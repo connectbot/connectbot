@@ -202,7 +202,7 @@ public class DynamicAcceptThread extends Thread implements IChannelWorkerThread 
 			}
 
 			try {
-				r2l = new StreamForwarder(cn, null, null, cn.stdoutStream, out, "RemoteToLocal");
+				r2l = new StreamForwarder(cn, null, sock, cn.stdoutStream, out, "RemoteToLocal");
 				l2r = new StreamForwarder(cn, r2l, sock, in, cn.stdinStream, "LocalToRemote");
 			} catch (IOException e) {
 				try {
