@@ -96,7 +96,7 @@ public class LocalAcceptThread extends Thread implements IChannelWorkerThread
 
 			try
 			{
-				r2l = new StreamForwarder(cn, null, null, cn.stdoutStream, s.getOutputStream(), "RemoteToLocal");
+				r2l = new StreamForwarder(cn, null, s, cn.stdoutStream, s.getOutputStream(), "RemoteToLocal");
 				l2r = new StreamForwarder(cn, r2l, s, s.getInputStream(), cn.stdinStream, "LocalToRemote");
 			}
 			catch (IOException e)
