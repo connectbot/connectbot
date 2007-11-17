@@ -23,6 +23,7 @@ import android.text.method.KeyCharacterMap;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,6 +51,13 @@ public class SecureShell extends Activity {
 	
 	private Cursor mCursor;
 	
+	// Store the username, hostname, and port from the database.
+	private String mHostname;
+	private String mUsername;
+	private int mPort;
+	
+	// This is the toggle for the original thread to release the indeterminate waiting graphic.
+	private boolean mIsWaiting;
 	// This is for the password dialog.
 	Semaphore sPass;
 	String mPassword = null;
@@ -88,6 +96,9 @@ public class SecureShell extends Activity {
 			conn = new Connection(hostname, port);
 
 			conn.addConnectionMonitor(mConnectionMonitor);
+			
+			setWaiting(true);
+			mHandler.post(mUpdateWaiting);
 			
 			Log.d("SSH", "Starting connection attempt...");
 			mBuffer =  "Attemping to connect...";
@@ -152,8 +163,8 @@ public class SecureShell extends Activity {
 				out = sess.getStdin();
 				in = sess.getStdout();
 
-				mBuffer = "Welcome...";
-				mHandler.post(mUpdateView);
+				setWaiting(false);
+				mHandler.post(mUpdateWaiting);
 				
 			} catch (IOException e) {
 				Log.e("SSH", e.getMessage());
@@ -259,27 +270,54 @@ public class SecureShell extends Activity {
         
         mContext = this;
         
+        requestWindowFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.secure_shell);
+        mOutput  = (TextView) findViewById(R.id.output);
         
         Log.d("SSH", "using URI " + getIntent().getData().toString());
         
         mCursor = managedQuery(getIntent().getData(), PROJECTION, null, null);
         mCursor.first();
         
-        mOutput  = (TextView) findViewById(R.id.output);
+        mHostname = mCursor.getString(HOSTNAME_INDEX);
+        mUsername = mCursor.getString(USERNAME_INDEX);
+        mPort = mCursor.getInt(PORT_INDEX);
+        
+        String title = "SSH: " + mUsername + "@" + mHostname;
+        if (mPort != 22)
+        	title += Integer.toString(mPort);
+        
+        this.setTitle(title);
+        
+        mConn = new ConnectionThread(mHostname, mUsername, mPort);
         
         mKMap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
-                
-        mConn = new ConnectionThread(
-        		mCursor.getString(HOSTNAME_INDEX),
-        		mCursor.getString(USERNAME_INDEX),
-        		mCursor.getInt(PORT_INDEX));
-        
+
         Log.d("SSH", "Starting new ConnectionThread");
         mConn.start();
     }
     
-    public String askPassword() {
+    public void setWaiting(boolean isWaiting) {
+    	mIsWaiting = isWaiting;
+    }
+    
+	final Runnable mUpdateWaiting = new Runnable() {
+		public void run() {
+	    	if (mIsWaiting) {
+	    		getWindow().setFeatureInt(Window.FEATURE_PROGRESS,
+	    				Window.PROGRESS_VISIBILITY_ON);
+	    		getWindow().setFeatureInt(Window.FEATURE_PROGRESS,
+	    				Window.PROGRESS_INDETERMINATE_ON);
+	    	} else {
+	    		getWindow().setFeatureInt(Window.FEATURE_PROGRESS,
+	    				Window.PROGRESS_VISIBILITY_OFF);
+	    		getWindow().setFeatureInt(Window.FEATURE_PROGRESS,
+	    				Window.PROGRESS_INDETERMINATE_OFF);
+	    	}
+		}
+	};
+
+	public String askPassword() {
     	Intent intent = new Intent(this, PasswordDialog.class);
     	this.startSubActivity(intent, PASSWORD_REQUEST);
     	return null;
