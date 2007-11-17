@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Secure Shell</string>
+    
+    <string name="title_hosts_list">Hosts List</string>
+    <string name="title_host">Host</string>
+    <string name="title_shell">Secure Shell</string>
+    <string name="title_password">Input Password</string>
+    
+
+	<string name="resolve_edit">Edit Host</string>
+	
+    <string name="menu_insert">Add Host</string>
+    <string name="menu_delete">Delete Host</string>
+    
+    <string name="button_ok">Ok</string>
+    <string name="button_add">Add</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_change">Change</string>
+</resources>

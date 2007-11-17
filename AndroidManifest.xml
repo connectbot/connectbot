@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.theb.ssh">
+    <application android:icon="@drawable/icon">
+    	<provider class="HostDbProvider"
+    		android:authorities="org.theb.provider.HostDb"/>
+        <activity class="HostsList" android:label="@string/title_hosts_list">
+            <intent-filter>
+                <action android:value="android.intent.action.MAIN" />
+                <category android:value="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:value="android.intent.action.PICK" />
+                <action android:value="android.intent.action.VIEW" />
+                <action android:value="android.intent.action.EDIT" />
+                <category android:value="android.intent.category.DEFAULT" />
+                <type android:value="vnd.android.cursor.dir/vnd.theb.host" />
+            </intent-filter>
+            
+        </activity>
+            
+        <activity class="HostEditor" android:label="@string/title_host"
+        				android:theme="@android:style/Theme.Dialog">
+            <!-- This filter says that we can view or edit the data of
+                 a single host -->
+            <intent-filter android:label="@string/resolve_edit">
+                <action android:value="org.theb.ssh.action.EDIT_HOST" />
+                <action android:value="org.theb.ssh.action.EDIT" />
+                <!-- DEFAULT: execute if being directly invoked. -->
+                <category android:value="android.intent.category.DEFAULT" />
+                
+               	<!-- ALTERNATIVE: show as an alternative action when the user is
+                     working with this type of data. -->
+                <category android:value="android.intent.category.ALTERNATIVE" />
+                
+                <!-- SELECTED_ALTERNATIVE: show as an alternative action the user
+                     can perform when selecting this type of data. -->
+                <category android:value="android.intent.category.SELECTED_ALTERNATIVE" />
+
+                <type android:value="vnd.android.cursor.item/vnd.theb.host" />
+            </intent-filter>
+            
+            <!-- This filter says that we can create a new note inside
+                 of a directory of notes. -->
+            <intent-filter>
+                <action android:value="android.intent.action.INSERT" />
+                <category android:value="android.intent.category.DEFAULT" />
+                <type android:value="vnd.android.cursor.dir/vnd.theb.host" />
+            </intent-filter>
+        </activity>
+        
+		<activity class="SecureShell" android:label="@string/title_shell">
+            <!-- This filter says that we can connect to a host -->
+            <intent-filter android:label="@string/resolve_edit">
+                <action android:value="org.theb.ssh.action.CONNECT_HOST" />
+                <action android:value="android.intent.action.PICK" />
+                <!-- DEFAULT: execute if being directly invoked. -->
+                <category android:value="android.intent.category.DEFAULT" />
+                <type android:value="vnd.android.cursor.item/vnd.theb.host" />
+            </intent-filter>
+        </activity>
+        
+        <activity class="PasswordDialog" android:label="@string/title_password"
+        		android:theme="@android:style/Theme.Dialog">
+        </activity> 
+    </application>
+</manifest> 
