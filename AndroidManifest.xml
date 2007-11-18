@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.theb.ssh">
-    <application android:icon="@drawable/icon">
+    <application android:icon="@drawable/icon"
+    	android:label="@string/app_name">
     	<provider class="HostDbProvider"
     		android:authorities="org.theb.provider.HostDb"/>
         <activity class="HostsList" android:label="@string/title_hosts_list">
@@ -51,7 +52,7 @@
         
 		<activity class="SecureShell" android:label="@string/title_shell">
             <!-- This filter says that we can connect to a host -->
-            <intent-filter android:label="@string/resolve_edit">
+            <intent-filter android:label="@string/resolve_connect">
                 <action android:value="org.theb.ssh.action.CONNECT_HOST" />
                 <action android:value="android.intent.action.PICK" />
                 <!-- DEFAULT: execute if being directly invoked. -->

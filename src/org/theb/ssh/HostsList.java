@@ -1,6 +1,8 @@
 package org.theb.ssh;
 
 import org.theb.provider.HostDb;
+
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.MeasureSpec;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 public class HostsList extends ListActivity {
 	public static final int DELETE_ID = Menu.FIRST;
 	public static final int INSERT_ID = Menu.FIRST + 1;
+	public static final int ABOUT_ID = Menu.FIRST + 2;
 	
 	private static final String[] PROJECTION = new String[] {
 		HostDb.Hosts._ID,
@@ -31,6 +35,13 @@ public class HostsList extends ListActivity {
 	
 	private Cursor mCursor;
 	
+	/**
+	 * @author kenny
+	 * Imparts a more informative view of the host list.
+	 * 
+	 * Displays as "username@hostname:port" but only includes the port if it is
+	 * not on the default port 22.
+	 */
 	public class HostListCursorAdapter extends SimpleCursorAdapter {
 
 		public HostListCursorAdapter(Context context, int layout, Cursor c,
@@ -42,9 +53,7 @@ public class HostsList extends ListActivity {
 		 public void bindView(View view, Context context, Cursor cursor) {
 			String label;
 			TextView textView = (TextView) view;
-			
-			// Create a list display of "username@hostname:port" but exclude the port if
-			// it is already port 22 (default secure shell port).
+
 			label = cursor.getString(2)
 					+ "@"
 					+ cursor.getString(1);
@@ -64,7 +73,7 @@ public class HostsList extends ListActivity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);	
         
-        this.setDefaultKeyMode(SHORTCUT_DEFAULT_KEYS);
+        setDefaultKeyMode(SHORTCUT_DEFAULT_KEYS);
         
         Intent intent = getIntent();
         if (intent.getData() == null) {
@@ -111,10 +120,13 @@ public class HostsList extends ListActivity {
         super.onCreateOptionsMenu(menu);
 
         // This is our one standard application action -- inserting a
-        // new note into the list.
+        // new host into the list.
         menu.add(0, INSERT_ID, R.string.menu_insert).setShortcut(
                 KeyEvent.KEYCODE_3, 0, KeyEvent.KEYCODE_A);
 
+        // This links to the about dialog for the program.
+        menu.add(0, ABOUT_ID, R.string.menu_about);
+        
         // Generate any additional actions that can be performed on the
         // overall list.  In a normal install, there are no additional
         // actions found here, but this allows other applications to extend
@@ -142,7 +154,7 @@ public class HostsList extends ListActivity {
             // This is the selected item.
             ContentURI uri = getIntent().getData().addId(getSelectionRowID());
 
-            // Build menu...  always starts with the CONNECT action...
+            // Build menu...  always starts with the PICK action...
             Intent[] specifics = new Intent[1];
             specifics[0] = new Intent(Intent.PICK_ACTION, uri);
             Menu.Item[] items = new Menu.Item[1];
@@ -181,11 +193,31 @@ public class HostsList extends ListActivity {
         case INSERT_ID:
             insertItem();
             return true;
+        case ABOUT_ID:
+        	showAbout();
+        	return true;
         }
         return super.onOptionsItemSelected(item);
     }
     
-    @Override
+    private void showAbout() {
+		Dialog about = new Dialog(this);
+		about.setContentView(R.layout.about_dialog);
+		about.setTitle(getResources().getString(R.string.app_name)
+				+ " "
+				+ getResources().getString(R.string.msg_version));
+		
+		// Everything looks cooler when you blur the window behind it.
+        about.getWindow().setFlags(WindowManager.LayoutParams.BLUR_BEHIND_FLAG,
+                WindowManager.LayoutParams.BLUR_BEHIND_FLAG);
+        WindowManager.LayoutParams lp = about.getWindow().getAttributes();
+        lp.tintBehind = 0x60000820;
+        about.getWindow().setAttributes(lp);
+        
+		about.show();
+	}
+
+	@Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         ContentURI url = getIntent().getData().addId(getSelectionRowID());
         
