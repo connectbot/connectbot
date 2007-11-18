@@ -7,16 +7,11 @@ import java.util.concurrent.Semaphore;
 
 import org.theb.provider.HostDb;
 
-import com.trilead.ssh2.Connection;
-import com.trilead.ssh2.ConnectionMonitor;
-import com.trilead.ssh2.Session;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.ContentURI;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.method.KeyCharacterMap;
@@ -26,8 +21,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+
+import com.trilead.ssh2.Connection;
+import com.trilead.ssh2.ConnectionMonitor;
+import com.trilead.ssh2.Session;
 
 public class SecureShell extends Activity {
 	private Context mContext;

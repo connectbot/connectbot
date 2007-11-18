@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				android:orientation="horizontal"
                 android:layout_width="fill_parent" 
-                android:layout_height="wrap_content"
+                android:layout_height="64px"
                 android:theme="@android:style/Theme.Dialog">
 
+	<ImageView id="@+id/icon"
+				android:layout_width="75px"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:minHeight="64px"
+				android:minWidth="64px"
+				android:src="@drawable/icon"/>
+	
     <TextView id="@+id/copyright" 
-              android:layout_width="fill_parent" 
-              android:layout_height="wrap_content" 
-              android:text="@string/msg_copyright"/>
-</RelativeLayout>
+                android:layout_width="fill_parent" 
+                android:layout_height="wrap_content" 
+				android:paddingLeft="10dip"
+                android:layout_weight="2"
+                android:text="@string/msg_copyright"/>
+</LinearLayout>
