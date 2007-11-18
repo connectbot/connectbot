@@ -8,8 +8,8 @@ import java.util.concurrent.Semaphore;
 import org.theb.provider.HostDb;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -17,18 +17,15 @@ import android.os.Handler;
 import android.text.method.KeyCharacterMap;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.Window;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.TextView;
 
+import com.trilead.ssh2.ChannelCondition;
 import com.trilead.ssh2.Connection;
 import com.trilead.ssh2.ConnectionMonitor;
 import com.trilead.ssh2.Session;
 
 public class SecureShell extends Activity {
-	private Context mContext;
 	private TextView mOutput;
 	private ConnectionThread mConn;
 	private String mBuffer;
@@ -54,16 +51,24 @@ public class SecureShell extends Activity {
 	private String mUsername;
 	private int mPort;
 	
-	// This is the toggle for the original thread to release the indeterminate waiting graphic.
+	// The toggle for the original thread to release the indeterminate waiting graphic.
+	private ProgressDialog progress;
 	private boolean mIsWaiting;
+	private String mWaitingTitle;
+	private String mWaitingMessage;
+	
+	// Connection lost reason.
+	private String mDisconnectReason;
+	
 	// This is for the password dialog.
 	Semaphore sPass;
 	String mPassword = null;
 	
 	Connection conn;
 	Session sess;
-	InputStream in;
-	OutputStream out;
+	InputStream stdin;
+	InputStream stderr;
+	OutputStream stdout;
 	int x;
 	int y;
 		
@@ -95,23 +100,22 @@ public class SecureShell extends Activity {
 
 			conn.addConnectionMonitor(mConnectionMonitor);
 			
-			setWaiting(true);
-			mHandler.post(mUpdateWaiting);
+            setWaiting(true, "Connection",
+            		"Connecting to " + hostname + "...");
 			
 			Log.d("SSH", "Starting connection attempt...");
-			mBuffer =  "Attemping to connect...";
-			mHandler.post(mUpdateView);
 
 	        try {
 				conn.connect(new InteractiveHostKeyVerifier());
 
-				Log.d("SSH", "Starting authentication...");
-				mBuffer =  "Attemping to authenticate...";
-				mHandler.post(mUpdateView);
+				setWaiting(true, "Authenticating",
+						"Trying to authenticate...");
 				
-				boolean enableKeyboardInteractive = true;
-				boolean enableDSA = true;
-				boolean enableRSA = true;
+				Log.d("SSH", "Starting authentication...");
+				
+//				boolean enableKeyboardInteractive = true;
+//				boolean enableDSA = true;
+//				boolean enableRSA = true;
 				
 				while (true) {
 					/*
@@ -121,6 +125,8 @@ public class SecureShell extends Activity {
 					
 					if (conn.isAuthMethodAvailable(username, "password")) {
 						Log.d("SSH", "Trying password authentication...");
+						setWaiting(true, "Authenticating",
+								"Trying to authenticate using password...");
 						
 						// Set a semaphore that is unset by the returning dialog.
 						sPass = new Semaphore(0);
@@ -143,8 +149,7 @@ public class SecureShell extends Activity {
 				}
 				
 				Log.d("SSH", "Opening session...");
-				mBuffer =  "Opening session...";
-				mHandler.post(mUpdateView);
+				setWaiting(true, "Session", "Requesting shell...");
 				
 				sess = conn.openSession();
 				
@@ -158,15 +163,14 @@ public class SecureShell extends Activity {
 				Log.d("SSH", "Requesting shell...");
 				sess.startShell();
 
-				out = sess.getStdin();
-				in = sess.getStdout();
+				stdout = sess.getStdin();
+				stderr = sess.getStderr();
+				stdin = sess.getStdout();
 
-				setWaiting(false);
-				mHandler.post(mUpdateWaiting);
-				
+				setWaiting(false, null, null);
 			} catch (IOException e) {
 				Log.e("SSH", e.getMessage());
-				mConnectionMonitor.connectionLost(e);
+				setWaiting(false, null, null);
 				return;
 			} catch (InterruptedException e) {
 				// This thread is coming to an end. Let us exit.
@@ -179,10 +183,28 @@ public class SecureShell extends Activity {
 			
 			try {
 				while (true) {
-					int len = in.read(buff);
-					if (len == -1)
-						return;
-					addText(buff, len);
+					if ((stdin.available() == 0) && (stderr.available() == 0)) {
+						int conditions = sess.waitForCondition(
+								ChannelCondition.STDOUT_DATA
+								| ChannelCondition.STDERR_DATA
+								| ChannelCondition.EOF, 2000);
+						if ((conditions & ChannelCondition.TIMEOUT) != 0)
+							continue;
+						if ((conditions & ChannelCondition.EOF) != 0)
+							if ((conditions &
+									(ChannelCondition.STDERR_DATA
+											| ChannelCondition.STDOUT_DATA)) == 0)
+								break;
+					}
+					
+					if (stdin.available() > 0) {
+						int len = stdin.read(buff);
+						addText(buff, len);
+					}
+					if (stderr.available() > 0) {
+						int len = stderr.read(buff);
+						addText(buff, len);
+					}
 				}
 			} catch (Exception e) {
 				Log.e("SSH", "Got exception reading: " + e.getMessage());
@@ -266,8 +288,6 @@ public class SecureShell extends Activity {
     public void onCreate(Bundle savedValues) {
         super.onCreate(savedValues);
         
-        mContext = this;
-        
         requestWindowFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.secure_shell);
         mOutput  = (TextView) findViewById(R.id.output);
@@ -295,22 +315,27 @@ public class SecureShell extends Activity {
         mConn.start();
     }
     
-    public void setWaiting(boolean isWaiting) {
+    public void setWaiting(boolean isWaiting, String title, String message) {
     	mIsWaiting = isWaiting;
+    	mWaitingTitle = title;
+    	mWaitingMessage = message;
+    	mHandler.post(mUpdateWaiting);
     }
     
 	final Runnable mUpdateWaiting = new Runnable() {
 		public void run() {
 	    	if (mIsWaiting) {
-	    		getWindow().setFeatureInt(Window.FEATURE_PROGRESS,
-	    				Window.PROGRESS_VISIBILITY_ON);
-	    		getWindow().setFeatureInt(Window.FEATURE_PROGRESS,
-	    				Window.PROGRESS_INDETERMINATE_ON);
+	    		if (progress == null)
+					progress = ProgressDialog.show(SecureShell.this, mWaitingTitle, mWaitingMessage, true, false);
+				else {
+	    			progress.setTitle(mWaitingTitle);
+	    			progress.setMessage(mWaitingMessage);
+	    		}
 	    	} else {
-	    		getWindow().setFeatureInt(Window.FEATURE_PROGRESS,
-	    				Window.PROGRESS_VISIBILITY_OFF);
-	    		getWindow().setFeatureInt(Window.FEATURE_PROGRESS,
-	    				Window.PROGRESS_INDETERMINATE_OFF);
+	    		if (progress != null) {
+	    			progress.dismiss();
+	    			progress = null;
+	    		}
 	    	}
 		}
 	};
@@ -328,14 +353,12 @@ public class SecureShell extends Activity {
 	    if (requestCode == PASSWORD_REQUEST) {
 	
 	        // If the request was cancelled, then we didn't get anything.
-	        if (resultCode == RESULT_CANCELED) {
-	            return;
-	
-	        // Otherwise, there now should be a password ready for us.
-	        } else {
+	        if (resultCode == RESULT_CANCELED)
+				mPassword = "";
+			else
 	            mPassword = data;
-	            sPass.release();
-	        }
+	        
+            sPass.release();
 	    }
 	}
     
@@ -358,10 +381,10 @@ public class SecureShell extends Activity {
     
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent msg) {
-    	if (out != null) {
+    	if (stdout != null) {
 	    	int c = mKMap.get(keyCode, msg.getMetaState());
 	    	try {
-				out.write(c);
+				stdout.write(c);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -375,25 +398,20 @@ public class SecureShell extends Activity {
     	mOutput.setText(mBuffer);
     }
 
+    final Runnable mDisconnectAlert = new Runnable() {
+    	public void run() {
+			AlertDialog d = AlertDialog.show(SecureShell.this,
+					"Connection Lost", mDisconnectReason, "Ok", false);
+			d.show();
+			// TODO: Return to previous activity if connection fails.
+	    }
+    };
+    
     final ConnectionMonitor mConnectionMonitor = new ConnectionMonitor() {
     	public void connectionLost(Throwable reason) {
     		Log.d("SSH", "Connection ended.");
-    		Dialog d = new Dialog(mContext);
-    		d.setTitle("Connection Lost");
-    		d.setContentView(R.layout.message_dialog);
-    		
-    		TextView msg = (TextView) d.findViewById(R.id.message);
-    		msg.setText(reason.getMessage());
-    		
-    		Button b = (Button) d.findViewById(R.id.dismiss);
-    		b.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					finish();
-				}
-    		});
-    		d.show();
-    		finish();
+    		mDisconnectReason = reason.getMessage();
+    		mHandler.post(mDisconnectAlert);
     	}
     };
 }

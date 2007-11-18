@@ -24,7 +24,8 @@ import android.widget.TextView;
 public class HostsList extends ListActivity {
 	public static final int DELETE_ID = Menu.FIRST;
 	public static final int INSERT_ID = Menu.FIRST + 1;
-	public static final int ABOUT_ID = Menu.FIRST + 2;
+	public static final int PREFERENCES_ID = Menu.FIRST + 2;
+	public static final int ABOUT_ID = Menu.FIRST + 3;
 	
 	private static final String[] PROJECTION = new String[] {
 		HostDb.Hosts._ID,
@@ -124,6 +125,10 @@ public class HostsList extends ListActivity {
         menu.add(0, INSERT_ID, R.string.menu_insert).setShortcut(
                 KeyEvent.KEYCODE_3, 0, KeyEvent.KEYCODE_A);
 
+        // The preferences link allows users to e.g. set the pubkey
+        menu.add(0, PREFERENCES_ID, R.string.menu_preferences).setShortcut(
+        		KeyEvent.KEYCODE_4, 0, KeyEvent.KEYCODE_P);
+        
         // This links to the about dialog for the program.
         menu.add(0, ABOUT_ID, R.string.menu_about);
         
@@ -193,6 +198,9 @@ public class HostsList extends ListActivity {
         case INSERT_ID:
             insertItem();
             return true;
+        case PREFERENCES_ID:
+        	showPreferences();
+        	return true;
         case ABOUT_ID:
         	showAbout();
         	return true;
@@ -200,7 +208,12 @@ public class HostsList extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
     
-    private void showAbout() {
+    private void showPreferences() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void showAbout() {
 		Dialog about = new Dialog(this);
 		about.setContentView(R.layout.about_dialog);
 		about.setTitle(getResources().getString(R.string.app_name)
