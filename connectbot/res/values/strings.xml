@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Secure Shell</string>
+    <string name="app_name">Connectbot</string>
     
-    <string name="title_hosts_list">Hosts List</string>
+    <string name="title_hosts_list">Connectbot</string>
     <string name="title_host">Host</string>
     <string name="title_shell">Secure Shell</string>
     <string name="title_password">Input Password</string>
     
-
 	<string name="resolve_edit">Edit Host</string>
+	<string name="resolve_connect">Connect</string>
 	
     <string name="menu_insert">Add Host</string>
     <string name="menu_delete">Delete Host</string>
+    <string name="menu_about">About</string>
     
     <string name="button_ok">Ok</string>
     <string name="button_add">Add</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_change">Change</string>
+    
+    <string name="msg_copyright">Copyright (C) 2007, Kenny Root</string>
+    <string name="msg_version">v1.0</string>
 </resources>
