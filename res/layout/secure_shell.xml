@@ -3,10 +3,16 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
+    <org.theb.ssh.TerminalView id="@+id/terminal"
+    	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:textSize="8sp"
+    	android:typeface="monospace" />
+<!-- 
     <TextView id="@+id/output"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:textSize="8sp"
         android:typeface="monospace" />
-
+ -->
 </RelativeLayout>
