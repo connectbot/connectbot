@@ -1104,15 +1104,14 @@ public class SoftFont {
 
 		switch (fontdata[entry][SF_TYPE]) {
 		case SF_BITMAP:
+			p.setStrokeWidth(0);
 			for (h=0;h<fontheight;h++) {
 				for (w=0;w<fontwidth;w++) {
 					//FIXME: 8 bit max currently...
 					if (0!=(fontdata[entry][h+SF_DATA] & (1<<(7-w)))) {
-						g.drawRect(
+						g.drawPoint(
 							x+(int)(w*dw),
 							y+(int)(h*dh),
-							((int)((w+1)*dw))-(int)(w*dw),
-							((int)((h+1)*dh))-(int)(h*dh),
 							p
 						);
 					}

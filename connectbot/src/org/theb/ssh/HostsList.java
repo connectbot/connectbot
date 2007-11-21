@@ -227,8 +227,8 @@ public class HostsList extends ListActivity {
     }
     
     private void showPreferences() {
-		// TODO Auto-generated method stub
-		
+    	Intent intent = new Intent(this, Preferences.class);
+    	this.startActivity(intent);
 	}
 
 	private void showAbout() {
