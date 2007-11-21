@@ -18,15 +18,14 @@
  */
 package org.theb.ssh;
 
-import com.trilead.ssh2.ServerHostKeyVerifier;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-public class InteractiveHostKeyVerifier implements ServerHostKeyVerifier {
-
-	public boolean verifyServerHostKey(String hostname, int port,
-			String serverHostKeyAlgorithm, byte[] serverHostKey)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
+public interface Terminal {
+	public int getWidth();
+	public int getHeight();
+	public int getRowCount();
+	public int getColumnCount();
+	public void start(InputStream in, OutputStream out);
+	public byte[] getKeyCode(int keyCode, int meta);
 }

@@ -18,15 +18,25 @@
  */
 package org.theb.ssh;
 
-import com.trilead.ssh2.ServerHostKeyVerifier;
+import android.app.Dialog;
+import android.content.Context;
 
-public class InteractiveHostKeyVerifier implements ServerHostKeyVerifier {
+public class PreferencesDialog extends Dialog {
 
-	public boolean verifyServerHostKey(String hostname, int port,
-			String serverHostKeyAlgorithm, byte[] serverHostKey)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return true;
+	public PreferencesDialog(Context context) {
+		super(context);
+		// TODO Auto-generated constructor stub
+	}
+
+	public PreferencesDialog(Context context, int theme) {
+		super(context, theme);
+		// TODO Auto-generated constructor stub
+	}
+
+	public PreferencesDialog(Context context, boolean cancelable,
+			OnCancelListener cancelListener) {
+		super(context, cancelable, cancelListener);
+		// TODO Auto-generated constructor stub
 	}
 
 }
