@@ -63,6 +63,17 @@
         
         <activity class="PasswordDialog" android:label="@string/title_password"
         		android:theme="@android:style/Theme.Dialog">
+        </activity>
+        
+        <activity class="TouchEntropy" android:label="@string/title_entropy"
+        		android:theme="@android:style/Theme.Dialog">
+        </activity>
+        
+        <activity class="Preferences" android:label="@string/title_preferences"
+        		android:theme="@android:style/Theme.Dialog">
+        		<intent-filter android:label="@string/title_preferences">
+        			<action android:value="org.theb.ssh.action.SETTINGS_ACTION"/>
+        		</intent-filter>
         </activity> 
     </application>
 </manifest> 

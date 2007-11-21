@@ -548,6 +548,14 @@ public class VDUBuffer {
   }
 
   /**
+   * Check whether the cursor is currently visible.
+   * @return visibility
+   */
+  public boolean isCursorVisible() {
+	  return showcursor;
+  }
+  
+  /**
    * Puts the cursor at the specified position.
    * @param c column
    * @param l line

@@ -6,6 +6,8 @@
     <string name="title_host">Host</string>
     <string name="title_shell">Secure Shell</string>
     <string name="title_password">Input Password</string>
+    <string name="title_preferences">Preferences</string>
+    <string name="title_entropy">Gathering Entropy</string>
     
 	<string name="resolve_edit">Edit Host</string>
 	<string name="resolve_connect">Connect</string>
@@ -15,10 +17,13 @@
     <string name="menu_preferences">Preferences</string>
     <string name="menu_about">About</string>
     
+    <string name="prompt_touch">Please touch the screen.</string>
+    
     <string name="button_ok">Ok</string>
     <string name="button_add">Add</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_change">Change</string>
+    <string name="button_generate">Generate Key</string>
     
     <string name="msg_copyright">Copyright &#169; 2007, Kenny Root http://the-b.org/</string>
     <string name="msg_version">v1.0</string>

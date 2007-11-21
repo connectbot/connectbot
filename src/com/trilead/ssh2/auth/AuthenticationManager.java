@@ -161,14 +161,20 @@ public class AuthenticationManager implements MessageHandler
 	public boolean authenticatePublicKey(String user, char[] PEMPrivateKey, String password, SecureRandom rnd)
 			throws IOException
 	{
+		Object key = PEMDecoder.decode(PEMPrivateKey, password);
+		
+		return authenticatePublicKey(user, key, rnd);
+	}
+	
+	public boolean authenticatePublicKey(String user, Object key, SecureRandom rnd)
+			throws IOException
+	{
 		try
 		{
 			initialize(user);
 
 			if (methodPossible("publickey") == false)
 				throw new IOException("Authentication method publickey not supported by the server at this stage.");
-
-			Object key = PEMDecoder.decode(PEMPrivateKey, password);
 
 			if (key instanceof DSAPrivateKey)
 			{

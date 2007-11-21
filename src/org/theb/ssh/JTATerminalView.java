@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PixelXorXfermode;
 import android.graphics.Typeface;
 import android.graphics.Paint.FontMetricsInt;
 import android.util.Log;
@@ -22,6 +23,8 @@ import android.view.View;
 
 public class JTATerminalView extends View implements VDUDisplay, Terminal, Runnable {
 	private Paint paint;
+	private Paint cursorPaint;
+	
 	private Canvas canvas;
 	private Bitmap bitmap;
 	
@@ -40,8 +43,8 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 	private int charHeight;
 	private int charDescent;
 	
-	private int termWidth;
-	private int termHeight;
+	private int xoffset = 0;
+	private int yoffset = 0;
 	
 	private int color[] = {
 			Color.BLACK,
@@ -62,6 +65,12 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 		
 		paint = new Paint();
 		paint.setAntiAlias(true);
+		
+		cursorPaint = new Paint();
+		cursorPaint.setAntiAlias(true);
+		cursorPaint.setColor(darken(color[COLOR_FG_STD]));
+		cursorPaint.setXfermode(new PixelXorXfermode(color[COLOR_BG_STD]));
+		
 		setFont(Typeface.MONOSPACE, 8);
 
 		emulation = new vt320() {
@@ -84,24 +93,20 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 		};
 		
 		setVDUBuffer(emulation);
-		emulation.setDisplay(this);
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		if (bitmap != null) {
 			canvas.drawBitmap(bitmap, 0, 0, null);
-			/*
-			if (charHeight > 0 && y > charHeight) {
-				// Invert pixels for cursor position.
-				Bitmap cursor = Bitmap.createBitmap(mBitmap, x, y - mCharHeight, mCharWidth, mCharHeight);
-				for (int cy = 0; cy < mCharHeight; cy++)
-					for (int cx = 0; cx < mCharWidth; cx++)
-						cursor.setPixel(cx, cy, (~cursor.getPixel(cx, cy) & 0xFFFFFFFF) | 0xFF000000);
-				canvas.drawBitmap(cursor, x, y - mCharHeight, null);
-				cursor = null;
+			
+			if (buffer.isCursorVisible() &&
+					(buffer.screenBase + buffer.getCursorRow() >= buffer.windowBase &&
+					buffer.screenBase + buffer.getCursorRow() < buffer.windowBase + buffer.height)) {
+				int x = buffer.getCursorColumn() * charWidth + xoffset;
+				int y = (buffer.getCursorRow() + buffer.screenBase - buffer.windowBase) * charHeight + yoffset;
+				canvas.drawRect(x, y, x + charWidth, y + charHeight, cursorPaint);
 			}
-			*/
 		}
 	}
  
@@ -120,11 +125,15 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 		canvas = newCanvas;
 		
 		setSize(w, h);
+		
+		// Make sure the buffer is in the center of the screen.
+		xoffset = (getWidth() - buffer.width * charWidth) / 2;
+		yoffset = (getHeight() - buffer.height * charHeight) / 2;
 	}
 	
 	private void setSize(int w, int h) {
-		termWidth = w / charWidth;
-		termHeight = h / charHeight;
+		int termWidth = w / charWidth;
+		int termHeight = h / charHeight;
 		
 		buffer.setScreenSize(termWidth, buffer.height = termHeight, true);
 	}
@@ -150,7 +159,11 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 	}
 	
 	public int getColumnCount() {
-		return termWidth;
+		return buffer.width;
+	}
+
+	public int getRowCount() {
+		return buffer.height;
 	}
 
 	public InputStream getInput() {
@@ -182,10 +195,6 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 		return out;
 	}
 
-	public int getRowCount() {
-		return termHeight;
-	}
-
 	private int darken(int color) {
 		return Color.argb(0xFF,
 			(int)(Color.red(color) * 0.8),
@@ -194,7 +203,7 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 		);
 	}
 	
-	/*
+	/* Not used.
 	private int brighten(int color) {
 		return Color.argb(0xFF,
 			(int)(Color.red(color) * 1.2),
@@ -205,17 +214,15 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 	*/
 	
 	public void redraw() {
-		// Make sure the buffer is in the center of the screen.
-		int xoffset = (getWidth() - buffer.width * charWidth) / 2;
-		int yoffset = (getHeight() - buffer.height * charHeight) / 2;
-		
 		// Draw the mouse-selection
 		//int selectStartLine = selectBegin.y - buffer.windowBase;
 		//int selectEndLine = selectEnd.y - buffer.windowBase;
 		
 		int fg, bg;
-		
+				
 		for (int l = 0; l < buffer.height; l++) {
+			// Check to see if the entire buffer is dirty or if this line is dirty.
+			// If neither is dirty, continue.
 			if (!buffer.update[0] && !buffer.update[l + 1]) continue;
 			
 			for (int c = 0; c < buffer.width; c++) {
@@ -225,15 +232,21 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 				fg = darken(color[COLOR_FG_STD]);
 				bg = darken(color[COLOR_BG_STD]);
 				
+				// Check if foreground color attribute is set.
 				if ((currAttr & VDUBuffer.COLOR_FG) != 0)
 					fg = darken(color[((currAttr & VDUBuffer.COLOR_FG) >> VDUBuffer.COLOR_FG_SHIFT) - 1]);
+
+				// Check if background color attribute is set.
 				if ((currAttr & VDUBuffer.COLOR_BG) != 0)
 					bg = darken(darken(color[((currAttr & VDUBuffer.COLOR_BG) >> VDUBuffer.COLOR_BG_SHIFT) - 1]));
+
+				// Check if bold attribute is set.
 				paint.setFakeBoldText((currAttr & VDUBuffer.BOLD) != 0);
 				
 				if ((currAttr & VDUBuffer.LOW) != 0)
 					fg = darken(fg);
 				
+				// Support character inversion by swapping background and foreground color.
 				if ((currAttr & VDUBuffer.INVERT) != 0) {
 					int swapc = bg;
 					bg = fg;
@@ -241,12 +254,18 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 				}
 				
 				// If this character is in the special font, print it and continue to the next character.
+				// We can't use the optimization below for special characters.
 				if (sf.inSoftFont(buffer.charArray[buffer.windowBase + l][c])) {
+					// Clear out the space where the character will be printed.
 					paint.setColor(bg);
 					canvas.drawRect(c * charWidth + xoffset, l * charHeight + yoffset,
 							c * (charWidth + 1) + xoffset, (l+1) * charHeight + yoffset, paint);
 					paint.setColor(fg);
+					
+					// FIXME: this won't work since we're not calling drawText()
 					paint.setUnderlineText((currAttr & VDUBuffer.UNDERLINE) != 0);
+					
+					// Draw the text if it's not invisible.
 					if ((currAttr & VDUBuffer.INVISIBLE) == 0)
 						sf.drawChar(canvas, paint, buffer.charArray[buffer.windowBase + l][c], xoffset + c * charWidth, l * charHeight + yoffset, charWidth, charHeight);
 					continue;
@@ -265,12 +284,16 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 					addr++;
 				}
 				
+				// Clear the background in preparation for writing text.
 				paint.setColor(bg);
 				canvas.drawRect(c * charWidth + xoffset, l * charHeight + yoffset,
 						addr * (charWidth + 1) + xoffset, (l+1) * charHeight + yoffset, paint);
 				paint.setColor(fg);
 				
+				// Check for the underline attribute and set the brush accordingly.
 				paint.setUnderlineText((currAttr & VDUBuffer.UNDERLINE) != 0);
+				
+				// Write the text string starting at 'c' for 'addr' number of characters.
 				if ((currAttr & VDUBuffer.INVISIBLE) == 0)
 					canvas.drawText(buffer.charArray[buffer.windowBase + l],
 							c, addr,
@@ -278,6 +301,7 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 							(l + 1) * charHeight - charDescent + yoffset,
 							paint);
 				
+				// Advance to the next text block with different characteristics.
 				c += addr - 1;
 			}
 		}
@@ -305,6 +329,7 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 
 	public void setVDUBuffer(VDUBuffer buffer) {
 		this.buffer = buffer;
+		buffer.setDisplay(this);
 	}
 
 	public void run() {
