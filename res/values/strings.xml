@@ -6,7 +6,7 @@
     <string name="title_host">Host</string>
     <string name="title_shell">Secure Shell</string>
     <string name="title_password">Input Password</string>
-    <string name="title_preferences">Preferences</string>
+    <string name="title_pubkey">Public Keys</string>
     <string name="title_entropy">Gathering Entropy</string>
     
 	<string name="resolve_edit">Edit Host</string>
@@ -15,6 +15,8 @@
     <string name="menu_insert">Add Host</string>
     <string name="menu_delete">Delete Host</string>
     <string name="menu_preferences">Preferences</string>
+    <string name="menu_pubkey">Public Keys</string>
+    
     <string name="menu_about">About</string>
     
     <string name="prompt_touch">Please touch the screen.</string>

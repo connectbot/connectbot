@@ -69,11 +69,8 @@
         		android:theme="@android:style/Theme.Dialog">
         </activity>
         
-        <activity class="Preferences" android:label="@string/title_preferences"
+        <activity class="Pubkey" android:label="@string/title_pubkey"
         		android:theme="@android:style/Theme.Dialog">
-        		<intent-filter android:label="@string/title_preferences">
-        			<action android:value="org.theb.ssh.action.SETTINGS_ACTION"/>
-        		</intent-filter>
         </activity> 
     </application>
 </manifest> 
