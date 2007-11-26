@@ -31,6 +31,7 @@ import android.net.ContentURI;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.MeasureSpec;
@@ -44,6 +45,9 @@ public class HostsList extends ListActivity {
 	public static final int INSERT_ID = Menu.FIRST + 1;
 	public static final int PREFERENCES_ID = Menu.FIRST + 2;
 	public static final int ABOUT_ID = Menu.FIRST + 3;
+	
+	// Preferences submenu
+	public static final int PUBKEY_ID = SubMenu.FIRST + 4;
 	
 	private static final String[] PROJECTION = new String[] {
 		HostDb.Hosts._ID,
@@ -144,7 +148,8 @@ public class HostsList extends ListActivity {
                 KeyEvent.KEYCODE_3, 0, KeyEvent.KEYCODE_A);
 
         // The preferences link allows users to e.g. set the pubkey
-        menu.add(0, PREFERENCES_ID, R.string.menu_preferences).setShortcut(
+        SubMenu prefs = menu.addSubMenu(0, 0, R.string.menu_preferences);
+        prefs.add(0, PUBKEY_ID, R.string.menu_pubkey).setShortcut(
         		KeyEvent.KEYCODE_4, 0, KeyEvent.KEYCODE_P);
         
         // This links to the about dialog for the program.
@@ -216,8 +221,8 @@ public class HostsList extends ListActivity {
         case INSERT_ID:
             insertItem();
             return true;
-        case PREFERENCES_ID:
-        	showPreferences();
+        case PUBKEY_ID:
+        	showPubkey();
         	return true;
         case ABOUT_ID:
         	showAbout();
@@ -226,8 +231,8 @@ public class HostsList extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
     
-    private void showPreferences() {
-    	Intent intent = new Intent(this, Preferences.class);
+    private void showPubkey() {
+    	Intent intent = new Intent(this, Pubkey.class);
     	this.startActivity(intent);
 	}
 

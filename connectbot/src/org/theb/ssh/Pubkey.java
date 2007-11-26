@@ -35,9 +35,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class Preferences extends Activity {
+public class Pubkey extends Activity {
 	private static SecureRandom mSecRand = null;
-	private static KeyStore mKeyStore = null;
+	//private static KeyStore mKeyStore = null;
 	private Thread kgThread = null;
 	
 	private static final int GATHER_ENTROPY = 0;
@@ -52,7 +52,7 @@ public class Preferences extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);	
         
-        setContentView(R.layout.preferences);
+        setContentView(R.layout.pubkey);
         
         generateButton = (Button) findViewById(R.id.generate);
         generateButton.setOnClickListener(mGenerateListener);
