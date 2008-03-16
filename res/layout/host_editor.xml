@@ -3,40 +3,40 @@
                 android:layout_width="fill_parent" 
                 android:layout_height="wrap_content">
 
-    <TextView id="@+id/usernameLabel" 
+    <TextView android:id="@+id/usernameLabel" 
               android:layout_width="fill_parent" 
               android:layout_height="wrap_content" 
               android:text="Username:"/>
 
-    <EditText id="@+id/username" 
+    <EditText android:id="@+id/username" 
               android:layout_width="fill_parent" 
               android:layout_height="wrap_content" 
               android:layout_below="@id/usernameLabel"/>
 
-    <TextView id="@+id/hostnameLabel" 
+    <TextView android:id="@+id/hostnameLabel" 
               android:layout_width="fill_parent" 
               android:layout_height="wrap_content"
               android:layout_below="@id/username" 
               android:text="Hostname:"/>
 
-    <EditText id="@+id/hostname" 
+    <EditText android:id="@+id/hostname" 
               android:layout_width="fill_parent" 
               android:layout_height="wrap_content" 
               android:layout_below="@id/hostnameLabel"/>
                 
-	<TextView id="@+id/portLabel" 
+	<TextView android:id="@+id/portLabel" 
               android:layout_width="fill_parent" 
               android:layout_height="wrap_content"
               android:layout_below="@id/hostname" 
               android:text="Port:"/>
 
-    <EditText id="@+id/port" 
+    <EditText android:id="@+id/port" 
               android:layout_width="fill_parent" 
               android:layout_height="wrap_content" 
               android:text="22"
               android:layout_below="@id/portLabel"/>
  
-    <Button id="@+id/add" 
+    <Button android:id="@+id/add" 
             android:layout_width="wrap_content" 
             android:layout_height="wrap_content" 
             android:layout_below="@id/port"
@@ -44,7 +44,7 @@
             android:layout_marginLeft="10dip"
             android:text="@string/button_add" />
 
-    <Button id="@+id/cancel"
+    <Button android:id="@+id/cancel"
     		android:layout_width="wrap_content" 
             android:layout_height="wrap_content"
             android:layout_toLeft="@id/add"

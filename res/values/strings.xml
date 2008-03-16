@@ -27,6 +27,8 @@
     <string name="button_change">Change</string>
     <string name="button_generate">Generate Key</string>
     
+    <string name="alert_disconnect_msg">Connection Lost</string>
+    
     <string name="msg_copyright">Copyright &#169; 2007, Kenny Root http://the-b.org/</string>
     <string name="msg_version">v1.0</string>
 </resources>

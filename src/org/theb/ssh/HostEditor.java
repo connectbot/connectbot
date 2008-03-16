@@ -23,7 +23,7 @@ import org.theb.provider.HostDb;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.ContentURI;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -59,15 +59,16 @@ public class HostEditor extends Activity {
     private Cursor mCursor;
     
 	private int mState;
-	private ContentURI mURI;
+	private Uri mURI;
 	
     @Override
     public void onCreate(Bundle savedValues) {
         super.onCreate(savedValues);
         
+        // TODO: update or remove
         // Have the system blur any windows behind this one.
-        getWindow().setFlags(WindowManager.LayoutParams.BLUR_BEHIND_FLAG,
-                WindowManager.LayoutParams.BLUR_BEHIND_FLAG);
+        //getWindow().setFlags(WindowManager.LayoutParams.BLUR_BEHIND_FLAG,
+        //        WindowManager.LayoutParams.BLUR_BEHIND_FLAG);
         
         // Apply a tint to any windows behind this one.  Doing a tint this
         // way is more efficient than using a translucent background.  Note

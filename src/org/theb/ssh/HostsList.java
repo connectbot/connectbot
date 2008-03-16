@@ -23,13 +23,13 @@ import org.theb.provider.HostDb;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.ComponentName;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
-import android.net.ContentURI;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.SubMenu;
 import android.view.View;
@@ -144,13 +144,13 @@ public class HostsList extends ListActivity {
 
         // This is our one standard application action -- inserting a
         // new host into the list.
-        menu.add(0, INSERT_ID, R.string.menu_insert).setShortcut(
-                KeyEvent.KEYCODE_3, 0, KeyEvent.KEYCODE_A);
+        menu.add(0, INSERT_ID, R.string.menu_insert)
+        	.setShortcut('3', 'a');
 
         // The preferences link allows users to e.g. set the pubkey
         SubMenu prefs = menu.addSubMenu(0, 0, R.string.menu_preferences);
-        prefs.add(0, PUBKEY_ID, R.string.menu_pubkey).setShortcut(
-        		KeyEvent.KEYCODE_4, 0, KeyEvent.KEYCODE_P);
+        prefs.add(0, PUBKEY_ID, R.string.menu_pubkey)
+        	.setShortcut('4', 'p');
         
         // This links to the about dialog for the program.
         menu.add(0, ABOUT_ID, R.string.menu_about);
@@ -180,7 +180,7 @@ public class HostsList extends ListActivity {
         // found.
         if (haveItems) {
             // This is the selected item.
-            ContentURI uri = getIntent().getData().addId(getSelectionRowID());
+        	Uri uri = ContentUris.withAppendedId(getIntent().getData(), getSelectedItemId());
 
             // Build menu...  always starts with the PICK action...
             Intent[] specifics = new Intent[1];
@@ -191,17 +191,15 @@ public class HostsList extends ListActivity {
             Intent intent = new Intent(null, uri);
             intent.addCategory(Intent.SELECTED_ALTERNATIVE_CATEGORY);
             menu.addIntentOptions(Menu.SELECTED_ALTERNATIVE, 0, null, specifics,
-                                  intent, Menu.NO_SEPARATOR_AFTER, items);
+                                  intent, 0, items);
 
             // ... and ends with the delete command.
             menu.add(Menu.SELECTED_ALTERNATIVE, DELETE_ID, R.string.menu_delete)
-.
-            setShortcut(KeyEvent.KEYCODE_2, 0, KeyEvent.KEYCODE_D);
-            menu.addSeparator(Menu.SELECTED_ALTERNATIVE, 0);
+            	.setShortcut('2', 'd');
 
             // Give a shortcut to the connect action.
             if (items[0] != null) {
-                items[0].setShortcut(KeyEvent.KEYCODE_1, 0, KeyEvent.KEYCODE_C);
+                items[0].setShortcut('1', 'c');
             }
         } else {
             menu.removeGroup(Menu.SELECTED_ALTERNATIVE);
@@ -243,9 +241,10 @@ public class HostsList extends ListActivity {
 				+ " "
 				+ getResources().getString(R.string.msg_version));
 		
+		// TODO: update or remove
 		// Everything looks cooler when you blur the window behind it.
-        about.getWindow().setFlags(WindowManager.LayoutParams.BLUR_BEHIND_FLAG,
-                WindowManager.LayoutParams.BLUR_BEHIND_FLAG);
+        //about.getWindow().setFlags(WindowManager.LayoutParams.BLUR_BEHIND_FLAG,
+        //        WindowManager.LayoutParams.BLUR_BEHIND_FLAG);
         WindowManager.LayoutParams lp = about.getWindow().getAttributes();
         lp.tintBehind = 0x60000820;
         about.getWindow().setAttributes(lp);
@@ -255,7 +254,7 @@ public class HostsList extends ListActivity {
 
 	@Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        ContentURI url = getIntent().getData().addId(getSelectionRowID());
+        Uri url = ContentUris.withAppendedId(getIntent().getData(), getSelectedItemId());
         
         String action = getIntent().getAction();
         if (Intent.PICK_ACTION.equals(action)
@@ -270,7 +269,7 @@ public class HostsList extends ListActivity {
     }
 
     private final void deleteItem() {
-        mCursor.moveTo(getSelection());
+    	mCursor.moveTo(getSelectedItemPosition());
         mCursor.deleteRow();
     }
 

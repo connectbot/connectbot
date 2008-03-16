@@ -52,7 +52,7 @@ public class TouchEntropy extends Activity {
         }
         
         @Override
-        public boolean onMotionEvent(MotionEvent event) {
+        public boolean onTouchEvent(MotionEvent event) {
         	// Only get entropy every 200 milliseconds to ensure the user has moved around.
         	long now = System.currentTimeMillis();
         	if ((now - mLastTime) < 200)

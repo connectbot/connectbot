@@ -23,14 +23,15 @@ import java.util.HashMap;
 import org.theb.provider.HostDb;
 
 import android.content.ContentProvider;
-import android.content.ContentProviderDatabaseHelper;
-import android.content.ContentURIParser;
+import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.QueryBuilder;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.ContentURI;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -47,9 +48,9 @@ public class HostDbProvider extends ContentProvider {
 	private static final int HOSTS = 1;
 	private static final int HOST_ID = 2;
 	
-	private static final ContentURIParser URL_MATCHER;
+	private static final UriMatcher URL_MATCHER;
 	
-	private static class DatabaseHelper extends ContentProviderDatabaseHelper {
+	private static class DatabaseHelper extends SQLiteOpenHelper {
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
@@ -69,7 +70,7 @@ public class HostDbProvider extends ContentProvider {
 	}
 	
 	@Override
-	public int delete(ContentURI uri, String where, String[] whereArgs) {
+	public int delete(Uri uri, String where, String[] whereArgs) {
 		int count;
 		switch (URL_MATCHER.match(uri)) {
 		case HOSTS:
@@ -77,7 +78,7 @@ public class HostDbProvider extends ContentProvider {
 			break;
 		
 		case HOST_ID:
-			String segment = uri.getPathSegment(1);
+			String segment = uri.getPathSegments().get(1);
 			count = mDB.delete("hosts", "_id="
 					+ segment
 					+ (!TextUtils.isEmpty(where) ? " AND (" + where
@@ -93,7 +94,7 @@ public class HostDbProvider extends ContentProvider {
 	}
 
 	@Override
-	public String getType(ContentURI uri) {
+	public String getType(Uri uri) {
 		switch (URL_MATCHER.match(uri)) {
 		case HOSTS:
 			return "vnd.android.cursor.dir/vnd.theb.host";
@@ -105,7 +106,7 @@ public class HostDbProvider extends ContentProvider {
 	}
 
 	@Override
-	public ContentURI insert(ContentURI uri, ContentValues initialValues) {
+	public Uri insert(Uri uri, ContentValues initialValues) {
 		long rowID;
 		
 		ContentValues values;
@@ -137,7 +138,7 @@ public class HostDbProvider extends ContentProvider {
 		
 		rowID = mDB.insert("hosts", "host", values);
 		if (rowID > 0) {
-			ContentURI newUri = HostDb.Hosts.CONTENT_URI.addId(rowID);
+			Uri newUri = ContentUris.withAppendedId(HostDb.Hosts.CONTENT_URI, rowID);
 			getContext().getContentResolver().notifyChange(newUri, null);
 			return newUri;
 		}
@@ -153,10 +154,9 @@ public class HostDbProvider extends ContentProvider {
 	}
 
 	@Override
-	public Cursor query(ContentURI uri, String[] projection, String selection,
-			String[] selectionArgs, String groupBy, String having,
-			String sortOrder) {
-		QueryBuilder qb = new QueryBuilder();
+	public Cursor query(Uri uri, String[] projection, String selection,
+			String[] selectionArgs, String sortOrder) {
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 		
 		switch (URL_MATCHER.match(uri)) {
 		case HOSTS:
@@ -166,7 +166,7 @@ public class HostDbProvider extends ContentProvider {
 			
 		case HOST_ID:
 			qb.setTables("hosts");
-			qb.appendWhere("_id=" + uri.getPathSegment(1));
+			qb.appendWhere("_id=" + uri.getPathSegments().get(1));
 			break;
 			
 		default:
@@ -180,14 +180,14 @@ public class HostDbProvider extends ContentProvider {
 			orderBy = sortOrder;
 		}
 		
-		Cursor c = qb.query(mDB, projection, selection, selectionArgs, groupBy,
-				having, orderBy);
+		Cursor c = qb.query(mDB, projection, selection, selectionArgs, null,
+				null, orderBy);
 		c.setNotificationUri(getContext().getContentResolver(), uri);
 		return c;
 	}
 
 	@Override
-	public int update(ContentURI uri, ContentValues values, String where,
+	public int update(Uri uri, ContentValues values, String where,
 			String[] whereArgs) {
 		int count;
 		
@@ -197,7 +197,7 @@ public class HostDbProvider extends ContentProvider {
 			break;
 			
         case HOST_ID:
-            String segment = uri.getPathSegment(1);
+            String segment = uri.getPathSegments().get(1);
             count = mDB
                     .update("hosts", values, "_id="
                             + segment
@@ -215,7 +215,7 @@ public class HostDbProvider extends ContentProvider {
 	}
 
 	static {
-		URL_MATCHER = new ContentURIParser(ContentURIParser.NO_MATCH);
+		URL_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 		URL_MATCHER.addURI("org.theb.provider.HostDb", "hosts", HOSTS);
 		URL_MATCHER.addURI("org.theb.provider.HostDb", "hosts/#", HOST_ID);
 		
