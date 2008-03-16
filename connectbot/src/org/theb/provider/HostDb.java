@@ -18,13 +18,13 @@
  */
 package org.theb.provider;
 
-import android.net.ContentURI;
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 public final class HostDb {
 	public static final class Hosts implements BaseColumns {
-		public static final ContentURI CONTENT_URI 
-			= ContentURI.create("content://org.theb.provider.HostDb/hosts");
+		public static final Uri CONTENT_URI 
+			= Uri.parse("content://org.theb.provider.HostDb/hosts");
 
 		public static final String DEFAULT_SORT_ORDER = "hostname DESC";
 

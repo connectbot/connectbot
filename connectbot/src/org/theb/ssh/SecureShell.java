@@ -216,9 +216,13 @@ public class SecureShell extends Activity implements FeedbackUI, ConnectionMonit
     		if (SecureShell.this.isFinishing())
     			return;
     		
-			AlertDialog d = AlertDialog.show(SecureShell.this,
-					"Connection Lost", mDisconnectReason, "Ok", false);
-			d.show();
+//			AlertDialog d = AlertDialog.show(SecureShell.this,
+//					"Connection Lost", mDisconnectReason, "Ok", false);
+			new AlertDialog.Builder(SecureShell.this)
+					.setIcon(R.drawable.icon)
+					.setTitle(R.string.alert_disconnect_msg)
+					.setPositiveButton(R.string.button_ok, null)
+					.show();
 			// TODO: Return to previous activity if connection fails.
 	    }
     };
