@@ -6,10 +6,10 @@
     	<provider android:name="HostDbProvider"
     		android:authorities="org.theb.provider.HostDb"/>
         <activity android:name="HostsList" android:label="@string/title_hosts_list">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
+
+
+
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
                 <action android:name="android.intent.action.VIEW" />
@@ -38,7 +38,7 @@
                      can perform when selecting this type of data. -->
                 <category android:name="android.intent.category.SELECTED_ALTERNATIVE" />
 
-                <type android:value="vnd.android.cursor.item/vnd.theb.host" />
+                <type android:mimeType="vnd.android.cursor.item/vnd.theb.host" />
             </intent-filter>
             
             <!-- This filter says that we can create a new note inside
@@ -46,18 +46,23 @@
             <intent-filter>
                 <action android:name="android.intent.action.INSERT" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <type android:value="vnd.android.cursor.dir/vnd.theb.host" />
+                <type android:mimeType="vnd.android.cursor.dir/vnd.theb.host" />
             </intent-filter>
         </activity>
         
 		<activity android:name="SecureShell" android:label="@string/title_shell">
             <!-- This filter says that we can connect to a host -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
             <intent-filter android:label="@string/resolve_connect">
                 <action android:name="org.theb.ssh.action.CONNECT_HOST" />
                 <action android:name="android.intent.action.PICK" />
                 <!-- DEFAULT: execute if being directly invoked. -->
                 <category android:name="android.intent.category.DEFAULT" />
-                <type android:value="vnd.android.cursor.item/vnd.theb.host" />
+                <type android:mimeType="vnd.android.cursor.item/vnd.theb.host" />
             </intent-filter>
         </activity>
         
@@ -73,4 +78,5 @@
         		android:theme="@android:style/Theme.Dialog">
         </activity> 
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest> 
