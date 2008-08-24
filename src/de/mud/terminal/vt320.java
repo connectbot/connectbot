@@ -1,7 +1,7 @@
 /*
  * This file is part of "JTA - Telnet/SSH for the JAVA(tm) platform".
  *
- * (c) Matthias L. Jugel, Marcus Meißner 1996-2005. All Rights Reserved.
+ * (c) Matthias L. Jugel, Marcus Meiner 1996-2005. All Rights Reserved.
  *
  * Please visit http://javatelnet.org/ for updates and contact.
  *
@@ -36,6 +36,7 @@ import java.util.Properties;
  * @author  Matthias L. Jugel, Marcus Mei\u00dfner
  */
 public abstract class vt320 extends VDUBuffer implements VDUInput {
+	
   /** The current version id tag.<P>
    * $Id: vt320.java 507 2005-10-25 10:14:52Z marcus $
    */
@@ -78,6 +79,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
   }
 
   protected void sendTelnetCommand(byte cmd) {
+	  
   }
 
   /** 
@@ -2326,7 +2328,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
               int limit;
               /* FIXME: xterm only cares about 0 and topmargin */
               if (R > bm)
-                limit = bm + 1;
+                limit = bm;   // BUGFIX: corrects scrollback dissapearing in irssi
               else if (R >= tm) {
                 limit = tm;
               } else

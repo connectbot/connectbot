@@ -19,6 +19,7 @@
 package org.theb.ssh;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,7 +42,9 @@ public class PasswordDialog extends Activity implements OnClickListener {
 	}
 
 	public void onClick(View arg0) {
-		setResult(RESULT_OK, mPassword.getText().toString());
+		Intent intent = this.getIntent();
+		intent.putExtra(Intent.EXTRA_TEXT, mPassword.getText().toString());
+		setResult(RESULT_OK, intent);
 		finish();
 	}
 }

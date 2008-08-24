@@ -32,7 +32,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.method.KeyCharacterMap;
+import android.view.KeyCharacterMap;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -87,20 +87,26 @@ public class SecureShell extends Activity implements FeedbackUI, ConnectionMonit
     public void onCreate(Bundle savedValues) {
         super.onCreate(savedValues);
         
+        // TODO: enable opengl for testing on real devices
+        //requestWindowFeature(Window.FEATURE_OPENGL);
         requestWindowFeature(Window.FEATURE_PROGRESS);
         mTerminal = new JTATerminalView(this);
         
         // TODO: implement scroll bar on right.
         setContentView((View)mTerminal);
         
-        Log.d("SSH", "using URI " + getIntent().getData().toString());
+//        Log.d("SSH", "using URI " + getIntent().getData().toString());
+//        
+//        mCursor = managedQuery(getIntent().getData(), PROJECTION, null, null);
+//        mCursor.moveToFirst();
+//        
+//        mHostname = mCursor.getString(HOSTNAME_INDEX);
+//        mUsername = mCursor.getString(USERNAME_INDEX);
+//        mPort = mCursor.getInt(PORT_INDEX);
         
-        mCursor = managedQuery(getIntent().getData(), PROJECTION, null, null);
-        mCursor.first();
-        
-        mHostname = mCursor.getString(HOSTNAME_INDEX);
-        mUsername = mCursor.getString(USERNAME_INDEX);
-        mPort = mCursor.getInt(PORT_INDEX);
+        mHostname = "192.168.254.230";
+        mUsername = "jsharkey";
+        mPort = 22;
         
         String title = "SSH: " + mUsername + "@" + mHostname;
         if (mPort != 22)
@@ -143,16 +149,14 @@ public class SecureShell extends Activity implements FeedbackUI, ConnectionMonit
 
 	public void askPassword() {
     	Intent intent = new Intent(this, PasswordDialog.class);
-    	this.startSubActivity(intent, PASSWORD_REQUEST);
+    	this.startActivityForResult(intent, PASSWORD_REQUEST);
 	}
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-            String data, Bundle extras)
-	{
-	    if (requestCode == PASSWORD_REQUEST) {
-	    	mConn.setPassword(data);
-	    }
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == PASSWORD_REQUEST) {
+			mConn.setPassword(data.getStringExtra(Intent.EXTRA_TEXT));
+		}
 	}
     
 	@Override
@@ -184,7 +188,7 @@ public class SecureShell extends Activity implements FeedbackUI, ConnectionMonit
 					out.write(c);
 	    		} else	if (keyCode == KeyEvent.KEYCODE_DEL) {
 					out.write(0x08); // CTRL-H
-	    		} else if (keyCode == KeyEvent.KEYCODE_NEWLINE
+	    		} else if (keyCode == KeyEvent.KEYCODE_ENTER
 	    				|| keyCode == KeyEvent.KEYCODE_DPAD_LEFT
 	    				|| keyCode == KeyEvent.KEYCODE_DPAD_UP
 	    				|| keyCode == KeyEvent.KEYCODE_DPAD_DOWN

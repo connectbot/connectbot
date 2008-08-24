@@ -2,6 +2,7 @@ package org.theb.ssh;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -74,7 +75,9 @@ public class TouchEntropy extends Activity {
                 	
         	// SHA1PRNG only keeps 20 bytes (160 bits) of entropy.
         	if (mEntropy.length() > 20) {
-        		TouchEntropy.this.setResult(RESULT_OK, mEntropy);
+        		Intent intent = TouchEntropy.this.getIntent();
+        		intent.putExtra(Intent.EXTRA_TEXT, mEntropy);
+        		TouchEntropy.this.setResult(RESULT_OK, intent);
         		TouchEntropy.this.finish();
         	}
         	

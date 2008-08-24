@@ -1,7 +1,7 @@
 /*
  * This file is part of "JTA - Telnet/SSH for the JAVA(tm) platform".
  *
- * (c) Matthias L. Jugel, Marcus Meißner 1996-2005. All Rights Reserved.
+ * (c) Matthias L. Jugel, Marcus Meiner 1996-2005. All Rights Reserved.
  *
  * Please visit http://javatelnet.org/ for updates and contact.
  *
@@ -43,6 +43,7 @@ public class SoftFont {
 	final static private char	SF_BITMAP = 0;
 	final static private char	SF_FILLRECT = 1;
 
+	
 	//final static private char	SF_CHAR	= 0;
 	final static private char	SF_WIDTH= 1;
 	final static private char	SF_HEIGHT= 2;

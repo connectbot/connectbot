@@ -18,6 +18,7 @@
  */
 package org.theb.provider;
 
+
 import android.net.Uri;
 import android.provider.BaseColumns;
 

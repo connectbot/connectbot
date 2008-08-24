@@ -74,7 +74,7 @@ public class HostEditor extends Activity {
         // way is more efficient than using a translucent background.  Note
         // that the tint color really should come from a resource.
         WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.tintBehind = 0x60000820;
+        //lp.tintBehind = 0x60000820;
         getWindow().setAttributes(lp);
 
         this.setContentView(R.layout.host_editor);
@@ -95,7 +95,7 @@ public class HostEditor extends Activity {
         // Do some setup based on the action being performed.
 
         final String action = intent.getAction();
-        if (Intent.INSERT_ACTION.equals(action)) {
+        if (Intent.ACTION_INSERT.equals(action)) {
         	mState = STATE_INSERT;
         	mURI = getContentResolver().insert(intent.getData(), null);
         
@@ -111,7 +111,8 @@ public class HostEditor extends Activity {
         	
         	// The new entry was created, so assume all will end well and
             // set the result to be returned.
-            setResult(RESULT_OK, mURI.toString());
+        	intent.putExtra(Intent.EXTRA_TEXT, mURI.toString());
+            setResult(RESULT_OK, intent);
         } else {
         	// Editing is the default state.
        		mState = STATE_EDIT;
@@ -133,7 +134,7 @@ public class HostEditor extends Activity {
     	
     	// Initialize the text with the host data
     	if (mCursor != null) {
-    		mCursor.first();
+    		mCursor.moveToFirst();
     		
     		String hostname = mCursor.getString(HOSTNAME_INDEX);
     		mHostname.setText(hostname);

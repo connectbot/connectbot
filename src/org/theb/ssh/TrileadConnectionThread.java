@@ -130,7 +130,7 @@ public class TrileadConnectionThread extends ConnectionThread {
 
 			session = connection.openSession();
 			
-			session.requestPTY("vt100",
+			session.requestPTY("xterm",  // BUGFIX: allow colors with xterm instead of vt100
 					term.getColumnCount(), term.getRowCount(),
 					term.getWidth(), term.getHeight(),
 					null);
