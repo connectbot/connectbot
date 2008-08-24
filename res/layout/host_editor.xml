@@ -47,7 +47,7 @@
     <Button android:id="@+id/cancel"
     		android:layout_width="wrap_content" 
             android:layout_height="wrap_content"
-            android:layout_toLeft="@id/add"
+            android:layout_toLeftOf="@id/add"
             android:layout_alignTop="@id/add"
             android:text="@string/button_cancel" />
 </RelativeLayout>
