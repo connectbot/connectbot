@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelXorXfermode;
 import android.graphics.Typeface;
+import android.graphics.Bitmap.Config;
 import android.graphics.Paint.FontMetricsInt;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -71,7 +72,7 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 		cursorPaint.setColor(darken(color[COLOR_FG_STD]));
 		cursorPaint.setXfermode(new PixelXorXfermode(color[COLOR_BG_STD]));
 		
-		setFont(Typeface.MONOSPACE, 8);
+		setFont(Typeface.MONOSPACE, 10);
 
 		emulation = new vt320() {
 			public void write(byte[] b) {
@@ -113,10 +114,10 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		Log.d("SSH/TerminalView", "onSizeChanged called");
-		Bitmap newBitmap = Bitmap.createBitmap(w, h, false);
+		Bitmap newBitmap = Bitmap.createBitmap(w, h, Config.ARGB_8888);
 		Canvas newCanvas = new Canvas();
 		
-		newCanvas.setDevice(newBitmap);
+		newCanvas.setBitmap(newBitmap);
 		
 		if (bitmap != null)
 			newCanvas.drawBitmap(bitmap, 0, 0, paint);
@@ -172,7 +173,7 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 
 	public byte[] getKeyCode(int keyCode, int meta) {
 		switch (keyCode) {
-		case KeyEvent.KEYCODE_NEWLINE:
+		case KeyEvent.KEYCODE_ENTER:
 			emulation.keyTyped(vt320.KEY_ENTER, ' ', meta);
 			break;
 		case KeyEvent.KEYCODE_DPAD_LEFT:
@@ -219,11 +220,30 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 		//int selectEndLine = selectEnd.y - buffer.windowBase;
 		
 		int fg, bg;
+
+		int lines = 0;
+		long time = System.currentTimeMillis() + 0;
+
+		// paint.setColor(color[COLOR_BG_STD]);
+		// canvas.drawRect(0, 0, bitmap.getWidth(), bitmap.getHeight(), paint);
+		// paint.setColor(color[COLOR_FG_STD]);
+
 				
 		for (int l = 0; l < buffer.height; l++) {
 			// Check to see if the entire buffer is dirty or if this line is dirty.
 			// If neither is dirty, continue.
 			if (!buffer.update[0] && !buffer.update[l + 1]) continue;
+			buffer.update[l + 1] = false;
+			
+			lines++;
+
+			// assume that we can blindly dump the terminal string
+			// canvas.drawText(buffer.charArray[buffer.windowBase + l],
+			// 0, buffer.charArray[buffer.windowBase + l].length,
+			// 0 * charWidth + xoffset,
+			// (l + 1) * charHeight - charDescent + yoffset,
+			// paint);
+
 			
 			for (int c = 0; c < buffer.width; c++) {
 				int addr = 0;
@@ -234,11 +254,11 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 				
 				// Check if foreground color attribute is set.
 				if ((currAttr & VDUBuffer.COLOR_FG) != 0)
-					fg = darken(color[((currAttr & VDUBuffer.COLOR_FG) >> VDUBuffer.COLOR_FG_SHIFT) - 1]);
+					fg = (color[((currAttr & VDUBuffer.COLOR_FG) >> VDUBuffer.COLOR_FG_SHIFT) - 1]);
 
 				// Check if background color attribute is set.
 				if ((currAttr & VDUBuffer.COLOR_BG) != 0)
-					bg = darken(darken(color[((currAttr & VDUBuffer.COLOR_BG) >> VDUBuffer.COLOR_BG_SHIFT) - 1]));
+					bg = (darken(color[((currAttr & VDUBuffer.COLOR_BG) >> VDUBuffer.COLOR_BG_SHIFT) - 1]));
 
 				// Check if bold attribute is set.
 				paint.setFakeBoldText((currAttr & VDUBuffer.BOLD) != 0);
@@ -255,39 +275,43 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 				
 				// If this character is in the special font, print it and continue to the next character.
 				// We can't use the optimization below for special characters.
-				if (sf.inSoftFont(buffer.charArray[buffer.windowBase + l][c])) {
-					// Clear out the space where the character will be printed.
-					paint.setColor(bg);
-					canvas.drawRect(c * charWidth + xoffset, l * charHeight + yoffset,
-							c * (charWidth + 1) + xoffset, (l+1) * charHeight + yoffset, paint);
-					paint.setColor(fg);
-					
-					// FIXME: this won't work since we're not calling drawText()
-					paint.setUnderlineText((currAttr & VDUBuffer.UNDERLINE) != 0);
-					
-					// Draw the text if it's not invisible.
-					if ((currAttr & VDUBuffer.INVISIBLE) == 0)
-						sf.drawChar(canvas, paint, buffer.charArray[buffer.windowBase + l][c], xoffset + c * charWidth, l * charHeight + yoffset, charWidth, charHeight);
-					continue;
-				}
+//				if (sf.inSoftFont(buffer.charArray[buffer.windowBase + l][c])) {
+//					// Clear out the space where the character will be printed.
+//					paint.setColor(bg);
+//					canvas.drawRect(c * charWidth + xoffset, l * charHeight + yoffset,
+//							c * (charWidth + 1) + xoffset, (l+1) * charHeight + yoffset, paint);
+//					paint.setColor(fg);
+//					
+//					// FIXME: this won't work since we're not calling drawText()
+//					paint.setUnderlineText((currAttr & VDUBuffer.UNDERLINE) != 0);
+//					
+//					// Draw the text if it's not invisible.
+//					if ((currAttr & VDUBuffer.INVISIBLE) == 0)
+//						sf.drawChar(canvas, paint, buffer.charArray[buffer.windowBase + l][c], xoffset + c * charWidth, l * charHeight + yoffset, charWidth, charHeight);
+//					continue;
+//				}
 				
 				// Determine the amount of continuous characters with the same settings and print them all at once.
-				while ((c + addr < buffer.width) &&
-						((buffer.charArray[buffer.windowBase + l][c + addr] < ' ') ||
-								(buffer.charAttributes[buffer.windowBase + l][c + addr] == currAttr)) &&
-								!sf.inSoftFont(buffer.charArray[buffer.windowBase + l][c + addr])) {
-					if (buffer.charArray[buffer.windowBase + l][c + addr] < ' ') {
-						buffer.charArray[buffer.windowBase + l][c + addr] = ' ';
-						buffer.charAttributes[buffer.windowBase + l][c + addr] = 0;
-						continue;
-					}
+//				while ((c + addr < buffer.width) &&
+//						((buffer.charArray[buffer.windowBase + l][c + addr] < ' ') ||
+//								(buffer.charAttributes[buffer.windowBase + l][c + addr] == currAttr)) &&
+//								!sf.inSoftFont(buffer.charArray[buffer.windowBase + l][c + addr])) {
+//					if (buffer.charArray[buffer.windowBase + l][c + addr] < ' ') {
+//						buffer.charArray[buffer.windowBase + l][c + addr] = ' ';
+//						buffer.charAttributes[buffer.windowBase + l][c + addr] = 0;
+//						continue;
+//					}
+//					addr++;
+//				}
+				
+				while(c + addr < buffer.width && buffer.charAttributes[buffer.windowBase + l][c + addr] == currAttr) {
 					addr++;
 				}
 				
 				// Clear the background in preparation for writing text.
 				paint.setColor(bg);
 				canvas.drawRect(c * charWidth + xoffset, l * charHeight + yoffset,
-						addr * (charWidth + 1) + xoffset, (l+1) * charHeight + yoffset, paint);
+						(c + addr) * charWidth + xoffset, (l+1) * charHeight + yoffset, paint);
 				paint.setColor(fg);
 				
 				// Check for the underline attribute and set the brush accordingly.
@@ -308,6 +332,9 @@ public class JTATerminalView extends View implements VDUDisplay, Terminal, Runna
 		
 		buffer.update[0] = false;
 		
+		time = System.currentTimeMillis() - time;
+		Log.d("redraw", "redraw called and updated lines=" + lines + " taking ms=" + time);
+
 		postInvalidate();
 	}
 

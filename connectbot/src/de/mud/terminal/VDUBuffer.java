@@ -1,7 +1,7 @@
 /*
  * This file is part of "JTA - Telnet/SSH for the JAVA(tm) platform".
  *
- * (c) Matthias L. Jugel, Marcus Meißner 1996-2005. All Rights Reserved.
+ * (c) Matthias L. Jugel, Marcus Meiner 1996-2005. All Rights Reserved.
  *
  * Please visit http://javatelnet.org/ for updates and contact.
  *
@@ -25,12 +25,15 @@
 
 package de.mud.terminal;
 
+import java.util.Arrays;
+import android.util.Log;
+
 /**
  * Implementation of a Video Display Unit (VDU) buffer. This class contains
  * all methods to manipulate the buffer that stores characters and their
  * attributes as well as the regions displayed.
  *
- * @author Matthias L. Jugel, Marcus Mei�ner
+ * @author Matthias L. Jugel, Marcus Meiner
  * @version $Id: VDUBuffer.java 503 2005-10-24 07:34:13Z marcus $
  */
 public class VDUBuffer {
@@ -504,6 +507,8 @@ public class VDUBuffer {
     char cbuf[] = new char[w];
     int abuf[] = new int[w];
 
+    Arrays.fill(cbuf, ' ');
+    
     for (int i = 0; i < w; i++) abuf[i] = curAttr;
     for (int i = 0; i < h && l + i < height; i++) {
       System.arraycopy(cbuf, 0, charArray[screenBase + l + i], c, w);
@@ -530,6 +535,8 @@ public class VDUBuffer {
     char cbuf[] = new char[w];
     int abuf[] = new int[w];
 
+    Arrays.fill(cbuf, ' ');
+    
     for (int i = 0; i < h && l + i < height; i++) {
       System.arraycopy(cbuf, 0, charArray[screenBase + l + i], c, w);
       System.arraycopy(abuf, 0, charAttributes[screenBase + l + i], c, w);
@@ -726,6 +733,11 @@ public class VDUBuffer {
 
     cbuf = new char[bufSize][w];
     abuf = new int[bufSize][w];
+
+    
+    for (int i = 0; i < bufSize; i++) {
+		Arrays.fill(cbuf[i], ' ');
+	}
 
     if (charArray != null && charAttributes != null) {
       for (int i = 0; i < bsize && i < bufSize; i++) {

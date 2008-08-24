@@ -25,12 +25,14 @@ import org.theb.provider.HostDb;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
@@ -51,6 +53,11 @@ public class HostDbProvider extends ContentProvider {
 	private static final UriMatcher URL_MATCHER;
 	
 	private static class DatabaseHelper extends SQLiteOpenHelper {
+
+		public DatabaseHelper(Context context, String name,
+				CursorFactory factory, int version) {
+			super(context, name, factory, version);
+		}
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
@@ -148,8 +155,8 @@ public class HostDbProvider extends ContentProvider {
 
 	@Override
 	public boolean onCreate() {
-		DatabaseHelper dbHelper = new DatabaseHelper();
-		mDB = dbHelper.openDatabase(getContext(), DATABASE_NAME, null, DATABASE_VERSION);
+		DatabaseHelper dbHelper = new DatabaseHelper(getContext(), DATABASE_NAME, null, DATABASE_VERSION);
+		mDB = dbHelper.getWritableDatabase();
 		return (mDB == null) ? false : true;
 	}
 

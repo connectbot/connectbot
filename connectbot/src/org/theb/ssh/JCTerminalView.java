@@ -29,6 +29,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelXorXfermode;
 import android.graphics.Typeface;
+import android.graphics.Bitmap.Config;
 import android.graphics.Paint.FontMetricsInt;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -102,10 +103,10 @@ public class JCTerminalView extends View implements Term, Terminal {
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		Log.d("SSH/TerminalView", "onSizeChanged called");
-		Bitmap newBitmap = Bitmap.createBitmap(w, h, false);
+		Bitmap newBitmap = Bitmap.createBitmap(w, h, Config.ARGB_8888);
 		Canvas newCanvas = new Canvas();
 		
-		newCanvas.setDevice(newBitmap);
+		newCanvas.setBitmap(newBitmap);
 		
 		if (mBitmap != null)
 			newCanvas.drawBitmap(mBitmap, 0, 0, mPaint);
@@ -155,8 +156,8 @@ public class JCTerminalView extends View implements Term, Terminal {
 
 	public void clear() {
 		mPaint.setColor(getBackgroundColor());
-		mCanvas.drawRect(0, 0, mCanvas.getBitmapWidth(),
-				mCanvas.getBitmapHeight(), mPaint);
+		mCanvas.drawRect(0, 0, mCanvas.getWidth(),
+				mCanvas.getHeight(), mPaint);
 		mPaint.setColor(getForegroundColor());
 	}
 
@@ -313,7 +314,7 @@ public class JCTerminalView extends View implements Term, Terminal {
 	}
 
 	public byte[] getKeyCode(int keyCode, int meta) {
-		if (keyCode == KeyEvent.KEYCODE_NEWLINE)
+		if (keyCode == KeyEvent.KEYCODE_ENTER)
 			return emulator.getCodeENTER();
 		else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT)
 			return emulator.getCodeLEFT();

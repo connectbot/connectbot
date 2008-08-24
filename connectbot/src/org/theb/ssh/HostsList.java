@@ -31,6 +31,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.WindowManager;
@@ -96,14 +97,14 @@ public class HostsList extends ListActivity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);	
         
-        setDefaultKeyMode(SHORTCUT_DEFAULT_KEYS);
+        setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
         
         Intent intent = getIntent();
         if (intent.getData() == null) {
         	intent.setData(HostDb.Hosts.CONTENT_URI);
         }
         
-        setupListStripes();
+        //setupListStripes();
         
         mCursor = managedQuery(getIntent().getData(), PROJECTION, null, null);
 
@@ -114,29 +115,29 @@ public class HostsList extends ListActivity {
         setListAdapter(adapter);
     }
     
-    /**
-     * Add stripes to the list view.
-     */
-    private void setupListStripes() {
-        // Get Drawables for alternating stripes
-        Drawable[] lineBackgrounds = new Drawable[2];
-        
-        lineBackgrounds[0] = getResources().getDrawable(R.drawable.even_stripe);
-        lineBackgrounds[1] = getResources().getDrawable(R.drawable.odd_stripe);
-
-        // Make and measure a sample TextView of the sort our adapter will
-        // return
-        View view = getViewInflate().inflate(
-                android.R.layout.simple_list_item_1, null, null);
-
-        TextView v = (TextView) view.findViewById(android.R.id.text1);
-        v.setText("X");
-        // Make it 100 pixels wide, and let it choose its own height.
-        v.measure(MeasureSpec.makeMeasureSpec(View.MeasureSpec.EXACTLY, 100),
-                MeasureSpec.makeMeasureSpec(View.MeasureSpec.UNSPECIFIED, 0));
-        int height = v.getMeasuredHeight();
-        getListView().setStripes(lineBackgrounds, height);
-    }
+//    /**
+//     * Add stripes to the list view.
+//     */
+//    private void setupListStripes() {
+//        // Get Drawables for alternating stripes
+//        Drawable[] lineBackgrounds = new Drawable[2];
+//        
+//        lineBackgrounds[0] = getResources().getDrawable(R.drawable.even_stripe);
+//        lineBackgrounds[1] = getResources().getDrawable(R.drawable.odd_stripe);
+//
+//        // Make and measure a sample TextView of the sort our adapter will
+//        // return
+//        View view = getViewInflate().inflate(
+//                android.R.layout.simple_list_item_1, null, null);
+//
+//        TextView v = (TextView) view.findViewById(android.R.id.text1);
+//        v.setText("X");
+//        // Make it 100 pixels wide, and let it choose its own height.
+//        v.measure(MeasureSpec.makeMeasureSpec(View.MeasureSpec.EXACTLY, 100),
+//                MeasureSpec.makeMeasureSpec(View.MeasureSpec.UNSPECIFIED, 0));
+//        int height = v.getMeasuredHeight();
+//        getListView().setStripes(lineBackgrounds, height);
+//    }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -144,25 +145,25 @@ public class HostsList extends ListActivity {
 
         // This is our one standard application action -- inserting a
         // new host into the list.
-        menu.add(0, INSERT_ID, R.string.menu_insert)
+        menu.add(0, INSERT_ID, Menu.NONE, R.string.menu_insert)
         	.setShortcut('3', 'a');
 
         // The preferences link allows users to e.g. set the pubkey
-        SubMenu prefs = menu.addSubMenu(0, 0, R.string.menu_preferences);
-        prefs.add(0, PUBKEY_ID, R.string.menu_pubkey)
+        SubMenu prefs = menu.addSubMenu(0, 0, Menu.NONE, R.string.menu_preferences);
+        prefs.add(0, PUBKEY_ID, Menu.NONE, R.string.menu_pubkey)
         	.setShortcut('4', 'p');
         
         // This links to the about dialog for the program.
-        menu.add(0, ABOUT_ID, R.string.menu_about);
+        menu.add(0, ABOUT_ID, Menu.NONE, R.string.menu_about);
         
         // Generate any additional actions that can be performed on the
         // overall list.  In a normal install, there are no additional
         // actions found here, but this allows other applications to extend
         // our menu with their own actions.
         Intent intent = new Intent(null, getIntent().getData());
-        intent.addCategory(Intent.ALTERNATIVE_CATEGORY);
+        intent.addCategory(Intent.CATEGORY_ALTERNATIVE);
         menu.addIntentOptions(
-            Menu.ALTERNATIVE, 0, new ComponentName(this, HostsList.class),
+            Menu.CATEGORY_ALTERNATIVE, 0, Menu.NONE, new ComponentName(this, HostsList.class),
             null, intent, 0, null);
 
         return true;
@@ -171,7 +172,7 @@ public class HostsList extends ListActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        final boolean haveItems = mCursor.count() > 0;
+        final boolean haveItems = mCursor.getCount() > 0;
 
         // If there are any notes in the list (which implies that one of
         // them is selected), then we need to generate the actions that
@@ -184,17 +185,17 @@ public class HostsList extends ListActivity {
 
             // Build menu...  always starts with the PICK action...
             Intent[] specifics = new Intent[1];
-            specifics[0] = new Intent(Intent.PICK_ACTION, uri);
-            Menu.Item[] items = new Menu.Item[1];
+            specifics[0] = new Intent(Intent.ACTION_PICK, uri);
+            MenuItem[] items = new MenuItem[1];
 
             // ... is followed by whatever other actions are available...
             Intent intent = new Intent(null, uri);
-            intent.addCategory(Intent.SELECTED_ALTERNATIVE_CATEGORY);
-            menu.addIntentOptions(Menu.SELECTED_ALTERNATIVE, 0, null, specifics,
+            intent.addCategory(Intent.CATEGORY_ALTERNATIVE);
+            menu.addIntentOptions(Menu.CATEGORY_ALTERNATIVE, 0, Menu.NONE, null, specifics,
                                   intent, 0, items);
 
             // ... and ends with the delete command.
-            menu.add(Menu.SELECTED_ALTERNATIVE, DELETE_ID, R.string.menu_delete)
+            menu.add(Menu.CATEGORY_ALTERNATIVE, DELETE_ID, Menu.NONE, R.string.menu_delete)
             	.setShortcut('2', 'd');
 
             // Give a shortcut to the connect action.
@@ -202,17 +203,17 @@ public class HostsList extends ListActivity {
                 items[0].setShortcut('1', 'c');
             }
         } else {
-            menu.removeGroup(Menu.SELECTED_ALTERNATIVE);
+            menu.removeGroup(Menu.CATEGORY_ALTERNATIVE);
         }
 
         // Make sure the delete action is disabled if there are no items.
-        menu.setItemShown(DELETE_ID, haveItems);
+        //menu.setItemShown(DELETE_ID, haveItems);
         return true;
     }
   
     @Override
-    public boolean onOptionsItemSelected(Menu.Item item) {
-        switch (item.getId()) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
         case DELETE_ID:
             deleteItem();
             return true;
@@ -246,7 +247,7 @@ public class HostsList extends ListActivity {
         //about.getWindow().setFlags(WindowManager.LayoutParams.BLUR_BEHIND_FLAG,
         //        WindowManager.LayoutParams.BLUR_BEHIND_FLAG);
         WindowManager.LayoutParams lp = about.getWindow().getAttributes();
-        lp.tintBehind = 0x60000820;
+        //lp.tintBehind = 0x60000820;
         about.getWindow().setAttributes(lp);
         
 		about.show();
@@ -257,24 +258,26 @@ public class HostsList extends ListActivity {
         Uri url = ContentUris.withAppendedId(getIntent().getData(), getSelectedItemId());
         
         String action = getIntent().getAction();
-        if (Intent.PICK_ACTION.equals(action)
-                || Intent.GET_CONTENT_ACTION.equals(action)) {
+        if (Intent.ACTION_PICK.equals(action)
+                || Intent.ACTION_GET_CONTENT.equals(action)) {
             // The caller is waiting for us to return a note selected by
             // the user.  The have clicked on one, so return it now.
-            setResult(RESULT_OK, url.toString());
+        	Intent intent = this.getIntent();
+        	intent.putExtra(Intent.EXTRA_TEXT, url.toString());
+            setResult(RESULT_OK, intent);
         } else {
             // Launch activity to view/edit the currently selected item
-            startActivity(new Intent(Intent.PICK_ACTION, url));
+            startActivity(new Intent(Intent.ACTION_PICK, url));
         }
     }
 
     private final void deleteItem() {
-    	mCursor.moveTo(getSelectedItemPosition());
+    	mCursor.move(getSelectedItemPosition());
         mCursor.deleteRow();
     }
 
     private final void insertItem() {
         // Launch activity to insert a new item
-        startActivity(new Intent(Intent.INSERT_ACTION, getIntent().getData()));
+        startActivity(new Intent(Intent.ACTION_INSERT, getIntent().getData()));
     }
 }

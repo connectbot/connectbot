@@ -101,19 +101,17 @@ public class Pubkey extends Activity {
     };
     
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-            String data, Bundle extras)
-	{
-	    if (requestCode == GATHER_ENTROPY) {
-	    	entropySeed = data;
-	    	entropyGathered.release();
-	    }
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == GATHER_ENTROPY) {
+			entropySeed = data.getStringExtra(Intent.EXTRA_TEXT);
+			entropyGathered.release();
+		}
 	}
     
     protected void gatherEntropy() {
     	generateButton.setEnabled(false);
 		Intent intent = new Intent(this, TouchEntropy.class);
-		startSubActivity(intent, GATHER_ENTROPY);
+		this.startActivityForResult(intent, GATHER_ENTROPY);
 	}
 
 	OnClickListener mCommitListener = new OnClickListener() {
