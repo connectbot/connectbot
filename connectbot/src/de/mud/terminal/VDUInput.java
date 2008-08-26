@@ -29,7 +29,7 @@ import java.util.Properties;
 /**
  * An interface for a terminal that accepts input from keyboard and mouse.
  *
- * @author Matthias L. Jugel, Marcus Meiner
+ * @author Matthias L. Jugel, Marcus Mei§ner
  * @version $Id: VDUInput.java 499 2005-09-29 08:24:54Z leo $
  */
 public interface VDUInput {
