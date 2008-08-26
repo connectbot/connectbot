@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.SecureRandom;
@@ -39,7 +40,7 @@ import com.trilead.ssh2.signature.RSASHA1Verify;
  * <code>KnownHosts</code> for your whole application.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: KnownHosts.java,v 1.1 2007/10/15 12:49:56 cplattne Exp $
+ * @version $Id: KnownHosts.java,v 1.2 2008/04/01 12:38:09 cplattne Exp $
  */
 
 public class KnownHosts
@@ -168,8 +169,16 @@ public class KnownHosts
 
 		HMAC hmac = new HMAC(sha1, salt, salt.length);
 
-		hmac.update(hostname.getBytes());
-
+		try
+		{
+			hmac.update(hostname.getBytes("ISO-8859-1"));
+		}catch(UnsupportedEncodingException ignore)
+		{
+			/* Actually, ISO-8859-1 is supported by all correct
+			 * Java implementations. But... you never know. */
+			hmac.update(hostname.getBytes());
+		}
+		
 		byte[] dig = new byte[hmac.getDigestLength()];
 
 		hmac.digest(dig);
@@ -684,7 +693,7 @@ public class KnownHosts
 				raf.write('\n');
 		}
 		
-		raf.write(new String(entry).getBytes());
+		raf.write(new String(entry).getBytes("ISO-8859-1"));
 		raf.close();
 	}
 

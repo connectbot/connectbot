@@ -5,7 +5,8 @@ package com.trilead.ssh2.packets;
  * PacketGlobalCancelForwardRequest.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: PacketGlobalCancelForwardRequest.java,v 1.1 2007/10/15 12:49:55 cplattne Exp $
+ * @version $Id: PacketGlobalCancelForwardRequest.java,v 1.1 2007/10/15 12:49:55
+ *          cplattne Exp $
  */
 public class PacketGlobalCancelForwardRequest
 {
@@ -28,7 +29,7 @@ public class PacketGlobalCancelForwardRequest
 		{
 			TypesWriter tw = new TypesWriter();
 			tw.writeByte(Packets.SSH_MSG_GLOBAL_REQUEST);
-			
+
 			tw.writeString("cancel-tcpip-forward");
 			tw.writeBoolean(wantReply);
 			tw.writeString(bindAddress);

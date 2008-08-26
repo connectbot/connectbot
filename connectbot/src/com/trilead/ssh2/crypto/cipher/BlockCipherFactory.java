@@ -7,7 +7,7 @@ import java.util.Vector;
  * BlockCipherFactory.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: BlockCipherFactory.java,v 1.1 2007/10/15 12:49:55 cplattne Exp $
+ * @version $Id: BlockCipherFactory.java,v 1.2 2008/04/01 12:38:09 cplattne Exp $
  */
 public class BlockCipherFactory
 {
@@ -36,7 +36,7 @@ public class BlockCipherFactory
 		ciphers.addElement(new CipherEntry("aes256-ctr", 16, 32, "com.trilead.ssh2.crypto.cipher.AES"));
 		ciphers.addElement(new CipherEntry("aes192-ctr", 16, 24, "com.trilead.ssh2.crypto.cipher.AES"));
 		ciphers.addElement(new CipherEntry("aes128-ctr", 16, 16, "com.trilead.ssh2.crypto.cipher.AES"));
-		ciphers.addElement(new CipherEntry("blowfish-ctr", 8, 16, "com.trileadssh2.crypto.cipher.BlowFish"));
+		ciphers.addElement(new CipherEntry("blowfish-ctr", 8, 16, "com.trilead.ssh2.crypto.cipher.BlowFish"));
 
 		ciphers.addElement(new CipherEntry("aes256-cbc", 16, 32, "com.trilead.ssh2.crypto.cipher.AES"));
 		ciphers.addElement(new CipherEntry("aes192-cbc", 16, 24, "com.trilead.ssh2.crypto.cipher.AES"));

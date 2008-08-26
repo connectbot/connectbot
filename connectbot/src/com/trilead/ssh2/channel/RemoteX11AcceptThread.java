@@ -13,7 +13,7 @@ import com.trilead.ssh2.log.Logger;
  * RemoteX11AcceptThread.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: RemoteX11AcceptThread.java,v 1.1 2007/10/15 12:49:56 cplattne Exp $
+ * @version $Id: RemoteX11AcceptThread.java,v 1.2 2008/04/01 12:38:09 cplattne Exp $
  */
 public class RemoteX11AcceptThread extends Thread
 {
@@ -123,7 +123,7 @@ public class RemoteX11AcceptThread extends Thread
 			if (remote_is.read(paddingBuffer, 0, authProtocolDataPadding) != authProtocolDataPadding)
 				throw new IOException("Unexpected EOF on X11 startup! (authProtocolDataPadding)");
 
-			if ("MIT-MAGIC-COOKIE-1".equals(new String(authProtocolName)) == false)
+			if ("MIT-MAGIC-COOKIE-1".equals(new String(authProtocolName, "ISO-8859-1")) == false)
 				throw new IOException("Unknown X11 authorization protocol!");
 
 			if (authProtocolDataLength != 16)

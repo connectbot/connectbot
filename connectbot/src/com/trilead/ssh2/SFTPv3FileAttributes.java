@@ -6,7 +6,7 @@ package com.trilead.ssh2;
  * about a file on the server. Not all fields may/must be present.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: SFTPv3FileAttributes.java,v 1.1 2007/10/15 12:49:56 cplattne Exp $
+ * @version $Id: SFTPv3FileAttributes.java,v 1.2 2008/04/01 12:38:09 cplattne Exp $
  */
 
 public class SFTPv3FileAttributes
@@ -65,13 +65,13 @@ public class SFTPv3FileAttributes
 	 * The ATIME attribute. Represented as seconds from Jan 1, 1970 in UTC.
 	 * <code>NULL</code> if not present.
 	 */
-	public Integer atime = null;
+	public Long atime = null;
 
 	/**
 	 * The MTIME attribute. Represented as seconds from Jan 1, 1970 in UTC.
 	 * <code>NULL</code> if not present.
 	 */
-	public Integer mtime = null;
+	public Long mtime = null;
 
 	/**
 	 * Checks if this entry is a directory.

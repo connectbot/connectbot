@@ -15,7 +15,7 @@ import com.trilead.ssh2.packets.TypesWriter;
  * DSASHA1Verify.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: DSASHA1Verify.java,v 1.1 2007/10/15 12:49:57 cplattne Exp $
+ * @version $Id: DSASHA1Verify.java,v 1.2 2008/04/01 12:38:09 cplattne Exp $
  */
 public class DSASHA1Verify
 {
@@ -80,20 +80,31 @@ public class DSASHA1Verify
 
 	public static DSASignature decodeSSHDSASignature(byte[] sig) throws IOException
 	{
-		TypesReader tr = new TypesReader(sig);
+		byte[] rsArray = null;
+		
+		if (sig.length == 40)
+		{
+			/* OK, another broken SSH server. */
+			rsArray = sig;	
+		}
+		else
+		{
+			/* Hopefully a server obeing the standard... */
+			TypesReader tr = new TypesReader(sig);
 
-		String sig_format = tr.readString();
+			String sig_format = tr.readString();
 
-		if (sig_format.equals("ssh-dss") == false)
-			throw new IOException("Peer sent wrong signature format");
+			if (sig_format.equals("ssh-dss") == false)
+				throw new IOException("Peer sent wrong signature format");
 
-		byte[] rsArray = tr.readByteString();
+			rsArray = tr.readByteString();
 
-		if (rsArray.length != 40)
-			throw new IOException("Peer sent corrupt signature");
+			if (rsArray.length != 40)
+				throw new IOException("Peer sent corrupt signature");
 
-		if (tr.remain() != 0)
-			throw new IOException("Padding in DSA signature!");
+			if (tr.remain() != 0)
+				throw new IOException("Padding in DSA signature!");
+		}
 
 		/* Remember, s and r are unsigned ints. */
 

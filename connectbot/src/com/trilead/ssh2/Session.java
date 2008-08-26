@@ -18,7 +18,7 @@ import com.trilead.ssh2.channel.X11ServerData;
  * a session. However, multiple sessions can be active simultaneously.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: Session.java,v 1.1 2007/10/15 12:49:56 cplattne Exp $
+ * @version $Id: Session.java,v 1.2 2008/03/03 07:01:36 cplattne Exp $
  */
 public class Session
 {
@@ -298,6 +298,32 @@ public class Session
 		cm.requestSubSystem(cn, name);
 	}
 
+	/**
+	 * This method can be used to perform end-to-end session (i.e., SSH channel)
+	 * testing. It sends a 'ping' message to the server and waits for the 'pong'
+	 * from the server.
+	 * <p>
+	 * Implementation details: this method sends a SSH_MSG_CHANNEL_REQUEST request
+	 * ('trilead-ping') to the server and waits for the SSH_MSG_CHANNEL_FAILURE reply
+	 * packet.
+	 * 
+	 * @throws IOException in case of any problem or when the session is closed
+	 */
+	public void ping() throws IOException
+	{
+		synchronized (this)
+		{
+			/*
+			 * The following is just a nicer error, we would catch it anyway
+			 * later in the channel code
+			 */
+			if (flag_closed)
+				throw new IOException("This session is closed.");
+		}
+
+		cm.requestChannelTrileadPing(cn);
+	}
+	
 	public InputStream getStdout()
 	{
 		return cn.getStdoutStream();

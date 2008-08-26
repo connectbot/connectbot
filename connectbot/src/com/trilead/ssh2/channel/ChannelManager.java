@@ -9,8 +9,10 @@ import com.trilead.ssh2.ChannelCondition;
 import com.trilead.ssh2.log.Logger;
 import com.trilead.ssh2.packets.PacketChannelOpenConfirmation;
 import com.trilead.ssh2.packets.PacketChannelOpenFailure;
+import com.trilead.ssh2.packets.PacketChannelTrileadPing;
 import com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest;
 import com.trilead.ssh2.packets.PacketGlobalForwardRequest;
+import com.trilead.ssh2.packets.PacketGlobalTrileadPing;
 import com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel;
 import com.trilead.ssh2.packets.PacketOpenSessionChannel;
 import com.trilead.ssh2.packets.PacketSessionExecCommand;
@@ -23,14 +25,13 @@ import com.trilead.ssh2.packets.TypesReader;
 import com.trilead.ssh2.transport.MessageHandler;
 import com.trilead.ssh2.transport.TransportManager;
 
-
 /**
  * ChannelManager. Please read the comments in Channel.java.
  * <p>
  * Besides the crypto part, this is the core of the library.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: ChannelManager.java,v 1.1 2007/10/15 12:49:56 cplattne Exp $
+ * @version $Id: ChannelManager.java,v 1.2 2008/03/03 07:01:36 cplattne Exp $
  */
 public class ChannelManager implements MessageHandler
 {
@@ -126,7 +127,7 @@ public class ChannelManager implements MessageHandler
 		}
 	}
 
-	private final void waitForGlobalSuccessOrFailure() throws IOException
+	private final boolean waitForGlobalRequestResult() throws IOException
 	{
 		synchronized (channels)
 		{
@@ -146,20 +147,18 @@ public class ChannelManager implements MessageHandler
 				}
 			}
 
-			if (globalFailedCounter != 0)
-			{
-				throw new IOException("The server denied the request (did you enable port forwarding?)");
-			}
+			if ((globalFailedCounter == 0) && (globalSuccessCounter == 1))
+				return true;
 
-			if (globalSuccessCounter == 0)
-			{
-				throw new IOException("Illegal state.");
-			}
+			if ((globalFailedCounter == 1) && (globalSuccessCounter == 0))
+				return false;
 
+			throw new IOException("Illegal state. The server sent " + globalSuccessCounter
+					+ " SSH_MSG_REQUEST_SUCCESS and " + globalFailedCounter + " SSH_MSG_REQUEST_FAILURE messages.");
 		}
 	}
 
-	private final void waitForChannelSuccessOrFailure(Channel c) throws IOException
+	private final boolean waitForChannelRequestResult(Channel c) throws IOException
 	{
 		synchronized (c)
 		{
@@ -184,10 +183,14 @@ public class ChannelManager implements MessageHandler
 				}
 			}
 
-			if (c.failedCounter != 0)
-			{
-				throw new IOException("The server denied the request.");
-			}
+			if ((c.failedCounter == 0) && (c.successCounter == 1))
+				return true;
+
+			if ((c.failedCounter == 1) && (c.successCounter == 0))
+				return false;
+
+			throw new IOException("Illegal state. The server sent " + c.successCounter
+					+ " SSH_MSG_CHANNEL_SUCCESS and " + c.failedCounter + " SSH_MSG_CHANNEL_FAILURE messages.");
 		}
 	}
 
@@ -471,7 +474,8 @@ public class ChannelManager implements MessageHandler
 
 		try
 		{
-			waitForGlobalSuccessOrFailure();
+			if (waitForGlobalRequestResult() == false)
+				throw new IOException("The server denied the request (did you enable port forwarding?)");
 		}
 		catch (IOException e)
 		{
@@ -509,14 +513,20 @@ public class ChannelManager implements MessageHandler
 		if (log.isEnabled())
 			log.log(50, "Requesting cancelation of remote forward ('" + rfd.bindAddress + "', " + rfd.bindPort + ")");
 
-		waitForGlobalSuccessOrFailure();
-
-		/* Only now we are sure that no more forwarded connections will arrive */
-
-		synchronized (remoteForwardings)
+		try
 		{
-			remoteForwardings.remove(rfd);
+			if (waitForGlobalRequestResult() == false)
+				throw new IOException("The server denied the request.");
 		}
+		finally
+		{
+			synchronized (remoteForwardings)
+			{
+				/* Only now we are sure that no more forwarded connections will arrive */
+				remoteForwardings.remove(rfd);
+			}
+		}
+
 	}
 
 	public void registerThread(IChannelWorkerThread thr) throws IOException
@@ -571,6 +581,67 @@ public class ChannelManager implements MessageHandler
 		return c;
 	}
 
+	public void requestGlobalTrileadPing() throws IOException
+	{
+		synchronized (channels)
+		{
+			globalSuccessCounter = globalFailedCounter = 0;
+		}
+
+		PacketGlobalTrileadPing pgtp = new PacketGlobalTrileadPing();
+
+		tm.sendMessage(pgtp.getPayload());
+
+		if (log.isEnabled())
+			log.log(50, "Sending SSH_MSG_GLOBAL_REQUEST 'trilead-ping'.");
+
+		try
+		{
+			if (waitForGlobalRequestResult() == true)
+				throw new IOException("Your server is alive - but buggy. "
+						+ "It replied with SSH_MSG_REQUEST_SUCCESS when it actually should not.");
+
+		}
+		catch (IOException e)
+		{
+			throw (IOException) new IOException("The ping request failed.").initCause(e);
+		}
+	}
+
+	public void requestChannelTrileadPing(Channel c) throws IOException
+	{
+		PacketChannelTrileadPing pctp;
+
+		synchronized (c)
+		{
+			if (c.state != Channel.STATE_OPEN)
+				throw new IOException("Cannot ping this channel (" + c.getReasonClosed() + ")");
+
+			pctp = new PacketChannelTrileadPing(c.remoteID);
+
+			c.successCounter = c.failedCounter = 0;
+		}
+
+		synchronized (c.channelSendLock)
+		{
+			if (c.closeMessageSent)
+				throw new IOException("Cannot ping this channel (" + c.getReasonClosed() + ")");
+			tm.sendMessage(pctp.getPayload());
+		}
+
+		try
+		{
+			if (waitForChannelRequestResult(c) == true)
+				throw new IOException("Your server is alive - but buggy. "
+						+ "It replied with SSH_MSG_SESSION_SUCCESS when it actually should not.");
+
+		}
+		catch (IOException e)
+		{
+			throw (IOException) new IOException("The ping request failed.").initCause(e);
+		}
+	}
+
 	public void requestPTY(Channel c, String term, int term_width_characters, int term_height_characters,
 			int term_width_pixels, int term_height_pixels, byte[] terminal_modes) throws IOException
 	{
@@ -596,7 +667,8 @@ public class ChannelManager implements MessageHandler
 
 		try
 		{
-			waitForChannelSuccessOrFailure(c);
+			if (waitForChannelRequestResult(c) == false)
+				throw new IOException("The server denied the request.");
 		}
 		catch (IOException e)
 		{
@@ -632,7 +704,8 @@ public class ChannelManager implements MessageHandler
 
 		try
 		{
-			waitForChannelSuccessOrFailure(c);
+			if (waitForChannelRequestResult(c) == false)
+				throw new IOException("The server denied the request.");
 		}
 		catch (IOException e)
 		{
@@ -663,7 +736,8 @@ public class ChannelManager implements MessageHandler
 
 		try
 		{
-			waitForChannelSuccessOrFailure(c);
+			if (waitForChannelRequestResult(c) == false)
+				throw new IOException("The server denied the request.");
 		}
 		catch (IOException e)
 		{
@@ -697,7 +771,8 @@ public class ChannelManager implements MessageHandler
 
 		try
 		{
-			waitForChannelSuccessOrFailure(c);
+			if (waitForChannelRequestResult(c) == false)
+				throw new IOException("The server denied the request.");
 		}
 		catch (IOException e)
 		{
@@ -728,7 +803,8 @@ public class ChannelManager implements MessageHandler
 
 		try
 		{
-			waitForChannelSuccessOrFailure(c);
+			if (waitForChannelRequestResult(c) == false)
+				throw new IOException("The server denied the request.");
 		}
 		catch (IOException e)
 		{
@@ -1533,11 +1609,11 @@ public class ChannelManager implements MessageHandler
 						c.state = Channel.STATE_CLOSED;
 						c.setReasonClosed("The connection is being shutdown");
 						c.closeMessageRecv = true; /*
-						 * You never know, perhaps
-						 * we are waiting for a
-						 * pending close message
-						 * from the server...
-						 */
+																															 * You never know, perhaps
+																															 * we are waiting for a
+																															 * pending close message
+																															 * from the server...
+																															 */
 						c.notifyAll();
 					}
 				}

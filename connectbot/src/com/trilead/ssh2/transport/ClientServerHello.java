@@ -4,15 +4,15 @@ package com.trilead.ssh2.transport;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 import com.trilead.ssh2.Connection;
-
 
 /**
  * ClientServerHello.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: ClientServerHello.java,v 1.1 2007/10/15 12:49:57 cplattne Exp $
+ * @version $Id: ClientServerHello.java,v 1.2 2008/04/01 12:38:09 cplattne Exp $
  */
 public class ClientServerHello
 {
@@ -58,7 +58,7 @@ public class ClientServerHello
 	{
 		client_line = "SSH-2.0-" + Connection.identification;
 
-		bo.write((client_line + "\r\n").getBytes());
+		bo.write((client_line + "\r\n").getBytes("ISO-8859-1"));
 		bo.flush();
 
 		byte[] serverVersion = new byte[512];
@@ -67,7 +67,7 @@ public class ClientServerHello
 		{
 			int len = readLineRN(bi, serverVersion);
 
-			server_line = new String(serverVersion, 0, len);
+			server_line = new String(serverVersion, 0, len, "ISO-8859-1");
 
 			if (server_line.startsWith("SSH-"))
 				break;
@@ -90,7 +90,18 @@ public class ClientServerHello
 	 */
 	public byte[] getClientString()
 	{
-		return client_line.getBytes();
+		byte[] result;
+
+		try
+		{
+			result = client_line.getBytes("ISO-8859-1");
+		}
+		catch (UnsupportedEncodingException ign)
+		{
+			result = client_line.getBytes();
+		}
+
+		return result;
 	}
 
 	/**
@@ -98,6 +109,17 @@ public class ClientServerHello
 	 */
 	public byte[] getServerString()
 	{
-		return server_line.getBytes();
+		byte[] result;
+
+		try
+		{
+			result = server_line.getBytes("ISO-8859-1");
+		}
+		catch (UnsupportedEncodingException ign)
+		{
+			result = server_line.getBytes();
+		}
+
+		return result;
 	}
 }
