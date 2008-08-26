@@ -49,7 +49,7 @@ import com.trilead.ssh2.util.Tokenizer;
  * TransportManager.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: TransportManager.java,v 1.1 2007/10/15 12:49:56 cplattne Exp $
+ * @version $Id: TransportManager.java,v 1.2 2008/04/01 12:38:09 cplattne Exp $
  */
 public class TransportManager
 {
@@ -366,7 +366,7 @@ public class TransportManager
 			if ((pd.proxyUser != null) && (pd.proxyPass != null))
 			{
 				String credentials = pd.proxyUser + ":" + pd.proxyPass;
-				char[] encoded = Base64.encode(credentials.getBytes());
+				char[] encoded = Base64.encode(credentials.getBytes("ISO-8859-1"));
 				sb.append("Proxy-Authorization: Basic ");
 				sb.append(encoded);
 				sb.append("\r\n");
@@ -388,7 +388,7 @@ public class TransportManager
 
 			OutputStream out = sock.getOutputStream();
 
-			out.write(sb.toString().getBytes());
+			out.write(sb.toString().getBytes("ISO-8859-1"));
 			out.flush();
 
 			/* Now parse the HTTP response */
@@ -398,7 +398,7 @@ public class TransportManager
 
 			int len = ClientServerHello.readLineRN(in, buffer);
 
-			String httpReponse = new String(buffer, 0, len);
+			String httpReponse = new String(buffer, 0, len, "ISO-8859-1");
 
 			if (httpReponse.startsWith("HTTP/") == false)
 				throw new IOException("The proxy did not send back a valid HTTP response.");

@@ -1,21 +1,27 @@
 
 package com.trilead.ssh2.log;
 
+import com.trilead.ssh2.DebugLogger;
+
 /**
  * Logger - a very simple logger, mainly used during development.
  * Is not based on log4j (to reduce external dependencies).
  * However, if needed, something like log4j could easily be
  * hooked in.
+ * <p>
+ * For speed reasons, the static variables are not protected
+ * with semaphores. In other words, if you dynamicaly change the
+ * logging settings, then some threads may still use the old setting.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: Logger.java,v 1.1 2007/10/15 12:49:56 cplattne Exp $
+ * @version $Id: Logger.java,v 1.2 2008/03/03 07:01:36 cplattne Exp $
  */
 
 public class Logger
 {
-	private static final boolean enabled = false;
-	private static final int logLevel = 99;
-
+	public static boolean enabled = false;
+	public static DebugLogger logger = null;
+	
 	private String className;
 
 	public final static Logger getLogger(Class x)
@@ -35,15 +41,14 @@ public class Logger
 
 	public final void log(int level, String message)
 	{
-		if ((enabled) && (level <= logLevel))
-		{
-			long now = System.currentTimeMillis();
-
-			synchronized (this)
-			{
-				System.err.println(now + " : " + className + ": " + message);
-				// or send it to log4j or whatever...
-			}
-		}
+		if (!enabled)
+			return;
+		
+		DebugLogger target = logger;
+		
+		if (target == null)
+			return;
+		
+		target.log(level, className, message);
 	}
 }

@@ -1,11 +1,13 @@
+
 package com.trilead.ssh2.packets;
+
 import java.io.IOException;
 
 /**
  * PacketDisconnect.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: PacketDisconnect.java,v 1.1 2007/10/15 12:49:55 cplattne Exp $
+ * @version $Id: PacketDisconnect.java,v 1.2 2008/04/01 12:38:09 cplattne Exp $
  */
 public class PacketDisconnect
 {
@@ -25,8 +27,7 @@ public class PacketDisconnect
 		int packet_type = tr.readByte();
 
 		if (packet_type != Packets.SSH_MSG_DISCONNECT)
-			throw new IOException("This is not a Disconnect Packet! ("
-					+ packet_type + ")");
+			throw new IOException("This is not a Disconnect Packet! (" + packet_type + ")");
 
 		reason = tr.readUINT32();
 		desc = tr.readString();
@@ -39,7 +40,7 @@ public class PacketDisconnect
 		this.desc = desc;
 		this.lang = lang;
 	}
-	
+
 	public byte[] getPayload()
 	{
 		if (payload == null)

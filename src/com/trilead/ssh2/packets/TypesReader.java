@@ -11,7 +11,7 @@ import com.trilead.ssh2.util.Tokenizer;
  * TypesReader.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: TypesReader.java,v 1.1 2007/10/15 12:49:55 cplattne Exp $
+ * @version $Id: TypesReader.java,v 1.2 2008/04/01 12:38:09 cplattne Exp $
  */
 public class TypesReader
 {
@@ -157,7 +157,8 @@ public class TypesReader
 		if ((len + pos) > max)
 			throw new IOException("Malformed SSH string.");
 
-		String res = new String(arr, pos, len);
+		String res = new String(arr, pos, len, "ISO-8859-1");
+		
 		pos += len;
 
 		return res;

@@ -15,12 +15,11 @@ import com.trilead.ssh2.crypto.digest.MD5;
 import com.trilead.ssh2.signature.DSAPrivateKey;
 import com.trilead.ssh2.signature.RSAPrivateKey;
 
-
 /**
  * PEM Support.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: PEMDecoder.java,v 1.1 2007/10/15 12:49:56 cplattne Exp $
+ * @version $Id: PEMDecoder.java,v 1.2 2008/04/01 12:38:09 cplattne Exp $
  */
 public class PEMDecoder
 {
@@ -82,7 +81,8 @@ public class PEMDecoder
 		while (true)
 		{
 			md5.update(password, 0, password.length);
-			md5.update(salt, 0, 8); // ARGH we only use the first 8 bytes of the salt in this step.
+			md5.update(salt, 0, 8); // ARGH we only use the first 8 bytes of the
+			// salt in this step.
 			// This took me two hours until I got AES-xxx running.
 
 			int copy = (keyLen < tmp.length) ? keyLen : tmp.length;
@@ -317,7 +317,7 @@ public class PEMDecoder
 			if (password == null)
 				throw new IOException("PEM is encrypted, but no password was specified");
 
-			decryptPEM(ps, password.getBytes());
+			decryptPEM(ps, password.getBytes("ISO-8859-1"));
 		}
 
 		if (ps.pemType == PEM_DSA_PRIVATE_KEY)

@@ -19,7 +19,7 @@ import java.io.OutputStream;
  * actually mapping every request to a distinct {@link Session}.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: SCPClient.java,v 1.1 2007/10/15 12:49:56 cplattne Exp $
+ * @version $Id: SCPClient.java,v 1.2 2008/04/01 12:38:09 cplattne Exp $
  */
 
 public class SCPClient
@@ -65,7 +65,10 @@ public class SCPClient
 
 		while (true)
 		{
-			/* This is a random limit - if your path names are longer, then adjust it */
+			/*
+			 * This is a random limit - if your path names are longer, then
+			 * adjust it
+			 */
 
 			if (sb.length() > 8192)
 				throw new IOException("Remote scp sent a too long line");
@@ -138,7 +141,7 @@ public class SCPClient
 
 		String cline = "C" + mode + " " + data.length + " " + fileName + "\n";
 
-		os.write(cline.getBytes());
+		os.write(cline.getBytes("ISO-8859-1"));
 		os.flush();
 
 		readResponse(is);
@@ -149,7 +152,7 @@ public class SCPClient
 
 		readResponse(is);
 
-		os.write("E\n".getBytes());
+		os.write("E\n".getBytes("ISO-8859-1"));
 		os.flush();
 	}
 
@@ -176,7 +179,7 @@ public class SCPClient
 
 			String cline = "C" + mode + " " + remain + " " + remoteName + "\n";
 
-			os.write(cline.getBytes());
+			os.write(cline.getBytes("ISO-8859-1"));
 			os.flush();
 
 			readResponse(is);
@@ -215,7 +218,7 @@ public class SCPClient
 			readResponse(is);
 		}
 
-		os.write("E\n".getBytes());
+		os.write("E\n".getBytes("ISO-8859-1"));
 		os.flush();
 	}
 
@@ -379,13 +382,14 @@ public class SCPClient
 	}
 
 	/**
-	 * Copy a local file to a remote directory, uses mode 0600 when creating
-	 * the file on the remote side.
+	 * Copy a local file to a remote directory, uses mode 0600 when creating the
+	 * file on the remote side.
 	 * 
 	 * @param localFile
 	 *            Path and name of local file.
 	 * @param remoteTargetDirectory
-	 *            Remote target directory. Use an empty string to specify the default directory.
+	 *            Remote target directory. Use an empty string to specify the
+	 *            default directory.
 	 * 
 	 * @throws IOException
 	 */
@@ -401,7 +405,8 @@ public class SCPClient
 	 * @param localFiles
 	 *            Paths and names of local file names.
 	 * @param remoteTargetDirectory
-	 *            Remote target directory. Use an empty string to specify the default directory.
+	 *            Remote target directory. Use an empty string to specify the
+	 *            default directory.
 	 * 
 	 * @throws IOException
 	 */
@@ -418,7 +423,8 @@ public class SCPClient
 	 * @param localFile
 	 *            Path and name of local file.
 	 * @param remoteTargetDirectory
-	 *            Remote target directory. Use an empty string to specify the default directory.
+	 *            Remote target directory. Use an empty string to specify the
+	 *            default directory.
 	 * @param mode
 	 *            a four digit string (e.g., 0644, see "man chmod", "man open")
 	 * @throws IOException
@@ -429,15 +435,17 @@ public class SCPClient
 	}
 
 	/**
-	 * Copy a local file to a remote directory, uses the specified mode and remote filename
-	 * when creating the file on the remote side.
+	 * Copy a local file to a remote directory, uses the specified mode and
+	 * remote filename when creating the file on the remote side.
 	 * 
 	 * @param localFile
 	 *            Path and name of local file.
 	 * @param remoteFileName
-	 *            The name of the file which will be created in the remote target directory.
+	 *            The name of the file which will be created in the remote
+	 *            target directory.
 	 * @param remoteTargetDirectory
-	 *            Remote target directory. Use an empty string to specify the default directory.
+	 *            Remote target directory. Use an empty string to specify the
+	 *            default directory.
 	 * @param mode
 	 *            a four digit string (e.g., 0644, see "man chmod", "man open")
 	 * @throws IOException
@@ -449,15 +457,17 @@ public class SCPClient
 	}
 
 	/**
-	 * Create a remote file and copy the contents of the passed byte array into it.
-	 * Uses mode 0600 for creating the remote file.
+	 * Create a remote file and copy the contents of the passed byte array into
+	 * it. Uses mode 0600 for creating the remote file.
 	 * 
 	 * @param data
 	 *            the data to be copied into the remote file.
 	 * @param remoteFileName
-	 *            The name of the file which will be created in the remote target directory.
+	 *            The name of the file which will be created in the remote
+	 *            target directory.
 	 * @param remoteTargetDirectory
-	 *            Remote target directory. Use an empty string to specify the default directory.
+	 *            Remote target directory. Use an empty string to specify the
+	 *            default directory.
 	 * @throws IOException
 	 */
 
@@ -467,15 +477,18 @@ public class SCPClient
 	}
 
 	/**
-	 * Create a remote file and copy the contents of the passed byte array into it.
-	 * The method use the specified mode when creating the file on the remote side.
+	 * Create a remote file and copy the contents of the passed byte array into
+	 * it. The method use the specified mode when creating the file on the
+	 * remote side.
 	 * 
 	 * @param data
 	 *            the data to be copied into the remote file.
 	 * @param remoteFileName
-	 *            The name of the file which will be created in the remote target directory.
+	 *            The name of the file which will be created in the remote
+	 *            target directory.
 	 * @param remoteTargetDirectory
-	 *            Remote target directory. Use an empty string to specify the default directory.
+	 *            Remote target directory. Use an empty string to specify the
+	 *            default directory.
 	 * @param mode
 	 *            a four digit string (e.g., 0644, see "man chmod", "man open")
 	 * @throws IOException
@@ -523,7 +536,8 @@ public class SCPClient
 	 * @param localFiles
 	 *            Paths and names of the local files.
 	 * @param remoteTargetDirectory
-	 *            Remote target directory. Use an empty string to specify the default directory.
+	 *            Remote target directory. Use an empty string to specify the
+	 *            default directory.
 	 * @param mode
 	 *            a four digit string (e.g., 0644, see "man chmod", "man open")
 	 * @throws IOException
@@ -538,7 +552,10 @@ public class SCPClient
 	{
 		Session sess = null;
 
-		/* remoteFiles may be null, indicating that the local filenames shall be used */
+		/*
+		 * remoteFiles may be null, indicating that the local filenames shall be
+		 * used
+		 */
 
 		if ((localFiles == null) || (remoteTargetDirectory == null) || (mode == null))
 			throw new IllegalArgumentException("Null argument.");
@@ -597,14 +614,15 @@ public class SCPClient
 	}
 
 	/**
-	 * Download a file from the remote server and pipe its contents into an <code>OutputStream</code>.
-	 * Please note that, to enable flexible usage of this method, the <code>OutputStream</code> will not
-	 * be closed nor flushed.  
+	 * Download a file from the remote server and pipe its contents into an
+	 * <code>OutputStream</code>. Please note that, to enable flexible usage
+	 * of this method, the <code>OutputStream</code> will not be closed nor
+	 * flushed.
 	 * 
 	 * @param remoteFile
-	 * 			Path and name of the remote file.
+	 *            Path and name of the remote file.
 	 * @param target
-	 * 			OutputStream where the contents of the file will be sent to.
+	 *            OutputStream where the contents of the file will be sent to.
 	 * @throws IOException
 	 */
 	public void get(String remoteFile, OutputStream target) throws IOException

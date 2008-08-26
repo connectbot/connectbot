@@ -8,7 +8,7 @@ import java.math.BigInteger;
  * TypesWriter.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: TypesWriter.java,v 1.1 2007/10/15 12:49:55 cplattne Exp $
+ * @version $Id: TypesWriter.java,v 1.2 2008/04/01 12:38:09 cplattne Exp $
  */
 public class TypesWriter
 {
@@ -39,7 +39,7 @@ public class TypesWriter
 		System.arraycopy(arr, 0, dst, 0, pos);
 		return dst;
 	}
-	
+
 	public void getBytes(byte dst[])
 	{
 		System.arraycopy(arr, 0, dst, 0, pos);
@@ -113,7 +113,7 @@ public class TypesWriter
 	{
 		writeBytes(buff, 0, buff.length);
 	}
-	
+
 	public void writeBytes(byte[] buff, int off, int len)
 	{
 		if ((pos + len) > arr.length)
@@ -131,16 +131,26 @@ public class TypesWriter
 
 	public void writeString(String v)
 	{
-		byte[] b = v.getBytes();
+		byte[] b;
+
+		try
+		{
+			/* All Java JVMs must support ISO-8859-1 */
+			b = v.getBytes("ISO-8859-1");
+		}
+		catch (UnsupportedEncodingException ignore)
+		{
+			b = v.getBytes();
+		}
 
 		writeUINT32(b.length);
 		writeBytes(b, 0, b.length);
 	}
-	
+
 	public void writeString(String v, String charsetName) throws UnsupportedEncodingException
 	{
 		byte[] b = (charsetName == null) ? v.getBytes() : v.getBytes(charsetName);
-		
+
 		writeUINT32(b.length);
 		writeBytes(b, 0, b.length);
 	}

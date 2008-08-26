@@ -56,7 +56,7 @@ import com.trilead.ssh2.sftp.Packet;
  * {@link #setCharset(String)}.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: SFTPv3Client.java,v 1.1 2007/10/15 12:49:56 cplattne Exp $
+ * @version $Id: SFTPv3Client.java,v 1.3 2008/04/01 12:38:09 cplattne Exp $
  */
 public class SFTPv3Client
 {
@@ -319,8 +319,8 @@ public class SFTPv3Client
 		{
 			if (debug != null)
 				debug.println("SSH_FILEXFER_ATTR_V3_ACMODTIME");
-			fa.atime = new Integer(tr.readUINT32());
-			fa.mtime = new Integer(tr.readUINT32());
+			fa.atime = new Long(((long)tr.readUINT32()) & 0xffffffffl);
+			fa.mtime = new Long(((long)tr.readUINT32()) & 0xffffffffl);
 
 		}
 
@@ -721,8 +721,11 @@ public class SFTPv3Client
 			}
 
 			sendMessage(Packet.SSH_FXP_READDIR, req_id, tw.getBytes());
-
-			byte[] resp = receiveMessage(34000);
+		
+			/* Some servers send here a packet with size > 34000 */
+			/* To whom it may concern: please learn to read the specs. */
+			
+			byte[] resp = receiveMessage(65536);
 
 			if (debug != null)
 			{

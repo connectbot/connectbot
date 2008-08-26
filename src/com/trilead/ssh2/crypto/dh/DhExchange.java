@@ -1,6 +1,7 @@
 
 package com.trilead.ssh2.crypto.dh;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
@@ -12,7 +13,7 @@ import com.trilead.ssh2.log.Logger;
  * DhExchange.
  * 
  * @author Christian Plattner, plattner@trilead.com
- * @version $Id: DhExchange.java,v 1.1 2007/10/15 12:49:57 cplattne Exp $
+ * @version $Id: DhExchange.java,v 1.2 2008/04/01 12:38:09 cplattne Exp $
  */
 public class DhExchange
 {
@@ -122,14 +123,14 @@ public class DhExchange
 	}
 
 	public byte[] calculateH(byte[] clientversion, byte[] serverversion, byte[] clientKexPayload,
-			byte[] serverKexPayload, byte[] hostKey)
+			byte[] serverKexPayload, byte[] hostKey) throws UnsupportedEncodingException
 	{
 		HashForSSH2Types hash = new HashForSSH2Types("SHA1");
 
 		if (log.isEnabled())
 		{
-			log.log(90, "Client: '" + new String(clientversion) + "'");
-			log.log(90, "Server: '" + new String(serverversion) + "'");
+			log.log(90, "Client: '" + new String(clientversion, "ISO-8859-1") + "'");
+			log.log(90, "Server: '" + new String(serverversion, "ISO-8859-1") + "'");
 		}
 
 		hash.updateByteString(clientversion);
