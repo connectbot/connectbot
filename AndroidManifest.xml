@@ -42,8 +42,8 @@
 				<data android:mimeType="vnd.android.cursor.item/vnd.theb.host" />
 			</intent-filter>
             
-            <!-- This filter says that we can create a new note inside
-                 of a directory of notes. -->
+            <!-- This filter says that we can create a new host inside
+                 of a directory of hosts. -->
             <intent-filter>
                 <action android:name="android.intent.action.INSERT" />
                 <category android:name="android.intent.category.DEFAULT" />
