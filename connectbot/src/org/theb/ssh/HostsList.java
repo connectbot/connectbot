@@ -18,6 +18,8 @@
  */
 package org.theb.ssh;
 
+import java.util.concurrent.Semaphore;
+
 import org.connectbot.Console;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
@@ -319,35 +321,73 @@ public class HostsList extends ListActivity {
 			cursor.moveToFirst();
 			
 			// try finding an already-open bridge for this connection
-			String nickname = cursor.getString(0);
+			final String nickname = cursor.getString(0);
 			TerminalBridge bridge = bound.findBridge(nickname);
 			if(bridge == null) {
 				// too bad, looks like we have to open the bridge ourselves
-				String username = cursor.getString(1);
-				String hostname = cursor.getString(2);
-				int port = cursor.getInt(3);
-				String emulation = cursor.getString(4);
-				int scrollback = cursor.getInt(5);
-				String hostkey = cursor.getString(6);
+				final String username = cursor.getString(1);
+				final String hostname = cursor.getString(2);
+				final int port = cursor.getInt(3);
+				final String emulation = cursor.getString(4);
+				final int scrollback = cursor.getInt(5);
+				final String hostkey = cursor.getString(6);
 				
 				try {
-					//Connection conn;
-					//bound.openConnection(conn, nickname, emulation, scrollback);
-					bound.openConnection(nickname, hostname, port, username, "moocow", "screen", 100);
+					// TODO: this is horridly messy lol
+					// TODO: finish copying over logic from TrileadConnectionThread here
+					
+			    	this.startActivityForResult(new Intent(this, PasswordDialog.class), PASSWORD_REQUEST);
+			    	
+			    	Thread connect = new Thread(new Runnable() {
+
+						public void run() {
+							try {
+								waitPassword.acquire();
+								//Connection conn;
+								//bound.openConnection(conn, nickname, emulation, scrollback);
+								bound.openConnection(nickname, hostname, port, username, password, "screen", 100);
+
+						    	// open the console view and select this specific terminal
+								Intent intent = new Intent(HostsList.this, Console.class);
+								intent.putExtra(Intent.EXTRA_TEXT, nickname);
+								startActivity(intent);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							password = null;
+						}
+			    	});
+			    	connect.start();
+			    	
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
 				
 				
+			} else {
+				// we found an existing terminal, so open it
+		    	// open the console view and select this specific terminal
+				Intent intent = new Intent(this, Console.class);
+				intent.putExtra(Intent.EXTRA_TEXT, nickname);
+				this.startActivity(intent);
 			}
 			
-	    	// open the console view and select this specific terminal
-			Intent intent = new Intent(this, Console.class);
-			intent.putExtra(Intent.EXTRA_TEXT, nickname);
-			this.startActivity(intent);
 	    	
 	    }
     }
+	
+	public final static int PASSWORD_REQUEST = 42;
+	public Semaphore waitPassword = new Semaphore(0);
+	public String password = null;
+	
+    @Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == PASSWORD_REQUEST) {
+			this.password = data.getStringExtra(Intent.EXTRA_TEXT);
+			this.waitPassword.release();
+		}
+	}
+
 	
 	private final void deleteItem() {
 		mCursor.move(getSelectedItemPosition());
