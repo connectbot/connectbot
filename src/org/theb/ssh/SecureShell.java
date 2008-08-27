@@ -95,19 +95,15 @@ public class SecureShell extends Activity implements FeedbackUI, ConnectionMonit
         // TODO: implement scroll bar on right.
         setContentView((View)mTerminal);
         
-//        Log.d("SSH", "using URI " + getIntent().getData().toString());
-//        
-//        mCursor = managedQuery(getIntent().getData(), PROJECTION, null, null);
-//        mCursor.moveToFirst();
-//        
-//        mHostname = mCursor.getString(HOSTNAME_INDEX);
-//        mUsername = mCursor.getString(USERNAME_INDEX);
-//        mPort = mCursor.getInt(PORT_INDEX);
+        Log.d("SSH", "using URI " + getIntent().getData().toString());
         
-        mHostname = "192.168.254.230";
-        mUsername = "jsharkey";
-        mPort = 22;
+        mCursor = managedQuery(getIntent().getData(), PROJECTION, null, null);
+        mCursor.moveToFirst();
         
+        mHostname = mCursor.getString(HOSTNAME_INDEX);
+        mUsername = mCursor.getString(USERNAME_INDEX);
+        mPort = mCursor.getInt(PORT_INDEX);
+
         String title = "SSH: " + mUsername + "@" + mHostname;
         if (mPort != 22)
         	title += Integer.toString(mPort);
