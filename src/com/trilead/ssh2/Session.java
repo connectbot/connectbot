@@ -129,6 +129,17 @@ public class Session
 		cm.requestPTY(cn, term, term_width_characters, term_height_characters, term_width_pixels, term_height_pixels,
 				terminal_modes);
 	}
+	
+	public void resizePTY(int width, int height) throws IOException {
+		synchronized (this)
+		{
+			/* The following is just a nicer error, we would catch it anyway later in the channel code */
+			if (flag_closed)
+				throw new IOException("This session is closed.");
+		}
+		
+		cm.resizePTY(cn, width, height);
+	}
 
 	/**
 	 * Request X11 forwarding for the current session.

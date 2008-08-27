@@ -43,7 +43,7 @@ public class HostDbProvider extends ContentProvider {
 	
 	private static final String TAG = "HostDbProvider";
 	private static final String DATABASE_NAME = "ssh_hosts.db";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 	
 	private static HashMap<String, String> HOSTS_LIST_PROJECTION_MAP;
 	
@@ -61,9 +61,15 @@ public class HostDbProvider extends ContentProvider {
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			db.execSQL("CREATE TABLE hosts (_id INTEGER PRIMARY KEY,"
-					+ "hostname TEXT," + "username TEXT," + "port INTEGER,"
-					+ "hostkey TEXT" + ")");
+			db.execSQL("CREATE TABLE hosts (_id INTEGER PRIMARY KEY," +
+					"nickname TEXT," +
+					"hostname TEXT," +
+					"username TEXT," +
+					"port INTEGER," +
+					"emulation TEXT," +
+					"scrollback INTEGER," +
+					"hostkey TEXT" +
+					")");
 		}
 
 		@Override
@@ -127,6 +133,10 @@ public class HostDbProvider extends ContentProvider {
 			throw new IllegalArgumentException("Unknown Insert " + uri);
 		}
 		*/
+		if (values.containsKey(HostDb.Hosts.NICKNAME) == false) {
+			values.put(HostDb.Hosts.NICKNAME, "");
+		}
+
 		if (values.containsKey(HostDb.Hosts.HOSTNAME) == false) {
 			values.put(HostDb.Hosts.HOSTNAME, "");
 		}
@@ -141,6 +151,14 @@ public class HostDbProvider extends ContentProvider {
 		
 		if (values.containsKey(HostDb.Hosts.HOSTKEY) == false) {
 			values.put(HostDb.Hosts.HOSTKEY, "");
+		}
+		
+		if (values.containsKey(HostDb.Hosts.EMULATION) == false) {
+			values.put(HostDb.Hosts.EMULATION, "");
+		}
+
+		if (values.containsKey(HostDb.Hosts.SCROLLBACK) == false) {
+			values.put(HostDb.Hosts.SCROLLBACK, "");
 		}
 		
 		rowID = mDB.insert("hosts", "host", values);
@@ -228,9 +246,12 @@ public class HostDbProvider extends ContentProvider {
 		
 		HOSTS_LIST_PROJECTION_MAP = new HashMap<String, String>();
 		HOSTS_LIST_PROJECTION_MAP.put(HostDb.Hosts._ID, "_id");
+		HOSTS_LIST_PROJECTION_MAP.put(HostDb.Hosts.NICKNAME, "nickname");
 		HOSTS_LIST_PROJECTION_MAP.put(HostDb.Hosts.HOSTNAME, "hostname");
 		HOSTS_LIST_PROJECTION_MAP.put(HostDb.Hosts.USERNAME, "username");
 		HOSTS_LIST_PROJECTION_MAP.put(HostDb.Hosts.PORT, "port");
 		HOSTS_LIST_PROJECTION_MAP.put(HostDb.Hosts.HOSTKEY, "hostkey");
+		HOSTS_LIST_PROJECTION_MAP.put(HostDb.Hosts.EMULATION, "emulation");
+		HOSTS_LIST_PROJECTION_MAP.put(HostDb.Hosts.SCROLLBACK, "scrollback");
 	}
 }

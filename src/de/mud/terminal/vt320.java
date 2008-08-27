@@ -39,6 +39,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
 	
   /** The current version id tag.<P>
    * $Id: vt320.java 507 2005-10-25 10:14:52Z marcus $
+   * 
    */
   public final static String ID = "$Id: vt320.java 507 2005-10-25 10:14:52Z marcus $";
 
@@ -1930,7 +1931,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             break;
           case 'r': // XTERM_RESTORE
             if (true || debug > 1)
-              System.out.println("ESC [ ? " + DCEvars[0] + " r");
+              System.out.println("m1ESC [ ? " + DCEvars[0] + " r");
             /* DEC Mode reset */
             for (int i = 0; i <= DCEvar; i++) {
               switch (DCEvars[i]) {
@@ -2328,7 +2329,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
               int limit;
               /* FIXME: xterm only cares about 0 and topmargin */
               if (R > bm)
-                limit = bm;   // BUGFIX: corrects scrollback dissapearing in irssi
+                limit = bm;   // BUGFIX: corrects scrollback dissapearing in irssi (?)
               else if (R >= tm) {
                 limit = tm;
               } else
@@ -2403,15 +2404,17 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             } else
               R = rows - 1;
             setBottomMargin(R);
+            System.out.println("setBottomMargin R="+R);
             if (R >= DCEvars[0]) {
               R = DCEvars[0] - 1;
               if (R < 0)
                 R = 0;
             }
             setTopMargin(R);
+            System.out.println("setTopMargin R="+R);
             _SetCursor(0, 0);
             if (debug > 1)
-              System.out.println("ESC [" + DCEvars[0] + " ; " + DCEvars[1] + " r");
+              System.out.println("m2ESC [" + DCEvars[0] + " ; " + DCEvars[1] + " r");
             break;
           case 'G':  /* CUP  / cursor absolute column */
             C = DCEvars[0];
@@ -2682,7 +2685,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
               if (debug > 3)
                 System.out.print("" + DCEvars[i] + ";");
             }
-            if (debug > 3)
+            if (debug > 4)
               System.out.print(" (attributes = " + attributes + ")m \n");
             break;
           default:

@@ -18,7 +18,13 @@
  */
 package org.theb.ssh;
 
+import org.connectbot.Console;
+import org.connectbot.service.TerminalBridge;
+import org.connectbot.service.TerminalManager;
+import org.theb.ssh.R;
 import org.theb.provider.HostDb;
+
+import com.trilead.ssh2.Connection;
 
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -26,10 +32,13 @@ import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -55,6 +64,7 @@ public class HostsList extends ListActivity {
 		HostDb.Hosts.HOSTNAME,
 		HostDb.Hosts.USERNAME, 
 		HostDb.Hosts.PORT,
+		HostDb.Hosts.NICKNAME
 	};
 	
 	private Cursor mCursor;
@@ -78,26 +88,59 @@ public class HostsList extends ListActivity {
 			String label;
 			TextView textView = (TextView) view;
 
-			label = cursor.getString(2)
-					+ "@"
-					+ cursor.getString(1);
+//			label = cursor.getString(2) + "@" + cursor.getString(1);
+//			int port = cursor.getInt(3);
+//			if (port != 22) {
+//				label = label + ":" + String.valueOf(port);
+//			}
 			
-			int port = cursor.getInt(3);
-			if (port != 22) {
-				label = label + ":" + String.valueOf(port);
-			}
-			
+			label = cursor.getString(4);
 			textView.setText(label);
 		}
 		
 	}
+	
+	
+	
+	
+
+	public TerminalManager bound = null;
+	
+    private ServiceConnection connection = new ServiceConnection() {
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			Log.d(this.getClass().toString(), "yay we bound to our terminalmanager");
+			bound = ((TerminalManager.TerminalBinder) service).getService();
+			
+			// TODO: update our green bulb icons by checking for existing bridges
+			// open up some test sessions
+//			try {
+//				bound.openConnection("192.168.254.230", 22, "connectbot", "b0tt", "screen", 100);
+//				bound.openConnection("192.168.254.230", 22, "connectbot", "b0tt", "screen", 100);
+//				bound.openConnection("192.168.254.230", 22, "connectbot", "b0tt", "screen", 100);
+//			} catch(Exception e) {
+//				e.printStackTrace();
+//			}
+			
+		}
+
+		public void onServiceDisconnected(ComponentName className) {
+			Log.d(this.getClass().toString(), "oops our terminalmanager was lost");
+			bound = null;
+		}
+	};
+	
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);	
         
-        setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
+        // start the terminal manager service and bind locally
+		this.startService(new Intent(this, TerminalManager.class));
+		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
+
+        
+        //setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
         
         Intent intent = getIntent();
         if (intent.getData() == null) {
@@ -267,7 +310,42 @@ public class HostsList extends ListActivity {
 	        setResult(RESULT_OK, intent);
 	    } else {
 	    	// Launch activity to view/edit the currently selected item
-	        startActivity(new Intent(Intent.ACTION_PICK, url));
+	        //startActivity(new Intent(Intent.ACTION_PICK, url));
+	    	
+	    	// collect all connection details
+			Cursor cursor = managedQuery(url, new String[] { "nickname",
+					"username", "hostname", "port", "emulation", "scrollback",
+					"hostkey" }, null, null);
+			cursor.moveToFirst();
+			
+			// try finding an already-open bridge for this connection
+			String nickname = cursor.getString(0);
+			TerminalBridge bridge = bound.findBridge(nickname);
+			if(bridge == null) {
+				// too bad, looks like we have to open the bridge ourselves
+				String username = cursor.getString(1);
+				String hostname = cursor.getString(2);
+				int port = cursor.getInt(3);
+				String emulation = cursor.getString(4);
+				int scrollback = cursor.getInt(5);
+				String hostkey = cursor.getString(6);
+				
+				try {
+					//Connection conn;
+					//bound.openConnection(conn, nickname, emulation, scrollback);
+					bound.openConnection(nickname, hostname, port, username, "moocow", "screen", 100);
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+				
+				
+			}
+			
+	    	// open the console view and select this specific terminal
+			Intent intent = new Intent(this, Console.class);
+			intent.putExtra(Intent.EXTRA_TEXT, nickname);
+			this.startActivity(intent);
+	    	
 	    }
     }
 	

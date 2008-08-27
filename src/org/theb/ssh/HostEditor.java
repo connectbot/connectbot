@@ -18,6 +18,7 @@
  */
 package org.theb.ssh;
 
+import org.theb.ssh.R;
 import org.theb.provider.HostDb;
 
 import android.app.Activity;
@@ -31,29 +32,26 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 public class HostEditor extends Activity {
-	public static final String EDIT_HOST_ACTION =
-        "com.theb.ssh.action.EDIT_HOST";
+	public static final String EDIT_HOST_ACTION = "com.theb.ssh.action.EDIT_HOST";
 
-    private static final String[] PROJECTION = new String[] {
-    	HostDb.Hosts._ID, // 0
-    	HostDb.Hosts.HOSTNAME, // 1
-    	HostDb.Hosts.USERNAME, // 2
-    	HostDb.Hosts.PORT, // 3
-    	HostDb.Hosts.HOSTKEY, // 4
-    };
+	private static final String[] PROJECTION = new String[] { HostDb.Hosts._ID,
+			HostDb.Hosts.NICKNAME, HostDb.Hosts.HOSTNAME,
+			HostDb.Hosts.USERNAME, HostDb.Hosts.PORT, HostDb.Hosts.EMULATION,
+			HostDb.Hosts.SCROLLBACK, };
+
+	private static final int INDEX_NICKNAME = 1, INDEX_HOSTNAME = 2,
+			INDEX_USERNAME = 3, INDEX_PORT = 4, INDEX_EMULATION = 5,
+			INDEX_SCROLLBACK = 6;
     
-    static final int HOSTNAME_INDEX = 1;
-    private static final int USERNAME_INDEX = 2;
-    private static final int PORT_INDEX = 3;
     // Set up distinct states that the activity can be run in.
     private static final int STATE_EDIT = 0;
     private static final int STATE_INSERT = 1;
     
-	private EditText mHostname;
-	private EditText mUsername;
-	private EditText mPort;
+	private EditText mNickname, mHostname, mUsername, mPort, mScrollback;
+	private Spinner mEmulation;
 
 	// Cursor that will provide access to the host data we are editing
     private Cursor mCursor;
@@ -64,37 +62,20 @@ public class HostEditor extends Activity {
     @Override
     public void onCreate(Bundle savedValues) {
         super.onCreate(savedValues);
-        
-        // TODO: update or remove
-        // Have the system blur any windows behind this one.
-        //getWindow().setFlags(WindowManager.LayoutParams.BLUR_BEHIND_FLAG,
-        //        WindowManager.LayoutParams.BLUR_BEHIND_FLAG);
-        
-        // Apply a tint to any windows behind this one.  Doing a tint this
-        // way is more efficient than using a translucent background.  Note
-        // that the tint color really should come from a resource.
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        //lp.tintBehind = 0x60000820;
-        getWindow().setAttributes(lp);
-
-        this.setContentView(R.layout.host_editor);
+        this.setContentView(R.layout.act_hosteditor);
         
         // Set up click handlers for text fields and button
-        mHostname = (EditText) findViewById(R.id.hostname);        
-        mUsername = (EditText) findViewById(R.id.username);
-        mPort = (EditText) findViewById(R.id.port);
-        
-        Button addButton = (Button) findViewById(R.id.add);
-        addButton.setOnClickListener(mCommitListener);
-        
-        Button cancelButton = (Button) findViewById(R.id.cancel);
-        cancelButton.setOnClickListener(mCancelListener);
-        
-        final Intent intent = getIntent();
+		this.mNickname = (EditText) findViewById(R.id.edit_nickname);
+		this.mHostname = (EditText) findViewById(R.id.edit_hostname);
+		this.mUsername = (EditText) findViewById(R.id.edit_username);
+		this.mPort = (EditText) findViewById(R.id.edit_port);
+		this.mEmulation = (Spinner) findViewById(R.id.edit_emulation);
+		this.mScrollback = (EditText) findViewById(R.id.edit_scrollback);
         
         // Do some setup based on the action being performed.
-
+        final Intent intent = getIntent();
         final String action = intent.getAction();
+        
         if (Intent.ACTION_INSERT.equals(action)) {
         	mState = STATE_INSERT;
         	mURI = getContentResolver().insert(intent.getData(), null);
@@ -103,8 +84,7 @@ public class HostEditor extends Activity {
         	// this activity.  A RESULT_CANCELED will be sent back to the
         	// original activity if they requested a result.
         	if (mURI == null) {
-            	Log.e("Notes", "Failed to insert new note into "
-                    + getIntent().getData());
+            	Log.e("Notes", "Failed to insert new note into " + getIntent().getData());
             	finish();
             	return;
         	}
@@ -119,13 +99,10 @@ public class HostEditor extends Activity {
         	
         	// Get the URI of the host whose properties we want to edit
             mURI = getIntent().getData();
-            
-            // If were editing, change the Ok button to be Change instead.
-            addButton.setText(R.string.button_change);
         }
         
         // Get a cursor to access the host data
-        mCursor = managedQuery(mURI, PROJECTION, null, null);
+        this.mCursor = managedQuery(mURI, PROJECTION, null, null);
     }
 
     @Override
@@ -133,17 +110,16 @@ public class HostEditor extends Activity {
     	super.onResume();
     	
     	// Initialize the text with the host data
-    	if (mCursor != null) {
+    	if(mCursor != null) {
     		mCursor.moveToFirst();
     		
-    		String hostname = mCursor.getString(HOSTNAME_INDEX);
-    		mHostname.setText(hostname);
+    		this.mNickname.setText(mCursor.getString(this.INDEX_NICKNAME));
+    		this.mHostname.setText(mCursor.getString(this.INDEX_HOSTNAME));
+    		this.mUsername.setText(mCursor.getString(this.INDEX_USERNAME));
+    		this.mPort.setText(mCursor.getString(this.INDEX_PORT));
+    		//this.emulation.setText(cursor.getString(this.INDEX_EMULATION));
+    		this.mScrollback.setText(mCursor.getString(this.INDEX_SCROLLBACK));
     		
-    		String username = mCursor.getString(USERNAME_INDEX);
-    		mUsername.setText(username);
-    		
-    		String port = mCursor.getString(PORT_INDEX);
-    		mPort.setText(port);
     	}
     }
 
@@ -152,17 +128,24 @@ public class HostEditor extends Activity {
     	super.onPause();
     	
     	// Write the text back into the cursor
-    	if (mCursor != null) {
+    	if(mCursor != null) {
+    		String nickname = mNickname.getText().toString();
+    		mCursor.updateString(INDEX_NICKNAME, nickname);
+
     		String hostname = mHostname.getText().toString();
-    		mCursor.updateString(HOSTNAME_INDEX, hostname);
+    		mCursor.updateString(INDEX_HOSTNAME, hostname);
     		
     		String username = mUsername.getText().toString();
-    		mCursor.updateString(USERNAME_INDEX, username);
+    		mCursor.updateString(INDEX_USERNAME, username);
     		
     		String portStr = mPort.getText().toString();
     		int port = Integer.parseInt(portStr);
-    		mCursor.updateInt(PORT_INDEX, port);
+    		mCursor.updateInt(INDEX_PORT, port);
     		
+    		String scrollbackStr = mScrollback.getText().toString();
+    		int scrollback = Integer.parseInt(scrollbackStr);
+    		mCursor.updateInt(INDEX_SCROLLBACK, scrollback);
+
     		if (isFinishing()
     				&& ((hostname.length() == 0)
     						|| (username.length() == 0)
@@ -197,18 +180,4 @@ public class HostEditor extends Activity {
     	}
     }
     
-    OnClickListener mCommitListener = new OnClickListener() {
-    	public void onClick(View v) {
-    		// When the user clicks, just finish this activity.
-    		// onPause will be called, and we save our data there.
-    		finish();
-    	}
-    };
-    
-    OnClickListener mCancelListener = new OnClickListener() {
-    	public void onClick(View v) {
-    		cancelEdit();
-    		finish();
-    	}
-    };
 }
