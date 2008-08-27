@@ -29,6 +29,9 @@
     
     <string name="alert_disconnect_msg">Connection Lost</string>
     
-    <string name="msg_copyright">Copyright &#169; 2007, Kenny Root http://the-b.org/</string>
+    <string name="msg_copyright">Copyright &#169; 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
     <string name="msg_version">v1.0</string>
+    
+    
+    
 </resources>

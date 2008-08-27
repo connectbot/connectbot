@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="list_emulation_modes">
+        <item>screen</item>
+        <item>vt100</item>
+        <item>xterm</item>
+    </string-array>
+    
+</resources>
