@@ -255,7 +255,7 @@ public class HostsList extends ListActivity {
 
 	@Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        Uri url = ContentUris.withAppendedId(getIntent().getData(), getSelectedItemId());
+        Uri url = ContentUris.withAppendedId(getIntent().getData(), id);
         
         String action = getIntent().getAction();
         if (Intent.ACTION_PICK.equals(action)
@@ -263,18 +263,19 @@ public class HostsList extends ListActivity {
             // The caller is waiting for us to return a note selected by
             // the user.  The have clicked on one, so return it now.
         	Intent intent = this.getIntent();
-        	intent.putExtra(Intent.EXTRA_TEXT, url.toString());
-            setResult(RESULT_OK, intent);
-        } else {
-            // Launch activity to view/edit the currently selected item
-            startActivity(new Intent(Intent.ACTION_PICK, url));
-        }
+	        intent.putExtra(Intent.EXTRA_TEXT, url.toString());
+	        setResult(RESULT_OK, intent);
+	    } else {
+	    	// Launch activity to view/edit the currently selected item
+	        startActivity(new Intent(Intent.ACTION_PICK, url));
+	    }
     }
-
-    private final void deleteItem() {
-    	mCursor.move(getSelectedItemPosition());
-        mCursor.deleteRow();
-    }
+	
+	private final void deleteItem() {
+		mCursor.move(getSelectedItemPosition());
+    	Uri uri = ContentUris.withAppendedId(getIntent().getData(), getSelectedItemId());
+    	getContentResolver().delete(uri, null, null);
+	}
 
     private final void insertItem() {
         // Launch activity to insert a new item
