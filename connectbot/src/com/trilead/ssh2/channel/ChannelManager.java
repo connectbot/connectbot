@@ -17,6 +17,7 @@ import com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel;
 import com.trilead.ssh2.packets.PacketOpenSessionChannel;
 import com.trilead.ssh2.packets.PacketSessionExecCommand;
 import com.trilead.ssh2.packets.PacketSessionPtyRequest;
+import com.trilead.ssh2.packets.PacketSessionPtyResize;
 import com.trilead.ssh2.packets.PacketSessionStartShell;
 import com.trilead.ssh2.packets.PacketSessionSubsystemRequest;
 import com.trilead.ssh2.packets.PacketSessionX11Request;
@@ -675,6 +676,35 @@ public class ChannelManager implements MessageHandler
 			throw (IOException) new IOException("PTY request failed").initCause(e);
 		}
 	}
+	
+	
+	public void resizePTY(Channel c, int width, int height) throws IOException {
+		PacketSessionPtyResize spr;
+
+		synchronized (c) {
+			if (c.state != Channel.STATE_OPEN)
+				throw new IOException("Cannot request PTY on this channel ("
+						+ c.getReasonClosed() + ")");
+
+			spr = new PacketSessionPtyResize(c.remoteID, true, width, height);
+			c.successCounter = c.failedCounter = 0;
+		}
+
+		synchronized (c.channelSendLock) {
+			if (c.closeMessageSent)
+				throw new IOException("Cannot request PTY on this channel ("
+						+ c.getReasonClosed() + ")");
+			tm.sendMessage(spr.getPayload());
+		}
+
+		try {
+			waitForChannelSuccessOrFailure(c);
+		} catch (IOException e) {
+			throw (IOException) new IOException("PTY request failed")
+					.initCause(e);
+		}
+	}
+	
 
 	public void requestX11(Channel c, boolean singleConnection, String x11AuthenticationProtocol,
 			String x11AuthenticationCookie, int x11ScreenNumber) throws IOException

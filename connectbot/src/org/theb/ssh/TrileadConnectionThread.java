@@ -41,12 +41,12 @@ public class TrileadConnectionThread extends ConnectionThread {
 
 	private Semaphore sPass;
 	
-	protected FeedbackUI ui;
+	//protected FeedbackUI ui;
 	protected Terminal term;
 	
 	public TrileadConnectionThread(FeedbackUI ui, Terminal term, String hostname, String username, int port) {
 		super(ui, hostname, username, port);
-		this.ui = ui;
+		//this.ui = ui;
 		this.term = term;
 		this.hostname = hostname;
 		this.username = username;
@@ -80,14 +80,13 @@ public class TrileadConnectionThread extends ConnectionThread {
 	public void run() {
 		connection = new Connection(hostname, port);
 
-		connection.addConnectionMonitor((ConnectionMonitor) ui);
-
-		ui.setWaiting(true, "Connection", "Connecting to " + hostname + "...");
+		//connection.addConnectionMonitor((ConnectionMonitor) ui);
+		//ui.setWaiting(true, "Connection", "Connecting to " + hostname + "...");
 
 		try {
 			connection.connect(new InteractiveHostKeyVerifier());
 
-			ui.setWaiting(true, "Authenticating", "Trying to authenticate...");
+			//ui.setWaiting(true, "Authenticating", "Trying to authenticate...");
 
 			// boolean enableKeyboardInteractive = true;
 			// boolean enableDSA = true;
@@ -100,21 +99,21 @@ public class TrileadConnectionThread extends ConnectionThread {
 				 */
 
 				if (connection.isAuthMethodAvailable(username, "password")) {
-					ui.setWaiting(true, "Authenticating",
-							"Trying to authenticate using password...");
+					//ui.setWaiting(true, "Authenticating","Trying to authenticate using password...");
 
 					// Set a semaphore that is unset by the returning dialog.
-					sPass = new Semaphore(0);
-					ui.askPassword();
+//					sPass = new Semaphore(0);
+//					ui.askPassword();
+//
+//					// Wait for the user to answer.
+//					sPass.acquire();
+//					sPass = null;
+//					if (password == null)
+//						continue;
+					
+					password = "b0tt";
 
-					// Wait for the user to answer.
-					sPass.acquire();
-					sPass = null;
-					if (password == null)
-						continue;
-
-					boolean res = connection.authenticateWithPassword(username,
-							password);
+					boolean res = connection.authenticateWithPassword(username, password);
 					password = null;
 					if (res == true)
 						break;
@@ -126,7 +125,7 @@ public class TrileadConnectionThread extends ConnectionThread {
 						"No supported authentication methods available.");
 			}
 
-			ui.setWaiting(true, "Session", "Requesting shell...");
+			//ui.setWaiting(true, "Session", "Requesting shell...");
 
 			session = connection.openSession();
 			
@@ -141,12 +140,9 @@ public class TrileadConnectionThread extends ConnectionThread {
 			// stderr = session.getStderr();
 			stdOut = session.getStdout();
 
-			ui.setWaiting(false, null, null);
+			//ui.setWaiting(false, null, null);
 		} catch (IOException e) {
-			ui.setWaiting(false, null, null);
-			return;
-		} catch (InterruptedException e) {
-			// This thread is coming to an end. Let us exit.
+			//ui.setWaiting(false, null, null);
 			return;
 		}
 

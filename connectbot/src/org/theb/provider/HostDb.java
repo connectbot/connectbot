@@ -27,11 +27,14 @@ public final class HostDb {
 		public static final Uri CONTENT_URI 
 			= Uri.parse("content://org.theb.provider.HostDb/hosts");
 
-		public static final String DEFAULT_SORT_ORDER = "hostname DESC";
+		public static final String DEFAULT_SORT_ORDER = "nickname DESC";
 
+		public static final String NICKNAME = "nickname";
 		public static final String USERNAME = "username";
 		public static final String HOSTNAME = "hostname";
 		public static final String PORT = "port";
+		public static final String EMULATION = "emulation";
+		public static final String SCROLLBACK = "scrollback";
 		public static final String HOSTKEY = "hostkey";
 	}
 }
