@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.theb.ssh">
-    <application android:icon="@drawable/icon"
-    	android:label="@string/app_name">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.theb.ssh">
+	<application android:icon="@drawable/icon" android:label="ConnectBot">
+
+
+<!-- 		
+		<activity android:name=".FrontPage">
+		</activity>
+
+		<activity android:name=".Console" android:screenOrientation="landscape">
+		</activity>
+		
+		<activity android:name=".HostEditor" android:screenOrientation="landscape">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+
+
+	 -->
+	 
+		<service android:name="org.connectbot.service.TerminalManager" />
+	 
+		<activity android:name="org.connectbot.Console" android:screenOrientation="landscape">
+		</activity>
+
     	<provider android:name="HostDbProvider"
     		android:authorities="org.theb.provider.HostDb"/>
+
         <activity android:name="HostsList" android:label="@string/title_hosts_list">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,28 +45,19 @@
             
         <activity android:name="HostEditor" android:label="@string/title_host"
         				android:theme="@android:style/Theme.Dialog">
-            <!-- This filter says that we can view or edit the data of
-                 a single host -->
             <intent-filter android:label="@string/resolve_edit">
                 <action android:name="org.theb.ssh.action.EDIT_HOST" />
                 <action android:name="org.theb.ssh.action.EDIT" />
-                <!-- DEFAULT: execute if being directly invoked. -->
                 <category android:name="android.intent.category.DEFAULT" />
                 
-               	<!-- ALTERNATIVE: show as an alternative action when the user is
-                     working with this type of data. -->
                 <category android:name="android.intent.category.ALTERNATIVE" />
                 
-                <!-- SELECTED_ALTERNATIVE: show as an alternative action the user
-                     can perform when selecting this type of data. -->
                 <category android:name="android.intent.category.SELECTED_ALTERNATIVE" />
 
                 
 				<data android:mimeType="vnd.android.cursor.item/vnd.theb.host" />
 			</intent-filter>
             
-            <!-- This filter says that we can create a new host inside
-                 of a directory of hosts. -->
             <intent-filter>
                 <action android:name="android.intent.action.INSERT" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -52,11 +66,9 @@
         </activity>
         
 		<activity android:name="SecureShell" android:label="@string/title_shell">
-            <!-- This filter says that we can connect to a host -->
             <intent-filter android:label="@string/resolve_connect">
                 <action android:name="org.theb.ssh.action.CONNECT_HOST" />
                 <action android:name="android.intent.action.PICK" />
-                <!-- DEFAULT: execute if being directly invoked. -->
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="vnd.android.cursor.item/vnd.theb.host" />
             </intent-filter>
@@ -73,6 +85,16 @@
         <activity android:name="Pubkey" android:label="@string/title_pubkey"
         		android:theme="@android:style/Theme.Dialog">
         </activity> 
-    </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-</manifest> 
+
+
+
+
+	</application>
+	 
+	<uses-permission android:name="android.permission.INTERNET" />
+	
+	
+</manifest>
+
+
+     
