@@ -20,22 +20,20 @@ package org.theb.ssh;
 
 import org.theb.ssh.R;
 import org.theb.provider.HostDb;
+import org.theb.provider.HostDb.Hosts;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.WindowManager;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 public class HostEditor extends Activity {
-	public static final String EDIT_HOST_ACTION = "com.theb.ssh.action.EDIT_HOST";
+	public static final String EDIT_HOST_ACTION = "org.theb.ssh.action.EDIT_HOST";
 
 	private static final String[] PROJECTION = new String[] { HostDb.Hosts._ID,
 			HostDb.Hosts.NICKNAME, HostDb.Hosts.HOSTNAME,
@@ -84,7 +82,7 @@ public class HostEditor extends Activity {
         	// this activity.  A RESULT_CANCELED will be sent back to the
         	// original activity if they requested a result.
         	if (mURI == null) {
-            	Log.e("Notes", "Failed to insert new note into " + getIntent().getData());
+            	Log.e("SSH", "Failed to insert new host into " + getIntent().getData());
             	finish();
             	return;
         	}
@@ -113,12 +111,12 @@ public class HostEditor extends Activity {
     	if(mCursor != null) {
     		mCursor.moveToFirst();
     		
-    		this.mNickname.setText(mCursor.getString(this.INDEX_NICKNAME));
-    		this.mHostname.setText(mCursor.getString(this.INDEX_HOSTNAME));
-    		this.mUsername.setText(mCursor.getString(this.INDEX_USERNAME));
-    		this.mPort.setText(mCursor.getString(this.INDEX_PORT));
+    		this.mNickname.setText(mCursor.getString(HostEditor.INDEX_NICKNAME));
+    		this.mHostname.setText(mCursor.getString(HostEditor.INDEX_HOSTNAME));
+    		this.mUsername.setText(mCursor.getString(HostEditor.INDEX_USERNAME));
+    		this.mPort.setText(mCursor.getString(HostEditor.INDEX_PORT));
     		//this.emulation.setText(cursor.getString(this.INDEX_EMULATION));
-    		this.mScrollback.setText(mCursor.getString(this.INDEX_SCROLLBACK));
+    		this.mScrollback.setText(mCursor.getString(HostEditor.INDEX_SCROLLBACK));
     		
     	}
     }
@@ -129,32 +127,28 @@ public class HostEditor extends Activity {
     	
     	// Write the text back into the cursor
     	if(mCursor != null) {
-    		String nickname = mNickname.getText().toString();
-    		mCursor.updateString(INDEX_NICKNAME, nickname);
-
-    		String hostname = mHostname.getText().toString();
-    		mCursor.updateString(INDEX_HOSTNAME, hostname);
-    		
-    		String username = mUsername.getText().toString();
-    		mCursor.updateString(INDEX_USERNAME, username);
-    		
-    		String portStr = mPort.getText().toString();
-    		int port = Integer.parseInt(portStr);
-    		mCursor.updateInt(INDEX_PORT, port);
-    		
-    		String scrollbackStr = mScrollback.getText().toString();
-    		int scrollback = Integer.parseInt(scrollbackStr);
-    		mCursor.updateInt(INDEX_SCROLLBACK, scrollback);
-
-    		if (isFinishing()
-    				&& ((hostname.length() == 0)
-    						|| (username.length() == 0)
-    						|| (port == 0))) {
-    			setResult(RESULT_CANCELED);
-    			deleteHost();
-    		} else {
-    			managedCommitUpdates(mCursor);
+    		ContentValues values = new ContentValues();
+    		values.put(Hosts.NICKNAME, mNickname.getText().toString());
+    		values.put(Hosts.HOSTNAME, mHostname.getText().toString());
+    		values.put(Hosts.USERNAME, mUsername.getText().toString());
+    		//mEmulation.getSelectedItemPosition();
+    		int port;
+    		try {
+    			port = Integer.parseInt(mPort.getText().toString());
+    		} catch (Exception e) {
+    			port = 22;
     		}
+    		values.put(Hosts.PORT, port);
+ 
+    		int scrollback;
+    		try {
+    			scrollback = Integer.parseInt(mScrollback.getText().toString());
+    		} catch (Exception e) {
+    			scrollback = 1000; // TODO: grab from R.whatever
+    		}
+    		values.put(Hosts.SCROLLBACK, scrollback);
+    		
+    		getContentResolver().update(mURI, values, null, null);
     	}
     }
     
@@ -174,7 +168,7 @@ public class HostEditor extends Activity {
     		mHostname.setText("");
     		mUsername.setText("");
     		mPort.setText("");
-    		mCursor.deleteRow();
+    		getContentResolver().delete(mURI, null, null);
     		mCursor.deactivate();
     		mCursor = null;
     	}
