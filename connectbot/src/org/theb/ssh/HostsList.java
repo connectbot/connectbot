@@ -53,10 +53,12 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 public class HostsList extends ListActivity {
-	public static final int DELETE_ID = Menu.FIRST;
-	public static final int INSERT_ID = Menu.FIRST + 1;
-	public static final int PREFERENCES_ID = Menu.FIRST + 2;
-	public static final int ABOUT_ID = Menu.FIRST + 3;
+	public static final int CONNECT_ID = Menu.FIRST;
+	public static final int EDIT_ID = Menu.FIRST + 1;
+	public static final int DELETE_ID = Menu.FIRST + 2;
+	public static final int INSERT_ID = Menu.FIRST + 3;
+	public static final int PREFERENCES_ID = Menu.FIRST + 4;
+	public static final int ABOUT_ID = Menu.FIRST + 5;
 	
 	// Preferences submenu
 	public static final int PUBKEY_ID = SubMenu.FIRST + 4;
@@ -101,10 +103,6 @@ public class HostsList extends ListActivity {
 		}
 		
 	}
-	
-	
-	
-	
 
 	public TerminalManager bound = null;
 	
@@ -190,16 +188,16 @@ public class HostsList extends ListActivity {
 
         // This is our one standard application action -- inserting a
         // new host into the list.
-        menu.add(0, INSERT_ID, Menu.NONE, R.string.menu_insert)
+        menu.add(0, INSERT_ID, INSERT_ID, R.string.menu_insert)
         	.setShortcut('3', 'a');
 
         // The preferences link allows users to e.g. set the pubkey
-        SubMenu prefs = menu.addSubMenu(0, 0, Menu.NONE, R.string.menu_preferences);
+        SubMenu prefs = menu.addSubMenu(0, 0, PREFERENCES_ID, R.string.menu_preferences);
         prefs.add(0, PUBKEY_ID, Menu.NONE, R.string.menu_pubkey)
         	.setShortcut('4', 'p');
         
         // This links to the about dialog for the program.
-        menu.add(0, ABOUT_ID, Menu.NONE, R.string.menu_about);
+        menu.add(0, ABOUT_ID, ABOUT_ID, R.string.menu_about);
         
         // Generate any additional actions that can be performed on the
         // overall list.  In a normal install, there are no additional
@@ -219,12 +217,12 @@ public class HostsList extends ListActivity {
         super.onPrepareOptionsMenu(menu);
         final boolean haveItems = mCursor.getCount() > 0;
 
-        // If there are any notes in the list (which implies that one of
+        // If there are any notes in the list (which does not necessarily imply one of
         // them is selected), then we need to generate the actions that
         // can be performed on the current selection.  This will be a combination
         // of our own specific actions along with any extensions that can be
         // found.
-        if (haveItems) {
+        if (haveItems && getSelectedItemId() >= 0) {
             // This is the selected item.
         	Uri uri = ContentUris.withAppendedId(getIntent().getData(), getSelectedItemId());
 
@@ -240,7 +238,7 @@ public class HostsList extends ListActivity {
                                   intent, 0, items);
 
             // ... and ends with the delete command.
-            menu.add(Menu.CATEGORY_ALTERNATIVE, DELETE_ID, Menu.NONE, R.string.menu_delete)
+            menu.add(Menu.CATEGORY_ALTERNATIVE, DELETE_ID, DELETE_ID, R.string.menu_delete)
             	.setShortcut('2', 'd');
 
             // Give a shortcut to the connect action.
@@ -345,12 +343,14 @@ public class HostsList extends ListActivity {
 								waitPassword.acquire();
 								//Connection conn;
 								//bound.openConnection(conn, nickname, emulation, scrollback);
-								bound.openConnection(nickname, hostname, port, username, password, "screen", 100);
+								if (password != null) {
+									bound.openConnection(nickname, hostname, port, username, password, "screen", 100);
 
-						    	// open the console view and select this specific terminal
-								Intent intent = new Intent(HostsList.this, Console.class);
-								intent.putExtra(Intent.EXTRA_TEXT, nickname);
-								startActivity(intent);
+									// open the console view and select this specific terminal
+									Intent intent = new Intent(HostsList.this, Console.class);
+									intent.putExtra(Intent.EXTRA_TEXT, nickname);
+									startActivity(intent);
+								}
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -383,12 +383,15 @@ public class HostsList extends ListActivity {
     @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode == PASSWORD_REQUEST) {
-			this.password = data.getStringExtra(Intent.EXTRA_TEXT);
+			if (data != null) {
+				this.password = data.getStringExtra(Intent.EXTRA_TEXT);
+			} else {
+				this.password = null;
+			}
 			this.waitPassword.release();
 		}
 	}
 
-	
 	private final void deleteItem() {
 		mCursor.move(getSelectedItemPosition());
     	Uri uri = ContentUris.withAppendedId(getIntent().getData(), getSelectedItemId());
