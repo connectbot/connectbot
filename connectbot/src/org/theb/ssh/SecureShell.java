@@ -21,7 +21,7 @@ package org.theb.ssh;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.theb.ssh.R;
+import org.connectbot.R;
 import org.theb.provider.HostDb;
 
 import com.trilead.ssh2.ConnectionMonitor;

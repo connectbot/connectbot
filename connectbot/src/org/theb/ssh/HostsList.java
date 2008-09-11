@@ -23,7 +23,7 @@ import java.util.concurrent.Semaphore;
 import org.connectbot.Console;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
-import org.theb.ssh.R;
+import org.connectbot.R;
 import org.theb.provider.HostDb;
 
 import com.trilead.ssh2.Connection;

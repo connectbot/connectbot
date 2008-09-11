@@ -18,7 +18,7 @@
  */
 package org.theb.ssh;
 
-import org.theb.ssh.R;
+import org.connectbot.R;
 
 import android.app.Activity;
 import android.content.Intent;

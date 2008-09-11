@@ -5,7 +5,6 @@ import org.connectbot.service.TerminalBridgeSurface;
 import org.connectbot.service.TerminalManager;
 import org.theb.ssh.InteractiveHostKeyVerifier;
 
-import org.theb.ssh.R;
 import com.trilead.ssh2.Connection;
 
 import de.mud.terminal.vt320;
