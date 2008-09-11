@@ -1,0 +1,41 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<EditTextPreference
+		android:key="nickname"
+		android:title="Nickname"
+		/>
+
+	<ListPreference
+		android:key="color"
+		android:title="Color category"
+		android:entries="@array/list_colors"
+		android:entryValues="@array/list_colors"
+		/>
+
+	<CheckBoxPreference
+		android:key="usekeys"
+		android:title="Use SSH keys"
+		/>
+
+	<PreferenceCategory
+		android:title="Connection settings">
+		
+		<EditTextPreference
+			android:key="username"
+			android:title="Username"
+			/>
+
+		<EditTextPreference
+			android:key="hostname"
+			android:title="Host"
+			/>
+
+		<EditTextPreference
+			android:key="port"
+			android:title="Port"
+			/>
+
+	</PreferenceCategory>
+
+
+</PreferenceScreen>

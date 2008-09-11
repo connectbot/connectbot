@@ -26,7 +26,7 @@ import java.security.SecureRandom;
 import java.security.Security;
 import java.util.concurrent.Semaphore;
 
-import org.theb.ssh.R;
+import org.connectbot.R;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.theb.ssh">
-	<application android:icon="@drawable/icon" android:label="ConnectBot">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.connectbot">
+	<application android:icon="@drawable/icon" android:label="newcb">
 
 
-<!-- 		
-		<activity android:name=".FrontPage">
+		<activity android:name=".HostList">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 		</activity>
 
-		<activity android:name=".Console" android:screenOrientation="landscape">
+		<activity android:name=".HostEditor">
 		</activity>
+
+<!-- pack=org.theb.ssh 		
 		
-		<activity android:name=".HostEditor" android:screenOrientation="landscape">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
+		<activity android:name=".Console" android:screenOrientation="landscape">
 		</activity>
 
 
@@ -25,14 +26,9 @@
 		<activity android:name="org.connectbot.Console" android:screenOrientation="landscape">
 		</activity>
 
-    	<provider android:name="HostDbProvider"
-    		android:authorities="org.theb.provider.HostDb"/>
+    	<provider android:name="org.theb.ssh.HostDbProvider" android:authorities="org.theb.provider.HostDb"/>
 
-        <activity android:name="HostsList" android:label="@string/title_hosts_list">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name="org.theb.ssh.HostsList" android:label="@string/title_hosts_list">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />
                 <action android:name="android.intent.action.VIEW" />
@@ -42,7 +38,7 @@
             </intent-filter>
             
         </activity>
-            
+            <!-- 
         <activity android:name="HostEditor" android:label="@string/title_host"
         				android:theme="@android:style/Theme.Dialog">
             <intent-filter android:label="@string/resolve_edit">
@@ -64,8 +60,8 @@
                 <data android:mimeType="vnd.android.cursor.dir/vnd.theb.host" />
             </intent-filter>
         </activity>
-        
-		<activity android:name="SecureShell" android:label="@string/title_shell">
+         -->
+		<activity android:name="org.theb.ssh.SecureShell" android:label="@string/title_shell">
             <intent-filter android:label="@string/resolve_connect">
                 <action android:name="org.theb.ssh.action.CONNECT_HOST" />
                 <action android:name="android.intent.action.PICK" />
@@ -74,15 +70,15 @@
             </intent-filter>
         </activity>
         
-        <activity android:name="PasswordDialog" android:label="@string/title_password"
+        <activity android:name="org.theb.ssh.PasswordDialog" android:label="@string/title_password"
         		android:theme="@android:style/Theme.Dialog">
         </activity>
         
-        <activity android:name="TouchEntropy" android:label="@string/title_entropy"
+        <activity android:name="org.theb.ssh.TouchEntropy" android:label="@string/title_entropy"
         		android:theme="@android:style/Theme.Dialog">
         </activity>
         
-        <activity android:name="Pubkey" android:label="@string/title_pubkey"
+        <activity android:name="org.theb.ssh.Pubkey" android:label="@string/title_pubkey"
         		android:theme="@android:style/Theme.Dialog">
         </activity> 
 

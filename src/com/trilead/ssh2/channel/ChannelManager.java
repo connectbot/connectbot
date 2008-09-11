@@ -698,7 +698,8 @@ public class ChannelManager implements MessageHandler
 		}
 
 		try {
-			waitForChannelSuccessOrFailure(c);
+			//waitForChannelSuccessOrFailure(c);
+			this.waitForChannelRequestResult(c);
 		} catch (IOException e) {
 			throw (IOException) new IOException("PTY request failed")
 					.initCause(e);
