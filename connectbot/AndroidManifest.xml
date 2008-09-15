@@ -8,12 +8,29 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.CREATE_SHORTCUT" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
 		</activity>
 
-		<activity android:name=".HostEditor">
+		<activity android:name=".HostEditor" />
+		<activity android:name=".SettingsActivity" />
+		<activity android:name=".AboutActivity" />
+
+		<service android:name="org.connectbot.service.TerminalManager" />
+	 
+		<activity android:name="org.connectbot.Console" android:screenOrientation="landscape">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<data android:scheme="ssh" />
+				<!-- format:  ssh://user@host:port/#nickname  -->
+			</intent-filter>
 		</activity>
 
-<!-- pack=org.theb.ssh 		
+
+<!-- package=org.theb.ssh 		
 		
 		<activity android:name=".Console" android:screenOrientation="landscape">
 		</activity>
@@ -21,10 +38,6 @@
 
 	 -->
 	 
-		<service android:name="org.connectbot.service.TerminalManager" />
-	 
-		<activity android:name="org.connectbot.Console" android:screenOrientation="landscape">
-		</activity>
 
     	<provider android:name="org.theb.ssh.HostDbProvider" android:authorities="org.theb.provider.HostDb"/>
 

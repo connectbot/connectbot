@@ -344,7 +344,7 @@ public class HostsList extends ListActivity {
 								//Connection conn;
 								//bound.openConnection(conn, nickname, emulation, scrollback);
 								if (password != null) {
-									bound.openConnection(nickname, hostname, port, username, password, "screen", 100);
+									//bound.openConnection(nickname, hostname, port, username, password, "screen", 100);
 
 									// open the console view and select this specific terminal
 									Intent intent = new Intent(HostsList.this, Console.class);
