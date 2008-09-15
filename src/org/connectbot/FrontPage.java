@@ -27,7 +27,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-import org.theb.ssh.R;
+
 
 public class FrontPage extends Activity {
 	

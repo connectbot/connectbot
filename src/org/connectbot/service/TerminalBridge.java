@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.theb.ssh.InteractiveHostKeyVerifier;
 import org.theb.ssh.JTATerminalView;
 
 import android.graphics.Bitmap;
@@ -21,8 +22,12 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.View.OnKeyListener;
 
+import com.trilead.ssh2.InteractiveCallback;
+import com.trilead.ssh2.KnownHosts;
+import com.trilead.ssh2.ServerHostKeyVerifier;
 import com.trilead.ssh2.Session;
 import com.trilead.ssh2.Connection;
+import com.trilead.ssh2.signature.RSAPublicKey;
 
 import de.mud.terminal.VDUBuffer;
 import de.mud.terminal.VDUDisplay;
@@ -33,72 +38,170 @@ import de.mud.terminal.vt320;
 public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	
 	public final Connection connection;
-	public final Session session;
-	public final String overlay;
+	public final String nickname, username;
+	public final Paint defaultPaint;
+	public Session session;
 	
 	public final static int TERM_WIDTH_CHARS = 80,
 		TERM_HEIGHT_CHARS = 24,
 		DEFAULT_FONT_SIZE = 10;
 	
 	public final static String ENCODING = "ASCII";
+	public static final String AUTH_PUBLICKEY = "publickey",
+		AUTH_PASSWORD = "password";
 	
-	public final OutputStream stdin;
-	public final InputStream stdout;
+	public OutputStream stdin;
+	public InputStream stdout;
 	
-	public final Paint defaultPaint;
-	
-	public final Thread relay;
+	public Thread relay;
 	
 	public View parent = null;
 	public Bitmap bitmap = null;
 	public Canvas canvas = new Canvas();
 	public VDUBuffer buffer = null;
 	
-	public TerminalBridge(Connection connection, String overlay, String emulation, int scrollback) throws Exception {
-		// create a terminal bridge from an SSH connection over to a SurfaceHolder
-		// will open a new session and handle rendering to the Surface if present
+	
+	public class HostKeyVerifier implements ServerHostKeyVerifier {
+		
+		// hex routine adapted from
+		// http://forums.sun.com/thread.jspa?threadID=252591&messageID=2272668
+		
+		private final char[] hex = "0123456789abcdef".toCharArray();
+		
+		public String hexdump(byte[] buf) {
+			StringBuffer out = new StringBuffer();
+			for(int i = 0; i < buf.length; i++) {
+				int value = buf[i] + 127;
+				out.append(":" + hex[(value>>>4)&0xf] + hex[value&0xf]);
+			}
+			return out.toString().substring(1);
+		}
+		
+		public boolean verifyServerHostKey(String hostname, int port, String serverHostKeyAlgorithm, byte[] serverHostKey) throws Exception {
+			// TODO: check against known key, prompt user if unknown or missing key
+			
+			KnownHosts hosts = new KnownHosts();
+			switch(hosts.verifyHostkey(hostname, serverHostKeyAlgorithm, serverHostKey)) {
+			case KnownHosts.HOSTKEY_IS_OK:
+				return true;
+
+			case KnownHosts.HOSTKEY_IS_NEW:
+				// prompt user
+				outputLine(String.format("The authenticity of host '%s' can't be established.", hostname));
+				outputLine(String.format("RSA key fingerprint is %s", hosts.createHexFingerprint(serverHostKeyAlgorithm, serverHostKey)));
+				outputLine("Are you sure you want to continue connecting (yes/no)? ");
+				return true;
+				
+			case KnownHosts.HOSTKEY_HAS_CHANGED:
+				return false;
+				
+			}
+			
+			return false;
+			
+		}
+		
+	}
+	
+	public TerminalBridge(final String nickname, final String username, final String hostname, final int port) throws Exception {
+		// newer version of TerminalBridge that will dump all connection progress to the display
+		
+		this.nickname = nickname;
+		this.username = username;
+		
+		// create our default paint
+		this.defaultPaint = new Paint();
+		this.defaultPaint.setAntiAlias(true);
+		this.defaultPaint.setTypeface(Typeface.MONOSPACE);
+		this.setFontSize(DEFAULT_FONT_SIZE);
+
+		for(int i = 0; i < color.length; i++)
+			this.darkerColor[i] = darken(color[i]);
+		
+		// create terminal buffer and handle outgoing data
+		// this is probably status reply information
+		this.buffer = new vt320() {
+			public void write(byte[] b) {
+				try {
+					TerminalBridge.this.stdin.write(b);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			public void sendTelnetCommand(byte cmd) {
+			}
+
+			public void setWindowSize(int c, int r) {
+			}
+		};
+
+		this.scrollback = scrollback;
+		this.buffer.setScreenSize(TERM_WIDTH_CHARS, TERM_HEIGHT_CHARS, true);
+		this.buffer.setBufferSize(scrollback);
+		this.buffer.setDisplay(this);
+		this.buffer.setCursorPosition(0, 0);
+
+		// try opening ssh connection
+		this.outputLine(String.format("Connecting to %s:%d", hostname, port));
+		this.connection = new Connection(hostname, port);
+
+		new Thread(new Runnable() {
+
+			public void run() {
+				try {
+					connection.connect(new HostKeyVerifier());
+					outputLine("Trying to authenticate");
+					if(connection.isAuthMethodAvailable(username, AUTH_PASSWORD)) {
+						// show auth prompt in window
+						promptPassword();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} 
+			
+		}).start();
+		
+	}
+	
+	public void outputLine(String line) {
+		this.buffer.putString(0, this.buffer.getCursorRow(), line);
+		this.buffer.setCursorPosition(0, this.buffer.getCursorRow() + 1);
+		this.redraw();
+	}
+
+	public void promptPassword() {
+		this.outputLine("Password: ");
+	}
+	
+	public void tryPassword(String password) {
+		try {
+			// try authenticating with given password
+			Log.d(this.getClass().toString(), String.format("tryPassword(password=%s) and username=%s", password, username));
+			if(this.connection.authenticateWithPassword(this.username, password)) {
+				finishConnection();
+				return;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		this.outputLine("Permission denied, please try again.");
+		this.promptPassword();
+	}
+	
+	
+	public void finishConnection() {
 		
 		try {
-			this.connection = connection;
 			this.session = connection.openSession();
-			this.session.requestPTY(emulation, 0, 0, 0, 0, null); // previously tried vt100, xterm, but "screen" works the best
+			this.session.requestPTY("screen", 0, 0, 0, 0, null); // previously tried vt100, xterm, but "screen" works the best
 			this.session.startShell();
-			
-			this.overlay = overlay;
-			
+
 			// grab stdin/out from newly formed session
 			this.stdin = this.session.getStdin();
 			this.stdout = this.session.getStdout();
-			
-			// create our default paint
-			this.defaultPaint = new Paint();
-			this.defaultPaint.setAntiAlias(true);
-			this.defaultPaint.setTypeface(Typeface.MONOSPACE);
-			this.setFontSize(DEFAULT_FONT_SIZE);
-			
-			// create terminal buffer and handle outgoing data
-			// this is probably status reply information
-			this.buffer = new vt320() {
-				public void write(byte[] b) {
-					try {
-						//Log.d("STDIN", new String(b));
-						TerminalBridge.this.stdin.write(b);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
 
-				public void sendTelnetCommand(byte cmd) {
-				}
-
-				public void setWindowSize(int c, int r) {
-				}
-			};
-			this.scrollback = scrollback;
-			this.buffer.setScreenSize(TERM_WIDTH_CHARS, TERM_HEIGHT_CHARS, true);
-			this.buffer.setBufferSize(scrollback);
-			this.buffer.setDisplay(this);
-			
 			// create thread to relay incoming connection data to buffer
 			this.relay = new Thread(new Runnable() {
 				public void run() {
@@ -120,25 +223,31 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 				}
 			});
 			this.relay.start();
-			
-		} catch(Exception e) {
-			throw e;
+
+			// force font-size to make sure we resizePTY as needed
+			this.setFontSize(this.fontSize);
+
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 		
-		for(int i = 0; i < color.length; i++)
-			this.darkerColor[i] = darken(color[i]);
-
 	}
 	
 	public void dispose() {
-		this.session.close();
+		if(this.session != null)
+			this.session.close();
 		this.connection.close();
 	}
 	
-	KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
+	public KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
+	
+	StringBuffer collected = new StringBuffer();
 
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
 		// pass through any keystrokes to output stream
+		
+		Log.d(this.getClass().toString(), "onKey() code="+keyCode);
 		if(event.getAction() == KeyEvent.ACTION_UP) return false;
 		try {
 
@@ -151,21 +260,42 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 				return true;
 			}
 			
-			// print normal keys
-			if(keymap.isPrintingKey(keyCode) || keyCode == KeyEvent.KEYCODE_SPACE) {
-		    	int key = keymap.get(keyCode, event.getMetaState());
-		    	this.stdin.write(key);
-				return true;
-			}
+			boolean printing = (keymap.isPrintingKey(keyCode) || keyCode == KeyEvent.KEYCODE_SPACE);
 			
-			// look for special chars
-			switch(keyCode) {
-				case KeyEvent.KEYCODE_DEL: stdin.write(0x08); return true;
-				case KeyEvent.KEYCODE_ENTER: ((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', event.getMetaState()); return true;
-				case KeyEvent.KEYCODE_DPAD_LEFT: ((vt320)buffer).keyPressed(vt320.KEY_LEFT, ' ', event.getMetaState()); return true;
-				case KeyEvent.KEYCODE_DPAD_UP: ((vt320)buffer).keyPressed(vt320.KEY_UP, ' ', event.getMetaState()); return true;
-				case KeyEvent.KEYCODE_DPAD_DOWN: ((vt320)buffer).keyPressed(vt320.KEY_DOWN, ' ', event.getMetaState()); return true;
-				case KeyEvent.KEYCODE_DPAD_RIGHT: ((vt320)buffer).keyPressed(vt320.KEY_RIGHT, ' ', event.getMetaState()); return true;
+			if(this.session == null) {
+				// check to see if we are collecting password information
+				if(keyCode == KeyEvent.KEYCODE_ENTER) {
+					this.tryPassword(collected.toString());
+					collected = new StringBuffer();
+					return true;
+				} else if(printing) {
+					collected.appendCodePoint(keymap.get(keyCode, event.getMetaState()));
+					return true;
+				} else if(keyCode == KeyEvent.KEYCODE_DEL && collected.length() > 0) {
+					collected.deleteCharAt(collected.length() - 1);
+					return true;
+				}
+				
+			} else {
+				
+				// otherwise pass through to existing session
+				// print normal keys
+				if (printing) {
+					int key = keymap.get(keyCode, event.getMetaState());
+					this.stdin.write(key);
+					return true;
+				}
+	
+				// look for special chars
+				switch(keyCode) {
+					case KeyEvent.KEYCODE_DEL: stdin.write(0x08); return true;
+					case KeyEvent.KEYCODE_ENTER: ((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', event.getMetaState()); return true;
+					case KeyEvent.KEYCODE_DPAD_LEFT: ((vt320)buffer).keyPressed(vt320.KEY_LEFT, ' ', event.getMetaState()); return true;
+					case KeyEvent.KEYCODE_DPAD_UP: ((vt320)buffer).keyPressed(vt320.KEY_UP, ' ', event.getMetaState()); return true;
+					case KeyEvent.KEYCODE_DPAD_DOWN: ((vt320)buffer).keyPressed(vt320.KEY_DOWN, ' ', event.getMetaState()); return true;
+					case KeyEvent.KEYCODE_DPAD_RIGHT: ((vt320)buffer).keyPressed(vt320.KEY_RIGHT, ' ', event.getMetaState()); return true;
+				}
+				
 			}
 			
 		} catch (IOException e) {
@@ -173,6 +303,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		}
 		return false;
 	}
+	
 
 	public int charWidth = -1,
 		charHeight = -1,
@@ -227,7 +358,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		
 		try {
 			buffer.setScreenSize(termWidth, termHeight, true);
-			session.resizePTY(termWidth, termHeight);
+			if(session != null)
+				session.resizePTY(termWidth, termHeight);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

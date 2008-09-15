@@ -22,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.ContextMenu;
@@ -47,20 +48,8 @@ public class HostList extends Activity {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
 
-			// TODO: update our green bulb icons by checking for existing
-			// bridges
-			// open up some test sessions
-			// try {
-			// bound.openConnection("192.168.254.230", 22, "connectbot", "b0tt",
-			// "screen", 100);
-			// bound.openConnection("192.168.254.230", 22, "connectbot", "b0tt",
-			// "screen", 100);
-			// bound.openConnection("192.168.254.230", 22, "connectbot", "b0tt",
-			// "screen", 100);
-			// } catch(Exception e) {
-			// e.printStackTrace();
-			// }
-
+			// TODO: update our green bulb icons by checking for existing bridges
+ 
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
@@ -73,17 +62,29 @@ public class HostList extends Activity {
 	public ListView list;
 	public HostAdapter adapter;
 
-	public int COL_ID, COL_NICKNAME, COL_USERNAME, COL_HOSTNAME, COL_CONNECTED;
+	public int COL_ID, COL_NICKNAME, COL_USERNAME, COL_HOSTNAME, COL_CONNECTED, COL_PORT;
+
+	@Override
+    public void onStart() {
+		super.onStart();
+
+		// start the terminal manager service
+		this.startService(new Intent(this, TerminalManager.class));
+		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
+
+	}
+
+	@Override
+    public void onStop() {
+		super.onStop();
+		this.unbindService(connection);
+		
+	}
 
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.act_frontpage);
-
-		// start the terminal manager service
-		this.startService(new Intent(this, TerminalManager.class));
-		this.bindService(new Intent(this, TerminalManager.class), connection,
-				Context.BIND_AUTO_CREATE);
 
 		// connect with hosts database and populate list
 		this.hostdb = new HostDatabase(this);
@@ -96,17 +97,23 @@ public class HostList extends Activity {
 		this.COL_NICKNAME = hosts.getColumnIndexOrThrow(HostDatabase.FIELD_HOST_NICKNAME);
 		this.COL_USERNAME = hosts.getColumnIndexOrThrow(HostDatabase.FIELD_HOST_USERNAME);
 		this.COL_HOSTNAME = hosts.getColumnIndexOrThrow(HostDatabase.FIELD_HOST_HOSTNAME);
+		this.COL_PORT = hosts.getColumnIndexOrThrow(HostDatabase.FIELD_HOST_PORT);
 		this.COL_CONNECTED = hosts.getColumnIndexOrThrow(HostDatabase.FIELD_HOST_LASTCONNECT);
 
 		this.list.setOnItemClickListener(new OnItemClickListener() {
 
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public synchronized void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 				// launch off to console details
-				// TODO: package information about connection selected
-				HostList.this.startActivity(new Intent(HostList.this,
-						Console.class));
+				Cursor c = (Cursor)parent.getAdapter().getItem(position);
+				String username = c.getString(COL_USERNAME);
+				String hostname = c.getString(COL_HOSTNAME);
+				int port = c.getInt(COL_PORT);
+				String nickname = c.getString(COL_NICKNAME);
+				
+				Intent intent = new Intent(HostList.this, Console.class);
+				intent.setData(Uri.parse(String.format("ssh://%s@%s:%s/#%s", username, hostname, port, nickname)));
+				HostList.this.startActivity(intent);
 
 			}
 
@@ -115,8 +122,7 @@ public class HostList extends Activity {
 		this.registerForContextMenu(this.list);
 
 		final Pattern hostmask = Pattern.compile(".+@.+(:\\d+)?");
-		final TextView text = (TextView) this
-				.findViewById(R.id.front_quickconnect);
+		final TextView text = (TextView) this.findViewById(R.id.front_quickconnect);
 		text.setOnKeyListener(new OnKeyListener() {
 
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -178,7 +184,7 @@ public class HostList extends Activity {
 		add.setIcon(android.R.drawable.ic_menu_add);
 		add.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				return false;
+				return true;
 			}
 		});
 
@@ -188,7 +194,7 @@ public class HostList extends Activity {
 			public boolean onMenuItemClick(MenuItem item) {
 				sortedByColor = true;
 				updateCursor();
-				return false;
+				return true;
 			}
 		});
 		
@@ -198,7 +204,7 @@ public class HostList extends Activity {
 			public boolean onMenuItemClick(MenuItem item) {
 				sortedByColor = false;
 				updateCursor();
-				return false;
+				return true;
 			}
 		});
 
@@ -207,13 +213,31 @@ public class HostList extends Activity {
     
 		MenuItem settings = menu.add(0, 0, Menu.NONE, "Settings");
 		settings.setIcon(android.R.drawable.ic_menu_preferences);
+		settings.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				HostList.this.startActivity(new Intent(HostList.this, SettingsActivity.class));
+				return true;
+			}
+		});
 
 		MenuItem about = menu.add(0, 0, Menu.NONE, "About");
 		about.setIcon(android.R.drawable.ic_menu_help);
+		about.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				HostList.this.startActivity(new Intent(HostList.this, AboutActivity.class));
+				return true;
+			}
+		});
 		
 		return true;
 		
 	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		this.updateCursor();
+	}
+	
+	public final static int REQUEST_EDIT = 1;
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
@@ -242,7 +266,7 @@ public class HostList extends Activity {
 			public boolean onMenuItemClick(MenuItem item) {
 				Intent intent = new Intent(HostList.this, HostEditor.class);
 				intent.putExtra(Intent.EXTRA_TITLE, id);
-				HostList.this.startActivity(intent);
+				HostList.this.startActivityForResult(intent, REQUEST_EDIT);
 				return false;
 			}
 		});

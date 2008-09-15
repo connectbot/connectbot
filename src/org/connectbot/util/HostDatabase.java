@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class HostDatabase extends SQLiteOpenHelper {
 	
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 4;
+	public final static int DB_VERSION = 5;
 	
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -23,6 +23,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_HOST_HOSTKEY = "hostkey";
 	public final static String FIELD_HOST_LASTCONNECT = "lastconnect";
 	public final static String FIELD_HOST_COLOR = "color";
+	public final static String FIELD_HOST_USEKEYS = "usekeys";
 
 	public final static String TABLE_PRIVKEYS = "keys";
 	public final static String FIELD_KEY_NAME = "name";
@@ -46,7 +47,8 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_HOST_PORT + " INTEGER, "
 				+ FIELD_HOST_HOSTKEY + " TEXT, "
 				+ FIELD_HOST_LASTCONNECT + " INTEGER, "
-				+ FIELD_HOST_COLOR + " TEXT)");
+				+ FIELD_HOST_COLOR + " TEXT, "
+				+ FIELD_HOST_USEKEYS + " TEXT)");
 
 		db.execSQL("CREATE TABLE " + TABLE_PRIVKEYS
 				+ " (_id INTEGER PRIMARY KEY, "
@@ -78,6 +80,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 		values.put(FIELD_HOST_HOSTNAME, hostname);
 		values.put(FIELD_HOST_PORT, port);
 		values.put(FIELD_HOST_LASTCONNECT, Integer.MAX_VALUE);
+		values.put(FIELD_HOST_USEKEYS, Boolean.toString(true));
 		if(color != null)
 			values.put(FIELD_HOST_COLOR, color);
 		
