@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.HostAdapter;
+import org.connectbot.util.HostBinder;
 import org.connectbot.util.HostDatabase;
 import org.theb.ssh.InteractiveHostKeyVerifier;
 
@@ -37,6 +38,7 @@ import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -48,12 +50,13 @@ public class HostList extends Activity {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
 
-			// TODO: update our green bulb icons by checking for existing bridges
- 
+			// update our listview binder to find the service
+			HostList.this.updateCursor();
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
 			bound = null;
+			HostList.this.updateCursor();
 		}
 	};
 
@@ -84,7 +87,7 @@ public class HostList extends Activity {
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		setContentView(R.layout.act_frontpage);
+		setContentView(R.layout.act_hostlist);
 
 		// connect with hosts database and populate list
 		this.hostdb = new HostDatabase(this);
@@ -126,14 +129,33 @@ public class HostList extends Activity {
 		text.setOnKeyListener(new OnKeyListener() {
 
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				
+				if(keyCode == KeyEvent.KEYCODE_ENTER) {
+					
+					// make sure we follow pattern
+					if (text.getText().length() < 3)
+						return false;
 
-				// make sure we follow pattern
-				if (text.getText().length() < 1)
-					return false;
+					// show error if poorly formed
+					if (!hostmask.matcher(text.getText().toString()).find()) {
+						text.setError("Use the format 'username@hostname:port'");
+						return false;
+					}
+					
+					// create new host for entered string and then launch
+					Uri uri = Uri.parse(String.format("ssh://%s", text.getText().toString()));
+					String username = uri.getUserInfo();
+					String hostname = uri.getHost();
+					int port = uri.getPort();
+					if(port == -1) port = 22;
+					
+					String nickname = String.format("%s@%s", username, hostname);
+					hostdb.createHost(null, nickname, username, hostname, port, hostdb.COLOR_GRAY);
+					
+					Intent intent = new Intent(HostList.this, Console.class);
+					intent.setData(Uri.parse(String.format("ssh://%s@%s:%s/#%s", username, hostname, port, nickname)));
+					HostList.this.startActivity(intent);
 
-				// TODO: only show error when trying to hit enter
-				if (!hostmask.matcher(text.getText().toString()).find()) {
-					text.setError("Use the format 'username@hostname:port'");
 				}
 
 				// set list filter based on text
@@ -158,7 +180,13 @@ public class HostList extends Activity {
 		if(this.hosts != null)
 			this.hosts.close();
 		this.hosts = this.hostdb.allHosts(sortedByColor);
-		this.adapter = new HostAdapter(this, this.hosts);
+		
+		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.item_host, this.hosts,
+				new String[] { hostdb.FIELD_HOST_NICKNAME, hostdb.FIELD_HOST_LASTCONNECT, hostdb.FIELD_HOST_LASTCONNECT, hostdb.FIELD_HOST_COLOR },
+				new int[] { android.R.id.text1, android.R.id.text2, android.R.id.icon, android.R.id.content });
+		adapter.setViewBinder(new HostBinder(bound, this.getResources()));
+		
+		//this.adapter = new HostAdapter(this, this.hosts);
 		this.list.setAdapter(adapter);
 		
 	}
@@ -180,13 +208,13 @@ public class HostList extends Activity {
 		
 		// add host, ssh keys, about
 
-		MenuItem add = menu.add(0, 0, Menu.NONE, "New host");
-		add.setIcon(android.R.drawable.ic_menu_add);
-		add.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				return true;
-			}
-		});
+//		MenuItem add = menu.add(0, 0, Menu.NONE, "New host");
+//		add.setIcon(android.R.drawable.ic_menu_add);
+//		add.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+//			public boolean onMenuItemClick(MenuItem item) {
+//				return true;
+//			}
+//		});
 
 		sortcolor = menu.add(0, 0, Menu.NONE, "Sort by color");
 		sortcolor.setIcon(android.R.drawable.ic_menu_share);
@@ -198,7 +226,7 @@ public class HostList extends Activity {
 			}
 		});
 		
-		sortlast = menu.add(0, 0, Menu.NONE, "Sort by last");
+		sortlast = menu.add(0, 0, Menu.NONE, "Sort by name");
 		sortlast.setIcon(android.R.drawable.ic_menu_share);
 		sortlast.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
@@ -210,6 +238,7 @@ public class HostList extends Activity {
 
 		MenuItem keys = menu.add(0, 0, Menu.NONE, "Manage keys");
 		keys.setIcon(android.R.drawable.ic_lock_lock);
+		keys.setEnabled(false);
     
 		MenuItem settings = menu.add(0, 0, Menu.NONE, "Settings");
 		settings.setIcon(android.R.drawable.ic_menu_preferences);

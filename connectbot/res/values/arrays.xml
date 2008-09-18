@@ -12,6 +12,7 @@
         <item>red</item>
         <item>green</item>
         <item>blue</item>
+        <item>gray</item>
     </string-array>
     
 </resources>

@@ -3,6 +3,7 @@ package org.connectbot.service;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.connectbot.util.HostDatabase;
 import org.theb.ssh.InteractiveHostKeyVerifier;
 
 import com.trilead.ssh2.Connection;
@@ -58,6 +59,10 @@ public class TerminalManager extends Service {
 	public void openConnection(String nickname, String hostname, String username, int port) throws Exception {
 		TerminalBridge bridge = new TerminalBridge(nickname, username, hostname, port);
 		this.bridges.add(bridge);
+		
+		// also update database with new time
+		this.touchHost(nickname);
+		
 	}
 	
 	public void openConnection(Uri uri) throws Exception {
@@ -68,6 +73,16 @@ public class TerminalManager extends Service {
 		
 		TerminalBridge bridge = new TerminalBridge(nickname, username, hostname, port);
 		this.bridges.add(bridge);
+
+		// also update database with new time
+		this.touchHost(nickname);
+	}
+	
+	protected void touchHost(String nickname) {
+		// also update database with new time
+		HostDatabase hostdb = new HostDatabase(this);
+		hostdb.touchHost(nickname);
+		hostdb.close();
 	}
 	
 	public TerminalBridge findBridge(String nickname) {

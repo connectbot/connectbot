@@ -180,6 +180,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			// try authenticating with given password
 			Log.d(this.getClass().toString(), String.format("tryPassword(password=%s) and username=%s", password, username));
 			if(this.connection.authenticateWithPassword(this.username, password)) {
+				this.buffer.deleteArea(0, 0, this.buffer.getColumns(), this.buffer.getRows());
 				finishConnection();
 				return;
 			}

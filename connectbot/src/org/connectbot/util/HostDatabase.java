@@ -8,12 +8,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 
 public class HostDatabase extends SQLiteOpenHelper {
 	
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 5;
+	public final static int DB_VERSION = 8;
 	
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -32,6 +33,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String COLOR_RED = "red";
 	public final static String COLOR_GREEN = "green";
 	public final static String COLOR_BLUE = "blue";
+	public final static String COLOR_GRAY = "gray";
 
 	public HostDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
@@ -55,10 +57,10 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_KEY_NAME + " TEXT, "
 				+ FIELD_KEY_PRIVATE + " TEXT)");
 		
-		this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, COLOR_RED);
-		this.createHost(db, "root@google.com", "root", "google.com", 22, COLOR_GREEN);
+		this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, null);
+		this.createHost(db, "root@google.com", "root", "google.com", 22, null);
 		this.createHost(db, "cron@server.example.com", "cron", "server.example.com", 22, COLOR_BLUE);
-		this.createHost(db, "backup@example.net", "backup", "example.net", 22, COLOR_RED);
+		this.createHost(db, "backup@example.net", "backup", "example.net", 22, COLOR_BLUE);
 		
 	}
 
@@ -67,6 +69,21 @@ public class HostDatabase extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOSTS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRIVKEYS);
 		onCreate(db);
+	}
+	
+	public void touchHost(String nickname) {
+		
+		Log.w(this.getClass().toString(), String.format("touchHost(nickname=%s)", nickname));
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		long now = System.currentTimeMillis() / 1000;
+		
+		ContentValues values = new ContentValues();
+		values.put(FIELD_HOST_LASTCONNECT, now);
+		
+		db.update(TABLE_HOSTS, values, FIELD_HOST_NICKNAME + " = ?", new String[] { nickname });
+		db.close();
+		
 	}
 	
 	public long createHost(SQLiteDatabase db, String nickname, String username, String hostname, int port, String color) {
@@ -79,7 +96,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 		values.put(FIELD_HOST_USERNAME, username);
 		values.put(FIELD_HOST_HOSTNAME, hostname);
 		values.put(FIELD_HOST_PORT, port);
-		values.put(FIELD_HOST_LASTCONNECT, Integer.MAX_VALUE);
+		values.put(FIELD_HOST_LASTCONNECT, 0);
 		values.put(FIELD_HOST_USEKEYS, Boolean.toString(true));
 		if(color != null)
 			values.put(FIELD_HOST_COLOR, color);
@@ -90,13 +107,13 @@ public class HostDatabase extends SQLiteOpenHelper {
 	
 	public Cursor allHosts(boolean sortColors) {
 		
-		String sortField = sortColors ? FIELD_HOST_COLOR : FIELD_HOST_LASTCONNECT;
+		String sortField = sortColors ? FIELD_HOST_COLOR : FIELD_HOST_NICKNAME;
 		
 		SQLiteDatabase db = this.getReadableDatabase();
 		return db.query(TABLE_HOSTS, new String[] { "_id", FIELD_HOST_NICKNAME,
 				FIELD_HOST_USERNAME, FIELD_HOST_HOSTNAME, FIELD_HOST_PORT,
 				FIELD_HOST_HOSTKEY, FIELD_HOST_LASTCONNECT, FIELD_HOST_COLOR },
-				null, null, null, null, sortField + " DESC");
+				null, null, null, null, sortField + " ASC");
 		
 	}
 	

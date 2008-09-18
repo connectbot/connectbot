@@ -1,36 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@android:id/content"  
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
-	android:padding="10dip"  
+	android:padding="10dip"
 	>
 
 	<ImageView
-		android:id="@+id/host_connected"
-		android:src="@android:drawable/presence_online"
+		android:id="@android:id/icon"
+		android:src="@drawable/connected"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
 		android:paddingTop="5dip"
 		/>
-		
-		<!-- 
-		
-	<TextView android:id="@+id/host_title"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceLarge"
-		/>
-
-	<TextView android:id="@+id/host_caption"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		android:layout_below="@id/host_title"
-		/>
-		
-		 -->
 		
 	<LinearLayout
 		android:orientation="horizontal"
@@ -38,19 +21,19 @@
 		android:layout_height="wrap_content"
 		>
 
-	<TextView android:id="@+id/host_title"
+	<TextView
+		android:id="@android:id/text1"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceLarge"
-		android:textColor="@color/blue"
 		/>
 
-	<TextView android:id="@+id/host_caption"
+	<TextView
+		android:id="@android:id/text2"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:paddingLeft="10dip"
 		android:textAppearance="?android:attr/textAppearanceSmall"
-		android:textColor="@color/blue"
 		/>
 
 		
