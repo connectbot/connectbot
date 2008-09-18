@@ -105,20 +105,22 @@ public class HostAdapter extends BaseAdapter {
 		
 		boolean connected = true;
 		
-		TextView title = (TextView)convertView.findViewById(R.id.host_title);
+		TextView title = (TextView)convertView.findViewById(android.R.id.text1);
 		title.setText(source.getString(COL_NICKNAME));
 		
-		TextView caption = (TextView)convertView.findViewById(R.id.host_caption);
+		TextView caption = (TextView)convertView.findViewById(android.R.id.text2);
 		caption.setText(String.format("%s%s", nice, connected ? ", connected" : ""));
 		
 		// correctly update text color as needed
+		title.setTextAppearance(context, android.R.attr.textAppearanceLarge);
+		caption.setTextAppearance(context, android.R.attr.textAppearanceSmall);
 		ColorStateList resolved = this.resolve(source.getString(COL_COLOR));
 		if(resolved != null) {
 			title.setTextColor(resolved);
 			caption.setTextColor(resolved);
 		}
 		
-		((ImageView)convertView.findViewById(R.id.host_connected)).setImageResource(connected ? android.R.drawable.presence_online : android.R.drawable.presence_offline);
+		((ImageView)convertView.findViewById(android.R.id.icon)).setImageResource(connected ? android.R.drawable.presence_online : android.R.drawable.presence_offline);
 		
 		// update icon correctly if service is connected
 		
