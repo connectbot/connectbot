@@ -1,5 +1,9 @@
 package org.connectbot;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +15,7 @@ import org.connectbot.service.TerminalManager;
 import org.connectbot.util.HostAdapter;
 import org.connectbot.util.HostBinder;
 import org.connectbot.util.HostDatabase;
+import org.json.JSONObject;
 import org.theb.ssh.InteractiveHostKeyVerifier;
 
 import com.trilead.ssh2.Connection;
@@ -22,10 +27,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.content.Intent.ShortcutIconResource;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -43,6 +54,41 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class HostList extends Activity {
+	
+	public final static String UPDATE_URL = "http://connectbot.org/version";
+	public final static double VERSION = 1.0;
+
+	public Handler versionHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			
+			// handle version update message
+			if(!(msg.obj instanceof JSONObject)) return;
+			JSONObject json = (JSONObject)msg.obj;
+			
+			double version = json.optDouble("version");
+			String features = json.optString("features");
+			final String target = "market://" + json.optString("target");
+			
+			if(version <= VERSION) return;
+			
+			new AlertDialog.Builder(HostList.this)
+				.setTitle("New version")
+				.setMessage(features)
+				.setPositiveButton("Yes, upgrade", new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface dialog, int which) {
+						Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(target));
+						HostList.this.startActivity(intent);
+	                }
+	            })
+	            .setNegativeButton("Not right now", new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface dialog, int which) {
+	                }
+	            }).create().show();
+			
+		}
+
+	};
 
 	public TerminalManager bound = null;
 
@@ -83,11 +129,62 @@ public class HostList extends Activity {
 		this.unbindService(connection);
 		
 	}
+	
+	
+	
+	public final static String EULA = "eula";
+	protected SharedPreferences prefs = null;
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if(resultCode == Activity.RESULT_OK) {
+			// yay they agreed, so store that info
+			Editor edit = prefs.edit();
+			edit.putBoolean(EULA, true);
+			edit.commit();
+		} else {
+			// user didnt agree, so close
+			this.finish();
+		}
+		
+		this.updateCursor();
+		
+	}
+	
+	
+	protected boolean shortcut = false;
+	
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.act_hostlist);
+
+		
+		// check for eula agreement
+		this.prefs = this.getSharedPreferences(EULA, Context.MODE_PRIVATE);
+		
+		boolean agreed = prefs.getBoolean(EULA, false);
+		if(!agreed) {
+			this.startActivityForResult(new Intent(this, WizardActivity.class), 1);
+		}
+		
+		// start thread to check for new version
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					JSONObject json = new JSONObject(readUrl(UPDATE_URL));
+					Message.obtain(versionHandler, -1, json).sendToTarget();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+		
+
+		
+		
+		this.shortcut = Intent.ACTION_CREATE_SHORTCUT.equals(getIntent().getAction());
 
 		// connect with hosts database and populate list
 		this.hostdb = new HostDatabase(this);
@@ -114,10 +211,30 @@ public class HostList extends Activity {
 				int port = c.getInt(COL_PORT);
 				String nickname = c.getString(COL_NICKNAME);
 				
-				Intent intent = new Intent(HostList.this, Console.class);
-				intent.setData(Uri.parse(String.format("ssh://%s@%s:%s/#%s", username, hostname, port, nickname)));
-				HostList.this.startActivity(intent);
+				Uri uri = Uri.parse(String.format("ssh://%s@%s:%s/#%s", username, hostname, port, nickname));
+				Intent contents = new Intent(Intent.ACTION_VIEW, uri);
+				contents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+				
+				if (shortcut) {
+					// create shortcut if requested
+					ShortcutIconResource icon = Intent.ShortcutIconResource.fromContext(HostList.this, R.drawable.icon);
+					
+					Intent intent = new Intent();
+					intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, contents);
+					intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, nickname);
+					intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
+
+					setResult(RESULT_OK, intent);
+					finish();
+					
+				} else {
+					HostList.this.startActivity(contents);
+					
+					
+				}
+
+				
 			}
 
 		});
@@ -242,29 +359,42 @@ public class HostList extends Activity {
     
 		MenuItem settings = menu.add(0, 0, Menu.NONE, "Settings");
 		settings.setIcon(android.R.drawable.ic_menu_preferences);
-		settings.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				HostList.this.startActivity(new Intent(HostList.this, SettingsActivity.class));
-				return true;
-			}
-		});
+		settings.setIntent(new Intent(HostList.this, SettingsActivity.class));
 
 		MenuItem about = menu.add(0, 0, Menu.NONE, "About");
 		about.setIcon(android.R.drawable.ic_menu_help);
-		about.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				HostList.this.startActivity(new Intent(HostList.this, AboutActivity.class));
-				return true;
-			}
-		});
+		about.setIntent(new Intent(HostList.this, WizardActivity.class));
 		
 		return true;
 		
 	}
 	
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		this.updateCursor();
+	
+	
+	public String readUrl(String fetchurl) throws Exception {
+		byte[] buffer = new byte[1024];
+		
+		URL url = new URL(fetchurl);
+		URLConnection connection = url.openConnection();
+		connection.setConnectTimeout(6000);
+		connection.setReadTimeout(6000);
+		connection.setRequestProperty("User-Agent", String.format("%s %f", this.getResources().getString(R.string.app_name), VERSION));
+		connection.connect();
+		InputStream is = connection.getInputStream();
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+
+		int bytesRead;
+		while ((bytesRead = is.read(buffer)) != -1) {
+			os.write(buffer, 0, bytesRead);
+		}
+
+		os.flush();
+		os.close();
+		is.close();
+		
+		return new String(os.toByteArray());
 	}
+	
 	
 	public final static int REQUEST_EDIT = 1;
 
