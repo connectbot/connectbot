@@ -90,6 +90,13 @@ public class HostList extends Activity {
 
 	};
 
+	public Handler updateHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			HostList.this.updateCursor();
+		}
+	};
+	
 	public TerminalManager bound = null;
 
 	private ServiceConnection connection = new ServiceConnection() {
@@ -413,14 +420,14 @@ public class HostList extends Activity {
 
 		// edit, disconnect, delete
 		// TODO: change disconnect/connect based on status
-		MenuItem connect = menu.add(0, 0, Menu.NONE, "Disconnect");
+		MenuItem connect = menu.add("Disconnect");
 		connect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				return false;
 			}
 		});
 
-		MenuItem edit = menu.add(0, 0, Menu.NONE, "Edit host");
+		MenuItem edit = menu.add("Edit host");
 		edit.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				Intent intent = new Intent(HostList.this, HostEditor.class);
@@ -430,10 +437,11 @@ public class HostList extends Activity {
 			}
 		});
 
-		MenuItem delete = menu.add(0, 0, Menu.NONE, "Delete host");
+		MenuItem delete = menu.add("Delete host");
 		delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				hostdb.deleteHost(id);
+				updateHandler.sendEmptyMessage(-1);
 				return false;
 			}
 		});
