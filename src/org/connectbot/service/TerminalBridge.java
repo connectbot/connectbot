@@ -89,7 +89,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 				// prompt user
 				outputLine(String.format("The authenticity of host '%s' can't be established.", hostname));
 				outputLine(String.format("RSA key fingerprint is %s", hosts.createHexFingerprint(serverHostKeyAlgorithm, serverHostKey)));
-				outputLine("Are you sure you want to continue connecting (yes/no)? ");
+				outputLine("[For now we'll assume you accept this key, but tap Menu and Disconnect if not.]");
+				//outputLine("Are you sure you want to continue connecting (yes/no)? ");
 				return true;
 				
 			case KnownHosts.HOSTKEY_HAS_CHANGED:
@@ -236,9 +237,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	}
 	
 	public void dispose() {
-		if(this.session != null)
-			this.session.close();
-		this.connection.close();
+		// meh this is buggy if the host isnt alive, so just spawn to thread for now
+		new Thread(new Runnable() {
+			public void run() {
+				if(session != null)
+					session.close();
+				connection.close();
+			}
+		}).start();
 	}
 	
 	public KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
@@ -248,7 +254,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
 		// pass through any keystrokes to output stream
 		
-		Log.d(this.getClass().toString(), "onKey() code="+keyCode);
+		//Log.d(this.getClass().toString(), "onKey() code="+keyCode);
 		if(event.getAction() == KeyEvent.ACTION_UP) return false;
 		try {
 

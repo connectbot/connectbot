@@ -68,7 +68,7 @@ public class Pubkey extends Activity {
     final Runnable mKeyGen = new Runnable() {    	
 		public void run() {
 			// TODO Auto-generated method stub
-    		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+//    		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
     		try {
      			mSecRand = SecureRandom.getInstance("SHA1PRNG");
     			

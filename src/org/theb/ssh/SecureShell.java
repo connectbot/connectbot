@@ -98,7 +98,7 @@ public class SecureShell extends Activity implements FeedbackUI, ConnectionMonit
         
         Log.d("SSH", "using URI " + getIntent().getData().toString());
         
-        mCursor = managedQuery(getIntent().getData(), PROJECTION, null, null);
+//        mCursor = managedQuery(getIntent().getData(), PROJECTION, null, null);
         mCursor.moveToFirst();
         
         mHostname = mCursor.getString(HOSTNAME_INDEX);

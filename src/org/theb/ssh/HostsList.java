@@ -149,7 +149,7 @@ public class HostsList extends ListActivity {
         
         //setupListStripes();
         
-        mCursor = managedQuery(getIntent().getData(), PROJECTION, null, null);
+        //mCursor = managedQuery(getIntent().getData(), PROJECTION, null, null);
 
         ListAdapter adapter = new HostListCursorAdapter(this,
                 android.R.layout.simple_list_item_1, mCursor,
@@ -280,7 +280,7 @@ public class HostsList extends ListActivity {
 
 	private void showAbout() {
 		Dialog about = new Dialog(this);
-		about.setContentView(R.layout.about_dialog);
+		//about.setContentView(R.layout.about_dialog);
 		about.setTitle(getResources().getString(R.string.app_name)
 				+ " "
 				+ getResources().getString(R.string.msg_version));
@@ -313,9 +313,10 @@ public class HostsList extends ListActivity {
 	        //startActivity(new Intent(Intent.ACTION_PICK, url));
 	    	
 	    	// collect all connection details
-			Cursor cursor = managedQuery(url, new String[] { "nickname",
-					"username", "hostname", "port", "emulation", "scrollback",
-					"hostkey" }, null, null);
+			Cursor cursor = null;
+//			managedQuery(url, new String[] { "nickname",
+//					"username", "hostname", "port", "emulation", "scrollback",
+//					"hostkey" }, null, null);
 			cursor.moveToFirst();
 			
 			// try finding an already-open bridge for this connection

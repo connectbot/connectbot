@@ -100,7 +100,7 @@ public class HostEditor extends Activity {
         }
         
         // Get a cursor to access the host data
-        this.mCursor = managedQuery(mURI, PROJECTION, null, null);
+        //this.mCursor = managedQuery(mURI, PROJECTION, null, null);
     }
 
     @Override
