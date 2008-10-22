@@ -105,6 +105,13 @@ public class HostDatabase extends SQLiteOpenHelper {
 		
 	}
 	
+	public void deleteHost(long id) {
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_HOSTS, "_id = ?", new String[] { Long.toString(id) });
+		
+	}
+	
 	public Cursor allHosts(boolean sortColors) {
 		
 		String sortField = sortColors ? FIELD_HOST_COLOR : FIELD_HOST_NICKNAME;

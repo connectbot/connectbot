@@ -433,6 +433,7 @@ public class HostList extends Activity {
 		MenuItem delete = menu.add(0, 0, Menu.NONE, "Delete host");
 		delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
+				hostdb.deleteHost(id);
 				return false;
 			}
 		});
