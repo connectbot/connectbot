@@ -60,6 +60,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	public Canvas canvas = new Canvas();
 	public VDUBuffer buffer = null;
 	
+	private boolean ctrlPressed = false;
+	
 	
 	public class HostKeyVerifier implements ServerHostKeyVerifier {
 		
@@ -289,6 +291,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 				// print normal keys
 				if (printing) {
 					int key = keymap.get(keyCode, event.getMetaState());
+					if (ctrlPressed) {
+			    		// Support CTRL-A through CTRL-Z
+			    		if (key >= 0x61 && key <= 0x79)
+			    			key -= 0x60;
+			    		else if (key >= 0x40 && key <= 0x59)
+			    			key -= 0x39;
+			    		ctrlPressed = false;
+					}
 					this.stdin.write(key);
 					return true;
 				}
@@ -301,6 +311,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 					case KeyEvent.KEYCODE_DPAD_UP: ((vt320)buffer).keyPressed(vt320.KEY_UP, ' ', event.getMetaState()); return true;
 					case KeyEvent.KEYCODE_DPAD_DOWN: ((vt320)buffer).keyPressed(vt320.KEY_DOWN, ' ', event.getMetaState()); return true;
 					case KeyEvent.KEYCODE_DPAD_RIGHT: ((vt320)buffer).keyPressed(vt320.KEY_RIGHT, ' ', event.getMetaState()); return true;
+					case KeyEvent.KEYCODE_DPAD_CENTER:
+						// TODO: Add some visual indication of Ctrl state
+						if (ctrlPressed) {
+							stdin.write(0x1B); // ESC
+							ctrlPressed = false;
+						} else
+							ctrlPressed = true;
+						return true;
 				}
 				
 			}
