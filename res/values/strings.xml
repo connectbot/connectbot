@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Connectbot</string>
+    <string name="app_name">ConnectBot</string>
+    <string name="app_desc">Simple, powerful, open-source SSH client.</string>
     
     <string name="title_hosts_list">Connectbot</string>
     <string name="title_host">Host</string>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:gravity="right"
+	>
+
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:layout_weight="1"
+	android:id="@+id/wizard_scroll"
+	>
+	
+	<ViewFlipper
+		android:id="@+id/wizard_flipper"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		/>
+	
+</ScrollView>
+
+<LinearLayout
+	android:orientation="horizontal"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:padding="10dip"
+	>
+	
+	<Button
+		android:id="@+id/action_prev"
+		android:layout_width="120dip"
+		android:layout_height="wrap_content"
+		android:drawableLeft="@drawable/ic_btn_back"
+		android:text="Cancel"
+		android:gravity="center"
+		/>
+
+	<Button
+		android:id="@+id/action_next"
+		android:layout_width="120dip"
+		android:layout_height="wrap_content"
+		android:drawableRight="@drawable/ic_btn_next"
+		android:text="Agree"
+		android:gravity="center"
+		/>
+
+</LinearLayout>
+
+</LinearLayout>

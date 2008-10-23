@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:padding="10dip"
+	>
+
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="ConnectBot is an simple, powerful, open-source SSH client for your Android device."
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		/>
+
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="10dip"
+		android:text="It can manage several SSH sessions in the background, and can copy/paste between other apps."
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		/>
+
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="10dip"
+		android:text="Before we get started, we need to get some legal information out of the way.  ConnectBot is provided under a GPLv3 license.  Here are a few key points:\n\nThere is no warranty for the program, to the extent permitted by applicable law.  Except when otherwise stated in writing the copyright holders and/or other parties provide the program 'as is' without warranty of any kind, either expressed or implied, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose.  The entire risk as to the quality and performance of the program is with you.  Should the program prove defective, you assume the cost of all necessary servicing, repair or correction.\n\nIn no event unless required by applicable law or agreed to in writing will any copyright holder, or any other party who modifies and/or conveys the program as permitted above, be liable to you for damages, including any general, special, incidental or consequential damages arising out of the use or inability to use the program (including but not limited to loss of data or data being rendered inaccurate or losses sustained by you or third parties or a failure of the program to operate with any other programs), even if such holder or other party has been advised of the possibility of such damages."
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		/>
+
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="10dip"
+		android:autoLink="web"
+		android:text="You can view the full text at http://www.gnu.org/licenses/gpl-3.0.txt"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		/>
+
+ 	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="10dip"
+		android:text="About and Credits"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		/>
+ 
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="10dip"
+		android:autoLink="web"
+		android:text="Copyright (c) 2007-2008 Kenny Root http://the-b.org, Jeffrey Sharkey http://jsharkey.org\n\nBased in part on the Trilead SSH2 client, provided under a BSD-style license.  Copyright (c) 2007 Trilead AG.  http://www.trilead.com\n\nAlso based on JTA Telnet/SSH client, provided under the GPLv2 license.  Copyright (c) Matthias L. Jugel, Marcus Meiner 1996-2005.  http://www.javassh.org"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		/>
+ 
+		
+</LinearLayout>
