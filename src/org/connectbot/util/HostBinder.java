@@ -1,3 +1,21 @@
+/*
+	ConnectBot: simple, powerful, open-source SSH client for Android
+	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
+	
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package org.connectbot.util;
 
 import org.connectbot.R;
@@ -14,6 +32,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 
+/**
+ * Binder used to help interpret a HostDatabase cursor into a ListView for
+ * display. Specifically, it controls the green "bulb" icon by checking against
+ * TerminalManager for status, and shows the last-connected time in a
+ * user-friendly format like "6 days ago."
+ * 
+ * @author jsharkey
+ */
 public class HostBinder implements ViewBinder {
 	
 	protected final TerminalManager manager;
@@ -25,17 +51,15 @@ public class HostBinder implements ViewBinder {
 		this.red = res.getColorStateList(R.color.red);
 		this.green = res.getColorStateList(R.color.green);
 		this.blue = res.getColorStateList(R.color.blue);
+		
 	}
 	
-	public boolean isConnected(Cursor cursor) {
+	/**
+	 * Check if we're connected to a terminal with the given nickname.
+	 */
+	protected boolean isConnected(String nickname) {
 		// always disconnected if we dont have backend service
 		if(this.manager == null) return false;
-		
-		// otherwise pull out nickname and check if active 
-		if(COL_NICKNAME == -1)
-			COL_NICKNAME = cursor.getColumnIndexOrThrow(HostDatabase.FIELD_HOST_NICKNAME);
-		
-		String nickname = cursor.getString(COL_NICKNAME);
 		return (this.manager.findBridge(nickname) != null);
 		
 	}
@@ -46,7 +70,12 @@ public class HostBinder implements ViewBinder {
 		case android.R.id.icon:
 			// set icon state based on status from backend service
 			ImageView icon = (ImageView)view;
-			if(this.isConnected(cursor)) {
+			
+			if(COL_NICKNAME == -1)
+				COL_NICKNAME = cursor.getColumnIndexOrThrow(HostDatabase.FIELD_HOST_NICKNAME);
+			
+			String nickname = cursor.getString(COL_NICKNAME);
+			if(this.isConnected(nickname)) {
 				icon.setImageState(new int[] { android.R.attr.state_checked }, true);
 			} else {
 				icon.setImageState(new int[] { }, true);
@@ -65,9 +94,11 @@ public class HostBinder implements ViewBinder {
 			if(HostDatabase.COLOR_BLUE.equals(color)) chosen = this.blue;
 
 			if(chosen != null) {
+				// set color normally if not selected 
 				text1.setTextColor(chosen);
 				text2.setTextColor(chosen);
 			} else {
+				// selected, so revert back to default black text
 				text1.setTextAppearance(view.getContext(), android.R.attr.textAppearanceLarge);
 				text2.setTextAppearance(view.getContext(), android.R.attr.textAppearanceSmall);
 			}

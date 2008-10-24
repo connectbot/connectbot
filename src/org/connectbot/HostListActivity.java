@@ -1,30 +1,35 @@
+/*
+	ConnectBot: simple, powerful, open-source SSH client for Android
+	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
+	
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package org.connectbot;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
-import org.connectbot.util.HostAdapter;
 import org.connectbot.util.HostBinder;
 import org.connectbot.util.HostDatabase;
-import org.json.JSONObject;
-import org.theb.ssh.InteractiveHostKeyVerifier;
+import org.connectbot.util.UpdateHelper;
 
-import com.trilead.ssh2.Connection;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.ListActivity;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -53,47 +58,12 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class HostList extends Activity {
+public class HostListActivity extends ListActivity {
 	
-	public final static String UPDATE_URL = "http://connectbot.org/version";
-	public final static double VERSION = 1.0;
-
-	public Handler versionHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			
-			// handle version update message
-			if(!(msg.obj instanceof JSONObject)) return;
-			JSONObject json = (JSONObject)msg.obj;
-			
-			double version = json.optDouble("version");
-			String features = json.optString("features");
-			final String target = "market://" + json.optString("target");
-			
-			if(version <= VERSION) return;
-			
-			new AlertDialog.Builder(HostList.this)
-				.setTitle("New version")
-				.setMessage(features)
-				.setPositiveButton("Yes, upgrade", new DialogInterface.OnClickListener() {
-	                public void onClick(DialogInterface dialog, int which) {
-						Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(target));
-						HostList.this.startActivity(intent);
-	                }
-	            })
-	            .setNegativeButton("Not right now", new DialogInterface.OnClickListener() {
-	                public void onClick(DialogInterface dialog, int which) {
-	                }
-	            }).create().show();
-			
-		}
-
-	};
-
 	public Handler updateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			HostList.this.updateCursor();
+			HostListActivity.this.updateCursor();
 		}
 	};
 	
@@ -104,19 +74,18 @@ public class HostList extends Activity {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
 
 			// update our listview binder to find the service
-			HostList.this.updateCursor();
+			HostListActivity.this.updateCursor();
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
 			bound = null;
-			HostList.this.updateCursor();
+			HostListActivity.this.updateCursor();
 		}
 	};
 
 	public HostDatabase hostdb;
 	public Cursor hosts;
 	public ListView list;
-	public HostAdapter adapter;
 
 	public int COL_ID, COL_NICKNAME, COL_USERNAME, COL_HOSTNAME, COL_CONNECTED, COL_PORT;
 
@@ -177,16 +146,7 @@ public class HostList extends Activity {
 		}
 		
 		// start thread to check for new version
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-					JSONObject json = new JSONObject(readUrl(UPDATE_URL));
-					Message.obtain(versionHandler, -1, json).sendToTarget();
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}).start();
+		new UpdateHelper(this);
 		
 
 		
@@ -195,7 +155,7 @@ public class HostList extends Activity {
 
 		// connect with hosts database and populate list
 		this.hostdb = new HostDatabase(this);
-		this.list = (ListView) this.findViewById(R.id.front_hostlist);
+		this.list = this.getListView();
 		this.updateCursor();
 		
 		//this.list.setSelector(R.drawable.highlight_disabled_pressed);
@@ -218,6 +178,7 @@ public class HostList extends Activity {
 				int port = c.getInt(COL_PORT);
 				String nickname = c.getString(COL_NICKNAME);
 				
+				// create a specific uri that represents this host
 				Uri uri = Uri.parse(String.format("ssh://%s@%s:%s/#%s", username, hostname, port, nickname));
 				Intent contents = new Intent(Intent.ACTION_VIEW, uri);
 				contents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -225,7 +186,7 @@ public class HostList extends Activity {
 				
 				if (shortcut) {
 					// create shortcut if requested
-					ShortcutIconResource icon = Intent.ShortcutIconResource.fromContext(HostList.this, R.drawable.icon);
+					ShortcutIconResource icon = Intent.ShortcutIconResource.fromContext(HostListActivity.this, R.drawable.icon);
 					
 					Intent intent = new Intent();
 					intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, contents);
@@ -236,7 +197,8 @@ public class HostList extends Activity {
 					finish();
 					
 				} else {
-					HostList.this.startActivity(contents);
+					// otherwise just launch activity to show this host
+					HostListActivity.this.startActivity(contents);
 					
 					
 				}
@@ -276,9 +238,9 @@ public class HostList extends Activity {
 					String nickname = String.format("%s@%s", username, hostname);
 					hostdb.createHost(null, nickname, username, hostname, port, hostdb.COLOR_GRAY);
 					
-					Intent intent = new Intent(HostList.this, Console.class);
+					Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
 					intent.setData(Uri.parse(String.format("ssh://%s@%s:%s/#%s", username, hostname, port, nickname)));
-					HostList.this.startActivity(intent);
+					HostListActivity.this.startActivity(intent);
 
 				}
 
@@ -287,7 +249,6 @@ public class HostList extends Activity {
 				// list.setTextFilterEnabled((filter.length() > 0));
 				// list.setFilterText(filter);
 
-				// TODO Auto-generated method stub
 				return false;
 			}
 
@@ -340,7 +301,7 @@ public class HostList extends Activity {
 //			}
 //		});
 
-		sortcolor = menu.add(0, 0, Menu.NONE, "Sort by color");
+		sortcolor = menu.add("Sort by color");
 		sortcolor.setIcon(android.R.drawable.ic_menu_share);
 		sortcolor.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
@@ -350,7 +311,7 @@ public class HostList extends Activity {
 			}
 		});
 		
-		sortlast = menu.add(0, 0, Menu.NONE, "Sort by name");
+		sortlast = menu.add("Sort by name");
 		sortlast.setIcon(android.R.drawable.ic_menu_share);
 		sortlast.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
@@ -360,17 +321,17 @@ public class HostList extends Activity {
 			}
 		});
 
-		MenuItem keys = menu.add(0, 0, Menu.NONE, "Manage keys");
+		MenuItem keys = menu.add("Manage keys");
 		keys.setIcon(android.R.drawable.ic_lock_lock);
 		keys.setEnabled(false);
     
-		MenuItem settings = menu.add(0, 0, Menu.NONE, "Settings");
+		MenuItem settings = menu.add("Settings");
 		settings.setIcon(android.R.drawable.ic_menu_preferences);
-		settings.setIntent(new Intent(HostList.this, SettingsActivity.class));
+		settings.setIntent(new Intent(HostListActivity.this, SettingsActivity.class));
 
-		MenuItem about = menu.add(0, 0, Menu.NONE, "About");
+		MenuItem about = menu.add("About");
 		about.setIcon(android.R.drawable.ic_menu_help);
-		about.setIntent(new Intent(HostList.this, WizardActivity.class));
+		about.setIntent(new Intent(HostListActivity.this, WizardActivity.class));
 		
 		return true;
 		
@@ -378,36 +339,10 @@ public class HostList extends Activity {
 	
 	
 	
-	public String readUrl(String fetchurl) throws Exception {
-		byte[] buffer = new byte[1024];
-		
-		URL url = new URL(fetchurl);
-		URLConnection connection = url.openConnection();
-		connection.setConnectTimeout(6000);
-		connection.setReadTimeout(6000);
-		connection.setRequestProperty("User-Agent", String.format("%s %f", this.getResources().getString(R.string.app_name), VERSION));
-		connection.connect();
-		InputStream is = connection.getInputStream();
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-
-		int bytesRead;
-		while ((bytesRead = is.read(buffer)) != -1) {
-			os.write(buffer, 0, bytesRead);
-		}
-
-		os.flush();
-		os.close();
-		is.close();
-		
-		return new String(os.toByteArray());
-	}
-	
-	
 	public final static int REQUEST_EDIT = 1;
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenu.ContextMenuInfo menuInfo) {
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
 		// create menu to handle hosts
 
@@ -430,9 +365,9 @@ public class HostList extends Activity {
 		MenuItem edit = menu.add("Edit host");
 		edit.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				Intent intent = new Intent(HostList.this, HostEditor.class);
+				Intent intent = new Intent(HostListActivity.this, HostEditorActivity.class);
 				intent.putExtra(Intent.EXTRA_TITLE, id);
-				HostList.this.startActivityForResult(intent, REQUEST_EDIT);
+				HostListActivity.this.startActivityForResult(intent, REQUEST_EDIT);
 				return false;
 			}
 		});
