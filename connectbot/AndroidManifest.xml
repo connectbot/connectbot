@@ -17,6 +17,7 @@
 		<activity android:name=".HostEditor" />
 		<activity android:name=".SettingsActivity" />
 		<activity android:name=".AboutActivity" />
+		<activity android:name=".WizardActivity" />
 
 		<service android:name="org.connectbot.service.TerminalManager" />
 	 
