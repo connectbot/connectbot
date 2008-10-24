@@ -1,3 +1,21 @@
+/*
+	ConnectBot: simple, powerful, open-source SSH client for Android
+	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
+	
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package org.connectbot.util;
 
 import java.util.LinkedList;
@@ -10,7 +28,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-
+/**
+ * Contains information about various SSH hosts, include public hostkey if known
+ * from previous sessions.
+ * 
+ * @author jsharkey
+ */
 public class HostDatabase extends SQLiteOpenHelper {
 	
 	public final static String DB_NAME = "hosts";
@@ -26,10 +49,6 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_HOST_COLOR = "color";
 	public final static String FIELD_HOST_USEKEYS = "usekeys";
 
-	public final static String TABLE_PRIVKEYS = "keys";
-	public final static String FIELD_KEY_NAME = "name";
-	public final static String FIELD_KEY_PRIVATE = "private";
-	
 	public final static String COLOR_RED = "red";
 	public final static String COLOR_GREEN = "green";
 	public final static String COLOR_BLUE = "blue";
@@ -52,11 +71,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_HOST_COLOR + " TEXT, "
 				+ FIELD_HOST_USEKEYS + " TEXT)");
 
-		db.execSQL("CREATE TABLE " + TABLE_PRIVKEYS
-				+ " (_id INTEGER PRIMARY KEY, "
-				+ FIELD_KEY_NAME + " TEXT, "
-				+ FIELD_KEY_PRIVATE + " TEXT)");
-		
+		// insert a few sample hosts, none of which probably connect
 		this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, null);
 		this.createHost(db, "root@google.com", "root", "google.com", 22, null);
 		this.createHost(db, "cron@server.example.com", "cron", "server.example.com", 22, COLOR_BLUE);
@@ -67,13 +82,14 @@ public class HostDatabase extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOSTS);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRIVKEYS);
 		onCreate(db);
 	}
 	
+	/**
+	 * Touch a specific host to update its "last connected" field.
+	 * @param nickname Nickname field of host to update
+	 */
 	public void touchHost(String nickname) {
-		
-		Log.w(this.getClass().toString(), String.format("touchHost(nickname=%s)", nickname));
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		long now = System.currentTimeMillis() / 1000;
@@ -86,6 +102,10 @@ public class HostDatabase extends SQLiteOpenHelper {
 		
 	}
 	
+	/**
+	 * Create a new host using the given parameters, and return its new
+	 * <code>_id</code> value.
+	 */
 	public long createHost(SQLiteDatabase db, String nickname, String username, String hostname, int port, String color) {
 		// create and insert new host
 		
@@ -105,6 +125,9 @@ public class HostDatabase extends SQLiteOpenHelper {
 		
 	}
 	
+	/**
+	 * Delete a specific host by its <code>_id</code> value.
+	 */
 	public void deleteHost(long id) {
 		
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -112,6 +135,10 @@ public class HostDatabase extends SQLiteOpenHelper {
 		
 	}
 	
+	/**
+	 * Return a cursor that contains information about all known hosts.
+	 * @param sortColors If true, sort by color, otherwise sort by nickname.
+	 */
 	public Cursor allHosts(boolean sortColors) {
 		
 		String sortField = sortColors ? FIELD_HOST_COLOR : FIELD_HOST_NICKNAME;

@@ -1,46 +1,63 @@
+/*
+	ConnectBot: simple, powerful, open-source SSH client for Android
+	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
+	
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package org.connectbot.service;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.theb.ssh.InteractiveHostKeyVerifier;
-import org.theb.ssh.JTATerminalView;
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.PixelXorXfermode;
 import android.graphics.Typeface;
 import android.graphics.Bitmap.Config;
 import android.graphics.Paint.FontMetricsInt;
 import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
-import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.View.OnKeyListener;
 
-import com.trilead.ssh2.InteractiveCallback;
 import com.trilead.ssh2.KnownHosts;
 import com.trilead.ssh2.ServerHostKeyVerifier;
 import com.trilead.ssh2.Session;
 import com.trilead.ssh2.Connection;
-import com.trilead.ssh2.signature.RSAPublicKey;
 
 import de.mud.terminal.VDUBuffer;
 import de.mud.terminal.VDUDisplay;
 import de.mud.terminal.vt320;
 
 
-// provides a bridge between the mud buffer and a surfaceholder
+/**
+ * Provides a bridge between a MUD terminal buffer and a possible TerminalView.
+ * This separation allows us to keep the TerminalBridge running in a background
+ * service. A TerminalView shares down a bitmap that we can use for rendering
+ * when available.
+ * 
+ * This class also provides SSH hostkey verification prompting, and password
+ * prompting.
+ */
 public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	
-	public final Connection connection;
-	public final String nickname, username;
-	public final Paint defaultPaint;
-	public Session session;
+	public final static String TAG = TerminalBridge.class.toString();
 	
 	public final static int TERM_WIDTH_CHARS = 80,
 		TERM_HEIGHT_CHARS = 24,
@@ -50,37 +67,50 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	public static final String AUTH_PUBLICKEY = "publickey",
 		AUTH_PASSWORD = "password";
 	
-	public OutputStream stdin;
-	public InputStream stdout;
+	private int darken(int color) {
+		return Color.argb(0xFF,
+			(int)(Color.red(color) * 0.8),
+			(int)(Color.green(color) * 0.8),
+			(int)(Color.blue(color) * 0.8)
+		);
+	}
 	
-	public Thread relay;
+	public int color[] = { Color.BLACK, Color.RED, Color.GREEN, Color.YELLOW,
+		Color.BLUE, Color.MAGENTA, Color.CYAN, Color.WHITE, };
 	
-	public View parent = null;
+	public int darkerColor[] = new int[color.length];
+	
+	public final static int COLOR_FG_STD = 7;
+	public final static int COLOR_BG_STD = 0;
+
+	public final String nickname;
+	protected final String username;
+	
+	protected final Connection connection;
+	protected Session session;
+	
+	protected final Paint defaultPaint;
+
+	protected OutputStream stdin;
+	protected InputStream stdout;
+	
+	protected Thread relay;
+	
 	public Bitmap bitmap = null;
-	public Canvas canvas = new Canvas();
 	public VDUBuffer buffer = null;
 	
+	protected View parent = null;
+	protected Canvas canvas = new Canvas();
+
 	private boolean ctrlPressed = false;
 	
 	
 	public class HostKeyVerifier implements ServerHostKeyVerifier {
 		
-		// hex routine adapted from
-		// http://forums.sun.com/thread.jspa?threadID=252591&messageID=2272668
-		
-		private final char[] hex = "0123456789abcdef".toCharArray();
-		
-		public String hexdump(byte[] buf) {
-			StringBuffer out = new StringBuffer();
-			for(int i = 0; i < buf.length; i++) {
-				int value = buf[i] + 127;
-				out.append(":" + hex[(value>>>4)&0xf] + hex[value&0xf]);
-			}
-			return out.toString().substring(1);
-		}
-		
 		public boolean verifyServerHostKey(String hostname, int port, String serverHostKeyAlgorithm, byte[] serverHostKey) throws Exception {
+
 			// TODO: check against known key, prompt user if unknown or missing key
+			// TODO: check to see what hostkey checking the trilead library offers
 			
 			KnownHosts hosts = new KnownHosts();
 			switch(hosts.verifyHostkey(hostname, serverHostKeyAlgorithm, serverHostKey)) {
@@ -106,8 +136,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		
 	}
 	
+	/**
+	 * Create new terminal bridge with following parameters. We will immediately
+	 * launch thread to start SSH connection and handle any hostkey verification
+	 * and password authentication.
+	 */
 	public TerminalBridge(final String nickname, final String username, final String hostname, final int port) throws Exception {
-		// newer version of TerminalBridge that will dump all connection progress to the display
 		
 		this.nickname = nickname;
 		this.username = username;
@@ -116,8 +150,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		this.defaultPaint = new Paint();
 		this.defaultPaint.setAntiAlias(true);
 		this.defaultPaint.setTypeface(Typeface.MONOSPACE);
+		
 		this.setFontSize(DEFAULT_FONT_SIZE);
 
+		// prepare our "darker" colors
 		for(int i = 0; i < color.length; i++)
 			this.darkerColor[i] = darken(color[i]);
 		
@@ -128,7 +164,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 				try {
 					TerminalBridge.this.stdin.write(b);
 				} catch (IOException e) {
-					e.printStackTrace();
+					Log.e(TAG, "Problem handling incoming data in vt320() thread", e);
 				}
 			}
 
@@ -139,7 +175,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			}
 		};
 
-		this.scrollback = scrollback;
 		this.buffer.setScreenSize(TERM_WIDTH_CHARS, TERM_HEIGHT_CHARS, true);
 		this.buffer.setBufferSize(scrollback);
 		this.buffer.setDisplay(this);
@@ -160,7 +195,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 						promptPassword();
 					}
 				} catch (IOException e) {
-					e.printStackTrace();
+					Log.e(TAG, "Problem in SSH connection thread", e);
 				}
 			} 
 			
@@ -168,38 +203,50 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		
 	}
 	
-	public void outputLine(String line) {
+	/**
+	 * Convenience method for writing a line into the underlying MUD buffer.
+	 */
+	protected void outputLine(String line) {
 		this.buffer.putString(0, this.buffer.getCursorRow(), line);
 		this.buffer.setCursorPosition(0, this.buffer.getCursorRow() + 1);
 		this.redraw();
 	}
 
-	public void promptPassword() {
+	protected void promptPassword() {
 		this.outputLine("Password: ");
 	}
 	
+	/**
+	 * Attempt to try password authentication using given string.
+	 */
 	public void tryPassword(String password) {
 		try {
 			// try authenticating with given password
-			Log.d(this.getClass().toString(), String.format("tryPassword(password=%s) and username=%s", password, username));
+			Log.d(TAG, "Attempting to try password authentication");
 			if(this.connection.authenticateWithPassword(this.username, password)) {
 				this.buffer.deleteArea(0, 0, this.buffer.getColumns(), this.buffer.getRows());
 				finishConnection();
 				return;
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.e(TAG, "Problem while trying to authenticate with password", e);
 		}
 		this.outputLine("Permission denied, please try again.");
 		this.promptPassword();
 	}
 	
-	
-	public void finishConnection() {
+	/**
+	 * Internal method to request actual PTY terminal once we've finished
+	 * authentication. If called before authenticated, it will just fail.
+	 */
+	protected void finishConnection() {
 		
 		try {
 			this.session = connection.openSession();
-			this.session.requestPTY("screen", 0, 0, 0, 0, null); // previously tried vt100, xterm, but "screen" works the best
+			
+			// previously tried vt100 and xterm for emulation modes
+			// "screen" works the best for color and escape codes
+			this.session.requestPTY("screen", 0, 0, 0, 0, null);
 			this.session.startShell();
 
 			// grab stdin/out from newly formed session
@@ -220,7 +267,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 								TerminalBridge.this.redraw();
 							}
 						} catch (IOException e) {
-							e.printStackTrace();
+							Log.e(TAG, "Problem while handling incoming data in relay thread", e);
 							break;
 						}
 					}
@@ -232,14 +279,17 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			this.setFontSize(this.fontSize);
 
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			Log.e(TAG, "Problem while trying to create PTY in finishConnection()", e1);
 		}
 		
 	}
 	
+	/**
+	 * Force disconnection of this terminal bridge.
+	 */
 	public void dispose() {
-		// meh this is buggy if the host isnt alive, so just spawn to thread for now
+		// disconnection request hangs if we havent really connected to a host yet
+		// temporary fix is to just spawn disconnection into a thread
 		new Thread(new Runnable() {
 			public void run() {
 				if(session != null)
@@ -250,17 +300,27 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	}
 	
 	public KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
-	
-	StringBuffer collected = new StringBuffer();
 
+	/**
+	 * Buffer of collected characters, for example when prompted for password or
+	 * accepting a hostkey.
+	 */
+	protected StringBuffer collected = new StringBuffer();
+
+	/**
+	 * Handle onKey() events coming down from a {@link TerminalView} above us.
+	 * We might collect these for our internal buffer when working with hostkeys
+	 * or passwords, but otherwise we pass them directly over to the SSH host.
+	 */
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
 		// pass through any keystrokes to output stream
 		
-		//Log.d(this.getClass().toString(), "onKey() code="+keyCode);
+		// ignore any key-up events
 		if(event.getAction() == KeyEvent.ACTION_UP) return false;
+		
 		try {
-
-			// check for resizing keys
+			// check for terminal resizing keys
+			// TODO: see if there is a way to make sure we dont "blip"
 			if(keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
 				this.setFontSize(this.fontSize + 2);
 				return true;
@@ -324,7 +384,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			}
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.e(TAG, "Problem while trying to handle an onKey() event", e);
 		}
 		return false;
 	}
@@ -334,11 +394,16 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		charHeight = -1,
 		charDescent = -1;
 	
-	public float fontSize = -1;
+	protected float fontSize = -1;
 	
-	public int scrollback = 120;
+	// TODO: read this scrollback value from preferences framework?
+	protected int scrollback = 120;
 	
-	public void setFontSize(float size) {
+	/**
+	 * Request a different font size. Will make call to parentChanged() to make
+	 * sure we resize PTY if needed.
+	 */
+	protected void setFontSize(float size) {
 		this.defaultPaint.setTextSize(size);
 		this.fontSize = size;
 		
@@ -356,8 +421,17 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			this.parentChanged(this.parent);
 	}
 	
-	public boolean fullRedraw = false;
+	/**
+	 * Flag indicating if we should perform a full-screen redraw during our next
+	 * rendering pass.
+	 */
+	protected boolean fullRedraw = false;
 	
+	/**
+	 * Something changed in our parent {@link TerminalView}, maybe it's a new
+	 * parent, or maybe it's an updated font size. We should recalculate
+	 * terminal size information and request a PTY resize.
+	 */
 	public synchronized void parentChanged(View parent) {
 		
 		this.parent = parent;
@@ -382,22 +456,29 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		int termHeight = height / charHeight;
 		
 		try {
+			// request a terminal pty resize
 			buffer.setScreenSize(termWidth, termHeight, true);
 			if(session != null)
 				session.resizePTY(termWidth, termHeight);
 		} catch(Exception e) {
-			e.printStackTrace();
+			Log.e(TAG, "Problem while trying to resize screen or PTY", e);
 		}
 		
 		// force full redraw with new buffer size
 		this.fullRedraw = true;
 		this.redraw();
 
-		Log.d(this.getClass().toString(), "parentChanged() now width=" + termWidth + ", height=" + termHeight);
+		Log.i(TAG, String.format("parentChanged() now width=%d, height=%d", termWidth, termHeight));
 	}
 	
+	/**
+	 * Somehow our parent {@link TerminalView} was destroyed. Now we don't need
+	 * to redraw anywhere, and we can recycle our internal bitmap.
+	 */
 	public synchronized void parentDestroyed() {
 		this.parent = null;
+		if(this.bitmap != null)
+			this.bitmap.recycle();
 		this.bitmap = null;
 		this.canvas.setBitmap(null);
 	}
@@ -410,22 +491,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		return buffer;
 	}
 	
-	private int darken(int color) {
-		return Color.argb(0xFF,
-			(int)(Color.red(color) * 0.8),
-			(int)(Color.green(color) * 0.8),
-			(int)(Color.blue(color) * 0.8)
-		);
-	}
-	
-	private int color[] = { Color.BLACK, Color.RED, Color.GREEN, Color.YELLOW,
-		Color.BLUE, Color.MAGENTA, Color.CYAN, Color.WHITE, };
-	
-	private int darkerColor[] = new int[color.length];
-	
-	private final static int COLOR_FG_STD = 7;
-	private final static int COLOR_BG_STD = 0;
-	
 	public long lastDraw = 0;
 	public long drawTolerance = 100;
 
@@ -433,21 +498,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		// render our buffer only if we have a surface
 		if(this.parent == null) return;
 		
-		long time = System.currentTimeMillis();
 		int lines = 0;
 		
-		// only worry about rendering if its been awhile
-		//if(time - lastDraw < drawTolerance) return;
-		//lastDraw = time;
-
 		int fg, bg;
 		boolean entireDirty = buffer.update[0] || this.fullRedraw;
 		
 		// walk through all lines in the buffer
 		for(int l = 0; l < buffer.height; l++) {
-			
-//			if(entireDirty)
-//				Log.w("BUFFERDUMP", new String(buffer.charArray[l]));
 			
 			// check if this line is dirty and needs to be repainted
 			// also check for entire-buffer dirty flags
@@ -456,9 +513,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			
 			// reset dirty flag for this line
 			buffer.update[l + 1] = false;
-			
-			// lock this entire row as being dirty
-			//Rect dirty = new Rect(0, l * charHeight, buffer.width * charWidth, (l + 1) * charHeight);
 			
 			// walk through all characters in this line
 			for (int c = 0; c < buffer.width; c++) {
@@ -511,26 +565,17 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 				// advance to the next text block with different characteristics
 				c += addr - 1;
 			}
-
-			// unlock this row and update
-			//this.current.unlockCanvasAndPost(canvas);
 		}
 		
 		// reset entire-buffer flags
 		buffer.update[0] = false;
 		this.fullRedraw = false;
 		
-		// dump out rendering statistics
-		time = System.currentTimeMillis() - time;
-		//Log.d(this.getClass().toString(), "redraw called and updated lines=" + lines + " taking ms=" + time);
-		
 		this.parent.postInvalidate();
 		
 	}
 
 	public void updateScrollBar() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	

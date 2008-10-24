@@ -1,11 +1,25 @@
+/*
+	ConnectBot: simple, powerful, open-source SSH client for Android
+	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
+	
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package org.connectbot;
 
 import org.connectbot.service.TerminalBridge;
-import org.connectbot.service.TerminalBridgeSurface;
 import org.connectbot.service.TerminalManager;
-import org.theb.ssh.InteractiveHostKeyVerifier;
-
-import com.trilead.ssh2.Connection;
 
 import de.mud.terminal.vt320;
 
@@ -14,7 +28,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -27,36 +40,33 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.MenuItem.OnMenuItemClickListener;
-import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.Animation.AnimationListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
-import android.widget.LinearLayout.LayoutParams;
 
-public class Console extends Activity {
+public class ConsoleActivity extends Activity {
 	
-	public ViewFlipper flip = null;
-	public TerminalManager bound = null;
-	public LayoutInflater inflater = null;
+	public final static String TAG = ConsoleActivity.class.toString();
+	
+	protected ViewFlipper flip = null;
+	protected TerminalManager bound = null;
+	protected LayoutInflater inflater = null;
 	
     private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
 			
-			Log.d(this.getClass().toString(), "ohhai there, i found bridges=" + bound.bridges.size());
+			Log.d(TAG, String.format("Connected to TerminalManager and found bridges.size=%d", bound.bridges.size()));
 			
 			// clear out any existing bridges and record requested index
 			flip.removeAllViews();
 			String requestedNickname = (requested != null) ? requested.getFragment() : null;
 			int requestedIndex = 0;
-
 			
 			// first check if we need to create a new session for requested
 			boolean found = false;
@@ -64,17 +74,17 @@ public class Console extends Activity {
 				if(bridge.nickname.equals(requestedNickname))
 					found = true;
 			}
-			
+
+			// if we didnt find the requested connection, try opening it
 			if(!found) {
 				try {
-					Log.d(this.getClass().toString(), "onServiceConnected() is openConnection() because of unknown requested uri="+requested.toString());
+					Log.d(TAG, String.format("We couldnt find an existing bridge with URI=%s, so creating one now", requested.toString()));
 					bound.openConnection(requested);
 				} catch(Exception e) {
-					e.printStackTrace();
+					Log.e(TAG, "Problem while trying to create new requested bridge from URI", e);
 				}
 			}
 
-			
 			// create views for all bridges on this service
 			for(TerminalBridge bridge : bound.bridges) {
 				
@@ -86,7 +96,7 @@ public class Console extends Activity {
 				overlay.setText(bridge.nickname);
 
 				// and add our terminal view control, using index to place behind overlay
-				TerminalView terminal = new TerminalView(Console.this, bridge);
+				TerminalView terminal = new TerminalView(ConsoleActivity.this, bridge);
 				terminal.setId(R.id.console_flip);
 				view.addView(terminal, 0);
 				
@@ -112,17 +122,21 @@ public class Console extends Activity {
 		}
 	};
 	
-	public Animation fade_out = null; 
-	//public String requestedBridge = null;
+	protected Animation fade_out = null; 
 	
-	public void updateDefault() {
+	/**
+	 * Save the currently shown {@link TerminalView} as the default. This is
+	 * saved back down into {@link TerminalManager} where we can read it again
+	 * later.
+	 */
+	protected void updateDefault() {
 		// update the current default terminal
 		TerminalView terminal = (TerminalView)flip.getCurrentView().findViewById(R.id.console_flip);
 		if(bound == null || terminal == null) return;
 		bound.defaultBridge = terminal.bridge;
 	}
 	
-	public Uri requested;
+	protected Uri requested;
 	
 	@Override
     public void onStart() {
@@ -147,7 +161,7 @@ public class Console extends Activity {
 		return view.findViewById(id);
 	}
 	
-	public ClipboardManager clipboard;
+	protected ClipboardManager clipboard;
 
 	@Override
     public void onCreate(Bundle icicle) {
@@ -157,9 +171,6 @@ public class Console extends Activity {
 		this.setContentView(R.layout.act_console);
 		
 		this.clipboard = (ClipboardManager)this.getSystemService(CLIPBOARD_SERVICE);
-		
-		// pull out any requested bridge
-		//this.requestedBridge = this.getIntent().getExtras().getString(Intent.EXTRA_TEXT);
 		
 		// handle requested console from incoming intent
 		this.requested = this.getIntent().getData();
@@ -253,7 +264,7 @@ public class Console extends Activity {
 						flip.setInAnimation(slide_right_in);
 						flip.setOutAnimation(slide_right_out);
 						flip.showPrevious();
-						Console.this.updateDefault();
+						ConsoleActivity.this.updateDefault();
 						
 						// show overlay on new slide and start fade
 						overlay = findCurrentView(R.id.terminal_overlay);
@@ -270,7 +281,7 @@ public class Console extends Activity {
 						flip.setInAnimation(slide_left_in);
 						flip.setOutAnimation(slide_left_out);
 						flip.showNext();
-						Console.this.updateDefault();
+						ConsoleActivity.this.updateDefault();
 
 						// show overlay on new slide and start fade
 						overlay = findCurrentView(R.id.terminal_overlay);
@@ -304,13 +315,13 @@ public class Console extends Activity {
 		
 	}
 	
-	public MenuItem copy, paste;
+	protected MenuItem copy, paste;
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		
-		MenuItem add = menu.add(0, 0, Menu.NONE, "Disconnect");
+		MenuItem add = menu.add("Disconnect");
 		add.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
 		add.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
@@ -324,12 +335,13 @@ public class Console extends Activity {
 			}
 		});
 		
-		copy = menu.add(0, 0, Menu.NONE, "Copy");
+		copy = menu.add("Copy");
 		copy.setIcon(android.R.drawable.ic_menu_set_as);
 		copy.setEnabled(false);
+		// TODO: implement copy here  :)
 
 		
-		paste = menu.add(0, 0, Menu.NONE, "Paste");
+		paste = menu.add("Paste");
 		paste.setIcon(android.R.drawable.ic_menu_edit);
 		paste.setEnabled(clipboard.hasText());
 		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
