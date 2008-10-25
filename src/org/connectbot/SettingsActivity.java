@@ -22,13 +22,14 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
 public class SettingsActivity extends PreferenceActivity {
-	
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preferences);
-        
-    }
-    
-}
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		addPreferencesFromResource(R.xml.preferences);
+
+		// TODO: add parse checking here to make sure we have integer value for scrollback
+
+	}
+
+}
