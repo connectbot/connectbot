@@ -21,6 +21,7 @@ package org.connectbot.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.concurrent.Semaphore;
 
 import org.connectbot.TerminalView;
 
@@ -40,6 +41,7 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 
 import com.trilead.ssh2.Connection;
+import com.trilead.ssh2.InteractiveCallback;
 import com.trilead.ssh2.KnownHosts;
 import com.trilead.ssh2.ServerHostKeyVerifier;
 import com.trilead.ssh2.Session;
@@ -58,7 +60,7 @@ import de.mud.terminal.vt320;
  * This class also provides SSH hostkey verification prompting, and password
  * prompting.
  */
-public class TerminalBridge implements VDUDisplay, OnKeyListener {
+public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCallback {
 	
 	public final static String TAG = TerminalBridge.class.toString();
 	
@@ -68,7 +70,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	
 	public final static String ENCODING = "ASCII";
 	public static final String AUTH_PUBLICKEY = "publickey",
-		AUTH_PASSWORD = "password";
+		AUTH_PASSWORD = "password",
+		AUTH_KEYBOARDINTERACTIVE = "keyboard-interactive";
 	
 	private int darken(int color) {
 		return Color.argb(0xFF,
@@ -109,6 +112,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	protected Canvas canvas = new Canvas();
 
 	private boolean ctrlPressed = false;
+	
+	private String currentMethod = null;
+	private Semaphore waitChallengeResponse;
+	private String currentChallengeResponse = null;
 	
 	
 	public class HostKeyVerifier implements ServerHostKeyVerifier {
@@ -200,9 +207,17 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 					connection.connect(new HostKeyVerifier());
 					outputLine("Trying to authenticate");
 					if(connection.isAuthMethodAvailable(username, AUTH_PASSWORD)) {
+						currentMethod = AUTH_PASSWORD;
 						// show auth prompt in window
 						requestPasswordVisible(true, "Password");
 						//promptPassword();
+					} else if (connection.isAuthMethodAvailable(username, AUTH_KEYBOARDINTERACTIVE)) {
+						currentMethod = AUTH_KEYBOARDINTERACTIVE;
+						if (connection.authenticateWithKeyboardInteractive(username, TerminalBridge.this)) {
+							TerminalBridge.this.buffer.deleteArea(0, 0, TerminalBridge.this.buffer.getColumns(), TerminalBridge.this.buffer.getRows());
+							requestPasswordVisible(false, null);
+							finishConnection();
+						}
 					} else {
 						outputLine("Looks like your host doesn't support 'password' authentication.");
 						outputLine("Other auth methods, such as interactive and publickey, are still being written.");
@@ -247,13 +262,19 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	 */
 	public void incomingPassword(String password) {
 		try {
-			// try authenticating with given password
-			Log.d(TAG, "Attempting to try password authentication");
-			if(this.connection.authenticateWithPassword(this.username, password)) {
-				this.buffer.deleteArea(0, 0, this.buffer.getColumns(), this.buffer.getRows());
-				requestPasswordVisible(false, null);
-				finishConnection();
-				return;
+			if (currentMethod == AUTH_PASSWORD) {
+				// try authenticating with given password
+				Log.d(TAG, "Attempting to try password authentication");
+				if (this.connection.authenticateWithPassword(this.username, password)) {
+					this.buffer.deleteArea(0, 0, this.buffer.getColumns(), this.buffer.getRows());
+					requestPasswordVisible(false, null);
+					finishConnection();
+					return;
+				}
+			} else if (currentMethod == AUTH_KEYBOARDINTERACTIVE) {
+				Log.d(TAG, "Attempting to try keyboard-interactive authentication");
+				currentChallengeResponse = password;
+				waitChallengeResponse.release();
 			}
 		} catch (IOException e) {
 			Log.e(TAG, "Problem while trying to authenticate with password", e);
@@ -601,6 +622,21 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	}
 
 	public void updateScrollBar() {
+	}
+
+	public String[] replyToChallenge(String name, String instruction,
+			int numPrompts, String[] prompt, boolean[] echo) throws Exception {
+		String[] responses = new String[numPrompts];
+		
+		waitChallengeResponse = new Semaphore(0);
+		
+		for (int i = 0; i < numPrompts; i++) {
+			requestPasswordVisible(true, prompt[i]);
+			waitChallengeResponse.acquire();
+			responses[i] = currentChallengeResponse;
+		}
+
+		return responses;
 	}
 
 	
