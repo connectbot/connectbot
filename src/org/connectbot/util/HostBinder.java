@@ -51,14 +51,19 @@ public class HostBinder implements ViewBinder {
 		
 	}
 	
+	public final static int STATE_UNKNOWN = 1, STATE_CONNECTED = 2, STATE_DISCONNECTED = 3;
+	
 	/**
 	 * Check if we're connected to a terminal with the given nickname.
 	 */
-	protected boolean isConnected(String nickname) {
+	protected int getConnectedState(String nickname) {
 		// always disconnected if we dont have backend service
-		if(this.manager == null) return false;
-		return (this.manager.findBridge(nickname) != null);
-		
+		if(this.manager == null) return STATE_UNKNOWN;
+		boolean connected = (this.manager.findBridge(nickname) != null);
+		boolean disconnected = (this.manager.disconnected.contains(nickname));
+		if(connected) return STATE_CONNECTED;
+		if(disconnected) return STATE_DISCONNECTED;
+		return STATE_UNKNOWN;
 	}
 	
 	public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
@@ -72,10 +77,16 @@ public class HostBinder implements ViewBinder {
 				COL_NICKNAME = cursor.getColumnIndexOrThrow(HostDatabase.FIELD_HOST_NICKNAME);
 			
 			String nickname = cursor.getString(COL_NICKNAME);
-			if(this.isConnected(nickname)) {
-				icon.setImageState(new int[] { android.R.attr.state_checked }, true);
-			} else {
+			switch(this.getConnectedState(nickname)) {
+			case STATE_UNKNOWN:
 				icon.setImageState(new int[] { }, true);
+				break;
+			case STATE_CONNECTED:
+				icon.setImageState(new int[] { android.R.attr.state_checked }, true);
+				break;
+			case STATE_DISCONNECTED:
+				icon.setImageState(new int[] { android.R.attr.state_expanded }, true);
+				break;
 			}
 			return true;
 			

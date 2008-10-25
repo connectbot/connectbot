@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.Semaphore;
 
+import org.connectbot.ConsoleActivity;
 import org.connectbot.TerminalView;
 
 import android.graphics.Bitmap;
@@ -41,6 +42,7 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 
 import com.trilead.ssh2.Connection;
+import com.trilead.ssh2.ConnectionMonitor;
 import com.trilead.ssh2.InteractiveCallback;
 import com.trilead.ssh2.KnownHosts;
 import com.trilead.ssh2.ServerHostKeyVerifier;
@@ -60,7 +62,7 @@ import de.mud.terminal.vt320;
  * This class also provides SSH hostkey verification prompting, and password
  * prompting.
  */
-public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCallback {
+public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCallback, ConnectionMonitor {
 	
 	public final static String TAG = TerminalBridge.class.toString();
 	
@@ -91,6 +93,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 	public final String nickname;
 	protected final String username;
+	public String postlogin = null;
 	
 	protected final Connection connection;
 	protected Session session;
@@ -199,34 +202,43 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		// try opening ssh connection
 		this.outputLine(String.format("Connecting to %s:%d", hostname, port));
 		this.connection = new Connection(hostname, port);
+		this.connection.addConnectionMonitor(this);
 
+	}
+	
+	/**
+	 * Spawn thread to open connection and start login process.
+	 */
+	public void startLogin() {
 		new Thread(new Runnable() {
-
 			public void run() {
 				try {
 					connection.connect(new HostKeyVerifier());
 					outputLine("Trying to authenticate");
+					
+					// TODO: insert publickey auth check here
+					
 					if(connection.isAuthMethodAvailable(username, AUTH_PASSWORD)) {
 						currentMethod = AUTH_PASSWORD;
-						// show auth prompt in window
-						requestPasswordVisible(true, "Password");
-						//promptPassword();
+						requestPromptVisible(true, "Password");
+						
 					} else if (connection.isAuthMethodAvailable(username, AUTH_KEYBOARDINTERACTIVE)) {
 						currentMethod = AUTH_KEYBOARDINTERACTIVE;
+						// this auth method will talk with us using InteractiveCallback interface
+						// it blocks until that auth is finished, which means 
 						if (connection.authenticateWithKeyboardInteractive(username, TerminalBridge.this)) {
-							TerminalBridge.this.buffer.deleteArea(0, 0, TerminalBridge.this.buffer.getColumns(), TerminalBridge.this.buffer.getRows());
-							requestPasswordVisible(false, null);
+							requestPromptVisible(false, null);
 							finishConnection();
 						}
+						
 					} else {
-						outputLine("Looks like your host doesn't support 'password' authentication.");
-						outputLine("Other auth methods, such as interactive and publickey, are still being written.");
+						outputLine("[Your host doesn't support 'password' or 'keyboard-interactive' authentication.]");
+						
 					}
 				} catch (IOException e) {
 					Log.e(TAG, "Problem in SSH connection thread", e);
 				}
 			} 
-			
 		}).start();
 		
 	}
@@ -240,21 +252,18 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.redraw();
 	}
 
-//	protected void promptPassword() {
-//		this.outputLine("Password: ");
-//	}
+	public Handler parentHandler = null;
 	
-	public boolean passwordRequested = false;
-	public Handler passwordHandler = null;
-	public String passwordHint = null;
+	public boolean promptRequested = false;
+	public String promptHint = null;
 	
-	protected void requestPasswordVisible(boolean visible, String hint) {
-		this.passwordRequested = visible;
-		this.passwordHint = hint;
+	protected void requestPromptVisible(boolean visible, String hint) {
+		this.promptRequested = visible;
+		this.promptHint = hint;
 		
 		// pass notification up to any attached gui
-		if(this.passwordHandler != null)
-			Message.obtain(this.passwordHandler, -1, this.nickname).sendToTarget();
+		if(this.parentHandler != null)
+			Message.obtain(this.parentHandler, ConsoleActivity.HANDLE_PROMPT, this).sendToTarget();
 	}
 	
 	/**
@@ -263,11 +272,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public void incomingPassword(String password) {
 		try {
 			if (currentMethod == AUTH_PASSWORD) {
-				// try authenticating with given password
 				Log.d(TAG, "Attempting to try password authentication");
 				if (this.connection.authenticateWithPassword(this.username, password)) {
-					this.buffer.deleteArea(0, 0, this.buffer.getColumns(), this.buffer.getRows());
-					requestPasswordVisible(false, null);
+					requestPromptVisible(false, null);
 					finishConnection();
 					return;
 				}
@@ -280,7 +287,18 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			Log.e(TAG, "Problem while trying to authenticate with password", e);
 		}
 		this.outputLine("Permission denied, please try again.");
-//		this.promptPassword();
+	}
+
+	/**
+	 * Inject a specific string into this terminal. Used for post-login strings
+	 * and pasting clipboard.
+	 */
+	public void injectString(String string) {
+		if(string == null || string.length() == 0) return;
+		KeyEvent[] events = keymap.getEvents(string.toCharArray());
+		for(KeyEvent event : events) {
+			this.onKey(null, event.getKeyCode(), event);
+		}
 	}
 	
 	/**
@@ -291,6 +309,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		
 		try {
 			this.session = connection.openSession();
+			buffer.deleteArea(0, 0, TerminalBridge.this.buffer.getColumns(), TerminalBridge.this.buffer.getRows());
 			
 			// previously tried vt100 and xterm for emulation modes
 			// "screen" works the best for color and escape codes
@@ -326,6 +345,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 			// force font-size to make sure we resizePTY as needed
 			this.setFontSize(this.fontSize);
+			
+			// finally send any post-login string, if requested
+			this.injectString(postlogin);
 
 		} catch (IOException e1) {
 			Log.e(TAG, "Problem while trying to create PTY in finishConnection()", e1);
@@ -333,10 +355,16 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		
 	}
 	
+	protected BridgeDisconnectedListener disconnectListener = null;
+	
+	public void setOnDisconnectedListener(BridgeDisconnectedListener disconnectListener) {
+		this.disconnectListener = disconnectListener;
+	}
+	
 	/**
 	 * Force disconnection of this terminal bridge.
 	 */
-	public void dispose() {
+	public void disconnect() {
 		// disconnection request hangs if we havent really connected to a host yet
 		// temporary fix is to just spawn disconnection into a thread
 		new Thread(new Runnable() {
@@ -346,6 +374,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				connection.close();
 			}
 		}).start();
+		
+		// pass notification back up to terminal manager
+		// the manager will do any gui notification if applicable
+		if(this.disconnectListener != null)
+			this.disconnectListener.onDisconnected(this);
+		
 	}
 	
 	public KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
@@ -484,6 +518,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		int width = parent.getWidth();
 		int height = parent.getHeight();
 		
+		// recalculate buffer size
+		int termWidth = width / charWidth;
+		int termHeight = height / charHeight;
+		
+		// convert our height/width to integral values
+		width = termWidth * charWidth;
+		height = termHeight * charHeight;
+		
 		// reallocate new bitmap if needed
 		boolean newBitmap = (this.bitmap == null);
 		if(this.bitmap != null)
@@ -497,10 +539,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.defaultPaint.setColor(Color.BLACK);
 		this.canvas.drawRect(0, 0, width, height, this.defaultPaint);
 
-		// recalculate buffer size and update buffer
-		int termWidth = width / charWidth;
-		int termHeight = height / charHeight;
-		
 		try {
 			// request a terminal pty resize
 			buffer.setScreenSize(termWidth, termHeight, true);
@@ -624,14 +662,18 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public void updateScrollBar() {
 	}
 
-	public String[] replyToChallenge(String name, String instruction,
-			int numPrompts, String[] prompt, boolean[] echo) throws Exception {
+	public void connectionLost(Throwable reason) {
+		// weve lost our ssh connection, so pass along to manager and gui
+		Log.e(TAG, "Somehow our underlying SSH socket died", reason);
+		this.disconnect();
+	}
+
+	public String[] replyToChallenge(String name, String instruction, int numPrompts, String[] prompt, boolean[] echo) throws Exception {
 		String[] responses = new String[numPrompts];
-		
 		waitChallengeResponse = new Semaphore(0);
 		
 		for (int i = 0; i < numPrompts; i++) {
-			requestPasswordVisible(true, prompt[i]);
+			requestPromptVisible(true, prompt[i]);
 			waitChallengeResponse.acquire();
 			responses[i] = currentChallengeResponse;
 		}
@@ -639,6 +681,5 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		return responses;
 	}
 
-	
 
 }

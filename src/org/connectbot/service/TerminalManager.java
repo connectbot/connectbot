@@ -21,6 +21,7 @@ package org.connectbot.service;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.connectbot.ConsoleActivity;
 import org.connectbot.R;
 import org.connectbot.util.HostDatabase;
 
@@ -29,7 +30,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -40,12 +43,14 @@ import android.util.Log;
  * 
  * @author jsharkey
  */
-public class TerminalManager extends Service {
+public class TerminalManager extends Service implements BridgeDisconnectedListener {
 	
 	public final static String TAG = TerminalManager.class.toString();
 	
 	public List<TerminalBridge> bridges = new LinkedList<TerminalBridge>();
 	public TerminalBridge defaultBridge = null;
+	
+	public List<String> disconnected = new LinkedList<String>();
 	
 	protected SharedPreferences prefs;
 	protected String pref_emulation, pref_scrollback;
@@ -64,7 +69,7 @@ public class TerminalManager extends Service {
 
 		// disconnect and dispose of any existing bridges
 		for(TerminalBridge bridge : bridges)
-			bridge.dispose();
+			bridge.disconnect();
 		
 	}
 	
@@ -83,8 +88,17 @@ public class TerminalManager extends Service {
 			scrollback = Integer.parseInt(prefs.getString(this.pref_scrollback, "140"));
 		} catch(Exception e) {
 		}
+
+		// find the post-connection string for this host
+		HostDatabase hostdb = new HostDatabase(this);
+		String postlogin = hostdb.getPostLogin(nickname);
+		hostdb.close();
+
 		
 		TerminalBridge bridge = new TerminalBridge(nickname, username, hostname, port, emulation, scrollback);
+		bridge.disconnectListener = this;
+		bridge.postlogin = postlogin;
+		bridge.startLogin();
 		this.bridges.add(bridge);
 		
 		// also update database with new connected time
@@ -126,14 +140,29 @@ public class TerminalManager extends Service {
 		}
 		return null;
 	}
+	
+	public Handler parentHandler = null;
 
 	/**
 	 * Force disconnection of this {@link TerminalBridge} and remove it from our
 	 * internal list of active connections.
 	 */
 	public void disconnect(TerminalBridge bridge) {
-		bridge.dispose();
+		// we will be notified about this through call back up to disconnected() 
+		bridge.disconnect();
+	}
+	
+	/**
+	 * Called by child bridge when somehow it's been disconnected.
+	 */
+	public void onDisconnected(TerminalBridge bridge) {
+		// remove this bridge from our list
 		this.bridges.remove(bridge);
+		this.disconnected.add(bridge.nickname);
+		
+		// pass notification back up to gui
+		if(this.parentHandler != null)
+			Message.obtain(this.parentHandler, ConsoleActivity.HANDLE_DISCONNECT, bridge).sendToTarget();
 		
 	}
 

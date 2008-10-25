@@ -65,6 +65,9 @@ public class ConsoleActivity extends Activity {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
 			
+			// let manager know about our event handling services
+			bound.parentHandler = parentHandler;
+			
 			Log.d(TAG, String.format("Connected to TerminalManager and found bridges.size=%d", bound.bridges.size()));
 			
 			// clear out any existing bridges and record requested index
@@ -93,7 +96,7 @@ public class ConsoleActivity extends Activity {
 			for(TerminalBridge bridge : bound.bridges) {
 				
 				// let them know about our password services
-				bridge.passwordHandler = passwordHandler;
+				bridge.parentHandler = parentHandler;
 				
 				// inflate each terminal view 
 				RelativeLayout view = (RelativeLayout)inflater.inflate(R.layout.item_terminal, flip, false);
@@ -119,16 +122,18 @@ public class ConsoleActivity extends Activity {
 			// show the requested bridge if found, also fade out overlay
 			flip.setDisplayedChild(requestedIndex);
 			flip.getCurrentView().findViewById(R.id.terminal_overlay).startAnimation(fade_out);
-			updatePasswordVisible();
+			updatePromptVisible();
+			updateEmptyVisible();
 			
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
 			// remove all bridge views
 			for(TerminalBridge bridge : bound.bridges)
-				bridge.passwordHandler = null;
+				bridge.parentHandler = null;
 			
 			flip.removeAllViews();
+			updateEmptyVisible();
 			bound = null;
 			
 		}
@@ -139,35 +144,59 @@ public class ConsoleActivity extends Activity {
 		if(!(view instanceof TerminalView)) return null;
 		return ((TerminalView)view).bridge.nickname;
 	}
-	
 
-	public Handler passwordHandler = new Handler() {
+	public final static int HANDLE_PROMPT = 1, HANDLE_DISCONNECT = 2;
+
+	public Handler parentHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			// someone below us requested to display a password dialog
 			// they are sending nickname and requested
-			String nickname = (String)msg.obj;
+			TerminalBridge bridge = (TerminalBridge)msg.obj;
 			
-			// if they are currently active, then obey request
-			if(nickname.equals(getCurrentNickname())) {
-				updatePasswordVisible();
+			switch(msg.what) {
+			case HANDLE_PROMPT:
+				// someone is requesting a prompt field update
+				updatePromptVisible();
+				break;
+				
+			case HANDLE_DISCONNECT:
+				// remove this bridge becase its been disconnected
+				Log.d(TAG, "Someone sending HANDLE_DISCONNECT to parentHandler");
+				for(int i = 0; i < flip.getChildCount(); i++) {
+					View view = flip.getChildAt(i).findViewById(R.id.console_flip);
+					if(!(view instanceof TerminalView)) continue;
+					TerminalView terminal = (TerminalView)view;
+					if(terminal.bridge.equals(bridge)) {
+						// weve found the terminal to remove
+						// shift something into its place if currently visible
+						if(flip.getDisplayedChild() == i) {
+							shiftLeft();
+						}
+						flip.removeViewAt(i);
+						updateEmptyVisible();
+						break;
+					}
+				}
+				break;
+			
 			}
-
+			
 		}
 	};
 	
-	protected void updatePasswordVisible() {
+	protected void updatePromptVisible() {
 		// check if our currently-visible terminalbridge is requesting password services
 		View view = findCurrentView(R.id.console_flip);
 		boolean requested = false;
 		if(view instanceof TerminalView)
-			requested = ((TerminalView)view).bridge.passwordRequested;
+			requested = ((TerminalView)view).bridge.promptRequested;
 		
 		// handle showing/hiding password field and transferring focus
 		if(requested) {
 			this.password.setVisibility(View.VISIBLE);
 			this.password.setText("");
-			this.password.setHint(((TerminalView)view).bridge.passwordHint);
+			this.password.setHint(((TerminalView)view).bridge.promptHint);
 			this.password.requestFocus();
 		} else {
 			this.password.setVisibility(View.GONE);
@@ -219,6 +248,7 @@ public class ConsoleActivity extends Activity {
 	protected ClipboardManager clipboard;
 	
 	protected EditText password;
+	protected TextView empty;
 	
 	protected Animation slide_left_in, slide_left_out, slide_right_in, slide_right_out, fade_stay_hidden, fade_out; 
 
@@ -237,6 +267,7 @@ public class ConsoleActivity extends Activity {
 		this.inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
 		this.flip = (ViewFlipper)this.findViewById(R.id.console_flip);
+		this.empty = (TextView)this.findViewById(android.R.id.empty);
 		
 		this.password = (EditText)this.findViewById(R.id.console_password);
 		this.password.setOnKeyListener(new OnKeyListener() {
@@ -361,7 +392,13 @@ public class ConsoleActivity extends Activity {
 		});
 		
 	}
+
+	protected void updateEmptyVisible() {
+		// update visibility of empty status message
+		this.empty.setVisibility((flip.getChildCount() == 0) ? View.VISIBLE : View.GONE);
+	}
 	
+
 	protected void shiftLeft() {
 		// keep current overlay from popping up again
 		View overlay = findCurrentView(R.id.terminal_overlay);
@@ -376,7 +413,7 @@ public class ConsoleActivity extends Activity {
 		overlay = findCurrentView(R.id.terminal_overlay);
 		if(overlay != null) overlay.startAnimation(fade_out);
 
-		updatePasswordVisible();
+		updatePromptVisible();
 
 	}
 	
@@ -395,7 +432,7 @@ public class ConsoleActivity extends Activity {
 		overlay = findCurrentView(R.id.terminal_overlay);
 		if(overlay != null) overlay.startAnimation(fade_out);
 
-		updatePasswordVisible();
+		updatePromptVisible();
 
 	}
 	
@@ -414,8 +451,9 @@ public class ConsoleActivity extends Activity {
 				if(view == null) return false;
 				TerminalView terminal = (TerminalView)view;
 				bound.disconnect(terminal.bridge);
-				flip.removeView(flip.getCurrentView());
-				shiftLeft();
+				// movement should now be happening over in onDisconnect() handler
+				//flip.removeView(flip.getCurrentView());
+				//shiftLeft();
 				return true;
 			}
 		});
@@ -438,10 +476,7 @@ public class ConsoleActivity extends Activity {
 				
 				// pull string from clipboard and generate all events to force down
 				String clip = clipboard.getText().toString();
-				KeyEvent[] events = terminal.bridge.keymap.getEvents(clip.toCharArray());
-				for(KeyEvent event : events) {
-					terminal.bridge.onKey(terminal, event.getKeyCode(), event);
-				}
+				terminal.bridge.injectString(clip);
 
 				return true;
 			}
