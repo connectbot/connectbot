@@ -34,51 +34,19 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.ViewFlipper;
 
+/**
+ * Show a series of wizard-like steps to the user, which might include an EULA,
+ * program credits, and helpful hints.
+ * 
+ * @author jsharkey
+ */
 public class WizardActivity extends Activity {
-	
-	public final static int ACTION_NEXT = +1, ACTION_PREV = -1;
-	
-	protected Handler actionHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			
-			switch(msg.what) {
-			case ACTION_NEXT:
-				if(flipper.getDisplayedChild() == flipper.getChildCount() - 1) {
-					WizardActivity.this.setResult(Activity.RESULT_OK);
-					WizardActivity.this.finish();
-				} else {
-					flipper.showNext();
-				}
-				break;
-			case ACTION_PREV:
-				if(flipper.getDisplayedChild() == 0) {
-					WizardActivity.this.setResult(Activity.RESULT_CANCELED);
-					WizardActivity.this.finish();
-				} else {
-					flipper.showPrevious();
-				}
-				break;
-				
-			}
-			
-			// scroll to top and hide all views except current
-			scroll.scrollTo(0, 0);
-			
-			setButtons();
-			
-		}
-	};
-	
-	protected void setButtons() {
-		boolean eula = (flipper.getDisplayedChild() == 0);
-		
-		next.setText(eula ? "Agree" : "Next");
-		prev.setText(eula ? "Cancel" : "Back");
-		
-	}
-	
-	protected ScrollView scroll = null;
+
+	/**
+	 * In-order list of wizard steps to present to user.  These are layout resource ids.
+	 */
+	public final static int[] STEPS = new int[] { R.layout.wiz_eula, R.layout.wiz_features };
+
 	protected ViewFlipper flipper = null;
 	protected Button next, prev;
 	
@@ -87,33 +55,62 @@ public class WizardActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.act_wizard);
 		
-		// let the user step through various parts of wizard
-		// inflate all views to walk through
-		
-		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		
-		this.scroll = (ScrollView)this.findViewById(R.id.wizard_scroll);
 		this.flipper = (ViewFlipper)this.findViewById(R.id.wizard_flipper);
 		
-		this.flipper.addView(inflater.inflate(R.layout.wiz_eula, this.flipper, false));
-		this.flipper.addView(inflater.inflate(R.layout.wiz_features, this.flipper, false));
+		// inflate the layouts for each step
+		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		for(int layout : STEPS) {
+			View step = inflater.inflate(layout, this.flipper, false);
+			this.flipper.addView(step);
+		}
 		
 		next = (Button)this.findViewById(R.id.action_next);
 		next.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				actionHandler.sendEmptyMessage(ACTION_NEXT);
+				if(isLastDisplayed()) {
+					// user walked past end of wizard, so return okay
+					WizardActivity.this.setResult(Activity.RESULT_OK);
+					WizardActivity.this.finish();
+				} else {
+					// show next step and update buttons
+					flipper.showNext();
+					updateButtons();
+				}
 			}
 		});
 		
 		prev = (Button)this.findViewById(R.id.action_prev);
 		prev.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				actionHandler.sendEmptyMessage(ACTION_PREV);
+				if(isFirstDisplayed()) {
+					// user walked past beginning of wizard, so return that they cancelled
+					WizardActivity.this.setResult(Activity.RESULT_CANCELED);
+					WizardActivity.this.finish();
+				} else {
+					// show previous step and update buttons
+					flipper.showPrevious();
+					updateButtons();
+				}
 			}
 		});
 		
-		this.setButtons();
+		this.updateButtons();
 		
+	}
+	
+	protected boolean isFirstDisplayed() {
+		return (flipper.getDisplayedChild() == 0);
+	}
+	
+	protected boolean isLastDisplayed() {
+		return (flipper.getDisplayedChild() == flipper.getChildCount() - 1);
+	}
+	
+	protected void updateButtons() {
+		boolean eula = (flipper.getDisplayedChild() == 0);
+		
+		next.setText(eula ? "Agree" : "Next");
+		prev.setText(eula ? "Cancel" : "Back");
 		
 	}
 	

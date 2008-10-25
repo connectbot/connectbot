@@ -41,10 +41,10 @@ public final class R {
         public static final int action_next=0x7f090005;
         public static final int action_prev=0x7f090004;
         public static final int console_flip=0x7f090000;
-        public static final int front_quickconnect=0x7f090001;
+        public static final int console_password=0x7f090001;
+        public static final int front_quickconnect=0x7f090002;
         public static final int terminal_overlay=0x7f090006;
         public static final int wizard_flipper=0x7f090003;
-        public static final int wizard_scroll=0x7f090002;
     }
     public static final class layout {
         public static final int act_console=0x7f030000;

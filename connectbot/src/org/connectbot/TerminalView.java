@@ -24,6 +24,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PixelXorXfermode;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
@@ -58,6 +59,7 @@ public class TerminalView extends View {
 		
 		// connect our view up to the bridge
 		this.setOnKeyListener(bridge);
+		
 		
 	}
 	

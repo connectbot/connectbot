@@ -67,7 +67,7 @@ public class HostListActivity extends ListActivity {
 		}
 	};
 	
-	public TerminalManager bound = null;
+	protected TerminalManager bound = null;
 
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
@@ -83,11 +83,10 @@ public class HostListActivity extends ListActivity {
 		}
 	};
 
-	public HostDatabase hostdb;
-	public Cursor hosts;
-	public ListView list;
+	protected HostDatabase hostdb;
+	protected Cursor hosts;
 
-	public int COL_ID, COL_NICKNAME, COL_USERNAME, COL_HOSTNAME, COL_CONNECTED, COL_PORT;
+	protected int COL_ID, COL_NICKNAME, COL_USERNAME, COL_HOSTNAME, COL_CONNECTED, COL_PORT;
 
 	@Override
     public void onStart() {
@@ -109,22 +108,33 @@ public class HostListActivity extends ListActivity {
 	
 	
 	public final static String EULA = "eula";
+
+	public final static int REQUEST_EDIT = 1;
+	public final static int REQUEST_EULA = 2;
+
 	protected SharedPreferences prefs = null;
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-		if(resultCode == Activity.RESULT_OK) {
-			// yay they agreed, so store that info
-			Editor edit = prefs.edit();
-			edit.putBoolean(EULA, true);
-			edit.commit();
-		} else {
-			// user didnt agree, so close
-			this.finish();
+		switch(requestCode) {
+		case REQUEST_EULA:
+			if(resultCode == Activity.RESULT_OK) {
+				// yay they agreed, so store that info
+				Editor edit = prefs.edit();
+				edit.putBoolean(EULA, true);
+				edit.commit();
+			} else {
+				// user didnt agree, so close
+				this.finish();
+			}
+			break;
+			
+		case REQUEST_EDIT:
+			this.updateCursor();
+			break;
+			
 		}
-		
-		this.updateCursor();
 		
 	}
 	
@@ -142,7 +152,7 @@ public class HostListActivity extends ListActivity {
 		
 		boolean agreed = prefs.getBoolean(EULA, false);
 		if(!agreed) {
-			this.startActivityForResult(new Intent(this, WizardActivity.class), 1);
+			this.startActivityForResult(new Intent(this, WizardActivity.class), REQUEST_EULA);
 		}
 		
 		// start thread to check for new version
@@ -155,7 +165,7 @@ public class HostListActivity extends ListActivity {
 
 		// connect with hosts database and populate list
 		this.hostdb = new HostDatabase(this);
-		this.list = this.getListView();
+		ListView list = this.getListView();
 		this.updateCursor();
 		
 		//this.list.setSelector(R.drawable.highlight_disabled_pressed);
@@ -167,7 +177,7 @@ public class HostListActivity extends ListActivity {
 		this.COL_PORT = hosts.getColumnIndexOrThrow(HostDatabase.FIELD_HOST_PORT);
 		this.COL_CONNECTED = hosts.getColumnIndexOrThrow(HostDatabase.FIELD_HOST_LASTCONNECT);
 
-		this.list.setOnItemClickListener(new OnItemClickListener() {
+		list.setOnItemClickListener(new OnItemClickListener() {
 
 			public synchronized void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -208,7 +218,7 @@ public class HostListActivity extends ListActivity {
 
 		});
 
-		this.registerForContextMenu(this.list);
+		this.registerForContextMenu(list);
 
 		final Pattern hostmask = Pattern.compile(".+@.+(:\\d+)?");
 		final TextView text = (TextView) this.findViewById(R.id.front_quickconnect);
@@ -216,40 +226,38 @@ public class HostListActivity extends ListActivity {
 
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				
-				if(keyCode == KeyEvent.KEYCODE_ENTER) {
+				if(keyCode != KeyEvent.KEYCODE_ENTER) return false;
 					
-					// make sure we follow pattern
-					if (text.getText().length() < 3)
-						return false;
+				// make sure we follow pattern
+				if (text.getText().length() < 3)
+					return false;
 
-					// show error if poorly formed
-					if (!hostmask.matcher(text.getText().toString()).find()) {
-						text.setError("Use the format 'username@hostname:port'");
-						return false;
-					}
-					
-					// create new host for entered string and then launch
-					Uri uri = Uri.parse(String.format("ssh://%s", text.getText().toString()));
-					String username = uri.getUserInfo();
-					String hostname = uri.getHost();
-					int port = uri.getPort();
-					if(port == -1) port = 22;
-					
-					String nickname = String.format("%s@%s", username, hostname);
-					hostdb.createHost(null, nickname, username, hostname, port, hostdb.COLOR_GRAY);
-					
-					Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
-					intent.setData(Uri.parse(String.format("ssh://%s@%s:%s/#%s", username, hostname, port, nickname)));
-					HostListActivity.this.startActivity(intent);
-
+				// show error if poorly formed
+				if (!hostmask.matcher(text.getText().toString()).find()) {
+					text.setError("Use the format 'username@hostname:port'");
+					return false;
 				}
+				
+				// create new host for entered string and then launch
+				Uri uri = Uri.parse(String.format("ssh://%s", text.getText().toString()));
+				String username = uri.getUserInfo();
+				String hostname = uri.getHost();
+				int port = uri.getPort();
+				if(port == -1) port = 22;
+				
+				String nickname = String.format("%s@%s", username, hostname);
+				hostdb.createHost(null, nickname, username, hostname, port, hostdb.COLOR_GRAY);
+				
+				Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
+				intent.setData(Uri.parse(String.format("ssh://%s@%s:%s/#%s", username, hostname, port, nickname)));
+				HostListActivity.this.startActivity(intent);
 
 				// set list filter based on text
 				// String filter = text.getText().toString();
 				// list.setTextFilterEnabled((filter.length() > 0));
 				// list.setFilterText(filter);
 
-				return false;
+				return true;
 			}
 
 		});
@@ -259,7 +267,7 @@ public class HostListActivity extends ListActivity {
 	public MenuItem sortcolor, sortlast;
 	public boolean sortedByColor = false;
 	
-	public void updateCursor() {
+	protected void updateCursor() {
 
 		// refresh cursor because of possible sorting change
 		if(this.hosts != null)
@@ -267,12 +275,12 @@ public class HostListActivity extends ListActivity {
 		this.hosts = this.hostdb.allHosts(sortedByColor);
 		
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.item_host, this.hosts,
-				new String[] { hostdb.FIELD_HOST_NICKNAME, hostdb.FIELD_HOST_LASTCONNECT, hostdb.FIELD_HOST_LASTCONNECT, hostdb.FIELD_HOST_COLOR },
+				new String[] { HostDatabase.FIELD_HOST_NICKNAME, HostDatabase.FIELD_HOST_LASTCONNECT, HostDatabase.FIELD_HOST_LASTCONNECT, HostDatabase.FIELD_HOST_COLOR },
 				new int[] { android.R.id.text1, android.R.id.text2, android.R.id.icon, android.R.id.content });
 		adapter.setViewBinder(new HostBinder(bound, this.getResources()));
 		
 		//this.adapter = new HostAdapter(this, this.hosts);
-		this.list.setAdapter(adapter);
+		this.setListAdapter(adapter);
 		
 	}
 
@@ -292,14 +300,6 @@ public class HostListActivity extends ListActivity {
 		super.onCreateOptionsMenu(menu);
 		
 		// add host, ssh keys, about
-
-//		MenuItem add = menu.add(0, 0, Menu.NONE, "New host");
-//		add.setIcon(android.R.drawable.ic_menu_add);
-//		add.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-//			public boolean onMenuItemClick(MenuItem item) {
-//				return true;
-//			}
-//		});
 
 		sortcolor = menu.add("Sort by color");
 		sortcolor.setIcon(android.R.drawable.ic_menu_share);
@@ -337,9 +337,6 @@ public class HostListActivity extends ListActivity {
 		
 	}
 	
-	
-	
-	public final static int REQUEST_EDIT = 1;
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -348,7 +345,7 @@ public class HostListActivity extends ListActivity {
 
 		// create menu to handle deleting and sharing lists
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-		Cursor cursor = (Cursor) this.list.getItemAtPosition(info.position);
+		Cursor cursor = (Cursor) this.getListView().getItemAtPosition(info.position);
 
 		menu.setHeaderTitle(cursor.getString(COL_NICKNAME));
 		final int id = cursor.getInt(COL_ID);
