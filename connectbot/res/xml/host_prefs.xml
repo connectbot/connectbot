@@ -21,6 +21,7 @@
 	<EditTextPreference
 		android:key="nickname"
 		android:title="Nickname"
+		android:singleLine="true"
 		/>
 
 	<ListPreference
@@ -41,16 +42,19 @@
 		<EditTextPreference
 			android:key="username"
 			android:title="Username"
+			android:singleLine="true"
 			/>
 
 		<EditTextPreference
 			android:key="hostname"
 			android:title="Host"
+			android:singleLine="true"
 			/>
 
 		<EditTextPreference
 			android:key="port"
 			android:title="Port"
+			android:singleLine="true"
 			/>
 
 	</PreferenceCategory>

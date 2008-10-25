@@ -24,22 +24,13 @@
 	android:gravity="right"
 	>
 
-	<ScrollView
-		xmlns:android="http://schemas.android.com/apk/res/android"
+	<ViewFlipper
+		android:id="@+id/wizard_flipper"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
-		android:id="@+id/wizard_scroll"
-		>
+		/>
 		
-		<ViewFlipper
-			android:id="@+id/wizard_flipper"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			/>
-		
-	</ScrollView>
-	
 	<LinearLayout
 		android:orientation="horizontal"
 		android:layout_width="wrap_content"

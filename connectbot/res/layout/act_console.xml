@@ -16,9 +16,41 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-
-<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/console_flip"  
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"  
 	android:layout_height="fill_parent"  
-	/>
+	>
+	
+	<TextView
+		android:id="@android:id/empty"
+		android:layout_width="fill_parent"  
+		android:layout_height="fill_parent"  
+		android:text="No hosts currently connected"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:gravity="center" 
+		/>
+
+	<ViewFlipper 
+		android:id="@+id/console_flip"  
+		android:layout_width="fill_parent"  
+		android:layout_height="fill_parent" 
+		/>
+
+	<FrameLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:padding="5dip"  
+		>
+		
+		<EditText
+			android:id="@+id/console_password"
+			android:layout_width="fill_parent"  
+			android:layout_height="wrap_content"
+			android:password="true"
+			android:singleLine="true"  
+			/>
+	
+	</FrameLayout>
+	
+</RelativeLayout>
