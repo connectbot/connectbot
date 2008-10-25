@@ -211,6 +211,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 	public void updateSummaries() {
 		// for all text preferences, set hint as current database value
 		for(String key : this.pref.values.keySet()) {
+			if(key.equals("postlogin")) continue;
 			Preference pref = this.findPreference(key);
 			if(pref == null) continue;
 			if(pref instanceof CheckBoxPreference) continue;

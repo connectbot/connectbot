@@ -36,6 +36,12 @@
 		android:title="Use SSH keys"
 		/>
 
+	<EditTextPreference
+		android:key="postlogin"
+		android:title="Post-login automation"
+		android:summary="Commands to run on remote server once authenticated"
+		/>
+
 	<PreferenceCategory
 		android:title="Connection settings">
 		

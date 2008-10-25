@@ -20,15 +20,18 @@ package org.connectbot;
 
 import java.util.regex.Pattern;
 
+import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.HostBinder;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.UpdateHelper;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -40,6 +43,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -90,6 +94,8 @@ public class HostListActivity extends ListActivity {
 		// start the terminal manager service
 		this.startService(new Intent(this, TerminalManager.class));
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
+		
+		this.updateCursor();
 
 	}
 
@@ -98,11 +104,16 @@ public class HostListActivity extends ListActivity {
 		super.onStop();
 		this.unbindService(connection);
 		
+		if(this.hosts != null) {
+			this.hosts.close();
+			this.hosts = null;
+		}
+		
 	}
 	
 	
 	
-	public final static String EULA = "eula";
+	public final static String PREF_EULA = "eula", PREF_SORTBYCOLOR = "sortByColor"; 
 
 	public final static int REQUEST_EDIT = 1;
 	public final static int REQUEST_EULA = 2;
@@ -117,7 +128,7 @@ public class HostListActivity extends ListActivity {
 			if(resultCode == Activity.RESULT_OK) {
 				// yay they agreed, so store that info
 				Editor edit = prefs.edit();
-				edit.putBoolean(EULA, true);
+				edit.putBoolean(PREF_EULA, true);
 				edit.commit();
 			} else {
 				// user didnt agree, so close
@@ -134,7 +145,7 @@ public class HostListActivity extends ListActivity {
 	}
 	
 	
-	protected boolean shortcut = false;
+	protected boolean makingShortcut = false;
 	
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -143,9 +154,9 @@ public class HostListActivity extends ListActivity {
 
 		
 		// check for eula agreement
-		this.prefs = this.getSharedPreferences(EULA, Context.MODE_PRIVATE);
+		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
-		boolean agreed = prefs.getBoolean(EULA, false);
+		boolean agreed = prefs.getBoolean(PREF_EULA, false);
 		if(!agreed) {
 			this.startActivityForResult(new Intent(this, WizardActivity.class), REQUEST_EULA);
 		}
@@ -156,13 +167,15 @@ public class HostListActivity extends ListActivity {
 
 		
 		
-		this.shortcut = Intent.ACTION_CREATE_SHORTCUT.equals(getIntent().getAction());
+		this.makingShortcut = Intent.ACTION_CREATE_SHORTCUT.equals(getIntent().getAction());
 
 		// connect with hosts database and populate list
 		this.hostdb = new HostDatabase(this);
 		ListView list = this.getListView();
-		this.updateCursor();
 		
+		this.sortedByColor = prefs.getBoolean(PREF_SORTBYCOLOR, false);
+		this.updateCursor();
+
 		//this.list.setSelector(R.drawable.highlight_disabled_pressed);
 
 		this.COL_ID = hosts.getColumnIndexOrThrow("_id");
@@ -189,7 +202,7 @@ public class HostListActivity extends ListActivity {
 				contents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 				
-				if (shortcut) {
+				if (makingShortcut) {
 					// create shortcut if requested
 					ShortcutIconResource icon = Intent.ShortcutIconResource.fromContext(HostListActivity.this, R.drawable.icon);
 					
@@ -217,6 +230,7 @@ public class HostListActivity extends ListActivity {
 
 		final Pattern hostmask = Pattern.compile(".+@.+(:\\d+)?");
 		final TextView text = (TextView) this.findViewById(R.id.front_quickconnect);
+		text.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
 		text.setOnKeyListener(new OnKeyListener() {
 
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -259,11 +273,15 @@ public class HostListActivity extends ListActivity {
 		});
 
 	}
-
+	
 	public MenuItem sortcolor, sortlast;
 	public boolean sortedByColor = false;
 	
 	protected void updateCursor() {
+		
+		Editor edit = prefs.edit();
+		edit.putBoolean(PREF_SORTBYCOLOR, sortedByColor);
+		edit.commit();
 
 		// refresh cursor because of possible sorting change
 		if(this.hosts != null)
@@ -294,9 +312,11 @@ public class HostListActivity extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
+
+		// dont offer menus when creating shortcut
+		if(makingShortcut) return true;
 		
 		// add host, ssh keys, about
-
 		sortcolor = menu.add("Sort by color");
 		sortcolor.setIcon(android.R.drawable.ic_menu_share);
 		sortcolor.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -343,15 +363,19 @@ public class HostListActivity extends ListActivity {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 		Cursor cursor = (Cursor) this.getListView().getItemAtPosition(info.position);
 
-		menu.setHeaderTitle(cursor.getString(COL_NICKNAME));
+		final String nickname = cursor.getString(COL_NICKNAME);
+		menu.setHeaderTitle(nickname);
 		final int id = cursor.getInt(COL_ID);
 
 		// edit, disconnect, delete
-		// TODO: change disconnect/connect based on status
 		MenuItem connect = menu.add("Disconnect");
+		final TerminalBridge bridge = bound.findBridge(nickname);
+		connect.setEnabled((bridge != null));
 		connect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				return false;
+				bound.disconnect(bridge);
+				updateHandler.sendEmptyMessage(-1);
+				return true;
 			}
 		});
 
@@ -361,16 +385,29 @@ public class HostListActivity extends ListActivity {
 				Intent intent = new Intent(HostListActivity.this, HostEditorActivity.class);
 				intent.putExtra(Intent.EXTRA_TITLE, id);
 				HostListActivity.this.startActivityForResult(intent, REQUEST_EDIT);
-				return false;
+				return true;
 			}
 		});
 
 		MenuItem delete = menu.add("Delete host");
 		delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				hostdb.deleteHost(id);
-				updateHandler.sendEmptyMessage(-1);
-				return false;
+				// prompt user to make sure they really want this
+				new AlertDialog.Builder(HostListActivity.this)
+					.setMessage(String.format("Are you sure you want to delete '%s'?", nickname))
+					.setPositiveButton("Yes, delete", new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int which) {
+		    				// make sure we disconnect
+		    				if(bridge != null)
+		    					bound.disconnect(bridge);
+
+		    				hostdb.deleteHost(id);
+		    				updateHandler.sendEmptyMessage(-1);
+		                }
+		            })
+		            .setNegativeButton("Cancel", null).create().show();
+
+				return true;
 			}
 		});
 

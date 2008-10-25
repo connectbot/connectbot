@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+/*
 	ConnectBot: simple, powerful, open-source SSH client for Android
 	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
 	
@@ -15,26 +14,10 @@
 	
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
--->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+*/
 
-	<ListPreference
-		android:key="@string/pref_emulation"
-		android:title="Emulation mode"
-		android:summary="Terminal emulation mode to use for PTY connections"
-		android:entries="@array/list_emulation_modes"
-		android:defaultValue="screen"
-		android:entryValues="@array/list_emulation_modes"
-		android:singleLine="true"
-		/>
+package org.connectbot.service;
 
-	<EditTextPreference
-		android:key="@string/pref_emulation"
-		android:title="Scrollback size"
-		android:summary="Size of scrollback buffer to keep in memory for each console"
-		android:defaultValue="140"
-		android:singleLine="true"
-		/>
-
-
-</PreferenceScreen>
+public interface BridgeDisconnectedListener {
+	public void onDisconnected(TerminalBridge bridge);
+}

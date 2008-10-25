@@ -33,7 +33,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class HostDatabase extends SQLiteOpenHelper {
 	
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 8;
+	public final static int DB_VERSION = 9;
 	
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -44,6 +44,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_HOST_LASTCONNECT = "lastconnect";
 	public final static String FIELD_HOST_COLOR = "color";
 	public final static String FIELD_HOST_USEKEYS = "usekeys";
+	public final static String FIELD_HOST_POSTLOGIN = "postlogin";
 
 	public final static String COLOR_RED = "red";
 	public final static String COLOR_GREEN = "green";
@@ -65,7 +66,8 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_HOST_HOSTKEY + " TEXT, "
 				+ FIELD_HOST_LASTCONNECT + " INTEGER, "
 				+ FIELD_HOST_COLOR + " TEXT, "
-				+ FIELD_HOST_USEKEYS + " TEXT)");
+				+ FIELD_HOST_USEKEYS + " TEXT, "
+				+ FIELD_HOST_POSTLOGIN + ")");
 
 		// insert a few sample hosts, none of which probably connect
 		this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, null);
@@ -144,6 +146,25 @@ public class HostDatabase extends SQLiteOpenHelper {
 				FIELD_HOST_USERNAME, FIELD_HOST_HOSTNAME, FIELD_HOST_PORT,
 				FIELD_HOST_HOSTKEY, FIELD_HOST_LASTCONNECT, FIELD_HOST_COLOR },
 				null, null, null, null, sortField + " ASC");
+		
+	}
+	
+	/**
+	 * Find the post-login command string for the given nickname.
+	 */
+	public String getPostLogin(String nickname) {
+		
+		String result = null;
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.query(TABLE_HOSTS, new String[] { FIELD_HOST_POSTLOGIN },
+				FIELD_HOST_NICKNAME + " = ?", new String[] { nickname }, null, null, null);
+		if(c == null || !c.moveToFirst()) {
+			result = null;
+		} else {
+			result = c.getString(c.getColumnIndexOrThrow(FIELD_HOST_POSTLOGIN));
+		}
+		
+		return result;
 		
 	}
 	
