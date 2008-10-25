@@ -19,14 +19,11 @@
 package org.connectbot.util;
 
 import org.connectbot.R;
-import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Paint;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;

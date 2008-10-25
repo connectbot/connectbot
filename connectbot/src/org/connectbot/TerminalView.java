@@ -20,11 +20,11 @@ package org.connectbot;
 
 import org.connectbot.service.TerminalBridge;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PixelXorXfermode;
-import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
@@ -54,8 +54,8 @@ public class TerminalView extends View {
 		this.setFocusableInTouchMode(true);
 		
 		this.cursorPaint = new Paint();
-		this.cursorPaint.setColor(bridge.color[bridge.COLOR_FG_STD]);
-		this.cursorPaint.setXfermode(new PixelXorXfermode(bridge.color[bridge.COLOR_BG_STD]));
+		this.cursorPaint.setColor(bridge.color[TerminalBridge.COLOR_FG_STD]);
+		this.cursorPaint.setXfermode(new PixelXorXfermode(bridge.color[TerminalBridge.COLOR_BG_STD]));
 		
 		// connect our view up to the bridge
 		this.setOnKeyListener(bridge);

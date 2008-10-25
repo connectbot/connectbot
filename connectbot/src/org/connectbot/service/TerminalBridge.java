@@ -22,11 +22,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.connectbot.TerminalView;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PixelXorXfermode;
 import android.graphics.Typeface;
 import android.graphics.Bitmap.Config;
 import android.graphics.Paint.FontMetricsInt;
@@ -38,10 +39,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
 
+import com.trilead.ssh2.Connection;
 import com.trilead.ssh2.KnownHosts;
 import com.trilead.ssh2.ServerHostKeyVerifier;
 import com.trilead.ssh2.Session;
-import com.trilead.ssh2.Connection;
 
 import de.mud.terminal.VDUBuffer;
 import de.mud.terminal.VDUDisplay;
@@ -125,7 +126,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			case KnownHosts.HOSTKEY_IS_NEW:
 				// prompt user
 				outputLine(String.format("The authenticity of host '%s' can't be established.", hostname));
-				outputLine(String.format("RSA key fingerprint is %s", hosts.createHexFingerprint(serverHostKeyAlgorithm, serverHostKey)));
+				outputLine(String.format("RSA key fingerprint is %s", KnownHosts.createHexFingerprint(serverHostKeyAlgorithm, serverHostKey)));
 				outputLine("[For now we'll assume you accept this key, but tap Menu and Disconnect if not.]");
 				//outputLine("Are you sure you want to continue connecting (yes/no)? ");
 				return true;

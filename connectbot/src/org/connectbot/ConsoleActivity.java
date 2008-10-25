@@ -21,8 +21,6 @@ package org.connectbot;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 
-import de.mud.terminal.vt320;
-
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -53,6 +51,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+import de.mud.terminal.vt320;
 
 public class ConsoleActivity extends Activity {
 	
@@ -327,7 +326,6 @@ public class ConsoleActivity extends Activity {
 				float distx = e2.getRawX() - e1.getRawX();
 				float disty = e2.getRawY() - e1.getRawY();
 				int goalwidth = flip.getWidth() / 2;
-				int goalheight = flip.getHeight() / 2;
 
 				// need to slide across half of display to trigger console change
 				// make sure user kept a steady hand horizontally
