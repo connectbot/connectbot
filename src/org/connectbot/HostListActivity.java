@@ -25,7 +25,6 @@ import org.connectbot.util.HostBinder;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.UpdateHelper;
 
-
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.ComponentName;
@@ -41,19 +40,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.MenuItem.OnMenuItemClickListener;
-import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -247,7 +242,7 @@ public class HostListActivity extends ListActivity {
 				if(port == -1) port = 22;
 				
 				String nickname = String.format("%s@%s", username, hostname);
-				hostdb.createHost(null, nickname, username, hostname, port, hostdb.COLOR_GRAY);
+				hostdb.createHost(null, nickname, username, hostname, port, HostDatabase.COLOR_GRAY);
 				
 				Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
 				intent.setData(Uri.parse(String.format("ssh://%s@%s:%s/#%s", username, hostname, port, nickname)));

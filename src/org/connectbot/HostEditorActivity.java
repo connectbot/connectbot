@@ -25,9 +25,6 @@ import java.util.Map;
 
 import org.connectbot.util.HostDatabase;
 
-
-
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -201,7 +198,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		// TODO: we could pass through a specific ContentProvider uri here
 		//this.getPreferenceManager().setSharedPreferencesName(uri);
 		
-		this.pref = new CursorPreferenceHack(db.getWritableDatabase(), db.TABLE_HOSTS, id);
+		this.pref = new CursorPreferenceHack(db.getWritableDatabase(), HostDatabase.TABLE_HOSTS, id);
 		this.pref.registerOnSharedPreferenceChangeListener(this);
 		
 		this.addPreferencesFromResource(R.xml.host_prefs);
