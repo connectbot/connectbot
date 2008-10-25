@@ -168,7 +168,8 @@ public class ConsoleActivity extends Activity {
 			this.password.requestFocus();
 		} else {
 			this.password.setVisibility(View.GONE);
-			view.requestFocus();
+			if(view != null)
+				view.requestFocus();
 		}
 		
 	}
