@@ -30,6 +30,8 @@ import android.graphics.PixelXorXfermode;
 import android.graphics.Typeface;
 import android.graphics.Bitmap.Config;
 import android.graphics.Paint.FontMetricsInt;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -192,7 +194,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 					outputLine("Trying to authenticate");
 					if(connection.isAuthMethodAvailable(username, AUTH_PASSWORD)) {
 						// show auth prompt in window
-						promptPassword();
+						requestPasswordVisible(true, "Password");
+						//promptPassword();
+					} else {
+						outputLine("Looks like your host doesn't support 'password' authentication.");
+						outputLine("Other auth methods, such as interactive and publickey, are still being written.");
 					}
 				} catch (IOException e) {
 					Log.e(TAG, "Problem in SSH connection thread", e);
@@ -212,19 +218,33 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		this.redraw();
 	}
 
-	protected void promptPassword() {
-		this.outputLine("Password: ");
+//	protected void promptPassword() {
+//		this.outputLine("Password: ");
+//	}
+	
+	public boolean passwordRequested = false;
+	public Handler passwordHandler = null;
+	public String passwordHint = null;
+	
+	protected void requestPasswordVisible(boolean visible, String hint) {
+		this.passwordRequested = visible;
+		this.passwordHint = hint;
+		
+		// pass notification up to any attached gui
+		if(this.passwordHandler != null)
+			Message.obtain(this.passwordHandler, -1, this.nickname).sendToTarget();
 	}
 	
 	/**
 	 * Attempt to try password authentication using given string.
 	 */
-	public void tryPassword(String password) {
+	public void incomingPassword(String password) {
 		try {
 			// try authenticating with given password
 			Log.d(TAG, "Attempting to try password authentication");
 			if(this.connection.authenticateWithPassword(this.username, password)) {
 				this.buffer.deleteArea(0, 0, this.buffer.getColumns(), this.buffer.getRows());
+				requestPasswordVisible(false, null);
 				finishConnection();
 				return;
 			}
@@ -232,7 +252,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			Log.e(TAG, "Problem while trying to authenticate with password", e);
 		}
 		this.outputLine("Permission denied, please try again.");
-		this.promptPassword();
+//		this.promptPassword();
 	}
 	
 	/**
@@ -246,6 +266,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			
 			// previously tried vt100 and xterm for emulation modes
 			// "screen" works the best for color and escape codes
+			// TODO: pull this value from the preferences
 			this.session.requestPTY("screen", 0, 0, 0, 0, null);
 			this.session.startShell();
 
@@ -305,7 +326,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	 * Buffer of collected characters, for example when prompted for password or
 	 * accepting a hostkey.
 	 */
-	protected StringBuffer collected = new StringBuffer();
+	//protected StringBuffer collected = new StringBuffer();
 
 	/**
 	 * Handle onKey() events coming down from a {@link TerminalView} above us.
@@ -333,17 +354,17 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			
 			if(this.session == null) {
 				// check to see if we are collecting password information
-				if(keyCode == KeyEvent.KEYCODE_ENTER) {
-					this.tryPassword(collected.toString());
-					collected = new StringBuffer();
-					return true;
-				} else if(printing) {
-					collected.appendCodePoint(keymap.get(keyCode, event.getMetaState()));
-					return true;
-				} else if(keyCode == KeyEvent.KEYCODE_DEL && collected.length() > 0) {
-					collected.deleteCharAt(collected.length() - 1);
-					return true;
-				}
+//				if(keyCode == KeyEvent.KEYCODE_ENTER) {
+//					this.incomingPassword(collected.toString());
+//					collected = new StringBuffer();
+//					return true;
+//				} else if(printing) {
+//					collected.appendCodePoint(keymap.get(keyCode, event.getMetaState()));
+//					return true;
+//				} else if(keyCode == KeyEvent.KEYCODE_DEL && collected.length() > 0) {
+//					collected.deleteCharAt(collected.length() - 1);
+//					return true;
+//				}
 				
 			} else {
 				

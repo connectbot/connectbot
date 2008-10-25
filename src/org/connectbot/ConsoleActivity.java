@@ -30,7 +30,9 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -40,11 +42,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -88,6 +93,9 @@ public class ConsoleActivity extends Activity {
 			// create views for all bridges on this service
 			for(TerminalBridge bridge : bound.bridges) {
 				
+				// let them know about our password services
+				bridge.passwordHandler = passwordHandler;
+				
 				// inflate each terminal view 
 				RelativeLayout view = (RelativeLayout)inflater.inflate(R.layout.item_terminal, flip, false);
 
@@ -112,6 +120,7 @@ public class ConsoleActivity extends Activity {
 			// show the requested bridge if found, also fade out overlay
 			flip.setDisplayedChild(requestedIndex);
 			flip.getCurrentView().findViewById(R.id.terminal_overlay).startAnimation(fade_out);
+			updatePasswordVisible();
 			
 		}
 
@@ -122,7 +131,47 @@ public class ConsoleActivity extends Activity {
 		}
 	};
 	
-	protected Animation fade_out = null; 
+	protected String getCurrentNickname() {
+		View view = findCurrentView(R.id.console_flip);
+		if(!(view instanceof TerminalView)) return null;
+		return ((TerminalView)view).bridge.nickname;
+	}
+	
+
+	public Handler passwordHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			// someone below us requested to display a password dialog
+			// they are sending nickname and requested
+			String nickname = (String)msg.obj;
+			
+			// if they are currently active, then obey request
+			if(nickname.equals(getCurrentNickname())) {
+				updatePasswordVisible();
+			}
+
+		}
+	};
+	
+	protected void updatePasswordVisible() {
+		// check if our currently-visible terminalbridge is requesting password services
+		View view = findCurrentView(R.id.console_flip);
+		boolean requested = false;
+		if(view instanceof TerminalView)
+			requested = ((TerminalView)view).bridge.passwordRequested;
+		
+		// handle showing/hiding password field and transferring focus
+		if(requested) {
+			this.password.setVisibility(View.VISIBLE);
+			this.password.setText("");
+			this.password.setHint(((TerminalView)view).bridge.passwordHint);
+			this.password.requestFocus();
+		} else {
+			this.password.setVisibility(View.GONE);
+			view.requestFocus();
+		}
+		
+	}
 	
 	/**
 	 * Save the currently shown {@link TerminalView} as the default. This is
@@ -131,12 +180,13 @@ public class ConsoleActivity extends Activity {
 	 */
 	protected void updateDefault() {
 		// update the current default terminal
-		TerminalView terminal = (TerminalView)flip.getCurrentView().findViewById(R.id.console_flip);
-		if(bound == null || terminal == null) return;
+		View view = findCurrentView(R.id.console_flip);
+		if(!(view instanceof TerminalView)) return;
+
+		TerminalView terminal = (TerminalView)view;
+		if(bound == null) return;
 		bound.defaultBridge = terminal.bridge;
 	}
-	
-	protected Uri requested;
 	
 	@Override
     public void onStart() {
@@ -149,7 +199,7 @@ public class ConsoleActivity extends Activity {
 	}
 
 	@Override
-    public void onStop() {
+	public void onStop() {
 		super.onStop();
 		this.unbindService(connection);
 		
@@ -161,7 +211,12 @@ public class ConsoleActivity extends Activity {
 		return view.findViewById(id);
 	}
 	
+	protected Uri requested;
 	protected ClipboardManager clipboard;
+	
+	protected EditText password;
+	
+	protected Animation slide_left_in, slide_left_out, slide_right_in, slide_right_out, fade_stay_hidden, fade_out; 
 
 	@Override
     public void onCreate(Bundle icicle) {
@@ -176,17 +231,36 @@ public class ConsoleActivity extends Activity {
 		this.requested = this.getIntent().getData();
 
 		this.inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
 		this.flip = (ViewFlipper)this.findViewById(R.id.console_flip);
 		
-		this.fade_out = AnimationUtils.loadAnimation(this, R.anim.fade_out);
-		
+		this.password = (EditText)this.findViewById(R.id.console_password);
+		this.password.setOnKeyListener(new OnKeyListener() {
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if(keyCode != KeyEvent.KEYCODE_ENTER) return false;
+				
+				// pass collected password down to current terminal
+				String value = password.getText().toString();
+				
+				View view = findCurrentView(R.id.console_flip);
+				if(!(view instanceof TerminalView)) return true;
+				((TerminalView)view).bridge.incomingPassword(value);
 
+				// finally clear password for next user
+				password.setText("");
+
+				return true;
+			}
+		});
+		
 		// preload animations for terminal switching
-		final Animation slide_left_in = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
-		final Animation slide_left_out = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
-		final Animation slide_right_in = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
-		final Animation slide_right_out = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
-		final Animation fade_stay_hidden = AnimationUtils.loadAnimation(this, R.anim.fade_stay_hidden);
+		this.slide_left_in = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
+		this.slide_left_out = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
+		this.slide_right_in = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
+		this.slide_right_out = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
+		
+		this.fade_out = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+		this.fade_stay_hidden = AnimationUtils.loadAnimation(this, R.anim.fade_stay_hidden);
 		
 		// detect fling gestures to switch between terminals
 		final GestureDetector detect = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
@@ -202,7 +276,7 @@ public class ConsoleActivity extends Activity {
 				}
 				
 				// activate consider if within x tolerance
-				if(Math.abs(e1.getX() - e2.getX()) < 100) {
+				if(Math.abs(e1.getX() - e2.getX()) < ViewConfiguration.getTouchSlop() * 4) {
 					
 					View flip = findCurrentView(R.id.console_flip);
 					if(flip == null) return false;
@@ -224,12 +298,10 @@ public class ConsoleActivity extends Activity {
 					} else {
 						// otherwise consume as pgup/pgdown for every 5 lines
 						if(moved > 5) {
-							Log.d(this.getClass().toString(), "going pagedown");
 							((vt320)terminal.bridge.buffer).keyPressed(vt320.KEY_PAGE_DOWN, ' ', 0);
 							totalY = 0;
 							return true;
 						} else if(moved < -5) {
-							Log.d(this.getClass().toString(), "going pageup");
 							((vt320)terminal.bridge.buffer).keyPressed(vt320.KEY_PAGE_UP, ' ', 0);
 							totalY = 0;
 							return true;
@@ -237,7 +309,6 @@ public class ConsoleActivity extends Activity {
 						
 					}
 					
-
 				}
 				
 				return false;
@@ -256,36 +327,12 @@ public class ConsoleActivity extends Activity {
 				// make sure user kept a steady hand horizontally
 				if(Math.abs(disty) < 100) {
 					if(distx > goalwidth) {
-
-						// keep current overlay from popping up again
-						View overlay = findCurrentView(R.id.terminal_overlay);
-						if(overlay != null) overlay.startAnimation(fade_stay_hidden);
-						
-						flip.setInAnimation(slide_right_in);
-						flip.setOutAnimation(slide_right_out);
-						flip.showPrevious();
-						ConsoleActivity.this.updateDefault();
-						
-						// show overlay on new slide and start fade
-						overlay = findCurrentView(R.id.terminal_overlay);
-						if(overlay != null) overlay.startAnimation(fade_out);
+						shiftRight();
 						return true;
 					}
 					
 					if(distx < -goalwidth) {
-
-						// keep current overlay from popping up again
-						View overlay = findCurrentView(R.id.terminal_overlay);
-						if(overlay != null) overlay.startAnimation(fade_stay_hidden);
-						
-						flip.setInAnimation(slide_left_in);
-						flip.setOutAnimation(slide_left_out);
-						flip.showNext();
-						ConsoleActivity.this.updateDefault();
-
-						// show overlay on new slide and start fade
-						overlay = findCurrentView(R.id.terminal_overlay);
-						if(overlay != null) overlay.startAnimation(fade_out);
+						shiftLeft();
 						return true;
 					}
 					
@@ -299,7 +346,6 @@ public class ConsoleActivity extends Activity {
 
 		});
 				
-		
 		flip.setLongClickable(true);
 		flip.setOnTouchListener(new OnTouchListener() {
 
@@ -310,9 +356,43 @@ public class ConsoleActivity extends Activity {
 	
 		});
 		
+	}
 	
-
+	protected void shiftLeft() {
+		// keep current overlay from popping up again
+		View overlay = findCurrentView(R.id.terminal_overlay);
+		if(overlay != null) overlay.startAnimation(fade_stay_hidden);
 		
+		flip.setInAnimation(slide_left_in);
+		flip.setOutAnimation(slide_left_out);
+		flip.showNext();
+		ConsoleActivity.this.updateDefault();
+
+		// show overlay on new slide and start fade
+		overlay = findCurrentView(R.id.terminal_overlay);
+		if(overlay != null) overlay.startAnimation(fade_out);
+
+		updatePasswordVisible();
+
+	}
+	
+	protected void shiftRight() {
+
+		// keep current overlay from popping up again
+		View overlay = findCurrentView(R.id.terminal_overlay);
+		if(overlay != null) overlay.startAnimation(fade_stay_hidden);
+		
+		flip.setInAnimation(slide_right_in);
+		flip.setOutAnimation(slide_right_out);
+		flip.showPrevious();
+		ConsoleActivity.this.updateDefault();
+		
+		// show overlay on new slide and start fade
+		overlay = findCurrentView(R.id.terminal_overlay);
+		if(overlay != null) overlay.startAnimation(fade_out);
+
+		updatePasswordVisible();
+
 	}
 	
 	protected MenuItem copy, paste;
@@ -331,6 +411,7 @@ public class ConsoleActivity extends Activity {
 				TerminalView terminal = (TerminalView)view;
 				bound.disconnect(terminal.bridge);
 				flip.removeView(flip.getCurrentView());
+				shiftLeft();
 				return true;
 			}
 		});
@@ -338,7 +419,7 @@ public class ConsoleActivity extends Activity {
 		copy = menu.add("Copy");
 		copy.setIcon(android.R.drawable.ic_menu_set_as);
 		copy.setEnabled(false);
-		// TODO: implement copy here  :)
+		// TODO: freeze current console, allow selection, and set clipboard to contents
 
 		
 		paste = menu.add("Paste");
