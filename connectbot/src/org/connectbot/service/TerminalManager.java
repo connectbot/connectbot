@@ -21,15 +21,18 @@ package org.connectbot.service;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.connectbot.R;
 import org.connectbot.util.HostDatabase;
 
 import com.trilead.ssh2.Connection;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -46,9 +49,15 @@ public class TerminalManager extends Service {
 	public List<TerminalBridge> bridges = new LinkedList<TerminalBridge>();
 	public TerminalBridge defaultBridge = null;
 	
+	protected SharedPreferences prefs;
+	protected String pref_emulation, pref_scrollback;
+	
 	@Override
 	public void onCreate() {
 		Log.i(TAG, "Starting background service");
+		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		this.pref_emulation = this.getResources().getString(R.string.pref_emulation);
+		this.pref_scrollback = this.getResources().getString(R.string.pref_scrollback);
 	}
 
 	@Override
@@ -60,7 +69,7 @@ public class TerminalManager extends Service {
 			bridge.dispose();
 		
 	}
-
+	
 	/**
 	 * Open a new SSH session using the given parameters.
 	 */
@@ -70,7 +79,14 @@ public class TerminalManager extends Service {
 			throw new Exception("Connection already open for that nickname");
 		}
 		
-		TerminalBridge bridge = new TerminalBridge(nickname, username, hostname, port);
+		String emulation = prefs.getString(this.pref_emulation, "screen");
+		int scrollback = 140;
+		try {
+			scrollback = Integer.parseInt(prefs.getString(this.pref_scrollback, "140"));
+		} catch(Exception e) {
+		}
+		
+		TerminalBridge bridge = new TerminalBridge(nickname, username, hostname, port, emulation, scrollback);
 		this.bridges.add(bridge);
 		
 		// also update database with new connected time

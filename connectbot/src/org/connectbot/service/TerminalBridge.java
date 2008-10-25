@@ -98,6 +98,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	
 	protected Thread relay;
 	
+	protected final String emulation;
+	protected final int scrollback;
+
 	public Bitmap bitmap = null;
 	public VDUBuffer buffer = null;
 	
@@ -143,10 +146,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	 * launch thread to start SSH connection and handle any hostkey verification
 	 * and password authentication.
 	 */
-	public TerminalBridge(final String nickname, final String username, final String hostname, final int port) throws Exception {
+	public TerminalBridge(final String nickname, final String username, final String hostname, final int port, String emulation, int scrollback) throws Exception {
 		
 		this.nickname = nickname;
 		this.username = username;
+		
+		this.emulation = emulation;
+		this.scrollback = scrollback;
 		
 		// create our default paint
 		this.defaultPaint = new Paint();
@@ -267,7 +273,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			// previously tried vt100 and xterm for emulation modes
 			// "screen" works the best for color and escape codes
 			// TODO: pull this value from the preferences
-			this.session.requestPTY("screen", 0, 0, 0, 0, null);
+			this.session.requestPTY(emulation, 0, 0, 0, 0, null);
 			this.session.startShell();
 
 			// grab stdin/out from newly formed session
@@ -416,9 +422,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		charDescent = -1;
 	
 	protected float fontSize = -1;
-	
-	// TODO: read this scrollback value from preferences framework?
-	protected int scrollback = 120;
 	
 	/**
 	 * Request a different font size. Will make call to parentChanged() to make

@@ -59,9 +59,9 @@ public final class R {
         public static final int alert_disconnect_msg=0x7f070015;
         public static final int app_desc=0x7f070001;
         public static final int app_name=0x7f070000;
-        public static final int bind_days=0x7f07001a;
-        public static final int bind_hours=0x7f070019;
-        public static final int bind_minutes=0x7f070018;
+        public static final int bind_days=0x7f07001c;
+        public static final int bind_hours=0x7f07001b;
+        public static final int bind_minutes=0x7f07001a;
         public static final int button_add=0x7f070011;
         public static final int button_cancel=0x7f070012;
         public static final int button_change=0x7f070013;
@@ -74,6 +74,8 @@ public final class R {
         public static final int menu_pubkey=0x7f07000d;
         public static final int msg_copyright=0x7f070016;
         public static final int msg_version=0x7f070017;
+        public static final int pref_emulation=0x7f070018;
+        public static final int pref_scrollback=0x7f070019;
         public static final int prompt_touch=0x7f07000f;
         public static final int resolve_connect=0x7f070009;
         public static final int resolve_edit=0x7f070008;

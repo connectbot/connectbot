@@ -126,8 +126,12 @@ public class ConsoleActivity extends Activity {
 
 		public void onServiceDisconnected(ComponentName className) {
 			// remove all bridge views
-			bound = null;
+			for(TerminalBridge bridge : bound.bridges)
+				bridge.passwordHandler = null;
+			
 			flip.removeAllViews();
+			bound = null;
+			
 		}
 	};
 	
@@ -238,6 +242,7 @@ public class ConsoleActivity extends Activity {
 		this.password = (EditText)this.findViewById(R.id.console_password);
 		this.password.setOnKeyListener(new OnKeyListener() {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if(event.getAction() == KeyEvent.ACTION_UP) return false;
 				if(keyCode != KeyEvent.KEYCODE_ENTER) return false;
 				
 				// pass collected password down to current terminal
