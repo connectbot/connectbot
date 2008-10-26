@@ -18,6 +18,7 @@
 
 package org.connectbot;
 
+import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 
@@ -31,6 +32,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.PowerManager;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -43,10 +45,12 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -66,7 +70,7 @@ public class ConsoleActivity extends Activity {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
 			
 			// let manager know about our event handling services
-			bound.parentHandler = parentHandler;
+			bound.disconnectHandler = disconnectHandler;
 			
 			Log.d(TAG, String.format("Connected to TerminalManager and found bridges.size=%d", bound.bridges.size()));
 			
@@ -95,8 +99,8 @@ public class ConsoleActivity extends Activity {
 			// create views for all bridges on this service
 			for(TerminalBridge bridge : bound.bridges) {
 				
-				// let them know about our password services
-				bridge.parentHandler = parentHandler;
+				// let them know about our prompt handler services
+				bridge.promptHelper.setHandler(promptHandler);
 				
 				// inflate each terminal view 
 				RelativeLayout view = (RelativeLayout)inflater.inflate(R.layout.item_terminal, flip, false);
@@ -128,9 +132,9 @@ public class ConsoleActivity extends Activity {
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
-			// remove all bridge views
+			// tell each bridge to forget about our prompt handler
 			for(TerminalBridge bridge : bound.bridges)
-				bridge.parentHandler = null;
+				bridge.promptHelper.setHandler(null);
 			
 			flip.removeAllViews();
 			updateEmptyVisible();
@@ -145,63 +149,81 @@ public class ConsoleActivity extends Activity {
 		return ((TerminalView)view).bridge.nickname;
 	}
 
-	public final static int HANDLE_PROMPT = 1, HANDLE_DISCONNECT = 2;
-
-	public Handler parentHandler = new Handler() {
+	public Handler promptHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			// someone below us requested to display a prompt
+			updatePromptVisible();
+			
+		}
+	};
+	
+	public Handler disconnectHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			// someone below us requested to display a password dialog
 			// they are sending nickname and requested
 			TerminalBridge bridge = (TerminalBridge)msg.obj;
 			
-			switch(msg.what) {
-			case HANDLE_PROMPT:
-				// someone is requesting a prompt field update
-				updatePromptVisible();
-				break;
-				
-			case HANDLE_DISCONNECT:
-				// remove this bridge becase its been disconnected
-				Log.d(TAG, "Someone sending HANDLE_DISCONNECT to parentHandler");
-				for(int i = 0; i < flip.getChildCount(); i++) {
-					View view = flip.getChildAt(i).findViewById(R.id.console_flip);
-					if(!(view instanceof TerminalView)) continue;
-					TerminalView terminal = (TerminalView)view;
-					if(terminal.bridge.equals(bridge)) {
-						// weve found the terminal to remove
-						// shift something into its place if currently visible
-						if(flip.getDisplayedChild() == i) {
-							shiftLeft();
-						}
-						flip.removeViewAt(i);
-						updateEmptyVisible();
-						break;
+			// remove this bridge becase its been disconnected
+			Log.d(TAG, "Someone sending HANDLE_DISCONNECT to parentHandler");
+			for(int i = 0; i < flip.getChildCount(); i++) {
+				View view = flip.getChildAt(i).findViewById(R.id.console_flip);
+				if(!(view instanceof TerminalView)) continue;
+				TerminalView terminal = (TerminalView)view;
+				if(terminal.bridge.equals(bridge)) {
+					// weve found the terminal to remove
+					// shift something into its place if currently visible
+					if(flip.getDisplayedChild() == i) {
+						shiftLeft();
 					}
+					flip.removeViewAt(i);
+					updateEmptyVisible();
+					break;
 				}
-				break;
-			
 			}
 			
 		}
 	};
 	
-	protected void updatePromptVisible() {
-		// check if our currently-visible terminalbridge is requesting password services
-		View view = findCurrentView(R.id.console_flip);
-		boolean requested = false;
-		if(view instanceof TerminalView)
-			requested = ((TerminalView)view).bridge.promptRequested;
+	protected void hideAllPrompts() {
+		this.stringPrompt.setVisibility(View.GONE);
+		this.booleanPrompt.setVisibility(View.GONE);
+		this.booleanYes.setVisibility(View.GONE);
+		this.booleanNo.setVisibility(View.GONE);
 		
-		// handle showing/hiding password field and transferring focus
-		if(requested) {
-			this.password.setVisibility(View.VISIBLE);
-			this.password.setText("");
-			this.password.setHint(((TerminalView)view).bridge.promptHint);
-			this.password.requestFocus();
+	}
+	
+	/**
+	 * Show any prompts requested by the currently visible {@link TerminalView}.
+	 */
+	protected void updatePromptVisible() {
+		// check if our currently-visible terminalbridge is requesting any prompt services
+		View view = findCurrentView(R.id.console_flip);
+		if(!(view instanceof TerminalView)) {
+			// we dont have an active view, so hide any prompts
+			this.hideAllPrompts();
+			return;
+		}
+		
+		PromptHelper prompt = ((TerminalView)view).bridge.promptHelper;
+		if(String.class.equals(prompt.promptRequested)) {
+			this.stringPrompt.setVisibility(View.VISIBLE);
+			this.stringPrompt.setText("");
+			this.stringPrompt.setHint(prompt.promptHint);
+			this.stringPrompt.requestFocus();
+			
+		} else if(Boolean.class.equals(prompt.promptRequested)) {
+			this.booleanPrompt.setVisibility(View.VISIBLE);
+			this.booleanPrompt.setText(prompt.promptHint);
+			this.booleanYes.setVisibility(View.VISIBLE);
+			this.booleanYes.requestFocus();
+			this.booleanNo.setVisibility(View.VISIBLE);
+			
 		} else {
-			this.password.setVisibility(View.GONE);
-			if(view != null)
-				view.requestFocus();
+			this.hideAllPrompts();
+			view.requestFocus();
+			
 		}
 		
 	}
@@ -221,6 +243,8 @@ public class ConsoleActivity extends Activity {
 		bound.defaultBridge = terminal.bridge;
 	}
 	
+	protected PowerManager.WakeLock wakelock;
+	
 	@Override
     public void onStart() {
 		super.onStart();
@@ -229,12 +253,21 @@ public class ConsoleActivity extends Activity {
 		// when connected it will insert all views
         this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
+        // make sure we dont let the screen fall asleep
+		// this also keeps the wifi chipset from disconnecting us
+		if (this.wakelock != null)
+			wakelock.acquire();
+
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
 		this.unbindService(connection);
+
+		// allow the screen to dim and fall asleep
+		if (this.wakelock != null)
+			wakelock.release();
 		
 	}
 	
@@ -244,10 +277,19 @@ public class ConsoleActivity extends Activity {
 		return view.findViewById(id);
 	}
 	
+	protected PromptHelper getCurrentPromptHelper() {
+		View view = findCurrentView(R.id.console_flip);
+		if(!(view instanceof TerminalView)) return null;
+		return ((TerminalView)view).bridge.promptHelper;
+	}
+	
 	protected Uri requested;
 	protected ClipboardManager clipboard;
 	
-	protected EditText password;
+	protected EditText stringPrompt;
+	protected TextView booleanPrompt;
+	protected Button booleanYes, booleanNo;
+	
 	protected TextView empty;
 	
 	protected Animation slide_left_in, slide_left_out, slide_right_in, slide_right_out, fade_stay_hidden, fade_out; 
@@ -261,6 +303,9 @@ public class ConsoleActivity extends Activity {
 		
 		this.clipboard = (ClipboardManager)this.getSystemService(CLIPBOARD_SERVICE);
 		
+        PowerManager manager = (PowerManager)getSystemService(Context.POWER_SERVICE);
+		wakelock = manager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, TAG);
+
 		// handle requested console from incoming intent
 		this.requested = this.getIntent().getData();
 
@@ -269,23 +314,46 @@ public class ConsoleActivity extends Activity {
 		this.flip = (ViewFlipper)this.findViewById(R.id.console_flip);
 		this.empty = (TextView)this.findViewById(android.R.id.empty);
 		
-		this.password = (EditText)this.findViewById(R.id.console_password);
-		this.password.setOnKeyListener(new OnKeyListener() {
+		this.stringPrompt = (EditText)this.findViewById(R.id.console_password);
+		this.stringPrompt.setOnKeyListener(new OnKeyListener() {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if(event.getAction() == KeyEvent.ACTION_UP) return false;
 				if(keyCode != KeyEvent.KEYCODE_ENTER) return false;
 				
 				// pass collected password down to current terminal
-				String value = password.getText().toString();
+				String value = stringPrompt.getText().toString();
 				
-				View view = findCurrentView(R.id.console_flip);
-				if(!(view instanceof TerminalView)) return true;
-				((TerminalView)view).bridge.incomingPassword(value);
+				PromptHelper helper = getCurrentPromptHelper();
+				if(helper == null) return false;
+				helper.setResponse(value);
 
 				// finally clear password for next user
-				password.setText("");
+				stringPrompt.setText("");
+				hideAllPrompts();
 
 				return true;
+			}
+		});
+		
+		this.booleanPrompt = (TextView)this.findViewById(R.id.console_prompt);
+		
+		this.booleanYes = (Button)this.findViewById(R.id.console_prompt_yes);
+		this.booleanYes.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				PromptHelper helper = getCurrentPromptHelper();
+				if(helper == null) return;
+				helper.setResponse(Boolean.TRUE);
+				hideAllPrompts();
+			}
+		});
+		
+		this.booleanNo = (Button)this.findViewById(R.id.console_prompt_no);
+		this.booleanNo.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				PromptHelper helper = getCurrentPromptHelper();
+				if(helper == null) return;
+				helper.setResponse(Boolean.FALSE);
+				hideAllPrompts();
 			}
 		});
 		

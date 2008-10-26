@@ -25,6 +25,7 @@ import java.util.concurrent.Semaphore;
 
 import org.connectbot.ConsoleActivity;
 import org.connectbot.TerminalView;
+import org.connectbot.util.HostDatabase;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -92,6 +93,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public final static int COLOR_BG_STD = 0;
 
 	public final String nickname;
+	protected final HostDatabase hostdb;
 	protected final String username;
 	public String postlogin = null;
 	
@@ -117,18 +119,15 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	private boolean ctrlPressed = false;
 	
 	private String currentMethod = null;
-	private Semaphore waitChallengeResponse;
-	private String currentChallengeResponse = null;
 	
 	
 	public class HostKeyVerifier implements ServerHostKeyVerifier {
 		
 		public boolean verifyServerHostKey(String hostname, int port, String serverHostKeyAlgorithm, byte[] serverHostKey) throws Exception {
 
-			// TODO: check against known key, prompt user if unknown or missing key
-			// TODO: check to see what hostkey checking the trilead library offers
+			// read in all known hosts from hostdb
+			KnownHosts hosts = hostdb.getKnownHosts();
 			
-			KnownHosts hosts = new KnownHosts();
 			switch(hosts.verifyHostkey(hostname, serverHostKeyAlgorithm, serverHostKey)) {
 			case KnownHosts.HOSTKEY_IS_OK:
 				return true;
@@ -137,11 +136,25 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				// prompt user
 				outputLine(String.format("The authenticity of host '%s' can't be established.", hostname));
 				outputLine(String.format("RSA key fingerprint is %s", KnownHosts.createHexFingerprint(serverHostKeyAlgorithm, serverHostKey)));
-				outputLine("[For now we'll assume you accept this key, but tap Menu and Disconnect if not.]");
+				//outputLine("[For now we'll assume you accept this key, but tap Menu and Disconnect if not.]");
 				//outputLine("Are you sure you want to continue connecting (yes/no)? ");
-				return true;
+				Boolean result = promptHelper.requestBooleanPrompt("Are you sure you want\nto continue connecting?");
+				if(result == null) return false;
+				if(result.booleanValue()) {
+					// save this key in known database
+					hostdb.saveKnownHost(hostname, serverHostKeyAlgorithm, serverHostKey);
+				}
+				return result.booleanValue();
 				
 			case KnownHosts.HOSTKEY_HAS_CHANGED:
+				outputLine("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+				outputLine("@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @");
+				outputLine("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+				outputLine("IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!");
+				outputLine("Someone could be eavesdropping on you right now (man-in-the-middle attack)!");
+				outputLine("It is also possible that the RSA host key has just been changed.");
+				outputLine(String.format("RSA key fingerprint is %s", KnownHosts.createHexFingerprint(serverHostKeyAlgorithm, serverHostKey)));
+				outputLine("Host key verification failed.");
 				return false;
 				
 			}
@@ -152,18 +165,24 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		
 	}
 	
+	public PromptHelper promptHelper;
+	
 	/**
 	 * Create new terminal bridge with following parameters. We will immediately
 	 * launch thread to start SSH connection and handle any hostkey verification
 	 * and password authentication.
 	 */
-	public TerminalBridge(final String nickname, final String username, final String hostname, final int port, String emulation, int scrollback) throws Exception {
+	public TerminalBridge(final HostDatabase hostdb, final String nickname, final String username, final String hostname, final int port, String emulation, int scrollback) throws Exception {
 		
+		this.hostdb = hostdb;
 		this.nickname = nickname;
 		this.username = username;
 		
 		this.emulation = emulation;
 		this.scrollback = scrollback;
+
+		// create prompt helper to relay password and hostkey requests up to gui
+		this.promptHelper = new PromptHelper(this);
 		
 		// create our default paint
 		this.defaultPaint = new Paint();
@@ -199,7 +218,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.buffer.setDisplay(this);
 		this.buffer.setCursorPosition(0, 0);
 
-		// try opening ssh connection
+		// prepare the ssh connection for opening
+		// we perform the actual connection later in startConnection()
 		this.outputLine(String.format("Connecting to %s:%d", hostname, port));
 		this.connection = new Connection(hostname, port);
 		this.connection.addConnectionMonitor(this);
@@ -209,39 +229,74 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	/**
 	 * Spawn thread to open connection and start login process.
 	 */
-	public void startLogin() {
+	public void startConnection() {
 		new Thread(new Runnable() {
 			public void run() {
 				try {
 					connection.connect(new HostKeyVerifier());
-					outputLine("Trying to authenticate");
 					
-					// TODO: insert publickey auth check here
-					
-					if(connection.isAuthMethodAvailable(username, AUTH_PASSWORD)) {
-						currentMethod = AUTH_PASSWORD;
-						requestPromptVisible(true, "Password");
+					// enter a loop to keep trying until authentication
+					while(!connection.isAuthenticationComplete()) {
+						handleAuthentication();
 						
-					} else if (connection.isAuthMethodAvailable(username, AUTH_KEYBOARDINTERACTIVE)) {
-						currentMethod = AUTH_KEYBOARDINTERACTIVE;
-						// this auth method will talk with us using InteractiveCallback interface
-						// it blocks until that auth is finished, which means 
-						if (connection.authenticateWithKeyboardInteractive(username, TerminalBridge.this)) {
-							requestPromptVisible(false, null);
-							finishConnection();
-						}
-						
-					} else {
-						outputLine("[Your host doesn't support 'password' or 'keyboard-interactive' authentication.]");
-						
+						// sleep to make sure we dont kill system
+						Thread.sleep(1000);
 					}
-				} catch (IOException e) {
+				} catch(Exception e) {
 					Log.e(TAG, "Problem in SSH connection thread", e);
 				}
 			} 
 		}).start();
+	}
+	
+	public void handleAuthentication() {
+		outputLine("Trying to authenticate");
+		
+		try {
+		
+			// TODO: insert publickey auth check here
+			
+			if(connection.isAuthMethodAvailable(username, AUTH_PASSWORD)) {
+				outputLine("Attempting 'password' authentication");
+				String password = promptHelper.requestStringPrompt("Password");
+				if(connection.authenticateWithPassword(username, password)) {
+					finishConnection();
+				} else {
+					outputLine("Authentication method 'password' failed");
+				}
+				
+			} else if(connection.isAuthMethodAvailable(username, AUTH_KEYBOARDINTERACTIVE)) {
+				// this auth method will talk with us using InteractiveCallback interface
+				// it blocks until authentication finishes 
+				outputLine("Attempting 'keyboard-interactive' authentication");
+				if(connection.authenticateWithKeyboardInteractive(username, TerminalBridge.this)) {
+					finishConnection();
+				} else {
+					outputLine("Authentication method 'keyboard-interactive' failed");
+				}
+				
+			} else {
+				outputLine("[Your host doesn't support 'password' or 'keyboard-interactive' authentication.]");
+				
+			}	
+		} catch(Exception e) {
+			Log.e(TAG, "Problem during handleAuthentication()", e);
+		}
 		
 	}
+	
+	/**
+	 * Handle challenges from keyboard-interactive authentication mode.
+	 */
+	public String[] replyToChallenge(String name, String instruction, int numPrompts, String[] prompt, boolean[] echo) throws Exception {
+		String[] responses = new String[numPrompts];
+		for(int i = 0; i < numPrompts; i++) {
+			// request response from user for each prompt
+			responses[i] = promptHelper.requestStringPrompt(prompt[i]);
+		}
+		return responses;
+	}
+
 	
 	/**
 	 * Convenience method for writing a line into the underlying MUD buffer.
@@ -252,42 +307,42 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.redraw();
 	}
 
-	public Handler parentHandler = null;
+//	public Handler parentHandler = null;
+//	
+//	public boolean promptRequested = false;
+//	public String promptHint = null;
+//	
+//	protected void requestPromptVisible(boolean visible, String hint) {
+//		this.promptRequested = visible;
+//		this.promptHint = hint;
+//		
+//		// pass notification up to any attached gui
+//		if(this.parentHandler != null)
+//			Message.obtain(this.parentHandler, ConsoleActivity.HANDLE_PROMPT, this).sendToTarget();
+//	}
 	
-	public boolean promptRequested = false;
-	public String promptHint = null;
-	
-	protected void requestPromptVisible(boolean visible, String hint) {
-		this.promptRequested = visible;
-		this.promptHint = hint;
-		
-		// pass notification up to any attached gui
-		if(this.parentHandler != null)
-			Message.obtain(this.parentHandler, ConsoleActivity.HANDLE_PROMPT, this).sendToTarget();
-	}
-	
-	/**
-	 * Attempt to try password authentication using given string.
-	 */
-	public void incomingPassword(String password) {
-		try {
-			if (currentMethod == AUTH_PASSWORD) {
-				Log.d(TAG, "Attempting to try password authentication");
-				if (this.connection.authenticateWithPassword(this.username, password)) {
-					requestPromptVisible(false, null);
-					finishConnection();
-					return;
-				}
-			} else if (currentMethod == AUTH_KEYBOARDINTERACTIVE) {
-				Log.d(TAG, "Attempting to try keyboard-interactive authentication");
-				currentChallengeResponse = password;
-				waitChallengeResponse.release();
-			}
-		} catch (IOException e) {
-			Log.e(TAG, "Problem while trying to authenticate with password", e);
-		}
-		this.outputLine("Permission denied, please try again.");
-	}
+//	/**
+//	 * Attempt to try password authentication using given string.
+//	 */
+//	public void incomingPassword(String password) {
+//		try {
+//			if (currentMethod == AUTH_PASSWORD) {
+//				Log.d(TAG, "Attempting to try password authentication");
+//				if (this.connection.authenticateWithPassword(this.username, password)) {
+//					requestPromptVisible(false, null);
+//					finishConnection();
+//					return;
+//				}
+//			} else if (currentMethod == AUTH_KEYBOARDINTERACTIVE) {
+//				Log.d(TAG, "Attempting to try keyboard-interactive authentication");
+//				currentChallengeResponse = password;
+//				waitChallengeResponse.release();
+//			}
+//		} catch (IOException e) {
+//			Log.e(TAG, "Problem while trying to authenticate with password", e);
+//		}
+//		this.outputLine("Permission denied, please try again.");
+//	}
 
 	/**
 	 * Inject a specific string into this terminal. Used for post-login strings
@@ -384,11 +439,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	
 	public KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
 
-	/**
-	 * Buffer of collected characters, for example when prompted for password or
-	 * accepting a hostkey.
-	 */
-	//protected StringBuffer collected = new StringBuffer();
+//	/**
+//	 * Buffer of collected characters, for example when prompted for password or
+//	 * accepting a hostkey.
+//	 */
+//	//protected StringBuffer collected = new StringBuffer();
 
 	/**
 	 * Handle onKey() events coming down from a {@link TerminalView} above us.
@@ -668,18 +723,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.disconnect();
 	}
 
-	public String[] replyToChallenge(String name, String instruction, int numPrompts, String[] prompt, boolean[] echo) throws Exception {
-		String[] responses = new String[numPrompts];
-		waitChallengeResponse = new Semaphore(0);
-		
-		for (int i = 0; i < numPrompts; i++) {
-			requestPromptVisible(true, prompt[i]);
-			waitChallengeResponse.acquire();
-			responses[i] = currentChallengeResponse;
-		}
-
-		return responses;
-	}
 
 
 }

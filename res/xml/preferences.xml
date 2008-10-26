@@ -29,7 +29,7 @@
 		/>
 
 	<EditTextPreference
-		android:key="@string/pref_emulation"
+		android:key="@string/pref_scrollback"
 		android:title="Scrollback size"
 		android:summary="Size of scrollback buffer to keep in memory for each console"
 		android:defaultValue="140"
