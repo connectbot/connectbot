@@ -97,7 +97,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	protected final String username;
 	public String postlogin = null;
 	
-	protected final Connection connection;
+	public final Connection connection;
 	protected Session session;
 	
 	protected final Paint defaultPaint;
@@ -226,6 +226,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 	}
 	
+	public final static int AUTH_TRIES = 20;
+	
 	/**
 	 * Spawn thread to open connection and start login process.
 	 */
@@ -236,7 +238,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					connection.connect(new HostKeyVerifier());
 					
 					// enter a loop to keep trying until authentication
-					while(!connection.isAuthenticationComplete()) {
+					int tries = 0;
+					while(!connection.isAuthenticationComplete() && tries++ < AUTH_TRIES && !disconnectFlag) {
 						handleAuthentication();
 						
 						// sleep to make sure we dont kill system
@@ -306,43 +309,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.buffer.setCursorPosition(0, this.buffer.getCursorRow() + 1);
 		this.redraw();
 	}
-
-//	public Handler parentHandler = null;
-//	
-//	public boolean promptRequested = false;
-//	public String promptHint = null;
-//	
-//	protected void requestPromptVisible(boolean visible, String hint) {
-//		this.promptRequested = visible;
-//		this.promptHint = hint;
-//		
-//		// pass notification up to any attached gui
-//		if(this.parentHandler != null)
-//			Message.obtain(this.parentHandler, ConsoleActivity.HANDLE_PROMPT, this).sendToTarget();
-//	}
-	
-//	/**
-//	 * Attempt to try password authentication using given string.
-//	 */
-//	public void incomingPassword(String password) {
-//		try {
-//			if (currentMethod == AUTH_PASSWORD) {
-//				Log.d(TAG, "Attempting to try password authentication");
-//				if (this.connection.authenticateWithPassword(this.username, password)) {
-//					requestPromptVisible(false, null);
-//					finishConnection();
-//					return;
-//				}
-//			} else if (currentMethod == AUTH_KEYBOARDINTERACTIVE) {
-//				Log.d(TAG, "Attempting to try keyboard-interactive authentication");
-//				currentChallengeResponse = password;
-//				waitChallengeResponse.release();
-//			}
-//		} catch (IOException e) {
-//			Log.e(TAG, "Problem while trying to authenticate with password", e);
-//		}
-//		this.outputLine("Permission denied, please try again.");
-//	}
 
 	/**
 	 * Inject a specific string into this terminal. Used for post-login strings
@@ -416,6 +382,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.disconnectListener = disconnectListener;
 	}
 	
+	protected boolean disconnectFlag = false;
+	
 	/**
 	 * Force disconnection of this terminal bridge.
 	 */
@@ -430,6 +398,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			}
 		}).start();
 		
+		this.disconnectFlag = true;
+		
 		// pass notification back up to terminal manager
 		// the manager will do any gui notification if applicable
 		if(this.disconnectListener != null)
@@ -438,12 +408,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	}
 	
 	public KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
-
-//	/**
-//	 * Buffer of collected characters, for example when prompted for password or
-//	 * accepting a hostkey.
-//	 */
-//	//protected StringBuffer collected = new StringBuffer();
 
 	/**
 	 * Handle onKey() events coming down from a {@link TerminalView} above us.
@@ -469,56 +433,41 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			
 			boolean printing = (keymap.isPrintingKey(keyCode) || keyCode == KeyEvent.KEYCODE_SPACE);
 			
-			if(this.session == null) {
-				// check to see if we are collecting password information
-//				if(keyCode == KeyEvent.KEYCODE_ENTER) {
-//					this.incomingPassword(collected.toString());
-//					collected = new StringBuffer();
-//					return true;
-//				} else if(printing) {
-//					collected.appendCodePoint(keymap.get(keyCode, event.getMetaState()));
-//					return true;
-//				} else if(keyCode == KeyEvent.KEYCODE_DEL && collected.length() > 0) {
-//					collected.deleteCharAt(collected.length() - 1);
-//					return true;
-//				}
+			// skip keys if we arent connected yet
+			if(this.session == null) return false;
 				
-			} else {
-				
-				// otherwise pass through to existing session
-				// print normal keys
-				if (printing) {
-					int key = keymap.get(keyCode, event.getMetaState());
+			// otherwise pass through to existing session
+			// print normal keys
+			if (printing) {
+				int key = keymap.get(keyCode, event.getMetaState());
+				if (ctrlPressed) {
+		    		// Support CTRL-A through CTRL-Z
+		    		if (key >= 0x61 && key <= 0x79)
+		    			key -= 0x60;
+		    		else if (key >= 0x40 && key <= 0x59)
+		    			key -= 0x39;
+		    		ctrlPressed = false;
+				}
+				this.stdin.write(key);
+				return true;
+			}
+
+			// look for special chars
+			switch(keyCode) {
+				case KeyEvent.KEYCODE_DEL: stdin.write(0x08); return true;
+				case KeyEvent.KEYCODE_ENTER: ((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', event.getMetaState()); return true;
+				case KeyEvent.KEYCODE_DPAD_LEFT: ((vt320)buffer).keyPressed(vt320.KEY_LEFT, ' ', event.getMetaState()); return true;
+				case KeyEvent.KEYCODE_DPAD_UP: ((vt320)buffer).keyPressed(vt320.KEY_UP, ' ', event.getMetaState()); return true;
+				case KeyEvent.KEYCODE_DPAD_DOWN: ((vt320)buffer).keyPressed(vt320.KEY_DOWN, ' ', event.getMetaState()); return true;
+				case KeyEvent.KEYCODE_DPAD_RIGHT: ((vt320)buffer).keyPressed(vt320.KEY_RIGHT, ' ', event.getMetaState()); return true;
+				case KeyEvent.KEYCODE_DPAD_CENTER:
+					// TODO: Add some visual indication of Ctrl state
 					if (ctrlPressed) {
-			    		// Support CTRL-A through CTRL-Z
-			    		if (key >= 0x61 && key <= 0x79)
-			    			key -= 0x60;
-			    		else if (key >= 0x40 && key <= 0x59)
-			    			key -= 0x39;
-			    		ctrlPressed = false;
-					}
-					this.stdin.write(key);
+						stdin.write(0x1B); // ESC
+						ctrlPressed = false;
+					} else
+						ctrlPressed = true;
 					return true;
-				}
-	
-				// look for special chars
-				switch(keyCode) {
-					case KeyEvent.KEYCODE_DEL: stdin.write(0x08); return true;
-					case KeyEvent.KEYCODE_ENTER: ((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', event.getMetaState()); return true;
-					case KeyEvent.KEYCODE_DPAD_LEFT: ((vt320)buffer).keyPressed(vt320.KEY_LEFT, ' ', event.getMetaState()); return true;
-					case KeyEvent.KEYCODE_DPAD_UP: ((vt320)buffer).keyPressed(vt320.KEY_UP, ' ', event.getMetaState()); return true;
-					case KeyEvent.KEYCODE_DPAD_DOWN: ((vt320)buffer).keyPressed(vt320.KEY_DOWN, ' ', event.getMetaState()); return true;
-					case KeyEvent.KEYCODE_DPAD_RIGHT: ((vt320)buffer).keyPressed(vt320.KEY_RIGHT, ' ', event.getMetaState()); return true;
-					case KeyEvent.KEYCODE_DPAD_CENTER:
-						// TODO: Add some visual indication of Ctrl state
-						if (ctrlPressed) {
-							stdin.write(0x1B); // ESC
-							ctrlPressed = false;
-						} else
-							ctrlPressed = true;
-						return true;
-				}
-				
 			}
 			
 		} catch (IOException e) {

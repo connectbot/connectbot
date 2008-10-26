@@ -102,6 +102,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		TerminalBridge bridge = new TerminalBridge(hostdb, nickname, username, hostname, port, emulation, scrollback);
 		bridge.disconnectListener = this;
 		bridge.postlogin = postlogin;
+		bridge.setOnDisconnectedListener(this);
 		bridge.startConnection();
 		this.bridges.add(bridge);
 		
@@ -150,7 +151,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 * internal list of active connections.
 	 */
 	public void disconnect(TerminalBridge bridge) {
-		// we will be notified about this through call back up to disconnected() 
+		// we will be notified about this through call back up to onDisconnected() 
 		bridge.disconnect();
 	}
 	

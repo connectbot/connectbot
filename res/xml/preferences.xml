@@ -36,5 +36,12 @@
 		android:singleLine="true"
 		/>
 
+	<CheckBoxPreference
+		android:key="@string/pref_keepalive"
+		android:title="Keep phone awake"
+		android:summary="Keep the screen from turning off when working in a console"
+		android:defaultValue="true"
+		/>
+
 
 </PreferenceScreen>

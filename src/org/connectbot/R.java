@@ -47,25 +47,30 @@ public final class R {
         public static final int console_prompt_no=0x7f090003;
         public static final int console_prompt_yes=0x7f090004;
         public static final int front_quickconnect=0x7f090005;
-        public static final int terminal_overlay=0x7f090009;
+        public static final int terminal_overlay=0x7f09000d;
+        public static final int tunnel_destination=0x7f09000c;
+        public static final int tunnel_local=0x7f090009;
+        public static final int tunnel_remote=0x7f09000a;
+        public static final int tunnel_source=0x7f09000b;
         public static final int wizard_flipper=0x7f090006;
     }
     public static final class layout {
         public static final int act_console=0x7f030000;
         public static final int act_hostlist=0x7f030001;
         public static final int act_wizard=0x7f030002;
-        public static final int item_host=0x7f030003;
-        public static final int item_terminal=0x7f030004;
-        public static final int wiz_eula=0x7f030005;
-        public static final int wiz_features=0x7f030006;
+        public static final int dia_tunnel=0x7f030003;
+        public static final int item_host=0x7f030004;
+        public static final int item_terminal=0x7f030005;
+        public static final int wiz_eula=0x7f030006;
+        public static final int wiz_features=0x7f030007;
     }
     public static final class string {
         public static final int alert_disconnect_msg=0x7f070015;
         public static final int app_desc=0x7f070001;
         public static final int app_name=0x7f070000;
-        public static final int bind_days=0x7f07001c;
-        public static final int bind_hours=0x7f07001b;
-        public static final int bind_minutes=0x7f07001a;
+        public static final int bind_days=0x7f07001d;
+        public static final int bind_hours=0x7f07001c;
+        public static final int bind_minutes=0x7f07001b;
         public static final int button_add=0x7f070011;
         public static final int button_cancel=0x7f070012;
         public static final int button_change=0x7f070013;
@@ -79,6 +84,7 @@ public final class R {
         public static final int msg_copyright=0x7f070016;
         public static final int msg_version=0x7f070017;
         public static final int pref_emulation=0x7f070018;
+        public static final int pref_keepalive=0x7f07001a;
         public static final int pref_scrollback=0x7f070019;
         public static final int prompt_touch=0x7f07000f;
         public static final int resolve_connect=0x7f070009;
