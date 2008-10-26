@@ -150,7 +150,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		return db.query(TABLE_HOSTS, new String[] { "_id", FIELD_HOST_NICKNAME,
 				FIELD_HOST_USERNAME, FIELD_HOST_HOSTNAME, FIELD_HOST_PORT,
-				FIELD_HOST_HOSTKEY, FIELD_HOST_LASTCONNECT, FIELD_HOST_COLOR },
+				FIELD_HOST_LASTCONNECT, FIELD_HOST_COLOR },
 				null, null, null, null, sortField + " ASC");
 		
 	}
