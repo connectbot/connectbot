@@ -18,21 +18,27 @@
 
 package org.connectbot;
 
+import java.util.regex.Pattern;
+
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -52,8 +58,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 import de.mud.terminal.vt320;
 
@@ -243,8 +251,11 @@ public class ConsoleActivity extends Activity {
 		bound.defaultBridge = terminal.bridge;
 	}
 	
-	protected PowerManager.WakeLock wakelock;
-	
+	protected SharedPreferences prefs = null;
+	protected PowerManager.WakeLock wakelock = null;
+
+	protected String PREF_KEEPALIVE = null;
+
 	@Override
     public void onStart() {
 		super.onStart();
@@ -255,7 +266,7 @@ public class ConsoleActivity extends Activity {
 
         // make sure we dont let the screen fall asleep
 		// this also keeps the wifi chipset from disconnecting us
-		if (this.wakelock != null)
+		if(this.wakelock != null && prefs.getBoolean(PREF_KEEPALIVE, true))
 			wakelock.acquire();
 
 	}
@@ -266,7 +277,7 @@ public class ConsoleActivity extends Activity {
 		this.unbindService(connection);
 
 		// allow the screen to dim and fall asleep
-		if (this.wakelock != null)
+		if(this.wakelock != null)
 			wakelock.release();
 		
 	}
@@ -302,9 +313,12 @@ public class ConsoleActivity extends Activity {
 		this.setContentView(R.layout.act_console);
 		
 		this.clipboard = (ClipboardManager)this.getSystemService(CLIPBOARD_SERVICE);
+		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
         PowerManager manager = (PowerManager)getSystemService(Context.POWER_SERVICE);
 		wakelock = manager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, TAG);
+		
+		this.PREF_KEEPALIVE = this.getResources().getString(R.string.pref_keepalive);
 
 		// handle requested console from incoming intent
 		this.requested = this.getIntent().getData();
@@ -504,19 +518,24 @@ public class ConsoleActivity extends Activity {
 
 	}
 	
-	protected MenuItem copy, paste;
+	protected MenuItem disconnect, copy, paste, tunnel;
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		
-		MenuItem add = menu.add("Disconnect");
-		add.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
-		add.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+		final View view = findCurrentView(R.id.console_flip);
+		boolean activeTerminal = (view instanceof TerminalView);
+		boolean authenticated = false;
+		if(activeTerminal)
+			authenticated = ((TerminalView)view).bridge.connection.isAuthenticationComplete();
+		
+		disconnect = menu.add("Disconnect");
+		disconnect.setEnabled(activeTerminal);
+		disconnect.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+		disconnect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				// close the currently visible session
-				View view = findCurrentView(R.id.console_flip);
-				if(view == null) return false;
 				TerminalView terminal = (TerminalView)view;
 				bound.disconnect(terminal.bridge);
 				// movement should now be happening over in onDisconnect() handler
@@ -528,18 +547,16 @@ public class ConsoleActivity extends Activity {
 		
 		copy = menu.add("Copy");
 		copy.setIcon(android.R.drawable.ic_menu_set_as);
-		copy.setEnabled(false);
+		copy.setEnabled(false && activeTerminal && authenticated);
 		// TODO: freeze current console, allow selection, and set clipboard to contents
 
 		
 		paste = menu.add("Paste");
 		paste.setIcon(android.R.drawable.ic_menu_edit);
-		paste.setEnabled(clipboard.hasText());
+		paste.setEnabled(clipboard.hasText() && activeTerminal && authenticated);
 		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				// force insert of clipboard text into current console
-				View view = findCurrentView(R.id.console_flip);
-				if(view == null) return false;
 				TerminalView terminal = (TerminalView)view;
 				
 				// pull string from clipboard and generate all events to force down
@@ -549,16 +566,83 @@ public class ConsoleActivity extends Activity {
 				return true;
 			}
 		});
+		
+		
+		tunnel = menu.add("Tunnel");
+		tunnel.setIcon(android.R.drawable.ic_menu_manage);
+		tunnel.setEnabled(activeTerminal && authenticated);
+		tunnel.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				// show dialog to create tunnel for this host
+				final TerminalView terminal = (TerminalView)view;
+				
+				// build dialog to prompt user about updating
+				final View tunnelView = inflater.inflate(R.layout.dia_tunnel, null, false);
+				((RadioButton)tunnelView.findViewById(R.id.tunnel_local)).setChecked(true);
+				new AlertDialog.Builder(ConsoleActivity.this)
+					.setView(tunnelView)
+					.setPositiveButton("Create tunnel", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							String type = ((RadioButton)tunnelView.findViewById(R.id.tunnel_local)).isChecked() ? TUNNEL_LOCAL : TUNNEL_REMOTE;
+							String source = ((TextView)tunnelView.findViewById(R.id.tunnel_source)).getText().toString();
+							String dest = ((TextView)tunnelView.findViewById(R.id.tunnel_destination)).getText().toString();
+							
+							createTunnel(terminal, type, source, dest);
+						}
+					})
+					.setNegativeButton("Cancel", null).create().show();
+				
+				return true;
+			}
+		});
 
 		return true;
 		
 	}
+	
+	public final static String EXTRA_TYPE = "type", EXTRA_SOURCE = "source", EXTRA_DEST = "dest", EXTRA_SILENT = "silent";
+	public final static String TUNNEL_LOCAL = "local", TUNNEL_REMOTE = "remote";
+	
+	protected void createTunnel(TerminalView target, String type, String source, String dest) {
+		String summary = null;
+		try {
+			boolean local = TUNNEL_LOCAL.equals(type);
+			int sourcePort = Integer.parseInt(source);
+			String[] destSplit = dest.split(":");
+			String destHost = destSplit[0];
+			int destPort = Integer.parseInt(destSplit[1]);
+			
+			if(local) {
+				target.bridge.connection.createLocalPortForwarder(sourcePort, destHost, destPort);
+				summary = String.format("Successfully created tunnel -L%d:%s:%d", sourcePort, destHost, destPort);
+			} else {
+				target.bridge.connection.requestRemotePortForwarding("", sourcePort, destHost, destPort);
+				summary = String.format("Successfully created tunnel -R%d:%s:%d", sourcePort, destHost, destPort);
+			}
+		} catch(Exception e) {
+			Log.e(TAG, "Problem trying to create tunnel", e);
+			summary = "Problem creating tunnel, maybe you're using ports under 1024?";
+		}
+		
+		Toast.makeText(ConsoleActivity.this, summary, Toast.LENGTH_LONG).show();
+		
+	}
+	
 
     @Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 		
-		paste.setEnabled(clipboard.hasText());
+		final View view = findCurrentView(R.id.console_flip);
+		boolean activeTerminal = (view instanceof TerminalView);
+		boolean authenticated = false;
+		if(activeTerminal)
+			authenticated = ((TerminalView)view).bridge.connection.isAuthenticationComplete();
+
+		disconnect.setEnabled(activeTerminal);
+		copy.setEnabled(false && activeTerminal && authenticated);
+		paste.setEnabled(clipboard.hasText() && activeTerminal && authenticated);
+		tunnel.setEnabled(activeTerminal && authenticated);
 		
 		return true;
 	}

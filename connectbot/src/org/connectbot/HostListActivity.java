@@ -90,11 +90,14 @@ public class HostListActivity extends ListActivity {
 	@Override
     public void onStart() {
 		super.onStart();
-
+		
 		// start the terminal manager service
 		this.startService(new Intent(this, TerminalManager.class));
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
-		
+
+		if(this.hostdb == null)
+			this.hostdb = new HostDatabase(this);
+
 		this.updateCursor();
 
 	}
@@ -107,6 +110,11 @@ public class HostListActivity extends ListActivity {
 		if(this.hosts != null) {
 			this.hosts.close();
 			this.hosts = null;
+		}
+		
+		if(this.hostdb != null) {
+			this.hostdb.close();
+			this.hostdb = null;
 		}
 		
 	}

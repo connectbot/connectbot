@@ -67,6 +67,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			
 			for(int i = 0; i < cursor.getColumnCount(); i++) {
 				String key = cursor.getColumnName(i);
+				if(key.equals(HostDatabase.FIELD_HOST_HOSTKEY)) continue;
 				String value = cursor.getString(i);
 				values.put(key, value);
 			}
