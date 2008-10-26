@@ -28,23 +28,27 @@ public final class R {
         public static final int red=0x7f080002;
     }
     public static final class drawable {
-        public static final int blue=0x7f020005;
+        public static final int blue=0x7f020006;
         public static final int connected=0x7f020000;
-        public static final int even_stripe=0x7f020006;
+        public static final int even_stripe=0x7f020007;
         public static final int highlight_disabled_pressed=0x7f020001;
         public static final int ic_btn_back=0x7f020002;
         public static final int ic_btn_next=0x7f020003;
         public static final int icon=0x7f020004;
-        public static final int odd_stripe=0x7f020007;
+        public static final int icon_older=0x7f020005;
+        public static final int odd_stripe=0x7f020008;
     }
     public static final class id {
-        public static final int action_next=0x7f090005;
-        public static final int action_prev=0x7f090004;
+        public static final int action_next=0x7f090008;
+        public static final int action_prev=0x7f090007;
         public static final int console_flip=0x7f090000;
         public static final int console_password=0x7f090001;
-        public static final int front_quickconnect=0x7f090002;
-        public static final int terminal_overlay=0x7f090006;
-        public static final int wizard_flipper=0x7f090003;
+        public static final int console_prompt=0x7f090002;
+        public static final int console_prompt_no=0x7f090003;
+        public static final int console_prompt_yes=0x7f090004;
+        public static final int front_quickconnect=0x7f090005;
+        public static final int terminal_overlay=0x7f090009;
+        public static final int wizard_flipper=0x7f090006;
     }
     public static final class layout {
         public static final int act_console=0x7f030000;

@@ -18,11 +18,14 @@
 
 package org.connectbot.util;
 
+import com.trilead.ssh2.KnownHosts;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Contains information about various SSH hosts, include public hostkey if known
@@ -32,14 +35,17 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class HostDatabase extends SQLiteOpenHelper {
 	
+	public final static String TAG = HostDatabase.class.toString();
+	
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 9;
+	public final static int DB_VERSION = 10;
 	
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
 	public final static String FIELD_HOST_USERNAME = "username";
 	public final static String FIELD_HOST_HOSTNAME = "hostname";
 	public final static String FIELD_HOST_PORT = "port";
+	public final static String FIELD_HOST_HOSTKEYALGO = "hostkeyalgo";
 	public final static String FIELD_HOST_HOSTKEY = "hostkey";
 	public final static String FIELD_HOST_LASTCONNECT = "lastconnect";
 	public final static String FIELD_HOST_COLOR = "color";
@@ -63,15 +69,15 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_HOST_USERNAME + " TEXT, "
 				+ FIELD_HOST_HOSTNAME + " TEXT, "
 				+ FIELD_HOST_PORT + " INTEGER, "
-				+ FIELD_HOST_HOSTKEY + " TEXT, "
+				+ FIELD_HOST_HOSTKEYALGO + " TEXT, "
+				+ FIELD_HOST_HOSTKEY + " BLOB, "
 				+ FIELD_HOST_LASTCONNECT + " INTEGER, "
 				+ FIELD_HOST_COLOR + " TEXT, "
 				+ FIELD_HOST_USEKEYS + " TEXT, "
 				+ FIELD_HOST_POSTLOGIN + ")");
 
 		// insert a few sample hosts, none of which probably connect
-		this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, null);
-		this.createHost(db, "root@google.com", "root", "google.com", 22, null);
+		this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, COLOR_GRAY);
 		this.createHost(db, "cron@server.example.com", "cron", "server.example.com", 22, COLOR_BLUE);
 		this.createHost(db, "backup@example.net", "backup", "example.net", 22, COLOR_BLUE);
 		
@@ -166,6 +172,57 @@ public class HostDatabase extends SQLiteOpenHelper {
 		
 		return result;
 		
+	}
+	
+	/**
+	 * Record the given hostkey into database under this nickname.
+	 */
+	public void saveKnownHost(String hostname, String hostkeyalgo, byte[] hostkey) {
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(FIELD_HOST_HOSTKEYALGO, hostkeyalgo);
+		values.put(FIELD_HOST_HOSTKEY, hostkey);
+		
+		db.update(TABLE_HOSTS, values, FIELD_HOST_HOSTNAME + " = ?", new String[] { hostname });
+		Log.d(TAG, String.format("Finished saving hostkey information for '%s'", hostname));
+		
+	}
+	
+	/**
+	 * Build list of known hosts for Trilead library.
+	 */
+	public KnownHosts getKnownHosts() {
+		KnownHosts known = new KnownHosts();
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.query(TABLE_HOSTS, new String[] { FIELD_HOST_HOSTNAME,
+				FIELD_HOST_HOSTKEYALGO, FIELD_HOST_HOSTKEY }, null, null, null,
+				null, null);
+		if(c == null) return null;
+		
+		int COL_HOSTNAME = c.getColumnIndexOrThrow(FIELD_HOST_HOSTNAME),
+			COL_HOSTKEYALGO = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEYALGO),
+			COL_HOSTKEY = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEY);
+		
+		while(c.moveToNext()) {
+			String hostname = c.getString(COL_HOSTNAME),
+				hostkeyalgo = c.getString(COL_HOSTKEYALGO);
+			byte[] hostkey = c.getBlob(COL_HOSTKEY);
+			
+			if(hostkeyalgo == null || hostkeyalgo.length() == 0) continue;
+			if(hostkey == null || hostkey.length == 0) continue;
+			
+			try {
+				known.addHostkey(new String[] { hostname }, hostkeyalgo, hostkey);
+			} catch(Exception e) {
+				Log.e(TAG, "Problem while adding a known host from database", e);
+			}
+			
+		}
+		
+		return known;
 	}
 	
 	

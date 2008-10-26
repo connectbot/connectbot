@@ -52,6 +52,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	
 	public List<String> disconnected = new LinkedList<String>();
 	
+	protected HostDatabase hostdb;
 	protected SharedPreferences prefs;
 	protected String pref_emulation, pref_scrollback;
 	
@@ -61,6 +62,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		this.pref_emulation = this.getResources().getString(R.string.pref_emulation);
 		this.pref_scrollback = this.getResources().getString(R.string.pref_scrollback);
+		
+		this.hostdb = new HostDatabase(this);
+
 	}
 
 	@Override
@@ -70,6 +74,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		// disconnect and dispose of any existing bridges
 		for(TerminalBridge bridge : bridges)
 			bridge.disconnect();
+		
+		if(this.hostdb != null)
+			this.hostdb.close();
 		
 	}
 	
@@ -90,15 +97,12 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		}
 
 		// find the post-connection string for this host
-		HostDatabase hostdb = new HostDatabase(this);
 		String postlogin = hostdb.getPostLogin(nickname);
-		hostdb.close();
-
 		
-		TerminalBridge bridge = new TerminalBridge(nickname, username, hostname, port, emulation, scrollback);
+		TerminalBridge bridge = new TerminalBridge(hostdb, nickname, username, hostname, port, emulation, scrollback);
 		bridge.disconnectListener = this;
 		bridge.postlogin = postlogin;
-		bridge.startLogin();
+		bridge.startConnection();
 		this.bridges.add(bridge);
 		
 		// also update database with new connected time
@@ -124,9 +128,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 * to {@link HostDatabase}.
 	 */
 	protected void touchHost(String nickname) {
-		HostDatabase hostdb = new HostDatabase(this);
 		hostdb.touchHost(nickname);
-		hostdb.close();
 	}
 
 	/**
@@ -141,7 +143,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		return null;
 	}
 	
-	public Handler parentHandler = null;
+	public Handler disconnectHandler = null;
 
 	/**
 	 * Force disconnection of this {@link TerminalBridge} and remove it from our
@@ -161,8 +163,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		this.disconnected.add(bridge.nickname);
 		
 		// pass notification back up to gui
-		if(this.parentHandler != null)
-			Message.obtain(this.parentHandler, ConsoleActivity.HANDLE_DISCONNECT, bridge).sendToTarget();
+		if(this.disconnectHandler != null)
+			Message.obtain(this.disconnectHandler, -1, bridge).sendToTarget();
 		
 	}
 
