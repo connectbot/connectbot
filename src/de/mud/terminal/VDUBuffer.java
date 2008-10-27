@@ -33,7 +33,7 @@ import android.util.Log;
  * all methods to manipulate the buffer that stores characters and their
  * attributes as well as the regions displayed.
  *
- * @author Matthias L. Jugel, Marcus Mei§ner
+ * @author Matthias L. Jugel, Marcus Meiner
  * @version $Id: VDUBuffer.java 503 2005-10-24 07:34:13Z marcus $
  */
 public class VDUBuffer {
@@ -343,8 +343,10 @@ public class VDUBuffer {
 
     if (scrollDown) {
       if (n > (bottom - top)) n = (bottom - top);
-      cbuf = new char[bottom - l - (n - 1)][width];
-      abuf = new int[bottom - l - (n - 1)][width];
+      int size = bottom - l - (n - 1);
+      if(size < 0) size = 0;
+      cbuf = new char[size][width];
+      abuf = new int[size][width];
 
       System.arraycopy(charArray, oldBase + l, cbuf, 0, bottom - l - (n - 1));
       System.arraycopy(charAttributes, oldBase + l,

@@ -41,6 +41,15 @@ public class TerminalView extends View {
 	protected final TerminalBridge bridge;
 	protected final Paint paint;
 	protected final Paint cursorPaint;
+	
+	public int top = -1, bottom = -1, left = -1, right = -1;
+	
+	public void resetSelected() {
+		this.top = -1;
+		this.bottom = -1;
+		this.left = -1;
+		this.right = -1;
+	}
 
 	public TerminalView(Context context, TerminalBridge bridge) {
 		super(context);
@@ -91,6 +100,12 @@ public class TerminalView extends View {
 				canvas.drawRect(x, y, x + this.bridge.charWidth,
 						y + this.bridge.charHeight, cursorPaint);
 				
+			}
+			
+			// draw any highlighted area
+			if(top >= 0 && bottom >= 0 && left >= 0 && right >= 0) {
+				canvas.drawRect(left * this.bridge.charWidth, top * this.bridge.charHeight,
+					right * this.bridge.charWidth, bottom * this.bridge.charHeight, cursorPaint);
 			}
 
 		}

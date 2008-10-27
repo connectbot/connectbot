@@ -15,4 +15,10 @@
         <item>gray</item>
     </string-array>
     
+    <string-array name="list_keymode">
+        <item>Use right-side keys</item>
+        <item>Use left-side keys</item>
+        <item>Don't use</item>
+    </string-array>
+
 </resources>

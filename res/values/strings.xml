@@ -36,6 +36,7 @@
 	<string name="pref_emulation">emulation</string>
 	<string name="pref_scrollback">scrollback</string>
 	<string name="pref_keepalive">keepalive</string>
+	<string name="pref_keymode">keymode</string>
 
     <string name="bind_minutes">%s minutes ago</string>
     <string name="bind_hours">%s hours ago</string>

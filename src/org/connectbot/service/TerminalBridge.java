@@ -91,9 +91,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	
 	public final static int COLOR_FG_STD = 7;
 	public final static int COLOR_BG_STD = 0;
+	
+	protected final TerminalManager manager;
 
 	public final String nickname;
-	protected final HostDatabase hostdb;
 	protected final String username;
 	public String postlogin = null;
 	
@@ -126,7 +127,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		public boolean verifyServerHostKey(String hostname, int port, String serverHostKeyAlgorithm, byte[] serverHostKey) throws Exception {
 
 			// read in all known hosts from hostdb
-			KnownHosts hosts = hostdb.getKnownHosts();
+			KnownHosts hosts = manager.hostdb.getKnownHosts();
 			
 			switch(hosts.verifyHostkey(hostname, serverHostKeyAlgorithm, serverHostKey)) {
 			case KnownHosts.HOSTKEY_IS_OK:
@@ -142,7 +143,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				if(result == null) return false;
 				if(result.booleanValue()) {
 					// save this key in known database
-					hostdb.saveKnownHost(hostname, serverHostKeyAlgorithm, serverHostKey);
+					manager.hostdb.saveKnownHost(hostname, serverHostKeyAlgorithm, serverHostKey);
 				}
 				return result.booleanValue();
 				
@@ -172,14 +173,15 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * launch thread to start SSH connection and handle any hostkey verification
 	 * and password authentication.
 	 */
-	public TerminalBridge(final HostDatabase hostdb, final String nickname, final String username, final String hostname, final int port, String emulation, int scrollback) throws Exception {
+	public TerminalBridge(final TerminalManager manager, final String nickname, final String username, final String hostname, final int port) throws Exception {
 		
-		this.hostdb = hostdb;
+		this.manager = manager;
 		this.nickname = nickname;
 		this.username = username;
 		
-		this.emulation = emulation;
-		this.scrollback = scrollback;
+		this.emulation = manager.getEmulation();
+		this.scrollback = manager.getScrollback();
+		this.postlogin = manager.getPostLogin(nickname);
 
 		// create prompt helper to relay password and hostkey requests up to gui
 		this.promptHelper = new PromptHelper(this);
@@ -314,13 +316,20 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * Inject a specific string into this terminal. Used for post-login strings
 	 * and pasting clipboard.
 	 */
-	public void injectString(String string) {
-		if(string == null || string.length() == 0) return;
-		KeyEvent[] events = keymap.getEvents(string.toCharArray());
-		for(KeyEvent event : events) {
-			this.onKey(null, event.getKeyCode(), event);
-		}
+	public void injectString(final String string) {
+		new Thread(new Runnable() {
+			public void run() {
+				if(string == null || string.length() == 0) return;
+				KeyEvent[] events = keymap.getEvents(string.toCharArray());
+				if(events == null || events.length == 0) return;
+				for(KeyEvent event : events) {
+					onKey(null, event.getKeyCode(), event);
+				}
+			}
+		}).start();
 	}
+	
+	public boolean fullyConnected = false;
 	
 	/**
 	 * Internal method to request actual PTY terminal once we've finished
@@ -367,6 +376,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			// force font-size to make sure we resizePTY as needed
 			this.setFontSize(this.fontSize);
 			
+			this.fullyConnected = true;
+			
 			// finally send any post-login string, if requested
 			this.injectString(postlogin);
 
@@ -399,6 +410,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		}).start();
 		
 		this.disconnectFlag = true;
+		this.fullyConnected = false;
 		
 		// pass notification back up to terminal manager
 		// the manager will do any gui notification if applicable
@@ -407,8 +419,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		
 	}
 	
+	public String keymode = null;
+	
+	public void refreshKeymode() {
+		this.keymode = this.manager.getKeyMode();
+	}
+	
 	public KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
-
+	
 	/**
 	 * Handle onKey() events coming down from a {@link TerminalView} above us.
 	 * We might collect these for our internal buffer when working with hostkeys
@@ -435,12 +453,16 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			
 			// skip keys if we arent connected yet
 			if(this.session == null) return false;
-				
+			
 			// otherwise pass through to existing session
 			// print normal keys
 			if (printing) {
 				int key = keymap.get(keyCode, event.getMetaState());
+				
+				Log.d(TAG, Integer.toString(event.getMetaState()));
+
 				if (ctrlPressed) {
+				//if((event.getMetaState() & KeyEvent.META_SYM_ON) != 0) {
 		    		// Support CTRL-A through CTRL-Z
 		    		if (key >= 0x61 && key <= 0x79)
 		    			key -= 0x60;
@@ -448,26 +470,64 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		    			key -= 0x39;
 		    		ctrlPressed = false;
 				}
+				
+				// handle pressing f-keys
+				if((event.getMetaState() & KeyEvent.META_SHIFT_ON) != 0) {
+					Log.d(TAG, "yay pressing an fkey");
+					switch(key) {
+					case '!': ((vt320)buffer).keyPressed(vt320.KEY_F1, ' ', 0); return true;
+					case '@': ((vt320)buffer).keyPressed(vt320.KEY_F2, ' ', 0); return true;
+					case '#': ((vt320)buffer).keyPressed(vt320.KEY_F3, ' ', 0); return true;
+					case '$': ((vt320)buffer).keyPressed(vt320.KEY_F4, ' ', 0); return true;
+					case '%': ((vt320)buffer).keyPressed(vt320.KEY_F5, ' ', 0); return true;
+					case '^': ((vt320)buffer).keyPressed(vt320.KEY_F6, ' ', 0); return true;
+					case '&': ((vt320)buffer).keyPressed(vt320.KEY_F7, ' ', 0); return true;
+					case '*': ((vt320)buffer).keyPressed(vt320.KEY_F8, ' ', 0); return true;
+					case '(': ((vt320)buffer).keyPressed(vt320.KEY_F9, ' ', 0); return true;
+					case ')': ((vt320)buffer).keyPressed(vt320.KEY_F10, ' ', 0); return true;
+					}
+				}
+				
 				this.stdin.write(key);
 				return true;
+			}
+			
+			// try handling keymode shortcuts
+			if("Use right-side keys".equals(this.keymode)) {
+				switch(keyCode) {
+				case KeyEvent.KEYCODE_ALT_RIGHT: this.stdin.write('/'); return true;
+				case KeyEvent.KEYCODE_SHIFT_RIGHT: this.stdin.write(0x09); return true;
+				}
+			} else if("Use left-side keys".equals(this.keymode)) {
+				switch(keyCode) {
+				case KeyEvent.KEYCODE_ALT_LEFT: this.stdin.write('/'); return true;
+				case KeyEvent.KEYCODE_SHIFT_LEFT: this.stdin.write(0x09); return true;
+				}
 			}
 
 			// look for special chars
 			switch(keyCode) {
-				case KeyEvent.KEYCODE_DEL: stdin.write(0x08); return true;
-				case KeyEvent.KEYCODE_ENTER: ((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', event.getMetaState()); return true;
-				case KeyEvent.KEYCODE_DPAD_LEFT: ((vt320)buffer).keyPressed(vt320.KEY_LEFT, ' ', event.getMetaState()); return true;
-				case KeyEvent.KEYCODE_DPAD_UP: ((vt320)buffer).keyPressed(vt320.KEY_UP, ' ', event.getMetaState()); return true;
-				case KeyEvent.KEYCODE_DPAD_DOWN: ((vt320)buffer).keyPressed(vt320.KEY_DOWN, ' ', event.getMetaState()); return true;
-				case KeyEvent.KEYCODE_DPAD_RIGHT: ((vt320)buffer).keyPressed(vt320.KEY_RIGHT, ' ', event.getMetaState()); return true;
-				case KeyEvent.KEYCODE_DPAD_CENTER:
-					// TODO: Add some visual indication of Ctrl state
-					if (ctrlPressed) {
-						stdin.write(0x1B); // ESC
-						ctrlPressed = false;
-					} else
-						ctrlPressed = true;
-					return true;
+			case KeyEvent.KEYCODE_CAMERA:
+				this.stdin.write(0x01);
+				this.stdin.write(' ');
+				//((vt320)buffer).keyTyped('a', 'a', vt320.KEY_CONTROL);
+				//((vt320)buffer).keyTyped(' ', ' ', 0);
+				break;
+				
+			case KeyEvent.KEYCODE_DEL: stdin.write(0x08); return true;
+			case KeyEvent.KEYCODE_ENTER: ((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', event.getMetaState()); return true;
+			case KeyEvent.KEYCODE_DPAD_LEFT: ((vt320)buffer).keyPressed(vt320.KEY_LEFT, ' ', event.getMetaState()); return true;
+			case KeyEvent.KEYCODE_DPAD_UP: ((vt320)buffer).keyPressed(vt320.KEY_UP, ' ', event.getMetaState()); return true;
+			case KeyEvent.KEYCODE_DPAD_DOWN: ((vt320)buffer).keyPressed(vt320.KEY_DOWN, ' ', event.getMetaState()); return true;
+			case KeyEvent.KEYCODE_DPAD_RIGHT: ((vt320)buffer).keyPressed(vt320.KEY_RIGHT, ' ', event.getMetaState()); return true;
+			case KeyEvent.KEYCODE_DPAD_CENTER:
+				// TODO: Add some visual indication of Ctrl state
+				if (ctrlPressed) {
+					stdin.write(0x1B); // ESC
+					ctrlPressed = false;
+				} else
+					ctrlPressed = true;
+				return true;
 			}
 			
 		} catch (IOException e) {

@@ -54,7 +54,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	
 	protected HostDatabase hostdb;
 	protected SharedPreferences prefs;
-	protected String pref_emulation, pref_scrollback;
+	protected String pref_emulation, pref_scrollback, pref_keymode;
 	
 	@Override
 	public void onCreate() {
@@ -62,6 +62,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		this.pref_emulation = this.getResources().getString(R.string.pref_emulation);
 		this.pref_scrollback = this.getResources().getString(R.string.pref_scrollback);
+		this.pref_keymode = this.getResources().getString(R.string.pref_keymode);
 		
 		this.hostdb = new HostDatabase(this);
 
@@ -89,19 +90,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 			throw new Exception("Connection already open for that nickname");
 		}
 		
-		String emulation = prefs.getString(this.pref_emulation, "screen");
-		int scrollback = 140;
-		try {
-			scrollback = Integer.parseInt(prefs.getString(this.pref_scrollback, "140"));
-		} catch(Exception e) {
-		}
-
-		// find the post-connection string for this host
-		String postlogin = hostdb.getPostLogin(nickname);
-		
-		TerminalBridge bridge = new TerminalBridge(hostdb, nickname, username, hostname, port, emulation, scrollback);
-		bridge.disconnectListener = this;
-		bridge.postlogin = postlogin;
+		TerminalBridge bridge = new TerminalBridge(this, nickname, username, hostname, port);
 		bridge.setOnDisconnectedListener(this);
 		bridge.startConnection();
 		this.bridges.add(bridge);
@@ -109,6 +98,27 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		// also update database with new connected time
 		this.touchHost(nickname);
 		
+	}
+	
+	public String getEmulation() {
+		return prefs.getString(this.pref_emulation, "screen");
+	}
+	
+	public int getScrollback() {
+		int scrollback = 140;
+		try {
+			scrollback = Integer.parseInt(prefs.getString(this.pref_scrollback, "140"));
+		} catch(Exception e) {
+		}
+		return scrollback;
+	}
+	
+	public String getPostLogin(String nickname) {
+		return hostdb.getPostLogin(nickname);
+	}
+	
+	public String getKeyMode() {
+		return prefs.getString(this.pref_keymode, "Use right-side keys");
 	}
 	
 	/**
