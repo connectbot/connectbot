@@ -255,6 +255,15 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	}
 	
 	public void handleAuthentication() {
+		try {
+			if (connection.authenticateWithNone(username)) {
+				finishConnection();
+				return;
+			}
+		} catch(Exception e) {
+			Log.d(TAG, "Host does not support 'none' authentication.");
+		}
+		
 		outputLine("Trying to authenticate");
 		
 		try {
