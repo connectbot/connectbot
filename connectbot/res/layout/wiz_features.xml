@@ -44,15 +44,7 @@
 		android:layout_height="wrap_content"
 		android:text="When you have multiple sessions open, you can 'pan' between them by swiping your finger left-to-right or right-to-left over the screen."
 		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:paddingBottom="10dip"
-		/>
-
-	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="Use the volume up/down buttons to change font size for a console."
-		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:paddingBottom="10dip"
+		android:paddingBottom="15dip"
 		/>
 
 	<TextView
@@ -60,7 +52,7 @@
 		android:layout_height="wrap_content"
 		android:text="Long-press on your Android desktop to create direct shortcuts to frequently-used SSH hosts."
 		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:paddingBottom="10dip"
+		android:paddingBottom="15dip"
 		/>
 
 	<TextView
@@ -68,7 +60,7 @@
 		android:layout_height="wrap_content"
 		android:text="Slide your finger up/down on the right-half of the terminal screen to look at the scrollback history.  Slide up/down on the left-half to send the page up/down keys."
 		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:paddingBottom="10dip"
+		android:paddingBottom="15dip"
 		/>
 
 </LinearLayout>

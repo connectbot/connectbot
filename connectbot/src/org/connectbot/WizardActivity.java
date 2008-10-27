@@ -38,7 +38,7 @@ public class WizardActivity extends Activity {
 	/**
 	 * In-order list of wizard steps to present to user.  These are layout resource ids.
 	 */
-	public final static int[] STEPS = new int[] { R.layout.wiz_eula, R.layout.wiz_features };
+	public final static int[] STEPS = new int[] { R.layout.wiz_eula, R.layout.wiz_features, R.layout.wiz_keyboard };
 
 	protected ViewFlipper flipper = null;
 	protected Button next, prev;
@@ -102,8 +102,8 @@ public class WizardActivity extends Activity {
 	protected void updateButtons() {
 		boolean eula = (flipper.getDisplayedChild() == 0);
 		
-		next.setText(eula ? "Agree" : "Next");
-		prev.setText(eula ? "Cancel" : "Back");
+		next.setText(eula ? getString(R.string.wizard_agree) : getString(R.string.wizard_next));
+		prev.setText(eula ? getString(R.string.wizard_cancel) : getString(R.string.wizard_back));
 		
 	}
 	

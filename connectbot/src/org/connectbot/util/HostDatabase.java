@@ -77,8 +77,8 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_HOST_POSTLOGIN + ")");
 
 		// insert a few sample hosts, none of which probably connect
-		this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, COLOR_GRAY);
-		this.createHost(db, "cron@server.example.com", "cron", "server.example.com", 22, COLOR_BLUE);
+		//this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, COLOR_GRAY);
+		this.createHost(db, "cron@server.example.com", "cron", "server.example.com", 22, COLOR_GRAY);
 		this.createHost(db, "backup@example.net", "backup", "example.net", 22, COLOR_BLUE);
 		
 	}

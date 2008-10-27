@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.connectbot.R;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
@@ -136,15 +137,15 @@ public class UpdateHelper implements Runnable {
 			
 			// build dialog to prompt user about updating
 			new AlertDialog.Builder(context)
-				.setTitle("New version")
+				.setTitle(R.string.upgrade)
 				.setMessage(features)
-				.setPositiveButton("Yes, upgrade", new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.upgrade_pos, new DialogInterface.OnClickListener() {
 	                public void onClick(DialogInterface dialog, int which) {
 						Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(target));
 						context.startActivity(intent);
 	                }
 	            })
-	            .setNegativeButton("Not right now", null).create().show();
+	            .setNegativeButton(R.string.upgrade_neg, null).create().show();
 			
 		}
 		
