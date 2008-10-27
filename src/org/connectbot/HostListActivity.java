@@ -252,7 +252,7 @@ public class HostListActivity extends ListActivity {
 
 				// show error if poorly formed
 				if (!hostmask.matcher(text.getText().toString()).find()) {
-					text.setError("Use the format 'username@hostname:port'");
+					text.setError(getString(R.string.list_format_error));
 					return false;
 				}
 				
@@ -326,7 +326,7 @@ public class HostListActivity extends ListActivity {
 		if(makingShortcut) return true;
 		
 		// add host, ssh keys, about
-		sortcolor = menu.add("Sort by color");
+		sortcolor = menu.add(R.string.list_menu_sortcolor);
 		sortcolor.setIcon(android.R.drawable.ic_menu_share);
 		sortcolor.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
@@ -336,7 +336,7 @@ public class HostListActivity extends ListActivity {
 			}
 		});
 		
-		sortlast = menu.add("Sort by name");
+		sortlast = menu.add(R.string.list_menu_sortname);
 		sortlast.setIcon(android.R.drawable.ic_menu_share);
 		sortlast.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
@@ -346,15 +346,15 @@ public class HostListActivity extends ListActivity {
 			}
 		});
 
-		MenuItem keys = menu.add("Manage keys");
-		keys.setIcon(android.R.drawable.ic_lock_lock);
-		keys.setEnabled(false);
+		//MenuItem keys = menu.add("Manage keys");
+		//keys.setIcon(android.R.drawable.ic_lock_lock);
+		//keys.setEnabled(false);
     
-		MenuItem settings = menu.add("Settings");
+		MenuItem settings = menu.add(R.string.list_menu_settings);
 		settings.setIcon(android.R.drawable.ic_menu_preferences);
 		settings.setIntent(new Intent(HostListActivity.this, SettingsActivity.class));
 
-		MenuItem about = menu.add("About");
+		MenuItem about = menu.add(R.string.list_menu_about);
 		about.setIcon(android.R.drawable.ic_menu_help);
 		about.setIntent(new Intent(HostListActivity.this, WizardActivity.class));
 		
@@ -377,7 +377,7 @@ public class HostListActivity extends ListActivity {
 		final int id = cursor.getInt(COL_ID);
 
 		// edit, disconnect, delete
-		MenuItem connect = menu.add("Disconnect");
+		MenuItem connect = menu.add(R.string.list_host_disconnect);
 		final TerminalBridge bridge = bound.findBridge(nickname);
 		connect.setEnabled((bridge != null));
 		connect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -388,7 +388,7 @@ public class HostListActivity extends ListActivity {
 			}
 		});
 
-		MenuItem edit = menu.add("Edit host");
+		MenuItem edit = menu.add(R.string.list_host_edit);
 		edit.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				Intent intent = new Intent(HostListActivity.this, HostEditorActivity.class);
@@ -398,13 +398,13 @@ public class HostListActivity extends ListActivity {
 			}
 		});
 
-		MenuItem delete = menu.add("Delete host");
+		MenuItem delete = menu.add(R.string.list_host_delete);
 		delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				// prompt user to make sure they really want this
 				new AlertDialog.Builder(HostListActivity.this)
-					.setMessage(String.format("Are you sure you want to delete '%s'?", nickname))
-					.setPositiveButton("Yes, delete", new DialogInterface.OnClickListener() {
+					.setMessage(getString(R.string.delete_message, nickname))
+					.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
 		                public void onClick(DialogInterface dialog, int which) {
 		    				// make sure we disconnect
 		    				if(bridge != null)
@@ -414,7 +414,7 @@ public class HostListActivity extends ListActivity {
 		    				updateHandler.sendEmptyMessage(-1);
 		                }
 		            })
-		            .setNegativeButton("Cancel", null).create().show();
+		            .setNegativeButton(R.string.delete_neg, null).create().show();
 
 				return true;
 			}

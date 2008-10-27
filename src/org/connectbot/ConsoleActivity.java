@@ -511,7 +511,7 @@ public class ConsoleActivity extends Activity {
 						}
 						
 						clipboard.setText(buffer.toString());
-						Toast.makeText(ConsoleActivity.this, String.format("Copied %d bytes to clipboard", buffer.length()), Toast.LENGTH_LONG).show();
+						Toast.makeText(ConsoleActivity.this, getString(R.string.console_copy_done, buffer.length()), Toast.LENGTH_LONG).show();
 						
 					case MotionEvent.ACTION_CANCEL:
 						// make sure we clear any highlighted area
@@ -589,7 +589,7 @@ public class ConsoleActivity extends Activity {
 		if(activeTerminal)
 			authenticated = ((TerminalView)view).bridge.fullyConnected;
 		
-		disconnect = menu.add("Disconnect");
+		disconnect = menu.add(R.string.console_menu_disconnect);
 		disconnect.setEnabled(activeTerminal);
 		disconnect.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
 		disconnect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -604,7 +604,7 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 		
-		copy = menu.add("Copy");
+		copy = menu.add(R.string.console_menu_copy);
 		copy.setIcon(android.R.drawable.ic_menu_set_as);
 		copy.setEnabled(activeTerminal && authenticated);
 		copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -614,13 +614,13 @@ public class ConsoleActivity extends Activity {
 				copySource = (TerminalView)view;
 				copySource.resetSelected();
 				
-				Toast.makeText(ConsoleActivity.this, "Touch and drag to select area to copy", Toast.LENGTH_LONG).show();
+				Toast.makeText(ConsoleActivity.this, getString(R.string.console_copy_start), Toast.LENGTH_LONG).show();
 				return true;
 			}
 		});
 
 		
-		paste = menu.add("Paste");
+		paste = menu.add(R.string.console_menu_paste);
 		paste.setIcon(android.R.drawable.ic_menu_edit);
 		paste.setEnabled(clipboard.hasText() && activeTerminal && authenticated);
 		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -637,7 +637,7 @@ public class ConsoleActivity extends Activity {
 		});
 		
 		
-		tunnel = menu.add("Tunnel");
+		tunnel = menu.add(R.string.console_menu_tunnel);
 		tunnel.setIcon(android.R.drawable.ic_menu_manage);
 		tunnel.setEnabled(activeTerminal && authenticated);
 		tunnel.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -683,14 +683,14 @@ public class ConsoleActivity extends Activity {
 			
 			if(local) {
 				target.bridge.connection.createLocalPortForwarder(sourcePort, destHost, destPort);
-				summary = String.format("Successfully created tunnel -L%d:%s:%d", sourcePort, destHost, destPort);
+				summary = getString(R.string.tunnel_done_local, sourcePort, destHost, destPort);
 			} else {
 				target.bridge.connection.requestRemotePortForwarding("", sourcePort, destHost, destPort);
-				summary = String.format("Successfully created tunnel -R%d:%s:%d", sourcePort, destHost, destPort);
+				summary = getString(R.string.tunnel_done_remote, sourcePort, destHost, destPort);
 			}
 		} catch(Exception e) {
 			Log.e(TAG, "Problem trying to create tunnel", e);
-			summary = "Problem creating tunnel, maybe you're using ports under 1024?";
+			summary = getString(R.string.tunnel_problem);
 		}
 		
 		Toast.makeText(ConsoleActivity.this, summary, Toast.LENGTH_LONG).show();

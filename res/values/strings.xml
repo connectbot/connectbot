@@ -33,6 +33,7 @@
     <string name="msg_copyright">Copyright &#169; 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
     <string name="msg_version">v1.0</string>
 
+
 	<string name="pref_emulation">emulation</string>
 	<string name="pref_scrollback">scrollback</string>
 	<string name="pref_keepalive">keepalive</string>
@@ -42,4 +43,66 @@
     <string name="bind_hours">%s hours ago</string>
     <string name="bind_days">%s days ago</string>
     
+
+
+	<string name="console_copy_done">Copied %d bytes to clipboard</string>
+	<string name="console_copy_start">Touch and drag to select area to copy</string>
+
+	<string name="console_menu_disconnect">Disconnect</string>
+	<string name="console_menu_copy">Copy</string>
+	<string name="console_menu_paste">Paste</string>
+	<string name="console_menu_tunnel">Tunnel</string>
+
+	<string name="tunnel_pos">Create tunnel</string>
+	<string name="tunnel_neg">Cancel</string>
+
+	<string name="tunnel_done_local">Successfully created tunnel -L%d:%s:%d</string>
+	<string name="tunnel_done_remote">Successfully created tunnel -R%d:%s:%d</string>
+	<string name="tunnel_problem">Problem creating tunnel, maybe you're using ports under 1024?</string>
+
+	<string name="list_format_error">Use the format 'username@hostname:port'</string>
+	<string name="list_menu_sortcolor">Sort by color</string>
+	<string name="list_menu_sortname">Sort by name</string>
+	<string name="list_menu_settings">Settings</string>
+	<string name="list_menu_about">About</string>
+
+	<string name="list_host_disconnect">Disconnect</string>
+	<string name="list_host_edit">Edit host</string>
+	<string name="list_host_delete">Delete host</string>
+
+	<string name="delete_message">Are you sure you want to delete '%s'?</string>
+	<string name="delete_pos">Yes, delete</string>
+	<string name="delete_neg">Cancel</string>
+
+
+	<string name="wizard_agree">Agree</string>
+	<string name="wizard_cancel">Cancel</string>
+	<string name="wizard_next">Next</string>
+	<string name="wizard_back">Back</string>
+
+
+	<string name="terminal_hostkey_warn">The authenticity of host '%s' can't be established.</string>
+	<string name="terminal_hostkey">RSA key fingerprint is %s</string>
+	<string name="terminal_hostkey_prompt">Are you sure you want\nto continue connecting?</string>
+
+	<string name="terminal_failed">Host key verification failed.</string>
+
+	<string name="terminal_auth">Trying to authenticate</string>
+
+	<string name="terminal_auth_pass">Attempting 'password' authentication</string>
+	<string name="terminal_auth_pass_hint">Password</string>
+	<string name="terminal_auth_pass_fail">Authentication method 'password' failed</string>
+
+	<string name="terminal_auth_ki">Attempting 'keyboard-interactive' authentication</string>
+	<string name="terminal_auth_ki_fail">Authentication method 'keyboard-interactive' failed</string>
+
+	<string name="terminal_auth_fail">[Your host doesn't support 'password' or 'keyboard-interactive' authentication.]</string>
+
+	<string name="upgrade">New version</string>
+	<string name="upgrade_pos">Yes, upgrade</string>
+	<string name="upgrade_neg">Not right now</string>
+
+
+
+
 </resources>
