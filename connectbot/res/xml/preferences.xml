@@ -18,30 +18,47 @@
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<ListPreference
-		android:key="@string/pref_emulation"
-		android:title="Emulation mode"
-		android:summary="Terminal emulation mode to use for PTY connections"
-		android:entries="@array/list_emulation_modes"
-		android:defaultValue="screen"
-		android:entryValues="@array/list_emulation_modes"
-		android:singleLine="true"
-		/>
+	<PreferenceCategory
+		android:title="Terminal emulation">
+		
+		<ListPreference
+			android:key="@string/pref_emulation"
+			android:title="Emulation mode"
+			android:summary="Terminal emulation mode to use for PTY connections"
+			android:entries="@array/list_emulation_modes"
+			android:defaultValue="screen"
+			android:entryValues="@array/list_emulation_modes"
+			/>
+	
+		<EditTextPreference
+			android:key="@string/pref_scrollback"
+			android:title="Scrollback size"
+			android:summary="Size of scrollback buffer to keep in memory for each console"
+			android:defaultValue="140"
+			android:singleLine="true"
+			/>
+			
+	</PreferenceCategory>
 
-	<EditTextPreference
-		android:key="@string/pref_scrollback"
-		android:title="Scrollback size"
-		android:summary="Size of scrollback buffer to keep in memory for each console"
-		android:defaultValue="140"
-		android:singleLine="true"
-		/>
+	<PreferenceCategory
+		android:title="User interface">
 
-	<CheckBoxPreference
-		android:key="@string/pref_keepalive"
-		android:title="Keep phone awake"
-		android:summary="Keep the screen from turning off when working in a console"
-		android:defaultValue="true"
-		/>
+		<ListPreference
+			android:key="@string/pref_keymode"
+			android:title="Directory shortcuts"
+			android:summary="Select how to use Alt for '/' and Shift for Tab"
+			android:entries="@array/list_keymode"
+			android:defaultValue="Use right-side keys"
+			android:entryValues="@array/list_keymode"
+			/>
+	
+		<CheckBoxPreference
+			android:key="@string/pref_keepalive"
+			android:title="Keep screen awake"
+			android:summary="Prevent the screen from turning off when working in a console"
+			android:defaultValue="true"
+			/>
 
+	</PreferenceCategory>
 
 </PreferenceScreen>

@@ -294,6 +294,7 @@ public class HostListActivity extends ListActivity {
 		// refresh cursor because of possible sorting change
 		if(this.hosts != null)
 			this.hosts.close();
+		if(this.hostdb == null) return;
 		this.hosts = this.hostdb.allHosts(sortedByColor);
 		
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.item_host, this.hosts,

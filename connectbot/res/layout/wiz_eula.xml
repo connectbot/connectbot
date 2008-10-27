@@ -41,7 +41,7 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:paddingTop="10dip"
-		android:text="It can manage several SSH sessions in the background, and can copy/paste between other apps."
+		android:text="It can manage several SSH sessions in the background, create tunnels, and copy/paste between other apps."
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		/>
 

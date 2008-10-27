@@ -42,14 +42,12 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 	
 	public class CursorPreferenceHack implements SharedPreferences {
 
-		protected final SQLiteDatabase db;
 		protected final String table;
 		protected final int id;
 
 		protected Map<String, String> values = new HashMap<String, String>();
 		
-		public CursorPreferenceHack(SQLiteDatabase db, String table, int id) {
-			this.db = db;
+		public CursorPreferenceHack(String table, int id) {
 			this.table = table;
 			this.id = id;
 			
@@ -61,6 +59,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			// fill a cursor and cache the values locally
 			// this makes sure we dont have any floating cursor to dispose later
 
+			SQLiteDatabase db = hostdb.getReadableDatabase();
 			Cursor cursor = db.query(table, null, "_id = ?",
 					new String[] { Integer.toString(id) }, null, null, null);
 			cursor.moveToFirst();
@@ -73,6 +72,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			}
 			
 			cursor.close();
+			db.close();
 			
 		}
 		
@@ -92,7 +92,9 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 			public boolean commit() {
 				Log.d(this.getClass().toString(), "commit() changes back to database");
+				SQLiteDatabase db = hostdb.getWritableDatabase();
 				db.update(table, update, "_id = ?", new String[] { Integer.toString(id) });
+				db.close();
 				
 				// make sure we refresh the parent cached values
 				cacheValues();
@@ -187,19 +189,21 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		return this.pref;
 	}
 	
-	public CursorPreferenceHack pref;
+	protected HostDatabase hostdb = null;
+	protected CursorPreferenceHack pref;
 	
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		
-		HostDatabase db = new HostDatabase(this);
 		int id = this.getIntent().getIntExtra(Intent.EXTRA_TITLE, -1);
 		
 		// TODO: we could pass through a specific ContentProvider uri here
 		//this.getPreferenceManager().setSharedPreferencesName(uri);
 		
-		this.pref = new CursorPreferenceHack(db.getWritableDatabase(), HostDatabase.TABLE_HOSTS, id);
+		this.hostdb = new HostDatabase(this);
+		
+		this.pref = new CursorPreferenceHack(HostDatabase.TABLE_HOSTS, id);
 		this.pref.registerOnSharedPreferenceChangeListener(this);
 		
 		this.addPreferencesFromResource(R.xml.host_prefs);
@@ -207,6 +211,21 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		this.updateSummaries();
 		
 		
+	}
+	
+	public void onStart() {
+		super.onStart();
+		if(this.hostdb == null)
+			this.hostdb = new HostDatabase(this);
+		
+	}
+	
+	public void onStop() {
+		super.onStop();
+		if(this.hostdb != null) {
+			this.hostdb.close();
+			this.hostdb = null;
+		}
 	}
 	
 	public void updateSummaries() {

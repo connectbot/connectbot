@@ -109,6 +109,7 @@ public class ConsoleActivity extends Activity {
 				
 				// let them know about our prompt handler services
 				bridge.promptHelper.setHandler(promptHandler);
+				bridge.refreshKeymode();
 				
 				// inflate each terminal view 
 				RelativeLayout view = (RelativeLayout)inflater.inflate(R.layout.item_terminal, flip, false);
@@ -387,6 +388,9 @@ public class ConsoleActivity extends Activity {
 			
 			@Override
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+				
+				// if copying, then ignore
+				if(copying) return false;
 
 				// if releasing then reset total scroll
 				if(e2.getAction() == MotionEvent.ACTION_UP) {
@@ -467,6 +471,58 @@ public class ConsoleActivity extends Activity {
 		flip.setOnTouchListener(new OnTouchListener() {
 
 			public boolean onTouch(View v, MotionEvent event) {
+				
+				// when copying, highlight the area
+				if(copying) {
+					if(copySource == null) return false;
+					int row = (int)(event.getY() / copySource.bridge.charHeight);
+					int col = (int)(event.getX() / copySource.bridge.charWidth);
+					
+					switch(event.getAction()) {
+					case MotionEvent.ACTION_DOWN:
+						// recording starting area
+						copySource.top = row;
+						copySource.left = col;
+						return false;
+					case MotionEvent.ACTION_MOVE:
+						// update selected area
+						copySource.bottom = row;
+						copySource.right = col;
+						copySource.invalidate();
+						return false;
+					case MotionEvent.ACTION_UP:
+						// copy selected area to clipboard
+						int top = Math.min(copySource.top, copySource.bottom),
+							bottom = Math.max(copySource.top, copySource.bottom),
+							left = Math.min(copySource.left, copySource.right),
+							right = Math.max(copySource.left, copySource.right);
+						
+						// perform actual buffer copy
+						int size = (right - left) * (bottom - top);
+						StringBuffer buffer = new StringBuffer(size);
+						for(int y = top; y <= bottom; y++) {
+							for(int x = left; x <= right; x++) {
+								// only copy printable chars
+								char c = copySource.bridge.buffer.getChar(x, y);
+								if(c < 32 || c >= 127) c = ' ';
+								buffer.append(c);
+							}
+							buffer.append("\n");
+						}
+						
+						clipboard.setText(buffer.toString());
+						Toast.makeText(ConsoleActivity.this, String.format("Copied %d bytes to clipboard", buffer.length()), Toast.LENGTH_LONG).show();
+						
+					case MotionEvent.ACTION_CANCEL:
+						// make sure we clear any highlighted area
+						copySource.resetSelected();
+						copying = false;
+						return true;
+					}
+					
+					
+				}
+				
 				// pass any touch events back to detector
 				return detect.onTouchEvent(event);
 			}
@@ -520,6 +576,9 @@ public class ConsoleActivity extends Activity {
 	
 	protected MenuItem disconnect, copy, paste, tunnel;
 	
+	protected boolean copying = false;
+	protected TerminalView copySource = null;
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -528,7 +587,7 @@ public class ConsoleActivity extends Activity {
 		boolean activeTerminal = (view instanceof TerminalView);
 		boolean authenticated = false;
 		if(activeTerminal)
-			authenticated = ((TerminalView)view).bridge.connection.isAuthenticationComplete();
+			authenticated = ((TerminalView)view).bridge.fullyConnected;
 		
 		disconnect = menu.add("Disconnect");
 		disconnect.setEnabled(activeTerminal);
@@ -547,8 +606,18 @@ public class ConsoleActivity extends Activity {
 		
 		copy = menu.add("Copy");
 		copy.setIcon(android.R.drawable.ic_menu_set_as);
-		copy.setEnabled(false && activeTerminal && authenticated);
-		// TODO: freeze current console, allow selection, and set clipboard to contents
+		copy.setEnabled(activeTerminal && authenticated);
+		copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				// mark as copying and reset any previous bounds
+				copying = true;
+				copySource = (TerminalView)view;
+				copySource.resetSelected();
+				
+				Toast.makeText(ConsoleActivity.this, "Touch and drag to select area to copy", Toast.LENGTH_LONG).show();
+				return true;
+			}
+		});
 
 		
 		paste = menu.add("Paste");
@@ -637,10 +706,10 @@ public class ConsoleActivity extends Activity {
 		boolean activeTerminal = (view instanceof TerminalView);
 		boolean authenticated = false;
 		if(activeTerminal)
-			authenticated = ((TerminalView)view).bridge.connection.isAuthenticationComplete();
+			authenticated = ((TerminalView)view).bridge.fullyConnected;
 
 		disconnect.setEnabled(activeTerminal);
-		copy.setEnabled(false && activeTerminal && authenticated);
+		copy.setEnabled(activeTerminal && authenticated);
 		paste.setEnabled(clipboard.hasText() && activeTerminal && authenticated);
 		tunnel.setEnabled(activeTerminal && authenticated);
 		
