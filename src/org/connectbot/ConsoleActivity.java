@@ -18,8 +18,6 @@
 
 package org.connectbot;
 
-import java.util.regex.Pattern;
-
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
@@ -278,7 +276,7 @@ public class ConsoleActivity extends Activity {
 		this.unbindService(connection);
 
 		// allow the screen to dim and fall asleep
-		if(this.wakelock != null)
+		if(this.wakelock != null && this.wakelock.isHeld())
 			wakelock.release();
 		
 	}
