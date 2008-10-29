@@ -444,7 +444,59 @@ public class Connection
 
 		return authenticated;
 	}
+	
+	/**
+	 * After a successful connect, one has to authenticate oneself. The
+	 * authentication method "publickey" works by signing a challenge sent by
+	 * the server. The signature is either DSA or RSA based - it just depends on
+	 * the type of private key you specify, either a DSA or RSA private key in
+	 * PEM format. And yes, this is may seem to be a little confusing, the
+	 * method is called "publickey" in the SSH-2 protocol specification, however
+	 * since we need to generate a signature, you actually have to supply a
+	 * private key =).
+	 * <p>
+	 * If the authentication phase is complete, <code>true</code> will be
+	 * returned. If the server does not accept the request (or if further
+	 * authentication steps are needed), <code>false</code> is returned and
+	 * one can retry either by using this or any other authentication method
+	 * (use the <code>getRemainingAuthMethods</code> method to get a list of
+	 * the remaining possible methods).
+	 * 
+	 * @param user
+	 *            A <code>String</code> holding the username.
+	 * @param key
+	 *            A <code>RSAPrivateKey</code> or <code>DSAPrivateKey</code>
+	 *            containing a DSA or RSA private key of
+	 *            the user in Trilead object format.
+	 * 
+	 * @return whether the connection is now authenticated.
+	 * @throws IOException
+	 */
+	public synchronized boolean authenticateWithPublicKey(String user, Object key)
+			throws IOException
+	{
+		if (tm == null)
+			throw new IllegalStateException("Connection is not established!");
 
+		if (authenticated)
+			throw new IllegalStateException("Connection is already authenticated!");
+
+		if (am == null)
+			am = new AuthenticationManager(tm);
+
+		if (cm == null)
+			cm = new ChannelManager(tm);
+
+		if (user == null)
+			throw new IllegalArgumentException("user argument is null");
+
+		if (key == null)
+			throw new IllegalArgumentException("Key argument is null");
+
+		authenticated = am.authenticatePublicKey(user, key, getOrCreateSecureRND());
+
+		return authenticated;
+	}
 	/**
 	 * A convenience wrapper function which reads in a private key (PEM format,
 	 * either DSA or RSA) and then calls

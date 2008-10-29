@@ -346,9 +346,9 @@ public class HostListActivity extends ListActivity {
 			}
 		});
 
-		//MenuItem keys = menu.add("Manage keys");
-		//keys.setIcon(android.R.drawable.ic_lock_lock);
-		//keys.setEnabled(false);
+		MenuItem keys = menu.add("Manage keys");
+		keys.setIcon(android.R.drawable.ic_lock_lock);
+		keys.setIntent(new Intent(HostListActivity.this, PubkeyListActivity.class));
     
 		MenuItem settings = menu.add(R.string.list_menu_settings);
 		settings.setIcon(android.R.drawable.ic_menu_preferences);

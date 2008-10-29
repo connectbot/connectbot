@@ -12,6 +12,7 @@
     
 	<string name="resolve_edit">Edit Host</string>
 	<string name="resolve_connect">Connect</string>
+	<string name="resolve_entropy">Gather Entropy</string>
 	
     <string name="menu_insert">Add Host</string>
     <string name="menu_delete">Delete Host</string>
@@ -20,7 +21,12 @@
     
     <string name="menu_about">About</string>
     
-    <string name="prompt_touch">Please touch the screen.</string>
+    <string name="pubkey_generate">Generate</string>
+	<string name="pubkey_delete">Delete Public Key</string>
+	<string name="pubkey_gather_entropy">Gathering Entropy</string>
+    <string name="pubkey_touch_prompt">Touch this box to gather randomness: </string>
+    <string name="pubkey_generating">Generating key...</string>
+    <string name="pubkey_copy_clipboard">Copy to clipboard for OpenSSH</string>
     
     <string name="button_ok">Ok</string>
     <string name="button_add">Add</string>

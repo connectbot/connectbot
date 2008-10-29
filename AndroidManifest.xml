@@ -20,6 +20,8 @@
 			</intent-filter>
 		</activity>
 
+		<activity android:name=".PubkeyListActivity" android:configChanges="keyboardHidden|orientation" />
+		<activity android:name=".GeneratePubkeyActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".HostEditorActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".SettingsActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".WizardActivity" android:configChanges="keyboardHidden|orientation" />
