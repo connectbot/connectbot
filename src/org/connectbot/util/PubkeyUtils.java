@@ -41,8 +41,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
-import android.util.Log;
-
 import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.signature.DSASHA1Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
@@ -59,7 +57,8 @@ public class PubkeyUtils {
 	public static String describeKey(Key key, int encrypted) {
 		String desc = null;
 		if (key instanceof RSAPublicKey) {
-			desc = "RSA " + String.valueOf(((RSAPublicKey)key).getModulus().bitLength()) + "-bit";
+			int bits = ((RSAPublicKey)key).getModulus().bitLength();
+			desc = "RSA " + String.valueOf(bits) + "-bit";
 		} else if (key instanceof DSAPublicKey) {
 			desc = "DSA 1024-bit";
 		} else {
@@ -72,30 +71,19 @@ public class PubkeyUtils {
 		return desc;
 	}
 	
-	public static byte[] sha1(byte[] data) throws NoSuchAlgorithmException {
-		MessageDigest hash = MessageDigest.getInstance("SHA-256");
-		byte[] hashed = hash.digest(data);
-		Log.d("KeyUtils", "hash is " + hashed.length + " bytes");
-		return hash.digest(data);
+	public static byte[] sha256(byte[] data) throws NoSuchAlgorithmException {
+		return MessageDigest.getInstance("SHA-256").digest(data);
 	}
 	
 	public static byte[] cipher(int mode, byte[] data, byte[] secret) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-		SecretKeySpec secretKeySpec = new SecretKeySpec(sha1(secret), "AES");
+		SecretKeySpec secretKeySpec = new SecretKeySpec(sha256(secret), "AES");
 		Cipher c = Cipher.getInstance("AES");
 		c.init(mode, secretKeySpec);
 		return c.doFinal(data);
-	}
-	
-	public static byte[] encrypt(byte[] cleartext, byte[] secret) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-		return cipher(Cipher.ENCRYPT_MODE, cleartext, secret);
 	}	
 	
 	public static byte[] encrypt(byte[] cleartext, String secret) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		return cipher(Cipher.ENCRYPT_MODE, cleartext, secret.getBytes());
-	}
-	
-	public static byte[] decrypt(byte[] ciphertext, byte[] secret) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-		return cipher(Cipher.DECRYPT_MODE, ciphertext, secret);
 	}
 	
 	public static byte[] decrypt(byte[] ciphertext, String secret) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
@@ -103,13 +91,11 @@ public class PubkeyUtils {
 	}
 	
 	public static byte[] getEncodedPublic(PublicKey pk) {
-		X509EncodedKeySpec x509 = new X509EncodedKeySpec(pk.getEncoded());
-		return x509.getEncoded();
+		return new X509EncodedKeySpec(pk.getEncoded()).getEncoded();
 	}
 	
 	public static byte[] getEncodedPrivate(PrivateKey pk) {
-		PKCS8EncodedKeySpec pkcs8 = new PKCS8EncodedKeySpec(pk.getEncoded());
-		return pkcs8.getEncoded();
+		return new PKCS8EncodedKeySpec(pk.getEncoded()).getEncoded();
 	}
 	
 	public static byte[] getEncodedPrivate(PrivateKey pk, String secret) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
@@ -153,7 +139,7 @@ public class PubkeyUtils {
 						dp.getP(), dp.getQ(), dp.getG(), ((DSAPublicKey) pk).getY());
 		}
 		
-		throw new IllegalArgumentException("PrivateKey is not RSA or DSA format");
+		throw new IllegalArgumentException("PublicKey is not RSA or DSA format");
 	}
 	
 	public static Object convertToTrilead(PrivateKey priv, PublicKey pub) {
