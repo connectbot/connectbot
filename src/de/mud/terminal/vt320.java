@@ -1530,7 +1530,13 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
               }
               if (C >= columns) {
                 if (wraparound) {
-                  if (R < rows - 1)
+                  int bot = rows;
+                  
+                  // If we're in the scroll region, check against the bottom margin
+                  if (R <= bm && R >= tm)
+                	  bot = bm;
+                  
+                  if (R < bot - 1)
                     R++;
                   else
                     insertLine(R, 1, SCROLL_UP);
