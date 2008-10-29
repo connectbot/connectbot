@@ -261,9 +261,15 @@ public class HostListActivity extends ListActivity {
 				String username = uri.getUserInfo();
 				String hostname = uri.getHost();
 				int port = uri.getPort();
-				if(port == -1) port = 22;
 				
-				String nickname = String.format("%s@%s", username, hostname);
+				String nickname;
+				if(port == -1) {
+					port = 22;
+					nickname = String.format("%s@%s", username, hostname);
+				} else {
+					nickname = String.format("%s@%s:%d", username, hostname, port);
+				}
+				
 				hostdb.createHost(null, nickname, username, hostname, port, HostDatabase.COLOR_GRAY);
 				
 				Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
