@@ -85,8 +85,12 @@ public class HostDatabase extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOSTS);
-		onCreate(db);
+		// Versions of the database before the Android Market release will be
+		// shot without warning.
+		if (oldVersion <= 9) {
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOSTS);
+			onCreate(db);	
+		}
 	}
 	
 	/**
