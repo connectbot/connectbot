@@ -21,12 +21,15 @@ package org.connectbot.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.concurrent.Semaphore;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
-import org.connectbot.ConsoleActivity;
 import org.connectbot.TerminalView;
-import org.connectbot.util.HostDatabase;
+import org.connectbot.util.PubkeyDatabase;
+import org.connectbot.util.PubkeyUtils;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -34,8 +37,6 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.Bitmap.Config;
 import android.graphics.Paint.FontMetricsInt;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -121,6 +122,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	
 	private String currentMethod = null;
 	
+	protected PubkeyDatabase pubkeydb = null;
+	protected Cursor pubkeys = null;
+	final int COL_NICKNAME, COL_TYPE, COL_PRIVATE, COL_PUBLIC, COL_ENCRYPTED;
+	private boolean pubkeysExhausted = false;
 	
 	public class HostKeyVerifier implements ServerHostKeyVerifier {
 		
@@ -226,6 +231,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.connection = new Connection(hostname, port);
 		this.connection.addConnectionMonitor(this);
 
+		this.pubkeydb = new PubkeyDatabase(manager);
+		this.pubkeys = this.pubkeydb.allPubkeys();
+		
+		this.COL_NICKNAME = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_NICKNAME);
+		this.COL_TYPE = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_TYPE);
+		this.COL_PRIVATE = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PRIVATE);
+		this.COL_PUBLIC = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PUBLIC);
+		this.COL_ENCRYPTED = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_ENCRYPTED);
 	}
 	
 	public final static int AUTH_TRIES = 20;
@@ -268,9 +281,34 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		
 		try {
 		
-			// TODO: insert publickey auth check here
-			
-			if(connection.isAuthMethodAvailable(username, AUTH_PASSWORD)) {
+			if (!pubkeysExhausted &&
+					connection.isAuthMethodAvailable(username, AUTH_PUBLICKEY)) {
+				Cursor cursor = pubkeydb.allPubkeys();
+				String keyNickname;
+				PrivateKey privKey;
+				PublicKey pubKey;
+								
+				while (cursor.moveToNext()) {
+					if (cursor.getInt(COL_ENCRYPTED) == 0) {
+						keyNickname = cursor.getString(COL_NICKNAME);
+						privKey = PubkeyUtils.decodePrivate(cursor.getBlob(COL_PRIVATE),
+								cursor.getString(COL_TYPE));
+						pubKey = PubkeyUtils.decodePublic(cursor.getBlob(COL_PUBLIC),
+								cursor.getString(COL_TYPE));
+						
+						Log.d("TerminalBridge", "Trying key " + PubkeyUtils.formatKey(pubKey));
+						
+						if (connection.authenticateWithPublicKey(username,
+								PubkeyUtils.convertToTrilead(privKey, pubKey))) {
+							finishConnection();
+						} else {
+							outputLine("Authentication method 'publickey' with key " + keyNickname + " failed");
+						}
+					}
+				}
+				
+				pubkeysExhausted = true;
+			} else if (connection.isAuthMethodAvailable(username, AUTH_PASSWORD)) {
 				outputLine("Attempting 'password' authentication");
 				String password = promptHelper.requestStringPrompt("Password");
 				if(connection.authenticateWithPassword(username, password)) {
@@ -638,6 +676,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			this.bitmap.recycle();
 		this.bitmap = null;
 		this.canvas.setBitmap(null);
+		
+		if (this.pubkeydb != null)
+			this.pubkeydb.close();
 	}
 
 	public void setVDUBuffer(VDUBuffer buffer) {

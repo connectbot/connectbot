@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	ConnectBot: simple, powerful, open-source SSH client for Android
+	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
+	
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:paddingLeft="10dip"
+	android:paddingRight="10dip"
+	android:scrollbars="vertical">
+		
+	<TableRow>
+		<TextView android:text="Nickname:" android:paddingRight="10dip" android:gravity="right|center_vertical" android:textAppearance="?android:attr/textAppearanceMedium" />
+		<EditText android:id="@+id/nickname" android:hint="My work key" android:layout_width="200dip" android:layout_height="wrap_content" />
+	</TableRow>
+
+	<TableRow>
+		<TextView android:text="Type:" android:paddingRight="10dip" android:textAppearance="?android:attr/textAppearanceMedium" android:gravity="bottom|right" android:layout_gravity="center_vertical"/>
+		<RadioGroup
+			android:id="@+id/key_type"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:checkedButton="@+id/rsa">
+		
+			<RadioButton
+				android:id="@+id/rsa"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="RSA"
+				android:paddingRight="30dip"
+				/>
+		
+			<RadioButton
+				android:id="@+id/dsa"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="DSA"
+				/>
+
+		</RadioGroup>
+	</TableRow>
+	
+	<TableRow>
+		<TextView android:text="Bits:" android:paddingRight="10dip" android:textAppearance="?android:attr/textAppearanceMedium" android:gravity="right|center_vertical" />
+		<EditText android:id="@+id/bits" android:layout_width="200dip" android:layout_height="wrap_content" android:text="1024" android:numeric="integer"/>
+	</TableRow>
+	
+	<SeekBar android:layout_height="wrap_content" android:id="@+id/bits_slider" android:layout_width="fill_parent" android:paddingBottom="10dip" android:max="3328" android:progress="256"/>
+
+	<TextView android:text="Note: password can be blank" android:gravity="right" android:layout_height="wrap_content" android:layout_width="wrap_content" />
+
+	<TableRow>
+		<TextView android:gravity="right|center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="Password:" />
+		<EditText android:id="@+id/password1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:password="true"></EditText>
+	</TableRow>
+	
+	<TableRow>
+		<LinearLayout android:orientation="vertical" android:gravity="right|center_vertical" >
+			<TextView android:gravity="right|bottom" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="Password:" />
+			<TextView android:gravity="right|top" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall" android:text="(again)" />
+		</LinearLayout>
+		<EditText android:id="@+id/password2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:password="true"></EditText>
+	</TableRow>
+	
+	<CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/unlock_at_startup" android:text="Unlock when ConnectBot starts"/>
+	
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/save" android:text="Save" android:enabled="false"/>
+
+</TableLayout>
