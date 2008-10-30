@@ -526,6 +526,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
   private final static int TSTATE_VT52Y = 15;
   private final static int TSTATE_CSI_TICKS = 16;
   private final static int TSTATE_CSI_EQUAL = 17; /* ESC [ = */
+  private final static int TSTATE_TITLE = 18; /* xterm title */
 
   /* Keys we support */
   public final static int KEY_PAUSE = 1;
@@ -1839,6 +1840,13 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
           case 'Y': /* vt52 cursor address mode , next chars are x,y */
             term_state = TSTATE_VT52Y;
             break;
+          case '_':
+          	term_state = TSTATE_TITLE;
+          	break;
+          case '\\':
+          	// TODO save title
+          	term_state = TSTATE_DATA;
+          	break;
           default:
             System.out.println("ESC unknown letter: " + c + " (" + ((int) c) + ")");
             break;
@@ -2409,14 +2417,14 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
               }
             } else
               R = rows - 1;
-            setBottomMargin(R);
+            int bot = R;
             System.out.println("setBottomMargin R="+R);
             if (R >= DCEvars[0]) {
               R = DCEvars[0] - 1;
               if (R < 0)
                 R = 0;
             }
-            setTopMargin(R);
+            setMargins(R, bot);
             System.out.println("setTopMargin R="+R);
             _SetCursor(0, 0);
             if (debug > 1)
@@ -2699,6 +2707,16 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             break;
         }
         break;
+      case TSTATE_TITLE:
+      	switch (c) {
+      	  case ESC:
+      		term_state = TSTATE_ESC;
+      		break;
+      	  default:
+      		// TODO save title
+      		break;
+      	}
+      	break;
       default:
         term_state = TSTATE_DATA;
         break;
