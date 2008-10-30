@@ -615,17 +615,13 @@ public class VDUBuffer {
   }
 
   /**
-   * Set the scroll margins simultaneously. If they're backwards, swap them.
-   * If they're out of bounds, trim them.
+   * Set the scroll margins simultaneously.  If they're out of bounds, trim them.
    * @param l1 line that is the top
    * @param l2 line that is the bottom
    */
   public void setMargins(int l1, int l2) {
-	  if (l1 > l2) {
-		  int temp = l2;
-		  l2 = l1;
-		  l1 = temp;
-	  }
+	  if (l1 > l2)
+		  return;
 	  
 	  if (l1 < 0)
 		  l1 = 0;

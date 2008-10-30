@@ -20,22 +20,39 @@
 	android:id="@android:id/content"  
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
-	android:orientation="vertical"
 	android:padding="10dip"
-	>
-		
-	<TextView
-		android:id="@android:id/text1"  
+	android:orientation="horizontal">
+	
+	<LinearLayout
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceLarge"
-		/>
+		android:orientation="vertical"
+		android:layout_weight="1"
+		android:gravity="left|center_vertical">
 		
-	<TextView
-		android:id="@android:id/text2"  
+		<TextView
+			android:id="@android:id/text1"  
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:text="Key Example"
+			/>
+			
+		<TextView
+			android:id="@android:id/text2"  
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:text="DSA 1024-bit"
+			/>
+	</LinearLayout>
+	
+	<ImageView
+		android:id="@android:id/icon1"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:src="@drawable/pubkey_locked"
+		android:layout_gravity="right"
 		/>
 		
 </LinearLayout>
