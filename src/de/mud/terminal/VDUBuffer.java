@@ -481,10 +481,13 @@ public class VDUBuffer {
 
     int bottom = (l > bottomMargin ? height - 1:
             (l < topMargin?topMargin:bottomMargin + 1));
-    System.arraycopy(charArray, screenBase + l + 1,
-                     charArray, screenBase + l, bottom - l - 1);
-    System.arraycopy(charAttributes, screenBase + l + 1,
-                     charAttributes, screenBase + l, bottom - l - 1);
+    int numRows = bottom - l - 1;
+    if (numRows > 0) {
+	    System.arraycopy(charArray, screenBase + l + 1,
+	                     charArray, screenBase + l, numRows);
+	    System.arraycopy(charAttributes, screenBase + l + 1,
+	                     charAttributes, screenBase + l, numRows);
+    }
     charArray[screenBase + bottom - 1] = new char[width];
     charAttributes[screenBase + bottom - 1] = new int[width];
     markLine(l, bottom - l);
@@ -612,6 +615,28 @@ public class VDUBuffer {
     return windowBase;
   }
 
+  /**
+   * Set the scroll margins simultaneously. If they're backwards, swap them.
+   * If they're out of bounds, trim them.
+   * @param l1 line that is the top
+   * @param l2 line that is the bottom
+   */
+  public void setMargins(int l1, int l2) {
+	  if (l1 > l2) {
+		  int temp = l2;
+		  l2 = l1;
+		  l1 = temp;
+	  }
+	  
+	  if (l1 < 0)
+		  l1 = 0;
+	  if (l2 > height - 1)
+		  l2 = height - 1;
+	  
+	  topMargin = l1;
+	  bottomMargin = l2;
+  }
+  
   /**
    * Set the top scroll margin for the screen. If the current bottom margin
    * is smaller it will become the top margin and the line will become the
