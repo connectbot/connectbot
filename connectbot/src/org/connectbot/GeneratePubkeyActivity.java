@@ -18,20 +18,16 @@
 
 package org.connectbot;
 
-import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-
 import org.connectbot.util.EntropyDialog;
 import org.connectbot.util.EntropyView;
-import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.OnEntropyGatheredListener;
+import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
 import android.app.Activity;
@@ -166,10 +162,16 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 				if (!hasFocus) {
 					try {
 						bits = Integer.parseInt(bitsText.getText().toString());
+						if (bits < minBits) {
+							bits = minBits;
+							bitsText.setText(String.valueOf(bits));
+						}
 					} catch (NumberFormatException nfe) {
 						bits = DEFAULT_BITS;
 						bitsText.setText(String.valueOf(bits));
 					}
+					
+					bitsSlider.setProgress(bits - minBits);
 				}
 			}
 		});

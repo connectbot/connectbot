@@ -28,7 +28,7 @@
 		
 		<service android:name="org.connectbot.service.TerminalManager" android:configChanges="keyboardHidden|orientation" />
 
-		<activity android:name=".ConsoleActivity" android:screenOrientation="landscape" android:configChanges="keyboardHidden|orientation">
+		<activity android:name=".ConsoleActivity" android:configChanges="keyboardHidden|orientation">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />

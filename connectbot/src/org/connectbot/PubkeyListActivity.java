@@ -18,16 +18,9 @@
 
 package org.connectbot;
 
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
-import java.security.interfaces.RSAPublicKey;
-import java.security.spec.EncodedKeySpec;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.EventListener;
 
-import org.connectbot.util.EntropyView;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
@@ -51,6 +44,7 @@ import android.view.ViewGroup;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -71,8 +65,6 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		
 		if(this.pubkeydb == null)
 			this.pubkeydb = new PubkeyDatabase(this);
-
-		this.updateCursor();	
 		
 		ListView list = this.getListView();
 		this.registerForContextMenu(list);
@@ -98,6 +90,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		
 		this.clipboard = (ClipboardManager)this.getSystemService(CLIPBOARD_SERVICE);
 	}
+	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -173,9 +166,14 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	};
 	
 	protected void updateCursor() {
-		this.pubkeys = this.pubkeydb.allPubkeys();
+		if (this.pubkeys != null) {
+			pubkeys.requery();
+			return;
+		}
 		
+		this.pubkeys = this.pubkeydb.allPubkeys();
 		this.setListAdapter(new PubkeyCursorAdapter(this, this.pubkeys));
+		this.startManagingCursor(pubkeys);
 	}
 	
 	class PubkeyCursorAdapter extends CursorAdapter {
@@ -199,6 +197,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		public void bindView(View view, Context context, Cursor cursor) {
 			TextView text1 = (TextView) view.findViewById(android.R.id.text1);
 			TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+			ImageView icon1 = (ImageView) view.findViewById(android.R.id.icon1);
 			
 			text1.setText(cursor.getString(mNickname));
 
@@ -211,8 +210,12 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			} catch (Exception e) {
 				e.printStackTrace();
 				
+				text2.setText(R.string.pubkey_unknown_format);
 				Log.e(TAG, "Error decoding public key at " + cursor.toString());
 			}
+			
+			if (encrypted == 0)
+				icon1.setImageResource(R.drawable.pubkey_unlocked);
 		}
 
 		@Override
