@@ -2341,7 +2341,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
               int limit;
               /* FIXME: xterm only cares about 0 and topmargin */
               if (R > bm)
-                limit = bm;   // BUGFIX: corrects scrollback dissapearing in irssi (?)
+                limit = bm - 1;
               else if (R >= tm) {
                 limit = tm;
               } else
