@@ -209,6 +209,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					TerminalBridge.this.stdin.write(b);
 				} catch (IOException e) {
 					Log.e(TAG, "Problem handling incoming data in vt320() thread", e);
+				} catch (NullPointerException npe) {
+					// TODO buffer input?
+					Log.d(TAG, "Input before we were connected discarded");
 				}
 			}
 
