@@ -118,9 +118,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	protected Canvas canvas = new Canvas();
 
 	private boolean ctrlPressed = false;
-	
-	private String currentMethod = null;
-	
+		
 	protected PubkeyDatabase pubkeydb = null;
 	protected Cursor pubkeys = null;
 	final int COL_NICKNAME, COL_TYPE, COL_PRIVATE, COL_PUBLIC, COL_ENCRYPTED;

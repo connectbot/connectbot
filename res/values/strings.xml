@@ -3,7 +3,7 @@
     <string name="app_name">ConnectBot</string>
     <string name="app_desc">Simple, powerful, open-source SSH client.</string>
     
-    <string name="title_hosts_list">Connectbot</string>
+    <string name="title_hosts_list">ConnectBot</string>
     <string name="title_host">Host</string>
     <string name="title_shell">Secure Shell</string>
     <string name="title_password">Input Password</string>
@@ -39,7 +39,11 @@
     <string name="alert_disconnect_msg">Connection Lost</string>
     
     <string name="msg_copyright">Copyright &#169; 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
-    <string name="msg_version">v1.0</string>
+
+ 	<!-- DO NOT MANUALLY UPDATE VERSION!!!
+ 	     Updating is update by the ant task "update-version" in build.xml
+ 	  -->
+    <string name="msg_version">ConnectBot (working copy)</string>
 
 
 	<string name="pref_emulation">emulation</string>

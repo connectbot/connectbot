@@ -21,7 +21,6 @@ package org.connectbot.service;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.connectbot.ConsoleActivity;
 import org.connectbot.R;
 import org.connectbot.util.HostDatabase;
 
