@@ -26,7 +26,6 @@
 package de.mud.terminal;
 
 import java.util.Arrays;
-import android.util.Log;
 
 /**
  * Implementation of a Video Display Unit (VDU) buffer. This class contains
@@ -339,7 +338,7 @@ public class VDUBuffer {
             (topMargin > 0 ?
             topMargin - 1 : 0) : bottomMargin));
 
-    System.out.println("l is "+l+", top is "+top+", bottom is "+bottom+", bottomargin is "+bottomMargin+", topMargin is "+topMargin);
+    // System.out.println("l is "+l+", top is "+top+", bottom is "+bottom+", bottomargin is "+bottomMargin+", topMargin is "+topMargin);
 
     if (scrollDown) {
       if (n > (bottom - top)) n = (bottom - top);
@@ -644,7 +643,6 @@ public class VDUBuffer {
    * @param l line that is the margin
    */
   public void setTopMargin(int l) {
-	  //System.out.println("trying setTopMargin " + l);
     if (l > bottomMargin) {
       topMargin = bottomMargin;
       bottomMargin = l;
@@ -652,7 +650,6 @@ public class VDUBuffer {
       topMargin = l;
     if (topMargin < 0) topMargin = 0;
     if (bottomMargin > height - 1) bottomMargin = height - 1;
-	  //System.out.println("final setTopMargin " + topMargin);
   }
 
   /**
@@ -669,7 +666,6 @@ public class VDUBuffer {
    * @param l line that is the margin
    */
   public void setBottomMargin(int l) {
-	  //System.out.println("trying setBottomMargin " + l);
     if (l < topMargin) {
       bottomMargin = topMargin;
       topMargin = l;
@@ -677,7 +673,6 @@ public class VDUBuffer {
       bottomMargin = l;
     if (topMargin < 0) topMargin = 0;
     if (bottomMargin > height - 1) bottomMargin = height - 1;
-	  //System.out.println("final setBottomMargin " + bottomMargin);
   }
 
   /**
@@ -787,7 +782,6 @@ public class VDUBuffer {
     bottomMargin = h - 1;
     update = new boolean[h + 1];
     update[0] = true;
-    
     /*  FIXME: ???
     if(resizeStrategy == RESIZE_FONT)
       setBounds(getBounds());
