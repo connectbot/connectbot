@@ -29,7 +29,6 @@ import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -506,7 +505,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			if (printing) {
 				int key = keymap.get(keyCode, event.getMetaState());
 				
-				Log.d(TAG, Integer.toString(event.getMetaState()));
+				//Log.d(TAG, Integer.toString(event.getMetaState()));
 
 				if (ctrlPressed) {
 				//if((event.getMetaState() & KeyEvent.META_SYM_ON) != 0) {
@@ -520,7 +519,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				
 				// handle pressing f-keys
 				if((event.getMetaState() & KeyEvent.META_SHIFT_ON) != 0) {
-					Log.d(TAG, "yay pressing an fkey");
+					//Log.d(TAG, "yay pressing an fkey");
 					switch(key) {
 					case '!': ((vt320)buffer).keyPressed(vt320.KEY_F1, ' ', 0); return true;
 					case '@': ((vt320)buffer).keyPressed(vt320.KEY_F2, ' ', 0); return true;

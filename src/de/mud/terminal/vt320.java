@@ -1737,8 +1737,6 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             break;
           case 'M': // RI
             System.out.println("ESC M : R is "+R+", tm is "+tm+", bm is "+bm);
-            if (R > bm) // outside scrolling region
-              break;
             if (R > tm) { // just go up 1 line.
               R--;
             } else { // scroll down
@@ -1945,7 +1943,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             break;
           case 'r': // XTERM_RESTORE
             if (true || debug > 1)
-              System.out.println("m1ESC [ ? " + DCEvars[0] + " r");
+              System.out.println("ESC [ ? " + DCEvars[0] + " r");
             /* DEC Mode reset */
             for (int i = 0; i <= DCEvar; i++) {
               switch (DCEvars[i]) {
@@ -2418,17 +2416,15 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             } else
               R = rows - 1;
             int bot = R;
-            System.out.println("setBottomMargin R="+R);
             if (R >= DCEvars[0]) {
               R = DCEvars[0] - 1;
               if (R < 0)
                 R = 0;
             }
             setMargins(R, bot);
-            System.out.println("setTopMargin R="+R);
             _SetCursor(0, 0);
             if (debug > 1)
-              System.out.println("m2ESC [" + DCEvars[0] + " ; " + DCEvars[1] + " r");
+              System.out.println("ESC [" + DCEvars[0] + " ; " + DCEvars[1] + " r");
             break;
           case 'G':  /* CUP  / cursor absolute column */
             C = DCEvars[0];
@@ -2699,7 +2695,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
               if (debug > 3)
                 System.out.print("" + DCEvars[i] + ";");
             }
-            if (debug > 4)
+            if (debug > 3)
               System.out.print(" (attributes = " + attributes + ")m \n");
             break;
           default:
