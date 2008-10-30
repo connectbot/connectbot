@@ -31,7 +31,7 @@ public class PromptHelper {
 	protected Semaphore promptResponse = new Semaphore(0);
 	
 	public String promptHint = null;
-	public Class promptRequested = null;
+	public Object promptRequested = null;
 	
 	protected Object response = null;
 
@@ -58,7 +58,7 @@ public class PromptHelper {
 	 * Request a prompt response from parent. This is a blocking call until user
 	 * interface returns a value.
 	 */
-	public synchronized Object requestPrompt(String hint, Class type) throws Exception {
+	public synchronized Object requestPrompt(String hint, Object type) throws Exception {
 		this.promptHint = hint;
 		this.promptRequested = type;
 		
