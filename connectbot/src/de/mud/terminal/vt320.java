@@ -2340,9 +2340,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             {
               int limit;
               /* FIXME: xterm only cares about 0 and topmargin */
-              if (R > bm)
-                limit = bm - 1;
-              else if (R >= tm) {
+              if (R >= tm) {
                 limit = tm;
               } else
                 limit = 0;
@@ -2360,9 +2358,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             /* cursor down n (1) times */
             {
               int limit;
-              if (R < tm)
-                limit = tm - 1;
-              else if (R <= bm) {
+              if (R <= bm) {
                 limit = bm;
               } else
                 limit = rows - 1;
