@@ -118,6 +118,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	protected Canvas canvas = new Canvas();
 
 	private boolean ctrlPressed = false;
+	private boolean altPressed = false;
+	private boolean shiftPressed = false;
 		
 	protected PubkeyDatabase pubkeydb = null;
 	protected Cursor pubkeys = null;
@@ -307,6 +309,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					}
 				}
 				
+				cursor.close();
 				pubkeysExhausted = true;
 			} else if (connection.isAuthMethodAvailable(username, AUTH_PASSWORD)) {
 				outputLine("Attempting 'password' authentication");
@@ -504,7 +507,19 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			// otherwise pass through to existing session
 			// print normal keys
 			if (printing) {
-				int key = keymap.get(keyCode, event.getMetaState());
+				int metaState = event.getMetaState();
+				
+				if (shiftPressed) {
+					metaState |= KeyEvent.META_SHIFT_ON;
+					shiftPressed = false;
+				}
+				
+				if (altPressed) {
+					metaState |= KeyEvent.META_ALT_ON;
+					altPressed = false;
+				}
+				
+				int key = keymap.get(keyCode, metaState);
 				
 				//Log.d(TAG, Integer.toString(event.getMetaState()));
 
@@ -544,11 +559,15 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				switch(keyCode) {
 				case KeyEvent.KEYCODE_ALT_RIGHT: this.stdin.write('/'); return true;
 				case KeyEvent.KEYCODE_SHIFT_RIGHT: this.stdin.write(0x09); return true;
+				case KeyEvent.KEYCODE_SHIFT_LEFT: this.shiftPressed = true; return true;
+				case KeyEvent.KEYCODE_ALT_LEFT: this.altPressed = true; return true;
 				}
 			} else if("Use left-side keys".equals(this.keymode)) {
 				switch(keyCode) {
 				case KeyEvent.KEYCODE_ALT_LEFT: this.stdin.write('/'); return true;
 				case KeyEvent.KEYCODE_SHIFT_LEFT: this.stdin.write(0x09); return true;
+				case KeyEvent.KEYCODE_SHIFT_RIGHT: this.shiftPressed = true; return true;
+				case KeyEvent.KEYCODE_ALT_RIGHT: this.altPressed = true; return true;
 				}
 			}
 
@@ -570,7 +589,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 				// TODO: Add some visual indication of Ctrl state
 				if (ctrlPressed) {
-					stdin.write(0x1B); // ESC
+					((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
 					ctrlPressed = false;
 				} else
 					ctrlPressed = true;
@@ -605,7 +624,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		float[] widths = new float[1];
 		this.defaultPaint.getTextWidths("X", widths);
 		this.charWidth = (int)widths[0];
-		this.charHeight = Math.abs(fm.top) + Math.abs(fm.descent);
+		this.charHeight = Math.abs(fm.top) + Math.abs(fm.descent) + 1;
 		
 		// refresh any bitmap with new font size
 		if(this.parent != null)
@@ -751,13 +770,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				
 				// clear this dirty area with background color
 				this.defaultPaint.setColor(bg);
-				canvas.drawRect(c * charWidth, l * charHeight, (c + addr) * charWidth, (l + 1) * charHeight, this.defaultPaint);
+				canvas.drawRect(c * charWidth, (l * charHeight) - 1, (c + addr) * charWidth, (l + 1) * charHeight, this.defaultPaint);
 				
 				// write the text string starting at 'c' for 'addr' number of characters
 				this.defaultPaint.setColor(fg);
 				if((currAttr & VDUBuffer.INVISIBLE) == 0)
 					canvas.drawText(buffer.charArray[buffer.windowBase + l], c,
-						addr, c * charWidth, ((l + 1) * charHeight) - charDescent,
+						addr, c * charWidth, ((l + 1) * charHeight) - charDescent - 2,
 						this.defaultPaint);
 				
 				// advance to the next text block with different characteristics
