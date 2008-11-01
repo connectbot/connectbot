@@ -18,6 +18,15 @@
 
 package org.connectbot.util;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.spec.InvalidKeySpecException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -105,6 +114,49 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 				FIELD_PUBKEY_NICKNAME, FIELD_PUBKEY_TYPE, FIELD_PUBKEY_PRIVATE,
 				FIELD_PUBKEY_PUBLIC, FIELD_PUBKEY_ENCRYPTED, FIELD_PUBKEY_STARTUP },
 				null, null, null, null, null);
+	}
+	
+	public Cursor getPubkey(long id) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		return db.query(TABLE_PUBKEYS, new String[] { "_id",
+				FIELD_PUBKEY_NICKNAME, FIELD_PUBKEY_TYPE, FIELD_PUBKEY_PRIVATE,
+				FIELD_PUBKEY_PUBLIC, FIELD_PUBKEY_ENCRYPTED, FIELD_PUBKEY_STARTUP },
+				"_id = ?", new String[] { String.valueOf(id) },
+				null, null, null);
+	}
+	
+	public boolean changePassword(long id, String oldPassword, String newPassword) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException {
+		SQLiteDatabase db = this.getWritableDatabase();		
+		
+		Cursor c = db.query(TABLE_PUBKEYS, new String[] { FIELD_PUBKEY_TYPE,
+				FIELD_PUBKEY_PRIVATE, FIELD_PUBKEY_ENCRYPTED },
+				"_id = ?", new String[] { String.valueOf(id) },
+				null, null, null);
+		
+		if (!c.moveToFirst())
+			return false;
+		
+		String keyType = c.getString(0);
+		byte[] encPriv = c.getBlob(1);
+		c.close();
+
+		PrivateKey priv;
+		try {
+			priv = PubkeyUtils.decodePrivate(encPriv, keyType, oldPassword);
+		} catch (InvalidKeyException e) {
+			return false;
+		} catch (BadPaddingException e) {
+			return false;
+		} catch (InvalidKeySpecException e) {
+			return false;
+		}
+		
+		ContentValues values = new ContentValues();
+		values.put(FIELD_PUBKEY_PRIVATE, PubkeyUtils.getEncodedPrivate(priv, newPassword));
+		values.put(FIELD_PUBKEY_ENCRYPTED, newPassword.length() > 0 ? 1 : 0);
+		db.update(TABLE_PUBKEYS, values, "_id = ?", new String[] { String.valueOf(id) });
+		
+		return true;
 	}
 	
 }
