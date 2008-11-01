@@ -25,7 +25,6 @@ import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -41,16 +40,15 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.AdapterView;
-import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.SimpleCursorAdapter.ViewBinder;
 
 public class PubkeyListActivity extends ListActivity implements EventListener {
 	public final static String TAG = PubkeyListActivity.class.toString();
@@ -64,8 +62,6 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	
 	protected LayoutInflater inflater = null;
 
-	protected Dialog changePasswordDialog;
-
 	@Override
     public void onStart() {
 		super.onStart();
@@ -75,6 +71,14 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		
 		ListView list = this.getListView();
 		this.registerForContextMenu(list);
+	}
+	
+	@Override
+    public void onStop() {
+		super.onStop();
+	
+		if(this.pubkeydb != null)
+			this.pubkeydb.close();
 	}
 	
 	@Override
@@ -219,68 +223,50 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	};
 	
 	protected void updateCursor() {
-		/*
 		if (this.pubkeys != null)
 			pubkeys.requery();
-		*/
-		// refresh cursor because of possible sorting change
-		if(this.pubkeys != null)
-			this.pubkeys.close();
-		if(this.pubkeydb == null) return;
+
+		if (this.pubkeydb == null) return;
 		
 		this.pubkeys = this.pubkeydb.allPubkeys();
-		this.setListAdapter(new PubkeyCursorAdapter(this, this.pubkeys));
-		//this.startManagingCursor(pubkeys);
+		
+		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.item_pubkey, this.pubkeys,
+				new String[] { PubkeyDatabase.FIELD_PUBKEY_NICKNAME, PubkeyDatabase.FIELD_PUBKEY_TYPE, PubkeyDatabase.FIELD_PUBKEY_ENCRYPTED },
+				new int[] { android.R.id.text1, android.R.id.text2, android.R.id.icon1 });
+		adapter.setViewBinder(new PubkeyBinder());
+		this.setListAdapter(adapter);
+
+		this.startManagingCursor(pubkeys);
 	}
 	
-	class PubkeyCursorAdapter extends CursorAdapter {
-		private final LayoutInflater mInflater;
-		private final int mNickname;
-		private final int mPubkey;
-		private final int mKeyType;
-		private final int mEncrypted;
-		
-		public PubkeyCursorAdapter(Context context, Cursor c) {
-			super(context, c);
-			
-            mInflater = LayoutInflater.from(context);
-            mNickname = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_NICKNAME);
-            mPubkey = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PUBLIC);
-            mEncrypted = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_ENCRYPTED);
-            mKeyType = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_TYPE);
-		}
-
-		@Override
-		public void bindView(View view, Context context, Cursor cursor) {
-			TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-			TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-			ImageView icon1 = (ImageView) view.findViewById(android.R.id.icon1);
-			
-			text1.setText(cursor.getString(mNickname));
-
-			String keyType = cursor.getString(mKeyType);
-			int encrypted = cursor.getInt(mEncrypted);
-			PublicKey pk;
-			try {
-				pk = PubkeyUtils.decodePublic(cursor.getBlob(mPubkey), keyType);
-				text2.setText(PubkeyUtils.describeKey(pk, encrypted));
-			} catch (Exception e) {
-				e.printStackTrace();
+	class PubkeyBinder implements ViewBinder {
+		public boolean setViewValue(View view, Cursor cursor, int columnIndex) {			
+			switch (view.getId()) {
+			case android.R.id.text2:
+				int encrypted = cursor.getInt(cursor.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_ENCRYPTED));
 				
-				text2.setText(R.string.pubkey_unknown_format);
-				Log.e(TAG, "Error decoding public key at " + cursor.toString());
+				PublicKey pub;
+				try {
+					pub = PubkeyUtils.decodePublic(cursor.getBlob(cursor.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PUBLIC)),
+							cursor.getString(columnIndex));
+					((TextView)view).setText(PubkeyUtils.describeKey(pub, encrypted));
+				} catch (Exception e) {
+					e.printStackTrace();
+					
+					((TextView)view).setText(R.string.pubkey_unknown_format);
+					Log.e(TAG, "Error decoding public key at " + cursor.toString());
+				}
+				return true;
+				
+			case android.R.id.icon1:
+				if (cursor.getInt(columnIndex) != 0)
+					((ImageView)view).setImageState(new int[] { android.R.attr.state_checked }, true);
+				else
+					((ImageView)view).setImageState(new int[] {  }, true);
+				return true;
 			}
 			
-			if (encrypted == 0)
-				icon1.setImageResource(R.drawable.pubkey_unlocked);
-		}
-
-		@Override
-		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            final LinearLayout view = (LinearLayout) mInflater.inflate(
-                    R.layout.item_pubkey, parent, false);
-            return view;
-		}
+			return false;
+		}	
 	}
-
 }

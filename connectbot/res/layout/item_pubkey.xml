@@ -51,7 +51,7 @@
 		android:id="@android:id/icon1"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:src="@drawable/pubkey_locked"
+		android:src="@drawable/pubkey"
 		android:layout_gravity="right"
 		/>
 		
