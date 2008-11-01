@@ -253,14 +253,15 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 				Log.d(TAG, "private: " + PubkeyUtils.formatKey(priv));
 				Log.d(TAG, "public: " + PubkeyUtils.formatKey(pub));
 				
-				PubkeyDatabase hostdb = new PubkeyDatabase(GeneratePubkeyActivity.this);
-				hostdb.createPubkey(null,
+				PubkeyDatabase pubkeydb = new PubkeyDatabase(GeneratePubkeyActivity.this);
+				pubkeydb.createPubkey(null,
 						nickname.getText().toString(),
 						keyType,
 						PubkeyUtils.getEncodedPrivate(priv, secret),
 						PubkeyUtils.getEncodedPublic(pub),
 						encrypted,
-						unlockAtStartup.isChecked());				
+						unlockAtStartup.isChecked());
+				pubkeydb.close();
 			} catch (Exception e) {
 				Log.e(TAG, "Could not generate key pair");
 

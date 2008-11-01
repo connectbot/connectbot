@@ -112,7 +112,7 @@ public class PubkeyUtils {
 	}
 	
 	public static PrivateKey decodePrivate(byte[] encoded, String keyType, String secret) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException {
-		if (secret.length() > 0)
+		if (secret != null && secret.length() > 0)
 			return decodePrivate(decrypt(encoded, secret), keyType);
 		else
 			return decodePrivate(encoded, keyType);

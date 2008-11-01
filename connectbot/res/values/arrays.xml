@@ -20,5 +20,10 @@
         <item>Use left-side keys</item>
         <item>Don't use</item>
     </string-array>
+    
+    <string-array name="list_pubkeyids">
+    	<item value="-2">Do not use keys</item>
+    	<item value="-1">Use any unlocked key</item>
+    </string-array>
 
 </resources>

@@ -53,9 +53,13 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_PUBKEY_PUBLIC = "public";
 	public final static String FIELD_PUBKEY_ENCRYPTED = "encrypted";
 	public final static String FIELD_PUBKEY_STARTUP = "startup";
+	
+	private Context context;
 
 	public PubkeyDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
+		
+		this.context = context;
 	}
 
 	@Override
@@ -103,6 +107,10 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 	public void deletePubkey(long id) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_PUBKEYS, "_id = ?", new String[] { Long.toString(id) });
+		
+		HostDatabase hostdb = new HostDatabase(context);
+		hostdb.stopUsingPubkey(id);
+		hostdb.close();
 	}
 	
 	/**

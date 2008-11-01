@@ -18,12 +18,14 @@
 
 package org.connectbot;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.connectbot.util.HostDatabase;
+import org.connectbot.util.PubkeyDatabase;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -33,6 +35,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.util.Log;
@@ -41,11 +44,12 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 	
 	public class CursorPreferenceHack implements SharedPreferences {
-
+		
 		protected final String table;
 		protected final int id;
 
 		protected Map<String, String> values = new HashMap<String, String>();
+		protected Map<String, String> pubkeys = new HashMap<String, String>();
 		
 		public CursorPreferenceHack(String table, int id) {
 			this.table = table;
@@ -74,6 +78,21 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			cursor.close();
 			db.close();
 			
+			db = pubkeydb.getReadableDatabase();
+			cursor = db.query(PubkeyDatabase.TABLE_PUBKEYS,
+					new String[] { "_id", PubkeyDatabase.FIELD_PUBKEY_NICKNAME },
+					null, null, null, null, null);
+	
+			if (cursor.moveToFirst()) {
+				do {
+					String pubkeyid = String.valueOf(cursor.getLong(0));
+					String value = cursor.getString(1);
+					pubkeys.put(pubkeyid, value);
+				} while (cursor.moveToNext());
+			}
+			
+			cursor.close();
+			db.close();
 		}
 		
 		public boolean contains(String key) {
@@ -190,6 +209,8 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 	}
 	
 	protected HostDatabase hostdb = null;
+	protected PubkeyDatabase pubkeydb = null;
+	
 	protected CursorPreferenceHack pref;
 	
 	@Override
@@ -202,15 +223,25 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		//this.getPreferenceManager().setSharedPreferencesName(uri);
 		
 		this.hostdb = new HostDatabase(this);
+		this.pubkeydb = new PubkeyDatabase(this);
 		
 		this.pref = new CursorPreferenceHack(HostDatabase.TABLE_HOSTS, id);
 		this.pref.registerOnSharedPreferenceChangeListener(this);
 		
 		this.addPreferencesFromResource(R.xml.host_prefs);
 		
-		this.updateSummaries();
+		// Grab all the pubkeys from the database cache we have.
+		ListPreference pubkeyPref = (ListPreference)this.findPreference(HostDatabase.FIELD_HOST_PUBKEYID);
+
+		List<CharSequence> pubkeyNicks = new LinkedList<CharSequence>(Arrays.asList(pubkeyPref.getEntries()));
+		pubkeyNicks.addAll(this.pref.pubkeys.values());
+		pubkeyPref.setEntries((CharSequence[]) pubkeyNicks.toArray(new CharSequence[pubkeyNicks.size()]));
 		
-		
+		List<CharSequence> pubkeyIds = new LinkedList<CharSequence>(Arrays.asList(pubkeyPref.getEntryValues()));
+		pubkeyIds.addAll(this.pref.pubkeys.keySet());
+		pubkeyPref.setEntryValues((CharSequence[]) pubkeyIds.toArray(new CharSequence[pubkeyIds.size()]));
+
+		this.updateSummaries();	
 	}
 	
 	public void onStart() {
@@ -235,6 +266,19 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			Preference pref = this.findPreference(key);
 			if(pref == null) continue;
 			if(pref instanceof CheckBoxPreference) continue;
+			String value = this.pref.getString(key, "");
+			
+			if(key.equals("pubkeyid")) {
+				try {
+					int pubkeyId = Integer.parseInt(value);
+					if (pubkeyId >= 0)
+						pref.setSummary(this.pref.pubkeys.get(this.pref.getString(key, "")));
+					continue;
+				} catch (NumberFormatException nfe) {
+					// Fall through.
+				}
+			}
+			
 			pref.setSummary(this.pref.getString(key, ""));
 		}
 		

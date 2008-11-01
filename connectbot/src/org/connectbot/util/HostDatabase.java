@@ -38,7 +38,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String TAG = HostDatabase.class.toString();
 	
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 10;
+	public final static int DB_VERSION = 11;
 	
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -51,12 +51,16 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_HOST_COLOR = "color";
 	public final static String FIELD_HOST_USEKEYS = "usekeys";
 	public final static String FIELD_HOST_POSTLOGIN = "postlogin";
+	public final static String FIELD_HOST_PUBKEYID = "pubkeyid";
 
 	public final static String COLOR_RED = "red";
 	public final static String COLOR_GREEN = "green";
 	public final static String COLOR_BLUE = "blue";
 	public final static String COLOR_GRAY = "gray";
 
+	public final static long PUBKEYID_NEVER = -2;
+	public final static long PUBKEYID_ANY = -1;
+	
 	public HostDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 	}
@@ -74,12 +78,13 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_HOST_LASTCONNECT + " INTEGER, "
 				+ FIELD_HOST_COLOR + " TEXT, "
 				+ FIELD_HOST_USEKEYS + " TEXT, "
-				+ FIELD_HOST_POSTLOGIN + ")");
+				+ FIELD_HOST_POSTLOGIN + " TEXT, "
+				+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY);
 
 		// insert a few sample hosts, none of which probably connect
 		//this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, COLOR_GRAY);
-		this.createHost(db, "cron@server.example.com", "cron", "server.example.com", 22, COLOR_GRAY);
-		this.createHost(db, "backup@example.net", "backup", "example.net", 22, COLOR_BLUE);
+		this.createHost(db, "cron@server.example.com", "cron", "server.example.com", 22, COLOR_GRAY, PUBKEYID_ANY);
+		this.createHost(db, "backup@example.net", "backup", "example.net", 22, COLOR_BLUE, PUBKEYID_ANY);
 		
 	}
 
@@ -90,6 +95,11 @@ public class HostDatabase extends SQLiteOpenHelper {
 		if (oldVersion <= 9) {
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOSTS);
 			onCreate(db);	
+		}
+		
+		if (oldVersion == 10) {
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY);
 		}
 	}
 	
@@ -114,7 +124,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	 * Create a new host using the given parameters, and return its new
 	 * <code>_id</code> value.
 	 */
-	public long createHost(SQLiteDatabase db, String nickname, String username, String hostname, int port, String color) {
+	public long createHost(SQLiteDatabase db, String nickname, String username, String hostname, int port, String color, long pubkeyId) {
 		// create and insert new host
 		
 		if(db == null) db = this.getWritableDatabase();
@@ -128,6 +138,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 		values.put(FIELD_HOST_USEKEYS, Boolean.toString(true));
 		if(color != null)
 			values.put(FIELD_HOST_COLOR, color);
+		values.put(FIELD_HOST_PUBKEYID, pubkeyId);
 		
 		return db.insert(TABLE_HOSTS, null, values);
 		
@@ -229,5 +240,48 @@ public class HostDatabase extends SQLiteOpenHelper {
 		return known;
 	}
 	
+	/**
+	 * Find the pubkey to use for a given nickname.
+	 */
+	public long getPubkeyId(String nickname) {	
+		long result = PUBKEYID_ANY;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.query(TABLE_HOSTS, new String[] { FIELD_HOST_PUBKEYID },
+				FIELD_HOST_NICKNAME + " = ?", new String[] { nickname }, null, null, null);
+		
+		if (c != null && c.moveToFirst())
+			result = c.getLong(0);
+		
+		return result;
+	}
 	
+	public void setPubkeyId(long hostId, long pubkeyId) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(FIELD_HOST_PUBKEYID, pubkeyId);
+		
+		db.update(TABLE_HOSTS, values, "_id = ?", new String[] { String.valueOf(hostId) });
+		db.close();
+
+		Log.d(TAG, String.format("Updated host id %d to use pubkey id %d", hostId, pubkeyId));
+	}
+	
+	/**
+	 * Unset any hosts using a pubkey that has been deleted.
+	 */
+	public void stopUsingPubkey(long pubkeyId) {
+		if (pubkeyId < 0) return;
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(FIELD_HOST_PUBKEYID, PUBKEYID_ANY);
+		
+		db.update(TABLE_HOSTS, values, FIELD_HOST_PUBKEYID + " = ?", new String[] { String.valueOf(pubkeyId) });
+		db.close();
+		
+		Log.d(TAG, String.format("Set all hosts using pubkey id %d to -1", pubkeyId));
+	}
 }

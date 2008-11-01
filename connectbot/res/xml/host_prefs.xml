@@ -30,12 +30,20 @@
 		android:entries="@array/list_colors"
 		android:entryValues="@array/list_colors"
 		/>
-
+<!--  
 	<CheckBoxPreference
 		android:key="usekeys"
 		android:title="Use SSH keys"
 		/>
+-->
 
+	<ListPreference
+		android:key="pubkeyid"
+		android:title="Use Pubkey Auth"
+		android:entries="@array/list_pubkeyids"
+		android:entryValues="@array/list_pubkeyids"
+		/>
+		
 	<EditTextPreference
 		android:key="postlogin"
 		android:title="Post-login automation"

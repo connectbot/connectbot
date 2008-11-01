@@ -270,7 +270,7 @@ public class HostListActivity extends ListActivity {
 					nickname = String.format("%s@%s:%d", username, hostname, port);
 				}
 				
-				hostdb.createHost(null, nickname, username, hostname, port, HostDatabase.COLOR_GRAY);
+				hostdb.createHost(null, nickname, username, hostname, port, HostDatabase.COLOR_GRAY, HostDatabase.PUBKEYID_ANY);
 				
 				Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
 				intent.setData(Uri.parse(String.format("ssh://%s@%s:%s/#%s", username, hostname, port, nickname)));

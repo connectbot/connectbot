@@ -21,10 +21,13 @@ package org.connectbot.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
 
 import org.connectbot.TerminalView;
+import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
@@ -269,6 +272,46 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		}).start();
 	}
 	
+	/**
+	 * Attempt connection with database row pointed to by cursor.
+	 * @param cursor
+	 * @return true for successful authentication
+	 * @throws NoSuchAlgorithmException
+	 * @throws InvalidKeySpecException
+	 * @throws IOException
+	 */
+	public boolean tryPublicKey(Cursor c) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+		String keyNickname = c.getString(COL_NICKNAME);
+		int encrypted = c.getInt(COL_ENCRYPTED);
+		
+		String password = null;
+		if (encrypted != 0)
+			password = promptHelper.requestStringPrompt(String.format("Password for key '%s'", keyNickname));
+		
+		PrivateKey privKey;
+		try {
+			privKey = PubkeyUtils.decodePrivate(c.getBlob(COL_PRIVATE),
+					c.getString(COL_TYPE), password);
+		} catch (Exception e) {
+			e.printStackTrace();
+			outputLine("Bad password for key '" + keyNickname + "'. Authentication failed.");
+			return false;
+		}
+		
+		PublicKey pubKey = PubkeyUtils.decodePublic(c.getBlob(COL_PUBLIC),
+				c.getString(COL_TYPE));
+		
+		Log.d("TerminalBridge", "Trying key " + PubkeyUtils.formatKey(pubKey));
+		
+		if (connection.authenticateWithPublicKey(username,
+				PubkeyUtils.convertToTrilead(privKey, pubKey)))
+			return true;
+		else
+			outputLine("Authentication method 'publickey' with key " + keyNickname + " failed");
+		
+		return false;
+	}
+	
 	public void handleAuthentication() {
 		try {
 			if (connection.authenticateWithNone(username)) {
@@ -282,31 +325,27 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		outputLine("Trying to authenticate");
 		
 		try {
-		
+			long pubkeyId = manager.hostdb.getPubkeyId(nickname);
+			
 			if (!pubkeysExhausted &&
+					pubkeyId != HostDatabase.PUBKEYID_NEVER &&
 					connection.isAuthMethodAvailable(username, AUTH_PUBLICKEY)) {
-				Cursor cursor = pubkeydb.allPubkeys();
-				String keyNickname;
-				PrivateKey privKey;
-				PublicKey pubKey;
-								
-				while (cursor.moveToNext()) {
-					if (cursor.getInt(COL_ENCRYPTED) == 0) {
-						keyNickname = cursor.getString(COL_NICKNAME);
-						privKey = PubkeyUtils.decodePrivate(cursor.getBlob(COL_PRIVATE),
-								cursor.getString(COL_TYPE));
-						pubKey = PubkeyUtils.decodePublic(cursor.getBlob(COL_PUBLIC),
-								cursor.getString(COL_TYPE));
-						
-						Log.d("TerminalBridge", "Trying key " + PubkeyUtils.formatKey(pubKey));
-						
-						if (connection.authenticateWithPublicKey(username,
-								PubkeyUtils.convertToTrilead(privKey, pubKey))) {
-							finishConnection();
-						} else {
-							outputLine("Authentication method 'publickey' with key " + keyNickname + " failed");
+				Cursor cursor;
+				
+				if (pubkeyId == HostDatabase.PUBKEYID_ANY) {
+					cursor = pubkeydb.allPubkeys();
+									
+					while (cursor.moveToNext()) {
+						if (cursor.getInt(COL_ENCRYPTED) == 0) {
+							if (tryPublicKey(cursor))
+								finishConnection();
 						}
 					}
+				} else {
+					cursor = pubkeydb.getPubkey(pubkeyId);
+					if (cursor.moveToFirst())
+						if (tryPublicKey(cursor))
+							finishConnection();
 				}
 				
 				cursor.close();
