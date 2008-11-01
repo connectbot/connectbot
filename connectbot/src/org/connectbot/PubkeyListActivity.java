@@ -25,6 +25,7 @@ import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -44,9 +45,11 @@ import android.view.ViewGroup;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 public class PubkeyListActivity extends ListActivity implements EventListener {
@@ -58,6 +61,10 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	protected int COL_ID, COL_NICKNAME, COL_TYPE, COL_PRIVATE, COL_PUBLIC, COL_ENCRYPTED, COL_STARTUP;
 
 	protected ClipboardManager clipboard;
+	
+	protected LayoutInflater inflater = null;
+
+	protected Dialog changePasswordDialog;
 
 	@Override
     public void onStart() {
@@ -89,6 +96,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		this.COL_STARTUP = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_STARTUP);
 		
 		this.clipboard = (ClipboardManager)this.getSystemService(CLIPBOARD_SERVICE);
+		
+		this.inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
 	
@@ -116,9 +125,11 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 		final String nickname = cursor.getString(COL_NICKNAME);
 		menu.setHeaderTitle(nickname);
+		
 		final int id = cursor.getInt(COL_ID);
 		final byte[] pubkeyEncoded = cursor.getBlob(COL_PUBLIC);
 		final String keyType = cursor.getString(COL_TYPE);
+		final int encrypted = cursor.getInt(COL_ENCRYPTED);
 
 		MenuItem delete = menu.add(R.string.pubkey_delete);
 		delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -141,19 +152,61 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		MenuItem copyToClipboard = menu.add(R.string.pubkey_copy_clipboard);
 		copyToClipboard.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {				
-				try {
-					Log.d(TAG, "Trying to decode public key format: " + keyType);
-					
+				try {					
 					PublicKey pk = PubkeyUtils.decodePublic(pubkeyEncoded, keyType);
 					String openSSHPubkey = new String(PubkeyUtils.convertToOpenSSHFormat(pk));
-					
-					Log.d(TAG, "OpenSSH format: " + openSSHPubkey);
-					
+										
 					clipboard.setText(openSSHPubkey);
 				} catch (Exception e) {
 					e.printStackTrace();
 				} 
 				return true;
+			}
+		});
+		
+		MenuItem changePassword = menu.add(R.string.pubkey_change_password);
+		changePassword.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				final View changePasswordView = inflater.inflate(R.layout.dia_changepassword, null, false);
+				((TableRow)changePasswordView.findViewById(R.id.old_password_prompt))
+					.setVisibility(encrypted != 0 ? View.VISIBLE : View.GONE);
+				new AlertDialog.Builder(PubkeyListActivity.this)
+				.setView(changePasswordView)
+				.setPositiveButton(R.string.button_change, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						String oldPassword = ((EditText)changePasswordView.findViewById(R.id.old_password)).getText().toString();
+						String password1 = ((EditText)changePasswordView.findViewById(R.id.password1)).getText().toString();
+						String password2 = ((EditText)changePasswordView.findViewById(R.id.password2)).getText().toString();
+
+						if (!password1.equals(password2)) {
+							new AlertDialog.Builder(PubkeyListActivity.this)
+							.setMessage(R.string.alert_passwords_do_not_match_msg)
+							.setPositiveButton(android.R.string.ok, null)
+							.create().show();
+							return;
+						}
+						
+						try {
+							if (!pubkeydb.changePassword(id, oldPassword, password1))
+								new AlertDialog.Builder(PubkeyListActivity.this)
+								.setMessage(R.string.alert_wrong_password_msg)
+								.setPositiveButton(android.R.string.ok, null)
+								.create().show();
+							else
+								updateHandler.sendEmptyMessage(-1);
+						} catch (Exception e) {
+							Log.e(TAG, "Could not change private key password");
+							e.printStackTrace();
+							new AlertDialog.Builder(PubkeyListActivity.this)
+							.setMessage(R.string.alert_key_corrupted_msg)
+							.setPositiveButton(android.R.string.ok, null)
+							.create().show();
+						}
+					}
+				})
+				.setNegativeButton(android.R.string.cancel, null).create().show();
+			
+			return true;
 			}
 		});
 	}
@@ -166,14 +219,18 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	};
 	
 	protected void updateCursor() {
-		if (this.pubkeys != null) {
+		/*
+		if (this.pubkeys != null)
 			pubkeys.requery();
-			return;
-		}
+		*/
+		// refresh cursor because of possible sorting change
+		if(this.pubkeys != null)
+			this.pubkeys.close();
+		if(this.pubkeydb == null) return;
 		
 		this.pubkeys = this.pubkeydb.allPubkeys();
 		this.setListAdapter(new PubkeyCursorAdapter(this, this.pubkeys));
-		this.startManagingCursor(pubkeys);
+		//this.startManagingCursor(pubkeys);
 	}
 	
 	class PubkeyCursorAdapter extends CursorAdapter {
