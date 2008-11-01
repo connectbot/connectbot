@@ -29,7 +29,7 @@
     <string name="pubkey_copy_clipboard">Copy to clipboard for OpenSSH</string>
     <string name="pubkey_list_empty">Press "Menu" to create public keys.</string>
     <string name="pubkey_unknown_format">Unknown format</string>
-    <string name="pubkey_change_password">Change Psassword</string>
+    <string name="pubkey_change_password">Change Password</string>
 
     <string name="prompt_old_password">Old password:</string>
     <string name="prompt_password">Password:</string>
