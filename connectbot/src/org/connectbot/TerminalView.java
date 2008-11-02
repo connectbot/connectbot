@@ -27,6 +27,7 @@ import android.graphics.Paint;
 import android.graphics.PixelXorXfermode;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Toast;
 
 /**
  * User interface {@link View} for showing a TerminalBridge in an
@@ -41,6 +42,8 @@ public class TerminalView extends View {
 	protected final TerminalBridge bridge;
 	protected final Paint paint;
 	protected final Paint cursorPaint;
+	
+	private Toast notification = null;
 	
 	public int top = -1, bottom = -1, left = -1, right = -1;
 	
@@ -112,4 +115,22 @@ public class TerminalView extends View {
 		
 	}
 	
+	public void notifyUser(String message) {
+		if (notification != null) {
+			notification.setText(message);
+			notification.show();
+		} else {
+			notification = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+			notification.show();
+		}
+	}
+
+	/**
+	 * Ask the {@link TerminalBridge} we're connected to to resize to a specific size.
+	 * @param width
+	 * @param height
+	 */
+	public void forceSize(int width, int height) {
+		this.bridge.resizeComputed(width, height, getWidth(), getHeight());
+	}
 }

@@ -44,6 +44,7 @@
     <string name="button_cancel">Cancel</string>
     <string name="button_change">Change</string>
     <string name="button_generate">Generate Key</string>
+    <string name="button_resize">Resize</string>
     
     <string name="alert_disconnect_msg">Connection Lost</string>
     
@@ -73,6 +74,7 @@
 	<string name="console_menu_copy">Copy</string>
 	<string name="console_menu_paste">Paste</string>
 	<string name="console_menu_tunnel">Tunnel</string>
+	<string name="console_menu_resize">Force Size</string>
 
 	<string name="tunnel_pos">Create tunnel</string>
 	<string name="tunnel_neg">Cancel</string>
