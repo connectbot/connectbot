@@ -21,17 +21,23 @@ package org.connectbot.util;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+
+import org.connectbot.service.PromptHelper;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Public Key Encryption database. Contains private and public key pairs
@@ -53,6 +59,10 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_PUBKEY_PUBLIC = "public";
 	public final static String FIELD_PUBKEY_ENCRYPTED = "encrypted";
 	public final static String FIELD_PUBKEY_STARTUP = "startup";
+	
+	public final static String KEY_TYPE_RSA = "RSA",
+		KEY_TYPE_DSA = "DSA",
+		KEY_TYPE_IMPORTED = "IMPORTED";
 	
 	private Context context;
 
@@ -132,6 +142,63 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 				"_id = ?", new String[] { String.valueOf(id) },
 				null, null, null);
 	}
+	
+	public Cursor getAllStartPubkeys() {
+		SQLiteDatabase db = this.getReadableDatabase();
+		return db.query(TABLE_PUBKEYS, new String[] { "_id",
+				FIELD_PUBKEY_NICKNAME, FIELD_PUBKEY_TYPE, FIELD_PUBKEY_PRIVATE,
+				FIELD_PUBKEY_PUBLIC, FIELD_PUBKEY_ENCRYPTED, FIELD_PUBKEY_STARTUP },
+				FIELD_PUBKEY_STARTUP + " = 1", null, null, null, null);
+	}
+	
+
+	/**
+	 * Pull all values for a given column as a list of Strings, probably for use
+	 * in a ListPreference. Sorted by <code>_id</code> ascending.
+	 */
+	public List<CharSequence> allValues(String column) {
+		List<CharSequence> list = new LinkedList<CharSequence>();
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.query(TABLE_PUBKEYS, new String[] { "_id", column },
+				null, null, null, null, "_id ASC");
+		
+		int COL = c.getColumnIndexOrThrow(column);
+		while(c.moveToNext()) {
+			list.add(c.getString(COL));
+		}
+		c.close();
+		
+		return list;
+	}
+	
+	public String getNickname(long id) {
+		String nickname = null;
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.query(TABLE_PUBKEYS, new String[] { "_id",
+				FIELD_PUBKEY_NICKNAME }, "_id = ?",
+				new String[] { Long.toString(id) }, null, null, null);
+		
+		if (c != null && c.moveToFirst())
+			nickname = c.getString(c.getColumnIndexOrThrow(FIELD_PUBKEY_NICKNAME));
+		
+		c.close();
+		return nickname;
+
+	}
+	
+	public void setOnStart(long id, boolean onStart) {
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(FIELD_PUBKEY_STARTUP, onStart ? 1 : 0);
+		
+		db.update(TABLE_PUBKEYS, values, "_id = ?", new String[] { Long.toString(id) });
+		
+	}
+	
 	
 	public boolean changePassword(long id, String oldPassword, String newPassword) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException {
 		SQLiteDatabase db = this.getWritableDatabase();		

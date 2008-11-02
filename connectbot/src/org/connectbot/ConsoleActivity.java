@@ -30,6 +30,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -314,6 +315,15 @@ public class ConsoleActivity extends Activity {
 		this.clipboard = (ClipboardManager)this.getSystemService(CLIPBOARD_SERVICE);
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
+		// request a forced orientation if requested by user
+		String rotate = this.prefs.getString(getString(R.string.pref_rotation), getString(R.string.list_rotation_land));
+		if(getString(R.string.list_rotation_land).equals(rotate)) {
+			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		} else if (getString(R.string.list_rotation_port).equals(rotate)) {
+			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		}
+		
+		
         PowerManager manager = (PowerManager)getSystemService(Context.POWER_SERVICE);
 		wakelock = manager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, TAG);
 		
@@ -594,7 +604,7 @@ public class ConsoleActivity extends Activity {
 			public boolean onMenuItemClick(MenuItem item) {
 				// close the currently visible session
 				TerminalView terminal = (TerminalView)view;
-				bound.disconnect(terminal.bridge);
+				terminal.bridge.dispatchDisconnect();
 				// movement should now be happening over in onDisconnect() handler
 				//flip.removeView(flip.getCurrentView());
 				//shiftLeft();

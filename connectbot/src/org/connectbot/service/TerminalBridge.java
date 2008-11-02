@@ -26,6 +26,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 
+import org.connectbot.R;
 import org.connectbot.TerminalView;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PubkeyDatabase;
@@ -51,6 +52,7 @@ import com.trilead.ssh2.InteractiveCallback;
 import com.trilead.ssh2.KnownHosts;
 import com.trilead.ssh2.ServerHostKeyVerifier;
 import com.trilead.ssh2.Session;
+import com.trilead.ssh2.crypto.PEMDecoder;
 
 import de.mud.terminal.VDUBuffer;
 import de.mud.terminal.VDUDisplay;
@@ -124,9 +126,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	private boolean altPressed = false;
 	private boolean shiftPressed = false;
 		
-	protected PubkeyDatabase pubkeydb = null;
-	protected Cursor pubkeys = null;
-	final int COL_NICKNAME, COL_TYPE, COL_PRIVATE, COL_PUBLIC, COL_ENCRYPTED;
+	//protected PubkeyDatabase pubkeydb = null;
+	//protected Cursor pubkeys = null;
+	//final int COL_NICKNAME, COL_TYPE, COL_PRIVATE, COL_PUBLIC, COL_ENCRYPTED;
 	private boolean pubkeysExhausted = false;
 	
 	private boolean forcedSize = false;
@@ -240,14 +242,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.connection = new Connection(hostname, port);
 		this.connection.addConnectionMonitor(this);
 
-		this.pubkeydb = new PubkeyDatabase(manager);
-		this.pubkeys = this.pubkeydb.allPubkeys();
-		
-		this.COL_NICKNAME = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_NICKNAME);
-		this.COL_TYPE = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_TYPE);
-		this.COL_PRIVATE = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PRIVATE);
-		this.COL_PUBLIC = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PUBLIC);
-		this.COL_ENCRYPTED = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_ENCRYPTED);
+//		this.pubkeydb = new PubkeyDatabase(manager);
+//		this.pubkeys = this.pubkeydb.allPubkeys();
+//		
+//		this.COL_NICKNAME = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_NICKNAME);
+//		this.COL_TYPE = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_TYPE);
+//		this.COL_PRIVATE = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PRIVATE);
+//		this.COL_PUBLIC = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PUBLIC);
+//		this.COL_ENCRYPTED = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_ENCRYPTED);
 	}
 	
 	public final static int AUTH_TRIES = 20;
@@ -285,35 +287,72 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * @throws IOException
 	 */
 	public boolean tryPublicKey(Cursor c) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+		int COL_NICKNAME = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_NICKNAME),
+			COL_TYPE = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_TYPE),
+			COL_PRIVATE = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PRIVATE),
+			COL_PUBLIC = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PUBLIC),
+			COL_ENCRYPTED = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_ENCRYPTED);
+
 		String keyNickname = c.getString(COL_NICKNAME);
 		int encrypted = c.getInt(COL_ENCRYPTED);
 		
-		String password = null;
-		if (encrypted != 0)
-			password = promptHelper.requestStringPrompt(String.format("Password for key '%s'", keyNickname));
-		
-		PrivateKey privKey;
-		try {
-			privKey = PubkeyUtils.decodePrivate(c.getBlob(COL_PRIVATE),
-					c.getString(COL_TYPE), password);
-		} catch (Exception e) {
-			e.printStackTrace();
-			outputLine("Bad password for key '" + keyNickname + "'. Authentication failed.");
-			return false;
+		Object trileadKey = null;
+		if(manager.isKeyLoaded(keyNickname)) {
+			// load this key from memory if its already there
+			Log.d(TAG, String.format("Found unlocked key '%s' already in-memory", keyNickname));
+			trileadKey = manager.getKey(keyNickname);
+			
+		} else {
+			// otherwise load key from database and prompt for password as needed
+			String password = null;
+			if (encrypted != 0)
+				password = promptHelper.requestStringPrompt(String.format("Password for key '%s'", keyNickname));
+
+			String type = c.getString(COL_TYPE);
+			if(PubkeyDatabase.KEY_TYPE_IMPORTED.equals(type)) {
+				// load specific key using pem format
+				byte[] raw = c.getBlob(COL_PRIVATE);
+				trileadKey = PEMDecoder.decode(new String(raw).toCharArray(), password);
+				
+			} else {
+				// load using internal generated format
+				PrivateKey privKey;
+				try {
+					privKey = PubkeyUtils.decodePrivate(c.getBlob(COL_PRIVATE),
+							c.getString(COL_TYPE), password);
+				} catch (Exception e) {
+					String message = String.format("Bad password for key '%s'. Authentication failed.", keyNickname);
+					Log.e(TAG, message, e);
+					outputLine(message);
+					return false;
+				}
+				
+				PublicKey pubKey = PubkeyUtils.decodePublic(c.getBlob(COL_PUBLIC),
+						c.getString(COL_TYPE));
+				
+				// convert key to trilead format
+				trileadKey = PubkeyUtils.convertToTrilead(privKey, pubKey);
+				Log.d(TAG, "Unlocked key " + PubkeyUtils.formatKey(pubKey));
+			}
+
+			Log.d(TAG, String.format("Unlocked key '%s'", keyNickname));
+
+			// save this key in-memory if option enabled
+			if(manager.isSavingKeys()) {
+				manager.addKey(keyNickname, trileadKey);
+			}
 		}
+
+		return this.tryPublicKey(this.username, nickname, trileadKey);
 		
-		PublicKey pubKey = PubkeyUtils.decodePublic(c.getBlob(COL_PUBLIC),
-				c.getString(COL_TYPE));
-		
-		Log.d("TerminalBridge", "Trying key " + PubkeyUtils.formatKey(pubKey));
-		
-		if (connection.authenticateWithPublicKey(username,
-				PubkeyUtils.convertToTrilead(privKey, pubKey)))
-			return true;
-		else
-			outputLine("Authentication method 'publickey' with key " + keyNickname + " failed");
-		
-		return false;
+	}
+	
+	protected boolean tryPublicKey(String username, String keyNickname, Object trileadKey) throws IOException {
+		outputLine(String.format("Attempting 'publickey' with key '%s' [%s]...", keyNickname, trileadKey.toString()));
+		boolean success = connection.authenticateWithPublicKey(username, trileadKey);
+		if(!success)
+			outputLine(String.format("Authentication method 'publickey' with key '%s' failed", keyNickname));
+		return success;
 	}
 	
 	public void handleAuthentication() {
@@ -334,25 +373,33 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			if (!pubkeysExhausted &&
 					pubkeyId != HostDatabase.PUBKEYID_NEVER &&
 					connection.isAuthMethodAvailable(username, AUTH_PUBLICKEY)) {
-				Cursor cursor;
+				
+				// if explicit pubkey defined for this host, then prompt for password as needed
+				// otherwise just try all in-memory keys held in terminalmanager
+				outputLine("Attempting 'publickey' authentication");
 				
 				if (pubkeyId == HostDatabase.PUBKEYID_ANY) {
-					cursor = pubkeydb.allPubkeys();
-									
-					while (cursor.moveToNext()) {
-						if (cursor.getInt(COL_ENCRYPTED) == 0) {
-							if (tryPublicKey(cursor))
-								finishConnection();
+					// try each of the in-memory keys
+					outputLine("Trying any loaded SSH keys");
+					for(String nickname : manager.loadedPubkeys.keySet()) {
+						Object trileadKey = manager.loadedPubkeys.get(nickname);
+						if(this.tryPublicKey(this.username, nickname, trileadKey)) {
+							finishConnection();
+							break;
 						}
 					}
+					
 				} else {
-					cursor = pubkeydb.getPubkey(pubkeyId);
+					outputLine("Host settings requested a specific SSH key");
+					// use a specific key for this host, as requested
+					Cursor cursor = manager.pubkeydb.getPubkey(pubkeyId);
 					if (cursor.moveToFirst())
 						if (tryPublicKey(cursor))
 							finishConnection();
+					cursor.close();
+					
 				}
 				
-				cursor.close();
 				pubkeysExhausted = true;
 			} else if (connection.isAuthMethodAvailable(username, AUTH_PASSWORD)) {
 				outputLine("Attempting 'password' authentication");
@@ -491,7 +538,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	/**
 	 * Force disconnection of this terminal bridge.
 	 */
-	public void disconnect() {
+	public void dispatchDisconnect() {
 		// disconnection request hangs if we havent really connected to a host yet
 		// temporary fix is to just spawn disconnection into a thread
 		new Thread(new Runnable() {
@@ -619,8 +666,21 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			// look for special chars
 			switch(keyCode) {
 			case KeyEvent.KEYCODE_CAMERA:
-				this.stdin.write(0x01);
-				this.stdin.write(' ');
+				
+				// check to see which shortcut the camera button triggers
+				String camera = manager.prefs.getString(manager.res.getString(R.string.pref_camera), manager.res.getString(R.string.list_camera_ctrlaspace));
+				if(manager.res.getString(R.string.list_camera_ctrlaspace).equals(camera)) {
+					this.stdin.write(0x01);
+					this.stdin.write(' ');
+					
+				} else if(manager.res.getString(R.string.list_camera_ctrla).equals(camera)) {
+					this.stdin.write(0x01);
+					
+				} else if(manager.res.getString(R.string.list_camera_esc).equals(camera)) {
+					((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+					
+				}
+
 				//((vt320)buffer).keyTyped('a', 'a', vt320.KEY_CONTROL);
 				//((vt320)buffer).keyTyped(' ', ' ', 0);
 				break;
@@ -759,9 +819,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			this.bitmap.recycle();
 		this.bitmap = null;
 		this.canvas.setBitmap(null);
-		
-		if (this.pubkeydb != null)
-			this.pubkeydb.close();
 	}
 
 	public void setVDUBuffer(VDUBuffer buffer) {
@@ -862,7 +919,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public void connectionLost(Throwable reason) {
 		// weve lost our ssh connection, so pass along to manager and gui
 		Log.e(TAG, "Somehow our underlying SSH socket died", reason);
-		this.disconnect();
+		this.dispatchDisconnect();
 	}
 
 	/**

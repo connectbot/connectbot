@@ -33,14 +33,6 @@
 	<TextView
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:paddingTop="10dip"
-		android:text="@string/msg_version"
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		/>
-		
-	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
 		android:text="ConnectBot is a simple, powerful, open-source Secure Shell (SSH) client for your Android device."
 		android:paddingTop="10dip"
 		android:textAppearance="?android:attr/textAppearanceMedium"
@@ -90,6 +82,14 @@
 		android:textColor="#bebebe"
 		/>
  
+		
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="10dip"
+		android:text="@string/msg_version"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		/>
 		
 </LinearLayout>
 

@@ -49,7 +49,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		protected final int id;
 
 		protected Map<String, String> values = new HashMap<String, String>();
-		protected Map<String, String> pubkeys = new HashMap<String, String>();
+//		protected Map<String, String> pubkeys = new HashMap<String, String>();
 		
 		public CursorPreferenceHack(String table, int id) {
 			this.table = table;
@@ -78,21 +78,21 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			cursor.close();
 			db.close();
 			
-			db = pubkeydb.getReadableDatabase();
-			cursor = db.query(PubkeyDatabase.TABLE_PUBKEYS,
-					new String[] { "_id", PubkeyDatabase.FIELD_PUBKEY_NICKNAME },
-					null, null, null, null, null);
-	
-			if (cursor.moveToFirst()) {
-				do {
-					String pubkeyid = String.valueOf(cursor.getLong(0));
-					String value = cursor.getString(1);
-					pubkeys.put(pubkeyid, value);
-				} while (cursor.moveToNext());
-			}
-			
-			cursor.close();
-			db.close();
+//			db = pubkeydb.getReadableDatabase();
+//			cursor = db.query(PubkeyDatabase.TABLE_PUBKEYS,
+//					new String[] { "_id", PubkeyDatabase.FIELD_PUBKEY_NICKNAME },
+//					null, null, null, null, null);
+//	
+//			if (cursor.moveToFirst()) {
+//				do {
+//					String pubkeyid = String.valueOf(cursor.getLong(0));
+//					String value = cursor.getString(1);
+//					pubkeys.put(pubkeyid, value);
+//				} while (cursor.moveToNext());
+//			}
+//			
+//			cursor.close();
+//			db.close();
 		}
 		
 		public boolean contains(String key) {
@@ -110,7 +110,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			}
 
 			public boolean commit() {
-				Log.d(this.getClass().toString(), "commit() changes back to database");
+				//Log.d(this.getClass().toString(), "commit() changes back to database");
 				SQLiteDatabase db = hostdb.getWritableDatabase();
 				db.update(table, update, "_id = ?", new String[] { Integer.toString(id) });
 				db.close();
@@ -143,13 +143,13 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			}
 
 			public android.content.SharedPreferences.Editor putString(String key, String value) {
-				Log.d(this.getClass().toString(), String.format("Editor.putString(key=%s, value=%s)", key, value));
+				//Log.d(this.getClass().toString(), String.format("Editor.putString(key=%s, value=%s)", key, value));
 				update.put(key, value);
 				return this;
 			}
 
 			public android.content.SharedPreferences.Editor remove(String key) {
-				Log.d(this.getClass().toString(), String.format("Editor.remove(key=%s)", key));
+				//Log.d(this.getClass().toString(), String.format("Editor.remove(key=%s)", key));
 				update.remove(key);
 				return this;
 			}
@@ -158,7 +158,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 
 		public Editor edit() {
-			Log.d(this.getClass().toString(), "edit()");
+			//Log.d(this.getClass().toString(), "edit()");
 			return new Editor();
 		}
 
@@ -183,7 +183,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		}
 
 		public String getString(String key, String defValue) {
-			Log.d(this.getClass().toString(), String.format("getString(key=%s, defValue=%s)", key, defValue));
+			//Log.d(this.getClass().toString(), String.format("getString(key=%s, defValue=%s)", key, defValue));
 			
 			if(!values.containsKey(key)) return defValue;
 			return values.get(key);
@@ -204,7 +204,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 	
 	@Override
 	public SharedPreferences getSharedPreferences(String name, int mode) {
-		Log.d(this.getClass().toString(), String.format("getSharedPreferences(name=%s)", name));
+		//Log.d(this.getClass().toString(), String.format("getSharedPreferences(name=%s)", name));
 		return this.pref;
 	}
 	
@@ -230,15 +230,17 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		
 		this.addPreferencesFromResource(R.xml.host_prefs);
 		
-		// Grab all the pubkeys from the database cache we have.
+		// add all existing pubkeys to our listpreference for user to choose from
+		// TODO: may be an issue here when this activity is recycled after adding a new pubkey
+		// TODO: should consider moving into onStart, but we dont have a good way of resetting the listpref after filling once
 		ListPreference pubkeyPref = (ListPreference)this.findPreference(HostDatabase.FIELD_HOST_PUBKEYID);
-
+		
 		List<CharSequence> pubkeyNicks = new LinkedList<CharSequence>(Arrays.asList(pubkeyPref.getEntries()));
-		pubkeyNicks.addAll(this.pref.pubkeys.values());
+		pubkeyNicks.addAll(pubkeydb.allValues(PubkeyDatabase.FIELD_PUBKEY_NICKNAME));
 		pubkeyPref.setEntries((CharSequence[]) pubkeyNicks.toArray(new CharSequence[pubkeyNicks.size()]));
 		
 		List<CharSequence> pubkeyIds = new LinkedList<CharSequence>(Arrays.asList(pubkeyPref.getEntryValues()));
-		pubkeyIds.addAll(this.pref.pubkeys.keySet());
+		pubkeyIds.addAll(pubkeydb.allValues("_id"));
 		pubkeyPref.setEntryValues((CharSequence[]) pubkeyIds.toArray(new CharSequence[pubkeyIds.size()]));
 
 		this.updateSummaries();	
@@ -249,6 +251,9 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		if(this.hostdb == null)
 			this.hostdb = new HostDatabase(this);
 		
+		if(this.pubkeydb == null)
+			this.pubkeydb = new PubkeyDatabase(this);
+		
 	}
 	
 	public void onStop() {
@@ -256,6 +261,11 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		if(this.hostdb != null) {
 			this.hostdb.close();
 			this.hostdb = null;
+		}
+		
+		if(this.pubkeydb != null) {
+			this.pubkeydb.close();
+			this.pubkeydb = null;
 		}
 	}
 	
@@ -272,14 +282,18 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 				try {
 					int pubkeyId = Integer.parseInt(value);
 					if (pubkeyId >= 0)
-						pref.setSummary(this.pref.pubkeys.get(this.pref.getString(key, "")));
+						pref.setSummary(pubkeydb.getNickname(pubkeyId));
+					else if(pubkeyId == HostDatabase.PUBKEYID_ANY)
+						pref.setSummary(R.string.list_pubkeyids_any);
+					else if(pubkeyId == HostDatabase.PUBKEYID_NEVER)
+						pref.setSummary(R.string.list_pubkeyids_none);
 					continue;
 				} catch (NumberFormatException nfe) {
 					// Fall through.
 				}
 			}
 			
-			pref.setSummary(this.pref.getString(key, ""));
+			pref.setSummary(value);
 		}
 		
 	}
