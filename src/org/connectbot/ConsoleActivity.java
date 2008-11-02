@@ -572,7 +572,7 @@ public class ConsoleActivity extends Activity {
 
 	}
 	
-	protected MenuItem disconnect, copy, paste, tunnel;
+	protected MenuItem disconnect, copy, paste, tunnel, resize;
 	
 	protected boolean copying = false;
 	protected TerminalView copySource = null;
@@ -658,6 +658,29 @@ public class ConsoleActivity extends Activity {
 						}
 					})
 					.setNegativeButton("Cancel", null).create().show();
+				
+				return true;
+			}
+		});
+		
+		resize = menu.add(R.string.console_menu_resize);
+		resize.setIcon(android.R.drawable.ic_menu_crop);
+		resize.setEnabled(activeTerminal);
+		resize.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				final TerminalView terminal = (TerminalView)view;
+				
+				final View resizeView = inflater.inflate(R.layout.dia_resize, null, false);
+				new AlertDialog.Builder(ConsoleActivity.this)
+					.setView(resizeView)
+					.setPositiveButton(R.string.button_resize, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							int width = Integer.parseInt(((EditText)resizeView.findViewById(R.id.width)).getText().toString());
+							int height = Integer.parseInt(((EditText)resizeView.findViewById(R.id.height)).getText().toString());
+							
+							terminal.forceSize(width, height);
+						}
+					}).create().show();
 				
 				return true;
 			}

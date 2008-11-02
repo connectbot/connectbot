@@ -117,7 +117,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public Bitmap bitmap = null;
 	public VDUBuffer buffer = null;
 	
-	protected View parent = null;
+	protected TerminalView parent = null;
 	protected Canvas canvas = new Canvas();
 
 	private boolean ctrlPressed = false;
@@ -128,6 +128,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	protected Cursor pubkeys = null;
 	final int COL_NICKNAME, COL_TYPE, COL_PRIVATE, COL_PUBLIC, COL_ENCRYPTED;
 	private boolean pubkeysExhausted = false;
+	
+	private boolean forcedSize = false;
+	private int termWidth;
+	private int termHeight;
 	
 	public class HostKeyVerifier implements ServerHostKeyVerifier {
 		
@@ -531,9 +535,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			// check for terminal resizing keys
 			// TODO: see if there is a way to make sure we dont "blip"
 			if(keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+				this.forcedSize = false;
 				this.setFontSize(this.fontSize + 2);
 				return true;
 			} else if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+				this.forcedSize = false;
 				this.setFontSize(this.fontSize - 2);
 				return true;
 			}
@@ -681,24 +687,28 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * parent, or maybe it's an updated font size. We should recalculate
 	 * terminal size information and request a PTY resize.
 	 */
-	public synchronized void parentChanged(View parent) {
+	public synchronized void parentChanged(TerminalView parent) {
 		
 		this.parent = parent;
 		int width = parent.getWidth();
 		int height = parent.getHeight();
 		
 		// recalculate buffer size
-		int termWidth = width / charWidth;
-		int termHeight = height / charHeight;
+		int termWidth, termHeight;
 		
-		// convert our height/width to integral values
-		width = termWidth * charWidth;
-		height = termHeight * charHeight;
+		if (this.forcedSize) {
+			termWidth = this.termWidth;
+			termHeight = this.termHeight;
+		} else {
+			termWidth = width / charWidth;
+			termHeight = height / charHeight;
+		}
 		
 		// reallocate new bitmap if needed
 		boolean newBitmap = (this.bitmap == null);
 		if(this.bitmap != null)
 			newBitmap = (this.bitmap.getWidth() != width || this.bitmap.getHeight() != height);
+		
 		if(newBitmap) {
 			this.bitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
 			this.canvas.setBitmap(this.bitmap);
@@ -708,6 +718,19 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.defaultPaint.setColor(Color.BLACK);
 		this.canvas.drawRect(0, 0, width, height, this.defaultPaint);
 
+		// Stroke the border of the terminal if the size is being forced;
+		if (this.forcedSize) {
+			int borderX = (termWidth * charWidth) + 1;
+			int borderY = (termHeight * charHeight) + 1;
+			
+			this.defaultPaint.setColor(Color.GRAY);
+			this.defaultPaint.setStrokeWidth(0.0f);
+			if (width >= borderX)
+				this.canvas.drawLine(borderX, 0, borderX, borderY + 1, defaultPaint);
+			if (height >= borderY)
+				this.canvas.drawLine(0, borderY, borderX + 1, borderY, defaultPaint);
+		}
+		
 		try {
 			// request a terminal pty resize
 			buffer.setScreenSize(termWidth, termHeight, true);
@@ -721,6 +744,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.fullRedraw = true;
 		this.redraw();
 
+		this.parent.notifyUser(String.format("%d x %d", termWidth, termHeight));
+		
 		Log.i(TAG, String.format("parentChanged() now width=%d, height=%d", termWidth, termHeight));
 	}
 	
@@ -838,6 +863,72 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		// weve lost our ssh connection, so pass along to manager and gui
 		Log.e(TAG, "Somehow our underlying SSH socket died", reason);
 		this.disconnect();
+	}
+
+	/**
+	 * Resize terminal to fit [rows]x[cols] in screen of size [width]x[height]
+	 * @param rows
+	 * @param cols
+	 * @param width
+	 * @param height
+	 */
+	public void resizeComputed(int cols, int rows, int width, int height) {
+		float size = 8.0f;
+		float step = 8.0f;
+		float limit = 0.125f;
+		
+		int direction;
+
+		while ((direction = fontSizeCompare(size, cols, rows, width, height)) < 0)
+			size += step;
+		
+		if (direction == 0) {
+			Log.d("fontsize", String.format("Found match at %f", size));
+			return;
+		}
+		
+		step /= 2.0f;
+		size -= step;
+		
+		while ((direction = fontSizeCompare(size, cols, rows, width, height)) != 0
+				&& step >= limit) {
+			step /= 2.0f;
+			if (direction > 0) {
+				size -= step;
+			} else {
+				size += step;
+			}
+		}
+		
+		if (direction > 0)
+			size -= step;
+		
+		this.forcedSize = true;
+		this.termWidth = cols;
+		this.termHeight = rows;
+		setFontSize(size);
+	}
+	
+	private int fontSizeCompare(float size, int cols, int rows, int width, int height) {
+		// read new metrics to get exact pixel dimensions
+		this.defaultPaint.setTextSize(size);
+		FontMetricsInt fm = this.defaultPaint.getFontMetricsInt();
+		
+		float[] widths = new float[1];
+		this.defaultPaint.getTextWidths("X", widths);
+		int termWidth = (int)widths[0] * cols;
+		int termHeight = (Math.abs(fm.top) + Math.abs(fm.descent) + 1) * rows;
+		
+		Log.d("fontsize", String.format("font size %f resulted in %d x %d", size, termWidth, termHeight));
+		
+		// Check to see if it fits in resolution specified.
+		if (termWidth > width || termHeight > height)
+			return 1;
+		
+		if (termWidth == width || termHeight == height)
+			return 0;
+		
+		return -1;
 	}
 
 
