@@ -18,6 +18,13 @@
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+	<CheckBoxPreference
+		android:key="@string/pref_memkeys"
+		android:title="Remember keys in memory"
+		android:summary="Keep unlocked SSH keys in memory until backend service is terminated (behave like 'ssh-add')"
+		android:defaultValue="true"
+		/>
+
 	<PreferenceCategory
 		android:title="Terminal emulation">
 		
@@ -44,14 +51,32 @@
 		android:title="User interface">
 
 		<ListPreference
+			android:key="@string/pref_rotation"
+			android:title="Rotation mode"
+			android:summary="How to change rotation when keyboard popped in/out"
+			android:entries="@array/list_rotation"
+			android:entryValues="@array/list_rotation"
+			android:defaultValue="@string/list_rotation_land"
+			/>
+
+		<ListPreference
 			android:key="@string/pref_keymode"
 			android:title="Directory shortcuts"
 			android:summary="Select how to use Alt for '/' and Shift for Tab"
 			android:entries="@array/list_keymode"
-			android:defaultValue="Use right-side keys"
 			android:entryValues="@array/list_keymode"
+			android:defaultValue="@string/list_keymode_right"
 			/>
 	
+		<ListPreference
+			android:key="@string/pref_camera"
+			android:title="Camera shortcut"
+			android:summary="Select which shortcut to trigger when camera button is pushed"
+			android:entries="@array/list_camera"
+			android:entryValues="@array/list_camera"
+			android:defaultValue="@string/list_camera_ctrlaspace"
+			/>
+
 		<CheckBoxPreference
 			android:key="@string/pref_keepalive"
 			android:title="Keep screen awake"

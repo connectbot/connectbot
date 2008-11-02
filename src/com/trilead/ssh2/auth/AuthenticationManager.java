@@ -233,7 +233,9 @@ public class AuthenticationManager implements MessageHandler
 
 				PacketUserauthRequestPublicKey ua = new PacketUserauthRequestPublicKey("ssh-connection", user,
 						"ssh-rsa", pk_enc, rsa_sig_enc);
+
 				tm.sendMessage(ua.getPayload());
+
 			}
 			else
 			{
@@ -241,7 +243,6 @@ public class AuthenticationManager implements MessageHandler
 			}
 
 			byte[] ar = getNextMessage();
-
 			if (ar[0] == Packets.SSH_MSG_USERAUTH_SUCCESS)
 			{
 				authenticated = true;
@@ -264,6 +265,7 @@ public class AuthenticationManager implements MessageHandler
 		}
 		catch (IOException e)
 		{
+e.printStackTrace();
 			tm.close(e, false);
 			throw (IOException) new IOException("Publickey authentication failed.").initCause(e);
 		}

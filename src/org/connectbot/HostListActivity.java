@@ -388,7 +388,7 @@ public class HostListActivity extends ListActivity {
 		connect.setEnabled((bridge != null));
 		connect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				bound.disconnect(bridge);
+				bridge.dispatchDisconnect();
 				updateHandler.sendEmptyMessage(-1);
 				return true;
 			}
@@ -414,7 +414,7 @@ public class HostListActivity extends ListActivity {
 		                public void onClick(DialogInterface dialog, int which) {
 		    				// make sure we disconnect
 		    				if(bridge != null)
-		    					bound.disconnect(bridge);
+		    					bridge.dispatchDisconnect();
 
 		    				hostdb.deleteHost(id);
 		    				updateHandler.sendEmptyMessage(-1);

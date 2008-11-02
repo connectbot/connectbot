@@ -18,15 +18,24 @@
 
 package org.connectbot.service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.connectbot.R;
 import org.connectbot.util.HostDatabase;
+import org.connectbot.util.PubkeyDatabase;
+import org.connectbot.util.PubkeyUtils;
 
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
@@ -51,9 +60,15 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	
 	public List<String> disconnected = new LinkedList<String>();
 	
+	protected HashMap<String, Object> loadedPubkeys = new HashMap<String, Object>();
+	
+	protected Resources res;
+	
 	protected HostDatabase hostdb;
+	protected PubkeyDatabase pubkeydb;
+
 	protected SharedPreferences prefs;
-	protected String pref_emulation, pref_scrollback, pref_keymode;
+	protected String pref_emulation, pref_scrollback, pref_keymode, pref_memkeys;
 	
 	@Override
 	public void onCreate() {
@@ -62,9 +77,36 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		this.pref_emulation = this.getResources().getString(R.string.pref_emulation);
 		this.pref_scrollback = this.getResources().getString(R.string.pref_scrollback);
 		this.pref_keymode = this.getResources().getString(R.string.pref_keymode);
+		this.pref_memkeys = this.getResources().getString(R.string.pref_memkeys);
+		
+		this.res = this.getResources();
 		
 		this.hostdb = new HostDatabase(this);
+		this.pubkeydb = new PubkeyDatabase(this);
+		
+		// load all marked pubkeys into memory
+		Cursor c = pubkeydb.getAllStartPubkeys();
+		int COL_NICKNAME = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_NICKNAME),
+			COL_TYPE = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_TYPE),
+			COL_PRIVATE = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PRIVATE),
+			COL_PUBLIC = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PUBLIC);
+		
+		while(c.moveToNext()) {
+			String keyNickname = c.getString(COL_NICKNAME);
+			try {
+				PrivateKey privKey = PubkeyUtils.decodePrivate(c.getBlob(COL_PRIVATE), c.getString(COL_TYPE));
+				PublicKey pubKey = PubkeyUtils.decodePublic(c.getBlob(COL_PUBLIC), c.getString(COL_TYPE));
+				Object trileadKey = PubkeyUtils.convertToTrilead(privKey, pubKey);
+				
+				this.loadedPubkeys.put(keyNickname, trileadKey);
+				Log.d(TAG, String.format("Added key '%s' to in-memory cache", keyNickname));
+			} catch (Exception e) {
+				Log.d(TAG, String.format("Problem adding key '%s' to in-memory cache", keyNickname), e);
+			}
+		}
+		c.close();
 
+		
 	}
 
 	@Override
@@ -73,10 +115,17 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		// disconnect and dispose of any existing bridges
 		for(TerminalBridge bridge : bridges)
-			bridge.disconnect();
+			bridge.dispatchDisconnect();
 		
-		if(this.hostdb != null)
+		if(this.hostdb != null) {
 			this.hostdb.close();
+			this.hostdb = null;
+		}
+		
+		if(this.pubkeydb != null) {
+			this.pubkeydb.close();
+			this.pubkeydb = null;
+		}
 		
 	}
 	
@@ -112,12 +161,16 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		return scrollback;
 	}
 	
+	public boolean isSavingKeys() {
+		return prefs.getBoolean(this.pref_memkeys, true);
+	}
+	
 	public String getPostLogin(String nickname) {
 		return hostdb.getPostLogin(nickname);
 	}
 	
 	public String getKeyMode() {
-		return prefs.getString(this.pref_keymode, "Use right-side keys");
+		return prefs.getString(this.pref_keymode, getString(R.string.list_keymode_right)); // "Use right-side keys"
 	}
 	
 	/**
@@ -155,14 +208,14 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	
 	public Handler disconnectHandler = null;
 
-	/**
-	 * Force disconnection of this {@link TerminalBridge} and remove it from our
-	 * internal list of active connections.
-	 */
-	public void disconnect(TerminalBridge bridge) {
-		// we will be notified about this through call back up to onDisconnected() 
-		bridge.disconnect();
-	}
+//	/**
+//	 * Force disconnection of this {@link TerminalBridge} and remove it from our
+//	 * internal list of active connections.
+//	 */
+//	public void disconnect(TerminalBridge bridge) {
+//		// we will be notified about this through call back up to onDisconnected() 
+//		bridge.disconnect();
+//	}
 	
 	/**
 	 * Called by child bridge when somehow it's been disconnected.
@@ -176,6 +229,23 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		if(this.disconnectHandler != null)
 			Message.obtain(this.disconnectHandler, -1, bridge).sendToTarget();
 		
+	}
+	
+	public boolean isKeyLoaded(String nickname) {
+		return this.loadedPubkeys.containsKey(nickname);
+	}
+	
+	public void addKey(String nickname, Object trileadKey) {
+		this.loadedPubkeys.remove(nickname);
+		this.loadedPubkeys.put(nickname, trileadKey);
+	}
+	
+	public void removeKey(String nickname) {
+		this.loadedPubkeys.remove(nickname);
+	}
+	
+	public Object getKey(String nickname) {
+		return this.loadedPubkeys.get(nickname);
 	}
 
 

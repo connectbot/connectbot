@@ -55,9 +55,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 public class GeneratePubkeyActivity extends Activity implements OnEntropyGatheredListener {
 	public final static String TAG = GeneratePubkeyActivity.class.toString();
 
-	final static String KEY_TYPE_RSA = "RSA",
-		KEY_TYPE_DSA = "DSA";
-	
 	final static int DEFAULT_BITS = 1024;
 	
 	protected LayoutInflater inflater = null;
@@ -73,7 +70,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 	
 	private EditText password1, password2;
 	
-	private String keyType = KEY_TYPE_RSA;
+	private String keyType = PubkeyDatabase.KEY_TYPE_RSA;
 	private int minBits = 768;
 	private int bits = DEFAULT_BITS;
 	
@@ -117,7 +114,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 					bitsText.setText(String.valueOf(DEFAULT_BITS));
 					bitsText.setEnabled(true);
 					
-					keyType = KEY_TYPE_RSA;
+					keyType = PubkeyDatabase.KEY_TYPE_RSA;
 				} else if (checkedId == R.id.dsa) {
 					// DSA keys can only be 1024 bits
 					
@@ -127,7 +124,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 					bitsText.setText(String.valueOf(DEFAULT_BITS));
 					bitsText.setEnabled(false);
 					
-					keyType = KEY_TYPE_DSA;
+					keyType = PubkeyDatabase.KEY_TYPE_DSA;
 				}				
 			}
 		});

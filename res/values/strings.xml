@@ -22,12 +22,12 @@
     <string name="menu_about">About</string>
     
     <string name="pubkey_generate">Generate</string>
-	<string name="pubkey_delete">Delete Public Key</string>
+	<string name="pubkey_delete">Delete key</string>
 	<string name="pubkey_gather_entropy">Gathering Entropy</string>
     <string name="pubkey_touch_prompt">Touch this box to gather randomness: </string>
     <string name="pubkey_generating">Generating key...</string>
-    <string name="pubkey_copy_clipboard">Copy to clipboard for OpenSSH</string>
-    <string name="pubkey_list_empty">Press "Menu" to create public keys.</string>
+    <string name="pubkey_copy_clipboard">Copy signature</string>
+    <string name="pubkey_list_empty">Press "Menu" to\ncreate public keys.</string>
     <string name="pubkey_unknown_format">Unknown format</string>
     <string name="pubkey_change_password">Change Password</string>
 
@@ -60,6 +60,16 @@
 	<string name="pref_scrollback">scrollback</string>
 	<string name="pref_keepalive">keepalive</string>
 	<string name="pref_keymode">keymode</string>
+	<string name="pref_memkeys">memkeys</string>
+	<string name="pref_rotation">rotation</string>
+	<string name="pref_camera">camera</string>
+	
+	<string name="list_keymode_right">Use right-side keys</string>
+	<string name="list_keymode_left">Use left-side keys</string>
+	<string name="list_keymode_none">Don't use</string>
+	
+	<string name="list_pubkeyids_none">Do not use keys</string>
+	<string name="list_pubkeyids_any">Use any unlocked key</string>
 
     <string name="bind_minutes">%s minutes ago</string>
     <string name="bind_hours">%s hours ago</string>
@@ -92,6 +102,15 @@
 	<string name="list_host_disconnect">Disconnect</string>
 	<string name="list_host_edit">Edit host</string>
 	<string name="list_host_delete">Delete host</string>
+
+	<string name="list_rotation_land">Force landscape</string>
+	<string name="list_rotation_port">Force portrait</string>
+	<string name="list_rotation_auto">Automatic</string>
+
+	<string name="list_camera_ctrlaspace">Ctrl+A then Space</string>
+	<string name="list_camera_ctrla">Ctrl+A</string>
+	<string name="list_camera_esc">Esc</string>
+	<string name="list_camera_none">None</string>
 
 	<string name="delete_message">Are you sure you want to delete '%s'?</string>
 	<string name="delete_pos">Yes, delete</string>

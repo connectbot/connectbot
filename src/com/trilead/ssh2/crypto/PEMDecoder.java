@@ -23,8 +23,8 @@ import com.trilead.ssh2.signature.RSAPrivateKey;
  */
 public class PEMDecoder
 {
-	private static final int PEM_RSA_PRIVATE_KEY = 1;
-	private static final int PEM_DSA_PRIVATE_KEY = 2;
+	public static final int PEM_RSA_PRIVATE_KEY = 1;
+	public static final int PEM_DSA_PRIVATE_KEY = 2;
 
 	private static final int hexToInt(char c)
 	{
@@ -120,7 +120,7 @@ public class PEMDecoder
 		return tmp;
 	}
 
-	private static final PEMStructure parsePEM(char[] pem) throws IOException
+	public static final PEMStructure parsePEM(char[] pem) throws IOException
 	{
 		PEMStructure ps = new PEMStructure();
 

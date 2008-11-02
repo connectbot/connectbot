@@ -79,7 +79,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_HOST_COLOR + " TEXT, "
 				+ FIELD_HOST_USEKEYS + " TEXT, "
 				+ FIELD_HOST_POSTLOGIN + " TEXT, "
-				+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY);
+				+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ")");
 
 		// insert a few sample hosts, none of which probably connect
 		//this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, COLOR_GRAY);

@@ -7,7 +7,19 @@
         <item>xterm</item>
     </string-array>
     
+    <string-array name="list_rotation">
+        <item>@string/list_rotation_land</item>
+        <item>@string/list_rotation_port</item>
+        <item>@string/list_rotation_auto</item>
+    </string-array>
     
+    <string-array name="list_camera">
+        <item>@string/list_camera_ctrlaspace</item>
+        <item>@string/list_camera_ctrla</item>
+        <item>@string/list_camera_esc</item>
+        <item>@string/list_camera_none</item>
+    </string-array>
+
     <string-array name="list_colors">
         <item>red</item>
         <item>green</item>
@@ -16,14 +28,14 @@
     </string-array>
     
     <string-array name="list_keymode">
-        <item>Use right-side keys</item>
-        <item>Use left-side keys</item>
-        <item>Don't use</item>
+        <item>@string/list_keymode_right</item>
+        <item>@string/list_keymode_left</item>
+        <item>@string/list_keymode_none</item>
     </string-array>
     
     <string-array name="list_pubkeyids">
-    	<item value="-2">Do not use keys</item>
-    	<item value="-1">Use any unlocked key</item>
+    	<item value="-2">@string/list_pubkeyids_none</item>
+    	<item value="-1">@string/list_pubkeyids_any</item>
     </string-array>
 
 </resources>
