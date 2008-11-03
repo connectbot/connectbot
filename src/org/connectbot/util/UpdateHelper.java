@@ -30,11 +30,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -93,11 +97,35 @@ public class UpdateHelper implements Runnable {
 			
 		}
 		
-		// place version information in user-agent string to be used later
-		this.userAgent = String.format("%s/%s (%d)", packageName, versionName, versionCode);
+		// decide if we really need to check for update
+		Resources res = context.getResources();
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		
-		// spawn thread to check for update
-		new Thread(this).start();
+		String frequency = prefs.getString(res.getString(R.string.pref_update), res.getString(R.string.list_update_daily));
+		long lastChecked = prefs.getLong(res.getString(R.string.pref_lastchecked), 0);
+		long now = (System.currentTimeMillis() / 1000);
+		long passed = now - lastChecked;
+		
+		boolean shouldCheck = false;
+		if(frequency.equals(res.getString(R.string.list_update_daily))) {
+			shouldCheck = (passed > 60 * 60 * 24);
+		} else if(frequency.equals(res.getString(R.string.list_update_weekly))) {
+			shouldCheck = (passed > 60 * 60 * 24 * 7);
+		}
+		
+		// place version information in user-agent string to be used later
+		this.userAgent = String.format("%s/%s (%d, freq=%s)", packageName, versionName, versionCode, frequency);
+
+		if(shouldCheck) {
+			// spawn thread to check for update
+			new Thread(this).start();
+			
+			// update our last-checked time
+			Editor editor = prefs.edit();
+			editor.putLong(res.getString(R.string.pref_lastchecked), now);
+			editor.commit();
+			
+		}
 
 	}
 

@@ -348,7 +348,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	}
 	
 	protected boolean tryPublicKey(String username, String keyNickname, Object trileadKey) throws IOException {
-		outputLine(String.format("Attempting 'publickey' with key '%s' [%s]...", keyNickname, trileadKey.toString()));
+		//outputLine(String.format("Attempting 'publickey' with key '%s' [%s]...", keyNickname, trileadKey.toString()));
 		boolean success = connection.authenticateWithPublicKey(username, trileadKey);
 		if(!success)
 			outputLine(String.format("Authentication method 'publickey' with key '%s' failed", keyNickname));
@@ -376,11 +376,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				
 				// if explicit pubkey defined for this host, then prompt for password as needed
 				// otherwise just try all in-memory keys held in terminalmanager
-				outputLine("Attempting 'publickey' authentication");
 				
 				if (pubkeyId == HostDatabase.PUBKEYID_ANY) {
 					// try each of the in-memory keys
-					outputLine("Trying any loaded SSH keys");
+					outputLine("Attempting 'publickey' authentication with any in-memory SSH keys");
 					for(String nickname : manager.loadedPubkeys.keySet()) {
 						Object trileadKey = manager.loadedPubkeys.get(nickname);
 						if(this.tryPublicKey(this.username, nickname, trileadKey)) {
@@ -390,7 +389,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					}
 					
 				} else {
-					outputLine("Host settings requested a specific SSH key");
+					outputLine("Attempting 'publickey' authentication with a specific SSH key");
 					// use a specific key for this host, as requested
 					Cursor cursor = manager.pubkeydb.getPubkey(pubkeyId);
 					if (cursor.moveToFirst())

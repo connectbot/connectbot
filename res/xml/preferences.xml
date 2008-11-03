@@ -21,8 +21,17 @@
 	<CheckBoxPreference
 		android:key="@string/pref_memkeys"
 		android:title="Remember keys in memory"
-		android:summary="Keep unlocked SSH keys in memory until backend service is terminated (behave like 'ssh-add')"
+		android:summary="Keep unlocked SSH keys in memory until backend service is terminated"
 		android:defaultValue="true"
+		/>
+
+	<ListPreference
+		android:key="@string/pref_update"
+		android:title="Update check"
+		android:summary="Set the maximum frequency to check for ConnectBot updates"
+		android:entries="@array/list_update"
+		android:entryValues="@array/list_update"
+		android:defaultValue="@string/list_update_daily"
 		/>
 
 	<PreferenceCategory
@@ -62,7 +71,7 @@
 		<ListPreference
 			android:key="@string/pref_keymode"
 			android:title="Directory shortcuts"
-			android:summary="Select how to use Alt for '/' and Shift for Tab"
+			android:summary="Select how to use Alt for \'/\' and Shift for Tab"
 			android:entries="@array/list_keymode"
 			android:entryValues="@array/list_keymode"
 			android:defaultValue="@string/list_keymode_right"

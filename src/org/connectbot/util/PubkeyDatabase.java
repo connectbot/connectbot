@@ -148,7 +148,7 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 		return db.query(TABLE_PUBKEYS, new String[] { "_id",
 				FIELD_PUBKEY_NICKNAME, FIELD_PUBKEY_TYPE, FIELD_PUBKEY_PRIVATE,
 				FIELD_PUBKEY_PUBLIC, FIELD_PUBKEY_ENCRYPTED, FIELD_PUBKEY_STARTUP },
-				FIELD_PUBKEY_STARTUP + " = 1", null, null, null, null);
+				FIELD_PUBKEY_STARTUP + " = 1 AND " + FIELD_PUBKEY_ENCRYPTED + " = 0", null, null, null, null);
 	}
 	
 
