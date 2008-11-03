@@ -44,6 +44,7 @@ public class TerminalView extends View {
 	protected final Paint cursorPaint;
 	
 	private Toast notification = null;
+	private String lastNotification = null;
 	
 	public int top = -1, bottom = -1, left = -1, right = -1;
 	
@@ -117,12 +118,18 @@ public class TerminalView extends View {
 	
 	public void notifyUser(String message) {
 		if (notification != null) {
+			// Don't keep telling the user the same thing.
+			if (lastNotification != null && lastNotification.equals(message))
+				return;
+			
 			notification.setText(message);
 			notification.show();
 		} else {
 			notification = Toast.makeText(context, message, Toast.LENGTH_SHORT);
 			notification.show();
 		}
+		
+		lastNotification = message;
 	}
 
 	/**
