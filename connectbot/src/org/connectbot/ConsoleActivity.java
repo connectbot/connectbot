@@ -500,16 +500,17 @@ public class ConsoleActivity extends Activity {
 						return false;
 					case MotionEvent.ACTION_UP:
 						// copy selected area to clipboard
-						int top = Math.min(copySource.top, copySource.bottom),
-							bottom = Math.max(copySource.top, copySource.bottom),
+						int adjust = 0; //copySource.bridge.buffer.windowBase - copySource.bridge.buffer.screenBase;
+						int top = Math.min(copySource.top, copySource.bottom) + adjust,
+							bottom = Math.max(copySource.top, copySource.bottom) + adjust,
 							left = Math.min(copySource.left, copySource.right),
 							right = Math.max(copySource.left, copySource.right);
 						
 						// perform actual buffer copy
 						int size = (right - left) * (bottom - top);
 						StringBuffer buffer = new StringBuffer(size);
-						for(int y = top; y <= bottom; y++) {
-							for(int x = left; x <= right; x++) {
+						for(int y = top; y < bottom; y++) {
+							for(int x = left; x < right; x++) {
 								// only copy printable chars
 								char c = copySource.bridge.buffer.getChar(x, y);
 								if(c < 32 || c >= 127) c = ' ';
@@ -524,6 +525,7 @@ public class ConsoleActivity extends Activity {
 					case MotionEvent.ACTION_CANCEL:
 						// make sure we clear any highlighted area
 						copySource.resetSelected();
+						copySource.invalidate();
 						copying = false;
 						return true;
 					}
@@ -675,7 +677,7 @@ public class ConsoleActivity extends Activity {
 		
 		resize = menu.add(R.string.console_menu_resize);
 		resize.setIcon(android.R.drawable.ic_menu_crop);
-		resize.setEnabled(activeTerminal);
+		resize.setEnabled(activeTerminal && authenticated);
 		resize.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				final TerminalView terminal = (TerminalView)view;
@@ -690,7 +692,7 @@ public class ConsoleActivity extends Activity {
 							
 							terminal.forceSize(width, height);
 						}
-					}).create().show();
+					}).setNegativeButton(R.string.button_cancel, null).create().show();
 				
 				return true;
 			}
@@ -743,7 +745,8 @@ public class ConsoleActivity extends Activity {
 		copy.setEnabled(activeTerminal && authenticated);
 		paste.setEnabled(clipboard.hasText() && activeTerminal && authenticated);
 		tunnel.setEnabled(activeTerminal && authenticated);
-		
+		resize.setEnabled(activeTerminal && authenticated);
+
 		return true;
 	}
 

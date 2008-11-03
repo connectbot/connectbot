@@ -27,6 +27,12 @@
         <item>gray</item>
     </string-array>
     
+    <string-array name="list_update">
+        <item>@string/list_update_daily</item>
+        <item>@string/list_update_weekly</item>
+        <item>@string/list_update_never</item>
+    </string-array>
+
     <string-array name="list_keymode">
         <item>@string/list_keymode_right</item>
         <item>@string/list_keymode_left</item>

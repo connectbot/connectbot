@@ -27,7 +27,7 @@
     <string name="pubkey_touch_prompt">Touch this box to gather randomness: </string>
     <string name="pubkey_generating">Generating key...</string>
     <string name="pubkey_copy_clipboard">Copy signature</string>
-    <string name="pubkey_list_empty">Press "Menu" to\ncreate public keys.</string>
+    <string name="pubkey_list_empty">Tap "Menu" to create\nor import public keys.</string>
     <string name="pubkey_unknown_format">Unknown format</string>
     <string name="pubkey_change_password">Change Password</string>
 
@@ -63,6 +63,8 @@
 	<string name="pref_memkeys">memkeys</string>
 	<string name="pref_rotation">rotation</string>
 	<string name="pref_camera">camera</string>
+	<string name="pref_update">update</string>
+	<string name="pref_lastchecked">lastchecked</string>
 	
 	<string name="list_keymode_right">Use right-side keys</string>
 	<string name="list_keymode_left">Use left-side keys</string>
@@ -70,6 +72,10 @@
 	
 	<string name="list_pubkeyids_none">Do not use keys</string>
 	<string name="list_pubkeyids_any">Use any unlocked key</string>
+
+	<string name="list_update_daily">Daily</string>
+	<string name="list_update_weekly">Weekly</string>
+	<string name="list_update_never">Never</string>
 
     <string name="bind_minutes">%s minutes ago</string>
     <string name="bind_hours">%s hours ago</string>

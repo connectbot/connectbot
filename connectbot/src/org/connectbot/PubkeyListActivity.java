@@ -438,6 +438,12 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 					.setMessage(getString(R.string.delete_message, nickname))
 					.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
 		                public void onClick(DialogInterface dialog, int which) {
+		                	
+		                	// dont forget to remove from in-memory
+		    				if(loaded)
+		    					bound.removeKey(nickname);
+
+		                	// delete from backend database and update gui
 		                	pubkeydb.deletePubkey(id);
 		    				updateHandler.sendEmptyMessage(-1);
 		                }

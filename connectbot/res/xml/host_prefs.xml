@@ -39,7 +39,7 @@
 
 	<ListPreference
 		android:key="pubkeyid"
-		android:title="Use SSH keys"
+		android:title="Use key authentication"
 		android:entries="@array/list_pubkeyids"
 		android:entryValues="@array/list_pubkeyids"
 		/>
