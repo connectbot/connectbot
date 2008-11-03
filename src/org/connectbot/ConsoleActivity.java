@@ -483,19 +483,20 @@ public class ConsoleActivity extends Activity {
 				// when copying, highlight the area
 				if(copying) {
 					if(copySource == null) return false;
-					int row = (int)(event.getY() / copySource.bridge.charHeight);
-					int col = (int)(event.getX() / copySource.bridge.charWidth);
+					float row = event.getY() / copySource.bridge.charHeight;
+					float col = event.getX() / copySource.bridge.charWidth;
+					Log.d(TAG, String.format("X = %f, Y = %f, row = %f, col = %f", event.getX(), event.getY(), row, col));
 					
 					switch(event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
 						// recording starting area
-						copySource.top = row;
-						copySource.left = col;
+						copySource.top = (int) Math.floor(row);
+						copySource.left = (int) Math.floor(col);
 						return false;
 					case MotionEvent.ACTION_MOVE:
 						// update selected area
-						copySource.bottom = row;
-						copySource.right = col;
+						copySource.bottom = (int) Math.ceil(row);
+						copySource.right = (int) Math.ceil(col);
 						copySource.invalidate();
 						return false;
 					case MotionEvent.ACTION_UP:
@@ -510,13 +511,23 @@ public class ConsoleActivity extends Activity {
 						int size = (right - left) * (bottom - top);
 						StringBuffer buffer = new StringBuffer(size);
 						for(int y = top; y < bottom; y++) {
+							int lastNonSpace = buffer.length();
+							
 							for(int x = left; x < right; x++) {
 								// only copy printable chars
 								char c = copySource.bridge.buffer.getChar(x, y);
 								if(c < 32 || c >= 127) c = ' ';
+								if (c != ' ')
+									lastNonSpace = buffer.length();
 								buffer.append(c);
 							}
-							buffer.append("\n");
+							
+							// Don't leave a bunch of spaces in our copy buffer.
+							if (buffer.length() > lastNonSpace)
+								buffer.delete(lastNonSpace + 1, buffer.length());
+							
+							if (y != bottom)
+								buffer.append("\n");
 						}
 						
 						clipboard.setText(buffer.toString());

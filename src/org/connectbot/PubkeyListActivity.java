@@ -23,21 +23,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
 import java.util.EventListener;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
-
-import com.trilead.ssh2.crypto.PEMDecoder;
-import com.trilead.ssh2.crypto.PEMStructure;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -64,13 +58,15 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SimpleCursorAdapter.ViewBinder;
+
+import com.trilead.ssh2.crypto.PEMDecoder;
+import com.trilead.ssh2.crypto.PEMStructure;
 
 public class PubkeyListActivity extends ListActivity implements EventListener {
 	public final static String TAG = PubkeyListActivity.class.toString();
