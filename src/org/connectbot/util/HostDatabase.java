@@ -417,8 +417,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 
 	/**
 	 * Update the parameters of a port forward in the database.
-	 * @param port forwardId ID of port forward in database
-	 * @param values
+	 * @param pfb {@link PortForwardBean} to save
 	 * @return true on success
 	 */
 	public boolean savePortForward(PortForwardBean pfb) {
@@ -437,5 +436,18 @@ public class HostDatabase extends SQLiteOpenHelper {
 		db.close();
 		
 		return success;
+	}
+
+	/**
+	 * Deletes a port forward from the database.
+	 * @param pfb {@link PortForwardBean} to delete
+	 */
+	public void deletePortForward(PortForwardBean pfb) {
+		if (pfb.getId() < 0)
+			return;
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_PORTFORWARDS, "_id = ?", new String[] { String.valueOf(pfb.getId()) });
+		db.close();
 	}
 }

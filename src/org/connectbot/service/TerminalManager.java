@@ -62,7 +62,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	
 	protected Resources res;
 	
-	protected HostDatabase hostdb;
+	public HostDatabase hostdb;
 	protected PubkeyDatabase pubkeydb;
 
 	protected SharedPreferences prefs;

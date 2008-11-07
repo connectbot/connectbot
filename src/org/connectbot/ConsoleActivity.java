@@ -59,7 +59,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,8 +66,9 @@ import android.widget.ViewFlipper;
 import de.mud.terminal.vt320;
 
 public class ConsoleActivity extends Activity {
-	
 	public final static String TAG = ConsoleActivity.class.toString();
+
+	protected static final int REQUEST_EDIT = 1;
 	
 	protected ViewFlipper flip = null;
 	protected TerminalManager bound = null;
@@ -158,7 +158,7 @@ public class ConsoleActivity extends Activity {
 		if(!(view instanceof TerminalView)) return null;
 		return ((TerminalView)view).bridge.nickname;
 	}
-
+	
 	public Handler promptHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -664,27 +664,9 @@ public class ConsoleActivity extends Activity {
 		portForward.setEnabled(activeTerminal && authenticated);
 		portForward.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				// show dialog to create portForward for this host
-				final TerminalView terminal = (TerminalView)view;
-				
-				// build dialog to prompt user about updating
-				final View portForwardView = inflater.inflate(R.layout.dia_portforward, null, false);
-				((RadioButton)portForwardView.findViewById(R.id.portforward_local)).setChecked(true);
-				new AlertDialog.Builder(ConsoleActivity.this)
-					.setView(portForwardView)
-					.setPositiveButton(R.string.portforward_pos, new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							String nickname = ((TextView)portForwardView.findViewById(R.id.nickname)).getText().toString();
-							String type = ((RadioButton)portForwardView.findViewById(R.id.portforward_local)).isChecked()
-								? HostDatabase.PORTFORWARD_LOCAL : HostDatabase.PORTFORWARD_REMOTE;
-							String source = ((TextView)portForwardView.findViewById(R.id.portforward_source)).getText().toString();
-							String dest = ((TextView)portForwardView.findViewById(R.id.portforward_destination)).getText().toString();
-							
-							createPortForward(terminal, nickname, type, source, dest);
-						}
-					})
-					.setNegativeButton(R.string.portforward_neg, null).create().show();
-				
+				Intent intent = new Intent(ConsoleActivity.this, PortForwardListActivity.class);
+				intent.putExtra(Intent.EXTRA_TITLE, bound.hostdb.findHostByNickname(getCurrentNickname()));
+				ConsoleActivity.this.startActivityForResult(intent, REQUEST_EDIT);
 				return true;
 			}
 		});

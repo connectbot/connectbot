@@ -21,16 +21,21 @@ package org.connectbot;
 import java.util.List;
 
 import org.connectbot.bean.PortForwardBean;
+import org.connectbot.service.TerminalBridge;
+import org.connectbot.service.TerminalManager;
 import org.connectbot.util.HostDatabase;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -60,14 +65,18 @@ public class PortForwardListActivity extends ListActivity {
 	protected Cursor hosts;
 	protected List<PortForwardBean> portForwards;
 	
+	protected ServiceConnection connection = null;
+	protected TerminalBridge hostBridge = null;
 	protected LayoutInflater inflater = null;
 	
 	private long hostId;
-
+		
 	@Override
     public void onStart() {
 		super.onStart();
 		
+        this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
+
 		if(this.hostdb == null)
 			this.hostdb = new HostDatabase(this);
 	}
@@ -76,6 +85,8 @@ public class PortForwardListActivity extends ListActivity {
     public void onStop() {
 		super.onStop();
 	
+		this.unbindService(connection);
+
 		if(this.hostdb != null) {
 			this.hostdb.close();
 			this.hostdb = null;
@@ -92,11 +103,30 @@ public class PortForwardListActivity extends ListActivity {
 		
 		// connect with hosts database and populate list
 		this.hostdb = new HostDatabase(this);
+		final String hostNickname = hostdb.findNicknameById(hostId);
 		
 		this.setTitle(String.format("%s: %s (%s)",
 				getResources().getText(R.string.app_name),
 				getResources().getText(R.string.title_port_forwards_list), 
-				hostdb.findNicknameById(hostId)));
+				hostNickname));
+		
+		connection = new ServiceConnection() {
+			public void onServiceConnected(ComponentName className, IBinder service) {
+				TerminalManager bound = ((TerminalManager.TerminalBinder) service).getService();
+				
+				for (TerminalBridge bridge: bound.bridges) {
+					if (bridge.nickname.equals(hostNickname)) {
+						hostBridge = bridge;
+						Log.d(TAG, "Found host bridge; using that instead of database");
+						break;
+					}
+				}
+			}
+
+			public void onServiceDisconnected(ComponentName name) {
+				hostBridge = null;
+			}
+		};
 		
 		this.updateList();
 		
@@ -132,6 +162,11 @@ public class PortForwardListActivity extends ListActivity {
 										nicknameEdit.getText().toString(), type,
 										sourcePortEdit.getText().toString(),
 										destEdit.getText().toString());
+								
+								if (hostBridge != null) {
+									hostBridge.addPortForward(pfb);
+									hostBridge.enablePortForward(pfb);
+								}
 								
 								if (!hostdb.savePortForward(pfb))
 									throw new Exception("Could not save port forward");
@@ -196,6 +231,12 @@ public class PortForwardListActivity extends ListActivity {
 								pfb.setSourcePort(Integer.parseInt(sourcePortEdit.getText().toString()));
 								pfb.setDest(destEdit.getText().toString());
 								
+								// Use the new settings for the existing connection.
+								if (hostBridge != null) {
+									hostBridge.disablePortForward(pfb);
+									hostBridge.enablePortForward(pfb);
+								}
+								
 								if (!hostdb.savePortForward(pfb))
 									throw new Exception("Could not save port forward");
 								
@@ -211,6 +252,33 @@ public class PortForwardListActivity extends ListActivity {
 				return true;
 			}
 		});
+		
+		MenuItem delete = menu.add(R.string.portforward_delete);
+		delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				// prompt user to make sure they really want this
+				new AlertDialog.Builder(PortForwardListActivity.this)
+					.setMessage(getString(R.string.delete_message, pfb.getNickname()))
+					.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
+		                public void onClick(DialogInterface dialog, int which) {
+		                	try {
+			    				// Delete the port forward from the host if needed.
+			    				if (hostBridge != null)
+			    					hostBridge.removePortForward(pfb);
+			    				
+			    				hostdb.deletePortForward(pfb);
+		                	} catch (Exception e) {
+		                		Log.e(TAG, "Could not delete port forward", e);
+		                	}
+		    				
+		    				updateHandler.sendEmptyMessage(-1);
+		                }
+		            })
+		            .setNegativeButton(R.string.delete_neg, null).create().show();
+				
+				return true;
+			}
+		});
 	}
 	
 	public Handler updateHandler = new Handler() {
@@ -220,15 +288,16 @@ public class PortForwardListActivity extends ListActivity {
 		}
 	};
 	
-	protected void updateList() {
-		if (this.hostdb == null) return;
-		
-		this.portForwards = this.hostdb.getPortForwardsForHost(hostId);
-		
+	protected void updateList() {		
+		if (hostBridge != null) {
+			this.portForwards = hostBridge.getPortForwards();
+		} else {
+			if (this.hostdb == null) return;
+			this.portForwards = this.hostdb.getPortForwardsForHost(hostId);
+		}
+
 		PortForwardAdapter adapter = new PortForwardAdapter(this, this.portForwards);
 		this.setListAdapter(adapter);
-
-		//this.startManagingCursor(portForwards);
 	}
 	
 	class PortForwardAdapter extends ArrayAdapter<PortForwardBean> {
