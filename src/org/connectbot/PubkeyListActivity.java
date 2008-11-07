@@ -68,6 +68,12 @@ import android.widget.SimpleCursorAdapter.ViewBinder;
 import com.trilead.ssh2.crypto.PEMDecoder;
 import com.trilead.ssh2.crypto.PEMStructure;
 
+/**
+ * List public keys in database by nickname and describe their properties. Allow users to import,
+ * generate, rename, and delete key pairs.
+ * 
+ * @author Kenny Root
+ */
 public class PubkeyListActivity extends ListActivity implements EventListener {
 	public final static String TAG = PubkeyListActivity.class.toString();
 
@@ -122,6 +128,10 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.act_pubkeylist);
+		
+		this.setTitle(String.format("%s: %s",
+				getResources().getText(R.string.app_name),
+				getResources().getText(R.string.title_pubkey_list)));
 		
 		// connect with hosts database and populate list
 		this.pubkeydb = new PubkeyDatabase(this);
@@ -327,7 +337,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		// TODO: option load/unload key from in-memory list
 		// prompt for password as needed for passworded keys
 		
-		final int id = cursor.getInt(COL_ID);
+		final long id = cursor.getLong(COL_ID);
 		final byte[] pubkeyEncoded = cursor.getBlob(COL_PUBLIC);
 		final String keyType = cursor.getString(COL_TYPE);
 		final int encrypted = cursor.getInt(COL_ENCRYPTED);
@@ -388,39 +398,39 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				((TableRow)changePasswordView.findViewById(R.id.old_password_prompt))
 					.setVisibility(encrypted != 0 ? View.VISIBLE : View.GONE);
 				new AlertDialog.Builder(PubkeyListActivity.this)
-				.setView(changePasswordView)
-				.setPositiveButton(R.string.button_change, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						String oldPassword = ((EditText)changePasswordView.findViewById(R.id.old_password)).getText().toString();
-						String password1 = ((EditText)changePasswordView.findViewById(R.id.password1)).getText().toString();
-						String password2 = ((EditText)changePasswordView.findViewById(R.id.password2)).getText().toString();
-
-						if (!password1.equals(password2)) {
-							new AlertDialog.Builder(PubkeyListActivity.this)
-							.setMessage(R.string.alert_passwords_do_not_match_msg)
-							.setPositiveButton(android.R.string.ok, null)
-							.create().show();
-							return;
-						}
-						
-						try {
-							if (!pubkeydb.changePassword(id, oldPassword, password1))
+					.setView(changePasswordView)
+					.setPositiveButton(R.string.button_change, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							String oldPassword = ((EditText)changePasswordView.findViewById(R.id.old_password)).getText().toString();
+							String password1 = ((EditText)changePasswordView.findViewById(R.id.password1)).getText().toString();
+							String password2 = ((EditText)changePasswordView.findViewById(R.id.password2)).getText().toString();
+	
+							if (!password1.equals(password2)) {
 								new AlertDialog.Builder(PubkeyListActivity.this)
-								.setMessage(R.string.alert_wrong_password_msg)
-								.setPositiveButton(android.R.string.ok, null)
-								.create().show();
-							else
-								updateHandler.sendEmptyMessage(-1);
-						} catch (Exception e) {
-							Log.e(TAG, "Could not change private key password", e);
-							new AlertDialog.Builder(PubkeyListActivity.this)
-							.setMessage(R.string.alert_key_corrupted_msg)
-							.setPositiveButton(android.R.string.ok, null)
-							.create().show();
+									.setMessage(R.string.alert_passwords_do_not_match_msg)
+									.setPositiveButton(android.R.string.ok, null)
+									.create().show();
+								return;
+							}
+							
+							try {
+								if (!pubkeydb.changePassword(id, oldPassword, password1))
+									new AlertDialog.Builder(PubkeyListActivity.this)
+										.setMessage(R.string.alert_wrong_password_msg)
+										.setPositiveButton(android.R.string.ok, null)
+										.create().show();
+								else
+									updateHandler.sendEmptyMessage(-1);
+							} catch (Exception e) {
+								Log.e(TAG, "Could not change private key password", e);
+								new AlertDialog.Builder(PubkeyListActivity.this)
+									.setMessage(R.string.alert_key_corrupted_msg)
+									.setPositiveButton(android.R.string.ok, null)
+									.create().show();
+							}
 						}
-					}
-				})
-				.setNegativeButton(android.R.string.cancel, null).create().show();
+					})
+					.setNegativeButton(android.R.string.cancel, null).create().show();
 			
 			return true;
 			}

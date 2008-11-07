@@ -46,12 +46,12 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 	public class CursorPreferenceHack implements SharedPreferences {
 		
 		protected final String table;
-		protected final int id;
+		protected final long id;
 
 		protected Map<String, String> values = new HashMap<String, String>();
 //		protected Map<String, String> pubkeys = new HashMap<String, String>();
 		
-		public CursorPreferenceHack(String table, int id) {
+		public CursorPreferenceHack(String table, long id) {
 			this.table = table;
 			this.id = id;
 			
@@ -65,7 +65,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 			SQLiteDatabase db = hostdb.getReadableDatabase();
 			Cursor cursor = db.query(table, null, "_id = ?",
-					new String[] { Integer.toString(id) }, null, null, null);
+					new String[] { String.valueOf(id) }, null, null, null);
 			cursor.moveToFirst();
 			
 			for(int i = 0; i < cursor.getColumnCount(); i++) {
@@ -112,7 +112,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			public boolean commit() {
 				//Log.d(this.getClass().toString(), "commit() changes back to database");
 				SQLiteDatabase db = hostdb.getWritableDatabase();
-				db.update(table, update, "_id = ?", new String[] { Integer.toString(id) });
+				db.update(table, update, "_id = ?", new String[] { String.valueOf(id) });
 				db.close();
 				
 				// make sure we refresh the parent cached values
@@ -217,7 +217,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		
-		int id = this.getIntent().getIntExtra(Intent.EXTRA_TITLE, -1);
+		long id = this.getIntent().getLongExtra(Intent.EXTRA_TITLE, -1);
 		
 		// TODO: we could pass through a specific ContentProvider uri here
 		//this.getPreferenceManager().setSharedPreferencesName(uri);

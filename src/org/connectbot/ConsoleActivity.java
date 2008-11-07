@@ -18,9 +18,11 @@
 
 package org.connectbot;
 
+import org.connectbot.bean.PortForwardBean;
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
+import org.connectbot.util.HostDatabase;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -485,7 +487,6 @@ public class ConsoleActivity extends Activity {
 					if(copySource == null) return false;
 					float row = event.getY() / copySource.bridge.charHeight;
 					float col = event.getX() / copySource.bridge.charWidth;
-					Log.d(TAG, String.format("X = %f, Y = %f, row = %f, col = %f", event.getX(), event.getY(), row, col));
 					
 					switch(event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
@@ -595,7 +596,7 @@ public class ConsoleActivity extends Activity {
 
 	}
 	
-	protected MenuItem disconnect, copy, paste, tunnel, resize;
+	protected MenuItem disconnect, copy, paste, portForward, resize;
 	
 	protected boolean copying = false;
 	protected TerminalView copySource = null;
@@ -658,29 +659,31 @@ public class ConsoleActivity extends Activity {
 		});
 		
 		
-		tunnel = menu.add(R.string.console_menu_tunnel);
-		tunnel.setIcon(android.R.drawable.ic_menu_manage);
-		tunnel.setEnabled(activeTerminal && authenticated);
-		tunnel.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+		portForward = menu.add(R.string.console_menu_portforwards);
+		portForward.setIcon(android.R.drawable.ic_menu_manage);
+		portForward.setEnabled(activeTerminal && authenticated);
+		portForward.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				// show dialog to create tunnel for this host
+				// show dialog to create portForward for this host
 				final TerminalView terminal = (TerminalView)view;
 				
 				// build dialog to prompt user about updating
-				final View tunnelView = inflater.inflate(R.layout.dia_tunnel, null, false);
-				((RadioButton)tunnelView.findViewById(R.id.tunnel_local)).setChecked(true);
+				final View portForwardView = inflater.inflate(R.layout.dia_portforward, null, false);
+				((RadioButton)portForwardView.findViewById(R.id.portforward_local)).setChecked(true);
 				new AlertDialog.Builder(ConsoleActivity.this)
-					.setView(tunnelView)
-					.setPositiveButton("Create tunnel", new DialogInterface.OnClickListener() {
+					.setView(portForwardView)
+					.setPositiveButton(R.string.portforward_pos, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
-							String type = ((RadioButton)tunnelView.findViewById(R.id.tunnel_local)).isChecked() ? TUNNEL_LOCAL : TUNNEL_REMOTE;
-							String source = ((TextView)tunnelView.findViewById(R.id.tunnel_source)).getText().toString();
-							String dest = ((TextView)tunnelView.findViewById(R.id.tunnel_destination)).getText().toString();
+							String nickname = ((TextView)portForwardView.findViewById(R.id.nickname)).getText().toString();
+							String type = ((RadioButton)portForwardView.findViewById(R.id.portforward_local)).isChecked()
+								? HostDatabase.PORTFORWARD_LOCAL : HostDatabase.PORTFORWARD_REMOTE;
+							String source = ((TextView)portForwardView.findViewById(R.id.portforward_source)).getText().toString();
+							String dest = ((TextView)portForwardView.findViewById(R.id.portforward_destination)).getText().toString();
 							
-							createTunnel(terminal, type, source, dest);
+							createPortForward(terminal, nickname, type, source, dest);
 						}
 					})
-					.setNegativeButton("Cancel", null).create().show();
+					.setNegativeButton(R.string.portforward_neg, null).create().show();
 				
 				return true;
 			}
@@ -703,7 +706,7 @@ public class ConsoleActivity extends Activity {
 							
 							terminal.forceSize(width, height);
 						}
-					}).setNegativeButton(R.string.button_cancel, null).create().show();
+					}).setNegativeButton(android.R.string.cancel, null).create().show();
 				
 				return true;
 			}
@@ -713,34 +716,24 @@ public class ConsoleActivity extends Activity {
 		
 	}
 	
-	public final static String EXTRA_TYPE = "type", EXTRA_SOURCE = "source", EXTRA_DEST = "dest", EXTRA_SILENT = "silent";
-	public final static String TUNNEL_LOCAL = "local", TUNNEL_REMOTE = "remote";
-	
-	protected void createTunnel(TerminalView target, String type, String source, String dest) {
-		String summary = null;
+	protected void createPortForward(TerminalView target, String nickname, String type, String source, String dest) {
+		String summary = getString(R.string.portforward_problem);
 		try {
-			boolean local = TUNNEL_LOCAL.equals(type);
-			int sourcePort = Integer.parseInt(source);
-			String[] destSplit = dest.split(":");
-			String destHost = destSplit[0];
-			int destPort = Integer.parseInt(destSplit[1]);
-			
-			if(local) {
-				target.bridge.connection.createLocalPortForwarder(sourcePort, destHost, destPort);
-				summary = getString(R.string.tunnel_done_local, sourcePort, destHost, destPort);
-			} else {
-				target.bridge.connection.requestRemotePortForwarding("", sourcePort, destHost, destPort);
-				summary = getString(R.string.tunnel_done_remote, sourcePort, destHost, destPort);
+			HostDatabase hostdb = new HostDatabase(this);
+			long hostId = hostdb.findHostByNickname(target.bridge.nickname);
+
+			PortForwardBean pfb = new PortForwardBean(hostId, nickname, type, source, dest);
+					
+			target.bridge.addPortForward(pfb);
+			if (target.bridge.enablePortForward(pfb)) {
+				summary = getString(R.string.portforward_done);
 			}
 		} catch(Exception e) {
-			Log.e(TAG, "Problem trying to create tunnel", e);
-			summary = getString(R.string.tunnel_problem);
+			Log.e(TAG, "Problem trying to create portForward", e);
 		}
 		
-		Toast.makeText(ConsoleActivity.this, summary, Toast.LENGTH_LONG).show();
-		
+		Toast.makeText(ConsoleActivity.this, summary, Toast.LENGTH_LONG).show();		
 	}
-	
 
     @Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
@@ -755,7 +748,7 @@ public class ConsoleActivity extends Activity {
 		disconnect.setEnabled(activeTerminal);
 		copy.setEnabled(activeTerminal && authenticated);
 		paste.setEnabled(clipboard.hasText() && activeTerminal && authenticated);
-		tunnel.setEnabled(activeTerminal && authenticated);
+		portForward.setEnabled(activeTerminal && authenticated);
 		resize.setEnabled(activeTerminal && authenticated);
 
 		return true;

@@ -160,6 +160,9 @@ public class HostListActivity extends ListActivity {
 		super.onCreate(icicle);
 		setContentView(R.layout.act_hostlist);
 
+		this.setTitle(String.format("%s: %s",
+				getResources().getText(R.string.app_name),
+				getResources().getText(R.string.title_hosts_list)));
 		
 		// check for eula agreement
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -380,7 +383,7 @@ public class HostListActivity extends ListActivity {
 
 		final String nickname = cursor.getString(COL_NICKNAME);
 		menu.setHeaderTitle(nickname);
-		final int id = cursor.getInt(COL_ID);
+		final long id = cursor.getLong(COL_ID);
 
 		// edit, disconnect, delete
 		MenuItem connect = menu.add(R.string.list_host_disconnect);
@@ -398,6 +401,16 @@ public class HostListActivity extends ListActivity {
 		edit.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				Intent intent = new Intent(HostListActivity.this, HostEditorActivity.class);
+				intent.putExtra(Intent.EXTRA_TITLE, id);
+				HostListActivity.this.startActivityForResult(intent, REQUEST_EDIT);
+				return true;
+			}
+		});
+		
+		MenuItem portForwards = menu.add(R.string.list_host_portforwards);
+		portForwards.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				Intent intent = new Intent(HostListActivity.this, PortForwardListActivity.class);
 				intent.putExtra(Intent.EXTRA_TITLE, id);
 				HostListActivity.this.startActivityForResult(intent, REQUEST_EDIT);
 				return true;

@@ -3,9 +3,11 @@
     <string name="app_name">ConnectBot</string>
     <string name="app_desc">Simple, powerful, open-source SSH client.</string>
     
-    <string name="title_hosts_list">ConnectBot</string>
-    <string name="title_host">Host</string>
-    <string name="title_shell">Secure Shell</string>
+    <string name="title_hosts_list">Hosts</string>
+    <string name="title_pubkey_list">Public keys</string>
+    <string name="title_port_forwards_list">Port forwards</string>
+    <string name="title_host_editor">Edit Host</string>
+    
     <string name="title_password">Input Password</string>
     <string name="title_pubkey">Public Keys</string>
     <string name="title_entropy">Gathering Entropy</string>
@@ -31,6 +33,12 @@
     <string name="pubkey_unknown_format">Unknown format</string>
     <string name="pubkey_change_password">Change Password</string>
 
+	<string name="portforward_list_empty">Tap "Menu" to create\nport forwards.</string>
+	<string name="portforward_edit">Edit Tunnel</string>
+	
+	<string name="prompt_nickname">Nickname:</string>
+	<string name="prompt_source_port">Source port:</string>
+	<string name="prompt_destination">Destination:</string>
     <string name="prompt_old_password">Old password:</string>
     <string name="prompt_password">Password:</string>
     <string name="prompt_again">(again)</string>
@@ -39,9 +47,7 @@
     <string name="alert_wrong_password_msg">Wrong password!</string>
     <string name="alert_key_corrupted_msg">Private key appears corrupt!</string>
     
-    <string name="button_ok">Ok</string>
     <string name="button_add">Add</string>
-    <string name="button_cancel">Cancel</string>
     <string name="button_change">Change</string>
     <string name="button_generate">Generate Key</string>
     <string name="button_resize">Resize</string>
@@ -89,15 +95,18 @@
 	<string name="console_menu_disconnect">Disconnect</string>
 	<string name="console_menu_copy">Copy</string>
 	<string name="console_menu_paste">Paste</string>
-	<string name="console_menu_tunnel">Tunnel</string>
+	<string name="console_menu_portforwards">Port Forwards</string>
 	<string name="console_menu_resize">Force Size</string>
 
-	<string name="tunnel_pos">Create tunnel</string>
-	<string name="tunnel_neg">Cancel</string>
+	<string name="portforward_local">Local</string>
+	<string name="portforward_remote">Remote</string>
+	<string name="portforward_pos">Create port forward</string>
+	<string name="portforward_neg">Cancel</string>
 
-	<string name="tunnel_done_local">Successfully created tunnel -L%d:%s:%d</string>
-	<string name="tunnel_done_remote">Successfully created tunnel -R%d:%s:%d</string>
-	<string name="tunnel_problem">Problem creating tunnel, maybe you're using ports under 1024?</string>
+	<string name="portforward_done">Successfully created port forward</string>
+	<string name="portforward_problem">Problem creating port forward, maybe you're using ports under 1024?</string>
+	
+	<string name="portforward_menu_add">Add port forward</string>
 
 	<string name="list_format_error">Use the format 'username@hostname:port'</string>
 	<string name="list_menu_sortcolor">Sort by color</string>
@@ -107,6 +116,7 @@
 
 	<string name="list_host_disconnect">Disconnect</string>
 	<string name="list_host_edit">Edit host</string>
+	<string name="list_host_portforwards">Edit port forwards</string>
 	<string name="list_host_delete">Delete host</string>
 
 	<string name="list_rotation_land">Force landscape</string>
@@ -122,12 +132,10 @@
 	<string name="delete_pos">Yes, delete</string>
 	<string name="delete_neg">Cancel</string>
 
-
 	<string name="wizard_agree">Agree</string>
 	<string name="wizard_cancel">Cancel</string>
 	<string name="wizard_next">Next</string>
 	<string name="wizard_back">Back</string>
-
 
 	<string name="terminal_hostkey_warn">The authenticity of host '%s' can't be established.</string>
 	<string name="terminal_hostkey">RSA key fingerprint is %s</string>

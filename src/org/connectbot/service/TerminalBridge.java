@@ -25,9 +25,14 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 import org.connectbot.R;
 import org.connectbot.TerminalView;
+import org.connectbot.bean.PortForwardBean;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
@@ -50,6 +55,7 @@ import com.trilead.ssh2.Connection;
 import com.trilead.ssh2.ConnectionMonitor;
 import com.trilead.ssh2.InteractiveCallback;
 import com.trilead.ssh2.KnownHosts;
+import com.trilead.ssh2.LocalPortForwarder;
 import com.trilead.ssh2.ServerHostKeyVerifier;
 import com.trilead.ssh2.Session;
 import com.trilead.ssh2.crypto.PEMDecoder;
@@ -89,6 +95,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		);
 	}
 	
+	private List<PortForwardBean> portForwards = new LinkedList<PortForwardBean>();
+	
 	public int color[] = { Color.BLACK, Color.RED, Color.GREEN, Color.YELLOW,
 		Color.BLUE, Color.MAGENTA, Color.CYAN, Color.WHITE, };
 	
@@ -125,10 +133,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	private boolean ctrlPressed = false;
 	private boolean altPressed = false;
 	private boolean shiftPressed = false;
-		
-	//protected PubkeyDatabase pubkeydb = null;
-	//protected Cursor pubkeys = null;
-	//final int COL_NICKNAME, COL_TYPE, COL_PRIVATE, COL_PUBLIC, COL_ENCRYPTED;
+
 	private boolean pubkeysExhausted = false;
 	
 	private boolean forcedSize = false;
@@ -236,20 +241,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.buffer.setDisplay(this);
 		this.buffer.setCursorPosition(0, 0);
 
+		// TODO Change this when hosts are beans as well
+		this.portForwards = manager.hostdb.getPortForwardsForHost(manager.hostdb.findHostByNickname(nickname));
+		
 		// prepare the ssh connection for opening
 		// we perform the actual connection later in startConnection()
 		this.outputLine(String.format("Connecting to %s:%d", hostname, port));
 		this.connection = new Connection(hostname, port);
 		this.connection.addConnectionMonitor(this);
-
-//		this.pubkeydb = new PubkeyDatabase(manager);
-//		this.pubkeys = this.pubkeydb.allPubkeys();
-//		
-//		this.COL_NICKNAME = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_NICKNAME);
-//		this.COL_TYPE = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_TYPE);
-//		this.COL_PRIVATE = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PRIVATE);
-//		this.COL_PUBLIC = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PUBLIC);
-//		this.COL_ENCRYPTED = pubkeys.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_ENCRYPTED);
 	}
 	
 	public final static int AUTH_TRIES = 20;
@@ -516,6 +515,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			this.setFontSize(this.fontSize);
 			
 			this.fullyConnected = true;
+			
+			// Start up predefined port forwards
+			ListIterator<PortForwardBean> itr = portForwards.listIterator();
+			while (itr.hasNext()) {
+				PortForwardBean pfb = itr.next();
+				Log.d(TAG, String.format("Enabling port forward %s", pfb.getDescription()));
+				enablePortForward(pfb);
+			}
 			
 			// finally send any post-login string, if requested
 			this.injectString(postlogin);
@@ -987,6 +994,117 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		return -1;
 	}
 
+	/**
+	 * Adds the {@link PortForwardBean} to the list.
+	 * @param portForward the port forward bean to add
+	 * @return true on successful addition
+	 */
+	public boolean addPortForward(PortForwardBean portForward) {
+		return this.portForwards.add(portForward);
+	}
 
+	/**
+	 * Removes the {@link PortForwardBean} from the list.
+	 * @param portForward the port forward bean to remove
+	 * @return true on successful removal
+	 */
+	public boolean removePortForward(PortForwardBean portForward) {
+		// Make sure we don't have a phantom forwarder.
+		disablePortForward(portForward);
+		
+		return this.portForwards.remove(portForward);
+	}
+	
+	/**
+	 * @return the list of port forwards
+	 */
+	public List<PortForwardBean> getPortForwards() {
+		return portForwards;
+	}
 
+	/**
+	 * Enables a port forward member. After calling this method, the port forward should
+	 * be operational.
+	 * @param portForward member of our current port forwards list to enable
+	 * @return true on successful port forward setup
+	 */
+	public boolean enablePortForward(PortForwardBean portForward) {
+		if (!this.portForwards.contains(portForward)) {
+			Log.e(TAG, "Attempt to enable port forward not in list");
+			return false;
+		}
+		
+		if (HostDatabase.PORTFORWARD_LOCAL.equals(portForward.getType())) {
+			LocalPortForwarder lpf = null;
+			try {
+				lpf = this.connection.createLocalPortForwarder(portForward.getSourcePort(), portForward.getDestAddr(), portForward.getDestPort());
+			} catch (IOException e) {
+				Log.e(TAG, "Could not create local port forward", e);
+				return false;
+			}
+			
+			if (lpf == null) {
+				Log.e(TAG, "returned LocalPortForwarder object is null");
+				return false;
+			}
+			
+			portForward.setIdentifier(lpf);
+			portForward.setEnabled(true);
+			return true;
+		} else if (HostDatabase.PORTFORWARD_REMOTE.equals(portForward.getType())) {
+			try {
+				this.connection.requestRemotePortForwarding("", portForward.getSourcePort(), portForward.getDestAddr(), portForward.getDestPort());
+			} catch (IOException e) {
+				Log.e(TAG, "Could not create remote port forward", e);
+				return false;
+			}
+			
+			portForward.setEnabled(false);
+			return true;
+		} else {
+			// Unsupported type
+			Log.e(TAG, String.format("attempt to forward unknown type %s", portForward.getType()));
+			return false;
+		}
+	}
+
+	/**
+	 * Disables a port forward member. After calling this method, the port forward should
+	 * be non-functioning.
+	 * @param portForward member of our current port forwards list to enable
+	 * @return true on successful port forward tear-down
+	 */
+	public boolean disablePortForward(PortForwardBean portForward) {
+		if (portForward.getType() == HostDatabase.PORTFORWARD_LOCAL) {
+			LocalPortForwarder lpf = null;
+			lpf = (LocalPortForwarder)portForward.getIdentifier();
+			
+			if (!portForward.isEnabled() || lpf == null)
+				return false;
+			
+			portForward.setEnabled(false);
+
+			try {
+				lpf.close();
+			} catch (IOException e) {
+				Log.e(TAG, "Could not stop local port forwarder, setting enabled to false", e);
+				return false;
+			}
+			
+			return true;
+		} else if (portForward.getType() == HostDatabase.PORTFORWARD_REMOTE) {
+			portForward.setEnabled(false);
+
+			try {
+				this.connection.cancelRemotePortForwarding(portForward.getSourcePort());
+			} catch (IOException e) {
+				Log.e(TAG, "Could not stop remote port forwarding, setting enabled to false", e);
+				return false;
+			}
+			
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

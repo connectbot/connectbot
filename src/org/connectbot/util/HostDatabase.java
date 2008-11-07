@@ -18,6 +18,11 @@
 
 package org.connectbot.util;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.connectbot.bean.PortForwardBean;
+
 import com.trilead.ssh2.KnownHosts;
 
 import android.content.ContentValues;
@@ -38,7 +43,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String TAG = HostDatabase.class.toString();
 	
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 11;
+	public final static int DB_VERSION = 12;
 	
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -52,11 +57,24 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_HOST_USEKEYS = "usekeys";
 	public final static String FIELD_HOST_POSTLOGIN = "postlogin";
 	public final static String FIELD_HOST_PUBKEYID = "pubkeyid";
+	
+	public final static String TABLE_PORTFORWARDS = "portforwards";
+	public final static String FIELD_PORTFORWARD_HOSTID = "hostid";
+	public final static String FIELD_PORTFORWARD_NICKNAME = "nickname";
+	public final static String FIELD_PORTFORWARD_TYPE = "type";
+	public final static String FIELD_PORTFORWARD_SOURCEPORT = "sourceport";
+	public final static String FIELD_PORTFORWARD_DESTADDR = "destaddr";
+	public final static String FIELD_PORTFORWARD_DESTPORT = "destport";
 
 	public final static String COLOR_RED = "red";
 	public final static String COLOR_GREEN = "green";
 	public final static String COLOR_BLUE = "blue";
 	public final static String COLOR_GRAY = "gray";
+	
+	public final static String PORTFORWARD_LOCAL = "local";
+	public final static String PORTFORWARD_REMOTE = "remote";
+	public final static String PORTFORWARD_DYNAMIC4 = "dynamic4";
+	public final static String PORTFORWARD_DYNAMIC5 = "dynamic5";
 
 	public final static long PUBKEYID_NEVER = -2;
 	public final static long PUBKEYID_ANY = -1;
@@ -86,6 +104,14 @@ public class HostDatabase extends SQLiteOpenHelper {
 		this.createHost(db, "cron@server.example.com", "cron", "server.example.com", 22, COLOR_GRAY, PUBKEYID_ANY);
 		this.createHost(db, "backup@example.net", "backup", "example.net", 22, COLOR_BLUE, PUBKEYID_ANY);
 		
+		db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS
+				+ " (_id INTEGER PRIMARY KEY, "
+				+ FIELD_PORTFORWARD_HOSTID + " INTEGER, "
+				+ FIELD_PORTFORWARD_NICKNAME + " TEXT, "
+				+ FIELD_PORTFORWARD_TYPE + " TEXT NOT NULL DEFAULT " + PORTFORWARD_LOCAL + ", "
+				+ FIELD_PORTFORWARD_SOURCEPORT + " INTEGER NOT NULL DEFAULT 8080, "
+				+ FIELD_PORTFORWARD_DESTADDR + " TEXT, "
+				+ FIELD_PORTFORWARD_DESTPORT + " TEXT)");
 	}
 
 	@Override
@@ -94,12 +120,23 @@ public class HostDatabase extends SQLiteOpenHelper {
 		// shot without warning.
 		if (oldVersion <= 9) {
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOSTS);
-			onCreate(db);	
+			onCreate(db);
+			return;
 		}
 		
-		if (oldVersion == 10) {
+		switch (oldVersion) {
+		case 10:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY);
+		case 11:
+			db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS
+					+ " (_id INTEGER PRIMARY KEY, "
+					+ FIELD_PORTFORWARD_HOSTID + " INTEGER, "
+					+ FIELD_PORTFORWARD_NICKNAME + " TEXT, "
+					+ FIELD_PORTFORWARD_TYPE + " TEXT NOT NULL DEFAULT " + PORTFORWARD_LOCAL + ", "
+					+ FIELD_PORTFORWARD_SOURCEPORT + " INTEGER NOT NULL DEFAULT 8080, "
+					+ FIELD_PORTFORWARD_DESTADDR + " TEXT, "
+					+ FIELD_PORTFORWARD_DESTPORT + " INTEGER)");			
 		}
 	}
 	
@@ -120,6 +157,49 @@ public class HostDatabase extends SQLiteOpenHelper {
 		
 	}
 	
+	/**
+	 * Find a specific host ID
+	 * @param nickname Nickname field of host to find
+	 */
+	public long findHostByNickname(String nickname) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		long id = -1;
+		
+		Cursor c = db.query(TABLE_HOSTS, new String[] { "_id" },
+				FIELD_HOST_NICKNAME + " = ?", new String[] { nickname },
+				null, null, null);
+		
+		if (c != null && c.moveToFirst())
+			id = c.getLong(0);
+		
+		c.close();
+		db.close();
+		
+		return id;
+	}
+	
+	/**
+	 * Find a host's nickname in the database by its ID.
+	 * @param hostId
+	 * @return the host's nickname
+	 */
+	public String findNicknameById(long hostId) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		String nickname = "unsaved host";
+		
+		Cursor c = db.query(TABLE_HOSTS, new String[] { FIELD_HOST_NICKNAME },
+				"_id = ?", new String[] { String.valueOf(hostId) },
+				null, null, null);
+		
+		if (c != null && c.moveToFirst())
+			nickname = c.getString(0);
+		
+		c.close();
+		db.close();
+		
+		return nickname;
+	}
+
 	/**
 	 * Create a new host using the given parameters, and return its new
 	 * <code>_id</code> value.
@@ -188,9 +268,12 @@ public class HostDatabase extends SQLiteOpenHelper {
 		return result;
 		
 	}
-	
+
 	/**
 	 * Record the given hostkey into database under this nickname.
+	 * @param hostname
+	 * @param hostkeyalgo
+	 * @param hostkey
 	 */
 	public void saveKnownHost(String hostname, String hostkeyalgo, byte[] hostkey) {
 
@@ -207,6 +290,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	
 	/**
 	 * Build list of known hosts for Trilead library.
+	 * @return
 	 */
 	public KnownHosts getKnownHosts() {
 		KnownHosts known = new KnownHosts();
@@ -242,6 +326,8 @@ public class HostDatabase extends SQLiteOpenHelper {
 	
 	/**
 	 * Find the pubkey to use for a given nickname.
+	 * @param nickname of host
+	 * @return pubkey ID in database
 	 */
 	public long getPubkeyId(String nickname) {	
 		long result = PUBKEYID_ANY;
@@ -256,6 +342,11 @@ public class HostDatabase extends SQLiteOpenHelper {
 		return result;
 	}
 	
+	/**
+	 * Set which public key to use for a particular host.
+	 * @param hostId host ID in database
+	 * @param pubkeyId public key ID in databae
+	 */
 	public void setPubkeyId(long hostId, long pubkeyId) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -267,9 +358,10 @@ public class HostDatabase extends SQLiteOpenHelper {
 
 		Log.d(TAG, String.format("Updated host id %d to use pubkey id %d", hostId, pubkeyId));
 	}
-	
+
 	/**
-	 * Unset any hosts using a pubkey that has been deleted.
+	 * Unset any hosts using a pubkey ID that has been deleted.
+	 * @param pubkeyId
 	 */
 	public void stopUsingPubkey(long pubkeyId) {
 		if (pubkeyId < 0) return;
@@ -283,5 +375,67 @@ public class HostDatabase extends SQLiteOpenHelper {
 		db.close();
 		
 		Log.d(TAG, String.format("Set all hosts using pubkey id %d to -1", pubkeyId));
+	}
+	
+	/*
+	 * Methods for dealing with port forwards attached to hosts
+	 */
+	
+	/**
+	 * Returns a list of all the port forwards associated with a particular host ID.
+	 * @param hostId ID of host
+	 * @return port forwards associated with host ID 
+	 */
+	public List<PortForwardBean> getPortForwardsForHost(long hostId) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		List<PortForwardBean> portForwards = new LinkedList<PortForwardBean>();
+		
+		Cursor c = db.query(TABLE_PORTFORWARDS, new String[] {
+				"_id", FIELD_PORTFORWARD_NICKNAME, FIELD_PORTFORWARD_TYPE, FIELD_PORTFORWARD_SOURCEPORT,
+				FIELD_PORTFORWARD_DESTADDR, FIELD_PORTFORWARD_DESTPORT },
+				FIELD_PORTFORWARD_HOSTID + " = ?", new String[] { String.valueOf(hostId) },
+				null, null, null);
+
+		while (c.moveToNext()) {
+			PortForwardBean pfb = new PortForwardBean(
+				c.getInt(0),
+				hostId,
+				c.getString(1),
+				c.getString(2),
+				c.getInt(3),
+				c.getString(4),
+				c.getInt(5));
+			portForwards.add(pfb);
+		}
+		
+		c.close();
+		db.close();
+				
+		return portForwards;
+	}
+
+
+	/**
+	 * Update the parameters of a port forward in the database.
+	 * @param port forwardId ID of port forward in database
+	 * @param values
+	 * @return true on success
+	 */
+	public boolean savePortForward(PortForwardBean pfb) {
+		boolean success = false;		
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		if (pfb.getId() < 0) {
+			long id = db.insert(TABLE_PORTFORWARDS, null, pfb.getValues());
+			pfb.setId(id);
+			success = true;
+		} else {				
+			if (db.update(TABLE_PORTFORWARDS, pfb.getValues(), "_id = ?", new String[] { String.valueOf(pfb.getId()) }) > 0)
+				success = true;
+		}
+		
+		db.close();
+		
+		return success;
 	}
 }
