@@ -43,5 +43,11 @@
     	<item value="-2">@string/list_pubkeyids_none</item>
     	<item value="-1">@string/list_pubkeyids_any</item>
     </string-array>
+    
+    <string-array name="list_portforward_types">
+    	<item value="local">@string/portforward_local</item>
+    	<item value="remote">@string/portforward_remote</item>
+    	<item value="dynamic">@string/portforward_dynamic</item>
+   	</string-array>
 
 </resources>

@@ -27,7 +27,6 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.connectbot.R;
 import org.connectbot.TerminalView;
@@ -517,11 +516,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			this.fullyConnected = true;
 			
 			// Start up predefined port forwards
-			ListIterator<PortForwardBean> itr = portForwards.listIterator();
-			while (itr.hasNext()) {
-				PortForwardBean pfb = itr.next();
-				Log.d(TAG, String.format("Enabling port forward %s", pfb.getDescription()));
+			for (PortForwardBean pfb : portForwards) {
 				enablePortForward(pfb);
+				Log.d(TAG, String.format("Enabling port formard %s (enabled? %b)", pfb.getDescription(), pfb.isEnabled()));
 			}
 			
 			// finally send any post-login string, if requested
@@ -1088,12 +1085,19 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * @return true on successful port forward tear-down
 	 */
 	public boolean disablePortForward(PortForwardBean portForward) {
-		if (portForward.getType() == HostDatabase.PORTFORWARD_LOCAL) {
+		if (!this.portForwards.contains(portForward)) {
+			Log.e(TAG, "Attempt to disable port forward not in list");
+			return false;
+		}
+		
+		if (HostDatabase.PORTFORWARD_LOCAL.equals(portForward.getType())) {
 			LocalPortForwarder lpf = null;
 			lpf = (LocalPortForwarder)portForward.getIdentifier();
 			
-			if (!portForward.isEnabled() || lpf == null)
+			if (!portForward.isEnabled() || lpf == null) {
+				Log.d(TAG, String.format("Could not disable %s; it appears to be not enabled or have no handler", portForward.getNickname()));
 				return false;
+			}
 			
 			portForward.setEnabled(false);
 
@@ -1105,7 +1109,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			}
 			
 			return true;
-		} else if (portForward.getType() == HostDatabase.PORTFORWARD_REMOTE) {
+		} else if (HostDatabase.PORTFORWARD_REMOTE.equals(portForward.getType())) {
 			portForward.setEnabled(false);
 
 			try {
@@ -1116,12 +1120,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			}
 			
 			return true;
-		} else if (portForward.getType() == HostDatabase.PORTFORWARD_DYNAMIC5) {
+		} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(portForward.getType())) {
 			DynamicPortForwarder dpf = null;
 			dpf = (DynamicPortForwarder)portForward.getIdentifier();
 			
-			if (!portForward.isEnabled() || dpf == null)
+			if (!portForward.isEnabled() || dpf == null) {
+				Log.d(TAG, String.format("Could not disable %s; it appears to be not enabled or have no handler", portForward.getNickname()));
 				return false;
+			}
 			
 			portForward.setEnabled(false);
 			
@@ -1134,6 +1140,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			
 			return true;
 		} else {
+			// Unsupported type
+			Log.e(TAG, String.format("attempt to forward unknown type %s", portForward.getType()));
 			return false;
 		}
 	}

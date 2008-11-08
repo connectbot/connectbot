@@ -44,6 +44,7 @@
     <string name="prompt_old_password">Old password:</string>
     <string name="prompt_password">Password:</string>
     <string name="prompt_again">(again)</string>
+    <string name="prompt_type">Type:</string>
     
     <string name="alert_passwords_do_not_match_msg">Passwords do not match!</string>
     <string name="alert_wrong_password_msg">Wrong password!</string>
@@ -102,7 +103,7 @@
 
 	<string name="portforward_local">Local</string>
 	<string name="portforward_remote">Remote</string>
-	<string name="portforward_dynamic">Dynamic</string>
+	<string name="portforward_dynamic">Dynamic (SOCKS)</string>
 	<string name="portforward_pos">Create port forward</string>
 	<string name="portforward_neg">Cancel</string>
 

@@ -209,10 +209,12 @@ public class PortForwardBean {
 			description = String.format("Local port %d to %s:%d", sourcePort, destAddr, destPort);
 		} else if (HostDatabase.PORTFORWARD_REMOTE.equals(type)) {
 			description = String.format("Remote port %d to %s:%d", sourcePort, destAddr, destPort); 
+/* I don't think we need the SOCKS4 type.
 		} else if (HostDatabase.PORTFORWARD_DYNAMIC4.equals(type)) {
 			description = String.format("Dynamic port %d (SOCKS4)", sourcePort);
+*/
 		} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(type)) {
-			description = String.format("Dynamic port %d (SOCKS5)", sourcePort);
+			description = String.format("Dynamic port %d (SOCKS)", sourcePort);
 		}
 		
 		return description;

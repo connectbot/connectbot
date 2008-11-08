@@ -18,9 +18,9 @@
 -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="wrap_content"
+	android:layout_height="fill_parent"
+	android:layout_width="fill_parent"	
 	android:scrollbars="vertical"
-	android:layout_width="fill_parent"
 	>
 	
 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -40,42 +40,16 @@
 				<TextView android:text="@string/prompt_nickname" android:paddingRight="10dip" android:gravity="right|center_vertical" android:textAppearance="?android:attr/textAppearanceMedium" />
 				<EditText android:id="@+id/nickname" android:hint="Internal Webserver" android:layout_width="200dip" android:layout_height="wrap_content" android:singleLine="true" />
 			</TableRow>
-		</TableLayout>
-		
-		<RadioGroup
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			>
 			
-			<RadioButton
-				android:id="@+id/portforward_local"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/portforward_local"
-				android:paddingRight="10dip"
-				/>
-			
-			<RadioButton
-				android:id="@+id/portforward_remote"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/portforward_remote"
-				android:paddingRight="10dip"
-				/>
-	
-			<RadioButton
-				android:id="@+id/portforward_dynamic"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/portforward_dynamic"
-				/>
-		</RadioGroup>
-		
-		<TableLayout 
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			>
+			<TableRow>
+				<TextView android:text="@string/prompt_type" android:paddingRight="10dip" android:gravity="right|center_vertical" android:textAppearance="?android:attr/textAppearanceMedium" />
+				<Spinner android:id="@+id/portforward_type"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:entries="@array/list_portforward_types"
+					android:prompt="@string/prompt_type"
+					/>
+			</TableRow>
 			
 			<TableRow>
 				<TextView android:text="@string/prompt_source_port" android:paddingRight="10dip" android:gravity="right|center_vertical" android:textAppearance="?android:attr/textAppearanceMedium" />

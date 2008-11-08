@@ -33,6 +33,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -48,8 +49,11 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.RadioButton;
+import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 /**
  * List all portForwards for a particular host and provide a way for users to add more portForwards,
@@ -117,10 +121,13 @@ public class PortForwardListActivity extends ListActivity {
 				for (TerminalBridge bridge: bound.bridges) {
 					if (bridge.nickname.equals(hostNickname)) {
 						hostBridge = bridge;
+						updateHandler.sendEmptyMessage(-1);
 						Log.d(TAG, "Found host bridge; using that instead of database");
 						break;
 					}
 				}
+				
+				
 			}
 
 			public void onServiceDisconnected(ComponentName name) {
@@ -131,6 +138,22 @@ public class PortForwardListActivity extends ListActivity {
 		this.updateList();
 		
 		this.registerForContextMenu(this.getListView());
+		
+		this.getListView().setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+				ListView lv = PortForwardListActivity.this.getListView();
+				PortForwardBean pfb = (PortForwardBean) lv.getItemAtPosition(position);
+				
+				if (hostBridge != null) {
+					if (pfb.isEnabled())
+						hostBridge.disablePortForward(pfb);
+					else
+						hostBridge.enablePortForward(pfb);
+
+					updateHandler.sendEmptyMessage(-1);
+				}
+			}
+		});
 		
 		this.inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -145,7 +168,7 @@ public class PortForwardListActivity extends ListActivity {
 			public boolean onMenuItemClick(MenuItem item) {
 				// build dialog to prompt user about updating
 				final View portForwardView = inflater.inflate(R.layout.dia_portforward, null, false);
-				((RadioButton)portForwardView.findViewById(R.id.portforward_local)).setChecked(true);
+				final Spinner typeSpinner = (Spinner)portForwardView.findViewById(R.id.portforward_type);
 				new AlertDialog.Builder(PortForwardListActivity.this)
 					.setView(portForwardView)
 					.setPositiveButton(R.string.portforward_pos, new DialogInterface.OnClickListener() {
@@ -155,13 +178,7 @@ public class PortForwardListActivity extends ListActivity {
 								final EditText sourcePortEdit = (EditText) portForwardView.findViewById(R.id.portforward_source);
 								final EditText destEdit = (EditText) portForwardView.findViewById(R.id.portforward_destination);
 
-								String type;
-								if (((RadioButton)portForwardView.findViewById(R.id.portforward_local)).isChecked())
-									type = HostDatabase.PORTFORWARD_LOCAL;
-								else if (((RadioButton)portForwardView.findViewById(R.id.portforward_remote)).isChecked())
-									type = HostDatabase.PORTFORWARD_REMOTE;
-								else
-									type = HostDatabase.PORTFORWARD_DYNAMIC5;
+								String type = (String)typeSpinner.getSelectedItem();
 								
 								PortForwardBean pfb = new PortForwardBean(hostId,
 										nicknameEdit.getText().toString(), type,
@@ -205,17 +222,14 @@ public class PortForwardListActivity extends ListActivity {
 			public boolean onMenuItemClick(MenuItem item) {
 				final View editTunnelView = inflater.inflate(R.layout.dia_portforward, null, false);
 				
-				final RadioButton portForwardLocal = (RadioButton) editTunnelView.findViewById(R.id.portforward_local);
-				final RadioButton portForwardRemote = (RadioButton) editTunnelView.findViewById(R.id.portforward_remote);
+				final Spinner typeSpinner = (Spinner) editTunnelView.findViewById(R.id.portforward_type);
+				if (HostDatabase.PORTFORWARD_LOCAL.equals(pfb.getType()))
+					typeSpinner.setSelection(0);
+				else if (HostDatabase.PORTFORWARD_REMOTE.equals(pfb.getType()))
+					typeSpinner.setSelection(1);
+				else
+					typeSpinner.setSelection(2);
 
-				if (HostDatabase.PORTFORWARD_LOCAL.equals(pfb.getType())) {
-					portForwardLocal.setChecked(true);
-				} else if (HostDatabase.PORTFORWARD_REMOTE.equals(pfb.getType())) {
-					portForwardRemote.setChecked(true);
-				} else {
-					((RadioButton) editTunnelView.findViewById(R.id.portforward_dynamic)).setChecked(true);
-				}
-				
 				final EditText nicknameEdit = (EditText) editTunnelView.findViewById(R.id.nickname);
 				nicknameEdit.setText(pfb.getNickname());
 
@@ -223,8 +237,21 @@ public class PortForwardListActivity extends ListActivity {
 				sourcePortEdit.setText(String.valueOf(pfb.getSourcePort()));
 				
 				final EditText destEdit = (EditText) editTunnelView.findViewById(R.id.portforward_destination);
-				destEdit.setText(String.format("%s:%d", pfb.getDestAddr(), pfb.getDestPort()));
-
+				if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(pfb.getType())) {
+					destEdit.setEnabled(false);
+				} else {
+					destEdit.setText(String.format("%s:%d", pfb.getDestAddr(), pfb.getDestPort()));
+				}
+				
+				typeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+					public void onItemSelected(AdapterView<?> value, View view,
+							int position, long id) {
+						destEdit.setEnabled(position != 2);
+					}
+					public void onNothingSelected(AdapterView<?> arg0) {						
+					}	
+				});
+				
 				new AlertDialog.Builder(PortForwardListActivity.this)
 					.setView(editTunnelView)
 					.setPositiveButton(R.string.button_change, new DialogInterface.OnClickListener() {
@@ -232,12 +259,17 @@ public class PortForwardListActivity extends ListActivity {
 							try {
 								pfb.setNickname(nicknameEdit.getText().toString());
 								
-								if (portForwardLocal.isChecked())
+								switch (typeSpinner.getSelectedItemPosition()) {
+								case 0:
 									pfb.setType(HostDatabase.PORTFORWARD_LOCAL);
-								else if (portForwardRemote.isChecked())
+									break;
+								case 1:
 									pfb.setType(HostDatabase.PORTFORWARD_REMOTE);
-								else
+									break;
+								case 2:
 									pfb.setType(HostDatabase.PORTFORWARD_DYNAMIC5);
+									break;
+								}
 								
 								pfb.setSourcePort(Integer.parseInt(sourcePortEdit.getText().toString()));
 								pfb.setDest(destEdit.getText().toString());
@@ -308,6 +340,7 @@ public class PortForwardListActivity extends ListActivity {
 		}
 
 		PortForwardAdapter adapter = new PortForwardAdapter(this, this.portForwards);
+		
 		this.setListAdapter(adapter);
 	}
 	
@@ -331,8 +364,12 @@ public class PortForwardListActivity extends ListActivity {
 			nickname.setText(pfb.getNickname());
 			caption.setText(pfb.getDescription());
 			
+			if (hostBridge != null && !pfb.isEnabled()) {
+				nickname.setPaintFlags(nickname.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+				caption.setPaintFlags(caption.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+			}
+			
 			return view;
 		}
 	}
-
 }
