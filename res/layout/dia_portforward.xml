@@ -53,7 +53,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/portforward_local"
-				android:paddingRight="30dip"
+				android:paddingRight="10dip"
 				/>
 			
 			<RadioButton
@@ -61,8 +61,15 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/portforward_remote"
+				android:paddingRight="10dip"
 				/>
 	
+			<RadioButton
+				android:id="@+id/portforward_dynamic"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/portforward_dynamic"
+				/>
 		</RadioGroup>
 		
 		<TableLayout 

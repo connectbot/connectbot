@@ -102,6 +102,7 @@
 
 	<string name="portforward_local">Local</string>
 	<string name="portforward_remote">Remote</string>
+	<string name="portforward_dynamic">Dynamic</string>
 	<string name="portforward_pos">Create port forward</string>
 	<string name="portforward_neg">Cancel</string>
 

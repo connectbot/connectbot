@@ -155,8 +155,13 @@ public class PortForwardListActivity extends ListActivity {
 								final EditText sourcePortEdit = (EditText) portForwardView.findViewById(R.id.portforward_source);
 								final EditText destEdit = (EditText) portForwardView.findViewById(R.id.portforward_destination);
 
-								String type = ((RadioButton)portForwardView.findViewById(R.id.portforward_local)).isChecked()
-									? HostDatabase.PORTFORWARD_LOCAL : HostDatabase.PORTFORWARD_REMOTE;
+								String type;
+								if (((RadioButton)portForwardView.findViewById(R.id.portforward_local)).isChecked())
+									type = HostDatabase.PORTFORWARD_LOCAL;
+								else if (((RadioButton)portForwardView.findViewById(R.id.portforward_remote)).isChecked())
+									type = HostDatabase.PORTFORWARD_REMOTE;
+								else
+									type = HostDatabase.PORTFORWARD_DYNAMIC5;
 								
 								PortForwardBean pfb = new PortForwardBean(hostId,
 										nicknameEdit.getText().toString(), type,
@@ -201,10 +206,14 @@ public class PortForwardListActivity extends ListActivity {
 				final View editTunnelView = inflater.inflate(R.layout.dia_portforward, null, false);
 				
 				final RadioButton portForwardLocal = (RadioButton) editTunnelView.findViewById(R.id.portforward_local);
+				final RadioButton portForwardRemote = (RadioButton) editTunnelView.findViewById(R.id.portforward_remote);
+
 				if (HostDatabase.PORTFORWARD_LOCAL.equals(pfb.getType())) {
 					portForwardLocal.setChecked(true);
-				} else { // if (HostDatabase.PORTFORWARD_REMOTE.equals(type)) {
-					((RadioButton) editTunnelView.findViewById(R.id.portforward_remote)).setChecked(true);
+				} else if (HostDatabase.PORTFORWARD_REMOTE.equals(pfb.getType())) {
+					portForwardRemote.setChecked(true);
+				} else {
+					((RadioButton) editTunnelView.findViewById(R.id.portforward_dynamic)).setChecked(true);
 				}
 				
 				final EditText nicknameEdit = (EditText) editTunnelView.findViewById(R.id.nickname);
@@ -225,8 +234,10 @@ public class PortForwardListActivity extends ListActivity {
 								
 								if (portForwardLocal.isChecked())
 									pfb.setType(HostDatabase.PORTFORWARD_LOCAL);
-								else
+								else if (portForwardRemote.isChecked())
 									pfb.setType(HostDatabase.PORTFORWARD_REMOTE);
+								else
+									pfb.setType(HostDatabase.PORTFORWARD_DYNAMIC5);
 								
 								pfb.setSourcePort(Integer.parseInt(sourcePortEdit.getText().toString()));
 								pfb.setDest(destEdit.getText().toString());

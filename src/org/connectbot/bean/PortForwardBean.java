@@ -139,7 +139,8 @@ public class PortForwardBean {
 	public void setDest(String dest) {
 		String[] destSplit = dest.split(":");
 		this.destAddr = destSplit[0];
-		this.destPort = Integer.parseInt(destSplit[1]);
+		if (destSplit.length > 1)
+			this.destPort = Integer.parseInt(destSplit[1]);
 	}
 	
 	/**

@@ -52,6 +52,7 @@ import android.view.View.OnKeyListener;
 
 import com.trilead.ssh2.Connection;
 import com.trilead.ssh2.ConnectionMonitor;
+import com.trilead.ssh2.DynamicPortForwarder;
 import com.trilead.ssh2.InteractiveCallback;
 import com.trilead.ssh2.KnownHosts;
 import com.trilead.ssh2.LocalPortForwarder;
@@ -1060,6 +1061,19 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			
 			portForward.setEnabled(false);
 			return true;
+		} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(portForward.getType())) {
+			DynamicPortForwarder dpf = null;
+			
+			try {
+				dpf = this.connection.createDynamicPortForwarder(portForward.getSourcePort());
+			} catch (IOException e) {
+				Log.e(TAG, "Could not create dynamic port forward", e);
+				return false;
+			}
+			
+			portForward.setIdentifier(dpf);
+			portForward.setEnabled(true);
+			return true;
 		} else {
 			// Unsupported type
 			Log.e(TAG, String.format("attempt to forward unknown type %s", portForward.getType()));
@@ -1098,6 +1112,23 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				this.connection.cancelRemotePortForwarding(portForward.getSourcePort());
 			} catch (IOException e) {
 				Log.e(TAG, "Could not stop remote port forwarding, setting enabled to false", e);
+				return false;
+			}
+			
+			return true;
+		} else if (portForward.getType() == HostDatabase.PORTFORWARD_DYNAMIC5) {
+			DynamicPortForwarder dpf = null;
+			dpf = (DynamicPortForwarder)portForward.getIdentifier();
+			
+			if (!portForward.isEnabled() || dpf == null)
+				return false;
+			
+			portForward.setEnabled(false);
+			
+			try {
+				dpf.close();
+			} catch (IOException e) {
+				Log.e(TAG, "Could not stop dynamic port forwarder, setting enabled to false", e);
 				return false;
 			}
 			

@@ -933,6 +933,58 @@ public class Connection
 	}
 
 	/**
+	 * Creates a new {@link DynamicPortForwarder}. A
+	 * <code>DynamicPortForwarder</code> forwards TCP/IP connections that arrive
+	 * at a local port via the secure tunnel to another host that is chosen via
+	 * the SOCKS protocol.
+	 * <p>
+	 * This method must only be called after one has passed successfully the
+	 * authentication step. There is no limit on the number of concurrent
+	 * forwardings.
+	 * 
+	 * @param local_port
+	 * @return A {@link DynamicPortForwarder} object.
+	 * @throws IOException
+	 */
+	public synchronized DynamicPortForwarder createDynamicPortForwarder(int local_port) throws IOException
+	{
+		if (tm == null)
+			throw new IllegalStateException("Cannot forward ports, you need to establish a connection first.");
+
+		if (!authenticated)
+			throw new IllegalStateException("Cannot forward ports, connection is not authenticated.");
+
+		return new DynamicPortForwarder(cm, local_port);
+	}
+	
+	/**
+	 * Creates a new {@link DynamicPortForwarder}. A
+	 * <code>DynamicPortForwarder</code> forwards TCP/IP connections that arrive
+	 * at a local port via the secure tunnel to another host that is chosen via
+	 * the SOCKS protocol.
+	 * <p>
+	 * This method must only be called after one has passed successfully the
+	 * authentication step. There is no limit on the number of concurrent
+	 * forwardings.
+	 * 
+	 * @param addr
+	 *            specifies the InetSocketAddress where the local socket shall
+	 *            be bound to.
+	 * @return A {@link DynamicPortForwarder} object.
+	 * @throws IOException
+	 */
+	public synchronized DynamicPortForwarder createDynamicPortForwarder(InetSocketAddress addr) throws IOException
+	{
+		if (tm == null)
+			throw new IllegalStateException("Cannot forward ports, you need to establish a connection first.");
+
+		if (!authenticated)
+			throw new IllegalStateException("Cannot forward ports, connection is not authenticated.");
+
+		return new DynamicPortForwarder(cm, addr);
+	}
+	
+	/**
 	 * Create a very basic {@link SCPClient} that can be used to copy files
 	 * from/to the SSH-2 server.
 	 * <p>
