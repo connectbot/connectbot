@@ -344,13 +344,6 @@ public class Socks5DatagramSocket extends DatagramSocket{
    }
 
 
-   private byte[] formHeader(String host,int port){
-      Socks5Message request = new Socks5Message(0,host,port);
-      request.data[0] = 0;
-      return request.data;
-   }
-
-
 /*======================================================================
 
 //Mainly Test functions

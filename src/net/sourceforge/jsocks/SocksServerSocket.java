@@ -154,21 +154,6 @@ public class SocksServerSocket extends ServerSocket{
 //Private Methods
 //////////////////
 
-   private void processReply(ProxyMessage reply)throws SocksException{
-      localPort = reply.port;
-      /*
-       * If the server have assigned same host as it was contacted on
-       * it might return an address of all zeros
-       */
-      if(reply.host.equals("0.0.0.0")){
-         localIP = proxy.proxyIP;
-         localHost = localIP.getHostName();
-      }else{
-         localHost = reply.host;
-         localIP = reply.ip;
-      }
-   }
-
    private void doDirect(){
       doing_direct = true;
       localPort = super.getLocalPort();
