@@ -2614,6 +2614,9 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                     attributes |= LOW;
                   }
                   break;
+                case 3: /* italics */
+            	  attributes |= INVERT;
+            	  break;
                 case 4:
                   attributes |= UNDERLINE;
                   break;
@@ -2640,6 +2643,9 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                   break;
                 case 21: /* normal intensity */
                   attributes &= ~(LOW | BOLD);
+                  break;
+                case 23: /* italics off */
+                  attributes &= ~INVERT;
                   break;
                 case 25: /* blinking off */
                   break;
