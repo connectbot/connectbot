@@ -168,7 +168,18 @@ public class PortForwardListActivity extends ListActivity {
 			public boolean onMenuItemClick(MenuItem item) {
 				// build dialog to prompt user about updating
 				final View portForwardView = inflater.inflate(R.layout.dia_portforward, null, false);
+				final EditText destEdit = (EditText) portForwardView.findViewById(R.id.portforward_destination);
 				final Spinner typeSpinner = (Spinner)portForwardView.findViewById(R.id.portforward_type);
+				
+				typeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+					public void onItemSelected(AdapterView<?> value, View view,
+							int position, long id) {
+						destEdit.setEnabled(position != 2);
+					}
+					public void onNothingSelected(AdapterView<?> arg0) {						
+					}	
+				});
+				
 				new AlertDialog.Builder(PortForwardListActivity.this)
 					.setView(portForwardView)
 					.setPositiveButton(R.string.portforward_pos, new DialogInterface.OnClickListener() {
@@ -176,9 +187,19 @@ public class PortForwardListActivity extends ListActivity {
 							try {
 								final EditText nicknameEdit = (EditText) portForwardView.findViewById(R.id.nickname);
 								final EditText sourcePortEdit = (EditText) portForwardView.findViewById(R.id.portforward_source);
-								final EditText destEdit = (EditText) portForwardView.findViewById(R.id.portforward_destination);
 
-								String type = (String)typeSpinner.getSelectedItem();
+								String type = HostDatabase.PORTFORWARD_LOCAL;
+								switch (typeSpinner.getSelectedItemPosition()) {
+								case 0:
+									type = HostDatabase.PORTFORWARD_LOCAL;
+									break;
+								case 1:
+									type = HostDatabase.PORTFORWARD_REMOTE;
+									break;
+								case 2:
+									type = HostDatabase.PORTFORWARD_DYNAMIC5;
+									break;
+								}
 								
 								PortForwardBean pfb = new PortForwardBean(hostId,
 										nicknameEdit.getText().toString(), type,

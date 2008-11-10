@@ -109,6 +109,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public final String nickname;
 	protected final String username;
 	public String postlogin = null;
+	private boolean wantSession = true;
 	
 	public final Connection connection;
 	protected Session session;
@@ -145,6 +146,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 			// read in all known hosts from hostdb
 			KnownHosts hosts = manager.hostdb.getKnownHosts();
+			Boolean result;
 			
 			switch(hosts.verifyHostkey(hostname, serverHostKeyAlgorithm, serverHostKey)) {
 			case KnownHosts.HOSTKEY_IS_OK:
@@ -154,9 +156,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				// prompt user
 				outputLine(String.format("The authenticity of host '%s' can't be established.", hostname));
 				outputLine(String.format("RSA key fingerprint is %s", KnownHosts.createHexFingerprint(serverHostKeyAlgorithm, serverHostKey)));
-				//outputLine("[For now we'll assume you accept this key, but tap Menu and Disconnect if not.]");
-				//outputLine("Are you sure you want to continue connecting (yes/no)? ");
-				Boolean result = promptHelper.requestBooleanPrompt("Are you sure you want\nto continue connecting?");
+
+				result = promptHelper.requestBooleanPrompt("Are you sure you want\nto continue connecting?");
 				if(result == null) return false;
 				if(result.booleanValue()) {
 					// save this key in known database
@@ -172,9 +173,15 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				outputLine("Someone could be eavesdropping on you right now (man-in-the-middle attack)!");
 				outputLine("It is also possible that the RSA host key has just been changed.");
 				outputLine(String.format("RSA key fingerprint is %s", KnownHosts.createHexFingerprint(serverHostKeyAlgorithm, serverHostKey)));
-				outputLine("Host key verification failed.");
-				return false;
 				
+				// Users have no way to delete keys, so we'll prompt them for now.
+				result = promptHelper.requestBooleanPrompt("Are you sure you want\nto continue connecting?");
+				if(result == null) return false;
+				if(result.booleanValue()) {
+					// save this key in known database
+					manager.hostdb.saveKnownHost(hostname, serverHostKeyAlgorithm, serverHostKey);
+				}
+				return result.booleanValue();				
 			}
 			
 			return false;
@@ -184,7 +191,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	}
 	
 	public PromptHelper promptHelper;
-	
+
 	/**
 	 * Create new terminal bridge with following parameters. We will immediately
 	 * launch thread to start SSH connection and handle any hostkey verification
@@ -199,6 +206,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.emulation = manager.getEmulation();
 		this.scrollback = manager.getScrollback();
 		this.postlogin = manager.getPostLogin(nickname);
+		this.wantSession = manager.getWantSession(nickname);
 
 		// create prompt helper to relay password and hostkey requests up to gui
 		this.promptHelper = new PromptHelper(this);
@@ -260,7 +268,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			public void run() {
 				try {
 					connection.connect(new HostKeyVerifier());
-					
+				} catch (IOException e) {
+					Log.e(TAG, "Problem in SSH connection thread during authentication", e);
+					Log.d(TAG, String.format("Cause is: %s", e.getCause().toString()));
+				}
+				
+				try {	
 					// enter a loop to keep trying until authentication
 					int tries = 0;
 					while(!connection.isAuthenticationComplete() && tries++ < AUTH_TRIES && !disconnectFlag) {
@@ -270,7 +283,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 						Thread.sleep(1000);
 					}
 				} catch(Exception e) {
-					Log.e(TAG, "Problem in SSH connection thread", e);
+					Log.e(TAG, "Problem in SSH connection thread during authentication", e);
 				}
 			} 
 		}).start();
@@ -466,13 +479,30 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		}).start();
 	}
 	
-	public boolean fullyConnected = false;
+	private boolean authenticated = false;
+	private boolean sessionOpen = false;
 	
 	/**
 	 * Internal method to request actual PTY terminal once we've finished
 	 * authentication. If called before authenticated, it will just fail.
 	 */
 	protected void finishConnection() {
+		setAuthenticated(true);
+		
+		// Start up predefined port forwards
+		for (PortForwardBean pfb : portForwards) {
+			try {
+				enablePortForward(pfb);
+				outputLine(String.format("Enable port forward: %s", pfb.getDescription()));
+			} catch (Exception e) {
+				Log.e(TAG, "Error setting up port forward during connect", e);
+			}
+		}
+		
+		if (!wantSession) {
+			outputLine("Session will not be started due to host preference.");
+			return;
+		}
 		
 		try {
 			this.session = connection.openSession();
@@ -508,21 +538,15 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					}
 				}
 			});
-			this.relay.start();
+			relay.start();
 
 			// force font-size to make sure we resizePTY as needed
-			this.setFontSize(this.fontSize);
+			setFontSize(this.fontSize);
 			
-			this.fullyConnected = true;
-			
-			// Start up predefined port forwards
-			for (PortForwardBean pfb : portForwards) {
-				enablePortForward(pfb);
-				Log.d(TAG, String.format("Enabling port formard %s (enabled? %b)", pfb.getDescription(), pfb.isEnabled()));
-			}
+			setSessionOpen(true);
 			
 			// finally send any post-login string, if requested
-			this.injectString(postlogin);
+			injectString(postlogin);
 
 		} catch (IOException e1) {
 			Log.e(TAG, "Problem while trying to create PTY in finishConnection()", e1);
@@ -530,6 +554,20 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		
 	}
 	
+	/**
+	 * @param sessionOpen the sessionOpen to set
+	 */
+	public void setSessionOpen(boolean sessionOpen) {
+		this.sessionOpen = sessionOpen;
+	}
+
+	/**
+	 * @return the sessionOpen
+	 */
+	public boolean isSessionOpen() {
+		return sessionOpen;
+	}
+
 	protected BridgeDisconnectedListener disconnectListener = null;
 	
 	public void setOnDisconnectedListener(BridgeDisconnectedListener disconnectListener) {
@@ -553,7 +591,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		}).start();
 		
 		this.disconnectFlag = true;
-		this.fullyConnected = false;
+		this.authenticated = false;
+		this.sessionOpen = false;
 		
 		// pass notification back up to terminal manager
 		// the manager will do any gui notification if applicable
@@ -1144,5 +1183,19 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			Log.e(TAG, String.format("attempt to forward unknown type %s", portForward.getType()));
 			return false;
 		}
+	}
+
+	/**
+	 * @param authenticated the authenticated to set
+	 */
+	public void setAuthenticated(boolean authenticated) {
+		this.authenticated = authenticated;
+	}
+
+	/**
+	 * @return the authenticated
+	 */
+	public boolean isAuthenticated() {
+		return authenticated;
 	}
 }

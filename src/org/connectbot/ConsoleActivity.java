@@ -133,9 +133,14 @@ public class ConsoleActivity extends Activity {
 				
 			}
 			
-			// show the requested bridge if found, also fade out overlay
-			flip.setDisplayedChild(requestedIndex);
-			flip.getCurrentView().findViewById(R.id.terminal_overlay).startAnimation(fade_out);
+			try {
+				// show the requested bridge if found, also fade out overlay
+				flip.setDisplayedChild(requestedIndex);
+				flip.getCurrentView().findViewById(R.id.terminal_overlay).startAnimation(fade_out);
+			} catch (NullPointerException npe) {
+				Log.d(TAG, "View went away when we were about to display it", npe);
+			}
+			
 			updatePromptVisible();
 			updateEmptyVisible();
 			
@@ -608,8 +613,11 @@ public class ConsoleActivity extends Activity {
 		final View view = findCurrentView(R.id.console_flip);
 		boolean activeTerminal = (view instanceof TerminalView);
 		boolean authenticated = false;
-		if(activeTerminal)
-			authenticated = ((TerminalView)view).bridge.fullyConnected;
+		boolean sessionOpen = false;
+		if(activeTerminal) {
+			authenticated = ((TerminalView) view).bridge.isAuthenticated();
+			sessionOpen = ((TerminalView)view).bridge.isSessionOpen();
+		}
 		
 		disconnect = menu.add(R.string.console_menu_disconnect);
 		disconnect.setEnabled(activeTerminal);
@@ -628,7 +636,7 @@ public class ConsoleActivity extends Activity {
 		
 		copy = menu.add(R.string.console_menu_copy);
 		copy.setIcon(android.R.drawable.ic_menu_set_as);
-		copy.setEnabled(activeTerminal && authenticated);
+		copy.setEnabled(activeTerminal);
 		copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				// mark as copying and reset any previous bounds
@@ -661,7 +669,7 @@ public class ConsoleActivity extends Activity {
 		
 		portForward = menu.add(R.string.console_menu_portforwards);
 		portForward.setIcon(android.R.drawable.ic_menu_manage);
-		portForward.setEnabled(activeTerminal && authenticated);
+		portForward.setEnabled(authenticated);
 		portForward.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				Intent intent = new Intent(ConsoleActivity.this, PortForwardListActivity.class);
@@ -673,7 +681,7 @@ public class ConsoleActivity extends Activity {
 		
 		resize = menu.add(R.string.console_menu_resize);
 		resize.setIcon(android.R.drawable.ic_menu_crop);
-		resize.setEnabled(activeTerminal && authenticated);
+		resize.setEnabled(activeTerminal && sessionOpen);
 		resize.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				final TerminalView terminal = (TerminalView)view;
@@ -724,14 +732,17 @@ public class ConsoleActivity extends Activity {
 		final View view = findCurrentView(R.id.console_flip);
 		boolean activeTerminal = (view instanceof TerminalView);
 		boolean authenticated = false;
-		if(activeTerminal)
-			authenticated = ((TerminalView)view).bridge.fullyConnected;
-
+		boolean sessionOpen = false;
+		if (activeTerminal) {
+			authenticated = ((TerminalView)view).bridge.isAuthenticated();
+			sessionOpen = ((TerminalView)view).bridge.isSessionOpen();
+		}
+		
 		disconnect.setEnabled(activeTerminal);
-		copy.setEnabled(activeTerminal && authenticated);
-		paste.setEnabled(clipboard.hasText() && activeTerminal && authenticated);
+		copy.setEnabled(activeTerminal);
+		paste.setEnabled(clipboard.hasText() && activeTerminal && sessionOpen);
 		portForward.setEnabled(activeTerminal && authenticated);
-		resize.setEnabled(activeTerminal && authenticated);
+		resize.setEnabled(activeTerminal && sessionOpen);
 
 		return true;
 	}

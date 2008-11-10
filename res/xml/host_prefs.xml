@@ -49,6 +49,12 @@
 		android:title="Post-login automation"
 		android:summary="Commands to run on remote server once authenticated"
 		/>
+		
+	<CheckBoxPreference
+		android:key="wantsession"
+		android:title="Start shell session"
+		android:summary="Disable this preference to only use port forwards."
+		/>
 
 	<PreferenceCategory
 		android:title="Connection settings">

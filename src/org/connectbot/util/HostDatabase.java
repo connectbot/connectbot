@@ -43,7 +43,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String TAG = HostDatabase.class.toString();
 	
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 12;
+	public final static int DB_VERSION = 13;
 	
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -57,6 +57,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_HOST_USEKEYS = "usekeys";
 	public final static String FIELD_HOST_POSTLOGIN = "postlogin";
 	public final static String FIELD_HOST_PUBKEYID = "pubkeyid";
+	public final static String FIELD_HOST_WANTSESSION = "wantsession";
 	
 	public final static String TABLE_PORTFORWARDS = "portforwards";
 	public final static String FIELD_PORTFORWARD_HOSTID = "hostid";
@@ -97,7 +98,8 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_HOST_COLOR + " TEXT, "
 				+ FIELD_HOST_USEKEYS + " TEXT, "
 				+ FIELD_HOST_POSTLOGIN + " TEXT, "
-				+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ")");
+				+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ", "
+				+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "')");
 
 		// insert a few sample hosts, none of which probably connect
 		//this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, COLOR_GRAY);
@@ -136,7 +138,10 @@ public class HostDatabase extends SQLiteOpenHelper {
 					+ FIELD_PORTFORWARD_TYPE + " TEXT NOT NULL DEFAULT " + PORTFORWARD_LOCAL + ", "
 					+ FIELD_PORTFORWARD_SOURCEPORT + " INTEGER NOT NULL DEFAULT 8080, "
 					+ FIELD_PORTFORWARD_DESTADDR + " TEXT, "
-					+ FIELD_PORTFORWARD_DESTPORT + " INTEGER)");			
+					+ FIELD_PORTFORWARD_DESTPORT + " INTEGER)");
+		case 12:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "'");
 		}
 	}
 	
@@ -219,6 +224,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 		if(color != null)
 			values.put(FIELD_HOST_COLOR, color);
 		values.put(FIELD_HOST_PUBKEYID, pubkeyId);
+		values.put(FIELD_HOST_WANTSESSION, Boolean.toString(true));
 		
 		return db.insert(TABLE_HOSTS, null, values);
 		
@@ -254,19 +260,45 @@ public class HostDatabase extends SQLiteOpenHelper {
 	 * Find the post-login command string for the given nickname.
 	 */
 	public String getPostLogin(String nickname) {
-		
 		String result = null;
+		
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.query(TABLE_HOSTS, new String[] { FIELD_HOST_POSTLOGIN },
 				FIELD_HOST_NICKNAME + " = ?", new String[] { nickname }, null, null, null);
-		if(c == null || !c.moveToFirst()) {
+		
+		if (c == null || !c.moveToFirst()) {
 			result = null;
 		} else {
 			result = c.getString(c.getColumnIndexOrThrow(FIELD_HOST_POSTLOGIN));
 		}
 		
-		return result;
+		c.close();
+		db.close();
 		
+		return result;
+	}
+
+	/**
+	 * Check whether a host should have a shell session started.
+	 * @param nickname Nick name of host to check
+	 * @return true if host should have a shell session started
+	 */
+	public boolean getWantSession(String nickname) {
+		Boolean result = true;
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.query(TABLE_HOSTS, new String[] { FIELD_HOST_WANTSESSION },
+				FIELD_HOST_NICKNAME + " = ?", new String[] { nickname }, null, null, null);
+		if(c == null || !c.moveToFirst()) {
+			result = true;
+		} else {
+			result = Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION)));
+		}
+		
+		c.close();
+		db.close();
+		
+		return result;
 	}
 
 	/**
