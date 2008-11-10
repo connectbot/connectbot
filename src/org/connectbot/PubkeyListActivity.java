@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Collections;
 import java.util.EventListener;
 import java.util.LinkedList;
 import java.util.List;
@@ -199,7 +200,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		generatekey.setIcon(android.R.drawable.ic_menu_manage);
 		generatekey.setIntent(new Intent(PubkeyListActivity.this, GeneratePubkeyActivity.class));
 
-		MenuItem importkey = menu.add("Import");
+		MenuItem importkey = menu.add(R.string.pubkey_import);
 		importkey.setIcon(android.R.drawable.ic_menu_upload);
 		importkey.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
@@ -210,11 +211,26 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				// build list of all files in sdcard root
 				final File sdcard = Environment.getExternalStorageDirectory();
 				Log.d(TAG, sdcard.toString());
+				
+				// Don't show a dialog if the SD card is completely absent.
+				final String state = Environment.getExternalStorageState();
+				if (Environment.MEDIA_REMOVED.equals(state)
+						|| Environment.MEDIA_BAD_REMOVAL.equals(state)
+						|| Environment.MEDIA_UNMOUNTABLE.equals(state)
+						|| Environment.MEDIA_UNMOUNTED.equals(state)) {
+					new AlertDialog.Builder(PubkeyListActivity.this)
+						.setMessage(R.string.alert_sdcard_absent)
+						.setNegativeButton(android.R.string.cancel, null).create().show();
+					return true;
+				}
+				
 				List<String> names = new LinkedList<String>();
 				for(File file : sdcard.listFiles()) {
 					if(file.isDirectory()) continue;
 					names.add(file.getName());
 				}
+				Collections.sort(names);
+				
 				final String[] namesList = names.toArray(new String[] {});
 				Log.d(TAG, names.toString());
 
@@ -244,7 +260,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 							}
 						}
 					})
-					.setNegativeButton("Cancel", null).create().show();
+					.setNegativeButton(android.R.string.cancel, null).create().show();
 
 				return true;
 			}

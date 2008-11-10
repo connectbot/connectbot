@@ -51,6 +51,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
@@ -322,6 +323,12 @@ public class ConsoleActivity extends Activity {
 		this.clipboard = (ClipboardManager)this.getSystemService(CLIPBOARD_SERVICE);
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
+		// hide status bar if requested by user
+		if (this.prefs.getBoolean(getString(R.string.pref_fullscreen), false)) {
+			this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+					WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		}
+		
 		// request a forced orientation if requested by user
 		String rotate = this.prefs.getString(getString(R.string.pref_rotation), getString(R.string.list_rotation_land));
 		if(getString(R.string.list_rotation_land).equals(rotate)) {
@@ -568,8 +575,11 @@ public class ConsoleActivity extends Activity {
 		// keep current overlay from popping up again
 		View overlay = findCurrentView(R.id.terminal_overlay);
 		if(overlay != null) overlay.startAnimation(fade_stay_hidden);
+
+		// Only show animation if there is something else to go to.
+		if (flip.getChildCount() > 1)
+			flip.setInAnimation(slide_left_in);
 		
-		flip.setInAnimation(slide_left_in);
 		flip.setOutAnimation(slide_left_out);
 		flip.showNext();
 		ConsoleActivity.this.updateDefault();
@@ -579,7 +589,6 @@ public class ConsoleActivity extends Activity {
 		if(overlay != null) overlay.startAnimation(fade_out);
 
 		updatePromptVisible();
-
 	}
 	
 	protected void shiftRight() {

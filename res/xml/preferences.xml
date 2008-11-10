@@ -68,6 +68,13 @@
 			android:defaultValue="@string/list_rotation_land"
 			/>
 
+		<CheckBoxPreference
+			android:key="@string/pref_fullscreen"
+			android:title="Full screen"
+			android:summary="Hide status bar while in console"
+			android:defaultValue="false"
+			/>
+			
 		<ListPreference
 			android:key="@string/pref_keymode"
 			android:title="Directory shortcuts"
@@ -92,7 +99,6 @@
 			android:summary="Prevent the screen from turning off when working in a console"
 			android:defaultValue="true"
 			/>
-
 	</PreferenceCategory>
 
 </PreferenceScreen>

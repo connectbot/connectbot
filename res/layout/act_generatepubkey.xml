@@ -26,11 +26,11 @@
 		android:layout_height="wrap_content"
 		android:paddingLeft="10dip"
 		android:paddingRight="10dip"
-		android:scrollbars="vertical" android:layout_width="wrap_content">
+		android:scrollbars="vertical" android:layout_width="fill_parent">
 			
 		<TableRow>
 			<TextView android:text="Nickname:" android:paddingRight="10dip" android:gravity="right|center_vertical" android:textAppearance="?android:attr/textAppearanceMedium" />
-			<EditText android:id="@+id/nickname" android:hint="My work key" android:layout_height="wrap_content" android:singleLine="true" />
+			<EditText android:id="@+id/nickname" android:hint="My work key" android:layout_height="wrap_content" android:singleLine="true" android:layout_weight="1"/>
 		</TableRow>
 	
 		<TableRow>
@@ -62,24 +62,24 @@
 		
 		<TableRow>
 			<TextView android:text="Bits:" android:paddingRight="10dip" android:textAppearance="?android:attr/textAppearanceMedium" android:gravity="right|center_vertical" />
-			<EditText android:id="@+id/bits" android:layout_height="wrap_content" android:text="1024" android:numeric="integer" android:singleLine="true" />
+			<EditText android:id="@+id/bits" android:layout_height="wrap_content" android:text="1024" android:numeric="integer" android:singleLine="true" android:layout_weight="1"/>
 		</TableRow>
 		
 		<SeekBar android:layout_height="wrap_content" android:id="@+id/bits_slider" android:layout_width="fill_parent" android:paddingBottom="10dip" android:max="3328" android:progress="256"/>
 	
-		<TextView android:text="Note: password can be blank" android:gravity="right" android:layout_height="wrap_content" android:layout_width="wrap_content" />
+		<TextView android:text="Note: password can be blank" android:gravity="left" android:layout_height="wrap_content" android:layout_width="wrap_content" />
 	
 		<TableRow>
-			<TextView android:gravity="right|center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="Password:" />
-			<EditText android:id="@+id/password1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:password="true" android:singleLine="true"/>
+			<TextView android:paddingRight="10dip" android:gravity="right|center_vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="Password:" />
+			<EditText android:id="@+id/password1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:password="true" android:singleLine="true" android:layout_weight="1"/>
 		</TableRow>
 		
 		<TableRow>
-			<LinearLayout android:orientation="vertical" android:gravity="right|center_vertical" >
+			<LinearLayout android:paddingRight="10dip" android:orientation="vertical" android:gravity="right|center_vertical" >
 				<TextView android:gravity="right|bottom" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="Password:" />
 				<TextView android:gravity="right|top" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceSmall" android:text="(again)" />
 			</LinearLayout>
-			<EditText android:id="@+id/password2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:password="true" android:singleLine="true"/>
+			<EditText android:id="@+id/password2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:password="true" android:singleLine="true" android:layout_weight="1"/>
 		</TableRow>
 		
 		<CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/unlock_at_startup" android:text="Unlock when ConnectBot starts"/>
