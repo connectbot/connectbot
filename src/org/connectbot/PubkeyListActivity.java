@@ -236,7 +236,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 				// prompt user to select any file from the sdcard root
 				new AlertDialog.Builder(PubkeyListActivity.this)
-					.setTitle("Pick from /sdcard")
+					.setTitle(R.string.pubkey_list_pick)
 					.setItems(namesList, new OnClickListener() {
 						public void onClick(DialogInterface arg0, int arg1) {
 							// find the exact file selected
@@ -256,7 +256,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 								
 							} catch(Exception e) {
 								Log.e(TAG, "Problem parsing imported private key", e);
-								Toast.makeText(PubkeyListActivity.this, "Problem parsing imported private key", Toast.LENGTH_LONG).show();
+								Toast.makeText(PubkeyListActivity.this, R.string.pubkey_import_parse_problem, Toast.LENGTH_LONG).show();
 							}
 						}
 					})
@@ -278,18 +278,15 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			
 			new AlertDialog.Builder(PubkeyListActivity.this)
 				.setView(view)
-				.setPositiveButton("Unlock key", new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.pubkey_unlock, new DialogInterface.OnClickListener() {
 		            public void onClick(DialogInterface dialog, int which) {
 		    			handleAddKey(c, passwordField.getText().toString());
 		            }
 		        })
-		        .setNegativeButton("Cancel", null).create().show();
+		        .setNegativeButton(android.R.string.cancel, null).create().show();
 		} else {
 			handleAddKey(c, null);
-
 		}
-			
-
 	}
 	
 	protected void handleAddKey(Cursor c, String password) {
@@ -302,7 +299,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			try {
 				trileadKey = PEMDecoder.decode(new String(raw).toCharArray(), password);
 			} catch(Exception e) {
-				String message = String.format("Bad password for key '%s'. Authentication failed.", keyNickname);
+				String message = getResources().getString(R.string.pubkey_failed_add, keyNickname);
 				Log.e(TAG, message, e);
 				Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG);
 			}
@@ -315,7 +312,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				privKey = PubkeyUtils.decodePrivate(c.getBlob(COL_PRIVATE), c.getString(COL_TYPE), password);
 				pubKey = PubkeyUtils.decodePublic(c.getBlob(COL_PUBLIC), c.getString(COL_TYPE));
 			} catch (Exception e) {
-				String message = String.format("Bad password for key '%s'. Authentication failed.", keyNickname);
+				String message = getResources().getString(R.string.pubkey_failed_add, keyNickname);
 				Log.e(TAG, message, e);
 				Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG);
 			}
@@ -363,7 +360,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		final boolean loaded = bound.isKeyLoaded(nickname);
 		final boolean onstart = (cursor.getInt(COL_STARTUP) == 1);
 
-		MenuItem load = menu.add(loaded ? "Unload from memory" : "Load into memory");
+		MenuItem load = menu.add(loaded ? R.string.pubkey_memory_unload : R.string.pubkey_memory_load);
 		load.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				if(loaded) {
@@ -377,7 +374,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			}
 		});
 		
-		onstartToggle = menu.add("Load key on start");
+		onstartToggle = menu.add(R.string.pubkey_load_on_start);
 		onstartToggle.setEnabled((encrypted == 0));
 		onstartToggle.setCheckable(true);
 		onstartToggle.setChecked(onstart);

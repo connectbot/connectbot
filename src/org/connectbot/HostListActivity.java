@@ -355,7 +355,7 @@ public class HostListActivity extends ListActivity {
 			}
 		});
 
-		MenuItem keys = menu.add("Manage keys");
+		MenuItem keys = menu.add(R.string.list_menu_pubkeys);
 		keys.setIcon(android.R.drawable.ic_lock_lock);
 		keys.setIntent(new Intent(HostListActivity.this, PubkeyListActivity.class));
     
