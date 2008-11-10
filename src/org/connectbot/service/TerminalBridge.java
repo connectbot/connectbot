@@ -664,6 +664,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		    			key -= 0x60;
 		    		else if (key >= 0x40 && key <= 0x59)
 		    			key -= 0x39;
+		    		else if (key == 0x20)
+		    			key = 0x00;
 		    		ctrlPressed = false;
 				}
 				
