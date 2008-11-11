@@ -18,6 +18,7 @@ import com.trilead.ssh2.HTTPProxyData;
 import com.trilead.ssh2.HTTPProxyException;
 import com.trilead.ssh2.ProxyData;
 import com.trilead.ssh2.ServerHostKeyVerifier;
+import com.trilead.ssh2.compression.ICompressor;
 import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.crypto.CryptoWishList;
 import com.trilead.ssh2.crypto.cipher.BlockCipher;
@@ -586,6 +587,27 @@ public class TransportManager
 		tc.changeSendCipher(bc, mac);
 	}
 
+	/**
+	 * @param comp
+	 */
+	public void changeRecvCompression(ICompressor comp) {
+		tc.changeRecvCompression(comp);
+	}
+
+	/**
+	 * @param comp
+	 */
+	public void changeSendCompression(ICompressor comp) {
+		tc.changeSendCompression(comp);
+	}
+
+	/**
+	 * 
+	 */
+	public void startCompression() {
+		tc.startCompression();
+	}
+
 	public void sendAsynchronousMessage(byte[] msg) throws IOException
 	{
 		synchronized (asynchronousQueue)
@@ -755,6 +777,10 @@ public class TransportManager
 				continue;
 			}
 
+			if (type == Packets.SSH_MSG_USERAUTH_SUCCESS) {
+				tc.startCompression();
+			}
+			
 			MessageHandler mh = null;
 
 			for (int i = 0; i < messageHandlers.size(); i++)

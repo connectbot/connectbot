@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.SecureRandom;
 
+import com.trilead.ssh2.compression.ICompressor;
 import com.trilead.ssh2.crypto.cipher.BlockCipher;
 import com.trilead.ssh2.crypto.cipher.CipherInputStream;
 import com.trilead.ssh2.crypto.cipher.CipherOutputStream;
@@ -50,6 +51,16 @@ public class TransportConnection
 	byte[] recv_mac_buffer_cmp;
 
 	int recv_padd_blocksize = 8;
+	
+	ICompressor recv_comp = null;
+	
+	ICompressor send_comp = null;
+	
+	boolean can_compress = false;
+
+	byte[] recv_comp_buffer;
+	
+	byte[] send_comp_buffer;
 
 	/* won't change */
 
@@ -101,7 +112,23 @@ public class TransportConnection
 		if (send_padd_blocksize < 8)
 			send_padd_blocksize = 8;
 	}
+	
+	public void changeRecvCompression(ICompressor comp)
+	{
+		recv_comp = comp;
+		
+		if (comp != null)
+			recv_comp_buffer = new byte[comp.getBufferSize()];
+	}
 
+	public void changeSendCompression(ICompressor comp)
+	{
+		send_comp = comp;
+		
+		if (comp != null)
+			send_comp_buffer = new byte[comp.getBufferSize()];
+	}
+	
 	public void sendMessage(byte[] message) throws IOException
 	{
 		sendMessage(message, 0, message.length, 0);
@@ -124,6 +151,12 @@ public class TransportConnection
 			padd = 4;
 		else if (padd > 64)
 			padd = 64;
+		
+		// TODO add compression somewhere here
+		if (send_comp != null && can_compress) {
+			len = send_comp.compress(message, off, len, send_comp_buffer);
+			message = send_comp_buffer;
+		}
 
 		int packet_len = 5 + len + padd; /* Minimum allowed padding is 4 */
 
@@ -279,6 +312,24 @@ public class TransportConnection
 					+ " bytes payload");
 		}
 
-		return payload_length;
+		if (recv_comp != null && can_compress) {
+			int[] uncomp_len = new int[] { payload_length };
+			buffer = recv_comp.uncompress(buffer, off, uncomp_len);
+			
+			if (buffer == null) {
+				throw new IOException("Error while inflating remote data");
+			} else {
+				return uncomp_len[0];
+			}
+		} else {
+			return payload_length;
+		}
+	}
+
+	/**
+	 * 
+	 */
+	public void startCompression() {
+		can_compress = true;
 	}
 }

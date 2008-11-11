@@ -171,6 +171,10 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		return hostdb.getWantSession(nickname);
 	}
 
+	public boolean getCompression(String nickname) {
+		return hostdb.getCompression(nickname);
+	}
+
 	public String getKeyMode() {
 		return prefs.getString(this.pref_keymode, getString(R.string.list_keymode_right)); // "Use right-side keys"
 	}

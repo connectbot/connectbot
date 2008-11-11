@@ -110,6 +110,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	protected final String username;
 	public String postlogin = null;
 	private boolean wantSession = true;
+	private boolean compression = false;
 	
 	public final Connection connection;
 	protected Session session;
@@ -207,6 +208,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.scrollback = manager.getScrollback();
 		this.postlogin = manager.getPostLogin(nickname);
 		this.wantSession = manager.getWantSession(nickname);
+		this.compression = manager.getCompression(nickname);
 
 		// create prompt helper to relay password and hostkey requests up to gui
 		this.promptHelper = new PromptHelper(this);
@@ -256,6 +258,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.outputLine(String.format("Connecting to %s:%d", hostname, port));
 		this.connection = new Connection(hostname, port);
 		this.connection.addConnectionMonitor(this);
+		this.connection.setCompression(compression);
 	}
 	
 	public final static int AUTH_TRIES = 20;

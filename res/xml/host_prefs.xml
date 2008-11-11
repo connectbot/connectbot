@@ -51,9 +51,15 @@
 		/>
 		
 	<CheckBoxPreference
+		android:key="compression"
+		android:title="Enable compression"
+		android:summary="This may help with slower networks"
+		/>
+		
+	<CheckBoxPreference
 		android:key="wantsession"
 		android:title="Start shell session"
-		android:summary="Disable this preference to only use port forwards."
+		android:summary="Disable this preference to only use port forwards"
 		/>
 
 	<PreferenceCategory

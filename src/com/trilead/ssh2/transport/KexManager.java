@@ -7,6 +7,8 @@ import java.security.SecureRandom;
 import com.trilead.ssh2.ConnectionInfo;
 import com.trilead.ssh2.DHGexParameters;
 import com.trilead.ssh2.ServerHostKeyVerifier;
+import com.trilead.ssh2.compression.CompressionFactory;
+import com.trilead.ssh2.compression.ICompressor;
 import com.trilead.ssh2.crypto.CryptoWishList;
 import com.trilead.ssh2.crypto.KeyMaterial;
 import com.trilead.ssh2.crypto.cipher.BlockCipher;
@@ -283,6 +285,7 @@ public class KexManager
 
 		BlockCipher cbc;
 		MAC mac;
+		ICompressor comp;
 
 		try
 		{
@@ -290,6 +293,8 @@ public class KexManager
 					km.initial_iv_client_to_server);
 
 			mac = new MAC(kxs.np.mac_algo_client_to_server, km.integrity_key_client_to_server);
+			
+			comp = CompressionFactory.createCompressor(kxs.np.comp_algo_client_to_server);
 
 		}
 		catch (IllegalArgumentException e1)
@@ -298,6 +303,7 @@ public class KexManager
 		}
 
 		tm.changeSendCipher(cbc, mac);
+		tm.changeSendCompression(comp);
 		tm.kexFinished();
 	}
 
@@ -464,6 +470,7 @@ public class KexManager
 
 			BlockCipher cbc;
 			MAC mac;
+			ICompressor comp;
 
 			try
 			{
@@ -471,7 +478,8 @@ public class KexManager
 						km.enc_key_server_to_client, km.initial_iv_server_to_client);
 
 				mac = new MAC(kxs.np.mac_algo_server_to_client, km.integrity_key_server_to_client);
-
+				
+				comp = CompressionFactory.createCompressor(kxs.np.comp_algo_server_to_client);
 			}
 			catch (IllegalArgumentException e1)
 			{
@@ -479,6 +487,7 @@ public class KexManager
 			}
 
 			tm.changeRecvCipher(cbc, mac);
+			tm.changeRecvCompression(comp);
 
 			ConnectionInfo sci = new ConnectionInfo();
 

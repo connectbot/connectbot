@@ -4,6 +4,7 @@ package com.trilead.ssh2.packets;
 import java.io.IOException;
 import java.security.SecureRandom;
 
+import com.trilead.ssh2.compression.CompressionFactory;
 import com.trilead.ssh2.crypto.CryptoWishList;
 import com.trilead.ssh2.transport.KexParameters;
 
@@ -31,8 +32,8 @@ public class PacketKexInit
 		kp.encryption_algorithms_server_to_client = cwl.s2c_enc_algos;
 		kp.mac_algorithms_client_to_server = cwl.c2s_mac_algos;
 		kp.mac_algorithms_server_to_client = cwl.s2c_mac_algos;
-		kp.compression_algorithms_client_to_server = new String[] { "none" };
-		kp.compression_algorithms_server_to_client = new String[] { "none" };
+		kp.compression_algorithms_client_to_server = cwl.c2s_comp_algos;
+		kp.compression_algorithms_server_to_client = cwl.s2c_comp_algos;
 		kp.languages_client_to_server = new String[] {};
 		kp.languages_server_to_client = new String[] {};
 		kp.first_kex_packet_follows = false;

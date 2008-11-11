@@ -89,6 +89,7 @@ public class Connection
 	private AuthenticationManager am;
 
 	private boolean authenticated = false;
+	private boolean compression = false;
 	private ChannelManager cm;
 
 	private CryptoWishList cryptoWishList = new CryptoWishList();
@@ -575,6 +576,20 @@ public class Connection
 	}
 
 	/**
+	 * Controls whether compression is used on the link or not.
+	 * <p>
+	 * Note: This can only be called before connect()
+	 * @param enabled whether to enable compression
+	 * @throws IOException
+	 */
+	public synchronized void setCompression(boolean enabled) throws IOException {
+		if (tm != null)
+			throw new IOException("Connection to " + hostname + " is already in connected state!");
+		
+		compression = enabled;
+	}
+	
+	/**
 	 * Close the connection to the SSH-2 server. All assigned sessions will be
 	 * closed, too. Can be called at any time. Don't forget to call this once
 	 * you don't need a connection anymore - otherwise the receiver thread may
@@ -735,6 +750,12 @@ public class Connection
 
 		tm.setConnectionMonitors(connectionMonitors);
 
+		// Don't offer compression if not requested
+		if (!compression) {
+			cryptoWishList.c2s_comp_algos = new String[] { "none" };
+			cryptoWishList.s2c_comp_algos = new String[] { "none" };
+		}
+		
 		/*
 		 * Make sure that the runnable below will observe the new value of "tm"
 		 * and "state" (the runnable will be executed in a different thread,

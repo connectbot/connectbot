@@ -43,7 +43,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String TAG = HostDatabase.class.toString();
 	
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 13;
+	public final static int DB_VERSION = 14;
 	
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -58,6 +58,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_HOST_POSTLOGIN = "postlogin";
 	public final static String FIELD_HOST_PUBKEYID = "pubkeyid";
 	public final static String FIELD_HOST_WANTSESSION = "wantsession";
+	public final static String FIELD_HOST_COMPRESSION = "compression";
 	
 	public final static String TABLE_PORTFORWARDS = "portforwards";
 	public final static String FIELD_PORTFORWARD_HOSTID = "hostid";
@@ -99,7 +100,8 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_HOST_USEKEYS + " TEXT, "
 				+ FIELD_HOST_POSTLOGIN + " TEXT, "
 				+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ", "
-				+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "')");
+				+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "', "
+				+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "')");
 
 		// insert a few sample hosts, none of which probably connect
 		//this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, COLOR_GRAY);
@@ -142,6 +144,9 @@ public class HostDatabase extends SQLiteOpenHelper {
 		case 12:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "'");
+		case 13:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "'");
 		}
 	}
 	
@@ -294,6 +299,27 @@ public class HostDatabase extends SQLiteOpenHelper {
 		} else {
 			result = Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION)));
 		}
+		
+		c.close();
+		db.close();
+		
+		return result;
+	}
+
+	/**
+	 * Check whether a host should have compression enabled.
+	 * @param nickname Nick name of host to check
+	 * @return true if host should have compression enabled
+	 */
+	public boolean getCompression(String nickname) {
+		Boolean result = false;
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.query(TABLE_HOSTS, new String[] { FIELD_HOST_COMPRESSION },
+				FIELD_HOST_NICKNAME + " = ?", new String[] { nickname }, null, null, null);
+		
+		if (c != null && c.moveToFirst())
+			result = Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION)));
 		
 		c.close();
 		db.close();
