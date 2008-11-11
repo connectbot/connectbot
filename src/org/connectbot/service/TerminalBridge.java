@@ -658,15 +658,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				
 				int key = keymap.get(keyCode, metaState);
 				
-				//Log.d(TAG, Integer.toString(event.getMetaState()));
-
 				if (ctrlPressed) {
-				//if((event.getMetaState() & KeyEvent.META_SYM_ON) != 0) {
-		    		// Support CTRL-A through CTRL-Z
-		    		if (key >= 0x61 && key <= 0x79)
+		    		// Support CTRL-a through CTRL-z
+		    		if (key >= 0x61 && key <= 0x7A)
 		    			key -= 0x60;
-		    		else if (key >= 0x40 && key <= 0x59)
-		    			key -= 0x39;
+		    		// Support CTRL-A through CTRL-_
+		    		else if (key >= 0x41 && key <= 0x5F)
+		    			key -= 0x40;
 		    		else if (key == 0x20)
 		    			key = 0x00;
 		    		ctrlPressed = false;

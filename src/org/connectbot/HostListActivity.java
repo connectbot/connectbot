@@ -320,11 +320,13 @@ public class HostListActivity extends ListActivity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 		
-		sortcolor.setVisible(!sortedByColor);
-		sortlast.setVisible(sortedByColor);
+		if (sortcolor != null)
+			sortcolor.setVisible(!sortedByColor);
+		
+		if (sortlast != null)
+			sortlast.setVisible(sortedByColor);
 		
 		return true;
-		
     }
 
 	@Override
