@@ -18,11 +18,11 @@
 
 package org.connectbot;
 
+import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
-import org.connectbot.util.HostDatabase;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -92,7 +92,7 @@ public class ConsoleActivity extends Activity {
 			// first check if we need to create a new session for requested
 			boolean found = false;
 			for(TerminalBridge bridge : bound.bridges) {
-				if(bridge.nickname.equals(requestedNickname))
+				if(bridge.host.getNickname().equals(requestedNickname))
 					found = true;
 			}
 
@@ -118,7 +118,7 @@ public class ConsoleActivity extends Activity {
 
 				// set the terminal overlay text
 				TextView overlay = (TextView)view.findViewById(R.id.terminal_overlay);
-				overlay.setText(bridge.nickname);
+				overlay.setText(bridge.host.getNickname());
 
 				// and add our terminal view control, using index to place behind overlay
 				TerminalView terminal = new TerminalView(ConsoleActivity.this, bridge);
@@ -129,7 +129,7 @@ public class ConsoleActivity extends Activity {
 				flip.addView(view);
 				
 				// check to see if this bridge was requested
-				if(bridge.nickname.equals(requestedNickname))
+				if(bridge.host.getNickname().equals(requestedNickname))
 					requestedIndex = flip.getChildCount() - 1;
 				
 			}
@@ -159,10 +159,10 @@ public class ConsoleActivity extends Activity {
 		}
 	};
 	
-	protected String getCurrentNickname() {
+	protected HostBean getCurrentHost() {
 		View view = findCurrentView(R.id.console_flip);
 		if(!(view instanceof TerminalView)) return null;
-		return ((TerminalView)view).bridge.nickname;
+		return ((TerminalView)view).bridge.host;
 	}
 	
 	public Handler promptHandler = new Handler() {
@@ -625,7 +625,7 @@ public class ConsoleActivity extends Activity {
 		boolean sessionOpen = false;
 		if(activeTerminal) {
 			authenticated = ((TerminalView) view).bridge.isAuthenticated();
-			sessionOpen = ((TerminalView)view).bridge.isSessionOpen();
+			sessionOpen = ((TerminalView) view).bridge.isSessionOpen();
 		}
 		
 		disconnect = menu.add(R.string.console_menu_disconnect);
@@ -682,7 +682,7 @@ public class ConsoleActivity extends Activity {
 		portForward.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				Intent intent = new Intent(ConsoleActivity.this, PortForwardListActivity.class);
-				intent.putExtra(Intent.EXTRA_TITLE, bound.hostdb.findHostByNickname(getCurrentNickname()));
+				intent.putExtra(Intent.EXTRA_TITLE, ((TerminalView) view).bridge.host.getId());
 				ConsoleActivity.this.startActivityForResult(intent, REQUEST_EDIT);
 				return true;
 			}
@@ -712,14 +712,12 @@ public class ConsoleActivity extends Activity {
 		});
 
 		return true;
-		
 	}
 	
 	protected void createPortForward(TerminalView target, String nickname, String type, String source, String dest) {
 		String summary = getString(R.string.portforward_problem);
 		try {
-			HostDatabase hostdb = new HostDatabase(this);
-			long hostId = hostdb.findHostByNickname(target.bridge.nickname);
+			long hostId = target.bridge.host.getId();
 
 			PortForwardBean pfb = new PortForwardBean(hostId, nickname, type, source, dest);
 					

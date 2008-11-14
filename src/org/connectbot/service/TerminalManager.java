@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.connectbot.R;
+import org.connectbot.bean.HostBean;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
@@ -56,7 +57,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public List<TerminalBridge> bridges = new LinkedList<TerminalBridge>();
 	public TerminalBridge defaultBridge = null;
 	
-	public List<String> disconnected = new LinkedList<String>();
+	public List<HostBean> disconnected = new LinkedList<HostBean>();
 	
 	protected HashMap<String, Object> loadedPubkeys = new HashMap<String, Object>();
 	
@@ -130,20 +131,19 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	/**
 	 * Open a new SSH session using the given parameters.
 	 */
-	public void openConnection(String nickname, String hostname, String username, int port) throws Exception {
+	public void openConnection(HostBean host) throws Exception {
 		// throw exception if terminal already open
-		if(this.findBridge(nickname) != null) {
+		if (this.findBridge(host) != null) {
 			throw new Exception("Connection already open for that nickname");
 		}
 		
-		TerminalBridge bridge = new TerminalBridge(this, nickname, username, hostname, port);
+		TerminalBridge bridge = new TerminalBridge(this, host);
 		bridge.setOnDisconnectedListener(this);
 		bridge.startConnection();
 		this.bridges.add(bridge);
 		
 		// also update database with new connected time
-		this.touchHost(nickname);
-		
+		this.touchHost(host);
 	}
 	
 	public String getEmulation() {
@@ -162,18 +162,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public boolean isSavingKeys() {
 		return prefs.getBoolean(this.pref_memkeys, true);
 	}
-	
-	public String getPostLogin(String nickname) {
-		return hostdb.getPostLogin(nickname);
-	}
-	
-	public boolean getWantSession(String nickname) {
-		return hostdb.getWantSession(nickname);
-	}
-
-	public boolean getCompression(String nickname) {
-		return hostdb.getCompression(nickname);
-	}
 
 	public String getKeyMode() {
 		return prefs.getString(this.pref_keymode, getString(R.string.list_keymode_right)); // "Use right-side keys"
@@ -189,24 +177,32 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		String hostname = uri.getHost();
 		int port = uri.getPort();
 		
-		this.openConnection(nickname, hostname, username, port);
+		HostBean host = hostdb.findHost(nickname, username, hostname, port);
+		
+		if (host == null) {
+			Log.d(TAG, String.format("Didn't find existing host (nickname=%s, username=%s, hostname=%s, port=%d)",
+					nickname, username, hostname, port));
+			host = new HostBean(nickname, username, hostname, port);
+		}
+		
+		this.openConnection(host);
 	}
 	
 	/**
 	 * Update the last-connected value for the given nickname by passing through
 	 * to {@link HostDatabase}.
 	 */
-	protected void touchHost(String nickname) {
-		hostdb.touchHost(nickname);
+	protected void touchHost(HostBean host) {
+		hostdb.touchHost(host);
 	}
 
 	/**
 	 * Find the {@link TerminalBridge} with the given nickname.  
 	 */
-	public TerminalBridge findBridge(String nickname) {
+	public TerminalBridge findBridge(HostBean host) {
 		// find the first active bridge with given nickname
 		for(TerminalBridge bridge : bridges) {
-			if(bridge.nickname.equals(nickname))
+			if (bridge.host.equals(host))
 				return bridge;
 		}
 		return null;
@@ -229,7 +225,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public void onDisconnected(TerminalBridge bridge) {
 		// remove this bridge from our list
 		this.bridges.remove(bridge);
-		this.disconnected.add(bridge.nickname);
+		this.disconnected.add(bridge.host);
 		
 		// pass notification back up to gui
 		if(this.disconnectHandler != null)

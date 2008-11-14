@@ -116,7 +116,7 @@
 	<string name="portforward_neg">Cancel</string>
 
 	<string name="portforward_done">Successfully created port forward</string>
-	<string name="portforward_problem">Problem creating port forward, maybe you're using ports under 1024?</string>
+	<string name="portforward_problem">Problem creating port forward, maybe you're using ports under 1024 or port is already used?</string>
 	
 	<string name="portforward_menu_add">Add port forward</string>
 

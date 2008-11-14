@@ -20,6 +20,7 @@ package org.connectbot;
 
 import java.util.List;
 
+import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
@@ -52,6 +53,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 
@@ -73,7 +75,7 @@ public class PortForwardListActivity extends ListActivity {
 	protected TerminalBridge hostBridge = null;
 	protected LayoutInflater inflater = null;
 	
-	private long hostId;
+	private HostBean host;
 		
 	@Override
     public void onStart() {
@@ -101,25 +103,25 @@ public class PortForwardListActivity extends ListActivity {
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		
-		this.hostId = this.getIntent().getLongExtra(Intent.EXTRA_TITLE, -1);
+		long hostId = this.getIntent().getLongExtra(Intent.EXTRA_TITLE, -1);
 
 		setContentView(R.layout.act_portforwardlist);
 		
 		// connect with hosts database and populate list
 		this.hostdb = new HostDatabase(this);
-		final String hostNickname = hostdb.findNicknameById(hostId);
+		host = hostdb.findHostById(hostId);
 		
 		this.setTitle(String.format("%s: %s (%s)",
 				getResources().getText(R.string.app_name),
 				getResources().getText(R.string.title_port_forwards_list), 
-				hostNickname));
+				host.getNickname()));
 		
 		connection = new ServiceConnection() {
 			public void onServiceConnected(ComponentName className, IBinder service) {
 				TerminalManager bound = ((TerminalManager.TerminalBinder) service).getService();
 				
 				for (TerminalBridge bridge: bound.bridges) {
-					if (bridge.nickname.equals(hostNickname)) {
+					if (bridge.host.equals(host)) {
 						hostBridge = bridge;
 						updateHandler.sendEmptyMessage(-1);
 						Log.d(TAG, "Found host bridge; using that instead of database");
@@ -147,8 +149,10 @@ public class PortForwardListActivity extends ListActivity {
 				if (hostBridge != null) {
 					if (pfb.isEnabled())
 						hostBridge.disablePortForward(pfb);
-					else
-						hostBridge.enablePortForward(pfb);
+					else {
+						if (!hostBridge.enablePortForward(pfb))
+							Toast.makeText(PortForwardListActivity.this, getString(R.string.portforward_problem), Toast.LENGTH_LONG).show();		
+					}
 
 					updateHandler.sendEmptyMessage(-1);
 				}
@@ -201,7 +205,7 @@ public class PortForwardListActivity extends ListActivity {
 									break;
 								}
 								
-								PortForwardBean pfb = new PortForwardBean(hostId,
+								PortForwardBean pfb = new PortForwardBean(host.getId(),
 										nicknameEdit.getText().toString(), type,
 										sourcePortEdit.getText().toString(),
 										destEdit.getText().toString());
@@ -357,7 +361,7 @@ public class PortForwardListActivity extends ListActivity {
 			this.portForwards = hostBridge.getPortForwards();
 		} else {
 			if (this.hostdb == null) return;
-			this.portForwards = this.hostdb.getPortForwardsForHost(hostId);
+			this.portForwards = this.hostdb.getPortForwardsForHost(host);
 		}
 
 		PortForwardAdapter adapter = new PortForwardAdapter(this, this.portForwards);

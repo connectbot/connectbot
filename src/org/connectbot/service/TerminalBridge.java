@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.connectbot.R;
 import org.connectbot.TerminalView;
+import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PubkeyDatabase;
@@ -106,11 +107,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	
 	protected final TerminalManager manager;
 
-	public final String nickname;
-	protected final String username;
-	public String postlogin = null;
-	private boolean wantSession = true;
-	private boolean compression = false;
+	public HostBean host;
+	//public final String nickname;
+	//protected final String username;
+	//public String postlogin = null;
+	//private boolean wantSession = true;
+	//private boolean compression = false;
 	
 	public final Connection connection;
 	protected Session session;
@@ -137,6 +139,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 	private boolean pubkeysExhausted = false;
 	
+	private boolean authenticated = false;
+
+	private boolean sessionOpen = false;
+
 	private boolean forcedSize = false;
 	private int termWidth;
 	private int termHeight;
@@ -149,7 +155,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			KnownHosts hosts = manager.hostdb.getKnownHosts();
 			Boolean result;
 			
-			switch(hosts.verifyHostkey(hostname, serverHostKeyAlgorithm, serverHostKey)) {
+			String matchName = String.format("%s:%d", hostname, port);
+			
+			switch(hosts.verifyHostkey(matchName, serverHostKeyAlgorithm, serverHostKey)) {
 			case KnownHosts.HOSTKEY_IS_OK:
 				return true;
 
@@ -162,7 +170,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				if(result == null) return false;
 				if(result.booleanValue()) {
 					// save this key in known database
-					manager.hostdb.saveKnownHost(hostname, serverHostKeyAlgorithm, serverHostKey);
+					manager.hostdb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
 				}
 				return result.booleanValue();
 				
@@ -180,7 +188,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				if(result == null) return false;
 				if(result.booleanValue()) {
 					// save this key in known database
-					manager.hostdb.saveKnownHost(hostname, serverHostKeyAlgorithm, serverHostKey);
+					manager.hostdb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
 				}
 				return result.booleanValue();				
 			}
@@ -198,17 +206,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * launch thread to start SSH connection and handle any hostkey verification
 	 * and password authentication.
 	 */
-	public TerminalBridge(final TerminalManager manager, final String nickname, final String username, final String hostname, final int port) throws Exception {
+	public TerminalBridge(final TerminalManager manager, final HostBean host) throws Exception {
 		
 		this.manager = manager;
-		this.nickname = nickname;
-		this.username = username;
+		this.host = host;
 		
 		this.emulation = manager.getEmulation();
 		this.scrollback = manager.getScrollback();
-		this.postlogin = manager.getPostLogin(nickname);
-		this.wantSession = manager.getWantSession(nickname);
-		this.compression = manager.getCompression(nickname);
 
 		// create prompt helper to relay password and hostkey requests up to gui
 		this.promptHelper = new PromptHelper(this);
@@ -251,14 +255,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.buffer.setCursorPosition(0, 0);
 
 		// TODO Change this when hosts are beans as well
-		this.portForwards = manager.hostdb.getPortForwardsForHost(manager.hostdb.findHostByNickname(nickname));
+		this.portForwards = manager.hostdb.getPortForwardsForHost(host);
 		
 		// prepare the ssh connection for opening
 		// we perform the actual connection later in startConnection()
-		this.outputLine(String.format("Connecting to %s:%d", hostname, port));
-		this.connection = new Connection(hostname, port);
+		this.outputLine(String.format("Connecting to %s:%d", host.getHostname(), host.getPort()));
+		this.connection = new Connection(host.getHostname(), host.getPort());
 		this.connection.addConnectionMonitor(this);
-		this.connection.setCompression(compression);
 	}
 	
 	public final static int AUTH_TRIES = 20;
@@ -357,7 +360,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			}
 		}
 
-		return this.tryPublicKey(this.username, nickname, trileadKey);
+		return this.tryPublicKey(host.getUsername(), host.getNickname(), trileadKey);
 		
 	}
 	
@@ -371,7 +374,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	
 	public void handleAuthentication() {
 		try {
-			if (connection.authenticateWithNone(username)) {
+			if (connection.authenticateWithNone(host.getUsername())) {
 				finishConnection();
 				return;
 			}
@@ -382,11 +385,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		outputLine("Trying to authenticate");
 		
 		try {
-			long pubkeyId = manager.hostdb.getPubkeyId(nickname);
+			long pubkeyId = host.getPubkeyId();
 			
 			if (!pubkeysExhausted &&
 					pubkeyId != HostDatabase.PUBKEYID_NEVER &&
-					connection.isAuthMethodAvailable(username, AUTH_PUBLICKEY)) {
+					connection.isAuthMethodAvailable(host.getUsername(), AUTH_PUBLICKEY)) {
 				
 				// if explicit pubkey defined for this host, then prompt for password as needed
 				// otherwise just try all in-memory keys held in terminalmanager
@@ -396,7 +399,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					outputLine("Attempting 'publickey' authentication with any in-memory SSH keys");
 					for(String nickname : manager.loadedPubkeys.keySet()) {
 						Object trileadKey = manager.loadedPubkeys.get(nickname);
-						if(this.tryPublicKey(this.username, nickname, trileadKey)) {
+						if(this.tryPublicKey(host.getUsername(), nickname, trileadKey)) {
 							finishConnection();
 							break;
 						}
@@ -414,20 +417,20 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				}
 				
 				pubkeysExhausted = true;
-			} else if (connection.isAuthMethodAvailable(username, AUTH_PASSWORD)) {
+			} else if (connection.isAuthMethodAvailable(host.getUsername(), AUTH_PASSWORD)) {
 				outputLine("Attempting 'password' authentication");
 				String password = promptHelper.requestStringPrompt("Password");
-				if(connection.authenticateWithPassword(username, password)) {
+				if(connection.authenticateWithPassword(host.getUsername(), password)) {
 					finishConnection();
 				} else {
 					outputLine("Authentication method 'password' failed");
 				}
 				
-			} else if(connection.isAuthMethodAvailable(username, AUTH_KEYBOARDINTERACTIVE)) {
+			} else if(connection.isAuthMethodAvailable(host.getUsername(), AUTH_KEYBOARDINTERACTIVE)) {
 				// this auth method will talk with us using InteractiveCallback interface
 				// it blocks until authentication finishes 
 				outputLine("Attempting 'keyboard-interactive' authentication");
-				if(connection.authenticateWithKeyboardInteractive(username, TerminalBridge.this)) {
+				if(connection.authenticateWithKeyboardInteractive(host.getUsername(), TerminalBridge.this)) {
 					finishConnection();
 				} else {
 					outputLine("Authentication method 'keyboard-interactive' failed");
@@ -482,9 +485,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		}).start();
 	}
 	
-	private boolean authenticated = false;
-	private boolean sessionOpen = false;
-	
 	/**
 	 * Internal method to request actual PTY terminal once we've finished
 	 * authentication. If called before authenticated, it will just fail.
@@ -502,7 +502,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			}
 		}
 		
-		if (!wantSession) {
+		if (!host.getWantSession()) {
 			outputLine("Session will not be started due to host preference.");
 			return;
 		}
@@ -549,7 +549,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			setSessionOpen(true);
 			
 			// finally send any post-login string, if requested
-			injectString(postlogin);
+			byte[] postLogin = host.getPostLogin();
+			if (postLogin != null)
+				injectString(new String(postLogin));
 
 		} catch (IOException e1) {
 			Log.e(TAG, "Problem while trying to create PTY in finishConnection()", e1);

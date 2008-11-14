@@ -18,11 +18,12 @@
 
 package org.connectbot;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
+import org.connectbot.bean.HostBean;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
-import org.connectbot.util.HostBinder;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.UpdateHelper;
 
@@ -37,55 +38,63 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class HostListActivity extends ListActivity {
-	
+	protected TerminalManager bound = null;
+
+	protected HostDatabase hostdb;
+	protected List<HostBean> hosts;
+	protected LayoutInflater inflater = null;
+
+	public boolean sortedByColor = false;
+
+	public MenuItem sortcolor;
+
+	public MenuItem sortlast;
+
 	public Handler updateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			HostListActivity.this.updateCursor();
+			HostListActivity.this.updateList();
 		}
 	};
-	
-	protected TerminalManager bound = null;
 
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
-
+	
 			// update our listview binder to find the service
-			HostListActivity.this.updateCursor();
+			HostListActivity.this.updateList();
 		}
-
+	
 		public void onServiceDisconnected(ComponentName className) {
 			bound = null;
-			HostListActivity.this.updateCursor();
+			HostListActivity.this.updateList();
 		}
 	};
-
-	protected HostDatabase hostdb;
-	protected Cursor hosts;
-
-	protected int COL_ID, COL_NICKNAME, COL_USERNAME, COL_HOSTNAME, COL_CONNECTED, COL_PORT;
 
 	@Override
     public void onStart() {
@@ -98,7 +107,7 @@ public class HostListActivity extends ListActivity {
 		if(this.hostdb == null)
 			this.hostdb = new HostDatabase(this);
 
-		this.updateCursor();
+		this.updateList();
 
 	}
 
@@ -106,11 +115,6 @@ public class HostListActivity extends ListActivity {
     public void onStop() {
 		super.onStop();
 		this.unbindService(connection);
-		
-		if(this.hosts != null) {
-			this.hosts.close();
-			this.hosts = null;
-		}
 		
 		if(this.hostdb != null) {
 			this.hostdb.close();
@@ -145,7 +149,7 @@ public class HostListActivity extends ListActivity {
 			break;
 			
 		case REQUEST_EDIT:
-			this.updateCursor();
+			this.updateList();
 			break;
 			
 		}
@@ -175,9 +179,6 @@ public class HostListActivity extends ListActivity {
 		// start thread to check for new version
 		new UpdateHelper(this);
 		
-
-		
-		
 		this.makingShortcut = Intent.ACTION_CREATE_SHORTCUT.equals(getIntent().getAction());
 
 		// connect with hosts database and populate list
@@ -185,30 +186,21 @@ public class HostListActivity extends ListActivity {
 		ListView list = this.getListView();
 		
 		this.sortedByColor = prefs.getBoolean(PREF_SORTBYCOLOR, false);
-		this.updateCursor();
+		this.updateList();
 
 		//this.list.setSelector(R.drawable.highlight_disabled_pressed);
-
-		this.COL_ID = hosts.getColumnIndexOrThrow("_id");
-		this.COL_NICKNAME = hosts.getColumnIndexOrThrow(HostDatabase.FIELD_HOST_NICKNAME);
-		this.COL_USERNAME = hosts.getColumnIndexOrThrow(HostDatabase.FIELD_HOST_USERNAME);
-		this.COL_HOSTNAME = hosts.getColumnIndexOrThrow(HostDatabase.FIELD_HOST_HOSTNAME);
-		this.COL_PORT = hosts.getColumnIndexOrThrow(HostDatabase.FIELD_HOST_PORT);
-		this.COL_CONNECTED = hosts.getColumnIndexOrThrow(HostDatabase.FIELD_HOST_LASTCONNECT);
 
 		list.setOnItemClickListener(new OnItemClickListener() {
 
 			public synchronized void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 				// launch off to console details
-				Cursor c = (Cursor)parent.getAdapter().getItem(position);
-				String username = c.getString(COL_USERNAME);
-				String hostname = c.getString(COL_HOSTNAME);
-				int port = c.getInt(COL_PORT);
-				String nickname = c.getString(COL_NICKNAME);
+				HostBean host = (HostBean) parent.getAdapter().getItem(position);
 				
 				// create a specific uri that represents this host
-				Uri uri = Uri.parse(String.format("ssh://%s@%s:%s/#%s", username, hostname, port, nickname));
+				Uri uri = Uri.parse(String.format("ssh://%s@%s:%s/#%s",
+						host.getUsername(), host.getHostname(),
+						host.getPort(), host.getNickname()));
 				Intent contents = new Intent(Intent.ACTION_VIEW, uri);
 				contents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -219,7 +211,7 @@ public class HostListActivity extends ListActivity {
 					
 					Intent intent = new Intent();
 					intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, contents);
-					intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, nickname);
+					intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, host.getNickname());
 					intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
 
 					setResult(RESULT_OK, intent);
@@ -228,13 +220,8 @@ public class HostListActivity extends ListActivity {
 				} else {
 					// otherwise just launch activity to show this host
 					HostListActivity.this.startActivity(contents);
-					
-					
-				}
-
-				
+				}				
 			}
-
 		});
 
 		this.registerForContextMenu(list);
@@ -273,7 +260,10 @@ public class HostListActivity extends ListActivity {
 					nickname = String.format("%s@%s:%d", username, hostname, port);
 				}
 				
-				hostdb.createHost(null, nickname, username, hostname, port, HostDatabase.COLOR_GRAY, HostDatabase.PUBKEYID_ANY);
+				HostBean host = new HostBean(nickname, username, hostname, port);
+				host.setColor(HostDatabase.COLOR_GRAY);
+				host.setPubkeyId(HostDatabase.PUBKEYID_ANY);
+				hostdb.saveHost(host);
 				
 				Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
 				intent.setData(Uri.parse(String.format("ssh://%s@%s:%s/#%s", username, hostname, port, nickname)));
@@ -289,42 +279,18 @@ public class HostListActivity extends ListActivity {
 
 		});
 
+		this.inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
-	public MenuItem sortcolor, sortlast;
-	public boolean sortedByColor = false;
-	
-	protected void updateCursor() {
-		
-		Editor edit = prefs.edit();
-		edit.putBoolean(PREF_SORTBYCOLOR, sortedByColor);
-		edit.commit();
-
-		// refresh cursor because of possible sorting change
-		if(this.hosts != null)
-			this.hosts.close();
-		if(this.hostdb == null) return;
-		this.hosts = this.hostdb.allHosts(sortedByColor);
-		
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.item_host, this.hosts,
-				new String[] { HostDatabase.FIELD_HOST_NICKNAME, HostDatabase.FIELD_HOST_LASTCONNECT, HostDatabase.FIELD_HOST_LASTCONNECT, HostDatabase.FIELD_HOST_COLOR },
-				new int[] { android.R.id.text1, android.R.id.text2, android.R.id.icon, android.R.id.content });
-		adapter.setViewBinder(new HostBinder(bound, this.getResources()));
-		
-		//this.adapter = new HostAdapter(this, this.hosts);
-		this.setListAdapter(adapter);
-		
-	}
-
-    @Override
+	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 		
-		if (sortcolor != null)
-			sortcolor.setVisible(!sortedByColor);
+		// don't offer menus when creating shortcut
+		if (makingShortcut) return true;
 		
-		if (sortlast != null)
-			sortlast.setVisible(sortedByColor);
+		sortcolor.setVisible(!sortedByColor);
+		sortlast.setVisible(sortedByColor);
 		
 		return true;
     }
@@ -333,7 +299,7 @@ public class HostListActivity extends ListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
-		// dont offer menus when creating shortcut
+		// don't offer menus when creating shortcut
 		if(makingShortcut) return true;
 		
 		// add host, ssh keys, about
@@ -342,7 +308,7 @@ public class HostListActivity extends ListActivity {
 		sortcolor.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				sortedByColor = true;
-				updateCursor();
+				updateList();
 				return true;
 			}
 		});
@@ -352,7 +318,7 @@ public class HostListActivity extends ListActivity {
 		sortlast.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				sortedByColor = false;
-				updateCursor();
+				updateList();
 				return true;
 			}
 		});
@@ -381,15 +347,13 @@ public class HostListActivity extends ListActivity {
 
 		// create menu to handle deleting and sharing lists
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-		Cursor cursor = (Cursor) this.getListView().getItemAtPosition(info.position);
+		final HostBean host = (HostBean) this.getListView().getItemAtPosition(info.position);
 
-		final String nickname = cursor.getString(COL_NICKNAME);
-		menu.setHeaderTitle(nickname);
-		final long id = cursor.getLong(COL_ID);
+		menu.setHeaderTitle(host.getNickname());
 
 		// edit, disconnect, delete
 		MenuItem connect = menu.add(R.string.list_host_disconnect);
-		final TerminalBridge bridge = bound.findBridge(nickname);
+		final TerminalBridge bridge = bound.findBridge(host);
 		connect.setEnabled((bridge != null));
 		connect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
@@ -403,7 +367,7 @@ public class HostListActivity extends ListActivity {
 		edit.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				Intent intent = new Intent(HostListActivity.this, HostEditorActivity.class);
-				intent.putExtra(Intent.EXTRA_TITLE, id);
+				intent.putExtra(Intent.EXTRA_TITLE, host.getId());
 				HostListActivity.this.startActivityForResult(intent, REQUEST_EDIT);
 				return true;
 			}
@@ -413,7 +377,7 @@ public class HostListActivity extends ListActivity {
 		portForwards.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				Intent intent = new Intent(HostListActivity.this, PortForwardListActivity.class);
-				intent.putExtra(Intent.EXTRA_TITLE, id);
+				intent.putExtra(Intent.EXTRA_TITLE, host.getId());
 				HostListActivity.this.startActivityForResult(intent, REQUEST_EDIT);
 				return true;
 			}
@@ -424,14 +388,14 @@ public class HostListActivity extends ListActivity {
 			public boolean onMenuItemClick(MenuItem item) {
 				// prompt user to make sure they really want this
 				new AlertDialog.Builder(HostListActivity.this)
-					.setMessage(getString(R.string.delete_message, nickname))
+					.setMessage(getString(R.string.delete_message, host.getNickname()))
 					.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
 		                public void onClick(DialogInterface dialog, int which) {
 		    				// make sure we disconnect
 		    				if(bridge != null)
 		    					bridge.dispatchDisconnect();
 
-		    				hostdb.deleteHost(id);
+		    				hostdb.deleteHost(host);
 		    				updateHandler.sendEmptyMessage(-1);
 		                }
 		            })
@@ -440,7 +404,130 @@ public class HostListActivity extends ListActivity {
 				return true;
 			}
 		});
-
 	}
+	
+	protected void updateList() {	
+		Editor edit = prefs.edit();
+		edit.putBoolean(PREF_SORTBYCOLOR, sortedByColor);
+		edit.commit();
+		
+		if (hostdb == null)
+			hostdb = new HostDatabase(this);
+		
+		hosts = hostdb.getHosts(sortedByColor);
+		
+		// Don't lose hosts that are connected via shortcuts but not in the database.
+		if (bound != null) {
+			for (TerminalBridge bridge : bound.bridges) {
+				if (!hosts.contains(bridge.host))
+					hosts.add(0, bridge.host);
+			}
+		}
 
+		HostAdapter adapter = new HostAdapter(this, hosts, bound);
+		
+		this.setListAdapter(adapter);
+	}
+	
+	class HostAdapter extends ArrayAdapter<HostBean> {
+		private List<HostBean> hosts;
+		private final TerminalManager manager;
+		private final ColorStateList red, green, blue;
+		
+		public final static int STATE_UNKNOWN = 1, STATE_CONNECTED = 2, STATE_DISCONNECTED = 3;
+
+		public HostAdapter(Context context, List<HostBean> hosts, TerminalManager manager) {
+			super(context, R.layout.item_host, hosts);
+			
+			this.hosts = hosts;
+			this.manager = manager;
+			
+			red = context.getResources().getColorStateList(R.color.red);
+			green = context.getResources().getColorStateList(R.color.green);
+			blue = context.getResources().getColorStateList(R.color.blue);
+		}
+		
+		/**
+		 * Check if we're connected to a terminal with the given host.
+		 */
+		protected int getConnectedState(HostBean host) {
+			// always disconnected if we dont have backend service
+			if (this.manager == null)
+				return STATE_UNKNOWN;
+			
+			if (manager.findBridge(host) != null)
+				return STATE_CONNECTED;
+			
+			if (manager.disconnected.contains(host))
+				return STATE_DISCONNECTED;
+			
+			return STATE_UNKNOWN;
+		}
+
+		public View getView(int position, View view, ViewGroup parent) {
+			if (view == null)
+				view = inflater.inflate(R.layout.item_host, null, false);
+
+			TextView nickname = (TextView)view.findViewById(android.R.id.text1);
+			TextView caption = (TextView)view.findViewById(android.R.id.text2);
+			ImageView icon = (ImageView)view.findViewById(android.R.id.icon);
+
+			Log.d("HostAdapter", String.format("Checking position %d", position));
+			HostBean host = hosts.get(position);
+			if (host == null) {
+				Log.e("HostAdapter", "What the fuck, host bean is null!");
+			}
+			nickname.setText(host.getNickname());
+			
+			switch(this.getConnectedState(host)) {
+			case STATE_UNKNOWN:
+				icon.setImageState(new int[] { }, true);
+				break;
+			case STATE_CONNECTED:
+				icon.setImageState(new int[] { android.R.attr.state_checked }, true);
+				break;
+			case STATE_DISCONNECTED:
+				icon.setImageState(new int[] { android.R.attr.state_expanded }, true);
+				break;
+			}
+			
+			ColorStateList chosen = null;
+			if (HostDatabase.COLOR_RED.equals(host.getColor()))
+				chosen = this.red;
+			else if (HostDatabase.COLOR_GREEN.equals(host.getColor()))
+				chosen = this.green;
+			else if (HostDatabase.COLOR_BLUE.equals(host.getColor()))
+				chosen = this.blue;
+			
+			if(chosen != null) {
+				// set color normally if not selected 
+				nickname.setTextColor(chosen);
+				caption.setTextColor(chosen);
+			} else {
+				// selected, so revert back to default black text
+				nickname.setTextAppearance(view.getContext(), android.R.attr.textAppearanceLarge);
+				caption.setTextAppearance(view.getContext(), android.R.attr.textAppearanceSmall);
+			}
+			
+			long now = System.currentTimeMillis() / 1000;
+			
+			String nice = "never";
+			if(host.getLastConnect() > 0) {
+				int minutes = (int)((now - host.getLastConnect()) / 60);
+				nice = view.getContext().getString(R.string.bind_minutes, minutes);
+				if (minutes >= 60) {
+					int hours = (minutes / 60);
+					nice = view.getContext().getString(R.string.bind_hours, hours);
+					if (hours >= 24) {
+						int days = (hours / 24);
+						nice = view.getContext().getString(R.string.bind_days, days);
+					}
+				}
+			}
+
+			caption.setText(nice);
+			
+			return view;
+		}
+	}
 }

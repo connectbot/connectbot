@@ -27,6 +27,7 @@ import android.content.ContentValues;
  *
  */
 public class PortForwardBean {
+	/* Database fields */
 	private long id = -1;
 	private long hostId = -1;
 	private String nickname = null;
@@ -35,6 +36,7 @@ public class PortForwardBean {
 	private String destAddr = null;
 	private int destPort = -1;
 	
+	/* Transient values */
 	private boolean enabled = false;
 	private Object identifier = null;
 	

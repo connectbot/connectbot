@@ -21,6 +21,7 @@ package org.connectbot.util;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
 
 import com.trilead.ssh2.KnownHosts;
@@ -105,8 +106,8 @@ public class HostDatabase extends SQLiteOpenHelper {
 
 		// insert a few sample hosts, none of which probably connect
 		//this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, COLOR_GRAY);
-		this.createHost(db, "cron@server.example.com", "cron", "server.example.com", 22, COLOR_GRAY, PUBKEYID_ANY);
-		this.createHost(db, "backup@example.net", "backup", "example.net", 22, COLOR_BLUE, PUBKEYID_ANY);
+		//this.createHost(db, "cron@server.example.com", "cron", "server.example.com", 22, COLOR_GRAY, PUBKEYID_ANY);
+		//this.createHost(db, "backup@example.net", "backup", "example.net", 22, COLOR_BLUE, PUBKEYID_ANY);
 		
 		db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS
 				+ " (_id INTEGER PRIMARY KEY, "
@@ -154,196 +155,187 @@ public class HostDatabase extends SQLiteOpenHelper {
 	 * Touch a specific host to update its "last connected" field.
 	 * @param nickname Nickname field of host to update
 	 */
-	public void touchHost(String nickname) {
-		
+	public void touchHost(HostBean host) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		long now = System.currentTimeMillis() / 1000;
 		
 		ContentValues values = new ContentValues();
 		values.put(FIELD_HOST_LASTCONNECT, now);
 		
-		db.update(TABLE_HOSTS, values, FIELD_HOST_NICKNAME + " = ?", new String[] { nickname });
-		db.close();
+		db.update(TABLE_HOSTS, values, "_id = ?", new String[] { String.valueOf(host.getId()) });
 		
+		db.close();
 	}
 	
 	/**
-	 * Find a specific host ID
-	 * @param nickname Nickname field of host to find
+	 * Create a new host using the given parameters.
 	 */
-	public long findHostByNickname(String nickname) {
-		SQLiteDatabase db = this.getReadableDatabase();
-		long id = -1;
+	public HostBean saveHost(HostBean host) {
+		SQLiteDatabase db = this.getWritableDatabase();
 		
-		Cursor c = db.query(TABLE_HOSTS, new String[] { "_id" },
-				FIELD_HOST_NICKNAME + " = ?", new String[] { nickname },
-				null, null, null);
-		
-		if (c != null && c.moveToFirst())
-			id = c.getLong(0);
-		
-		c.close();
+		long id = db.insert(TABLE_HOSTS, null, host.getValues());
 		db.close();
-		
-		return id;
-	}
-	
-	/**
-	 * Find a host's nickname in the database by its ID.
-	 * @param hostId
-	 * @return the host's nickname
-	 */
-	public String findNicknameById(long hostId) {
-		SQLiteDatabase db = this.getReadableDatabase();
-		String nickname = "unsaved host";
-		
-		Cursor c = db.query(TABLE_HOSTS, new String[] { FIELD_HOST_NICKNAME },
-				"_id = ?", new String[] { String.valueOf(hostId) },
-				null, null, null);
-		
-		if (c != null && c.moveToFirst())
-			nickname = c.getString(0);
-		
-		c.close();
-		db.close();
-		
-		return nickname;
-	}
 
-	/**
-	 * Create a new host using the given parameters, and return its new
-	 * <code>_id</code> value.
-	 */
-	public long createHost(SQLiteDatabase db, String nickname, String username, String hostname, int port, String color, long pubkeyId) {
-		// create and insert new host
+		host.setId(id);
 		
-		if(db == null) db = this.getWritableDatabase();
-		
-		ContentValues values = new ContentValues();
-		values.put(FIELD_HOST_NICKNAME, nickname);
-		values.put(FIELD_HOST_USERNAME, username);
-		values.put(FIELD_HOST_HOSTNAME, hostname);
-		values.put(FIELD_HOST_PORT, port);
-		values.put(FIELD_HOST_LASTCONNECT, 0);
-		values.put(FIELD_HOST_USEKEYS, Boolean.toString(true));
-		if(color != null)
-			values.put(FIELD_HOST_COLOR, color);
-		values.put(FIELD_HOST_PUBKEYID, pubkeyId);
-		values.put(FIELD_HOST_WANTSESSION, Boolean.toString(true));
-		
-		return db.insert(TABLE_HOSTS, null, values);
-		
+		return host;
 	}
 	
 	/**
 	 * Delete a specific host by its <code>_id</code> value.
 	 */
-	public void deleteHost(long id) {
+	public void deleteHost(HostBean host) {
+		if (host.getId() < 0)
+			return;
 		
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_HOSTS, "_id = ?", new String[] { Long.toString(id) });
-		
+		db.delete(TABLE_HOSTS, "_id = ?", new String[] { String.valueOf(host.getId()) });
+		db.close();
 	}
 	
 	/**
 	 * Return a cursor that contains information about all known hosts.
 	 * @param sortColors If true, sort by color, otherwise sort by nickname.
 	 */
-	public Cursor allHosts(boolean sortColors) {
-		
+	public List<HostBean> getHosts(boolean sortColors) {
 		String sortField = sortColors ? FIELD_HOST_COLOR : FIELD_HOST_NICKNAME;
-		
 		SQLiteDatabase db = this.getReadableDatabase();
-		return db.query(TABLE_HOSTS, new String[] { "_id", FIELD_HOST_NICKNAME,
-				FIELD_HOST_USERNAME, FIELD_HOST_HOSTNAME, FIELD_HOST_PORT,
-				FIELD_HOST_LASTCONNECT, FIELD_HOST_COLOR },
-				null, null, null, null, sortField + " ASC");
 		
+		List<HostBean> hosts = new LinkedList<HostBean>();
+		
+		Cursor c = db.query(TABLE_HOSTS, null, null, null, null, null, sortField + " ASC");
+
+		int COL_ID = c.getColumnIndexOrThrow("_id"),
+			COL_NICKNAME = c.getColumnIndexOrThrow(FIELD_HOST_NICKNAME),
+			COL_USERNAME = c.getColumnIndexOrThrow(FIELD_HOST_USERNAME),
+			COL_HOSTNAME = c.getColumnIndexOrThrow(FIELD_HOST_HOSTNAME),
+			COL_PORT = c.getColumnIndexOrThrow(FIELD_HOST_PORT),
+			COL_LASTCONNECT = c.getColumnIndexOrThrow(FIELD_HOST_LASTCONNECT),
+			COL_COLOR = c.getColumnIndexOrThrow(FIELD_HOST_COLOR),
+			COL_USEKEYS = c.getColumnIndexOrThrow(FIELD_HOST_USEKEYS),
+			COL_POSTLOGIN = c.getColumnIndexOrThrow(FIELD_HOST_POSTLOGIN),
+			COL_PUBKEYID = c.getColumnIndexOrThrow(FIELD_HOST_PUBKEYID),
+			COL_WANTSESSION = c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION),
+			COL_COMPRESSION = c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION);
+		
+		while (c.moveToNext()) {
+			HostBean host = new HostBean();
+			
+			host.setId(c.getLong(COL_ID));
+			host.setNickname(c.getString(COL_NICKNAME));
+			host.setUsername(c.getString(COL_USERNAME));
+			host.setHostname(c.getString(COL_HOSTNAME));
+			host.setPort(c.getInt(COL_PORT));
+			host.setLastConnect(c.getLong(COL_LASTCONNECT));
+			host.setColor(c.getString(COL_COLOR));
+			host.setUseKeys(Boolean.valueOf(c.getString(COL_USEKEYS)));
+			host.setPostLogin(c.getBlob(COL_POSTLOGIN));
+			host.setPubkeyId(c.getLong(COL_PUBKEYID));
+			host.setWantSession(Boolean.valueOf(c.getString(COL_WANTSESSION)));
+			host.setCompression(Boolean.valueOf(c.getString(COL_COMPRESSION)));
+			
+			hosts.add(host);
+		}
+		
+		c.close();
+		db.close();
+				
+		return hosts;
 	}
 	
 	/**
-	 * Find the post-login command string for the given nickname.
+	 * @param nickname
+	 * @param username
+	 * @param hostname
+	 * @param port
+	 * @return
 	 */
-	public String getPostLogin(String nickname) {
-		String result = null;
-		
+	public HostBean findHost(String nickname, String username, String hostname,
+			int port) {
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor c = db.query(TABLE_HOSTS, new String[] { FIELD_HOST_POSTLOGIN },
-				FIELD_HOST_NICKNAME + " = ?", new String[] { nickname }, null, null, null);
 		
-		if (c == null || !c.moveToFirst()) {
-			result = null;
-		} else {
-			result = c.getString(c.getColumnIndexOrThrow(FIELD_HOST_POSTLOGIN));
+		Cursor c = db.query(TABLE_HOSTS, null,
+				FIELD_HOST_NICKNAME + " = ? AND " +
+					FIELD_HOST_USERNAME + " = ? AND " +
+					FIELD_HOST_HOSTNAME + " = ? AND " +
+					FIELD_HOST_PORT + " = ?",
+				new String[] { nickname, username, hostname, String.valueOf(port) },
+				null, null, null);
+		
+		HostBean host = null;
+		
+		if (c != null && c.moveToFirst()) {
+			host = createHostBean(c);
 		}
 		
 		c.close();
 		db.close();
 		
-		return result;
+		return host;
 	}
 
 	/**
-	 * Check whether a host should have a shell session started.
-	 * @param nickname Nick name of host to check
-	 * @return true if host should have a shell session started
+	 * @param hostId
+	 * @return
 	 */
-	public boolean getWantSession(String nickname) {
-		Boolean result = true;
-		
+	public HostBean findHostById(long hostId) {
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor c = db.query(TABLE_HOSTS, new String[] { FIELD_HOST_WANTSESSION },
-				FIELD_HOST_NICKNAME + " = ?", new String[] { nickname }, null, null, null);
-		if(c == null || !c.moveToFirst()) {
-			result = true;
-		} else {
-			result = Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION)));
+		
+		Cursor c = db.query(TABLE_HOSTS, null,
+				"_id = ?", new String[] { String.valueOf(hostId) },
+				null, null, null);
+		
+		HostBean host = null;
+		
+		if (c != null && c.moveToFirst()) {
+			host = createHostBean(c);
 		}
 		
 		c.close();
 		db.close();
 		
-		return result;
+		return host;
 	}
-
-	/**
-	 * Check whether a host should have compression enabled.
-	 * @param nickname Nick name of host to check
-	 * @return true if host should have compression enabled
-	 */
-	public boolean getCompression(String nickname) {
-		Boolean result = false;
+	
+	private HostBean createHostBean(Cursor c) {
+		HostBean host = new HostBean();
 		
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor c = db.query(TABLE_HOSTS, new String[] { FIELD_HOST_COMPRESSION },
-				FIELD_HOST_NICKNAME + " = ?", new String[] { nickname }, null, null, null);
+		host.setId(c.getLong(c.getColumnIndexOrThrow("_id")));
+		host.setNickname(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_NICKNAME)));
+		host.setUsername(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_USERNAME)));
+		host.setHostname(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_HOSTNAME)));
+		host.setPort(c.getInt(c.getColumnIndexOrThrow(FIELD_HOST_PORT)));
+		host.setLastConnect(c.getLong(c.getColumnIndexOrThrow(FIELD_HOST_LASTCONNECT)));
+		host.setColor(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_COLOR)));
+		host.setUseKeys(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_USEKEYS))));
+		host.setPostLogin(c.getBlob(c.getColumnIndexOrThrow(FIELD_HOST_POSTLOGIN)));
+		host.setPubkeyId(c.getLong(c.getColumnIndexOrThrow(FIELD_HOST_PUBKEYID)));
+		host.setWantSession(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION))));
+		host.setCompression(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION))));
 		
-		if (c != null && c.moveToFirst())
-			result = Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION)));
-		
-		c.close();
-		db.close();
-		
-		return result;
+		return host;
 	}
 
 	/**
 	 * Record the given hostkey into database under this nickname.
 	 * @param hostname
+	 * @param port 
 	 * @param hostkeyalgo
 	 * @param hostkey
 	 */
-	public void saveKnownHost(String hostname, String hostkeyalgo, byte[] hostkey) {
-
+	public void saveKnownHost(String hostname, int port, String hostkeyalgo, byte[] hostkey) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		
 		ContentValues values = new ContentValues();
 		values.put(FIELD_HOST_HOSTKEYALGO, hostkeyalgo);
 		values.put(FIELD_HOST_HOSTKEY, hostkey);
 		
-		db.update(TABLE_HOSTS, values, FIELD_HOST_HOSTNAME + " = ?", new String[] { hostname });
+		db.update(TABLE_HOSTS, values,
+				FIELD_HOST_HOSTNAME + " = ? AND " + FIELD_HOST_PORT + " = ?",
+				new String[] { hostname, String.valueOf(port) });
 		Log.d(TAG, String.format("Finished saving hostkey information for '%s'", hostname));
 		
+		db.close();
 	}
 	
 	/**
@@ -355,66 +347,38 @@ public class HostDatabase extends SQLiteOpenHelper {
 		
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.query(TABLE_HOSTS, new String[] { FIELD_HOST_HOSTNAME,
-				FIELD_HOST_HOSTKEYALGO, FIELD_HOST_HOSTKEY }, null, null, null,
-				null, null);
-		if(c == null) return null;
+				FIELD_HOST_PORT, FIELD_HOST_HOSTKEYALGO, FIELD_HOST_HOSTKEY },
+				null, null, null, null, null);
+
+		if (c != null) {
 		
-		int COL_HOSTNAME = c.getColumnIndexOrThrow(FIELD_HOST_HOSTNAME),
-			COL_HOSTKEYALGO = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEYALGO),
-			COL_HOSTKEY = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEY);
-		
-		while(c.moveToNext()) {
-			String hostname = c.getString(COL_HOSTNAME),
-				hostkeyalgo = c.getString(COL_HOSTKEYALGO);
-			byte[] hostkey = c.getBlob(COL_HOSTKEY);
+			int COL_HOSTNAME = c.getColumnIndexOrThrow(FIELD_HOST_HOSTNAME),
+				COL_PORT = c.getColumnIndexOrThrow(FIELD_HOST_PORT),
+				COL_HOSTKEYALGO = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEYALGO),
+				COL_HOSTKEY = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEY);
 			
-			if(hostkeyalgo == null || hostkeyalgo.length() == 0) continue;
-			if(hostkey == null || hostkey.length == 0) continue;
-			
-			try {
-				known.addHostkey(new String[] { hostname }, hostkeyalgo, hostkey);
-			} catch(Exception e) {
-				Log.e(TAG, "Problem while adding a known host from database", e);
+			while(c.moveToNext()) {
+				String hostname = c.getString(COL_HOSTNAME),
+					hostkeyalgo = c.getString(COL_HOSTKEYALGO);
+				int port = c.getInt(COL_PORT);
+				byte[] hostkey = c.getBlob(COL_HOSTKEY);
+				
+				if(hostkeyalgo == null || hostkeyalgo.length() == 0) continue;
+				if(hostkey == null || hostkey.length == 0) continue;
+				
+				try {
+					known.addHostkey(new String[] { String.format("%s:%d", hostname, port) }, hostkeyalgo, hostkey);
+				} catch(Exception e) {
+					Log.e(TAG, "Problem while adding a known host from database", e);
+				}
+				
 			}
-			
 		}
 		
-		return known;
-	}
-	
-	/**
-	 * Find the pubkey to use for a given nickname.
-	 * @param nickname of host
-	 * @return pubkey ID in database
-	 */
-	public long getPubkeyId(String nickname) {	
-		long result = PUBKEYID_ANY;
-
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor c = db.query(TABLE_HOSTS, new String[] { FIELD_HOST_PUBKEYID },
-				FIELD_HOST_NICKNAME + " = ?", new String[] { nickname }, null, null, null);
-		
-		if (c != null && c.moveToFirst())
-			result = c.getLong(0);
-		
-		return result;
-	}
-	
-	/**
-	 * Set which public key to use for a particular host.
-	 * @param hostId host ID in database
-	 * @param pubkeyId public key ID in databae
-	 */
-	public void setPubkeyId(long hostId, long pubkeyId) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		
-		ContentValues values = new ContentValues();
-		values.put(FIELD_HOST_PUBKEYID, pubkeyId);
-		
-		db.update(TABLE_HOSTS, values, "_id = ?", new String[] { String.valueOf(hostId) });
+		c.close();
 		db.close();
-
-		Log.d(TAG, String.format("Updated host id %d to use pubkey id %d", hostId, pubkeyId));
+		
+		return known;
 	}
 
 	/**
@@ -441,23 +405,23 @@ public class HostDatabase extends SQLiteOpenHelper {
 	
 	/**
 	 * Returns a list of all the port forwards associated with a particular host ID.
-	 * @param hostId ID of host
+	 * @param host the host for which we want the port forward list
 	 * @return port forwards associated with host ID 
 	 */
-	public List<PortForwardBean> getPortForwardsForHost(long hostId) {
+	public List<PortForwardBean> getPortForwardsForHost(HostBean host) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		List<PortForwardBean> portForwards = new LinkedList<PortForwardBean>();
 		
 		Cursor c = db.query(TABLE_PORTFORWARDS, new String[] {
 				"_id", FIELD_PORTFORWARD_NICKNAME, FIELD_PORTFORWARD_TYPE, FIELD_PORTFORWARD_SOURCEPORT,
 				FIELD_PORTFORWARD_DESTADDR, FIELD_PORTFORWARD_DESTPORT },
-				FIELD_PORTFORWARD_HOSTID + " = ?", new String[] { String.valueOf(hostId) },
+				FIELD_PORTFORWARD_HOSTID + " = ?", new String[] { String.valueOf(host.getId()) },
 				null, null, null);
 
 		while (c.moveToNext()) {
 			PortForwardBean pfb = new PortForwardBean(
 				c.getInt(0),
-				hostId,
+				host.getId(),
 				c.getString(1),
 				c.getString(2),
 				c.getInt(3),
@@ -471,7 +435,6 @@ public class HostDatabase extends SQLiteOpenHelper {
 				
 		return portForwards;
 	}
-
 
 	/**
 	 * Update the parameters of a port forward in the database.
