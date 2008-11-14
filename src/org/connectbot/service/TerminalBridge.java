@@ -266,6 +266,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.outputLine(String.format("Connecting to %s:%d", host.getHostname(), host.getPort()));
 		this.connection = new Connection(host.getHostname(), host.getPort());
 		this.connection.addConnectionMonitor(this);
+		this.connection.setCompression(host.getCompression());
 	}
 	
 	/**
