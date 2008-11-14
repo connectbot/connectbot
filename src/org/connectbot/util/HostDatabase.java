@@ -229,7 +229,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 			host.setLastConnect(c.getLong(COL_LASTCONNECT));
 			host.setColor(c.getString(COL_COLOR));
 			host.setUseKeys(Boolean.valueOf(c.getString(COL_USEKEYS)));
-			host.setPostLogin(c.getBlob(COL_POSTLOGIN));
+			host.setPostLogin(c.getString(COL_POSTLOGIN));
 			host.setPubkeyId(c.getLong(COL_PUBKEYID));
 			host.setWantSession(Boolean.valueOf(c.getString(COL_WANTSESSION)));
 			host.setCompression(Boolean.valueOf(c.getString(COL_COMPRESSION)));
@@ -308,7 +308,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 		host.setLastConnect(c.getLong(c.getColumnIndexOrThrow(FIELD_HOST_LASTCONNECT)));
 		host.setColor(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_COLOR)));
 		host.setUseKeys(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_USEKEYS))));
-		host.setPostLogin(c.getBlob(c.getColumnIndexOrThrow(FIELD_HOST_POSTLOGIN)));
+		host.setPostLogin(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_POSTLOGIN)));
 		host.setPubkeyId(c.getLong(c.getColumnIndexOrThrow(FIELD_HOST_PUBKEYID)));
 		host.setWantSession(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION))));
 		host.setCompression(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION))));

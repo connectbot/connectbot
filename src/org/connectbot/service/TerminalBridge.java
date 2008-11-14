@@ -87,6 +87,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		AUTH_PASSWORD = "password",
 		AUTH_KEYBOARDINTERACTIVE = "keyboard-interactive";
 	
+	public final static int AUTH_TRIES = 20;
+
 	private int darken(int color) {
 		return Color.argb(0xFF,
 			(int)(Color.red(color) * 0.8),
@@ -142,6 +144,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	private boolean authenticated = false;
 
 	private boolean sessionOpen = false;
+
+	protected boolean disconnectFlag = false;
 
 	private boolean forcedSize = false;
 	private int termWidth;
@@ -263,8 +267,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		this.connection = new Connection(host.getHostname(), host.getPort());
 		this.connection.addConnectionMonitor(this);
 	}
-	
-	public final static int AUTH_TRIES = 20;
 	
 	/**
 	 * Spawn thread to open connection and start login process.
@@ -549,9 +551,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			setSessionOpen(true);
 			
 			// finally send any post-login string, if requested
-			byte[] postLogin = host.getPostLogin();
-			if (postLogin != null)
-				injectString(new String(postLogin));
+			injectString(host.getPostLogin());
 
 		} catch (IOException e1) {
 			Log.e(TAG, "Problem while trying to create PTY in finishConnection()", e1);
@@ -578,8 +578,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public void setOnDisconnectedListener(BridgeDisconnectedListener disconnectListener) {
 		this.disconnectListener = disconnectListener;
 	}
-	
-	protected boolean disconnectFlag = false;
 	
 	/**
 	 * Force disconnection of this terminal bridge.

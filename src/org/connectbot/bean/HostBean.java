@@ -37,7 +37,7 @@ public class HostBean {
 	private long lastConnect = -1;
 	private String color;
 	private boolean useKeys = true;
-	private byte[] postLogin = null;
+	private String postLogin = null;
 	private long pubkeyId = -1;
 	private boolean wantSession = true;
 	private boolean compression = false;
@@ -113,10 +113,10 @@ public class HostBean {
 	public boolean getUseKeys() {
 		return useKeys;
 	}
-	public void setPostLogin(byte[] postLogin) {
+	public void setPostLogin(String postLogin) {
 		this.postLogin = postLogin;
 	}
-	public byte[] getPostLogin() {
+	public String getPostLogin() {
 		return postLogin;
 	}
 	public void setPubkeyId(long pubkeyId) {
