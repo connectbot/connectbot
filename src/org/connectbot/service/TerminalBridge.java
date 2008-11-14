@@ -514,7 +514,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			// previously tried vt100 and xterm for emulation modes
 			// "screen" works the best for color and escape codes
 			// TODO: pull this value from the preferences
-			this.session.requestPTY(emulation, 0, 0, 0, 0, null);
+			this.session.requestPTY(emulation, termWidth, termHeight, 0, 0, null);
 			this.session.startShell();
 
 			// grab stdin/out from newly formed session
@@ -793,20 +793,24 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * terminal size information and request a PTY resize.
 	 */
 	public synchronized void parentChanged(TerminalView parent) {
-		
 		this.parent = parent;
 		int width = parent.getWidth();
 		int height = parent.getHeight();
 		
-		// recalculate buffer size
-		int termWidth, termHeight;
-		
-		if (this.forcedSize) {
-			termWidth = this.termWidth;
-			termHeight = this.termHeight;
-		} else {
-			termWidth = width / charWidth;
-			termHeight = height / charHeight;
+		if (!this.forcedSize) {
+			// recalculate buffer size
+			int newTermWidth, newTermHeight;
+
+			newTermWidth = width / charWidth;
+			newTermHeight = height / charHeight;
+			
+			// If nothing has changed in the terminal dimensions and not an intial
+			// draw then don't blow away scroll regions and such.
+			if (newTermWidth == termWidth && newTermHeight == termHeight)
+				return;
+			
+			termWidth = newTermWidth;
+			termHeight = newTermHeight;
 		}
 		
 		// reallocate new bitmap if needed
