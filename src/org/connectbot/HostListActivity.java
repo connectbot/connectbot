@@ -331,9 +331,9 @@ public class HostListActivity extends ListActivity {
 		settings.setIcon(android.R.drawable.ic_menu_preferences);
 		settings.setIntent(new Intent(HostListActivity.this, SettingsActivity.class));
 
-		MenuItem about = menu.add(R.string.list_menu_about);
-		about.setIcon(android.R.drawable.ic_menu_help);
-		about.setIntent(new Intent(HostListActivity.this, WizardActivity.class));
+		MenuItem help = menu.add(R.string.list_menu_help);
+		help.setIcon(android.R.drawable.ic_menu_help);
+		help.setIntent(new Intent(HostListActivity.this, HelpActivity.class));
 		
 		return true;
 		
@@ -472,7 +472,6 @@ public class HostListActivity extends ListActivity {
 			TextView caption = (TextView)view.findViewById(android.R.id.text2);
 			ImageView icon = (ImageView)view.findViewById(android.R.id.icon);
 
-			Log.d("HostAdapter", String.format("Checking position %d", position));
 			HostBean host = hosts.get(position);
 			if (host == null) {
 				Log.e("HostAdapter", "What the fuck, host bean is null!");

@@ -26,6 +26,8 @@
 		<activity android:name=".PortForwardListActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".SettingsActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".WizardActivity" android:configChanges="keyboardHidden|orientation" />
+		<activity android:name=".HelpActivity" android:configChanges="keyboardHidden|orientation" />
+		<activity android:name=".HelpTopicActivity" android:configChanges="keyboardHidden|orientation" />
 		
 		<service android:name="org.connectbot.service.TerminalManager" android:configChanges="keyboardHidden|orientation" />
 

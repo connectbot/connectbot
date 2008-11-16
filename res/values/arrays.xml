@@ -50,4 +50,8 @@
     	<item value="dynamic">@string/portforward_dynamic</item>
    	</string-array>
 
+	<string-array name="list_wizard_topics">
+		<item>Hints</item>
+		<item>Keyboard</item>
+	</string-array>
 </resources>

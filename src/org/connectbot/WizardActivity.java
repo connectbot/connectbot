@@ -18,6 +18,8 @@
 
 package org.connectbot;
 
+import org.connectbot.util.HelpTopicView;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -34,12 +36,6 @@ import android.widget.ViewFlipper;
  * @author jsharkey
  */
 public class WizardActivity extends Activity {
-
-	/**
-	 * In-order list of wizard steps to present to user.  These are layout resource ids.
-	 */
-	public final static int[] STEPS = new int[] { R.layout.wiz_eula, R.layout.wiz_features, R.layout.wiz_keyboard };
-
 	protected ViewFlipper flipper = null;
 	protected Button next, prev;
 	
@@ -48,13 +44,17 @@ public class WizardActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.act_wizard);
 		
-		this.flipper = (ViewFlipper)this.findViewById(R.id.wizard_flipper);
+		this.flipper = (ViewFlipper) findViewById(R.id.wizard_flipper);
 		
-		// inflate the layouts for each step
+		// inflate the layout for EULA step
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		for(int layout : STEPS) {
-			View step = inflater.inflate(layout, this.flipper, false);
-			this.flipper.addView(step);
+		this.flipper.addView(inflater.inflate(R.layout.wiz_eula, this.flipper, false));
+
+		// Add a view for each help topic we want the user to see.
+		String[] topics = getResources().getStringArray(R.array.list_wizard_topics);
+		for (String topic : topics) {
+			View step = new HelpTopicView(this, topic);
+			flipper.addView(step);
 		}
 		
 		next = (Button)this.findViewById(R.id.action_next);
@@ -87,8 +87,7 @@ public class WizardActivity extends Activity {
 			}
 		});
 		
-		this.updateButtons();
-		
+		this.updateButtons();	
 	}
 	
 	protected boolean isFirstDisplayed() {
@@ -104,7 +103,5 @@ public class WizardActivity extends Activity {
 		
 		next.setText(eula ? getString(R.string.wizard_agree) : getString(R.string.wizard_next));
 		prev.setText(eula ? getString(R.string.wizard_cancel) : getString(R.string.wizard_back));
-		
 	}
-	
 }
