@@ -141,13 +141,39 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	
 	private boolean authenticated = false;
 	private boolean sessionOpen = false;
-	protected boolean disconnectFlag = false;
+	private boolean disconnected = false;
 	private boolean awaitingClose = false;
 
 	private boolean forcedSize = false;
 	private int termWidth;
 	private int termHeight;
 	
+	public String keymode = null;
+
+	public KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
+
+	public int charWidth = -1;
+
+	public int charHeight = -1;
+
+	public int charDescent = -1;
+
+	protected float fontSize = -1;
+
+	/**
+	 * Flag indicating if we should perform a full-screen redraw during our next
+	 * rendering pass.
+	 */
+	protected boolean fullRedraw = false;
+
+	public long drawTolerance = 100;
+
+	public long lastDraw = 0;
+
+	public PromptHelper promptHelper;
+
+	protected BridgeDisconnectedListener disconnectListener = null;
+
 	public class HostKeyVerifier implements ServerHostKeyVerifier {
 		
 		public boolean verifyServerHostKey(String hostname, int port, String serverHostKeyAlgorithm, byte[] serverHostKey) throws Exception {
@@ -200,8 +226,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		
 	}
 	
-	public PromptHelper promptHelper;
-
 	/**
 	 * Create new terminal bridge with following parameters. We will immediately
 	 * launch thread to start SSH connection and handle any hostkey verification
@@ -250,7 +274,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			}
 		};
 
-		buffer.setScreenSize(TERM_WIDTH_CHARS, TERM_HEIGHT_CHARS, true);
 		buffer.setBufferSize(scrollback);
 		buffer.setDisplay(this);
 		buffer.setCursorPosition(0, 0);
@@ -277,12 +300,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				} catch (IOException e) {
 					Log.e(TAG, "Problem in SSH connection thread during authentication", e);
 					Log.d(TAG, String.format("Cause is: %s", e.getCause().toString()));
+					dispatchDisconnect();
+					return;
 				}
 				
 				try {	
 					// enter a loop to keep trying until authentication
 					int tries = 0;
-					while(!connection.isAuthenticationComplete() && tries++ < AUTH_TRIES && !disconnectFlag) {
+					while(!connection.isAuthenticationComplete() && tries++ < AUTH_TRIES && !disconnected) {
 						handleAuthentication();
 						
 						// sleep to make sure we dont kill system
@@ -583,8 +608,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		return sessionOpen;
 	}
 
-	protected BridgeDisconnectedListener disconnectListener = null;
-	
 	public void setOnDisconnectedListener(BridgeDisconnectedListener disconnectListener) {
 		this.disconnectListener = disconnectListener;
 	}
@@ -594,7 +617,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 */
 	public void dispatchDisconnect() {
 		// We don't need to do this multiple times.
-		if (disconnectFlag)
+		if (disconnected)
 			return;
 		
 		// disconnection request hangs if we havent really connected to a host yet
@@ -607,7 +630,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			}
 		}).start();
 		
-		disconnectFlag = true;
+		disconnected = true;
 		authenticated = false;
 		sessionOpen = false;
 		
@@ -627,13 +650,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		}).start();
 	}
 	
-	public String keymode = null;
-	
 	public void refreshKeymode() {
 		keymode = manager.getKeyMode();
 	}
-	
-	public KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
 	
 	/**
 	 * Handle onKey() events coming down from a {@link TerminalView} above us.
@@ -661,7 +680,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			boolean printing = (keymap.isPrintingKey(keyCode) || keyCode == KeyEvent.KEYCODE_SPACE);
 			
 			// skip keys if we aren't connected yet or have been disconnected
-			if(disconnectFlag || session == null)
+			if(disconnected || session == null)
 				return false;
 			
 			// otherwise pass through to existing session
@@ -783,12 +802,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	}
 	
 
-	public int charWidth = -1,
-		charHeight = -1,
-		charDescent = -1;
-	
-	protected float fontSize = -1;
-	
 	/**
 	 * Request a different font size. Will make call to parentChanged() to make
 	 * sure we resize PTY if needed.
@@ -810,12 +823,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		if(parent != null)
 			parentChanged(parent);
 	}
-	
-	/**
-	 * Flag indicating if we should perform a full-screen redraw during our next
-	 * rendering pass.
-	 */
-	protected boolean fullRedraw = false;
 	
 	/**
 	 * Something changed in our parent {@link TerminalView}, maybe it's a new
@@ -872,7 +879,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		
 		try {
 			// request a terminal pty resize
+			int prevRow = buffer.getCursorRow();
 			buffer.setScreenSize(termWidth, termHeight, true);
+			
+			// Work around weird vt320.java behavior where cursor is an offset from the bottom??
+			buffer.setCursorPosition(buffer.getCursorColumn(), prevRow);
+			
 			if(session != null)
 				session.resizePTY(termWidth, termHeight);
 		} catch(Exception e) {
@@ -908,9 +920,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		return buffer;
 	}
 	
-	public long lastDraw = 0;
-	public long drawTolerance = 100;
-
 	public synchronized void redraw() {
 		// render our buffer only if we have a surface
 		if(parent == null) return;
@@ -1241,5 +1250,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 */
 	public boolean isAwaitingClose() {
 		return awaitingClose;
+	}
+	
+	/**
+	 * @return whether this connection had started and subsequently disconnected
+	 */
+	public boolean isDisconnected() {
+		return disconnected;
 	}
 }

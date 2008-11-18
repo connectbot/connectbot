@@ -228,6 +228,11 @@ public class ConsoleActivity extends Activity {
 				break;
 			}
 		}
+		
+		// If we just closed the last bridge, go back to the previous activity.
+		if (flip.getChildCount() == 0) {
+			finish();
+		}
 	}
 	
 	protected void createPortForward(TerminalView target, String nickname, String type, String source, String dest) {
@@ -531,15 +536,17 @@ public class ConsoleActivity extends Activity {
 		final boolean activeTerminal = (view instanceof TerminalView);
 		boolean authenticated = false;
 		boolean sessionOpen = false;
+		boolean disconnected = false;
 		
 		if (activeTerminal) {
 			authenticated = ((TerminalView) view).bridge.isAuthenticated();
 			sessionOpen = ((TerminalView) view).bridge.isSessionOpen();
+			disconnected = ((TerminalView) view).bridge.isDisconnected();
 		}
 		
 		
 		disconnect = menu.add(R.string.console_menu_disconnect);
-		if (!sessionOpen)
+		if (!sessionOpen && disconnected)
 			disconnect.setTitle(R.string.console_menu_close);
 		disconnect.setEnabled(activeTerminal);
 		disconnect.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
@@ -547,7 +554,7 @@ public class ConsoleActivity extends Activity {
 			public boolean onMenuItemClick(MenuItem item) {
 				// disconnect or close the currently visible session
 				TerminalBridge bridge = ((TerminalView)view).bridge;
-				if (bridge.isSessionOpen()) {
+				if (bridge.isSessionOpen() || !bridge.isDisconnected()) {
 					requestedDisconnect = true;
 					bridge.dispatchDisconnect();
 				} else {
@@ -637,13 +644,15 @@ public class ConsoleActivity extends Activity {
 		boolean activeTerminal = (view instanceof TerminalView);
 		boolean authenticated = false;
 		boolean sessionOpen = false;
+		boolean disconnected = false;
 		if (activeTerminal) {
 			authenticated = ((TerminalView)view).bridge.isAuthenticated();
 			sessionOpen = ((TerminalView)view).bridge.isSessionOpen();
+			disconnected = ((TerminalView)view).bridge.isDisconnected();
 		}
 		
 		disconnect.setEnabled(activeTerminal);
-		if (sessionOpen)
+		if (sessionOpen || !disconnected)
 			disconnect.setTitle(R.string.console_menu_disconnect);
 		else
 			disconnect.setTitle(R.string.console_menu_close);
@@ -682,14 +691,15 @@ public class ConsoleActivity extends Activity {
 	}
 	
 	protected void shiftLeft() {
+		// Only show animation if there is something else to go to.
+		if (flip.getChildCount() <= 1)
+			return;
+		
 		// keep current overlay from popping up again
 		View overlay = findCurrentView(R.id.terminal_overlay);
 		if(overlay != null) overlay.startAnimation(fade_stay_hidden);
 
-		// Only show animation if there is something else to go to.
-		if (flip.getChildCount() > 1)
-			flip.setInAnimation(slide_left_in);
-		
+		flip.setInAnimation(slide_left_in);	
 		flip.setOutAnimation(slide_left_out);
 		flip.showNext();
 		ConsoleActivity.this.updateDefault();
@@ -702,7 +712,10 @@ public class ConsoleActivity extends Activity {
 	}
 	
 	protected void shiftRight() {
-
+		// Only show animation if there is something else to go to.
+		if (flip.getChildCount() <= 1)
+			return;
+		
 		// keep current overlay from popping up again
 		View overlay = findCurrentView(R.id.terminal_overlay);
 		if(overlay != null) overlay.startAnimation(fade_stay_hidden);
@@ -717,7 +730,6 @@ public class ConsoleActivity extends Activity {
 		if(overlay != null) overlay.startAnimation(fade_out);
 
 		updatePromptVisible();
-
 	}
 
 	/**
