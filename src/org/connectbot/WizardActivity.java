@@ -53,8 +53,7 @@ public class WizardActivity extends Activity {
 		// Add a view for each help topic we want the user to see.
 		String[] topics = getResources().getStringArray(R.array.list_wizard_topics);
 		for (String topic : topics) {
-			View step = new HelpTopicView(this, topic);
-			flipper.addView(step);
+			flipper.addView(new HelpTopicView(this).setTopic(topic));
 		}
 		
 		next = (Button)this.findViewById(R.id.action_next);

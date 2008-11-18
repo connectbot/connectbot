@@ -75,7 +75,33 @@ public class ConsoleActivity extends Activity {
 	protected TerminalManager bound = null;
 	protected LayoutInflater inflater = null;
 	
-    private ServiceConnection connection = new ServiceConnection() {
+    protected SharedPreferences prefs = null;
+	
+	protected PowerManager.WakeLock wakelock = null;
+	
+	protected String PREF_KEEPALIVE = null;
+	
+	protected Uri requested;
+	
+	protected ClipboardManager clipboard;
+	protected EditText stringPrompt;
+
+	protected TextView booleanPrompt;
+
+	protected Button booleanYes, booleanNo;
+
+	protected TextView empty;
+	
+	protected Animation slide_left_in, slide_left_out, slide_right_in, slide_right_out, fade_stay_hidden, fade_out;
+	
+	protected MenuItem disconnect, copy, paste, portForward, resize;
+	
+	protected boolean requestedDisconnect = false;
+	
+	protected boolean copying = false;
+	protected TerminalView copySource = null;
+	
+	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
 			
@@ -95,8 +121,8 @@ public class ConsoleActivity extends Activity {
 				if(bridge.host.getNickname().equals(requestedNickname))
 					found = true;
 			}
-
-			// if we didnt find the requested connection, try opening it
+	
+			// If we didn't find the requested connection, try opening it
 			if(!found) {
 				try {
 					Log.d(TAG, String.format("We couldnt find an existing bridge with URI=%s, so creating one now", requested.toString()));
@@ -105,7 +131,7 @@ public class ConsoleActivity extends Activity {
 					Log.e(TAG, "Problem while trying to create new requested bridge from URI", e);
 				}
 			}
-
+	
 			// create views for all bridges on this service
 			for(TerminalBridge bridge : bound.bridges) {
 				
@@ -115,11 +141,11 @@ public class ConsoleActivity extends Activity {
 				
 				// inflate each terminal view 
 				RelativeLayout view = (RelativeLayout)inflater.inflate(R.layout.item_terminal, flip, false);
-
+	
 				// set the terminal overlay text
 				TextView overlay = (TextView)view.findViewById(R.id.terminal_overlay);
 				overlay.setText(bridge.host.getNickname());
-
+	
 				// and add our terminal view control, using index to place behind overlay
 				TerminalView terminal = new TerminalView(ConsoleActivity.this, bridge);
 				terminal.setId(R.id.console_flip);
@@ -146,7 +172,7 @@ public class ConsoleActivity extends Activity {
 			updateEmptyVisible();
 			
 		}
-
+	
 		public void onServiceDisconnected(ComponentName className) {
 			// tell each bridge to forget about our prompt handler
 			for(TerminalBridge bridge : bound.bridges)
@@ -158,6 +184,74 @@ public class ConsoleActivity extends Activity {
 			
 		}
 	};
+
+	public Handler promptHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			// someone below us requested to display a prompt
+			updatePromptVisible();
+		}
+	};
+
+	public Handler disconnectHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			Log.d(TAG, "Someone sending HANDLE_DISCONNECT to parentHandler");
+
+			// someone below us requested to display a password dialog
+			// they are sending nickname and requested
+			TerminalBridge bridge = (TerminalBridge)msg.obj;
+			
+			if (bridge.isAwaitingClose())
+				closeBridge(bridge);
+		}
+	};
+
+	/**
+	 * @param bridge
+	 */
+	private void closeBridge(TerminalBridge bridge) {
+		for(int i = 0; i < flip.getChildCount(); i++) {
+			View child = flip.getChildAt(i).findViewById(R.id.console_flip);
+			
+			if (!(child instanceof TerminalView)) continue;
+			
+			TerminalView terminal = (TerminalView) child;
+			
+			if (terminal.bridge.equals(bridge)) {
+				// we've found the terminal to remove
+				// shift something into its place if currently visible
+				if(flip.getDisplayedChild() == i)
+					shiftLeft();
+				flip.removeViewAt(i);
+				updateEmptyVisible();
+				break;
+			}
+		}
+	}
+	
+	protected void createPortForward(TerminalView target, String nickname, String type, String source, String dest) {
+		String summary = getString(R.string.portforward_problem);
+		try {
+			long hostId = target.bridge.host.getId();
+
+			PortForwardBean pfb = new PortForwardBean(hostId, nickname, type, source, dest);
+					
+			target.bridge.addPortForward(pfb);
+			if (target.bridge.enablePortForward(pfb)) {
+				summary = getString(R.string.portforward_done);
+			}
+		} catch(Exception e) {
+			Log.e(TAG, "Problem trying to create portForward", e);
+		}
+		
+		Toast.makeText(ConsoleActivity.this, summary, Toast.LENGTH_LONG).show();		
+	}
+	protected View findCurrentView(int id) {
+		View view = this.flip.getCurrentView();
+		if(view == null) return null;
+		return view.findViewById(id);
+	}
 	
 	protected HostBean getCurrentHost() {
 		View view = findCurrentView(R.id.console_flip);
@@ -165,153 +259,18 @@ public class ConsoleActivity extends Activity {
 		return ((TerminalView)view).bridge.host;
 	}
 	
-	public Handler promptHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			// someone below us requested to display a prompt
-			updatePromptVisible();
-			
-		}
-	};
-	
-	public Handler disconnectHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			// someone below us requested to display a password dialog
-			// they are sending nickname and requested
-			TerminalBridge bridge = (TerminalBridge)msg.obj;
-			
-			// remove this bridge becase its been disconnected
-			Log.d(TAG, "Someone sending HANDLE_DISCONNECT to parentHandler");
-			for(int i = 0; i < flip.getChildCount(); i++) {
-				View view = flip.getChildAt(i).findViewById(R.id.console_flip);
-				if(!(view instanceof TerminalView)) continue;
-				TerminalView terminal = (TerminalView)view;
-				if(terminal.bridge.equals(bridge)) {
-					// weve found the terminal to remove
-					// shift something into its place if currently visible
-					if(flip.getDisplayedChild() == i) {
-						shiftLeft();
-					}
-					flip.removeViewAt(i);
-					updateEmptyVisible();
-					break;
-				}
-			}
-			
-		}
-	};
-	
+	protected PromptHelper getCurrentPromptHelper() {
+		View view = findCurrentView(R.id.console_flip);
+		if(!(view instanceof TerminalView)) return null;
+		return ((TerminalView)view).bridge.promptHelper;
+	} 
+
 	protected void hideAllPrompts() {
 		this.stringPrompt.setVisibility(View.GONE);
 		this.booleanPrompt.setVisibility(View.GONE);
 		this.booleanYes.setVisibility(View.GONE);
 		this.booleanNo.setVisibility(View.GONE);
-		
 	}
-	
-	/**
-	 * Show any prompts requested by the currently visible {@link TerminalView}.
-	 */
-	protected void updatePromptVisible() {
-		// check if our currently-visible terminalbridge is requesting any prompt services
-		View view = findCurrentView(R.id.console_flip);
-		if(!(view instanceof TerminalView)) {
-			// we dont have an active view, so hide any prompts
-			this.hideAllPrompts();
-			return;
-		}
-		
-		PromptHelper prompt = ((TerminalView)view).bridge.promptHelper;
-		if(String.class.equals(prompt.promptRequested)) {
-			this.stringPrompt.setVisibility(View.VISIBLE);
-			this.stringPrompt.setText("");
-			this.stringPrompt.setHint(prompt.promptHint);
-			this.stringPrompt.requestFocus();
-			
-		} else if(Boolean.class.equals(prompt.promptRequested)) {
-			this.booleanPrompt.setVisibility(View.VISIBLE);
-			this.booleanPrompt.setText(prompt.promptHint);
-			this.booleanYes.setVisibility(View.VISIBLE);
-			this.booleanYes.requestFocus();
-			this.booleanNo.setVisibility(View.VISIBLE);
-			
-		} else {
-			this.hideAllPrompts();
-			view.requestFocus();
-			
-		}
-		
-	}
-	
-	/**
-	 * Save the currently shown {@link TerminalView} as the default. This is
-	 * saved back down into {@link TerminalManager} where we can read it again
-	 * later.
-	 */
-	protected void updateDefault() {
-		// update the current default terminal
-		View view = findCurrentView(R.id.console_flip);
-		if(!(view instanceof TerminalView)) return;
-
-		TerminalView terminal = (TerminalView)view;
-		if(bound == null) return;
-		bound.defaultBridge = terminal.bridge;
-	}
-	
-	protected SharedPreferences prefs = null;
-	protected PowerManager.WakeLock wakelock = null;
-
-	protected String PREF_KEEPALIVE = null;
-
-	@Override
-    public void onStart() {
-		super.onStart();
-
-		// connect with manager service to find all bridges
-		// when connected it will insert all views
-        this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
-
-        // make sure we dont let the screen fall asleep
-		// this also keeps the wifi chipset from disconnecting us
-		if(this.wakelock != null && prefs.getBoolean(PREF_KEEPALIVE, true))
-			wakelock.acquire();
-
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		this.unbindService(connection);
-
-		// allow the screen to dim and fall asleep
-		if(this.wakelock != null && this.wakelock.isHeld())
-			wakelock.release();
-		
-	}
-	
-	protected View findCurrentView(int id) {
-		View view = this.flip.getCurrentView();
-		if(view == null) return null;
-		return view.findViewById(id);
-	}
-	
-	protected PromptHelper getCurrentPromptHelper() {
-		View view = findCurrentView(R.id.console_flip);
-		if(!(view instanceof TerminalView)) return null;
-		return ((TerminalView)view).bridge.promptHelper;
-	}
-	
-	protected Uri requested;
-	protected ClipboardManager clipboard;
-	
-	protected EditText stringPrompt;
-	protected TextView booleanPrompt;
-	protected Button booleanYes, booleanNo;
-	
-	protected TextView empty;
-	
-	protected Animation slide_left_in, slide_left_out, slide_right_in, slide_right_out, fade_stay_hidden, fade_out; 
 
 	@Override
     public void onCreate(Bundle icicle) {
@@ -409,6 +368,32 @@ public class ConsoleActivity extends Activity {
 			public float totalY = 0;
 			
 			@Override
+			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+				
+				float distx = e2.getRawX() - e1.getRawX();
+				float disty = e2.getRawY() - e1.getRawY();
+				int goalwidth = flip.getWidth() / 2;
+
+				// need to slide across half of display to trigger console change
+				// make sure user kept a steady hand horizontally
+				if(Math.abs(disty) < 100) {
+					if(distx > goalwidth) {
+						shiftRight();
+						return true;
+					}
+					
+					if(distx < -goalwidth) {
+						shiftLeft();
+						return true;
+					}
+					
+				}
+					
+				return false;
+			}
+			 
+		
+			@Override
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 				
 				// if copying, then ignore
@@ -454,34 +439,6 @@ public class ConsoleActivity extends Activity {
 					}
 					
 				}
-				
-				return false;
-			}
-			 
-		
-			@Override
-			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-				
-				float distx = e2.getRawX() - e1.getRawX();
-				float disty = e2.getRawY() - e1.getRawY();
-				int goalwidth = flip.getWidth() / 2;
-
-				// need to slide across half of display to trigger console change
-				// make sure user kept a steady hand horizontally
-				if(Math.abs(disty) < 100) {
-					if(distx > goalwidth) {
-						shiftRight();
-						return true;
-					}
-					
-					if(distx < -goalwidth) {
-						shiftLeft();
-						return true;
-					}
-					
-				}
-				
-
 				
 				return false;
 			}
@@ -564,81 +521,39 @@ public class ConsoleActivity extends Activity {
 		});
 		
 	}
-
-	protected void updateEmptyVisible() {
-		// update visibility of empty status message
-		this.empty.setVisibility((flip.getChildCount() == 0) ? View.VISIBLE : View.GONE);
-	}
 	
 
-	protected void shiftLeft() {
-		// keep current overlay from popping up again
-		View overlay = findCurrentView(R.id.terminal_overlay);
-		if(overlay != null) overlay.startAnimation(fade_stay_hidden);
-
-		// Only show animation if there is something else to go to.
-		if (flip.getChildCount() > 1)
-			flip.setInAnimation(slide_left_in);
-		
-		flip.setOutAnimation(slide_left_out);
-		flip.showNext();
-		ConsoleActivity.this.updateDefault();
-
-		// show overlay on new slide and start fade
-		overlay = findCurrentView(R.id.terminal_overlay);
-		if(overlay != null) overlay.startAnimation(fade_out);
-
-		updatePromptVisible();
-	}
-	
-	protected void shiftRight() {
-
-		// keep current overlay from popping up again
-		View overlay = findCurrentView(R.id.terminal_overlay);
-		if(overlay != null) overlay.startAnimation(fade_stay_hidden);
-		
-		flip.setInAnimation(slide_right_in);
-		flip.setOutAnimation(slide_right_out);
-		flip.showPrevious();
-		ConsoleActivity.this.updateDefault();
-		
-		// show overlay on new slide and start fade
-		overlay = findCurrentView(R.id.terminal_overlay);
-		if(overlay != null) overlay.startAnimation(fade_out);
-
-		updatePromptVisible();
-
-	}
-	
-	protected MenuItem disconnect, copy, paste, portForward, resize;
-	
-	protected boolean copying = false;
-	protected TerminalView copySource = null;
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		
 		final View view = findCurrentView(R.id.console_flip);
-		boolean activeTerminal = (view instanceof TerminalView);
+		final boolean activeTerminal = (view instanceof TerminalView);
 		boolean authenticated = false;
 		boolean sessionOpen = false;
-		if(activeTerminal) {
+		
+		if (activeTerminal) {
 			authenticated = ((TerminalView) view).bridge.isAuthenticated();
 			sessionOpen = ((TerminalView) view).bridge.isSessionOpen();
 		}
 		
+		
 		disconnect = menu.add(R.string.console_menu_disconnect);
+		if (!sessionOpen)
+			disconnect.setTitle(R.string.console_menu_close);
 		disconnect.setEnabled(activeTerminal);
 		disconnect.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
 		disconnect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				// close the currently visible session
-				TerminalView terminal = (TerminalView)view;
-				terminal.bridge.dispatchDisconnect();
-				// movement should now be happening over in onDisconnect() handler
-				//flip.removeView(flip.getCurrentView());
-				//shiftLeft();
+				// disconnect or close the currently visible session
+				TerminalBridge bridge = ((TerminalView)view).bridge;
+				if (bridge.isSessionOpen()) {
+					requestedDisconnect = true;
+					bridge.dispatchDisconnect();
+				} else {
+					// remove this bridge because it's been explicitly closed.
+					closeBridge(bridge);
+				}
 				return true;
 			}
 		});
@@ -714,25 +629,7 @@ public class ConsoleActivity extends Activity {
 		return true;
 	}
 	
-	protected void createPortForward(TerminalView target, String nickname, String type, String source, String dest) {
-		String summary = getString(R.string.portforward_problem);
-		try {
-			long hostId = target.bridge.host.getId();
-
-			PortForwardBean pfb = new PortForwardBean(hostId, nickname, type, source, dest);
-					
-			target.bridge.addPortForward(pfb);
-			if (target.bridge.enablePortForward(pfb)) {
-				summary = getString(R.string.portforward_done);
-			}
-		} catch(Exception e) {
-			Log.e(TAG, "Problem trying to create portForward", e);
-		}
-		
-		Toast.makeText(ConsoleActivity.this, summary, Toast.LENGTH_LONG).show();		
-	}
-
-    @Override
+	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 		
@@ -746,12 +643,135 @@ public class ConsoleActivity extends Activity {
 		}
 		
 		disconnect.setEnabled(activeTerminal);
+		if (sessionOpen)
+			disconnect.setTitle(R.string.console_menu_disconnect);
+		else
+			disconnect.setTitle(R.string.console_menu_close);
 		copy.setEnabled(activeTerminal);
 		paste.setEnabled(clipboard.hasText() && activeTerminal && sessionOpen);
 		portForward.setEnabled(activeTerminal && authenticated);
 		resize.setEnabled(activeTerminal && sessionOpen);
 
 		return true;
+	}
+	
+	@Override
+    public void onStart() {
+		super.onStart();
+
+		// connect with manager service to find all bridges
+		// when connected it will insert all views
+        this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
+
+        // make sure we dont let the screen fall asleep
+		// this also keeps the wifi chipset from disconnecting us
+		if(this.wakelock != null && prefs.getBoolean(PREF_KEEPALIVE, true))
+			wakelock.acquire();
+
+	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		this.unbindService(connection);
+
+		// allow the screen to dim and fall asleep
+		if(this.wakelock != null && this.wakelock.isHeld())
+			wakelock.release();
+		
+	}
+	
+	protected void shiftLeft() {
+		// keep current overlay from popping up again
+		View overlay = findCurrentView(R.id.terminal_overlay);
+		if(overlay != null) overlay.startAnimation(fade_stay_hidden);
+
+		// Only show animation if there is something else to go to.
+		if (flip.getChildCount() > 1)
+			flip.setInAnimation(slide_left_in);
+		
+		flip.setOutAnimation(slide_left_out);
+		flip.showNext();
+		ConsoleActivity.this.updateDefault();
+
+		// show overlay on new slide and start fade
+		overlay = findCurrentView(R.id.terminal_overlay);
+		if(overlay != null) overlay.startAnimation(fade_out);
+
+		updatePromptVisible();
+	}
+	
+	protected void shiftRight() {
+
+		// keep current overlay from popping up again
+		View overlay = findCurrentView(R.id.terminal_overlay);
+		if(overlay != null) overlay.startAnimation(fade_stay_hidden);
+		
+		flip.setInAnimation(slide_right_in);
+		flip.setOutAnimation(slide_right_out);
+		flip.showPrevious();
+		ConsoleActivity.this.updateDefault();
+		
+		// show overlay on new slide and start fade
+		overlay = findCurrentView(R.id.terminal_overlay);
+		if(overlay != null) overlay.startAnimation(fade_out);
+
+		updatePromptVisible();
+
+	}
+
+	/**
+	 * Save the currently shown {@link TerminalView} as the default. This is
+	 * saved back down into {@link TerminalManager} where we can read it again
+	 * later.
+	 */
+	protected void updateDefault() {
+		// update the current default terminal
+		View view = findCurrentView(R.id.console_flip);
+		if(!(view instanceof TerminalView)) return;
+
+		TerminalView terminal = (TerminalView)view;
+		if(bound == null) return;
+		bound.defaultBridge = terminal.bridge;
+	}
+	
+	protected void updateEmptyVisible() {
+		// update visibility of empty status message
+		this.empty.setVisibility((flip.getChildCount() == 0) ? View.VISIBLE : View.GONE);
+	}
+
+    /**
+	 * Show any prompts requested by the currently visible {@link TerminalView}.
+	 */
+	protected void updatePromptVisible() {
+		// check if our currently-visible terminalbridge is requesting any prompt services
+		View view = findCurrentView(R.id.console_flip);
+		if(!(view instanceof TerminalView)) {
+			// we dont have an active view, so hide any prompts
+			this.hideAllPrompts();
+			return;
+		}
+		
+		PromptHelper prompt = ((TerminalView)view).bridge.promptHelper;
+		if(String.class.equals(prompt.promptRequested)) {
+			this.stringPrompt.setVisibility(View.VISIBLE);
+			this.stringPrompt.setText("");
+			this.stringPrompt.setHint(prompt.promptHint);
+			this.stringPrompt.requestFocus();
+			
+		} else if(Boolean.class.equals(prompt.promptRequested)) {
+			this.booleanPrompt.setVisibility(View.VISIBLE);
+			this.booleanPrompt.setText(prompt.promptHint);
+			this.booleanYes.setVisibility(View.VISIBLE);
+			this.booleanYes.requestFocus();
+			this.booleanNo.setVisibility(View.VISIBLE);
+		
+		} else {
+			this.hideAllPrompts();
+			view.requestFocus();
+			
+		}
+		
 	}
 
 }

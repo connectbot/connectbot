@@ -20,6 +20,7 @@ package org.connectbot.util;
 import org.connectbot.HelpActivity;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -28,29 +29,34 @@ import android.webkit.WebView;
  *
  */
 public class HelpTopicView extends WebView {
+	public HelpTopicView(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+		initialize();
+	}
 
-	/**
-	 * @param context
-	 */
+	public HelpTopicView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		initialize();
+	}
+
 	public HelpTopicView(Context context) {
 		super(context);
-
+		initialize();
+	}
+	
+	private void initialize() {
 		WebSettings wSet = getSettings();
 		wSet.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
 		wSet.setUseWideViewPort(false);
 	}
 	
-	public HelpTopicView(Context context, String topic) {
-		this(context);
-		
-		this.setTopic(topic);
-	}
-	
-	public void setTopic(String topic) {
+	public HelpTopicView setTopic(String topic) {
 		String path = String.format("file:///android_asset/%s/%s%s",
 				HelpActivity.HELPDIR, topic, HelpActivity.SUFFIX);
 		loadUrl(path);
 		
 		computeScroll();
+		
+		return this;
 	}
 }

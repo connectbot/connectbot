@@ -110,6 +110,7 @@
 	<string name="console_copy_start">Touch and drag to select area to copy</string>
 
 	<string name="console_menu_disconnect">Disconnect</string>
+	<string name="console_menu_close">Close</string>
 	<string name="console_menu_copy">Copy</string>
 	<string name="console_menu_paste">Paste</string>
 	<string name="console_menu_portforwards">Port Forwards</string>
