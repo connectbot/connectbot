@@ -557,12 +557,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					int conditions = ChannelCondition.STDOUT_DATA
 							| ChannelCondition.STDERR_DATA
 							| ChannelCondition.CLOSED
-							| ChannelCondition.EXIT_STATUS;
+							| ChannelCondition.EXIT_STATUS
+							| ChannelCondition.EXIT_SIGNAL;
 					int newConditions = 0;
 					while((newConditions & ChannelCondition.CLOSED) == 0) {
 						try {
 							newConditions = session.waitForCondition(conditions, 0);
-							if ((newConditions & ChannelCondition.STDOUT_DATA) == ChannelCondition.STDOUT_DATA) {
+							if ((newConditions & ChannelCondition.STDOUT_DATA) != 0) {
 								n = stdout.read(b);
 								if (n > 0) {
 									((vt320)buffer).putString(new String(b, 0, n, ENCODING));
@@ -570,13 +571,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 								}
 							}
 							
-							if ((newConditions & ChannelCondition.STDERR_DATA) == ChannelCondition.STDERR_DATA) {
+							if ((newConditions & ChannelCondition.STDERR_DATA) != 0) {
 								n = stderr.read(b);
 								// TODO I don't know.. do we want this? We were ignoring it before
 								Log.d(TAG, String.format("Read data from stderr: %s", new String(b, 0, n, ENCODING)));
 							}
 							
-							if ((newConditions & ChannelCondition.EXIT_STATUS) == ChannelCondition.EXIT_STATUS) {
+							if ((newConditions & (ChannelCondition.EXIT_STATUS | ChannelCondition.EXIT_SIGNAL)) != 0) {
 								// The other side closed our channel, so let's disconnect.
 								// TODO review whether any tunnel is in use currently.
 								dispatchDisconnect();
