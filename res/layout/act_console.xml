@@ -40,11 +40,10 @@
 	<RelativeLayout
 		android:id="@+id/console_password_group"
 		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
+		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:padding="5dip"
-		android:fadingEdge="horizontal"
-		android:fadingEdgeLength="25dip"
+		android:background="#80000000"
 		android:visibility="gone"
 		>
 		
@@ -53,7 +52,7 @@
 			android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceMedium"
 			android:layout_width="fill_parent"
-			android:layout_above="@+id/console_password"
+			android:visibility="gone"
 			/>
 			
 		<EditText
@@ -62,7 +61,7 @@
 			android:layout_height="wrap_content"
 			android:password="true"
 			android:singleLine="true"
-			android:layout_alignParentBottom="true"
+			android:layout_below="@+id/console_password_hint"
 			/>
 		
 	</RelativeLayout>
@@ -70,7 +69,7 @@
 	<RelativeLayout
 		android:id="@+id/console_boolean_group"
 		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
+		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:padding="5dip"
 		android:background="#88000000"
@@ -79,6 +78,13 @@
 		android:visibility="gone"
 		>
 		
+		<TextView
+			android:id="@+id/console_prompt"
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="fill_parent"
+			/>
+			
 		<Button
 			android:id="@+id/console_prompt_no"
 			android:text="No"
@@ -89,8 +95,8 @@
 			android:layout_width="wrap_content"  
 			android:layout_height="wrap_content"
 			android:layout_alignParentRight="true"
+			android:layout_below="@+id/console_prompt"
 			android:clickable="false"
-			android:layout_alignParentBottom="true"
 			/>
 
 		<Button
@@ -103,16 +109,7 @@
 			android:layout_width="wrap_content"  
 			android:layout_height="wrap_content"
 			android:layout_toLeftOf="@+id/console_prompt_no"
-			android:layout_alignParentBottom="true"
-			/>
-		
-		<TextView
-			android:id="@+id/console_prompt"
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:layout_toLeftOf="@+id/console_prompt_yes"
-			android:layout_width="fill_parent"
-			android:layout_alignParentBottom="true"
+			android:layout_below="@+id/console_prompt"
 			/>
 	
 	</RelativeLayout>
