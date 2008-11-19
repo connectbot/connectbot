@@ -38,53 +38,83 @@
 		/>
 
 	<RelativeLayout
+		android:id="@+id/console_password_group"
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
+		android:layout_height="fill_parent"
 		android:layout_alignParentBottom="true"
-		android:padding="5dip"  
+		android:padding="5dip"
+		android:fadingEdge="horizontal"
+		android:fadingEdgeLength="25dip"
+		android:visibility="gone"
 		>
 		
+		<TextView
+			android:id="@+id/console_password_hint"
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="fill_parent"
+			android:layout_above="@+id/console_password"
+			/>
+			
 		<EditText
 			android:id="@+id/console_password"
 			android:layout_width="fill_parent"  
 			android:layout_height="wrap_content"
 			android:password="true"
 			android:singleLine="true"
-			android:visibility="gone"  
+			android:layout_alignParentBottom="true"
 			/>
-
-		<TextView
-			android:id="@+id/console_prompt"
-			android:layout_width="fill_parent"  
-			android:layout_height="wrap_content"
-			android:visibility="gone"  
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:paddingRight="100dip"
-			/>
+		
+	</RelativeLayout>
+	
+	<RelativeLayout
+		android:id="@+id/console_boolean_group"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_alignParentBottom="true"
+		android:padding="5dip"
+		android:background="#88000000"
+		android:fadingEdge="horizontal"
+		android:fadingEdgeLength="25dip"
+		android:visibility="gone"
+		>
 		
 		<Button
 			android:id="@+id/console_prompt_no"
 			android:text="No"
-			android:paddingTop="5dip" android:paddingBottom="10dip"
-			android:paddingLeft="40dip" android:paddingRight="40dip"
+			android:paddingTop="5dip"
+			android:paddingBottom="10dip"
+			android:paddingLeft="40dip"
+			android:paddingRight="40dip"
 			android:layout_width="wrap_content"  
 			android:layout_height="wrap_content"
 			android:layout_alignParentRight="true"
-			android:visibility="gone"  
+			android:clickable="false"
+			android:layout_alignParentBottom="true"
 			/>
 
 		<Button
 			android:id="@+id/console_prompt_yes"
 			android:text="Yes"
-			android:paddingTop="5dip" android:paddingBottom="10dip"
-			android:paddingLeft="40dip" android:paddingRight="40dip"
+			android:paddingTop="5dip"
+			android:paddingBottom="10dip"
+			android:paddingLeft="40dip"
+			android:paddingRight="40dip"
 			android:layout_width="wrap_content"  
 			android:layout_height="wrap_content"
-			android:layout_toLeftOf="@id/console_prompt_no"
-			android:visibility="gone"  
+			android:layout_toLeftOf="@+id/console_prompt_no"
+			android:layout_alignParentBottom="true"
+			/>
+		
+		<TextView
+			android:id="@+id/console_prompt"
+			android:layout_height="wrap_content"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_toLeftOf="@+id/console_prompt_yes"
+			android:layout_width="fill_parent"
+			android:layout_alignParentBottom="true"
 			/>
 	
 	</RelativeLayout>
-	
 	
 </RelativeLayout>

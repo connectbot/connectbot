@@ -84,10 +84,11 @@ public class ConsoleActivity extends Activity {
 	protected Uri requested;
 	
 	protected ClipboardManager clipboard;
+	protected RelativeLayout stringPromptGroup;
 	protected EditText stringPrompt;
 
+	protected RelativeLayout booleanPromptGroup;
 	protected TextView booleanPrompt;
-
 	protected Button booleanYes, booleanNo;
 
 	protected TextView empty;
@@ -139,7 +140,7 @@ public class ConsoleActivity extends Activity {
 				bridge.promptHelper.setHandler(promptHandler);
 				bridge.refreshKeymode();
 				
-				// inflate each terminal view 
+				// inflate each terminal view
 				RelativeLayout view = (RelativeLayout)inflater.inflate(R.layout.item_terminal, flip, false);
 	
 				// set the terminal overlay text
@@ -250,10 +251,10 @@ public class ConsoleActivity extends Activity {
 			Log.e(TAG, "Problem trying to create portForward", e);
 		}
 		
-		Toast.makeText(ConsoleActivity.this, summary, Toast.LENGTH_LONG).show();		
+		Toast.makeText(ConsoleActivity.this, summary, Toast.LENGTH_LONG).show();
 	}
 	protected View findCurrentView(int id) {
-		View view = this.flip.getCurrentView();
+		View view = flip.getCurrentView();
 		if(view == null) return null;
 		return view.findViewById(id);
 	}
@@ -268,55 +269,54 @@ public class ConsoleActivity extends Activity {
 		View view = findCurrentView(R.id.console_flip);
 		if(!(view instanceof TerminalView)) return null;
 		return ((TerminalView)view).bridge.promptHelper;
-	} 
+	}
 
 	protected void hideAllPrompts() {
-		this.stringPrompt.setVisibility(View.GONE);
-		this.booleanPrompt.setVisibility(View.GONE);
-		this.booleanYes.setVisibility(View.GONE);
-		this.booleanNo.setVisibility(View.GONE);
+		stringPromptGroup.setVisibility(View.GONE);
+		booleanPromptGroup.setVisibility(View.GONE);
 	}
 
 	@Override
     public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.setContentView(R.layout.act_console);
 		
-		this.clipboard = (ClipboardManager)this.getSystemService(CLIPBOARD_SERVICE);
-		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		// hide status bar if requested by user
-		if (this.prefs.getBoolean(getString(R.string.pref_fullscreen), false)) {
-			this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+		if (prefs.getBoolean(getString(R.string.pref_fullscreen), false)) {
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 					WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		}
 		
 		// request a forced orientation if requested by user
-		String rotate = this.prefs.getString(getString(R.string.pref_rotation), getString(R.string.list_rotation_land));
+		String rotate = prefs.getString(getString(R.string.pref_rotation), getString(R.string.list_rotation_land));
 		if(getString(R.string.list_rotation_land).equals(rotate)) {
-			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		} else if (getString(R.string.list_rotation_port).equals(rotate)) {
-			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
 		
 		
         PowerManager manager = (PowerManager)getSystemService(Context.POWER_SERVICE);
 		wakelock = manager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, TAG);
 		
-		this.PREF_KEEPALIVE = this.getResources().getString(R.string.pref_keepalive);
+		PREF_KEEPALIVE = getResources().getString(R.string.pref_keepalive);
 
 		// handle requested console from incoming intent
-		this.requested = this.getIntent().getData();
+		requested = getIntent().getData();
 
-		this.inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
-		this.flip = (ViewFlipper)this.findViewById(R.id.console_flip);
-		this.empty = (TextView)this.findViewById(android.R.id.empty);
+		flip = (ViewFlipper)findViewById(R.id.console_flip);
+		empty = (TextView)findViewById(android.R.id.empty);
 		
-		this.stringPrompt = (EditText)this.findViewById(R.id.console_password);
-		this.stringPrompt.setOnKeyListener(new OnKeyListener() {
+		stringPromptGroup = (RelativeLayout) findViewById(R.id.console_password_group);
+		stringPrompt = (EditText)findViewById(R.id.console_password);
+		stringPrompt.setOnKeyListener(new OnKeyListener() {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if(event.getAction() == KeyEvent.ACTION_UP) return false;
 				if(keyCode != KeyEvent.KEYCODE_ENTER) return false;
@@ -336,10 +336,11 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 		
-		this.booleanPrompt = (TextView)this.findViewById(R.id.console_prompt);
+		booleanPromptGroup = (RelativeLayout) findViewById(R.id.console_boolean_group);
+		booleanPrompt = (TextView)findViewById(R.id.console_prompt);
 		
-		this.booleanYes = (Button)this.findViewById(R.id.console_prompt_yes);
-		this.booleanYes.setOnClickListener(new OnClickListener() {
+		booleanYes = (Button)findViewById(R.id.console_prompt_yes);
+		booleanYes.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				PromptHelper helper = getCurrentPromptHelper();
 				if(helper == null) return;
@@ -348,8 +349,8 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 		
-		this.booleanNo = (Button)this.findViewById(R.id.console_prompt_no);
-		this.booleanNo.setOnClickListener(new OnClickListener() {
+		booleanNo = (Button)findViewById(R.id.console_prompt_no);
+		booleanNo.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				PromptHelper helper = getCurrentPromptHelper();
 				if(helper == null) return;
@@ -359,13 +360,13 @@ public class ConsoleActivity extends Activity {
 		});
 		
 		// preload animations for terminal switching
-		this.slide_left_in = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
-		this.slide_left_out = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
-		this.slide_right_in = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
-		this.slide_right_out = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
+		slide_left_in = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
+		slide_left_out = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
+		slide_right_in = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
+		slide_right_out = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
 		
-		this.fade_out = AnimationUtils.loadAnimation(this, R.anim.fade_out);
-		this.fade_stay_hidden = AnimationUtils.loadAnimation(this, R.anim.fade_stay_hidden);
+		fade_out = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+		fade_stay_hidden = AnimationUtils.loadAnimation(this, R.anim.fade_stay_hidden);
 		
 		// detect fling gestures to switch between terminals
 		final GestureDetector detect = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
@@ -417,7 +418,7 @@ public class ConsoleActivity extends Activity {
 					TerminalView terminal = (TerminalView)flip;
 
 					// estimate how many rows we have scrolled through
-					// accumulate distance that doesn't trigger immediate scroll  
+					// accumulate distance that doesn't trigger immediate scroll
 					totalY += distanceY;
 					int moved = (int)(totalY / terminal.bridge.charHeight);
 					
@@ -670,11 +671,11 @@ public class ConsoleActivity extends Activity {
 
 		// connect with manager service to find all bridges
 		// when connected it will insert all views
-        this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
+        bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
         // make sure we dont let the screen fall asleep
 		// this also keeps the wifi chipset from disconnecting us
-		if(this.wakelock != null && prefs.getBoolean(PREF_KEEPALIVE, true))
+		if(wakelock != null && prefs.getBoolean(PREF_KEEPALIVE, true))
 			wakelock.acquire();
 
 	}
@@ -682,10 +683,10 @@ public class ConsoleActivity extends Activity {
 	@Override
 	public void onStop() {
 		super.onStop();
-		this.unbindService(connection);
+		unbindService(connection);
 
 		// allow the screen to dim and fall asleep
-		if(this.wakelock != null && this.wakelock.isHeld())
+		if(wakelock != null && wakelock.isHeld())
 			wakelock.release();
 		
 	}
@@ -699,7 +700,7 @@ public class ConsoleActivity extends Activity {
 		View overlay = findCurrentView(R.id.terminal_overlay);
 		if(overlay != null) overlay.startAnimation(fade_stay_hidden);
 
-		flip.setInAnimation(slide_left_in);	
+		flip.setInAnimation(slide_left_in);
 		flip.setOutAnimation(slide_left_out);
 		flip.showNext();
 		ConsoleActivity.this.updateDefault();
@@ -749,7 +750,7 @@ public class ConsoleActivity extends Activity {
 	
 	protected void updateEmptyVisible() {
 		// update visibility of empty status message
-		this.empty.setVisibility((flip.getChildCount() == 0) ? View.VISIBLE : View.GONE);
+		empty.setVisibility((flip.getChildCount() == 0) ? View.VISIBLE : View.GONE);
 	}
 
     /**
@@ -760,30 +761,25 @@ public class ConsoleActivity extends Activity {
 		View view = findCurrentView(R.id.console_flip);
 		if(!(view instanceof TerminalView)) {
 			// we dont have an active view, so hide any prompts
-			this.hideAllPrompts();
+			hideAllPrompts();
 			return;
 		}
 		
 		PromptHelper prompt = ((TerminalView)view).bridge.promptHelper;
 		if(String.class.equals(prompt.promptRequested)) {
-			this.stringPrompt.setVisibility(View.VISIBLE);
-			this.stringPrompt.setText("");
-			this.stringPrompt.setHint(prompt.promptHint);
-			this.stringPrompt.requestFocus();
+			stringPromptGroup.setVisibility(View.VISIBLE);
+			stringPrompt.setText("");
+			stringPrompt.setHint(prompt.promptHint);
+			stringPrompt.requestFocus();
 			
 		} else if(Boolean.class.equals(prompt.promptRequested)) {
-			this.booleanPrompt.setVisibility(View.VISIBLE);
-			this.booleanPrompt.setText(prompt.promptHint);
-			this.booleanYes.setVisibility(View.VISIBLE);
-			this.booleanYes.requestFocus();
-			this.booleanNo.setVisibility(View.VISIBLE);
+			booleanPromptGroup.setVisibility(View.VISIBLE);
+			booleanPrompt.setText(prompt.promptHint);
+			booleanYes.requestFocus();
 		
 		} else {
-			this.hideAllPrompts();
+			hideAllPrompts();
 			view.requestFocus();
-			
 		}
-		
 	}
-
 }

@@ -25,7 +25,7 @@ import android.content.ContentValues;
  * @author kenny
  *
  */
-public class HostBean {
+public class HostBean extends AbstractBean {
 	/* Database fields */
 	private long id = -1;
 	private String nickname = null;

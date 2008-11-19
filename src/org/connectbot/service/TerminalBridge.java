@@ -299,6 +299,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					connection.connect(new HostKeyVerifier());
 				} catch (IOException e) {
 					Log.e(TAG, "Problem in SSH connection thread during authentication", e);
+					// TODO report cause to user:
 					Log.d(TAG, String.format("Cause is: %s", e.getCause().toString()));
 					dispatchDisconnect();
 					return;
@@ -539,15 +540,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			// previously tried vt100 and xterm for emulation modes
 			// "screen" works the best for color and escape codes
 			// TODO: pull this value from the preferences
+			((vt320) buffer).setAnswerBack(emulation);
 			session.requestPTY(emulation, termWidth, termHeight, 0, 0, null);
 			session.startShell();
 			
-			new Thread(new Runnable() {
-				public void run() {
-					session.waitForCondition(ChannelCondition.CLOSED, 0);
-				}
-			}).start();
-
 			// grab stdin/out from newly formed session
 			stdin = session.getStdin();
 			stdout = session.getStdout();
@@ -560,7 +556,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					int n = 0;
 					int conditions = ChannelCondition.STDOUT_DATA
 							| ChannelCondition.STDERR_DATA
-							| ChannelCondition.CLOSED;
+							| ChannelCondition.CLOSED
+							| ChannelCondition.EXIT_STATUS;
 					int newConditions = 0;
 					while((newConditions & ChannelCondition.CLOSED) == 0) {
 						try {
@@ -575,8 +572,15 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 							
 							if ((newConditions & ChannelCondition.STDERR_DATA) == ChannelCondition.STDERR_DATA) {
 								n = stderr.read(b);
-								/* I don't know.. do we want this? */
+								// TODO I don't know.. do we want this? We were ignoring it before
 								Log.d(TAG, String.format("Read data from stderr: %s", new String(b, 0, n, ENCODING)));
+							}
+							
+							if ((newConditions & ChannelCondition.EXIT_STATUS) == ChannelCondition.EXIT_STATUS) {
+								// The other side closed our channel, so let's disconnect.
+								// TODO review whether any tunnel is in use currently.
+								dispatchDisconnect();
+								break;
 							}
 						} catch (IOException e) {
 							Log.e(TAG, "Problem while handling incoming data in relay thread", e);

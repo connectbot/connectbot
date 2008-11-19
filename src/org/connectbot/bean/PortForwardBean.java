@@ -26,7 +26,7 @@ import android.content.ContentValues;
  * @author Kenny Root
  *
  */
-public class PortForwardBean {
+public class PortForwardBean extends AbstractBean {
 	/* Database fields */
 	private long id = -1;
 	private long hostId = -1;
