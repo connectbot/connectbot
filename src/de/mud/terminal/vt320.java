@@ -30,10 +30,10 @@ import java.util.Properties;
 /**
  * Implementation of a VT terminal emulation plus ANSI compatible.
  * <P>
- * <B>Maintainer:</B> Marcus Mei§ner
+ * <B>Maintainer:</B> Marcus Meiï¿½ner
  *
  * @version $Id: vt320.java 507 2005-10-25 10:14:52Z marcus $
- * @author  Matthias L. Jugel, Marcus Mei§ner
+ * @author  Matthias L. Jugel, Marcus Meiï¿½ner
  */
 public abstract class vt320 extends VDUBuffer implements VDUInput {
 	
@@ -1675,6 +1675,11 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             for (int i = 0; i < nw; i += 8) {
               Tabs[i] = 1;
             }
+            deleteArea(0, 0, columns, rows, attributes);
+            setMargins(0, rows);
+            C = R = 0;
+            _SetCursor(0, 0);
+            showCursor(true);
             /*FIXME:*/
             break;
           case '[':

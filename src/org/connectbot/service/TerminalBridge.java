@@ -557,27 +557,28 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					int conditions = ChannelCondition.STDOUT_DATA
 							| ChannelCondition.STDERR_DATA
 							| ChannelCondition.CLOSED
-							| ChannelCondition.EXIT_STATUS
-							| ChannelCondition.EXIT_SIGNAL;
+							| ChannelCondition.EOF;
 					int newConditions = 0;
 					while((newConditions & ChannelCondition.CLOSED) == 0) {
 						try {
 							newConditions = session.waitForCondition(conditions, 0);
 							if ((newConditions & ChannelCondition.STDOUT_DATA) != 0) {
-								n = stdout.read(b);
-								if (n > 0) {
+								while (stdout.available() > 0) {
+									n = stdout.read(b);
 									((vt320)buffer).putString(new String(b, 0, n, ENCODING));
-									redraw();
 								}
+								redraw();
 							}
 							
 							if ((newConditions & ChannelCondition.STDERR_DATA) != 0) {
-								n = stderr.read(b);
-								// TODO I don't know.. do we want this? We were ignoring it before
-								Log.d(TAG, String.format("Read data from stderr: %s", new String(b, 0, n, ENCODING)));
+								while (stderr.available() > 0) {
+									n = stderr.read(b);
+									// TODO I don't know.. do we want this? We were ignoring it before
+									Log.d(TAG, String.format("Read data from stderr: %s", new String(b, 0, n, ENCODING)));
+								}
 							}
 							
-							if ((newConditions & (ChannelCondition.EXIT_STATUS | ChannelCondition.EXIT_SIGNAL)) != 0) {
+							if ((newConditions & ChannelCondition.EOF) != 0) {
 								// The other side closed our channel, so let's disconnect.
 								// TODO review whether any tunnel is in use currently.
 								dispatchDisconnect();
@@ -802,7 +803,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				Log.d(TAG, "Our stdin was closed, dispatching disconnect event");
 				dispatchDisconnect();
 			}
+		} catch (NullPointerException npe) {
+			Log.d(TAG, "Input before connection established ignored.");
+			return true;
 		}
+		
 		return false;
 	}
 	
