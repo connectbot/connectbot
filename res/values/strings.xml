@@ -139,6 +139,7 @@
 	<string name="list_host_edit">Edit host</string>
 	<string name="list_host_portforwards">Edit port forwards</string>
 	<string name="list_host_delete">Delete host</string>
+	<string name="list_host_empty">Use the quick-connect box\nbelow to connect to a host.</string>
 
 	<string name="list_rotation_land">Force landscape</string>
 	<string name="list_rotation_port">Force portrait</string>

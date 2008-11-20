@@ -23,13 +23,27 @@
 	android:layout_height="fill_parent"
 	>
 	
-	<ListView android:id="@android:id/list"
+	<RelativeLayout
 		android:layout_width="fill_parent"
 		android:layout_height="0dip"
 		android:layout_weight="1"
-		/>
-
-
+		>
+	
+		<ListView android:id="@android:id/list"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			/>
+			
+		<TextView android:id="@android:id/empty"
+	        android:layout_width="fill_parent" 
+	        android:layout_height="fill_parent"
+	        android:text="@string/list_host_empty"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:gravity="center"
+	        />
+        
+	</RelativeLayout>
+	
 	<FrameLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
