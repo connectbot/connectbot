@@ -301,7 +301,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					Log.e(TAG, "Problem in SSH connection thread during authentication", e);
 					// TODO report cause to user:
 					Log.d(TAG, String.format("Cause is: %s", e.getCause().toString()));
-					dispatchDisconnect();
+					dispatchDisconnect(false);
 					return;
 				}
 				
@@ -581,7 +581,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 							if ((newConditions & ChannelCondition.EOF) != 0) {
 								// The other side closed our channel, so let's disconnect.
 								// TODO review whether any tunnel is in use currently.
-								dispatchDisconnect();
+								dispatchDisconnect(false);
 								break;
 							}
 						} catch (IOException e) {
@@ -621,7 +621,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	/**
 	 * Force disconnection of this terminal bridge.
 	 */
-	public void dispatchDisconnect() {
+	public void dispatchDisconnect(boolean immediate) {
 		// We don't need to do this multiple times.
 		if (disconnected)
 			return;
@@ -640,20 +640,26 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		authenticated = false;
 		sessionOpen = false;
 		
+		if (immediate)
+			awaitingClose = true;
+		
 		// pass notification back up to terminal manager
 		// the manager will do any gui notification if applicable
 		if(disconnectListener != null)
 			disconnectListener.onDisconnected(this);
 		
-		new Thread(new Runnable() {
-			public void run() {
-				boolean result = promptHelper.requestBooleanPrompt("Host has disconnected.\nClose session?");
-				if (result) {
-					awaitingClose = true;
-					disconnectListener.onDisconnected(TerminalBridge.this);
+		if (!immediate) {
+			new Thread(new Runnable() {
+				public void run() {
+					boolean result = promptHelper.requestBooleanPrompt("Host has disconnected.\nClose session?");
+					if (result) {
+						awaitingClose = true;
+						if (disconnectListener != null)
+							disconnectListener.onDisconnected(TerminalBridge.this);
+					}
 				}
-			}
-		}).start();
+			}).start();
+		}
 	}
 	
 	public void refreshKeymode() {
@@ -801,7 +807,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			} catch (IOException ioe) {
 				// Our stdin got blown away, so we must be closed.
 				Log.d(TAG, "Our stdin was closed, dispatching disconnect event");
-				dispatchDisconnect();
+				dispatchDisconnect(false);
 			}
 		} catch (NullPointerException npe) {
 			Log.d(TAG, "Input before connection established ignored.");
@@ -1017,7 +1023,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public void connectionLost(Throwable reason) {
 		// weve lost our ssh connection, so pass along to manager and gui
 		Log.e(TAG, "Somehow our underlying SSH socket died", reason);
-		dispatchDisconnect();
+		dispatchDisconnect(false);
 	}
 
 	/**

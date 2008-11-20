@@ -114,7 +114,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		// disconnect and dispose of any existing bridges
 		for(TerminalBridge bridge : bridges)
-			bridge.dispatchDisconnect();
+			bridge.dispatchDisconnect(true);
 		
 		if(this.hostdb != null) {
 			this.hostdb.close();

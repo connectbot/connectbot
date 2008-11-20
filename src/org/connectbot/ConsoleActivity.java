@@ -96,9 +96,7 @@ public class ConsoleActivity extends Activity {
 	protected Animation slide_left_in, slide_left_out, slide_right_in, slide_right_out, fade_stay_hidden, fade_out;
 	
 	protected MenuItem disconnect, copy, paste, portForward, resize;
-	
-	protected boolean requestedDisconnect = false;
-	
+		
 	protected boolean copying = false;
 	protected TerminalView copySource = null;
 	
@@ -556,8 +554,7 @@ public class ConsoleActivity extends Activity {
 				// disconnect or close the currently visible session
 				TerminalBridge bridge = ((TerminalView)view).bridge;
 				if (bridge.isSessionOpen() || !bridge.isDisconnected()) {
-					requestedDisconnect = true;
-					bridge.dispatchDisconnect();
+					bridge.dispatchDisconnect(true);
 				} else {
 					// remove this bridge because it's been explicitly closed.
 					closeBridge(bridge);
