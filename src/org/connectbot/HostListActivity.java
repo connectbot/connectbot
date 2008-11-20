@@ -66,16 +66,16 @@ public class HostListActivity extends ListActivity {
 	protected TerminalManager bound = null;
 
 	protected HostDatabase hostdb;
-	protected List<HostBean> hosts;
+	private List<HostBean> hosts;
 	protected LayoutInflater inflater = null;
 
-	public boolean sortedByColor = false;
+	protected boolean sortedByColor = false;
 
-	public MenuItem sortcolor;
+	private MenuItem sortcolor;
 
-	public MenuItem sortlast;
+	private MenuItem sortlast;
 
-	public Handler updateHandler = new Handler() {
+	protected Handler updateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			HostListActivity.this.updateList();
@@ -130,7 +130,7 @@ public class HostListActivity extends ListActivity {
 	public final static int REQUEST_EDIT = 1;
 	public final static int REQUEST_EULA = 2;
 
-	protected SharedPreferences prefs = null;
+	private SharedPreferences prefs = null;
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -450,7 +450,7 @@ public class HostListActivity extends ListActivity {
 		/**
 		 * Check if we're connected to a terminal with the given host.
 		 */
-		protected int getConnectedState(HostBean host) {
+		private int getConnectedState(HostBean host) {
 			// always disconnected if we dont have backend service
 			if (this.manager == null)
 				return STATE_UNKNOWN;

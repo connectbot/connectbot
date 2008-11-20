@@ -63,11 +63,11 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	
 	protected Resources res;
 	
-	public HostDatabase hostdb;
+	protected HostDatabase hostdb;
 	protected PubkeyDatabase pubkeydb;
 
 	protected SharedPreferences prefs;
-	protected String pref_emulation, pref_scrollback, pref_keymode, pref_memkeys;
+	private String pref_emulation, pref_scrollback, pref_keymode, pref_memkeys;
 	
 	@Override
 	public void onCreate() {
@@ -131,7 +131,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	/**
 	 * Open a new SSH session using the given parameters.
 	 */
-	public void openConnection(HostBean host) throws Exception {
+	private void openConnection(HostBean host) throws Exception {
 		// throw exception if terminal already open
 		if (this.findBridge(host) != null) {
 			throw new Exception("Connection already open for that nickname");
@@ -192,7 +192,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 * Update the last-connected value for the given nickname by passing through
 	 * to {@link HostDatabase}.
 	 */
-	protected void touchHost(HostBean host) {
+	private void touchHost(HostBean host) {
 		hostdb.touchHost(host);
 	}
 
@@ -249,7 +249,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public Object getKey(String nickname) {
 		return this.loadedPubkeys.get(nickname);
 	}
-
 
 	public class TerminalBinder extends Binder {
 		public TerminalManager getService() {

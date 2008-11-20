@@ -57,7 +57,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 
 	final static int DEFAULT_BITS = 1024;
 	
-	protected LayoutInflater inflater = null;
+	private LayoutInflater inflater = null;
 
 	private EditText nickname;
 	private RadioGroup keyTypeGroup;

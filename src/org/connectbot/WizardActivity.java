@@ -37,7 +37,7 @@ import android.widget.ViewFlipper;
  */
 public class WizardActivity extends Activity {
 	protected ViewFlipper flipper = null;
-	protected Button next, prev;
+	private Button next, prev;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

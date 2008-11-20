@@ -13,13 +13,13 @@ import android.os.Message;
  */
 public class PromptHelper {
 	
-	protected final Object tag;
+	private final Object tag;
 	
 	public PromptHelper(Object tag) {
 		this.tag = tag;
 	}
 	
-	protected Handler handler = null;
+	private Handler handler = null;
 
 	/**
 	 * Register a user interface handler, if available.
@@ -28,12 +28,12 @@ public class PromptHelper {
 		this.handler = handler;
 	}
 	
-	protected Semaphore promptResponse = new Semaphore(0);
+	private Semaphore promptResponse = new Semaphore(0);
 	
 	public String promptHint = null;
 	public Object promptRequested = null;
 	
-	protected Object response = null;
+	private Object response = null;
 
 	/**
 	 * Set an incoming value from an above user interface. Will automatically

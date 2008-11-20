@@ -75,27 +75,27 @@ public class ConsoleActivity extends Activity {
 	protected TerminalManager bound = null;
 	protected LayoutInflater inflater = null;
 	
-    protected SharedPreferences prefs = null;
+    private SharedPreferences prefs = null;
 	
-	protected PowerManager.WakeLock wakelock = null;
+	private PowerManager.WakeLock wakelock = null;
 	
-	protected String PREF_KEEPALIVE = null;
+	private String PREF_KEEPALIVE = null;
 	
 	protected Uri requested;
 	
 	protected ClipboardManager clipboard;
-	protected RelativeLayout stringPromptGroup;
+	private RelativeLayout stringPromptGroup;
 	protected EditText stringPrompt;
 
-	protected RelativeLayout booleanPromptGroup;
-	protected TextView booleanPrompt;
-	protected Button booleanYes, booleanNo;
+	private RelativeLayout booleanPromptGroup;
+	private TextView booleanPrompt;
+	private Button booleanYes, booleanNo;
 
-	protected TextView empty;
+	private TextView empty;
 	
-	protected Animation slide_left_in, slide_left_out, slide_right_in, slide_right_out, fade_stay_hidden, fade_out;
+	private Animation slide_left_in, slide_left_out, slide_right_in, slide_right_out, fade_stay_hidden, fade_out;
 	
-	protected MenuItem disconnect, copy, paste, portForward, resize;
+	private MenuItem disconnect, copy, paste, portForward, resize;
 		
 	protected boolean copying = false;
 	protected TerminalView copySource = null;
@@ -184,7 +184,7 @@ public class ConsoleActivity extends Activity {
 		}
 	};
 
-	public Handler promptHandler = new Handler() {
+	protected Handler promptHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			// someone below us requested to display a prompt
@@ -192,7 +192,7 @@ public class ConsoleActivity extends Activity {
 		}
 	};
 
-	public Handler disconnectHandler = new Handler() {
+	protected Handler disconnectHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			Log.d(TAG, "Someone sending HANDLE_DISCONNECT to parentHandler");
@@ -234,6 +234,7 @@ public class ConsoleActivity extends Activity {
 		}
 	}
 	
+	// TODO review use (apparently unused)
 	protected void createPortForward(TerminalView target, String nickname, String type, String source, String dest) {
 		String summary = getString(R.string.portforward_problem);
 		try {
@@ -251,12 +252,14 @@ public class ConsoleActivity extends Activity {
 		
 		Toast.makeText(ConsoleActivity.this, summary, Toast.LENGTH_LONG).show();
 	}
+	
 	protected View findCurrentView(int id) {
 		View view = flip.getCurrentView();
 		if(view == null) return null;
 		return view.findViewById(id);
 	}
 	
+	// TODO review use (apparently unused)
 	protected HostBean getCurrentHost() {
 		View view = findCurrentView(R.id.console_flip);
 		if(!(view instanceof TerminalView)) return null;
@@ -367,9 +370,8 @@ public class ConsoleActivity extends Activity {
 		fade_stay_hidden = AnimationUtils.loadAnimation(this, R.anim.fade_stay_hidden);
 		
 		// detect fling gestures to switch between terminals
-		final GestureDetector detect = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
-			
-			public float totalY = 0;
+		final GestureDetector detect = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {		
+			private float totalY = 0;
 			
 			@Override
 			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -735,7 +737,7 @@ public class ConsoleActivity extends Activity {
 	 * saved back down into {@link TerminalManager} where we can read it again
 	 * later.
 	 */
-	protected void updateDefault() {
+	private void updateDefault() {
 		// update the current default terminal
 		View view = findCurrentView(R.id.console_flip);
 		if(!(view instanceof TerminalView)) return;

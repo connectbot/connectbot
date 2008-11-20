@@ -27,7 +27,7 @@ import android.content.ContentValues;
  * @author Kenny Root
  *
  */
-public abstract class AbstractBean {
+abstract class AbstractBean {
 	public abstract ContentValues getValues();
 	
 	public String toXML() {

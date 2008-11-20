@@ -59,13 +59,6 @@ public class PortForwardBean extends AbstractBean {
 	}
 	
 	/**
-	 * 
-	 */
-	public PortForwardBean(long hostId) {
-		this.hostId = hostId;
-	}
-
-	/**
 	 * @param type One of the port forward types from {@link HostDatabase}
 	 * @param source Source port number
 	 * @param dest Destination is "host:port" format

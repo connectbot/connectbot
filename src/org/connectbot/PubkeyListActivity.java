@@ -79,9 +79,9 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	public final static String TAG = PubkeyListActivity.class.toString();
 
 	protected PubkeyDatabase pubkeydb;
-	protected Cursor pubkeys;
+	private Cursor pubkeys;
 	
-	protected int COL_ID, COL_NICKNAME, COL_TYPE, COL_PRIVATE, COL_PUBLIC, COL_ENCRYPTED, COL_STARTUP;
+	private int COL_ID, COL_NICKNAME, COL_TYPE, COL_PRIVATE, COL_PUBLIC, COL_ENCRYPTED, COL_STARTUP;
 
 	protected ClipboardManager clipboard;
 	
@@ -174,7 +174,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	/**
 	 * Read given file into memory as <code>byte[]</code>.
 	 */
-	public static byte[] readRaw(File file) throws Exception {
+	protected static byte[] readRaw(File file) throws Exception {
 		InputStream is = new FileInputStream(file);
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		
@@ -336,7 +336,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		
 	}
 	
-	protected MenuItem onstartToggle = null;
+	private MenuItem onstartToggle = null;
 	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -476,7 +476,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	}
 	
 
-	public Handler updateHandler = new Handler() {
+	protected Handler updateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			PubkeyListActivity.this.updateCursor();

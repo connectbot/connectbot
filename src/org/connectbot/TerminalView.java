@@ -38,15 +38,15 @@ import android.widget.Toast;
  */
 public class TerminalView extends View {
 
-	protected final Context context;
+	private final Context context;
 	protected final TerminalBridge bridge;
-	protected final Paint paint;
-	protected final Paint cursorPaint;
+	private final Paint paint;
+	private final Paint cursorPaint;
 	
 	private Toast notification = null;
 	private String lastNotification = null;
 	
-	public int top = -1, bottom = -1, left = -1, right = -1;
+	protected int top = -1, bottom = -1, left = -1, right = -1;
 	
 	public void resetSelected() {
 		this.top = -1;

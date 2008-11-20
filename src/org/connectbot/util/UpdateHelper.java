@@ -70,10 +70,10 @@ public class UpdateHelper implements Runnable {
 
 	protected Context context;
 	
-	protected String packageName, versionName;
+	private String packageName, versionName;
 	protected int versionCode;
 	
-	protected String userAgent;
+	private String userAgent;
 
 	/**
 	 * Constructor will automatically spawn thread to check for updates.
@@ -147,7 +147,7 @@ public class UpdateHelper implements Runnable {
 	 * Handler that will parse the JSON response and show dialog to user if an
 	 * update is available.
 	 */
-	public Handler versionHandler = new Handler() {
+	private Handler versionHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 
@@ -184,7 +184,7 @@ public class UpdateHelper implements Runnable {
 	 * Read contents of a URL and return as a String. Handles any server
 	 * downtime with a 6-second timeout.
 	 */
-	public static String getUrl(String tryUrl, String userAgent) throws Exception {
+	private static String getUrl(String tryUrl, String userAgent) throws Exception {
 		
 		URL url = new URL(tryUrl);
 		URLConnection connection = url.openConnection();

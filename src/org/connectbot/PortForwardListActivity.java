@@ -33,7 +33,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.database.Cursor;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -68,10 +67,9 @@ public class PortForwardListActivity extends ListActivity {
 
 	protected HostDatabase hostdb;
 
-	protected Cursor hosts;
-	protected List<PortForwardBean> portForwards;
+	private List<PortForwardBean> portForwards;
 	
-	protected ServiceConnection connection = null;
+	private ServiceConnection connection = null;
 	protected TerminalBridge hostBridge = null;
 	protected LayoutInflater inflater = null;
 	
@@ -349,7 +347,7 @@ public class PortForwardListActivity extends ListActivity {
 		});
 	}
 	
-	public Handler updateHandler = new Handler() {
+	protected Handler updateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			PortForwardListActivity.this.updateList();

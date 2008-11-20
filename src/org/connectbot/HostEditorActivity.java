@@ -41,10 +41,7 @@ import android.preference.PreferenceActivity;
 import android.util.Log;
 
 public class HostEditorActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
-
-	
 	public class CursorPreferenceHack implements SharedPreferences {
-		
 		protected final String table;
 		protected final long id;
 
@@ -101,7 +98,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		
 		public class Editor implements SharedPreferences.Editor {
 			
-			public ContentValues update = new ContentValues();
+			private ContentValues update = new ContentValues();
 			
 			public SharedPreferences.Editor clear() {
 				Log.d(this.getClass().toString(), "clear()");
@@ -189,7 +186,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			return values.get(key);
 		}
 		
-		public List<OnSharedPreferenceChangeListener> listeners = new LinkedList<OnSharedPreferenceChangeListener>();
+		protected List<OnSharedPreferenceChangeListener> listeners = new LinkedList<OnSharedPreferenceChangeListener>();
 
 		public void registerOnSharedPreferenceChangeListener(OnSharedPreferenceChangeListener listener) {
 			listeners.add(listener);
@@ -209,9 +206,9 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 	}
 	
 	protected HostDatabase hostdb = null;
-	protected PubkeyDatabase pubkeydb = null;
+	private PubkeyDatabase pubkeydb = null;
 	
-	protected CursorPreferenceHack pref;
+	private CursorPreferenceHack pref;
 	
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -269,7 +266,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		}
 	}
 	
-	public void updateSummaries() {
+	private void updateSummaries() {
 		// for all text preferences, set hint as current database value
 		for(String key : this.pref.values.keySet()) {
 			if(key.equals("postlogin")) continue;

@@ -79,16 +79,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	
 	public final static String TAG = TerminalBridge.class.toString();
 	
-	public final static int TERM_WIDTH_CHARS = 80,
-		TERM_HEIGHT_CHARS = 24,
-		DEFAULT_FONT_SIZE = 10;
+	public final static int DEFAULT_FONT_SIZE = 10;
 	
 	public final static String ENCODING = "ASCII";
 	public static final String AUTH_PUBLICKEY = "publickey",
 		AUTH_PASSWORD = "password",
 		AUTH_KEYBOARDINTERACTIVE = "keyboard-interactive";
 	
-	public final static int AUTH_TRIES = 20;
+	protected final static int AUTH_TRIES = 20;
 
 	private int darken(int color) {
 		return Color.argb(0xFF,
@@ -103,7 +101,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public int color[] = { Color.BLACK, Color.RED, Color.GREEN, Color.YELLOW,
 		Color.BLUE, Color.MAGENTA, Color.CYAN, Color.WHITE, };
 	
-	public int darkerColor[] = new int[color.length];
+	private int darkerColor[] = new int[color.length];
 	
 	public final static int COLOR_FG_STD = 7;
 	public final static int COLOR_BG_STD = 0;
@@ -115,23 +113,23 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public final Connection connection;
 	protected Session session;
 	
-	protected final Paint defaultPaint;
+	private final Paint defaultPaint;
 
 	protected OutputStream stdin;
 	protected InputStream stdout;
 	
 	private InputStream stderr;
 
-	protected Thread relay;
+	private Thread relay;
 	
-	protected final String emulation;
-	protected final int scrollback;
+	private final String emulation;
+	private final int scrollback;
 
 	public Bitmap bitmap = null;
 	public VDUBuffer buffer = null;
 	
-	protected TerminalView parent = null;
-	protected Canvas canvas = new Canvas();
+	private TerminalView parent = null;
+	private Canvas canvas = new Canvas();
 
 	private boolean ctrlPressed = false;
 	private boolean altPressed = false;
@@ -148,27 +146,23 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	private int termWidth;
 	private int termHeight;
 	
-	public String keymode = null;
+	private String keymode = null;
 
-	public KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
+	protected KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
 
 	public int charWidth = -1;
 
 	public int charHeight = -1;
 
-	public int charDescent = -1;
+	private int charDescent = -1;
 
-	protected float fontSize = -1;
+	private float fontSize = -1;
 
 	/**
 	 * Flag indicating if we should perform a full-screen redraw during our next
 	 * rendering pass.
 	 */
-	protected boolean fullRedraw = false;
-
-	public long drawTolerance = 100;
-
-	public long lastDraw = 0;
+	private boolean fullRedraw = false;
 
 	public PromptHelper promptHelper;
 
@@ -292,7 +286,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	/**
 	 * Spawn thread to open connection and start login process.
 	 */
-	public void startConnection() {
+	protected void startConnection() {
 		new Thread(new Runnable() {
 			public void run() {
 				try {
@@ -329,7 +323,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * @throws InvalidKeySpecException
 	 * @throws IOException
 	 */
-	public boolean tryPublicKey(Cursor c) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+	private boolean tryPublicKey(Cursor c) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
 		int COL_NICKNAME = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_NICKNAME),
 			COL_TYPE = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_TYPE),
 			COL_PRIVATE = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PRIVATE),
@@ -390,7 +384,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		
 	}
 	
-	protected boolean tryPublicKey(String username, String keyNickname, Object trileadKey) throws IOException {
+	private boolean tryPublicKey(String username, String keyNickname, Object trileadKey) throws IOException {
 		//outputLine(String.format("Attempting 'publickey' with key '%s' [%s]...", keyNickname, trileadKey.toString()));
 		boolean success = connection.authenticateWithPublicKey(username, trileadKey);
 		if(!success)
@@ -398,7 +392,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		return success;
 	}
 	
-	public void handleAuthentication() {
+	protected void handleAuthentication() {
 		try {
 			if (connection.authenticateWithNone(host.getUsername())) {
 				finishConnection();
@@ -515,7 +509,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * Internal method to request actual PTY terminal once we've finished
 	 * authentication. If called before authenticated, it will just fail.
 	 */
-	protected void finishConnection() {
+	private void finishConnection() {
 		setAuthenticated(true);
 		
 		// Start up predefined port forwards
@@ -822,7 +816,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * Request a different font size. Will make call to parentChanged() to make
 	 * sure we resize PTY if needed.
 	 */
-	protected void setFontSize(float size) {
+	private void setFontSize(float size) {
 		defaultPaint.setTextSize(size);
 		fontSize = size;
 		
