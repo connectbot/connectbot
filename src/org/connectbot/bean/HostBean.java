@@ -22,7 +22,7 @@ import org.connectbot.util.HostDatabase;
 import android.content.ContentValues;
 
 /**
- * @author kenny
+ * @author Kenny Root
  *
  */
 public class HostBean extends AbstractBean {

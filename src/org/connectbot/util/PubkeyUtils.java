@@ -54,7 +54,7 @@ public class PubkeyUtils {
 			", bytes=" + encoded.length + "]";
 	}
 	
-	public static String describeKey(Key key, int encrypted) {
+	public static String describeKey(Key key, boolean encrypted) {
 		String desc = null;
 		if (key instanceof RSAPublicKey) {
 			int bits = ((RSAPublicKey)key).getModulus().bitLength();
@@ -65,7 +65,7 @@ public class PubkeyUtils {
 			desc = "Unknown Key Type";
 		}
 		
-		if (encrypted != 0)
+		if (encrypted)
 			desc += " (encrypted)";
 		
 		return desc;

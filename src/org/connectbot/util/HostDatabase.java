@@ -205,7 +205,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 		
 		Cursor c = db.query(TABLE_HOSTS, null, null, null, null, null, sortField + " ASC");
 
-		int COL_ID = c.getColumnIndexOrThrow("_id"),
+		final int COL_ID = c.getColumnIndexOrThrow("_id"),
 			COL_NICKNAME = c.getColumnIndexOrThrow(FIELD_HOST_NICKNAME),
 			COL_USERNAME = c.getColumnIndexOrThrow(FIELD_HOST_USERNAME),
 			COL_HOSTNAME = c.getColumnIndexOrThrow(FIELD_HOST_HOSTNAME),

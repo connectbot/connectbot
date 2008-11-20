@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
+import org.connectbot.bean.PubkeyBean;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
@@ -34,7 +35,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Handler;
@@ -84,28 +84,20 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		this.pubkeydb = new PubkeyDatabase(this);
 		
 		// load all marked pubkeys into memory
-		Cursor c = pubkeydb.getAllStartPubkeys();
-		int COL_NICKNAME = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_NICKNAME),
-			COL_TYPE = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_TYPE),
-			COL_PRIVATE = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PRIVATE),
-			COL_PUBLIC = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PUBLIC);
+		List<PubkeyBean> pubkeys = pubkeydb.getAllStartPubkeys();
 		
-		while(c.moveToNext()) {
-			String keyNickname = c.getString(COL_NICKNAME);
+		for (PubkeyBean pubkey : pubkeys) {
 			try {
-				PrivateKey privKey = PubkeyUtils.decodePrivate(c.getBlob(COL_PRIVATE), c.getString(COL_TYPE));
-				PublicKey pubKey = PubkeyUtils.decodePublic(c.getBlob(COL_PUBLIC), c.getString(COL_TYPE));
+				PrivateKey privKey = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType());
+				PublicKey pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
 				Object trileadKey = PubkeyUtils.convertToTrilead(privKey, pubKey);
 				
-				this.loadedPubkeys.put(keyNickname, trileadKey);
-				Log.d(TAG, String.format("Added key '%s' to in-memory cache", keyNickname));
+				this.loadedPubkeys.put(pubkey.getNickname(), trileadKey);
+				Log.d(TAG, String.format("Added key '%s' to in-memory cache", pubkey.getNickname()));
 			} catch (Exception e) {
-				Log.d(TAG, String.format("Problem adding key '%s' to in-memory cache", keyNickname), e);
+				Log.d(TAG, String.format("Problem adding key '%s' to in-memory cache", pubkey.getNickname()), e);
 			}
 		}
-		c.close();
-
-		
 	}
 
 	@Override

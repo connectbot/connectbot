@@ -18,16 +18,10 @@
 
 package org.connectbot.util;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.spec.InvalidKeySpecException;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import org.connectbot.bean.PubkeyBean;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -39,10 +33,9 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Public Key Encryption database. Contains private and public key pairs
  * for public key authentication.
  * 
- * @author kroot
+ * @author Kenny Root
  */
-public class PubkeyDatabase extends SQLiteOpenHelper {
-	
+public class PubkeyDatabase extends SQLiteOpenHelper {	
 	public final static String TAG = PubkeyDatabase.class.toString();
 	
 	public final static String DB_NAME = "pubkeys";
@@ -110,24 +103,69 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 	/**
 	 * Delete a specific host by its <code>_id</code> value.
 	 */
-	public void deletePubkey(long id) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_PUBKEYS, "_id = ?", new String[] { Long.toString(id) });
-		
+	public void deletePubkey(PubkeyBean pubkey) {
 		HostDatabase hostdb = new HostDatabase(context);
-		hostdb.stopUsingPubkey(id);
+		hostdb.stopUsingPubkey(pubkey.getId());
 		hostdb.close();
+		
+		SQLiteDatabase db = getWritableDatabase();
+		db.delete(TABLE_PUBKEYS, "_id = ?", new String[] { Long.toString(pubkey.getId()) });
+		db.close();
 	}
 	
 	/**
 	 * Return a cursor that contains information about all known hosts.
 	 */
+	/*
 	public Cursor allPubkeys() {
 		SQLiteDatabase db = this.getReadableDatabase();
 		return db.query(TABLE_PUBKEYS, new String[] { "_id",
 				FIELD_PUBKEY_NICKNAME, FIELD_PUBKEY_TYPE, FIELD_PUBKEY_PRIVATE,
 				FIELD_PUBKEY_PUBLIC, FIELD_PUBKEY_ENCRYPTED, FIELD_PUBKEY_STARTUP },
 				null, null, null, null, null);
+	}*/
+	
+	public List<PubkeyBean> allPubkeys() {
+		return getPubkeys(null, null);
+	}
+	
+	public List<PubkeyBean> getAllStartPubkeys() {
+		return getPubkeys(FIELD_PUBKEY_STARTUP + " = 1 AND " + FIELD_PUBKEY_ENCRYPTED + " = 0", null);
+	}
+	
+	private List<PubkeyBean> getPubkeys(String selection, String[] selectionArgs) {
+		SQLiteDatabase db = getReadableDatabase();
+
+		List<PubkeyBean> pubkeys = new LinkedList<PubkeyBean>();
+
+		Cursor c = db.query(TABLE_PUBKEYS, null, selection, selectionArgs, null, null, null);
+
+		final int COL_ID = c.getColumnIndexOrThrow("_id"),
+			COL_NICKNAME = c.getColumnIndexOrThrow(FIELD_PUBKEY_NICKNAME),
+			COL_TYPE = c.getColumnIndexOrThrow(FIELD_PUBKEY_TYPE),
+			COL_PRIVATE = c.getColumnIndexOrThrow(FIELD_PUBKEY_PRIVATE),
+			COL_PUBLIC = c.getColumnIndexOrThrow(FIELD_PUBKEY_PUBLIC),
+			COL_ENCRYPTED = c.getColumnIndexOrThrow(FIELD_PUBKEY_ENCRYPTED),
+			COL_STARTUP = c.getColumnIndexOrThrow(FIELD_PUBKEY_STARTUP);
+
+		while (c.moveToNext()) {
+			PubkeyBean pubkey = new PubkeyBean();
+			
+			pubkey.setId(c.getLong(COL_ID));
+			pubkey.setNickname(c.getString(COL_NICKNAME));
+			pubkey.setType(c.getString(COL_TYPE));
+			pubkey.setPrivateKey(c.getBlob(COL_PRIVATE));
+			pubkey.setPublicKey(c.getBlob(COL_PUBLIC));
+			pubkey.setEncrypted(Boolean.valueOf(c.getString(COL_ENCRYPTED)));
+			pubkey.setStartup(Boolean.valueOf(c.getString(COL_STARTUP)));
+			
+			pubkeys.add(pubkey);
+		}
+		
+		c.close();
+		db.close();
+				
+		return pubkeys;
 	}
 	
 	public Cursor getPubkey(long id) {
@@ -139,14 +177,50 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 				null, null, null);
 	}
 	
-	public Cursor getAllStartPubkeys() {
+	/*public Cursor getAllStartPubkeys() {
 		SQLiteDatabase db = this.getReadableDatabase();
 		return db.query(TABLE_PUBKEYS, new String[] { "_id",
 				FIELD_PUBKEY_NICKNAME, FIELD_PUBKEY_TYPE, FIELD_PUBKEY_PRIVATE,
 				FIELD_PUBKEY_PUBLIC, FIELD_PUBKEY_ENCRYPTED, FIELD_PUBKEY_STARTUP },
 				FIELD_PUBKEY_STARTUP + " = 1 AND " + FIELD_PUBKEY_ENCRYPTED + " = 0", null, null, null, null);
+	}*/
+	
+	/**
+	 * @param hostId
+	 * @return
+	 */
+	public PubkeyBean findPubkeyById(long pubkeyId) {
+		SQLiteDatabase db = getReadableDatabase();
+		
+		Cursor c = db.query(TABLE_PUBKEYS, null,
+				"_id = ?", new String[] { String.valueOf(pubkeyId) },
+				null, null, null);
+		
+		PubkeyBean pubkey = null;
+		
+		if (c != null && c.moveToFirst()) {
+			pubkey = createPubkeyBean(c);
+		}
+		
+		c.close();
+		db.close();
+		
+		return pubkey;
 	}
 	
+	private PubkeyBean createPubkeyBean(Cursor c) {
+		PubkeyBean pubkey = new PubkeyBean();
+		
+		pubkey.setId(c.getLong(c.getColumnIndexOrThrow("_id")));
+		pubkey.setNickname(c.getString(c.getColumnIndexOrThrow(FIELD_PUBKEY_NICKNAME)));
+		pubkey.setType(c.getString(c.getColumnIndexOrThrow(FIELD_PUBKEY_TYPE)));
+		pubkey.setPrivateKey(c.getBlob(c.getColumnIndexOrThrow(FIELD_PUBKEY_PRIVATE)));
+		pubkey.setPublicKey(c.getBlob(c.getColumnIndexOrThrow(FIELD_PUBKEY_PUBLIC)));
+		pubkey.setEncrypted(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_PUBKEY_ENCRYPTED))));
+		pubkey.setStartup(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_PUBKEY_STARTUP))));
+		
+		return pubkey;
+	}
 
 	/**
 	 * Pull all values for a given column as a list of Strings, probably for use
@@ -167,7 +241,7 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 		
 		return list;
 	}
-	
+
 	public String getNickname(long id) {
 		String nickname = null;
 		
@@ -183,7 +257,7 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 		return nickname;
 
 	}
-	
+/*	
 	public void setOnStart(long id, boolean onStart) {
 		
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -194,7 +268,6 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 		db.update(TABLE_PUBKEYS, values, "_id = ?", new String[] { Long.toString(id) });
 		
 	}
-	
 	
 	public boolean changePassword(long id, String oldPassword, String newPassword) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException {
 		SQLiteDatabase db = this.getWritableDatabase();		
@@ -229,5 +302,28 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 		
 		return true;
 	}
+	*/
+
+	/**
+	 * @param pubkey
+	 */
+	public PubkeyBean savePubkey(PubkeyBean pubkey) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		boolean success = false;
+		ContentValues values = pubkey.getValues();
+		if (pubkey.getId() > 0) {
+			values.remove("_id");
+			if (db.update(TABLE_PUBKEYS, values, "_id = ?", new String[] { String.valueOf(pubkey.getId()) }) > 0)
+				success = true;
+		}
+		
+		if (!success) {
+			long id = db.insert(TABLE_PUBKEYS, null, pubkey.getValues());
+			pubkey.setId(id);
+		}
+		
+		db.close();
 	
+		return pubkey;
+	}
 }

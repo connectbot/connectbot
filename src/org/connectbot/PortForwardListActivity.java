@@ -362,7 +362,7 @@ public class PortForwardListActivity extends ListActivity {
 			this.portForwards = this.hostdb.getPortForwardsForHost(host);
 		}
 
-		PortForwardAdapter adapter = new PortForwardAdapter(this, this.portForwards);
+		PortForwardAdapter adapter = new PortForwardAdapter(this, portForwards);
 		
 		this.setListAdapter(adapter);
 	}

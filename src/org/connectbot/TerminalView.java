@@ -49,10 +49,10 @@ public class TerminalView extends View {
 	protected int top = -1, bottom = -1, left = -1, right = -1;
 	
 	public void resetSelected() {
-		this.top = -1;
-		this.bottom = -1;
-		this.left = -1;
-		this.right = -1;
+		top = -1;
+		bottom = -1;
+		left = -1;
+		right = -1;
 	}
 
 	public TerminalView(Context context, TerminalBridge bridge) {
@@ -60,56 +60,56 @@ public class TerminalView extends View {
 		
 		this.context = context;
 		this.bridge = bridge;
-		this.paint = new Paint();
+		paint = new Paint();
 		
-		this.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-		this.setFocusable(true);
-		this.setFocusableInTouchMode(true);
+		setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		setFocusable(true);
+		setFocusableInTouchMode(true);
 		
-		this.cursorPaint = new Paint();
-		this.cursorPaint.setColor(bridge.color[TerminalBridge.COLOR_FG_STD]);
-		this.cursorPaint.setXfermode(new PixelXorXfermode(bridge.color[TerminalBridge.COLOR_BG_STD]));
+		cursorPaint = new Paint();
+		cursorPaint.setColor(bridge.color[TerminalBridge.COLOR_FG_STD]);
+		cursorPaint.setXfermode(new PixelXorXfermode(bridge.color[TerminalBridge.COLOR_BG_STD]));
 		
 		// connect our view up to the bridge
-		this.setOnKeyListener(bridge);
+		setOnKeyListener(bridge);
 		
 		
 	}
 	
 	public void destroy() {
 		// tell bridge to destroy its bitmap
-		this.bridge.parentDestroyed();
+		bridge.parentDestroyed();
 	}
 	
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
-		this.bridge.parentChanged(this);
+		bridge.parentChanged(this);
 	}
 	
 	@Override
 	public void onDraw(Canvas canvas) {
-		if(this.bridge.bitmap != null) {
+		if(bridge.bitmap != null) {
 			
 			// draw the bridge bitmap if it exists
-			canvas.drawBitmap(this.bridge.bitmap, 0, 0, this.paint);
+			canvas.drawBitmap(bridge.bitmap, 0, 0, paint);
 			
 			// also draw cursor if visible
-			if(this.bridge.buffer.isCursorVisible()) {
-				int x = this.bridge.buffer.getCursorColumn() * this.bridge.charWidth;
-				int y = (this.bridge.buffer.getCursorRow()
-						+ this.bridge.buffer.screenBase - this.bridge.buffer.windowBase)
-						* this.bridge.charHeight;
+			if(bridge.buffer.isCursorVisible()) {
+				int x = bridge.buffer.getCursorColumn() * bridge.charWidth;
+				int y = (bridge.buffer.getCursorRow()
+						+ bridge.buffer.screenBase - bridge.buffer.windowBase)
+						* bridge.charHeight;
 				
-				canvas.drawRect(x, y, x + this.bridge.charWidth,
-						y + this.bridge.charHeight, cursorPaint);
+				canvas.drawRect(x, y, x + bridge.charWidth,
+						y + bridge.charHeight, cursorPaint);
 				
 			}
 			
 			// draw any highlighted area
 			if(top >= 0 && bottom >= 0 && left >= 0 && right >= 0) {
-				canvas.drawRect(left * this.bridge.charWidth, top * this.bridge.charHeight,
-					right * this.bridge.charWidth, bottom * this.bridge.charHeight, cursorPaint);
+				canvas.drawRect(left * bridge.charWidth, top * bridge.charHeight,
+					right * bridge.charWidth, bottom * bridge.charHeight, cursorPaint);
 			}
 
 		}
@@ -138,6 +138,6 @@ public class TerminalView extends View {
 	 * @param height
 	 */
 	public void forceSize(int width, int height) {
-		this.bridge.resizeComputed(width, height, getWidth(), getHeight());
+		bridge.resizeComputed(width, height, getWidth(), getHeight());
 	}
 }
