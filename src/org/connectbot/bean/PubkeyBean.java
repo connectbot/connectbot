@@ -42,8 +42,8 @@ public class PubkeyBean extends AbstractBean {
 	private String type;
 	private byte[] privateKey;
 	private byte[] publicKey;
-	private boolean encrypted;
-	private boolean startup;
+	private boolean encrypted = false;
+	private boolean startup = false;
 	
 	/* Transient values */
 	private boolean unlocked = false;

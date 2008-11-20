@@ -242,7 +242,13 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 								boolean encrypted = PEMDecoder.isPEMEncrypted(struct);
 								
 								// write new value into database
-								pubkeydb.createPubkey(null, name, PubkeyDatabase.KEY_TYPE_IMPORTED, raw, new byte[] {}, encrypted, false);
+								PubkeyBean pubkey = new PubkeyBean();
+								pubkey.setNickname(name);
+								pubkey.setType(PubkeyDatabase.KEY_TYPE_IMPORTED);
+								pubkey.setPrivateKey(raw);
+								pubkey.setEncrypted(encrypted);
+								
+								pubkeydb.savePubkey(pubkey);
 								updateHandler.sendEmptyMessage(-1);
 								
 							} catch(Exception e) {

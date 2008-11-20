@@ -77,28 +77,6 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
 	}
-
-	/**
-	 * Create a new pubkey using the given parameters, and return its new
-	 * <code>_id</code> value.
-	 */
-	public long createPubkey(SQLiteDatabase db, String nickname, String type, byte[] privatekey,
-			byte[] publickey, boolean encrypted, boolean startup) {
-		// create and insert new host
-		
-		if (db == null)
-			db = this.getWritableDatabase();
-		
-		ContentValues values = new ContentValues();
-		values.put(FIELD_PUBKEY_NICKNAME, nickname);
-		values.put(FIELD_PUBKEY_TYPE, type);
-		values.put(FIELD_PUBKEY_PRIVATE, privatekey);
-		values.put(FIELD_PUBKEY_PUBLIC, publickey);
-		values.put(FIELD_PUBKEY_ENCRYPTED, encrypted ? 1 : 0);
-		values.put(FIELD_PUBKEY_STARTUP, startup ? 1 : 0);
-		
-		return db.insert(TABLE_PUBKEYS, null, values);		
-	}
 	
 	/**
 	 * Delete a specific host by its <code>_id</code> value.
@@ -156,8 +134,8 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 			pubkey.setType(c.getString(COL_TYPE));
 			pubkey.setPrivateKey(c.getBlob(COL_PRIVATE));
 			pubkey.setPublicKey(c.getBlob(COL_PUBLIC));
-			pubkey.setEncrypted(Boolean.valueOf(c.getString(COL_ENCRYPTED)));
-			pubkey.setStartup(Boolean.valueOf(c.getString(COL_STARTUP)));
+			pubkey.setEncrypted(c.getInt(COL_ENCRYPTED) > 0);
+			pubkey.setStartup(c.getInt(COL_STARTUP) > 0);
 			
 			pubkeys.add(pubkey);
 		}
@@ -167,23 +145,6 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 				
 		return pubkeys;
 	}
-	
-	public Cursor getPubkey(long id) {
-		SQLiteDatabase db = this.getReadableDatabase();
-		return db.query(TABLE_PUBKEYS, new String[] { "_id",
-				FIELD_PUBKEY_NICKNAME, FIELD_PUBKEY_TYPE, FIELD_PUBKEY_PRIVATE,
-				FIELD_PUBKEY_PUBLIC, FIELD_PUBKEY_ENCRYPTED, FIELD_PUBKEY_STARTUP },
-				"_id = ?", new String[] { String.valueOf(id) },
-				null, null, null);
-	}
-	
-	/*public Cursor getAllStartPubkeys() {
-		SQLiteDatabase db = this.getReadableDatabase();
-		return db.query(TABLE_PUBKEYS, new String[] { "_id",
-				FIELD_PUBKEY_NICKNAME, FIELD_PUBKEY_TYPE, FIELD_PUBKEY_PRIVATE,
-				FIELD_PUBKEY_PUBLIC, FIELD_PUBKEY_ENCRYPTED, FIELD_PUBKEY_STARTUP },
-				FIELD_PUBKEY_STARTUP + " = 1 AND " + FIELD_PUBKEY_ENCRYPTED + " = 0", null, null, null, null);
-	}*/
 	
 	/**
 	 * @param hostId
@@ -216,8 +177,8 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 		pubkey.setType(c.getString(c.getColumnIndexOrThrow(FIELD_PUBKEY_TYPE)));
 		pubkey.setPrivateKey(c.getBlob(c.getColumnIndexOrThrow(FIELD_PUBKEY_PRIVATE)));
 		pubkey.setPublicKey(c.getBlob(c.getColumnIndexOrThrow(FIELD_PUBKEY_PUBLIC)));
-		pubkey.setEncrypted(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_PUBKEY_ENCRYPTED))));
-		pubkey.setStartup(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_PUBKEY_STARTUP))));
+		pubkey.setEncrypted(c.getInt(c.getColumnIndexOrThrow(FIELD_PUBKEY_ENCRYPTED)) > 0);
+		pubkey.setStartup(c.getInt(c.getColumnIndexOrThrow(FIELD_PUBKEY_STARTUP)) > 0);
 		
 		return pubkey;
 	}

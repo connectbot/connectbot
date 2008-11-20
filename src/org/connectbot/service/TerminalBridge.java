@@ -32,11 +32,11 @@ import org.connectbot.R;
 import org.connectbot.TerminalView;
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
+import org.connectbot.bean.PubkeyBean;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -323,60 +323,48 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * @throws InvalidKeySpecException
 	 * @throws IOException
 	 */
-	private boolean tryPublicKey(Cursor c) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-		int COL_NICKNAME = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_NICKNAME),
-			COL_TYPE = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_TYPE),
-			COL_PRIVATE = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PRIVATE),
-			COL_PUBLIC = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_PUBLIC),
-			COL_ENCRYPTED = c.getColumnIndexOrThrow(PubkeyDatabase.FIELD_PUBKEY_ENCRYPTED);
-
-		String keyNickname = c.getString(COL_NICKNAME);
-		int encrypted = c.getInt(COL_ENCRYPTED);
-		
+	private boolean tryPublicKey(PubkeyBean pubkey) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
 		Object trileadKey = null;
-		if(manager.isKeyLoaded(keyNickname)) {
+		if(manager.isKeyLoaded(pubkey.getNickname())) {
 			// load this key from memory if its already there
-			Log.d(TAG, String.format("Found unlocked key '%s' already in-memory", keyNickname));
-			trileadKey = manager.getKey(keyNickname);
+			Log.d(TAG, String.format("Found unlocked key '%s' already in-memory", pubkey.getNickname()));
+			trileadKey = manager.getKey(pubkey.getNickname());
 			
 		} else {
 			// otherwise load key from database and prompt for password as needed
 			String password = null;
-			if (encrypted != 0)
-				password = promptHelper.requestStringPrompt(String.format("Password for key '%s'", keyNickname));
+			if (pubkey.isEncrypted())
+				password = promptHelper.requestStringPrompt(String.format("Password for key '%s'", pubkey.getNickname()));
 
-			String type = c.getString(COL_TYPE);
-			if(PubkeyDatabase.KEY_TYPE_IMPORTED.equals(type)) {
+			if(PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType())) {
 				// load specific key using pem format
-				byte[] raw = c.getBlob(COL_PRIVATE);
-				trileadKey = PEMDecoder.decode(new String(raw).toCharArray(), password);
-				
+				trileadKey = PEMDecoder.decode(new String(pubkey.getPrivateKey()).toCharArray(), password);				
 			} else {
 				// load using internal generated format
 				PrivateKey privKey;
 				try {
-					privKey = PubkeyUtils.decodePrivate(c.getBlob(COL_PRIVATE),
-							c.getString(COL_TYPE), password);
+					privKey = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(),
+							pubkey.getType(), password);
 				} catch (Exception e) {
-					String message = String.format("Bad password for key '%s'. Authentication failed.", keyNickname);
+					String message = String.format("Bad password for key '%s'. Authentication failed.", pubkey.getNickname());
 					Log.e(TAG, message, e);
 					outputLine(message);
 					return false;
 				}
 				
-				PublicKey pubKey = PubkeyUtils.decodePublic(c.getBlob(COL_PUBLIC),
-						c.getString(COL_TYPE));
+				PublicKey pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(),
+						pubkey.getType());
 				
 				// convert key to trilead format
 				trileadKey = PubkeyUtils.convertToTrilead(privKey, pubKey);
 				Log.d(TAG, "Unlocked key " + PubkeyUtils.formatKey(pubKey));
 			}
 
-			Log.d(TAG, String.format("Unlocked key '%s'", keyNickname));
+			Log.d(TAG, String.format("Unlocked key '%s'", pubkey.getNickname()));
 
 			// save this key in-memory if option enabled
 			if(manager.isSavingKeys()) {
-				manager.addKey(keyNickname, trileadKey);
+				manager.addKey(pubkey.getNickname(), trileadKey);
 			}
 		}
 
@@ -428,11 +416,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				} else {
 					outputLine("Attempting 'publickey' authentication with a specific SSH key");
 					// use a specific key for this host, as requested
-					Cursor cursor = manager.pubkeydb.getPubkey(pubkeyId);
-					if (cursor.moveToFirst())
-						if (tryPublicKey(cursor))
-							finishConnection();
-					cursor.close();
+					PubkeyBean pubkey = manager.pubkeydb.findPubkeyById(pubkeyId);
+					if (tryPublicKey(pubkey))
+						finishConnection();
 					
 				}
 				

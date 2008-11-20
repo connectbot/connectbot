@@ -24,6 +24,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 
+import org.connectbot.bean.PubkeyBean;
 import org.connectbot.util.EntropyDialog;
 import org.connectbot.util.EntropyView;
 import org.connectbot.util.OnEntropyGatheredListener;
@@ -250,14 +251,16 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 				Log.d(TAG, "private: " + PubkeyUtils.formatKey(priv));
 				Log.d(TAG, "public: " + PubkeyUtils.formatKey(pub));
 				
+				PubkeyBean pubkey = new PubkeyBean();
+				pubkey.setNickname(nickname.getText().toString());
+				pubkey.setType(keyType);
+				pubkey.setPrivateKey(PubkeyUtils.getEncodedPrivate(priv, secret));
+				pubkey.setPublicKey(PubkeyUtils.getEncodedPublic(pub));
+				pubkey.setEncrypted(encrypted);
+				pubkey.setStartup(unlockAtStartup.isChecked());
+				
 				PubkeyDatabase pubkeydb = new PubkeyDatabase(GeneratePubkeyActivity.this);
-				pubkeydb.createPubkey(null,
-						nickname.getText().toString(),
-						keyType,
-						PubkeyUtils.getEncodedPrivate(priv, secret),
-						PubkeyUtils.getEncodedPublic(pub),
-						encrypted,
-						unlockAtStartup.isChecked());
+				pubkeydb.savePubkey(pubkey);
 				pubkeydb.close();
 			} catch (Exception e) {
 				Log.e(TAG, "Could not generate key pair");
