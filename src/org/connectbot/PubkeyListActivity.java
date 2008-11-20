@@ -481,7 +481,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 		public View getView(int position, View view, ViewGroup parent) {
 			if (view == null)
-				view = inflater.inflate(R.layout.item_portforward, null, false);
+				view = inflater.inflate(R.layout.item_pubkey, null, false);
 
 			TextView nickname = (TextView)view.findViewById(android.R.id.text1);
 			TextView caption = (TextView)view.findViewById(android.R.id.text2);
