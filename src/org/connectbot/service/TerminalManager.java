@@ -32,10 +32,12 @@ import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
@@ -67,21 +69,24 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	protected PubkeyDatabase pubkeydb;
 
 	protected SharedPreferences prefs;
-	private String pref_emulation, pref_scrollback, pref_keymode, pref_memkeys;
+	private String pref_emulation, pref_scrollback, pref_keymode, pref_memkeys, pref_wifilock;
+	
+	private WifiManager.WifiLock wifilock;
 	
 	@Override
 	public void onCreate() {
 		Log.i(TAG, "Starting background service");
-		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		this.pref_emulation = this.getResources().getString(R.string.pref_emulation);
-		this.pref_scrollback = this.getResources().getString(R.string.pref_scrollback);
-		this.pref_keymode = this.getResources().getString(R.string.pref_keymode);
-		this.pref_memkeys = this.getResources().getString(R.string.pref_memkeys);
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		pref_emulation = getResources().getString(R.string.pref_emulation);
+		pref_scrollback = getResources().getString(R.string.pref_scrollback);
+		pref_keymode = getResources().getString(R.string.pref_keymode);
+		pref_memkeys = getResources().getString(R.string.pref_memkeys);
+		pref_wifilock = getResources().getString(R.string.pref_wifilock);
 		
-		this.res = this.getResources();
+		res = getResources();
 		
-		this.hostdb = new HostDatabase(this);
-		this.pubkeydb = new PubkeyDatabase(this);
+		hostdb = new HostDatabase(this);
+		pubkeydb = new PubkeyDatabase(this);
 		
 		// load all marked pubkeys into memory
 		List<PubkeyBean> pubkeys = pubkeydb.getAllStartPubkeys();
@@ -92,12 +97,15 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				PublicKey pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
 				Object trileadKey = PubkeyUtils.convertToTrilead(privKey, pubKey);
 				
-				this.loadedPubkeys.put(pubkey.getNickname(), trileadKey);
+				loadedPubkeys.put(pubkey.getNickname(), trileadKey);
 				Log.d(TAG, String.format("Added key '%s' to in-memory cache", pubkey.getNickname()));
 			} catch (Exception e) {
 				Log.d(TAG, String.format("Problem adding key '%s' to in-memory cache", pubkey.getNickname()), e);
 			}
 		}
+		
+		WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		wifilock = manager.createWifiLock(TAG);
 	}
 
 	@Override
@@ -108,16 +116,18 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		for(TerminalBridge bridge : bridges)
 			bridge.dispatchDisconnect(true);
 		
-		if(this.hostdb != null) {
-			this.hostdb.close();
-			this.hostdb = null;
+		if(hostdb != null) {
+			hostdb.close();
+			hostdb = null;
 		}
 		
-		if(this.pubkeydb != null) {
-			this.pubkeydb.close();
-			this.pubkeydb = null;
+		if(pubkeydb != null) {
+			pubkeydb.close();
+			pubkeydb = null;
 		}
 		
+		if (wifilock != null)
+			wifilock.release();
 	}
 	
 	/**
@@ -125,38 +135,48 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 */
 	private void openConnection(HostBean host) throws Exception {
 		// throw exception if terminal already open
-		if (this.findBridge(host) != null) {
+		if (findBridge(host) != null) {
 			throw new Exception("Connection already open for that nickname");
 		}
 		
 		TerminalBridge bridge = new TerminalBridge(this, host);
 		bridge.setOnDisconnectedListener(this);
 		bridge.startConnection();
-		this.bridges.add(bridge);
+		bridges.add(bridge);
+		
+		// Add a reference to the WifiLock
+		if (isLockingWifi()) {
+			Log.d(TAG, "Acquiring WifiLock");
+			wifilock.acquire();
+		}
 		
 		// also update database with new connected time
-		this.touchHost(host);
+		touchHost(host);
 	}
 	
 	public String getEmulation() {
-		return prefs.getString(this.pref_emulation, "screen");
+		return prefs.getString(pref_emulation, "screen");
 	}
 	
 	public int getScrollback() {
 		int scrollback = 140;
 		try {
-			scrollback = Integer.parseInt(prefs.getString(this.pref_scrollback, "140"));
+			scrollback = Integer.parseInt(prefs.getString(pref_scrollback, "140"));
 		} catch(Exception e) {
 		}
 		return scrollback;
 	}
 	
 	public boolean isSavingKeys() {
-		return prefs.getBoolean(this.pref_memkeys, true);
+		return prefs.getBoolean(pref_memkeys, true);
 	}
 
 	public String getKeyMode() {
-		return prefs.getString(this.pref_keymode, getString(R.string.list_keymode_right)); // "Use right-side keys"
+		return prefs.getString(pref_keymode, getString(R.string.list_keymode_right)); // "Use right-side keys"
+	}
+	
+	public boolean isLockingWifi() {
+		return prefs.getBoolean(pref_wifilock, true);
 	}
 	
 	/**
@@ -189,7 +209,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 
 	/**
-	 * Find the {@link TerminalBridge} with the given nickname.  
+	 * Find the {@link TerminalBridge} with the given nickname.
 	 */
 	public TerminalBridge findBridge(HostBean host) {
 		// find the first active bridge with given nickname
@@ -207,7 +227,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 //	 * internal list of active connections.
 //	 */
 //	public void disconnect(TerminalBridge bridge) {
-//		// we will be notified about this through call back up to onDisconnected() 
+//		// we will be notified about this through call back up to onDisconnected()
 //		bridge.disconnect();
 //	}
 	
@@ -216,30 +236,36 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 */
 	public void onDisconnected(TerminalBridge bridge) {
 		// remove this bridge from our list
-		this.bridges.remove(bridge);
-		this.disconnected.add(bridge.host);
+		bridges.remove(bridge);
+		
+		if (bridges.size() == 0 && wifilock.isHeld()) {
+			Log.d(TAG, "WifiLock was held, releasing");
+			wifilock.release();
+		}
+		
+		disconnected.add(bridge.host);
 		
 		// pass notification back up to gui
-		if(this.disconnectHandler != null)
-			Message.obtain(this.disconnectHandler, -1, bridge).sendToTarget();
+		if(disconnectHandler != null)
+			Message.obtain(disconnectHandler, -1, bridge).sendToTarget();
 		
 	}
 	
 	public boolean isKeyLoaded(String nickname) {
-		return this.loadedPubkeys.containsKey(nickname);
+		return loadedPubkeys.containsKey(nickname);
 	}
 	
 	public void addKey(String nickname, Object trileadKey) {
-		this.loadedPubkeys.remove(nickname);
-		this.loadedPubkeys.put(nickname, trileadKey);
+		loadedPubkeys.remove(nickname);
+		loadedPubkeys.put(nickname, trileadKey);
 	}
 	
 	public void removeKey(String nickname) {
-		this.loadedPubkeys.remove(nickname);
+		loadedPubkeys.remove(nickname);
 	}
 	
 	public Object getKey(String nickname) {
-		return this.loadedPubkeys.get(nickname);
+		return loadedPubkeys.get(nickname);
 	}
 
 	public class TerminalBinder extends Binder {

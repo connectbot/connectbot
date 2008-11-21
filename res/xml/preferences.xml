@@ -99,6 +99,13 @@
 			android:summary="Prevent the screen from turning off when working in a console"
 			android:defaultValue="true"
 			/>
+			
+		<CheckBoxPreference
+			android:key="@string/pref_wifilock"
+			android:title="Keep Wi-Fi active"
+			android:summary="Prevent Wi-Fi from turning off when a session is active"
+			android:defaultValue="true"
+			/>
 	</PreferenceCategory>
 
 </PreferenceScreen>

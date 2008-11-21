@@ -88,6 +88,7 @@
 	<string name="pref_update">update</string>
 	<string name="pref_lastchecked">lastchecked</string>
 	<string name="pref_fullscreen">fullscreen</string>
+	<string name="pref_wifilock">wifilock</string>
 	
 	<string name="list_keymode_right">Use right-side keys</string>
 	<string name="list_keymode_left">Use left-side keys</string>
