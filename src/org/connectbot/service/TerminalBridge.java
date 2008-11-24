@@ -293,8 +293,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					connection.connect(new HostKeyVerifier());
 				} catch (IOException e) {
 					Log.e(TAG, "Problem in SSH connection thread during authentication", e);
-					// TODO report cause to user:
-					Log.d(TAG, String.format("Cause is: %s", e.getCause().toString()));
+					
+					// Display the reason in the text.
+					outputLine(e.getCause().getMessage());
+
 					dispatchDisconnect(false);
 					return;
 				}
