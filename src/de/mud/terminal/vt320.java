@@ -2748,6 +2748,11 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
     for (int i = 0; i < nw; i += 8) {
       Tabs[i] = 1;
     }
+    deleteArea(0, 0, getColumns(), getRows(), attributes);
+    setMargins(0, getRows());
+    C = R = 0;
+    _SetCursor(0, 0);
+    showCursor(true);
     /*FIXME:*/
     term_state = TSTATE_DATA;
   }
