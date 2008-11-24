@@ -157,6 +157,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	private int charDescent = -1;
 
 	private float fontSize = -1;
+	
+	private List<String> localOutput;
 
 	/**
 	 * Flag indicating if we should perform a full-screen redraw during our next
@@ -178,14 +180,25 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			
 			String matchName = String.format("%s:%d", hostname, port);
 			
+			String fingerprint = KnownHosts.createHexFingerprint(serverHostKeyAlgorithm, serverHostKey);
+			
+			String algorithmName;
+			if ("ssh-rsa".equals(serverHostKeyAlgorithm))
+				algorithmName = "RSA";
+			else if ("ssh-dss".equals(serverHostKeyAlgorithm))
+				algorithmName = "DSA";
+			else
+				algorithmName = serverHostKeyAlgorithm;
+			
 			switch(hosts.verifyHostkey(matchName, serverHostKeyAlgorithm, serverHostKey)) {
 			case KnownHosts.HOSTKEY_IS_OK:
+				outputLine(String.format("Verified host %s key: %s", algorithmName, fingerprint));
 				return true;
 
 			case KnownHosts.HOSTKEY_IS_NEW:
 				// prompt user
 				outputLine(String.format("The authenticity of host '%s' can't be established.", hostname));
-				outputLine(String.format("RSA key fingerprint is %s", KnownHosts.createHexFingerprint(serverHostKeyAlgorithm, serverHostKey)));
+				outputLine(String.format("Host %s key fingerprint is %s", algorithmName, fingerprint));
 
 				result = promptHelper.requestBooleanPrompt("Are you sure you want\nto continue connecting?");
 				if(result == null) return false;
@@ -201,8 +214,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				outputLine("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 				outputLine("IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!");
 				outputLine("Someone could be eavesdropping on you right now (man-in-the-middle attack)!");
-				outputLine("It is also possible that the RSA host key has just been changed.");
-				outputLine(String.format("RSA key fingerprint is %s", KnownHosts.createHexFingerprint(serverHostKeyAlgorithm, serverHostKey)));
+				outputLine("It is also possible that the host key has just been changed.");
+				outputLine(String.format("Host %s key fingerprint is %s",
+						algorithmName, fingerprint));
 				
 				// Users have no way to delete keys, so we'll prompt them for now.
 				result = promptHelper.requestBooleanPrompt("Are you sure you want\nto continue connecting?");
@@ -241,6 +255,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		defaultPaint.setAntiAlias(true);
 		defaultPaint.setTypeface(Typeface.MONOSPACE);
 		
+		localOutput = new LinkedList<String>();
+		
 		setFontSize(DEFAULT_FONT_SIZE);
 
 		// prepare our "darker" colors
@@ -270,7 +286,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 		buffer.setBufferSize(scrollback);
 		buffer.setDisplay(this);
-		buffer.setCursorPosition(0, 0);
 
 		// TODO Change this when hosts are beans as well
 		portForwards = manager.hostdb.getPortForwardsForHost(host);
@@ -471,8 +486,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * Convenience method for writing a line into the underlying MUD buffer.
 	 */
 	protected void outputLine(String line) {
-		buffer.putString(0, buffer.getCursorRow(), line);
-		buffer.setCursorPosition(0, buffer.getCursorRow() + 1);
+		localOutput.add(line + "\r\n");
+		
+		((vt320) buffer).putString(line + "\r\n");
 		redraw();
 	}
 
@@ -517,8 +533,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		
 		try {
 			session = connection.openSession();
-			buffer.deleteArea(0, 0, buffer.getColumns(), buffer.getRows());
+			((vt320) buffer).reset();
 			
+			// We no longer need our local output.
+			localOutput.clear();
+
 			// previously tried vt100 and xterm for emulation modes
 			// "screen" works the best for color and escape codes
 			// TODO: pull this value from the preferences
@@ -887,6 +906,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				session.resizePTY(termWidth, termHeight);
 		} catch(Exception e) {
 			Log.e(TAG, "Problem while trying to resize screen or PTY", e);
+		}
+		
+		// redraw local output if we don't have a sesson to receive our resize request
+		if (session == null) {
+			((vt320) buffer).reset();
+			for (String line : localOutput)
+				((vt320) buffer).putString(line);
 		}
 		
 		// force full redraw with new buffer size
