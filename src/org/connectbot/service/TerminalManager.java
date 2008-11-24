@@ -36,6 +36,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Binder;
@@ -71,6 +73,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	protected SharedPreferences prefs;
 	private String pref_emulation, pref_scrollback, pref_keymode, pref_memkeys, pref_wifilock;
 	
+	private ConnectivityManager connectivityManager;
 	private WifiManager.WifiLock wifilock;
 	
 	@Override
@@ -103,6 +106,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				Log.d(TAG, String.format("Problem adding key '%s' to in-memory cache", pubkey.getNickname()), e);
 			}
 		}
+		
+		connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		
 		WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		wifilock = manager.createWifiLock(TAG);
@@ -145,7 +150,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		bridges.add(bridge);
 		
 		// Add a reference to the WifiLock
-		if (isLockingWifi()) {
+		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+		if (isLockingWifi() && info.getType() == ConnectivityManager.TYPE_WIFI) {
 			Log.d(TAG, "Acquiring WifiLock");
 			wifilock.acquire();
 		}
@@ -281,5 +287,4 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		Log.i(TAG, "Someone bound to TerminalManager");
 		return binder;
 	}
-
 }
