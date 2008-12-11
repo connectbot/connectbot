@@ -23,6 +23,8 @@ import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
@@ -63,6 +65,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	
 	public List<HostBean> disconnected = new LinkedList<HostBean>();
 	
+	public Handler disconnectHandler = null;
+
 	protected HashMap<String, Object> loadedPubkeys = new HashMap<String, Object>();
 	
 	protected Resources res;
@@ -73,8 +77,13 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	protected SharedPreferences prefs;
 	private String pref_emulation, pref_scrollback, pref_keymode, pref_memkeys, pref_wifilock;
 	
+	private final IBinder binder = new TerminalBinder();
+
 	private ConnectivityManager connectivityManager;
 	private WifiManager.WifiLock wifilock;
+	
+	private Timer idleTimer;
+	private final long IDLE_TIMEOUT = 300000; // 5 minutes
 	
 	@Override
 	public void onCreate() {
@@ -131,7 +140,10 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 			pubkeydb = null;
 		}
 		
-		if (wifilock != null)
+		if (idleTimer != null)
+			idleTimer.cancel();
+		
+		if (wifilock != null && wifilock.isHeld())
 			wifilock.release();
 	}
 	
@@ -226,35 +238,24 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		return null;
 	}
 	
-	public Handler disconnectHandler = null;
-
-//	/**
-//	 * Force disconnection of this {@link TerminalBridge} and remove it from our
-//	 * internal list of active connections.
-//	 */
-//	public void disconnect(TerminalBridge bridge) {
-//		// we will be notified about this through call back up to onDisconnected()
-//		bridge.disconnect();
-//	}
-	
 	/**
 	 * Called by child bridge when somehow it's been disconnected.
 	 */
 	public void onDisconnected(TerminalBridge bridge) {
 		// remove this bridge from our list
 		bridges.remove(bridge);
-		
+
 		if (bridges.size() == 0 && wifilock.isHeld()) {
 			Log.d(TAG, "WifiLock was held, releasing");
 			wifilock.release();
 		}
-		
+
 		disconnected.add(bridge.host);
-		
+
 		// pass notification back up to gui
-		if(disconnectHandler != null)
+		if (disconnectHandler != null)
 			Message.obtain(disconnectHandler, -1, bridge).sendToTarget();
-		
+
 	}
 	
 	public boolean isKeyLoaded(String nickname) {
@@ -274,17 +275,52 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		return loadedPubkeys.get(nickname);
 	}
 
+	private void stop() {
+		// TODO add in a way to check whether keys loaded are encrypted and only
+		// set timer when we have an encrypted key loaded
+		
+		if (loadedPubkeys.size() > 0) {
+			if (idleTimer == null)
+				idleTimer = new Timer();
+			idleTimer.schedule(new IdleTask(), IDLE_TIMEOUT);
+		} else {
+			Log.d(TAG, "Stopping background service immediately");
+			stopSelf();
+		}
+	}
+	
 	public class TerminalBinder extends Binder {
 		public TerminalManager getService() {
 			return TerminalManager.this;
 		}
 	}
 	
-	private final IBinder binder = new TerminalBinder();
-
 	@Override
 	public IBinder onBind(Intent intent) {
 		Log.i(TAG, "Someone bound to TerminalManager");
+		
+		// Make sure we stay running to maintain the bridges
+		startService(new Intent(this, TerminalManager.class));
+		
 		return binder;
+	}
+	
+	@Override
+	public boolean onUnbind(Intent intent) {
+		if (bridges.size() == 0)
+			stop();
+		
+		return false;
+	}
+
+	private class IdleTask extends TimerTask {
+		/* (non-Javadoc)
+		 * @see java.util.TimerTask#run()
+		 */
+		@Override
+		public void run() {
+			Log.d(TAG, String.format("Stopping service after timeout of ~%d seconds", IDLE_TIMEOUT / 1000));
+			TerminalManager.this.stopSelf();
+		}
 	}
 }

@@ -101,7 +101,6 @@ public class HostListActivity extends ListActivity {
 		super.onStart();
 		
 		// start the terminal manager service
-		this.startService(new Intent(this, TerminalManager.class));
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
 		if(this.hostdb == null)
