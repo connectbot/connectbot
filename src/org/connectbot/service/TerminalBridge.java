@@ -134,6 +134,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	private boolean ctrlPressed = false;
 	private boolean altPressed = false;
 	private boolean shiftPressed = false;
+	private boolean slashKeyPressed = false;
+	private boolean tabKeyPressed = false;
 
 	private boolean pubkeysExhausted = false;
 	
@@ -673,14 +675,38 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * or passwords, but otherwise we pass them directly over to the SSH host.
 	 */
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
-		// ignore any key-up events
-		if(event.getAction() == KeyEvent.ACTION_UP)
-			return false;
-		
 		try {
+
+			// Ignore all key-up events except for the special keys
+			if (event.getAction() == KeyEvent.ACTION_UP) {
+				// skip keys if we aren't connected yet or have been disconnected
+				if (disconnected || session == null)
+					return false;
+				
+				if ("Use right-side keys".equals(keymode)) {
+					if (keyCode == KeyEvent.KEYCODE_ALT_RIGHT && slashKeyPressed) {
+						stdin.write('/');
+						return true;
+					} else if (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT && tabKeyPressed) {
+						stdin.write(0x09);
+						return true;
+					}
+				} else if ("Use left-side keys".equals(keymode)) {
+					if (keyCode == KeyEvent.KEYCODE_ALT_LEFT && slashKeyPressed) {
+						stdin.write('/');
+						return true;
+					} else if (keyCode == KeyEvent.KEYCODE_SHIFT_LEFT && tabKeyPressed) {
+						stdin.write(0x09);
+						return true;
+					}
+				}
+				
+				return false;
+			}
+
 			// check for terminal resizing keys
 			// TODO: see if there is a way to make sure we dont "blip"
-			if(keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+			if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
 				forcedSize = false;
 				setFontSize(fontSize + 2);
 				return true;
@@ -690,16 +716,18 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				return true;
 			}
 			
-			boolean printing = (keymap.isPrintingKey(keyCode) || keyCode == KeyEvent.KEYCODE_SPACE);
-			
 			// skip keys if we aren't connected yet or have been disconnected
 			if(disconnected || session == null)
 				return false;
+			
+			boolean printing = (keymap.isPrintingKey(keyCode) || keyCode == KeyEvent.KEYCODE_SPACE);
 			
 			// otherwise pass through to existing session
 			// print normal keys
 			if (printing) {
 				int metaState = event.getMetaState();
+				
+				slashKeyPressed = tabKeyPressed = false;
 				
 				if (shiftPressed) {
 					metaState |= KeyEvent.META_SHIFT_ON;
@@ -749,15 +777,15 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			// try handling keymode shortcuts
 			if("Use right-side keys".equals(keymode)) {
 				switch(keyCode) {
-				case KeyEvent.KEYCODE_ALT_RIGHT: stdin.write('/'); return true;
-				case KeyEvent.KEYCODE_SHIFT_RIGHT: stdin.write(0x09); return true;
+				case KeyEvent.KEYCODE_ALT_RIGHT: slashKeyPressed = true; return true;
+				case KeyEvent.KEYCODE_SHIFT_RIGHT: tabKeyPressed = true; return true;
 				case KeyEvent.KEYCODE_SHIFT_LEFT: shiftPressed = true; return true;
 				case KeyEvent.KEYCODE_ALT_LEFT: altPressed = true; return true;
 				}
 			} else if("Use left-side keys".equals(keymode)) {
 				switch(keyCode) {
-				case KeyEvent.KEYCODE_ALT_LEFT: stdin.write('/'); return true;
-				case KeyEvent.KEYCODE_SHIFT_LEFT: stdin.write(0x09); return true;
+				case KeyEvent.KEYCODE_ALT_LEFT: slashKeyPressed = true; return true;
+				case KeyEvent.KEYCODE_SHIFT_LEFT: tabKeyPressed = true; return true;
 				case KeyEvent.KEYCODE_SHIFT_RIGHT: shiftPressed = true; return true;
 				case KeyEvent.KEYCODE_ALT_RIGHT: altPressed = true; return true;
 				}
