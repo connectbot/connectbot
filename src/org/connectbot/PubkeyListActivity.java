@@ -267,7 +267,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	}
 	
 	protected void handleAddKey(final PubkeyBean pubkey) {		
-		if(!pubkey.isEncrypted()) {
+		if (pubkey.isEncrypted()) {
 			final View view = inflater.inflate(R.layout.dia_password, null);
 			final EditText passwordField = (EditText)view.findViewById(android.R.id.text1);
 			
