@@ -275,17 +275,32 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		return loadedPubkeys.get(nickname);
 	}
 
-	private void stop() {
+	private void stopWithDelay() {
 		// TODO add in a way to check whether keys loaded are encrypted and only
 		// set timer when we have an encrypted key loaded
 		
 		if (loadedPubkeys.size() > 0) {
-			if (idleTimer == null)
-				idleTimer = new Timer();
+			synchronized (this) {
+				if (idleTimer == null)
+					idleTimer = new Timer(true);
+			}
+
 			idleTimer.schedule(new IdleTask(), IDLE_TIMEOUT);
 		} else {
 			Log.d(TAG, "Stopping background service immediately");
 			stopSelf();
+		}
+	}
+	
+	protected void stopNow() {
+		if (bridges.size() == 0)
+			stopSelf();
+	}
+
+	private synchronized void stopIdleTimer() {
+		if (idleTimer != null) {
+			idleTimer.cancel();
+			idleTimer = null;
 		}
 	}
 	
@@ -299,6 +314,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public IBinder onBind(Intent intent) {
 		Log.i(TAG, "Someone bound to TerminalManager");
 		
+		stopIdleTimer();
+		
 		// Make sure we stay running to maintain the bridges
 		startService(new Intent(this, TerminalManager.class));
 		
@@ -306,11 +323,22 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 	
 	@Override
-	public boolean onUnbind(Intent intent) {
-		if (bridges.size() == 0)
-			stop();
+	public void onRebind(Intent intent) {
+		super.onRebind(intent);
+
+		Log.i(TAG, "Someone rebound to TerminalManager");
 		
-		return false;
+		stopIdleTimer();
+	}
+
+	@Override
+	public boolean onUnbind(Intent intent) {
+		Log.i(TAG, "Someone unbound from TerminalManager");
+		
+		if (bridges.size() == 0)
+			stopWithDelay();
+		
+		return true;
 	}
 
 	private class IdleTask extends TimerTask {
@@ -320,7 +348,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		@Override
 		public void run() {
 			Log.d(TAG, String.format("Stopping service after timeout of ~%d seconds", IDLE_TIMEOUT / 1000));
-			TerminalManager.this.stopSelf();
+			TerminalManager.this.stopNow();
 		}
 	}
 }
