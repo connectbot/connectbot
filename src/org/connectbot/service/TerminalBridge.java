@@ -52,6 +52,7 @@ import android.view.View.OnKeyListener;
 
 import com.trilead.ssh2.ChannelCondition;
 import com.trilead.ssh2.Connection;
+import com.trilead.ssh2.ConnectionInfo;
 import com.trilead.ssh2.ConnectionMonitor;
 import com.trilead.ssh2.DynamicPortForwarder;
 import com.trilead.ssh2.InteractiveCallback;
@@ -171,6 +172,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public PromptHelper promptHelper;
 
 	protected BridgeDisconnectedListener disconnectListener = null;
+
+	protected ConnectionInfo connectionInfo;
 
 	public class HostKeyVerifier implements ServerHostKeyVerifier {
 		
@@ -307,7 +310,26 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		new Thread(new Runnable() {
 			public void run() {
 				try {
-					connection.connect(new HostKeyVerifier());
+					connectionInfo = connection.connect(new HostKeyVerifier());
+					
+					if (connectionInfo.clientToServerCryptoAlgorithm
+							.equals(connectionInfo.serverToClientCryptoAlgorithm)
+							&& connectionInfo.clientToServerMACAlgorithm
+									.equals(connectionInfo.serverToClientMACAlgorithm)) {
+						outputLine(String.format("Using algorithm: %s %s",
+								connectionInfo.clientToServerCryptoAlgorithm,
+								connectionInfo.clientToServerMACAlgorithm));
+					} else {
+						outputLine(String.format(
+								"Client-to-server algorithm: %s %s",
+								connectionInfo.clientToServerCryptoAlgorithm,
+								connectionInfo.clientToServerMACAlgorithm));
+
+						outputLine(String.format(
+								"Server-to-client algorithm: %s %s",
+								connectionInfo.serverToClientCryptoAlgorithm,
+								connectionInfo.serverToClientMACAlgorithm));
+					}
 				} catch (IOException e) {
 					Log.e(TAG, "Problem in SSH connection thread during authentication", e);
 					
@@ -717,7 +739,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			}
 			
 			// skip keys if we aren't connected yet or have been disconnected
-			if(disconnected || session == null)
+			if (disconnected || session == null)
 				return false;
 			
 			boolean printing = (keymap.isPrintingKey(keyCode) || keyCode == KeyEvent.KEYCODE_SPACE);
