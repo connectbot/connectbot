@@ -89,21 +89,27 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	
 	protected final static int AUTH_TRIES = 20;
 
-	private int darken(int color) {
-		return Color.argb(0xFF,
-			(int)(Color.red(color) * 0.8),
-			(int)(Color.green(color) * 0.8),
-			(int)(Color.blue(color) * 0.8)
-		);
-	}
-	
 	private List<PortForwardBean> portForwards = new LinkedList<PortForwardBean>();
 	
-	public int color[] = { Color.BLACK, Color.RED, Color.GREEN, Color.YELLOW,
-		Color.BLUE, Color.MAGENTA, Color.CYAN, Color.WHITE, };
-	
-	private int darkerColor[] = new int[color.length];
-	
+	public int color[] = {
+			0xff000000, // black
+			0xffcc0000, // red
+			0xff00cc00, // green
+			0xffcccc00, // brown
+			0xff0000cc, // blue
+			0xffcc00cc, // purple
+			0xff00cccc, // cyan
+			0xffcccccc, // light grey
+			0xff444444, // dark grey
+			0xffff4444, // light red
+			0xff44ff44, // light green
+			0xffffff44, // yellow
+			0xff4444ff, // light blue
+			0xffff44ff, // light purple
+			0xff44ffff, // light cyan
+			0xffffffff, // white
+	};
+		
 	public final static int COLOR_FG_STD = 7;
 	public final static int COLOR_BG_STD = 0;
 	
@@ -263,10 +269,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		localOutput = new LinkedList<String>();
 		
 		setFontSize(DEFAULT_FONT_SIZE);
-
-		// prepare our "darker" colors
-		for(int i = 0; i < color.length; i++)
-			darkerColor[i] = darken(color[i]);
 		
 		// create terminal buffer and handle outgoing data
 		// this is probably status reply information
@@ -1024,12 +1026,22 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				bg = color[COLOR_BG_STD];
 				
 				// check if foreground color attribute is set
-				if((currAttr & VDUBuffer.COLOR_FG) != 0)
-					fg = color[((currAttr & VDUBuffer.COLOR_FG) >> VDUBuffer.COLOR_FG_SHIFT) - 1];
+				if ((currAttr & VDUBuffer.COLOR_FG) != 0) {
+					fg = (currAttr & VDUBuffer.COLOR_FG) >> VDUBuffer.COLOR_FG_SHIFT;
+					if (fg < 16)
+						fg = color[fg];
+					else
+						fg = ((vt320) buffer).getColor(fg - 16);
+				}
 
 				// check if background color attribute is set
-				if((currAttr & VDUBuffer.COLOR_BG) != 0)
-					bg = darkerColor[((currAttr & VDUBuffer.COLOR_BG) >> VDUBuffer.COLOR_BG_SHIFT) - 1];
+				if ((currAttr & VDUBuffer.COLOR_BG) != 0) {
+					bg = (currAttr & VDUBuffer.COLOR_BG) >> VDUBuffer.COLOR_BG_SHIFT;
+					if (bg < 16)
+						bg = color[bg];
+					else
+						bg = ((vt320) buffer).getColor(bg - 16);	
+				}
 				
 				// support character inversion by swapping background and foreground color
 				if ((currAttr & VDUBuffer.INVERT) != 0) {
@@ -1039,8 +1051,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				}
 				
 				// if black-on-black, try correcting to grey
+				/*
 				if(fg == Color.BLACK && bg == Color.BLACK)
 					fg = Color.GRAY;
+				*/
 				
 				// correctly set bold and underlined attributes if requested
 				defaultPaint.setFakeBoldText((currAttr & VDUBuffer.BOLD) != 0);

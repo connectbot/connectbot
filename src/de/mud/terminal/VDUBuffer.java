@@ -1,7 +1,7 @@
 /*
  * This file is part of "JTA - Telnet/SSH for the JAVA(tm) platform".
  *
- * (c) Matthias L. Jugel, Marcus Mei§ner 1996-2005. All Rights Reserved.
+ * (c) Matthias L. Jugel, Marcus Meiï¿½ner 1996-2005. All Rights Reserved.
  *
  * Please visit http://javatelnet.org/ for updates and contact.
  *
@@ -32,7 +32,7 @@ import java.util.Arrays;
  * all methods to manipulate the buffer that stores characters and their
  * attributes as well as the regions displayed.
  *
- * @author Matthias L. Jugel, Marcus Mei§ner
+ * @author Matthias L. Jugel, Marcus Meiï¿½ner
  * @version $Id: VDUBuffer.java 503 2005-10-24 07:34:13Z marcus $
  */
 public class VDUBuffer {
@@ -81,13 +81,13 @@ public class VDUBuffer {
   /** how much to left shift the foreground color */
   public final static int COLOR_FG_SHIFT = 5;
   /** how much to left shift the background color */
-  public final static int COLOR_BG_SHIFT = 9;
+  public final static int COLOR_BG_SHIFT = 13;
   /** color mask */
-  public final static int COLOR = 0x1fe0;
+  public final static int COLOR = 0x1fffe0;
   /** foreground color mask */
-  public final static int COLOR_FG = 0x1e0;
+  public final static int COLOR_FG = 0x1fe0;
   /** background color mask */
-  public final static int COLOR_BG = 0x1e00;
+  public final static int COLOR_BG = 0x1fe000;
 
   /**
    * Create a new video display buffer with the passed width and height in
