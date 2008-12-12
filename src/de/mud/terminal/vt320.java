@@ -45,9 +45,6 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
 
   /** the debug level */
   private final static int debug = 0;
-
-  // Color palette for xterm 256-color
-  private int[] colorPalette = new int[240];
   
   /**
    * Write an answer back to the remote host. This is needed to be able to
@@ -1078,22 +1075,19 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
 			// Define color palette
 			String[] colorData = osc.split(";");
 
-			String[] rgb = new String[3];
 			try {
-				int colorIndex = Integer.parseInt(colorData[1]) - 16;
+				int colorIndex = Integer.parseInt(colorData[1]);
 
 				if ("rgb:".equals(colorData[2].substring(0, 4))) {
-					rgb = colorData[2].substring(4).split("/");
+					String[] rgb = colorData[2].substring(4).split("/");
 
-					colorPalette[colorIndex] = 0xFF000000
-							| (Integer.parseInt(rgb[0].substring(0, 2), 16) & 0xFF) << 16
-							| (Integer.parseInt(rgb[1].substring(0, 2), 16) & 0xFF) << 8
-							| (Integer.parseInt(rgb[2].substring(0, 2), 16) & 0xFF);
+					int red = Integer.parseInt(rgb[0].substring(0, 2), 16) & 0xFF;
+					int green = Integer.parseInt(rgb[1].substring(0, 2), 16) & 0xFF;
+					int blue = Integer.parseInt(rgb[2].substring(0, 2), 16) & 0xFF;
+					display.setColor(colorIndex, red, green, blue);
 				}
 			} catch (Exception e) {
-				System.out.println("OSC: invalid color sequence encountered");
-				System.out.println(String.format("R:%s, G:%s, B:%s, remain:%s", rgb[0], rgb[1], rgb[2], colorData[2].substring(4)));
-				e.printStackTrace();
+				System.out.println("OSC: invalid color sequence encountered: " + osc);
 			}
 		} else
 			System.out.println("OSC: " + osc);
@@ -1704,6 +1698,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             setMargins(0, rows);
             C = R = 0;
             _SetCursor(0, 0);
+            display.resetColors();
             showCursor(true);
             /*FIXME:*/
             break;
@@ -2704,9 +2699,9 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                   break;
                 case 38:
                   if (DCEvars[i+1] == 5) {
-                      attributes &= ~COLOR_FG;
-                      attributes |= ((DCEvars[i+2]) & 0xff) << COLOR_FG_SHIFT;
-                      i+=2;
+                    attributes &= ~COLOR_FG;
+                    attributes |= ((DCEvars[i+2]) & 0xff) << COLOR_FG_SHIFT;
+                    i+=2;
                   }
                   break;
                 case 39:
@@ -2724,16 +2719,38 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                   attributes |= (DCEvars[i] - 40) << COLOR_BG_SHIFT;
                   break;
                 case 48:
-                    if (DCEvars[i+1] == 5) {
-                        attributes &= ~COLOR_BG;
-                      	attributes |= (DCEvars[i+2]) << COLOR_BG_SHIFT;
-                        i+=2;
-                    }
-                    break;
+                  if (DCEvars[i+1] == 5) {
+                    attributes &= ~COLOR_BG;
+                    attributes |= (DCEvars[i+2]) << COLOR_BG_SHIFT;
+                    i+=2;
+                  }
+                  break;
                 case 49:
                   attributes &= ~COLOR_BG;
                   break;
-
+                case 90:
+                case 91:
+                case 92:
+                case 93:
+                case 94:
+                case 95:
+                case 96:
+                case 97:
+                  attributes &= ~COLOR_FG;
+                  attributes |= (DCEvars[i] - 82) << COLOR_FG_SHIFT;
+                  break;
+                case 100:
+                case 101:
+                case 102:
+                case 103:
+                case 104:
+                case 105:
+                case 106:
+                case 107:
+                  attributes &= ~COLOR_BG;
+                  attributes |= (DCEvars[i] - 92) << COLOR_BG_SHIFT;
+                  break;
+                	
                 default:
                   System.out.println("ESC [ " + DCEvars[i] + " m unknown...");
                   break;
@@ -2791,12 +2808,9 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
     setMargins(0, getRows());
     C = R = 0;
     _SetCursor(0, 0);
+    display.resetColors();
     showCursor(true);
     /*FIXME:*/
     term_state = TSTATE_DATA;
-  }
-  
-  public int getColor(int colorIndex) {
-	  return colorPalette[colorIndex];
   }
 }
