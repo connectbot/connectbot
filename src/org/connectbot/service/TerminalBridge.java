@@ -1011,11 +1011,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				
 				// check if foreground color attribute is set
 				if ((currAttr & VDUBuffer.COLOR_FG) != 0)
-					fg = color[(currAttr & VDUBuffer.COLOR_FG) >> VDUBuffer.COLOR_FG_SHIFT];
+					fg = color[((currAttr & VDUBuffer.COLOR_FG) >> VDUBuffer.COLOR_FG_SHIFT) - 1];
 
 				// check if background color attribute is set
 				if ((currAttr & VDUBuffer.COLOR_BG) != 0)
-					bg = color[(currAttr & VDUBuffer.COLOR_BG) >> VDUBuffer.COLOR_BG_SHIFT];
+					bg = color[((currAttr & VDUBuffer.COLOR_BG) >> VDUBuffer.COLOR_BG_SHIFT) - 1];
 				
 				// support character inversion by swapping background and foreground color
 				if ((currAttr & VDUBuffer.INVERT) != 0) {

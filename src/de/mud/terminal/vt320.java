@@ -2695,13 +2695,13 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                 case 36:
                 case 37:
                   attributes &= ~COLOR_FG;
-                  attributes |= (DCEvars[i] - 30) << COLOR_FG_SHIFT;
+                  attributes |= ((DCEvars[i] - 30) + 1)<< COLOR_FG_SHIFT;
                   break;
                 case 38:
                   if (DCEvars[i+1] == 5) {
                     attributes &= ~COLOR_FG;
-                    attributes |= ((DCEvars[i+2]) & 0xff) << COLOR_FG_SHIFT;
-                    i+=2;
+                    attributes |= ((DCEvars[i + 2]) + 1) << COLOR_FG_SHIFT;
+                    i += 2;
                   }
                   break;
                 case 39:
@@ -2716,13 +2716,13 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                 case 46:
                 case 47:
                   attributes &= ~COLOR_BG;
-                  attributes |= (DCEvars[i] - 40) << COLOR_BG_SHIFT;
+                  attributes |= ((DCEvars[i] - 40) + 1) << COLOR_BG_SHIFT;
                   break;
                 case 48:
                   if (DCEvars[i+1] == 5) {
                     attributes &= ~COLOR_BG;
-                    attributes |= (DCEvars[i+2]) << COLOR_BG_SHIFT;
-                    i+=2;
+                    attributes |= (DCEvars[i + 2] + 1) << COLOR_BG_SHIFT;
+                    i += 2;
                   }
                   break;
                 case 49:
@@ -2737,7 +2737,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                 case 96:
                 case 97:
                   attributes &= ~COLOR_FG;
-                  attributes |= (DCEvars[i] - 82) << COLOR_FG_SHIFT;
+                  attributes |= ((DCEvars[i] - 82) + 1) << COLOR_FG_SHIFT;
                   break;
                 case 100:
                 case 101:
@@ -2748,7 +2748,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                 case 106:
                 case 107:
                   attributes &= ~COLOR_BG;
-                  attributes |= (DCEvars[i] - 92) << COLOR_BG_SHIFT;
+                  attributes |= ((DCEvars[i] - 92) + 1) << COLOR_BG_SHIFT;
                   break;
                 	
                 default:

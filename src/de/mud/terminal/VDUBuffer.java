@@ -81,13 +81,13 @@ public class VDUBuffer {
   /** how much to left shift the foreground color */
   public final static int COLOR_FG_SHIFT = 5;
   /** how much to left shift the background color */
-  public final static int COLOR_BG_SHIFT = 13;
+  public final static int COLOR_BG_SHIFT = 14;
   /** color mask */
-  public final static int COLOR = 0x1fffe0;
+  public final static int COLOR = 0x7fffe0;    /* 0000 0000 0111 1111 1111 1111 1110 0000 */
   /** foreground color mask */
-  public final static int COLOR_FG = 0x1fe0;
+  public final static int COLOR_FG = 0x3fe0;   /* 0000 0000 0000 0000 0011 1111 1110 0000 */
   /** background color mask */
-  public final static int COLOR_BG = 0x1fe000;
+  public final static int COLOR_BG = 0x7fc000; /* 0000 0000 0111 1111 1100 0000 0000 0000 */
 
   /**
    * Create a new video display buffer with the passed width and height in
