@@ -82,7 +82,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	
 	public final static int DEFAULT_FONT_SIZE = 10;
 	
-	public final static String ENCODING = "ASCII";
 	public static final String AUTH_PUBLICKEY = "publickey",
 		AUTH_PASSWORD = "password",
 		AUTH_KEYBOARDINTERACTIVE = "keyboard-interactive";
@@ -576,7 +575,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 							if ((newConditions & ChannelCondition.STDOUT_DATA) != 0) {
 								while (stdout.available() > 0) {
 									n = stdout.read(b);
-									((vt320)buffer).putString(new String(b, 0, n, ENCODING));
+									((vt320)buffer).putString(new String(b, 0, n, host.getEncoding()));
 								}
 								redraw();
 							}
@@ -585,7 +584,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 								while (stderr.available() > 0) {
 									n = stderr.read(b);
 									// TODO I don't know.. do we want this? We were ignoring it before
-									Log.d(TAG, String.format("Read data from stderr: %s", new String(b, 0, n, ENCODING)));
+									Log.d(TAG, String.format("Read data from stderr: %s", new String(b, 0, n, host.getEncoding())));
 								}
 							}
 							

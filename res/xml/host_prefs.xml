@@ -39,7 +39,7 @@
 
 	<ListPreference
 		android:key="pubkeyid"
-		android:title="Use key authentication"
+		android:title="Use pubkey authentication"
 		android:entries="@array/list_pubkeyids"
 		android:entryValues="@array/list_pubkeyids"
 		/>
@@ -62,6 +62,14 @@
 		android:summary="Disable this preference to only use port forwards"
 		/>
 
+	<ListPreference
+		android:key="encoding"
+		android:title="Encoding"
+		android:summary="Character encoding for the host"
+		android:entries="@array/list_encodings"
+		android:entryValues="@array/list_encodings"
+		/>
+	
 	<PreferenceCategory
 		android:title="Connection settings">
 		

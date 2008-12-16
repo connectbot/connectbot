@@ -54,4 +54,11 @@
 		<item>Hints</item>
 		<item>Keyboard</item>
 	</string-array>
+
+	<string-array name="list_encodings">
+    	<item value="ASCII">ASCII</item>
+    	<item value="ISO8859_1">ISO 8859-1</item>
+    	<item value="UTF-8">UTF-8</item>
+   	</string-array>
+	
 </resources>

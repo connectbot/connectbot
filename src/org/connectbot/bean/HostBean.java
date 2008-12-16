@@ -41,6 +41,7 @@ public class HostBean extends AbstractBean {
 	private long pubkeyId = -1;
 	private boolean wantSession = true;
 	private boolean compression = false;
+	private String encoding = HostDatabase.ENCODING_ASCII;
 
 	public HostBean() {
 		
@@ -137,6 +138,14 @@ public class HostBean extends AbstractBean {
 	public boolean getCompression() {
 		return compression;
 	}
+
+	public void setEncoding(String encoding) {
+		this.encoding  = encoding;
+	}
+
+	public String getEncoding() {
+		return this.encoding;
+	}
 	
 	public String getDescription() {
 		String description = String.format("%s@%s", username, hostname);
@@ -163,6 +172,7 @@ public class HostBean extends AbstractBean {
 		values.put(HostDatabase.FIELD_HOST_PUBKEYID, pubkeyId);
 		values.put(HostDatabase.FIELD_HOST_WANTSESSION, Boolean.toString(wantSession));
 		values.put(HostDatabase.FIELD_HOST_COMPRESSION, Boolean.toString(compression));
+		values.put(HostDatabase.FIELD_HOST_ENCODING, encoding);
 		
 		return values;
 	}

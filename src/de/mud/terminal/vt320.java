@@ -70,10 +70,29 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
 
     if (len > 0) {
       markLine(R, 1);
+      int lastChar = -1;
+      
       for (int i = 0; i < len; i++) {
         // System.err.print(s.charAt(i)+"("+(int)s.charAt(i)+")");
-        putChar(s.charAt(i), false);
+    	char c = s.charAt(i);
+    	if (!Character.isLowSurrogate(c) && !Character.isHighSurrogate(c)) {
+          if (Character.getType(c) == Character.NON_SPACING_MARK) {
+            if (lastChar != -1) {
+              char nc = Precomposer.precompose((char) lastChar, c);
+              putChar(nc, false);
+              lastChar = -1;
+            }
+          } else {
+        	if (lastChar != -1)
+              putChar((char) lastChar, false);
+            lastChar = c;
+          }
+	    }
       }
+      
+      if (lastChar != -1)
+        putChar((char) lastChar, false);
+      
       setCursorPosition(C, R);
       redraw();
     }

@@ -44,7 +44,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String TAG = HostDatabase.class.toString();
 	
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 14;
+	public final static int DB_VERSION = 15;
 	
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -60,6 +60,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_HOST_PUBKEYID = "pubkeyid";
 	public final static String FIELD_HOST_WANTSESSION = "wantsession";
 	public final static String FIELD_HOST_COMPRESSION = "compression";
+	public final static String FIELD_HOST_ENCODING = "encoding";
 	
 	public final static String TABLE_PORTFORWARDS = "portforwards";
 	public final static String FIELD_PORTFORWARD_HOSTID = "hostid";
@@ -78,6 +79,10 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String PORTFORWARD_REMOTE = "remote";
 	public final static String PORTFORWARD_DYNAMIC4 = "dynamic4";
 	public final static String PORTFORWARD_DYNAMIC5 = "dynamic5";
+	
+	public final static String ENCODING_ASCII = "ASCII";
+	public final static String ENCODING_UTF8 = "UTF-8";
+	public final static String ENCODING_ISO88591 = "ISO8859_1";
 
 	public final static long PUBKEYID_NEVER = -2;
 	public final static long PUBKEYID_ANY = -1;
@@ -102,8 +107,8 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_HOST_POSTLOGIN + " TEXT, "
 				+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ", "
 				+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "', "
-				+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "')");
-
+				+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
+				+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_ASCII + "')");
 		// insert a few sample hosts, none of which probably connect
 		//this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, COLOR_GRAY);
 		//this.createHost(db, "cron@server.example.com", "cron", "server.example.com", 22, COLOR_GRAY, PUBKEYID_ANY);
@@ -148,6 +153,9 @@ public class HostDatabase extends SQLiteOpenHelper {
 		case 13:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "'");
+		case 14:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_ASCII + "'");
 		}
 	}
 	
@@ -216,7 +224,8 @@ public class HostDatabase extends SQLiteOpenHelper {
 			COL_POSTLOGIN = c.getColumnIndexOrThrow(FIELD_HOST_POSTLOGIN),
 			COL_PUBKEYID = c.getColumnIndexOrThrow(FIELD_HOST_PUBKEYID),
 			COL_WANTSESSION = c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION),
-			COL_COMPRESSION = c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION);
+			COL_COMPRESSION = c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION),
+			COL_ENCODING = c.getColumnIndexOrThrow(FIELD_HOST_ENCODING);
 		
 		while (c.moveToNext()) {
 			HostBean host = new HostBean();
@@ -233,6 +242,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 			host.setPubkeyId(c.getLong(COL_PUBKEYID));
 			host.setWantSession(Boolean.valueOf(c.getString(COL_WANTSESSION)));
 			host.setCompression(Boolean.valueOf(c.getString(COL_COMPRESSION)));
+			host.setEncoding(c.getString(COL_ENCODING));
 			
 			hosts.add(host);
 		}
@@ -312,6 +322,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 		host.setPubkeyId(c.getLong(c.getColumnIndexOrThrow(FIELD_HOST_PUBKEYID)));
 		host.setWantSession(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION))));
 		host.setCompression(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION))));
+		host.setEncoding(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_ENCODING)));
 		
 		return host;
 	}
