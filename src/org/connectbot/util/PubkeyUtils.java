@@ -162,17 +162,20 @@ public class PubkeyUtils {
 	 * OpenSSH compatibility methods 
 	 */
 	
-	public static String convertToOpenSSHFormat(PublicKey pk) throws IOException, InvalidKeyException {
+	public static String convertToOpenSSHFormat(PublicKey pk, String nickname) throws IOException, InvalidKeyException {
+		if (nickname == null)
+			nickname = "connectbot@android";
+
 		if (pk instanceof RSAPublicKey) {
 			String data = "ssh-rsa ";
 			data += String.valueOf(Base64.encode(RSASHA1Verify.encodeSSHRSAPublicKey(
 					(com.trilead.ssh2.signature.RSAPublicKey)convertToTrilead(pk))));
-			return data + " connectbot@android";
+			return data + " " + nickname;
 		} else if (pk instanceof DSAPublicKey) {
 			String data = "ssh-dss ";
 			data += String.valueOf(Base64.encode(DSASHA1Verify.encodeSSHDSAPublicKey(
 					(com.trilead.ssh2.signature.DSAPublicKey)convertToTrilead(pk))));
-			return data + " connectbot@android";
+			return data + " " + nickname;
 		}
 		
 		throw new InvalidKeyException("Unknown key type");

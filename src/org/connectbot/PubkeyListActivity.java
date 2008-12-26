@@ -369,14 +369,14 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			}
 		});
 
-		MenuItem copyToClipboard = menu.add(R.string.pubkey_copy_clipboard);
-		copyToClipboard.setEnabled(!imported);
-		copyToClipboard.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+		MenuItem copyPublicToClipboard = menu.add(R.string.pubkey_copy_clipboard);
+		copyPublicToClipboard.setEnabled(!imported);
+		copyPublicToClipboard.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				try {
 					PublicKey pk = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
-					String openSSHPubkey = new String(PubkeyUtils.convertToOpenSSHFormat(pk));
-										
+					String openSSHPubkey = new String(PubkeyUtils.convertToOpenSSHFormat(pk, pubkey.getNickname()));
+
 					clipboard.setText(openSSHPubkey);
 				} catch (Exception e) {
 					e.printStackTrace();

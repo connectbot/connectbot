@@ -394,7 +394,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			}
 		}
 
-		return this.tryPublicKey(host.getUsername(), host.getNickname(), trileadKey);
+		return this.tryPublicKey(host.getUsername(), pubkey.getNickname(), trileadKey);
 		
 	}
 	
