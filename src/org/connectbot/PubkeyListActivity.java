@@ -369,7 +369,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			}
 		});
 
-		MenuItem copyPublicToClipboard = menu.add(R.string.pubkey_copy_clipboard);
+		MenuItem copyPublicToClipboard = menu.add(R.string.pubkey_copy_public);
 		copyPublicToClipboard.setEnabled(!imported);
 		copyPublicToClipboard.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {

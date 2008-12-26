@@ -33,7 +33,8 @@
 	<string name="pubkey_gather_entropy">Gathering Entropy</string>
     <string name="pubkey_touch_prompt">Touch this box to gather randomness: </string>
     <string name="pubkey_generating">Generating key pair...</string>
-    <string name="pubkey_copy_clipboard">Copy signature</string>
+    <string name="pubkey_copy_private">Copy private key</string>
+    <string name="pubkey_copy_public">Copy public key</string>
     <string name="pubkey_list_empty">Tap "Menu" to create\nor import key pairs.</string>
     <string name="pubkey_unknown_format">Unknown format</string>
     <string name="pubkey_change_password">Change Password</string>
