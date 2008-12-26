@@ -29,11 +29,12 @@ import android.content.ContentValues;
  */
 abstract class AbstractBean {
 	public abstract ContentValues getValues();
+	public abstract String getBeanName();
 	
 	public String toXML() {
 		XmlBuilder xml = new XmlBuilder();
 		
-		xml.append("<host>");
+		xml.append(String.format("<%s>", getBeanName()));
 
 		ContentValues values = getValues();
 		for (Entry<String, Object> entry : values.valueSet()) {
@@ -41,7 +42,7 @@ abstract class AbstractBean {
 			if (value != null)
 				xml.append(entry.getKey(), value);
 		}
-		xml.append("</host>");
+		xml.append(String.format("</%s>", getBeanName()));
 		
 		return xml.toString();
 	}

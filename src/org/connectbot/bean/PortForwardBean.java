@@ -27,6 +27,8 @@ import android.content.ContentValues;
  *
  */
 public class PortForwardBean extends AbstractBean {
+	public static final String BEAN_NAME = "portforward";
+	
 	/* Database fields */
 	private long id = -1;
 	private long hostId = -1;
@@ -72,6 +74,10 @@ public class PortForwardBean extends AbstractBean {
 		this.setDest(dest);
 	}
 
+	public String getBeanName() {
+		return BEAN_NAME;
+	}
+	
 	/**
 	 * @param id the id to set
 	 */

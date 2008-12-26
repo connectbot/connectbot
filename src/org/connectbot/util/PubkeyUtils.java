@@ -19,26 +19,40 @@
 package org.connectbot.util;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.AlgorithmParameters;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyFactory;
+import java.security.KeyPair;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.DSAPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.InvalidParameterSpecException;
+import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.EncryptedPrivateKeyInfo;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.PBEParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import com.trilead.ssh2.crypto.Base64;
@@ -46,6 +60,9 @@ import com.trilead.ssh2.signature.DSASHA1Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
 
 public class PubkeyUtils {
+	public static final String PKCS8_START = "-----BEGIN PRIVATE KEY-----";
+	public static final String PKCS8_END = "-----END PRIVATE KEY-----";
+	
 	public static String formatKey(Key key){
 		String algo = key.getAlgorithm();
 		String fmt = key.getFormat();
@@ -124,6 +141,41 @@ public class PubkeyUtils {
 		return kf.generatePublic(pubKeySpec);
 	}
 	
+	public static KeyPair recoverKeyPair(byte[] encoded) throws NoSuchAlgorithmException, InvalidKeySpecException {
+		KeySpec privKeySpec = new PKCS8EncodedKeySpec(encoded);
+		KeySpec pubKeySpec;
+
+		PrivateKey priv;
+		PublicKey pub;
+		KeyFactory kf;
+		try {
+			kf = KeyFactory.getInstance(PubkeyDatabase.KEY_TYPE_RSA);
+			priv = kf.generatePrivate(privKeySpec);
+
+			pubKeySpec = new RSAPublicKeySpec(((RSAPrivateCrtKey) priv)
+					.getModulus(), ((RSAPrivateCrtKey) priv)
+					.getPublicExponent());
+
+			pub = kf.generatePublic(pubKeySpec);
+		} catch (ClassCastException e) {
+			kf = KeyFactory.getInstance(PubkeyDatabase.KEY_TYPE_DSA);
+			priv = kf.generatePrivate(privKeySpec);
+
+			DSAParams params = ((DSAPrivateKey) priv).getParams();
+
+			// Calculate public key Y
+			BigInteger y = params.getG().modPow(((DSAPrivateKey) priv).getX(),
+					params.getP());
+
+			pubKeySpec = new DSAPublicKeySpec(y, params.getP(), params.getQ(),
+					params.getG());
+
+			pub = kf.generatePublic(pubKeySpec);
+		}
+
+		return new KeyPair(pub, priv);
+	}
+	
 	/*
 	 * Trilead compatibility methods
 	 */
@@ -180,4 +232,67 @@ public class PubkeyUtils {
 		
 		throw new InvalidKeyException("Unknown key type");
 	}
+	
+    public static String exportPEM(PrivateKey key, String secret) throws NoSuchAlgorithmException, InvalidParameterSpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, InvalidKeySpecException, IllegalBlockSizeException, IOException {
+		StringBuilder sb = new StringBuilder();
+
+		byte[] data = key.getEncoded();
+
+		sb.append(PKCS8_START);
+		sb.append('\n');
+
+		if (secret != null) {
+			byte[] salt = new byte[8];
+			SecureRandom random = new SecureRandom();
+			random.nextBytes(salt);
+			
+			PBEParameterSpec defParams = new PBEParameterSpec(salt, 1);
+			AlgorithmParameters params = AlgorithmParameters.getInstance(key.getAlgorithm());
+			
+			params.init(defParams);
+			
+			PBEKeySpec pbeSpec = new PBEKeySpec(secret.toCharArray());
+			
+			SecretKeyFactory keyFact = SecretKeyFactory.getInstance(key.getAlgorithm());
+			Cipher cipher = Cipher.getInstance(key.getAlgorithm());
+			cipher.init(Cipher.WRAP_MODE, keyFact.generateSecret(pbeSpec), params);
+			
+			byte[] wrappedKey = cipher.wrap(key);
+			
+			EncryptedPrivateKeyInfo pinfo = new EncryptedPrivateKeyInfo(params, wrappedKey);
+			
+			data = pinfo.getEncoded();
+			
+			sb.append("Proc-Type: 4,ENCRYPTED\n");
+			sb.append("DEK-Info: DES-EDE3-CBC,");
+			sb.append(encodeHex(salt));
+			sb.append("\n\n");
+		}
+
+		int i = sb.length();
+		sb.append(Base64.encode(data));
+		for (i += 63; i < sb.length(); i += 64) {
+			sb.insert(i, "\n");
+		}
+
+		sb.append('\n');
+		sb.append(PKCS8_END);
+		sb.append('\n');
+
+		return sb.toString();
+	}
+    
+    final static private char hexDigit[] = { '0', '1', '2', '3', '4', '5', '6',
+			'7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+    private static String encodeHex(byte[] bytes) {
+    	char[] hex = new char[bytes.length * 2];
+    	
+    	int i = 0;
+    	for (byte b : bytes) {
+    		hex[i++] = hexDigit[(b >> 4) & 0x0f];
+    		hex[i++] = hexDigit[b & 0x0f];
+    	}
+    	
+    	return new String(hex);
+    }
 }

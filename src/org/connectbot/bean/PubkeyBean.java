@@ -36,6 +36,8 @@ import android.content.ContentValues;
  *
  */
 public class PubkeyBean extends AbstractBean {
+	public static final String BEAN_NAME = "pubkey";
+	
 	/* Database fields */
 	private long id;
 	private String nickname;
@@ -48,6 +50,10 @@ public class PubkeyBean extends AbstractBean {
 	/* Transient values */
 	private boolean unlocked = false;
 	private Object unlockedPrivate = null;
+	
+	public String getBeanName() {
+		return BEAN_NAME;
+	}
 	
 	public void setId(long id) {
 		this.id = id;
@@ -128,7 +134,6 @@ public class PubkeyBean extends AbstractBean {
 	public ContentValues getValues() {
 		ContentValues values = new ContentValues();
 		
-		values.put("_id", id);
 		values.put(PubkeyDatabase.FIELD_PUBKEY_NICKNAME, nickname);
 		values.put(PubkeyDatabase.FIELD_PUBKEY_TYPE, type);
 		values.put(PubkeyDatabase.FIELD_PUBKEY_PRIVATE, privateKey);

@@ -26,6 +26,8 @@ import android.content.ContentValues;
  *
  */
 public class HostBean extends AbstractBean {
+	public static final String BEAN_NAME = "host";
+	
 	/* Database fields */
 	private long id = -1;
 	private String nickname = null;
@@ -45,6 +47,10 @@ public class HostBean extends AbstractBean {
 
 	public HostBean() {
 		
+	}
+	
+	public String getBeanName() {
+		return BEAN_NAME;
 	}
 	
 	public HostBean(String nickname, String username, String hostname, int port) {

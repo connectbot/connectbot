@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Collections;
@@ -66,6 +67,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.crypto.PEMDecoder;
 import com.trilead.ssh2.crypto.PEMStructure;
 
@@ -230,27 +232,49 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 					.setTitle(R.string.pubkey_list_pick)
 					.setItems(namesList, new OnClickListener() {
 						public void onClick(DialogInterface arg0, int arg1) {
+							PubkeyBean pubkey = new PubkeyBean();
+
 							// find the exact file selected
 							String name = namesList[arg1];
+							pubkey.setNickname(name);
 							File actual = new File(sdcard, name);
 							
 							// parse the actual key once to check if its encrypted
 							// then save original file contents into our database
 							try {
 								byte[] raw = readRaw(actual);
-								PEMStructure struct = PEMDecoder.parsePEM(new String(raw).toCharArray());
-								boolean encrypted = PEMDecoder.isPEMEncrypted(struct);
+								
+								String data = new String(raw);
+								if (data.startsWith(PubkeyUtils.PKCS8_START)) {
+									int start = data.indexOf(PubkeyUtils.PKCS8_START) + PubkeyUtils.PKCS8_START.length();
+									int end = data.indexOf(PubkeyUtils.PKCS8_END);
+									
+									if (end > start) {
+										char[] encoded = data.substring(start, end - 1).toCharArray();
+										Log.d(TAG, "encoded: " + new String(encoded));
+										byte[] decoded = Base64.decode(encoded);
+										
+										KeyPair kp = PubkeyUtils.recoverKeyPair(decoded);
+										
+										pubkey.setType(kp.getPrivate().getAlgorithm());
+										pubkey.setPrivateKey(kp.getPrivate().getEncoded());
+										pubkey.setPublicKey(kp.getPublic().getEncoded());
+									} else {
+										Log.e(TAG, "Problem parsing PKCS#8 file; corrupt?");
+										Toast.makeText(PubkeyListActivity.this,
+												R.string.pubkey_import_parse_problem,
+												Toast.LENGTH_LONG).show();
+									}
+								} else {
+									PEMStructure struct = PEMDecoder.parsePEM(new String(raw).toCharArray());
+									pubkey.setEncrypted(PEMDecoder.isPEMEncrypted(struct));
+									pubkey.setType(PubkeyDatabase.KEY_TYPE_IMPORTED);
+									pubkey.setPrivateKey(raw);
+								}
 								
 								// write new value into database
-								PubkeyBean pubkey = new PubkeyBean();
-								pubkey.setNickname(name);
-								pubkey.setType(PubkeyDatabase.KEY_TYPE_IMPORTED);
-								pubkey.setPrivateKey(raw);
-								pubkey.setEncrypted(encrypted);
-								
 								pubkeydb.savePubkey(pubkey);
 								updateHandler.sendEmptyMessage(-1);
-								
 							} catch(Exception e) {
 								Log.e(TAG, "Problem parsing imported private key", e);
 								Toast.makeText(PubkeyListActivity.this, R.string.pubkey_import_parse_problem, Toast.LENGTH_LONG).show();
@@ -338,7 +362,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		// prompt for password as needed for passworded keys
 		
 		// cant change password or clipboard imported keys
-		boolean imported = PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType());
+		final boolean imported = PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType());
 		final boolean loaded = bound.isKeyLoaded(pubkey.getNickname());
 
 		MenuItem load = menu.add(loaded ? R.string.pubkey_memory_unload : R.string.pubkey_memory_load);
@@ -385,6 +409,28 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			}
 		});
 		
+        MenuItem copyPrivateToClipboard = menu.add(R.string.pubkey_copy_private);
+        copyPrivateToClipboard.setEnabled(!pubkey.isEncrypted() || imported);
+		copyPrivateToClipboard.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				try {
+					String data = null;
+					
+					if (imported)
+						data = new String(pubkey.getPrivateKey());
+					else {
+						PrivateKey pk = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType());
+						data = new String(PubkeyUtils.exportPEM(pk, null));
+					}
+					
+					clipboard.setText(data);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return true;
+			}
+		});
+        
 		MenuItem changePassword = menu.add(R.string.pubkey_change_password);
 		changePassword.setEnabled(!imported);
 		changePassword.setOnMenuItemClickListener(new OnMenuItemClickListener() {
