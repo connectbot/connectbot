@@ -2,9 +2,12 @@
 <resources>
     
     <string-array name="list_emulation_modes">
+    	<item>xterm-color</item>
+    	<item>xterm-256color</item>
+    	<item>xterm</item>
+		<item>vt100</item>
+		<item>ansi</item>
         <item>screen</item>
-        <item>vt100</item>
-        <item>xterm</item>
     </string-array>
     
     <string-array name="list_rotation">
