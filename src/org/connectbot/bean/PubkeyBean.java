@@ -17,14 +17,7 @@
 */
 package org.connectbot.bean;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.spec.InvalidKeySpecException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
@@ -144,16 +137,12 @@ public class PubkeyBean extends AbstractBean {
 		return values;
 	}
 
-	public boolean changePassword(String oldPassword, String newPassword) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException {
+	public boolean changePassword(String oldPassword, String newPassword) throws Exception {
 		PrivateKey priv;
 		
 		try {
 			priv = PubkeyUtils.decodePrivate(getPrivateKey(), getType(), oldPassword);
-		} catch (InvalidKeyException e) {
-			return false;
-		} catch (BadPaddingException e) {
-			return false;
-		} catch (InvalidKeySpecException e) {
+		} catch (Exception e) {
 			return false;
 		}
 		

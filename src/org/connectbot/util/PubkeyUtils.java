@@ -44,6 +44,7 @@ import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -55,6 +56,8 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import android.util.Log;
+
 import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.signature.DSASHA1Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
@@ -62,6 +65,12 @@ import com.trilead.ssh2.signature.RSASHA1Verify;
 public class PubkeyUtils {
 	public static final String PKCS8_START = "-----BEGIN PRIVATE KEY-----";
 	public static final String PKCS8_END = "-----END PRIVATE KEY-----";
+	
+	// Size in bytes of salt to use.
+	private static final int SALT_SIZE = 8;
+	
+	// Number of iterations for password hashing. PKCS#5 recommends 1000
+	private static final int ITERATIONS = 1000;
 	
 	public static String formatKey(Key key){
 		String algo = key.getAlgorithm();
@@ -99,12 +108,36 @@ public class PubkeyUtils {
 		return c.doFinal(data);
 	}	
 	
-	public static byte[] encrypt(byte[] cleartext, String secret) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-		return cipher(Cipher.ENCRYPT_MODE, cleartext, secret.getBytes());
+	public static byte[] encrypt(byte[] cleartext, String secret) throws Exception {
+		byte[] salt = new byte[SALT_SIZE];
+
+		byte[] ciphertext = Encryptor.encrypt(salt, ITERATIONS, secret, cleartext);
+
+		byte[] complete = new byte[salt.length + ciphertext.length];
+
+		System.arraycopy(salt, 0, complete, 0, salt.length);
+		System.arraycopy(ciphertext, 0, complete, salt.length, ciphertext.length);
+
+		Arrays.fill(salt, (byte) 0x00);
+		Arrays.fill(ciphertext, (byte) 0x00);
+
+		return complete;
 	}
 	
-	public static byte[] decrypt(byte[] ciphertext, String secret) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-		return cipher(Cipher.DECRYPT_MODE, ciphertext, secret.getBytes());
+	public static byte[] decrypt(byte[] complete, String secret) throws Exception {
+		try {
+			byte[] salt = new byte[SALT_SIZE];
+			byte[] ciphertext = new byte[complete.length - salt.length];
+			
+			System.arraycopy(complete, 0, salt, 0, salt.length);
+			System.arraycopy(complete, salt.length, ciphertext, 0, ciphertext.length);
+			
+			return Encryptor.decrypt(salt, ITERATIONS, secret, ciphertext);
+		} catch (Exception e) {
+			Log.d("decrypt", "Could not decrypt with new method", e);
+			// We might be using the old encryption method.
+			return cipher(Cipher.DECRYPT_MODE, complete, secret.getBytes());
+		}
 	}
 	
 	public static byte[] getEncodedPublic(PublicKey pk) {
@@ -115,7 +148,7 @@ public class PubkeyUtils {
 		return new PKCS8EncodedKeySpec(pk.getEncoded()).getEncoded();
 	}
 	
-	public static byte[] getEncodedPrivate(PrivateKey pk, String secret) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+	public static byte[] getEncodedPrivate(PrivateKey pk, String secret) throws Exception {
 		if (secret.length() > 0)
 			return encrypt(getEncodedPrivate(pk), secret);
 		else
@@ -128,7 +161,7 @@ public class PubkeyUtils {
 		return kf.generatePrivate(privKeySpec);
 	}
 	
-	public static PrivateKey decodePrivate(byte[] encoded, String keyType, String secret) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException {
+	public static PrivateKey decodePrivate(byte[] encoded, String keyType, String secret) throws Exception {
 		if (secret != null && secret.length() > 0)
 			return decodePrivate(decrypt(encoded, secret), keyType);
 		else
