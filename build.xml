@@ -282,7 +282,6 @@
         </exec>
 
 	<loadfile property="android.manifest" srcFile="${basedir}/AndroidManifest.xml" encoding="${encoding}" />
-<!--
 	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${lib.dir}/ant/ant-contrib.jar"/>
         <propertyregex property="version.number" input="${android.manifest}" select="\1"
  		regexp='android:versionName="([0-9\.]+)"'
@@ -296,7 +295,6 @@
 		replace='\1${ant.project.name} ${version.number} (r${svn.revision} ${build.date})\2' />
 
 	<echo>Updated "msg_version" to: ${ant.project.name} ${version.number} (r${svn.revision} ${build.date})</echo>
--->
     </target>
 
 </project>
