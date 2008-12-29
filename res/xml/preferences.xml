@@ -106,6 +106,14 @@
 			android:summary="Prevent Wi-Fi from turning off when a session is active"
 			android:defaultValue="true"
 			/>
+
+		<CheckBoxPreference
+			android:key="@string/pref_bumpyarrows"
+			android:title="Bumpy arrow keys"
+			android:summary="Vibrate when sending arrow keys from trackball, useful for laggy connections"
+			android:defaultValue="true"
+			/>
+
 	</PreferenceCategory>
 
 </PreferenceScreen>

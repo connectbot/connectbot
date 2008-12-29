@@ -49,6 +49,8 @@ import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.os.Vibrator;
+import android.content.Context;
 
 import com.trilead.ssh2.ChannelCondition;
 import com.trilead.ssh2.Connection;
@@ -142,9 +144,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	protected KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
 
 	public int charWidth = -1;
-
 	public int charHeight = -1;
-
 	private int charDescent = -1;
 
 	private float fontSize = -1;
@@ -675,6 +675,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public void refreshKeymode() {
 		keymode = manager.getKeyMode();
 	}
+
+	private boolean bumpyArrows = false;
+	public Vibrator vibrator = null;
+
+	public static final long VIBRATE_DURATION = 30;
 	
 	/**
 	 * Handle onKey() events coming down from a {@link TerminalView} above us.
@@ -822,10 +827,26 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				
 			case KeyEvent.KEYCODE_DEL: stdin.write(0x08); return true;
 			case KeyEvent.KEYCODE_ENTER: ((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', event.getMetaState()); return true;
-			case KeyEvent.KEYCODE_DPAD_LEFT: ((vt320)buffer).keyPressed(vt320.KEY_LEFT, ' ', event.getMetaState()); return true;
-			case KeyEvent.KEYCODE_DPAD_UP: ((vt320)buffer).keyPressed(vt320.KEY_UP, ' ', event.getMetaState()); return true;
-			case KeyEvent.KEYCODE_DPAD_DOWN: ((vt320)buffer).keyPressed(vt320.KEY_DOWN, ' ', event.getMetaState()); return true;
-			case KeyEvent.KEYCODE_DPAD_RIGHT: ((vt320)buffer).keyPressed(vt320.KEY_RIGHT, ' ', event.getMetaState()); return true;
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				((vt320)buffer).keyPressed(vt320.KEY_LEFT, ' ', event.getMetaState());
+				this.tryKeyVibrate();
+				return true;
+
+			case KeyEvent.KEYCODE_DPAD_UP:
+				((vt320)buffer).keyPressed(vt320.KEY_UP, ' ', event.getMetaState());
+				this.tryKeyVibrate();
+				return true;
+
+			case KeyEvent.KEYCODE_DPAD_DOWN:
+				((vt320)buffer).keyPressed(vt320.KEY_DOWN, ' ', event.getMetaState());
+				this.tryKeyVibrate();
+				return true;
+
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				((vt320)buffer).keyPressed(vt320.KEY_RIGHT, ' ', event.getMetaState());
+				this.tryKeyVibrate();
+				return true;
+
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 				// TODO: Add some visual indication of Ctrl state
 				if (ctrlPressed) {
@@ -853,6 +874,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		return false;
 	}
 	
+	public void tryKeyVibrate() {
+		if(bumpyArrows && vibrator != null)
+			vibrator.vibrate(VIBRATE_DURATION);
+	}
 
 	/**
 	 * Request a different font size. Will make call to parentChanged() to make
@@ -886,6 +911,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		int width = parent.getWidth();
 		int height = parent.getHeight();
 		
+		this.bumpyArrows = manager.prefs.getBoolean(manager.res.getString(R.string.pref_bumpyarrows), true);
+		if(parent != null) {
+			this.vibrator = (Vibrator) parent.getContext().getSystemService(Context.VIBRATOR_SERVICE);
+		}
+
 		if (!forcedSize) {
 			// recalculate buffer size
 			int newTermWidth, newTermHeight;

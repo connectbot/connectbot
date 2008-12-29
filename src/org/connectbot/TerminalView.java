@@ -39,7 +39,7 @@ import android.widget.Toast;
 public class TerminalView extends View {
 
 	private final Context context;
-	protected final TerminalBridge bridge;
+	public final TerminalBridge bridge;
 	private final Paint paint;
 	private final Paint cursorPaint;
 	

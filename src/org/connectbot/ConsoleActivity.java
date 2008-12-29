@@ -281,7 +281,6 @@ public class ConsoleActivity extends Activity {
     public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.setContentView(R.layout.act_console);
 		
 		clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
@@ -434,10 +433,12 @@ public class ConsoleActivity extends Activity {
 						// otherwise consume as pgup/pgdown for every 5 lines
 						if(moved > 5) {
 							((vt320)terminal.bridge.buffer).keyPressed(vt320.KEY_PAGE_DOWN, ' ', 0);
+							terminal.bridge.tryKeyVibrate();
 							totalY = 0;
 							return true;
 						} else if(moved < -5) {
 							((vt320)terminal.bridge.buffer).keyPressed(vt320.KEY_PAGE_UP, ' ', 0);
+							terminal.bridge.tryKeyVibrate();
 							totalY = 0;
 							return true;
 						}
