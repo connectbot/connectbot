@@ -1054,10 +1054,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				}
 				
 				// if black-on-black, try correcting to grey
-				/*
 				if(fg == Color.BLACK && bg == Color.BLACK)
 					fg = Color.GRAY;
-				*/
 				
 				// correctly set bold and underlined attributes if requested
 				defaultPaint.setFakeBoldText((currAttr & VDUBuffer.BOLD) != 0);
