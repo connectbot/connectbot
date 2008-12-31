@@ -247,6 +247,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		defaultPaint = new Paint();
 		defaultPaint.setAntiAlias(true);
 		defaultPaint.setTypeface(Typeface.MONOSPACE);
+		defaultPaint.setFakeBoldText(true); // more readable?
 		
 		localOutput = new LinkedList<String>();
 		
@@ -569,13 +570,15 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 							| ChannelCondition.CLOSED
 							| ChannelCondition.EOF;
 					int newConditions = 0;
+					final String encoding = host.getEncoding();
+					
 					while((newConditions & ChannelCondition.CLOSED) == 0) {
 						try {
 							newConditions = session.waitForCondition(conditions, 0);
 							if ((newConditions & ChannelCondition.STDOUT_DATA) != 0) {
 								while (stdout.available() > 0) {
 									n = stdout.read(b);
-									((vt320)buffer).putString(new String(b, 0, n, host.getEncoding()));
+									((vt320)buffer).putString(new String(b, 0, n, encoding));
 								}
 								redraw();
 							}
@@ -584,7 +587,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 								while (stderr.available() > 0) {
 									n = stderr.read(b);
 									// TODO I don't know.. do we want this? We were ignoring it before
-									Log.d(TAG, String.format("Read data from stderr: %s", new String(b, 0, n, host.getEncoding())));
+									Log.d(TAG, String.format("Read data from stderr: %s", new String(b, 0, n, encoding)));
 								}
 							}
 							
@@ -1039,8 +1042,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				bg = color[COLOR_BG_STD];
 				
 				// check if foreground color attribute is set
-				if ((currAttr & VDUBuffer.COLOR_FG) != 0)
-					fg = color[((currAttr & VDUBuffer.COLOR_FG) >> VDUBuffer.COLOR_FG_SHIFT) - 1];
+				if ((currAttr & VDUBuffer.COLOR_FG) != 0) {
+					int fgcolor = ((currAttr & VDUBuffer.COLOR_FG) >> VDUBuffer.COLOR_FG_SHIFT) - 1;
+					if (fgcolor < 8 && (currAttr & VDUBuffer.BOLD) != 0)
+						fg = color[fgcolor + 8];
+					else
+						fg = color[fgcolor];
+				}
 
 				// check if background color attribute is set
 				if ((currAttr & VDUBuffer.COLOR_BG) != 0)
@@ -1053,12 +1061,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					fg = swapc;
 				}
 				
-				// if black-on-black, try correcting to grey
-				if(fg == Color.BLACK && bg == Color.BLACK)
-					fg = Color.GRAY;
-				
-				// correctly set bold and underlined attributes if requested
-				defaultPaint.setFakeBoldText((currAttr & VDUBuffer.BOLD) != 0);
+				// set underlined attributes if requested
 				defaultPaint.setUnderlineText((currAttr & VDUBuffer.UNDERLINE) != 0);
 				
 				// determine the amount of continuous characters with the same settings and print them all at once
