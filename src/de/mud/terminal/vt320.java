@@ -1601,10 +1601,12 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                           }
                         }
                       }
+                      /*
                       if (c >= '\u005f' && c <= '\u007e') {
                         c = DECSPECIAL[(short) c - 0x5f];
                         mapped = true;
                       }
+                      */
                       break;
                     case '<': // 'user preferred' is currently 'ISO Latin-1 suppl
                       c = (char) (((int) c & 0x7f) | 0x80);
@@ -1622,10 +1624,12 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                 if (!mapped && (c >= '\u0080' && c <= '\u00ff')) {
                   switch (gx[gr]) {
                     case '0':
+                      /*
                       if (c >= '\u00df' && c <= '\u00fe') {
                         c = DECSPECIAL[c - '\u00df'];
                         mapped = true;
                       }
+                      */
                       break;
                     case '<':
                     case 'A':
