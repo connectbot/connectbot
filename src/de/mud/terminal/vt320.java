@@ -1613,12 +1613,10 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                 if (!mapped && (c >= '\u0080' && c <= '\u00ff')) {
                   switch (gx[gr]) {
                     case '0':
-                      /* DEC special graphics should only be mapped when they're on the left apparently.
                       if (c >= '\u00df' && c <= '\u00fe') {
                         c = DECSPECIAL[c - '\u00df'];
                         mapped = true;
                       }
-                      */
                       break;
                     case '<':
                     case 'A':
