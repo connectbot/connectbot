@@ -139,12 +139,8 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
     setBufferSize(100);
     //setBorder(2, false);
 
-    int nw = getColumns();
-    if (nw < 132) nw = 132; //catch possible later 132/80 resizes
-    Tabs = new byte[nw];
-    for (int i = 0; i < nw; i += 8) {
-      Tabs[i] = 1;
-    }
+    gx = new char[4];
+    reset();
 
     /* top row of numpad */
     PF1 = "\u001bOP";
@@ -599,15 +595,10 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
    * < - User defined
    * ....
    */
-  char gx[] = {// same initial set as in XTERM.
-    'B', // g0
-    '0', // g1
-    'B', // g2
-    'B', // g3
-  };
-  char gl = 0;		// default GL to G0
-  char gr = 2;		// default GR to G2
-  int onegl = -1;	// single shift override for GL.
+  char gx[];
+  char gl;		// GL (left charset)
+  char gr;		// GR (right charset)
+  int onegl;	// single shift override for GL.
 
   // Map from scoansi linedrawing to DEC _and_ unicode (for the stuff which
   // is not in linedrawing). Got from experimenting with scoadmin.
@@ -1601,12 +1592,10 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                           }
                         }
                       }
-                      /*
                       if (c >= '\u005f' && c <= '\u007e') {
                         c = DECSPECIAL[(short) c - 0x5f];
                         mapped = true;
                       }
-                      */
                       break;
                     case '<': // 'user preferred' is currently 'ISO Latin-1 suppl
                       c = (char) (((int) c & 0x7f) | 0x80);
@@ -1624,7 +1613,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                 if (!mapped && (c >= '\u0080' && c <= '\u00ff')) {
                   switch (gx[gr]) {
                     case '0':
-                      /*
+                      /* DEC special graphics should only be mapped when they're on the left apparently.
                       if (c >= '\u00df' && c <= '\u00fe') {
                         c = DECSPECIAL[c - '\u00df'];
                         mapped = true;
@@ -1703,27 +1692,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             break;
           case 'c':
             /* Hard terminal reset */
-            /* reset character sets */
-            gx[0] = 'B';
-            gx[1] = '0';
-            gx[2] = 'B';
-            gx[3] = 'B';
-            gl = 0;  // default GL to G0
-            gr = 1;  // default GR to G1
-            /* reset tabs */
-            int nw = getColumns();
-            if (nw < 132) nw = 132;
-            Tabs = new byte[nw];
-            for (int i = 0; i < nw; i += 8) {
-              Tabs[i] = 1;
-            }
-            deleteArea(0, 0, columns, rows, attributes);
-            setMargins(0, rows);
-            C = R = 0;
-            _SetCursor(0, 0);
-            display.resetColors();
-            showCursor(true);
-            /*FIXME:*/
+            reset();
             break;
           case '[':
             DCEvar = 0;
@@ -2815,11 +2784,15 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
   /* hard reset the terminal */
   public void reset() {
     gx[0] = 'B';
-    gx[1] = '0';
+    gx[1] = 'B';
     gx[2] = 'B';
     gx[3] = 'B';
+    
     gl = 0;  // default GL to G0
-    gr = 1;  // default GR to G1
+    gr = 2;  // default GR to G2
+    
+    onegl = -1; // Single shift override
+    
     /* reset tabs */
     int nw = getColumns();
     if (nw < 132) nw = 132;
@@ -2827,11 +2800,15 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
     for (int i = 0; i < nw; i += 8) {
       Tabs[i] = 1;
     }
+    
     deleteArea(0, 0, getColumns(), getRows(), attributes);
     setMargins(0, getRows());
     C = R = 0;
     _SetCursor(0, 0);
-    display.resetColors();
+    
+    if (display != null)
+    	display.resetColors();
+    
     showCursor(true);
     /*FIXME:*/
     term_state = TSTATE_DATA;
