@@ -494,11 +494,18 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	
 	/**
 	 * Convenience method for writing a line into the underlying MUD buffer.
+	 * Should never be called once the session is established.
 	 */
 	protected void outputLine(String line) {
-		localOutput.add(line + "\r\n");
+		if (session != null)
+			Log.e(TAG, "Session established, cannot use outputLine!", new IOException("outputLine call traceback"));
 		
-		((vt320) buffer).putString(line + "\r\n");
+		synchronized (localOutput) {
+			localOutput.add(line + "\r\n");
+			
+			((vt320) buffer).putString(line + "\r\n");
+		}
+		
 		redraw();
 	}
 
@@ -979,8 +986,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		// redraw local output if we don't have a sesson to receive our resize request
 		if (session == null) {
 			((vt320) buffer).reset();
-			for (String line : localOutput)
-				((vt320) buffer).putString(line);
+			synchronized (localOutput) {
+				for (String line : localOutput)
+					((vt320) buffer).putString(line);
+			}
 		}
 		
 		// force full redraw with new buffer size
