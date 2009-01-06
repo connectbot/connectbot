@@ -496,7 +496,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * Convenience method for writing a line into the underlying MUD buffer.
 	 * Should never be called once the session is established.
 	 */
-	protected void outputLine(String line) {
+	protected synchronized void outputLine(String line) {
 		if (session != null)
 			Log.e(TAG, "Session established, cannot use outputLine!", new IOException("outputLine call traceback"));
 		
@@ -663,17 +663,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		if (immediate)
 			awaitingClose = true;
 		
-		// pass notification back up to terminal manager
-		// the manager will do any gui notification if applicable
-		if(disconnectListener != null)
-			disconnectListener.onDisconnected(this);
-		
 		if (!immediate) {
 			new Thread(new Runnable() {
 				public void run() {
 					boolean result = promptHelper.requestBooleanPrompt("Host has disconnected.\nClose session?");
 					if (result) {
 						awaitingClose = true;
+						
+						// Tell the TerminalManager that we can be destroyed now.
 						if (disconnectListener != null)
 							disconnectListener.onDisconnected(TerminalBridge.this);
 					}
@@ -985,8 +982,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		
 		// redraw local output if we don't have a sesson to receive our resize request
 		if (session == null) {
-			((vt320) buffer).reset();
 			synchronized (localOutput) {
+				((vt320) buffer).reset();
+				
 				for (String line : localOutput)
 					((vt320) buffer).putString(line);
 			}
