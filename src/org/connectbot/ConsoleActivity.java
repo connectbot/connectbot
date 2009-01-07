@@ -50,7 +50,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
@@ -556,12 +555,7 @@ public class ConsoleActivity extends Activity {
 			public boolean onMenuItemClick(MenuItem item) {
 				// disconnect or close the currently visible session
 				TerminalBridge bridge = ((TerminalView)view).bridge;
-				if (bridge.isSessionOpen() || !bridge.isDisconnected()) {
-					bridge.dispatchDisconnect(true);
-				} else {
-					// remove this bridge because it's been explicitly closed.
-					closeBridge(bridge);
-				}
+				bridge.dispatchDisconnect(true);
 				return true;
 			}
 		});
@@ -692,43 +686,55 @@ public class ConsoleActivity extends Activity {
 	}
 	
 	protected void shiftLeft() {
+		View overlay;
+
 		// Only show animation if there is something else to go to.
-		if (flip.getChildCount() <= 1)
-			return;
+		if (flip.getChildCount() > 1) {
+			// keep current overlay from popping up again
+			overlay = findCurrentView(R.id.terminal_overlay);
+			if (overlay != null)
+				overlay.startAnimation(fade_stay_hidden);
+
+			flip.setInAnimation(slide_left_in);
+			flip.setOutAnimation(slide_left_out);
+			flip.showNext();
+		}
 		
-		// keep current overlay from popping up again
-		View overlay = findCurrentView(R.id.terminal_overlay);
-		if(overlay != null) overlay.startAnimation(fade_stay_hidden);
-
-		flip.setInAnimation(slide_left_in);
-		flip.setOutAnimation(slide_left_out);
-		flip.showNext();
 		ConsoleActivity.this.updateDefault();
-
-		// show overlay on new slide and start fade
-		overlay = findCurrentView(R.id.terminal_overlay);
-		if(overlay != null) overlay.startAnimation(fade_out);
-
+		
+		if (flip.getChildCount() > 1) {
+			// show overlay on new slide and start fade
+			overlay = findCurrentView(R.id.terminal_overlay);
+			if (overlay != null)
+				overlay.startAnimation(fade_out);
+		}
+		
 		updatePromptVisible();
 	}
 	
 	protected void shiftRight() {
+		View overlay;
+
 		// Only show animation if there is something else to go to.
-		if (flip.getChildCount() <= 1)
-			return;
+		if (flip.getChildCount() > 1) {
+			// keep current overlay from popping up again
+			overlay = findCurrentView(R.id.terminal_overlay);
+			if (overlay != null)
+				overlay.startAnimation(fade_stay_hidden);
+
+			flip.setInAnimation(slide_right_in);
+			flip.setOutAnimation(slide_right_out);
+			flip.showPrevious();
+		}
 		
-		// keep current overlay from popping up again
-		View overlay = findCurrentView(R.id.terminal_overlay);
-		if(overlay != null) overlay.startAnimation(fade_stay_hidden);
-		
-		flip.setInAnimation(slide_right_in);
-		flip.setOutAnimation(slide_right_out);
-		flip.showPrevious();
 		ConsoleActivity.this.updateDefault();
-		
-		// show overlay on new slide and start fade
-		overlay = findCurrentView(R.id.terminal_overlay);
-		if(overlay != null) overlay.startAnimation(fade_out);
+
+		if (flip.getChildCount() > 1) {
+			// show overlay on new slide and start fade
+			overlay = findCurrentView(R.id.terminal_overlay);
+			if (overlay != null)
+				overlay.startAnimation(fade_out);
+		}
 
 		updatePromptVisible();
 	}

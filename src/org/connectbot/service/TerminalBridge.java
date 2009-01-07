@@ -643,7 +643,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 */
 	public void dispatchDisconnect(boolean immediate) {
 		// We don't need to do this multiple times.
-		if (disconnected)
+		if (disconnected && !immediate)
 			return;
 		
 		// disconnection request hangs if we havent really connected to a host yet
@@ -660,10 +660,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		authenticated = false;
 		sessionOpen = false;
 		
-		if (immediate)
+		if (immediate) {
 			awaitingClose = true;
-		
-		if (!immediate) {
+			if (disconnectListener != null)
+				disconnectListener.onDisconnected(TerminalBridge.this);
+		} else {
 			new Thread(new Runnable() {
 				public void run() {
 					boolean result = promptHelper.requestBooleanPrompt("Host has disconnected.\nClose session?");
