@@ -31,8 +31,7 @@
 		android:gravity="center" 
 		/>
 
-	<!-- CHANGE BACK TO ViewFlipper WHEN FIX RELEASED! -->
-	<org.connectbot.util.ViewFlipperFixed
+	<ViewFlipper
 		android:id="@+id/console_flip"  
 		android:layout_width="fill_parent"  
 		android:layout_height="fill_parent" 
