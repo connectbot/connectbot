@@ -23,6 +23,7 @@ import org.connectbot.bean.PortForwardBean;
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
+import org.connectbot.util.ViewFlipperFixed;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -62,7 +63,6 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 import de.mud.terminal.vt320;
 
 public class ConsoleActivity extends Activity {
@@ -70,7 +70,7 @@ public class ConsoleActivity extends Activity {
 
 	protected static final int REQUEST_EDIT = 1;
 	
-	protected ViewFlipper flip = null;
+	protected ViewFlipperFixed flip = null;
 	protected TerminalManager bound = null;
 	protected LayoutInflater inflater = null;
 	
@@ -310,7 +310,7 @@ public class ConsoleActivity extends Activity {
 
 		inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
-		flip = (ViewFlipper)findViewById(R.id.console_flip);
+		flip = (ViewFlipperFixed)findViewById(R.id.console_flip);
 		empty = (TextView)findViewById(android.R.id.empty);
 		
 		stringPromptGroup = (RelativeLayout) findViewById(R.id.console_password_group);
@@ -687,9 +687,10 @@ public class ConsoleActivity extends Activity {
 	
 	protected void shiftLeft() {
 		View overlay;
-
+		boolean shouldAnimate = flip.getChildCount() > 1;
+		
 		// Only show animation if there is something else to go to.
-		if (flip.getChildCount() > 1) {
+		if (shouldAnimate) {
 			// keep current overlay from popping up again
 			overlay = findCurrentView(R.id.terminal_overlay);
 			if (overlay != null)
@@ -702,7 +703,7 @@ public class ConsoleActivity extends Activity {
 		
 		ConsoleActivity.this.updateDefault();
 		
-		if (flip.getChildCount() > 1) {
+		if (shouldAnimate) {
 			// show overlay on new slide and start fade
 			overlay = findCurrentView(R.id.terminal_overlay);
 			if (overlay != null)
@@ -714,9 +715,10 @@ public class ConsoleActivity extends Activity {
 	
 	protected void shiftRight() {
 		View overlay;
+		boolean shouldAnimate = flip.getChildCount() > 1;
 
 		// Only show animation if there is something else to go to.
-		if (flip.getChildCount() > 1) {
+		if (shouldAnimate) {
 			// keep current overlay from popping up again
 			overlay = findCurrentView(R.id.terminal_overlay);
 			if (overlay != null)
@@ -729,7 +731,7 @@ public class ConsoleActivity extends Activity {
 		
 		ConsoleActivity.this.updateDefault();
 
-		if (flip.getChildCount() > 1) {
+		if (shouldAnimate) {
 			// show overlay on new slide and start fade
 			overlay = findCurrentView(R.id.terminal_overlay);
 			if (overlay != null)
