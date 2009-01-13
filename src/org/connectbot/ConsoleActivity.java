@@ -226,8 +226,10 @@ public class ConsoleActivity extends Activity {
 				/* TODO Remove this workaround when ViewFlipper is fixed to listen
 				 * to view removals. Android Issue 1784
 				 */
-				if (flip.getDisplayedChild() >= flip.getChildCount())
-					flip.setDisplayedChild(flip.getDisplayedChild());
+				final int numChildren = flip.getChildCount();
+				if (flip.getDisplayedChild() >= numChildren &&
+						numChildren > 0)
+					flip.setDisplayedChild(numChildren - 1);
 				
 				updateEmptyVisible();
 				break;
