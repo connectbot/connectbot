@@ -21,6 +21,12 @@ package org.connectbot.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CoderResult;
+import java.nio.charset.CodingErrorAction;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -82,6 +88,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	
 	public final static String TAG = TerminalBridge.class.toString();
 	
+	private final static int BUFFER_SIZE = 4096;
+
 	public final static int DEFAULT_FONT_SIZE = 10;
 	
 	public static final String AUTH_PUBLICKEY = "publickey",
@@ -150,7 +158,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	private float fontSize = -1;
 	
 	private List<String> localOutput;
-
+	
 	/**
 	 * Flag indicating if we should perform a full-screen redraw during our next
 	 * rendering pass.
@@ -570,22 +578,103 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			// create thread to relay incoming connection data to buffer
 			relay = new Thread(new Runnable() {
 				public void run() {
-					byte[] b = new byte[4096];
+					final String encoding = host.getEncoding();
+					
+					byte[] b = new byte[BUFFER_SIZE];
+					
+					Charset charset = Charset.forName(encoding);
+					
+					/* Set up character set decoder to report any byte sequences
+					 * which are malformed so we can try to resume decoding it
+					 * on the next packet received.
+					 * 
+					 * UTF-8 byte sequences have a tendency to get truncated at
+					 * times.
+					 */
+					CharsetDecoder cd = charset.newDecoder();
+					cd.onUnmappableCharacter(CodingErrorAction.REPLACE);
+					cd.onMalformedInput(CodingErrorAction.REPORT);
+					
+					CharsetDecoder replacer = charset.newDecoder();
+					replacer.onUnmappableCharacter(CodingErrorAction.REPLACE);
+					replacer.onMalformedInput(CodingErrorAction.REPLACE);
+					
+					ByteBuffer bb;
+					CharBuffer cb = CharBuffer.allocate(BUFFER_SIZE);
+					
 					int n = 0;
+					int offset = 0;
+					
 					int conditions = ChannelCondition.STDOUT_DATA
 							| ChannelCondition.STDERR_DATA
 							| ChannelCondition.CLOSED
 							| ChannelCondition.EOF;
 					int newConditions = 0;
-					final String encoding = host.getEncoding();
 					
 					while((newConditions & ChannelCondition.CLOSED) == 0) {
 						try {
 							newConditions = session.waitForCondition(conditions, 0);
 							if ((newConditions & ChannelCondition.STDOUT_DATA) != 0) {
 								while (stdout.available() > 0) {
-									n = stdout.read(b);
-									((vt320)buffer).putString(new String(b, 0, n, encoding));
+									n = offset + stdout.read(b, offset, BUFFER_SIZE - offset);
+									
+									bb = ByteBuffer.wrap(b, 0, n);
+									CoderResult cr = cd.decode(bb, cb, true);	
+									
+									if (cr.isMalformed()) {
+										int curpos = bb.position() - cr.length();
+										
+										if (curpos > 0) {
+											/* There is good data before the malformed section, so
+											 * pass this on immediately.
+											 */
+											((vt320)buffer).putString(new String(cb.array(), 0, cb.position()));
+										}
+										
+										while (bb.position() < n) {
+											bb = ByteBuffer.wrap(b, curpos, cr.length());
+											
+											cb.clear();
+											replacer.decode(bb, cb, true);
+											
+											((vt320) buffer).putString(new String(cb.array(), 0, cb.position()));
+										
+											curpos += cr.length();
+										
+											bb = ByteBuffer.wrap(b, curpos, n - curpos);
+											
+											cb.clear();
+											cr = cd.decode(bb, cb, true);
+										}
+										
+										if (cr.isMalformed()) {
+											/* If we still have malformed input, save the bytes for the next
+											 * read and try to parse it again.
+											 */
+											offset = n - bb.position() + cr.length();
+											if ((bb.position() - cr.length()) < offset) {
+												byte tmp[] = new byte[offset];
+												System.arraycopy(b, bb.position() - cr.length(), tmp, 0, offset);
+												System.arraycopy(tmp, 0, b, 0, offset);
+											} else {
+												System.arraycopy(b, bb.position() - cr.length(), b, 0, offset);
+											}
+											Log.d(TAG, String.format("Copying out %d chars at %d: 0x%02x",
+													offset, bb.position() - cr.length(),
+													b[bb.position() - cr.length()]
+											));
+										} else {
+											// After discarding the previous offset, we only have valid data.
+											((vt320)buffer).putString(new String(cb.array(), 0, cb.position()));
+											offset = 0;
+										}
+									} else {
+										// No errors at all.
+										((vt320)buffer).putString(new String(cb.array(), 0, cb.position()));
+										offset = 0;
+									}
+									
+									cb.clear();
 								}
 								redraw();
 							}
@@ -593,8 +682,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 							if ((newConditions & ChannelCondition.STDERR_DATA) != 0) {
 								while (stderr.available() > 0) {
 									n = stderr.read(b);
+									bb = ByteBuffer.wrap(b, 0, n);
+									replacer.decode(bb, cb, false);
 									// TODO I don't know.. do we want this? We were ignoring it before
-									Log.d(TAG, String.format("Read data from stderr: %s", new String(b, 0, n, encoding)));
+									Log.d(TAG, String.format("Read data from stderr: %s", new String(cb.array(), 0, cb.position())));
+									cb.clear();
 								}
 							}
 							
