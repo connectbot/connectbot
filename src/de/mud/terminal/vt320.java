@@ -60,22 +60,36 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
   }
 
   /**
-   * Put string at current cursor position. Moves cursor
-   * according to the String. Does NOT wrap.
-   * @param s the string
+   * Convenience function for putString(char[], int, int)
    */
   public void putString(String s) {
-    int len = s.length();
-    // System.err.println("'"+s+"'");
-
+	int len = s.length();
+	char[] tmp = new char[len];
+	s.getChars(0, len, tmp, 0);
+	putString(tmp, 0, len);
+  }
+  
+  /**
+   * Put string at current cursor position. Moves cursor
+   * according to the String. Does NOT wrap.
+   * @param s character array
+   * @param start place to start in array
+   * @param len number of characters to process
+   */
+  public void putString(char[] s, int start, int len) {
     if (len > 0) {
-      markLine(R, 1);
+      //markLine(R, 1);
       int lastChar = -1;
+      char c;
       
       for (int i = 0; i < len; i++) {
-        // System.err.print(s.charAt(i)+"("+(int)s.charAt(i)+")");
-    	char c = s.charAt(i);
-    	if (!Character.isLowSurrogate(c) && !Character.isHighSurrogate(c)) {
+    	c = s[start + i];
+    	// Shortcut for my favorite ASCII					
+    	if (c <= 0x7F) {
+    	  if (lastChar != -1)
+    	    putChar((char) lastChar, false);
+    	  lastChar = c;	
+    	} else if (!Character.isLowSurrogate(c) && !Character.isHighSurrogate(c)) {
           if (Character.getType(c) == Character.NON_SPACING_MARK) {
             if (lastChar != -1) {
               char nc = Precomposer.precompose((char) lastChar, c);
@@ -1403,13 +1417,10 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
   private void putChar(char c, boolean doshowcursor) {
     int rows = getRows(); //statusline
     int columns = getColumns();
-    int tm = getTopMargin();
-    int bm = getBottomMargin();
     // byte msg[];
-    boolean mapped = false;
 
     if (debug > 4) System.out.println("putChar(" + c + " [" + ((int) c) + "]) at R=" + R + " , C=" + C + ", columns=" + columns + ", rows=" + rows);
-    markLine(R, 1);
+    //markLine(R, 1);
     if (c > 255) {
       if (debug > 0)
         System.out.println("char > 255:" + (int) c);
@@ -1430,7 +1441,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
               term_state = TSTATE_OSC;
               break;
             case RI:
-              if (R > tm)
+              if (R > getTopMargin())
                 R--;
               else
                 insertLine(R, 1, SCROLL_DOWN);
@@ -1439,8 +1450,8 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
               break;
             case IND:
               if (debug > 2)
-                System.out.println("IND at " + R + ", tm is " + tm + ", bm is " + bm);
-              if (R == bm || R == rows - 1)
+                System.out.println("IND at " + R + ", tm is " + getTopMargin() + ", bm is " + getBottomMargin());
+              if (R == getBottomMargin() || R == rows - 1)
                 insertLine(R, 1, SCROLL_UP);
               else
                 R++;
@@ -1448,7 +1459,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                 System.out.println("IND (at " + R + " )");
               break;
             case NEL:
-              if (R == bm || R == rows - 1)
+              if (R == getBottomMargin() || R == rows - 1)
                 insertLine(R, 1, SCROLL_UP);
               else
                 R++;
@@ -1516,14 +1527,14 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             break;
           case '\n':
             if (debug > 3)
-              System.out.println("R= " + R + ", bm " + bm + ", tm=" + tm + ", rows=" + rows);
+              System.out.println("R= " + R + ", bm " + getBottomMargin() + ", tm=" + getTopMargin() + ", rows=" + rows);
             if (!vms) {
               if (lastwaslf != 0 && lastwaslf != c)   //  Ray: I do not understand this logic.
                 break;
               lastwaslf = c;
               /*C = 0;*/
             }
-            if (R == bm || R >= rows - 1)
+            if (R == getBottomMargin() || R >= rows - 1)
               insertLine(R, 1, SCROLL_UP);
             else
               R++;
@@ -1563,8 +1574,8 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                   int bot = rows;
                   
                   // If we're in the scroll region, check against the bottom margin
-                  if (R <= bm && R >= tm)
-                	  bot = bm;
+                  if (R <= getBottomMargin() && R >= getTopMargin())
+                	  bot = getBottomMargin();
                   
                   if (R < bot - 1)
                     R++;
@@ -1576,6 +1587,8 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                   C = columns - 1;
                 }
               }
+
+              boolean mapped = false;
 
               // Mapping if DEC Special is chosen charset
               if (usedcharsets) {
@@ -1724,7 +1737,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             insertLine(R, 1, SCROLL_DOWN);
             break;
           case 'E': /* NEL */
-            if (R == bm || R == rows - 1)
+            if (R == getBottomMargin() || R == rows - 1)
               insertLine(R, 1, SCROLL_UP);
             else
               R++;
@@ -1733,7 +1746,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
               System.out.println("ESC E (at " + R + ")");
             break;
           case 'D': /* IND */
-            if (R == bm || R == rows - 1)
+            if (R == getBottomMargin() || R == rows - 1)
               insertLine(R, 1, SCROLL_UP);
             else
               R++;
@@ -1751,8 +1764,8 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
               deleteArea(C, R, columns - C, 1, attributes);
             break;
           case 'M': // RI
-            System.out.println("ESC M : R is "+R+", tm is "+tm+", bm is "+bm);
-            if (R > tm) { // just go up 1 line.
+            System.out.println("ESC M : R is "+R+", tm is "+getTopMargin()+", bm is "+getBottomMargin());
+            if (R > getTopMargin()) { // just go up 1 line.
               R--;
             } else { // scroll down
               insertLine(R, 1, SCROLL_DOWN);
@@ -2355,8 +2368,8 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             {
               int limit;
               /* FIXME: xterm only cares about 0 and topmargin */
-              if (R >= tm) {
-                limit = tm;
+              if (R >= getTopMargin()) {
+                limit = getTopMargin();
               } else
                 limit = 0;
               if (DCEvars[0] == 0)
@@ -2373,8 +2386,8 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             /* cursor down n (1) times */
             {
               int limit;
-              if (R <= bm) {
-                limit = bm;
+              if (R <= getBottomMargin()) {
+                limit = getBottomMargin();
               } else
                 limit = rows - 1;
               if (DCEvars[0] == 0)
@@ -2770,13 +2783,20 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
         term_state = TSTATE_DATA;
         break;
     }
-    if (C > columns) C = columns;
-    if (R > rows) R = rows;
-    if (C < 0) C = 0;
-    if (R < 0) R = 0;
+    
+    if (C > columns)
+      C = columns;
+    else if (C < 0)
+      C = 0;
+    
+    if (R > rows)
+      R = rows;
+    else if (R < 0)
+      R = 0;
+    
     if (doshowcursor)
       setCursorPosition(C, R);
-    markLine(R, 1);
+    //markLine(R, 1);
   }
 
   /* hard reset the terminal */

@@ -509,9 +509,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			Log.e(TAG, "Session established, cannot use outputLine!", new IOException("outputLine call traceback"));
 		
 		synchronized (localOutput) {
-			localOutput.add(line + "\r\n");
+			final String s = line + "\r\n";
 			
-			((vt320) buffer).putString(line + "\r\n");
+			localOutput.add(s);
+			
+			((vt320) buffer).putString(s);
 		}
 		
 		redraw();
@@ -628,7 +630,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 											/* There is good data before the malformed section, so
 											 * pass this on immediately.
 											 */
-											((vt320)buffer).putString(new String(cb.array(), 0, cb.position()));
+											((vt320)buffer).putString(cb.array(), 0, cb.position());
 										}
 										
 										while (bb.position() < n) {
@@ -637,7 +639,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 											cb.clear();
 											replacer.decode(bb, cb, true);
 											
-											((vt320) buffer).putString(new String(cb.array(), 0, cb.position()));
+											((vt320) buffer).putString(cb.array(), 0, cb.position());
 										
 											curpos += cr.length();
 										
@@ -665,12 +667,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 											));
 										} else {
 											// After discarding the previous offset, we only have valid data.
-											((vt320)buffer).putString(new String(cb.array(), 0, cb.position()));
+											((vt320)buffer).putString(cb.array(), 0, cb.position());
 											offset = 0;
 										}
 									} else {
 										// No errors at all.
-										((vt320)buffer).putString(new String(cb.array(), 0, cb.position()));
+										((vt320)buffer).putString(cb.array(), 0, cb.position());
 										offset = 0;
 									}
 									
