@@ -834,6 +834,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			if (disconnected || session == null)
 				return false;
 			
+			// if we're in scrollback, scroll to bottom of window on input
+			if (buffer.windowBase != buffer.screenBase) 
+				buffer.setWindowBase(buffer.screenBase);
+			
 			boolean printing = (keymap.isPrintingKey(keyCode) || keyCode == KeyEvent.KEYCODE_SPACE);
 			
 			// otherwise pass through to existing session
