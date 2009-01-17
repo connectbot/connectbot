@@ -489,6 +489,7 @@ public class VDUBuffer {
 	                     charAttributes, screenBase + l, numRows);
     }
     charArray[screenBase + bottom - 1] = new char[width];
+    Arrays.fill(charArray[screenBase + bottom - 1], ' ');
     charAttributes[screenBase + bottom - 1] = new int[width];
     markLine(l, bottom - l);
   }
