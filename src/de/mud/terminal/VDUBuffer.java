@@ -454,6 +454,7 @@ public class VDUBuffer {
 
     for (int i = 0; i < n; i++) {
       cbuf[(screenBase + l) + (scrollDown ? i : -i)] = new char[width];
+      Arrays.fill(cbuf[(screenBase + l) + (scrollDown ? i : -i)], ' ');
       abuf[(screenBase + l) + (scrollDown ? i : -i)] = new int[width];
     }
 
