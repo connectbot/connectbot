@@ -94,7 +94,7 @@
 	
 	<string name="list_keymode_right">Use right-side keys</string>
 	<string name="list_keymode_left">Use left-side keys</string>
-	<string name="list_keymode_none">Don't use</string>
+	<string name="list_keymode_none">Disable</string>
 	
 	<string name="list_pubkeyids_none">Do not use keys</string>
 	<string name="list_pubkeyids_any">Use any unlocked key</string>
