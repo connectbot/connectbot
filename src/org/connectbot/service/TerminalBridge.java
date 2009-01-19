@@ -990,6 +990,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * sure we resize PTY if needed.
 	 */
 	private void setFontSize(float size) {
+		if (size <= 0.0)
+			return;
+		
 		defaultPaint.setTextSize(size);
 		fontSize = size;
 		
