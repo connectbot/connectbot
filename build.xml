@@ -270,31 +270,34 @@
     </target>
 
     <target name="update-version" description="Updates the Version.java file with current SVN revision">
-	<echo>Updating strings.xml with SVN revision and build date...</echo>
-        <property name="revision" value="HEAD"/>
-	<tstamp>
-		<format property="build.date" pattern="yyyy.MM.dd" />
-	</tstamp>
-
-        <!-- find out svn.revision of HEAD, need svn.exe installed on local machine -->
-        <exec executable="svn" outputproperty="svnlog.out">
-            <arg line="info -r ${revision}"/>
-        </exec>
-
-	<loadfile property="android.manifest" srcFile="${basedir}/AndroidManifest.xml" encoding="${encoding}" />
-	<taskdef resource="net/sf/antcontrib/antlib.xml" classpath="${lib.dir}/ant/ant-contrib.jar"/>
-        <propertyregex property="version.number" input="${android.manifest}" select="\1"
- 		regexp='android:versionName="([0-9\.]+)"'
-		defaultValue="0" />
-
-        <propertyregex property="svn.revision" input="${svnlog.out}" select="\1"
- 		regexp="Revision: ([0-9]+)"
-		defaultValue="0" />
-
-	<replaceregexp file="${resource-dir}/values/strings.xml" encoding="${encoding}" match='(\x3Cstring name="msg_version">)[^\x3C]*(\x3C/string>)'
-		replace='\1${ant.project.name} ${version.number} (r${svn.revision} ${build.date})\2' />
-
-	<echo>Updated "msg_version" to: ${ant.project.name} ${version.number} (r${svn.revision} ${build.date})</echo>
+		<echo>Updating strings.xml with SVN revision and build date...</echo>
+	        <property name="revision" value="HEAD"/>
+		<tstamp>
+			<format property="build.date" pattern="yyyy.MM.dd" />
+		</tstamp>
+    	
+    	<!-- Get the version name from the android manifest, will en up in property ${manifest.android:versionName} -->
+    	<xmlproperty file="${basedir}/AndroidManifest.xml" collapseAttributes="true"/>
+    	
+    	<!-- find out svn.revision of HEAD, need svn.exe installed on local machine will en up in property ${Revision} -->
+    	<exec executable="svn" output="svnlog.out">
+    		<arg line="info -r ${revision}"/>
+		</exec>
+    	
+    	<loadproperties srcFile="svnlog.out">
+    		<filterchain>
+    			<linecontains>
+    				<contains value="Revision"/>
+				</linecontains>
+			</filterchain>
+		</loadproperties>
+    	
+    	<delete file="svnlog.out"/>
+	
+		<replaceregexp file="${resource-dir}/values/strings.xml" encoding="${encoding}" match='(\x3Cstring name="msg_version">)[^\x3C]*(\x3C/string>)'
+			replace='\1${ant.project.name} ${manifest.android:versionName} (r${Revision} ${build.date})\2' />
+	
+		<echo>Updated "msg_version" to: ${ant.project.name} ${manifest.android:versionName} (r${Revision} ${build.date})</echo>
     </target>
 
 </project>
