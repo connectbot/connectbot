@@ -33,6 +33,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -308,6 +309,8 @@ public class ConsoleActivity extends Activity {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
 		
+		// TODO find proper way to disable volume key beep if it exists.
+		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		
         PowerManager manager = (PowerManager)getSystemService(Context.POWER_SERVICE);
 		wakelock = manager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, TAG);
