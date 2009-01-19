@@ -515,8 +515,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			
 			((vt320) buffer).putString(s);
 		}
-		
-		redraw();
 	}
 
 	/**
@@ -1121,12 +1119,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		return buffer;
 	}
 	
-	public synchronized void redraw() {
-		// render our buffer only if we have a surface
-		if(parent == null) return;
-		
-		int lines = 0;
-		
+	public void onDraw() {
 		int fg, bg;
 		boolean entireDirty = buffer.update[0] || fullRedraw;
 		
@@ -1135,8 +1128,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			
 			// check if this line is dirty and needs to be repainted
 			// also check for entire-buffer dirty flags
-			if(!entireDirty && !buffer.update[l + 1]) continue;
-			lines++;
+			if (!entireDirty && !buffer.update[l + 1]) continue;
 			
 			// reset dirty flag for this line
 			buffer.update[l + 1] = false;
@@ -1197,11 +1189,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		// reset entire-buffer flags
 		buffer.update[0] = false;
 		fullRedraw = false;
-		
-		parent.postInvalidate();
-		
 	}
 
+	public void redraw() {
+		if (parent != null)
+			parent.postInvalidate();
+	}
+	
 	public void updateScrollBar() {
 	}
 

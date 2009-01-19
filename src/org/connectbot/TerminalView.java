@@ -90,6 +90,8 @@ public class TerminalView extends View {
 	@Override
 	public void onDraw(Canvas canvas) {
 		if(bridge.bitmap != null) {
+			// draw the bitmap
+			bridge.onDraw();
 			
 			// draw the bridge bitmap if it exists
 			canvas.drawBitmap(bridge.bitmap, 0, 0, paint);
@@ -111,9 +113,7 @@ public class TerminalView extends View {
 				canvas.drawRect(left * bridge.charWidth, top * bridge.charHeight,
 					right * bridge.charWidth, bottom * bridge.charHeight, cursorPaint);
 			}
-
 		}
-		
 	}
 	
 	public void notifyUser(String message) {
