@@ -24,7 +24,7 @@ public class PromptHelper {
 	/**
 	 * Register a user interface handler, if available.
 	 */
-	public void setHandler(Handler handler) {
+	public synchronized void setHandler(Handler handler) {
 		this.handler = handler;
 	}
 	

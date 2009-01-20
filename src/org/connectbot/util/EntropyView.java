@@ -89,17 +89,17 @@ public class EntropyView extends View {
         		splitText = prompt.indexOf(" ", prompt.length() / 2);
         	
         	c.drawText(prompt.substring(0, splitText),
-        			getWidth() / 2,
-        			getHeight() / 2 + (mPaint.ascent() + mPaint.descent()),
+        			getWidth() / 2.0f,
+        			getHeight() / 2.0f + (mPaint.ascent() + mPaint.descent()),
         			mPaint);
         	c.drawText(prompt.substring(splitText),
-        			getWidth() / 2,
-        			getHeight() / 2 - (mPaint.ascent() + mPaint.descent()),
+        			getWidth() / 2.0f,
+        			getHeight() / 2.0f - (mPaint.ascent() + mPaint.descent()),
         			mPaint);
         } else {
         	c.drawText(prompt,
-        			getWidth() / 2,
-        			getHeight() / 2 - (mFontMetrics.ascent + mFontMetrics.descent) / 2,
+        			getWidth() / 2.0f,
+        			getHeight() / 2.0f - (mFontMetrics.ascent + mFontMetrics.descent) / 2,
         			mPaint);
         }
     }

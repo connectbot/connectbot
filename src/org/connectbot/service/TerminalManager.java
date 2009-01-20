@@ -140,8 +140,10 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 			pubkeydb = null;
 		}
 		
-		if (idleTimer != null)
-			idleTimer.cancel();
+		synchronized (this) {
+			if (idleTimer != null)
+				idleTimer.cancel();
+		}
 		
 		if (wifilock != null && wifilock.isHeld())
 			wifilock.release();
@@ -283,9 +285,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 			synchronized (this) {
 				if (idleTimer == null)
 					idleTimer = new Timer(true);
+					
+				idleTimer.schedule(new IdleTask(), IDLE_TIMEOUT);
 			}
-
-			idleTimer.schedule(new IdleTask(), IDLE_TIMEOUT);
 		} else {
 			Log.d(TAG, "Stopping background service immediately");
 			stopSelf();

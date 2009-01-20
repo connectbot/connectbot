@@ -107,7 +107,7 @@
     </target>
 
     <!-- Generate the R.java file for this project's resources. -->
-    <target name="resource-src" depends="dirs">
+    <target name="resource-src" depends="dirs, update-version">
         <echo>Generating R.java / Manifest.java from the resources...</echo>
         <exec executable="${aapt}" failonerror="true">
             <arg value="package" />
@@ -208,7 +208,7 @@
 
     <!-- Package the application and sign it with a debug key.
 		 This is the default target when building. It is used for debug. -->
-    <target name="debug" depends="dex, package-res, update-version">
+    <target name="debug" depends="dex, package-res">
         <echo>Packaging ${out-debug-package}, and signing it with a debug key...</echo>
         <exec executable="${apk-builder}" failonerror="true">
             <arg value="${out-debug-package-ospath}" />
@@ -225,7 +225,7 @@
 
     <!-- Package the application without signing it.
     	 This allows for the application to be signed later with an official publishing key. -->
-    <target name="release" depends="dex, package-res, update-version">
+    <target name="release" depends="dex, package-res">
         <echo>Packaging ${out-unsigned-package} for release...</echo>
         <exec executable="${apk-builder}" failonerror="true">
             <arg value="${out-unsigned-package-ospath}" />

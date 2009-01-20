@@ -331,6 +331,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				String message = getResources().getString(R.string.pubkey_failed_add, pubkey.getNickname());
 				Log.e(TAG, message, e);
 				Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG);
+				return;
 			}
 
 			// convert key to trilead format
@@ -399,7 +400,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			public boolean onMenuItemClick(MenuItem item) {
 				try {
 					PublicKey pk = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
-					String openSSHPubkey = new String(PubkeyUtils.convertToOpenSSHFormat(pk, pubkey.getNickname()));
+					String openSSHPubkey = PubkeyUtils.convertToOpenSSHFormat(pk, pubkey.getNickname());
 
 					clipboard.setText(openSSHPubkey);
 				} catch (Exception e) {
@@ -420,7 +421,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 						data = new String(pubkey.getPrivateKey());
 					else {
 						PrivateKey pk = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType());
-						data = new String(PubkeyUtils.exportPEM(pk, null));
+						data = PubkeyUtils.exportPEM(pk, null);
 					}
 					
 					clipboard.setText(data);

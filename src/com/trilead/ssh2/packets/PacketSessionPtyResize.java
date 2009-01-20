@@ -5,14 +5,12 @@ public class PacketSessionPtyResize {
 
 	public int recipientChannelID;
 	public boolean wantReply;
-	public String term;
 	public int width;
 	public int height;
 
 	public PacketSessionPtyResize(int recipientChannelID, boolean wantReply, int width, int height) {
 		this.recipientChannelID = recipientChannelID;
 		this.wantReply = wantReply;
-		this.term = term;
 		this.width = width;
 		this.height = height;
 	}

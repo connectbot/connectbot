@@ -433,7 +433,7 @@ public class ConsoleActivity extends Activity {
 					int moved = (int)(totalY / terminal.bridge.charHeight);
 					
 					// consume as scrollback only if towards right half of screen
-					if(e2.getX() > flip.getWidth() / 2) {
+					if (e2.getX() > flip.getWidth() / 2.0) {
 						if(moved != 0) {
 							int base = terminal.bridge.buffer.getWindowBase();
 							terminal.bridge.buffer.setWindowBase(base + moved);
@@ -520,6 +520,7 @@ public class ConsoleActivity extends Activity {
 						
 						clipboard.setText(buffer.toString());
 						Toast.makeText(ConsoleActivity.this, getString(R.string.console_copy_done, buffer.length()), Toast.LENGTH_LONG).show();
+						// fall through to clear state
 						
 					case MotionEvent.ACTION_CANCEL:
 						// make sure we clear any highlighted area

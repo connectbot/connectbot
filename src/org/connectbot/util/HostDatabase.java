@@ -274,11 +274,13 @@ public class HostDatabase extends SQLiteOpenHelper {
 		
 		HostBean host = null;
 		
-		if (c != null && c.moveToFirst()) {
-			host = createHostBean(c);
+		if (c != null) {
+			if (c.moveToFirst())
+				host = createHostBean(c);
+			
+			c.close();
 		}
 		
-		c.close();
 		db.close();
 		
 		return host;
@@ -297,11 +299,13 @@ public class HostDatabase extends SQLiteOpenHelper {
 		
 		HostBean host = null;
 		
-		if (c != null && c.moveToFirst()) {
-			host = createHostBean(c);
+		if (c != null) {
+			if (c.moveToFirst())
+				host = createHostBean(c);
+			
+			c.close();
 		}
 		
-		c.close();
 		db.close();
 		
 		return host;
@@ -362,31 +366,30 @@ public class HostDatabase extends SQLiteOpenHelper {
 				null, null, null, null, null);
 
 		if (c != null) {
-		
 			int COL_HOSTNAME = c.getColumnIndexOrThrow(FIELD_HOST_HOSTNAME),
 				COL_PORT = c.getColumnIndexOrThrow(FIELD_HOST_PORT),
 				COL_HOSTKEYALGO = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEYALGO),
 				COL_HOSTKEY = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEY);
 			
-			while(c.moveToNext()) {
+			while (c.moveToNext()) {
 				String hostname = c.getString(COL_HOSTNAME),
 					hostkeyalgo = c.getString(COL_HOSTKEYALGO);
 				int port = c.getInt(COL_PORT);
 				byte[] hostkey = c.getBlob(COL_HOSTKEY);
 				
-				if(hostkeyalgo == null || hostkeyalgo.length() == 0) continue;
-				if(hostkey == null || hostkey.length == 0) continue;
+				if (hostkeyalgo == null || hostkeyalgo.length() == 0) continue;
+				if (hostkey == null || hostkey.length == 0) continue;
 				
 				try {
 					known.addHostkey(new String[] { String.format("%s:%d", hostname, port) }, hostkeyalgo, hostkey);
 				} catch(Exception e) {
 					Log.e(TAG, "Problem while adding a known host from database", e);
 				}
-				
 			}
+			
+			c.close();
 		}
 		
-		c.close();
 		db.close();
 		
 		return known;

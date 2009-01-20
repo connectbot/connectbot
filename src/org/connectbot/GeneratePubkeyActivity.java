@@ -204,7 +204,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 	}
 	
 	public void onEntropyGathered(byte[] entropy) {
-		this.entropy = entropy;
+		this.entropy = entropy.clone();
 		
 		Log.d(TAG, "entropy gathered; attemping to generate key...");
 		startKeyGen();

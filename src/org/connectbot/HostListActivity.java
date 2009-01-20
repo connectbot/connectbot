@@ -473,11 +473,17 @@ public class HostListActivity extends ListActivity {
 
 			HostBean host = hosts.get(position);
 			if (host == null) {
-				Log.e("HostAdapter", "What the fuck, host bean is null!");
+				// Well, something bad happened. We can't continue.
+				Log.e("HostAdapter", "Host bean is null!");
+				
+				nickname.setText("Error during lookup");
+				caption.setText("see 'adb logcat' for more");
+				return view;
 			}
+			
 			nickname.setText(host.getNickname());
 			
-			switch(this.getConnectedState(host)) {
+			switch (this.getConnectedState(host)) {
 			case STATE_UNKNOWN:
 				icon.setImageState(new int[] { }, true);
 				break;
@@ -497,7 +503,7 @@ public class HostListActivity extends ListActivity {
 			else if (HostDatabase.COLOR_BLUE.equals(host.getColor()))
 				chosen = this.blue;
 			
-			if(chosen != null) {
+			if (chosen != null) {
 				// set color normally if not selected 
 				nickname.setTextColor(chosen);
 				caption.setTextColor(chosen);
@@ -510,7 +516,7 @@ public class HostListActivity extends ListActivity {
 			long now = System.currentTimeMillis() / 1000;
 			
 			String nice = "never";
-			if(host.getLastConnect() > 0) {
+			if (host.getLastConnect() > 0) {
 				int minutes = (int)((now - host.getLastConnect()) / 60);
 				nice = view.getContext().getString(R.string.bind_minutes, minutes);
 				if (minutes >= 60) {

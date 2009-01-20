@@ -504,7 +504,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * Convenience method for writing a line into the underlying MUD buffer.
 	 * Should never be called once the session is established.
 	 */
-	protected synchronized void outputLine(String line) {
+	protected void outputLine(String line) {
 		if (session != null)
 			Log.e(TAG, "Session established, cannot use outputLine!", new IOException("outputLine call traceback"));
 		
@@ -978,8 +978,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		return false;
 	}
 	
-	public void tryKeyVibrate() {
-		if(bumpyArrows && vibrator != null)
+	public synchronized void tryKeyVibrate() {
+		if (bumpyArrows && vibrator != null)
 			vibrator.vibrate(VIBRATE_DURATION);
 	}
 
@@ -1018,10 +1018,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		int width = parent.getWidth();
 		int height = parent.getHeight();
 		
-		this.bumpyArrows = manager.prefs.getBoolean(manager.res.getString(R.string.pref_bumpyarrows), true);
-		if(parent != null) {
-			this.vibrator = (Vibrator) parent.getContext().getSystemService(Context.VIBRATOR_SERVICE);
-		}
+		bumpyArrows = manager.prefs.getBoolean(manager.res.getString(R.string.pref_bumpyarrows), true);
+		vibrator = (Vibrator) parent.getContext().getSystemService(Context.VIBRATOR_SERVICE);
 
 		if (!forcedSize) {
 			// recalculate buffer size
@@ -1212,7 +1210,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * @param width
 	 * @param height
 	 */
-	public void resizeComputed(int cols, int rows, int width, int height) {
+	public synchronized void resizeComputed(int cols, int rows, int width, int height) {
 		float size = 8.0f;
 		float step = 8.0f;
 		float limit = 0.125f;

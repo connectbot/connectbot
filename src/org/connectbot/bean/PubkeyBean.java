@@ -73,19 +73,19 @@ public class PubkeyBean extends AbstractBean {
 	}
 
 	public void setPrivateKey(byte[] privateKey) {
-		this.privateKey = privateKey;
+		this.privateKey = privateKey.clone();
 	}
 
 	public byte[] getPrivateKey() {
-		return privateKey;
+		return privateKey.clone();
 	}
 
 	public void setPublicKey(byte[] publicKey) {
-		this.publicKey = publicKey;
+		this.publicKey = publicKey.clone();
 	}
 
 	public byte[] getPublicKey() {
-		return publicKey;
+		return publicKey.clone();
 	}
 
 	public void setEncrypted(boolean encrypted) {

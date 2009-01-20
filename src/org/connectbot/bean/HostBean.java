@@ -97,10 +97,10 @@ public class HostBean extends AbstractBean {
 		return hostKeyAlgo;
 	}
 	public void setHostKey(byte[] hostKey) {
-		this.hostKey = hostKey;
+		this.hostKey = hostKey.clone();
 	}
 	public byte[] getHostKey() {
-		return hostKey;
+		return hostKey.clone();
 	}
 	public void setLastConnect(long lastConnect) {
 		this.lastConnect = lastConnect;
@@ -183,6 +183,7 @@ public class HostBean extends AbstractBean {
 		return values;
 	}
 	
+	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof HostBean))
 			return false;
@@ -197,4 +198,17 @@ public class HostBean extends AbstractBean {
 			
 		return false;
 	}
+
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		
+		hash = 31 * hash + (null == nickname ? 0 : nickname.hashCode());
+		hash = 31 * hash + (null == username ? 0 : username.hashCode());
+		hash = 31 * hash + (null == hostname ? 0 : hostname.hashCode());
+		hash = 31 * hash + port;
+		
+		return hash;
+	}
+	
 }

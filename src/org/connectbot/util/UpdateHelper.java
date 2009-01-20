@@ -63,7 +63,7 @@ import android.util.Log;
  * 
  * @author jsharkey
  */
-public class UpdateHelper implements Runnable {
+public final class UpdateHelper implements Runnable {
 	
 	public final static String TAG = UpdateHelper.class.toString();
 	public final static String UPDATE_URL = "http://connectbot.org/version";
@@ -118,6 +118,7 @@ public class UpdateHelper implements Runnable {
 
 		if(shouldCheck) {
 			// spawn thread to check for update
+			// Note that this class should be marked final because a thread is started in the constructor.
 			new Thread(this).start();
 			
 			// update our last-checked time

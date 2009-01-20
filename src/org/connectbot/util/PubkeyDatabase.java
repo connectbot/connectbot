@@ -117,30 +117,33 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 		List<PubkeyBean> pubkeys = new LinkedList<PubkeyBean>();
 
 		Cursor c = db.query(TABLE_PUBKEYS, null, selection, selectionArgs, null, null, null);
-
-		final int COL_ID = c.getColumnIndexOrThrow("_id"),
-			COL_NICKNAME = c.getColumnIndexOrThrow(FIELD_PUBKEY_NICKNAME),
-			COL_TYPE = c.getColumnIndexOrThrow(FIELD_PUBKEY_TYPE),
-			COL_PRIVATE = c.getColumnIndexOrThrow(FIELD_PUBKEY_PRIVATE),
-			COL_PUBLIC = c.getColumnIndexOrThrow(FIELD_PUBKEY_PUBLIC),
-			COL_ENCRYPTED = c.getColumnIndexOrThrow(FIELD_PUBKEY_ENCRYPTED),
-			COL_STARTUP = c.getColumnIndexOrThrow(FIELD_PUBKEY_STARTUP);
-
-		while (c.moveToNext()) {
-			PubkeyBean pubkey = new PubkeyBean();
+		
+		if (c != null) {
+			final int COL_ID = c.getColumnIndexOrThrow("_id"),
+				COL_NICKNAME = c.getColumnIndexOrThrow(FIELD_PUBKEY_NICKNAME),
+				COL_TYPE = c.getColumnIndexOrThrow(FIELD_PUBKEY_TYPE),
+				COL_PRIVATE = c.getColumnIndexOrThrow(FIELD_PUBKEY_PRIVATE),
+				COL_PUBLIC = c.getColumnIndexOrThrow(FIELD_PUBKEY_PUBLIC),
+				COL_ENCRYPTED = c.getColumnIndexOrThrow(FIELD_PUBKEY_ENCRYPTED),
+				COL_STARTUP = c.getColumnIndexOrThrow(FIELD_PUBKEY_STARTUP);
+	
+			while (c.moveToNext()) {
+				PubkeyBean pubkey = new PubkeyBean();
+				
+				pubkey.setId(c.getLong(COL_ID));
+				pubkey.setNickname(c.getString(COL_NICKNAME));
+				pubkey.setType(c.getString(COL_TYPE));
+				pubkey.setPrivateKey(c.getBlob(COL_PRIVATE));
+				pubkey.setPublicKey(c.getBlob(COL_PUBLIC));
+				pubkey.setEncrypted(c.getInt(COL_ENCRYPTED) > 0);
+				pubkey.setStartup(c.getInt(COL_STARTUP) > 0);
+				
+				pubkeys.add(pubkey);
+			}
 			
-			pubkey.setId(c.getLong(COL_ID));
-			pubkey.setNickname(c.getString(COL_NICKNAME));
-			pubkey.setType(c.getString(COL_TYPE));
-			pubkey.setPrivateKey(c.getBlob(COL_PRIVATE));
-			pubkey.setPublicKey(c.getBlob(COL_PUBLIC));
-			pubkey.setEncrypted(c.getInt(COL_ENCRYPTED) > 0);
-			pubkey.setStartup(c.getInt(COL_STARTUP) > 0);
-			
-			pubkeys.add(pubkey);
+			c.close();
 		}
 		
-		c.close();
 		db.close();
 				
 		return pubkeys;
@@ -159,11 +162,13 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 		
 		PubkeyBean pubkey = null;
 		
-		if (c != null && c.moveToFirst()) {
-			pubkey = createPubkeyBean(c);
+		if (c != null) {
+			if (c.moveToFirst())
+				pubkey = createPubkeyBean(c);
+			
+			c.close();
 		}
 		
-		c.close();
 		db.close();
 		
 		return pubkey;
@@ -194,11 +199,16 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 		Cursor c = db.query(TABLE_PUBKEYS, new String[] { "_id", column },
 				null, null, null, null, "_id ASC");
 		
-		int COL = c.getColumnIndexOrThrow(column);
-		while(c.moveToNext()) {
-			list.add(c.getString(COL));
+		if (c != null) {
+			int COL = c.getColumnIndexOrThrow(column);
+			
+			while (c.moveToNext())
+				list.add(c.getString(COL));
+			
+			c.close();
 		}
-		c.close();
+		
+		db.close();
 		
 		return list;
 	}
@@ -211,13 +221,18 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 				FIELD_PUBKEY_NICKNAME }, "_id = ?",
 				new String[] { Long.toString(id) }, null, null, null);
 		
-		if (c != null && c.moveToFirst())
-			nickname = c.getString(c.getColumnIndexOrThrow(FIELD_PUBKEY_NICKNAME));
+		if (c != null) {
+			if (c.moveToFirst())
+				nickname = c.getString(c.getColumnIndexOrThrow(FIELD_PUBKEY_NICKNAME));
+			
+			c.close();
+		}
 		
-		c.close();
+		db.close();
+		
 		return nickname;
-
 	}
+	
 /*	
 	public void setOnStart(long id, boolean onStart) {
 		
@@ -271,7 +286,9 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 	public PubkeyBean savePubkey(PubkeyBean pubkey) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		boolean success = false;
+		
 		ContentValues values = pubkey.getValues();
+		
 		if (pubkey.getId() > 0) {
 			values.remove("_id");
 			if (db.update(TABLE_PUBKEYS, values, "_id = ?", new String[] { String.valueOf(pubkey.getId()) }) > 0)
