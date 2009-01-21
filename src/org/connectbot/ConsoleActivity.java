@@ -780,9 +780,12 @@ public class ConsoleActivity extends Activity {
 	protected void updatePromptVisible() {
 		// check if our currently-visible terminalbridge is requesting any prompt services
 		View view = findCurrentView(R.id.console_flip);
+
+		// Hide all the prompts in case a prompt request was canceled
+		hideAllPrompts();
+
 		if(!(view instanceof TerminalView)) {
 			// we dont have an active view, so hide any prompts
-			hideAllPrompts();
 			return;
 		}
 		

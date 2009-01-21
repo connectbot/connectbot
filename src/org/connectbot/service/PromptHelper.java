@@ -12,44 +12,51 @@ import android.os.Message;
  * @author jsharkey
  */
 public class PromptHelper {
-	
 	private final Object tag;
-	
-	public PromptHelper(Object tag) {
-		this.tag = tag;
-	}
-	
-	private Handler handler = null;
 
-	/**
-	 * Register a user interface handler, if available.
-	 */
-	public synchronized void setHandler(Handler handler) {
-		this.handler = handler;
-	}
+	private Handler handler = null;
 	
-	private Semaphore promptResponse = new Semaphore(0);
+	private Semaphore promptToken;
+	private Semaphore promptResponse;
 	
 	public String promptHint = null;
 	public Object promptRequested = null;
 	
 	private Object response = null;
+	
+	public PromptHelper(Object tag) {
+		this.tag = tag;
+		
+		// Threads must acquire this before they can send a prompt.
+		promptToken = new Semaphore(1);
+		
+		// Responses will release this semaphore.
+		promptResponse = new Semaphore(0);
+	}
+	
+
+	/**
+	 * Register a user interface handler, if available.
+	 */
+	public void setHandler(Handler handler) {
+		this.handler = handler;
+	}
 
 	/**
 	 * Set an incoming value from an above user interface. Will automatically
 	 * notify any waiting requests.
 	 */
 	public void setResponse(Object value) {
-		this.response = value;
-		this.promptResponse.release();
+		response = value;
+		promptResponse.release();
 	}
 	
 	/**
 	 * Return the internal response value just before erasing and returning it.
 	 */
 	protected Object popResponse() {
-		Object value = this.response;
-		this.response = null;
+		Object value = response;
+		response = null;
 		return value;
 	}
 
@@ -57,44 +64,98 @@ public class PromptHelper {
 	/**
 	 * Request a prompt response from parent. This is a blocking call until user
 	 * interface returns a value.
+	 * Only one thread can call this at a time. cancelPrompt() will force this to
+	 * immediately return.
 	 */
-	public synchronized Object requestPrompt(String hint, Object type) throws Exception {
-		this.promptHint = hint;
-		this.promptRequested = type;
+	private Object requestPrompt(String hint, Object type, boolean immediate) throws InterruptedException {
+		Object response = null;
 		
-		// notify any parent watching for live events
-		if(handler != null)
-			Message.obtain(handler, -1, tag).sendToTarget();
+		if (immediate)
+			cancelPrompt();
 		
-		// acquire lock until user passes back value
-		this.promptResponse.acquire();
-		this.promptRequested = null;
-		return this.popResponse();
+		promptToken.acquire();
+
+		try {
+			promptHint = hint;
+			promptRequested = type;
+			
+			// notify any parent watching for live events
+			if (handler != null)
+				Message.obtain(handler, -1, tag).sendToTarget();
+		
+			// acquire lock until user passes back value
+			promptResponse.acquire();
+			promptRequested = null;
+			
+			response = popResponse();
+		} finally {
+			promptToken.release();
+		}
+		
+		return response;
 	}
 	
 	/**
 	 * Request a string response from parent. This is a blocking call until user
 	 * interface returns a value.
+	 * @param hint prompt hint for user to answer
+	 * @param immediate whether to cancel other in-progress prompts
+	 * @return string user has entered
 	 */
-	public String requestStringPrompt(String hint) {
+	public String requestStringPrompt(String hint, boolean immediate) {
 		String value = null;
 		try {
-			value = (String)this.requestPrompt(hint, String.class);
+			value = (String)this.requestPrompt(hint, String.class, immediate);
 		} catch(Exception e) {
 		}
 		return value;
 	}
 	
 	/**
+	 * Convenience method for requestStringPrompt(String, boolean)
+	 * @param hint prompt hint for user to answer
+	 * @return string user has entered
+	 */
+	public String requestStringPrompt(String hint) {
+		return requestStringPrompt(hint, false);
+	}
+	
+	/**
 	 * Request a boolean response from parent. This is a blocking call until user
 	 * interface returns a value.
+	 * @param hint prompt hint for user to answer
+	 * @param immediate whether to cancel other in-progress prompts
+	 * @return choice user has made (yes/no)
 	 */
-	public Boolean requestBooleanPrompt(String hint) {
+	public Boolean requestBooleanPrompt(String hint, boolean immediate) {
 		Boolean value = null;
 		try {
-			value = (Boolean)this.requestPrompt(hint, Boolean.class);
+			value = (Boolean)this.requestPrompt(hint, Boolean.class, immediate);
 		} catch(Exception e) {
 		}
 		return value;
+	}
+	
+	/**
+	 * Convenience method for requestBooleanPrompt(String, boolean)
+	 * @param hint String to present to user in prompt
+	 * @return choice user has made (yes/no)
+	 */
+	public Boolean requestBooleanPrompt(String hint) {
+		return requestBooleanPrompt(hint, false);
+	}
+	
+	/**
+	 * Cancel an in-progress prompt.
+	 */
+	public void cancelPrompt() {
+		if (!promptToken.tryAcquire()) {
+			// A thread has the token, so try to interrupt it
+			response = null;
+			promptResponse.release();
+		} else {
+			// No threads have acquired the token
+			promptToken.release();
+		}
 	}
 }

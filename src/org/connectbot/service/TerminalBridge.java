@@ -368,9 +368,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		} else {
 			// otherwise load key from database and prompt for password as needed
 			String password = null;
-			if (pubkey.isEncrypted())
+			if (pubkey.isEncrypted()) {
 				password = promptHelper.requestStringPrompt(String.format("Password for key '%s'", pubkey.getNickname()));
-
+				
+				// Something must have interrupted the prompt.
+				if (password == null)
+					return false;
+			}
+			
 			if(PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType())) {
 				// load specific key using pem format
 				trileadKey = PEMDecoder.decode(new String(pubkey.getPrivateKey()).toCharArray(), password);				
@@ -447,21 +452,24 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 							break;
 						}
 					}
-					
 				} else {
-					outputLine("Attempting 'publickey' authentication with a specific SSH key");
+					outputLine("Attempting 'publickey' authentication with a specific public key");
 					// use a specific key for this host, as requested
 					PubkeyBean pubkey = manager.pubkeydb.findPubkeyById(pubkeyId);
-					if (tryPublicKey(pubkey))
-						finishConnection();
 					
+					if (pubkey == null)
+						outputLine("Selected public key is invalid, try reselecting key in host editor");
+					else
+						if (tryPublicKey(pubkey))
+							finishConnection();
 				}
 				
 				pubkeysExhausted = true;
 			} else if (connection.isAuthMethodAvailable(host.getUsername(), AUTH_PASSWORD)) {
 				outputLine("Attempting 'password' authentication");
 				String password = promptHelper.requestStringPrompt("Password");
-				if(connection.authenticateWithPassword(host.getUsername(), password)) {
+				if (password != null
+						&& connection.authenticateWithPassword(host.getUsername(), password)) {
 					finishConnection();
 				} else {
 					outputLine("Authentication method 'password' failed");
@@ -759,8 +767,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		} else {
 			new Thread(new Runnable() {
 				public void run() {
-					boolean result = promptHelper.requestBooleanPrompt("Host has disconnected.\nClose session?");
-					if (result) {
+					Boolean result = promptHelper.requestBooleanPrompt("Host has disconnected.\nClose session?", true);
+					if (result == null || result.booleanValue()) {
 						awaitingClose = true;
 						
 						// Tell the TerminalManager that we can be destroyed now.
