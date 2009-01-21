@@ -99,6 +99,7 @@ public class ConsoleActivity extends Activity {
 	private MenuItem disconnect, copy, paste, portForward, resize;
 		
 	protected TerminalBridge copySource = null;
+	private int lastTouchRow, lastTouchCol;
 	
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
@@ -415,6 +416,9 @@ public class ConsoleActivity extends Activity {
 				// if copying, then ignore
 				if (copySource != null && copySource.isSelectingForCopy())
 					return false;
+				
+				if (e1 == null || e2 == null)
+					return false;
 
 				// if releasing then reset total scroll
 				if(e2.getAction() == MotionEvent.ACTION_UP) {
@@ -480,16 +484,31 @@ public class ConsoleActivity extends Activity {
 					switch(event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
 						// recording starting area
-						area.setTop(row);
-						area.setLeft(col);
-						copySource.redraw();
-						return false;
+						if (area.isSelectingOrigin()) {
+							area.setTop(row);
+							area.setLeft(col);
+							lastTouchRow = row;
+							lastTouchCol = col;
+							copySource.redraw();
+						}
+						return true;
 					case MotionEvent.ACTION_MOVE:
+						/* ignore when user hasn't moved since last time so
+						 * we can fine-tune with directional pad
+						 */
+						if (row == lastTouchRow && col == lastTouchCol)
+							return true;
+						
+						// if the user moves, start the selection for other corner
+						area.finishSelectingOrigin();
+						
 						// update selected area
 						area.setBottom(row);
 						area.setRight(col);
+						lastTouchRow = row;
+						lastTouchCol = col;
 						copySource.redraw();
-						return false;
+						return true;
 					case MotionEvent.ACTION_UP:
 						/* If they didn't move their finger, maybe they meant to
 						 * select the rest of the text with the directional pad.
