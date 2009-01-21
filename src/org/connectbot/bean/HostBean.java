@@ -97,10 +97,16 @@ public class HostBean extends AbstractBean {
 		return hostKeyAlgo;
 	}
 	public void setHostKey(byte[] hostKey) {
-		this.hostKey = hostKey.clone();
+		if (hostKey == null)
+			this.hostKey = null;
+		else
+			this.hostKey = hostKey.clone();
 	}
 	public byte[] getHostKey() {
-		return hostKey.clone();
+		if (hostKey == null)
+			return null;
+		else
+			return hostKey.clone();
 	}
 	public void setLastConnect(long lastConnect) {
 		this.lastConnect = lastConnect;

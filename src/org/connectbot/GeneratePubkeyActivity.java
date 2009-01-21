@@ -204,6 +204,12 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 	}
 	
 	public void onEntropyGathered(byte[] entropy) {
+		// For some reason the entropy dialog was aborted, exit activity
+		if (entropy == null) {
+			finish();
+			return;
+		}
+		
 		this.entropy = entropy.clone();
 		
 		Log.d(TAG, "entropy gathered; attemping to generate key...");
