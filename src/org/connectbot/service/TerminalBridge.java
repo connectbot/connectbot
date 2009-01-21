@@ -39,10 +39,12 @@ import org.connectbot.TerminalView;
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
 import org.connectbot.bean.PubkeyBean;
+import org.connectbot.bean.SelectionArea;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -50,13 +52,13 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.Bitmap.Config;
 import android.graphics.Paint.FontMetricsInt;
+import android.os.Vibrator;
+import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
-import android.os.Vibrator;
-import android.content.Context;
 
 import com.trilead.ssh2.ChannelCondition;
 import com.trilead.ssh2.Connection;
@@ -148,6 +150,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	private int termHeight;
 	
 	private String keymode = null;
+	
+	private boolean selectingForCopy = false;
+	private SelectionArea selectionArea;
+	private ClipboardManager clipboard;
 
 	protected KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
 
@@ -285,6 +291,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		buffer.setBufferSize(scrollback);
 		resetColors();
 		buffer.setDisplay(this);
+		
+		selectionArea = new SelectionArea();
 
 		// TODO Change this when hosts are beans as well
 		portForwards = manager.hostdb.getPortForwardsForHost(host);
@@ -940,32 +948,84 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			case KeyEvent.KEYCODE_DEL: stdin.write(0x08); return true;
 			case KeyEvent.KEYCODE_ENTER: ((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', event.getMetaState()); return true;
 			case KeyEvent.KEYCODE_DPAD_LEFT:
-				((vt320)buffer).keyPressed(vt320.KEY_LEFT, ' ', event.getMetaState());
-				this.tryKeyVibrate();
+				if (selectingForCopy) {
+					if (selectionArea.isSelectingOrigin())
+						selectionArea.decrementLeft();
+					else
+						selectionArea.decrementRight();
+					redraw();
+				} else {
+					((vt320)buffer).keyPressed(vt320.KEY_LEFT, ' ', event.getMetaState());
+					tryKeyVibrate();
+				}
 				return true;
 
 			case KeyEvent.KEYCODE_DPAD_UP:
-				((vt320)buffer).keyPressed(vt320.KEY_UP, ' ', event.getMetaState());
-				this.tryKeyVibrate();
+				if (selectingForCopy) {
+					if (selectionArea.isSelectingOrigin())
+						selectionArea.decrementTop();
+					else
+						selectionArea.decrementBottom();
+					redraw();
+				} else {
+					((vt320)buffer).keyPressed(vt320.KEY_UP, ' ', event.getMetaState());
+					tryKeyVibrate();
+				}
 				return true;
 
 			case KeyEvent.KEYCODE_DPAD_DOWN:
-				((vt320)buffer).keyPressed(vt320.KEY_DOWN, ' ', event.getMetaState());
-				this.tryKeyVibrate();
+				if (selectingForCopy) {
+					if (selectionArea.isSelectingOrigin())
+						selectionArea.incrementTop();
+					else
+						selectionArea.incrementBottom();
+					redraw();
+				} else {
+					((vt320)buffer).keyPressed(vt320.KEY_DOWN, ' ', event.getMetaState());
+					tryKeyVibrate();
+				}
 				return true;
 
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				((vt320)buffer).keyPressed(vt320.KEY_RIGHT, ' ', event.getMetaState());
-				this.tryKeyVibrate();
+				if (selectingForCopy) {
+					if (selectionArea.isSelectingOrigin())
+						selectionArea.incrementLeft();
+					else
+						selectionArea.incrementRight();
+					redraw();
+				} else {
+					((vt320)buffer).keyPressed(vt320.KEY_RIGHT, ' ', event.getMetaState());
+					tryKeyVibrate();
+				}
 				return true;
 
 			case KeyEvent.KEYCODE_DPAD_CENTER:
-				// TODO: Add some visual indication of Ctrl state
-				if (ctrlPressed) {
-					((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
-					ctrlPressed = false;
-				} else
-					ctrlPressed = true;
+				if (selectingForCopy) {
+					if (selectionArea.isSelectingOrigin())
+						selectionArea.finishSelectingOrigin();
+					else {
+						if (parent != null && clipboard != null) {
+							// copy selected area to clipboard
+							String copiedText = selectionArea.copyFrom(buffer);
+						
+							clipboard.setText(copiedText);
+							parent.notifyUser(parent.getContext().getString(R.string.console_copy_done,
+											copiedText.length()));
+							
+							selectingForCopy = false;
+							selectionArea.reset();
+						}
+					}
+					
+					redraw();
+				} else {
+					// TODO: Add some visual indication of Ctrl state
+					if (ctrlPressed) {
+						((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+						ctrlPressed = false;
+					} else
+						ctrlPressed = true;
+				}
 				return true;
 			}
 			
@@ -984,6 +1044,18 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		}
 		
 		return false;
+	}
+	
+	public void setSelectingForCopy(boolean selectingForCopy) {
+		this.selectingForCopy = selectingForCopy;
+	}
+	
+	public boolean isSelectingForCopy() {
+		return selectingForCopy;
+	}
+	
+	public SelectionArea getSelectionArea() {
+		return selectionArea;
 	}
 	
 	public synchronized void tryKeyVibrate() {
@@ -1028,7 +1100,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		
 		bumpyArrows = manager.prefs.getBoolean(manager.res.getString(R.string.pref_bumpyarrows), true);
 		vibrator = (Vibrator) parent.getContext().getSystemService(Context.VIBRATOR_SERVICE);
-
+		clipboard = (ClipboardManager) parent.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+		
 		if (!forcedSize) {
 			// recalculate buffer size
 			int newTermWidth, newTermHeight;

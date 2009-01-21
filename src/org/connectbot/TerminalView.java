@@ -18,6 +18,7 @@
 
 package org.connectbot;
 
+import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.TerminalBridge;
 
 import android.app.Activity;
@@ -45,15 +46,6 @@ public class TerminalView extends View {
 	
 	private Toast notification = null;
 	private String lastNotification = null;
-	
-	protected int top = -1, bottom = -1, left = -1, right = -1;
-	
-	public void resetSelected() {
-		top = -1;
-		bottom = -1;
-		left = -1;
-		right = -1;
-	}
 
 	public TerminalView(Context context, TerminalBridge bridge) {
 		super(context);
@@ -109,9 +101,15 @@ public class TerminalView extends View {
 			}
 			
 			// draw any highlighted area
-			if(top >= 0 && bottom >= 0 && left >= 0 && right >= 0) {
-				canvas.drawRect(left * bridge.charWidth, top * bridge.charHeight,
-					right * bridge.charWidth, bottom * bridge.charHeight, cursorPaint);
+			if (bridge.isSelectingForCopy()) {
+				SelectionArea area = bridge.getSelectionArea();
+				canvas.drawRect(
+					area.getLeft() * bridge.charWidth,
+					area.getTop() * bridge.charHeight,
+					(area.getRight() + 1) * bridge.charWidth,
+					(area.getBottom() + 1) * bridge.charHeight,
+					cursorPaint
+				);
 			}
 		}
 	}

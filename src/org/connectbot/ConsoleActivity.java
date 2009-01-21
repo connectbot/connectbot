@@ -20,6 +20,7 @@ package org.connectbot;
 
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
+import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
@@ -97,8 +98,7 @@ public class ConsoleActivity extends Activity {
 	
 	private MenuItem disconnect, copy, paste, portForward, resize;
 		
-	protected boolean copying = false;
-	protected TerminalView copySource = null;
+	protected TerminalBridge copySource = null;
 	
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
@@ -413,7 +413,8 @@ public class ConsoleActivity extends Activity {
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 				
 				// if copying, then ignore
-				if(copying) return false;
+				if (copySource != null && copySource.isSelectingForCopy())
+					return false;
 
 				// if releasing then reset total scroll
 				if(e2.getAction() == MotionEvent.ACTION_UP) {
@@ -470,63 +471,46 @@ public class ConsoleActivity extends Activity {
 			public boolean onTouch(View v, MotionEvent event) {
 				
 				// when copying, highlight the area
-				if(copying) {
-					if(copySource == null) return false;
-					float row = event.getY() / copySource.bridge.charHeight;
-					float col = event.getX() / copySource.bridge.charWidth;
+				if (copySource != null && copySource.isSelectingForCopy()) {
+					int row = (int)Math.floor(event.getY() / copySource.charHeight);
+					int col = (int)Math.floor(event.getX() / copySource.charWidth);
+					
+					SelectionArea area = copySource.getSelectionArea();
 					
 					switch(event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
 						// recording starting area
-						copySource.top = (int) Math.floor(row);
-						copySource.left = (int) Math.floor(col);
+						area.setTop(row);
+						area.setLeft(col);
+						copySource.redraw();
 						return false;
 					case MotionEvent.ACTION_MOVE:
 						// update selected area
-						copySource.bottom = (int) Math.ceil(row);
-						copySource.right = (int) Math.ceil(col);
-						copySource.invalidate();
+						area.setBottom(row);
+						area.setRight(col);
+						copySource.redraw();
 						return false;
 					case MotionEvent.ACTION_UP:
-						// copy selected area to clipboard
-						int adjust = 0; //copySource.bridge.buffer.windowBase - copySource.bridge.buffer.screenBase;
-						int top = Math.min(copySource.top, copySource.bottom) + adjust,
-							bottom = Math.max(copySource.top, copySource.bottom) + adjust,
-							left = Math.min(copySource.left, copySource.right),
-							right = Math.max(copySource.left, copySource.right);
-						
-						// perform actual buffer copy
-						int size = (right - left) * (bottom - top);
-						StringBuffer buffer = new StringBuffer(size);
-						for(int y = top; y < bottom; y++) {
-							int lastNonSpace = buffer.length();
-							
-							for(int x = left; x < right; x++) {
-								// only copy printable chars
-								char c = copySource.bridge.buffer.getChar(x, y);
-								if(c < 32 || c >= 127) c = ' ';
-								if (c != ' ')
-									lastNonSpace = buffer.length();
-								buffer.append(c);
-							}
-							
-							// Don't leave a bunch of spaces in our copy buffer.
-							if (buffer.length() > lastNonSpace)
-								buffer.delete(lastNonSpace + 1, buffer.length());
-							
-							if (y != bottom)
-								buffer.append("\n");
+						/* If they didn't move their finger, maybe they meant to
+						 * select the rest of the text with the directional pad.
+						 */
+						if (area.getLeft() == area.getRight() &&
+								area.getTop() == area.getBottom()) {
+							return true;
 						}
 						
-						clipboard.setText(buffer.toString());
-						Toast.makeText(ConsoleActivity.this, getString(R.string.console_copy_done, buffer.length()), Toast.LENGTH_LONG).show();
+						// copy selected area to clipboard
+						String copiedText = area.copyFrom(copySource.buffer);
+						
+						clipboard.setText(copiedText);
+						Toast.makeText(ConsoleActivity.this, getString(R.string.console_copy_done, copiedText.length()), Toast.LENGTH_LONG).show();
 						// fall through to clear state
 						
 					case MotionEvent.ACTION_CANCEL:
 						// make sure we clear any highlighted area
-						copySource.resetSelected();
-						copySource.invalidate();
-						copying = false;
+						area.reset();
+						copySource.setSelectingForCopy(false);
+						copySource.redraw();
 						return true;
 					}
 					
@@ -579,9 +563,16 @@ public class ConsoleActivity extends Activity {
 		copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				// mark as copying and reset any previous bounds
-				copying = true;
-				copySource = (TerminalView)view;
-				copySource.resetSelected();
+				copySource = ((TerminalView)view).bridge;
+				
+				SelectionArea area = copySource.getSelectionArea();
+				area.reset();
+				area.setBounds(copySource.buffer.getColumns(), copySource.buffer.getRows());
+				
+				copySource.setSelectingForCopy(true);
+				
+				// Make sure we show the initial selection
+				copySource.redraw();
 				
 				Toast.makeText(ConsoleActivity.this, getString(R.string.console_copy_start), Toast.LENGTH_LONG).show();
 				return true;

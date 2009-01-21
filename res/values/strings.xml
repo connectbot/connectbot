@@ -110,7 +110,7 @@
 
 
 	<string name="console_copy_done">Copied %d bytes to clipboard</string>
-	<string name="console_copy_start">Touch and drag to select area to copy</string>
+	<string name="console_copy_start">Touch and drag\nor use directional pad\nto select area to copy</string>
 
 	<string name="console_menu_disconnect">Disconnect</string>
 	<string name="console_menu_close">Close</string>
