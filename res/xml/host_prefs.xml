@@ -41,7 +41,7 @@
 		android:key="pubkeyid"
 		android:title="Use pubkey authentication"
 		android:entries="@array/list_pubkeyids"
-		android:entryValues="@array/list_pubkeyids"
+		android:entryValues="@array/list_pubkeyids_value"
 		/>
 		
 	<EditTextPreference
@@ -67,7 +67,7 @@
 		android:title="Encoding"
 		android:summary="Character encoding for the host"
 		android:entries="@array/list_encodings"
-		android:entryValues="@array/list_encodings"
+		android:entryValues="@array/list_encodings_value"
 		/>
 	
 	<PreferenceCategory

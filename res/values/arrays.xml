@@ -43,14 +43,19 @@
     </string-array>
     
     <string-array name="list_pubkeyids">
-    	<item value="-2">@string/list_pubkeyids_none</item>
-    	<item value="-1">@string/list_pubkeyids_any</item>
+    	<item>@string/list_pubkeyids_none</item>
+    	<item>@string/list_pubkeyids_any</item>
     </string-array>
     
+    <string-array name="list_pubkeyids_value">
+    	<item>-2</item>
+    	<item>-1</item>
+   	</string-array>
+    
     <string-array name="list_portforward_types">
-    	<item value="local">@string/portforward_local</item>
-    	<item value="remote">@string/portforward_remote</item>
-    	<item value="dynamic">@string/portforward_dynamic</item>
+    	<item>@string/portforward_local</item>
+    	<item>@string/portforward_remote</item>
+    	<item>@string/portforward_dynamic</item>
    	</string-array>
 
 	<string-array name="list_wizard_topics">
@@ -59,9 +64,15 @@
 	</string-array>
 
 	<string-array name="list_encodings">
-    	<item value="ASCII">ASCII</item>
-    	<item value="ISO8859_1">ISO 8859-1</item>
-    	<item value="UTF-8">UTF-8</item>
+    	<item>ASCII</item>
+    	<item>ISO 8859-1</item>
+    	<item>UTF-8</item>
+   	</string-array>
+   	
+   	<string-array name="list_encodings_value">
+	   	<item>ASCII</item>
+	   	<item>ISO8859_1</item>
+	   	<item>UTF-8</item>
    	</string-array>
 	
 </resources>
