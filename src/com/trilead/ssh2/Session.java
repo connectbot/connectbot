@@ -130,7 +130,26 @@ public class Session
 				terminal_modes);
 	}
 	
-	public void resizePTY(int width, int height) throws IOException {
+	/**
+	 * Inform other side of connection that our PTY has resized.
+	 * <p>
+	 * Zero dimension parameters are ignored. The character/row dimensions
+     * override the pixel dimensions (when nonzero). Pixel dimensions refer to
+     * the drawable area of the window. The dimension parameters are only
+     * informational.
+     * 
+     * @param term_width_characters
+     *            terminal width, characters (e.g., 80)
+     * @param term_height_characters
+     *            terminal height, rows (e.g., 24)
+     * @param term_width_pixels
+     *            terminal width, pixels (e.g., 640)
+     * @param term_height_pixels
+     *            terminal height, pixels (e.g., 480)
+	 * @throws IOException
+	 */
+	public void resizePTY(int term_width_characters, int term_height_characters, int term_width_pixels,
+			int term_height_pixels) throws IOException {
 		synchronized (this)
 		{
 			/* The following is just a nicer error, we would catch it anyway later in the channel code */
@@ -138,7 +157,7 @@ public class Session
 				throw new IOException("This session is closed.");
 		}
 		
-		cm.resizePTY(cn, width, height);
+		cm.resizePTY(cn, term_width_characters, term_height_characters, term_width_pixels, term_height_pixels);
 	}
 
 	/**

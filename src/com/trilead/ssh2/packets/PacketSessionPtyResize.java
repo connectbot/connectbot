@@ -4,15 +4,17 @@ public class PacketSessionPtyResize {
 	byte[] payload;
 
 	public int recipientChannelID;
-	public boolean wantReply;
 	public int width;
 	public int height;
+	public int pixelWidth;
+	public int pixelHeight;
 
-	public PacketSessionPtyResize(int recipientChannelID, boolean wantReply, int width, int height) {
+	public PacketSessionPtyResize(int recipientChannelID, int width, int height, int pixelWidth, int pixelHeight) {
 		this.recipientChannelID = recipientChannelID;
-		this.wantReply = wantReply;
 		this.width = width;
 		this.height = height;
+		this.pixelWidth = pixelWidth;
+		this.pixelHeight = pixelHeight;
 	}
 
 	public byte[] getPayload()
@@ -23,11 +25,11 @@ public class PacketSessionPtyResize {
 			tw.writeByte(Packets.SSH_MSG_CHANNEL_REQUEST);
 			tw.writeUINT32(recipientChannelID);
 			tw.writeString("window-change");
-			tw.writeBoolean(wantReply);
+			tw.writeBoolean(false);
 			tw.writeUINT32(width);
 			tw.writeUINT32(height);
-			tw.writeUINT32(0);
-			tw.writeUINT32(0);
+			tw.writeUINT32(pixelWidth);
+			tw.writeUINT32(pixelHeight);
 
 			payload = tw.getBytes();
 		}

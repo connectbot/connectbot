@@ -678,7 +678,8 @@ public class ChannelManager implements MessageHandler
 	}
 	
 	
-	public void resizePTY(Channel c, int width, int height) throws IOException {
+	public void resizePTY(Channel c, int term_width_characters, int term_height_characters,
+			int term_width_pixels, int term_height_pixels) throws IOException {
 		PacketSessionPtyResize spr;
 
 		synchronized (c) {
@@ -686,7 +687,8 @@ public class ChannelManager implements MessageHandler
 				throw new IOException("Cannot request PTY on this channel ("
 						+ c.getReasonClosed() + ")");
 
-			spr = new PacketSessionPtyResize(c.remoteID, true, width, height);
+			spr = new PacketSessionPtyResize(c.remoteID, term_width_characters, term_height_characters,
+					term_width_pixels, term_height_pixels);
 			c.successCounter = c.failedCounter = 0;
 		}
 
@@ -695,14 +697,6 @@ public class ChannelManager implements MessageHandler
 				throw new IOException("Cannot request PTY on this channel ("
 						+ c.getReasonClosed() + ")");
 			tm.sendMessage(spr.getPayload());
-		}
-
-		try {
-			//waitForChannelSuccessOrFailure(c);
-			this.waitForChannelRequestResult(c);
-		} catch (IOException e) {
-			throw (IOException) new IOException("PTY request failed")
-					.initCause(e);
 		}
 	}
 	

@@ -1154,7 +1154,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			buffer.setCursorPosition(buffer.getCursorColumn(), prevRow);
 
 			if(session != null)
-				session.resizePTY(termWidth, termHeight);
+				session.resizePTY(termWidth, termHeight, width, height);
 		} catch(Exception e) {
 			Log.e(TAG, "Problem while trying to resize screen or PTY", e);
 		}
