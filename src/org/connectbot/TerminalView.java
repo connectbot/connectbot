@@ -19,15 +19,17 @@
 package org.connectbot;
 
 import org.connectbot.bean.SelectionArea;
+import org.connectbot.service.FontSizeChangedListener;
 import org.connectbot.service.TerminalBridge;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PixelXorXfermode;
-import android.util.Log;
+import android.graphics.RectF;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Toast;
@@ -39,16 +41,18 @@ import android.widget.Toast;
  *
  * @author jsharkey
  */
-public class TerminalView extends View {
+public class TerminalView extends View implements FontSizeChangedListener {
 
 	private final Context context;
 	public final TerminalBridge bridge;
 	private final Paint paint;
 	private final Paint cursorPaint;
-	private final Paint cursorDecorationPaint;
 
 	// Cursor paints to distinguish modes
-	private float[] ctrlLines, altLines, shiftLines;
+	private Path ctrlCursor, altCursor, shiftCursor;
+	private RectF tempSrc, tempDst;
+	private Matrix scaleMatrix;
+	private static final Matrix.ScaleToFit scaleType = Matrix.ScaleToFit.FILL;
 
 	private Toast notification = null;
 	private String lastNotification = null;
@@ -67,10 +71,37 @@ public class TerminalView extends View {
 		cursorPaint = new Paint();
 		cursorPaint.setColor(bridge.color[TerminalBridge.COLOR_FG_STD]);
 		cursorPaint.setXfermode(new PixelXorXfermode(bridge.color[TerminalBridge.COLOR_BG_STD]));
+		cursorPaint.setAntiAlias(true);
 
-		cursorDecorationPaint = new Paint();
-		cursorDecorationPaint.setColor(Color.BLACK);
-		//cursorDecorationPaint.setXfermode(new PixelXorXfermode(bridge.color[TerminalBridge.COLOR_FG_STD]));
+		/*
+		 * Set up our cursor indicators on a 1x1 Path object which we can later
+		 * transform to our character width and height
+		 */
+		// TODO make this into a resource somehow
+		shiftCursor = new Path();
+		shiftCursor.lineTo(0.5f, 0.33f);
+		shiftCursor.lineTo(1.0f, 0.0f);
+		shiftCursor.close();
+
+		altCursor = new Path();
+		altCursor.moveTo(0.0f, 1.0f);
+		altCursor.lineTo(0.5f, 0.66f);
+		altCursor.lineTo(1.0f, 1.0f);
+		altCursor.close();
+
+		ctrlCursor = new Path();
+		ctrlCursor.moveTo(0.0f, 0.25f);
+		ctrlCursor.lineTo(1.0f, 0.5f);
+		ctrlCursor.lineTo(0.0f, 0.75f);
+		ctrlCursor.close();
+
+		// For creating the transform when the terminal resizes
+		tempSrc = new RectF();
+		tempSrc.set(0.0f, 0.0f, 1.0f, 1.0f);
+		tempDst = new RectF();
+		scaleMatrix = new Matrix();
+
+		bridge.addFontSizeChangedListener(this);
 
 		// connect our view up to the bridge
 		setOnKeyListener(bridge);
@@ -85,27 +116,12 @@ public class TerminalView extends View {
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
 		bridge.parentChanged(this);
+	}
 
-		// Make a triangle shape pointing down on the top
-		shiftLines = new float[] {
-			0.0f, 0.0f, bridge.charWidth / 2.0f, bridge.charHeight / 3.0f,
-			bridge.charWidth / 2.0f, bridge.charHeight / 3.0f, bridge.charWidth, 0.0f,
-			bridge.charWidth, 0.0f, 0.0f, 0.0f,
-		};
-
-		// Make a triangle shape pointing up on the bottom
-		altLines = new float[] {
-			0.0f, bridge.charHeight, bridge.charWidth / 2.0f, (bridge.charHeight / 3.0f) * 2.0f,
-			bridge.charWidth / 2.0f, (bridge.charHeight / 3.0f) * 2.0f, bridge.charWidth, bridge.charHeight,
-			bridge.charWidth, bridge.charHeight, 0.0f, bridge.charHeight,
-		};
-
-		// Make a triangle shape pointing right in the middle
-		ctrlLines = new float[] {
-			0.0f, bridge.charHeight / 4.0f, bridge.charWidth, bridge.charHeight / 2.0f,
-			bridge.charWidth, bridge.charHeight / 2.0f, 0.0f, (bridge.charHeight / 3.0f) * 2.0f,
-			0.0f, (bridge.charHeight / 4.0f) * 3.0f, 0.0f, bridge.charHeight / 4.0f,
-		};
+	public void onFontSizeChanged(float size) {
+		// Create a scale matrix to scale our 1x1 representation of the cursor
+		tempDst.set(0.0f, 0.0f, bridge.charWidth, bridge.charHeight);
+		scaleMatrix.setRectToRect(tempSrc, tempDst, scaleType);
 	}
 
 	@Override
@@ -131,14 +147,16 @@ public class TerminalView extends View {
 				canvas.clipRect(0, 0, bridge.charWidth, bridge.charHeight);
 				canvas.drawPaint(cursorPaint);
 
+				// Make sure we scale our decorations to the correct size.
+				canvas.concat(scaleMatrix);
+
 				int metaState = bridge.getMetaState();
-				Log.d("cursor", "Meta state: " + metaState);
 				if ((metaState & TerminalBridge.META_SHIFT_ON) == TerminalBridge.META_SHIFT_ON)
-					canvas.drawLines(shiftLines, cursorPaint);
+					canvas.drawPath(shiftCursor, cursorPaint);
 				if ((metaState & TerminalBridge.META_ALT_ON) == TerminalBridge.META_ALT_ON)
-					canvas.drawLines(altLines, cursorPaint);
+					canvas.drawPath(altCursor, cursorPaint);
 				if ((metaState & TerminalBridge.META_CTRL_ON) == TerminalBridge.META_CTRL_ON)
-					canvas.drawLines(ctrlLines, cursorPaint);
+					canvas.drawPath(ctrlCursor, cursorPaint);
 
 				// Restore previous clip region
 				canvas.restore();
@@ -147,13 +165,15 @@ public class TerminalView extends View {
 			// draw any highlighted area
 			if (bridge.isSelectingForCopy()) {
 				SelectionArea area = bridge.getSelectionArea();
-				canvas.drawRect(
+				canvas.save(Canvas.CLIP_SAVE_FLAG);
+				canvas.clipRect(
 					area.getLeft() * bridge.charWidth,
 					area.getTop() * bridge.charHeight,
 					(area.getRight() + 1) * bridge.charWidth,
-					(area.getBottom() + 1) * bridge.charHeight,
-					cursorPaint
+					(area.getBottom() + 1) * bridge.charHeight
 				);
+				canvas.drawPaint(cursorPaint);
+				canvas.restore();
 			}
 		}
 	}

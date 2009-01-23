@@ -167,6 +167,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 	private float fontSize = -1;
 
+	private List<FontSizeChangedListener> fontSizeChangedListeners;
+
 	private List<String> localOutput;
 
 	/**
@@ -268,6 +270,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		defaultPaint.setFakeBoldText(true); // more readable?
 
 		localOutput = new LinkedList<String>();
+
+		fontSizeChangedListeners = new LinkedList<FontSizeChangedListener>();
 
 		setFontSize(DEFAULT_FONT_SIZE);
 
@@ -1122,6 +1126,30 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		// refresh any bitmap with new font size
 		if(parent != null)
 			parentChanged(parent);
+
+		for (FontSizeChangedListener ofscl : fontSizeChangedListeners)
+			ofscl.onFontSizeChanged(size);
+	}
+
+	/**
+	 * Add an {@link FontSizeChangedListener} to the list of listeners for this
+	 * bridge.
+	 * 
+	 * @param listener
+	 *            listener to add
+	 */
+	public void addFontSizeChangedListener(FontSizeChangedListener listener) {
+		fontSizeChangedListeners.add(listener);
+	}
+
+	/**
+	 * Remove an {@link FontSizeChangedListener} from the list of listeners for
+	 * this bridge.
+	 * 
+	 * @param listener
+	 */
+	public void removeFontSizeChangedListener(FontSizeChangedListener listener) {
+		fontSizeChangedListeners.remove(listener);
 	}
 
 	/**
