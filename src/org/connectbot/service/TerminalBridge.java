@@ -138,6 +138,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	private boolean slashKeyPressed = false;
 	private boolean tabKeyPressed = false;
 
+	public final static int META_CTRL_ON  = 0x01;
+	public final static int META_ALT_ON   = 0x02;
+	public final static int META_SHIFT_ON = 0x04;
+
 	private boolean pubkeysExhausted = false;
 
 	private boolean authenticated = false;
@@ -217,7 +221,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 			case KnownHosts.HOSTKEY_HAS_CHANGED:
 				outputLine("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-				outputLine("@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @");
+				outputLine("@	WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!	 @");
 				outputLine("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 				outputLine("IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!");
 				outputLine("Someone could be eavesdropping on you right now (man-in-the-middle attack)!");
@@ -514,7 +518,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		}
 		return responses;
 	}
-
 
 	/**
 	 * Convenience method for writing a line into the underlying MUD buffer.
@@ -864,11 +867,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				if (shiftPressed) {
 					metaState |= KeyEvent.META_SHIFT_ON;
 					shiftPressed = false;
+					redraw();
 				}
 
 				if (altPressed) {
 					metaState |= KeyEvent.META_ALT_ON;
 					altPressed = false;
+					redraw();
 				}
 
 				int key = keymap.get(keyCode, metaState);
@@ -883,6 +888,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					else if (key == 0x20)
 						key = 0x00;
 					ctrlPressed = false;
+					redraw();
 				}
 
 				// handle pressing f-keys
@@ -909,17 +915,37 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			// try handling keymode shortcuts
 			if("Use right-side keys".equals(keymode)) {
 				switch(keyCode) {
-				case KeyEvent.KEYCODE_ALT_RIGHT: slashKeyPressed = true; return true;
-				case KeyEvent.KEYCODE_SHIFT_RIGHT: tabKeyPressed = true; return true;
-				case KeyEvent.KEYCODE_SHIFT_LEFT: shiftPressed = true; return true;
-				case KeyEvent.KEYCODE_ALT_LEFT: altPressed = true; return true;
+				case KeyEvent.KEYCODE_ALT_RIGHT:
+					slashKeyPressed = true;
+					return true;
+				case KeyEvent.KEYCODE_SHIFT_RIGHT:
+					tabKeyPressed = true;
+					return true;
+				case KeyEvent.KEYCODE_SHIFT_LEFT:
+					shiftPressed = true;
+					redraw();
+					return true;
+				case KeyEvent.KEYCODE_ALT_LEFT:
+					altPressed = true;
+					redraw();
+					return true;
 				}
 			} else if("Use left-side keys".equals(keymode)) {
 				switch(keyCode) {
-				case KeyEvent.KEYCODE_ALT_LEFT: slashKeyPressed = true; return true;
-				case KeyEvent.KEYCODE_SHIFT_LEFT: tabKeyPressed = true; return true;
-				case KeyEvent.KEYCODE_SHIFT_RIGHT: shiftPressed = true; return true;
-				case KeyEvent.KEYCODE_ALT_RIGHT: altPressed = true; return true;
+				case KeyEvent.KEYCODE_ALT_LEFT:
+					slashKeyPressed = true;
+					return true;
+				case KeyEvent.KEYCODE_SHIFT_LEFT:
+					tabKeyPressed = true;
+					return true;
+				case KeyEvent.KEYCODE_SHIFT_RIGHT:
+					shiftPressed = true;
+					redraw();
+					return true;
+				case KeyEvent.KEYCODE_ALT_RIGHT:
+					altPressed = true;
+					redraw();
+					return true;
 				}
 			}
 
@@ -1016,16 +1042,16 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 							selectionArea.reset();
 						}
 					}
-
-					redraw();
 				} else {
-					// TODO: Add some visual indication of Ctrl state
 					if (ctrlPressed) {
 						((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
 						ctrlPressed = false;
 					} else
 						ctrlPressed = true;
 				}
+
+				redraw();
+
 				return true;
 			}
 
@@ -1044,6 +1070,16 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		}
 
 		return false;
+	}
+
+	public int getMetaState() {
+		int state = 0;
+
+		if (ctrlPressed) state |= META_CTRL_ON;
+		if (altPressed) state |= META_ALT_ON;
+		if (shiftPressed) state |= META_SHIFT_ON;
+
+		return state;
 	}
 
 	public void setSelectingForCopy(boolean selectingForCopy) {
@@ -1130,7 +1166,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 		// clear out any old buffer information
 		defaultPaint.setColor(Color.BLACK);
-		canvas.drawRect(0, 0, width, height, defaultPaint);
+		canvas.drawPaint(defaultPaint);
 
 		// Stroke the border of the terminal if the size is being forced;
 		if (forcedSize) {
@@ -1249,9 +1285,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					addr++;
 				}
 
+				// Save the current clip region
+				canvas.save(Canvas.CLIP_SAVE_FLAG);
+
 				// clear this dirty area with background color
 				defaultPaint.setColor(bg);
-				canvas.drawRect(c * charWidth, (l * charHeight) - 1, (c + addr) * charWidth, (l + 1) * charHeight, defaultPaint);
+				canvas.clipRect(c * charWidth, (l * charHeight) - 1, (c + addr) * charWidth, (l + 1) * charHeight);
+				canvas.drawPaint(defaultPaint);
 
 				// write the text string starting at 'c' for 'addr' number of characters
 				defaultPaint.setColor(fg);
@@ -1259,6 +1299,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					canvas.drawText(buffer.charArray[buffer.windowBase + l], c,
 						addr, c * charWidth, ((l + 1) * charHeight) - charDescent - 2,
 						defaultPaint);
+
+				// Restore the previous clip region
+				canvas.restore();
 
 				// advance to the next text block with different characteristics
 				c += addr - 1;

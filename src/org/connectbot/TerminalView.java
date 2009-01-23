@@ -24,8 +24,10 @@ import org.connectbot.service.TerminalBridge;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelXorXfermode;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Toast;
@@ -43,6 +45,10 @@ public class TerminalView extends View {
 	public final TerminalBridge bridge;
 	private final Paint paint;
 	private final Paint cursorPaint;
+	private final Paint cursorDecorationPaint;
+
+	// Cursor paints to distinguish modes
+	private float[] ctrlLines, altLines, shiftLines;
 
 	private Toast notification = null;
 	private String lastNotification = null;
@@ -62,10 +68,12 @@ public class TerminalView extends View {
 		cursorPaint.setColor(bridge.color[TerminalBridge.COLOR_FG_STD]);
 		cursorPaint.setXfermode(new PixelXorXfermode(bridge.color[TerminalBridge.COLOR_BG_STD]));
 
+		cursorDecorationPaint = new Paint();
+		cursorDecorationPaint.setColor(Color.BLACK);
+		//cursorDecorationPaint.setXfermode(new PixelXorXfermode(bridge.color[TerminalBridge.COLOR_FG_STD]));
+
 		// connect our view up to the bridge
 		setOnKeyListener(bridge);
-
-
 	}
 
 	public void destroy() {
@@ -77,6 +85,27 @@ public class TerminalView extends View {
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
 		bridge.parentChanged(this);
+
+		// Make a triangle shape pointing down on the top
+		shiftLines = new float[] {
+			0.0f, 0.0f, bridge.charWidth / 2.0f, bridge.charHeight / 3.0f,
+			bridge.charWidth / 2.0f, bridge.charHeight / 3.0f, bridge.charWidth, 0.0f,
+			bridge.charWidth, 0.0f, 0.0f, 0.0f,
+		};
+
+		// Make a triangle shape pointing up on the bottom
+		altLines = new float[] {
+			0.0f, bridge.charHeight, bridge.charWidth / 2.0f, (bridge.charHeight / 3.0f) * 2.0f,
+			bridge.charWidth / 2.0f, (bridge.charHeight / 3.0f) * 2.0f, bridge.charWidth, bridge.charHeight,
+			bridge.charWidth, bridge.charHeight, 0.0f, bridge.charHeight,
+		};
+
+		// Make a triangle shape pointing right in the middle
+		ctrlLines = new float[] {
+			0.0f, bridge.charHeight / 4.0f, bridge.charWidth, bridge.charHeight / 2.0f,
+			bridge.charWidth, bridge.charHeight / 2.0f, 0.0f, (bridge.charHeight / 3.0f) * 2.0f,
+			0.0f, (bridge.charHeight / 4.0f) * 3.0f, 0.0f, bridge.charHeight / 4.0f,
+		};
 	}
 
 	@Override
@@ -95,9 +124,24 @@ public class TerminalView extends View {
 						+ bridge.buffer.screenBase - bridge.buffer.windowBase)
 						* bridge.charHeight;
 
-				canvas.drawRect(x, y, x + bridge.charWidth,
-						y + bridge.charHeight, cursorPaint);
+				// Save the current clip and translation
+				canvas.save();
 
+				canvas.translate(x, y);
+				canvas.clipRect(0, 0, bridge.charWidth, bridge.charHeight);
+				canvas.drawPaint(cursorPaint);
+
+				int metaState = bridge.getMetaState();
+				Log.d("cursor", "Meta state: " + metaState);
+				if ((metaState & TerminalBridge.META_SHIFT_ON) == TerminalBridge.META_SHIFT_ON)
+					canvas.drawLines(shiftLines, cursorPaint);
+				if ((metaState & TerminalBridge.META_ALT_ON) == TerminalBridge.META_ALT_ON)
+					canvas.drawLines(altLines, cursorPaint);
+				if ((metaState & TerminalBridge.META_CTRL_ON) == TerminalBridge.META_CTRL_ON)
+					canvas.drawLines(ctrlLines, cursorPaint);
+
+				// Restore previous clip region
+				canvas.restore();
 			}
 
 			// draw any highlighted area
