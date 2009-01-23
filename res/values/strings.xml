@@ -1,83 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ConnectBot</string>
-    <string name="app_desc">Simple, powerful, open-source SSH client.</string>
-    
-    <string name="title_hosts_list">Hosts</string>
-    <string name="title_pubkey_list">Pubkeys</string>
-    <string name="title_port_forwards_list">Port forwards</string>
-    <string name="title_host_editor">Edit Host</string>
-    <string name="title_help">Help</string>
-    
-    <string name="title_password">Input Password</string>
-    <string name="title_entropy">Gathering Entropy</string>
-    
+	<string name="app_name">ConnectBot</string>
+	<string name="app_desc">Simple, powerful, open-source SSH client.</string>
+
+	<string name="title_hosts_list">Hosts</string>
+	<string name="title_pubkey_list">Pubkeys</string>
+	<string name="title_port_forwards_list">Port forwards</string>
+	<string name="title_host_editor">Edit Host</string>
+	<string name="title_help">Help</string>
+
+	<string name="title_password">Input Password</string>
+	<string name="title_entropy">Gathering Entropy</string>
+
 	<string name="resolve_edit">Edit Host</string>
 	<string name="resolve_connect">Connect</string>
 	<string name="resolve_entropy">Gather Entropy</string>
-	
-    <string name="menu_insert">Add Host</string>
-    <string name="menu_delete">Delete Host</string>
-    <string name="menu_preferences">Preferences</string>
-    <string name="menu_help">Help</string>
-    
-    <string name="help_intro">Please select a topic below for more information on a particular subject.</string>
-    <string name="help_about">About ConnectBot</string>
-    <string name="help_keyboard">Keyboard</string>
-    <string name="help_pubkeys">Pubkeys</string>
-    <string name="help_portforwards">Port Forwards</string>
-    
-    <string name="pubkey_generate">Generate</string>
-    <string name="pubkey_import">Import</string>
+
+	<string name="menu_insert">Add Host</string>
+	<string name="menu_delete">Delete Host</string>
+	<string name="menu_preferences">Preferences</string>
+	<string name="menu_help">Help</string>
+
+	<string name="help_intro">Please select a topic below for more information on a particular subject.</string>
+	<string name="help_about">About ConnectBot</string>
+	<string name="help_keyboard">Keyboard</string>
+	<string name="help_pubkeys">Pubkeys</string>
+	<string name="help_portforwards">Port Forwards</string>
+
+	<string name="pubkey_generate">Generate</string>
+	<string name="pubkey_import">Import</string>
 	<string name="pubkey_delete">Delete key</string>
 	<string name="pubkey_gather_entropy">Gathering Entropy</string>
-    <string name="pubkey_touch_prompt">Touch this box to gather randomness: </string>
-    <string name="pubkey_generating">Generating key pair...</string>
-    <string name="pubkey_copy_private">Copy private key</string>
-    <string name="pubkey_copy_public">Copy public key</string>
-    <string name="pubkey_list_empty">Tap "Menu" to create\nor import key pairs.</string>
-    <string name="pubkey_unknown_format">Unknown format</string>
-    <string name="pubkey_change_password">Change password</string>
-    <string name="pubkey_list_pick">Pick from /sdcard</string>
-    <string name="pubkey_import_parse_problem">Problem parsing imported private key</string>
-    <string name="pubkey_unlock">Unlock key</string>
-    <string name="pubkey_failed_add">Bad password for key '%s'. Authentication failed.</string>
-    <string name="pubkey_memory_load">Load into memory</string>
-    <string name="pubkey_memory_unload">Unload from memory</string>
-    <string name="pubkey_load_on_start">Load key on start</string>
+	<string name="pubkey_touch_prompt">Touch this box to gather randomness: </string>
+	<string name="pubkey_generating">Generating key pair...</string>
+	<string name="pubkey_copy_private">Copy private key</string>
+	<string name="pubkey_copy_public">Copy public key</string>
+	<string name="pubkey_list_empty">Tap "Menu" to create\nor import key pairs.</string>
+	<string name="pubkey_unknown_format">Unknown format</string>
+	<string name="pubkey_change_password">Change password</string>
+	<string name="pubkey_list_pick">Pick from /sdcard</string>
+	<string name="pubkey_import_parse_problem">Problem parsing imported private key
+	</string>
+	<string name="pubkey_unlock">Unlock key</string>
+	<string name="pubkey_failed_add">Bad password for key '%s'. Authentication failed.</string>
+	<string name="pubkey_memory_load">Load into memory</string>
+	<string name="pubkey_memory_unload">Unload from memory</string>
+	<string name="pubkey_load_on_start">Load key on start</string>
 
 	<string name="portforward_list_empty">Tap "Menu" to create\nport forwards.</string>
 	<string name="portforward_edit">Edit port forward</string>
 	<string name="portforward_delete">Delete port forward</string>
-	
-	
+
 	<string name="prompt_nickname">Nickname:</string>
 	<string name="prompt_source_port">Source port:</string>
 	<string name="prompt_destination">Destination:</string>
-    <string name="prompt_old_password">Old password:</string>
-    <string name="prompt_password">Password:</string>
-    <string name="prompt_again">(again)</string>
-    <string name="prompt_type">Type:</string>
-    
-    <string name="alert_passwords_do_not_match_msg">Passwords do not match!</string>
-    <string name="alert_wrong_password_msg">Wrong password!</string>
-    <string name="alert_key_corrupted_msg">Private key appears corrupt!</string>
-    <string name="alert_sdcard_absent">SD card is not inserted!</string>
-    
-    <string name="button_add">Add</string>
-    <string name="button_change">Change</string>
-    <string name="button_generate">Generate Key</string>
-    <string name="button_resize">Resize</string>
-    
-    <string name="alert_disconnect_msg">Connection Lost</string>
-    
-    <string name="msg_copyright">Copyright &#169; 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
+	<string name="prompt_old_password">Old password:</string>
+	<string name="prompt_password">Password:</string>
+	<string name="prompt_again">(again)</string>
+	<string name="prompt_type">Type:</string>
 
- 	<!-- DO NOT MANUALLY UPDATE VERSION!!!
- 	     Updating is update by the ant task "update-version" in build.xml
- 	  -->
-    <string name="msg_version">ConnectBot (working copy)</string>
+	<string name="alert_passwords_do_not_match_msg">Passwords do not match!</string>
+	<string name="alert_wrong_password_msg">Wrong password!</string>
+	<string name="alert_key_corrupted_msg">Private key appears corrupt!</string>
+	<string name="alert_sdcard_absent">SD card is not inserted!</string>
 
+	<string name="button_add">Add</string>
+	<string name="button_change">Change</string>
+	<string name="button_generate">Generate Key</string>
+	<string name="button_resize">Resize</string>
+
+	<string name="alert_disconnect_msg">Connection Lost</string>
+
+	<string name="msg_copyright">Copyright &#169; 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
+
+	<!-- DO NOT MANUALLY UPDATE VERSION!!!
+	  Updating is update by the ant task "update-version" in build.xml
+	-->
+	<string name="msg_version">ConnectBot (working copy)</string>
 
 	<string name="pref_emulation">emulation</string>
 	<string name="pref_scrollback">scrollback</string>
@@ -91,11 +90,11 @@
 	<string name="pref_fullscreen">fullscreen</string>
 	<string name="pref_wifilock">wifilock</string>
 	<string name="pref_bumpyarrows">bumpyarrows</string>
-	
+
 	<string name="list_keymode_right">Use right-side keys</string>
 	<string name="list_keymode_left">Use left-side keys</string>
 	<string name="list_keymode_none">Disable</string>
-	
+
 	<string name="list_pubkeyids_none">Do not use keys</string>
 	<string name="list_pubkeyids_any">Use any unlocked key</string>
 
@@ -103,11 +102,9 @@
 	<string name="list_update_weekly">Weekly</string>
 	<string name="list_update_never">Never</string>
 
-    <string name="bind_minutes">%s minutes ago</string>
-    <string name="bind_hours">%s hours ago</string>
-    <string name="bind_days">%s days ago</string>
-    
-
+	<string name="bind_minutes">%s minutes ago</string>
+	<string name="bind_hours">%s hours ago</string>
+	<string name="bind_days">%s days ago</string>
 
 	<string name="console_copy_done">Copied %d bytes to clipboard</string>
 	<string name="console_copy_start">Touch and drag\nor use directional pad\nto select area to copy</string>
@@ -127,11 +124,11 @@
 
 	<string name="portforward_done">Successfully created port forward</string>
 	<string name="portforward_problem">Problem creating port forward, maybe you're using ports under 1024 or port is already used?</string>
-	
+
 	<string name="portforward_menu_add">Add port forward</string>
 
 	<string name="list_format_error">Use the format 'username@hostname:port'</string>
-	
+
 	<string name="list_menu_pubkeys">Manage Pubkeys</string>
 	<string name="list_menu_sortcolor">Sort by color</string>
 	<string name="list_menu_sortname">Sort by name</string>
@@ -182,5 +179,4 @@
 	<string name="upgrade">New version</string>
 	<string name="upgrade_pos">Yes, upgrade</string>
 	<string name="upgrade_neg">Not right now</string>
-
 </resources>

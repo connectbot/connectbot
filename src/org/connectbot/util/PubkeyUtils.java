@@ -1,17 +1,17 @@
 /*
 	ConnectBot: simple, powerful, open-source SSH client for Android
 	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
-	
+
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
-	
+
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
-	
+
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -65,13 +65,13 @@ import com.trilead.ssh2.signature.RSASHA1Verify;
 public class PubkeyUtils {
 	public static final String PKCS8_START = "-----BEGIN PRIVATE KEY-----";
 	public static final String PKCS8_END = "-----END PRIVATE KEY-----";
-	
+
 	// Size in bytes of salt to use.
 	private static final int SALT_SIZE = 8;
-	
+
 	// Number of iterations for password hashing. PKCS#5 recommends 1000
 	private static final int ITERATIONS = 1000;
-	
+
 	public static String formatKey(Key key){
 		String algo = key.getAlgorithm();
 		String fmt = key.getFormat();
@@ -79,7 +79,7 @@ public class PubkeyUtils {
 		return "Key[algorithm=" + algo + ", format=" + fmt +
 			", bytes=" + encoded.length + "]";
 	}
-	
+
 	public static String describeKey(Key key, boolean encrypted) {
 		String desc = null;
 		if (key instanceof RSAPublicKey) {
@@ -90,24 +90,24 @@ public class PubkeyUtils {
 		} else {
 			desc = "Unknown Key Type";
 		}
-		
+
 		if (encrypted)
 			desc += " (encrypted)";
-		
+
 		return desc;
 	}
-	
+
 	public static byte[] sha256(byte[] data) throws NoSuchAlgorithmException {
 		return MessageDigest.getInstance("SHA-256").digest(data);
 	}
-	
+
 	public static byte[] cipher(int mode, byte[] data, byte[] secret) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 		SecretKeySpec secretKeySpec = new SecretKeySpec(sha256(secret), "AES");
 		Cipher c = Cipher.getInstance("AES");
 		c.init(mode, secretKeySpec);
 		return c.doFinal(data);
-	}	
-	
+	}
+
 	public static byte[] encrypt(byte[] cleartext, String secret) throws Exception {
 		byte[] salt = new byte[SALT_SIZE];
 
@@ -123,15 +123,15 @@ public class PubkeyUtils {
 
 		return complete;
 	}
-	
+
 	public static byte[] decrypt(byte[] complete, String secret) throws Exception {
 		try {
 			byte[] salt = new byte[SALT_SIZE];
 			byte[] ciphertext = new byte[complete.length - salt.length];
-			
+
 			System.arraycopy(complete, 0, salt, 0, salt.length);
 			System.arraycopy(complete, salt.length, ciphertext, 0, ciphertext.length);
-			
+
 			return Encryptor.decrypt(salt, ITERATIONS, secret, ciphertext);
 		} catch (Exception e) {
 			Log.d("decrypt", "Could not decrypt with new method", e);
@@ -139,41 +139,41 @@ public class PubkeyUtils {
 			return cipher(Cipher.DECRYPT_MODE, complete, secret.getBytes());
 		}
 	}
-	
+
 	public static byte[] getEncodedPublic(PublicKey pk) {
 		return new X509EncodedKeySpec(pk.getEncoded()).getEncoded();
 	}
-	
+
 	public static byte[] getEncodedPrivate(PrivateKey pk) {
 		return new PKCS8EncodedKeySpec(pk.getEncoded()).getEncoded();
 	}
-	
+
 	public static byte[] getEncodedPrivate(PrivateKey pk, String secret) throws Exception {
 		if (secret.length() > 0)
 			return encrypt(getEncodedPrivate(pk), secret);
 		else
 			return getEncodedPrivate(pk);
 	}
-	
+
 	public static PrivateKey decodePrivate(byte[] encoded, String keyType) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		PKCS8EncodedKeySpec privKeySpec = new PKCS8EncodedKeySpec(encoded);
 		KeyFactory kf = KeyFactory.getInstance(keyType);
 		return kf.generatePrivate(privKeySpec);
 	}
-	
+
 	public static PrivateKey decodePrivate(byte[] encoded, String keyType, String secret) throws Exception {
 		if (secret != null && secret.length() > 0)
 			return decodePrivate(decrypt(encoded, secret), keyType);
 		else
 			return decodePrivate(encoded, keyType);
 	}
-	
+
 	public static PublicKey decodePublic(byte[] encoded, String keyType) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		X509EncodedKeySpec pubKeySpec = new X509EncodedKeySpec(encoded);
 		KeyFactory kf = KeyFactory.getInstance(keyType);
 		return kf.generatePublic(pubKeySpec);
 	}
-	
+
 	public static KeyPair recoverKeyPair(byte[] encoded) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		KeySpec privKeySpec = new PKCS8EncodedKeySpec(encoded);
 		KeySpec pubKeySpec;
@@ -208,11 +208,11 @@ public class PubkeyUtils {
 
 		return new KeyPair(pub, priv);
 	}
-	
+
 	/*
 	 * Trilead compatibility methods
 	 */
-	
+
 	public static Object convertToTrilead(PublicKey pk) {
 		if (pk instanceof RSAPublicKey) {
 			return new com.trilead.ssh2.signature.RSAPublicKey(
@@ -223,10 +223,10 @@ public class PubkeyUtils {
 			return new com.trilead.ssh2.signature.DSAPublicKey(
 						dp.getP(), dp.getQ(), dp.getG(), ((DSAPublicKey) pk).getY());
 		}
-		
+
 		throw new IllegalArgumentException("PublicKey is not RSA or DSA format");
 	}
-	
+
 	public static Object convertToTrilead(PrivateKey priv, PublicKey pub) {
 		if (priv instanceof RSAPrivateKey) {
 			return new com.trilead.ssh2.signature.RSAPrivateKey(
@@ -239,14 +239,14 @@ public class PubkeyUtils {
 						dp.getP(), dp.getQ(), dp.getG(), ((DSAPublicKey) pub).getY(),
 						((DSAPrivateKey) priv).getX());
 		}
-		
+
 		throw new IllegalArgumentException("Key is not RSA or DSA format");
 	}
-	
+
 	/*
-	 * OpenSSH compatibility methods 
+	 * OpenSSH compatibility methods
 	 */
-	
+
 	public static String convertToOpenSSHFormat(PublicKey pk, String nickname) throws IOException, InvalidKeyException {
 		if (nickname == null)
 			nickname = "connectbot@android";
@@ -262,11 +262,11 @@ public class PubkeyUtils {
 					(com.trilead.ssh2.signature.DSAPublicKey)convertToTrilead(pk))));
 			return data + " " + nickname;
 		}
-		
+
 		throw new InvalidKeyException("Unknown key type");
 	}
-	
-    public static String exportPEM(PrivateKey key, String secret) throws NoSuchAlgorithmException, InvalidParameterSpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, InvalidKeySpecException, IllegalBlockSizeException, IOException {
+
+	public static String exportPEM(PrivateKey key, String secret) throws NoSuchAlgorithmException, InvalidParameterSpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, InvalidKeySpecException, IllegalBlockSizeException, IOException {
 		StringBuilder sb = new StringBuilder();
 
 		byte[] data = key.getEncoded();
@@ -278,24 +278,24 @@ public class PubkeyUtils {
 			byte[] salt = new byte[8];
 			SecureRandom random = new SecureRandom();
 			random.nextBytes(salt);
-			
+
 			PBEParameterSpec defParams = new PBEParameterSpec(salt, 1);
 			AlgorithmParameters params = AlgorithmParameters.getInstance(key.getAlgorithm());
-			
+
 			params.init(defParams);
-			
+
 			PBEKeySpec pbeSpec = new PBEKeySpec(secret.toCharArray());
-			
+
 			SecretKeyFactory keyFact = SecretKeyFactory.getInstance(key.getAlgorithm());
 			Cipher cipher = Cipher.getInstance(key.getAlgorithm());
 			cipher.init(Cipher.WRAP_MODE, keyFact.generateSecret(pbeSpec), params);
-			
+
 			byte[] wrappedKey = cipher.wrap(key);
-			
+
 			EncryptedPrivateKeyInfo pinfo = new EncryptedPrivateKeyInfo(params, wrappedKey);
-			
+
 			data = pinfo.getEncoded();
-			
+
 			sb.append("Proc-Type: 4,ENCRYPTED\n");
 			sb.append("DEK-Info: DES-EDE3-CBC,");
 			sb.append(encodeHex(salt));
@@ -314,18 +314,18 @@ public class PubkeyUtils {
 
 		return sb.toString();
 	}
-    
-    final static private char hexDigit[] = { '0', '1', '2', '3', '4', '5', '6',
+
+	final static private char hexDigit[] = { '0', '1', '2', '3', '4', '5', '6',
 			'7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-    private static String encodeHex(byte[] bytes) {
-    	char[] hex = new char[bytes.length * 2];
-    	
-    	int i = 0;
-    	for (byte b : bytes) {
-    		hex[i++] = hexDigit[(b >> 4) & 0x0f];
-    		hex[i++] = hexDigit[b & 0x0f];
-    	}
-    	
-    	return new String(hex);
-    }
+	private static String encodeHex(byte[] bytes) {
+		char[] hex = new char[bytes.length * 2];
+
+		int i = 0;
+		for (byte b : bytes) {
+			hex[i++] = hexDigit[(b >> 4) & 0x0f];
+			hex[i++] = hexDigit[b & 0x0f];
+		}
+
+		return new String(hex);
+	}
 }

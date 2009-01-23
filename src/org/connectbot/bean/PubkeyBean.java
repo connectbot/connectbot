@@ -1,17 +1,17 @@
 /*
 	ConnectBot: simple, powerful, open-source SSH client for Android
 	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
-	
+
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
-	
+
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
-	
+
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -30,7 +30,7 @@ import android.content.ContentValues;
  */
 public class PubkeyBean extends AbstractBean {
 	public static final String BEAN_NAME = "pubkey";
-	
+
 	/* Database fields */
 	private long id;
 	private String nickname;
@@ -39,15 +39,15 @@ public class PubkeyBean extends AbstractBean {
 	private byte[] publicKey;
 	private boolean encrypted = false;
 	private boolean startup = false;
-	
+
 	/* Transient values */
 	private boolean unlocked = false;
 	private Object unlockedPrivate = null;
-	
+
 	public String getBeanName() {
 		return BEAN_NAME;
 	}
-	
+
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -138,29 +138,29 @@ public class PubkeyBean extends AbstractBean {
 	@Override
 	public ContentValues getValues() {
 		ContentValues values = new ContentValues();
-		
+
 		values.put(PubkeyDatabase.FIELD_PUBKEY_NICKNAME, nickname);
 		values.put(PubkeyDatabase.FIELD_PUBKEY_TYPE, type);
 		values.put(PubkeyDatabase.FIELD_PUBKEY_PRIVATE, privateKey);
 		values.put(PubkeyDatabase.FIELD_PUBKEY_PUBLIC, publicKey);
 		values.put(PubkeyDatabase.FIELD_PUBKEY_ENCRYPTED, encrypted ? 1 : 0);
 		values.put(PubkeyDatabase.FIELD_PUBKEY_STARTUP, startup ? 1 : 0);
-		
+
 		return values;
 	}
 
 	public boolean changePassword(String oldPassword, String newPassword) throws Exception {
 		PrivateKey priv;
-		
+
 		try {
 			priv = PubkeyUtils.decodePrivate(getPrivateKey(), getType(), oldPassword);
 		} catch (Exception e) {
 			return false;
 		}
-		
+
 		setPrivateKey(PubkeyUtils.getEncodedPrivate(priv, newPassword));
 		setEncrypted(newPassword.length() > 0);
-		
+
 		return true;
 	}
 }

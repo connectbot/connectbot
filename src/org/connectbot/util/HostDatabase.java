@@ -1,17 +1,17 @@
 /*
 	ConnectBot: simple, powerful, open-source SSH client for Android
 	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
-	
+
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
-	
+
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
-	
+
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -36,16 +36,16 @@ import android.util.Log;
 /**
  * Contains information about various SSH hosts, include public hostkey if known
  * from previous sessions.
- * 
+ *
  * @author jsharkey
  */
 public class HostDatabase extends SQLiteOpenHelper {
-	
+
 	public final static String TAG = HostDatabase.class.toString();
-	
+
 	public final static String DB_NAME = "hosts";
 	public final static int DB_VERSION = 15;
-	
+
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
 	public final static String FIELD_HOST_USERNAME = "username";
@@ -61,7 +61,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_HOST_WANTSESSION = "wantsession";
 	public final static String FIELD_HOST_COMPRESSION = "compression";
 	public final static String FIELD_HOST_ENCODING = "encoding";
-	
+
 	public final static String TABLE_PORTFORWARDS = "portforwards";
 	public final static String FIELD_PORTFORWARD_HOSTID = "hostid";
 	public final static String FIELD_PORTFORWARD_NICKNAME = "nickname";
@@ -74,19 +74,19 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String COLOR_GREEN = "green";
 	public final static String COLOR_BLUE = "blue";
 	public final static String COLOR_GRAY = "gray";
-	
+
 	public final static String PORTFORWARD_LOCAL = "local";
 	public final static String PORTFORWARD_REMOTE = "remote";
 	public final static String PORTFORWARD_DYNAMIC4 = "dynamic4";
 	public final static String PORTFORWARD_DYNAMIC5 = "dynamic5";
-	
+
 	public final static String ENCODING_ASCII = "ASCII";
 	public final static String ENCODING_UTF8 = "UTF-8";
 	public final static String ENCODING_ISO88591 = "ISO8859_1";
 
 	public final static long PUBKEYID_NEVER = -2;
 	public final static long PUBKEYID_ANY = -1;
-	
+
 	public HostDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 	}
@@ -113,7 +113,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 		//this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, COLOR_GRAY);
 		//this.createHost(db, "cron@server.example.com", "cron", "server.example.com", 22, COLOR_GRAY, PUBKEYID_ANY);
 		//this.createHost(db, "backup@example.net", "backup", "example.net", 22, COLOR_BLUE, PUBKEYID_ANY);
-		
+
 		db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS
 				+ " (_id INTEGER PRIMARY KEY, "
 				+ FIELD_PORTFORWARD_HOSTID + " INTEGER, "
@@ -133,7 +133,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 			onCreate(db);
 			return;
 		}
-		
+
 		switch (oldVersion) {
 		case 10:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
@@ -158,7 +158,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 					+ " ADD COLUMN " + FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_ASCII + "'");
 		}
 	}
-	
+
 	/**
 	 * Touch a specific host to update its "last connected" field.
 	 * @param nickname Nickname field of host to update
@@ -166,41 +166,41 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public void touchHost(HostBean host) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		long now = System.currentTimeMillis() / 1000;
-		
+
 		ContentValues values = new ContentValues();
 		values.put(FIELD_HOST_LASTCONNECT, now);
-		
+
 		db.update(TABLE_HOSTS, values, "_id = ?", new String[] { String.valueOf(host.getId()) });
-		
+
 		db.close();
 	}
-	
+
 	/**
 	 * Create a new host using the given parameters.
 	 */
 	public HostBean saveHost(HostBean host) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		
+
 		long id = db.insert(TABLE_HOSTS, null, host.getValues());
 		db.close();
 
 		host.setId(id);
-		
+
 		return host;
 	}
-	
+
 	/**
 	 * Delete a specific host by its <code>_id</code> value.
 	 */
 	public void deleteHost(HostBean host) {
 		if (host.getId() < 0)
 			return;
-		
+
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_HOSTS, "_id = ?", new String[] { String.valueOf(host.getId()) });
 		db.close();
 	}
-	
+
 	/**
 	 * Return a cursor that contains information about all known hosts.
 	 * @param sortColors If true, sort by color, otherwise sort by nickname.
@@ -208,9 +208,9 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public List<HostBean> getHosts(boolean sortColors) {
 		String sortField = sortColors ? FIELD_HOST_COLOR : FIELD_HOST_NICKNAME;
 		SQLiteDatabase db = this.getReadableDatabase();
-		
+
 		List<HostBean> hosts = new LinkedList<HostBean>();
-		
+
 		Cursor c = db.query(TABLE_HOSTS, null, null, null, null, null, sortField + " ASC");
 
 		final int COL_ID = c.getColumnIndexOrThrow("_id"),
@@ -226,10 +226,10 @@ public class HostDatabase extends SQLiteOpenHelper {
 			COL_WANTSESSION = c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION),
 			COL_COMPRESSION = c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION),
 			COL_ENCODING = c.getColumnIndexOrThrow(FIELD_HOST_ENCODING);
-		
+
 		while (c.moveToNext()) {
 			HostBean host = new HostBean();
-			
+
 			host.setId(c.getLong(COL_ID));
 			host.setNickname(c.getString(COL_NICKNAME));
 			host.setUsername(c.getString(COL_USERNAME));
@@ -243,16 +243,16 @@ public class HostDatabase extends SQLiteOpenHelper {
 			host.setWantSession(Boolean.valueOf(c.getString(COL_WANTSESSION)));
 			host.setCompression(Boolean.valueOf(c.getString(COL_COMPRESSION)));
 			host.setEncoding(c.getString(COL_ENCODING));
-			
+
 			hosts.add(host);
 		}
-		
+
 		c.close();
 		db.close();
-				
+
 		return hosts;
 	}
-	
+
 	/**
 	 * @param nickname
 	 * @param username
@@ -263,7 +263,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public HostBean findHost(String nickname, String username, String hostname,
 			int port) {
 		SQLiteDatabase db = this.getReadableDatabase();
-		
+
 		Cursor c = db.query(TABLE_HOSTS, null,
 				FIELD_HOST_NICKNAME + " = ? AND " +
 					FIELD_HOST_USERNAME + " = ? AND " +
@@ -271,18 +271,18 @@ public class HostDatabase extends SQLiteOpenHelper {
 					FIELD_HOST_PORT + " = ?",
 				new String[] { nickname, username, hostname, String.valueOf(port) },
 				null, null, null);
-		
+
 		HostBean host = null;
-		
+
 		if (c != null) {
 			if (c.moveToFirst())
 				host = createHostBean(c);
-			
+
 			c.close();
 		}
-		
+
 		db.close();
-		
+
 		return host;
 	}
 
@@ -292,28 +292,28 @@ public class HostDatabase extends SQLiteOpenHelper {
 	 */
 	public HostBean findHostById(long hostId) {
 		SQLiteDatabase db = this.getReadableDatabase();
-		
+
 		Cursor c = db.query(TABLE_HOSTS, null,
 				"_id = ?", new String[] { String.valueOf(hostId) },
 				null, null, null);
-		
+
 		HostBean host = null;
-		
+
 		if (c != null) {
 			if (c.moveToFirst())
 				host = createHostBean(c);
-			
+
 			c.close();
 		}
-		
+
 		db.close();
-		
+
 		return host;
 	}
-	
+
 	private HostBean createHostBean(Cursor c) {
 		HostBean host = new HostBean();
-		
+
 		host.setId(c.getLong(c.getColumnIndexOrThrow("_id")));
 		host.setNickname(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_NICKNAME)));
 		host.setUsername(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_USERNAME)));
@@ -327,39 +327,39 @@ public class HostDatabase extends SQLiteOpenHelper {
 		host.setWantSession(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION))));
 		host.setCompression(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION))));
 		host.setEncoding(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_ENCODING)));
-		
+
 		return host;
 	}
 
 	/**
 	 * Record the given hostkey into database under this nickname.
 	 * @param hostname
-	 * @param port 
+	 * @param port
 	 * @param hostkeyalgo
 	 * @param hostkey
 	 */
 	public void saveKnownHost(String hostname, int port, String hostkeyalgo, byte[] hostkey) {
 		SQLiteDatabase db = this.getReadableDatabase();
-		
+
 		ContentValues values = new ContentValues();
 		values.put(FIELD_HOST_HOSTKEYALGO, hostkeyalgo);
 		values.put(FIELD_HOST_HOSTKEY, hostkey);
-		
+
 		db.update(TABLE_HOSTS, values,
 				FIELD_HOST_HOSTNAME + " = ? AND " + FIELD_HOST_PORT + " = ?",
 				new String[] { hostname, String.valueOf(port) });
 		Log.d(TAG, String.format("Finished saving hostkey information for '%s'", hostname));
-		
+
 		db.close();
 	}
-	
+
 	/**
 	 * Build list of known hosts for Trilead library.
 	 * @return
 	 */
 	public KnownHosts getKnownHosts() {
 		KnownHosts known = new KnownHosts();
-		
+
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.query(TABLE_HOSTS, new String[] { FIELD_HOST_HOSTNAME,
 				FIELD_HOST_PORT, FIELD_HOST_HOSTKEYALGO, FIELD_HOST_HOSTKEY },
@@ -370,28 +370,28 @@ public class HostDatabase extends SQLiteOpenHelper {
 				COL_PORT = c.getColumnIndexOrThrow(FIELD_HOST_PORT),
 				COL_HOSTKEYALGO = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEYALGO),
 				COL_HOSTKEY = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEY);
-			
+
 			while (c.moveToNext()) {
 				String hostname = c.getString(COL_HOSTNAME),
 					hostkeyalgo = c.getString(COL_HOSTKEYALGO);
 				int port = c.getInt(COL_PORT);
 				byte[] hostkey = c.getBlob(COL_HOSTKEY);
-				
+
 				if (hostkeyalgo == null || hostkeyalgo.length() == 0) continue;
 				if (hostkey == null || hostkey.length == 0) continue;
-				
+
 				try {
 					known.addHostkey(new String[] { String.format("%s:%d", hostname, port) }, hostkeyalgo, hostkey);
 				} catch(Exception e) {
 					Log.e(TAG, "Problem while adding a known host from database", e);
 				}
 			}
-			
+
 			c.close();
 		}
-		
+
 		db.close();
-		
+
 		return known;
 	}
 
@@ -401,31 +401,31 @@ public class HostDatabase extends SQLiteOpenHelper {
 	 */
 	public void stopUsingPubkey(long pubkeyId) {
 		if (pubkeyId < 0) return;
-		
+
 		SQLiteDatabase db = this.getWritableDatabase();
-		
+
 		ContentValues values = new ContentValues();
 		values.put(FIELD_HOST_PUBKEYID, PUBKEYID_ANY);
-		
+
 		db.update(TABLE_HOSTS, values, FIELD_HOST_PUBKEYID + " = ?", new String[] { String.valueOf(pubkeyId) });
 		db.close();
-		
+
 		Log.d(TAG, String.format("Set all hosts using pubkey id %d to -1", pubkeyId));
 	}
-	
+
 	/*
 	 * Methods for dealing with port forwards attached to hosts
 	 */
-	
+
 	/**
 	 * Returns a list of all the port forwards associated with a particular host ID.
 	 * @param host the host for which we want the port forward list
-	 * @return port forwards associated with host ID 
+	 * @return port forwards associated with host ID
 	 */
 	public List<PortForwardBean> getPortForwardsForHost(HostBean host) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		List<PortForwardBean> portForwards = new LinkedList<PortForwardBean>();
-		
+
 		Cursor c = db.query(TABLE_PORTFORWARDS, new String[] {
 				"_id", FIELD_PORTFORWARD_NICKNAME, FIELD_PORTFORWARD_TYPE, FIELD_PORTFORWARD_SOURCEPORT,
 				FIELD_PORTFORWARD_DESTADDR, FIELD_PORTFORWARD_DESTPORT },
@@ -443,10 +443,10 @@ public class HostDatabase extends SQLiteOpenHelper {
 				c.getInt(5));
 			portForwards.add(pfb);
 		}
-		
+
 		c.close();
 		db.close();
-				
+
 		return portForwards;
 	}
 
@@ -456,20 +456,20 @@ public class HostDatabase extends SQLiteOpenHelper {
 	 * @return true on success
 	 */
 	public boolean savePortForward(PortForwardBean pfb) {
-		boolean success = false;		
+		boolean success = false;
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		if (pfb.getId() < 0) {
 			long id = db.insert(TABLE_PORTFORWARDS, null, pfb.getValues());
 			pfb.setId(id);
 			success = true;
-		} else {				
+		} else {
 			if (db.update(TABLE_PORTFORWARDS, pfb.getValues(), "_id = ?", new String[] { String.valueOf(pfb.getId()) }) > 0)
 				success = true;
 		}
-		
+
 		db.close();
-		
+
 		return success;
 	}
 
@@ -480,7 +480,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public void deletePortForward(PortForwardBean pfb) {
 		if (pfb.getId() < 0)
 			return;
-		
+
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_PORTFORWARDS, "_id = ?", new String[] { String.valueOf(pfb.getId()) });
 		db.close();

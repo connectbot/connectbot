@@ -1,17 +1,17 @@
 /*
 	ConnectBot: simple, powerful, open-source SSH client for Android
 	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
-	
+
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
-	
+
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
-	
+
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -85,11 +85,11 @@ public class HostListActivity extends ListActivity {
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
-	
+
 			// update our listview binder to find the service
 			HostListActivity.this.updateList();
 		}
-	
+
 		public void onServiceDisconnected(ComponentName className) {
 			bound = null;
 			HostListActivity.this.updateList();
@@ -97,9 +97,9 @@ public class HostListActivity extends ListActivity {
 	};
 
 	@Override
-    public void onStart() {
+	public void onStart() {
 		super.onStart();
-		
+
 		// start the terminal manager service
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
@@ -111,20 +111,20 @@ public class HostListActivity extends ListActivity {
 	}
 
 	@Override
-    public void onStop() {
+	public void onStop() {
 		super.onStop();
 		this.unbindService(connection);
-		
+
 		if(this.hostdb != null) {
 			this.hostdb.close();
 			this.hostdb = null;
 		}
-		
+
 	}
-	
-	
-	
-	public final static String PREF_EULA = "eula", PREF_SORTBYCOLOR = "sortByColor"; 
+
+
+
+	public final static String PREF_EULA = "eula", PREF_SORTBYCOLOR = "sortByColor";
 
 	public final static int REQUEST_EDIT = 1;
 	public final static int REQUEST_EULA = 2;
@@ -146,18 +146,18 @@ public class HostListActivity extends ListActivity {
 				this.finish();
 			}
 			break;
-			
+
 		case REQUEST_EDIT:
 			this.updateList();
 			break;
-			
+
 		}
-		
+
 	}
-	
-	
+
+
 	protected boolean makingShortcut = false;
-	
+
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
@@ -166,24 +166,24 @@ public class HostListActivity extends ListActivity {
 		this.setTitle(String.format("%s: %s",
 				getResources().getText(R.string.app_name),
 				getResources().getText(R.string.title_hosts_list)));
-		
+
 		// check for eula agreement
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		
+
 		boolean agreed = prefs.getBoolean(PREF_EULA, false);
 		if(!agreed) {
 			this.startActivityForResult(new Intent(this, WizardActivity.class), REQUEST_EULA);
 		}
-		
+
 		// start thread to check for new version
 		new UpdateHelper(this);
-		
+
 		this.makingShortcut = Intent.ACTION_CREATE_SHORTCUT.equals(getIntent().getAction());
 
 		// connect with hosts database and populate list
 		this.hostdb = new HostDatabase(this);
 		ListView list = this.getListView();
-		
+
 		this.sortedByColor = prefs.getBoolean(PREF_SORTBYCOLOR, false);
 		this.updateList();
 
@@ -195,7 +195,7 @@ public class HostListActivity extends ListActivity {
 
 				// launch off to console details
 				HostBean host = (HostBean) parent.getAdapter().getItem(position);
-				
+
 				// create a specific uri that represents this host
 				Uri uri = Uri.parse(String.format("ssh://%s@%s:%s/#%s",
 						host.getUsername(), host.getHostname(),
@@ -203,11 +203,11 @@ public class HostListActivity extends ListActivity {
 				Intent contents = new Intent(Intent.ACTION_VIEW, uri);
 				contents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-				
+
 				if (makingShortcut) {
 					// create shortcut if requested
 					ShortcutIconResource icon = Intent.ShortcutIconResource.fromContext(HostListActivity.this, R.drawable.icon);
-					
+
 					Intent intent = new Intent();
 					intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, contents);
 					intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, host.getNickname());
@@ -215,11 +215,11 @@ public class HostListActivity extends ListActivity {
 
 					setResult(RESULT_OK, intent);
 					finish();
-					
+
 				} else {
 					// otherwise just launch activity to show this host
 					HostListActivity.this.startActivity(contents);
-				}				
+				}
 			}
 		});
 
@@ -231,10 +231,10 @@ public class HostListActivity extends ListActivity {
 		text.setOnKeyListener(new OnKeyListener() {
 
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				
+
 				if(event.getAction() == KeyEvent.ACTION_UP) return false;
 				if(keyCode != KeyEvent.KEYCODE_ENTER) return false;
-					
+
 				// make sure we follow pattern
 				if (text.getText().length() < 3)
 					return false;
@@ -244,13 +244,13 @@ public class HostListActivity extends ListActivity {
 					text.setError(getString(R.string.list_format_error));
 					return false;
 				}
-				
+
 				// create new host for entered string and then launch
 				Uri uri = Uri.parse(String.format("ssh://%s", text.getText().toString()));
 				String username = uri.getUserInfo();
 				String hostname = uri.getHost();
 				int port = uri.getPort();
-				
+
 				String nickname;
 				if(port == -1) {
 					port = 22;
@@ -258,12 +258,12 @@ public class HostListActivity extends ListActivity {
 				} else {
 					nickname = String.format("%s@%s:%d", username, hostname, port);
 				}
-				
+
 				HostBean host = new HostBean(nickname, username, hostname, port);
 				host.setColor(HostDatabase.COLOR_GRAY);
 				host.setPubkeyId(HostDatabase.PUBKEYID_ANY);
 				hostdb.saveHost(host);
-				
+
 				Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
 				intent.setData(Uri.parse(String.format("ssh://%s@%s:%s/#%s", username, hostname, port, nickname)));
 				HostListActivity.this.startActivity(intent);
@@ -280,19 +280,19 @@ public class HostListActivity extends ListActivity {
 
 		this.inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		
+
 		// don't offer menus when creating shortcut
 		if (makingShortcut) return true;
-		
+
 		sortcolor.setVisible(!sortedByColor);
 		sortlast.setVisible(sortedByColor);
-		
+
 		return true;
-    }
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -300,7 +300,7 @@ public class HostListActivity extends ListActivity {
 
 		// don't offer menus when creating shortcut
 		if(makingShortcut) return true;
-		
+
 		// add host, ssh keys, about
 		sortcolor = menu.add(R.string.list_menu_sortcolor);
 		sortcolor.setIcon(android.R.drawable.ic_menu_share);
@@ -311,7 +311,7 @@ public class HostListActivity extends ListActivity {
 				return true;
 			}
 		});
-		
+
 		sortlast = menu.add(R.string.list_menu_sortname);
 		sortlast.setIcon(android.R.drawable.ic_menu_share);
 		sortlast.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -325,7 +325,7 @@ public class HostListActivity extends ListActivity {
 		MenuItem keys = menu.add(R.string.list_menu_pubkeys);
 		keys.setIcon(android.R.drawable.ic_lock_lock);
 		keys.setIntent(new Intent(HostListActivity.this, PubkeyListActivity.class));
-    
+
 		MenuItem settings = menu.add(R.string.list_menu_settings);
 		settings.setIcon(android.R.drawable.ic_menu_preferences);
 		settings.setIntent(new Intent(HostListActivity.this, SettingsActivity.class));
@@ -333,11 +333,11 @@ public class HostListActivity extends ListActivity {
 		MenuItem help = menu.add(R.string.list_menu_help);
 		help.setIcon(android.R.drawable.ic_menu_help);
 		help.setIntent(new Intent(HostListActivity.this, HelpActivity.class));
-		
+
 		return true;
-		
+
 	}
-	
+
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -371,7 +371,7 @@ public class HostListActivity extends ListActivity {
 				return true;
 			}
 		});
-		
+
 		MenuItem portForwards = menu.add(R.string.list_host_portforwards);
 		portForwards.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
@@ -389,32 +389,32 @@ public class HostListActivity extends ListActivity {
 				new AlertDialog.Builder(HostListActivity.this)
 					.setMessage(getString(R.string.delete_message, host.getNickname()))
 					.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
-		                public void onClick(DialogInterface dialog, int which) {
-		    				// make sure we disconnect
-		    				if(bridge != null)
-		    					bridge.dispatchDisconnect(true);
+						public void onClick(DialogInterface dialog, int which) {
+						// make sure we disconnect
+							if(bridge != null)
+								bridge.dispatchDisconnect(true);
 
-		    				hostdb.deleteHost(host);
-		    				updateHandler.sendEmptyMessage(-1);
-		                }
-		            })
-		            .setNegativeButton(R.string.delete_neg, null).create().show();
+							hostdb.deleteHost(host);
+							updateHandler.sendEmptyMessage(-1);
+						}
+						})
+					.setNegativeButton(R.string.delete_neg, null).create().show();
 
 				return true;
 			}
 		});
 	}
-	
-	protected void updateList() {	
+
+	protected void updateList() {
 		Editor edit = prefs.edit();
 		edit.putBoolean(PREF_SORTBYCOLOR, sortedByColor);
 		edit.commit();
-		
+
 		if (hostdb == null)
 			hostdb = new HostDatabase(this);
-		
+
 		hosts = hostdb.getHosts(sortedByColor);
-		
+
 		// Don't lose hosts that are connected via shortcuts but not in the database.
 		if (bound != null) {
 			for (TerminalBridge bridge : bound.bridges) {
@@ -424,28 +424,28 @@ public class HostListActivity extends ListActivity {
 		}
 
 		HostAdapter adapter = new HostAdapter(this, hosts, bound);
-		
+
 		this.setListAdapter(adapter);
 	}
-	
+
 	class HostAdapter extends ArrayAdapter<HostBean> {
 		private List<HostBean> hosts;
 		private final TerminalManager manager;
 		private final ColorStateList red, green, blue;
-		
+
 		public final static int STATE_UNKNOWN = 1, STATE_CONNECTED = 2, STATE_DISCONNECTED = 3;
 
 		public HostAdapter(Context context, List<HostBean> hosts, TerminalManager manager) {
 			super(context, R.layout.item_host, hosts);
-			
+
 			this.hosts = hosts;
 			this.manager = manager;
-			
+
 			red = context.getResources().getColorStateList(R.color.red);
 			green = context.getResources().getColorStateList(R.color.green);
 			blue = context.getResources().getColorStateList(R.color.blue);
 		}
-		
+
 		/**
 		 * Check if we're connected to a terminal with the given host.
 		 */
@@ -453,13 +453,13 @@ public class HostListActivity extends ListActivity {
 			// always disconnected if we dont have backend service
 			if (this.manager == null)
 				return STATE_UNKNOWN;
-			
+
 			if (manager.findBridge(host) != null)
 				return STATE_CONNECTED;
-			
+
 			if (manager.disconnected.contains(host))
 				return STATE_DISCONNECTED;
-			
+
 			return STATE_UNKNOWN;
 		}
 
@@ -475,14 +475,14 @@ public class HostListActivity extends ListActivity {
 			if (host == null) {
 				// Well, something bad happened. We can't continue.
 				Log.e("HostAdapter", "Host bean is null!");
-				
+
 				nickname.setText("Error during lookup");
 				caption.setText("see 'adb logcat' for more");
 				return view;
 			}
-			
+
 			nickname.setText(host.getNickname());
-			
+
 			switch (this.getConnectedState(host)) {
 			case STATE_UNKNOWN:
 				icon.setImageState(new int[] { }, true);
@@ -494,7 +494,7 @@ public class HostListActivity extends ListActivity {
 				icon.setImageState(new int[] { android.R.attr.state_expanded }, true);
 				break;
 			}
-			
+
 			ColorStateList chosen = null;
 			if (HostDatabase.COLOR_RED.equals(host.getColor()))
 				chosen = this.red;
@@ -502,9 +502,9 @@ public class HostListActivity extends ListActivity {
 				chosen = this.green;
 			else if (HostDatabase.COLOR_BLUE.equals(host.getColor()))
 				chosen = this.blue;
-			
+
 			if (chosen != null) {
-				// set color normally if not selected 
+				// set color normally if not selected
 				nickname.setTextColor(chosen);
 				caption.setTextColor(chosen);
 			} else {
@@ -512,9 +512,9 @@ public class HostListActivity extends ListActivity {
 				nickname.setTextAppearance(view.getContext(), android.R.attr.textAppearanceLarge);
 				caption.setTextAppearance(view.getContext(), android.R.attr.textAppearanceSmall);
 			}
-			
+
 			long now = System.currentTimeMillis() / 1000;
-			
+
 			String nice = "never";
 			if (host.getLastConnect() > 0) {
 				int minutes = (int)((now - host.getLastConnect()) / 60);
@@ -530,7 +530,7 @@ public class HostListActivity extends ListActivity {
 			}
 
 			caption.setText(nice);
-			
+
 			return view;
 		}
 	}

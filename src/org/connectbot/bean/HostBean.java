@@ -1,17 +1,17 @@
 /*
 	ConnectBot: simple, powerful, open-source SSH client for Android
 	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
-	
+
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
-	
+
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
-	
+
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -27,7 +27,7 @@ import android.content.ContentValues;
  */
 public class HostBean extends AbstractBean {
 	public static final String BEAN_NAME = "host";
-	
+
 	/* Database fields */
 	private long id = -1;
 	private String nickname = null;
@@ -46,20 +46,20 @@ public class HostBean extends AbstractBean {
 	private String encoding = HostDatabase.ENCODING_ASCII;
 
 	public HostBean() {
-		
+
 	}
-	
+
 	public String getBeanName() {
 		return BEAN_NAME;
 	}
-	
+
 	public HostBean(String nickname, String username, String hostname, int port) {
 		this.nickname = nickname;
 		this.username = username;
 		this.hostname = hostname;
 		this.port = port;
 	}
-	
+
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -158,19 +158,19 @@ public class HostBean extends AbstractBean {
 	public String getEncoding() {
 		return this.encoding;
 	}
-	
+
 	public String getDescription() {
 		String description = String.format("%s@%s", username, hostname);
-		
+
 		if (port != 22)
 			description += String.format(":%d", port);
-		
+
 		return description;
 	}
-	
+
 	public ContentValues getValues() {
 		ContentValues values = new ContentValues();
-		
+
 		values.put(HostDatabase.FIELD_HOST_NICKNAME, nickname);
 		values.put(HostDatabase.FIELD_HOST_USERNAME, username);
 		values.put(HostDatabase.FIELD_HOST_HOSTNAME, hostname);
@@ -185,36 +185,36 @@ public class HostBean extends AbstractBean {
 		values.put(HostDatabase.FIELD_HOST_WANTSESSION, Boolean.toString(wantSession));
 		values.put(HostDatabase.FIELD_HOST_COMPRESSION, Boolean.toString(compression));
 		values.put(HostDatabase.FIELD_HOST_ENCODING, encoding);
-		
+
 		return values;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof HostBean))
 			return false;
-		
+
 		HostBean host = (HostBean)o;
-		
+
 		if (host.getNickname().equals(nickname)
 			&& host.getUsername().equals(username)
 			&& host.getHostname().equals(hostname)
 			&& host.getPort() == port)
 			return true;
-			
+
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
 		int hash = 7;
-		
+
 		hash = 31 * hash + (null == nickname ? 0 : nickname.hashCode());
 		hash = 31 * hash + (null == username ? 0 : username.hashCode());
 		hash = 31 * hash + (null == hostname ? 0 : hostname.hashCode());
 		hash = 31 * hash + port;
-		
+
 		return hash;
 	}
-	
+
 }

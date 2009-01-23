@@ -1,17 +1,17 @@
 /*
 	ConnectBot: simple, powerful, open-source SSH client for Android
 	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
-	
+
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
-	
+
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
-	
+
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -57,7 +57,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 	public final static String TAG = GeneratePubkeyActivity.class.toString();
 
 	final static int DEFAULT_BITS = 1024;
-	
+
 	private LayoutInflater inflater = null;
 
 	private EditText nickname;
@@ -68,80 +68,80 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 	private Button save;
 	private Dialog entropyDialog;
 	private ProgressDialog progress;
-	
+
 	private EditText password1, password2;
-	
+
 	private String keyType = PubkeyDatabase.KEY_TYPE_RSA;
 	private int minBits = 768;
 	private int bits = DEFAULT_BITS;
-	
+
 	private byte[] entropy;
-	
+
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		
+
 		setContentView(R.layout.act_generatepubkey);
-		
+
 		nickname = (EditText) findViewById(R.id.nickname);
-		
+
 		keyTypeGroup = (RadioGroup) findViewById(R.id.key_type);
-		
+
 		bitsText = (EditText) findViewById(R.id.bits);
 		bitsSlider = (SeekBar) findViewById(R.id.bits_slider);
-		
+
 		password1 = (EditText) findViewById(R.id.password1);
 		password2 = (EditText) findViewById(R.id.password2);
-		
+
 		unlockAtStartup = (CheckBox) findViewById(R.id.unlock_at_startup);
-		
+
 		save = (Button) findViewById(R.id.save);
-		
+
 		inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		nickname.addTextChangedListener(textChecker);
 		password1.addTextChangedListener(textChecker);
 		password2.addTextChangedListener(textChecker);
-		
+
 		keyTypeGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				if (checkedId == R.id.rsa) {
 					minBits = 768;
-					
+
 					bitsSlider.setEnabled(true);
 					bitsSlider.setProgress(DEFAULT_BITS - minBits);
-					
+
 					bitsText.setText(String.valueOf(DEFAULT_BITS));
 					bitsText.setEnabled(true);
-					
+
 					keyType = PubkeyDatabase.KEY_TYPE_RSA;
 				} else if (checkedId == R.id.dsa) {
 					// DSA keys can only be 1024 bits
-					
+
 					bitsSlider.setEnabled(false);
 					bitsSlider.setProgress(DEFAULT_BITS - minBits);
-					
+
 					bitsText.setText(String.valueOf(DEFAULT_BITS));
 					bitsText.setEnabled(false);
-					
+
 					keyType = PubkeyDatabase.KEY_TYPE_DSA;
-				}				
+				}
 			}
 		});
-		
+
 		bitsSlider.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromTouch) {
 				// Stay evenly divisible by 8 because it looks nicer to have
 				// 2048 than 2043 bits.
-				
+
 				int leftover = progress % 8;
-				
+
 				if (leftover > 0)
 					progress += 8 - leftover;
-				
+
 				bits = minBits + progress;
 				bitsText.setText(String.valueOf(bits));
 			}
@@ -154,7 +154,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 				// We don't care about the stop.
 			}
 		});
-		
+
 		bitsText.setOnFocusChangeListener(new OnFocusChangeListener() {
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (!hasFocus) {
@@ -168,16 +168,16 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 						bits = DEFAULT_BITS;
 						bitsText.setText(String.valueOf(bits));
 					}
-					
+
 					bitsSlider.setProgress(bits - minBits);
 				}
 			}
 		});
-		
+
 		save.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				GeneratePubkeyActivity.this.save.setEnabled(false);
-				
+
 				GeneratePubkeyActivity.this.startEntropyGather();
 			}
 		});
@@ -186,36 +186,36 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 
 	private void checkEntries() {
 		boolean allowSave = true;
-		
+
 		if (!password1.getText().toString().equals(password2.getText().toString()))
 			allowSave = false;
-		
-		if (nickname.getText().length() == 0) 
+
+		if (nickname.getText().length() == 0)
 			allowSave = false;
-		
+
 		save.setEnabled(allowSave);
 	}
-	
+
 	private void startEntropyGather() {
 		final View entropyView = inflater.inflate(R.layout.dia_gatherentropy, null, false);
 		((EntropyView)entropyView.findViewById(R.id.entropy)).addOnEntropyGatheredListener(GeneratePubkeyActivity.this);
 		entropyDialog = new EntropyDialog(GeneratePubkeyActivity.this, entropyView);
 		entropyDialog.show();
 	}
-	
+
 	public void onEntropyGathered(byte[] entropy) {
 		// For some reason the entropy dialog was aborted, exit activity
 		if (entropy == null) {
 			finish();
 			return;
 		}
-		
+
 		this.entropy = entropy.clone();
-		
+
 		Log.d(TAG, "entropy gathered; attemping to generate key...");
 		startKeyGen();
 	}
-	
+
 	private void startKeyGen() {
 		progress = new ProgressDialog(GeneratePubkeyActivity.this);
 		progress.setMessage(GeneratePubkeyActivity.this.getResources().getText(R.string.pubkey_generating));
@@ -225,38 +225,38 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 
 		new Thread(mKeyGen).start();
 	}
-	
+
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			progress.dismiss();
 			GeneratePubkeyActivity.this.finish();
 		}
 	};
-	
+
 	final private Runnable mKeyGen = new Runnable() {
 		public void run() {
 			try {
 				boolean encrypted = false;
-				
+
 				SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-				
+
 				random.setSeed(entropy);
-				
+
 				KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(keyType);
-				
+
 				keyPairGen.initialize(bits, random);
-				
+
 				KeyPair pair = keyPairGen.generateKeyPair();
 				PrivateKey priv = pair.getPrivate();
 				PublicKey pub = pair.getPublic();
-				
+
 				String secret = password1.getText().toString();
 				if (secret.length() > 0)
 					encrypted = true;
-							
+
 				Log.d(TAG, "private: " + PubkeyUtils.formatKey(priv));
 				Log.d(TAG, "public: " + PubkeyUtils.formatKey(pub));
-				
+
 				PubkeyBean pubkey = new PubkeyBean();
 				pubkey.setNickname(nickname.getText().toString());
 				pubkey.setType(keyType);
@@ -264,7 +264,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 				pubkey.setPublicKey(PubkeyUtils.getEncodedPublic(pub));
 				pubkey.setEncrypted(encrypted);
 				pubkey.setStartup(unlockAtStartup.isChecked());
-				
+
 				PubkeyDatabase pubkeydb = new PubkeyDatabase(GeneratePubkeyActivity.this);
 				pubkeydb.savePubkey(pubkey);
 				pubkeydb.close();
@@ -273,12 +273,12 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 
 				e.printStackTrace();
 			}
-			
+
 			handler.sendEmptyMessage(0);
 		}
 
 	};
-	
+
 	final private TextWatcher textChecker = new TextWatcher() {
 		public void afterTextChanged(Editable s) {}
 

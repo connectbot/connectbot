@@ -1,17 +1,17 @@
 /*
 	ConnectBot: simple, powerful, open-source SSH client for Android
 	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
-	
+
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
-	
+
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
-	
+
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -35,7 +35,7 @@ import android.widget.LinearLayout;
  */
 public class HelpActivity extends Activity {
 	public final static String TAG = HelpActivity.class.toString();
-	
+
 	public final static String HELPDIR = "help";
 	public final static String SUFFIX = ".html";
 
@@ -43,11 +43,11 @@ public class HelpActivity extends Activity {
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.act_help);
-		
+
 		this.setTitle(String.format("%s: %s",
 				getResources().getText(R.string.app_name),
 				getResources().getText(R.string.title_help)));
-		
+
 		AssetManager am = this.getAssets();
 		LinearLayout content = (LinearLayout)this.findViewById(R.id.topics);
 
@@ -57,7 +57,7 @@ public class HelpActivity extends Activity {
 					Button button = new Button(this);
 					final String topic = name.substring(0, name.length() - SUFFIX.length());
 					button.setText(topic);
-					
+
 					button.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
 							Intent intent = new Intent(HelpActivity.this, HelpTopicActivity.class);
@@ -65,7 +65,7 @@ public class HelpActivity extends Activity {
 							HelpActivity.this.startActivity(intent);
 						}
 					});
-					
+
 					content.addView(button);
 				}
 			}

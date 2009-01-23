@@ -8,32 +8,32 @@ import android.os.Message;
 /**
  * Helps provide a relay for prompts and responses between a possible user
  * interface and some underlying service.
- * 
+ *
  * @author jsharkey
  */
 public class PromptHelper {
 	private final Object tag;
 
 	private Handler handler = null;
-	
+
 	private Semaphore promptToken;
 	private Semaphore promptResponse;
-	
+
 	public String promptHint = null;
 	public Object promptRequested = null;
-	
+
 	private Object response = null;
-	
+
 	public PromptHelper(Object tag) {
 		this.tag = tag;
-		
+
 		// Threads must acquire this before they can send a prompt.
 		promptToken = new Semaphore(1);
-		
+
 		// Responses will release this semaphore.
 		promptResponse = new Semaphore(0);
 	}
-	
+
 
 	/**
 	 * Register a user interface handler, if available.
@@ -50,7 +50,7 @@ public class PromptHelper {
 		response = value;
 		promptResponse.release();
 	}
-	
+
 	/**
 	 * Return the internal response value just before erasing and returning it.
 	 */
@@ -69,32 +69,32 @@ public class PromptHelper {
 	 */
 	private Object requestPrompt(String hint, Object type, boolean immediate) throws InterruptedException {
 		Object response = null;
-		
+
 		if (immediate)
 			cancelPrompt();
-		
+
 		promptToken.acquire();
 
 		try {
 			promptHint = hint;
 			promptRequested = type;
-			
+
 			// notify any parent watching for live events
 			if (handler != null)
 				Message.obtain(handler, -1, tag).sendToTarget();
-		
+
 			// acquire lock until user passes back value
 			promptResponse.acquire();
 			promptRequested = null;
-			
+
 			response = popResponse();
 		} finally {
 			promptToken.release();
 		}
-		
+
 		return response;
 	}
-	
+
 	/**
 	 * Request a string response from parent. This is a blocking call until user
 	 * interface returns a value.
@@ -110,7 +110,7 @@ public class PromptHelper {
 		}
 		return value;
 	}
-	
+
 	/**
 	 * Convenience method for requestStringPrompt(String, boolean)
 	 * @param hint prompt hint for user to answer
@@ -119,7 +119,7 @@ public class PromptHelper {
 	public String requestStringPrompt(String hint) {
 		return requestStringPrompt(hint, false);
 	}
-	
+
 	/**
 	 * Request a boolean response from parent. This is a blocking call until user
 	 * interface returns a value.
@@ -135,7 +135,7 @@ public class PromptHelper {
 		}
 		return value;
 	}
-	
+
 	/**
 	 * Convenience method for requestBooleanPrompt(String, boolean)
 	 * @param hint String to present to user in prompt
@@ -144,7 +144,7 @@ public class PromptHelper {
 	public Boolean requestBooleanPrompt(String hint) {
 		return requestBooleanPrompt(hint, false);
 	}
-	
+
 	/**
 	 * Cancel an in-progress prompt.
 	 */

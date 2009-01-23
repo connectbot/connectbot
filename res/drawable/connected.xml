@@ -1,5 +1,15 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:state_checked="true" android:drawable="@android:drawable/presence_online" />
-	<item android:state_expanded="true" android:drawable="@android:drawable/presence_busy" />
-	<item android:drawable="@android:drawable/presence_invisible" />
+<selector
+	xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<item
+		android:state_checked="true"
+		android:drawable="@android:drawable/presence_online" />
+
+	<item
+		android:state_expanded="true"
+		android:drawable="@android:drawable/presence_busy" />
+
+	<item
+		android:drawable="@android:drawable/presence_invisible" />
+
 </selector>
