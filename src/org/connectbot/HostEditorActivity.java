@@ -52,11 +52,10 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			this.table = table;
 			this.id = id;
 
-			this.cacheValues();
-
+			cacheValues();
 		}
 
-		protected void cacheValues() {
+		protected final void cacheValues() {
 			// fill a cursor and cache the values locally
 			// this makes sure we dont have any floating cursor to dispose later
 

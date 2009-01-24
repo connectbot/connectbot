@@ -18,6 +18,7 @@
 
 package org.connectbot.service;
 
+import java.io.IOException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.HashMap;
@@ -152,10 +153,10 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	/**
 	 * Open a new SSH session using the given parameters.
 	 */
-	private void openConnection(HostBean host) throws Exception {
+	private void openConnection(HostBean host) throws IllegalArgumentException, IOException {
 		// throw exception if terminal already open
 		if (findBridge(host) != null) {
-			throw new Exception("Connection already open for that nickname");
+			throw new IllegalArgumentException("Connection already open for that nickname");
 		}
 
 		TerminalBridge bridge = new TerminalBridge(this, host);

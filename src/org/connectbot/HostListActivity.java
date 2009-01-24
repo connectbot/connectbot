@@ -133,9 +133,7 @@ public class HostListActivity extends ListActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-		switch(requestCode) {
-		case REQUEST_EULA:
+		if (requestCode == REQUEST_EULA) {
 			if(resultCode == Activity.RESULT_OK) {
 				// yay they agreed, so store that info
 				Editor edit = prefs.edit();
@@ -145,16 +143,10 @@ public class HostListActivity extends ListActivity {
 				// user didnt agree, so close
 				this.finish();
 			}
-			break;
-
-		case REQUEST_EDIT:
+		} else if (requestCode == REQUEST_EDIT) {
 			this.updateList();
-			break;
-
 		}
-
 	}
-
 
 	protected boolean makingShortcut = false;
 
@@ -463,7 +455,9 @@ public class HostListActivity extends ListActivity {
 			return STATE_UNKNOWN;
 		}
 
-		public View getView(int position, View view, ViewGroup parent) {
+		@Override
+		public View getView(int position, View origView, ViewGroup parent) {
+			View view = origView;
 			if (view == null)
 				view = inflater.inflate(R.layout.item_host, null, false);
 

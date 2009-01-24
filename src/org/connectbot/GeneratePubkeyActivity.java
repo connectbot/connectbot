@@ -138,11 +138,12 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 				// 2048 than 2043 bits.
 
 				int leftover = progress % 8;
+				int ourProgress = progress;
 
 				if (leftover > 0)
-					progress += 8 - leftover;
+					ourProgress += 8 - leftover;
 
-				bits = minBits + progress;
+				bits = minBits + ourProgress;
 				bitsText.setText(String.valueOf(bits));
 			}
 

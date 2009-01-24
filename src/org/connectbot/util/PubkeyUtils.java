@@ -247,7 +247,8 @@ public class PubkeyUtils {
 	 * OpenSSH compatibility methods
 	 */
 
-	public static String convertToOpenSSHFormat(PublicKey pk, String nickname) throws IOException, InvalidKeyException {
+	public static String convertToOpenSSHFormat(PublicKey pk, String origNickname) throws IOException, InvalidKeyException {
+		String nickname = origNickname;
 		if (nickname == null)
 			nickname = "connectbot@android";
 

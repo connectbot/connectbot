@@ -532,7 +532,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			this.pubkeys = pubkeys;
 		}
 
-		public View getView(int position, View view, ViewGroup parent) {
+		public View getView(int position, View origView, ViewGroup parent) {
+			View view = origView;
 			if (view == null)
 				view = inflater.inflate(R.layout.item_pubkey, null, false);
 

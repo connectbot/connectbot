@@ -38,7 +38,7 @@ public class SelectionArea {
 		reset();
 	}
 
-	public void reset() {
+	public final void reset() {
 		top = left = bottom = right = 0;
 		selectingOrigin = true;
 	}

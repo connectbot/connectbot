@@ -33,6 +33,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.database.SQLException;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -214,7 +215,7 @@ public class PortForwardListActivity extends ListActivity {
 								}
 
 								if (!hostdb.savePortForward(pfb))
-									throw new Exception("Could not save port forward");
+									throw new SQLException("Could not save port forward");
 
 								updateHandler.sendEmptyMessage(-1);
 							} catch (Exception e) {
@@ -304,7 +305,7 @@ public class PortForwardListActivity extends ListActivity {
 								}
 
 								if (!hostdb.savePortForward(pfb))
-									throw new Exception("Could not save port forward");
+									throw new SQLException("Could not save port forward");
 
 								updateHandler.sendEmptyMessage(-1);
 							} catch (Exception e) {
@@ -376,7 +377,9 @@ public class PortForwardListActivity extends ListActivity {
 			this.portForwards = portForwards;
 		}
 
-		public View getView(int position, View view, ViewGroup parent) {
+		@Override
+		public View getView(int position, View origView, ViewGroup parent) {
+			View view = origView;
 			if (view == null)
 				view = inflater.inflate(R.layout.item_portforward, null, false);
 

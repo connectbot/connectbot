@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.connectbot.service;
 
@@ -13,5 +13,5 @@ public interface FontSizeChangedListener {
 	 * @param size
 	 *            new font size
 	 */
-	public void onFontSizeChanged(float size);
+	void onFontSizeChanged(float size);
 }

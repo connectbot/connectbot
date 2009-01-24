@@ -130,7 +130,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public VDUBuffer buffer = null;
 
 	private TerminalView parent = null;
-	private Canvas canvas = new Canvas();
+	private final Canvas canvas = new Canvas();
 
 	private int metaState = 0;
 
@@ -147,7 +147,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public final static int META_CTRL_MASK = META_CTRL_ON | META_CTRL_LOCK;
 	public final static int META_ALT_MASK = META_ALT_ON | META_ALT_LOCK;
 	public final static int META_SHIFT_MASK = META_SHIFT_ON | META_SHIFT_LOCK;
-	
+
 	// All the transient key codes
 	public final static int META_TRANSIENT = META_CTRL_ON | META_ALT_ON
 			| META_SHIFT_ON;
@@ -166,7 +166,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	private String keymode = null;
 
 	private boolean selectingForCopy = false;
-	private SelectionArea selectionArea;
+	private final SelectionArea selectionArea;
 	private ClipboardManager clipboard;
 
 	protected KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
@@ -177,9 +177,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 	private float fontSize = -1;
 
-	private List<FontSizeChangedListener> fontSizeChangedListeners;
+	private final List<FontSizeChangedListener> fontSizeChangedListeners;
 
-	private List<String> localOutput;
+	private final List<String> localOutput;
 
 	/**
 	 * Flag indicating if we should perform a full-screen redraw during our next
@@ -198,12 +198,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 *
 	 */
 	private final class Relay implements Runnable {
+		final String encoding = host.getEncoding();
+
 		public void run() {
-			final String encoding = host.getEncoding();
+			final byte[] b = new byte[BUFFER_SIZE];
+			final byte[] tmpBuff = new byte[BUFFER_SIZE];
 
-			byte[] b = new byte[BUFFER_SIZE];
-
-			Charset charset = Charset.forName(encoding);
+			final Charset charset = Charset.forName(encoding);
 
 			/* Set up character set decoder to report any byte sequences
 			 * which are malformed so we can try to resume decoding it
@@ -212,11 +213,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			 * UTF-8 byte sequences have a tendency to get truncated at
 			 * times.
 			 */
-			CharsetDecoder cd = charset.newDecoder();
+			final CharsetDecoder cd = charset.newDecoder();
 			cd.onUnmappableCharacter(CodingErrorAction.REPLACE);
 			cd.onMalformedInput(CodingErrorAction.REPORT);
 
-			CharsetDecoder replacer = charset.newDecoder();
+			final CharsetDecoder replacer = charset.newDecoder();
 			replacer.onUnmappableCharacter(CodingErrorAction.REPLACE);
 			replacer.onMalformedInput(CodingErrorAction.REPLACE);
 
@@ -274,9 +275,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 									 */
 									offset = n - bb.position() + cr.length();
 									if ((bb.position() - cr.length()) < offset) {
-										byte tmp[] = new byte[offset];
-										System.arraycopy(b, bb.position() - cr.length(), tmp, 0, offset);
-										System.arraycopy(tmp, 0, b, 0, offset);
+										System.arraycopy(b, bb.position() - cr.length(), tmpBuff, 0, offset);
+										System.arraycopy(tmpBuff, 0, b, 0, offset);
 									} else {
 										System.arraycopy(b, bb.position() - cr.length(), b, 0, offset);
 									}
@@ -327,7 +327,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 	public class HostKeyVerifier implements ServerHostKeyVerifier {
 
-		public boolean verifyServerHostKey(String hostname, int port, String serverHostKeyAlgorithm, byte[] serverHostKey) throws Exception {
+		public boolean verifyServerHostKey(String hostname, int port,
+				String serverHostKeyAlgorithm, byte[] serverHostKey) throws IOException {
 
 			// read in all known hosts from hostdb
 			KnownHosts hosts = manager.hostdb.getKnownHosts();
@@ -381,10 +382,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					manager.hostdb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
 				}
 				return result.booleanValue();
+
+				default:
+					return false;
 			}
-
-			return false;
-
 		}
 
 	}
@@ -394,7 +395,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * launch thread to start SSH connection and handle any hostkey verification
 	 * and password authentication.
 	 */
-	public TerminalBridge(final TerminalManager manager, final HostBean host) throws Exception {
+	public TerminalBridge(final TerminalManager manager, final HostBean host) throws IOException {
 
 		this.manager = manager;
 		this.host = host;
@@ -420,20 +421,23 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		// create terminal buffer and handle outgoing data
 		// this is probably status reply information
 		buffer = new vt320() {
+			@Override
 			public void write(byte[] b) {
 				try {
-					stdin.write(b);
+					if (b != null)
+						stdin.write(b);
 				} catch (IOException e) {
 					Log.e(TAG, "Problem handling incoming data in vt320() thread", e);
-				} catch (NullPointerException npe) {
-					// TODO buffer input?
-					Log.d(TAG, "Input before we were connected discarded");
 				}
 			}
 
+			// We don't use telnet sequences.
+			@Override
 			public void sendTelnetCommand(byte cmd) {
 			}
 
+			// We don't want remote to resize our window.
+			@Override
 			public void setWindowSize(int c, int r) {
 			}
 		};
@@ -655,7 +659,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	/**
 	 * Handle challenges from keyboard-interactive authentication mode.
 	 */
-	public String[] replyToChallenge(String name, String instruction, int numPrompts, String[] prompt, boolean[] echo) throws Exception {
+	public String[] replyToChallenge(String name, String instruction, int numPrompts, String[] prompt, boolean[] echo) {
 		String[] responses = new String[numPrompts];
 		for(int i = 0; i < numPrompts; i++) {
 			// request response from user for each prompt
@@ -668,7 +672,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * Convenience method for writing a line into the underlying MUD buffer.
 	 * Should never be called once the session is established.
 	 */
-	protected void outputLine(String line) {
+	protected final void outputLine(String line) {
 		if (session != null)
 			Log.e(TAG, "Session established, cannot use outputLine!", new IOException("outputLine call traceback"));
 
@@ -954,6 +958,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				case KeyEvent.KEYCODE_ALT_LEFT:
 					metaPress(META_ALT_ON);
 					return true;
+				default:
+					break;
 				}
 			} else if("Use left-side keys".equals(keymode)) {
 				switch(keyCode) {
@@ -969,6 +975,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				case KeyEvent.KEYCODE_ALT_RIGHT:
 					metaPress(META_ALT_ON);
 					return true;
+				default:
+					break;
 				}
 			}
 
@@ -1168,7 +1176,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * Request a different font size. Will make call to parentChanged() to make
 	 * sure we resize PTY if needed.
 	 */
-	private void setFontSize(float size) {
+	private final void setFontSize(float size) {
 		if (size <= 0.0)
 			return;
 
@@ -1195,7 +1203,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	/**
 	 * Add an {@link FontSizeChangedListener} to the list of listeners for this
 	 * bridge.
-	 * 
+	 *
 	 * @param listener
 	 *            listener to add
 	 */
@@ -1218,7 +1226,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * parent, or maybe it's an updated font size. We should recalculate
 	 * terminal size information and request a PTY resize.
 	 */
-	public synchronized void parentChanged(TerminalView parent) {
+	public final synchronized void parentChanged(TerminalView parent) {
 		this.parent = parent;
 		int width = parent.getWidth();
 		int height = parent.getHeight();
@@ -1407,6 +1415,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			parent.postInvalidate();
 	}
 
+	// We don't have a scroll bar.
 	public void updateScrollBar() {
 	}
 
@@ -1674,7 +1683,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			color[index] = 0xff000000 | red << 16 | green << 8 | blue;
 	}
 
-	public void resetColors() {
+	public final void resetColors() {
 		color = new int[] {
 				0xff000000, // black
 				0xffcc0000, // red

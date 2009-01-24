@@ -71,7 +71,7 @@ public class PortForwardBean extends AbstractBean {
 		this.type = type;
 		this.sourcePort = Integer.parseInt(source);
 
-		this.setDest(dest);
+		setDest(dest);
 	}
 
 	public String getBeanName() {
@@ -137,7 +137,7 @@ public class PortForwardBean extends AbstractBean {
 	/**
 	 * @param dest The destination in "host:port" format
 	 */
-	public void setDest(String dest) {
+	public final void setDest(String dest) {
 		String[] destSplit = dest.split(":");
 		this.destAddr = destSplit[0];
 		if (destSplit.length > 1)
