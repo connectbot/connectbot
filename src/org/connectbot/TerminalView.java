@@ -47,6 +47,7 @@ public class TerminalView extends View implements FontSizeChangedListener {
 	public final TerminalBridge bridge;
 	private final Paint paint;
 	private final Paint cursorPaint;
+	private final Paint cursorStrokePaint;
 
 	// Cursor paints to distinguish modes
 	private Path ctrlCursor, altCursor, shiftCursor;
@@ -73,6 +74,10 @@ public class TerminalView extends View implements FontSizeChangedListener {
 		cursorPaint.setXfermode(new PixelXorXfermode(bridge.color[TerminalBridge.COLOR_BG_STD]));
 		cursorPaint.setAntiAlias(true);
 
+		cursorStrokePaint = new Paint(cursorPaint);
+		cursorStrokePaint.setStrokeWidth(0.1f);
+		cursorStrokePaint.setStyle(Paint.Style.STROKE);
+
 		/*
 		 * Set up our cursor indicators on a 1x1 Path object which we can later
 		 * transform to our character width and height
@@ -81,19 +86,16 @@ public class TerminalView extends View implements FontSizeChangedListener {
 		shiftCursor = new Path();
 		shiftCursor.lineTo(0.5f, 0.33f);
 		shiftCursor.lineTo(1.0f, 0.0f);
-		shiftCursor.close();
 
 		altCursor = new Path();
 		altCursor.moveTo(0.0f, 1.0f);
 		altCursor.lineTo(0.5f, 0.66f);
 		altCursor.lineTo(1.0f, 1.0f);
-		altCursor.close();
 
 		ctrlCursor = new Path();
 		ctrlCursor.moveTo(0.0f, 0.25f);
 		ctrlCursor.lineTo(1.0f, 0.5f);
 		ctrlCursor.lineTo(0.0f, 0.75f);
-		ctrlCursor.close();
 
 		// For creating the transform when the terminal resizes
 		tempSrc = new RectF();
@@ -116,9 +118,15 @@ public class TerminalView extends View implements FontSizeChangedListener {
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
 		bridge.parentChanged(this);
+		
+		scaleCursors();
 	}
 
 	public void onFontSizeChanged(float size) {
+		scaleCursors();
+	}
+
+	private void scaleCursors() {
 		// Create a scale matrix to scale our 1x1 representation of the cursor
 		tempDst.set(0.0f, 0.0f, bridge.charWidth, bridge.charHeight);
 		scaleMatrix.setRectToRect(tempSrc, tempDst, scaleType);
@@ -151,11 +159,20 @@ public class TerminalView extends View implements FontSizeChangedListener {
 				canvas.concat(scaleMatrix);
 
 				int metaState = bridge.getMetaState();
-				if ((metaState & TerminalBridge.META_SHIFT_ON) == TerminalBridge.META_SHIFT_ON)
+
+				if ((metaState & TerminalBridge.META_SHIFT_ON) != 0)
+					canvas.drawPath(shiftCursor, cursorStrokePaint);
+				else if ((metaState & TerminalBridge.META_SHIFT_LOCK) != 0)
 					canvas.drawPath(shiftCursor, cursorPaint);
-				if ((metaState & TerminalBridge.META_ALT_ON) == TerminalBridge.META_ALT_ON)
+
+				if ((metaState & TerminalBridge.META_ALT_ON) != 0)
+					canvas.drawPath(altCursor, cursorStrokePaint);
+				else if ((metaState & TerminalBridge.META_ALT_LOCK) != 0)
 					canvas.drawPath(altCursor, cursorPaint);
-				if ((metaState & TerminalBridge.META_CTRL_ON) == TerminalBridge.META_CTRL_ON)
+
+				if ((metaState & TerminalBridge.META_CTRL_ON) != 0)
+					canvas.drawPath(ctrlCursor, cursorStrokePaint);
+				else if ((metaState & TerminalBridge.META_CTRL_LOCK) != 0)
 					canvas.drawPath(ctrlCursor, cursorPaint);
 
 				// Restore previous clip region

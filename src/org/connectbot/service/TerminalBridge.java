@@ -132,15 +132,25 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	private TerminalView parent = null;
 	private Canvas canvas = new Canvas();
 
-	private boolean ctrlPressed = false;
-	private boolean altPressed = false;
-	private boolean shiftPressed = false;
-	private boolean slashKeyPressed = false;
-	private boolean tabKeyPressed = false;
+	private int metaState = 0;
 
-	public final static int META_CTRL_ON  = 0x01;
-	public final static int META_ALT_ON   = 0x02;
-	public final static int META_SHIFT_ON = 0x04;
+	public final static int META_CTRL_ON = 0x01;
+	public final static int META_CTRL_LOCK = 0x02;
+	public final static int META_ALT_ON = 0x04;
+	public final static int META_ALT_LOCK = 0x08;
+	public final static int META_SHIFT_ON = 0x10;
+	public final static int META_SHIFT_LOCK = 0x20;
+	public final static int META_SLASH = 0x40;
+	public final static int META_TAB = 0x80;
+
+	// The bit mask of momentary and lock states for each
+	public final static int META_CTRL_MASK = META_CTRL_ON | META_CTRL_LOCK;
+	public final static int META_ALT_MASK = META_ALT_ON | META_ALT_LOCK;
+	public final static int META_SHIFT_MASK = META_SHIFT_ON | META_SHIFT_LOCK;
+	
+	// All the transient key codes
+	public final static int META_TRANSIENT = META_CTRL_ON | META_ALT_ON
+			| META_SHIFT_ON;
 
 	private boolean pubkeysExhausted = false;
 
@@ -182,6 +192,138 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	protected BridgeDisconnectedListener disconnectListener = null;
 
 	protected ConnectionInfo connectionInfo;
+
+	/**
+	 * @author kenny
+	 *
+	 */
+	private final class Relay implements Runnable {
+		public void run() {
+			final String encoding = host.getEncoding();
+
+			byte[] b = new byte[BUFFER_SIZE];
+
+			Charset charset = Charset.forName(encoding);
+
+			/* Set up character set decoder to report any byte sequences
+			 * which are malformed so we can try to resume decoding it
+			 * on the next packet received.
+			 *
+			 * UTF-8 byte sequences have a tendency to get truncated at
+			 * times.
+			 */
+			CharsetDecoder cd = charset.newDecoder();
+			cd.onUnmappableCharacter(CodingErrorAction.REPLACE);
+			cd.onMalformedInput(CodingErrorAction.REPORT);
+
+			CharsetDecoder replacer = charset.newDecoder();
+			replacer.onUnmappableCharacter(CodingErrorAction.REPLACE);
+			replacer.onMalformedInput(CodingErrorAction.REPLACE);
+
+			ByteBuffer bb;
+			CharBuffer cb = CharBuffer.allocate(BUFFER_SIZE);
+
+			int n = 0;
+			int offset = 0;
+
+			int conditions = ChannelCondition.STDOUT_DATA
+					| ChannelCondition.STDERR_DATA
+					| ChannelCondition.CLOSED
+					| ChannelCondition.EOF;
+			int newConditions = 0;
+
+			while((newConditions & ChannelCondition.CLOSED) == 0) {
+				try {
+					newConditions = session.waitForCondition(conditions, 0);
+					if ((newConditions & ChannelCondition.STDOUT_DATA) != 0) {
+						while (stdout.available() > 0) {
+							n = offset + stdout.read(b, offset, BUFFER_SIZE - offset);
+
+							bb = ByteBuffer.wrap(b, 0, n);
+							CoderResult cr = cd.decode(bb, cb, true);
+
+							if (cr.isMalformed()) {
+								int curpos = bb.position() - cr.length();
+
+								if (curpos > 0) {
+									/* There is good data before the malformed section, so
+									 * pass this on immediately.
+									 */
+									((vt320)buffer).putString(cb.array(), 0, cb.position());
+								}
+
+								while (bb.position() < n) {
+									bb = ByteBuffer.wrap(b, curpos, cr.length());
+
+									cb.clear();
+									replacer.decode(bb, cb, true);
+
+									((vt320) buffer).putString(cb.array(), 0, cb.position());
+
+									curpos += cr.length();
+
+									bb = ByteBuffer.wrap(b, curpos, n - curpos);
+
+									cb.clear();
+									cr = cd.decode(bb, cb, true);
+								}
+
+								if (cr.isMalformed()) {
+									/* If we still have malformed input, save the bytes for the next
+									 * read and try to parse it again.
+									 */
+									offset = n - bb.position() + cr.length();
+									if ((bb.position() - cr.length()) < offset) {
+										byte tmp[] = new byte[offset];
+										System.arraycopy(b, bb.position() - cr.length(), tmp, 0, offset);
+										System.arraycopy(tmp, 0, b, 0, offset);
+									} else {
+										System.arraycopy(b, bb.position() - cr.length(), b, 0, offset);
+									}
+									Log.d(TAG, String.format("Copying out %d chars at %d: 0x%02x",
+											offset, bb.position() - cr.length(),
+											b[bb.position() - cr.length()]
+									));
+								} else {
+									// After discarding the previous offset, we only have valid data.
+									((vt320)buffer).putString(cb.array(), 0, cb.position());
+									offset = 0;
+								}
+							} else {
+								// No errors at all.
+								((vt320)buffer).putString(cb.array(), 0, cb.position());
+								offset = 0;
+							}
+
+							cb.clear();
+						}
+						redraw();
+					}
+
+					if ((newConditions & ChannelCondition.STDERR_DATA) != 0) {
+						while (stderr.available() > 0) {
+							n = stderr.read(b);
+							bb = ByteBuffer.wrap(b, 0, n);
+							replacer.decode(bb, cb, false);
+							// TODO I don't know.. do we want this? We were ignoring it before
+							Log.d(TAG, String.format("Read data from stderr: %s", new String(cb.array(), 0, cb.position())));
+							cb.clear();
+						}
+					}
+
+					if ((newConditions & ChannelCondition.EOF) != 0) {
+						// The other side closed our channel, so let's disconnect.
+						// TODO review whether any tunnel is in use currently.
+						dispatchDisconnect(false);
+						break;
+					}
+				} catch (IOException e) {
+					Log.e(TAG, "Problem while handling incoming data in relay thread", e);
+					break;
+				}
+			}
+		}
+	}
 
 	public class HostKeyVerifier implements ServerHostKeyVerifier {
 
@@ -302,7 +444,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 		selectionArea = new SelectionArea();
 
-		// TODO Change this when hosts are beans as well
 		portForwards = manager.hostdb.getPortForwardsForHost(host);
 
 		// prepare the ssh connection for opening
@@ -599,133 +740,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			stderr = session.getStderr();
 
 			// create thread to relay incoming connection data to buffer
-			relay = new Thread(new Runnable() {
-				public void run() {
-					final String encoding = host.getEncoding();
-
-					byte[] b = new byte[BUFFER_SIZE];
-
-					Charset charset = Charset.forName(encoding);
-
-					/* Set up character set decoder to report any byte sequences
-					 * which are malformed so we can try to resume decoding it
-					 * on the next packet received.
-					 *
-					 * UTF-8 byte sequences have a tendency to get truncated at
-					 * times.
-					 */
-					CharsetDecoder cd = charset.newDecoder();
-					cd.onUnmappableCharacter(CodingErrorAction.REPLACE);
-					cd.onMalformedInput(CodingErrorAction.REPORT);
-
-					CharsetDecoder replacer = charset.newDecoder();
-					replacer.onUnmappableCharacter(CodingErrorAction.REPLACE);
-					replacer.onMalformedInput(CodingErrorAction.REPLACE);
-
-					ByteBuffer bb;
-					CharBuffer cb = CharBuffer.allocate(BUFFER_SIZE);
-
-					int n = 0;
-					int offset = 0;
-
-					int conditions = ChannelCondition.STDOUT_DATA
-							| ChannelCondition.STDERR_DATA
-							| ChannelCondition.CLOSED
-							| ChannelCondition.EOF;
-					int newConditions = 0;
-
-					while((newConditions & ChannelCondition.CLOSED) == 0) {
-						try {
-							newConditions = session.waitForCondition(conditions, 0);
-							if ((newConditions & ChannelCondition.STDOUT_DATA) != 0) {
-								while (stdout.available() > 0) {
-									n = offset + stdout.read(b, offset, BUFFER_SIZE - offset);
-
-									bb = ByteBuffer.wrap(b, 0, n);
-									CoderResult cr = cd.decode(bb, cb, true);
-
-									if (cr.isMalformed()) {
-										int curpos = bb.position() - cr.length();
-
-										if (curpos > 0) {
-											/* There is good data before the malformed section, so
-											 * pass this on immediately.
-											 */
-											((vt320)buffer).putString(cb.array(), 0, cb.position());
-										}
-
-										while (bb.position() < n) {
-											bb = ByteBuffer.wrap(b, curpos, cr.length());
-
-											cb.clear();
-											replacer.decode(bb, cb, true);
-
-											((vt320) buffer).putString(cb.array(), 0, cb.position());
-
-											curpos += cr.length();
-
-											bb = ByteBuffer.wrap(b, curpos, n - curpos);
-
-											cb.clear();
-											cr = cd.decode(bb, cb, true);
-										}
-
-										if (cr.isMalformed()) {
-											/* If we still have malformed input, save the bytes for the next
-											 * read and try to parse it again.
-											 */
-											offset = n - bb.position() + cr.length();
-											if ((bb.position() - cr.length()) < offset) {
-												byte tmp[] = new byte[offset];
-												System.arraycopy(b, bb.position() - cr.length(), tmp, 0, offset);
-												System.arraycopy(tmp, 0, b, 0, offset);
-											} else {
-												System.arraycopy(b, bb.position() - cr.length(), b, 0, offset);
-											}
-											Log.d(TAG, String.format("Copying out %d chars at %d: 0x%02x",
-													offset, bb.position() - cr.length(),
-													b[bb.position() - cr.length()]
-											));
-										} else {
-											// After discarding the previous offset, we only have valid data.
-											((vt320)buffer).putString(cb.array(), 0, cb.position());
-											offset = 0;
-										}
-									} else {
-										// No errors at all.
-										((vt320)buffer).putString(cb.array(), 0, cb.position());
-										offset = 0;
-									}
-
-									cb.clear();
-								}
-								redraw();
-							}
-
-							if ((newConditions & ChannelCondition.STDERR_DATA) != 0) {
-								while (stderr.available() > 0) {
-									n = stderr.read(b);
-									bb = ByteBuffer.wrap(b, 0, n);
-									replacer.decode(bb, cb, false);
-									// TODO I don't know.. do we want this? We were ignoring it before
-									Log.d(TAG, String.format("Read data from stderr: %s", new String(cb.array(), 0, cb.position())));
-									cb.clear();
-								}
-							}
-
-							if ((newConditions & ChannelCondition.EOF) != 0) {
-								// The other side closed our channel, so let's disconnect.
-								// TODO review whether any tunnel is in use currently.
-								dispatchDisconnect(false);
-								break;
-							}
-						} catch (IOException e) {
-							Log.e(TAG, "Problem while handling incoming data in relay thread", e);
-							break;
-						}
-					}
-				}
-			});
+			relay = new Thread(new Relay());
 			relay.start();
 
 			// force font-size to make sure we resizePTY as needed
@@ -819,18 +834,26 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					return false;
 
 				if ("Use right-side keys".equals(keymode)) {
-					if (keyCode == KeyEvent.KEYCODE_ALT_RIGHT && slashKeyPressed) {
+					if (keyCode == KeyEvent.KEYCODE_ALT_RIGHT
+							&& (metaState & META_SLASH) != 0) {
+						metaState &= metaState ^ META_SLASH ^ META_TRANSIENT;
 						stdin.write('/');
 						return true;
-					} else if (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT && tabKeyPressed) {
+					} else if (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT
+							&& (metaState & META_TAB) != 0) {
+						metaState &= metaState ^ META_TAB ^ META_TRANSIENT;
 						stdin.write(0x09);
 						return true;
 					}
 				} else if ("Use left-side keys".equals(keymode)) {
-					if (keyCode == KeyEvent.KEYCODE_ALT_LEFT && slashKeyPressed) {
+					if (keyCode == KeyEvent.KEYCODE_ALT_LEFT
+							&& (metaState & META_SLASH) != 0) {
+						metaState &= metaState ^ META_SLASH ^ META_TRANSIENT;
 						stdin.write('/');
 						return true;
-					} else if (keyCode == KeyEvent.KEYCODE_SHIFT_LEFT && tabKeyPressed) {
+					} else if (keyCode == KeyEvent.KEYCODE_SHIFT_LEFT
+							&& (metaState & META_TAB) != 0) {
+						metaState &= metaState ^ META_TAB ^ META_TRANSIENT;
 						stdin.write(0x09);
 						return true;
 					}
@@ -840,7 +863,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			}
 
 			// check for terminal resizing keys
-			// TODO: see if there is a way to make sure we dont "blip"
 			if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
 				forcedSize = false;
 				setFontSize(fontSize + 2);
@@ -864,25 +886,25 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			// otherwise pass through to existing session
 			// print normal keys
 			if (printing) {
-				int metaState = event.getMetaState();
+				int curMetaState = event.getMetaState();
 
-				slashKeyPressed = tabKeyPressed = false;
+				metaState &= metaState ^ META_SLASH ^ META_TAB;
 
-				if (shiftPressed) {
-					metaState |= KeyEvent.META_SHIFT_ON;
-					shiftPressed = false;
+				if ((metaState & META_SHIFT_MASK) != 0) {
+					curMetaState |= KeyEvent.META_SHIFT_ON;
+					metaState &= metaState ^ META_SHIFT_ON;
 					redraw();
 				}
 
-				if (altPressed) {
-					metaState |= KeyEvent.META_ALT_ON;
-					altPressed = false;
+				if ((metaState & META_ALT_MASK) != 0) {
+					curMetaState |= KeyEvent.META_ALT_ON;
+					metaState &= metaState ^ META_ALT_ON;
 					redraw();
 				}
 
-				int key = keymap.get(keyCode, metaState);
+				int key = keymap.get(keyCode, curMetaState);
 
-				if (ctrlPressed) {
+				if ((metaState & META_CTRL_MASK) != 0) {
 					// Support CTRL-a through CTRL-z
 					if (key >= 0x61 && key <= 0x7A)
 						key -= 0x60;
@@ -891,13 +913,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 						key -= 0x40;
 					else if (key == 0x20)
 						key = 0x00;
-					ctrlPressed = false;
+
+					metaState &= metaState ^ META_CTRL_ON;
+
 					redraw();
 				}
 
 				// handle pressing f-keys
-				if((event.getMetaState() & KeyEvent.META_SHIFT_ON) != 0) {
-					//Log.d(TAG, "yay pressing an fkey");
+				if ((curMetaState & KeyEvent.META_SHIFT_ON) != 0) {
 					switch(key) {
 					case '!': ((vt320)buffer).keyPressed(vt320.KEY_F1, ' ', 0); return true;
 					case '@': ((vt320)buffer).keyPressed(vt320.KEY_F2, ' ', 0); return true;
@@ -920,35 +943,31 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			if("Use right-side keys".equals(keymode)) {
 				switch(keyCode) {
 				case KeyEvent.KEYCODE_ALT_RIGHT:
-					slashKeyPressed = true;
+					metaState |= META_SLASH;
 					return true;
 				case KeyEvent.KEYCODE_SHIFT_RIGHT:
-					tabKeyPressed = true;
+					metaState |= META_TAB;
 					return true;
 				case KeyEvent.KEYCODE_SHIFT_LEFT:
-					shiftPressed = true;
-					redraw();
+					metaPress(META_SHIFT_ON);
 					return true;
 				case KeyEvent.KEYCODE_ALT_LEFT:
-					altPressed = true;
-					redraw();
+					metaPress(META_ALT_ON);
 					return true;
 				}
 			} else if("Use left-side keys".equals(keymode)) {
 				switch(keyCode) {
 				case KeyEvent.KEYCODE_ALT_LEFT:
-					slashKeyPressed = true;
+					metaState |= META_SLASH;
 					return true;
 				case KeyEvent.KEYCODE_SHIFT_LEFT:
-					tabKeyPressed = true;
+					metaState |= META_TAB;
 					return true;
 				case KeyEvent.KEYCODE_SHIFT_RIGHT:
-					shiftPressed = true;
-					redraw();
+					metaPress(META_SHIFT_ON);
 					return true;
 				case KeyEvent.KEYCODE_ALT_RIGHT:
-					altPressed = true;
-					redraw();
+					metaPress(META_ALT_ON);
 					return true;
 				}
 			}
@@ -971,12 +990,18 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 				}
 
-				//((vt320)buffer).keyTyped('a', 'a', vt320.KEY_CONTROL);
-				//((vt320)buffer).keyTyped(' ', ' ', 0);
 				break;
 
-			case KeyEvent.KEYCODE_DEL: stdin.write(0x08); return true;
-			case KeyEvent.KEYCODE_ENTER: ((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', event.getMetaState()); return true;
+			case KeyEvent.KEYCODE_DEL:
+				((vt320) buffer).keyPressed(vt320.KEY_BACK_SPACE, ' ',
+						getStateForBuffer());
+				metaState &= metaState ^ META_TRANSIENT;
+				return true;
+			case KeyEvent.KEYCODE_ENTER:
+				((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', getStateForBuffer());
+				metaState &= metaState ^ META_TRANSIENT;
+				return true;
+
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				if (selectingForCopy) {
 					if (selectionArea.isSelectingOrigin())
@@ -985,7 +1010,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 						selectionArea.decrementRight();
 					redraw();
 				} else {
-					((vt320)buffer).keyPressed(vt320.KEY_LEFT, ' ', event.getMetaState());
+					((vt320) buffer).keyPressed(vt320.KEY_LEFT, ' ',
+							getStateForBuffer());
+					metaState &= metaState ^ META_TRANSIENT;
 					tryKeyVibrate();
 				}
 				return true;
@@ -998,7 +1025,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 						selectionArea.decrementBottom();
 					redraw();
 				} else {
-					((vt320)buffer).keyPressed(vt320.KEY_UP, ' ', event.getMetaState());
+					((vt320) buffer).keyPressed(vt320.KEY_UP, ' ',
+							getStateForBuffer());
+					metaState &= metaState ^ META_TRANSIENT;
 					tryKeyVibrate();
 				}
 				return true;
@@ -1011,7 +1040,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 						selectionArea.incrementBottom();
 					redraw();
 				} else {
-					((vt320)buffer).keyPressed(vt320.KEY_DOWN, ' ', event.getMetaState());
+					((vt320) buffer).keyPressed(vt320.KEY_DOWN, ' ',
+							getStateForBuffer());
+					metaState &= metaState ^ META_TRANSIENT;
 					tryKeyVibrate();
 				}
 				return true;
@@ -1024,7 +1055,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 						selectionArea.incrementRight();
 					redraw();
 				} else {
-					((vt320)buffer).keyPressed(vt320.KEY_RIGHT, ' ', event.getMetaState());
+					((vt320) buffer).keyPressed(vt320.KEY_RIGHT, ' ',
+							getStateForBuffer());
+					metaState &= metaState ^ META_TRANSIENT;
 					tryKeyVibrate();
 				}
 				return true;
@@ -1039,19 +1072,20 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 							String copiedText = selectionArea.copyFrom(buffer);
 
 							clipboard.setText(copiedText);
-							parent.notifyUser(parent.getContext().getString(R.string.console_copy_done,
-											copiedText.length()));
+							parent.notifyUser(parent.getContext().getString(
+									R.string.console_copy_done,
+									copiedText.length()));
 
 							selectingForCopy = false;
 							selectionArea.reset();
 						}
 					}
 				} else {
-					if (ctrlPressed) {
+					if ((metaState & META_CTRL_ON) != 0) {
 						((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
-						ctrlPressed = false;
+						metaState &= metaState ^ META_CTRL_ON;
 					} else
-						ctrlPressed = true;
+						metaState |= META_CTRL_ON;
 				}
 
 				redraw();
@@ -1076,14 +1110,41 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		return false;
 	}
 
+	/**
+	 * Handle meta key presses where the key can be locked on.
+	 * <p>
+	 * 1st press: next key to have meta state<br />
+	 * 2nd press: meta state is locked on<br />
+	 * 3rd press: disable meta state
+	 * 
+	 * @param code
+	 */
+	private void metaPress(int code) {
+		if ((metaState & (code << 1)) != 0) {
+			metaState &= metaState ^ (code << 1);
+		} else if ((metaState & code) != 0) {
+			metaState &= metaState ^ code;
+			metaState |= code << 1;
+		} else
+			metaState |= code;
+		redraw();
+	}
+
 	public int getMetaState() {
-		int state = 0;
+		return metaState;
+	}
 
-		if (ctrlPressed) state |= META_CTRL_ON;
-		if (altPressed) state |= META_ALT_ON;
-		if (shiftPressed) state |= META_SHIFT_ON;
+	private int getStateForBuffer() {
+		int bufferState = 0;
 
-		return state;
+		if ((metaState & META_CTRL_MASK) != 0)
+			bufferState |= vt320.KEY_CONTROL;
+		if ((metaState & META_SHIFT_MASK) != 0)
+			bufferState |= vt320.KEY_SHIFT;
+		if ((metaState & META_ALT_MASK) != 0)
+			bufferState |= vt320.KEY_ALT;
+
+		return bufferState;
 	}
 
 	public void setSelectingForCopy(boolean selectingForCopy) {
