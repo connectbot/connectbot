@@ -57,6 +57,7 @@ public class TerminalView extends View implements FontSizeChangedListener {
 
 	private Toast notification = null;
 	private String lastNotification = null;
+	private boolean notifications = true;
 
 	public TerminalView(Context context, TerminalBridge bridge) {
 		super(context);
@@ -118,7 +119,7 @@ public class TerminalView extends View implements FontSizeChangedListener {
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
 		bridge.parentChanged(this);
-		
+
 		scaleCursors();
 	}
 
@@ -196,6 +197,9 @@ public class TerminalView extends View implements FontSizeChangedListener {
 	}
 
 	public void notifyUser(String message) {
+		if (!notifications)
+			return;
+
 		if (notification != null) {
 			// Don't keep telling the user the same thing.
 			if (lastNotification != null && lastNotification.equals(message))
@@ -218,5 +222,13 @@ public class TerminalView extends View implements FontSizeChangedListener {
 	 */
 	public void forceSize(int width, int height) {
 		bridge.resizeComputed(width, height, getWidth(), getHeight());
+	}
+
+	/**
+	 * Sets the ability for the TerminalView to display Toast notifications to the user.
+	 * @param value whether to enable notifications or not
+	 */
+	public void setNotifications(boolean value) {
+		notifications = value;
 	}
 }

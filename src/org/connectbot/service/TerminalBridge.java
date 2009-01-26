@@ -1124,7 +1124,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * 1st press: next key to have meta state<br />
 	 * 2nd press: meta state is locked on<br />
 	 * 3rd press: disable meta state
-	 * 
+	 *
 	 * @param code
 	 */
 	private void metaPress(int code) {
@@ -1214,7 +1214,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	/**
 	 * Remove an {@link FontSizeChangedListener} from the list of listeners for
 	 * this bridge.
-	 * 
+	 *
 	 * @param listener
 	 */
 	public void removeFontSizeChangedListener(FontSizeChangedListener listener) {
@@ -1256,7 +1256,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		if(bitmap != null)
 			newBitmap = (bitmap.getWidth() != width || bitmap.getHeight() != height);
 
-		if(newBitmap) {
+		if (newBitmap) {
+			if (bitmap != null)
+				bitmap.recycle();
 			bitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
 			canvas.setBitmap(bitmap);
 		}
@@ -1306,7 +1308,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		fullRedraw = true;
 		redraw();
 
-		this.parent.notifyUser(String.format("%d x %d", termWidth, termHeight));
+		parent.notifyUser(String.format("%d x %d", termWidth, termHeight));
 
 		Log.i(TAG, String.format("parentChanged() now width=%d, height=%d", termWidth, termHeight));
 	}
@@ -1317,10 +1319,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 */
 	public synchronized void parentDestroyed() {
 		parent = null;
-		if(bitmap != null)
+		canvas.setBitmap(null);
+		if (bitmap != null)
 			bitmap.recycle();
 		bitmap = null;
-		canvas.setBitmap(null);
 	}
 
 	public void setVDUBuffer(VDUBuffer buffer) {
