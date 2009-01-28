@@ -81,14 +81,14 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
       //markLine(R, 1);
       int lastChar = -1;
       char c;
-      
+
       for (int i = 0; i < len; i++) {
     	c = s[start + i];
-    	// Shortcut for my favorite ASCII					
+    	// Shortcut for my favorite ASCII
     	if (c <= 0x7F) {
     	  if (lastChar != -1)
     	    putChar((char) lastChar, false);
-    	  lastChar = c;	
+    	  lastChar = c;
     	} else if (!Character.isLowSurrogate(c) && !Character.isHighSurrogate(c)) {
           if (Character.getType(c) == Character.NON_SPACING_MARK) {
             if (lastChar != -1) {
@@ -103,27 +103,28 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
           }
 	    }
       }
-      
+
       if (lastChar != -1)
         putChar((char) lastChar, false);
-      
+
       setCursorPosition(C, R);
       redraw();
     }
   }
 
   protected void sendTelnetCommand(byte cmd) {
-	  
+
   }
 
-  /** 
+  /**
    * Sent the changed window size from the terminal to all listeners.
    */
   protected void setWindowSize(int c, int r) {
     /* To be overridden by Terminal.java */
   }
 
-  public void setScreenSize(int c, int r, boolean broadcast) {
+  @Override
+public void setScreenSize(int c, int r, boolean broadcast) {
     int oldrows = getRows();
     //int oldcols = getColumns();
 
@@ -133,7 +134,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
 
     /* Tricky, since the VDUBuffer works strangely. */
     if (r > oldrows) {
-      setCursorPosition(C, R + (r-oldrows)); 
+      setCursorPosition(C, R + (r-oldrows));
       redraw();
     }
     if (broadcast) {
@@ -1522,10 +1523,10 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             } while (C < columns && (Tabs[C] == 0));
             lastwaslf = 0;
             break;
-          case '\r':
+          case '\r': // 13 CR
             C = 0;
             break;
-          case '\n':
+          case '\n': // 10 LF
             if (debug > 3)
               System.out.println("R= " + R + ", bm " + getBottomMargin() + ", tm=" + getTopMargin() + ", rows=" + rows);
             if (!vms) {
@@ -1572,15 +1573,17 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
               if (C >= columns) {
                 if (wraparound) {
                   int bot = rows;
-                  
+
                   // If we're in the scroll region, check against the bottom margin
                   if (R <= getBottomMargin() && R >= getTopMargin())
-                	  bot = getBottomMargin();
-                  
+                    bot = getBottomMargin() + 1;
+
                   if (R < bot - 1)
                     R++;
-                  else
+                  else {
+                    if (debug > 3) System.out.println("scrolling due to wrap at " + R);
                     insertLine(R, 1, SCROLL_UP);
+                  }
                   C = 0;
                 } else {
                   // cursor stays on last character.
@@ -1611,7 +1614,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                       }
                       break;
                     case '<': // 'user preferred' is currently 'ISO Latin-1 suppl
-                      c = (char) (((int) c & 0x7f) | 0x80);
+                      c = (char) ((c & 0x7f) | 0x80);
                       mapped = true;
                       break;
                     case 'A':
@@ -1957,7 +1960,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
           case '7':
           case '8':
           case '9':
-            DCEvars[DCEvar] = DCEvars[DCEvar] * 10 + ((int) c) - 48;
+            DCEvars[DCEvar] = DCEvars[DCEvar] * 10 + (c) - 48;
             term_state = TSTATE_DCEQ;
             break;
           case ';':
@@ -2122,7 +2125,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             switch (DCEvars[0]) {
               case 15:
                 /* printer? no printer. */
-                write(((char) ESC) + "[?13n", false);
+                write((ESC) + "[?13n", false);
                 System.out.println("ESC[5n");
                 break;
               default:
@@ -2179,7 +2182,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
           case '7':
           case '8':
           case '9':
-            DCEvars[DCEvar] = DCEvars[DCEvar] * 10 + ((int) c) - 48;
+            DCEvars[DCEvar] = DCEvars[DCEvar] * 10 + (c) - 48;
             term_state = TSTATE_CSI_EQUAL;
             break;
           case ';':
@@ -2274,7 +2277,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
           case '7':
           case '8':
           case '9':
-            DCEvars[DCEvar] = DCEvars[DCEvar] * 10 + ((int) c) - 48;
+            DCEvars[DCEvar] = DCEvars[DCEvar] * 10 + (c) - 48;
             term_state = TSTATE_CSI;
             break;
           case ';':
@@ -2289,7 +2292,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             if (terminalID.equals("vt320")) subcode = "63;";
             if (terminalID.equals("vt220")) subcode = "62;";
             if (terminalID.equals("vt100")) subcode = "61;";
-            write(((char) ESC) + "[?" + subcode + "1;2c", false);
+            write((ESC) + "[?" + subcode + "1;2c", false);
             if (debug > 1)
               System.out.println("ESC [ " + DCEvars[0] + " c");
             break;
@@ -2571,7 +2574,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
           case 'n':
             switch (DCEvars[0]) {
               case 5: /* malfunction? No malfunction. */
-                writeSpecial(((char) ESC) + "[0n");
+                writeSpecial((ESC) + "[0n");
                 if (debug > 1)
                   System.out.println("ESC[5n");
                 break;
@@ -2579,7 +2582,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                 // DO NOT offset R and C by 1! (checked against /usr/X11R6/bin/resize
                 // FIXME check again.
                 // FIXME: but vttest thinks different???
-                writeSpecial(((char) ESC) + "[" + R + ";" + C + "R");
+                writeSpecial((ESC) + "[" + R + ";" + C + "R");
                 if (debug > 1)
                   System.out.println("ESC[6n");
                 break;
@@ -2753,7 +2756,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
                   attributes &= ~COLOR_BG;
                   attributes |= ((DCEvars[i] - 92) + 1) << COLOR_BG_SHIFT;
                   break;
-                	
+
                 default:
                   System.out.println("ESC [ " + DCEvars[i] + " m unknown...");
                   break;
@@ -2783,17 +2786,17 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
         term_state = TSTATE_DATA;
         break;
     }
-    
+
     if (C > columns)
       C = columns;
     else if (C < 0)
       C = 0;
-    
+
     if (R > rows)
       R = rows;
     else if (R < 0)
       R = 0;
-    
+
     if (doshowcursor)
       setCursorPosition(C, R);
     //markLine(R, 1);
@@ -2805,12 +2808,12 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
     gx[1] = 'B';
     gx[2] = 'B';
     gx[3] = 'B';
-    
+
     gl = 0;  // default GL to G0
     gr = 2;  // default GR to G2
-    
+
     onegl = -1; // Single shift override
-    
+
     /* reset tabs */
     int nw = getColumns();
     if (nw < 132) nw = 132;
@@ -2818,15 +2821,15 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
     for (int i = 0; i < nw; i += 8) {
       Tabs[i] = 1;
     }
-    
+
     deleteArea(0, 0, getColumns(), getRows(), attributes);
     setMargins(0, getRows());
     C = R = 0;
     _SetCursor(0, 0);
-    
+
     if (display != null)
     	display.resetColors();
-    
+
     showCursor(true);
     /*FIXME:*/
     term_state = TSTATE_DATA;
