@@ -19,6 +19,7 @@
 package org.connectbot;
 
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.connectbot.bean.HostBean;
@@ -189,9 +190,11 @@ public class HostListActivity extends ListActivity {
 				HostBean host = (HostBean) parent.getAdapter().getItem(position);
 
 				// create a specific uri that represents this host
-				Uri uri = Uri.parse(String.format("ssh://%s@%s:%s/#%s",
-						host.getUsername(), host.getHostname(),
-						host.getPort(), host.getNickname()));
+				Uri uri = Uri.parse(String.format("ssh://%s@%s:%d/#%s",
+						Uri.encode(host.getUsername()),
+						Uri.encode(host.getHostname()),
+						host.getPort(),
+						Uri.encode(host.getNickname())));
 				Intent contents = new Intent(Intent.ACTION_VIEW, uri);
 				contents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -217,7 +220,7 @@ public class HostListActivity extends ListActivity {
 
 		this.registerForContextMenu(list);
 
-		final Pattern hostmask = Pattern.compile(".+@.+(:\\d+)?");
+		final Pattern hostmask = Pattern.compile("^([^@]+)@([0-9A-Z.-]+)(:(\\d+))?$", Pattern.CASE_INSENSITIVE);
 		final TextView text = (TextView) this.findViewById(R.id.front_quickconnect);
 		text.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
 		text.setOnKeyListener(new OnKeyListener() {
@@ -232,20 +235,25 @@ public class HostListActivity extends ListActivity {
 					return false;
 
 				// show error if poorly formed
-				if (!hostmask.matcher(text.getText().toString()).find()) {
+				Matcher matcher = hostmask.matcher(text.getText().toString());
+				if (!matcher.matches()) {
 					text.setError(getString(R.string.list_format_error));
 					return false;
 				}
 
 				// create new host for entered string and then launch
-				Uri uri = Uri.parse(String.format("ssh://%s", text.getText().toString()));
-				String username = uri.getUserInfo();
-				String hostname = uri.getHost();
-				int port = uri.getPort();
+				String username = matcher.group(1);
+				String hostname = matcher.group(2);
+
+				int port = 22;
+				try {
+					port = Integer.parseInt(matcher.group(4));
+				} catch (Exception e) {
+					Log.i("HostListActivity", "Invalid format for port: "+ matcher.group(4));
+				}
 
 				String nickname;
-				if(port == -1) {
-					port = 22;
+				if (port == 22) {
 					nickname = String.format("%s@%s", username, hostname);
 				} else {
 					nickname = String.format("%s@%s:%d", username, hostname, port);
@@ -257,7 +265,8 @@ public class HostListActivity extends ListActivity {
 				hostdb.saveHost(host);
 
 				Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
-				intent.setData(Uri.parse(String.format("ssh://%s@%s:%s/#%s", username, hostname, port, nickname)));
+				intent.setData(Uri.parse(String.format("ssh://%s@%s:%d/#%s",
+						Uri.encode(username), Uri.encode(hostname), port, Uri.encode(nickname))));
 				HostListActivity.this.startActivity(intent);
 
 				// set list filter based on text
