@@ -424,7 +424,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			@Override
 			public void write(byte[] b) {
 				try {
-					if (b != null)
+					if (b != null && stdin != null)
 						stdin.write(b);
 				} catch (IOException e) {
 					Log.e(TAG, "Problem handling incoming data in vt320() thread", e);
@@ -1006,7 +1006,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				metaState &= metaState ^ META_TRANSIENT;
 				return true;
 			case KeyEvent.KEYCODE_ENTER:
-				((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', getStateForBuffer());
+				((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', 0);
 				metaState &= metaState ^ META_TRANSIENT;
 				return true;
 
