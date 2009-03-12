@@ -429,7 +429,7 @@ public class KexManager
 
 			if (kxs.np.kex_algo.equals("diffie-hellman-group-exchange-sha1"))
 			{
-				if (kxs.dhgexParameters.getMin_group_len() == 0)
+				if (kxs.dhgexParameters.getMin_group_len() == 0 || csh.server_versioncomment.matches("OpenSSH_2\\.([0-4]\\.|5\\.[0-2]).*"))
 				{
 					PacketKexDhGexRequestOld dhgexreq = new PacketKexDhGexRequestOld(kxs.dhgexParameters);
 					tm.sendKexMessage(dhgexreq.getPayload());
