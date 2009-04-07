@@ -57,6 +57,8 @@
 	<string name="portforward_delete">Delete port forward</string>
 
 	<string name="prompt_nickname">Nickname:</string>
+	<!-- An example string that could be used as a nickname for a pubkey. -->
+	<string name="prompt_nickname_hint_pubkey">My work key</string>
 	<!-- The source TCP port for port forwards. -->
 	<string name="prompt_source_port">Source port:</string>
 	<!-- The "host:port" combination used for port forward destinations. -->
@@ -67,6 +69,9 @@
 	<string name="prompt_again">(again)</string>
 	<!-- Label for the user to select port forward type. -->
 	<string name="prompt_type">Type:</string>
+	<string name="prompt_password_can_be_blank">Note: password can be blank</string>
+	<!-- Prompt for the size of the private key in bits. -->
+	<string name="prompt_bits">Bits:</string>
 
 	<string name="alert_passwords_do_not_match_msg">Passwords do not match!</string>
 	<string name="alert_wrong_password_msg">Wrong password!</string>
@@ -176,6 +181,9 @@
 	<string name="portforward_problem">Problem creating port forward, maybe you're using ports under 1024 or port is already used?</string>
 
 	<string name="portforward_menu_add">Add port forward</string>
+
+	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
+	<string name="hint_userhost">user@hostname</string>
 
 	<string name="list_format_error">Use the format 'username@hostname:port'</string>
 
