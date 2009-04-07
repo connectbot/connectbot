@@ -1,95 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">ConnectBot</string>
-	<string name="app_desc">Simple, powerful, open-source SSH client.</string>
+	<string name="app_desc">Enkel, kraftfull, öppenkällkods SSH-klient.</string>
 
 	<!-- Window title for the Host List -->
-	<string name="title_hosts_list">Hosts</string>
+	<string name="title_hosts_list">Värddatorer</string>
 	<!-- Window title for the Pubkeys List -->
-	<string name="title_pubkey_list">Pubkeys</string>
+	<string name="title_pubkey_list">Publika nycklar</string>
 	<!-- Window title for the Port Forwards List -->
 	<string name="title_port_forwards_list">Port forwards</string>
 	<!-- Window title when editing host details -->
-	<string name="title_host_editor">Edit Host</string>
+	<string name="title_host_editor">Redigera värddator</string>
 	<!-- Window title for Help index -->
-	<string name="title_help">Help</string>
+	<string name="title_help">Hjälp</string>
 
-	<string name="title_password">Input Password</string>
-	<string name="title_entropy">Gathering Entropy</string>
+	<string name="title_password">Lösenordsinmatning</string>
+	<string name="title_entropy">Samlar in entropi</string>
 
-	<string name="resolve_edit">Edit Host</string>
-	<string name="resolve_connect">Connect</string>
-	<string name="resolve_entropy">Gather Entropy</string>
+	<string name="resolve_edit">Redigera värddator</string>
+	<string name="resolve_connect">Anslut</string>
+	<string name="resolve_entropy">Samla in Entropi</string>
 
-	<string name="menu_insert">Add Host</string>
-	<string name="menu_delete">Delete Host</string>
-	<string name="menu_preferences">Preferences</string>
-	<string name="menu_help">Help</string>
+	<string name="menu_insert">Lägg till värddator</string>
+	<string name="menu_delete">Ta bort värddator</string>
+	<string name="menu_preferences">Egenskaper</string>
+	<string name="menu_help">Hjälp</string>
 
 	<string name="help_intro">Please select a topic below for more information on a particular subject.</string>
-	<string name="help_about">About ConnectBot</string>
-	<string name="help_keyboard">Keyboard</string>
-	<string name="help_pubkeys">Pubkeys</string>
-	<string name="help_portforwards">Port Forwards</string>
+	<string name="help_about">Om ConnectBot</string>
+	<string name="help_keyboard">Tangentbord</string>
+	<string name="help_pubkeys">Publika nycklar</string>
+	<string name="help_portforwards">Port vidarebefodringar</string>
 
-	<string name="pubkey_generate">Generate</string>
-	<string name="pubkey_import">Import</string>
-	<string name="pubkey_delete">Delete key</string>
-	<string name="pubkey_gather_entropy">Gathering Entropy</string>
-	<string name="pubkey_touch_prompt">Touch this box to gather randomness: </string>
-	<string name="pubkey_generating">Generating key pair...</string>
-	<string name="pubkey_copy_private">Copy private key</string>
-	<string name="pubkey_copy_public">Copy public key</string>
-	<string name="pubkey_list_empty">Tap "Menu" to create\nor import key pairs.</string>
-	<string name="pubkey_unknown_format">Unknown format</string>
-	<string name="pubkey_change_password">Change password</string>
-	<string name="pubkey_list_pick">Pick from /sdcard</string>
-	<string name="pubkey_import_parse_problem">Problem parsing imported private key
-	</string>
-	<string name="pubkey_unlock">Unlock key</string>
-	<string name="pubkey_failed_add">Bad password for key '%1$s'. Authentication failed.</string>
-	<string name="pubkey_memory_load">Load into memory</string>
-	<string name="pubkey_memory_unload">Unload from memory</string>
-	<string name="pubkey_load_on_start">Load key on start</string>
+	<string name="pubkey_generate">Generera</string>
+	<string name="pubkey_import">Importera</string>
+	<string name="pubkey_delete">Ta bort nyckel</string>
+	<string name="pubkey_gather_entropy">Samlar in entropi</string>
+	<string name="pubkey_touch_prompt">Rör vid rutan för att samla in slumpdata:</string>
+	<string name="pubkey_generating">Genererar nyckelpar...</string>
+	<string name="pubkey_copy_private">Kopiera privata nyckeln</string>
+	<string name="pubkey_copy_public">Kopiera publika nyckeln</string>
+	<string name="pubkey_list_empty">Tryck på "Meny" för att\nskapa eller importera nyckelpar</string>
+	<string name="pubkey_unknown_format">Okänt format</string>
+	<string name="pubkey_change_password">Ändra lösenord</string>
+	<string name="pubkey_list_pick">Välj från /sdcard</string>
+	<string name="pubkey_import_parse_problem">Svårigheter med att tyda den importerade privata nyckeln</string>
+	<string name="pubkey_unlock">Lås upp nyckel</string>
+	<string name="pubkey_failed_add">Felaktigt lösenord för nyckeln '%1$s'. Autentiseringen misslyckades.</string>
+	<string name="pubkey_memory_load">Ladda in i minnet</string>
+	<string name="pubkey_memory_unload">Ladda ur minnet</string>
+	<string name="pubkey_load_on_start">Ladda nyckel från start</string>
 
 	<string name="portforward_list_empty">Tap "Menu" to create\nport forwards.</string>
 	<string name="portforward_edit">Edit port forward</string>
 	<string name="portforward_delete">Delete port forward</string>
 
-	<string name="prompt_nickname">Nickname:</string>
+	<string name="prompt_nickname">Namn:</string>
 	<!-- An example string that could be used as a nickname for a pubkey. -->
 	<string name="prompt_nickname_hint_pubkey">My work key</string>
 	<!-- The source TCP port for port forwards. -->
-	<string name="prompt_source_port">Source port:</string>
+	<string name="prompt_source_port">Källport:</string>
 	<!-- The "host:port" combination used for port forward destinations. -->
 	<string name="prompt_destination">Destination:</string>
-	<string name="prompt_old_password">Old password:</string>
-	<string name="prompt_password">Password:</string>
+	<string name="prompt_old_password">Gammalt lösenord:</string>
+	<string name="prompt_password">Lösenord:</string>
 	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
-	<string name="prompt_again">(again)</string>
+	<string name="prompt_again">(igen)</string>
 	<!-- Label for the user to select port forward type. -->
 	<string name="prompt_type">Type:</string>
 	<string name="prompt_password_can_be_blank">Note: password can be blank</string>
 	<!-- Prompt for the size of the private key in bits. -->
 	<string name="prompt_bits">Bits:</string>
 
-	<string name="alert_passwords_do_not_match_msg">Passwords do not match!</string>
-	<string name="alert_wrong_password_msg">Wrong password!</string>
-	<string name="alert_key_corrupted_msg">Private key appears corrupt!</string>
+	<string name="alert_passwords_do_not_match_msg">Lösenorden överenstämmer inte med varandra!</string>
+	<string name="alert_wrong_password_msg">Felaktigt lösenord!</string>
+	<string name="alert_key_corrupted_msg">Privata nyckeln ser ut att vara korrupt!</string>
 	<string name="alert_sdcard_absent">SD card is not inserted!</string>
 
 	<!-- Add a new item (e.g., host or pubkey) to the list. -->
-	<string name="button_add">Add</string>
+	<string name="button_add">Lägg till</string>
 	<!-- Change an existing item's (e.g., host or pubkey) details. -->
-	<string name="button_change">Change</string>
+	<string name="button_change">Ändra</string>
 	<!-- Button that begins the generation of a public key pair. -->
-	<string name="button_generate">Generate Key</string>
+	<string name="button_generate">Generera nyckel</string>
 	<!-- Button that resizes the screen to the user-specified dimensions. -->
-	<string name="button_resize">Resize</string>
+	<string name="button_resize">Ändra storlek</string>
 
-	<string name="alert_disconnect_msg">Connection Lost</string>
+	<string name="alert_disconnect_msg">Anslutningen förlorad</string>
 
-	<string name="msg_copyright">Copyright &#169; 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
+	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
 
 	<!-- DO NOT MANUALLY UPDATE VERSION!!!
 	  Updating is update by the ant task "update-version" in build.xml
@@ -110,93 +109,93 @@
 	<!-- Do not translate -->
 	<string name="pref_rotation">rotation</string>
 	<!-- Do not translate -->
-	<string name="pref_camera">camera</string>
+	<string name="pref_camera">kamera</string>
 	<!-- Do not translate -->
-	<string name="pref_update">update</string>
+	<string name="pref_update">uppdatera</string>
 	<!-- Do not translate -->
 	<string name="pref_lastchecked">lastchecked</string>
 	<!-- Do not translate -->
-	<string name="pref_fullscreen">fullscreen</string>
+	<string name="pref_fullscreen">helskärm</string>
 	<!-- Do not translate -->
 	<string name="pref_wifilock">wifilock</string>
 	<!-- Do not translate -->
-	<string name="pref_bumpyarrows">bumpyarrows</string>
+	<string name="pref_bumpyarrows">guppiga pilar</string>
 
 	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
-	<string name="list_keymode_right">Use right-side keys</string>
+	<string name="list_keymode_right">Använd högerknapparna</string>
 	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
-	<string name="list_keymode_left">Use left-side keys</string>
+	<string name="list_keymode_left">Använd vänsterknapparna</string>
 	<!-- Preference selection to indicate never to use special shortcut keys. -->
-	<string name="list_keymode_none">Disable</string>
+	<string name="list_keymode_none">Avaktivera</string>
 
 	<!-- Preference to not use pubkeys to authenticate to this host. -->
-	<string name="list_pubkeyids_none">Do not use keys</string>
+	<string name="list_pubkeyids_none">Använd inte knapparna</string>
 	<!-- Preference to use any pubkey to authenticate to this host. -->
-	<string name="list_pubkeyids_any">Use any unlocked key</string>
+	<string name="list_pubkeyids_any">Använd valfri olåst nyckel</string>
 
 	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_daily">Daily</string>
+	<string name="list_update_daily">Varje dag</string>
 	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_weekly">Weekly</string>
+	<string name="list_update_weekly">Varje vecka</string>
 	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_never">Never</string>
+	<string name="list_update_never">Aldrig</string>
 
 	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
-	<string name="bind_minutes">%1$s minutes ago</string>
+	<string name="bind_minutes">%1$s minuter sedan</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
-	<string name="bind_hours">%1$s hours ago</string>
+	<string name="bind_hours">%1$s timmar sendan</string>
 	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
-	<string name="bind_days">%1$s days ago</string>
+	<string name="bind_days">%1$s dagar sedan</string>
 
 	<!-- Message given when user copies from the terminal. -->
-	<string name="console_copy_done">Copied %1$d bytes to clipboard</string>
+	<string name="console_copy_done">Kopierade %1$d bytes till urklippshanteraren.</string>
 	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">Touch and drag\nor use directional pad\nto select area to copy</string>
+	<string name="console_copy_start">Tryck och drag\neller använd bollen\nför att markera en yta för kopiering</string>
 
 	<!-- Button to disconnect from the current host in a terminal. -->
-	<string name="console_menu_disconnect">Disconnect</string>
+	<string name="console_menu_disconnect">Koppla ner</string>
 	<!-- Button to close the disconnected terminal window. -->
-	<string name="console_menu_close">Close</string>
+	<string name="console_menu_close">Stäng</string>
 	<!-- Button to begin copying from the terminal to the clipboard. -->
-	<string name="console_menu_copy">Copy</string>
+	<string name="console_menu_copy">Kopiera</string>
 	<!-- Button to paste from the clipboard to the terminal. -->
-	<string name="console_menu_paste">Paste</string>
+	<string name="console_menu_paste">Klistra in</string>
 	<!-- Button that brings user to the Port Forwards List. -->
-	<string name="console_menu_portforwards">Port Forwards</string>
+	<string name="console_menu_portforwards">Port vidarebefodringar</string>
 	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
-	<string name="console_menu_resize">Force Size</string>
+	<string name="console_menu_resize">Fast storlek</string>
 
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
-	<string name="portforward_local">Local</string>
+	<string name="portforward_local">Lokal</string>
 	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
-	<string name="portforward_remote">Remote</string>
+	<string name="portforward_remote">Fjärr</string>
 	<!-- Selection for a "dynamic" port forward. E.g., connections to a port listening locally is forwarded based on the SOCKS protocol to an arbitrary remote host and port. -->
-	<string name="portforward_dynamic">Dynamic (SOCKS)</string>
+	<string name="portforward_dynamic">Dynamisk (SOCKS)</string>
 	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
-	<string name="portforward_pos">Create port forward</string>
+	<string name="portforward_pos">Skapa vidarebefodring av port</string>
 	<!-- Button that cancels the creation of a port forward from the Port Forward Creation dialog. -->
-	<string name="portforward_neg">Cancel</string>
+	<string name="portforward_neg">Avbryt</string>
 
-	<string name="portforward_done">Successfully created port forward</string>
+	<string name="portforward_done">Vidarebefodring av port skapad.</string>
 	<string name="portforward_problem">Problem creating port forward, maybe you're using ports under 1024 or port is already used?</string>
 
-	<string name="portforward_menu_add">Add port forward</string>
+	<string name="portforward_menu_add">Lägg till vidarebefodring av port.</string>
 
 	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
 	<string name="hint_userhost">user@hostname</string>
 
-	<string name="list_format_error">Use the format 'username@hostname:port'</string>
+	<string name="list_format_error">Använd formatet "användarnamn@värddator:port"</string>
 
-	<string name="list_menu_pubkeys">Manage Pubkeys</string>
+	<string name="list_menu_pubkeys">Hantera publika nycklar</string>
 	<!-- Selection choice to sort hosts by color. -->
-	<string name="list_menu_sortcolor">Sort by color</string>
+	<string name="list_menu_sortcolor">Sortera efter färg</string>
 	<!-- Selection choice to sort hosts by nickname. -->
-	<string name="list_menu_sortname">Sort by name</string>
-	<string name="list_menu_settings">Settings</string>
-	<string name="list_menu_help">Help</string>
+	<string name="list_menu_sortname">Sortera efter namn</string>
+	<string name="list_menu_settings">Inställningar</string>
+	<string name="list_menu_help">Hjälp</string>
 
-	<string name="list_host_disconnect">Disconnect</string>
-	<string name="list_host_edit">Edit host</string>
+	<string name="list_host_disconnect">Koppla ner</string>
+	<string name="list_host_edit">Inställningar för värddator</string>
 	<string name="list_host_portforwards">Edit port forwards</string>
 	<string name="list_host_delete">Delete host</string>
 	<string name="list_host_empty">Use the quick-connect box\nbelow to connect to a host.</string>
@@ -217,15 +216,15 @@
 
 	<string name="delete_message">Are you sure you want to delete '%1$s'?</string>
 	<string name="delete_pos">Yes, delete</string>
-	<string name="delete_neg">Cancel</string>
+	<string name="delete_neg">Avbryt</string>
 
 	<!-- Button to agree to license terms. -->
 	<string name="wizard_agree">Agree</string>
 	<!-- Button to cancel out of (i.e., not accept) the license terms. -->
-	<string name="wizard_cancel">Cancel</string>
+	<string name="wizard_cancel">Avbryt</string>
 	<!-- Button to go to the next page in the first time start-up wizard. -->
 	<string name="wizard_next">Next</string>
-	<!-- Button to go to the previous page in the first time start-up wizard. -->
+	<!-- Button to go to the next page in the first time start-up wizard. -->
 	<string name="wizard_back">Back</string>
 
 	<string name="terminal_hostkey_warn">The authenticity of host '%1$s' can't be established.</string>
