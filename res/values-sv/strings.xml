@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">ConnectBot</string>
-	<string name="app_desc">Enkel, kraftfull, öppenkällkods SSH-klient.</string>
+	<string name="app_desc">Enkel, kraftfull, open-source SSH-klient.</string>
 
 	<!-- Window title for the Host List -->
-	<string name="title_hosts_list">Värddatorer</string>
+	<string name="title_hosts_list">Värdar</string>
 	<!-- Window title for the Pubkeys List -->
 	<string name="title_pubkey_list">Publika nycklar</string>
 	<!-- Window title for the Port Forwards List -->
-	<string name="title_port_forwards_list">Port forwards</string>
+	<string name="title_port_forwards_list">Vidarebefodring av portar</string>
 	<!-- Window title when editing host details -->
-	<string name="title_host_editor">Redigera värddator</string>
+	<string name="title_host_editor">Redigera värd</string>
 	<!-- Window title for Help index -->
 	<string name="title_help">Hjälp</string>
 
 	<string name="title_password">Lösenordsinmatning</string>
 	<string name="title_entropy">Samlar in entropi</string>
 
-	<string name="resolve_edit">Redigera värddator</string>
+	<string name="resolve_edit">Redigera värd</string>
 	<string name="resolve_connect">Anslut</string>
 	<string name="resolve_entropy">Samla in Entropi</string>
 
-	<string name="menu_insert">Lägg till värddator</string>
-	<string name="menu_delete">Ta bort värddator</string>
+	<string name="menu_insert">Lägg till värd</string>
+	<string name="menu_delete">Ta bort värd</string>
 	<string name="menu_preferences">Egenskaper</string>
 	<string name="menu_help">Hjälp</string>
 
-	<string name="help_intro">Please select a topic below for more information on a particular subject.</string>
+	<string name="help_intro">Var god välj ett ämne nedan som du skulle vilja ha mer information om.</string>
 	<string name="help_about">Om ConnectBot</string>
 	<string name="help_keyboard">Tangentbord</string>
 	<string name="help_pubkeys">Publika nycklar</string>
@@ -51,13 +51,13 @@
 	<string name="pubkey_memory_unload">Ladda ur minnet</string>
 	<string name="pubkey_load_on_start">Ladda nyckel från start</string>
 
-	<string name="portforward_list_empty">Tap "Menu" to create\nport forwards.</string>
-	<string name="portforward_edit">Edit port forward</string>
-	<string name="portforward_delete">Delete port forward</string>
+	<string name="portforward_list_empty">Rör vid "Menu" för att skapa\nvidarebefodringar av portar.</string>
+	<string name="portforward_edit">Ändra viderabefodring av port</string>
+	<string name="portforward_delete">Ta bort vidarebefodring av port</string>
 
 	<string name="prompt_nickname">Namn:</string>
 	<!-- An example string that could be used as a nickname for a pubkey. -->
-	<string name="prompt_nickname_hint_pubkey">My work key</string>
+	<string name="prompt_nickname_hint_pubkey">Min jobbenyckel</string>
 	<!-- The source TCP port for port forwards. -->
 	<string name="prompt_source_port">Källport:</string>
 	<!-- The "host:port" combination used for port forward destinations. -->
@@ -67,15 +67,15 @@
 	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
 	<string name="prompt_again">(igen)</string>
 	<!-- Label for the user to select port forward type. -->
-	<string name="prompt_type">Type:</string>
-	<string name="prompt_password_can_be_blank">Note: password can be blank</string>
+	<string name="prompt_type">Typ:</string>
+	<string name="prompt_password_can_be_blank">Notis: lösenordet kan vara blankt</string>
 	<!-- Prompt for the size of the private key in bits. -->
-	<string name="prompt_bits">Bits:</string>
+	<string name="prompt_bits">Bitar:</string>
 
 	<string name="alert_passwords_do_not_match_msg">Lösenorden överenstämmer inte med varandra!</string>
 	<string name="alert_wrong_password_msg">Felaktigt lösenord!</string>
 	<string name="alert_key_corrupted_msg">Privata nyckeln ser ut att vara korrupt!</string>
-	<string name="alert_sdcard_absent">SD card is not inserted!</string>
+	<string name="alert_sdcard_absent">SD-kortet är inte instoppat!</string>
 
 	<!-- Add a new item (e.g., host or pubkey) to the list. -->
 	<string name="button_add">Lägg till</string>
@@ -177,14 +177,14 @@
 	<string name="portforward_neg">Avbryt</string>
 
 	<string name="portforward_done">Vidarebefodring av port skapad.</string>
-	<string name="portforward_problem">Problem creating port forward, maybe you're using ports under 1024 or port is already used?</string>
+	<string name="portforward_problem">Lyckades inte att skapa en vidarebefodring av port, är den under 1024 eller används den kanske?</string>
 
 	<string name="portforward_menu_add">Lägg till vidarebefodring av port.</string>
 
 	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
-	<string name="hint_userhost">user@hostname</string>
+	<string name="hint_userhost">användarnamn@värdnamn</string>
 
-	<string name="list_format_error">Använd formatet "användarnamn@värddator:port"</string>
+	<string name="list_format_error">Använd formatet "användarnamn@värdnamn:port"</string>
 
 	<string name="list_menu_pubkeys">Hantera publika nycklar</string>
 	<!-- Selection choice to sort hosts by color. -->
@@ -195,59 +195,59 @@
 	<string name="list_menu_help">Hjälp</string>
 
 	<string name="list_host_disconnect">Koppla ner</string>
-	<string name="list_host_edit">Inställningar för värddator</string>
-	<string name="list_host_portforwards">Edit port forwards</string>
-	<string name="list_host_delete">Delete host</string>
-	<string name="list_host_empty">Use the quick-connect box\nbelow to connect to a host.</string>
+	<string name="list_host_edit">Inställningar för värd</string>
+	<string name="list_host_portforwards">Ändra vidarebefodringar av portar</string>
+	<string name="list_host_delete">Ta bort värd</string>
+	<string name="list_host_empty">Använd snabbanslutningen\nnedan för att ansluta till en värd.</string>
 
-	<string name="list_rotation_land">Force landscape</string>
-	<string name="list_rotation_port">Force portrait</string>
+	<string name="list_rotation_land">Tvinga horisontellt läge</string>
+	<string name="list_rotation_port">Tvinga vertikalt läge</string>
 	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
-	<string name="list_rotation_auto">Automatic</string>
+	<string name="list_rotation_auto">Automatiskt</string>
 
 	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
-	<string name="list_camera_ctrlaspace">Ctrl+A then Space</string>
+	<string name="list_camera_ctrlaspace">Ctrl+A sen Space</string>
 	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A". -->
 	<string name="list_camera_ctrla">Ctrl+A</string>
 	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
 	<string name="list_camera_esc">Esc</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
-	<string name="list_camera_none">None</string>
+	<string name="list_camera_none">Ingen</string>
 
-	<string name="delete_message">Are you sure you want to delete '%1$s'?</string>
-	<string name="delete_pos">Yes, delete</string>
+	<string name="delete_message">Är du säker att du vill ta bort '%1$s'?</string>
+	<string name="delete_pos">Ja, ta bort</string>
 	<string name="delete_neg">Avbryt</string>
 
 	<!-- Button to agree to license terms. -->
-	<string name="wizard_agree">Agree</string>
+	<string name="wizard_agree">Godkänn</string>
 	<!-- Button to cancel out of (i.e., not accept) the license terms. -->
 	<string name="wizard_cancel">Avbryt</string>
 	<!-- Button to go to the next page in the first time start-up wizard. -->
-	<string name="wizard_next">Next</string>
-	<!-- Button to go to the next page in the first time start-up wizard. -->
-	<string name="wizard_back">Back</string>
+	<string name="wizard_next">Nästa</string>
+	<!-- Button to go to the previous page in the first time start-up wizard. -->
+	<string name="wizard_back">Tillbaka</string>
 
-	<string name="terminal_hostkey_warn">The authenticity of host '%1$s' can't be established.</string>
-	<string name="terminal_hostkey">RSA key fingerprint is %1$s</string>
-	<string name="terminal_hostkey_prompt">Are you sure you want\nto continue connecting?</string>
+	<string name="terminal_hostkey_warn">Identiteten av värden '%1$s' går ej att fastställa.</string>
+	<string name="terminal_hostkey">RSA-nyckel fingeravtrycket är %1$s</string>
+	<string name="terminal_hostkey_prompt">Är du säker att du vill\nfortsätta att ansluta?</string>
 
-	<string name="terminal_failed">Host key verification failed.</string>
+	<string name="terminal_failed">Verifikation av värd-nyckeln misslyckades.</string>
 
-	<string name="terminal_auth">Trying to authenticate</string>
+	<string name="terminal_auth">Försöker att autentisera</string>
 
-	<string name="terminal_auth_pass">Attempting 'password' authentication</string>
-	<string name="terminal_auth_pass_hint">Password</string>
-	<string name="terminal_auth_pass_fail">Authentication method 'password' failed</string>
+	<string name="terminal_auth_pass">Försöker med 'password' autentisering</string>
+	<string name="terminal_auth_pass_hint">Lösenord</string>
+	<string name="terminal_auth_pass_fail">Autentiseringsmetoden 'password' misslyckades</string>
 
-	<string name="terminal_auth_ki">Attempting 'keyboard-interactive' authentication</string>
-	<string name="terminal_auth_ki_fail">Authentication method 'keyboard-interactive' failed</string>
+	<string name="terminal_auth_ki">Försöker med 'keyboard-interactive' autentisering</string>
+	<string name="terminal_auth_ki_fail">Autentiseringsmetoden 'keyboard-interactive' misslyckades</string>
 
-	<string name="terminal_auth_fail">[Your host doesn't support 'password' or 'keyboard-interactive' authentication.]</string>
+	<string name="terminal_auth_fail">[Din värd stödjer inte 'password' eller 'keyboard-interactive' autentiseringsmetoderna]</string>
 
 	<!-- Dialog title when a new version of ConnectBot is detected. -->
-	<string name="upgrade">New version</string>
+	<string name="upgrade">Ny version</string>
 	<!-- Button selection to upgrade to the latest ConnectBot when one is available. -->
-	<string name="upgrade_pos">Yes, upgrade</string>
+	<string name="upgrade_pos">Ja, uppgradera</string>
 	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
-	<string name="upgrade_neg">Not right now</string>
+	<string name="upgrade_neg">Inte just nu</string>
 </resources>

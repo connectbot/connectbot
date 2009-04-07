@@ -40,7 +40,7 @@
 	<string name="pubkey_generating">Erzeuge Schlüsselpaar...</string>
 	<string name="pubkey_copy_private">Privaten Schlüssel kopieren</string>
 	<string name="pubkey_copy_public">Öffentlichen Schlüssel kopieren</string>
-	<string name="pubkey_list_empty">Tap "Menu" to create\nor import key pairs.</string>
+	<string name="pubkey_list_empty">"Menu" drücken, um Schlüsselpaare\nzu erzeugen oder importieren.</string>
 	<string name="pubkey_unknown_format">Unbekanntes Format</string>
 	<string name="pubkey_change_password">Passwort ändern</string>
 	<string name="pubkey_list_pick">Wähle von /sdcard</string>
@@ -51,7 +51,7 @@
 	<string name="pubkey_memory_unload">Aus Speicher entfernen.</string>
 	<string name="pubkey_load_on_start">Schlüssel beim Start laden</string>
 
-	<string name="portforward_list_empty">Tap "Menu" to create\nport forwards.</string>
+	<string name="portforward_list_empty">"Menu" tippen, um port\nforwards zu erzeugen.</string>
 	<string name="portforward_edit">Port forwards editieren.</string>
 	<string name="portforward_delete">Port forward löschen.</string>
 
@@ -67,7 +67,7 @@
 	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
 	<string name="prompt_again">(nochmal)</string>
 	<!-- Label for the user to select port forward type. -->
-	<string name="prompt_type">Type:</string>
+	<string name="prompt_type">Typ:</string>
 	<string name="prompt_password_can_be_blank">Note: password can be blank</string>
 	<!-- Prompt for the size of the private key in bits. -->
 	<string name="prompt_bits">Bits:</string>
@@ -198,7 +198,7 @@
 	<string name="list_host_edit">Host editieren</string>
 	<string name="list_host_portforwards">Port forwards editieren</string>
 	<string name="list_host_delete">Host löschen</string>
-	<string name="list_host_empty">Use the quick-connect box\nbelow to connect to a host.</string>
+	<string name="list_host_empty">Benutzen Sie die quick-connect box\nunten um sich mit einem Host zu verbinden.</string>
 
 	<string name="list_rotation_land">Querformat erzwingen</string>
 	<string name="list_rotation_port">Hochformat erzwingen</string>
@@ -224,7 +224,7 @@
 	<string name="wizard_cancel">Abbrechen</string>
 	<!-- Button to go to the next page in the first time start-up wizard. -->
 	<string name="wizard_next">Weiter</string>
-	<!-- Button to go to the next page in the first time start-up wizard. -->
+	<!-- Button to go to the previous page in the first time start-up wizard. -->
 	<string name="wizard_back">Zurück</string>
 
 	<string name="terminal_hostkey_warn">The authenticity of host '%1$s' can't be established.</string>
