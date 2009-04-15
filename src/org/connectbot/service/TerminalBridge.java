@@ -465,6 +465,16 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		new Thread(new Runnable() {
 			public void run() {
 				try {
+					/* Uncomment when debugging SSH protocol:
+					DebugLogger logger = new DebugLogger() {
+
+						public void log(int level, String className, String message) {
+							Log.d("SSH", message);
+						}
+
+					};
+					connection.enableDebugging(true, logger);
+					*/
 					connectionInfo = connection.connect(new HostKeyVerifier());
 
 					if (connectionInfo.clientToServerCryptoAlgorithm

@@ -1589,6 +1589,8 @@ public class Connection
 					}
 				};
 			}
+
+			Logger.logger = logger;
 		}
 	}
 
