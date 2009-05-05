@@ -60,7 +60,7 @@ public class TerminalView extends View implements FontSizeChangedListener {
 
 	private Toast notification = null;
 	private String lastNotification = null;
-	private boolean notifications = true;
+	private volatile boolean notifications = true;
 
 	public TerminalView(Context context, TerminalBridge bridge) {
 		super(context);
@@ -121,7 +121,8 @@ public class TerminalView extends View implements FontSizeChangedListener {
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
-		bridge.parentChanged(this);
+		if (notifications)
+			bridge.parentChanged(this);
 
 		scaleCursors();
 	}
