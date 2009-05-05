@@ -1,95 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">ConnectBot</string>
-	<string name="app_desc">Einfacher, mächtiger, open-source SSH client.</string>
+	<string name="app_desc">Enkel, kraftig open-source SSH-klient</string>
 
 	<!-- Window title for the Host List -->
-	<string name="title_hosts_list">Hosts</string>
+	<string name="title_hosts_list">Verter</string>
 	<!-- Window title for the Pubkeys List -->
-	<string name="title_pubkey_list">Pubkeys</string>
+	<string name="title_pubkey_list">Offentlige nøkler</string>
 	<!-- Window title for the Port Forwards List -->
 	<string name="title_port_forwards_list">Port forwards</string>
 	<!-- Window title when editing host details -->
-	<string name="title_host_editor">Host bearbeiten</string>
+	<string name="title_host_editor">Endre vert</string>
 	<!-- Window title for Help index -->
-	<string name="title_help">Hilfe</string>
+	<string name="title_help">Hjelp</string>
 
-	<string name="title_password">Passwort eingeben</string>
-	<string name="title_entropy">Sammle Entropie</string>
+	<string name="title_password">Skriv inn passord</string>
+	<string name="title_entropy">Samler entropi</string>
 
-	<string name="resolve_edit">Host bearbeiten</string>
-	<string name="resolve_connect">Verbinden</string>
-	<string name="resolve_entropy">Sammle Entropie</string>
+	<string name="resolve_edit">Endre vert</string>
+	<string name="resolve_connect">Koble til</string>
+	<string name="resolve_entropy">Samle entropi</string>
 
-	<string name="menu_insert">Host hinzufügen</string>
-	<string name="menu_delete">Host löschen</string>
-	<string name="menu_preferences">Einstellungen</string>
-	<string name="menu_help">Hilfe</string>
+	<string name="menu_insert">Legg til vert</string>
+	<string name="menu_delete">Slett vert</string>
+	<string name="menu_preferences">Preferanser</string>
+	<string name="menu_help">Hjelp</string>
 
-	<string name="help_intro">Wählen Sie eine Überschrift aus,  um mehr Informationen zu einem bestimmten Thema zu erhalten!</string>
-	<string name="help_about">Über ConnectBot</string>
+	<string name="help_intro">Please select a topic below for more information on a particular subject.</string>
+	<string name="help_about">Om ConnectBot</string>
 	<string name="help_keyboard">Tastatur</string>
-	<string name="help_pubkeys">Pubkeys</string>
+	<string name="help_pubkeys">Offentlige nøkler</string>
 	<string name="help_portforwards">Port Forwards</string>
 
-	<string name="pubkey_generate">Erzeugen</string>
-	<string name="pubkey_import">Importieren</string>
-	<string name="pubkey_delete">Schlüssel löschen</string>
-	<string name="pubkey_gather_entropy">Sammle Entropie</string>
-	<string name="pubkey_touch_prompt">Berühren Sie diese Box, um Zufallszahlen zu erzeugen!</string>
-	<string name="pubkey_generating">Erzeuge Schlüsselpaar...</string>
-	<string name="pubkey_copy_private">Privaten Schlüssel kopieren</string>
-	<string name="pubkey_copy_public">Öffentlichen Schlüssel kopieren</string>
-	<string name="pubkey_list_empty">"Menu" drücken, um Schlüsselpaare\nzu erzeugen oder importieren.</string>
-	<string name="pubkey_unknown_format">Unbekanntes Format</string>
-	<string name="pubkey_change_password">Passwort ändern</string>
-	<string name="pubkey_list_pick">Wähle von /sdcard</string>
-	<string name="pubkey_import_parse_problem">Konnte importierten geheimen Schlüssel nicht parsen.</string>
-	<string name="pubkey_unlock">Schlüssel entsperren.</string>
-	<string name="pubkey_failed_add">Bad password for key '%1$s'. Authentication failed.</string>
-	<string name="pubkey_memory_load">In Speicher laden.</string>
-	<string name="pubkey_memory_unload">Aus Speicher entfernen.</string>
-	<string name="pubkey_load_on_start">Schlüssel beim Start laden</string>
+	<string name="pubkey_generate">Generer</string>
+	<string name="pubkey_import">Importer</string>
+	<string name="pubkey_delete">Slett nøkkel</string>
+	<string name="pubkey_gather_entropy">Samler entropi</string>
+	<string name="pubkey_touch_prompt">Touch this box to gather randomness: </string>
+	<string name="pubkey_generating">Genererer nøkkelpar...</string>
+	<string name="pubkey_copy_private">Kopier privat nøkkel</string>
+	<string name="pubkey_copy_public">Kopier offentlig nøkkel</string>
+	<string name="pubkey_list_empty">Tap "Menu" to create\nor import key pairs.</string>
+	<string name="pubkey_unknown_format">Ukjent format</string>
+	<string name="pubkey_change_password">Bytt passord</string>
+	<string name="pubkey_list_pick">Pick from /sdcard</string>
+	<string name="pubkey_import_parse_problem">Feil ved innlesing av privat nøkkel</string>
+	<string name="pubkey_unlock">Frigjør nøkkel</string>
+	<string name="pubkey_failed_add">Feil passord for nøkkel '%1$s'. Autentisering feilet.</string>
+	<string name="pubkey_memory_load">Last inn i minne</string>
+	<string name="pubkey_memory_unload">Last ut av minne</string>
+	<string name="pubkey_load_on_start">Last nøkkel ved start</string>
 
-	<string name="portforward_list_empty">"Menu" tippen, um port\nforwards zu erzeugen.</string>
-	<string name="portforward_edit">Port forwards editieren.</string>
-	<string name="portforward_delete">Port forward löschen.</string>
+	<string name="portforward_list_empty">Tap "Menu" to create\nport forwards.</string>
+	<string name="portforward_edit">Edit port forward</string>
+	<string name="portforward_delete">Delete port forward</string>
 
-	<string name="prompt_nickname">Spitzname:</string>
+	<string name="prompt_nickname">Kallenavn:</string>
 	<!-- An example string that could be used as a nickname for a pubkey. -->
 	<string name="prompt_nickname_hint_pubkey">My work key</string>
 	<!-- The source TCP port for port forwards. -->
-	<string name="prompt_source_port">Quellport</string>
+	<string name="prompt_source_port">Source port:</string>
 	<!-- The "host:port" combination used for port forward destinations. -->
-	<string name="prompt_destination">Ziel:</string>
-	<string name="prompt_old_password">Altes Passwort:</string>
-	<string name="prompt_password">Passwort:</string>
+	<string name="prompt_destination">Destinasjon</string>
+	<string name="prompt_old_password">Gammelt passord:</string>
+	<string name="prompt_password">Passord:</string>
 	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
-	<string name="prompt_again">(nochmal)</string>
+	<string name="prompt_again">(en gang til)</string>
 	<!-- Label for the user to select port forward type. -->
-	<string name="prompt_type">Typ:</string>
-	<string name="prompt_password_can_be_blank">Note: password can be blank</string>
+	<string name="prompt_type">Type:</string>
+	<string name="prompt_password_can_be_blank">NB: Passord kan være tomt</string>
 	<!-- Prompt for the size of the private key in bits. -->
 	<string name="prompt_bits">Bits:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
 	<string name="prompt_pubkey_password">Password for key '%1$s'</string>
 
-	<string name="alert_passwords_do_not_match_msg">Passwörter stimmen nicht überein!</string>
-	<string name="alert_wrong_password_msg">Falsches Passwort!</string>
-	<string name="alert_key_corrupted_msg">Geheimer Schlüssel scheint korrupt!</string>
-	<string name="alert_sdcard_absent">SD-Karte nicht eingesteckt!</string>
+	<string name="alert_passwords_do_not_match_msg">Passordene er ikke like!</string>
+	<string name="alert_wrong_password_msg">Feil passord!</string>
+	<string name="alert_key_corrupted_msg">Privat nøkkel ser ut til å være korrupt!</string>
+	<string name="alert_sdcard_absent">SD card is not inserted!</string>
 
 	<!-- Add a new item (e.g., host or pubkey) to the list. -->
-	<string name="button_add">Hinzufügen</string>
+	<string name="button_add">Legg til</string>
 	<!-- Change an existing item's (e.g., host or pubkey) details. -->
-	<string name="button_change">Ändern</string>
+	<string name="button_change">Endre</string>
 	<!-- Button that begins the generation of a public key pair. -->
-	<string name="button_generate">Schlüssel erzeugen</string>
+	<string name="button_generate">Generer nøkkel</string>
 	<!-- Button that resizes the screen to the user-specified dimensions. -->
-	<string name="button_resize">Größe ändern</string>
+	<string name="button_resize">Endre størrelse</string>
 
-	<string name="alert_disconnect_msg">Die Verbindung wurde getrennt.</string>
+	<string name="alert_disconnect_msg">Mistet tilkobling</string>
 
 	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
 
@@ -186,23 +186,23 @@
 	<string name="pref_bumpyarrows_summary">Vibrate when sending arrow keys from trackball; useful for laggy connections</string>
 
 	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
-	<string name="list_keymode_right">Tasten rechts verwenden</string>
+	<string name="list_keymode_right">Use right-side keys</string>
 	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
-	<string name="list_keymode_left">Tasten links verwenden</string>
+	<string name="list_keymode_left">Use left-side keys</string>
 	<!-- Preference selection to indicate never to use special shortcut keys. -->
-	<string name="list_keymode_none">Ausschalten</string>
+	<string name="list_keymode_none">Deaktiver</string>
 
 	<!-- Preference to not use pubkeys to authenticate to this host. -->
-	<string name="list_pubkeyids_none">Keine Schlüssel verwenden</string>
+	<string name="list_pubkeyids_none">Ikke bruk nøkler</string>
 	<!-- Preference to use any pubkey to authenticate to this host. -->
-	<string name="list_pubkeyids_any">Beliebigen entsperrten Schlüssel verwenden</string>
+	<string name="list_pubkeyids_any">Use any unlocked key</string>
 
 	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_daily">Täglich</string>
+	<string name="list_update_daily">Daglig</string>
 	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_weekly">Wöchentlich</string>
+	<string name="list_update_weekly">Ukentlig</string>
 	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_never">Niemals</string>
+	<string name="list_update_never">Aldri</string>
 
 	<!-- Host nickname field preference title -->
 	<string name="hostpref_nickname_title">Nickname</string>
@@ -244,121 +244,121 @@
 	<string name="hostpref_port_title">Port</string>
 
 	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
-	<string name="bind_minutes">%1$s minutes ago</string>
+	<string name="bind_minutes">%1$s minutt siden</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
-	<string name="bind_hours">%1$s hours ago</string>
+	<string name="bind_hours">%1$s timer siden</string>
 	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
-	<string name="bind_days">%1$s days ago</string>
+	<string name="bind_days">%1$s dager siden</string>
 
 	<!-- Message given when user copies from the terminal. -->
 	<string name="console_copy_done">Copied %1$d bytes to clipboard</string>
 	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">Berühren und ziehen\noder trackball verwenden\num zu kopierenden Bereich auszuwählen</string>
+	<string name="console_copy_start">Touch and drag\nor use directional pad\nto select area to copy</string>
 
 	<!-- Button to disconnect from the current host in a terminal. -->
-	<string name="console_menu_disconnect">Verbindung trennen</string>
+	<string name="console_menu_disconnect">Koble fra</string>
 	<!-- Button to close the disconnected terminal window. -->
-	<string name="console_menu_close">Schließen</string>
+	<string name="console_menu_close">Lukk</string>
 	<!-- Button to begin copying from the terminal to the clipboard. -->
-	<string name="console_menu_copy">Kopieren</string>
+	<string name="console_menu_copy">Kopier</string>
 	<!-- Button to paste from the clipboard to the terminal. -->
-	<string name="console_menu_paste">Einfügen</string>
+	<string name="console_menu_paste">Lim inn</string>
 	<!-- Button that brings user to the Port Forwards List. -->
 	<string name="console_menu_portforwards">Port Forwards</string>
 	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
-	<string name="console_menu_resize">Größe erzwingen</string>
+	<string name="console_menu_resize">Force Size</string>
 
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
 	<string name="portforward_local">Lokal</string>
 	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
-	<string name="portforward_remote">Entfernt</string>
+	<string name="portforward_remote">Ekstern</string>
 	<!-- Selection for a "dynamic" port forward. E.g., connections to a port listening locally is forwarded based on the SOCKS protocol to an arbitrary remote host and port. -->
-	<string name="portforward_dynamic">Dynamisch (SOCKS)</string>
+	<string name="portforward_dynamic">Dynamisk (SOCKS)</string>
 	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
-	<string name="portforward_pos">Port forward anlegen</string>
+	<string name="portforward_pos">Create port forward</string>
 	<!-- Button that cancels the creation of a port forward from the Port Forward Creation dialog. -->
-	<string name="portforward_neg">Abbrechen</string>
+	<string name="portforward_neg">Avbryt</string>
 
-	<string name="portforward_done">Port forward angelegt.</string>
-	<string name="portforward_problem">Konnte port forward nicht anlegen. Verwenden Sie Ports kleiner als 1024, oder wird der Port bereits verwendet?</string>
+	<string name="portforward_done">Successfully created port forward</string>
+	<string name="portforward_problem">Problem creating port forward, maybe you're using ports under 1024 or port is already used?</string>
 
-	<string name="portforward_menu_add">Port forward hinzufügen</string>
+	<string name="portforward_menu_add">Add port forward</string>
 
 	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
-	<string name="hint_userhost">user@hostname</string>
+	<string name="hint_userhost">bruker@vert</string>
 
-	<string name="list_format_error">Verwenden Sie das Format 'benutzername@hostname:port'</string>
+	<string name="list_format_error">Bruk formatet 'bruker@vert:port'</string>
 
-	<string name="list_menu_pubkeys">Pubkeys verwalten</string>
+	<string name="list_menu_pubkeys">Manage Pubkeys</string>
 	<!-- Selection choice to sort hosts by color. -->
-	<string name="list_menu_sortcolor">Nach Farbe sortieren</string>
+	<string name="list_menu_sortcolor">Sorter etter farge</string>
 	<!-- Selection choice to sort hosts by nickname. -->
-	<string name="list_menu_sortname">Nach Name sortieren</string>
-	<string name="list_menu_settings">Einstellungen</string>
-	<string name="list_menu_help">Hilfe</string>
+	<string name="list_menu_sortname">Sorter etter navn</string>
+	<string name="list_menu_settings">Innstillinger</string>
+	<string name="list_menu_help">Hjelp</string>
 
-	<string name="list_host_disconnect">Verbindung trennen</string>
-	<string name="list_host_edit">Host editieren</string>
-	<string name="list_host_portforwards">Port forwards editieren</string>
-	<string name="list_host_delete">Host löschen</string>
-	<string name="list_host_empty">Benutzen Sie die quick-connect box\nunten um sich mit einem Host zu verbinden.</string>
+	<string name="list_host_disconnect">Koble fra</string>
+	<string name="list_host_edit">Rediger vert</string>
+	<string name="list_host_portforwards">Edit port forwards</string>
+	<string name="list_host_delete">Slett vert</string>
+	<string name="list_host_empty">Use the quick-connect box\nbelow to connect to a host.</string>
 
 	<!-- Default screen rotation preference selection -->
 	<string name="list_rotation_default">Default</string>
-	<string name="list_rotation_land">Querformat erzwingen</string>
-	<string name="list_rotation_port">Hochformat erzwingen</string>
+	<string name="list_rotation_land">Force landscape</string>
+	<string name="list_rotation_port">Force portrait</string>
 	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
-	<string name="list_rotation_auto">Automatisch</string>
+	<string name="list_rotation_auto">Automatisk</string>
 
 	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
-	<string name="list_camera_ctrlaspace">Strg+A dann Space</string>
+	<string name="list_camera_ctrlaspace">Ctrl+A og mellomrom</string>
 	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A". -->
-	<string name="list_camera_ctrla">Strg+A</string>
+	<string name="list_camera_ctrla">Ctrl+A</string>
 	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
 	<string name="list_camera_esc">Esc</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
-	<string name="list_camera_none">Nichts</string>
+	<string name="list_camera_none">Ingen</string>
 
-	<string name="delete_message">Are you sure you want to delete '%1$s'?</string>
-	<string name="delete_pos">Ja, löschen</string>
-	<string name="delete_neg">Abbrechen</string>
+	<string name="delete_message">Er du sikker på at du vil slette '%1$s'?</string>
+	<string name="delete_pos">Ja, slett</string>
+	<string name="delete_neg">Avbryt</string>
 
 	<!-- Button to agree to license terms. -->
-	<string name="wizard_agree">Zustimmung</string>
+	<string name="wizard_agree">Godta</string>
 	<!-- Button to cancel out of (i.e., not accept) the license terms. -->
-	<string name="wizard_cancel">Abbrechen</string>
+	<string name="wizard_cancel">Avbryt</string>
 	<!-- Button to go to the next page in the first time start-up wizard. -->
-	<string name="wizard_next">Weiter</string>
+	<string name="wizard_next">Neste</string>
 	<!-- Button to go to the previous page in the first time start-up wizard. -->
-	<string name="wizard_back">Zurück</string>
+	<string name="wizard_back">Tilbake</string>
 
 	<string name="terminal_hostkey_warn">The authenticity of host '%1$s' can't be established.</string>
 	<string name="terminal_hostkey">RSA key fingerprint is %1$s</string>
-	<string name="terminal_hostkey_prompt">Sind Sie sicher, dass Sie\neine Verbindung herstellen wollen?</string>
+	<string name="terminal_hostkey_prompt">Er du sikker på at\ndu vil koble til?</string>
 
-	<string name="terminal_failed">Überprüfung des Host-Schlüssels fehlgeschlagen.</string>
+	<string name="terminal_failed">Verifisering av vertsnøkkelen feilet.</string>
 
-	<string name="terminal_auth">Versuche zu authentisieren.</string>
+	<string name="terminal_auth">Forsøker å autentisere</string>
 
-	<string name="terminal_auth_pass">Versuche Authentisierung mit Passwort.</string>
-	<string name="terminal_auth_pass_hint">Passwort</string>
-	<string name="terminal_auth_pass_fail">Authentisierungsmethode 'Passwort' fehlgeschlagen.</string>
+	<string name="terminal_auth_pass">Forsøker 'passord'-autentisering</string>
+	<string name="terminal_auth_pass_hint">Passord</string>
+	<string name="terminal_auth_pass_fail">Autentiseringsmetode 'passord' feilet</string>
 
 	<string name="terminal_auth_pubkey_any">Attempting 'publickey' authentication with any in-memory public keys</string>
 	<string name="terminal_auth_pubkey_invalid">Selected public key is invalid, try reselecting key in host editor</string>
 	<string name="terminal_auth_pubkey_specific">Attempting 'publickey' authentication with a specific public key</string>
 
-	<string name="terminal_auth_ki">Versuche 'keyboard-interactive' Authentisierung.</string>
-	<string name="terminal_auth_ki_fail">Authentisierungsmetrhode 'keyboard-interactive' fehlgeschlagen</string>
+	<string name="terminal_auth_ki">Attempting 'keyboard-interactive' authentication</string>
+	<string name="terminal_auth_ki_fail">Authentication method 'keyboard-interactive' failed</string>
 
-	<string name="terminal_auth_fail">[Ihr Host unterstützt weder 'password' noch 'keyboard-interactive' Authentisierung.]</string>
+	<string name="terminal_auth_fail">[Your host doesn't support 'password' or 'keyboard-interactive' authentication.]</string>
 
     <string name="local_shell_unavailable">Failure! Local shell is unavailable on this phone.</string>
 
 	<!-- Dialog title when a new version of ConnectBot is detected. -->
-	<string name="upgrade">Neue Version</string>
+	<string name="upgrade">Ny versjon</string>
 	<!-- Button selection to upgrade to the latest ConnectBot when one is available. -->
-	<string name="upgrade_pos">Ja, aktualisieren</string>
+	<string name="upgrade_pos">Ja, oppgrader</string>
 	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
-	<string name="upgrade_neg">Nicht jetzt</string>
+	<string name="upgrade_neg">Ikke akkurat nå</string>
 </resources>
