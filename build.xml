@@ -29,7 +29,7 @@
     <property file="build.properties"/>
 
     <!-- The default.properties file is created and updated by the 'android' tool, as well
-         as ADT. 
+         as ADT.
          This file is an integral part of the build system for your application and
          should be checked in in Version Control Systems. -->
     <property file="default.properties"/>
@@ -53,7 +53,7 @@
          To customize the rules, copy/paste them below the task, and disable import by setting
          the import attribute to false:
             <setup import="false" />
-         
+
          This will ensure that the properties are setup correctly but that your customized
          targets are used.
     -->
@@ -254,7 +254,7 @@
             <arg path="${application-package}" />
         </exec>
     </target>
-    
+
     <target name="help">
         <!-- displays starts at col 13
               |13                                                              80| -->
