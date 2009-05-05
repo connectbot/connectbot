@@ -73,6 +73,9 @@
 	<!-- Prompt for the size of the private key in bits. -->
 	<string name="prompt_bits">Bits:</string>
 
+	<!-- Prompt for the password to unlock a certain pubkey. -->
+	<string name="prompt_pubkey_password">Password for key '%1$s'</string>
+
 	<string name="alert_passwords_do_not_match_msg">Passwords do not match!</string>
 	<string name="alert_wrong_password_msg">Wrong password!</string>
 	<string name="alert_key_corrupted_msg">Private key appears corrupt!</string>
@@ -122,6 +125,67 @@
 	<!-- Do not translate -->
 	<string name="pref_bumpyarrows">bumpyarrows</string>
 
+	<!-- The category title for terminal emulation preferences. -->
+	<string name="pref_emulation_category">Terminal emulation</string>
+
+	<!-- Name for the emulation terminal type preference. -->
+	<string name="pref_emulation_title">Emulation mode</string>
+	<!-- Description of the emulation terminal type preference. -->
+	<string name="pref_emulation_summary">Terminal emulation mode to use for PTY connections</string>
+
+	<!-- Name for the scrollback size preference -->
+	<string name="pref_scrollback_title">Scrollback size</string>
+	<!-- Description of the scrollback size preference -->
+	<string name="pref_scrollback_summary">Size of scrollback buffer to keep in memory for each console</string>
+
+	<!-- The category title for user interface preferences -->
+	<string name="pref_ui_category">User interface</string>
+
+	<!-- Name for the rotation mode preference -->
+	<string name="pref_rotation_title">Rotation mode</string>
+	<!-- Summary for the rotation mode preference -->
+	<string name="pref_rotation_summary">How to change rotation when keyboard popped in/out</string>
+
+	<!-- Name for the full screen preference -->
+	<string name="pref_fullscreen_title">Full screen</string>
+	<!-- Summary for the full screen preference -->
+	<string name="pref_fullscreen_summary">Hide status bar while in console</string>
+
+	<!-- Name for the memorize keys preference -->
+	<string name="pref_memkeys_title">Remember keys in memory</string>
+	<!-- Summary for the memorize keys preference -->
+	<string name="pref_memkeys_summary">Keep unlocked keys in memory until backend service is terminated</string>
+
+	<!-- Name for the update check preference -->
+	<string name="pref_update_title">Update check</string>
+	<!-- Summary for the update check preference -->
+	<string name="pref_update_summary">Set the maximum frequency to check for ConnectBot updates</string>
+
+	<!-- Name for the keyboard shortcuts preference -->
+	<string name="pref_keymode_title">Directory shortcuts</string>
+	<!-- Summary for the keyboard shortcuts preference -->
+	<string name="pref_keymode_summary">Select how to use Alt for '/' and Shift for Tab</string>
+
+	<!-- Name for the camera shortcut usage preference -->
+	<string name="pref_camera_title">Camera shortcut</string>
+	<!-- Summary for the camera shortcut usage preference -->
+	<string name="pref_camera_summary">Select which shortcut to trigger when the camera button is pushed</string>
+
+	<!-- Name for the keep screen on preference -->
+	<string name="pref_keepalive_title">Keep screen awake</string>
+	<!-- Summary for the camera shortcut usage preference -->
+	<string name="pref_keepalive_summary">Prevent the screen from turning off when working in a console</string>
+
+	<!-- Name for the Wi-Fi lock preference -->
+	<string name="pref_wifilock_title">Keep Wi-Fi active</string>
+	<!-- Summary for the Wi-Fi lock preference -->
+	<string name="pref_wifilock_summary">Prevent Wi-Fi from turning off when a session is active</string>
+
+	<!-- Name for the haptic feedback (bumpy arrow) preference -->
+	<string name="pref_bumpyarrows_title">Bumpy arrows</string>
+	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
+	<string name="pref_bumpyarrows_summary">Vibrate when sending arrow keys from trackball; useful for laggy connections</string>
+
 	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
 	<string name="list_keymode_right">Use right-side keys</string>
 	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
@@ -140,6 +204,45 @@
 	<string name="list_update_weekly">Weekly</string>
 	<!-- Frequency for which to check for program updates. -->
 	<string name="list_update_never">Never</string>
+
+	<!-- Host nickname field preference title -->
+	<string name="hostpref_nickname_title">Nickname</string>
+
+	<!-- Host color category preference title -->
+	<string name="hostpref_color_title">Color category</string>
+
+	<!-- Host pubkey usage preference title -->
+	<string name="hostpref_pubkeyid_title">Use pubkey authentication</string>
+
+	<!-- Host post-login automation preference title -->
+	<string name="hostpref_postlogin_title">Post-login automation</string>
+
+	<!-- Host compression preference title -->
+	<string name="hostpref_compression_title">Compression</string>
+	<!-- Summary for compression preference -->
+	<string name="hostpref_compression_summary">This may help with slower networks</string>
+
+	<!-- Setting for whether we want a session to start up when we connect to a host -->
+	<string name="hostpref_wantsession_title">Start shell session</string>
+	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
+	<string name="hostpref_wantsession_summary">Disable this preference to only use port forwards</string>
+
+	<!-- Host character encoding preference title -->
+	<string name="hostpref_encoding_title">Encoding</string>
+	<!-- Host character encoding preference summary -->
+	<string name="hostpref_encoding_summary">Character encoding for the host</string>
+
+	<!-- Host preference category title for connection settings -->
+	<string name="hostpref_connection_category">Connection settings</string>
+
+	<!-- Username field title for host editor preference -->
+	<string name="hostpref_username_title">Username</string>
+
+	<!-- Hostname field title for host editor preference -->
+	<string name="hostpref_hostname_title">Host</string>
+
+	<!-- Port field title for host editor preference -->
+	<string name="hostpref_port_title">Port</string>
 
 	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
 	<string name="bind_minutes">%1$s minutes ago</string>
@@ -240,10 +343,16 @@
 	<string name="terminal_auth_pass_hint">Password</string>
 	<string name="terminal_auth_pass_fail">Authentication method 'password' failed</string>
 
+	<string name="terminal_auth_pubkey_any">Attempting 'publickey' authentication with any in-memory public keys</string>
+	<string name="terminal_auth_pubkey_invalid">Selected public key is invalid, try reselecting key in host editor</string>
+	<string name="terminal_auth_pubkey_specific">Attempting 'publickey' authentication with a specific public key</string>
+
 	<string name="terminal_auth_ki">Attempting 'keyboard-interactive' authentication</string>
 	<string name="terminal_auth_ki_fail">Authentication method 'keyboard-interactive' failed</string>
 
 	<string name="terminal_auth_fail">[Your host doesn't support 'password' or 'keyboard-interactive' authentication.]</string>
+
+    <string name="local_shell_unavailable">Failure! Local shell is unavailable on this phone.</string>
 
 	<!-- Dialog title when a new version of ConnectBot is detected. -->
 	<string name="upgrade">New version</string>

@@ -19,37 +19,37 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<CheckBoxPreference
-		android:key="@string/pref_memkeys"
-		android:title="Remember keys in memory"
-		android:summary="Keep unlocked SSH keys in memory until backend service is terminated"
+		android:key="memkeys"
+		android:title="@string/pref_memkeys_title"
+		android:summary="@string/pref_memkeys_summary"
 		android:defaultValue="true"
 		/>
 
 	<ListPreference
-		android:key="@string/pref_update"
-		android:title="Update check"
-		android:summary="Set the maximum frequency to check for ConnectBot updates"
+		android:key="update"
+		android:title="@string/pref_update_title"
+		android:summary="@string/pref_update_summary"
 		android:entries="@array/list_update"
 		android:entryValues="@array/list_update"
 		android:defaultValue="@string/list_update_daily"
 		/>
 
 	<PreferenceCategory
-		android:title="Terminal emulation">
+		android:title="@string/pref_emulation_category">
 		
 		<ListPreference
-			android:key="@string/pref_emulation"
-			android:title="Emulation mode"
-			android:summary="Terminal emulation mode to use for PTY connections"
+			android:key="emulation"
+			android:title="@string/pref_emulation_title"
+			android:summary="@string/pref_emulation_summary"
 			android:entries="@array/list_emulation_modes"
 			android:defaultValue="screen"
 			android:entryValues="@array/list_emulation_modes"
 			/>
 	
 		<EditTextPreference
-			android:key="@string/pref_scrollback"
-			android:title="Scrollback size"
-			android:summary="Size of scrollback buffer to keep in memory for each console"
+			android:key="scrollback"
+			android:title="@string/pref_scrollback_title"
+			android:summary="@string/pref_scrollback_summary"
 			android:defaultValue="140"
 			android:singleLine="true"
 			/>
@@ -57,60 +57,60 @@
 	</PreferenceCategory>
 
 	<PreferenceCategory
-		android:title="User interface">
+		android:title="@string/pref_ui_category">
 
 		<ListPreference
-			android:key="@string/pref_rotation"
-			android:title="Rotation mode"
-			android:summary="How to change rotation when keyboard popped in/out"
+			android:key="rotation"
+			android:title="@string/pref_rotation_title"
+			android:summary="@string/pref_rotation_summary"
 			android:entries="@array/list_rotation"
 			android:entryValues="@array/list_rotation"
 			android:defaultValue="@string/list_rotation_land"
 			/>
 
 		<CheckBoxPreference
-			android:key="@string/pref_fullscreen"
-			android:title="Full screen"
-			android:summary="Hide status bar while in console"
+			android:key="fullscreen"
+			android:title="@string/pref_fullscreen_title"
+			android:summary="@string/pref_fullscreen_summary"
 			android:defaultValue="false"
 			/>
 			
 		<ListPreference
-			android:key="@string/pref_keymode"
-			android:title="Directory shortcuts"
-			android:summary="Select how to use Alt for \'/\' and Shift for Tab"
+			android:key="keymode"
+			android:title="@string/pref_keymode_title"
+			android:summary="@string/pref_keymode_summary"
 			android:entries="@array/list_keymode"
 			android:entryValues="@array/list_keymode"
 			android:defaultValue="@string/list_keymode_right"
 			/>
 	
 		<ListPreference
-			android:key="@string/pref_camera"
-			android:title="Camera shortcut"
-			android:summary="Select which shortcut to trigger when camera button is pushed"
+			android:key="camera"
+			android:title="@string/pref_camera_title"
+			android:summary="@string/pref_camera_summary"
 			android:entries="@array/list_camera"
 			android:entryValues="@array/list_camera"
 			android:defaultValue="@string/list_camera_ctrlaspace"
 			/>
 
 		<CheckBoxPreference
-			android:key="@string/pref_keepalive"
-			android:title="Keep screen awake"
-			android:summary="Prevent the screen from turning off when working in a console"
+			android:key="keepalive"
+			android:title="@string/pref_keepalive_title"
+			android:summary="@string/pref_keepalive_summary"
 			android:defaultValue="true"
 			/>
 			
 		<CheckBoxPreference
-			android:key="@string/pref_wifilock"
-			android:title="Keep Wi-Fi active"
-			android:summary="Prevent Wi-Fi from turning off when a session is active"
+			android:key="wifilock"
+			android:title="@string/pref_wifilock_title"
+			android:summary="@string/pref_wifilock_summary"
 			android:defaultValue="true"
 			/>
 
 		<CheckBoxPreference
-			android:key="@string/pref_bumpyarrows"
-			android:title="Bumpy arrow keys"
-			android:summary="Vibrate when sending arrow keys from trackball, useful for laggy connections"
+			android:key="bumpyarrows"
+			android:title="@string/pref_bumpyarrows_title"
+			android:summary="@string/pref_bumpyarrows_summary"
 			android:defaultValue="true"
 			/>
 

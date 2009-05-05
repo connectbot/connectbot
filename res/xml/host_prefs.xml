@@ -20,13 +20,13 @@
 
 	<EditTextPreference
 		android:key="nickname"
-		android:title="Nickname"
+		android:title="@string/hostpref_nickname_title"
 		android:singleLine="true"
 		/>
 
 	<ListPreference
 		android:key="color"
-		android:title="Color category"
+		android:title="@string/hostpref_color_title"
 		android:entries="@array/list_colors"
 		android:entryValues="@array/list_colors"
 		/>
@@ -39,59 +39,58 @@
 
 	<ListPreference
 		android:key="pubkeyid"
-		android:title="Use pubkey authentication"
+		android:title="@string/hostpref_pubkeyid_title"
 		android:entries="@array/list_pubkeyids"
 		android:entryValues="@array/list_pubkeyids_value"
 		/>
 		
 	<EditTextPreference
 		android:key="postlogin"
-		android:title="Post-login automation"
+		android:title="@string/hostpref_postlogin_title"
 		android:summary="Commands to run on remote server once authenticated"
 		/>
 		
 	<CheckBoxPreference
 		android:key="compression"
-		android:title="Enable compression"
-		android:summary="This may help with slower networks"
+		android:title="@string/hostpref_compression_title"
+		android:summary="@string/hostpref_compression_summary"
 		/>
 		
 	<CheckBoxPreference
 		android:key="wantsession"
-		android:title="Start shell session"
-		android:summary="Disable this preference to only use port forwards"
+		android:title="@string/hostpref_wantsession_title"
+		android:summary="@string/hostpref_wantsession_summary"
 		/>
 
 	<ListPreference
 		android:key="encoding"
-		android:title="Encoding"
-		android:summary="Character encoding for the host"
+		android:title="@string/hostpref_encoding_title"
+		android:summary="@string/hostpref_encoding_summary"
 		android:entries="@array/list_encodings"
 		android:entryValues="@array/list_encodings_value"
 		/>
 	
 	<PreferenceCategory
-		android:title="Connection settings">
+		android:title="@string/hostpref_connection_category">
 		
 		<EditTextPreference
 			android:key="username"
-			android:title="Username"
+			android:title="@string/hostpref_username_title"
 			android:singleLine="true"
 			/>
 
 		<EditTextPreference
 			android:key="hostname"
-			android:title="Host"
+			android:title="@string/hostpref_hostname_title"
 			android:singleLine="true"
 			/>
 
 		<EditTextPreference
 			android:key="port"
-			android:title="Port"
+			android:title="@string/hostpref_port_title"
 			android:singleLine="true"
 			/>
 
 	</PreferenceCategory>
-
 
 </PreferenceScreen>
