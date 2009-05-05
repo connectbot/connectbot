@@ -34,6 +34,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -302,13 +304,21 @@ public class ConsoleActivity extends Activity {
 					WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		}
 
+		String rotateDefault;
+		if (Resources.getSystem().getConfiguration().keyboard == Configuration.KEYBOARD_NOKEYS)
+			rotateDefault = getString(R.string.list_rotation_port);
+		else
+			rotateDefault = getString(R.string.list_rotation_land);
+
+		String rotate = prefs.getString(getString(R.string.pref_rotation), rotateDefault);
+		if (getString(R.string.list_rotation_default).equals(rotate))
+			rotate = rotateDefault;
+
 		// request a forced orientation if requested by user
-		String rotate = prefs.getString(getString(R.string.pref_rotation), getString(R.string.list_rotation_land));
-		if(getString(R.string.list_rotation_land).equals(rotate)) {
+		if (getString(R.string.list_rotation_land).equals(rotate))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		} else if (getString(R.string.list_rotation_port).equals(rotate)) {
+		else if (getString(R.string.list_rotation_port).equals(rotate))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		}
 
 		// TODO find proper way to disable volume key beep if it exists.
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);

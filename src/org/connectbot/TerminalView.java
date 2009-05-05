@@ -32,6 +32,9 @@ import android.graphics.PixelXorXfermode;
 import android.graphics.RectF;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.BaseInputConnection;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 import android.widget.Toast;
 
 /**
@@ -230,5 +233,16 @@ public class TerminalView extends View implements FontSizeChangedListener {
 	 */
 	public void setNotifications(boolean value) {
 		notifications = value;
+	}
+
+	@Override
+	public boolean onCheckIsTextEditor() {
+		return true;
+	}
+
+	@Override
+	public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+		outAttrs.imeOptions |= EditorInfo.IME_FLAG_NO_EXTRACT_UI | EditorInfo.IME_ACTION_NONE;
+		return new BaseInputConnection(this, false);
 	}
 }

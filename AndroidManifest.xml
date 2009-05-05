@@ -31,7 +31,8 @@
 		
 		<service android:name="org.connectbot.service.TerminalManager" android:configChanges="keyboardHidden|orientation" />
 
-		<activity android:name=".ConsoleActivity" android:configChanges="keyboardHidden|orientation" android:theme="@style/NoTitle">
+		<activity android:name=".ConsoleActivity" android:configChanges="keyboardHidden|orientation"
+			android:theme="@style/NoTitle" android:windowSoftInputMode="stateAlwaysVisible|adjustResize">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
@@ -41,13 +42,12 @@
 		</activity>
 
 	</application>
-	 
+
+	<uses-sdk android:minSdkVersion="3" />
+
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	
 </manifest>
-
-
-     

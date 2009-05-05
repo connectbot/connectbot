@@ -304,6 +304,8 @@
 	<string name="list_host_delete">Delete host</string>
 	<string name="list_host_empty">Use the quick-connect box\nbelow to connect to a host.</string>
 
+	<!-- Default screen rotation preference selection -->
+	<string name="list_rotation_default">Default</string>
 	<string name="list_rotation_land">Force landscape</string>
 	<string name="list_rotation_port">Force portrait</string>
 	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->

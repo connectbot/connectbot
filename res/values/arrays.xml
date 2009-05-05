@@ -11,6 +11,7 @@
 	</string-array>
 
 	<string-array name="list_rotation">
+		<item>@string/list_rotation_default</item>
 		<item>@string/list_rotation_land</item>
 		<item>@string/list_rotation_port</item>
 		<item>@string/list_rotation_auto</item>
