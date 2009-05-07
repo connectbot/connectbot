@@ -1022,10 +1022,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 			case KeyEvent.KEYCODE_DPAD_LEFT:
 				if (selectingForCopy) {
-					if (selectionArea.isSelectingOrigin())
-						selectionArea.decrementLeft();
-					else
-						selectionArea.decrementRight();
+					selectionArea.decrementColumn();
 					redraw();
 				} else {
 					((vt320) buffer).keyPressed(vt320.KEY_LEFT, ' ',
@@ -1037,10 +1034,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 			case KeyEvent.KEYCODE_DPAD_UP:
 				if (selectingForCopy) {
-					if (selectionArea.isSelectingOrigin())
-						selectionArea.decrementTop();
-					else
-						selectionArea.decrementBottom();
+					selectionArea.decrementRow();
 					redraw();
 				} else {
 					((vt320) buffer).keyPressed(vt320.KEY_UP, ' ',
@@ -1052,10 +1046,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 			case KeyEvent.KEYCODE_DPAD_DOWN:
 				if (selectingForCopy) {
-					if (selectionArea.isSelectingOrigin())
-						selectionArea.incrementTop();
-					else
-						selectionArea.incrementBottom();
+					selectionArea.incrementRow();
 					redraw();
 				} else {
 					((vt320) buffer).keyPressed(vt320.KEY_DOWN, ' ',
@@ -1067,10 +1058,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
 				if (selectingForCopy) {
-					if (selectionArea.isSelectingOrigin())
-						selectionArea.incrementLeft();
-					else
-						selectionArea.incrementRight();
+					selectionArea.incrementColumn();
 					redraw();
 				} else {
 					((vt320) buffer).keyPressed(vt320.KEY_RIGHT, ' ',

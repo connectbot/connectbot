@@ -34,6 +34,8 @@ public class HostBeanTest extends AndroidTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
+		super.setUp();
+
 		host1 = new HostBean();
 		host1.setNickname("Home");
 		host1.setUsername("bob");

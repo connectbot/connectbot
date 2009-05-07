@@ -495,8 +495,8 @@ public class ConsoleActivity extends Activity {
 					case MotionEvent.ACTION_DOWN:
 						// recording starting area
 						if (area.isSelectingOrigin()) {
-							area.setTop(row);
-							area.setLeft(col);
+							area.setRow(row);
+							area.setColumn(col);
 							lastTouchRow = row;
 							lastTouchCol = col;
 							copySource.redraw();
@@ -513,8 +513,8 @@ public class ConsoleActivity extends Activity {
 						area.finishSelectingOrigin();
 
 						// update selected area
-						area.setBottom(row);
-						area.setRight(col);
+						area.setRow(row);
+						area.setColumn(col);
 						lastTouchRow = row;
 						lastTouchCol = col;
 						copySource.redraw();

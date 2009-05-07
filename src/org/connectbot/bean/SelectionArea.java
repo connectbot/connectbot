@@ -69,64 +69,74 @@ public class SelectionArea {
 		selectingOrigin = false;
 	}
 
-	public void setTop(int top) {
+	public void decrementRow() {
+		if (selectingOrigin)
+			setTop(top - 1);
+		else
+			setBottom(bottom - 1);
+	}
+
+	public void incrementRow() {
+		if (selectingOrigin)
+			setTop(top + 1);
+		else
+			setBottom(bottom + 1);
+	}
+
+	public void setRow(int row) {
+		if (selectingOrigin)
+			setTop(row);
+		else
+			setBottom(row);
+	}
+
+	private void setTop(int top) {
 		this.top = bottom = checkBounds(top, maxRows);
-	}
-
-	public void decrementTop() {
-		setTop(--top);
-	}
-
-	public void incrementTop() {
-		setTop(++top);
 	}
 
 	public int getTop() {
 		return Math.min(top, bottom);
 	}
 
-	public void setBottom(int bottom) {
+	private void setBottom(int bottom) {
 		this.bottom = checkBounds(bottom, maxRows);
-	}
-
-	public void decrementBottom() {
-		setBottom(--bottom);
-	}
-
-	public void incrementBottom() {
-		setBottom(++bottom);
 	}
 
 	public int getBottom() {
 		return Math.max(top, bottom);
 	}
 
-	public void setLeft(int left) {
+	public void decrementColumn() {
+		if (selectingOrigin)
+			setLeft(left - 1);
+		else
+			setRight(right - 1);
+	}
+
+	public void incrementColumn() {
+		if (selectingOrigin)
+			setLeft(left + 1);
+		else
+			setRight(right + 1);
+	}
+
+	public void setColumn(int column) {
+		if (selectingOrigin)
+			setLeft(column);
+		else
+			setRight(column);
+	}
+
+	private void setLeft(int left) {
 		this.left = right = checkBounds(left, maxColumns);
-	}
-
-	public void decrementLeft() {
-		setLeft(--left);
-	}
-
-	public void incrementLeft() {
-		setLeft(++left);
 	}
 
 	public int getLeft() {
 		return Math.min(left, right);
 	}
 
-	public void setRight(int right) {
+	private void setRight(int right) {
 		this.right = checkBounds(right, maxColumns);
-	}
-
-	public void decrementRight() {
-		setRight(--right);
-	}
-
-	public void incrementRight() {
-		setRight(++right);
 	}
 
 	public int getRight() {
@@ -166,6 +176,7 @@ public class SelectionArea {
 		return buffer.toString();
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
 
