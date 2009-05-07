@@ -49,6 +49,7 @@ public class HostBean extends AbstractBean {
 
 	}
 
+	@Override
 	public String getBeanName() {
 		return BEAN_NAME;
 	}
@@ -168,6 +169,7 @@ public class HostBean extends AbstractBean {
 		return description;
 	}
 
+	@Override
 	public ContentValues getValues() {
 		ContentValues values = new ContentValues();
 
@@ -196,18 +198,39 @@ public class HostBean extends AbstractBean {
 
 		HostBean host = (HostBean)o;
 
-		if (host.getNickname().equals(nickname)
-			&& host.getUsername().equals(username)
-			&& host.getHostname().equals(hostname)
-			&& host.getPort() == port)
-			return true;
+		if (id != -1 && host.getId() != -1)
+			return host.getId() == id;
 
-		return false;
+		if (nickname == null) {
+			if (host.getNickname() != null)
+				return false;
+		} else if (!nickname.equals(host.getNickname()))
+			return false;
+
+		if (username == null) {
+			if (host.getUsername() != null)
+				return false;
+		} else if (!username.equals(host.getUsername()))
+			return false;
+
+		if (hostname == null) {
+			if (host.getHostname() != null)
+				return false;
+		} else if (!hostname.equals(host.getHostname()))
+			return false;
+
+		if (port != host.getPort())
+			return false;
+
+		return true;
 	}
 
 	@Override
 	public int hashCode() {
 		int hash = 7;
+
+		if (id != -1)
+			return (int)id;
 
 		hash = 31 * hash + (null == nickname ? 0 : nickname.hashCode());
 		hash = 31 * hash + (null == username ? 0 : username.hashCode());
