@@ -934,7 +934,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				}
 
 				// handle pressing f-keys
-				if ((curMetaState & KeyEvent.META_SHIFT_ON) != 0) {
+				if ((metaState &= META_TAB) != 0) {
 					switch(key) {
 					case '!': ((vt320)buffer).keyPressed(vt320.KEY_F1, ' ', 0); return true;
 					case '@': ((vt320)buffer).keyPressed(vt320.KEY_F2, ' ', 0); return true;
