@@ -850,24 +850,24 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				if ("Use right-side keys".equals(keymode)) {
 					if (keyCode == KeyEvent.KEYCODE_ALT_RIGHT
 							&& (metaState & META_SLASH) != 0) {
-						metaState &= metaState ^ META_SLASH ^ META_TRANSIENT;
+						metaState &= ~(META_SLASH | META_TRANSIENT);
 						stdin.write('/');
 						return true;
 					} else if (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT
 							&& (metaState & META_TAB) != 0) {
-						metaState &= metaState ^ META_TAB ^ META_TRANSIENT;
+						metaState &= ~(META_TAB | META_TRANSIENT);
 						stdin.write(0x09);
 						return true;
 					}
 				} else if ("Use left-side keys".equals(keymode)) {
 					if (keyCode == KeyEvent.KEYCODE_ALT_LEFT
 							&& (metaState & META_SLASH) != 0) {
-						metaState &= metaState ^ META_SLASH ^ META_TRANSIENT;
+						metaState &= ~(META_SLASH | META_TRANSIENT);
 						stdin.write('/');
 						return true;
 					} else if (keyCode == KeyEvent.KEYCODE_SHIFT_LEFT
 							&& (metaState & META_TAB) != 0) {
-						metaState &= metaState ^ META_TAB ^ META_TRANSIENT;
+						metaState &= ~(META_TAB | META_TRANSIENT);
 						stdin.write(0x09);
 						return true;
 					}
@@ -902,17 +902,17 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			if (printing) {
 				int curMetaState = event.getMetaState();
 
-				metaState &= metaState ^ META_SLASH ^ META_TAB;
+				metaState &= ~(META_SLASH | META_TAB);
 
 				if ((metaState & META_SHIFT_MASK) != 0) {
 					curMetaState |= KeyEvent.META_SHIFT_ON;
-					metaState &= metaState ^ META_SHIFT_ON;
+					metaState &= ~META_SHIFT_ON;
 					redraw();
 				}
 
 				if ((metaState & META_ALT_MASK) != 0) {
 					curMetaState |= KeyEvent.META_ALT_ON;
-					metaState &= metaState ^ META_ALT_ON;
+					metaState &= ~META_ALT_ON;
 					redraw();
 				}
 
@@ -928,7 +928,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					else if (key == 0x20)
 						key = 0x00;
 
-					metaState &= metaState ^ META_CTRL_ON;
+					metaState &= ~META_CTRL_ON;
 
 					redraw();
 				}
@@ -949,44 +949,57 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					}
 				}
 
-				stdin.write(key);
+				if (key < 0x80)
+					stdin.write(key);
+				else
+					// TODO write encoding routine that doesn't allocate each time
+					stdin.write(new String(Character.toChars(key))
+							.getBytes(host.getEncoding()));
 				return true;
 			}
 
+			if (keyCode == KeyEvent.KEYCODE_UNKNOWN &&
+					event.getAction() == KeyEvent.ACTION_MULTIPLE) {
+				byte[] input = event.getCharacters().getBytes(host.getEncoding());
+				stdin.write(input);
+			}
+
 			// try handling keymode shortcuts
-			if("Use right-side keys".equals(keymode)) {
-				switch(keyCode) {
-				case KeyEvent.KEYCODE_ALT_RIGHT:
-					metaState |= META_SLASH;
-					return true;
-				case KeyEvent.KEYCODE_SHIFT_RIGHT:
-					metaState |= META_TAB;
-					return true;
-				case KeyEvent.KEYCODE_SHIFT_LEFT:
-					metaPress(META_SHIFT_ON);
-					return true;
-				case KeyEvent.KEYCODE_ALT_LEFT:
-					metaPress(META_ALT_ON);
-					return true;
-				default:
-					break;
-				}
-			} else if("Use left-side keys".equals(keymode)) {
-				switch(keyCode) {
-				case KeyEvent.KEYCODE_ALT_LEFT:
-					metaState |= META_SLASH;
-					return true;
-				case KeyEvent.KEYCODE_SHIFT_LEFT:
-					metaState |= META_TAB;
-					return true;
-				case KeyEvent.KEYCODE_SHIFT_RIGHT:
-					metaPress(META_SHIFT_ON);
-					return true;
-				case KeyEvent.KEYCODE_ALT_RIGHT:
-					metaPress(META_ALT_ON);
-					return true;
-				default:
-					break;
+			if (event.getRepeatCount() == 0) {
+				if ("Use right-side keys".equals(keymode)) {
+					switch(keyCode) {
+					case KeyEvent.KEYCODE_ALT_RIGHT:
+						metaState |= META_SLASH;
+						return true;
+					case KeyEvent.KEYCODE_SHIFT_RIGHT:
+						metaState |= META_TAB;
+						return true;
+					case KeyEvent.KEYCODE_SHIFT_LEFT:
+						metaPress(META_SHIFT_ON);
+						return true;
+					case KeyEvent.KEYCODE_ALT_LEFT:
+						metaPress(META_ALT_ON);
+						return true;
+					default:
+						break;
+					}
+				} else if ("Use left-side keys".equals(keymode)) {
+					switch(keyCode) {
+					case KeyEvent.KEYCODE_ALT_LEFT:
+						metaState |= META_SLASH;
+						return true;
+					case KeyEvent.KEYCODE_SHIFT_LEFT:
+						metaState |= META_TAB;
+						return true;
+					case KeyEvent.KEYCODE_SHIFT_RIGHT:
+						metaPress(META_SHIFT_ON);
+						return true;
+					case KeyEvent.KEYCODE_ALT_RIGHT:
+						metaPress(META_ALT_ON);
+						return true;
+					default:
+						break;
+					}
 				}
 			}
 
@@ -1013,11 +1026,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			case KeyEvent.KEYCODE_DEL:
 				((vt320) buffer).keyPressed(vt320.KEY_BACK_SPACE, ' ',
 						getStateForBuffer());
-				metaState &= metaState ^ META_TRANSIENT;
+				metaState &= ~META_TRANSIENT;
 				return true;
 			case KeyEvent.KEYCODE_ENTER:
 				((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', 0);
-				metaState &= metaState ^ META_TRANSIENT;
+				metaState &= ~META_TRANSIENT;
 				return true;
 
 			case KeyEvent.KEYCODE_DPAD_LEFT:
@@ -1027,7 +1040,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				} else {
 					((vt320) buffer).keyPressed(vt320.KEY_LEFT, ' ',
 							getStateForBuffer());
-					metaState &= metaState ^ META_TRANSIENT;
+					metaState &= ~META_TRANSIENT;
 					tryKeyVibrate();
 				}
 				return true;
@@ -1039,7 +1052,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				} else {
 					((vt320) buffer).keyPressed(vt320.KEY_UP, ' ',
 							getStateForBuffer());
-					metaState &= metaState ^ META_TRANSIENT;
+					metaState &= ~META_TRANSIENT;
 					tryKeyVibrate();
 				}
 				return true;
@@ -1051,7 +1064,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				} else {
 					((vt320) buffer).keyPressed(vt320.KEY_DOWN, ' ',
 							getStateForBuffer());
-					metaState &= metaState ^ META_TRANSIENT;
+					metaState &= ~META_TRANSIENT;
 					tryKeyVibrate();
 				}
 				return true;
@@ -1063,7 +1076,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				} else {
 					((vt320) buffer).keyPressed(vt320.KEY_RIGHT, ' ',
 							getStateForBuffer());
-					metaState &= metaState ^ META_TRANSIENT;
+					metaState &= ~META_TRANSIENT;
 					tryKeyVibrate();
 				}
 				return true;
@@ -1089,7 +1102,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				} else {
 					if ((metaState & META_CTRL_ON) != 0) {
 						((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
-						metaState &= metaState ^ META_CTRL_ON;
+						metaState &= ~META_CTRL_ON;
 					} else
 						metaState |= META_CTRL_ON;
 				}
@@ -1127,9 +1140,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 */
 	private void metaPress(int code) {
 		if ((metaState & (code << 1)) != 0) {
-			metaState &= metaState ^ (code << 1);
+			metaState &= ~(code << 1);
 		} else if ((metaState & code) != 0) {
-			metaState &= metaState ^ code;
+			metaState &= ~code;
 			metaState |= code << 1;
 		} else
 			metaState |= code;
