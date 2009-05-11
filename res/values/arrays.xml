@@ -25,10 +25,10 @@
 	</string-array>
 
 	<string-array name="list_colors">
-		<item>red</item>
-		<item>green</item>
-		<item>blue</item>
-		<item>gray</item>
+		<item>@string/color_red</item>
+		<item>@string/color_green</item>
+		<item>@string/color_blue</item>
+		<item>@string/color_gray</item>
 	</string-array>
 
 	<string-array name="list_update">

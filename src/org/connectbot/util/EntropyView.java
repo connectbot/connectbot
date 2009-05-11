@@ -80,9 +80,10 @@ public class EntropyView extends View {
 		listeners.remove(listener);
 	}
 
+	@Override
 	public void onDraw(Canvas c) {
-		String prompt = getResources().getString(R.string.pubkey_touch_prompt)
-			+ " " + (int)(100.0 * (mEntropyIdx / 20.0)) + "% done";
+		String prompt = String.format(getResources().getString(R.string.pubkey_touch_prompt),
+			(int)(100.0 * (mEntropyIdx / 20.0)));
 		if (splitText > 0 ||
 				mPaint.measureText(prompt) > (getWidth() * 0.8)) {
 			if (splitText == 0)

@@ -47,7 +47,7 @@
 	<EditTextPreference
 		android:key="postlogin"
 		android:title="@string/hostpref_postlogin_title"
-		android:summary="Commands to run on remote server once authenticated"
+		android:summary="@string/hostpref_postlogin_summary"
 		/>
 		
 	<CheckBoxPreference
