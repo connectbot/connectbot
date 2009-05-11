@@ -1,0 +1,19 @@
+Compiling
+---------
+
+To compile ConnectBot using Ant, you must specify where your Android SDK is via the local.properties file. Insert a line similar to the following with the full path to your SDK:
+
+sdk-location=/usr/local/android
+
+
+Localization
+------------
+
+To use only a specific localization or localizations in your ConnectBot build using Ant, simply insert lines into default.properties similar to these:
+
+apk-configurations=english,europe,asia
+apk-config-english=en
+apk-config-europe=en,fr,it,de,es
+apk-config-asia=en,zh_CN
+
+You may also configure this via Eclipse via Project Properties -> Android -> Project APK Configurations
