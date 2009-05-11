@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">ConnectBot</string>
+	<string name="app_desc">Simple, powerful, open-source SSH client.</string>
+
+	<!-- Window title for the Host List -->
+	<string name="title_hosts_list">Serveurs</string>
+	<!-- Window title for the Pubkeys List -->
+	<string name="title_pubkey_list">Clés publiques</string>
+	<!-- Window title for the Port Forwards List -->
+	<string name="title_port_forwards_list">Port forwards</string>
+	<!-- Window title when editing host details -->
+	<string name="title_host_editor">Modifier le serveur</string>
+	<!-- Window title for Help index -->
+	<string name="title_help">Aide</string>
+
+	<string name="title_password">Input Password</string>
+	<string name="title_entropy">Gathering Entropy</string>
+
+	<string name="resolve_edit">Modifier le serveur</string>
+	<string name="resolve_connect">Connexion</string>
+	<string name="resolve_entropy">Gather Entropy</string>
+
+	<string name="menu_insert">Add Host</string>
+	<string name="menu_delete">Supprimmer le serveur</string>
+	<string name="menu_preferences">Préférences</string>
+	<string name="menu_help">Aide</string>
+
+	<string name="help_intro">Please select a topic below for more information on a particular subject.</string>
+	<string name="help_about">À propos de ConnectBot</string>
+	<string name="help_keyboard">Clavier</string>
+	<string name="help_pubkeys">Clés publiques</string>
+	<string name="help_portforwards">Port Forwards</string>
+
+	<string name="pubkey_generate">Générer</string>
+	<string name="pubkey_import">Importer</string>
+	<string name="pubkey_delete">Supprimer la clé</string>
+	<string name="pubkey_gather_entropy">Gathering Entropy</string>
+	<string name="pubkey_touch_prompt">Touch this box to gather randomness: </string>
+	<string name="pubkey_generating">Generating key pair...</string>
+	<string name="pubkey_copy_private">Copier la clé privée</string>
+	<string name="pubkey_copy_public">Copier la clé publique</string>
+	<string name="pubkey_list_empty">Tap "Menu" to create\nor import key pairs.</string>
+	<string name="pubkey_unknown_format">Format inconnu</string>
+	<string name="pubkey_change_password">Changer le mot de passe</string>
+	<string name="pubkey_list_pick">Pick from /sdcard</string>
+	<string name="pubkey_import_parse_problem">Problem parsing imported private key
+	</string>
+	<string name="pubkey_unlock">Déverrouiller la clé</string>
+	<string name="pubkey_failed_add">Bad password for key '%1$s'. Authentication failed.</string>
+	<string name="pubkey_memory_load">Charger en mémoire</string>
+	<string name="pubkey_memory_unload">Unload from memory</string>
+	<string name="pubkey_load_on_start">Charger la clé au démarrage</string>
+
+	<string name="portforward_list_empty">Tap "Menu" to create\nport forwards.</string>
+	<string name="portforward_edit">Edit port forward</string>
+	<string name="portforward_delete">Delete port forward</string>
+
+	<string name="prompt_nickname">Pseudo</string>
+	<!-- An example string that could be used as a nickname for a pubkey. -->
+	<string name="prompt_nickname_hint_pubkey">ma clé professionnelle</string>
+	<!-- The source TCP port for port forwards. -->
+	<string name="prompt_source_port">Port source:</string>
+	<!-- The "host:port" combination used for port forward destinations. -->
+	<string name="prompt_destination">Destination:</string>
+	<string name="prompt_old_password">Ancien mot de passe:</string>
+	<string name="prompt_password">Mot de passe:</string>
+	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
+	<string name="prompt_again">(encore)</string>
+	<!-- Label for the user to select port forward type. -->
+	<string name="prompt_type">Type:</string>
+	<string name="prompt_password_can_be_blank">Note: le mot de passe peux être vide</string>
+	<!-- Prompt for the size of the private key in bits. -->
+	<string name="prompt_bits">Bits:</string>
+
+	<!-- Prompt for the password to unlock a certain pubkey. -->
+	<string name="prompt_pubkey_password">Password for key '%1$s'</string>
+
+	<string name="alert_passwords_do_not_match_msg">Les mots de passe diffèrent!</string>
+	<string name="alert_wrong_password_msg">Mauvais mot de passe</string>
+	<string name="alert_key_corrupted_msg">Private key appears corrupt!</string>
+	<string name="alert_sdcard_absent">SD card is not inserted!</string>
+
+	<!-- Add a new item (e.g., host or pubkey) to the list. -->
+	<string name="button_add">Ajouter</string>
+	<!-- Change an existing item's (e.g., host or pubkey) details. -->
+	<string name="button_change">Changer</string>
+	<!-- Button that begins the generation of a public key pair. -->
+	<string name="button_generate">Generate Key</string>
+	<!-- Button that resizes the screen to the user-specified dimensions. -->
+	<string name="button_resize">Redimensionner</string>
+
+	<string name="alert_disconnect_msg">Connexion perdue</string>
+
+	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
+
+	<!-- DO NOT MANUALLY UPDATE VERSION!!!
+	  Updating is update by the ant task "update-version" in build.xml
+	  Do not translate.
+	-->
+	<string name="msg_version">ConnectBot (working copy)</string>
+
+	<!-- Do not translate -->
+	<string name="pref_emulation">emulation</string>
+	<!-- Do not translate -->
+	<string name="pref_scrollback">scrollback</string>
+	<!-- Do not translate -->
+	<string name="pref_keepalive">keepalive</string>
+	<!-- Do not translate -->
+	<string name="pref_keymode">keymode</string>
+	<!-- Do not translate -->
+	<string name="pref_memkeys">memkeys</string>
+	<!-- Do not translate -->
+	<string name="pref_rotation">rotation</string>
+	<!-- Do not translate -->
+	<string name="pref_camera">camera</string>
+	<!-- Do not translate -->
+	<string name="pref_update">update</string>
+	<!-- Do not translate -->
+	<string name="pref_lastchecked">lastchecked</string>
+	<!-- Do not translate -->
+	<string name="pref_fullscreen">fullscreen</string>
+	<!-- Do not translate -->
+	<string name="pref_wifilock">wifilock</string>
+	<!-- Do not translate -->
+	<string name="pref_bumpyarrows">bumpyarrows</string>
+
+	<!-- The category title for terminal emulation preferences. -->
+	<string name="pref_emulation_category">Terminal emulation</string>
+
+	<!-- Name for the emulation terminal type preference. -->
+	<string name="pref_emulation_title">Emulation mode</string>
+	<!-- Description of the emulation terminal type preference. -->
+	<string name="pref_emulation_summary">Terminal emulation mode to use for PTY connections</string>
+
+	<!-- Name for the scrollback size preference -->
+	<string name="pref_scrollback_title">Scrollback size</string>
+	<!-- Description of the scrollback size preference -->
+	<string name="pref_scrollback_summary">Size of scrollback buffer to keep in memory for each console</string>
+
+	<!-- The category title for user interface preferences -->
+	<string name="pref_ui_category">User interface</string>
+
+	<!-- Name for the rotation mode preference -->
+	<string name="pref_rotation_title">Rotation mode</string>
+	<!-- Summary for the rotation mode preference -->
+	<string name="pref_rotation_summary">How to change rotation when keyboard popped in/out</string>
+
+	<!-- Name for the full screen preference -->
+	<string name="pref_fullscreen_title">Plein écran</string>
+	<!-- Summary for the full screen preference -->
+	<string name="pref_fullscreen_summary">Hide status bar while in console</string>
+
+	<!-- Name for the memorize keys preference -->
+	<string name="pref_memkeys_title">Remember keys in memory</string>
+	<!-- Summary for the memorize keys preference -->
+	<string name="pref_memkeys_summary">Keep unlocked keys in memory until backend service is terminated</string>
+
+	<!-- Name for the update check preference -->
+	<string name="pref_update_title">Update check</string>
+	<!-- Summary for the update check preference -->
+	<string name="pref_update_summary">Set the maximum frequency to check for ConnectBot updates</string>
+
+	<!-- Name for the keyboard shortcuts preference -->
+	<string name="pref_keymode_title">Directory shortcuts</string>
+	<!-- Summary for the keyboard shortcuts preference -->
+	<string name="pref_keymode_summary">Select how to use Alt for '/' and Shift for Tab</string>
+
+	<!-- Name for the camera shortcut usage preference -->
+	<string name="pref_camera_title">Camera shortcut</string>
+	<!-- Summary for the camera shortcut usage preference -->
+	<string name="pref_camera_summary">Select which shortcut to trigger when the camera button is pushed</string>
+
+	<!-- Name for the keep screen on preference -->
+	<string name="pref_keepalive_title">Keep screen awake</string>
+	<!-- Summary for the camera shortcut usage preference -->
+	<string name="pref_keepalive_summary">Prevent the screen from turning off when working in a console</string>
+
+	<!-- Name for the Wi-Fi lock preference -->
+	<string name="pref_wifilock_title">Garder le Wi-Fi actif</string>
+	<!-- Summary for the Wi-Fi lock preference -->
+	<string name="pref_wifilock_summary">Empêcher la désactivation du Wi-Fi quand une session est active</string>
+
+	<!-- Name for the haptic feedback (bumpy arrow) preference -->
+	<string name="pref_bumpyarrows_title">Bumpy arrows</string>
+	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
+	<string name="pref_bumpyarrows_summary">Vibrer lors de l'envoi d'une touche directionnelle à partir du trackball</string>
+
+	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
+	<string name="list_keymode_right">Use right-side keys</string>
+	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
+	<string name="list_keymode_left">Use left-side keys</string>
+	<!-- Preference selection to indicate never to use special shortcut keys. -->
+	<string name="list_keymode_none">Disable</string>
+
+	<!-- Preference to not use pubkeys to authenticate to this host. -->
+	<string name="list_pubkeyids_none">Do not use keys</string>
+	<!-- Preference to use any pubkey to authenticate to this host. -->
+	<string name="list_pubkeyids_any">Use any unlocked key</string>
+
+	<!-- Frequency for which to check for program updates. -->
+	<string name="list_update_daily">Journalière</string>
+	<!-- Frequency for which to check for program updates. -->
+	<string name="list_update_weekly">Hebdomadaire</string>
+	<!-- Frequency for which to check for program updates. -->
+	<string name="list_update_never">Jamais</string>
+
+	<!-- Host nickname field preference title -->
+	<string name="hostpref_nickname_title">Nickname</string>
+
+	<!-- Host color category preference title -->
+	<string name="hostpref_color_title">Color category</string>
+
+	<!-- Host pubkey usage preference title -->
+	<string name="hostpref_pubkeyid_title">Use pubkey authentication</string>
+
+	<!-- Host post-login automation preference title -->
+	<string name="hostpref_postlogin_title">Post-login automation</string>
+
+	<!-- Host compression preference title -->
+	<string name="hostpref_compression_title">Compression</string>
+	<!-- Summary for compression preference -->
+	<string name="hostpref_compression_summary">This may help with slower networks</string>
+
+	<!-- Setting for whether we want a session to start up when we connect to a host -->
+	<string name="hostpref_wantsession_title">Start shell session</string>
+	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
+	<string name="hostpref_wantsession_summary">Disable this preference to only use port forwards</string>
+
+	<!-- Host character encoding preference title -->
+	<string name="hostpref_encoding_title">Encoding</string>
+	<!-- Host character encoding preference summary -->
+	<string name="hostpref_encoding_summary">Character encoding for the host</string>
+
+	<!-- Host preference category title for connection settings -->
+	<string name="hostpref_connection_category">Connection settings</string>
+
+	<!-- Username field title for host editor preference -->
+	<string name="hostpref_username_title">Nom d'utilisateur</string>
+
+	<!-- Hostname field title for host editor preference -->
+	<string name="hostpref_hostname_title">Serveur</string>
+
+	<!-- Port field title for host editor preference -->
+	<string name="hostpref_port_title">Port</string>
+
+	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
+	<string name="bind_minutes">Il ya %1 $s minutes</string>
+	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
+	<string name="bind_hours">Il y a %1 $s heures</string>
+	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
+	<string name="bind_days">Il y a %1 $s jours</string>
+
+	<!-- Message given when user copies from the terminal. -->
+	<string name="console_copy_done">%1$d octets copié dans le presse-papier</string>
+	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
+	<string name="console_copy_start">Touch and drag\nor use directional pad\nto select area to copy</string>
+
+	<!-- Button to disconnect from the current host in a terminal. -->
+	<string name="console_menu_disconnect">Déconnexion</string>
+	<!-- Button to close the disconnected terminal window. -->
+	<string name="console_menu_close">Fermer</string>
+	<!-- Button to begin copying from the terminal to the clipboard. -->
+	<string name="console_menu_copy">Copier</string>
+	<!-- Button to paste from the clipboard to the terminal. -->
+	<string name="console_menu_paste">Coller</string>
+	<!-- Button that brings user to the Port Forwards List. -->
+	<string name="console_menu_portforwards">Port Forwards</string>
+	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
+	<string name="console_menu_resize">Force Size</string>
+
+	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
+	<string name="portforward_local">Local</string>
+	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
+	<string name="portforward_remote">Remote</string>
+	<!-- Selection for a "dynamic" port forward. E.g., connections to a port listening locally is forwarded based on the SOCKS protocol to an arbitrary remote host and port. -->
+	<string name="portforward_dynamic">Dynamic (SOCKS)</string>
+	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
+	<string name="portforward_pos">Create port forward</string>
+	<!-- Button that cancels the creation of a port forward from the Port Forward Creation dialog. -->
+	<string name="portforward_neg">Cancel</string>
+
+	<string name="portforward_done">Successfully created port forward</string>
+	<string name="portforward_problem">Problem creating port forward, maybe you're using ports under 1024 or port is already used?</string>
+
+	<string name="portforward_menu_add">Add port forward</string>
+
+	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
+	<string name="hint_userhost">user@hostname</string>
+
+	<string name="list_format_error">Utilisez le format 'utilisateur@serveur:port'</string>
+
+	<string name="list_menu_pubkeys">Gérer les clés publiques</string>
+	<!-- Selection choice to sort hosts by color. -->
+	<string name="list_menu_sortcolor">Trier par couleur</string>
+	<!-- Selection choice to sort hosts by nickname. -->
+	<string name="list_menu_sortname">Trier par nom</string>
+	<string name="list_menu_settings">Réglages</string>
+	<string name="list_menu_help">Aide</string>
+
+	<string name="list_host_disconnect">Déconnexion</string>
+	<string name="list_host_edit">Edit host</string>
+	<string name="list_host_portforwards">Edit port forwards</string>
+	<string name="list_host_delete">Delete host</string>
+	<string name="list_host_empty">Use the quick-connect box\nbelow to connect to a host.</string>
+
+	<!-- Default screen rotation preference selection -->
+	<string name="list_rotation_default">Default</string>
+	<string name="list_rotation_land">Forcer le mode paysage</string>
+	<string name="list_rotation_port">Forcer le mode portrait</string>
+	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
+	<string name="list_rotation_auto">Automatique</string>
+
+	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
+	<string name="list_camera_ctrlaspace">Ctrl+A puis Espace</string>
+	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A". -->
+	<string name="list_camera_ctrla">Ctrl+A</string>
+	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
+	<string name="list_camera_esc">Echap</string>
+	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
+	<string name="list_camera_none">None</string>
+
+	<string name="delete_message">Êtes-vous sûr de vouloir supprimer '%1$s' ?</string>
+	<string name="delete_pos">Oui, supprimer</string>
+	<string name="delete_neg">Cancel</string>
+
+	<!-- Button to agree to license terms. -->
+	<string name="wizard_agree">Agree</string>
+	<!-- Button to cancel out of (i.e., not accept) the license terms. -->
+	<string name="wizard_cancel">Cancel</string>
+	<!-- Button to go to the next page in the first time start-up wizard. -->
+	<string name="wizard_next">Suivant</string>
+	<!-- Button to go to the previous page in the first time start-up wizard. -->
+	<string name="wizard_back">Précédent</string>
+
+	<string name="terminal_hostkey_warn">L'autenthicité du serveur '%1' ne peut être établie.</string>
+	<string name="terminal_hostkey">RSA key fingerprint is %1$s</string>
+	<string name="terminal_hostkey_prompt">Are you sure you want\nto continue connecting?</string>
+
+	<string name="terminal_failed">Host key verification failed.</string>
+
+	<string name="terminal_auth">Trying to authenticate</string>
+
+	<string name="terminal_auth_pass">Attempting 'password' authentication</string>
+	<string name="terminal_auth_pass_hint">Mot de passe</string>
+	<string name="terminal_auth_pass_fail">L'authentification par mot de passe a échoué</string>
+
+	<string name="terminal_auth_pubkey_any">Attempting 'publickey' authentication with any in-memory public keys</string>
+	<string name="terminal_auth_pubkey_invalid">Selected public key is invalid, try reselecting key in host editor</string>
+	<string name="terminal_auth_pubkey_specific">Attempting 'publickey' authentication with a specific public key</string>
+
+	<string name="terminal_auth_ki">Attempting 'keyboard-interactive' authentication</string>
+	<string name="terminal_auth_ki_fail">Authentication method 'keyboard-interactive' failed</string>
+
+	<string name="terminal_auth_fail">[Your host doesn't support 'password' or 'keyboard-interactive' authentication.]</string>
+
+    <string name="local_shell_unavailable">Failure! Local shell is unavailable on this phone.</string>
+
+	<!-- Dialog title when a new version of ConnectBot is detected. -->
+	<string name="upgrade">Nouvelle version</string>
+	<!-- Button selection to upgrade to the latest ConnectBot when one is available. -->
+	<string name="upgrade_pos">Oui, mettre à jour</string>
+	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
+	<string name="upgrade_neg">Pas maintenant</string>
+</resources>

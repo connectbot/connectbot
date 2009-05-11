@@ -73,7 +73,7 @@
 	<string name="prompt_bits">Bits:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Password for key '%1$s'</string>
+	<string name="prompt_pubkey_password">Passwort für Schlüssel '%1$s'</string>
 
 	<string name="alert_passwords_do_not_match_msg">Passwörter stimmen nicht überein!</string>
 	<string name="alert_wrong_password_msg">Falsches Passwort!</string>
@@ -125,65 +125,65 @@
 	<string name="pref_bumpyarrows">bumpyarrows</string>
 
 	<!-- The category title for terminal emulation preferences. -->
-	<string name="pref_emulation_category">Terminal emulation</string>
+	<string name="pref_emulation_category">Terminalemulation</string>
 
 	<!-- Name for the emulation terminal type preference. -->
-	<string name="pref_emulation_title">Emulation mode</string>
+	<string name="pref_emulation_title">Emulationsmodus</string>
 	<!-- Description of the emulation terminal type preference. -->
-	<string name="pref_emulation_summary">Terminal emulation mode to use for PTY connections</string>
+	<string name="pref_emulation_summary">Terminalemulationsmodus für PTY Verbindungen</string>
 
 	<!-- Name for the scrollback size preference -->
-	<string name="pref_scrollback_title">Scrollback size</string>
+	<string name="pref_scrollback_title">Bildlaufpuffergröße</string>
 	<!-- Description of the scrollback size preference -->
-	<string name="pref_scrollback_summary">Size of scrollback buffer to keep in memory for each console</string>
+	<string name="pref_scrollback_summary">Größe des Bildlaufpuffers, der für jede Konsole im Speicher gehalten wird</string>
 
 	<!-- The category title for user interface preferences -->
-	<string name="pref_ui_category">User interface</string>
+	<string name="pref_ui_category">Benutzungsschnittstelle</string>
 
 	<!-- Name for the rotation mode preference -->
-	<string name="pref_rotation_title">Rotation mode</string>
+	<string name="pref_rotation_title">Rotationsmodus</string>
 	<!-- Summary for the rotation mode preference -->
-	<string name="pref_rotation_summary">How to change rotation when keyboard popped in/out</string>
+	<string name="pref_rotation_summary">Wie soll die Rotation bei ein-/ausklappen der Tastatur verändert werden</string>
 
 	<!-- Name for the full screen preference -->
-	<string name="pref_fullscreen_title">Full screen</string>
+	<string name="pref_fullscreen_title">Vollbild</string>
 	<!-- Summary for the full screen preference -->
-	<string name="pref_fullscreen_summary">Hide status bar while in console</string>
+	<string name="pref_fullscreen_summary">Statuszeile in der Konsole verbergen</string>
 
 	<!-- Name for the memorize keys preference -->
-	<string name="pref_memkeys_title">Remember keys in memory</string>
+	<string name="pref_memkeys_title">Schlüssel im Speicher behalten</string>
 	<!-- Summary for the memorize keys preference -->
-	<string name="pref_memkeys_summary">Keep unlocked keys in memory until backend service is terminated</string>
+	<string name="pref_memkeys_summary">Entsperrte Schlüssel im Speicher halten, bis der Hintergrunddienst beendet wurde</string>
 
 	<!-- Name for the update check preference -->
-	<string name="pref_update_title">Update check</string>
+	<string name="pref_update_title">Aktualisierungen suchen</string>
 	<!-- Summary for the update check preference -->
-	<string name="pref_update_summary">Set the maximum frequency to check for ConnectBot updates</string>
+	<string name="pref_update_summary">Die maximale Frequenz einstellen, mit der nach ConnectBot aktualisierungen gesucht werden soll</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
-	<string name="pref_keymode_title">Directory shortcuts</string>
+	<string name="pref_keymode_title">Verzeichniskürzel</string>
 	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Select how to use Alt for '/' and Shift for Tab</string>
+	<string name="pref_keymode_summary">Einstellen, wie Alt und '/' und Hochstellen für Tabulator verwendet werden sollen</string>
 
 	<!-- Name for the camera shortcut usage preference -->
-	<string name="pref_camera_title">Camera shortcut</string>
+	<string name="pref_camera_title">Kamerakürzel</string>
 	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_camera_summary">Select which shortcut to trigger when the camera button is pushed</string>
+	<string name="pref_camera_summary">Welches Kürzel soll durch Drücken des Kamerauslösers aktiviert werden</string>
 
 	<!-- Name for the keep screen on preference -->
-	<string name="pref_keepalive_title">Keep screen awake</string>
+	<string name="pref_keepalive_title">Bildschirm anlassen</string>
 	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_keepalive_summary">Prevent the screen from turning off when working in a console</string>
+	<string name="pref_keepalive_summary">Verhindern, dass beim Arbeiten an der Konsole der Bildschirm abgeschaltet wird</string>
 
 	<!-- Name for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_title">Keep Wi-Fi active</string>
+	<string name="pref_wifilock_title">WLAN aktiviert lassen</string>
 	<!-- Summary for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_summary">Prevent Wi-Fi from turning off when a session is active</string>
+	<string name="pref_wifilock_summary">Verhindern, dass während einer aktiven Sitzung WLAN deaktiviert wird</string>
 
 	<!-- Name for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_title">Bumpy arrows</string>
+	<string name="pref_bumpyarrows_title">Holprige Pfeile</string>
 	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_summary">Vibrate when sending arrow keys from trackball; useful for laggy connections</string>
+	<string name="pref_bumpyarrows_summary">Vibirieren, wenn Pfeiltasten vom Trackball gesendet werden; nützlich bei laggenden Verbindungen</string>
 
 	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
 	<string name="list_keymode_right">Tasten rechts verwenden</string>
@@ -205,37 +205,37 @@
 	<string name="list_update_never">Niemals</string>
 
 	<!-- Host nickname field preference title -->
-	<string name="hostpref_nickname_title">Nickname</string>
+	<string name="hostpref_nickname_title">Spitzname</string>
 
 	<!-- Host color category preference title -->
-	<string name="hostpref_color_title">Color category</string>
+	<string name="hostpref_color_title">Farbkategorie</string>
 
 	<!-- Host pubkey usage preference title -->
-	<string name="hostpref_pubkeyid_title">Use pubkey authentication</string>
+	<string name="hostpref_pubkeyid_title">Verwende "pubkey" Authentisierung</string>
 
 	<!-- Host post-login automation preference title -->
-	<string name="hostpref_postlogin_title">Post-login automation</string>
+	<string name="hostpref_postlogin_title">Post-Login Automatisierung</string>
 
 	<!-- Host compression preference title -->
-	<string name="hostpref_compression_title">Compression</string>
+	<string name="hostpref_compression_title">Kompression</string>
 	<!-- Summary for compression preference -->
-	<string name="hostpref_compression_summary">This may help with slower networks</string>
+	<string name="hostpref_compression_summary">Dies könnte bei langsamen Netzwerken helfen</string>
 
 	<!-- Setting for whether we want a session to start up when we connect to a host -->
-	<string name="hostpref_wantsession_title">Start shell session</string>
+	<string name="hostpref_wantsession_title">Kommandozeilensitzung starten</string>
 	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
-	<string name="hostpref_wantsession_summary">Disable this preference to only use port forwards</string>
+	<string name="hostpref_wantsession_summary">Diese Einstellung abwählen, um ausschließlich Portweiterleitungen zu verwenden</string>
 
 	<!-- Host character encoding preference title -->
 	<string name="hostpref_encoding_title">Encoding</string>
 	<!-- Host character encoding preference summary -->
-	<string name="hostpref_encoding_summary">Character encoding for the host</string>
+	<string name="hostpref_encoding_summary">Zeichen-Encoding für den Host</string>
 
 	<!-- Host preference category title for connection settings -->
-	<string name="hostpref_connection_category">Connection settings</string>
+	<string name="hostpref_connection_category">Verbindungseinstellungen</string>
 
 	<!-- Username field title for host editor preference -->
-	<string name="hostpref_username_title">Username</string>
+	<string name="hostpref_username_title">Benutzername</string>
 
 	<!-- Hostname field title for host editor preference -->
 	<string name="hostpref_hostname_title">Host</string>
@@ -304,7 +304,7 @@
 	<string name="list_host_empty">Benutzen Sie die quick-connect box\nunten um sich mit einem Host zu verbinden.</string>
 
 	<!-- Default screen rotation preference selection -->
-	<string name="list_rotation_default">Default</string>
+	<string name="list_rotation_default">Vorgabe</string>
 	<string name="list_rotation_land">Querformat erzwingen</string>
 	<string name="list_rotation_port">Hochformat erzwingen</string>
 	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
@@ -344,16 +344,16 @@
 	<string name="terminal_auth_pass_hint">Passwort</string>
 	<string name="terminal_auth_pass_fail">Authentisierungsmethode 'Passwort' fehlgeschlagen.</string>
 
-	<string name="terminal_auth_pubkey_any">Attempting 'publickey' authentication with any in-memory public keys</string>
-	<string name="terminal_auth_pubkey_invalid">Selected public key is invalid, try reselecting key in host editor</string>
-	<string name="terminal_auth_pubkey_specific">Attempting 'publickey' authentication with a specific public key</string>
+	<string name="terminal_auth_pubkey_any">Versuche "Public Key" Authentisierung mit allen öffentlichen Schlüsseln im Speicher</string>
+	<string name="terminal_auth_pubkey_invalid">Der ausgewählte öffentliche Schlüssel ist ungültig, versuchen Sie den Schlüssel im Host-Editor neu auszuwählen</string>
+	<string name="terminal_auth_pubkey_specific">Versuche "Public Key" Authentisierung mit einem bestimmten öffentlichen Schlüssel</string>
 
 	<string name="terminal_auth_ki">Versuche 'keyboard-interactive' Authentisierung.</string>
 	<string name="terminal_auth_ki_fail">Authentisierungsmetrhode 'keyboard-interactive' fehlgeschlagen</string>
 
 	<string name="terminal_auth_fail">[Ihr Host unterstützt weder 'password' noch 'keyboard-interactive' Authentisierung.]</string>
 
-    <string name="local_shell_unavailable">Failure! Local shell is unavailable on this phone.</string>
+    <string name="local_shell_unavailable">Fehler! Lokale Kommandozeile ist auf diesem Telefon nicht verfügbar.</string>
 
 	<!-- Dialog title when a new version of ConnectBot is detected. -->
 	<string name="upgrade">Neue Version</string>
