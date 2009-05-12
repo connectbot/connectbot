@@ -26,17 +26,17 @@
 	<string name="menu_preferences">Einstellungen</string>
 	<string name="menu_help">Hilfe</string>
 
-	<string name="help_intro">Wählen Sie eine Überschrift aus,  um mehr Informationen zu einem bestimmten Thema zu erhalten!</string>
+	<string name="help_intro">Wählen Sie eine Überschrift aus, um mehr Informationen zu einem bestimmten Thema zu erhalten!</string>
 	<string name="help_about">Über ConnectBot</string>
 	<string name="help_keyboard">Tastatur</string>
 	<string name="help_pubkeys">Pubkeys</string>
-	<string name="help_portforwards">Port Forwards</string>
+	<string name="help_portforwards">Port-Weiterleitungen</string>
 
 	<string name="pubkey_generate">Erzeugen</string>
 	<string name="pubkey_import">Importieren</string>
 	<string name="pubkey_delete">Schlüssel löschen</string>
 	<string name="pubkey_gather_entropy">Sammle Entropie</string>
-	<string name="pubkey_touch_prompt">Berühren Sie diese Box, um Zufallszahlen zu erzeugen!</string>
+	<string name="pubkey_touch_prompt">Berühren Sie diese Box, um Zufallszahlen zu erzeugen: %1$d%% fertig</string>
 	<string name="pubkey_generating">Erzeuge Schlüsselpaar...</string>
 	<string name="pubkey_copy_private">Privaten Schlüssel kopieren</string>
 	<string name="pubkey_copy_public">Öffentlichen Schlüssel kopieren</string>
@@ -51,9 +51,9 @@
 	<string name="pubkey_memory_unload">Aus Speicher entfernen.</string>
 	<string name="pubkey_load_on_start">Schlüssel beim Start laden</string>
 
-	<string name="portforward_list_empty">"Menu" tippen, um port\nforwards zu erzeugen.</string>
-	<string name="portforward_edit">Port forwards editieren.</string>
-	<string name="portforward_delete">Port forward löschen.</string>
+	<string name="portforward_list_empty">"Menu" tippen, um Port-\nWeiterleitungen zu erzeugen.</string>
+	<string name="portforward_edit">Port-Weiterleitung editieren.</string>
+	<string name="portforward_delete">Port-Weiterleitung löschen.</string>
 
 	<string name="prompt_nickname">Spitzname:</string>
 	<!-- An example string that could be used as a nickname for a pubkey. -->
@@ -143,7 +143,7 @@
 	<!-- Name for the rotation mode preference -->
 	<string name="pref_rotation_title">Rotationsmodus</string>
 	<!-- Summary for the rotation mode preference -->
-	<string name="pref_rotation_summary">Wie soll die Rotation bei ein-/ausklappen der Tastatur verändert werden</string>
+	<string name="pref_rotation_summary">Wie soll die Rotation beim Ein-/Ausklappen der Tastatur verändert werden</string>
 
 	<!-- Name for the full screen preference -->
 	<string name="pref_fullscreen_title">Vollbild</string>
@@ -158,12 +158,12 @@
 	<!-- Name for the update check preference -->
 	<string name="pref_update_title">Aktualisierungen suchen</string>
 	<!-- Summary for the update check preference -->
-	<string name="pref_update_summary">Die maximale Frequenz einstellen, mit der nach ConnectBot aktualisierungen gesucht werden soll</string>
+	<string name="pref_update_summary">Die maximale Frequenz einstellen, mit der nach ConnectBot Aktualisierungen gesucht werden soll</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Verzeichniskürzel</string>
 	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Einstellen, wie Alt und '/' und Hochstellen für Tabulator verwendet werden sollen</string>
+	<string name="pref_keymode_summary">Einstellen, wie Alt für \'/\' und Hochstellen für \'Tab\' verwendet werden sollen</string>
 
 	<!-- Name for the camera shortcut usage preference -->
 	<string name="pref_camera_title">Kamerakürzel</string>
@@ -178,7 +178,7 @@
 	<!-- Name for the Wi-Fi lock preference -->
 	<string name="pref_wifilock_title">WLAN aktiviert lassen</string>
 	<!-- Summary for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_summary">Verhindern, dass während einer aktiven Sitzung WLAN deaktiviert wird</string>
+	<string name="pref_wifilock_summary">Verhindern, dass während einer laufenden Verbindung WLAN deaktiviert wird</string>
 
 	<!-- Name for the haptic feedback (bumpy arrow) preference -->
 	<string name="pref_bumpyarrows_title">Holprige Pfeile</string>
@@ -224,7 +224,7 @@
 	<!-- Setting for whether we want a session to start up when we connect to a host -->
 	<string name="hostpref_wantsession_title">Kommandozeilensitzung starten</string>
 	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
-	<string name="hostpref_wantsession_summary">Diese Einstellung abwählen, um ausschließlich Portweiterleitungen zu verwenden</string>
+	<string name="hostpref_wantsession_summary">Diese Einstellung abwählen, um ausschließlich Port-Weiterleitungen zu verwenden</string>
 
 	<!-- Host character encoding preference title -->
 	<string name="hostpref_encoding_title">Encoding</string>
@@ -253,7 +253,7 @@
 	<!-- Message given when user copies from the terminal. -->
 	<string name="console_copy_done">%1$d Byte in die Zwischenablage kopiert</string>
 	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">Berühren und ziehen\noder trackball verwenden\num zu kopierenden Bereich auszuwählen</string>
+	<string name="console_copy_start">Berühren und ziehen oder Trackball verwenden\num zu kopierenden Bereich auszuwählen</string>
 
 	<!-- Button to disconnect from the current host in a terminal. -->
 	<string name="console_menu_disconnect">Verbindung trennen</string>
@@ -264,7 +264,7 @@
 	<!-- Button to paste from the clipboard to the terminal. -->
 	<string name="console_menu_paste">Einfügen</string>
 	<!-- Button that brings user to the Port Forwards List. -->
-	<string name="console_menu_portforwards">Port Forwards</string>
+	<string name="console_menu_portforwards">Port-Weiterleitungen</string>
 	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
 	<string name="console_menu_resize">Größe erzwingen</string>
 
@@ -275,14 +275,14 @@
 	<!-- Selection for a "dynamic" port forward. E.g., connections to a port listening locally is forwarded based on the SOCKS protocol to an arbitrary remote host and port. -->
 	<string name="portforward_dynamic">Dynamisch (SOCKS)</string>
 	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
-	<string name="portforward_pos">Port forward anlegen</string>
+	<string name="portforward_pos">Port-Weiterleitung anlegen</string>
 	<!-- Button that cancels the creation of a port forward from the Port Forward Creation dialog. -->
 	<string name="portforward_neg">Abbrechen</string>
 
-	<string name="portforward_done">Port forward angelegt.</string>
-	<string name="portforward_problem">Konnte port forward nicht anlegen. Verwenden Sie Ports kleiner als 1024, oder wird der Port bereits verwendet?</string>
+	<string name="portforward_done">Port-Weiterleitung angelegt.</string>
+	<string name="portforward_problem">Konnte Port-Weiterleitung nicht anlegen. Verwenden Sie Ports kleiner als 1024, oder wird der Port bereits verwendet?</string>
 
-	<string name="portforward_menu_add">Port forward hinzufügen</string>
+	<string name="portforward_menu_add">Port-Weiterleitung hinzufügen</string>
 
 	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
 	<string name="hint_userhost">user@hostname</string>
@@ -299,7 +299,7 @@
 
 	<string name="list_host_disconnect">Verbindung trennen</string>
 	<string name="list_host_edit">Host editieren</string>
-	<string name="list_host_portforwards">Port forwards editieren</string>
+	<string name="list_host_portforwards">Port-Weiterleitungen editieren</string>
 	<string name="list_host_delete">Host löschen</string>
 	<string name="list_host_empty">Benutzen Sie die quick-connect box\nunten um sich mit einem Host zu verbinden.</string>
 
@@ -353,7 +353,7 @@
 
 	<string name="terminal_auth_fail">[Ihr Host unterstützt weder 'password' noch 'keyboard-interactive' Authentisierung.]</string>
 
-    <string name="local_shell_unavailable">Fehler! Lokale Kommandozeile ist auf diesem Telefon nicht verfügbar.</string>
+	<string name="local_shell_unavailable">Fehler! Lokale Kommandozeile ist auf diesem Telefon nicht verfügbar.</string>
 
 	<!-- Dialog title when a new version of ConnectBot is detected. -->
 	<string name="upgrade">Neue Version</string>
@@ -361,4 +361,16 @@
 	<string name="upgrade_pos">Ja, aktualisieren</string>
 	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
 	<string name="upgrade_neg">Nicht jetzt</string>
+	<string name="pubkey_touch_hint">Um eine gute Zufallsverteilung zu gewährleisten, bewegen Sie Ihren Finger zufällig über die Box unten!</string>
+	<string name="host_verification_failure_warning_header">WARNUNG: IDENTIFIKATION DES ENTFERNTEN HOSTS HAT SICH GEÄNDERT!</string>
+	<string name="host_verification_failure_warning">MÖGLICHERWEISE TUT JEMAND ETWAS BÖSES!\nJemand könnte Sie jetzt gerade belauschen (man-in-the-middle attack)!\nEs ist auch möglich, dass nur der Host-Key geändert wurde.</string>
+	<string name="prompt_host_disconnected">Der Host hat die Verbindung beendet.\nSitzung schließen?</string>
+	<string name="prompt_continue_connecting">Sind Sie sicher, dass Sie sich verbinden wollen?</string>
+	<string name="host_authenticity_warning">Die Authentizität von Host '%1$s' kann nicht bestätigt werden.</string>
+	<string name="host_fingerprint">Fingerabdruck von Host %1$s Schlüssel ist %2$</string>
+	<string name="hostpref_postlogin_summary">Befehle, die auf dem entfernten Host nach der Anmeldung gestartet werden sollen.</string>
+	<string name="color_red">rot</string>
+	<string name="color_green">grün</string>
+	<string name="color_blue">blau</string>
+	<string name="color_gray">grau</string>
 </resources>

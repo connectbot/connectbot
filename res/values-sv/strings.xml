@@ -36,7 +36,8 @@
 	<string name="pubkey_import">Importera</string>
 	<string name="pubkey_delete">Ta bort nyckel</string>
 	<string name="pubkey_gather_entropy">Samlar in entropi</string>
-	<string name="pubkey_touch_prompt">Rör vid rutan för att samla in slumpdata:</string>
+	<string name="pubkey_touch_prompt">Rör vid rutan för att samla in slumpdata: %1$d%% klart</string>
+	<string name="pubkey_touch_hint">In order to assure randomness during the key generation, move your finger randomly over the box below.</string>
 	<string name="pubkey_generating">Genererar nyckelpar...</string>
 	<string name="pubkey_copy_private">Kopiera privata nyckeln</string>
 	<string name="pubkey_copy_public">Kopiera publika nyckeln</string>
@@ -74,6 +75,21 @@
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
 	<string name="prompt_pubkey_password">Password for key '%1$s'</string>
+
+	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
+	<string name="host_verification_failure_warning_header">WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</string>
+	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
+	<string name="host_verification_failure_warning">IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\nSomeone could be eavesdropping on you right now (man-in-the-middle attack)!\nIt is also possible that the host key has just been changed.</string>
+
+	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
+	<string name="prompt_host_disconnected">Host has disconnected.\nClose session?</string>
+	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
+	<string name="prompt_continue_connecting">Är du säker att du vill\nfortsätta att ansluta?</string>
+
+	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
+	<string name="host_authenticity_warning">Identiteten av värden '%1$s' går ej att fastställa.</string>
+	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
+	<string name="host_fingerprint">Host %1$s key fingerprint is %2$s</string>
 
 	<string name="alert_passwords_do_not_match_msg">Lösenorden överenstämmer inte med varandra!</string>
 	<string name="alert_wrong_password_msg">Felaktigt lösenord!</string>
@@ -215,6 +231,8 @@
 
 	<!-- Host post-login automation preference title -->
 	<string name="hostpref_postlogin_title">Post-login automation</string>
+	<!-- Host post-login automation preference summary -->
+	<string name="hostpref_postlogin_summary">Commands to run on remote server once authenticated</string>
 
 	<!-- Host compression preference title -->
 	<string name="hostpref_compression_title">Compression</string>
@@ -353,7 +371,7 @@
 
 	<string name="terminal_auth_fail">[Din värd stödjer inte 'password' eller 'keyboard-interactive' autentiseringsmetoderna]</string>
 
-    <string name="local_shell_unavailable">Failure! Local shell is unavailable on this phone.</string>
+	<string name="local_shell_unavailable">Failure! Local shell is unavailable on this phone.</string>
 
 	<!-- Dialog title when a new version of ConnectBot is detected. -->
 	<string name="upgrade">Ny version</string>
@@ -361,4 +379,9 @@
 	<string name="upgrade_pos">Ja, uppgradera</string>
 	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
 	<string name="upgrade_neg">Inte just nu</string>
+
+	<string name="color_red">red</string>
+	<string name="color_green">green</string>
+	<string name="color_blue">blue</string>
+	<string name="color_gray">gray</string>
 </resources>
