@@ -397,6 +397,34 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	}
 
 	/**
+	 * Create a new terminal bridge suitable for unit testing.
+	 */
+	public TerminalBridge() {
+		buffer = new vt320() {
+			@Override
+			public void write(byte[] b) {}
+			@Override
+			public void sendTelnetCommand(byte cmd) {}
+			@Override
+			public void setWindowSize(int c, int r) {}
+		};
+
+		emulation = null;
+		manager = null;
+
+		defaultPaint = new Paint();
+
+		selectionArea = new SelectionArea();
+		scrollback = 1;
+
+		localOutput = new LinkedList<String>();
+
+		fontSizeChangedListeners = new LinkedList<FontSizeChangedListener>();
+
+		connection = null;
+	}
+
+	/**
 	 * Create new terminal bridge with following parameters. We will immediately
 	 * launch thread to start SSH connection and handle any hostkey verification
 	 * and password authentication.
@@ -851,7 +879,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			// Ignore all key-up events except for the special keys
 			if (event.getAction() == KeyEvent.ACTION_UP) {
 				// skip keys if we aren't connected yet or have been disconnected
-				if (disconnected || session == null)
+				if (disconnected || !sessionOpen)
 					return false;
 
 				if ("Use right-side keys".equals(keymode)) {
@@ -895,7 +923,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			}
 
 			// skip keys if we aren't connected yet or have been disconnected
-			if (disconnected || session == null)
+			if (disconnected || !sessionOpen)
 				return false;
 
 			// if we're in scrollback, scroll to bottom of window on input
@@ -941,7 +969,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				}
 
 				// handle pressing f-keys
-				if ((metaState &= META_TAB) != 0) {
+				if ((metaState & META_TAB) != 0) {
 					switch(key) {
 					case '!': ((vt320)buffer).keyPressed(vt320.KEY_F1, ' ', 0); return true;
 					case '@': ((vt320)buffer).keyPressed(vt320.KEY_F2, ' ', 0); return true;
@@ -962,6 +990,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					// TODO write encoding routine that doesn't allocate each time
 					stdin.write(new String(Character.toChars(key))
 							.getBytes(host.getEncoding()));
+
 				return true;
 			}
 

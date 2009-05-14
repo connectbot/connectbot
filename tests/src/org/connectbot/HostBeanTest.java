@@ -18,6 +18,7 @@
 package org.connectbot;
 
 import org.connectbot.bean.HostBean;
+import org.connectbot.mock.BeanTestCase;
 
 import android.test.AndroidTestCase;
 
