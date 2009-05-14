@@ -331,7 +331,7 @@ public class HostListActivity extends ListActivity {
 		settings.setIcon(android.R.drawable.ic_menu_preferences);
 		settings.setIntent(new Intent(HostListActivity.this, SettingsActivity.class));
 
-		MenuItem help = menu.add(R.string.list_menu_help);
+		MenuItem help = menu.add(R.string.title_help);
 		help.setIcon(android.R.drawable.ic_menu_help);
 		help.setIntent(new Intent(HostListActivity.this, HelpActivity.class));
 

@@ -14,23 +14,16 @@
 	<!-- Window title for Help index -->
 	<string name="title_help">Hjælp</string>
 
-	<string name="title_password">Angiv adgangskode</string>
-	<string name="title_entropy">Indsamler entropi</string>
-
-	<string name="resolve_edit">Rediger vært</string>
 	<string name="resolve_connect">Tilslut</string>
 	<string name="resolve_entropy">Indsamler entropi</string>
 
 	<string name="menu_insert">Tilføj vært</string>
 	<string name="menu_delete">Fjern vært</string>
 	<string name="menu_preferences">Foretrukne</string>
-	<string name="menu_help">Hjælp</string>
 
 	<string name="help_intro">Vælg venligst et emne nedenfor, som du ønsker mere information om.</string>
 	<string name="help_about">Om ConnectBot</string>
 	<string name="help_keyboard">Tastatur</string>
-	<string name="help_pubkeys">Offentlige nøgler</string>
-	<string name="help_portforwards">Port Forwards</string>
 
 	<string name="pubkey_generate">Generer</string>
 	<string name="pubkey_import">Importér</string>
@@ -273,8 +266,6 @@
 	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
 	<string name="console_copy_start">Touch and drag\nor use directional pad\nto select area to copy</string>
 
-	<!-- Button to disconnect from the current host in a terminal. -->
-	<string name="console_menu_disconnect">Frakoblet</string>
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">Luk</string>
 	<!-- Button to begin copying from the terminal to the clipboard. -->
@@ -294,8 +285,6 @@
 	<string name="portforward_dynamic">Dynamisk (SOCKS)</string>
 	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
 	<string name="portforward_pos">Create port forward</string>
-	<!-- Button that cancels the creation of a port forward from the Port Forward Creation dialog. -->
-	<string name="portforward_neg">Afbryd</string>
 
 	<string name="portforward_done">Successfully created port forward</string>
 	<string name="portforward_problem">Problem creating port forward, maybe you're using ports under 1024 or port is already used?</string>
@@ -313,7 +302,6 @@
 	<!-- Selection choice to sort hosts by nickname. -->
 	<string name="list_menu_sortname">Sortér efter navn</string>
 	<string name="list_menu_settings">Indstillinger</string>
-	<string name="list_menu_help">Hjælp</string>
 
 	<string name="list_host_disconnect">Frakoblet</string>
 	<string name="list_host_edit">Redigér vært</string>
@@ -343,18 +331,12 @@
 
 	<!-- Button to agree to license terms. -->
 	<string name="wizard_agree">Godkend</string>
-	<!-- Button to cancel out of (i.e., not accept) the license terms. -->
-	<string name="wizard_cancel">Afbryd</string>
 	<!-- Button to go to the next page in the first time start-up wizard. -->
 	<string name="wizard_next">Næste</string>
 	<!-- Button to go to the previous page in the first time start-up wizard. -->
 	<string name="wizard_back">Tilbage</string>
 
 	<string name="terminal_no_hosts_connected">No hosts currently connected</string>
-
-	<string name="terminal_hostkey_warn">The authenticity of host '%1$s' can't be established.</string>
-	<string name="terminal_hostkey">RSA nøgle fingeraftryk er %1$s</string>
-	<string name="terminal_hostkey_prompt">Er du sikker på at du ønsker\nat skabe forbindelse?</string>
 
 	<string name="terminal_failed">Verifikation af værtsnøgle mislykkedes.</string>
 

@@ -14,23 +14,16 @@
 	<!-- Window title for Help index -->
 	<string name="title_help">Hjälp</string>
 
-	<string name="title_password">Lösenordsinmatning</string>
-	<string name="title_entropy">Samlar in entropi</string>
-
-	<string name="resolve_edit">Redigera värd</string>
 	<string name="resolve_connect">Anslut</string>
 	<string name="resolve_entropy">Samla in Entropi</string>
 
 	<string name="menu_insert">Lägg till värd</string>
 	<string name="menu_delete">Ta bort värd</string>
 	<string name="menu_preferences">Egenskaper</string>
-	<string name="menu_help">Hjälp</string>
 
 	<string name="help_intro">Var god välj ett ämne nedan som du skulle vilja ha mer information om.</string>
 	<string name="help_about">Om ConnectBot</string>
 	<string name="help_keyboard">Tangentbord</string>
-	<string name="help_pubkeys">Publika nycklar</string>
-	<string name="help_portforwards">Port vidarebefodringar</string>
 
 	<string name="pubkey_generate">Generera</string>
 	<string name="pubkey_import">Importera</string>
@@ -273,8 +266,6 @@
 	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
 	<string name="console_copy_start">Tryck och drag\neller använd bollen\nför att markera en yta för kopiering</string>
 
-	<!-- Button to disconnect from the current host in a terminal. -->
-	<string name="console_menu_disconnect">Koppla ner</string>
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">Stäng</string>
 	<!-- Button to begin copying from the terminal to the clipboard. -->
@@ -294,8 +285,6 @@
 	<string name="portforward_dynamic">Dynamisk (SOCKS)</string>
 	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
 	<string name="portforward_pos">Skapa vidarebefodring av port</string>
-	<!-- Button that cancels the creation of a port forward from the Port Forward Creation dialog. -->
-	<string name="portforward_neg">Avbryt</string>
 
 	<string name="portforward_done">Vidarebefodring av port skapad.</string>
 	<string name="portforward_problem">Lyckades inte att skapa en vidarebefodring av port, är den under 1024 eller används den kanske?</string>
@@ -313,7 +302,6 @@
 	<!-- Selection choice to sort hosts by nickname. -->
 	<string name="list_menu_sortname">Sortera efter namn</string>
 	<string name="list_menu_settings">Inställningar</string>
-	<string name="list_menu_help">Hjälp</string>
 
 	<string name="list_host_disconnect">Koppla ner</string>
 	<string name="list_host_edit">Inställningar för värd</string>
@@ -343,18 +331,12 @@
 
 	<!-- Button to agree to license terms. -->
 	<string name="wizard_agree">Godkänn</string>
-	<!-- Button to cancel out of (i.e., not accept) the license terms. -->
-	<string name="wizard_cancel">Avbryt</string>
 	<!-- Button to go to the next page in the first time start-up wizard. -->
 	<string name="wizard_next">Nästa</string>
 	<!-- Button to go to the previous page in the first time start-up wizard. -->
 	<string name="wizard_back">Tillbaka</string>
 
 	<string name="terminal_no_hosts_connected">No hosts currently connected</string>
-
-	<string name="terminal_hostkey_warn">Identiteten av värden '%1$s' går ej att fastställa.</string>
-	<string name="terminal_hostkey">RSA-nyckel fingeravtrycket är %1$s</string>
-	<string name="terminal_hostkey_prompt">Är du säker att du vill\nfortsätta att ansluta?</string>
 
 	<string name="terminal_failed">Verifikation av värd-nyckeln misslyckades.</string>
 

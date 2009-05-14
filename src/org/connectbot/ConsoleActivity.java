@@ -572,7 +572,7 @@ public class ConsoleActivity extends Activity {
 		}
 
 
-		disconnect = menu.add(R.string.console_menu_disconnect);
+		disconnect = menu.add(R.string.list_host_disconnect);
 		if (!sessionOpen && disconnected)
 			disconnect.setTitle(R.string.console_menu_close);
 		disconnect.setEnabled(activeTerminal);
@@ -681,7 +681,7 @@ public class ConsoleActivity extends Activity {
 
 		disconnect.setEnabled(activeTerminal);
 		if (sessionOpen || !disconnected)
-			disconnect.setTitle(R.string.console_menu_disconnect);
+			disconnect.setTitle(R.string.list_host_disconnect);
 		else
 			disconnect.setTitle(R.string.console_menu_close);
 		copy.setEnabled(activeTerminal);

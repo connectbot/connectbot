@@ -101,6 +101,6 @@ public class WizardActivity extends Activity {
 		boolean eula = (flipper.getDisplayedChild() == 0);
 
 		next.setText(eula ? getString(R.string.wizard_agree) : getString(R.string.wizard_next));
-		prev.setText(eula ? getString(R.string.wizard_cancel) : getString(R.string.wizard_back));
+		prev.setText(eula ? getString(R.string.delete_neg) : getString(R.string.wizard_back));
 	}
 }

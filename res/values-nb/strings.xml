@@ -14,23 +14,16 @@
 	<!-- Window title for Help index -->
 	<string name="title_help">Hjelp</string>
 
-	<string name="title_password">Skriv inn passord</string>
-	<string name="title_entropy">Samler entropi</string>
-
-	<string name="resolve_edit">Endre vert</string>
 	<string name="resolve_connect">Koble til</string>
 	<string name="resolve_entropy">Samle entropi</string>
 
 	<string name="menu_insert">Legg til vert</string>
 	<string name="menu_delete">Slett vert</string>
 	<string name="menu_preferences">Preferanser</string>
-	<string name="menu_help">Hjelp</string>
 
 	<string name="help_intro">Please select a topic below for more information on a particular subject.</string>
 	<string name="help_about">Om ConnectBot</string>
 	<string name="help_keyboard">Tastatur</string>
-	<string name="help_pubkeys">Offentlige nøkler</string>
-	<string name="help_portforwards">Port Forwards</string>
 
 	<string name="pubkey_generate">Generer</string>
 	<string name="pubkey_import">Importer</string>
@@ -273,8 +266,6 @@
 	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
 	<string name="console_copy_start">Touch and drag\nor use directional pad\nto select area to copy</string>
 
-	<!-- Button to disconnect from the current host in a terminal. -->
-	<string name="console_menu_disconnect">Koble fra</string>
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">Lukk</string>
 	<!-- Button to begin copying from the terminal to the clipboard. -->
@@ -294,8 +285,6 @@
 	<string name="portforward_dynamic">Dynamisk (SOCKS)</string>
 	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
 	<string name="portforward_pos">Create port forward</string>
-	<!-- Button that cancels the creation of a port forward from the Port Forward Creation dialog. -->
-	<string name="portforward_neg">Avbryt</string>
 
 	<string name="portforward_done">Successfully created port forward</string>
 	<string name="portforward_problem">Problem creating port forward, maybe you're using ports under 1024 or port is already used?</string>
@@ -313,7 +302,6 @@
 	<!-- Selection choice to sort hosts by nickname. -->
 	<string name="list_menu_sortname">Sorter etter navn</string>
 	<string name="list_menu_settings">Innstillinger</string>
-	<string name="list_menu_help">Hjelp</string>
 
 	<string name="list_host_disconnect">Koble fra</string>
 	<string name="list_host_edit">Rediger vert</string>
@@ -343,18 +331,12 @@
 
 	<!-- Button to agree to license terms. -->
 	<string name="wizard_agree">Godta</string>
-	<!-- Button to cancel out of (i.e., not accept) the license terms. -->
-	<string name="wizard_cancel">Avbryt</string>
 	<!-- Button to go to the next page in the first time start-up wizard. -->
 	<string name="wizard_next">Neste</string>
 	<!-- Button to go to the previous page in the first time start-up wizard. -->
 	<string name="wizard_back">Tilbake</string>
 
 	<string name="terminal_no_hosts_connected">No hosts currently connected</string>
-
-	<string name="terminal_hostkey_warn">The authenticity of host '%1$s' can't be established.</string>
-	<string name="terminal_hostkey">RSA key fingerprint is %1$s</string>
-	<string name="terminal_hostkey_prompt">Er du sikker på at\ndu vil koble til?</string>
 
 	<string name="terminal_failed">Verifisering av vertsnøkkelen feilet.</string>
 

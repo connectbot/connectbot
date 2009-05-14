@@ -224,7 +224,7 @@ public class PortForwardListActivity extends ListActivity {
 							}
 						}
 					})
-					.setNegativeButton(R.string.portforward_neg, null).create().show();
+					.setNegativeButton(R.string.delete_neg, null).create().show();
 
 				return true;
 			}

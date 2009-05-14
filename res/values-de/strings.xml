@@ -14,23 +14,16 @@
 	<!-- Window title for Help index -->
 	<string name="title_help">Hilfe</string>
 
-	<string name="title_password">Passwort eingeben</string>
-	<string name="title_entropy">Sammle Entropie</string>
-
-	<string name="resolve_edit">Host bearbeiten</string>
 	<string name="resolve_connect">Verbinden</string>
 	<string name="resolve_entropy">Sammle Entropie</string>
 
 	<string name="menu_insert">Host hinzufügen</string>
 	<string name="menu_delete">Host löschen</string>
 	<string name="menu_preferences">Einstellungen</string>
-	<string name="menu_help">Hilfe</string>
 
 	<string name="help_intro">Wählen Sie eine Überschrift aus, um mehr Informationen zu einem bestimmten Thema zu erhalten!</string>
 	<string name="help_about">Über ConnectBot</string>
 	<string name="help_keyboard">Tastatur</string>
-	<string name="help_pubkeys">Pubkeys</string>
-	<string name="help_portforwards">Port-Weiterleitungen</string>
 
 	<string name="pubkey_generate">Erzeugen</string>
 	<string name="pubkey_import">Importieren</string>
@@ -273,8 +266,6 @@
 	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
 	<string name="console_copy_start">Berühren und ziehen oder Trackball verwenden\num zu kopierenden Bereich auszuwählen</string>
 
-	<!-- Button to disconnect from the current host in a terminal. -->
-	<string name="console_menu_disconnect">Verbindung trennen</string>
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">Schließen</string>
 	<!-- Button to begin copying from the terminal to the clipboard. -->
@@ -294,8 +285,6 @@
 	<string name="portforward_dynamic">Dynamisch (SOCKS)</string>
 	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
 	<string name="portforward_pos">Port-Weiterleitung anlegen</string>
-	<!-- Button that cancels the creation of a port forward from the Port Forward Creation dialog. -->
-	<string name="portforward_neg">Abbrechen</string>
 
 	<string name="portforward_done">Port-Weiterleitung angelegt.</string>
 	<string name="portforward_problem">Konnte Port-Weiterleitung nicht anlegen. Verwenden Sie Ports kleiner als 1024, oder wird der Port bereits verwendet?</string>
@@ -313,7 +302,6 @@
 	<!-- Selection choice to sort hosts by nickname. -->
 	<string name="list_menu_sortname">Nach Name sortieren</string>
 	<string name="list_menu_settings">Einstellungen</string>
-	<string name="list_menu_help">Hilfe</string>
 
 	<string name="list_host_disconnect">Verbindung trennen</string>
 	<string name="list_host_edit">Host editieren</string>
@@ -343,18 +331,12 @@
 
 	<!-- Button to agree to license terms. -->
 	<string name="wizard_agree">Zustimmung</string>
-	<!-- Button to cancel out of (i.e., not accept) the license terms. -->
-	<string name="wizard_cancel">Abbrechen</string>
 	<!-- Button to go to the next page in the first time start-up wizard. -->
 	<string name="wizard_next">Weiter</string>
 	<!-- Button to go to the previous page in the first time start-up wizard. -->
 	<string name="wizard_back">Zurück</string>
 
 	<string name="terminal_no_hosts_connected">No hosts currently connected</string>
-
-	<string name="terminal_hostkey_warn">Die Authentizität von host '%1$s' kann nicht garantiert werden.</string>
-	<string name="terminal_hostkey">RSA Schlüssel Fingerabdruck ist %1$s</string>
-	<string name="terminal_hostkey_prompt">Sind Sie sicher, dass Sie\neine Verbindung herstellen wollen?</string>
 
 	<string name="terminal_failed">Überprüfung des Host-Schlüssels fehlgeschlagen.</string>
 
