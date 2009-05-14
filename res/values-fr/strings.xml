@@ -45,8 +45,7 @@
 	<string name="pubkey_unknown_format">Format inconnu</string>
 	<string name="pubkey_change_password">Changer le mot de passe</string>
 	<string name="pubkey_list_pick">Pick from /sdcard</string>
-	<string name="pubkey_import_parse_problem">Problem parsing imported private key
-	</string>
+	<string name="pubkey_import_parse_problem">Problem parsing imported private key</string>
 	<string name="pubkey_unlock">Déverrouiller la clé</string>
 	<string name="pubkey_failed_add">Bad password for key '%1$s'. Authentication failed.</string>
 	<string name="pubkey_memory_load">Charger en mémoire</string>
@@ -88,7 +87,7 @@
 	<string name="prompt_continue_connecting">Are you sure you want\nto continue connecting?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">L'autenthicité du serveur '%1' ne peut être établie.</string>
+	<string name="host_authenticity_warning">L'autenthicité du serveur '%1$s' ne peut être établie.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">Host %1$s key fingerprint is %2$s</string>
 
@@ -263,11 +262,11 @@
 	<string name="hostpref_port_title">Port</string>
 
 	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
-	<string name="bind_minutes">Il ya %1 $s minutes</string>
+	<string name="bind_minutes">Il ya %1$s minutes</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
-	<string name="bind_hours">Il y a %1 $s heures</string>
+	<string name="bind_hours">Il y a %1$s heures</string>
 	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
-	<string name="bind_days">Il y a %1 $s jours</string>
+	<string name="bind_days">Il y a %1$s jours</string>
 
 	<!-- Message given when user copies from the terminal. -->
 	<string name="console_copy_done">%1$d octets copié dans le presse-papier</string>
@@ -351,7 +350,9 @@
 	<!-- Button to go to the previous page in the first time start-up wizard. -->
 	<string name="wizard_back">Précédent</string>
 
-	<string name="terminal_hostkey_warn">L'autenthicité du serveur '%1' ne peut être établie.</string>
+	<string name="terminal_no_hosts_connected">No hosts currently connected</string>
+
+	<string name="terminal_hostkey_warn">L'autenthicité du serveur '%1$s' ne peut être établie.</string>
 	<string name="terminal_hostkey">RSA key fingerprint is %1$s</string>
 	<string name="terminal_hostkey_prompt">Are you sure you want\nto continue connecting?</string>
 

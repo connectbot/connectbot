@@ -350,6 +350,8 @@
 	<!-- Button to go to the previous page in the first time start-up wizard. -->
 	<string name="wizard_back">Tillbaka</string>
 
+	<string name="terminal_no_hosts_connected">No hosts currently connected</string>
+
 	<string name="terminal_hostkey_warn">Identiteten av värden '%1$s' går ej att fastställa.</string>
 	<string name="terminal_hostkey">RSA-nyckel fingeravtrycket är %1$s</string>
 	<string name="terminal_hostkey_prompt">Är du säker att du vill\nfortsätta att ansluta?</string>

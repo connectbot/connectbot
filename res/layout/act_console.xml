@@ -26,7 +26,7 @@
 		android:id="@android:id/empty"
 		android:layout_width="fill_parent"  
 		android:layout_height="fill_parent"  
-		android:text="No hosts currently connected"
+		android:text="@string/terminal_no_hosts_connected"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:gravity="center" 
 		/>

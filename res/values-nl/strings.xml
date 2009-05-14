@@ -350,6 +350,8 @@
 	<!-- Button to go to the previous page in the first time start-up wizard. -->
 	<string name="wizard_back">Terug</string>
 
+	<string name="terminal_no_hosts_connected">No hosts currently connected</string>
+
 	<string name="terminal_hostkey_warn">De authenticatie van host '%1$s' kan niet worden vastgesteld.</string>
 	<string name="terminal_hostkey">RSA sleutel vingerafdruk is %1$s</string>
 	<string name="terminal_hostkey_prompt">Weet je zeker dat je\nwilt doorgaan met verbinden?</string>

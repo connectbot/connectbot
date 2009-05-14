@@ -37,6 +37,7 @@
 	<string name="pubkey_delete">Schlüssel löschen</string>
 	<string name="pubkey_gather_entropy">Sammle Entropie</string>
 	<string name="pubkey_touch_prompt">Berühren Sie diese Box, um Zufallszahlen zu erzeugen: %1$d%% fertig</string>
+	<string name="pubkey_touch_hint">Um eine gute Zufallsverteilung zu gewährleisten, bewegen Sie Ihren Finger zufällig über die Box unten!</string>
 	<string name="pubkey_generating">Erzeuge Schlüsselpaar...</string>
 	<string name="pubkey_copy_private">Privaten Schlüssel kopieren</string>
 	<string name="pubkey_copy_public">Öffentlichen Schlüssel kopieren</string>
@@ -74,6 +75,21 @@
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
 	<string name="prompt_pubkey_password">Passwort für Schlüssel '%1$s'</string>
+
+	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
+	<string name="host_verification_failure_warning_header">WARNUNG: IDENTIFIKATION DES ENTFERNTEN HOSTS HAT SICH GEÄNDERT!</string>
+	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
+	<string name="host_verification_failure_warning">MÖGLICHERWEISE TUT JEMAND ETWAS BÖSES!\nJemand könnte Sie jetzt gerade belauschen (man-in-the-middle attack)!\nEs ist auch möglich, dass nur der Host-Key geändert wurde.</string>
+
+	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
+	<string name="prompt_host_disconnected">Der Host hat die Verbindung beendet.\nSitzung schließen?</string>
+	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
+	<string name="prompt_continue_connecting">Sind Sie sicher, dass Sie sich verbinden wollen?</string>
+
+	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
+	<string name="host_authenticity_warning">Die Authentizität von Host '%1$s' kann nicht bestätigt werden.</string>
+	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
+	<string name="host_fingerprint">Fingerabdruck von Host %1$s Schlüssel ist %2$s</string>
 
 	<string name="alert_passwords_do_not_match_msg">Passwörter stimmen nicht überein!</string>
 	<string name="alert_wrong_password_msg">Falsches Passwort!</string>
@@ -215,6 +231,8 @@
 
 	<!-- Host post-login automation preference title -->
 	<string name="hostpref_postlogin_title">Post-Login Automatisierung</string>
+	<!-- Host post-login automation preference summary -->
+	<string name="hostpref_postlogin_summary">Befehle, die auf dem entfernten Host nach der Anmeldung gestartet werden sollen.</string>
 
 	<!-- Host compression preference title -->
 	<string name="hostpref_compression_title">Kompression</string>
@@ -332,6 +350,8 @@
 	<!-- Button to go to the previous page in the first time start-up wizard. -->
 	<string name="wizard_back">Zurück</string>
 
+	<string name="terminal_no_hosts_connected">No hosts currently connected</string>
+
 	<string name="terminal_hostkey_warn">Die Authentizität von host '%1$s' kann nicht garantiert werden.</string>
 	<string name="terminal_hostkey">RSA Schlüssel Fingerabdruck ist %1$s</string>
 	<string name="terminal_hostkey_prompt">Sind Sie sicher, dass Sie\neine Verbindung herstellen wollen?</string>
@@ -361,14 +381,7 @@
 	<string name="upgrade_pos">Ja, aktualisieren</string>
 	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
 	<string name="upgrade_neg">Nicht jetzt</string>
-	<string name="pubkey_touch_hint">Um eine gute Zufallsverteilung zu gewährleisten, bewegen Sie Ihren Finger zufällig über die Box unten!</string>
-	<string name="host_verification_failure_warning_header">WARNUNG: IDENTIFIKATION DES ENTFERNTEN HOSTS HAT SICH GEÄNDERT!</string>
-	<string name="host_verification_failure_warning">MÖGLICHERWEISE TUT JEMAND ETWAS BÖSES!\nJemand könnte Sie jetzt gerade belauschen (man-in-the-middle attack)!\nEs ist auch möglich, dass nur der Host-Key geändert wurde.</string>
-	<string name="prompt_host_disconnected">Der Host hat die Verbindung beendet.\nSitzung schließen?</string>
-	<string name="prompt_continue_connecting">Sind Sie sicher, dass Sie sich verbinden wollen?</string>
-	<string name="host_authenticity_warning">Die Authentizität von Host '%1$s' kann nicht bestätigt werden.</string>
-	<string name="host_fingerprint">Fingerabdruck von Host %1$s Schlüssel ist %2$</string>
-	<string name="hostpref_postlogin_summary">Befehle, die auf dem entfernten Host nach der Anmeldung gestartet werden sollen.</string>
+
 	<string name="color_red">rot</string>
 	<string name="color_green">grün</string>
 	<string name="color_blue">blau</string>

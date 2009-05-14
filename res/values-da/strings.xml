@@ -350,6 +350,8 @@
 	<!-- Button to go to the previous page in the first time start-up wizard. -->
 	<string name="wizard_back">Tilbage</string>
 
+	<string name="terminal_no_hosts_connected">No hosts currently connected</string>
+
 	<string name="terminal_hostkey_warn">The authenticity of host '%1$s' can't be established.</string>
 	<string name="terminal_hostkey">RSA nøgle fingeraftryk er %1$s</string>
 	<string name="terminal_hostkey_prompt">Er du sikker på at du ønsker\nat skabe forbindelse?</string>
