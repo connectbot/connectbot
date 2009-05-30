@@ -224,10 +224,13 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 		progress.setCancelable(false);
 		progress.show();
 
-		new Thread(mKeyGen).start();
+		Thread keyGenThread = new Thread(mKeyGen);
+		keyGenThread.setName("KeyGen");
+		keyGenThread.start();
 	}
 
 	private Handler handler = new Handler() {
+		@Override
 		public void handleMessage(Message msg) {
 			progress.dismiss();
 			GeneratePubkeyActivity.this.finish();

@@ -407,6 +407,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			public void sendTelnetCommand(byte cmd) {}
 			@Override
 			public void setWindowSize(int c, int r) {}
+			@Override
+			public void debug(String s) {}
 		};
 
 		emulation = null;
@@ -456,6 +458,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		// this is probably status reply information
 		buffer = new vt320() {
 			@Override
+			public void debug(String s) {
+				Log.d(TAG, s);
+			}
+
+			@Override
 			public void write(byte[] b) {
 				try {
 					if (b != null && stdin != null)
@@ -496,7 +503,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * Spawn thread to open connection and start login process.
 	 */
 	protected void startConnection() {
-		new Thread(new Runnable() {
+		Thread connectionThread = new Thread(new Runnable() {
 			public void run() {
 				try {
 					/* Uncomment when debugging SSH protocol:
@@ -552,7 +559,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					Log.e(TAG, "Problem in SSH connection thread during authentication", e);
 				}
 			}
-		}).start();
+		});
+		connectionThread.setName("Connection");
+		connectionThread.start();
 	}
 
 	/**
@@ -734,7 +743,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * and pasting clipboard.
 	 */
 	public void injectString(final String string) {
-		new Thread(new Runnable() {
+		Thread injectStringThread = new Thread(new Runnable() {
 			public void run() {
 				if(string == null || string.length() == 0) return;
 				KeyEvent[] events = keymap.getEvents(string.toCharArray());
@@ -743,7 +752,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					onKey(null, event.getKeyCode(), event);
 				}
 			}
-		}).start();
+		});
+		injectStringThread.setName("InjectString");
+		injectStringThread.start();
 	}
 
 	/**
@@ -789,6 +800,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 			// create thread to relay incoming connection data to buffer
 			relay = new Thread(new Relay());
+			relay.setName("Relay");
 			relay.start();
 
 			// force font-size to make sure we resizePTY as needed
@@ -826,13 +838,15 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 		// disconnection request hangs if we havent really connected to a host yet
 		// temporary fix is to just spawn disconnection into a thread
-		new Thread(new Runnable() {
+		Thread disconnectThread = new Thread(new Runnable() {
 			public void run() {
 				if(session != null)
 					session.close();
 				connection.close();
 			}
-		}).start();
+		});
+		disconnectThread.setName("Disconnect");
+		disconnectThread.start();
 
 		disconnected = true;
 		authenticated = false;
@@ -843,7 +857,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			if (disconnectListener != null)
 				disconnectListener.onDisconnected(TerminalBridge.this);
 		} else {
-			new Thread(new Runnable() {
+			Thread disconnectPromptThread = new Thread(new Runnable() {
 				public void run() {
 					Boolean result = promptHelper.requestBooleanPrompt(
 							manager.res.getString(R.string.prompt_host_disconnected), true);
@@ -855,7 +869,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 							disconnectListener.onDisconnected(TerminalBridge.this);
 					}
 				}
-			}).start();
+			});
+			disconnectPromptThread.setName("DisconnectPrompt");
+			disconnectPromptThread.start();
 		}
 	}
 

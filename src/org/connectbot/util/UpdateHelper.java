@@ -119,7 +119,9 @@ public final class UpdateHelper implements Runnable {
 		if(shouldCheck) {
 			// spawn thread to check for update
 			// Note that this class should be marked final because a thread is started in the constructor.
-			new Thread(this).start();
+			Thread updateThread = new Thread(this);
+			updateThread.setName("UpdateHelper");
+			updateThread.start();
 
 			// update our last-checked time
 			Editor editor = prefs.edit();
