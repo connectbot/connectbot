@@ -94,22 +94,21 @@ public final class UpdateHelper implements Runnable {
 		} catch(Exception e) {
 			Log.e(TAG, "Couldn't find package information in PackageManager", e);
 			return;
-
 		}
 
 		// decide if we really need to check for update
 		Resources res = context.getResources();
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-		String frequency = prefs.getString(res.getString(R.string.pref_update), res.getString(R.string.list_update_daily));
+		String frequency = prefs.getString(res.getString(R.string.pref_update), "Daily");
 		long lastChecked = prefs.getLong(res.getString(R.string.pref_lastchecked), 0);
 		long now = (System.currentTimeMillis() / 1000);
 		long passed = now - lastChecked;
 
 		boolean shouldCheck = false;
-		if(frequency.equals(res.getString(R.string.list_update_daily))) {
+		if ("Daily".equals(frequency)) {
 			shouldCheck = (passed > 60 * 60 * 24);
-		} else if(frequency.equals(res.getString(R.string.list_update_weekly))) {
+		} else if ("Weekly".equals(frequency)) {
 			shouldCheck = (passed > 60 * 60 * 24 * 7);
 		}
 

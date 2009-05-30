@@ -17,11 +17,25 @@
 		<item>@string/list_rotation_auto</item>
 	</string-array>
 
+	<string-array name="list_rotation_values">
+		<item>default</item>
+		<item>landscape</item>
+		<item>portrait</item>
+		<item>automatic</item>
+	</string-array>
+
 	<string-array name="list_camera">
 		<item>@string/list_camera_ctrlaspace</item>
 		<item>@string/list_camera_ctrla</item>
 		<item>@string/list_camera_esc</item>
 		<item>@string/list_camera_none</item>
+	</string-array>
+
+	<string-array name="list_camera_values">
+		<item>ctrl+a space</item>
+		<item>ctrl+a</item>
+		<item>esc</item>
+		<item>none</item>
 	</string-array>
 
 	<string-array name="list_colors">
@@ -31,16 +45,35 @@
 		<item>@string/color_gray</item>
 	</string-array>
 
+	<string-array name="list_color_values">
+		<item>red</item>
+		<item>green</item>
+		<item>blue</item>
+		<item>gray</item>
+	</string-array>
+
 	<string-array name="list_update">
 		<item>@string/list_update_daily</item>
 		<item>@string/list_update_weekly</item>
 		<item>@string/list_update_never</item>
 	</string-array>
 
+	<string-array name="list_update_values">
+		<item>daily</item>
+		<item>weekly</item>
+		<item>never</item>
+	</string-array>
+
 	<string-array name="list_keymode">
 		<item>@string/list_keymode_right</item>
 		<item>@string/list_keymode_left</item>
 		<item>@string/list_keymode_none</item>
+	</string-array>
+
+	<string-array name="list_keymode_values">
+		<item>Use right-side keys</item>
+		<item>Use left-side keys</item>
+		<item>none</item>
 	</string-array>
 
 	<string-array name="list_pubkeyids">

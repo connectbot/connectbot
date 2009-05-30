@@ -1064,16 +1064,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 				// check to see which shortcut the camera button triggers
 				String camera = manager.prefs.getString(manager.res.getString(R.string.pref_camera), manager.res.getString(R.string.list_camera_ctrlaspace));
-				if(manager.res.getString(R.string.list_camera_ctrlaspace).equals(camera)) {
+				if("Ctrl+A then Space".equals(camera)) {
 					stdin.write(0x01);
 					stdin.write(' ');
-
-				} else if(manager.res.getString(R.string.list_camera_ctrla).equals(camera)) {
+				} else if("Ctrl+A".equals(camera)) {
 					stdin.write(0x01);
-
-				} else if(manager.res.getString(R.string.list_camera_esc).equals(camera)) {
+				} else if("Esc".equals(camera)) {
 					((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
-
 				}
 
 				break;

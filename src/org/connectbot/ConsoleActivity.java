@@ -307,18 +307,18 @@ public class ConsoleActivity extends Activity {
 
 		String rotateDefault;
 		if (Resources.getSystem().getConfiguration().keyboard == Configuration.KEYBOARD_NOKEYS)
-			rotateDefault = getString(R.string.list_rotation_port);
+			rotateDefault = "Force portrait";
 		else
-			rotateDefault = getString(R.string.list_rotation_land);
+			rotateDefault = "Force landscape";
 
 		String rotate = prefs.getString(getString(R.string.pref_rotation), rotateDefault);
-		if (getString(R.string.list_rotation_default).equals(rotate))
+		if ("Default".equals(rotate))
 			rotate = rotateDefault;
 
 		// request a forced orientation if requested by user
-		if (getString(R.string.list_rotation_land).equals(rotate))
+		if ("Force landscape".equals(rotate))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		else if (getString(R.string.list_rotation_port).equals(rotate))
+		else if ("Force portrait".equals(rotate))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		// TODO find proper way to disable volume key beep if it exists.

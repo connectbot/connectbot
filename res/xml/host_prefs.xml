@@ -28,7 +28,7 @@
 		android:key="color"
 		android:title="@string/hostpref_color_title"
 		android:entries="@array/list_colors"
-		android:entryValues="@array/list_colors"
+		android:entryValues="@array/list_color_values"
 		/>
 <!--  
 	<CheckBoxPreference
