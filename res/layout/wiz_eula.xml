@@ -2,94 +2,94 @@
 <!--
 	ConnectBot: simple, powerful, open-source SSH client for Android
 	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
-	
+
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
-	
+
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
-	
+
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
+
 <ScrollView
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:layout_weight="1"
 	>
-	
-<LinearLayout
-	android:orientation="vertical"
-	android:layout_width="wrap_content"
-	android:layout_height="wrap_content"
-	android:padding="10dip"
-	>
 
-	<TextView
-		android:layout_width="fill_parent"
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="ConnectBot is a simple, powerful, open-source Secure Shell (SSH) client for your Android device."
-		android:textAppearance="?android:attr/textAppearanceMedium"
-		/>
+		android:padding="10dip"
+		>
 
-	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:paddingTop="10dip"
-		android:text="It can manage several SSH sessions, create secure tunnels, and copy/paste between other apps."
-		android:textAppearance="?android:attr/textAppearanceMedium"
-		/>
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="ConnectBot is a simple, powerful, open-source Secure Shell (SSH) client for your Android device."
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			/>
 
-	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:paddingTop="10dip"
-		android:text="Before we get started, we need to get some legal information out of the way.  ConnectBot is provided under a GPLv3 license.  Here are a few key points:\n\nThis program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details."
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		/>
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="10dip"
+			android:text="It can manage several SSH sessions, create secure tunnels, and copy/paste between other apps."
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			/>
 
-	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:paddingTop="10dip"
-		android:autoLink="web"
-		android:text="You can view the full text at http://www.gnu.org/licenses/gpl-3.0.txt"
-		android:textSize="14sp"
-		android:textColor="#bebebe"
-		/>
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="10dip"
+			android:text="Before we get started, we need to get some legal information out of the way.  ConnectBot is provided under a GPLv3 license.  Here are a few key points:\n\nThis program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details."
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			/>
 
- 	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:paddingTop="10dip"
-		android:text="About and Credits"
-		android:textAppearance="?android:attr/textAppearanceMedium"
-		/>
- 
-	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:paddingTop="10dip"
-		android:autoLink="web"
-		android:text="Copyright \u00a9 2007-2008 Kenny Root http://the-b.org, Jeffrey Sharkey http://jsharkey.org\n\nBased in part on the Trilead SSH2 client, provided under a BSD-style license.  Copyright \u00a9 2007 Trilead AG.  http://www.trilead.com\n\nAlso based on JTA Telnet/SSH client, provided under the GPLv2 license.  Copyright \u00a9 Matthias L. Jugel, Marcus Meiner 1996-2005.  http://www.javassh.org\n\nAlso based in part on the JSOCKS library, provided under the GNU LGPL license. http://jsocks.sourceforge.net\n\nAlso based in part on JZlib provided under a BSD-style license. Copyright \u00a9 JCraft, Inc., 2000-20004 http://www.jcraft.com"
-		android:textSize="14sp"
-		android:textColor="#bebebe"
-		/>
- 
-		
-	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:paddingTop="10dip"
-		android:text="@string/msg_version"
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		/>
-		
-</LinearLayout>
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="10dip"
+			android:autoLink="web"
+			android:text="You can view the full text at http://www.gnu.org/licenses/gpl-3.0.txt"
+			android:textSize="14sp"
+			android:textColor="#bebebe"
+			/>
+
+ 		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="10dip"
+			android:text="About and Credits"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			/>
+
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="10dip"
+			android:autoLink="web"
+			android:text="Copyright \u00a9 2007-2008 Kenny Root http://the-b.org, Jeffrey Sharkey http://jsharkey.org\n\nBased in part on the Trilead SSH2 client, provided under a BSD-style license.  Copyright \u00a9 2007 Trilead AG.  http://www.trilead.com\n\nAlso based on JTA Telnet/SSH client, provided under the GPLv2 license.  Copyright \u00a9 Matthias L. Jugel, Marcus Meiner 1996-2005.  http://www.javassh.org\n\nAlso based in part on the JSOCKS library, provided under the GNU LGPL license. http://jsocks.sourceforge.net\n\nAlso based in part on JZlib provided under a BSD-style license. Copyright \u00a9 JCraft, Inc., 2000-20004 http://www.jcraft.com"
+			android:textSize="14sp"
+			android:textColor="#bebebe"
+			/>
+
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="10dip"
+			android:text="@string/msg_version"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			/>
+
+	</LinearLayout>
 
 </ScrollView>
