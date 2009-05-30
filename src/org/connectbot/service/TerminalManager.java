@@ -27,10 +27,10 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.connectbot.R;
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PubkeyBean;
 import org.connectbot.util.HostDatabase;
+import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
@@ -76,7 +76,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	protected PubkeyDatabase pubkeydb;
 
 	protected SharedPreferences prefs;
-	private String pref_emulation, pref_scrollback, pref_keymode, pref_memkeys, pref_wifilock;
 
 	private final IBinder binder = new TerminalBinder();
 
@@ -90,11 +89,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public void onCreate() {
 		Log.i(TAG, "Starting background service");
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		pref_emulation = getResources().getString(R.string.pref_emulation);
-		pref_scrollback = getResources().getString(R.string.pref_scrollback);
-		pref_keymode = getResources().getString(R.string.pref_keymode);
-		pref_memkeys = getResources().getString(R.string.pref_memkeys);
-		pref_wifilock = getResources().getString(R.string.pref_wifilock);
 
 		res = getResources();
 
@@ -176,28 +170,28 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 
 	public String getEmulation() {
-		return prefs.getString(pref_emulation, "screen");
+		return prefs.getString(PreferenceConstants.EMULATION, "screen");
 	}
 
 	public int getScrollback() {
 		int scrollback = 140;
 		try {
-			scrollback = Integer.parseInt(prefs.getString(pref_scrollback, "140"));
+			scrollback = Integer.parseInt(prefs.getString(PreferenceConstants.SCROLLBACK, "140"));
 		} catch(Exception e) {
 		}
 		return scrollback;
 	}
 
 	public boolean isSavingKeys() {
-		return prefs.getBoolean(pref_memkeys, true);
+		return prefs.getBoolean(PreferenceConstants.MEMKEYS, true);
 	}
 
 	public String getKeyMode() {
-		return prefs.getString(pref_keymode, getString(R.string.list_keymode_right)); // "Use right-side keys"
+		return prefs.getString(PreferenceConstants.KEYMODE, PreferenceConstants.KEYMODE_RIGHT); // "Use right-side keys"
 	}
 
 	public boolean isLockingWifi() {
-		return prefs.getBoolean(pref_wifilock, true);
+		return prefs.getBoolean(PreferenceConstants.WIFI_LOCK, true);
 	}
 
 	/**

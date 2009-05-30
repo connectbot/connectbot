@@ -108,31 +108,6 @@
 	-->
 	<string name="msg_version">ConnectBot (working copy)</string>
 
-	<!-- Do not translate -->
-	<string name="pref_emulation">emulation</string>
-	<!-- Do not translate -->
-	<string name="pref_scrollback">scrollback</string>
-	<!-- Do not translate -->
-	<string name="pref_keepalive">keepalive</string>
-	<!-- Do not translate -->
-	<string name="pref_keymode">keymode</string>
-	<!-- Do not translate -->
-	<string name="pref_memkeys">memkeys</string>
-	<!-- Do not translate -->
-	<string name="pref_rotation">rotation</string>
-	<!-- Do not translate -->
-	<string name="pref_camera">camera</string>
-	<!-- Do not translate -->
-	<string name="pref_update">update</string>
-	<!-- Do not translate -->
-	<string name="pref_lastchecked">lastchecked</string>
-	<!-- Do not translate -->
-	<string name="pref_fullscreen">fullscreen</string>
-	<!-- Do not translate -->
-	<string name="pref_wifilock">wifilock</string>
-	<!-- Do not translate -->
-	<string name="pref_bumpyarrows">bumpyarrows</string>
-
 	<!-- The category title for terminal emulation preferences. -->
 	<string name="pref_emulation_category">Terminal emulation</string>
 

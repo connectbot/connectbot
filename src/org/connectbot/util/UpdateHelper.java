@@ -100,15 +100,15 @@ public final class UpdateHelper implements Runnable {
 		Resources res = context.getResources();
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-		String frequency = prefs.getString(res.getString(R.string.pref_update), "Daily");
-		long lastChecked = prefs.getLong(res.getString(R.string.pref_lastchecked), 0);
+		String frequency = prefs.getString(PreferenceConstants.UPDATE, PreferenceConstants.UPDATE_DAILY);
+		long lastChecked = prefs.getLong(PreferenceConstants.LAST_CHECKED, 0);
 		long now = (System.currentTimeMillis() / 1000);
 		long passed = now - lastChecked;
 
 		boolean shouldCheck = false;
-		if ("Daily".equals(frequency)) {
+		if (PreferenceConstants.UPDATE_DAILY.equals(frequency)) {
 			shouldCheck = (passed > 60 * 60 * 24);
-		} else if ("Weekly".equals(frequency)) {
+		} else if (PreferenceConstants.UPDATE_WEEKLY.equals(frequency)) {
 			shouldCheck = (passed > 60 * 60 * 24 * 7);
 		}
 
