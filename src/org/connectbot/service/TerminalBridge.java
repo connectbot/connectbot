@@ -42,6 +42,7 @@ import org.connectbot.bean.PortForwardBean;
 import org.connectbot.bean.PubkeyBean;
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.util.HostDatabase;
+import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
@@ -901,7 +902,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				if (disconnected || !sessionOpen)
 					return false;
 
-				if ("Use right-side keys".equals(keymode)) {
+				if (PreferenceConstants.KEYMODE_RIGHT.equals(keymode)) {
 					if (keyCode == KeyEvent.KEYCODE_ALT_RIGHT
 							&& (metaState & META_SLASH) != 0) {
 						metaState &= ~(META_SLASH | META_TRANSIENT);
@@ -913,7 +914,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 						stdin.write(0x09);
 						return true;
 					}
-				} else if ("Use left-side keys".equals(keymode)) {
+				} else if (PreferenceConstants.KEYMODE_LEFT.equals(keymode)) {
 					if (keyCode == KeyEvent.KEYCODE_ALT_LEFT
 							&& (metaState & META_SLASH) != 0) {
 						metaState &= ~(META_SLASH | META_TRANSIENT);
@@ -1063,13 +1064,15 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			case KeyEvent.KEYCODE_CAMERA:
 
 				// check to see which shortcut the camera button triggers
-				String camera = manager.prefs.getString(manager.res.getString(R.string.pref_camera), manager.res.getString(R.string.list_camera_ctrlaspace));
-				if("Ctrl+A then Space".equals(camera)) {
+				String camera = manager.prefs.getString(
+						PreferenceConstants.CAMERA,
+						PreferenceConstants.CAMERA_CTRLA_SPACE);
+				if(PreferenceConstants.CAMERA_CTRLA_SPACE.equals(camera)) {
 					stdin.write(0x01);
 					stdin.write(' ');
-				} else if("Ctrl+A".equals(camera)) {
+				} else if(PreferenceConstants.CAMERA_CTRLA.equals(camera)) {
 					stdin.write(0x01);
-				} else if("Esc".equals(camera)) {
+				} else if(PreferenceConstants.CAMERA_ESC.equals(camera)) {
 					((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
 				}
 
@@ -1294,7 +1297,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		int width = parent.getWidth();
 		int height = parent.getHeight();
 
-		bumpyArrows = manager.prefs.getBoolean(manager.res.getString(R.string.pref_bumpyarrows), true);
+		bumpyArrows = manager.prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, true);
 		vibrator = (Vibrator) parent.getContext().getSystemService(Context.VIBRATOR_SERVICE);
 		clipboard = (ClipboardManager) parent.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
 

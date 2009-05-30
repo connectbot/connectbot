@@ -24,6 +24,7 @@ import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
+import org.connectbot.util.PreferenceConstants;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -81,8 +82,6 @@ public class ConsoleActivity extends Activity {
 	private SharedPreferences prefs = null;
 
 	private PowerManager.WakeLock wakelock = null;
-
-	private String PREF_KEEPALIVE = null;
 
 	protected Uri requested;
 
@@ -300,25 +299,25 @@ public class ConsoleActivity extends Activity {
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		// hide status bar if requested by user
-		if (prefs.getBoolean(getString(R.string.pref_fullscreen), false)) {
+		if (prefs.getBoolean(PreferenceConstants.FULLSCREEN, false)) {
 			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 					WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		}
 
 		String rotateDefault;
 		if (Resources.getSystem().getConfiguration().keyboard == Configuration.KEYBOARD_NOKEYS)
-			rotateDefault = "Force portrait";
+			rotateDefault = PreferenceConstants.ROTATION_PORTRAIT;
 		else
-			rotateDefault = "Force landscape";
+			rotateDefault = PreferenceConstants.ROTATION_LANDSCAPE;
 
-		String rotate = prefs.getString(getString(R.string.pref_rotation), rotateDefault);
-		if ("Default".equals(rotate))
+		String rotate = prefs.getString(PreferenceConstants.ROTATION, rotateDefault);
+		if (PreferenceConstants.ROTATION_DEFAULT.equals(rotate))
 			rotate = rotateDefault;
 
 		// request a forced orientation if requested by user
-		if ("Force landscape".equals(rotate))
+		if (PreferenceConstants.ROTATION_LANDSCAPE.equals(rotate))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		else if ("Force portrait".equals(rotate))
+		else if (PreferenceConstants.ROTATION_PORTRAIT.equals(rotate))
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		// TODO find proper way to disable volume key beep if it exists.
@@ -326,8 +325,6 @@ public class ConsoleActivity extends Activity {
 
 		PowerManager manager = (PowerManager)getSystemService(Context.POWER_SERVICE);
 		wakelock = manager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, TAG);
-
-		PREF_KEEPALIVE = getResources().getString(R.string.pref_keepalive);
 
 		// handle requested console from incoming intent
 		requested = getIntent().getData();
@@ -704,7 +701,7 @@ public class ConsoleActivity extends Activity {
 
 		// make sure we dont let the screen fall asleep
 		// this also keeps the wifi chipset from disconnecting us
-		if(wakelock != null && prefs.getBoolean(PREF_KEEPALIVE, true))
+		if(wakelock != null && prefs.getBoolean(PreferenceConstants.KEEP_ALIVE, true))
 			wakelock.acquire();
 
 	}

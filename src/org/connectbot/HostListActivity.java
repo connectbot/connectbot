@@ -26,6 +26,7 @@ import org.connectbot.bean.HostBean;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.HostDatabase;
+import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.UpdateHelper;
 
 import android.app.Activity;
@@ -123,10 +124,6 @@ public class HostListActivity extends ListActivity {
 
 	}
 
-
-
-	public final static String PREF_EULA = "eula", PREF_SORTBYCOLOR = "sortByColor";
-
 	public final static int REQUEST_EDIT = 1;
 	public final static int REQUEST_EULA = 2;
 
@@ -138,7 +135,7 @@ public class HostListActivity extends ListActivity {
 			if(resultCode == Activity.RESULT_OK) {
 				// yay they agreed, so store that info
 				Editor edit = prefs.edit();
-				edit.putBoolean(PREF_EULA, true);
+				edit.putBoolean(PreferenceConstants.EULA, true);
 				edit.commit();
 			} else {
 				// user didnt agree, so close
@@ -163,7 +160,7 @@ public class HostListActivity extends ListActivity {
 		// check for eula agreement
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-		boolean agreed = prefs.getBoolean(PREF_EULA, false);
+		boolean agreed = prefs.getBoolean(PreferenceConstants.EULA, false);
 		if(!agreed) {
 			this.startActivityForResult(new Intent(this, WizardActivity.class), REQUEST_EULA);
 		}
@@ -177,7 +174,7 @@ public class HostListActivity extends ListActivity {
 		this.hostdb = new HostDatabase(this);
 		ListView list = this.getListView();
 
-		this.sortedByColor = prefs.getBoolean(PREF_SORTBYCOLOR, false);
+		this.sortedByColor = prefs.getBoolean(PreferenceConstants.SORT_BY_COLOR, false);
 		this.updateList();
 
 		//this.list.setSelector(R.drawable.highlight_disabled_pressed);
@@ -408,7 +405,7 @@ public class HostListActivity extends ListActivity {
 
 	protected void updateList() {
 		Editor edit = prefs.edit();
-		edit.putBoolean(PREF_SORTBYCOLOR, sortedByColor);
+		edit.putBoolean(PreferenceConstants.SORT_BY_COLOR, sortedByColor);
 		edit.commit();
 
 		if (hostdb == null)
