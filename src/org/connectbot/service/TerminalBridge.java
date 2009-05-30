@@ -255,16 +255,16 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 								}
 
 								while (bb.position() < n) {
-									bb = ByteBuffer.wrap(b, curpos, cr.length());
+									ByteBuffer replacebb = ByteBuffer.wrap(b, curpos, cr.length());
 
 									cb.clear();
-									replacer.decode(bb, cb, true);
+									replacer.decode(replacebb, cb, true);
 
 									((vt320) buffer).putString(cb.array(), 0, cb.position());
 
 									curpos += cr.length();
 
-									bb = ByteBuffer.wrap(b, curpos, n - curpos);
+									bb.position(curpos);
 
 									cb.clear();
 									cr = cd.decode(bb, cb, true);
