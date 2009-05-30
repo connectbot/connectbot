@@ -36,16 +36,18 @@ import java.util.Properties;
  * @author  Matthias L. Jugel, Marcus Mei�ner
  */
 public abstract class vt320 extends VDUBuffer implements VDUInput {
-	
+
   /** The current version id tag.<P>
    * $Id: vt320.java 507 2005-10-25 10:14:52Z marcus $
-   * 
+   *
    */
   public final static String ID = "$Id: vt320.java 507 2005-10-25 10:14:52Z marcus $";
 
   /** the debug level */
   private final static int debug = 0;
-  
+  private StringBuilder debugStr;
+  public abstract void debug(String notice);
+
   /**
    * Write an answer back to the remote host. This is needed to be able to
    * send terminal answers requests like status and type information.
@@ -68,7 +70,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
 	s.getChars(0, len, tmp, 0);
 	putString(tmp, 0, len);
   }
-  
+
   /**
    * Put string at current cursor position. Moves cursor
    * according to the String. Does NOT wrap.
@@ -128,7 +130,17 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     int oldrows = getRows();
     //int oldcols = getColumns();
 
-    if (debug>2) System.err.println("setscreensize ("+c+","+r+","+broadcast+")");
+    if (debug>2) {
+      debugStr.append("setscreensize (")
+        .append(c)
+        .append(',')
+        .append(r)
+        .append(',')
+        .append(broadcast)
+        .append(')');
+      debug(debugStr.toString());
+      debugStr.setLength(0);
+    }
 
     super.setScreenSize(c,r,false);
 
@@ -153,6 +165,8 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     setTerminalID("vt320");
     setBufferSize(100);
     //setBorder(2, false);
+
+    debugStr = new StringBuilder();
 
     gx = new char[4];
     reset();
@@ -470,7 +484,14 @@ public void setScreenSize(int c, int r, boolean broadcast) {
    * @param s the string to be sent
    */
   private boolean write(String s, boolean doecho) {
-    if (debug > 2) System.out.println("write(|" + s + "|," + doecho);
+    if (debug > 2) {
+      debugStr.append("write(|")
+        .append(s)
+        .append("|,")
+        .append(doecho);
+      debug(debugStr.toString());
+      debugStr.setLength(0);
+    }
     if (s == null) // aka the empty string.
       return true;
     /* NOTE: getBytes() honours some locale, it *CONVERTS* the string.
@@ -691,7 +712,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
   static String unEscape(String tmp) {
     int idx = 0, oldidx = 0;
     String cmd;
-    // System.err.println("unescape("+tmp+")");
+    // f.println("unescape("+tmp+")");
     cmd = "";
     while ((idx = tmp.indexOf('\\', oldidx)) >= 0 &&
             ++idx <= tmp.length()) {
@@ -775,7 +796,17 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     boolean shift = (modifiers & VDUInput.KEY_SHIFT) != 0;
     boolean alt = (modifiers & VDUInput.KEY_ALT) != 0;
 
-    if (debug > 1) System.out.println("keyPressed("+keyCode+", "+(int)keyChar+", "+modifiers+")");
+    if (debug > 1) {
+      debugStr.append("keyPressed(")
+        .append(keyCode)
+        .append(", ")
+        .append((int)keyChar)
+        .append(", ")
+        .append(modifiers)
+        .append(')');
+      debug(debugStr.toString());
+      debugStr.setLength(0);
+    }
 
     int xind;
     String fmap[];
@@ -895,7 +926,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
   }
 /*
   public void keyReleased(KeyEvent evt) {
-    if (debug > 1) System.out.println("keyReleased("+evt+")");
+    if (debug > 1) debug("keyReleased("+evt+")");
     // ignore
   }
 */
@@ -908,7 +939,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     boolean shift = (modifiers & VDUInput.KEY_SHIFT) != 0;
     boolean alt = (modifiers & VDUInput.KEY_ALT) != 0;
 
-    if (debug > 1) System.out.println("keyTyped("+keyCode+", "+(int)keyChar+", "+modifiers+")");
+    if (debug > 1) debug("keyTyped("+keyCode+", "+(int)keyChar+", "+modifiers+")");
 
     if (keyChar == '\t') {
       if (shift) {
@@ -939,7 +970,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     }
 
     if ((keyCode == 10) && !control) {
-      System.out.println("Sending \\r");
+      debug("Sending \\r");
       write("\r", false);
       return;
     }
@@ -1092,7 +1123,10 @@ public void setScreenSize(int c, int r, boolean broadcast) {
   }
 
   private void handle_dcs(String dcs) {
-    System.out.println("DCS: " + dcs);
+    debugStr.append("DCS: ")
+      .append(dcs);
+    debug(debugStr.toString());
+    debugStr.setLength(0);
   }
 
   private void handle_osc(String osc) {
@@ -1112,10 +1146,13 @@ public void setScreenSize(int c, int r, boolean broadcast) {
 					display.setColor(colorIndex, red, green, blue);
 				}
 			} catch (Exception e) {
-				System.out.println("OSC: invalid color sequence encountered: " + osc);
+				debugStr.append("OSC: invalid color sequence encountered: ")
+				  .append(osc);
+				debug(debugStr.toString());
+				debugStr.setLength(0);
 			}
 		} else
-			System.out.println("OSC: " + osc);
+			debug("OSC: " + osc);
   }
 
   private final static char unimap[] = {
@@ -1420,11 +1457,26 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     int columns = getColumns();
     // byte msg[];
 
-    if (debug > 4) System.out.println("putChar(" + c + " [" + ((int) c) + "]) at R=" + R + " , C=" + C + ", columns=" + columns + ", rows=" + rows);
+    if (debug > 4) {
+      debugStr.append("putChar(")
+        .append(c)
+        .append(" [")
+        .append((int) c)
+        .append("]) at R=")
+        .append(R)
+        .append(" , C=")
+        .append(C)
+        .append(", columns=")
+        .append(columns)
+        .append(", rows=")
+        .append(rows);
+      debug(debugStr.toString());
+      debugStr.setLength(0);
+    }
     //markLine(R, 1);
     if (c > 255) {
       if (debug > 0)
-        System.out.println("char > 255:" + (int) c);
+        debug("char > 255:" + (int) c);
       //return;
     }
 
@@ -1447,17 +1499,25 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               else
                 insertLine(R, 1, SCROLL_DOWN);
               if (debug > 1)
-                System.out.println("RI");
+                debug("RI");
               break;
             case IND:
-              if (debug > 2)
-                System.out.println("IND at " + R + ", tm is " + getTopMargin() + ", bm is " + getBottomMargin());
+              if (debug > 2) {
+                debugStr.append("IND at ")
+                  .append(R)
+                  .append(", tm is ")
+                  .append(getTopMargin())
+                  .append(", bm is ")
+                  .append(getBottomMargin());
+                debug(debugStr.toString());
+                debugStr.setLength(0);
+              }
               if (R == getBottomMargin() || R == rows - 1)
                 insertLine(R, 1, SCROLL_UP);
               else
                 R++;
               if (debug > 1)
-                System.out.println("IND (at " + R + " )");
+                debug("IND (at " + R + " )");
               break;
             case NEL:
               if (R == getBottomMargin() || R == rows - 1)
@@ -1466,12 +1526,12 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 R++;
               C = 0;
               if (debug > 1)
-                System.out.println("NEL (at " + R + " )");
+                debug("NEL (at " + R + " )");
               break;
             case HTS:
               Tabs[C] = 1;
               if (debug > 1)
-                System.out.println("HTS");
+                debug("HTS");
               break;
             case DCS:
               dcs = "";
@@ -1528,7 +1588,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case '\n': // 10 LF
             if (debug > 3)
-              System.out.println("R= " + R + ", bm " + getBottomMargin() + ", tm=" + getTopMargin() + ", rows=" + rows);
+              debug("R= " + R + ", bm " + getBottomMargin() + ", tm=" + getTopMargin() + ", rows=" + rows);
             if (!vms) {
               if (lastwaslf != 0 && lastwaslf != c)   //  Ray: I do not understand this logic.
                 break;
@@ -1565,7 +1625,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               if (c < 32) {
                 if (c != 0)
                   if (debug > 0)
-                    System.out.println("TSTATE_DATA char: " + ((int) c));
+                    debug("TSTATE_DATA char: " + ((int) c));
                 /*break; some BBS really want those characters, like hearst etc. */
                 if (c == 0) /* print 0 ... you bet */
                   break;
@@ -1581,7 +1641,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                   if (R < bot - 1)
                     R++;
                   else {
-                    if (debug > 3) System.out.println("scrolling due to wrap at " + R);
+                    if (debug > 3) debug("scrolling due to wrap at " + R);
                     insertLine(R, 1, SCROLL_UP);
                   }
                   C = 0;
@@ -1622,7 +1682,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                       mapped = true;
                       break;
                     default:
-                      System.out.println("Unsupported GL mapping: " + gx[thisgl]);
+                      debug("Unsupported GL mapping: " + gx[thisgl]);
                       break;
                   }
                 }
@@ -1640,7 +1700,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                       mapped = true;
                       break;
                     default:
-                      System.out.println("Unsupported GR mapping: " + gx[gr]);
+                      debug("Unsupported GR mapping: " + gx[gr]);
                       break;
                   }
                 }
@@ -1692,7 +1752,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             output8bit = true;
             break;
           default:
-            System.out.println("ESC <space> " + c + " unhandled.");
+            debug("ESC <space> " + c + " unhandled.");
         }
         break;
       case TSTATE_ESC:
@@ -1746,7 +1806,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               R++;
             C = 0;
             if (debug > 1)
-              System.out.println("ESC E (at " + R + ")");
+              debug("ESC E (at " + R + ")");
             break;
           case 'D': /* IND */
             if (R == getBottomMargin() || R == rows - 1)
@@ -1754,7 +1814,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             else
               R++;
             if (debug > 1)
-              System.out.println("ESC D (at " + R + " )");
+              debug("ESC D (at " + R + " )");
             break;
           case 'J': /* erase to end of screen */
             if (R < rows - 1)
@@ -1767,7 +1827,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               deleteArea(C, R, columns - C, 1, attributes);
             break;
           case 'M': // RI
-            System.out.println("ESC M : R is "+R+", tm is "+getTopMargin()+", bm is "+getBottomMargin());
+            debug("ESC M : R is "+R+", tm is "+getTopMargin()+", bm is "+getBottomMargin());
             if (R > getTopMargin()) { // just go up 1 line.
               R--;
             } else { // scroll down
@@ -1775,11 +1835,11 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             }
             /* else do nothing ; */
             if (debug > 2)
-              System.out.println("ESC M ");
+              debug("ESC M ");
             break;
           case 'H':
             if (debug > 1)
-              System.out.println("ESC H at " + C);
+              debug("ESC H at " + C);
             /* right border probably ...*/
             if (C >= columns)
               C = columns - 1;
@@ -1794,7 +1854,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
           case '=':
             /*application keypad*/
             if (debug > 0)
-              System.out.println("ESC =");
+              debug("ESC =");
             keypadmode = true;
             break;
           case '<': /* vt52 mode off */
@@ -1802,7 +1862,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case '>': /*normal keypad*/
             if (debug > 0)
-              System.out.println("ESC >");
+              debug("ESC >");
             keypadmode = false;
             break;
           case '7': /*save cursor, attributes, margins */
@@ -1816,7 +1876,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             Stm = getTopMargin();
             Sbm = getBottomMargin();
             if (debug > 1)
-              System.out.println("ESC 7");
+              debug("ESC 7");
             break;
           case '8': /*restore cursor, attributes, margins */
             C = Sc;
@@ -1828,7 +1888,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             setBottomMargin(Sbm);
             attributes = Sa;
             if (debug > 1)
-              System.out.println("ESC 8");
+              debug("ESC 8");
             break;
           case '(': /* Designate G0 Character set (ISO 2022) */
             term_state = TSTATE_SETG0;
@@ -1877,7 +1937,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
           	term_state = TSTATE_DATA;
           	break;
           default:
-            System.out.println("ESC unknown letter: " + c + " (" + ((int) c) + ")");
+            debug("ESC unknown letter: " + c + " (" + ((int) c) + ")");
             break;
         }
         break;
@@ -1891,36 +1951,36 @@ public void setScreenSize(int c, int r, boolean broadcast) {
         break;
       case TSTATE_SETG0:
         if (c != '0' && c != 'A' && c != 'B' && c != '<')
-          System.out.println("ESC ( " + c + ": G0 char set?  (" + ((int) c) + ")");
+          debug("ESC ( " + c + ": G0 char set?  (" + ((int) c) + ")");
         else {
-          if (debug > 2) System.out.println("ESC ( : G0 char set  (" + c + " " + ((int) c) + ")");
+          if (debug > 2) debug("ESC ( : G0 char set  (" + c + " " + ((int) c) + ")");
           gx[0] = c;
         }
         term_state = TSTATE_DATA;
         break;
       case TSTATE_SETG1:
         if (c != '0' && c != 'A' && c != 'B' && c != '<') {
-          System.out.println("ESC ) " + c + " (" + ((int) c) + ") :G1 char set?");
+          debug("ESC ) " + c + " (" + ((int) c) + ") :G1 char set?");
         } else {
-          if (debug > 2) System.out.println("ESC ) :G1 char set  (" + c + " " + ((int) c) + ")");
+          if (debug > 2) debug("ESC ) :G1 char set  (" + c + " " + ((int) c) + ")");
           gx[1] = c;
         }
         term_state = TSTATE_DATA;
         break;
       case TSTATE_SETG2:
         if (c != '0' && c != 'A' && c != 'B' && c != '<')
-          System.out.println("ESC*:G2 char set?  (" + ((int) c) + ")");
+          debug("ESC*:G2 char set?  (" + ((int) c) + ")");
         else {
-          if (debug > 2) System.out.println("ESC*:G2 char set  (" + c + " " + ((int) c) + ")");
+          if (debug > 2) debug("ESC*:G2 char set  (" + c + " " + ((int) c) + ")");
           gx[2] = c;
         }
         term_state = TSTATE_DATA;
         break;
       case TSTATE_SETG3:
         if (c != '0' && c != 'A' && c != 'B' && c != '<')
-          System.out.println("ESC+:G3 char set?  (" + ((int) c) + ")");
+          debug("ESC+:G3 char set?  (" + ((int) c) + ")");
         else {
-          if (debug > 2) System.out.println("ESC+:G3 char set  (" + c + " " + ((int) c) + ")");
+          if (debug > 2) debug("ESC+:G3 char set  (" + c + " " + ((int) c) + ")");
           gx[3] = c;
         }
         term_state = TSTATE_DATA;
@@ -1933,7 +1993,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 putChar(i, j, 'E', 0);
             break;
           default:
-            System.out.println("ESC # " + c + " not supported.");
+            debug("ESC # " + c + " not supported.");
             break;
         }
         term_state = TSTATE_DATA;
@@ -1970,11 +2030,11 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case 's': // XTERM_SAVE missing!
             if (true || debug > 1)
-              System.out.println("ESC [ ? " + DCEvars[0] + " s unimplemented!");
+              debug("ESC [ ? " + DCEvars[0] + " s unimplemented!");
             break;
           case 'r': // XTERM_RESTORE
             if (true || debug > 1)
-              System.out.println("ESC [ ? " + DCEvars[0] + " r");
+              debug("ESC [ ? " + DCEvars[0] + " r");
             /* DEC Mode reset */
             for (int i = 0; i <= DCEvar; i++) {
               switch (DCEvars[i]) {
@@ -2001,13 +2061,13 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                   mouserpt = DCEvars[i];
                   break;
                 default:
-                  System.out.println("ESC [ ? " + DCEvars[0] + " r, unimplemented!");
+                  debug("ESC [ ? " + DCEvars[0] + " r, unimplemented!");
               }
             }
             break;
           case 'h': // DECSET
             if (debug > 0)
-              System.out.println("ESC [ ? " + DCEvars[0] + " h");
+              debug("ESC [ ? " + DCEvars[0] + " h");
             /* DEC Mode set */
             for (int i = 0; i <= DCEvar; i++) {
               switch (DCEvars[i]) {
@@ -2047,7 +2107,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                   /* 18 - DECPFF - Printer Form Feed Mode -> On */
                   /* 19 - DECPEX - Printer Extent Mode -> Screen */
                 default:
-                  System.out.println("ESC [ ? " + DCEvars[0] + " h, unsupported.");
+                  debug("ESC [ ? " + DCEvars[0] + " h, unsupported.");
                   break;
               }
             }
@@ -2060,22 +2120,22 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             switch (DCEvars[0]) {
               case 1:
                 if (debug > 1)
-                  System.out.println("CSI ? 1 i : Print line containing cursor");
+                  debug("CSI ? 1 i : Print line containing cursor");
                 break;
               case 4:
                 if (debug > 1)
-                  System.out.println("CSI ? 4 i : Start passthrough printing");
+                  debug("CSI ? 4 i : Start passthrough printing");
                 break;
               case 5:
                 if (debug > 1)
-                  System.out.println("CSI ? 4 i : Stop passthrough printing");
+                  debug("CSI ? 4 i : Stop passthrough printing");
                 break;
             }
             break;
           case 'l':	//DECRST
             /* DEC Mode reset */
             if (debug > 0)
-              System.out.println("ESC [ ? " + DCEvars[0] + " l");
+              debug("ESC [ ? " + DCEvars[0] + " l");
             for (int i = 0; i <= DCEvar; i++) {
               switch (DCEvars[i]) {
                 case 1:  /* Application cursor keys */
@@ -2114,27 +2174,27 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                   mouserpt = 0;
                   break;
                 default:
-                  System.out.println("ESC [ ? " + DCEvars[0] + " l, unsupported.");
+                  debug("ESC [ ? " + DCEvars[0] + " l, unsupported.");
                   break;
               }
             }
             break;
           case 'n':
             if (debug > 0)
-              System.out.println("ESC [ ? " + DCEvars[0] + " n");
+              debug("ESC [ ? " + DCEvars[0] + " n");
             switch (DCEvars[0]) {
               case 15:
                 /* printer? no printer. */
                 write((ESC) + "[?13n", false);
-                System.out.println("ESC[5n");
+                debug("ESC[5n");
                 break;
               default:
-                System.out.println("ESC [ ? " + DCEvars[0] + " n, unsupported.");
+                debug("ESC [ ? " + DCEvars[0] + " n, unsupported.");
                 break;
             }
             break;
           default:
-            System.out.println("ESC [ ? " + DCEvars[0] + " " + c + ", unsupported.");
+            debug("ESC [ ? " + DCEvars[0] + " " + c + ", unsupported.");
             break;
         }
         break;
@@ -2145,7 +2205,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             term_state = TSTATE_ESC;
             break;
           default:
-            System.out.println("Unknown character ESC[! character is " + (int) c);
+            debug("Unknown character ESC[! character is " + (int) c);
             break;
         }
         break;
@@ -2153,7 +2213,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
         term_state = TSTATE_DATA;
         switch (c) {
           case 'p':
-            System.out.println("Conformance level: " + DCEvars[0] + " (unsupported)," + DCEvars[1]);
+            debug("Conformance level: " + DCEvars[0] + " (unsupported)," + DCEvars[1]);
             if (DCEvars[0] == 61) {
               output8bit = false;
               break;
@@ -2165,7 +2225,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             }
             break;
           default:
-            System.out.println("Unknown ESC [...  \"" + c);
+            debug("Unknown ESC [...  \"" + c);
             break;
         }
         break;
@@ -2195,7 +2255,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
 	  {
 	    int newcolor;
 
-            System.out.println("ESC [ = "+DCEvars[0]+" F");
+            debug("ESC [ = "+DCEvars[0]+" F");
 
             attributes &= ~COLOR_FG;
 	    newcolor =	((DCEvars[0] & 1) << 2)	|
@@ -2209,7 +2269,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
 	  {
 	    int newcolor;
 
-            System.out.println("ESC [ = "+DCEvars[0]+" G");
+            debug("ESC [ = "+DCEvars[0]+" G");
 
             attributes &= ~COLOR_BG;
 	    newcolor =	((DCEvars[0] & 1) << 2)	|
@@ -2220,10 +2280,14 @@ public void setScreenSize(int c, int r, boolean broadcast) {
           }
 
           default:
-            System.out.print("Unknown ESC [ = ");
-	    for (int i=0;i<=DCEvar;i++)
-		System.out.print(DCEvars[i]+",");
-	    System.out.println("" + c);
+            debugStr.append("Unknown ESC [ = ");
+            for (int i=0;i<=DCEvar;i++) {
+              debugStr.append(DCEvars[i])
+                .append(',');
+            }
+            debugStr.append(c);
+            debug(debugStr.toString());
+            debugStr.setLength(0);
             break;
         }
         break;
@@ -2231,19 +2295,19 @@ public void setScreenSize(int c, int r, boolean broadcast) {
         term_state = TSTATE_DATA;
         switch (c) {
           case '}':
-            System.out.println("Active Status Display now " + DCEvars[0]);
+            debug("Active Status Display now " + DCEvars[0]);
             statusmode = DCEvars[0];
             break;
             /* bad documentation?
                case '-':
-               System.out.println("Set Status Display now "+DCEvars[0]);
+               debug("Set Status Display now "+DCEvars[0]);
                break;
             */
           case '~':
-            System.out.println("Status Line mode now " + DCEvars[0]);
+            debug("Status Line mode now " + DCEvars[0]);
             break;
           default:
-            System.out.println("UNKNOWN Status Display code " + c + ", with Pn=" + DCEvars[0]);
+            debug("UNKNOWN Status Display code " + c + ", with Pn=" + DCEvars[0]);
             break;
         }
         break;
@@ -2294,11 +2358,11 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             if (terminalID.equals("vt100")) subcode = "61;";
             write((ESC) + "[?" + subcode + "1;2c", false);
             if (debug > 1)
-              System.out.println("ESC [ " + DCEvars[0] + " c");
+              debug("ESC [ " + DCEvars[0] + " c");
             break;
           case 'q':
             if (debug > 1)
-              System.out.println("ESC [ " + DCEvars[0] + " q");
+              debug("ESC [ " + DCEvars[0] + " q");
             break;
           case 'g':
             /* used for tabsets */
@@ -2311,7 +2375,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 break;
             }
             if (debug > 1)
-              System.out.println("ESC [ " + DCEvars[0] + " g");
+              debug("ESC [ " + DCEvars[0] + " g");
             break;
           case 'h':
             switch (DCEvars[0]) {
@@ -2319,15 +2383,15 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 insertmode = 1;
                 break;
               case 20:
-                System.out.println("Setting CRLF to TRUE");
+                debug("Setting CRLF to TRUE");
                 sendcrlf = true;
                 break;
               default:
-                System.out.println("unsupported: ESC [ " + DCEvars[0] + " h");
+                debug("unsupported: ESC [ " + DCEvars[0] + " h");
                 break;
             }
             if (debug > 1)
-              System.out.println("ESC [ " + DCEvars[0] + " h");
+              debug("ESC [ " + DCEvars[0] + " h");
             break;
           case 'i': // Printer Controller mode.
             // "Transparent printing sends all output, except the CSI 4 i
@@ -2339,18 +2403,18 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             switch (DCEvars[0]) {
               case 0:
                 if (debug > 1)
-                  System.out.println("CSI 0 i:  Print Screen, not implemented.");
+                  debug("CSI 0 i:  Print Screen, not implemented.");
                 break;
               case 4:
                 if (debug > 1)
-                  System.out.println("CSI 4 i:  Enable Transparent Printing, not implemented.");
+                  debug("CSI 4 i:  Enable Transparent Printing, not implemented.");
                 break;
               case 5:
                 if (debug > 1)
-                  System.out.println("CSI 4/5 i:  Disable Transparent Printing, not implemented.");
+                  debug("CSI 4/5 i:  Disable Transparent Printing, not implemented.");
                 break;
               default:
-                System.out.println("ESC [ " + DCEvars[0] + " i, unimplemented!");
+                debug("ESC [ " + DCEvars[0] + " i, unimplemented!");
             }
             break;
           case 'l':
@@ -2359,11 +2423,11 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 insertmode = 0;
                 break;
               case 20:
-                System.out.println("Setting CRLF to FALSE");
+                debug("Setting CRLF to FALSE");
                 sendcrlf = false;
                 break;
               default:
-                System.out.println("ESC [ " + DCEvars[0] + " l, unimplemented!");
+                debug("ESC [ " + DCEvars[0] + " l, unimplemented!");
                 break;
             }
             break;
@@ -2382,7 +2446,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               if (R < limit)
                 R = limit;
               if (debug > 1)
-                System.out.println("ESC [ " + DCEvars[0] + " A");
+                debug("ESC [ " + DCEvars[0] + " A");
               break;
             }
           case 'B':	// CUD
@@ -2400,11 +2464,11 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               if (R > limit)
                 R = limit;
               else {
-                if (debug > 2) System.out.println("Not limited.");
+                if (debug > 2) debug("Not limited.");
               }
-              if (debug > 2) System.out.println("to: " + R);
+              if (debug > 2) debug("to: " + R);
               if (debug > 1)
-                System.out.println("ESC [ " + DCEvars[0] + " B (at C=" + C + ")");
+                debug("ESC [ " + DCEvars[0] + " B (at C=" + C + ")");
               break;
             }
           case 'C':
@@ -2415,12 +2479,12 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             if (C > columns - 1)
               C = columns - 1;
             if (debug > 1)
-              System.out.println("ESC [ " + DCEvars[0] + " C");
+              debug("ESC [ " + DCEvars[0] + " C");
             break;
           case 'd': // CVA
             R = DCEvars[0];
             if (debug > 1)
-              System.out.println("ESC [ " + DCEvars[0] + " d");
+              debug("ESC [ " + DCEvars[0] + " d");
             break;
           case 'D':
             if (DCEvars[0] == 0)
@@ -2429,7 +2493,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               C -= DCEvars[0];
             if (C < 0) C = 0;
             if (debug > 1)
-              System.out.println("ESC [ " + DCEvars[0] + " D");
+              debug("ESC [ " + DCEvars[0] + " D");
             break;
           case 'r': // DECSTBM
             if (DCEvar > 0)   //  Ray:  Any argument is optional
@@ -2451,18 +2515,18 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             setMargins(R, bot);
             _SetCursor(0, 0);
             if (debug > 1)
-              System.out.println("ESC [" + DCEvars[0] + " ; " + DCEvars[1] + " r");
+              debug("ESC [" + DCEvars[0] + " ; " + DCEvars[1] + " r");
             break;
           case 'G':  /* CUP  / cursor absolute column */
             C = DCEvars[0];
-            if (debug > 1) System.out.println("ESC [ " + DCEvars[0] + " G");
+            if (debug > 1) debug("ESC [ " + DCEvars[0] + " G");
             break;
           case 'H':  /* CUP  / cursor position */
             /* gets 2 arguments */
             _SetCursor(DCEvars[0] - 1, DCEvars[1] - 1);
             if (debug > 2) {
-              System.out.println("ESC [ " + DCEvars[0] + ";" + DCEvars[1] + " H, moveoutsidemargins " + moveoutsidemargins);
-              System.out.println("	-> R now " + R + ", C now " + C);
+              debug("ESC [ " + DCEvars[0] + ";" + DCEvars[1] + " H, moveoutsidemargins " + moveoutsidemargins);
+              debug("	-> R now " + R + ", C now " + C);
             }
             break;
           case 'f':  /* move cursor 2 */
@@ -2472,7 +2536,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             if (C < 0) C = 0;
             if (R < 0) R = 0;
             if (debug > 2)
-              System.out.println("ESC [ " + DCEvars[0] + ";" + DCEvars[1] + " f");
+              debug("ESC [ " + DCEvars[0] + ";" + DCEvars[1] + " f");
             break;
           case 'S': /* ind aka 'scroll forward' */
             if (DCEvars[0] == 0)
@@ -2487,7 +2551,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             else
               insertLine(R, DCEvars[0], SCROLL_DOWN);
             if (debug > 1)
-              System.out.println("ESC [ " + DCEvars[0] + "" + (c) + " (at R " + R + ")");
+              debug("ESC [ " + DCEvars[0] + "" + (c) + " (at R " + R + ")");
             break;
           case 'T': /* 'ri' aka scroll backward */
             if (DCEvars[0] == 0)
@@ -2497,7 +2561,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case 'M':
             if (debug > 1)
-              System.out.println("ESC [ " + DCEvars[0] + "" + (c) + " at R=" + R);
+              debug("ESC [ " + DCEvars[0] + "" + (c) + " at R=" + R);
             if (DCEvars[0] == 0)
               deleteLine(R);
             else
@@ -2506,7 +2570,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case 'K':
             if (debug > 1)
-              System.out.println("ESC [ " + DCEvars[0] + " K");
+              debug("ESC [ " + DCEvars[0] + " K");
             /* clear in line */
             switch (DCEvars[0]) {
               case 6: /* 97801 uses ESC[6K for delete to end of line */
@@ -2543,11 +2607,11 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 break;
             }
             if (debug > 1)
-              System.out.println("ESC [ " + DCEvars[0] + " J");
+              debug("ESC [ " + DCEvars[0] + " J");
             break;
           case '@':
             if (debug > 1)
-              System.out.println("ESC [ " + DCEvars[0] + " @");
+              debug("ESC [ " + DCEvars[0] + " @");
             for (int i = 0; i < DCEvars[0]; i++)
               insertChar(C, R, ' ', attributes);
             break;
@@ -2555,7 +2619,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             {
               int toerase = DCEvars[0];
               if (debug > 1)
-                System.out.println("ESC [ " + DCEvars[0] + " X, C=" + C + ",R=" + R);
+                debug("ESC [ " + DCEvars[0] + " X, C=" + C + ",R=" + R);
               if (toerase == 0)
                 toerase = 1;
               if (toerase + C > columns)
@@ -2566,7 +2630,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             }
           case 'P':
             if (debug > 1)
-              System.out.println("ESC [ " + DCEvars[0] + " P, C=" + C + ",R=" + R);
+              debug("ESC [ " + DCEvars[0] + " P, C=" + C + ",R=" + R);
             if (DCEvars[0] == 0) DCEvars[0] = 1;
             for (int i = 0; i < DCEvars[0]; i++)
               deleteChar(C, R);
@@ -2576,7 +2640,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               case 5: /* malfunction? No malfunction. */
                 writeSpecial((ESC) + "[0n");
                 if (debug > 1)
-                  System.out.println("ESC[5n");
+                  debug("ESC[5n");
                 break;
               case 6:
                 // DO NOT offset R and C by 1! (checked against /usr/X11R6/bin/resize
@@ -2584,11 +2648,11 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 // FIXME: but vttest thinks different???
                 writeSpecial((ESC) + "[" + R + ";" + C + "R");
                 if (debug > 1)
-                  System.out.println("ESC[6n");
+                  debug("ESC[6n");
                 break;
               default:
                 if (debug > 0)
-                  System.out.println("ESC [ " + DCEvars[0] + " n??");
+                  debug("ESC [ " + DCEvars[0] + " n??");
                 break;
             }
             break;
@@ -2597,18 +2661,18 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             Sr = R;
             Sa = attributes;
             if (debug > 3)
-              System.out.println("ESC[s");
+              debug("ESC[s");
             break;
           case 'u': /* DECRC - restore cursor */
             C = Sc;
             R = Sr;
             attributes = Sa;
             if (debug > 3)
-              System.out.println("ESC[u");
+              debug("ESC[u");
             break;
           case 'm':  /* attributes as color, bold , blink,*/
             if (debug > 3)
-              System.out.print("ESC [ ");
+              debug("ESC [ ");
             if (DCEvar == 0 && DCEvars[0] == 0)
               attributes = 0;
             for (int i = 0; i <= DCEvar; i++) {
@@ -2758,17 +2822,36 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                   break;
 
                 default:
-                  System.out.println("ESC [ " + DCEvars[i] + " m unknown...");
+                  debugStr.append("ESC [ ")
+                    .append(DCEvars[i])
+                    .append(" m unknown...");
+                  debug(debugStr.toString());
+                  debugStr.setLength(0);
                   break;
               }
-              if (debug > 3)
-                System.out.print("" + DCEvars[i] + ";");
+              if (debug > 3) {
+                debugStr.append(DCEvars[i])
+                  .append(';');
+                debug(debugStr.toString());
+                debugStr.setLength(0);
+              }
             }
-            if (debug > 3)
-              System.out.print(" (attributes = " + attributes + ")m \n");
+            if (debug > 3) {
+              debugStr.append(" (attributes = ")
+                .append(attributes)
+                .append(")m");
+              debug(debugStr.toString());
+              debugStr.setLength(0);
+            }
             break;
           default:
-            System.out.println("ESC [ unknown letter:" + c + " (" + ((int) c) + ")");
+            debugStr.append("ESC [ unknown letter: ")
+              .append(c)
+              .append(" (")
+              .append((int)c)
+              .append(')');
+            debug(debugStr.toString());
+            debugStr.setLength(0);
             break;
         }
         break;
