@@ -526,23 +526,37 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	class PubkeyAdapter extends ArrayAdapter<PubkeyBean> {
 		private List<PubkeyBean> pubkeys;
 
+		class ViewHolder {
+			public TextView nickname;
+			public TextView caption;
+			public ImageView icon;
+		}
+
 		public PubkeyAdapter(Context context, List<PubkeyBean> pubkeys) {
 			super(context, R.layout.item_pubkey, pubkeys);
 
 			this.pubkeys = pubkeys;
 		}
 
-		public View getView(int position, View origView, ViewGroup parent) {
-			View view = origView;
-			if (view == null)
-				view = inflater.inflate(R.layout.item_pubkey, null, false);
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder holder;
 
-			TextView nickname = (TextView)view.findViewById(android.R.id.text1);
-			TextView caption = (TextView)view.findViewById(android.R.id.text2);
-			ImageView icon = (ImageView)view.findViewById(android.R.id.icon1);
+			if (convertView == null) {
+				convertView = inflater.inflate(R.layout.item_pubkey, null, false);
+
+				holder = new ViewHolder();
+
+				holder.nickname = (TextView) convertView.findViewById(android.R.id.text1);
+				holder.caption = (TextView) convertView.findViewById(android.R.id.text2);
+				holder.icon = (ImageView) convertView.findViewById(android.R.id.icon1);
+
+				convertView.setTag(holder);
+			} else
+				holder = (ViewHolder) convertView.getTag();
 
 			PubkeyBean pubkey = pubkeys.get(position);
-			nickname.setText(pubkey.getNickname());
+			holder.nickname.setText(pubkey.getNickname());
 
 			boolean imported = PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType());
 
@@ -550,32 +564,32 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				try {
 					PEMStructure struct = PEMDecoder.parsePEM(new String(pubkey.getPrivateKey()).toCharArray());
 					String type = (struct.pemType == PEMDecoder.PEM_RSA_PRIVATE_KEY) ? "RSA" : "DSA";
-					caption.setText(String.format("%s unknown-bit", type));
+					holder.caption.setText(String.format("%s unknown-bit", type));
 				} catch (IOException e) {
 					Log.e(TAG, "Error decoding IMPORTED public key at " + pubkey.getId(), e);
 				}
 			} else {
 				try {
 					PublicKey pub = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
-					caption.setText(PubkeyUtils.describeKey(pub, pubkey.isEncrypted()));
+					holder.caption.setText(PubkeyUtils.describeKey(pub, pubkey.isEncrypted()));
 				} catch (Exception e) {
 					Log.e(TAG, "Error decoding public key at " + pubkey.getId(), e);
-					caption.setText(R.string.pubkey_unknown_format);
+					holder.caption.setText(R.string.pubkey_unknown_format);
 				}
 			}
 
 			if (bound == null) {
-				icon.setVisibility(View.GONE);
+				holder.icon.setVisibility(View.GONE);
 			} else {
-				icon.setVisibility(View.VISIBLE);
+				holder.icon.setVisibility(View.VISIBLE);
 
 				if (bound.isKeyLoaded(pubkey.getNickname()))
-					icon.setImageState(new int[] { android.R.attr.state_checked }, true);
+					holder.icon.setImageState(new int[] { android.R.attr.state_checked }, true);
 				else
-					icon.setImageState(new int[] {  }, true);
+					holder.icon.setImageState(new int[] {  }, true);
 			}
 
-			return view;
+			return convertView;
 		}
 	}
 }
