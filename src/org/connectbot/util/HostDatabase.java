@@ -89,6 +89,8 @@ public class HostDatabase extends SQLiteOpenHelper {
 
 	public HostDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
+
+		getWritableDatabase().close();
 	}
 
 	@Override
