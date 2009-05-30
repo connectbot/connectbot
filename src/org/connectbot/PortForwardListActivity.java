@@ -369,6 +369,11 @@ public class PortForwardListActivity extends ListActivity {
 	}
 
 	class PortForwardAdapter extends ArrayAdapter<PortForwardBean> {
+		class ViewHolder {
+			public TextView nickname;
+			public TextView caption;
+		}
+
 		private List<PortForwardBean> portForwards;
 
 		public PortForwardAdapter(Context context, List<PortForwardBean> portForwards) {
@@ -378,24 +383,30 @@ public class PortForwardListActivity extends ListActivity {
 		}
 
 		@Override
-		public View getView(int position, View origView, ViewGroup parent) {
-			View view = origView;
-			if (view == null)
-				view = inflater.inflate(R.layout.item_portforward, null, false);
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder holder;
 
-			TextView nickname = (TextView)view.findViewById(android.R.id.text1);
-			TextView caption = (TextView)view.findViewById(android.R.id.text2);
+			if (convertView == null) {
+				convertView = inflater.inflate(R.layout.item_portforward, null, false);
+
+				holder = new ViewHolder();
+				holder.nickname = (TextView)convertView.findViewById(android.R.id.text1);
+				holder.caption = (TextView)convertView.findViewById(android.R.id.text2);
+
+				convertView.setTag(holder);
+			} else
+				holder = (ViewHolder) convertView.getTag();
 
 			PortForwardBean pfb = portForwards.get(position);
-			nickname.setText(pfb.getNickname());
-			caption.setText(pfb.getDescription());
+			holder.nickname.setText(pfb.getNickname());
+			holder.caption.setText(pfb.getDescription());
 
 			if (hostBridge != null && !pfb.isEnabled()) {
-				nickname.setPaintFlags(nickname.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-				caption.setPaintFlags(caption.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+				holder.nickname.setPaintFlags(holder.nickname.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+				holder.caption.setPaintFlags(holder.caption.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 			}
 
-			return view;
+			return convertView;
 		}
 	}
 }

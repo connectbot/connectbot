@@ -253,7 +253,9 @@
 
 	<!-- Port field title for host editor preference -->
 	<string name="hostpref_port_title">Port</string>
-
+	
+	<!-- Displayed to indicate a host has never been connected to. -->
+	<string name="bind_never">Never connected</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
 	<string name="bind_minutes">%1$s minutes ago</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->

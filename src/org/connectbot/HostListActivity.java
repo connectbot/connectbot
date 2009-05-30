@@ -436,6 +436,12 @@ public class HostListActivity extends ListActivity {
 
 		public final static int STATE_UNKNOWN = 1, STATE_CONNECTED = 2, STATE_DISCONNECTED = 3;
 
+		class ViewHolder {
+			public TextView nickname;
+			public TextView caption;
+			public ImageView icon;
+		}
+
 		public HostAdapter(Context context, List<HostBean> hosts, TerminalManager manager) {
 			super(context, R.layout.item_host, hosts);
 
@@ -465,36 +471,43 @@ public class HostListActivity extends ListActivity {
 		}
 
 		@Override
-		public View getView(int position, View origView, ViewGroup parent) {
-			View view = origView;
-			if (view == null)
-				view = inflater.inflate(R.layout.item_host, null, false);
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder holder;
 
-			TextView nickname = (TextView)view.findViewById(android.R.id.text1);
-			TextView caption = (TextView)view.findViewById(android.R.id.text2);
-			ImageView icon = (ImageView)view.findViewById(android.R.id.icon);
+			if (convertView == null) {
+				convertView = inflater.inflate(R.layout.item_host, null, false);
+
+				holder = new ViewHolder();
+
+				holder.nickname = (TextView)convertView.findViewById(android.R.id.text1);
+				holder.caption = (TextView)convertView.findViewById(android.R.id.text2);
+				holder.icon = (ImageView)convertView.findViewById(android.R.id.icon);
+
+				convertView.setTag(holder);
+			} else
+				holder = (ViewHolder) convertView.getTag();
 
 			HostBean host = hosts.get(position);
 			if (host == null) {
 				// Well, something bad happened. We can't continue.
 				Log.e("HostAdapter", "Host bean is null!");
 
-				nickname.setText("Error during lookup");
-				caption.setText("see 'adb logcat' for more");
-				return view;
+				holder.nickname.setText("Error during lookup");
+				holder.caption.setText("see 'adb logcat' for more");
+				return convertView;
 			}
 
-			nickname.setText(host.getNickname());
+			holder.nickname.setText(host.getNickname());
 
 			switch (this.getConnectedState(host)) {
 			case STATE_UNKNOWN:
-				icon.setImageState(new int[] { }, true);
+				holder.icon.setImageState(new int[] { }, true);
 				break;
 			case STATE_CONNECTED:
-				icon.setImageState(new int[] { android.R.attr.state_checked }, true);
+				holder.icon.setImageState(new int[] { android.R.attr.state_checked }, true);
 				break;
 			case STATE_DISCONNECTED:
-				icon.setImageState(new int[] { android.R.attr.state_expanded }, true);
+				holder.icon.setImageState(new int[] { android.R.attr.state_expanded }, true);
 				break;
 			}
 
@@ -506,35 +519,37 @@ public class HostListActivity extends ListActivity {
 			else if (HostDatabase.COLOR_BLUE.equals(host.getColor()))
 				chosen = this.blue;
 
+			Context context = convertView.getContext();
+
 			if (chosen != null) {
 				// set color normally if not selected
-				nickname.setTextColor(chosen);
-				caption.setTextColor(chosen);
+				holder.nickname.setTextColor(chosen);
+				holder.caption.setTextColor(chosen);
 			} else {
 				// selected, so revert back to default black text
-				nickname.setTextAppearance(view.getContext(), android.R.attr.textAppearanceLarge);
-				caption.setTextAppearance(view.getContext(), android.R.attr.textAppearanceSmall);
+				holder.nickname.setTextAppearance(context, android.R.attr.textAppearanceLarge);
+				holder.caption.setTextAppearance(context, android.R.attr.textAppearanceSmall);
 			}
 
 			long now = System.currentTimeMillis() / 1000;
 
-			String nice = "never";
+			String nice = context.getString(R.string.bind_never);
 			if (host.getLastConnect() > 0) {
 				int minutes = (int)((now - host.getLastConnect()) / 60);
-				nice = view.getContext().getString(R.string.bind_minutes, minutes);
 				if (minutes >= 60) {
 					int hours = (minutes / 60);
-					nice = view.getContext().getString(R.string.bind_hours, hours);
 					if (hours >= 24) {
 						int days = (hours / 24);
-						nice = view.getContext().getString(R.string.bind_days, days);
-					}
-				}
+						nice = context.getString(R.string.bind_days, days);
+					} else
+						nice = context.getString(R.string.bind_hours, hours);
+				} else
+					nice = context.getString(R.string.bind_minutes, minutes);
 			}
 
-			caption.setText(nice);
+			holder.caption.setText(nice);
 
-			return view;
+			return convertView;
 		}
 	}
 }
