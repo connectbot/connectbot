@@ -19,6 +19,7 @@ public class PromptHelper {
 	private Semaphore promptToken;
 	private Semaphore promptResponse;
 
+	public String promptInstructions = null;
 	public String promptHint = null;
 	public Object promptRequested = null;
 
@@ -67,7 +68,7 @@ public class PromptHelper {
 	 * Only one thread can call this at a time. cancelPrompt() will force this to
 	 * immediately return.
 	 */
-	private Object requestPrompt(String hint, Object type, boolean immediate) throws InterruptedException {
+	private Object requestPrompt(String instructions, String hint, Object type, boolean immediate) throws InterruptedException {
 		Object response = null;
 
 		if (immediate)
@@ -76,6 +77,7 @@ public class PromptHelper {
 		promptToken.acquire();
 
 		try {
+			promptInstructions = instructions;
 			promptHint = hint;
 			promptRequested = type;
 
@@ -85,6 +87,8 @@ public class PromptHelper {
 
 			// acquire lock until user passes back value
 			promptResponse.acquire();
+			promptInstructions = null;
+			promptHint = null;
 			promptRequested = null;
 
 			response = popResponse();
@@ -102,10 +106,10 @@ public class PromptHelper {
 	 * @param immediate whether to cancel other in-progress prompts
 	 * @return string user has entered
 	 */
-	public String requestStringPrompt(String hint, boolean immediate) {
+	public String requestStringPrompt(String instructions, String hint, boolean immediate) {
 		String value = null;
 		try {
-			value = (String)this.requestPrompt(hint, String.class, immediate);
+			value = (String)this.requestPrompt(instructions, hint, String.class, immediate);
 		} catch(Exception e) {
 		}
 		return value;
@@ -116,8 +120,8 @@ public class PromptHelper {
 	 * @param hint prompt hint for user to answer
 	 * @return string user has entered
 	 */
-	public String requestStringPrompt(String hint) {
-		return requestStringPrompt(hint, false);
+	public String requestStringPrompt(String instructions, String hint) {
+		return requestStringPrompt(instructions, hint, false);
 	}
 
 	/**
@@ -127,10 +131,10 @@ public class PromptHelper {
 	 * @param immediate whether to cancel other in-progress prompts
 	 * @return choice user has made (yes/no)
 	 */
-	public Boolean requestBooleanPrompt(String hint, boolean immediate) {
+	public Boolean requestBooleanPrompt(String instructions, String hint, boolean immediate) {
 		Boolean value = null;
 		try {
-			value = (Boolean)this.requestPrompt(hint, Boolean.class, immediate);
+			value = (Boolean)this.requestPrompt(instructions, hint, Boolean.class, immediate);
 		} catch(Exception e) {
 		}
 		return value;
@@ -141,8 +145,8 @@ public class PromptHelper {
 	 * @param hint String to present to user in prompt
 	 * @return choice user has made (yes/no)
 	 */
-	public Boolean requestBooleanPrompt(String hint) {
-		return requestBooleanPrompt(hint, false);
+	public Boolean requestBooleanPrompt(String instructions, String hint) {
+		return requestBooleanPrompt(instructions, hint, false);
 	}
 
 	/**

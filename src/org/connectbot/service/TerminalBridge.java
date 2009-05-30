@@ -357,7 +357,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				outputLine(String.format(manager.res.getString(R.string.host_authenticity_warning), hostname));
 				outputLine(String.format(manager.res.getString(R.string.host_fingerprint), algorithmName, fingerprint));
 
-				result = promptHelper.requestBooleanPrompt(manager.res.getString(R.string.prompt_continue_connecting));
+				result = promptHelper.requestBooleanPrompt(null, manager.res.getString(R.string.prompt_continue_connecting));
 				if(result == null) return false;
 				if(result.booleanValue()) {
 					// save this key in known database
@@ -381,7 +381,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 						algorithmName, fingerprint));
 
 				// Users have no way to delete keys, so we'll prompt them for now.
-				result = promptHelper.requestBooleanPrompt(manager.res.getString(R.string.prompt_continue_connecting));
+				result = promptHelper.requestBooleanPrompt(null, manager.res.getString(R.string.prompt_continue_connecting));
 				if(result == null) return false;
 				if(result.booleanValue()) {
 					// save this key in known database
@@ -583,7 +583,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			// otherwise load key from database and prompt for password as needed
 			String password = null;
 			if (pubkey.isEncrypted()) {
-				password = promptHelper.requestStringPrompt(String.format("Password for key '%s'", pubkey.getNickname()));
+				password = promptHelper.requestStringPrompt(null,
+						String.format(manager.res.getString(R.string.prompt_pubkey_password),
+								pubkey.getNickname()));
 
 				// Something must have interrupted the prompt.
 				if (password == null)
@@ -681,7 +683,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				pubkeysExhausted = true;
 			} else if (connection.isAuthMethodAvailable(host.getUsername(), AUTH_PASSWORD)) {
 				outputLine("Attempting 'password' authentication");
-				String password = promptHelper.requestStringPrompt("Password");
+				String password = promptHelper.requestStringPrompt(null,
+						manager.res.getString(R.string.prompt_password));
 				if (password != null
 						&& connection.authenticateWithPassword(host.getUsername(), password)) {
 					finishConnection();
@@ -716,7 +719,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		String[] responses = new String[numPrompts];
 		for(int i = 0; i < numPrompts; i++) {
 			// request response from user for each prompt
-			responses[i] = promptHelper.requestStringPrompt(prompt[i]);
+			responses[i] = promptHelper.requestStringPrompt(instruction, prompt[i]);
 		}
 		return responses;
 	}
@@ -859,7 +862,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		} else {
 			Thread disconnectPromptThread = new Thread(new Runnable() {
 				public void run() {
-					Boolean result = promptHelper.requestBooleanPrompt(
+					Boolean result = promptHelper.requestBooleanPrompt(null,
 							manager.res.getString(R.string.prompt_host_disconnected), true);
 					if (result == null || result.booleanValue()) {
 						awaitingClose = true;

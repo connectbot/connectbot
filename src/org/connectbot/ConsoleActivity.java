@@ -89,6 +89,7 @@ public class ConsoleActivity extends Activity {
 	protected ClipboardManager clipboard;
 	private RelativeLayout stringPromptGroup;
 	protected EditText stringPrompt;
+	private TextView stringPromptInstructions;
 
 	private RelativeLayout booleanPromptGroup;
 	private TextView booleanPrompt;
@@ -337,6 +338,7 @@ public class ConsoleActivity extends Activity {
 		empty = (TextView)findViewById(android.R.id.empty);
 
 		stringPromptGroup = (RelativeLayout) findViewById(R.id.console_password_group);
+		stringPromptInstructions = (TextView) findViewById(R.id.console_password_instructions);
 		stringPrompt = (EditText)findViewById(R.id.console_password);
 		stringPrompt.setOnKeyListener(new OnKeyListener() {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -834,6 +836,13 @@ public class ConsoleActivity extends Activity {
 		PromptHelper prompt = ((TerminalView)view).bridge.promptHelper;
 		if(String.class.equals(prompt.promptRequested)) {
 			stringPromptGroup.setVisibility(View.VISIBLE);
+
+			String instructions = prompt.promptInstructions;
+			if (instructions != null && instructions.length() > 0) {
+				stringPromptInstructions.setVisibility(View.VISIBLE);
+				stringPromptInstructions.setText(instructions);
+			} else
+				stringPromptInstructions.setVisibility(View.GONE);
 			stringPrompt.setText("");
 			stringPrompt.setHint(prompt.promptHint);
 			stringPrompt.requestFocus();
