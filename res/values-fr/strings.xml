@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">ConnectBot</string>
-	<string name="app_desc">Simple, powerful, open-source SSH client.</string>
+	<string name="app_desc">Un client SSH simple, open-source et puissant.</string>
 
 	<!-- Window title for the Host List -->
 	<string name="title_hosts_list">Serveurs</string>
 	<!-- Window title for the Pubkeys List -->
 	<string name="title_pubkey_list">Clés publiques</string>
 	<!-- Window title for the Port Forwards List -->
-	<string name="title_port_forwards_list">Port forwards</string>
+	<string name="title_port_forwards_list">Redirections de ports</string>
 	<!-- Window title when editing host details -->
 	<string name="title_host_editor">Modifier le serveur</string>
 	<!-- Window title for Help index -->
@@ -17,7 +17,7 @@
 	<string name="resolve_connect">Connexion</string>
 	<string name="resolve_entropy">Gather Entropy</string>
 
-	<string name="menu_insert">Add Host</string>
+	<string name="menu_insert">Ajouter un serveur</string>
 	<string name="menu_delete">Supprimmer le serveur</string>
 	<string name="menu_preferences">Préférences</string>
 
@@ -31,13 +31,13 @@
 	<string name="pubkey_gather_entropy">Gathering Entropy</string>
 	<string name="pubkey_touch_prompt">Touch this box to gather randomness: %1$d%% done</string>
 	<string name="pubkey_touch_hint">In order to assure randomness during the key generation, move your finger randomly over the box below.</string>
-	<string name="pubkey_generating">Generating key pair...</string>
+	<string name="pubkey_generating">Génération de la paire de clés en cours...</string>
 	<string name="pubkey_copy_private">Copier la clé privée</string>
 	<string name="pubkey_copy_public">Copier la clé publique</string>
 	<string name="pubkey_list_empty">Tap "Menu" to create\nor import key pairs.</string>
 	<string name="pubkey_unknown_format">Format inconnu</string>
 	<string name="pubkey_change_password">Changer le mot de passe</string>
-	<string name="pubkey_list_pick">Pick from /sdcard</string>
+	<string name="pubkey_list_pick">Récupérer depuis /sdcard</string>
 	<string name="pubkey_import_parse_problem">Problem parsing imported private key</string>
 	<string name="pubkey_unlock">Déverrouiller la clé</string>
 	<string name="pubkey_failed_add">Bad password for key '%1$s'. Authentication failed.</string>
@@ -67,7 +67,7 @@
 	<string name="prompt_bits">Bits:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Password for key '%1$s'</string>
+	<string name="prompt_pubkey_password">Mot de passe pour la clé '%1$s'</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</string>
@@ -107,31 +107,6 @@
 	  Do not translate.
 	-->
 	<string name="msg_version">ConnectBot (working copy)</string>
-
-	<!-- Do not translate -->
-	<string name="pref_emulation">emulation</string>
-	<!-- Do not translate -->
-	<string name="pref_scrollback">scrollback</string>
-	<!-- Do not translate -->
-	<string name="pref_keepalive">keepalive</string>
-	<!-- Do not translate -->
-	<string name="pref_keymode">keymode</string>
-	<!-- Do not translate -->
-	<string name="pref_memkeys">memkeys</string>
-	<!-- Do not translate -->
-	<string name="pref_rotation">rotation</string>
-	<!-- Do not translate -->
-	<string name="pref_camera">camera</string>
-	<!-- Do not translate -->
-	<string name="pref_update">update</string>
-	<!-- Do not translate -->
-	<string name="pref_lastchecked">lastchecked</string>
-	<!-- Do not translate -->
-	<string name="pref_fullscreen">fullscreen</string>
-	<!-- Do not translate -->
-	<string name="pref_wifilock">wifilock</string>
-	<!-- Do not translate -->
-	<string name="pref_bumpyarrows">bumpyarrows</string>
 
 	<!-- The category title for terminal emulation preferences. -->
 	<string name="pref_emulation_category">Terminal emulation</string>
@@ -254,6 +229,8 @@
 	<!-- Port field title for host editor preference -->
 	<string name="hostpref_port_title">Port</string>
 
+	<!-- Displayed to indicate a host has never been connected to. -->
+	<string name="bind_never">Never connected</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
 	<string name="bind_minutes">Il ya %1$s minutes</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
@@ -364,8 +341,8 @@
 	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
 	<string name="upgrade_neg">Pas maintenant</string>
 
-	<string name="color_red">red</string>
-	<string name="color_green">green</string>
-	<string name="color_blue">blue</string>
-	<string name="color_gray">gray</string>
+	<string name="color_red">rouge</string>
+	<string name="color_green">vert</string>
+	<string name="color_blue">bleu</string>
+	<string name="color_gray">gris</string>
 </resources>

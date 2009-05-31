@@ -77,12 +77,12 @@
 	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
 	<string name="prompt_host_disconnected">Der Host hat die Verbindung beendet.\nSitzung schließen?</string>
 	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
-	<string name="prompt_continue_connecting">Sind Sie sicher, dass Sie sich verbinden wollen?</string>
+	<string name="prompt_continue_connecting">Sind Sie sicher, dass Sie\neine Verbindung herstellen wollen?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">Die Authentizität von Host '%1$s' kann nicht bestätigt werden.</string>
+	<string name="host_authenticity_warning">Die Authentizität von host '%1$s' kann nicht garantiert werden.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
-	<string name="host_fingerprint">Fingerabdruck von Host %1$s Schlüssel ist %2$s</string>
+	<string name="host_fingerprint">%1$s Schlüssel Fingerabdruck ist %2$s</string>
 
 	<string name="alert_passwords_do_not_match_msg">Passwörter stimmen nicht überein!</string>
 	<string name="alert_wrong_password_msg">Falsches Passwort!</string>
@@ -107,31 +107,6 @@
 	  Do not translate.
 	-->
 	<string name="msg_version">ConnectBot (working copy)</string>
-
-	<!-- Do not translate -->
-	<string name="pref_emulation">emulation</string>
-	<!-- Do not translate -->
-	<string name="pref_scrollback">scrollback</string>
-	<!-- Do not translate -->
-	<string name="pref_keepalive">keepalive</string>
-	<!-- Do not translate -->
-	<string name="pref_keymode">keymode</string>
-	<!-- Do not translate -->
-	<string name="pref_memkeys">memkeys</string>
-	<!-- Do not translate -->
-	<string name="pref_rotation">rotation</string>
-	<!-- Do not translate -->
-	<string name="pref_camera">camera</string>
-	<!-- Do not translate -->
-	<string name="pref_update">update</string>
-	<!-- Do not translate -->
-	<string name="pref_lastchecked">lastchecked</string>
-	<!-- Do not translate -->
-	<string name="pref_fullscreen">fullscreen</string>
-	<!-- Do not translate -->
-	<string name="pref_wifilock">wifilock</string>
-	<!-- Do not translate -->
-	<string name="pref_bumpyarrows">bumpyarrows</string>
 
 	<!-- The category title for terminal emulation preferences. -->
 	<string name="pref_emulation_category">Terminalemulation</string>
@@ -235,7 +210,7 @@
 	<!-- Setting for whether we want a session to start up when we connect to a host -->
 	<string name="hostpref_wantsession_title">Kommandozeilensitzung starten</string>
 	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
-	<string name="hostpref_wantsession_summary">Diese Einstellung abwählen, um ausschließlich Port-Weiterleitungen zu verwenden</string>
+	<string name="hostpref_wantsession_summary">Diese Einstellung abwählen, um ausschließlich Portweiterleitungen zu verwenden</string>
 
 	<!-- Host character encoding preference title -->
 	<string name="hostpref_encoding_title">Encoding</string>
@@ -254,6 +229,8 @@
 	<!-- Port field title for host editor preference -->
 	<string name="hostpref_port_title">Port</string>
 
+	<!-- Displayed to indicate a host has never been connected to. -->
+	<string name="bind_never">Never connected</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
 	<string name="bind_minutes">vor %1$s Minuten</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
@@ -264,7 +241,7 @@
 	<!-- Message given when user copies from the terminal. -->
 	<string name="console_copy_done">%1$d Byte in die Zwischenablage kopiert</string>
 	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">Berühren und ziehen oder Trackball verwenden\num zu kopierenden Bereich auszuwählen</string>
+	<string name="console_copy_start">Berühren und ziehen\noder trackball verwenden\num zu kopierenden Bereich auszuwählen</string>
 
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">Schließen</string>
@@ -351,7 +328,7 @@
 	<string name="terminal_auth_pubkey_specific">Versuche "Public Key" Authentisierung mit einem bestimmten öffentlichen Schlüssel</string>
 
 	<string name="terminal_auth_ki">Versuche 'keyboard-interactive' Authentisierung.</string>
-	<string name="terminal_auth_ki_fail">Authentisierungsmetrhode 'keyboard-interactive' fehlgeschlagen</string>
+	<string name="terminal_auth_ki_fail">Authentisierungsmethode 'keyboard-interactive' fehlgeschlagen</string>
 
 	<string name="terminal_auth_fail">[Ihr Host unterstützt weder 'password' noch 'keyboard-interactive' Authentisierung.]</string>
 
