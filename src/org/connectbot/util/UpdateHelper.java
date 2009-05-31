@@ -124,7 +124,7 @@ public final class UpdateHelper implements Runnable {
 
 			// update our last-checked time
 			Editor editor = prefs.edit();
-			editor.putLong(res.getString(R.string.pref_lastchecked), now);
+			editor.putLong(PreferenceConstants.LAST_CHECKED, now);
 			editor.commit();
 
 		}
