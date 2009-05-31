@@ -108,31 +108,6 @@
 	-->
 	<string name="msg_version">ConnectBot (working copy)</string>
 
-	<!-- Do not translate -->
-	<string name="pref_emulation">emulación</string>
-	<!-- Do not translate -->
-	<string name="pref_scrollback">scrollback</string>
-	<!-- Do not translate -->
-	<string name="pref_keepalive">keepalive</string>
-	<!-- Do not translate -->
-	<string name="pref_keymode">keymode</string>
-	<!-- Do not translate -->
-	<string name="pref_memkeys">memkeys</string>
-	<!-- Do not translate -->
-	<string name="pref_rotation">rotación</string>
-	<!-- Do not translate -->
-	<string name="pref_camera">cámara</string>
-	<!-- Do not translate -->
-	<string name="pref_update">actualizar</string>
-	<!-- Do not translate -->
-	<string name="pref_lastchecked">última comprobación</string>
-	<!-- Do not translate -->
-	<string name="pref_fullscreen">pantalla completa</string>
-	<!-- Do not translate -->
-	<string name="pref_wifilock">wifilock</string>
-	<!-- Do not translate -->
-	<string name="pref_bumpyarrows">bumpyarrows</string>
-
 	<!-- The category title for terminal emulation preferences. -->
 	<string name="pref_emulation_category">Terminal emulation</string>
 
@@ -254,6 +229,8 @@
 	<!-- Port field title for host editor preference -->
 	<string name="hostpref_port_title">Port</string>
 
+	<!-- Displayed to indicate a host has never been connected to. -->
+	<string name="bind_never">Never connected</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
 	<string name="bind_minutes">Hace %1$s minutos</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->

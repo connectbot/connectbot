@@ -29,8 +29,8 @@
 	<string name="pubkey_import">导入</string>
 	<string name="pubkey_delete">删除密钥</string>
 	<string name="pubkey_gather_entropy">Gathering Entropy</string>
-	<string name="pubkey_touch_prompt">点击方框来收集随机数：%1$d％完成</string>
-	<string name="pubkey_touch_hint">In order to assure randomness during the key generation, move your finger randomly over the box below.</string>
+	<string name="pubkey_touch_prompt">触摸方框来收集随机数:%1$d%% 完成</string>
+	<string name="pubkey_touch_hint">由于密钥产生的时候需要随机数据，请在下面的方框中随便移动你的手指</string>
 	<string name="pubkey_generating">正在产生密钥配对</string>
 	<string name="pubkey_copy_private">复制私钥</string>
 	<string name="pubkey_copy_public">复制公钥</string>
@@ -40,67 +40,67 @@
 	<string name="pubkey_list_pick">从/sdcard获取</string>
 	<string name="pubkey_import_parse_problem">导入私钥的时候出现问题</string>
 	<string name="pubkey_unlock">未锁定key</string>
-	<string name="pubkey_failed_add">Bad password for key '%1$s'. Authentication failed.</string>
+	<string name="pubkey_failed_add">验证失败，错误的的密钥密码'%1$s'</string>
 	<string name="pubkey_memory_load">载入内存中</string>
 	<string name="pubkey_memory_unload">从内存中移除</string>
-	<string name="pubkey_load_on_start">Load key on start</string>
+	<string name="pubkey_load_on_start">在启动的时候载入密钥</string>
 
-	<string name="portforward_list_empty">Tap "Menu" to create\nport forwards.</string>
-	<string name="portforward_edit">Edit port forward</string>
-	<string name="portforward_delete">Delete port forward</string>
+	<string name="portforward_list_empty">点击"菜单"来创建端口转发</string>
+	<string name="portforward_edit">编辑端口转发</string>
+	<string name="portforward_delete">删除端口转发</string>
 
-	<string name="prompt_nickname">Nickname:</string>
+	<string name="prompt_nickname">昵称</string>
 	<!-- An example string that could be used as a nickname for a pubkey. -->
-	<string name="prompt_nickname_hint_pubkey">My work key</string>
+	<string name="prompt_nickname_hint_pubkey">我的工作密钥</string>
 	<!-- The source TCP port for port forwards. -->
-	<string name="prompt_source_port">Source port:</string>
+	<string name="prompt_source_port">源端口</string>
 	<!-- The "host:port" combination used for port forward destinations. -->
-	<string name="prompt_destination">Destination:</string>
-	<string name="prompt_old_password">Old password:</string>
-	<string name="prompt_password">Password:</string>
+	<string name="prompt_destination">目标端口</string>
+	<string name="prompt_old_password">旧密码</string>
+	<string name="prompt_password">密码</string>
 	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
-	<string name="prompt_again">(again)</string>
+	<string name="prompt_again">再输入一遍密码</string>
 	<!-- Label for the user to select port forward type. -->
-	<string name="prompt_type">Type:</string>
-	<string name="prompt_password_can_be_blank">Note: password can be blank</string>
+	<string name="prompt_type">转发类型</string>
+	<string name="prompt_password_can_be_blank">密码不能为空</string>
 	<!-- Prompt for the size of the private key in bits. -->
-	<string name="prompt_bits">Bits:</string>
+	<string name="prompt_bits">位数</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Password for key '%1$s'</string>
+	<string name="prompt_pubkey_password">密钥'%1$s'的密码</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning_header">WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</string>
+	<string name="host_verification_failure_warning_header">警告：远程主机的标志已经改变</string>
 	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning">IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\nSomeone could be eavesdropping on you right now (man-in-the-middle attack)!\nIt is also possible that the host key has just been changed.</string>
 
 	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
-	<string name="prompt_host_disconnected">Host has disconnected.\nClose session?</string>
+	<string name="prompt_host_disconnected">主机已经断开.\n是否关闭本次对话？</string>
 	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
-	<string name="prompt_continue_connecting">Are you sure you want\nto continue connecting?</string>
+	<string name="prompt_continue_connecting">是否要继续连接？</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">The authenticity of host '%1$s' can't be established.</string>
+	<string name="host_authenticity_warning">主机'%1$s'的验证无法建立</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">Host %1$s key fingerprint is %2$s</string>
 
-	<string name="alert_passwords_do_not_match_msg">Passwords do not match!</string>
-	<string name="alert_wrong_password_msg">Wrong password!</string>
-	<string name="alert_key_corrupted_msg">Private key appears corrupt!</string>
-	<string name="alert_sdcard_absent">SD card is not inserted!</string>
+	<string name="alert_passwords_do_not_match_msg">密码不匹配</string>
+	<string name="alert_wrong_password_msg">错误的密码</string>
+	<string name="alert_key_corrupted_msg">私钥好像已经损坏</string>
+	<string name="alert_sdcard_absent">sd卡没有插入</string>
 
 	<!-- Add a new item (e.g., host or pubkey) to the list. -->
-	<string name="button_add">Add</string>
+	<string name="button_add">添加</string>
 	<!-- Change an existing item's (e.g., host or pubkey) details. -->
-	<string name="button_change">Change</string>
+	<string name="button_change">修改</string>
 	<!-- Button that begins the generation of a public key pair. -->
-	<string name="button_generate">Generate Key</string>
+	<string name="button_generate">生成密钥</string>
 	<!-- Button that resizes the screen to the user-specified dimensions. -->
-	<string name="button_resize">Resize</string>
+	<string name="button_resize">缩放</string>
 
-	<string name="alert_disconnect_msg">Connection Lost</string>
+	<string name="alert_disconnect_msg">连接中断</string>
 
-	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
+	<string name="msg_copyright">版权所有2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
 
 	<!-- DO NOT MANUALLY UPDATE VERSION!!!
 	  Updating is update by the ant task "update-version" in build.xml
@@ -108,33 +108,8 @@
 	-->
 	<string name="msg_version">ConnectBot (working copy)</string>
 
-	<!-- Do not translate -->
-	<string name="pref_emulation">emulation</string>
-	<!-- Do not translate -->
-	<string name="pref_scrollback">scrollback</string>
-	<!-- Do not translate -->
-	<string name="pref_keepalive">keepalive</string>
-	<!-- Do not translate -->
-	<string name="pref_keymode">keymode</string>
-	<!-- Do not translate -->
-	<string name="pref_memkeys">memkeys</string>
-	<!-- Do not translate -->
-	<string name="pref_rotation">rotation</string>
-	<!-- Do not translate -->
-	<string name="pref_camera">camera</string>
-	<!-- Do not translate -->
-	<string name="pref_update">update</string>
-	<!-- Do not translate -->
-	<string name="pref_lastchecked">lastchecked</string>
-	<!-- Do not translate -->
-	<string name="pref_fullscreen">fullscreen</string>
-	<!-- Do not translate -->
-	<string name="pref_wifilock">wifilock</string>
-	<!-- Do not translate -->
-	<string name="pref_bumpyarrows">bumpyarrows</string>
-
 	<!-- The category title for terminal emulation preferences. -->
-	<string name="pref_emulation_category">Terminal emulation</string>
+	<string name="pref_emulation_category">模拟终端</string>
 
 	<!-- Name for the emulation terminal type preference. -->
 	<string name="pref_emulation_title">Emulation mode</string>
@@ -254,6 +229,8 @@
 	<!-- Port field title for host editor preference -->
 	<string name="hostpref_port_title">Port</string>
 
+	<!-- Displayed to indicate a host has never been connected to. -->
+	<string name="bind_never">Never connected</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
 	<string name="bind_minutes">%1$s minutes ago</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
