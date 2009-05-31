@@ -34,7 +34,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -97,10 +96,18 @@ public final class UpdateHelper implements Runnable {
 		}
 
 		// decide if we really need to check for update
-		Resources res = context.getResources();
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-		String frequency = prefs.getString(PreferenceConstants.UPDATE, PreferenceConstants.UPDATE_DAILY);
+		String frequency;
+		try {
+			frequency = prefs.getString(PreferenceConstants.UPDATE, PreferenceConstants.UPDATE_DAILY);
+		} catch (ClassCastException cce) {
+			// Hm, somehow we got a long in there in the previous upgrades.
+			frequency = PreferenceConstants.UPDATE_DAILY;
+			Editor editor = prefs.edit();
+			editor.putString(PreferenceConstants.UPDATE, frequency);
+			editor.commit();
+		}
 		long lastChecked = prefs.getLong(PreferenceConstants.LAST_CHECKED, 0);
 		long now = (System.currentTimeMillis() / 1000);
 		long passed = now - lastChecked;
