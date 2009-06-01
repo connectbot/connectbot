@@ -377,8 +377,8 @@ public class VDUBuffer {
             newBufSize += n;
           }
 
-          cbuf = new char[bufSize][];
-          abuf = new int[bufSize][];
+          cbuf = new char[newBufSize][];
+          abuf = new int[newBufSize][];
         } else {
           offset = n;
           cbuf = charArray;
@@ -406,7 +406,7 @@ public class VDUBuffer {
         }
         // copy anything from the topMargin up to the amount of lines inserted
         // to the gap left over between scrollback buffer and screenBase
-        if (oldBase > 0) {
+        if (oldBase >= 0) {
           System.arraycopy(charArray, oldBase + top,
                            cbuf, oldBase - offset,
                            n);
