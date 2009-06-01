@@ -203,9 +203,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		final String encoding = host.getEncoding();
 
 		public void run() {
-			final byte[] b = new byte[BUFFER_SIZE];
-			final byte[] tmpBuff = new byte[BUFFER_SIZE];
-
 			final Charset charset = Charset.forName(encoding);
 
 			/* Set up character set decoder to report any byte sequences
@@ -223,8 +220,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			replacer.onUnmappableCharacter(CodingErrorAction.REPLACE);
 			replacer.onMalformedInput(CodingErrorAction.REPLACE);
 
-			ByteBuffer bb;
+			ByteBuffer bb = ByteBuffer.allocate(BUFFER_SIZE);
 			CharBuffer cb = CharBuffer.allocate(BUFFER_SIZE);
+
+			final byte[] bba = bb.array();
+			final char[] cba = cb.array();
+			final byte[] tmpBuff = new byte[BUFFER_SIZE];
 
 			int n = 0;
 			int offset = 0;
@@ -240,9 +241,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					newConditions = session.waitForCondition(conditions, 0);
 					if ((newConditions & ChannelCondition.STDOUT_DATA) != 0) {
 						while (stdout.available() > 0) {
-							n = offset + stdout.read(b, offset, BUFFER_SIZE - offset);
+							n = offset + stdout.read(bba, offset, BUFFER_SIZE - offset);
 
-							bb = ByteBuffer.wrap(b, 0, n);
+							bb.position(0);
+							bb.limit(n);
+
 							CoderResult cr = cd.decode(bb, cb, true);
 
 							if (cr.isMalformed()) {
@@ -252,20 +255,22 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 									/* There is good data before the malformed section, so
 									 * pass this on immediately.
 									 */
-									((vt320)buffer).putString(cb.array(), 0, cb.position());
+									((vt320)buffer).putString(cba, 0, cb.position());
 								}
 
 								while (bb.position() < n) {
-									ByteBuffer replacebb = ByteBuffer.wrap(b, curpos, cr.length());
+									bb.position(curpos);
+									bb.limit(curpos + cr.length());
 
 									cb.clear();
-									replacer.decode(replacebb, cb, true);
+									replacer.decode(bb, cb, true);
 
-									((vt320) buffer).putString(cb.array(), 0, cb.position());
+									((vt320) buffer).putString(cba, 0, cb.position());
 
 									curpos += cr.length();
 
 									bb.position(curpos);
+									cb.limit(n);
 
 									cb.clear();
 									cr = cd.decode(bb, cb, true);
@@ -277,23 +282,23 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 									 */
 									offset = n - bb.position() + cr.length();
 									if ((bb.position() - cr.length()) < offset) {
-										System.arraycopy(b, bb.position() - cr.length(), tmpBuff, 0, offset);
-										System.arraycopy(tmpBuff, 0, b, 0, offset);
+										System.arraycopy(bba, bb.position() - cr.length(), tmpBuff, 0, offset);
+										System.arraycopy(tmpBuff, 0, bba, 0, offset);
 									} else {
-										System.arraycopy(b, bb.position() - cr.length(), b, 0, offset);
+										System.arraycopy(bba, bb.position() - cr.length(), bba, 0, offset);
 									}
 									Log.d(TAG, String.format("Copying out %d chars at %d: 0x%02x",
 											offset, bb.position() - cr.length(),
-											b[bb.position() - cr.length()]
+											bba[bb.position() - cr.length()]
 									));
 								} else {
 									// After discarding the previous offset, we only have valid data.
-									((vt320)buffer).putString(cb.array(), 0, cb.position());
+									((vt320)buffer).putString(cba, 0, cb.position());
 									offset = 0;
 								}
 							} else {
 								// No errors at all.
-								((vt320)buffer).putString(cb.array(), 0, cb.position());
+								((vt320)buffer).putString(cba, 0, cb.position());
 								offset = 0;
 							}
 
@@ -304,11 +309,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 					if ((newConditions & ChannelCondition.STDERR_DATA) != 0) {
 						while (stderr.available() > 0) {
-							n = stderr.read(b);
-							bb = ByteBuffer.wrap(b, 0, n);
+							n = stderr.read(bba);
+							bb.position(0);
+							bb.limit(n);
 							replacer.decode(bb, cb, false);
 							// TODO I don't know.. do we want this? We were ignoring it before
-							Log.d(TAG, String.format("Read data from stderr: %s", new String(cb.array(), 0, cb.position())));
+							Log.d(TAG, String.format("Read data from stderr: %s", new String(cba, 0, cb.position())));
 							cb.clear();
 						}
 					}
@@ -405,6 +411,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			@Override
 			public void write(byte[] b) {}
 			@Override
+			public void write(int b) {}
+			@Override
 			public void sendTelnetCommand(byte cmd) {}
 			@Override
 			public void setWindowSize(int c, int r) {}
@@ -469,7 +477,17 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 					if (b != null && stdin != null)
 						stdin.write(b);
 				} catch (IOException e) {
-					Log.e(TAG, "Problem handling incoming data in vt320() thread", e);
+					Log.e(TAG, "Problem writing outgoing data in vt320() thread", e);
+				}
+			}
+
+			@Override
+			public void write(int b) {
+				try {
+					if (stdin != null)
+						stdin.write(b);
+				} catch (IOException e) {
+					Log.e(TAG, "Problem writing outgoing data in vt320() thread", e);
 				}
 			}
 
