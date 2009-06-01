@@ -327,6 +327,10 @@ public class VDUBuffer {
     int offset = 0;
     int oldBase = screenBase;
 
+    int newScreenBase = screenBase;
+    int newWindowBase = windowBase;
+    int newBufSize = bufSize;
+
     if (l > bottomMargin) /* We do not scroll below bottom margin (below the scrolling region). */
       return;
     int top = (l < topMargin ?
@@ -363,14 +367,14 @@ public class VDUBuffer {
           if (bufSize + n > maxBufSize) {
             offset = n - (maxBufSize - bufSize);
             scrollMarker += offset;
-            bufSize = maxBufSize;
-            screenBase = maxBufSize - height - 1;
-            windowBase = screenBase;
+            newBufSize = maxBufSize;
+            newScreenBase = maxBufSize - height - 1;
+            newWindowBase = screenBase;
           } else {
             scrollMarker += n;
-            screenBase += n;
-            windowBase += n;
-            bufSize += n;
+            newScreenBase += n;
+            newWindowBase += n;
+            newBufSize += n;
           }
 
           cbuf = new char[bufSize][];
@@ -394,10 +398,10 @@ public class VDUBuffer {
         // topMargin to the new screen
         if (top > 0) {
           System.arraycopy(charArray, oldBase,
-                           cbuf, screenBase,
+                           cbuf, newScreenBase,
                            top);
           System.arraycopy(charAttributes, oldBase,
-                           abuf, screenBase,
+                           abuf, newScreenBase,
                            top);
         }
         // copy anything from the topMargin up to the amount of lines inserted
@@ -413,19 +417,19 @@ public class VDUBuffer {
         // copy anything from topMargin + n up to the line linserted to the
         // topMargin
         System.arraycopy(charArray, oldBase + top + n,
-                         cbuf, screenBase + top,
+                         cbuf, newScreenBase + top,
                          l - top - (n - 1));
         System.arraycopy(charAttributes, oldBase + top + n,
-                         abuf, screenBase + top,
+                         abuf, newScreenBase + top,
                          l - top - (n - 1));
         //
         // copy the all lines next to the inserted to the new buffer
         if (l < height - 1) {
           System.arraycopy(charArray, oldBase + l + 1,
-                           cbuf, screenBase + l + 1,
+                           cbuf, newScreenBase + l + 1,
                            (height - 1) - l);
           System.arraycopy(charAttributes, oldBase + l + 1,
-                           abuf, screenBase + l + 1,
+                           abuf, newScreenBase + l + 1,
                            (height - 1) - l);
         }
       } catch (ArrayIndexOutOfBoundsException e) {
@@ -441,6 +445,7 @@ public class VDUBuffer {
         System.err.println("top=" + top + ", bottom=" + bottom);
         System.err.println("n=" + n + ", l=" + l);
         System.err.println("screenBase=" + screenBase + ", windowBase=" + windowBase);
+        System.err.println("newScreenBase=" + newScreenBase + ", newWindowBase=" + newWindowBase);
         System.err.println("oldBase=" + oldBase);
         System.err.println("size.width=" + width + ", size.height=" + height);
         System.err.println("abuf.length=" + abuf.length + ", cbuf.length=" + cbuf.length);
@@ -453,13 +458,16 @@ public class VDUBuffer {
 
 
     for (int i = 0; i < n; i++) {
-      cbuf[(screenBase + l) + (scrollDown ? i : -i)] = new char[width];
-      Arrays.fill(cbuf[(screenBase + l) + (scrollDown ? i : -i)], ' ');
-      abuf[(screenBase + l) + (scrollDown ? i : -i)] = new int[width];
+      cbuf[(newScreenBase + l) + (scrollDown ? i : -i)] = new char[width];
+      Arrays.fill(cbuf[(newScreenBase + l) + (scrollDown ? i : -i)], ' ');
+      abuf[(newScreenBase + l) + (scrollDown ? i : -i)] = new int[width];
     }
 
     charArray = cbuf;
     charAttributes = abuf;
+    screenBase = newScreenBase;
+    windowBase = newWindowBase;
+    bufSize = newBufSize;
 
     if (scrollDown)
       markLine(l, bottom - l + 1);
