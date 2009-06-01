@@ -32,7 +32,7 @@ import java.util.Arrays;
  * all methods to manipulate the buffer that stores characters and their
  * attributes as well as the regions displayed.
  *
- * @author Matthias L. Jugel, Marcus Mei�ner
+ * @author Matthias L. Jugel, Marcus Meißner
  * @version $Id: VDUBuffer.java 503 2005-10-24 07:34:13Z marcus $
  */
 public class VDUBuffer {
@@ -344,8 +344,8 @@ public class VDUBuffer {
       if (n > (bottom - top)) n = (bottom - top);
       int size = bottom - l - (n - 1);
       if(size < 0) size = 0;
-      cbuf = new char[size][width];
-      abuf = new int[size][width];
+      cbuf = new char[size][];
+      abuf = new int[size][];
 
       System.arraycopy(charArray, oldBase + l, cbuf, 0, bottom - l - (n - 1));
       System.arraycopy(charAttributes, oldBase + l,
@@ -373,8 +373,8 @@ public class VDUBuffer {
             bufSize += n;
           }
 
-          cbuf = new char[bufSize][width];
-          abuf = new int[bufSize][width];
+          cbuf = new char[bufSize][];
+          abuf = new int[bufSize][];
         } else {
           offset = n;
           cbuf = charArray;
@@ -482,15 +482,23 @@ public class VDUBuffer {
     int bottom = (l > bottomMargin ? height - 1:
             (l < topMargin?topMargin:bottomMargin + 1));
     int numRows = bottom - l - 1;
+
+    char[] discardedChars = charArray[screenBase + l];
+    int[] discardedAttributes = charAttributes[screenBase + l];
+
     if (numRows > 0) {
 	    System.arraycopy(charArray, screenBase + l + 1,
 	                     charArray, screenBase + l, numRows);
 	    System.arraycopy(charAttributes, screenBase + l + 1,
 	                     charAttributes, screenBase + l, numRows);
     }
-    charArray[screenBase + bottom - 1] = new char[width];
-    Arrays.fill(charArray[screenBase + bottom - 1], ' ');
-    charAttributes[screenBase + bottom - 1] = new int[width];
+
+    int newBottomRow = screenBase + bottom - 1;
+    charArray[newBottomRow] = discardedChars;
+    charAttributes[newBottomRow] = discardedAttributes;
+    Arrays.fill(charArray[newBottomRow], ' ');
+    Arrays.fill(charAttributes[newBottomRow], 0);
+
     markLine(l, bottom - l);
   }
 
@@ -510,15 +518,12 @@ public class VDUBuffer {
     c = checkBounds(c, 0, width - 1);
     l = checkBounds(l, 0, height - 1);
 
-    char cbuf[] = new char[w];
-    int abuf[] = new int[w];
-
-    Arrays.fill(cbuf, ' ');
-    
-    for (int i = 0; i < w; i++) abuf[i] = curAttr;
+    int endColumn = c + w;
+    int targetRow = screenBase + l;
     for (int i = 0; i < h && l + i < height; i++) {
-      System.arraycopy(cbuf, 0, charArray[screenBase + l + i], c, w);
-      System.arraycopy(abuf, 0, charAttributes[screenBase + l + i], c, w);
+      Arrays.fill(charAttributes[targetRow], c, endColumn, curAttr);
+      Arrays.fill(charArray[targetRow], c, endColumn, ' ');
+      targetRow++;
     }
     markLine(l, h);
   }
@@ -535,19 +540,7 @@ public class VDUBuffer {
    * @see #redraw
    */
   public void deleteArea(int c, int l, int w, int h) {
-    c = checkBounds(c, 0, width - 1);
-    l = checkBounds(l, 0, height - 1);
-
-    char cbuf[] = new char[w];
-    int abuf[] = new int[w];
-
-    Arrays.fill(cbuf, ' ');
-    
-    for (int i = 0; i < h && l + i < height; i++) {
-      System.arraycopy(cbuf, 0, charArray[screenBase + l + i], c, w);
-      System.arraycopy(abuf, 0, charAttributes[screenBase + l + i], c, w);
-    }
-    markLine(l, h);
+    deleteArea(c, l, w, h, 0);
   }
 
   /**

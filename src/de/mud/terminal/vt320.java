@@ -56,6 +56,13 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
   public abstract void write(byte[] b);
 
   /**
+   * Write an answer back to the remote host. This is needed to be able to
+   * send terminal answers requests like status and type information.
+   * @param b the array of bytes to be sent
+   */
+  public abstract void write(int b);
+
+  /**
    * Play the beep sound ...
    */
   public void beep() { /* do nothing by default */
@@ -511,6 +518,23 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     return true;
   }
 
+  private boolean write(int s, boolean doecho) {
+    if (debug > 2) {
+      debugStr.append("write(|")
+        .append(s)
+        .append("|,")
+        .append(doecho);
+      debug(debugStr.toString());
+      debugStr.setLength(0);
+    }
+
+    write(s);
+
+    if (doecho)
+      putChar((char)s, false);
+    return true;
+  }
+
   private boolean write(String s) {
     return write(s, localecho);
   }
@@ -958,20 +982,20 @@ public void setScreenSize(int c, int r, boolean broadcast) {
       return;
     }
     if (alt) {
-      write("" + ((char) (keyChar | 0x80)));
+      write(((char) (keyChar | 0x80)));
       return;
     }
 
     if (((keyCode == KEY_ENTER) || (keyChar == 10))
             && !control) {
-      write("\r", false);
+      write('\r');
       if (localecho) putString("\r\n"); // bad hack
       return;
     }
 
     if ((keyCode == 10) && !control) {
       debug("Sending \\r");
-      write("\r", false);
+      write('\r');
       return;
     }
 
@@ -981,7 +1005,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     // if(((!vms && keyChar == '2') || keyChar == '@' || keyChar == ' ')
     //    && control)
     if (((!vms && keyChar == '2') || keyChar == ' ') && control)
-      write("" + (char) 0);
+      write(0);
 
     if (vms) {
       if (keyChar == 127 && !control) {
@@ -1117,7 +1141,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
       }
 
     if (!((keyChar == 8) || (keyChar == 127) || (keyChar == '\r') || (keyChar == '\n'))) {
-      write("" + keyChar);
+      write(keyChar);
       return;
     }
   }
