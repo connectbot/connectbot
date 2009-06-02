@@ -762,8 +762,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		keymode = manager.getKeyMode();
 	}
 
-	private boolean bumpyArrows = false;
-
 	/**
 	 * Handle onKey() events coming down from a {@link TerminalView} above us.
 	 * We might collect these for our internal buffer when working with hostkeys
@@ -1110,8 +1108,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	}
 
 	public synchronized void tryKeyVibrate() {
-		if (bumpyArrows)
-			manager.vibrate();
+		manager.vibrate();
 	}
 
 	/**
@@ -1173,7 +1170,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		int width = parent.getWidth();
 		int height = parent.getHeight();
 
-		bumpyArrows = manager.prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, true);
 		clipboard = (ClipboardManager) parent.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
 
 		if (!forcedSize) {

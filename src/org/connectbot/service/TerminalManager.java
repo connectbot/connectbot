@@ -43,6 +43,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.media.AudioManager;
@@ -67,7 +68,7 @@ import android.util.Log;
  *
  * @author jsharkey
  */
-public class TerminalManager extends Service implements BridgeDisconnectedListener {
+public class TerminalManager extends Service implements BridgeDisconnectedListener, OnSharedPreferenceChangeListener {
 
 	public final static String TAG = TerminalManager.class.toString();
 
@@ -93,12 +94,12 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	private WifiManager.WifiLock wifilock;
 
 	private MediaPlayer mediaPlayer;
-	private static final float BEEP_VOLUME = 0.15f;
 
 	private Timer idleTimer;
 	private final long IDLE_TIMEOUT = 300000; // 5 minutes
 
 	private Vibrator vibrator;
+	private volatile boolean wantVibration;
 	public static final long VIBRATE_DURATION = 30;
 
 	private NotificationManager notificationManager;
@@ -108,6 +109,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public void onCreate() {
 		Log.i(TAG, "Starting background service");
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		prefs.registerOnSharedPreferenceChangeListener(this);
 
 		res = getResources();
 
@@ -136,6 +138,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		wifilock = manager.createWifiLock(TAG);
 
 		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		wantVibration = prefs.getBoolean(PreferenceConstants.BELL_VIBRATE, true);
 
 		enableMediaPlayer();
 
@@ -384,6 +387,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	private void enableMediaPlayer() {
 		mediaPlayer = new MediaPlayer();
 
+		float volume = prefs.getFloat(PreferenceConstants.BELL_VOLUME,
+				PreferenceConstants.DEFAULT_BELL_VOLUME);
+
 		mediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
 		mediaPlayer.setOnCompletionListener(new BeepListener());
 
@@ -392,7 +398,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 			mediaPlayer.setDataSource(file.getFileDescriptor(), file
 					.getStartOffset(), file.getLength());
 			file.close();
-			mediaPlayer.setVolume(BEEP_VOLUME, BEEP_VOLUME);
+			mediaPlayer.setVolume(volume, volume);
 			mediaPlayer.prepare();
 		} catch (IOException e) {
 			Log.e(TAG, "Error setting up bell media player", e);
@@ -407,11 +413,10 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 
 	public void playBeep() {
-		if (prefs.getBoolean(PreferenceConstants.BELL, true))
-			if (mediaPlayer != null)
-				mediaPlayer.start();
+		if (mediaPlayer != null)
+			mediaPlayer.start();
 
-		if (prefs.getBoolean(PreferenceConstants.BELL_VIBRATE, true))
+		if (wantVibration)
 			vibrate();
 	}
 
@@ -448,8 +453,34 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
 				notificationIntent, 0);
 
-		notification.setLatestEventInfo(context, res.getString(R.string.app_name), contentText, contentIntent);
+		notification.setLatestEventInfo(context, res.getString(R.string.app_name),
+				contentText, contentIntent);
 
 		notificationManager.notify(NOTIFICATION_ID, notification);
+	}
+
+	/* (non-Javadoc)
+	 * @see android.content.SharedPreferences.OnSharedPreferenceChangeListener#onSharedPreferenceChanged(android.content.SharedPreferences, java.lang.String)
+	 */
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+			String key) {
+		if (PreferenceConstants.BELL.equals(key)) {
+			boolean wantAudible = sharedPreferences.getBoolean(
+					PreferenceConstants.BELL, true);
+			if (wantAudible && mediaPlayer == null)
+				enableMediaPlayer();
+			else if (!wantAudible && mediaPlayer != null)
+				disableMediaPlayer();
+		} else if (PreferenceConstants.BELL_VOLUME.equals(key)) {
+			if (mediaPlayer != null) {
+				float volume = sharedPreferences.getFloat(
+						PreferenceConstants.BELL_VOLUME,
+						PreferenceConstants.DEFAULT_BELL_VOLUME);
+				mediaPlayer.setVolume(volume, volume);
+			}
+		} else if (PreferenceConstants.BUMPY_ARROWS.equals(key)) {
+			wantVibration = sharedPreferences.getBoolean(
+					PreferenceConstants.BUMPY_ARROWS, true);
+		}
 	}
 }

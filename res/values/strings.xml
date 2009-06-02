@@ -169,14 +169,20 @@
 	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
 	<string name="pref_bumpyarrows_summary">Vibrate when sending arrow keys from trackball; useful for laggy connections</string>
 
+	<!-- Category title for the Terminal Bell preferences -->
+	<string name="pref_bell_category">Terminal bell</string>
+
 	<!-- Checkbox preference title for the audible terminal bell feature -->
-	<string name="pref_bell_title">Audible terminal bell</string>
+	<string name="pref_bell_title">Audible bell</string>
+
+	<!-- Title for the slider preference to set the volume -->
+	<string name="pref_bell_volume_title">Bell volume</string>
 
 	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
-	<string name="pref_bell_vibrate_title">Vibrate on terminal bell</string>
+	<string name="pref_bell_vibrate_title">Vibrate on bell</string>
 
 	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
-	<string name="pref_bell_notification_title">Terminal bell notifications</string>
+	<string name="pref_bell_notification_title">Background notifications</string>
 	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
 	<string name="pref_bell_notification_summary">Send notification when a terminal running in the background sounds a bell.</string>
 

@@ -36,7 +36,7 @@
 
 	<PreferenceCategory
 		android:title="@string/pref_emulation_category">
-		
+
 		<ListPreference
 			android:key="emulation"
 			android:title="@string/pref_emulation_title"
@@ -45,7 +45,7 @@
 			android:entryValues="@array/list_emulation_modes"
 			android:defaultValue="screen"
 			/>
-	
+
 		<EditTextPreference
 			android:key="scrollback"
 			android:title="@string/pref_scrollback_title"
@@ -53,7 +53,7 @@
 			android:defaultValue="140"
 			android:singleLine="true"
 			/>
-			
+
 	</PreferenceCategory>
 
 	<PreferenceCategory
@@ -113,11 +113,20 @@
 			android:summary="@string/pref_bumpyarrows_summary"
 			android:defaultValue="true"
 			/>
+	</PreferenceCategory>
+
+	<PreferenceCategory
+		android:title="@string/pref_bell_category">
 
 		<CheckBoxPreference
 			android:key="bell"
 			android:title="@string/pref_bell_title"
 			android:defaultValue="true"
+			/>
+
+		<org.connectbot.util.VolumePreference
+			android:key="bellVolume"
+			android:title="@string/pref_bell_volume_title"
 			/>
 
 		<CheckBoxPreference

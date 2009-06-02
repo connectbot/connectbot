@@ -36,7 +36,6 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -305,7 +304,7 @@ public class ConsoleActivity extends Activity {
 		}
 
 		String rotateDefault;
-		if (Resources.getSystem().getConfiguration().keyboard == Configuration.KEYBOARD_NOKEYS)
+		if (getResources().getConfiguration().keyboard == Configuration.KEYBOARD_NOKEYS)
 			rotateDefault = PreferenceConstants.ROTATION_PORTRAIT;
 		else
 			rotateDefault = PreferenceConstants.ROTATION_LANDSCAPE;
@@ -671,6 +670,8 @@ public class ConsoleActivity extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 
+		setVolumeControlStream(AudioManager.STREAM_NOTIFICATION);
+
 		final View view = findCurrentView(R.id.console_flip);
 		boolean activeTerminal = (view instanceof TerminalView);
 		boolean authenticated = false;
@@ -693,6 +694,13 @@ public class ConsoleActivity extends Activity {
 		resize.setEnabled(activeTerminal && sessionOpen);
 
 		return true;
+	}
+
+	@Override
+	public void onOptionsMenuClosed(Menu menu) {
+		super.onOptionsMenuClosed(menu);
+
+		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 	}
 
 	@Override
