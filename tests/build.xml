@@ -58,4 +58,10 @@
          targets are used.
     -->
     <setup />
+
+    <target name="clean"
+        description="Clean up the result of the build process">
+        <delete dir="${out-folder}"/>
+        <delete dir="${gen-folder}"/>
+    </target>
 </project>
