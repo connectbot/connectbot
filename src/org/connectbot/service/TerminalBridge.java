@@ -21,12 +21,6 @@ package org.connectbot.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CoderResult;
-import java.nio.charset.CodingErrorAction;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -62,7 +56,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
 
-import com.trilead.ssh2.ChannelCondition;
 import com.trilead.ssh2.Connection;
 import com.trilead.ssh2.ConnectionInfo;
 import com.trilead.ssh2.ConnectionMonitor;
@@ -91,8 +84,6 @@ import de.mud.terminal.vt320;
 public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCallback, ConnectionMonitor {
 
 	public final static String TAG = TerminalBridge.class.toString();
-
-	private final static int BUFFER_SIZE = 4096;
 
 	public final static int DEFAULT_FONT_SIZE = 10;
 
@@ -123,7 +114,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 	private InputStream stderr;
 
-	private Thread relay;
+	private Relay relay;
 
 	private final String emulation;
 	private final int scrollback;
@@ -194,144 +185,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	protected BridgeDisconnectedListener disconnectListener = null;
 
 	protected ConnectionInfo connectionInfo;
-
-	/**
-	 * @author kenny
-	 *
-	 */
-	private final class Relay implements Runnable {
-		final String encoding = host.getEncoding();
-
-		public void run() {
-			final Charset charset = Charset.forName(encoding);
-
-			/* Set up character set decoder to report any byte sequences
-			 * which are malformed so we can try to resume decoding it
-			 * on the next packet received.
-			 *
-			 * UTF-8 byte sequences have a tendency to get truncated at
-			 * times.
-			 */
-			final CharsetDecoder cd = charset.newDecoder();
-			cd.onUnmappableCharacter(CodingErrorAction.REPLACE);
-			cd.onMalformedInput(CodingErrorAction.REPORT);
-
-			final CharsetDecoder replacer = charset.newDecoder();
-			replacer.onUnmappableCharacter(CodingErrorAction.REPLACE);
-			replacer.onMalformedInput(CodingErrorAction.REPLACE);
-
-			ByteBuffer bb = ByteBuffer.allocate(BUFFER_SIZE);
-			CharBuffer cb = CharBuffer.allocate(BUFFER_SIZE);
-
-			final byte[] bba = bb.array();
-			final char[] cba = cb.array();
-			final byte[] tmpBuff = new byte[BUFFER_SIZE];
-
-			int n = 0;
-			int offset = 0;
-
-			int conditions = ChannelCondition.STDOUT_DATA
-					| ChannelCondition.STDERR_DATA
-					| ChannelCondition.CLOSED
-					| ChannelCondition.EOF;
-			int newConditions = 0;
-
-			while((newConditions & ChannelCondition.CLOSED) == 0) {
-				try {
-					newConditions = session.waitForCondition(conditions, 0);
-					if ((newConditions & ChannelCondition.STDOUT_DATA) != 0) {
-						while (stdout.available() > 0) {
-							n = offset + stdout.read(bba, offset, BUFFER_SIZE - offset);
-
-							bb.position(0);
-							bb.limit(n);
-
-							CoderResult cr = cd.decode(bb, cb, true);
-
-							if (cr.isMalformed()) {
-								int curpos = bb.position() - cr.length();
-
-								if (curpos > 0) {
-									/* There is good data before the malformed section, so
-									 * pass this on immediately.
-									 */
-									((vt320)buffer).putString(cba, 0, cb.position());
-								}
-
-								while (bb.position() < n) {
-									bb.position(curpos);
-									bb.limit(curpos + cr.length());
-
-									cb.clear();
-									replacer.decode(bb, cb, true);
-
-									((vt320) buffer).putString(cba, 0, cb.position());
-
-									curpos += cr.length();
-
-									bb.position(curpos);
-									cb.limit(n);
-
-									cb.clear();
-									cr = cd.decode(bb, cb, true);
-								}
-
-								if (cr.isMalformed()) {
-									/* If we still have malformed input, save the bytes for the next
-									 * read and try to parse it again.
-									 */
-									offset = n - bb.position() + cr.length();
-									if ((bb.position() - cr.length()) < offset) {
-										System.arraycopy(bba, bb.position() - cr.length(), tmpBuff, 0, offset);
-										System.arraycopy(tmpBuff, 0, bba, 0, offset);
-									} else {
-										System.arraycopy(bba, bb.position() - cr.length(), bba, 0, offset);
-									}
-									Log.d(TAG, String.format("Copying out %d chars at %d: 0x%02x",
-											offset, bb.position() - cr.length(),
-											bba[bb.position() - cr.length()]
-									));
-								} else {
-									// After discarding the previous offset, we only have valid data.
-									((vt320)buffer).putString(cba, 0, cb.position());
-									offset = 0;
-								}
-							} else {
-								// No errors at all.
-								((vt320)buffer).putString(cba, 0, cb.position());
-								offset = 0;
-							}
-
-							cb.clear();
-						}
-						redraw();
-					}
-
-					if ((newConditions & ChannelCondition.STDERR_DATA) != 0) {
-						while (stderr.available() > 0) {
-							n = stderr.read(bba);
-							bb.position(0);
-							bb.limit(n);
-							replacer.decode(bb, cb, false);
-							// TODO I don't know.. do we want this? We were ignoring it before
-							Log.d(TAG, String.format("Read data from stderr: %s", new String(cba, 0, cb.position())));
-							cb.clear();
-						}
-					}
-
-					if ((newConditions & ChannelCondition.EOF) != 0) {
-						// The other side closed our channel, so let's disconnect.
-						// TODO review whether any tunnel is in use currently.
-						dispatchDisconnect(false);
-						break;
-					}
-				} catch (IOException e) {
-					Log.e(TAG, "Problem while handling incoming data in relay thread", e);
-					break;
-				}
-			}
-		}
-	}
 
 	public class HostKeyVerifier implements ServerHostKeyVerifier {
 
@@ -821,9 +674,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			stderr = session.getStderr();
 
 			// create thread to relay incoming connection data to buffer
-			relay = new Thread(new Relay());
-			relay.setName("Relay");
-			relay.start();
+			relay = new Relay(this, session, stdout, stderr, (vt320) buffer, host.getEncoding());
+			Thread relayThread = new Thread(relay);
+			relayThread.setName("Relay");
+			relayThread.start();
 
 			// force font-size to make sure we resizePTY as needed
 			setFontSize(fontSize);
