@@ -322,8 +322,7 @@
             <arg value="tests/build.xml" />
             <arg value="reinstall"/>
         </exec>
-        <!-- <mkdir dir="${log-dir}" /> -->
-	<echo>Running test cases...</echo>
+        <echo>Running test cases...</echo>
         <exec executable="${adb}">
             <arg value="shell" />
             <arg value="am" />
