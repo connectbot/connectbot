@@ -570,8 +570,10 @@ public class ConsoleActivity extends Activity {
 			disconnected = ((TerminalView) view).bridge.isDisconnected();
 		}
 
+		menu.setQwertyMode(true);
 
 		disconnect = menu.add(R.string.list_host_disconnect);
+		disconnect.setAlphabeticShortcut('w');
 		if (!sessionOpen && disconnected)
 			disconnect.setTitle(R.string.console_menu_close);
 		disconnect.setEnabled(activeTerminal);
@@ -586,6 +588,7 @@ public class ConsoleActivity extends Activity {
 		});
 
 		copy = menu.add(R.string.console_menu_copy);
+		copy.setAlphabeticShortcut('c');
 		copy.setIcon(android.R.drawable.ic_menu_set_as);
 		copy.setEnabled(activeTerminal);
 		copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -607,8 +610,8 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 
-
 		paste = menu.add(R.string.console_menu_paste);
+		paste.setAlphabeticShortcut('v');
 		paste.setIcon(android.R.drawable.ic_menu_edit);
 		paste.setEnabled(clipboard.hasText() && activeTerminal && authenticated);
 		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -624,8 +627,8 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 
-
 		portForward = menu.add(R.string.console_menu_portforwards);
+		portForward.setAlphabeticShortcut('f');
 		portForward.setIcon(android.R.drawable.ic_menu_manage);
 		portForward.setEnabled(authenticated);
 		portForward.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -638,6 +641,7 @@ public class ConsoleActivity extends Activity {
 		});
 
 		resize = menu.add(R.string.console_menu_resize);
+		resize.setAlphabeticShortcut('s');
 		resize.setIcon(android.R.drawable.ic_menu_crop);
 		resize.setEnabled(activeTerminal && sessionOpen);
 		resize.setOnMenuItemClickListener(new OnMenuItemClickListener() {
