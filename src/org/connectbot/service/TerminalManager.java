@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.connectbot.ConsoleActivity;
+import org.connectbot.R;
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PubkeyBean;
 import org.connectbot.util.HostDatabase;
@@ -34,11 +36,18 @@ import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -47,6 +56,7 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -82,8 +92,17 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	private ConnectivityManager connectivityManager;
 	private WifiManager.WifiLock wifilock;
 
+	private MediaPlayer mediaPlayer;
+	private static final float BEEP_VOLUME = 0.15f;
+
 	private Timer idleTimer;
 	private final long IDLE_TIMEOUT = 300000; // 5 minutes
+
+	private Vibrator vibrator;
+	public static final long VIBRATE_DURATION = 30;
+
+	private NotificationManager notificationManager;
+	private static final int NOTIFICATION_ID = 1;
 
 	@Override
 	public void onCreate() {
@@ -115,6 +134,12 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		wifilock = manager.createWifiLock(TAG);
+
+		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+		enableMediaPlayer();
+
+		notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
 	@Override
@@ -142,6 +167,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		if (wifilock != null && wifilock.isHeld())
 			wifilock.release();
+
+		disableMediaPlayer();
 	}
 
 	/**
@@ -347,5 +374,82 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 			Log.d(TAG, String.format("Stopping service after timeout of ~%d seconds", IDLE_TIMEOUT / 1000));
 			TerminalManager.this.stopNow();
 		}
+	}
+
+	public void vibrate() {
+		if (vibrator != null)
+			vibrator.vibrate(VIBRATE_DURATION);
+	}
+
+	private void enableMediaPlayer() {
+		mediaPlayer = new MediaPlayer();
+
+		mediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
+		mediaPlayer.setOnCompletionListener(new BeepListener());
+
+		AssetFileDescriptor file = res.openRawResourceFd(R.raw.bell);
+		try {
+			mediaPlayer.setDataSource(file.getFileDescriptor(), file
+					.getStartOffset(), file.getLength());
+			file.close();
+			mediaPlayer.setVolume(BEEP_VOLUME, BEEP_VOLUME);
+			mediaPlayer.prepare();
+		} catch (IOException e) {
+			Log.e(TAG, "Error setting up bell media player", e);
+		}
+	}
+
+	private void disableMediaPlayer() {
+		if (mediaPlayer != null) {
+			mediaPlayer.release();
+			mediaPlayer = null;
+		}
+	}
+
+	public void playBeep() {
+		if (prefs.getBoolean(PreferenceConstants.BELL, true))
+			if (mediaPlayer != null)
+				mediaPlayer.start();
+
+		if (prefs.getBoolean(PreferenceConstants.BELL_VIBRATE, true))
+			vibrate();
+	}
+
+	class BeepListener implements OnCompletionListener {
+		public void onCompletion(MediaPlayer mp) {
+			mp.seekTo(0);
+		}
+	}
+
+	/**
+	 * Send system notification to user for a certain host. When user selects
+	 * the notification, it will bring them directly to the ConsoleActivity
+	 * displaying the host.
+	 *
+	 * @param host
+	 */
+	public void sendActivityNotification(HostBean host) {
+		if (!prefs.getBoolean(PreferenceConstants.BELL_NOTIFICATION, false))
+			return;
+
+		String contentText = res.getString(
+				R.string.notification_text, host.getNickname());
+
+		Notification notification = new Notification(
+				R.drawable.notification_icon, contentText,
+				System.currentTimeMillis());
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+		Context context = getApplicationContext();
+		Intent notificationIntent = new Intent(this, ConsoleActivity.class);
+		notificationIntent.setAction("android.intent.action.VIEW");
+		notificationIntent.setData(host.getUri());
+
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+				notificationIntent, 0);
+
+		notification.setLatestEventInfo(context, res.getString(R.string.app_name), contentText, contentIntent);
+
+		notificationManager.notify(NOTIFICATION_ID, notification);
 	}
 }

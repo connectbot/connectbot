@@ -48,7 +48,6 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.Bitmap.Config;
 import android.graphics.Paint.FontMetrics;
-import android.os.Vibrator;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.KeyCharacterMap;
@@ -352,6 +351,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			// We don't want remote to resize our window.
 			@Override
 			public void setWindowSize(int c, int r) {
+			}
+
+			@Override
+			public void beep() {
+				if (parent.isShown())
+					manager.playBeep();
+				else
+					manager.sendActivityNotification(host);
 			}
 		};
 
@@ -756,9 +763,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	}
 
 	private boolean bumpyArrows = false;
-	public Vibrator vibrator = null;
-
-	public static final long VIBRATE_DURATION = 30;
 
 	/**
 	 * Handle onKey() events coming down from a {@link TerminalView} above us.
@@ -1106,8 +1110,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	}
 
 	public synchronized void tryKeyVibrate() {
-		if (bumpyArrows && vibrator != null)
-			vibrator.vibrate(VIBRATE_DURATION);
+		if (bumpyArrows)
+			manager.vibrate();
 	}
 
 	/**
@@ -1170,7 +1174,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		int height = parent.getHeight();
 
 		bumpyArrows = manager.prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, true);
-		vibrator = (Vibrator) parent.getContext().getSystemService(Context.VIBRATOR_SERVICE);
 		clipboard = (ClipboardManager) parent.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
 
 		if (!forcedSize) {

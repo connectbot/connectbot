@@ -262,8 +262,7 @@ public class HostListActivity extends ListActivity {
 				hostdb.saveHost(host);
 
 				Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
-				intent.setData(Uri.parse(String.format("ssh://%s@%s:%d/#%s",
-						Uri.encode(username), Uri.encode(hostname), port, Uri.encode(nickname))));
+				intent.setData(host.getUri());
 				HostListActivity.this.startActivity(intent);
 
 				// set list filter based on text

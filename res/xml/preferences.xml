@@ -114,6 +114,25 @@
 			android:defaultValue="true"
 			/>
 
+		<CheckBoxPreference
+			android:key="bell"
+			android:title="@string/pref_bell_title"
+			android:defaultValue="true"
+			/>
+
+		<CheckBoxPreference
+			android:key="bellVibrate"
+			android:title="@string/pref_bell_vibrate_title"
+			android:defaultValue="true"
+			/>
+
+		<CheckBoxPreference
+			android:key="bellNotification"
+			android:title="@string/pref_bell_notification_title"
+			android:summary="@string/pref_bell_notification_summary"
+			android:defaultValue="false"
+			/>
+
 	</PreferenceCategory>
 
 </PreferenceScreen>

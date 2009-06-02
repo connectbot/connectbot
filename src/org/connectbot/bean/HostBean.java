@@ -20,6 +20,7 @@ package org.connectbot.bean;
 import org.connectbot.util.HostDatabase;
 
 import android.content.ContentValues;
+import android.net.Uri;
 
 /**
  * @author Kenny Root
@@ -238,6 +239,22 @@ public class HostBean extends AbstractBean {
 		hash = 31 * hash + port;
 
 		return hash;
+	}
+
+	/**
+	 * @return URI identifying this HostBean
+	 */
+	public Uri getUri() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("ssh://")
+			.append(Uri.encode(username))
+			.append('@')
+			.append(Uri.encode(hostname))
+			.append(':')
+			.append(port)
+			.append("/#")
+			.append(nickname);
+		return Uri.parse(sb.toString());
 	}
 
 }
