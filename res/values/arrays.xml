@@ -18,10 +18,10 @@
 	</string-array>
 
 	<string-array name="list_rotation_values">
-		<item>default</item>
-		<item>landscape</item>
-		<item>portrait</item>
-		<item>automatic</item>
+		<item>Default</item>
+		<item>Force landscape</item>
+		<item>Force portrait</item>
+		<item>Automatic</item>
 	</string-array>
 
 	<string-array name="list_camera">
@@ -32,10 +32,10 @@
 	</string-array>
 
 	<string-array name="list_camera_values">
-		<item>ctrl+a space</item>
-		<item>ctrl+a</item>
-		<item>esc</item>
-		<item>none</item>
+		<item>Ctrl+A then Space</item>
+		<item>Ctrl+A</item>
+		<item>Esc</item>
+		<item>None</item>
 	</string-array>
 
 	<string-array name="list_colors">
@@ -59,9 +59,9 @@
 	</string-array>
 
 	<string-array name="list_update_values">
-		<item>daily</item>
-		<item>weekly</item>
-		<item>never</item>
+		<item>Daily</item>
+		<item>Weekly</item>
+		<item>Never</item>
 	</string-array>
 
 	<string-array name="list_keymode">
