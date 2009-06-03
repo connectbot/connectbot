@@ -99,10 +99,12 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	private final long IDLE_TIMEOUT = 300000; // 5 minutes
 
 	private Vibrator vibrator;
-	private volatile boolean wantVibration;
+	private volatile boolean wantKeyVibration;
 	public static final long VIBRATE_DURATION = 30;
 
 	private NotificationManager notificationManager;
+
+	private boolean wantBellVibration;
 	private static final int NOTIFICATION_ID = 1;
 
 	@Override
@@ -138,8 +140,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		wifilock = manager.createWifiLock(TAG);
 
 		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		wantVibration = prefs.getBoolean(PreferenceConstants.BELL_VIBRATE, true);
+		wantKeyVibration = prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, true);
 
+		wantBellVibration = prefs.getBoolean(PreferenceConstants.BELL_VIBRATE, true);
 		enableMediaPlayer();
 
 		notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -379,7 +382,12 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		}
 	}
 
-	public void vibrate() {
+	public void tryKeyVibrate() {
+		if (wantKeyVibration)
+			vibrate();
+	}
+
+	private void vibrate() {
 		if (vibrator != null)
 			vibrator.vibrate(VIBRATE_DURATION);
 	}
@@ -416,7 +424,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		if (mediaPlayer != null)
 			mediaPlayer.start();
 
-		if (wantVibration)
+		if (wantBellVibration)
 			vibrate();
 	}
 
@@ -478,8 +486,11 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 						PreferenceConstants.DEFAULT_BELL_VOLUME);
 				mediaPlayer.setVolume(volume, volume);
 			}
+		} else if (PreferenceConstants.BELL_VIBRATE.equals(key)) {
+			wantBellVibration = sharedPreferences.getBoolean(
+					PreferenceConstants.BELL_VIBRATE, true);
 		} else if (PreferenceConstants.BUMPY_ARROWS.equals(key)) {
-			wantVibration = sharedPreferences.getBoolean(
+			wantKeyVibration = sharedPreferences.getBoolean(
 					PreferenceConstants.BUMPY_ARROWS, true);
 		}
 	}

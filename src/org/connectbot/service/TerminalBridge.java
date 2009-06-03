@@ -1108,7 +1108,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	}
 
 	public synchronized void tryKeyVibrate() {
-		manager.vibrate();
+		manager.tryKeyVibrate();
 	}
 
 	/**
