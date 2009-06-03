@@ -719,28 +719,6 @@ public class ConsoleActivity extends Activity {
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
-
-		/* Make sure our current TerminalView doesn't send a
-		 * notification to the user about the screen size.
-		 */
-		View view = findCurrentView(R.id.console_flip);
-		if (view instanceof TerminalView)
-			((TerminalView) view).setNotifications(false);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		// Enable notifications for the current TerminalView.
-		View view = findCurrentView(R.id.console_flip);
-		if (view instanceof TerminalView)
-			((TerminalView) view).setNotifications(true);
-	}
-
-	@Override
 	public void onStop() {
 		super.onStop();
 
