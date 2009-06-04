@@ -1,176 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">ConnectBot</string>
-	<string name="app_desc">Un client SSH simple, open-source et puissant.</string>
+	<string name="app_desc">簡單,強大,開源的SSH客戶端</string>
 
 	<!-- Window title for the Host List -->
-	<string name="title_hosts_list">Serveurs</string>
+	<string name="title_hosts_list">主機</string>
 	<!-- Window title for the Pubkeys List -->
-	<string name="title_pubkey_list">Clés publiques</string>
+	<string name="title_pubkey_list">公鑰</string>
 	<!-- Window title for the Port Forwards List -->
-	<string name="title_port_forwards_list">Redirections de ports</string>
+	<string name="title_port_forwards_list">端口映射</string>
 	<!-- Window title when editing host details -->
-	<string name="title_host_editor">Modifier le serveur</string>
+	<string name="title_host_editor">編輯主機</string>
 	<!-- Window title for Help index -->
-	<string name="title_help">Aide</string>
+	<string name="title_help">幫助</string>
 
-	<string name="resolve_connect">Connexion</string>
-	<string name="resolve_entropy">Génération d'aléatoire</string>
+	<string name="resolve_connect">連接</string>
+	<string name="resolve_entropy">Gather Entropy</string>
 
-	<string name="menu_insert">Ajouter un serveur</string>
-	<string name="menu_delete">Supprimmer le serveur</string>
-	<string name="menu_preferences">Préférences</string>
+	<string name="menu_insert">添加主機</string>
+	<string name="menu_delete">刪除主機</string>
+	<string name="menu_preferences">設置</string>
 
-	<string name="help_intro">Sélectionnez un sujet ci-dessous pour plus d'informations.</string>
-	<string name="help_about">À propos de ConnectBot</string>
-	<string name="help_keyboard">Clavier</string>
+	<string name="help_intro">Please select a topic below for more information on a particular subject.</string>
+	<string name="help_about">關於ConnectBot</string>
+	<string name="help_keyboard">鍵盤</string>
 
-	<string name="pubkey_generate">Générer</string>
-	<string name="pubkey_import">Importer</string>
-	<string name="pubkey_delete">Supprimer la clé</string>
-	<string name="pubkey_gather_entropy">Génération d'aléatoire</string>
-	<string name="pubkey_touch_prompt">Touchez cette boîte pour récupérer un nombre aléatoire : %1$d%% fait</string>
-	<string name="pubkey_touch_hint">Afin d'assurer la qualité des nombres aléatoires utilisés pendant la génération de la clé, merci de bouger votre doigt de façon aléatoire sur la boîte ci-dessous.</string>
-	<string name="pubkey_generating">Génération de la paire de clés en cours...</string>
-	<string name="pubkey_copy_private">Copier la clé privée</string>
-	<string name="pubkey_copy_public">Copier la clé publique</string>
-	<string name="pubkey_list_empty">Cliquer sur le "Menu" pour créer\nou importer des paires de clés.</string>
-	<string name="pubkey_unknown_format">Format inconnu</string>
-	<string name="pubkey_change_password">Changer le mot de passe</string>
-	<string name="pubkey_list_pick">Récupérer depuis /sdcard</string>
-	<string name="pubkey_import_parse_problem">Problème lors de l'import de la clé privée</string>
-	<string name="pubkey_unlock">Déverrouiller la clé</string>
-	<string name="pubkey_failed_add">Mot de passe incorrect pour la clef '%1$s'. Authentification incorrecte.</string>
-	<string name="pubkey_memory_load">Chargée en mémoire</string>
-	<string name="pubkey_memory_unload">Effacée de la mémoire</string>
-	<string name="pubkey_load_on_start">Charger la clé au démarrage</string>
+	<string name="pubkey_generate">產生</string>
+	<string name="pubkey_import">導入</string>
+	<string name="pubkey_delete">刪除密鑰</string>
+	<string name="pubkey_gather_entropy">Gathering Entropy</string>
+	<string name="pubkey_touch_prompt">觸摸方框來收集隨機數:%1$d%%完成</string>
+	<string name="pubkey_touch_hint">由於密鑰產生的時候需要隨機數據，請在下面的方框中隨便移動你的手指</string>
+	<string name="pubkey_generating">正在產生密鑰配對</string>
+	<string name="pubkey_copy_private">複製私鑰</string>
+	<string name="pubkey_copy_public">複製公鑰</string>
+	<string name="pubkey_list_empty">按“菜單”鍵創建或導入密鑰。</string>
+	<string name="pubkey_unknown_format">未知格式</string>
+	<string name="pubkey_change_password">更改密碼</string>
+	<string name="pubkey_list_pick">從/sdcard獲取</string>
+	<string name="pubkey_import_parse_problem">導入私鑰的時候出現問題</string>
+	<string name="pubkey_unlock">未鎖定私鑰</string>
+	<string name="pubkey_failed_add">驗證失敗，錯誤的的密鑰密碼' %1$s'</string>
+	<string name="pubkey_memory_load">載入內存中</string>
+	<string name="pubkey_memory_unload">從內存中移除</string>
+	<string name="pubkey_load_on_start">在啟動的時候載入密鑰</string>
 
-	<string name="portforward_list_empty">Appuyez sur "Menu" pour créer\ndes redirections de port.</string>
-	<string name="portforward_edit">Editez la redirection de port</string>
-	<string name="portforward_delete">Effacez la redirection de port</string>
+	<string name="portforward_list_empty">按“菜單”鍵建端口转发</string>
+	<string name="portforward_edit">編輯端口轉發</string>
+	<string name="portforward_delete">刪除端口轉發</string>
 
-	<string name="prompt_nickname">Pseudo</string>
+	<string name="prompt_nickname">暱稱：</string>
 	<!-- An example string that could be used as a nickname for a pubkey. -->
-	<string name="prompt_nickname_hint_pubkey">Ma clé de travail</string>
+	<string name="prompt_nickname_hint_pubkey">我的工作密鑰</string>
 	<!-- The source TCP port for port forwards. -->
-	<string name="prompt_source_port">Port source:</string>
+	<string name="prompt_source_port">源端口：</string>
 	<!-- The "host:port" combination used for port forward destinations. -->
-	<string name="prompt_destination">Destination:</string>
-	<string name="prompt_old_password">Ancien mot de passe:</string>
-	<string name="prompt_password">Mot de passe:</string>
+	<string name="prompt_destination">目標端口：</string>
+	<string name="prompt_old_password">舊密碼</string>
+	<string name="prompt_password">密碼：</string>
 	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
-	<string name="prompt_again">(encore)</string>
+	<string name="prompt_again">(再輸入一遍密碼)</string>
 	<!-- Label for the user to select port forward type. -->
-	<string name="prompt_type">Type:</string>
-	<string name="prompt_password_can_be_blank">Note: le mot de passe peux être vide</string>
+	<string name="prompt_type">轉發類型：</string>
+	<string name="prompt_password_can_be_blank">密碼可以為空</string>
 	<!-- Prompt for the size of the private key in bits. -->
-	<string name="prompt_bits">Bits:</string>
+	<string name="prompt_bits">位數：</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Mot de passe pour la clé '%1$s'</string>
+	<string name="prompt_pubkey_password">密鑰'%1$s'的密碼</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning_header">ATTENTION : L'IDENTIFICATION DE L'HOTE DISTANT A CHANGEE !</string>
+	<string name="host_verification_failure_warning_header">警告：遠程主機的標誌已經改變</string>
 	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning">IL EST POSSIBLE QUE QUELQU'UN FASSE QUELQUE CHOSE DE NUISIBLE !\nQuelqu'un pourrait vous écouter en ce moment (attaque de l'homme du milieu) !\nIl est aussi possible que la clé du serveur ait juste changée.</string>
+	<string name="host_verification_failure_warning">IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\nSomeone could be eavesdropping on you right now (man-in-the-middle attack)!\nIt is also possible that the host key has just been changed.</string>
 
 	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
-	<string name="prompt_host_disconnected">L'hôte s'est deconnecté.\nFermer la session?</string>
+	<string name="prompt_host_disconnected">主機已經斷開。\n是否關閉本次對話？</string>
 	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
-	<string name="prompt_continue_connecting">Etes-vous sur de vouloir\ncontinuer à vous connecter ?</string>
+	<string name="prompt_continue_connecting">是否要繼續連接？</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">L'autenthicité du serveur '%1$s' ne peut être établie.</string>
+	<string name="host_authenticity_warning">主機' %1$s '的驗證無法建立</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
-	<string name="host_fingerprint">L'empreinte de la clé du serveur %1$s est %2$s</string>
+	<string name="host_fingerprint">Host %1$s key fingerprint is %2$s</string>
 
-	<string name="alert_passwords_do_not_match_msg">Les mots de passe diffèrent!</string>
-	<string name="alert_wrong_password_msg">Mauvais mot de passe</string>
-	<string name="alert_key_corrupted_msg">La clé privée semble corrompue!</string>
-	<string name="alert_sdcard_absent">Pas de carte SD dans le lecteur !</string>
+	<string name="alert_passwords_do_not_match_msg">密碼不匹配！</string>
+	<string name="alert_wrong_password_msg">錯誤的密碼！</string>
+	<string name="alert_key_corrupted_msg">私鑰好像已經損壞！</string>
+	<string name="alert_sdcard_absent">沒有插入SD卡！</string>
 
 	<!-- Add a new item (e.g., host or pubkey) to the list. -->
-	<string name="button_add">Ajouter</string>
+	<string name="button_add">添加</string>
 	<!-- Change an existing item's (e.g., host or pubkey) details. -->
-	<string name="button_change">Changer</string>
+	<string name="button_change">修改</string>
 	<!-- Button that begins the generation of a public key pair. -->
-	<string name="button_generate">Générer clé</string>
+	<string name="button_generate">生成密鑰</string>
 	<!-- Button that resizes the screen to the user-specified dimensions. -->
-	<string name="button_resize">Redimensionner</string>
+	<string name="button_resize">調整大小</string>
 
-	<string name="alert_disconnect_msg">Connexion perdue</string>
+	<string name="alert_disconnect_msg">連接中斷</string>
 
-	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
+	<string name="msg_copyright">版權所有2007-2008肯尼根 http://the-b.org/  ，杰弗裡夏基 http://jsharkey.org/</string>
 
 	<!-- DO NOT MANUALLY UPDATE VERSION!!!
 	  Updating is update by the ant task "update-version" in build.xml
 	  Do not translate.
 	-->
-	<string name="msg_version">ConnectBot (copie de travail)</string>
+	<string name="msg_version">ConnectBot (working copy)</string>
 
 	<!-- The category title for terminal emulation preferences. -->
-	<string name="pref_emulation_category">Emulation du mode terminal</string>
+	<string name="pref_emulation_category">模擬終端</string>
 
 	<!-- Name for the emulation terminal type preference. -->
-	<string name="pref_emulation_title">Mode d'emulation</string>
+	<string name="pref_emulation_title">終端機類型</string>
 	<!-- Description of the emulation terminal type preference. -->
-	<string name="pref_emulation_summary">Mode d'emulation du terminal à utiliser pour les connexions PTY</string>
+	<string name="pref_emulation_summary">Terminal emulation mode to use for PTY connections</string>
 
 	<!-- Name for the scrollback size preference -->
-	<string name="pref_scrollback_title">Taille de la mémoire de parcours arrière</string>
+	<string name="pref_scrollback_title">回溯存儲大小</string>
 	<!-- Description of the scrollback size preference -->
-	<string name="pref_scrollback_summary">Taille de la mémoire de parcours arrière à garder en mémoire pour chaque console</string>
+	<string name="pref_scrollback_summary">Size of scrollback buffer to keep in memory for each console</string>
 
 	<!-- The category title for user interface preferences -->
-	<string name="pref_ui_category">Interface utilisateur</string>
+	<string name="pref_ui_category">User interface</string>
 
 	<!-- Name for the rotation mode preference -->
-	<string name="pref_rotation_title">Mode de rotation</string>
+	<string name="pref_rotation_title">行為的輪換</string>
 	<!-- Summary for the rotation mode preference -->
-	<string name="pref_rotation_summary">Comment changer l'orientation de l'écran quand le clavier est deplié ou non</string>
+	<string name="pref_rotation_summary">How to change rotation when keyboard popped in/out</string>
 
 	<!-- Name for the full screen preference -->
-	<string name="pref_fullscreen_title">Plein écran</string>
+	<string name="pref_fullscreen_title">全屏</string>
 	<!-- Summary for the full screen preference -->
-	<string name="pref_fullscreen_summary">Cacher la barre de status lorsque la console est active</string>
+	<string name="pref_fullscreen_summary">Hide status bar while in console</string>
 
 	<!-- Name for the memorize keys preference -->
-	<string name="pref_memkeys_title">Garder les clés en mémoire</string>
+	<string name="pref_memkeys_title">Remember keys in memory</string>
 	<!-- Summary for the memorize keys preference -->
-	<string name="pref_memkeys_summary">Garder les clés débloquées en mémoire tant que le service tourne en arrière plan</string>
+	<string name="pref_memkeys_summary">Keep unlocked keys in memory until backend service is terminated</string>
 
 	<!-- Name for the update check preference -->
-	<string name="pref_update_title">Vérifier les mises à jour</string>
+	<string name="pref_update_title">頻率檢查更新</string>
 	<!-- Summary for the update check preference -->
-	<string name="pref_update_summary">Régler la fréquence de vérification pour les mise à jour de ConnectBot</string>
+	<string name="pref_update_summary">最大頻率檢查ConnectBot更新</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
-	<string name="pref_keymode_title">Raccourcis de navigation</string>
+	<string name="pref_keymode_title">Directory shortcuts</string>
 	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Définir quel couple de touche Alt et Shift utiliser pour '/' et Tab</string>
+	<string name="pref_keymode_summary">Select how to use Alt for '/' and Shift for Tab</string>
 
 	<!-- Name for the camera shortcut usage preference -->
-	<string name="pref_camera_title">Raccourci du bouton Camera</string>
+	<string name="pref_camera_title">Camera shortcut</string>
 	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_camera_summary">Sélectionnez le raccourci à exécuter quand le bouton camera est pressé</string>
+	<string name="pref_camera_summary">Select which shortcut to trigger when the camera button is pushed</string>
 
 	<!-- Name for the keep screen on preference -->
-	<string name="pref_keepalive_title">Garder l'écran allumé</string>
+	<string name="pref_keepalive_title">保持清醒屏幕</string>
 	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_keepalive_summary">Empêcher la mise en veille de l'écran pendant une session console</string>
+	<string name="pref_keepalive_summary">Prevent the screen from turning off when working in a console</string>
 
 	<!-- Name for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_title">Garder le Wi-Fi actif</string>
+	<string name="pref_wifilock_title">Keep Wi-Fi active</string>
 	<!-- Summary for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_summary">Empêcher la désactivation du Wi-Fi quand une session est active</string>
+	<string name="pref_wifilock_summary">Prevent Wi-Fi from turning off when a session is active</string>
 
 	<!-- Name for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_title">Flêches vibrantes</string>
+	<string name="pref_bumpyarrows_title">觸覺方向鍵</string>
 	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_summary">Vibrer lors de l'envoi d'une touche directionnelle à partir du trackball ; intéressant pour les connexions lentes</string>
+	<string name="pref_bumpyarrows_summary">Vibrate when sending arrow keys from trackball; useful for laggy connections</string>
 
 	<!-- Category title for the Terminal Bell preferences -->
-	<string name="pref_bell_category">Cloche du terminal</string>
+	<string name="pref_bell_category">Terminal bell</string>
 
 	<!-- Checkbox preference title for the audible terminal bell feature -->
 	<string name="pref_bell_title">Audible bell</string>
@@ -182,16 +182,16 @@
 	<string name="pref_bell_vibrate_title">Vibrate on bell</string>
 
 	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
-	<string name="pref_bell_notification_title">Background notifications</string>
+	<string name="pref_bell_notification_title">背景通知</string>
 	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
 	<string name="pref_bell_notification_summary">Send notification when a terminal running in the background sounds a bell.</string>
 
 	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
-	<string name="list_keymode_right">Use right-side keys</string>
+	<string name="list_keymode_right">使用右側按鍵</string>
 	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
-	<string name="list_keymode_left">Use left-side keys</string>
+	<string name="list_keymode_left">使用左側按鍵</string>
 	<!-- Preference selection to indicate never to use special shortcut keys. -->
-	<string name="list_keymode_none">Désactiver</string>
+	<string name="list_keymode_none">Disable</string>
 
 	<!-- Preference to not use pubkeys to authenticate to this host. -->
 	<string name="list_pubkeyids_none">Do not use keys</string>
@@ -199,11 +199,11 @@
 	<string name="list_pubkeyids_any">Use any unlocked key</string>
 
 	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_daily">Journalière</string>
+	<string name="list_update_daily">每天</string>
 	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_weekly">Hebdomadaire</string>
+	<string name="list_update_weekly">每週</string>
 	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_never">Jamais</string>
+	<string name="list_update_never">永不</string>
 
 	<!-- Host nickname field preference title -->
 	<string name="hostpref_nickname_title">Nickname</string>
@@ -235,13 +235,13 @@
 	<string name="hostpref_encoding_summary">Character encoding for the host</string>
 
 	<!-- Host preference category title for connection settings -->
-	<string name="hostpref_connection_category">Paramètre de connexion</string>
+	<string name="hostpref_connection_category">Connection settings</string>
 
 	<!-- Username field title for host editor preference -->
-	<string name="hostpref_username_title">Nom d'utilisateur</string>
+	<string name="hostpref_username_title">Username</string>
 
 	<!-- Hostname field title for host editor preference -->
-	<string name="hostpref_hostname_title">Serveur</string>
+	<string name="hostpref_hostname_title">Host</string>
 
 	<!-- Port field title for host editor preference -->
 	<string name="hostpref_port_title">Port</string>
@@ -249,23 +249,23 @@
 	<!-- Displayed to indicate a host has never been connected to. -->
 	<string name="bind_never">Never connected</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
-	<string name="bind_minutes">Il ya %1$s minutes</string>
+	<string name="bind_minutes">%1$s分鐘前</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
-	<string name="bind_hours">Il y a %1$s heures</string>
+	<string name="bind_hours">%1$s小時以前</string>
 	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
-	<string name="bind_days">Il y a %1$s jours</string>
+	<string name="bind_days">%1$s天前</string>
 
 	<!-- Message given when user copies from the terminal. -->
-	<string name="console_copy_done">%1$d octets copié dans le presse-papier</string>
+	<string name="console_copy_done">%1$d字節複製到剪貼簿</string>
 	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
 	<string name="console_copy_start">Touch and drag\nor use directional pad\nto select area to copy</string>
 
 	<!-- Button to close the disconnected terminal window. -->
-	<string name="console_menu_close">Fermer</string>
+	<string name="console_menu_close">Close</string>
 	<!-- Button to begin copying from the terminal to the clipboard. -->
-	<string name="console_menu_copy">Copier</string>
+	<string name="console_menu_copy">Copy</string>
 	<!-- Button to paste from the clipboard to the terminal. -->
-	<string name="console_menu_paste">Coller</string>
+	<string name="console_menu_paste">Paste</string>
 	<!-- Button that brings user to the Port Forwards List. -->
 	<string name="console_menu_portforwards">Port Forwards</string>
 	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
@@ -288,16 +288,16 @@
 	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
 	<string name="hint_userhost">user@hostname</string>
 
-	<string name="list_format_error">Utilisez le format 'utilisateur@serveur:port'</string>
+	<string name="list_format_error">Use the format 'username@hostname:port'</string>
 
-	<string name="list_menu_pubkeys">Gérer les clés publiques</string>
+	<string name="list_menu_pubkeys">Manage Pubkeys</string>
 	<!-- Selection choice to sort hosts by color. -->
-	<string name="list_menu_sortcolor">Trier par couleur</string>
+	<string name="list_menu_sortcolor">Sort by color</string>
 	<!-- Selection choice to sort hosts by nickname. -->
-	<string name="list_menu_sortname">Trier par nom</string>
-	<string name="list_menu_settings">Réglages</string>
+	<string name="list_menu_sortname">Sort by name</string>
+	<string name="list_menu_settings">Settings</string>
 
-	<string name="list_host_disconnect">Déconnexion</string>
+	<string name="list_host_disconnect">斷線</string>
 	<string name="list_host_edit">Edit host</string>
 	<string name="list_host_portforwards">Edit port forwards</string>
 	<string name="list_host_delete">Delete host</string>
@@ -305,30 +305,30 @@
 
 	<!-- Default screen rotation preference selection -->
 	<string name="list_rotation_default">Default</string>
-	<string name="list_rotation_land">Forcer le mode paysage</string>
-	<string name="list_rotation_port">Forcer le mode portrait</string>
+	<string name="list_rotation_land">Force landscape</string>
+	<string name="list_rotation_port">Force portrait</string>
 	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
-	<string name="list_rotation_auto">Automatique</string>
+	<string name="list_rotation_auto">Automatic</string>
 
 	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
-	<string name="list_camera_ctrlaspace">Ctrl+A puis Espace</string>
+	<string name="list_camera_ctrlaspace">Ctrl+A then Space</string>
 	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A". -->
 	<string name="list_camera_ctrla">Ctrl+A</string>
 	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
-	<string name="list_camera_esc">Echap</string>
+	<string name="list_camera_esc">Esc</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">None</string>
 
-	<string name="delete_message">Êtes-vous sûr de vouloir supprimer '%1$s' ?</string>
-	<string name="delete_pos">Oui, supprimer</string>
+	<string name="delete_message">您是否確實要刪除'%1$s'？</string>
+	<string name="delete_pos">是的，刪除</string>
 	<string name="delete_neg">Cancel</string>
 
 	<!-- Button to agree to license terms. -->
 	<string name="wizard_agree">Agree</string>
 	<!-- Button to go to the next page in the first time start-up wizard. -->
-	<string name="wizard_next">Suivant</string>
+	<string name="wizard_next">Next</string>
 	<!-- Button to go to the previous page in the first time start-up wizard. -->
-	<string name="wizard_back">Précédent</string>
+	<string name="wizard_back">Back</string>
 
 	<string name="terminal_no_hosts_connected">No hosts currently connected</string>
 
@@ -337,8 +337,8 @@
 	<string name="terminal_auth">Trying to authenticate</string>
 
 	<string name="terminal_auth_pass">Attempting 'password' authentication</string>
-	<string name="terminal_auth_pass_hint">Mot de passe</string>
-	<string name="terminal_auth_pass_fail">L'authentification par mot de passe a échoué</string>
+	<string name="terminal_auth_pass_hint">密碼</string>
+	<string name="terminal_auth_pass_fail">Authentication method 'password' failed</string>
 
 	<string name="terminal_auth_pubkey_any">Attempting 'publickey' authentication with any in-memory public keys</string>
 	<string name="terminal_auth_pubkey_invalid">Selected public key is invalid, try reselecting key in host editor</string>
@@ -352,17 +352,17 @@
 	<string name="local_shell_unavailable">Failure! Local shell is unavailable on this phone.</string>
 
 	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
-	<string name="notification_text">%1$s wants your attention.</string>
+	<string name="notification_text">%1$s希望你注意</string>
 
 	<!-- Dialog title when a new version of ConnectBot is detected. -->
-	<string name="upgrade">Nouvelle version</string>
+	<string name="upgrade">New version</string>
 	<!-- Button selection to upgrade to the latest ConnectBot when one is available. -->
-	<string name="upgrade_pos">Oui, mettre à jour</string>
+	<string name="upgrade_pos">Yes, upgrade</string>
 	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
-	<string name="upgrade_neg">Pas maintenant</string>
+	<string name="upgrade_neg">Not right now</string>
 
-	<string name="color_red">rouge</string>
-	<string name="color_green">vert</string>
-	<string name="color_blue">bleu</string>
-	<string name="color_gray">gris</string>
+	<string name="color_red">紅色</string>
+	<string name="color_green">綠色</string>
+	<string name="color_blue">藍色</string>
+	<string name="color_gray">灰色</string>
 </resources>
