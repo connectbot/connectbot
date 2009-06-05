@@ -525,7 +525,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			Log.d(TAG, "Host does not support 'none' authentication.");
 		}
 
-		outputLine("Trying to authenticate");
+		outputLine(manager.res.getString(R.string.terminal_auth));
 
 		try {
 			long pubkeyId = host.getPubkeyId();
@@ -539,7 +539,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 				if (pubkeyId == HostDatabase.PUBKEYID_ANY) {
 					// try each of the in-memory keys
-					outputLine("Attempting 'publickey' authentication with any in-memory SSH keys");
+					outputLine(manager.res.getString(R.string.terminal_auth_pubkey_any));
 					for(String nickname : manager.loadedPubkeys.keySet()) {
 						Object trileadKey = manager.loadedPubkeys.get(nickname);
 						if(this.tryPublicKey(host.getUsername(), nickname, trileadKey)) {
@@ -548,12 +548,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 						}
 					}
 				} else {
-					outputLine("Attempting 'publickey' authentication with a specific public key");
+					outputLine(manager.res.getString(R.string.terminal_auth_pubkey_specific));
 					// use a specific key for this host, as requested
 					PubkeyBean pubkey = manager.pubkeydb.findPubkeyById(pubkeyId);
 
 					if (pubkey == null)
-						outputLine("Selected public key is invalid, try reselecting key in host editor");
+						outputLine(manager.res.getString(R.string.terminal_auth_pubkey_invalid));
 					else
 						if (tryPublicKey(pubkey))
 							finishConnection();
@@ -561,28 +561,28 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 				pubkeysExhausted = true;
 			} else if (connection.isAuthMethodAvailable(host.getUsername(), AUTH_PASSWORD)) {
-				outputLine("Attempting 'password' authentication");
+				outputLine(manager.res.getString(R.string.terminal_auth_pass));
 				String password = promptHelper.requestStringPrompt(null,
 						manager.res.getString(R.string.prompt_password));
 				if (password != null
 						&& connection.authenticateWithPassword(host.getUsername(), password)) {
 					finishConnection();
 				} else {
-					outputLine("Authentication method 'password' failed");
+					outputLine(manager.res.getString(R.string.terminal_auth_pass_fail));
 				}
 
 			} else if(connection.isAuthMethodAvailable(host.getUsername(), AUTH_KEYBOARDINTERACTIVE)) {
 				// this auth method will talk with us using InteractiveCallback interface
 				// it blocks until authentication finishes
-				outputLine("Attempting 'keyboard-interactive' authentication");
+				outputLine(manager.res.getString(R.string.terminal_auth_ki));
 				if(connection.authenticateWithKeyboardInteractive(host.getUsername(), TerminalBridge.this)) {
 					finishConnection();
 				} else {
-					outputLine("Authentication method 'keyboard-interactive' failed");
+					outputLine(manager.res.getString(R.string.terminal_auth_ki_fail));
 				}
 
 			} else {
-				outputLine("[Your host doesn't support 'password' or 'keyboard-interactive' authentication.]");
+				outputLine(manager.res.getString(R.string.terminal_auth_fail));
 
 			}
 		} catch(Exception e) {
