@@ -80,7 +80,7 @@
 	<string name="prompt_continue_connecting">Sei sicuro di voler\ncontinuare a connetterti?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">L'autenticità dell'host '%1$s'  non può essere accertata.</string>
+	<string name="host_authenticity_warning">L'autenticità dell'host '%1$s' non può essere accertata.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">Host %1$s l'impronta digitale della chiave è %2$s</string>
 

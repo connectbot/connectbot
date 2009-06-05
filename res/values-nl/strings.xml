@@ -30,7 +30,7 @@
 	<string name="pubkey_delete">Verwijder knop</string>
 	<string name="pubkey_gather_entropy">Verzamelen van Entropie</string>
 	<string name="pubkey_touch_prompt">Raak dit vierkant aan om willekeurigheid te verzamelen: %1$d%% gedaan</string>
-	<string name="pubkey_touch_hint">In order to assure randomness during the key generation, move your finger randomly over the box below.</string>
+	<string name="pubkey_touch_hint">Beweeg je vinger in willekeurige volgorde over het vak beneden om er voor te zorgen dat de invoer willekeurig blijft.</string>
 	<string name="pubkey_generating">Genereren van een sleutel paar...</string>
 	<string name="pubkey_copy_private">Kopieer privé sleutel</string>
 	<string name="pubkey_copy_public">Kopieer publieke sleutel</string>
@@ -82,7 +82,7 @@
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
 	<string name="host_authenticity_warning">De authenticatie van host '%1$s' kan niet worden vastgesteld.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
-	<string name="host_fingerprint">Host %1$s key fingerprint is %2$s</string>
+	<string name="host_fingerprint">Host %1$s sleutel vingerafdruk is %2$s</string>
 
 	<string name="alert_passwords_do_not_match_msg">Wachtwoorden zijn niet hetzelfde!</string>
 	<string name="alert_wrong_password_msg">Verkeerd wachtwoord!</string>

@@ -29,23 +29,23 @@
 	<string name="pubkey_import">導入</string>
 	<string name="pubkey_delete">刪除密鑰</string>
 	<string name="pubkey_gather_entropy">Gathering Entropy</string>
-	<string name="pubkey_touch_prompt">觸摸方框來收集隨機數:%1$d%%完成</string>
+	<string name="pubkey_touch_prompt">觸摸方框來收集隨機數：%1$d％完成</string>
 	<string name="pubkey_touch_hint">由於密鑰產生的時候需要隨機數據，請在下面的方框中隨便移動你的手指</string>
 	<string name="pubkey_generating">正在產生密鑰配對</string>
 	<string name="pubkey_copy_private">複製私鑰</string>
 	<string name="pubkey_copy_public">複製公鑰</string>
-	<string name="pubkey_list_empty">按“菜單”鍵創建或導入密鑰。</string>
+	<string name="pubkey_list_empty">按「菜單」鍵創建或導入密鑰。</string>
 	<string name="pubkey_unknown_format">未知格式</string>
 	<string name="pubkey_change_password">更改密碼</string>
 	<string name="pubkey_list_pick">從/sdcard獲取</string>
 	<string name="pubkey_import_parse_problem">導入私鑰的時候出現問題</string>
 	<string name="pubkey_unlock">未鎖定私鑰</string>
-	<string name="pubkey_failed_add">驗證失敗，錯誤的的密鑰密碼' %1$s'</string>
+	<string name="pubkey_failed_add">驗證失敗，錯誤的的密鑰密碼「%1$s」</string>
 	<string name="pubkey_memory_load">載入內存中</string>
 	<string name="pubkey_memory_unload">從內存中移除</string>
 	<string name="pubkey_load_on_start">在啟動的時候載入密鑰</string>
 
-	<string name="portforward_list_empty">按“菜單”鍵建端口转发</string>
+	<string name="portforward_list_empty">按「菜單」鍵建端口轉發</string>
 	<string name="portforward_edit">編輯端口轉發</string>
 	<string name="portforward_delete">刪除端口轉發</string>
 
@@ -67,7 +67,7 @@
 	<string name="prompt_bits">位數：</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">密鑰'%1$s'的密碼</string>
+	<string name="prompt_pubkey_password">密鑰「%1$s」的密碼</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">警告：遠程主機的標誌已經改變</string>
@@ -80,7 +80,7 @@
 	<string name="prompt_continue_connecting">是否要繼續連接？</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">主機' %1$s '的驗證無法建立</string>
+	<string name="host_authenticity_warning">主機「%1$s」的驗證無法建立</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">Host %1$s key fingerprint is %2$s</string>
 
@@ -100,7 +100,7 @@
 
 	<string name="alert_disconnect_msg">連接中斷</string>
 
-	<string name="msg_copyright">版權所有2007-2008肯尼根 http://the-b.org/  ，杰弗裡夏基 http://jsharkey.org/</string>
+	<string name="msg_copyright">版權所有2007-2008 Kenny Root http://the-b.org/ , Jeffrey Sharkey http://jsharkey.org/</string>
 
 	<!-- DO NOT MANUALLY UPDATE VERSION!!!
 	  Updating is update by the ant task "update-version" in build.xml
@@ -319,7 +319,7 @@
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">None</string>
 
-	<string name="delete_message">您是否確實要刪除'%1$s'？</string>
+	<string name="delete_message">您是否確實要刪除「%1$s」？</string>
 	<string name="delete_pos">是的，刪除</string>
 	<string name="delete_neg">Cancel</string>
 
