@@ -733,7 +733,7 @@ public class VDUBuffer {
   public void setScreenSize(int w, int h, boolean broadcast) {
     char cbuf[][];
     int abuf[][];
-    int bsize = bufSize;
+    int maxSize = bufSize;
 
     if (w < 1 || h < 1) return;
 
@@ -759,17 +759,22 @@ public class VDUBuffer {
     cbuf = new char[bufSize][w];
     abuf = new int[bufSize][w];
 
-    
-    for (int i = 0; i < bufSize; i++) {
-		Arrays.fill(cbuf[i], ' ');
-	}
 
+    for (int i = 0; i < bufSize; i++) {
+      Arrays.fill(cbuf[i], ' ');
+    }
+
+    if (bufSize < maxSize)
+      maxSize = bufSize;
+
+    int rowLength;
     if (charArray != null && charAttributes != null) {
-      for (int i = 0; i < bsize && i < bufSize; i++) {
+      for (int i = 0; i < maxSize && charArray[i] != null; i++) {
+        rowLength = charArray[i].length;
         System.arraycopy(charArray[i], 0, cbuf[i], 0,
-                         w < width ? w : width);
+                         w < rowLength ? w : rowLength);
         System.arraycopy(charAttributes[i], 0, abuf[i], 0,
-                         w < width ? w : width);
+                         w < rowLength ? w : rowLength);
       }
     }
 
