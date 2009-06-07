@@ -208,6 +208,8 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 	private PubkeyDatabase pubkeydb = null;
 
 	private CursorPreferenceHack pref;
+	private String[] colorValues;
+	private String[] colors;
 
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -233,15 +235,19 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 		List<CharSequence> pubkeyNicks = new LinkedList<CharSequence>(Arrays.asList(pubkeyPref.getEntries()));
 		pubkeyNicks.addAll(pubkeydb.allValues(PubkeyDatabase.FIELD_PUBKEY_NICKNAME));
-		pubkeyPref.setEntries((CharSequence[]) pubkeyNicks.toArray(new CharSequence[pubkeyNicks.size()]));
+		pubkeyPref.setEntries(pubkeyNicks.toArray(new CharSequence[pubkeyNicks.size()]));
 
 		List<CharSequence> pubkeyIds = new LinkedList<CharSequence>(Arrays.asList(pubkeyPref.getEntryValues()));
 		pubkeyIds.addAll(pubkeydb.allValues("_id"));
-		pubkeyPref.setEntryValues((CharSequence[]) pubkeyIds.toArray(new CharSequence[pubkeyIds.size()]));
+		pubkeyPref.setEntryValues(pubkeyIds.toArray(new CharSequence[pubkeyIds.size()]));
+
+		colorValues = getResources().getStringArray(R.array.list_color_values);
+		colors = getResources().getStringArray(R.array.list_colors);
 
 		this.updateSummaries();
 	}
 
+	@Override
 	public void onStart() {
 		super.onStart();
 		if(this.hostdb == null)
@@ -252,6 +258,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 	}
 
+	@Override
 	public void onStop() {
 		super.onStop();
 		if(this.hostdb != null) {
@@ -267,14 +274,14 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 	private void updateSummaries() {
 		// for all text preferences, set hint as current database value
-		for(String key : this.pref.values.keySet()) {
-			if(key.equals("postlogin")) continue;
+		for (String key : this.pref.values.keySet()) {
+			if(key.equals(HostDatabase.FIELD_HOST_POSTLOGIN)) continue;
 			Preference pref = this.findPreference(key);
 			if(pref == null) continue;
 			if(pref instanceof CheckBoxPreference) continue;
 			String value = this.pref.getString(key, "");
 
-			if(key.equals("pubkeyid")) {
+			if (key.equals(HostDatabase.FIELD_HOST_PUBKEYID)) {
 				try {
 					int pubkeyId = Integer.parseInt(value);
 					if (pubkeyId >= 0)
@@ -287,6 +294,16 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 				} catch (NumberFormatException nfe) {
 					// Fall through.
 				}
+			} else if (key.equals(HostDatabase.FIELD_HOST_COLOR)) {
+				int colorIndex = -1;
+				for (int i = 0; i < colorValues.length; i++)
+					if (colorValues[i].equals(value)) {
+						colorIndex = i;
+						break;
+					}
+
+				if (colorIndex >= 0)
+					value = colors[colorIndex];
 			}
 
 			pref.setSummary(value);
