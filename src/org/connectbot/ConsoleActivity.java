@@ -36,7 +36,6 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -305,7 +304,7 @@ public class ConsoleActivity extends Activity {
 		}
 
 		String rotateDefault;
-		if (Resources.getSystem().getConfiguration().keyboard == Configuration.KEYBOARD_NOKEYS)
+		if (getResources().getConfiguration().keyboard == Configuration.KEYBOARD_NOKEYS)
 			rotateDefault = PreferenceConstants.ROTATION_PORTRAIT;
 		else
 			rotateDefault = PreferenceConstants.ROTATION_LANDSCAPE;
@@ -570,8 +569,10 @@ public class ConsoleActivity extends Activity {
 			disconnected = ((TerminalView) view).bridge.isDisconnected();
 		}
 
+		menu.setQwertyMode(true);
 
 		disconnect = menu.add(R.string.list_host_disconnect);
+		disconnect.setAlphabeticShortcut('w');
 		if (!sessionOpen && disconnected)
 			disconnect.setTitle(R.string.console_menu_close);
 		disconnect.setEnabled(activeTerminal);
@@ -586,6 +587,7 @@ public class ConsoleActivity extends Activity {
 		});
 
 		copy = menu.add(R.string.console_menu_copy);
+		copy.setAlphabeticShortcut('c');
 		copy.setIcon(android.R.drawable.ic_menu_set_as);
 		copy.setEnabled(activeTerminal);
 		copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -607,8 +609,8 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 
-
 		paste = menu.add(R.string.console_menu_paste);
+		paste.setAlphabeticShortcut('v');
 		paste.setIcon(android.R.drawable.ic_menu_edit);
 		paste.setEnabled(clipboard.hasText() && activeTerminal && authenticated);
 		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -624,8 +626,8 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 
-
 		portForward = menu.add(R.string.console_menu_portforwards);
+		portForward.setAlphabeticShortcut('f');
 		portForward.setIcon(android.R.drawable.ic_menu_manage);
 		portForward.setEnabled(authenticated);
 		portForward.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -638,6 +640,7 @@ public class ConsoleActivity extends Activity {
 		});
 
 		resize = menu.add(R.string.console_menu_resize);
+		resize.setAlphabeticShortcut('s');
 		resize.setIcon(android.R.drawable.ic_menu_crop);
 		resize.setEnabled(activeTerminal && sessionOpen);
 		resize.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -667,6 +670,8 @@ public class ConsoleActivity extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 
+		setVolumeControlStream(AudioManager.STREAM_NOTIFICATION);
+
 		final View view = findCurrentView(R.id.console_flip);
 		boolean activeTerminal = (view instanceof TerminalView);
 		boolean authenticated = false;
@@ -692,6 +697,13 @@ public class ConsoleActivity extends Activity {
 	}
 
 	@Override
+	public void onOptionsMenuClosed(Menu menu) {
+		super.onOptionsMenuClosed(menu);
+
+		setVolumeControlStream(AudioManager.STREAM_MUSIC);
+	}
+
+	@Override
 	public void onStart() {
 		super.onStart();
 
@@ -704,28 +716,6 @@ public class ConsoleActivity extends Activity {
 		if(wakelock != null && prefs.getBoolean(PreferenceConstants.KEEP_ALIVE, true))
 			wakelock.acquire();
 
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-
-		/* Make sure our current TerminalView doesn't send a
-		 * notification to the user about the screen size.
-		 */
-		View view = findCurrentView(R.id.console_flip);
-		if (view instanceof TerminalView)
-			((TerminalView) view).setNotifications(false);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		// Enable notifications for the current TerminalView.
-		View view = findCurrentView(R.id.console_flip);
-		if (view instanceof TerminalView)
-			((TerminalView) view).setNotifications(true);
 	}
 
 	@Override

@@ -48,7 +48,6 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.Bitmap.Config;
 import android.graphics.Paint.FontMetrics;
-import android.os.Vibrator;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.KeyCharacterMap;
@@ -353,6 +352,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			@Override
 			public void setWindowSize(int c, int r) {
 			}
+
+			@Override
+			public void beep() {
+				if (parent.isShown())
+					manager.playBeep();
+				else
+					manager.sendActivityNotification(host);
+			}
 		};
 
 		buffer.setBufferSize(scrollback);
@@ -518,7 +525,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			Log.d(TAG, "Host does not support 'none' authentication.");
 		}
 
-		outputLine("Trying to authenticate");
+		outputLine(manager.res.getString(R.string.terminal_auth));
 
 		try {
 			long pubkeyId = host.getPubkeyId();
@@ -532,7 +539,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 				if (pubkeyId == HostDatabase.PUBKEYID_ANY) {
 					// try each of the in-memory keys
-					outputLine("Attempting 'publickey' authentication with any in-memory SSH keys");
+					outputLine(manager.res.getString(R.string.terminal_auth_pubkey_any));
 					for(String nickname : manager.loadedPubkeys.keySet()) {
 						Object trileadKey = manager.loadedPubkeys.get(nickname);
 						if(this.tryPublicKey(host.getUsername(), nickname, trileadKey)) {
@@ -541,12 +548,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 						}
 					}
 				} else {
-					outputLine("Attempting 'publickey' authentication with a specific public key");
+					outputLine(manager.res.getString(R.string.terminal_auth_pubkey_specific));
 					// use a specific key for this host, as requested
 					PubkeyBean pubkey = manager.pubkeydb.findPubkeyById(pubkeyId);
 
 					if (pubkey == null)
-						outputLine("Selected public key is invalid, try reselecting key in host editor");
+						outputLine(manager.res.getString(R.string.terminal_auth_pubkey_invalid));
 					else
 						if (tryPublicKey(pubkey))
 							finishConnection();
@@ -554,28 +561,28 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 				pubkeysExhausted = true;
 			} else if (connection.isAuthMethodAvailable(host.getUsername(), AUTH_PASSWORD)) {
-				outputLine("Attempting 'password' authentication");
+				outputLine(manager.res.getString(R.string.terminal_auth_pass));
 				String password = promptHelper.requestStringPrompt(null,
 						manager.res.getString(R.string.prompt_password));
 				if (password != null
 						&& connection.authenticateWithPassword(host.getUsername(), password)) {
 					finishConnection();
 				} else {
-					outputLine("Authentication method 'password' failed");
+					outputLine(manager.res.getString(R.string.terminal_auth_pass_fail));
 				}
 
 			} else if(connection.isAuthMethodAvailable(host.getUsername(), AUTH_KEYBOARDINTERACTIVE)) {
 				// this auth method will talk with us using InteractiveCallback interface
 				// it blocks until authentication finishes
-				outputLine("Attempting 'keyboard-interactive' authentication");
+				outputLine(manager.res.getString(R.string.terminal_auth_ki));
 				if(connection.authenticateWithKeyboardInteractive(host.getUsername(), TerminalBridge.this)) {
 					finishConnection();
 				} else {
-					outputLine("Authentication method 'keyboard-interactive' failed");
+					outputLine(manager.res.getString(R.string.terminal_auth_ki_fail));
 				}
 
 			} else {
-				outputLine("[Your host doesn't support 'password' or 'keyboard-interactive' authentication.]");
+				outputLine(manager.res.getString(R.string.terminal_auth_fail));
 
 			}
 		} catch(Exception e) {
@@ -754,11 +761,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public void refreshKeymode() {
 		keymode = manager.getKeyMode();
 	}
-
-	private boolean bumpyArrows = false;
-	public Vibrator vibrator = null;
-
-	public static final long VIBRATE_DURATION = 30;
 
 	/**
 	 * Handle onKey() events coming down from a {@link TerminalView} above us.
@@ -1106,8 +1108,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	}
 
 	public synchronized void tryKeyVibrate() {
-		if (bumpyArrows && vibrator != null)
-			vibrator.vibrate(VIBRATE_DURATION);
+		manager.tryKeyVibrate();
 	}
 
 	/**
@@ -1169,8 +1170,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		int width = parent.getWidth();
 		int height = parent.getHeight();
 
-		bumpyArrows = manager.prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, true);
-		vibrator = (Vibrator) parent.getContext().getSystemService(Context.VIBRATOR_SERVICE);
 		clipboard = (ClipboardManager) parent.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
 
 		if (!forcedSize) {

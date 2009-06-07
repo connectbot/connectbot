@@ -64,4 +64,10 @@ public class PreferenceConstants {
 	public static final String EULA = "eula";
 
 	public static final String SORT_BY_COLOR = "sortByColor";
+
+	public static final String BELL = "bell";
+	public static final String BELL_VOLUME = "bellVolume";
+	public static final String BELL_VIBRATE = "bellVibrate";
+	public static final String BELL_NOTIFICATION = "bellNotification";
+	public static final float DEFAULT_BELL_VOLUME = 0.25f;
 }

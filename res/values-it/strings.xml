@@ -80,7 +80,7 @@
 	<string name="prompt_continue_connecting">Sei sicuro di voler\ncontinuare a connetterti?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">L'autenticità dell'host '%1$s'  non può essere accertata.</string>
+	<string name="host_authenticity_warning">L'autenticità dell'host '%1$s' non può essere accertata.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">Host %1$s l'impronta digitale della chiave è %2$s</string>
 
@@ -168,6 +168,23 @@
 	<string name="pref_bumpyarrows_title">Frecce ineguali</string>
 	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
 	<string name="pref_bumpyarrows_summary">Vibra quando si inviano movimenti con la trackball; utile per connessioni lente</string>
+
+	<!-- Category title for the Terminal Bell preferences -->
+	<string name="pref_bell_category">Terminal bell</string>
+
+	<!-- Checkbox preference title for the audible terminal bell feature -->
+	<string name="pref_bell_title">Audible bell</string>
+
+	<!-- Title for the slider preference to set the volume -->
+	<string name="pref_bell_volume_title">Bell volume</string>
+
+	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
+	<string name="pref_bell_vibrate_title">Vibrate on bell</string>
+
+	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
+	<string name="pref_bell_notification_title">Background notifications</string>
+	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
+	<string name="pref_bell_notification_summary">Send notification when a terminal running in the background sounds a bell.</string>
 
 	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
 	<string name="list_keymode_right">Usa tasti sul lato destro</string>
@@ -333,6 +350,9 @@
 	<string name="terminal_auth_fail">[Il tuo host non supporta l'autenticazione 'password' o 'keyboard-interactive'</string>
 
 	<string name="local_shell_unavailable">Fallimento! La shell locale non è disponibile su questo telefono.</string>
+
+	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
+	<string name="notification_text">%1$s wants your attention.</string>
 
 	<!-- Dialog title when a new version of ConnectBot is detected. -->
 	<string name="upgrade">Nuova versione</string>
