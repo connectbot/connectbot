@@ -32,6 +32,9 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class EntropyView extends View {
+	private static final int SHA1_MAX_BYTES = 20;
+	private static final int MILLIS_BETWEEN_INPUTS = 50;
+
 	private Paint mPaint;
 	private FontMetrics mFontMetrics;
 	private boolean mFlipFlop;
@@ -39,7 +42,8 @@ public class EntropyView extends View {
 	private Vector<OnEntropyGatheredListener> listeners;
 
 	private byte[] mEntropy;
-	private int mEntropyIdx;
+	private int mEntropyByteIndex;
+	private int mEntropyBitIndex;
 
 	private int splitText = 0;
 
@@ -66,8 +70,9 @@ public class EntropyView extends View {
 		mPaint.setColor(Color.WHITE);
 		mFontMetrics = mPaint.getFontMetrics();
 
-		mEntropy = new byte[20];
-		mEntropyIdx = 0;
+		mEntropy = new byte[SHA1_MAX_BYTES];
+		mEntropyByteIndex = 0;
+		mEntropyBitIndex = 0;
 
 		listeners = new Vector<OnEntropyGatheredListener>();
 	}
@@ -83,7 +88,7 @@ public class EntropyView extends View {
 	@Override
 	public void onDraw(Canvas c) {
 		String prompt = String.format(getResources().getString(R.string.pubkey_touch_prompt),
-			(int)(100.0 * (mEntropyIdx / 20.0)));
+			(int)(100.0 * (mEntropyByteIndex / 20.0)) + (int)(5.0 * (mEntropyBitIndex / 8.0)));
 		if (splitText > 0 ||
 				mPaint.measureText(prompt) > (getWidth() * 0.8)) {
 			if (splitText == 0)
@@ -107,31 +112,51 @@ public class EntropyView extends View {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if (mEntropyIdx >= 20
+		if (mEntropyByteIndex >= SHA1_MAX_BYTES
 				|| lastX == event.getX()
 				|| lastY == event.getY())
 			return true;
 
 		// Only get entropy every 200 milliseconds to ensure the user has moved around.
 		long now = System.currentTimeMillis();
-		if ((now - mLastTime) < 200)
+		if ((now - mLastTime) < MILLIS_BETWEEN_INPUTS)
 				return true;
 		else
 				mLastTime = now;
 
-		// Get the lowest 4 bits of each X, Y input and concat to the entropy-gathering
-		// string.
-		if (mFlipFlop)
-				mEntropy[mEntropyIdx++] += (byte)((((int)event.getX() & 0x0F) << 4) | ((int)event.getY() & 0x0F));
-		else
-				mEntropy[mEntropyIdx++] += (byte)((((int)event.getY() & 0x0F) << 4) | ((int)event.getX() & 0x0F));
+		byte input;
 
-		mFlipFlop = !mFlipFlop;
 		lastX = event.getX();
 		lastY = event.getY();
 
-		// SHA1PRNG only keeps 20 bytes (160 bits) of entropy.
-		if (mEntropyIdx >= 20) {
+		// Get the lowest 4 bits of each X, Y input and concat to the entropy-gathering
+		// string.
+		if (mFlipFlop)
+				input = (byte)((((int)lastX & 0x0F) << 4) | ((int)lastY & 0x0F));
+		else
+				input = (byte)((((int)lastY & 0x0F) << 4) | ((int)lastX & 0x0F));
+		mFlipFlop = !mFlipFlop;
+
+		for (int i = 0; i < 4 && mEntropyByteIndex < SHA1_MAX_BYTES; i++) {
+			if ((input & 0x3) == 0x1) {
+				mEntropy[mEntropyByteIndex] <<= 1;
+				mEntropy[mEntropyByteIndex] |= 1;
+				mEntropyBitIndex++;
+				input >>= 2;
+			} else if ((input & 0x3) == 0x2) {
+				mEntropy[mEntropyByteIndex] <<= 1;
+				mEntropyBitIndex++;
+				input >>= 2;
+			}
+
+			if (mEntropyBitIndex >= 8) {
+				mEntropyBitIndex = 0;
+				mEntropyByteIndex++;
+			}
+		}
+
+		// SHA1PRNG only keeps 160 bits of entropy.
+		if (mEntropyByteIndex >= SHA1_MAX_BYTES) {
 			for (OnEntropyGatheredListener listener: listeners) {
 				listener.onEntropyGathered(mEntropy);
 			}
