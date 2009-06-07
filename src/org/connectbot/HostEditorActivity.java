@@ -241,9 +241,6 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		pubkeyIds.addAll(pubkeydb.allValues("_id"));
 		pubkeyPref.setEntryValues(pubkeyIds.toArray(new CharSequence[pubkeyIds.size()]));
 
-		colorValues = getResources().getStringArray(R.array.list_color_values);
-		colors = getResources().getStringArray(R.array.list_colors);
-
 		this.updateSummaries();
 	}
 
@@ -279,11 +276,11 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			Preference pref = this.findPreference(key);
 			if(pref == null) continue;
 			if(pref instanceof CheckBoxPreference) continue;
-			String value = this.pref.getString(key, "");
+			CharSequence value = this.pref.getString(key, "");
 
 			if (key.equals(HostDatabase.FIELD_HOST_PUBKEYID)) {
 				try {
-					int pubkeyId = Integer.parseInt(value);
+					int pubkeyId = Integer.parseInt((String) value);
 					if (pubkeyId >= 0)
 						pref.setSummary(pubkeydb.getNickname(pubkeyId));
 					else if(pubkeyId == HostDatabase.PUBKEYID_ANY)
@@ -294,16 +291,11 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 				} catch (NumberFormatException nfe) {
 					// Fall through.
 				}
-			} else if (key.equals(HostDatabase.FIELD_HOST_COLOR)) {
-				int colorIndex = -1;
-				for (int i = 0; i < colorValues.length; i++)
-					if (colorValues[i].equals(value)) {
-						colorIndex = i;
-						break;
-					}
-
-				if (colorIndex >= 0)
-					value = colors[colorIndex];
+			} else if (pref instanceof ListPreference) {
+				ListPreference listPref = (ListPreference) pref;
+				int entryIndex = listPref.findIndexOfValue((String) value);
+				if (entryIndex >= 0)
+					value = listPref.getEntries()[entryIndex];
 			}
 
 			pref.setSummary(value);
