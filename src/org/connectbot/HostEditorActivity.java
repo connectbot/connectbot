@@ -208,6 +208,8 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 	private PubkeyDatabase pubkeydb = null;
 
 	private CursorPreferenceHack pref;
+	private String[] colorValues;
+	private String[] colors;
 
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -233,15 +235,16 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 		List<CharSequence> pubkeyNicks = new LinkedList<CharSequence>(Arrays.asList(pubkeyPref.getEntries()));
 		pubkeyNicks.addAll(pubkeydb.allValues(PubkeyDatabase.FIELD_PUBKEY_NICKNAME));
-		pubkeyPref.setEntries((CharSequence[]) pubkeyNicks.toArray(new CharSequence[pubkeyNicks.size()]));
+		pubkeyPref.setEntries(pubkeyNicks.toArray(new CharSequence[pubkeyNicks.size()]));
 
 		List<CharSequence> pubkeyIds = new LinkedList<CharSequence>(Arrays.asList(pubkeyPref.getEntryValues()));
 		pubkeyIds.addAll(pubkeydb.allValues("_id"));
-		pubkeyPref.setEntryValues((CharSequence[]) pubkeyIds.toArray(new CharSequence[pubkeyIds.size()]));
+		pubkeyPref.setEntryValues(pubkeyIds.toArray(new CharSequence[pubkeyIds.size()]));
 
 		this.updateSummaries();
 	}
 
+	@Override
 	public void onStart() {
 		super.onStart();
 		if(this.hostdb == null)
@@ -252,6 +255,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 	}
 
+	@Override
 	public void onStop() {
 		super.onStop();
 		if(this.hostdb != null) {
@@ -267,16 +271,16 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 	private void updateSummaries() {
 		// for all text preferences, set hint as current database value
-		for(String key : this.pref.values.keySet()) {
-			if(key.equals("postlogin")) continue;
+		for (String key : this.pref.values.keySet()) {
+			if(key.equals(HostDatabase.FIELD_HOST_POSTLOGIN)) continue;
 			Preference pref = this.findPreference(key);
 			if(pref == null) continue;
 			if(pref instanceof CheckBoxPreference) continue;
-			String value = this.pref.getString(key, "");
+			CharSequence value = this.pref.getString(key, "");
 
-			if(key.equals("pubkeyid")) {
+			if (key.equals(HostDatabase.FIELD_HOST_PUBKEYID)) {
 				try {
-					int pubkeyId = Integer.parseInt(value);
+					int pubkeyId = Integer.parseInt((String) value);
 					if (pubkeyId >= 0)
 						pref.setSummary(pubkeydb.getNickname(pubkeyId));
 					else if(pubkeyId == HostDatabase.PUBKEYID_ANY)
@@ -287,6 +291,11 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 				} catch (NumberFormatException nfe) {
 					// Fall through.
 				}
+			} else if (pref instanceof ListPreference) {
+				ListPreference listPref = (ListPreference) pref;
+				int entryIndex = listPref.findIndexOfValue((String) value);
+				if (entryIndex >= 0)
+					value = listPref.getEntries()[entryIndex];
 			}
 
 			pref.setSummary(value);

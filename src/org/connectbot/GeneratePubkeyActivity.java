@@ -213,6 +213,12 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 
 		this.entropy = entropy.clone();
 
+		int numSetBits = 0;
+		for (int i = 0; i < 20; i++)
+			numSetBits += measureNumberOfSetBits(this.entropy[i]);
+
+		Log.d(TAG, "Entropy distribution=" + (int)(100.0 * numSetBits / 160.0) + "%");
+
 		Log.d(TAG, "entropy gathered; attemping to generate key...");
 		startKeyGen();
 	}
@@ -294,4 +300,16 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 			checkEntries();
 		}
 	};
+
+	private int measureNumberOfSetBits(byte b) {
+		int numSetBits = 0;
+
+		for (int i = 0; i < 8; i++) {
+			if ((b & 1) == 1)
+				numSetBits++;
+			b >>= 1;
+		}
+
+		return numSetBits;
+	}
 }
