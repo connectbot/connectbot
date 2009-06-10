@@ -64,6 +64,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.nullwire.trace.ExceptionHandler;
+
 public class HostListActivity extends ListActivity {
 	protected TerminalManager bound = null;
 
@@ -110,6 +112,7 @@ public class HostListActivity extends ListActivity {
 
 		this.updateList();
 
+		ExceptionHandler.checkForTraces(this);
 	}
 
 	@Override
@@ -122,6 +125,13 @@ public class HostListActivity extends ListActivity {
 			this.hostdb = null;
 		}
 
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		ExceptionHandler.checkForTraces(this);
 	}
 
 	public final static int REQUEST_EDIT = 1;
@@ -156,6 +166,8 @@ public class HostListActivity extends ListActivity {
 		this.setTitle(String.format("%s: %s",
 				getResources().getText(R.string.app_name),
 				getResources().getText(R.string.title_hosts_list)));
+
+		ExceptionHandler.register(this);
 
 		// check for eula agreement
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);

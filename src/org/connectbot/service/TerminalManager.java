@@ -61,6 +61,8 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.nullwire.trace.ExceptionHandler;
+
 /**
  * Manager for SSH connections that runs as a background service. This service
  * holds a list of currently connected SSH bridges that are ready for connection
@@ -110,6 +112,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	@Override
 	public void onCreate() {
 		Log.i(TAG, "Starting background service");
+
+		ExceptionHandler.register(this);
+
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
 

@@ -67,6 +67,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import com.nullwire.trace.ExceptionHandler;
+
 import de.mud.terminal.vt320;
 
 public class ConsoleActivity extends Activity {
@@ -293,6 +296,8 @@ public class ConsoleActivity extends Activity {
 		super.onCreate(icicle);
 
 		this.setContentView(R.layout.act_console);
+
+		ExceptionHandler.register(this);
 
 		clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -715,7 +720,6 @@ public class ConsoleActivity extends Activity {
 		// this also keeps the wifi chipset from disconnecting us
 		if(wakelock != null && prefs.getBoolean(PreferenceConstants.KEEP_ALIVE, true))
 			wakelock.acquire();
-
 	}
 
 	@Override
@@ -727,6 +731,13 @@ public class ConsoleActivity extends Activity {
 		// allow the screen to dim and fall asleep
 		if(wakelock != null && wakelock.isHeld())
 			wakelock.release();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		ExceptionHandler.checkForTraces(this);
 	}
 
 	protected void shiftLeft() {
