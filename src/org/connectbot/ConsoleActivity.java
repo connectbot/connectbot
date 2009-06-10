@@ -733,13 +733,6 @@ public class ConsoleActivity extends Activity {
 			wakelock.release();
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		ExceptionHandler.checkForTraces(this);
-	}
-
 	protected void shiftLeft() {
 		View overlay;
 		boolean shouldAnimate = flip.getChildCount() > 1;

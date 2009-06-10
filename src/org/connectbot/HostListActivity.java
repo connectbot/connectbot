@@ -111,8 +111,6 @@ public class HostListActivity extends ListActivity {
 			this.hostdb = new HostDatabase(this);
 
 		this.updateList();
-
-		ExceptionHandler.checkForTraces(this);
 	}
 
 	@Override

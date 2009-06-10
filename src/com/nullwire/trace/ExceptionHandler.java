@@ -18,28 +18,32 @@ import org.connectbot.R;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 public class ExceptionHandler {
-
 	public static String TAG = "com.nullwire.trace.ExceptionsHandler";
 
 	private static String[] stackTraceFileList = null;
 
-	private static AlertDialog submitDialog;
-
 	/**
 	 * @param context
 	 */
-	public static void checkForTraces(Context context) {
-		if (searchForStackTraces(context).length > 0) {
-			Log.d(TAG, "number of stack traces: " + searchForStackTraces(context).length);
-			askUserToSubmitExceptions(context);
-		}
+	public static void checkForTraces(final Context context) {
+		new Thread(new Runnable() {
+			public void run() {
+				String[] stackTraces = searchForStackTraces(context);
+				if (stackTraces != null && stackTraces.length > 0) {
+					Log.d(TAG, "number of stack traces: " + stackTraces.length);
+					submissionHandler.sendMessage(
+							submissionHandler.obtainMessage(-1, context));
+				}
+			}
+		}).start();
 	}
 
 	/**
@@ -88,6 +92,9 @@ public class ExceptionHandler {
 		if (stackTraceFileList != null && stackTraceFileList.length > 0)
 			return stackTraceFileList;
 
+		if (context == null)
+			return null;
+
 		if (G.FILES_PATH == null)
 			getPackageInfo(context);
 
@@ -103,24 +110,27 @@ public class ExceptionHandler {
 		return (stackTraceFileList = dir.list(filter));
 	}
 
-	public static void askUserToSubmitExceptions(Context context) {
-		if (submitDialog == null) {
-			DialogInterface.OnClickListener clickListener = new ExceptionClickListener(context);
-			submitDialog = new AlertDialog.Builder(context)
+	private static Handler submissionHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			Context context = (Context) msg.obj;
+			ExceptionClickListener clickListener = new ExceptionClickListener(context);
+			new AlertDialog.Builder(context)
 					.setMessage(R.string.exceptions_submit_message)
-					.setPositiveButton(android.R.string.ok, clickListener)
+					.setPositiveButton(android.R.string.yes, clickListener)
 					.setNegativeButton(android.R.string.no, clickListener)
-					.create();
+					.create().show();
 		}
-
-		submitDialog.show();
-	}
+	};
 
 	/**
 	 * Look into the files folder to see if there are any "*.stacktrace" files.
 	 * If any are present, submit them to the trace server.
 	 */
 	public static void submitStackTraces(Context context) {
+		if (context == null)
+			return;
+
 		try {
 			Log.d(TAG, "Looking for exceptions in: " + G.FILES_PATH);
 			String[] list = searchForStackTraces(context);
@@ -172,6 +182,9 @@ public class ExceptionHandler {
 	}
 
 	public synchronized static void removeStackTraces(Context context) {
+		if (context == null)
+			return;
+
 		try {
 			String[] list = searchForStackTraces(context);
 
@@ -183,7 +196,7 @@ public class ExceptionHandler {
 				file.delete();
 			}
 
-			list = null;
+			stackTraceFileList = null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
