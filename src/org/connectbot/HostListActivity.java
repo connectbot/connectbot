@@ -342,7 +342,9 @@ public class HostListActivity extends ListActivity {
 		help.setIntent(new Intent(HostListActivity.this, HelpActivity.class));
 
 		return true;
+
 	}
+
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -440,10 +442,6 @@ public class HostListActivity extends ListActivity {
 
 		public final static int STATE_UNKNOWN = 1, STATE_CONNECTED = 2, STATE_DISCONNECTED = 3;
 
-		private final int[] stateChecked;
-		private final int[] stateExpanded;
-		private final int[] stateNone;
-
 		class ViewHolder {
 			public TextView nickname;
 			public TextView caption;
@@ -459,10 +457,6 @@ public class HostListActivity extends ListActivity {
 			red = context.getResources().getColorStateList(R.color.red);
 			green = context.getResources().getColorStateList(R.color.green);
 			blue = context.getResources().getColorStateList(R.color.blue);
-
-			stateNone = new int[] { };
-			stateChecked = new int[] { android.R.attr.state_checked };
-			stateExpanded = new int[] { android.R.attr.state_expanded };
 		}
 
 		/**
@@ -513,13 +507,13 @@ public class HostListActivity extends ListActivity {
 
 			switch (this.getConnectedState(host)) {
 			case STATE_UNKNOWN:
-				holder.icon.setImageState(stateNone, true);
+				holder.icon.setImageState(new int[] { }, true);
 				break;
 			case STATE_CONNECTED:
-				holder.icon.setImageState(stateChecked, true);
+				holder.icon.setImageState(new int[] { android.R.attr.state_checked }, true);
 				break;
 			case STATE_DISCONNECTED:
-				holder.icon.setImageState(stateExpanded, true);
+				holder.icon.setImageState(new int[] { android.R.attr.state_expanded }, true);
 				break;
 			}
 
