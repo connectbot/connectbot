@@ -66,6 +66,8 @@ import android.widget.AdapterView.OnItemSelectedListener;
 public class PortForwardListActivity extends ListActivity {
 	public final static String TAG = PortForwardListActivity.class.toString();
 
+	private static final int LISTENER_CYCLE_TIME = 500;
+
 	protected HostDatabase hostdb;
 
 	private List<PortForwardBean> portForwards;
@@ -281,6 +283,9 @@ public class PortForwardListActivity extends ListActivity {
 					.setPositiveButton(R.string.button_change, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							try {
+								if (hostBridge != null)
+									hostBridge.disablePortForward(pfb);
+
 								pfb.setNickname(nicknameEdit.getText().toString());
 
 								switch (typeSpinner.getSelectedItemPosition()) {
@@ -299,10 +304,14 @@ public class PortForwardListActivity extends ListActivity {
 								pfb.setDest(destEdit.getText().toString());
 
 								// Use the new settings for the existing connection.
-								if (hostBridge != null) {
-									hostBridge.disablePortForward(pfb);
-									hostBridge.enablePortForward(pfb);
-								}
+								if (hostBridge != null)
+									updateHandler.postDelayed(new Runnable() {
+										public void run() {
+											hostBridge.enablePortForward(pfb);
+											updateHandler.sendEmptyMessage(-1);
+										}
+									}, LISTENER_CYCLE_TIME);
+
 
 								if (!hostdb.savePortForward(pfb))
 									throw new SQLException("Could not save port forward");
