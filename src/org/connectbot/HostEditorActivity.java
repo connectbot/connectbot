@@ -252,6 +252,12 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		for (Entry<String, Charset> entry : Charset.availableCharsets().entrySet()) {
 			Charset c = entry.getValue();
 			if (c.canEncode() && c.isRegistered()) {
+				String key = entry.getKey();
+				if (key.startsWith("cp")) {
+					// Custom CP437 charset changes
+					charsetIds.add("CP437");
+					charsetNames.add("CP437");
+				}
 				charsetIds.add(entry.getKey());
 				charsetNames.add(c.displayName());
 			}

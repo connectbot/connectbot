@@ -18,6 +18,8 @@
 
 package org.connectbot.service;
 
+import gnu.java.nio.charset.Cp437;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -76,7 +78,11 @@ public class Relay implements Runnable {
 	}
 
 	public void setCharset(String encoding) {
-		Charset charset = Charset.forName(encoding);
+		Charset charset;
+		if (encoding.equals(Cp437.NAME))
+			charset = new Cp437();
+		else
+			charset = Charset.forName(encoding);
 
 		CharsetDecoder newCd = charset.newDecoder();
 		newCd.onUnmappableCharacter(CodingErrorAction.REPLACE);
