@@ -137,5 +137,14 @@ public class Relay implements Runnable {
 				break;
 			}
 		}
+
+	}
+
+	private void logAndDiscard(InputStream stream) throws IOException {
+		int bytesAvail;
+		while ((bytesAvail = stream.available()) > 0) {
+			stream.skip(bytesAvail);
+			Log.d(TAG, String.format("Discarded %d bytes from stderr", bytesAvail));
+		}
 	}
 }
