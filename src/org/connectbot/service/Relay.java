@@ -26,7 +26,6 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CoderResult;
 import java.nio.charset.CodingErrorAction;
 
 import android.util.Log;
@@ -52,8 +51,8 @@ public class Relay implements Runnable {
 
 	private TerminalBridge bridge;
 
+	private Charset currentCharset;
 	private CharsetDecoder decoder;
-	private CharsetDecoder replacer;
 
 	private Session session;
 
@@ -78,22 +77,22 @@ public class Relay implements Runnable {
 	}
 
 	public void setCharset(String encoding) {
+		Log.d("ConnectBot.Relay", "changing charset to " + encoding);
 		Charset charset;
 		if (encoding.equals(Cp437.NAME))
 			charset = new Cp437();
 		else
 			charset = Charset.forName(encoding);
 
+		if (charset == currentCharset)
+			return;
+
 		CharsetDecoder newCd = charset.newDecoder();
 		newCd.onUnmappableCharacter(CodingErrorAction.REPLACE);
-		newCd.onMalformedInput(CodingErrorAction.REPORT);
+		newCd.onMalformedInput(CodingErrorAction.REPLACE);
 
-		CharsetDecoder newReplacer = charset.newDecoder();
-		newReplacer.onUnmappableCharacter(CodingErrorAction.REPLACE);
-		newReplacer.onMalformedInput(CodingErrorAction.REPLACE);
-
+		currentCharset = charset;
 		decoder = newCd;
-		replacer = newReplacer;
 	}
 
 	public void run() {
@@ -104,7 +103,6 @@ public class Relay implements Runnable {
 		charArray = charBuffer.array();
 
 		int bytesRead = 0;
-		int offset = 0;
 
 		int newConditions = 0;
 
@@ -113,28 +111,12 @@ public class Relay implements Runnable {
 				newConditions = session.waitForCondition(CONDITIONS, 0);
 				if ((newConditions & ChannelCondition.STDOUT_DATA) != 0) {
 					while (stdout.available() > 0) {
-						bytesRead = offset + stdout.read(byteArray, offset, BUFFER_SIZE - offset);
+						bytesRead = stdout.read(byteArray, 0, BUFFER_SIZE);
 
 						byteBuffer.position(0);
 						byteBuffer.limit(bytesRead);
-
-						CoderResult coderResult = decoder.decode(byteBuffer, charBuffer, true);
-
-						while (byteBuffer.position() < bytesRead) {
-							if (coderResult.isMalformed())
-								skipMalformedBytes(bytesRead, coderResult);
-
-							coderResult = decoder.decode(byteBuffer, charBuffer, true);
-						}
-
-						if (coderResult.isMalformed())
-							offset = discardMalformedBytes(bytesRead, coderResult);
-						else {
-							// No errors at all.
-							buffer.putString(charArray, 0, charBuffer.position());
-							offset = 0;
-						}
-
+						decoder.decode(byteBuffer, charBuffer, false);
+						buffer.putString(charArray, 0, charBuffer.position());
 						charBuffer.clear();
 					}
 
@@ -155,70 +137,5 @@ public class Relay implements Runnable {
 				break;
 			}
 		}
-	}
-
-	/**
-	 * @param stream
-\	 * @throws IOException
-	 */
-	private void logAndDiscard(InputStream stream) throws IOException {
-		while (stream.available() > 0) {
-			int n = stream.read(byteArray);
-			byteBuffer.position(0);
-			byteBuffer.limit(n);
-			replacer.decode(byteBuffer, charBuffer, false);
-			// TODO I don't know.. do we want this? We were ignoring it before
-			Log.d(TAG, String.format("Read data from stream: %s", new String(charArray, 0, charBuffer.position())));
-			charBuffer.clear();
-		}
-	}
-
-	/**
-	 * @param n
-	 * @param cr
-	 * @return
-	 */
-	private int discardMalformedBytes(int n, CoderResult cr) {
-		int offset;
-		/* If we still have malformed input, save the bytes for the next
-		 * read and try to parse it again.
-		 */
-		offset = n - byteBuffer.position() + cr.length();
-		System.arraycopy(byteArray, byteBuffer.position() - cr.length(), byteArray, 0, offset);
-		Log.d(TAG, String.format("Copying out %d chars at %d: 0x%02x",
-				offset, byteBuffer.position() - cr.length(),
-				byteArray[byteBuffer.position() - cr.length()]
-		));
-		return offset;
-	}
-
-	/**
-	 * @param numReadBytes
-	 * @param errorResult
-	 */
-	private void skipMalformedBytes(int numReadBytes, CoderResult errorResult) {
-		int curpos = byteBuffer.position() - errorResult.length();
-
-		if (curpos > 0) {
-			/* There is good data before the malformed section, so
-			 * pass this on immediately.
-			 */
-			buffer.putString(charArray, 0, charBuffer.position());
-		}
-
-		byteBuffer.position(curpos);
-		byteBuffer.limit(curpos + errorResult.length());
-
-		charBuffer.clear();
-		replacer.decode(byteBuffer, charBuffer, true);
-
-		buffer.putString(charArray, 0, charBuffer.position());
-
-		curpos += errorResult.length();
-
-		byteBuffer.position(curpos);
-		byteBuffer.limit(numReadBytes);
-
-		charBuffer.clear();
 	}
 }

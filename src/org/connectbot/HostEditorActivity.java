@@ -26,16 +26,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.connectbot.bean.HostBean;
+import org.connectbot.service.TerminalBridge;
+import org.connectbot.service.TerminalManager;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PubkeyDatabase;
 
+import android.content.ComponentName;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -199,25 +206,28 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 	}
 
-
 	@Override
 	public SharedPreferences getSharedPreferences(String name, int mode) {
 		//Log.d(this.getClass().toString(), String.format("getSharedPreferences(name=%s)", name));
 		return this.pref;
 	}
 
+	protected static final String TAG = "ConnectBot.HostEditorActivity";
+
 	protected HostDatabase hostdb = null;
 	private PubkeyDatabase pubkeydb = null;
 
 	private CursorPreferenceHack pref;
-	private String[] colorValues;
-	private String[] colors;
+	private ServiceConnection connection;
+
+	private HostBean host;
+	protected TerminalBridge hostBridge;
 
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 
-		long id = this.getIntent().getLongExtra(Intent.EXTRA_TITLE, -1);
+		long hostId = this.getIntent().getLongExtra(Intent.EXTRA_TITLE, -1);
 
 		// TODO: we could pass through a specific ContentProvider uri here
 		//this.getPreferenceManager().setSharedPreferencesName(uri);
@@ -225,7 +235,27 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		this.hostdb = new HostDatabase(this);
 		this.pubkeydb = new PubkeyDatabase(this);
 
-		this.pref = new CursorPreferenceHack(HostDatabase.TABLE_HOSTS, id);
+		host = hostdb.findHostById(hostId);
+
+		connection = new ServiceConnection() {
+			public void onServiceConnected(ComponentName className, IBinder service) {
+				TerminalManager bound = ((TerminalManager.TerminalBinder) service).getService();
+
+				for (TerminalBridge bridge: bound.bridges) {
+					if (bridge.host.equals(host)) {
+						hostBridge = bridge;
+						Log.d(TAG, "Found host bridge; charset updates will be made live");
+						break;
+					}
+				}
+			}
+
+			public void onServiceDisconnected(ComponentName name) {
+				hostBridge = null;
+			}
+		};
+
+		this.pref = new CursorPreferenceHack(HostDatabase.TABLE_HOSTS, hostId);
 		this.pref.registerOnSharedPreferenceChangeListener(this);
 
 		this.addPreferencesFromResource(R.xml.host_prefs);
@@ -272,6 +302,9 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 	@Override
 	public void onStart() {
 		super.onStart();
+
+		bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
+
 		if(this.hostdb == null)
 			this.hostdb = new HostDatabase(this);
 
@@ -283,6 +316,9 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 	@Override
 	public void onStop() {
 		super.onStop();
+
+		unbindService(connection);
+
 		if(this.hostdb != null) {
 			this.hostdb.close();
 			this.hostdb = null;
@@ -332,6 +368,10 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		// update values on changed preference
 		this.updateSummaries();
 
+		// Our CursorPreferenceHack always send null keys, so try to set charset anyway
+		if (hostBridge != null)
+			hostBridge.setCharset(sharedPreferences
+					.getString(HostDatabase.FIELD_HOST_ENCODING, HostDatabase.ENCODING_DEFAULT));
 	}
 
 }

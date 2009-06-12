@@ -604,6 +604,15 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	}
 
 	/**
+	 * Sets the encoding used by the terminal. If the connection is live,
+	 * then the character set is changed for the next read.
+	 * @param encoding the canonical name of the character encoding
+	 */
+	public void setCharset(String encoding) {
+		relay.setCharset(encoding);
+	}
+
+	/**
 	 * Convenience method for writing a line into the underlying MUD buffer.
 	 * Should never be called once the session is established.
 	 */
