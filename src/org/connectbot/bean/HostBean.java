@@ -44,7 +44,7 @@ public class HostBean extends AbstractBean {
 	private long pubkeyId = -1;
 	private boolean wantSession = true;
 	private boolean compression = false;
-	private String encoding = HostDatabase.ENCODING_ASCII;
+	private String encoding = HostDatabase.ENCODING_DEFAULT;
 
 	public HostBean() {
 
