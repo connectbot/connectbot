@@ -18,11 +18,13 @@
 
 package org.connectbot;
 
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PubkeyDatabase;
@@ -240,6 +242,23 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		List<CharSequence> pubkeyIds = new LinkedList<CharSequence>(Arrays.asList(pubkeyPref.getEntryValues()));
 		pubkeyIds.addAll(pubkeydb.allValues("_id"));
 		pubkeyPref.setEntryValues(pubkeyIds.toArray(new CharSequence[pubkeyIds.size()]));
+
+		// Populate the character set encoding list with all available
+		ListPreference charsetPref = (ListPreference) findPreference(HostDatabase.FIELD_HOST_ENCODING);
+
+		List<CharSequence> charsetIds = new LinkedList<CharSequence>();
+		List<CharSequence> charsetNames = new LinkedList<CharSequence>();
+
+		for (Entry<String, Charset> entry : Charset.availableCharsets().entrySet()) {
+			Charset c = entry.getValue();
+			if (c.canEncode() && c.isRegistered()) {
+				charsetIds.add(entry.getKey());
+				charsetNames.add(c.displayName());
+			}
+		}
+
+		charsetPref.setEntryValues(charsetIds.toArray(new CharSequence[charsetIds.size()]));
+		charsetPref.setEntries(charsetNames.toArray(new CharSequence[charsetNames.size()]));
 
 		this.updateSummaries();
 	}

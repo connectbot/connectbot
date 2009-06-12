@@ -18,6 +18,7 @@
 
 package org.connectbot.util;
 
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -80,9 +81,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String PORTFORWARD_DYNAMIC4 = "dynamic4";
 	public final static String PORTFORWARD_DYNAMIC5 = "dynamic5";
 
-	public final static String ENCODING_ASCII = "ASCII";
-	public final static String ENCODING_UTF8 = "UTF-8";
-	public final static String ENCODING_ISO88591 = "ISO8859_1";
+	public final static String ENCODING_DEFAULT = Charset.defaultCharset().name();
 
 	public final static long PUBKEYID_NEVER = -2;
 	public final static long PUBKEYID_ANY = -1;
@@ -110,7 +109,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ", "
 				+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "', "
 				+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
-				+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_ASCII + "')");
+				+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "')");
 		// insert a few sample hosts, none of which probably connect
 		//this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, COLOR_GRAY);
 		//this.createHost(db, "cron@server.example.com", "cron", "server.example.com", 22, COLOR_GRAY, PUBKEYID_ANY);
@@ -157,7 +156,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 					+ " ADD COLUMN " + FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "'");
 		case 14:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
-					+ " ADD COLUMN " + FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_ASCII + "'");
+					+ " ADD COLUMN " + FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "'");
 		}
 	}
 
