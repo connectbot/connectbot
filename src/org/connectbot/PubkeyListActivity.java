@@ -78,7 +78,7 @@ import com.trilead.ssh2.crypto.PEMStructure;
  * @author Kenny Root
  */
 public class PubkeyListActivity extends ListActivity implements EventListener {
-	public final static String TAG = PubkeyListActivity.class.toString();
+	public final static String TAG = "ConnectBot.PubkeyListActivity";
 
 	protected PubkeyDatabase pubkeydb;
 	private List<PubkeyBean> pubkeys;

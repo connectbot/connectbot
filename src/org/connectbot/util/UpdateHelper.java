@@ -64,7 +64,7 @@ import android.util.Log;
  */
 public final class UpdateHelper implements Runnable {
 
-	public final static String TAG = UpdateHelper.class.toString();
+	public final static String TAG = "ConnectBot.UpdateHelper";
 	public final static String UPDATE_URL = "http://connectbot.org/version";
 
 	protected Context context;

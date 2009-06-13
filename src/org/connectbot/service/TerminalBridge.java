@@ -81,8 +81,7 @@ import de.mud.terminal.vt320;
  * prompting.
  */
 public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCallback, ConnectionMonitor {
-
-	public final static String TAG = TerminalBridge.class.toString();
+	public final static String TAG = "ConnectBot.TerminalBridge";
 
 	public final static int DEFAULT_FONT_SIZE = 10;
 

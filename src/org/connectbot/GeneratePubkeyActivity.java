@@ -54,7 +54,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class GeneratePubkeyActivity extends Activity implements OnEntropyGatheredListener {
-	public final static String TAG = GeneratePubkeyActivity.class.toString();
+	public final static String TAG = "ConnectBot.GeneratePubkeyActivity";
 
 	final static int DEFAULT_BITS = 1024;
 

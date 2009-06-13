@@ -71,8 +71,7 @@ import com.nullwire.trace.ExceptionHandler;
  * @author jsharkey
  */
 public class TerminalManager extends Service implements BridgeDisconnectedListener, OnSharedPreferenceChangeListener {
-
-	public final static String TAG = TerminalManager.class.toString();
+	public final static String TAG = "ConnectBot.TerminalManager";
 
 	public List<TerminalBridge> bridges = new LinkedList<TerminalBridge>();
 	public TerminalBridge defaultBridge = null;

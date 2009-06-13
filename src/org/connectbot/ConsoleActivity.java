@@ -73,7 +73,7 @@ import com.nullwire.trace.ExceptionHandler;
 import de.mud.terminal.vt320;
 
 public class ConsoleActivity extends Activity {
-	public final static String TAG = ConsoleActivity.class.toString();
+	public final static String TAG = "ConnectBot.ConsoleActivity";
 
 	protected static final int REQUEST_EDIT = 1;
 

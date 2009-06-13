@@ -42,7 +42,7 @@ import android.util.Log;
  */
 public class HostDatabase extends SQLiteOpenHelper {
 
-	public final static String TAG = HostDatabase.class.toString();
+	public final static String TAG = "ConnectBot.HostDatabase";
 
 	public final static String DB_NAME = "hosts";
 	public final static int DB_VERSION = 15;
