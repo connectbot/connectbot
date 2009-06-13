@@ -1175,6 +1175,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * terminal size information and request a PTY resize.
 	 */
 	public final synchronized void parentChanged(TerminalView parent) {
+		if (manager != null && !manager.isResizeAllowed()) {
+			Log.d(TAG, "Resize is not allowed now");
+			return;
+		}
+
 		this.parent = parent;
 		int width = parent.getWidth();
 		int height = parent.getHeight();

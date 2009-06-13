@@ -107,6 +107,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	private NotificationManager notificationManager;
 
 	private boolean wantBellVibration;
+
+	private boolean resizeAllowed = true;
+
 	private static final int NOTIFICATION_ID = 1;
 
 	@Override
@@ -370,6 +373,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public boolean onUnbind(Intent intent) {
 		Log.i(TAG, "Someone unbound from TerminalManager");
 
+		setResizeAllowed(true);
+
 		if (bridges.size() == 0)
 			stopWithDelay();
 
@@ -498,5 +503,17 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 			wantKeyVibration = sharedPreferences.getBoolean(
 					PreferenceConstants.BUMPY_ARROWS, true);
 		}
+	}
+
+	/**
+	 * Allow {@link TerminalBridge} to resize when the parent has changed.
+	 * @param resizeAllowed
+	 */
+	public void setResizeAllowed(boolean resizeAllowed) {
+		this.resizeAllowed  = resizeAllowed;
+	}
+
+	public boolean isResizeAllowed() {
+		return resizeAllowed;
 	}
 }

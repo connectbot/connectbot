@@ -105,6 +105,8 @@ public class ConsoleActivity extends Activity {
 	protected TerminalBridge copySource = null;
 	private int lastTouchRow, lastTouchCol;
 
+	private boolean forcedOrientation = false;
+
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
@@ -307,22 +309,6 @@ public class ConsoleActivity extends Activity {
 			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 					WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		}
-
-		String rotateDefault;
-		if (getResources().getConfiguration().keyboard == Configuration.KEYBOARD_NOKEYS)
-			rotateDefault = PreferenceConstants.ROTATION_PORTRAIT;
-		else
-			rotateDefault = PreferenceConstants.ROTATION_LANDSCAPE;
-
-		String rotate = prefs.getString(PreferenceConstants.ROTATION, rotateDefault);
-		if (PreferenceConstants.ROTATION_DEFAULT.equals(rotate))
-			rotate = rotateDefault;
-
-		// request a forced orientation if requested by user
-		if (PreferenceConstants.ROTATION_LANDSCAPE.equals(rotate))
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		else if (PreferenceConstants.ROTATION_PORTRAIT.equals(rotate))
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		// TODO find proper way to disable volume key beep if it exists.
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -557,6 +543,30 @@ public class ConsoleActivity extends Activity {
 
 	}
 
+	/**
+	 *
+	 */
+	private void configureOrientation() {
+		String rotateDefault;
+		if (getResources().getConfiguration().keyboard == Configuration.KEYBOARD_NOKEYS)
+			rotateDefault = PreferenceConstants.ROTATION_PORTRAIT;
+		else
+			rotateDefault = PreferenceConstants.ROTATION_LANDSCAPE;
+
+		String rotate = prefs.getString(PreferenceConstants.ROTATION, rotateDefault);
+		if (PreferenceConstants.ROTATION_DEFAULT.equals(rotate))
+			rotate = rotateDefault;
+
+		// request a forced orientation if requested by user
+		if (PreferenceConstants.ROTATION_LANDSCAPE.equals(rotate)) {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			forcedOrientation = true;
+		} else if (PreferenceConstants.ROTATION_PORTRAIT.equals(rotate)) {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			forcedOrientation = true;
+		}
+	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -723,6 +733,26 @@ public class ConsoleActivity extends Activity {
 	}
 
 	@Override
+	public void onPause() {
+		super.onPause();
+		Log.d(TAG, "onPause called");
+
+		if (bound != null)
+			bound.setResizeAllowed(false);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		Log.d(TAG, "onResume called");
+
+		configureOrientation();
+
+		if (bound != null)
+			bound.setResizeAllowed(true);
+	}
+
+	@Override
 	public void onStop() {
 		super.onStop();
 
@@ -846,6 +876,22 @@ public class ConsoleActivity extends Activity {
 		} else {
 			hideAllPrompts();
 			view.requestFocus();
+		}
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+
+		Log.d(TAG, String.format("onConfigurationChanged; requestedOrientation=%d, newConfig.orientation=%d", getRequestedOrientation(), newConfig.orientation));
+		if (forcedOrientation && bound != null) {
+			if ((newConfig.orientation != Configuration.ORIENTATION_LANDSCAPE &&
+					getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) ||
+				(newConfig.orientation != Configuration.ORIENTATION_PORTRAIT &&
+					getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT))
+				bound.setResizeAllowed(false);
+			else
+				bound.setResizeAllowed(true);
 		}
 	}
 }
