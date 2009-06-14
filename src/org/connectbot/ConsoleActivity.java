@@ -105,6 +105,8 @@ public class ConsoleActivity extends Activity {
 	protected TerminalBridge copySource = null;
 	private int lastTouchRow, lastTouchCol;
 
+	private boolean forcedOrientation;
+
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
@@ -556,12 +558,16 @@ public class ConsoleActivity extends Activity {
 			rotate = rotateDefault;
 
 		// request a forced orientation if requested by user
-		if (PreferenceConstants.ROTATION_LANDSCAPE.equals(rotate))
+		if (PreferenceConstants.ROTATION_LANDSCAPE.equals(rotate)) {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		else if (PreferenceConstants.ROTATION_PORTRAIT.equals(rotate))
+			forcedOrientation = true;
+		} else if (PreferenceConstants.ROTATION_PORTRAIT.equals(rotate)) {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		else
+			forcedOrientation = true;
+		} else {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+			forcedOrientation = false;
+		}
 	}
 
 
@@ -734,7 +740,7 @@ public class ConsoleActivity extends Activity {
 		super.onPause();
 		Log.d(TAG, "onPause called");
 
-		if (bound != null)
+		if (forcedOrientation && bound != null)
 			bound.setResizeAllowed(false);
 	}
 
@@ -745,7 +751,7 @@ public class ConsoleActivity extends Activity {
 
 		configureOrientation();
 
-		if (bound != null)
+		if (forcedOrientation && bound != null)
 			bound.setResizeAllowed(true);
 	}
 
@@ -882,9 +888,10 @@ public class ConsoleActivity extends Activity {
 
 		Log.d(TAG, String.format("onConfigurationChanged; requestedOrientation=%d, newConfig.orientation=%d", getRequestedOrientation(), newConfig.orientation));
 		if (bound != null) {
-			if ((newConfig.orientation != Configuration.ORIENTATION_LANDSCAPE &&
+			if (forcedOrientation &&
+					(newConfig.orientation != Configuration.ORIENTATION_LANDSCAPE &&
 					getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) ||
-				(newConfig.orientation != Configuration.ORIENTATION_PORTRAIT &&
+					(newConfig.orientation != Configuration.ORIENTATION_PORTRAIT &&
 					getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT))
 				bound.setResizeAllowed(false);
 			else
