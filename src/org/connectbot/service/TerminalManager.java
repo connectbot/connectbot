@@ -351,6 +351,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public IBinder onBind(Intent intent) {
 		Log.i(TAG, "Someone bound to TerminalManager");
 
+		setResizeAllowed(true);
+
 		stopIdleTimer();
 
 		// Make sure we stay running to maintain the bridges
@@ -362,6 +364,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	@Override
 	public void onRebind(Intent intent) {
 		super.onRebind(intent);
+
+		setResizeAllowed(true);
 
 		Log.i(TAG, "Someone rebound to TerminalManager");
 
