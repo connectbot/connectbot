@@ -574,7 +574,7 @@ public class ConsoleActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
-		final View view = findCurrentView(R.id.console_flip);
+		View view = findCurrentView(R.id.console_flip);
 		final boolean activeTerminal = (view instanceof TerminalView);
 		boolean sessionOpen = false;
 		boolean disconnected = false;
@@ -595,7 +595,9 @@ public class ConsoleActivity extends Activity {
 		disconnect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				// disconnect or close the currently visible session
-				TerminalBridge bridge = ((TerminalView)view).bridge;
+				TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
+				TerminalBridge bridge = terminalView.bridge;
+
 				bridge.dispatchDisconnect(true);
 				return true;
 			}
@@ -608,7 +610,8 @@ public class ConsoleActivity extends Activity {
 		copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				// mark as copying and reset any previous bounds
-				copySource = ((TerminalView)view).bridge;
+				TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
+				copySource = terminalView.bridge;
 
 				SelectionArea area = copySource.getSelectionArea();
 				area.reset();
@@ -631,11 +634,12 @@ public class ConsoleActivity extends Activity {
 		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				// force insert of clipboard text into current console
-				TerminalView terminal = (TerminalView)view;
+				TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
+				TerminalBridge bridge = terminalView.bridge;
 
 				// pull string from clipboard and generate all events to force down
 				String clip = clipboard.getText().toString();
-				terminal.bridge.injectString(clip);
+				bridge.injectString(clip);
 
 				return true;
 			}
@@ -647,8 +651,11 @@ public class ConsoleActivity extends Activity {
 		portForward.setEnabled(sessionOpen);
 		portForward.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
+				TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
+				TerminalBridge bridge = terminalView.bridge;
+
 				Intent intent = new Intent(ConsoleActivity.this, PortForwardListActivity.class);
-				intent.putExtra(Intent.EXTRA_TITLE, ((TerminalView) view).bridge.host.getId());
+				intent.putExtra(Intent.EXTRA_TITLE, bridge.host.getId());
 				ConsoleActivity.this.startActivityForResult(intent, REQUEST_EDIT);
 				return true;
 			}
@@ -660,7 +667,7 @@ public class ConsoleActivity extends Activity {
 		resize.setEnabled(sessionOpen);
 		resize.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				final TerminalView terminal = (TerminalView)view;
+				final TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
 
 				final View resizeView = inflater.inflate(R.layout.dia_resize, null, false);
 				new AlertDialog.Builder(ConsoleActivity.this)
@@ -670,7 +677,7 @@ public class ConsoleActivity extends Activity {
 							int width = Integer.parseInt(((EditText)resizeView.findViewById(R.id.width)).getText().toString());
 							int height = Integer.parseInt(((EditText)resizeView.findViewById(R.id.height)).getText().toString());
 
-							terminal.forceSize(width, height);
+							terminalView.forceSize(width, height);
 						}
 					}).setNegativeButton(android.R.string.cancel, null).create().show();
 
