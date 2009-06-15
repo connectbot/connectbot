@@ -27,11 +27,13 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.connectbot.R;
 import org.connectbot.bean.HostBean;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.HostDatabase;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 import de.mud.telnet.TelnetProtocolHandler;
@@ -280,5 +282,11 @@ public class Telnet extends AbsTransport {
 		if (port < 0)
 			port = DEFAULT_PORT;
 		selection.put(HostDatabase.FIELD_HOST_PORT, Integer.toString(port));
+	}
+
+	public static String getFormatHint(Context context) {
+		return String.format("%s:%s",
+				context.getString(R.string.format_hostname),
+				context.getString(R.string.format_port));
 	}
 }

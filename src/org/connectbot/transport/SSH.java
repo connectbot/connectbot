@@ -45,6 +45,7 @@ import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
@@ -781,5 +782,12 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	@Override
 	public void setCompression(boolean compression) {
 		this.compression = compression;
+	}
+
+	public static String getFormatHint(Context context) {
+		return String.format("%s@%s:%s",
+				context.getString(R.string.format_username),
+				context.getString(R.string.format_hostname),
+				context.getString(R.string.format_port));
 	}
 }

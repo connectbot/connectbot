@@ -80,6 +80,7 @@ public class HostListActivity extends ListActivity {
 	private MenuItem sortlast;
 
 	private Spinner transportSpinner;
+	private TextView quickconnect;
 
 	protected Handler updateHandler = new Handler() {
 		@Override
@@ -197,17 +198,10 @@ public class HostListActivity extends ListActivity {
 
 				// launch off to console details
 				HostBean host = (HostBean) parent.getAdapter().getItem(position);
+				Uri uri = host.getUri();
 
-				// create a specific uri that represents this host
-				Uri uri = Uri.parse(String.format("%s://%s@%s:%d/#%s",
-						Uri.encode(host.getProtocol()),
-						Uri.encode(host.getUsername()),
-						Uri.encode(host.getHostname()),
-						host.getPort(),
-						Uri.encode(host.getNickname())));
 				Intent contents = new Intent(Intent.ACTION_VIEW, uri);
 				contents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
 
 				if (makingShortcut) {
 					// create shortcut if requested
@@ -230,37 +224,19 @@ public class HostListActivity extends ListActivity {
 
 		this.registerForContextMenu(list);
 
-		final TextView text = (TextView) this.findViewById(R.id.front_quickconnect);
-		text.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
-		text.setOnKeyListener(new OnKeyListener() {
+		quickconnect = (TextView) this.findViewById(R.id.front_quickconnect);
+		quickconnect.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
+		quickconnect.setOnKeyListener(new OnKeyListener() {
 
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 
 				if(event.getAction() == KeyEvent.ACTION_UP) return false;
 				if(keyCode != KeyEvent.KEYCODE_ENTER) return false;
 
-				Uri uri = TransportFactory.getUri((String) transportSpinner
-						.getSelectedItem(), text.getText().toString());
-
-				if (uri == null) {
-					text.setError(getString(R.string.list_format_error));
-					return false;
-				}
-
-				HostBean host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
-				host.setColor(HostDatabase.COLOR_GRAY);
-				host.setPubkeyId(HostDatabase.PUBKEYID_ANY);
-				hostdb.saveHost(host);
-
-				Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
-				intent.setData(uri);
-				HostListActivity.this.startActivity(intent);
-
-				return true;
+				return startConsoleActivity();
 			}
-
 		});
-		text.requestFocus();
+		quickconnect.requestFocus();
 
 		transportSpinner = (Spinner)findViewById(R.id.transport_selection);
 		ArrayAdapter<String> transportSelection = new ArrayAdapter<String>(this,
@@ -268,7 +244,20 @@ public class HostListActivity extends ListActivity {
 		transportSelection.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		transportSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
-				text.requestFocus();
+				String formatHint = TransportFactory.getFormatHint(
+						(String) transportSpinner.getSelectedItem(),
+						HostListActivity.this);
+
+				quickconnect.setHint(formatHint);
+
+				// Start ConsoleActivity immediately if the hint is empty.
+				if ("".equals(formatHint)) {
+					quickconnect.setEnabled(false);
+					startConsoleActivity();
+				} else {
+					quickconnect.setEnabled(true);
+					quickconnect.requestFocus();
+				}
 			}
 			public void onNothingSelected(AdapterView<?> arg0) { }
 		});
@@ -401,6 +390,34 @@ public class HostListActivity extends ListActivity {
 				return true;
 			}
 		});
+	}
+
+	/**
+	 * @param text
+	 * @return
+	 */
+	private boolean startConsoleActivity() {
+		Uri uri = TransportFactory.getUri((String) transportSpinner
+				.getSelectedItem(), quickconnect.getText().toString());
+
+		if (uri == null) {
+			quickconnect.setError(getString(R.string.list_format_error,
+					TransportFactory.getFormatHint(
+							(String) transportSpinner.getSelectedItem(),
+							HostListActivity.this)));
+			return false;
+		}
+
+		HostBean host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
+		host.setColor(HostDatabase.COLOR_GRAY);
+		host.setPubkeyId(HostDatabase.PUBKEYID_ANY);
+		hostdb.saveHost(host);
+
+		Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
+		intent.setData(uri);
+		HostListActivity.this.startActivity(intent);
+
+		return true;
 	}
 
 	protected void updateList() {

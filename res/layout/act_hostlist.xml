@@ -34,12 +34,13 @@
 
 	<EditText
 		android:id="@+id/front_quickconnect"
-		android:singleLine="true"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:hint="@string/hint_userhost"
+		android:hint="username@hostname:port"
 		android:layout_toRightOf="@+id/transport_selection"
 		android:layout_alignTop="@+id/transport_selection"
+		android:inputType="textEmailAddress"
+		android:layout_alignBottom="@+id/transport_selection"
 		/>
 
 	<ListView

@@ -288,7 +288,15 @@
 	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
 	<string name="hint_userhost">gebruiker@hostnaam</string>
 
-	<string name="list_format_error">Gebruik het formaat 'gebruikersnaam@hostnaam:poort'</string>
+	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
+	<string name="list_format_error">Gebruik het formaat "%1$s"</string>
+
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+        <string name="format_username">gebruikersnaam</string>
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_hostname">hostnaam</string>
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_port">poort</string>
 
 	<string name="list_menu_pubkeys">Beheer Pubkeys</string>
 	<!-- Selection choice to sort hosts by color. -->

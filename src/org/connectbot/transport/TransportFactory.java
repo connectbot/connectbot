@@ -18,6 +18,7 @@
 
 package org.connectbot.transport;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
@@ -81,6 +82,23 @@ public class TransportFactory {
 			return SSH.canForwardPorts();
 		} else {
 			return false;
+		}
+	}
+
+	/**
+	 * @param protocol text name of protocol
+	 * @param context
+	 * @return expanded format hint
+	 */
+	public static String getFormatHint(String protocol, Context context) {
+		if (SSH.getProtocolName().equals(protocol)) {
+			return SSH.getFormatHint(context);
+		} else if (Telnet.getProtocolName().equals(protocol)) {
+			return Telnet.getFormatHint(context);
+		} else if (Local.getProtocolName().equals(protocol)) {
+			return Local.getFormatHint(context);
+		} else {
+			return AbsTransport.getFormatHint(context);
 		}
 	}
 }

@@ -265,10 +265,14 @@ public class HostBean extends AbstractBean {
 	 */
 	public Uri getUri() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("ssh://")
-			.append(Uri.encode(username))
-			.append('@')
-			.append(Uri.encode(hostname))
+		sb.append(protocol)
+			.append("://");
+
+		if (username != null)
+			sb.append(Uri.encode(username))
+				.append('@');
+
+		sb.append(Uri.encode(hostname))
 			.append(':')
 			.append(port)
 			.append("/#")

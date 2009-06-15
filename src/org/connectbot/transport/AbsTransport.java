@@ -27,6 +27,7 @@ import org.connectbot.bean.PortForwardBean;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 
+import android.content.Context;
 import android.net.Uri;
 
 /**
@@ -234,4 +235,12 @@ public abstract class AbsTransport {
 	 * @return
 	 */
 	public abstract HostBean createHost(Uri uri);
+
+	/**
+	 * @param context context containing the correct resources
+	 * @return string that hints at the format for connection
+	 */
+	public static String getFormatHint(Context context) {
+		return "???";
+	}
 }

@@ -31,6 +31,7 @@ import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.HostDatabase;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
@@ -211,5 +212,9 @@ public class Local extends AbsTransport {
 	public void getSelectionArgs(Uri uri, Map<String, String> selection) {
 		selection.put(HostDatabase.FIELD_HOST_PROTOCOL, PROTOCOL);
 		selection.put(HostDatabase.FIELD_HOST_NICKNAME, uri.getFragment());
+	}
+
+	public static String getFormatHint(Context context) {
+		return "";
 	}
 }
