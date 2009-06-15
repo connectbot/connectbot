@@ -18,8 +18,8 @@
 
 package org.connectbot.util;
 
-import java.util.Iterator;
 import java.nio.charset.Charset;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +49,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String TAG = "ConnectBot.HostDatabase";
 
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 16;
+	public final static int DB_VERSION = 17;
 
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -65,6 +65,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_HOST_POSTLOGIN = "postlogin";
 	public final static String FIELD_HOST_PUBKEYID = "pubkeyid";
 	public final static String FIELD_HOST_WANTSESSION = "wantsession";
+	public final static String FIELD_HOST_DELKEY = "delkey";
 	public final static String FIELD_HOST_COMPRESSION = "compression";
 	public final static String FIELD_HOST_ENCODING = "encoding";
 
@@ -85,6 +86,9 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String PORTFORWARD_REMOTE = "remote";
 	public final static String PORTFORWARD_DYNAMIC4 = "dynamic4";
 	public final static String PORTFORWARD_DYNAMIC5 = "dynamic5";
+
+	public final static String DELKEY_DEL = "del";
+	public final static String DELKEY_BACKSPACE = "backspace";
 
 	public final static String ENCODING_DEFAULT = Charset.defaultCharset().name();
 
@@ -115,6 +119,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_HOST_USEKEYS + " TEXT, "
 				+ FIELD_HOST_POSTLOGIN + " TEXT, "
 				+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ", "
+				+ FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "', "
 				+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "', "
 				+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
 				+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "')");
@@ -165,6 +170,9 @@ public class HostDatabase extends SQLiteOpenHelper {
 			case 15:
 				db.execSQL("ALTER TABLE " + TABLE_HOSTS
 						+ " ADD COLUMN " + FIELD_HOST_PROTOCOL + " TEXT DEFAULT 'ssh'");
+			case 16:
+				db.execSQL("ALTER TABLE " + TABLE_HOSTS
+						+ " ADD COLUMN " + FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "'");
 			}
 		} catch (SQLiteException e) {
 			// The database has entered an unknown state. Try to recover.
@@ -316,6 +324,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 			COL_POSTLOGIN = c.getColumnIndexOrThrow(FIELD_HOST_POSTLOGIN),
 			COL_PUBKEYID = c.getColumnIndexOrThrow(FIELD_HOST_PUBKEYID),
 			COL_WANTSESSION = c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION),
+			COL_DELKEY = c.getColumnIndexOrThrow(FIELD_HOST_DELKEY),
 			COL_COMPRESSION = c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION),
 			COL_ENCODING = c.getColumnIndexOrThrow(FIELD_HOST_ENCODING);
 
@@ -334,6 +343,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 			host.setPostLogin(c.getString(COL_POSTLOGIN));
 			host.setPubkeyId(c.getLong(COL_PUBKEYID));
 			host.setWantSession(Boolean.valueOf(c.getString(COL_WANTSESSION)));
+			host.setDelKey(c.getString(COL_DELKEY));
 			host.setCompression(Boolean.valueOf(c.getString(COL_COMPRESSION)));
 			host.setEncoding(c.getString(COL_ENCODING));
 

@@ -29,6 +29,7 @@ import org.connectbot.bean.PortForwardBean;
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.transport.AbsTransport;
 import org.connectbot.transport.TransportFactory;
+import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 
 import android.content.Context;
@@ -362,6 +363,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		// "screen" works the best for color and escape codes
 		((vt320) buffer).setAnswerBack(emulation);
 
+		if (HostDatabase.DELKEY_BACKSPACE.equals(host.getDelKey()))
+			((vt320) buffer).setBackspace(vt320.DELETE_IS_BACKSPACE);
+		else
+			((vt320) buffer).setBackspace(vt320.DELETE_IS_DEL);
+
 		// create thread to relay incoming connection data to buffer
 		relay = new Relay(this, transport, (vt320) buffer, host.getEncoding());
 		Thread relayThread = new Thread(relay);
@@ -530,6 +536,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 						key -= 0x40;
 					else if (key == 0x20)
 						key = 0x00;
+					else if (key == 0x3F)
+						key = 0x7F;
 
 					metaState &= ~META_CTRL_ON;
 

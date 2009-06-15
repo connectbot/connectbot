@@ -206,7 +206,12 @@ public void setScreenSize(int c, int r, boolean broadcast) {
       BackSpace[2] = "\u0018";	//  VMS control deletes line back
       BackSpace[0] = BackSpace[3] = "\u007f";	//  VMS other is delete
     } else {
-      BackSpace[0] = BackSpace[1] = BackSpace[2] = BackSpace[3] = "\b";
+      //BackSpace[0] = BackSpace[1] = BackSpace[2] = BackSpace[3] = "\b";
+      // ConnectBot modifications.
+      BackSpace[0] = "\b";
+      BackSpace[1] = "\u007f";
+      BackSpace[2] = "\u001b[3~";
+      BackSpace[3] = "\u001b[2~";
     }
 
     /* some more VT100 keys */
@@ -284,6 +289,19 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     NUMPlus[0] = "+";
     NUMDot = new String[4];
     NUMDot[0] = ".";
+  }
+
+  public void setBackspace(int type) {
+    switch (type) {
+    case DELETE_IS_DEL:
+      BackSpace[0] = "\u007f";
+      BackSpace[1] = "\b";
+      break;
+    case DELETE_IS_BACKSPACE:
+      BackSpace[0] = "\b";
+      BackSpace[1] = "\u007f";
+      break;
+    }
   }
 
   /**
@@ -647,6 +665,9 @@ public void setScreenSize(int c, int r, boolean broadcast) {
   public final static int KEY_DECIMAL = 41;
   public final static int KEY_ADD = 42;
   public final static int KEY_ESCAPE = 43;
+
+  public final static int DELETE_IS_DEL = 0;
+  public final static int DELETE_IS_BACKSPACE = 1;
 
   /* The graphics charsets
    * B - default ASCII

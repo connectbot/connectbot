@@ -42,5 +42,6 @@ public class DefaultExceptionHandler implements UncaughtExceptionHandler {
 		Log.d(TAG, result.toString());
 		// FlurryAgent session has ended
 		t.getThreadGroup().destroy();
+//		Thread.getDefaultUncaughtExceptionHandler().uncaughtException(t, e);
 	}
 }

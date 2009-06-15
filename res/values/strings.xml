@@ -229,6 +229,11 @@
 	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
 	<string name="hostpref_wantsession_summary">Disable this preference to only use port forwards</string>
 
+	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_title">DEL Key</string>
+	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_summary">The key code sent when DEL key is pressed</string>
+
 	<!-- Host character encoding preference title -->
 	<string name="hostpref_encoding_title">Encoding</string>
 	<!-- Host character encoding preference summary -->
@@ -326,6 +331,11 @@
 	<string name="list_camera_esc">Esc</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">None</string>
+
+	<!-- Name for the backspace character -->
+	<string name="list_delkey_backspace">Backspace</string>
+	<!-- Name for the ASCII DEL character -->
+	<string name="list_delkey_del">Delete</string>
 
 	<string name="delete_message">Are you sure you want to delete '%1$s'?</string>
 	<string name="delete_pos">Yes, delete</string>
