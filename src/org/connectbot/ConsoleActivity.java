@@ -116,6 +116,8 @@ public class ConsoleActivity extends Activity {
 
 			Log.d(TAG, String.format("Connected to TerminalManager and found bridges.size=%d", bound.bridges.size()));
 
+			bound.setResizeAllowed(true);
+
 			// clear out any existing bridges and record requested index
 			flip.removeAllViews();
 			String requestedNickname = (requested != null) ? requested.getFragment() : null;
