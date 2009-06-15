@@ -21,6 +21,8 @@ package org.connectbot.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -1486,7 +1488,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		if (HostDatabase.PORTFORWARD_LOCAL.equals(portForward.getType())) {
 			LocalPortForwarder lpf = null;
 			try {
-				lpf = connection.createLocalPortForwarder(portForward.getSourcePort(), portForward.getDestAddr(), portForward.getDestPort());
+				lpf = connection.createLocalPortForwarder(
+						new InetSocketAddress(InetAddress.getLocalHost(), portForward.getSourcePort()),
+						portForward.getDestAddr(), portForward.getDestPort());
 			} catch (IOException e) {
 				Log.e(TAG, "Could not create local port forward", e);
 				return false;
