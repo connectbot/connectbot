@@ -24,6 +24,7 @@ import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -31,6 +32,8 @@ import org.connectbot.ConsoleActivity;
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PubkeyBean;
+import org.connectbot.transport.AbsTransport;
+import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.PubkeyDatabase;
@@ -80,12 +83,12 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	public Handler disconnectHandler = null;
 
-	protected HashMap<String, Object> loadedPubkeys = new HashMap<String, Object>();
+	public HashMap<String, Object> loadedPubkeys = new HashMap<String, Object>();
 
-	protected Resources res;
+	public Resources res;
 
-	protected HostDatabase hostdb;
-	protected PubkeyDatabase pubkeydb;
+	public HostDatabase hostdb;
+	public PubkeyDatabase pubkeydb;
 
 	protected SharedPreferences prefs;
 
@@ -235,21 +238,28 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 
 	/**
-	 * Open a new SSH session by reading parameters from the given URI. Follows
-	 * format <code>ssh://user@host:port/#nickname</code>
+	 * Open a new connection by reading parameters from the given URI. Follows
+	 * format specified by an individual transport.
 	 */
 	public void openConnection(Uri uri) throws Exception {
-		String nickname = uri.getFragment();
-		String username = uri.getUserInfo();
-		String hostname = uri.getHost();
-		int port = uri.getPort();
+		AbsTransport transport = TransportFactory.getTransport(uri.getScheme());
 
-		HostBean host = hostdb.findHost(nickname, username, hostname, port);
+		Map<String, String> selection = new HashMap<String, String>();
+
+		transport.getSelectionArgs(uri, selection);
+		if (selection.size() == 0) {
+			Log.e(TAG, String.format("Transport %s failed to do something useful with URI=%s",
+					uri.getScheme(), uri.toString()));
+			throw new IllegalStateException("Failed to get needed selection arguments");
+		}
+
+		HostBean host = hostdb.findHost(selection);
 
 		if (host == null) {
-			Log.d(TAG, String.format("Didn't find existing host (nickname=%s, username=%s, hostname=%s, port=%d)",
-					nickname, username, hostname, port));
-			host = new HostBean(nickname, username, hostname, port);
+			Log.d(TAG, String.format(
+					"Didn't find existing host (selection=%s)",
+					selection.toString()));
+			host = transport.createHost(uri);
 		}
 
 		this.openConnection(host);

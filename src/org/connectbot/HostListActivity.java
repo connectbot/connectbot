@@ -19,12 +19,11 @@
 package org.connectbot;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.connectbot.bean.HostBean;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
+import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.UpdateHelper;
@@ -61,6 +60,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -78,6 +78,8 @@ public class HostListActivity extends ListActivity {
 	private MenuItem sortcolor;
 
 	private MenuItem sortlast;
+
+	private Spinner transportSpinner;
 
 	protected Handler updateHandler = new Handler() {
 		@Override
@@ -197,7 +199,8 @@ public class HostListActivity extends ListActivity {
 				HostBean host = (HostBean) parent.getAdapter().getItem(position);
 
 				// create a specific uri that represents this host
-				Uri uri = Uri.parse(String.format("ssh://%s@%s:%d/#%s",
+				Uri uri = Uri.parse(String.format("%s://%s@%s:%d/#%s",
+						Uri.encode(host.getProtocol()),
 						Uri.encode(host.getUsername()),
 						Uri.encode(host.getHostname()),
 						host.getPort(),
@@ -227,7 +230,6 @@ public class HostListActivity extends ListActivity {
 
 		this.registerForContextMenu(list);
 
-		final Pattern hostmask = Pattern.compile("^([^@]+)@([0-9A-Z.-]+)(:(\\d+))?$", Pattern.CASE_INSENSITIVE);
 		final TextView text = (TextView) this.findViewById(R.id.front_quickconnect);
 		text.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
 		text.setOnKeyListener(new OnKeyListener() {
@@ -237,53 +239,40 @@ public class HostListActivity extends ListActivity {
 				if(event.getAction() == KeyEvent.ACTION_UP) return false;
 				if(keyCode != KeyEvent.KEYCODE_ENTER) return false;
 
-				// make sure we follow pattern
-				if (text.getText().length() < 3)
-					return false;
+				Uri uri = TransportFactory.getUri((String) transportSpinner
+						.getSelectedItem(), text.getText().toString());
 
-				// show error if poorly formed
-				Matcher matcher = hostmask.matcher(text.getText().toString());
-				if (!matcher.matches()) {
+				if (uri == null) {
 					text.setError(getString(R.string.list_format_error));
 					return false;
 				}
 
-				// create new host for entered string and then launch
-				String username = matcher.group(1);
-				String hostname = matcher.group(2);
-
-				int port = 22;
-				try {
-					port = Integer.parseInt(matcher.group(4));
-				} catch (Exception e) {
-					Log.i("HostListActivity", "Invalid format for port: "+ matcher.group(4));
-				}
-
-				String nickname;
-				if (port == 22) {
-					nickname = String.format("%s@%s", username, hostname);
-				} else {
-					nickname = String.format("%s@%s:%d", username, hostname, port);
-				}
-
-				HostBean host = new HostBean(nickname, username, hostname, port);
+				HostBean host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
 				host.setColor(HostDatabase.COLOR_GRAY);
 				host.setPubkeyId(HostDatabase.PUBKEYID_ANY);
 				hostdb.saveHost(host);
 
 				Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
-				intent.setData(host.getUri());
+				intent.setData(uri);
 				HostListActivity.this.startActivity(intent);
-
-				// set list filter based on text
-				// String filter = text.getText().toString();
-				// list.setTextFilterEnabled((filter.length() > 0));
-				// list.setFilterText(filter);
 
 				return true;
 			}
 
 		});
+		text.requestFocus();
+
+		transportSpinner = (Spinner)findViewById(R.id.transport_selection);
+		ArrayAdapter<String> transportSelection = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, TransportFactory.getTransportNames());
+		transportSelection.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		transportSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
+				text.requestFocus();
+			}
+			public void onNothingSelected(AdapterView<?> arg0) { }
+		});
+		transportSpinner.setAdapter(transportSelection);
 
 		this.inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -388,6 +377,8 @@ public class HostListActivity extends ListActivity {
 				return true;
 			}
 		});
+		if (!TransportFactory.canForwardPorts(host.getProtocol()))
+			portForwards.setEnabled(false);
 
 		MenuItem delete = menu.add(R.string.list_host_delete);
 		delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
