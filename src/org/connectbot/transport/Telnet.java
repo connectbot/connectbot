@@ -132,9 +132,11 @@ public class Telnet extends AbsTransport {
 
 	@Override
 	public void close() {
+		connected = false;
 		if (socket != null)
 			try {
 				socket.close();
+				socket = null;
 			} catch (IOException e) {
 				Log.d(TAG, "Error closing telnet socket.", e);
 			}

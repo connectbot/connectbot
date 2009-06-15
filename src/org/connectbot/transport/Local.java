@@ -95,10 +95,14 @@ public class Local extends AbsTransport {
 	@Override
 	public void close() {
 		try {
-			os.close();
-			is.close();
-			os = null;
-			is = null;
+			if (os != null) {
+				os.close();
+				os = null;
+			}
+			if (is != null) {
+				is.close();
+				is = null;
+			}
 		} catch (IOException e) {
 			Log.e(TAG, "Couldn't close shell", e);
 		}
