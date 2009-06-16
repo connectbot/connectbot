@@ -245,6 +245,7 @@ public class HostListActivity extends ListActivity {
 						HostListActivity.this);
 
 				quickconnect.setHint(formatHint);
+				quickconnect.setError(null);
 
 				// Start ConsoleActivity immediately if the hint is empty.
 				if ("".equals(formatHint)) {
