@@ -162,9 +162,13 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public void onDestroy() {
 		Log.i(TAG, "Destroying background service");
 
-		// disconnect and dispose of any existing bridges
-		for(TerminalBridge bridge : bridges)
-			bridge.dispatchDisconnect(true);
+		if (bridges.size() > 0) {
+			TerminalBridge[] tmpBridges = bridges.toArray(new TerminalBridge[bridges.size()]);
+
+			// disconnect and dispose of any existing bridges
+			for (int i = 0; i < tmpBridges.length; i++)
+				tmpBridges[i].dispatchDisconnect(true);
+		}
 
 		if(hostdb != null) {
 			hostdb.close();
