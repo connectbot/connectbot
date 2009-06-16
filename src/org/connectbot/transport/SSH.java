@@ -258,6 +258,9 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			} else {
 				bridge.outputLine(manager.res.getString(R.string.terminal_auth_fail));
 			}
+		} catch (IllegalStateException e) {
+			Log.e(TAG, "Connection went away while we were trying to authenticate", e);
+			return;
 		} catch(Exception e) {
 			Log.e(TAG, "Problem during handleAuthentication()", e);
 		}

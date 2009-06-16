@@ -67,6 +67,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.nullwire.trace.ExceptionHandler;
 
 public class HostListActivity extends ListActivity {
+	public final static int REQUEST_EDIT = 1;
+
+	public final static int REQUEST_EULA = 2;
+
 	protected TerminalManager bound = null;
 
 	protected HostDatabase hostdb;
@@ -81,6 +85,10 @@ public class HostListActivity extends ListActivity {
 
 	private Spinner transportSpinner;
 	private TextView quickconnect;
+
+	private SharedPreferences prefs = null;
+
+	protected boolean makingShortcut = false;
 
 	protected Handler updateHandler = new Handler() {
 		@Override
@@ -112,8 +120,6 @@ public class HostListActivity extends ListActivity {
 
 		if(this.hostdb == null)
 			this.hostdb = new HostDatabase(this);
-
-		this.updateList();
 	}
 
 	@Override
@@ -125,7 +131,6 @@ public class HostListActivity extends ListActivity {
 			this.hostdb.close();
 			this.hostdb = null;
 		}
-
 	}
 
 	@Override
@@ -134,11 +139,6 @@ public class HostListActivity extends ListActivity {
 
 		ExceptionHandler.checkForTraces(this);
 	}
-
-	public final static int REQUEST_EDIT = 1;
-	public final static int REQUEST_EULA = 2;
-
-	private SharedPreferences prefs = null;
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -156,8 +156,6 @@ public class HostListActivity extends ListActivity {
 			this.updateList();
 		}
 	}
-
-	protected boolean makingShortcut = false;
 
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -188,7 +186,6 @@ public class HostListActivity extends ListActivity {
 		ListView list = this.getListView();
 
 		this.sortedByColor = prefs.getBoolean(PreferenceConstants.SORT_BY_COLOR, false);
-		this.updateList();
 
 		//this.list.setSelector(R.drawable.highlight_disabled_pressed);
 
@@ -236,7 +233,6 @@ public class HostListActivity extends ListActivity {
 				return startConsoleActivity();
 			}
 		});
-		quickconnect.requestFocus();
 
 		transportSpinner = (Spinner)findViewById(R.id.transport_selection);
 		ArrayAdapter<String> transportSelection = new ArrayAdapter<String>(this,
@@ -421,9 +417,11 @@ public class HostListActivity extends ListActivity {
 	}
 
 	protected void updateList() {
-		Editor edit = prefs.edit();
-		edit.putBoolean(PreferenceConstants.SORT_BY_COLOR, sortedByColor);
-		edit.commit();
+		if (prefs.getBoolean(PreferenceConstants.SORT_BY_COLOR, false) != sortedByColor) {
+			Editor edit = prefs.edit();
+			edit.putBoolean(PreferenceConstants.SORT_BY_COLOR, sortedByColor);
+			edit.commit();
+		}
 
 		if (hostdb == null)
 			hostdb = new HostDatabase(this);
