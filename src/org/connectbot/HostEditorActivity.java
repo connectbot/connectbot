@@ -274,27 +274,22 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		pubkeyPref.setEntryValues(pubkeyIds.toArray(new CharSequence[pubkeyIds.size()]));
 
 		// Populate the character set encoding list with all available
-		ListPreference charsetPref = (ListPreference) findPreference(HostDatabase.FIELD_HOST_ENCODING);
+		final ListPreference charsetPref = (ListPreference) findPreference(HostDatabase.FIELD_HOST_ENCODING);
 
-		List<CharSequence> charsetIds = new LinkedList<CharSequence>();
-		List<CharSequence> charsetNames = new LinkedList<CharSequence>();
+		if (CharsetHolder.isInitialized()) {
+			initCharsetPref(charsetPref);
+		} else {
+			String[] currentCharsetPref = new String[1];
+			currentCharsetPref[0] = charsetPref.getValue();
+			charsetPref.setEntryValues(currentCharsetPref);
+			charsetPref.setEntries(currentCharsetPref);
 
-		for (Entry<String, Charset> entry : Charset.availableCharsets().entrySet()) {
-			Charset c = entry.getValue();
-			if (c.canEncode() && c.isRegistered()) {
-				String key = entry.getKey();
-				if (key.startsWith("cp")) {
-					// Custom CP437 charset changes
-					charsetIds.add("CP437");
-					charsetNames.add("CP437");
+			new Thread(new Runnable() {
+				public void run() {
+					initCharsetPref(charsetPref);
 				}
-				charsetIds.add(entry.getKey());
-				charsetNames.add(c.displayName());
-			}
+			}).start();
 		}
-
-		charsetPref.setEntryValues(charsetIds.toArray(new CharSequence[charsetIds.size()]));
-		charsetPref.setEntries(charsetNames.toArray(new CharSequence[charsetNames.size()]));
 
 		this.updateSummaries();
 	}
@@ -310,7 +305,6 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 		if(this.pubkeydb == null)
 			this.pubkeydb = new PubkeyDatabase(this);
-
 	}
 
 	@Override
@@ -364,6 +358,11 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 	}
 
+	private void initCharsetPref(final ListPreference charsetPref) {
+		charsetPref.setEntryValues(CharsetHolder.getCharsetIds());
+		charsetPref.setEntries(CharsetHolder.getCharsetNames());
+	}
+
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		// update values on changed preference
 		this.updateSummaries();
@@ -374,4 +373,55 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 					.getString(HostDatabase.FIELD_HOST_ENCODING, HostDatabase.ENCODING_DEFAULT));
 	}
 
+	public static class CharsetHolder {
+		private static boolean initialized = false;
+
+		private static CharSequence[] charsetIds;
+		private static CharSequence[] charsetNames;
+
+		public static CharSequence[] getCharsetNames() {
+			if (charsetNames == null)
+				initialize();
+
+			return charsetNames;
+		}
+
+		public static CharSequence[] getCharsetIds() {
+			if (charsetIds == null)
+				initialize();
+
+			return charsetIds;
+		}
+
+		private synchronized static void initialize() {
+			if (initialized)
+				return;
+
+			List<CharSequence> charsetIdsList = new LinkedList<CharSequence>();
+			List<CharSequence> charsetNamesList = new LinkedList<CharSequence>();
+
+			for (Entry<String, Charset> entry : Charset.availableCharsets().entrySet()) {
+				Charset c = entry.getValue();
+				if (c.canEncode() && c.isRegistered()) {
+					String key = entry.getKey();
+					if (key.startsWith("cp")) {
+						// Custom CP437 charset changes
+						charsetIdsList.add("CP437");
+						charsetNamesList.add("CP437");
+					}
+					charsetIdsList.add(entry.getKey());
+					charsetNamesList.add(c.displayName());
+				}
+			}
+
+			charsetIds = charsetIdsList.toArray(new CharSequence[charsetIdsList.size()]);
+			charsetNames = charsetNamesList.toArray(new CharSequence[charsetNamesList.size()]);
+
+			initialized = true;
+		}
+
+		public static boolean isInitialized() {
+			return initialized;
+		}
+	}
 }
