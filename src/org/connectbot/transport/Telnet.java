@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -89,7 +90,8 @@ public class Telnet extends AbsTransport {
 			/** write data to our back end */
 			@Override
 			public void write(byte[] b) throws IOException {
-				os.write(b);
+				if (os != null)
+					os.write(b);
 			}
 
 			/** sent on IAC EOR (prompt terminator for remote access systems). */
@@ -193,14 +195,22 @@ public class Telnet extends AbsTransport {
 
 	@Override
 	public void write(byte[] buffer) throws IOException {
-		if (os != null)
-			os.write(buffer);
+		try {
+			if (os != null)
+				os.write(buffer);
+		} catch (SocketException e) {
+			bridge.dispatchDisconnect(false);
+		}
 	}
 
 	@Override
 	public void write(int c) throws IOException {
-		if (os != null)
-			os.write(c);
+		try {
+			if (os != null)
+				os.write(c);
+		} catch (SocketException e) {
+			bridge.dispatchDisconnect(false);
+		}
 	}
 
 	@Override
