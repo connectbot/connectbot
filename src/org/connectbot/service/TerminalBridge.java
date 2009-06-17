@@ -406,7 +406,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		// temporary fix is to just spawn disconnection into a thread
 		Thread disconnectThread = new Thread(new Runnable() {
 			public void run() {
-				if(transport != null)
+				if (transport != null && transport.isConnected())
 					transport.close();
 			}
 		});

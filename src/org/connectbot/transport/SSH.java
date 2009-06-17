@@ -90,7 +90,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 	static final Pattern hostmask;
 	static {
-		hostmask = 	Pattern.compile("^(.+)@([0-9a-z.-]+)(:(\\d+))?$", Pattern.CASE_INSENSITIVE);
+		hostmask = Pattern.compile("^(.+)@([0-9a-z.-]+)(:(\\d+))?$", Pattern.CASE_INSENSITIVE);
 	}
 
 	private boolean compression = false;
@@ -445,6 +445,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 	@Override
 	public void close() {
+		connected = false;
+
 		if (session != null)
 			session.close();
 		if (connection != null)
@@ -483,6 +485,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		}
 
 		if ((newConditions & ChannelCondition.EOF) != 0) {
+			onDisconnect();
 			throw new IOException("Remote end closed connection");
 		}
 
