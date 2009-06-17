@@ -578,10 +578,13 @@ public class ConsoleActivity extends Activity {
 		final boolean activeTerminal = (view instanceof TerminalView);
 		boolean sessionOpen = false;
 		boolean disconnected = false;
+		boolean canForwardPorts = false;
 
 		if (activeTerminal) {
-			sessionOpen = ((TerminalView) view).bridge.isSessionOpen();
-			disconnected = ((TerminalView) view).bridge.isDisconnected();
+			TerminalBridge bridge = ((TerminalView) view).bridge;
+			sessionOpen = bridge.isSessionOpen();
+			disconnected = bridge.isDisconnected();
+			canForwardPorts = bridge.canFowardPorts();
 		}
 
 		menu.setQwertyMode(true);
@@ -648,7 +651,7 @@ public class ConsoleActivity extends Activity {
 		portForward = menu.add(R.string.console_menu_portforwards);
 		portForward.setAlphabeticShortcut('f');
 		portForward.setIcon(android.R.drawable.ic_menu_manage);
-		portForward.setEnabled(sessionOpen);
+		portForward.setEnabled(sessionOpen && canForwardPorts);
 		portForward.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
@@ -698,9 +701,13 @@ public class ConsoleActivity extends Activity {
 		boolean activeTerminal = (view instanceof TerminalView);
 		boolean sessionOpen = false;
 		boolean disconnected = false;
+		boolean canForwardPorts = false;
+
 		if (activeTerminal) {
-			sessionOpen = ((TerminalView)view).bridge.isSessionOpen();
-			disconnected = ((TerminalView)view).bridge.isDisconnected();
+			TerminalBridge bridge = ((TerminalView) view).bridge;
+			sessionOpen = bridge.isSessionOpen();
+			disconnected = bridge.isDisconnected();
+			canForwardPorts = bridge.canFowardPorts();
 		}
 
 		disconnect.setEnabled(activeTerminal);
@@ -710,7 +717,7 @@ public class ConsoleActivity extends Activity {
 			disconnect.setTitle(R.string.console_menu_close);
 		copy.setEnabled(activeTerminal);
 		paste.setEnabled(clipboard.hasText() && sessionOpen);
-		portForward.setEnabled(sessionOpen);
+		portForward.setEnabled(sessionOpen && canForwardPorts);
 		resize.setEnabled(sessionOpen);
 
 		return true;

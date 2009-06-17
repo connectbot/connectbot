@@ -1117,6 +1117,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	}
 
 	/**
+	 * @return whether underlying transport can forward ports
+	 */
+	public boolean canFowardPorts() {
+		return transport.canForwardPorts();
+	}
+
+	/**
 	 * Adds the {@link PortForwardBean} to the list.
 	 * @param portForward the port forward bean to add
 	 * @return true on successful addition
