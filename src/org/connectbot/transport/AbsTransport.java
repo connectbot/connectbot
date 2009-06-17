@@ -157,7 +157,7 @@ public abstract class AbsTransport {
 	 * Whether or not this transport type can forward ports.
 	 * @return true on ability to forward ports
 	 */
-	public static boolean canForwardPorts() {
+	public boolean canForwardPorts() {
 		return false;
 	}
 

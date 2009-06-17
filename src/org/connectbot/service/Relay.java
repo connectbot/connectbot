@@ -70,7 +70,7 @@ public class Relay implements Runnable {
 		else
 			charset = Charset.forName(encoding);
 
-		if (charset == currentCharset)
+		if (charset == currentCharset || charset == null)
 			return;
 
 		CharsetDecoder newCd = charset.newDecoder();

@@ -207,7 +207,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		// Add a reference to the WifiLock
 		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
-		if (isLockingWifi() && info.getType() == ConnectivityManager.TYPE_WIFI) {
+		if (isLockingWifi() &&
+				info != null &&
+				info.getType() == ConnectivityManager.TYPE_WIFI) {
 			Log.d(TAG, "Acquiring WifiLock");
 			wifilock.acquire();
 		}

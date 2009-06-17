@@ -265,7 +265,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	/**
 	 * Spawn thread to open connection and start login process.
 	 */
-	@SuppressWarnings("static-access")
 	protected void startConnection() {
 		transport = TransportFactory.getTransport(host.getProtocol());
 		transport.setBridge(this);
@@ -310,7 +309,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	 * @param encoding the canonical name of the character encoding
 	 */
 	public void setCharset(String encoding) {
-		relay.setCharset(encoding);
+		if (relay != null)
+			relay.setCharset(encoding);
 	}
 
 	/**
@@ -856,6 +856,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		int width = parent.getWidth();
 		int height = parent.getHeight();
 
+		// Something has gone wrong with our layout; we're 0 width or height!
+		if (width <= 0 || height <= 0)
+			return;
+
 		clipboard = (ClipboardManager) parent.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
 
 		if (!forcedSize) {
@@ -1144,6 +1148,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	 * @return true on successful port forward setup
 	 */
 	public boolean enablePortForward(PortForwardBean portForward) {
+		if (!transport.isConnected()) {
+			Log.i(TAG, "Attempt to enable port forward while not connected");
+			return false;
+		}
+
 		return transport.enablePortForward(portForward);
 	}
 
@@ -1154,6 +1163,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	 * @return true on successful port forward tear-down
 	 */
 	public boolean disablePortForward(PortForwardBean portForward) {
+		if (!transport.isConnected()) {
+			Log.i(TAG, "Attempt to disable port forward while not connected");
+			return false;
+		}
+
 		return transport.disablePortForward(portForward);
 	}
 

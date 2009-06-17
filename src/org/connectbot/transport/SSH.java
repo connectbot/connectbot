@@ -463,8 +463,11 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	}
 
 	@Override
-	public int read(byte[] buffer, int start, int len) throws IOException{
+	public int read(byte[] buffer, int start, int len) throws IOException {
 		int bytesRead = 0;
+
+		if (session == null)
+			return 0;
 
 		int newConditions = session.waitForCondition(conditions, 0);
 
@@ -531,7 +534,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		bridge.dispatchDisconnect(true);
 	}
 
-	public static boolean canForwardPorts() {
+	@Override
+	public boolean canForwardPorts() {
 		return true;
 	}
 
