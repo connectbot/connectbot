@@ -908,11 +908,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 
 		try {
 			// request a terminal pty resize
-			int prevRow = buffer.getCursorRow();
-			buffer.setScreenSize(columns, rows, true);
+			synchronized (buffer) {
+				int prevRow = buffer.getCursorRow();
+				buffer.setScreenSize(columns, rows, true);
 
-			// Work around weird vt320.java behavior where cursor is an offset from the bottom??
-			buffer.setCursorPosition(buffer.getCursorColumn(), prevRow);
+				// Work around weird vt320.java behavior where cursor is an offset from the bottom??
+				buffer.setCursorPosition(buffer.getCursorColumn(), prevRow);
+			}
 
 			if(transport != null)
 				transport.setDimensions(columns, rows, width, height);
@@ -964,80 +966,82 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 
 	public void onDraw() {
 		int fg, bg;
-		boolean entireDirty = buffer.update[0] || fullRedraw;
+		synchronized (buffer) {
+			boolean entireDirty = buffer.update[0] || fullRedraw;
 
-		// walk through all lines in the buffer
-		for(int l = 0; l < buffer.height; l++) {
+			// walk through all lines in the buffer
+			for(int l = 0; l < buffer.height; l++) {
 
-			// check if this line is dirty and needs to be repainted
-			// also check for entire-buffer dirty flags
-			if (!entireDirty && !buffer.update[l + 1]) continue;
+				// check if this line is dirty and needs to be repainted
+				// also check for entire-buffer dirty flags
+				if (!entireDirty && !buffer.update[l + 1]) continue;
 
-			// reset dirty flag for this line
-			buffer.update[l + 1] = false;
+				// reset dirty flag for this line
+				buffer.update[l + 1] = false;
 
-			// walk through all characters in this line
-			for (int c = 0; c < buffer.width; c++) {
-				int addr = 0;
-				int currAttr = buffer.charAttributes[buffer.windowBase + l][c];
+				// walk through all characters in this line
+				for (int c = 0; c < buffer.width; c++) {
+					int addr = 0;
+					int currAttr = buffer.charAttributes[buffer.windowBase + l][c];
 
-				// reset default colors
-				fg = color[COLOR_FG_STD];
-				bg = color[COLOR_BG_STD];
+					// reset default colors
+					fg = color[COLOR_FG_STD];
+					bg = color[COLOR_BG_STD];
 
-				// check if foreground color attribute is set
-				if ((currAttr & VDUBuffer.COLOR_FG) != 0) {
-					int fgcolor = ((currAttr & VDUBuffer.COLOR_FG) >> VDUBuffer.COLOR_FG_SHIFT) - 1;
-					if (fgcolor < 8 && (currAttr & VDUBuffer.BOLD) != 0)
-						fg = color[fgcolor + 8];
-					else
-						fg = color[fgcolor];
+					// check if foreground color attribute is set
+					if ((currAttr & VDUBuffer.COLOR_FG) != 0) {
+						int fgcolor = ((currAttr & VDUBuffer.COLOR_FG) >> VDUBuffer.COLOR_FG_SHIFT) - 1;
+						if (fgcolor < 8 && (currAttr & VDUBuffer.BOLD) != 0)
+							fg = color[fgcolor + 8];
+						else
+							fg = color[fgcolor];
+					}
+
+					// check if background color attribute is set
+					if ((currAttr & VDUBuffer.COLOR_BG) != 0)
+						bg = color[((currAttr & VDUBuffer.COLOR_BG) >> VDUBuffer.COLOR_BG_SHIFT) - 1];
+
+					// support character inversion by swapping background and foreground color
+					if ((currAttr & VDUBuffer.INVERT) != 0) {
+						int swapc = bg;
+						bg = fg;
+						fg = swapc;
+					}
+
+					// set underlined attributes if requested
+					defaultPaint.setUnderlineText((currAttr & VDUBuffer.UNDERLINE) != 0);
+
+					// determine the amount of continuous characters with the same settings and print them all at once
+					while(c + addr < buffer.width && buffer.charAttributes[buffer.windowBase + l][c + addr] == currAttr) {
+						addr++;
+					}
+
+					// Save the current clip region
+					canvas.save(Canvas.CLIP_SAVE_FLAG);
+
+					// clear this dirty area with background color
+					defaultPaint.setColor(bg);
+					canvas.clipRect(c * charWidth, l * charHeight, (c + addr) * charWidth, (l + 1) * charHeight);
+					canvas.drawPaint(defaultPaint);
+
+					// write the text string starting at 'c' for 'addr' number of characters
+					defaultPaint.setColor(fg);
+					if((currAttr & VDUBuffer.INVISIBLE) == 0)
+						canvas.drawText(buffer.charArray[buffer.windowBase + l], c,
+							addr, c * charWidth, (l * charHeight) - charTop,
+							defaultPaint);
+
+					// Restore the previous clip region
+					canvas.restore();
+
+					// advance to the next text block with different characteristics
+					c += addr - 1;
 				}
-
-				// check if background color attribute is set
-				if ((currAttr & VDUBuffer.COLOR_BG) != 0)
-					bg = color[((currAttr & VDUBuffer.COLOR_BG) >> VDUBuffer.COLOR_BG_SHIFT) - 1];
-
-				// support character inversion by swapping background and foreground color
-				if ((currAttr & VDUBuffer.INVERT) != 0) {
-					int swapc = bg;
-					bg = fg;
-					fg = swapc;
-				}
-
-				// set underlined attributes if requested
-				defaultPaint.setUnderlineText((currAttr & VDUBuffer.UNDERLINE) != 0);
-
-				// determine the amount of continuous characters with the same settings and print them all at once
-				while(c + addr < buffer.width && buffer.charAttributes[buffer.windowBase + l][c + addr] == currAttr) {
-					addr++;
-				}
-
-				// Save the current clip region
-				canvas.save(Canvas.CLIP_SAVE_FLAG);
-
-				// clear this dirty area with background color
-				defaultPaint.setColor(bg);
-				canvas.clipRect(c * charWidth, l * charHeight, (c + addr) * charWidth, (l + 1) * charHeight);
-				canvas.drawPaint(defaultPaint);
-
-				// write the text string starting at 'c' for 'addr' number of characters
-				defaultPaint.setColor(fg);
-				if((currAttr & VDUBuffer.INVISIBLE) == 0)
-					canvas.drawText(buffer.charArray[buffer.windowBase + l], c,
-						addr, c * charWidth, (l * charHeight) - charTop,
-						defaultPaint);
-
-				// Restore the previous clip region
-				canvas.restore();
-
-				// advance to the next text block with different characteristics
-				c += addr - 1;
 			}
-		}
 
-		// reset entire-buffer flags
-		buffer.update[0] = false;
+			// reset entire-buffer flags
+			buffer.update[0] = false;
+		}
 		fullRedraw = false;
 	}
 
