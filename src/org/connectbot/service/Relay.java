@@ -78,7 +78,9 @@ public class Relay implements Runnable {
 		newCd.onMalformedInput(CodingErrorAction.REPLACE);
 
 		currentCharset = charset;
-		decoder = newCd;
+		synchronized (this) {
+			decoder = newCd;
+		}
 	}
 
 	public void run() {
@@ -97,7 +99,9 @@ public class Relay implements Runnable {
 				if (bytesRead > 0) {
 					byteBuffer.position(0);
 					byteBuffer.limit(bytesRead);
-					decoder.decode(byteBuffer, charBuffer, false);
+					synchronized (this) {
+						decoder.decode(byteBuffer, charBuffer, false);
+					}
 					buffer.putString(charArray, 0, charBuffer.position());
 					charBuffer.clear();
 					bridge.redraw();
