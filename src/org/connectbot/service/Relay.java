@@ -25,6 +25,7 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CoderResult;
 import java.nio.charset.CodingErrorAction;
 
 import org.connectbot.transport.AbsTransport;
@@ -90,18 +91,33 @@ public class Relay implements Runnable {
 		byteArray = byteBuffer.array();
 		charArray = charBuffer.array();
 
+		CoderResult result;
+
 		int bytesRead = 0;
+		byteBuffer.limit(0);
+		int bytesToRead;
+		int offset;
 
 		try {
 			while (true) {
-				bytesRead = transport.read(byteArray, 0, BUFFER_SIZE);
+				bytesToRead = byteBuffer.capacity() - byteBuffer.limit();
+				offset = byteBuffer.arrayOffset() + byteBuffer.limit();
+				bytesRead = transport.read(byteArray, offset, bytesToRead);
 
 				if (bytesRead > 0) {
-					byteBuffer.position(0);
-					byteBuffer.limit(bytesRead);
+					byteBuffer.limit(byteBuffer.limit() + bytesRead);
+
 					synchronized (this) {
-						decoder.decode(byteBuffer, charBuffer, false);
+						result = decoder.decode(byteBuffer, charBuffer, false);
 					}
+
+					if (result.isUnderflow() &&
+							byteBuffer.limit() == byteBuffer.capacity()) {
+						byteBuffer.compact();
+						byteBuffer.limit(byteBuffer.position());
+						byteBuffer.position(0);
+					}
+
 					buffer.putString(charArray, 0, charBuffer.position());
 					charBuffer.clear();
 					bridge.redraw();
