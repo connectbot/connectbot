@@ -51,7 +51,7 @@
 			android:title="@string/pref_scrollback_title"
 			android:summary="@string/pref_scrollback_summary"
 			android:defaultValue="140"
-			android:singleLine="true"
+			android:numeric="integer"
 			/>
 
 	</PreferenceCategory>
