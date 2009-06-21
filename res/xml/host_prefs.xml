@@ -94,7 +94,7 @@
 		<EditTextPreference
 			android:key="port"
 			android:title="@string/hostpref_port_title"
-			android:singleLine="true"
+			android:numeric="integer"
 			/>
 
 	</PreferenceCategory>
