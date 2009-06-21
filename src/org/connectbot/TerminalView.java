@@ -121,8 +121,8 @@ public class TerminalView extends View implements FontSizeChangedListener {
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
-		if (notifications)
-			bridge.parentChanged(this);
+
+		bridge.parentChanged(this);
 
 		scaleCursors();
 	}

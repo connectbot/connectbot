@@ -18,20 +18,25 @@
 
 package org.connectbot.util;
 
+import java.nio.charset.Charset;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
-
-import com.trilead.ssh2.KnownHosts;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.trilead.ssh2.KnownHosts;
 
 /**
  * Contains information about various SSH hosts, include public hostkey if known
@@ -41,13 +46,14 @@ import android.util.Log;
  */
 public class HostDatabase extends SQLiteOpenHelper {
 
-	public final static String TAG = HostDatabase.class.toString();
+	public final static String TAG = "ConnectBot.HostDatabase";
 
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 15;
+	public final static int DB_VERSION = 17;
 
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
+	public final static String FIELD_HOST_PROTOCOL = "protocol";
 	public final static String FIELD_HOST_USERNAME = "username";
 	public final static String FIELD_HOST_HOSTNAME = "hostname";
 	public final static String FIELD_HOST_PORT = "port";
@@ -59,6 +65,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_HOST_POSTLOGIN = "postlogin";
 	public final static String FIELD_HOST_PUBKEYID = "pubkeyid";
 	public final static String FIELD_HOST_WANTSESSION = "wantsession";
+	public final static String FIELD_HOST_DELKEY = "delkey";
 	public final static String FIELD_HOST_COMPRESSION = "compression";
 	public final static String FIELD_HOST_ENCODING = "encoding";
 
@@ -80,9 +87,10 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String PORTFORWARD_DYNAMIC4 = "dynamic4";
 	public final static String PORTFORWARD_DYNAMIC5 = "dynamic5";
 
-	public final static String ENCODING_ASCII = "ASCII";
-	public final static String ENCODING_UTF8 = "UTF-8";
-	public final static String ENCODING_ISO88591 = "ISO8859_1";
+	public final static String DELKEY_DEL = "del";
+	public final static String DELKEY_BACKSPACE = "backspace";
+
+	public final static String ENCODING_DEFAULT = Charset.defaultCharset().name();
 
 	public final static long PUBKEYID_NEVER = -2;
 	public final static long PUBKEYID_ANY = -1;
@@ -95,9 +103,12 @@ public class HostDatabase extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		dropAllTables(db);
+
 		db.execSQL("CREATE TABLE " + TABLE_HOSTS
 				+ " (_id INTEGER PRIMARY KEY, "
 				+ FIELD_HOST_NICKNAME + " TEXT, "
+				+ FIELD_HOST_PROTOCOL + " TEXT DEFAULT 'ssh', "
 				+ FIELD_HOST_USERNAME + " TEXT, "
 				+ FIELD_HOST_HOSTNAME + " TEXT, "
 				+ FIELD_HOST_PORT + " INTEGER, "
@@ -108,13 +119,10 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_HOST_USEKEYS + " TEXT, "
 				+ FIELD_HOST_POSTLOGIN + " TEXT, "
 				+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ", "
+				+ FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "', "
 				+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "', "
 				+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
-				+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_ASCII + "')");
-		// insert a few sample hosts, none of which probably connect
-		//this.createHost(db, "connectbot@bravo", "connectbot", "192.168.254.230", 22, COLOR_GRAY);
-		//this.createHost(db, "cron@server.example.com", "cron", "server.example.com", 22, COLOR_GRAY, PUBKEYID_ANY);
-		//this.createHost(db, "backup@example.net", "backup", "example.net", 22, COLOR_BLUE, PUBKEYID_ANY);
+				+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "')");
 
 		db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS
 				+ " (_id INTEGER PRIMARY KEY, "
@@ -136,29 +144,105 @@ public class HostDatabase extends SQLiteOpenHelper {
 			return;
 		}
 
-		switch (oldVersion) {
-		case 10:
-			db.execSQL("ALTER TABLE " + TABLE_HOSTS
-					+ " ADD COLUMN " + FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY);
-		case 11:
-			db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS
-					+ " (_id INTEGER PRIMARY KEY, "
-					+ FIELD_PORTFORWARD_HOSTID + " INTEGER, "
-					+ FIELD_PORTFORWARD_NICKNAME + " TEXT, "
-					+ FIELD_PORTFORWARD_TYPE + " TEXT NOT NULL DEFAULT " + PORTFORWARD_LOCAL + ", "
-					+ FIELD_PORTFORWARD_SOURCEPORT + " INTEGER NOT NULL DEFAULT 8080, "
-					+ FIELD_PORTFORWARD_DESTADDR + " TEXT, "
-					+ FIELD_PORTFORWARD_DESTPORT + " INTEGER)");
-		case 12:
-			db.execSQL("ALTER TABLE " + TABLE_HOSTS
-					+ " ADD COLUMN " + FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "'");
-		case 13:
-			db.execSQL("ALTER TABLE " + TABLE_HOSTS
-					+ " ADD COLUMN " + FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "'");
-		case 14:
-			db.execSQL("ALTER TABLE " + TABLE_HOSTS
-					+ " ADD COLUMN " + FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_ASCII + "'");
+		try {
+			switch (oldVersion) {
+			case 10:
+				db.execSQL("ALTER TABLE " + TABLE_HOSTS
+						+ " ADD COLUMN " + FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY);
+			case 11:
+				db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS
+						+ " (_id INTEGER PRIMARY KEY, "
+						+ FIELD_PORTFORWARD_HOSTID + " INTEGER, "
+						+ FIELD_PORTFORWARD_NICKNAME + " TEXT, "
+						+ FIELD_PORTFORWARD_TYPE + " TEXT NOT NULL DEFAULT " + PORTFORWARD_LOCAL + ", "
+						+ FIELD_PORTFORWARD_SOURCEPORT + " INTEGER NOT NULL DEFAULT 8080, "
+						+ FIELD_PORTFORWARD_DESTADDR + " TEXT, "
+						+ FIELD_PORTFORWARD_DESTPORT + " INTEGER)");
+			case 12:
+				db.execSQL("ALTER TABLE " + TABLE_HOSTS
+						+ " ADD COLUMN " + FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "'");
+			case 13:
+				db.execSQL("ALTER TABLE " + TABLE_HOSTS
+						+ " ADD COLUMN " + FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "'");
+			case 14:
+				db.execSQL("ALTER TABLE " + TABLE_HOSTS
+						+ " ADD COLUMN " + FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "'");
+			case 15:
+				db.execSQL("ALTER TABLE " + TABLE_HOSTS
+						+ " ADD COLUMN " + FIELD_HOST_PROTOCOL + " TEXT DEFAULT 'ssh'");
+			case 16:
+				db.execSQL("ALTER TABLE " + TABLE_HOSTS
+						+ " ADD COLUMN " + FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "'");
+			}
+		} catch (SQLiteException e) {
+			// The database has entered an unknown state. Try to recover.
+			try {
+				regenerateTables(db);
+			} catch (SQLiteException e2) {
+				dropAndCreateTables(db);
+			}
 		}
+	}
+
+	private void regenerateTables(SQLiteDatabase db) {
+		dropAllTablesWithPrefix(db, "OLD_");
+		db.execSQL("ALTER TABLE " + TABLE_HOSTS + " RENAME TO OLD_"
+				+ TABLE_HOSTS);
+		db.execSQL("ALTER TABLE " + TABLE_PORTFORWARDS + " RENAME TO OLD_"
+				+ TABLE_PORTFORWARDS);
+
+		onCreate(db);
+
+		repopulateTable(db, TABLE_HOSTS);
+		repopulateTable(db, TABLE_PORTFORWARDS);
+
+		dropAllTablesWithPrefix(db, "OLD_");
+	}
+
+	private void repopulateTable(SQLiteDatabase db, String tableName) {
+		String columns = getTableColumnNames(db, tableName);
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("INSERT INTO ")
+				.append(tableName)
+				.append(" (")
+				.append(columns)
+				.append(") SELECT ")
+				.append(columns)
+				.append(" FROM OLD_")
+				.append(tableName);
+
+		String sql = sb.toString();
+		Log.d(TAG, "Attempting to execute repopulation command: " + sql);
+		db.execSQL(sql);
+	}
+
+	private String getTableColumnNames(SQLiteDatabase db, String tableName) {
+		StringBuilder sb = new StringBuilder();
+
+		Cursor fields = db.rawQuery("PRAGMA table_info(" + tableName + ")", null);
+		while (fields.moveToNext()) {
+			if (!fields.isFirst())
+				sb.append(", ");
+			sb.append(fields.getString(1));
+		}
+		fields.close();
+
+		return sb.toString();
+	}
+
+	private void dropAndCreateTables(SQLiteDatabase db) {
+		dropAllTables(db);
+		onCreate(db);
+	}
+
+	private void dropAllTablesWithPrefix(SQLiteDatabase db, String prefix) {
+		db.execSQL("DROP TABLE IF EXISTS " + prefix + TABLE_HOSTS);
+		db.execSQL("DROP TABLE IF EXISTS " + prefix + TABLE_PORTFORWARDS);
+	}
+
+	private void dropAllTables(SQLiteDatabase db) {
+		dropAllTablesWithPrefix(db, "");
 	}
 
 	/**
@@ -211,12 +295,26 @@ public class HostDatabase extends SQLiteOpenHelper {
 		String sortField = sortColors ? FIELD_HOST_COLOR : FIELD_HOST_NICKNAME;
 		SQLiteDatabase db = this.getReadableDatabase();
 
-		List<HostBean> hosts = new LinkedList<HostBean>();
-
 		Cursor c = db.query(TABLE_HOSTS, null, null, null, null, null, sortField + " ASC");
+
+		List<HostBean> hosts = createHostBeans(c);
+
+		c.close();
+		db.close();
+
+		return hosts;
+	}
+
+	/**
+	 * @param hosts
+	 * @param c
+	 */
+	private List<HostBean> createHostBeans(Cursor c) {
+		List<HostBean> hosts = new LinkedList<HostBean>();
 
 		final int COL_ID = c.getColumnIndexOrThrow("_id"),
 			COL_NICKNAME = c.getColumnIndexOrThrow(FIELD_HOST_NICKNAME),
+			COL_PROTOCOL = c.getColumnIndexOrThrow(FIELD_HOST_PROTOCOL),
 			COL_USERNAME = c.getColumnIndexOrThrow(FIELD_HOST_USERNAME),
 			COL_HOSTNAME = c.getColumnIndexOrThrow(FIELD_HOST_HOSTNAME),
 			COL_PORT = c.getColumnIndexOrThrow(FIELD_HOST_PORT),
@@ -226,6 +324,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 			COL_POSTLOGIN = c.getColumnIndexOrThrow(FIELD_HOST_POSTLOGIN),
 			COL_PUBKEYID = c.getColumnIndexOrThrow(FIELD_HOST_PUBKEYID),
 			COL_WANTSESSION = c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION),
+			COL_DELKEY = c.getColumnIndexOrThrow(FIELD_HOST_DELKEY),
 			COL_COMPRESSION = c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION),
 			COL_ENCODING = c.getColumnIndexOrThrow(FIELD_HOST_ENCODING);
 
@@ -234,6 +333,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 
 			host.setId(c.getLong(COL_ID));
 			host.setNickname(c.getString(COL_NICKNAME));
+			host.setProtocol(c.getString(COL_PROTOCOL));
 			host.setUsername(c.getString(COL_USERNAME));
 			host.setHostname(c.getString(COL_HOSTNAME));
 			host.setPort(c.getInt(COL_PORT));
@@ -243,45 +343,68 @@ public class HostDatabase extends SQLiteOpenHelper {
 			host.setPostLogin(c.getString(COL_POSTLOGIN));
 			host.setPubkeyId(c.getLong(COL_PUBKEYID));
 			host.setWantSession(Boolean.valueOf(c.getString(COL_WANTSESSION)));
+			host.setDelKey(c.getString(COL_DELKEY));
 			host.setCompression(Boolean.valueOf(c.getString(COL_COMPRESSION)));
 			host.setEncoding(c.getString(COL_ENCODING));
 
 			hosts.add(host);
 		}
 
-		c.close();
-		db.close();
-
 		return hosts;
 	}
 
 	/**
+	 * @param c
+	 * @return
+	 */
+	private HostBean getFirstHostBean(Cursor c) {
+		HostBean host = null;
+
+		List<HostBean> hosts = createHostBeans(c);
+		if (hosts.size() > 0)
+			host = hosts.get(0);
+
+		c.close();
+
+		return host;
+	}
+
+	/**
 	 * @param nickname
+	 * @param protocol
 	 * @param username
 	 * @param hostname
+	 * @param hostname2
 	 * @param port
 	 * @return
 	 */
-	public HostBean findHost(String nickname, String username, String hostname,
-			int port) {
+	public HostBean findHost(Map<String, String> selection) {
 		SQLiteDatabase db = this.getReadableDatabase();
 
+		StringBuilder selectionBuilder = new StringBuilder();
+
+		Iterator<Entry<String, String>> i = selection.entrySet().iterator();
+
+		String[] selectionValues = new String[selection.size()];
+		int n = 0;
+		while (i.hasNext()) {
+			Entry<String, String> entry = i.next();
+
+			if (n > 0)
+				selectionBuilder.append(" AND ");
+
+			selectionBuilder.append(entry.getKey())
+				.append(" = ?");
+
+			selectionValues[n++] = entry.getValue();
+		}
+
 		Cursor c = db.query(TABLE_HOSTS, null,
-				FIELD_HOST_NICKNAME + " = ? AND " +
-					FIELD_HOST_USERNAME + " = ? AND " +
-					FIELD_HOST_HOSTNAME + " = ? AND " +
-					FIELD_HOST_PORT + " = ?",
-				new String[] { nickname, username, hostname, String.valueOf(port) },
+				selectionBuilder.toString(),
+				selectionValues,
 				null, null, null);
 
-		HostBean host = null;
-
-		if (c != null) {
-			if (c.moveToFirst())
-				host = createHostBean(c);
-
-			c.close();
-		}
+		HostBean host = getFirstHostBean(c);
 
 		db.close();
 
@@ -299,36 +422,9 @@ public class HostDatabase extends SQLiteOpenHelper {
 				"_id = ?", new String[] { String.valueOf(hostId) },
 				null, null, null);
 
-		HostBean host = null;
-
-		if (c != null) {
-			if (c.moveToFirst())
-				host = createHostBean(c);
-
-			c.close();
-		}
+		HostBean host = getFirstHostBean(c);
 
 		db.close();
-
-		return host;
-	}
-
-	private HostBean createHostBean(Cursor c) {
-		HostBean host = new HostBean();
-
-		host.setId(c.getLong(c.getColumnIndexOrThrow("_id")));
-		host.setNickname(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_NICKNAME)));
-		host.setUsername(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_USERNAME)));
-		host.setHostname(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_HOSTNAME)));
-		host.setPort(c.getInt(c.getColumnIndexOrThrow(FIELD_HOST_PORT)));
-		host.setLastConnect(c.getLong(c.getColumnIndexOrThrow(FIELD_HOST_LASTCONNECT)));
-		host.setColor(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_COLOR)));
-		host.setUseKeys(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_USEKEYS))));
-		host.setPostLogin(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_POSTLOGIN)));
-		host.setPubkeyId(c.getLong(c.getColumnIndexOrThrow(FIELD_HOST_PUBKEYID)));
-		host.setWantSession(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION))));
-		host.setCompression(Boolean.valueOf(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION))));
-		host.setEncoding(c.getString(c.getColumnIndexOrThrow(FIELD_HOST_ENCODING)));
 
 		return host;
 	}

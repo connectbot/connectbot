@@ -24,6 +24,7 @@ import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -31,6 +32,8 @@ import org.connectbot.ConsoleActivity;
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PubkeyBean;
+import org.connectbot.transport.AbsTransport;
+import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.PubkeyDatabase;
@@ -61,6 +64,8 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.nullwire.trace.ExceptionHandler;
+
 /**
  * Manager for SSH connections that runs as a background service. This service
  * holds a list of currently connected SSH bridges that are ready for connection
@@ -69,8 +74,7 @@ import android.util.Log;
  * @author jsharkey
  */
 public class TerminalManager extends Service implements BridgeDisconnectedListener, OnSharedPreferenceChangeListener {
-
-	public final static String TAG = TerminalManager.class.toString();
+	public final static String TAG = "ConnectBot.TerminalManager";
 
 	public List<TerminalBridge> bridges = new LinkedList<TerminalBridge>();
 	public TerminalBridge defaultBridge = null;
@@ -79,12 +83,12 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	public Handler disconnectHandler = null;
 
-	protected HashMap<String, Object> loadedPubkeys = new HashMap<String, Object>();
+	public HashMap<String, Object> loadedPubkeys = new HashMap<String, Object>();
 
-	protected Resources res;
+	public Resources res;
 
-	protected HostDatabase hostdb;
-	protected PubkeyDatabase pubkeydb;
+	public HostDatabase hostdb;
+	public PubkeyDatabase pubkeydb;
 
 	protected SharedPreferences prefs;
 
@@ -105,11 +109,17 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	private NotificationManager notificationManager;
 
 	private boolean wantBellVibration;
+
+	private boolean resizeAllowed = true;
+
 	private static final int NOTIFICATION_ID = 1;
 
 	@Override
 	public void onCreate() {
 		Log.i(TAG, "Starting background service");
+
+		ExceptionHandler.register(this);
+
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
 
@@ -152,9 +162,13 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public void onDestroy() {
 		Log.i(TAG, "Destroying background service");
 
-		// disconnect and dispose of any existing bridges
-		for(TerminalBridge bridge : bridges)
-			bridge.dispatchDisconnect(true);
+		if (bridges.size() > 0) {
+			TerminalBridge[] tmpBridges = bridges.toArray(new TerminalBridge[bridges.size()]);
+
+			// disconnect and dispose of any existing bridges
+			for (int i = 0; i < tmpBridges.length; i++)
+				tmpBridges[i].dispatchDisconnect(true);
+		}
 
 		if(hostdb != null) {
 			hostdb.close();
@@ -193,7 +207,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		// Add a reference to the WifiLock
 		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
-		if (isLockingWifi() && info.getType() == ConnectivityManager.TYPE_WIFI) {
+		if (isLockingWifi() &&
+				info != null &&
+				info.getType() == ConnectivityManager.TYPE_WIFI) {
 			Log.d(TAG, "Acquiring WifiLock");
 			wifilock.acquire();
 		}
@@ -228,21 +244,28 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 
 	/**
-	 * Open a new SSH session by reading parameters from the given URI. Follows
-	 * format <code>ssh://user@host:port/#nickname</code>
+	 * Open a new connection by reading parameters from the given URI. Follows
+	 * format specified by an individual transport.
 	 */
 	public void openConnection(Uri uri) throws Exception {
-		String nickname = uri.getFragment();
-		String username = uri.getUserInfo();
-		String hostname = uri.getHost();
-		int port = uri.getPort();
+		AbsTransport transport = TransportFactory.getTransport(uri.getScheme());
 
-		HostBean host = hostdb.findHost(nickname, username, hostname, port);
+		Map<String, String> selection = new HashMap<String, String>();
+
+		transport.getSelectionArgs(uri, selection);
+		if (selection.size() == 0) {
+			Log.e(TAG, String.format("Transport %s failed to do something useful with URI=%s",
+					uri.getScheme(), uri.toString()));
+			throw new IllegalStateException("Failed to get needed selection arguments");
+		}
+
+		HostBean host = hostdb.findHost(selection);
 
 		if (host == null) {
-			Log.d(TAG, String.format("Didn't find existing host (nickname=%s, username=%s, hostname=%s, port=%d)",
-					nickname, username, hostname, port));
-			host = new HostBean(nickname, username, hostname, port);
+			Log.d(TAG, String.format(
+					"Didn't find existing host (selection=%s)",
+					selection.toString()));
+			host = transport.createHost(uri);
 		}
 
 		this.openConnection(host);
@@ -344,6 +367,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public IBinder onBind(Intent intent) {
 		Log.i(TAG, "Someone bound to TerminalManager");
 
+		setResizeAllowed(true);
+
 		stopIdleTimer();
 
 		// Make sure we stay running to maintain the bridges
@@ -356,6 +381,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public void onRebind(Intent intent) {
 		super.onRebind(intent);
 
+		setResizeAllowed(true);
+
 		Log.i(TAG, "Someone rebound to TerminalManager");
 
 		stopIdleTimer();
@@ -364,6 +391,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	@Override
 	public boolean onUnbind(Intent intent) {
 		Log.i(TAG, "Someone unbound from TerminalManager");
+
+		setResizeAllowed(true);
 
 		if (bridges.size() == 0)
 			stopWithDelay();
@@ -493,5 +522,17 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 			wantKeyVibration = sharedPreferences.getBoolean(
 					PreferenceConstants.BUMPY_ARROWS, true);
 		}
+	}
+
+	/**
+	 * Allow {@link TerminalBridge} to resize when the parent has changed.
+	 * @param resizeAllowed
+	 */
+	public void setResizeAllowed(boolean resizeAllowed) {
+		this.resizeAllowed  = resizeAllowed;
+	}
+
+	public boolean isResizeAllowed() {
+		return resizeAllowed;
 	}
 }

@@ -17,43 +17,39 @@
  */
 package org.connectbot;
 
-import java.io.OutputStream;
 import java.lang.reflect.Field;
 
-import org.connectbot.mock.NullOutputStream;
+import org.connectbot.mock.NullTransport;
 import org.connectbot.service.TerminalBridge;
+import org.connectbot.transport.AbsTransport;
+import org.connectbot.util.PreferenceConstants;
 
 import android.test.AndroidTestCase;
 import android.view.KeyEvent;
 
 /**
  * @author Kenny Root
- * 
+ *
  */
 public class TerminalBridgeTest extends AndroidTestCase {
 	public void testShiftLock() throws SecurityException, NoSuchFieldException,
 			IllegalArgumentException, IllegalAccessException {
 		TerminalBridge bridge = new TerminalBridge();
-		
-		OutputStream nullStream = new NullOutputStream();
+		AbsTransport nullTransport = new NullTransport();
 
 		// Make sure onKey will work when we call it
 		Field disconnected = TerminalBridge.class
 				.getDeclaredField("disconnected");
-		Field sessionOpen = TerminalBridge.class
-				.getDeclaredField("sessionOpen");
 		Field keymode = TerminalBridge.class.getDeclaredField("keymode");
-		Field stdin = TerminalBridge.class.getDeclaredField("stdin");
+		Field transport = TerminalBridge.class.getDeclaredField("transport");
 
 		disconnected.setAccessible(true);
-		sessionOpen.setAccessible(true);
 		keymode.setAccessible(true);
-		stdin.setAccessible(true);
+		transport.setAccessible(true);
 
 		disconnected.setBoolean(bridge, false);
-		sessionOpen.setBoolean(bridge, true);
-		keymode.set(bridge, "Use right-side keys");
-		stdin.set(bridge, nullStream);
+		keymode.set(bridge, PreferenceConstants.KEYMODE_RIGHT);
+		transport.set(bridge, nullTransport);
 
 		// Begin tests
 		assertTrue("Meta state is " + bridge.getMetaState()

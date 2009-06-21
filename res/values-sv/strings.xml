@@ -288,7 +288,15 @@
 	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
 	<string name="hint_userhost">användarnamn@värdnamn</string>
 
-	<string name="list_format_error">Använd formatet "användarnamn@värdnamn:port"</string>
+	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
+	<string name="list_format_error">Använd formatet "%1$s"</string>
+
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+        <string name="format_username">användarnamn</string>
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_hostname">värdnamn</string>
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_port">port</string>
 
 	<string name="list_menu_pubkeys">Hantera publika nycklar</string>
 	<!-- Selection choice to sort hosts by color. -->

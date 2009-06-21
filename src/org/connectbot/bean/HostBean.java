@@ -35,6 +35,7 @@ public class HostBean extends AbstractBean {
 	private String username = null;
 	private String hostname = null;
 	private int port = 22;
+	private String protocol = "ssh";
 	private String hostKeyAlgo = null;
 	private byte[] hostKey = null;
 	private long lastConnect = -1;
@@ -43,8 +44,9 @@ public class HostBean extends AbstractBean {
 	private String postLogin = null;
 	private long pubkeyId = -1;
 	private boolean wantSession = true;
+	private String delKey = HostDatabase.DELKEY_DEL;
 	private boolean compression = false;
-	private String encoding = HostDatabase.ENCODING_ASCII;
+	private String encoding = HostDatabase.ENCODING_DEFAULT;
 
 	public HostBean() {
 
@@ -55,8 +57,9 @@ public class HostBean extends AbstractBean {
 		return BEAN_NAME;
 	}
 
-	public HostBean(String nickname, String username, String hostname, int port) {
+	public HostBean(String nickname, String protocol, String username, String hostname, int port) {
 		this.nickname = nickname;
+		this.protocol = protocol;
 		this.username = username;
 		this.hostname = hostname;
 		this.port = port;
@@ -92,6 +95,15 @@ public class HostBean extends AbstractBean {
 	public int getPort() {
 		return port;
 	}
+
+	public void setProtocol(String protocol) {
+		this.protocol = protocol;
+	}
+
+	public String getProtocol() {
+		return protocol;
+	}
+
 	public void setHostKeyAlgo(String hostKeyAlgo) {
 		this.hostKeyAlgo = hostKeyAlgo;
 	}
@@ -146,6 +158,12 @@ public class HostBean extends AbstractBean {
 	public boolean getWantSession() {
 		return wantSession;
 	}
+	public void setDelKey(String delKey) {
+		this.delKey = delKey;
+	}
+	public String getDelKey() {
+		return delKey;
+	}
 	public void setCompression(boolean compression) {
 		this.compression = compression;
 	}
@@ -175,6 +193,7 @@ public class HostBean extends AbstractBean {
 		ContentValues values = new ContentValues();
 
 		values.put(HostDatabase.FIELD_HOST_NICKNAME, nickname);
+		values.put(HostDatabase.FIELD_HOST_PROTOCOL, protocol);
 		values.put(HostDatabase.FIELD_HOST_USERNAME, username);
 		values.put(HostDatabase.FIELD_HOST_HOSTNAME, hostname);
 		values.put(HostDatabase.FIELD_HOST_PORT, port);
@@ -186,6 +205,7 @@ public class HostBean extends AbstractBean {
 		values.put(HostDatabase.FIELD_HOST_POSTLOGIN, postLogin);
 		values.put(HostDatabase.FIELD_HOST_PUBKEYID, pubkeyId);
 		values.put(HostDatabase.FIELD_HOST_WANTSESSION, Boolean.toString(wantSession));
+		values.put(HostDatabase.FIELD_HOST_DELKEY, delKey);
 		values.put(HostDatabase.FIELD_HOST_COMPRESSION, Boolean.toString(compression));
 		values.put(HostDatabase.FIELD_HOST_ENCODING, encoding);
 
@@ -194,7 +214,7 @@ public class HostBean extends AbstractBean {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof HostBean))
+		if (o == null || !(o instanceof HostBean))
 			return false;
 
 		HostBean host = (HostBean)o;
@@ -206,6 +226,12 @@ public class HostBean extends AbstractBean {
 			if (host.getNickname() != null)
 				return false;
 		} else if (!nickname.equals(host.getNickname()))
+			return false;
+
+		if (protocol == null) {
+			if (host.getProtocol() != null)
+				return false;
+		} else if (!protocol.equals(host.getProtocol()))
 			return false;
 
 		if (username == null) {
@@ -234,6 +260,7 @@ public class HostBean extends AbstractBean {
 			return (int)id;
 
 		hash = 31 * hash + (null == nickname ? 0 : nickname.hashCode());
+		hash = 31 * hash + (null == protocol ? 0 : protocol.hashCode());
 		hash = 31 * hash + (null == username ? 0 : username.hashCode());
 		hash = 31 * hash + (null == hostname ? 0 : hostname.hashCode());
 		hash = 31 * hash + port;
@@ -246,10 +273,14 @@ public class HostBean extends AbstractBean {
 	 */
 	public Uri getUri() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("ssh://")
-			.append(Uri.encode(username))
-			.append('@')
-			.append(Uri.encode(hostname))
+		sb.append(protocol)
+			.append("://");
+
+		if (username != null)
+			sb.append(Uri.encode(username))
+				.append('@');
+
+		sb.append(Uri.encode(hostname))
 			.append(':')
 			.append(port)
 			.append("/#")

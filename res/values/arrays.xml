@@ -97,16 +97,14 @@
 		<item>Keyboard</item>
 	</string-array>
 
-	<string-array name="list_encodings">
-		<item>ASCII</item>
-		<item>ISO 8859-1</item>
-		<item>UTF-8</item>
+	<string-array name="list_delkey">
+		<item>@string/list_delkey_del</item>
+		<item>@string/list_delkey_backspace</item>
 	</string-array>
 
-	<string-array name="list_encodings_value">
-		<item>ASCII</item>
-		<item>ISO8859_1</item>
-		<item>UTF-8</item>
+	<string-array name="list_delkey_values">
+		<item>del</item>
+		<item>backspace</item>
 	</string-array>
 
 </resources>

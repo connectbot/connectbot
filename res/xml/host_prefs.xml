@@ -63,11 +63,17 @@
 		/>
 
 	<ListPreference
+		android:key="delkey"
+		android:title="@string/hostpref_delkey_title"
+		android:summary="@string/hostpref_delkey_summary"
+		android:entries="@array/list_delkey"
+		android:entryValues="@array/list_delkey_values"
+		/>
+
+	<ListPreference
 		android:key="encoding"
 		android:title="@string/hostpref_encoding_title"
 		android:summary="@string/hostpref_encoding_summary"
-		android:entries="@array/list_encodings"
-		android:entryValues="@array/list_encodings_value"
 		/>
 	
 	<PreferenceCategory

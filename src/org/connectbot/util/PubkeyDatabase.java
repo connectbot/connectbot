@@ -36,7 +36,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * @author Kenny Root
  */
 public class PubkeyDatabase extends SQLiteOpenHelper {
-	public final static String TAG = PubkeyDatabase.class.toString();
+	public final static String TAG = "ConnectBot.PubkeyDatabase";
 
 	public final static String DB_NAME = "pubkeys";
 	public final static int DB_VERSION = 1;

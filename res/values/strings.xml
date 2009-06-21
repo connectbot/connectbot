@@ -229,6 +229,11 @@
 	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
 	<string name="hostpref_wantsession_summary">Disable this preference to only use port forwards</string>
 
+	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_title">DEL Key</string>
+	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_summary">The key code sent when DEL key is pressed</string>
+
 	<!-- Host character encoding preference title -->
 	<string name="hostpref_encoding_title">Encoding</string>
 	<!-- Host character encoding preference summary -->
@@ -288,7 +293,15 @@
 	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
 	<string name="hint_userhost">user@hostname</string>
 
-	<string name="list_format_error">Use the format 'username@hostname:port'</string>
+	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
+	<string name="list_format_error">Use the format "%1$s"</string>
+
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+        <string name="format_username">username</string>
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_hostname">hostname</string>
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_port">port</string>
 
 	<string name="list_menu_pubkeys">Manage Pubkeys</string>
 	<!-- Selection choice to sort hosts by color. -->
@@ -318,6 +331,11 @@
 	<string name="list_camera_esc">Esc</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">None</string>
+
+	<!-- Name for the backspace character -->
+	<string name="list_delkey_backspace">Backspace</string>
+	<!-- Name for the ASCII DEL character -->
+	<string name="list_delkey_del">Delete</string>
 
 	<string name="delete_message">Are you sure you want to delete '%1$s'?</string>
 	<string name="delete_pos">Yes, delete</string>
@@ -360,6 +378,9 @@
 	<string name="upgrade_pos">Yes, upgrade</string>
 	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
 	<string name="upgrade_neg">Not right now</string>
+
+	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
+	<string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?</string>
 
 	<string name="color_red">red</string>
 	<string name="color_green">green</string>

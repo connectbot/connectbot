@@ -67,10 +67,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import com.nullwire.trace.ExceptionHandler;
+
 import de.mud.terminal.vt320;
 
 public class ConsoleActivity extends Activity {
-	public final static String TAG = ConsoleActivity.class.toString();
+	public final static String TAG = "ConnectBot.ConsoleActivity";
 
 	protected static final int REQUEST_EDIT = 1;
 
@@ -102,6 +105,8 @@ public class ConsoleActivity extends Activity {
 	protected TerminalBridge copySource = null;
 	private int lastTouchRow, lastTouchCol;
 
+	private boolean forcedOrientation;
+
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
@@ -110,6 +115,8 @@ public class ConsoleActivity extends Activity {
 			bound.disconnectHandler = disconnectHandler;
 
 			Log.d(TAG, String.format("Connected to TerminalManager and found bridges.size=%d", bound.bridges.size()));
+
+			bound.setResizeAllowed(true);
 
 			// clear out any existing bridges and record requested index
 			flip.removeAllViews();
@@ -126,7 +133,7 @@ public class ConsoleActivity extends Activity {
 			// If we didn't find the requested connection, try opening it
 			if(!found) {
 				try {
-					Log.d(TAG, String.format("We couldnt find an existing bridge with URI=%s, so creating one now", requested.toString()));
+					Log.d(TAG, String.format("We couldnt find an existing bridge with URI=%s (nickname=%s), so creating one now", requested.toString(), requestedNickname));
 					bound.openConnection(requested);
 				} catch(Exception e) {
 					Log.e(TAG, "Problem while trying to create new requested bridge from URI", e);
@@ -158,7 +165,6 @@ public class ConsoleActivity extends Activity {
 				// check to see if this bridge was requested
 				if(bridge.host.getNickname().equals(requestedNickname))
 					requestedIndex = flip.getChildCount() - 1;
-
 			}
 
 			try {
@@ -171,7 +177,6 @@ public class ConsoleActivity extends Activity {
 
 			updatePromptVisible();
 			updateEmptyVisible();
-
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
@@ -182,7 +187,6 @@ public class ConsoleActivity extends Activity {
 			flip.removeAllViews();
 			updateEmptyVisible();
 			bound = null;
-
 		}
 	};
 
@@ -294,6 +298,8 @@ public class ConsoleActivity extends Activity {
 
 		this.setContentView(R.layout.act_console);
 
+		ExceptionHandler.register(this);
+
 		clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -302,22 +308,6 @@ public class ConsoleActivity extends Activity {
 			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 					WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		}
-
-		String rotateDefault;
-		if (getResources().getConfiguration().keyboard == Configuration.KEYBOARD_NOKEYS)
-			rotateDefault = PreferenceConstants.ROTATION_PORTRAIT;
-		else
-			rotateDefault = PreferenceConstants.ROTATION_LANDSCAPE;
-
-		String rotate = prefs.getString(PreferenceConstants.ROTATION, rotateDefault);
-		if (PreferenceConstants.ROTATION_DEFAULT.equals(rotate))
-			rotate = rotateDefault;
-
-		// request a forced orientation if requested by user
-		if (PreferenceConstants.ROTATION_LANDSCAPE.equals(rotate))
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		else if (PreferenceConstants.ROTATION_PORTRAIT.equals(rotate))
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		// TODO find proper way to disable volume key beep if it exists.
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -552,21 +542,49 @@ public class ConsoleActivity extends Activity {
 
 	}
 
+	/**
+	 *
+	 */
+	private void configureOrientation() {
+		String rotateDefault;
+		if (getResources().getConfiguration().keyboard == Configuration.KEYBOARD_NOKEYS)
+			rotateDefault = PreferenceConstants.ROTATION_PORTRAIT;
+		else
+			rotateDefault = PreferenceConstants.ROTATION_LANDSCAPE;
+
+		String rotate = prefs.getString(PreferenceConstants.ROTATION, rotateDefault);
+		if (PreferenceConstants.ROTATION_DEFAULT.equals(rotate))
+			rotate = rotateDefault;
+
+		// request a forced orientation if requested by user
+		if (PreferenceConstants.ROTATION_LANDSCAPE.equals(rotate)) {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			forcedOrientation = true;
+		} else if (PreferenceConstants.ROTATION_PORTRAIT.equals(rotate)) {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			forcedOrientation = true;
+		} else {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+			forcedOrientation = false;
+		}
+	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
-		final View view = findCurrentView(R.id.console_flip);
+		View view = findCurrentView(R.id.console_flip);
 		final boolean activeTerminal = (view instanceof TerminalView);
-		boolean authenticated = false;
 		boolean sessionOpen = false;
 		boolean disconnected = false;
+		boolean canForwardPorts = false;
 
 		if (activeTerminal) {
-			authenticated = ((TerminalView) view).bridge.isAuthenticated();
-			sessionOpen = ((TerminalView) view).bridge.isSessionOpen();
-			disconnected = ((TerminalView) view).bridge.isDisconnected();
+			TerminalBridge bridge = ((TerminalView) view).bridge;
+			sessionOpen = bridge.isSessionOpen();
+			disconnected = bridge.isDisconnected();
+			canForwardPorts = bridge.canFowardPorts();
 		}
 
 		menu.setQwertyMode(true);
@@ -580,7 +598,9 @@ public class ConsoleActivity extends Activity {
 		disconnect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				// disconnect or close the currently visible session
-				TerminalBridge bridge = ((TerminalView)view).bridge;
+				TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
+				TerminalBridge bridge = terminalView.bridge;
+
 				bridge.dispatchDisconnect(true);
 				return true;
 			}
@@ -593,7 +613,8 @@ public class ConsoleActivity extends Activity {
 		copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				// mark as copying and reset any previous bounds
-				copySource = ((TerminalView)view).bridge;
+				TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
+				copySource = terminalView.bridge;
 
 				SelectionArea area = copySource.getSelectionArea();
 				area.reset();
@@ -612,15 +633,16 @@ public class ConsoleActivity extends Activity {
 		paste = menu.add(R.string.console_menu_paste);
 		paste.setAlphabeticShortcut('v');
 		paste.setIcon(android.R.drawable.ic_menu_edit);
-		paste.setEnabled(clipboard.hasText() && activeTerminal && authenticated);
+		paste.setEnabled(clipboard.hasText() && sessionOpen);
 		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				// force insert of clipboard text into current console
-				TerminalView terminal = (TerminalView)view;
+				TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
+				TerminalBridge bridge = terminalView.bridge;
 
 				// pull string from clipboard and generate all events to force down
 				String clip = clipboard.getText().toString();
-				terminal.bridge.injectString(clip);
+				bridge.injectString(clip);
 
 				return true;
 			}
@@ -629,11 +651,14 @@ public class ConsoleActivity extends Activity {
 		portForward = menu.add(R.string.console_menu_portforwards);
 		portForward.setAlphabeticShortcut('f');
 		portForward.setIcon(android.R.drawable.ic_menu_manage);
-		portForward.setEnabled(authenticated);
+		portForward.setEnabled(sessionOpen && canForwardPorts);
 		portForward.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
+				TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
+				TerminalBridge bridge = terminalView.bridge;
+
 				Intent intent = new Intent(ConsoleActivity.this, PortForwardListActivity.class);
-				intent.putExtra(Intent.EXTRA_TITLE, ((TerminalView) view).bridge.host.getId());
+				intent.putExtra(Intent.EXTRA_TITLE, bridge.host.getId());
 				ConsoleActivity.this.startActivityForResult(intent, REQUEST_EDIT);
 				return true;
 			}
@@ -642,10 +667,10 @@ public class ConsoleActivity extends Activity {
 		resize = menu.add(R.string.console_menu_resize);
 		resize.setAlphabeticShortcut('s');
 		resize.setIcon(android.R.drawable.ic_menu_crop);
-		resize.setEnabled(activeTerminal && sessionOpen);
+		resize.setEnabled(sessionOpen);
 		resize.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				final TerminalView terminal = (TerminalView)view;
+				final TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
 
 				final View resizeView = inflater.inflate(R.layout.dia_resize, null, false);
 				new AlertDialog.Builder(ConsoleActivity.this)
@@ -655,7 +680,7 @@ public class ConsoleActivity extends Activity {
 							int width = Integer.parseInt(((EditText)resizeView.findViewById(R.id.width)).getText().toString());
 							int height = Integer.parseInt(((EditText)resizeView.findViewById(R.id.height)).getText().toString());
 
-							terminal.forceSize(width, height);
+							terminalView.forceSize(width, height);
 						}
 					}).setNegativeButton(android.R.string.cancel, null).create().show();
 
@@ -674,13 +699,15 @@ public class ConsoleActivity extends Activity {
 
 		final View view = findCurrentView(R.id.console_flip);
 		boolean activeTerminal = (view instanceof TerminalView);
-		boolean authenticated = false;
 		boolean sessionOpen = false;
 		boolean disconnected = false;
+		boolean canForwardPorts = false;
+
 		if (activeTerminal) {
-			authenticated = ((TerminalView)view).bridge.isAuthenticated();
-			sessionOpen = ((TerminalView)view).bridge.isSessionOpen();
-			disconnected = ((TerminalView)view).bridge.isDisconnected();
+			TerminalBridge bridge = ((TerminalView) view).bridge;
+			sessionOpen = bridge.isSessionOpen();
+			disconnected = bridge.isDisconnected();
+			canForwardPorts = bridge.canFowardPorts();
 		}
 
 		disconnect.setEnabled(activeTerminal);
@@ -689,9 +716,9 @@ public class ConsoleActivity extends Activity {
 		else
 			disconnect.setTitle(R.string.console_menu_close);
 		copy.setEnabled(activeTerminal);
-		paste.setEnabled(clipboard.hasText() && activeTerminal && sessionOpen);
-		portForward.setEnabled(activeTerminal && authenticated);
-		resize.setEnabled(activeTerminal && sessionOpen);
+		paste.setEnabled(clipboard.hasText() && sessionOpen);
+		portForward.setEnabled(sessionOpen && canForwardPorts);
+		resize.setEnabled(sessionOpen);
 
 		return true;
 	}
@@ -715,7 +742,26 @@ public class ConsoleActivity extends Activity {
 		// this also keeps the wifi chipset from disconnecting us
 		if(wakelock != null && prefs.getBoolean(PreferenceConstants.KEEP_ALIVE, true))
 			wakelock.acquire();
+	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+		Log.d(TAG, "onPause called");
+
+		if (forcedOrientation && bound != null)
+			bound.setResizeAllowed(false);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		Log.d(TAG, "onResume called");
+
+		configureOrientation();
+
+		if (forcedOrientation && bound != null)
+			bound.setResizeAllowed(true);
 	}
 
 	@Override
@@ -842,6 +888,23 @@ public class ConsoleActivity extends Activity {
 		} else {
 			hideAllPrompts();
 			view.requestFocus();
+		}
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+
+		Log.d(TAG, String.format("onConfigurationChanged; requestedOrientation=%d, newConfig.orientation=%d", getRequestedOrientation(), newConfig.orientation));
+		if (bound != null) {
+			if (forcedOrientation &&
+					(newConfig.orientation != Configuration.ORIENTATION_LANDSCAPE &&
+					getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) ||
+					(newConfig.orientation != Configuration.ORIENTATION_PORTRAIT &&
+					getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT))
+				bound.setResizeAllowed(false);
+			else
+				bound.setResizeAllowed(true);
 		}
 	}
 }

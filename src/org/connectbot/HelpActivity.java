@@ -34,7 +34,7 @@ import android.widget.LinearLayout;
  *
  */
 public class HelpActivity extends Activity {
-	public final static String TAG = HelpActivity.class.toString();
+	public final static String TAG = "ConnectBot.HelpActivity";
 
 	public final static String HELPDIR = "help";
 	public final static String SUFFIX = ".html";

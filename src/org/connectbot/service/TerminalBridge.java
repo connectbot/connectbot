@@ -19,13 +19,6 @@
 package org.connectbot.service;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,12 +26,11 @@ import org.connectbot.R;
 import org.connectbot.TerminalView;
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
-import org.connectbot.bean.PubkeyBean;
 import org.connectbot.bean.SelectionArea;
+import org.connectbot.transport.AbsTransport;
+import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
-import org.connectbot.util.PubkeyDatabase;
-import org.connectbot.util.PubkeyUtils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -54,18 +46,6 @@ import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
-
-import com.trilead.ssh2.Connection;
-import com.trilead.ssh2.ConnectionInfo;
-import com.trilead.ssh2.ConnectionMonitor;
-import com.trilead.ssh2.DynamicPortForwarder;
-import com.trilead.ssh2.InteractiveCallback;
-import com.trilead.ssh2.KnownHosts;
-import com.trilead.ssh2.LocalPortForwarder;
-import com.trilead.ssh2.ServerHostKeyVerifier;
-import com.trilead.ssh2.Session;
-import com.trilead.ssh2.crypto.PEMDecoder;
-
 import de.mud.terminal.VDUBuffer;
 import de.mud.terminal.VDUDisplay;
 import de.mud.terminal.vt320;
@@ -80,19 +60,10 @@ import de.mud.terminal.vt320;
  * This class also provides SSH hostkey verification prompting, and password
  * prompting.
  */
-public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCallback, ConnectionMonitor {
-
-	public final static String TAG = TerminalBridge.class.toString();
+public class TerminalBridge implements VDUDisplay, OnKeyListener {
+	public final static String TAG = "ConnectBot.TerminalBridge";
 
 	public final static int DEFAULT_FONT_SIZE = 10;
-
-	public static final String AUTH_PUBLICKEY = "publickey",
-		AUTH_PASSWORD = "password",
-		AUTH_KEYBOARDINTERACTIVE = "keyboard-interactive";
-
-	protected final static int AUTH_TRIES = 20;
-
-	private List<PortForwardBean> portForwards = new LinkedList<PortForwardBean>();
 
 	public int color[];
 
@@ -103,15 +74,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 	public HostBean host;
 
-	public final Connection connection;
-	protected Session session;
+	private AbsTransport transport;
 
 	private final Paint defaultPaint;
-
-	protected OutputStream stdin;
-	protected InputStream stdout;
-
-	private InputStream stderr;
 
 	private Relay relay;
 
@@ -144,16 +109,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public final static int META_TRANSIENT = META_CTRL_ON | META_ALT_ON
 			| META_SHIFT_ON;
 
-	private boolean pubkeysExhausted = false;
-
-	private boolean authenticated = false;
-	private boolean sessionOpen = false;
 	private boolean disconnected = false;
 	private boolean awaitingClose = false;
 
 	private boolean forcedSize = false;
-	private int termWidth;
-	private int termHeight;
+	private int columns;
+	private int rows;
 
 	private String keymode = null;
 
@@ -182,78 +143,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	public PromptHelper promptHelper;
 
 	protected BridgeDisconnectedListener disconnectListener = null;
-
-	protected ConnectionInfo connectionInfo;
-
-	public class HostKeyVerifier implements ServerHostKeyVerifier {
-
-		public boolean verifyServerHostKey(String hostname, int port,
-				String serverHostKeyAlgorithm, byte[] serverHostKey) throws IOException {
-
-			// read in all known hosts from hostdb
-			KnownHosts hosts = manager.hostdb.getKnownHosts();
-			Boolean result;
-
-			String matchName = String.format("%s:%d", hostname, port);
-
-			String fingerprint = KnownHosts.createHexFingerprint(serverHostKeyAlgorithm, serverHostKey);
-
-			String algorithmName;
-			if ("ssh-rsa".equals(serverHostKeyAlgorithm))
-				algorithmName = "RSA";
-			else if ("ssh-dss".equals(serverHostKeyAlgorithm))
-				algorithmName = "DSA";
-			else
-				algorithmName = serverHostKeyAlgorithm;
-
-			switch(hosts.verifyHostkey(matchName, serverHostKeyAlgorithm, serverHostKey)) {
-			case KnownHosts.HOSTKEY_IS_OK:
-				outputLine(String.format("Verified host %s key: %s", algorithmName, fingerprint));
-				return true;
-
-			case KnownHosts.HOSTKEY_IS_NEW:
-				// prompt user
-				outputLine(String.format(manager.res.getString(R.string.host_authenticity_warning), hostname));
-				outputLine(String.format(manager.res.getString(R.string.host_fingerprint), algorithmName, fingerprint));
-
-				result = promptHelper.requestBooleanPrompt(null, manager.res.getString(R.string.prompt_continue_connecting));
-				if(result == null) return false;
-				if(result.booleanValue()) {
-					// save this key in known database
-					manager.hostdb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
-				}
-				return result.booleanValue();
-
-			case KnownHosts.HOSTKEY_HAS_CHANGED:
-				String header = String.format("@   %s   @",
-						manager.res.getString(R.string.host_verification_failure_warning_header));
-
-				char[] atsigns = new char[header.length()];
-				Arrays.fill(atsigns, '@');
-				String border = new String(atsigns);
-
-				outputLine(border);
-				outputLine(manager.res.getString(R.string.host_verification_failure_warning));
-				outputLine(border);
-
-				outputLine(String.format(manager.res.getString(R.string.host_fingerprint),
-						algorithmName, fingerprint));
-
-				// Users have no way to delete keys, so we'll prompt them for now.
-				result = promptHelper.requestBooleanPrompt(null, manager.res.getString(R.string.prompt_continue_connecting));
-				if(result == null) return false;
-				if(result.booleanValue()) {
-					// save this key in known database
-					manager.hostdb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
-				}
-				return result.booleanValue();
-
-				default:
-					return false;
-			}
-		}
-
-	}
 
 	/**
 	 * Create a new terminal bridge suitable for unit testing.
@@ -284,7 +173,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 		fontSizeChangedListeners = new LinkedList<FontSizeChangedListener>();
 
-		connection = null;
+		transport = null;
 	}
 
 	/**
@@ -326,8 +215,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			@Override
 			public void write(byte[] b) {
 				try {
-					if (b != null && stdin != null)
-						stdin.write(b);
+					if (b != null && transport != null)
+						transport.write(b);
 				} catch (IOException e) {
 					Log.e(TAG, "Problem writing outgoing data in vt320() thread", e);
 				}
@@ -336,8 +225,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			@Override
 			public void write(int b) {
 				try {
-					if (stdin != null)
-						stdin.write(b);
+					if (transport != null)
+						transport.write(b);
 				} catch (IOException e) {
 					Log.e(TAG, "Problem writing outgoing data in vt320() thread", e);
 				}
@@ -367,228 +256,39 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		buffer.setDisplay(this);
 
 		selectionArea = new SelectionArea();
+	}
 
-		portForwards = manager.hostdb.getPortForwardsForHost(host);
-
-		// prepare the ssh connection for opening
-		// we perform the actual connection later in startConnection()
-		outputLine(String.format("Connecting to %s:%d", host.getHostname(), host.getPort()));
-		connection = new Connection(host.getHostname(), host.getPort());
-		connection.addConnectionMonitor(this);
-		connection.setCompression(host.getCompression());
+	public PromptHelper getPromptHelper() {
+		return promptHelper;
 	}
 
 	/**
 	 * Spawn thread to open connection and start login process.
 	 */
 	protected void startConnection() {
+		transport = TransportFactory.getTransport(host.getProtocol());
+		transport.setBridge(this);
+		transport.setManager(manager);
+		transport.setHost(host);
+
+		// Should be more abstract?
+		transport.setCompression(host.getCompression());
+		transport.setEmulation(emulation);
+
+		if (transport.canForwardPorts()) {
+			for (PortForwardBean portForward : manager.hostdb.getPortForwardsForHost(host))
+				transport.addPortForward(portForward);
+		}
+
+		outputLine(String.format("Connecting to %s:%d via %s", host.getHostname(), host.getPort(), host.getProtocol()));
+
 		Thread connectionThread = new Thread(new Runnable() {
 			public void run() {
-				try {
-					/* Uncomment when debugging SSH protocol:
-					DebugLogger logger = new DebugLogger() {
-
-						public void log(int level, String className, String message) {
-							Log.d("SSH", message);
-						}
-
-					};
-					connection.enableDebugging(true, logger);
-					*/
-					connectionInfo = connection.connect(new HostKeyVerifier());
-
-					if (connectionInfo.clientToServerCryptoAlgorithm
-							.equals(connectionInfo.serverToClientCryptoAlgorithm)
-							&& connectionInfo.clientToServerMACAlgorithm
-									.equals(connectionInfo.serverToClientMACAlgorithm)) {
-						outputLine(String.format("Using algorithm: %s %s",
-								connectionInfo.clientToServerCryptoAlgorithm,
-								connectionInfo.clientToServerMACAlgorithm));
-					} else {
-						outputLine(String.format(
-								"Client-to-server algorithm: %s %s",
-								connectionInfo.clientToServerCryptoAlgorithm,
-								connectionInfo.clientToServerMACAlgorithm));
-
-						outputLine(String.format(
-								"Server-to-client algorithm: %s %s",
-								connectionInfo.serverToClientCryptoAlgorithm,
-								connectionInfo.serverToClientMACAlgorithm));
-					}
-				} catch (IOException e) {
-					Log.e(TAG, "Problem in SSH connection thread during authentication", e);
-
-					// Display the reason in the text.
-					outputLine(e.getCause().getMessage());
-
-					dispatchDisconnect(false);
-					return;
-				}
-
-				try {
-					// enter a loop to keep trying until authentication
-					int tries = 0;
-					while(!connection.isAuthenticationComplete() && tries++ < AUTH_TRIES && !disconnected) {
-						handleAuthentication();
-
-						// sleep to make sure we dont kill system
-						Thread.sleep(1000);
-					}
-				} catch(Exception e) {
-					Log.e(TAG, "Problem in SSH connection thread during authentication", e);
-				}
+				transport.connect();
 			}
 		});
 		connectionThread.setName("Connection");
 		connectionThread.start();
-	}
-
-	/**
-	 * Attempt connection with database row pointed to by cursor.
-	 * @param cursor
-	 * @return true for successful authentication
-	 * @throws NoSuchAlgorithmException
-	 * @throws InvalidKeySpecException
-	 * @throws IOException
-	 */
-	private boolean tryPublicKey(PubkeyBean pubkey) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-		Object trileadKey = null;
-		if(manager.isKeyLoaded(pubkey.getNickname())) {
-			// load this key from memory if its already there
-			Log.d(TAG, String.format("Found unlocked key '%s' already in-memory", pubkey.getNickname()));
-			trileadKey = manager.getKey(pubkey.getNickname());
-
-		} else {
-			// otherwise load key from database and prompt for password as needed
-			String password = null;
-			if (pubkey.isEncrypted()) {
-				password = promptHelper.requestStringPrompt(null,
-						String.format(manager.res.getString(R.string.prompt_pubkey_password),
-								pubkey.getNickname()));
-
-				// Something must have interrupted the prompt.
-				if (password == null)
-					return false;
-			}
-
-			if(PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType())) {
-				// load specific key using pem format
-				trileadKey = PEMDecoder.decode(new String(pubkey.getPrivateKey()).toCharArray(), password);
-			} else {
-				// load using internal generated format
-				PrivateKey privKey;
-				try {
-					privKey = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(),
-							pubkey.getType(), password);
-				} catch (Exception e) {
-					String message = String.format("Bad password for key '%s'. Authentication failed.", pubkey.getNickname());
-					Log.e(TAG, message, e);
-					outputLine(message);
-					return false;
-				}
-
-				PublicKey pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(),
-						pubkey.getType());
-
-				// convert key to trilead format
-				trileadKey = PubkeyUtils.convertToTrilead(privKey, pubKey);
-				Log.d(TAG, "Unlocked key " + PubkeyUtils.formatKey(pubKey));
-			}
-
-			Log.d(TAG, String.format("Unlocked key '%s'", pubkey.getNickname()));
-
-			// save this key in-memory if option enabled
-			if(manager.isSavingKeys()) {
-				manager.addKey(pubkey.getNickname(), trileadKey);
-			}
-		}
-
-		return this.tryPublicKey(host.getUsername(), pubkey.getNickname(), trileadKey);
-
-	}
-
-	private boolean tryPublicKey(String username, String keyNickname, Object trileadKey) throws IOException {
-		//outputLine(String.format("Attempting 'publickey' with key '%s' [%s]...", keyNickname, trileadKey.toString()));
-		boolean success = connection.authenticateWithPublicKey(username, trileadKey);
-		if(!success)
-			outputLine(String.format("Authentication method 'publickey' with key '%s' failed", keyNickname));
-		return success;
-	}
-
-	protected void handleAuthentication() {
-		try {
-			if (connection.authenticateWithNone(host.getUsername())) {
-				finishConnection();
-				return;
-			}
-		} catch(Exception e) {
-			Log.d(TAG, "Host does not support 'none' authentication.");
-		}
-
-		outputLine(manager.res.getString(R.string.terminal_auth));
-
-		try {
-			long pubkeyId = host.getPubkeyId();
-
-			if (!pubkeysExhausted &&
-					pubkeyId != HostDatabase.PUBKEYID_NEVER &&
-					connection.isAuthMethodAvailable(host.getUsername(), AUTH_PUBLICKEY)) {
-
-				// if explicit pubkey defined for this host, then prompt for password as needed
-				// otherwise just try all in-memory keys held in terminalmanager
-
-				if (pubkeyId == HostDatabase.PUBKEYID_ANY) {
-					// try each of the in-memory keys
-					outputLine(manager.res.getString(R.string.terminal_auth_pubkey_any));
-					for(String nickname : manager.loadedPubkeys.keySet()) {
-						Object trileadKey = manager.loadedPubkeys.get(nickname);
-						if(this.tryPublicKey(host.getUsername(), nickname, trileadKey)) {
-							finishConnection();
-							break;
-						}
-					}
-				} else {
-					outputLine(manager.res.getString(R.string.terminal_auth_pubkey_specific));
-					// use a specific key for this host, as requested
-					PubkeyBean pubkey = manager.pubkeydb.findPubkeyById(pubkeyId);
-
-					if (pubkey == null)
-						outputLine(manager.res.getString(R.string.terminal_auth_pubkey_invalid));
-					else
-						if (tryPublicKey(pubkey))
-							finishConnection();
-				}
-
-				pubkeysExhausted = true;
-			} else if (connection.isAuthMethodAvailable(host.getUsername(), AUTH_PASSWORD)) {
-				outputLine(manager.res.getString(R.string.terminal_auth_pass));
-				String password = promptHelper.requestStringPrompt(null,
-						manager.res.getString(R.string.prompt_password));
-				if (password != null
-						&& connection.authenticateWithPassword(host.getUsername(), password)) {
-					finishConnection();
-				} else {
-					outputLine(manager.res.getString(R.string.terminal_auth_pass_fail));
-				}
-
-			} else if(connection.isAuthMethodAvailable(host.getUsername(), AUTH_KEYBOARDINTERACTIVE)) {
-				// this auth method will talk with us using InteractiveCallback interface
-				// it blocks until authentication finishes
-				outputLine(manager.res.getString(R.string.terminal_auth_ki));
-				if(connection.authenticateWithKeyboardInteractive(host.getUsername(), TerminalBridge.this)) {
-					finishConnection();
-				} else {
-					outputLine(manager.res.getString(R.string.terminal_auth_ki_fail));
-				}
-
-			} else {
-				outputLine(manager.res.getString(R.string.terminal_auth_fail));
-
-			}
-		} catch(Exception e) {
-			Log.e(TAG, "Problem during handleAuthentication()", e);
-		}
-
 	}
 
 	/**
@@ -604,11 +304,21 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	}
 
 	/**
+	 * Sets the encoding used by the terminal. If the connection is live,
+	 * then the character set is changed for the next read.
+	 * @param encoding the canonical name of the character encoding
+	 */
+	public void setCharset(String encoding) {
+		if (relay != null)
+			relay.setCharset(encoding);
+	}
+
+	/**
 	 * Convenience method for writing a line into the underlying MUD buffer.
 	 * Should never be called once the session is established.
 	 */
-	protected final void outputLine(String line) {
-		if (session != null)
+	public final void outputLine(String line) {
+		if (transport != null && transport.isSessionOpen())
 			Log.e(TAG, "Session established, cannot use outputLine!", new IOException("outputLine call traceback"));
 
 		synchronized (localOutput) {
@@ -643,68 +353,41 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * Internal method to request actual PTY terminal once we've finished
 	 * authentication. If called before authenticated, it will just fail.
 	 */
-	private void finishConnection() {
-		setAuthenticated(true);
+	public void onConnected() {
+		((vt320) buffer).reset();
 
-		// Start up predefined port forwards
-		for (PortForwardBean pfb : portForwards) {
-			try {
-				enablePortForward(pfb);
-				outputLine(String.format("Enable port forward: %s", pfb.getDescription()));
-			} catch (Exception e) {
-				Log.e(TAG, "Error setting up port forward during connect", e);
-			}
-		}
+		// We no longer need our local output.
+		localOutput.clear();
 
-		if (!host.getWantSession()) {
-			outputLine("Session will not be started due to host preference.");
-			return;
-		}
+		// previously tried vt100 and xterm for emulation modes
+		// "screen" works the best for color and escape codes
+		((vt320) buffer).setAnswerBack(emulation);
 
-		try {
-			session = connection.openSession();
-			((vt320) buffer).reset();
+		if (HostDatabase.DELKEY_BACKSPACE.equals(host.getDelKey()))
+			((vt320) buffer).setBackspace(vt320.DELETE_IS_BACKSPACE);
+		else
+			((vt320) buffer).setBackspace(vt320.DELETE_IS_DEL);
 
-			// We no longer need our local output.
-			localOutput.clear();
+		// create thread to relay incoming connection data to buffer
+		relay = new Relay(this, transport, (vt320) buffer, host.getEncoding());
+		Thread relayThread = new Thread(relay);
+		relayThread.setName("Relay");
+		relayThread.start();
 
-			// previously tried vt100 and xterm for emulation modes
-			// "screen" works the best for color and escape codes
-			// TODO: pull this value from the preferences
-			((vt320) buffer).setAnswerBack(emulation);
-			session.requestPTY(emulation, termWidth, termHeight, 0, 0, null);
-			session.startShell();
+		// force font-size to make sure we resizePTY as needed
+		setFontSize(fontSize);
 
-			// grab stdin/out from newly formed session
-			stdin = session.getStdin();
-			stdout = session.getStdout();
-			stderr = session.getStderr();
-
-			// create thread to relay incoming connection data to buffer
-			relay = new Relay(this, session, stdout, stderr, (vt320) buffer, host.getEncoding());
-			Thread relayThread = new Thread(relay);
-			relayThread.setName("Relay");
-			relayThread.start();
-
-			// force font-size to make sure we resizePTY as needed
-			setFontSize(fontSize);
-
-			sessionOpen = true;
-
-			// finally send any post-login string, if requested
-			injectString(host.getPostLogin());
-
-		} catch (IOException e1) {
-			Log.e(TAG, "Problem while trying to create PTY in finishConnection()", e1);
-		}
-
+		// finally send any post-login string, if requested
+		injectString(host.getPostLogin());
 	}
 
 	/**
 	 * @return whether a session is open or not
 	 */
 	public boolean isSessionOpen() {
-		return sessionOpen;
+		if (transport != null)
+			return transport.isSessionOpen();
+		return false;
 	}
 
 	public void setOnDisconnectedListener(BridgeDisconnectedListener disconnectListener) {
@@ -723,17 +406,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		// temporary fix is to just spawn disconnection into a thread
 		Thread disconnectThread = new Thread(new Runnable() {
 			public void run() {
-				if(session != null)
-					session.close();
-				connection.close();
+				if (transport != null && transport.isConnected())
+					transport.close();
 			}
 		});
 		disconnectThread.setName("Disconnect");
 		disconnectThread.start();
 
 		disconnected = true;
-		authenticated = false;
-		sessionOpen = false;
 
 		if (immediate) {
 			awaitingClose = true;
@@ -773,31 +453,31 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			// Ignore all key-up events except for the special keys
 			if (event.getAction() == KeyEvent.ACTION_UP) {
 				// skip keys if we aren't connected yet or have been disconnected
-				if (disconnected || !sessionOpen)
+				if (disconnected || transport == null)
 					return false;
 
 				if (PreferenceConstants.KEYMODE_RIGHT.equals(keymode)) {
 					if (keyCode == KeyEvent.KEYCODE_ALT_RIGHT
 							&& (metaState & META_SLASH) != 0) {
 						metaState &= ~(META_SLASH | META_TRANSIENT);
-						stdin.write('/');
+						transport.write('/');
 						return true;
 					} else if (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT
 							&& (metaState & META_TAB) != 0) {
 						metaState &= ~(META_TAB | META_TRANSIENT);
-						stdin.write(0x09);
+						transport.write(0x09);
 						return true;
 					}
 				} else if (PreferenceConstants.KEYMODE_LEFT.equals(keymode)) {
 					if (keyCode == KeyEvent.KEYCODE_ALT_LEFT
 							&& (metaState & META_SLASH) != 0) {
 						metaState &= ~(META_SLASH | META_TRANSIENT);
-						stdin.write('/');
+						transport.write('/');
 						return true;
 					} else if (keyCode == KeyEvent.KEYCODE_SHIFT_LEFT
 							&& (metaState & META_TAB) != 0) {
 						metaState &= ~(META_TAB | META_TRANSIENT);
-						stdin.write(0x09);
+						transport.write(0x09);
 						return true;
 					}
 				}
@@ -817,7 +497,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			}
 
 			// skip keys if we aren't connected yet or have been disconnected
-			if (disconnected || !sessionOpen)
+			if (disconnected || transport == null)
 				return false;
 
 			// if we're in scrollback, scroll to bottom of window on input
@@ -856,6 +536,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 						key -= 0x40;
 					else if (key == 0x20)
 						key = 0x00;
+					else if (key == 0x3F)
+						key = 0x7F;
 
 					metaState &= ~META_CTRL_ON;
 
@@ -879,10 +561,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 				}
 
 				if (key < 0x80)
-					stdin.write(key);
+					transport.write(key);
 				else
 					// TODO write encoding routine that doesn't allocate each time
-					stdin.write(new String(Character.toChars(key))
+					transport.write(new String(Character.toChars(key))
 							.getBytes(host.getEncoding()));
 
 				return true;
@@ -891,7 +573,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			if (keyCode == KeyEvent.KEYCODE_UNKNOWN &&
 					event.getAction() == KeyEvent.ACTION_MULTIPLE) {
 				byte[] input = event.getCharacters().getBytes(host.getEncoding());
-				stdin.write(input);
+				transport.write(input);
 			}
 
 			// try handling keymode shortcuts
@@ -942,10 +624,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 						PreferenceConstants.CAMERA,
 						PreferenceConstants.CAMERA_CTRLA_SPACE);
 				if(PreferenceConstants.CAMERA_CTRLA_SPACE.equals(camera)) {
-					stdin.write(0x01);
-					stdin.write(' ');
+					transport.write(0x01);
+					transport.write(' ');
 				} else if(PreferenceConstants.CAMERA_CTRLA.equals(camera)) {
-					stdin.write(0x01);
+					transport.write(0x01);
 				} else if(PreferenceConstants.CAMERA_ESC.equals(camera)) {
 					((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
 				}
@@ -1044,10 +726,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		} catch (IOException e) {
 			Log.e(TAG, "Problem while trying to handle an onKey() event", e);
 			try {
-				stdin.flush();
+				transport.flush();
 			} catch (IOException ioe) {
-				// Our stdin got blown away, so we must be closed.
-				Log.d(TAG, "Our stdin was closed, dispatching disconnect event");
+				Log.d(TAG, "Our transport was closed, dispatching disconnect event");
 				dispatchDisconnect(false);
 			}
 		} catch (NullPointerException npe) {
@@ -1166,26 +847,35 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * terminal size information and request a PTY resize.
 	 */
 	public final synchronized void parentChanged(TerminalView parent) {
+		if (manager != null && !manager.isResizeAllowed()) {
+			Log.d(TAG, "Resize is not allowed now");
+			return;
+		}
+
 		this.parent = parent;
 		int width = parent.getWidth();
 		int height = parent.getHeight();
+
+		// Something has gone wrong with our layout; we're 0 width or height!
+		if (width <= 0 || height <= 0)
+			return;
 
 		clipboard = (ClipboardManager) parent.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
 
 		if (!forcedSize) {
 			// recalculate buffer size
-			int newTermWidth, newTermHeight;
+			int newColumns, newRows;
 
-			newTermWidth = width / charWidth;
-			newTermHeight = height / charHeight;
+			newColumns = width / charWidth;
+			newRows = height / charHeight;
 
 			// If nothing has changed in the terminal dimensions and not an intial
 			// draw then don't blow away scroll regions and such.
-			if (newTermWidth == termWidth && newTermHeight == termHeight)
+			if (newColumns == columns && newRows == rows)
 				return;
 
-			termWidth = newTermWidth;
-			termHeight = newTermHeight;
+			columns = newColumns;
+			rows = newRows;
 		}
 
 		// reallocate new bitmap if needed
@@ -1194,8 +884,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			newBitmap = (bitmap.getWidth() != width || bitmap.getHeight() != height);
 
 		if (newBitmap) {
-			if (bitmap != null)
-				bitmap.recycle();
+			discardBitmap();
 			bitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
 			canvas.setBitmap(bitmap);
 		}
@@ -1206,8 +895,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 		// Stroke the border of the terminal if the size is being forced;
 		if (forcedSize) {
-			int borderX = (termWidth * charWidth) + 1;
-			int borderY = (termHeight * charHeight) + 1;
+			int borderX = (columns * charWidth) + 1;
+			int borderY = (rows * charHeight) + 1;
 
 			defaultPaint.setColor(Color.GRAY);
 			defaultPaint.setStrokeWidth(0.0f);
@@ -1219,20 +908,22 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 		try {
 			// request a terminal pty resize
-			int prevRow = buffer.getCursorRow();
-			buffer.setScreenSize(termWidth, termHeight, true);
+			synchronized (buffer) {
+				int prevRow = buffer.getCursorRow();
+				buffer.setScreenSize(columns, rows, true);
 
-			// Work around weird vt320.java behavior where cursor is an offset from the bottom??
-			buffer.setCursorPosition(buffer.getCursorColumn(), prevRow);
+				// Work around weird vt320.java behavior where cursor is an offset from the bottom??
+				buffer.setCursorPosition(buffer.getCursorColumn(), prevRow);
+			}
 
-			if(session != null)
-				session.resizePTY(termWidth, termHeight, width, height);
+			if(transport != null)
+				transport.setDimensions(columns, rows, width, height);
 		} catch(Exception e) {
 			Log.e(TAG, "Problem while trying to resize screen or PTY", e);
 		}
 
 		// redraw local output if we don't have a sesson to receive our resize request
-		if (session == null) {
+		if (transport == null) {
 			synchronized (localOutput) {
 				((vt320) buffer).reset();
 
@@ -1245,9 +936,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 		fullRedraw = true;
 		redraw();
 
-		parent.notifyUser(String.format("%d x %d", termWidth, termHeight));
+		parent.notifyUser(String.format("%d x %d", columns, rows));
 
-		Log.i(TAG, String.format("parentChanged() now width=%d, height=%d", termWidth, termHeight));
+		Log.i(TAG, String.format("parentChanged() now width=%d, height=%d", columns, rows));
 	}
 
 	/**
@@ -1256,7 +947,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 */
 	public synchronized void parentDestroyed() {
 		parent = null;
-		canvas.setBitmap(null);
+		discardBitmap();
+	}
+
+	private void discardBitmap() {
 		if (bitmap != null)
 			bitmap.recycle();
 		bitmap = null;
@@ -1272,80 +966,82 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 	public void onDraw() {
 		int fg, bg;
-		boolean entireDirty = buffer.update[0] || fullRedraw;
+		synchronized (buffer) {
+			boolean entireDirty = buffer.update[0] || fullRedraw;
 
-		// walk through all lines in the buffer
-		for(int l = 0; l < buffer.height; l++) {
+			// walk through all lines in the buffer
+			for(int l = 0; l < buffer.height; l++) {
 
-			// check if this line is dirty and needs to be repainted
-			// also check for entire-buffer dirty flags
-			if (!entireDirty && !buffer.update[l + 1]) continue;
+				// check if this line is dirty and needs to be repainted
+				// also check for entire-buffer dirty flags
+				if (!entireDirty && !buffer.update[l + 1]) continue;
 
-			// reset dirty flag for this line
-			buffer.update[l + 1] = false;
+				// reset dirty flag for this line
+				buffer.update[l + 1] = false;
 
-			// walk through all characters in this line
-			for (int c = 0; c < buffer.width; c++) {
-				int addr = 0;
-				int currAttr = buffer.charAttributes[buffer.windowBase + l][c];
+				// walk through all characters in this line
+				for (int c = 0; c < buffer.width; c++) {
+					int addr = 0;
+					int currAttr = buffer.charAttributes[buffer.windowBase + l][c];
 
-				// reset default colors
-				fg = color[COLOR_FG_STD];
-				bg = color[COLOR_BG_STD];
+					// reset default colors
+					fg = color[COLOR_FG_STD];
+					bg = color[COLOR_BG_STD];
 
-				// check if foreground color attribute is set
-				if ((currAttr & VDUBuffer.COLOR_FG) != 0) {
-					int fgcolor = ((currAttr & VDUBuffer.COLOR_FG) >> VDUBuffer.COLOR_FG_SHIFT) - 1;
-					if (fgcolor < 8 && (currAttr & VDUBuffer.BOLD) != 0)
-						fg = color[fgcolor + 8];
-					else
-						fg = color[fgcolor];
+					// check if foreground color attribute is set
+					if ((currAttr & VDUBuffer.COLOR_FG) != 0) {
+						int fgcolor = ((currAttr & VDUBuffer.COLOR_FG) >> VDUBuffer.COLOR_FG_SHIFT) - 1;
+						if (fgcolor < 8 && (currAttr & VDUBuffer.BOLD) != 0)
+							fg = color[fgcolor + 8];
+						else
+							fg = color[fgcolor];
+					}
+
+					// check if background color attribute is set
+					if ((currAttr & VDUBuffer.COLOR_BG) != 0)
+						bg = color[((currAttr & VDUBuffer.COLOR_BG) >> VDUBuffer.COLOR_BG_SHIFT) - 1];
+
+					// support character inversion by swapping background and foreground color
+					if ((currAttr & VDUBuffer.INVERT) != 0) {
+						int swapc = bg;
+						bg = fg;
+						fg = swapc;
+					}
+
+					// set underlined attributes if requested
+					defaultPaint.setUnderlineText((currAttr & VDUBuffer.UNDERLINE) != 0);
+
+					// determine the amount of continuous characters with the same settings and print them all at once
+					while(c + addr < buffer.width && buffer.charAttributes[buffer.windowBase + l][c + addr] == currAttr) {
+						addr++;
+					}
+
+					// Save the current clip region
+					canvas.save(Canvas.CLIP_SAVE_FLAG);
+
+					// clear this dirty area with background color
+					defaultPaint.setColor(bg);
+					canvas.clipRect(c * charWidth, l * charHeight, (c + addr) * charWidth, (l + 1) * charHeight);
+					canvas.drawPaint(defaultPaint);
+
+					// write the text string starting at 'c' for 'addr' number of characters
+					defaultPaint.setColor(fg);
+					if((currAttr & VDUBuffer.INVISIBLE) == 0)
+						canvas.drawText(buffer.charArray[buffer.windowBase + l], c,
+							addr, c * charWidth, (l * charHeight) - charTop,
+							defaultPaint);
+
+					// Restore the previous clip region
+					canvas.restore();
+
+					// advance to the next text block with different characteristics
+					c += addr - 1;
 				}
-
-				// check if background color attribute is set
-				if ((currAttr & VDUBuffer.COLOR_BG) != 0)
-					bg = color[((currAttr & VDUBuffer.COLOR_BG) >> VDUBuffer.COLOR_BG_SHIFT) - 1];
-
-				// support character inversion by swapping background and foreground color
-				if ((currAttr & VDUBuffer.INVERT) != 0) {
-					int swapc = bg;
-					bg = fg;
-					fg = swapc;
-				}
-
-				// set underlined attributes if requested
-				defaultPaint.setUnderlineText((currAttr & VDUBuffer.UNDERLINE) != 0);
-
-				// determine the amount of continuous characters with the same settings and print them all at once
-				while(c + addr < buffer.width && buffer.charAttributes[buffer.windowBase + l][c + addr] == currAttr) {
-					addr++;
-				}
-
-				// Save the current clip region
-				canvas.save(Canvas.CLIP_SAVE_FLAG);
-
-				// clear this dirty area with background color
-				defaultPaint.setColor(bg);
-				canvas.clipRect(c * charWidth, l * charHeight, (c + addr) * charWidth, (l + 1) * charHeight);
-				canvas.drawPaint(defaultPaint);
-
-				// write the text string starting at 'c' for 'addr' number of characters
-				defaultPaint.setColor(fg);
-				if((currAttr & VDUBuffer.INVISIBLE) == 0)
-					canvas.drawText(buffer.charArray[buffer.windowBase + l], c,
-						addr, c * charWidth, (l * charHeight) - charTop,
-						defaultPaint);
-
-				// Restore the previous clip region
-				canvas.restore();
-
-				// advance to the next text block with different characteristics
-				c += addr - 1;
 			}
-		}
 
-		// reset entire-buffer flags
-		buffer.update[0] = false;
+			// reset entire-buffer flags
+			buffer.update[0] = false;
+		}
 		fullRedraw = false;
 	}
 
@@ -1356,12 +1052,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 
 	// We don't have a scroll bar.
 	public void updateScrollBar() {
-	}
-
-	public void connectionLost(Throwable reason) {
-		// weve lost our ssh connection, so pass along to manager and gui
-		Log.e(TAG, "Somehow our underlying SSH socket died", reason);
-		dispatchDisconnect(false);
 	}
 
 	/**
@@ -1403,8 +1093,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 			size -= step;
 
 		forcedSize = true;
-		termWidth = cols;
-		termHeight = rows;
+		this.columns = cols;
+		this.rows = rows;
 		setFontSize(size);
 	}
 
@@ -1431,12 +1121,19 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	}
 
 	/**
+	 * @return whether underlying transport can forward ports
+	 */
+	public boolean canFowardPorts() {
+		return transport.canForwardPorts();
+	}
+
+	/**
 	 * Adds the {@link PortForwardBean} to the list.
 	 * @param portForward the port forward bean to add
 	 * @return true on successful addition
 	 */
 	public boolean addPortForward(PortForwardBean portForward) {
-		return portForwards.add(portForward);
+		return transport.addPortForward(portForward);
 	}
 
 	/**
@@ -1445,17 +1142,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * @return true on successful removal
 	 */
 	public boolean removePortForward(PortForwardBean portForward) {
-		// Make sure we don't have a phantom forwarder.
-		disablePortForward(portForward);
-
-		return portForwards.remove(portForward);
+		return transport.removePortForward(portForward);
 	}
 
 	/**
 	 * @return the list of port forwards
 	 */
 	public List<PortForwardBean> getPortForwards() {
-		return portForwards;
+		return transport.getPortForwards();
 	}
 
 	/**
@@ -1465,56 +1159,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * @return true on successful port forward setup
 	 */
 	public boolean enablePortForward(PortForwardBean portForward) {
-		if (!portForwards.contains(portForward)) {
-			Log.e(TAG, "Attempt to enable port forward not in list");
+		if (!transport.isConnected()) {
+			Log.i(TAG, "Attempt to enable port forward while not connected");
 			return false;
 		}
 
-		if (HostDatabase.PORTFORWARD_LOCAL.equals(portForward.getType())) {
-			LocalPortForwarder lpf = null;
-			try {
-				lpf = connection.createLocalPortForwarder(portForward.getSourcePort(), portForward.getDestAddr(), portForward.getDestPort());
-			} catch (IOException e) {
-				Log.e(TAG, "Could not create local port forward", e);
-				return false;
-			}
-
-			if (lpf == null) {
-				Log.e(TAG, "returned LocalPortForwarder object is null");
-				return false;
-			}
-
-			portForward.setIdentifier(lpf);
-			portForward.setEnabled(true);
-			return true;
-		} else if (HostDatabase.PORTFORWARD_REMOTE.equals(portForward.getType())) {
-			try {
-				connection.requestRemotePortForwarding("", portForward.getSourcePort(), portForward.getDestAddr(), portForward.getDestPort());
-			} catch (IOException e) {
-				Log.e(TAG, "Could not create remote port forward", e);
-				return false;
-			}
-
-			portForward.setEnabled(false);
-			return true;
-		} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(portForward.getType())) {
-			DynamicPortForwarder dpf = null;
-
-			try {
-				dpf = connection.createDynamicPortForwarder(portForward.getSourcePort());
-			} catch (IOException e) {
-				Log.e(TAG, "Could not create dynamic port forward", e);
-				return false;
-			}
-
-			portForward.setIdentifier(dpf);
-			portForward.setEnabled(true);
-			return true;
-		} else {
-			// Unsupported type
-			Log.e(TAG, String.format("attempt to forward unknown type %s", portForward.getType()));
-			return false;
-		}
+		return transport.enablePortForward(portForward);
 	}
 
 	/**
@@ -1524,79 +1174,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener, InteractiveCal
 	 * @return true on successful port forward tear-down
 	 */
 	public boolean disablePortForward(PortForwardBean portForward) {
-		if (!portForwards.contains(portForward)) {
-			Log.e(TAG, "Attempt to disable port forward not in list");
+		if (!transport.isConnected()) {
+			Log.i(TAG, "Attempt to disable port forward while not connected");
 			return false;
 		}
 
-		if (HostDatabase.PORTFORWARD_LOCAL.equals(portForward.getType())) {
-			LocalPortForwarder lpf = null;
-			lpf = (LocalPortForwarder)portForward.getIdentifier();
-
-			if (!portForward.isEnabled() || lpf == null) {
-				Log.d(TAG, String.format("Could not disable %s; it appears to be not enabled or have no handler", portForward.getNickname()));
-				return false;
-			}
-
-			portForward.setEnabled(false);
-
-			try {
-				lpf.close();
-			} catch (IOException e) {
-				Log.e(TAG, "Could not stop local port forwarder, setting enabled to false", e);
-				return false;
-			}
-
-			return true;
-		} else if (HostDatabase.PORTFORWARD_REMOTE.equals(portForward.getType())) {
-			portForward.setEnabled(false);
-
-			try {
-				connection.cancelRemotePortForwarding(portForward.getSourcePort());
-			} catch (IOException e) {
-				Log.e(TAG, "Could not stop remote port forwarding, setting enabled to false", e);
-				return false;
-			}
-
-			return true;
-		} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(portForward.getType())) {
-			DynamicPortForwarder dpf = null;
-			dpf = (DynamicPortForwarder)portForward.getIdentifier();
-
-			if (!portForward.isEnabled() || dpf == null) {
-				Log.d(TAG, String.format("Could not disable %s; it appears to be not enabled or have no handler", portForward.getNickname()));
-				return false;
-			}
-
-			portForward.setEnabled(false);
-
-			try {
-				dpf.close();
-			} catch (IOException e) {
-				Log.e(TAG, "Could not stop dynamic port forwarder, setting enabled to false", e);
-				return false;
-			}
-
-			return true;
-		} else {
-			// Unsupported type
-			Log.e(TAG, String.format("attempt to forward unknown type %s", portForward.getType()));
-			return false;
-		}
-	}
-
-	/**
-	 * @param authenticated the authenticated to set
-	 */
-	public void setAuthenticated(boolean authenticated) {
-		this.authenticated = authenticated;
-	}
-
-	/**
-	 * @return the authenticated
-	 */
-	public boolean isAuthenticated() {
-		return authenticated;
+		return transport.disablePortForward(portForward);
 	}
 
 	/**

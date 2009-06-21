@@ -75,12 +75,11 @@
 
 			<EditText
 				android:id="@+id/portforward_source"
-				android:hint="143"
+				android:hint="8080"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:numeric="integer"
-				android:singleLine="true"
 				android:layout_weight="1"
+				android:inputType="number"
 				/>
 		</TableRow>
 
@@ -94,11 +93,11 @@
 
 			<EditText
 				android:id="@+id/portforward_destination"
-				android:hint="localhost:143"
+				android:hint="localhost:80"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:singleLine="true"
 				android:layout_weight="1"
+				android:inputType="textEmailAddress"
 				/>
 		</TableRow>
 	</TableLayout>

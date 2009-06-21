@@ -17,50 +17,47 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>
 -->
 
-<LinearLayout
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	>
 
-	<RelativeLayout
-		android:layout_width="fill_parent"
-		android:layout_height="0dip"
-		android:layout_weight="1"
-		>
+	<Spinner
+		android:id="@+id/transport_selection"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentLeft="true"
+		/>
 
-		<ListView
-			android:id="@android:id/list"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			/>
-
-		<TextView
-			android:id="@android:id/empty"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			android:text="@string/list_host_empty"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:gravity="center"
-			/>
-
-	</RelativeLayout>
-
-	<FrameLayout
+	<EditText
+		android:id="@+id/front_quickconnect"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:padding="5dip"
-		>
+		android:hint="username@hostname:port"
+		android:layout_toRightOf="@+id/transport_selection"
+		android:layout_alignTop="@+id/transport_selection"
+		android:inputType="textEmailAddress"
+		android:layout_alignBottom="@+id/transport_selection"
+		/>
 
-		<EditText
-			android:id="@+id/front_quickconnect"
-			android:singleLine="true"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/hint_userhost"
-			android:inputType="textEmailAddress"
-			/>
+	<ListView
+		android:id="@android:id/list"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_above="@+id/transport_selection"
+		/>
 
-	</FrameLayout>
-</LinearLayout>
+	<TextView
+		android:id="@android:id/empty"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:text="@string/list_host_empty"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:gravity="center"
+		android:layout_above="@+id/transport_selection"
+		/>
+
+</RelativeLayout>
