@@ -13,6 +13,8 @@
 	<string name="title_host_editor">Edit Host</string>
 	<!-- Window title for Help index -->
 	<string name="title_help">Help</string>
+	<!-- Window title for color list editing screen -->
+	<string name="title_colors">Colors</string>
 
 	<string name="resolve_connect">Connect</string>
 	<string name="resolve_entropy">Gather Entropy</string>

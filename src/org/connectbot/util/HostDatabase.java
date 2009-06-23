@@ -49,7 +49,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String TAG = "ConnectBot.HostDatabase";
 
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 17;
+	public final static int DB_VERSION = 18;
 
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -76,6 +76,18 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_PORTFORWARD_SOURCEPORT = "sourceport";
 	public final static String FIELD_PORTFORWARD_DESTADDR = "destaddr";
 	public final static String FIELD_PORTFORWARD_DESTPORT = "destport";
+
+	public final static String TABLE_COLORS = "colors";
+	public final static String FIELD_COLOR_SCHEME = "scheme";
+	public final static String FIELD_COLOR_NUMBER = "number";
+	public final static String FIELD_COLOR_VALUE = "value";
+
+	public final static String TABLE_COLOR_DEFAULTS = "colorDefaults";
+	public final static String FIELD_COLOR_FG = "fg";
+	public final static String FIELD_COLOR_BG = "bg";
+
+	public final static int DEFAULT_FG_COLOR = 7;
+	public final static int DEFAULT_BG_COLOR = 0;
 
 	public final static String COLOR_RED = "red";
 	public final static String COLOR_GREEN = "green";
@@ -132,6 +144,27 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_PORTFORWARD_SOURCEPORT + " INTEGER NOT NULL DEFAULT 8080, "
 				+ FIELD_PORTFORWARD_DESTADDR + " TEXT, "
 				+ FIELD_PORTFORWARD_DESTPORT + " TEXT)");
+
+		db.execSQL("CREATE INDEX " + TABLE_PORTFORWARDS + FIELD_PORTFORWARD_HOSTID + "index ON "
+				+ TABLE_PORTFORWARDS + " (" + FIELD_PORTFORWARD_HOSTID + ");");
+
+		db.execSQL("CREATE TABLE " + TABLE_COLORS
+				+ " (_id INTEGER PRIMARY KEY, "
+				+ FIELD_COLOR_NUMBER + " INTEGER, "
+				+ FIELD_COLOR_VALUE + " INTEGER, "
+				+ FIELD_COLOR_SCHEME + " INTEGER)");
+
+		db.execSQL("CREATE INDEX " + TABLE_COLORS + FIELD_COLOR_SCHEME + "index ON "
+				+ TABLE_COLORS + " (" + FIELD_COLOR_SCHEME + ");");
+
+		db.execSQL("CREATE TABLE " + TABLE_COLOR_DEFAULTS
+				+ " (_id INTEGER PRIMARY KEY, "
+				+ FIELD_COLOR_SCHEME + " INTEGER, "
+				+ FIELD_COLOR_FG + " INTEGER, "
+				+ FIELD_COLOR_BG + " INTEGER)");
+
+		db.execSQL("CREATE INDEX " + TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index ON "
+				+ TABLE_COLOR_DEFAULTS + " (" + FIELD_COLOR_SCHEME + ");");
 	}
 
 	@Override
@@ -173,6 +206,26 @@ public class HostDatabase extends SQLiteOpenHelper {
 			case 16:
 				db.execSQL("ALTER TABLE " + TABLE_HOSTS
 						+ " ADD COLUMN " + FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "'");
+			case 17:
+				db.execSQL("CREATE INDEX " + TABLE_PORTFORWARDS + FIELD_PORTFORWARD_HOSTID + "index ON "
+						+ TABLE_PORTFORWARDS + " (" + FIELD_PORTFORWARD_HOSTID + ");");
+
+				// Add colors
+				db.execSQL("CREATE TABLE " + TABLE_COLORS
+						+ " (_id INTEGER PRIMARY KEY, "
+						+ FIELD_COLOR_NUMBER + " INTEGER, "
+						+ FIELD_COLOR_VALUE + " INTEGER, "
+						+ FIELD_COLOR_SCHEME + " INTEGER)");
+				db.execSQL("CREATE INDEX " + TABLE_COLORS + FIELD_COLOR_SCHEME + "index ON "
+						+ TABLE_COLORS + " (" + FIELD_COLOR_SCHEME + ");");
+
+				db.execSQL("CREATE TABLE " + TABLE_COLOR_DEFAULTS
+						+ " (_id INTEGER PRIMARY KEY, "
+						+ FIELD_COLOR_SCHEME + " INTEGER, "
+						+ FIELD_COLOR_FG + " INTEGER, "
+						+ FIELD_COLOR_BG + " INTEGER)");
+				db.execSQL("CREATE INDEX " + TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index ON "
+						+ TABLE_COLOR_DEFAULTS + " (" + FIELD_COLOR_SCHEME + ");");
 			}
 		} catch (SQLiteException e) {
 			// The database has entered an unknown state. Try to recover.
@@ -581,6 +634,172 @@ public class HostDatabase extends SQLiteOpenHelper {
 
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_PORTFORWARDS, "_id = ?", new String[] { String.valueOf(pfb.getId()) });
+		db.close();
+	}
+
+	public Integer[] getColorsForHost(HostBean host) {
+		Integer[] colors = Colors.defaults.clone();
+
+		SQLiteDatabase db = getReadableDatabase();
+
+		Cursor c = db.query(TABLE_COLORS, new String[] {
+				FIELD_COLOR_NUMBER, FIELD_COLOR_VALUE },
+				FIELD_COLOR_SCHEME + " IS NULL",
+				null, null, null, null);
+
+		while (c.moveToNext()) {
+			Log.d(TAG, "Setting default color " + c.getInt(0) + " to " + c.getInt(1));
+			colors[c.getInt(0)] = new Integer(c.getInt(1));
+		}
+
+		c.close();
+
+		// TODO This could probably just be a join
+		if (host != null) {
+			c = db.query(TABLE_COLORS, new String[] {
+					FIELD_COLOR_NUMBER, FIELD_COLOR_VALUE },
+					FIELD_COLOR_SCHEME + " = ?",
+					new String[] { String.valueOf(host.getId()) },
+					null, null, null);
+
+			while (c.moveToNext()) {
+				colors[c.getInt(0)] = new Integer(c.getInt(1));
+			}
+
+			c.close();
+		}
+
+		db.close();
+
+		return colors;
+	}
+
+	public void setColorForHost(HostBean host, int number, int value) {
+		SQLiteDatabase db = getWritableDatabase();
+
+		String hostWhere;
+		if (host == null)
+			hostWhere = FIELD_COLOR_SCHEME + " IS NULL";
+		else
+			hostWhere = FIELD_COLOR_SCHEME + " = ?";
+
+		if (value == Colors.defaults[number]) {
+			String[] whereArgs;
+
+			if (host != null) {
+				whereArgs = new String[2];
+				whereArgs[1] = String.valueOf(host.getId());
+			} else
+				whereArgs = new String[1];
+
+			whereArgs[0] = String.valueOf(number);
+
+			db.delete(TABLE_COLORS,
+					FIELD_COLOR_NUMBER + " = ? AND "
+					+ hostWhere,
+					new String[] { String.valueOf(number) });
+		} else {
+			ContentValues values = new ContentValues();
+			values.put(FIELD_COLOR_NUMBER, number);
+			values.put(FIELD_COLOR_VALUE, value);
+
+			String[] whereArgs = null;
+
+			if (host != null)
+				whereArgs = new String[] { String.valueOf(host.getId()) };
+
+			int rowsAffected = db.update(TABLE_COLORS, values,
+					hostWhere, whereArgs);
+
+			if (rowsAffected == 0) {
+				db.insert(TABLE_COLORS, null, values);
+			}
+		}
+
+		db.close();
+	}
+
+	public void setGlobalColor(int number, int value) {
+		setColorForHost(null, number, value);
+	}
+
+	public int[] getDefaultColorsForHost(HostBean host) {
+		int[] colors = new int[] { DEFAULT_FG_COLOR, DEFAULT_BG_COLOR };
+
+		SQLiteDatabase db = getReadableDatabase();
+
+		Cursor c = db.query(TABLE_COLOR_DEFAULTS,
+				new String[] { FIELD_COLOR_FG, FIELD_COLOR_BG },
+				FIELD_COLOR_SCHEME + " IS NULL",
+				null, null, null, null);
+
+		if (c.moveToFirst()) {
+			colors[0] = c.getInt(0);
+			colors[1] = c.getInt(1);
+		}
+
+		c.close();
+
+		// TODO This could probably just be a join
+		if (host != null) {
+			c = db.query(TABLE_COLOR_DEFAULTS,
+					new String[] { FIELD_COLOR_FG, FIELD_COLOR_BG },
+					FIELD_COLOR_SCHEME + " = ?",
+					new String[] { String.valueOf(host.getId()) },
+					null, null, null);
+
+			if (c.moveToFirst()) {
+				colors[0] = c.getInt(0);
+				colors[1] = c.getInt(1);
+			}
+
+			c.close();
+		}
+
+		db.close();
+
+		return colors;
+	}
+
+	public int[] getGlobalDefaultColors() {
+		return getDefaultColorsForHost(null);
+	}
+
+	public void setDefaultColorsForHost(HostBean host, int fg, int bg) {
+		int[] defaultColors = getGlobalDefaultColors();
+
+		SQLiteDatabase db = getWritableDatabase();
+
+		String schemeWhere = null;
+		String[] whereArgs;
+
+		// TODO change host.getId() into scheme numbers for colors
+
+		if (host == null) {
+			schemeWhere = FIELD_COLOR_SCHEME + " IS NULL";
+			whereArgs = null;
+		} else {
+			schemeWhere = FIELD_COLOR_SCHEME + " = ?";
+			whereArgs = new String[] { String.valueOf(host.getId()) };
+		}
+
+		if (fg == defaultColors[0] && bg == defaultColors[1]) {
+			db.delete(TABLE_COLOR_DEFAULTS,
+					schemeWhere,
+					whereArgs);
+		} else {
+			ContentValues values = new ContentValues();
+			values.put(FIELD_COLOR_FG, fg);
+			values.put(FIELD_COLOR_BG, bg);
+
+			int rowsAffected = db.update(TABLE_COLOR_DEFAULTS, values,
+					schemeWhere, whereArgs);
+
+			if (rowsAffected == 0) {
+				db.insert(TABLE_COLOR_DEFAULTS, null, values);
+			}
+		}
+
 		db.close();
 	}
 }

@@ -74,8 +74,8 @@ public class TerminalView extends View implements FontSizeChangedListener {
 		setFocusableInTouchMode(true);
 
 		cursorPaint = new Paint();
-		cursorPaint.setColor(bridge.color[TerminalBridge.COLOR_FG_STD]);
-		cursorPaint.setXfermode(new PixelXorXfermode(bridge.color[TerminalBridge.COLOR_BG_STD]));
+		cursorPaint.setColor(bridge.color[bridge.defaultFg]);
+		cursorPaint.setXfermode(new PixelXorXfermode(bridge.color[bridge.defaultBg]));
 		cursorPaint.setAntiAlias(true);
 
 		cursorStrokePaint = new Paint(cursorPaint);

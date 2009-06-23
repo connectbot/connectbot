@@ -308,6 +308,10 @@ public class HostListActivity extends ListActivity {
 		keys.setIcon(android.R.drawable.ic_lock_lock);
 		keys.setIntent(new Intent(HostListActivity.this, PubkeyListActivity.class));
 
+		MenuItem colors = menu.add("Colors");
+		colors.setIcon(android.R.drawable.ic_menu_slideshow);
+		colors.setIntent(new Intent(HostListActivity.this, ColorsActivity.class));
+
 		MenuItem settings = menu.add(R.string.list_menu_settings);
 		settings.setIcon(android.R.drawable.ic_menu_preferences);
 		settings.setIntent(new Intent(HostListActivity.this, SettingsActivity.class));
