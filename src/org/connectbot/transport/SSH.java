@@ -94,7 +94,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	}
 
 	private boolean compression = false;
-//	private volatile boolean authenticated = false;
+	private volatile boolean authenticated = false;
 	private volatile boolean connected = false;
 	private volatile boolean sessionOpen = false;
 
@@ -341,6 +341,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	 * authentication. If called before authenticated, it will just fail.
 	 */
 	private void finishConnection() {
+		authenticated = true;
+
 		for (PortForwardBean portForward : portForwards) {
 			try {
 				enablePortForward(portForward);
@@ -567,6 +569,9 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			return false;
 		}
 
+		if (!authenticated)
+			return false;
+
 		if (HostDatabase.PORTFORWARD_LOCAL.equals(portForward.getType())) {
 			LocalPortForwarder lpf = null;
 			try {
@@ -622,6 +627,9 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			Log.e(TAG, "Attempt to disable port forward not in list");
 			return false;
 		}
+
+		if (!authenticated)
+			return false;
 
 		if (HostDatabase.PORTFORWARD_LOCAL.equals(portForward.getType())) {
 			LocalPortForwarder lpf = null;
