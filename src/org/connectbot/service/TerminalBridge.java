@@ -19,6 +19,7 @@
 package org.connectbot.service;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -301,6 +302,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			responses[i] = promptHelper.requestStringPrompt(instruction, prompt[i]);
 		}
 		return responses;
+	}
+
+	/**
+	 * @return charset in use by bridge
+	 */
+	public Charset getCharset() {
+		return relay.getCharset();
 	}
 
 	/**

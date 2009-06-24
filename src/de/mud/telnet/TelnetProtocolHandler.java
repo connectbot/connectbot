@@ -92,6 +92,11 @@ public abstract class TelnetProtocolHandler {
   protected abstract void write(byte[] b) throws IOException;
 
   /**
+   * Read the charset name from terminal.
+   */
+  protected abstract String getCharsetName();
+
+  /**
    * Send one byte to the remote host.
    * @param b the byte to be sent
    * @see #write(byte[] b)
@@ -167,6 +172,8 @@ public abstract class TelnetProtocolHandler {
   private final static byte TELOPT_NAWS  = (byte)31;  /* NA-WindowSize*/
   /** Telnet option: Terminal Type */
   private final static byte TELOPT_TTYPE  = (byte)24;  /* terminal type */
+  /** Telnet option: CHARSET */
+  private final static byte TELOPT_CHARSET= (byte)42;  /* charset */
 
   private final static byte[] IACWILL  = { IAC, WILL };
   private final static byte[] IACWONT  = { IAC, WONT };
@@ -174,6 +181,9 @@ public abstract class TelnetProtocolHandler {
   private final static byte[] IACDONT  = { IAC, DONT };
   private final static byte[] IACSB  = { IAC, SB };
   private final static byte[] IACSE  = { IAC, SE };
+
+  private final static byte CHARSET_ACCEPTED = (byte)2;
+  private final static byte CHARSET_REJECTED = (byte)3;
 
   /** Telnet option qualifier 'IS' */
   private final static byte TELQUAL_IS = (byte)0;
@@ -242,7 +252,28 @@ public abstract class TelnetProtocolHandler {
         write(ttype.getBytes());
         write(IACSE);
       }
+      break;
+    case TELOPT_CHARSET:
+        System.out.println("Got SB CHARSET");
 
+      String charsetStr = new String(sbdata, "US-ASCII");
+      if (charsetStr.startsWith("TTABLE ")) {
+        charsetStr = charsetStr.substring(7);
+      }
+      String[] charsets = charsetStr.split(charsetStr.substring(0,0));
+      String myCharset = getCharsetName();
+      for (String charset : charsets) {
+        if (charset.equals(myCharset)) {
+          write(IACSB);write(TELOPT_CHARSET);write(CHARSET_ACCEPTED);
+          write(charset.getBytes());
+          write(IACSE);
+          System.out.println("Sent our charset!");
+          return;
+        }
+      }
+      write(IACSB);write(TELOPT_CHARSET);write(CHARSET_REJECTED);
+      write(IACSE);
+      break;
     }
   }
 

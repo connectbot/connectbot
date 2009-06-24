@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -97,6 +98,15 @@ public class Telnet extends AbsTransport {
 			/** sent on IAC EOR (prompt terminator for remote access systems). */
 			@Override
 			public void notifyEndOfRecord() {
+			}
+
+			@Override
+			protected String getCharsetName() {
+				Charset charset = bridge.getCharset();
+				if (charset != null)
+					return charset.name();
+				else
+					return "";
 			}
 		};
 	}
