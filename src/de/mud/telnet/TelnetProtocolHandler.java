@@ -638,11 +638,10 @@ public abstract class TelnetProtocolHandler {
   }
 
   public void inputfeed(byte[] b, int offset, int len) {
-    byte[] xb = new byte[tempbuf.length+offset+len];
+    byte[] xb = new byte[tempbuf.length+len];
 
-    System.arraycopy(b,0,xb,0,offset);
-    System.arraycopy(tempbuf,0,xb,offset,tempbuf.length);
-    System.arraycopy(b,offset,xb,offset+tempbuf.length,len);
+    System.arraycopy(tempbuf,0,xb,0,tempbuf.length);
+    System.arraycopy(b,offset,xb,tempbuf.length,len);
     tempbuf = xb;
   }
 }

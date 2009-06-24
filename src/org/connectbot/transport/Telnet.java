@@ -172,7 +172,7 @@ public class Telnet extends AbsTransport {
 		do {
 			n = handler.negotiate(buffer, start);
 			if (n > 0)
-				return start + n;
+				return n;
 		} while (n == 0);
 
 		while (n <= 0) {
@@ -187,7 +187,7 @@ public class Telnet extends AbsTransport {
 				throw new IOException("Remote end closed connection.");
 			}
 
-			handler.inputfeed(buffer, start, n - start);
+			handler.inputfeed(buffer, start, n);
 			n = handler.negotiate(buffer, start);
 		}
 		return n;
