@@ -41,6 +41,7 @@ public class HostBean extends AbstractBean {
 	private long lastConnect = -1;
 	private String color;
 	private boolean useKeys = true;
+	private String useAuthAgent = HostDatabase.AUTHAGENT_NO;
 	private String postLogin = null;
 	private long pubkeyId = -1;
 	private boolean wantSession = true;
@@ -140,6 +141,12 @@ public class HostBean extends AbstractBean {
 	public boolean getUseKeys() {
 		return useKeys;
 	}
+	public void setUseAuthAgent(String useAuthAgent) {
+		this.useAuthAgent = useAuthAgent;
+	}
+	public String getUseAuthAgent() {
+		return useAuthAgent;
+	}
 	public void setPostLogin(String postLogin) {
 		this.postLogin = postLogin;
 	}
@@ -202,6 +209,7 @@ public class HostBean extends AbstractBean {
 		values.put(HostDatabase.FIELD_HOST_LASTCONNECT, lastConnect);
 		values.put(HostDatabase.FIELD_HOST_COLOR, color);
 		values.put(HostDatabase.FIELD_HOST_USEKEYS, Boolean.toString(useKeys));
+		values.put(HostDatabase.FIELD_HOST_USEAUTHAGENT, useAuthAgent);
 		values.put(HostDatabase.FIELD_HOST_POSTLOGIN, postLogin);
 		values.put(HostDatabase.FIELD_HOST_PUBKEYID, pubkeyId);
 		values.put(HostDatabase.FIELD_HOST_WANTSESSION, Boolean.toString(wantSession));

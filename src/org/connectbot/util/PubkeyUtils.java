@@ -267,6 +267,29 @@ public class PubkeyUtils {
 		throw new InvalidKeyException("Unknown key type");
 	}
 
+	/*
+	 * OpenSSH compatibility methods
+	 */
+
+	/**
+	 * @param trileadKey
+	 * @return OpenSSH-encoded pubkey
+	 */
+	public static byte[] extractOpenSSHPublic(Object trileadKey) {
+		try {
+			if (trileadKey instanceof com.trilead.ssh2.signature.RSAPrivateKey)
+				return RSASHA1Verify.encodeSSHRSAPublicKey(
+						((com.trilead.ssh2.signature.RSAPrivateKey) trileadKey).getPublicKey());
+			else if (trileadKey instanceof com.trilead.ssh2.signature.DSAPrivateKey)
+				return DSASHA1Verify.encodeSSHDSAPublicKey(
+						((com.trilead.ssh2.signature.DSAPrivateKey) trileadKey).getPublicKey());
+			else
+				return null;
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
 	public static String exportPEM(PrivateKey key, String secret) throws NoSuchAlgorithmException, InvalidParameterSpecException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, InvalidKeySpecException, IllegalBlockSizeException, IOException {
 		StringBuilder sb = new StringBuilder();
 

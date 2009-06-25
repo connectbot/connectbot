@@ -21,12 +21,14 @@ package org.connectbot.service;
 import java.io.IOException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Map.Entry;
 
 import org.connectbot.ConsoleActivity;
 import org.connectbot.R;
@@ -83,7 +85,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	public Handler disconnectHandler = null;
 
-	public HashMap<String, Object> loadedPubkeys = new HashMap<String, Object>();
+	public Map<String, KeyHolder> loadedKeypairs = new HashMap<String, KeyHolder>();
 
 	public Resources res;
 
@@ -137,8 +139,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				PublicKey pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
 				Object trileadKey = PubkeyUtils.convertToTrilead(privKey, pubKey);
 
-				loadedPubkeys.put(pubkey.getNickname(), trileadKey);
-				Log.d(TAG, String.format("Added key '%s' to in-memory cache", pubkey.getNickname()));
+				addKey(pubkey.getNickname(), trileadKey);
 			} catch (Exception e) {
 				Log.d(TAG, String.format("Problem adding key '%s' to in-memory cache", pubkey.getNickname()), e);
 			}
@@ -312,27 +313,73 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 
 	public boolean isKeyLoaded(String nickname) {
-		return loadedPubkeys.containsKey(nickname);
+		return loadedKeypairs.containsKey(nickname);
 	}
 
 	public void addKey(String nickname, Object trileadKey) {
-		loadedPubkeys.remove(nickname);
-		loadedPubkeys.put(nickname, trileadKey);
+		removeKey(nickname);
+
+		byte[] sshPubKey = PubkeyUtils.extractOpenSSHPublic(trileadKey);
+
+		KeyHolder keyHolder = new KeyHolder();
+		keyHolder.trileadKey = trileadKey;
+		keyHolder.openSSHPubkey = sshPubKey;
+
+		loadedKeypairs.put(nickname, keyHolder);
+
+		Log.d(TAG, String.format("Added key '%s' to in-memory cache", nickname));
 	}
 
-	public void removeKey(String nickname) {
-		loadedPubkeys.remove(nickname);
+	public boolean removeKey(String nickname) {
+		Log.d(TAG, String.format("Removed key '%s' to in-memory cache", nickname));
+		return loadedKeypairs.remove(nickname) != null;
+	}
+
+	public boolean removeKey(byte[] publicKey) {
+		String nickname = null;
+		for (Entry<String,KeyHolder> entry : loadedKeypairs.entrySet()) {
+			if (Arrays.equals(entry.getValue().openSSHPubkey, publicKey)) {
+				nickname = entry.getKey();
+				break;
+			}
+		}
+
+		if (nickname != null) {
+			Log.d(TAG, String.format("Removed key '%s' to in-memory cache", nickname));
+			return removeKey(nickname);
+		} else
+			return false;
 	}
 
 	public Object getKey(String nickname) {
-		return loadedPubkeys.get(nickname);
+		if (loadedKeypairs.containsKey(nickname)) {
+			KeyHolder keyHolder = loadedKeypairs.get(nickname);
+			return keyHolder.trileadKey;
+		} else
+			return null;
+	}
+
+	public Object getKey(byte[] publicKey) {
+		for (KeyHolder keyHolder : loadedKeypairs.values()) {
+			if (Arrays.equals(keyHolder.openSSHPubkey, publicKey))
+				return keyHolder.trileadKey;
+		}
+		return null;
+	}
+
+	public String getKeyNickname(byte[] publicKey) {
+		for (Entry<String,KeyHolder> entry : loadedKeypairs.entrySet()) {
+			if (Arrays.equals(entry.getValue().openSSHPubkey, publicKey))
+				return entry.getKey();
+		}
+		return null;
 	}
 
 	private void stopWithDelay() {
 		// TODO add in a way to check whether keys loaded are encrypted and only
 		// set timer when we have an encrypted key loaded
 
-		if (loadedPubkeys.size() > 0) {
+		if (loadedKeypairs.size() > 0) {
 			synchronized (this) {
 				if (idleTimer == null)
 					idleTimer = new Timer(true);
@@ -534,5 +581,10 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	public boolean isResizeAllowed() {
 		return resizeAllowed;
+	}
+
+	public class KeyHolder {
+		public Object trileadKey;
+		public byte[] openSSHPubkey;
 	}
 }

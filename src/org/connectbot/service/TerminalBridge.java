@@ -272,8 +272,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		transport.setManager(manager);
 		transport.setHost(host);
 
-		// Should be more abstract?
+		// TODO make this more abstract so we don't litter on AbsTransport
 		transport.setCompression(host.getCompression());
+		transport.setUseAuthAgent(host.getUseAuthAgent());
 		transport.setEmulation(emulation);
 
 		if (transport.canForwardPorts()) {

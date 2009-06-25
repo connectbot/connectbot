@@ -49,7 +49,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String TAG = "ConnectBot.HostDatabase";
 
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 18;
+	public final static int DB_VERSION = 19;
 
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -62,6 +62,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_HOST_LASTCONNECT = "lastconnect";
 	public final static String FIELD_HOST_COLOR = "color";
 	public final static String FIELD_HOST_USEKEYS = "usekeys";
+	public final static String FIELD_HOST_USEAUTHAGENT = "useauthagent";
 	public final static String FIELD_HOST_POSTLOGIN = "postlogin";
 	public final static String FIELD_HOST_PUBKEYID = "pubkeyid";
 	public final static String FIELD_HOST_WANTSESSION = "wantsession";
@@ -102,6 +103,10 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String DELKEY_DEL = "del";
 	public final static String DELKEY_BACKSPACE = "backspace";
 
+	public final static String AUTHAGENT_NO = "no";
+	public final static String AUTHAGENT_CONFIRM = "confirm";
+	public final static String AUTHAGENT_YES = "yes";
+
 	public final static String ENCODING_DEFAULT = Charset.defaultCharset().name();
 
 	public final static long PUBKEYID_NEVER = -2;
@@ -129,6 +134,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_HOST_LASTCONNECT + " INTEGER, "
 				+ FIELD_HOST_COLOR + " TEXT, "
 				+ FIELD_HOST_USEKEYS + " TEXT, "
+				+ FIELD_HOST_USEAUTHAGENT + " TEXT, "
 				+ FIELD_HOST_POSTLOGIN + " TEXT, "
 				+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ", "
 				+ FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "', "
@@ -226,6 +232,9 @@ public class HostDatabase extends SQLiteOpenHelper {
 						+ FIELD_COLOR_BG + " INTEGER)");
 				db.execSQL("CREATE INDEX " + TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index ON "
 						+ TABLE_COLOR_DEFAULTS + " (" + FIELD_COLOR_SCHEME + ");");
+			case 18:
+				db.execSQL("ALTER TABLE " + TABLE_HOSTS
+						+ " ADD COLUMN " + FIELD_HOST_USEAUTHAGENT + " TEXT DEFAULT '" + AUTHAGENT_NO + "'");
 			}
 		} catch (SQLiteException e) {
 			// The database has entered an unknown state. Try to recover.
@@ -374,6 +383,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 			COL_LASTCONNECT = c.getColumnIndexOrThrow(FIELD_HOST_LASTCONNECT),
 			COL_COLOR = c.getColumnIndexOrThrow(FIELD_HOST_COLOR),
 			COL_USEKEYS = c.getColumnIndexOrThrow(FIELD_HOST_USEKEYS),
+			COL_USEAUTHAGENT = c.getColumnIndexOrThrow(FIELD_HOST_USEAUTHAGENT),
 			COL_POSTLOGIN = c.getColumnIndexOrThrow(FIELD_HOST_POSTLOGIN),
 			COL_PUBKEYID = c.getColumnIndexOrThrow(FIELD_HOST_PUBKEYID),
 			COL_WANTSESSION = c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION),
@@ -393,6 +403,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 			host.setLastConnect(c.getLong(COL_LASTCONNECT));
 			host.setColor(c.getString(COL_COLOR));
 			host.setUseKeys(Boolean.valueOf(c.getString(COL_USEKEYS)));
+			host.setUseAuthAgent(c.getString(COL_USEAUTHAGENT));
 			host.setPostLogin(c.getString(COL_POSTLOGIN));
 			host.setPubkeyId(c.getLong(COL_PUBKEYID));
 			host.setWantSession(Boolean.valueOf(c.getString(COL_WANTSESSION)));

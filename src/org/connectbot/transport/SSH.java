@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,6 +42,7 @@ import org.connectbot.bean.PortForwardBean;
 import org.connectbot.bean.PubkeyBean;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
+import org.connectbot.service.TerminalManager.KeyHolder;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
@@ -49,6 +51,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.trilead.ssh2.AuthAgentCallback;
 import com.trilead.ssh2.ChannelCondition;
 import com.trilead.ssh2.Connection;
 import com.trilead.ssh2.ConnectionInfo;
@@ -60,12 +63,18 @@ import com.trilead.ssh2.LocalPortForwarder;
 import com.trilead.ssh2.ServerHostKeyVerifier;
 import com.trilead.ssh2.Session;
 import com.trilead.ssh2.crypto.PEMDecoder;
+import com.trilead.ssh2.signature.DSAPrivateKey;
+import com.trilead.ssh2.signature.DSAPublicKey;
+import com.trilead.ssh2.signature.DSASHA1Verify;
+import com.trilead.ssh2.signature.RSAPrivateKey;
+import com.trilead.ssh2.signature.RSAPublicKey;
+import com.trilead.ssh2.signature.RSASHA1Verify;
 
 /**
  * @author Kenny Root
  *
  */
-public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveCallback {
+public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveCallback, AuthAgentCallback {
 	public SSH() {
 		super();
 	}
@@ -120,6 +129,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 	private int width;
 	private int height;
+
+	private String useAuthAgent = HostDatabase.AUTHAGENT_NO;
 
 	public class HostKeyVerifier implements ServerHostKeyVerifier {
 		public boolean verifyServerHostKey(String hostname, int port,
@@ -216,8 +227,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 					// try each of the in-memory keys
 					bridge.outputLine(manager.res
 							.getString(R.string.terminal_auth_pubkey_any));
-					for(String nickname : manager.loadedPubkeys.keySet()) {
-						Object trileadKey = manager.loadedPubkeys.get(nickname);
+					for(String nickname : manager.loadedKeypairs.keySet()) {
+						Object trileadKey = manager.loadedKeypairs.get(nickname).trileadKey;
 						if(this.tryPublicKey(host.getUsername(), nickname, trileadKey)) {
 							finishConnection();
 							break;
@@ -360,6 +371,9 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 		try {
 			session = connection.openSession();
+
+			if (!useAuthAgent.equals(HostDatabase.AUTHAGENT_NO))
+				session.requestAuthAgentForwarding(this);
 
 			session.requestPTY(getEmulation(), columns, rows, width, height, null);
 			session.startShell();
@@ -807,5 +821,66 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				context.getString(R.string.format_username),
 				context.getString(R.string.format_hostname),
 				context.getString(R.string.format_port));
+	}
+
+	@Override
+	public void setUseAuthAgent(String useAuthAgent) {
+		this.useAuthAgent = useAuthAgent;
+	}
+
+	public Map<String,byte[]> retrieveIdentities() {
+		Map<String,byte[]> pubKeys = new HashMap<String,byte[]>(manager.loadedKeypairs.size());
+
+		for (Entry<String,KeyHolder> entry : manager.loadedKeypairs.entrySet()) {
+			Object trileadKey = entry.getValue().trileadKey;
+
+			try {
+				if (trileadKey instanceof RSAPrivateKey) {
+					RSAPublicKey pubkey = ((RSAPrivateKey) trileadKey).getPublicKey();
+					pubKeys.put(entry.getKey(), RSASHA1Verify.encodeSSHRSAPublicKey(pubkey));
+				} else if (trileadKey instanceof DSAPrivateKey) {
+					DSAPublicKey pubkey = ((DSAPrivateKey) trileadKey).getPublicKey();
+					pubKeys.put(entry.getKey(), DSASHA1Verify.encodeSSHDSAPublicKey(pubkey));
+				} else
+					continue;
+			} catch (IOException e) {
+				continue;
+			}
+		}
+
+		return pubKeys;
+	}
+
+	public Object getPrivateKey(byte[] publicKey) {
+		String nickname = manager.getKeyNickname(publicKey);
+
+		if (nickname == null)
+			return null;
+
+		if (useAuthAgent.equals(HostDatabase.AUTHAGENT_NO)) {
+			Log.e(TAG, "");
+			return null;
+		} else if (useAuthAgent.equals(HostDatabase.AUTHAGENT_CONFIRM)) {
+			Boolean result = bridge.promptHelper.requestBooleanPrompt(null,
+					manager.res.getString(R.string.prompt_allow_agent_to_use_key,
+							nickname));
+			if (result == null || !result)
+				return null;
+		}
+		return manager.getKey(nickname);
+	}
+
+	public boolean addIdentity(Object key, String comment) {
+		manager.addKey(comment, key);
+		return true;
+	}
+
+	public boolean removeAllIdentities() {
+		manager.loadedKeypairs.clear();
+		return true;
+	}
+
+	public boolean removeIdentity(byte[] publicKey) {
+		return manager.removeKey(publicKey);
 	}
 }

@@ -353,7 +353,28 @@ public class Session
 
 		cm.requestChannelTrileadPing(cn);
 	}
-	
+
+	/**
+	 * Request authentication agent forwarding.
+	 * @param agent object that implements the callbacks
+	 *
+	 * @throws IOException in case of any problem or when the session is closed
+	 */
+	public synchronized boolean requestAuthAgentForwarding(AuthAgentCallback agent) throws IOException
+	{
+		synchronized (this)
+		{
+			/*
+			 * The following is just a nicer error, we would catch it anyway
+			 * later in the channel code
+			 */
+			if (flag_closed)
+				throw new IOException("This session is closed.");
+		}
+
+		return cm.requestChannelAgentForwarding(cn, agent);
+	}
+
 	public InputStream getStdout()
 	{
 		return cn.getStdoutStream();

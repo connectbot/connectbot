@@ -43,7 +43,14 @@
 		android:entries="@array/list_pubkeyids"
 		android:entryValues="@array/list_pubkeyids_value"
 		/>
-		
+
+	<ListPreference
+		android:key="useauthagent"
+		android:title="@string/hostpref_authagent_title"
+		android:entries="@array/list_authagent"
+		android:entryValues="@array/list_authagent_values"
+		/>
+
 	<EditTextPreference
 		android:key="postlogin"
 		android:title="@string/hostpref_postlogin_title"

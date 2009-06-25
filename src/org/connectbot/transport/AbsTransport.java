@@ -133,6 +133,10 @@ public abstract class AbsTransport {
 		// do nothing
 	}
 
+	public void setUseAuthAgent(String useAuthAgent) {
+		// do nothing
+	}
+
 	public void setEmulation(String emulation) {
 		this.emulation = emulation;
 	}

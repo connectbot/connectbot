@@ -71,6 +71,9 @@
 	<!-- Prompt for the password to unlock a certain pubkey. -->
 	<string name="prompt_pubkey_password">Password for key '%1$s'</string>
 
+	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key -->
+	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key '%1$s'?</string>
+
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</string>
 	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
@@ -215,6 +218,9 @@
 
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">Use pubkey authentication</string>
+
+	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
+	<string name="hostpref_authagent_title">Use SSH auth agent</string>
 
 	<!-- Host post-login automation preference title -->
 	<string name="hostpref_postlogin_title">Post-login automation</string>
