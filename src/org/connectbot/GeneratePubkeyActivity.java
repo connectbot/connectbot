@@ -65,6 +65,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 	private SeekBar bitsSlider;
 	private EditText bitsText;
 	private CheckBox unlockAtStartup;
+	private CheckBox confirmUse;
 	private Button save;
 	private Dialog entropyDialog;
 	private ProgressDialog progress;
@@ -94,6 +95,8 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 		password2 = (EditText) findViewById(R.id.password2);
 
 		unlockAtStartup = (CheckBox) findViewById(R.id.unlock_at_startup);
+
+		confirmUse = (CheckBox) findViewById(R.id.confirm_use);
 
 		save = (Button) findViewById(R.id.save);
 
@@ -274,6 +277,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 				pubkey.setPublicKey(PubkeyUtils.getEncodedPublic(pub));
 				pubkey.setEncrypted(encrypted);
 				pubkey.setStartup(unlockAtStartup.isChecked());
+				pubkey.setConfirmUse(confirmUse.isChecked());
 
 				PubkeyDatabase pubkeydb = new PubkeyDatabase(GeneratePubkeyActivity.this);
 				pubkeydb.savePubkey(pubkey);
