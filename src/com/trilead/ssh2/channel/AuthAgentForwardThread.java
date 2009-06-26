@@ -8,8 +8,6 @@ import java.security.SecureRandom;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import android.util.Log;
-
 import com.trilead.ssh2.AuthAgentCallback;
 import com.trilead.ssh2.log.Logger;
 import com.trilead.ssh2.packets.TypesReader;
@@ -29,34 +27,34 @@ import com.trilead.ssh2.signature.RSASignature;
  */
 public class AuthAgentForwardThread extends Thread implements IChannelWorkerThread
 {
-	public static final int SSH_AGENT_CONSTRAIN_LIFETIME = 1;
-	public static final int SSH_AGENT_CONSTRAIN_CONFIRM = 2;
+	private static final byte[] SSH_AGENT_FAILURE = {0, 0, 0, 1, 5}; // 5
+	private static final byte[] SSH_AGENT_SUCCESS = {0, 0, 0, 1, 6}; // 6
 
-	private static final byte[] SSH_AGENT_FAILURE = {0, 0, 0, 1, 5};
-	private static final byte[] SSH_AGENT_SUCCESS = {0, 0, 0, 1, 6};
-//	public static final int SSH_AGENT_FAILURE = 5;
-//	public static final int SSH_AGENT_SUCCESS = 6;
+	private static final int SSH2_AGENTC_REQUEST_IDENTITIES = 11;
+	private static final int SSH2_AGENT_IDENTITIES_ANSWER = 12;
 
-	public static final int SSH2_AGENTC_REQUEST_IDENTITIES = 11;
-	public static final int SSH2_AGENT_IDENTITIES_ANSWER = 12;
+	private static final int SSH2_AGENTC_SIGN_REQUEST = 13;
+	private static final int SSH2_AGENT_SIGN_RESPONSE = 14;
 
-	public static final int SSH2_AGENTC_SIGN_REQUEST = 13;
-	public static final int SSH2_AGENT_SIGN_RESPONSE = 14;
+	private static final int SSH2_AGENTC_ADD_IDENTITY = 17;
+	private static final int SSH2_AGENTC_REMOVE_IDENTITY = 18;
+	private static final int SSH2_AGENTC_REMOVE_ALL_IDENTITIES = 19;
 
-	public static final int SSH2_AGENTC_ADD_IDENTITY = 17;
-	public static final int SSH2_AGENTC_REMOVE_IDENTITY = 18;
-	public static final int SSH2_AGENTC_REMOVE_ALL_IDENTITIES = 19;
+//	private static final int SSH_AGENTC_ADD_SMARTCARD_KEY = 20;
+//	private static final int SSH_AGENTC_REMOVE_SMARTCARD_KEY = 21;
 
-	public static final int SSH_AGENTC_ADD_SMARTCARD_KEY = 20;
-	public static final int SSH_AGENTC_REMOVE_SMARTCARD_KEY = 21;
+	private static final int SSH_AGENTC_LOCK = 22;
+	private static final int SSH_AGENTC_UNLOCK = 23;
 
-	public static final int SSH_AGENTC_LOCK = 22;
-	public static final int SSH_AGENTC_UNLOCK = 23;
+	private static final int SSH2_AGENTC_ADD_ID_CONSTRAINED = 25;
+//	private static final int SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED = 26;
 
-	public static final int SSH2_AGENTC_ADD_ID_CONSTRAINED = 25;
-	public static final int SSH_AGENTC_ADD_SMARTCARD_KEY_CONSTRAINED = 26;
+	// Constraints for adding keys
+	private static final int SSH_AGENT_CONSTRAIN_LIFETIME = 1;
+	private static final int SSH_AGENT_CONSTRAIN_CONFIRM = 2;
 
-	public static final int SSH_AGENT_OLD_SIGNATURE = 1;
+	// Flags for signature requests
+//	private static final int SSH_AGENT_OLD_SIGNATURE = 1;
 
 	private static final Logger log = Logger.getLogger(RemoteAcceptThread.class);
 
@@ -64,6 +62,7 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 	OutputStream os;
 	InputStream is;
 	Channel c;
+
 	byte[] buffer = new byte[Channel.CHANNEL_BUFFER_SIZE];
 
 	public AuthAgentForwardThread(Channel c, AuthAgentCallback authAgent)
@@ -81,7 +80,9 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 		try
 		{
 			c.cm.registerThread(this);
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			stopWorking();
 			return;
 		}
@@ -103,7 +104,8 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 				{
 					len = is.read(buffer, readSoFar, buffer.length - readSoFar);
 				}
-				catch (IOException e) {
+				catch (IOException e)
+				{
 					stopWorking();
 					return;
 				}
@@ -113,20 +115,15 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 
 				readSoFar += len;
 
-				Log.d("AuthAgent", "read " + readSoFar + " bytes");
-
 				if (readSoFar >= 4) {
 					TypesReader tr = new TypesReader(buffer, 0, 4);
 					totalSize = tr.readUINT32() + 4;
-					Log.d("AuthAgent", "message is " + totalSize + " bytes");
 				}
 
 				if (totalSize == readSoFar) {
-//					debugPacket(buffer, readSoFar);
 					TypesReader tr = new TypesReader(buffer, 4, readSoFar - 4);
 					int messageType = tr.readByte();
 
-					Log.d("AuthAgent", "Got a message type " + messageType);
 					switch (messageType) {
 					case SSH2_AGENTC_REQUEST_IDENTITIES:
 						sendIdentities();
@@ -143,6 +140,12 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 					case SSH2_AGENTC_SIGN_REQUEST:
 						processSignRequest(tr);
 						break;
+					case SSH_AGENTC_LOCK:
+						processLockRequest(tr);
+						break;
+					case SSH_AGENTC_UNLOCK:
+						processUnlockRequest(tr);
+						break;
 					default:
 						os.write(SSH_AGENT_FAILURE);
 						break;
@@ -150,9 +153,6 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 
 					readSoFar = 0;
 				}
-				// TODO write actual agent forwarding stuff!
-//				log.log(0, "Received an agent request; sending failure");
-//				os.write(AGENT_FAILURE);
 			}
 
 			c.cm.closeChannel(c, "EOF on both streams reached.", true);
@@ -168,6 +168,7 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 			catch (IOException e1)
 			{
 			}
+
 			try
 			{
 				os.close();
@@ -175,6 +176,7 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 			catch (IOException e2)
 			{
 			}
+
 			try
 			{
 				c.cm.closeChannel(c, "IOException in agent forwarder (" + e.getMessage() + ")", true);
@@ -196,15 +198,32 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 		}
 	}
 
+	/**
+	 * @return whether the agent is locked
+	 */
+	private boolean failWhenLocked() throws IOException
+	{
+		if (authAgent.isAgentLocked()) {
+			os.write(SSH_AGENT_FAILURE);
+			return true;
+		} else
+			return false;
+	}
+
 	private void sendIdentities() throws IOException
 	{
-		Map<String,byte[]> keys = authAgent.retrieveIdentities();
+		Map<String,byte[]> keys = null;
 
 		TypesWriter tw = new TypesWriter();
 		tw.writeByte(SSH2_AGENT_IDENTITIES_ANSWER);
 		int numKeys = 0;
+
+		if (!authAgent.isAgentLocked())
+			keys = authAgent.retrieveIdentities();
+
 		if (keys != null)
 			numKeys = keys.size();
+
 		tw.writeUINT32(numKeys);
 
 		if (keys != null) {
@@ -215,7 +234,6 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 			}
 		}
 
-		Log.d("AuthAgent", "Sending " + numKeys + " to server");
 		sendPacket(tw.getBytes());
 	}
 
@@ -225,6 +243,9 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 	private void addIdentity(TypesReader tr) {
 		try
 		{
+			if (failWhenLocked())
+				return;
+
 			String type = tr.readString();
 
 			Object key;
@@ -277,6 +298,9 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 	private void removeIdentity(TypesReader tr) {
 		try
 		{
+			if (failWhenLocked())
+				return;
+
 			byte[] publicKey = tr.readByteString();
 			if (authAgent.removeIdentity(publicKey))
 				os.write(SSH_AGENT_SUCCESS);
@@ -301,6 +325,9 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 	private void removeAllIdentities(TypesReader tr) {
 		try
 		{
+			if (failWhenLocked())
+				return;
+
 			if (authAgent.removeAllIdentities())
 				os.write(SSH_AGENT_SUCCESS);
 			else
@@ -322,16 +349,23 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 	{
 		try
 		{
+			if (failWhenLocked())
+				return;
+
 			byte[] publicKey = tr.readByteString();
 			byte[] challenge = tr.readByteString();
 
 			int flags = tr.readUINT32();
 
+			if (flags != 0) {
+				// We don't understand any flags; abort!
+				os.write(SSH_AGENT_FAILURE);
+				return;
+			}
+
 			Object trileadKey = authAgent.getPrivateKey(publicKey);
 
 			if (trileadKey == null) {
-				Log.d("AuthAgent", "Key not known to us; failing signature. Public key:");
-//				debugPacket(publicKey);
 				os.write(SSH_AGENT_FAILURE);
 				return;
 			}
@@ -343,13 +377,10 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 						(RSAPrivateKey) trileadKey);
 				response = RSASHA1Verify.encodeSSHRSASignature(signature);
 			} else if (trileadKey instanceof DSAPrivateKey) {
-				if ((flags & SSH_AGENT_OLD_SIGNATURE) != 0)
-					Log.d("AuthAgent", "Want old signature type");
 				DSASignature signature = DSASHA1Verify.generateSignature(challenge,
 						(DSAPrivateKey) trileadKey, new SecureRandom());
 				response = DSASHA1Verify.encodeSSHDSASignature(signature);
 			} else {
-				Log.d("AuthAgent", "Unknown key type; failing signature request");
 				os.write(SSH_AGENT_FAILURE);
 				return;
 			}
@@ -360,12 +391,68 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 
 			sendPacket(tw.getBytes());
 		}
-		catch (IOException e) {
+		catch (IOException e)
+		{
 			try
 			{
 				os.write(SSH_AGENT_FAILURE);
 			}
-			catch (IOException e1) {
+			catch (IOException e1)
+			{
+			}
+		}
+	}
+
+	/**
+	 * @param tr
+	 */
+	private void processLockRequest(TypesReader tr) {
+		try
+		{
+			if (failWhenLocked())
+				return;
+
+			String lockPassphrase = tr.readString();
+			if (!authAgent.setAgentLock(lockPassphrase)) {
+				os.write(SSH_AGENT_FAILURE);
+				return;
+			} else
+				os.write(SSH_AGENT_SUCCESS);
+		}
+		catch (IOException e)
+		{
+			try
+			{
+				os.write(SSH_AGENT_FAILURE);
+			}
+			catch (IOException e1)
+			{
+			}
+		}
+	}
+
+	/**
+	 * @param tr
+	 */
+	private void processUnlockRequest(TypesReader tr)
+	{
+		try
+		{
+			String unlockPassphrase = tr.readString();
+
+			if (authAgent.requestAgentUnlock(unlockPassphrase))
+				os.write(SSH_AGENT_SUCCESS);
+			else
+				os.write(SSH_AGENT_FAILURE);
+		}
+		catch (IOException e)
+		{
+			try
+			{
+				os.write(SSH_AGENT_FAILURE);
+			}
+			catch (IOException e1)
+			{
 			}
 		}
 	}
@@ -374,35 +461,11 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 	 * @param tw
 	 * @throws IOException
 	 */
-	private void sendPacket(byte[] message) throws IOException {
+	private void sendPacket(byte[] message) throws IOException
+	{
 		TypesWriter packet = new TypesWriter();
 		packet.writeUINT32(message.length);
 		packet.writeBytes(message);
-//		debugPacket(packet.getBytes());
 		os.write(packet.getBytes());
 	}
-
-//	private static final char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-//
-//	private void debugPacket(byte[] packet) {
-//		debugPacket(packet, packet.length);
-//	}
-//
-//	private void debugPacket(byte[] packet, int len) {
-//		StringBuilder sb = new StringBuilder();
-//		sb.append("Packet dump:");
-//
-//		for (int i = 0; i < len; i++) {
-//			if (packet[i] < 32 || packet[i] > 0x7e) {
-//				sb.append(" 0x");
-//				sb.append(hexDigits[(packet[i] >> 4) & 0xF]);
-//				sb.append(hexDigits[packet[i] & 0xF]);
-//			} else {
-//				sb.append("    ");
-//				sb.append((char)packet[i]);
-//			}
-//		}
-//
-//		Log.d("AuthAgent", sb.toString());
-//	}
 }

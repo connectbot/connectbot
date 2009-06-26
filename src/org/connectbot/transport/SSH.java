@@ -131,6 +131,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	private int height;
 
 	private String useAuthAgent = HostDatabase.AUTHAGENT_NO;
+	private String agentLockPassphrase;
 
 	public class HostKeyVerifier implements ServerHostKeyVerifier {
 		public boolean verifyServerHostKey(String hostname, int port,
@@ -882,5 +883,27 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 	public boolean removeIdentity(byte[] publicKey) {
 		return manager.removeKey(publicKey);
+	}
+
+	public boolean isAgentLocked() {
+		return agentLockPassphrase != null;
+	}
+
+	public boolean requestAgentUnlock(String unlockPassphrase) {
+		if (agentLockPassphrase == null)
+			return false;
+
+		if (agentLockPassphrase.equals(unlockPassphrase))
+			agentLockPassphrase = null;
+
+		return agentLockPassphrase == null;
+	}
+
+	public boolean setAgentLock(String lockPassphrase) {
+		if (agentLockPassphrase != null)
+			return false;
+
+		agentLockPassphrase = lockPassphrase;
+		return true;
 	}
 }

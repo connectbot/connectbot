@@ -42,4 +42,20 @@ public interface AuthAgentCallback {
 	 *         the user in Trilead object format.
 	 */
 	Object getPrivateKey(byte[] publicKey);
+
+	/**
+	 * @return
+	 */
+	boolean isAgentLocked();
+
+	/**
+	 * @param lockPassphrase
+	 */
+	boolean setAgentLock(String lockPassphrase);
+
+	/**
+	 * @param unlockPassphrase
+	 * @return
+	 */
+	boolean requestAgentUnlock(String unlockPassphrase);
 }
