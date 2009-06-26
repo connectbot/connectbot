@@ -39,11 +39,14 @@ public class PubkeyBean extends AbstractBean {
 	private byte[] publicKey;
 	private boolean encrypted = false;
 	private boolean startup = false;
+	private boolean confirmUse = false;
+	private int lifetime = 0;
 
 	/* Transient values */
 	private boolean unlocked = false;
 	private Object unlockedPrivate = null;
 
+	@Override
 	public String getBeanName() {
 		return BEAN_NAME;
 	}
@@ -116,6 +119,22 @@ public class PubkeyBean extends AbstractBean {
 		return startup;
 	}
 
+	public void setConfirmUse(boolean confirmUse) {
+		this.confirmUse = confirmUse;
+	}
+
+	public boolean isConfirmUse() {
+		return confirmUse;
+	}
+
+	public void setLifetime(int lifetime) {
+		this.lifetime = lifetime;
+	}
+
+	public int getLifetime() {
+		return lifetime;
+	}
+
 	public void setUnlocked(boolean unlocked) {
 		this.unlocked = unlocked;
 	}
@@ -145,6 +164,8 @@ public class PubkeyBean extends AbstractBean {
 		values.put(PubkeyDatabase.FIELD_PUBKEY_PUBLIC, publicKey);
 		values.put(PubkeyDatabase.FIELD_PUBKEY_ENCRYPTED, encrypted ? 1 : 0);
 		values.put(PubkeyDatabase.FIELD_PUBKEY_STARTUP, startup ? 1 : 0);
+		values.put(PubkeyDatabase.FIELD_PUBKEY_CONFIRMUSE, confirmUse ? 1 : 0);
+		values.put(PubkeyDatabase.FIELD_PUBKEY_LIFETIME, lifetime);
 
 		return values;
 	}

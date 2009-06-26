@@ -90,6 +90,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	protected TerminalManager bound = null;
 
 	private MenuItem onstartToggle = null;
+	private MenuItem confirmUse = null;
 
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
@@ -345,7 +346,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 		// save this key in-memory if option enabled
 		if(bound.isSavingKeys()) {
-			bound.addKey(pubkey.getNickname(), trileadKey);
+			bound.addKey(pubkey, trileadKey);
 		}
 
 		updateHandler.sendEmptyMessage(-1);
@@ -477,6 +478,19 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 					.setNegativeButton(android.R.string.cancel, null).create().show();
 
 			return true;
+			}
+		});
+
+		confirmUse = menu.add(R.string.pubkey_confirm_use);
+		confirmUse.setCheckable(true);
+		confirmUse.setChecked(pubkey.isConfirmUse());
+		confirmUse.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				// toggle confirm use
+				pubkey.setConfirmUse(!pubkey.isConfirmUse());
+				pubkeydb.savePubkey(pubkey);
+				updateHandler.sendEmptyMessage(-1);
+				return true;
 			}
 		});
 

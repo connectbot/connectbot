@@ -101,6 +101,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	private MediaPlayer mediaPlayer;
 
+	private Timer pubkeyTimer;
+
 	private Timer idleTimer;
 	private final long IDLE_TIMEOUT = 300000; // 5 minutes
 
@@ -127,6 +129,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		res = getResources();
 
+		pubkeyTimer = new Timer("pubkeyTimer", true);
+
 		hostdb = new HostDatabase(this);
 		pubkeydb = new PubkeyDatabase(this);
 
@@ -139,7 +143,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				PublicKey pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
 				Object trileadKey = PubkeyUtils.convertToTrilead(privKey, pubKey);
 
-				addKey(pubkey.getNickname(), trileadKey);
+				addKey(pubkey, trileadKey);
 			} catch (Exception e) {
 				Log.d(TAG, String.format("Problem adding key '%s' to in-memory cache", pubkey.getNickname()), e);
 			}
@@ -184,6 +188,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		synchronized (this) {
 			if (idleTimer != null)
 				idleTimer.cancel();
+			if (pubkeyTimer != null)
+				pubkeyTimer.cancel();
 		}
 
 		if (wifilock != null && wifilock.isHeld())
@@ -316,18 +322,30 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		return loadedKeypairs.containsKey(nickname);
 	}
 
-	public void addKey(String nickname, Object trileadKey) {
-		removeKey(nickname);
+	public void addKey(PubkeyBean pubkey, Object trileadKey) {
+		removeKey(pubkey.getNickname());
 
 		byte[] sshPubKey = PubkeyUtils.extractOpenSSHPublic(trileadKey);
 
 		KeyHolder keyHolder = new KeyHolder();
+		keyHolder.bean = pubkey;
 		keyHolder.trileadKey = trileadKey;
 		keyHolder.openSSHPubkey = sshPubKey;
 
-		loadedKeypairs.put(nickname, keyHolder);
+		loadedKeypairs.put(pubkey.getNickname(), keyHolder);
 
-		Log.d(TAG, String.format("Added key '%s' to in-memory cache", nickname));
+		if (pubkey.getLifetime() > 0) {
+			final String nickname = pubkey.getNickname();
+			pubkeyTimer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					Log.d(TAG, "Unloading from memory key: " + nickname);
+					removeKey(nickname);
+				}
+			}, pubkey.getLifetime() * 1000);
+		}
+
+		Log.d(TAG, String.format("Added key '%s' to in-memory cache", pubkey.getNickname()));
 	}
 
 	public boolean removeKey(String nickname) {
@@ -382,7 +400,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		if (loadedKeypairs.size() > 0) {
 			synchronized (this) {
 				if (idleTimer == null)
-					idleTimer = new Timer(true);
+					idleTimer = new Timer("idleTimer", true);
 
 				idleTimer.schedule(new IdleTask(), IDLE_TIMEOUT);
 			}
@@ -584,6 +602,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 
 	public class KeyHolder {
+		public PubkeyBean bean;
 		public Object trileadKey;
 		public byte[] openSSHPubkey;
 	}

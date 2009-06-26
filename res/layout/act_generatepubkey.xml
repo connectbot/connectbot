@@ -160,6 +160,12 @@
 			android:id="@+id/unlock_at_startup"
 			android:text="@string/pubkey_load_on_start" />
 
+		<CheckBox
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/confirm_use"
+			android:text="@string/pubkey_confirm_use" />
+
 		<Button
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

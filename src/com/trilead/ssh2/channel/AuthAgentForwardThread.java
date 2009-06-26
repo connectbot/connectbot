@@ -129,7 +129,10 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 						sendIdentities();
 						break;
 					case SSH2_AGENTC_ADD_IDENTITY:
-						addIdentity(tr);
+						addIdentity(tr, false);
+						break;
+					case SSH2_AGENTC_ADD_ID_CONSTRAINED:
+						addIdentity(tr, true);
 						break;
 					case SSH2_AGENTC_REMOVE_IDENTITY:
 						removeIdentity(tr);
@@ -240,7 +243,7 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 	/**
 	 * @param tr
 	 */
-	private void addIdentity(TypesReader tr) {
+	private void addIdentity(TypesReader tr, boolean checkConstraints) {
 		try
 		{
 			if (failWhenLocked())
@@ -275,7 +278,25 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 				return;
 			}
 
-			if (authAgent.addIdentity(key, comment))
+			boolean confirmUse = false;
+			int lifetime = 0;
+
+			if (checkConstraints) {
+				while (tr.remain() > 0) {
+					int constraint = tr.readByte();
+					if (constraint == SSH_AGENT_CONSTRAIN_CONFIRM)
+						confirmUse = true;
+					else if (constraint == SSH_AGENT_CONSTRAIN_LIFETIME)
+						lifetime = tr.readUINT32();
+					else {
+						// Unknown constraint. Bail.
+						os.write(SSH_AGENT_FAILURE);
+						return;
+					}
+				}
+			}
+
+			if (authAgent.addIdentity(key, comment, confirmUse, lifetime))
 				os.write(SSH_AGENT_SUCCESS);
 			else
 				os.write(SSH_AGENT_FAILURE);

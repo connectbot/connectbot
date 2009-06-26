@@ -228,9 +228,13 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 					// try each of the in-memory keys
 					bridge.outputLine(manager.res
 							.getString(R.string.terminal_auth_pubkey_any));
-					for(String nickname : manager.loadedKeypairs.keySet()) {
-						Object trileadKey = manager.loadedKeypairs.get(nickname).trileadKey;
-						if(this.tryPublicKey(host.getUsername(), nickname, trileadKey)) {
+					for (Entry<String, KeyHolder> entry : manager.loadedKeypairs.entrySet()) {
+						if (entry.getValue().bean.isConfirmUse()
+								&& !promptForPubkeyUse(entry.getKey()))
+							continue;
+
+						if (this.tryPublicKey(host.getUsername(), entry.getKey(),
+								entry.getValue().trileadKey)) {
 							finishConnection();
 							break;
 						}
@@ -291,8 +295,13 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		if(manager.isKeyLoaded(pubkey.getNickname())) {
 			// load this key from memory if its already there
 			Log.d(TAG, String.format("Found unlocked key '%s' already in-memory", pubkey.getNickname()));
-			trileadKey = manager.getKey(pubkey.getNickname());
 
+			if (pubkey.isConfirmUse()) {
+				if (promptForPubkeyUse(pubkey.getNickname()))
+					return false;
+			}
+
+			trileadKey = manager.getKey(pubkey.getNickname());
 		} else {
 			// otherwise load key from database and prompt for password as needed
 			String password = null;
@@ -333,7 +342,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 			// save this key in-memory if option enabled
 			if(manager.isSavingKeys()) {
-				manager.addKey(pubkey.getNickname(), trileadKey);
+				manager.addKey(pubkey, trileadKey);
 			}
 		}
 
@@ -861,18 +870,28 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		if (useAuthAgent.equals(HostDatabase.AUTHAGENT_NO)) {
 			Log.e(TAG, "");
 			return null;
-		} else if (useAuthAgent.equals(HostDatabase.AUTHAGENT_CONFIRM)) {
-			Boolean result = bridge.promptHelper.requestBooleanPrompt(null,
-					manager.res.getString(R.string.prompt_allow_agent_to_use_key,
-							nickname));
-			if (result == null || !result)
+		} else if (useAuthAgent.equals(HostDatabase.AUTHAGENT_CONFIRM) ||
+				manager.loadedKeypairs.get(nickname).bean.isConfirmUse()) {
+			if (!promptForPubkeyUse(nickname))
 				return null;
 		}
 		return manager.getKey(nickname);
 	}
 
-	public boolean addIdentity(Object key, String comment) {
-		manager.addKey(comment, key);
+	private boolean promptForPubkeyUse(String nickname) {
+		Boolean result = bridge.promptHelper.requestBooleanPrompt(null,
+				manager.res.getString(R.string.prompt_allow_agent_to_use_key,
+						nickname));
+		return result;
+	}
+
+	public boolean addIdentity(Object key, String comment, boolean confirmUse, int lifetime) {
+		PubkeyBean pubkey = new PubkeyBean();
+//		pubkey.setType(PubkeyDatabase.KEY_TYPE_IMPORTED);
+		pubkey.setNickname(comment);
+		pubkey.setConfirmUse(confirmUse);
+		pubkey.setLifetime(lifetime);
+		manager.addKey(pubkey, key);
 		return true;
 	}
 

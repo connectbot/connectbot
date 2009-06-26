@@ -20,9 +20,11 @@ public interface AuthAgentCallback {
 	 *            containing a DSA or RSA private key of
 	 *            the user in Trilead object format.
 	 * @param comment comment associated with this key
+	 * @param confirmUse whether to prompt before using this key
+	 * @param lifetime lifetime in seconds for key to be remembered
 	 * @return success or failure
 	 */
-	boolean addIdentity(Object key, String comment);
+	boolean addIdentity(Object key, String comment, boolean confirmUse, int lifetime);
 
 	/**
 	 * @param publicKey byte blob containing the OpenSSH-format encoded public key
