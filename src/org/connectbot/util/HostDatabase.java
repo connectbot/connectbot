@@ -33,7 +33,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.trilead.ssh2.KnownHosts;
@@ -44,7 +43,7 @@ import com.trilead.ssh2.KnownHosts;
  *
  * @author jsharkey
  */
-public class HostDatabase extends SQLiteOpenHelper {
+public class HostDatabase extends RobustSQLiteOpenHelper {
 
 	public final static String TAG = "ConnectBot.HostDatabase";
 
@@ -112,6 +111,11 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static long PUBKEYID_NEVER = -2;
 	public final static long PUBKEYID_ANY = -1;
 
+	static {
+		addTableName(TABLE_HOSTS);
+		addTableName(TABLE_PORTFORWARDS);
+	}
+
 	public HostDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 
@@ -120,7 +124,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		dropAllTables(db);
+		super.onCreate(db);
 
 		db.execSQL("CREATE TABLE " + TABLE_HOSTS
 				+ " (_id INTEGER PRIMARY KEY, "
@@ -174,7 +178,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+	public void onRobustUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) throws SQLiteException {
 		// Versions of the database before the Android Market release will be
 		// shot without warning.
 		if (oldVersion <= 9) {
@@ -183,128 +187,58 @@ public class HostDatabase extends SQLiteOpenHelper {
 			return;
 		}
 
-		try {
-			switch (oldVersion) {
-			case 10:
-				db.execSQL("ALTER TABLE " + TABLE_HOSTS
-						+ " ADD COLUMN " + FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY);
-			case 11:
-				db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS
-						+ " (_id INTEGER PRIMARY KEY, "
-						+ FIELD_PORTFORWARD_HOSTID + " INTEGER, "
-						+ FIELD_PORTFORWARD_NICKNAME + " TEXT, "
-						+ FIELD_PORTFORWARD_TYPE + " TEXT NOT NULL DEFAULT " + PORTFORWARD_LOCAL + ", "
-						+ FIELD_PORTFORWARD_SOURCEPORT + " INTEGER NOT NULL DEFAULT 8080, "
-						+ FIELD_PORTFORWARD_DESTADDR + " TEXT, "
-						+ FIELD_PORTFORWARD_DESTPORT + " INTEGER)");
-			case 12:
-				db.execSQL("ALTER TABLE " + TABLE_HOSTS
-						+ " ADD COLUMN " + FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "'");
-			case 13:
-				db.execSQL("ALTER TABLE " + TABLE_HOSTS
-						+ " ADD COLUMN " + FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "'");
-			case 14:
-				db.execSQL("ALTER TABLE " + TABLE_HOSTS
-						+ " ADD COLUMN " + FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "'");
-			case 15:
-				db.execSQL("ALTER TABLE " + TABLE_HOSTS
-						+ " ADD COLUMN " + FIELD_HOST_PROTOCOL + " TEXT DEFAULT 'ssh'");
-			case 16:
-				db.execSQL("ALTER TABLE " + TABLE_HOSTS
-						+ " ADD COLUMN " + FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "'");
-			case 17:
-				db.execSQL("CREATE INDEX " + TABLE_PORTFORWARDS + FIELD_PORTFORWARD_HOSTID + "index ON "
-						+ TABLE_PORTFORWARDS + " (" + FIELD_PORTFORWARD_HOSTID + ");");
+		switch (oldVersion) {
+		case 10:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY);
+		case 11:
+			db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS
+					+ " (_id INTEGER PRIMARY KEY, "
+					+ FIELD_PORTFORWARD_HOSTID + " INTEGER, "
+					+ FIELD_PORTFORWARD_NICKNAME + " TEXT, "
+					+ FIELD_PORTFORWARD_TYPE + " TEXT NOT NULL DEFAULT " + PORTFORWARD_LOCAL + ", "
+					+ FIELD_PORTFORWARD_SOURCEPORT + " INTEGER NOT NULL DEFAULT 8080, "
+					+ FIELD_PORTFORWARD_DESTADDR + " TEXT, "
+					+ FIELD_PORTFORWARD_DESTPORT + " INTEGER)");
+		case 12:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "'");
+		case 13:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "'");
+		case 14:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "'");
+		case 15:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_PROTOCOL + " TEXT DEFAULT 'ssh'");
+		case 16:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "'");
+		case 17:
+			db.execSQL("CREATE INDEX " + TABLE_PORTFORWARDS + FIELD_PORTFORWARD_HOSTID + "index ON "
+					+ TABLE_PORTFORWARDS + " (" + FIELD_PORTFORWARD_HOSTID + ");");
 
-				// Add colors
-				db.execSQL("CREATE TABLE " + TABLE_COLORS
-						+ " (_id INTEGER PRIMARY KEY, "
-						+ FIELD_COLOR_NUMBER + " INTEGER, "
-						+ FIELD_COLOR_VALUE + " INTEGER, "
-						+ FIELD_COLOR_SCHEME + " INTEGER)");
-				db.execSQL("CREATE INDEX " + TABLE_COLORS + FIELD_COLOR_SCHEME + "index ON "
-						+ TABLE_COLORS + " (" + FIELD_COLOR_SCHEME + ");");
+			// Add colors
+			db.execSQL("CREATE TABLE " + TABLE_COLORS
+					+ " (_id INTEGER PRIMARY KEY, "
+					+ FIELD_COLOR_NUMBER + " INTEGER, "
+					+ FIELD_COLOR_VALUE + " INTEGER, "
+					+ FIELD_COLOR_SCHEME + " INTEGER)");
+			db.execSQL("CREATE INDEX " + TABLE_COLORS + FIELD_COLOR_SCHEME + "index ON "
+					+ TABLE_COLORS + " (" + FIELD_COLOR_SCHEME + ");");
 
-				db.execSQL("CREATE TABLE " + TABLE_COLOR_DEFAULTS
-						+ " (_id INTEGER PRIMARY KEY, "
-						+ FIELD_COLOR_SCHEME + " INTEGER, "
-						+ FIELD_COLOR_FG + " INTEGER, "
-						+ FIELD_COLOR_BG + " INTEGER)");
-				db.execSQL("CREATE INDEX " + TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index ON "
-						+ TABLE_COLOR_DEFAULTS + " (" + FIELD_COLOR_SCHEME + ");");
-			case 18:
-				db.execSQL("ALTER TABLE " + TABLE_HOSTS
-						+ " ADD COLUMN " + FIELD_HOST_USEAUTHAGENT + " TEXT DEFAULT '" + AUTHAGENT_NO + "'");
-			}
-		} catch (SQLiteException e) {
-			// The database has entered an unknown state. Try to recover.
-			try {
-				regenerateTables(db);
-			} catch (SQLiteException e2) {
-				dropAndCreateTables(db);
-			}
+			db.execSQL("CREATE TABLE " + TABLE_COLOR_DEFAULTS
+					+ " (_id INTEGER PRIMARY KEY, "
+					+ FIELD_COLOR_SCHEME + " INTEGER, "
+					+ FIELD_COLOR_FG + " INTEGER, "
+					+ FIELD_COLOR_BG + " INTEGER)");
+			db.execSQL("CREATE INDEX " + TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index ON "
+					+ TABLE_COLOR_DEFAULTS + " (" + FIELD_COLOR_SCHEME + ");");
+		case 18:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_USEAUTHAGENT + " TEXT DEFAULT '" + AUTHAGENT_NO + "'");
 		}
-	}
-
-	private void regenerateTables(SQLiteDatabase db) {
-		dropAllTablesWithPrefix(db, "OLD_");
-		db.execSQL("ALTER TABLE " + TABLE_HOSTS + " RENAME TO OLD_"
-				+ TABLE_HOSTS);
-		db.execSQL("ALTER TABLE " + TABLE_PORTFORWARDS + " RENAME TO OLD_"
-				+ TABLE_PORTFORWARDS);
-
-		onCreate(db);
-
-		repopulateTable(db, TABLE_HOSTS);
-		repopulateTable(db, TABLE_PORTFORWARDS);
-
-		dropAllTablesWithPrefix(db, "OLD_");
-	}
-
-	private void repopulateTable(SQLiteDatabase db, String tableName) {
-		String columns = getTableColumnNames(db, tableName);
-
-		StringBuilder sb = new StringBuilder();
-		sb.append("INSERT INTO ")
-				.append(tableName)
-				.append(" (")
-				.append(columns)
-				.append(") SELECT ")
-				.append(columns)
-				.append(" FROM OLD_")
-				.append(tableName);
-
-		String sql = sb.toString();
-		Log.d(TAG, "Attempting to execute repopulation command: " + sql);
-		db.execSQL(sql);
-	}
-
-	private String getTableColumnNames(SQLiteDatabase db, String tableName) {
-		StringBuilder sb = new StringBuilder();
-
-		Cursor fields = db.rawQuery("PRAGMA table_info(" + tableName + ")", null);
-		while (fields.moveToNext()) {
-			if (!fields.isFirst())
-				sb.append(", ");
-			sb.append(fields.getString(1));
-		}
-		fields.close();
-
-		return sb.toString();
-	}
-
-	private void dropAndCreateTables(SQLiteDatabase db) {
-		dropAllTables(db);
-		onCreate(db);
-	}
-
-	private void dropAllTablesWithPrefix(SQLiteDatabase db, String prefix) {
-		db.execSQL("DROP TABLE IF EXISTS " + prefix + TABLE_HOSTS);
-		db.execSQL("DROP TABLE IF EXISTS " + prefix + TABLE_PORTFORWARDS);
-	}
-
-	private void dropAllTables(SQLiteDatabase db) {
-		dropAllTablesWithPrefix(db, "");
 	}
 
 	/**
