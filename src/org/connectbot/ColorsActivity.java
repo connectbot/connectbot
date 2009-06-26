@@ -261,7 +261,7 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 
 	private void editColor(int colorNumber) {
 		mCurrentColor = colorNumber;
-		new UberColorPickerDialog(this, this, mColorList.get(colorNumber), true).show();
+		new UberColorPickerDialog(this, this, mColorList.get(colorNumber)).show();
 	}
 
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
