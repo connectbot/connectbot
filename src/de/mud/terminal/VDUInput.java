@@ -1,7 +1,7 @@
 /*
  * This file is part of "JTA - Telnet/SSH for the JAVA(tm) platform".
  *
- * (c) Matthias L. Jugel, Marcus Meißner 1996-2005. All Rights Reserved.
+ * (c) Matthias L. Jugel, Marcus Mei√üner 1996-2005. All Rights Reserved.
  *
  * Please visit http://javatelnet.org/ for updates and contact.
  *
@@ -29,7 +29,7 @@ import java.util.Properties;
 /**
  * An interface for a terminal that accepts input from keyboard and mouse.
  *
- * @author Matthias L. Jugel, Marcus Meißner
+ * @author Matthias L. Jugel, Marcus Mei√üner
  * @version $Id: VDUInput.java 499 2005-09-29 08:24:54Z leo $
  */
 public interface VDUInput {
@@ -40,7 +40,7 @@ public interface VDUInput {
   public final static int KEY_ACTION = 0x08;
 
 
-  
+
   /**
    * Direct access to writing data ...
    * @param b

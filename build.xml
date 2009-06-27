@@ -187,6 +187,7 @@
             -dontskipnonpubliclibraryclasses
             -dontobfuscate
             -dontoptimize
+            -printusage ${out-folder}/proguard.usage
 
             -keep public class * extends android.app.Activity
             -keep public class * extends android.app.Service
