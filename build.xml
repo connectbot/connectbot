@@ -190,7 +190,7 @@
 
             -keep public class * extends android.app.Activity
             -keep public class * extends android.app.Service
-            -keep public class org.connectbot.*
+            -keep class org.connectbot.**
             -keep public class com.trilead.ssh2.compression.*
             -keep public class com.trilead.ssh2.crypto.cipher.*
         </proguard>
