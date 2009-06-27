@@ -56,9 +56,11 @@ public class ExceptionHandler {
 			PackageInfo pi;
 			// Version
 			pi = pm.getPackageInfo(context.getPackageName(), 0);
-			G.APP_VERSION = pi.versionName;
 			// Package name
 			G.APP_PACKAGE = pi.packageName;
+			// Version information
+			G.APP_VERSION = pi.versionName;
+			G.APP_DESCRIPTION = context.getString(R.string.msg_version);
 			// Files dir for storing the stack traces
 			G.FILES_PATH = context.getFilesDir().getAbsolutePath();
 		} catch (NameNotFoundException e) {
