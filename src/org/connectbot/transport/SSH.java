@@ -155,13 +155,13 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 			switch(hosts.verifyHostkey(matchName, serverHostKeyAlgorithm, serverHostKey)) {
 			case KnownHosts.HOSTKEY_IS_OK:
-				bridge.outputLine(String.format("Verified host %s key: %s", algorithmName, fingerprint));
+				bridge.outputLine(manager.res.getString(R.string.terminal_sucess, algorithmName, fingerprint));
 				return true;
 
 			case KnownHosts.HOSTKEY_IS_NEW:
 				// prompt user
-				bridge.outputLine(String.format(manager.res.getString(R.string.host_authenticity_warning), hostname));
-				bridge.outputLine(String.format(manager.res.getString(R.string.host_fingerprint), algorithmName, fingerprint));
+				bridge.outputLine(manager.res.getString(R.string.host_authenticity_warning, hostname));
+				bridge.outputLine(manager.res.getString(R.string.host_fingerprint, algorithmName, fingerprint));
 
 				result = bridge.promptHelper.requestBooleanPrompt(null, manager.res.getString(R.string.prompt_continue_connecting));
 				if(result == null) return false;
@@ -212,7 +212,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			Log.d(TAG, "Host does not support 'none' authentication.");
 		}
 
-		bridge.outputLine("Trying to authenticate");
+		bridge.outputLine(manager.res.getString(R.string.terminal_auth));
 
 		try {
 			long pubkeyId = host.getPubkeyId();
@@ -240,7 +240,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 						}
 					}
 				} else {
-					bridge.outputLine("Attempting 'publickey' authentication with a specific public key");
+					bridge.outputLine(manager.res.getString(R.string.terminal_auth_pubkey_specific));
 					// use a specific key for this host, as requested
 					PubkeyBean pubkey = manager.pubkeydb.findPubkeyById(pubkeyId);
 
@@ -255,7 +255,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			} else if (connection.isAuthMethodAvailable(host.getUsername(), AUTH_PASSWORD)) {
 				bridge.outputLine(manager.res.getString(R.string.terminal_auth_pass));
 				String password = bridge.getPromptHelper().requestStringPrompt(null,
-						manager.res.getString(R.string.terminal_auth_pass_hint));
+						manager.res.getString(R.string.prompt_password));
 				if (password != null
 						&& connection.authenticateWithPassword(host.getUsername(), password)) {
 					finishConnection();
@@ -353,7 +353,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		//bridge.outputLine(String.format("Attempting 'publickey' with key '%s' [%s]...", keyNickname, trileadKey.toString()));
 		boolean success = connection.authenticateWithPublicKey(username, trileadKey);
 		if(!success)
-			bridge.outputLine(String.format("Authentication method 'publickey' with key '%s' failed", keyNickname));
+			bridge.outputLine(manager.res.getString(R.string.terminal_auth_pubkey_fail, keyNickname));
 		return success;
 	}
 
@@ -367,14 +367,14 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		for (PortForwardBean portForward : portForwards) {
 			try {
 				enablePortForward(portForward);
-				bridge.outputLine(String.format("Enable port forward: %s", portForward.getDescription()));
+				bridge.outputLine(manager.res.getString(R.string.terminal_enable_portfoward, portForward.getDescription()));
 			} catch (Exception e) {
 				Log.e(TAG, "Error setting up port forward during connect", e);
 			}
 		}
 
 		if (!host.getWantSession()) {
-			bridge.outputLine("Session will not be started due to host preference.");
+			bridge.outputLine(manager.res.getString(R.string.terminal_no_session));
 			bridge.onConnected();
 			return;
 		}
@@ -431,17 +431,17 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 					.equals(connectionInfo.serverToClientCryptoAlgorithm)
 					&& connectionInfo.clientToServerMACAlgorithm
 							.equals(connectionInfo.serverToClientMACAlgorithm)) {
-				bridge.outputLine(String.format("Using algorithm: %s %s",
+				bridge.outputLine(manager.res.getString(R.string.terminal_using_algorithm,
 						connectionInfo.clientToServerCryptoAlgorithm,
 						connectionInfo.clientToServerMACAlgorithm));
 			} else {
-				bridge.outputLine(String.format(
-						"Client-to-server algorithm: %s %s",
+				bridge.outputLine(manager.res.getString(
+						R.string.terminal_using_c2s_algorithm,
 						connectionInfo.clientToServerCryptoAlgorithm,
 						connectionInfo.clientToServerMACAlgorithm));
 
-				bridge.outputLine(String.format(
-						"Server-to-client algorithm: %s %s",
+				bridge.outputLine(manager.res.getString(
+						R.string.terminal_using_s2c_algorithm,
 						connectionInfo.serverToClientCryptoAlgorithm,
 						connectionInfo.serverToClientMACAlgorithm));
 			}

@@ -307,7 +307,7 @@
 	<string name="list_format_error">Use the format "%1$s"</string>
 
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-        <string name="format_username">username</string>
+	<string name="format_username">username</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
 	<string name="format_hostname">hostname</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
@@ -360,22 +360,38 @@
 
 	<string name="terminal_no_hosts_connected">No hosts currently connected</string>
 
+	<!-- Displayed in terminal when attempting to connect to a host. The first two
+	     variables are host:port and the third is the protocol (e.g., SSH) -->
+	<string name="terminal_connecting">Connecting to %1$s:%2$d via %3$s</string>
+
+	<!-- Displays the host key to the user in the terminal -->
+	<string name="terminal_sucess">Verified host '%1$s' key: %2$s</string>
 	<string name="terminal_failed">Host key verification failed.</string>
+
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_s2c_algorithm">Server-to-client algorithm: %1$s %2$s</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_c2s_algorithm">Client-to-server algorithm: %1$s %2$s</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_algorithm">Using algorithm: %1$s %2$s</string>
 
 	<string name="terminal_auth">Trying to authenticate</string>
 
 	<string name="terminal_auth_pass">Attempting 'password' authentication</string>
-	<string name="terminal_auth_pass_hint">Password</string>
 	<string name="terminal_auth_pass_fail">Authentication method 'password' failed</string>
 
 	<string name="terminal_auth_pubkey_any">Attempting 'publickey' authentication with any in-memory public keys</string>
 	<string name="terminal_auth_pubkey_invalid">Selected public key is invalid, try reselecting key in host editor</string>
 	<string name="terminal_auth_pubkey_specific">Attempting 'publickey' authentication with a specific public key</string>
+	<string name="terminal_auth_pubkey_fail">Authentication method 'publickey' with key '%1$s' failed</string>
 
 	<string name="terminal_auth_ki">Attempting 'keyboard-interactive' authentication</string>
 	<string name="terminal_auth_ki_fail">Authentication method 'keyboard-interactive' failed</string>
 
 	<string name="terminal_auth_fail">[Your host doesn't support 'password' or 'keyboard-interactive' authentication.]</string>
+
+	<string name="terminal_no_session">Session will not be started due to host preference.</string>
+	<string name="terminal_enable_portfoward">Enable port forward: %1$s</string>
 
 	<string name="local_shell_unavailable">Failure! Local shell is unavailable on this phone.</string>
 

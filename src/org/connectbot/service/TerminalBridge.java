@@ -282,7 +282,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 				transport.addPortForward(portForward);
 		}
 
-		outputLine(String.format("Connecting to %s:%d via %s", host.getHostname(), host.getPort(), host.getProtocol()));
+		outputLine(manager.res.getString(R.string.terminal_connecting, host.getHostname(), host.getPort(), host.getProtocol()));
 
 		Thread connectionThread = new Thread(new Runnable() {
 			public void run() {
