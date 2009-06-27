@@ -13,9 +13,11 @@
 	<string name="title_host_editor">Edytuj hosta</string>
 	<!-- Window title for Help index -->
 	<string name="title_help">Pomoc</string>
+	<!-- Window title for color list editing screen -->
+	<string name="title_colors">Colors</string>
 
 	<string name="resolve_connect">Połącz</string>
-	<string name="resolve_entropy">Gather Entropy</string>
+	<string name="resolve_entropy">Uruchom generatora liczb losowych</string>
 
 	<string name="menu_insert">Dodaj hosta</string>
 	<string name="menu_delete">Usuń hosta</string>
@@ -28,7 +30,7 @@
 	<string name="pubkey_generate">Generuj</string>
 	<string name="pubkey_import">Importuj</string>
 	<string name="pubkey_delete">Usuń klucz</string>
-	<string name="pubkey_gather_entropy">Gathering Entropy</string>
+	<string name="pubkey_gather_entropy">Generowanie losowego klucza</string>
 	<string name="pubkey_touch_prompt">Dotknij to pole, żeby losowo wygenerować dane. Ukończono: %1$d%%</string>
 	<string name="pubkey_touch_hint">Dla niepowtarzalności klucza, poruszaj losowo palcem po polu poniżej.</string>
 	<string name="pubkey_generating">Generowanie pary kluczy...</string>
@@ -44,6 +46,8 @@
 	<string name="pubkey_memory_load">Załaduj do pamięci</string>
 	<string name="pubkey_memory_unload">Usuń z pamięci</string>
 	<string name="pubkey_load_on_start">Załaduj klucz przy uruchamianiu</string>
+	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
+	<string name="pubkey_confirm_use">Confirm before use</string>
 
 	<string name="portforward_list_empty">Naciśnij "Menu",\nżeby stworzyć przekierowanie portu.</string>
 	<string name="portforward_edit">Edytuj przekierowanie portu</string>
@@ -69,6 +73,9 @@
 	<!-- Prompt for the password to unlock a certain pubkey. -->
 	<string name="prompt_pubkey_password">Proszę podać hasło dla klucza '%1$s'</string>
 
+	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key -->
+	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key '%1$s'?</string>
+
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">OSTRZEŻENIE: ZDALNA IDENTYFIKACJA HOSTA ZMIENIŁA SIĘ!</string>
 	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
@@ -82,7 +89,7 @@
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
 	<string name="host_authenticity_warning">Autentyczność hosta '%1$s' nie może zostać ustalona.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
-	<string name="host_fingerprint">Host %1$s key fingerprint is %2$s</string>
+	<string name="host_fingerprint">Fingerprint hosta %1$s to %2$s</string>
 
 	<string name="alert_passwords_do_not_match_msg">Hasła nie zgadzają się!</string>
 	<string name="alert_wrong_password_msg">Nieprawidłowe hasło!</string>
@@ -170,21 +177,21 @@
 	<string name="pref_bumpyarrows_summary">Wibruj kiedy emulowane są klawisze strzałek; Użyteczne dla wolnych połączeń</string>
 
 	<!-- Category title for the Terminal Bell preferences -->
-	<string name="pref_bell_category">Terminal bell</string>
+	<string name="pref_bell_category">Brzęczyk terminala</string>
 
 	<!-- Checkbox preference title for the audible terminal bell feature -->
-	<string name="pref_bell_title">Audible bell</string>
+	<string name="pref_bell_title">Brzęczyk słyszalny</string>
 
 	<!-- Title for the slider preference to set the volume -->
-	<string name="pref_bell_volume_title">Bell volume</string>
+	<string name="pref_bell_volume_title">Głośność brzęczyka</string>
 
 	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
-	<string name="pref_bell_vibrate_title">Vibrate on bell</string>
+	<string name="pref_bell_vibrate_title">Włącz wibracje</string>
 
 	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
-	<string name="pref_bell_notification_title">Background notifications</string>
+	<string name="pref_bell_notification_title">Powiadomienia</string>
 	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
-	<string name="pref_bell_notification_summary">Send notification when a terminal running in the background sounds a bell.</string>
+	<string name="pref_bell_notification_summary">Uruchom powiadomienie podczas akcji w zminimalizowanej aplikacji.</string>
 
 	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
 	<string name="list_keymode_right">Używaj klawiszy z prawej strony</string>
@@ -214,6 +221,9 @@
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">Używaj kluczy publicznych do autoryzacji</string>
 
+	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
+	<string name="hostpref_authagent_title">Use SSH auth agent</string>
+
 	<!-- Host post-login automation preference title -->
 	<string name="hostpref_postlogin_title">Wykonaj po zalogowaniu</string>
 	<!-- Host post-login automation preference summary -->
@@ -228,6 +238,11 @@
 	<string name="hostpref_wantsession_title">Uruchom polecenie powłoki</string>
 	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
 	<string name="hostpref_wantsession_summary">Wyłącz jeśli chcesz tylko przekierować porty</string>
+
+	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_title">DEL Key</string>
+	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_summary">The key code sent when DEL key is pressed</string>
 
 	<!-- Host character encoding preference title -->
 	<string name="hostpref_encoding_title">Kodowanie</string>
@@ -292,7 +307,7 @@
 	<string name="list_format_error">Użyj formatu "%1$s"</string>
 
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-        <string name="format_username">użytkownik</string>
+	<string name="format_username">użytkownik</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
 	<string name="format_hostname">nazwa_hosta</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
@@ -327,6 +342,11 @@
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">Żadny</string>
 
+	<!-- Name for the backspace character -->
+	<string name="list_delkey_backspace">Backspace</string>
+	<!-- Name for the ASCII DEL character -->
+	<string name="list_delkey_del">Delete</string>
+
 	<string name="delete_message">Jesteś pewien, że chcesz usunąć '%1$s'?</string>
 	<string name="delete_pos">Tak, usuń</string>
 	<string name="delete_neg">Anuluj</string>
@@ -340,27 +360,43 @@
 
 	<string name="terminal_no_hosts_connected">Żaden host nie jest obecnie połączony</string>
 
+	<!-- Displayed in terminal when attempting to connect to a host. The first two
+	     variables are host:port and the third is the protocol (e.g., SSH) -->
+	<string name="terminal_connecting">Connecting to %1$s:%2$d via %3$s</string>
+
+	<!-- Displays the host key to the user in the terminal -->
+	<string name="terminal_sucess">Verified host '%1$s' key: %2$s</string>
 	<string name="terminal_failed">Weryfikacja klucza hosta nie powiodła się.</string>
+
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_s2c_algorithm">Server-to-client algorithm: %1$s %2$s</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_c2s_algorithm">Client-to-server algorithm: %1$s %2$s</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_algorithm">Using algorithm: %1$s %2$s</string>
 
 	<string name="terminal_auth">Próba autoryzacji</string>
 
 	<string name="terminal_auth_pass">Próba autoryzacji za pomocą hasła</string>
-	<string name="terminal_auth_pass_hint">Hasło</string>
 	<string name="terminal_auth_pass_fail">Autoryzacja za pomocą klucza nie powiodła się</string>
 
 	<string name="terminal_auth_pubkey_any">Próba autentykacji za pomocą dowolnego zapamiętanego klucza publicznego</string>
 	<string name="terminal_auth_pubkey_invalid">Wybrany klucz publiczny jest nieprawidłowy, spróbuj wybrać inny klucz w edycji hosta</string>
 	<string name="terminal_auth_pubkey_specific">Próba autentykacji za pomocą wybranego klucza publicznego</string>
+	<string name="terminal_auth_pubkey_fail">Authentication method 'publickey' with key '%1$s' failed</string>
 
 	<string name="terminal_auth_ki">Próba autentykacji za pomocą klawiatury</string>
 	<string name="terminal_auth_ki_fail">Autoryzacja za pomocą klawiatury nie powiodła się</string>
 
 	<string name="terminal_auth_fail">[Twój host nie obsługuje autentykacji za pomocą klawiatury lub hasła.]</string>
 
+	<string name="terminal_no_session">Session will not be started due to host preference.</string>
+	<string name="terminal_enable_portfoward">Enable port forward: %1$s</string>
+
 	<string name="local_shell_unavailable">Niepowodzenie! Lokalna powłoka nie jest obsługiwana na tym telefonie.</string>
 
 	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
-	<string name="notification_text">%1$s wants your attention.</string>
+	<string name="notification_text">%1$s wymaga twojej akcji</string>
 
 	<!-- Dialog title when a new version of ConnectBot is detected. -->
 	<string name="upgrade">Nowa wersja</string>
@@ -368,6 +404,9 @@
 	<string name="upgrade_pos">Tak, zaktualizuj</string>
 	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
 	<string name="upgrade_neg">Nie, nie teraz</string>
+
+	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
+	<string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?</string>
 
 	<string name="color_red">czerwony</string>
 	<string name="color_green">zielony</string>

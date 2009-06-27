@@ -13,6 +13,8 @@
 	<string name="title_host_editor">Modifier le serveur</string>
 	<!-- Window title for Help index -->
 	<string name="title_help">Aide</string>
+	<!-- Window title for color list editing screen -->
+	<string name="title_colors">Colors</string>
 
 	<string name="resolve_connect">Connexion</string>
 	<string name="resolve_entropy">Génération d'aléatoire</string>
@@ -44,6 +46,8 @@
 	<string name="pubkey_memory_load">Chargée en mémoire</string>
 	<string name="pubkey_memory_unload">Effacée de la mémoire</string>
 	<string name="pubkey_load_on_start">Charger la clé au démarrage</string>
+	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
+	<string name="pubkey_confirm_use">Confirm before use</string>
 
 	<string name="portforward_list_empty">Appuyez sur "Menu" pour créer\ndes redirections de port.</string>
 	<string name="portforward_edit">Editez la redirection de port</string>
@@ -68,6 +72,9 @@
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
 	<string name="prompt_pubkey_password">Mot de passe pour la clé '%1$s'</string>
+
+	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key -->
+	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key '%1$s'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">ATTENTION : L'IDENTIFICATION DE L'HOTE DISTANT A CHANGEE !</string>
@@ -173,28 +180,28 @@
 	<string name="pref_bell_category">Cloche du terminal</string>
 
 	<!-- Checkbox preference title for the audible terminal bell feature -->
-	<string name="pref_bell_title">Audible bell</string>
+	<string name="pref_bell_title">Alerte sonore</string>
 
 	<!-- Title for the slider preference to set the volume -->
-	<string name="pref_bell_volume_title">Bell volume</string>
+	<string name="pref_bell_volume_title">Volume de l'alerte</string>
 
 	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
-	<string name="pref_bell_vibrate_title">Vibrate on bell</string>
+	<string name="pref_bell_vibrate_title">Vibrer en cas d'alerte</string>
 
 	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
-	<string name="pref_bell_notification_title">Background notifications</string>
+	<string name="pref_bell_notification_title">Notification en arrière plan</string>
 	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
-	<string name="pref_bell_notification_summary">Send notification when a terminal running in the background sounds a bell.</string>
+	<string name="pref_bell_notification_summary">Envoyer une notification lorsqu'un terminal génère une alerte</string>
 
 	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
-	<string name="list_keymode_right">Use right-side keys</string>
+	<string name="list_keymode_right">Utiliser les touches du coté droit du clavier</string>
 	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
-	<string name="list_keymode_left">Use left-side keys</string>
+	<string name="list_keymode_left">Utiliser les touches du coté gauche du clavier</string>
 	<!-- Preference selection to indicate never to use special shortcut keys. -->
 	<string name="list_keymode_none">Désactiver</string>
 
 	<!-- Preference to not use pubkeys to authenticate to this host. -->
-	<string name="list_pubkeyids_none">Do not use keys</string>
+	<string name="list_pubkeyids_none">Ne pas utiliser les clefs de cryptage publiques</string>
 	<!-- Preference to use any pubkey to authenticate to this host. -->
 	<string name="list_pubkeyids_any">Use any unlocked key</string>
 
@@ -206,33 +213,41 @@
 	<string name="list_update_never">Jamais</string>
 
 	<!-- Host nickname field preference title -->
-	<string name="hostpref_nickname_title">Nickname</string>
+	<string name="hostpref_nickname_title">Surnom</string>
 
 	<!-- Host color category preference title -->
-	<string name="hostpref_color_title">Color category</string>
+	<string name="hostpref_color_title">Catégorie de couleur</string>
 
 	<!-- Host pubkey usage preference title -->
-	<string name="hostpref_pubkeyid_title">Use pubkey authentication</string>
+	<string name="hostpref_pubkeyid_title">Utiliser l'autentification par clef de cryptage publique</string>
+
+	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
+	<string name="hostpref_authagent_title">Use SSH auth agent</string>
 
 	<!-- Host post-login automation preference title -->
 	<string name="hostpref_postlogin_title">Post-login automation</string>
 	<!-- Host post-login automation preference summary -->
-	<string name="hostpref_postlogin_summary">Commands to run on remote server once authenticated</string>
+	<string name="hostpref_postlogin_summary">Commandes a éffectuer sur le serveur distant après s'êtres autentifier</string>
 
 	<!-- Host compression preference title -->
 	<string name="hostpref_compression_title">Compression</string>
 	<!-- Summary for compression preference -->
-	<string name="hostpref_compression_summary">This may help with slower networks</string>
+	<string name="hostpref_compression_summary">Cela peut aider pour des reseaux lent</string>
 
 	<!-- Setting for whether we want a session to start up when we connect to a host -->
 	<string name="hostpref_wantsession_title">Start shell session</string>
 	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
-	<string name="hostpref_wantsession_summary">Disable this preference to only use port forwards</string>
+	<string name="hostpref_wantsession_summary">Décochez cette préférence pour n'utiliser que le mode "port forwards"</string>
+
+	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_title">DEL Key</string>
+	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_summary">The key code sent when DEL key is pressed</string>
 
 	<!-- Host character encoding preference title -->
-	<string name="hostpref_encoding_title">Encoding</string>
+	<string name="hostpref_encoding_title">cryptage</string>
 	<!-- Host character encoding preference summary -->
-	<string name="hostpref_encoding_summary">Character encoding for the host</string>
+	<string name="hostpref_encoding_summary">codage de charactère a utiliser pour le serveur</string>
 
 	<!-- Host preference category title for connection settings -->
 	<string name="hostpref_connection_category">Paramètre de connexion</string>
@@ -247,7 +262,7 @@
 	<string name="hostpref_port_title">Port</string>
 
 	<!-- Displayed to indicate a host has never been connected to. -->
-	<string name="bind_never">Never connected</string>
+	<string name="bind_never">jamais connecté</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
 	<string name="bind_minutes">Il ya %1$s minutes</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
@@ -258,7 +273,7 @@
 	<!-- Message given when user copies from the terminal. -->
 	<string name="console_copy_done">%1$d octets copié dans le presse-papier</string>
 	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">Touch and drag\nor use directional pad\nto select area to copy</string>
+	<string name="console_copy_start">Toucher et tirer\nou utiliser les touches directionelles\npour selectioner la region à copier</string>
 
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">Fermer</string>
@@ -286,7 +301,7 @@
 	<string name="portforward_menu_add">Add port forward</string>
 
 	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
-	<string name="hint_userhost">user@hostname</string>
+	<string name="hint_userhost">utilisateur@serveur</string>
 
 	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
 	<string name="list_format_error">Utilisez le format "%1$s"</string>
@@ -306,13 +321,13 @@
 	<string name="list_menu_settings">Réglages</string>
 
 	<string name="list_host_disconnect">Déconnexion</string>
-	<string name="list_host_edit">Edit host</string>
+	<string name="list_host_edit">Editer le serveur</string>
 	<string name="list_host_portforwards">Edit port forwards</string>
-	<string name="list_host_delete">Delete host</string>
-	<string name="list_host_empty">Use the quick-connect box\nbelow to connect to a host.</string>
+	<string name="list_host_delete">Effacer le serveur</string>
+	<string name="list_host_empty">Utilisez la boite de connection rapide en bas pour vous connecter a un serveur</string>
 
 	<!-- Default screen rotation preference selection -->
-	<string name="list_rotation_default">Default</string>
+	<string name="list_rotation_default">Par défaut</string>
 	<string name="list_rotation_land">Forcer le mode paysage</string>
 	<string name="list_rotation_port">Forcer le mode portrait</string>
 	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
@@ -325,11 +340,16 @@
 	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
 	<string name="list_camera_esc">Echap</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
-	<string name="list_camera_none">None</string>
+	<string name="list_camera_none">aucun</string>
+
+	<!-- Name for the backspace character -->
+	<string name="list_delkey_backspace">Backspace</string>
+	<!-- Name for the ASCII DEL character -->
+	<string name="list_delkey_del">Delete</string>
 
 	<string name="delete_message">Êtes-vous sûr de vouloir supprimer '%1$s' ?</string>
 	<string name="delete_pos">Oui, supprimer</string>
-	<string name="delete_neg">Cancel</string>
+	<string name="delete_neg">Annuler</string>
 
 	<!-- Button to agree to license terms. -->
 	<string name="wizard_agree">Agree</string>
@@ -340,22 +360,38 @@
 
 	<string name="terminal_no_hosts_connected">No hosts currently connected</string>
 
+	<!-- Displayed in terminal when attempting to connect to a host. The first two
+	     variables are host:port and the third is the protocol (e.g., SSH) -->
+	<string name="terminal_connecting">Connecting to %1$s:%2$d via %3$s</string>
+
+	<!-- Displays the host key to the user in the terminal -->
+	<string name="terminal_sucess">Verified host '%1$s' key: %2$s</string>
 	<string name="terminal_failed">Host key verification failed.</string>
+
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_s2c_algorithm">Server-to-client algorithm: %1$s %2$s</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_c2s_algorithm">Client-to-server algorithm: %1$s %2$s</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_algorithm">Using algorithm: %1$s %2$s</string>
 
 	<string name="terminal_auth">Trying to authenticate</string>
 
 	<string name="terminal_auth_pass">Attempting 'password' authentication</string>
-	<string name="terminal_auth_pass_hint">Mot de passe</string>
 	<string name="terminal_auth_pass_fail">L'authentification par mot de passe a échoué</string>
 
 	<string name="terminal_auth_pubkey_any">Attempting 'publickey' authentication with any in-memory public keys</string>
 	<string name="terminal_auth_pubkey_invalid">Selected public key is invalid, try reselecting key in host editor</string>
 	<string name="terminal_auth_pubkey_specific">Attempting 'publickey' authentication with a specific public key</string>
+	<string name="terminal_auth_pubkey_fail">Authentication method 'publickey' with key '%1$s' failed</string>
 
 	<string name="terminal_auth_ki">Attempting 'keyboard-interactive' authentication</string>
 	<string name="terminal_auth_ki_fail">Authentication method 'keyboard-interactive' failed</string>
 
 	<string name="terminal_auth_fail">[Your host doesn't support 'password' or 'keyboard-interactive' authentication.]</string>
+
+	<string name="terminal_no_session">Session will not be started due to host preference.</string>
+	<string name="terminal_enable_portfoward">Enable port forward: %1$s</string>
 
 	<string name="local_shell_unavailable">Failure! Local shell is unavailable on this phone.</string>
 
@@ -368,6 +404,9 @@
 	<string name="upgrade_pos">Oui, mettre à jour</string>
 	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
 	<string name="upgrade_neg">Pas maintenant</string>
+
+	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
+	<string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?</string>
 
 	<string name="color_red">rouge</string>
 	<string name="color_green">vert</string>

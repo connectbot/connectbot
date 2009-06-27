@@ -13,6 +13,8 @@
 	<string name="title_host_editor">Bewerk host</string>
 	<!-- Window title for Help index -->
 	<string name="title_help">Help</string>
+	<!-- Window title for color list editing screen -->
+	<string name="title_colors">Colors</string>
 
 	<string name="resolve_connect">Verbind</string>
 	<string name="resolve_entropy">Verzamel Entropie</string>
@@ -44,6 +46,8 @@
 	<string name="pubkey_memory_load">Laad in geheugen</string>
 	<string name="pubkey_memory_unload">Ontlaad uit geheugen</string>
 	<string name="pubkey_load_on_start">Laad sleutel op start</string>
+	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
+	<string name="pubkey_confirm_use">Confirm before use</string>
 
 	<string name="portforward_list_empty">Tik "Menu" om poort\nforwards te maken.</string>
 	<string name="portforward_edit">Bewerk port forward</string>
@@ -68,6 +72,9 @@
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
 	<string name="prompt_pubkey_password">Wachtwoord voor sleutel '%1$s'</string>
+
+	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key -->
+	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key '%1$s'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">WAARSCHUWING: REMOTE HOST IDENTIFICATIE IS VERANDERD!</string>
@@ -170,21 +177,21 @@
 	<string name="pref_bumpyarrows_summary">Tril als pijl knoppen worden gestuurd van trackball; handig voor langzame verbindingen</string>
 
 	<!-- Category title for the Terminal Bell preferences -->
-	<string name="pref_bell_category">Terminal bell</string>
+	<string name="pref_bell_category">Terminal bel</string>
 
 	<!-- Checkbox preference title for the audible terminal bell feature -->
-	<string name="pref_bell_title">Audible bell</string>
+	<string name="pref_bell_title">Hoorbare bel</string>
 
 	<!-- Title for the slider preference to set the volume -->
-	<string name="pref_bell_volume_title">Bell volume</string>
+	<string name="pref_bell_volume_title">Bel volume</string>
 
 	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
-	<string name="pref_bell_vibrate_title">Vibrate on bell</string>
+	<string name="pref_bell_vibrate_title">Tril bij bel</string>
 
 	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
-	<string name="pref_bell_notification_title">Background notifications</string>
+	<string name="pref_bell_notification_title">Achtergrond notificaties</string>
 	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
-	<string name="pref_bell_notification_summary">Send notification when a terminal running in the background sounds a bell.</string>
+	<string name="pref_bell_notification_summary">Stuur notificatie als terminal in de achtergrond een bel laat klinken.</string>
 
 	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
 	<string name="list_keymode_right">Gebruik rechter kant sleutels</string>
@@ -214,6 +221,9 @@
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">Gebruik pubkey authenticatie</string>
 
+	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
+	<string name="hostpref_authagent_title">Use SSH auth agent</string>
+
 	<!-- Host post-login automation preference title -->
 	<string name="hostpref_postlogin_title">Na-login automatie</string>
 	<!-- Host post-login automation preference summary -->
@@ -228,6 +238,11 @@
 	<string name="hostpref_wantsession_title">Start shell sessie</string>
 	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
 	<string name="hostpref_wantsession_summary">Schakel dit uit om alleen port forwards te gebruiken</string>
+
+	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_title">DEL Key</string>
+	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_summary">The key code sent when DEL key is pressed</string>
 
 	<!-- Host character encoding preference title -->
 	<string name="hostpref_encoding_title">Codering</string>
@@ -292,7 +307,7 @@
 	<string name="list_format_error">Gebruik het formaat "%1$s"</string>
 
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-        <string name="format_username">gebruikersnaam</string>
+	<string name="format_username">gebruiker</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
 	<string name="format_hostname">hostnaam</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
@@ -327,6 +342,11 @@
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">Geen</string>
 
+	<!-- Name for the backspace character -->
+	<string name="list_delkey_backspace">Backspace</string>
+	<!-- Name for the ASCII DEL character -->
+	<string name="list_delkey_del">Delete</string>
+
 	<string name="delete_message">Weet je zeker dat je '%1$s' wilt verwijderen?</string>
 	<string name="delete_pos">Ja, verwijder</string>
 	<string name="delete_neg">Annuleren</string>
@@ -340,27 +360,43 @@
 
 	<string name="terminal_no_hosts_connected">Momenteel geen hosts verbonden</string>
 
+	<!-- Displayed in terminal when attempting to connect to a host. The first two
+	     variables are host:port and the third is the protocol (e.g., SSH) -->
+	<string name="terminal_connecting">Connecting to %1$s:%2$d via %3$s</string>
+
+	<!-- Displays the host key to the user in the terminal -->
+	<string name="terminal_sucess">Verified host '%1$s' key: %2$s</string>
 	<string name="terminal_failed">Host sleutel verificatie mislukt</string>
+
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_s2c_algorithm">Server-to-client algorithm: %1$s %2$s</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_c2s_algorithm">Client-to-server algorithm: %1$s %2$s</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_algorithm">Using algorithm: %1$s %2$s</string>
 
 	<string name="terminal_auth">Probeert te authenticeren</string>
 
 	<string name="terminal_auth_pass">Probeert 'wachtwoord' authenticatie</string>
-	<string name="terminal_auth_pass_hint">Wachtwoord</string>
 	<string name="terminal_auth_pass_fail">Authenticatie methode 'wachtwoord' mislukt</string>
 
 	<string name="terminal_auth_pubkey_any">Probeert 'publieke sleutel' authenticatie met een willekeurige in-geheugen publieke sleutel</string>
 	<string name="terminal_auth_pubkey_invalid">Geselecteerde publieke sleutel is ongeldig, probeer herselecteren van de sleutel in de host bewerker</string>
 	<string name="terminal_auth_pubkey_specific">Probeert 'publickey' authenticatie met een specifieke publieke sleutel</string>
+	<string name="terminal_auth_pubkey_fail">Authentication method 'publickey' with key '%1$s' failed</string>
 
 	<string name="terminal_auth_ki">Probeert 'keyboard-interactive' authenticatie</string>
 	<string name="terminal_auth_ki_fail">Authenticatie methode 'keyboard-interactive' mislukt</string>
 
 	<string name="terminal_auth_fail">[Uw host ondersteund 'wachtwoord' of 'keyboard-interactive' authenticatie niet.]</string>
 
+	<string name="terminal_no_session">Session will not be started due to host preference.</string>
+	<string name="terminal_enable_portfoward">Enable port forward: %1$s</string>
+
 	<string name="local_shell_unavailable">Mislukking! Lokale shell is niet beschikbaar op deze telefoon.</string>
 
 	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
-	<string name="notification_text">%1$s wants your attention.</string>
+	<string name="notification_text">%1$s wil je aandacht.</string>
 
 	<!-- Dialog title when a new version of ConnectBot is detected. -->
 	<string name="upgrade">Nieuwe versie</string>
@@ -368,6 +404,9 @@
 	<string name="upgrade_pos">Ja, upgrade</string>
 	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
 	<string name="upgrade_neg">Nog niet</string>
+
+	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
+	<string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?</string>
 
 	<string name="color_red">rood</string>
 	<string name="color_green">groen</string>
