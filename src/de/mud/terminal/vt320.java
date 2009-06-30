@@ -1175,7 +1175,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
   }
 
   private void handle_osc(String osc) {
-	  if (osc.substring(0, 2).equals("4;")) {
+	  if (osc.length() > 2 && osc.substring(0, 2).equals("4;")) {
 			// Define color palette
 			String[] colorData = osc.split(";");
 
