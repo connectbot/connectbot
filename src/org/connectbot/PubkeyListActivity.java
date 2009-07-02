@@ -80,6 +80,8 @@ import com.trilead.ssh2.crypto.PEMStructure;
 public class PubkeyListActivity extends ListActivity implements EventListener {
 	public final static String TAG = "ConnectBot.PubkeyListActivity";
 
+	private static final int MAX_KEYFILE_SIZE = 8192;
+
 	protected PubkeyDatabase pubkeydb;
 	private List<PubkeyBean> pubkeys;
 
@@ -239,6 +241,13 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 							String name = namesList[arg1];
 							pubkey.setNickname(name);
 							File actual = new File(sdcard, name);
+
+							if (actual.length() > MAX_KEYFILE_SIZE) {
+								Toast.makeText(PubkeyListActivity.this,
+										R.string.pubkey_import_parse_problem,
+										Toast.LENGTH_LONG).show();
+								return;
+							}
 
 							// parse the actual key once to check if its encrypted
 							// then save original file contents into our database
