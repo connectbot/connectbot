@@ -14,7 +14,7 @@
 	<!-- Window title for Help index -->
 	<string name="title_help">Hjelp</string>
 	<!-- Window title for color list editing screen -->
-	<string name="title_colors">Colors</string>
+	<string name="title_colors">Farger</string>
 
 	<string name="resolve_connect">Koble til</string>
 	<string name="resolve_entropy">Samle entropi</string>
@@ -94,7 +94,7 @@
 	<string name="alert_passwords_do_not_match_msg">Passordene er ikke like!</string>
 	<string name="alert_wrong_password_msg">Feil passord!</string>
 	<string name="alert_key_corrupted_msg">Privat nøkkel ser ut til å være korrupt!</string>
-	<string name="alert_sdcard_absent">SD card is not inserted!</string>
+	<string name="alert_sdcard_absent">SD-kortet er ikke satt inn!</string>
 
 	<!-- Add a new item (e.g., host or pubkey) to the list. -->
 	<string name="button_add">Legg til</string>
@@ -116,7 +116,7 @@
 	<string name="msg_version">ConnectBot (working copy)</string>
 
 	<!-- The category title for terminal emulation preferences. -->
-	<string name="pref_emulation_category">Terminal emulation</string>
+	<string name="pref_emulation_category">Terminalemulering</string>
 
 	<!-- Name for the emulation terminal type preference. -->
 	<string name="pref_emulation_title">Emulation mode</string>
@@ -129,7 +129,7 @@
 	<string name="pref_scrollback_summary">Size of scrollback buffer to keep in memory for each console</string>
 
 	<!-- The category title for user interface preferences -->
-	<string name="pref_ui_category">User interface</string>
+	<string name="pref_ui_category">Brukergrensesnitt</string>
 
 	<!-- Name for the rotation mode preference -->
 	<string name="pref_rotation_title">Rotation mode</string>
@@ -137,7 +137,7 @@
 	<string name="pref_rotation_summary">How to change rotation when keyboard popped in/out</string>
 
 	<!-- Name for the full screen preference -->
-	<string name="pref_fullscreen_title">Full screen</string>
+	<string name="pref_fullscreen_title">Full skjerm</string>
 	<!-- Summary for the full screen preference -->
 	<string name="pref_fullscreen_summary">Hide status bar while in console</string>
 
@@ -177,7 +177,7 @@
 	<string name="pref_bumpyarrows_summary">Vibrate when sending arrow keys from trackball; useful for laggy connections</string>
 
 	<!-- Category title for the Terminal Bell preferences -->
-	<string name="pref_bell_category">Terminal bell</string>
+	<string name="pref_bell_category">Terminalklokke</string>
 
 	<!-- Checkbox preference title for the audible terminal bell feature -->
 	<string name="pref_bell_title">Audible bell</string>
@@ -213,7 +213,7 @@
 	<string name="list_update_never">Aldri</string>
 
 	<!-- Host nickname field preference title -->
-	<string name="hostpref_nickname_title">Nickname</string>
+	<string name="hostpref_nickname_title">Kallenavn</string>
 
 	<!-- Host color category preference title -->
 	<string name="hostpref_color_title">Color category</string>
@@ -230,7 +230,7 @@
 	<string name="hostpref_postlogin_summary">Commands to run on remote server once authenticated</string>
 
 	<!-- Host compression preference title -->
-	<string name="hostpref_compression_title">Compression</string>
+	<string name="hostpref_compression_title">Komprimering</string>
 	<!-- Summary for compression preference -->
 	<string name="hostpref_compression_summary">This may help with slower networks</string>
 
@@ -253,7 +253,7 @@
 	<string name="hostpref_connection_category">Connection settings</string>
 
 	<!-- Username field title for host editor preference -->
-	<string name="hostpref_username_title">Username</string>
+	<string name="hostpref_username_title">Brukernavn</string>
 
 	<!-- Hostname field title for host editor preference -->
 	<string name="hostpref_hostname_title">Host</string>
@@ -304,12 +304,12 @@
 	<string name="hint_userhost">bruker@vert</string>
 
 	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
-	<string name="list_format_error">Bruk formatet "%1$s"</string>
+	<string name="list_format_error">Use the format "%1$s"</string>
 
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_username">bruker</string>
+	<string name="format_username">brukernavn</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_hostname">vert</string>
+	<string name="format_hostname">hostname</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
 	<string name="format_port">port</string>
 
@@ -408,8 +408,8 @@
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
 	<string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?</string>
 
-	<string name="color_red">red</string>
-	<string name="color_green">green</string>
-	<string name="color_blue">blue</string>
-	<string name="color_gray">gray</string>
+	<string name="color_red">rød</string>
+	<string name="color_green">grønn</string>
+	<string name="color_blue">blå</string>
+	<string name="color_gray">grå</string>
 </resources>

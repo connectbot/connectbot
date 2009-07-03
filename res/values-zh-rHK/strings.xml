@@ -14,7 +14,7 @@
 	<!-- Window title for Help index -->
 	<string name="title_help">幫助</string>
 	<!-- Window title for color list editing screen -->
-	<string name="title_colors">Colors</string>
+	<string name="title_colors">顏色</string>
 
 	<string name="resolve_connect">連接</string>
 	<string name="resolve_entropy">Gather Entropy</string>
