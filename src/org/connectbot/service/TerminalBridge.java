@@ -520,6 +520,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			if (printing) {
 				int curMetaState = event.getMetaState();
 
+				boolean oppositeShift = (metaState & META_TAB) != 0;
+
 				metaState &= ~(META_SLASH | META_TAB);
 
 				if ((metaState & META_SHIFT_MASK) != 0) {
@@ -554,7 +556,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 				}
 
 				// handle pressing f-keys
-				if ((metaState & META_TAB) != 0) {
+				if (oppositeShift) {
 					switch(key) {
 					case '!': ((vt320)buffer).keyPressed(vt320.KEY_F1, ' ', 0); return true;
 					case '@': ((vt320)buffer).keyPressed(vt320.KEY_F2, ' ', 0); return true;
@@ -583,6 +585,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 					event.getAction() == KeyEvent.ACTION_MULTIPLE) {
 				byte[] input = event.getCharacters().getBytes(host.getEncoding());
 				transport.write(input);
+				return true;
 			}
 
 			// try handling keymode shortcuts
