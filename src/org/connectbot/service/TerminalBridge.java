@@ -34,6 +34,7 @@ import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -118,6 +119,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	private int rows;
 
 	private String keymode = null;
+
+	private boolean hardwareKeyboard = false;
 
 	private boolean selectingForCopy = false;
 	private final SelectionArea selectionArea;
@@ -257,6 +260,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		buffer.setDisplay(this);
 
 		selectionArea = new SelectionArea();
+
+		hardwareKeyboard = (manager.res.getConfiguration().keyboard
+				== Configuration.KEYBOARD_QWERTY);
 	}
 
 	public PromptHelper getPromptHelper() {
@@ -520,8 +526,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			if (printing) {
 				int curMetaState = event.getMetaState();
 
-				boolean oppositeShift = (metaState & META_TAB) != 0;
-
 				metaState &= ~(META_SLASH | META_TAB);
 
 				if ((metaState & META_SHIFT_MASK) != 0) {
@@ -539,6 +543,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 				int key = keymap.get(keyCode, curMetaState);
 
 				if ((metaState & META_CTRL_MASK) != 0) {
+					metaState &= ~META_CTRL_ON;
+					redraw();
+
+					if (!hardwareKeyboard && key >= '0' && key <= '9') {
+						if (sendFunctionKey(key))
+							return true;
+					}
+
 					// Support CTRL-a through CTRL-z
 					if (key >= 0x61 && key <= 0x7A)
 						key -= 0x60;
@@ -549,26 +561,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 						key = 0x00;
 					else if (key == 0x3F)
 						key = 0x7F;
-
-					metaState &= ~META_CTRL_ON;
-
-					redraw();
 				}
 
 				// handle pressing f-keys
-				if (oppositeShift) {
-					switch(key) {
-					case '!': ((vt320)buffer).keyPressed(vt320.KEY_F1, ' ', 0); return true;
-					case '@': ((vt320)buffer).keyPressed(vt320.KEY_F2, ' ', 0); return true;
-					case '#': ((vt320)buffer).keyPressed(vt320.KEY_F3, ' ', 0); return true;
-					case '$': ((vt320)buffer).keyPressed(vt320.KEY_F4, ' ', 0); return true;
-					case '%': ((vt320)buffer).keyPressed(vt320.KEY_F5, ' ', 0); return true;
-					case '^': ((vt320)buffer).keyPressed(vt320.KEY_F6, ' ', 0); return true;
-					case '&': ((vt320)buffer).keyPressed(vt320.KEY_F7, ' ', 0); return true;
-					case '*': ((vt320)buffer).keyPressed(vt320.KEY_F8, ' ', 0); return true;
-					case '(': ((vt320)buffer).keyPressed(vt320.KEY_F9, ' ', 0); return true;
-					case ')': ((vt320)buffer).keyPressed(vt320.KEY_F10, ' ', 0); return true;
-					}
+				if (hardwareKeyboard && (curMetaState & KeyEvent.META_SHIFT_ON) != 0) {
+					if (sendFunctionKey(key))
+						return true;
 				}
 
 				if (key < 0x80)
@@ -749,6 +747,58 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @param key
+	 * @return successful
+	 */
+	private boolean sendFunctionKey(int key) {
+		Log.d(TAG, "sendFunctionKey called with " + key);
+		switch (key) {
+		case '1':
+		case '!':
+			((vt320) buffer).keyPressed(vt320.KEY_F1, ' ', 0);
+			return true;
+		case '2':
+		case '@':
+			((vt320) buffer).keyPressed(vt320.KEY_F2, ' ', 0);
+			return true;
+		case '3':
+		case '#':
+			((vt320) buffer).keyPressed(vt320.KEY_F3, ' ', 0);
+			return true;
+		case '4':
+		case '$':
+			((vt320) buffer).keyPressed(vt320.KEY_F4, ' ', 0);
+			return true;
+		case '5':
+		case '%':
+			((vt320) buffer).keyPressed(vt320.KEY_F5, ' ', 0);
+			return true;
+		case '6':
+		case '^':
+			((vt320) buffer).keyPressed(vt320.KEY_F6, ' ', 0);
+			return true;
+		case '7':
+		case '&':
+			((vt320) buffer).keyPressed(vt320.KEY_F7, ' ', 0);
+			return true;
+		case '8':
+		case '*':
+			((vt320) buffer).keyPressed(vt320.KEY_F8, ' ', 0);
+			return true;
+		case '9':
+		case '(':
+			((vt320) buffer).keyPressed(vt320.KEY_F9, ' ', 0);
+			return true;
+		case '0':
+		case ')':
+			((vt320) buffer).keyPressed(vt320.KEY_F10, ' ', 0);
+			return true;
+		default:
+			return false;
+		}
 	}
 
 	/**
