@@ -87,9 +87,9 @@
 	</string-array>
 
 	<string-array name="list_authagent">
-		<item>No</item>
-		<item>With confirmation</item>
-		<item>Yes</item>
+		<item>@string/no</item>
+		<item>@string/with_confirmation</item>
+		<item>@string/yes</item>
 	</string-array>
 
 	<string-array name="list_authagent_values">

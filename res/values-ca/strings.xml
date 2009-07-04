@@ -405,6 +405,13 @@
 	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
 	<string name="upgrade_neg">No ara</string>
 
+	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
+	<string name="no">No</string>
+	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
+	<string name="with_confirmation">With confirmation</string>
+	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
+	<string name="yes">Yes</string>
+
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
 	<string name="exceptions_submit_message">Sembla que ConnectBot ha tingut un problema l'últim cop que s'ha iniciat. Enviar la informació de l'error als desenvolupadors de ConnectBot?</string>
 
