@@ -546,10 +546,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 					metaState &= ~META_CTRL_ON;
 					redraw();
 
-					if (!hardwareKeyboard && key >= '0' && key <= '9') {
-						if (sendFunctionKey(key))
-							return true;
-					}
+					if (!hardwareKeyboard && sendFunctionKey(keyCode))
+						return true;
 
 					// Support CTRL-a through CTRL-z
 					if (key >= 0x61 && key <= 0x7A)
@@ -564,10 +562,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 				}
 
 				// handle pressing f-keys
-				if (hardwareKeyboard && (curMetaState & KeyEvent.META_SHIFT_ON) != 0) {
-					if (sendFunctionKey(key))
-						return true;
-				}
+				if (hardwareKeyboard
+						&& (curMetaState & KeyEvent.META_SHIFT_ON) != 0
+						&& sendFunctionKey(keyCode))
+					return true;
 
 				if (key < 0x80)
 					transport.write(key);
@@ -753,47 +751,36 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	 * @param key
 	 * @return successful
 	 */
-	private boolean sendFunctionKey(int key) {
-		Log.d(TAG, "sendFunctionKey called with " + key);
-		switch (key) {
-		case '1':
-		case '!':
+	private boolean sendFunctionKey(int keyCode) {
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_1:
 			((vt320) buffer).keyPressed(vt320.KEY_F1, ' ', 0);
 			return true;
-		case '2':
-		case '@':
+		case KeyEvent.KEYCODE_2:
 			((vt320) buffer).keyPressed(vt320.KEY_F2, ' ', 0);
 			return true;
-		case '3':
-		case '#':
+		case KeyEvent.KEYCODE_3:
 			((vt320) buffer).keyPressed(vt320.KEY_F3, ' ', 0);
 			return true;
-		case '4':
-		case '$':
+		case KeyEvent.KEYCODE_4:
 			((vt320) buffer).keyPressed(vt320.KEY_F4, ' ', 0);
 			return true;
-		case '5':
-		case '%':
+		case KeyEvent.KEYCODE_5:
 			((vt320) buffer).keyPressed(vt320.KEY_F5, ' ', 0);
 			return true;
-		case '6':
-		case '^':
+		case KeyEvent.KEYCODE_6:
 			((vt320) buffer).keyPressed(vt320.KEY_F6, ' ', 0);
 			return true;
-		case '7':
-		case '&':
+		case KeyEvent.KEYCODE_7:
 			((vt320) buffer).keyPressed(vt320.KEY_F7, ' ', 0);
 			return true;
-		case '8':
-		case '*':
+		case KeyEvent.KEYCODE_8:
 			((vt320) buffer).keyPressed(vt320.KEY_F8, ' ', 0);
 			return true;
-		case '9':
-		case '(':
+		case KeyEvent.KEYCODE_9:
 			((vt320) buffer).keyPressed(vt320.KEY_F9, ' ', 0);
 			return true;
-		case '0':
-		case ')':
+		case KeyEvent.KEYCODE_0:
 			((vt320) buffer).keyPressed(vt320.KEY_F10, ' ', 0);
 			return true;
 		default:
