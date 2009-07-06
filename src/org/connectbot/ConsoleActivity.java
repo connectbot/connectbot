@@ -354,7 +354,7 @@ public class ConsoleActivity extends Activity {
 
 				// finally clear password for next user
 				stringPrompt.setText("");
-				hideAllPrompts();
+				updatePromptVisible();
 
 				return true;
 			}
@@ -369,7 +369,7 @@ public class ConsoleActivity extends Activity {
 				PromptHelper helper = getCurrentPromptHelper();
 				if(helper == null) return;
 				helper.setResponse(Boolean.TRUE);
-				hideAllPrompts();
+				updatePromptVisible();
 			}
 		});
 
@@ -379,7 +379,7 @@ public class ConsoleActivity extends Activity {
 				PromptHelper helper = getCurrentPromptHelper();
 				if(helper == null) return;
 				helper.setResponse(Boolean.FALSE);
-				hideAllPrompts();
+				updatePromptVisible();
 			}
 		});
 

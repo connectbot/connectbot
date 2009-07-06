@@ -473,14 +473,20 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	public void close() {
 		connected = false;
 
-		if (session != null)
+		if (session != null) {
 			session.close();
-		if (connection != null)
+			session = null;
+		}
+
+		if (connection != null) {
 			connection.close();
+			connection = null;
+		}
 	}
 
 	private void onDisconnect() {
-		connected = false;
+		close();
+
 		bridge.dispatchDisconnect(false);
 	}
 
@@ -560,7 +566,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	}
 
 	public void connectionLost(Throwable reason) {
-		bridge.dispatchDisconnect(true);
+		onDisconnect();
 	}
 
 	@Override

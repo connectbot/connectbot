@@ -239,6 +239,11 @@
 	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
 	<string name="hostpref_wantsession_summary">Disable this preference to only use port forwards</string>
 
+	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
+	<string name="hostpref_stayconnected_title">Stay connected</string>
+	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
+	<string name="hostpref_stayconnected_summary">Try to reconnect to host if disconnected</string>
+
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
 	<string name="hostpref_delkey_title">DEL Key</string>
 	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->

@@ -255,7 +255,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			}
 		};
 
-		buffer.setBufferSize(scrollback);
+		// Don't keep any scrollback if a session is not being opened.
+		if (host.getWantSession())
+			buffer.setBufferSize(scrollback);
+		else
+			buffer.setBufferSize(0);
+
 		resetColors();
 		buffer.setDisplay(this);
 
@@ -296,6 +301,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			}
 		});
 		connectionThread.setName("Connection");
+		connectionThread.setDaemon(true);
 		connectionThread.start();
 	}
 
@@ -369,6 +375,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	 * authentication. If called before authenticated, it will just fail.
 	 */
 	public void onConnected() {
+		disconnected = false;
+
 		((vt320) buffer).reset();
 
 		// We no longer need our local output.
@@ -386,6 +394,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		// create thread to relay incoming connection data to buffer
 		relay = new Relay(this, transport, (vt320) buffer, host.getEncoding());
 		Thread relayThread = new Thread(relay);
+		relayThread.setDaemon(true);
 		relayThread.setName("Relay");
 		relayThread.start();
 
@@ -414,8 +423,15 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	 */
 	public void dispatchDisconnect(boolean immediate) {
 		// We don't need to do this multiple times.
-		if (disconnected && !immediate)
-			return;
+		synchronized (this) {
+			if (disconnected && !immediate)
+				return;
+
+			disconnected = true;
+		}
+
+		// Cancel any pending prompts.
+		promptHelper.cancelPrompt();
 
 		// disconnection request hangs if we havent really connected to a host yet
 		// temporary fix is to just spawn disconnection into a thread
@@ -428,17 +444,19 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		disconnectThread.setName("Disconnect");
 		disconnectThread.start();
 
-		disconnected = true;
-
 		if (immediate) {
 			awaitingClose = true;
 			if (disconnectListener != null)
 				disconnectListener.onDisconnected(TerminalBridge.this);
 		} else {
+			if (host.getStayConnected()) {
+				startConnection();
+				return;
+			}
 			Thread disconnectPromptThread = new Thread(new Runnable() {
 				public void run() {
 					Boolean result = promptHelper.requestBooleanPrompt(null,
-							manager.res.getString(R.string.prompt_host_disconnected), true);
+							manager.res.getString(R.string.prompt_host_disconnected));
 					if (result == null || result.booleanValue()) {
 						awaitingClose = true;
 
@@ -449,6 +467,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 				}
 			});
 			disconnectPromptThread.setName("DisconnectPrompt");
+			disconnectPromptThread.setDaemon(true);
 			disconnectPromptThread.start();
 		}
 	}
@@ -459,8 +478,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 
 	/**
 	 * Handle onKey() events coming down from a {@link TerminalView} above us.
-	 * We might collect these for our internal buffer when working with hostkeys
-	 * or passwords, but otherwise we pass them directly over to the SSH host.
+	 * Modify the keys to make more sense to a host then pass it to the transport.
 	 */
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
 		try {

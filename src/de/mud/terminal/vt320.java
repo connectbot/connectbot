@@ -2956,7 +2956,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     _SetCursor(0, 0);
 
     if (display != null)
-    	display.resetColors();
+      display.resetColors();
 
     showCursor(true);
     /*FIXME:*/

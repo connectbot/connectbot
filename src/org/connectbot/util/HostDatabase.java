@@ -48,7 +48,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public final static String TAG = "ConnectBot.HostDatabase";
 
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 19;
+	public final static int DB_VERSION = 20;
 
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -68,6 +68,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public final static String FIELD_HOST_DELKEY = "delkey";
 	public final static String FIELD_HOST_COMPRESSION = "compression";
 	public final static String FIELD_HOST_ENCODING = "encoding";
+	public final static String FIELD_HOST_STAYCONNECTED = "stayconnected";
 
 	public final static String TABLE_PORTFORWARDS = "portforwards";
 	public final static String FIELD_PORTFORWARD_HOSTID = "hostid";
@@ -144,7 +145,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 				+ FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "', "
 				+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "', "
 				+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
-				+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "')");
+				+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "', "
+				+ FIELD_HOST_STAYCONNECTED + " TEXT)");
 
 		db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS
 				+ " (_id INTEGER PRIMARY KEY, "
@@ -238,6 +240,9 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		case 18:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_USEAUTHAGENT + " TEXT DEFAULT '" + AUTHAGENT_NO + "'");
+		case 19:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_STAYCONNECTED + " TEXT");
 		}
 	}
 
@@ -323,7 +328,9 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			COL_WANTSESSION = c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION),
 			COL_DELKEY = c.getColumnIndexOrThrow(FIELD_HOST_DELKEY),
 			COL_COMPRESSION = c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION),
-			COL_ENCODING = c.getColumnIndexOrThrow(FIELD_HOST_ENCODING);
+			COL_ENCODING = c.getColumnIndexOrThrow(FIELD_HOST_ENCODING),
+			COL_STAYCONNECTED = c.getColumnIndexOrThrow(FIELD_HOST_STAYCONNECTED);
+
 
 		while (c.moveToNext()) {
 			HostBean host = new HostBean();
@@ -344,6 +351,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			host.setDelKey(c.getString(COL_DELKEY));
 			host.setCompression(Boolean.valueOf(c.getString(COL_COMPRESSION)));
 			host.setEncoding(c.getString(COL_ENCODING));
+			host.setStayConnected(Boolean.valueOf(c.getString(COL_STAYCONNECTED)));
 
 			hosts.add(host);
 		}

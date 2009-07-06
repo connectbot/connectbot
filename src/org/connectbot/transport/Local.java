@@ -135,6 +135,7 @@ public class Local extends AbsTransport {
 
 		Thread exitWatcherThread = new Thread(exitWatcher);
 		exitWatcherThread.setName("LocalExitWatcher");
+		exitWatcherThread.setDaemon(true);
 		exitWatcherThread.start();
 
 		is = new FileInputStream(shellFd);

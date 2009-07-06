@@ -69,6 +69,12 @@
 		android:summary="@string/hostpref_wantsession_summary"
 		/>
 
+	<CheckBoxPreference
+		android:key="stayconnected"
+		android:title="@string/hostpref_stayconnected_title"
+		android:summary="@string/hostpref_stayconnected_summary"
+		/>
+
 	<ListPreference
 		android:key="delkey"
 		android:title="@string/hostpref_delkey_title"

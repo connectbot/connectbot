@@ -48,6 +48,7 @@ public class HostBean extends AbstractBean {
 	private String delKey = HostDatabase.DELKEY_DEL;
 	private boolean compression = false;
 	private String encoding = HostDatabase.ENCODING_DEFAULT;
+	private boolean stayConnected = false;
 
 	public HostBean() {
 
@@ -186,6 +187,14 @@ public class HostBean extends AbstractBean {
 		return this.encoding;
 	}
 
+	public void setStayConnected(boolean stayConnected) {
+		this.stayConnected = stayConnected;
+	}
+
+	public boolean getStayConnected() {
+		return stayConnected;
+	}
+
 	public String getDescription() {
 		String description = String.format("%s@%s", username, hostname);
 
@@ -216,6 +225,7 @@ public class HostBean extends AbstractBean {
 		values.put(HostDatabase.FIELD_HOST_DELKEY, delKey);
 		values.put(HostDatabase.FIELD_HOST_COMPRESSION, Boolean.toString(compression));
 		values.put(HostDatabase.FIELD_HOST_ENCODING, encoding);
+		values.put(HostDatabase.FIELD_HOST_STAYCONNECTED, stayConnected);
 
 		return values;
 	}
