@@ -115,6 +115,11 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	static {
 		addTableName(TABLE_HOSTS);
 		addTableName(TABLE_PORTFORWARDS);
+		addIndexName(TABLE_PORTFORWARDS + FIELD_PORTFORWARD_HOSTID + "index");
+		addTableName(TABLE_COLORS);
+		addIndexName(TABLE_COLORS + FIELD_COLOR_SCHEME + "index");
+		addTableName(TABLE_COLOR_DEFAULTS);
+		addIndexName(TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index");
 	}
 
 	public HostDatabase(Context context) {
