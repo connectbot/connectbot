@@ -635,7 +635,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			DynamicPortForwarder dpf = null;
 
 			try {
-				dpf = connection.createDynamicPortForwarder(portForward.getSourcePort());
+				dpf = connection.createDynamicPortForwarder(
+						new InetSocketAddress(InetAddress.getLocalHost(), portForward.getSourcePort()));
 			} catch (IOException e) {
 				Log.e(TAG, "Could not create dynamic port forward", e);
 				return false;
