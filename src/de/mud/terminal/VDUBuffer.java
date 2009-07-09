@@ -559,7 +559,6 @@ public class VDUBuffer {
   public void setCursorPosition(int c, int l) {
     cursorX = c;
     cursorY = l;
-    update[cursorY + 1] = true;
   }
 
   /**
@@ -610,7 +609,7 @@ public class VDUBuffer {
 
     if (l1 < 0)
       l1 = 0;
-    if (l2 > height - 1)
+    if (l2 >= height)
       l2 = height - 1;
 
     topMargin = l1;
@@ -630,7 +629,7 @@ public class VDUBuffer {
     } else
       topMargin = l;
     if (topMargin < 0) topMargin = 0;
-    if (bottomMargin > height - 1) bottomMargin = height - 1;
+    if (bottomMargin >= height) bottomMargin = height - 1;
   }
 
   /**
@@ -653,7 +652,7 @@ public class VDUBuffer {
     } else
       bottomMargin = l;
     if (topMargin < 0) topMargin = 0;
-    if (bottomMargin > height - 1) bottomMargin = height - 1;
+    if (bottomMargin >= height) bottomMargin = height - 1;
   }
 
   /**
@@ -759,6 +758,20 @@ public class VDUBuffer {
                          w < rowLength ? w : rowLength);
       }
     }
+
+    int C = getCursorColumn();
+    if (C < 0)
+      C = 0;
+    else if (C >= width)
+      C = width - 1;
+
+    int R = getCursorRow();
+    if (R < 0)
+      R = 0;
+    else if (R >= height)
+      R = height - 1;
+
+    setCursorPosition(C, R);
 
     charArray = cbuf;
     charAttributes = abuf;

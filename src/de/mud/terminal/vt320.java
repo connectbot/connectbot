@@ -153,12 +153,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
 
     /* Tricky, since the VDUBuffer works strangely. */
     if (r > oldrows) {
-      int newR = R + (r - oldrows);
-      if (newR < 0)
-        newR = 0;
-      else if (newR > height - 1)
-        newR = height - 1;
-      setCursorPosition(C, R = newR);
+      setCursorPosition(C, R + (r - oldrows));
       redraw();
     }
     if (broadcast) {
@@ -1493,7 +1488,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     int tm = getTopMargin();
 
     R = (row < 0)?0: row;
-    C = (col < 0)?0: (col > width - 1) ? width - 1 : col;
+    C = (col < 0)?0: (col >= width) ? width - 1 : col;
 
     if (!moveoutsidemargins) {
       R += tm;
@@ -1840,7 +1835,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case 'B': /* CUD */
             R++;
-            if (R > rows - 1) R = rows - 1;
+            if (R >= rows) R = rows - 1;
             break;
           case 'C':
             C++;
@@ -1993,10 +1988,18 @@ public void setScreenSize(int c, int r, boolean broadcast) {
         break;
       case TSTATE_VT52X:
         C = c - 37;
+        if (C < 0)
+          C = 0;
+        else if (C >= width)
+          C = width - 1;
         term_state = TSTATE_VT52Y;
         break;
       case TSTATE_VT52Y:
         R = c - 37;
+        if (R < 0)
+          R = 0;
+        else if (R >= height)
+          R = height - 1;
         term_state = TSTATE_DATA;
         break;
       case TSTATE_SETG0:
@@ -2526,13 +2529,17 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               C++;
             else
               C += DCEvars[0];
-            if (C > columns - 1)
+            if (C >= columns)
               C = columns - 1;
             if (debug > 1)
               debug("ESC [ " + DCEvars[0] + " C");
             break;
           case 'd': // CVA
             R = DCEvars[0];
+            if (R < 0)
+              R = 0;
+            else if (R >= height)
+              R = height - 1;
             if (debug > 1)
               debug("ESC [ " + DCEvars[0] + " d");
             break;
@@ -2569,6 +2576,10 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case 'G':  /* CUP  / cursor absolute column */
             C = DCEvars[0];
+            if (C < 0)
+              C = 0;
+            else if (C >= width)
+              C = width - 1;
             if (debug > 1) debug("ESC [ " + DCEvars[0] + " G");
             break;
           case 'H':  /* CUP  / cursor position */
@@ -2583,8 +2594,14 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             /* gets 2 arguments */
             R = DCEvars[0] - 1;
             C = DCEvars[1] - 1;
-            if (C < 0) C = 0;
-            if (R < 0) R = 0;
+            if (C < 0)
+              C = 0;
+            else if (C >= width)
+              C = width - 1;
+            if (R < 0)
+              R = 0;
+            else if (R >= height)
+              R = height - 1;
             if (debug > 2)
               debug("ESC [ " + DCEvars[0] + ";" + DCEvars[1] + " f");
             break;
@@ -2760,8 +2777,8 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                   }
                   break;
                 case 3: /* italics */
-            	  attributes |= INVERT;
-            	  break;
+                  attributes |= INVERT;
+                  break;
                 case 4:
                   attributes |= UNDERLINE;
                   break;
@@ -2906,33 +2923,21 @@ public void setScreenSize(int c, int r, boolean broadcast) {
         }
         break;
       case TSTATE_TITLE:
-      	switch (c) {
-      	  case ESC:
-      		term_state = TSTATE_ESC;
-      		break;
-      	  default:
-      		// TODO save title
-      		break;
-      	}
-      	break;
+        switch (c) {
+          case ESC:
+            term_state = TSTATE_ESC;
+            break;
+          default:
+            // TODO save title
+            break;
+        }
+        break;
       default:
         term_state = TSTATE_DATA;
         break;
     }
 
-    if (C > columns)
-      C = columns;
-    else if (C < 0)
-      C = 0;
-
-    if (R > rows)
-      R = rows;
-    else if (R < 0)
-      R = 0;
-
-    if (doshowcursor)
-      setCursorPosition(C, R);
-    //markLine(R, 1);
+    setCursorPosition(C, R);
   }
 
   /* hard reset the terminal */
