@@ -397,7 +397,7 @@ public abstract class Proxy{
    public static final int SOCKS_METHOD_NOTSUPPORTED	=8<<16;
 
 
-   static final int SOCKS_CMD_CONNECT 		=0x1;
+   public static final int SOCKS_CMD_CONNECT 		=0x1;
    static final int SOCKS_CMD_BIND		=0x2;
    static final int SOCKS_CMD_UDP_ASSOCIATE	=0x3;
 
