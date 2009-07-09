@@ -128,13 +128,6 @@ public class DynamicAcceptThread extends Thread implements IChannelWorkerThread 
 			if (!auth.checkRequest(msg))
 				throw new SocksException(Proxy.SOCKS_FAILURE);
 
-			if (msg.ip == null) {
-				if (msg instanceof Socks5Message) {
-					msg.ip = InetAddress.getByName(msg.host);
-				} else
-					throw new SocksException(Proxy.SOCKS_FAILURE);
-			}
-
 			switch (msg.command) {
 			case Proxy.SOCKS_CMD_CONNECT:
 				onConnect(msg);
@@ -175,14 +168,15 @@ public class DynamicAcceptThread extends Thread implements IChannelWorkerThread 
 			StreamForwarder l2r = null;
 
 			if (msg instanceof Socks5Message) {
-				response = new Socks5Message(Proxy.SOCKS_SUCCESS, sock
-						.getLocalAddress(), sock.getLocalPort());
+				response = new Socks5Message(Proxy.SOCKS_SUCCESS, (InetAddress)null, 0);
 			} else {
-				response = new Socks4Message(Socks4Message.REPLY_OK, sock
-						.getLocalAddress(), sock.getLocalPort());
-
+				response = new Socks4Message(Socks4Message.REPLY_OK, (InetAddress)null, 0);
 			}
 			response.write(out);
+
+			String destHost = msg.host;
+			if (msg.ip != null)
+				destHost = msg.ip.getHostAddress();
 
 			try {
 				/*
@@ -190,9 +184,8 @@ public class DynamicAcceptThread extends Thread implements IChannelWorkerThread 
 				 * optimistic terms: not open yet)
 				 */
 
-				cn = cm.openDirectTCPIPChannel(msg.host, msg.port,
-						sock.getInetAddress().getHostAddress(),
-						sock.getPort());
+				cn = cm.openDirectTCPIPChannel(destHost, msg.port,
+						"127.0.0.1", 0);
 
 			} catch (IOException e) {
 				/*
