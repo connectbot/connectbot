@@ -134,8 +134,8 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
 
   @Override
 public void setScreenSize(int c, int r, boolean broadcast) {
-    int oldrows = getRows();
-    //int oldcols = getColumns();
+    int oldrows = height;
+    //int oldcols = width;
 
     if (debug>2) {
       debugStr.append("setscreensize (")
@@ -153,7 +153,12 @@ public void setScreenSize(int c, int r, boolean broadcast) {
 
     /* Tricky, since the VDUBuffer works strangely. */
     if (r > oldrows) {
-      setCursorPosition(C, R + (r-oldrows));
+      int newR = R + (r - oldrows);
+      if (newR < 0)
+        newR = 0;
+      else if (newR > height - 1)
+        newR = height - 1;
+      setCursorPosition(C, R = newR);
       redraw();
     }
     if (broadcast) {
@@ -1484,11 +1489,11 @@ public void setScreenSize(int c, int r, boolean broadcast) {
   }
 
   private void _SetCursor(int row, int col) {
-    int maxr = getRows();
+    int maxr = height - 1;
     int tm = getTopMargin();
 
-    R = (row < 0)?0:row;
-    C = (col < 0)?0:col;
+    R = (row < 0)?0: row;
+    C = (col < 0)?0: (col > width - 1) ? width - 1 : col;
 
     if (!moveoutsidemargins) {
       R += tm;
@@ -1498,32 +1503,32 @@ public void setScreenSize(int c, int r, boolean broadcast) {
   }
 
   private void putChar(char c, boolean doshowcursor) {
-    int rows = getRows(); //statusline
-    int columns = getColumns();
+    int rows = this.height; //statusline
+    int columns = this.width;
     // byte msg[];
 
-    if (debug > 4) {
-      debugStr.append("putChar(")
-        .append(c)
-        .append(" [")
-        .append((int) c)
-        .append("]) at R=")
-        .append(R)
-        .append(" , C=")
-        .append(C)
-        .append(", columns=")
-        .append(columns)
-        .append(", rows=")
-        .append(rows);
-      debug(debugStr.toString());
-      debugStr.setLength(0);
-    }
-    //markLine(R, 1);
-    if (c > 255) {
-      if (debug > 0)
-        debug("char > 255:" + (int) c);
-      //return;
-    }
+//    if (debug > 4) {
+//      debugStr.append("putChar(")
+//        .append(c)
+//        .append(" [")
+//        .append((int) c)
+//        .append("]) at R=")
+//        .append(R)
+//        .append(" , C=")
+//        .append(C)
+//        .append(", columns=")
+//        .append(columns)
+//        .append(", rows=")
+//        .append(rows);
+//      debug(debugStr.toString());
+//      debugStr.setLength(0);
+//    }
+//    markLine(R, 1);
+//    if (c > 255) {
+//      if (debug > 0)
+//        debug("char > 255:" + (int) c);
+//      //return;
+//    }
 
 
     switch (term_state) {
@@ -2084,7 +2089,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             for (int i = 0; i <= DCEvar; i++) {
               switch (DCEvars[i]) {
                 case 3: /* 80 columns*/
-                  setScreenSize(80, getRows(), true);
+                  setScreenSize(80, height, true);
                   break;
                 case 4: /* scrolling mode, smooth */
                   break;
@@ -2126,7 +2131,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                   vt52mode = false;
                   break;
                 case 3: /* 132 columns*/
-                  setScreenSize(132, getRows(), true);
+                  setScreenSize(132, height, true);
                   break;
                 case 6: /* DECOM: move inside margins. */
                   moveoutsidemargins = false;
@@ -2193,7 +2198,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                   vt52mode = true;
                   break;
                 case 3: /* 80 columns*/
-                  setScreenSize(80, getRows(), true);
+                  setScreenSize(80, height, true);
                   break;
                 case 6: /* DECOM: move outside margins. */
                   moveoutsidemargins = true;
@@ -2413,7 +2418,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             /* used for tabsets */
             switch (DCEvars[0]) {
               case 3:/* clear them */
-                Tabs = new byte[getColumns()];
+                Tabs = new byte[width];
                 break;
               case 0:
                 Tabs[C] = 0;
@@ -2943,15 +2948,15 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     onegl = -1; // Single shift override
 
     /* reset tabs */
-    int nw = getColumns();
+    int nw = width;
     if (nw < 132) nw = 132;
     Tabs = new byte[nw];
     for (int i = 0; i < nw; i += 8) {
       Tabs[i] = 1;
     }
 
-    deleteArea(0, 0, getColumns(), getRows(), attributes);
-    setMargins(0, getRows());
+    deleteArea(0, 0, width, height, attributes);
+    setMargins(0, height);
     C = R = 0;
     _SetCursor(0, 0);
 

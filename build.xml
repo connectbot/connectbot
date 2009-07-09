@@ -186,14 +186,16 @@
             -libraryjars ${android-jar}
             -dontskipnonpubliclibraryclasses
             -dontobfuscate
-            -dontoptimize
+            -optimizations method/inlining/*,code/removal/*
+            -optimizationpasses 3
+            -allowaccessmodification
             -printusage ${out-folder}/proguard.usage
 
             -keep public class * extends android.app.Activity
             -keep public class * extends android.app.Service
             -keep class org.connectbot.**
             -keep public class com.trilead.ssh2.compression.*
-            -keep public class com.trilead.ssh2.crypto.cipher.*
+            -keep public class com.trilead.ssh2.crypto.*
         </proguard>
     </target>
 
