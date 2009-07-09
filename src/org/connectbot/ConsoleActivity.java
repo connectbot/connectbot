@@ -18,6 +18,9 @@
 
 package org.connectbot;
 
+import java.lang.ref.WeakReference;
+import java.util.List;
+
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
 import org.connectbot.bean.SelectionArea;
@@ -28,6 +31,7 @@ import org.connectbot.util.PreferenceConstants;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -62,13 +66,17 @@ import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.nullwire.trace.ExceptionHandler;
 
@@ -112,7 +120,7 @@ public class ConsoleActivity extends Activity {
 
 	private InputMethodManager inputManager;
 
-	private MenuItem disconnect, copy, paste, portForward, resize;
+	private MenuItem disconnect, copy, paste, portForward, resize, urlscan;
 
 	protected TerminalBridge copySource = null;
 	private int lastTouchRow, lastTouchCol;
@@ -718,6 +726,30 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 
+		urlscan = menu.add(R.string.console_menu_urlscan);
+		urlscan.setAlphabeticShortcut('u');
+		urlscan.setIcon(android.R.drawable.ic_menu_search);
+		urlscan.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				final TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
+
+				List<String> urls = terminalView.bridge.scanForURLs();
+
+				Dialog urlDialog = new Dialog(ConsoleActivity.this);
+				urlDialog.setTitle(R.string.console_menu_urlscan);
+
+				ListView urlListView = new ListView(ConsoleActivity.this);
+				URLItemListener urlListener = new URLItemListener(ConsoleActivity.this);
+				urlListView.setOnItemClickListener(urlListener);
+
+				urlListView.setAdapter(new ArrayAdapter<String>(ConsoleActivity.this, android.R.layout.simple_list_item_1, urls));
+				urlDialog.setContentView(urlListView);
+				urlDialog.show();
+
+				return true;
+			}
+		});
+
 		resize = menu.add(R.string.console_menu_resize);
 		resize.setAlphabeticShortcut('s');
 		resize.setIcon(android.R.drawable.ic_menu_crop);
@@ -943,6 +975,36 @@ public class ConsoleActivity extends Activity {
 			hideAllPrompts();
 			view.requestFocus();
 		}
+	}
+
+	private class URLItemListener implements OnItemClickListener {
+		private WeakReference<Context> contextRef;
+
+		URLItemListener(Context context) {
+			this.contextRef = new WeakReference<Context>(context);
+		}
+
+		public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
+			Context context = contextRef.get();
+
+			if (context == null)
+				return;
+
+			try {
+				TextView urlView = (TextView) view;
+
+				String url = urlView.getText().toString();
+				if (url.indexOf("://") < 0)
+					url = "http://" + url;
+
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+				context.startActivity(intent);
+			} catch (Exception e) {
+				Log.e(TAG, "couldn't open URL", e);
+				// We should probably tell the user that we couldn't find a handler...
+			}
+		}
+
 	}
 
 	@Override

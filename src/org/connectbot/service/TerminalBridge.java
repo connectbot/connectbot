@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.connectbot.R;
 import org.connectbot.TerminalView;
@@ -1278,5 +1280,28 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		defaultBg = defaults[1];
 
 		color = manager.hostdb.getColorsForHost(host);
+	}
+
+	// This was taken from http://geekswithblogs.net/casualjim/archive/2005/12/01/61722.aspx
+	private final static String urlRegex = "(?:(?:ht|f)tp(?:s?)\\:\\/\\/|~/|/)?(?:\\w+:\\w+@)?(?:(?:[-\\w]+\\.)+(?:com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))(?::[\\d]{1,5})?(?:(?:(?:/(?:[-\\w~!$+|.,=]|%[a-f\\d]{2})+)+|/)+|\\?|#)?(?:(?:\\?(?:[-\\w~!$+|.,*:]|%[a-f\\d{2}])+=(?:[-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)(?:&(?:[-\\w~!$+|.,*:]|%[a-f\\d{2}])+=(?:[-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)*)*(?:#(?:[-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)?";
+	private static Pattern urlPattern = null;
+
+	/**
+	 * @return
+	 */
+	public List<String> scanForURLs() {
+		List<String> urls = new LinkedList<String>();
+
+		if (urlPattern == null)
+			urlPattern = Pattern.compile(urlRegex);
+
+		for (int l = 0; l < buffer.height; l++) {
+			Matcher urlMatcher = urlPattern.matcher(
+					new String(buffer.charArray[buffer.windowBase + l]));
+			while (urlMatcher.find())
+				urls.add(urlMatcher.group());
+		}
+
+		return urls;
 	}
 }

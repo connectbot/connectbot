@@ -290,6 +290,8 @@
 	<string name="console_menu_portforwards">Port Forwards</string>
 	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
 	<string name="console_menu_resize">Force Size</string>
+	<!-- Button that brings up the list of URLs on the current screen -->
+	<string name="console_menu_urlscan">URL Scan</string>
 
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
 	<string name="portforward_local">Local</string>
