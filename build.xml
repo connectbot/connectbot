@@ -186,9 +186,7 @@
             -libraryjars ${android-jar}
             -dontskipnonpubliclibraryclasses
             -dontobfuscate
-            -optimizations method/inlining/*,code/removal/*
-            -optimizationpasses 3
-            -allowaccessmodification
+	    -dontoptimize
             -printusage ${out-folder}/proguard.usage
 
             -keep public class * extends android.app.Activity
