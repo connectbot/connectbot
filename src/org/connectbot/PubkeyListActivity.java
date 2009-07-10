@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -85,6 +86,10 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 	private static final int MAX_KEYFILE_SIZE = 8192;
 	private static final int REQUEST_CODE_PICK_FILE = 1;
+
+	// Constants for AndExplorer's file picking intent
+	private static final String ANDEXPLORER_TITLE = "explorer_title";
+	private static final String MIME_TYPE_ANDEXPLORER_FILE = "vnd.android.cursor.dir/lysesoft.andexplorer.file";
 
 	protected PubkeyDatabase pubkeydb;
 	private List<PubkeyBean> pubkeys;
@@ -204,16 +209,28 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		importkey.setIcon(android.R.drawable.ic_menu_upload);
 		importkey.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
+				Uri sdcard = Uri.fromFile(Environment.getExternalStorageDirectory());
+				String pickerTitle = getString(R.string.pubkey_list_pick);
+
 				// Try to use OpenIntent's file browser to pick a file
 				Intent intent = new Intent(FileManagerIntents.ACTION_PICK_FILE);
-				intent.setData(Uri.fromFile(Environment.getExternalStorageDirectory()));
-				intent.putExtra(FileManagerIntents.EXTRA_TITLE, getString(R.string.pubkey_list_pick));
+				intent.setData(sdcard);
+				intent.putExtra(FileManagerIntents.EXTRA_TITLE, pickerTitle);
 				intent.putExtra(FileManagerIntents.EXTRA_BUTTON_TEXT, getString(android.R.string.ok));
 
 				try {
 					startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
 				} catch (ActivityNotFoundException e) {
-					pickFileSimple();
+					// If OI didn't work, try AndExplorer
+					intent = new Intent(Intent.ACTION_PICK);
+					intent.setDataAndType(sdcard, MIME_TYPE_ANDEXPLORER_FILE);
+					intent.putExtra(ANDEXPLORER_TITLE, pickerTitle);
+
+					try {
+						startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
+					} catch (ActivityNotFoundException e1) {
+						pickFileSimple();
+					}
 				}
 
 				return true;
@@ -470,20 +487,19 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		super.onActivityResult(requestCode, resultCode, intent);
 
 		switch (requestCode) {
 		case REQUEST_CODE_PICK_FILE:
-			if (resultCode == RESULT_OK && data != null) {
-				String filename = data.getDataString();
-				if (filename != null) {
-					// Get rid of URI prefix:
-					if (filename.startsWith("file://")) {
-						filename = filename.substring(7);
-					}
-
-					readKeyFromFile(filename);
+			if (resultCode == RESULT_OK && intent != null) {
+				Uri uri = intent.getData();
+				if (uri != null) {
+					readKeyFromFile(new File(URI.create(uri.toString())));
+				} else {
+					String filename = intent.getDataString();
+					if (filename != null)
+						readKeyFromFile(new File(URI.create(filename)));
 				}
 			}
 			break;
@@ -493,15 +509,13 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	/**
 	 * @param name
 	 */
-	private void readKeyFromFile(String name) {
+	private void readKeyFromFile(File file) {
 		PubkeyBean pubkey = new PubkeyBean();
 
 		// find the exact file selected
-		pubkey.setNickname(name);
-		File actual = new File(Environment.getExternalStorageDirectory(),
-				name);
+		pubkey.setNickname(file.getName());
 
-		if (actual.length() > MAX_KEYFILE_SIZE) {
+		if (file.length() > MAX_KEYFILE_SIZE) {
 			Toast.makeText(PubkeyListActivity.this,
 					R.string.pubkey_import_parse_problem,
 					Toast.LENGTH_LONG).show();
@@ -511,7 +525,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		// parse the actual key once to check if its encrypted
 		// then save original file contents into our database
 		try {
-			byte[] raw = readRaw(actual);
+			byte[] raw = readRaw(file);
 
 			String data = new String(raw);
 			if (data.startsWith(PubkeyUtils.PKCS8_START)) {
@@ -542,7 +556,10 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			}
 
 			// write new value into database
+			if (pubkeydb == null)
+				pubkeydb = new PubkeyDatabase(this);
 			pubkeydb.savePubkey(pubkey);
+
 			updateHandler.sendEmptyMessage(-1);
 		} catch(Exception e) {
 			Log.e(TAG, "Problem parsing imported private key", e);
@@ -587,7 +604,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				public void onClick(DialogInterface arg0, int arg1) {
 					String name = namesList[arg1];
 
-					readKeyFromFile(name);
+					readKeyFromFile(new File(sdcard, name));
 				}
 			})
 			.setNegativeButton(android.R.string.cancel, null).create().show();
