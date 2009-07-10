@@ -92,13 +92,13 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
       char c;
 
       for (int i = 0; i < len; i++) {
-    	c = s[start + i];
-    	// Shortcut for my favorite ASCII
-    	if (c <= 0x7F) {
-    	  if (lastChar != -1)
-    	    putChar((char) lastChar, false);
-    	  lastChar = c;
-    	} else if (!Character.isLowSurrogate(c) && !Character.isHighSurrogate(c)) {
+        c = s[start + i];
+        // Shortcut for my favorite ASCII
+        if (c <= 0x7F) {
+          if (lastChar != -1)
+            putChar((char) lastChar, false);
+          lastChar = c;
+        } else if (!Character.isLowSurrogate(c) && !Character.isHighSurrogate(c)) {
           if (Character.getType(c) == Character.NON_SPACING_MARK) {
             if (lastChar != -1) {
               char nc = Precomposer.precompose((char) lastChar, c);
@@ -106,11 +106,11 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
               lastChar = -1;
             }
           } else {
-        	if (lastChar != -1)
+          if (lastChar != -1)
               putChar((char) lastChar, false);
             lastChar = c;
           }
-	    }
+        }
       }
 
       if (lastChar != -1)
@@ -1524,7 +1524,6 @@ public void setScreenSize(int c, int r, boolean broadcast) {
 //        debug("char > 255:" + (int) c);
 //      //return;
 //    }
-
 
     switch (term_state) {
       case TSTATE_DATA:
