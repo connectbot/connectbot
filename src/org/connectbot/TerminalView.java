@@ -243,7 +243,10 @@ public class TerminalView extends View implements FontSizeChangedListener {
 
 	@Override
 	public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
-		outAttrs.imeOptions |= EditorInfo.IME_FLAG_NO_EXTRACT_UI | EditorInfo.IME_ACTION_NONE;
+		outAttrs.imeOptions |=
+			EditorInfo.IME_FLAG_NO_EXTRACT_UI |
+			EditorInfo.IME_FLAG_NO_ENTER_ACTION |
+			EditorInfo.IME_ACTION_NONE;
 		outAttrs.inputType = EditorInfo.TYPE_NULL;
 		return new BaseInputConnection(this, false);
 	}
