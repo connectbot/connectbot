@@ -13,6 +13,8 @@
 	<string name="title_host_editor">Ubah Host</string>
 	<!-- Window title for Help index -->
 	<string name="title_help">Bantuan</string>
+	<!-- Window title for color list editing screen -->
+	<string name="title_colors">Colors</string>
 
 	<string name="resolve_connect">Hubungi</string>
 	<string name="resolve_entropy">Kumpulkan entropy</string>
@@ -44,6 +46,8 @@
 	<string name="pubkey_memory_load">Muat ke memori</string>
 	<string name="pubkey_memory_unload">Hapus dari memori</string>
 	<string name="pubkey_load_on_start">Muat kunci pada waktu memulai</string>
+	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
+	<string name="pubkey_confirm_use">Confirm before use</string>
 
 	<string name="portforward_list_empty">Sentu "Menu" untuk membuat\nport forwards.</string>
 	<string name="portforward_edit">Ubah port forward</string>
@@ -68,6 +72,9 @@
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
 	<string name="prompt_pubkey_password">Kata sandi untuk kunci '%1$s'</string>
+
+	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key -->
+	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key '%1$s'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">PERINGATAN: IDENTIFIKASI REMOTE HOST TELAH BERUBAH!</string>
@@ -214,6 +221,9 @@
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">Gunakan otentifikasi pubkey</string>
 
+	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
+	<string name="hostpref_authagent_title">Use SSH auth agent</string>
+
 	<!-- Host post-login automation preference title -->
 	<string name="hostpref_postlogin_title">otomasi setelah login</string>
 	<!-- Host post-login automation preference summary -->
@@ -228,6 +238,11 @@
 	<string name="hostpref_wantsession_title">Jalankan sesi shell</string>
 	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
 	<string name="hostpref_wantsession_summary">Non-aktifkan kesukaan ini hanya untuk port forwards</string>
+
+	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_title">DEL Key</string>
+	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_summary">The key code sent when DEL key is pressed</string>
 
 	<!-- Host character encoding preference title -->
 	<string name="hostpref_encoding_title">Pengkodean</string>
@@ -292,7 +307,7 @@
 	<string name="list_format_error">Gunakan format "%1$s"</string>
 
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-        <string name="format_username">namapengguna</string>
+	<string name="format_username">pengguna</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
 	<string name="format_hostname">namahost</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
@@ -327,6 +342,11 @@
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">Kosong</string>
 
+	<!-- Name for the backspace character -->
+	<string name="list_delkey_backspace">Backspace</string>
+	<!-- Name for the ASCII DEL character -->
+	<string name="list_delkey_del">Delete</string>
+
 	<string name="delete_message">Apakah anda yakin ingin menghapus %1$s?</string>
 	<string name="delete_pos">Ya, hapus</string>
 	<string name="delete_neg">Batal</string>
@@ -340,22 +360,38 @@
 
 	<string name="terminal_no_hosts_connected">Tidak ada host yang saat ini terhubung</string>
 
+	<!-- Displayed in terminal when attempting to connect to a host. The first two
+	     variables are host:port and the third is the protocol (e.g., SSH) -->
+	<string name="terminal_connecting">Connecting to %1$s:%2$d via %3$s</string>
+
+	<!-- Displays the host key to the user in the terminal -->
+	<string name="terminal_sucess">Verified host '%1$s' key: %2$s</string>
 	<string name="terminal_failed">Verifikasi kunci host gagal.</string>
+
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_s2c_algorithm">Server-to-client algorithm: %1$s %2$s</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_c2s_algorithm">Client-to-server algorithm: %1$s %2$s</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_algorithm">Using algorithm: %1$s %2$s</string>
 
 	<string name="terminal_auth">Mencoba untuk mengotentifikasi</string>
 
 	<string name="terminal_auth_pass">Mencoba otentifikasi 'kata sandi'</string>
-	<string name="terminal_auth_pass_hint">Kata sandi</string>
 	<string name="terminal_auth_pass_fail">Metoda otentifikasi 'kata sandi' gagal</string>
 
 	<string name="terminal_auth_pubkey_any">Mencoba otentifikasi 'kunci publik' dengan kunci publik apapun dalam memori</string>
 	<string name="terminal_auth_pubkey_invalid">Kunci publik yang dipilih tidak valid, coba pilih kembali tombol dalam pengubah host</string>
 	<string name="terminal_auth_pubkey_specific">Mencoba otentifikasi 'kunci publik' dengan kunci publik spesifik</string>
+	<string name="terminal_auth_pubkey_fail">Authentication method 'publickey' with key '%1$s' failed</string>
 
 	<string name="terminal_auth_ki">Mencoba otentifikasi 'papan ketik interaktif'</string>
 	<string name="terminal_auth_ki_fail">Metode otentifikasi 'papan ketik interaktif' gagal</string>
 
 	<string name="terminal_auth_fail">[Host anda tidak mendukung otentifikasi 'kata sandi' atau 'papan ketik interaktif'.]</string>
+
+	<string name="terminal_no_session">Session will not be started due to host preference.</string>
+	<string name="terminal_enable_portfoward">Enable port forward: %1$s</string>
 
 	<string name="local_shell_unavailable">Gagal! Shell lokal tidak tersedia di telepon ini.</string>
 
@@ -368,6 +404,16 @@
 	<string name="upgrade_pos">Ya, perbarui</string>
 	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
 	<string name="upgrade_neg">Jangan sekarang</string>
+
+	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
+	<string name="no">No</string>
+	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
+	<string name="with_confirmation">With confirmation</string>
+	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
+	<string name="yes">Yes</string>
+
+	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
+	<string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?</string>
 
 	<string name="color_red">merah</string>
 	<string name="color_green">hijau</string>

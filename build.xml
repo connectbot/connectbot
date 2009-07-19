@@ -169,8 +169,47 @@
          </javac>
     </target>
 
+    <target name="check-proguard">
+        <available file="tools/proguard.jar" property="have.proguard"/>
+    </target>
+
+    <target name="proguard" depends="check-proguard">
+        <fail unless="have.proguard">You requested ProGuard, but you don't have the JAR available! See README</fail>
+    </target>
+
+    <target name="proguard.execute" depends="compile" if="have.proguard">
+        <taskdef resource="proguard/ant/task.properties"
+                classpath="tools/proguard.jar" />
+        <proguard>
+            -injars ${out-classes}
+            -outjars ${out-folder}/classes.min.jar
+            -libraryjars ${android-jar}
+            -dontskipnonpubliclibraryclasses
+            -dontobfuscate
+	    -dontoptimize
+            -printusage ${out-folder}/proguard.usage
+
+            -keep public class * extends android.app.Activity
+            -keep public class * extends android.app.Service
+            -keep class org.connectbot.**
+            -keep public class com.trilead.ssh2.compression.*
+            -keep public class com.trilead.ssh2.crypto.*
+        </proguard>
+    </target>
+
     <!-- Convert this project's .class files into .dex files. -->
-    <target name="dex" depends="compile">
+    <target name="dex.proguard" depends="proguard.execute" if="have.proguard">
+        <echo>Converting compiled files and external libraries into ${out-folder}/${dex-file}...</echo>
+        <apply executable="${dx}" failonerror="true" parallel="true">
+            <arg value="--dex" />
+            <arg value="--output=${intermediate-dex-location}" />
+            <fileset dir="${out-folder}" includes="*.min.jar" />
+            <fileset dir="${external-libs-folder}" includes="*.jar"/>
+        </apply>
+    </target>
+
+    <!-- Convert this project's .class files into .dex files. -->
+    <target name="dex.vanilla" depends="compile" unless="have.proguard">
         <echo>Converting compiled files and external libraries into ${out-folder}/${dex-file}...</echo>
         <apply executable="${dx}" failonerror="true" parallel="true">
             <arg value="--dex" />
@@ -179,6 +218,8 @@
             <fileset dir="${external-libs-folder}" includes="*.jar"/>
         </apply>
     </target>
+
+    <target name="dex" depends="dex.vanilla, dex.proguard" />
 
     <!-- Put the project's resources into the output package file
          This actually can create multiple resource package in case
@@ -271,6 +312,9 @@
         <echo>              The signatures must match.</echo>
         <echo>   uninstall: uninstall the application from a running emulator or</echo>
         <echo>              device.</echo>
+        <echo>   proguard:  use before build statements like "debug" and "release"</echo>
+        <echo>              to enable proguard dead code removal. NOTE: You must</echo>
+        <echo>              have tools/proguard.jar available. See the README.</echo>
     </target>
 
     <target name="update-version" description="Updates the Version.java file with current SVN revision">

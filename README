@@ -17,3 +17,13 @@ apk-config-europe=en,fr,it,de,es
 apk-config-asia=en,zh_CN
 
 You may also configure this via Eclipse via Project Properties -> Android -> Project APK Configurations
+
+
+ProGuard Support
+----------------
+
+Download the ProGuard distribution from its website at http://proguard.sourceforge.net/ and place the proguard.jar into the "tools" subdirectory in the ConnectBot root directory.
+
+When running ant to build ConnectBot and engage ProGuard, use:
+
+ant proguard release

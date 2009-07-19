@@ -33,7 +33,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.trilead.ssh2.KnownHosts;
@@ -44,12 +43,12 @@ import com.trilead.ssh2.KnownHosts;
  *
  * @author jsharkey
  */
-public class HostDatabase extends SQLiteOpenHelper {
+public class HostDatabase extends RobustSQLiteOpenHelper {
 
 	public final static String TAG = "ConnectBot.HostDatabase";
 
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 17;
+	public final static int DB_VERSION = 20;
 
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -62,12 +61,14 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_HOST_LASTCONNECT = "lastconnect";
 	public final static String FIELD_HOST_COLOR = "color";
 	public final static String FIELD_HOST_USEKEYS = "usekeys";
+	public final static String FIELD_HOST_USEAUTHAGENT = "useauthagent";
 	public final static String FIELD_HOST_POSTLOGIN = "postlogin";
 	public final static String FIELD_HOST_PUBKEYID = "pubkeyid";
 	public final static String FIELD_HOST_WANTSESSION = "wantsession";
 	public final static String FIELD_HOST_DELKEY = "delkey";
 	public final static String FIELD_HOST_COMPRESSION = "compression";
 	public final static String FIELD_HOST_ENCODING = "encoding";
+	public final static String FIELD_HOST_STAYCONNECTED = "stayconnected";
 
 	public final static String TABLE_PORTFORWARDS = "portforwards";
 	public final static String FIELD_PORTFORWARD_HOSTID = "hostid";
@@ -76,6 +77,18 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_PORTFORWARD_SOURCEPORT = "sourceport";
 	public final static String FIELD_PORTFORWARD_DESTADDR = "destaddr";
 	public final static String FIELD_PORTFORWARD_DESTPORT = "destport";
+
+	public final static String TABLE_COLORS = "colors";
+	public final static String FIELD_COLOR_SCHEME = "scheme";
+	public final static String FIELD_COLOR_NUMBER = "number";
+	public final static String FIELD_COLOR_VALUE = "value";
+
+	public final static String TABLE_COLOR_DEFAULTS = "colorDefaults";
+	public final static String FIELD_COLOR_FG = "fg";
+	public final static String FIELD_COLOR_BG = "bg";
+
+	public final static int DEFAULT_FG_COLOR = 7;
+	public final static int DEFAULT_BG_COLOR = 0;
 
 	public final static String COLOR_RED = "red";
 	public final static String COLOR_GREEN = "green";
@@ -90,10 +103,24 @@ public class HostDatabase extends SQLiteOpenHelper {
 	public final static String DELKEY_DEL = "del";
 	public final static String DELKEY_BACKSPACE = "backspace";
 
+	public final static String AUTHAGENT_NO = "no";
+	public final static String AUTHAGENT_CONFIRM = "confirm";
+	public final static String AUTHAGENT_YES = "yes";
+
 	public final static String ENCODING_DEFAULT = Charset.defaultCharset().name();
 
 	public final static long PUBKEYID_NEVER = -2;
 	public final static long PUBKEYID_ANY = -1;
+
+	static {
+		addTableName(TABLE_HOSTS);
+		addTableName(TABLE_PORTFORWARDS);
+		addIndexName(TABLE_PORTFORWARDS + FIELD_PORTFORWARD_HOSTID + "index");
+		addTableName(TABLE_COLORS);
+		addIndexName(TABLE_COLORS + FIELD_COLOR_SCHEME + "index");
+		addTableName(TABLE_COLOR_DEFAULTS);
+		addIndexName(TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index");
+	}
 
 	public HostDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
@@ -103,7 +130,7 @@ public class HostDatabase extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		dropAllTables(db);
+		super.onCreate(db);
 
 		db.execSQL("CREATE TABLE " + TABLE_HOSTS
 				+ " (_id INTEGER PRIMARY KEY, "
@@ -117,12 +144,14 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_HOST_LASTCONNECT + " INTEGER, "
 				+ FIELD_HOST_COLOR + " TEXT, "
 				+ FIELD_HOST_USEKEYS + " TEXT, "
+				+ FIELD_HOST_USEAUTHAGENT + " TEXT, "
 				+ FIELD_HOST_POSTLOGIN + " TEXT, "
 				+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ", "
 				+ FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "', "
 				+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "', "
 				+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
-				+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "')");
+				+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "', "
+				+ FIELD_HOST_STAYCONNECTED + " TEXT)");
 
 		db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS
 				+ " (_id INTEGER PRIMARY KEY, "
@@ -132,10 +161,31 @@ public class HostDatabase extends SQLiteOpenHelper {
 				+ FIELD_PORTFORWARD_SOURCEPORT + " INTEGER NOT NULL DEFAULT 8080, "
 				+ FIELD_PORTFORWARD_DESTADDR + " TEXT, "
 				+ FIELD_PORTFORWARD_DESTPORT + " TEXT)");
+
+		db.execSQL("CREATE INDEX " + TABLE_PORTFORWARDS + FIELD_PORTFORWARD_HOSTID + "index ON "
+				+ TABLE_PORTFORWARDS + " (" + FIELD_PORTFORWARD_HOSTID + ");");
+
+		db.execSQL("CREATE TABLE " + TABLE_COLORS
+				+ " (_id INTEGER PRIMARY KEY, "
+				+ FIELD_COLOR_NUMBER + " INTEGER, "
+				+ FIELD_COLOR_VALUE + " INTEGER, "
+				+ FIELD_COLOR_SCHEME + " INTEGER)");
+
+		db.execSQL("CREATE INDEX " + TABLE_COLORS + FIELD_COLOR_SCHEME + "index ON "
+				+ TABLE_COLORS + " (" + FIELD_COLOR_SCHEME + ");");
+
+		db.execSQL("CREATE TABLE " + TABLE_COLOR_DEFAULTS
+				+ " (_id INTEGER PRIMARY KEY, "
+				+ FIELD_COLOR_SCHEME + " INTEGER, "
+				+ FIELD_COLOR_FG + " INTEGER, "
+				+ FIELD_COLOR_BG + " INTEGER)");
+
+		db.execSQL("CREATE INDEX " + TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index ON "
+				+ TABLE_COLOR_DEFAULTS + " (" + FIELD_COLOR_SCHEME + ");");
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+	public void onRobustUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) throws SQLiteException {
 		// Versions of the database before the Android Market release will be
 		// shot without warning.
 		if (oldVersion <= 9) {
@@ -144,105 +194,61 @@ public class HostDatabase extends SQLiteOpenHelper {
 			return;
 		}
 
-		try {
-			switch (oldVersion) {
-			case 10:
-				db.execSQL("ALTER TABLE " + TABLE_HOSTS
-						+ " ADD COLUMN " + FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY);
-			case 11:
-				db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS
-						+ " (_id INTEGER PRIMARY KEY, "
-						+ FIELD_PORTFORWARD_HOSTID + " INTEGER, "
-						+ FIELD_PORTFORWARD_NICKNAME + " TEXT, "
-						+ FIELD_PORTFORWARD_TYPE + " TEXT NOT NULL DEFAULT " + PORTFORWARD_LOCAL + ", "
-						+ FIELD_PORTFORWARD_SOURCEPORT + " INTEGER NOT NULL DEFAULT 8080, "
-						+ FIELD_PORTFORWARD_DESTADDR + " TEXT, "
-						+ FIELD_PORTFORWARD_DESTPORT + " INTEGER)");
-			case 12:
-				db.execSQL("ALTER TABLE " + TABLE_HOSTS
-						+ " ADD COLUMN " + FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "'");
-			case 13:
-				db.execSQL("ALTER TABLE " + TABLE_HOSTS
-						+ " ADD COLUMN " + FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "'");
-			case 14:
-				db.execSQL("ALTER TABLE " + TABLE_HOSTS
-						+ " ADD COLUMN " + FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "'");
-			case 15:
-				db.execSQL("ALTER TABLE " + TABLE_HOSTS
-						+ " ADD COLUMN " + FIELD_HOST_PROTOCOL + " TEXT DEFAULT 'ssh'");
-			case 16:
-				db.execSQL("ALTER TABLE " + TABLE_HOSTS
-						+ " ADD COLUMN " + FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "'");
-			}
-		} catch (SQLiteException e) {
-			// The database has entered an unknown state. Try to recover.
-			try {
-				regenerateTables(db);
-			} catch (SQLiteException e2) {
-				dropAndCreateTables(db);
-			}
+		switch (oldVersion) {
+		case 10:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY);
+		case 11:
+			db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS
+					+ " (_id INTEGER PRIMARY KEY, "
+					+ FIELD_PORTFORWARD_HOSTID + " INTEGER, "
+					+ FIELD_PORTFORWARD_NICKNAME + " TEXT, "
+					+ FIELD_PORTFORWARD_TYPE + " TEXT NOT NULL DEFAULT " + PORTFORWARD_LOCAL + ", "
+					+ FIELD_PORTFORWARD_SOURCEPORT + " INTEGER NOT NULL DEFAULT 8080, "
+					+ FIELD_PORTFORWARD_DESTADDR + " TEXT, "
+					+ FIELD_PORTFORWARD_DESTPORT + " INTEGER)");
+		case 12:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "'");
+		case 13:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "'");
+		case 14:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "'");
+		case 15:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_PROTOCOL + " TEXT DEFAULT 'ssh'");
+		case 16:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "'");
+		case 17:
+			db.execSQL("CREATE INDEX " + TABLE_PORTFORWARDS + FIELD_PORTFORWARD_HOSTID + "index ON "
+					+ TABLE_PORTFORWARDS + " (" + FIELD_PORTFORWARD_HOSTID + ");");
+
+			// Add colors
+			db.execSQL("CREATE TABLE " + TABLE_COLORS
+					+ " (_id INTEGER PRIMARY KEY, "
+					+ FIELD_COLOR_NUMBER + " INTEGER, "
+					+ FIELD_COLOR_VALUE + " INTEGER, "
+					+ FIELD_COLOR_SCHEME + " INTEGER)");
+			db.execSQL("CREATE INDEX " + TABLE_COLORS + FIELD_COLOR_SCHEME + "index ON "
+					+ TABLE_COLORS + " (" + FIELD_COLOR_SCHEME + ");");
+
+			db.execSQL("CREATE TABLE " + TABLE_COLOR_DEFAULTS
+					+ " (_id INTEGER PRIMARY KEY, "
+					+ FIELD_COLOR_SCHEME + " INTEGER, "
+					+ FIELD_COLOR_FG + " INTEGER, "
+					+ FIELD_COLOR_BG + " INTEGER)");
+			db.execSQL("CREATE INDEX " + TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index ON "
+					+ TABLE_COLOR_DEFAULTS + " (" + FIELD_COLOR_SCHEME + ");");
+		case 18:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_USEAUTHAGENT + " TEXT DEFAULT '" + AUTHAGENT_NO + "'");
+		case 19:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_STAYCONNECTED + " TEXT");
 		}
-	}
-
-	private void regenerateTables(SQLiteDatabase db) {
-		dropAllTablesWithPrefix(db, "OLD_");
-		db.execSQL("ALTER TABLE " + TABLE_HOSTS + " RENAME TO OLD_"
-				+ TABLE_HOSTS);
-		db.execSQL("ALTER TABLE " + TABLE_PORTFORWARDS + " RENAME TO OLD_"
-				+ TABLE_PORTFORWARDS);
-
-		onCreate(db);
-
-		repopulateTable(db, TABLE_HOSTS);
-		repopulateTable(db, TABLE_PORTFORWARDS);
-
-		dropAllTablesWithPrefix(db, "OLD_");
-	}
-
-	private void repopulateTable(SQLiteDatabase db, String tableName) {
-		String columns = getTableColumnNames(db, tableName);
-
-		StringBuilder sb = new StringBuilder();
-		sb.append("INSERT INTO ")
-				.append(tableName)
-				.append(" (")
-				.append(columns)
-				.append(") SELECT ")
-				.append(columns)
-				.append(" FROM OLD_")
-				.append(tableName);
-
-		String sql = sb.toString();
-		Log.d(TAG, "Attempting to execute repopulation command: " + sql);
-		db.execSQL(sql);
-	}
-
-	private String getTableColumnNames(SQLiteDatabase db, String tableName) {
-		StringBuilder sb = new StringBuilder();
-
-		Cursor fields = db.rawQuery("PRAGMA table_info(" + tableName + ")", null);
-		while (fields.moveToNext()) {
-			if (!fields.isFirst())
-				sb.append(", ");
-			sb.append(fields.getString(1));
-		}
-		fields.close();
-
-		return sb.toString();
-	}
-
-	private void dropAndCreateTables(SQLiteDatabase db) {
-		dropAllTables(db);
-		onCreate(db);
-	}
-
-	private void dropAllTablesWithPrefix(SQLiteDatabase db, String prefix) {
-		db.execSQL("DROP TABLE IF EXISTS " + prefix + TABLE_HOSTS);
-		db.execSQL("DROP TABLE IF EXISTS " + prefix + TABLE_PORTFORWARDS);
-	}
-
-	private void dropAllTables(SQLiteDatabase db) {
-		dropAllTablesWithPrefix(db, "");
 	}
 
 	/**
@@ -321,12 +327,15 @@ public class HostDatabase extends SQLiteOpenHelper {
 			COL_LASTCONNECT = c.getColumnIndexOrThrow(FIELD_HOST_LASTCONNECT),
 			COL_COLOR = c.getColumnIndexOrThrow(FIELD_HOST_COLOR),
 			COL_USEKEYS = c.getColumnIndexOrThrow(FIELD_HOST_USEKEYS),
+			COL_USEAUTHAGENT = c.getColumnIndexOrThrow(FIELD_HOST_USEAUTHAGENT),
 			COL_POSTLOGIN = c.getColumnIndexOrThrow(FIELD_HOST_POSTLOGIN),
 			COL_PUBKEYID = c.getColumnIndexOrThrow(FIELD_HOST_PUBKEYID),
 			COL_WANTSESSION = c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION),
 			COL_DELKEY = c.getColumnIndexOrThrow(FIELD_HOST_DELKEY),
 			COL_COMPRESSION = c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION),
-			COL_ENCODING = c.getColumnIndexOrThrow(FIELD_HOST_ENCODING);
+			COL_ENCODING = c.getColumnIndexOrThrow(FIELD_HOST_ENCODING),
+			COL_STAYCONNECTED = c.getColumnIndexOrThrow(FIELD_HOST_STAYCONNECTED);
+
 
 		while (c.moveToNext()) {
 			HostBean host = new HostBean();
@@ -340,12 +349,14 @@ public class HostDatabase extends SQLiteOpenHelper {
 			host.setLastConnect(c.getLong(COL_LASTCONNECT));
 			host.setColor(c.getString(COL_COLOR));
 			host.setUseKeys(Boolean.valueOf(c.getString(COL_USEKEYS)));
+			host.setUseAuthAgent(c.getString(COL_USEAUTHAGENT));
 			host.setPostLogin(c.getString(COL_POSTLOGIN));
 			host.setPubkeyId(c.getLong(COL_PUBKEYID));
 			host.setWantSession(Boolean.valueOf(c.getString(COL_WANTSESSION)));
 			host.setDelKey(c.getString(COL_DELKEY));
 			host.setCompression(Boolean.valueOf(c.getString(COL_COMPRESSION)));
 			host.setEncoding(c.getString(COL_ENCODING));
+			host.setStayConnected(Boolean.valueOf(c.getString(COL_STAYCONNECTED)));
 
 			hosts.add(host);
 		}
@@ -581,6 +592,172 @@ public class HostDatabase extends SQLiteOpenHelper {
 
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_PORTFORWARDS, "_id = ?", new String[] { String.valueOf(pfb.getId()) });
+		db.close();
+	}
+
+	public Integer[] getColorsForHost(HostBean host) {
+		Integer[] colors = Colors.defaults.clone();
+
+		SQLiteDatabase db = getReadableDatabase();
+
+		Cursor c = db.query(TABLE_COLORS, new String[] {
+				FIELD_COLOR_NUMBER, FIELD_COLOR_VALUE },
+				FIELD_COLOR_SCHEME + " IS NULL",
+				null, null, null, null);
+
+		while (c.moveToNext()) {
+			Log.d(TAG, "Setting default color " + c.getInt(0) + " to " + c.getInt(1));
+			colors[c.getInt(0)] = new Integer(c.getInt(1));
+		}
+
+		c.close();
+
+		// TODO This could probably just be a join
+		if (host != null) {
+			c = db.query(TABLE_COLORS, new String[] {
+					FIELD_COLOR_NUMBER, FIELD_COLOR_VALUE },
+					FIELD_COLOR_SCHEME + " = ?",
+					new String[] { String.valueOf(host.getId()) },
+					null, null, null);
+
+			while (c.moveToNext()) {
+				colors[c.getInt(0)] = new Integer(c.getInt(1));
+			}
+
+			c.close();
+		}
+
+		db.close();
+
+		return colors;
+	}
+
+	public void setColorForHost(HostBean host, int number, int value) {
+		SQLiteDatabase db = getWritableDatabase();
+
+		String hostWhere;
+		if (host == null)
+			hostWhere = FIELD_COLOR_SCHEME + " IS NULL";
+		else
+			hostWhere = FIELD_COLOR_SCHEME + " = ?";
+
+		if (value == Colors.defaults[number]) {
+			String[] whereArgs;
+
+			if (host != null) {
+				whereArgs = new String[2];
+				whereArgs[1] = String.valueOf(host.getId());
+			} else
+				whereArgs = new String[1];
+
+			whereArgs[0] = String.valueOf(number);
+
+			db.delete(TABLE_COLORS,
+					FIELD_COLOR_NUMBER + " = ? AND "
+					+ hostWhere,
+					new String[] { String.valueOf(number) });
+		} else {
+			ContentValues values = new ContentValues();
+			values.put(FIELD_COLOR_NUMBER, number);
+			values.put(FIELD_COLOR_VALUE, value);
+
+			String[] whereArgs = null;
+
+			if (host != null)
+				whereArgs = new String[] { String.valueOf(host.getId()) };
+
+			int rowsAffected = db.update(TABLE_COLORS, values,
+					hostWhere, whereArgs);
+
+			if (rowsAffected == 0) {
+				db.insert(TABLE_COLORS, null, values);
+			}
+		}
+
+		db.close();
+	}
+
+	public void setGlobalColor(int number, int value) {
+		setColorForHost(null, number, value);
+	}
+
+	public int[] getDefaultColorsForHost(HostBean host) {
+		int[] colors = new int[] { DEFAULT_FG_COLOR, DEFAULT_BG_COLOR };
+
+		SQLiteDatabase db = getReadableDatabase();
+
+		Cursor c = db.query(TABLE_COLOR_DEFAULTS,
+				new String[] { FIELD_COLOR_FG, FIELD_COLOR_BG },
+				FIELD_COLOR_SCHEME + " IS NULL",
+				null, null, null, null);
+
+		if (c.moveToFirst()) {
+			colors[0] = c.getInt(0);
+			colors[1] = c.getInt(1);
+		}
+
+		c.close();
+
+		// TODO This could probably just be a join
+		if (host != null) {
+			c = db.query(TABLE_COLOR_DEFAULTS,
+					new String[] { FIELD_COLOR_FG, FIELD_COLOR_BG },
+					FIELD_COLOR_SCHEME + " = ?",
+					new String[] { String.valueOf(host.getId()) },
+					null, null, null);
+
+			if (c.moveToFirst()) {
+				colors[0] = c.getInt(0);
+				colors[1] = c.getInt(1);
+			}
+
+			c.close();
+		}
+
+		db.close();
+
+		return colors;
+	}
+
+	public int[] getGlobalDefaultColors() {
+		return getDefaultColorsForHost(null);
+	}
+
+	public void setDefaultColorsForHost(HostBean host, int fg, int bg) {
+		int[] defaultColors = getGlobalDefaultColors();
+
+		SQLiteDatabase db = getWritableDatabase();
+
+		String schemeWhere = null;
+		String[] whereArgs;
+
+		// TODO change host.getId() into scheme numbers for colors
+
+		if (host == null) {
+			schemeWhere = FIELD_COLOR_SCHEME + " IS NULL";
+			whereArgs = null;
+		} else {
+			schemeWhere = FIELD_COLOR_SCHEME + " = ?";
+			whereArgs = new String[] { String.valueOf(host.getId()) };
+		}
+
+		if (fg == defaultColors[0] && bg == defaultColors[1]) {
+			db.delete(TABLE_COLOR_DEFAULTS,
+					schemeWhere,
+					whereArgs);
+		} else {
+			ContentValues values = new ContentValues();
+			values.put(FIELD_COLOR_FG, fg);
+			values.put(FIELD_COLOR_BG, bg);
+
+			int rowsAffected = db.update(TABLE_COLOR_DEFAULTS, values,
+					schemeWhere, whereArgs);
+
+			if (rowsAffected == 0) {
+				db.insert(TABLE_COLOR_DEFAULTS, null, values);
+			}
+		}
+
 		db.close();
 	}
 }

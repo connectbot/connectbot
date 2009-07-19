@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.connectbot"
-	android:versionName="1.5.2"
-	android:versionCode="152">
+	android:versionName="1.6-dev"
+	android:versionCode="177">
 	
 	<application
 		android:icon="@drawable/icon"
@@ -28,6 +28,7 @@
 		<activity android:name=".WizardActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".HelpActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".HelpTopicActivity" android:configChanges="keyboardHidden|orientation" />
+		<activity android:name=".ColorsActivity" android:configChanges="keyboardHidden|orientation" />
 
 		<service android:name="org.connectbot.service.TerminalManager" android:configChanges="keyboardHidden|orientation" />
 

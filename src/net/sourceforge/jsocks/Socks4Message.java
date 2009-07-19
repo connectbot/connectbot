@@ -1,8 +1,12 @@
 package net.sourceforge.jsocks;
-import java.io.*;
-import java.net.*;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
-/** 
+/**
   SOCKS4 Reply/Request message.
 */
 
@@ -25,14 +29,14 @@ public class Socks4Message extends ProxyMessage{
       msgBytes[1] = (byte) command;
    }
 
-   /** 
+   /**
     *  Server successfull reply
     */
    public Socks4Message(int cmd,InetAddress ip,int port){
       this(0,cmd,ip,port,null);
    }
 
-   /** 
+   /**
     *  Client request
     */
    public Socks4Message(int cmd,InetAddress ip,int port,String user){
@@ -84,11 +88,14 @@ public class Socks4Message extends ProxyMessage{
       read(in,clientMode);
    }
 
-   public void read(InputStream in) throws IOException{
+   @Override
+public void read(InputStream in) throws IOException{
         read(in,true);
    }
 
-   public void read(InputStream in, boolean clientMode) throws IOException{
+   @Override
+public void read(InputStream in, boolean clientMode) throws IOException{
+       boolean mode4a = false;
        DataInputStream d_in = new DataInputStream(in);
        version= d_in.readUnsignedByte();
        command = d_in.readUnsignedByte();
@@ -103,21 +110,28 @@ public class Socks4Message extends ProxyMessage{
        port = d_in.readUnsignedShort();
        byte[] addr = new byte[4];
        d_in.readFully(addr);
-       ip=bytes2IP(addr);
-       host = ip.getHostName();
+       if (addr[0] == 0 && addr[1] == 0 && addr[2] == 0 && addr[3] != 0)
+          mode4a = true;
+       else {
+          ip=bytes2IP(addr);
+          host = ip.getHostName();
+       }
        if(!clientMode){
-          int b = in.read();
-          //Hope there are no idiots with user name bigger than this
-          byte[] userBytes = new byte[256];
-          int i = 0;
-          for(i =0;i<userBytes.length && b>0;++i){
-             userBytes[i] = (byte) b;
-             b = in.read();
+          StringBuilder sb = new StringBuilder();
+          int b;
+          while ((b = in.read()) != 0)
+             sb.append((char) b);
+          user = sb.toString();
+          if (mode4a) {
+             sb.setLength(0);
+             while ((b = in.read()) != 0)
+                sb.append((char) b);
+             host = sb.toString();
           }
-          user = new String(userBytes,0,i);
        }
    }
-   public void write(OutputStream out) throws IOException{
+   @Override
+public void write(OutputStream out) throws IOException{
       if(msgBytes == null){
          Socks4Message msg = new Socks4Message(version,command,ip,port,user);
          msgBytes = msg.msgBytes;

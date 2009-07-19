@@ -142,11 +142,10 @@ public class VDUBuffer {
    */
 
   public void putChar(int c, int l, char ch, int attributes) {
-    c = checkBounds(c, 0, width - 1);
-    l = checkBounds(l, 0, height - 1);
     charArray[screenBase + l][c] = ch;
     charAttributes[screenBase + l][c] = attributes;
-    markLine(l, 1);
+    if (l < height)
+      update[l + 1] = true;
   }
 
   /**
@@ -156,8 +155,6 @@ public class VDUBuffer {
    * @see #putChar
    */
   public char getChar(int c, int l) {
-    c = checkBounds(c, 0, width - 1);
-    l = checkBounds(l, 0, height - 1);
     return charArray[screenBase + l][c];
   }
 
@@ -168,8 +165,6 @@ public class VDUBuffer {
    * @see #putChar
    */
   public int getAttributes(int c, int l) {
-    c = checkBounds(c, 0, width - 1);
-    l = checkBounds(l, 0, height - 1);
     return charAttributes[screenBase + l][c];
   }
 
@@ -192,8 +187,6 @@ public class VDUBuffer {
    * @see #redraw
    */
   public void insertChar(int c, int l, char ch, int attributes) {
-    c = checkBounds(c, 0, width - 1);
-    l = checkBounds(l, 0, height - 1);
     System.arraycopy(charArray[screenBase + l], c,
                      charArray[screenBase + l], c + 1, width - c - 1);
     System.arraycopy(charAttributes[screenBase + l], c,
@@ -212,8 +205,6 @@ public class VDUBuffer {
    * @see #redraw
    */
   public void deleteChar(int c, int l) {
-    c = checkBounds(c, 0, width - 1);
-    l = checkBounds(l, 0, height - 1);
     if (c < width - 1) {
       System.arraycopy(charArray[screenBase + l], c + 1,
                        charArray[screenBase + l], c, width - c - 1);
@@ -320,8 +311,6 @@ public class VDUBuffer {
    * @see #redraw
    */
   public synchronized void insertLine(int l, int n, boolean scrollDown) {
-    l = checkBounds(l, 0, height - 1);
-
     char cbuf[][] = null;
     int abuf[][] = null;
     int offset = 0;
@@ -485,8 +474,6 @@ public class VDUBuffer {
    * @see #deleteLine
    */
   public void deleteLine(int l) {
-    l = checkBounds(l, 0, height - 1);
-
     int bottom = (l > bottomMargin ? height - 1:
             (l < topMargin?topMargin:bottomMargin + 1));
     int numRows = bottom - l - 1;
@@ -523,9 +510,6 @@ public class VDUBuffer {
    * @see #redraw
    */
   public void deleteArea(int c, int l, int w, int h, int curAttr) {
-    c = checkBounds(c, 0, width - 1);
-    l = checkBounds(l, 0, height - 1);
-
     int endColumn = c + w;
     int targetRow = screenBase + l;
     for (int i = 0; i < h && l + i < height; i++) {
@@ -556,8 +540,6 @@ public class VDUBuffer {
    * @param doshow
    */
   public void showCursor(boolean doshow) {
-    if (doshow != showcursor)
-      markLine(cursorY, 1);
     showcursor = doshow;
   }
 
@@ -566,18 +548,17 @@ public class VDUBuffer {
    * @return visibility
    */
   public boolean isCursorVisible() {
-	  return showcursor;
+    return showcursor;
   }
-  
+
   /**
    * Puts the cursor at the specified position.
    * @param c column
    * @param l line
    */
   public void setCursorPosition(int c, int l) {
-    cursorX = checkBounds(c, 0, width - 1);
-    cursorY = checkBounds(l, 0, height - 1);
-    markLine(cursorY, 1);
+    cursorX = c;
+    cursorY = l;
   }
 
   /**
@@ -623,18 +604,18 @@ public class VDUBuffer {
    * @param l2 line that is the bottom
    */
   public void setMargins(int l1, int l2) {
-	  if (l1 > l2)
-		  return;
-	  
-	  if (l1 < 0)
-		  l1 = 0;
-	  if (l2 > height - 1)
-		  l2 = height - 1;
-	  
-	  topMargin = l1;
-	  bottomMargin = l2;
+    if (l1 > l2)
+      return;
+
+    if (l1 < 0)
+      l1 = 0;
+    if (l2 >= height)
+      l2 = height - 1;
+
+    topMargin = l1;
+    bottomMargin = l2;
   }
-  
+
   /**
    * Set the top scroll margin for the screen. If the current bottom margin
    * is smaller it will become the top margin and the line will become the
@@ -648,7 +629,7 @@ public class VDUBuffer {
     } else
       topMargin = l;
     if (topMargin < 0) topMargin = 0;
-    if (bottomMargin > height - 1) bottomMargin = height - 1;
+    if (bottomMargin >= height) bottomMargin = height - 1;
   }
 
   /**
@@ -671,7 +652,7 @@ public class VDUBuffer {
     } else
       bottomMargin = l;
     if (topMargin < 0) topMargin = 0;
-    if (bottomMargin > height - 1) bottomMargin = height - 1;
+    if (bottomMargin >= height) bottomMargin = height - 1;
   }
 
   /**
@@ -778,6 +759,20 @@ public class VDUBuffer {
       }
     }
 
+    int C = getCursorColumn();
+    if (C < 0)
+      C = 0;
+    else if (C >= width)
+      C = width - 1;
+
+    int R = getCursorRow();
+    if (R < 0)
+      R = 0;
+    else if (R >= height)
+      R = height - 1;
+
+    setCursorPosition(C, R);
+
     charArray = cbuf;
     charAttributes = abuf;
     width = w;
@@ -813,16 +808,18 @@ public class VDUBuffer {
    * @see #redraw
    */
   public void markLine(int l, int n) {
-    l = checkBounds(l, 0, height - 1);
     for (int i = 0; (i < n) && (l + i < height); i++)
       update[l + i + 1] = true;
   }
 
-  private int checkBounds(int value, int lower, int upper) {
-    if (value < lower) return lower;
-    if (value > upper) return upper;
-    return value;
-  }
+//  private static int checkBounds(int value, int lower, int upper) {
+//    if (value < lower)
+//      return lower;
+//    else if (value > upper)
+//      return upper;
+//    else
+//      return value;
+//  }
 
   /** a generic display that should redraw on demand */
   protected VDUDisplay display;

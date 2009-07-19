@@ -235,6 +235,7 @@ public class HostListActivity extends ListActivity {
 		});
 
 		transportSpinner = (Spinner)findViewById(R.id.transport_selection);
+		transportSpinner.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
 		ArrayAdapter<String> transportSelection = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, TransportFactory.getTransportNames());
 		transportSelection.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -307,6 +308,10 @@ public class HostListActivity extends ListActivity {
 		MenuItem keys = menu.add(R.string.list_menu_pubkeys);
 		keys.setIcon(android.R.drawable.ic_lock_lock);
 		keys.setIntent(new Intent(HostListActivity.this, PubkeyListActivity.class));
+
+		MenuItem colors = menu.add("Colors");
+		colors.setIcon(android.R.drawable.ic_menu_slideshow);
+		colors.setIntent(new Intent(HostListActivity.this, ColorsActivity.class));
 
 		MenuItem settings = menu.add(R.string.list_menu_settings);
 		settings.setIcon(android.R.drawable.ic_menu_preferences);

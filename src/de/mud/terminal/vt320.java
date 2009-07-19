@@ -30,10 +30,10 @@ import java.util.Properties;
 /**
  * Implementation of a VT terminal emulation plus ANSI compatible.
  * <P>
- * <B>Maintainer:</B> Marcus Mei�ner
+ * <B>Maintainer:</B> Marcus Meißner
  *
  * @version $Id: vt320.java 507 2005-10-25 10:14:52Z marcus $
- * @author  Matthias L. Jugel, Marcus Mei�ner
+ * @author  Matthias L. Jugel, Marcus Meißner
  */
 public abstract class vt320 extends VDUBuffer implements VDUInput {
 
@@ -92,13 +92,13 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
       char c;
 
       for (int i = 0; i < len; i++) {
-    	c = s[start + i];
-    	// Shortcut for my favorite ASCII
-    	if (c <= 0x7F) {
-    	  if (lastChar != -1)
-    	    putChar((char) lastChar, false);
-    	  lastChar = c;
-    	} else if (!Character.isLowSurrogate(c) && !Character.isHighSurrogate(c)) {
+        c = s[start + i];
+        // Shortcut for my favorite ASCII
+        if (c <= 0x7F) {
+          if (lastChar != -1)
+            putChar((char) lastChar, false);
+          lastChar = c;
+        } else if (!Character.isLowSurrogate(c) && !Character.isHighSurrogate(c)) {
           if (Character.getType(c) == Character.NON_SPACING_MARK) {
             if (lastChar != -1) {
               char nc = Precomposer.precompose((char) lastChar, c);
@@ -106,11 +106,11 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
               lastChar = -1;
             }
           } else {
-        	if (lastChar != -1)
+          if (lastChar != -1)
               putChar((char) lastChar, false);
             lastChar = c;
           }
-	    }
+        }
       }
 
       if (lastChar != -1)
@@ -134,8 +134,8 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
 
   @Override
 public void setScreenSize(int c, int r, boolean broadcast) {
-    int oldrows = getRows();
-    //int oldcols = getColumns();
+    int oldrows = height;
+    //int oldcols = width;
 
     if (debug>2) {
       debugStr.append("setscreensize (")
@@ -153,7 +153,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
 
     /* Tricky, since the VDUBuffer works strangely. */
     if (r > oldrows) {
-      setCursorPosition(C, R + (r-oldrows));
+      setCursorPosition(C, R + (r - oldrows));
       redraw();
     }
     if (broadcast) {
@@ -1175,7 +1175,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
   }
 
   private void handle_osc(String osc) {
-	  if (osc.substring(0, 2).equals("4;")) {
+	  if (osc.length() > 2 && osc.substring(0, 2).equals("4;")) {
 			// Define color palette
 			String[] colorData = osc.split(";");
 
@@ -1484,11 +1484,11 @@ public void setScreenSize(int c, int r, boolean broadcast) {
   }
 
   private void _SetCursor(int row, int col) {
-    int maxr = getRows();
+    int maxr = height - 1;
     int tm = getTopMargin();
 
-    R = (row < 0)?0:row;
-    C = (col < 0)?0:col;
+    R = (row < 0)?0: row;
+    C = (col < 0)?0: (col >= width) ? width - 1 : col;
 
     if (!moveoutsidemargins) {
       R += tm;
@@ -1498,33 +1498,32 @@ public void setScreenSize(int c, int r, boolean broadcast) {
   }
 
   private void putChar(char c, boolean doshowcursor) {
-    int rows = getRows(); //statusline
-    int columns = getColumns();
+    int rows = this.height; //statusline
+    int columns = this.width;
     // byte msg[];
 
-    if (debug > 4) {
-      debugStr.append("putChar(")
-        .append(c)
-        .append(" [")
-        .append((int) c)
-        .append("]) at R=")
-        .append(R)
-        .append(" , C=")
-        .append(C)
-        .append(", columns=")
-        .append(columns)
-        .append(", rows=")
-        .append(rows);
-      debug(debugStr.toString());
-      debugStr.setLength(0);
-    }
-    //markLine(R, 1);
-    if (c > 255) {
-      if (debug > 0)
-        debug("char > 255:" + (int) c);
-      //return;
-    }
-
+//    if (debug > 4) {
+//      debugStr.append("putChar(")
+//        .append(c)
+//        .append(" [")
+//        .append((int) c)
+//        .append("]) at R=")
+//        .append(R)
+//        .append(" , C=")
+//        .append(C)
+//        .append(", columns=")
+//        .append(columns)
+//        .append(", rows=")
+//        .append(rows);
+//      debug(debugStr.toString());
+//      debugStr.setLength(0);
+//    }
+//    markLine(R, 1);
+//    if (c > 255) {
+//      if (debug > 0)
+//        debug("char > 255:" + (int) c);
+//      //return;
+//    }
 
     switch (term_state) {
       case TSTATE_DATA:
@@ -1835,7 +1834,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case 'B': /* CUD */
             R++;
-            if (R > rows - 1) R = rows - 1;
+            if (R >= rows) R = rows - 1;
             break;
           case 'C':
             C++;
@@ -1988,10 +1987,18 @@ public void setScreenSize(int c, int r, boolean broadcast) {
         break;
       case TSTATE_VT52X:
         C = c - 37;
+        if (C < 0)
+          C = 0;
+        else if (C >= width)
+          C = width - 1;
         term_state = TSTATE_VT52Y;
         break;
       case TSTATE_VT52Y:
         R = c - 37;
+        if (R < 0)
+          R = 0;
+        else if (R >= height)
+          R = height - 1;
         term_state = TSTATE_DATA;
         break;
       case TSTATE_SETG0:
@@ -2084,7 +2091,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             for (int i = 0; i <= DCEvar; i++) {
               switch (DCEvars[i]) {
                 case 3: /* 80 columns*/
-                  setScreenSize(80, getRows(), true);
+                  setScreenSize(80, height, true);
                   break;
                 case 4: /* scrolling mode, smooth */
                   break;
@@ -2126,7 +2133,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                   vt52mode = false;
                   break;
                 case 3: /* 132 columns*/
-                  setScreenSize(132, getRows(), true);
+                  setScreenSize(132, height, true);
                   break;
                 case 6: /* DECOM: move inside margins. */
                   moveoutsidemargins = false;
@@ -2193,7 +2200,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                   vt52mode = true;
                   break;
                 case 3: /* 80 columns*/
-                  setScreenSize(80, getRows(), true);
+                  setScreenSize(80, height, true);
                   break;
                 case 6: /* DECOM: move outside margins. */
                   moveoutsidemargins = true;
@@ -2413,7 +2420,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             /* used for tabsets */
             switch (DCEvars[0]) {
               case 3:/* clear them */
-                Tabs = new byte[getColumns()];
+                Tabs = new byte[width];
                 break;
               case 0:
                 Tabs[C] = 0;
@@ -2521,13 +2528,17 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               C++;
             else
               C += DCEvars[0];
-            if (C > columns - 1)
+            if (C >= columns)
               C = columns - 1;
             if (debug > 1)
               debug("ESC [ " + DCEvars[0] + " C");
             break;
           case 'd': // CVA
             R = DCEvars[0];
+            if (R < 0)
+              R = 0;
+            else if (R >= height)
+              R = height - 1;
             if (debug > 1)
               debug("ESC [ " + DCEvars[0] + " d");
             break;
@@ -2564,6 +2575,10 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case 'G':  /* CUP  / cursor absolute column */
             C = DCEvars[0];
+            if (C < 0)
+              C = 0;
+            else if (C >= width)
+              C = width - 1;
             if (debug > 1) debug("ESC [ " + DCEvars[0] + " G");
             break;
           case 'H':  /* CUP  / cursor position */
@@ -2578,8 +2593,14 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             /* gets 2 arguments */
             R = DCEvars[0] - 1;
             C = DCEvars[1] - 1;
-            if (C < 0) C = 0;
-            if (R < 0) R = 0;
+            if (C < 0)
+              C = 0;
+            else if (C >= width)
+              C = width - 1;
+            if (R < 0)
+              R = 0;
+            else if (R >= height)
+              R = height - 1;
             if (debug > 2)
               debug("ESC [ " + DCEvars[0] + ";" + DCEvars[1] + " f");
             break;
@@ -2755,8 +2776,8 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                   }
                   break;
                 case 3: /* italics */
-            	  attributes |= INVERT;
-            	  break;
+                  attributes |= INVERT;
+                  break;
                 case 4:
                   attributes |= UNDERLINE;
                   break;
@@ -2901,33 +2922,21 @@ public void setScreenSize(int c, int r, boolean broadcast) {
         }
         break;
       case TSTATE_TITLE:
-      	switch (c) {
-      	  case ESC:
-      		term_state = TSTATE_ESC;
-      		break;
-      	  default:
-      		// TODO save title
-      		break;
-      	}
-      	break;
+        switch (c) {
+          case ESC:
+            term_state = TSTATE_ESC;
+            break;
+          default:
+            // TODO save title
+            break;
+        }
+        break;
       default:
         term_state = TSTATE_DATA;
         break;
     }
 
-    if (C > columns)
-      C = columns;
-    else if (C < 0)
-      C = 0;
-
-    if (R > rows)
-      R = rows;
-    else if (R < 0)
-      R = 0;
-
-    if (doshowcursor)
-      setCursorPosition(C, R);
-    //markLine(R, 1);
+    setCursorPosition(C, R);
   }
 
   /* hard reset the terminal */
@@ -2943,20 +2952,20 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     onegl = -1; // Single shift override
 
     /* reset tabs */
-    int nw = getColumns();
+    int nw = width;
     if (nw < 132) nw = 132;
     Tabs = new byte[nw];
     for (int i = 0; i < nw; i += 8) {
       Tabs[i] = 1;
     }
 
-    deleteArea(0, 0, getColumns(), getRows(), attributes);
-    setMargins(0, getRows());
+    deleteArea(0, 0, width, height, attributes);
+    setMargins(0, height);
     C = R = 0;
     _SetCursor(0, 0);
 
     if (display != null)
-    	display.resetColors();
+      display.resetColors();
 
     showCursor(true);
     /*FIXME:*/

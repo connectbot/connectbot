@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">ConnectBot</string>
+	<string name="app_desc">Client SSH simple, potent i lliure</string>
+
+	<!-- Window title for the Host List -->
+	<string name="title_hosts_list">Servidors</string>
+	<!-- Window title for the Pubkeys List -->
+	<string name="title_pubkey_list">Claus Públiques</string>
+	<!-- Window title for the Port Forwards List -->
+	<string name="title_port_forwards_list">Redirecció de Ports</string>
+	<!-- Window title when editing host details -->
+	<string name="title_host_editor">Edició del Servidor</string>
+	<!-- Window title for Help index -->
+	<string name="title_help">Ajuda</string>
+	<!-- Window title for color list editing screen -->
+	<string name="title_colors">Colors</string>
+
+	<string name="resolve_connect">Connecta</string>
+	<string name="resolve_entropy">Recull Entropia</string>
+
+	<string name="menu_insert">Afegeix servidor</string>
+	<string name="menu_delete">Elimina servidor</string>
+	<string name="menu_preferences">Preferències</string>
+
+	<string name="help_intro">Siusplau escull un tema de sota per a més informació en aquest assumpte en particular</string>
+	<string name="help_about">Sobre ConnectBot</string>
+	<string name="help_keyboard">Teclat</string>
+
+	<string name="pubkey_generate">Genera</string>
+	<string name="pubkey_import">Importa</string>
+	<string name="pubkey_delete">Elimina la clau</string>
+	<string name="pubkey_gather_entropy">Recull Entropia</string>
+	<string name="pubkey_touch_prompt">Toca aquesta caixa per obtenir aleatorietat: %1$d%% completat</string>
+	<string name="pubkey_touch_hint">Per assegurar l'aleatorietat durant la generació de la clau, mou el dit aleatoriament per sobre la caixa de sota.</string>
+	<string name="pubkey_generating">Generant parell de claus...</string>
+	<string name="pubkey_copy_private">Còpia la clau privada</string>
+	<string name="pubkey_copy_public">Còpia la clau pública</string>
+	<string name="pubkey_list_empty">Pulsa "Menu" per crear\no importar parells de claus.</string>
+	<string name="pubkey_unknown_format">Format desconegut</string>
+	<string name="pubkey_change_password">Canvia la contrasenya</string>
+	<string name="pubkey_list_pick">Obté de /sdcard</string>
+	<string name="pubkey_import_parse_problem">Problema analitzant les claus privades importades</string>
+	<string name="pubkey_unlock">Desbloqueja clau</string>
+	<string name="pubkey_failed_add">Contrasenya incorrecta per la clau '%1$s'. Autenticació fallada</string>
+	<string name="pubkey_memory_load">Carrega a la memòria</string>
+	<string name="pubkey_memory_unload">Descarrega de la memòria</string>
+	<string name="pubkey_load_on_start">Carrega la clau a l'inici</string>
+	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
+	<string name="pubkey_confirm_use">Confirmar abans d'usar</string>
+
+	<string name="portforward_list_empty">Pulsa "Menu" per crear\nredireccions de ports.</string>
+	<string name="portforward_edit">Edita redireccions de ports</string>
+	<string name="portforward_delete">Elimina redireccions de ports</string>
+
+	<string name="prompt_nickname">Sobrenom:</string>
+	<!-- An example string that could be used as a nickname for a pubkey. -->
+	<string name="prompt_nickname_hint_pubkey">La meva clau</string>
+	<!-- The source TCP port for port forwards. -->
+	<string name="prompt_source_port">Port d'origen:</string>
+	<!-- The "host:port" combination used for port forward destinations. -->
+	<string name="prompt_destination">Destí:</string>
+	<string name="prompt_old_password">Contrasenya anterior:</string>
+	<string name="prompt_password">Contrasenya:</string>
+	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
+	<string name="prompt_again">(altre cop)</string>
+	<!-- Label for the user to select port forward type. -->
+	<string name="prompt_type">Tipus:</string>
+	<string name="prompt_password_can_be_blank">Nota: la contrasenya pot ser en blanc</string>
+	<!-- Prompt for the size of the private key in bits. -->
+	<string name="prompt_bits">Bits:</string>
+
+	<!-- Prompt for the password to unlock a certain pubkey. -->
+	<string name="prompt_pubkey_password">Contrasenya per la clau '%1$s'</string>
+
+	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key -->
+	<string name="prompt_allow_agent_to_use_key">Permet al servidor remot\nutilitzar la clau '%1$s'?</string>
+
+	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
+	<string name="host_verification_failure_warning_header">ALERTA: LA IDENTIFICACIÓ DEL SERVIDOR REMOT HA CANVIAT!</string>
+	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
+	<string name="host_verification_failure_warning">ES POSSIBLE QUE ALGÚ ESTIGUI FENT ALGUNA COSA LLETGA!\nAlgú pot estar escoltant la teva comunicació (atac home-al-mig)!\nTambé és possible que simplement el servidor hagi canviat la clau.</string>
+
+	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
+	<string name="prompt_host_disconnected">Servidor desconnectat.\nTancar sessió?</string>
+	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
+	<string name="prompt_continue_connecting">Estàs segur que vols\ncontinuar connectant?</string>
+
+	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
+	<string name="host_authenticity_warning">La autenticació amb el servidor '%1$s' no es pot establir.</string>
+	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
+	<string name="host_fingerprint">Servidor %1$s empremta de la clau és %2$s</string>
+
+	<string name="alert_passwords_do_not_match_msg">Les contrasenyes no coincideixen!</string>
+	<string name="alert_wrong_password_msg">La contrasenya no és correcta.</string>
+	<string name="alert_key_corrupted_msg">Les claus privades semblen malmèses!</string>
+	<string name="alert_sdcard_absent">La targeta SD no es troba present!</string>
+
+	<!-- Add a new item (e.g., host or pubkey) to the list. -->
+	<string name="button_add">Afegeix</string>
+	<!-- Change an existing item's (e.g., host or pubkey) details. -->
+	<string name="button_change">Canvia</string>
+	<!-- Button that begins the generation of a public key pair. -->
+	<string name="button_generate">Genera clau</string>
+	<!-- Button that resizes the screen to the user-specified dimensions. -->
+	<string name="button_resize">Redimensiona</string>
+
+	<string name="alert_disconnect_msg">Connexió perduda</string>
+
+	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
+
+	<!-- DO NOT MANUALLY UPDATE VERSION!!!
+	  Updating is update by the ant task "update-version" in build.xml
+	  Do not translate.
+	-->
+	<string name="msg_version">ConnectBot (working copy)</string>
+
+	<!-- The category title for terminal emulation preferences. -->
+	<string name="pref_emulation_category">Emulador del terminal</string>
+
+	<!-- Name for the emulation terminal type preference. -->
+	<string name="pref_emulation_title">Mode d'emulació</string>
+	<!-- Description of the emulation terminal type preference. -->
+	<string name="pref_emulation_summary">Mode d'emulació de terminal per l'ús de connexions PTY</string>
+
+	<!-- Name for the scrollback size preference -->
+	<string name="pref_scrollback_title">Tamany de la història</string>
+	<!-- Description of the scrollback size preference -->
+	<string name="pref_scrollback_summary">Tamany de la memòria per mantenir la història de cada consola</string>
+
+	<!-- The category title for user interface preferences -->
+	<string name="pref_ui_category">Interfície d'usuari</string>
+
+	<!-- Name for the rotation mode preference -->
+	<string name="pref_rotation_title">Mode de rotació</string>
+	<!-- Summary for the rotation mode preference -->
+	<string name="pref_rotation_summary">Com canvia la orientació quan el teclat s'obre o es tanca</string>
+
+	<!-- Name for the full screen preference -->
+	<string name="pref_fullscreen_title">Pantalla completa</string>
+	<!-- Summary for the full screen preference -->
+	<string name="pref_fullscreen_summary">Amaga la barra d'estat en consola</string>
+
+	<!-- Name for the memorize keys preference -->
+	<string name="pref_memkeys_title">Recorda les claus en memòria</string>
+	<!-- Summary for the memorize keys preference -->
+	<string name="pref_memkeys_summary">Manté les claus descarregadesen memòria fins que el servei finalitzi</string>
+
+	<!-- Name for the update check preference -->
+	<string name="pref_update_title">Comprova actualització</string>
+	<!-- Summary for the update check preference -->
+	<string name="pref_update_summary">Escull la freqüència màxima de comprovació d'actualitzacions de ConnectBot</string>
+
+	<!-- Name for the keyboard shortcuts preference -->
+	<string name="pref_keymode_title">Drecera de carpetes</string>
+	<!-- Summary for the keyboard shortcuts preference -->
+	<string name="pref_keymode_summary">Escull com usar Alt per '/' i Shift per Tab</string>
+
+	<!-- Name for the camera shortcut usage preference -->
+	<string name="pref_camera_title">Drecera de càmera</string>
+	<!-- Summary for the camera shortcut usage preference -->
+	<string name="pref_camera_summary">Escull quina acció fer quan el botó de la càmera es clica</string>
+
+	<!-- Name for the keep screen on preference -->
+	<string name="pref_keepalive_title">Manté la pantalla encesa</string>
+	<!-- Summary for the camera shortcut usage preference -->
+	<string name="pref_keepalive_summary">Evita que la pantalla s'apagui mentre s'usa la consola</string>
+
+	<!-- Name for the Wi-Fi lock preference -->
+	<string name="pref_wifilock_title">Manté activa la Wi-Fi</string>
+	<!-- Summary for the Wi-Fi lock preference -->
+	<string name="pref_wifilock_summary">Evita que la Wi-Fi s'apagui mentre hi ha una sessió activa</string>
+
+	<!-- Name for the haptic feedback (bumpy arrow) preference -->
+	<string name="pref_bumpyarrows_title">Cursors vibrants</string>
+	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
+	<string name="pref_bumpyarrows_summary">Vibra quan s'envien els cursors de direcció amb la rodeta; útil per connexions lentes</string>
+
+	<!-- Category title for the Terminal Bell preferences -->
+	<string name="pref_bell_category">So del Terminal</string>
+
+	<!-- Checkbox preference title for the audible terminal bell feature -->
+	<string name="pref_bell_title">So activat</string>
+
+	<!-- Title for the slider preference to set the volume -->
+	<string name="pref_bell_volume_title">Volum del so</string>
+
+	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
+	<string name="pref_bell_vibrate_title">Vibra en sonar</string>
+
+	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
+	<string name="pref_bell_notification_title">Notificacions en rerefons</string>
+	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
+	<string name="pref_bell_notification_summary">Envia notificacions quan un terminal actiu al rerefons envia una senyal de so.</string>
+
+	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
+	<string name="list_keymode_right">Utilitza les tecles de la dreta</string>
+	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
+	<string name="list_keymode_left">Utilitza les tecles de l'esquerra</string>
+	<!-- Preference selection to indicate never to use special shortcut keys. -->
+	<string name="list_keymode_none">Deshabilita</string>
+
+	<!-- Preference to not use pubkeys to authenticate to this host. -->
+	<string name="list_pubkeyids_none">No usis claus</string>
+	<!-- Preference to use any pubkey to authenticate to this host. -->
+	<string name="list_pubkeyids_any">Fes servir qualsevol clau desbloquejada</string>
+
+	<!-- Frequency for which to check for program updates. -->
+	<string name="list_update_daily">Diàriament</string>
+	<!-- Frequency for which to check for program updates. -->
+	<string name="list_update_weekly">Setmanalment</string>
+	<!-- Frequency for which to check for program updates. -->
+	<string name="list_update_never">Mai</string>
+
+	<!-- Host nickname field preference title -->
+	<string name="hostpref_nickname_title">Sobrenom</string>
+
+	<!-- Host color category preference title -->
+	<string name="hostpref_color_title">Color de la categoria</string>
+
+	<!-- Host pubkey usage preference title -->
+	<string name="hostpref_pubkeyid_title">Usa autenticació de claus públiques</string>
+
+	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
+	<string name="hostpref_authagent_title">Usa agent d'autenticació SSH</string>
+
+	<!-- Host post-login automation preference title -->
+	<string name="hostpref_postlogin_title">Automatització post-entrada</string>
+	<!-- Host post-login automation preference summary -->
+	<string name="hostpref_postlogin_summary">Comandes a executar en el servidor remot un cop autenticat.</string>
+
+	<!-- Host compression preference title -->
+	<string name="hostpref_compression_title">Compressió</string>
+	<!-- Summary for compression preference -->
+	<string name="hostpref_compression_summary">Això pot ajudar per xarxes lentes</string>
+
+	<!-- Setting for whether we want a session to start up when we connect to a host -->
+	<string name="hostpref_wantsession_title">Inicia una sessió de shell</string>
+	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
+	<string name="hostpref_wantsession_summary">Deshabilita aquesta preferència per només usar redireccionament de ports</string>
+
+	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_title">Tecla DEL</string>
+	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_summary">El codi enviat al pulsar la tecla DEL</string>
+
+	<!-- Host character encoding preference title -->
+	<string name="hostpref_encoding_title">Codificació</string>
+	<!-- Host character encoding preference summary -->
+	<string name="hostpref_encoding_summary">Codificació de caràcters per el servidor</string>
+
+	<!-- Host preference category title for connection settings -->
+	<string name="hostpref_connection_category">Paràmetres de connexió</string>
+
+	<!-- Username field title for host editor preference -->
+	<string name="hostpref_username_title">Nom d'usuari</string>
+
+	<!-- Hostname field title for host editor preference -->
+	<string name="hostpref_hostname_title">Servidor</string>
+
+	<!-- Port field title for host editor preference -->
+	<string name="hostpref_port_title">Port</string>
+
+	<!-- Displayed to indicate a host has never been connected to. -->
+	<string name="bind_never">Mai connectat</string>
+	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
+	<string name="bind_minutes">Fa %1$s minuts</string>
+	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
+	<string name="bind_hours">Fa %1$s hores</string>
+	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
+	<string name="bind_days">Fa %1$s dies</string>
+
+	<!-- Message given when user copies from the terminal. -->
+	<string name="console_copy_done">Copiats %1$d bytes al porta-retalls</string>
+	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
+	<string name="console_copy_start">Toca i arrosega\no fes servir les tecles de direcció\nper escollir l'àrea a copiar</string>
+
+	<!-- Button to close the disconnected terminal window. -->
+	<string name="console_menu_close">Tanca</string>
+	<!-- Button to begin copying from the terminal to the clipboard. -->
+	<string name="console_menu_copy">Copia</string>
+	<!-- Button to paste from the clipboard to the terminal. -->
+	<string name="console_menu_paste">Enganxa</string>
+	<!-- Button that brings user to the Port Forwards List. -->
+	<string name="console_menu_portforwards">Redireccionament de ports</string>
+	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
+	<string name="console_menu_resize">Força el tamany</string>
+
+	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
+	<string name="portforward_local">Local</string>
+	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
+	<string name="portforward_remote">Remot</string>
+	<!-- Selection for a "dynamic" port forward. E.g., connections to a port listening locally is forwarded based on the SOCKS protocol to an arbitrary remote host and port. -->
+	<string name="portforward_dynamic">Dinàmic (SOCKS)</string>
+	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
+	<string name="portforward_pos">Crea redireccionament de ports</string>
+
+	<string name="portforward_done">Redireccionament creat correctament</string>
+	<string name="portforward_problem">Problemes creant el redireccionament de ports, potser s'usen ports per sota del 1024 o el port és en ús actualment?</string>
+
+	<string name="portforward_menu_add">Afegeix redireccionament de ports</string>
+
+	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
+	<string name="hint_userhost">usuari@servidor</string>
+
+	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
+	<string name="list_format_error">Usa el format "%1$s"</string>
+
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_username">Usuari</string>
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_hostname">servidor</string>
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_port">port</string>
+
+	<string name="list_menu_pubkeys">Gestiona Claus</string>
+	<!-- Selection choice to sort hosts by color. -->
+	<string name="list_menu_sortcolor">Ordena per color</string>
+	<!-- Selection choice to sort hosts by nickname. -->
+	<string name="list_menu_sortname">Ordena per nom</string>
+	<string name="list_menu_settings">Arrenjaments</string>
+
+	<string name="list_host_disconnect">Desconnecta</string>
+	<string name="list_host_edit">Edita el servidor</string>
+	<string name="list_host_portforwards">Edita el redireccionament de ports</string>
+	<string name="list_host_delete">Elimina servidors</string>
+	<string name="list_host_empty">Utilitza el quadre de connexió ràpida\nde sota per connectar al servidor</string>
+
+	<!-- Default screen rotation preference selection -->
+	<string name="list_rotation_default">Per defecte</string>
+	<string name="list_rotation_land">Força horitzontal</string>
+	<string name="list_rotation_port">Força vertical</string>
+	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
+	<string name="list_rotation_auto">Automàtic</string>
+
+	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
+	<string name="list_camera_ctrlaspace">Ctrl+A llavors Espai</string>
+	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A". -->
+	<string name="list_camera_ctrla">Ctrl+A</string>
+	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
+	<string name="list_camera_esc">Esc</string>
+	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
+	<string name="list_camera_none">Res</string>
+
+	<!-- Name for the backspace character -->
+	<string name="list_delkey_backspace">Retrocés</string>
+	<!-- Name for the ASCII DEL character -->
+	<string name="list_delkey_del">Suprimeix</string>
+
+	<string name="delete_message">Estas segur que vols esborrar '%1$s'?</string>
+	<string name="delete_pos">Sí, esborra</string>
+	<string name="delete_neg">Cancel·la</string>
+
+	<!-- Button to agree to license terms. -->
+	<string name="wizard_agree">Accepto</string>
+	<!-- Button to go to the next page in the first time start-up wizard. -->
+	<string name="wizard_next">Següent</string>
+	<!-- Button to go to the previous page in the first time start-up wizard. -->
+	<string name="wizard_back">Enrere</string>
+
+	<string name="terminal_no_hosts_connected">No hi ha servidors connectats actualment</string>
+
+	<!-- Displayed in terminal when attempting to connect to a host. The first two
+	     variables are host:port and the third is the protocol (e.g., SSH) -->
+	<string name="terminal_connecting">Connectant a %1$s:%2$d via %3$s</string>
+
+	<!-- Displays the host key to the user in the terminal -->
+	<string name="terminal_sucess">Clau de servidor '%1$s' verificada: %2$s</string>
+	<string name="terminal_failed">Verificació de la clau del servidor errònia.</string>
+
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_s2c_algorithm">Algoritme servidor-a-client: %1$s %2$s</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_c2s_algorithm">Algoritme client-a-servidor: %1$s %2$s</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_algorithm">Usant algoritme: %1$s %2$s</string>
+
+	<string name="terminal_auth">Intentant autenticar</string>
+
+	<string name="terminal_auth_pass">Intentant autenticació de 'contrasenya'</string>
+	<string name="terminal_auth_pass_fail">Autenticació amb 'contrasenya' errònia</string>
+
+	<string name="terminal_auth_pubkey_any">Intentant autenticació amb 'claus públiques' amb totes les claus en memòria</string>
+	<string name="terminal_auth_pubkey_invalid">La clau pública seleccionada és invàlida, intenta reseleccionar la clau en l'editor del servidor</string>
+	<string name="terminal_auth_pubkey_specific">Intentant autenticació amb 'claus públiques' amb una clau específica</string>
+	<string name="terminal_auth_pubkey_fail">Mètode d'autenticació 'claus públiques' amb clau '%1$s' fallit</string>
+
+	<string name="terminal_auth_ki">Intentant autenticació 'teclat-interactiu'</string>
+	<string name="terminal_auth_ki_fail">Mètode d'autenticació 'teclat-interactiu' fallit.</string>
+
+	<string name="terminal_auth_fail">[El servidor no admet autenticació amb 'contrasenya' o 'teclat-interactiu'.]</string>
+
+	<string name="terminal_no_session">La sessió no s'iniciarà degut a la preferencia de servidor.</string>
+	<string name="terminal_enable_portfoward">Activa el redireccionament de ports: %1$s</string>
+
+	<string name="local_shell_unavailable">Fallada! El shell local no està disponible en aquest telèfon.</string>
+
+	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
+	<string name="notification_text">%1$s necessita la teva atenció.</string>
+
+	<!-- Dialog title when a new version of ConnectBot is detected. -->
+	<string name="upgrade">Nova versió</string>
+	<!-- Button selection to upgrade to the latest ConnectBot when one is available. -->
+	<string name="upgrade_pos">Sí, actualitza</string>
+	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
+	<string name="upgrade_neg">No ara</string>
+
+	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
+	<string name="no">No</string>
+	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
+	<string name="with_confirmation">With confirmation</string>
+	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
+	<string name="yes">Yes</string>
+
+	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
+	<string name="exceptions_submit_message">Sembla que ConnectBot ha tingut un problema l'últim cop que s'ha iniciat. Enviar la informació de l'error als desenvolupadors de ConnectBot?</string>
+
+	<string name="color_red">vermell</string>
+	<string name="color_green">verd</string>
+	<string name="color_blue">blau</string>
+	<string name="color_gray">gris</string>
+</resources>

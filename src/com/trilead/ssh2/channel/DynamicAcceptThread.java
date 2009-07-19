@@ -1,17 +1,17 @@
 /*
 	ConnectBot: simple, powerful, open-source SSH client for Android
 	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
-	
+
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
-	
+
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
-	
+
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -19,44 +19,126 @@ package com.trilead.ssh2.channel;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.io.OutputStream;
+import java.io.PushbackInputStream;
+import java.net.ConnectException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.NoRouteToHostException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import net.sourceforge.jsocks.Proxy;
 import net.sourceforge.jsocks.ProxyMessage;
-import net.sourceforge.jsocks.ProxyServer;
 import net.sourceforge.jsocks.Socks4Message;
 import net.sourceforge.jsocks.Socks5Message;
+import net.sourceforge.jsocks.SocksException;
 import net.sourceforge.jsocks.server.ServerAuthenticator;
 import net.sourceforge.jsocks.server.ServerAuthenticatorNone;
 
 /**
  * DynamicAcceptThread.
- * 
+ *
  * @author Kenny Root
- * @version $Id:
+ * @version $Id$
  */
 public class DynamicAcceptThread extends Thread implements IChannelWorkerThread {
 	private ChannelManager cm;
 	private ServerSocket ss;
-	
-	class DynamicAcceptRunnable extends ProxyServer {
+
+	class DynamicAcceptRunnable implements Runnable {
+		private static final int idleTimeout	= 180000; //3 minutes
+
 		private ServerAuthenticator auth;
 		private Socket sock;
 		private InputStream in;
 		private OutputStream out;
 		private ProxyMessage msg;
-		
+
 		public DynamicAcceptRunnable(ServerAuthenticator auth, Socket sock) {
-			super(auth, sock);
 			this.auth = auth;
 			this.sock = sock;
+
+			setName("DynamicAcceptRunnable");
 		}
 
-		protected void startSession() throws IOException {
-			sock.setSoTimeout(ProxyServer.iddleTimeout);
+		public void run() {
+			try {
+				startSession();
+			} catch (IOException ioe) {
+				int error_code = Proxy.SOCKS_FAILURE;
+
+				if (ioe instanceof SocksException)
+					error_code = ((SocksException) ioe).errCode;
+				else if (ioe instanceof NoRouteToHostException)
+					error_code = Proxy.SOCKS_HOST_UNREACHABLE;
+				else if (ioe instanceof ConnectException)
+					error_code = Proxy.SOCKS_CONNECTION_REFUSED;
+				else if (ioe instanceof InterruptedIOException)
+					error_code = Proxy.SOCKS_TTL_EXPIRE;
+
+				if (error_code > Proxy.SOCKS_ADDR_NOT_SUPPORTED
+						|| error_code < 0) {
+					error_code = Proxy.SOCKS_FAILURE;
+				}
+
+				sendErrorMessage(error_code);
+			} finally {
+				if (auth != null)
+					auth.endSession();
+			}
+		}
+
+		private ProxyMessage readMsg(InputStream in) throws IOException {
+			PushbackInputStream push_in;
+			if (in instanceof PushbackInputStream)
+				push_in = (PushbackInputStream) in;
+			else
+				push_in = new PushbackInputStream(in);
+
+			int version = push_in.read();
+			push_in.unread(version);
+
+			ProxyMessage msg;
+
+			if (version == 5) {
+				msg = new Socks5Message(push_in, false);
+			} else if (version == 4) {
+				msg = new Socks4Message(push_in, false);
+			} else {
+				throw new SocksException(Proxy.SOCKS_FAILURE);
+			}
+			return msg;
+		}
+
+		private void sendErrorMessage(int error_code) {
+			ProxyMessage err_msg;
+			if (msg instanceof Socks4Message)
+				err_msg = new Socks4Message(Socks4Message.REPLY_REJECTED);
+			else
+				err_msg = new Socks5Message(error_code);
+			try {
+				err_msg.write(out);
+			} catch (IOException ioe) {
+			}
+		}
+
+		private void handleRequest(ProxyMessage msg) throws IOException {
+			if (!auth.checkRequest(msg))
+				throw new SocksException(Proxy.SOCKS_FAILURE);
+
+			switch (msg.command) {
+			case Proxy.SOCKS_CMD_CONNECT:
+				onConnect(msg);
+				break;
+			default:
+				throw new SocksException(Proxy.SOCKS_CMD_NOT_SUPPORTED);
+			}
+		}
+
+		private void startSession() throws IOException {
+			sock.setSoTimeout(idleTimeout);
 
 			try {
 				auth = auth.startSession(sock);
@@ -78,12 +160,23 @@ public class DynamicAcceptThread extends Thread implements IChannelWorkerThread 
 			msg = readMsg(in);
 			handleRequest(msg);
 		}
-		
-		protected void onConnect(ProxyMessage msg) throws IOException {
+
+		private void onConnect(ProxyMessage msg) throws IOException {
 			ProxyMessage response = null;
 			Channel cn = null;
 			StreamForwarder r2l = null;
 			StreamForwarder l2r = null;
+
+			if (msg instanceof Socks5Message) {
+				response = new Socks5Message(Proxy.SOCKS_SUCCESS, (InetAddress)null, 0);
+			} else {
+				response = new Socks4Message(Socks4Message.REPLY_OK, (InetAddress)null, 0);
+			}
+			response.write(out);
+
+			String destHost = msg.host;
+			if (msg.ip != null)
+				destHost = msg.ip.getHostAddress();
 
 			try {
 				/*
@@ -91,9 +184,8 @@ public class DynamicAcceptThread extends Thread implements IChannelWorkerThread 
 				 * optimistic terms: not open yet)
 				 */
 
-				cn = cm.openDirectTCPIPChannel(msg.host, msg.port,
-						sock.getInetAddress().getHostAddress(),
-						sock.getPort());
+				cn = cm.openDirectTCPIPChannel(destHost, msg.port,
+						"127.0.0.1", 0);
 
 			} catch (IOException e) {
 				/*
@@ -131,26 +223,18 @@ public class DynamicAcceptThread extends Thread implements IChannelWorkerThread 
 			l2r.setDaemon(true);
 			r2l.start();
 			l2r.start();
-			
-			if (msg instanceof Socks5Message) {
-				response = new Socks5Message(Proxy.SOCKS_SUCCESS, sock
-						.getLocalAddress(), sock.getLocalPort());
-			} else {
-				response = new Socks4Message(Socks4Message.REPLY_OK, sock
-						.getLocalAddress(), sock.getLocalPort());
-
-			}
-			response.write(out);
 		}
 	}
-	
+
 	public DynamicAcceptThread(ChannelManager cm, int local_port)
 			throws IOException {
 		this.cm = cm;
 
+		setName("DynamicAcceptThread");
+
 		ss = new ServerSocket(local_port);
 	}
-	
+
 	public DynamicAcceptThread(ChannelManager cm, InetSocketAddress localAddress)
 			throws IOException {
 		this.cm = cm;
@@ -159,6 +243,7 @@ public class DynamicAcceptThread extends Thread implements IChannelWorkerThread 
 		ss.bind(localAddress);
 	}
 
+	@Override
 	public void run() {
 		try {
 			cm.registerThread(this);
@@ -183,10 +268,10 @@ public class DynamicAcceptThread extends Thread implements IChannelWorkerThread 
 			t.start();
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.trilead.ssh2.channel.IChannelWorkerThread#stopWorking()
 	 */
 	public void stopWorking() {

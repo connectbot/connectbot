@@ -86,6 +86,18 @@
 		<item>-1</item>
 	</string-array>
 
+	<string-array name="list_authagent">
+		<item>@string/no</item>
+		<item>@string/with_confirmation</item>
+		<item>@string/yes</item>
+	</string-array>
+
+	<string-array name="list_authagent_values">
+		<item>no</item>
+		<item>confirm</item>
+		<item>yes</item>
+	</string-array>
+
 	<string-array name="list_portforward_types">
 		<item>@string/portforward_local</item>
 		<item>@string/portforward_remote</item>

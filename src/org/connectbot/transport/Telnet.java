@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -97,6 +98,15 @@ public class Telnet extends AbsTransport {
 			/** sent on IAC EOR (prompt terminator for remote access systems). */
 			@Override
 			public void notifyEndOfRecord() {
+			}
+
+			@Override
+			protected String getCharsetName() {
+				Charset charset = bridge.getCharset();
+				if (charset != null)
+					return charset.name();
+				else
+					return "";
 			}
 		};
 	}
@@ -172,7 +182,7 @@ public class Telnet extends AbsTransport {
 		do {
 			n = handler.negotiate(buffer, start);
 			if (n > 0)
-				return start + n;
+				return n;
 		} while (n == 0);
 
 		while (n <= 0) {
@@ -187,7 +197,7 @@ public class Telnet extends AbsTransport {
 				throw new IOException("Remote end closed connection.");
 			}
 
-			handler.inputfeed(buffer, start, n - start);
+			handler.inputfeed(buffer, start, n);
 			n = handler.negotiate(buffer, start);
 		}
 		return n;

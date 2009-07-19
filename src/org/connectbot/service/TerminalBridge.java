@@ -19,8 +19,11 @@
 package org.connectbot.service;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.connectbot.R;
 import org.connectbot.TerminalView;
@@ -33,6 +36,7 @@ import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -65,10 +69,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 
 	public final static int DEFAULT_FONT_SIZE = 10;
 
-	public int color[];
+	public Integer[] color;
 
-	public final static int COLOR_FG_STD = 7;
-	public final static int COLOR_BG_STD = 0;
+	public int defaultFg = HostDatabase.DEFAULT_FG_COLOR;
+	public int defaultBg = HostDatabase.DEFAULT_BG_COLOR;
 
 	protected final TerminalManager manager;
 
@@ -117,6 +121,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	private int rows;
 
 	private String keymode = null;
+
+	private boolean hardwareKeyboard = false;
 
 	private boolean selectingForCopy = false;
 	private final SelectionArea selectionArea;
@@ -251,11 +257,19 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			}
 		};
 
-		buffer.setBufferSize(scrollback);
+		// Don't keep any scrollback if a session is not being opened.
+		if (host.getWantSession())
+			buffer.setBufferSize(scrollback);
+		else
+			buffer.setBufferSize(0);
+
 		resetColors();
 		buffer.setDisplay(this);
 
 		selectionArea = new SelectionArea();
+
+		hardwareKeyboard = (manager.res.getConfiguration().keyboard
+				== Configuration.KEYBOARD_QWERTY);
 	}
 
 	public PromptHelper getPromptHelper() {
@@ -271,8 +285,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		transport.setManager(manager);
 		transport.setHost(host);
 
-		// Should be more abstract?
+		// TODO make this more abstract so we don't litter on AbsTransport
 		transport.setCompression(host.getCompression());
+		transport.setUseAuthAgent(host.getUseAuthAgent());
 		transport.setEmulation(emulation);
 
 		if (transport.canForwardPorts()) {
@@ -280,7 +295,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 				transport.addPortForward(portForward);
 		}
 
-		outputLine(String.format("Connecting to %s:%d via %s", host.getHostname(), host.getPort(), host.getProtocol()));
+		outputLine(manager.res.getString(R.string.terminal_connecting, host.getHostname(), host.getPort(), host.getProtocol()));
 
 		Thread connectionThread = new Thread(new Runnable() {
 			public void run() {
@@ -288,6 +303,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			}
 		});
 		connectionThread.setName("Connection");
+		connectionThread.setDaemon(true);
 		connectionThread.start();
 	}
 
@@ -301,6 +317,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			responses[i] = promptHelper.requestStringPrompt(instruction, prompt[i]);
 		}
 		return responses;
+	}
+
+	/**
+	 * @return charset in use by bridge
+	 */
+	public Charset getCharset() {
+		return relay.getCharset();
 	}
 
 	/**
@@ -354,6 +377,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	 * authentication. If called before authenticated, it will just fail.
 	 */
 	public void onConnected() {
+		disconnected = false;
+
 		((vt320) buffer).reset();
 
 		// We no longer need our local output.
@@ -371,6 +396,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		// create thread to relay incoming connection data to buffer
 		relay = new Relay(this, transport, (vt320) buffer, host.getEncoding());
 		Thread relayThread = new Thread(relay);
+		relayThread.setDaemon(true);
 		relayThread.setName("Relay");
 		relayThread.start();
 
@@ -399,8 +425,15 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	 */
 	public void dispatchDisconnect(boolean immediate) {
 		// We don't need to do this multiple times.
-		if (disconnected && !immediate)
-			return;
+		synchronized (this) {
+			if (disconnected && !immediate)
+				return;
+
+			disconnected = true;
+		}
+
+		// Cancel any pending prompts.
+		promptHelper.cancelPrompt();
 
 		// disconnection request hangs if we havent really connected to a host yet
 		// temporary fix is to just spawn disconnection into a thread
@@ -413,17 +446,19 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		disconnectThread.setName("Disconnect");
 		disconnectThread.start();
 
-		disconnected = true;
-
 		if (immediate) {
 			awaitingClose = true;
 			if (disconnectListener != null)
 				disconnectListener.onDisconnected(TerminalBridge.this);
 		} else {
+			if (host.getStayConnected()) {
+				startConnection();
+				return;
+			}
 			Thread disconnectPromptThread = new Thread(new Runnable() {
 				public void run() {
 					Boolean result = promptHelper.requestBooleanPrompt(null,
-							manager.res.getString(R.string.prompt_host_disconnected), true);
+							manager.res.getString(R.string.prompt_host_disconnected));
 					if (result == null || result.booleanValue()) {
 						awaitingClose = true;
 
@@ -434,6 +469,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 				}
 			});
 			disconnectPromptThread.setName("DisconnectPrompt");
+			disconnectPromptThread.setDaemon(true);
 			disconnectPromptThread.start();
 		}
 	}
@@ -444,8 +480,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 
 	/**
 	 * Handle onKey() events coming down from a {@link TerminalView} above us.
-	 * We might collect these for our internal buffer when working with hostkeys
-	 * or passwords, but otherwise we pass them directly over to the SSH host.
+	 * Modify the keys to make more sense to a host then pass it to the transport.
 	 */
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
 		try {
@@ -528,6 +563,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 				int key = keymap.get(keyCode, curMetaState);
 
 				if ((metaState & META_CTRL_MASK) != 0) {
+					metaState &= ~META_CTRL_ON;
+					redraw();
+
+					if (!hardwareKeyboard && sendFunctionKey(keyCode))
+						return true;
+
 					// Support CTRL-a through CTRL-z
 					if (key >= 0x61 && key <= 0x7A)
 						key -= 0x60;
@@ -538,27 +579,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 						key = 0x00;
 					else if (key == 0x3F)
 						key = 0x7F;
-
-					metaState &= ~META_CTRL_ON;
-
-					redraw();
 				}
 
 				// handle pressing f-keys
-				if ((metaState & META_TAB) != 0) {
-					switch(key) {
-					case '!': ((vt320)buffer).keyPressed(vt320.KEY_F1, ' ', 0); return true;
-					case '@': ((vt320)buffer).keyPressed(vt320.KEY_F2, ' ', 0); return true;
-					case '#': ((vt320)buffer).keyPressed(vt320.KEY_F3, ' ', 0); return true;
-					case '$': ((vt320)buffer).keyPressed(vt320.KEY_F4, ' ', 0); return true;
-					case '%': ((vt320)buffer).keyPressed(vt320.KEY_F5, ' ', 0); return true;
-					case '^': ((vt320)buffer).keyPressed(vt320.KEY_F6, ' ', 0); return true;
-					case '&': ((vt320)buffer).keyPressed(vt320.KEY_F7, ' ', 0); return true;
-					case '*': ((vt320)buffer).keyPressed(vt320.KEY_F8, ' ', 0); return true;
-					case '(': ((vt320)buffer).keyPressed(vt320.KEY_F9, ' ', 0); return true;
-					case ')': ((vt320)buffer).keyPressed(vt320.KEY_F10, ' ', 0); return true;
-					}
-				}
+				if (hardwareKeyboard
+						&& (curMetaState & KeyEvent.META_SHIFT_ON) != 0
+						&& sendFunctionKey(keyCode))
+					return true;
 
 				if (key < 0x80)
 					transport.write(key);
@@ -574,6 +601,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 					event.getAction() == KeyEvent.ACTION_MULTIPLE) {
 				byte[] input = event.getCharacters().getBytes(host.getEncoding());
 				transport.write(input);
+				return true;
 			}
 
 			// try handling keymode shortcuts
@@ -737,6 +765,47 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @param key
+	 * @return successful
+	 */
+	private boolean sendFunctionKey(int keyCode) {
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_1:
+			((vt320) buffer).keyPressed(vt320.KEY_F1, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_2:
+			((vt320) buffer).keyPressed(vt320.KEY_F2, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_3:
+			((vt320) buffer).keyPressed(vt320.KEY_F3, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_4:
+			((vt320) buffer).keyPressed(vt320.KEY_F4, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_5:
+			((vt320) buffer).keyPressed(vt320.KEY_F5, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_6:
+			((vt320) buffer).keyPressed(vt320.KEY_F6, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_7:
+			((vt320) buffer).keyPressed(vt320.KEY_F7, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_8:
+			((vt320) buffer).keyPressed(vt320.KEY_F8, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_9:
+			((vt320) buffer).keyPressed(vt320.KEY_F9, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_0:
+			((vt320) buffer).keyPressed(vt320.KEY_F10, ' ', 0);
+			return true;
+		default:
+			return false;
+		}
 	}
 
 	/**
@@ -985,8 +1054,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 					int currAttr = buffer.charAttributes[buffer.windowBase + l][c];
 
 					// reset default colors
-					fg = color[COLOR_FG_STD];
-					bg = color[COLOR_BG_STD];
+					fg = color[defaultFg];
+					bg = color[defaultBg];
 
 					// check if foreground color attribute is set
 					if ((currAttr & VDUBuffer.COLOR_FG) != 0) {
@@ -1206,71 +1275,33 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	}
 
 	public final void resetColors() {
-		color = new int[] {
-				0xff000000, // black
-				0xffcc0000, // red
-				0xff00cc00, // green
-				0xffcccc00, // brown
-				0xff0000cc, // blue
-				0xffcc00cc, // purple
-				0xff00cccc, // cyan
-				0xffcccccc, // light grey
-				0xff444444, // dark grey
-				0xffff4444, // light red
-				0xff44ff44, // light green
-				0xffffff44, // yellow
-				0xff4444ff, // light blue
-				0xffff44ff, // light purple
-				0xff44ffff, // light cyan
-				0xffffffff, // white
-				0xff000000, 0xff00005f, 0xff000087, 0xff0000af, 0xff0000d7,
-				0xff0000ff, 0xff005f00, 0xff005f5f, 0xff005f87, 0xff005faf,
-				0xff005fd7, 0xff005fff, 0xff008700, 0xff00875f, 0xff008787,
-				0xff0087af, 0xff0087d7, 0xff0087ff, 0xff00af00, 0xff00af5f,
-				0xff00af87, 0xff00afaf, 0xff00afd7, 0xff00afff, 0xff00d700,
-				0xff00d75f, 0xff00d787, 0xff00d7af, 0xff00d7d7, 0xff00d7ff,
-				0xff00ff00, 0xff00ff5f, 0xff00ff87, 0xff00ffaf, 0xff00ffd7,
-				0xff00ffff, 0xff5f0000, 0xff5f005f, 0xff5f0087, 0xff5f00af,
-				0xff5f00d7, 0xff5f00ff, 0xff5f5f00, 0xff5f5f5f, 0xff5f5f87,
-				0xff5f5faf, 0xff5f5fd7, 0xff5f5fff, 0xff5f8700, 0xff5f875f,
-				0xff5f8787, 0xff5f87af, 0xff5f87d7, 0xff5f87ff, 0xff5faf00,
-				0xff5faf5f, 0xff5faf87, 0xff5fafaf, 0xff5fafd7, 0xff5fafff,
-				0xff5fd700, 0xff5fd75f, 0xff5fd787, 0xff5fd7af, 0xff5fd7d7,
-				0xff5fd7ff, 0xff5fff00, 0xff5fff5f, 0xff5fff87, 0xff5fffaf,
-				0xff5fffd7, 0xff5fffff, 0xff870000, 0xff87005f, 0xff870087,
-				0xff8700af, 0xff8700d7, 0xff8700ff, 0xff875f00, 0xff875f5f,
-				0xff875f87, 0xff875faf, 0xff875fd7, 0xff875fff, 0xff878700,
-				0xff87875f, 0xff878787, 0xff8787af, 0xff8787d7, 0xff8787ff,
-				0xff87af00, 0xff87af5f, 0xff87af87, 0xff87afaf, 0xff87afd7,
-				0xff87afff, 0xff87d700, 0xff87d75f, 0xff87d787, 0xff87d7af,
-				0xff87d7d7, 0xff87d7ff, 0xff87ff00, 0xff87ff5f, 0xff87ff87,
-				0xff87ffaf, 0xff87ffd7, 0xff87ffff, 0xffaf0000, 0xffaf005f,
-				0xffaf0087, 0xffaf00af, 0xffaf00d7, 0xffaf00ff, 0xffaf5f00,
-				0xffaf5f5f, 0xffaf5f87, 0xffaf5faf, 0xffaf5fd7, 0xffaf5fff,
-				0xffaf8700, 0xffaf875f, 0xffaf8787, 0xffaf87af, 0xffaf87d7,
-				0xffaf87ff, 0xffafaf00, 0xffafaf5f, 0xffafaf87, 0xffafafaf,
-				0xffafafd7, 0xffafafff, 0xffafd700, 0xffafd75f, 0xffafd787,
-				0xffafd7af, 0xffafd7d7, 0xffafd7ff, 0xffafff00, 0xffafff5f,
-				0xffafff87, 0xffafffaf, 0xffafffd7, 0xffafffff, 0xffd70000,
-				0xffd7005f, 0xffd70087, 0xffd700af, 0xffd700d7, 0xffd700ff,
-				0xffd75f00, 0xffd75f5f, 0xffd75f87, 0xffd75faf, 0xffd75fd7,
-				0xffd75fff, 0xffd78700, 0xffd7875f, 0xffd78787, 0xffd787af,
-				0xffd787d7, 0xffd787ff, 0xffd7af00, 0xffd7af5f, 0xffd7af87,
-				0xffd7afaf, 0xffd7afd7, 0xffd7afff, 0xffd7d700, 0xffd7d75f,
-				0xffd7d787, 0xffd7d7af, 0xffd7d7d7, 0xffd7d7ff, 0xffd7ff00,
-				0xffd7ff5f, 0xffd7ff87, 0xffd7ffaf, 0xffd7ffd7, 0xffd7ffff,
-				0xffff0000, 0xffff005f, 0xffff0087, 0xffff00af, 0xffff00d7,
-				0xffff00ff, 0xffff5f00, 0xffff5f5f, 0xffff5f87, 0xffff5faf,
-				0xffff5fd7, 0xffff5fff, 0xffff8700, 0xffff875f, 0xffff8787,
-				0xffff87af, 0xffff87d7, 0xffff87ff, 0xffffaf00, 0xffffaf5f,
-				0xffffaf87, 0xffffafaf, 0xffffafd7, 0xffffafff, 0xffffd700,
-				0xffffd75f, 0xffffd787, 0xffffd7af, 0xffffd7d7, 0xffffd7ff,
-				0xffffff00, 0xffffff5f, 0xffffff87, 0xffffffaf, 0xffffffd7,
-				0xffffffff, 0xff080808, 0xff121212, 0xff1c1c1c, 0xff262626,
-				0xff303030, 0xff3a3a3a, 0xff444444, 0xff4e4e4e, 0xff585858,
-				0xff626262, 0xff6c6c6c, 0xff767676, 0xff808080, 0xff8a8a8a,
-				0xff949494, 0xff9e9e9e, 0xffa8a8a8, 0xffb2b2b2, 0xffbcbcbc,
-				0xffc6c6c6, 0xffd0d0d0, 0xffdadada, 0xffe4e4e4, 0xffeeeeee,
-		};
+		int[] defaults = manager.hostdb.getDefaultColorsForHost(host);
+		defaultFg = defaults[0];
+		defaultBg = defaults[1];
+
+		color = manager.hostdb.getColorsForHost(host);
+	}
+
+	// This was taken from http://geekswithblogs.net/casualjim/archive/2005/12/01/61722.aspx
+	private final static String urlRegex = "(?:(?:ht|f)tp(?:s?)\\:\\/\\/|~/|/)?(?:\\w+:\\w+@)?(?:(?:[-\\w]+\\.)+(?:com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))(?::[\\d]{1,5})?(?:(?:(?:/(?:[-\\w~!$+|.,=]|%[a-f\\d]{2})+)+|/)+|\\?|#)?(?:(?:\\?(?:[-\\w~!$+|.,*:]|%[a-f\\d{2}])+=(?:[-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)(?:&(?:[-\\w~!$+|.,*:]|%[a-f\\d{2}])+=(?:[-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)*)*(?:#(?:[-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)?";
+	private static Pattern urlPattern = null;
+
+	/**
+	 * @return
+	 */
+	public List<String> scanForURLs() {
+		List<String> urls = new LinkedList<String>();
+
+		if (urlPattern == null)
+			urlPattern = Pattern.compile(urlRegex);
+
+		for (int l = 0; l < buffer.height; l++) {
+			Matcher urlMatcher = urlPattern.matcher(
+					new String(buffer.charArray[buffer.windowBase + l]));
+			while (urlMatcher.find())
+				urls.add(urlMatcher.group());
+		}
+
+		return urls;
 	}
 }

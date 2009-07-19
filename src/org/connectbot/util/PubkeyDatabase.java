@@ -27,7 +27,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteException;
 
 /**
  * Public Key Encryption database. Contains private and public key pairs
@@ -35,11 +35,11 @@ import android.database.sqlite.SQLiteOpenHelper;
  *
  * @author Kenny Root
  */
-public class PubkeyDatabase extends SQLiteOpenHelper {
+public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 	public final static String TAG = "ConnectBot.PubkeyDatabase";
 
 	public final static String DB_NAME = "pubkeys";
-	public final static int DB_VERSION = 1;
+	public final static int DB_VERSION = 2;
 
 	public final static String TABLE_PUBKEYS = "pubkeys";
 	public final static String FIELD_PUBKEY_NICKNAME = "nickname";
@@ -48,12 +48,18 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 	public final static String FIELD_PUBKEY_PUBLIC = "public";
 	public final static String FIELD_PUBKEY_ENCRYPTED = "encrypted";
 	public final static String FIELD_PUBKEY_STARTUP = "startup";
+	public final static String FIELD_PUBKEY_CONFIRMUSE = "confirmuse";
+	public final static String FIELD_PUBKEY_LIFETIME = "lifetime";
 
 	public final static String KEY_TYPE_RSA = "RSA",
 		KEY_TYPE_DSA = "DSA",
 		KEY_TYPE_IMPORTED = "IMPORTED";
 
 	private Context context;
+
+	static {
+		addTableName(TABLE_PUBKEYS);
+	}
 
 	public PubkeyDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
@@ -63,6 +69,8 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		super.onCreate(db);
+
 		db.execSQL("CREATE TABLE " + TABLE_PUBKEYS
 				+ " (_id INTEGER PRIMARY KEY, "
 				+ FIELD_PUBKEY_NICKNAME + " TEXT, "
@@ -70,12 +78,20 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 				+ FIELD_PUBKEY_PRIVATE + " BLOB, "
 				+ FIELD_PUBKEY_PUBLIC + " BLOB, "
 				+ FIELD_PUBKEY_ENCRYPTED + " INTEGER, "
-				+ FIELD_PUBKEY_STARTUP + " INTEGER)");
+				+ FIELD_PUBKEY_STARTUP + " INTEGER, "
+				+ FIELD_PUBKEY_CONFIRMUSE + " INTEGER DEFAULT 0, "
+				+ FIELD_PUBKEY_LIFETIME + " INTEGER DEFAULT 0)");
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+	public void onRobustUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) throws SQLiteException {
+			switch (oldVersion) {
+			case 1:
+				db.execSQL("ALTER TABLE " + TABLE_PUBKEYS
+						+ " ADD COLUMN " + FIELD_PUBKEY_CONFIRMUSE + " INTEGER DEFAULT 0");
+				db.execSQL("ALTER TABLE " + TABLE_PUBKEYS
+						+ " ADD COLUMN " + FIELD_PUBKEY_LIFETIME + " INTEGER DEFAULT 0");
+			}
 	}
 
 	/**
@@ -125,7 +141,9 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 				COL_PRIVATE = c.getColumnIndexOrThrow(FIELD_PUBKEY_PRIVATE),
 				COL_PUBLIC = c.getColumnIndexOrThrow(FIELD_PUBKEY_PUBLIC),
 				COL_ENCRYPTED = c.getColumnIndexOrThrow(FIELD_PUBKEY_ENCRYPTED),
-				COL_STARTUP = c.getColumnIndexOrThrow(FIELD_PUBKEY_STARTUP);
+				COL_STARTUP = c.getColumnIndexOrThrow(FIELD_PUBKEY_STARTUP),
+				COL_CONFIRMUSE = c.getColumnIndexOrThrow(FIELD_PUBKEY_CONFIRMUSE),
+				COL_LIFETIME = c.getColumnIndexOrThrow(FIELD_PUBKEY_LIFETIME);
 
 			while (c.moveToNext()) {
 				PubkeyBean pubkey = new PubkeyBean();
@@ -137,6 +155,8 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 				pubkey.setPublicKey(c.getBlob(COL_PUBLIC));
 				pubkey.setEncrypted(c.getInt(COL_ENCRYPTED) > 0);
 				pubkey.setStartup(c.getInt(COL_STARTUP) > 0);
+				pubkey.setConfirmUse(c.getInt(COL_CONFIRMUSE) > 0);
+				pubkey.setLifetime(c.getInt(COL_LIFETIME));
 
 				pubkeys.add(pubkey);
 			}
@@ -184,6 +204,8 @@ public class PubkeyDatabase extends SQLiteOpenHelper {
 		pubkey.setPublicKey(c.getBlob(c.getColumnIndexOrThrow(FIELD_PUBKEY_PUBLIC)));
 		pubkey.setEncrypted(c.getInt(c.getColumnIndexOrThrow(FIELD_PUBKEY_ENCRYPTED)) > 0);
 		pubkey.setStartup(c.getInt(c.getColumnIndexOrThrow(FIELD_PUBKEY_STARTUP)) > 0);
+		pubkey.setConfirmUse(c.getInt(c.getColumnIndexOrThrow(FIELD_PUBKEY_CONFIRMUSE)) > 0);
+		pubkey.setLifetime(c.getInt(c.getColumnIndexOrThrow(FIELD_PUBKEY_LIFETIME)));
 
 		return pubkey;
 	}

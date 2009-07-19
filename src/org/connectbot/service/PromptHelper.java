@@ -68,11 +68,8 @@ public class PromptHelper {
 	 * Only one thread can call this at a time. cancelPrompt() will force this to
 	 * immediately return.
 	 */
-	private Object requestPrompt(String instructions, String hint, Object type, boolean immediate) throws InterruptedException {
+	private Object requestPrompt(String instructions, String hint, Object type) throws InterruptedException {
 		Object response = null;
-
-		if (immediate)
-			cancelPrompt();
 
 		promptToken.acquire();
 
@@ -103,50 +100,30 @@ public class PromptHelper {
 	 * Request a string response from parent. This is a blocking call until user
 	 * interface returns a value.
 	 * @param hint prompt hint for user to answer
-	 * @param immediate whether to cancel other in-progress prompts
-	 * @return string user has entered
-	 */
-	public String requestStringPrompt(String instructions, String hint, boolean immediate) {
-		String value = null;
-		try {
-			value = (String)this.requestPrompt(instructions, hint, String.class, immediate);
-		} catch(Exception e) {
-		}
-		return value;
-	}
-
-	/**
-	 * Convenience method for requestStringPrompt(String, boolean)
-	 * @param hint prompt hint for user to answer
 	 * @return string user has entered
 	 */
 	public String requestStringPrompt(String instructions, String hint) {
-		return requestStringPrompt(instructions, hint, false);
+		String value = null;
+		try {
+			value = (String)this.requestPrompt(instructions, hint, String.class);
+		} catch(Exception e) {
+		}
+		return value;
 	}
 
 	/**
 	 * Request a boolean response from parent. This is a blocking call until user
 	 * interface returns a value.
 	 * @param hint prompt hint for user to answer
-	 * @param immediate whether to cancel other in-progress prompts
-	 * @return choice user has made (yes/no)
-	 */
-	public Boolean requestBooleanPrompt(String instructions, String hint, boolean immediate) {
-		Boolean value = null;
-		try {
-			value = (Boolean)this.requestPrompt(instructions, hint, Boolean.class, immediate);
-		} catch(Exception e) {
-		}
-		return value;
-	}
-
-	/**
-	 * Convenience method for requestBooleanPrompt(String, boolean)
-	 * @param hint String to present to user in prompt
 	 * @return choice user has made (yes/no)
 	 */
 	public Boolean requestBooleanPrompt(String instructions, String hint) {
-		return requestBooleanPrompt(instructions, hint, false);
+		Boolean value = null;
+		try {
+			value = (Boolean)this.requestPrompt(instructions, hint, Boolean.class);
+		} catch(Exception e) {
+		}
+		return value;
 	}
 
 	/**

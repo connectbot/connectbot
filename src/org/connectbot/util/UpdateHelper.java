@@ -22,6 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Locale;
 
 import org.connectbot.R;
 import org.json.JSONObject;
@@ -120,7 +121,9 @@ public final class UpdateHelper implements Runnable {
 		}
 
 		// place version information in user-agent string to be used later
-		this.userAgent = String.format("%s/%s (%d, freq=%s)", packageName, versionName, versionCode, frequency);
+		userAgent = String.format("%s/%s (%d, freq=%s, lang=%s)",
+				packageName, versionName, versionCode, frequency,
+				Locale.getDefault().getLanguage());
 
 		if(shouldCheck) {
 			// spawn thread to check for update

@@ -74,7 +74,7 @@ public class SocksException extends java.io.IOException{
                   "General SOCKS fault" };
 
    String errString;
-   int errCode;
+   public int errCode;
 
 }//End of SocksException class
 

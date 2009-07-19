@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Vector;
 
+import com.trilead.ssh2.AuthAgentCallback;
 import com.trilead.ssh2.ChannelCondition;
 import com.trilead.ssh2.log.Logger;
+import com.trilead.ssh2.packets.PacketChannelAuthAgentReq;
 import com.trilead.ssh2.packets.PacketChannelOpenConfirmation;
 import com.trilead.ssh2.packets.PacketChannelOpenFailure;
 import com.trilead.ssh2.packets.PacketChannelTrileadPing;
@@ -49,6 +51,8 @@ public class ChannelManager implements MessageHandler
 	private int globalFailedCounter = 0;
 
 	private HashMap remoteForwardings = new HashMap();
+
+	private AuthAgentCallback authAgent;
 
 	private Vector listenerThreads = new Vector();
 
@@ -528,6 +532,38 @@ public class ChannelManager implements MessageHandler
 			}
 		}
 
+	}
+
+	/**
+	 * @param agent
+	 * @throws IOException
+	 */
+	public boolean requestChannelAgentForwarding(Channel c, AuthAgentCallback authAgent) throws IOException {
+		synchronized (this)
+		{
+			if (this.authAgent != null)
+				throw new IllegalStateException("Auth agent already exists");
+
+			this.authAgent = authAgent;
+		}
+
+		synchronized (channels)
+		{
+			globalSuccessCounter = globalFailedCounter = 0;
+		}
+
+		if (log.isEnabled())
+			log.log(50, "Requesting agent forwarding");
+
+		PacketChannelAuthAgentReq aar = new PacketChannelAuthAgentReq(c.remoteID);
+		tm.sendMessage(aar.getPayload());
+
+		if (waitForChannelRequestResult(c) == false) {
+			authAgent = null;
+			return false;
+		}
+
+		return true;
 	}
 
 	public void registerThread(IChannelWorkerThread thr) throws IOException
@@ -1270,6 +1306,25 @@ public class ChannelManager implements MessageHandler
 
 			rat.setDaemon(true);
 			rat.start();
+
+			return;
+		}
+
+		if ("auth-agent@openssh.com".equals(channelType)) {
+			Channel c = new Channel(this);
+
+			synchronized (c)
+			{
+				c.remoteID = remoteID;
+				c.remoteWindow = remoteWindow & 0xFFFFffffL; /* properly convert UINT32 to long */
+				c.remoteMaxPacketSize = remoteMaxPacketSize;
+				c.localID = addChannel(c);
+			}
+
+			AuthAgentForwardThread aat = new AuthAgentForwardThread(c, authAgent);
+
+			aat.setDaemon(true);
+			aat.start();
 
 			return;
 		}

@@ -135,6 +135,7 @@ public class Local extends AbsTransport {
 
 		Thread exitWatcherThread = new Thread(exitWatcher);
 		exitWatcherThread.setName("LocalExitWatcher");
+		exitWatcherThread.setDaemon(true);
 		exitWatcherThread.start();
 
 		is = new FileInputStream(shellFd);
@@ -180,7 +181,7 @@ public class Local extends AbsTransport {
 	@Override
 	public void setDimensions(int columns, int rows, int width, int height) {
 		try {
-			mExec_setPtyWindowSize.invoke(null, shellFd, columns, rows, width, height);
+			mExec_setPtyWindowSize.invoke(null, shellFd, rows, columns, width, height);
 		} catch (Exception e) {
 			Log.e(TAG, "Couldn't resize pty", e);
 		}

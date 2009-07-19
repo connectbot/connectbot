@@ -18,6 +18,9 @@
 
 package org.connectbot;
 
+import java.lang.ref.WeakReference;
+import java.util.List;
+
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
 import org.connectbot.bean.SelectionArea;
@@ -28,6 +31,7 @@ import org.connectbot.util.PreferenceConstants;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -61,12 +65,18 @@ import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.nullwire.trace.ExceptionHandler;
 
@@ -76,6 +86,10 @@ public class ConsoleActivity extends Activity {
 	public final static String TAG = "ConnectBot.ConsoleActivity";
 
 	protected static final int REQUEST_EDIT = 1;
+
+	private static final int CLICK_TIME = 250;
+	private static final float MAX_CLICK_DISTANCE = 25f;
+	private static final int KEYBOARD_DISPLAY_TIME = 1250;
 
 	protected ViewFlipper flip = null;
 	protected TerminalManager bound = null;
@@ -98,14 +112,22 @@ public class ConsoleActivity extends Activity {
 
 	private TextView empty;
 
-	private Animation slide_left_in, slide_left_out, slide_right_in, slide_right_out, fade_stay_hidden, fade_out;
+	private Animation slide_left_in, slide_left_out, slide_right_in, slide_right_out, fade_stay_hidden, fade_out_delayed;
 
-	private MenuItem disconnect, copy, paste, portForward, resize;
+	private Animation keyboard_fade_in, keyboard_fade_out;
+	private ImageView keyboardButton;
+	private float lastX, lastY;
+
+	private InputMethodManager inputManager;
+
+	private MenuItem disconnect, copy, paste, portForward, resize, urlscan;
 
 	protected TerminalBridge copySource = null;
 	private int lastTouchRow, lastTouchCol;
 
 	private boolean forcedOrientation;
+
+	private Handler handler = new Handler();
 
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
@@ -170,7 +192,7 @@ public class ConsoleActivity extends Activity {
 			try {
 				// show the requested bridge if found, also fade out overlay
 				flip.setDisplayedChild(requestedIndex);
-				flip.getCurrentView().findViewById(R.id.terminal_overlay).startAnimation(fade_out);
+				flip.getCurrentView().findViewById(R.id.terminal_overlay).startAnimation(fade_out_delayed);
 			} catch (NullPointerException npe) {
 				Log.d(TAG, "View went away when we were about to display it", npe);
 			}
@@ -340,7 +362,7 @@ public class ConsoleActivity extends Activity {
 
 				// finally clear password for next user
 				stringPrompt.setText("");
-				hideAllPrompts();
+				updatePromptVisible();
 
 				return true;
 			}
@@ -355,7 +377,7 @@ public class ConsoleActivity extends Activity {
 				PromptHelper helper = getCurrentPromptHelper();
 				if(helper == null) return;
 				helper.setResponse(Boolean.TRUE);
-				hideAllPrompts();
+				updatePromptVisible();
 			}
 		});
 
@@ -365,7 +387,7 @@ public class ConsoleActivity extends Activity {
 				PromptHelper helper = getCurrentPromptHelper();
 				if(helper == null) return;
 				helper.setResponse(Boolean.FALSE);
-				hideAllPrompts();
+				updatePromptVisible();
 			}
 		});
 
@@ -375,8 +397,25 @@ public class ConsoleActivity extends Activity {
 		slide_right_in = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
 		slide_right_out = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
 
-		fade_out = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+		fade_out_delayed = AnimationUtils.loadAnimation(this, R.anim.fade_out_delayed);
 		fade_stay_hidden = AnimationUtils.loadAnimation(this, R.anim.fade_stay_hidden);
+
+		// Preload animation for keyboard button
+		keyboard_fade_in = AnimationUtils.loadAnimation(this, R.anim.keyboard_fade_in);
+		keyboard_fade_out = AnimationUtils.loadAnimation(this, R.anim.keyboard_fade_out);
+
+		inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		keyboardButton = (ImageView) findViewById(R.id.keyboard_button);
+		keyboardButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View flip = findCurrentView(R.id.console_flip);
+				if (flip == null)
+					return;
+
+				inputManager.showSoftInput(flip, InputMethodManager.SHOW_FORCED);
+				keyboardButton.setVisibility(View.GONE);
+			}
+		});
 
 		// detect fling gestures to switch between terminals
 		final GestureDetector detect = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
@@ -530,8 +569,31 @@ public class ConsoleActivity extends Activity {
 						copySource.redraw();
 						return true;
 					}
+				}
 
+				Configuration config = getResources().getConfiguration();
 
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					lastX = event.getX();
+					lastY = event.getY();
+				} else if (event.getAction() == MotionEvent.ACTION_UP
+						&& config.hardKeyboardHidden != Configuration.KEYBOARDHIDDEN_NO
+						&& keyboardButton.getVisibility() == View.GONE
+						&& event.getEventTime() - event.getDownTime() < CLICK_TIME
+						&& Math.abs(event.getX() - lastX) < MAX_CLICK_DISTANCE
+						&& Math.abs(event.getY() - lastY) < MAX_CLICK_DISTANCE) {
+					keyboardButton.startAnimation(keyboard_fade_in);
+					keyboardButton.setVisibility(View.VISIBLE);
+
+					handler.postDelayed(new Runnable() {
+						public void run() {
+							if (keyboardButton.getVisibility() == View.GONE)
+								return;
+
+							keyboardButton.startAnimation(keyboard_fade_out);
+							keyboardButton.setVisibility(View.GONE);
+						}
+					}, KEYBOARD_DISPLAY_TIME);
 				}
 
 				// pass any touch events back to detector
@@ -660,6 +722,30 @@ public class ConsoleActivity extends Activity {
 				Intent intent = new Intent(ConsoleActivity.this, PortForwardListActivity.class);
 				intent.putExtra(Intent.EXTRA_TITLE, bridge.host.getId());
 				ConsoleActivity.this.startActivityForResult(intent, REQUEST_EDIT);
+				return true;
+			}
+		});
+
+		urlscan = menu.add(R.string.console_menu_urlscan);
+		urlscan.setAlphabeticShortcut('u');
+		urlscan.setIcon(android.R.drawable.ic_menu_search);
+		urlscan.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				final TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
+
+				List<String> urls = terminalView.bridge.scanForURLs();
+
+				Dialog urlDialog = new Dialog(ConsoleActivity.this);
+				urlDialog.setTitle(R.string.console_menu_urlscan);
+
+				ListView urlListView = new ListView(ConsoleActivity.this);
+				URLItemListener urlListener = new URLItemListener(ConsoleActivity.this);
+				urlListView.setOnItemClickListener(urlListener);
+
+				urlListView.setAdapter(new ArrayAdapter<String>(ConsoleActivity.this, android.R.layout.simple_list_item_1, urls));
+				urlDialog.setContentView(urlListView);
+				urlDialog.show();
+
 				return true;
 			}
 		});
@@ -797,7 +883,7 @@ public class ConsoleActivity extends Activity {
 			// show overlay on new slide and start fade
 			overlay = findCurrentView(R.id.terminal_overlay);
 			if (overlay != null)
-				overlay.startAnimation(fade_out);
+				overlay.startAnimation(fade_out_delayed);
 		}
 
 		updatePromptVisible();
@@ -825,7 +911,7 @@ public class ConsoleActivity extends Activity {
 			// show overlay on new slide and start fade
 			overlay = findCurrentView(R.id.terminal_overlay);
 			if (overlay != null)
-				overlay.startAnimation(fade_out);
+				overlay.startAnimation(fade_out_delayed);
 		}
 
 		updatePromptVisible();
@@ -889,6 +975,36 @@ public class ConsoleActivity extends Activity {
 			hideAllPrompts();
 			view.requestFocus();
 		}
+	}
+
+	private class URLItemListener implements OnItemClickListener {
+		private WeakReference<Context> contextRef;
+
+		URLItemListener(Context context) {
+			this.contextRef = new WeakReference<Context>(context);
+		}
+
+		public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
+			Context context = contextRef.get();
+
+			if (context == null)
+				return;
+
+			try {
+				TextView urlView = (TextView) view;
+
+				String url = urlView.getText().toString();
+				if (url.indexOf("://") < 0)
+					url = "http://" + url;
+
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+				context.startActivity(intent);
+			} catch (Exception e) {
+				Log.e(TAG, "couldn't open URL", e);
+				// We should probably tell the user that we couldn't find a handler...
+			}
+		}
+
 	}
 
 	@Override

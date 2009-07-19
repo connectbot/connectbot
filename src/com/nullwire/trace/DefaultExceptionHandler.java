@@ -31,6 +31,9 @@ public class DefaultExceptionHandler implements UncaughtExceptionHandler {
 			// Write the stacktrace to disk
 			BufferedWriter bos = new BufferedWriter(new FileWriter(G.FILES_PATH
 					+ "/" + filename + ".stacktrace"));
+			bos.write(G.APP_VERSION);
+			bos.write(G.APP_DESCRIPTION);
+			bos.write('\n');
 			bos.write(result.toString());
 			bos.flush();
 			// Close up everything
