@@ -239,6 +239,11 @@
 	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
 	<string name="hostpref_wantsession_summary">Disable this preference to only use port forwards</string>
 
+	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
+	<string name="hostpref_stayconnected_title">Stay connected</string>
+	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
+	<string name="hostpref_stayconnected_summary">Try to reconnect to host if disconnected</string>
+
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
 	<string name="hostpref_delkey_title">DEL Key</string>
 	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
@@ -253,13 +258,13 @@
 	<string name="hostpref_connection_category">Connection settings</string>
 
 	<!-- Username field title for host editor preference -->
-	<string name="hostpref_username_title">Username</string>
+	<string name="hostpref_username_title">使用者名稱</string>
 
 	<!-- Hostname field title for host editor preference -->
 	<string name="hostpref_hostname_title">Host</string>
 
 	<!-- Port field title for host editor preference -->
-	<string name="hostpref_port_title">Port</string>
+	<string name="hostpref_port_title">端口</string>
 
 	<!-- Displayed to indicate a host has never been connected to. -->
 	<string name="bind_never">Never connected</string>
@@ -285,6 +290,8 @@
 	<string name="console_menu_portforwards">Port Forwards</string>
 	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
 	<string name="console_menu_resize">Force Size</string>
+	<!-- Button that brings up the list of URLs on the current screen -->
+	<string name="console_menu_urlscan">URL Scan</string>
 
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
 	<string name="portforward_local">Local</string>
@@ -323,7 +330,7 @@
 	<string name="list_host_disconnect">斷線</string>
 	<string name="list_host_edit">Edit host</string>
 	<string name="list_host_portforwards">Edit port forwards</string>
-	<string name="list_host_delete">Delete host</string>
+	<string name="list_host_delete">刪除主機</string>
 	<string name="list_host_empty">Use the quick-connect box\nbelow to connect to a host.</string>
 
 	<!-- Default screen rotation preference selection -->

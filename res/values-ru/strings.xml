@@ -14,7 +14,7 @@
 	<!-- Window title for Help index -->
 	<string name="title_help">Помощь</string>
 	<!-- Window title for color list editing screen -->
-	<string name="title_colors">Colors</string>
+	<string name="title_colors">Цвета</string>
 
 	<string name="resolve_connect">Соединение</string>
 	<string name="resolve_entropy">Gather Entropy</string>
@@ -53,13 +53,13 @@
 	<string name="portforward_edit">Edit port forward</string>
 	<string name="portforward_delete">Delete port forward</string>
 
-	<string name="prompt_nickname">Nickname:</string>
+	<string name="prompt_nickname">Псевдоним:</string>
 	<!-- An example string that could be used as a nickname for a pubkey. -->
 	<string name="prompt_nickname_hint_pubkey">Мой рабочий ключ</string>
 	<!-- The source TCP port for port forwards. -->
 	<string name="prompt_source_port">Source port:</string>
 	<!-- The "host:port" combination used for port forward destinations. -->
-	<string name="prompt_destination">Destination:</string>
+	<string name="prompt_destination">Получатель:</string>
 	<string name="prompt_old_password">Старый пароль:</string>
 	<string name="prompt_password">Пароль:</string>
 	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
@@ -129,7 +129,7 @@
 	<string name="pref_scrollback_summary">Size of scrollback buffer to keep in memory for each console</string>
 
 	<!-- The category title for user interface preferences -->
-	<string name="pref_ui_category">User interface</string>
+	<string name="pref_ui_category">Пользовательский интерфейс</string>
 
 	<!-- Name for the rotation mode preference -->
 	<string name="pref_rotation_title">Rotation mode</string>
@@ -137,17 +137,17 @@
 	<string name="pref_rotation_summary">How to change rotation when keyboard popped in/out</string>
 
 	<!-- Name for the full screen preference -->
-	<string name="pref_fullscreen_title">Full screen</string>
+	<string name="pref_fullscreen_title">Полный экран</string>
 	<!-- Summary for the full screen preference -->
 	<string name="pref_fullscreen_summary">Hide status bar while in console</string>
 
 	<!-- Name for the memorize keys preference -->
-	<string name="pref_memkeys_title">Remember keys in memory</string>
+	<string name="pref_memkeys_title">Запомнить ключи в памяти</string>
 	<!-- Summary for the memorize keys preference -->
 	<string name="pref_memkeys_summary">Keep unlocked keys in memory until backend service is terminated</string>
 
 	<!-- Name for the update check preference -->
-	<string name="pref_update_title">Update check</string>
+	<string name="pref_update_title">Проверка обновления</string>
 	<!-- Summary for the update check preference -->
 	<string name="pref_update_summary">Set the maximum frequency to check for ConnectBot updates</string>
 
@@ -189,7 +189,7 @@
 	<string name="pref_bell_vibrate_title">Vibrate on bell</string>
 
 	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
-	<string name="pref_bell_notification_title">Background notifications</string>
+	<string name="pref_bell_notification_title">Фоновые уведомления</string>
 	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
 	<string name="pref_bell_notification_summary">Send notification when a terminal running in the background sounds a bell.</string>
 
@@ -198,7 +198,7 @@
 	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
 	<string name="list_keymode_left">Use left-side keys</string>
 	<!-- Preference selection to indicate never to use special shortcut keys. -->
-	<string name="list_keymode_none">Disable</string>
+	<string name="list_keymode_none">Отключить</string>
 
 	<!-- Preference to not use pubkeys to authenticate to this host. -->
 	<string name="list_pubkeyids_none">Не использовать ключи</string>
@@ -213,7 +213,7 @@
 	<string name="list_update_never">Никогда</string>
 
 	<!-- Host nickname field preference title -->
-	<string name="hostpref_nickname_title">Nickname</string>
+	<string name="hostpref_nickname_title">Псевдоним</string>
 
 	<!-- Host color category preference title -->
 	<string name="hostpref_color_title">Color category</string>
@@ -230,7 +230,7 @@
 	<string name="hostpref_postlogin_summary">Commands to run on remote server once authenticated</string>
 
 	<!-- Host compression preference title -->
-	<string name="hostpref_compression_title">Compression</string>
+	<string name="hostpref_compression_title">Сжатие</string>
 	<!-- Summary for compression preference -->
 	<string name="hostpref_compression_summary">This may help with slower networks</string>
 
@@ -238,6 +238,11 @@
 	<string name="hostpref_wantsession_title">Start shell session</string>
 	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
 	<string name="hostpref_wantsession_summary">Disable this preference to only use port forwards</string>
+
+	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
+	<string name="hostpref_stayconnected_title">Stay connected</string>
+	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
+	<string name="hostpref_stayconnected_summary">Try to reconnect to host if disconnected</string>
 
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
 	<string name="hostpref_delkey_title">DEL Key</string>
@@ -250,23 +255,23 @@
 	<string name="hostpref_encoding_summary">Character encoding for the host</string>
 
 	<!-- Host preference category title for connection settings -->
-	<string name="hostpref_connection_category">Connection settings</string>
+	<string name="hostpref_connection_category">Настройки соединения</string>
 
 	<!-- Username field title for host editor preference -->
-	<string name="hostpref_username_title">Username</string>
+	<string name="hostpref_username_title">Имя пользователя</string>
 
 	<!-- Hostname field title for host editor preference -->
 	<string name="hostpref_hostname_title">Host</string>
 
 	<!-- Port field title for host editor preference -->
-	<string name="hostpref_port_title">Port</string>
+	<string name="hostpref_port_title">Порт</string>
 
 	<!-- Displayed to indicate a host has never been connected to. -->
 	<string name="bind_never">Never connected</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
 	<string name="bind_minutes">%1$s минут назад</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
-	<string name="bind_hours">%1$s hours ago</string>
+	<string name="bind_hours">%1$s час(ов) назад</string>
 	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
 	<string name="bind_days">%1$s дней назад</string>
 
@@ -285,6 +290,8 @@
 	<string name="console_menu_portforwards">Перенаправления портов</string>
 	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
 	<string name="console_menu_resize">Force Size</string>
+	<!-- Button that brings up the list of URLs on the current screen -->
+	<string name="console_menu_urlscan">URL Scan</string>
 
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
 	<string name="portforward_local">Local</string>
@@ -304,14 +311,14 @@
 	<string name="hint_userhost">пользователь@имяхоста</string>
 
 	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
-	<string name="list_format_error">Use the format "%1$s"</string>
+	<string name="list_format_error">Используйте формат "%1$s"</string>
 
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_username">пользователь</string>
+	<string name="format_username">имя пользователя</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
 	<string name="format_hostname">имяхоста</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_port">port</string>
+	<string name="format_port">порт</string>
 
 	<string name="list_menu_pubkeys">Manage Pubkeys</string>
 	<!-- Selection choice to sort hosts by color. -->
@@ -327,11 +334,11 @@
 	<string name="list_host_empty">Use the quick-connect box\nbelow to connect to a host.</string>
 
 	<!-- Default screen rotation preference selection -->
-	<string name="list_rotation_default">Default</string>
+	<string name="list_rotation_default">По умолчанию</string>
 	<string name="list_rotation_land">Force landscape</string>
 	<string name="list_rotation_port">Force portrait</string>
 	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
-	<string name="list_rotation_auto">Automatic</string>
+	<string name="list_rotation_auto">Автоматически</string>
 
 	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
 	<string name="list_camera_ctrlaspace">Ctrl+A затем пробел</string>
@@ -345,7 +352,7 @@
 	<!-- Name for the backspace character -->
 	<string name="list_delkey_backspace">Backspace</string>
 	<!-- Name for the ASCII DEL character -->
-	<string name="list_delkey_del">Delete</string>
+	<string name="list_delkey_del">Удалить</string>
 
 	<string name="delete_message">Вы уверены, что хотите удалить '%1$s'?</string>
 	<string name="delete_pos">Да, удалить</string>
@@ -415,8 +422,8 @@
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
 	<string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?</string>
 
-	<string name="color_red">red</string>
-	<string name="color_green">green</string>
-	<string name="color_blue">blue</string>
-	<string name="color_gray">gray</string>
+	<string name="color_red">красный</string>
+	<string name="color_green">зелёный</string>
+	<string name="color_blue">синий</string>
+	<string name="color_gray">серый</string>
 </resources>

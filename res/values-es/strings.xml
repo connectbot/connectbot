@@ -157,7 +157,7 @@
 	<string name="pref_keymode_summary">Especifique como usar Alt para '/' y Shit para Tab</string>
 
 	<!-- Name for the camera shortcut usage preference -->
-	<string name="pref_camera_title">Boton de la Cmara</string>
+	<string name="pref_camera_title">Boton de la Cámara</string>
 	<!-- Summary for the camera shortcut usage preference -->
 	<string name="pref_camera_summary">Especifique que secuencia de teclas activar cuando presione el botón de la cámara</string>
 
@@ -239,6 +239,11 @@
 	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
 	<string name="hostpref_wantsession_summary">Disable this preference to only use port forwards</string>
 
+	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
+	<string name="hostpref_stayconnected_title">Stay connected</string>
+	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
+	<string name="hostpref_stayconnected_summary">Try to reconnect to host if disconnected</string>
+
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
 	<string name="hostpref_delkey_title">Tecla DEL</string>
 	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
@@ -285,6 +290,8 @@
 	<string name="console_menu_portforwards">Traducciones de puerto</string>
 	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
 	<string name="console_menu_resize">Forzar un tamaño</string>
+	<!-- Button that brings up the list of URLs on the current screen -->
+	<string name="console_menu_urlscan">URL Scan</string>
 
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
 	<string name="portforward_local">Local</string>
@@ -309,7 +316,7 @@
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
 	<string name="format_username">Usuario</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_hostname">Nombre del hots)equipo anfitrion=</string>
+	<string name="format_hostname">nombre del host</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
 	<string name="format_port">puerto</string>
 
@@ -410,7 +417,7 @@
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
 	<string name="with_confirmation">With confirmation</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
-	<string name="yes">Yes</string>
+	<string name="yes">Sí</string>
 
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
 	<string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?</string>
