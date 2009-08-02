@@ -85,7 +85,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
    * @param start place to start in array
    * @param len number of characters to process
    */
-  public void putString(char[] s, boolean[] fullwidths, int start, int len) {
+  public void putString(char[] s, byte[] fullwidths, int start, int len) {
     if (len > 0) {
       //markLine(R, 1);
       int lastChar = -1;
@@ -112,7 +112,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
               putChar((char) lastChar, isWide, false);
             lastChar = c;
             if (fullwidths != null)
-                isWide = fullwidths[i];
+                isWide = fullwidths[i] == 1;
           }
         }
       }

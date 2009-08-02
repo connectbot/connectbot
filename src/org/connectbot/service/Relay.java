@@ -29,6 +29,7 @@ import java.nio.charset.CoderResult;
 import java.nio.charset.CodingErrorAction;
 
 import org.connectbot.transport.AbsTransport;
+import org.connectbot.util.EastAsianWidth;
 
 import android.util.Log;
 import de.mud.terminal.vt320;
@@ -41,10 +42,13 @@ public class Relay implements Runnable {
 
 	private static final int BUFFER_SIZE = 4096;
 
+	private static boolean useJNI = true;
+
 	private TerminalBridge bridge;
 
 	private Charset currentCharset;
 	private CharsetDecoder decoder;
+	private boolean isLegacyEastAsian = false;
 
 	private AbsTransport transport;
 
@@ -55,6 +59,15 @@ public class Relay implements Runnable {
 
 	private byte[] byteArray;
 	private char[] charArray;
+
+	static {
+		try {
+			System.loadLibrary("cbicu");
+		} catch (UnsatisfiedLinkError e) {
+			Log.e(TAG, "Could not load cbicu library; using fallback width measurement method", e);
+			useJNI = false;
+		}
+	}
 
 	public Relay(TerminalBridge bridge, AbsTransport transport, vt320 buffer, String encoding) {
 		setCharset(encoding);
@@ -92,8 +105,15 @@ public class Relay implements Runnable {
 		byteBuffer = ByteBuffer.allocate(BUFFER_SIZE);
 		charBuffer = CharBuffer.allocate(BUFFER_SIZE);
 
-		float[] widths = new float[BUFFER_SIZE];
-		boolean[] fullwidths = new boolean[BUFFER_SIZE];
+		/* for both JNI and non-JNI method */
+		byte[] wideAttribute = new byte[BUFFER_SIZE];
+
+		/* non-JNI fallback method */
+		float[] widths = null;
+
+		if (!useJNI) {
+			widths = new float[BUFFER_SIZE];
+		}
 
 		byteArray = byteBuffer.array();
 		charArray = charBuffer.array();
@@ -128,11 +148,17 @@ public class Relay implements Runnable {
 					}
 
 					offset = charBuffer.position();
-					bridge.defaultPaint.getTextWidths(charArray, 0, offset, widths);
-					for (int i = 0; i < offset; i++)
-						fullwidths[i] = (int)widths[i] != charWidth;
 
-					buffer.putString(charArray, fullwidths, 0, charBuffer.position());
+					if (!useJNI) {
+						bridge.defaultPaint.getTextWidths(charArray, 0, offset, widths);
+						for (int i = 0; i < offset; i++)
+							wideAttribute[i] =
+								(byte) (((int)widths[i] != charWidth) ? 1 : 0);
+					} else {
+						EastAsianWidth.measure(charArray, 0, charBuffer.position(),
+								wideAttribute, isLegacyEastAsian);
+					}
+					buffer.putString(charArray, wideAttribute, 0, charBuffer.position());
 					charBuffer.clear();
 					bridge.redraw();
 				}
