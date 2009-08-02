@@ -65,6 +65,20 @@ public class VDUBuffer {
   /** Scroll down when inserting a line. */
   public final static boolean SCROLL_DOWN = true;
 
+  /*  Attributes bit-field usage:
+   *
+   *  8421 8421 8421 8421 8421 8421 8421 8421
+   *  |||| |||| |||| |||| |||| |||| |||| |||`- Bold
+   *  |||| |||| |||| |||| |||| |||| |||| ||`-- Underline
+   *  |||| |||| |||| |||| |||| |||| |||| |`--- Invert
+   *  |||| |||| |||| |||| |||| |||| |||| `---- Low
+   *  |||| |||| |||| |||| |||| |||| |||`------ Invisible
+   *  |||| |||| |||| |||| ||`+-++++-+++------- Foreground Color
+   *  |||| |||| |`++-++++-++------------------ Background Color
+   *  |||| |||| `----------------------------- Fullwidth character
+   *  `+++-++++------------------------------- Reserved for future use
+   */
+
   /** Make character normal. */
   public final static int NORMAL = 0x00;
   /** Make character bold. */
@@ -77,6 +91,8 @@ public class VDUBuffer {
   public final static int LOW = 0x08;
   /** Invisible character. */
   public final static int INVISIBLE = 0x10;
+  /** Unicode full-width character (CJK, et al.) */
+  public final static int FULLWIDTH = 0x8000000;
 
   /** how much to left shift the foreground color */
   public final static int COLOR_FG_SHIFT = 5;

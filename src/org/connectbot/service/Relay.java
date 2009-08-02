@@ -92,6 +92,9 @@ public class Relay implements Runnable {
 		byteBuffer = ByteBuffer.allocate(BUFFER_SIZE);
 		charBuffer = CharBuffer.allocate(BUFFER_SIZE);
 
+		float[] widths = new float[BUFFER_SIZE];
+		boolean[] fullwidths = new boolean[BUFFER_SIZE];
+
 		byteArray = byteBuffer.array();
 		charArray = charBuffer.array();
 
@@ -101,9 +104,11 @@ public class Relay implements Runnable {
 		byteBuffer.limit(0);
 		int bytesToRead;
 		int offset;
+		int charWidth;
 
 		try {
 			while (true) {
+				charWidth = bridge.charWidth;
 				bytesToRead = byteBuffer.capacity() - byteBuffer.limit();
 				offset = byteBuffer.arrayOffset() + byteBuffer.limit();
 				bytesRead = transport.read(byteArray, offset, bytesToRead);
@@ -122,7 +127,12 @@ public class Relay implements Runnable {
 						byteBuffer.position(0);
 					}
 
-					buffer.putString(charArray, 0, charBuffer.position());
+					offset = charBuffer.position();
+					bridge.defaultPaint.getTextWidths(charArray, 0, offset, widths);
+					for (int i = 0; i < offset; i++)
+						fullwidths[i] = (int)widths[i] != charWidth;
+
+					buffer.putString(charArray, fullwidths, 0, charBuffer.position());
 					charBuffer.clear();
 					bridge.redraw();
 				}
