@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">ConnectBot</string>
+	<string name="app_desc">シンプルでパワフルなオープンソースのSSHクライアント</string>
+
+	<!-- Window title for the Host List -->
+	<string name="title_hosts_list">ホスト</string>
+	<!-- Window title for the Pubkeys List -->
+	<string name="title_pubkey_list">公開鍵</string>
+	<!-- Window title for the Port Forwards List -->
+	<string name="title_port_forwards_list">ポート転送</string>
+	<!-- Window title when editing host details -->
+	<string name="title_host_editor">ホストの編集</string>
+	<!-- Window title for Help index -->
+	<string name="title_help">ヘルプ</string>
+	<!-- Window title for color list editing screen -->
+	<string name="title_colors">配色</string>
+
+	<string name="resolve_connect">接続</string>
+	<string name="resolve_entropy">エントロピー収集</string>
+
+	<string name="menu_insert">ホストを追加</string>
+	<string name="menu_delete">ホストを削除</string>
+	<string name="menu_preferences">設定</string>
+
+	<string name="help_intro">以下のトピックより詳細を知りたいものを選択してください。</string>
+	<string name="help_about">ConnectBotについて</string>
+	<string name="help_keyboard">キーボード</string>
+
+	<string name="pubkey_generate">生成</string>
+	<string name="pubkey_import">インポート</string>
+	<string name="pubkey_delete">鍵を削除</string>
+	<string name="pubkey_gather_entropy">エントロピー収集中</string>
+	<string name="pubkey_touch_prompt">この四角内をランダムに触ってください: %1$d%% 完了</string>
+	<string name="pubkey_touch_hint">鍵作成時のランダムさを保証するため、下の四角内で指をランダムに動かしてください。</string>
+	<string name="pubkey_generating">鍵ペアを生成しています...</string>
+	<string name="pubkey_copy_private">秘密鍵をコピー</string>
+	<string name="pubkey_copy_public">公開鍵をコピー</string>
+	<string name="pubkey_list_empty">"Menu"ボタンを押して鍵の作成またはインポートを行ってください。</string>
+	<string name="pubkey_unknown_format">不明なフォーマット</string>
+	<string name="pubkey_change_password">パスワードを変更</string>
+	<string name="pubkey_list_pick">SDカードから選ぶ</string>
+	<string name="pubkey_import_parse_problem">インポートした秘密鍵を解析時に問題発生</string>
+	<string name="pubkey_unlock">鍵をアンロック</string>
+	<string name="pubkey_failed_add">鍵 '%1$s' のパスワードが正しくありません。認証に失敗しました。</string>
+	<string name="pubkey_memory_load">メモリにロード</string>
+	<string name="pubkey_memory_unload">メモリからアンロード</string>
+	<string name="pubkey_load_on_start">起動時に鍵をロード</string>
+	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
+	<string name="pubkey_confirm_use">使用時に確認する</string>
+
+	<string name="portforward_list_empty">MENUをタップして\nポート転送を作成します．</string>
+	<string name="portforward_edit">ポート転送を編集</string>
+	<string name="portforward_delete">ポート転送を削除</string>
+
+	<string name="prompt_nickname">鍵の名前</string>
+	<!-- An example string that could be used as a nickname for a pubkey. -->
+	<string name="prompt_nickname_hint_pubkey">My work key</string>
+	<!-- The source TCP port for port forwards. -->
+	<string name="prompt_source_port">ソースポート:</string>
+	<!-- The "host:port" combination used for port forward destinations. -->
+	<string name="prompt_destination">転送先:</string>
+	<string name="prompt_old_password">旧パスワード:</string>
+	<string name="prompt_password">パスワード:</string>
+	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
+	<string name="prompt_again">(再入力)</string>
+	<!-- Label for the user to select port forward type. -->
+	<string name="prompt_type">タイプ:</string>
+	<string name="prompt_password_can_be_blank">備考: パスワードは空欄にできます。</string>
+	<!-- Prompt for the size of the private key in bits. -->
+	<string name="prompt_bits">ビット長:</string>
+
+	<!-- Prompt for the password to unlock a certain pubkey. -->
+	<string name="prompt_pubkey_password">鍵 '%1$s' のパスワード</string>
+
+	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key -->
+	<string name="prompt_allow_agent_to_use_key">リモートホストが鍵 '%1$s' を使用することを許可しますか?</string>
+
+	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
+	<string name="host_verification_failure_warning_header">警告: リモートホストのIDが変わっています!</string>
+	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
+	<string name="host_verification_failure_warning">何者かが不正を行っている可能性があります!\n現在誰かに盗聴されているかもしれません (中間者攻撃)!\n単にホストキーが変更されただけの可能性もあります。</string>
+
+	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
+	<string name="prompt_host_disconnected">ホスト切断されました．\nセッションを閉じますか？</string>
+	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
+	<string name="prompt_continue_connecting">このまま接続しますか?</string>
+
+	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
+	<string name="host_authenticity_warning">ホスト '%1$s' の確認ができませんでした。</string>
+	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
+	<string name="host_fingerprint">ホストの%1$sキーフィンガープリントは%2$s</string>
+
+	<string name="alert_passwords_do_not_match_msg">パスワードが一致しません！</string>
+	<string name="alert_wrong_password_msg">間違ったパスワードです．</string>
+	<string name="alert_key_corrupted_msg">秘密鍵が壊れています!</string>
+	<string name="alert_sdcard_absent">SD カードが挿入されていません．</string>
+
+	<!-- Add a new item (e.g., host or pubkey) to the list. -->
+	<string name="button_add">追加</string>
+	<!-- Change an existing item's (e.g., host or pubkey) details. -->
+	<string name="button_change">変更</string>
+	<!-- Button that begins the generation of a public key pair. -->
+	<string name="button_generate">鍵生成</string>
+	<!-- Button that resizes the screen to the user-specified dimensions. -->
+	<string name="button_resize">リサイズ</string>
+
+	<string name="alert_disconnect_msg">接続が失われました．</string>
+
+	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
+
+	<!-- DO NOT MANUALLY UPDATE VERSION!!!
+	  Updating is update by the ant task "update-version" in build.xml
+	  Do not translate.
+	-->
+	<string name="msg_version">ConnectBot (working copy)</string>
+
+	<!-- The category title for terminal emulation preferences. -->
+	<string name="pref_emulation_category">端末エミュレート</string>
+
+	<!-- Name for the emulation terminal type preference. -->
+	<string name="pref_emulation_title">エミュレートモード</string>
+	<!-- Description of the emulation terminal type preference. -->
+	<string name="pref_emulation_summary">PTYで使う端末エミュレーションモード</string>
+
+	<!-- Name for the scrollback size preference -->
+	<string name="pref_scrollback_title">スクロールサイズ</string>
+	<!-- Description of the scrollback size preference -->
+	<string name="pref_scrollback_summary">メモリに保持するスクロールバッファのサイズ</string>
+
+	<!-- The category title for user interface preferences -->
+	<string name="pref_ui_category">ユーザーインターフェース</string>
+
+	<!-- Name for the rotation mode preference -->
+	<string name="pref_rotation_title">画面の向き</string>
+	<!-- Summary for the rotation mode preference -->
+	<string name="pref_rotation_summary">キーボードのポップイン/アウト時の向きの変更</string>
+
+	<!-- Name for the full screen preference -->
+	<string name="pref_fullscreen_title">全画面</string>
+	<!-- Summary for the full screen preference -->
+	<string name="pref_fullscreen_summary">ステータスバーを隠蔽しコンソールとして利用</string>
+
+	<!-- Name for the memorize keys preference -->
+	<string name="pref_memkeys_title">メモリに鍵を保持する</string>
+	<!-- Summary for the memorize keys preference -->
+	<string name="pref_memkeys_summary">バックエンドのサービスが終了しない限り、アンロックした鍵をメモリに保持します</string>
+
+	<!-- Name for the update check preference -->
+	<string name="pref_update_title">更新を確認</string>
+	<!-- Summary for the update check preference -->
+	<string name="pref_update_summary">ConnectBotの更新をチェックする頻度を設定します</string>
+
+	<!-- Name for the keyboard shortcuts preference -->
+	<string name="pref_keymode_title">ディレクトリのショートカット</string>
+	<!-- Summary for the keyboard shortcuts preference -->
+	<string name="pref_keymode_summary">Altを'/'、ShiftをTabに割り当てます</string>
+
+	<!-- Name for the camera shortcut usage preference -->
+	<string name="pref_camera_title">カメラボタンショートカット</string>
+	<!-- Summary for the camera shortcut usage preference -->
+	<string name="pref_camera_summary">カメラボタンが押されたときのショートカットを選びます</string>
+
+	<!-- Name for the keep screen on preference -->
+	<string name="pref_keepalive_title">画面をスリープしない</string>
+	<!-- Summary for the camera shortcut usage preference -->
+	<string name="pref_keepalive_summary">コンソール作業中に画面がOFFになるのを防ぎます</string>
+
+	<!-- Name for the Wi-Fi lock preference -->
+	<string name="pref_wifilock_title">Wi-Fiをスリープしない</string>
+	<!-- Summary for the Wi-Fi lock preference -->
+	<string name="pref_wifilock_summary">セッションが有効な間Wi-FiがOFFになるのを防ぎます</string>
+
+	<!-- Name for the haptic feedback (bumpy arrow) preference -->
+	<string name="pref_bumpyarrows_title">矢印で振動</string>
+	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
+	<string name="pref_bumpyarrows_summary">トラックボールで矢印キーを送信するときに振動します; ラグがある接続時に便利</string>
+
+	<!-- Category title for the Terminal Bell preferences -->
+	<string name="pref_bell_category">端末音設定</string>
+
+	<!-- Checkbox preference title for the audible terminal bell feature -->
+	<string name="pref_bell_title">ベル音</string>
+
+	<!-- Title for the slider preference to set the volume -->
+	<string name="pref_bell_volume_title">ボリューム設定</string>
+
+	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
+	<string name="pref_bell_vibrate_title">バイブレーション</string>
+
+	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
+	<string name="pref_bell_notification_title">バックグラウンド通知</string>
+	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
+	<string name="pref_bell_notification_summary">バックグランドで実行中の端末がベルを鳴らしたとき通知します</string>
+
+	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
+	<string name="list_keymode_right">右側のキーで使う</string>
+	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
+	<string name="list_keymode_left">左側のキーで使う</string>
+	<!-- Preference selection to indicate never to use special shortcut keys. -->
+	<string name="list_keymode_none">無効</string>
+
+	<!-- Preference to not use pubkeys to authenticate to this host. -->
+	<string name="list_pubkeyids_none">公開鍵を使わない</string>
+	<!-- Preference to use any pubkey to authenticate to this host. -->
+	<string name="list_pubkeyids_any">アンロックされた鍵のいずれかを使う</string>
+
+	<!-- Frequency for which to check for program updates. -->
+	<string name="list_update_daily">毎日</string>
+	<!-- Frequency for which to check for program updates. -->
+	<string name="list_update_weekly">毎週</string>
+	<!-- Frequency for which to check for program updates. -->
+	<string name="list_update_never">しない</string>
+
+	<!-- Host nickname field preference title -->
+	<string name="hostpref_nickname_title">ニックネーム</string>
+
+	<!-- Host color category preference title -->
+	<string name="hostpref_color_title">色の系統</string>
+
+	<!-- Host pubkey usage preference title -->
+	<string name="hostpref_pubkeyid_title">公開鍵認証を使用</string>
+
+	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
+	<string name="hostpref_authagent_title">SSH認証エージェントを使う</string>
+
+	<!-- Host post-login automation preference title -->
+	<string name="hostpref_postlogin_title">ログイン後の自動実行</string>
+	<!-- Host post-login automation preference summary -->
+	<string name="hostpref_postlogin_summary">認証後にリモートで実行するコマンド</string>
+
+	<!-- Host compression preference title -->
+	<string name="hostpref_compression_title">圧縮</string>
+	<!-- Summary for compression preference -->
+	<string name="hostpref_compression_summary">遅いネットワークで有効かもしれません</string>
+
+	<!-- Setting for whether we want a session to start up when we connect to a host -->
+	<string name="hostpref_wantsession_title">シェルセッションを使う</string>
+	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
+	<string name="hostpref_wantsession_summary">ポート転送のみ行う場合に無効にしてください</string>
+
+	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
+	<string name="hostpref_stayconnected_title">接続の維持</string>
+	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
+	<string name="hostpref_stayconnected_summary">接続が切れたら再接続を試みます</string>
+
+	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_title">DELキー</string>
+	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_summary">DELキーが押されたときに送るキーコード</string>
+
+	<!-- Host character encoding preference title -->
+	<string name="hostpref_encoding_title">エンコーディング</string>
+	<!-- Host character encoding preference summary -->
+	<string name="hostpref_encoding_summary">ホスト側の文字エンコーディング</string>
+
+	<!-- Host preference category title for connection settings -->
+	<string name="hostpref_connection_category">接続設定</string>
+
+	<!-- Username field title for host editor preference -->
+	<string name="hostpref_username_title">ユーザ名</string>
+
+	<!-- Hostname field title for host editor preference -->
+	<string name="hostpref_hostname_title">ホスト</string>
+
+	<!-- Port field title for host editor preference -->
+	<string name="hostpref_port_title">ポート</string>
+
+	<!-- Displayed to indicate a host has never been connected to. -->
+	<string name="bind_never">未接続</string>
+	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
+	<string name="bind_minutes">%1$s 分前</string>
+	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
+	<string name="bind_hours">%1$s 時間前</string>
+	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
+	<string name="bind_days">%1$s 日前</string>
+
+	<!-- Message given when user copies from the terminal. -->
+	<string name="console_copy_done">クリップボードに %1$d バイトコピーしました．</string>
+	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
+	<string name="console_copy_start">タッチしてドラッグ\nまたは方向パッドで\nコピー領域を選択</string>
+
+	<!-- Button to close the disconnected terminal window. -->
+	<string name="console_menu_close">切断</string>
+	<!-- Button to begin copying from the terminal to the clipboard. -->
+	<string name="console_menu_copy">コピー</string>
+	<!-- Button to paste from the clipboard to the terminal. -->
+	<string name="console_menu_paste">貼り付け</string>
+	<!-- Button that brings user to the Port Forwards List. -->
+	<string name="console_menu_portforwards">ポート転送</string>
+	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
+	<string name="console_menu_resize">サイズ強制</string>
+	<!-- Button that brings up the list of URLs on the current screen -->
+	<string name="console_menu_urlscan">URL スキャン</string>
+
+	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
+	<string name="portforward_local">ローカル</string>
+	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
+	<string name="portforward_remote">リモート</string>
+	<!-- Selection for a "dynamic" port forward. E.g., connections to a port listening locally is forwarded based on the SOCKS protocol to an arbitrary remote host and port. -->
+	<string name="portforward_dynamic">動的 (SOCKS)</string>
+	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
+	<string name="portforward_pos">ポート転送の作成</string>
+
+	<string name="portforward_done">ポート転送の作成に成功しました．</string>
+	<string name="portforward_problem">ポート転送の作成ができません．おそらく1024ポート以下か既に利用されているポートを指定されています．</string>
+
+	<string name="portforward_menu_add">ポート転送の追加</string>
+
+	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
+	<string name="hint_userhost">user@hostname</string>
+
+	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
+	<string name="list_format_error">"%1$s" 形式を使ってください</string>
+
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_username">ユーザ名</string>
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_hostname">ホスト名</string>
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_port">ポート</string>
+
+	<string name="list_menu_pubkeys">公開鍵管理</string>
+	<!-- Selection choice to sort hosts by color. -->
+	<string name="list_menu_sortcolor">色でソート</string>
+	<!-- Selection choice to sort hosts by nickname. -->
+	<string name="list_menu_sortname">名前順でソート</string>
+	<string name="list_menu_settings">設定</string>
+
+	<string name="list_host_disconnect">切断</string>
+	<string name="list_host_edit">接続ホストの編集</string>
+	<string name="list_host_portforwards">ポート転送の編集</string>
+	<string name="list_host_delete">接続ホストの削除</string>
+	<string name="list_host_empty">下のquick-connect box\nを使ってホストに接続できます.</string>
+
+	<!-- Default screen rotation preference selection -->
+	<string name="list_rotation_default">デフォルト</string>
+	<string name="list_rotation_land">横向き固定</string>
+	<string name="list_rotation_port">縦向き固定</string>
+	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
+	<string name="list_rotation_auto">自動判定</string>
+
+	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
+	<string name="list_camera_ctrlaspace">Ctrl+Aに続いてSpace</string>
+	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A". -->
+	<string name="list_camera_ctrla">Ctrl+A</string>
+	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
+	<string name="list_camera_esc">Esc</string>
+	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
+	<string name="list_camera_none">なし</string>
+
+	<!-- Name for the backspace character -->
+	<string name="list_delkey_backspace">Backspace</string>
+	<!-- Name for the ASCII DEL character -->
+	<string name="list_delkey_del">Delete</string>
+
+	<string name="delete_message">'%1$s'を削除してよろしいですか?</string>
+	<string name="delete_pos">はい、削除します</string>
+	<string name="delete_neg">キャンセル</string>
+
+	<!-- Button to agree to license terms. -->
+	<string name="wizard_agree">同意します</string>
+	<!-- Button to go to the next page in the first time start-up wizard. -->
+	<string name="wizard_next">次へ</string>
+	<!-- Button to go to the previous page in the first time start-up wizard. -->
+	<string name="wizard_back">戻る</string>
+
+	<string name="terminal_no_hosts_connected">接続済みのホストはありません．</string>
+
+	<!-- Displayed in terminal when attempting to connect to a host. The first two
+	     variables are host:port and the third is the protocol (e.g., SSH) -->
+	<string name="terminal_connecting">%1$s:%2$dに%3$sで接続しています</string>
+
+	<!-- Displays the host key to the user in the terminal -->
+	<string name="terminal_sucess">ホスト'%1$s' キー%2$s を検証しました</string>
+	<string name="terminal_failed">ホストキーが検証できません</string>
+
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_s2c_algorithm">サーバtoクライアント アルゴリズム: %1$s %2$s</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_c2s_algorithm">クライアントからサーバ アルゴリズム: %1$s %2$s</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_algorithm">使用アルゴリズム: %1$s %2$s</string>
+
+	<string name="terminal_auth">認証を試行中</string>
+
+	<string name="terminal_auth_pass">'password' 認証を試行</string>
+	<string name="terminal_auth_pass_fail">'password' 認証失敗</string>
+
+	<string name="terminal_auth_pubkey_any">メモリ上の公開鍵による 'publickey' 認証を試行</string>
+	<string name="terminal_auth_pubkey_invalid">選択された公開鍵は無効です、ホストの編集で選び直してください</string>
+	<string name="terminal_auth_pubkey_specific">指定された公開鍵による 'publickey' 認証を試行</string>
+	<string name="terminal_auth_pubkey_fail">鍵 '%1$s' での 'publickey' 認証に失敗</string>
+
+	<string name="terminal_auth_ki">'keyboard-interactive' 認証を試行</string>
+	<string name="terminal_auth_ki_fail">'keyboard-interactive' 認証に失敗</string>
+
+	<string name="terminal_auth_fail">[ホストは 'password' や 'keyboard-interactive' 認証をサポートしていません.]</string>
+
+	<string name="terminal_no_session">ホスト設定によりセッションを開始しません</string>
+	<string name="terminal_enable_portfoward">ポート転送 %1$s を有効化</string>
+
+	<string name="local_shell_unavailable">エラー! この電話機にはローカルシェルがありません.</string>
+
+	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
+	<string name="notification_text">%1$s でベルが鳴りました</string>
+
+	<!-- Dialog title when a new version of ConnectBot is detected. -->
+	<string name="upgrade">新しいバージョン</string>
+	<!-- Button selection to upgrade to the latest ConnectBot when one is available. -->
+	<string name="upgrade_pos">はい、アップグレードします．</string>
+	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
+	<string name="upgrade_neg">いいえ、今は行いません．</string>
+
+	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
+	<string name="no">いいえ</string>
+	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
+	<string name="with_confirmation">確認が必要</string>
+	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
+	<string name="yes">はい</string>
+
+	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
+	<string name="exceptions_submit_message">前回ConnectBot実行時に問題が発生したようです。ConnectBotの開発者にエラーレポートを送信しますか?</string>
+
+	<string name="color_red">赤</string>
+	<string name="color_green">緑</string>
+	<string name="color_blue">青</string>
+	<string name="color_gray">グレー</string>
+</resources>

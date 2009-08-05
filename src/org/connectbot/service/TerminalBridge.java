@@ -80,7 +80,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 
 	private AbsTransport transport;
 
-	private final Paint defaultPaint;
+	final Paint defaultPaint;
 
 	private Relay relay;
 
@@ -1037,6 +1037,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		int fg, bg;
 		synchronized (buffer) {
 			boolean entireDirty = buffer.update[0] || fullRedraw;
+			boolean isWideCharacter = false;
 
 			// walk through all lines in the buffer
 			for(int l = 0; l < buffer.height; l++) {
@@ -1080,9 +1081,16 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 					// set underlined attributes if requested
 					defaultPaint.setUnderlineText((currAttr & VDUBuffer.UNDERLINE) != 0);
 
-					// determine the amount of continuous characters with the same settings and print them all at once
-					while(c + addr < buffer.width && buffer.charAttributes[buffer.windowBase + l][c + addr] == currAttr) {
+					isWideCharacter = (currAttr & VDUBuffer.FULLWIDTH) != 0;
+
+					if (isWideCharacter)
 						addr++;
+					else {
+						// determine the amount of continuous characters with the same settings and print them all at once
+						while(c + addr < buffer.width
+								&& buffer.charAttributes[buffer.windowBase + l][c + addr] == currAttr) {
+							addr++;
+						}
 					}
 
 					// Save the current clip region
@@ -1090,7 +1098,17 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 
 					// clear this dirty area with background color
 					defaultPaint.setColor(bg);
-					canvas.clipRect(c * charWidth, l * charHeight, (c + addr) * charWidth, (l + 1) * charHeight);
+					if (isWideCharacter) {
+						canvas.clipRect(c * charWidth,
+								l * charHeight,
+								(c + 2) * charWidth,
+								(l + 1) * charHeight);
+					} else {
+						canvas.clipRect(c * charWidth,
+								l * charHeight,
+								(c + addr) * charWidth,
+								(l + 1) * charHeight);
+					}
 					canvas.drawPaint(defaultPaint);
 
 					// write the text string starting at 'c' for 'addr' number of characters
@@ -1105,6 +1123,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 
 					// advance to the next text block with different characteristics
 					c += addr - 1;
+					if (isWideCharacter)
+						c++;
 				}
 			}
 

@@ -72,10 +72,10 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
    * Convenience function for putString(char[], int, int)
    */
   public void putString(String s) {
-	int len = s.length();
-	char[] tmp = new char[len];
-	s.getChars(0, len, tmp, 0);
-	putString(tmp, 0, len);
+    int len = s.length();
+    char[] tmp = new char[len];
+    s.getChars(0, len, tmp, 0);
+    putString(tmp, null, 0, len);
   }
 
   /**
@@ -85,36 +85,40 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
    * @param start place to start in array
    * @param len number of characters to process
    */
-  public void putString(char[] s, int start, int len) {
+  public void putString(char[] s, byte[] fullwidths, int start, int len) {
     if (len > 0) {
       //markLine(R, 1);
       int lastChar = -1;
       char c;
+      boolean isWide = false;
 
       for (int i = 0; i < len; i++) {
         c = s[start + i];
         // Shortcut for my favorite ASCII
         if (c <= 0x7F) {
           if (lastChar != -1)
-            putChar((char) lastChar, false);
+            putChar((char) lastChar, isWide, false);
           lastChar = c;
+          isWide = false;
         } else if (!Character.isLowSurrogate(c) && !Character.isHighSurrogate(c)) {
           if (Character.getType(c) == Character.NON_SPACING_MARK) {
             if (lastChar != -1) {
               char nc = Precomposer.precompose((char) lastChar, c);
-              putChar(nc, false);
+              putChar(nc, isWide, false);
               lastChar = -1;
             }
           } else {
-          if (lastChar != -1)
-              putChar((char) lastChar, false);
+            if (lastChar != -1)
+              putChar((char) lastChar, isWide, false);
             lastChar = c;
+            if (fullwidths != null)
+                isWide = fullwidths[i] == 1;
           }
         }
       }
 
       if (lastChar != -1)
-        putChar((char) lastChar, false);
+        putChar((char) lastChar, isWide, false);
 
       setCursorPosition(C, R);
       redraw();
@@ -138,6 +142,9 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     //int oldcols = width;
 
     if (debug>2) {
+      if (debugStr == null)
+        debugStr = new StringBuilder();
+
       debugStr.append("setscreensize (")
         .append(c)
         .append(',')
@@ -167,13 +174,14 @@ public void setScreenSize(int c, int r, boolean broadcast) {
    */
   public vt320(int width, int height) {
     super(width, height);
+
+    debugStr = new StringBuilder();
+
     setVMS(false);
     setIBMCharset(false);
     setTerminalID("vt320");
     setBufferSize(100);
     //setBorder(2, false);
-
-    debugStr = new StringBuilder();
 
     gx = new char[4];
     reset();
@@ -548,8 +556,9 @@ public void setScreenSize(int c, int r, boolean broadcast) {
 
     write(s);
 
+    // TODO check if character is wide
     if (doecho)
-      putChar((char)s, false);
+      putChar((char)s, false, false);
     return true;
   }
 
@@ -1497,7 +1506,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     if (R > maxr) R = maxr;
   }
 
-  private void putChar(char c, boolean doshowcursor) {
+  private void putChar(char c, boolean isWide, boolean doshowcursor) {
     int rows = this.height; //statusline
     int columns = this.width;
     // byte msg[];
@@ -1754,9 +1763,25 @@ public void setScreenSize(int c, int r, boolean broadcast) {
 
               /*if(true || (statusmode == 0)) { */
               if (insertmode == 1) {
-                insertChar(C, R, c, attributes);
+                if (isWide) {
+                  if (C >= columns - 1) {
+                    C = 0;
+                    R++;
+                  }
+                  insertChar(C++, R, c, attributes | FULLWIDTH);
+                  insertChar(C, R, ' ', attributes | FULLWIDTH);
+                } else
+                  insertChar(C, R, c, attributes);
               } else {
-                putChar(C, R, c, attributes);
+                if (isWide) {
+                  if (C >= columns - 1) {
+                    C = 0;
+                    R++;
+                  }
+                  putChar(C++, R, c, attributes | FULLWIDTH);
+                  putChar(C, R, ' ', attributes | FULLWIDTH);
+                } else
+                  putChar(C, R, c, attributes);
               }
               /*
                 } else {
@@ -2525,9 +2550,10 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             }
           case 'C':
             if (DCEvars[0] == 0)
+              DCEvars[0] = 1;
+            while (DCEvars[0]-- > 0) {
               C++;
-            else
-              C += DCEvars[0];
+            }
             if (C >= columns)
               C = columns - 1;
             if (debug > 1)
@@ -2544,9 +2570,10 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case 'D':
             if (DCEvars[0] == 0)
+              DCEvars[0] = 1;
+            while (DCEvars[0]-- > 0) {
               C--;
-            else
-              C -= DCEvars[0];
+            }
             if (C < 0) C = 0;
             if (debug > 1)
               debug("ESC [ " + DCEvars[0] + " D");

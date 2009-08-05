@@ -36,6 +36,7 @@ import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.widget.Toast;
+import de.mud.terminal.VDUBuffer;
 
 /**
  * User interface {@link View} for showing a TerminalBridge in an
@@ -148,6 +149,11 @@ public class TerminalView extends View implements FontSizeChangedListener {
 
 			// also draw cursor if visible
 			if(bridge.buffer.isCursorVisible()) {
+				int currentAttribute = bridge.buffer.getAttributes(
+						bridge.buffer.getCursorColumn(),
+						bridge.buffer.getCursorRow());
+				boolean onWideCharacter = (currentAttribute & VDUBuffer.FULLWIDTH) != 0;
+
 				int x = bridge.buffer.getCursorColumn() * bridge.charWidth;
 				int y = (bridge.buffer.getCursorRow()
 						+ bridge.buffer.screenBase - bridge.buffer.windowBase)
@@ -157,7 +163,9 @@ public class TerminalView extends View implements FontSizeChangedListener {
 				canvas.save();
 
 				canvas.translate(x, y);
-				canvas.clipRect(0, 0, bridge.charWidth, bridge.charHeight);
+				canvas.clipRect(0, 0,
+						bridge.charWidth * (onWideCharacter ? 2 : 1),
+						bridge.charHeight);
 				canvas.drawPaint(cursorPaint);
 
 				// Make sure we scale our decorations to the correct size.

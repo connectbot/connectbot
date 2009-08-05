@@ -79,9 +79,7 @@
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">警告：远程主机的标志已经改变</string>
 	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning">可能某人正在做非善意的事情\n
-可能有人正在偷听你的会话(中间人攻击)\n
-但也许仅仅是主密匙(host key)已被更改，你确信如此?</string>
+	<string name="host_verification_failure_warning">可能某人正在做非善意的事情\n可能有人正在偷听你的会话(中间人攻击)\n但也许仅仅是主密匙(host key)已被更改，你确信如此?</string>
 
 	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
 	<string name="prompt_host_disconnected">主机已经断开。\n是否关闭本次对话？</string>
@@ -241,6 +239,11 @@
 	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
 	<string name="hostpref_wantsession_summary">仅仅对端口转发禁用偏好设置</string>
 
+	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
+	<string name="hostpref_stayconnected_title">Stay connected</string>
+	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
+	<string name="hostpref_stayconnected_summary">Try to reconnect to host if disconnected</string>
+
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
 	<string name="hostpref_delkey_title">DEL键</string>
 	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
@@ -275,9 +278,7 @@
 	<!-- Message given when user copies from the terminal. -->
 	<string name="console_copy_done">复制 %1$d 字节到剪贴板</string>
 	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">滑动手指\n
-或使用轨迹球\n
-选择要复制的区域</string>
+	<string name="console_copy_start">滑动手指\n或使用轨迹球\n选择要复制的区域</string>
 
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">关闭</string>
@@ -289,6 +290,8 @@
 	<string name="console_menu_portforwards">端口转发</string>
 	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
 	<string name="console_menu_resize">字体大小</string>
+	<!-- Button that brings up the list of URLs on the current screen -->
+	<string name="console_menu_urlscan">URL Scan</string>
 
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
 	<string name="portforward_local">本地</string>
@@ -410,11 +413,11 @@
 	<string name="upgrade_neg">暂时不</string>
 
 	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
-	<string name="no">No</string>
+	<string name="no">不</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
 	<string name="with_confirmation">With confirmation</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
-	<string name="yes">Yes</string>
+	<string name="yes">是</string>
 
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
 	<string name="exceptions_submit_message">似乎ConnectBot在最后运行时出现异常. 请回报给ConnectBot开发者</string>
