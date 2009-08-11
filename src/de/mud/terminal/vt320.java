@@ -1934,7 +1934,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               debug("ESC >");
             keypadmode = false;
             break;
-          case '7': /*save cursor, attributes, margins */
+          case '7': /* DECSC: save cursor, attributes */
             Sc = C;
             Sr = R;
             Sgl = gl;
@@ -1942,19 +1942,15 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             Sa = attributes;
             Sgx = new char[4];
             for (int i = 0; i < 4; i++) Sgx[i] = gx[i];
-            Stm = getTopMargin();
-            Sbm = getBottomMargin();
             if (debug > 1)
               debug("ESC 7");
             break;
-          case '8': /*restore cursor, attributes, margins */
+          case '8': /* DECRC: restore cursor, attributes */
             C = Sc;
             R = Sr;
             gl = Sgl;
             gr = Sgr;
             for (int i = 0; i < 4; i++) gx[i] = Sgx[i];
-            setTopMargin(Stm);
-            setBottomMargin(Sbm);
             attributes = Sa;
             if (debug > 1)
               debug("ESC 8");
