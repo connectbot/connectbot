@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">ConnectBot</string>
 	<string name="app_desc">Sederhana, kuat, klien kode terbuka SSH</string>
 
 	<!-- Window title for the Host List -->
@@ -17,6 +16,7 @@
 	<string name="title_colors">Colors</string>
 
 	<string name="resolve_connect">Hubungi</string>
+	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
 	<string name="resolve_entropy">Kumpulkan entropy</string>
 
 	<string name="menu_insert">Tambahkan host</string>
@@ -30,12 +30,14 @@
 	<string name="pubkey_generate">Buat</string>
 	<string name="pubkey_import">Impor</string>
 	<string name="pubkey_delete">Tombol Hapus</string>
+	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
 	<string name="pubkey_gather_entropy">Kumpulkan Entropy</string>
 	<string name="pubkey_touch_prompt">Sentuh  boks ini untuk mengumpulkan ke tidak tentuan: %1$d%% selesai</string>
 	<string name="pubkey_touch_hint">Untuk menyakinkan ketidak tentuan selama pembuatan kunci, gerakan tangan anda secara tidak menentu diatas kotak dibawah.</string>
 	<string name="pubkey_generating">Membuat pasangan kunci</string>
 	<string name="pubkey_copy_private">Menyalin kunci pribadi</string>
 	<string name="pubkey_copy_public">Salin kunci publik</string>
+	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
 	<string name="pubkey_list_empty">Sentuh "Menu" untuk membuat/atau mengimpor pasangan kunci</string>
 	<string name="pubkey_unknown_format">Format tidak diketahui</string>
 	<string name="pubkey_change_password">Ubah kata sandi</string>
@@ -49,6 +51,7 @@
 	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
 	<string name="pubkey_confirm_use">Confirm before use</string>
 
+	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
 	<string name="portforward_list_empty">Sentu "Menu" untuk membuat\nport forwards.</string>
 	<string name="portforward_edit">Ubah port forward</string>
 	<string name="portforward_delete">Hapus port forward</string>
@@ -73,7 +76,7 @@
 	<!-- Prompt for the password to unlock a certain pubkey. -->
 	<string name="prompt_pubkey_password">Kata sandi untuk kunci '%1$s'</string>
 
-	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key -->
+	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
 	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key '%1$s'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
@@ -108,12 +111,6 @@
 	<string name="alert_disconnect_msg">Koneksi Hilang</string>
 
 	<string name="msg_copyright">Hak Cipta © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
-
-	<!-- DO NOT MANUALLY UPDATE VERSION!!!
-	  Updating is update by the ant task "update-version" in build.xml
-	  Do not translate.
-	-->
-	<string name="msg_version">ConnectBot (salinan yang bekerja)</string>
 
 	<!-- The category title for terminal emulation preferences. -->
 	<string name="pref_emulation_category">Terminal Emulasi</string>
@@ -277,7 +274,7 @@
 
 	<!-- Message given when user copies from the terminal. -->
 	<string name="console_copy_done">Tersalin %1$d bytes ke papan klip</string>
-	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
+	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
 	<string name="console_copy_start">Sentuh dan tarik\natau gunakan tombol panah\nuntuk memilih daerah untuk disalin</string>
 
 	<!-- Button to close the disconnected terminal window. -->
@@ -331,6 +328,7 @@
 	<string name="list_host_edit">Ubah host</string>
 	<string name="list_host_portforwards">Ubah port forwards</string>
 	<string name="list_host_delete">Hapus host</string>
+	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
 	<string name="list_host_empty">Gunakan kotak cepat-hubungi\ndibawah untuk menghubungi sebuah host.</string>
 
 	<!-- Default screen rotation preference selection -->

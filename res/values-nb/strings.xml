@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">ConnectBot</string>
 	<string name="app_desc">Enkel, kraftig open-source SSH-klient</string>
 
 	<!-- Window title for the Host List -->
@@ -8,38 +7,41 @@
 	<!-- Window title for the Pubkeys List -->
 	<string name="title_pubkey_list">Offentlige nøkler</string>
 	<!-- Window title for the Port Forwards List -->
-	<string name="title_port_forwards_list">Port forwards</string>
+	<string name="title_port_forwards_list">Videresendte porter</string>
 	<!-- Window title when editing host details -->
-	<string name="title_host_editor">Endre vert</string>
+	<string name="title_host_editor">Rediger vert</string>
 	<!-- Window title for Help index -->
 	<string name="title_help">Hjelp</string>
 	<!-- Window title for color list editing screen -->
 	<string name="title_colors">Farger</string>
 
 	<string name="resolve_connect">Koble til</string>
+	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
 	<string name="resolve_entropy">Samle entropi</string>
 
 	<string name="menu_insert">Legg til vert</string>
 	<string name="menu_delete">Slett vert</string>
-	<string name="menu_preferences">Preferanser</string>
+	<string name="menu_preferences">Innstillinger</string>
 
-	<string name="help_intro">Please select a topic below for more information on a particular subject.</string>
+	<string name="help_intro">Velg et emne nedenfor for mer informasjon om et bestemt emne.</string>
 	<string name="help_about">Om ConnectBot</string>
 	<string name="help_keyboard">Tastatur</string>
 
-	<string name="pubkey_generate">Generer</string>
+	<string name="pubkey_generate">Lag</string>
 	<string name="pubkey_import">Importer</string>
 	<string name="pubkey_delete">Slett nøkkel</string>
+	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
 	<string name="pubkey_gather_entropy">Samler entropi</string>
-	<string name="pubkey_touch_prompt">Touch this box to gather randomness: %1$d%% done</string>
-	<string name="pubkey_touch_hint">In order to assure randomness during the key generation, move your finger randomly over the box below.</string>
+	<string name="pubkey_touch_prompt">Ta i denne boksen for å samle tilfeldigheter: %1$d%% ferdig</string>
+	<string name="pubkey_touch_hint">For å forsikre tilfeldighet under nøkkel generasjon, flytt fingeren tilfeldig over boksen nedenfor.</string>
 	<string name="pubkey_generating">Genererer nøkkelpar...</string>
 	<string name="pubkey_copy_private">Kopier privat nøkkel</string>
 	<string name="pubkey_copy_public">Kopier offentlig nøkkel</string>
-	<string name="pubkey_list_empty">Tap "Menu" to create\nor import key pairs.</string>
+	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
+	<string name="pubkey_list_empty">Trykk "Meny" for å lage/eller importere nøkkel par</string>
 	<string name="pubkey_unknown_format">Ukjent format</string>
-	<string name="pubkey_change_password">Bytt passord</string>
-	<string name="pubkey_list_pick">Pick from /sdcard</string>
+	<string name="pubkey_change_password">Endre passord</string>
+	<string name="pubkey_list_pick">Velg fra /sdcard</string>
 	<string name="pubkey_import_parse_problem">Feil ved innlesing av privat nøkkel</string>
 	<string name="pubkey_unlock">Frigjør nøkkel</string>
 	<string name="pubkey_failed_add">Feil passord for nøkkel '%1$s'. Autentisering feilet.</string>
@@ -47,15 +49,16 @@
 	<string name="pubkey_memory_unload">Last ut av minne</string>
 	<string name="pubkey_load_on_start">Last nøkkel ved start</string>
 	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
-	<string name="pubkey_confirm_use">Confirm before use</string>
+	<string name="pubkey_confirm_use">Godkjenn før bruk</string>
 
+	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
 	<string name="portforward_list_empty">Tap "Menu" to create\nport forwards.</string>
-	<string name="portforward_edit">Edit port forward</string>
-	<string name="portforward_delete">Delete port forward</string>
+	<string name="portforward_edit">Rediger videresendte porter</string>
+	<string name="portforward_delete">Slett videresendte porter</string>
 
 	<string name="prompt_nickname">Kallenavn:</string>
 	<!-- An example string that could be used as a nickname for a pubkey. -->
-	<string name="prompt_nickname_hint_pubkey">My work key</string>
+	<string name="prompt_nickname_hint_pubkey">Min arbeids nøkkel</string>
 	<!-- The source TCP port for port forwards. -->
 	<string name="prompt_source_port">Source port:</string>
 	<!-- The "host:port" combination used for port forward destinations. -->
@@ -71,13 +74,13 @@
 	<string name="prompt_bits">Bits:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Password for key '%1$s'</string>
+	<string name="prompt_pubkey_password">Passord for nøkkel '%1$s'</string>
 
-	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key -->
-	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key '%1$s'?</string>
+	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
+	<string name="prompt_allow_agent_to_use_key">Godta ekstern vert til\nå bruke nøkkel '%1$s'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning_header">WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</string>
+	<string name="host_verification_failure_warning_header">ADVARSEL: EKSTERN VERT IDENTIFIKASJON HAR BLITT ENDRET!</string>
 	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning">IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\nSomeone could be eavesdropping on you right now (man-in-the-middle attack)!\nIt is also possible that the host key has just been changed.</string>
 
@@ -108,12 +111,6 @@
 	<string name="alert_disconnect_msg">Mistet tilkobling</string>
 
 	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
-
-	<!-- DO NOT MANUALLY UPDATE VERSION!!!
-	  Updating is update by the ant task "update-version" in build.xml
-	  Do not translate.
-	-->
-	<string name="msg_version">ConnectBot (working copy)</string>
 
 	<!-- The category title for terminal emulation preferences. -->
 	<string name="pref_emulation_category">Terminalemulering</string>
@@ -277,7 +274,7 @@
 
 	<!-- Message given when user copies from the terminal. -->
 	<string name="console_copy_done">Copied %1$d bytes to clipboard</string>
-	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
+	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
 	<string name="console_copy_start">Touch and drag\nor use directional pad\nto select area to copy</string>
 
 	<!-- Button to close the disconnected terminal window. -->
@@ -331,6 +328,7 @@
 	<string name="list_host_edit">Rediger vert</string>
 	<string name="list_host_portforwards">Edit port forwards</string>
 	<string name="list_host_delete">Slett vert</string>
+	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
 	<string name="list_host_empty">Use the quick-connect box\nbelow to connect to a host.</string>
 
 	<!-- Default screen rotation preference selection -->

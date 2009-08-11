@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">ConnectBot</string>
 	<string name="app_desc">Simple, powerful, open-source SSH client.</string>
 
 	<!-- Window title for the Host List -->
@@ -112,12 +111,6 @@
 	<string name="alert_disconnect_msg">Connection Lost</string>
 
 	<string name="msg_copyright">Copyright &#169; 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
-
-	<!-- DO NOT MANUALLY UPDATE VERSION!!!
-	  Updating is update by the ant task "update-version" in build.xml
-	  Do not translate.
-	-->
-	<string name="msg_version">ConnectBot (working copy)</string>
 
 	<!-- The category title for terminal emulation preferences. -->
 	<string name="pref_emulation_category">Terminal emulation</string>
