@@ -122,7 +122,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 
 	private String keymode = null;
 
-	private boolean hardwareKeyboard = false;
+	private boolean hardKeyboard = false;
 
 	private boolean selectingForCopy = false;
 	private final SelectionArea selectionArea;
@@ -268,7 +268,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 
 		selectionArea = new SelectionArea();
 
-		hardwareKeyboard = (manager.res.getConfiguration().keyboard
+		hardKeyboard = (manager.res.getConfiguration().keyboard
 				== Configuration.KEYBOARD_QWERTY);
 	}
 
@@ -487,8 +487,13 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
 		try {
 
+			boolean hardKeyboardHidden =
+				manager.res.getConfiguration().hardKeyboardHidden ==
+					Configuration.HARDKEYBOARDHIDDEN_YES;
+
 			// Ignore all key-up events except for the special keys
-			if (event.getAction() == KeyEvent.ACTION_UP) {
+			if (event.getAction() == KeyEvent.ACTION_UP &&
+					hardKeyboard && !hardKeyboardHidden) {
 				// skip keys if we aren't connected yet or have been disconnected
 				if (disconnected || transport == null)
 					return false;
@@ -568,7 +573,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 					metaState &= ~META_CTRL_ON;
 					redraw();
 
-					if (!hardwareKeyboard && sendFunctionKey(keyCode))
+					if ((!hardKeyboard || (hardKeyboard && hardKeyboardHidden))
+							&& sendFunctionKey(keyCode))
 						return true;
 
 					// Support CTRL-a through CTRL-z
@@ -584,7 +590,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 				}
 
 				// handle pressing f-keys
-				if (hardwareKeyboard
+				if ((hardKeyboard && !hardKeyboardHidden)
 						&& (curMetaState & KeyEvent.META_SHIFT_ON) != 0
 						&& sendFunctionKey(keyCode))
 					return true;
@@ -607,7 +613,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			}
 
 			// try handling keymode shortcuts
-			if (event.getRepeatCount() == 0) {
+			if (hardKeyboard && !hardKeyboardHidden &&
+					event.getRepeatCount() == 0) {
 				if (PreferenceConstants.KEYMODE_RIGHT.equals(keymode)) {
 					switch (keyCode) {
 					case KeyEvent.KEYCODE_ALT_RIGHT:
