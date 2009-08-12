@@ -358,13 +358,15 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	 * and pasting clipboard.
 	 */
 	public void injectString(final String string) {
+		if (string == null || string.length() == 0)
+			return;
+
 		Thread injectStringThread = new Thread(new Runnable() {
 			public void run() {
-				if(string == null || string.length() == 0) return;
-				KeyEvent[] events = keymap.getEvents(string.toCharArray());
-				if(events == null || events.length == 0) return;
-				for(KeyEvent event : events) {
-					onKey(null, event.getKeyCode(), event);
+				try {
+					transport.write(string.getBytes(host.getEncoding()));
+				} catch (Exception e) {
+					Log.e(TAG, "Couldn't inject string to remote host: ", e);
 				}
 			}
 		});
