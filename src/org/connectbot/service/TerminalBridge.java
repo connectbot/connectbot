@@ -492,8 +492,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 					Configuration.HARDKEYBOARDHIDDEN_YES;
 
 			// Ignore all key-up events except for the special keys
-			if (event.getAction() == KeyEvent.ACTION_UP &&
-					hardKeyboard && !hardKeyboardHidden) {
+			if (event.getAction() == KeyEvent.ACTION_UP) {
+				// There's nothing here for virtual keyboard users.
+				if (!hardKeyboard || (hardKeyboard && hardKeyboardHidden))
+					return false;
+
 				// skip keys if we aren't connected yet or have been disconnected
 				if (disconnected || transport == null)
 					return false;
