@@ -608,8 +608,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 
 			// try handling keymode shortcuts
 			if (event.getRepeatCount() == 0) {
-				if ("Use right-side keys".equals(keymode)) {
-					switch(keyCode) {
+				if (PreferenceConstants.KEYMODE_RIGHT.equals(keymode)) {
+					switch (keyCode) {
 					case KeyEvent.KEYCODE_ALT_RIGHT:
 						metaState |= META_SLASH;
 						return true;
@@ -622,11 +622,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 					case KeyEvent.KEYCODE_ALT_LEFT:
 						metaPress(META_ALT_ON);
 						return true;
-					default:
-						break;
 					}
-				} else if ("Use left-side keys".equals(keymode)) {
-					switch(keyCode) {
+				} else if (PreferenceConstants.KEYMODE_LEFT.equals(keymode)) {
+					switch (keyCode) {
 					case KeyEvent.KEYCODE_ALT_LEFT:
 						metaState |= META_SLASH;
 						return true;
@@ -639,8 +637,17 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 					case KeyEvent.KEYCODE_ALT_RIGHT:
 						metaPress(META_ALT_ON);
 						return true;
-					default:
-						break;
+					}
+				} else {
+					switch (keyCode) {
+					case KeyEvent.KEYCODE_ALT_LEFT:
+					case KeyEvent.KEYCODE_ALT_RIGHT:
+						metaPress(META_ALT_ON);
+						return true;
+					case KeyEvent.KEYCODE_SHIFT_LEFT:
+					case KeyEvent.KEYCODE_SHIFT_RIGHT:
+						metaPress(META_SHIFT_ON);
+						return true;
 					}
 				}
 			}
