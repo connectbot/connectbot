@@ -122,7 +122,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 
 	private String keymode = null;
 
-	private boolean hardwareKeyboard = false;
+	private boolean hardKeyboard = false;
 
 	private boolean selectingForCopy = false;
 	private final SelectionArea selectionArea;
@@ -268,7 +268,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 
 		selectionArea = new SelectionArea();
 
-		hardwareKeyboard = (manager.res.getConfiguration().keyboard
+		hardKeyboard = (manager.res.getConfiguration().keyboard
 				== Configuration.KEYBOARD_QWERTY);
 	}
 
@@ -358,13 +358,15 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	 * and pasting clipboard.
 	 */
 	public void injectString(final String string) {
+		if (string == null || string.length() == 0)
+			return;
+
 		Thread injectStringThread = new Thread(new Runnable() {
 			public void run() {
-				if(string == null || string.length() == 0) return;
-				KeyEvent[] events = keymap.getEvents(string.toCharArray());
-				if(events == null || events.length == 0) return;
-				for(KeyEvent event : events) {
-					onKey(null, event.getKeyCode(), event);
+				try {
+					transport.write(string.getBytes(host.getEncoding()));
+				} catch (Exception e) {
+					Log.e(TAG, "Couldn't inject string to remote host: ", e);
 				}
 			}
 		});
@@ -485,8 +487,16 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
 		try {
 
+			boolean hardKeyboardHidden =
+				manager.res.getConfiguration().hardKeyboardHidden ==
+					Configuration.HARDKEYBOARDHIDDEN_YES;
+
 			// Ignore all key-up events except for the special keys
 			if (event.getAction() == KeyEvent.ACTION_UP) {
+				// There's nothing here for virtual keyboard users.
+				if (!hardKeyboard || (hardKeyboard && hardKeyboardHidden))
+					return false;
+
 				// skip keys if we aren't connected yet or have been disconnected
 				if (disconnected || transport == null)
 					return false;
@@ -566,7 +576,8 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 					metaState &= ~META_CTRL_ON;
 					redraw();
 
-					if (!hardwareKeyboard && sendFunctionKey(keyCode))
+					if ((!hardKeyboard || (hardKeyboard && hardKeyboardHidden))
+							&& sendFunctionKey(keyCode))
 						return true;
 
 					// Support CTRL-a through CTRL-z
@@ -582,7 +593,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 				}
 
 				// handle pressing f-keys
-				if (hardwareKeyboard
+				if ((hardKeyboard && !hardKeyboardHidden)
 						&& (curMetaState & KeyEvent.META_SHIFT_ON) != 0
 						&& sendFunctionKey(keyCode))
 					return true;
@@ -605,9 +616,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			}
 
 			// try handling keymode shortcuts
-			if (event.getRepeatCount() == 0) {
-				if ("Use right-side keys".equals(keymode)) {
-					switch(keyCode) {
+			if (hardKeyboard && !hardKeyboardHidden &&
+					event.getRepeatCount() == 0) {
+				if (PreferenceConstants.KEYMODE_RIGHT.equals(keymode)) {
+					switch (keyCode) {
 					case KeyEvent.KEYCODE_ALT_RIGHT:
 						metaState |= META_SLASH;
 						return true;
@@ -620,11 +632,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 					case KeyEvent.KEYCODE_ALT_LEFT:
 						metaPress(META_ALT_ON);
 						return true;
-					default:
-						break;
 					}
-				} else if ("Use left-side keys".equals(keymode)) {
-					switch(keyCode) {
+				} else if (PreferenceConstants.KEYMODE_LEFT.equals(keymode)) {
+					switch (keyCode) {
 					case KeyEvent.KEYCODE_ALT_LEFT:
 						metaState |= META_SLASH;
 						return true;
@@ -637,8 +647,17 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 					case KeyEvent.KEYCODE_ALT_RIGHT:
 						metaPress(META_ALT_ON);
 						return true;
-					default:
-						break;
+					}
+				} else {
+					switch (keyCode) {
+					case KeyEvent.KEYCODE_ALT_LEFT:
+					case KeyEvent.KEYCODE_ALT_RIGHT:
+						metaPress(META_ALT_ON);
+						return true;
+					case KeyEvent.KEYCODE_SHIFT_LEFT:
+					case KeyEvent.KEYCODE_SHIFT_RIGHT:
+						metaPress(META_SHIFT_ON);
+						return true;
 					}
 				}
 			}

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">ConnectBot</string>
 	<string name="app_desc">簡單,強大,開源的SSH客戶端</string>
 
 	<!-- Window title for the Host List -->
@@ -17,6 +16,7 @@
 	<string name="title_colors">顏色</string>
 
 	<string name="resolve_connect">連接</string>
+	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
 	<string name="resolve_entropy">Gather Entropy</string>
 
 	<string name="menu_insert">添加主機</string>
@@ -30,12 +30,14 @@
 	<string name="pubkey_generate">產生</string>
 	<string name="pubkey_import">導入</string>
 	<string name="pubkey_delete">刪除密鑰</string>
+	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
 	<string name="pubkey_gather_entropy">Gathering Entropy</string>
 	<string name="pubkey_touch_prompt">觸摸方框來收集隨機數：%1$d％完成</string>
 	<string name="pubkey_touch_hint">由於密鑰產生的時候需要隨機數據，請在下面的方框中隨便移動你的手指</string>
 	<string name="pubkey_generating">正在產生密鑰配對</string>
 	<string name="pubkey_copy_private">複製私鑰</string>
 	<string name="pubkey_copy_public">複製公鑰</string>
+	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
 	<string name="pubkey_list_empty">按「菜單」鍵創建或導入密鑰。</string>
 	<string name="pubkey_unknown_format">未知格式</string>
 	<string name="pubkey_change_password">更改密碼</string>
@@ -49,6 +51,7 @@
 	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
 	<string name="pubkey_confirm_use">Confirm before use</string>
 
+	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
 	<string name="portforward_list_empty">按「菜單」鍵建端口轉發</string>
 	<string name="portforward_edit">編輯端口轉發</string>
 	<string name="portforward_delete">刪除端口轉發</string>
@@ -73,7 +76,7 @@
 	<!-- Prompt for the password to unlock a certain pubkey. -->
 	<string name="prompt_pubkey_password">密鑰「%1$s」的密碼</string>
 
-	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key -->
+	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
 	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key '%1$s'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
@@ -108,12 +111,6 @@
 	<string name="alert_disconnect_msg">連接中斷</string>
 
 	<string name="msg_copyright">版權所有2007-2008 Kenny Root http://the-b.org/ , Jeffrey Sharkey http://jsharkey.org/</string>
-
-	<!-- DO NOT MANUALLY UPDATE VERSION!!!
-	  Updating is update by the ant task "update-version" in build.xml
-	  Do not translate.
-	-->
-	<string name="msg_version">ConnectBot (working copy)</string>
 
 	<!-- The category title for terminal emulation preferences. -->
 	<string name="pref_emulation_category">模擬終端</string>
@@ -277,7 +274,7 @@
 
 	<!-- Message given when user copies from the terminal. -->
 	<string name="console_copy_done">%1$d字節複製到剪貼簿</string>
-	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
+	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
 	<string name="console_copy_start">Touch and drag\nor use directional pad\nto select area to copy</string>
 
 	<!-- Button to close the disconnected terminal window. -->
@@ -331,6 +328,7 @@
 	<string name="list_host_edit">Edit host</string>
 	<string name="list_host_portforwards">Edit port forwards</string>
 	<string name="list_host_delete">刪除主機</string>
+	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
 	<string name="list_host_empty">Use the quick-connect box\nbelow to connect to a host.</string>
 
 	<!-- Default screen rotation preference selection -->

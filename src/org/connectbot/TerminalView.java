@@ -148,13 +148,19 @@ public class TerminalView extends View implements FontSizeChangedListener {
 			canvas.drawBitmap(bridge.bitmap, 0, 0, paint);
 
 			// also draw cursor if visible
-			if(bridge.buffer.isCursorVisible()) {
+			if (bridge.buffer.isCursorVisible()) {
+				int cursorColumn = bridge.buffer.getCursorColumn();
+				int columns = bridge.buffer.getColumns();
+
+				if (cursorColumn == columns)
+					cursorColumn = columns - 1;
+
 				int currentAttribute = bridge.buffer.getAttributes(
-						bridge.buffer.getCursorColumn(),
+						cursorColumn,
 						bridge.buffer.getCursorRow());
 				boolean onWideCharacter = (currentAttribute & VDUBuffer.FULLWIDTH) != 0;
 
-				int x = bridge.buffer.getCursorColumn() * bridge.charWidth;
+				int x = cursorColumn * bridge.charWidth;
 				int y = (bridge.buffer.getCursorRow()
 						+ bridge.buffer.screenBase - bridge.buffer.windowBase)
 						* bridge.charHeight;

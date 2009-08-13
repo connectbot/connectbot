@@ -318,7 +318,7 @@
     </target>
 
     <target name="update-version" description="Updates the Version.java file with current SVN revision">
-        <echo>Updating strings.xml with SVN revision and build date...</echo>
+        <echo>Updating resources with SVN revision and build date...</echo>
         <property name="revision" value="HEAD"/>
         <tstamp>
             <format property="build.date" pattern="yyyy.MM.dd" />
@@ -342,7 +342,7 @@
 
         <delete file="svnlog.out"/>
 
-        <replaceregexp file="${resource-folder}/values/strings.xml" encoding="utf8" match='(\x3Cstring name="msg_version">)[^\x3C]*(\x3C/string>)'
+        <replaceregexp file="${resource-folder}/values/notrans.xml" encoding="utf8" match='(\x3Cstring name="msg_version">)[^\x3C]*(\x3C/string>)'
             replace='\1${ant.project.name} ${manifest.android:versionName} (r${Revision} ${build.date})\2' />
 
         <echo>Updated "msg_version" to: ${ant.project.name} ${manifest.android:versionName} (r${Revision} ${build.date})</echo>

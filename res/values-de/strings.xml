@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">ConnectBot</string>
 	<string name="app_desc">Einfacher, mächtiger, open-source SSH client.</string>
 
 	<!-- Window title for the Host List -->
@@ -17,6 +16,7 @@
 	<string name="title_colors">Farben</string>
 
 	<string name="resolve_connect">Verbinden</string>
+	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
 	<string name="resolve_entropy">Sammle Entropie</string>
 
 	<string name="menu_insert">Host hinzufügen</string>
@@ -30,12 +30,14 @@
 	<string name="pubkey_generate">Erzeugen</string>
 	<string name="pubkey_import">Importieren</string>
 	<string name="pubkey_delete">Schlüssel löschen</string>
+	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
 	<string name="pubkey_gather_entropy">Sammle Entropie</string>
 	<string name="pubkey_touch_prompt">Berühren Sie diese Box, um Zufallszahlen zu erzeugen: %1$d%% fertig</string>
 	<string name="pubkey_touch_hint">Um eine gute Zufallsverteilung zu gewährleisten, bewegen Sie Ihren Finger zufällig über die Box unten!</string>
 	<string name="pubkey_generating">Erzeuge Schlüsselpaar...</string>
 	<string name="pubkey_copy_private">Privaten Schlüssel kopieren</string>
 	<string name="pubkey_copy_public">Öffentlichen Schlüssel kopieren</string>
+	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
 	<string name="pubkey_list_empty">"Menu" drücken, um Schlüsselpaare\nzu erzeugen oder importieren.</string>
 	<string name="pubkey_unknown_format">Unbekanntes Format</string>
 	<string name="pubkey_change_password">Passwort ändern</string>
@@ -49,6 +51,7 @@
 	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
 	<string name="pubkey_confirm_use">Bestätigen vor Benutzung</string>
 
+	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
 	<string name="portforward_list_empty">"Menu" tippen, um Port-\nWeiterleitungen zu erzeugen.</string>
 	<string name="portforward_edit">Port-Weiterleitung editieren.</string>
 	<string name="portforward_delete">Port-Weiterleitung löschen.</string>
@@ -73,7 +76,7 @@
 	<!-- Prompt for the password to unlock a certain pubkey. -->
 	<string name="prompt_pubkey_password">Passwort für Schlüssel '%1$s'</string>
 
-	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key -->
+	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
 	<string name="prompt_allow_agent_to_use_key">Remote Host die Benutzung\ndes Schlüssels '%1$s' erlauben?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
@@ -108,12 +111,6 @@
 	<string name="alert_disconnect_msg">Die Verbindung wurde getrennt.</string>
 
 	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
-
-	<!-- DO NOT MANUALLY UPDATE VERSION!!!
-	  Updating is update by the ant task "update-version" in build.xml
-	  Do not translate.
-	-->
-	<string name="msg_version">ConnectBot (working copy)</string>
 
 	<!-- The category title for terminal emulation preferences. -->
 	<string name="pref_emulation_category">Terminalemulation</string>
@@ -240,9 +237,9 @@
 	<string name="hostpref_wantsession_summary">Diese Einstellung abwählen, um ausschließlich Port-Weiterleitungen zu verwenden</string>
 
 	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
-	<string name="hostpref_stayconnected_title">Stay connected</string>
+	<string name="hostpref_stayconnected_title">Verbindung halten</string>
 	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
-	<string name="hostpref_stayconnected_summary">Try to reconnect to host if disconnected</string>
+	<string name="hostpref_stayconnected_summary">Verbindung bei Verbindungsabbruch wiederherstellen</string>
 
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
 	<string name="hostpref_delkey_title">DEL Taste</string>
@@ -277,7 +274,7 @@
 
 	<!-- Message given when user copies from the terminal. -->
 	<string name="console_copy_done">%1$d Byte in die Zwischenablage kopiert</string>
-	<!-- Instructions for how to copy from the terminal. The \n entries are to split lines to improve readability and prevent wrapping off the screen. -->
+	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
 	<string name="console_copy_start">Berühren und ziehen\noder Trackball verwenden\num zu kopierenden Bereich auszuwählen</string>
 
 	<!-- Button to close the disconnected terminal window. -->
@@ -331,6 +328,7 @@
 	<string name="list_host_edit">Host editieren</string>
 	<string name="list_host_portforwards">Port-Weiterleitungen editieren</string>
 	<string name="list_host_delete">Host löschen</string>
+	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
 	<string name="list_host_empty">Benutzen Sie die quick-connect box\nunten um sich mit einem Host zu verbinden.</string>
 
 	<!-- Default screen rotation preference selection -->
@@ -415,7 +413,7 @@
 	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
 	<string name="no">Nein</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
-	<string name="with_confirmation">With confirmation</string>
+	<string name="with_confirmation">Mit Bestätigung</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
 	<string name="yes">Ja</string>
 
