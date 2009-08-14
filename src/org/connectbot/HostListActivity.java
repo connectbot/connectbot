@@ -247,15 +247,7 @@ public class HostListActivity extends ListActivity {
 
 				quickconnect.setHint(formatHint);
 				quickconnect.setError(null);
-
-				// Start ConsoleActivity immediately if the hint is empty.
-				if ("".equals(formatHint)) {
-					quickconnect.setEnabled(false);
-					startConsoleActivity();
-				} else {
-					quickconnect.setEnabled(true);
-					quickconnect.requestFocus();
-				}
+				quickconnect.requestFocus();
 			}
 			public void onNothingSelected(AdapterView<?> arg0) { }
 		});
@@ -410,14 +402,17 @@ public class HostListActivity extends ListActivity {
 			return false;
 		}
 
-		HostBean host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
-		host.setColor(HostDatabase.COLOR_GRAY);
-		host.setPubkeyId(HostDatabase.PUBKEYID_ANY);
-		hostdb.saveHost(host);
+		HostBean host = TransportFactory.findHost(hostdb, uri);
+		if (host == null) {
+			host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
+			host.setColor(HostDatabase.COLOR_GRAY);
+			host.setPubkeyId(HostDatabase.PUBKEYID_ANY);
+			hostdb.saveHost(host);
+		}
 
 		Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
 		intent.setData(uri);
-		HostListActivity.this.startActivity(intent);
+		startActivity(intent);
 
 		return true;
 	}

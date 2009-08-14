@@ -18,6 +18,12 @@
 
 package org.connectbot.transport;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.connectbot.bean.HostBean;
+import org.connectbot.util.HostDatabase;
+
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
@@ -28,6 +34,8 @@ import android.util.Log;
  *
  */
 public class TransportFactory {
+	private static final String TAG = "ConnectBot.TransportFactory";
+
 	private static String[] transportNames = {
 		SSH.getProtocolName(),
 		Telnet.getProtocolName(),
@@ -100,5 +108,26 @@ public class TransportFactory {
 		} else {
 			return AbsTransport.getFormatHint(context);
 		}
+	}
+
+	/**
+	 * @param hostdb Handle to HostDatabase
+	 * @param uri URI to target server
+	 * @param host HostBean in which to put the results
+	 * @return true when host was found
+	 */
+	public static HostBean findHost(HostDatabase hostdb, Uri uri) {
+		AbsTransport transport = getTransport(uri.getScheme());
+
+		Map<String, String> selection = new HashMap<String, String>();
+
+		transport.getSelectionArgs(uri, selection);
+		if (selection.size() == 0) {
+			Log.e(TAG, String.format("Transport %s failed to do something useful with URI=%s",
+					uri.getScheme(), uri.toString()));
+			throw new IllegalStateException("Failed to get needed selection arguments");
+		}
+
+		return  hostdb.findHost(selection);
 	}
 }
