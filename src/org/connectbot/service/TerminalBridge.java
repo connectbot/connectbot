@@ -999,9 +999,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			synchronized (buffer) {
 				int prevRow = buffer.getCursorRow();
 				buffer.setScreenSize(columns, rows, true);
-
-				// Work around weird vt320.java behavior where cursor is an offset from the bottom??
-				buffer.setCursorPosition(buffer.getCursorColumn(), prevRow);
 			}
 
 			if(transport != null)

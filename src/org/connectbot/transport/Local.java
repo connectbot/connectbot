@@ -200,7 +200,13 @@ public class Local extends AbsTransport {
 	}
 
 	public static Uri getUri(String input) {
-		return Uri.parse(DEFAULT_URI);
+		Uri uri = Uri.parse(DEFAULT_URI);
+
+		if (input != null && input.length() > 0) {
+			uri = uri.buildUpon().fragment(input).build();
+		}
+
+		return uri;
 	}
 
 	@Override
@@ -220,6 +226,6 @@ public class Local extends AbsTransport {
 	}
 
 	public static String getFormatHint(Context context) {
-		return "";
+		return context.getString(R.string.hostpref_nickname_title);
 	}
 }

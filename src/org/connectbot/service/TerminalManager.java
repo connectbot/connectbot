@@ -34,7 +34,6 @@ import org.connectbot.ConsoleActivity;
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PubkeyBean;
-import org.connectbot.transport.AbsTransport;
 import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
@@ -255,27 +254,12 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 * format specified by an individual transport.
 	 */
 	public void openConnection(Uri uri) throws Exception {
-		AbsTransport transport = TransportFactory.getTransport(uri.getScheme());
+		HostBean host = TransportFactory.findHost(hostdb, uri);
 
-		Map<String, String> selection = new HashMap<String, String>();
+		if (host == null)
+			host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
 
-		transport.getSelectionArgs(uri, selection);
-		if (selection.size() == 0) {
-			Log.e(TAG, String.format("Transport %s failed to do something useful with URI=%s",
-					uri.getScheme(), uri.toString()));
-			throw new IllegalStateException("Failed to get needed selection arguments");
-		}
-
-		HostBean host = hostdb.findHost(selection);
-
-		if (host == null) {
-			Log.d(TAG, String.format(
-					"Didn't find existing host (selection=%s)",
-					selection.toString()));
-			host = transport.createHost(uri);
-		}
-
-		this.openConnection(host);
+		openConnection(host);
 	}
 
 	/**
