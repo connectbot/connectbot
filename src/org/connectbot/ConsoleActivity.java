@@ -729,6 +729,7 @@ public class ConsoleActivity extends Activity {
 		urlscan = menu.add(R.string.console_menu_urlscan);
 		urlscan.setAlphabeticShortcut('u');
 		urlscan.setIcon(android.R.drawable.ic_menu_search);
+		urlscan.setEnabled(activeTerminal);
 		urlscan.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				final TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
@@ -804,6 +805,7 @@ public class ConsoleActivity extends Activity {
 		copy.setEnabled(activeTerminal);
 		paste.setEnabled(clipboard.hasText() && sessionOpen);
 		portForward.setEnabled(sessionOpen && canForwardPorts);
+		urlscan.setEnabled(activeTerminal);
 		resize.setEnabled(sessionOpen);
 
 		return true;
