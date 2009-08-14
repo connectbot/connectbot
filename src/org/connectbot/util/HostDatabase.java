@@ -122,10 +122,14 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		addIndexName(TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index");
 	}
 
+	private Object dbLock;
+
 	public HostDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 
 		getWritableDatabase().close();
+
+		dbLock = new Object();
 	}
 
 	@Override
@@ -256,25 +260,32 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	 * @param nickname Nickname field of host to update
 	 */
 	public void touchHost(HostBean host) {
-		SQLiteDatabase db = this.getWritableDatabase();
 		long now = System.currentTimeMillis() / 1000;
 
 		ContentValues values = new ContentValues();
 		values.put(FIELD_HOST_LASTCONNECT, now);
 
-		db.update(TABLE_HOSTS, values, "_id = ?", new String[] { String.valueOf(host.getId()) });
+		synchronized (dbLock) {
+			SQLiteDatabase db = this.getWritableDatabase();
 
-		db.close();
+			db.update(TABLE_HOSTS, values, "_id = ?", new String[] { String.valueOf(host.getId()) });
+
+			db.close();
+		}
 	}
 
 	/**
 	 * Create a new host using the given parameters.
 	 */
 	public HostBean saveHost(HostBean host) {
-		SQLiteDatabase db = this.getWritableDatabase();
+		long id;
 
-		long id = db.insert(TABLE_HOSTS, null, host.getValues());
-		db.close();
+		synchronized (dbLock) {
+			SQLiteDatabase db = this.getWritableDatabase();
+
+			id = db.insert(TABLE_HOSTS, null, host.getValues());
+			db.close();
+		}
 
 		host.setId(id);
 
@@ -288,9 +299,11 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		if (host.getId() < 0)
 			return;
 
-		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_HOSTS, "_id = ?", new String[] { String.valueOf(host.getId()) });
-		db.close();
+		synchronized (dbLock) {
+			SQLiteDatabase db = this.getWritableDatabase();
+			db.delete(TABLE_HOSTS, "_id = ?", new String[] { String.valueOf(host.getId()) });
+			db.close();
+		}
 	}
 
 	/**
@@ -299,14 +312,18 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	 */
 	public List<HostBean> getHosts(boolean sortColors) {
 		String sortField = sortColors ? FIELD_HOST_COLOR : FIELD_HOST_NICKNAME;
-		SQLiteDatabase db = this.getReadableDatabase();
+		List<HostBean> hosts;
 
-		Cursor c = db.query(TABLE_HOSTS, null, null, null, null, null, sortField + " ASC");
+		synchronized (dbLock) {
+			SQLiteDatabase db = this.getReadableDatabase();
 
-		List<HostBean> hosts = createHostBeans(c);
+			Cursor c = db.query(TABLE_HOSTS, null, null, null, null, null, sortField + " ASC");
 
-		c.close();
-		db.close();
+			hosts = createHostBeans(c);
+
+			c.close();
+			db.close();
+		}
 
 		return hosts;
 	}
@@ -390,8 +407,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	 * @return
 	 */
 	public HostBean findHost(Map<String, String> selection) {
-		SQLiteDatabase db = this.getReadableDatabase();
-
 		StringBuilder selectionBuilder = new StringBuilder();
 
 		Iterator<Entry<String, String>> i = selection.entrySet().iterator();
@@ -410,14 +425,20 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			selectionValues[n++] = entry.getValue();
 		}
 
-		Cursor c = db.query(TABLE_HOSTS, null,
-				selectionBuilder.toString(),
-				selectionValues,
-				null, null, null);
+		HostBean host;
 
-		HostBean host = getFirstHostBean(c);
+		synchronized (dbLock) {
+			SQLiteDatabase db = getReadableDatabase();
 
-		db.close();
+			Cursor c = db.query(TABLE_HOSTS, null,
+					selectionBuilder.toString(),
+					selectionValues,
+					null, null, null);
+
+			host = getFirstHostBean(c);
+
+			db.close();
+		}
 
 		return host;
 	}
@@ -427,15 +448,19 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	 * @return
 	 */
 	public HostBean findHostById(long hostId) {
-		SQLiteDatabase db = this.getReadableDatabase();
+		HostBean host;
 
-		Cursor c = db.query(TABLE_HOSTS, null,
-				"_id = ?", new String[] { String.valueOf(hostId) },
-				null, null, null);
+		synchronized (dbLock) {
+			SQLiteDatabase db = getReadableDatabase();
 
-		HostBean host = getFirstHostBean(c);
+			Cursor c = db.query(TABLE_HOSTS, null,
+					"_id = ?", new String[] { String.valueOf(hostId) },
+					null, null, null);
 
-		db.close();
+			host = getFirstHostBean(c);
+
+			db.close();
+		}
 
 		return host;
 	}
@@ -448,18 +473,20 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	 * @param hostkey
 	 */
 	public void saveKnownHost(String hostname, int port, String hostkeyalgo, byte[] hostkey) {
-		SQLiteDatabase db = this.getReadableDatabase();
-
 		ContentValues values = new ContentValues();
 		values.put(FIELD_HOST_HOSTKEYALGO, hostkeyalgo);
 		values.put(FIELD_HOST_HOSTKEY, hostkey);
 
-		db.update(TABLE_HOSTS, values,
-				FIELD_HOST_HOSTNAME + " = ? AND " + FIELD_HOST_PORT + " = ?",
-				new String[] { hostname, String.valueOf(port) });
-		Log.d(TAG, String.format("Finished saving hostkey information for '%s'", hostname));
+		synchronized (dbLock) {
+			SQLiteDatabase db = getReadableDatabase();
 
-		db.close();
+			db.update(TABLE_HOSTS, values,
+					FIELD_HOST_HOSTNAME + " = ? AND " + FIELD_HOST_PORT + " = ?",
+					new String[] { hostname, String.valueOf(port) });
+			Log.d(TAG, String.format("Finished saving hostkey information for '%s'", hostname));
+
+			db.close();
+		}
 	}
 
 	/**
@@ -469,37 +496,39 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public KnownHosts getKnownHosts() {
 		KnownHosts known = new KnownHosts();
 
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor c = db.query(TABLE_HOSTS, new String[] { FIELD_HOST_HOSTNAME,
-				FIELD_HOST_PORT, FIELD_HOST_HOSTKEYALGO, FIELD_HOST_HOSTKEY },
-				null, null, null, null, null);
+		synchronized (dbLock) {
+			SQLiteDatabase db = this.getReadableDatabase();
+			Cursor c = db.query(TABLE_HOSTS, new String[] { FIELD_HOST_HOSTNAME,
+					FIELD_HOST_PORT, FIELD_HOST_HOSTKEYALGO, FIELD_HOST_HOSTKEY },
+					null, null, null, null, null);
 
-		if (c != null) {
-			int COL_HOSTNAME = c.getColumnIndexOrThrow(FIELD_HOST_HOSTNAME),
-				COL_PORT = c.getColumnIndexOrThrow(FIELD_HOST_PORT),
-				COL_HOSTKEYALGO = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEYALGO),
-				COL_HOSTKEY = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEY);
+			if (c != null) {
+				int COL_HOSTNAME = c.getColumnIndexOrThrow(FIELD_HOST_HOSTNAME),
+					COL_PORT = c.getColumnIndexOrThrow(FIELD_HOST_PORT),
+					COL_HOSTKEYALGO = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEYALGO),
+					COL_HOSTKEY = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEY);
 
-			while (c.moveToNext()) {
-				String hostname = c.getString(COL_HOSTNAME),
-					hostkeyalgo = c.getString(COL_HOSTKEYALGO);
-				int port = c.getInt(COL_PORT);
-				byte[] hostkey = c.getBlob(COL_HOSTKEY);
+				while (c.moveToNext()) {
+					String hostname = c.getString(COL_HOSTNAME),
+						hostkeyalgo = c.getString(COL_HOSTKEYALGO);
+					int port = c.getInt(COL_PORT);
+					byte[] hostkey = c.getBlob(COL_HOSTKEY);
 
-				if (hostkeyalgo == null || hostkeyalgo.length() == 0) continue;
-				if (hostkey == null || hostkey.length == 0) continue;
+					if (hostkeyalgo == null || hostkeyalgo.length() == 0) continue;
+					if (hostkey == null || hostkey.length == 0) continue;
 
-				try {
-					known.addHostkey(new String[] { String.format("%s:%d", hostname, port) }, hostkeyalgo, hostkey);
-				} catch(Exception e) {
-					Log.e(TAG, "Problem while adding a known host from database", e);
+					try {
+						known.addHostkey(new String[] { String.format("%s:%d", hostname, port) }, hostkeyalgo, hostkey);
+					} catch(Exception e) {
+						Log.e(TAG, "Problem while adding a known host from database", e);
+					}
 				}
+
+				c.close();
 			}
 
-			c.close();
+			db.close();
 		}
-
-		db.close();
 
 		return known;
 	}
@@ -511,13 +540,15 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public void stopUsingPubkey(long pubkeyId) {
 		if (pubkeyId < 0) return;
 
-		SQLiteDatabase db = this.getWritableDatabase();
-
 		ContentValues values = new ContentValues();
 		values.put(FIELD_HOST_PUBKEYID, PUBKEYID_ANY);
 
-		db.update(TABLE_HOSTS, values, FIELD_HOST_PUBKEYID + " = ?", new String[] { String.valueOf(pubkeyId) });
-		db.close();
+		synchronized (dbLock) {
+			SQLiteDatabase db = this.getWritableDatabase();
+
+			db.update(TABLE_HOSTS, values, FIELD_HOST_PUBKEYID + " = ?", new String[] { String.valueOf(pubkeyId) });
+			db.close();
+		}
 
 		Log.d(TAG, String.format("Set all hosts using pubkey id %d to -1", pubkeyId));
 	}
@@ -532,29 +563,32 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	 * @return port forwards associated with host ID
 	 */
 	public List<PortForwardBean> getPortForwardsForHost(HostBean host) {
-		SQLiteDatabase db = this.getReadableDatabase();
 		List<PortForwardBean> portForwards = new LinkedList<PortForwardBean>();
 
-		Cursor c = db.query(TABLE_PORTFORWARDS, new String[] {
-				"_id", FIELD_PORTFORWARD_NICKNAME, FIELD_PORTFORWARD_TYPE, FIELD_PORTFORWARD_SOURCEPORT,
-				FIELD_PORTFORWARD_DESTADDR, FIELD_PORTFORWARD_DESTPORT },
-				FIELD_PORTFORWARD_HOSTID + " = ?", new String[] { String.valueOf(host.getId()) },
-				null, null, null);
+		synchronized (dbLock) {
+			SQLiteDatabase db = this.getReadableDatabase();
 
-		while (c.moveToNext()) {
-			PortForwardBean pfb = new PortForwardBean(
-				c.getInt(0),
-				host.getId(),
-				c.getString(1),
-				c.getString(2),
-				c.getInt(3),
-				c.getString(4),
-				c.getInt(5));
-			portForwards.add(pfb);
+			Cursor c = db.query(TABLE_PORTFORWARDS, new String[] {
+					"_id", FIELD_PORTFORWARD_NICKNAME, FIELD_PORTFORWARD_TYPE, FIELD_PORTFORWARD_SOURCEPORT,
+					FIELD_PORTFORWARD_DESTADDR, FIELD_PORTFORWARD_DESTPORT },
+					FIELD_PORTFORWARD_HOSTID + " = ?", new String[] { String.valueOf(host.getId()) },
+					null, null, null);
+
+			while (c.moveToNext()) {
+				PortForwardBean pfb = new PortForwardBean(
+					c.getInt(0),
+					host.getId(),
+					c.getString(1),
+					c.getString(2),
+					c.getInt(3),
+					c.getString(4),
+					c.getInt(5));
+				portForwards.add(pfb);
+			}
+
+			c.close();
+			db.close();
 		}
-
-		c.close();
-		db.close();
 
 		return portForwards;
 	}
@@ -566,18 +600,21 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	 */
 	public boolean savePortForward(PortForwardBean pfb) {
 		boolean success = false;
-		SQLiteDatabase db = this.getWritableDatabase();
 
-		if (pfb.getId() < 0) {
-			long id = db.insert(TABLE_PORTFORWARDS, null, pfb.getValues());
-			pfb.setId(id);
-			success = true;
-		} else {
-			if (db.update(TABLE_PORTFORWARDS, pfb.getValues(), "_id = ?", new String[] { String.valueOf(pfb.getId()) }) > 0)
+		synchronized (dbLock) {
+			SQLiteDatabase db = getWritableDatabase();
+
+			if (pfb.getId() < 0) {
+				long id = db.insert(TABLE_PORTFORWARDS, null, pfb.getValues());
+				pfb.setId(id);
 				success = true;
-		}
+			} else {
+				if (db.update(TABLE_PORTFORWARDS, pfb.getValues(), "_id = ?", new String[] { String.valueOf(pfb.getId()) }) > 0)
+					success = true;
+			}
 
-		db.close();
+			db.close();
+		}
 
 		return success;
 	}
@@ -590,50 +627,54 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		if (pfb.getId() < 0)
 			return;
 
-		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_PORTFORWARDS, "_id = ?", new String[] { String.valueOf(pfb.getId()) });
-		db.close();
+		synchronized (dbLock) {
+			SQLiteDatabase db = this.getWritableDatabase();
+			db.delete(TABLE_PORTFORWARDS, "_id = ?", new String[] { String.valueOf(pfb.getId()) });
+			db.close();
+		}
 	}
 
 	public Integer[] getColorsForHost(HostBean host) {
 		Integer[] colors = Colors.defaults.clone();
 
-		SQLiteDatabase db = getReadableDatabase();
+		synchronized (dbLock) {
+			SQLiteDatabase db = getReadableDatabase();
 
-		Cursor c = db.query(TABLE_COLORS, new String[] {
-				FIELD_COLOR_NUMBER, FIELD_COLOR_VALUE },
-				FIELD_COLOR_SCHEME + " IS NULL",
-				null, null, null, null);
-
-		while (c.moveToNext()) {
-			Log.d(TAG, "Setting default color " + c.getInt(0) + " to " + c.getInt(1));
-			colors[c.getInt(0)] = new Integer(c.getInt(1));
-		}
-
-		c.close();
-
-		// TODO This could probably just be a join
-		if (host != null) {
-			c = db.query(TABLE_COLORS, new String[] {
+			Cursor c = db.query(TABLE_COLORS, new String[] {
 					FIELD_COLOR_NUMBER, FIELD_COLOR_VALUE },
-					FIELD_COLOR_SCHEME + " = ?",
-					new String[] { String.valueOf(host.getId()) },
-					null, null, null);
+					FIELD_COLOR_SCHEME + " IS NULL",
+					null, null, null, null);
 
 			while (c.moveToNext()) {
+				Log.d(TAG, "Setting default color " + c.getInt(0) + " to " + c.getInt(1));
 				colors[c.getInt(0)] = new Integer(c.getInt(1));
 			}
 
 			c.close();
-		}
 
-		db.close();
+			// TODO This could probably just be a join
+			if (host != null) {
+				c = db.query(TABLE_COLORS, new String[] {
+						FIELD_COLOR_NUMBER, FIELD_COLOR_VALUE },
+						FIELD_COLOR_SCHEME + " = ?",
+						new String[] { String.valueOf(host.getId()) },
+						null, null, null);
+
+				while (c.moveToNext()) {
+					colors[c.getInt(0)] = new Integer(c.getInt(1));
+				}
+
+				c.close();
+			}
+
+			db.close();
+		}
 
 		return colors;
 	}
 
 	public void setColorForHost(HostBean host, int number, int value) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db;
 
 		String hostWhere;
 		if (host == null)
@@ -652,10 +693,16 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 			whereArgs[0] = String.valueOf(number);
 
-			db.delete(TABLE_COLORS,
-					FIELD_COLOR_NUMBER + " = ? AND "
-					+ hostWhere,
-					new String[] { String.valueOf(number) });
+			synchronized (dbLock) {
+				db = getWritableDatabase();
+
+				db.delete(TABLE_COLORS,
+						FIELD_COLOR_NUMBER + " = ? AND "
+						+ hostWhere,
+						new String[] { String.valueOf(number) });
+
+				db.close();
+			}
 		} else {
 			ContentValues values = new ContentValues();
 			values.put(FIELD_COLOR_NUMBER, number);
@@ -666,15 +713,18 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			if (host != null)
 				whereArgs = new String[] { String.valueOf(host.getId()) };
 
-			int rowsAffected = db.update(TABLE_COLORS, values,
-					hostWhere, whereArgs);
+			synchronized (dbLock) {
+				db = getWritableDatabase();
+				int rowsAffected = db.update(TABLE_COLORS, values,
+						hostWhere, whereArgs);
 
-			if (rowsAffected == 0) {
-				db.insert(TABLE_COLORS, null, values);
+				if (rowsAffected == 0) {
+					db.insert(TABLE_COLORS, null, values);
+				}
+
+				db.close();
 			}
 		}
-
-		db.close();
 	}
 
 	public void setGlobalColor(int number, int value) {
@@ -684,27 +734,13 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public int[] getDefaultColorsForHost(HostBean host) {
 		int[] colors = new int[] { DEFAULT_FG_COLOR, DEFAULT_BG_COLOR };
 
-		SQLiteDatabase db = getReadableDatabase();
+		synchronized (dbLock) {
+			SQLiteDatabase db = getReadableDatabase();
 
-		Cursor c = db.query(TABLE_COLOR_DEFAULTS,
-				new String[] { FIELD_COLOR_FG, FIELD_COLOR_BG },
-				FIELD_COLOR_SCHEME + " IS NULL",
-				null, null, null, null);
-
-		if (c.moveToFirst()) {
-			colors[0] = c.getInt(0);
-			colors[1] = c.getInt(1);
-		}
-
-		c.close();
-
-		// TODO This could probably just be a join
-		if (host != null) {
-			c = db.query(TABLE_COLOR_DEFAULTS,
+			Cursor c = db.query(TABLE_COLOR_DEFAULTS,
 					new String[] { FIELD_COLOR_FG, FIELD_COLOR_BG },
-					FIELD_COLOR_SCHEME + " = ?",
-					new String[] { String.valueOf(host.getId()) },
-					null, null, null);
+					FIELD_COLOR_SCHEME + " IS NULL",
+					null, null, null, null);
 
 			if (c.moveToFirst()) {
 				colors[0] = c.getInt(0);
@@ -712,9 +748,25 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			}
 
 			c.close();
-		}
 
-		db.close();
+			// TODO This could probably just be a join
+			if (host != null) {
+				c = db.query(TABLE_COLOR_DEFAULTS,
+						new String[] { FIELD_COLOR_FG, FIELD_COLOR_BG },
+						FIELD_COLOR_SCHEME + " = ?",
+						new String[] { String.valueOf(host.getId()) },
+						null, null, null);
+
+				if (c.moveToFirst()) {
+					colors[0] = c.getInt(0);
+					colors[1] = c.getInt(1);
+				}
+
+				c.close();
+			}
+
+			db.close();
+		}
 
 		return colors;
 	}
@@ -726,7 +778,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public void setDefaultColorsForHost(HostBean host, int fg, int bg) {
 		int[] defaultColors = getGlobalDefaultColors();
 
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db;
 
 		String schemeWhere = null;
 		String[] whereArgs;
@@ -742,22 +794,32 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		}
 
 		if (fg == defaultColors[0] && bg == defaultColors[1]) {
-			db.delete(TABLE_COLOR_DEFAULTS,
-					schemeWhere,
-					whereArgs);
+			synchronized (dbLock) {
+				db = getWritableDatabase();
+
+				db.delete(TABLE_COLOR_DEFAULTS,
+						schemeWhere,
+						whereArgs);
+
+				db.close();
+			}
 		} else {
 			ContentValues values = new ContentValues();
 			values.put(FIELD_COLOR_FG, fg);
 			values.put(FIELD_COLOR_BG, bg);
 
-			int rowsAffected = db.update(TABLE_COLOR_DEFAULTS, values,
-					schemeWhere, whereArgs);
+			synchronized (dbLock) {
+				db = getWritableDatabase();
 
-			if (rowsAffected == 0) {
-				db.insert(TABLE_COLOR_DEFAULTS, null, values);
+				int rowsAffected = db.update(TABLE_COLOR_DEFAULTS, values,
+						schemeWhere, whereArgs);
+
+				if (rowsAffected == 0) {
+					db.insert(TABLE_COLOR_DEFAULTS, null, values);
+				}
+
+				db.close();
 			}
 		}
-
-		db.close();
 	}
 }
