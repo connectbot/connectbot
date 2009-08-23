@@ -71,15 +71,15 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			SQLiteDatabase db = hostdb.getReadableDatabase();
 			Cursor cursor = db.query(table, null, "_id = ?",
 					new String[] { String.valueOf(id) }, null, null, null);
-			cursor.moveToFirst();
 
-			for(int i = 0; i < cursor.getColumnCount(); i++) {
-				String key = cursor.getColumnName(i);
-				if(key.equals(HostDatabase.FIELD_HOST_HOSTKEY)) continue;
-				String value = cursor.getString(i);
-				values.put(key, value);
+			if (cursor.moveToFirst()) {
+				for(int i = 0; i < cursor.getColumnCount(); i++) {
+					String key = cursor.getColumnName(i);
+					if(key.equals(HostDatabase.FIELD_HOST_HOSTKEY)) continue;
+					String value = cursor.getString(i);
+					values.put(key, value);
+				}
 			}
-
 			cursor.close();
 			db.close();
 
