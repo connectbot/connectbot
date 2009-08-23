@@ -764,8 +764,19 @@ public class ConsoleActivity extends Activity {
 					.setView(resizeView)
 					.setPositiveButton(R.string.button_resize, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
-							int width = Integer.parseInt(((EditText)resizeView.findViewById(R.id.width)).getText().toString());
-							int height = Integer.parseInt(((EditText)resizeView.findViewById(R.id.height)).getText().toString());
+							int width, height;
+							try {
+								width = Integer.parseInt(((EditText) resizeView
+										.findViewById(R.id.width))
+										.getText().toString());
+								height = Integer.parseInt(((EditText) resizeView
+										.findViewById(R.id.height))
+										.getText().toString());
+							} catch (NumberFormatException nfe) {
+								// TODO change this to a real dialog where we can
+								// make the input boxes turn red to indicate an error.
+								return;
+							}
 
 							terminalView.forceSize(width, height);
 						}
