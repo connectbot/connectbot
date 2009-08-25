@@ -30,7 +30,8 @@
 		android:layout_width="100dip"
 		android:layout_height="wrap_content"
 		android:singleLine="true"
-		android:numeric="integer" android:text="80"/>
+		android:numeric="integer"
+		android:text="80"/>
 
 	<TextView
 		android:layout_width="wrap_content"
@@ -48,5 +49,6 @@
 		android:layout_width="100dip"
 		android:layout_height="wrap_content"
 		android:singleLine="true"
-		android:numeric="integer" android:text="25"/>
+		android:numeric="integer"
+		android:text="25"/>
 </LinearLayout>
