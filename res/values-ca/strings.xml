@@ -237,9 +237,9 @@
 	<string name="hostpref_wantsession_summary">Deshabilita aquesta preferència per només usar redireccionament de ports</string>
 
 	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
-	<string name="hostpref_stayconnected_title">Stay connected</string>
+	<string name="hostpref_stayconnected_title">Manté connectat</string>
 	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
-	<string name="hostpref_stayconnected_summary">Try to reconnect to host if disconnected</string>
+	<string name="hostpref_stayconnected_summary">Intenta reconnectar al servidor si es desconnecta</string>
 
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
 	<string name="hostpref_delkey_title">Tecla DEL</string>
@@ -288,7 +288,7 @@
 	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
 	<string name="console_menu_resize">Força el tamany</string>
 	<!-- Button that brings up the list of URLs on the current screen -->
-	<string name="console_menu_urlscan">URL Scan</string>
+	<string name="console_menu_urlscan">Llistat de URL</string>
 
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
 	<string name="portforward_local">Local</string>
@@ -413,7 +413,7 @@
 	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
 	<string name="no">No</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
-	<string name="with_confirmation">With confirmation</string>
+	<string name="with_confirmation">Amb confirmació</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
 	<string name="yes">Sí</string>
 

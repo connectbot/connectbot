@@ -23,7 +23,7 @@
 	<string name="menu_delete">Host löschen</string>
 	<string name="menu_preferences">Einstellungen</string>
 
-	<string name="help_intro">Wählen Sie eine Überschrift aus, um mehr Informationen zu einem bestimmten Thema zu erhalten!</string>
+	<string name="help_intro">Für mehr Informationen wählen Sie eine Überschrift!</string>
 	<string name="help_about">Über ConnectBot</string>
 	<string name="help_keyboard">Tastatur</string>
 
