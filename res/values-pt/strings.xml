@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_desc">Yksinkertainen, tehokas, avoimen lähdekoodin SSH-asiakasohjelma.</string>
+	<string name="app_desc">Simples e poderoso cliente SSH open-source</string>
 
 	<!-- Window title for the Host List -->
-	<string name="title_hosts_list">Palvelimet</string>
+	<string name="title_hosts_list">Máquinas</string>
 	<!-- Window title for the Pubkeys List -->
-	<string name="title_pubkey_list">Julkiset avaimet</string>
+	<string name="title_pubkey_list">Chaves Públicas</string>
 	<!-- Window title for the Port Forwards List -->
-	<string name="title_port_forwards_list">Porttiohjaukset</string>
+	<string name="title_port_forwards_list">Redireciomento de portas</string>
 	<!-- Window title when editing host details -->
-	<string name="title_host_editor">Palvelimen muokkaus</string>
+	<string name="title_host_editor">Editar a Máquina</string>
 	<!-- Window title for Help index -->
-	<string name="title_help">Ohje</string>
+	<string name="title_help">Ajuda</string>
 	<!-- Window title for color list editing screen -->
-	<string name="title_colors">Värit</string>
+	<string name="title_colors">Cores</string>
 
-	<string name="resolve_connect">Yhdistä</string>
+	<string name="resolve_connect">Ligar</string>
 	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
 	<string name="resolve_entropy">Gather Entropy</string>
 
-	<string name="menu_insert">Lisää palvelin</string>
-	<string name="menu_delete">Poista palvelin</string>
-	<string name="menu_preferences">Asetukset</string>
+	<string name="menu_insert">Adicionar uma Máquina</string>
+	<string name="menu_delete">Eliminar máquina</string>
+	<string name="menu_preferences">Definições</string>
 
-	<string name="help_intro">Ole hyvä ja valitse alta aihe, josta haluaisit tietää lisää.</string>
-	<string name="help_about">Tietoja ConnectBotista</string>
-	<string name="help_keyboard">Näppäimistö</string>
+	<string name="help_intro">Selecione um tópico para mais informações sobre o assunto.</string>
+	<string name="help_about">Sobre ConnectBot</string>
+	<string name="help_keyboard">Teclado</string>
 
-	<string name="pubkey_generate">Luo</string>
-	<string name="pubkey_import">Tuo</string>
-	<string name="pubkey_delete">Poista avain</string>
+	<string name="pubkey_generate">Gerar</string>
+	<string name="pubkey_import">Importar</string>
+	<string name="pubkey_delete">Apagar a chave</string>
 	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
 	<string name="pubkey_gather_entropy">Gathering Entropy</string>
-	<string name="pubkey_touch_prompt">Kosketa tätä laatikkoa kerätäksesi satunnaisdataa: %1$d%% valmiina</string>
-	<string name="pubkey_touch_hint">Varmistaaksesi avaimen luonnin satunnaisuuden, liikuta sormeasi alla olevan laatikon kohdalla sattumanvaraisesti.</string>
-	<string name="pubkey_generating">Luodaan avainparia...</string>
-	<string name="pubkey_copy_private">Kopio yksityinen avain</string>
-	<string name="pubkey_copy_public">Kopioi julkinen avain</string>
+	<string name="pubkey_touch_prompt">Toque nesta caixa para gerar aleariedade:  %1$d%% completo</string>
+	<string name="pubkey_touch_hint">Para assegurar aleatoriedade durante a geração da chave, mova o dedo aleatoriamente sobre a caixa a baixo.</string>
+	<string name="pubkey_generating">A gerar par de chaves</string>
+	<string name="pubkey_copy_private">Copiar chave privada</string>
+	<string name="pubkey_copy_public">Copiar chave pública</string>
 	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
-	<string name="pubkey_list_empty">Tap "Menu" to create\nor import key pairs.</string>
-	<string name="pubkey_unknown_format">Tuntematon tyyppi</string>
-	<string name="pubkey_change_password">Vaihda salasana</string>
-	<string name="pubkey_list_pick">Pick from /sdcard</string>
-	<string name="pubkey_import_parse_problem">Ongelma käsiteltäessä tuotua avainparia</string>
+	<string name="pubkey_list_empty">Carregue em "Menu" para criar\nou importar as chaves.</string>
+	<string name="pubkey_unknown_format">Formato desconhecido</string>
+	<string name="pubkey_change_password">Alterar password</string>
+	<string name="pubkey_list_pick">Escolher de /sdcard</string>
+	<string name="pubkey_import_parse_problem">Problem parsing imported private key</string>
 	<string name="pubkey_unlock">Unlock key</string>
 	<string name="pubkey_failed_add">Bad password for key '%1$s'. Authentication failed.</string>
 	<string name="pubkey_memory_load">Load into memory</string>
