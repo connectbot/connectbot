@@ -34,6 +34,13 @@
 		android:defaultValue="Daily"
 		/>
 
+	<CheckBoxPreference
+		android:key="connPersist"
+		android:title="@string/pref_conn_persist_title"
+		android:summary="@string/pref_conn_persist_summary"
+		android:defaultValue="true"
+		/>
+
 	<PreferenceCategory
 		android:title="@string/pref_emulation_category">
 
