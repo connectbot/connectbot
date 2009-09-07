@@ -148,6 +148,11 @@
 	<!-- Summary for the update check preference -->
 	<string name="pref_update_summary">Set the maximum frequency to check for ConnectBot updates</string>
 
+	<!-- Name for the preference that forces the service to stay running in the background.-->
+	<string name="pref_conn_persist_title">Persist connections</string>
+	<!-- Summary for the preference that forces the service to stay running in the background. -->
+	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Directory shortcuts</string>
 	<!-- Summary for the keyboard shortcuts preference -->

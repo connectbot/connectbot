@@ -160,6 +160,13 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		enableMediaPlayer();
 
 		notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+		/* If user wants the connections to stay alive at all costs,
+		 * set the service to be "foreground."
+		 */
+		if (prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)) {
+			setForeground(true);
+		}
 	}
 
 	@Override
