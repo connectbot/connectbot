@@ -1331,12 +1331,14 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		if (urlPattern == null)
 			urlPattern = Pattern.compile(urlRegex);
 
-		for (int l = 0; l < buffer.height; l++) {
-			Matcher urlMatcher = urlPattern.matcher(
-					new String(buffer.charArray[buffer.windowBase + l]));
-			while (urlMatcher.find())
-				urls.add(urlMatcher.group());
-		}
+		char[] visibleBuffer = new char[buffer.height * buffer.width];
+		for (int l = 0; l < buffer.height; l++)
+			System.arraycopy(buffer.charArray[buffer.windowBase + l], 0,
+					visibleBuffer, l * buffer.width, buffer.width);
+
+		Matcher urlMatcher = urlPattern.matcher(new String(visibleBuffer));
+		while (urlMatcher.find())
+			urls.add(urlMatcher.group());
 
 		return urls;
 	}
