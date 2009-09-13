@@ -46,7 +46,6 @@
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
 		android:layout_toLeftOf="@+id/bg"
-		android:id="@+id/fg_label"
 		android:paddingTop="12dp"
 		/>
 
