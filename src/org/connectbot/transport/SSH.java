@@ -629,7 +629,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				return false;
 			}
 
-			portForward.setEnabled(false);
+			portForward.setEnabled(true);
 			return true;
 		} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(portForward.getType())) {
 			DynamicPortForwarder dpf = null;
