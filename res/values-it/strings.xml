@@ -17,23 +17,23 @@
 
 	<string name="resolve_connect">Connetti</string>
 	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="resolve_entropy">Creazione entropia</string>
+	<string name="resolve_entropy">Raccolta entropia</string>
 
 	<string name="menu_insert">Aggiungi connessione</string>
 	<string name="menu_delete">Elimina connessione</string>
 	<string name="menu_preferences">Preferenze</string>
 
-	<string name="help_intro">Selezionare un argomento dalla lista per ottenere maggiori informazioni.</string>
+	<string name="help_intro">Seleziona un argomento dalla lista per ottenere maggiori informazioni.</string>
 	<string name="help_about">Informazioni su ConnectBot</string>
 	<string name="help_keyboard">Tastiera</string>
 
 	<string name="pubkey_generate">Genera</string>
 	<string name="pubkey_import">Importa</string>
-	<string name="pubkey_delete">Cancella chiave</string>
+	<string name="pubkey_delete">Elimina chiave</string>
 	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="pubkey_gather_entropy">Creazione entropia</string>
-	<string name="pubkey_touch_prompt">Toccare il riquadro per ottenere la randomicità: %1$d%% fatto</string>
-	<string name="pubkey_touch_hint">Per poter assicurare la randomicità durante la generazione della chiave, muovere le dita casualmente sul riquadro sottostante.</string>
+	<string name="pubkey_gather_entropy">Raccolta entropia</string>
+	<string name="pubkey_touch_prompt">Tocca questo riquadro per raccogliere informazioni casuali: %1$d%% fatto</string>
+	<string name="pubkey_touch_hint">Per poter assicurare una sorgente di casualità durante la generazione della chiave, muovere le dita casualmente sul riquadro sottostante.</string>
 	<string name="pubkey_generating">La coppia di chiavi viene generata...</string>
 	<string name="pubkey_copy_private">Copia chiave privata</string>
 	<string name="pubkey_copy_public">Copia chiave pubblica</string>
@@ -42,23 +42,23 @@
 	<string name="pubkey_unknown_format">Formato non riconosciuto</string>
 	<string name="pubkey_change_password">Cambia password</string>
 	<string name="pubkey_list_pick">Leggi da /sdcard</string>
-	<string name="pubkey_import_parse_problem">Problemi durante l'importazione della chiave privata</string>
+	<string name="pubkey_import_parse_problem">Problemi durante l\'importazione della chiave privata</string>
 	<string name="pubkey_unlock">Chiave di sblocco</string>
-	<string name="pubkey_failed_add">Password errata per la chiave '%1$s'. Errore di autenticazione.</string>
+	<string name="pubkey_failed_add">Password errata per la chiave \'%1$s\'. Errore di autenticazione.</string>
 	<string name="pubkey_memory_load">Carica in memoria</string>
 	<string name="pubkey_memory_unload">Elimina dalla memoria</string>
-	<string name="pubkey_load_on_start">Carica la chiave all'avvio</string>
+	<string name="pubkey_load_on_start">Carica la chiave all\'avvio</string>
 	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
 	<string name="pubkey_confirm_use">Conferma prima di usare</string>
 
 	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
-	<string name="portforward_list_empty">Selezione "Menu" per creare\ninoltri delle porte.</string>
+	<string name="portforward_list_empty">Seleziona "Menu" per creare\ninoltri delle porte.</string>
 	<string name="portforward_edit">Modifica inoltro porte</string>
 	<string name="portforward_delete">Elimina inoltro porta</string>
 
 	<string name="prompt_nickname">Nome utente:</string>
 	<!-- An example string that could be used as a nickname for a pubkey. -->
-	<string name="prompt_nickname_hint_pubkey">La mia chiave del lavoro</string>
+	<string name="prompt_nickname_hint_pubkey">La mia chiave di lavoro</string>
 	<!-- The source TCP port for port forwards. -->
 	<string name="prompt_source_port">Porta sorgente:</string>
 	<!-- The "host:port" combination used for port forward destinations. -->
@@ -69,35 +69,35 @@
 	<string name="prompt_again">(ripeti)</string>
 	<!-- Label for the user to select port forward type. -->
 	<string name="prompt_type">Tipo:</string>
-	<string name="prompt_password_can_be_blank">Nota: la password non può essere vuota</string>
+	<string name="prompt_password_can_be_blank">Nota: la password può essere vuota</string>
 	<!-- Prompt for the size of the private key in bits. -->
 	<string name="prompt_bits">Bits:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Password per la chiave '%1$s'</string>
+	<string name="prompt_pubkey_password">Password per la chiave \'%1$s\'</string>
 
 	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">Permetti all'host remoto di\n usare la chiave '%1$s'?</string>
+	<string name="prompt_allow_agent_to_use_key">Permetti all\'host remoto di\n usare la chiave \'%1$s\'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning_header">ATTENZIONE: L'IDENTIFICAZIONE DELL?HOST REMOTO E' CAMBIATA!</string>
+	<string name="host_verification_failure_warning_header">ATTENZIONE: L\'IDENTIFICAZIONE DELL\'HOST REMOTO E\' CAMBIATA!</string>
 	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning">E' POSSIBILE CHE QUALCUNO STIA FACENDO QUALCOSA DI MALEVOLO!\nQualcuno potrebbe spiarti in questo momento (attacco man-in-the-middle)!\nMa è anche possibile che la chiave dell'host sia cambiata.</string>
+	<string name="host_verification_failure_warning">E\' POSSIBILE CHE QUALCUNO STIA FACENDO QUALCOSA DI MALEVOLO!\nQualcuno potrebbe spiarti in questo momento (attacco man-in-the-middle)!\nMa è anche possibile che la chiave dell\'host sia cambiata.</string>
 
 	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
-	<string name="prompt_host_disconnected">L'host ha disconnesso.\nChiudere la sessione?</string>
+	<string name="prompt_host_disconnected">L\'host si è disconnesso.\nChiudere la sessione?</string>
 	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
 	<string name="prompt_continue_connecting">Sei sicuro di voler\ncontinuare a connetterti?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">L'autenticità dell'host '%1$s' non può essere accertata.</string>
+	<string name="host_authenticity_warning">L\'autenticità dell\'host \'%1$s\' non può essere accertata.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
-	<string name="host_fingerprint">Host %1$s l'impronta digitale della chiave è %2$s</string>
+	<string name="host_fingerprint">L\'impronta digitale della chiave dell\'Host %1$s è %2$s</string>
 
 	<string name="alert_passwords_do_not_match_msg">Le password non corrispondono!</string>
 	<string name="alert_wrong_password_msg">Password errata!</string>
 	<string name="alert_key_corrupted_msg">La chiave privata sembra corrotta!</string>
-	<string name="alert_sdcard_absent">SD card non trovata!</string>
+	<string name="alert_sdcard_absent">Scheda SD non trovata!</string>
 
 	<!-- Add a new item (e.g., host or pubkey) to the list. -->
 	<string name="button_add">Aggiungi</string>
@@ -141,22 +141,27 @@
 	<!-- Name for the memorize keys preference -->
 	<string name="pref_memkeys_title">Mantieni le chiavi in memoria</string>
 	<!-- Summary for the memorize keys preference -->
-	<string name="pref_memkeys_summary">Mantenere le chiavi in memoria finchè il servizio non viene terminato</string>
+	<string name="pref_memkeys_summary">Mantiene le chiavi in memoria finché il servizio non viene terminato</string>
 
 	<!-- Name for the update check preference -->
 	<string name="pref_update_title">Controlla aggiornamenti</string>
 	<!-- Summary for the update check preference -->
 	<string name="pref_update_summary">Imposta la frequenza massima per il controllo degli aggiornamenti</string>
 
+	<!-- Name for the preference that forces the service to stay running in the background.-->
+	<string name="pref_conn_persist_title">Persist connections</string>
+	<!-- Summary for the preference that forces the service to stay running in the background. -->
+	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Scorciatoie directory</string>
 	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Controlla l'uso di Alt per '/' e di Shift per Tab</string>
+	<string name="pref_keymode_summary">Controlla l\'uso di Alt per \'/\' e di Shift per Tab</string>
 
 	<!-- Name for the camera shortcut usage preference -->
 	<string name="pref_camera_title">Scorciatoia camera</string>
 	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_camera_summary">Selezionare quale scorciatoia azionare quando il bottone della camera viene premuto</string>
+	<string name="pref_camera_summary">Seleziona quale scorciatoia azionare quando il bottone della camera viene premuto</string>
 
 	<!-- Name for the keep screen on preference -->
 	<string name="pref_keepalive_title">Impedisci lo spegnimento dello schermo</string>
@@ -169,7 +174,7 @@
 	<string name="pref_wifilock_summary">Non spegne la connessione Wi-Fi quando una sessione è attiva</string>
 
 	<!-- Name for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_title">Frecce ineguali</string>
+	<string name="pref_bumpyarrows_title">Vibrazione frecce</string>
 	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
 	<string name="pref_bumpyarrows_summary">Vibra quando si inviano movimenti con la trackball; utile per connessioni lente</string>
 
@@ -216,15 +221,15 @@
 	<string name="hostpref_color_title">Categoria colore</string>
 
 	<!-- Host pubkey usage preference title -->
-	<string name="hostpref_pubkeyid_title">Usare autenticazione a chiave pubblica</string>
+	<string name="hostpref_pubkeyid_title">Usa autenticazione a chiave pubblica</string>
 
 	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
-	<string name="hostpref_authagent_title">Usa l'agente di autorizzazione SSH</string>
+	<string name="hostpref_authagent_title">Usa l\'agente di autorizzazione SSH</string>
 
 	<!-- Host post-login automation preference title -->
 	<string name="hostpref_postlogin_title">Automazione post-accesso</string>
 	<!-- Host post-login automation preference summary -->
-	<string name="hostpref_postlogin_summary">Comandi per eseguire su un server remoto una volta autenticati</string>
+	<string name="hostpref_postlogin_summary">Comandi da eseguire su un server remoto una volta autenticati</string>
 
 	<!-- Host compression preference title -->
 	<string name="hostpref_compression_title">Compressione</string>
@@ -242,9 +247,9 @@
 	<string name="hostpref_stayconnected_summary">Tenta di riconnettersi in caso di disconnessione</string>
 
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_title">Tasto DEL</string>
+	<string name="hostpref_delkey_title">Tasto CANC</string>
 	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_summary">Il codice di tastiera inviato quando viene premuto il tasto DEL</string>
+	<string name="hostpref_delkey_summary">Il codice di tastiera inviato quando viene premuto il tasto CANC</string>
 
 	<!-- Host character encoding preference title -->
 	<string name="hostpref_encoding_title">Codifica</string>
@@ -275,7 +280,7 @@
 	<!-- Message given when user copies from the terminal. -->
 	<string name="console_copy_done">%1$d byte copiati</string>
 	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">Tocca e trascina\noppure usa il pad direzionale\nper selezionare un area da copiare</string>
+	<string name="console_copy_start">Tocca e trascina\noppure usa il pad direzionale\nper selezionare un\'area da copiare</string>
 
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">Chiudi</string>
@@ -288,7 +293,7 @@
 	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
 	<string name="console_menu_resize">Forza Dimensione</string>
 	<!-- Button that brings up the list of URLs on the current screen -->
-	<string name="console_menu_urlscan">URL Scan</string>
+	<string name="console_menu_urlscan">Scansione URL</string>
 
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
 	<string name="portforward_local">Locale</string>
@@ -300,7 +305,7 @@
 	<string name="portforward_pos">Crea inoltro porta</string>
 
 	<string name="portforward_done">Inoltro della porta impostato correttamente</string>
-	<string name="portforward_problem">Problema configurando l'inoltro della porta, forse si cerca di usare una porta più bassa di 1024 o la porta è già in uso?</string>
+	<string name="portforward_problem">Problema configurando l\'inoltro della porta, forse si cerca di usare una porta più bassa di 1024 o la porta è già in uso?</string>
 
 	<string name="portforward_menu_add">Aggiungi inoltro di una porta</string>
 
@@ -313,7 +318,7 @@
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
 	<string name="format_username">nome utente</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_hostname">hostname</string>
+	<string name="format_hostname">nome host</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
 	<string name="format_port">porta</string>
 
@@ -333,8 +338,8 @@
 
 	<!-- Default screen rotation preference selection -->
 	<string name="list_rotation_default">Predefinita</string>
-	<string name="list_rotation_land">Forza paesaggio</string>
-	<string name="list_rotation_port">Forza ritratto</string>
+	<string name="list_rotation_land">Forza orizzontale</string>
+	<string name="list_rotation_port">Forza verticale</string>
 	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
 	<string name="list_rotation_auto">Automatico</string>
 
@@ -352,8 +357,8 @@
 	<!-- Name for the ASCII DEL character -->
 	<string name="list_delkey_del">Elimina</string>
 
-	<string name="delete_message">Sei sicuro di voler cancellare '%1$s'?</string>
-	<string name="delete_pos">Si, cancella</string>
+	<string name="delete_message">Sei sicuro di voler eliminare \'%1$s\'?</string>
+	<string name="delete_pos">Sì, elimina</string>
 	<string name="delete_neg">Annulla</string>
 
 	<!-- Button to agree to license terms. -->
@@ -370,32 +375,32 @@
 	<string name="terminal_connecting">Connessione a %1$s:%2$d via %3$s</string>
 
 	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Host verificato '%1$s' chiave: %2$s</string>
-	<string name="terminal_failed">Verifica della chiave dell'host fallita.</string>
+	<string name="terminal_sucess">Host verificato \'%1$s\' chiave: %2$s</string>
+	<string name="terminal_failed">Verifica della chiave dell\'host fallita.</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
 	<string name="terminal_using_s2c_algorithm">Algoritmo server-to-client: %1$s %2$s</string>
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
 	<string name="terminal_using_c2s_algorithm">Algoritmo client-to-server: %1$s %2$s</string>
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_algorithm">Uso algoritmo: %1$s %2$s</string>
+	<string name="terminal_using_algorithm">Algoritmo in uso: %1$s %2$s</string>
 
 	<string name="terminal_auth">Tentativo di autenticazione</string>
 
-	<string name="terminal_auth_pass">Provando l'autenticazione 'password'</string>
-	<string name="terminal_auth_pass_fail">Metodo di autenticazione 'password' fallito</string>
+	<string name="terminal_auth_pass">Provando l\'autenticazione \'password\'</string>
+	<string name="terminal_auth_pass_fail">Metodo di autenticazione \'password\' fallito</string>
 
-	<string name="terminal_auth_pubkey_any">Tentativo di utilizzare autenticazione a 'chiave pubblica' con una delle chiavi pubbliche in memoria</string>
-	<string name="terminal_auth_pubkey_invalid">La chiave pubblica selezionata non è valida, provare a riselezionare la chiave nell'host editor</string>
-	<string name="terminal_auth_pubkey_specific">Tentativo di autenticazione a 'chiave pubblica' con una chiave pubblica specifica</string>
-	<string name="terminal_auth_pubkey_fail">Metodo di autenticazione a 'chiave pubblica' con la chiave '%1$s' fallito</string>
+	<string name="terminal_auth_pubkey_any">Tentativo di utilizzo autenticazione a \'chiave pubblica\' con una delle chiavi pubbliche in memoria</string>
+	<string name="terminal_auth_pubkey_invalid">La chiave pubblica selezionata non è valida, provare a riselezionare la chiave nell\'host editor</string>
+	<string name="terminal_auth_pubkey_specific">Tentativo di autenticazione a \'chiave pubblica\' con una chiave pubblica specifica</string>
+	<string name="terminal_auth_pubkey_fail">Metodo di autenticazione a \'chiave pubblica\' con la chiave \'%1$s\' fallito</string>
 
-	<string name="terminal_auth_ki">Provando l'autenticazione 'keyboard-interactive'</string>
-	<string name="terminal_auth_ki_fail">Metodo di autenticazione 'keyboard-interactive' fallito</string>
+	<string name="terminal_auth_ki">Provando l\'autenticazione \'keyboard-interactive\'</string>
+	<string name="terminal_auth_ki_fail">Metodo di autenticazione \'keyboard-interactive\' fallito</string>
 
-	<string name="terminal_auth_fail">[Il tuo host non supporta l'autenticazione 'password' o 'keyboard-interactive'</string>
+	<string name="terminal_auth_fail">[Il tuo host non supporta l\'autenticazione \'password\' o \'keyboard-interactive\'</string>
 
-	<string name="terminal_no_session">La sessione non inizierà a causa delle preferenze dell'host.</string>
+	<string name="terminal_no_session">La sessione non inizierà a causa delle preferenze dell\'host.</string>
 	<string name="terminal_enable_portfoward">Abilita il port forward: %1$s</string>
 
 	<string name="local_shell_unavailable">Fallimento! La shell locale non è disponibile su questo telefono.</string>
@@ -406,7 +411,7 @@
 	<!-- Dialog title when a new version of ConnectBot is detected. -->
 	<string name="upgrade">Nuova versione</string>
 	<!-- Button selection to upgrade to the latest ConnectBot when one is available. -->
-	<string name="upgrade_pos">Si, aggiorna</string>
+	<string name="upgrade_pos">Sì, aggiorna</string>
 	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
 	<string name="upgrade_neg">Non adesso</string>
 
@@ -418,7 +423,7 @@
 	<string name="yes">Sì</string>
 
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
-	<string name="exceptions_submit_message">Sembrerebbe che ConnectBot abbia avuto un problema durante l'ultima esecuzione. Inviare una segnalazione d'errore agli sviluppatori di ConnectBot?</string>
+	<string name="exceptions_submit_message">Sembrerebbe che ConnectBot abbia avuto un problema durante l\'ultima esecuzione. Inviare una segnalazione d\'errore agli sviluppatori di ConnectBot?</string>
 
 	<string name="color_red">rosso</string>
 	<string name="color_green">verde</string>

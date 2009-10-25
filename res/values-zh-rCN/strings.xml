@@ -148,6 +148,11 @@
 	<!-- Summary for the update check preference -->
 	<string name="pref_update_summary">设置检查ConnectBot最新版本的最大频率</string>
 
+	<!-- Name for the preference that forces the service to stay running in the background.-->
+	<string name="pref_conn_persist_title">Persist connections</string>
+	<!-- Summary for the preference that forces the service to stay running in the background. -->
+	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">目录快捷键</string>
 	<!-- Summary for the keyboard shortcuts preference -->
@@ -321,7 +326,7 @@
 	<!-- Selection choice to sort hosts by color. -->
 	<string name="list_menu_sortcolor">使用颜色排序</string>
 	<!-- Selection choice to sort hosts by nickname. -->
-	<string name="list_menu_sortname">使用名字排序</string>
+	<string name="list_menu_sortname">按名字排序</string>
 	<string name="list_menu_settings">设置</string>
 
 	<string name="list_host_disconnect">断开连接</string>

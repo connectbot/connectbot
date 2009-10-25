@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_desc">Egyszerű, hatékony, nyílt-forráskódú SSH kliens.</string>
+
+	<!-- Window title for the Host List -->
+	<string name="title_hosts_list">Kiszolgálók</string>
+	<!-- Window title for the Pubkeys List -->
+	<string name="title_pubkey_list">Publikus kulcsok</string>
+	<!-- Window title for the Port Forwards List -->
+	<string name="title_port_forwards_list">Port átiránytások</string>
+	<!-- Window title when editing host details -->
+	<string name="title_host_editor">Kiszolgáló szerkesztése</string>
+	<!-- Window title for Help index -->
+	<string name="title_help">Súgó</string>
+	<!-- Window title for color list editing screen -->
+	<string name="title_colors">Színek</string>
+
+	<string name="resolve_connect">Csatlakozás</string>
+	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
+	<string name="resolve_entropy">Entrópia gyűjtés</string>
+
+	<string name="menu_insert">Kiszolgáló hozzáadása</string>
+	<string name="menu_delete">Kiszolgáló törlése</string>
+	<string name="menu_preferences">Beállítások</string>
+
+	<string name="help_intro">Válaszon témakört az alábbiak közül egy adott téma részletes leírásához.</string>
+	<string name="help_about">A ConnectBot névjegye</string>
+	<string name="help_keyboard">Billentyűzet</string>
+
+	<string name="pubkey_generate">Generálás</string>
+	<string name="pubkey_import">Importálás</string>
+	<string name="pubkey_delete">Kulcs törlése</string>
+	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
+	<string name="pubkey_gather_entropy">Entrópia gyűjtés</string>
+	<string name="pubkey_touch_prompt">Érintse meg a dobozt a véletlenszerű generálásához: %1$d%% kész</string>
+	<string name="pubkey_touch_hint">A kulcs egyediségének biztosítása érdekében mozgassa ujját véletlenszerűen az alábbi dobozban.</string>
+	<string name="pubkey_generating">Kulcspár generálása...</string>
+	<string name="pubkey_copy_private">Privát kulcs másolása</string>
+	<string name="pubkey_copy_public">Nyilvános kulcs másolása</string>
+	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
+	<string name="pubkey_list_empty">Nyomjon "Menu"-t, kulcspár\n létrehozáshoz/importáláshoz.</string>
+	<string name="pubkey_unknown_format">Ismeretlen formátum</string>
+	<string name="pubkey_change_password">Jelszócsere</string>
+	<string name="pubkey_list_pick">Kiválaszt /sdcard -ról</string>
+	<string name="pubkey_import_parse_problem">Probléma a privát kulcspár feldolgozása során</string>
+	<string name="pubkey_unlock">Kulcs feloldása</string>
+	<string name="pubkey_failed_add">Hibás jelszó a '%1$s' kulcshoz. Sikertelen azonosítás.</string>
+	<string name="pubkey_memory_load">Betöltés a memóriába</string>
+	<string name="pubkey_memory_unload">Mermória ürítése</string>
+	<string name="pubkey_load_on_start">Kulcs betöltése induláskor</string>
+	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
+	<string name="pubkey_confirm_use">Jóváhagyás használat előtt</string>
+
+	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
+	<string name="portforward_list_empty">Nyomj "Menu"-t a port\nátirányításhoz.</string>
+	<string name="portforward_edit">Port átirányítás módosítása</string>
+	<string name="portforward_delete">Port átirányítás törlése</string>
+
+	<string name="prompt_nickname">Becenév:</string>
+	<!-- An example string that could be used as a nickname for a pubkey. -->
+	<string name="prompt_nickname_hint_pubkey">A munkahelyi kulcsom</string>
+	<!-- The source TCP port for port forwards. -->
+	<string name="prompt_source_port">Helyi port:</string>
+	<!-- The "host:port" combination used for port forward destinations. -->
+	<string name="prompt_destination">Cél:</string>
+	<string name="prompt_old_password">Régi jelszó:</string>
+	<string name="prompt_password">Jelszó:</string>
+	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
+	<string name="prompt_again">(újra)</string>
+	<!-- Label for the user to select port forward type. -->
+	<string name="prompt_type">Típus:</string>
+	<string name="prompt_password_can_be_blank">Tipp: a jelszóadás nem kötelező</string>
+	<!-- Prompt for the size of the private key in bits. -->
+	<string name="prompt_bits">Bitek:</string>
+
+	<!-- Prompt for the password to unlock a certain pubkey. -->
+	<string name="prompt_pubkey_password">A '%1$s' kulcs jelszava</string>
+
+	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
+	<string name="prompt_allow_agent_to_use_key">A '%1$s' kulcs engedélyezése\na távoli gépnek?</string>
+
+	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
+	<string name="host_verification_failure_warning_header">FIGYELEM: A TÁVOLI GÉP AZONOSÍTÓJA MEGVÁLTOZOTT!</string>
+	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
+	<string name="host_verification_failure_warning">FELTEHETŐEN VALAKI GYANÚS DOLGOKAT MŰVEL! \nValaki feltehetően megpróbál lehallgatni (man-in-the-middle attack) téged! \ nDe az is lehetséges, hogy a távoli fél kulcsa közben megváltozott.</string>
+
+	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
+	<string name="prompt_host_disconnected">A kapcsolat megszakadt.\nBezárja a folyamatot?</string>
+	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
+	<string name="prompt_continue_connecting">Biztosan folytatja a csatlakozást?</string>
+
+	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
+	<string name="host_authenticity_warning">A '%1$s' kiszolgáló azonosítása sikertelen.</string>
+	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
+	<string name="host_fingerprint">A %1$s kulcs újlenyomata a(-z) %2$s</string>
+
+	<string name="alert_passwords_do_not_match_msg">Nem egyezik a jelszó!</string>
+	<string name="alert_wrong_password_msg">Hibás jelszó!</string>
+	<string name="alert_key_corrupted_msg">Sérült privát kulcs!</string>
+	<string name="alert_sdcard_absent">Nincs SD kártya!</string>
+
+	<!-- Add a new item (e.g., host or pubkey) to the list. -->
+	<string name="button_add">Hozzáadás</string>
+	<!-- Change an existing item's (e.g., host or pubkey) details. -->
+	<string name="button_change">Módosítás</string>
+	<!-- Button that begins the generation of a public key pair. -->
+	<string name="button_generate">Kulcs generálása</string>
+	<!-- Button that resizes the screen to the user-specified dimensions. -->
+	<string name="button_resize">Átméretezés</string>
+
+	<string name="alert_disconnect_msg">A kapcsolat megszakadt</string>
+
+	<string name="msg_copyright">Minden jog fentartva © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
+
+	<!-- The category title for terminal emulation preferences. -->
+	<string name="pref_emulation_category">Terminál emulálás</string>
+
+	<!-- Name for the emulation terminal type preference. -->
+	<string name="pref_emulation_title">Emulálási mód</string>
+	<!-- Description of the emulation terminal type preference. -->
+	<string name="pref_emulation_summary">Terminál emulálási mód PTY kapcsolatokhoz</string>
+
+	<!-- Name for the scrollback size preference -->
+	<string name="pref_scrollback_title">Előzmények mérete</string>
+	<!-- Description of the scrollback size preference -->
+	<string name="pref_scrollback_summary">Az előzmények memóriában tartandó mérete konzolonként</string>
+
+	<!-- The category title for user interface preferences -->
+	<string name="pref_ui_category">Felhasználói felület</string>
+
+	<!-- Name for the rotation mode preference -->
+	<string name="pref_rotation_title">Forgatási mód</string>
+	<!-- Summary for the rotation mode preference -->
+	<string name="pref_rotation_summary">Hogyan forduljon a kijelző a billentyűzet ki/becsukása során</string>
+
+	<!-- Name for the full screen preference -->
+	<string name="pref_fullscreen_title">Teljes képernyő</string>
+	<!-- Summary for the full screen preference -->
+	<string name="pref_fullscreen_summary">Rejtett állapotsor a konzol használata során</string>
+
+	<!-- Name for the memorize keys preference -->
+	<string name="pref_memkeys_title">Kulcsok megörzése a memóriában</string>
+	<!-- Summary for the memorize keys preference -->
+	<string name="pref_memkeys_summary">Tartsa nyitva a memóriában lévő kulcsokat amíg a háttérszolgáltatás meg nem szűnik</string>
+
+	<!-- Name for the update check preference -->
+	<string name="pref_update_title">Frissítés ellenőrzése</string>
+	<!-- Summary for the update check preference -->
+	<string name="pref_update_summary">ConnectBot frissítés ellenőrzésének maximális gyakorisága</string>
+
+	<!-- Name for the preference that forces the service to stay running in the background.-->
+	<string name="pref_conn_persist_title">Persist connections</string>
+	<!-- Summary for the preference that forces the service to stay running in the background. -->
+	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+
+	<!-- Name for the keyboard shortcuts preference -->
+	<string name="pref_keymode_title">Könyvtár hivatkozások</string>
+	<!-- Summary for the keyboard shortcuts preference -->
+	<string name="pref_keymode_summary">Válassza ki, hogyan kell használni az Alt-ot\n a '/' helyett és a Shift-et a Tab helyett</string>
+
+	<!-- Name for the camera shortcut usage preference -->
+	<string name="pref_camera_title">Kamera gomb hivatkozás</string>
+	<!-- Summary for the camera shortcut usage preference -->
+	<string name="pref_camera_summary">Válassza ki a kamera gombhoz tartozó hivatkozást</string>
+
+	<!-- Name for the keep screen on preference -->
+	<string name="pref_keepalive_title">Tartsa ébren a képernyőt</string>
+	<!-- Summary for the camera shortcut usage preference -->
+	<string name="pref_keepalive_summary">Akadályozza meg a képernyővédő bekapcsolását konzolon végzett munka alatt</string>
+
+	<!-- Name for the Wi-Fi lock preference -->
+	<string name="pref_wifilock_title">Tartsa fenn a Wi-Fi kapcsolatot</string>
+	<!-- Summary for the Wi-Fi lock preference -->
+	<string name="pref_wifilock_summary">Akadályozza meg a Wi-Fi kikapcsolását amíg a munka zajlik</string>
+
+	<!-- Name for the haptic feedback (bumpy arrow) preference -->
+	<string name="pref_bumpyarrows_title">Ugráló nyilak</string>
+	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
+	<string name="pref_bumpyarrows_summary">Vibráljon amikor a hanyattegérrel mozgatjuk a kurzort; hasznos lehet lassú kapcsolatoknál</string>
+
+	<!-- Category title for the Terminal Bell preferences -->
+	<string name="pref_bell_category">Terminál csengő</string>
+
+	<!-- Checkbox preference title for the audible terminal bell feature -->
+	<string name="pref_bell_title">Hallható csengő</string>
+
+	<!-- Title for the slider preference to set the volume -->
+	<string name="pref_bell_volume_title">Csengő hangereje</string>
+
+	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
+	<string name="pref_bell_vibrate_title">Vibráljon csengetéskor</string>
+
+	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
+	<string name="pref_bell_notification_title">Háttér figyelmeztetések</string>
+	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
+	<string name="pref_bell_notification_summary">Küldjön értesítőt amikor a háttérben futó terminál csenget.</string>
+
+	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
+	<string name="list_keymode_right">A jobb oldali gombok használata</string>
+	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
+	<string name="list_keymode_left">A baloldali gombok használata</string>
+	<!-- Preference selection to indicate never to use special shortcut keys. -->
+	<string name="list_keymode_none">Tiltás</string>
+
+	<!-- Preference to not use pubkeys to authenticate to this host. -->
+	<string name="list_pubkeyids_none">Kulcsok használatának tiltása</string>
+	<!-- Preference to use any pubkey to authenticate to this host. -->
+	<string name="list_pubkeyids_any">Bármely nyilvános kulcs használata</string>
+
+	<!-- Frequency for which to check for program updates. -->
+	<string name="list_update_daily">Naponta</string>
+	<!-- Frequency for which to check for program updates. -->
+	<string name="list_update_weekly">Hetente</string>
+	<!-- Frequency for which to check for program updates. -->
+	<string name="list_update_never">Soha</string>
+
+	<!-- Host nickname field preference title -->
+	<string name="hostpref_nickname_title">Becenév</string>
+
+	<!-- Host color category preference title -->
+	<string name="hostpref_color_title">Szín-kategória</string>
+
+	<!-- Host pubkey usage preference title -->
+	<string name="hostpref_pubkeyid_title">Nyilvános kulcs használata azonosításhoz</string>
+
+	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
+	<string name="hostpref_authagent_title">Az SSH auth agent használata</string>
+
+	<!-- Host post-login automation preference title -->
+	<string name="hostpref_postlogin_title">Bejelentkezést követő automatikus parancsok</string>
+	<!-- Host post-login automation preference summary -->
+	<string name="hostpref_postlogin_summary">Olyan parancsok amelyek a bejelentkezést követően kerülnek futtatásra</string>
+
+	<!-- Host compression preference title -->
+	<string name="hostpref_compression_title">Tömörítés</string>
+	<!-- Summary for compression preference -->
+	<string name="hostpref_compression_summary">Jól jöhet lassú házatok esetén</string>
+
+	<!-- Setting for whether we want a session to start up when we connect to a host -->
+	<string name="hostpref_wantsession_title">Parancssor indítása</string>
+	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
+	<string name="hostpref_wantsession_summary">Kapcsolja ki, ha csak port átirányitásokat akar</string>
+
+	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
+	<string name="hostpref_stayconnected_title">Maradjon csatlakozva</string>
+	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
+	<string name="hostpref_stayconnected_summary">Újracsatlakozás ha a kapcsolat megszakad</string>
+
+	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_title">DEL billentyű</string>
+	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_summary">Az a billenytű kód amit a DEL lenyomásakor küldünk</string>
+
+	<!-- Host character encoding preference title -->
+	<string name="hostpref_encoding_title">Karakterkódolás</string>
+	<!-- Host character encoding preference summary -->
+	<string name="hostpref_encoding_summary">A kiszolgáló karakterkódolása</string>
+
+	<!-- Host preference category title for connection settings -->
+	<string name="hostpref_connection_category">Kapcsolat beállításai</string>
+
+	<!-- Username field title for host editor preference -->
+	<string name="hostpref_username_title">Felhasználónév</string>
+
+	<!-- Hostname field title for host editor preference -->
+	<string name="hostpref_hostname_title">Kiszolgáló</string>
+
+	<!-- Port field title for host editor preference -->
+	<string name="hostpref_port_title">Port</string>
+
+	<!-- Displayed to indicate a host has never been connected to. -->
+	<string name="bind_never">Még nem csatlakozott</string>
+	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
+	<string name="bind_minutes">%1$s perce</string>
+	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
+	<string name="bind_hours">%1$s órája</string>
+	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
+	<string name="bind_days">%1$s napja</string>
+
+	<!-- Message given when user copies from the terminal. -->
+	<string name="console_copy_done">%1$d bájt a vágólapra másolva</string>
+	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
+	<string name="console_copy_start">Érintéssel és húzással\nvagy a hanyattegér használatával\njelölje ki a másolandó területet.</string>
+
+	<!-- Button to close the disconnected terminal window. -->
+	<string name="console_menu_close">Bezárás</string>
+	<!-- Button to begin copying from the terminal to the clipboard. -->
+	<string name="console_menu_copy">Másolás</string>
+	<!-- Button to paste from the clipboard to the terminal. -->
+	<string name="console_menu_paste">Beillesztés</string>
+	<!-- Button that brings user to the Port Forwards List. -->
+	<string name="console_menu_portforwards">Port átirányítások</string>
+	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
+	<string name="console_menu_resize">Méret kényszerítése</string>
+	<!-- Button that brings up the list of URLs on the current screen -->
+	<string name="console_menu_urlscan">URL Keresés</string>
+
+	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
+	<string name="portforward_local">Helyi</string>
+	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
+	<string name="portforward_remote">Távoli</string>
+	<!-- Selection for a "dynamic" port forward. E.g., connections to a port listening locally is forwarded based on the SOCKS protocol to an arbitrary remote host and port. -->
+	<string name="portforward_dynamic">Dinamikus (SOCKS)</string>
+	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
+	<string name="portforward_pos">Port átirányítás létrehozása</string>
+
+	<string name="portforward_done">Sikeres port átirányítás</string>
+	<string name="portforward_problem">Probléma a port átirányítás létrehozása során, 1024 alatti vagy már használatban lévő portot választott?</string>
+
+	<string name="portforward_menu_add">Port átirányítás hozzáadása</string>
+
+	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
+	<string name="hint_userhost">felhasználó@gépnév</string>
+
+	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
+	<string name="list_format_error">A "%1$s" formátum használata</string>
+
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_username">felhasználónév</string>
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_hostname">gépnév</string>
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_port">port</string>
+
+	<string name="list_menu_pubkeys">Publikus kulcsok kezelése</string>
+	<!-- Selection choice to sort hosts by color. -->
+	<string name="list_menu_sortcolor">Rendezés szín szerint</string>
+	<!-- Selection choice to sort hosts by nickname. -->
+	<string name="list_menu_sortname">Rendezés név szerint</string>
+	<string name="list_menu_settings">Beállítások</string>
+
+	<string name="list_host_disconnect">A kapcsolat bontása</string>
+	<string name="list_host_edit">Kiszolgáló szerkesztése</string>
+	<string name="list_host_portforwards">Port átirányítások szerkesztése</string>
+	<string name="list_host_delete">Kiszolgáló törlése</string>
+	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
+	<string name="list_host_empty">Használja a gyors csatlakozás dobozt\n a csatlakozáshoz.</string>
+
+	<!-- Default screen rotation preference selection -->
+	<string name="list_rotation_default">Alapbeállitás</string>
+	<string name="list_rotation_land">Fekvő mód kényszerítése</string>
+	<string name="list_rotation_port">Álló mód kényszerítése</string>
+	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
+	<string name="list_rotation_auto">Automatikus</string>
+
+	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
+	<string name="list_camera_ctrlaspace">Ctrl+A majd Space</string>
+	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A". -->
+	<string name="list_camera_ctrla">Ctrl+A</string>
+	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
+	<string name="list_camera_esc">Esc</string>
+	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
+	<string name="list_camera_none">Semmit</string>
+
+	<!-- Name for the backspace character -->
+	<string name="list_delkey_backspace">Backspace</string>
+	<!-- Name for the ASCII DEL character -->
+	<string name="list_delkey_del">Delete</string>
+
+	<string name="delete_message">Biztosan törli a '%1$s'-t?</string>
+	<string name="delete_pos">Igen, törlés</string>
+	<string name="delete_neg">Mégsem</string>
+
+	<!-- Button to agree to license terms. -->
+	<string name="wizard_agree">Elfogad</string>
+	<!-- Button to go to the next page in the first time start-up wizard. -->
+	<string name="wizard_next">Következő</string>
+	<!-- Button to go to the previous page in the first time start-up wizard. -->
+	<string name="wizard_back">Vissza</string>
+
+	<string name="terminal_no_hosts_connected">Nincs csatlakozva</string>
+
+	<!-- Displayed in terminal when attempting to connect to a host. The first two
+	     variables are host:port and the third is the protocol (e.g., SSH) -->
+	<string name="terminal_connecting">Csatlakozás %1$s:%2$d a %3$s protokollon</string>
+
+	<!-- Displays the host key to the user in the terminal -->
+	<string name="terminal_sucess">Azonosított '%1$s' gépnév kulcsa: %2$s</string>
+	<string name="terminal_failed">Távoli gép, kulcs azonosítása sikertelen.</string>
+
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_s2c_algorithm">Szerver-kliens algoritmus: %1$s %2$s</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_c2s_algorithm">Kliens-szerver algoritmus: %1$s %2$s</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_algorithm">Használt algoritmus: %1$s %2$s</string>
+
+	<string name="terminal_auth">Azonosítási probálkozás</string>
+
+	<string name="terminal_auth_pass">Próbálkozás 'password' azonosítással</string>
+	<string name="terminal_auth_pass_fail">A  'password' azonosítás sikertelen.</string>
+
+	<string name="terminal_auth_pubkey_any">Próbálkozás 'publickey' azonosítással, bármely memóriában található nyilvános kulccsal</string>
+	<string name="terminal_auth_pubkey_invalid">A nyilvános kulcs hibás, próbálja újra kiválasztani az állomás kezelőből</string>
+	<string name="terminal_auth_pubkey_specific">Próbálkozás 'publickey' azonosítással, választott nyilvános kulccsal</string>
+	<string name="terminal_auth_pubkey_fail">A '%1$s' kulccsal történt 'publickey' azonosítás sikertelen.</string>
+
+	<string name="terminal_auth_ki">Próbálkozás 'keyboard-interactive' azonosítással</string>
+	<string name="terminal_auth_ki_fail">'keyboard-interactive' azonosítás sikertelen</string>
+
+	<string name="terminal_auth_fail">[A gépnév nem támogatja a 'password' vagy 'keyboard-interactive' azonosítást.]</string>
+
+	<string name="terminal_no_session">A munkamenet nem kezdhető el a gép beállítások miatt.</string>
+	<string name="terminal_enable_portfoward">Port átirányítás engedélyezése: %1$s</string>
+
+	<string name="local_shell_unavailable">Hiba! Nincs lokális shell ezen a telefonon.</string>
+
+	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
+	<string name="notification_text">%1$s a figyelmére szorul.</string>
+
+	<!-- Dialog title when a new version of ConnectBot is detected. -->
+	<string name="upgrade">Új verzió</string>
+	<!-- Button selection to upgrade to the latest ConnectBot when one is available. -->
+	<string name="upgrade_pos">Igen, frissítés</string>
+	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
+	<string name="upgrade_neg">Most nem</string>
+
+	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
+	<string name="no">Nem</string>
+	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
+	<string name="with_confirmation">Csak beleegyezéssel</string>
+	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
+	<string name="yes">Igen</string>
+
+	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
+	<string name="exceptions_submit_message">Úgy tűnik a ConnectBot a legutóbbi futtatáskor összeomlott. Elküldi a hibanaplót a ConnectBot fejleszőinek?</string>
+
+	<string name="color_red">piros</string>
+	<string name="color_green">zöld</string>
+	<string name="color_blue">kék</string>
+	<string name="color_gray">szürke</string>
+</resources>

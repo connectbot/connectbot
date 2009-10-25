@@ -148,6 +148,11 @@
 	<!-- Summary for the update check preference -->
 	<string name="pref_update_summary">Régler la fréquence de vérification pour les mise à jour de ConnectBot</string>
 
+	<!-- Name for the preference that forces the service to stay running in the background.-->
+	<string name="pref_conn_persist_title">Persist connections</string>
+	<!-- Summary for the preference that forces the service to stay running in the background. -->
+	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Raccourcis de navigation</string>
 	<!-- Summary for the keyboard shortcuts preference -->
@@ -200,7 +205,7 @@
 	<!-- Preference to not use pubkeys to authenticate to this host. -->
 	<string name="list_pubkeyids_none">Ne pas utiliser les clefs de cryptage publiques</string>
 	<!-- Preference to use any pubkey to authenticate to this host. -->
-	<string name="list_pubkeyids_any">Use any unlocked key</string>
+	<string name="list_pubkeyids_any">Utiliser une clé pour l'authentification</string>
 
 	<!-- Frequency for which to check for program updates. -->
 	<string name="list_update_daily">Journalière</string>
@@ -222,7 +227,7 @@
 	<string name="hostpref_authagent_title">Utiliser l'agent d'authentification SSH</string>
 
 	<!-- Host post-login automation preference title -->
-	<string name="hostpref_postlogin_title">Post-login automation</string>
+	<string name="hostpref_postlogin_title">Commande à exécuter automatiquement après l'authentification</string>
 	<!-- Host post-login automation preference summary -->
 	<string name="hostpref_postlogin_summary">Commandes a éffectuer sur le serveur distant après s'êtres autentifier</string>
 
@@ -370,23 +375,23 @@
 	<string name="terminal_connecting">Connexion à %1$s:%2$d via %3$s</string>
 
 	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Verified host '%1$s' key: %2$s</string>
-	<string name="terminal_failed">Host key verification failed.</string>
+	<string name="terminal_sucess">Clé de vérification de l'hôte '%1$s' : %2$s</string>
+	<string name="terminal_failed">Authentification par clé échouée</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
 	<string name="terminal_using_s2c_algorithm">Algorithme serveur vers client : %1$s %2$s</string>
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
 	<string name="terminal_using_c2s_algorithm">Algorithme client vers serveur : %1$s %2$s</string>
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_algorithm">Using algorithm: %1$s %2$s</string>
+	<string name="terminal_using_algorithm">Utilisation de l'algorithme de cryptage : %1$s %2$s</string>
 
 	<string name="terminal_auth">Tentative d'authentification</string>
 
-	<string name="terminal_auth_pass">Attempting 'password' authentication</string>
+	<string name="terminal_auth_pass">Tentative d'authentification par mot de passe</string>
 	<string name="terminal_auth_pass_fail">L'authentification par mot de passe a échoué</string>
 
-	<string name="terminal_auth_pubkey_any">Attempting 'publickey' authentication with any in-memory public keys</string>
-	<string name="terminal_auth_pubkey_invalid">Selected public key is invalid, try reselecting key in host editor</string>
+	<string name="terminal_auth_pubkey_any">Tentative d'authentification avec une clé publique en mémoire</string>
+	<string name="terminal_auth_pubkey_invalid">La clé publique sélectionnée est invalide, essayez de sélectionner une clé dans les préférences de l'hôte</string>
 	<string name="terminal_auth_pubkey_specific">Tentative d'authentification par clé publique avec une clé publique spécifique</string>
 	<string name="terminal_auth_pubkey_fail">La méthode d'authentification par clé publique avec la clé '%1$s' a échouée.</string>
 
@@ -395,8 +400,8 @@
 
 	<string name="terminal_auth_fail">[L'hôte ne supporte pas l'authentification par mot de passe ou par clavier.]</string>
 
-	<string name="terminal_no_session">Session will not be started due to host preference.</string>
-	<string name="terminal_enable_portfoward">Enable port forward: %1$s</string>
+	<string name="terminal_no_session">La session ne sera pas démarrée à cause des préférences de l'hôte.</string>
+	<string name="terminal_enable_portfoward">Activer la redirection de port : %1$s</string>
 
 	<string name="local_shell_unavailable">Echec ! Le shell local est indisponible sur ce téléphone.</string>
 
@@ -418,7 +423,7 @@
 	<string name="yes">Oui</string>
 
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
-	<string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?</string>
+	<string name="exceptions_submit_message">Il semblerait que ConnectBot ait eu un problème lors de sa dernière utilisation. Voulez vous envoyer un rapport d'erreur aux développeurs de ConnectBot ?</string>
 
 	<string name="color_red">rouge</string>
 	<string name="color_green">vert</string>

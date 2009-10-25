@@ -148,6 +148,11 @@
 	<!-- Summary for the update check preference -->
 	<string name="pref_update_summary">Establecer la frequencia maxima para revisar actualizaciones de ConnectBot</string>
 
+	<!-- Name for the preference that forces the service to stay running in the background.-->
+	<string name="pref_conn_persist_title">Persist connections</string>
+	<!-- Summary for the preference that forces the service to stay running in the background. -->
+	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Sequencia de teclas para directorios</string>
 	<!-- Summary for the keyboard shortcuts preference -->
@@ -415,10 +420,10 @@
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
 	<string name="with_confirmation">Con confirmación</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
-	<string name="yes">Si</string>
+	<string name="yes">Sí</string>
 
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
-	<string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?</string>
+	<string name="exceptions_submit_message">Parece que ConnectBot tuvo un problema en su última ejecución. Enviar reporte de error a los desarrolladores de ConnectBot?</string>
 
 	<string name="color_red">rojo</string>
 	<string name="color_green">verde</string>
