@@ -1,83 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_desc">Simple, powerful, open-source SSH client.</string>
+	<string name="app_desc">Cliente de SSH simples, poderoso e de código aberto</string>
 
 	<!-- Window title for the Host List -->
 	<string name="title_hosts_list">Máquinas</string>
 	<!-- Window title for the Pubkeys List -->
-	<string name="title_pubkey_list">Pubkeys</string>
+	<string name="title_pubkey_list">Chaves públicas</string>
 	<!-- Window title for the Port Forwards List -->
-	<string name="title_port_forwards_list">Redirecionamento de Porta</string>
+	<string name="title_port_forwards_list">Redirecionamentos de porta</string>
 	<!-- Window title when editing host details -->
-	<string name="title_host_editor">Editar Máquina</string>
+	<string name="title_host_editor">Editar máquina</string>
 	<!-- Window title for Help index -->
-	<string name="title_help">Help</string>
+	<string name="title_help">Ajuda</string>
 	<!-- Window title for color list editing screen -->
 	<string name="title_colors">Cores</string>
 
 	<string name="resolve_connect">Conectar</string>
 	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="resolve_entropy">Gather Entropy</string>
+	<string name="resolve_entropy">Gerar entropia</string>
 
-	<string name="menu_insert">Adicionar Máquina</string>
-	<string name="menu_delete">Apagar Máquina</string>
+	<string name="menu_insert">Adicionar máquina</string>
+	<string name="menu_delete">Apagar máquina</string>
 	<string name="menu_preferences">Preferências</string>
 
-	<string name="help_intro">Please select a topic below for more information on a particular subject.</string>
-	<string name="help_about">About ConnectBot</string>
+	<string name="help_intro">Selecione um tópico abaixo para mais informação sobre um assunto em particular.</string>
+	<string name="help_about">Sobre o ConnectBot</string>
 	<string name="help_keyboard">Teclado</string>
 
 	<string name="pubkey_generate">Gerar</string>
-	<string name="pubkey_import">Import</string>
-	<string name="pubkey_delete">Delete key</string>
+	<string name="pubkey_import">Importar</string>
+	<string name="pubkey_delete">Apagar chave</string>
 	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="pubkey_gather_entropy">Gathering Entropy</string>
-	<string name="pubkey_touch_prompt">Touch this box to gather randomness: %1$d%% done</string>
-	<string name="pubkey_touch_hint">In order to assure randomness during the key generation, move your finger randomly over the box below.</string>
-	<string name="pubkey_generating">Generating key pair...</string>
-	<string name="pubkey_copy_private">Copy private key</string>
-	<string name="pubkey_copy_public">Copy public key</string>
+	<string name="pubkey_gather_entropy">Gerando entropia</string>
+	<string name="pubkey_touch_prompt">Toque nessa caixa para gerar aleatoriedade: %1$d%% pronto</string>
+	<string name="pubkey_touch_hint">Para garantir aleatoriedade durante a geração da chave, mova seu dedo aleatoriamente na caixa abaixo.</string>
+	<string name="pubkey_generating">Gerando par de chaves...</string>
+	<string name="pubkey_copy_private">Copiar chave privada</string>
+	<string name="pubkey_copy_public">Copiar chave pública</string>
 	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
-	<string name="pubkey_list_empty">Tap "Menu" to create\nor import key pairs.</string>
-	<string name="pubkey_unknown_format">Unknown format</string>
-	<string name="pubkey_change_password">Change password</string>
-	<string name="pubkey_list_pick">Pick from /sdcard</string>
-	<string name="pubkey_import_parse_problem">Problem parsing imported private key</string>
-	<string name="pubkey_unlock">Unlock key</string>
-	<string name="pubkey_failed_add">Bad password for key '%1$s'. Authentication failed.</string>
-	<string name="pubkey_memory_load">Load into memory</string>
-	<string name="pubkey_memory_unload">Unload from memory</string>
-	<string name="pubkey_load_on_start">Load key on start</string>
+	<string name="pubkey_list_empty">Pressione "Menu" para criar ou importar pares de chaves.</string>
+	<string name="pubkey_unknown_format">Formato desconhecido</string>
+	<string name="pubkey_change_password">Mudar senha</string>
+	<string name="pubkey_list_pick">Pegar de /sdcard</string>
+	<string name="pubkey_import_parse_problem">Problema ao analisar chave privada importada</string>
+	<string name="pubkey_unlock">Destravar chave</string>
+	<string name="pubkey_failed_add">Senha incorreta para chave "%1$s". Autenticação falhou.</string>
+	<string name="pubkey_memory_load">Carregar para memória</string>
+	<string name="pubkey_memory_unload">Descarregar da memória</string>
+	<string name="pubkey_load_on_start">Carregar chave no início</string>
 	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
-	<string name="pubkey_confirm_use">Confirm before use</string>
+	<string name="pubkey_confirm_use">Confirmar antes de usar</string>
 
 	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
-	<string name="portforward_list_empty">Tap "Menu" to create\nport forwards.</string>
-	<string name="portforward_edit">Edit port forward</string>
-	<string name="portforward_delete">Delete port forward</string>
+	<string name="portforward_list_empty">Pressione "Menu" para criar redirecionamentos de porta.</string>
+	<string name="portforward_edit">Editar redirecionamento de porta</string>
+	<string name="portforward_delete">Apagar redirecionamento de porta</string>
 
-	<string name="prompt_nickname">Nickname:</string>
+	<string name="prompt_nickname">Apelido:</string>
 	<!-- An example string that could be used as a nickname for a pubkey. -->
-	<string name="prompt_nickname_hint_pubkey">My work key</string>
+	<string name="prompt_nickname_hint_pubkey">Minha chave do trabalho</string>
 	<!-- The source TCP port for port forwards. -->
-	<string name="prompt_source_port">Source port:</string>
+	<string name="prompt_source_port">Porta de origem:</string>
 	<!-- The "host:port" combination used for port forward destinations. -->
-	<string name="prompt_destination">Destination:</string>
-	<string name="prompt_old_password">Old password:</string>
-	<string name="prompt_password">Password:</string>
+	<string name="prompt_destination">Destino:</string>
+	<string name="prompt_old_password">Senha antiga:</string>
+	<string name="prompt_password">Senha:</string>
 	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
-	<string name="prompt_again">(again)</string>
+	<string name="prompt_again">(repita)</string>
 	<!-- Label for the user to select port forward type. -->
-	<string name="prompt_type">Type:</string>
-	<string name="prompt_password_can_be_blank">Note: password can be blank</string>
+	<string name="prompt_type">Tipo:</string>
+	<string name="prompt_password_can_be_blank">Nota: a senha pode ser em branco</string>
 	<!-- Prompt for the size of the private key in bits. -->
 	<string name="prompt_bits">Bits:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Password for key '%1$s'</string>
+	<string name="prompt_pubkey_password">Senha para chave "%1$s"</string>
 
 	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key '%1$s'?</string>
+	<string name="prompt_allow_agent_to_use_key">Permitir que a máquina remota use a chave "%1$s"?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</string>
@@ -147,6 +147,11 @@
 	<string name="pref_update_title">Update check</string>
 	<!-- Summary for the update check preference -->
 	<string name="pref_update_summary">Set the maximum frequency to check for ConnectBot updates</string>
+
+	<!-- Name for the preference that forces the service to stay running in the background.-->
+	<string name="pref_conn_persist_title">Persist connections</string>
+	<!-- Summary for the preference that forces the service to stay running in the background. -->
+	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Directory shortcuts</string>
