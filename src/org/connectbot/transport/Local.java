@@ -22,7 +22,6 @@ import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.connectbot.R;
@@ -35,6 +34,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.google.ase.Exec;
+
 /**
  * @author Kenny Root
  *
@@ -45,33 +46,10 @@ public class Local extends AbsTransport {
 
 	private static final String DEFAULT_URI = "local:#Local";
 
-	private static Method mExec_openSubprocess;
-	private static Method mExec_waitFor;
-	private static Method mExec_setPtyWindowSize;
-
 	private FileDescriptor shellFd;
 
 	private FileInputStream is;
 	private FileOutputStream os;
-
-	static {
-		initPrivateAPI();
-	}
-
-	private static void initPrivateAPI() {
-		try {
-			Class<?> mExec = Class.forName("android.os.Exec");
-			mExec_openSubprocess = mExec.getMethod("createSubprocess",
-					String.class, String.class, String.class, int[].class);
-			mExec_waitFor = mExec.getMethod("waitFor", int.class);
-			mExec_setPtyWindowSize = mExec.getMethod("setPtyWindowSize",
-					FileDescriptor.class, int.class, int.class, int.class, int.class);
-		} catch (NoSuchMethodException e) {
-			// Give up
-		} catch (ClassNotFoundException e) {
-			// Give up
-		}
-	}
 
 	/**
 	 *
@@ -113,21 +91,17 @@ public class Local extends AbsTransport {
 		int[] pids = new int[1];
 
 		try {
-			shellFd = (FileDescriptor) mExec_openSubprocess.invoke(null,
-				"/system/bin/sh", "-", null, pids);
+			shellFd = Exec.createSubprocess("/system/bin/sh", "-", null, pids);
 		} catch (Exception e) {
 			bridge.outputLine(manager.res.getString(R.string.local_shell_unavailable));
+			Log.e(TAG, "Cannot start local shell", e);
 			return;
 		}
 
 		final int shellPid = pids[0];
 		Runnable exitWatcher = new Runnable() {
 			public void run() {
-				try {
-					mExec_waitFor.invoke(null, shellPid);
-				} catch (Exception e) {
-					Log.e(TAG, "Couldn't wait for shell exit", e);
-				}
+				Exec.waitFor(shellPid);
 
 				bridge.dispatchDisconnect(false);
 			}
@@ -181,7 +155,7 @@ public class Local extends AbsTransport {
 	@Override
 	public void setDimensions(int columns, int rows, int width, int height) {
 		try {
-			mExec_setPtyWindowSize.invoke(null, shellFd, rows, columns, width, height);
+			Exec.setPtyWindowSize(shellFd, rows, columns, width, height);
 		} catch (Exception e) {
 			Log.e(TAG, "Couldn't resize pty", e);
 		}
