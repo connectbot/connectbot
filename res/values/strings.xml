@@ -425,6 +425,9 @@
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
 	<string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?</string>
 
+	<!-- Menu selection to reset colors to their defaults. -->
+	<string name="menu_colors_reset">Reset</string>
+
 	<string name="color_red">red</string>
 	<string name="color_green">green</string>
 	<string name="color_blue">blue</string>

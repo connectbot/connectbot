@@ -997,7 +997,6 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		try {
 			// request a terminal pty resize
 			synchronized (buffer) {
-				int prevRow = buffer.getCursorRow();
 				buffer.setScreenSize(columns, rows, true);
 			}
 
@@ -1311,11 +1310,11 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 	}
 
 	public final void resetColors() {
-		int[] defaults = manager.hostdb.getDefaultColorsForHost(host);
+		int[] defaults = manager.hostdb.getDefaultColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
 		defaultFg = defaults[0];
 		defaultBg = defaults[1];
 
-		color = manager.hostdb.getColorsForHost(host);
+		color = manager.hostdb.getColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
 	}
 
 	// This was taken from http://geekswithblogs.net/casualjim/archive/2005/12/01/61722.aspx

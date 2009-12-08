@@ -112,6 +112,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public final static long PUBKEYID_NEVER = -2;
 	public final static long PUBKEYID_ANY = -1;
 
+	public static final int DEFAULT_COLOR_SCHEME = 0;
+
 	static {
 		addTableName(TABLE_HOSTS);
 		addTableName(TABLE_PORTFORWARDS);
@@ -634,7 +636,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		}
 	}
 
-	public Integer[] getColorsForHost(HostBean host) {
+	public Integer[] getColorsForScheme(int scheme) {
 		Integer[] colors = Colors.defaults.clone();
 
 		synchronized (dbLock) {
@@ -642,54 +644,29 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 			Cursor c = db.query(TABLE_COLORS, new String[] {
 					FIELD_COLOR_NUMBER, FIELD_COLOR_VALUE },
-					FIELD_COLOR_SCHEME + " IS NULL",
-					null, null, null, null);
+					FIELD_COLOR_SCHEME + " = ?",
+					new String[] { String.valueOf(scheme) },
+					null, null, null);
 
 			while (c.moveToNext()) {
-				Log.d(TAG, "Setting default color " + c.getInt(0) + " to " + c.getInt(1));
 				colors[c.getInt(0)] = new Integer(c.getInt(1));
 			}
 
 			c.close();
-
-			// TODO This could probably just be a join
-			if (host != null) {
-				c = db.query(TABLE_COLORS, new String[] {
-						FIELD_COLOR_NUMBER, FIELD_COLOR_VALUE },
-						FIELD_COLOR_SCHEME + " = ?",
-						new String[] { String.valueOf(host.getId()) },
-						null, null, null);
-
-				while (c.moveToNext()) {
-					colors[c.getInt(0)] = new Integer(c.getInt(1));
-				}
-
-				c.close();
-			}
-
 			db.close();
 		}
 
 		return colors;
 	}
 
-	public void setColorForHost(HostBean host, int number, int value) {
+	public void setColorForScheme(int scheme, int number, int value) {
 		SQLiteDatabase db;
 
-		String hostWhere;
-		if (host == null)
-			hostWhere = FIELD_COLOR_SCHEME + " IS NULL";
-		else
-			hostWhere = FIELD_COLOR_SCHEME + " = ?";
+		String schemeWhere;
+		schemeWhere = FIELD_COLOR_SCHEME + " = ?";
 
 		if (value == Colors.defaults[number]) {
-			String[] whereArgs;
-
-			if (host != null) {
-				whereArgs = new String[2];
-				whereArgs[1] = String.valueOf(host.getId());
-			} else
-				whereArgs = new String[1];
+			String[] whereArgs = new String[1];
 
 			whereArgs[0] = String.valueOf(number);
 
@@ -698,7 +675,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 				db.delete(TABLE_COLORS,
 						FIELD_COLOR_NUMBER + " = ? AND "
-						+ hostWhere,
+						+ schemeWhere,
 						new String[] { String.valueOf(number) });
 
 				db.close();
@@ -710,13 +687,12 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 			String[] whereArgs = null;
 
-			if (host != null)
-				whereArgs = new String[] { String.valueOf(host.getId()) };
+			whereArgs = new String[] { String.valueOf(scheme) };
 
 			synchronized (dbLock) {
 				db = getWritableDatabase();
 				int rowsAffected = db.update(TABLE_COLORS, values,
-						hostWhere, whereArgs);
+						schemeWhere, whereArgs);
 
 				if (rowsAffected == 0) {
 					db.insert(TABLE_COLORS, null, values);
@@ -728,10 +704,10 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	public void setGlobalColor(int number, int value) {
-		setColorForHost(null, number, value);
+		setColorForScheme(DEFAULT_COLOR_SCHEME, number, value);
 	}
 
-	public int[] getDefaultColorsForHost(HostBean host) {
+	public int[] getDefaultColorsForScheme(int scheme) {
 		int[] colors = new int[] { DEFAULT_FG_COLOR, DEFAULT_BG_COLOR };
 
 		synchronized (dbLock) {
@@ -750,11 +726,11 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			c.close();
 
 			// TODO This could probably just be a join
-			if (host != null) {
+			if (scheme != DEFAULT_COLOR_SCHEME) {
 				c = db.query(TABLE_COLOR_DEFAULTS,
 						new String[] { FIELD_COLOR_FG, FIELD_COLOR_BG },
 						FIELD_COLOR_SCHEME + " = ?",
-						new String[] { String.valueOf(host.getId()) },
+						new String[] { String.valueOf(scheme) },
 						null, null, null);
 
 				if (c.moveToFirst()) {
@@ -772,10 +748,10 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	public int[] getGlobalDefaultColors() {
-		return getDefaultColorsForHost(null);
+		return getDefaultColorsForScheme(DEFAULT_COLOR_SCHEME);
 	}
 
-	public void setDefaultColorsForHost(HostBean host, int fg, int bg) {
+	public void setDefaultColorsForScheme(int scheme, int fg, int bg) {
 		int[] defaultColors = getGlobalDefaultColors();
 
 		SQLiteDatabase db;
@@ -783,15 +759,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		String schemeWhere = null;
 		String[] whereArgs;
 
-		// TODO change host.getId() into scheme numbers for colors
-
-		if (host == null) {
-			schemeWhere = FIELD_COLOR_SCHEME + " IS NULL";
-			whereArgs = null;
-		} else {
-			schemeWhere = FIELD_COLOR_SCHEME + " = ?";
-			whereArgs = new String[] { String.valueOf(host.getId()) };
-		}
+		schemeWhere = FIELD_COLOR_SCHEME + " = ?";
+		whereArgs = new String[] { String.valueOf(scheme) };
 
 		if (fg == defaultColors[0] && bg == defaultColors[1]) {
 			synchronized (dbLock) {
