@@ -208,7 +208,10 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 
 		fontSizeChangedListeners = new LinkedList<FontSizeChangedListener>();
 
-		setFontSize(DEFAULT_FONT_SIZE);
+		int hostFontSize = host.getFontSize();
+		if (hostFontSize < 0)
+			hostFontSize = DEFAULT_FONT_SIZE;
+		setFontSize(hostFontSize);
 
 		// create terminal buffer and handle outgoing data
 		// this is probably status reply information
@@ -906,6 +909,9 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 
 		for (FontSizeChangedListener ofscl : fontSizeChangedListeners)
 			ofscl.onFontSizeChanged(size);
+
+		host.setFontSize((int) fontSize);
+		manager.hostdb.saveHost(host);
 	}
 
 	/**

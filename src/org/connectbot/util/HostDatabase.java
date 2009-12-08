@@ -48,7 +48,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public final static String TAG = "ConnectBot.HostDatabase";
 
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 20;
+	public final static int DB_VERSION = 21;
 
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -66,6 +66,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public final static String FIELD_HOST_PUBKEYID = "pubkeyid";
 	public final static String FIELD_HOST_WANTSESSION = "wantsession";
 	public final static String FIELD_HOST_DELKEY = "delkey";
+	public final static String FIELD_HOST_FONTSIZE = "fontsize";
 	public final static String FIELD_HOST_COMPRESSION = "compression";
 	public final static String FIELD_HOST_ENCODING = "encoding";
 	public final static String FIELD_HOST_STAYCONNECTED = "stayconnected";
@@ -154,6 +155,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 				+ FIELD_HOST_POSTLOGIN + " TEXT, "
 				+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ", "
 				+ FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "', "
+				+ FIELD_HOST_FONTSIZE + " INTEGER, "
 				+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "', "
 				+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
 				+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "', "
@@ -254,6 +256,9 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		case 19:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_STAYCONNECTED + " TEXT");
+		case 20:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_FONTSIZE + " INTEGER");
 		}
 	}
 
@@ -280,16 +285,20 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	 * Create a new host using the given parameters.
 	 */
 	public HostBean saveHost(HostBean host) {
-		long id;
+		long id = host.getId();
 
 		synchronized (dbLock) {
 			SQLiteDatabase db = this.getWritableDatabase();
 
-			id = db.insert(TABLE_HOSTS, null, host.getValues());
+			if (id < 0) {
+				id = db.insert(TABLE_HOSTS, null, host.getValues());
+				host.setId(id);
+			} else {
+				db.update(TABLE_HOSTS, host.getValues(), "_id = ?",
+						new String[] { String.valueOf(id) });
+			}
 			db.close();
 		}
-
-		host.setId(id);
 
 		return host;
 	}

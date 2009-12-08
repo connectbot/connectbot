@@ -30,7 +30,15 @@
 		android:entries="@array/list_colors"
 		android:entryValues="@array/list_color_values"
 		/>
-<!--  
+
+	<EditTextPreference
+		android:key="fontsize"
+		android:title="@string/hostpref_fontsize_title"
+		android:inputType="number"
+		android:singleLine="true"
+		/>
+
+<!--
 	<CheckBoxPreference
 		android:key="usekeys"
 		android:title="Use SSH keys"

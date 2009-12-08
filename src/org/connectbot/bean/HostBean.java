@@ -46,6 +46,7 @@ public class HostBean extends AbstractBean {
 	private long pubkeyId = -1;
 	private boolean wantSession = true;
 	private String delKey = HostDatabase.DELKEY_DEL;
+	private int fontSize = -1;
 	private boolean compression = false;
 	private String encoding = HostDatabase.ENCODING_DEFAULT;
 	private boolean stayConnected = false;
@@ -172,6 +173,12 @@ public class HostBean extends AbstractBean {
 	public String getDelKey() {
 		return delKey;
 	}
+	public void setFontSize(int fontSize) {
+		this.fontSize = fontSize;
+	}
+	public int getFontSize() {
+		return fontSize;
+	}
 	public void setCompression(boolean compression) {
 		this.compression = compression;
 	}
@@ -223,6 +230,7 @@ public class HostBean extends AbstractBean {
 		values.put(HostDatabase.FIELD_HOST_PUBKEYID, pubkeyId);
 		values.put(HostDatabase.FIELD_HOST_WANTSESSION, Boolean.toString(wantSession));
 		values.put(HostDatabase.FIELD_HOST_DELKEY, delKey);
+		values.put(HostDatabase.FIELD_HOST_FONTSIZE, fontSize);
 		values.put(HostDatabase.FIELD_HOST_COMPRESSION, Boolean.toString(compression));
 		values.put(HostDatabase.FIELD_HOST_ENCODING, encoding);
 		values.put(HostDatabase.FIELD_HOST_STAYCONNECTED, stayConnected);
