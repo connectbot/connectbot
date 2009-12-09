@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_desc">Simple, powerful, open-source SSH client.</string>
+	<string name="app_desc">Jednoduchý, všestranný, open-source SSH klient</string>
 
 	<!-- Window title for the Host List -->
-	<string name="title_hosts_list">Hosts</string>
+	<string name="title_hosts_list">Hostitelé</string>
 	<!-- Window title for the Pubkeys List -->
-	<string name="title_pubkey_list">Pubkeys</string>
+	<string name="title_pubkey_list">Veřejné klíče</string>
 	<!-- Window title for the Port Forwards List -->
 	<string name="title_port_forwards_list">Přesměrování portu</string>
 	<!-- Window title when editing host details -->
-	<string name="title_host_editor">Edit Host</string>
+	<string name="title_host_editor">Upravit hostitele</string>
 	<!-- Window title for Help index -->
 	<string name="title_help">Nápověda</string>
 	<!-- Window title for color list editing screen -->
@@ -23,18 +23,18 @@
 	<string name="menu_delete">Smazat hostitele</string>
 	<string name="menu_preferences">Nastavení</string>
 
-	<string name="help_intro">Please select a topic below for more information on a particular subject.</string>
+	<string name="help_intro">Prosím, vyberte následující téma pro více informací na daný subjekt.</string>
 	<string name="help_about">O aplikaci ConnectBot</string>
 	<string name="help_keyboard">Klávesnice</string>
 
-	<string name="pubkey_generate">Generate</string>
+	<string name="pubkey_generate">Vygenerovat</string>
 	<string name="pubkey_import">Importovat</string>
 	<string name="pubkey_delete">Smazat klíč</string>
 	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
 	<string name="pubkey_gather_entropy">Gathering Entropy</string>
 	<string name="pubkey_touch_prompt">Touch this box to gather randomness: %1$d%% done</string>
 	<string name="pubkey_touch_hint">In order to assure randomness during the key generation, move your finger randomly over the box below.</string>
-	<string name="pubkey_generating">Generating key pair...</string>
+	<string name="pubkey_generating">Generování párování klíčem...</string>
 	<string name="pubkey_copy_private">Kopírovat soukromý klíč</string>
 	<string name="pubkey_copy_public">Kopírovat veřejný klíč</string>
 	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->

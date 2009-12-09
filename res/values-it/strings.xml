@@ -139,7 +139,7 @@
 	<string name="pref_fullscreen_summary">Nascondi la barra di stato in console</string>
 
 	<!-- Name for the memorize keys preference -->
-	<string name="pref_memkeys_title">Mantieni le chiavi in memoria</string>
+	<string name="pref_memkeys_title">Mantieni chiavi in memoria</string>
 	<!-- Summary for the memorize keys preference -->
 	<string name="pref_memkeys_summary">Mantiene le chiavi in memoria finché il servizio non viene terminato</string>
 
@@ -149,9 +149,9 @@
 	<string name="pref_update_summary">Imposta la frequenza massima per il controllo degli aggiornamenti</string>
 
 	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">Persist connections</string>
+	<string name="pref_conn_persist_title">Connessioni permanenti</string>
 	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+	<string name="pref_conn_persist_summary">Forza connessioni a rimanere collegate in sottofondo</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Scorciatoie directory</string>
@@ -191,9 +191,9 @@
 	<string name="pref_bell_vibrate_title">Vibra alla campanella</string>
 
 	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
-	<string name="pref_bell_notification_title">Notifiche in background</string>
+	<string name="pref_bell_notification_title">Notifiche in sottofondo</string>
 	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
-	<string name="pref_bell_notification_summary">Invia una notifica quando un terminale eseguito in background suona una campanella.</string>
+	<string name="pref_bell_notification_summary">Invia una notifica quando un terminale eseguito in sottofondo suona una campanella.</string>
 
 	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
 	<string name="list_keymode_right">Usa tasti sul lato destro</string>
@@ -242,7 +242,7 @@
 	<string name="hostpref_wantsession_summary">Disabilita questa preferenza per usare solo port forward</string>
 
 	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
-	<string name="hostpref_stayconnected_title">Mantieni le connessioni</string>
+	<string name="hostpref_stayconnected_title">Mantieni connessioni</string>
 	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
 	<string name="hostpref_stayconnected_summary">Tenta di riconnettersi in caso di disconnessione</string>
 
@@ -341,7 +341,7 @@
 	<string name="list_rotation_land">Forza orizzontale</string>
 	<string name="list_rotation_port">Forza verticale</string>
 	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
-	<string name="list_rotation_auto">Automatico</string>
+	<string name="list_rotation_auto">Automatica</string>
 
 	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
 	<string name="list_camera_ctrlaspace">Ctrl+A poi Spazio</string>
