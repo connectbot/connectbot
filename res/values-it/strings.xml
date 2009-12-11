@@ -220,6 +220,9 @@
 	<!-- Host color category preference title -->
 	<string name="hostpref_color_title">Categoria colore</string>
 
+	<!-- Host's default font size when opening the terminal in points (pt) -->
+	<string name="hostpref_fontsize_title">Font size (pt)</string>
+
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">Usa autenticazione a chiave pubblica</string>
 
@@ -424,6 +427,9 @@
 
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
 	<string name="exceptions_submit_message">Sembrerebbe che ConnectBot abbia avuto un problema durante l\'ultima esecuzione. Inviare una segnalazione d\'errore agli sviluppatori di ConnectBot?</string>
+
+	<!-- Menu selection to reset colors to their defaults. -->
+	<string name="menu_colors_reset">Reset</string>
 
 	<string name="color_red">rosso</string>
 	<string name="color_green">verde</string>
