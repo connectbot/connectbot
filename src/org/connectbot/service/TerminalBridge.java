@@ -911,7 +911,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			ofscl.onFontSizeChanged(size);
 
 		host.setFontSize((int) fontSize);
-		manager.hostdb.saveHost(host);
+		manager.hostdb.updateFontSize(host);
 	}
 
 	/**

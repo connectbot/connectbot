@@ -285,22 +285,45 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	 * Create a new host using the given parameters.
 	 */
 	public HostBean saveHost(HostBean host) {
-		long id = host.getId();
+		long id;
 
 		synchronized (dbLock) {
 			SQLiteDatabase db = this.getWritableDatabase();
 
-			if (id < 0) {
-				id = db.insert(TABLE_HOSTS, null, host.getValues());
-				host.setId(id);
-			} else {
-				db.update(TABLE_HOSTS, host.getValues(), "_id = ?",
-						new String[] { String.valueOf(id) });
-			}
+			id = db.insert(TABLE_HOSTS, null, host.getValues());
+
 			db.close();
 		}
 
+		host.setId(id);
+
 		return host;
+	}
+
+	/**
+	 * Update a field in a host record.
+	 */
+	public boolean updateFontSize(HostBean host) {
+		long id = host.getId();
+		if (id < 0) {
+			Log.e(TAG, "Attempting to update host without ID!",
+					new IllegalArgumentException());
+			return false;
+		}
+
+		ContentValues updates = new ContentValues();
+		updates.put(FIELD_HOST_FONTSIZE, host.getFontSize());
+
+		synchronized (dbLock) {
+			SQLiteDatabase db = getWritableDatabase();
+
+			db.update(TABLE_HOSTS, updates, "_id = ?",
+					new String[] { String.valueOf(id) });
+
+			db.close();
+		}
+
+		return true;
 	}
 
 	/**
@@ -360,6 +383,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			COL_PUBKEYID = c.getColumnIndexOrThrow(FIELD_HOST_PUBKEYID),
 			COL_WANTSESSION = c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION),
 			COL_DELKEY = c.getColumnIndexOrThrow(FIELD_HOST_DELKEY),
+			COL_FONTSIZE = c.getColumnIndexOrThrow(FIELD_HOST_FONTSIZE),
 			COL_COMPRESSION = c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION),
 			COL_ENCODING = c.getColumnIndexOrThrow(FIELD_HOST_ENCODING),
 			COL_STAYCONNECTED = c.getColumnIndexOrThrow(FIELD_HOST_STAYCONNECTED);
@@ -382,6 +406,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			host.setPubkeyId(c.getLong(COL_PUBKEYID));
 			host.setWantSession(Boolean.valueOf(c.getString(COL_WANTSESSION)));
 			host.setDelKey(c.getString(COL_DELKEY));
+			host.setFontSize(c.getInt(COL_FONTSIZE));
 			host.setCompression(Boolean.valueOf(c.getString(COL_COMPRESSION)));
 			host.setEncoding(c.getString(COL_ENCODING));
 			host.setStayConnected(Boolean.valueOf(c.getString(COL_STAYCONNECTED)));
