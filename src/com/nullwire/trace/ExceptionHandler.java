@@ -81,8 +81,10 @@ public class ExceptionHandler {
 		Log.d(TAG, "URL: " + G.URL);
 
 		boolean stackTracesFound = false;
+
 		// We'll return true if any stack traces were found
-		if (searchForStackTraces().length > 0) {
+		String[] list = searchForStackTraces();
+		if (list != null && list.length > 0) {
 			stackTracesFound = true;
 		}
 
