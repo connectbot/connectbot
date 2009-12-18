@@ -14,9 +14,9 @@
          application-package
              the name of your application package as defined in the manifest. Used by the
              'uninstall' rule.
-         source-folder
+         source.dir
              the name of the source folder. Default is 'src'.
-         out-folder
+         out.dir
              the name of the output folder. Default is 'bin'.
 
          Properties related to the SDK location or the project target should be updated
@@ -37,11 +37,11 @@
     <!-- Custom Android task to deal with the project target, and import the proper rules.
          This requires ant 1.6.0 or above. -->
     <path id="android.antlibs">
-        <pathelement path="${sdk-location}/tools/lib/anttasks.jar" />
-        <pathelement path="${sdk-location}/tools/lib/sdklib.jar" />
-        <pathelement path="${sdk-location}/tools/lib/androidprefs.jar" />
-        <pathelement path="${sdk-location}/tools/lib/apkbuilder.jar" />
-        <pathelement path="${sdk-location}/tools/lib/jarutils.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/anttasks.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/sdklib.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/androidprefs.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/apkbuilder.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/jarutils.jar" />
     </path>
 
     <taskdef name="setup"
@@ -58,10 +58,4 @@
          targets are used.
     -->
     <setup />
-
-    <target name="clean"
-        description="Clean up the result of the build process">
-        <delete dir="${out-folder}"/>
-        <delete dir="${gen-folder}"/>
-    </target>
 </project>

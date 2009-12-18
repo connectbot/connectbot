@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.connectbot"
 	android:versionName="1.6-dev"
-	android:versionCode="224">
+	android:versionCode="225">
 
 	<application
 		android:icon="@drawable/icon"
@@ -48,7 +48,7 @@
 
 	</application>
 
-	<uses-sdk android:targetSdkVersion="6" android:minSdkVersion="3"/>
+	<uses-sdk android:targetSdkVersion="6" android:minSdkVersion="3" />
 
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.VIBRATE" />
@@ -56,5 +56,5 @@
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-	<supports-screens/>
+	<supports-screens />
 </manifest>

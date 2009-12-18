@@ -334,7 +334,7 @@
         <apply executable="${dx}" failonerror="true" parallel="true">
             <arg value="--dex" />
             <arg value="--output=${intermediate.dex.file}" />
-            <fileset dir="${out.classes.absolute.dir}" includes="*.min.jar" />
+            <fileset dir="${out.absolute.dir}" includes="*.min.jar" />
             <fileset dir="${external.libs.absolute.dir}" includes="*.jar"/>
         </apply>
     </target>
