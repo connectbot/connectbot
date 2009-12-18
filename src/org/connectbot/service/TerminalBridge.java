@@ -209,7 +209,7 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 		fontSizeChangedListeners = new LinkedList<FontSizeChangedListener>();
 
 		int hostFontSize = host.getFontSize();
-		if (hostFontSize < 0)
+		if (hostFontSize <= 0)
 			hostFontSize = DEFAULT_FONT_SIZE;
 		setFontSize(hostFontSize);
 
