@@ -17,11 +17,15 @@
 */
 package org.connectbot.util;
 
+import android.os.Build;
+
 /**
  * @author Kenny Root
  *
  */
 public class PreferenceConstants {
+	public static final boolean PRE_ECLAIR = (Integer.parseInt(Build.VERSION.SDK) <= 4);
+
 	public static final String MEMKEYS = "memkeys";
 	public static final String UPDATE = "update";
 
