@@ -77,7 +77,7 @@
 	<string name="prompt_pubkey_password">密鑰「%1$s」的密碼</string>
 
 	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key '%1$s'?</string>
+	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key \'%1$s\'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">警告：遠程主機的標誌已經改變</string>
@@ -156,7 +156,7 @@
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Directory shortcuts</string>
 	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Select how to use Alt for '/' and Shift for Tab</string>
+	<string name="pref_keymode_summary">Select how to use Alt for \'/\' and Shift for Tab</string>
 
 	<!-- Name for the camera shortcut usage preference -->
 	<string name="pref_camera_title">Camera shortcut</string>
@@ -308,7 +308,7 @@
 	<string name="portforward_pos">Create port forward</string>
 
 	<string name="portforward_done">Successfully created port forward</string>
-	<string name="portforward_problem">Problem creating port forward, maybe you're using ports under 1024 or port is already used?</string>
+	<string name="portforward_problem">Problem creating port forward, maybe you\'re using ports under 1024 or port is already used?</string>
 
 	<string name="portforward_menu_add">Add port forward</string>
 
@@ -378,7 +378,7 @@
 	<string name="terminal_connecting">Connecting to %1$s:%2$d via %3$s</string>
 
 	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Verified host '%1$s' key: %2$s</string>
+	<string name="terminal_sucess">Verified host \'%1$s\' key: %2$s</string>
 	<string name="terminal_failed">Host key verification failed.</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
@@ -390,18 +390,18 @@
 
 	<string name="terminal_auth">Trying to authenticate</string>
 
-	<string name="terminal_auth_pass">Attempting 'password' authentication</string>
-	<string name="terminal_auth_pass_fail">Authentication method 'password' failed</string>
+	<string name="terminal_auth_pass">Attempting \'password\' authentication</string>
+	<string name="terminal_auth_pass_fail">Authentication method \'password\' failed</string>
 
-	<string name="terminal_auth_pubkey_any">Attempting 'publickey' authentication with any in-memory public keys</string>
+	<string name="terminal_auth_pubkey_any">Attempting \'publickey\' authentication with any in-memory public keys</string>
 	<string name="terminal_auth_pubkey_invalid">Selected public key is invalid, try reselecting key in host editor</string>
-	<string name="terminal_auth_pubkey_specific">Attempting 'publickey' authentication with a specific public key</string>
-	<string name="terminal_auth_pubkey_fail">Authentication method 'publickey' with key '%1$s' failed</string>
+	<string name="terminal_auth_pubkey_specific">Attempting \'publickey\' authentication with a specific public key</string>
+	<string name="terminal_auth_pubkey_fail">Authentication method \'publickey\' with key \'%1$s\' failed</string>
 
-	<string name="terminal_auth_ki">Attempting 'keyboard-interactive' authentication</string>
-	<string name="terminal_auth_ki_fail">Authentication method 'keyboard-interactive' failed</string>
+	<string name="terminal_auth_ki">Attempting \'keyboard-interactive\' authentication</string>
+	<string name="terminal_auth_ki_fail">Authentication method \'keyboard-interactive\' failed</string>
 
-	<string name="terminal_auth_fail">[Your host doesn't support 'password' or 'keyboard-interactive' authentication.]</string>
+	<string name="terminal_auth_fail">[Your host doesn\'t support \'password\' or \'keyboard-interactive\' authentication.]</string>
 
 	<string name="terminal_no_session">Session will not be started due to host preference.</string>
 	<string name="terminal_enable_portfoward">Enable port forward: %1$s</string>

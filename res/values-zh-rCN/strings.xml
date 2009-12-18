@@ -360,7 +360,7 @@
 	<!-- Name for the ASCII DEL character -->
 	<string name="list_delkey_del">删除</string>
 
-	<string name="delete_message">确定要删除'%1$s'吗？</string>
+	<string name="delete_message">确定要删除\'%1$s\'吗？</string>
 	<string name="delete_pos">是，删除</string>
 	<string name="delete_neg">取消</string>
 

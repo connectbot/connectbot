@@ -44,7 +44,7 @@
 	<string name="pubkey_list_pick">Välj från /sdcard</string>
 	<string name="pubkey_import_parse_problem">Svårigheter med att tyda den importerade privata nyckeln</string>
 	<string name="pubkey_unlock">Lås upp nyckel</string>
-	<string name="pubkey_failed_add">Felaktigt lösenord för nyckeln '%1$s'. Autentiseringen misslyckades.</string>
+	<string name="pubkey_failed_add">Felaktigt lösenord för nyckeln \'%1$s\'. Autentiseringen misslyckades.</string>
 	<string name="pubkey_memory_load">Ladda in i minnet</string>
 	<string name="pubkey_memory_unload">Ladda ur minnet</string>
 	<string name="pubkey_load_on_start">Ladda nyckel från start</string>
@@ -74,10 +74,10 @@
 	<string name="prompt_bits">Bitar:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Lösenord för nyckel '%1$s'</string>
+	<string name="prompt_pubkey_password">Lösenord för nyckel \'%1$s\'</string>
 
 	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">Tillåt fjärrvärd att\nanvända nyckel '%1$s'?</string>
+	<string name="prompt_allow_agent_to_use_key">Tillåt fjärrvärd att\nanvända nyckel \'%1$s\'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">VARNING: IDENTIFIERING AV FJÄRRVÄRD HAR ÄNDRATS!</string>
@@ -90,7 +90,7 @@
 	<string name="prompt_continue_connecting">Är du säker att du vill\nfortsätta att ansluta?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">Identiteten av värden '%1$s' går ej att fastställa.</string>
+	<string name="host_authenticity_warning">Identiteten av värden \'%1$s\' går ej att fastställa.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">Host %1$s key fingerprint is %2$s</string>
 
@@ -156,7 +156,7 @@
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Genvägar för katalog</string>
 	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Välj hur Alt används för '/' och Shift för Tab</string>
+	<string name="pref_keymode_summary">Välj hur Alt används för \'/\' och Shift för Tab</string>
 
 	<!-- Name for the camera shortcut usage preference -->
 	<string name="pref_camera_title">Genväg för kamera</string>
@@ -360,7 +360,7 @@
 	<!-- Name for the ASCII DEL character -->
 	<string name="list_delkey_del">Delete</string>
 
-	<string name="delete_message">Är du säker att du vill ta bort '%1$s'?</string>
+	<string name="delete_message">Är du säker att du vill ta bort \'%1$s\'?</string>
 	<string name="delete_pos">Ja, ta bort</string>
 	<string name="delete_neg">Avbryt</string>
 
@@ -378,7 +378,7 @@
 	<string name="terminal_connecting">Connecting to %1$s:%2$d via %3$s</string>
 
 	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Verified host '%1$s' key: %2$s</string>
+	<string name="terminal_sucess">Verified host \'%1$s\' key: %2$s</string>
 	<string name="terminal_failed">Verifikation av värd-nyckeln misslyckades.</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
@@ -390,18 +390,18 @@
 
 	<string name="terminal_auth">Försöker att autentisera</string>
 
-	<string name="terminal_auth_pass">Försöker med 'password' autentisering</string>
-	<string name="terminal_auth_pass_fail">Autentiseringsmetoden 'password' misslyckades</string>
+	<string name="terminal_auth_pass">Försöker med \'password\' autentisering</string>
+	<string name="terminal_auth_pass_fail">Autentiseringsmetoden \'password\' misslyckades</string>
 
-	<string name="terminal_auth_pubkey_any">Attempting 'publickey' authentication with any in-memory public keys</string>
+	<string name="terminal_auth_pubkey_any">Attempting \'publickey\' authentication with any in-memory public keys</string>
 	<string name="terminal_auth_pubkey_invalid">Selected public key is invalid, try reselecting key in host editor</string>
-	<string name="terminal_auth_pubkey_specific">Attempting 'publickey' authentication with a specific public key</string>
-	<string name="terminal_auth_pubkey_fail">Authentication method 'publickey' with key '%1$s' failed</string>
+	<string name="terminal_auth_pubkey_specific">Attempting \'publickey\' authentication with a specific public key</string>
+	<string name="terminal_auth_pubkey_fail">Authentication method \'publickey\' with key \'%1$s\' failed</string>
 
-	<string name="terminal_auth_ki">Försöker med 'keyboard-interactive' autentisering</string>
-	<string name="terminal_auth_ki_fail">Autentiseringsmetoden 'keyboard-interactive' misslyckades</string>
+	<string name="terminal_auth_ki">Försöker med \'keyboard-interactive\' autentisering</string>
+	<string name="terminal_auth_ki_fail">Autentiseringsmetoden \'keyboard-interactive\' misslyckades</string>
 
-	<string name="terminal_auth_fail">[Din värd stödjer inte 'password' eller 'keyboard-interactive' autentiseringsmetoderna]</string>
+	<string name="terminal_auth_fail">[Din värd stödjer inte \'password\' eller \'keyboard-interactive\' autentiseringsmetoderna]</string>
 
 	<string name="terminal_no_session">Session will not be started due to host preference.</string>
 	<string name="terminal_enable_portfoward">Enable port forward: %1$s</string>

@@ -44,7 +44,7 @@
 	<string name="pubkey_list_pick">SDカードから選ぶ</string>
 	<string name="pubkey_import_parse_problem">インポートした秘密鍵を解析時に問題発生</string>
 	<string name="pubkey_unlock">鍵をアンロック</string>
-	<string name="pubkey_failed_add">鍵 '%1$s' のパスワードが正しくありません。認証に失敗しました。</string>
+	<string name="pubkey_failed_add">鍵 \'%1$s\' のパスワードが正しくありません。認証に失敗しました。</string>
 	<string name="pubkey_memory_load">メモリにロード</string>
 	<string name="pubkey_memory_unload">メモリからアンロード</string>
 	<string name="pubkey_load_on_start">起動時に鍵をロード</string>
@@ -74,10 +74,10 @@
 	<string name="prompt_bits">ビット長:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">鍵 '%1$s' のパスワード</string>
+	<string name="prompt_pubkey_password">鍵 \'%1$s\' のパスワード</string>
 
 	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">リモートホストが鍵 '%1$s' を使用することを許可しますか?</string>
+	<string name="prompt_allow_agent_to_use_key">リモートホストが鍵 \'%1$s\' を使用することを許可しますか?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">警告: リモートホストのIDが変わっています!</string>
@@ -90,7 +90,7 @@
 	<string name="prompt_continue_connecting">このまま接続しますか?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">ホスト '%1$s' の確認ができませんでした。</string>
+	<string name="host_authenticity_warning">ホスト \'%1$s\' の確認ができませんでした。</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">ホストの%1$sキーフィンガープリントは%2$s</string>
 
@@ -156,7 +156,7 @@
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">ディレクトリのショートカット</string>
 	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Altを'/'、ShiftをTabに割り当てます</string>
+	<string name="pref_keymode_summary">Altを\'/\'、ShiftをTabに割り当てます</string>
 
 	<!-- Name for the camera shortcut usage preference -->
 	<string name="pref_camera_title">カメラボタンショートカット</string>
@@ -360,7 +360,7 @@
 	<!-- Name for the ASCII DEL character -->
 	<string name="list_delkey_del">Delete</string>
 
-	<string name="delete_message">'%1$s'を削除してよろしいですか?</string>
+	<string name="delete_message">\'%1$s\'を削除してよろしいですか?</string>
 	<string name="delete_pos">はい、削除します</string>
 	<string name="delete_neg">キャンセル</string>
 
@@ -378,7 +378,7 @@
 	<string name="terminal_connecting">%1$s:%2$dに%3$sで接続しています</string>
 
 	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">ホスト'%1$s' キー%2$s を検証しました</string>
+	<string name="terminal_sucess">ホスト\'%1$s\' キー%2$s を検証しました</string>
 	<string name="terminal_failed">ホストキーが検証できません</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
@@ -390,18 +390,18 @@
 
 	<string name="terminal_auth">認証を試行中</string>
 
-	<string name="terminal_auth_pass">'password' 認証を試行</string>
-	<string name="terminal_auth_pass_fail">'password' 認証失敗</string>
+	<string name="terminal_auth_pass">\'password\' 認証を試行</string>
+	<string name="terminal_auth_pass_fail">\'password\' 認証失敗</string>
 
-	<string name="terminal_auth_pubkey_any">メモリ上の公開鍵による 'publickey' 認証を試行</string>
+	<string name="terminal_auth_pubkey_any">メモリ上の公開鍵による \'publickey\' 認証を試行</string>
 	<string name="terminal_auth_pubkey_invalid">選択された公開鍵は無効です、ホストの編集で選び直してください</string>
-	<string name="terminal_auth_pubkey_specific">指定された公開鍵による 'publickey' 認証を試行</string>
-	<string name="terminal_auth_pubkey_fail">鍵 '%1$s' での 'publickey' 認証に失敗</string>
+	<string name="terminal_auth_pubkey_specific">指定された公開鍵による \'publickey\' 認証を試行</string>
+	<string name="terminal_auth_pubkey_fail">鍵 \'%1$s\' での \'publickey\' 認証に失敗</string>
 
-	<string name="terminal_auth_ki">'keyboard-interactive' 認証を試行</string>
-	<string name="terminal_auth_ki_fail">'keyboard-interactive' 認証に失敗</string>
+	<string name="terminal_auth_ki">\'keyboard-interactive\' 認証を試行</string>
+	<string name="terminal_auth_ki_fail">\'keyboard-interactive\' 認証に失敗</string>
 
-	<string name="terminal_auth_fail">[ホストは 'password' や 'keyboard-interactive' 認証をサポートしていません.]</string>
+	<string name="terminal_auth_fail">[ホストは \'password\' や \'keyboard-interactive\' 認証をサポートしていません.]</string>
 
 	<string name="terminal_no_session">ホスト設定によりセッションを開始しません</string>
 	<string name="terminal_enable_portfoward">ポート転送 %1$s を有効化</string>

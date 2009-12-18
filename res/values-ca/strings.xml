@@ -33,7 +33,7 @@
 	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
 	<string name="pubkey_gather_entropy">Recull Entropia</string>
 	<string name="pubkey_touch_prompt">Toca aquesta caixa per obtenir aleatorietat: %1$d%% completat</string>
-	<string name="pubkey_touch_hint">Per assegurar l'aleatorietat durant la generació de la clau, mou el dit aleatoriament per sobre la caixa de sota.</string>
+	<string name="pubkey_touch_hint">Per assegurar l\'aleatorietat durant la generació de la clau, mou el dit aleatoriament per sobre la caixa de sota.</string>
 	<string name="pubkey_generating">Generant parell de claus...</string>
 	<string name="pubkey_copy_private">Còpia la clau privada</string>
 	<string name="pubkey_copy_public">Còpia la clau pública</string>
@@ -44,12 +44,12 @@
 	<string name="pubkey_list_pick">Obté de /sdcard</string>
 	<string name="pubkey_import_parse_problem">Problema analitzant les claus privades importades</string>
 	<string name="pubkey_unlock">Desbloqueja clau</string>
-	<string name="pubkey_failed_add">Contrasenya incorrecta per la clau '%1$s'. Autenticació fallada</string>
+	<string name="pubkey_failed_add">Contrasenya incorrecta per la clau \'%1$s\'. Autenticació fallada</string>
 	<string name="pubkey_memory_load">Carrega a la memòria</string>
 	<string name="pubkey_memory_unload">Descarrega de la memòria</string>
-	<string name="pubkey_load_on_start">Carrega la clau a l'inici</string>
+	<string name="pubkey_load_on_start">Carrega la clau a l\'inici</string>
 	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
-	<string name="pubkey_confirm_use">Confirmar abans d'usar</string>
+	<string name="pubkey_confirm_use">Confirmar abans d\'usar</string>
 
 	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
 	<string name="portforward_list_empty">Pulsa "Menu" per crear\nredireccions de ports.</string>
@@ -60,7 +60,7 @@
 	<!-- An example string that could be used as a nickname for a pubkey. -->
 	<string name="prompt_nickname_hint_pubkey">La meva clau</string>
 	<!-- The source TCP port for port forwards. -->
-	<string name="prompt_source_port">Port d'origen:</string>
+	<string name="prompt_source_port">Port d\'origen:</string>
 	<!-- The "host:port" combination used for port forward destinations. -->
 	<string name="prompt_destination">Destí:</string>
 	<string name="prompt_old_password">Contrasenya anterior:</string>
@@ -74,10 +74,10 @@
 	<string name="prompt_bits">Bits:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Contrasenya per la clau '%1$s'</string>
+	<string name="prompt_pubkey_password">Contrasenya per la clau \'%1$s\'</string>
 
 	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">Permet al servidor remot\nutilitzar la clau '%1$s'?</string>
+	<string name="prompt_allow_agent_to_use_key">Permet al servidor remot\nutilitzar la clau \'%1$s\'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">ALERTA: LA IDENTIFICACIÓ DEL SERVIDOR REMOT HA CANVIAT!</string>
@@ -90,7 +90,7 @@
 	<string name="prompt_continue_connecting">Estàs segur que vols\ncontinuar connectant?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">La autenticació amb el servidor '%1$s' no es pot establir.</string>
+	<string name="host_authenticity_warning">La autenticació amb el servidor \'%1$s\' no es pot establir.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">Servidor %1$s empremta de la clau és %2$s</string>
 
@@ -116,9 +116,9 @@
 	<string name="pref_emulation_category">Emulador del terminal</string>
 
 	<!-- Name for the emulation terminal type preference. -->
-	<string name="pref_emulation_title">Mode d'emulació</string>
+	<string name="pref_emulation_title">Mode d\'emulació</string>
 	<!-- Description of the emulation terminal type preference. -->
-	<string name="pref_emulation_summary">Mode d'emulació de terminal per l'ús de connexions PTY</string>
+	<string name="pref_emulation_summary">Mode d\'emulació de terminal per l\'ús de connexions PTY</string>
 
 	<!-- Name for the scrollback size preference -->
 	<string name="pref_scrollback_title">Tamany de la història</string>
@@ -126,17 +126,17 @@
 	<string name="pref_scrollback_summary">Tamany de la memòria per mantenir la història de cada consola</string>
 
 	<!-- The category title for user interface preferences -->
-	<string name="pref_ui_category">Interfície d'usuari</string>
+	<string name="pref_ui_category">Interfície d\'usuari</string>
 
 	<!-- Name for the rotation mode preference -->
 	<string name="pref_rotation_title">Mode de rotació</string>
 	<!-- Summary for the rotation mode preference -->
-	<string name="pref_rotation_summary">Com canvia la orientació quan el teclat s'obre o es tanca</string>
+	<string name="pref_rotation_summary">Com canvia la orientació quan el teclat s\'obre o es tanca</string>
 
 	<!-- Name for the full screen preference -->
 	<string name="pref_fullscreen_title">Pantalla completa</string>
 	<!-- Summary for the full screen preference -->
-	<string name="pref_fullscreen_summary">Amaga la barra d'estat en consola</string>
+	<string name="pref_fullscreen_summary">Amaga la barra d\'estat en consola</string>
 
 	<!-- Name for the memorize keys preference -->
 	<string name="pref_memkeys_title">Recorda les claus en memòria</string>
@@ -146,7 +146,7 @@
 	<!-- Name for the update check preference -->
 	<string name="pref_update_title">Comprova actualització</string>
 	<!-- Summary for the update check preference -->
-	<string name="pref_update_summary">Escull la freqüència màxima de comprovació d'actualitzacions de ConnectBot</string>
+	<string name="pref_update_summary">Escull la freqüència màxima de comprovació d\'actualitzacions de ConnectBot</string>
 
 	<!-- Name for the preference that forces the service to stay running in the background.-->
 	<string name="pref_conn_persist_title">Persist connections</string>
@@ -156,7 +156,7 @@
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Drecera de carpetes</string>
 	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Escull com usar Alt per '/' i Shift per Tab</string>
+	<string name="pref_keymode_summary">Escull com usar Alt per \'/\' i Shift per Tab</string>
 
 	<!-- Name for the camera shortcut usage preference -->
 	<string name="pref_camera_title">Drecera de càmera</string>
@@ -166,17 +166,17 @@
 	<!-- Name for the keep screen on preference -->
 	<string name="pref_keepalive_title">Manté la pantalla encesa</string>
 	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_keepalive_summary">Evita que la pantalla s'apagui mentre s'usa la consola</string>
+	<string name="pref_keepalive_summary">Evita que la pantalla s\'apagui mentre s\'usa la consola</string>
 
 	<!-- Name for the Wi-Fi lock preference -->
 	<string name="pref_wifilock_title">Manté activa la Wi-Fi</string>
 	<!-- Summary for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_summary">Evita que la Wi-Fi s'apagui mentre hi ha una sessió activa</string>
+	<string name="pref_wifilock_summary">Evita que la Wi-Fi s\'apagui mentre hi ha una sessió activa</string>
 
 	<!-- Name for the haptic feedback (bumpy arrow) preference -->
 	<string name="pref_bumpyarrows_title">Cursors vibrants</string>
 	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_summary">Vibra quan s'envien els cursors de direcció amb la rodeta; útil per connexions lentes</string>
+	<string name="pref_bumpyarrows_summary">Vibra quan s\'envien els cursors de direcció amb la rodeta; útil per connexions lentes</string>
 
 	<!-- Category title for the Terminal Bell preferences -->
 	<string name="pref_bell_category">So del Terminal</string>
@@ -198,7 +198,7 @@
 	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
 	<string name="list_keymode_right">Utilitza les tecles de la dreta</string>
 	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
-	<string name="list_keymode_left">Utilitza les tecles de l'esquerra</string>
+	<string name="list_keymode_left">Utilitza les tecles de l\'esquerra</string>
 	<!-- Preference selection to indicate never to use special shortcut keys. -->
 	<string name="list_keymode_none">Deshabilita</string>
 
@@ -227,7 +227,7 @@
 	<string name="hostpref_pubkeyid_title">Usa autenticació de claus públiques</string>
 
 	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
-	<string name="hostpref_authagent_title">Usa agent d'autenticació SSH</string>
+	<string name="hostpref_authagent_title">Usa agent d\'autenticació SSH</string>
 
 	<!-- Host post-login automation preference title -->
 	<string name="hostpref_postlogin_title">Automatització post-entrada</string>
@@ -263,7 +263,7 @@
 	<string name="hostpref_connection_category">Paràmetres de connexió</string>
 
 	<!-- Username field title for host editor preference -->
-	<string name="hostpref_username_title">Nom d'usuari</string>
+	<string name="hostpref_username_title">Nom d\'usuari</string>
 
 	<!-- Hostname field title for host editor preference -->
 	<string name="hostpref_hostname_title">Servidor</string>
@@ -283,7 +283,7 @@
 	<!-- Message given when user copies from the terminal. -->
 	<string name="console_copy_done">Copiats %1$d bytes al porta-retalls</string>
 	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">Toca i arrosega\no fes servir les tecles de direcció\nper escollir l'àrea a copiar</string>
+	<string name="console_copy_start">Toca i arrosega\no fes servir les tecles de direcció\nper escollir l\'àrea a copiar</string>
 
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">Tanca</string>
@@ -308,7 +308,7 @@
 	<string name="portforward_pos">Crea redireccionament de ports</string>
 
 	<string name="portforward_done">Redireccionament creat correctament</string>
-	<string name="portforward_problem">Problemes creant el redireccionament de ports, potser s'usen ports per sota del 1024 o el port és en ús actualment?</string>
+	<string name="portforward_problem">Problemes creant el redireccionament de ports, potser s\'usen ports per sota del 1024 o el port és en ús actualment?</string>
 
 	<string name="portforward_menu_add">Afegeix redireccionament de ports</string>
 
@@ -360,7 +360,7 @@
 	<!-- Name for the ASCII DEL character -->
 	<string name="list_delkey_del">Suprimeix</string>
 
-	<string name="delete_message">Estas segur que vols esborrar '%1$s'?</string>
+	<string name="delete_message">Estas segur que vols esborrar \'%1$s\'?</string>
 	<string name="delete_pos">Sí, esborra</string>
 	<string name="delete_neg">Cancel·la</string>
 
@@ -378,7 +378,7 @@
 	<string name="terminal_connecting">Connectant a %1$s:%2$d via %3$s</string>
 
 	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Clau de servidor '%1$s' verificada: %2$s</string>
+	<string name="terminal_sucess">Clau de servidor \'%1$s\' verificada: %2$s</string>
 	<string name="terminal_failed">Verificació de la clau del servidor errònia.</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
@@ -390,20 +390,20 @@
 
 	<string name="terminal_auth">Intentant autenticar</string>
 
-	<string name="terminal_auth_pass">Intentant autenticació de 'contrasenya'</string>
-	<string name="terminal_auth_pass_fail">Autenticació amb 'contrasenya' errònia</string>
+	<string name="terminal_auth_pass">Intentant autenticació de \'contrasenya\'</string>
+	<string name="terminal_auth_pass_fail">Autenticació amb \'contrasenya\' errònia</string>
 
-	<string name="terminal_auth_pubkey_any">Intentant autenticació amb 'claus públiques' amb totes les claus en memòria</string>
-	<string name="terminal_auth_pubkey_invalid">La clau pública seleccionada és invàlida, intenta reseleccionar la clau en l'editor del servidor</string>
-	<string name="terminal_auth_pubkey_specific">Intentant autenticació amb 'claus públiques' amb una clau específica</string>
-	<string name="terminal_auth_pubkey_fail">Mètode d'autenticació 'claus públiques' amb clau '%1$s' fallit</string>
+	<string name="terminal_auth_pubkey_any">Intentant autenticació amb \'claus públiques\' amb totes les claus en memòria</string>
+	<string name="terminal_auth_pubkey_invalid">La clau pública seleccionada és invàlida, intenta reseleccionar la clau en l\'editor del servidor</string>
+	<string name="terminal_auth_pubkey_specific">Intentant autenticació amb \'claus públiques\' amb una clau específica</string>
+	<string name="terminal_auth_pubkey_fail">Mètode d\'autenticació \'claus públiques\' amb clau \'%1$s\' fallit</string>
 
-	<string name="terminal_auth_ki">Intentant autenticació 'teclat-interactiu'</string>
-	<string name="terminal_auth_ki_fail">Mètode d'autenticació 'teclat-interactiu' fallit.</string>
+	<string name="terminal_auth_ki">Intentant autenticació \'teclat-interactiu\'</string>
+	<string name="terminal_auth_ki_fail">Mètode d\'autenticació \'teclat-interactiu\' fallit.</string>
 
-	<string name="terminal_auth_fail">[El servidor no admet autenticació amb 'contrasenya' o 'teclat-interactiu'.]</string>
+	<string name="terminal_auth_fail">[El servidor no admet autenticació amb \'contrasenya\' o \'teclat-interactiu\'.]</string>
 
-	<string name="terminal_no_session">La sessió no s'iniciarà degut a la preferencia de servidor.</string>
+	<string name="terminal_no_session">La sessió no s\'iniciarà degut a la preferencia de servidor.</string>
 	<string name="terminal_enable_portfoward">Activa el redireccionament de ports: %1$s</string>
 
 	<string name="local_shell_unavailable">Fallada! El shell local no està disponible en aquest telèfon.</string>
@@ -426,7 +426,7 @@
 	<string name="yes">Sí</string>
 
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
-	<string name="exceptions_submit_message">Sembla que ConnectBot ha tingut un problema l'últim cop que s'ha iniciat. Enviar la informació de l'error als desenvolupadors de ConnectBot?</string>
+	<string name="exceptions_submit_message">Sembla que ConnectBot ha tingut un problema l\'últim cop que s\'ha iniciat. Enviar la informació de l\'error als desenvolupadors de ConnectBot?</string>
 
 	<!-- Menu selection to reset colors to their defaults. -->
 	<string name="menu_colors_reset">Reset</string>

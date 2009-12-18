@@ -24,7 +24,7 @@
 	<string name="menu_preferences">Preferencje</string>
 
 	<string name="help_intro">Proszę wybrać temat poniżej aby uzyskać więcej informacji na konkretny temat.</string>
-	<string name="help_about">O ConnectBot'cie</string>
+	<string name="help_about">O ConnectBot\'cie</string>
 	<string name="help_keyboard">Klawiatura</string>
 
 	<string name="pubkey_generate">Generuj</string>
@@ -44,7 +44,7 @@
 	<string name="pubkey_list_pick">Zaimportuj z karty SD</string>
 	<string name="pubkey_import_parse_problem">Niewłaściwy format importowanego klucza prywatnego</string>
 	<string name="pubkey_unlock">Kod odblokowywujący</string>
-	<string name="pubkey_failed_add">Złe hasło dla klucza '%1$s'. Brak dostępu.</string>
+	<string name="pubkey_failed_add">Złe hasło dla klucza \'%1$s\'. Brak dostępu.</string>
 	<string name="pubkey_memory_load">Załaduj do pamięci</string>
 	<string name="pubkey_memory_unload">Usuń z pamięci</string>
 	<string name="pubkey_load_on_start">Załaduj klucz przy uruchamianiu</string>
@@ -74,10 +74,10 @@
 	<string name="prompt_bits">Bity:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Proszę podać hasło dla klucza '%1$s'</string>
+	<string name="prompt_pubkey_password">Proszę podać hasło dla klucza \'%1$s\'</string>
 
 	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">Zezwolić zdalnemu hostowi na\nużycie klucza '%1$s'?</string>
+	<string name="prompt_allow_agent_to_use_key">Zezwolić zdalnemu hostowi na\nużycie klucza \'%1$s\'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">OSTRZEŻENIE: ZDALNA IDENTYFIKACJA HOSTA ZMIENIŁA SIĘ!</string>
@@ -90,7 +90,7 @@
 	<string name="prompt_continue_connecting">Czy na pewno chcesz\n kontynuować połączenie?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">Autentyczność hosta '%1$s' nie może zostać ustalona.</string>
+	<string name="host_authenticity_warning">Autentyczność hosta \'%1$s\' nie może zostać ustalona.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">Fingerprint hosta %1$s to %2$s</string>
 
@@ -156,7 +156,7 @@
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Skróty klawiaturowe</string>
 	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Wybierz, którego Alt, Shift używać dla '/' oraz 'Tab'</string>
+	<string name="pref_keymode_summary">Wybierz, którego Alt, Shift używać dla \'/\' oraz \'Tab\'</string>
 
 	<!-- Name for the camera shortcut usage preference -->
 	<string name="pref_camera_title">Klawisz aparatu</string>
@@ -283,7 +283,7 @@
 	<!-- Message given when user copies from the terminal. -->
 	<string name="console_copy_done">Skopiowano %1$d bajtów do schowka</string>
 	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">Dotknij i przeciągnij\nlub użyj trackball'a\naby zaznaczyć obszar do skopiowania</string>
+	<string name="console_copy_start">Dotknij i przeciągnij\nlub użyj trackball\'a\naby zaznaczyć obszar do skopiowania</string>
 
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">Zamknij</string>
@@ -360,7 +360,7 @@
 	<!-- Name for the ASCII DEL character -->
 	<string name="list_delkey_del">Usuń</string>
 
-	<string name="delete_message">Jesteś pewien, że chcesz usunąć '%1$s'?</string>
+	<string name="delete_message">Jesteś pewien, że chcesz usunąć \'%1$s\'?</string>
 	<string name="delete_pos">Tak, usuń</string>
 	<string name="delete_neg">Anuluj</string>
 
@@ -378,7 +378,7 @@
 	<string name="terminal_connecting">Łączenie z hostem %1$s:%2$d przez %3$s</string>
 
 	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Zweryfikowany klucz hosta '%1$s': %2$s</string>
+	<string name="terminal_sucess">Zweryfikowany klucz hosta \'%1$s\': %2$s</string>
 	<string name="terminal_failed">Weryfikacja klucza hosta nie powiodła się.</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
@@ -396,7 +396,7 @@
 	<string name="terminal_auth_pubkey_any">Próba autentykacji za pomocą dowolnego zapamiętanego klucza publicznego</string>
 	<string name="terminal_auth_pubkey_invalid">Wybrany klucz publiczny jest nieprawidłowy, spróbuj wybrać inny klucz w edycji hosta</string>
 	<string name="terminal_auth_pubkey_specific">Próba autoryzacji za pomocą wybranego klucza publicznego</string>
-	<string name="terminal_auth_pubkey_fail">Autoryzacja metodą klucza publicznego z kluczem '%1$s' nie powiodła się</string>
+	<string name="terminal_auth_pubkey_fail">Autoryzacja metodą klucza publicznego z kluczem \'%1$s\' nie powiodła się</string>
 
 	<string name="terminal_auth_ki">Próba autoryzacji za pomocą klawiatury</string>
 	<string name="terminal_auth_ki_fail">Autoryzacja za pomocą klawiatury nie powiodła się</string>

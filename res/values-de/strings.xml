@@ -44,7 +44,7 @@
 	<string name="pubkey_list_pick">Wähle von /sdcard</string>
 	<string name="pubkey_import_parse_problem">Konnte importierten geheimen Schlüssel nicht parsen.</string>
 	<string name="pubkey_unlock">Schlüssel entsperren.</string>
-	<string name="pubkey_failed_add">Falsches Passwort für Schlüssel '%1$s'. Legitimation fehlgeschlagen.</string>
+	<string name="pubkey_failed_add">Falsches Passwort für Schlüssel \'%1$s\'. Legitimation fehlgeschlagen.</string>
 	<string name="pubkey_memory_load">In Speicher laden.</string>
 	<string name="pubkey_memory_unload">Aus Speicher entfernen.</string>
 	<string name="pubkey_load_on_start">Schlüssel beim Start laden</string>
@@ -74,10 +74,10 @@
 	<string name="prompt_bits">Bits:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Passwort für Schlüssel '%1$s'</string>
+	<string name="prompt_pubkey_password">Passwort für Schlüssel \'%1$s\'</string>
 
 	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">Remote Host die Benutzung\ndes Schlüssels '%1$s' erlauben?</string>
+	<string name="prompt_allow_agent_to_use_key">Remote Host die Benutzung\ndes Schlüssels \'%1$s\' erlauben?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">WARNUNG: IDENTIFIKATION DES ENTFERNTEN HOSTS HAT SICH GEÄNDERT!</string>
@@ -90,7 +90,7 @@
 	<string name="prompt_continue_connecting">Sind Sie sicher, dass Sie\neine Verbindung herstellen wollen?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">Die Authentizität von Host '%1$s' kann nicht garantiert werden.</string>
+	<string name="host_authenticity_warning">Die Authentizität von Host \'%1$s\' kann nicht garantiert werden.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">Host %1$ss Schlüssel Fingerabdruck ist %2$s</string>
 
@@ -360,7 +360,7 @@
 	<!-- Name for the ASCII DEL character -->
 	<string name="list_delkey_del">Entfernen</string>
 
-	<string name="delete_message">Soll '%1$s' wirklich gelöscht werden?</string>
+	<string name="delete_message">Soll \'%1$s\' wirklich gelöscht werden?</string>
 	<string name="delete_pos">Ja, löschen</string>
 	<string name="delete_neg">Abbrechen</string>
 
@@ -378,7 +378,7 @@
 	<string name="terminal_connecting">Verbinde mit %1$s:%2$d mittels %3$s</string>
 
 	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Host '%1$s' Schlüssel: %2$s bestätigt</string>
+	<string name="terminal_sucess">Host \'%1$s\' Schlüssel: %2$s bestätigt</string>
 	<string name="terminal_failed">Überprüfung des Host-Schlüssels fehlgeschlagen.</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
@@ -391,17 +391,17 @@
 	<string name="terminal_auth">Versuche zu authentisieren.</string>
 
 	<string name="terminal_auth_pass">Versuche Authentisierung mit Passwort.</string>
-	<string name="terminal_auth_pass_fail">Authentisierungsmethode 'Passwort' fehlgeschlagen.</string>
+	<string name="terminal_auth_pass_fail">Authentisierungsmethode \'Passwort\' fehlgeschlagen.</string>
 
 	<string name="terminal_auth_pubkey_any">Versuche "Public Key" Authentisierung mit allen öffentlichen Schlüsseln im Speicher</string>
 	<string name="terminal_auth_pubkey_invalid">Der ausgewählte öffentliche Schlüssel ist ungültig, versuchen Sie den Schlüssel im Host-Editor neu auszuwählen</string>
 	<string name="terminal_auth_pubkey_specific">Versuche "Public Key" Authentisierung mit einem bestimmten öffentlichen Schlüssel</string>
-	<string name="terminal_auth_pubkey_fail">Authentifizierungs Methode 'publickey' mit Schlüssel '%1$s' fehlgeschlagen</string>
+	<string name="terminal_auth_pubkey_fail">Authentifizierungs Methode \'publickey\' mit Schlüssel \'%1$s\' fehlgeschlagen</string>
 
-	<string name="terminal_auth_ki">Versuche 'keyboard-interactive' Authentisierung.</string>
-	<string name="terminal_auth_ki_fail">Authentisierungsmethode 'keyboard-interactive' fehlgeschlagen</string>
+	<string name="terminal_auth_ki">Versuche \'keyboard-interactive\' Authentisierung.</string>
+	<string name="terminal_auth_ki_fail">Authentisierungsmethode \'keyboard-interactive\' fehlgeschlagen</string>
 
-	<string name="terminal_auth_fail">[Ihr Host unterstützt weder 'password' noch 'keyboard-interactive' Authentisierung.]</string>
+	<string name="terminal_auth_fail">[Ihr Host unterstützt weder \'password\' noch \'keyboard-interactive\' Authentisierung.]</string>
 
 	<string name="terminal_no_session">Sitzung wird wegen Host Präferenz nicht gestartet</string>
 	<string name="terminal_enable_portfoward">Aktiviere Port Forwarding: %1$s</string>
