@@ -252,6 +252,15 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				}
 
 				pubkeysExhausted = true;
+			} else if(connection.isAuthMethodAvailable(host.getUsername(), AUTH_KEYBOARDINTERACTIVE)) {
+				// this auth method will talk with us using InteractiveCallback interface
+				// it blocks until authentication finishes
+				bridge.outputLine(manager.res.getString(R.string.terminal_auth_ki));
+				if(connection.authenticateWithKeyboardInteractive(host.getUsername(), this)) {
+					finishConnection();
+				} else {
+					bridge.outputLine(manager.res.getString(R.string.terminal_auth_ki_fail));
+				}
 			} else if (connection.isAuthMethodAvailable(host.getUsername(), AUTH_PASSWORD)) {
 				bridge.outputLine(manager.res.getString(R.string.terminal_auth_pass));
 				String password = bridge.getPromptHelper().requestStringPrompt(null,
@@ -261,15 +270,6 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 					finishConnection();
 				} else {
 					bridge.outputLine(manager.res.getString(R.string.terminal_auth_pass_fail));
-				}
-			} else if(connection.isAuthMethodAvailable(host.getUsername(), AUTH_KEYBOARDINTERACTIVE)) {
-				// this auth method will talk with us using InteractiveCallback interface
-				// it blocks until authentication finishes
-				bridge.outputLine(manager.res.getString(R.string.terminal_auth_ki));
-				if(connection.authenticateWithKeyboardInteractive(host.getUsername(), this)) {
-					finishConnection();
-				} else {
-					bridge.outputLine(manager.res.getString(R.string.terminal_auth_ki_fail));
 				}
 			} else {
 				bridge.outputLine(manager.res.getString(R.string.terminal_auth_fail));
