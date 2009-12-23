@@ -48,7 +48,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public final static String TAG = "ConnectBot.HostDatabase";
 
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 21;
+	public final static int DB_VERSION = 22;
 
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -114,6 +114,16 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public final static long PUBKEYID_ANY = -1;
 
 	public static final int DEFAULT_COLOR_SCHEME = 0;
+
+	// Table creation strings
+	public static final String CREATE_TABLE_COLOR_DEFAULTS =
+		"CREATE TABLE " + TABLE_COLOR_DEFAULTS
+		+ " (" + FIELD_COLOR_SCHEME + " INTEGER NOT NULL, "
+		+ FIELD_COLOR_FG + " INTEGER NOT NULL DEFAULT " + DEFAULT_FG_COLOR + ", "
+		+ FIELD_COLOR_BG + " INTEGER NOT NULL DEFAULT " + DEFAULT_BG_COLOR + ")";
+	public static final String CREATE_TABLE_COLOR_DEFAULTS_INDEX =
+		"CREATE INDEX " + TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index ON "
+		+ TABLE_COLOR_DEFAULTS + " (" + FIELD_COLOR_SCHEME + ");";
 
 	static {
 		addTableName(TABLE_HOSTS);
@@ -182,14 +192,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		db.execSQL("CREATE INDEX " + TABLE_COLORS + FIELD_COLOR_SCHEME + "index ON "
 				+ TABLE_COLORS + " (" + FIELD_COLOR_SCHEME + ");");
 
-		db.execSQL("CREATE TABLE " + TABLE_COLOR_DEFAULTS
-				+ " (_id INTEGER PRIMARY KEY, "
-				+ FIELD_COLOR_SCHEME + " INTEGER, "
-				+ FIELD_COLOR_FG + " INTEGER, "
-				+ FIELD_COLOR_BG + " INTEGER)");
-
-		db.execSQL("CREATE INDEX " + TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index ON "
-				+ TABLE_COLOR_DEFAULTS + " (" + FIELD_COLOR_SCHEME + ");");
+		db.execSQL(CREATE_TABLE_COLOR_DEFAULTS);
+		db.execSQL(CREATE_TABLE_COLOR_DEFAULTS_INDEX);
 	}
 
 	@Override
@@ -242,14 +246,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 					+ FIELD_COLOR_SCHEME + " INTEGER)");
 			db.execSQL("CREATE INDEX " + TABLE_COLORS + FIELD_COLOR_SCHEME + "index ON "
 					+ TABLE_COLORS + " (" + FIELD_COLOR_SCHEME + ");");
-
-			db.execSQL("CREATE TABLE " + TABLE_COLOR_DEFAULTS
-					+ " (_id INTEGER PRIMARY KEY, "
-					+ FIELD_COLOR_SCHEME + " INTEGER, "
-					+ FIELD_COLOR_FG + " INTEGER, "
-					+ FIELD_COLOR_BG + " INTEGER)");
-			db.execSQL("CREATE INDEX " + TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index ON "
-					+ TABLE_COLOR_DEFAULTS + " (" + FIELD_COLOR_SCHEME + ");");
 		case 18:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_USEAUTHAGENT + " TEXT DEFAULT '" + AUTHAGENT_NO + "'");
@@ -259,6 +255,10 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		case 20:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_FONTSIZE + " INTEGER");
+		case 21:
+			db.execSQL("DROP TABLE " + TABLE_COLOR_DEFAULTS);
+			db.execSQL(CREATE_TABLE_COLOR_DEFAULTS);
+			db.execSQL(CREATE_TABLE_COLOR_DEFAULTS_INDEX);
 		}
 	}
 
@@ -749,8 +749,9 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 			Cursor c = db.query(TABLE_COLOR_DEFAULTS,
 					new String[] { FIELD_COLOR_FG, FIELD_COLOR_BG },
-					FIELD_COLOR_SCHEME + " IS NULL",
-					null, null, null, null);
+					FIELD_COLOR_SCHEME + " = ?",
+					new String[] { String.valueOf(scheme) },
+					null, null, null);
 
 			if (c.moveToFirst()) {
 				colors[0] = c.getInt(0);
@@ -758,22 +759,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			}
 
 			c.close();
-
-			// TODO This could probably just be a join
-			if (scheme != DEFAULT_COLOR_SCHEME) {
-				c = db.query(TABLE_COLOR_DEFAULTS,
-						new String[] { FIELD_COLOR_FG, FIELD_COLOR_BG },
-						FIELD_COLOR_SCHEME + " = ?",
-						new String[] { String.valueOf(scheme) },
-						null, null, null);
-
-				if (c.moveToFirst()) {
-					colors[0] = c.getInt(0);
-					colors[1] = c.getInt(1);
-				}
-
-				c.close();
-			}
 
 			db.close();
 		}
@@ -786,8 +771,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	public void setDefaultColorsForScheme(int scheme, int fg, int bg) {
-		int[] defaultColors = getGlobalDefaultColors();
-
 		SQLiteDatabase db;
 
 		String schemeWhere = null;
@@ -796,33 +779,22 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		schemeWhere = FIELD_COLOR_SCHEME + " = ?";
 		whereArgs = new String[] { String.valueOf(scheme) };
 
-		if (fg == defaultColors[0] && bg == defaultColors[1]) {
-			synchronized (dbLock) {
-				db = getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(FIELD_COLOR_FG, fg);
+		values.put(FIELD_COLOR_BG, bg);
 
-				db.delete(TABLE_COLOR_DEFAULTS,
-						schemeWhere,
-						whereArgs);
+		synchronized (dbLock) {
+			db = getWritableDatabase();
 
-				db.close();
+			int rowsAffected = db.update(TABLE_COLOR_DEFAULTS, values,
+					schemeWhere, whereArgs);
+
+			if (rowsAffected == 0) {
+				values.put(FIELD_COLOR_SCHEME, scheme);
+				db.insert(TABLE_COLOR_DEFAULTS, null, values);
 			}
-		} else {
-			ContentValues values = new ContentValues();
-			values.put(FIELD_COLOR_FG, fg);
-			values.put(FIELD_COLOR_BG, bg);
 
-			synchronized (dbLock) {
-				db = getWritableDatabase();
-
-				int rowsAffected = db.update(TABLE_COLOR_DEFAULTS, values,
-						schemeWhere, whereArgs);
-
-				if (rowsAffected == 0) {
-					db.insert(TABLE_COLOR_DEFAULTS, null, values);
-				}
-
-				db.close();
-			}
+			db.close();
 		}
 	}
 }
