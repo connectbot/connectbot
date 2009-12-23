@@ -71,6 +71,7 @@ public abstract class ConnectionNotifier {
 
 		notification.flags = Notification.FLAG_ONGOING_EVENT
 				| Notification.FLAG_NO_CLEAR;
+		notification.when = 0;
 
 		notification.contentIntent = PendingIntent.getActivity(context,
 				ONLINE_NOTIFICATION,

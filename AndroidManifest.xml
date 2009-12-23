@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.connectbot"
-	android:versionName="1.6.0"
-	android:versionCode="227">
+	android:versionName="1.6.1"
+	android:versionCode="228">
 
 	<application
 		android:icon="@drawable/icon"
@@ -33,7 +33,8 @@
 		<service android:name="org.connectbot.service.TerminalManager" android:configChanges="keyboardHidden|orientation" />
 
 		<activity android:name=".ConsoleActivity" android:configChanges="keyboardHidden|orientation"
-			android:theme="@style/NoTitle" android:windowSoftInputMode="stateAlwaysVisible|adjustResize">
+			android:theme="@style/NoTitle" android:windowSoftInputMode="stateAlwaysVisible|adjustResize"
+			android:launchMode="singleTop">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
