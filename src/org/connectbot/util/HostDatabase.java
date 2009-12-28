@@ -305,11 +305,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	 */
 	public boolean updateFontSize(HostBean host) {
 		long id = host.getId();
-		if (id < 0) {
-			Log.e(TAG, "Attempting to update host without ID!",
-					new IllegalArgumentException());
+		if (id < 0)
 			return false;
-		}
 
 		ContentValues updates = new ContentValues();
 		updates.put(FIELD_HOST_FONTSIZE, host.getFontSize());
@@ -447,19 +444,26 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 		Iterator<Entry<String, String>> i = selection.entrySet().iterator();
 
-		String[] selectionValues = new String[selection.size()];
+		List<String> selectionValuesList = new LinkedList<String>();
 		int n = 0;
 		while (i.hasNext()) {
 			Entry<String, String> entry = i.next();
 
-			if (n > 0)
+			if (entry.getValue() == null)
+				continue;
+
+			if (n++ > 0)
 				selectionBuilder.append(" AND ");
 
 			selectionBuilder.append(entry.getKey())
 				.append(" = ?");
 
-			selectionValues[n++] = entry.getValue();
+			selectionValuesList.add(entry.getValue());
 		}
+
+		String selectionValues[] = new String[selectionValuesList.size()];
+		selectionValuesList.toArray(selectionValues);
+		selectionValuesList = null;
 
 		HostBean host;
 

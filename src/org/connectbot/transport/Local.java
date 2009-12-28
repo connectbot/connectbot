@@ -188,7 +188,14 @@ public class Local extends AbsTransport {
 		HostBean host = new HostBean();
 
 		host.setProtocol(PROTOCOL);
-		host.setNickname(uri.getFragment());
+
+		String nickname = uri.getFragment();
+		if (nickname == null || nickname.length() == 0) {
+			host.setNickname(getDefaultNickname(host.getUsername(),
+					host.getHostname(), host.getPort()));
+		} else {
+			host.setNickname(uri.getFragment());
+		}
 
 		return host;
 	}
