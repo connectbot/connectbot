@@ -149,9 +149,9 @@
 	<string name="pref_update_summary">设置检查ConnectBot最新版本的最大频率</string>
 
 	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">Persist connections</string>
+	<string name="pref_conn_persist_title">保持联机</string>
 	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+	<string name="pref_conn_persist_summary">强制并保持连接在后台</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">目录快捷键</string>
@@ -219,6 +219,9 @@
 
 	<!-- Host color category preference title -->
 	<string name="hostpref_color_title">颜色类型</string>
+
+	<!-- Host's default font size when opening the terminal in points (pt) -->
+	<string name="hostpref_fontsize_title">Font size (pt)</string>
 
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">使用公钥验证</string>
@@ -357,7 +360,7 @@
 	<!-- Name for the ASCII DEL character -->
 	<string name="list_delkey_del">删除</string>
 
-	<string name="delete_message">确定要删除'%1$s'吗？</string>
+	<string name="delete_message">确定要删除\'%1$s\'吗？</string>
 	<string name="delete_pos">是，删除</string>
 	<string name="delete_neg">取消</string>
 
@@ -424,6 +427,9 @@
 
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
 	<string name="exceptions_submit_message">似乎ConnectBot在最后运行时出现异常. 请回报给ConnectBot开发者</string>
+
+	<!-- Menu selection to reset colors to their defaults. -->
+	<string name="menu_colors_reset">Reset</string>
 
 	<string name="color_red">红</string>
 	<string name="color_green">绿</string>

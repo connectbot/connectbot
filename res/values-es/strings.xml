@@ -44,7 +44,7 @@
 	<string name="pubkey_list_pick">Escoger desde la tarjeta sd</string>
 	<string name="pubkey_import_parse_problem">Problema analizando clave privada importada</string>
 	<string name="pubkey_unlock">Desbloquear clave</string>
-	<string name="pubkey_failed_add">Contraseña incorrecta para la clave '%1$s'. Autenticación fallida.</string>
+	<string name="pubkey_failed_add">Contraseña incorrecta para la clave \'%1$s\'. Autenticación fallida.</string>
 	<string name="pubkey_memory_load">Cargar en memoria</string>
 	<string name="pubkey_memory_unload">Descargar de memoria</string>
 	<string name="pubkey_load_on_start">Cargar clave al inicio</string>
@@ -74,10 +74,10 @@
 	<string name="prompt_bits">Bits:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Contraseña para clave '%1$s'</string>
+	<string name="prompt_pubkey_password">Contraseña para clave \'%1$s\'</string>
 
 	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">¿Autorizar maquina remota\nde usar clave '%1$s'?</string>
+	<string name="prompt_allow_agent_to_use_key">¿Autorizar maquina remota\nde usar clave \'%1$s\'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">ADVERTENCIA: ¡IDENTIFICACION DE LA MAQUINA REMOTA HA CAMBIADO!</string>
@@ -90,7 +90,7 @@
 	<string name="prompt_continue_connecting">¿Esta seguro que desea\nseguir intentando conexión?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">La autenticidad de la máquina '%1$s' no puede ser establecida.</string>
+	<string name="host_authenticity_warning">La autenticidad de la máquina \'%1$s\' no puede ser establecida.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">La clave huella de la maquina %1$s es %2$s</string>
 
@@ -156,7 +156,7 @@
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Sequencia de teclas para directorios</string>
 	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Especifique como usar Alt para '/' y Shit para Tab</string>
+	<string name="pref_keymode_summary">Especifique como usar Alt para \'/\' y Shit para Tab</string>
 
 	<!-- Name for the camera shortcut usage preference -->
 	<string name="pref_camera_title">Boton de la Cámara</string>
@@ -219,6 +219,9 @@
 
 	<!-- Host color category preference title -->
 	<string name="hostpref_color_title">Categoria de colores</string>
+
+	<!-- Host's default font size when opening the terminal in points (pt) -->
+	<string name="hostpref_fontsize_title">Font size (pt)</string>
 
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">Usar clave de autenticación pública</string>
@@ -357,7 +360,7 @@
 	<!-- Name for the ASCII DEL character -->
 	<string name="list_delkey_del">Eliminar</string>
 
-	<string name="delete_message">¿Está seguro de que quiere eliminar '%1$s'?</string>
+	<string name="delete_message">¿Está seguro de que quiere eliminar \'%1$s\'?</string>
 	<string name="delete_pos">Sí, eliminar</string>
 	<string name="delete_neg">Cancelar</string>
 
@@ -375,7 +378,7 @@
 	<string name="terminal_connecting">Canectando a %1$s:%2$d via %3$s</string>
 
 	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Host (equipo anfitrion) '%1$s' clave: %2$s verifiado.</string>
+	<string name="terminal_sucess">Host (equipo anfitrion) \'%1$s\' clave: %2$s verifiado.</string>
 	<string name="terminal_failed">Verificación del host (equipo anfitrion) fallida</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
@@ -388,17 +391,17 @@
 	<string name="terminal_auth">Intentando autenticar</string>
 
 	<string name="terminal_auth_pass">Intentando autenticación de la contraseña</string>
-	<string name="terminal_auth_pass_fail">Método de autenticación 'password' fallido</string>
+	<string name="terminal_auth_pass_fail">Método de autenticación \'password\' fallido</string>
 
 	<string name="terminal_auth_pubkey_any">Intentando autenticacion de la clave pública usando las claves públicas en memoria</string>
 	<string name="terminal_auth_pubkey_invalid">La clave pública selecciona es invalida, intenta reseleccional la clave en el editor de host (equipo anfitrion)</string>
 	<string name="terminal_auth_pubkey_specific">Intentar autenticación  de la clave pública con una clave pública determinada</string>
-	<string name="terminal_auth_pubkey_fail">El método de autenticación 'publickey' con clave '%1$s' ha fallado.</string>
+	<string name="terminal_auth_pubkey_fail">El método de autenticación \'publickey\' con clave \'%1$s\' ha fallado.</string>
 
-	<string name="terminal_auth_ki">Intentando autenticación 'interactiva por teclado'</string>
-	<string name="terminal_auth_ki_fail">El método de autenticación 'interactiva por teclado' ha fallado</string>
+	<string name="terminal_auth_ki">Intentando autenticación \'interactiva por teclado\'</string>
+	<string name="terminal_auth_ki_fail">El método de autenticación \'interactiva por teclado\' ha fallado</string>
 
-	<string name="terminal_auth_fail">[Su equipo no soporta el método de autenticación por 'contraseña' o por 'interacción por teclado'.]</string>
+	<string name="terminal_auth_fail">[Su equipo no soporta el método de autenticación por \'contraseña\' o por \'interacción por teclado\'.]</string>
 
 	<string name="terminal_no_session">La sesión no se iniciará debido a las preferencias del equipo.</string>
 	<string name="terminal_enable_portfoward">Activar redirección de puerto: %1$s</string>
@@ -424,6 +427,9 @@
 
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
 	<string name="exceptions_submit_message">Parece que ConnectBot tuvo un problema en su última ejecución. Enviar reporte de error a los desarrolladores de ConnectBot?</string>
+
+	<!-- Menu selection to reset colors to their defaults. -->
+	<string name="menu_colors_reset">Reset</string>
 
 	<string name="color_red">rojo</string>
 	<string name="color_green">verde</string>

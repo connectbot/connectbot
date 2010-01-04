@@ -44,7 +44,7 @@
 	<string name="pubkey_list_pick">Ambil dari /sdcard</string>
 	<string name="pubkey_import_parse_problem">Masalah dalam mengambil kunci pribadi yang terimpor</string>
 	<string name="pubkey_unlock">Buka kunci</string>
-	<string name="pubkey_failed_add">Kata sandi buruk untuk kunci '%1$s'. Authentifikasi gagal.</string>
+	<string name="pubkey_failed_add">Kata sandi buruk untuk kunci \'%1$s\'. Authentifikasi gagal.</string>
 	<string name="pubkey_memory_load">Muat ke memori</string>
 	<string name="pubkey_memory_unload">Hapus dari memori</string>
 	<string name="pubkey_load_on_start">Muat kunci pada waktu memulai</string>
@@ -74,10 +74,10 @@
 	<string name="prompt_bits">Bits:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Kata sandi untuk kunci '%1$s'</string>
+	<string name="prompt_pubkey_password">Kata sandi untuk kunci \'%1$s\'</string>
 
 	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key '%1$s'?</string>
+	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key \'%1$s\'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">PERINGATAN: IDENTIFIKASI REMOTE HOST TELAH BERUBAH!</string>
@@ -90,7 +90,7 @@
 	<string name="prompt_continue_connecting">Apakah anda yakin anda ingin\n melanjutkan untuk menghubungi?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">Authentifikasi dari host '%1$s' tidak dapat dibuat.</string>
+	<string name="host_authenticity_warning">Authentifikasi dari host \'%1$s\' tidak dapat dibuat.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">Host %1$s tanda tangan kunci adalah %2$s</string>
 
@@ -156,7 +156,7 @@
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Direktori jalan pintas</string>
 	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Pilih bagaimana menggunakan Alt untuk '/' dan Shift untuk Tab</string>
+	<string name="pref_keymode_summary">Pilih bagaimana menggunakan Alt untuk \'/\' dan Shift untuk Tab</string>
 
 	<!-- Name for the camera shortcut usage preference -->
 	<string name="pref_camera_title">Jalan pintas kamera</string>
@@ -219,6 +219,9 @@
 
 	<!-- Host color category preference title -->
 	<string name="hostpref_color_title">Kategori warna</string>
+
+	<!-- Host's default font size when opening the terminal in points (pt) -->
+	<string name="hostpref_fontsize_title">Font size (pt)</string>
 
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">Gunakan otentifikasi pubkey</string>
@@ -375,7 +378,7 @@
 	<string name="terminal_connecting">Connecting to %1$s:%2$d via %3$s</string>
 
 	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Verified host '%1$s' key: %2$s</string>
+	<string name="terminal_sucess">Verified host \'%1$s\' key: %2$s</string>
 	<string name="terminal_failed">Verifikasi kunci host gagal.</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
@@ -387,18 +390,18 @@
 
 	<string name="terminal_auth">Mencoba untuk mengotentifikasi</string>
 
-	<string name="terminal_auth_pass">Mencoba otentifikasi 'kata sandi'</string>
-	<string name="terminal_auth_pass_fail">Metoda otentifikasi 'kata sandi' gagal</string>
+	<string name="terminal_auth_pass">Mencoba otentifikasi \'kata sandi\'</string>
+	<string name="terminal_auth_pass_fail">Metoda otentifikasi \'kata sandi\' gagal</string>
 
-	<string name="terminal_auth_pubkey_any">Mencoba otentifikasi 'kunci publik' dengan kunci publik apapun dalam memori</string>
+	<string name="terminal_auth_pubkey_any">Mencoba otentifikasi \'kunci publik\' dengan kunci publik apapun dalam memori</string>
 	<string name="terminal_auth_pubkey_invalid">Kunci publik yang dipilih tidak valid, coba pilih kembali tombol dalam pengubah host</string>
-	<string name="terminal_auth_pubkey_specific">Mencoba otentifikasi 'kunci publik' dengan kunci publik spesifik</string>
-	<string name="terminal_auth_pubkey_fail">Authentication method 'publickey' with key '%1$s' failed</string>
+	<string name="terminal_auth_pubkey_specific">Mencoba otentifikasi \'kunci publik\' dengan kunci publik spesifik</string>
+	<string name="terminal_auth_pubkey_fail">Authentication method \'publickey\' with key \'%1$s\' failed</string>
 
-	<string name="terminal_auth_ki">Mencoba otentifikasi 'papan ketik interaktif'</string>
-	<string name="terminal_auth_ki_fail">Metode otentifikasi 'papan ketik interaktif' gagal</string>
+	<string name="terminal_auth_ki">Mencoba otentifikasi \'papan ketik interaktif\'</string>
+	<string name="terminal_auth_ki_fail">Metode otentifikasi \'papan ketik interaktif\' gagal</string>
 
-	<string name="terminal_auth_fail">[Host anda tidak mendukung otentifikasi 'kata sandi' atau 'papan ketik interaktif'.]</string>
+	<string name="terminal_auth_fail">[Host anda tidak mendukung otentifikasi \'kata sandi\' atau \'papan ketik interaktif\'.]</string>
 
 	<string name="terminal_no_session">Session will not be started due to host preference.</string>
 	<string name="terminal_enable_portfoward">Enable port forward: %1$s</string>
@@ -424,6 +427,9 @@
 
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
 	<string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?</string>
+
+	<!-- Menu selection to reset colors to their defaults. -->
+	<string name="menu_colors_reset">Reset</string>
 
 	<string name="color_red">merah</string>
 	<string name="color_green">hijau</string>

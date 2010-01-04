@@ -44,7 +44,7 @@
 	<string name="pubkey_list_pick">Vælg fra /sdcard</string>
 	<string name="pubkey_import_parse_problem">Fejl ved indlæsning af privat nøgle</string>
 	<string name="pubkey_unlock">Lås nøgle op</string>
-	<string name="pubkey_failed_add">Forkert adgangskode for nøglen '%1$s'. Autorisering mislykkedes.</string>
+	<string name="pubkey_failed_add">Forkert adgangskode for nøglen \'%1$s\'. Autorisering mislykkedes.</string>
 	<string name="pubkey_memory_load">Indlæs i hukommelse</string>
 	<string name="pubkey_memory_unload">Fjern fra hukommelse</string>
 	<string name="pubkey_load_on_start">Indlæs nøgle ved start</string>
@@ -74,10 +74,10 @@
 	<string name="prompt_bits">Bits:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Adgangskode for nøglen '%1$s'</string>
+	<string name="prompt_pubkey_password">Adgangskode for nøglen \'%1$s\'</string>
 
 	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">Tillad fjernvært at\nbruge nøglen '%1$s'?</string>
+	<string name="prompt_allow_agent_to_use_key">Tillad fjernvært at\nbruge nøglen \'%1$s\'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">ADVARSEL: FJERNVÆRTENS IDENTIFIKATION ER ÆNDRET!</string>
@@ -90,7 +90,7 @@
 	<string name="prompt_continue_connecting">Er du sikker på at du ønsker\nat skabe forbindelse?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">Ægtheden for værten '%1$s' kan ikke påvises.</string>
+	<string name="host_authenticity_warning">Ægtheden for værten \'%1$s\' kan ikke påvises.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">%1$s nøgle fingeraftryk er %2$s</string>
 
@@ -149,14 +149,14 @@
 	<string name="pref_update_summary">Maksimal tid mellem check for opdateringer til ConnectBot</string>
 
 	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">Persist connections</string>
+	<string name="pref_conn_persist_title">Vedvarende forbindelser</string>
 	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+	<string name="pref_conn_persist_summary">Tving forbindelser til at være aktive i baggrunden</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Biblioteksgenveje</string>
 	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Vælg hvordan Alt for '/' og Skift for Tabulater skal bruges</string>
+	<string name="pref_keymode_summary">Vælg hvordan Alt for \'/\' og Skift for Tabulater skal bruges</string>
 
 	<!-- Name for the camera shortcut usage preference -->
 	<string name="pref_camera_title">Kamera genveje</string>
@@ -219,6 +219,9 @@
 
 	<!-- Host color category preference title -->
 	<string name="hostpref_color_title">Farvekategorier</string>
+
+	<!-- Host's default font size when opening the terminal in points (pt) -->
+	<string name="hostpref_fontsize_title">Font size (pt)</string>
 
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">Brug offentlig nøgleautorisering</string>
@@ -357,7 +360,7 @@
 	<!-- Name for the ASCII DEL character -->
 	<string name="list_delkey_del">Slet</string>
 
-	<string name="delete_message">Er du sikker på at du vil slette '%1$s'?</string>
+	<string name="delete_message">Er du sikker på at du vil slette \'%1$s\'?</string>
 	<string name="delete_pos">Ja slet</string>
 	<string name="delete_neg">Afbryd</string>
 
@@ -375,7 +378,7 @@
 	<string name="terminal_connecting">Forbinder til %1$s:%2$d via %3$s</string>
 
 	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Verificeret vært '%1$s' nøgle: %2$s</string>
+	<string name="terminal_sucess">Verificeret vært \'%1$s\' nøgle: %2$s</string>
 	<string name="terminal_failed">Verifikation af værtsnøgle mislykkedes.</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
@@ -390,15 +393,15 @@
 	<string name="terminal_auth_pass">Forsøger "adgangskode"-autorisering</string>
 	<string name="terminal_auth_pass_fail">Autoriseringsmetoden "adgangskode" mislykkedes</string>
 
-	<string name="terminal_auth_pubkey_any">Forsøger 'publickey'-autorisering med enhver offentlig nøgle i hukommelsen</string>
+	<string name="terminal_auth_pubkey_any">Forsøger \'publickey\'-autorisering med enhver offentlig nøgle i hukommelsen</string>
 	<string name="terminal_auth_pubkey_invalid">Valgte offentlige nøgle er ugyldig, prøv at vælge nøglen igen</string>
-	<string name="terminal_auth_pubkey_specific">Forsøger 'publickey'-autorisering med valgte offentlige nøgle</string>
-	<string name="terminal_auth_pubkey_fail">autentifikationsmetoden 'publickey' med nøglen '%1$s' fejlede</string>
+	<string name="terminal_auth_pubkey_specific">Forsøger \'publickey\'-autorisering med valgte offentlige nøgle</string>
+	<string name="terminal_auth_pubkey_fail">autentifikationsmetoden \'publickey\' med nøglen \'%1$s\' fejlede</string>
 
-	<string name="terminal_auth_ki">Forsøger 'keyboard-interactive' autorisering</string>
-	<string name="terminal_auth_ki_fail">'keyboard-interactive'-autorisering fejlede</string>
+	<string name="terminal_auth_ki">Forsøger \'keyboard-interactive\' autorisering</string>
+	<string name="terminal_auth_ki_fail">\'keyboard-interactive\'-autorisering fejlede</string>
 
-	<string name="terminal_auth_fail">[Din vært understøtter ikke 'password' eller 'keyboard-interactive' autorisering.]</string>
+	<string name="terminal_auth_fail">[Din vært understøtter ikke \'password\' eller \'keyboard-interactive\' autorisering.]</string>
 
 	<string name="terminal_no_session">Sessionen kunne ikke startes pga. værtens preferencer</string>
 	<string name="terminal_enable_portfoward">Aktiver port videreførsel: %1$s</string>
@@ -424,6 +427,9 @@
 
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
 	<string name="exceptions_submit_message">Tilsyneladende havde ConnectBot problemer sidste gang det blev brugt. Videresend fejlrapport til ConnectBot udviklerne?</string>
+
+	<!-- Menu selection to reset colors to their defaults. -->
+	<string name="menu_colors_reset">Reset</string>
 
 	<string name="color_red">rød</string>
 	<string name="color_green">grøn</string>

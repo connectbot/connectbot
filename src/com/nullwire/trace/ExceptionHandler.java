@@ -36,20 +36,24 @@ public class ExceptionHandler {
 	public static void checkForTraces(final Context context) {
 		new Thread(new Runnable() {
 			public void run() {
-				String[] stackTraces = searchForStackTraces(context);
+				String[] stackTraces = searchForStackTraces();
 				if (stackTraces != null && stackTraces.length > 0) {
 					Log.d(TAG, "number of stack traces: " + stackTraces.length);
-					submissionHandler.sendMessage(
-							submissionHandler.obtainMessage(-1, context));
+					submissionHandler.sendMessage(submissionHandler
+							.obtainMessage(-1, context));
 				}
 			}
 		}).start();
 	}
 
+
 	/**
-	 * @param context
-	 */
-	private static void getPackageInfo(Context context) {
+	* Register handler for unhandled exceptions.
+	*
+	* @param context
+	*/
+	public static boolean register(Context context) {
+		Log.i(TAG, "Registering default exceptions handler");
 		// Get information about the Package
 		PackageManager pm = context.getPackageManager();
 		try {
@@ -63,6 +67,10 @@ public class ExceptionHandler {
 			G.APP_DESCRIPTION = context.getString(R.string.msg_version);
 			// Files dir for storing the stack traces
 			G.FILES_PATH = context.getFilesDir().getAbsolutePath();
+			// Device model
+			G.PHONE_MODEL = android.os.Build.MODEL;
+			// Android version
+			G.ANDROID_VERSION = android.os.Build.VERSION.RELEASE;
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -71,35 +79,43 @@ public class ExceptionHandler {
 		Log.d(TAG, "APP_PACKAGE: " + G.APP_PACKAGE);
 		Log.d(TAG, "FILES_PATH: " + G.FILES_PATH);
 		Log.d(TAG, "URL: " + G.URL);
-	}
 
-	public static void register(Context context) {
-		Log.i(TAG, "Registering default exceptions handler");
+		boolean stackTracesFound = false;
+
+		// We'll return true if any stack traces were found
+		String[] list = searchForStackTraces();
+		if (list != null && list.length > 0) {
+			stackTracesFound = true;
+		}
 
 		new Thread() {
 			@Override
 			public void run() {
-				// Register default exceptions handler
-				Thread.setDefaultUncaughtExceptionHandler(new DefaultExceptionHandler());
+				UncaughtExceptionHandler currentHandler = Thread.getDefaultUncaughtExceptionHandler();
+
+				if (currentHandler != null) {
+					Log.d(TAG, "current handler class="+currentHandler.getClass().getName());
+				}
+				// don't register again if already registered
+				if (!(currentHandler instanceof DefaultExceptionHandler)) {
+					// Register default exceptions handler
+					Thread.setDefaultUncaughtExceptionHandler(
+							new DefaultExceptionHandler(currentHandler));
+				}
 			}
 		}.start();
+
+		return stackTracesFound;
 	}
 
 	/**
 	 * Search for stack trace files.
-	 *
 	 * @return
 	 */
-	private static String[] searchForStackTraces(Context context) {
-		if (stackTraceFileList != null && stackTraceFileList.length > 0)
+	private static String[] searchForStackTraces() {
+		if (stackTraceFileList != null) {
 			return stackTraceFileList;
-
-		if (context == null)
-			return null;
-
-		if (G.FILES_PATH == null)
-			getPackageInfo(context);
-
+		}
 		File dir = new File(G.FILES_PATH + "/");
 		// Try to create the files folder if it doesn't exist
 		dir.mkdir();
@@ -116,7 +132,7 @@ public class ExceptionHandler {
 		@Override
 		public void handleMessage(Message msg) {
 			Context context = (Context) msg.obj;
-			ExceptionClickListener clickListener = new ExceptionClickListener(context);
+			ExceptionClickListener clickListener = new ExceptionClickListener();
 			new AlertDialog.Builder(context)
 					.setMessage(R.string.exceptions_submit_message)
 					.setPositiveButton(android.R.string.yes, clickListener)
@@ -129,13 +145,10 @@ public class ExceptionHandler {
 	 * Look into the files folder to see if there are any "*.stacktrace" files.
 	 * If any are present, submit them to the trace server.
 	 */
-	public static void submitStackTraces(Context context) {
-		if (context == null)
-			return;
-
+	public static void submitStackTraces() {
 		try {
 			Log.d(TAG, "Looking for exceptions in: " + G.FILES_PATH);
-			String[] list = searchForStackTraces(context);
+			String[] list = searchForStackTraces();
 			if (list != null && list.length > 0) {
 				Log.d(TAG, "Found " + list.length + " stacktrace(s)");
 				StringBuilder contents = new StringBuilder();
@@ -179,16 +192,13 @@ public class ExceptionHandler {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			removeStackTraces(context);
+			removeStackTraces();
 		}
 	}
 
-	public synchronized static void removeStackTraces(Context context) {
-		if (context == null)
-			return;
-
+	public synchronized static void removeStackTraces() {
 		try {
-			String[] list = searchForStackTraces(context);
+			String[] list = searchForStackTraces();
 
 			if (list == null)
 				return;

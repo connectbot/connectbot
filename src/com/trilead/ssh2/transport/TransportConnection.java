@@ -152,8 +152,9 @@ public class TransportConnection
 		else if (padd > 64)
 			padd = 64;
 		
-		// TODO add compression somewhere here
 		if (send_comp != null && can_compress) {
+			if (send_comp_buffer.length < message.length + 1024)
+				send_comp_buffer = new byte[message.length + 1024];
 			len = send_comp.compress(message, off, len, send_comp_buffer);
 			message = send_comp_buffer;
 		}

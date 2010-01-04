@@ -61,12 +61,7 @@ public class Relay implements Runnable {
 	private char[] charArray;
 
 	static {
-		try {
-			System.loadLibrary("cbicu");
-		} catch (UnsatisfiedLinkError e) {
-			Log.e(TAG, "Could not load cbicu library; using fallback width measurement method", e);
-			useJNI = false;
-		}
+		useJNI = EastAsianWidth.available;
 	}
 
 	public Relay(TerminalBridge bridge, AbsTransport transport, vt320 buffer, String encoding) {

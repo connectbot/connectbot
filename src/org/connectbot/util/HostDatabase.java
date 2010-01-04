@@ -48,7 +48,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public final static String TAG = "ConnectBot.HostDatabase";
 
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 20;
+	public final static int DB_VERSION = 21;
 
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -66,6 +66,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public final static String FIELD_HOST_PUBKEYID = "pubkeyid";
 	public final static String FIELD_HOST_WANTSESSION = "wantsession";
 	public final static String FIELD_HOST_DELKEY = "delkey";
+	public final static String FIELD_HOST_FONTSIZE = "fontsize";
 	public final static String FIELD_HOST_COMPRESSION = "compression";
 	public final static String FIELD_HOST_ENCODING = "encoding";
 	public final static String FIELD_HOST_STAYCONNECTED = "stayconnected";
@@ -112,6 +113,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public final static long PUBKEYID_NEVER = -2;
 	public final static long PUBKEYID_ANY = -1;
 
+	public static final int DEFAULT_COLOR_SCHEME = 0;
+
 	static {
 		addTableName(TABLE_HOSTS);
 		addTableName(TABLE_PORTFORWARDS);
@@ -152,6 +155,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 				+ FIELD_HOST_POSTLOGIN + " TEXT, "
 				+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ", "
 				+ FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "', "
+				+ FIELD_HOST_FONTSIZE + " INTEGER, "
 				+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "', "
 				+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
 				+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "', "
@@ -252,6 +256,9 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		case 19:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_STAYCONNECTED + " TEXT");
+		case 20:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_FONTSIZE + " INTEGER");
 		}
 	}
 
@@ -284,12 +291,39 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			SQLiteDatabase db = this.getWritableDatabase();
 
 			id = db.insert(TABLE_HOSTS, null, host.getValues());
+
 			db.close();
 		}
 
 		host.setId(id);
 
 		return host;
+	}
+
+	/**
+	 * Update a field in a host record.
+	 */
+	public boolean updateFontSize(HostBean host) {
+		long id = host.getId();
+		if (id < 0) {
+			Log.e(TAG, "Attempting to update host without ID!",
+					new IllegalArgumentException());
+			return false;
+		}
+
+		ContentValues updates = new ContentValues();
+		updates.put(FIELD_HOST_FONTSIZE, host.getFontSize());
+
+		synchronized (dbLock) {
+			SQLiteDatabase db = getWritableDatabase();
+
+			db.update(TABLE_HOSTS, updates, "_id = ?",
+					new String[] { String.valueOf(id) });
+
+			db.close();
+		}
+
+		return true;
 	}
 
 	/**
@@ -349,6 +383,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			COL_PUBKEYID = c.getColumnIndexOrThrow(FIELD_HOST_PUBKEYID),
 			COL_WANTSESSION = c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION),
 			COL_DELKEY = c.getColumnIndexOrThrow(FIELD_HOST_DELKEY),
+			COL_FONTSIZE = c.getColumnIndexOrThrow(FIELD_HOST_FONTSIZE),
 			COL_COMPRESSION = c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION),
 			COL_ENCODING = c.getColumnIndexOrThrow(FIELD_HOST_ENCODING),
 			COL_STAYCONNECTED = c.getColumnIndexOrThrow(FIELD_HOST_STAYCONNECTED);
@@ -371,6 +406,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			host.setPubkeyId(c.getLong(COL_PUBKEYID));
 			host.setWantSession(Boolean.valueOf(c.getString(COL_WANTSESSION)));
 			host.setDelKey(c.getString(COL_DELKEY));
+			host.setFontSize(c.getInt(COL_FONTSIZE));
 			host.setCompression(Boolean.valueOf(c.getString(COL_COMPRESSION)));
 			host.setEncoding(c.getString(COL_ENCODING));
 			host.setStayConnected(Boolean.valueOf(c.getString(COL_STAYCONNECTED)));
@@ -634,7 +670,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		}
 	}
 
-	public Integer[] getColorsForHost(HostBean host) {
+	public Integer[] getColorsForScheme(int scheme) {
 		Integer[] colors = Colors.defaults.clone();
 
 		synchronized (dbLock) {
@@ -642,54 +678,29 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 			Cursor c = db.query(TABLE_COLORS, new String[] {
 					FIELD_COLOR_NUMBER, FIELD_COLOR_VALUE },
-					FIELD_COLOR_SCHEME + " IS NULL",
-					null, null, null, null);
+					FIELD_COLOR_SCHEME + " = ?",
+					new String[] { String.valueOf(scheme) },
+					null, null, null);
 
 			while (c.moveToNext()) {
-				Log.d(TAG, "Setting default color " + c.getInt(0) + " to " + c.getInt(1));
 				colors[c.getInt(0)] = new Integer(c.getInt(1));
 			}
 
 			c.close();
-
-			// TODO This could probably just be a join
-			if (host != null) {
-				c = db.query(TABLE_COLORS, new String[] {
-						FIELD_COLOR_NUMBER, FIELD_COLOR_VALUE },
-						FIELD_COLOR_SCHEME + " = ?",
-						new String[] { String.valueOf(host.getId()) },
-						null, null, null);
-
-				while (c.moveToNext()) {
-					colors[c.getInt(0)] = new Integer(c.getInt(1));
-				}
-
-				c.close();
-			}
-
 			db.close();
 		}
 
 		return colors;
 	}
 
-	public void setColorForHost(HostBean host, int number, int value) {
+	public void setColorForScheme(int scheme, int number, int value) {
 		SQLiteDatabase db;
 
-		String hostWhere;
-		if (host == null)
-			hostWhere = FIELD_COLOR_SCHEME + " IS NULL";
-		else
-			hostWhere = FIELD_COLOR_SCHEME + " = ?";
+		String schemeWhere;
+		schemeWhere = FIELD_COLOR_SCHEME + " = ?";
 
 		if (value == Colors.defaults[number]) {
-			String[] whereArgs;
-
-			if (host != null) {
-				whereArgs = new String[2];
-				whereArgs[1] = String.valueOf(host.getId());
-			} else
-				whereArgs = new String[1];
+			String[] whereArgs = new String[1];
 
 			whereArgs[0] = String.valueOf(number);
 
@@ -698,7 +709,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 				db.delete(TABLE_COLORS,
 						FIELD_COLOR_NUMBER + " = ? AND "
-						+ hostWhere,
+						+ schemeWhere,
 						new String[] { String.valueOf(number) });
 
 				db.close();
@@ -710,13 +721,12 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 			String[] whereArgs = null;
 
-			if (host != null)
-				whereArgs = new String[] { String.valueOf(host.getId()) };
+			whereArgs = new String[] { String.valueOf(scheme) };
 
 			synchronized (dbLock) {
 				db = getWritableDatabase();
 				int rowsAffected = db.update(TABLE_COLORS, values,
-						hostWhere, whereArgs);
+						schemeWhere, whereArgs);
 
 				if (rowsAffected == 0) {
 					db.insert(TABLE_COLORS, null, values);
@@ -728,10 +738,10 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	public void setGlobalColor(int number, int value) {
-		setColorForHost(null, number, value);
+		setColorForScheme(DEFAULT_COLOR_SCHEME, number, value);
 	}
 
-	public int[] getDefaultColorsForHost(HostBean host) {
+	public int[] getDefaultColorsForScheme(int scheme) {
 		int[] colors = new int[] { DEFAULT_FG_COLOR, DEFAULT_BG_COLOR };
 
 		synchronized (dbLock) {
@@ -750,11 +760,11 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			c.close();
 
 			// TODO This could probably just be a join
-			if (host != null) {
+			if (scheme != DEFAULT_COLOR_SCHEME) {
 				c = db.query(TABLE_COLOR_DEFAULTS,
 						new String[] { FIELD_COLOR_FG, FIELD_COLOR_BG },
 						FIELD_COLOR_SCHEME + " = ?",
-						new String[] { String.valueOf(host.getId()) },
+						new String[] { String.valueOf(scheme) },
 						null, null, null);
 
 				if (c.moveToFirst()) {
@@ -772,10 +782,10 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	public int[] getGlobalDefaultColors() {
-		return getDefaultColorsForHost(null);
+		return getDefaultColorsForScheme(DEFAULT_COLOR_SCHEME);
 	}
 
-	public void setDefaultColorsForHost(HostBean host, int fg, int bg) {
+	public void setDefaultColorsForScheme(int scheme, int fg, int bg) {
 		int[] defaultColors = getGlobalDefaultColors();
 
 		SQLiteDatabase db;
@@ -783,15 +793,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		String schemeWhere = null;
 		String[] whereArgs;
 
-		// TODO change host.getId() into scheme numbers for colors
-
-		if (host == null) {
-			schemeWhere = FIELD_COLOR_SCHEME + " IS NULL";
-			whereArgs = null;
-		} else {
-			schemeWhere = FIELD_COLOR_SCHEME + " = ?";
-			whereArgs = new String[] { String.valueOf(host.getId()) };
-		}
+		schemeWhere = FIELD_COLOR_SCHEME + " = ?";
+		whereArgs = new String[] { String.valueOf(scheme) };
 
 		if (fg == defaultColors[0] && bg == defaultColors[1]) {
 			synchronized (dbLock) {

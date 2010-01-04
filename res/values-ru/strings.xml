@@ -44,7 +44,7 @@
 	<string name="pubkey_list_pick">Загрузить с SD карты</string>
 	<string name="pubkey_import_parse_problem">Проблема при распозновании импортированного частного ключа</string>
 	<string name="pubkey_unlock">Разблокировать ключ</string>
-	<string name="pubkey_failed_add">Неверный пароль для ключа '%1$s'. Аутентификация не удалась</string>
+	<string name="pubkey_failed_add">Неверный пароль для ключа \'%1$s\'. Аутентификация не удалась</string>
 	<string name="pubkey_memory_load">Загрузить в память</string>
 	<string name="pubkey_memory_unload">Выгрузить из памяти</string>
 	<string name="pubkey_load_on_start">Загружать ключ при старте</string>
@@ -74,10 +74,10 @@
 	<string name="prompt_bits">Размер в битах</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Пароль для ключа '%1$s'</string>
+	<string name="prompt_pubkey_password">Пароль для ключа \'%1$s\'</string>
 
 	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">Использовать ключ '%1$s'?</string>
+	<string name="prompt_allow_agent_to_use_key">Использовать ключ \'%1$s\'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">ВНИМАНИЕ! ИДЕНТИФИКАЦИЯ УДАЛЕННОГО ХОСТА ЗАМЕНЕНА</string>
@@ -90,7 +90,7 @@
 	<string name="prompt_continue_connecting">Хотите продолжить\nпопытки соединения?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">Подлинность  хоста '%1$s' не может быть установлена</string>
+	<string name="host_authenticity_warning">Подлинность  хоста \'%1$s\' не может быть установлена</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">Подпись (fingerprint) host-ключа  для сервера %1$s  - %2$s</string>
 
@@ -149,14 +149,14 @@
 	<string name="pref_update_summary">Как часто проверять  обновления для ConnectBot</string>
 
 	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">Persist connections</string>
+	<string name="pref_conn_persist_title">Постоянные соединения</string>
 	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+	<string name="pref_conn_persist_summary">Принудительно сохранять соединение в фоновом режиме.</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Ярлыки папок</string>
 	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Выберите, как использовать Alt вместо '/' и Shift вместо Tab</string>
+	<string name="pref_keymode_summary">Выберите, как использовать Alt вместо \'/\' и Shift вместо Tab</string>
 
 	<!-- Name for the camera shortcut usage preference -->
 	<string name="pref_camera_title">Ярлык камеры</string>
@@ -219,6 +219,9 @@
 
 	<!-- Host color category preference title -->
 	<string name="hostpref_color_title">Цвет для категории</string>
+
+	<!-- Host's default font size when opening the terminal in points (pt) -->
+	<string name="hostpref_fontsize_title">Font size (pt)</string>
 
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">Использовать аутентификацию по открытому ключу</string>
@@ -357,7 +360,7 @@
 	<!-- Name for the ASCII DEL character -->
 	<string name="list_delkey_del">Удалить</string>
 
-	<string name="delete_message">Вы уверены, что хотите удалить '%1$s'?</string>
+	<string name="delete_message">Вы уверены, что хотите удалить \'%1$s\'?</string>
 	<string name="delete_pos">Да, удалить</string>
 	<string name="delete_neg">Отменить</string>
 
@@ -375,7 +378,7 @@
 	<string name="terminal_connecting">Подключение к %1$s:%2$d через %3$s</string>
 
 	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Проверенный узел '%1$s' ключ: %2$s</string>
+	<string name="terminal_sucess">Проверенный узел \'%1$s\' ключ: %2$s</string>
 	<string name="terminal_failed">Проверка ключа узла провалена</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
@@ -387,18 +390,18 @@
 
 	<string name="terminal_auth">Пытаюсь аутентифицироваться</string>
 
-	<string name="terminal_auth_pass">Попытка 'password' авторизации</string>
-	<string name="terminal_auth_pass_fail">Неуспешная попытка 'password' авторизации</string>
+	<string name="terminal_auth_pass">Попытка \'password\' авторизации</string>
+	<string name="terminal_auth_pass_fail">Неуспешная попытка \'password\' авторизации</string>
 
-	<string name="terminal_auth_pubkey_any">Попытка 'publickey' авторизации с публичными ключами в памяти</string>
+	<string name="terminal_auth_pubkey_any">Попытка \'publickey\' авторизации с публичными ключами в памяти</string>
 	<string name="terminal_auth_pubkey_invalid">Выбранный открытый ключ неверен, выберите другой в редакторе узлов</string>
-	<string name="terminal_auth_pubkey_specific">Попытка 'publickey' авторизации</string>
-	<string name="terminal_auth_pubkey_fail">Неуспешная авторизация  'publickey' с ключом  '%1$s'</string>
+	<string name="terminal_auth_pubkey_specific">Попытка \'publickey\' авторизации</string>
+	<string name="terminal_auth_pubkey_fail">Неуспешная авторизация  \'publickey\' с ключом  \'%1$s\'</string>
 
-	<string name="terminal_auth_ki">Попытка 'keyboard-interactive' авторизации</string>
+	<string name="terminal_auth_ki">Попытка \'keyboard-interactive\' авторизации</string>
 	<string name="terminal_auth_ki_fail">Неуспешная авторизация</string>
 
-	<string name="terminal_auth_fail">Ваш хост не поддерживает 'password' и 'keyboard-interactive'  типа авторизации</string>
+	<string name="terminal_auth_fail">Ваш хост не поддерживает \'password\' и \'keyboard-interactive\'  типа авторизации</string>
 
 	<string name="terminal_no_session">Настройки хоста не позволяют запустить данную сессию</string>
 	<string name="terminal_enable_portfoward">Включить переадресацию порта: %1$s</string>
@@ -424,6 +427,9 @@
 
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
 	<string name="exceptions_submit_message">Возможно, при последнем запуске программы возникла проблема. Отправить разработчикам отчет об ошибке?</string>
+
+	<!-- Menu selection to reset colors to their defaults. -->
+	<string name="menu_colors_reset">Reset</string>
 
 	<string name="color_red">красный</string>
 	<string name="color_green">зелёный</string>

@@ -12,7 +12,15 @@ import android.util.Log;
 
 public class DefaultExceptionHandler implements UncaughtExceptionHandler {
 
+	private UncaughtExceptionHandler defaultExceptionHandler;
+
 	private static final String TAG = "UNHANDLED_EXCEPTION";
+
+	// constructor
+	public DefaultExceptionHandler(UncaughtExceptionHandler pDefaultExceptionHandler)
+	{
+		defaultExceptionHandler = pDefaultExceptionHandler;
+	}
 
 	// Default exception handler
 	public void uncaughtException(Thread t, Throwable e) {
@@ -31,9 +39,10 @@ public class DefaultExceptionHandler implements UncaughtExceptionHandler {
 			// Write the stacktrace to disk
 			BufferedWriter bos = new BufferedWriter(new FileWriter(G.FILES_PATH
 					+ "/" + filename + ".stacktrace"));
-			bos.write(G.APP_VERSION);
-			bos.write(G.APP_DESCRIPTION);
-			bos.write('\n');
+			bos.write(G.APP_VERSION + "\n");
+			bos.write(G.APP_DESCRIPTION + "\n");
+			bos.write(G.ANDROID_VERSION + "\n");
+			bos.write(G.PHONE_MODEL + "\n");
 			bos.write(result.toString());
 			bos.flush();
 			// Close up everything
@@ -43,7 +52,7 @@ public class DefaultExceptionHandler implements UncaughtExceptionHandler {
 			ebos.printStackTrace();
 		}
 		Log.d(TAG, result.toString());
-		// FlurryAgent session has ended
-		t.getThreadGroup().destroy();
+		//call original handler
+		defaultExceptionHandler.uncaughtException(t, e);
 	}
 }

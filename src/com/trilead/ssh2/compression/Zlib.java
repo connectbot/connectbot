@@ -25,14 +25,14 @@ import com.jcraft.jzlib.ZStream;
  * 
  */
 public class Zlib implements ICompressor {
-	static private final int BUF_SIZE = 4096;
+	static private final int DEFAULT_BUF_SIZE = 4096;
 	static private final int LEVEL = 5;
 
 	private ZStream deflate;
-	private byte[] deflate_tmpbuf = new byte[BUF_SIZE];
+	private byte[] deflate_tmpbuf;
 
 	private ZStream inflate;
-	private byte[] inflate_tmpbuf = new byte[BUF_SIZE];
+	private byte[] inflate_tmpbuf;
 	private byte[] inflated_buf;
 
 	public Zlib() {
@@ -41,11 +41,14 @@ public class Zlib implements ICompressor {
 
 		deflate.deflateInit(LEVEL);
 		inflate.inflateInit();
-		inflated_buf = new byte[BUF_SIZE];
+
+		deflate_tmpbuf = new byte[DEFAULT_BUF_SIZE];
+		inflate_tmpbuf = new byte[DEFAULT_BUF_SIZE];
+		inflated_buf = new byte[DEFAULT_BUF_SIZE];
 	}
-	
+
 	public int getBufferSize() {
-		return BUF_SIZE;
+		return DEFAULT_BUF_SIZE;
 	}
 
 	public int compress(byte[] buf, int start, int len, byte[] output) {
@@ -53,24 +56,26 @@ public class Zlib implements ICompressor {
 		deflate.next_in_index = start;
 		deflate.avail_in = len - start;
 
-		int status;
-		int outputlen = start;
+		if ((buf.length + 1024) > deflate_tmpbuf.length) {
+			deflate_tmpbuf = new byte[buf.length + 1024];
+		}
 
-		do {
-			deflate.next_out = deflate_tmpbuf;
-			deflate.next_out_index = 0;
-			deflate.avail_out = BUF_SIZE;
-			status = deflate.deflate(JZlib.Z_PARTIAL_FLUSH);
-			switch (status) {
-			case JZlib.Z_OK:
-				System.arraycopy(deflate_tmpbuf, 0, output, outputlen, BUF_SIZE
-						- deflate.avail_out);
-				outputlen += (BUF_SIZE - deflate.avail_out);
-				break;
-			default:
-				System.err.println("compress: deflate returnd " + status);
-			}
-		} while (deflate.avail_out == 0);
+		deflate.next_out = deflate_tmpbuf;
+		deflate.next_out_index = 0;
+		deflate.avail_out = output.length;
+
+		if (deflate.deflate(JZlib.Z_PARTIAL_FLUSH) != JZlib.Z_OK) {
+			System.err.println("compress: compression failure");
+		}
+
+		if (deflate.avail_in > 0) {
+			System.err.println("compress: deflated data too large");
+		}
+
+		int outputlen = output.length - deflate.avail_out;
+
+		System.arraycopy(deflate_tmpbuf, 0, output, 0, outputlen);
+
 		return outputlen;
 	}
 
@@ -84,20 +89,20 @@ public class Zlib implements ICompressor {
 		while (true) {
 			inflate.next_out = inflate_tmpbuf;
 			inflate.next_out_index = 0;
-			inflate.avail_out = BUF_SIZE;
+			inflate.avail_out = DEFAULT_BUF_SIZE;
 			int status = inflate.inflate(JZlib.Z_PARTIAL_FLUSH);
 			switch (status) {
 			case JZlib.Z_OK:
-				if (inflated_buf.length < inflated_end + BUF_SIZE
+				if (inflated_buf.length < inflated_end + DEFAULT_BUF_SIZE
 						- inflate.avail_out) {
-					byte[] foo = new byte[inflated_end + BUF_SIZE
+					byte[] foo = new byte[inflated_end + DEFAULT_BUF_SIZE
 							- inflate.avail_out];
 					System.arraycopy(inflated_buf, 0, foo, 0, inflated_end);
 					inflated_buf = foo;
 				}
 				System.arraycopy(inflate_tmpbuf, 0, inflated_buf, inflated_end,
-						BUF_SIZE - inflate.avail_out);
-				inflated_end += (BUF_SIZE - inflate.avail_out);
+						DEFAULT_BUF_SIZE - inflate.avail_out);
+				inflated_end += (DEFAULT_BUF_SIZE - inflate.avail_out);
 				length[0] = inflated_end;
 				break;
 			case JZlib.Z_BUF_ERROR:

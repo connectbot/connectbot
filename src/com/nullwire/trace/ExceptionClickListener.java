@@ -19,28 +19,27 @@ public class ExceptionClickListener implements OnClickListener {
 
 	WeakReference<Context> context;
 
-	public ExceptionClickListener(Context context) {
-		this.context = new WeakReference<Context>(context);
-	}
+	public ExceptionClickListener() { }
 
 	public void onClick(DialogInterface dialog, int whichButton) {
 		switch (whichButton) {
 		case DialogInterface.BUTTON_POSITIVE:
+			dialog.dismiss();
 			Log.d(TAG, "Trying to submit stack traces");
 			new Thread(new Runnable() {
 				public void run() {
-					ExceptionHandler.submitStackTraces(context.get());
+					ExceptionHandler.submitStackTraces();
 				}
 			}).run();
-			dialog.dismiss();
 			break;
 		case DialogInterface.BUTTON_NEGATIVE:
+			dialog.dismiss();
+			Log.d(TAG, "Deleting old stack traces.");
 			new Thread(new Runnable() {
 				public void run() {
-					ExceptionHandler.removeStackTraces(context.get());
+					ExceptionHandler.removeStackTraces();
 				}
 			}).run();
-			dialog.dismiss();
 			break;
 		default:
 			Log.d("ExceptionClickListener", "Got unknown button click: " + whichButton);

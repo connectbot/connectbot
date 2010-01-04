@@ -8,6 +8,8 @@ package org.connectbot.util;
  *
  */
 public class EastAsianWidth {
+	public static boolean available = false;
+
 	/**
 	 * @param charArray
 	 * @param i
@@ -17,4 +19,13 @@ public class EastAsianWidth {
 	 */
 	public native static void measure(char[] charArray, int start, int end,
 			byte[] wideAttribute, boolean isLegacyEastAsian);
+
+	static {
+		try {
+			System.loadLibrary("org_connectbot_util_EastAsianWidth");
+			available = true;
+		} catch (Exception e) {
+			// Failure
+		}
+	}
 }

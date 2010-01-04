@@ -30,7 +30,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Map.Entry;
 
-import org.connectbot.ConsoleActivity;
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PubkeyBean;
@@ -40,9 +39,6 @@ import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -109,13 +105,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	private volatile boolean wantKeyVibration;
 	public static final long VIBRATE_DURATION = 30;
 
-	private NotificationManager notificationManager;
-
 	private boolean wantBellVibration;
 
 	private boolean resizeAllowed = true;
-
-	private static final int NOTIFICATION_ID = 1;
 
 	@Override
 	public void onCreate() {
@@ -158,15 +150,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		wantBellVibration = prefs.getBoolean(PreferenceConstants.BELL_VIBRATE, true);
 		enableMediaPlayer();
-
-		notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-		/* If user wants the connections to stay alive at all costs,
-		 * set the service to be "foreground."
-		 */
-		if (prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)) {
-			setForeground(true);
-		}
 	}
 
 	@Override
@@ -402,8 +385,10 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 
 	protected void stopNow() {
-		if (bridges.size() == 0)
+		if (bridges.size() == 0) {
+			ConnectionNotifier.getInstance().hideRunningNotification(this);
 			stopSelf();
+		}
 	}
 
 	private synchronized void stopIdleTimer() {
@@ -439,6 +424,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		setResizeAllowed(true);
 
+		ConnectionNotifier.getInstance().hideRunningNotification(this);
+
 		Log.i(TAG, "Someone rebound to TerminalManager");
 
 		stopIdleTimer();
@@ -450,8 +437,16 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		setResizeAllowed(true);
 
-		if (bridges.size() == 0)
+		if (bridges.size() == 0) {
 			stopWithDelay();
+		} else {
+			/* If user wants the connections to stay alive at all costs,
+			 * set the service to be "foreground."
+			 */
+			if (prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)) {
+				ConnectionNotifier.getInstance().showRunningNotification(this);
+			}
+		}
 
 		return true;
 	}
@@ -530,26 +525,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		if (!prefs.getBoolean(PreferenceConstants.BELL_NOTIFICATION, false))
 			return;
 
-		String contentText = res.getString(
-				R.string.notification_text, host.getNickname());
-
-		Notification notification = new Notification(
-				R.drawable.notification_icon, contentText,
-				System.currentTimeMillis());
-		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
-		Context context = getApplicationContext();
-		Intent notificationIntent = new Intent(this, ConsoleActivity.class);
-		notificationIntent.setAction("android.intent.action.VIEW");
-		notificationIntent.setData(host.getUri());
-
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-				notificationIntent, 0);
-
-		notification.setLatestEventInfo(context, res.getString(R.string.app_name),
-				contentText, contentIntent);
-
-		notificationManager.notify(NOTIFICATION_ID, notification);
+		ConnectionNotifier.getInstance().showActivityNotification(this, host);
 	}
 
 	/* (non-Javadoc)
