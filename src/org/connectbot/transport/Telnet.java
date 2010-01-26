@@ -284,12 +284,21 @@ public class Telnet extends AbsTransport {
 		HostBean host = new HostBean();
 
 		host.setProtocol(PROTOCOL);
-		host.setNickname(uri.getFragment());
+
 		host.setHostname(uri.getHost());
+
 		int port = uri.getPort();
 		if (port < 0)
 			port = DEFAULT_PORT;
 		host.setPort(port);
+
+		String nickname = uri.getFragment();
+		if (nickname == null || nickname.length() == 0) {
+			host.setNickname(getDefaultNickname(host.getUsername(),
+					host.getHostname(), host.getPort()));
+		} else {
+			host.setNickname(uri.getFragment());
+		}
 
 		return host;
 	}

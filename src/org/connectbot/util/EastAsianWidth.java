@@ -26,6 +26,8 @@ public class EastAsianWidth {
 			available = true;
 		} catch (Exception e) {
 			// Failure
+		} catch (UnsatisfiedLinkError e1) {
+			// Failure
 		}
 	}
 }

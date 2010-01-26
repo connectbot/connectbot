@@ -108,6 +108,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	private volatile boolean sessionOpen = false;
 
 	private boolean pubkeysExhausted = false;
+	private boolean interactiveCanContinue = true;
 
 	private Connection connection;
 	private Session session;
@@ -252,10 +253,12 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				}
 
 				pubkeysExhausted = true;
-			} else if(connection.isAuthMethodAvailable(host.getUsername(), AUTH_KEYBOARDINTERACTIVE)) {
+			} else if (interactiveCanContinue &&
+					connection.isAuthMethodAvailable(host.getUsername(), AUTH_KEYBOARDINTERACTIVE)) {
 				// this auth method will talk with us using InteractiveCallback interface
 				// it blocks until authentication finishes
 				bridge.outputLine(manager.res.getString(R.string.terminal_auth_ki));
+				interactiveCanContinue = false;
 				if(connection.authenticateWithKeyboardInteractive(host.getUsername(), this)) {
 					finishConnection();
 				} else {
@@ -790,6 +793,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	 * Handle challenges from keyboard-interactive authentication mode.
 	 */
 	public String[] replyToChallenge(String name, String instruction, int numPrompts, String[] prompt, boolean[] echo) {
+		interactiveCanContinue = true;
 		String[] responses = new String[numPrompts];
 		for(int i = 0; i < numPrompts; i++) {
 			// request response from user for each prompt
@@ -803,14 +807,23 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		HostBean host = new HostBean();
 
 		host.setProtocol(PROTOCOL);
-		host.setNickname(uri.getFragment());
+
 		host.setHostname(uri.getHost());
 
 		int port = uri.getPort();
 		if (port < 0)
 			port = DEFAULT_PORT;
 		host.setPort(port);
+
 		host.setUsername(uri.getUserInfo());
+
+		String nickname = uri.getFragment();
+		if (nickname == null || nickname.length() == 0) {
+			host.setNickname(getDefaultNickname(host.getUsername(),
+					host.getHostname(), host.getPort()));
+		} else {
+			host.setNickname(uri.getFragment());
+		}
 
 		return host;
 	}

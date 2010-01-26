@@ -308,6 +308,7 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 		reset.setIcon(android.R.drawable.ic_menu_revert);
 		reset.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem arg0) {
+				// Reset each individual color to defaults.
 				for (int i = 0; i < Colors.defaults.length; i++) {
 					if (mColorList.get(i) != Colors.defaults[i]) {
 						hostdb.setGlobalColor(i, Colors.defaults[i]);
@@ -315,6 +316,13 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 					}
 				}
 				mColorGrid.invalidateViews();
+
+				// Reset the default FG/BG colors as well.
+				mFgSpinner.setSelection(HostDatabase.DEFAULT_FG_COLOR);
+				mBgSpinner.setSelection(HostDatabase.DEFAULT_BG_COLOR);
+				hostdb.setDefaultColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME,
+						HostDatabase.DEFAULT_FG_COLOR, HostDatabase.DEFAULT_BG_COLOR);
+
 				return true;
 			}
 		});

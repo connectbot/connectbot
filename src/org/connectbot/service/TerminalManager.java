@@ -184,6 +184,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		if (wifilock != null && wifilock.isHeld())
 			wifilock.release();
 
+		ConnectionNotifier.getInstance().hideRunningNotification(this);
+
 		disableMediaPlayer();
 	}
 
@@ -386,7 +388,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	protected void stopNow() {
 		if (bridges.size() == 0) {
-			ConnectionNotifier.getInstance().hideRunningNotification(this);
 			stopSelf();
 		}
 	}
@@ -409,6 +410,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		Log.i(TAG, "Someone bound to TerminalManager");
 
 		setResizeAllowed(true);
+
+		ConnectionNotifier.getInstance().hideRunningNotification(this);
 
 		stopIdleTimer();
 

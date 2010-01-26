@@ -185,7 +185,7 @@ public class ConsoleActivity extends Activity {
 				flip.addView(view);
 
 				// check to see if this bridge was requested
-				if(bridge.host.getNickname().equals(requestedNickname))
+				if (bridge.host.getNickname().equals(requestedNickname))
 					requestedIndex = flip.getChildCount() - 1;
 			}
 

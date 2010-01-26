@@ -128,6 +128,6 @@ public class TransportFactory {
 			throw new IllegalStateException("Failed to get needed selection arguments");
 		}
 
-		return  hostdb.findHost(selection);
+		return hostdb.findHost(selection);
 	}
 }
