@@ -494,12 +494,16 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		case REQUEST_CODE_PICK_FILE:
 			if (resultCode == RESULT_OK && intent != null) {
 				Uri uri = intent.getData();
-				if (uri != null) {
-					readKeyFromFile(new File(URI.create(uri.toString())));
-				} else {
-					String filename = intent.getDataString();
-					if (filename != null)
-						readKeyFromFile(new File(URI.create(filename)));
+				try {
+					if (uri != null) {
+						readKeyFromFile(new File(URI.create(uri.toString())));
+					} else {
+						String filename = intent.getDataString();
+						if (filename != null)
+							readKeyFromFile(new File(URI.create(filename)));
+					}
+				} catch (IllegalArgumentException e) {
+					Log.e(TAG, "Couldn't read from picked file", e);
 				}
 			}
 			break;
