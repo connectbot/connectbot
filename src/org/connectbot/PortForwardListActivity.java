@@ -33,6 +33,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Resources;
 import android.database.SQLException;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -112,10 +113,21 @@ public class PortForwardListActivity extends ListActivity {
 		this.hostdb = new HostDatabase(this);
 		host = hostdb.findHostById(hostId);
 
-		this.setTitle(String.format("%s: %s (%s)",
-				getResources().getText(R.string.app_name),
-				getResources().getText(R.string.title_port_forwards_list),
-				host.getNickname()));
+		{
+			String nickname = host.getNickname();
+			final Resources resources = getResources();
+
+			if (nickname != null) {
+				this.setTitle(String.format("%s: %s (%s)",
+						resources.getText(R.string.app_name),
+						resources.getText(R.string.title_port_forwards_list),
+						nickname));
+			} else {
+				this.setTitle(String.format("%s: %s",
+						resources.getText(R.string.app_name),
+						resources.getText(R.string.title_port_forwards_list)));
+			}
+		}
 
 		connection = new ServiceConnection() {
 			public void onServiceConnected(ComponentName className, IBinder service) {

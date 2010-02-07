@@ -147,13 +147,19 @@ public class ConsoleActivity extends Activity {
 
 			// first check if we need to create a new session for requested
 			boolean found = false;
-			for(TerminalBridge bridge : bound.bridges) {
-				if(bridge.host.getNickname().equals(requestedNickname))
+			for (TerminalBridge bridge : bound.bridges) {
+				String nick = bridge.host.getNickname();
+				if (nick == null)
+					continue;
+
+				if (nick.equals(requestedNickname)) {
 					found = true;
+					break;
+				}
 			}
 
 			// If we didn't find the requested connection, try opening it
-			if(!found) {
+			if (!found) {
 				try {
 					Log.d(TAG, String.format("We couldnt find an existing bridge with URI=%s (nickname=%s), so creating one now", requested.toString(), requestedNickname));
 					bound.openConnection(requested);
@@ -163,7 +169,7 @@ public class ConsoleActivity extends Activity {
 			}
 
 			// create views for all bridges on this service
-			for(TerminalBridge bridge : bound.bridges) {
+			for (TerminalBridge bridge : bound.bridges) {
 
 				// let them know about our prompt handler services
 				bridge.promptHelper.setHandler(promptHandler);
