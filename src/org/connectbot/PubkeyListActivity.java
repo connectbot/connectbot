@@ -577,10 +577,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 		// Don't show a dialog if the SD card is completely absent.
 		final String state = Environment.getExternalStorageState();
-		if (Environment.MEDIA_REMOVED.equals(state)
-				|| Environment.MEDIA_BAD_REMOVAL.equals(state)
-				|| Environment.MEDIA_UNMOUNTABLE.equals(state)
-				|| Environment.MEDIA_UNMOUNTED.equals(state)) {
+		if (!Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)
+				&& !Environment.MEDIA_MOUNTED.equals(state)) {
 			new AlertDialog.Builder(PubkeyListActivity.this)
 				.setMessage(R.string.alert_sdcard_absent)
 				.setNegativeButton(android.R.string.cancel, null).create().show();
@@ -588,9 +586,14 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		}
 
 		List<String> names = new LinkedList<String>();
-		for(File file : sdcard.listFiles()) {
-			if(file.isDirectory()) continue;
-			names.add(file.getName());
+		{
+			File[] files = sdcard.listFiles();
+			if (files != null) {
+				for(File file : sdcard.listFiles()) {
+					if(file.isDirectory()) continue;
+					names.add(file.getName());
+				}
+			}
 		}
 		Collections.sort(names);
 
