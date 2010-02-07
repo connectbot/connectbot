@@ -611,7 +611,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				lpf = connection.createLocalPortForwarder(
 						new InetSocketAddress(InetAddress.getLocalHost(), portForward.getSourcePort()),
 						portForward.getDestAddr(), portForward.getDestPort());
-			} catch (IOException e) {
+			} catch (Exception e) {
 				Log.e(TAG, "Could not create local port forward", e);
 				return false;
 			}
@@ -627,7 +627,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		} else if (HostDatabase.PORTFORWARD_REMOTE.equals(portForward.getType())) {
 			try {
 				connection.requestRemotePortForwarding("", portForward.getSourcePort(), portForward.getDestAddr(), portForward.getDestPort());
-			} catch (IOException e) {
+			} catch (Exception e) {
 				Log.e(TAG, "Could not create remote port forward", e);
 				return false;
 			}
@@ -640,7 +640,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			try {
 				dpf = connection.createDynamicPortForwarder(
 						new InetSocketAddress(InetAddress.getLocalHost(), portForward.getSourcePort()));
-			} catch (IOException e) {
+			} catch (Exception e) {
 				Log.e(TAG, "Could not create dynamic port forward", e);
 				return false;
 			}
