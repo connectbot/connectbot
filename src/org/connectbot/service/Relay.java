@@ -17,7 +17,7 @@
 
 package org.connectbot.service;
 
-import gnu.java.nio.charset.Cp437;
+import org.apache.harmony.niochar.charset.additional.IBM437;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -73,8 +73,9 @@ public class Relay implements Runnable {
 	public void setCharset(String encoding) {
 		Log.d("ConnectBot.Relay", "changing charset to " + encoding);
 		Charset charset;
-		if (encoding.equals(Cp437.NAME))
-			charset = new Cp437();
+		if (encoding.equals("CP437"))
+			charset = new IBM437("IBM437",
+					new String[] { "IBM437", "CP437" });
 		else
 			charset = Charset.forName(encoding);
 
