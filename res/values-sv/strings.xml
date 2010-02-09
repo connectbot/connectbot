@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2007 Kenny Root, Jeffrey Sharkey
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
 <resources>
 	<string name="app_desc">Enkel, kraftfull, open-source SSH-klient.</string>
 
@@ -53,7 +71,7 @@
 
 	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
 	<string name="portforward_list_empty">Rör vid "Menu" för att skapa\nvidarebefodringar av portar.</string>
-	<string name="portforward_edit">Ändra viderabefodring av port</string>
+	<string name="portforward_edit">Ändra vidarebefordring av port</string>
 	<string name="portforward_delete">Ta bort vidarebefodring av port</string>
 
 	<string name="prompt_nickname">Namn:</string>
@@ -235,7 +253,7 @@
 	<string name="hostpref_postlogin_summary">Commands to run on remote server once authenticated</string>
 
 	<!-- Host compression preference title -->
-	<string name="hostpref_compression_title">Compression</string>
+	<string name="hostpref_compression_title">Kompression</string>
 	<!-- Summary for compression preference -->
 	<string name="hostpref_compression_summary">This may help with slower networks</string>
 
@@ -255,7 +273,7 @@
 	<string name="hostpref_delkey_summary">The key code sent when DEL key is pressed</string>
 
 	<!-- Host character encoding preference title -->
-	<string name="hostpref_encoding_title">Encoding</string>
+	<string name="hostpref_encoding_title">Kodar</string>
 	<!-- Host character encoding preference summary -->
 	<string name="hostpref_encoding_summary">Character encoding for the host</string>
 
@@ -431,7 +449,10 @@
 	<!-- Menu selection to reset colors to their defaults. -->
 	<string name="menu_colors_reset">Reset</string>
 
-	<string name="color_red">red</string>
+	<!-- Displayed in the notification bar that connections are active -->
+	<string name="app_is_running">ConnectBot is running</string>
+
+	<string name="color_red">röd</string>
 	<string name="color_green">green</string>
 	<string name="color_blue">blue</string>
 	<string name="color_gray">gray</string>

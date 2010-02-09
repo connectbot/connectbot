@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2007 Kenny Root, Jeffrey Sharkey
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
 <resources>
 	<string name="app_desc">Jednoduchý, všestranný, open-source SSH klient</string>
 
@@ -31,17 +49,17 @@
 	<string name="pubkey_import">Importovat</string>
 	<string name="pubkey_delete">Smazat klíč</string>
 	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="pubkey_gather_entropy">Gathering Entropy</string>
-	<string name="pubkey_touch_prompt">Touch this box to gather randomness: %1$d%% done</string>
-	<string name="pubkey_touch_hint">In order to assure randomness during the key generation, move your finger randomly over the box below.</string>
+	<string name="pubkey_gather_entropy">Získávání entropie</string>
+	<string name="pubkey_touch_prompt">Dotkněte se plochy pro získání náhodnosti: %1$d%% hotovo</string>
+	<string name="pubkey_touch_hint">Pro zajištění náhodnosti během generování klíče pohybujte prstem náhodně po ploše níže.</string>
 	<string name="pubkey_generating">Generování párování klíčem...</string>
 	<string name="pubkey_copy_private">Kopírovat soukromý klíč</string>
 	<string name="pubkey_copy_public">Kopírovat veřejný klíč</string>
 	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
-	<string name="pubkey_list_empty">Tap "Menu" to create\nor import key pairs.</string>
+	<string name="pubkey_list_empty">Stiskněte "Menu" pro získákní\nnebo vytvoření páru klíčů.</string>
 	<string name="pubkey_unknown_format">Neznámý formát</string>
 	<string name="pubkey_change_password">Změnit heslo</string>
-	<string name="pubkey_list_pick">Pick from /sdcard</string>
+	<string name="pubkey_list_pick">Vyberte z /sdcard</string>
 	<string name="pubkey_import_parse_problem">Problém s importací soukromého klíče</string>
 	<string name="pubkey_unlock">Odblokovat klíč</string>
 	<string name="pubkey_failed_add">Bad password for key \'%1$s\'. Authentication failed.</string>
@@ -49,12 +67,12 @@
 	<string name="pubkey_memory_unload">Odstranit z paměti</string>
 	<string name="pubkey_load_on_start">Nahrát klíč při startu</string>
 	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
-	<string name="pubkey_confirm_use">Confirm before use</string>
+	<string name="pubkey_confirm_use">Potvrdit před použitím</string>
 
 	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
-	<string name="portforward_list_empty">Tap "Menu" to create\nport forwards.</string>
-	<string name="portforward_edit">Edit port forward</string>
-	<string name="portforward_delete">Delete port forward</string>
+	<string name="portforward_list_empty">Stiskněte "Menu" pro vytvoření\npřesměrování portů.</string>
+	<string name="portforward_edit">Upravit přesměrování portů</string>
+	<string name="portforward_delete">Smazat přesměrování portů</string>
 
 	<string name="prompt_nickname">Přezdívka:</string>
 	<!-- An example string that could be used as a nickname for a pubkey. -->
@@ -74,29 +92,29 @@
 	<string name="prompt_bits">Počet bitů:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Heslo pro klíč \'%1$s\'</string>
+	<string name="prompt_pubkey_password">Password for key \'%1$s\'</string>
 
 	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
 	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key \'%1$s\'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning_header">WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</string>
+	<string name="host_verification_failure_warning_header">VAROVÁNÍ: IDENTIFIKACE VZDÁLENÉHO HOSTA SE ZMĚNILA!</string>
 	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning">IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\nSomeone could be eavesdropping on you right now (man-in-the-middle attack)!\nIt is also possible that the host key has just been changed.</string>
+	<string name="host_verification_failure_warning">JE MOŽNÉ ŽE NĚKDO PROVÁDÍ NĚCO NEKALÉHO!\nNěkdo vás právě může odposlouchávat (útok muže uprostřed)!\nTaké je možné že se byl klíč hosta právě změněn.</string>
 
 	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
-	<string name="prompt_host_disconnected">Host has disconnected.\nClose session?</string>
+	<string name="prompt_host_disconnected">Host se odpojil.\nUkončit sezení?</string>
 	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
 	<string name="prompt_continue_connecting">Opravdu chcete\npokračovat v připojování?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
 	<string name="host_authenticity_warning">The authenticity of host \'%1$s\' can\'t be established.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
-	<string name="host_fingerprint">Host %1$s key fingerprint is %2$s</string>
+	<string name="host_fingerprint">Otisk prstu hosta %1$s je %2$s</string>
 
-	<string name="alert_passwords_do_not_match_msg">Passwords do not match!</string>
+	<string name="alert_passwords_do_not_match_msg">Hesla se neshodují!</string>
 	<string name="alert_wrong_password_msg">Špatné heslo!</string>
-	<string name="alert_key_corrupted_msg">Private key appears corrupt!</string>
+	<string name="alert_key_corrupted_msg">Soukromý klíč vypadá poškozeně!</string>
 	<string name="alert_sdcard_absent">Není vložena SD karta!</string>
 
 	<!-- Add a new item (e.g., host or pubkey) to the list. -->
@@ -106,9 +124,9 @@
 	<!-- Button that begins the generation of a public key pair. -->
 	<string name="button_generate">Generovat klíč</string>
 	<!-- Button that resizes the screen to the user-specified dimensions. -->
-	<string name="button_resize">Resize</string>
+	<string name="button_resize">Změnit velikost</string>
 
-	<string name="alert_disconnect_msg">Connection Lost</string>
+	<string name="alert_disconnect_msg">Spojení ztraceno</string>
 
 	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
 
@@ -116,96 +134,96 @@
 	<string name="pref_emulation_category">Terminálová emulace</string>
 
 	<!-- Name for the emulation terminal type preference. -->
-	<string name="pref_emulation_title">Emulation mode</string>
+	<string name="pref_emulation_title">Režim emulace</string>
 	<!-- Description of the emulation terminal type preference. -->
-	<string name="pref_emulation_summary">Terminal emulation mode to use for PTY connections</string>
+	<string name="pref_emulation_summary">Režim emulace terminálu použitý při PTY spojeních</string>
 
 	<!-- Name for the scrollback size preference -->
-	<string name="pref_scrollback_title">Scrollback size</string>
+	<string name="pref_scrollback_title">Velikost historie</string>
 	<!-- Description of the scrollback size preference -->
-	<string name="pref_scrollback_summary">Size of scrollback buffer to keep in memory for each console</string>
+	<string name="pref_scrollback_summary">Velikost historie uložená v paměti pro každou konzoli</string>
 
 	<!-- The category title for user interface preferences -->
 	<string name="pref_ui_category">Uživatelské rozhraní</string>
 
 	<!-- Name for the rotation mode preference -->
-	<string name="pref_rotation_title">Rotation mode</string>
+	<string name="pref_rotation_title">Režim rotace</string>
 	<!-- Summary for the rotation mode preference -->
-	<string name="pref_rotation_summary">How to change rotation when keyboard popped in/out</string>
+	<string name="pref_rotation_summary">Jak změnit rotaci když se zobrazí / skryje klávesnice</string>
 
 	<!-- Name for the full screen preference -->
-	<string name="pref_fullscreen_title">Full screen</string>
+	<string name="pref_fullscreen_title">Celá obrazovka</string>
 	<!-- Summary for the full screen preference -->
-	<string name="pref_fullscreen_summary">Hide status bar while in console</string>
+	<string name="pref_fullscreen_summary">Skrýt stavový řádek když je zobrazena konzole</string>
 
 	<!-- Name for the memorize keys preference -->
 	<string name="pref_memkeys_title">Uchovávat klíče v paměti</string>
 	<!-- Summary for the memorize keys preference -->
-	<string name="pref_memkeys_summary">Keep unlocked keys in memory until backend service is terminated</string>
+	<string name="pref_memkeys_summary">Ponechat odemčené klíče v paměti dokud není ukončena služba na pozadí</string>
 
 	<!-- Name for the update check preference -->
-	<string name="pref_update_title">Update check</string>
+	<string name="pref_update_title">Kontrolovat aktualizace</string>
 	<!-- Summary for the update check preference -->
-	<string name="pref_update_summary">Set the maximum frequency to check for ConnectBot updates</string>
+	<string name="pref_update_summary">Nastavit maximální frekvenci pro kontrolu aktualizací ConnectBota</string>
 
 	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">Persist connections</string>
+	<string name="pref_conn_persist_title">Trvalá spojení</string>
 	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+	<string name="pref_conn_persist_summary">Vynutit spojení i v pozadí</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
-	<string name="pref_keymode_title">Directory shortcuts</string>
+	<string name="pref_keymode_title">Zkratky adresářů</string>
 	<!-- Summary for the keyboard shortcuts preference -->
 	<string name="pref_keymode_summary">Select how to use Alt for \'/\' and Shift for Tab</string>
 
 	<!-- Name for the camera shortcut usage preference -->
-	<string name="pref_camera_title">Camera shortcut</string>
+	<string name="pref_camera_title">Zkratka fotoaparátu</string>
 	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_camera_summary">Select which shortcut to trigger when the camera button is pushed</string>
+	<string name="pref_camera_summary">Vyberte kterou zkratku použít když je stisknuto tlačítko fotoaparátu</string>
 
 	<!-- Name for the keep screen on preference -->
-	<string name="pref_keepalive_title">Keep screen awake</string>
+	<string name="pref_keepalive_title">Ponechat zapnutou obrazovku</string>
 	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_keepalive_summary">Prevent the screen from turning off when working in a console</string>
+	<string name="pref_keepalive_summary">Zabránit obrazovce ve vypnutí při práci v konzoli</string>
 
 	<!-- Name for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_title">Keep Wi-Fi active</string>
+	<string name="pref_wifilock_title">Ponechat Wi-Fi aktivní</string>
 	<!-- Summary for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_summary">Prevent Wi-Fi from turning off when a session is active</string>
+	<string name="pref_wifilock_summary">Zabránit Wi-Fi ve vypnutí když je sezení aktivní</string>
 
 	<!-- Name for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_title">Bumpy arrows</string>
+	<string name="pref_bumpyarrows_title">Hrbolaté šipky</string>
 	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_summary">Vibrate when sending arrow keys from trackball; useful for laggy connections</string>
+	<string name="pref_bumpyarrows_summary">Vibrovat při posílání kurzorových kláves z trackballu; užitečná pro špatná spojení</string>
 
 	<!-- Category title for the Terminal Bell preferences -->
-	<string name="pref_bell_category">Terminal bell</string>
+	<string name="pref_bell_category">Zvonek terminálu</string>
 
 	<!-- Checkbox preference title for the audible terminal bell feature -->
-	<string name="pref_bell_title">Audible bell</string>
+	<string name="pref_bell_title">slyšitelný zvonek</string>
 
 	<!-- Title for the slider preference to set the volume -->
-	<string name="pref_bell_volume_title">Bell volume</string>
+	<string name="pref_bell_volume_title">Hlasitost zvonku</string>
 
 	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
-	<string name="pref_bell_vibrate_title">Vibrate on bell</string>
+	<string name="pref_bell_vibrate_title">Vibrovat při zvonku</string>
 
 	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
-	<string name="pref_bell_notification_title">Background notifications</string>
+	<string name="pref_bell_notification_title">Upozornění v pozadí</string>
 	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
-	<string name="pref_bell_notification_summary">Send notification when a terminal running in the background sounds a bell.</string>
+	<string name="pref_bell_notification_summary">Zobrazit upozornění když terminál běžící v pozadí zazvoní zvonkem</string>
 
 	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
-	<string name="list_keymode_right">Use right-side keys</string>
+	<string name="list_keymode_right">Použít klávesy napravo</string>
 	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
-	<string name="list_keymode_left">Use left-side keys</string>
+	<string name="list_keymode_left">Použít klávesy nalevo</string>
 	<!-- Preference selection to indicate never to use special shortcut keys. -->
 	<string name="list_keymode_none">Vypnout</string>
 
 	<!-- Preference to not use pubkeys to authenticate to this host. -->
 	<string name="list_pubkeyids_none">Nepoužívat klíče</string>
 	<!-- Preference to use any pubkey to authenticate to this host. -->
-	<string name="list_pubkeyids_any">Use any unlocked key</string>
+	<string name="list_pubkeyids_any">Použít jakýkoliv odemčený klíč</string>
 
 	<!-- Frequency for which to check for program updates. -->
 	<string name="list_update_daily">Denně</string>
@@ -215,49 +233,49 @@
 	<string name="list_update_never">Nikdy</string>
 
 	<!-- Host nickname field preference title -->
-	<string name="hostpref_nickname_title">Nickname</string>
+	<string name="hostpref_nickname_title">Přezdívka</string>
 
 	<!-- Host color category preference title -->
-	<string name="hostpref_color_title">Color category</string>
+	<string name="hostpref_color_title">Barevná kategorie</string>
 
 	<!-- Host's default font size when opening the terminal in points (pt) -->
-	<string name="hostpref_fontsize_title">Font size (pt)</string>
+	<string name="hostpref_fontsize_title">Velikost fontu (pt)</string>
 
 	<!-- Host pubkey usage preference title -->
-	<string name="hostpref_pubkeyid_title">Use pubkey authentication</string>
+	<string name="hostpref_pubkeyid_title">Použít autentizaci veřejným klíčem</string>
 
 	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
-	<string name="hostpref_authagent_title">Use SSH auth agent</string>
+	<string name="hostpref_authagent_title">Použít SSH autorizačního agenta</string>
 
 	<!-- Host post-login automation preference title -->
-	<string name="hostpref_postlogin_title">Post-login automation</string>
+	<string name="hostpref_postlogin_title">Automatizace po přihlášení</string>
 	<!-- Host post-login automation preference summary -->
-	<string name="hostpref_postlogin_summary">Commands to run on remote server once authenticated</string>
+	<string name="hostpref_postlogin_summary">Příkazy které se spustí na vzdáleném serveru po přihlášení</string>
 
 	<!-- Host compression preference title -->
-	<string name="hostpref_compression_title">Compression</string>
+	<string name="hostpref_compression_title">Komprese</string>
 	<!-- Summary for compression preference -->
-	<string name="hostpref_compression_summary">This may help with slower networks</string>
+	<string name="hostpref_compression_summary">Může pomoct na pomalejších sítích</string>
 
 	<!-- Setting for whether we want a session to start up when we connect to a host -->
-	<string name="hostpref_wantsession_title">Start shell session</string>
+	<string name="hostpref_wantsession_title">Spustit sezení shellu</string>
 	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
-	<string name="hostpref_wantsession_summary">Disable this preference to only use port forwards</string>
+	<string name="hostpref_wantsession_summary">Vypněte tuto možnost pokud pouze přesměrováváte porty</string>
 
 	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
-	<string name="hostpref_stayconnected_title">Stay connected</string>
+	<string name="hostpref_stayconnected_title">Zůstat připojený</string>
 	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
-	<string name="hostpref_stayconnected_summary">Try to reconnect to host if disconnected</string>
+	<string name="hostpref_stayconnected_summary">Zkusit se znovu připojit při odpojení</string>
 
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
 	<string name="hostpref_delkey_title">Klávesa DEL</string>
 	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_summary">The key code sent when DEL key is pressed</string>
+	<string name="hostpref_delkey_summary">Kód klávesy odeslaný při stisku DEL</string>
 
 	<!-- Host character encoding preference title -->
-	<string name="hostpref_encoding_title">Encoding</string>
+	<string name="hostpref_encoding_title">Kódování</string>
 	<!-- Host character encoding preference summary -->
-	<string name="hostpref_encoding_summary">Character encoding for the host</string>
+	<string name="hostpref_encoding_summary">Kódování znaků na hostovi</string>
 
 	<!-- Host preference category title for connection settings -->
 	<string name="hostpref_connection_category">Nastavení připojení</string>
@@ -272,7 +290,7 @@
 	<string name="hostpref_port_title">Port</string>
 
 	<!-- Displayed to indicate a host has never been connected to. -->
-	<string name="bind_never">Never connected</string>
+	<string name="bind_never">Nikdy nepřipojen</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
 	<string name="bind_minutes">Před %1$s minutami</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
@@ -281,9 +299,9 @@
 	<string name="bind_days">Před %1$s dny</string>
 
 	<!-- Message given when user copies from the terminal. -->
-	<string name="console_copy_done">Copied %1$d bytes to clipboard</string>
+	<string name="console_copy_done">Zkopírováno %1$d bajtů do schránky</string>
 	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">Touch and drag\nor use directional pad\nto select area to copy</string>
+	<string name="console_copy_start">Stiskněte a táhněte\nnebo použijte směrový ovladač\npro výběr oblasti ke zkopírování</string>
 
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">Zavřít</string>
@@ -292,25 +310,25 @@
 	<!-- Button to paste from the clipboard to the terminal. -->
 	<string name="console_menu_paste">Vložit</string>
 	<!-- Button that brings user to the Port Forwards List. -->
-	<string name="console_menu_portforwards">Port Forwards</string>
+	<string name="console_menu_portforwards">Přesměrování portů</string>
 	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
-	<string name="console_menu_resize">Force Size</string>
+	<string name="console_menu_resize">Vynutit velikost</string>
 	<!-- Button that brings up the list of URLs on the current screen -->
-	<string name="console_menu_urlscan">URL Scan</string>
+	<string name="console_menu_urlscan">Najít URL</string>
 
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
-	<string name="portforward_local">Local</string>
+	<string name="portforward_local">Místní</string>
 	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
-	<string name="portforward_remote">Remote</string>
+	<string name="portforward_remote">Vzdálený</string>
 	<!-- Selection for a "dynamic" port forward. E.g., connections to a port listening locally is forwarded based on the SOCKS protocol to an arbitrary remote host and port. -->
-	<string name="portforward_dynamic">Dynamic (SOCKS)</string>
+	<string name="portforward_dynamic">Dynamický (SOCKS)</string>
 	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
-	<string name="portforward_pos">Create port forward</string>
+	<string name="portforward_pos">Vytvořit přesměrování portu</string>
 
-	<string name="portforward_done">Successfully created port forward</string>
+	<string name="portforward_done">Přesměrování portu úspěšně vytvořeno</string>
 	<string name="portforward_problem">Problem creating port forward, maybe you\'re using ports under 1024 or port is already used?</string>
 
-	<string name="portforward_menu_add">Add port forward</string>
+	<string name="portforward_menu_add">Přidat přesměrování portu</string>
 
 	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
 	<string name="hint_userhost">user@hostname</string>
@@ -319,35 +337,35 @@
 	<string name="list_format_error">Použijte formát "%1$s"</string>
 
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_username">username</string>
+	<string name="format_username">uživatelské jméno</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_hostname">hostname</string>
+	<string name="format_hostname">jméno hosta</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
 	<string name="format_port">port</string>
 
-	<string name="list_menu_pubkeys">Manage Pubkeys</string>
+	<string name="list_menu_pubkeys">Spravovat veřejné klíče</string>
 	<!-- Selection choice to sort hosts by color. -->
-	<string name="list_menu_sortcolor">Sort by color</string>
+	<string name="list_menu_sortcolor">Seřadit podle barvy</string>
 	<!-- Selection choice to sort hosts by nickname. -->
-	<string name="list_menu_sortname">Sort by name</string>
+	<string name="list_menu_sortname">Seřadit podle jména</string>
 	<string name="list_menu_settings">Nastavení</string>
 
 	<string name="list_host_disconnect">Odpojit</string>
-	<string name="list_host_edit">Edit host</string>
-	<string name="list_host_portforwards">Edit port forwards</string>
-	<string name="list_host_delete">Delete host</string>
+	<string name="list_host_edit">Upravit hosta</string>
+	<string name="list_host_portforwards">Upravit přesměrování portů</string>
+	<string name="list_host_delete">Smazat hosta</string>
 	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
-	<string name="list_host_empty">Use the quick-connect box\nbelow to connect to a host.</string>
+	<string name="list_host_empty">Použijte pole rychlého připojení\nníže pro připojení k hostovi.</string>
 
 	<!-- Default screen rotation preference selection -->
-	<string name="list_rotation_default">Default</string>
-	<string name="list_rotation_land">Force landscape</string>
-	<string name="list_rotation_port">Force portrait</string>
+	<string name="list_rotation_default">Standardní</string>
+	<string name="list_rotation_land">Vynutit na šířku</string>
+	<string name="list_rotation_port">Vynutit na výšku</string>
 	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
-	<string name="list_rotation_auto">Automatic</string>
+	<string name="list_rotation_auto">Automaticky</string>
 
 	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
-	<string name="list_camera_ctrlaspace">Ctrl+A then Space</string>
+	<string name="list_camera_ctrlaspace">Ctrl+A potom mezerník</string>
 	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A". -->
 	<string name="list_camera_ctrla">Ctrl+A</string>
 	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
@@ -361,8 +379,8 @@
 	<string name="list_delkey_del">Delete</string>
 
 	<string name="delete_message">Are you sure you want to delete \'%1$s\'?</string>
-	<string name="delete_pos">Yes, delete</string>
-	<string name="delete_neg">Cancel</string>
+	<string name="delete_pos">Ano, smazat</string>
+	<string name="delete_neg">Zrušit</string>
 
 	<!-- Button to agree to license terms. -->
 	<string name="wizard_agree">Souhlasím</string>
@@ -371,30 +389,30 @@
 	<!-- Button to go to the previous page in the first time start-up wizard. -->
 	<string name="wizard_back">Zpět</string>
 
-	<string name="terminal_no_hosts_connected">No hosts currently connected</string>
+	<string name="terminal_no_hosts_connected">Žádný host není připojený</string>
 
 	<!-- Displayed in terminal when attempting to connect to a host. The first two
 	     variables are host:port and the third is the protocol (e.g., SSH) -->
-	<string name="terminal_connecting">Connecting to %1$s:%2$d via %3$s</string>
+	<string name="terminal_connecting">Připojování k %1$s:%2$d přes %3$s</string>
 
 	<!-- Displays the host key to the user in the terminal -->
 	<string name="terminal_sucess">Verified host \'%1$s\' key: %2$s</string>
-	<string name="terminal_failed">Host key verification failed.</string>
+	<string name="terminal_failed">Selhalo ověření klíče hosta</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_s2c_algorithm">Server-to-client algorithm: %1$s %2$s</string>
+	<string name="terminal_using_s2c_algorithm">Algoritmus server-klient: %1$s %2$s</string>
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_c2s_algorithm">Client-to-server algorithm: %1$s %2$s</string>
+	<string name="terminal_using_c2s_algorithm">Algoritmus klient-server: %1$s %2$s</string>
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_algorithm">Using algorithm: %1$s %2$s</string>
+	<string name="terminal_using_algorithm">Použitý algoritmus: %1$s %2$s</string>
 
-	<string name="terminal_auth">Trying to authenticate</string>
+	<string name="terminal_auth">Pokus o autentizaci</string>
 
 	<string name="terminal_auth_pass">Attempting \'password\' authentication</string>
 	<string name="terminal_auth_pass_fail">Authentication method \'password\' failed</string>
 
 	<string name="terminal_auth_pubkey_any">Attempting \'publickey\' authentication with any in-memory public keys</string>
-	<string name="terminal_auth_pubkey_invalid">Selected public key is invalid, try reselecting key in host editor</string>
+	<string name="terminal_auth_pubkey_invalid">Vybraný veřejný klič je neplatný, zkuste jej znovu vybrat při úpravě hosta</string>
 	<string name="terminal_auth_pubkey_specific">Attempting \'publickey\' authentication with a specific public key</string>
 	<string name="terminal_auth_pubkey_fail">Authentication method \'publickey\' with key \'%1$s\' failed</string>
 
@@ -403,13 +421,13 @@
 
 	<string name="terminal_auth_fail">[Your host doesn\'t support \'password\' or \'keyboard-interactive\' authentication.]</string>
 
-	<string name="terminal_no_session">Session will not be started due to host preference.</string>
-	<string name="terminal_enable_portfoward">Enable port forward: %1$s</string>
+	<string name="terminal_no_session">Sezení nebude spuštěno kvůli nastavení hosta.</string>
+	<string name="terminal_enable_portfoward">Povolit přesměrování portu: %1$s</string>
 
-	<string name="local_shell_unavailable">Failure! Local shell is unavailable on this phone.</string>
+	<string name="local_shell_unavailable">Selhání! Místní shell není na tomto telefonu podporován</string>
 
 	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
-	<string name="notification_text">%1$s wants your attention.</string>
+	<string name="notification_text">%1$s žádá pozornost.</string>
 
 	<!-- Dialog title when a new version of ConnectBot is detected. -->
 	<string name="upgrade">Nová verze</string>
@@ -419,17 +437,20 @@
 	<string name="upgrade_neg">Nyní ne</string>
 
 	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
-	<string name="no">No</string>
+	<string name="no">Ne</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
-	<string name="with_confirmation">With confirmation</string>
+	<string name="with_confirmation">S potvrzením</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
-	<string name="yes">Yes</string>
+	<string name="yes">Ano</string>
 
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
-	<string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?</string>
+	<string name="exceptions_submit_message">Vypadá to že měl ConnectBot problém když naposledy běžel. Odeslat hlášení o chybě vývojářům ConnectBota?</string>
 
 	<!-- Menu selection to reset colors to their defaults. -->
-	<string name="menu_colors_reset">Reset</string>
+	<string name="menu_colors_reset">Obnovit</string>
+
+	<!-- Displayed in the notification bar that connections are active -->
+	<string name="app_is_running">ConnectBot is running</string>
 
 	<string name="color_red">červená</string>
 	<string name="color_green">zelená</string>

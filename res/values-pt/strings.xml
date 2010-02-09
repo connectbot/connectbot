@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2007 Kenny Root, Jeffrey Sharkey
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
 <resources>
 	<string name="app_desc">Simples e poderoso cliente SSH open-source</string>
 
@@ -20,8 +38,8 @@
 	<string name="resolve_entropy">Gather Entropy</string>
 
 	<string name="menu_insert">Adicionar uma Máquina</string>
-	<string name="menu_delete">Eliminar máquina</string>
-	<string name="menu_preferences">Definições</string>
+	<string name="menu_delete">Eliminar anfitrião</string>
+	<string name="menu_preferences">Preferências</string>
 
 	<string name="help_intro">Selecione um tópico para mais informações sobre o assunto.</string>
 	<string name="help_about">Sobre ConnectBot</string>
@@ -31,7 +49,7 @@
 	<string name="pubkey_import">Importar</string>
 	<string name="pubkey_delete">Apagar a chave</string>
 	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="pubkey_gather_entropy">Gathering Entropy</string>
+	<string name="pubkey_gather_entropy">Recolhendo entropia</string>
 	<string name="pubkey_touch_prompt">Toque nesta caixa para gerar aleariedade:  %1$d%% completo</string>
 	<string name="pubkey_touch_hint">Para assegurar aleatoriedade durante a geração da chave, mova o dedo aleatoriamente sobre a caixa a baixo.</string>
 	<string name="pubkey_generating">A gerar par de chaves</string>
@@ -42,36 +60,36 @@
 	<string name="pubkey_unknown_format">Formato desconhecido</string>
 	<string name="pubkey_change_password">Alterar password</string>
 	<string name="pubkey_list_pick">Escolher de /sdcard</string>
-	<string name="pubkey_import_parse_problem">Problem parsing imported private key</string>
-	<string name="pubkey_unlock">Unlock key</string>
+	<string name="pubkey_import_parse_problem">Problema de análise com a  chave privada importada</string>
+	<string name="pubkey_unlock">Desbloquear chave</string>
 	<string name="pubkey_failed_add">Bad password for key \'%1$s\'. Authentication failed.</string>
-	<string name="pubkey_memory_load">Load into memory</string>
-	<string name="pubkey_memory_unload">Unload from memory</string>
-	<string name="pubkey_load_on_start">Load key on start</string>
+	<string name="pubkey_memory_load">Carregar para a memória</string>
+	<string name="pubkey_memory_unload">retirar da memória</string>
+	<string name="pubkey_load_on_start">carregar chave no Inicio</string>
 	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
-	<string name="pubkey_confirm_use">Confirm before use</string>
+	<string name="pubkey_confirm_use">Confirmar antes de usar</string>
 
 	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
-	<string name="portforward_list_empty">Tap "Menu" to create\nport forwards.</string>
-	<string name="portforward_edit">Edit port forward</string>
-	<string name="portforward_delete">Delete port forward</string>
+	<string name="portforward_list_empty">Carregue "Menu" para criar\nport forward</string>
+	<string name="portforward_edit">Editar port forward</string>
+	<string name="portforward_delete">Apagar port forward</string>
 
-	<string name="prompt_nickname">Nickname:</string>
+	<string name="prompt_nickname">Alcunha:</string>
 	<!-- An example string that could be used as a nickname for a pubkey. -->
-	<string name="prompt_nickname_hint_pubkey">My work key</string>
+	<string name="prompt_nickname_hint_pubkey">A minha chave de trabalho</string>
 	<!-- The source TCP port for port forwards. -->
-	<string name="prompt_source_port">Source port:</string>
+	<string name="prompt_source_port">Porta de origem:</string>
 	<!-- The "host:port" combination used for port forward destinations. -->
-	<string name="prompt_destination">Destination:</string>
-	<string name="prompt_old_password">Old password:</string>
-	<string name="prompt_password">Password:</string>
+	<string name="prompt_destination">Destino:</string>
+	<string name="prompt_old_password">Palavra-passe Antiga:</string>
+	<string name="prompt_password">Palavra-passe:</string>
 	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
-	<string name="prompt_again">(again)</string>
+	<string name="prompt_again">(novamente)</string>
 	<!-- Label for the user to select port forward type. -->
-	<string name="prompt_type">Type:</string>
-	<string name="prompt_password_can_be_blank">Note: password can be blank</string>
+	<string name="prompt_type">Tipo:</string>
+	<string name="prompt_password_can_be_blank">Nota: password pode ser em branco</string>
 	<!-- Prompt for the size of the private key in bits. -->
-	<string name="prompt_bits">Bits:</string>
+	<string name="prompt_bits">bits:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
 	<string name="prompt_pubkey_password">Password for key \'%1$s\'</string>
@@ -80,48 +98,48 @@
 	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key \'%1$s\'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning_header">WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</string>
+	<string name="host_verification_failure_warning_header">AVISO: a identificação do host remoto mudou!</string>
 	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning">IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\nSomeone could be eavesdropping on you right now (man-in-the-middle attack)!\nIt is also possible that the host key has just been changed.</string>
+	<string name="host_verification_failure_warning">É POSSÍVEL QUE ALGUÉM ESTEJA A FAZER ALGO ERRADO!\n Alguém pode estar espiando ( ataque man-in-the-middle)!\nTambém e possível que a chave do hospede tenha sido alterada</string>
 
 	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
-	<string name="prompt_host_disconnected">Host has disconnected.\nClose session?</string>
+	<string name="prompt_host_disconnected">Hospede desconectou-se.\nFechar sessão?</string>
 	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
-	<string name="prompt_continue_connecting">Are you sure you want\nto continue connecting?</string>
+	<string name="prompt_continue_connecting">Tem a certeza que quer\ncontinuar  a connectar?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
 	<string name="host_authenticity_warning">The authenticity of host \'%1$s\' can\'t be established.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
-	<string name="host_fingerprint">Host %1$s key fingerprint is %2$s</string>
+	<string name="host_fingerprint">Hospede %1$s id da chave é %2$s</string>
 
-	<string name="alert_passwords_do_not_match_msg">Passwords do not match!</string>
-	<string name="alert_wrong_password_msg">Wrong password!</string>
-	<string name="alert_key_corrupted_msg">Private key appears corrupt!</string>
-	<string name="alert_sdcard_absent">SD card is not inserted!</string>
+	<string name="alert_passwords_do_not_match_msg">As palavras passe não coincidem!</string>
+	<string name="alert_wrong_password_msg">Palavra passe errada!</string>
+	<string name="alert_key_corrupted_msg">Chave privada parece estar corrupta.</string>
+	<string name="alert_sdcard_absent">Cartão SD não parece estar inserido!</string>
 
 	<!-- Add a new item (e.g., host or pubkey) to the list. -->
-	<string name="button_add">Add</string>
+	<string name="button_add">Adicionar</string>
 	<!-- Change an existing item's (e.g., host or pubkey) details. -->
-	<string name="button_change">Change</string>
+	<string name="button_change">Alterar</string>
 	<!-- Button that begins the generation of a public key pair. -->
-	<string name="button_generate">Generate Key</string>
+	<string name="button_generate">Gerar Chave</string>
 	<!-- Button that resizes the screen to the user-specified dimensions. -->
-	<string name="button_resize">Resize</string>
+	<string name="button_resize">Redimensionar</string>
 
-	<string name="alert_disconnect_msg">Connection Lost</string>
+	<string name="alert_disconnect_msg">Ligação Perdida</string>
 
-	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
+	<string name="msg_copyright">Direitos de Autor © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
 
 	<!-- The category title for terminal emulation preferences. -->
-	<string name="pref_emulation_category">Terminal emulation</string>
+	<string name="pref_emulation_category">Terminal de emulação</string>
 
 	<!-- Name for the emulation terminal type preference. -->
-	<string name="pref_emulation_title">Emulation mode</string>
+	<string name="pref_emulation_title">Modo de emulação</string>
 	<!-- Description of the emulation terminal type preference. -->
-	<string name="pref_emulation_summary">Terminal emulation mode to use for PTY connections</string>
+	<string name="pref_emulation_summary">Terminal de emulação  para usar conecções PTY</string>
 
 	<!-- Name for the scrollback size preference -->
-	<string name="pref_scrollback_title">Scrollback size</string>
+	<string name="pref_scrollback_title">Tamanho de Scrollback</string>
 	<!-- Description of the scrollback size preference -->
 	<string name="pref_scrollback_summary">Size of scrollback buffer to keep in memory for each console</string>
 
@@ -419,20 +437,23 @@
 	<string name="upgrade_neg">Not right now</string>
 
 	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
-	<string name="no">No</string>
+	<string name="no">Não</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
-	<string name="with_confirmation">With confirmation</string>
+	<string name="with_confirmation">com confirmação</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
-	<string name="yes">Yes</string>
+	<string name="yes">Sim</string>
 
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
-	<string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?</string>
+	<string name="exceptions_submit_message">Aparentemente o ConnectBot teve um problema na ultima vez que foi executado. Enviar relatório de erros para os programadores do  ConnectBot?</string>
 
 	<!-- Menu selection to reset colors to their defaults. -->
-	<string name="menu_colors_reset">Reset</string>
+	<string name="menu_colors_reset">Limpar</string>
 
-	<string name="color_red">red</string>
-	<string name="color_green">green</string>
-	<string name="color_blue">blue</string>
-	<string name="color_gray">gray</string>
+	<!-- Displayed in the notification bar that connections are active -->
+	<string name="app_is_running">O ConnectBot esta a ser executado</string>
+
+	<string name="color_red">vermelho</string>
+	<string name="color_green">verde</string>
+	<string name="color_blue">azul</string>
+	<string name="color_gray">cinzento</string>
 </resources>

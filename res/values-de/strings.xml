@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2007 Kenny Root, Jeffrey Sharkey
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
 <resources>
 	<string name="app_desc">Einfacher, mächtiger, open-source SSH client.</string>
 
@@ -221,7 +239,7 @@
 	<string name="hostpref_color_title">Farbkategorie</string>
 
 	<!-- Host's default font size when opening the terminal in points (pt) -->
-	<string name="hostpref_fontsize_title">Font size (pt)</string>
+	<string name="hostpref_fontsize_title">Fontgröße (pt)</string>
 
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">Verwende "pubkey" Authentisierung</string>
@@ -429,7 +447,10 @@
 	<string name="exceptions_submit_message">Scheinbar hatte ConnectBot Probleme bei der letzten Benutzung. Fehlermeldung an die ConnectBot übermitteln?</string>
 
 	<!-- Menu selection to reset colors to their defaults. -->
-	<string name="menu_colors_reset">Reset</string>
+	<string name="menu_colors_reset">Zurücksetzen</string>
+
+	<!-- Displayed in the notification bar that connections are active -->
+	<string name="app_is_running">ConnectBot is running</string>
 
 	<string name="color_red">rot</string>
 	<string name="color_green">grün</string>

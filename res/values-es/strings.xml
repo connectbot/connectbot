@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2007 Kenny Root, Jeffrey Sharkey
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
 <resources>
-	<string name="app_desc">Simple, poderoso, cliente SSH de código abierto.</string>
+	<string name="app_desc">Cliente de SSH sencillo, potente y open-source</string>
 
 	<!-- Window title for the Host List -->
 	<string name="title_hosts_list">Máquinas</string>
@@ -69,7 +87,7 @@
 	<string name="prompt_again">(de nuevo)</string>
 	<!-- Label for the user to select port forward type. -->
 	<string name="prompt_type">Tipo:</string>
-	<string name="prompt_password_can_be_blank">Nota: la contraseña no puede ser dejada en blanco</string>
+	<string name="prompt_password_can_be_blank">Nota: la contraseña puede ser dejada en blanco</string>
 	<!-- Prompt for the size of the private key in bits. -->
 	<string name="prompt_bits">Bits:</string>
 
@@ -80,21 +98,21 @@
 	<string name="prompt_allow_agent_to_use_key">¿Autorizar maquina remota\nde usar clave \'%1$s\'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning_header">ADVERTENCIA: ¡IDENTIFICACION DE LA MAQUINA REMOTA HA CAMBIADO!</string>
+	<string name="host_verification_failure_warning_header">ATENCIÓN: ¡LA IDENTIFICACIÓN DE LA MAQUINA REMOTA HA CAMBIADO!</string>
 	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning">¡ES POSIBLE QUE ALGUIEN ESTE HACIENDO ALGO INAPROPIADO!\nAlguien puede estar interviniendo en estos momentos (attaque "man-in-the-middle")!\nTambién es posible que la clave haya sido cambiada.</string>
+	<string name="host_verification_failure_warning">¡ES POSIBLE QUE ALGUIEN ESTE HACIENDO ALGO INAPROPIADO!\nAlguien puede estar interviniendo en estos momentos (ataque "man-in-the-middle")!\nTambién es posible que la clave haya sido cambiada.</string>
 
 	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
 	<string name="prompt_host_disconnected">La máquina ha sido desconectada.\n¿Desea cerrar sesión?</string>
 	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
-	<string name="prompt_continue_connecting">¿Esta seguro que desea\nseguir intentando conexión?</string>
+	<string name="prompt_continue_connecting">¿Esta seguro de que desea\nseguir conectándose?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
 	<string name="host_authenticity_warning">La autenticidad de la máquina \'%1$s\' no puede ser establecida.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">La clave huella de la maquina %1$s es %2$s</string>
 
-	<string name="alert_passwords_do_not_match_msg">¡Las constraseñas no coinciden!</string>
+	<string name="alert_passwords_do_not_match_msg">¡Las contraseñas no coinciden!</string>
 	<string name="alert_wrong_password_msg">¡Contraseña errónea!</string>
 	<string name="alert_key_corrupted_msg">¡La clave privada parece corrupta!</string>
 	<string name="alert_sdcard_absent">¡Tarjeta SD no insertada!</string>
@@ -139,9 +157,9 @@
 	<string name="pref_fullscreen_summary">Esconder barra de estatus cuando este en consola</string>
 
 	<!-- Name for the memorize keys preference -->
-	<string name="pref_memkeys_title">Recordar teclas en la memoria</string>
+	<string name="pref_memkeys_title">Recordar claves en memoria</string>
 	<!-- Summary for the memorize keys preference -->
-	<string name="pref_memkeys_summary">Recordar teclas en la memoria hasta que el servicio de fondo se termine</string>
+	<string name="pref_memkeys_summary">Recordar claves en memoria hasta que el servicio en segundo plano termine</string>
 
 	<!-- Name for the update check preference -->
 	<string name="pref_update_title">Revisar por actualizaciones</string>
@@ -149,12 +167,12 @@
 	<string name="pref_update_summary">Establecer la frequencia maxima para revisar actualizaciones de ConnectBot</string>
 
 	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">Persist connections</string>
+	<string name="pref_conn_persist_title">Conexiones persistentes</string>
 	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+	<string name="pref_conn_persist_summary">Mantener conexiones activas en segundo plano</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
-	<string name="pref_keymode_title">Sequencia de teclas para directorios</string>
+	<string name="pref_keymode_title">Secuencia de teclas para directorios</string>
 	<!-- Summary for the keyboard shortcuts preference -->
 	<string name="pref_keymode_summary">Especifique como usar Alt para \'/\' y Shit para Tab</string>
 
@@ -176,7 +194,7 @@
 	<!-- Name for the haptic feedback (bumpy arrow) preference -->
 	<string name="pref_bumpyarrows_title">Bumpy arrows</string>
 	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_summary">Vibrate when sending arrow keys from trackball; useful for laggy connections</string>
+	<string name="pref_bumpyarrows_summary">Vibrar al recibir las teclas del cursor desde el trackball; útil para conexiones con retardos</string>
 
 	<!-- Category title for the Terminal Bell preferences -->
 	<string name="pref_bell_category">Timbre del terminal</string>
@@ -221,7 +239,7 @@
 	<string name="hostpref_color_title">Categoria de colores</string>
 
 	<!-- Host's default font size when opening the terminal in points (pt) -->
-	<string name="hostpref_fontsize_title">Font size (pt)</string>
+	<string name="hostpref_fontsize_title">Tamaño de la fuente (pt)</string>
 
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">Usar clave de autenticación pública</string>
@@ -337,7 +355,7 @@
 	<string name="list_host_portforwards">Editar redirección de puertos</string>
 	<string name="list_host_delete">Eliminar equipo</string>
 	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
-	<string name="list_host_empty">Use the quick-connect box\nbelow to connect to a host.</string>
+	<string name="list_host_empty">Usar la casilla de conexión rápida\na continuación para conectarse a una máquina</string>
 
 	<!-- Default screen rotation preference selection -->
 	<string name="list_rotation_default">Predeterminado</string>
@@ -429,7 +447,10 @@
 	<string name="exceptions_submit_message">Parece que ConnectBot tuvo un problema en su última ejecución. Enviar reporte de error a los desarrolladores de ConnectBot?</string>
 
 	<!-- Menu selection to reset colors to their defaults. -->
-	<string name="menu_colors_reset">Reset</string>
+	<string name="menu_colors_reset">Restablecer</string>
+
+	<!-- Displayed in the notification bar that connections are active -->
+	<string name="app_is_running">ConnectBot is running</string>
 
 	<string name="color_red">rojo</string>
 	<string name="color_green">verde</string>
