@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2007 Kenny Root, Jeffrey Sharkey
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
 <resources>
 	<string name="app_desc">Cliente de SSH simples, poderoso e de código aberto</string>
 
@@ -80,35 +98,35 @@
 	<string name="prompt_allow_agent_to_use_key">Permitir que a máquina remota use a chave "%1$s"?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning_header">WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</string>
+	<string name="host_verification_failure_warning_header">ALERTA: Identificação do Host remoto foi alterada!</string>
 	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning">IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\nSomeone could be eavesdropping on you right now (man-in-the-middle attack)!\nIt is also possible that the host key has just been changed.</string>
 
 	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
-	<string name="prompt_host_disconnected">Host has disconnected.\nClose session?</string>
+	<string name="prompt_host_disconnected">Desconectado do Host.\Sessao Fechada</string>
 	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
-	<string name="prompt_continue_connecting">Are you sure you want\nto continue connecting?</string>
+	<string name="prompt_continue_connecting">Voce tem certeza que deseja continuar a conexao ?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
 	<string name="host_authenticity_warning">The authenticity of host \'%1$s\' can\'t be established.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">Host %1$s key fingerprint is %2$s</string>
 
-	<string name="alert_passwords_do_not_match_msg">Passwords do not match!</string>
-	<string name="alert_wrong_password_msg">Wrong password!</string>
-	<string name="alert_key_corrupted_msg">Private key appears corrupt!</string>
-	<string name="alert_sdcard_absent">SD card is not inserted!</string>
+	<string name="alert_passwords_do_not_match_msg">Senhas não conferem!</string>
+	<string name="alert_wrong_password_msg">Senha incorreta!</string>
+	<string name="alert_key_corrupted_msg">Chave privada parece corrompida!</string>
+	<string name="alert_sdcard_absent">Cartão SD não está inserido!</string>
 
 	<!-- Add a new item (e.g., host or pubkey) to the list. -->
-	<string name="button_add">Add</string>
+	<string name="button_add">Adicionar</string>
 	<!-- Change an existing item's (e.g., host or pubkey) details. -->
-	<string name="button_change">Change</string>
+	<string name="button_change">Alterar</string>
 	<!-- Button that begins the generation of a public key pair. -->
-	<string name="button_generate">Generate Key</string>
+	<string name="button_generate">Gerar chave</string>
 	<!-- Button that resizes the screen to the user-specified dimensions. -->
-	<string name="button_resize">Resize</string>
+	<string name="button_resize">Redimensionar</string>
 
-	<string name="alert_disconnect_msg">Connection Lost</string>
+	<string name="alert_disconnect_msg">Conexão perdida</string>
 
 	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
 
@@ -430,6 +448,9 @@
 
 	<!-- Menu selection to reset colors to their defaults. -->
 	<string name="menu_colors_reset">Reset</string>
+
+	<!-- Displayed in the notification bar that connections are active -->
+	<string name="app_is_running">ConnectBot is running</string>
 
 	<string name="color_red">red</string>
 	<string name="color_green">green</string>

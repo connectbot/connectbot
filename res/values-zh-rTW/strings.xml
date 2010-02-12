@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2007 Kenny Root, Jeffrey Sharkey
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
 <resources>
 	<string name="app_desc">簡單,強大,開源的SSH客戶端</string>
 
@@ -17,13 +35,13 @@
 
 	<string name="resolve_connect">連接</string>
 	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="resolve_entropy">Gather Entropy</string>
+	<string name="resolve_entropy">收集用戶熵</string>
 
 	<string name="menu_insert">添加主機</string>
 	<string name="menu_delete">刪除主機</string>
 	<string name="menu_preferences">設置</string>
 
-	<string name="help_intro">Please select a topic below for more information on a particular subject.</string>
+	<string name="help_intro">請在下面主題中選擇一個以查看更多內容。</string>
 	<string name="help_about">關於ConnectBot</string>
 	<string name="help_keyboard">鍵盤</string>
 
@@ -31,7 +49,7 @@
 	<string name="pubkey_import">導入</string>
 	<string name="pubkey_delete">刪除密鑰</string>
 	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="pubkey_gather_entropy">Gathering Entropy</string>
+	<string name="pubkey_gather_entropy">正在收集用戶熵</string>
 	<string name="pubkey_touch_prompt">觸摸方框來收集隨機數：%1$d％完成</string>
 	<string name="pubkey_touch_hint">由於密鑰產生的時候需要隨機數據，請在下面的方框中隨便移動你的手指</string>
 	<string name="pubkey_generating">正在產生密鑰配對</string>
@@ -49,7 +67,7 @@
 	<string name="pubkey_memory_unload">從內存中移除</string>
 	<string name="pubkey_load_on_start">在啟動的時候載入密鑰</string>
 	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
-	<string name="pubkey_confirm_use">Confirm before use</string>
+	<string name="pubkey_confirm_use">使用前確認</string>
 
 	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
 	<string name="portforward_list_empty">按「菜單」鍵建端口轉發</string>
@@ -82,7 +100,7 @@
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning_header">警告：遠程主機的標誌已經改變</string>
 	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning">IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\nSomeone could be eavesdropping on you right now (man-in-the-middle attack)!\nIt is also possible that the host key has just been changed.</string>
+	<string name="host_verification_failure_warning">可能某人正在做非善意的事情\n可能有人正在偷聽你的會話(中間人攻擊)\n但也許僅僅是主密匙(host key)已被更改，你確信如此?</string>
 
 	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
 	<string name="prompt_host_disconnected">主機已經斷開。\n是否關閉本次對話？</string>
@@ -92,7 +110,7 @@
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
 	<string name="host_authenticity_warning">主機「%1$s」的驗證無法建立</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
-	<string name="host_fingerprint">Host %1$s key fingerprint is %2$s</string>
+	<string name="host_fingerprint">主機 %1$s 密鑰指紋是 %2$s</string>
 
 	<string name="alert_passwords_do_not_match_msg">密碼不匹配！</string>
 	<string name="alert_wrong_password_msg">錯誤的密碼！</string>
@@ -118,15 +136,15 @@
 	<!-- Name for the emulation terminal type preference. -->
 	<string name="pref_emulation_title">終端機類型</string>
 	<!-- Description of the emulation terminal type preference. -->
-	<string name="pref_emulation_summary">Terminal emulation mode to use for PTY connections</string>
+	<string name="pref_emulation_summary">設置使用PTY連接時的終端模式</string>
 
 	<!-- Name for the scrollback size preference -->
 	<string name="pref_scrollback_title">回溯存儲大小</string>
 	<!-- Description of the scrollback size preference -->
-	<string name="pref_scrollback_summary">Size of scrollback buffer to keep in memory for each console</string>
+	<string name="pref_scrollback_summary">在內存中為每個控制台保留的回滾緩存長度</string>
 
 	<!-- The category title for user interface preferences -->
-	<string name="pref_ui_category">User interface</string>
+	<string name="pref_ui_category">用戶界面</string>
 
 	<!-- Name for the rotation mode preference -->
 	<string name="pref_rotation_title">行為的輪換</string>
@@ -136,12 +154,12 @@
 	<!-- Name for the full screen preference -->
 	<string name="pref_fullscreen_title">全屏</string>
 	<!-- Summary for the full screen preference -->
-	<string name="pref_fullscreen_summary">Hide status bar while in console</string>
+	<string name="pref_fullscreen_summary">處於控制台時隱藏狀態欄</string>
 
 	<!-- Name for the memorize keys preference -->
-	<string name="pref_memkeys_title">Remember keys in memory</string>
+	<string name="pref_memkeys_title">在內存中記錄密鑰</string>
 	<!-- Summary for the memorize keys preference -->
-	<string name="pref_memkeys_summary">Keep unlocked keys in memory until backend service is terminated</string>
+	<string name="pref_memkeys_summary">保存解鎖密匙在內存中，直到後端服務停止為止</string>
 
 	<!-- Name for the update check preference -->
 	<string name="pref_update_title">頻率檢查更新</string>
@@ -149,63 +167,63 @@
 	<string name="pref_update_summary">最大頻率檢查ConnectBot更新</string>
 
 	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">Persist connections</string>
+	<string name="pref_conn_persist_title">保持聯機</string>
 	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+	<string name="pref_conn_persist_summary">強制並保持連接在後台</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
-	<string name="pref_keymode_title">Directory shortcuts</string>
+	<string name="pref_keymode_title">目錄快捷鍵</string>
 	<!-- Summary for the keyboard shortcuts preference -->
 	<string name="pref_keymode_summary">Select how to use Alt for \'/\' and Shift for Tab</string>
 
 	<!-- Name for the camera shortcut usage preference -->
-	<string name="pref_camera_title">Camera shortcut</string>
+	<string name="pref_camera_title">攝像快捷鍵</string>
 	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_camera_summary">Select which shortcut to trigger when the camera button is pushed</string>
+	<string name="pref_camera_summary">選擇當照相鍵按下時將要觸發的快捷鍵</string>
 
 	<!-- Name for the keep screen on preference -->
 	<string name="pref_keepalive_title">保持清醒屏幕</string>
 	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_keepalive_summary">Prevent the screen from turning off when working in a console</string>
+	<string name="pref_keepalive_summary">禁止屏幕睡眠當終端正在工作時</string>
 
 	<!-- Name for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_title">Keep Wi-Fi active</string>
+	<string name="pref_wifilock_title">保持Wi-Fi激活</string>
 	<!-- Summary for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_summary">Prevent Wi-Fi from turning off when a session is active</string>
+	<string name="pref_wifilock_summary">禁止WiFi自動關閉當會話激活時</string>
 
 	<!-- Name for the haptic feedback (bumpy arrow) preference -->
 	<string name="pref_bumpyarrows_title">觸覺方向鍵</string>
 	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_summary">Vibrate when sending arrow keys from trackball; useful for laggy connections</string>
+	<string name="pref_bumpyarrows_summary">振動當用軌跡球發出模擬方曏鍵時; 對滯後連接特別有用</string>
 
 	<!-- Category title for the Terminal Bell preferences -->
-	<string name="pref_bell_category">Terminal bell</string>
+	<string name="pref_bell_category">終端鈴聲</string>
 
 	<!-- Checkbox preference title for the audible terminal bell feature -->
-	<string name="pref_bell_title">Audible bell</string>
+	<string name="pref_bell_title">響鈴</string>
 
 	<!-- Title for the slider preference to set the volume -->
-	<string name="pref_bell_volume_title">Bell volume</string>
+	<string name="pref_bell_volume_title">鈴聲音量</string>
 
 	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
-	<string name="pref_bell_vibrate_title">Vibrate on bell</string>
+	<string name="pref_bell_vibrate_title">振動同時響鈴</string>
 
 	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
 	<string name="pref_bell_notification_title">背景通知</string>
 	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
-	<string name="pref_bell_notification_summary">Send notification when a terminal running in the background sounds a bell.</string>
+	<string name="pref_bell_notification_summary">當後台終端響鈴時發出通知</string>
 
 	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
 	<string name="list_keymode_right">使用右側按鍵</string>
 	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
 	<string name="list_keymode_left">使用左側按鍵</string>
 	<!-- Preference selection to indicate never to use special shortcut keys. -->
-	<string name="list_keymode_none">Disable</string>
+	<string name="list_keymode_none">禁用</string>
 
 	<!-- Preference to not use pubkeys to authenticate to this host. -->
-	<string name="list_pubkeyids_none">Do not use keys</string>
+	<string name="list_pubkeyids_none">不使用密匙</string>
 	<!-- Preference to use any pubkey to authenticate to this host. -->
-	<string name="list_pubkeyids_any">Use any unlocked key</string>
+	<string name="list_pubkeyids_any">使用解鎖密匙</string>
 
 	<!-- Frequency for which to check for program updates. -->
 	<string name="list_update_daily">每天</string>
@@ -215,27 +233,27 @@
 	<string name="list_update_never">永不</string>
 
 	<!-- Host nickname field preference title -->
-	<string name="hostpref_nickname_title">Nickname</string>
+	<string name="hostpref_nickname_title">昵稱</string>
 
 	<!-- Host color category preference title -->
-	<string name="hostpref_color_title">Color category</string>
+	<string name="hostpref_color_title">顏色類型</string>
 
 	<!-- Host's default font size when opening the terminal in points (pt) -->
-	<string name="hostpref_fontsize_title">Font size (pt)</string>
+	<string name="hostpref_fontsize_title">字型大小 (pt)</string>
 
 	<!-- Host pubkey usage preference title -->
-	<string name="hostpref_pubkeyid_title">Use pubkey authentication</string>
+	<string name="hostpref_pubkeyid_title">使用公鑰驗證</string>
 
 	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
-	<string name="hostpref_authagent_title">Use SSH auth agent</string>
+	<string name="hostpref_authagent_title">使用 SSH 認證</string>
 
 	<!-- Host post-login automation preference title -->
 	<string name="hostpref_postlogin_title">Post-login automation</string>
 	<!-- Host post-login automation preference summary -->
-	<string name="hostpref_postlogin_summary">Commands to run on remote server once authenticated</string>
+	<string name="hostpref_postlogin_summary">每次驗證後在遠端服務器上運行的命令</string>
 
 	<!-- Host compression preference title -->
-	<string name="hostpref_compression_title">Compression</string>
+	<string name="hostpref_compression_title">壓縮</string>
 	<!-- Summary for compression preference -->
 	<string name="hostpref_compression_summary">This may help with slower networks</string>
 
@@ -430,6 +448,9 @@
 
 	<!-- Menu selection to reset colors to their defaults. -->
 	<string name="menu_colors_reset">Reset</string>
+
+	<!-- Displayed in the notification bar that connections are active -->
+	<string name="app_is_running">ConnectBot is running</string>
 
 	<string name="color_red">紅色</string>
 	<string name="color_green">綠色</string>

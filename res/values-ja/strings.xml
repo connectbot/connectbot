@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2007 Kenny Root, Jeffrey Sharkey
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
 <resources>
 	<string name="app_desc">シンプルでパワフルなオープンソースのSSHクライアント</string>
 
@@ -9,7 +27,7 @@
 	<!-- Window title for the Port Forwards List -->
 	<string name="title_port_forwards_list">ポート転送</string>
 	<!-- Window title when editing host details -->
-	<string name="title_host_editor">ホストの編集</string>
+	<string name="title_host_editor">ホストを編集</string>
 	<!-- Window title for Help index -->
 	<string name="title_help">ヘルプ</string>
 	<!-- Window title for color list editing screen -->
@@ -17,13 +35,13 @@
 
 	<string name="resolve_connect">接続</string>
 	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="resolve_entropy">エントロピー収集</string>
+	<string name="resolve_entropy">エントロピーの取得</string>
 
 	<string name="menu_insert">ホストを追加</string>
 	<string name="menu_delete">ホストを削除</string>
 	<string name="menu_preferences">設定</string>
 
-	<string name="help_intro">以下のトピックより詳細を知りたいものを選択してください。</string>
+	<string name="help_intro">特定の情報について知りたいときは、以下のトピックを選択してください。</string>
 	<string name="help_about">ConnectBotについて</string>
 	<string name="help_keyboard">キーボード</string>
 
@@ -149,9 +167,9 @@
 	<string name="pref_update_summary">ConnectBotの更新をチェックする頻度を設定します</string>
 
 	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">Persist connections</string>
+	<string name="pref_conn_persist_title">持続的接続</string>
 	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+	<string name="pref_conn_persist_summary">バックグラウンドでの実行中に接続の持続を強制する</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">ディレクトリのショートカット</string>
@@ -221,7 +239,7 @@
 	<string name="hostpref_color_title">色の系統</string>
 
 	<!-- Host's default font size when opening the terminal in points (pt) -->
-	<string name="hostpref_fontsize_title">Font size (pt)</string>
+	<string name="hostpref_fontsize_title">フォントのサイズ (pt)</string>
 
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">公開鍵認証を使用</string>
@@ -429,7 +447,10 @@
 	<string name="exceptions_submit_message">前回ConnectBot実行時に問題が発生したようです。ConnectBotの開発者にエラーレポートを送信しますか?</string>
 
 	<!-- Menu selection to reset colors to their defaults. -->
-	<string name="menu_colors_reset">Reset</string>
+	<string name="menu_colors_reset">リセット</string>
+
+	<!-- Displayed in the notification bar that connections are active -->
+	<string name="app_is_running">ConnectBot is running</string>
 
 	<string name="color_red">赤</string>
 	<string name="color_green">緑</string>

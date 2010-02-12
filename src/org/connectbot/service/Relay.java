@@ -1,24 +1,23 @@
 /*
-	ConnectBot: simple, powerful, open-source SSH client for Android
-	Copyright (C) 2007-2008 Kenny Root, Jeffrey Sharkey
-
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2007 Kenny Root, Jeffrey Sharkey
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package org.connectbot.service;
 
-import gnu.java.nio.charset.Cp437;
+import org.apache.harmony.niochar.charset.additional.IBM437;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -74,8 +73,9 @@ public class Relay implements Runnable {
 	public void setCharset(String encoding) {
 		Log.d("ConnectBot.Relay", "changing charset to " + encoding);
 		Charset charset;
-		if (encoding.equals(Cp437.NAME))
-			charset = new Cp437();
+		if (encoding.equals("CP437"))
+			charset = new IBM437("IBM437",
+					new String[] { "IBM437", "CP437" });
 		else
 			charset = Charset.forName(encoding);
 
