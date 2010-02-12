@@ -1778,7 +1778,10 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 if (isWide) {
                   if (C >= columns - 1) {
                     C = 0;
-                    R++;
+                    if (R == getBottomMargin() || R == rows - 1)
+                      insertLine(R, 1, SCROLL_UP);
+	                else
+	                  R++;
                   }
                   insertChar(C++, R, c, attributes | FULLWIDTH);
                   insertChar(C, R, ' ', attributes | FULLWIDTH);
@@ -1788,7 +1791,10 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 if (isWide) {
                   if (C >= columns - 1) {
                     C = 0;
-                    R++;
+                    if (R == getBottomMargin() || R == rows - 1)
+                      insertLine(R, 1, SCROLL_UP);
+                    else
+                      R++;
                   }
                   putChar(C++, R, c, attributes | FULLWIDTH);
                   putChar(C, R, ' ', attributes | FULLWIDTH);

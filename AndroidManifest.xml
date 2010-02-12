@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.connectbot"
 	android:versionName="1.7-dev"
-	android:versionCode="255">
+	android:versionCode="256">
 
 	<application
 		android:icon="@drawable/icon"
