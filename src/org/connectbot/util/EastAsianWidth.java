@@ -17,12 +17,15 @@
 
 package org.connectbot.util;
 
+import android.util.Log;
+
 /**
  * @author Kenny Root
  *
  */
 public class EastAsianWidth {
-	public static boolean available = false;
+	public static boolean useJNI = false;
+	private static final String TAG = "ConnectBot.EastAsianWidth";
 
 	/**
 	 * @param charArray
@@ -37,7 +40,15 @@ public class EastAsianWidth {
 	static {
 		try {
 			System.loadLibrary("org_connectbot_util_EastAsianWidth");
-			available = true;
+
+			char[] testInput = {(char)0x4EBA};
+			byte[] testResult = new byte[1];
+			measure(testInput, 0, 1, testResult, true);
+
+			if (testResult[0] == 1)
+				useJNI = true;
+			else
+				Log.d(TAG, "EastAsianWidth JNI measuring not available");
 		} catch (Exception e) {
 			// Failure
 		} catch (UnsatisfiedLinkError e1) {
