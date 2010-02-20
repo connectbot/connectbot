@@ -1978,7 +1978,8 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             R = Sr;
             gl = Sgl;
             gr = Sgr;
-            for (int i = 0; i < 4; i++) gx[i] = Sgx[i];
+            if (Sgx != null)
+              for (int i = 0; i < 4; i++) gx[i] = Sgx[i];
             attributes = Sa;
             if (debug > 1)
               debug("ESC 8");
