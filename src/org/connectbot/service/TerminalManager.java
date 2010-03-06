@@ -191,7 +191,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	/**
 	 * Open a new SSH session using the given parameters.
 	 */
-	private void openConnection(HostBean host) throws IllegalArgumentException, IOException {
+	private TerminalBridge openConnection(HostBean host) throws IllegalArgumentException, IOException {
 		// throw exception if terminal already open
 		if (findBridge(host) != null) {
 			throw new IllegalArgumentException("Connection already open for that nickname");
@@ -213,6 +213,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		// also update database with new connected time
 		touchHost(host);
+
+		return bridge;
 	}
 
 	public String getEmulation() {
@@ -244,13 +246,13 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 * Open a new connection by reading parameters from the given URI. Follows
 	 * format specified by an individual transport.
 	 */
-	public void openConnection(Uri uri) throws Exception {
+	public TerminalBridge openConnection(Uri uri) throws Exception {
 		HostBean host = TransportFactory.findHost(hostdb, uri);
 
 		if (host == null)
 			host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
 
-		openConnection(host);
+		return openConnection(host);
 	}
 
 	/**
@@ -570,9 +572,32 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		return resizeAllowed;
 	}
 
-	public class KeyHolder {
+	public static class KeyHolder {
 		public PubkeyBean bean;
 		public Object trileadKey;
 		public byte[] openSSHPubkey;
+	}
+
+	/**
+	 * @param requestedNickname
+	 * @return TerminalBridge that matches nickname.
+	 */
+	public TerminalBridge getBridgeByName(final String requestedNickname) {
+		if (requestedNickname == null) {
+			return null;
+		}
+
+		for (final TerminalBridge bridge : bridges) {
+			final String nick = bridge.host.getNickname();
+			if (nick == null) {
+				continue;
+			}
+
+			if (nick.equals(requestedNickname)) {
+				return bridge;
+			}
+		}
+
+		return null;
 	}
 }

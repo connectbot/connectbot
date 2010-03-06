@@ -141,27 +141,17 @@ public class ConsoleActivity extends Activity {
 
 			// clear out any existing bridges and record requested index
 			flip.removeAllViews();
-			String requestedNickname = (requested != null) ? requested.getFragment() : null;
+
+			final String requestedNickname = (requested != null) ? requested.getFragment() : null;
 			int requestedIndex = 0;
 
-			// first check if we need to create a new session for requested
-			boolean found = false;
-			for (TerminalBridge bridge : bound.bridges) {
-				String nick = bridge.host.getNickname();
-				if (nick == null)
-					continue;
-
-				if (nick.equals(requestedNickname)) {
-					found = true;
-					break;
-				}
-			}
+			TerminalBridge requestedBridge = bound.getBridgeByName(requestedNickname);
 
 			// If we didn't find the requested connection, try opening it
-			if (!found) {
+			if (requestedNickname != null && requestedBridge == null) {
 				try {
 					Log.d(TAG, String.format("We couldnt find an existing bridge with URI=%s (nickname=%s), so creating one now", requested.toString(), requestedNickname));
-					bound.openConnection(requested);
+					requestedBridge = bound.openConnection(requested);
 				} catch(Exception e) {
 					Log.e(TAG, "Problem while trying to create new requested bridge from URI", e);
 				}
@@ -170,40 +160,14 @@ public class ConsoleActivity extends Activity {
 			// create views for all bridges on this service
 			for (TerminalBridge bridge : bound.bridges) {
 
-				// let them know about our prompt handler services
-				bridge.promptHelper.setHandler(promptHandler);
-				bridge.refreshKeymode();
-
-				// inflate each terminal view
-				RelativeLayout view = (RelativeLayout)inflater.inflate(R.layout.item_terminal, flip, false);
-
-				// set the terminal overlay text
-				TextView overlay = (TextView)view.findViewById(R.id.terminal_overlay);
-				overlay.setText(bridge.host.getNickname());
-
-				// and add our terminal view control, using index to place behind overlay
-				TerminalView terminal = new TerminalView(ConsoleActivity.this, bridge);
-				terminal.setId(R.id.console_flip);
-				view.addView(terminal, 0);
-
-				// finally attach to the flipper
-				flip.addView(view);
+				final int currentIndex = addNewTerminalView(bridge);
 
 				// check to see if this bridge was requested
-				if (bridge.host.getNickname().equals(requestedNickname))
-					requestedIndex = flip.getChildCount() - 1;
+				if (bridge == requestedBridge)
+					requestedIndex = currentIndex;
 			}
 
-			try {
-				// show the requested bridge if found, also fade out overlay
-				flip.setDisplayedChild(requestedIndex);
-				flip.getCurrentView().findViewById(R.id.terminal_overlay).startAnimation(fade_out_delayed);
-			} catch (NullPointerException npe) {
-				Log.d(TAG, "View went away when we were about to display it", npe);
-			}
-
-			updatePromptVisible();
-			updateEmptyVisible();
+			setDisplayedTerminal(requestedIndex);
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
@@ -868,6 +832,54 @@ public class ConsoleActivity extends Activity {
 			bound.setResizeAllowed(true);
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onNewIntent(android.content.Intent)
+	 */
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+
+		Log.d(TAG, "onNewIntent called");
+
+		requested = intent.getData();
+
+		if (requested == null) {
+			Log.e(TAG, "Got null intent data in onNewIntent()");
+			return;
+		}
+
+		if (bound == null) {
+			Log.e(TAG, "We're not bound in onNewIntent()");
+			return;
+		}
+
+		TerminalBridge requestedBridge = bound.getBridgeByName(requested.getFragment());
+		int requestedIndex = 0;
+		if (requestedBridge == null) {
+			// If we didn't find the requested connection, try opening it
+
+			try {
+				Log.d(TAG, String.format("We couldnt find an existing bridge with URI=%s (nickname=%s),"+
+						"so creating one now", requested.toString(), requested.getFragment()));
+				requestedBridge = bound.openConnection(requested);
+			} catch(Exception e) {
+				Log.e(TAG, "Problem while trying to create new requested bridge from URI", e);
+			}
+
+			requestedIndex = addNewTerminalView(requestedBridge);
+		} else {
+			for (int i = 0; i < flip.getChildCount(); i++) {
+				TerminalView tv = (TerminalView) flip.getChildAt(i);
+				if (tv.bridge == requestedBridge) {
+					requestedIndex = i;
+					break;
+				}
+			}
+		}
+
+		setDisplayedTerminal(requestedIndex);
+	}
+
 	@Override
 	public void onStop() {
 		super.onStop();
@@ -1040,5 +1052,53 @@ public class ConsoleActivity extends Activity {
 			else
 				bound.setResizeAllowed(true);
 		}
+	}
+
+	/**
+	 * Adds a new TerminalBridge to the current set of views in our ViewFlipper.
+	 *
+	 * @param bridge TerminalBridge to add to our ViewFlipper
+	 * @return the child index of the new view in the ViewFlipper
+	 */
+	private int addNewTerminalView(TerminalBridge bridge) {
+		// let them know about our prompt handler services
+		bridge.promptHelper.setHandler(promptHandler);
+		bridge.refreshKeymode();
+
+		// inflate each terminal view
+		RelativeLayout view = (RelativeLayout)inflater.inflate(R.layout.item_terminal, flip, false);
+
+		// set the terminal overlay text
+		TextView overlay = (TextView)view.findViewById(R.id.terminal_overlay);
+		overlay.setText(bridge.host.getNickname());
+
+		// and add our terminal view control, using index to place behind overlay
+		TerminalView terminal = new TerminalView(ConsoleActivity.this, bridge);
+		terminal.setId(R.id.console_flip);
+		view.addView(terminal, 0);
+
+		// finally attach to the flipper
+		flip.addView(view);
+
+		return flip.getChildCount() - 1;
+	}
+
+	/**
+	 * Displays the child in the ViewFlipper at the requestedIndex and updates the prompts.
+	 *
+	 * @param requestedIndex the index of the terminal view to display
+	 */
+	private void setDisplayedTerminal(int requestedIndex) {
+		try {
+			// show the requested bridge if found, also fade out overlay
+			flip.setDisplayedChild(requestedIndex);
+			flip.getCurrentView().findViewById(R.id.terminal_overlay)
+					.startAnimation(fade_out_delayed);
+		} catch (NullPointerException npe) {
+			Log.d(TAG, "View went away when we were about to display it", npe);
+		}
+
+		updatePromptVisible();
+		updateEmptyVisible();
 	}
 }
