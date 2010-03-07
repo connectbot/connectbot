@@ -90,6 +90,10 @@ public class ConsoleActivity extends Activity {
 	private static final float MAX_CLICK_DISTANCE = 25f;
 	private static final int KEYBOARD_DISPLAY_TIME = 1250;
 
+	// Direction to shift the ViewFlipper
+	private static final int SHIFT_LEFT = 0;
+	private static final int SHIFT_RIGHT = 1;
+
 	protected ViewFlipper flip = null;
 	protected TerminalManager bound = null;
 	protected LayoutInflater inflater = null;
@@ -207,36 +211,39 @@ public class ConsoleActivity extends Activity {
 	 * @param bridge
 	 */
 	private void closeBridge(TerminalBridge bridge) {
-		for(int i = 0; i < flip.getChildCount(); i++) {
-			View child = flip.getChildAt(i).findViewById(R.id.console_flip);
+		synchronized (flip) {
+			for(int i = 0; i < flip.getChildCount(); i++) {
+				View child = flip.getChildAt(i).findViewById(R.id.console_flip);
 
-			if (!(child instanceof TerminalView)) continue;
+				if (!(child instanceof TerminalView)) continue;
 
-			TerminalView terminal = (TerminalView) child;
+				TerminalView terminal = (TerminalView) child;
 
-			if (terminal.bridge.equals(bridge)) {
-				// we've found the terminal to remove
-				// shift something into its place if currently visible
-				if(flip.getDisplayedChild() == i)
-					shiftLeft();
-				flip.removeViewAt(i);
+				if (terminal.bridge.equals(bridge)) {
+					// we've found the terminal to remove
+					// shift something into its place if currently visible
+					if (flip.getDisplayedChild() == i) {
+						shiftCurrentTerminal(SHIFT_LEFT);
+					}
+					flip.removeViewAt(i);
 
-				/* TODO Remove this workaround when ViewFlipper is fixed to listen
-				 * to view removals. Android Issue 1784
-				 */
-				final int numChildren = flip.getChildCount();
-				if (flip.getDisplayedChild() >= numChildren &&
-						numChildren > 0)
-					flip.setDisplayedChild(numChildren - 1);
+					/* TODO Remove this workaround when ViewFlipper is fixed to listen
+					 * to view removals. Android Issue 1784
+					 */
+					final int numChildren = flip.getChildCount();
+					if (flip.getDisplayedChild() >= numChildren &&
+							numChildren > 0)
+						flip.setDisplayedChild(numChildren - 1);
 
-				updateEmptyVisible();
-				break;
+					updateEmptyVisible();
+					break;
+				}
 			}
-		}
 
-		// If we just closed the last bridge, go back to the previous activity.
-		if (flip.getChildCount() == 0) {
-			finish();
+			// If we just closed the last bridge, go back to the previous activity.
+			if (flip.getChildCount() == 0) {
+				finish();
+			}
 		}
 	}
 
@@ -393,20 +400,20 @@ public class ConsoleActivity extends Activity {
 			@Override
 			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
-				float distx = e2.getRawX() - e1.getRawX();
-				float disty = e2.getRawY() - e1.getRawY();
-				int goalwidth = flip.getWidth() / 2;
+				final float distx = e2.getRawX() - e1.getRawX();
+				final float disty = e2.getRawY() - e1.getRawY();
+				final int goalwidth = flip.getWidth() / 2;
 
 				// need to slide across half of display to trigger console change
 				// make sure user kept a steady hand horizontally
-				if(Math.abs(disty) < 100) {
-					if(distx > goalwidth) {
-						shiftRight();
+				if (Math.abs(disty) < (flip.getHeight() / 4)) {
+					if (distx > goalwidth) {
+						shiftCurrentTerminal(SHIFT_RIGHT);
 						return true;
 					}
 
-					if(distx < -goalwidth) {
-						shiftLeft();
+					if (distx < -goalwidth) {
+						shiftCurrentTerminal(SHIFT_LEFT);
 						return true;
 					}
 
@@ -427,12 +434,12 @@ public class ConsoleActivity extends Activity {
 					return false;
 
 				// if releasing then reset total scroll
-				if(e2.getAction() == MotionEvent.ACTION_UP) {
+				if (e2.getAction() == MotionEvent.ACTION_UP) {
 					totalY = 0;
 				}
 
 				// activate consider if within x tolerance
-				if(Math.abs(e1.getX() - e2.getX()) < ViewConfiguration.getTouchSlop() * 4) {
+				if (Math.abs(e1.getX() - e2.getX()) < ViewConfiguration.getTouchSlop() * 4) {
 
 					View flip = findCurrentView(R.id.console_flip);
 					if(flip == null) return false;
@@ -441,11 +448,11 @@ public class ConsoleActivity extends Activity {
 					// estimate how many rows we have scrolled through
 					// accumulate distance that doesn't trigger immediate scroll
 					totalY += distanceY;
-					int moved = (int)(totalY / terminal.bridge.charHeight);
+					final int moved = (int)(totalY / terminal.bridge.charHeight);
 
 					// consume as scrollback only if towards right half of screen
-					if (e2.getX() > flip.getWidth() / 2.0) {
-						if(moved != 0) {
+					if (e2.getX() > flip.getWidth() / 2) {
+						if (moved != 0) {
 							int base = terminal.bridge.buffer.getWindowBase();
 							terminal.bridge.buffer.setWindowBase(base + moved);
 							totalY = 0;
@@ -453,12 +460,12 @@ public class ConsoleActivity extends Activity {
 						}
 					} else {
 						// otherwise consume as pgup/pgdown for every 5 lines
-						if(moved > 5) {
+						if (moved > 5) {
 							((vt320)terminal.bridge.buffer).keyPressed(vt320.KEY_PAGE_DOWN, ' ', 0);
 							terminal.bridge.tryKeyVibrate();
 							totalY = 0;
 							return true;
-						} else if(moved < -5) {
+						} else if (moved < -5) {
 							((vt320)terminal.bridge.buffer).keyPressed(vt320.KEY_PAGE_UP, ' ', 0);
 							terminal.bridge.tryKeyVibrate();
 							totalY = 0;
@@ -868,11 +875,13 @@ public class ConsoleActivity extends Activity {
 
 			requestedIndex = addNewTerminalView(requestedBridge);
 		} else {
-			for (int i = 0; i < flip.getChildCount(); i++) {
-				TerminalView tv = (TerminalView) flip.getChildAt(i);
-				if (tv.bridge == requestedBridge) {
-					requestedIndex = i;
-					break;
+			synchronized (flip) {
+				for (int i = 0; i < flip.getChildCount(); i++) {
+					TerminalView tv = (TerminalView) flip.getChildAt(i);
+					if (tv.bridge == requestedBridge) {
+						requestedIndex = i;
+						break;
+					}
 				}
 			}
 		}
@@ -891,60 +900,40 @@ public class ConsoleActivity extends Activity {
 			wakelock.release();
 	}
 
-	protected void shiftLeft() {
+	protected void shiftCurrentTerminal(final int direction) {
 		View overlay;
-		boolean shouldAnimate = flip.getChildCount() > 1;
+		synchronized (flip) {
+			boolean shouldAnimate = flip.getChildCount() > 1;
 
-		// Only show animation if there is something else to go to.
-		if (shouldAnimate) {
-			// keep current overlay from popping up again
-			overlay = findCurrentView(R.id.terminal_overlay);
-			if (overlay != null)
-				overlay.startAnimation(fade_stay_hidden);
+			// Only show animation if there is something else to go to.
+			if (shouldAnimate) {
+				// keep current overlay from popping up again
+				overlay = findCurrentView(R.id.terminal_overlay);
+				if (overlay != null)
+					overlay.startAnimation(fade_stay_hidden);
 
-			flip.setInAnimation(slide_left_in);
-			flip.setOutAnimation(slide_left_out);
-			flip.showNext();
+				if (direction == SHIFT_LEFT) {
+					flip.setInAnimation(slide_left_in);
+					flip.setOutAnimation(slide_left_out);
+					flip.showNext();
+				} else if (direction == SHIFT_RIGHT) {
+					flip.setInAnimation(slide_right_in);
+					flip.setOutAnimation(slide_right_out);
+					flip.showPrevious();
+				}
+			}
+
+			ConsoleActivity.this.updateDefault();
+
+			if (shouldAnimate) {
+				// show overlay on new slide and start fade
+				overlay = findCurrentView(R.id.terminal_overlay);
+				if (overlay != null)
+					overlay.startAnimation(fade_out_delayed);
+			}
+
+			updatePromptVisible();
 		}
-
-		ConsoleActivity.this.updateDefault();
-
-		if (shouldAnimate) {
-			// show overlay on new slide and start fade
-			overlay = findCurrentView(R.id.terminal_overlay);
-			if (overlay != null)
-				overlay.startAnimation(fade_out_delayed);
-		}
-
-		updatePromptVisible();
-	}
-
-	protected void shiftRight() {
-		View overlay;
-		boolean shouldAnimate = flip.getChildCount() > 1;
-
-		// Only show animation if there is something else to go to.
-		if (shouldAnimate) {
-			// keep current overlay from popping up again
-			overlay = findCurrentView(R.id.terminal_overlay);
-			if (overlay != null)
-				overlay.startAnimation(fade_stay_hidden);
-
-			flip.setInAnimation(slide_right_in);
-			flip.setOutAnimation(slide_right_out);
-			flip.showPrevious();
-		}
-
-		ConsoleActivity.this.updateDefault();
-
-		if (shouldAnimate) {
-			// show overlay on new slide and start fade
-			overlay = findCurrentView(R.id.terminal_overlay);
-			if (overlay != null)
-				overlay.startAnimation(fade_out_delayed);
-		}
-
-		updatePromptVisible();
 	}
 
 	/**
@@ -1077,10 +1066,11 @@ public class ConsoleActivity extends Activity {
 		terminal.setId(R.id.console_flip);
 		view.addView(terminal, 0);
 
-		// finally attach to the flipper
-		flip.addView(view);
-
-		return flip.getChildCount() - 1;
+		synchronized (flip) {
+			// finally attach to the flipper
+			flip.addView(view);
+			return flip.getChildCount() - 1;
+		}
 	}
 
 	/**
@@ -1089,16 +1079,18 @@ public class ConsoleActivity extends Activity {
 	 * @param requestedIndex the index of the terminal view to display
 	 */
 	private void setDisplayedTerminal(int requestedIndex) {
-		try {
-			// show the requested bridge if found, also fade out overlay
-			flip.setDisplayedChild(requestedIndex);
-			flip.getCurrentView().findViewById(R.id.terminal_overlay)
-					.startAnimation(fade_out_delayed);
-		} catch (NullPointerException npe) {
-			Log.d(TAG, "View went away when we were about to display it", npe);
-		}
+		synchronized (flip) {
+			try {
+				// show the requested bridge if found, also fade out overlay
+				flip.setDisplayedChild(requestedIndex);
+				flip.getCurrentView().findViewById(R.id.terminal_overlay)
+						.startAnimation(fade_out_delayed);
+			} catch (NullPointerException npe) {
+				Log.d(TAG, "View went away when we were about to display it", npe);
+			}
 
-		updatePromptVisible();
-		updateEmptyVisible();
+			updatePromptVisible();
+			updateEmptyVisible();
+		}
 	}
 }
