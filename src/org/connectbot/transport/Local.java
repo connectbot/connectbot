@@ -208,4 +208,12 @@ public class Local extends AbsTransport {
 	public static String getFormatHint(Context context) {
 		return context.getString(R.string.hostpref_nickname_title);
 	}
+
+	/* (non-Javadoc)
+	 * @see org.connectbot.transport.AbsTransport#usesNetwork()
+	 */
+	@Override
+	public boolean usesNetwork() {
+		return false;
+	}
 }

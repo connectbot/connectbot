@@ -944,4 +944,12 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		agentLockPassphrase = lockPassphrase;
 		return true;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.connectbot.transport.AbsTransport#usesNetwork()
+	 */
+	@Override
+	public boolean usesNetwork() {
+		return true;
+	}
 }

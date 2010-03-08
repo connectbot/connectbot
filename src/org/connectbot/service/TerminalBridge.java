@@ -455,8 +455,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			if (disconnectListener != null)
 				disconnectListener.onDisconnected(TerminalBridge.this);
 		} else {
+			{
+				final String line = manager.res.getString(R.string.alert_disconnect_msg);
+				((vt320) buffer).putString("\r\n" + line + "\r\n");
+			}
 			if (host.getStayConnected()) {
-				startConnection();
+				manager.requestReconnect(this);
 				return;
 			}
 			Thread disconnectPromptThread = new Thread(new Runnable() {
@@ -1347,5 +1351,12 @@ public class TerminalBridge implements VDUDisplay, OnKeyListener {
 			urls.add(urlMatcher.group());
 
 		return urls;
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isUsingNetwork() {
+		return transport.usesNetwork();
 	}
 }

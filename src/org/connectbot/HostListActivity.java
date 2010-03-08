@@ -330,7 +330,7 @@ public class HostListActivity extends ListActivity {
 
 		// edit, disconnect, delete
 		MenuItem connect = menu.add(R.string.list_host_disconnect);
-		final TerminalBridge bridge = bound.findBridge(host);
+		final TerminalBridge bridge = bound.getConnectedBridge(host);
 		connect.setEnabled((bridge != null));
 		connect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
@@ -473,7 +473,7 @@ public class HostListActivity extends ListActivity {
 			if (this.manager == null)
 				return STATE_UNKNOWN;
 
-			if (manager.findBridge(host) != null)
+			if (manager.getConnectedBridge(host) != null)
 				return STATE_CONNECTED;
 
 			if (manager.disconnected.contains(host))

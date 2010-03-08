@@ -246,4 +246,9 @@ public abstract class AbsTransport {
 	public static String getFormatHint(Context context) {
 		return "???";
 	}
+
+	/**
+	 * @return
+	 */
+	public abstract boolean usesNetwork();
 }

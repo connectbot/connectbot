@@ -149,7 +149,7 @@ public class ConsoleActivity extends Activity {
 			final String requestedNickname = (requested != null) ? requested.getFragment() : null;
 			int requestedIndex = 0;
 
-			TerminalBridge requestedBridge = bound.getBridgeByName(requestedNickname);
+			TerminalBridge requestedBridge = bound.getConnectedBridge(requestedNickname);
 
 			// If we didn't find the requested connection, try opening it
 			if (requestedNickname != null && requestedBridge == null) {
@@ -176,8 +176,10 @@ public class ConsoleActivity extends Activity {
 
 		public void onServiceDisconnected(ComponentName className) {
 			// tell each bridge to forget about our prompt handler
-			for(TerminalBridge bridge : bound.bridges)
-				bridge.promptHelper.setHandler(null);
+			synchronized (bound.bridges) {
+				for(TerminalBridge bridge : bound.bridges)
+					bridge.promptHelper.setHandler(null);
+			}
 
 			flip.removeAllViews();
 			updateEmptyVisible();
@@ -852,7 +854,7 @@ public class ConsoleActivity extends Activity {
 			return;
 		}
 
-		TerminalBridge requestedBridge = bound.getBridgeByName(requested.getFragment());
+		TerminalBridge requestedBridge = bound.getConnectedBridge(requested.getFragment());
 		int requestedIndex = 0;
 
 		synchronized (flip) {
