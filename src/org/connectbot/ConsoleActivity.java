@@ -210,34 +210,26 @@ public class ConsoleActivity extends Activity {
 	/**
 	 * @param bridge
 	 */
-	private void closeBridge(TerminalBridge bridge) {
+	private void closeBridge(final TerminalBridge bridge) {
 		synchronized (flip) {
-			for(int i = 0; i < flip.getChildCount(); i++) {
-				View child = flip.getChildAt(i).findViewById(R.id.console_flip);
+			final int flipIndex = getFlipIndex(bridge);
 
-				if (!(child instanceof TerminalView)) continue;
-
-				TerminalView terminal = (TerminalView) child;
-
-				if (terminal.bridge.equals(bridge)) {
-					// we've found the terminal to remove
-					// shift something into its place if currently visible
-					if (flip.getDisplayedChild() == i) {
-						shiftCurrentTerminal(SHIFT_LEFT);
-					}
-					flip.removeViewAt(i);
-
-					/* TODO Remove this workaround when ViewFlipper is fixed to listen
-					 * to view removals. Android Issue 1784
-					 */
-					final int numChildren = flip.getChildCount();
-					if (flip.getDisplayedChild() >= numChildren &&
-							numChildren > 0)
-						flip.setDisplayedChild(numChildren - 1);
-
-					updateEmptyVisible();
-					break;
+			if (flipIndex >= 0) {
+				if (flip.getDisplayedChild() == flipIndex) {
+					shiftCurrentTerminal(SHIFT_LEFT);
 				}
+				flip.removeViewAt(flipIndex);
+
+				/* TODO Remove this workaround when ViewFlipper is fixed to listen
+				 * to view removals. Android Issue 1784
+				 */
+				final int numChildren = flip.getChildCount();
+				if (flip.getDisplayedChild() >= numChildren &&
+						numChildren > 0) {
+					flip.setDisplayedChild(numChildren - 1);
+				}
+
+				updateEmptyVisible();
 			}
 
 			// If we just closed the last bridge, go back to the previous activity.
@@ -862,31 +854,29 @@ public class ConsoleActivity extends Activity {
 
 		TerminalBridge requestedBridge = bound.getBridgeByName(requested.getFragment());
 		int requestedIndex = 0;
-		if (requestedBridge == null) {
-			// If we didn't find the requested connection, try opening it
 
-			try {
-				Log.d(TAG, String.format("We couldnt find an existing bridge with URI=%s (nickname=%s),"+
-						"so creating one now", requested.toString(), requested.getFragment()));
-				requestedBridge = bound.openConnection(requested);
-			} catch(Exception e) {
-				Log.e(TAG, "Problem while trying to create new requested bridge from URI", e);
-			}
+		synchronized (flip) {
+			if (requestedBridge == null) {
+				// If we didn't find the requested connection, try opening it
 
-			requestedIndex = addNewTerminalView(requestedBridge);
-		} else {
-			synchronized (flip) {
-				for (int i = 0; i < flip.getChildCount(); i++) {
-					TerminalView tv = (TerminalView) flip.getChildAt(i);
-					if (tv.bridge == requestedBridge) {
-						requestedIndex = i;
-						break;
-					}
+				try {
+					Log.d(TAG, String.format("We couldnt find an existing bridge with URI=%s (nickname=%s),"+
+							"so creating one now", requested.toString(), requested.getFragment()));
+					requestedBridge = bound.openConnection(requested);
+				} catch(Exception e) {
+					Log.e(TAG, "Problem while trying to create new requested bridge from URI", e);
+				}
+
+				requestedIndex = addNewTerminalView(requestedBridge);
+			} else {
+				final int flipIndex = getFlipIndex(requestedBridge);
+				if (flipIndex > requestedIndex) {
+					requestedIndex = flipIndex;
 				}
 			}
-		}
 
-		setDisplayedTerminal(requestedIndex);
+			setDisplayedTerminal(requestedIndex);
+		}
 	}
 
 	@Override
@@ -1071,6 +1061,28 @@ public class ConsoleActivity extends Activity {
 			flip.addView(view);
 			return flip.getChildCount() - 1;
 		}
+	}
+
+	private int getFlipIndex(TerminalBridge bridge) {
+		synchronized (flip) {
+			final int children = flip.getChildCount();
+			for (int i = 0; i < children; i++) {
+				final View view = flip.getChildAt(i).findViewById(R.id.console_flip);
+
+				if (view == null || !(view instanceof TerminalView)) {
+					// How did that happen?
+					continue;
+				}
+
+				final TerminalView tv = (TerminalView) view;
+
+				if (tv.bridge == bridge) {
+					return i;
+				}
+			}
+		}
+
+		return -1;
 	}
 
 	/**
