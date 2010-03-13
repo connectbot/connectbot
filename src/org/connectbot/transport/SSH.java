@@ -299,7 +299,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			Log.d(TAG, String.format("Found unlocked key '%s' already in-memory", pubkey.getNickname()));
 
 			if (pubkey.isConfirmUse()) {
-				if (promptForPubkeyUse(pubkey.getNickname()))
+				if (!promptForPubkeyUse(pubkey.getNickname()))
 					return false;
 			}
 
