@@ -20,6 +20,7 @@ package org.connectbot;
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.FontSizeChangedListener;
 import org.connectbot.service.TerminalBridge;
+import org.connectbot.service.TerminalKeyListener;
 
 import android.app.Activity;
 import android.content.Context;
@@ -110,7 +111,7 @@ public class TerminalView extends View implements FontSizeChangedListener {
 		bridge.addFontSizeChangedListener(this);
 
 		// connect our view up to the bridge
-		setOnKeyListener(bridge);
+		setOnKeyListener(bridge.getKeyHandler());
 	}
 
 	public void destroy() {
@@ -149,14 +150,18 @@ public class TerminalView extends View implements FontSizeChangedListener {
 			// also draw cursor if visible
 			if (bridge.buffer.isCursorVisible()) {
 				int cursorColumn = bridge.buffer.getCursorColumn();
-				int columns = bridge.buffer.getColumns();
+				final int cursorRow = bridge.buffer.getCursorRow();
+
+				final int columns = bridge.buffer.getColumns();
 
 				if (cursorColumn == columns)
 					cursorColumn = columns - 1;
 
+				if (cursorColumn < 0 || cursorRow < 0)
+					return;
+
 				int currentAttribute = bridge.buffer.getAttributes(
-						cursorColumn,
-						bridge.buffer.getCursorRow());
+						cursorColumn, cursorRow);
 				boolean onWideCharacter = (currentAttribute & VDUBuffer.FULLWIDTH) != 0;
 
 				int x = cursorColumn * bridge.charWidth;
@@ -176,21 +181,21 @@ public class TerminalView extends View implements FontSizeChangedListener {
 				// Make sure we scale our decorations to the correct size.
 				canvas.concat(scaleMatrix);
 
-				int metaState = bridge.getMetaState();
+				int metaState = bridge.getKeyHandler().getMetaState();
 
-				if ((metaState & TerminalBridge.META_SHIFT_ON) != 0)
+				if ((metaState & TerminalKeyListener.META_SHIFT_ON) != 0)
 					canvas.drawPath(shiftCursor, cursorStrokePaint);
-				else if ((metaState & TerminalBridge.META_SHIFT_LOCK) != 0)
+				else if ((metaState & TerminalKeyListener.META_SHIFT_LOCK) != 0)
 					canvas.drawPath(shiftCursor, cursorPaint);
 
-				if ((metaState & TerminalBridge.META_ALT_ON) != 0)
+				if ((metaState & TerminalKeyListener.META_ALT_ON) != 0)
 					canvas.drawPath(altCursor, cursorStrokePaint);
-				else if ((metaState & TerminalBridge.META_ALT_LOCK) != 0)
+				else if ((metaState & TerminalKeyListener.META_ALT_LOCK) != 0)
 					canvas.drawPath(altCursor, cursorPaint);
 
-				if ((metaState & TerminalBridge.META_CTRL_ON) != 0)
+				if ((metaState & TerminalKeyListener.META_CTRL_ON) != 0)
 					canvas.drawPath(ctrlCursor, cursorStrokePaint);
-				else if ((metaState & TerminalBridge.META_CTRL_LOCK) != 0)
+				else if ((metaState & TerminalKeyListener.META_CTRL_LOCK) != 0)
 					canvas.drawPath(ctrlCursor, cursorPaint);
 
 				// Restore previous clip region

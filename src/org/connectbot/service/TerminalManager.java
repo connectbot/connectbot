@@ -45,6 +45,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.AssetFileDescriptor;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -115,6 +116,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	protected List<WeakReference<TerminalBridge>> mPendingReconnect
 			= new LinkedList<WeakReference<TerminalBridge>>();
 
+	public boolean hardKeyboardHidden;
+
 	@Override
 	public void onCreate() {
 		Log.i(TAG, "Starting background service");
@@ -151,6 +154,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		wantBellVibration = prefs.getBoolean(PreferenceConstants.BELL_VIBRATE, true);
 		enableMediaPlayer();
+
+		hardKeyboardHidden = (res.getConfiguration().hardKeyboardHidden ==
+			Configuration.HARDKEYBOARDHIDDEN_YES);
 
 		final boolean lockingWifi = prefs.getBoolean(PreferenceConstants.WIFI_LOCK, true);
 
@@ -257,10 +263,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		} catch(Exception e) {
 		}
 		return scrollback;
-	}
-
-	public String getKeyMode() {
-		return prefs.getString(PreferenceConstants.KEYMODE, PreferenceConstants.KEYMODE_RIGHT); // "Use right-side keys"
 	}
 
 	/**

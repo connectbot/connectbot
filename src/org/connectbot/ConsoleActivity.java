@@ -1032,6 +1032,8 @@ public class ConsoleActivity extends Activity {
 				bound.setResizeAllowed(false);
 			else
 				bound.setResizeAllowed(true);
+
+			bound.hardKeyboardHidden = (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES);
 		}
 	}
 
@@ -1044,7 +1046,6 @@ public class ConsoleActivity extends Activity {
 	private int addNewTerminalView(TerminalBridge bridge) {
 		// let them know about our prompt handler services
 		bridge.promptHelper.setHandler(promptHandler);
-		bridge.refreshKeymode();
 
 		// inflate each terminal view
 		RelativeLayout view = (RelativeLayout)inflater.inflate(R.layout.item_terminal, flip, false);

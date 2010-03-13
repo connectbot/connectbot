@@ -129,4 +129,10 @@ public class NullTransport extends AbsTransport {
 
 	}
 
+	@Override
+	public boolean usesNetwork() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
