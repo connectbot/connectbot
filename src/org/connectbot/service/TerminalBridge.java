@@ -151,7 +151,7 @@ public class TerminalBridge implements VDUDisplay {
 
 		transport = null;
 
-		keyListener = new TerminalKeyListener(manager, this, buffer, host);
+		keyListener = new TerminalKeyListener(manager, this, buffer, null);
 	}
 
 	/**
@@ -242,7 +242,7 @@ public class TerminalBridge implements VDUDisplay {
 
 		selectionArea = new SelectionArea();
 
-		keyListener = new TerminalKeyListener(manager, this, buffer, host);
+		keyListener = new TerminalKeyListener(manager, this, buffer, host.getEncoding());
 	}
 
 	public PromptHelper getPromptHelper() {
@@ -307,6 +307,7 @@ public class TerminalBridge implements VDUDisplay {
 	public void setCharset(String encoding) {
 		if (relay != null)
 			relay.setCharset(encoding);
+		keyListener.setCharset(encoding);
 	}
 
 	/**

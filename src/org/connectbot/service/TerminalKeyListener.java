@@ -6,7 +6,6 @@ package org.connectbot.service;
 import java.io.IOException;
 
 import org.connectbot.TerminalView;
-import org.connectbot.bean.HostBean;
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.util.PreferenceConstants;
 
@@ -51,7 +50,6 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	private final TerminalManager manager;
 	private final TerminalBridge bridge;
 	private final VDUBuffer buffer;
-	private final HostBean host;
 
 	protected KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
 
@@ -64,16 +62,18 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	private boolean selectingForCopy = false;
 	private final SelectionArea selectionArea;
 
+	private String encoding;
+
 	private final SharedPreferences prefs;
 
 	public TerminalKeyListener(TerminalManager manager,
 			TerminalBridge bridge,
 			VDUBuffer buffer,
-			HostBean host) {
+			String encoding) {
 		this.manager = manager;
 		this.bridge = bridge;
 		this.buffer = buffer;
-		this.host = host;
+		this.encoding = encoding;
 
 		selectionArea = new SelectionArea();
 
@@ -202,14 +202,14 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				else
 					// TODO write encoding routine that doesn't allocate each time
 					bridge.transport.write(new String(Character.toChars(key))
-							.getBytes(host.getEncoding()));
+							.getBytes(encoding));
 
 				return true;
 			}
 
 			if (keyCode == KeyEvent.KEYCODE_UNKNOWN &&
 					event.getAction() == KeyEvent.ACTION_MULTIPLE) {
-				byte[] input = event.getCharacters().getBytes(host.getEncoding());
+				byte[] input = event.getCharacters().getBytes(encoding);
 				bridge.transport.write(input);
 				return true;
 			}
@@ -482,5 +482,9 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 	private void updateKeymode() {
 		keymode = prefs.getString(PreferenceConstants.KEYMODE, PreferenceConstants.KEYMODE_RIGHT);
+	}
+
+	public void setCharset(String encoding) {
+		this.encoding = encoding;
 	}
 }
