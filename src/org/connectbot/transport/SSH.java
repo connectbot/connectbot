@@ -342,10 +342,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 			Log.d(TAG, String.format("Unlocked key '%s'", pubkey.getNickname()));
 
-			// save this key in-memory if option enabled
-			if(manager.isSavingKeys()) {
-				manager.addKey(pubkey, trileadKey);
-			}
+			// save this key in memory
+			manager.addKey(pubkey, trileadKey);
 		}
 
 		return tryPublicKey(host.getUsername(), pubkey.getNickname(), trileadKey);

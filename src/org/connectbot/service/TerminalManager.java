@@ -110,6 +110,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	private boolean resizeAllowed = true;
 
+	private boolean savingKeys;
+
 	protected List<WeakReference<TerminalBridge>> mPendingReconnect
 			= new LinkedList<WeakReference<TerminalBridge>>();
 
@@ -153,6 +155,12 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		final boolean lockingWifi = prefs.getBoolean(PreferenceConstants.WIFI_LOCK, true);
 
 		connectivityManager = new ConnectivityReceiver(this, lockingWifi);
+
+		updateSavingKeys();
+	}
+
+	private void updateSavingKeys() {
+		savingKeys = prefs.getBoolean(PreferenceConstants.MEMKEYS, true);
 	}
 
 	@Override
@@ -251,10 +259,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		return scrollback;
 	}
 
-	public boolean isSavingKeys() {
-		return prefs.getBoolean(PreferenceConstants.MEMKEYS, true);
-	}
-
 	public String getKeyMode() {
 		return prefs.getString(PreferenceConstants.KEYMODE, PreferenceConstants.KEYMODE_RIGHT); // "Use right-side keys"
 	}
@@ -344,6 +348,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 
 	public void addKey(PubkeyBean pubkey, Object trileadKey) {
+		if (!savingKeys)
+			return;
+
 		removeKey(pubkey.getNickname());
 
 		byte[] sshPubKey = PubkeyUtils.extractOpenSSHPublic(trileadKey);
@@ -604,6 +611,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		} else if (PreferenceConstants.WIFI_LOCK.equals(key)) {
 			final boolean lockingWifi = prefs.getBoolean(PreferenceConstants.WIFI_LOCK, true);
 			connectivityManager.setWantWifiLock(lockingWifi);
+		} else if (PreferenceConstants.MEMKEYS.equals(key)) {
+			updateSavingKeys();
 		}
 	}
 
