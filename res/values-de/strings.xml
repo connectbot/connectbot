@@ -370,6 +370,8 @@
 	<string name="list_camera_ctrla">Strg+A</string>
 	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
 	<string name="list_camera_esc">Esc</string>
+	<!-- Selection to indicate pressing the Camera button should send "Esc+A". -->
+	<string name="list_camera_esc_a">Esc+A</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">Nichts</string>
 
@@ -450,7 +452,7 @@
 	<string name="menu_colors_reset">Zurücksetzen</string>
 
 	<!-- Displayed in the notification bar that connections are active -->
-	<string name="app_is_running">ConnectBot is running</string>
+	<string name="app_is_running">ConnectBot läuft</string>
 
 	<string name="color_red">rot</string>
 	<string name="color_green">grün</string>

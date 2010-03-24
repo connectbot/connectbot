@@ -370,6 +370,8 @@
 	<string name="list_camera_ctrla">Ctrl+A</string>
 	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
 	<string name="list_camera_esc">Esc</string>
+	<!-- Selection to indicate pressing the Camera button should send "Esc+A". -->
+	<string name="list_camera_esc_a">Esc+A</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">无</string>
 

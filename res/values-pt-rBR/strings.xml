@@ -131,12 +131,12 @@
 	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
 
 	<!-- The category title for terminal emulation preferences. -->
-	<string name="pref_emulation_category">Terminal emulation</string>
+	<string name="pref_emulation_category">Emulação de Terminal</string>
 
 	<!-- Name for the emulation terminal type preference. -->
-	<string name="pref_emulation_title">Emulation mode</string>
+	<string name="pref_emulation_title">Modo De Emulação</string>
 	<!-- Description of the emulation terminal type preference. -->
-	<string name="pref_emulation_summary">Terminal emulation mode to use for PTY connections</string>
+	<string name="pref_emulation_summary">Modo de emulação de terminal para usar em conexões PTY</string>
 
 	<!-- Name for the scrollback size preference -->
 	<string name="pref_scrollback_title">Scrollback size</string>
@@ -144,50 +144,50 @@
 	<string name="pref_scrollback_summary">Size of scrollback buffer to keep in memory for each console</string>
 
 	<!-- The category title for user interface preferences -->
-	<string name="pref_ui_category">User interface</string>
+	<string name="pref_ui_category">Interface do usuário</string>
 
 	<!-- Name for the rotation mode preference -->
-	<string name="pref_rotation_title">Rotation mode</string>
+	<string name="pref_rotation_title">Modo de Rotação</string>
 	<!-- Summary for the rotation mode preference -->
 	<string name="pref_rotation_summary">How to change rotation when keyboard popped in/out</string>
 
 	<!-- Name for the full screen preference -->
-	<string name="pref_fullscreen_title">Full screen</string>
+	<string name="pref_fullscreen_title">Tela cheia</string>
 	<!-- Summary for the full screen preference -->
 	<string name="pref_fullscreen_summary">Hide status bar while in console</string>
 
 	<!-- Name for the memorize keys preference -->
-	<string name="pref_memkeys_title">Remember keys in memory</string>
+	<string name="pref_memkeys_title">Lembrar as chaves na memória</string>
 	<!-- Summary for the memorize keys preference -->
 	<string name="pref_memkeys_summary">Keep unlocked keys in memory until backend service is terminated</string>
 
 	<!-- Name for the update check preference -->
-	<string name="pref_update_title">Update check</string>
+	<string name="pref_update_title">Verificar Atualização</string>
 	<!-- Summary for the update check preference -->
 	<string name="pref_update_summary">Set the maximum frequency to check for ConnectBot updates</string>
 
 	<!-- Name for the preference that forces the service to stay running in the background.-->
 	<string name="pref_conn_persist_title">Persist connections</string>
 	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+	<string name="pref_conn_persist_summary">Força as conexões para ficarem conectadas enquanto estão em segundo plano</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
-	<string name="pref_keymode_title">Directory shortcuts</string>
+	<string name="pref_keymode_title">Atalhos dos Diretórios</string>
 	<!-- Summary for the keyboard shortcuts preference -->
 	<string name="pref_keymode_summary">Select how to use Alt for \'/\' and Shift for Tab</string>
 
 	<!-- Name for the camera shortcut usage preference -->
-	<string name="pref_camera_title">Camera shortcut</string>
+	<string name="pref_camera_title">Atalho para Câmera</string>
 	<!-- Summary for the camera shortcut usage preference -->
 	<string name="pref_camera_summary">Select which shortcut to trigger when the camera button is pushed</string>
 
 	<!-- Name for the keep screen on preference -->
-	<string name="pref_keepalive_title">Keep screen awake</string>
+	<string name="pref_keepalive_title">Manter a tela ativa</string>
 	<!-- Summary for the camera shortcut usage preference -->
 	<string name="pref_keepalive_summary">Prevent the screen from turning off when working in a console</string>
 
 	<!-- Name for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_title">Keep Wi-Fi active</string>
+	<string name="pref_wifilock_title">Manter WI-FI ativo</string>
 	<!-- Summary for the Wi-Fi lock preference -->
 	<string name="pref_wifilock_summary">Prevent Wi-Fi from turning off when a session is active</string>
 
@@ -370,6 +370,8 @@
 	<string name="list_camera_ctrla">Ctrl+A</string>
 	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
 	<string name="list_camera_esc">Esc</string>
+	<!-- Selection to indicate pressing the Camera button should send "Esc+A". -->
+	<string name="list_camera_esc_a">Esc+A</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">None</string>
 
