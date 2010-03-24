@@ -20,6 +20,7 @@ package org.connectbot.service;
 import org.connectbot.ConsoleActivity;
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
+import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 
 import android.app.Notification;
@@ -29,6 +30,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 
 /**
  * @author Kenny Root
@@ -76,6 +78,19 @@ public abstract class ConnectionNotifier {
 		notification.setLatestEventInfo(context, res.getString(R.string.app_name), contentText, contentIntent);
 
 		notification.flags = Notification.FLAG_AUTO_CANCEL;
+
+		notification.flags |= Notification.DEFAULT_LIGHTS;
+		if (HostDatabase.COLOR_RED.equals(host.getColor()))
+			notification.ledARGB = Color.RED;
+		else if (HostDatabase.COLOR_GREEN.equals(host.getColor()))
+			notification.ledARGB = Color.GREEN;
+		else if (HostDatabase.COLOR_BLUE.equals(host.getColor()))
+			notification.ledARGB = Color.BLUE;
+		else
+			notification.ledARGB = Color.WHITE;
+		notification.ledOnMS = 300;
+		notification.ledOffMS = 1000;
+		notification.flags |= Notification.FLAG_SHOW_LIGHTS;
 
 		return notification;
 	}
