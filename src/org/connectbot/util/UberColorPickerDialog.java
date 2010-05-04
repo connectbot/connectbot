@@ -571,37 +571,12 @@ public class UberColorPickerDialog extends Dialog {
 		}
 
 		/**
-		 * Convert a slider position in the range [0,PALETTE_DIM] to a byte value in the range [0,255].
-		 * @param sliderPos in the range [0,PALETTE_DIM].
-		 * @return
-		 */
-		public int sliderPosTo255(int sliderPos) {
-			int int255 = (int)(255.0f * ((float)sliderPos / (float)PALETTE_DIM));
-			int255 = pinToByte(int255);
-			return int255;
-		}
-
-		/**
 		 * Wrap Math.round().  I'm not a Java expert.  Is this the only way to avoid writing "(int)Math.round" everywhere?
 		 * @param x
 		 * @return
 		 */
 		private int round(double x) {
 			return (int)Math.round(x);
-		}
-
-		/**
-		 * Limit a value to a min and max range.
-		 * @param n
-		 * @return
-		 */
-		private int pinToByte(int n) {
-			if (n < 0) {
-				n = 0;
-			} else if (n > 255) {
-				n = 255;
-			}
-			return n;
 		}
 
 		/**

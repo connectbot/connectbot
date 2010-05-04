@@ -241,36 +241,10 @@ public class ConsoleActivity extends Activity {
 		}
 	}
 
-	// TODO review use (apparently unused)
-	protected void createPortForward(TerminalView target, String nickname, String type, String source, String dest) {
-		String summary = getString(R.string.portforward_problem);
-		try {
-			long hostId = target.bridge.host.getId();
-
-			PortForwardBean pfb = new PortForwardBean(hostId, nickname, type, source, dest);
-
-			target.bridge.addPortForward(pfb);
-			if (target.bridge.enablePortForward(pfb)) {
-				summary = getString(R.string.portforward_done);
-			}
-		} catch(Exception e) {
-			Log.e(TAG, "Problem trying to create portForward", e);
-		}
-
-		Toast.makeText(ConsoleActivity.this, summary, Toast.LENGTH_LONG).show();
-	}
-
 	protected View findCurrentView(int id) {
 		View view = flip.getCurrentView();
 		if(view == null) return null;
 		return view.findViewById(id);
-	}
-
-	// TODO review use (apparently unused)
-	protected HostBean getCurrentHost() {
-		View view = findCurrentView(R.id.console_flip);
-		if(!(view instanceof TerminalView)) return null;
-		return ((TerminalView)view).bridge.host;
 	}
 
 	protected PromptHelper getCurrentPromptHelper() {
