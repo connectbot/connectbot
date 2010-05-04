@@ -20,8 +20,6 @@ package org.connectbot;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import org.connectbot.bean.HostBean;
-import org.connectbot.bean.PortForwardBean;
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
@@ -780,17 +778,16 @@ public class ConsoleActivity extends Activity {
 		// connect with manager service to find all bridges
 		// when connected it will insert all views
 		bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
-
-		// make sure we dont let the screen fall asleep
-		// this also keeps the wifi chipset from disconnecting us
-		if(wakelock != null && prefs.getBoolean(PreferenceConstants.KEEP_ALIVE, true))
-			wakelock.acquire();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 		Log.d(TAG, "onPause called");
+
+		// Allow the screen to dim and fall asleep.
+		if (wakelock != null && wakelock.isHeld())
+			wakelock.release();
 
 		if (forcedOrientation && bound != null)
 			bound.setResizeAllowed(false);
@@ -800,6 +797,11 @@ public class ConsoleActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		Log.d(TAG, "onResume called");
+
+		// Make sure we don't let the screen fall asleep.
+		// This also keeps the Wi-Fi chipset from disconnecting us.
+		if (wakelock != null && prefs.getBoolean(PreferenceConstants.KEEP_ALIVE, true))
+			wakelock.acquire();
 
 		configureOrientation();
 
@@ -860,10 +862,6 @@ public class ConsoleActivity extends Activity {
 		super.onStop();
 
 		unbindService(connection);
-
-		// allow the screen to dim and fall asleep
-		if(wakelock != null && wakelock.isHeld())
-			wakelock.release();
 	}
 
 	protected void shiftCurrentTerminal(final int direction) {
