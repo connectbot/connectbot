@@ -172,7 +172,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 		clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
 
-		inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = LayoutInflater.from(this);
 	}
 
 	/**

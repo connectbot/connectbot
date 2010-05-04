@@ -252,7 +252,7 @@ public class HostListActivity extends ListActivity {
 		});
 		transportSpinner.setAdapter(transportSelection);
 
-		this.inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.inflater = LayoutInflater.from(this);
 	}
 
 	@Override

@@ -310,7 +310,7 @@ public class ConsoleActivity extends Activity {
 		// handle requested console from incoming intent
 		requested = getIntent().getData();
 
-		inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = LayoutInflater.from(this);
 
 		flip = (ViewFlipper)findViewById(R.id.console_flip);
 		empty = (TextView)findViewById(android.R.id.empty);

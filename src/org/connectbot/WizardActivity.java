@@ -46,7 +46,7 @@ public class WizardActivity extends Activity {
 		this.flipper = (ViewFlipper) findViewById(R.id.wizard_flipper);
 
 		// inflate the layout for EULA step
-		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = LayoutInflater.from(this);
 		this.flipper.addView(inflater.inflate(R.layout.wiz_eula, this.flipper, false));
 
 		// Add a view for each help topic we want the user to see.

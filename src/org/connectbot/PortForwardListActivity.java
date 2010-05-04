@@ -163,7 +163,7 @@ public class PortForwardListActivity extends ListActivity {
 			}
 		});
 
-		this.inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.inflater = LayoutInflater.from(this);
 	}
 
 	@Override
