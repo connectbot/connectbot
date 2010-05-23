@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.connectbot"
-	android:versionName="1.7-dev"
-	android:versionCode="265">
+	android:versionName="1.7.0-rc1"
+	android:versionCode="301"
+	android:installLocation="auto">
 
 	<application
 		android:icon="@drawable/icon"
 		android:label="@string/app_name"
 		android:description="@string/app_desc"
-		android:backupAgent=".service.BackupAgent">
+		android:allowBackup="true"
+		android:backupAgent=".service.BackupAgent"
+		android:killAfterRestore="true">
 
 		<activity android:name=".HostListActivity" >
 			<intent-filter>
