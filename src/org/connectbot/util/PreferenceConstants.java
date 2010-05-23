@@ -25,6 +25,8 @@ import android.os.Build;
  */
 public class PreferenceConstants {
 	public static final boolean PRE_ECLAIR = (Integer.parseInt(Build.VERSION.SDK) <= 4);
+	public static final boolean PRE_FROYO = PRE_ECLAIR ? true :
+		(Build.VERSION.SDK_INT <= 7);
 
 	public static final String MEMKEYS = "memkeys";
 	public static final String UPDATE = "update";
@@ -77,4 +79,7 @@ public class PreferenceConstants {
 	public static final float DEFAULT_BELL_VOLUME = 0.25f;
 
 	public static final String CONNECTION_PERSIST = "connPersist";
+
+	/* Backup identifiers */
+	public static final String BACKUP_PREF_KEY = "prefs";
 }
