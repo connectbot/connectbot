@@ -299,7 +299,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			Log.d(TAG, String.format("Found unlocked key '%s' already in-memory", pubkey.getNickname()));
 
 			if (pubkey.isConfirmUse()) {
-				if (promptForPubkeyUse(pubkey.getNickname()))
+				if (!promptForPubkeyUse(pubkey.getNickname()))
 					return false;
 			}
 
@@ -342,10 +342,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 			Log.d(TAG, String.format("Unlocked key '%s'", pubkey.getNickname()));
 
-			// save this key in-memory if option enabled
-			if(manager.isSavingKeys()) {
-				manager.addKey(pubkey, trileadKey);
-			}
+			// save this key in memory
+			manager.addKey(pubkey, trileadKey);
 		}
 
 		return tryPublicKey(host.getUsername(), pubkey.getNickname(), trileadKey);
@@ -942,6 +940,14 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			return false;
 
 		agentLockPassphrase = lockPassphrase;
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.connectbot.transport.AbsTransport#usesNetwork()
+	 */
+	@Override
+	public boolean usesNetwork() {
 		return true;
 	}
 }

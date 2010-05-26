@@ -35,7 +35,7 @@
 
 	<string name="resolve_connect">Připojit</string>
 	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="resolve_entropy">Gather Entropy</string>
+	<string name="resolve_entropy">Získat entropii</string>
 
 	<string name="menu_insert">Přidat hostitele</string>
 	<string name="menu_delete">Smazat hostitele</string>
@@ -370,6 +370,8 @@
 	<string name="list_camera_ctrla">Ctrl+A</string>
 	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
 	<string name="list_camera_esc">Esc</string>
+	<!-- Selection to indicate pressing the Camera button should send "Esc+A". -->
+	<string name="list_camera_esc_a">Esc+A</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">Nic</string>
 

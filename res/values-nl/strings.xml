@@ -167,9 +167,9 @@
 	<string name="pref_update_summary">Stel de maximale frequentie in om te controleren voor ConnectBot updates</string>
 
 	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">Persist connections</string>
+	<string name="pref_conn_persist_title">Behoud verbindingen</string>
 	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+	<string name="pref_conn_persist_summary">Forceer dat de verbindingen actief blijven op de achtergrond</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Folder snelkoppelingen</string>
@@ -239,7 +239,7 @@
 	<string name="hostpref_color_title">Kleur catogorie</string>
 
 	<!-- Host's default font size when opening the terminal in points (pt) -->
-	<string name="hostpref_fontsize_title">Font size (pt)</string>
+	<string name="hostpref_fontsize_title">Lettergrootte</string>
 
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">Gebruik pubkey authenticatie</string>
@@ -370,6 +370,8 @@
 	<string name="list_camera_ctrla">Ctrl+A</string>
 	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
 	<string name="list_camera_esc">Esc</string>
+	<!-- Selection to indicate pressing the Camera button should send "Esc+A". -->
+	<string name="list_camera_esc_a">Esc+A</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">Geen</string>
 
@@ -447,10 +449,10 @@
 	<string name="exceptions_submit_message">Het lijkt erop dat ConnectBot een probleem had de laatste keer dat het gebruikt werd. Wilt u een foutenrapport naar de ConnectBot ontwikkelaars sturen?</string>
 
 	<!-- Menu selection to reset colors to their defaults. -->
-	<string name="menu_colors_reset">Reset</string>
+	<string name="menu_colors_reset">Terug naar standaardinstellingen</string>
 
 	<!-- Displayed in the notification bar that connections are active -->
-	<string name="app_is_running">ConnectBot is running</string>
+	<string name="app_is_running">ConnectBot werkt (Connecties zijn actief)</string>
 
 	<string name="color_red">rood</string>
 	<string name="color_green">groen</string>

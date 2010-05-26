@@ -46,6 +46,7 @@
 		<item>@string/list_camera_ctrlaspace</item>
 		<item>@string/list_camera_ctrla</item>
 		<item>@string/list_camera_esc</item>
+		<item>@string/list_camera_esc_a</item>
 		<item>@string/list_camera_none</item>
 	</string-array>
 
@@ -53,6 +54,7 @@
 		<item>Ctrl+A then Space</item>
 		<item>Ctrl+A</item>
 		<item>Esc</item>
+		<item>Esc+A</item>
 		<item>None</item>
 	</string-array>
 

@@ -99,7 +99,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 
 		save = (Button) findViewById(R.id.save);
 
-		inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = LayoutInflater.from(this);
 
 		nickname.addTextChangedListener(textChecker);
 		password1.addTextChangedListener(textChecker);

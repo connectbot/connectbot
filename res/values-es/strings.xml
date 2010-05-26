@@ -192,7 +192,7 @@
 	<string name="pref_wifilock_summary">Prevenir que la red inálambrica se apague mientras haya una conexión activa</string>
 
 	<!-- Name for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_title">Bumpy arrows</string>
+	<string name="pref_bumpyarrows_title">Cursor con vibración</string>
 	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
 	<string name="pref_bumpyarrows_summary">Vibrar al recibir las teclas del cursor desde el trackball; útil para conexiones con retardos</string>
 
@@ -370,6 +370,8 @@
 	<string name="list_camera_ctrla">Ctrl+A</string>
 	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
 	<string name="list_camera_esc">Esc</string>
+	<!-- Selection to indicate pressing the Camera button should send "Esc+A". -->
+	<string name="list_camera_esc_a">Esc+A</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">Ninguno</string>
 
@@ -450,7 +452,7 @@
 	<string name="menu_colors_reset">Restablecer</string>
 
 	<!-- Displayed in the notification bar that connections are active -->
-	<string name="app_is_running">ConnectBot is running</string>
+	<string name="app_is_running">ConnectBot está ejecutándose</string>
 
 	<string name="color_red">rojo</string>
 	<string name="color_green">verde</string>

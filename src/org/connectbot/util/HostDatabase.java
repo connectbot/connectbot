@@ -134,14 +134,12 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		addIndexName(TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index");
 	}
 
-	private Object dbLock;
+	public static final Object[] dbLock = new Object[0];
 
 	public HostDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 
 		getWritableDatabase().close();
-
-		dbLock = new Object();
 	}
 
 	@Override

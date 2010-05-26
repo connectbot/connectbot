@@ -172,7 +172,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 		clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
 
-		inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = LayoutInflater.from(this);
 	}
 
 	/**
@@ -292,10 +292,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 		Log.d(TAG, String.format("Unlocked key '%s'", pubkey.getNickname()));
 
-		// save this key in-memory if option enabled
-		if(bound.isSavingKeys()) {
-			bound.addKey(pubkey, trileadKey);
-		}
+		// save this key in memory
+		bound.addKey(pubkey, trileadKey);
 
 		updateHandler.sendEmptyMessage(-1);
 	}

@@ -18,6 +18,7 @@
 package org.connectbot.service;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Arrays;
@@ -44,14 +45,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.AssetFileDescriptor;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
-import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
@@ -73,6 +72,11 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public final static String TAG = "ConnectBot.TerminalManager";
 
 	public List<TerminalBridge> bridges = new LinkedList<TerminalBridge>();
+	public Map<HostBean, WeakReference<TerminalBridge>> mHostBridgeMap =
+		new HashMap<HostBean, WeakReference<TerminalBridge>>();
+	public Map<String, WeakReference<TerminalBridge>> mNicknameBridgeMap =
+		new HashMap<String, WeakReference<TerminalBridge>>();
+
 	public TerminalBridge defaultBridge = null;
 
 	public List<HostBean> disconnected = new LinkedList<HostBean>();
@@ -88,10 +92,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	protected SharedPreferences prefs;
 
-	private final IBinder binder = new TerminalBinder();
+	final private IBinder binder = new TerminalBinder();
 
-	private ConnectivityManager connectivityManager;
-	private WifiManager.WifiLock wifilock;
+	private ConnectivityReceiver connectivityManager;
 
 	private MediaPlayer mediaPlayer;
 
@@ -107,6 +110,13 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	private boolean wantBellVibration;
 
 	private boolean resizeAllowed = true;
+
+	private boolean savingKeys;
+
+	protected List<WeakReference<TerminalBridge>> mPendingReconnect
+			= new LinkedList<WeakReference<TerminalBridge>>();
+
+	public boolean hardKeyboardHidden;
 
 	@Override
 	public void onCreate() {
@@ -139,29 +149,31 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 			}
 		}
 
-		connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-		WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		wifilock = manager.createWifiLock(TAG);
-
 		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		wantKeyVibration = prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, true);
 
 		wantBellVibration = prefs.getBoolean(PreferenceConstants.BELL_VIBRATE, true);
 		enableMediaPlayer();
+
+		hardKeyboardHidden = (res.getConfiguration().hardKeyboardHidden ==
+			Configuration.HARDKEYBOARDHIDDEN_YES);
+
+		final boolean lockingWifi = prefs.getBoolean(PreferenceConstants.WIFI_LOCK, true);
+
+		connectivityManager = new ConnectivityReceiver(this, lockingWifi);
+
+		updateSavingKeys();
+	}
+
+	private void updateSavingKeys() {
+		savingKeys = prefs.getBoolean(PreferenceConstants.MEMKEYS, true);
 	}
 
 	@Override
 	public void onDestroy() {
 		Log.i(TAG, "Destroying background service");
 
-		if (bridges.size() > 0) {
-			TerminalBridge[] tmpBridges = bridges.toArray(new TerminalBridge[bridges.size()]);
-
-			// disconnect and dispose of any existing bridges
-			for (int i = 0; i < tmpBridges.length; i++)
-				tmpBridges[i].dispatchDisconnect(true);
-		}
+		disconnectAll(true);
 
 		if(hostdb != null) {
 			hostdb.close();
@@ -180,8 +192,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				pubkeyTimer.cancel();
 		}
 
-		if (wifilock != null && wifilock.isHeld())
-			wifilock.release();
+		connectivityManager.cleanup();
 
 		ConnectionNotifier.getInstance().hideRunningNotification(this);
 
@@ -189,30 +200,56 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 
 	/**
+	 * Disconnect all currently connected bridges.
+	 */
+	private void disconnectAll(final boolean immediate) {
+		TerminalBridge[] tmpBridges = null;
+
+		synchronized (bridges) {
+			if (bridges.size() > 0) {
+				tmpBridges = bridges.toArray(new TerminalBridge[bridges.size()]);
+			}
+		}
+
+		if (tmpBridges != null) {
+			// disconnect and dispose of any existing bridges
+			for (int i = 0; i < tmpBridges.length; i++)
+				tmpBridges[i].dispatchDisconnect(immediate);
+		}
+	}
+
+	/**
 	 * Open a new SSH session using the given parameters.
 	 */
-	private void openConnection(HostBean host) throws IllegalArgumentException, IOException {
+	private TerminalBridge openConnection(HostBean host) throws IllegalArgumentException, IOException {
 		// throw exception if terminal already open
-		if (findBridge(host) != null) {
+		if (getConnectedBridge(host) != null) {
 			throw new IllegalArgumentException("Connection already open for that nickname");
 		}
 
 		TerminalBridge bridge = new TerminalBridge(this, host);
 		bridge.setOnDisconnectedListener(this);
 		bridge.startConnection();
-		bridges.add(bridge);
 
-		// Add a reference to the WifiLock
-		NetworkInfo info = connectivityManager.getActiveNetworkInfo();
-		if (isLockingWifi() &&
-				info != null &&
-				info.getType() == ConnectivityManager.TYPE_WIFI) {
-			Log.d(TAG, "Acquiring WifiLock");
-			wifilock.acquire();
+		synchronized (bridges) {
+			bridges.add(bridge);
+			WeakReference<TerminalBridge> wr = new WeakReference<TerminalBridge>(bridge);
+			mHostBridgeMap.put(bridge.host, wr);
+			mNicknameBridgeMap.put(bridge.host.getNickname(), wr);
+		}
+
+		synchronized (disconnected) {
+			disconnected.remove(bridge.host);
+		}
+
+		if (bridge.isUsingNetwork()) {
+			connectivityManager.incRef();
 		}
 
 		// also update database with new connected time
 		touchHost(host);
+
+		return bridge;
 	}
 
 	public String getEmulation() {
@@ -228,29 +265,17 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		return scrollback;
 	}
 
-	public boolean isSavingKeys() {
-		return prefs.getBoolean(PreferenceConstants.MEMKEYS, true);
-	}
-
-	public String getKeyMode() {
-		return prefs.getString(PreferenceConstants.KEYMODE, PreferenceConstants.KEYMODE_RIGHT); // "Use right-side keys"
-	}
-
-	public boolean isLockingWifi() {
-		return prefs.getBoolean(PreferenceConstants.WIFI_LOCK, true);
-	}
-
 	/**
 	 * Open a new connection by reading parameters from the given URI. Follows
 	 * format specified by an individual transport.
 	 */
-	public void openConnection(Uri uri) throws Exception {
+	public TerminalBridge openConnection(Uri uri) throws Exception {
 		HostBean host = TransportFactory.findHost(hostdb, uri);
 
 		if (host == null)
 			host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
 
-		openConnection(host);
+		return openConnection(host);
 	}
 
 	/**
@@ -262,30 +287,57 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 
 	/**
-	 * Find the {@link TerminalBridge} with the given nickname.
+	 * Find a connected {@link TerminalBridge} with the given HostBean.
+	 *
+	 * @param host the HostBean to search for
+	 * @return TerminalBridge that uses the HostBean
 	 */
-	public TerminalBridge findBridge(HostBean host) {
-		// find the first active bridge with given nickname
-		for(TerminalBridge bridge : bridges) {
-			if (bridge.host.equals(host))
-				return bridge;
+	public TerminalBridge getConnectedBridge(HostBean host) {
+		WeakReference<TerminalBridge> wr = mHostBridgeMap.get(host);
+		if (wr != null) {
+			return wr.get();
+		} else {
+			return null;
 		}
-		return null;
+	}
+
+	/**
+	 * Find a connected {@link TerminalBridge} using its nickname.
+	 *
+	 * @param nickname
+	 * @return TerminalBridge that matches nickname
+	 */
+	public TerminalBridge getConnectedBridge(final String nickname) {
+		if (nickname == null) {
+			return null;
+		}
+		WeakReference<TerminalBridge> wr = mNicknameBridgeMap.get(nickname);
+		if (wr != null) {
+			return wr.get();
+		} else {
+			return null;
+		}
 	}
 
 	/**
 	 * Called by child bridge when somehow it's been disconnected.
 	 */
 	public void onDisconnected(TerminalBridge bridge) {
-		// remove this bridge from our list
-		bridges.remove(bridge);
+		synchronized (bridges) {
+			// remove this bridge from our list
+			bridges.remove(bridge);
 
-		if (bridges.size() == 0 && wifilock.isHeld()) {
-			Log.d(TAG, "WifiLock was held, releasing");
-			wifilock.release();
+			mHostBridgeMap.remove(bridge.host);
+			mNicknameBridgeMap.remove(bridge.host.getNickname());
+
+			if (bridge.isUsingNetwork()) {
+				connectivityManager.decRef();
+			}
 		}
 
-		disconnected.add(bridge.host);
+		synchronized (disconnected) {
+			disconnected.add(bridge.host);
+		}
 
 		// pass notification back up to gui
 		if (disconnectHandler != null)
@@ -298,6 +350,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 
 	public void addKey(PubkeyBean pubkey, Object trileadKey) {
+		if (!savingKeys)
+			return;
+
 		removeKey(pubkey.getNickname());
 
 		byte[] sshPubKey = PubkeyUtils.extractOpenSSHPublic(trileadKey);
@@ -555,6 +610,11 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		} else if (PreferenceConstants.BUMPY_ARROWS.equals(key)) {
 			wantKeyVibration = sharedPreferences.getBoolean(
 					PreferenceConstants.BUMPY_ARROWS, true);
+		} else if (PreferenceConstants.WIFI_LOCK.equals(key)) {
+			final boolean lockingWifi = prefs.getBoolean(PreferenceConstants.WIFI_LOCK, true);
+			connectivityManager.setWantWifiLock(lockingWifi);
+		} else if (PreferenceConstants.MEMKEYS.equals(key)) {
+			updateSavingKeys();
 		}
 	}
 
@@ -570,9 +630,69 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		return resizeAllowed;
 	}
 
-	public class KeyHolder {
+	public static class KeyHolder {
 		public PubkeyBean bean;
 		public Object trileadKey;
 		public byte[] openSSHPubkey;
+	}
+
+	/**
+	 * Called when connectivity to the network is lost and it doesn't appear
+	 * we'll be getting a different connection any time soon.
+	 */
+	public void onConnectivityLost() {
+		final Thread t = new Thread() {
+			@Override
+			public void run() {
+				disconnectAll(false);
+			}
+		};
+		t.start();
+	}
+
+	/**
+	 * Called when connectivity to the network is restored.
+	 */
+	public void onConnectivityRestored() {
+		final Thread t = new Thread() {
+			@Override
+			public void run() {
+				reconnectPending();
+			}
+		};
+		t.start();
+	}
+
+	/**
+	 * Insert request into reconnect queue to be executed either immediately
+	 * or later when connectivity is restored depending on whether we're
+	 * currently connected.
+	 *
+	 * @param bridge the TerminalBridge to reconnect when possible
+	 */
+	public void requestReconnect(TerminalBridge bridge) {
+		synchronized (mPendingReconnect) {
+			mPendingReconnect.add(new WeakReference<TerminalBridge>(bridge));
+			if (connectivityManager.isConnected()) {
+				reconnectPending();
+			}
+		}
+	}
+
+	/**
+	 * Reconnect all bridges that were pending a reconnect when connectivity
+	 * was lost.
+	 */
+	private void reconnectPending() {
+		synchronized (mPendingReconnect) {
+			for (WeakReference<TerminalBridge> ref : mPendingReconnect) {
+				TerminalBridge bridge = ref.get();
+				if (bridge == null) {
+					continue;
+				}
+				bridge.startConnection();
+			}
+			mPendingReconnect.clear();
+		}
 	}
 }

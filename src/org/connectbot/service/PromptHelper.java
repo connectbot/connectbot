@@ -66,6 +66,9 @@ public class PromptHelper {
 	 */
 	public void setResponse(Object value) {
 		response = value;
+		promptRequested = null;
+		promptInstructions = null;
+		promptHint = null;
 		promptResponse.release();
 	}
 
@@ -101,9 +104,6 @@ public class PromptHelper {
 
 			// acquire lock until user passes back value
 			promptResponse.acquire();
-			promptInstructions = null;
-			promptHint = null;
-			promptRequested = null;
 
 			response = popResponse();
 		} finally {

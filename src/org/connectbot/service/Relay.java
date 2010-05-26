@@ -60,7 +60,7 @@ public class Relay implements Runnable {
 	private char[] charArray;
 
 	static {
-		useJNI = EastAsianWidth.available;
+		useJNI = EastAsianWidth.useJNI;
 	}
 
 	public Relay(TerminalBridge bridge, AbsTransport transport, vt320 buffer, String encoding) {

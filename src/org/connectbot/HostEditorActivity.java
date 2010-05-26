@@ -240,13 +240,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			public void onServiceConnected(ComponentName className, IBinder service) {
 				TerminalManager bound = ((TerminalManager.TerminalBinder) service).getService();
 
-				for (TerminalBridge bridge: bound.bridges) {
-					if (bridge.host.equals(host)) {
-						hostBridge = bridge;
-						Log.d(TAG, "Found host bridge; charset updates will be made live");
-						break;
-					}
-				}
+				hostBridge = bound.getConnectedBridge(host);
 			}
 
 			public void onServiceDisconnected(ComponentName name) {

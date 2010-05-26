@@ -20,8 +20,6 @@ package org.connectbot;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import org.connectbot.bean.HostBean;
-import org.connectbot.bean.PortForwardBean;
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
@@ -90,6 +88,10 @@ public class ConsoleActivity extends Activity {
 	private static final float MAX_CLICK_DISTANCE = 25f;
 	private static final int KEYBOARD_DISPLAY_TIME = 1250;
 
+	// Direction to shift the ViewFlipper
+	private static final int SHIFT_LEFT = 0;
+	private static final int SHIFT_RIGHT = 1;
+
 	protected ViewFlipper flip = null;
 	protected TerminalManager bound = null;
 	protected LayoutInflater inflater = null;
@@ -141,27 +143,17 @@ public class ConsoleActivity extends Activity {
 
 			// clear out any existing bridges and record requested index
 			flip.removeAllViews();
-			String requestedNickname = (requested != null) ? requested.getFragment() : null;
+
+			final String requestedNickname = (requested != null) ? requested.getFragment() : null;
 			int requestedIndex = 0;
 
-			// first check if we need to create a new session for requested
-			boolean found = false;
-			for (TerminalBridge bridge : bound.bridges) {
-				String nick = bridge.host.getNickname();
-				if (nick == null)
-					continue;
-
-				if (nick.equals(requestedNickname)) {
-					found = true;
-					break;
-				}
-			}
+			TerminalBridge requestedBridge = bound.getConnectedBridge(requestedNickname);
 
 			// If we didn't find the requested connection, try opening it
-			if (!found) {
+			if (requestedNickname != null && requestedBridge == null) {
 				try {
 					Log.d(TAG, String.format("We couldnt find an existing bridge with URI=%s (nickname=%s), so creating one now", requested.toString(), requestedNickname));
-					bound.openConnection(requested);
+					requestedBridge = bound.openConnection(requested);
 				} catch(Exception e) {
 					Log.e(TAG, "Problem while trying to create new requested bridge from URI", e);
 				}
@@ -170,46 +162,22 @@ public class ConsoleActivity extends Activity {
 			// create views for all bridges on this service
 			for (TerminalBridge bridge : bound.bridges) {
 
-				// let them know about our prompt handler services
-				bridge.promptHelper.setHandler(promptHandler);
-				bridge.refreshKeymode();
-
-				// inflate each terminal view
-				RelativeLayout view = (RelativeLayout)inflater.inflate(R.layout.item_terminal, flip, false);
-
-				// set the terminal overlay text
-				TextView overlay = (TextView)view.findViewById(R.id.terminal_overlay);
-				overlay.setText(bridge.host.getNickname());
-
-				// and add our terminal view control, using index to place behind overlay
-				TerminalView terminal = new TerminalView(ConsoleActivity.this, bridge);
-				terminal.setId(R.id.console_flip);
-				view.addView(terminal, 0);
-
-				// finally attach to the flipper
-				flip.addView(view);
+				final int currentIndex = addNewTerminalView(bridge);
 
 				// check to see if this bridge was requested
-				if (bridge.host.getNickname().equals(requestedNickname))
-					requestedIndex = flip.getChildCount() - 1;
+				if (bridge == requestedBridge)
+					requestedIndex = currentIndex;
 			}
 
-			try {
-				// show the requested bridge if found, also fade out overlay
-				flip.setDisplayedChild(requestedIndex);
-				flip.getCurrentView().findViewById(R.id.terminal_overlay).startAnimation(fade_out_delayed);
-			} catch (NullPointerException npe) {
-				Log.d(TAG, "View went away when we were about to display it", npe);
-			}
-
-			updatePromptVisible();
-			updateEmptyVisible();
+			setDisplayedTerminal(requestedIndex);
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
 			// tell each bridge to forget about our prompt handler
-			for(TerminalBridge bridge : bound.bridges)
-				bridge.promptHelper.setHandler(null);
+			synchronized (bound.bridges) {
+				for(TerminalBridge bridge : bound.bridges)
+					bridge.promptHelper.setHandler(null);
+			}
 
 			flip.removeAllViews();
 			updateEmptyVisible();
@@ -242,70 +210,39 @@ public class ConsoleActivity extends Activity {
 	/**
 	 * @param bridge
 	 */
-	private void closeBridge(TerminalBridge bridge) {
-		for(int i = 0; i < flip.getChildCount(); i++) {
-			View child = flip.getChildAt(i).findViewById(R.id.console_flip);
+	private void closeBridge(final TerminalBridge bridge) {
+		synchronized (flip) {
+			final int flipIndex = getFlipIndex(bridge);
 
-			if (!(child instanceof TerminalView)) continue;
-
-			TerminalView terminal = (TerminalView) child;
-
-			if (terminal.bridge.equals(bridge)) {
-				// we've found the terminal to remove
-				// shift something into its place if currently visible
-				if(flip.getDisplayedChild() == i)
-					shiftLeft();
-				flip.removeViewAt(i);
+			if (flipIndex >= 0) {
+				if (flip.getDisplayedChild() == flipIndex) {
+					shiftCurrentTerminal(SHIFT_LEFT);
+				}
+				flip.removeViewAt(flipIndex);
 
 				/* TODO Remove this workaround when ViewFlipper is fixed to listen
 				 * to view removals. Android Issue 1784
 				 */
 				final int numChildren = flip.getChildCount();
 				if (flip.getDisplayedChild() >= numChildren &&
-						numChildren > 0)
+						numChildren > 0) {
 					flip.setDisplayedChild(numChildren - 1);
+				}
 
 				updateEmptyVisible();
-				break;
+			}
+
+			// If we just closed the last bridge, go back to the previous activity.
+			if (flip.getChildCount() == 0) {
+				finish();
 			}
 		}
-
-		// If we just closed the last bridge, go back to the previous activity.
-		if (flip.getChildCount() == 0) {
-			finish();
-		}
-	}
-
-	// TODO review use (apparently unused)
-	protected void createPortForward(TerminalView target, String nickname, String type, String source, String dest) {
-		String summary = getString(R.string.portforward_problem);
-		try {
-			long hostId = target.bridge.host.getId();
-
-			PortForwardBean pfb = new PortForwardBean(hostId, nickname, type, source, dest);
-
-			target.bridge.addPortForward(pfb);
-			if (target.bridge.enablePortForward(pfb)) {
-				summary = getString(R.string.portforward_done);
-			}
-		} catch(Exception e) {
-			Log.e(TAG, "Problem trying to create portForward", e);
-		}
-
-		Toast.makeText(ConsoleActivity.this, summary, Toast.LENGTH_LONG).show();
 	}
 
 	protected View findCurrentView(int id) {
 		View view = flip.getCurrentView();
 		if(view == null) return null;
 		return view.findViewById(id);
-	}
-
-	// TODO review use (apparently unused)
-	protected HostBean getCurrentHost() {
-		View view = findCurrentView(R.id.console_flip);
-		if(!(view instanceof TerminalView)) return null;
-		return ((TerminalView)view).bridge.host;
 	}
 
 	protected PromptHelper getCurrentPromptHelper() {
@@ -345,7 +282,7 @@ public class ConsoleActivity extends Activity {
 		// handle requested console from incoming intent
 		requested = getIntent().getData();
 
-		inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = LayoutInflater.from(this);
 
 		flip = (ViewFlipper)findViewById(R.id.console_flip);
 		empty = (TextView)findViewById(android.R.id.empty);
@@ -429,20 +366,20 @@ public class ConsoleActivity extends Activity {
 			@Override
 			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
-				float distx = e2.getRawX() - e1.getRawX();
-				float disty = e2.getRawY() - e1.getRawY();
-				int goalwidth = flip.getWidth() / 2;
+				final float distx = e2.getRawX() - e1.getRawX();
+				final float disty = e2.getRawY() - e1.getRawY();
+				final int goalwidth = flip.getWidth() / 2;
 
 				// need to slide across half of display to trigger console change
 				// make sure user kept a steady hand horizontally
-				if(Math.abs(disty) < 100) {
-					if(distx > goalwidth) {
-						shiftRight();
+				if (Math.abs(disty) < (flip.getHeight() / 4)) {
+					if (distx > goalwidth) {
+						shiftCurrentTerminal(SHIFT_RIGHT);
 						return true;
 					}
 
-					if(distx < -goalwidth) {
-						shiftLeft();
+					if (distx < -goalwidth) {
+						shiftCurrentTerminal(SHIFT_LEFT);
 						return true;
 					}
 
@@ -463,12 +400,12 @@ public class ConsoleActivity extends Activity {
 					return false;
 
 				// if releasing then reset total scroll
-				if(e2.getAction() == MotionEvent.ACTION_UP) {
+				if (e2.getAction() == MotionEvent.ACTION_UP) {
 					totalY = 0;
 				}
 
 				// activate consider if within x tolerance
-				if(Math.abs(e1.getX() - e2.getX()) < ViewConfiguration.getTouchSlop() * 4) {
+				if (Math.abs(e1.getX() - e2.getX()) < ViewConfiguration.getTouchSlop() * 4) {
 
 					View flip = findCurrentView(R.id.console_flip);
 					if(flip == null) return false;
@@ -477,11 +414,11 @@ public class ConsoleActivity extends Activity {
 					// estimate how many rows we have scrolled through
 					// accumulate distance that doesn't trigger immediate scroll
 					totalY += distanceY;
-					int moved = (int)(totalY / terminal.bridge.charHeight);
+					final int moved = (int)(totalY / terminal.bridge.charHeight);
 
 					// consume as scrollback only if towards right half of screen
-					if (e2.getX() > flip.getWidth() / 2.0) {
-						if(moved != 0) {
+					if (e2.getX() > flip.getWidth() / 2) {
+						if (moved != 0) {
 							int base = terminal.bridge.buffer.getWindowBase();
 							terminal.bridge.buffer.setWindowBase(base + moved);
 							totalY = 0;
@@ -489,12 +426,12 @@ public class ConsoleActivity extends Activity {
 						}
 					} else {
 						// otherwise consume as pgup/pgdown for every 5 lines
-						if(moved > 5) {
+						if (moved > 5) {
 							((vt320)terminal.bridge.buffer).keyPressed(vt320.KEY_PAGE_DOWN, ' ', 0);
 							terminal.bridge.tryKeyVibrate();
 							totalY = 0;
 							return true;
-						} else if(moved < -5) {
+						} else if (moved < -5) {
 							((vt320)terminal.bridge.buffer).keyPressed(vt320.KEY_PAGE_UP, ' ', 0);
 							terminal.bridge.tryKeyVibrate();
 							totalY = 0;
@@ -841,17 +778,16 @@ public class ConsoleActivity extends Activity {
 		// connect with manager service to find all bridges
 		// when connected it will insert all views
 		bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
-
-		// make sure we dont let the screen fall asleep
-		// this also keeps the wifi chipset from disconnecting us
-		if(wakelock != null && prefs.getBoolean(PreferenceConstants.KEEP_ALIVE, true))
-			wakelock.acquire();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 		Log.d(TAG, "onPause called");
+
+		// Allow the screen to dim and fall asleep.
+		if (wakelock != null && wakelock.isHeld())
+			wakelock.release();
 
 		if (forcedOrientation && bound != null)
 			bound.setResizeAllowed(false);
@@ -862,10 +798,63 @@ public class ConsoleActivity extends Activity {
 		super.onResume();
 		Log.d(TAG, "onResume called");
 
+		// Make sure we don't let the screen fall asleep.
+		// This also keeps the Wi-Fi chipset from disconnecting us.
+		if (wakelock != null && prefs.getBoolean(PreferenceConstants.KEEP_ALIVE, true))
+			wakelock.acquire();
+
 		configureOrientation();
 
 		if (forcedOrientation && bound != null)
 			bound.setResizeAllowed(true);
+	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onNewIntent(android.content.Intent)
+	 */
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+
+		Log.d(TAG, "onNewIntent called");
+
+		requested = intent.getData();
+
+		if (requested == null) {
+			Log.e(TAG, "Got null intent data in onNewIntent()");
+			return;
+		}
+
+		if (bound == null) {
+			Log.e(TAG, "We're not bound in onNewIntent()");
+			return;
+		}
+
+		TerminalBridge requestedBridge = bound.getConnectedBridge(requested.getFragment());
+		int requestedIndex = 0;
+
+		synchronized (flip) {
+			if (requestedBridge == null) {
+				// If we didn't find the requested connection, try opening it
+
+				try {
+					Log.d(TAG, String.format("We couldnt find an existing bridge with URI=%s (nickname=%s),"+
+							"so creating one now", requested.toString(), requested.getFragment()));
+					requestedBridge = bound.openConnection(requested);
+				} catch(Exception e) {
+					Log.e(TAG, "Problem while trying to create new requested bridge from URI", e);
+				}
+
+				requestedIndex = addNewTerminalView(requestedBridge);
+			} else {
+				final int flipIndex = getFlipIndex(requestedBridge);
+				if (flipIndex > requestedIndex) {
+					requestedIndex = flipIndex;
+				}
+			}
+
+			setDisplayedTerminal(requestedIndex);
+		}
 	}
 
 	@Override
@@ -873,66 +862,42 @@ public class ConsoleActivity extends Activity {
 		super.onStop();
 
 		unbindService(connection);
-
-		// allow the screen to dim and fall asleep
-		if(wakelock != null && wakelock.isHeld())
-			wakelock.release();
 	}
 
-	protected void shiftLeft() {
+	protected void shiftCurrentTerminal(final int direction) {
 		View overlay;
-		boolean shouldAnimate = flip.getChildCount() > 1;
+		synchronized (flip) {
+			boolean shouldAnimate = flip.getChildCount() > 1;
 
-		// Only show animation if there is something else to go to.
-		if (shouldAnimate) {
-			// keep current overlay from popping up again
-			overlay = findCurrentView(R.id.terminal_overlay);
-			if (overlay != null)
-				overlay.startAnimation(fade_stay_hidden);
+			// Only show animation if there is something else to go to.
+			if (shouldAnimate) {
+				// keep current overlay from popping up again
+				overlay = findCurrentView(R.id.terminal_overlay);
+				if (overlay != null)
+					overlay.startAnimation(fade_stay_hidden);
 
-			flip.setInAnimation(slide_left_in);
-			flip.setOutAnimation(slide_left_out);
-			flip.showNext();
+				if (direction == SHIFT_LEFT) {
+					flip.setInAnimation(slide_left_in);
+					flip.setOutAnimation(slide_left_out);
+					flip.showNext();
+				} else if (direction == SHIFT_RIGHT) {
+					flip.setInAnimation(slide_right_in);
+					flip.setOutAnimation(slide_right_out);
+					flip.showPrevious();
+				}
+			}
+
+			ConsoleActivity.this.updateDefault();
+
+			if (shouldAnimate) {
+				// show overlay on new slide and start fade
+				overlay = findCurrentView(R.id.terminal_overlay);
+				if (overlay != null)
+					overlay.startAnimation(fade_out_delayed);
+			}
+
+			updatePromptVisible();
 		}
-
-		ConsoleActivity.this.updateDefault();
-
-		if (shouldAnimate) {
-			// show overlay on new slide and start fade
-			overlay = findCurrentView(R.id.terminal_overlay);
-			if (overlay != null)
-				overlay.startAnimation(fade_out_delayed);
-		}
-
-		updatePromptVisible();
-	}
-
-	protected void shiftRight() {
-		View overlay;
-		boolean shouldAnimate = flip.getChildCount() > 1;
-
-		// Only show animation if there is something else to go to.
-		if (shouldAnimate) {
-			// keep current overlay from popping up again
-			overlay = findCurrentView(R.id.terminal_overlay);
-			if (overlay != null)
-				overlay.startAnimation(fade_stay_hidden);
-
-			flip.setInAnimation(slide_right_in);
-			flip.setOutAnimation(slide_right_out);
-			flip.showPrevious();
-		}
-
-		ConsoleActivity.this.updateDefault();
-
-		if (shouldAnimate) {
-			// show overlay on new slide and start fade
-			overlay = findCurrentView(R.id.terminal_overlay);
-			if (overlay != null)
-				overlay.startAnimation(fade_out_delayed);
-		}
-
-		updatePromptVisible();
 	}
 
 	/**
@@ -1039,6 +1004,80 @@ public class ConsoleActivity extends Activity {
 				bound.setResizeAllowed(false);
 			else
 				bound.setResizeAllowed(true);
+
+			bound.hardKeyboardHidden = (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES);
+		}
+	}
+
+	/**
+	 * Adds a new TerminalBridge to the current set of views in our ViewFlipper.
+	 *
+	 * @param bridge TerminalBridge to add to our ViewFlipper
+	 * @return the child index of the new view in the ViewFlipper
+	 */
+	private int addNewTerminalView(TerminalBridge bridge) {
+		// let them know about our prompt handler services
+		bridge.promptHelper.setHandler(promptHandler);
+
+		// inflate each terminal view
+		RelativeLayout view = (RelativeLayout)inflater.inflate(R.layout.item_terminal, flip, false);
+
+		// set the terminal overlay text
+		TextView overlay = (TextView)view.findViewById(R.id.terminal_overlay);
+		overlay.setText(bridge.host.getNickname());
+
+		// and add our terminal view control, using index to place behind overlay
+		TerminalView terminal = new TerminalView(ConsoleActivity.this, bridge);
+		terminal.setId(R.id.console_flip);
+		view.addView(terminal, 0);
+
+		synchronized (flip) {
+			// finally attach to the flipper
+			flip.addView(view);
+			return flip.getChildCount() - 1;
+		}
+	}
+
+	private int getFlipIndex(TerminalBridge bridge) {
+		synchronized (flip) {
+			final int children = flip.getChildCount();
+			for (int i = 0; i < children; i++) {
+				final View view = flip.getChildAt(i).findViewById(R.id.console_flip);
+
+				if (view == null || !(view instanceof TerminalView)) {
+					// How did that happen?
+					continue;
+				}
+
+				final TerminalView tv = (TerminalView) view;
+
+				if (tv.bridge == bridge) {
+					return i;
+				}
+			}
+		}
+
+		return -1;
+	}
+
+	/**
+	 * Displays the child in the ViewFlipper at the requestedIndex and updates the prompts.
+	 *
+	 * @param requestedIndex the index of the terminal view to display
+	 */
+	private void setDisplayedTerminal(int requestedIndex) {
+		synchronized (flip) {
+			try {
+				// show the requested bridge if found, also fade out overlay
+				flip.setDisplayedChild(requestedIndex);
+				flip.getCurrentView().findViewById(R.id.terminal_overlay)
+						.startAnimation(fade_out_delayed);
+			} catch (NullPointerException npe) {
+				Log.d(TAG, "View went away when we were about to display it", npe);
+			}
+
+			updatePromptVisible();
+			updateEmptyVisible();
 		}
 	}
 }

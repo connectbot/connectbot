@@ -132,16 +132,8 @@ public class PortForwardListActivity extends ListActivity {
 			public void onServiceConnected(ComponentName className, IBinder service) {
 				TerminalManager bound = ((TerminalManager.TerminalBinder) service).getService();
 
-				for (TerminalBridge bridge: bound.bridges) {
-					if (bridge.host.equals(host)) {
-						hostBridge = bridge;
-						updateHandler.sendEmptyMessage(-1);
-						Log.d(TAG, "Found host bridge; using that instead of database");
-						break;
-					}
-				}
-
-
+				hostBridge = bound.getConnectedBridge(host);
+				updateHandler.sendEmptyMessage(-1);
 			}
 
 			public void onServiceDisconnected(ComponentName name) {
@@ -171,7 +163,7 @@ public class PortForwardListActivity extends ListActivity {
 			}
 		});
 
-		this.inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.inflater = LayoutInflater.from(this);
 	}
 
 	@Override
