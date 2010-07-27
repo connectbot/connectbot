@@ -317,6 +317,11 @@
 	<!-- Button that brings up the list of URLs on the current screen -->
 	<string name="console_menu_urlscan">URL Scan</string>
 
+	<!-- Button label to answer "Yes" to a yes/no prompt -->
+	<string name="button_yes">Yes</string>
+	<!-- Button label to answer "No" to a yes/no prompt -->
+	<string name="button_no">No</string>
+
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
 	<string name="portforward_local">Local</string>
 	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->

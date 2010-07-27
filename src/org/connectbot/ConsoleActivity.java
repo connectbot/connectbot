@@ -23,6 +23,7 @@ import java.util.List;
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
+import org.connectbot.service.TerminalKeyListener;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.PreferenceConstants;
 
@@ -116,7 +117,6 @@ public class ConsoleActivity extends Activity {
 	private Animation slide_left_in, slide_left_out, slide_right_in, slide_right_out, fade_stay_hidden, fade_out_delayed;
 
 	private Animation keyboard_fade_in, keyboard_fade_out;
-	private ImageView keyboardButton;
 	private float lastX, lastY;
 
 	private InputMethodManager inputManager;
@@ -347,7 +347,8 @@ public class ConsoleActivity extends Activity {
 		keyboard_fade_out = AnimationUtils.loadAnimation(this, R.anim.keyboard_fade_out);
 
 		inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		keyboardButton = (ImageView) findViewById(R.id.keyboard_button);
+
+		final ImageView keyboardButton = (ImageView) findViewById(R.id.button_keyboard);
 		keyboardButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				View flip = findCurrentView(R.id.console_flip);
@@ -356,6 +357,30 @@ public class ConsoleActivity extends Activity {
 
 				inputManager.showSoftInput(flip, InputMethodManager.SHOW_FORCED);
 				keyboardButton.setVisibility(View.GONE);
+			}
+		});
+
+		final ImageView ctrlButton = (ImageView) findViewById(R.id.button_keyboard);
+		ctrlButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View flip = findCurrentView(R.id.console_flip);
+				if (flip == null) return;
+				TerminalView terminal = (TerminalView)flip;
+
+				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+				handler.metaPress(TerminalKeyListener.META_CTRL_ON);
+			}
+		});
+
+		final ImageView escButton = (ImageView) findViewById(R.id.button_keyboard);
+		escButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View flip = findCurrentView(R.id.console_flip);
+				if (flip == null) return;
+				TerminalView terminal = (TerminalView)flip;
+
+				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+				handler.sendEscape();
 			}
 		});
 

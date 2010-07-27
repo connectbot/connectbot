@@ -375,10 +375,10 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					}
 				} else {
 					if ((metaState & META_CTRL_ON) != 0) {
-						((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+						sendEscape();
 						metaState &= ~META_CTRL_ON;
 					} else
-						metaState |= META_CTRL_ON;
+						metaPress(META_CTRL_ON);
 				}
 
 				bridge.redraw();
@@ -402,6 +402,9 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		return false;
 	}
 
+	public void sendEscape() {
+		((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+	}
 
 	/**
 	 * @param key
@@ -453,7 +456,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	 *
 	 * @param code
 	 */
-	private void metaPress(int code) {
+	public void metaPress(int code) {
 		if ((metaState & (code << 1)) != 0) {
 			metaState &= ~(code << 1);
 		} else if ((metaState & code) != 0) {
