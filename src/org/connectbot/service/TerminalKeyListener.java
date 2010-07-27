@@ -1,5 +1,18 @@
-/**
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2010 Kenny Root, Jeffrey Sharkey
  *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.connectbot.service;
 
@@ -362,10 +375,10 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					}
 				} else {
 					if ((metaState & META_CTRL_ON) != 0) {
-						((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+						sendEscape();
 						metaState &= ~META_CTRL_ON;
 					} else
-						metaState |= META_CTRL_ON;
+						metaPress(META_CTRL_ON);
 				}
 
 				bridge.redraw();
@@ -389,6 +402,9 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		return false;
 	}
 
+	public void sendEscape() {
+		((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+	}
 
 	/**
 	 * @param key
@@ -440,7 +456,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	 *
 	 * @param code
 	 */
-	private void metaPress(int code) {
+	public void metaPress(int code) {
 		if ((metaState & (code << 1)) != 0) {
 			metaState &= ~(code << 1);
 		} else if ((metaState & code) != 0) {

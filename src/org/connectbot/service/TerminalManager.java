@@ -246,6 +246,10 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 			connectivityManager.incRef();
 		}
 
+		if (prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)) {
+			ConnectionNotifier.getInstance().showRunningNotification(this);
+		}
+
 		// also update database with new connected time
 		touchHost(host);
 
@@ -323,6 +327,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 * Called by child bridge when somehow it's been disconnected.
 	 */
 	public void onDisconnected(TerminalBridge bridge) {
+		boolean shouldHideRunningNotification = false;
+
 		synchronized (bridges) {
 			// remove this bridge from our list
 			bridges.remove(bridge);
@@ -333,16 +339,24 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 			if (bridge.isUsingNetwork()) {
 				connectivityManager.decRef();
 			}
+
+			if (bridges.size() == 0 &&
+					mPendingReconnect.size() == 0) {
+				shouldHideRunningNotification = true;
+			}
 		}
 
 		synchronized (disconnected) {
 			disconnected.add(bridge.host);
 		}
 
+		if (shouldHideRunningNotification) {
+			ConnectionNotifier.getInstance().hideRunningNotification(this);
+		}
+
 		// pass notification back up to gui
 		if (disconnectHandler != null)
 			Message.obtain(disconnectHandler, -1, bridge).sendToTarget();
-
 	}
 
 	public boolean isKeyLoaded(String nickname) {
@@ -465,8 +479,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		setResizeAllowed(true);
 
-		ConnectionNotifier.getInstance().hideRunningNotification(this);
-
 		stopIdleTimer();
 
 		// Make sure we stay running to maintain the bridges
@@ -481,8 +493,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		setResizeAllowed(true);
 
-		ConnectionNotifier.getInstance().hideRunningNotification(this);
-
 		Log.i(TAG, "Someone rebound to TerminalManager");
 
 		stopIdleTimer();
@@ -496,13 +506,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		if (bridges.size() == 0) {
 			stopWithDelay();
-		} else {
-			/* If user wants the connections to stay alive at all costs,
-			 * set the service to be "foreground."
-			 */
-			if (prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)) {
-				ConnectionNotifier.getInstance().showRunningNotification(this);
-			}
 		}
 
 		return true;
@@ -565,7 +568,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 			vibrate();
 	}
 
-	class BeepListener implements OnCompletionListener {
+	private static class BeepListener implements OnCompletionListener {
 		public void onCompletion(MediaPlayer mp) {
 			mp.seekTo(0);
 		}
@@ -647,6 +650,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				disconnectAll(false);
 			}
 		};
+		t.setName("Disconnector");
 		t.start();
 	}
 
@@ -660,6 +664,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				reconnectPending();
 			}
 		};
+		t.setName("Reconnector");
 		t.start();
 	}
 
@@ -673,7 +678,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public void requestReconnect(TerminalBridge bridge) {
 		synchronized (mPendingReconnect) {
 			mPendingReconnect.add(new WeakReference<TerminalBridge>(bridge));
-			if (connectivityManager.isConnected()) {
+			if (!bridge.isUsingNetwork() ||
+					connectivityManager.isConnected()) {
 				reconnectPending();
 			}
 		}

@@ -92,7 +92,7 @@
 
 		<Button
 			android:id="@+id/console_prompt_no"
-			android:text="No"
+			android:text="@string/button_no"
 			android:paddingTop="5dip"
 			android:paddingBottom="10dip"
 			android:paddingLeft="40dip"
@@ -106,7 +106,7 @@
 
 		<Button
 			android:id="@+id/console_prompt_yes"
-			android:text="Yes"
+			android:text="@string/button_yes"
 			android:paddingTop="5dip"
 			android:paddingBottom="10dip"
 			android:paddingLeft="40dip"
@@ -119,16 +119,43 @@
 
 	</RelativeLayout>
 
-	<ImageView
-		android:id="@+id/keyboard_button"
-		android:paddingRight="15dip"
-		android:paddingBottom="15dip"
-		android:layout_width="wrap_content"
+	<RelativeLayout
+		android:id="@+id/keyboard_group"
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
-		android:layout_alignParentRight="true"
-		android:visibility="gone"
-		android:src="@+drawable/keyboard_icon"
-		/>
+		android:padding="15dip"
+		android:visibility="gone">
+
+		<ImageView
+			android:id="@+id/button_keyboard"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentRight="true"
+			android:src="@+drawable/button_keyboard"
+			/>
+
+		<ImageView
+			android:id="@+id/button_ctrl"
+			android:paddingRight="15dip"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_alignParentBottom="true"
+			android:src="@+drawable/button_ctrl"
+			/>
+
+		<ImageView
+			android:id="@+id/button_esc"
+			android:paddingRight="15dip"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@+id/button_ctrl"
+			android:layout_alignParentBottom="true"
+			android:src="@+drawable/button_esc"
+			/>
+
+	</RelativeLayout>
 
 </RelativeLayout>

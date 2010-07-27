@@ -23,6 +23,7 @@ import java.util.List;
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
+import org.connectbot.service.TerminalKeyListener;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.PreferenceConstants;
 
@@ -116,7 +117,6 @@ public class ConsoleActivity extends Activity {
 	private Animation slide_left_in, slide_left_out, slide_right_in, slide_right_out, fade_stay_hidden, fade_out_delayed;
 
 	private Animation keyboard_fade_in, keyboard_fade_out;
-	private ImageView keyboardButton;
 	private float lastX, lastY;
 
 	private InputMethodManager inputManager;
@@ -129,6 +129,8 @@ public class ConsoleActivity extends Activity {
 	private boolean forcedOrientation;
 
 	private Handler handler = new Handler();
+
+	private ImageView mKeyboardButton;
 
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
@@ -347,15 +349,46 @@ public class ConsoleActivity extends Activity {
 		keyboard_fade_out = AnimationUtils.loadAnimation(this, R.anim.keyboard_fade_out);
 
 		inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		keyboardButton = (ImageView) findViewById(R.id.keyboard_button);
-		keyboardButton.setOnClickListener(new OnClickListener() {
+
+		final RelativeLayout keyboardGroup = (RelativeLayout) findViewById(R.id.keyboard_group);
+
+		mKeyboardButton = (ImageView) findViewById(R.id.button_keyboard);
+		mKeyboardButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				View flip = findCurrentView(R.id.console_flip);
 				if (flip == null)
 					return;
 
 				inputManager.showSoftInput(flip, InputMethodManager.SHOW_FORCED);
-				keyboardButton.setVisibility(View.GONE);
+				keyboardGroup.setVisibility(View.GONE);
+			}
+		});
+
+		final ImageView ctrlButton = (ImageView) findViewById(R.id.button_ctrl);
+		ctrlButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View flip = findCurrentView(R.id.console_flip);
+				if (flip == null) return;
+				TerminalView terminal = (TerminalView)flip;
+
+				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+				handler.metaPress(TerminalKeyListener.META_CTRL_ON);
+
+				keyboardGroup.setVisibility(View.GONE);
+			}
+		});
+
+		final ImageView escButton = (ImageView) findViewById(R.id.button_esc);
+		escButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View flip = findCurrentView(R.id.console_flip);
+				if (flip == null) return;
+				TerminalView terminal = (TerminalView)flip;
+
+				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+				handler.sendEscape();
+
+				keyboardGroup.setVisibility(View.GONE);
 			}
 		});
 
@@ -519,21 +552,20 @@ public class ConsoleActivity extends Activity {
 					lastX = event.getX();
 					lastY = event.getY();
 				} else if (event.getAction() == MotionEvent.ACTION_UP
-						&& config.hardKeyboardHidden != Configuration.KEYBOARDHIDDEN_NO
-						&& keyboardButton.getVisibility() == View.GONE
+						&& keyboardGroup.getVisibility() == View.GONE
 						&& event.getEventTime() - event.getDownTime() < CLICK_TIME
 						&& Math.abs(event.getX() - lastX) < MAX_CLICK_DISTANCE
 						&& Math.abs(event.getY() - lastY) < MAX_CLICK_DISTANCE) {
-					keyboardButton.startAnimation(keyboard_fade_in);
-					keyboardButton.setVisibility(View.VISIBLE);
+					keyboardGroup.startAnimation(keyboard_fade_in);
+					keyboardGroup.setVisibility(View.VISIBLE);
 
 					handler.postDelayed(new Runnable() {
 						public void run() {
-							if (keyboardButton.getVisibility() == View.GONE)
+							if (keyboardGroup.getVisibility() == View.GONE)
 								return;
 
-							keyboardButton.startAnimation(keyboard_fade_out);
-							keyboardButton.setVisibility(View.GONE);
+							keyboardGroup.startAnimation(keyboard_fade_out);
+							keyboardGroup.setVisibility(View.GONE);
 						}
 					}, KEYBOARD_DISPLAY_TIME);
 				}
@@ -1006,6 +1038,8 @@ public class ConsoleActivity extends Activity {
 				bound.setResizeAllowed(true);
 
 			bound.hardKeyboardHidden = (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES);
+
+			mKeyboardButton.setVisibility(bound.hardKeyboardHidden ? View.VISIBLE : View.GONE);
 		}
 	}
 

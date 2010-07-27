@@ -31,6 +31,8 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
 	private boolean mLockingWifi;
 
+	private Object[] mLock = new Object[0];
+
 	public ConnectivityReceiver(TerminalManager manager, boolean lockingWifi) {
 		mTerminalManager = manager;
 
@@ -93,21 +95,26 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 	}
 
 	/**
-	 * Increase the number of things using the network. Acquire a Wifi lock if necessary.
+	 * Increase the number of things using the network. Acquire a Wi-Fi lock
+	 * if necessary.
 	 */
 	public void incRef() {
-		synchronized (this) {
-			acquireWifiLockIfNecessary();
+		synchronized (mLock) {
+			acquireWifiLockIfNecessaryLocked();
 
 			mNetworkRef  += 1;
 		}
 	}
 
+	/**
+	 * Decrease the number of things using the network. Release the Wi-Fi lock
+	 * if necessary.
+	 */
 	public void decRef() {
-		synchronized (this) {
+		synchronized (mLock) {
 			mNetworkRef -= 1;
 
-			releaseWifiLockIfNecessary();
+			releaseWifiLockIfNecessaryLocked();
 		}
 	}
 
@@ -115,32 +122,24 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 	 * @param mLockingWifi
 	 */
 	public void setWantWifiLock(boolean lockingWifi) {
-		synchronized (this) {
+		synchronized (mLock) {
 			mLockingWifi = lockingWifi;
 
 			if (mLockingWifi) {
-				acquireWifiLockIfNecessary();
-			} else if (!mLockingWifi) {
-				releaseWifiLockIfNecessary();
+				acquireWifiLockIfNecessaryLocked();
+			} else {
+				releaseWifiLockIfNecessaryLocked();
 			}
 		}
 	}
 
-	/**
-	 *
-	 */
-	private void acquireWifiLockIfNecessary() {
-		synchronized (this) {
-			if (mLockingWifi && mNetworkRef > 0 && !mWifiLock.isHeld()) {
-				mWifiLock.acquire();
-			}
+	private void acquireWifiLockIfNecessaryLocked() {
+		if (mLockingWifi && mNetworkRef > 0 && !mWifiLock.isHeld()) {
+			mWifiLock.acquire();
 		}
 	}
 
-	/**
-	 *
-	 */
-	private void releaseWifiLockIfNecessary() {
+	private void releaseWifiLockIfNecessaryLocked() {
 		if (mNetworkRef == 0 && mWifiLock.isHeld()) {
 			mWifiLock.release();
 		}
