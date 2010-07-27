@@ -130,6 +130,8 @@ public class ConsoleActivity extends Activity {
 
 	private Handler handler = new Handler();
 
+	private ImageView mKeyboardButton;
+
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
@@ -348,19 +350,21 @@ public class ConsoleActivity extends Activity {
 
 		inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-		final ImageView keyboardButton = (ImageView) findViewById(R.id.button_keyboard);
-		keyboardButton.setOnClickListener(new OnClickListener() {
+		final RelativeLayout keyboardGroup = (RelativeLayout) findViewById(R.id.keyboard_group);
+
+		mKeyboardButton = (ImageView) findViewById(R.id.button_keyboard);
+		mKeyboardButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				View flip = findCurrentView(R.id.console_flip);
 				if (flip == null)
 					return;
 
 				inputManager.showSoftInput(flip, InputMethodManager.SHOW_FORCED);
-				keyboardButton.setVisibility(View.GONE);
+				keyboardGroup.setVisibility(View.GONE);
 			}
 		});
 
-		final ImageView ctrlButton = (ImageView) findViewById(R.id.button_keyboard);
+		final ImageView ctrlButton = (ImageView) findViewById(R.id.button_ctrl);
 		ctrlButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				View flip = findCurrentView(R.id.console_flip);
@@ -369,10 +373,12 @@ public class ConsoleActivity extends Activity {
 
 				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
 				handler.metaPress(TerminalKeyListener.META_CTRL_ON);
+
+				keyboardGroup.setVisibility(View.GONE);
 			}
 		});
 
-		final ImageView escButton = (ImageView) findViewById(R.id.button_keyboard);
+		final ImageView escButton = (ImageView) findViewById(R.id.button_esc);
 		escButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				View flip = findCurrentView(R.id.console_flip);
@@ -381,6 +387,8 @@ public class ConsoleActivity extends Activity {
 
 				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
 				handler.sendEscape();
+
+				keyboardGroup.setVisibility(View.GONE);
 			}
 		});
 
@@ -544,21 +552,20 @@ public class ConsoleActivity extends Activity {
 					lastX = event.getX();
 					lastY = event.getY();
 				} else if (event.getAction() == MotionEvent.ACTION_UP
-						&& config.hardKeyboardHidden != Configuration.KEYBOARDHIDDEN_NO
-						&& keyboardButton.getVisibility() == View.GONE
+						&& keyboardGroup.getVisibility() == View.GONE
 						&& event.getEventTime() - event.getDownTime() < CLICK_TIME
 						&& Math.abs(event.getX() - lastX) < MAX_CLICK_DISTANCE
 						&& Math.abs(event.getY() - lastY) < MAX_CLICK_DISTANCE) {
-					keyboardButton.startAnimation(keyboard_fade_in);
-					keyboardButton.setVisibility(View.VISIBLE);
+					keyboardGroup.startAnimation(keyboard_fade_in);
+					keyboardGroup.setVisibility(View.VISIBLE);
 
 					handler.postDelayed(new Runnable() {
 						public void run() {
-							if (keyboardButton.getVisibility() == View.GONE)
+							if (keyboardGroup.getVisibility() == View.GONE)
 								return;
 
-							keyboardButton.startAnimation(keyboard_fade_out);
-							keyboardButton.setVisibility(View.GONE);
+							keyboardGroup.startAnimation(keyboard_fade_out);
+							keyboardGroup.setVisibility(View.GONE);
 						}
 					}, KEYBOARD_DISPLAY_TIME);
 				}
@@ -1031,6 +1038,8 @@ public class ConsoleActivity extends Activity {
 				bound.setResizeAllowed(true);
 
 			bound.hardKeyboardHidden = (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES);
+
+			mKeyboardButton.setVisibility(bound.hardKeyboardHidden ? View.VISIBLE : View.GONE);
 		}
 	}
 
