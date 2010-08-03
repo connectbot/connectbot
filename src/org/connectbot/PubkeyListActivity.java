@@ -293,7 +293,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		Log.d(TAG, String.format("Unlocked key '%s'", pubkey.getNickname()));
 
 		// save this key in memory
-		bound.addKey(pubkey, trileadKey);
+		bound.addKey(pubkey, trileadKey, true);
 
 		updateHandler.sendEmptyMessage(-1);
 	}
