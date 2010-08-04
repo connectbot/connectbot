@@ -915,8 +915,6 @@ public class TerminalBridge implements VDUDisplay {
 		color = manager.hostdb.getColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
 	}
 
-	// This was taken from http://geekswithblogs.net/casualjim/archive/2005/12/01/61722.aspx
-	private final static String urlRegex = "(?:(?:ht|f)tp(?:s?)\\:\\/\\/|~/|/)?(?:\\w+:\\w+@)?(?:(?:[-\\w]+\\.)+(?:com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))(?::[\\d]{1,5})?(?:(?:(?:/(?:[-\\w~!$+|.,=]|%[a-f\\d]{2})+)+|/)+|\\?|#)?(?:(?:\\?(?:[-\\w~!$+|.,*:]|%[a-f\\d{2}])+=(?:[-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)(?:&(?:[-\\w~!$+|.,*:]|%[a-f\\d{2}])+=(?:[-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)*)*(?:#(?:[-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)?";
 	private static Pattern urlPattern = null;
 
 	/**
@@ -925,8 +923,36 @@ public class TerminalBridge implements VDUDisplay {
 	public List<String> scanForURLs() {
 		List<String> urls = new LinkedList<String>();
 
-		if (urlPattern == null)
-			urlPattern = Pattern.compile(urlRegex);
+		if (urlPattern == null) {
+			// based on http://www.ietf.org/rfc/rfc2396.txt
+			String scheme = "[A-Za-z][-+.0-9A-Za-z]*";
+			String unreserved = "[-._~0-9A-Za-z]";
+			String pctEncoded = "%[0-9A-Fa-f]{2}";
+			String subDelims = "[!$&'()*+,;=]";
+			String userinfo = "(?:" + unreserved + "|" + pctEncoded + "|" + subDelims + "|:)*";
+			String h16 = "[0-9A-Fa-f]{1,4}";
+			String decOctet = "(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])";
+			String ipv4address = decOctet + "\\." + decOctet + "\\." + decOctet + "\\." + decOctet;
+			String ls32 = "(?:" + h16 + ":" + h16 + "|" + ipv4address + ")";
+			String ipv6address = "(?:(?:" + h16 + "){6}" + ls32 + ")";
+			String ipvfuture = "v[0-9A-Fa-f]+.(?:" + unreserved + "|" + subDelims + "|:)+";
+			String ipLiteral = "\\[(?:" + ipv6address + "|" + ipvfuture + ")\\]";
+			String regName = "(?:" + unreserved + "|" + pctEncoded + "|" + subDelims + ")*";
+			String host = "(?:" + ipLiteral + "|" + ipv4address + "|" + regName + ")";
+			String port = "[0-9]*";
+			String authority = "(?:" + userinfo + "@)?" + host + "(?::" + port + ")?";
+			String pchar = "(?:" + unreserved + "|" + pctEncoded + "|" + subDelims + ")";
+			String segment = pchar + "*";
+			String pathAbempty = "(?:/" + segment + ")*";
+			String segmentNz = pchar + "+";
+			String pathAbsolute = "/(?:" + segmentNz + "(?:/" + segment + ")*)?";
+			String pathRootless = segmentNz + "(?:/" + segment + ")*";
+			String hierPart = "(?://" + authority + pathAbempty + "|" + pathAbsolute + "|" + pathRootless + ")";
+			String query = "(?:" + pchar + "|/|\\?)*";
+			String fragment = "(?:" + pchar + "|/|\\?)*";
+			String uriRegex = scheme + ":" + hierPart + "(?:" + query + ")?(?:#" + fragment + ")?";
+			urlPattern = Pattern.compile(uriRegex);
+		}
 
 		char[] visibleBuffer = new char[buffer.height * buffer.width];
 		for (int l = 0; l < buffer.height; l++)
