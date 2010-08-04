@@ -26,7 +26,7 @@ import android.os.Build;
 public class PreferenceConstants {
 	public static final boolean PRE_ECLAIR = (Integer.parseInt(Build.VERSION.SDK) <= 4);
 	public static final boolean PRE_FROYO = PRE_ECLAIR ? true :
-		(Build.VERSION.SDK_INT <= 7);
+		(Integer.parseInt(Build.VERSION.SDK) <= 7);
 
 	public static final String MEMKEYS = "memkeys";
 	public static final String UPDATE = "update";
