@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.connectbot"
 	android:versionName="1.7.0-rc1"
-	android:versionCode="305"
+	android:versionCode="306"
 	android:installLocation="auto">
 
 	<application
@@ -34,7 +34,9 @@
 		<activity android:name=".HelpTopicActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".ColorsActivity" android:configChanges="keyboardHidden|orientation" />
 
-		<service android:name="org.connectbot.service.TerminalManager" android:configChanges="keyboardHidden|orientation" />
+		<service android:name="org.connectbot.service.TerminalManager"
+			android:configChanges="keyboardHidden|orientation"
+			android:description="@string/service_desc" />
 
 		<activity android:name=".ConsoleActivity" android:configChanges="keyboardHidden|orientation"
 			android:theme="@style/NoTitle" android:windowSoftInputMode="stateAlwaysVisible|adjustResize"
