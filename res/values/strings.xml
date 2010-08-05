@@ -20,6 +20,7 @@
 
 <resources>
 	<string name="app_desc">Simple, powerful, open-source SSH client.</string>
+	<string name="service_desc">Maintains SSH connections and loaded pubkeys</string>
 
 	<!-- Window title for the Host List -->
 	<string name="title_hosts_list">Hosts</string>
