@@ -17,21 +17,29 @@
 
 package org.connectbot;
 
+import java.util.List;
+
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.FontSizeChangedListener;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PixelXorXfermode;
 import android.graphics.RectF;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -62,6 +70,14 @@ public class TerminalView extends View implements FontSizeChangedListener {
 	private Toast notification = null;
 	private String lastNotification = null;
 	private volatile boolean notifications = true;
+
+	// Related to Accessibility Features
+	private boolean accessibilityActive = false;
+    private StringBuffer accessibilityBuffer = null;
+	private AccessibilityEventSender eventSender = null;
+	private int ACCESSIBILITY_EVENT_THRESHOLD = 1000;
+	private static final String SCREENREADER_INTENT_ACTION = "android.accessibilityservice.AccessibilityService";
+    private static final String SCREENREADER_INTENT_CATEGORY = "android.accessibilityservice.category.FEEDBACK_SPOKEN";
 
 	public TerminalView(Context context, TerminalBridge bridge) {
 		super(context);
@@ -112,6 +128,9 @@ public class TerminalView extends View implements FontSizeChangedListener {
 
 		// connect our view up to the bridge
 		setOnKeyListener(bridge.getKeyHandler());
+
+		// Enable accessibility features if a screen reader is active.
+		accessibilityActive = isScreenReaderActive();
 	}
 
 	public void destroy() {
@@ -267,5 +286,94 @@ public class TerminalView extends View implements FontSizeChangedListener {
 			EditorInfo.IME_ACTION_NONE;
 		outAttrs.inputType = EditorInfo.TYPE_NULL;
 		return new BaseInputConnection(this, false);
+	}
+
+    private boolean isScreenReaderActive() {
+        // Restrict the set of intents to only accessibility services that have
+        // the category FEEDBACK_SPOKEN (aka, screen readers).
+        Intent screenReaderIntent = new Intent(SCREENREADER_INTENT_ACTION);
+        screenReaderIntent.addCategory(SCREENREADER_INTENT_CATEGORY);
+        List<ResolveInfo> screenReaders = context.getPackageManager().queryIntentServices(
+                screenReaderIntent, 0);
+        ContentResolver cr = context.getContentResolver();
+        Cursor cursor = null;
+        int status = 0;
+        for (ResolveInfo screenReader : screenReaders) {
+            // All screen readers are expected to implement a content provider that responds to
+            // content://<nameofpackage>.providers.StatusProvider
+            cursor = cr.query(Uri.parse("content://" + screenReader.serviceInfo.packageName
+                    + ".providers.StatusProvider"), null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                // These content providers use a special cursor that only has one element,
+                // an integer that is 1 if the screen reader is running.
+                status = cursor.getInt(0);
+                cursor.close();
+                if (status == 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+	public StringBuffer getAccessibilityBuffer() {
+	    return accessibilityBuffer;
+	}
+
+    public void propagateConsoleText(char[] rawText, int length) {
+        if (accessibilityActive) {
+            if (accessibilityBuffer == null) {
+                accessibilityBuffer = new StringBuffer();
+            }
+
+            for (int i = 0; i < length; ++i) {
+                accessibilityBuffer.append(rawText[i]);
+            }
+
+            if (eventSender != null) {
+                removeCallbacks(eventSender);
+            } else {
+                eventSender = new AccessibilityEventSender();
+            }
+            postDelayed(eventSender, ACCESSIBILITY_EVENT_THRESHOLD);
+        }
+    }
+
+	private class AccessibilityEventSender implements Runnable {
+        public void run() {
+            synchronized (accessibilityBuffer) {
+                // Strip Console Codes
+                String regex = "" + ((char) 27) + (char) 92 + ((char) 91) + "[^m]+[m|:]";
+                accessibilityBuffer =
+                    new StringBuffer(accessibilityBuffer.toString().replaceAll(regex, " "));
+
+                // Apply Backspaces
+                String backspaceCode = "" + ((char) 8) + ((char) 27) + ((char) 91) + ((char) 75);
+                int i = accessibilityBuffer.indexOf(backspaceCode);
+                while (i != -1) {
+                    if (i == 0) {
+                        accessibilityBuffer =
+                            accessibilityBuffer.replace(i, i + backspaceCode.length(), "");
+                    } else {
+                        accessibilityBuffer =
+                            accessibilityBuffer.replace(i - 1, i + backspaceCode.length(), "");
+                    }
+                    i = accessibilityBuffer.indexOf(backspaceCode);
+                }
+
+                if (accessibilityBuffer.length() > 0) {
+                    AccessibilityEvent event =
+                        AccessibilityEvent.obtain(AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED);
+                    event.setFromIndex(0);
+                    event.setAddedCount(accessibilityBuffer.length());
+                    event.getText().add(accessibilityBuffer);
+
+                    sendAccessibilityEventUnchecked(event);
+                    accessibilityBuffer.setLength(0);
+                }
+            }
+        }
 	}
 }

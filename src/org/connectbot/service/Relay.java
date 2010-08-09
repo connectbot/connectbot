@@ -17,8 +17,6 @@
 
 package org.connectbot.service;
 
-import org.apache.harmony.niochar.charset.additional.IBM437;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -27,6 +25,7 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
 import java.nio.charset.CodingErrorAction;
 
+import org.apache.harmony.niochar.charset.additional.IBM437;
 import org.connectbot.transport.AbsTransport;
 import org.connectbot.util.EastAsianWidth;
 
@@ -154,6 +153,7 @@ public class Relay implements Runnable {
 								wideAttribute, isLegacyEastAsian);
 					}
 					buffer.putString(charArray, wideAttribute, 0, charBuffer.position());
+					bridge.propagateConsoleText(charArray, charBuffer.position());
 					charBuffer.clear();
 					bridge.redraw();
 				}
