@@ -18,6 +18,8 @@
 package org.connectbot;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.FontSizeChangedListener;
@@ -74,7 +76,10 @@ public class TerminalView extends View implements FontSizeChangedListener {
 	// Related to Accessibility Features
 	private boolean accessibilityActive = false;
 	private StringBuffer accessibilityBuffer = null;
+	private Pattern controlCodes = null;
+	private Matcher codeMatcher = null;
 	private AccessibilityEventSender eventSender = null;
+	private AccessibilityStateTester stateTester = null;
 	private int ACCESSIBILITY_EVENT_THRESHOLD = 1000;
 	private static final String SCREENREADER_INTENT_ACTION = "android.accessibilityservice.AccessibilityService";
 	private static final String SCREENREADER_INTENT_CATEGORY = "android.accessibilityservice.category.FEEDBACK_SPOKEN";
@@ -130,7 +135,8 @@ public class TerminalView extends View implements FontSizeChangedListener {
 		setOnKeyListener(bridge.getKeyHandler());
 
 		// Enable accessibility features if a screen reader is active.
-		accessibilityActive = isScreenReaderActive();
+		stateTester = new AccessibilityStateTester();
+		new Thread(stateTester).start();
 	}
 
 	public void destroy() {
@@ -288,37 +294,6 @@ public class TerminalView extends View implements FontSizeChangedListener {
 		return new BaseInputConnection(this, false);
 	}
 
-	private boolean isScreenReaderActive() {
-		// Restrict the set of intents to only accessibility services that have
-		// the category FEEDBACK_SPOKEN (aka, screen readers).
-		Intent screenReaderIntent = new Intent(SCREENREADER_INTENT_ACTION);
-		screenReaderIntent.addCategory(SCREENREADER_INTENT_CATEGORY);
-		List<ResolveInfo> screenReaders = context.getPackageManager().queryIntentServices(
-				screenReaderIntent, 0);
-		ContentResolver cr = context.getContentResolver();
-		Cursor cursor = null;
-		int status = 0;
-		for (ResolveInfo screenReader : screenReaders) {
-			// All screen readers are expected to implement a content provider
-			// that responds to:
-			// content://<nameofpackage>.providers.StatusProvider
-			cursor = cr.query(Uri.parse("content://" + screenReader.serviceInfo.packageName
-					+ ".providers.StatusProvider"), null, null, null, null);
-			if (cursor != null) {
-				cursor.moveToFirst();
-				// These content providers use a special cursor that only has
-				// one element, an integer that is 1 if the screen reader is
-				// running.
-				status = cursor.getInt(0);
-				cursor.close();
-				if (status == 1) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	public StringBuffer getAccessibilityBuffer() {
 		return accessibilityBuffer;
 	}
@@ -346,9 +321,16 @@ public class TerminalView extends View implements FontSizeChangedListener {
 		public void run() {
 			synchronized (accessibilityBuffer) {
 				// Strip console codes with regex matching control codes
-				String regex = "" + ((char) 27) + (char) 92 + ((char) 91) + "[^m]+[m|:]";
-				accessibilityBuffer = new StringBuffer(
-						accessibilityBuffer.toString().replaceAll(regex, " "));
+			    if (controlCodes == null) {
+			        controlCodes =
+			            Pattern.compile("" + ((char) 27) + (char) 92 + ((char) 91) + "[^m]+[m|:]");
+			    }
+			    if (codeMatcher == null) {
+			        codeMatcher = controlCodes.matcher(accessibilityBuffer);
+			    } else {
+			        codeMatcher.reset(accessibilityBuffer);
+			    }
+				accessibilityBuffer = new StringBuffer(codeMatcher.replaceAll(" "));
 
 				// Apply Backspaces using backspace character sequence
 				String backspaceCode = "" + ((char) 8) + ((char) 27) + ((char) 91) + ((char) 75);
@@ -377,4 +359,37 @@ public class TerminalView extends View implements FontSizeChangedListener {
 			}
 		}
 	}
+
+    private class AccessibilityStateTester implements Runnable {
+        public void run() {
+            // Restrict the set of intents to only accessibility services that
+            // have the category FEEDBACK_SPOKEN (aka, screen readers).
+            Intent screenReaderIntent = new Intent(SCREENREADER_INTENT_ACTION);
+            screenReaderIntent.addCategory(SCREENREADER_INTENT_CATEGORY);
+            List<ResolveInfo> screenReaders = context.getPackageManager().queryIntentServices(
+                    screenReaderIntent, 0);
+            ContentResolver cr = context.getContentResolver();
+            Cursor cursor = null;
+            int status = 0;
+            for (ResolveInfo screenReader : screenReaders) {
+                // All screen readers are expected to implement a content
+                // provider that responds to:
+                // content://<nameofpackage>.providers.StatusProvider
+                cursor = cr.query(Uri.parse("content://" + screenReader.serviceInfo.packageName
+                        + ".providers.StatusProvider"), null, null, null, null);
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                    // These content providers use a special cursor that only has
+                    // one element, an integer that is 1 if the screen reader is running.
+                    status = cursor.getInt(0);
+                    cursor.close();
+                    if (status == 1) {
+                        accessibilityActive = true;
+                        return;
+                    }
+                }
+            }
+            accessibilityActive = false;
+        }
+    }
 }
