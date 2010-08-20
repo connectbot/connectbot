@@ -928,7 +928,7 @@ public class TerminalBridge implements VDUDisplay {
 			String scheme = "[A-Za-z][-+.0-9A-Za-z]*";
 			String unreserved = "[-._~0-9A-Za-z]";
 			String pctEncoded = "%[0-9A-Fa-f]{2}";
-			String subDelims = "[!$&'()*+,;=]";
+			String subDelims = "[!$&'()*+,;:=]";
 			String userinfo = "(?:" + unreserved + "|" + pctEncoded + "|" + subDelims + "|:)*";
 			String h16 = "[0-9A-Fa-f]{1,4}";
 			String decOctet = "(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])";
