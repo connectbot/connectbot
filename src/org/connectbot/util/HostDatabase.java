@@ -273,8 +273,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			SQLiteDatabase db = this.getWritableDatabase();
 
 			db.update(TABLE_HOSTS, values, "_id = ?", new String[] { String.valueOf(host.getId()) });
-
-			db.close();
 		}
 	}
 
@@ -288,8 +286,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			SQLiteDatabase db = this.getWritableDatabase();
 
 			id = db.insert(TABLE_HOSTS, null, host.getValues());
-
-			db.close();
 		}
 
 		host.setId(id);
@@ -314,7 +310,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			db.update(TABLE_HOSTS, updates, "_id = ?",
 					new String[] { String.valueOf(id) });
 
-			db.close();
 		}
 
 		return true;
@@ -330,7 +325,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		synchronized (dbLock) {
 			SQLiteDatabase db = this.getWritableDatabase();
 			db.delete(TABLE_HOSTS, "_id = ?", new String[] { String.valueOf(host.getId()) });
-			db.close();
 		}
 	}
 
@@ -350,7 +344,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			hosts = createHostBeans(c);
 
 			c.close();
-			db.close();
 		}
 
 		return hosts;
@@ -473,8 +466,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 					null, null, null);
 
 			host = getFirstHostBean(c);
-
-			db.close();
 		}
 
 		return host;
@@ -495,8 +486,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 					null, null, null);
 
 			host = getFirstHostBean(c);
-
-			db.close();
 		}
 
 		return host;
@@ -521,8 +510,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 					FIELD_HOST_HOSTNAME + " = ? AND " + FIELD_HOST_PORT + " = ?",
 					new String[] { hostname, String.valueOf(port) });
 			Log.d(TAG, String.format("Finished saving hostkey information for '%s'", hostname));
-
-			db.close();
 		}
 	}
 
@@ -563,8 +550,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 				c.close();
 			}
-
-			db.close();
 		}
 
 		return known;
@@ -584,7 +569,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			SQLiteDatabase db = this.getWritableDatabase();
 
 			db.update(TABLE_HOSTS, values, FIELD_HOST_PUBKEYID + " = ?", new String[] { String.valueOf(pubkeyId) });
-			db.close();
 		}
 
 		Log.d(TAG, String.format("Set all hosts using pubkey id %d to -1", pubkeyId));
@@ -624,7 +608,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			}
 
 			c.close();
-			db.close();
 		}
 
 		return portForwards;
@@ -649,8 +632,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 				if (db.update(TABLE_PORTFORWARDS, pfb.getValues(), "_id = ?", new String[] { String.valueOf(pfb.getId()) }) > 0)
 					success = true;
 			}
-
-			db.close();
 		}
 
 		return success;
@@ -667,7 +648,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		synchronized (dbLock) {
 			SQLiteDatabase db = this.getWritableDatabase();
 			db.delete(TABLE_PORTFORWARDS, "_id = ?", new String[] { String.valueOf(pfb.getId()) });
-			db.close();
 		}
 	}
 
@@ -688,7 +668,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			}
 
 			c.close();
-			db.close();
 		}
 
 		return colors;
@@ -712,8 +691,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 						FIELD_COLOR_NUMBER + " = ? AND "
 						+ schemeWhere,
 						new String[] { String.valueOf(number) });
-
-				db.close();
 			}
 		} else {
 			ContentValues values = new ContentValues();
@@ -732,8 +709,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 				if (rowsAffected == 0) {
 					db.insert(TABLE_COLORS, null, values);
 				}
-
-				db.close();
 			}
 		}
 	}
@@ -760,8 +735,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			}
 
 			c.close();
-
-			db.close();
 		}
 
 		return colors;
@@ -794,8 +767,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 				values.put(FIELD_COLOR_SCHEME, scheme);
 				db.insert(TABLE_COLOR_DEFAULTS, null, values);
 			}
-
-			db.close();
 		}
 	}
 }
