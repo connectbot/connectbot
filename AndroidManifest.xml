@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.connectbot"
-	android:versionName="1.7.0-rc1"
-	android:versionCode="306"
+	android:versionName="1.7.0-rc2"
+	android:versionCode="307"
 	android:installLocation="auto">
 
 	<application
