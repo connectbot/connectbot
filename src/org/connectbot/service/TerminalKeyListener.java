@@ -168,8 +168,6 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			// otherwise pass through to existing session
 			// print normal keys
 			if (printing) {
-				int curMetaState = event.getMetaState();
-
 				metaState &= ~(META_SLASH | META_TAB);
 
 				if ((metaState & META_SHIFT_MASK) != 0) {
