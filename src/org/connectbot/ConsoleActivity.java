@@ -85,9 +85,9 @@ public class ConsoleActivity extends Activity {
 
 	protected static final int REQUEST_EDIT = 1;
 
-	private static final int CLICK_TIME = 250;
+	private static final int CLICK_TIME = 400;
 	private static final float MAX_CLICK_DISTANCE = 25f;
-	private static final int KEYBOARD_DISPLAY_TIME = 1250;
+	private static final int KEYBOARD_DISPLAY_TIME = 1500;
 
 	// Direction to shift the ViewFlipper
 	private static final int SHIFT_LEFT = 0;
