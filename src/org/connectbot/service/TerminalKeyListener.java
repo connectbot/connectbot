@@ -161,13 +161,13 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 			bridge.resetScrollPosition();
 
-			int curMetaState = event.getMetaState();
-			int key = keymap.get(keyCode, curMetaState);
-			boolean printing = (key != 0 || key == KeyEvent.KEYCODE_SPACE);
+			boolean printing = (keymap.isPrintingKey(keyCode) || keyCode == KeyEvent.KEYCODE_SPACE);
 
 			// otherwise pass through to existing session
 			// print normal keys
 			if (printing) {
+				int curMetaState = event.getMetaState();
+
 				metaState &= ~(META_SLASH | META_TAB);
 
 				if ((metaState & META_SHIFT_MASK) != 0) {
@@ -181,6 +181,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					metaState &= ~META_ALT_ON;
 					bridge.redraw();
 				}
+
+				int key = keymap.get(keyCode, curMetaState);
 
 				if ((metaState & META_CTRL_MASK) != 0) {
 					metaState &= ~META_CTRL_ON;
