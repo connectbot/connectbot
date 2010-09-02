@@ -30,7 +30,7 @@ public class ExceptionClickListener implements OnClickListener {
 				public void run() {
 					ExceptionHandler.submitStackTraces();
 				}
-			}).run();
+			}).start();
 			break;
 		case DialogInterface.BUTTON_NEGATIVE:
 			dialog.dismiss();
@@ -39,7 +39,7 @@ public class ExceptionClickListener implements OnClickListener {
 				public void run() {
 					ExceptionHandler.removeStackTraces();
 				}
-			}).run();
+			}).start();
 			break;
 		default:
 			Log.d("ExceptionClickListener", "Got unknown button click: " + whichButton);
