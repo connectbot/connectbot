@@ -30,6 +30,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PixelXorXfermode;
 import android.graphics.RectF;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.BaseInputConnection;
@@ -266,6 +267,18 @@ public class TerminalView extends View implements FontSizeChangedListener {
 			EditorInfo.IME_FLAG_NO_ENTER_ACTION |
 			EditorInfo.IME_ACTION_NONE;
 		outAttrs.inputType = EditorInfo.TYPE_NULL;
-		return new BaseInputConnection(this, false);
+		return new BaseInputConnection(this, false) {
+			@Override
+			public boolean deleteSurroundingText (int leftLength, int rightLength) {
+				if (rightLength == 0 && leftLength == 0) {
+					return this.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+				}
+				for (int i = 0, i < lengthLeft; i++) {
+					this.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+				}
+				// TODO: forward delete
+				return true;
+			}
+		};
 	}
 }
