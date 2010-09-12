@@ -273,7 +273,7 @@ public class TerminalView extends View implements FontSizeChangedListener {
 				if (rightLength == 0 && leftLength == 0) {
 					return this.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
 				}
-				for (int i = 0, i < lengthLeft; i++) {
+				for (int i = 0; i < leftLength; i++) {
 					this.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
 				}
 				// TODO: forward delete
