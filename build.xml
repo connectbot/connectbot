@@ -538,8 +538,6 @@
     <target name="update-version" description="Updates the Version.java file with current Git revision">
         <echo>Updating resources with Git revision and build date...</echo>
 
-        <property name="revision" value="HEAD"/>
-
         <tstamp>
             <format property="build.date" pattern="yyyy.MM.dd" />
         </tstamp>
@@ -548,15 +546,15 @@
         <xpath input="AndroidManifest.xml" expression="/manifest/@android:versionName"
                     output="manifest.version.name" />
 
-        <!-- find out svn.revision of HEAD, need svn.exe installed on local machine will en up in property ${Revision} -->
+        <!-- find out the description of the current Git commit -->
         <exec executable="git" outputproperty="git.revision">
-            <arg line="rev-parse --short ${revision}"/>
+            <arg line="describe --dirty"/>
         </exec>
 
         <replaceregexp file="${resource.absolute.dir}/values/notrans.xml" encoding="utf8" match='(\x3Cstring name="msg_version">)[^\x3C]*(\x3C/string>)'
-            replace='\1${ant.project.name} ${manifest.version.name} (r${git.revision} ${build.date})\2' />
+            replace='\1${ant.project.name} ${manifest.version.name} (${git.revision} ${build.date})\2' />
 
-        <echo>Updated "msg_version" to: ${ant.project.name} ${manifest.version.name} (r${git.revision} ${build.date})</echo>
+        <echo>Updated "msg_version" to: ${ant.project.name} ${manifest.version.name} (${git.revision} ${build.date})</echo>
     </target>
 
     <target name="clean"
