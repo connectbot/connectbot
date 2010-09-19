@@ -345,7 +345,7 @@
         <apply executable="${dx}" failonerror="true" parallel="true">
             <arg value="--dex" />
             <arg value="--output=${intermediate.dex.file}" />
-	    <arg path="${out.classes.absolute.dir}" />
+            <arg path="${out.classes.absolute.dir}" />
             <fileset dir="${external.libs.absolute.dir}" includes="*.jar"/>
         </apply>
     </target>
@@ -546,9 +546,14 @@
         <xpath input="AndroidManifest.xml" expression="/manifest/@android:versionName"
                     output="manifest.version.name" />
 
+        <!-- checkout notrans.xml so we can ignore it in our index -->
+        <exec executable="git">
+            <arg line="checkout res/values/notrans.xml"/>
+        </exec>
+
         <!-- find out the description of the current Git commit -->
         <exec executable="git" outputproperty="git.revision">
-            <arg line="describe --dirty"/>
+            <arg line="describe --match 'v[0-9]*' --dirty"/>
         </exec>
 
         <replaceregexp file="${resource.absolute.dir}/values/notrans.xml" encoding="utf8" match='(\x3Cstring name="msg_version">)[^\x3C]*(\x3C/string>)'
