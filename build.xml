@@ -54,31 +54,31 @@
         <fail unless="have.proguard">You requested ProGuard, but you don't have the JAR available! See README</fail>
     </target>
 
-    <target name="-pre-build" depends="create.out.dir, link.out.dir"/>
+    <target name="-pre-build" depends="create-out-dir, link-out-dir, update-version"/>
 
-    <target name="-post-compile" depends="proguard.execute"/>
+    <target name="-post-compile" depends="proguard-execute"/>
 
-    <target name="remove.out.symlink">
+    <target name="remove-out-symlink">
         <symlink action="delete" link="${proguard.out.dir}" failonerror="false"/>
     </target>
 
-    <target name="check.out.exists" depends="remove.out.symlink">
+    <target name="check-out-exists" depends="remove-out-symlink">
         <available file="${proguard.out.dir}" property="proguard.out.is.dir"/>
     </target>
 
-    <target name="delete.out.dir" depends="check.out.exists" if="proguard.out.is.dir">
+    <target name="delete-out-dir" depends="check-out-exists" if="proguard.out.is.dir">
         <delete dir="${proguard.out.dir}"/>
     </target>
 
-    <target name="create.out.dir" depends="delete.out.dir" if="have.proguard">
+    <target name="create-out-dir" depends="delete-out-dir" if="have.proguard">
         <mkdir dir="${proguard.out.dir}"/>
     </target>
 
-    <target name="link.out.dir" depends="delete.out.dir" unless="have.proguard">
+    <target name="link-out-dir" depends="delete-out-dir" unless="have.proguard">
         <symlink link="${proguard.out.dir}" resource="${out.classes.dir}"/>
     </target>
 
-    <target name="proguard.execute" if="have.proguard">
+    <target name="proguard-execute" if="have.proguard">
         <mkdir dir="${out.dex.input.absolute.dir}"/>
         <taskdef resource="proguard/ant/task.properties"
                 classpath="tools/proguard.jar" />
