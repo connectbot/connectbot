@@ -44,7 +44,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.util.Log;
@@ -98,8 +97,6 @@ public class ConsoleActivity extends Activity {
 	protected LayoutInflater inflater = null;
 
 	private SharedPreferences prefs = null;
-
-	private PowerManager.WakeLock wakelock = null;
 
 	protected Uri requested;
 
@@ -277,9 +274,6 @@ public class ConsoleActivity extends Activity {
 
 		// TODO find proper way to disable volume key beep if it exists.
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
-		PowerManager manager = (PowerManager)getSystemService(Context.POWER_SERVICE);
-		wakelock = manager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, TAG);
 
 		// handle requested console from incoming intent
 		requested = getIntent().getData();
@@ -817,10 +811,6 @@ public class ConsoleActivity extends Activity {
 		super.onPause();
 		Log.d(TAG, "onPause called");
 
-		// Allow the screen to dim and fall asleep.
-		if (wakelock != null && wakelock.isHeld())
-			wakelock.release();
-
 		if (forcedOrientation && bound != null)
 			bound.setResizeAllowed(false);
 	}
@@ -832,8 +822,11 @@ public class ConsoleActivity extends Activity {
 
 		// Make sure we don't let the screen fall asleep.
 		// This also keeps the Wi-Fi chipset from disconnecting us.
-		if (wakelock != null && prefs.getBoolean(PreferenceConstants.KEEP_ALIVE, true))
-			wakelock.acquire();
+		if (prefs.getBoolean(PreferenceConstants.KEEP_ALIVE, true)) {
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		} else {
+			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		}
 
 		configureOrientation();
 
