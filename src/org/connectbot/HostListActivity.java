@@ -178,7 +178,8 @@ public class HostListActivity extends ListActivity {
 		// start thread to check for new version
 		new UpdateHelper(this);
 
-		this.makingShortcut = Intent.ACTION_CREATE_SHORTCUT.equals(getIntent().getAction());
+		this.makingShortcut = Intent.ACTION_CREATE_SHORTCUT.equals(getIntent().getAction())
+								|| Intent.ACTION_PICK.equals(getIntent().getAction());
 
 		// connect with hosts database and populate list
 		this.hostdb = new HostDatabase(this);
