@@ -270,6 +270,10 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					case KeyEvent.KEYCODE_SHIFT_RIGHT:
 						metaPress(META_SHIFT_ON);
 						return true;
+					case 93:
+					case 94:
+						metaPress(META_CTRL_ON);
+						return true;
 					}
 				}
 			}
