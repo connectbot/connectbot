@@ -25,6 +25,7 @@ import org.connectbot.util.PreferenceConstants;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.util.Log;
@@ -68,6 +69,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 	private String keymode = null;
 	private boolean hardKeyboard = false;
+	private boolean toshibaAC100 = false;
 
 	private int metaState = 0;
 
@@ -95,6 +97,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 		hardKeyboard = (manager.res.getConfiguration().keyboard
 				== Configuration.KEYBOARD_QWERTY);
+
+		toshibaAC100 = "TOSHIBA_AC_AND_AZ".equals(new Build().PRODUCT);
 
 		updateKeymode();
 	}
@@ -185,7 +189,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				int key = keymap.get(keyCode, curMetaState);
 
 				if ((metaState & META_CTRL_MASK) != 0 ||
-				    (curMetaState & 8) != 0) {
+				    (toshibaAC100 && (curMetaState & 8) != 0)) {
 					metaState &= ~META_CTRL_ON;
 					bridge.redraw();
 
@@ -230,6 +234,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 			// try handling keymode shortcuts
 			if (hardKeyboard && !hardKeyboardHidden &&
+					!toshibaAC100 &&
 					event.getRepeatCount() == 0) {
 				if (PreferenceConstants.KEYMODE_RIGHT.equals(keymode)) {
 					switch (keyCode) {
