@@ -184,7 +184,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 				int key = keymap.get(keyCode, curMetaState);
 
-				if ((metaState & META_CTRL_MASK) != 0) {
+				if ((metaState & META_CTRL_MASK) != 0 ||
+				    (curMetaState & 8) != 0) {
 					metaState &= ~META_CTRL_ON;
 					bridge.redraw();
 
@@ -269,10 +270,6 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					case KeyEvent.KEYCODE_SHIFT_LEFT:
 					case KeyEvent.KEYCODE_SHIFT_RIGHT:
 						metaPress(META_SHIFT_ON);
-						return true;
-					case 93:
-					case 94:
-						metaPress(META_CTRL_ON);
 						return true;
 					}
 				}
