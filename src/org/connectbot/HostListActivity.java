@@ -45,6 +45,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -543,20 +544,9 @@ public class HostListActivity extends ListActivity {
 				holder.caption.setTextAppearance(context, android.R.attr.textAppearanceSmall);
 			}
 
-			long now = System.currentTimeMillis() / 1000;
-
-			String nice = context.getString(R.string.bind_never);
+			CharSequence nice = context.getString(R.string.bind_never);
 			if (host.getLastConnect() > 0) {
-				int minutes = (int)((now - host.getLastConnect()) / 60);
-				if (minutes >= 60) {
-					int hours = (minutes / 60);
-					if (hours >= 24) {
-						int days = (hours / 24);
-						nice = context.getString(R.string.bind_days, days);
-					} else
-						nice = context.getString(R.string.bind_hours, hours);
-				} else
-					nice = context.getString(R.string.bind_minutes, minutes);
+				nice = DateUtils.getRelativeTimeSpanString(host.getLastConnect() * 1000);
 			}
 
 			holder.caption.setText(nice);

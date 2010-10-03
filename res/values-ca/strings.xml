@@ -291,12 +291,6 @@
 
 	<!-- Displayed to indicate a host has never been connected to. -->
 	<string name="bind_never">Mai connectat</string>
-	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
-	<string name="bind_minutes">Fa %1$s minuts</string>
-	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
-	<string name="bind_hours">Fa %1$s hores</string>
-	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
-	<string name="bind_days">Fa %1$s dies</string>
 
 	<!-- Message given when user copies from the terminal. -->
 	<string name="console_copy_done">Copiats %1$d bytes al porta-retalls</string>

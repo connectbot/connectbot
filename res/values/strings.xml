@@ -293,12 +293,6 @@
 
 	<!-- Displayed to indicate a host has never been connected to. -->
 	<string name="bind_never">Never connected</string>
-	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
-	<string name="bind_minutes">%1$s minutes ago</string>
-	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
-	<string name="bind_hours">%1$s hours ago</string>
-	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
-	<string name="bind_days">%1$s days ago</string>
 
 	<!-- Message given when user copies from the terminal. -->
 	<string name="console_copy_done">Copied %1$d bytes to clipboard</string>

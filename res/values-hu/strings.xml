@@ -291,12 +291,6 @@
 
 	<!-- Displayed to indicate a host has never been connected to. -->
 	<string name="bind_never">Még nem csatlakozott</string>
-	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
-	<string name="bind_minutes">%1$s perce</string>
-	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
-	<string name="bind_hours">%1$s órája</string>
-	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
-	<string name="bind_days">%1$s napja</string>
 
 	<!-- Message given when user copies from the terminal. -->
 	<string name="console_copy_done">%1$d bájt a vágólapra másolva</string>
