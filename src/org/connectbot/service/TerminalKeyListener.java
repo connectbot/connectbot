@@ -165,7 +165,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 			bridge.resetScrollPosition();
 
-			boolean printing = (keymap.isPrintingKey(keyCode) || keyCode == KeyEvent.KEYCODE_SPACE);
+			boolean printing = (keymap.isPrintingKey(keyCode) || keyCode == KeyEvent.KEYCODE_SPACE || keyCode == KeyEvent.KEYCODE_TAB);
 
 			// otherwise pass through to existing session
 			// print normal keys
