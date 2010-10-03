@@ -211,7 +211,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 				// handle pressing f-keys
 				if ((hardKeyboard && !hardKeyboardHidden)
-						&& (curMetaState & KeyEvent.META_SHIFT_ON) != 0
+						&& (curMetaState & (toshibaAC100? KeyEvent.META_ALT_LEFT_ON:KeyEvent.META_SHIFT_ON)) != 0
 						&& sendFunctionKey(keyCode))
 					return true;
 
