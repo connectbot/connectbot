@@ -17,42 +17,59 @@
 
 package org.connectbot.util;
 
-import android.util.Log;
+import android.graphics.Paint;
+import android.text.AndroidCharacter;
 
 /**
  * @author Kenny Root
  *
  */
-public class EastAsianWidth {
-	public static boolean useJNI = false;
-	private static final String TAG = "ConnectBot.EastAsianWidth";
+public abstract class EastAsianWidth {
+	public static EastAsianWidth getInstance() {
+		if (PreferenceConstants.PRE_FROYO)
+			return PreFroyo.Holder.sInstance;
+		else
+			return FroyoAndBeyond.Holder.sInstance;
+	}
 
 	/**
 	 * @param charArray
 	 * @param i
 	 * @param position
 	 * @param wideAttribute
-	 * @param isLegacyEastAsian
 	 */
-	public native static void measure(char[] charArray, int start, int end,
-			byte[] wideAttribute, boolean isLegacyEastAsian);
+	public abstract void measure(char[] charArray, int start, int end,
+			byte[] wideAttribute, Paint paint, int charWidth);
 
-	static {
-		try {
-			System.loadLibrary("org_connectbot_util_EastAsianWidth");
+	private static class PreFroyo extends EastAsianWidth {
+		private static final int BUFFER_SIZE = 4096;
+		private float[] mWidths = new float[BUFFER_SIZE];
 
-			char[] testInput = {(char)0x4EBA};
-			byte[] testResult = new byte[1];
-			measure(testInput, 0, 1, testResult, true);
+		private static class Holder {
+			private static final PreFroyo sInstance = new PreFroyo();
+		}
 
-			if (testResult[0] == 1)
-				useJNI = true;
-			else
-				Log.d(TAG, "EastAsianWidth JNI measuring not available");
-		} catch (Exception e) {
-			// Failure
-		} catch (UnsatisfiedLinkError e1) {
-			// Failure
+		@Override
+		public void measure(char[] charArray, int start, int end,
+				byte[] wideAttribute, Paint paint, int charWidth) {
+			paint.getTextWidths(charArray, start, end, mWidths);
+			final int N = end - start;
+			for (int i = 0; i < N; i++)
+				wideAttribute[i] = (byte) (((int)mWidths[i] != charWidth) ?
+						AndroidCharacter.EAST_ASIAN_WIDTH_WIDE :
+						AndroidCharacter.EAST_ASIAN_WIDTH_NARROW);
+		}
+	}
+
+	private static class FroyoAndBeyond extends EastAsianWidth {
+		private static class Holder {
+			private static final FroyoAndBeyond sInstance = new FroyoAndBeyond();
+		}
+
+		@Override
+		public void measure(char[] charArray, int start, int end,
+				byte[] wideAttribute, Paint paint, int charWidth) {
+			AndroidCharacter.getEastAsianWidths(charArray, start, end - start, wideAttribute);
 		}
 	}
 }
