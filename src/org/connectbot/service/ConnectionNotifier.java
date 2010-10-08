@@ -41,7 +41,7 @@ public abstract class ConnectionNotifier {
 	private static final int ONLINE_NOTIFICATION = 1;
 	private static final int ACTIVITY_NOTIFICATION = 2;
 
-	 public static ConnectionNotifier getInstance() {
+	public static ConnectionNotifier getInstance() {
 		if (PreferenceConstants.PRE_ECLAIR)
 			return PreEclair.Holder.sInstance;
 		else
