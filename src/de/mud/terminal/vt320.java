@@ -25,6 +25,8 @@
 
 package de.mud.terminal;
 
+import android.text.AndroidCharacter;
+
 import java.util.Properties;
 
 /**
@@ -111,8 +113,11 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
             if (lastChar != -1)
               putChar((char) lastChar, isWide, false);
             lastChar = c;
-            if (fullwidths != null)
-                isWide = fullwidths[i] == 1;
+            if (fullwidths != null) {
+                final byte width = fullwidths[i];
+                isWide = (width == AndroidCharacter.EAST_ASIAN_WIDTH_WIDE)
+                    || (width == AndroidCharacter.EAST_ASIAN_WIDTH_FULL_WIDTH);
+            }
           }
         }
       }
