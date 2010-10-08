@@ -113,7 +113,7 @@ public class PortForwardListActivity extends ListActivity {
 		host = hostdb.findHostById(hostId);
 
 		{
-			String nickname = host.getNickname();
+			final String nickname = host != null ? host.getNickname() : null;
 			final Resources resources = getResources();
 
 			if (nickname != null) {
@@ -209,7 +209,8 @@ public class PortForwardListActivity extends ListActivity {
 									break;
 								}
 
-								PortForwardBean pfb = new PortForwardBean(host.getId(),
+								PortForwardBean pfb = new PortForwardBean(
+										host != null ? host.getId() : -1,
 										nicknameEdit.getText().toString(), type,
 										sourcePortEdit.getText().toString(),
 										destEdit.getText().toString());
@@ -219,7 +220,7 @@ public class PortForwardListActivity extends ListActivity {
 									hostBridge.enablePortForward(pfb);
 								}
 
-								if (!hostdb.savePortForward(pfb))
+								if (host != null && !hostdb.savePortForward(pfb))
 									throw new SQLException("Could not save port forward");
 
 								updateHandler.sendEmptyMessage(-1);
