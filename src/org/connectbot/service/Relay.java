@@ -41,8 +41,6 @@ public class Relay implements Runnable {
 
 	private static final int BUFFER_SIZE = 4096;
 
-	private static boolean useJNI = true;
-
 	private TerminalBridge bridge;
 
 	private Charset currentCharset;
@@ -58,10 +56,6 @@ public class Relay implements Runnable {
 
 	private byte[] byteArray;
 	private char[] charArray;
-
-	static {
-		useJNI = EastAsianWidth.useJNI;
-	}
 
 	public Relay(TerminalBridge bridge, AbsTransport transport, vt320 buffer, String encoding) {
 		setCharset(encoding);
@@ -100,15 +94,8 @@ public class Relay implements Runnable {
 		byteBuffer = ByteBuffer.allocate(BUFFER_SIZE);
 		charBuffer = CharBuffer.allocate(BUFFER_SIZE);
 
-		/* for both JNI and non-JNI method */
+		/* for East Asian character widths */
 		byte[] wideAttribute = new byte[BUFFER_SIZE];
-
-		/* non-JNI fallback method */
-		float[] widths = null;
-
-		if (!useJNI) {
-			widths = new float[BUFFER_SIZE];
-		}
 
 		byteArray = byteBuffer.array();
 		charArray = charBuffer.array();
@@ -120,6 +107,8 @@ public class Relay implements Runnable {
 		int bytesToRead;
 		int offset;
 		int charWidth;
+
+		EastAsianWidth measurer = EastAsianWidth.getInstance();
 
 		try {
 			while (true) {
@@ -144,15 +133,7 @@ public class Relay implements Runnable {
 
 					offset = charBuffer.position();
 
-					if (!useJNI) {
-						bridge.defaultPaint.getTextWidths(charArray, 0, offset, widths);
-						for (int i = 0; i < offset; i++)
-							wideAttribute[i] =
-								(byte) (((int)widths[i] != charWidth) ? 1 : 0);
-					} else {
-						EastAsianWidth.measure(charArray, 0, charBuffer.position(),
-								wideAttribute, isLegacyEastAsian);
-					}
+					measurer.measure(charArray, 0, offset, wideAttribute, bridge.defaultPaint, charWidth);
 					buffer.putString(charArray, wideAttribute, 0, charBuffer.position());
 					charBuffer.clear();
 					bridge.redraw();
