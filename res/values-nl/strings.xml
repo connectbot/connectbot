@@ -269,9 +269,9 @@
 	<string name="hostpref_stayconnected_summary">Verbinding automatisch proberen te herstellen</string>
 
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_title">DEL Sleutel</string>
+	<string name="hostpref_delkey_title">Del-toets</string>
 	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_summary">De sleutelcode als DEL knop in word gedrukt</string>
+	<string name="hostpref_delkey_summary">De toetscode als de DEL-knop in wordt gedrukt</string>
 
 	<!-- Host character encoding preference title -->
 	<string name="hostpref_encoding_title">Codering</string>
