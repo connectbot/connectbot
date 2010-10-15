@@ -19,6 +19,7 @@
 -->
 <resources>
 	<string name="app_desc">Jednoduchý, všestranný, open-source SSH klient</string>
+	<string name="service_desc">Maintains SSH connections and loaded pubkeys</string>
 
 	<!-- Window title for the Host List -->
 	<string name="title_hosts_list">Hostitelé</string>
@@ -316,6 +317,11 @@
 	<!-- Button that brings up the list of URLs on the current screen -->
 	<string name="console_menu_urlscan">Najít URL</string>
 
+	<!-- Button label to answer "Yes" to a yes/no prompt -->
+	<string name="button_yes">Ano</string>
+	<!-- Button label to answer "No" to a yes/no prompt -->
+	<string name="button_no">Ne</string>
+
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
 	<string name="portforward_local">Místní</string>
 	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
@@ -452,7 +458,7 @@
 	<string name="menu_colors_reset">Obnovit</string>
 
 	<!-- Displayed in the notification bar that connections are active -->
-	<string name="app_is_running">ConnectBot is running</string>
+	<string name="app_is_running">ConnectBot běží</string>
 
 	<string name="color_red">červená</string>
 	<string name="color_green">zelená</string>
