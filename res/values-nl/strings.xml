@@ -19,6 +19,7 @@
 -->
 <resources>
 	<string name="app_desc">Simpele, krachtige, open-source SSH client.</string>
+	<string name="service_desc">Maintains SSH connections and loaded pubkeys</string>
 
 	<!-- Window title for the Host List -->
 	<string name="title_hosts_list">Hosts</string>
@@ -268,9 +269,9 @@
 	<string name="hostpref_stayconnected_summary">Verbinding automatisch proberen te herstellen</string>
 
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_title">DEL Sleutel</string>
+	<string name="hostpref_delkey_title">Del-toets</string>
 	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_summary">De sleutelcode als DEL knop in word gedrukt</string>
+	<string name="hostpref_delkey_summary">De toetscode als de DEL-knop in wordt gedrukt</string>
 
 	<!-- Host character encoding preference title -->
 	<string name="hostpref_encoding_title">Codering</string>
@@ -315,6 +316,11 @@
 	<string name="console_menu_resize">Forceer grootte</string>
 	<!-- Button that brings up the list of URLs on the current screen -->
 	<string name="console_menu_urlscan">URK Scan</string>
+
+	<!-- Button label to answer "Yes" to a yes/no prompt -->
+	<string name="button_yes">Ja</string>
+	<!-- Button label to answer "No" to a yes/no prompt -->
+	<string name="button_no">Nee</string>
 
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
 	<string name="portforward_local">Lokaal</string>

@@ -19,6 +19,7 @@
 -->
 <resources>
 	<string name="app_desc">Egyszerű, hatékony, nyílt-forráskódú SSH kliens.</string>
+	<string name="service_desc">Maintains SSH connections and loaded pubkeys</string>
 
 	<!-- Window title for the Host List -->
 	<string name="title_hosts_list">Kiszolgálók</string>
@@ -315,6 +316,11 @@
 	<string name="console_menu_resize">Méret kényszerítése</string>
 	<!-- Button that brings up the list of URLs on the current screen -->
 	<string name="console_menu_urlscan">URL Keresés</string>
+
+	<!-- Button label to answer "Yes" to a yes/no prompt -->
+	<string name="button_yes">Igen</string>
+	<!-- Button label to answer "No" to a yes/no prompt -->
+	<string name="button_no">Nem</string>
 
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
 	<string name="portforward_local">Helyi</string>

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.connectbot"
 	android:versionName="1.7.1"
-	android:versionCode="327"
+	android:versionCode="330"
 	android:installLocation="auto">
 
 	<application

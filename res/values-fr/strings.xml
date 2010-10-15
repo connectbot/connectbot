@@ -19,6 +19,7 @@
 -->
 <resources>
 	<string name="app_desc">Un client SSH simple, open-source et puissant.</string>
+	<string name="service_desc">Maintains SSH connections and loaded pubkeys</string>
 
 	<!-- Window title for the Host List -->
 	<string name="title_hosts_list">Serveurs</string>
@@ -316,6 +317,11 @@
 	<!-- Button that brings up the list of URLs on the current screen -->
 	<string name="console_menu_urlscan">Lister les URL</string>
 
+	<!-- Button label to answer "Yes" to a yes/no prompt -->
+	<string name="button_yes">Oui</string>
+	<!-- Button label to answer "No" to a yes/no prompt -->
+	<string name="button_no">Non</string>
+
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
 	<string name="portforward_local">Local</string>
 	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
@@ -371,7 +377,7 @@
 	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
 	<string name="list_camera_esc">Echap</string>
 	<!-- Selection to indicate pressing the Camera button should send "Esc+A". -->
-	<string name="list_camera_esc_a">Esc+A</string>
+	<string name="list_camera_esc_a">Echap+A</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">aucun</string>
 

@@ -19,6 +19,7 @@
 -->
 <resources>
 	<string name="app_desc">Client SSH simple, potent i lliure</string>
+	<string name="service_desc">Maintains SSH connections and loaded pubkeys</string>
 
 	<!-- Window title for the Host List -->
 	<string name="title_hosts_list">Servidors</string>
@@ -167,9 +168,9 @@
 	<string name="pref_update_summary">Escull la freqüència màxima de comprovació d\'actualitzacions de ConnectBot</string>
 
 	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">Persist connections</string>
+	<string name="pref_conn_persist_title">Connexions persistents</string>
 	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+	<string name="pref_conn_persist_summary">Manté les connexions mentre l\'aplicació és en segon pla</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">Drecera de carpetes</string>
@@ -239,7 +240,7 @@
 	<string name="hostpref_color_title">Color de la categoria</string>
 
 	<!-- Host's default font size when opening the terminal in points (pt) -->
-	<string name="hostpref_fontsize_title">Font size (pt)</string>
+	<string name="hostpref_fontsize_title">Mida de la lletra (pt)</string>
 
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">Usa autenticació de claus públiques</string>
@@ -315,6 +316,11 @@
 	<string name="console_menu_resize">Força el tamany</string>
 	<!-- Button that brings up the list of URLs on the current screen -->
 	<string name="console_menu_urlscan">Llistat de URL</string>
+
+	<!-- Button label to answer "Yes" to a yes/no prompt -->
+	<string name="button_yes">Sí</string>
+	<!-- Button label to answer "No" to a yes/no prompt -->
+	<string name="button_no">No</string>
 
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
 	<string name="portforward_local">Local</string>
@@ -449,10 +455,10 @@
 	<string name="exceptions_submit_message">Sembla que ConnectBot ha tingut un problema l\'últim cop que s\'ha iniciat. Enviar la informació de l\'error als desenvolupadors de ConnectBot?</string>
 
 	<!-- Menu selection to reset colors to their defaults. -->
-	<string name="menu_colors_reset">Reset</string>
+	<string name="menu_colors_reset">Reinicia</string>
 
 	<!-- Displayed in the notification bar that connections are active -->
-	<string name="app_is_running">ConnectBot is running</string>
+	<string name="app_is_running">El ConnectBot està en marxa</string>
 
 	<string name="color_red">vermell</string>
 	<string name="color_green">verd</string>
