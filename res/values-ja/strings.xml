@@ -19,6 +19,7 @@
 -->
 <resources>
 	<string name="app_desc">シンプルでパワフルなオープンソースのSSHクライアント</string>
+	<string name="service_desc">Maintains SSH connections and loaded pubkeys</string>
 
 	<!-- Window title for the Host List -->
 	<string name="title_hosts_list">ホスト</string>
@@ -316,6 +317,11 @@
 	<!-- Button that brings up the list of URLs on the current screen -->
 	<string name="console_menu_urlscan">URL スキャン</string>
 
+	<!-- Button label to answer "Yes" to a yes/no prompt -->
+	<string name="button_yes">はい</string>
+	<!-- Button label to answer "No" to a yes/no prompt -->
+	<string name="button_no">いいえ</string>
+
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
 	<string name="portforward_local">ローカル</string>
 	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
@@ -452,7 +458,7 @@
 	<string name="menu_colors_reset">リセット</string>
 
 	<!-- Displayed in the notification bar that connections are active -->
-	<string name="app_is_running">ConnectBot is running</string>
+	<string name="app_is_running">ConnectBot起動中</string>
 
 	<string name="color_red">赤</string>
 	<string name="color_green">緑</string>

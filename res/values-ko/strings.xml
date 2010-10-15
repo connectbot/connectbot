@@ -19,13 +19,14 @@
 -->
 <resources>
 	<string name="app_desc">간단하고, 강력한, 오픈소스 SSH 클라이언트.</string>
+	<string name="service_desc">Maintains SSH connections and loaded pubkeys</string>
 
 	<!-- Window title for the Host List -->
 	<string name="title_hosts_list">호스트</string>
 	<!-- Window title for the Pubkeys List -->
 	<string name="title_pubkey_list">공개키</string>
 	<!-- Window title for the Port Forwards List -->
-	<string name="title_port_forwards_list">포트 포워딩 목록</string>
+	<string name="title_port_forwards_list">포트 포워딩</string>
 	<!-- Window title when editing host details -->
 	<string name="title_host_editor">호스트 편집</string>
 	<!-- Window title for Help index -->
@@ -35,61 +36,61 @@
 
 	<string name="resolve_connect">접속</string>
 	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="resolve_entropy">Gather Entropy</string>
+	<string name="resolve_entropy">엔트로피 수집</string>
 
-	<string name="menu_insert">Add Host</string>
-	<string name="menu_delete">Delete Host</string>
-	<string name="menu_preferences">Preferences</string>
+	<string name="menu_insert">호스트 추가</string>
+	<string name="menu_delete">호스트 삭제</string>
+	<string name="menu_preferences">기본 설정</string>
 
-	<string name="help_intro">Please select a topic below for more information on a particular subject.</string>
-	<string name="help_about">About ConnectBot</string>
-	<string name="help_keyboard">Keyboard</string>
+	<string name="help_intro">아래의 제목들을 선택하면 특정 주제의 정보를 더 알 수 있습니다.</string>
+	<string name="help_about">ConnectBot 정보</string>
+	<string name="help_keyboard">키보드</string>
 
-	<string name="pubkey_generate">Generate</string>
-	<string name="pubkey_import">Import</string>
-	<string name="pubkey_delete">Delete key</string>
+	<string name="pubkey_generate">생성</string>
+	<string name="pubkey_import">가져오기</string>
+	<string name="pubkey_delete">키 삭제</string>
 	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="pubkey_gather_entropy">Gathering Entropy</string>
-	<string name="pubkey_touch_prompt">Touch this box to gather randomness: %1$d%% done</string>
-	<string name="pubkey_touch_hint">In order to assure randomness during the key generation, move your finger randomly over the box below.</string>
-	<string name="pubkey_generating">Generating key pair...</string>
-	<string name="pubkey_copy_private">Copy private key</string>
-	<string name="pubkey_copy_public">Copy public key</string>
+	<string name="pubkey_gather_entropy">엔트로피 수집 중</string>
+	<string name="pubkey_touch_prompt">이 사각형의 랜덤으로 터치하세요: %1$d%% 완료</string>
+	<string name="pubkey_touch_hint">키 생성시 랜덤을 보장하기 위해 아래의 사각형 안에서 손가락을 랜덤으로 이동하십시오.</string>
+	<string name="pubkey_generating">키 쌍 생성 중...</string>
+	<string name="pubkey_copy_private">개인 키 복사</string>
+	<string name="pubkey_copy_public">공개 키 복사</string>
 	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
-	<string name="pubkey_list_empty">Tap "Menu" to create\nor import key pairs.</string>
-	<string name="pubkey_unknown_format">Unknown format</string>
-	<string name="pubkey_change_password">Change password</string>
-	<string name="pubkey_list_pick">Pick from /sdcard</string>
-	<string name="pubkey_import_parse_problem">Problem parsing imported private key</string>
-	<string name="pubkey_unlock">Unlock key</string>
+	<string name="pubkey_list_empty">"메뉴" 버튼을 눌러 키 쌍을\n만들거나 가져 옵니다.</string>
+	<string name="pubkey_unknown_format">알 수 없는 형식</string>
+	<string name="pubkey_change_password">암호 바꾸기</string>
+	<string name="pubkey_list_pick">/sdcard에서 선택</string>
+	<string name="pubkey_import_parse_problem">가져온 개인키 분석 중 문제 발생</string>
+	<string name="pubkey_unlock">키 잠금 해제</string>
 	<string name="pubkey_failed_add">Bad password for key \'%1$s\'. Authentication failed.</string>
-	<string name="pubkey_memory_load">Load into memory</string>
-	<string name="pubkey_memory_unload">Unload from memory</string>
-	<string name="pubkey_load_on_start">Load key on start</string>
+	<string name="pubkey_memory_load">메모리에 올리기</string>
+	<string name="pubkey_memory_unload">메모리에서 내리기</string>
+	<string name="pubkey_load_on_start">시작할 때 키를 올리기</string>
 	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
-	<string name="pubkey_confirm_use">Confirm before use</string>
+	<string name="pubkey_confirm_use">사용 전에 확인</string>
 
 	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
-	<string name="portforward_list_empty">Tap "Menu" to create\nport forwards.</string>
-	<string name="portforward_edit">Edit port forward</string>
-	<string name="portforward_delete">Delete port forward</string>
+	<string name="portforward_list_empty">"메뉴"를 눌러\n포트 포워딩을 만듭니다.</string>
+	<string name="portforward_edit">포트 포워딩 편집</string>
+	<string name="portforward_delete">포트 포워딩을 삭제</string>
 
-	<string name="prompt_nickname">Nickname:</string>
+	<string name="prompt_nickname">대화명:</string>
 	<!-- An example string that could be used as a nickname for a pubkey. -->
-	<string name="prompt_nickname_hint_pubkey">My work key</string>
+	<string name="prompt_nickname_hint_pubkey">내 작업 키</string>
 	<!-- The source TCP port for port forwards. -->
-	<string name="prompt_source_port">Source port:</string>
+	<string name="prompt_source_port">원본 포트:</string>
 	<!-- The "host:port" combination used for port forward destinations. -->
-	<string name="prompt_destination">Destination:</string>
-	<string name="prompt_old_password">Old password:</string>
-	<string name="prompt_password">Password:</string>
+	<string name="prompt_destination">설명:</string>
+	<string name="prompt_old_password">이전 암호:</string>
+	<string name="prompt_password">암호:</string>
 	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
-	<string name="prompt_again">(again)</string>
+	<string name="prompt_again">(다시)</string>
 	<!-- Label for the user to select port forward type. -->
-	<string name="prompt_type">Type:</string>
-	<string name="prompt_password_can_be_blank">Note: password can be blank</string>
+	<string name="prompt_type">종류:</string>
+	<string name="prompt_password_can_be_blank">참고: 암호는 비워둘 수 있습니다.</string>
 	<!-- Prompt for the size of the private key in bits. -->
-	<string name="prompt_bits">Bits:</string>
+	<string name="prompt_bits">비트:</string>
 
 	<!-- Prompt for the password to unlock a certain pubkey. -->
 	<string name="prompt_pubkey_password">Password for key \'%1$s\'</string>
@@ -98,274 +99,279 @@
 	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key \'%1$s\'?</string>
 
 	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning_header">WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</string>
+	<string name="host_verification_failure_warning_header">경고: 원격 호스트의 식별이 바뀌었습니다!</string>
 	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning">IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\nSomeone could be eavesdropping on you right now (man-in-the-middle attack)!\nIt is also possible that the host key has just been changed.</string>
+	<string name="host_verification_failure_warning">누군가가 나쁜 짓을 하고 있는 것일 수 있습니다!\n지금 누군가가 당신을 도청하고 있을 수도 있습니다 (중간자 공격)!\n또는, 단순히 호스트 키가 바뀐 것일 수도 있습니다.</string>
 
 	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
-	<string name="prompt_host_disconnected">Host has disconnected.\nClose session?</string>
+	<string name="prompt_host_disconnected">호스트 연결이 끊겼습니다.\n세션을 닫을까요?</string>
 	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
-	<string name="prompt_continue_connecting">Are you sure you want\nto continue connecting?</string>
+	<string name="prompt_continue_connecting">정말로 연결을 진행하기\n바랍니까?</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
 	<string name="host_authenticity_warning">The authenticity of host \'%1$s\' can\'t be established.</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
-	<string name="host_fingerprint">Host %1$s key fingerprint is %2$s</string>
+	<string name="host_fingerprint">호스트 %1$s 키 지문은 %2$s</string>
 
-	<string name="alert_passwords_do_not_match_msg">Passwords do not match!</string>
-	<string name="alert_wrong_password_msg">Wrong password!</string>
-	<string name="alert_key_corrupted_msg">Private key appears corrupt!</string>
-	<string name="alert_sdcard_absent">SD card is not inserted!</string>
+	<string name="alert_passwords_do_not_match_msg">암호가 맞지 않습니다!</string>
+	<string name="alert_wrong_password_msg">잘못된 암호입니다!</string>
+	<string name="alert_key_corrupted_msg">개인 키가 손상되었습니다!</string>
+	<string name="alert_sdcard_absent">SD 카드가 삽입되지 않습니다!</string>
 
 	<!-- Add a new item (e.g., host or pubkey) to the list. -->
-	<string name="button_add">Add</string>
+	<string name="button_add">추가</string>
 	<!-- Change an existing item's (e.g., host or pubkey) details. -->
-	<string name="button_change">Change</string>
+	<string name="button_change">바꾸기</string>
 	<!-- Button that begins the generation of a public key pair. -->
-	<string name="button_generate">Generate Key</string>
+	<string name="button_generate">키 생성</string>
 	<!-- Button that resizes the screen to the user-specified dimensions. -->
-	<string name="button_resize">Resize</string>
+	<string name="button_resize">크기 조정</string>
 
-	<string name="alert_disconnect_msg">Connection Lost</string>
+	<string name="alert_disconnect_msg">연결이 끊어짐</string>
 
 	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
 
 	<!-- The category title for terminal emulation preferences. -->
-	<string name="pref_emulation_category">Terminal emulation</string>
+	<string name="pref_emulation_category">터미널 에뮬레이션</string>
 
 	<!-- Name for the emulation terminal type preference. -->
-	<string name="pref_emulation_title">Emulation mode</string>
+	<string name="pref_emulation_title">에뮬레이션 모드</string>
 	<!-- Description of the emulation terminal type preference. -->
-	<string name="pref_emulation_summary">Terminal emulation mode to use for PTY connections</string>
+	<string name="pref_emulation_summary">PTY 연결 용 터미널 에뮬레이션 모드</string>
 
 	<!-- Name for the scrollback size preference -->
-	<string name="pref_scrollback_title">Scrollback size</string>
+	<string name="pref_scrollback_title">스크롤 크기</string>
 	<!-- Description of the scrollback size preference -->
-	<string name="pref_scrollback_summary">Size of scrollback buffer to keep in memory for each console</string>
+	<string name="pref_scrollback_summary">각 콘솔별로 메모리에 담아 둘 스크롤 버퍼의 크기</string>
 
 	<!-- The category title for user interface preferences -->
-	<string name="pref_ui_category">User interface</string>
+	<string name="pref_ui_category">사용자 인터페이스</string>
 
 	<!-- Name for the rotation mode preference -->
-	<string name="pref_rotation_title">Rotation mode</string>
+	<string name="pref_rotation_title">회전 모드</string>
 	<!-- Summary for the rotation mode preference -->
-	<string name="pref_rotation_summary">How to change rotation when keyboard popped in/out</string>
+	<string name="pref_rotation_summary">키보드 팝 인/아웃시 회전 방법</string>
 
 	<!-- Name for the full screen preference -->
-	<string name="pref_fullscreen_title">Full screen</string>
+	<string name="pref_fullscreen_title">전체 화면</string>
 	<!-- Summary for the full screen preference -->
-	<string name="pref_fullscreen_summary">Hide status bar while in console</string>
+	<string name="pref_fullscreen_summary">콘솔일 때 상태 표시줄을 숨김</string>
 
 	<!-- Name for the memorize keys preference -->
-	<string name="pref_memkeys_title">Remember keys in memory</string>
+	<string name="pref_memkeys_title">메모리에 키를 기억</string>
 	<!-- Summary for the memorize keys preference -->
-	<string name="pref_memkeys_summary">Keep unlocked keys in memory until backend service is terminated</string>
+	<string name="pref_memkeys_summary">백엔드 서비스가 종료되기 전까지 잠금이 풀린 키들을 메모리에 유지합니다</string>
 
 	<!-- Name for the update check preference -->
-	<string name="pref_update_title">Update check</string>
+	<string name="pref_update_title">업데이트 검사</string>
 	<!-- Summary for the update check preference -->
-	<string name="pref_update_summary">Set the maximum frequency to check for ConnectBot updates</string>
+	<string name="pref_update_summary">ConnectBot 업데이트 확인 주기 설정</string>
 
 	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">Persist connections</string>
+	<string name="pref_conn_persist_title">접속 유지</string>
 	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
+	<string name="pref_conn_persist_summary">백그라운드 동안에도 강제로 연결된 상태 유지</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
-	<string name="pref_keymode_title">Directory shortcuts</string>
+	<string name="pref_keymode_title">디렉터리 바로 가기</string>
 	<!-- Summary for the keyboard shortcuts preference -->
 	<string name="pref_keymode_summary">Select how to use Alt for \'/\' and Shift for Tab</string>
 
 	<!-- Name for the camera shortcut usage preference -->
-	<string name="pref_camera_title">Camera shortcut</string>
+	<string name="pref_camera_title">카메라 바로 가기</string>
 	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_camera_summary">Select which shortcut to trigger when the camera button is pushed</string>
+	<string name="pref_camera_summary">카메라 버튼을 눌러 실행할 바로 가기 선택</string>
 
 	<!-- Name for the keep screen on preference -->
-	<string name="pref_keepalive_title">Keep screen awake</string>
+	<string name="pref_keepalive_title">화면 켜짐 유지</string>
 	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_keepalive_summary">Prevent the screen from turning off when working in a console</string>
+	<string name="pref_keepalive_summary">콘솔 작업 중 화면이 꺼지는 것을 방지</string>
 
 	<!-- Name for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_title">Keep Wi-Fi active</string>
+	<string name="pref_wifilock_title">Wi-Fi 켜짐 유지</string>
 	<!-- Summary for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_summary">Prevent Wi-Fi from turning off when a session is active</string>
+	<string name="pref_wifilock_summary">세션이 유효한 동안 Wi-Fi가 꺼지지 않도록 함</string>
 
 	<!-- Name for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_title">Bumpy arrows</string>
+	<string name="pref_bumpyarrows_title">방향키 진동</string>
 	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_summary">Vibrate when sending arrow keys from trackball; useful for laggy connections</string>
+	<string name="pref_bumpyarrows_summary">트랙볼로 방향키를 보낼 때 진동합니다; 연결이 느린 경우 유용</string>
 
 	<!-- Category title for the Terminal Bell preferences -->
-	<string name="pref_bell_category">Terminal bell</string>
+	<string name="pref_bell_category">터미널 벨</string>
 
 	<!-- Checkbox preference title for the audible terminal bell feature -->
-	<string name="pref_bell_title">Audible bell</string>
+	<string name="pref_bell_title">벨소리</string>
 
 	<!-- Title for the slider preference to set the volume -->
-	<string name="pref_bell_volume_title">Bell volume</string>
+	<string name="pref_bell_volume_title">벨 볼륨</string>
 
 	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
-	<string name="pref_bell_vibrate_title">Vibrate on bell</string>
+	<string name="pref_bell_vibrate_title">진동 벨</string>
 
 	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
-	<string name="pref_bell_notification_title">Background notifications</string>
+	<string name="pref_bell_notification_title">백그라운드 알림</string>
 	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
-	<string name="pref_bell_notification_summary">Send notification when a terminal running in the background sounds a bell.</string>
+	<string name="pref_bell_notification_summary">백그라운드에서 실행중인 터미널 벨을 울리 때 알립니다.</string>
 
 	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
-	<string name="list_keymode_right">Use right-side keys</string>
+	<string name="list_keymode_right">오른쪽의 키들 사용</string>
 	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
-	<string name="list_keymode_left">Use left-side keys</string>
+	<string name="list_keymode_left">왼쪽의 키들 사용</string>
 	<!-- Preference selection to indicate never to use special shortcut keys. -->
-	<string name="list_keymode_none">Disable</string>
+	<string name="list_keymode_none">사용 안 함</string>
 
 	<!-- Preference to not use pubkeys to authenticate to this host. -->
-	<string name="list_pubkeyids_none">Do not use keys</string>
+	<string name="list_pubkeyids_none">키 사용 안함</string>
 	<!-- Preference to use any pubkey to authenticate to this host. -->
-	<string name="list_pubkeyids_any">Use any unlocked key</string>
+	<string name="list_pubkeyids_any">잠금키 사용</string>
 
 	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_daily">Daily</string>
+	<string name="list_update_daily">매일</string>
 	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_weekly">Weekly</string>
+	<string name="list_update_weekly">매주</string>
 	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_never">Never</string>
+	<string name="list_update_never">하지 않음</string>
 
 	<!-- Host nickname field preference title -->
-	<string name="hostpref_nickname_title">Nickname</string>
+	<string name="hostpref_nickname_title">닉네임</string>
 
 	<!-- Host color category preference title -->
-	<string name="hostpref_color_title">Color category</string>
+	<string name="hostpref_color_title">색상 카테고리</string>
 
 	<!-- Host's default font size when opening the terminal in points (pt) -->
-	<string name="hostpref_fontsize_title">Font size (pt)</string>
+	<string name="hostpref_fontsize_title">글꼴 크기 (pt)</string>
 
 	<!-- Host pubkey usage preference title -->
-	<string name="hostpref_pubkeyid_title">Use pubkey authentication</string>
+	<string name="hostpref_pubkeyid_title">공개 키 인증 사용</string>
 
 	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
-	<string name="hostpref_authagent_title">Use SSH auth agent</string>
+	<string name="hostpref_authagent_title">SSH 인증 에이전트 사용</string>
 
 	<!-- Host post-login automation preference title -->
-	<string name="hostpref_postlogin_title">Post-login automation</string>
+	<string name="hostpref_postlogin_title">로그인 후 자동 실행</string>
 	<!-- Host post-login automation preference summary -->
-	<string name="hostpref_postlogin_summary">Commands to run on remote server once authenticated</string>
+	<string name="hostpref_postlogin_summary">인증 후 원격 서버에서 실행될 명령어들</string>
 
 	<!-- Host compression preference title -->
-	<string name="hostpref_compression_title">Compression</string>
+	<string name="hostpref_compression_title">압축</string>
 	<!-- Summary for compression preference -->
-	<string name="hostpref_compression_summary">This may help with slower networks</string>
+	<string name="hostpref_compression_summary">네트워크가 느린 경우 유용</string>
 
 	<!-- Setting for whether we want a session to start up when we connect to a host -->
-	<string name="hostpref_wantsession_title">Start shell session</string>
+	<string name="hostpref_wantsession_title">쉘 세션 시작</string>
 	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
-	<string name="hostpref_wantsession_summary">Disable this preference to only use port forwards</string>
+	<string name="hostpref_wantsession_summary">포트 포워드만 사용할 경우 이 설정을 해제 하세요</string>
 
 	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
-	<string name="hostpref_stayconnected_title">Stay connected</string>
+	<string name="hostpref_stayconnected_title">연결 유지</string>
 	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
-	<string name="hostpref_stayconnected_summary">Try to reconnect to host if disconnected</string>
+	<string name="hostpref_stayconnected_summary">연결이 끊기면 다시 연결을 시도</string>
 
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_title">DEL Key</string>
+	<string name="hostpref_delkey_title">삭제 키</string>
 	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_summary">The key code sent when DEL key is pressed</string>
+	<string name="hostpref_delkey_summary">삭제 키를 눌렀을 때 보낼 키 코드</string>
 
 	<!-- Host character encoding preference title -->
-	<string name="hostpref_encoding_title">Encoding</string>
+	<string name="hostpref_encoding_title">인코딩</string>
 	<!-- Host character encoding preference summary -->
-	<string name="hostpref_encoding_summary">Character encoding for the host</string>
+	<string name="hostpref_encoding_summary">호스트의 문자 인코딩</string>
 
 	<!-- Host preference category title for connection settings -->
-	<string name="hostpref_connection_category">Connection settings</string>
+	<string name="hostpref_connection_category">접속 설정</string>
 
 	<!-- Username field title for host editor preference -->
-	<string name="hostpref_username_title">Username</string>
+	<string name="hostpref_username_title">사용자 이름</string>
 
 	<!-- Hostname field title for host editor preference -->
-	<string name="hostpref_hostname_title">Host</string>
+	<string name="hostpref_hostname_title">호스트</string>
 
 	<!-- Port field title for host editor preference -->
-	<string name="hostpref_port_title">Port</string>
+	<string name="hostpref_port_title">포트</string>
 
 	<!-- Displayed to indicate a host has never been connected to. -->
-	<string name="bind_never">Never connected</string>
+	<string name="bind_never">연결된 적 없음</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
-	<string name="bind_minutes">%1$s minutes ago</string>
+	<string name="bind_minutes">%1$s 분 전</string>
 	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
-	<string name="bind_hours">%1$s hours ago</string>
+	<string name="bind_hours">%1$s 시간 전</string>
 	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
-	<string name="bind_days">%1$s days ago</string>
+	<string name="bind_days">%1$s 일 전</string>
 
 	<!-- Message given when user copies from the terminal. -->
-	<string name="console_copy_done">Copied %1$d bytes to clipboard</string>
+	<string name="console_copy_done">클립 보드에 %1$d 바이트가 복사되었습니다.</string>
 	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">Touch and drag\nor use directional pad\nto select area to copy</string>
+	<string name="console_copy_start">터치 후 드래그 또는\n방향 키로\n복사 영역을 선택</string>
 
 	<!-- Button to close the disconnected terminal window. -->
-	<string name="console_menu_close">Close</string>
+	<string name="console_menu_close">닫기</string>
 	<!-- Button to begin copying from the terminal to the clipboard. -->
-	<string name="console_menu_copy">Copy</string>
+	<string name="console_menu_copy">복사</string>
 	<!-- Button to paste from the clipboard to the terminal. -->
-	<string name="console_menu_paste">Paste</string>
+	<string name="console_menu_paste">붙여넣기</string>
 	<!-- Button that brings user to the Port Forwards List. -->
-	<string name="console_menu_portforwards">Port Forwards</string>
+	<string name="console_menu_portforwards">포트 포워드</string>
 	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
-	<string name="console_menu_resize">Force Size</string>
+	<string name="console_menu_resize">크기 고정</string>
 	<!-- Button that brings up the list of URLs on the current screen -->
-	<string name="console_menu_urlscan">URL Scan</string>
+	<string name="console_menu_urlscan">URL 검색</string>
+
+	<!-- Button label to answer "Yes" to a yes/no prompt -->
+	<string name="button_yes">예</string>
+	<!-- Button label to answer "No" to a yes/no prompt -->
+	<string name="button_no">아니오</string>
 
 	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
-	<string name="portforward_local">Local</string>
+	<string name="portforward_local">로컬</string>
 	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
-	<string name="portforward_remote">Remote</string>
+	<string name="portforward_remote">원격</string>
 	<!-- Selection for a "dynamic" port forward. E.g., connections to a port listening locally is forwarded based on the SOCKS protocol to an arbitrary remote host and port. -->
-	<string name="portforward_dynamic">Dynamic (SOCKS)</string>
+	<string name="portforward_dynamic">동적 (SOCKS)</string>
 	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
-	<string name="portforward_pos">Create port forward</string>
+	<string name="portforward_pos">포트 포워딩 만들기</string>
 
-	<string name="portforward_done">Successfully created port forward</string>
+	<string name="portforward_done">포트 포워딩을 만드는 데 성공했습니다.</string>
 	<string name="portforward_problem">Problem creating port forward, maybe you\'re using ports under 1024 or port is already used?</string>
 
-	<string name="portforward_menu_add">Add port forward</string>
+	<string name="portforward_menu_add">포트 포워딩 추가</string>
 
 	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
 	<string name="hint_userhost">user@hostname</string>
 
 	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
-	<string name="list_format_error">Use the format "%1$s"</string>
+	<string name="list_format_error">"%1$s" 형식을 사용</string>
 
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_username">username</string>
+	<string name="format_username">사용자 이름</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_hostname">hostname</string>
+	<string name="format_hostname">호스트 이름</string>
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_port">port</string>
+	<string name="format_port">포트</string>
 
-	<string name="list_menu_pubkeys">Manage Pubkeys</string>
+	<string name="list_menu_pubkeys">개인키 관리자</string>
 	<!-- Selection choice to sort hosts by color. -->
-	<string name="list_menu_sortcolor">Sort by color</string>
+	<string name="list_menu_sortcolor">색상순 정렬</string>
 	<!-- Selection choice to sort hosts by nickname. -->
-	<string name="list_menu_sortname">Sort by name</string>
-	<string name="list_menu_settings">Settings</string>
+	<string name="list_menu_sortname">이름순 정렬</string>
+	<string name="list_menu_settings">설정</string>
 
-	<string name="list_host_disconnect">Disconnect</string>
-	<string name="list_host_edit">Edit host</string>
-	<string name="list_host_portforwards">Edit port forwards</string>
-	<string name="list_host_delete">Delete host</string>
+	<string name="list_host_disconnect">연결끊기</string>
+	<string name="list_host_edit">호스트 편집</string>
+	<string name="list_host_portforwards">포트 포워딩 편집</string>
+	<string name="list_host_delete">호스트 삭제</string>
 	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
-	<string name="list_host_empty">Use the quick-connect box\nbelow to connect to a host.</string>
+	<string name="list_host_empty">아래의 빠른-연결 상자로\n호스트에 연결할 수 있습니다.</string>
 
 	<!-- Default screen rotation preference selection -->
-	<string name="list_rotation_default">Default</string>
-	<string name="list_rotation_land">Force landscape</string>
-	<string name="list_rotation_port">Force portrait</string>
+	<string name="list_rotation_default">기본</string>
+	<string name="list_rotation_land">가로 고정</string>
+	<string name="list_rotation_port">세로 고정</string>
 	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
-	<string name="list_rotation_auto">Automatic</string>
+	<string name="list_rotation_auto">자동</string>
 
 	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
-	<string name="list_camera_ctrlaspace">Ctrl+A then Space</string>
+	<string name="list_camera_ctrlaspace">Ctrl+A 후 Space</string>
 	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A". -->
 	<string name="list_camera_ctrla">Ctrl+A</string>
 	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
@@ -373,48 +379,48 @@
 	<!-- Selection to indicate pressing the Camera button should send "Esc+A". -->
 	<string name="list_camera_esc_a">Esc+A</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
-	<string name="list_camera_none">None</string>
+	<string name="list_camera_none">없음</string>
 
 	<!-- Name for the backspace character -->
-	<string name="list_delkey_backspace">Backspace</string>
+	<string name="list_delkey_backspace">백스페이스</string>
 	<!-- Name for the ASCII DEL character -->
-	<string name="list_delkey_del">Delete</string>
+	<string name="list_delkey_del">삭제</string>
 
 	<string name="delete_message">Are you sure you want to delete \'%1$s\'?</string>
-	<string name="delete_pos">Yes, delete</string>
-	<string name="delete_neg">Cancel</string>
+	<string name="delete_pos">예, 삭제</string>
+	<string name="delete_neg">취소</string>
 
 	<!-- Button to agree to license terms. -->
-	<string name="wizard_agree">Agree</string>
+	<string name="wizard_agree">동의</string>
 	<!-- Button to go to the next page in the first time start-up wizard. -->
-	<string name="wizard_next">Next</string>
+	<string name="wizard_next">다음</string>
 	<!-- Button to go to the previous page in the first time start-up wizard. -->
-	<string name="wizard_back">Back</string>
+	<string name="wizard_back">뒤로</string>
 
-	<string name="terminal_no_hosts_connected">No hosts currently connected</string>
+	<string name="terminal_no_hosts_connected">현재 연결된 호스트가 없음</string>
 
 	<!-- Displayed in terminal when attempting to connect to a host. The first two
 	     variables are host:port and the third is the protocol (e.g., SSH) -->
-	<string name="terminal_connecting">Connecting to %1$s:%2$d via %3$s</string>
+	<string name="terminal_connecting">%3$s(으)로 %1$s:%2$d에 연결 중</string>
 
 	<!-- Displays the host key to the user in the terminal -->
 	<string name="terminal_sucess">Verified host \'%1$s\' key: %2$s</string>
-	<string name="terminal_failed">Host key verification failed.</string>
+	<string name="terminal_failed">호스트 키를 확인할 수 없습니다.</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_s2c_algorithm">Server-to-client algorithm: %1$s %2$s</string>
+	<string name="terminal_using_s2c_algorithm">서버-&gt;클라이언트 알고리즘: %1$s %2$s</string>
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_c2s_algorithm">Client-to-server algorithm: %1$s %2$s</string>
+	<string name="terminal_using_c2s_algorithm">클라이언트-&gt;서버 알고리즘: %1$s %2$s</string>
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_algorithm">Using algorithm: %1$s %2$s</string>
+	<string name="terminal_using_algorithm">사용중인 알고리즘: %1$s %2$s</string>
 
-	<string name="terminal_auth">Trying to authenticate</string>
+	<string name="terminal_auth">인증 시도 중</string>
 
 	<string name="terminal_auth_pass">Attempting \'password\' authentication</string>
 	<string name="terminal_auth_pass_fail">Authentication method \'password\' failed</string>
 
 	<string name="terminal_auth_pubkey_any">Attempting \'publickey\' authentication with any in-memory public keys</string>
-	<string name="terminal_auth_pubkey_invalid">Selected public key is invalid, try reselecting key in host editor</string>
+	<string name="terminal_auth_pubkey_invalid">선택된 공개 키가 잘못되었습니다. 호스트 편집에서 키를 다시 선택해 보세요</string>
 	<string name="terminal_auth_pubkey_specific">Attempting \'publickey\' authentication with a specific public key</string>
 	<string name="terminal_auth_pubkey_fail">Authentication method \'publickey\' with key \'%1$s\' failed</string>
 
@@ -423,39 +429,39 @@
 
 	<string name="terminal_auth_fail">[Your host doesn\'t support \'password\' or \'keyboard-interactive\' authentication.]</string>
 
-	<string name="terminal_no_session">Session will not be started due to host preference.</string>
-	<string name="terminal_enable_portfoward">Enable port forward: %1$s</string>
+	<string name="terminal_no_session">호스트 설정 동안에는 세션이 시작되지 않을 것 입니다.</string>
+	<string name="terminal_enable_portfoward">포트 포워딩 사용: %1$s</string>
 
-	<string name="local_shell_unavailable">Failure! Local shell is unavailable on this phone.</string>
+	<string name="local_shell_unavailable">실패! 이 폰은 로컬 쉘을 사용할 수 없습니다.</string>
 
 	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
-	<string name="notification_text">%1$s wants your attention.</string>
+	<string name="notification_text">%1$s에서 알림이 있습니다.</string>
 
 	<!-- Dialog title when a new version of ConnectBot is detected. -->
-	<string name="upgrade">New version</string>
+	<string name="upgrade">새 버전</string>
 	<!-- Button selection to upgrade to the latest ConnectBot when one is available. -->
-	<string name="upgrade_pos">Yes, upgrade</string>
+	<string name="upgrade_pos">네, 업그레이드</string>
 	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
-	<string name="upgrade_neg">Not right now</string>
+	<string name="upgrade_neg">나중에</string>
 
 	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
-	<string name="no">No</string>
+	<string name="no">아니오</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
-	<string name="with_confirmation">With confirmation</string>
+	<string name="with_confirmation">확인 작업 수행</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
-	<string name="yes">Yes</string>
+	<string name="yes">예</string>
 
 	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
-	<string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?</string>
+	<string name="exceptions_submit_message">마지막으로 ConnectBot이 실행했을 때 문제가 있었던 것 같습니다. ConnectBot 개발자에 오류 보고서를 보내시겠습니까?</string>
 
 	<!-- Menu selection to reset colors to their defaults. -->
-	<string name="menu_colors_reset">Reset</string>
+	<string name="menu_colors_reset">초기화</string>
 
 	<!-- Displayed in the notification bar that connections are active -->
-	<string name="app_is_running">ConnectBot is running</string>
+	<string name="app_is_running">ConnectBot 실행 중</string>
 
-	<string name="color_red">red</string>
-	<string name="color_green">green</string>
-	<string name="color_blue">blue</string>
-	<string name="color_gray">gray</string>
+	<string name="color_red">빨간색</string>
+	<string name="color_green">녹색</string>
+	<string name="color_blue">파란색</string>
+	<string name="color_gray">회색</string>
 </resources>
