@@ -17,9 +17,8 @@
  * limitations under the License.
  */
 -->
-<resources>
-
-	<string-array name="list_emulation_modes">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+	<string-array name="list_emulation_modes" translatable="false">
 		<item>xterm-color</item>
 		<item>xterm-256color</item>
 		<item>xterm</item>
@@ -28,21 +27,21 @@
 		<item>screen</item>
 	</string-array>
 
-	<string-array name="list_rotation">
+	<string-array name="list_rotation" translatable="false">
 		<item>@string/list_rotation_default</item>
 		<item>@string/list_rotation_land</item>
 		<item>@string/list_rotation_port</item>
 		<item>@string/list_rotation_auto</item>
 	</string-array>
 
-	<string-array name="list_rotation_values">
+	<string-array name="list_rotation_values" translatable="false">
 		<item>Default</item>
 		<item>Force landscape</item>
 		<item>Force portrait</item>
 		<item>Automatic</item>
 	</string-array>
 
-	<string-array name="list_camera">
+	<string-array name="list_camera" translatable="false">
 		<item>@string/list_camera_ctrlaspace</item>
 		<item>@string/list_camera_ctrla</item>
 		<item>@string/list_camera_esc</item>
@@ -50,7 +49,7 @@
 		<item>@string/list_camera_none</item>
 	</string-array>
 
-	<string-array name="list_camera_values">
+	<string-array name="list_camera_values" translatable="false">
 		<item>Ctrl+A then Space</item>
 		<item>Ctrl+A</item>
 		<item>Esc</item>
@@ -58,84 +57,84 @@
 		<item>None</item>
 	</string-array>
 
-	<string-array name="list_colors">
+	<string-array name="list_colors" translatable="false">
 		<item>@string/color_red</item>
 		<item>@string/color_green</item>
 		<item>@string/color_blue</item>
 		<item>@string/color_gray</item>
 	</string-array>
 
-	<string-array name="list_color_values">
+	<string-array name="list_color_values" translatable="false">
 		<item>red</item>
 		<item>green</item>
 		<item>blue</item>
 		<item>gray</item>
 	</string-array>
 
-	<string-array name="list_update">
+	<string-array name="list_update" translatable="false">
 		<item>@string/list_update_daily</item>
 		<item>@string/list_update_weekly</item>
 		<item>@string/list_update_never</item>
 	</string-array>
 
-	<string-array name="list_update_values">
+	<string-array name="list_update_values" translatable="false">
 		<item>Daily</item>
 		<item>Weekly</item>
 		<item>Never</item>
 	</string-array>
 
-	<string-array name="list_keymode">
+	<string-array name="list_keymode" translatable="false">
 		<item>@string/list_keymode_right</item>
 		<item>@string/list_keymode_left</item>
 		<item>@string/list_keymode_none</item>
 	</string-array>
 
-	<string-array name="list_keymode_values">
+	<string-array name="list_keymode_values" translatable="false">
 		<item>Use right-side keys</item>
 		<item>Use left-side keys</item>
 		<item>none</item>
 	</string-array>
 
-	<string-array name="list_pubkeyids">
+	<string-array name="list_pubkeyids" translatable="false">
 		<item>@string/list_pubkeyids_none</item>
 		<item>@string/list_pubkeyids_any</item>
 	</string-array>
 
-	<string-array name="list_pubkeyids_value">
+	<string-array name="list_pubkeyids_value" translatable="false">
 		<item>-2</item>
 		<item>-1</item>
 	</string-array>
 
-	<string-array name="list_authagent">
+	<string-array name="list_authagent" translatable="false">
 		<item>@string/no</item>
 		<item>@string/with_confirmation</item>
 		<item>@string/yes</item>
 	</string-array>
 
-	<string-array name="list_authagent_values">
+	<string-array name="list_authagent_values" translatable="false">
 		<item>no</item>
 		<item>confirm</item>
 		<item>yes</item>
 	</string-array>
 
-	<string-array name="list_portforward_types">
+	<string-array name="list_portforward_types" translatable="false">
 		<item>@string/portforward_local</item>
 		<item>@string/portforward_remote</item>
 		<item>@string/portforward_dynamic</item>
 	</string-array>
 
-	<string-array name="list_wizard_topics">
+	<string-array name="list_wizard_topics" translatable="false">
 		<item>Hints</item>
 		<item>PhysicalKeyboard</item>
 		<item>VirtualKeyboard</item>
 	</string-array>
 
-	<string-array name="list_delkey">
+	<string-array name="list_delkey" translatable="false">
 		<item>@string/list_delkey_del</item>
 		<item>@string/list_delkey_backspace</item>
 	</string-array>
 
-	<string-array name="list_delkey_values">
+	<string-array name="list_delkey_values" translatable="false">
 		<item>del</item>
 		<item>backspace</item>
 	</string-array>
