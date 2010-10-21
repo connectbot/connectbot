@@ -18,12 +18,12 @@
  */
 -->
 <resources>
-	<string name="app_name">ConnectBot</string>
+	<string name="app_name" translatable="false">ConnectBot</string>
 	<!-- DO NOT MANUALLY UPDATE VERSION!!!
 	  Updating is update by the ant task "update-version" in build.xml
 	-->
-	<string name="msg_version">ConnectBot (working copy)</string>
+	<string name="msg_version" translatable="false">ConnectBot (working copy)</string>
 
-	<string name="copyright_info">Before we get started, we need to get some legal information out of the way.  ConnectBot is provided under the Apache License, Version 2.0 (the &#x201C;License&#x201D;).  Here are a few key points:\n\nYou may not use this program except in compliance with the License. You may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &#x201C;AS IS&#x201D; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</string>
+	<string name="copyright_info" translatable="false">Before we get started, we need to get some legal information out of the way.  ConnectBot is provided under the Apache License, Version 2.0 (the &#x201C;License&#x201D;).  Here are a few key points:\n\nYou may not use this program except in compliance with the License. You may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &#x201C;AS IS&#x201D; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</string>
 
 </resources>
