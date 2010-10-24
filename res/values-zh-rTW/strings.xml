@@ -1,467 +1,196 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-/*
- * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2007 Kenny Root, Jeffrey Sharkey
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
--->
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-	<string name="app_desc">簡單,強大,開源的SSH客戶端</string>
-	<string name="service_desc">Maintains SSH connections and loaded pubkeys</string>
-
-	<!-- Window title for the Host List -->
-	<string name="title_hosts_list">主機列表</string>
-	<!-- Window title for the Pubkeys List -->
-	<string name="title_pubkey_list">公鑰</string>
-	<!-- Window title for the Port Forwards List -->
-	<string name="title_port_forwards_list">端口映射</string>
-	<!-- Window title when editing host details -->
-	<string name="title_host_editor">編輯主機資訊</string>
-	<!-- Window title for Help index -->
-	<string name="title_help">輔助說明</string>
-	<!-- Window title for color list editing screen -->
-	<string name="title_colors">顏色</string>
-
-	<string name="resolve_connect">連線</string>
-	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="resolve_entropy">收集用戶熵</string>
-
-	<string name="menu_insert">新增主機</string>
-	<string name="menu_delete">刪除主機</string>
-	<string name="menu_preferences">設定</string>
-
-	<string name="help_intro">請在下面主題中選擇一個以查看更多內容。</string>
-	<string name="help_about">關於ConnectBot</string>
-	<string name="help_keyboard">鍵盤</string>
-
-	<string name="pubkey_generate">產生</string>
-	<string name="pubkey_import">匯入</string>
-	<string name="pubkey_delete">刪除金鑰</string>
-	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="pubkey_gather_entropy">正在收集用戶熵</string>
-	<string name="pubkey_touch_prompt">觸摸方框來收集隨機數：%1$d％完成</string>
-	<string name="pubkey_touch_hint">由於密鑰產生的時候需要隨機數據，請在下面的方框中隨便移動你的手指</string>
-	<string name="pubkey_generating">正在產生密鑰配對</string>
-	<string name="pubkey_copy_private">複製私鑰</string>
-	<string name="pubkey_copy_public">複製公鑰</string>
-	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
-	<string name="pubkey_list_empty">按「菜單」鍵創建或導入密鑰。</string>
-	<string name="pubkey_unknown_format">未知格式</string>
-	<string name="pubkey_change_password">更改密碼</string>
-	<string name="pubkey_list_pick">從/sdcard獲取</string>
-	<string name="pubkey_import_parse_problem">導入私鑰的時候出現問題</string>
-	<string name="pubkey_unlock">未鎖定私鑰</string>
-	<string name="pubkey_failed_add">驗證失敗，錯誤的的密鑰密碼「%1$s」</string>
-	<string name="pubkey_memory_load">載入內存中</string>
-	<string name="pubkey_memory_unload">從內存中移除</string>
-	<string name="pubkey_load_on_start">在啟動的時候載入密鑰</string>
-	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
-	<string name="pubkey_confirm_use">使用前確認</string>
-
-	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
-	<string name="portforward_list_empty">按「菜單」鍵建端口轉發</string>
-	<string name="portforward_edit">編輯端口轉發</string>
-	<string name="portforward_delete">刪除端口轉發</string>
-
-	<string name="prompt_nickname">暱稱：</string>
-	<!-- An example string that could be used as a nickname for a pubkey. -->
-	<string name="prompt_nickname_hint_pubkey">我的工作密鑰</string>
-	<!-- The source TCP port for port forwards. -->
-	<string name="prompt_source_port">源端口：</string>
-	<!-- The "host:port" combination used for port forward destinations. -->
-	<string name="prompt_destination">目標端口：</string>
-	<string name="prompt_old_password">舊密碼</string>
-	<string name="prompt_password">密碼：</string>
-	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
-	<string name="prompt_again">(再輸入一遍密碼)</string>
-	<!-- Label for the user to select port forward type. -->
-	<string name="prompt_type">轉發類型：</string>
-	<string name="prompt_password_can_be_blank">密碼可以為空</string>
-	<!-- Prompt for the size of the private key in bits. -->
-	<string name="prompt_bits">位數：</string>
-
-	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">密鑰「%1$s」的密碼</string>
-
-	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key \'%1$s\'?</string>
-
-	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning_header">警告：遠程主機的標誌已經改變</string>
-	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning">可能某人正在做非善意的事情\n可能有人正在偷聽你的會話(中間人攻擊)\n但也許僅僅是主密匙(host key)已被更改，你確信如此?</string>
-
-	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
-	<string name="prompt_host_disconnected">主機已經斷開。\n是否關閉本次對話？</string>
-	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
-	<string name="prompt_continue_connecting">是否要繼續連接？</string>
-
-	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">主機「%1$s」的驗證無法建立</string>
-	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
-	<string name="host_fingerprint">主機 %1$s 密鑰指紋是 %2$s</string>
-
-	<string name="alert_passwords_do_not_match_msg">密碼不匹配！</string>
-	<string name="alert_wrong_password_msg">錯誤的密碼！</string>
-	<string name="alert_key_corrupted_msg">私鑰好像已經損壞！</string>
-	<string name="alert_sdcard_absent">沒有插入SD卡！</string>
-
-	<!-- Add a new item (e.g., host or pubkey) to the list. -->
-	<string name="button_add">添加</string>
-	<!-- Change an existing item's (e.g., host or pubkey) details. -->
-	<string name="button_change">修改</string>
-	<!-- Button that begins the generation of a public key pair. -->
-	<string name="button_generate">生成密鑰</string>
-	<!-- Button that resizes the screen to the user-specified dimensions. -->
-	<string name="button_resize">調整大小</string>
-
-	<string name="alert_disconnect_msg">連接中斷</string>
-
-	<string name="msg_copyright">版權所有2007-2008 Kenny Root http://the-b.org/ , Jeffrey Sharkey http://jsharkey.org/</string>
-
-	<!-- The category title for terminal emulation preferences. -->
-	<string name="pref_emulation_category">模擬終端</string>
-
-	<!-- Name for the emulation terminal type preference. -->
-	<string name="pref_emulation_title">終端機類型</string>
-	<!-- Description of the emulation terminal type preference. -->
-	<string name="pref_emulation_summary">設置使用PTY連接時的終端模式</string>
-
-	<!-- Name for the scrollback size preference -->
-	<string name="pref_scrollback_title">回溯存儲大小</string>
-	<!-- Description of the scrollback size preference -->
-	<string name="pref_scrollback_summary">在內存中為每個控制台保留的回滾緩存長度</string>
-
-	<!-- The category title for user interface preferences -->
-	<string name="pref_ui_category">用戶界面</string>
-
-	<!-- Name for the rotation mode preference -->
-	<string name="pref_rotation_title">行為的輪換</string>
-	<!-- Summary for the rotation mode preference -->
-	<string name="pref_rotation_summary">How to change rotation when keyboard popped in/out</string>
-
-	<!-- Name for the full screen preference -->
-	<string name="pref_fullscreen_title">全屏</string>
-	<!-- Summary for the full screen preference -->
-	<string name="pref_fullscreen_summary">處於控制台時隱藏狀態欄</string>
-
-	<!-- Name for the memorize keys preference -->
-	<string name="pref_memkeys_title">在內存中記錄密鑰</string>
-	<!-- Summary for the memorize keys preference -->
-	<string name="pref_memkeys_summary">保存解鎖密匙在內存中，直到後端服務停止為止</string>
-
-	<!-- Name for the update check preference -->
-	<string name="pref_update_title">頻率檢查更新</string>
-	<!-- Summary for the update check preference -->
-	<string name="pref_update_summary">最大頻率檢查ConnectBot更新</string>
-
-	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">保持聯機</string>
-	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">強制並保持連接在後台</string>
-
-	<!-- Name for the keyboard shortcuts preference -->
-	<string name="pref_keymode_title">目錄快捷鍵</string>
-	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Select how to use Alt for \'/\' and Shift for Tab</string>
-
-	<!-- Name for the camera shortcut usage preference -->
-	<string name="pref_camera_title">攝像快捷鍵</string>
-	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_camera_summary">選擇當照相鍵按下時將要觸發的快捷鍵</string>
-
-	<!-- Name for the keep screen on preference -->
-	<string name="pref_keepalive_title">保持清醒屏幕</string>
-	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_keepalive_summary">禁止屏幕睡眠當終端正在工作時</string>
-
-	<!-- Name for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_title">保持Wi-Fi激活</string>
-	<!-- Summary for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_summary">禁止WiFi自動關閉當會話激活時</string>
-
-	<!-- Name for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_title">觸覺方向鍵</string>
-	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_summary">振動當用軌跡球發出模擬方曏鍵時; 對滯後連接特別有用</string>
-
-	<!-- Category title for the Terminal Bell preferences -->
-	<string name="pref_bell_category">終端鈴聲</string>
-
-	<!-- Checkbox preference title for the audible terminal bell feature -->
-	<string name="pref_bell_title">響鈴</string>
-
-	<!-- Title for the slider preference to set the volume -->
-	<string name="pref_bell_volume_title">鈴聲音量</string>
-
-	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
-	<string name="pref_bell_vibrate_title">振動同時響鈴</string>
-
-	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
-	<string name="pref_bell_notification_title">背景通知</string>
-	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
-	<string name="pref_bell_notification_summary">當後台終端響鈴時發出通知</string>
-
-	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
-	<string name="list_keymode_right">使用右側按鍵</string>
-	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
-	<string name="list_keymode_left">使用左側按鍵</string>
-	<!-- Preference selection to indicate never to use special shortcut keys. -->
-	<string name="list_keymode_none">禁用</string>
-
-	<!-- Preference to not use pubkeys to authenticate to this host. -->
-	<string name="list_pubkeyids_none">不使用密匙</string>
-	<!-- Preference to use any pubkey to authenticate to this host. -->
-	<string name="list_pubkeyids_any">使用解鎖密匙</string>
-
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_daily">每天</string>
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_weekly">每週</string>
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_never">永不</string>
-
-	<!-- Host nickname field preference title -->
-	<string name="hostpref_nickname_title">昵稱</string>
-
-	<!-- Host color category preference title -->
-	<string name="hostpref_color_title">顏色類型</string>
-
-	<!-- Host's default font size when opening the terminal in points (pt) -->
-	<string name="hostpref_fontsize_title">字型大小 (pt)</string>
-
-	<!-- Host pubkey usage preference title -->
-	<string name="hostpref_pubkeyid_title">使用公鑰驗證</string>
-
-	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
-	<string name="hostpref_authagent_title">使用 SSH 認證</string>
-
-	<!-- Host post-login automation preference title -->
-	<string name="hostpref_postlogin_title">Post-login automation</string>
-	<!-- Host post-login automation preference summary -->
-	<string name="hostpref_postlogin_summary">每次驗證後在遠端服務器上運行的命令</string>
-
-	<!-- Host compression preference title -->
-	<string name="hostpref_compression_title">壓縮</string>
-	<!-- Summary for compression preference -->
-	<string name="hostpref_compression_summary">此選項對低速網絡會有幫助</string>
-
-	<!-- Setting for whether we want a session to start up when we connect to a host -->
-	<string name="hostpref_wantsession_title">開始Shell會話</string>
-	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
-	<string name="hostpref_wantsession_summary">僅僅對端口轉發禁用偏好設置</string>
-
-	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
-	<string name="hostpref_stayconnected_title">保持連接</string>
-	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
-	<string name="hostpref_stayconnected_summary">斷線後自動重新連接到主機</string>
-
-	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_title">DEL鍵</string>
-	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_summary">當DEL按下時觸發的按鍵</string>
-
-	<!-- Host character encoding preference title -->
-	<string name="hostpref_encoding_title">編碼</string>
-	<!-- Host character encoding preference summary -->
-	<string name="hostpref_encoding_summary">主機的字符編碼</string>
-
-	<!-- Host preference category title for connection settings -->
-	<string name="hostpref_connection_category">連接設置</string>
-
-	<!-- Username field title for host editor preference -->
-	<string name="hostpref_username_title">用戶名</string>
-
-	<!-- Hostname field title for host editor preference -->
-	<string name="hostpref_hostname_title">主機</string>
-
-	<!-- Port field title for host editor preference -->
-	<string name="hostpref_port_title">端口</string>
-
-	<!-- Displayed to indicate a host has never been connected to. -->
-	<string name="bind_never">從未連接</string>
-	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
-	<string name="bind_minutes">已連接 %1$s 分鐘</string>
-	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
-	<string name="bind_hours">已連接 %1$s 小時</string>
-	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
-	<string name="bind_days">已連接 %1$s 天</string>
-
-	<!-- Message given when user copies from the terminal. -->
-	<string name="console_copy_done">復制 %1$d 字節到剪貼板</string>
-	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">滑動手指\n或使用軌跡球\n選擇要復制的區域</string>
-
-	<!-- Button to close the disconnected terminal window. -->
-	<string name="console_menu_close">關閉</string>
-	<!-- Button to begin copying from the terminal to the clipboard. -->
-	<string name="console_menu_copy">復制</string>
-	<!-- Button to paste from the clipboard to the terminal. -->
-	<string name="console_menu_paste">粘貼</string>
-	<!-- Button that brings user to the Port Forwards List. -->
-	<string name="console_menu_portforwards">端口轉發</string>
-	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
-	<string name="console_menu_resize">字體大小</string>
-	<!-- Button that brings up the list of URLs on the current screen -->
-	<string name="console_menu_urlscan">URL 地址掃描</string>
-
-	<!-- Button label to answer "Yes" to a yes/no prompt -->
-	<string name="button_yes">是</string>
-	<!-- Button label to answer "No" to a yes/no prompt -->
-	<string name="button_no">不</string>
-
-	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
-	<string name="portforward_local">本地</string>
-	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
-	<string name="portforward_remote">遠端</string>
-	<!-- Selection for a "dynamic" port forward. E.g., connections to a port listening locally is forwarded based on the SOCKS protocol to an arbitrary remote host and port. -->
-	<string name="portforward_dynamic">動態套接字(SOCKS)</string>
-	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
-	<string name="portforward_pos">創建端口轉發</string>
-
-	<string name="portforward_done">成功創建端口轉發</string>
-	<string name="portforward_problem">Problem creating port forward, maybe you\'re using ports under 1024 or port is already used?</string>
-
-	<string name="portforward_menu_add">添加端口轉發</string>
-
-	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
-	<string name="hint_userhost">用戶名@主機名</string>
-
-	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
-	<string name="list_format_error">使用"%1$s"格式</string>
-
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_username">用戶名</string>
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_hostname">主機名</string>
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_port">端口</string>
-
-	<string name="list_menu_pubkeys">管理公鑰</string>
-	<!-- Selection choice to sort hosts by color. -->
-	<string name="list_menu_sortcolor">使用顏色排序</string>
-	<!-- Selection choice to sort hosts by nickname. -->
-	<string name="list_menu_sortname">按名字排序</string>
-	<string name="list_menu_settings">設置</string>
-
-	<string name="list_host_disconnect">斷開連接</string>
-	<string name="list_host_edit">編輯主機</string>
-	<string name="list_host_portforwards">編輯端口轉發</string>
-	<string name="list_host_delete">刪除主機</string>
-	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
-	<string name="list_host_empty">使用下面的快速連接框連接主機</string>
-
-	<!-- Default screen rotation preference selection -->
-	<string name="list_rotation_default">默認</string>
-	<string name="list_rotation_land">強制橫屏顯示</string>
-	<string name="list_rotation_port">強制竪屏顯示</string>
-	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
-	<string name="list_rotation_auto">自動</string>
-
-	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
-	<string name="list_camera_ctrlaspace">Ctrl+A 然後 Space</string>
-	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A". -->
-	<string name="list_camera_ctrla">Ctrl+A</string>
-	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
-	<string name="list_camera_esc">Esc</string>
-	<!-- Selection to indicate pressing the Camera button should send "Esc+A". -->
-	<string name="list_camera_esc_a">Esc+A</string>
-	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
-	<string name="list_camera_none">無</string>
-
-	<!-- Name for the backspace character -->
-	<string name="list_delkey_backspace">Backspace</string>
-	<!-- Name for the ASCII DEL character -->
-	<string name="list_delkey_del">刪除</string>
-
-	<string name="delete_message">Are you sure you want to delete \'%1$s\'?</string>
-	<string name="delete_pos">是，刪除</string>
-	<string name="delete_neg">取消</string>
-
-	<!-- Button to agree to license terms. -->
-	<string name="wizard_agree">同意</string>
-	<!-- Button to go to the next page in the first time start-up wizard. -->
-	<string name="wizard_next">下一頁</string>
-	<!-- Button to go to the previous page in the first time start-up wizard. -->
-	<string name="wizard_back">返回</string>
-
-	<string name="terminal_no_hosts_connected">當前沒有已連接主機</string>
-
-	<!-- Displayed in terminal when attempting to connect to a host. The first two
-	     variables are host:port and the third is the protocol (e.g., SSH) -->
-	<string name="terminal_connecting">連接到 %1$s:%2$d，通過 %3$s</string>
-
-	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Verified host \'%1$s\' key: %2$s</string>
-	<string name="terminal_failed">主機驗證失敗</string>
-
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_s2c_algorithm">服務器到客戶端算法：%1$s %2$s</string>
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_c2s_algorithm">客戶端到服務器算法：%1$s %2$s</string>
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_algorithm">使用算法：%1$s %2$s</string>
-
-	<string name="terminal_auth">嘗試驗證</string>
-
-	<string name="terminal_auth_pass">Attempting \'password\' authentication</string>
-	<string name="terminal_auth_pass_fail">Authentication method \'password\' failed</string>
-
-	<string name="terminal_auth_pubkey_any">Attempting \'publickey\' authentication with any in-memory public keys</string>
-	<string name="terminal_auth_pubkey_invalid">所選擇的公鑰無法使用，請在主機編輯中嘗試重新選擇</string>
-	<string name="terminal_auth_pubkey_specific">Attempting \'publickey\' authentication with a specific public key</string>
-	<string name="terminal_auth_pubkey_fail">Authentication method \'publickey\' with key \'%1$s\' failed</string>
-
-	<string name="terminal_auth_ki">Attempting \'keyboard-interactive\' authentication</string>
-	<string name="terminal_auth_ki_fail">Authentication method \'keyboard-interactive\' failed</string>
-
-	<string name="terminal_auth_fail">[Your host doesn\'t support \'password\' or \'keyboard-interactive\' authentication.]</string>
-
-	<string name="terminal_no_session">因為主機的相關設置，不會啓動會話。</string>
-	<string name="terminal_enable_portfoward">啓用端口轉發：%1$s</string>
-
-	<string name="local_shell_unavailable">失敗! 本地Shell在該手機上不可用</string>
-
-	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
-	<string name="notification_text">%1$s 需要你的註意</string>
-
-	<!-- Dialog title when a new version of ConnectBot is detected. -->
-	<string name="upgrade">新版本</string>
-	<!-- Button selection to upgrade to the latest ConnectBot when one is available. -->
-	<string name="upgrade_pos">是，昇級</string>
-	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
-	<string name="upgrade_neg">暫時不</string>
-
-	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
-	<string name="no">不</string>
-	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
-	<string name="with_confirmation">已確認過</string>
-	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
-	<string name="yes">是</string>
-
-	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
-	<string name="exceptions_submit_message">似乎ConnectBot在最後運行時出現異常. 請回報給ConnectBot開發者</string>
-
-	<!-- Menu selection to reset colors to their defaults. -->
-	<string name="menu_colors_reset">重設</string>
-
-	<!-- Displayed in the notification bar that connections are active -->
-	<string name="app_is_running">ConnectBot is running</string>
-
-	<string name="color_red">紅</string>
-	<string name="color_green">綠</string>
-	<string name="color_blue">藍</string>
-	<string name="color_gray">灰</string>
+  <string name="app_desc">簡單,強大,開源的SSH客戶端</string>
+  <string name="title_hosts_list">主機列表</string>
+  <string name="title_pubkey_list">公鑰</string>
+  <string name="title_port_forwards_list">端口映射</string>
+  <string name="title_host_editor">編輯主機資訊</string>
+  <string name="title_help">輔助說明</string>
+  <string name="title_colors">顏色</string>
+  <string name="resolve_connect">連線</string>
+  <string name="resolve_entropy">收集用戶熵</string>
+  <string name="menu_insert">新增主機</string>
+  <string name="menu_delete">刪除主機</string>
+  <string name="menu_preferences">設定</string>
+  <string name="help_intro">請在下面主題中選擇一個以查看更多內容。</string>
+  <string name="help_about">關於ConnectBot</string>
+  <string name="help_keyboard">鍵盤</string>
+  <string name="pubkey_generate">產生</string>
+  <string name="pubkey_import">匯入</string>
+  <string name="pubkey_delete">刪除金鑰</string>
+  <string name="pubkey_gather_entropy">正在收集用戶熵</string>
+  <string name="pubkey_touch_prompt">觸摸方框來收集隨機數：%1$d％完成</string>
+  <string name="pubkey_touch_hint">由於密鑰產生的時候需要隨機數據，請在下面的方框中隨便移動你的手指</string>
+  <string name="pubkey_generating">正在產生密鑰配對</string>
+  <string name="pubkey_copy_private">複製私鑰</string>
+  <string name="pubkey_copy_public">複製公鑰</string>
+  <string name="pubkey_list_empty">按「菜單」鍵創建或導入密鑰。</string>
+  <string name="pubkey_unknown_format">未知格式</string>
+  <string name="pubkey_change_password">更改密碼</string>
+  <string name="pubkey_list_pick">從/sdcard獲取</string>
+  <string name="pubkey_import_parse_problem">導入私鑰的時候出現問題</string>
+  <string name="pubkey_unlock">未鎖定私鑰</string>
+  <string name="pubkey_failed_add">驗證失敗，錯誤的的密鑰密碼「%1$s」</string>
+  <string name="pubkey_memory_load">載入內存中</string>
+  <string name="pubkey_memory_unload">從內存中移除</string>
+  <string name="pubkey_load_on_start">在啟動的時候載入密鑰</string>
+  <string name="pubkey_confirm_use">使用前確認</string>
+  <string name="portforward_list_empty">按「菜單」鍵建端口轉發</string>
+  <string name="portforward_edit">編輯端口轉發</string>
+  <string name="portforward_delete">刪除端口轉發</string>
+  <string name="prompt_nickname">暱稱：</string>
+  <string name="prompt_nickname_hint_pubkey">我的工作密鑰</string>
+  <string name="prompt_source_port">源端口：</string>
+  <string name="prompt_destination">目標端口：</string>
+  <string name="prompt_old_password">舊密碼</string>
+  <string name="prompt_password">密碼：</string>
+  <string name="prompt_again">(再輸入一遍密碼)</string>
+  <string name="prompt_type">轉發類型：</string>
+  <string name="prompt_password_can_be_blank">密碼可以為空</string>
+  <string name="prompt_bits">位數：</string>
+  <string name="prompt_pubkey_password">密鑰「%1$s」的密碼</string>
+  <string name="host_verification_failure_warning_header">警告：遠程主機的標誌已經改變</string>
+  <string name="host_verification_failure_warning">可能某人正在做非善意的事情\n可能有人正在偷聽你的會話(中間人攻擊)\n但也許僅僅是主密匙(host key)已被更改，你確信如此?</string>
+  <string name="prompt_host_disconnected">主機已經斷開。\n是否關閉本次對話？</string>
+  <string name="prompt_continue_connecting">是否要繼續連接？</string>
+  <string name="host_authenticity_warning">主機「%1$s」的驗證無法建立</string>
+  <string name="host_fingerprint">主機 %1$s 密鑰指紋是 %2$s</string>
+  <string name="alert_passwords_do_not_match_msg">密碼不匹配！</string>
+  <string name="alert_wrong_password_msg">錯誤的密碼！</string>
+  <string name="alert_key_corrupted_msg">私鑰好像已經損壞！</string>
+  <string name="alert_sdcard_absent">沒有插入SD卡！</string>
+  <string name="button_add">添加</string>
+  <string name="button_change">修改</string>
+  <string name="button_generate">生成密鑰</string>
+  <string name="button_resize">調整大小</string>
+  <string name="alert_disconnect_msg">連接中斷</string>
+  <string name="msg_copyright">版權所有2007-2008 Kenny Root http://the-b.org/ , Jeffrey Sharkey http://jsharkey.org/</string>
+  <string name="pref_emulation_category">模擬終端</string>
+  <string name="pref_emulation_title">終端機類型</string>
+  <string name="pref_emulation_summary">設置使用PTY連接時的終端模式</string>
+  <string name="pref_scrollback_title">回溯存儲大小</string>
+  <string name="pref_scrollback_summary">在內存中為每個控制台保留的回滾緩存長度</string>
+  <string name="pref_ui_category">用戶界面</string>
+  <string name="pref_rotation_title">行為的輪換</string>
+  <string name="pref_fullscreen_title">全屏</string>
+  <string name="pref_fullscreen_summary">處於控制台時隱藏狀態欄</string>
+  <string name="pref_memkeys_title">在內存中記錄密鑰</string>
+  <string name="pref_memkeys_summary">保存解鎖密匙在內存中，直到後端服務停止為止</string>
+  <string name="pref_update_title">頻率檢查更新</string>
+  <string name="pref_update_summary">最大頻率檢查ConnectBot更新</string>
+  <string name="pref_conn_persist_title">保持聯機</string>
+  <string name="pref_conn_persist_summary">強制並保持連接在後台</string>
+  <string name="pref_keymode_title">目錄快捷鍵</string>
+  <string name="pref_camera_title">攝像快捷鍵</string>
+  <string name="pref_camera_summary">選擇當照相鍵按下時將要觸發的快捷鍵</string>
+  <string name="pref_keepalive_title">保持清醒屏幕</string>
+  <string name="pref_keepalive_summary">禁止屏幕睡眠當終端正在工作時</string>
+  <string name="pref_wifilock_title">保持Wi-Fi激活</string>
+  <string name="pref_wifilock_summary">禁止WiFi自動關閉當會話激活時</string>
+  <string name="pref_bumpyarrows_title">觸覺方向鍵</string>
+  <string name="pref_bumpyarrows_summary">振動當用軌跡球發出模擬方曏鍵時; 對滯後連接特別有用</string>
+  <string name="pref_bell_category">終端鈴聲</string>
+  <string name="pref_bell_title">響鈴</string>
+  <string name="pref_bell_volume_title">鈴聲音量</string>
+  <string name="pref_bell_vibrate_title">振動同時響鈴</string>
+  <string name="pref_bell_notification_title">背景通知</string>
+  <string name="pref_bell_notification_summary">當後台終端響鈴時發出通知</string>
+  <string name="list_keymode_right">使用右側按鍵</string>
+  <string name="list_keymode_left">使用左側按鍵</string>
+  <string name="list_keymode_none">禁用</string>
+  <string name="list_pubkeyids_none">不使用密匙</string>
+  <string name="list_pubkeyids_any">使用解鎖密匙</string>
+  <string name="list_update_daily">每天</string>
+  <string name="list_update_weekly">每週</string>
+  <string name="list_update_never">永不</string>
+  <string name="hostpref_nickname_title">昵稱</string>
+  <string name="hostpref_color_title">顏色類型</string>
+  <string name="hostpref_fontsize_title">字型大小 (pt)</string>
+  <string name="hostpref_pubkeyid_title">使用公鑰驗證</string>
+  <string name="hostpref_authagent_title">使用 SSH 認證</string>
+  <string name="hostpref_postlogin_summary">每次驗證後在遠端服務器上運行的命令</string>
+  <string name="hostpref_compression_title">壓縮</string>
+  <string name="hostpref_compression_summary">此選項對低速網絡會有幫助</string>
+  <string name="hostpref_wantsession_title">開始Shell會話</string>
+  <string name="hostpref_wantsession_summary">僅僅對端口轉發禁用偏好設置</string>
+  <string name="hostpref_stayconnected_title">保持連接</string>
+  <string name="hostpref_stayconnected_summary">斷線後自動重新連接到主機</string>
+  <string name="hostpref_delkey_title">DEL鍵</string>
+  <string name="hostpref_delkey_summary">當DEL按下時觸發的按鍵</string>
+  <string name="hostpref_encoding_title">編碼</string>
+  <string name="hostpref_encoding_summary">主機的字符編碼</string>
+  <string name="hostpref_connection_category">連接設置</string>
+  <string name="hostpref_username_title">用戶名</string>
+  <string name="hostpref_hostname_title">主機</string>
+  <string name="hostpref_port_title">端口</string>
+  <string name="bind_never">從未連接</string>
+  <string name="bind_minutes">已連接 %1$s 分鐘</string>
+  <string name="bind_hours">已連接 %1$s 小時</string>
+  <string name="bind_days">已連接 %1$s 天</string>
+  <string name="console_copy_done">復制 %1$d 字節到剪貼板</string>
+  <string name="console_copy_start">滑動手指\n或使用軌跡球\n選擇要復制的區域</string>
+  <string name="console_menu_close">關閉</string>
+  <string name="console_menu_copy">復制</string>
+  <string name="console_menu_paste">粘貼</string>
+  <string name="console_menu_portforwards">端口轉發</string>
+  <string name="console_menu_resize">字體大小</string>
+  <string name="console_menu_urlscan">URL 地址掃描</string>
+  <string name="button_yes">是</string>
+  <string name="button_no">不</string>
+  <string name="portforward_local">本地</string>
+  <string name="portforward_remote">遠端</string>
+  <string name="portforward_dynamic">動態套接字(SOCKS)</string>
+  <string name="portforward_pos">創建端口轉發</string>
+  <string name="portforward_done">成功創建端口轉發</string>
+  <string name="portforward_menu_add">添加端口轉發</string>
+  <string name="hint_userhost">用戶名\@主機名</string>
+  <string name="list_format_error">使用%1$s格式</string>
+  <string name="format_username">用戶名</string>
+  <string name="format_hostname">主機名</string>
+  <string name="format_port">端口</string>
+  <string name="list_menu_pubkeys">管理公鑰</string>
+  <string name="list_menu_sortcolor">使用顏色排序</string>
+  <string name="list_menu_sortname">按名字排序</string>
+  <string name="list_menu_settings">設置</string>
+  <string name="list_host_disconnect">斷開連接</string>
+  <string name="list_host_edit">編輯主機</string>
+  <string name="list_host_portforwards">編輯端口轉發</string>
+  <string name="list_host_delete">刪除主機</string>
+  <string name="list_host_empty">使用下面的快速連接框連接主機</string>
+  <string name="list_rotation_default">默認</string>
+  <string name="list_rotation_land">強制橫屏顯示</string>
+  <string name="list_rotation_port">強制竪屏顯示</string>
+  <string name="list_rotation_auto">自動</string>
+  <string name="list_camera_ctrlaspace">Ctrl+A 然後 Space</string>
+  <string name="list_camera_none">無</string>
+  <string name="list_delkey_del">刪除</string>
+  <string name="delete_pos">是，刪除</string>
+  <string name="delete_neg">取消</string>
+  <string name="wizard_agree">同意</string>
+  <string name="wizard_next">下一頁</string>
+  <string name="wizard_back">返回</string>
+  <string name="terminal_no_hosts_connected">當前沒有已連接主機</string>
+  <string name="terminal_connecting">連接到 %1$s:%2$d，通過 %3$s</string>
+  <string name="terminal_failed">主機驗證失敗</string>
+  <string name="terminal_using_s2c_algorithm">服務器到客戶端算法：%1$s %2$s</string>
+  <string name="terminal_using_c2s_algorithm">客戶端到服務器算法：%1$s %2$s</string>
+  <string name="terminal_using_algorithm">使用算法：%1$s %2$s</string>
+  <string name="terminal_auth">嘗試驗證</string>
+  <string name="terminal_auth_pubkey_invalid">所選擇的公鑰無法使用，請在主機編輯中嘗試重新選擇</string>
+  <string name="terminal_no_session">因為主機的相關設置，不會啓動會話。</string>
+  <string name="terminal_enable_portfoward">啓用端口轉發：%1$s</string>
+  <string name="local_shell_unavailable">失敗! 本地Shell在該手機上不可用</string>
+  <string name="notification_text">%1$s 需要你的註意</string>
+  <string name="upgrade">新版本</string>
+  <string name="upgrade_pos">是，昇級</string>
+  <string name="upgrade_neg">暫時不</string>
+  <string name="no">不</string>
+  <string name="with_confirmation">已確認過</string>
+  <string name="yes">是</string>
+  <string name="exceptions_submit_message">似乎ConnectBot在最後運行時出現異常. 請回報給ConnectBot開發者</string>
+  <string name="menu_colors_reset">重設</string>
+  <string name="color_red">紅</string>
+  <string name="color_green">綠</string>
+  <string name="color_blue">藍</string>
+  <string name="color_gray">灰</string>
 </resources>

@@ -1,467 +1,217 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-/*
- * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2007 Kenny Root, Jeffrey Sharkey
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
--->
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-	<string name="app_desc">Simpele, krachtige, open-source SSH client.</string>
-	<string name="service_desc">Maintains SSH connections and loaded pubkeys</string>
-
-	<!-- Window title for the Host List -->
-	<string name="title_hosts_list">Hosts</string>
-	<!-- Window title for the Pubkeys List -->
-	<string name="title_pubkey_list">Pubkeys</string>
-	<!-- Window title for the Port Forwards List -->
-	<string name="title_port_forwards_list">Port forwards</string>
-	<!-- Window title when editing host details -->
-	<string name="title_host_editor">Host bewerken</string>
-	<!-- Window title for Help index -->
-	<string name="title_help">Help</string>
-	<!-- Window title for color list editing screen -->
-	<string name="title_colors">Kleuren</string>
-
-	<string name="resolve_connect">Verbinden</string>
-	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="resolve_entropy">Verzamel Entropie</string>
-
-	<string name="menu_insert">Host Toevoegen</string>
-	<string name="menu_delete">Host verwijderen</string>
-	<string name="menu_preferences">Voorkeuren</string>
-
-	<string name="help_intro">Selecteer hieronder een onderwerp voor meer informatie over een onderwerp.</string>
-	<string name="help_about">Over ConnectBot</string>
-	<string name="help_keyboard">Toetsenbord</string>
-
-	<string name="pubkey_generate">Genereren</string>
-	<string name="pubkey_import">Importeren</string>
-	<string name="pubkey_delete">Sleutel verwijderen</string>
-	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="pubkey_gather_entropy">Bezig met het verzamelen van Entropie</string>
-	<string name="pubkey_touch_prompt">Raak dit vierkant aan om willekeurigheid te verzamelen: %1$d%% gedaan</string>
-	<string name="pubkey_touch_hint">Beweeg je vinger in willekeurige volgorde over het vak beneden om er voor te zorgen dat de invoer willekeurig blijft.</string>
-	<string name="pubkey_generating">Genereren van een sleutel paar...</string>
-	<string name="pubkey_copy_private">Kopieer privé sleutel</string>
-	<string name="pubkey_copy_public">Kopieer publieke sleutel</string>
-	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
-	<string name="pubkey_list_empty">Tik op "Menu" om te maken\nof importeer sleutel paren.</string>
-	<string name="pubkey_unknown_format">Onbekend formaat</string>
-	<string name="pubkey_change_password">Verander wachtwoord</string>
-	<string name="pubkey_list_pick">Kies van /sdcard</string>
-	<string name="pubkey_import_parse_problem">Probleem met het parsen van geimporteerde privé sleutel</string>
-	<string name="pubkey_unlock">Ontgrendel sleutel</string>
-	<string name="pubkey_failed_add">Slecht wachtwoord voor sleutel \'%1$s\'. Authenticatie mislukt</string>
-	<string name="pubkey_memory_load">Laad in geheugen</string>
-	<string name="pubkey_memory_unload">Ontlaad uit geheugen</string>
-	<string name="pubkey_load_on_start">Laad sleutel op start</string>
-	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
-	<string name="pubkey_confirm_use">Bevestig voor gebruik</string>
-
-	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
-	<string name="portforward_list_empty">Tik "Menu" om poort\nforwards te maken.</string>
-	<string name="portforward_edit">Bewerk port forward</string>
-	<string name="portforward_delete">Verwijder port forward</string>
-
-	<string name="prompt_nickname">Bijnaam:</string>
-	<!-- An example string that could be used as a nickname for a pubkey. -->
-	<string name="prompt_nickname_hint_pubkey">Mijn werk sleutel</string>
-	<!-- The source TCP port for port forwards. -->
-	<string name="prompt_source_port">Bron poort:</string>
-	<!-- The "host:port" combination used for port forward destinations. -->
-	<string name="prompt_destination">Bestemming:</string>
-	<string name="prompt_old_password">Oud wachtwoord:</string>
-	<string name="prompt_password">Wachtwoord:</string>
-	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
-	<string name="prompt_again">(opnieuw)</string>
-	<!-- Label for the user to select port forward type. -->
-	<string name="prompt_type">Type:</string>
-	<string name="prompt_password_can_be_blank">Opmerking: wachtwoord kan leeg zijn</string>
-	<!-- Prompt for the size of the private key in bits. -->
-	<string name="prompt_bits">Bits:</string>
-
-	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Wachtwoord voor sleutel \'%1$s\'</string>
-
-	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">Sta host toe om \'%1$s\' \nsleutel te gebruiken ?</string>
-
-	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning_header">WAARSCHUWING: REMOTE HOST IDENTIFICATIE IS VERANDERD!</string>
-	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning">HET IS MOGELIJK DAT IEMAND ONGEWILD BEZIG IS!\nIemand kan nu misschien mee kijken met wat je aan het doen bent (man-in-the-middle attack)!\nHet is ook mogelijk dat de host sleutel veranderd is.</string>
-
-	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
-	<string name="prompt_host_disconnected">Host heeft de verbinding verbroken.\nSessie afsluiten?</string>
-	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
-	<string name="prompt_continue_connecting">Weet je zeker dat je\nwilt doorgaan met verbinden?</string>
-
-	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">De authenticatie van host \'%1$s\' kan niet worden vastgesteld.</string>
-	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
-	<string name="host_fingerprint">Host %1$s sleutel vingerafdruk is %2$s</string>
-
-	<string name="alert_passwords_do_not_match_msg">Wachtwoorden zijn niet hetzelfde!</string>
-	<string name="alert_wrong_password_msg">Verkeerd wachtwoord!</string>
-	<string name="alert_key_corrupted_msg">Privé sleutel lijkt corrupt!</string>
-	<string name="alert_sdcard_absent">SD kaart niet aanwezig!</string>
-
-	<!-- Add a new item (e.g., host or pubkey) to the list. -->
-	<string name="button_add">Voeg toe</string>
-	<!-- Change an existing item's (e.g., host or pubkey) details. -->
-	<string name="button_change">Verander</string>
-	<!-- Button that begins the generation of a public key pair. -->
-	<string name="button_generate">Genereer sleutel</string>
-	<!-- Button that resizes the screen to the user-specified dimensions. -->
-	<string name="button_resize">Verander formaat</string>
-
-	<string name="alert_disconnect_msg">Verbinding verloren</string>
-
-	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
-
-	<!-- The category title for terminal emulation preferences. -->
-	<string name="pref_emulation_category">Terminal emulatie</string>
-
-	<!-- Name for the emulation terminal type preference. -->
-	<string name="pref_emulation_title">Emulatie mode</string>
-	<!-- Description of the emulation terminal type preference. -->
-	<string name="pref_emulation_summary">Terminal emulatie mode voor gebruik in PTY verbindingen</string>
-
-	<!-- Name for the scrollback size preference -->
-	<string name="pref_scrollback_title">Scrollback grootte</string>
-	<!-- Description of the scrollback size preference -->
-	<string name="pref_scrollback_summary">Grootte van scrollback buffer om in geheugen te houden voor elke console</string>
-
-	<!-- The category title for user interface preferences -->
-	<string name="pref_ui_category">Gebruikers interface</string>
-
-	<!-- Name for the rotation mode preference -->
-	<string name="pref_rotation_title">Rotatie mode</string>
-	<!-- Summary for the rotation mode preference -->
-	<string name="pref_rotation_summary">Hoe rotatie te veranderen wanneer keyboard in/uit geschoven is</string>
-
-	<!-- Name for the full screen preference -->
-	<string name="pref_fullscreen_title">Volledig scherm</string>
-	<!-- Summary for the full screen preference -->
-	<string name="pref_fullscreen_summary">Verberg status balk terwijl in console</string>
-
-	<!-- Name for the memorize keys preference -->
-	<string name="pref_memkeys_title">Onthoud sleutels in geheugen</string>
-	<!-- Summary for the memorize keys preference -->
-	<string name="pref_memkeys_summary">Houd ontgrendelde sleutels in geheugen tot achtergrond service is gestopt</string>
-
-	<!-- Name for the update check preference -->
-	<string name="pref_update_title">Update controle</string>
-	<!-- Summary for the update check preference -->
-	<string name="pref_update_summary">Stel de maximale frequentie in om te controleren voor ConnectBot updates</string>
-
-	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">Behoud verbindingen</string>
-	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Forceer dat de verbindingen actief blijven op de achtergrond</string>
-
-	<!-- Name for the keyboard shortcuts preference -->
-	<string name="pref_keymode_title">Folder snelkoppelingen</string>
-	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Selecteer hoe Alt voor \'/\' en Shift voor Tab te gebruiken</string>
-
-	<!-- Name for the camera shortcut usage preference -->
-	<string name="pref_camera_title">Camera snelkoppeling</string>
-	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_camera_summary">Selecteer welke snelkoppeling te activeren wanneer camera knop is ingedrukt</string>
-
-	<!-- Name for the keep screen on preference -->
-	<string name="pref_keepalive_title">Houd scherm wakker</string>
-	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_keepalive_summary">Voorkom scherm van uitgaan wanneer er gewerkt word in een console</string>
-
-	<!-- Name for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_title">Houd Wi-Fi actief</string>
-	<!-- Summary for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_summary">Voorkom Wi-Fi van uitgaan wanneer er een sessie actief is</string>
-
-	<!-- Name for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_title">Hobbelige pijlen</string>
-	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_summary">Tril als pijl knoppen worden gestuurd van trackball; handig voor langzame verbindingen</string>
-
-	<!-- Category title for the Terminal Bell preferences -->
-	<string name="pref_bell_category">Terminal bel</string>
-
-	<!-- Checkbox preference title for the audible terminal bell feature -->
-	<string name="pref_bell_title">Hoorbare bel</string>
-
-	<!-- Title for the slider preference to set the volume -->
-	<string name="pref_bell_volume_title">Bel volume</string>
-
-	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
-	<string name="pref_bell_vibrate_title">Tril bij bel</string>
-
-	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
-	<string name="pref_bell_notification_title">Achtergrond notificaties</string>
-	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
-	<string name="pref_bell_notification_summary">Stuur notificatie als terminal in de achtergrond een bel laat klinken.</string>
-
-	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
-	<string name="list_keymode_right">Gebruik rechter kant sleutels</string>
-	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
-	<string name="list_keymode_left">Gebruik linker kant sleutels</string>
-	<!-- Preference selection to indicate never to use special shortcut keys. -->
-	<string name="list_keymode_none">Schakel uit</string>
-
-	<!-- Preference to not use pubkeys to authenticate to this host. -->
-	<string name="list_pubkeyids_none">Gebruik sleutels niet</string>
-	<!-- Preference to use any pubkey to authenticate to this host. -->
-	<string name="list_pubkeyids_any">Gebruik een willekeurige ontgrendelde sleutel</string>
-
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_daily">Dagelijks</string>
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_weekly">Wekelijks</string>
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_never">Nooit</string>
-
-	<!-- Host nickname field preference title -->
-	<string name="hostpref_nickname_title">Bijnaam</string>
-
-	<!-- Host color category preference title -->
-	<string name="hostpref_color_title">Kleur catogorie</string>
-
-	<!-- Host's default font size when opening the terminal in points (pt) -->
-	<string name="hostpref_fontsize_title">Lettergrootte</string>
-
-	<!-- Host pubkey usage preference title -->
-	<string name="hostpref_pubkeyid_title">Gebruik pubkey authenticatie</string>
-
-	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
-	<string name="hostpref_authagent_title">Gebruik SSH auth agent</string>
-
-	<!-- Host post-login automation preference title -->
-	<string name="hostpref_postlogin_title">Na-login automatie</string>
-	<!-- Host post-login automation preference summary -->
-	<string name="hostpref_postlogin_summary">Commando\'s om uit te voeren op de remote server wanneer geauthenticeerd</string>
-
-	<!-- Host compression preference title -->
-	<string name="hostpref_compression_title">Compressie</string>
-	<!-- Summary for compression preference -->
-	<string name="hostpref_compression_summary">Dit kan helpen bij langzame netwerken</string>
-
-	<!-- Setting for whether we want a session to start up when we connect to a host -->
-	<string name="hostpref_wantsession_title">Start shell sessie</string>
-	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
-	<string name="hostpref_wantsession_summary">Schakel dit uit om alleen port forwards te gebruiken</string>
-
-	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
-	<string name="hostpref_stayconnected_title">Blijf verbonden</string>
-	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
-	<string name="hostpref_stayconnected_summary">Verbinding automatisch proberen te herstellen</string>
-
-	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_title">Del-toets</string>
-	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_summary">De toetscode als de DEL-knop in wordt gedrukt</string>
-
-	<!-- Host character encoding preference title -->
-	<string name="hostpref_encoding_title">Codering</string>
-	<!-- Host character encoding preference summary -->
-	<string name="hostpref_encoding_summary">Tekencodering voor de host</string>
-
-	<!-- Host preference category title for connection settings -->
-	<string name="hostpref_connection_category">Verbindings instellingen</string>
-
-	<!-- Username field title for host editor preference -->
-	<string name="hostpref_username_title">Gebruikersnaam</string>
-
-	<!-- Hostname field title for host editor preference -->
-	<string name="hostpref_hostname_title">Host</string>
-
-	<!-- Port field title for host editor preference -->
-	<string name="hostpref_port_title">Poort</string>
-
-	<!-- Displayed to indicate a host has never been connected to. -->
-	<string name="bind_never">Nooit verbonden</string>
-	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
-	<string name="bind_minutes">%1$s minuten geleden</string>
-	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
-	<string name="bind_hours">%1$s uren geleden</string>
-	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
-	<string name="bind_days">%1$s dagen geleden</string>
-
-	<!-- Message given when user copies from the terminal. -->
-	<string name="console_copy_done">%1$d bytes gekopieerd naar het klembord</string>
-	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">Tik en sleep\nof gebruik directioneel pad\nom velden te selecteren omte kopiëren</string>
-
-	<!-- Button to close the disconnected terminal window. -->
-	<string name="console_menu_close">Sluit</string>
-	<!-- Button to begin copying from the terminal to the clipboard. -->
-	<string name="console_menu_copy">Kopieer</string>
-	<!-- Button to paste from the clipboard to the terminal. -->
-	<string name="console_menu_paste">Plak</string>
-	<!-- Button that brings user to the Port Forwards List. -->
-	<string name="console_menu_portforwards">Port Forwards</string>
-	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
-	<string name="console_menu_resize">Forceer grootte</string>
-	<!-- Button that brings up the list of URLs on the current screen -->
-	<string name="console_menu_urlscan">URK Scan</string>
-
-	<!-- Button label to answer "Yes" to a yes/no prompt -->
-	<string name="button_yes">Ja</string>
-	<!-- Button label to answer "No" to a yes/no prompt -->
-	<string name="button_no">Nee</string>
-
-	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
-	<string name="portforward_local">Lokaal</string>
-	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
-	<string name="portforward_remote">Op afstand</string>
-	<!-- Selection for a "dynamic" port forward. E.g., connections to a port listening locally is forwarded based on the SOCKS protocol to an arbitrary remote host and port. -->
-	<string name="portforward_dynamic">Dynamisch (SOCKS)</string>
-	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
-	<string name="portforward_pos">Maak port forward</string>
-
-	<string name="portforward_done">Succesvol port forward gemaakt</string>
-	<string name="portforward_problem">Probleem met het maken van een port forward, misschien gebruik je poort onder 1024 of is de poort al gebruikt?</string>
-
-	<string name="portforward_menu_add">Voeg port forward toe</string>
-
-	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
-	<string name="hint_userhost">gebruiker@hostnaam</string>
-
-	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
-	<string name="list_format_error">Gebruik het formaat "%1$s"</string>
-
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_username">gebruiker</string>
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_hostname">hostnaam</string>
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_port">poort</string>
-
-	<string name="list_menu_pubkeys">Beheer Pubkeys</string>
-	<!-- Selection choice to sort hosts by color. -->
-	<string name="list_menu_sortcolor">Sorteer op kleur</string>
-	<!-- Selection choice to sort hosts by nickname. -->
-	<string name="list_menu_sortname">Sorteer op naam</string>
-	<string name="list_menu_settings">Instellingen</string>
-
-	<string name="list_host_disconnect">Verbreek verbinding</string>
-	<string name="list_host_edit">Bewerk host</string>
-	<string name="list_host_portforwards">Bewerk port forwards</string>
-	<string name="list_host_delete">Verwijder hosts</string>
-	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
-	<string name="list_host_empty">Gebruik het snel-verbindings vierkant\nonder om een host te verbinden.</string>
-
-	<!-- Default screen rotation preference selection -->
-	<string name="list_rotation_default">Standaard</string>
-	<string name="list_rotation_land">Forceer landschap</string>
-	<string name="list_rotation_port">Forceer portret</string>
-	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
-	<string name="list_rotation_auto">Automatisch</string>
-
-	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
-	<string name="list_camera_ctrlaspace">Ctrl+A en dan Spatie</string>
-	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A". -->
-	<string name="list_camera_ctrla">Ctrl+A</string>
-	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
-	<string name="list_camera_esc">Esc</string>
-	<!-- Selection to indicate pressing the Camera button should send "Esc+A". -->
-	<string name="list_camera_esc_a">Esc+A</string>
-	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
-	<string name="list_camera_none">Geen</string>
-
-	<!-- Name for the backspace character -->
-	<string name="list_delkey_backspace">Backspace</string>
-	<!-- Name for the ASCII DEL character -->
-	<string name="list_delkey_del">Verwijderen</string>
-
-	<string name="delete_message">Weet je zeker dat je \'%1$s\' wilt verwijderen?</string>
-	<string name="delete_pos">Ja, verwijder</string>
-	<string name="delete_neg">Annuleren</string>
-
-	<!-- Button to agree to license terms. -->
-	<string name="wizard_agree">Ga akkoord</string>
-	<!-- Button to go to the next page in the first time start-up wizard. -->
-	<string name="wizard_next">Volgende</string>
-	<!-- Button to go to the previous page in the first time start-up wizard. -->
-	<string name="wizard_back">Terug</string>
-
-	<string name="terminal_no_hosts_connected">Momenteel geen hosts verbonden</string>
-
-	<!-- Displayed in terminal when attempting to connect to a host. The first two
-	     variables are host:port and the third is the protocol (e.g., SSH) -->
-	<string name="terminal_connecting">Bezig met verbinden naar %1$s:%2$d via %3$s</string>
-
-	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Gecontroleerde host \'%1$s\' sleutel: %2$s</string>
-	<string name="terminal_failed">Host sleutel verificatie mislukt</string>
-
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_s2c_algorithm">Server-naar-cliënt algoritme: %1$s %2$s</string>
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_c2s_algorithm">Cliënt-naar-server algoritme: %1$s %2$s</string>
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_algorithm">Gebruikt algoritme: %1$s %2$s</string>
-
-	<string name="terminal_auth">Probeert te authenticeren</string>
-
-	<string name="terminal_auth_pass">Probeert \'wachtwoord\' authenticatie</string>
-	<string name="terminal_auth_pass_fail">Authenticatie methode \'wachtwoord\' mislukt</string>
-
-	<string name="terminal_auth_pubkey_any">Probeert \'publieke sleutel\' authenticatie met een willekeurige in-geheugen publieke sleutel</string>
-	<string name="terminal_auth_pubkey_invalid">Geselecteerde publieke sleutel is ongeldig, probeer herselecteren van de sleutel in de host bewerker</string>
-	<string name="terminal_auth_pubkey_specific">Probeert \'publickey\' authenticatie met een specifieke publieke sleutel</string>
-	<string name="terminal_auth_pubkey_fail">Authenticatie methode \'publickey\' met sleutel \'%1$s\' gefaald</string>
-
-	<string name="terminal_auth_ki">Probeert \'keyboard-interactive\' authenticatie</string>
-	<string name="terminal_auth_ki_fail">Authenticatie methode \'keyboard-interactive\' mislukt</string>
-
-	<string name="terminal_auth_fail">[Uw host ondersteund \'wachtwoord\' of \'keyboard-interactive\' authenticatie niet.]</string>
-
-	<string name="terminal_no_session">Sessie zal niet gestart worden door host instelling</string>
-	<string name="terminal_enable_portfoward">Activeer port forward: %1$s</string>
-
-	<string name="local_shell_unavailable">Mislukking! Lokale shell is niet beschikbaar op deze telefoon.</string>
-
-	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
-	<string name="notification_text">%1$s wil je aandacht.</string>
-
-	<!-- Dialog title when a new version of ConnectBot is detected. -->
-	<string name="upgrade">Nieuwe versie</string>
-	<!-- Button selection to upgrade to the latest ConnectBot when one is available. -->
-	<string name="upgrade_pos">Ja, upgrade</string>
-	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
-	<string name="upgrade_neg">Nog niet</string>
-
-	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
-	<string name="no">Nee</string>
-	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
-	<string name="with_confirmation">Met toestemming</string>
-	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
-	<string name="yes">Ja</string>
-
-	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
-	<string name="exceptions_submit_message">Het lijkt erop dat ConnectBot een probleem had de laatste keer dat het gebruikt werd. Wilt u een foutenrapport naar de ConnectBot ontwikkelaars sturen?</string>
-
-	<!-- Menu selection to reset colors to their defaults. -->
-	<string name="menu_colors_reset">Terug naar standaardinstellingen</string>
-
-	<!-- Displayed in the notification bar that connections are active -->
-	<string name="app_is_running">ConnectBot werkt (Connecties zijn actief)</string>
-
-	<string name="color_red">rood</string>
-	<string name="color_green">groen</string>
-	<string name="color_blue">blauw</string>
-	<string name="color_gray">grijs</string>
+  <string name="app_desc">Simpele, krachtige, open-source SSH client.</string>
+  <string name="service_desc">Onderhoud SSH verbindingen en geladen pubkeys</string>
+  <string name="title_hosts_list">Hosts</string>
+  <string name="title_pubkey_list">Pubkeys</string>
+  <string name="title_port_forwards_list">Port forwards</string>
+  <string name="title_host_editor">Host bewerken</string>
+  <string name="title_help">Help</string>
+  <string name="title_colors">Kleuren</string>
+  <string name="resolve_connect">Verbinden</string>
+  <string name="resolve_entropy">Verzamel Entropie</string>
+  <string name="menu_insert">Host Toevoegen</string>
+  <string name="menu_delete">Host verwijderen</string>
+  <string name="menu_preferences">Voorkeuren</string>
+  <string name="help_intro">Selecteer hieronder een onderwerp voor meer informatie over een onderwerp.</string>
+  <string name="help_about">Over ConnectBot</string>
+  <string name="help_keyboard">Toetsenbord</string>
+  <string name="pubkey_generate">Genereren</string>
+  <string name="pubkey_import">Importeren</string>
+  <string name="pubkey_delete">Sleutel verwijderen</string>
+  <string name="pubkey_gather_entropy">Bezig met het verzamelen van Entropie</string>
+  <string name="pubkey_touch_prompt">Raak dit vierkant aan om willekeurigheid te verzamelen: %1$d%% gedaan</string>
+  <string name="pubkey_touch_hint">Beweeg je vinger in willekeurige volgorde over het vak beneden om er voor te zorgen dat de invoer willekeurig blijft.</string>
+  <string name="pubkey_generating">Genereren van een sleutel paar...</string>
+  <string name="pubkey_copy_private">Kopieer privé sleutel</string>
+  <string name="pubkey_copy_public">Kopieer publieke sleutel</string>
+  <string name="pubkey_list_empty">Tik op Menu om te maken\nof importeer sleutel paren.</string>
+  <string name="pubkey_unknown_format">Onbekend formaat</string>
+  <string name="pubkey_change_password">Verander wachtwoord</string>
+  <string name="pubkey_list_pick">Kies van /sdcard</string>
+  <string name="pubkey_import_parse_problem">Probleem met het parsen van geimporteerde privé sleutel</string>
+  <string name="pubkey_unlock">Ontgrendel sleutel</string>
+  <string name="pubkey_failed_add">Slecht wachtwoord voor sleutel \'%1$s\'. Authenticatie mislukt</string>
+  <string name="pubkey_memory_load">Laad in geheugen</string>
+  <string name="pubkey_memory_unload">Ontlaad uit geheugen</string>
+  <string name="pubkey_load_on_start">Laad sleutel op start</string>
+  <string name="pubkey_confirm_use">Bevestig voor gebruik</string>
+  <string name="portforward_list_empty">Tik Menu om poort\nforwards te maken.</string>
+  <string name="portforward_edit">Bewerk port forward</string>
+  <string name="portforward_delete">Verwijder port forward</string>
+  <string name="prompt_nickname">Bijnaam:</string>
+  <string name="prompt_nickname_hint_pubkey">Mijn werk sleutel</string>
+  <string name="prompt_source_port">Bron poort:</string>
+  <string name="prompt_destination">Bestemming:</string>
+  <string name="prompt_old_password">Oud wachtwoord:</string>
+  <string name="prompt_password">Wachtwoord:</string>
+  <string name="prompt_again">(opnieuw)</string>
+  <string name="prompt_type">Type:</string>
+  <string name="prompt_password_can_be_blank">Opmerking: wachtwoord kan leeg zijn</string>
+  <string name="prompt_bits">Bits:</string>
+  <string name="prompt_pubkey_password">Wachtwoord voor sleutel \'%1$s\'</string>
+  <string name="prompt_allow_agent_to_use_key">Sta host toe om \'%1$s\' \nsleutel te gebruiken ?</string>
+  <string name="host_verification_failure_warning_header">WAARSCHUWING: REMOTE HOST IDENTIFICATIE IS VERANDERD!</string>
+  <string name="host_verification_failure_warning">HET IS MOGELIJK DAT IEMAND ONGEWILD BEZIG IS!\nIemand kan nu misschien mee kijken met wat je aan het doen bent (man-in-the-middle attack)!\nHet is ook mogelijk dat de host sleutel veranderd is.</string>
+  <string name="prompt_host_disconnected">Host heeft de verbinding verbroken.\nSessie afsluiten?</string>
+  <string name="prompt_continue_connecting">Weet je zeker dat je\nwilt doorgaan met verbinden?</string>
+  <string name="host_authenticity_warning">De authenticatie van host \'%1$s\' kan niet worden vastgesteld.</string>
+  <string name="host_fingerprint">Host %1$s sleutel vingerafdruk is %2$s</string>
+  <string name="alert_passwords_do_not_match_msg">Wachtwoorden zijn niet hetzelfde!</string>
+  <string name="alert_wrong_password_msg">Verkeerd wachtwoord!</string>
+  <string name="alert_key_corrupted_msg">Privé sleutel lijkt corrupt!</string>
+  <string name="alert_sdcard_absent">SD kaart niet aanwezig!</string>
+  <string name="button_add">Voeg toe</string>
+  <string name="button_change">Verander</string>
+  <string name="button_generate">Genereer sleutel</string>
+  <string name="button_resize">Verander formaat</string>
+  <string name="alert_disconnect_msg">Verbinding verloren</string>
+  <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
+  <string name="pref_emulation_category">Terminal emulatie</string>
+  <string name="pref_emulation_title">Emulatie mode</string>
+  <string name="pref_emulation_summary">Terminal emulatie mode voor gebruik in PTY verbindingen</string>
+  <string name="pref_scrollback_title">Scrollback grootte</string>
+  <string name="pref_scrollback_summary">Grootte van scrollback buffer om in geheugen te houden voor elke console</string>
+  <string name="pref_ui_category">Gebruikers interface</string>
+  <string name="pref_rotation_title">Rotatie mode</string>
+  <string name="pref_rotation_summary">Hoe rotatie te veranderen wanneer keyboard in/uit geschoven is</string>
+  <string name="pref_fullscreen_title">Volledig scherm</string>
+  <string name="pref_fullscreen_summary">Verberg status balk terwijl in console</string>
+  <string name="pref_memkeys_title">Onthoud sleutels in geheugen</string>
+  <string name="pref_memkeys_summary">Houd ontgrendelde sleutels in geheugen tot achtergrond service is gestopt</string>
+  <string name="pref_update_title">Update controle</string>
+  <string name="pref_update_summary">Stel de maximale frequentie in om te controleren voor ConnectBot updates</string>
+  <string name="pref_conn_persist_title">Behoud verbindingen</string>
+  <string name="pref_conn_persist_summary">Forceer dat de verbindingen actief blijven op de achtergrond</string>
+  <string name="pref_keymode_title">Folder snelkoppelingen</string>
+  <string name="pref_keymode_summary">Selecteer hoe Alt voor \'/\' en Shift voor Tab te gebruiken</string>
+  <string name="pref_camera_title">Camera snelkoppeling</string>
+  <string name="pref_camera_summary">Selecteer welke snelkoppeling te activeren wanneer camera knop is ingedrukt</string>
+  <string name="pref_keepalive_title">Houd scherm wakker</string>
+  <string name="pref_keepalive_summary">Voorkom scherm van uitgaan wanneer er gewerkt word in een console</string>
+  <string name="pref_wifilock_title">Houd Wi-Fi actief</string>
+  <string name="pref_wifilock_summary">Voorkom Wi-Fi van uitgaan wanneer er een sessie actief is</string>
+  <string name="pref_bumpyarrows_title">Hobbelige pijlen</string>
+  <string name="pref_bumpyarrows_summary">Tril als pijl knoppen worden gestuurd van trackball; handig voor langzame verbindingen</string>
+  <string name="pref_bell_category">Terminal bel</string>
+  <string name="pref_bell_title">Hoorbare bel</string>
+  <string name="pref_bell_volume_title">Bel volume</string>
+  <string name="pref_bell_vibrate_title">Tril bij bel</string>
+  <string name="pref_bell_notification_title">Achtergrond notificaties</string>
+  <string name="pref_bell_notification_summary">Stuur notificatie als terminal in de achtergrond een bel laat klinken.</string>
+  <string name="list_keymode_right">Gebruik rechter kant sleutels</string>
+  <string name="list_keymode_left">Gebruik linker kant sleutels</string>
+  <string name="list_keymode_none">Schakel uit</string>
+  <string name="list_pubkeyids_none">Gebruik sleutels niet</string>
+  <string name="list_pubkeyids_any">Gebruik een willekeurige ontgrendelde sleutel</string>
+  <string name="list_update_daily">Dagelijks</string>
+  <string name="list_update_weekly">Wekelijks</string>
+  <string name="list_update_never">Nooit</string>
+  <string name="hostpref_nickname_title">Bijnaam</string>
+  <string name="hostpref_color_title">Kleur catogorie</string>
+  <string name="hostpref_fontsize_title">Lettergrootte</string>
+  <string name="hostpref_pubkeyid_title">Gebruik pubkey authenticatie</string>
+  <string name="hostpref_authagent_title">Gebruik SSH auth agent</string>
+  <string name="hostpref_postlogin_title">Na-login automatie</string>
+  <string name="hostpref_postlogin_summary">Commando\'s om uit te voeren op de remote server wanneer geauthenticeerd</string>
+  <string name="hostpref_compression_title">Compressie</string>
+  <string name="hostpref_compression_summary">Dit kan helpen bij langzame netwerken</string>
+  <string name="hostpref_wantsession_title">Start shell sessie</string>
+  <string name="hostpref_wantsession_summary">Schakel dit uit om alleen port forwards te gebruiken</string>
+  <string name="hostpref_stayconnected_title">Blijf verbonden</string>
+  <string name="hostpref_stayconnected_summary">Verbinding automatisch proberen te herstellen</string>
+  <string name="hostpref_delkey_title">Del-toets</string>
+  <string name="hostpref_delkey_summary">De toetscode als de DEL-knop in wordt gedrukt</string>
+  <string name="hostpref_encoding_title">Codering</string>
+  <string name="hostpref_encoding_summary">Tekencodering voor de host</string>
+  <string name="hostpref_connection_category">Verbindings instellingen</string>
+  <string name="hostpref_username_title">Gebruikersnaam</string>
+  <string name="hostpref_hostname_title">Host</string>
+  <string name="hostpref_port_title">Poort</string>
+  <string name="bind_never">Nooit verbonden</string>
+  <string name="bind_minutes">%1$s minuten geleden</string>
+  <string name="bind_hours">%1$s uren geleden</string>
+  <string name="bind_days">%1$s dagen geleden</string>
+  <string name="console_copy_done">%1$d bytes gekopieerd naar het klembord</string>
+  <string name="console_copy_start">Tik en sleep\nof gebruik directioneel pad\nom velden te selecteren omte kopiëren</string>
+  <string name="console_menu_close">Sluit</string>
+  <string name="console_menu_copy">Kopieer</string>
+  <string name="console_menu_paste">Plak</string>
+  <string name="console_menu_portforwards">Port Forwards</string>
+  <string name="console_menu_resize">Forceer grootte</string>
+  <string name="console_menu_urlscan">URK Scan</string>
+  <string name="button_yes">Ja</string>
+  <string name="button_no">Nee</string>
+  <string name="portforward_local">Lokaal</string>
+  <string name="portforward_remote">Op afstand</string>
+  <string name="portforward_dynamic">Dynamisch (SOCKS)</string>
+  <string name="portforward_pos">Maak port forward</string>
+  <string name="portforward_done">Succesvol port forward gemaakt</string>
+  <string name="portforward_problem">Probleem met het maken van een port forward, misschien gebruik je poort onder 1024 of is de poort al gebruikt?</string>
+  <string name="portforward_menu_add">Voeg port forward toe</string>
+  <string name="hint_userhost">gebruiker\@hostnaam</string>
+  <string name="list_format_error">Gebruik het formaat %1$s</string>
+  <string name="format_username">gebruiker</string>
+  <string name="format_hostname">hostnaam</string>
+  <string name="format_port">poort</string>
+  <string name="list_menu_pubkeys">Beheer Pubkeys</string>
+  <string name="list_menu_sortcolor">Sorteer op kleur</string>
+  <string name="list_menu_sortname">Sorteer op naam</string>
+  <string name="list_menu_settings">Instellingen</string>
+  <string name="list_host_disconnect">Verbreek verbinding</string>
+  <string name="list_host_edit">Bewerk host</string>
+  <string name="list_host_portforwards">Bewerk port forwards</string>
+  <string name="list_host_delete">Verwijder hosts</string>
+  <string name="list_host_empty">Gebruik het snel-verbindings vierkant\nonder om een host te verbinden.</string>
+  <string name="list_rotation_default">Standaard</string>
+  <string name="list_rotation_land">Forceer landschap</string>
+  <string name="list_rotation_port">Forceer portret</string>
+  <string name="list_rotation_auto">Automatisch</string>
+  <string name="list_camera_ctrlaspace">Ctrl+A en dan Spatie</string>
+  <string name="list_camera_ctrla">Ctrl+A</string>
+  <string name="list_camera_esc">Esc</string>
+  <string name="list_camera_esc_a">Esc+A</string>
+  <string name="list_camera_none">Geen</string>
+  <string name="list_delkey_backspace">Backspace</string>
+  <string name="list_delkey_del">Verwijderen</string>
+  <string name="delete_message">Weet je zeker dat je \'%1$s\' wilt verwijderen?</string>
+  <string name="delete_pos">Ja, verwijder</string>
+  <string name="delete_neg">Annuleren</string>
+  <string name="wizard_agree">Ga akkoord</string>
+  <string name="wizard_next">Volgende</string>
+  <string name="wizard_back">Terug</string>
+  <string name="terminal_no_hosts_connected">Momenteel geen hosts verbonden</string>
+  <string name="terminal_connecting">Bezig met verbinden naar %1$s:%2$d via %3$s</string>
+  <string name="terminal_sucess">Gecontroleerde host \'%1$s\' sleutel: %2$s</string>
+  <string name="terminal_failed">Host sleutel verificatie mislukt</string>
+  <string name="terminal_using_s2c_algorithm">Server-naar-cliënt algoritme: %1$s %2$s</string>
+  <string name="terminal_using_c2s_algorithm">Cliënt-naar-server algoritme: %1$s %2$s</string>
+  <string name="terminal_using_algorithm">Gebruikt algoritme: %1$s %2$s</string>
+  <string name="terminal_auth">Probeert te authenticeren</string>
+  <string name="terminal_auth_pass">Probeert \'wachtwoord\' authenticatie</string>
+  <string name="terminal_auth_pass_fail">Authenticatie methode \'wachtwoord\' mislukt</string>
+  <string name="terminal_auth_pubkey_any">Probeert \'publieke sleutel\' authenticatie met een willekeurige in-geheugen publieke sleutel</string>
+  <string name="terminal_auth_pubkey_invalid">Geselecteerde publieke sleutel is ongeldig, probeer herselecteren van de sleutel in de host bewerker</string>
+  <string name="terminal_auth_pubkey_specific">Probeert \'publickey\' authenticatie met een specifieke publieke sleutel</string>
+  <string name="terminal_auth_pubkey_fail">Authenticatie methode \'publickey\' met sleutel \'%1$s\' gefaald</string>
+  <string name="terminal_auth_ki">Probeert \'keyboard-interactive\' authenticatie</string>
+  <string name="terminal_auth_ki_fail">Authenticatie methode \'keyboard-interactive\' mislukt</string>
+  <string name="terminal_auth_fail">[Uw host ondersteund \'wachtwoord\' of \'keyboard-interactive\' authenticatie niet.]</string>
+  <string name="terminal_no_session">Sessie zal niet gestart worden door host instelling</string>
+  <string name="terminal_enable_portfoward">Activeer port forward: %1$s</string>
+  <string name="local_shell_unavailable">Mislukking! Lokale shell is niet beschikbaar op deze telefoon.</string>
+  <string name="notification_text">%1$s wil je aandacht.</string>
+  <string name="upgrade">Nieuwe versie</string>
+  <string name="upgrade_pos">Ja, upgrade</string>
+  <string name="upgrade_neg">Nog niet</string>
+  <string name="no">Nee</string>
+  <string name="with_confirmation">Met toestemming</string>
+  <string name="yes">Ja</string>
+  <string name="exceptions_submit_message">Het lijkt erop dat ConnectBot een probleem had de laatste keer dat het gebruikt werd. Wilt u een foutenrapport naar de ConnectBot ontwikkelaars sturen?</string>
+  <string name="menu_colors_reset">Terug naar standaardinstellingen</string>
+  <string name="app_is_running">ConnectBot werkt (Connecties zijn actief)</string>
+  <string name="color_red">rood</string>
+  <string name="color_green">groen</string>
+  <string name="color_blue">blauw</string>
+  <string name="color_gray">grijs</string>
 </resources>
