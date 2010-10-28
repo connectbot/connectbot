@@ -46,6 +46,16 @@
     <property name="proguard.out.dir" value="${out.dir}/proguard.out"/>
     <property name="out.dex.input.absolute.dir" value="${proguard.out.dir}"/>
 
+    <!-- Output directory for .po files. -->
+    <property name="locale.dir" value="locale" />
+
+    <!-- Default args to pass to a2po for .po generation. -->
+    <property name="a2po.args" value="--groups strings --template fortune/fortune.pot --layout 'po/fortune/fortune-%(locale)s.po'"/>
+
+    <!-- File names for launchpad translations. -->
+    <property name="launchpad.export.file" value="launchpad-export.tar.gz"/>
+    <property name="launchpad.import.file" value="launchpad-import.tar.gz"/>
+
     <target name="check-proguard">
         <available file="tools/proguard.jar" property="have.proguard"/>
     </target>
@@ -169,6 +179,29 @@
                 <contains string="${test.results}" substring="FAILURES"/>
             </condition>
         </fail>
+    </target>
+
+    <!-- Translations come from launchpad.net and are placed in the
+         locale/ subdirectory. -->
+    <target name="translations-import">
+        <untar src="${launchpad.export.file}" dest="${locale.dir}" compression="gzip"/>
+        <exec executable="a2po" failonerror="true">
+            <arg value="import"/>
+            <arg line="${a2po.args}"/>
+        </exec>
+    </target>
+
+    <!-- Translations are to be uploaded to launchpad.net as a tar ball
+         created from the locale/ subdirectory. -->
+    <target name="translations-export">
+        <exec executable="a2po" failonerror="true">
+            <arg value="export"/>
+            <arg line="${a2po.args}"/>
+        </exec>
+        <tar destfile="${launchpad.import.file}"
+            compression="gzip"
+            basedir="${locale.dir}"
+            includes="**/*.pot **/*.po" />
     </target>
 
 <!-- End custom ConnectBot stuff -->
