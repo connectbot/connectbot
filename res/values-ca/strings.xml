@@ -1,17 +1,19 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">Client SSH simple, potent i lliure</string>
+  <string name="service_desc">Manté les connexions SSH i les claus públiques</string>
   <string name="title_hosts_list">Servidors</string>
   <string name="title_pubkey_list">Claus Públiques</string>
   <string name="title_port_forwards_list">Redirecció de Ports</string>
   <string name="title_host_editor">Edició del Servidor</string>
   <string name="title_help">Ajuda</string>
+  <string name="title_colors">Colors</string>
   <string name="resolve_connect">Connecta</string>
   <string name="resolve_entropy">Recull Entropia</string>
   <string name="menu_insert">Afegeix servidor</string>
   <string name="menu_delete">Elimina servidor</string>
   <string name="menu_preferences">Preferències</string>
-  <string name="help_intro">Siusplau escull un tema de sota per a més informació en aquest assumpte en particular</string>
+  <string name="help_intro">Si us plau, esculli un tema per a més informació en aquest assumpte en particular</string>
   <string name="help_about">Sobre ConnectBot</string>
   <string name="help_keyboard">Teclat</string>
   <string name="pubkey_generate">Genera</string>
@@ -46,6 +48,7 @@
   <string name="prompt_again">(altre cop)</string>
   <string name="prompt_type">Tipus:</string>
   <string name="prompt_password_can_be_blank">Nota: la contrasenya pot ser en blanc</string>
+  <string name="prompt_bits">Bits</string>
   <string name="prompt_pubkey_password">Contrasenya per la clau \'%1$s\'</string>
   <string name="prompt_allow_agent_to_use_key">Permet al servidor remot\nutilitzar la clau \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">ALERTA: LA IDENTIFICACIÓ DEL SERVIDOR REMOT HA CANVIAT!</string>
@@ -63,6 +66,7 @@
   <string name="button_generate">Genera clau</string>
   <string name="button_resize">Redimensiona</string>
   <string name="alert_disconnect_msg">Connexió perduda</string>
+  <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
   <string name="pref_emulation_category">Emulador del terminal</string>
   <string name="pref_emulation_title">Mode d\'emulació</string>
   <string name="pref_emulation_summary">Mode d\'emulació de terminal per l\'ús de connexions PTY</string>
@@ -123,6 +127,7 @@
   <string name="hostpref_connection_category">Paràmetres de connexió</string>
   <string name="hostpref_username_title">Nom d\'usuari</string>
   <string name="hostpref_hostname_title">Servidor</string>
+  <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Mai connectat</string>
   <string name="bind_minutes">Fa %1$s minuts</string>
   <string name="bind_hours">Fa %1$s hores</string>
@@ -136,6 +141,8 @@
   <string name="console_menu_resize">Força el tamany</string>
   <string name="console_menu_urlscan">Llistat de URL</string>
   <string name="button_yes">Sí</string>
+  <string name="button_no">No</string>
+  <string name="portforward_local">Local</string>
   <string name="portforward_remote">Remot</string>
   <string name="portforward_dynamic">Dinàmic (SOCKS)</string>
   <string name="portforward_pos">Crea redireccionament de ports</string>
@@ -146,6 +153,7 @@
   <string name="list_format_error">Usa el format %1$s</string>
   <string name="format_username">Usuari</string>
   <string name="format_hostname">servidor</string>
+  <string name="format_port">port</string>
   <string name="list_menu_pubkeys">Gestiona Claus</string>
   <string name="list_menu_sortcolor">Ordena per color</string>
   <string name="list_menu_sortname">Ordena per nom</string>
@@ -160,6 +168,9 @@
   <string name="list_rotation_port">Força vertical</string>
   <string name="list_rotation_auto">Automàtic</string>
   <string name="list_camera_ctrlaspace">Ctrl+A llavors Espai</string>
+  <string name="list_camera_ctrla">Ctrl+A</string>
+  <string name="list_camera_esc">Esc</string>
+  <string name="list_camera_esc_a">Esc+A</string>
   <string name="list_camera_none">Res</string>
   <string name="list_delkey_backspace">Retrocés</string>
   <string name="list_delkey_del">Suprimeix</string>
@@ -193,6 +204,7 @@
   <string name="upgrade">Nova versió</string>
   <string name="upgrade_pos">Sí, actualitza</string>
   <string name="upgrade_neg">No ara</string>
+  <string name="no">No</string>
   <string name="with_confirmation">Amb confirmació</string>
   <string name="yes">Sí</string>
   <string name="exceptions_submit_message">Sembla que ConnectBot ha tingut un problema l\'últim cop que s\'ha iniciat. Enviar la informació de l\'error als desenvolupadors de ConnectBot?</string>
