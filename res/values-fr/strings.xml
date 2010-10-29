@@ -1,467 +1,210 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-/*
- * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2007 Kenny Root, Jeffrey Sharkey
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
--->
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-	<string name="app_desc">Un client SSH simple, open-source et puissant.</string>
-	<string name="service_desc">Maintains SSH connections and loaded pubkeys</string>
-
-	<!-- Window title for the Host List -->
-	<string name="title_hosts_list">Serveurs</string>
-	<!-- Window title for the Pubkeys List -->
-	<string name="title_pubkey_list">Clés publiques</string>
-	<!-- Window title for the Port Forwards List -->
-	<string name="title_port_forwards_list">Redirections de ports</string>
-	<!-- Window title when editing host details -->
-	<string name="title_host_editor">Modifier le serveur</string>
-	<!-- Window title for Help index -->
-	<string name="title_help">Aide</string>
-	<!-- Window title for color list editing screen -->
-	<string name="title_colors">Couleurs</string>
-
-	<string name="resolve_connect">Connexion</string>
-	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="resolve_entropy">Génération d\'aléatoire</string>
-
-	<string name="menu_insert">Ajouter un serveur</string>
-	<string name="menu_delete">Supprimmer le serveur</string>
-	<string name="menu_preferences">Préférences</string>
-
-	<string name="help_intro">Sélectionnez un sujet ci-dessous pour plus d\'informations.</string>
-	<string name="help_about">À propos de ConnectBot</string>
-	<string name="help_keyboard">Clavier</string>
-
-	<string name="pubkey_generate">Générer</string>
-	<string name="pubkey_import">Importer</string>
-	<string name="pubkey_delete">Supprimer la clé</string>
-	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="pubkey_gather_entropy">Génération d\'aléatoire</string>
-	<string name="pubkey_touch_prompt">Touchez cette boîte pour récupérer un nombre aléatoire : %1$d%% fait</string>
-	<string name="pubkey_touch_hint">Afin d\'assurer la qualité des nombres aléatoires utilisés pendant la génération de la clé, merci de bouger votre doigt de façon aléatoire sur la boîte ci-dessous.</string>
-	<string name="pubkey_generating">Génération de la paire de clés en cours...</string>
-	<string name="pubkey_copy_private">Copier la clé privée</string>
-	<string name="pubkey_copy_public">Copier la clé publique</string>
-	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
-	<string name="pubkey_list_empty">Cliquer sur le "Menu" pour créer\nou importer des paires de clés.</string>
-	<string name="pubkey_unknown_format">Format inconnu</string>
-	<string name="pubkey_change_password">Changer le mot de passe</string>
-	<string name="pubkey_list_pick">Récupérer depuis /sdcard</string>
-	<string name="pubkey_import_parse_problem">Problème lors de l\'import de la clé privée</string>
-	<string name="pubkey_unlock">Déverrouiller la clé</string>
-	<string name="pubkey_failed_add">Mot de passe incorrect pour la clef \'%1$s\'. Authentification incorrecte.</string>
-	<string name="pubkey_memory_load">Chargée en mémoire</string>
-	<string name="pubkey_memory_unload">Effacée de la mémoire</string>
-	<string name="pubkey_load_on_start">Charger la clé au démarrage</string>
-	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
-	<string name="pubkey_confirm_use">Confirmer avant utilisation</string>
-
-	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
-	<string name="portforward_list_empty">Appuyez sur "Menu" pour créer\ndes redirections de port.</string>
-	<string name="portforward_edit">Editez la redirection de port</string>
-	<string name="portforward_delete">Effacez la redirection de port</string>
-
-	<string name="prompt_nickname">Pseudo</string>
-	<!-- An example string that could be used as a nickname for a pubkey. -->
-	<string name="prompt_nickname_hint_pubkey">Ma clé de travail</string>
-	<!-- The source TCP port for port forwards. -->
-	<string name="prompt_source_port">Port source:</string>
-	<!-- The "host:port" combination used for port forward destinations. -->
-	<string name="prompt_destination">Destination :</string>
-	<string name="prompt_old_password">Ancien mot de passe:</string>
-	<string name="prompt_password">Mot de passe:</string>
-	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
-	<string name="prompt_again">(encore)</string>
-	<!-- Label for the user to select port forward type. -->
-	<string name="prompt_type">Type :</string>
-	<string name="prompt_password_can_be_blank">Note: le mot de passe peux être vide</string>
-	<!-- Prompt for the size of the private key in bits. -->
-	<string name="prompt_bits">Bits :</string>
-
-	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Mot de passe pour la clé \'%1$s\'</string>
-
-	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">Autoriser l\'hôte distant à\nutiliser la clé \'%1$s\' ?</string>
-
-	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning_header">ATTENTION : L\'IDENTIFICATION DE L\'HOTE DISTANT A CHANGEE !</string>
-	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning">IL EST POSSIBLE QUE QUELQU\'UN FASSE QUELQUE CHOSE DE NUISIBLE !\nQuelqu\'un pourrait vous écouter en ce moment (attaque de l\'homme du milieu) !\nIl est aussi possible que la clé du serveur ait juste changée.</string>
-
-	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
-	<string name="prompt_host_disconnected">L\'hôte s\'est deconnecté.\nFermer la session?</string>
-	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
-	<string name="prompt_continue_connecting">Etes-vous sur de vouloir\ncontinuer à vous connecter ?</string>
-
-	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">L\'autenthicité du serveur \'%1$s\' ne peut être établie.</string>
-	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
-	<string name="host_fingerprint">L\'empreinte de la clé du serveur %1$s est %2$s</string>
-
-	<string name="alert_passwords_do_not_match_msg">Les mots de passe diffèrent!</string>
-	<string name="alert_wrong_password_msg">Mauvais mot de passe</string>
-	<string name="alert_key_corrupted_msg">La clé privée semble corrompue!</string>
-	<string name="alert_sdcard_absent">Pas de carte SD dans le lecteur !</string>
-
-	<!-- Add a new item (e.g., host or pubkey) to the list. -->
-	<string name="button_add">Ajouter</string>
-	<!-- Change an existing item's (e.g., host or pubkey) details. -->
-	<string name="button_change">Changer</string>
-	<!-- Button that begins the generation of a public key pair. -->
-	<string name="button_generate">Générer clé</string>
-	<!-- Button that resizes the screen to the user-specified dimensions. -->
-	<string name="button_resize">Redimensionner</string>
-
-	<string name="alert_disconnect_msg">Connexion perdue</string>
-
-	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
-
-	<!-- The category title for terminal emulation preferences. -->
-	<string name="pref_emulation_category">Emulation du mode terminal</string>
-
-	<!-- Name for the emulation terminal type preference. -->
-	<string name="pref_emulation_title">Mode d\'emulation</string>
-	<!-- Description of the emulation terminal type preference. -->
-	<string name="pref_emulation_summary">Mode d\'emulation du terminal à utiliser pour les connexions PTY</string>
-
-	<!-- Name for the scrollback size preference -->
-	<string name="pref_scrollback_title">Taille de la mémoire de parcours arrière</string>
-	<!-- Description of the scrollback size preference -->
-	<string name="pref_scrollback_summary">Taille de la mémoire de parcours arrière à garder en mémoire pour chaque console</string>
-
-	<!-- The category title for user interface preferences -->
-	<string name="pref_ui_category">Interface utilisateur</string>
-
-	<!-- Name for the rotation mode preference -->
-	<string name="pref_rotation_title">Mode de rotation</string>
-	<!-- Summary for the rotation mode preference -->
-	<string name="pref_rotation_summary">Comment changer l\'orientation de l\'écran quand le clavier est deplié ou non</string>
-
-	<!-- Name for the full screen preference -->
-	<string name="pref_fullscreen_title">Plein écran</string>
-	<!-- Summary for the full screen preference -->
-	<string name="pref_fullscreen_summary">Cacher la barre de status lorsque la console est active</string>
-
-	<!-- Name for the memorize keys preference -->
-	<string name="pref_memkeys_title">Garder les clés en mémoire</string>
-	<!-- Summary for the memorize keys preference -->
-	<string name="pref_memkeys_summary">Garder les clés débloquées en mémoire tant que le service tourne en arrière plan</string>
-
-	<!-- Name for the update check preference -->
-	<string name="pref_update_title">Vérifier les mises à jour</string>
-	<!-- Summary for the update check preference -->
-	<string name="pref_update_summary">Régler la fréquence de vérification pour les mise à jour de ConnectBot</string>
-
-	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">Connexions persistantes</string>
-	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Forcer les connexions à rester connectées en arrière plan</string>
-
-	<!-- Name for the keyboard shortcuts preference -->
-	<string name="pref_keymode_title">Raccourcis de navigation</string>
-	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Définir quel couple de touche Alt et Shift utiliser pour \'/\' et Tab</string>
-
-	<!-- Name for the camera shortcut usage preference -->
-	<string name="pref_camera_title">Raccourci du bouton Camera</string>
-	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_camera_summary">Sélectionnez le raccourci à exécuter quand le bouton camera est pressé</string>
-
-	<!-- Name for the keep screen on preference -->
-	<string name="pref_keepalive_title">Garder l\'écran allumé</string>
-	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_keepalive_summary">Empêcher la mise en veille de l\'écran pendant une session console</string>
-
-	<!-- Name for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_title">Garder le Wi-Fi actif</string>
-	<!-- Summary for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_summary">Empêcher la désactivation du Wi-Fi quand une session est active</string>
-
-	<!-- Name for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_title">Flêches vibrantes</string>
-	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_summary">Vibrer lors de l\'envoi d\'une touche directionnelle à partir du trackball ; intéressant pour les connexions lentes</string>
-
-	<!-- Category title for the Terminal Bell preferences -->
-	<string name="pref_bell_category">Cloche du terminal</string>
-
-	<!-- Checkbox preference title for the audible terminal bell feature -->
-	<string name="pref_bell_title">Alerte sonore</string>
-
-	<!-- Title for the slider preference to set the volume -->
-	<string name="pref_bell_volume_title">Volume de l\'alerte</string>
-
-	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
-	<string name="pref_bell_vibrate_title">Vibrer en cas d\'alerte</string>
-
-	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
-	<string name="pref_bell_notification_title">Notification en arrière plan</string>
-	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
-	<string name="pref_bell_notification_summary">Envoyer une notification lorsqu\'un terminal génère une alerte</string>
-
-	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
-	<string name="list_keymode_right">Utiliser les touches du coté droit du clavier</string>
-	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
-	<string name="list_keymode_left">Utiliser les touches du coté gauche du clavier</string>
-	<!-- Preference selection to indicate never to use special shortcut keys. -->
-	<string name="list_keymode_none">Désactiver</string>
-
-	<!-- Preference to not use pubkeys to authenticate to this host. -->
-	<string name="list_pubkeyids_none">Ne pas utiliser les clefs de cryptage publiques</string>
-	<!-- Preference to use any pubkey to authenticate to this host. -->
-	<string name="list_pubkeyids_any">Utiliser une clé pour l\'authentification</string>
-
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_daily">Journalière</string>
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_weekly">Hebdomadaire</string>
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_never">Jamais</string>
-
-	<!-- Host nickname field preference title -->
-	<string name="hostpref_nickname_title">Surnom</string>
-
-	<!-- Host color category preference title -->
-	<string name="hostpref_color_title">Catégorie de couleur</string>
-
-	<!-- Host's default font size when opening the terminal in points (pt) -->
-	<string name="hostpref_fontsize_title">Taille de police (pt)</string>
-
-	<!-- Host pubkey usage preference title -->
-	<string name="hostpref_pubkeyid_title">Utiliser l\'autentification par clef de cryptage publique</string>
-
-	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
-	<string name="hostpref_authagent_title">Utiliser l\'agent d\'authentification SSH</string>
-
-	<!-- Host post-login automation preference title -->
-	<string name="hostpref_postlogin_title">Commande à exécuter automatiquement après l\'authentification</string>
-	<!-- Host post-login automation preference summary -->
-	<string name="hostpref_postlogin_summary">Commandes a éffectuer sur le serveur distant après s\'êtres autentifier</string>
-
-	<!-- Host compression preference title -->
-	<string name="hostpref_compression_title">Compression</string>
-	<!-- Summary for compression preference -->
-	<string name="hostpref_compression_summary">Cela peut aider pour des reseaux lent</string>
-
-	<!-- Setting for whether we want a session to start up when we connect to a host -->
-	<string name="hostpref_wantsession_title">Démarrer une session en ligne de commande</string>
-	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
-	<string name="hostpref_wantsession_summary">Décochez cette préférence pour n\'utiliser que le mode "port forwards"</string>
-
-	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
-	<string name="hostpref_stayconnected_title">Rester connecté</string>
-	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
-	<string name="hostpref_stayconnected_summary">Essayer de se reconnecter à l\'hôte après déconnexion</string>
-
-	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_title">Touche SUPPR</string>
-	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_summary">Le code de touche envoyé quand la touche SUPPR est appuyée.</string>
-
-	<!-- Host character encoding preference title -->
-	<string name="hostpref_encoding_title">cryptage</string>
-	<!-- Host character encoding preference summary -->
-	<string name="hostpref_encoding_summary">codage de charactère a utiliser pour le serveur</string>
-
-	<!-- Host preference category title for connection settings -->
-	<string name="hostpref_connection_category">Paramètre de connexion</string>
-
-	<!-- Username field title for host editor preference -->
-	<string name="hostpref_username_title">Nom d\'utilisateur</string>
-
-	<!-- Hostname field title for host editor preference -->
-	<string name="hostpref_hostname_title">Serveur</string>
-
-	<!-- Port field title for host editor preference -->
-	<string name="hostpref_port_title">Port</string>
-
-	<!-- Displayed to indicate a host has never been connected to. -->
-	<string name="bind_never">jamais connecté</string>
-	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
-	<string name="bind_minutes">Il ya %1$s minutes</string>
-	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
-	<string name="bind_hours">Il y a %1$s heures</string>
-	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
-	<string name="bind_days">Il y a %1$s jours</string>
-
-	<!-- Message given when user copies from the terminal. -->
-	<string name="console_copy_done">%1$d octets copié dans le presse-papier</string>
-	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">Toucher et tirer\nou utiliser les touches directionelles\npour selectioner la region à copier</string>
-
-	<!-- Button to close the disconnected terminal window. -->
-	<string name="console_menu_close">Fermer</string>
-	<!-- Button to begin copying from the terminal to the clipboard. -->
-	<string name="console_menu_copy">Copier</string>
-	<!-- Button to paste from the clipboard to the terminal. -->
-	<string name="console_menu_paste">Coller</string>
-	<!-- Button that brings user to the Port Forwards List. -->
-	<string name="console_menu_portforwards">Redirections de port</string>
-	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
-	<string name="console_menu_resize">Forcer la taille</string>
-	<!-- Button that brings up the list of URLs on the current screen -->
-	<string name="console_menu_urlscan">Lister les URL</string>
-
-	<!-- Button label to answer "Yes" to a yes/no prompt -->
-	<string name="button_yes">Oui</string>
-	<!-- Button label to answer "No" to a yes/no prompt -->
-	<string name="button_no">Non</string>
-
-	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
-	<string name="portforward_local">Local</string>
-	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
-	<string name="portforward_remote">Distant</string>
-	<!-- Selection for a "dynamic" port forward. E.g., connections to a port listening locally is forwarded based on the SOCKS protocol to an arbitrary remote host and port. -->
-	<string name="portforward_dynamic">Dynamique (SOCKS)</string>
-	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
-	<string name="portforward_pos">Créer la redirection de port</string>
-
-	<string name="portforward_done">Redirection de port créée avec succès</string>
-	<string name="portforward_problem">Problème de création de la redirection de port, peut-être utilisez vous un port sous le 1024 ou un déjà utilisé ?</string>
-
-	<string name="portforward_menu_add">Ajouter une redirection de port</string>
-
-	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
-	<string name="hint_userhost">utilisateur@serveur</string>
-
-	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
-	<string name="list_format_error">Utilisez le format "%1$s"</string>
-
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_username">utilisateur</string>
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_hostname">serveur</string>
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_port">port</string>
-
-	<string name="list_menu_pubkeys">Gérer les clés publiques</string>
-	<!-- Selection choice to sort hosts by color. -->
-	<string name="list_menu_sortcolor">Trier par couleur</string>
-	<!-- Selection choice to sort hosts by nickname. -->
-	<string name="list_menu_sortname">Trier par nom</string>
-	<string name="list_menu_settings">Réglages</string>
-
-	<string name="list_host_disconnect">Déconnexion</string>
-	<string name="list_host_edit">Editer le serveur</string>
-	<string name="list_host_portforwards">Editer les redirections de port</string>
-	<string name="list_host_delete">Effacer le serveur</string>
-	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
-	<string name="list_host_empty">Utilisez la boite de connection rapide en bas pour vous connecter a un serveur</string>
-
-	<!-- Default screen rotation preference selection -->
-	<string name="list_rotation_default">Par défaut</string>
-	<string name="list_rotation_land">Forcer le mode paysage</string>
-	<string name="list_rotation_port">Forcer le mode portrait</string>
-	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
-	<string name="list_rotation_auto">Automatique</string>
-
-	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
-	<string name="list_camera_ctrlaspace">Ctrl+A puis Espace</string>
-	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A". -->
-	<string name="list_camera_ctrla">Ctrl+A</string>
-	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
-	<string name="list_camera_esc">Echap</string>
-	<!-- Selection to indicate pressing the Camera button should send "Esc+A". -->
-	<string name="list_camera_esc_a">Echap+A</string>
-	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
-	<string name="list_camera_none">aucun</string>
-
-	<!-- Name for the backspace character -->
-	<string name="list_delkey_backspace">Retour arriére</string>
-	<!-- Name for the ASCII DEL character -->
-	<string name="list_delkey_del">Supprimer</string>
-
-	<string name="delete_message">Êtes-vous sûr de vouloir supprimer \'%1$s\' ?</string>
-	<string name="delete_pos">Oui, supprimer</string>
-	<string name="delete_neg">Annuler</string>
-
-	<!-- Button to agree to license terms. -->
-	<string name="wizard_agree">Accepter</string>
-	<!-- Button to go to the next page in the first time start-up wizard. -->
-	<string name="wizard_next">Suivant</string>
-	<!-- Button to go to the previous page in the first time start-up wizard. -->
-	<string name="wizard_back">Précédent</string>
-
-	<string name="terminal_no_hosts_connected">Aucun hôte actuellement connecté</string>
-
-	<!-- Displayed in terminal when attempting to connect to a host. The first two
-	     variables are host:port and the third is the protocol (e.g., SSH) -->
-	<string name="terminal_connecting">Connexion à %1$s:%2$d via %3$s</string>
-
-	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Clé de vérification de l\'hôte \'%1$s\' : %2$s</string>
-	<string name="terminal_failed">Authentification par clé échouée</string>
-
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_s2c_algorithm">Algorithme serveur vers client : %1$s %2$s</string>
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_c2s_algorithm">Algorithme client vers serveur : %1$s %2$s</string>
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_algorithm">Utilisation de l\'algorithme de cryptage : %1$s %2$s</string>
-
-	<string name="terminal_auth">Tentative d\'authentification</string>
-
-	<string name="terminal_auth_pass">Tentative d\'authentification par mot de passe</string>
-	<string name="terminal_auth_pass_fail">L\'authentification par mot de passe a échoué</string>
-
-	<string name="terminal_auth_pubkey_any">Tentative d\'authentification avec une clé publique en mémoire</string>
-	<string name="terminal_auth_pubkey_invalid">La clé publique sélectionnée est invalide, essayez de sélectionner une clé dans les préférences de l\'hôte</string>
-	<string name="terminal_auth_pubkey_specific">Tentative d\'authentification par clé publique avec une clé publique spécifique</string>
-	<string name="terminal_auth_pubkey_fail">La méthode d\'authentification par clé publique avec la clé \'%1$s\' a échouée.</string>
-
-	<string name="terminal_auth_ki">Tentative d\'authentification par clavier</string>
-	<string name="terminal_auth_ki_fail">La méthode d\'authentification par clavier a échouée</string>
-
-	<string name="terminal_auth_fail">[L\'hôte ne supporte pas l\'authentification par mot de passe ou par clavier.]</string>
-
-	<string name="terminal_no_session">La session ne sera pas démarrée à cause des préférences de l\'hôte.</string>
-	<string name="terminal_enable_portfoward">Activer la redirection de port : %1$s</string>
-
-	<string name="local_shell_unavailable">Echec ! Le shell local est indisponible sur ce téléphone.</string>
-
-	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
-	<string name="notification_text">%1$s requiert votre attention.</string>
-
-	<!-- Dialog title when a new version of ConnectBot is detected. -->
-	<string name="upgrade">Nouvelle version</string>
-	<!-- Button selection to upgrade to the latest ConnectBot when one is available. -->
-	<string name="upgrade_pos">Oui, mettre à jour</string>
-	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
-	<string name="upgrade_neg">Pas maintenant</string>
-
-	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
-	<string name="no">Non</string>
-	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
-	<string name="with_confirmation">Après confirmation</string>
-	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
-	<string name="yes">Oui</string>
-
-	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
-	<string name="exceptions_submit_message">Il semblerait que ConnectBot ait eu un problème lors de sa dernière utilisation. Voulez vous envoyer un rapport d\'erreur aux développeurs de ConnectBot ?</string>
-
-	<!-- Menu selection to reset colors to their defaults. -->
-	<string name="menu_colors_reset">Réinitialiser</string>
-
-	<!-- Displayed in the notification bar that connections are active -->
-	<string name="app_is_running">ConnectBot est en cours</string>
-
-	<string name="color_red">rouge</string>
-	<string name="color_green">vert</string>
-	<string name="color_blue">bleu</string>
-	<string name="color_gray">gris</string>
+  <string name="app_desc">Un client SSH simple, open-source et puissant.</string>
+  <string name="title_hosts_list">Serveurs</string>
+  <string name="title_pubkey_list">Clés publiques</string>
+  <string name="title_port_forwards_list">Redirections de ports</string>
+  <string name="title_host_editor">Modifier le serveur</string>
+  <string name="title_help">Aide</string>
+  <string name="title_colors">Couleurs</string>
+  <string name="resolve_connect">Connexion</string>
+  <string name="resolve_entropy">Génération d\'aléatoire</string>
+  <string name="menu_insert">Ajouter un serveur</string>
+  <string name="menu_delete">Supprimmer le serveur</string>
+  <string name="menu_preferences">Préférences</string>
+  <string name="help_intro">Sélectionnez un sujet ci-dessous pour plus d\'informations.</string>
+  <string name="help_about">À propos de ConnectBot</string>
+  <string name="help_keyboard">Clavier</string>
+  <string name="pubkey_generate">Générer</string>
+  <string name="pubkey_import">Importer</string>
+  <string name="pubkey_delete">Supprimer la clé</string>
+  <string name="pubkey_gather_entropy">Génération d\'aléatoire</string>
+  <string name="pubkey_touch_prompt">Touchez cette boîte pour récupérer un nombre aléatoire : %1$d%% fait</string>
+  <string name="pubkey_touch_hint">Afin d\'assurer la qualité des nombres aléatoires utilisés pendant la génération de la clé, merci de bouger votre doigt de façon aléatoire sur la boîte ci-dessous.</string>
+  <string name="pubkey_generating">Génération de la paire de clés en cours...</string>
+  <string name="pubkey_copy_private">Copier la clé privée</string>
+  <string name="pubkey_copy_public">Copier la clé publique</string>
+  <string name="pubkey_list_empty">Cliquer sur le Menu pour créer\nou importer des paires de clés.</string>
+  <string name="pubkey_unknown_format">Format inconnu</string>
+  <string name="pubkey_change_password">Changer le mot de passe</string>
+  <string name="pubkey_list_pick">Récupérer depuis /sdcard</string>
+  <string name="pubkey_import_parse_problem">Problème lors de l\'import de la clé privée</string>
+  <string name="pubkey_unlock">Déverrouiller la clé</string>
+  <string name="pubkey_failed_add">Mot de passe incorrect pour la clef \'%1$s\'. Authentification incorrecte.</string>
+  <string name="pubkey_memory_load">Chargée en mémoire</string>
+  <string name="pubkey_memory_unload">Effacée de la mémoire</string>
+  <string name="pubkey_load_on_start">Charger la clé au démarrage</string>
+  <string name="pubkey_confirm_use">Confirmer avant utilisation</string>
+  <string name="portforward_list_empty">Appuyez sur Menu pour créer\ndes redirections de port.</string>
+  <string name="portforward_edit">Editez la redirection de port</string>
+  <string name="portforward_delete">Effacez la redirection de port</string>
+  <string name="prompt_nickname">Pseudo</string>
+  <string name="prompt_nickname_hint_pubkey">Ma clé de travail</string>
+  <string name="prompt_source_port">Port source:</string>
+  <string name="prompt_destination">Destination :</string>
+  <string name="prompt_old_password">Ancien mot de passe:</string>
+  <string name="prompt_password">Mot de passe:</string>
+  <string name="prompt_again">(encore)</string>
+  <string name="prompt_type">Type :</string>
+  <string name="prompt_password_can_be_blank">Note: le mot de passe peux être vide</string>
+  <string name="prompt_bits">Bits :</string>
+  <string name="prompt_pubkey_password">Mot de passe pour la clé \'%1$s\'</string>
+  <string name="prompt_allow_agent_to_use_key">Autoriser l\'hôte distant à\nutiliser la clé \'%1$s\' ?</string>
+  <string name="host_verification_failure_warning_header">ATTENTION : L\'IDENTIFICATION DE L\'HOTE DISTANT A CHANGEE !</string>
+  <string name="host_verification_failure_warning">IL EST POSSIBLE QUE QUELQU\'UN FASSE QUELQUE CHOSE DE NUISIBLE !\nQuelqu\'un pourrait vous écouter en ce moment (attaque de l\'homme du milieu) !\nIl est aussi possible que la clé du serveur ait juste changée.</string>
+  <string name="prompt_host_disconnected">L\'hôte s\'est deconnecté.\nFermer la session?</string>
+  <string name="prompt_continue_connecting">Etes-vous sur de vouloir\ncontinuer à vous connecter ?</string>
+  <string name="host_authenticity_warning">L\'autenthicité du serveur \'%1$s\' ne peut être établie.</string>
+  <string name="host_fingerprint">L\'empreinte de la clé du serveur %1$s est %2$s</string>
+  <string name="alert_passwords_do_not_match_msg">Les mots de passe diffèrent!</string>
+  <string name="alert_wrong_password_msg">Mauvais mot de passe</string>
+  <string name="alert_key_corrupted_msg">La clé privée semble corrompue!</string>
+  <string name="alert_sdcard_absent">Pas de carte SD dans le lecteur !</string>
+  <string name="button_add">Ajouter</string>
+  <string name="button_change">Changer</string>
+  <string name="button_generate">Générer clé</string>
+  <string name="button_resize">Redimensionner</string>
+  <string name="alert_disconnect_msg">Connexion perdue</string>
+  <string name="pref_emulation_category">Emulation du mode terminal</string>
+  <string name="pref_emulation_title">Mode d\'emulation</string>
+  <string name="pref_emulation_summary">Mode d\'emulation du terminal à utiliser pour les connexions PTY</string>
+  <string name="pref_scrollback_title">Taille de la mémoire de parcours arrière</string>
+  <string name="pref_scrollback_summary">Taille de la mémoire de parcours arrière à garder en mémoire pour chaque console</string>
+  <string name="pref_ui_category">Interface utilisateur</string>
+  <string name="pref_rotation_title">Mode de rotation</string>
+  <string name="pref_rotation_summary">Comment changer l\'orientation de l\'écran quand le clavier est deplié ou non</string>
+  <string name="pref_fullscreen_title">Plein écran</string>
+  <string name="pref_fullscreen_summary">Cacher la barre de status lorsque la console est active</string>
+  <string name="pref_memkeys_title">Garder les clés en mémoire</string>
+  <string name="pref_memkeys_summary">Garder les clés débloquées en mémoire tant que le service tourne en arrière plan</string>
+  <string name="pref_update_title">Vérifier les mises à jour</string>
+  <string name="pref_update_summary">Régler la fréquence de vérification pour les mise à jour de ConnectBot</string>
+  <string name="pref_conn_persist_title">Connexions persistantes</string>
+  <string name="pref_conn_persist_summary">Forcer les connexions à rester connectées en arrière plan</string>
+  <string name="pref_keymode_title">Raccourcis de navigation</string>
+  <string name="pref_keymode_summary">Définir quel couple de touche Alt et Shift utiliser pour \'/\' et Tab</string>
+  <string name="pref_camera_title">Raccourci du bouton Camera</string>
+  <string name="pref_camera_summary">Sélectionnez le raccourci à exécuter quand le bouton camera est pressé</string>
+  <string name="pref_keepalive_title">Garder l\'écran allumé</string>
+  <string name="pref_keepalive_summary">Empêcher la mise en veille de l\'écran pendant une session console</string>
+  <string name="pref_wifilock_title">Garder le Wi-Fi actif</string>
+  <string name="pref_wifilock_summary">Empêcher la désactivation du Wi-Fi quand une session est active</string>
+  <string name="pref_bumpyarrows_title">Flêches vibrantes</string>
+  <string name="pref_bumpyarrows_summary">Vibrer lors de l\'envoi d\'une touche directionnelle à partir du trackball ; intéressant pour les connexions lentes</string>
+  <string name="pref_bell_category">Cloche du terminal</string>
+  <string name="pref_bell_title">Alerte sonore</string>
+  <string name="pref_bell_volume_title">Volume de l\'alerte</string>
+  <string name="pref_bell_vibrate_title">Vibrer en cas d\'alerte</string>
+  <string name="pref_bell_notification_title">Notification en arrière plan</string>
+  <string name="pref_bell_notification_summary">Envoyer une notification lorsqu\'un terminal génère une alerte</string>
+  <string name="list_keymode_right">Utiliser les touches du coté droit du clavier</string>
+  <string name="list_keymode_left">Utiliser les touches du coté gauche du clavier</string>
+  <string name="list_keymode_none">Désactiver</string>
+  <string name="list_pubkeyids_none">Ne pas utiliser les clefs de cryptage publiques</string>
+  <string name="list_pubkeyids_any">Utiliser une clé pour l\'authentification</string>
+  <string name="list_update_daily">Journalière</string>
+  <string name="list_update_weekly">Hebdomadaire</string>
+  <string name="list_update_never">Jamais</string>
+  <string name="hostpref_nickname_title">Surnom</string>
+  <string name="hostpref_color_title">Catégorie de couleur</string>
+  <string name="hostpref_fontsize_title">Taille de police (pt)</string>
+  <string name="hostpref_pubkeyid_title">Utiliser l\'autentification par clef de cryptage publique</string>
+  <string name="hostpref_authagent_title">Utiliser l\'agent d\'authentification SSH</string>
+  <string name="hostpref_postlogin_title">Commande à exécuter automatiquement après l\'authentification</string>
+  <string name="hostpref_postlogin_summary">Commandes a éffectuer sur le serveur distant après s\'êtres autentifier</string>
+  <string name="hostpref_compression_summary">Cela peut aider pour des reseaux lent</string>
+  <string name="hostpref_wantsession_title">Démarrer une session en ligne de commande</string>
+  <string name="hostpref_wantsession_summary">Décochez cette préférence pour n\'utiliser que le mode port forwards</string>
+  <string name="hostpref_stayconnected_title">Rester connecté</string>
+  <string name="hostpref_stayconnected_summary">Essayer de se reconnecter à l\'hôte après déconnexion</string>
+  <string name="hostpref_delkey_title">Touche SUPPR</string>
+  <string name="hostpref_delkey_summary">Le code de touche envoyé quand la touche SUPPR est appuyée.</string>
+  <string name="hostpref_encoding_title">cryptage</string>
+  <string name="hostpref_encoding_summary">codage de charactère a utiliser pour le serveur</string>
+  <string name="hostpref_connection_category">Paramètre de connexion</string>
+  <string name="hostpref_username_title">Nom d\'utilisateur</string>
+  <string name="hostpref_hostname_title">Serveur</string>
+  <string name="bind_never">jamais connecté</string>
+  <string name="bind_minutes">Il ya %1$s minutes</string>
+  <string name="bind_hours">Il y a %1$s heures</string>
+  <string name="bind_days">Il y a %1$s jours</string>
+  <string name="console_copy_done">%1$d octets copié dans le presse-papier</string>
+  <string name="console_copy_start">Toucher et tirer\nou utiliser les touches directionelles\npour selectioner la region à copier</string>
+  <string name="console_menu_close">Fermer</string>
+  <string name="console_menu_copy">Copier</string>
+  <string name="console_menu_paste">Coller</string>
+  <string name="console_menu_portforwards">Redirections de port</string>
+  <string name="console_menu_resize">Forcer la taille</string>
+  <string name="console_menu_urlscan">Lister les URL</string>
+  <string name="button_yes">Oui</string>
+  <string name="button_no">Non</string>
+  <string name="portforward_remote">Distant</string>
+  <string name="portforward_dynamic">Dynamique (SOCKS)</string>
+  <string name="portforward_pos">Créer la redirection de port</string>
+  <string name="portforward_done">Redirection de port créée avec succès</string>
+  <string name="portforward_problem">Problème de création de la redirection de port, peut-être utilisez vous un port sous le 1024 ou un déjà utilisé ?</string>
+  <string name="portforward_menu_add">Ajouter une redirection de port</string>
+  <string name="hint_userhost">utilisateur\@serveur</string>
+  <string name="list_format_error">Utilisez le format %1$s</string>
+  <string name="format_username">utilisateur</string>
+  <string name="format_hostname">serveur</string>
+  <string name="list_menu_pubkeys">Gérer les clés publiques</string>
+  <string name="list_menu_sortcolor">Trier par couleur</string>
+  <string name="list_menu_sortname">Trier par nom</string>
+  <string name="list_menu_settings">Réglages</string>
+  <string name="list_host_disconnect">Déconnexion</string>
+  <string name="list_host_edit">Editer le serveur</string>
+  <string name="list_host_portforwards">Editer les redirections de port</string>
+  <string name="list_host_delete">Effacer le serveur</string>
+  <string name="list_host_empty">Utilisez la boite de connection rapide en bas pour vous connecter a un serveur</string>
+  <string name="list_rotation_default">Par défaut</string>
+  <string name="list_rotation_land">Forcer le mode paysage</string>
+  <string name="list_rotation_port">Forcer le mode portrait</string>
+  <string name="list_rotation_auto">Automatique</string>
+  <string name="list_camera_ctrlaspace">Ctrl+A puis Espace</string>
+  <string name="list_camera_esc">Echap</string>
+  <string name="list_camera_esc_a">Echap+A</string>
+  <string name="list_camera_none">aucun</string>
+  <string name="list_delkey_backspace">Retour arriére</string>
+  <string name="list_delkey_del">Supprimer</string>
+  <string name="delete_message">Êtes-vous sûr de vouloir supprimer \'%1$s\' ?</string>
+  <string name="delete_pos">Oui, supprimer</string>
+  <string name="delete_neg">Annuler</string>
+  <string name="wizard_agree">Accepter</string>
+  <string name="wizard_next">Suivant</string>
+  <string name="wizard_back">Précédent</string>
+  <string name="terminal_no_hosts_connected">Aucun hôte actuellement connecté</string>
+  <string name="terminal_connecting">Connexion à %1$s:%2$d via %3$s</string>
+  <string name="terminal_sucess">Clé de vérification de l\'hôte \'%1$s\' : %2$s</string>
+  <string name="terminal_failed">Authentification par clé échouée</string>
+  <string name="terminal_using_s2c_algorithm">Algorithme serveur vers client : %1$s %2$s</string>
+  <string name="terminal_using_c2s_algorithm">Algorithme client vers serveur : %1$s %2$s</string>
+  <string name="terminal_using_algorithm">Utilisation de l\'algorithme de cryptage : %1$s %2$s</string>
+  <string name="terminal_auth">Tentative d\'authentification</string>
+  <string name="terminal_auth_pass">Tentative d\'authentification par mot de passe</string>
+  <string name="terminal_auth_pass_fail">L\'authentification par mot de passe a échoué</string>
+  <string name="terminal_auth_pubkey_any">Tentative d\'authentification avec une clé publique en mémoire</string>
+  <string name="terminal_auth_pubkey_invalid">La clé publique sélectionnée est invalide, essayez de sélectionner une clé dans les préférences de l\'hôte</string>
+  <string name="terminal_auth_pubkey_specific">Tentative d\'authentification par clé publique avec une clé publique spécifique</string>
+  <string name="terminal_auth_pubkey_fail">La méthode d\'authentification par clé publique avec la clé \'%1$s\' a échouée.</string>
+  <string name="terminal_auth_ki">Tentative d\'authentification par clavier</string>
+  <string name="terminal_auth_ki_fail">La méthode d\'authentification par clavier a échouée</string>
+  <string name="terminal_auth_fail">[L\'hôte ne supporte pas l\'authentification par mot de passe ou par clavier.]</string>
+  <string name="terminal_no_session">La session ne sera pas démarrée à cause des préférences de l\'hôte.</string>
+  <string name="terminal_enable_portfoward">Activer la redirection de port : %1$s</string>
+  <string name="local_shell_unavailable">Echec ! Le shell local est indisponible sur ce téléphone.</string>
+  <string name="notification_text">%1$s requiert votre attention.</string>
+  <string name="upgrade">Nouvelle version</string>
+  <string name="upgrade_pos">Oui, mettre à jour</string>
+  <string name="upgrade_neg">Pas maintenant</string>
+  <string name="no">Non</string>
+  <string name="with_confirmation">Après confirmation</string>
+  <string name="yes">Oui</string>
+  <string name="exceptions_submit_message">Il semblerait que ConnectBot ait eu un problème lors de sa dernière utilisation. Voulez vous envoyer un rapport d\'erreur aux développeurs de ConnectBot ?</string>
+  <string name="menu_colors_reset">Réinitialiser</string>
+  <string name="app_is_running">ConnectBot est en cours</string>
+  <string name="color_red">rouge</string>
+  <string name="color_green">vert</string>
+  <string name="color_blue">bleu</string>
+  <string name="color_gray">gris</string>
 </resources>

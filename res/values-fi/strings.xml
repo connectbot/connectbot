@@ -1,467 +1,196 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-/*
- * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2007 Kenny Root, Jeffrey Sharkey
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
--->
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-	<string name="app_desc">Yksinkertainen ja tehokas avoimen lähdekoodin SSH-asiakasohjelma.</string>
-	<string name="service_desc">Maintains SSH connections and loaded pubkeys</string>
-
-	<!-- Window title for the Host List -->
-	<string name="title_hosts_list">Palvelimet</string>
-	<!-- Window title for the Pubkeys List -->
-	<string name="title_pubkey_list">Julkiset avaimet</string>
-	<!-- Window title for the Port Forwards List -->
-	<string name="title_port_forwards_list">Porttiohjaukset</string>
-	<!-- Window title when editing host details -->
-	<string name="title_host_editor">Muokaa palvelinta</string>
-	<!-- Window title for Help index -->
-	<string name="title_help">Ohje</string>
-	<!-- Window title for color list editing screen -->
-	<string name="title_colors">Värit</string>
-
-	<string name="resolve_connect">Yhdistä</string>
-	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="resolve_entropy">Satunnaisdatan keräys</string>
-
-	<string name="menu_insert">Lisää palvelin</string>
-	<string name="menu_delete">Poista palvelin</string>
-	<string name="menu_preferences">Asetukset</string>
-
-	<string name="help_intro">Valitse alta aihe, josta haluat lisätietoja.</string>
-	<string name="help_about">Tietoja ConnectBotista</string>
-	<string name="help_keyboard">Näppäimistö</string>
-
-	<string name="pubkey_generate">Luo</string>
-	<string name="pubkey_import">Tuo</string>
-	<string name="pubkey_delete">Poista avain</string>
-	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="pubkey_gather_entropy">Kerätään satunnaisdataa</string>
-	<string name="pubkey_touch_prompt">Kosketa tätä laatikkoa kerätäksesi satunnaisdataa: %1$d%% valmiina</string>
-	<string name="pubkey_touch_hint">Liikuta sormeasi alla olevan laatikon kohdalla sattumanvaraisesti varmistaaksesi avaimen luonnin satunnaisuuden.</string>
-	<string name="pubkey_generating">Luodaan avainparia...</string>
-	<string name="pubkey_copy_private">Kopio yksityinen avain</string>
-	<string name="pubkey_copy_public">Kopioi julkinen avain</string>
-	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
-	<string name="pubkey_list_empty">Paina valikkopainiketta\nluodaksesi tai tuodaksesi\navainpareja.</string>
-	<string name="pubkey_unknown_format">Tuntematon tyyppi</string>
-	<string name="pubkey_change_password">Vaihda salasana</string>
-	<string name="pubkey_list_pick">Hae sijainnista /sdcard</string>
-	<string name="pubkey_import_parse_problem">Ongelma käsiteltäessä tuotua avainparia</string>
-	<string name="pubkey_unlock">Poista avaimen lukitus</string>
-	<string name="pubkey_failed_add">Bad password for key \'%1$s\'. Authentication failed.</string>
-	<string name="pubkey_memory_load">Lataa muistiin</string>
-	<string name="pubkey_memory_unload">Poista muistista</string>
-	<string name="pubkey_load_on_start">Lataa avain käynnistyksen yhteydessä</string>
-	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
-	<string name="pubkey_confirm_use">Vahvista ennen käyttöä</string>
-
-	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
-	<string name="portforward_list_empty">Paina valikkopainiketta\nluodaksesi porttiohjauksia.</string>
-	<string name="portforward_edit">Muokkaa porttiohjausta</string>
-	<string name="portforward_delete">Poista porttiohjaus</string>
-
-	<string name="prompt_nickname">Lempinimi:</string>
-	<!-- An example string that could be used as a nickname for a pubkey. -->
-	<string name="prompt_nickname_hint_pubkey">Työavain</string>
-	<!-- The source TCP port for port forwards. -->
-	<string name="prompt_source_port">Lähdeportti:</string>
-	<!-- The "host:port" combination used for port forward destinations. -->
-	<string name="prompt_destination">Kohde:</string>
-	<string name="prompt_old_password">Vanha salasana:</string>
-	<string name="prompt_password">Salasana:</string>
-	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
-	<string name="prompt_again">(uudelleen)</string>
-	<!-- Label for the user to select port forward type. -->
-	<string name="prompt_type">Tyyppi:</string>
-	<string name="prompt_password_can_be_blank">Huomio: salasana voi olla sisältämättä merkkejä</string>
-	<!-- Prompt for the size of the private key in bits. -->
-	<string name="prompt_bits">Bittejä:</string>
-
-	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Password for key \'%1$s\'</string>
-
-	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">Allow remote host to\nuse key \'%1$s\'?</string>
-
-	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning_header">VAROITUS: ETÄPÄÄN KONEEN TUNNISTE ON MUUTTUNUT!</string>
-	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning">JOKU SAATTAA OLLA TEKEMÄSSÄ PAHOJAAN!\nOn mahdollista, että yhteyttäsi salakuunnellaan (niin kutsuttu man-in-the-middle -hyökkäys)!\nOn toki myös mahdollista, että palvelimen avainta vain on muutettu.</string>
-
-	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
-	<string name="prompt_host_disconnected">Palvelin katkaisi yhteyden.\nSuljetaanko istunto?</string>
-	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
-	<string name="prompt_continue_connecting">Haluatko varmasti\njatkaa yhdistämistä?</string>
-
-	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">The authenticity of host \'%1$s\' can\'t be established.</string>
-	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
-	<string name="host_fingerprint">Palvelimen %1$s avaimen sormenjälki: %2$s</string>
-
-	<string name="alert_passwords_do_not_match_msg">Salasanat eivät täsmää!</string>
-	<string name="alert_wrong_password_msg">Väärä salasana!</string>
-	<string name="alert_key_corrupted_msg">Yksityinen avain vaikuttaa korruptoituneelta.</string>
-	<string name="alert_sdcard_absent">Laitteessa ei ole muistikorttia!</string>
-
-	<!-- Add a new item (e.g., host or pubkey) to the list. -->
-	<string name="button_add">Lisää</string>
-	<!-- Change an existing item's (e.g., host or pubkey) details. -->
-	<string name="button_change">Muokkaa</string>
-	<!-- Button that begins the generation of a public key pair. -->
-	<string name="button_generate">Luo avain</string>
-	<!-- Button that resizes the screen to the user-specified dimensions. -->
-	<string name="button_resize">Muuta kokoa</string>
-
-	<string name="alert_disconnect_msg">Yhteys katkesi</string>
-
-	<string name="msg_copyright">Tekijänoikeudet © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
-
-	<!-- The category title for terminal emulation preferences. -->
-	<string name="pref_emulation_category">Pääte-emulaattori</string>
-
-	<!-- Name for the emulation terminal type preference. -->
-	<string name="pref_emulation_title">Emulointitila</string>
-	<!-- Description of the emulation terminal type preference. -->
-	<string name="pref_emulation_summary">PTY-yhteyksissä käytettävä emulointitila</string>
-
-	<!-- Name for the scrollback size preference -->
-	<string name="pref_scrollback_title">Vierityspuskurin koko</string>
-	<!-- Description of the scrollback size preference -->
-	<string name="pref_scrollback_summary">Konsolikohtainen koko vierityspuskurille, jossa pidetään konsolin historiaa</string>
-
-	<!-- The category title for user interface preferences -->
-	<string name="pref_ui_category">Käyttöliittymä</string>
-
-	<!-- Name for the rotation mode preference -->
-	<string name="pref_rotation_title">Näytön pyöritys</string>
-	<!-- Summary for the rotation mode preference -->
-	<string name="pref_rotation_summary">Miten näyttöä pyöritetään kun näppäimistö tulee näkyviin/poistuu näkyvistä</string>
-
-	<!-- Name for the full screen preference -->
-	<string name="pref_fullscreen_title">Kokoruutu</string>
-	<!-- Summary for the full screen preference -->
-	<string name="pref_fullscreen_summary">Piilota ilmoitusalue konsolikäytössä</string>
-
-	<!-- Name for the memorize keys preference -->
-	<string name="pref_memkeys_title">Pidä avaimet muistissa</string>
-	<!-- Summary for the memorize keys preference -->
-	<string name="pref_memkeys_summary">Pitää avatut avaimet muistissa kunnes taustapalvelu suljetaan</string>
-
-	<!-- Name for the update check preference -->
-	<string name="pref_update_title">Päivitysten tarkistus</string>
-	<!-- Summary for the update check preference -->
-	<string name="pref_update_summary">Kuinka usein ConnectBot enintään tarkistaa päivitykset</string>
-
-	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">Ylläpidä yhteys</string>
-	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Pakottaa yhteyden pysymään aktiivisena ohjelman ollessa taustalla</string>
-
-	<!-- Name for the keyboard shortcuts preference -->
-	<string name="pref_keymode_title">Pikanäppäimet</string>
-	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Select how to use Alt for \'/\' and Shift for Tab</string>
-
-	<!-- Name for the camera shortcut usage preference -->
-	<string name="pref_camera_title">Kamera-pikanäppäin</string>
-	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_camera_summary">Valitse kamerapainikkeesta suoritettava toiminto</string>
-
-	<!-- Name for the keep screen on preference -->
-	<string name="pref_keepalive_title">Pidä näyttö päällä</string>
-	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_keepalive_summary">Estää näytön sammumisen työskenneltäessä konsolissa</string>
-
-	<!-- Name for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_title">Pidä Wi-Fi-yhteys päällä</string>
-	<!-- Summary for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_summary">Estää Wi-Fi-yhteyden katkaisemisen kun istunto on aktiivinen</string>
-
-	<!-- Name for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_title">Värinä nuolista</string>
-	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_summary">Värinäefekti aina kun nuolinäppäinten painalluksia lähetetään palvelimelle. Kätevä hitaille yhteyksille.</string>
-
-	<!-- Category title for the Terminal Bell preferences -->
-	<string name="pref_bell_category">Päätteen kello</string>
-
-	<!-- Checkbox preference title for the audible terminal bell feature -->
-	<string name="pref_bell_title">Kellon äänet käytössä</string>
-
-	<!-- Title for the slider preference to set the volume -->
-	<string name="pref_bell_volume_title">Kellon äänenvoimakkuus</string>
-
-	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
-	<string name="pref_bell_vibrate_title">Värinäefekti kellosta</string>
-
-	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
-	<string name="pref_bell_notification_title">Taustailmoitukset</string>
-	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
-	<string name="pref_bell_notification_summary">Näyttää ilmoituksen kun taustalla olevassa päätteessä soitetaan kelloa.</string>
-
-	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
-	<string name="list_keymode_right">Käytä oikean reunan erikoispainikkeita</string>
-	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
-	<string name="list_keymode_left">Käytä vasemman reunan erikoispainikkeita</string>
-	<!-- Preference selection to indicate never to use special shortcut keys. -->
-	<string name="list_keymode_none">Pois käytöstä</string>
-
-	<!-- Preference to not use pubkeys to authenticate to this host. -->
-	<string name="list_pubkeyids_none">Älä käytä avaimia</string>
-	<!-- Preference to use any pubkey to authenticate to this host. -->
-	<string name="list_pubkeyids_any">Käytä mitä tahansa avattua avainta</string>
-
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_daily">Päivittäin</string>
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_weekly">Viikoittain</string>
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_never">Ei koskaan</string>
-
-	<!-- Host nickname field preference title -->
-	<string name="hostpref_nickname_title">Lempinimi</string>
-
-	<!-- Host color category preference title -->
-	<string name="hostpref_color_title">Väri</string>
-
-	<!-- Host's default font size when opening the terminal in points (pt) -->
-	<string name="hostpref_fontsize_title">Kirjasimen koko (pistettä)</string>
-
-	<!-- Host pubkey usage preference title -->
-	<string name="hostpref_pubkeyid_title">Kirjaudu avainparilla</string>
-
-	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
-	<string name="hostpref_authagent_title">Käytä SSH-kirjautumisagenttia</string>
-
-	<!-- Host post-login automation preference title -->
-	<string name="hostpref_postlogin_title">Kirjautumisen jälkeiset automaattiset toimenpiteet</string>
-	<!-- Host post-login automation preference summary -->
-	<string name="hostpref_postlogin_summary">Palvelimella kirjautumisen jälkeen ajettavat komennot</string>
-
-	<!-- Host compression preference title -->
-	<string name="hostpref_compression_title">Pakkaus</string>
-	<!-- Summary for compression preference -->
-	<string name="hostpref_compression_summary">Tämä voi helpottaa hitaiden yhteyksien käyttämistä</string>
-
-	<!-- Setting for whether we want a session to start up when we connect to a host -->
-	<string name="hostpref_wantsession_title">Käynnistä komentorivi-istunto</string>
-	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
-	<string name="hostpref_wantsession_summary">Ota tämä pois käytöstä jos käytät vain porttiohjausta</string>
-
-	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
-	<string name="hostpref_stayconnected_title">Pysy yhteydessä</string>
-	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
-	<string name="hostpref_stayconnected_summary">Yritä yhdistää palvelimeen uudelleen yhteyden katkeamisen jälkeen</string>
-
-	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_title">Del-näppäin</string>
-	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_summary">Del-näppäintä painettaessa lähetettävä näppäinkoodi</string>
-
-	<!-- Host character encoding preference title -->
-	<string name="hostpref_encoding_title">Merkistökoodaus</string>
-	<!-- Host character encoding preference summary -->
-	<string name="hostpref_encoding_summary">Palvelimella käytettävä merkistökoodaus</string>
-
-	<!-- Host preference category title for connection settings -->
-	<string name="hostpref_connection_category">Yhteysasetukset</string>
-
-	<!-- Username field title for host editor preference -->
-	<string name="hostpref_username_title">Käyttäjätunnus</string>
-
-	<!-- Hostname field title for host editor preference -->
-	<string name="hostpref_hostname_title">Palvelin</string>
-
-	<!-- Port field title for host editor preference -->
-	<string name="hostpref_port_title">Portti</string>
-
-	<!-- Displayed to indicate a host has never been connected to. -->
-	<string name="bind_never">Ei koskaan yhdistetty</string>
-	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
-	<string name="bind_minutes">%1$s minuuttia sitten</string>
-	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
-	<string name="bind_hours">%1$s tuntia sitten</string>
-	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
-	<string name="bind_days">%1$s päivää sitten</string>
-
-	<!-- Message given when user copies from the terminal. -->
-	<string name="console_copy_done">%1$d tavua kopioitu leikepöydälle</string>
-	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">Maalaa koskettamalla\ntai käytä nuolinäppäimiä\nvalitaksesi kopioitavan alueen</string>
-
-	<!-- Button to close the disconnected terminal window. -->
-	<string name="console_menu_close">Sulje</string>
-	<!-- Button to begin copying from the terminal to the clipboard. -->
-	<string name="console_menu_copy">Kopioi</string>
-	<!-- Button to paste from the clipboard to the terminal. -->
-	<string name="console_menu_paste">Liitä</string>
-	<!-- Button that brings user to the Port Forwards List. -->
-	<string name="console_menu_portforwards">Porttiohjaukset</string>
-	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
-	<string name="console_menu_resize">Pakota koko</string>
-	<!-- Button that brings up the list of URLs on the current screen -->
-	<string name="console_menu_urlscan">URL-haku</string>
-
-	<!-- Button label to answer "Yes" to a yes/no prompt -->
-	<string name="button_yes">Kyllä</string>
-	<!-- Button label to answer "No" to a yes/no prompt -->
-	<string name="button_no">Ei</string>
-
-	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
-	<string name="portforward_local">Paikallinen</string>
-	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
-	<string name="portforward_remote">Etä</string>
-	<!-- Selection for a "dynamic" port forward. E.g., connections to a port listening locally is forwarded based on the SOCKS protocol to an arbitrary remote host and port. -->
-	<string name="portforward_dynamic">Dynaaminen (SOCKS)</string>
-	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
-	<string name="portforward_pos">Luo porttiohjaus</string>
-
-	<string name="portforward_done">Porttiohjaus luotu onnistuneesti</string>
-	<string name="portforward_problem">Problem creating port forward, maybe you\'re using ports under 1024 or port is already used?</string>
-
-	<string name="portforward_menu_add">Lisää porttiohjaus</string>
-
-	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
-	<string name="hint_userhost">tunnus@palvelin</string>
-
-	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
-	<string name="list_format_error">Käytä muotoa "%1$s"</string>
-
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_username">käyttäjätunnus</string>
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_hostname">palvelin</string>
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_port">portti</string>
-
-	<string name="list_menu_pubkeys">Hallitse avaimia</string>
-	<!-- Selection choice to sort hosts by color. -->
-	<string name="list_menu_sortcolor">Lajittele värin mukaan</string>
-	<!-- Selection choice to sort hosts by nickname. -->
-	<string name="list_menu_sortname">Lajittele nimen mukaan</string>
-	<string name="list_menu_settings">Asetukset</string>
-
-	<string name="list_host_disconnect">Katkaise</string>
-	<string name="list_host_edit">Muokkaa palvelinta</string>
-	<string name="list_host_portforwards">Muokkaa porttiohjauksia</string>
-	<string name="list_host_delete">Poista palvelin</string>
-	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
-	<string name="list_host_empty">Käytä alla olevaa tekstikenttää\nyhdistääksesei palvelimeen.</string>
-
-	<!-- Default screen rotation preference selection -->
-	<string name="list_rotation_default">Oletus</string>
-	<string name="list_rotation_land">Pakota vaakatasoon</string>
-	<string name="list_rotation_port">Pakota pystysuuntaan</string>
-	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
-	<string name="list_rotation_auto">Automaattinen</string>
-
-	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
-	<string name="list_camera_ctrlaspace">Ctrl+A ja välilyönti</string>
-	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A". -->
-	<string name="list_camera_ctrla">Ctrl+A</string>
-	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
-	<string name="list_camera_esc">Esc</string>
-	<!-- Selection to indicate pressing the Camera button should send "Esc+A". -->
-	<string name="list_camera_esc_a">Esc+A</string>
-	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
-	<string name="list_camera_none">Ei mitään</string>
-
-	<!-- Name for the backspace character -->
-	<string name="list_delkey_backspace">Askelpalautin</string>
-	<!-- Name for the ASCII DEL character -->
-	<string name="list_delkey_del">Delete</string>
-
-	<string name="delete_message">Are you sure you want to delete \'%1$s\'?</string>
-	<string name="delete_pos">Kyllä, poista</string>
-	<string name="delete_neg">Peru</string>
-
-	<!-- Button to agree to license terms. -->
-	<string name="wizard_agree">Hyväksy</string>
-	<!-- Button to go to the next page in the first time start-up wizard. -->
-	<string name="wizard_next">Seuraava</string>
-	<!-- Button to go to the previous page in the first time start-up wizard. -->
-	<string name="wizard_back">Edellinen</string>
-
-	<string name="terminal_no_hosts_connected">Yhteenkään palvelimeen ei ole yhdistetty</string>
-
-	<!-- Displayed in terminal when attempting to connect to a host. The first two
-	     variables are host:port and the third is the protocol (e.g., SSH) -->
-	<string name="terminal_connecting">Muodostetaan %3$s-yhteys palvelimeen %1$s:%2$d</string>
-
-	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Verified host \'%1$s\' key: %2$s</string>
-	<string name="terminal_failed">Palvelimen avaimen varmistaminen epäonnistui</string>
-
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_s2c_algorithm">Salausalgoritmi palvelimelta asiakkaalle: %1$s %2$s</string>
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_c2s_algorithm">Salausalgoritmi asiakkaalta palvelimelle: %1$s %2$s</string>
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_algorithm">Käytetään salausalgoritmia %1$s %2$s</string>
-
-	<string name="terminal_auth">Kirjaudutaan</string>
-
-	<string name="terminal_auth_pass">Attempting \'password\' authentication</string>
-	<string name="terminal_auth_pass_fail">Authentication method \'password\' failed</string>
-
-	<string name="terminal_auth_pubkey_any">Attempting \'publickey\' authentication with any in-memory public keys</string>
-	<string name="terminal_auth_pubkey_invalid">Valittu julkinen avain ei kelpaa, kokeile valita toinen avain palvelimen asetuksista</string>
-	<string name="terminal_auth_pubkey_specific">Attempting \'publickey\' authentication with a specific public key</string>
-	<string name="terminal_auth_pubkey_fail">Authentication method \'publickey\' with key \'%1$s\' failed</string>
-
-	<string name="terminal_auth_ki">Attempting \'keyboard-interactive\' authentication</string>
-	<string name="terminal_auth_ki_fail">Authentication method \'keyboard-interactive\' failed</string>
-
-	<string name="terminal_auth_fail">[Your host doesn\'t support \'password\' or \'keyboard-interactive\' authentication.]</string>
-
-	<string name="terminal_no_session">Istuntoa ei aloiteta palvelimen asetuksista johtuen</string>
-	<string name="terminal_enable_portfoward">Ota käyttöön porttiohjaus %1$s</string>
-
-	<string name="local_shell_unavailable">Virhe! Paikallista komentoriviä ei ole käytettävissä</string>
-
-	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
-	<string name="notification_text">%1$s kaipaa huomiotasi.</string>
-
-	<!-- Dialog title when a new version of ConnectBot is detected. -->
-	<string name="upgrade">Uusi versio</string>
-	<!-- Button selection to upgrade to the latest ConnectBot when one is available. -->
-	<string name="upgrade_pos">Kyllä, päivitä</string>
-	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
-	<string name="upgrade_neg">Ei juuri nyt</string>
-
-	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
-	<string name="no">Ei</string>
-	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
-	<string name="with_confirmation">Kysy varmistus</string>
-	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
-	<string name="yes">Kyllä</string>
-
-	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
-	<string name="exceptions_submit_message">ConnectBotilla vaikutti olevan ongelmia kun sitä käytettiin edellisen kerran. Lähetetäänkö virheraportti ohjelman kehittäjille?</string>
-
-	<!-- Menu selection to reset colors to their defaults. -->
-	<string name="menu_colors_reset">Palauta</string>
-
-	<!-- Displayed in the notification bar that connections are active -->
-	<string name="app_is_running">ConnectBot on käynnissä</string>
-
-	<string name="color_red">punainen</string>
-	<string name="color_green">vihreä</string>
-	<string name="color_blue">sininen</string>
-	<string name="color_gray">harmaa</string>
+  <string name="app_desc">Yksinkertainen ja tehokas avoimen lähdekoodin SSH-asiakasohjelma.</string>
+  <string name="title_hosts_list">Palvelimet</string>
+  <string name="title_pubkey_list">Julkiset avaimet</string>
+  <string name="title_port_forwards_list">Porttiohjaukset</string>
+  <string name="title_host_editor">Muokaa palvelinta</string>
+  <string name="title_help">Ohje</string>
+  <string name="title_colors">Värit</string>
+  <string name="resolve_connect">Yhdistä</string>
+  <string name="resolve_entropy">Satunnaisdatan keräys</string>
+  <string name="menu_insert">Lisää palvelin</string>
+  <string name="menu_delete">Poista palvelin</string>
+  <string name="menu_preferences">Asetukset</string>
+  <string name="help_intro">Valitse alta aihe, josta haluat lisätietoja.</string>
+  <string name="help_about">Tietoja ConnectBotista</string>
+  <string name="help_keyboard">Näppäimistö</string>
+  <string name="pubkey_generate">Luo</string>
+  <string name="pubkey_import">Tuo</string>
+  <string name="pubkey_delete">Poista avain</string>
+  <string name="pubkey_gather_entropy">Kerätään satunnaisdataa</string>
+  <string name="pubkey_touch_prompt">Kosketa tätä laatikkoa kerätäksesi satunnaisdataa: %1$d%% valmiina</string>
+  <string name="pubkey_touch_hint">Liikuta sormeasi alla olevan laatikon kohdalla sattumanvaraisesti varmistaaksesi avaimen luonnin satunnaisuuden.</string>
+  <string name="pubkey_generating">Luodaan avainparia...</string>
+  <string name="pubkey_copy_private">Kopio yksityinen avain</string>
+  <string name="pubkey_copy_public">Kopioi julkinen avain</string>
+  <string name="pubkey_list_empty">Paina valikkopainiketta\nluodaksesi tai tuodaksesi\navainpareja.</string>
+  <string name="pubkey_unknown_format">Tuntematon tyyppi</string>
+  <string name="pubkey_change_password">Vaihda salasana</string>
+  <string name="pubkey_list_pick">Hae sijainnista /sdcard</string>
+  <string name="pubkey_import_parse_problem">Ongelma käsiteltäessä tuotua avainparia</string>
+  <string name="pubkey_unlock">Poista avaimen lukitus</string>
+  <string name="pubkey_memory_load">Lataa muistiin</string>
+  <string name="pubkey_memory_unload">Poista muistista</string>
+  <string name="pubkey_load_on_start">Lataa avain käynnistyksen yhteydessä</string>
+  <string name="pubkey_confirm_use">Vahvista ennen käyttöä</string>
+  <string name="portforward_list_empty">Paina valikkopainiketta\nluodaksesi porttiohjauksia.</string>
+  <string name="portforward_edit">Muokkaa porttiohjausta</string>
+  <string name="portforward_delete">Poista porttiohjaus</string>
+  <string name="prompt_nickname">Lempinimi:</string>
+  <string name="prompt_nickname_hint_pubkey">Työavain</string>
+  <string name="prompt_source_port">Lähdeportti:</string>
+  <string name="prompt_destination">Kohde:</string>
+  <string name="prompt_old_password">Vanha salasana:</string>
+  <string name="prompt_password">Salasana:</string>
+  <string name="prompt_again">(uudelleen)</string>
+  <string name="prompt_type">Tyyppi:</string>
+  <string name="prompt_password_can_be_blank">Huomio: salasana voi olla sisältämättä merkkejä</string>
+  <string name="prompt_bits">Bittejä:</string>
+  <string name="host_verification_failure_warning_header">VAROITUS: ETÄPÄÄN KONEEN TUNNISTE ON MUUTTUNUT!</string>
+  <string name="host_verification_failure_warning">JOKU SAATTAA OLLA TEKEMÄSSÄ PAHOJAAN!\nOn mahdollista, että yhteyttäsi salakuunnellaan (niin kutsuttu man-in-the-middle -hyökkäys)!\nOn toki myös mahdollista, että palvelimen avainta vain on muutettu.</string>
+  <string name="prompt_host_disconnected">Palvelin katkaisi yhteyden.\nSuljetaanko istunto?</string>
+  <string name="prompt_continue_connecting">Haluatko varmasti\njatkaa yhdistämistä?</string>
+  <string name="host_fingerprint">Palvelimen %1$s avaimen sormenjälki: %2$s</string>
+  <string name="alert_passwords_do_not_match_msg">Salasanat eivät täsmää!</string>
+  <string name="alert_wrong_password_msg">Väärä salasana!</string>
+  <string name="alert_key_corrupted_msg">Yksityinen avain vaikuttaa korruptoituneelta.</string>
+  <string name="alert_sdcard_absent">Laitteessa ei ole muistikorttia!</string>
+  <string name="button_add">Lisää</string>
+  <string name="button_change">Muokkaa</string>
+  <string name="button_generate">Luo avain</string>
+  <string name="button_resize">Muuta kokoa</string>
+  <string name="alert_disconnect_msg">Yhteys katkesi</string>
+  <string name="msg_copyright">Tekijänoikeudet © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
+  <string name="pref_emulation_category">Pääte-emulaattori</string>
+  <string name="pref_emulation_title">Emulointitila</string>
+  <string name="pref_emulation_summary">PTY-yhteyksissä käytettävä emulointitila</string>
+  <string name="pref_scrollback_title">Vierityspuskurin koko</string>
+  <string name="pref_scrollback_summary">Konsolikohtainen koko vierityspuskurille, jossa pidetään konsolin historiaa</string>
+  <string name="pref_ui_category">Käyttöliittymä</string>
+  <string name="pref_rotation_title">Näytön pyöritys</string>
+  <string name="pref_rotation_summary">Miten näyttöä pyöritetään kun näppäimistö tulee näkyviin/poistuu näkyvistä</string>
+  <string name="pref_fullscreen_title">Kokoruutu</string>
+  <string name="pref_fullscreen_summary">Piilota ilmoitusalue konsolikäytössä</string>
+  <string name="pref_memkeys_title">Pidä avaimet muistissa</string>
+  <string name="pref_memkeys_summary">Pitää avatut avaimet muistissa kunnes taustapalvelu suljetaan</string>
+  <string name="pref_update_title">Päivitysten tarkistus</string>
+  <string name="pref_update_summary">Kuinka usein ConnectBot enintään tarkistaa päivitykset</string>
+  <string name="pref_conn_persist_title">Ylläpidä yhteys</string>
+  <string name="pref_conn_persist_summary">Pakottaa yhteyden pysymään aktiivisena ohjelman ollessa taustalla</string>
+  <string name="pref_keymode_title">Pikanäppäimet</string>
+  <string name="pref_camera_title">Kamera-pikanäppäin</string>
+  <string name="pref_camera_summary">Valitse kamerapainikkeesta suoritettava toiminto</string>
+  <string name="pref_keepalive_title">Pidä näyttö päällä</string>
+  <string name="pref_keepalive_summary">Estää näytön sammumisen työskenneltäessä konsolissa</string>
+  <string name="pref_wifilock_title">Pidä Wi-Fi-yhteys päällä</string>
+  <string name="pref_wifilock_summary">Estää Wi-Fi-yhteyden katkaisemisen kun istunto on aktiivinen</string>
+  <string name="pref_bumpyarrows_title">Värinä nuolista</string>
+  <string name="pref_bumpyarrows_summary">Värinäefekti aina kun nuolinäppäinten painalluksia lähetetään palvelimelle. Kätevä hitaille yhteyksille.</string>
+  <string name="pref_bell_category">Päätteen kello</string>
+  <string name="pref_bell_title">Kellon äänet käytössä</string>
+  <string name="pref_bell_volume_title">Kellon äänenvoimakkuus</string>
+  <string name="pref_bell_vibrate_title">Värinäefekti kellosta</string>
+  <string name="pref_bell_notification_title">Taustailmoitukset</string>
+  <string name="pref_bell_notification_summary">Näyttää ilmoituksen kun taustalla olevassa päätteessä soitetaan kelloa.</string>
+  <string name="list_keymode_right">Käytä oikean reunan erikoispainikkeita</string>
+  <string name="list_keymode_left">Käytä vasemman reunan erikoispainikkeita</string>
+  <string name="list_keymode_none">Pois käytöstä</string>
+  <string name="list_pubkeyids_none">Älä käytä avaimia</string>
+  <string name="list_pubkeyids_any">Käytä mitä tahansa avattua avainta</string>
+  <string name="list_update_daily">Päivittäin</string>
+  <string name="list_update_weekly">Viikoittain</string>
+  <string name="list_update_never">Ei koskaan</string>
+  <string name="hostpref_nickname_title">Lempinimi</string>
+  <string name="hostpref_color_title">Väri</string>
+  <string name="hostpref_fontsize_title">Kirjasimen koko (pistettä)</string>
+  <string name="hostpref_pubkeyid_title">Kirjaudu avainparilla</string>
+  <string name="hostpref_authagent_title">Käytä SSH-kirjautumisagenttia</string>
+  <string name="hostpref_postlogin_title">Kirjautumisen jälkeiset automaattiset toimenpiteet</string>
+  <string name="hostpref_postlogin_summary">Palvelimella kirjautumisen jälkeen ajettavat komennot</string>
+  <string name="hostpref_compression_title">Pakkaus</string>
+  <string name="hostpref_compression_summary">Tämä voi helpottaa hitaiden yhteyksien käyttämistä</string>
+  <string name="hostpref_wantsession_title">Käynnistä komentorivi-istunto</string>
+  <string name="hostpref_wantsession_summary">Ota tämä pois käytöstä jos käytät vain porttiohjausta</string>
+  <string name="hostpref_stayconnected_title">Pysy yhteydessä</string>
+  <string name="hostpref_stayconnected_summary">Yritä yhdistää palvelimeen uudelleen yhteyden katkeamisen jälkeen</string>
+  <string name="hostpref_delkey_title">Del-näppäin</string>
+  <string name="hostpref_delkey_summary">Del-näppäintä painettaessa lähetettävä näppäinkoodi</string>
+  <string name="hostpref_encoding_title">Merkistökoodaus</string>
+  <string name="hostpref_encoding_summary">Palvelimella käytettävä merkistökoodaus</string>
+  <string name="hostpref_connection_category">Yhteysasetukset</string>
+  <string name="hostpref_username_title">Käyttäjätunnus</string>
+  <string name="hostpref_hostname_title">Palvelin</string>
+  <string name="hostpref_port_title">Portti</string>
+  <string name="bind_never">Ei koskaan yhdistetty</string>
+  <string name="bind_minutes">%1$s minuuttia sitten</string>
+  <string name="bind_hours">%1$s tuntia sitten</string>
+  <string name="bind_days">%1$s päivää sitten</string>
+  <string name="console_copy_done">%1$d tavua kopioitu leikepöydälle</string>
+  <string name="console_copy_start">Maalaa koskettamalla\ntai käytä nuolinäppäimiä\nvalitaksesi kopioitavan alueen</string>
+  <string name="console_menu_close">Sulje</string>
+  <string name="console_menu_copy">Kopioi</string>
+  <string name="console_menu_paste">Liitä</string>
+  <string name="console_menu_portforwards">Porttiohjaukset</string>
+  <string name="console_menu_resize">Pakota koko</string>
+  <string name="console_menu_urlscan">URL-haku</string>
+  <string name="button_yes">Kyllä</string>
+  <string name="button_no">Ei</string>
+  <string name="portforward_local">Paikallinen</string>
+  <string name="portforward_remote">Etä</string>
+  <string name="portforward_dynamic">Dynaaminen (SOCKS)</string>
+  <string name="portforward_pos">Luo porttiohjaus</string>
+  <string name="portforward_done">Porttiohjaus luotu onnistuneesti</string>
+  <string name="portforward_menu_add">Lisää porttiohjaus</string>
+  <string name="hint_userhost">tunnus\@palvelin</string>
+  <string name="list_format_error">Käytä muotoa %1$s</string>
+  <string name="format_username">käyttäjätunnus</string>
+  <string name="format_hostname">palvelin</string>
+  <string name="format_port">portti</string>
+  <string name="list_menu_pubkeys">Hallitse avaimia</string>
+  <string name="list_menu_sortcolor">Lajittele värin mukaan</string>
+  <string name="list_menu_sortname">Lajittele nimen mukaan</string>
+  <string name="list_menu_settings">Asetukset</string>
+  <string name="list_host_disconnect">Katkaise</string>
+  <string name="list_host_edit">Muokkaa palvelinta</string>
+  <string name="list_host_portforwards">Muokkaa porttiohjauksia</string>
+  <string name="list_host_delete">Poista palvelin</string>
+  <string name="list_host_empty">Käytä alla olevaa tekstikenttää\nyhdistääksesei palvelimeen.</string>
+  <string name="list_rotation_default">Oletus</string>
+  <string name="list_rotation_land">Pakota vaakatasoon</string>
+  <string name="list_rotation_port">Pakota pystysuuntaan</string>
+  <string name="list_rotation_auto">Automaattinen</string>
+  <string name="list_camera_ctrlaspace">Ctrl+A ja välilyönti</string>
+  <string name="list_camera_none">Ei mitään</string>
+  <string name="list_delkey_backspace">Askelpalautin</string>
+  <string name="delete_pos">Kyllä, poista</string>
+  <string name="delete_neg">Peru</string>
+  <string name="wizard_agree">Hyväksy</string>
+  <string name="wizard_next">Seuraava</string>
+  <string name="wizard_back">Edellinen</string>
+  <string name="terminal_no_hosts_connected">Yhteenkään palvelimeen ei ole yhdistetty</string>
+  <string name="terminal_connecting">Muodostetaan %3$s-yhteys palvelimeen %1$s:%2$d</string>
+  <string name="terminal_failed">Palvelimen avaimen varmistaminen epäonnistui</string>
+  <string name="terminal_using_s2c_algorithm">Salausalgoritmi palvelimelta asiakkaalle: %1$s %2$s</string>
+  <string name="terminal_using_c2s_algorithm">Salausalgoritmi asiakkaalta palvelimelle: %1$s %2$s</string>
+  <string name="terminal_using_algorithm">Käytetään salausalgoritmia %1$s %2$s</string>
+  <string name="terminal_auth">Kirjaudutaan</string>
+  <string name="terminal_auth_pubkey_invalid">Valittu julkinen avain ei kelpaa, kokeile valita toinen avain palvelimen asetuksista</string>
+  <string name="terminal_no_session">Istuntoa ei aloiteta palvelimen asetuksista johtuen</string>
+  <string name="terminal_enable_portfoward">Ota käyttöön porttiohjaus %1$s</string>
+  <string name="local_shell_unavailable">Virhe! Paikallista komentoriviä ei ole käytettävissä</string>
+  <string name="notification_text">%1$s kaipaa huomiotasi.</string>
+  <string name="upgrade">Uusi versio</string>
+  <string name="upgrade_pos">Kyllä, päivitä</string>
+  <string name="upgrade_neg">Ei juuri nyt</string>
+  <string name="no">Ei</string>
+  <string name="with_confirmation">Kysy varmistus</string>
+  <string name="yes">Kyllä</string>
+  <string name="exceptions_submit_message">ConnectBotilla vaikutti olevan ongelmia kun sitä käytettiin edellisen kerran. Lähetetäänkö virheraportti ohjelman kehittäjille?</string>
+  <string name="menu_colors_reset">Palauta</string>
+  <string name="app_is_running">ConnectBot on käynnissä</string>
+  <string name="color_red">punainen</string>
+  <string name="color_green">vihreä</string>
+  <string name="color_blue">sininen</string>
+  <string name="color_gray">harmaa</string>
 </resources>

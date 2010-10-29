@@ -1,467 +1,178 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-/*
- * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2007 Kenny Root, Jeffrey Sharkey
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
--->
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-	<string name="app_desc">Basit, güçlü, açık kaynaklı SSH istemci.</string>
-	<string name="service_desc">Maintains SSH connections and loaded pubkeys</string>
-
-	<!-- Window title for the Host List -->
-	<string name="title_hosts_list">Anasistemler</string>
-	<!-- Window title for the Pubkeys List -->
-	<string name="title_pubkey_list">Açık Anahtarlar</string>
-	<!-- Window title for the Port Forwards List -->
-	<string name="title_port_forwards_list">Erişim noktası yönlendirmeleri</string>
-	<!-- Window title when editing host details -->
-	<string name="title_host_editor">Anasistemi Düzenle</string>
-	<!-- Window title for Help index -->
-	<string name="title_help">Yardım</string>
-	<!-- Window title for color list editing screen -->
-	<string name="title_colors">Renkler</string>
-
-	<string name="resolve_connect">Bağlan</string>
-	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="resolve_entropy">Entropi Topla</string>
-
-	<string name="menu_insert">Anasistem Ekle</string>
-	<string name="menu_delete">Anasistemi Sil</string>
-	<string name="menu_preferences">Tercihler</string>
-
-	<string name="help_intro">Daha fazla bilgi almak için aşağıdaki konulardan birisini seçiniz.</string>
-	<string name="help_about">ConnectBot Hakkında</string>
-	<string name="help_keyboard">Klavye</string>
-
-	<string name="pubkey_generate">Oluştur</string>
-	<string name="pubkey_import">İçe aktar</string>
-	<string name="pubkey_delete">Anahtarı Sil</string>
-	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="pubkey_gather_entropy">Entropi Toplanıyor</string>
-	<string name="pubkey_touch_prompt">Raslantısallık toplamak için bu kutuya dokun: %1$d%% gerçekleşti</string>
-	<string name="pubkey_touch_hint">Anahtar oluşturma süresince raslantısallığı sağlamak için parmağınızı aşağıdaki kutu içinde rastgele haraket ettiriniz.</string>
-	<string name="pubkey_generating">Anahtar çifti oluşturuluyor...</string>
-	<string name="pubkey_copy_private">Kişisel anahtarı kopyala</string>
-	<string name="pubkey_copy_public">Açık anahtarı kopyala</string>
-	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
-	<string name="pubkey_list_empty">Anahtar çiftini yaratmak veya\niçeri aktarmak için "Menü" ye dokun</string>
-	<string name="pubkey_unknown_format">Bilinmeyen biçim</string>
-	<string name="pubkey_change_password">Parolayı değiştir</string>
-	<string name="pubkey_list_pick">/sdcard \'dan seç</string>
-	<string name="pubkey_import_parse_problem">İçeri aktarılan kişisel anahtarı ayrıştırma sorunu</string>
-	<string name="pubkey_unlock">Anahtarın kilidini aç</string>
-	<string name="pubkey_failed_add">Anahtar \'%1$s\' için hatalı parola. Kimlik doğrulama başarısız oldu.</string>
-	<string name="pubkey_memory_load">Belleğe yükle</string>
-	<string name="pubkey_memory_unload">Bellekten kaldır</string>
-	<string name="pubkey_load_on_start">Başlangıçta anahtarı yükle</string>
-	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
-	<string name="pubkey_confirm_use">Kullanmadan önce doğrulat</string>
-
-	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
-	<string name="portforward_list_empty">Kapı yönlendirme yaratmak\niçin "Menü" ye dokun</string>
-	<string name="portforward_edit">Kapı yönlendirmeyi düzenle</string>
-	<string name="portforward_delete">Kapı yönlendirmeyi sil</string>
-
-	<string name="prompt_nickname">Takma Ad:</string>
-	<!-- An example string that could be used as a nickname for a pubkey. -->
-	<string name="prompt_nickname_hint_pubkey">Açık anahtar için takma ad</string>
-	<!-- The source TCP port for port forwards. -->
-	<string name="prompt_source_port">Kaynak kapı:</string>
-	<!-- The "host:port" combination used for port forward destinations. -->
-	<string name="prompt_destination">Hedef (Anasistem:Kapı):</string>
-	<string name="prompt_old_password">Eski Parola:</string>
-	<string name="prompt_password">Parola:</string>
-	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
-	<string name="prompt_again">(tekrar)</string>
-	<!-- Label for the user to select port forward type. -->
-	<string name="prompt_type">Tip:</string>
-	<string name="prompt_password_can_be_blank">Not: parola boş bırakılabilir</string>
-	<!-- Prompt for the size of the private key in bits. -->
-	<string name="prompt_bits">İkiller:</string>
-
-	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Anahtar \'%1$s\' için parola</string>
-
-	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">Uzak anasistemin \'%1$s\' anahtarını\nkullanmasına izin ver?</string>
-
-	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning_header">UYARI: UZAK ANASİSTEM KİMLİĞİ DEĞİŞMİŞ!</string>
-	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning">BİRİLERİNİN KÖTÜ BİRŞEYLER YAPIYOR OLMASI OLASI!\nBirileri şu anda sizi dinliyor olabilir (aradaki adam saldırısı)!\nSadece anasistem anahtarı da değişmiş olabilir.</string>
-
-	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
-	<string name="prompt_host_disconnected">Anasistem bağlantısı kesildi.\nOturumu kapat?</string>
-	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
-	<string name="prompt_continue_connecting">Bağlanmaya devam etmek\nistediğinize emin misiniz?</string>
-
-	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">Anasistem \'%1$s\' in gerçekliği doğrulanamadı.</string>
-	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
-	<string name="host_fingerprint">Anasistem %1$s anahtar parmakizi %2$s</string>
-
-	<string name="alert_passwords_do_not_match_msg">Parolalar uyuşmuyor!</string>
-	<string name="alert_wrong_password_msg">Yanlış parola!</string>
-	<string name="alert_key_corrupted_msg">Kişisel anahtar bozuk görünüyor</string>
-	<string name="alert_sdcard_absent">SD kart takılmamış!</string>
-
-	<!-- Add a new item (e.g., host or pubkey) to the list. -->
-	<string name="button_add">Ekle</string>
-	<!-- Change an existing item's (e.g., host or pubkey) details. -->
-	<string name="button_change">Değiştir</string>
-	<!-- Button that begins the generation of a public key pair. -->
-	<string name="button_generate">Anahtar Üret</string>
-	<!-- Button that resizes the screen to the user-specified dimensions. -->
-	<string name="button_resize">Yeniden boyutlandır</string>
-
-	<string name="alert_disconnect_msg">Bağlantı Kesildi</string>
-
-	<string name="msg_copyright">Telif Hakkı © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
-
-	<!-- The category title for terminal emulation preferences. -->
-	<string name="pref_emulation_category">Uçbirim öykünümü</string>
-
-	<!-- Name for the emulation terminal type preference. -->
-	<string name="pref_emulation_title">Öykünüm kipi</string>
-	<!-- Description of the emulation terminal type preference. -->
-	<string name="pref_emulation_summary">PTY bağlantıları için kullanılan uçbirim öykünüm kipi</string>
-
-	<!-- Name for the scrollback size preference -->
-	<string name="pref_scrollback_title">Geri kaydırma boyu</string>
-	<!-- Description of the scrollback size preference -->
-	<string name="pref_scrollback_summary">Her bir konsol için bellekte tutulacak geri kaydırma arabellek boyu</string>
-
-	<!-- The category title for user interface preferences -->
-	<string name="pref_ui_category">Kullanıcı arayüzü</string>
-
-	<!-- Name for the rotation mode preference -->
-	<string name="pref_rotation_title">Dönme kipi</string>
-	<!-- Summary for the rotation mode preference -->
-	<string name="pref_rotation_summary">Klavye saklandığında/açıldığında dönüş nasıl değişir</string>
-
-	<!-- Name for the full screen preference -->
-	<string name="pref_fullscreen_title">Tüm ekran</string>
-	<!-- Summary for the full screen preference -->
-	<string name="pref_fullscreen_summary">Konsolda iken durum çubuğunu gizle</string>
-
-	<!-- Name for the memorize keys preference -->
-	<string name="pref_memkeys_title">Anahtarları bellekte tut</string>
-	<!-- Summary for the memorize keys preference -->
-	<string name="pref_memkeys_summary">Kilidi açılmış anahtarları arkadaki hizmetler sonlanana kadar bellekte tut</string>
-
-	<!-- Name for the update check preference -->
-	<string name="pref_update_title">Güncellemelere bak</string>
-	<!-- Summary for the update check preference -->
-	<string name="pref_update_summary">ConnectBot güncellemelerine bakmak için en fazla sıklığı ayarla</string>
-
-	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">Persist connections</string>
-	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Force connections to stay connected while in background</string>
-
-	<!-- Name for the keyboard shortcuts preference -->
-	<string name="pref_keymode_title">Dizin kısayolları</string>
-	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">\'/\' için Alt ve Tab için Shift kullanımının nasıl olacağını seç</string>
-
-	<!-- Name for the camera shortcut usage preference -->
-	<string name="pref_camera_title">Kamera kısayolu</string>
-	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_camera_summary">Kamera düğmesine basıldığında hangi kısayolun tetikleneceğini seç</string>
-
-	<!-- Name for the keep screen on preference -->
-	<string name="pref_keepalive_title">Ekranı açık tut</string>
-	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_keepalive_summary">Bir konsolda çalışırken ekranın kapanmasını engelle</string>
-
-	<!-- Name for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_title">Wi-Fi etkin tut</string>
-	<!-- Summary for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_summary">Bir oturum etkinken Wi-Fi kapanmasını engelle</string>
-
-	<!-- Name for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_title">Bumpy arrows</string>
-	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_summary">Okları izotop ile kullanırken titret; düşük bağlantılar için kullanışlıdır</string>
-
-	<!-- Category title for the Terminal Bell preferences -->
-	<string name="pref_bell_category">Terminal zili</string>
-
-	<!-- Checkbox preference title for the audible terminal bell feature -->
-	<string name="pref_bell_title">Sesli zil</string>
-
-	<!-- Title for the slider preference to set the volume -->
-	<string name="pref_bell_volume_title">Zil ses düzeyi</string>
-
-	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
-	<string name="pref_bell_vibrate_title">Titreşim</string>
-
-	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
-	<string name="pref_bell_notification_title">Arkaplan uyarıları</string>
-	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
-	<string name="pref_bell_notification_summary">Send notification when a terminal running in the background sounds a bell.</string>
-
-	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
-	<string name="list_keymode_right">Sağ taraftaki tuşları kullan</string>
-	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
-	<string name="list_keymode_left">Sol taraftaki tuşları kullan</string>
-	<!-- Preference selection to indicate never to use special shortcut keys. -->
-	<string name="list_keymode_none">Devre Dışı Bırak</string>
-
-	<!-- Preference to not use pubkeys to authenticate to this host. -->
-	<string name="list_pubkeyids_none">Tuşları kullanma</string>
-	<!-- Preference to use any pubkey to authenticate to this host. -->
-	<string name="list_pubkeyids_any">Herhangi bir tuşu kullan</string>
-
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_daily">Günlük</string>
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_weekly">Haftalık</string>
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_never">Asla</string>
-
-	<!-- Host nickname field preference title -->
-	<string name="hostpref_nickname_title">Rumuz</string>
-
-	<!-- Host color category preference title -->
-	<string name="hostpref_color_title">Renk kategorisi</string>
-
-	<!-- Host's default font size when opening the terminal in points (pt) -->
-	<string name="hostpref_fontsize_title">Yazıtipi boyutu (pt)</string>
-
-	<!-- Host pubkey usage preference title -->
-	<string name="hostpref_pubkeyid_title">Use pubkey authentication</string>
-
-	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
-	<string name="hostpref_authagent_title">Use SSH auth agent</string>
-
-	<!-- Host post-login automation preference title -->
-	<string name="hostpref_postlogin_title">Post-login automation</string>
-	<!-- Host post-login automation preference summary -->
-	<string name="hostpref_postlogin_summary">Uzak sunucuya bağlanıldığında çalıştırılacak komutlar</string>
-
-	<!-- Host compression preference title -->
-	<string name="hostpref_compression_title">Sıkıştırma</string>
-	<!-- Summary for compression preference -->
-	<string name="hostpref_compression_summary">Yavaş ağlarda yardımcı olabilir</string>
-
-	<!-- Setting for whether we want a session to start up when we connect to a host -->
-	<string name="hostpref_wantsession_title">Start shell session</string>
-	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
-	<string name="hostpref_wantsession_summary">Disable this preference to only use port forwards</string>
-
-	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
-	<string name="hostpref_stayconnected_title">Bağlı kal</string>
-	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
-	<string name="hostpref_stayconnected_summary">Bağlantı koparsa tekrar bağlanmayı dene</string>
-
-	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_title">DEL Key</string>
-	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_summary">The key code sent when DEL key is pressed</string>
-
-	<!-- Host character encoding preference title -->
-	<string name="hostpref_encoding_title">Dil Kodlaması</string>
-	<!-- Host character encoding preference summary -->
-	<string name="hostpref_encoding_summary">Sunucu karakter kodlaması</string>
-
-	<!-- Host preference category title for connection settings -->
-	<string name="hostpref_connection_category">Bağlantı ayarları</string>
-
-	<!-- Username field title for host editor preference -->
-	<string name="hostpref_username_title">Kullanıcı Adı</string>
-
-	<!-- Hostname field title for host editor preference -->
-	<string name="hostpref_hostname_title">Sunucu</string>
-
-	<!-- Port field title for host editor preference -->
-	<string name="hostpref_port_title">Port</string>
-
-	<!-- Displayed to indicate a host has never been connected to. -->
-	<string name="bind_never">Daha önce bağlanılmadı</string>
-	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
-	<string name="bind_minutes">%1$s dakika önce</string>
-	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
-	<string name="bind_hours">%1$ saat önce</string>
-	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
-	<string name="bind_days">%1$s gün önce</string>
-
-	<!-- Message given when user copies from the terminal. -->
-	<string name="console_copy_done">%1$d byte panoya kopyalandı</string>
-	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">Kopyalanacak alanı seçmek için dokun ve sürükle ya da pad kullan</string>
-
-	<!-- Button to close the disconnected terminal window. -->
-	<string name="console_menu_close">Kapat</string>
-	<!-- Button to begin copying from the terminal to the clipboard. -->
-	<string name="console_menu_copy">Kopyala</string>
-	<!-- Button to paste from the clipboard to the terminal. -->
-	<string name="console_menu_paste">Yapıştır</string>
-	<!-- Button that brings user to the Port Forwards List. -->
-	<string name="console_menu_portforwards">Port Yönlendirmeleri</string>
-	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
-	<string name="console_menu_resize">Force Size</string>
-	<!-- Button that brings up the list of URLs on the current screen -->
-	<string name="console_menu_urlscan">URL Tara</string>
-
-	<!-- Button label to answer "Yes" to a yes/no prompt -->
-	<string name="button_yes">Evet</string>
-	<!-- Button label to answer "No" to a yes/no prompt -->
-	<string name="button_no">Hayır</string>
-
-	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
-	<string name="portforward_local">Yerel</string>
-	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
-	<string name="portforward_remote">Uzak</string>
-	<!-- Selection for a "dynamic" port forward. E.g., connections to a port listening locally is forwarded based on the SOCKS protocol to an arbitrary remote host and port. -->
-	<string name="portforward_dynamic">Dinamik (SOCKS)</string>
-	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
-	<string name="portforward_pos">Port yönlendirmesi oluştur</string>
-
-	<string name="portforward_done">Port yönlendirmesi başarıyla oluşturuldu</string>
-	<string name="portforward_problem">Problem creating port forward, maybe you\'re using ports under 1024 or port is already used?</string>
-
-	<string name="portforward_menu_add">Port yönlendirmesi ekle</string>
-
-	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
-	<string name="hint_userhost">kullanici@sunucuadi</string>
-
-	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
-	<string name="list_format_error">"%1$s" formatında kullanın</string>
-
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_username">kullanıcı adı</string>
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_hostname">sunucu adı</string>
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_port">port</string>
-
-	<string name="list_menu_pubkeys">Manage Pubkeys</string>
-	<!-- Selection choice to sort hosts by color. -->
-	<string name="list_menu_sortcolor">Rengine göre sırala</string>
-	<!-- Selection choice to sort hosts by nickname. -->
-	<string name="list_menu_sortname">İsime göre sırala</string>
-	<string name="list_menu_settings">Ayarlar</string>
-
-	<string name="list_host_disconnect">Bağlantıyı kes</string>
-	<string name="list_host_edit">Sunucu düzenle</string>
-	<string name="list_host_portforwards">Port yönlendirmeleri düzenle</string>
-	<string name="list_host_delete">Sunucuyu sil</string>
-	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
-	<string name="list_host_empty">Sunucuya bağlanmak için\naşağıdaki hızlı bağlan kutucuğunu kullan</string>
-
-	<!-- Default screen rotation preference selection -->
-	<string name="list_rotation_default">Varsayılan</string>
-	<string name="list_rotation_land">Force landscape</string>
-	<string name="list_rotation_port">Force portrait</string>
-	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
-	<string name="list_rotation_auto">Otomatik</string>
-
-	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
-	<string name="list_camera_ctrlaspace">Ctrl+A ardından Boşluk</string>
-	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A". -->
-	<string name="list_camera_ctrla">Ctrl+A</string>
-	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
-	<string name="list_camera_esc">Esc</string>
-	<!-- Selection to indicate pressing the Camera button should send "Esc+A". -->
-	<string name="list_camera_esc_a">Esc+A</string>
-	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
-	<string name="list_camera_none">Hiçbiri</string>
-
-	<!-- Name for the backspace character -->
-	<string name="list_delkey_backspace">Sil</string>
-	<!-- Name for the ASCII DEL character -->
-	<string name="list_delkey_del">Sil</string>
-
-	<string name="delete_message">Are you sure you want to delete \'%1$s\'?</string>
-	<string name="delete_pos">Evet, sil</string>
-	<string name="delete_neg">İptal Et</string>
-
-	<!-- Button to agree to license terms. -->
-	<string name="wizard_agree">Kabul et</string>
-	<!-- Button to go to the next page in the first time start-up wizard. -->
-	<string name="wizard_next">İleri</string>
-	<!-- Button to go to the previous page in the first time start-up wizard. -->
-	<string name="wizard_back">Geri dön</string>
-
-	<string name="terminal_no_hosts_connected">Hiçbir sunucuya bağlanılmadı</string>
-
-	<!-- Displayed in terminal when attempting to connect to a host. The first two
-	     variables are host:port and the third is the protocol (e.g., SSH) -->
-	<string name="terminal_connecting">%3$s ile %1$s:%2$d bağlanıyor</string>
-
-	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Verified host \'%1$s\' key: %2$s</string>
-	<string name="terminal_failed">Sunucu anahtarı doğrulaması başarısız oldu</string>
-
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_s2c_algorithm">Server-to-client algorithm: %1$s %2$s</string>
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_c2s_algorithm">Client-to-server algorithm: %1$s %2$s</string>
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_algorithm">Using algorithm: %1$s %2$s</string>
-
-	<string name="terminal_auth">Trying to authenticate</string>
-
-	<string name="terminal_auth_pass">Attempting \'password\' authentication</string>
-	<string name="terminal_auth_pass_fail">Authentication method \'password\' failed</string>
-
-	<string name="terminal_auth_pubkey_any">Attempting \'publickey\' authentication with any in-memory public keys</string>
-	<string name="terminal_auth_pubkey_invalid">Selected public key is invalid, try reselecting key in host editor</string>
-	<string name="terminal_auth_pubkey_specific">Attempting \'publickey\' authentication with a specific public key</string>
-	<string name="terminal_auth_pubkey_fail">Authentication method \'publickey\' with key \'%1$s\' failed</string>
-
-	<string name="terminal_auth_ki">Attempting \'keyboard-interactive\' authentication</string>
-	<string name="terminal_auth_ki_fail">Authentication method \'keyboard-interactive\' failed</string>
-
-	<string name="terminal_auth_fail">[Your host doesn\'t support \'password\' or \'keyboard-interactive\' authentication.]</string>
-
-	<string name="terminal_no_session">Sunucu tercihleri sebebiyle oturum başlatılamıyor</string>
-	<string name="terminal_enable_portfoward">Port yönlendirmesini etkinleştir: %1$s</string>
-
-	<string name="local_shell_unavailable">Başarısız! Yerel shell bu telefonda kullanılamıyor.</string>
-
-	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
-	<string name="notification_text">%1$s wants your attention.</string>
-
-	<!-- Dialog title when a new version of ConnectBot is detected. -->
-	<string name="upgrade">Yeni sürüm</string>
-	<!-- Button selection to upgrade to the latest ConnectBot when one is available. -->
-	<string name="upgrade_pos">Evet, yükselt</string>
-	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
-	<string name="upgrade_neg">Şimdi değil</string>
-
-	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
-	<string name="no">Hayır</string>
-	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
-	<string name="with_confirmation">With confirmation</string>
-	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
-	<string name="yes">Evet</string>
-
-	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
-	<string name="exceptions_submit_message">ConnectBot son çalıştırıldığında sorunla karşılaştı. Hata raporunu ConnectBot geliştiricilerine iletmek ister misiniz?</string>
-
-	<!-- Menu selection to reset colors to their defaults. -->
-	<string name="menu_colors_reset">Sıfırla</string>
-
-	<!-- Displayed in the notification bar that connections are active -->
-	<string name="app_is_running">ConnectBot çalışıyor</string>
-
-	<string name="color_red">kırmızı</string>
-	<string name="color_green">yeşil</string>
-	<string name="color_blue">mavi</string>
-	<string name="color_gray">gri</string>
+  <string name="app_desc">Basit, güçlü, açık kaynaklı SSH istemci.</string>
+  <string name="title_hosts_list">Anasistemler</string>
+  <string name="title_pubkey_list">Açık Anahtarlar</string>
+  <string name="title_port_forwards_list">Erişim noktası yönlendirmeleri</string>
+  <string name="title_host_editor">Anasistemi Düzenle</string>
+  <string name="title_help">Yardım</string>
+  <string name="title_colors">Renkler</string>
+  <string name="resolve_connect">Bağlan</string>
+  <string name="resolve_entropy">Entropi Topla</string>
+  <string name="menu_insert">Anasistem Ekle</string>
+  <string name="menu_delete">Anasistemi Sil</string>
+  <string name="menu_preferences">Tercihler</string>
+  <string name="help_intro">Daha fazla bilgi almak için aşağıdaki konulardan birisini seçiniz.</string>
+  <string name="help_about">ConnectBot Hakkında</string>
+  <string name="help_keyboard">Klavye</string>
+  <string name="pubkey_generate">Oluştur</string>
+  <string name="pubkey_import">İçe aktar</string>
+  <string name="pubkey_delete">Anahtarı Sil</string>
+  <string name="pubkey_gather_entropy">Entropi Toplanıyor</string>
+  <string name="pubkey_touch_prompt">Raslantısallık toplamak için bu kutuya dokun: %1$d%% gerçekleşti</string>
+  <string name="pubkey_touch_hint">Anahtar oluşturma süresince raslantısallığı sağlamak için parmağınızı aşağıdaki kutu içinde rastgele haraket ettiriniz.</string>
+  <string name="pubkey_generating">Anahtar çifti oluşturuluyor...</string>
+  <string name="pubkey_copy_private">Kişisel anahtarı kopyala</string>
+  <string name="pubkey_copy_public">Açık anahtarı kopyala</string>
+  <string name="pubkey_list_empty">Anahtar çiftini yaratmak veya\niçeri aktarmak için Menü ye dokun</string>
+  <string name="pubkey_unknown_format">Bilinmeyen biçim</string>
+  <string name="pubkey_change_password">Parolayı değiştir</string>
+  <string name="pubkey_list_pick">/sdcard \'dan seç</string>
+  <string name="pubkey_import_parse_problem">İçeri aktarılan kişisel anahtarı ayrıştırma sorunu</string>
+  <string name="pubkey_unlock">Anahtarın kilidini aç</string>
+  <string name="pubkey_failed_add">Anahtar \'%1$s\' için hatalı parola. Kimlik doğrulama başarısız oldu.</string>
+  <string name="pubkey_memory_load">Belleğe yükle</string>
+  <string name="pubkey_memory_unload">Bellekten kaldır</string>
+  <string name="pubkey_load_on_start">Başlangıçta anahtarı yükle</string>
+  <string name="pubkey_confirm_use">Kullanmadan önce doğrulat</string>
+  <string name="portforward_list_empty">Kapı yönlendirme yaratmak\niçin Menü ye dokun</string>
+  <string name="portforward_edit">Kapı yönlendirmeyi düzenle</string>
+  <string name="portforward_delete">Kapı yönlendirmeyi sil</string>
+  <string name="prompt_nickname">Takma Ad:</string>
+  <string name="prompt_nickname_hint_pubkey">Açık anahtar için takma ad</string>
+  <string name="prompt_source_port">Kaynak kapı:</string>
+  <string name="prompt_destination">Hedef (Anasistem:Kapı):</string>
+  <string name="prompt_old_password">Eski Parola:</string>
+  <string name="prompt_password">Parola:</string>
+  <string name="prompt_again">(tekrar)</string>
+  <string name="prompt_type">Tip:</string>
+  <string name="prompt_password_can_be_blank">Not: parola boş bırakılabilir</string>
+  <string name="prompt_bits">İkiller:</string>
+  <string name="prompt_pubkey_password">Anahtar \'%1$s\' için parola</string>
+  <string name="prompt_allow_agent_to_use_key">Uzak anasistemin \'%1$s\' anahtarını\nkullanmasına izin ver?</string>
+  <string name="host_verification_failure_warning_header">UYARI: UZAK ANASİSTEM KİMLİĞİ DEĞİŞMİŞ!</string>
+  <string name="host_verification_failure_warning">BİRİLERİNİN KÖTÜ BİRŞEYLER YAPIYOR OLMASI OLASI!\nBirileri şu anda sizi dinliyor olabilir (aradaki adam saldırısı)!\nSadece anasistem anahtarı da değişmiş olabilir.</string>
+  <string name="prompt_host_disconnected">Anasistem bağlantısı kesildi.\nOturumu kapat?</string>
+  <string name="prompt_continue_connecting">Bağlanmaya devam etmek\nistediğinize emin misiniz?</string>
+  <string name="host_authenticity_warning">Anasistem \'%1$s\' in gerçekliği doğrulanamadı.</string>
+  <string name="host_fingerprint">Anasistem %1$s anahtar parmakizi %2$s</string>
+  <string name="alert_passwords_do_not_match_msg">Parolalar uyuşmuyor!</string>
+  <string name="alert_wrong_password_msg">Yanlış parola!</string>
+  <string name="alert_key_corrupted_msg">Kişisel anahtar bozuk görünüyor</string>
+  <string name="alert_sdcard_absent">SD kart takılmamış!</string>
+  <string name="button_add">Ekle</string>
+  <string name="button_change">Değiştir</string>
+  <string name="button_generate">Anahtar Üret</string>
+  <string name="button_resize">Yeniden boyutlandır</string>
+  <string name="alert_disconnect_msg">Bağlantı Kesildi</string>
+  <string name="msg_copyright">Telif Hakkı © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
+  <string name="pref_emulation_category">Uçbirim öykünümü</string>
+  <string name="pref_emulation_title">Öykünüm kipi</string>
+  <string name="pref_emulation_summary">PTY bağlantıları için kullanılan uçbirim öykünüm kipi</string>
+  <string name="pref_scrollback_title">Geri kaydırma boyu</string>
+  <string name="pref_scrollback_summary">Her bir konsol için bellekte tutulacak geri kaydırma arabellek boyu</string>
+  <string name="pref_ui_category">Kullanıcı arayüzü</string>
+  <string name="pref_rotation_title">Dönme kipi</string>
+  <string name="pref_rotation_summary">Klavye saklandığında/açıldığında dönüş nasıl değişir</string>
+  <string name="pref_fullscreen_title">Tüm ekran</string>
+  <string name="pref_fullscreen_summary">Konsolda iken durum çubuğunu gizle</string>
+  <string name="pref_memkeys_title">Anahtarları bellekte tut</string>
+  <string name="pref_memkeys_summary">Kilidi açılmış anahtarları arkadaki hizmetler sonlanana kadar bellekte tut</string>
+  <string name="pref_update_title">Güncellemelere bak</string>
+  <string name="pref_update_summary">ConnectBot güncellemelerine bakmak için en fazla sıklığı ayarla</string>
+  <string name="pref_keymode_title">Dizin kısayolları</string>
+  <string name="pref_keymode_summary">\'/\' için Alt ve Tab için Shift kullanımının nasıl olacağını seç</string>
+  <string name="pref_camera_title">Kamera kısayolu</string>
+  <string name="pref_camera_summary">Kamera düğmesine basıldığında hangi kısayolun tetikleneceğini seç</string>
+  <string name="pref_keepalive_title">Ekranı açık tut</string>
+  <string name="pref_keepalive_summary">Bir konsolda çalışırken ekranın kapanmasını engelle</string>
+  <string name="pref_wifilock_title">Wi-Fi etkin tut</string>
+  <string name="pref_wifilock_summary">Bir oturum etkinken Wi-Fi kapanmasını engelle</string>
+  <string name="pref_bumpyarrows_summary">Okları izotop ile kullanırken titret; düşük bağlantılar için kullanışlıdır</string>
+  <string name="pref_bell_category">Terminal zili</string>
+  <string name="pref_bell_title">Sesli zil</string>
+  <string name="pref_bell_volume_title">Zil ses düzeyi</string>
+  <string name="pref_bell_vibrate_title">Titreşim</string>
+  <string name="pref_bell_notification_title">Arkaplan uyarıları</string>
+  <string name="list_keymode_right">Sağ taraftaki tuşları kullan</string>
+  <string name="list_keymode_left">Sol taraftaki tuşları kullan</string>
+  <string name="list_keymode_none">Devre Dışı Bırak</string>
+  <string name="list_pubkeyids_none">Tuşları kullanma</string>
+  <string name="list_pubkeyids_any">Herhangi bir tuşu kullan</string>
+  <string name="list_update_daily">Günlük</string>
+  <string name="list_update_weekly">Haftalık</string>
+  <string name="list_update_never">Asla</string>
+  <string name="hostpref_nickname_title">Rumuz</string>
+  <string name="hostpref_color_title">Renk kategorisi</string>
+  <string name="hostpref_fontsize_title">Yazıtipi boyutu (pt)</string>
+  <string name="hostpref_postlogin_summary">Uzak sunucuya bağlanıldığında çalıştırılacak komutlar</string>
+  <string name="hostpref_compression_title">Sıkıştırma</string>
+  <string name="hostpref_compression_summary">Yavaş ağlarda yardımcı olabilir</string>
+  <string name="hostpref_stayconnected_title">Bağlı kal</string>
+  <string name="hostpref_stayconnected_summary">Bağlantı koparsa tekrar bağlanmayı dene</string>
+  <string name="hostpref_encoding_title">Dil Kodlaması</string>
+  <string name="hostpref_encoding_summary">Sunucu karakter kodlaması</string>
+  <string name="hostpref_connection_category">Bağlantı ayarları</string>
+  <string name="hostpref_username_title">Kullanıcı Adı</string>
+  <string name="hostpref_hostname_title">Sunucu</string>
+  <string name="bind_never">Daha önce bağlanılmadı</string>
+  <string name="bind_minutes">%1$s dakika önce</string>
+  <string name="bind_hours">%1$ saat önce</string>
+  <string name="bind_days">%1$s gün önce</string>
+  <string name="console_copy_done">%1$d byte panoya kopyalandı</string>
+  <string name="console_copy_start">Kopyalanacak alanı seçmek için dokun ve sürükle ya da pad kullan</string>
+  <string name="console_menu_close">Kapat</string>
+  <string name="console_menu_copy">Kopyala</string>
+  <string name="console_menu_paste">Yapıştır</string>
+  <string name="console_menu_portforwards">Port Yönlendirmeleri</string>
+  <string name="console_menu_urlscan">URL Tara</string>
+  <string name="button_yes">Evet</string>
+  <string name="button_no">Hayır</string>
+  <string name="portforward_local">Yerel</string>
+  <string name="portforward_remote">Uzak</string>
+  <string name="portforward_dynamic">Dinamik (SOCKS)</string>
+  <string name="portforward_pos">Port yönlendirmesi oluştur</string>
+  <string name="portforward_done">Port yönlendirmesi başarıyla oluşturuldu</string>
+  <string name="portforward_menu_add">Port yönlendirmesi ekle</string>
+  <string name="hint_userhost">kullanici\@sunucuadi</string>
+  <string name="list_format_error">%1$s formatında kullanın</string>
+  <string name="format_username">kullanıcı adı</string>
+  <string name="format_hostname">sunucu adı</string>
+  <string name="list_menu_sortcolor">Rengine göre sırala</string>
+  <string name="list_menu_sortname">İsime göre sırala</string>
+  <string name="list_menu_settings">Ayarlar</string>
+  <string name="list_host_disconnect">Bağlantıyı kes</string>
+  <string name="list_host_edit">Sunucu düzenle</string>
+  <string name="list_host_portforwards">Port yönlendirmeleri düzenle</string>
+  <string name="list_host_delete">Sunucuyu sil</string>
+  <string name="list_host_empty">Sunucuya bağlanmak için\naşağıdaki hızlı bağlan kutucuğunu kullan</string>
+  <string name="list_rotation_default">Varsayılan</string>
+  <string name="list_rotation_auto">Otomatik</string>
+  <string name="list_camera_ctrlaspace">Ctrl+A ardından Boşluk</string>
+  <string name="list_camera_none">Hiçbiri</string>
+  <string name="list_delkey_backspace">Sil</string>
+  <string name="list_delkey_del">Sil</string>
+  <string name="delete_pos">Evet, sil</string>
+  <string name="delete_neg">İptal Et</string>
+  <string name="wizard_agree">Kabul et</string>
+  <string name="wizard_next">İleri</string>
+  <string name="wizard_back">Geri dön</string>
+  <string name="terminal_no_hosts_connected">Hiçbir sunucuya bağlanılmadı</string>
+  <string name="terminal_connecting">%3$s ile %1$s:%2$d bağlanıyor</string>
+  <string name="terminal_failed">Sunucu anahtarı doğrulaması başarısız oldu</string>
+  <string name="terminal_no_session">Sunucu tercihleri sebebiyle oturum başlatılamıyor</string>
+  <string name="terminal_enable_portfoward">Port yönlendirmesini etkinleştir: %1$s</string>
+  <string name="local_shell_unavailable">Başarısız! Yerel shell bu telefonda kullanılamıyor.</string>
+  <string name="upgrade">Yeni sürüm</string>
+  <string name="upgrade_pos">Evet, yükselt</string>
+  <string name="upgrade_neg">Şimdi değil</string>
+  <string name="no">Hayır</string>
+  <string name="yes">Evet</string>
+  <string name="exceptions_submit_message">ConnectBot son çalıştırıldığında sorunla karşılaştı. Hata raporunu ConnectBot geliştiricilerine iletmek ister misiniz?</string>
+  <string name="menu_colors_reset">Sıfırla</string>
+  <string name="app_is_running">ConnectBot çalışıyor</string>
+  <string name="color_red">kırmızı</string>
+  <string name="color_green">yeşil</string>
+  <string name="color_blue">mavi</string>
+  <string name="color_gray">gri</string>
 </resources>
