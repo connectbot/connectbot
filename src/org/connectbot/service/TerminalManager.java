@@ -173,7 +173,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public void onDestroy() {
 		Log.i(TAG, "Destroying background service");
 
-		disconnectAll(true);
+		disconnectAll(true, false);
 
 		if(hostdb != null) {
 			hostdb.close();
@@ -202,7 +202,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	/**
 	 * Disconnect all currently connected bridges.
 	 */
-	private void disconnectAll(final boolean immediate) {
+	private void disconnectAll(final boolean immediate, final boolean excludeLocal) {
 		TerminalBridge[] tmpBridges = null;
 
 		synchronized (bridges) {
@@ -213,8 +213,11 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		if (tmpBridges != null) {
 			// disconnect and dispose of any existing bridges
-			for (int i = 0; i < tmpBridges.length; i++)
+			for (int i = 0; i < tmpBridges.length; i++) {
+				if (excludeLocal && !tmpBridges[i].isUsingNetwork())
+					continue;
 				tmpBridges[i].dispatchDisconnect(immediate);
+			}
 		}
 	}
 
@@ -660,7 +663,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		final Thread t = new Thread() {
 			@Override
 			public void run() {
-				disconnectAll(false);
+				disconnectAll(false, true);
 			}
 		};
 		t.setName("Disconnector");
