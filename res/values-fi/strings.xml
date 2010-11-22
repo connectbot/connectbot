@@ -161,8 +161,12 @@
   <string name="list_rotation_port">Pakota pystysuuntaan</string>
   <string name="list_rotation_auto">Automaattinen</string>
   <string name="list_camera_ctrlaspace">Ctrl+A ja välilyönti</string>
+  <string name="list_camera_ctrla">Ctrl+A</string>
+  <string name="list_camera_esc">Esc</string>
+  <string name="list_camera_esc_a">Esc+A</string>
   <string name="list_camera_none">Ei mitään</string>
   <string name="list_delkey_backspace">Askelpalautin</string>
+  <string name="list_delkey_del">Delete</string>
   <string name="delete_pos">Kyllä, poista</string>
   <string name="delete_neg">Peru</string>
   <string name="wizard_agree">Hyväksy</string>

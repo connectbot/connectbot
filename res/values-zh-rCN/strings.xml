@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">简单,强大,开源的ssh客户端</string>
+  <string name="service_desc">设置SSH连接并且装载公钥</string>
   <string name="title_hosts_list">主机</string>
   <string name="title_pubkey_list">公钥</string>
   <string name="title_port_forwards_list">端口重定向</string>
