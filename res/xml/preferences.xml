@@ -43,6 +43,14 @@
 		android:defaultValue="true"
 		/>
 
+	<EditTextPreference
+		android:key="shell"
+		android:defaultValue="/system/bin/sh -"
+		android:title="@string/pref_shell_title"
+		android:summary="@string/pref_shell_summary"
+		android:dialogMessage="@string/pref_shell_detail"
+		/>
+
 	<PreferenceCategory
 		android:title="@string/pref_emulation_category">
 

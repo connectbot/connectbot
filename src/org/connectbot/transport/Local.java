@@ -50,10 +50,13 @@ public class Local extends AbsTransport {
 	private FileInputStream is;
 	private FileOutputStream os;
 
+	private String shellCommand;
+
 	/**
 	 *
 	 */
-	public Local() {
+	public Local(String shellCommand) {
+		this.shellCommand = shellCommand;
 	}
 
 	/**
@@ -90,7 +93,18 @@ public class Local extends AbsTransport {
 		int[] pids = new int[1];
 
 		try {
-			shellFd = Exec.createSubprocess("/system/bin/sh", "-", null, pids);
+			// Exec.createSubprocess is limited to two command-line arguments, so
+			// use sh -c "command with several arguments" if necessary.
+			String[] cmdParts = shellCommand.split(" +");
+			String cmd = cmdParts[0];
+			String arg0 = (cmdParts.length > 1 ? cmdParts[1] : null);
+			String arg1 = (cmdParts.length > 2 ? cmdParts[2] : null);
+			if (cmdParts.length > 3 || shellCommand.contains("\"")) {
+				cmd = "/system/bin/sh";
+				arg0 = "-c";
+				arg1 = shellCommand;
+			}
+			shellFd = Exec.createSubprocess(cmd, arg0, arg1, pids);
 		} catch (Exception e) {
 			bridge.outputLine(manager.res.getString(R.string.local_shell_unavailable));
 			Log.e(TAG, "Cannot start local shell", e);
