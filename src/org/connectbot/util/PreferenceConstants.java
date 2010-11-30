@@ -39,6 +39,9 @@ public class PreferenceConstants {
 
 	public static final String SCROLLBACK = "scrollback";
 
+	public static final String SHELL = "shell";
+	public static final String SHELL_DEFAULT = "/system/bin/sh -";
+
 	public static final String EMULATION = "emulation";
 
 	public static final String ROTATION = "rotation";

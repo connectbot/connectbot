@@ -229,7 +229,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		TerminalBridge bridge = new TerminalBridge(this, host);
 		bridge.setOnDisconnectedListener(this);
-		bridge.startConnection();
+		bridge.startConnection(prefs.getString(PreferenceConstants.SHELL, PreferenceConstants.SHELL_DEFAULT));
 
 		synchronized (bridges) {
 			bridges.add(bridge);
@@ -274,10 +274,12 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 * format specified by an individual transport.
 	 */
 	public TerminalBridge openConnection(Uri uri) throws Exception {
-		HostBean host = TransportFactory.findHost(hostdb, uri);
+		HostBean host = TransportFactory.findHost(hostdb, uri,
+			prefs.getString(PreferenceConstants.SHELL, PreferenceConstants.SHELL_DEFAULT));
 
 		if (host == null)
-			host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
+			host = TransportFactory.getTransport(uri.getScheme(),
+				prefs.getString(PreferenceConstants.SHELL, PreferenceConstants.SHELL_DEFAULT)).createHost(uri);
 
 		return openConnection(host);
 	}
@@ -709,7 +711,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				if (bridge == null) {
 					continue;
 				}
-				bridge.startConnection();
+				bridge.startConnection(prefs.getString(PreferenceConstants.SHELL, PreferenceConstants.SHELL_DEFAULT));
 			}
 			mPendingReconnect.clear();
 		}

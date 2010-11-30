@@ -402,9 +402,11 @@ public class HostListActivity extends ListActivity {
 			return false;
 		}
 
-		HostBean host = TransportFactory.findHost(hostdb, uri);
+		HostBean host = TransportFactory.findHost(hostdb, uri,
+			prefs.getString(PreferenceConstants.SHELL, PreferenceConstants.SHELL_DEFAULT));
 		if (host == null) {
-			host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
+			host = TransportFactory.getTransport(uri.getScheme(),
+				prefs.getString(PreferenceConstants.SHELL, PreferenceConstants.SHELL_DEFAULT)).createHost(uri);
 			host.setColor(HostDatabase.COLOR_GRAY);
 			host.setPubkeyId(HostDatabase.PUBKEYID_ANY);
 			hostdb.saveHost(host);
