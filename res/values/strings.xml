@@ -139,6 +139,11 @@
 	<!-- Detailed description of the local shell preference -->
 	<string name="pref_shell_detail">&quot;Command to run in Local mode.  Default is \&quot;/system/bin/sh -\&quot; (no quotes).&quot;</string>
 
+	<!-- Name for the obey haptic feedback setting preference -->
+	<string name="pref_obeyHaptic_title">"Override vibrate"</string>
+	<!-- Detailed description of the haptic feedback setting preference -->
+	<string name="pref_obeyHaptic_summary">"Don't vibrate if haptic feedback is disabled in system settings"</string>
+
 	<!-- The category title for terminal emulation preferences. -->
 	<string name="pref_emulation_category">"Terminal emulation"</string>
 

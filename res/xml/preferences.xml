@@ -51,6 +51,13 @@
 		android:dialogMessage="@string/pref_shell_detail"
 		/>
 
+	<CheckBoxPreference
+		android:key="obeyHaptic"
+		android:defaultValue="false"
+		android:summary="@string/pref_obeyHaptic_summary"
+		android:title="@string/pref_obeyHaptic_title"
+		/>
+
 	<PreferenceCategory
 		android:title="@string/pref_emulation_category">
 
@@ -160,5 +167,6 @@
 			/>
 
 	</PreferenceCategory>
+
 
 </PreferenceScreen>
