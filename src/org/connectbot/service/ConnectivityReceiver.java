@@ -100,9 +100,9 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 	 */
 	public void incRef() {
 		synchronized (mLock) {
-			acquireWifiLockIfNecessaryLocked();
-
 			mNetworkRef  += 1;
+
+			acquireWifiLockIfNecessaryLocked();
 		}
 	}
 
