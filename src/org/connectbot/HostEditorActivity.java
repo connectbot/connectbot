@@ -130,6 +130,11 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 				return true;
 			}
 
+			// Gingerbread compatibility
+			public void apply() {
+				commit();
+			}
+
 			public android.content.SharedPreferences.Editor putBoolean(String key, boolean value) {
 				return this.putString(key, Boolean.toString(value));
 			}
@@ -157,7 +162,6 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 				update.remove(key);
 				return this;
 			}
-
 		}
 
 
