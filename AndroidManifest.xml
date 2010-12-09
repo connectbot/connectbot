@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.connectbot"
 	android:versionName="1.7.1"
-	android:versionCode="336"
+	android:versionCode="337"
 	android:installLocation="auto">
+
+	<uses-sdk android:targetSdkVersion="9" android:minSdkVersion="3" />
 
 	<application
 		android:icon="@drawable/icon"
@@ -62,8 +64,6 @@
 		</activity>
 
 	</application>
-
-	<uses-sdk android:targetSdkVersion="8" android:minSdkVersion="3" />
 
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.VIBRATE" />
