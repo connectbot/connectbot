@@ -46,6 +46,9 @@ import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.SingleLineTransformationMethod;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -369,7 +372,7 @@ public class ConsoleActivity extends Activity {
 				final TerminalView terminal = (TerminalView)flip;
 				Thread promptThread = new Thread(new Runnable() {
 						public void run() {
-							String inj = getCurrentPromptHelper().requestStringPrompt(null, "Text to insert");
+							String inj = getCurrentPromptHelper().requestStringPrompt(null, "");
 							terminal.bridge.injectString(inj);
 						}
 					});
@@ -987,11 +990,23 @@ public class ConsoleActivity extends Activity {
 			stringPromptGroup.setVisibility(View.VISIBLE);
 
 			String instructions = prompt.promptInstructions;
+			boolean password = prompt.passwordRequested;
 			if (instructions != null && instructions.length() > 0) {
 				stringPromptInstructions.setVisibility(View.VISIBLE);
 				stringPromptInstructions.setText(instructions);
 			} else
 				stringPromptInstructions.setVisibility(View.GONE);
+
+			if (password) {
+				stringPrompt.setInputType(InputType.TYPE_CLASS_TEXT |
+										  InputType.TYPE_TEXT_VARIATION_PASSWORD);
+				stringPrompt.setTransformationMethod(PasswordTransformationMethod.getInstance());
+			} else {
+				stringPrompt.setInputType(InputType.TYPE_CLASS_TEXT |
+										  InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
+				stringPrompt.setTransformationMethod(SingleLineTransformationMethod.getInstance());
+			}
+
 			stringPrompt.setText("");
 			stringPrompt.setHint(prompt.promptHint);
 			stringPrompt.requestFocus();

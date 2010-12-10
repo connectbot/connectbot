@@ -129,6 +129,7 @@
 
 		<ImageView
 			android:id="@+id/button_input"
+			android:paddingRight="15dip"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_toLeftOf="@+id/button_keyboard"
