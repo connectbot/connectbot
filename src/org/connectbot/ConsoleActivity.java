@@ -128,6 +128,7 @@ public class ConsoleActivity extends Activity {
 	private Handler handler = new Handler();
 
 	private ImageView mKeyboardButton;
+	private ImageView mInputButton;
 
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
@@ -354,6 +355,27 @@ public class ConsoleActivity extends Activity {
 					return;
 
 				inputManager.showSoftInput(flip, InputMethodManager.SHOW_FORCED);
+				keyboardGroup.setVisibility(View.GONE);
+			}
+		});
+
+		mInputButton = (ImageView) findViewById(R.id.button_input);
+		mInputButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View flip = findCurrentView(R.id.console_flip);
+				if (flip == null)
+					return;
+				
+				final TerminalView terminal = (TerminalView)flip;
+				Thread promptThread = new Thread(new Runnable() {
+						public void run() {
+							String inj = getCurrentPromptHelper().requestStringPrompt(null, "Text to insert");
+							terminal.bridge.injectString(inj);
+						}
+					});
+				promptThread.setName("Prompt");
+				promptThread.setDaemon(true);
+				promptThread.start();
 				keyboardGroup.setVisibility(View.GONE);
 			}
 		});
@@ -1033,6 +1055,7 @@ public class ConsoleActivity extends Activity {
 			bound.hardKeyboardHidden = (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES);
 
 			mKeyboardButton.setVisibility(bound.hardKeyboardHidden ? View.VISIBLE : View.GONE);
+			mInputButton.setVisibility(bound.hardKeyboardHidden ? View.VISIBLE : View.GONE);
 		}
 	}
 
