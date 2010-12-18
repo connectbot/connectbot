@@ -868,6 +868,8 @@ public class ConsoleActivity extends Activity {
 					requestedBridge = bound.openConnection(requested);
 				} catch(Exception e) {
 					Log.e(TAG, "Problem while trying to create new requested bridge from URI", e);
+					// TODO: We should display an error dialog here.
+					return;
 				}
 
 				requestedIndex = addNewTerminalView(requestedBridge);
