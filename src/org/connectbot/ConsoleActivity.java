@@ -17,15 +17,20 @@
 
 package org.connectbot;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 import java.util.List;
 
+import org.connectbot.bean.PubkeyBean;
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.PreferenceConstants;
+import org.connectbot.util.PubkeyDatabase;
+import org.connectbot.util.PubkeyUtils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -131,6 +136,9 @@ public class ConsoleActivity extends Activity {
 
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
+			//variables added to enable adding public keys specified in Intent.
+			PubkeyBean pubkey;
+
 			bound = ((TerminalManager.TerminalBinder) service).getService();
 
 			// let manager know about our event handling services
@@ -143,8 +151,23 @@ public class ConsoleActivity extends Activity {
 			// clear out any existing bridges and record requested index
 			flip.removeAllViews();
 
+			//get the requested nick name from the URI fragment in the intent
 			final String requestedNickname = (requested != null) ? requested.getFragment() : null;
 			int requestedIndex = 0;
+
+			//if the user has passed a query fragment, it contains the public key
+			if ((requested.getQuery() != null) && (requested.getQueryParameter("pubKey") != null)){
+				//the public key is stored in a key-value pair where key="pubKey"
+				try {
+					pubkey = PubkeyUtils.readKeyFromFile(new File(requested.getQueryParameter
+							("pubKey"))); //read key from file in to pubkeyBean
+					addKeyToDb(pubkey); //add to DB if not already there.
+					bound.loadPubkeyIntoMem(pubkey, null);//load into memory
+				} catch (Exception e) {
+					Log.e(TAG, e.getMessage());
+					Log.e(TAG, "Public key authentication shan't be used.");
+				}
+			}
 
 			TerminalBridge requestedBridge = bound.getConnectedBridge(requestedNickname);
 
@@ -206,6 +229,28 @@ public class ConsoleActivity extends Activity {
 		}
 	};
 
+	private void addKeyToDb(PubkeyBean pubkey) {
+		PubkeyDatabase pubkeyDb = new PubkeyDatabase(this);
+		boolean updateDb = true;
+		//load the key into the database only if the pub key is not already in the
+		//database.
+		List<PubkeyBean> pubkeys = pubkeyDb.allPubkeys();
+
+		for (PubkeyBean existingPubkey : pubkeys) {
+			//if both the private key and the public key matches, set updateDb to false
+			//and break. Arrays.equals() returns true if both are null.
+			if ((Arrays.equals(existingPubkey.getPrivateKey(), pubkey.getPrivateKey()))
+					&&(Arrays.equals(existingPubkey.getPublicKey(),
+							pubkey.getPublicKey()))) {
+				updateDb = false;
+				break;
+			}
+		}
+
+		if (updateDb) {
+			pubkeyDb.savePubkey(pubkey);
+		}
+	}
 	/**
 	 * @param bridge
 	 */

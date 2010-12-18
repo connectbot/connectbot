@@ -63,6 +63,7 @@
 	<string name="pubkey_change_password">"Change password"</string>
 	<string name="pubkey_list_pick">"Pick from /sdcard"</string>
 	<string name="pubkey_import_parse_problem">"Problem parsing imported private key"</string>
+	<string name="pubkey_import_duplicate">"Imported private key already exists"</string>
 	<string name="pubkey_unlock">"Unlock key"</string>
 	<string name="pubkey_failed_add">"Bad password for key '%1$s'. Authentication failed."</string>
 	<string name="pubkey_memory_load">"Load into memory"</string>
