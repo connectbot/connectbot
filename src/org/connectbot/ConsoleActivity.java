@@ -164,7 +164,6 @@ public class ConsoleActivity extends Activity {
 					addKeyToDb(pubkey); //add to DB if not already there.
 					bound.loadPubkeyIntoMem(pubkey, null);//load into memory
 				} catch (Exception e) {
-					Log.e(TAG, e.getMessage());
 					Log.e(TAG, "Public key authentication shan't be used.");
 				}
 			}
