@@ -184,5 +184,4 @@ public class PubkeyBean extends AbstractBean {
 
 		return true;
 	}
-
 }
