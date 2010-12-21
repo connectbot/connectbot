@@ -460,7 +460,6 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 					updateHandler.sendEmptyMessage(-1);
 				}
 				catch(Exception exception) {
-					Log.e(TAG, "Add key failed: " + exception.getMessage());
 					String message = getResources().getString(R.string.
 							pubkey_import_parse_problem);
 					Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG).show();
