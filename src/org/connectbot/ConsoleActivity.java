@@ -1189,6 +1189,15 @@ public class ConsoleActivity extends Activity {
 			nicknames.add(pubkey.getNickname());
 		}
 
+		//if there are no pubkeys in the DB, don't display dialog to select from
+		//loaded pub keys. Direct user to the import dialog instead.
+		if (nicknames.size() == 0) {
+			pubkeyChosen = true; //even if user cancels import, set pubkeyChosen to true.
+			//this will prevent the dialog being displayed again after a context switch.
+			showFilePicker();
+			return;
+		}
+
 		//display an alertDialog to this end
 		new AlertDialog.Builder(ConsoleActivity.this)
 			.setTitle(R.string.pubkey_memory_load_verbose)
@@ -1202,6 +1211,8 @@ public class ConsoleActivity extends Activity {
 						public void onClick(DialogInterface arg0, int listPos) {
 							pubkeyChosen = true; //user has chosen a public key
 							//load key to mem if not already loaded
+							//this will prevent the dialog being displayed again after a context
+							//switch.
 							if (!bound.isKeyLoaded(nicknames.get(listPos))) {
 								//load it to memory
 								ConsoleActivity.this.handleLoadKey(pubkeys.get(listPos));
@@ -1214,6 +1225,8 @@ public class ConsoleActivity extends Activity {
 						 * If the user chooses this button, show him a file picker dialog
 						 */
 						public void onClick(DialogInterface dialog, int which) {
+							pubkeyChosen = true; //even if user cancels import, set pubkeyChosen to
+							//true.
 							showFilePicker();
 						}
 					})
@@ -1331,9 +1344,11 @@ public class ConsoleActivity extends Activity {
 			.setItems(namesList, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface arg0, int arg1) {
 					String name = namesList[arg1];
-
+					PubkeyBean pubkey;
 					try {
-						addKeyToDb(PubkeyUtils.readKeyFromFile(new File(sdcard, name)));
+						pubkey = PubkeyUtils.readKeyFromFile(new File(sdcard, name));
+						addKeyToDb(pubkey);
+						handleLoadKey(pubkey); //load to memory
 					} catch (Exception exception) {
 						String message = getResources().getString(R.string.
 								pubkey_import_parse_problem);
@@ -1357,20 +1372,29 @@ public class ConsoleActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
 
+		PubkeyBean pubkey = null;
+
 		switch (requestCode) {
 		case REQUEST_CODE_PICK_FILE:
 			if (resultCode == RESULT_OK && intent != null) {
 				Uri uri = intent.getData();
 				try {
 					if (uri != null) {
-						addKeyToDb(PubkeyUtils.readKeyFromFile(new File(URI.create(
-								uri.toString()))));
+						pubkey = PubkeyUtils.readKeyFromFile(new File(URI.create(uri.toString())));
 					} else {
 						String filename = intent.getDataString();
 						if (filename != null) {
-							addKeyToDb(PubkeyUtils.readKeyFromFile(new File(URI.create(
-									filename))));
+							pubkey = PubkeyUtils.readKeyFromFile(new File(URI.create(filename)));
 						}
+					}
+					if (pubkey != null) {
+						addKeyToDb(pubkey);
+						handleLoadKey(pubkey); //load to memory
+					}
+					else {
+						String message = getResources().getString(R.string.
+								pubkey_import_parse_problem);
+						Toast.makeText(ConsoleActivity.this, message, Toast.LENGTH_LONG).show();
 					}
 				}
 				catch(Exception exception) {
