@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">Cliente de SSH sencillo, potente y open-source</string>
+  <string name="service_desc">Mantiene conexiones SSH y las claves públicas guardadas</string>
   <string name="title_hosts_list">Máquinas</string>
   <string name="title_pubkey_list">Claves Publicas</string>
   <string name="title_port_forwards_list">Traducciones de puerto</string>
@@ -47,6 +48,7 @@
   <string name="prompt_again">(de nuevo)</string>
   <string name="prompt_type">Tipo:</string>
   <string name="prompt_password_can_be_blank">Nota: la contraseña puede ser dejada en blanco</string>
+  <string name="prompt_bits">Bits:</string>
   <string name="prompt_pubkey_password">Contraseña para clave \'%1$s\'</string>
   <string name="prompt_allow_agent_to_use_key">¿Autorizar maquina remota\nde usar clave \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">ATENCIÓN: ¡LA IDENTIFICACIÓN DE LA MAQUINA REMOTA HA CAMBIADO!</string>
@@ -139,6 +141,8 @@
   <string name="console_menu_resize">Forzar un tamaño</string>
   <string name="console_menu_urlscan">Escaneo de direcciones</string>
   <string name="button_yes">Sí</string>
+  <string name="button_no">Denegar</string>
+  <string name="portforward_local">Local</string>
   <string name="portforward_remote">Remoto</string>
   <string name="portforward_dynamic">Dinámicos (SOCKS)</string>
   <string name="portforward_pos">Crear reenvio de puerto</string>
@@ -164,6 +168,9 @@
   <string name="list_rotation_port">Forzar retrato</string>
   <string name="list_rotation_auto">Automático</string>
   <string name="list_camera_ctrlaspace">Ctrl+A después espacio</string>
+  <string name="list_camera_ctrla">Ctrl+A</string>
+  <string name="list_camera_esc">Esc</string>
+  <string name="list_camera_esc_a">Esc+A</string>
   <string name="list_camera_none">Ninguno</string>
   <string name="list_delkey_backspace">Borrar</string>
   <string name="list_delkey_del">Eliminar</string>
@@ -197,6 +204,7 @@
   <string name="upgrade">Nueva versión</string>
   <string name="upgrade_pos">Sí, actualizar</string>
   <string name="upgrade_neg">No en este momento</string>
+  <string name="no">Denegar</string>
   <string name="with_confirmation">Con confirmación</string>
   <string name="yes">Sí</string>
   <string name="exceptions_submit_message">Parece que ConnectBot tuvo un problema en su última ejecución. Enviar reporte de error a los desarrolladores de ConnectBot?</string>

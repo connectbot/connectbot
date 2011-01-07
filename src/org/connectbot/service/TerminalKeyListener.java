@@ -73,6 +73,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 	private int metaState = 0;
 
+	private int mDeadKey = 0;
+
 	private ClipboardManager clipboard = null;
 	private boolean selectingForCopy = false;
 	private final SelectionArea selectionArea;
@@ -165,34 +167,56 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 			bridge.resetScrollPosition();
 
-			boolean printing = (keymap.isPrintingKey(keyCode) || keyCode == KeyEvent.KEYCODE_SPACE || keyCode == KeyEvent.KEYCODE_TAB);
+			if (keyCode == KeyEvent.KEYCODE_UNKNOWN &&
+					event.getAction() == KeyEvent.ACTION_MULTIPLE) {
+				byte[] input = event.getCharacters().getBytes(encoding);
+				bridge.transport.write(input);
+				return true;
+			}
+
+			int curMetaState = event.getMetaState();
+
+			if ((metaState & META_SHIFT_MASK) != 0) {
+				curMetaState |= KeyEvent.META_SHIFT_ON;
+			}
+
+			if ((metaState & META_ALT_MASK) != 0) {
+				curMetaState |= KeyEvent.META_ALT_ON;
+			}
+
+			int key = event.getUnicodeChar(curMetaState);
+
+			if ((key & KeyCharacterMap.COMBINING_ACCENT) != 0) {
+				mDeadKey = key & KeyCharacterMap.COMBINING_ACCENT_MASK;
+				return true;
+			}
+
+			if (mDeadKey != 0) {
+				key = KeyCharacterMap.getDeadChar(mDeadKey, keyCode);
+				mDeadKey = 0;
+			}
+
+			final boolean printing = (key != 0);
 
 			// otherwise pass through to existing session
 			// print normal keys
 			if (printing) {
-				int curMetaState = event.getMetaState();
-
 				metaState &= ~(META_SLASH | META_TAB);
 
-				if ((metaState & META_SHIFT_MASK) != 0) {
-					curMetaState |= KeyEvent.META_SHIFT_ON;
-					metaState &= ~META_SHIFT_ON;
+				// Remove shift and alt modifiers
+				final int lastMetaState = metaState;
+				metaState &= ~(META_SHIFT_ON | META_ALT_ON);
+				if (metaState != lastMetaState) {
 					bridge.redraw();
 				}
-
-				if ((metaState & META_ALT_MASK) != 0) {
-					curMetaState |= KeyEvent.META_ALT_ON;
-					metaState &= ~META_ALT_ON;
-					bridge.redraw();
-				}
-
-				int key = keymap.get(keyCode, curMetaState);
 
 				if ((metaState & META_CTRL_MASK) != 0 ||
 				    (toshibaAC100 && (curMetaState & 8) != 0)) {
 					metaState &= ~META_CTRL_ON;
 					bridge.redraw();
 
+					// If there is no hard keyboard or there is a hard keyboard currently hidden,
+					// CTRL-1 through CTRL-9 will send F1 through F9
 					if ((!hardKeyboard || (hardKeyboard && hardKeyboardHidden))
 							&& sendFunctionKey(keyCode))
 						return true;
@@ -203,8 +227,10 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					// Support CTRL-A through CTRL-_
 					else if (key >= 0x41 && key <= 0x5F)
 						key -= 0x40;
+					// CTRL-space sends NULL
 					else if (key == 0x20)
 						key = 0x00;
+					// CTRL-? sends DEL
 					else if (key == 0x3F)
 						key = 0x7F;
 				}
@@ -222,13 +248,6 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					bridge.transport.write(new String(Character.toChars(key))
 							.getBytes(encoding));
 
-				return true;
-			}
-
-			if (keyCode == KeyEvent.KEYCODE_UNKNOWN &&
-					event.getAction() == KeyEvent.ACTION_MULTIPLE) {
-				byte[] input = event.getCharacters().getBytes(encoding);
-				bridge.transport.write(input);
 				return true;
 			}
 
@@ -492,6 +511,10 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 	public int getMetaState() {
 		return metaState;
+	}
+
+	public int getDeadKey() {
+		return mDeadKey;
 	}
 
 	public void setClipboardManager(ClipboardManager clipboard) {
