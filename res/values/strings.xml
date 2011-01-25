@@ -21,6 +21,11 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 	<string name="app_desc">"Simple, powerful, open-source SSH client."</string>
 	<string name="service_desc">"Maintains SSH connections and loaded pubkeys"</string>
+	<string name="auth_agent_service_desc">"Acts as an ssh-agent for other Android Apps on the device"</string>
+	
+	<string name="ssh_agent_permission_label">use SSH keys stored in your SSH Agent</string>
+    <string name="ssh_agent_permission_desc">Allows the application to authenticate SSH transactions using your private keys stored in ConnectBot.
+    	VERY DANGEROUS if used by a malicious application.</string>	
 
 	<!-- Window title for the Host List -->
 	<string name="title_hosts_list">"Hosts"</string>

@@ -46,6 +46,14 @@
 		<service android:name="org.connectbot.service.TerminalManager"
 			android:configChanges="keyboardHidden|orientation"
 			android:description="@string/service_desc" />
+			
+		<service android:name="org.connectbot.service.AuthAgentService"
+			android:description="@string/auth_agent_service_desc"
+			android:permission="com.madgag.android.ssh.permission.ACCESS_SSH_AGENT">
+			<intent-filter>
+				<action android:name="com.madgag.android.ssh.BIND_SSH_AGENT_SERVICE" />
+			</intent-filter>
+		</service>
 
 		<activity android:name=".ConsoleActivity" android:configChanges="keyboardHidden|orientation"
 			android:theme="@style/NoTitle" android:windowSoftInputMode="stateAlwaysVisible|adjustResize"
@@ -72,4 +80,13 @@
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 
 	<supports-screens />
+	
+	<permission 
+		android:name="com.madgag.android.ssh.permission.ACCESS_SSH_AGENT"
+		android:protectionLevel="dangerous"
+		android:permissionGroup="android.permission-group.PERSONAL_INFO"
+		android:label="@string/ssh_agent_permission_label"
+		android:description="@string/ssh_agent_permission_desc"
+		android:icon="@drawable/pubkey">
+	</permission>
 </manifest>
