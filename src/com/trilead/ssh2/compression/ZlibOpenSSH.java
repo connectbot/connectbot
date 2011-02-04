@@ -18,15 +18,18 @@
 package com.trilead.ssh2.compression;
 
 /**
- * @author Kenny Root
+ * Defines how zlib@openssh.org compression works.
+ * See 
+ * http://www.openssh.org/txt/draft-miller-secsh-compression-delayed-00.txt
+ * compression is disabled until userauth has occurred.
+ *
+ * @author Matt Johnston
  *
  */
-public interface ICompressor {
-	int getBufferSize();
+public class ZlibOpenSSH extends Zlib {
 
-	int compress(byte[] buf, int start, int len, byte[] output);
+	public boolean canCompressPreauth() {
+		return false;
+	}
 
-	byte[] uncompress(byte[] buf, int start, int[] len);
-
-	boolean canCompressPreauth();
 }
