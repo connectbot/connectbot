@@ -1,6 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">Einfacher, mächtiger, open-source SSH client.</string>
+  <string name="service_desc">Hält SSH-Verbindungen und geladene öffentliche Schlüssel aufrecht</string>
+  <string name="title_hosts_list">Hosts</string>
+  <string name="title_pubkey_list">Öffentliche Schlüssel</string>
   <string name="title_port_forwards_list">Port-Weiterleitungen</string>
   <string name="title_host_editor">Host bearbeiten</string>
   <string name="title_help">Hilfe</string>
@@ -22,19 +25,19 @@
   <string name="pubkey_generating">Erzeuge Schlüsselpaar...</string>
   <string name="pubkey_copy_private">Privaten Schlüssel kopieren</string>
   <string name="pubkey_copy_public">Öffentlichen Schlüssel kopieren</string>
-  <string name="pubkey_list_empty">Menu drücken, um Schlüsselpaare\nzu erzeugen oder importieren.</string>
+  <string name="pubkey_list_empty">\"Menu\" drücken, um Schlüsselpaare\nzu erzeugen oder zu importieren.</string>
   <string name="pubkey_unknown_format">Unbekanntes Format</string>
   <string name="pubkey_change_password">Passwort ändern</string>
   <string name="pubkey_list_pick">Wähle von /sdcard</string>
-  <string name="pubkey_import_parse_problem">Konnte importierten geheimen Schlüssel nicht parsen.</string>
-  <string name="pubkey_unlock">Schlüssel entsperren.</string>
+  <string name="pubkey_import_parse_problem">Fehler beim Parsen des importierten, geheimen Schlüssels</string>
+  <string name="pubkey_unlock">Schlüssel entsperren</string>
   <string name="pubkey_failed_add">Falsches Passwort für Schlüssel \'%1$s\'. Legitimation fehlgeschlagen.</string>
-  <string name="pubkey_memory_load">In Speicher laden.</string>
-  <string name="pubkey_memory_unload">Aus Speicher entfernen.</string>
+  <string name="pubkey_memory_load">In Speicher laden</string>
+  <string name="pubkey_memory_unload">Aus Speicher entfernen</string>
   <string name="pubkey_load_on_start">Schlüssel beim Start laden</string>
   <string name="pubkey_confirm_use">Bestätigen vor Benutzung</string>
-  <string name="portforward_list_empty">Menu tippen, um Port-\nWeiterleitungen zu erzeugen.</string>
-  <string name="portforward_edit">Port-Weiterleitung editieren.</string>
+  <string name="portforward_list_empty">Auf \"Menu\" tippen um Port-\nWeiterleitungen zu erstellen.</string>
+  <string name="portforward_edit">Port-Weiterleitung bearbeiten.</string>
   <string name="portforward_delete">Port-Weiterleitung löschen.</string>
   <string name="prompt_nickname">Spitzname:</string>
   <string name="prompt_nickname_hint_pubkey">Mein Schlüssel</string>
@@ -45,6 +48,7 @@
   <string name="prompt_again">(nochmal)</string>
   <string name="prompt_type">Typ:</string>
   <string name="prompt_password_can_be_blank">Hinweis: Passwort kann leer bleiben</string>
+  <string name="prompt_bits">Bits:</string>
   <string name="prompt_pubkey_password">Passwort für Schlüssel \'%1$s\'</string>
   <string name="prompt_allow_agent_to_use_key">Remote Host die Benutzung\ndes Schlüssels \'%1$s\' erlauben?</string>
   <string name="host_verification_failure_warning_header">WARNUNG: IDENTIFIKATION DES ENTFERNTEN HOSTS HAT SICH GEÄNDERT!</string>
@@ -62,6 +66,7 @@
   <string name="button_generate">Schlüssel erzeugen</string>
   <string name="button_resize">Größe ändern</string>
   <string name="alert_disconnect_msg">Die Verbindung wurde getrennt.</string>
+  <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
   <string name="pref_emulation_category">Terminalemulation</string>
   <string name="pref_emulation_title">Emulationsmodus</string>
   <string name="pref_emulation_summary">Terminalemulationsmodus für PTY Verbindungen</string>
@@ -102,7 +107,7 @@
   <string name="list_update_daily">Täglich</string>
   <string name="list_update_weekly">Wöchentlich</string>
   <string name="list_update_never">Niemals</string>
-  <string name="hostpref_nickname_title">Spitzname</string>
+  <string name="hostpref_nickname_title">Nutzername</string>
   <string name="hostpref_color_title">Farbkategorie</string>
   <string name="hostpref_fontsize_title">Fontgröße (pt)</string>
   <string name="hostpref_pubkeyid_title">Verwende pubkey Authentisierung</string>
@@ -117,9 +122,12 @@
   <string name="hostpref_stayconnected_summary">Verbindung bei Verbindungsabbruch wiederherstellen</string>
   <string name="hostpref_delkey_title">DEL Taste</string>
   <string name="hostpref_delkey_summary">Zu sendender Tastencode wenn DEL gedrückt wird</string>
+  <string name="hostpref_encoding_title">Zeichensatz</string>
   <string name="hostpref_encoding_summary">Zeichen-Encoding für den Host</string>
   <string name="hostpref_connection_category">Verbindungseinstellungen</string>
   <string name="hostpref_username_title">Benutzername</string>
+  <string name="hostpref_hostname_title">Host</string>
+  <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Nie verbunden</string>
   <string name="bind_minutes">vor %1$s Minuten</string>
   <string name="bind_hours">vor %1$s Stunden</string>
@@ -131,6 +139,7 @@
   <string name="console_menu_paste">Einfügen</string>
   <string name="console_menu_portforwards">Port-Weiterleitungen</string>
   <string name="console_menu_resize">Größe erzwingen</string>
+  <string name="console_menu_urlscan">URL Scan</string>
   <string name="button_yes">Ja</string>
   <string name="button_no">Nein</string>
   <string name="portforward_local">Lokal</string>
@@ -140,6 +149,7 @@
   <string name="portforward_done">Port-Weiterleitung angelegt.</string>
   <string name="portforward_problem">Konnte Port-Weiterleitung nicht anlegen. Verwenden Sie Ports kleiner als 1024, oder wird der Port bereits verwendet?</string>
   <string name="portforward_menu_add">Port-Weiterleitung hinzufügen</string>
+  <string name="hint_userhost">benutzer\@hostname</string>
   <string name="list_format_error">Benutze das Format %1$s</string>
   <string name="format_username">Benutzername</string>
   <string name="format_hostname">Hostname</string>
@@ -159,7 +169,10 @@
   <string name="list_rotation_auto">Automatisch</string>
   <string name="list_camera_ctrlaspace">Strg+A dann Space</string>
   <string name="list_camera_ctrla">Strg+A</string>
+  <string name="list_camera_esc">Esc</string>
+  <string name="list_camera_esc_a">Esc+A</string>
   <string name="list_camera_none">Nichts</string>
+  <string name="list_delkey_backspace">Rücktaste</string>
   <string name="list_delkey_del">Entfernen</string>
   <string name="delete_message">Soll \'%1$s\' wirklich gelöscht werden?</string>
   <string name="delete_pos">Ja, löschen</string>
