@@ -49,9 +49,9 @@
 			
 		<service android:name="org.connectbot.service.AuthAgentService"
 			android:description="@string/auth_agent_service_desc"
-			android:permission="com.madgag.android.ssh.permission.ACCESS_SSH_AGENT">
+			android:permission="org.openintents.ssh.permission.ACCESS_SSH_AGENT">
 			<intent-filter>
-				<action android:name="com.madgag.android.ssh.BIND_SSH_AGENT_SERVICE" />
+				<action android:name="org.openintents.ssh.BIND_SSH_AGENT_SERVICE" />
 			</intent-filter>
 		</service>
 
@@ -82,7 +82,7 @@
 	<supports-screens />
 	
 	<permission 
-		android:name="com.madgag.android.ssh.permission.ACCESS_SSH_AGENT"
+		android:name="org.openintents.ssh.permission.ACCESS_SSH_AGENT"
 		android:protectionLevel="dangerous"
 		android:permissionGroup="android.permission-group.PERSONAL_INFO"
 		android:label="@string/ssh_agent_permission_label"
