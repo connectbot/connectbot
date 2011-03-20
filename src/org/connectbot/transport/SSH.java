@@ -108,6 +108,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 	private boolean pubkeysExhausted = false;
 	private boolean interactiveCanContinue = true;
+	private boolean connect_try_failed = false;
 
 	private Connection connection;
 	private Session session;
@@ -402,7 +403,24 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	}
 
 	@Override
-	public void connect() {
+	public void connect () {
+		int tries = 0;
+		connect_try_failed = true;
+		while (tries++ < AUTH_TRIES) {
+			connection_try ();
+			if (!connect_try_failed) {
+				return;
+			}
+			try {
+				// wait a bit before retry
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {}
+		}
+		Log.d(TAG, "Could not connect - out of retries");
+		onDisconnect();
+	}
+
+	public void connection_try() {
 		connection = new Connection(host.getHostname(), host.getPort());
 		connection.addConnectionMonitor(this);
 
@@ -446,27 +464,27 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 						connectionInfo.serverToClientMACAlgorithm));
 			}
 		} catch (IOException e) {
-			Log.e(TAG, "Problem in SSH connection thread during authentication", e);
+			Log.e(TAG, "Problem in SSH connection thread during authentication, retrying", e);
 
 			// Display the reason in the text.
 			bridge.outputLine(e.getCause().getMessage());
-
-			onDisconnect();
+			connect_try_failed = true;
 			return;
 		}
 
-		try {
-			// enter a loop to keep trying until authentication
-			int tries = 0;
-			while (connected && !connection.isAuthenticationComplete() && tries++ < AUTH_TRIES) {
+		// enter a loop to keep trying until authentication
+		int tries = 0;
+		while (connected && !connection.isAuthenticationComplete() && tries++ < AUTH_TRIES) {
+			try {
 				authenticate();
 
 				// sleep to make sure we dont kill system
 				Thread.sleep(1000);
+			} catch(Exception e) {
+				Log.e(TAG, "Problem in SSH connection thread during authentication, ("+connected+","+connection.isAuthenticationComplete()+","+tries+")", e);
 			}
-		} catch(Exception e) {
-			Log.e(TAG, "Problem in SSH connection thread during authentication", e);
 		}
+		connect_try_failed = false;
 	}
 
 	@Override
