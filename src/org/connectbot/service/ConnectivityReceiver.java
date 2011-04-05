@@ -65,22 +65,20 @@ public class ConnectivityReceiver extends BroadcastReceiver {
             Log.w(TAG, "onReceived() called: " + intent);
             return;
 		}
+		NetworkInfo info = intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+		Log.d(TAG, "onReceived() called; " + info.toString());
+		Log.d(TAG, "onReceived() called; mIsConnected: " + mIsConnected + ", StateConnected?: " +(info.getState()==State.CONNECTED));
 
-		boolean noConnectivity = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
-		boolean isFailover = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
-
-		Log.d(TAG, "onReceived() called; noConnectivity? " + noConnectivity + "; isFailover? " + isFailover);
-
-		if (noConnectivity && !isFailover && mIsConnected) {
-			mIsConnected = false;
-			mTerminalManager.onConnectivityLost();
-		} else if (!mIsConnected) {
-			NetworkInfo info = (NetworkInfo) intent.getExtras()
-					.get(ConnectivityManager.EXTRA_NETWORK_INFO);
-
-			if (mIsConnected = (info.getState() == State.CONNECTED)) {
+		if (info.getState()==State.CONNECTED) {
+			if (!mIsConnected) {
 				mTerminalManager.onConnectivityRestored();
 			}
+			mIsConnected = true;
+		} else {
+			if (mIsConnected) {
+				mTerminalManager.onConnectivityLost();
+			}
+			mIsConnected = false;
 		}
 	}
 

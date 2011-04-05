@@ -691,8 +691,10 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public void requestReconnect(TerminalBridge bridge) {
 		synchronized (mPendingReconnect) {
 			mPendingReconnect.add(new WeakReference<TerminalBridge>(bridge));
+			Log.i(TAG, "requestReconnect()");
 			if (!bridge.isUsingNetwork() ||
 					connectivityManager.isConnected()) {
+				Log.i(TAG, "requestReconnect()->ReconnectPending()");
 				reconnectPending();
 			}
 		}
@@ -704,12 +706,14 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 */
 	private void reconnectPending() {
 		synchronized (mPendingReconnect) {
+
 			for (WeakReference<TerminalBridge> ref : mPendingReconnect) {
 				TerminalBridge bridge = ref.get();
 				if (bridge == null) {
 					continue;
 				}
 				bridge.startConnection();
+				Log.i(TAG, "ReconnectPending()");
 			}
 			mPendingReconnect.clear();
 		}

@@ -407,7 +407,7 @@ public class TerminalBridge implements VDUDisplay {
 
 			disconnected = true;
 		}
-
+		Log.i(TAG, "dispatchDisconnect");
 		// Cancel any pending prompts.
 		promptHelper.cancelPrompt();
 
@@ -432,6 +432,12 @@ public class TerminalBridge implements VDUDisplay {
 				((vt320) buffer).putString("\r\n" + line + "\r\n");
 			}
 			if (host.getStayConnected()) {
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				manager.requestReconnect(this);
 				return;
 			}
