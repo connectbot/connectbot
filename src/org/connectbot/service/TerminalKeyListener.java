@@ -108,6 +108,28 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
         }).start();
     }
 
+    private void vt320_keyPressed(final int key, final char c) {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    ((vt320) buffer).keyPressed(key, c,
+				    getStateForBuffer());
+                } catch (Exception e) { e.printStackTrace(); }
+            }
+        }).start();
+    }
+
+    private void vt320_keyTyped(final int key, final char c) {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    ((vt320) buffer).keyTyped(key, c,
+				    getStateForBuffer());
+                } catch (Exception e) { e.printStackTrace(); }
+            }
+        }).start();
+    }
+
 	public TerminalKeyListener(TerminalManager manager,
 			TerminalBridge bridge,
 			VDUBuffer buffer,
@@ -335,33 +357,20 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				} else if(PreferenceConstants.CAMERA_CTRLA.equals(camera)) {
                     writeToBridge(0x01);
 				} else if(PreferenceConstants.CAMERA_ESC.equals(camera)) {
-					((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+					vt320_keyTyped(vt320.KEY_ESCAPE, ' ');
 				} else if(PreferenceConstants.CAMERA_ESC_A.equals(camera)) {
-					((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+                    vt320_keyTyped(vt320.KEY_ESCAPE, ' ');
                     writeToBridge('a');
 				}
 
 				break;
 
 			case KeyEvent.KEYCODE_DEL:
-                new Thread(new Runnable() {
-                    public void run() {
-                        try {
-                            ((vt320) buffer).keyPressed(vt320.KEY_BACK_SPACE, ' ',
-						getStateForBuffer());
-                        } catch (Exception e) { e.printStackTrace(); }
-                    }
-                }).start();
+                vt320_keyPressed(vt320.KEY_BACK_SPACE, ' ');
 				metaState &= ~META_TRANSIENT;
 				return true;
 			case KeyEvent.KEYCODE_ENTER:
-                new Thread(new Runnable() {
-                    public void run() {
-                        try {
-                            ((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', 0);
-                        } catch (Exception e) { e.printStackTrace(); }
-                    }
-                }).start();
+                vt320_keyPressed(vt320.KEY_ENTER, ' ');
 				metaState &= ~META_TRANSIENT;
 				return true;
 
@@ -370,14 +379,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					selectionArea.decrementColumn();
 					bridge.redraw();
 				} else {
-                    new Thread(new Runnable() {
-                        public void run() {
-                            try {
-                                ((vt320) buffer).keyPressed(vt320.KEY_LEFT, ' ',
-                                getStateForBuffer());
-                            } catch (Exception e) { e.printStackTrace(); }
-                        }
-                    }).start();
+                    vt320_keyPressed(vt320.KEY_LEFT, ' ');
 					metaState &= ~META_TRANSIENT;
 					bridge.tryKeyVibrate();
 				}
@@ -388,14 +390,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					selectionArea.decrementRow();
 					bridge.redraw();
 				} else {
-                    new Thread(new Runnable() {
-                        public void run() {
-                            try {
-                                ((vt320) buffer).keyPressed(vt320.KEY_UP, ' ',
-							getStateForBuffer());
-                            } catch (Exception e) { e.printStackTrace(); }
-                        }
-                    }).start();
+                    vt320_keyPressed(vt320.KEY_UP, ' ');
 					metaState &= ~META_TRANSIENT;
 					bridge.tryKeyVibrate();
 				}
@@ -406,14 +401,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					selectionArea.incrementRow();
 					bridge.redraw();
 				} else {
-                    new Thread(new Runnable() {
-                        public void run() {
-                            try {
-                                ((vt320) buffer).keyPressed(vt320.KEY_DOWN, ' ',
-							getStateForBuffer());
-                            } catch (Exception e) { e.printStackTrace(); }
-                        }
-                    }).start();
+                    vt320_keyPressed(vt320.KEY_DOWN, ' ');
 					metaState &= ~META_TRANSIENT;
 					bridge.tryKeyVibrate();
 				}
@@ -424,14 +412,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					selectionArea.incrementColumn();
 					bridge.redraw();
 				} else {
-                    new Thread(new Runnable() {
-                        public void run() {
-                            try {
-                                ((vt320) buffer).keyPressed(vt320.KEY_RIGHT, ' ',
-							getStateForBuffer());
-                            } catch (Exception e) { e.printStackTrace(); }
-                        }
-                    }).start();
+                    vt320_keyPressed(vt320.KEY_RIGHT, ' ');
 					metaState &= ~META_TRANSIENT;
 					bridge.tryKeyVibrate();
 				}
@@ -486,7 +467,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	}
 
 	public void sendEscape() {
-		((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+        vt320_keyTyped(vt320.KEY_ESCAPE, ' ');
 	}
 
 	/**
@@ -496,34 +477,34 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	private boolean sendFunctionKey(int keyCode) {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_1:
-			((vt320) buffer).keyPressed(vt320.KEY_F1, ' ', 0);
+            vt320_keyPressed(vt320.KEY_F1, ' ');
 			return true;
 		case KeyEvent.KEYCODE_2:
-			((vt320) buffer).keyPressed(vt320.KEY_F2, ' ', 0);
+			vt320_keyPressed(vt320.KEY_F2, ' ');
 			return true;
 		case KeyEvent.KEYCODE_3:
-			((vt320) buffer).keyPressed(vt320.KEY_F3, ' ', 0);
+			vt320_keyPressed(vt320.KEY_F3, ' ');
 			return true;
 		case KeyEvent.KEYCODE_4:
-			((vt320) buffer).keyPressed(vt320.KEY_F4, ' ', 0);
+			vt320_keyPressed(vt320.KEY_F4, ' ');
 			return true;
 		case KeyEvent.KEYCODE_5:
-			((vt320) buffer).keyPressed(vt320.KEY_F5, ' ', 0);
+			vt320_keyPressed(vt320.KEY_F5, ' ');
 			return true;
 		case KeyEvent.KEYCODE_6:
-			((vt320) buffer).keyPressed(vt320.KEY_F6, ' ', 0);
+			vt320_keyPressed(vt320.KEY_F6, ' ');
 			return true;
 		case KeyEvent.KEYCODE_7:
-			((vt320) buffer).keyPressed(vt320.KEY_F7, ' ', 0);
+			vt320_keyPressed(vt320.KEY_F7, ' ');
 			return true;
 		case KeyEvent.KEYCODE_8:
-			((vt320) buffer).keyPressed(vt320.KEY_F8, ' ', 0);
+			vt320_keyPressed(vt320.KEY_F8, ' ');
 			return true;
 		case KeyEvent.KEYCODE_9:
-			((vt320) buffer).keyPressed(vt320.KEY_F9, ' ', 0);
+			vt320_keyPressed(vt320.KEY_F9, ' ');
 			return true;
 		case KeyEvent.KEYCODE_0:
-			((vt320) buffer).keyPressed(vt320.KEY_F10, ' ', 0);
+			vt320_keyPressed(vt320.KEY_F10, ' ');
 			return true;
 		default:
 			return false;
