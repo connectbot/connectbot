@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">Un client SSH semplice, potente ed open-source.</string>
-  <string name="service_desc">Mantieni le connessioni SSH e le pubkeys caricate</string>
-  <string name="title_hosts_list">Host</string>
+  <string name="service_desc">Mantieni le connessioni SSH e le chiavi pubbliche caricate</string>
+  <string name="title_hosts_list">Connessione</string>
   <string name="title_pubkey_list">Chiavi pubbliche</string>
-  <string name="title_port_forwards_list">Inoltro delle porte</string>
+  <string name="title_port_forwards_list">Inoltro porte</string>
   <string name="title_host_editor">Modifica connessione</string>
   <string name="title_help">Aiuto</string>
   <string name="title_colors">Colori</string>

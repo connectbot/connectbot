@@ -47,6 +47,10 @@ public class Zlib implements ICompressor {
 		inflated_buf = new byte[DEFAULT_BUF_SIZE];
 	}
 
+	public boolean canCompressPreauth() {
+		return true;
+	}
+
 	public int getBufferSize() {
 		return DEFAULT_BUF_SIZE;
 	}

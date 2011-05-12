@@ -123,6 +123,8 @@
   <string name="hostpref_encoding_summary">Kodowanie znaków dla hosta</string>
   <string name="hostpref_connection_category">Ustawienia połączenia</string>
   <string name="hostpref_username_title">Nazwa użytkownika</string>
+  <string name="hostpref_hostname_title">Host</string>
+  <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Nigdy nie połączono</string>
   <string name="bind_minutes">%1$s minut temu</string>
   <string name="bind_hours">%1$s godzin temu</string>
@@ -148,6 +150,7 @@
   <string name="list_format_error">Proszę użyć formatu %1$s</string>
   <string name="format_username">Nazwa użytkownika</string>
   <string name="format_hostname">nazwa_hosta</string>
+  <string name="format_port">port</string>
   <string name="list_menu_pubkeys">Zarządzaj kluczami publicznymi</string>
   <string name="list_menu_sortcolor">Sortuj według koloru</string>
   <string name="list_menu_sortname">Sortuj według nazwy</string>
@@ -162,7 +165,11 @@
   <string name="list_rotation_port">Wymuś orientację pionową</string>
   <string name="list_rotation_auto">Automatycznie</string>
   <string name="list_camera_ctrlaspace">Ctrl+A następnie Spacja</string>
+  <string name="list_camera_ctrla">Ctrl+A</string>
+  <string name="list_camera_esc">Esc</string>
+  <string name="list_camera_esc_a">Esc+A</string>
   <string name="list_camera_none">Żaden</string>
+  <string name="list_delkey_backspace">Backspace</string>
   <string name="list_delkey_del">Usuń</string>
   <string name="delete_message">Jesteś pewien, że chcesz usunąć \'%1$s\'?</string>
   <string name="delete_pos">Tak, usuń</string>

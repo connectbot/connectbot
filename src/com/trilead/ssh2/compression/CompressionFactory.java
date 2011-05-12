@@ -43,7 +43,7 @@ public class CompressionFactory {
 		/* Higher Priority First */
 
 		compressors.addElement(new CompressorEntry("zlib", "com.trilead.ssh2.compression.Zlib"));
-		compressors.addElement(new CompressorEntry("zlib@openssh.com", "com.trilead.ssh2.compression.Zlib"));
+		compressors.addElement(new CompressorEntry("zlib@openssh.com", "com.trilead.ssh2.compression.ZlibOpenSSH"));
 		compressors.addElement(new CompressorEntry("none", ""));
 	}
 

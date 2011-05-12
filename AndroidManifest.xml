@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.connectbot"
 	android:versionName="1.7.1"
-	android:versionCode="339"
+	android:versionCode="347"
 	android:installLocation="auto">
 
 	<uses-sdk android:targetSdkVersion="9" android:minSdkVersion="3" />
@@ -69,6 +69,7 @@
 	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
 
 	<supports-screens />
 </manifest>

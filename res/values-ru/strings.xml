@@ -1,14 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">Простой и мощный SSH клиент с открытым исходным кодом</string>
-  <string name="title_hosts_list">Хосты</string>
+  <string name="service_desc">Управляет SSH соединениями и загруженными ключами</string>
+  <string name="title_hosts_list">Серверы</string>
   <string name="title_pubkey_list">Публичные ключи</string>
   <string name="title_port_forwards_list">Переадресация портов</string>
   <string name="title_host_editor">Изменить хост</string>
   <string name="title_help">Помощь</string>
-  <string name="title_colors">Цвета</string>
-  <string name="resolve_connect">Соединение</string>
-  <string name="resolve_entropy">Получить произвольный шум</string>
+  <string name="title_colors">Цветовая схема</string>
+  <string name="resolve_connect">Подключиться</string>
+  <string name="resolve_entropy">Создание ключа</string>
   <string name="menu_insert">Добавить хост</string>
   <string name="menu_delete">Удалить хост</string>
   <string name="menu_preferences">Настройки</string>
