@@ -147,26 +147,30 @@ public abstract class ConnectionNotifier {
 
 		@Override
 		public void showRunningNotification(Service context) {
-			Object[] setForegroundArgs = new Object[1];
-			setForegroundArgs[0] = Boolean.TRUE;
-			try {
-				setForeground.invoke(context, setForegroundArgs);
-		    } catch (InvocationTargetException e) {
-		    } catch (IllegalAccessException e) {
-		    }
-			getNotificationManager(context).notify(ONLINE_NOTIFICATION, newRunningNotification(context));
+			if (setForeground != null) {
+				Object[] setForegroundArgs = new Object[1];
+				setForegroundArgs[0] = Boolean.TRUE;
+				try {
+					setForeground.invoke(context, setForegroundArgs);
+				} catch (InvocationTargetException e) {
+				} catch (IllegalAccessException e) {
+				}
+				getNotificationManager(context).notify(ONLINE_NOTIFICATION, newRunningNotification(context));
+			}
 		}
 
 		@Override
 		public void hideRunningNotification(Service context) {
-			Object[] setForegroundArgs = new Object[1];
-			setForegroundArgs[0] = Boolean.FALSE;
-			try {
-				setForeground.invoke(context, setForegroundArgs);
-		    } catch (InvocationTargetException e) {
-		    } catch (IllegalAccessException e) {
-		    }
-			getNotificationManager(context).cancel(ONLINE_NOTIFICATION);
+			if (setForeground != null) {
+				Object[] setForegroundArgs = new Object[1];
+				setForegroundArgs[0] = Boolean.FALSE;
+				try {
+					setForeground.invoke(context, setForegroundArgs);
+				} catch (InvocationTargetException e) {
+				} catch (IllegalAccessException e) {
+				}
+				getNotificationManager(context).cancel(ONLINE_NOTIFICATION);
+			}
 		}
 	}
 
