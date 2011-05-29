@@ -941,7 +941,7 @@ public class TerminalBridge implements VDUDisplay {
 			String host = "(?:" + ipLiteral + "|" + ipv4address + "|" + regName + ")";
 			String port = "[0-9]*";
 			String authority = "(?:" + userinfo + "@)?" + host + "(?::" + port + ")?";
-			String pchar = "(?:" + unreserved + "|" + pctEncoded + "|" + subDelims + ")";
+			String pchar = "(?:" + unreserved + "|" + pctEncoded + "|" + subDelims + "|@)";
 			String segment = pchar + "*";
 			String pathAbempty = "(?:/" + segment + ")*";
 			String segmentNz = pchar + "+";
