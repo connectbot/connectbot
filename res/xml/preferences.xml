@@ -43,6 +43,21 @@
 		android:defaultValue="true"
 		/>
 
+	<EditTextPreference
+		android:key="shell"
+		android:defaultValue="/system/bin/sh -"
+		android:title="@string/pref_shell_title"
+		android:summary="@string/pref_shell_summary"
+		android:dialogMessage="@string/pref_shell_detail"
+		/>
+
+	<CheckBoxPreference
+		android:key="obeyHaptic"
+		android:defaultValue="false"
+		android:summary="@string/pref_obeyHaptic_summary"
+		android:title="@string/pref_obeyHaptic_title"
+		/>
+
 	<PreferenceCategory
 		android:title="@string/pref_emulation_category">
 
@@ -152,5 +167,6 @@
 			/>
 
 	</PreferenceCategory>
+
 
 </PreferenceScreen>

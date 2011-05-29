@@ -45,13 +45,13 @@ public class TransportFactory {
 	 * @param protocol
 	 * @return
 	 */
-	public static AbsTransport getTransport(String protocol) {
+	public static AbsTransport getTransport(String protocol, String shellCommand) {
 		if (SSH.getProtocolName().equals(protocol)) {
 			return new SSH();
 		} else if (Telnet.getProtocolName().equals(protocol)) {
 			return new Telnet();
 		} else if (Local.getProtocolName().equals(protocol)) {
-			return new Local();
+			return new Local(shellCommand);
 		} else {
 			return null;
 		}
@@ -115,8 +115,8 @@ public class TransportFactory {
 	 * @param host HostBean in which to put the results
 	 * @return true when host was found
 	 */
-	public static HostBean findHost(HostDatabase hostdb, Uri uri) {
-		AbsTransport transport = getTransport(uri.getScheme());
+	public static HostBean findHost(HostDatabase hostdb, Uri uri, String shellCommand) {
+		AbsTransport transport = getTransport(uri.getScheme(), shellCommand);
 
 		Map<String, String> selection = new HashMap<String, String>();
 

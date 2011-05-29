@@ -47,6 +47,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.ContentObserver;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -57,6 +58,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.nullwire.trace.ExceptionHandler;
@@ -118,9 +120,35 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	public boolean hardKeyboardHidden;
 
+	private SettingsObserver settingsObserver;
+
+	public class SettingsObserver extends ContentObserver {
+		public SettingsObserver(Handler handler) {
+			super(handler);
+		}
+
+		public void observe() {
+			getContentResolver().registerContentObserver(
+					Settings.System.getUriFor(Settings.System.HAPTIC_FEEDBACK_ENABLED),
+					false, this);
+		}
+
+		public void stop() {
+			getContentResolver().unregisterContentObserver(this);
+		}
+
+		@Override
+		public void onChange(boolean selfChange) {
+			onSharedPreferenceChanged(prefs, Settings.System.HAPTIC_FEEDBACK_ENABLED);
+		}
+	}
+
 	@Override
 	public void onCreate() {
 		Log.i(TAG, "Starting background service");
+
+		settingsObserver = new SettingsObserver(new Handler());
+		settingsObserver.observe();
 
 		ExceptionHandler.register(this);
 
@@ -151,9 +179,16 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		}
 
 		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		wantKeyVibration = prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, true);
 
-		wantBellVibration = prefs.getBoolean(PreferenceConstants.BELL_VIBRATE, true);
+		boolean allowVibration = !prefs.getBoolean(PreferenceConstants.OBEY_HAPTIC, false)
+				|| (Settings.System.getInt(getContentResolver(),
+						Settings.System.HAPTIC_FEEDBACK_ENABLED, 1) == 1);
+
+		wantKeyVibration = allowVibration && prefs.getBoolean(
+				PreferenceConstants.BUMPY_ARROWS, true);
+		wantBellVibration = allowVibration && prefs.getBoolean(
+				PreferenceConstants.BELL_VIBRATE, true);
+
 		enableMediaPlayer();
 
 		hardKeyboardHidden = (res.getConfiguration().hardKeyboardHidden ==
@@ -174,6 +209,11 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		Log.i(TAG, "Destroying background service");
 
 		disconnectAll(true);
+
+		if(settingsObserver != null) {
+			settingsObserver.stop();
+			settingsObserver = null;
+		}
 
 		if(hostdb != null) {
 			hostdb.close();
@@ -229,7 +269,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		TerminalBridge bridge = new TerminalBridge(this, host);
 		bridge.setOnDisconnectedListener(this);
-		bridge.startConnection();
+		bridge.startConnection(prefs.getString(PreferenceConstants.SHELL, PreferenceConstants.SHELL_DEFAULT));
 
 		synchronized (bridges) {
 			bridges.add(bridge);
@@ -274,10 +314,12 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 * format specified by an individual transport.
 	 */
 	public TerminalBridge openConnection(Uri uri) throws Exception {
-		HostBean host = TransportFactory.findHost(hostdb, uri);
+		HostBean host = TransportFactory.findHost(hostdb, uri,
+			prefs.getString(PreferenceConstants.SHELL, PreferenceConstants.SHELL_DEFAULT));
 
 		if (host == null)
-			host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
+			host = TransportFactory.getTransport(uri.getScheme(),
+				prefs.getString(PreferenceConstants.SHELL, PreferenceConstants.SHELL_DEFAULT)).createHost(uri);
 
 		return openConnection(host);
 	}
@@ -620,11 +662,16 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 						PreferenceConstants.DEFAULT_BELL_VOLUME);
 				mediaPlayer.setVolume(volume, volume);
 			}
-		} else if (PreferenceConstants.BELL_VIBRATE.equals(key)) {
-			wantBellVibration = sharedPreferences.getBoolean(
+		} else if (PreferenceConstants.BELL_VIBRATE.equals(key)
+				|| PreferenceConstants.BUMPY_ARROWS.equals(key)
+				|| PreferenceConstants.OBEY_HAPTIC.equals(key)
+				|| Settings.System.HAPTIC_FEEDBACK_ENABLED.equals(key)) {
+			boolean allowVibration = !prefs.getBoolean(PreferenceConstants.OBEY_HAPTIC, false)
+					|| (Settings.System.getInt(getContentResolver(),
+							Settings.System.HAPTIC_FEEDBACK_ENABLED, 1) == 1);
+			wantBellVibration = allowVibration && sharedPreferences.getBoolean(
 					PreferenceConstants.BELL_VIBRATE, true);
-		} else if (PreferenceConstants.BUMPY_ARROWS.equals(key)) {
-			wantKeyVibration = sharedPreferences.getBoolean(
+			wantKeyVibration = allowVibration && sharedPreferences.getBoolean(
 					PreferenceConstants.BUMPY_ARROWS, true);
 		} else if (PreferenceConstants.WIFI_LOCK.equals(key)) {
 			final boolean lockingWifi = prefs.getBoolean(PreferenceConstants.WIFI_LOCK, true);
@@ -709,7 +756,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				if (bridge == null) {
 					continue;
 				}
-				bridge.startConnection();
+				bridge.startConnection(prefs.getString(PreferenceConstants.SHELL, PreferenceConstants.SHELL_DEFAULT));
 			}
 			mPendingReconnect.clear();
 		}
