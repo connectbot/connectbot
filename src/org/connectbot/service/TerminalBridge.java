@@ -596,8 +596,15 @@ public class TerminalBridge implements VDUDisplay {
 				buffer.setScreenSize(columns, rows, true);
 			}
 
-			if(transport != null)
-				transport.setDimensions(columns, rows, width, height);
+			if(transport != null) {
+                new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            transport.setDimensions(columns, rows, width, height);
+                        } catch (Exception e) { e.printStackTrace(); }
+                    }
+                }).start();
+            }
 		} catch(Exception e) {
 			Log.e(TAG, "Problem while trying to resize screen or PTY", e);
 		}
