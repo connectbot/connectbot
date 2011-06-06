@@ -52,7 +52,7 @@ public class RemoteAcceptThread extends Thread
 
 			s = new Socket(targetAddress, targetPort);
 
-			StreamForwarder r2l = new StreamForwarder(c, null, null, c.getStdoutStream(), s.getOutputStream(),
+			StreamForwarder r2l = new StreamForwarder(c, null, s, c.getStdoutStream(), s.getOutputStream(),
 					"RemoteToLocal");
 			StreamForwarder l2r = new StreamForwarder(c, null, null, s.getInputStream(), c.getStdinStream(),
 					"LocalToRemote");

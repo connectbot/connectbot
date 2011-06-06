@@ -167,7 +167,11 @@
   <string name="list_rotation_port">强制竖屏显示</string>
   <string name="list_rotation_auto">自动</string>
   <string name="list_camera_ctrlaspace">Ctrl+A 然后 Space</string>
+  <string name="list_camera_ctrla">Ctrl+A</string>
+  <string name="list_camera_esc">Esc 键</string>
+  <string name="list_camera_esc_a">Esc+A</string>
   <string name="list_camera_none">无</string>
+  <string name="list_delkey_backspace">退格键</string>
   <string name="list_delkey_del">删除</string>
   <string name="delete_message">确定要删除\'%1$s\'吗？</string>
   <string name="delete_pos">是，删除</string>
