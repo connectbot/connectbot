@@ -33,7 +33,12 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:name=".PubkeyListActivity" android:configChanges="keyboardHidden|orientation" />
+		<activity android:name=".PubkeyListActivity" android:configChanges="keyboardHidden|orientation" >
+			<intent-filter>
+				<action android:name="org.openintents.ssh.agent.IDENTITY_ADMIN" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
 		<activity android:name=".GeneratePubkeyActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".HostEditorActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".PortForwardListActivity" android:configChanges="keyboardHidden|orientation" />
