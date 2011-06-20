@@ -18,6 +18,7 @@ package org.connectbot.service;
 
 import java.io.IOException;
 
+import org.connectbot.R;
 import org.connectbot.TerminalView;
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.util.PreferenceConstants;
@@ -74,7 +75,6 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	private int mDeadKey = 0;
 
 	private ClipboardManager clipboard = null;
-	private boolean selectingForCopy = false;
 	private final SelectionArea selectionArea;
 
 	private String encoding;
@@ -90,7 +90,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		this.buffer = buffer;
 		this.encoding = encoding;
 
-		selectionArea = new SelectionArea();
+		selectionArea = bridge.getSelectionArea();
 
 		prefs = PreferenceManager.getDefaultSharedPreferences(manager);
 		prefs.registerOnSharedPreferenceChangeListener(this);
@@ -101,11 +101,22 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		updateKeymode();
 	}
 
+	public boolean onKey(View v, int keyCode, KeyEvent event) {
+		final boolean hardKeyboardHidden = manager.hardKeyboardHidden;
+		if (manager.prefs.getBoolean(PreferenceConstants.ASUS_TRANSFORMER, false) &&
+			hardKeyboard &&
+			!hardKeyboardHidden) {
+			return onKey_asus_transformer(v,keyCode,event);
+		} else {
+			return onKey_orig(v,keyCode,event);
+		}
+	}
+
 	/**
 	 * Handle onKey() events coming down from a {@link TerminalView} above us.
 	 * Modify the keys to make more sense to a host then pass it to the transport.
 	 */
-	public boolean onKey(View v, int keyCode, KeyEvent event) {
+	public boolean onKey_orig(View v, int keyCode, KeyEvent event) {
 		try {
 			final boolean hardKeyboardHidden = manager.hardKeyboardHidden;
 
@@ -326,7 +337,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				return true;
 
 			case KeyEvent.KEYCODE_DPAD_LEFT:
-				if (selectingForCopy) {
+				if (bridge.isSelectingForCopy()) {
 					selectionArea.decrementColumn();
 					bridge.redraw();
 				} else {
@@ -338,7 +349,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				return true;
 
 			case KeyEvent.KEYCODE_DPAD_UP:
-				if (selectingForCopy) {
+				if (bridge.isSelectingForCopy()) {
 					selectionArea.decrementRow();
 					bridge.redraw();
 				} else {
@@ -350,7 +361,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				return true;
 
 			case KeyEvent.KEYCODE_DPAD_DOWN:
-				if (selectingForCopy) {
+				if (bridge.isSelectingForCopy()) {
 					selectionArea.incrementRow();
 					bridge.redraw();
 				} else {
@@ -362,7 +373,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				return true;
 
 			case KeyEvent.KEYCODE_DPAD_RIGHT:
-				if (selectingForCopy) {
+				if (bridge.isSelectingForCopy()) {
 					selectionArea.incrementColumn();
 					bridge.redraw();
 				} else {
@@ -374,7 +385,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				return true;
 
 			case KeyEvent.KEYCODE_DPAD_CENTER:
-				if (selectingForCopy) {
+				if (bridge.isSelectingForCopy()) {
 					if (selectionArea.isSelectingOrigin())
 						selectionArea.finishSelectingOrigin();
 					else {
@@ -387,8 +398,11 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 //							manager.notifyUser(manager.getString(
 //									R.string.console_copy_done,
 //									copiedText.length()));
+							((TerminalView) v).notifyUser(manager.getString(
+									R.string.console_copy_done,
+									copiedText.length()));
 
-							selectingForCopy = false;
+							bridge.setSelectingForCopy(false);
 							selectionArea.reset();
 						}
 					}
@@ -402,6 +416,249 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 				bridge.redraw();
 
+				return true;
+			}
+
+		} catch (IOException e) {
+			Log.e(TAG, "Problem while trying to handle an onKey() event", e);
+			try {
+				bridge.transport.flush();
+			} catch (IOException ioe) {
+				Log.d(TAG, "Our transport was closed, dispatching disconnect event");
+				bridge.dispatchDisconnect(false);
+			}
+		} catch (NullPointerException npe) {
+			Log.d(TAG, "Input before connection established ignored.");
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Handle onKey() events coming down from a {@link TerminalView} above us.
+	 * Modify the keys to make more sense to a host then pass it to the transport.
+	 */
+	public boolean onKey_asus_transformer(View v, int keyCode, KeyEvent event) {
+		try {
+
+			// Ignore all key-up events except for the special keys
+			if (event.getAction() == KeyEvent.ACTION_UP) {
+				return false;
+			}
+
+			// check for terminal resizing keys
+			if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+				bridge.increaseFontSize();
+				return true;
+			} else if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+				bridge.decreaseFontSize();
+				return true;
+			}
+
+			// skip keys if we aren't connected yet or have been disconnected
+			if (bridge.isDisconnected() || bridge.transport == null)
+				return false;
+
+			bridge.resetScrollPosition();
+
+			if (keyCode == KeyEvent.KEYCODE_UNKNOWN &&
+					event.getAction() == KeyEvent.ACTION_MULTIPLE) {
+				byte[] input = event.getCharacters().getBytes(encoding);
+				bridge.transport.write(input);
+				return true;
+			}
+
+			int curMetaState = event.getMetaState();
+
+			int key = event.getUnicodeChar(curMetaState);
+			Log.d(TAG, "metastate: ".concat(Integer.toString(curMetaState)).concat(", ").concat(Integer.toString(metaState)).concat(", ").concat(Integer.toString(keyCode)).concat(", ").concat(Integer.toString(key)));
+
+			if ((key & KeyCharacterMap.COMBINING_ACCENT) != 0) {
+				mDeadKey = key & KeyCharacterMap.COMBINING_ACCENT_MASK;
+				return true;
+			}
+
+			if (mDeadKey != 0) {
+				key = KeyCharacterMap.getDeadChar(mDeadKey, keyCode);
+				mDeadKey = 0;
+			}
+
+			final boolean printing = (key != 0);
+
+			// otherwise pass through to existing session
+			// print normal keys
+			if (printing) {
+
+				if (key < 0x80)
+					bridge.transport.write(key);
+				else
+					// TODO write encoding routine that doesn't allocate each time
+					bridge.transport.write(new String(Character.toChars(key))
+							.getBytes(encoding));
+
+				return true;
+			}
+
+			if ((curMetaState & 0x2000) != 0) {
+				bridge.redraw();
+				int key1=event.getUnicodeChar(0);
+				// If there is no hard keyboard or there is a hard keyboard currently hidden,
+				// CTRL-1 through CTRL-9 will send F1 through F9
+				if (sendFunctionKey(keyCode))
+					return true;
+
+				// Support CTRL-a through CTRL-z
+				if (key1 >= 0x61 && key1 <= 0x7A)
+					key = key1 - 0x60;
+				// Support CTRL-A through CTRL-_
+				else if (key1 >= 0x41 && key1 <= 0x5F)
+					key = key1 - 0x40;
+				// CTRL-space sends NULL
+				else if (key1 == 0x20)
+					key = 0x00;
+				// CTRL-? sends DEL
+				else if (key1 == 0x3F)
+					key = 0x7F;
+				else if (key1 == 0)
+					return true;
+
+				if (key < 0x80)
+					bridge.transport.write(key);
+				else
+					// TODO write encoding routine that doesn't allocate each time
+					bridge.transport.write(new String(Character.toChars(key))
+						.getBytes(encoding));
+
+				return true;
+			}
+
+			//Log.d(TAG,"key: ".concat(Integer.toString(keyCode)));
+			// look for special chars
+			switch(keyCode) {
+			case KeyEvent.KEYCODE_CAMERA:
+
+				// check to see which shortcut the camera button triggers
+				String camera = manager.prefs.getString(
+						PreferenceConstants.CAMERA,
+						PreferenceConstants.CAMERA_CTRLA_SPACE);
+				if(PreferenceConstants.CAMERA_CTRLA_SPACE.equals(camera)) {
+					bridge.transport.write(0x01);
+					bridge.transport.write(' ');
+				} else if(PreferenceConstants.CAMERA_CTRLA.equals(camera)) {
+					bridge.transport.write(0x01);
+				} else if(PreferenceConstants.CAMERA_ESC.equals(camera)) {
+					((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+				} else if(PreferenceConstants.CAMERA_ESC_A.equals(camera)) {
+					((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+					bridge.transport.write('a');
+				}
+
+				break;
+			case KeyEvent.KEYCODE_DEL:
+				((vt320) buffer).keyPressed(vt320.KEY_BACK_SPACE, ' ',
+						getStateForBuffer());
+				metaState &= ~META_TRANSIENT;
+				return true;
+			case KeyEvent.KEYCODE_ENTER:
+				((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', 0);
+				metaState &= ~META_TRANSIENT;
+				return true;
+
+			case KeyEvent.KEYCODE_DPAD_LEFT:
+				if (bridge.isSelectingForCopy()) {
+					selectionArea.decrementColumn();
+					bridge.redraw();
+				} else {
+					((vt320) buffer).keyPressed(vt320.KEY_LEFT, ' ',
+							getStateForBuffer());
+					metaState &= ~META_TRANSIENT;
+					bridge.tryKeyVibrate();
+				}
+				return true;
+
+			case KeyEvent.KEYCODE_DPAD_UP:
+				if (bridge.isSelectingForCopy()) {
+					selectionArea.decrementRow();
+					bridge.redraw();
+				} else {
+					((vt320) buffer).keyPressed(vt320.KEY_UP, ' ',
+							getStateForBuffer());
+					metaState &= ~META_TRANSIENT;
+					bridge.tryKeyVibrate();
+				}
+				return true;
+
+			case KeyEvent.KEYCODE_DPAD_DOWN:
+				if (bridge.isSelectingForCopy()) {
+					selectionArea.incrementRow();
+					bridge.redraw();
+				} else {
+					((vt320) buffer).keyPressed(vt320.KEY_DOWN, ' ',
+							getStateForBuffer());
+					metaState &= ~META_TRANSIENT;
+					bridge.tryKeyVibrate();
+				}
+				return true;
+
+			case KeyEvent.KEYCODE_DPAD_RIGHT:
+				if (bridge.isSelectingForCopy()) {
+					selectionArea.incrementColumn();
+					bridge.redraw();
+				} else {
+					((vt320) buffer).keyPressed(vt320.KEY_RIGHT, ' ',
+							getStateForBuffer());
+					metaState &= ~META_TRANSIENT;
+					bridge.tryKeyVibrate();
+				}
+				return true;
+
+			case KeyEvent.KEYCODE_SEARCH:
+				if (bridge.isSelectingForCopy()) {
+					if (selectionArea.isSelectingOrigin())
+						selectionArea.finishSelectingOrigin();
+					else {
+						if (clipboard != null) {
+							// copy selected area to clipboard
+							String copiedText = selectionArea.copyFrom(buffer);
+
+							clipboard.setText(copiedText);
+							((TerminalView) v).notifyUser(manager.getString(
+							R.string.console_copy_done,
+							copiedText.length()));
+
+							bridge.setSelectingForCopy(false);
+							selectionArea.reset();
+						}
+					}
+					bridge.redraw();
+				} else {
+					sendEscape();
+				}
+				return true;
+			case KeyEvent.KEYCODE_PAGE_UP:
+				((vt320) buffer).keyPressed(vt320.KEY_PAGE_UP, ' ',getStateForBuffer());
+				metaState &= ~META_TRANSIENT;
+				bridge.tryKeyVibrate();
+				return true;
+			case KeyEvent.KEYCODE_PAGE_DOWN:
+				((vt320) buffer).keyPressed(vt320.KEY_PAGE_DOWN, ' ',getStateForBuffer());
+				metaState &= ~META_TRANSIENT;
+				bridge.tryKeyVibrate();
+				return true;
+			case KeyEvent.KEYCODE_MOVE_HOME:
+//				((vt320) buffer).keyPressed(vt320.KEY_HOME, ' ',getStateForBuffer());
+				((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+				bridge.transport.write(new String("[1~").getBytes());
+				metaState &= ~META_TRANSIENT;
+				bridge.tryKeyVibrate();
+				return true;
+			case KeyEvent.KEYCODE_MOVE_END:
+//				((vt320) buffer).keyPressed(vt320.KEY_END, ' ',getStateForBuffer());
+				((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+				bridge.transport.write(new String("[4~").getBytes());
+				metaState &= ~META_TRANSIENT;
+				bridge.tryKeyVibrate();
 				return true;
 			}
 

@@ -465,4 +465,7 @@
 	<string name="color_green">"green"</string>
 	<string name="color_blue">"blue"</string>
 	<string name="color_gray">"gray"</string>
+
+	<string name="pref_asus_transformer_title">"Asus Transformer with keyboard"</string>
+	<string name="pref_asus_transformer_summary">"Asus Transformer with keyboard"</string>
 </resources>

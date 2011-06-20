@@ -525,15 +525,31 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	}
 
 	@Override
-	public void write(byte[] buffer) throws IOException {
-		if (stdin != null)
-			stdin.write(buffer);
+	public void write(final byte[] buffer) throws IOException {
+		new Thread(new Runnable() {
+			public void run() {
+				if (stdin != null)
+					try {
+						stdin.write(buffer);
+					} catch(Exception e) {
+						Log.e(TAG,"IO Exception",e);
+					}
+			}
+		}).start();
 	}
 
 	@Override
-	public void write(int c) throws IOException {
-		if (stdin != null)
-			stdin.write(c);
+	public void write(final int c) throws IOException {
+		new Thread(new Runnable() {
+			public void run() {
+				if (stdin != null)
+					try {
+						stdin.write(c);
+					} catch(Exception e) {
+						Log.e(TAG,"IO Exception",e);
+					}
+			}
+		}).start();
 	}
 
 	@Override

@@ -637,7 +637,8 @@ public class ConsoleActivity extends Activity {
 		});
 
 		copy = menu.add(R.string.console_menu_copy);
-		copy.setAlphabeticShortcut('c');
+//		copy.setAlphabeticShortcut('c');
+		copy.setAlphabeticShortcut('x');
 		copy.setIcon(android.R.drawable.ic_menu_set_as);
 		copy.setEnabled(activeTerminal);
 		copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -649,6 +650,8 @@ public class ConsoleActivity extends Activity {
 				SelectionArea area = copySource.getSelectionArea();
 				area.reset();
 				area.setBounds(copySource.buffer.getColumns(), copySource.buffer.getRows());
+				area.setRow(copySource.buffer.getCursorRow());
+				area.setColumn(copySource.buffer.getCursorColumn());
 
 				copySource.setSelectingForCopy(true);
 

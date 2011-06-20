@@ -122,6 +122,13 @@
 			android:summary="@string/pref_bumpyarrows_summary"
 			android:defaultValue="true"
 			/>
+
+		<CheckBoxPreference
+			android:key="asus_transformer"
+			android:title="@string/pref_asus_transformer_title"
+			android:summary="@string/pref_asus_transformer_summary"
+			android:defaultValue="false"
+			/>
 	</PreferenceCategory>
 
 	<PreferenceCategory
