@@ -26,6 +26,7 @@ import org.connectbot.util.PreferenceConstants;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.util.Log;
@@ -35,7 +36,6 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 import de.mud.terminal.VDUBuffer;
 import de.mud.terminal.vt320;
-
 /**
  * @author kenny
  *
@@ -103,7 +103,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
 		final boolean hardKeyboardHidden = manager.hardKeyboardHidden;
-		if (manager.prefs.getBoolean(PreferenceConstants.ASUS_TRANSFORMER, false) &&
+		if  (Build.MODEL.equals("Transformer TF101") &&
 			hardKeyboard &&
 			!hardKeyboardHidden) {
 			return onKey_asus_transformer(v,keyCode,event);
@@ -484,7 +484,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				mDeadKey = 0;
 			}
 
-			final boolean printing = (key != 0);
+			final boolean printing = ((key != 0) && (key != 10));
 
 			// otherwise pass through to existing session
 			// print normal keys
@@ -500,7 +500,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				return true;
 			}
 
-			if ((curMetaState & 0x2000) != 0) {
+			if ((curMetaState & 0x1000) != 0) {
 				bridge.redraw();
 				int key1=event.getUnicodeChar(0);
 				// If there is no hard keyboard or there is a hard keyboard currently hidden,
@@ -562,6 +562,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				return true;
 			case KeyEvent.KEYCODE_ENTER:
 				((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', 0);
+				//((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', META_ALT_ON);
 				metaState &= ~META_TRANSIENT;
 				return true;
 
@@ -614,6 +615,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				return true;
 
 			case KeyEvent.KEYCODE_SEARCH:
+			case KeyEvent.KEYCODE_ALT_RIGHT:
 				if (bridge.isSelectingForCopy()) {
 					if (selectionArea.isSelectingOrigin())
 						selectionArea.finishSelectingOrigin();
