@@ -35,12 +35,12 @@ import org.connectbot.util.HostDatabase;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
-import android.graphics.Bitmap.Config;
 import android.graphics.Paint.FontMetrics;
+import android.graphics.Typeface;
 import android.text.ClipboardManager;
 import android.util.Log;
 import de.mud.terminal.VDUBuffer;
@@ -57,6 +57,7 @@ import de.mud.terminal.vt320;
  * This class also provides SSH hostkey verification prompting, and password
  * prompting.
  */
+@SuppressWarnings("deprecation") // for ClipboardManager
 public class TerminalBridge implements VDUDisplay {
 	public final static String TAG = "ConnectBot.TerminalBridge";
 
@@ -98,6 +99,8 @@ public class TerminalBridge implements VDUDisplay {
 
 	private boolean selectingForCopy = false;
 	private final SelectionArea selectionArea;
+
+	// TODO add support for the new clipboard API
 	private ClipboardManager clipboard;
 
 	public int charWidth = -1;

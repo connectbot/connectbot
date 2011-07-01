@@ -79,7 +79,6 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	private int mDeadKey = 0;
 
 	// TODO add support for the new API.
-	@SuppressWarnings("deprecation")
 	private ClipboardManager clipboard = null;
 
 	private boolean selectingForCopy = false;
