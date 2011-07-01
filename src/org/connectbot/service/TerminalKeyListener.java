@@ -39,6 +39,7 @@ import de.mud.terminal.vt320;
  * @author kenny
  *
  */
+@SuppressWarnings("deprecation") // for ClipboardManager
 public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceChangeListener {
 	private static final String TAG = "ConnectBot.OnKeyListener";
 
@@ -77,7 +78,10 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 	private int mDeadKey = 0;
 
+	// TODO add support for the new API.
+	@SuppressWarnings("deprecation")
 	private ClipboardManager clipboard = null;
+
 	private boolean selectingForCopy = false;
 	private final SelectionArea selectionArea;
 
