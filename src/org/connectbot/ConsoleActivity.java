@@ -620,7 +620,7 @@ public class ConsoleActivity extends Activity {
 		menu.setQwertyMode(true);
 
 		disconnect = menu.add(R.string.list_host_disconnect);
-		disconnect.setAlphabeticShortcut('w');
+		//disconnect.setAlphabeticShortcut('w');
 		if (!sessionOpen && disconnected)
 			disconnect.setTitle(R.string.console_menu_close);
 		disconnect.setEnabled(activeTerminal);
@@ -637,7 +637,8 @@ public class ConsoleActivity extends Activity {
 		});
 
 		copy = menu.add(R.string.console_menu_copy);
-		copy.setAlphabeticShortcut('c');
+//		copy.setAlphabeticShortcut('c');
+		//copy.setAlphabeticShortcut('x');
 		copy.setIcon(android.R.drawable.ic_menu_set_as);
 		copy.setEnabled(activeTerminal);
 		copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -649,6 +650,8 @@ public class ConsoleActivity extends Activity {
 				SelectionArea area = copySource.getSelectionArea();
 				area.reset();
 				area.setBounds(copySource.buffer.getColumns(), copySource.buffer.getRows());
+				area.setRow(copySource.buffer.getCursorRow());
+				area.setColumn(copySource.buffer.getCursorColumn());
 
 				copySource.setSelectingForCopy(true);
 
@@ -661,7 +664,7 @@ public class ConsoleActivity extends Activity {
 		});
 
 		paste = menu.add(R.string.console_menu_paste);
-		paste.setAlphabeticShortcut('v');
+		//paste.setAlphabeticShortcut('v');
 		paste.setIcon(android.R.drawable.ic_menu_edit);
 		paste.setEnabled(clipboard.hasText() && sessionOpen);
 		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -679,7 +682,7 @@ public class ConsoleActivity extends Activity {
 		});
 
 		portForward = menu.add(R.string.console_menu_portforwards);
-		portForward.setAlphabeticShortcut('f');
+		//portForward.setAlphabeticShortcut('f');
 		portForward.setIcon(android.R.drawable.ic_menu_manage);
 		portForward.setEnabled(sessionOpen && canForwardPorts);
 		portForward.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -695,7 +698,7 @@ public class ConsoleActivity extends Activity {
 		});
 
 		urlscan = menu.add(R.string.console_menu_urlscan);
-		urlscan.setAlphabeticShortcut('u');
+		//urlscan.setAlphabeticShortcut('u');
 		urlscan.setIcon(android.R.drawable.ic_menu_search);
 		urlscan.setEnabled(activeTerminal);
 		urlscan.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -720,7 +723,7 @@ public class ConsoleActivity extends Activity {
 		});
 
 		resize = menu.add(R.string.console_menu_resize);
-		resize.setAlphabeticShortcut('s');
+		//resize.setAlphabeticShortcut('s');
 		resize.setIcon(android.R.drawable.ic_menu_crop);
 		resize.setEnabled(sessionOpen);
 		resize.setOnMenuItemClickListener(new OnMenuItemClickListener() {

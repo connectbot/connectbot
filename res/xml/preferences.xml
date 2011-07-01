@@ -122,6 +122,7 @@
 			android:summary="@string/pref_bumpyarrows_summary"
 			android:defaultValue="true"
 			/>
+
 	</PreferenceCategory>
 
 	<PreferenceCategory

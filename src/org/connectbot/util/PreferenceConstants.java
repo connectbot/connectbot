@@ -82,4 +82,6 @@ public class PreferenceConstants {
 
 	/* Backup identifiers */
 	public static final String BACKUP_PREF_KEY = "prefs";
+
+	public static final String ASUS_TRANSFORMER="asus_transformer";
 }
