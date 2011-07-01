@@ -69,8 +69,6 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	private final TerminalBridge bridge;
 	private final VDUBuffer buffer;
 
-	protected KeyCharacterMap keymap = KeyCharacterMap.load(KeyCharacterMap.BUILT_IN_KEYBOARD);
-
 	private String keymode = null;
 	private boolean hardKeyboard = false;
 
