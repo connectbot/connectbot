@@ -204,7 +204,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			}
 
 			final boolean printing = (key != 0);
-                        if (key == 10) key = 13; // translate LF to CR
+			if (key == 10) key = 13; // translate LF to CR
 
 			// otherwise pass through to existing session
 			// print normal keys
