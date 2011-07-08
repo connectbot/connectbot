@@ -47,11 +47,11 @@ public class TransportFactory {
 	 */
 	public static AbsTransport getTransport(String protocol) {
 		if (SSH.getProtocolName().equals(protocol)) {
-			return new SSH();
+			return new TransportWrapper(new SSH());
 		} else if (Telnet.getProtocolName().equals(protocol)) {
-			return new Telnet();
+			return new TransportWrapper(new Telnet());
 		} else if (Local.getProtocolName().equals(protocol)) {
-			return new Local();
+			return new TransportWrapper(new Local());
 		} else {
 			return null;
 		}
