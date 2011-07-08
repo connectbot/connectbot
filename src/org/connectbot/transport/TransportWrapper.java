@@ -161,35 +161,35 @@ public class TransportWrapper extends AbsTransport implements Runnable {
 
 	public boolean usesNetwork() { return transport.usesNetwork(); }
 	public void run() {
-		Object o;
-		try {
-			while ((o = queue.take()) != null) { // should never be null...
-				try {
-					if (CMD_CLOSE.equals(o)) {
-						transport.close();
-						break; // thread exits on-close
-					} else if (CMD_FLUSH.equals(o)) {
-						transport.flush();
-					} else if (o instanceof byte[]) {
-						transport.write((byte[]) o);
-					} else if (o instanceof Integer) {
-						transport.write((Integer) o);
-					}
-				} catch (IOException e) {
-					Log.e(TAG, "Unable to send deferred data", e);
-					try {
-						transport.flush();
-					} catch (IOException ioe) {
-						Log.d(TAG, "transport was closed, dispatching disconnect event");
-						bridge.dispatchDisconnect(false);
-						break; // thread should exit
-					}
+		boolean closed = false;
+		while (!closed) {
+			try {
+				Object o = queue.take();
+				if (CMD_CLOSE.equals(o)) {
+					transport.close();
+					closed = true;
+				} else if (CMD_FLUSH.equals(o)) {
+					transport.flush();
+				} else if (o instanceof byte[]) {
+					transport.write((byte[]) o);
+				} else if (o instanceof Integer) {
+					transport.write((Integer) o);
 				}
+			} catch (IOException e) {
+				Log.e(TAG, "Unable to send deferred data", e);
+				try {
+					transport.flush();
+				} catch (IOException ioe) {
+					Log.d(TAG, "transport was closed, dispatching disconnect event");
+					bridge.dispatchDisconnect(false);
+					closed = true;
+				}
+			} catch (InterruptedException e) {
+				Log.e(TAG, "received an unexpected thread interrupt, exiting", e);
+				transport.close();
+				bridge.dispatchDisconnect(false);
+				closed = true;
 			}
-		} catch (InterruptedException e) {
-			Log.e(TAG, "received an unexpected thread interrupt, exiting", e);
-			transport.close();
-			bridge.dispatchDisconnect(false);
 		}
 	}
 }
