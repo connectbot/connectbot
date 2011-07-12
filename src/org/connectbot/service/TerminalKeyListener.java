@@ -323,8 +323,6 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			// look for special chars
 			switch(keyCode) {
 			case KEYCODE_ESCAPE:
-				sendEscape();
-				return true;
 			case KeyEvent.KEYCODE_SEARCH:
 				sendEscape();
 				return true;
