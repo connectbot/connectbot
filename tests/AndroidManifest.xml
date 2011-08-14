@@ -17,7 +17,5 @@
     -->
     <instrumentation android:name="android.test.InstrumentationTestRunner"
                      android:targetPackage="org.connectbot"
-                     android:label="Tests for HostListActivity" />
-
-    <uses-sdk android:targetSdkVersion="6" android:minSdkVersion="3" />
+                     android:label="Tests for ConnectBot" />
 </manifest>
