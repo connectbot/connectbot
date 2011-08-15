@@ -43,9 +43,6 @@
 
 <!-- Begin custom ConnectBot stuff -->
 
-    <property name="proguard.out.dir" value="${out.dir}/proguard.out"/>
-    <property name="out.dex.input.absolute.dir" value="${proguard.out.dir}"/>
-
     <!-- Output directory for .po files. -->
     <property name="locale.dir" value="locale" />
 
@@ -56,48 +53,7 @@
     <property name="launchpad.export.file" value="launchpad-export.tar.gz"/>
     <property name="launchpad.import.file" value="launchpad-import.tar.gz"/>
 
-    <target name="check-proguard">
-        <available file="tools/proguard.jar" property="have.proguard"/>
-    </target>
-
-    <target name="proguard" depends="check-proguard">
-        <fail unless="have.proguard">You requested ProGuard, but you don't have the JAR available! See README</fail>
-    </target>
-
-    <target name="-pre-build" depends="create-out-dir, link-out-dir, update-version"/>
-
-    <target name="-post-compile" depends="proguard-execute"/>
-
-    <target name="remove-out-symlink">
-        <symlink action="delete" link="${proguard.out.dir}" failonerror="false"/>
-    </target>
-
-    <target name="check-out-exists" depends="remove-out-symlink">
-        <available file="${proguard.out.dir}" property="proguard.out.is.dir"/>
-    </target>
-
-    <target name="delete-out-dir" depends="check-out-exists" if="proguard.out.is.dir">
-        <delete dir="${proguard.out.dir}"/>
-    </target>
-
-    <target name="create-out-dir" depends="delete-out-dir" if="have.proguard">
-        <mkdir dir="${proguard.out.dir}"/>
-    </target>
-
-    <target name="link-out-dir" depends="delete-out-dir" unless="have.proguard">
-        <symlink link="${proguard.out.dir}" resource="${out.classes.dir}"/>
-    </target>
-
-    <target name="proguard-execute" if="have.proguard">
-        <mkdir dir="${out.dex.input.absolute.dir}"/>
-        <taskdef resource="proguard/ant/task.properties"
-                classpath="tools/proguard.jar" />
-        <proguard configuration="proguard.flags" printusage="${out.dir}/proguard.usage">
-            <injar path="${out.classes.dir}"/>
-            <outjar path="${proguard.out.dir}"/>
-            <libraryjar path="${android.jar}"/>
-        </proguard>
-    </target>
+    <target name="-pre-build" depends="update-version"/>
 
     <target name="help">
         <!-- displays starts at col 13
@@ -115,9 +71,11 @@
         <echo>              signatures must match.</echo>
         <echo>   uninstall: Uninstalls the application from a running emulator or</echo>
         <echo>              device.</echo>
-        <echo>   proguard:  use before build statements like "debug" and "release"</echo>
-        <echo>              to enable proguard dead code removal. NOTE: You must</echo>
-        <echo>              have tools/proguard.jar available. See the README.</echo>
+	<echo>   translations-import: Import translations from a Launchpad-style</echo>
+	<echo>              Rosetta translation.</echo>
+	<echo>   translations-export: Export translations to a Launchpad-style</echo>
+	<echo>              Rosetta translation.</echo>
+
     </target>
 
     <target name="update-version" description="Updates the Version.java file with current Git revision">

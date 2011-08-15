@@ -1,9 +1,0 @@
--dontskipnonpubliclibraryclasses
--dontobfuscate
--dontoptimize
-
--keep public class * extends android.app.Activity
--keep public class * extends android.app.Service
--keep class org.connectbot.**
--keep public class com.trilead.ssh2.compression.*
--keep public class com.trilead.ssh2.crypto.*
