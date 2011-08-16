@@ -133,6 +133,7 @@ public class Relay implements Runnable {
 
 					measurer.measure(charArray, 0, offset, wideAttribute, bridge.defaultPaint, charWidth);
 					buffer.putString(charArray, wideAttribute, 0, charBuffer.position());
+					bridge.propagateConsoleText(charArray, charBuffer.position());
 					charBuffer.clear();
 					bridge.redraw();
 				}

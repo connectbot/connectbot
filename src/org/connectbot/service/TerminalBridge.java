@@ -647,6 +647,12 @@ public class TerminalBridge implements VDUDisplay {
 		return buffer;
 	}
 
+	public void propagateConsoleText(char[] rawText, int length) {
+	    if (parent != null) {
+	        parent.propagateConsoleText(rawText, length);
+	    }
+	}
+
 	public void onDraw() {
 		int fg, bg;
 		synchronized (buffer) {

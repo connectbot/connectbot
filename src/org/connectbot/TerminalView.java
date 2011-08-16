@@ -17,22 +17,32 @@
 
 package org.connectbot;
 
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.FontSizeChangedListener;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PixelXorXfermode;
 import android.graphics.RectF;
+import android.net.Uri;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.accessibility.AccessibilityEvent;
 import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -63,6 +73,17 @@ public class TerminalView extends View implements FontSizeChangedListener {
 	private Toast notification = null;
 	private String lastNotification = null;
 	private volatile boolean notifications = true;
+
+	// Related to Accessibility Features
+	private boolean accessibilityActive = false;
+	private StringBuffer accessibilityBuffer = null;
+	private Pattern controlCodes = null;
+	private Matcher codeMatcher = null;
+	private AccessibilityEventSender eventSender = null;
+	private AccessibilityStateTester stateTester = null;
+	private int ACCESSIBILITY_EVENT_THRESHOLD = 1000;
+	private static final String SCREENREADER_INTENT_ACTION = "android.accessibilityservice.AccessibilityService";
+	private static final String SCREENREADER_INTENT_CATEGORY = "android.accessibilityservice.category.FEEDBACK_SPOKEN";
 
 	public TerminalView(Context context, TerminalBridge bridge) {
 		super(context);
@@ -113,6 +134,10 @@ public class TerminalView extends View implements FontSizeChangedListener {
 
 		// connect our view up to the bridge
 		setOnKeyListener(bridge.getKeyHandler());
+
+		// Enable accessibility features if a screen reader is active.
+		stateTester = new AccessibilityStateTester();
+		new Thread(stateTester).start();
 	}
 
 	public void destroy() {
@@ -286,4 +311,103 @@ public class TerminalView extends View implements FontSizeChangedListener {
 			}
 		};
 	}
+
+	public StringBuffer getAccessibilityBuffer() {
+		return accessibilityBuffer;
+	}
+
+	public void propagateConsoleText(char[] rawText, int length) {
+		if (accessibilityActive) {
+			if (accessibilityBuffer == null) {
+				accessibilityBuffer = new StringBuffer();
+			}
+
+			for (int i = 0; i < length; ++i) {
+				accessibilityBuffer.append(rawText[i]);
+			}
+
+			if (eventSender != null) {
+				removeCallbacks(eventSender);
+			} else {
+				eventSender = new AccessibilityEventSender();
+			}
+			postDelayed(eventSender, ACCESSIBILITY_EVENT_THRESHOLD);
+		}
+	}
+
+	private class AccessibilityEventSender implements Runnable {
+		public void run() {
+			synchronized (accessibilityBuffer) {
+				// Strip console codes with regex matching control codes
+			    if (controlCodes == null) {
+			        controlCodes =
+			            Pattern.compile("" + ((char) 27) + (char) 92 + ((char) 91) + "[^m]+[m|:]");
+			    }
+			    if (codeMatcher == null) {
+			        codeMatcher = controlCodes.matcher(accessibilityBuffer);
+			    } else {
+			        codeMatcher.reset(accessibilityBuffer);
+			    }
+				accessibilityBuffer = new StringBuffer(codeMatcher.replaceAll(" "));
+
+				// Apply Backspaces using backspace character sequence
+				String backspaceCode = "" + ((char) 8) + ((char) 27) + ((char) 91) + ((char) 75);
+				int i = accessibilityBuffer.indexOf(backspaceCode);
+				while (i != -1) {
+					if (i == 0) {
+						accessibilityBuffer = accessibilityBuffer.replace(
+								i, i + backspaceCode.length(), "");
+					} else {
+						accessibilityBuffer = accessibilityBuffer.replace(
+								i - 1, i + backspaceCode.length(), "");
+					}
+					i = accessibilityBuffer.indexOf(backspaceCode);
+				}
+
+				if (accessibilityBuffer.length() > 0) {
+					AccessibilityEvent event = AccessibilityEvent.obtain(
+							AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED);
+					event.setFromIndex(0);
+					event.setAddedCount(accessibilityBuffer.length());
+					event.getText().add(accessibilityBuffer);
+
+					sendAccessibilityEventUnchecked(event);
+					accessibilityBuffer.setLength(0);
+				}
+			}
+		}
+	}
+
+    private class AccessibilityStateTester implements Runnable {
+        public void run() {
+            // Restrict the set of intents to only accessibility services that
+            // have the category FEEDBACK_SPOKEN (aka, screen readers).
+            Intent screenReaderIntent = new Intent(SCREENREADER_INTENT_ACTION);
+            screenReaderIntent.addCategory(SCREENREADER_INTENT_CATEGORY);
+            List<ResolveInfo> screenReaders = context.getPackageManager().queryIntentServices(
+                    screenReaderIntent, 0);
+            ContentResolver cr = context.getContentResolver();
+            Cursor cursor = null;
+            int status = 0;
+            for (ResolveInfo screenReader : screenReaders) {
+                // All screen readers are expected to implement a content
+                // provider that responds to:
+                // content://<nameofpackage>.providers.StatusProvider
+                cursor = cr.query(Uri.parse("content://" + screenReader.serviceInfo.packageName
+                        + ".providers.StatusProvider"), null, null, null, null);
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                    // These content providers use a special cursor that only has
+                    // one element, an integer that is 1 if the screen reader is running.
+                    status = cursor.getInt(0);
+                    cursor.close();
+                    if (status == 1) {
+                        accessibilityActive = true;
+                        return;
+                    }
+                }
+            }
+            accessibilityActive = false;
+        }
+    }
 }
