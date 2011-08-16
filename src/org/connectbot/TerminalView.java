@@ -39,10 +39,12 @@ import android.graphics.Path;
 import android.graphics.PixelXorXfermode;
 import android.graphics.RectF;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -75,13 +77,18 @@ public class TerminalView extends View implements FontSizeChangedListener {
 	private volatile boolean notifications = true;
 
 	// Related to Accessibility Features
-	private boolean accessibilityActive = false;
-	private StringBuffer accessibilityBuffer = null;
-	private Pattern controlCodes = null;
-	private Matcher codeMatcher = null;
-	private AccessibilityEventSender eventSender = null;
-	private AccessibilityStateTester stateTester = null;
-	private int ACCESSIBILITY_EVENT_THRESHOLD = 1000;
+	private boolean mAccessibilityInitialized = false;
+	private boolean mAccessibilityActive = true;
+	private Object[] mAccessibilityLock = new Object[0];
+	private StringBuffer mAccessibilityBuffer;
+	private Pattern mControlCodes = null;
+	private Matcher mCodeMatcher = null;
+	private AccessibilityEventSender mEventSender = null;
+
+	private static final String BACKSPACE_CODE = "\\x08\\x1b\\[K";
+	private static final String CONTROL_CODE_PATTERN = "\\x1b\\[K[^m]+[m|:]";
+
+	private static final int ACCESSIBILITY_EVENT_THRESHOLD = 1000;
 	private static final String SCREENREADER_INTENT_ACTION = "android.accessibilityservice.AccessibilityService";
 	private static final String SCREENREADER_INTENT_CATEGORY = "android.accessibilityservice.category.FEEDBACK_SPOKEN";
 
@@ -135,9 +142,10 @@ public class TerminalView extends View implements FontSizeChangedListener {
 		// connect our view up to the bridge
 		setOnKeyListener(bridge.getKeyHandler());
 
+		mAccessibilityBuffer = new StringBuffer();
+
 		// Enable accessibility features if a screen reader is active.
-		stateTester = new AccessibilityStateTester();
-		new Thread(stateTester).start();
+		new AccessibilityStateTester().execute((Void) null);
 	}
 
 	public void destroy() {
@@ -312,102 +320,133 @@ public class TerminalView extends View implements FontSizeChangedListener {
 		};
 	}
 
-	public StringBuffer getAccessibilityBuffer() {
-		return accessibilityBuffer;
-	}
-
 	public void propagateConsoleText(char[] rawText, int length) {
-		if (accessibilityActive) {
-			if (accessibilityBuffer == null) {
-				accessibilityBuffer = new StringBuffer();
+		if (mAccessibilityActive) {
+			synchronized (mAccessibilityLock) {
+				mAccessibilityBuffer.append(rawText, 0, length);
 			}
 
-			for (int i = 0; i < length; ++i) {
-				accessibilityBuffer.append(rawText[i]);
-			}
+			if (mAccessibilityInitialized) {
+				if (mEventSender != null) {
+					removeCallbacks(mEventSender);
+				} else {
+					mEventSender = new AccessibilityEventSender();
+				}
 
-			if (eventSender != null) {
-				removeCallbacks(eventSender);
-			} else {
-				eventSender = new AccessibilityEventSender();
+				postDelayed(mEventSender, ACCESSIBILITY_EVENT_THRESHOLD);
 			}
-			postDelayed(eventSender, ACCESSIBILITY_EVENT_THRESHOLD);
 		}
 	}
 
 	private class AccessibilityEventSender implements Runnable {
 		public void run() {
-			synchronized (accessibilityBuffer) {
-				// Strip console codes with regex matching control codes
-			    if (controlCodes == null) {
-			        controlCodes =
-			            Pattern.compile("" + ((char) 27) + (char) 92 + ((char) 91) + "[^m]+[m|:]");
-			    }
-			    if (codeMatcher == null) {
-			        codeMatcher = controlCodes.matcher(accessibilityBuffer);
-			    } else {
-			        codeMatcher.reset(accessibilityBuffer);
-			    }
-				accessibilityBuffer = new StringBuffer(codeMatcher.replaceAll(" "));
-
-				// Apply Backspaces using backspace character sequence
-				String backspaceCode = "" + ((char) 8) + ((char) 27) + ((char) 91) + ((char) 75);
-				int i = accessibilityBuffer.indexOf(backspaceCode);
-				while (i != -1) {
-					if (i == 0) {
-						accessibilityBuffer = accessibilityBuffer.replace(
-								i, i + backspaceCode.length(), "");
-					} else {
-						accessibilityBuffer = accessibilityBuffer.replace(
-								i - 1, i + backspaceCode.length(), "");
-					}
-					i = accessibilityBuffer.indexOf(backspaceCode);
+			synchronized (mAccessibilityLock) {
+				if (mCodeMatcher == null) {
+					mCodeMatcher = mControlCodes.matcher(mAccessibilityBuffer);
+				} else {
+					mCodeMatcher.reset(mAccessibilityBuffer);
 				}
 
-				if (accessibilityBuffer.length() > 0) {
+				// Strip all control codes out.
+				mAccessibilityBuffer = new StringBuffer(mCodeMatcher.replaceAll(" "));
+
+				// Apply Backspaces using backspace character sequence
+				int i = mAccessibilityBuffer.indexOf(BACKSPACE_CODE);
+				while (i != -1) {
+					mAccessibilityBuffer = mAccessibilityBuffer.replace(i == 0 ? 0 : i - 1, i
+							+ BACKSPACE_CODE.length(), "");
+					i = mAccessibilityBuffer.indexOf(BACKSPACE_CODE);
+				}
+
+				if (mAccessibilityBuffer.length() > 0) {
 					AccessibilityEvent event = AccessibilityEvent.obtain(
 							AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED);
 					event.setFromIndex(0);
-					event.setAddedCount(accessibilityBuffer.length());
-					event.getText().add(accessibilityBuffer);
+					event.setAddedCount(mAccessibilityBuffer.length());
+					event.getText().add(mAccessibilityBuffer);
 
 					sendAccessibilityEventUnchecked(event);
-					accessibilityBuffer.setLength(0);
+					mAccessibilityBuffer.setLength(0);
 				}
 			}
 		}
 	}
 
-    private class AccessibilityStateTester implements Runnable {
-        public void run() {
-            // Restrict the set of intents to only accessibility services that
-            // have the category FEEDBACK_SPOKEN (aka, screen readers).
-            Intent screenReaderIntent = new Intent(SCREENREADER_INTENT_ACTION);
-            screenReaderIntent.addCategory(SCREENREADER_INTENT_CATEGORY);
-            List<ResolveInfo> screenReaders = context.getPackageManager().queryIntentServices(
-                    screenReaderIntent, 0);
-            ContentResolver cr = context.getContentResolver();
-            Cursor cursor = null;
-            int status = 0;
-            for (ResolveInfo screenReader : screenReaders) {
-                // All screen readers are expected to implement a content
-                // provider that responds to:
-                // content://<nameofpackage>.providers.StatusProvider
-                cursor = cr.query(Uri.parse("content://" + screenReader.serviceInfo.packageName
-                        + ".providers.StatusProvider"), null, null, null, null);
-                if (cursor != null) {
-                    cursor.moveToFirst();
-                    // These content providers use a special cursor that only has
-                    // one element, an integer that is 1 if the screen reader is running.
-                    status = cursor.getInt(0);
-                    cursor.close();
-                    if (status == 1) {
-                        accessibilityActive = true;
-                        return;
-                    }
-                }
-            }
-            accessibilityActive = false;
-        }
-    }
+	private class AccessibilityStateTester extends AsyncTask<Void, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			/*
+			 * Presumably if the accessibility manager is not enabled, we don't
+			 * need to send accessibility events.
+			 */
+			final AccessibilityManager accessibility = (AccessibilityManager) context
+					.getSystemService(Context.ACCESSIBILITY_SERVICE);
+			if (!accessibility.isEnabled()) {
+				return false;
+			}
+
+			/*
+			 * Restrict the set of intents to only accessibility services that
+			 * have the category FEEDBACK_SPOKEN (aka, screen readers).
+			 */
+			final Intent screenReaderIntent = new Intent(SCREENREADER_INTENT_ACTION);
+			screenReaderIntent.addCategory(SCREENREADER_INTENT_CATEGORY);
+
+			final ContentResolver cr = context.getContentResolver();
+
+			final List<ResolveInfo> screenReaders = context.getPackageManager().queryIntentServices(
+					screenReaderIntent, 0);
+
+			boolean foundScreenReader = false;
+
+			final int N = screenReaders.size();
+			for (int i = 0; i < N; i++) {
+				final ResolveInfo screenReader = screenReaders.get(i);
+
+				/*
+				 * All screen readers are expected to implement a content
+				 * provider that responds to:
+				 * content://<nameofpackage>.providers.StatusProvider
+				 */
+				final Cursor cursor = cr.query(
+						Uri.parse("content://" + screenReader.serviceInfo.packageName
+								+ ".providers.StatusProvider"), null, null, null, null);
+				if (cursor != null && cursor.moveToFirst()) {
+					/*
+					 * These content providers use a special cursor that only has
+					 * one element, an integer that is 1 if the screen reader is
+					 * running.
+					 */
+					final int status = cursor.getInt(0);
+
+					cursor.close();
+
+					if (status == 1) {
+						foundScreenReader = true;
+						break;
+					}
+				}
+			}
+
+			if (foundScreenReader) {
+				mControlCodes = Pattern.compile(CONTROL_CODE_PATTERN);
+			}
+
+			return foundScreenReader;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			mAccessibilityActive = result;
+
+			mAccessibilityInitialized = true;
+
+			if (result) {
+				mEventSender = new AccessibilityEventSender();
+				postDelayed(mEventSender, ACCESSIBILITY_EVENT_THRESHOLD);
+			} else {
+				mAccessibilityBuffer = null;
+			}
+		}
+	}
 }
