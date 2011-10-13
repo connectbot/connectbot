@@ -25,7 +25,6 @@ import org.connectbot.service.TerminalManager;
 import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
-import org.connectbot.util.UpdateHelper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -168,9 +167,6 @@ public class HostListActivity extends ListActivity {
 		if(!agreed) {
 			this.startActivityForResult(new Intent(this, WizardActivity.class), REQUEST_EULA);
 		}
-
-		// start thread to check for new version
-		new UpdateHelper(this);
 
 		this.makingShortcut = Intent.ACTION_CREATE_SHORTCUT.equals(getIntent().getAction())
 								|| Intent.ACTION_PICK.equals(getIntent().getAction());
