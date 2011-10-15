@@ -52,6 +52,39 @@
     </target>
 -->
 
+    <target name="coverage-xml" depends="coverage">
+        <run-tests-helper emma.enabled="true">
+            <extra-instrument-args>
+                <arg value="-e" />
+                   <arg value="coverageFile" />
+                   <arg value="${emma.dump.file}" />
+            </extra-instrument-args>
+        </run-tests-helper>
+        <echo>Downloading coverage file into project directory...</echo>
+        <exec executable="${adb}" failonerror="true">
+            <arg line="${adb.device.arg}" />
+            <arg value="pull" />
+            <arg value="${emma.dump.file}" />
+            <arg value="coverage.ec" />
+        </exec>
+        <echo>Extracting XML coverage report...</echo>
+        <emma>
+            <report sourcepath="${tested.project.absolute.dir}/${source.dir}"
+                              verbosity="${verbosity}">
+                <infileset dir=".">
+                    <include name="coverage.ec" />
+                    <include name="coverage.em" />
+                </infileset>
+                <xml outfile="coverage/coverage.xml" />
+           </report>
+        </emma>
+        <echo>Cleaning up temporary files...</echo>
+        <delete dir="${instrumentation.absolute.dir}" />
+        <delete file="coverage.ec" />
+        <delete file="coverage.em" />
+        <echo>Saving the report file in ${basedir}/coverage/coverage.xml</echo>
+    </target>
+
     <!-- Execute the Android Setup task that will setup some properties
          specific to the target, and import the build rules files.
 
