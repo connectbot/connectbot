@@ -79,23 +79,6 @@ public class PubkeyUtils {
 			", bytes=" + encoded.length + "]";
 	}
 
-	public static String describeKey(Key key, boolean encrypted) {
-		String desc = null;
-		if (key instanceof RSAPublicKey) {
-			int bits = ((RSAPublicKey)key).getModulus().bitLength();
-			desc = "RSA " + String.valueOf(bits) + "-bit";
-		} else if (key instanceof DSAPublicKey) {
-			desc = "DSA 1024-bit";
-		} else {
-			desc = "Unknown Key Type";
-		}
-
-		if (encrypted)
-			desc += " (encrypted)";
-
-		return desc;
-	}
-
 	public static byte[] sha256(byte[] data) throws NoSuchAlgorithmException {
 		return MessageDigest.getInstance("SHA-256").digest(data);
 	}
