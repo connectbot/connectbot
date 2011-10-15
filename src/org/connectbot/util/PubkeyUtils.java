@@ -338,17 +338,17 @@ public class PubkeyUtils {
 		return sb.toString();
 	}
 
-	final static private char hexDigit[] = { '0', '1', '2', '3', '4', '5', '6',
+	private static final char[] HEX_DIGITS = { '0', '1', '2', '3', '4', '5', '6',
 			'7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-	private static String encodeHex(byte[] bytes) {
-		char[] hex = new char[bytes.length * 2];
+	protected static String encodeHex(byte[] bytes) {
+		final char[] hex = new char[bytes.length * 2];
 
 		int i = 0;
 		for (byte b : bytes) {
-			hex[i++] = hexDigit[(b >> 4) & 0x0f];
-			hex[i++] = hexDigit[b & 0x0f];
+			hex[i++] = HEX_DIGITS[(b >> 4) & 0x0f];
+			hex[i++] = HEX_DIGITS[b & 0x0f];
 		}
 
-		return new String(hex);
+		return String.valueOf(hex);
 	}
 }
