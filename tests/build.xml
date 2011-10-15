@@ -52,7 +52,7 @@
     </target>
 -->
 
-    <target name="coverage-xml" depends="coverage">
+    <target name="coverage-xml" depends="-set-coverage-classpath, -install-instrumented, install">
         <run-tests-helper emma.enabled="true">
             <extra-instrument-args>
                 <arg value="-e" />
