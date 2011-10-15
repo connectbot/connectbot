@@ -109,11 +109,7 @@
         description="Clean up the result of the build process">
         <delete dir="${out.absolute.dir}"/>
         <delete dir="${gen.absolute.dir}"/>
-        <exec executable="ant" failonerror="true">
-            <arg value="-f" />
-            <arg value="tests/build.xml" />
-            <arg value="clean"/>
-        </exec>
+	<ant dir="tests" target="clean" />
     </target>
 
     <target name="tests" depends="install">
