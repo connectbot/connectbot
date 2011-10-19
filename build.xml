@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="ConnectBot" default="help">
 
-<!-- The local.properties file is created and updated by the 'android'
-     tool.
-     It contains the path to the SDK. It should *NOT* be checked into
-     Version Control Systems. -->
-    <property file="local.properties" />
+    <!-- The local.properties file is created and updated by the 'android' tool.
+         It contains the path to the SDK. It should *NOT* be checked into
+         Version Control Systems. -->
+    <loadproperties srcFile="local.properties" />
 
-    <!-- The build.properties file can be created by you and is never touched
-         by the 'android' tool. This is the place to change some of the
-         default property values used by the Ant rules.
+    <!-- The ant.properties file can be created by you. It is only edited by the
+         'android' tool to add properties to it.
+         This is the place to change some Ant specific build properties.
          Here are some properties you may want to change/update:
 
          source.dir
              The name of the source directory. Default is 'src'.
          out.dir
              The name of the output directory. Default is 'bin'.
+
+         For other overridable properties, look at the beginning of the rules
+         files in the SDK, at tools/ant/build.xml
 
          Properties related to the SDK location or the project target should
          be updated using the 'android' tool with the 'update' action.
@@ -24,22 +26,13 @@
          application and should be checked into Version Control Systems.
 
          -->
-    <property file="build.properties" />
+    <property file="ant.properties" />
 
-    <!-- The default.properties file is created and updated by the 'android'
+    <!-- The project.properties file is created and updated by the 'android'
          tool, as well as ADT.
          This file is an integral part of the build system for your
          application and should be checked into Version Control Systems. -->
-    <property file="default.properties" />
-
-    <!-- Custom Android task to deal with the project target, and import the
-         proper rules.
-         This requires ant 1.6.0 or above. -->
-    <path id="android.antlibs">
-        <pathelement path="${sdk.dir}/tools/lib/anttasks.jar" />
-        <pathelement path="${sdk.dir}/tools/lib/sdklib.jar" />
-        <pathelement path="${sdk.dir}/tools/lib/androidprefs.jar" />
-    </path>
+    <loadproperties srcFile="project.properties" />
 
 <!-- Begin custom ConnectBot stuff -->
 
@@ -71,10 +64,10 @@
         <echo>              signatures must match.</echo>
         <echo>   uninstall: Uninstalls the application from a running emulator or</echo>
         <echo>              device.</echo>
-	<echo>   translations-import: Import translations from a Launchpad-style</echo>
-	<echo>              Rosetta translation.</echo>
-	<echo>   translations-export: Export translations to a Launchpad-style</echo>
-	<echo>              Rosetta translation.</echo>
+        <echo>   translations-import: Import translations from a Launchpad-style</echo>
+        <echo>              Rosetta translation.</echo>
+        <echo>   translations-export: Export translations to a Launchpad-style</echo>
+        <echo>              Rosetta translation.</echo>
 
     </target>
 
@@ -101,7 +94,6 @@
 
         <replaceregexp file="${resource.absolute.dir}/values/notrans.xml" encoding="utf8" match='(\x3Cstring name="msg_version">)[^\x3C]*(\x3C/string>)'
             replace='\1${ant.project.name} ${manifest.version.name} (${git.revision} ${build.date})\2' />
-
         <echo>Updated "msg_version" to: ${ant.project.name} ${manifest.version.name} (${git.revision} ${build.date})</echo>
     </target>
 
@@ -109,30 +101,7 @@
         description="Clean up the result of the build process">
         <delete dir="${out.absolute.dir}"/>
         <delete dir="${gen.absolute.dir}"/>
-	<ant dir="tests" target="clean" />
-    </target>
-
-    <target name="tests" depends="install">
-        <echo>Building and installing tests...</echo>
-        <exec executable="ant" failonerror="true">
-            <arg value="-f" />
-            <arg value="tests/build.xml" />
-            <arg value="install"/>
-        </exec>
-        <echo>Running test cases...</echo>
-        <exec executable="${adb}">
-            <arg value="shell" />
-            <arg value="am" />
-            <arg value="instrument" />
-            <arg value="-w" />
-            <arg value="${application-package}.tests/android.test.InstrumentationTestRunner" />
-            <redirector outputproperty="test.results"/>
-        </exec>
-        <fail message="Some unit tests failed:${line.separator}${test.results}">
-            <condition>
-                <contains string="${test.results}" substring="FAILURES"/>
-            </condition>
-        </fail>
+        <ant dir="tests" target="clean" />
     </target>
 
     <!-- Translations come from launchpad.net and are placed in the
@@ -160,9 +129,47 @@
 
 <!-- End custom ConnectBot stuff -->
 
-    <taskdef name="setup"
-        classname="com.android.ant.SetupTask"
-        classpathref="android.antlibs" />
+   <!-- quick check on sdk.dir -->
+    <fail
+            message="sdk.dir is missing. Make sure to generate local.properties using 'android update project'"
+            unless="sdk.dir"
+    />
 
-    <setup />
+
+<!-- extension targets. Uncomment the ones where you want to do custom work
+     in between standard targets -->
+<!--
+    <target name="-pre-build">
+    </target>
+    <target name="-pre-compile">
+    </target>
+
+    /* This is typically used for code obfuscation.
+       Compiled code location: ${out.classes.absolute.dir}
+       If this is not done in place, override ${out.dex.input.absolute.dir} */
+    <target name="-post-compile">
+    </target>
+-->
+
+    <!-- Import the actual build file.
+
+         To customize existing targets, there are two options:
+         - Customize only one target:
+             - copy/paste the target into this file, *before* the
+               <import> task.
+             - customize it to your needs.
+         - Customize the whole content of build.xml
+             - copy/paste the content of the rules files (minus the top node)
+               into this file, replacing the <import> task.
+             - customize to your needs.
+
+         ***********************
+         ****** IMPORTANT ******
+         ***********************
+         In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
+         in order to avoid having your file be overridden by tools such as "android update project"
+    -->
+    <!-- version-tag: custom -->
+    <import file="${sdk.dir}/tools/ant/build.xml" />
+
 </project>
