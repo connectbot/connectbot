@@ -40,7 +40,7 @@
     <property name="locale.dir" value="locale" />
 
     <!-- Default args to pass to a2po for .po generation. -->
-    <property name="a2po.args" value="--groups strings --template fortune/fortune.pot --layout 'po/fortune/fortune-%(locale)s.po'"/>
+    <property name="a2po.args" value="--groups strings --template fortune/fortune.pot --layout 'fortune/fortune-%(locale)s.po'"/>
 
     <!-- File names for launchpad translations. -->
     <property name="launchpad.export.file" value="launchpad-export.tar.gz"/>
