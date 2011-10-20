@@ -114,6 +114,8 @@
   <string name="hostpref_wantsession_title">Začni sejo lupine</string>
   <string name="hostpref_stayconnected_title">Ostanite povezani</string>
   <string name="hostpref_stayconnected_summary">Poskusi se ponovno povezati, če se prekine povezava</string>
+  <string name="hostpref_delkey_title">Tipka DEL</string>
+  <string name="hostpref_delkey_summary">Poslana koda tipke, ko je tipka DEL pritisnjena</string>
   <string name="hostpref_encoding_title">Kodiranje</string>
   <string name="hostpref_encoding_summary">Kodiranje znakov za gostitelja</string>
   <string name="hostpref_connection_category">Nastavitve povezave</string>
@@ -132,6 +134,10 @@
   <string name="button_no">Ne</string>
   <string name="portforward_local">Krajevno</string>
   <string name="portforward_remote">Oddaljeno</string>
+  <string name="portforward_pos">Ustvari posredovanje vrat</string>
+  <string name="portforward_done">Uspešno ustvarjeno posredovanje vrat</string>
+  <string name="portforward_menu_add">Dodaj posredovanje vrat</string>
+  <string name="hint_userhost">uporabnik\@gostitelj</string>
   <string name="list_format_error">Uporabi vrsto %1$s</string>
   <string name="format_username">Uporabniško ime</string>
   <string name="format_hostname">ime gostitelja</string>
@@ -142,6 +148,7 @@
   <string name="list_menu_settings">Nastavitve</string>
   <string name="list_host_disconnect">Prekini povezavo</string>
   <string name="list_host_edit">Urejaj gostitelja</string>
+  <string name="list_host_portforwards">Urejaj posredovanja vrat</string>
   <string name="list_host_delete">Izbriši gostitelja</string>
   <string name="list_rotation_default">Privzeto</string>
   <string name="list_rotation_land">Prisili ležeče</string>
@@ -160,13 +167,18 @@
   <string name="wizard_agree">Se strinjam</string>
   <string name="wizard_next">Naprej</string>
   <string name="wizard_back">Nazaj</string>
+  <string name="terminal_no_hosts_connected">Trenutno ni noben gostitelj povezan</string>
   <string name="terminal_connecting">Povezujem se na %1$s:%2$d preko %3$s</string>
   <string name="terminal_sucess">Preverjen gostitelj \'%1$s\' ključ: %2$s</string>
   <string name="terminal_failed">Preverjanje ključa gostitelja spodletelo.</string>
+  <string name="terminal_using_s2c_algorithm">Strežnik - odjemalec algoritem: %1$s %2$s</string>
+  <string name="terminal_using_c2s_algorithm">Odjemalec - strežnik algoritem: %1$s %2$s</string>
   <string name="terminal_using_algorithm">Uporabljam algoritem: %1$s %2$s</string>
   <string name="terminal_auth">Poskušam se overit</string>
   <string name="terminal_auth_pass">Poskušam overitev z geslom</string>
   <string name="terminal_auth_pass_fail">Overitev z geslom spodletela</string>
+  <string name="terminal_auth_pubkey_fail">Spodletela avtentikacijska metoda \'publickey\' z ključem \'%1$s\'</string>
+  <string name="terminal_auth_fail">[Vaš gostitelj ne podpira \'password\' ali \'keyboard-interactive\' avtentikacije.]</string>
   <string name="notification_text">%1$s želi vašo pozornost.</string>
   <string name="upgrade">Nova različica</string>
   <string name="upgrade_pos">Da, posodobi</string>

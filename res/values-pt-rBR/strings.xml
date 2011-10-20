@@ -66,6 +66,7 @@
   <string name="button_generate">Gerar chave</string>
   <string name="button_resize">Redimensionar</string>
   <string name="alert_disconnect_msg">Conexão perdida</string>
+  <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
   <string name="pref_emulation_category">Emulação de Terminal</string>
   <string name="pref_emulation_title">Modo de emulação</string>
   <string name="pref_emulation_summary">Modo de emulação do terminal com conexões PTY</string>
@@ -83,6 +84,7 @@
   <string name="pref_conn_persist_title">Conexões persistentes</string>
   <string name="pref_conn_persist_summary">Forçar as conexões para que continuem conectadas mesmo em segundo plano</string>
   <string name="pref_keymode_title">Teclas de atalho</string>
+  <string name="pref_keymode_summary">Selecione para usar Alt para \'/\' e Shift para Tab</string>
   <string name="pref_camera_title">Atalho para a câmera</string>
   <string name="pref_camera_summary">Selecione o que fazer quando o botão da câmera for pressionado</string>
   <string name="pref_keepalive_title">Manter tela ligada</string>
@@ -124,6 +126,7 @@
   <string name="hostpref_encoding_summary">Codificação de caracteres para o host</string>
   <string name="hostpref_connection_category">Configurações de conexão</string>
   <string name="hostpref_username_title">Usuário</string>
+  <string name="hostpref_hostname_title">Anfitrião (host)</string>
   <string name="hostpref_port_title">Porta</string>
   <string name="bind_never">Nunca usado</string>
   <string name="bind_minutes">%1$s minutos atrás</string>
@@ -144,6 +147,7 @@
   <string name="portforward_dynamic">Dinâmico (SOCKS)</string>
   <string name="portforward_pos">Criar encaminhamento de porta</string>
   <string name="portforward_done">Encaminhamento de porta criado com sucesso</string>
+  <string name="portforward_problem">Problema na criação do redirecionamento de portas, talvez você esteja usando portas menores que 1024 ou a porta já esteja sendo usada.</string>
   <string name="portforward_menu_add">Adicionar encaminhamento de porta</string>
   <string name="hint_userhost">usuario\@nome_do_host</string>
   <string name="list_format_error">Use o formato %1$s</string>
@@ -164,6 +168,7 @@
   <string name="list_rotation_port">Forçar modo retrato</string>
   <string name="list_rotation_auto">Automático</string>
   <string name="list_camera_ctrlaspace">Ctrl + A + Espaço</string>
+  <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
   <string name="list_camera_esc_a">Esc+A</string>
   <string name="list_camera_none">Nada</string>
@@ -177,12 +182,18 @@
   <string name="wizard_back">Voltar</string>
   <string name="terminal_no_hosts_connected">Sem host conectado atualmente</string>
   <string name="terminal_connecting">Conectando no %1$s:%2$d via %3$s</string>
+  <string name="terminal_sucess">"Anfitrião comprovado  \'%1$s\' chave: %2$s"</string>
   <string name="terminal_failed">Falha na verificação da chave do host</string>
   <string name="terminal_using_s2c_algorithm">Algoritmo do servidor para o cliente: %1$s %2$s</string>
   <string name="terminal_using_c2s_algorithm">Algoritmo do cliente para o servidor: %1$s %2$s</string>
   <string name="terminal_using_algorithm">Usando o algoritmo: %1$s %2$s</string>
   <string name="terminal_auth">Tentando autenticação</string>
+  <string name="terminal_auth_pass">Tentativa de autenticação de \'senha\' em andamento</string>
+  <string name="terminal_auth_pass_fail">Método de autenticação por \'senha\' falhou</string>
   <string name="terminal_auth_pubkey_invalid">A chave pública selecionada é inválida, tente selecionar outra no editor de hosts</string>
+  <string name="terminal_auth_pubkey_fail">Metodo de autenticação \'publickey\' com a chave \'%1$s\' falhou</string>
+  <string name="terminal_auth_ki_fail">Metodo de autenticação \'interativa por teclado\' falhou</string>
+  <string name="terminal_auth_fail">[Seu host não suporta autenticação por \'senha\' ou \'interativa por teclado\'.</string>
   <string name="terminal_no_session">A sessão não será iniciada devido à configurações do host.</string>
   <string name="terminal_enable_portfoward">Habilitar encaminhamento de porta: %1$s</string>
   <string name="local_shell_unavailable">Erro! O terminal local não está disponível neste telefone.</string>

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="app_desc">簡單,強大,開源的SSH客戶端</string>
+  <string name="app_desc">簡單、強大、開源的SSH客戶端</string>
   <string name="title_hosts_list">主機列表</string>
   <string name="title_pubkey_list">公鑰</string>
   <string name="title_port_forwards_list">端口映射</string>

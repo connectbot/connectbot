@@ -91,7 +91,7 @@
   <string name="pref_keepalive_summary">Verhindern, dass beim Arbeiten an der Konsole der Bildschirm abgeschaltet wird</string>
   <string name="pref_wifilock_title">WLAN aktiviert lassen</string>
   <string name="pref_wifilock_summary">Verhindern, dass während einer aktiven Sitzung WLAN deaktiviert wird</string>
-  <string name="pref_bumpyarrows_title">Holprige Pfeile</string>
+  <string name="pref_bumpyarrows_title">Vibrierende Pfeiltasten</string>
   <string name="pref_bumpyarrows_summary">Vibirieren, wenn Pfeiltasten vom Trackball gesendet werden; nützlich bei laggenden Verbindungen</string>
   <string name="pref_bell_category">Terminalglocke</string>
   <string name="pref_bell_title">Hörbare Glocke</string>
