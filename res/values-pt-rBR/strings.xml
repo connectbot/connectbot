@@ -12,8 +12,8 @@
   <string name="resolve_entropy">Sensibilidade</string>
   <string name="menu_insert">Adicionar Host</string>
   <string name="menu_delete">Apagar host</string>
-  <string name="menu_preferences">Perferências</string>
-  <string name="help_intro">Escolha um tópico para obter maiores informações.</string>
+  <string name="menu_preferences">Preferências</string>
+  <string name="help_intro">Escolha um dos tópicos abaixo para maiores informações</string>
   <string name="help_about">Sobre o ConnectBot</string>
   <string name="help_keyboard">Teclado</string>
   <string name="pubkey_generate">Gerar</string>
@@ -190,8 +190,11 @@
   <string name="terminal_auth">Tentando autenticação</string>
   <string name="terminal_auth_pass">Tentativa de autenticação de \'senha\' em andamento</string>
   <string name="terminal_auth_pass_fail">Método de autenticação por \'senha\' falhou</string>
+  <string name="terminal_auth_pubkey_any">Tentando autenticação \'chave pública\' com qualquer chave pública na memória</string>
   <string name="terminal_auth_pubkey_invalid">A chave pública selecionada é inválida, tente selecionar outra no editor de hosts</string>
+  <string name="terminal_auth_pubkey_specific">Tentando autenticação \'chave pública\' com uma chave pública específica</string>
   <string name="terminal_auth_pubkey_fail">Metodo de autenticação \'publickey\' com a chave \'%1$s\' falhou</string>
+  <string name="terminal_auth_ki">Tentando autenticação \'teclado-interativo\'</string>
   <string name="terminal_auth_ki_fail">Metodo de autenticação \'interativa por teclado\' falhou</string>
   <string name="terminal_auth_fail">[Seu host não suporta autenticação por \'senha\' ou \'interativa por teclado\'.</string>
   <string name="terminal_no_session">A sessão não será iniciada devido à configurações do host.</string>
