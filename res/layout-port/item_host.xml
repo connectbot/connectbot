@@ -32,6 +32,7 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
 		android:paddingTop="5dip"
+		android:contentDescription="@string/image_description_connected"
 		/>
 		
 	<TextView
