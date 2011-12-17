@@ -438,13 +438,6 @@
 	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
 	<string name="notification_text">"%1$s wants your attention."</string>
 
-	<!-- Dialog title when a new version of ConnectBot is detected. -->
-	<string name="upgrade">"New version"</string>
-	<!-- Button selection to upgrade to the latest ConnectBot when one is available. -->
-	<string name="upgrade_pos">"Yes, upgrade"</string>
-	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
-	<string name="upgrade_neg">"Not right now"</string>
-
 	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
 	<string name="no">"No"</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
