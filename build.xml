@@ -127,6 +127,23 @@
             includes="**/*.pot **/*.po" />
     </target>
 
+    <target name="-check-ndk">
+        <fail
+            message="ndk.dir is missing. Make sure to put it in local.properties"
+            unless="ndk.dir"
+        />
+    </target>
+
+    <target name="native-build" depends="-check-ndk">
+        <exec executable="${ndk.dir}/ndk-build" failonerror="true" />
+    </target>
+
+    <target name="native-clean" depends="-check-ndk">
+        <exec executable="${ndk.dir}/ndk-build" failonerror="true">
+            <arg value="clean" />
+        </exec>
+    </target>
+
 <!-- End custom ConnectBot stuff -->
 
    <!-- quick check on sdk.dir -->
