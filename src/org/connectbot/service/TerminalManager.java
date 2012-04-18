@@ -60,6 +60,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.nullwire.trace.ExceptionHandler;
+import com.trilead.ssh2.crypto.PEMDecoder;
 
 /**
  * Manager for SSH connections that runs as a background service. This service
@@ -365,6 +366,49 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	public void addKey(PubkeyBean pubkey, Object trileadKey) {
 		addKey(pubkey, trileadKey, false);
+	}
+
+	/**
+	 * Load a public key into memory.
+	 * Convenience method which also creates the TrileadKey from the PubKeyBean
+	 * @param pubkey Public key to load into memory
+	 * @param password Password.
+	 */
+	public void loadPubkeyIntoMem(PubkeyBean pubkey, String password) throws Exception {
+		//redundant error check
+		if ((pubkey.isEncrypted()) &&(password == null)) {
+			throw new Exception("Public key encrypted, and no password " +
+					"provided");
+		}
+
+		Object trileadKey = null;
+		if(PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType())) {
+			// load specific key using pem format
+			try {
+				trileadKey = PEMDecoder.decode(new String(pubkey.getPrivateKey()).toCharArray(), password);
+			} catch(Exception e) {
+				throw new Exception("Failed to get Trilead key for: " + pubkey.getNickname());
+			}
+		} else {
+			// load using internal generated format
+			PrivateKey privKey = null;
+			PublicKey pubKey = null;
+			try {
+				privKey = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType(), password);
+				pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
+			} catch (Exception e) {
+				throw new Exception("Failed to decode key: " + pubkey.getNickname());
+			}
+
+			// convert key to trilead format
+			trileadKey = PubkeyUtils.convertToTrilead(privKey, pubKey);
+		}
+
+		if (trileadKey == null) {
+			throw new Exception("Failed to get Trilead key");
+		}
+
+		addKey(pubkey, trileadKey, true);
 	}
 
 	public void addKey(PubkeyBean pubkey, Object trileadKey, boolean force) {

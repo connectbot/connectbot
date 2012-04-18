@@ -17,15 +17,12 @@
 
 package org.connectbot;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
-import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EventListener;
 import java.util.LinkedList;
@@ -70,7 +67,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.crypto.PEMDecoder;
 import com.trilead.ssh2.crypto.PEMStructure;
 
@@ -83,7 +79,6 @@ import com.trilead.ssh2.crypto.PEMStructure;
 public class PubkeyListActivity extends ListActivity implements EventListener {
 	public final static String TAG = "ConnectBot.PubkeyListActivity";
 
-	private static final int MAX_KEYFILE_SIZE = 8192;
 	private static final int REQUEST_CODE_PICK_FILE = 1;
 
 	// Constants for AndExplorer's file picking intent
@@ -175,27 +170,6 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		inflater = LayoutInflater.from(this);
 	}
 
-	/**
-	 * Read given file into memory as <code>byte[]</code>.
-	 */
-	protected static byte[] readRaw(File file) throws Exception {
-		InputStream is = new FileInputStream(file);
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-
-		int bytesRead;
-		byte[] buffer = new byte[1024];
-		while ((bytesRead = is.read(buffer)) != -1) {
-			os.write(buffer, 0, bytesRead);
-		}
-
-		os.flush();
-		os.close();
-		is.close();
-
-		return os.toByteArray();
-
-	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -248,54 +222,34 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				.setView(view)
 				.setPositiveButton(R.string.pubkey_unlock, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						handleAddKey(pubkey, passwordField.getText().toString());
+
+						try {
+							bound.loadPubkeyIntoMem(pubkey, passwordField.getText().toString());
+							updateHandler.sendEmptyMessage(-1);
+						} catch (Exception e) {
+							Log.e(TAG, e.getMessage());
+							String message = getResources().getString(R.string.pubkey_failed_add,
+									pubkey.getNickname());
+							Log.e(TAG, message);
+							Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG).
+								show();
+						}
 					}
 				})
 				.setNegativeButton(android.R.string.cancel, null).create().show();
 		} else {
-			handleAddKey(pubkey, null);
-		}
-	}
-
-	protected void handleAddKey(PubkeyBean pubkey, String password) {
-		Object trileadKey = null;
-		if(PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType())) {
-			// load specific key using pem format
 			try {
-				trileadKey = PEMDecoder.decode(new String(pubkey.getPrivateKey()).toCharArray(), password);
-			} catch(Exception e) {
-				String message = getResources().getString(R.string.pubkey_failed_add, pubkey.getNickname());
-				Log.e(TAG, message, e);
-				Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG);
-			}
-
-		} else {
-			// load using internal generated format
-			PrivateKey privKey = null;
-			PublicKey pubKey = null;
-			try {
-				privKey = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType(), password);
-				pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
+				bound.loadPubkeyIntoMem(pubkey, null);
+				updateHandler.sendEmptyMessage(-1);
 			} catch (Exception e) {
-				String message = getResources().getString(R.string.pubkey_failed_add, pubkey.getNickname());
-				Log.e(TAG, message, e);
-				Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG);
-				return;
+				Log.e(TAG, e.getMessage());
+
+				String message = getResources().getString(R.string.pubkey_failed_add,
+						pubkey.getNickname());
+				Log.e(TAG, message);
+				Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG).show();
 			}
-
-			// convert key to trilead format
-			trileadKey = PubkeyUtils.convertToTrilead(privKey, pubKey);
-			Log.d(TAG, "Unlocked key " + PubkeyUtils.formatKey(pubKey));
 		}
-
-		if(trileadKey == null) return;
-
-		Log.d(TAG, String.format("Unlocked key '%s'", pubkey.getNickname()));
-
-		// save this key in memory
-		bound.addKey(pubkey, trileadKey, true);
-
-		updateHandler.sendEmptyMessage(-1);
 	}
 
 	@Override
@@ -493,14 +447,22 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				Uri uri = intent.getData();
 				try {
 					if (uri != null) {
-						readKeyFromFile(new File(URI.create(uri.toString())));
+						addKeyToDb(PubkeyUtils.readKeyFromFile(new File(URI.create(
+								uri.toString()))));
 					} else {
 						String filename = intent.getDataString();
-						if (filename != null)
-							readKeyFromFile(new File(URI.create(filename)));
+						if (filename != null) {
+							addKeyToDb(PubkeyUtils.readKeyFromFile(new File(URI.create(
+									filename))));
+						}
 					}
-				} catch (IllegalArgumentException e) {
-					Log.e(TAG, "Couldn't read from picked file", e);
+
+					updateHandler.sendEmptyMessage(-1);
+				}
+				catch(Exception exception) {
+					String message = getResources().getString(R.string.
+							pubkey_import_parse_problem);
+					Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG).show();
 				}
 			}
 			break;
@@ -508,63 +470,41 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	}
 
 	/**
-	 * @param name
+	 * Method to add key to Database.
+	 * Also added checks to make sure same key is not written in twice.
+	 * Replicated from @link{org.connectbot.ConsoleActivity#addKeyToDb}
+	 *
+	 * @param pubkey Key to add
 	 */
-	private void readKeyFromFile(File file) {
-		PubkeyBean pubkey = new PubkeyBean();
+	private void addKeyToDb(PubkeyBean pubkey) {
+		if (pubkeydb == null) {
+			pubkeydb = new PubkeyDatabase(this);
+		}
+		boolean updateDb = true;
+		//load the key into the database only if the pub key is not already in the
+		//database.
+		List<PubkeyBean> pubkeys = pubkeydb.allPubkeys();
 
-		// find the exact file selected
-		pubkey.setNickname(file.getName());
+		for (PubkeyBean existingPubkey : pubkeys) {
 
-		if (file.length() > MAX_KEYFILE_SIZE) {
-			Toast.makeText(PubkeyListActivity.this,
-					R.string.pubkey_import_parse_problem,
-					Toast.LENGTH_LONG).show();
-			return;
+			Log.d(TAG, "looking at Pubkey: " + existingPubkey.getNickname());
+			//if both the private key and the public key matches, set updateDb to false
+			//and break. Arrays.equals() returns true if both are null.
+			if ((Arrays.equals(existingPubkey.getPrivateKey(), pubkey.getPrivateKey()))
+					&& (Arrays.equals(existingPubkey.getPublicKey(),
+							pubkey.getPublicKey()))) {
+
+				String message = getResources().getString(R.string.pubkey_import_duplicate);
+				Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG).show();
+
+				updateDb = false;
+				break;
+			}
 		}
 
-		// parse the actual key once to check if its encrypted
-		// then save original file contents into our database
-		try {
-			byte[] raw = readRaw(file);
-
-			String data = new String(raw);
-			if (data.startsWith(PubkeyUtils.PKCS8_START)) {
-				int start = data.indexOf(PubkeyUtils.PKCS8_START) + PubkeyUtils.PKCS8_START.length();
-				int end = data.indexOf(PubkeyUtils.PKCS8_END);
-
-				if (end > start) {
-					char[] encoded = data.substring(start, end - 1).toCharArray();
-					Log.d(TAG, "encoded: " + new String(encoded));
-					byte[] decoded = Base64.decode(encoded);
-
-					KeyPair kp = PubkeyUtils.recoverKeyPair(decoded);
-
-					pubkey.setType(kp.getPrivate().getAlgorithm());
-					pubkey.setPrivateKey(kp.getPrivate().getEncoded());
-					pubkey.setPublicKey(kp.getPublic().getEncoded());
-				} else {
-					Log.e(TAG, "Problem parsing PKCS#8 file; corrupt?");
-					Toast.makeText(PubkeyListActivity.this,
-							R.string.pubkey_import_parse_problem,
-							Toast.LENGTH_LONG).show();
-				}
-			} else {
-				PEMStructure struct = PEMDecoder.parsePEM(new String(raw).toCharArray());
-				pubkey.setEncrypted(PEMDecoder.isPEMEncrypted(struct));
-				pubkey.setType(PubkeyDatabase.KEY_TYPE_IMPORTED);
-				pubkey.setPrivateKey(raw);
-			}
-
-			// write new value into database
-			if (pubkeydb == null)
-				pubkeydb = new PubkeyDatabase(this);
+		if (updateDb) {
+			Log.i(TAG, "Writing key to DB...");
 			pubkeydb.savePubkey(pubkey);
-
-			updateHandler.sendEmptyMessage(-1);
-		} catch(Exception e) {
-			Log.e(TAG, "Problem parsing imported private key", e);
-			Toast.makeText(PubkeyListActivity.this, R.string.pubkey_import_parse_problem, Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -608,7 +548,14 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				public void onClick(DialogInterface arg0, int arg1) {
 					String name = namesList[arg1];
 
-					readKeyFromFile(new File(sdcard, name));
+					try {
+						addKeyToDb(PubkeyUtils.readKeyFromFile(new File(sdcard, name)));
+						updateHandler.sendEmptyMessage(-1);
+					} catch (Exception exception) {
+						String message = getResources().getString(R.string.
+								pubkey_import_parse_problem);
+						Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG).show();
+					}
 				}
 			})
 			.setNegativeButton(android.R.string.cancel, null).create().show();

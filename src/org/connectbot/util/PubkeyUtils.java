@@ -17,7 +17,11 @@
 
 package org.connectbot.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.AlgorithmParameters;
 import java.security.InvalidAlgorithmParameterException;
@@ -55,9 +59,13 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.connectbot.bean.PubkeyBean;
+
 import android.util.Log;
 
 import com.trilead.ssh2.crypto.Base64;
+import com.trilead.ssh2.crypto.PEMDecoder;
+import com.trilead.ssh2.crypto.PEMStructure;
 import com.trilead.ssh2.signature.DSASHA1Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
 
@@ -67,6 +75,10 @@ public class PubkeyUtils {
 
 	// Size in bytes of salt to use.
 	private static final int SALT_SIZE = 8;
+	//the maximum size of the keyfile
+	private static final int MAX_KEYFILE_SIZE = 8192;
+	//Log Tag
+	private static final String TAG = "org.connectbot.util.PubkeyUtils";
 
 	// Number of iterations for password hashing. PKCS#5 recommends 1000
 	private static final int ITERATIONS = 1000;
@@ -350,5 +362,79 @@ public class PubkeyUtils {
 		}
 
 		return new String(hex);
+	}
+
+	/**
+	 * Method, cannibalised from
+	 * @link{org.connectbot.PubkeyListActivity#readKeyFromFile} to read a
+	 *  key from a file and return a PubKeyBean
+	 *  @param file The file containing the key
+	 *  @return PubkeyBean holding the key
+	 */
+	public static PubkeyBean readKeyFromFile(File file) throws Exception {
+
+		PubkeyBean pubkey = new PubkeyBean();//to be returned
+
+		// find the exact file selected
+		pubkey.setNickname(file.getName());
+
+		if (file.length() > MAX_KEYFILE_SIZE) {
+			return null;
+		}
+
+		// parse the actual key once to check if its encrypted
+		byte[] raw = readRaw(file);
+
+		String data = new String(raw);
+		if (data.startsWith(PubkeyUtils.PKCS8_START)) {
+			int start = data.indexOf(PubkeyUtils.PKCS8_START) + PubkeyUtils.PKCS8_START.length();
+			int end = data.indexOf(PubkeyUtils.PKCS8_END);
+
+			if (end > start) {
+				char[] encoded = data.substring(start, end - 1).toCharArray();
+				Log.d(TAG, "encoded: " + new String(encoded));
+				byte[] decoded = Base64.decode(encoded);
+
+				KeyPair kp = PubkeyUtils.recoverKeyPair(decoded);
+
+				pubkey.setType(kp.getPrivate().getAlgorithm());
+				pubkey.setPrivateKey(kp.getPrivate().getEncoded());
+				pubkey.setPublicKey(kp.getPublic().getEncoded());
+			}
+			else {
+				Log.e(TAG, "Problem parsing PKCS#8 file; corrupt?");
+				throw new Exception("Problem parsing PKCS#8 file; corrupt?");
+			}
+		}
+		else {
+			PEMStructure struct = PEMDecoder.parsePEM(new String(raw).toCharArray());
+			pubkey.setEncrypted(PEMDecoder.isPEMEncrypted(struct));
+			pubkey.setType(PubkeyDatabase.KEY_TYPE_IMPORTED);
+			pubkey.setPrivateKey(raw);
+		}
+
+		Log.d(TAG, "Success creating pubkey.");
+		return pubkey;
+	}
+
+	/**
+	 * Replica of @link{org.connectbot.PubkeyListActivity#readRaw}
+	 * Read given file into memory as <code>byte[]</code>.
+	 */
+	private static byte[] readRaw(File file) throws Exception {
+		InputStream is = new FileInputStream(file);
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+
+		int bytesRead;
+		byte[] buffer = new byte[1024];
+		while ((bytesRead = is.read(buffer)) != -1) {
+			os.write(buffer, 0, bytesRead);
+		}
+
+		os.flush();
+		os.close();
+		is.close();
+
+		return os.toByteArray();
 	}
 }

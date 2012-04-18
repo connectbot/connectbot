@@ -17,19 +17,30 @@
 
 package org.connectbot;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
+import org.connectbot.bean.PubkeyBean;
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.PreferenceConstants;
+import org.connectbot.util.PubkeyDatabase;
+import org.connectbot.util.PubkeyUtils;
+import org.openintents.intents.FileManagerIntents;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -41,6 +52,7 @@ import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -88,6 +100,13 @@ public class ConsoleActivity extends Activity {
 	private static final float MAX_CLICK_DISTANCE = 25f;
 	private static final int KEYBOARD_DISPLAY_TIME = 1500;
 
+	//Constants for displaying a file picker
+	private static final int REQUEST_CODE_PICK_FILE = 1;
+	// Constants for AndExplorer's file picking intent
+	private static final String ANDEXPLORER_TITLE = "explorer_title";
+	private static final String MIME_TYPE_ANDEXPLORER_FILE =
+		"vnd.android.cursor.dir/lysesoft.andexplorer.file";
+
 	// Direction to shift the ViewFlipper
 	private static final int SHIFT_LEFT = 0;
 	private static final int SHIFT_RIGHT = 1;
@@ -103,6 +122,12 @@ public class ConsoleActivity extends Activity {
 	private boolean hardKeyboard = false;
 
 	protected Uri requested;
+	/** Boolean returned in Intent from third-party app */
+	private boolean usePubkeyAuth;
+	/** Boolean to indicate if the dialog has been displayed and keys loaded already
+	 * Set to indicate the dialog should not be displayed if the user switches tasks
+	 * and returns.*/
+	private boolean pubkeyChosen;
 
 	protected ClipboardManager clipboard;
 	private RelativeLayout stringPromptGroup;
@@ -147,8 +172,19 @@ public class ConsoleActivity extends Activity {
 			// clear out any existing bridges and record requested index
 			flip.removeAllViews();
 
+			//get the requested nick name from the URI fragment in the intent
 			final String requestedNickname = (requested != null) ? requested.getFragment() : null;
 			int requestedIndex = 0;
+
+			//if the user has asked for pubkey authentication, display:
+			//1. The list of pubkeys in memory for the user to pick from.
+			//2. File list if user wants to add a new pubkey to memory
+			if ((usePubkeyAuth) && (!pubkeyChosen)) {
+				//this method will call a series of methods which allows the user to pick either an
+				//existing key and load it into mem if necessary, or import a key from the file
+				//system and load it into memory.
+				pickLoadedPubkeys();
+			}
 
 			TerminalBridge requestedBridge = bound.getConnectedBridge(requestedNickname);
 
@@ -210,6 +246,28 @@ public class ConsoleActivity extends Activity {
 		}
 	};
 
+	private void addKeyToDb(PubkeyBean pubkey) {
+		PubkeyDatabase pubkeyDb = new PubkeyDatabase(this);
+		boolean updateDb = true;
+		//load the key into the database only if the pub key is not already in the
+		//database.
+		List<PubkeyBean> pubkeys = pubkeyDb.allPubkeys();
+
+		for (PubkeyBean existingPubkey : pubkeys) {
+			//if both the private key and the public key matches, set updateDb to false
+			//and break. Arrays.equals() returns true if both are null.
+			if ((Arrays.equals(existingPubkey.getPrivateKey(), pubkey.getPrivateKey()))
+					&&(Arrays.equals(existingPubkey.getPublicKey(),
+							pubkey.getPublicKey()))) {
+				updateDb = false;
+				break;
+			}
+		}
+
+		if (updateDb) {
+			pubkeyDb.savePubkey(pubkey);
+		}
+	}
 	/**
 	 * @param bridge
 	 */
@@ -292,6 +350,8 @@ public class ConsoleActivity extends Activity {
 
 		// handle requested console from incoming intent
 		requested = getIntent().getData();
+		usePubkeyAuth = getIntent().getBooleanExtra("usePubKeyAuth", false);
+		pubkeyChosen = false;
 
 		inflater = LayoutInflater.from(this);
 
@@ -865,6 +925,8 @@ public class ConsoleActivity extends Activity {
 		Log.d(TAG, "onNewIntent called");
 
 		requested = intent.getData();
+		usePubkeyAuth = getIntent().getBooleanExtra("usePubKeyAuth", false);
+		pubkeyChosen = false;
 
 		if (requested == null) {
 			Log.e(TAG, "Got null intent data in onNewIntent()");
@@ -1128,6 +1190,241 @@ public class ConsoleActivity extends Activity {
 
 			updatePromptVisible();
 			updateEmptyVisible();
+		}
+	}
+
+	/**
+	 * Display a simple dialog that allows the user to pick a pubkey to use for auth from among the
+	 * list of pubkeys already in the sqlite DB. Also offer the user an additional option to choose
+	 * to select another pubkey file
+	 */
+	private void pickLoadedPubkeys() {
+		PubkeyDatabase pubkeyDb = new PubkeyDatabase(this);
+		//load all of the pubkeys in the DB into List<PubkeyBean>
+		final List<PubkeyBean> pubkeys = pubkeyDb.allPubkeys();
+		final ArrayList<String> nicknames = new ArrayList<String>();
+
+		//O(n) algo to get all of the nicknames into the array, making sure
+		//that nickname.get(u) corresponds to pubkeys.get(u)
+		for (PubkeyBean pubkey : pubkeys) {
+			nicknames.add(pubkey.getNickname());
+		}
+
+		//if there are no pubkeys in the DB, don't display dialog to select from
+		//loaded pub keys. Direct user to the import dialog instead.
+		if (nicknames.size() == 0) {
+			pubkeyChosen = true; //even if user cancels import, set pubkeyChosen to true.
+			//this will prevent the dialog being displayed again after a context switch.
+			showFilePicker();
+			return;
+		}
+
+		//display an alertDialog to this end
+		new AlertDialog.Builder(ConsoleActivity.this)
+			.setTitle(R.string.pubkey_memory_load_verbose)
+			.setItems(nicknames.toArray(new String[]{}),
+					/*
+					 * Add a new onClick Listener. Sets chooseNewKey to false if user chooses
+					 * to add another key from file, else loads the key selected into mem
+					 * if it isn't already.
+					 */
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface arg0, int listPos) {
+							pubkeyChosen = true; //user has chosen a public key
+							//load key to mem if not already loaded
+							//this will prevent the dialog being displayed again after a context
+							//switch.
+							if (!bound.isKeyLoaded(nicknames.get(listPos))) {
+								//load it to memory
+								ConsoleActivity.this.handleLoadKey(pubkeys.get(listPos));
+							}
+						}
+			})
+			.setNegativeButton(R.string.pubkey_import,
+					new DialogInterface.OnClickListener() {
+						/**
+						 * If the user chooses this button, show him a file picker dialog
+						 */
+						public void onClick(DialogInterface dialog, int which) {
+							pubkeyChosen = true; //even if user cancels import, set pubkeyChosen to
+							//true.
+							showFilePicker();
+						}
+					})
+			.create().show();
+	}
+
+	/**
+	 * Load public key into memory. Based on {@link PubkeyListActivity#handleAddKey(PubkeyBean)}.
+	 * @param pubkey The public key to load into memory.
+	 */
+	private void handleLoadKey(final PubkeyBean pubkey) {
+		if (pubkey.isEncrypted()) {
+			final View view = inflater.inflate(R.layout.dia_password, null);
+			final EditText passwordField = (EditText)view.findViewById(android.R.id.text1);
+
+			new AlertDialog.Builder(ConsoleActivity.this)
+				.setView(view)
+				.setPositiveButton(R.string.pubkey_unlock, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+
+						try {
+							bound.loadPubkeyIntoMem(pubkey, passwordField.getText().toString());
+						} catch (Exception e) {
+							String message = getResources().getString(R.string.pubkey_failed_add,
+									pubkey.getNickname());
+							Log.e(TAG, message);
+							Toast.makeText(ConsoleActivity.this, message, Toast.LENGTH_LONG).
+								show();
+						}
+					}
+				})
+				.setNegativeButton(android.R.string.cancel, null).create().show();
+		} else {
+			try {
+				bound.loadPubkeyIntoMem(pubkey, null);
+			} catch (Exception e) {
+				Log.e(TAG, e.getMessage());
+
+				String message = getResources().getString(R.string.pubkey_failed_add,
+						pubkey.getNickname());
+				Log.e(TAG, message);
+				Toast.makeText(ConsoleActivity.this, message, Toast.LENGTH_LONG).show();
+			}
+		}
+	}
+
+	/**
+	 * Show a dialog to pick the file to use as a pubkey.
+	 *
+	 * Just as in {@link PubkeyListActivity}, use OI File Manager, Android Explorer, or simple
+	 * custom dialog. In that order.
+	 */
+	private void showFilePicker() {
+		Uri sdcard = Uri.fromFile(Environment.getExternalStorageDirectory());
+		String pickerTitle = getString(R.string.pubkey_list_pick);
+
+		// Try to use OpenIntent's file browser to pick a file
+		Intent intent = new Intent(FileManagerIntents.ACTION_PICK_FILE);
+		intent.setData(sdcard);
+		intent.putExtra(FileManagerIntents.EXTRA_TITLE, pickerTitle);
+		intent.putExtra(FileManagerIntents.EXTRA_BUTTON_TEXT, getString(android.R.string.ok));
+
+		try {
+			startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
+		} catch (ActivityNotFoundException e) {
+			// If OI didn't work, try AndExplorer
+			intent = new Intent(Intent.ACTION_PICK);
+			intent.setDataAndType(sdcard, MIME_TYPE_ANDEXPLORER_FILE);
+			intent.putExtra(ANDEXPLORER_TITLE, pickerTitle);
+
+			try {
+				startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
+			} catch (ActivityNotFoundException e1) {
+				showSimpleFilePicker();
+			}
+		}
+	}
+
+	/**
+	 * Show a Simple FilePicker based on an AlertDialog. Same as in {@link PubkeyListActivity}
+	 */
+	private void showSimpleFilePicker() {
+		// build list of all files in sdcard root
+		final File sdcard = Environment.getExternalStorageDirectory();
+		Log.d(TAG, sdcard.toString());
+
+		// Don't show a dialog if the SD card is completely absent.
+		final String state = Environment.getExternalStorageState();
+		if (!Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)
+				&& !Environment.MEDIA_MOUNTED.equals(state)) {
+			new AlertDialog.Builder(ConsoleActivity.this)
+				.setMessage(R.string.alert_sdcard_absent)
+				.setNegativeButton(android.R.string.cancel, null).create().show();
+			return;
+		}
+
+		List<String> names = new LinkedList<String>();
+		{
+			File[] files = sdcard.listFiles();
+			if (files != null) {
+				for(File file : sdcard.listFiles()) {
+					if(file.isDirectory()) continue;
+					names.add(file.getName());
+				}
+			}
+		}
+		Collections.sort(names);
+
+		final String[] namesList = names.toArray(new String[] {});
+		Log.d(TAG, names.toString());
+
+		// prompt user to select any file from the sdcard root
+		new AlertDialog.Builder(ConsoleActivity.this)
+			.setTitle(R.string.pubkey_list_pick)
+			.setItems(namesList, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface arg0, int arg1) {
+					String name = namesList[arg1];
+					PubkeyBean pubkey;
+					try {
+						pubkey = PubkeyUtils.readKeyFromFile(new File(sdcard, name));
+						addKeyToDb(pubkey);
+						handleLoadKey(pubkey); //load to memory
+					} catch (Exception exception) {
+						String message = getResources().getString(R.string.
+								pubkey_import_parse_problem);
+						Toast.makeText(ConsoleActivity.this, message, Toast.LENGTH_LONG).show();
+					}
+				}
+			})
+			.setNegativeButton(android.R.string.cancel, null).create().show();
+	}
+
+	/**
+	 * Overriden method to handle the result of a launched Activity.
+	 *
+	 * The two sorts of activities that could be launched are:
+	 * <ul>
+	 * <li>OI File Manager, or</li>
+	 * <li>AndExplorer</li>
+	 * </ul>
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		super.onActivityResult(requestCode, resultCode, intent);
+
+		PubkeyBean pubkey = null;
+
+		switch (requestCode) {
+		case REQUEST_CODE_PICK_FILE:
+			if (resultCode == RESULT_OK && intent != null) {
+				Uri uri = intent.getData();
+				try {
+					if (uri != null) {
+						pubkey = PubkeyUtils.readKeyFromFile(new File(URI.create(uri.toString())));
+					} else {
+						String filename = intent.getDataString();
+						if (filename != null) {
+							pubkey = PubkeyUtils.readKeyFromFile(new File(URI.create(filename)));
+						}
+					}
+					if (pubkey != null) {
+						addKeyToDb(pubkey);
+						handleLoadKey(pubkey); //load to memory
+					}
+					else {
+						String message = getResources().getString(R.string.
+								pubkey_import_parse_problem);
+						Toast.makeText(ConsoleActivity.this, message, Toast.LENGTH_LONG).show();
+					}
+				}
+				catch(Exception exception) {
+					String message = getResources().getString(R.string.
+							pubkey_import_parse_problem);
+					Toast.makeText(ConsoleActivity.this, message, Toast.LENGTH_LONG).show();
+				}
+			}
+			break;
 		}
 	}
 }
