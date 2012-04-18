@@ -46,6 +46,9 @@ import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.SingleLineTransformationMethod;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -132,6 +135,7 @@ public class ConsoleActivity extends Activity {
 	private Handler handler = new Handler();
 
 	private ImageView mKeyboardButton;
+	private ImageView mInputButton;
 
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
@@ -369,6 +373,27 @@ public class ConsoleActivity extends Activity {
 					return;
 
 				inputManager.showSoftInput(flip, InputMethodManager.SHOW_FORCED);
+				keyboardGroup.setVisibility(View.GONE);
+			}
+		});
+
+		mInputButton = (ImageView) findViewById(R.id.button_input);
+		mInputButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View flip = findCurrentView(R.id.console_flip);
+				if (flip == null)
+					return;
+				
+				final TerminalView terminal = (TerminalView)flip;
+				Thread promptThread = new Thread(new Runnable() {
+						public void run() {
+							String inj = getCurrentPromptHelper().requestStringPrompt(null, "");
+							terminal.bridge.injectString(inj);
+						}
+					});
+				promptThread.setName("Prompt");
+				promptThread.setDaemon(true);
+				promptThread.start();
 				keyboardGroup.setVisibility(View.GONE);
 			}
 		});
@@ -988,11 +1013,23 @@ public class ConsoleActivity extends Activity {
 			stringPromptGroup.setVisibility(View.VISIBLE);
 
 			String instructions = prompt.promptInstructions;
+			boolean password = prompt.passwordRequested;
 			if (instructions != null && instructions.length() > 0) {
 				stringPromptInstructions.setVisibility(View.VISIBLE);
 				stringPromptInstructions.setText(instructions);
 			} else
 				stringPromptInstructions.setVisibility(View.GONE);
+
+			if (password) {
+				stringPrompt.setInputType(InputType.TYPE_CLASS_TEXT |
+										  InputType.TYPE_TEXT_VARIATION_PASSWORD);
+				stringPrompt.setTransformationMethod(PasswordTransformationMethod.getInstance());
+			} else {
+				stringPrompt.setInputType(InputType.TYPE_CLASS_TEXT |
+										  InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
+				stringPrompt.setTransformationMethod(SingleLineTransformationMethod.getInstance());
+			}
+
 			stringPrompt.setText("");
 			stringPrompt.setHint(prompt.promptHint);
 			stringPrompt.requestFocus();
@@ -1056,6 +1093,7 @@ public class ConsoleActivity extends Activity {
 			bound.hardKeyboardHidden = (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES);
 
 			mKeyboardButton.setVisibility(bound.hardKeyboardHidden ? View.VISIBLE : View.GONE);
+			mInputButton.setVisibility(bound.hardKeyboardHidden ? View.VISIBLE : View.GONE);
 		}
 	}
 

@@ -39,6 +39,7 @@ public class PromptHelper {
 	public String promptInstructions = null;
 	public String promptHint = null;
 	public Object promptRequested = null;
+	public boolean passwordRequested = true;
 
 	private Object response = null;
 
@@ -92,12 +93,11 @@ public class PromptHelper {
 		Object response = null;
 
 		promptToken.acquire();
-
 		try {
 			promptInstructions = instructions;
 			promptHint = hint;
 			promptRequested = type;
-
+			
 			// notify any parent watching for live events
 			if (handler != null)
 				Message.obtain(handler, -1, tag).sendToTarget();
@@ -121,6 +121,23 @@ public class PromptHelper {
 	 */
 	public String requestStringPrompt(String instructions, String hint) {
 		String value = null;
+		passwordRequested = false;
+		try {
+			value = (String)this.requestPrompt(instructions, hint, String.class);
+		} catch(Exception e) {
+		}
+		return value;
+	}
+
+	/**
+	 * Request a password response from parent. This is a blocking call until user
+	 * interface returns a value.
+	 * @param hint prompt hint for user to answer
+	 * @return string user has entered
+	 */
+	public String requestPasswordPrompt(String instructions, String hint) {
+		String value = null;
+		passwordRequested = true;
 		try {
 			value = (String)this.requestPrompt(instructions, hint, String.class);
 		} catch(Exception e) {

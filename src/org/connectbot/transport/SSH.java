@@ -265,7 +265,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				}
 			} else if (connection.isAuthMethodAvailable(host.getUsername(), AUTH_PASSWORD)) {
 				bridge.outputLine(manager.res.getString(R.string.terminal_auth_pass));
-				String password = bridge.getPromptHelper().requestStringPrompt(null,
+				String password = bridge.getPromptHelper().requestPasswordPrompt(null,
 						manager.res.getString(R.string.prompt_password));
 				if (password != null
 						&& connection.authenticateWithPassword(host.getUsername(), password)) {
@@ -308,7 +308,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			// otherwise load key from database and prompt for password as needed
 			String password = null;
 			if (pubkey.isEncrypted()) {
-				password = bridge.getPromptHelper().requestStringPrompt(null,
+				password = bridge.getPromptHelper().requestPasswordPrompt(null,
 						manager.res.getString(R.string.prompt_pubkey_password, pubkey.getNickname()));
 
 				// Something must have interrupted the prompt.
@@ -794,7 +794,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		String[] responses = new String[numPrompts];
 		for(int i = 0; i < numPrompts; i++) {
 			// request response from user for each prompt
-			responses[i] = bridge.promptHelper.requestStringPrompt(instruction, prompt[i]);
+			responses[i] = bridge.promptHelper.requestPasswordPrompt(instruction, prompt[i]);
 		}
 		return responses;
 	}
