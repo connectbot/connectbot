@@ -25,6 +25,7 @@ import org.connectbot.util.PreferenceConstants;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.util.Log;
@@ -102,6 +103,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 		hardKeyboard = (manager.res.getConfiguration().keyboard
 				== Configuration.KEYBOARD_QWERTY);
+
+		hardKeyboard = hardKeyboard && !Build.MODEL.equals("Transformer TF101");
 
 		updateKeymode();
 	}
@@ -320,6 +323,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			// look for special chars
 			switch(keyCode) {
 			case KEYCODE_ESCAPE:
+			case KeyEvent.KEYCODE_SEARCH:
 				sendEscape();
 				return true;
 			case KeyEvent.KEYCODE_TAB:
@@ -432,6 +436,30 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 				bridge.redraw();
 
+				return true;
+			case KeyEvent.KEYCODE_PAGE_UP:
+				((vt320) buffer).keyPressed(vt320.KEY_PAGE_UP, ' ',getStateForBuffer());
+				metaState &= ~META_TRANSIENT;
+				bridge.tryKeyVibrate();
+				return true;
+			case KeyEvent.KEYCODE_PAGE_DOWN:
+				((vt320) buffer).keyPressed(vt320.KEY_PAGE_DOWN, ' ',getStateForBuffer());
+				metaState &= ~META_TRANSIENT;
+				bridge.tryKeyVibrate();
+				return true;
+			case KeyEvent.KEYCODE_MOVE_HOME:
+//				((vt320) buffer).keyPressed(vt320.KEY_HOME, ' ',getStateForBuffer());
+				((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+				bridge.transport.write("[1~".getBytes());
+				metaState &= ~META_TRANSIENT;
+				bridge.tryKeyVibrate();
+				return true;
+			case KeyEvent.KEYCODE_MOVE_END:
+//				((vt320) buffer).keyPressed(vt320.KEY_END, ' ',getStateForBuffer());
+				((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+				bridge.transport.write("[4~".getBytes());
+				metaState &= ~META_TRANSIENT;
+				bridge.tryKeyVibrate();
 				return true;
 			}
 
