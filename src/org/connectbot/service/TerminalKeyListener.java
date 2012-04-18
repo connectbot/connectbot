@@ -25,6 +25,7 @@ import org.connectbot.util.PreferenceConstants;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.util.Log;
@@ -71,6 +72,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 	private String keymode = null;
 	private boolean hardKeyboard = false;
+	private boolean asusTransformer = false;
 
 	private int metaState = 0;
 
@@ -102,6 +104,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 		hardKeyboard = (manager.res.getConfiguration().keyboard
 				== Configuration.KEYBOARD_QWERTY);
+
+		asusTransformer = Build.MODEL.equals("Transformer TF101");
 
 		updateKeymode();
 	}
@@ -231,7 +235,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				}
 
 				// handle pressing f-keys
-				if ((hardKeyboard && !hardKeyboardHidden)
+				if ((hardKeyboard && !hardKeyboardHidden && !asusTransformer)
 						&& (curMetaState & KeyEvent.META_SHIFT_ON) != 0
 						&& sendFunctionKey(keyCode))
 					return true;
@@ -247,7 +251,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			}
 
 			// send ctrl and meta-keys as appropriate
-			if (!hardKeyboard || hardKeyboardHidden) {
+			if (!hardKeyboard || hardKeyboardHidden
+					|| (asusTransformer && hardKeyboard && !hardKeyboardHidden)) {
 				int k = event.getUnicodeChar(0);
 				int k0 = k;
 				boolean sendCtrl = false;
@@ -322,6 +327,11 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			case KEYCODE_ESCAPE:
 				sendEscape();
 				return true;
+			case KeyEvent.KEYCODE_SEARCH:
+				if (asusTransformer && hardKeyboard && !hardKeyboardHidden) {
+					sendEscape();
+					return true;
+				}
 			case KeyEvent.KEYCODE_TAB:
 				bridge.transport.write(0x09);
 				return true;
@@ -432,6 +442,30 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 				bridge.redraw();
 
+				return true;
+			case KeyEvent.KEYCODE_PAGE_UP:
+				((vt320) buffer).keyPressed(vt320.KEY_PAGE_UP, ' ',getStateForBuffer());
+				metaState &= ~META_TRANSIENT;
+				bridge.tryKeyVibrate();
+				return true;
+			case KeyEvent.KEYCODE_PAGE_DOWN:
+				((vt320) buffer).keyPressed(vt320.KEY_PAGE_DOWN, ' ',getStateForBuffer());
+				metaState &= ~META_TRANSIENT;
+				bridge.tryKeyVibrate();
+				return true;
+			case KeyEvent.KEYCODE_MOVE_HOME:
+//				((vt320) buffer).keyPressed(vt320.KEY_HOME, ' ',getStateForBuffer());
+				((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+				bridge.transport.write(new String("[1~").getBytes());
+				metaState &= ~META_TRANSIENT;
+				bridge.tryKeyVibrate();
+				return true;
+			case KeyEvent.KEYCODE_MOVE_END:
+//				((vt320) buffer).keyPressed(vt320.KEY_END, ' ',getStateForBuffer());
+				((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+				bridge.transport.write(new String("[4~").getBytes());
+				metaState &= ~META_TRANSIENT;
+				bridge.tryKeyVibrate();
 				return true;
 			}
 
