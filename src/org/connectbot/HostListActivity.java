@@ -25,7 +25,6 @@ import org.connectbot.service.TerminalManager;
 import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
-import org.connectbot.util.UpdateHelper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -62,8 +61,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-
-import com.nullwire.trace.ExceptionHandler;
 
 public class HostListActivity extends ListActivity {
 	public final static int REQUEST_EDIT = 1;
@@ -135,8 +132,6 @@ public class HostListActivity extends ListActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
-
-		ExceptionHandler.checkForTraces(this);
 	}
 
 	@Override
@@ -165,8 +160,6 @@ public class HostListActivity extends ListActivity {
 				getResources().getText(R.string.app_name),
 				getResources().getText(R.string.title_hosts_list)));
 
-		ExceptionHandler.register(this);
-
 		// check for eula agreement
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -174,9 +167,6 @@ public class HostListActivity extends ListActivity {
 		if(!agreed) {
 			this.startActivityForResult(new Intent(this, WizardActivity.class), REQUEST_EULA);
 		}
-
-		// start thread to check for new version
-		new UpdateHelper(this);
 
 		this.makingShortcut = Intent.ACTION_CREATE_SHORTCUT.equals(getIntent().getAction())
 								|| Intent.ACTION_PICK.equals(getIntent().getAction());

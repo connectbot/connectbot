@@ -91,6 +91,7 @@
   <string name="pref_keepalive_summary">禁止屏幕睡眠当终端正在工作时</string>
   <string name="pref_wifilock_title">保持WI-FI激活</string>
   <string name="pref_wifilock_summary">禁止WiFi自动关闭当会话激活时</string>
+  <string name="pref_bumpyarrows_title">触摸反馈</string>
   <string name="pref_bumpyarrows_summary">振动当用轨迹球发出模拟方向键时; (对滞后连接特别有用)</string>
   <string name="pref_bell_category">终端铃声</string>
   <string name="pref_bell_title">响铃</string>

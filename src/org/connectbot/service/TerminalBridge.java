@@ -327,6 +327,10 @@ public class TerminalBridge implements VDUDisplay {
 			localOutput.add(s);
 
 			((vt320) buffer).putString(s);
+
+			// For accessibility
+			final char[] charArray = s.toCharArray();
+			propagateConsoleText(charArray, charArray.length);
 		}
 	}
 
@@ -645,6 +649,12 @@ public class TerminalBridge implements VDUDisplay {
 
 	public VDUBuffer getVDUBuffer() {
 		return buffer;
+	}
+
+	public void propagateConsoleText(char[] rawText, int length) {
+		if (parent != null) {
+			parent.propagateConsoleText(rawText, length);
+		}
 	}
 
 	public void onDraw() {

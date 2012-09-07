@@ -79,23 +79,6 @@ public class PubkeyUtils {
 			", bytes=" + encoded.length + "]";
 	}
 
-	public static String describeKey(Key key, boolean encrypted) {
-		String desc = null;
-		if (key instanceof RSAPublicKey) {
-			int bits = ((RSAPublicKey)key).getModulus().bitLength();
-			desc = "RSA " + String.valueOf(bits) + "-bit";
-		} else if (key instanceof DSAPublicKey) {
-			desc = "DSA 1024-bit";
-		} else {
-			desc = "Unknown Key Type";
-		}
-
-		if (encrypted)
-			desc += " (encrypted)";
-
-		return desc;
-	}
-
 	public static byte[] sha256(byte[] data) throws NoSuchAlgorithmException {
 		return MessageDigest.getInstance("SHA-256").digest(data);
 	}
@@ -338,17 +321,17 @@ public class PubkeyUtils {
 		return sb.toString();
 	}
 
-	final static private char hexDigit[] = { '0', '1', '2', '3', '4', '5', '6',
+	private static final char[] HEX_DIGITS = { '0', '1', '2', '3', '4', '5', '6',
 			'7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-	private static String encodeHex(byte[] bytes) {
-		char[] hex = new char[bytes.length * 2];
+	protected static String encodeHex(byte[] bytes) {
+		final char[] hex = new char[bytes.length * 2];
 
 		int i = 0;
 		for (byte b : bytes) {
-			hex[i++] = hexDigit[(b >> 4) & 0x0f];
-			hex[i++] = hexDigit[b & 0x0f];
+			hex[i++] = HEX_DIGITS[(b >> 4) & 0x0f];
+			hex[i++] = HEX_DIGITS[b & 0x0f];
 		}
 
-		return new String(hex);
+		return String.valueOf(hex);
 	}
 }

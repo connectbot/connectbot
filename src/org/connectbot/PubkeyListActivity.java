@@ -43,9 +43,9 @@ import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.DialogInterface.OnClickListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -58,17 +58,17 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.crypto.PEMDecoder;
@@ -275,7 +275,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			PublicKey pubKey = null;
 			try {
 				privKey = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType(), password);
-				pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
+				pubKey = pubkey.getPublicKey();
 			} catch (Exception e) {
 				String message = getResources().getString(R.string.pubkey_failed_add, pubkey.getNickname());
 				Log.e(TAG, message, e);
@@ -346,7 +346,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		copyPublicToClipboard.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				try {
-					PublicKey pk = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
+					PublicKey pk = pubkey.getPublicKey();
 					String openSSHPubkey = PubkeyUtils.convertToOpenSSHFormat(pk, pubkey.getNickname());
 
 					clipboard.setText(openSSHPubkey);
@@ -661,8 +661,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				}
 			} else {
 				try {
-					PublicKey pub = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
-					holder.caption.setText(PubkeyUtils.describeKey(pub, pubkey.isEncrypted()));
+					holder.caption.setText(pubkey.getDescription());
 				} catch (Exception e) {
 					Log.e(TAG, "Error decoding public key at " + pubkey.getId(), e);
 					holder.caption.setText(R.string.pubkey_unknown_format);

@@ -17,6 +17,7 @@
 
 package org.connectbot;
 
+import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 
 /**
@@ -24,24 +25,23 @@ import android.test.ActivityInstrumentationTestCase2;
  * {@link android.test.ApplicationTestCase ApplicationTestCase} for more
  * information on how to write and extend Application tests.
  * <p/>
- * To run this test, you can type:
- * adb shell am instrument -w \
- * -e class org.connectbot.HostListActivityTest \
+ * To run this test, you can type: adb shell am instrument -w \ -e class
+ * org.connectbot.HostListActivityTest \
  * org.connectbot.tests/android.test.InstrumentationTestRunner
  */
-public class HostListActivityTest extends
-		ActivityInstrumentationTestCase2<HostListActivity> {
+public class HostListActivityTest extends ActivityInstrumentationTestCase2<HostListActivity> {
+	private Activity mActivity;
 
 	public HostListActivityTest() {
 		super("org.connectbot", HostListActivity.class);
 	}
 
-	public void testOpenMenu() {
-		HostListActivity a = getActivity();
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
 
-		a.openOptionsMenu();
+		setActivityInitialTouchMode(false);
 
-		a.closeOptionsMenu();
+		mActivity = getActivity();
 	}
-
 }

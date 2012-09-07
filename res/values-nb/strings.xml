@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="app_desc">Enkel og kraftig SSH-klient med åpen kildekode.</string>
+  <string name="app_desc">Enkel og omfattende SSH-klient med åpen kildekode.</string>
   <string name="service_desc">Opprettholder SSH-tilkoblinger og innlastede offentlige nøkler</string>
   <string name="title_hosts_list">Verter</string>
   <string name="title_pubkey_list">Offentlige nøkler</string>

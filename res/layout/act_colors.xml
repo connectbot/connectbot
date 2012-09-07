@@ -24,7 +24,7 @@
 	android:layout_height="fill_parent">
 
 	<TextView
-		android:text="FG:"
+		android:text="@string/colors_fg"
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
 		android:id="@+id/fg_label"
@@ -47,7 +47,7 @@
 		/>
 
 	<TextView
-		android:text="BG:"
+		android:text="@string/color_bg"
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
 		android:layout_toLeftOf="@+id/bg"

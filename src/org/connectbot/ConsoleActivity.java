@@ -75,8 +75,6 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.nullwire.trace.ExceptionHandler;
-
 import de.mud.terminal.vt320;
 
 public class ConsoleActivity extends Activity {
@@ -275,8 +273,6 @@ public class ConsoleActivity extends Activity {
 				Configuration.KEYBOARD_QWERTY;
 
 		this.setContentView(R.layout.act_console);
-
-		ExceptionHandler.register(this);
 
 		clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
