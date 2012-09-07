@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">Egyszerű, hatékony, nyílt-forráskódú SSH kliens.</string>
+  <string name="service_desc">Fenntartja az SSH kapcsolatokat és a betöltött nyilvános kulcsokat</string>
   <string name="title_hosts_list">Kiszolgálók</string>
   <string name="title_pubkey_list">Publikus kulcsok</string>
   <string name="title_port_forwards_list">Port átiránytások</string>
@@ -126,6 +127,7 @@
   <string name="hostpref_connection_category">Kapcsolat beállításai</string>
   <string name="hostpref_username_title">Felhasználónév</string>
   <string name="hostpref_hostname_title">Kiszolgáló</string>
+  <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Még nem csatlakozott</string>
   <string name="bind_minutes">%1$s perce</string>
   <string name="bind_hours">%1$s órája</string>
@@ -151,6 +153,7 @@
   <string name="list_format_error">A %1$s formátum használata</string>
   <string name="format_username">felhasználónév</string>
   <string name="format_hostname">gépnév</string>
+  <string name="format_port">port</string>
   <string name="list_menu_pubkeys">Publikus kulcsok kezelése</string>
   <string name="list_menu_sortcolor">Rendezés szín szerint</string>
   <string name="list_menu_sortname">Rendezés név szerint</string>
@@ -165,7 +168,12 @@
   <string name="list_rotation_port">Álló mód kényszerítése</string>
   <string name="list_rotation_auto">Automatikus</string>
   <string name="list_camera_ctrlaspace">Ctrl+A majd Space</string>
+  <string name="list_camera_ctrla">Ctrl+A</string>
+  <string name="list_camera_esc">Esc</string>
+  <string name="list_camera_esc_a">Esc+A</string>
   <string name="list_camera_none">Semmit</string>
+  <string name="list_delkey_backspace">Backspace</string>
+  <string name="list_delkey_del">Delete</string>
   <string name="delete_message">Biztosan törli a \'%1$s\'-t?</string>
   <string name="delete_pos">Igen, törlés</string>
   <string name="delete_neg">Mégsem</string>

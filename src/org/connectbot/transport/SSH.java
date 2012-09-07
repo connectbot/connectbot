@@ -332,8 +332,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 					return false;
 				}
 
-				PublicKey pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(),
-						pubkey.getType());
+				PublicKey pubKey = pubkey.getPublicKey();
 
 				// convert key to trilead format
 				trileadKey = PubkeyUtils.convertToTrilead(privKey, pubKey);

@@ -17,7 +17,15 @@
 
 package org.connectbot.bean;
 
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.EncodedKeySpec;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
@@ -31,12 +39,16 @@ import android.content.ContentValues;
 public class PubkeyBean extends AbstractBean {
 	public static final String BEAN_NAME = "pubkey";
 
+	private static final String KEY_TYPE_RSA = "RSA";
+
+	private static final String KEY_TYPE_DSA = "DSA";
+
 	/* Database fields */
 	private long id;
 	private String nickname;
 	private String type;
 	private byte[] privateKey;
-	private byte[] publicKey;
+	private PublicKey publicKey;
 	private boolean encrypted = false;
 	private boolean startup = false;
 	private boolean confirmUse = false;
@@ -89,18 +101,36 @@ public class PubkeyBean extends AbstractBean {
 			return privateKey.clone();
 	}
 
-	public void setPublicKey(byte[] publicKey) {
-		if (publicKey == null)
-			this.publicKey = null;
-		else
-			this.publicKey = publicKey.clone();
+	private PublicKey decodePublicKeyAs(EncodedKeySpec keySpec, String keyType) {
+		try {
+			final KeyFactory kf = KeyFactory.getInstance(keyType);
+			return kf.generatePublic(keySpec);
+		} catch (NoSuchAlgorithmException e) {
+			return null;
+		} catch (InvalidKeySpecException e) {
+			return null;
+		}
 	}
 
-	public byte[] getPublicKey() {
-		if (publicKey == null)
-			return null;
-		else
-			return publicKey.clone();
+	public void setPublicKey(byte[] encoded) {
+		final X509EncodedKeySpec pubKeySpec = new X509EncodedKeySpec(encoded);
+		if (type != null) {
+			publicKey = decodePublicKeyAs(pubKeySpec, type);
+		} else {
+			publicKey = decodePublicKeyAs(pubKeySpec, KEY_TYPE_RSA);
+			if (publicKey != null) {
+				type = KEY_TYPE_RSA;
+			} else {
+				publicKey = decodePublicKeyAs(pubKeySpec, KEY_TYPE_DSA);
+				if (publicKey != null) {
+					type = KEY_TYPE_DSA;
+				}
+			}
+		}
+	}
+
+	public PublicKey getPublicKey() {
+		return publicKey;
 	}
 
 	public void setEncrypted(boolean encrypted) {
@@ -151,6 +181,25 @@ public class PubkeyBean extends AbstractBean {
 		return unlockedPrivate;
 	}
 
+	public String getDescription() {
+		StringBuilder sb = new StringBuilder();
+		if (publicKey instanceof RSAPublicKey) {
+			int bits = ((RSAPublicKey) publicKey).getModulus().bitLength();
+			sb.append("RSA ");
+			sb.append(bits);
+			sb.append("-bit");
+		} else if (publicKey instanceof DSAPublicKey) {
+			sb.append("DSA 1024-bit");
+		} else {
+			sb.append("Unknown Key Type");
+		}
+
+		if (encrypted)
+			sb.append(" (encrypted)");
+
+		return sb.toString();
+	}
+
 	/* (non-Javadoc)
 	 * @see org.connectbot.bean.AbstractBean#getValues()
 	 */
@@ -161,7 +210,7 @@ public class PubkeyBean extends AbstractBean {
 		values.put(PubkeyDatabase.FIELD_PUBKEY_NICKNAME, nickname);
 		values.put(PubkeyDatabase.FIELD_PUBKEY_TYPE, type);
 		values.put(PubkeyDatabase.FIELD_PUBKEY_PRIVATE, privateKey);
-		values.put(PubkeyDatabase.FIELD_PUBKEY_PUBLIC, publicKey);
+		values.put(PubkeyDatabase.FIELD_PUBKEY_PUBLIC, publicKey.getEncoded());
 		values.put(PubkeyDatabase.FIELD_PUBKEY_ENCRYPTED, encrypted ? 1 : 0);
 		values.put(PubkeyDatabase.FIELD_PUBKEY_STARTUP, startup ? 1 : 0);
 		values.put(PubkeyDatabase.FIELD_PUBKEY_CONFIRMUSE, confirmUse ? 1 : 0);

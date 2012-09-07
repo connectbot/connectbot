@@ -65,8 +65,8 @@ import android.view.View;
  * @author Keith Wiley, kwiley@keithwiley.com, http://keithwiley.com
  */
 public class UberColorPickerDialog extends Dialog {
-	private OnColorChangedListener mListener;
-	private int mInitialColor;
+	private final OnColorChangedListener mListener;
+	private final int mInitialColor;
 
 	/**
 	 * Callback to the creator of the dialog, informing the creator of a new color and notifying that the dialog is about to dismiss.

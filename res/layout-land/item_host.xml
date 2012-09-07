@@ -28,12 +28,13 @@
 	<ImageView
 		android:id="@android:id/icon"
 		android:src="@drawable/connected"
+		android:contentDescription="@string/image_description_connected"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
 		android:paddingTop="5dip"
 		/>
-		
+
 	<LinearLayout
 		android:orientation="horizontal"
 		android:layout_width="fill_parent"

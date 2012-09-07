@@ -26,9 +26,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Map.Entry;
 
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
@@ -59,12 +59,10 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.nullwire.trace.ExceptionHandler;
-
 /**
- * Manager for SSH connections that runs as a background service. This service
- * holds a list of currently connected SSH bridges that are ready for connection
- * up to a GUI if needed.
+ * Manager for SSH connections that runs as a service. This service holds a list
+ * of currently connected SSH bridges that are ready for connection up to a GUI
+ * if needed.
  *
  * @author jsharkey
  */
@@ -120,9 +118,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	@Override
 	public void onCreate() {
-		Log.i(TAG, "Starting background service");
-
-		ExceptionHandler.register(this);
+		Log.i(TAG, "Starting service");
 
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
@@ -141,7 +137,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		for (PubkeyBean pubkey : pubkeys) {
 			try {
 				PrivateKey privKey = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType());
-				PublicKey pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
+				PublicKey pubKey = pubkey.getPublicKey();
 				Object trileadKey = PubkeyUtils.convertToTrilead(privKey, pubKey);
 
 				addKey(pubkey, trileadKey);
@@ -171,7 +167,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	@Override
 	public void onDestroy() {
-		Log.i(TAG, "Destroying background service");
+		Log.i(TAG, "Destroying service");
 
 		disconnectAll(true);
 
@@ -453,7 +449,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				idleTimer.schedule(new IdleTask(), IDLE_TIMEOUT);
 			}
 		} else {
-			Log.d(TAG, "Stopping background service immediately");
+			Log.d(TAG, "Stopping service immediately");
 			stopSelf();
 		}
 	}

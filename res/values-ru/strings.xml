@@ -103,7 +103,7 @@
   <string name="list_keymode_left">Использовать клавиши с левой стороны</string>
   <string name="list_keymode_none">Отключить</string>
   <string name="list_pubkeyids_none">Не использовать ключи</string>
-  <string name="list_pubkeyids_any">Использовать любую разблокированную клавишу</string>
+  <string name="list_pubkeyids_any">Использовать любую свободную клавишу</string>
   <string name="list_update_daily">Ежедневно</string>
   <string name="list_update_weekly">Еженедельно</string>
   <string name="list_update_never">Никогда</string>

@@ -438,13 +438,6 @@
 	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
 	<string name="notification_text">"%1$s wants your attention."</string>
 
-	<!-- Dialog title when a new version of ConnectBot is detected. -->
-	<string name="upgrade">"New version"</string>
-	<!-- Button selection to upgrade to the latest ConnectBot when one is available. -->
-	<string name="upgrade_pos">"Yes, upgrade"</string>
-	<!-- Button selection to skip upgrading to the latest ConnectBot when one is available. -->
-	<string name="upgrade_neg">"Not right now"</string>
-
 	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
 	<string name="no">"No"</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
@@ -465,4 +458,28 @@
 	<string name="color_green">"green"</string>
 	<string name="color_blue">"blue"</string>
 	<string name="color_gray">"gray"</string>
+
+	<!-- Very short label indicating the thing next to it is "foreground color." -->
+	<string name="colors_fg">"FG":</string>
+
+	<!-- Very short label indicating the thing next to it is "background color." -->
+	<string name="color_bg">"BG:"</string>
+
+	<!-- Describes the image of the "connected to host" icon for accessibility purposes. -->
+	<string name="image_description_connected">"Connected."</string>
+
+	<!-- Describes the icon of the "locked pubkey" icon for accessibility purposes. -->
+	<string name="image_description_key_is_locked">"Key is locked."</string>
+
+	<!-- Describes the icon of the "send control character" button in the terminal view for
+	     accessibility purposes. -->
+	<string name="image_description_toggle_control_character">Toggle control character.</string>
+
+	<!-- Describes the icon of the "send escape character" button in the terminal view for
+	     accessibility purposes. -->
+	<string name="image_description_send_escape_character">Send escape character.</string>
+
+	<!-- Describes the icon of the "show keyboard" button in the terminal view for accessibility
+	     purposes. -->
+	<string name="image_description_show_keyboard">Show keyboard.</string>
 </resources>

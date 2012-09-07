@@ -124,6 +124,9 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		"CREATE INDEX " + TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index ON "
 		+ TABLE_COLOR_DEFAULTS + " (" + FIELD_COLOR_SCHEME + ");";
 
+	private static final String WHERE_SCHEME_AND_COLOR = FIELD_COLOR_SCHEME + " = ? AND "
+			+ FIELD_COLOR_NUMBER + " = ?";
+
 	static {
 		addTableName(TABLE_HOSTS);
 		addTableName(TABLE_PORTFORWARDS);
@@ -674,39 +677,30 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	public void setColorForScheme(int scheme, int number, int value) {
-		SQLiteDatabase db;
+		final SQLiteDatabase db;
 
-		String schemeWhere;
-		schemeWhere = FIELD_COLOR_SCHEME + " = ?";
+		final String[] whereArgs = new String[] { String.valueOf(scheme), String.valueOf(number) };
 
 		if (value == Colors.defaults[number]) {
-			String[] whereArgs = new String[1];
-
-			whereArgs[0] = String.valueOf(number);
-
 			synchronized (dbLock) {
 				db = getWritableDatabase();
 
 				db.delete(TABLE_COLORS,
-						FIELD_COLOR_NUMBER + " = ? AND "
-						+ schemeWhere,
-						new String[] { String.valueOf(number) });
+						WHERE_SCHEME_AND_COLOR, whereArgs);
 			}
 		} else {
-			ContentValues values = new ContentValues();
-			values.put(FIELD_COLOR_NUMBER, number);
+			final ContentValues values = new ContentValues();
 			values.put(FIELD_COLOR_VALUE, value);
-
-			String[] whereArgs = null;
-
-			whereArgs = new String[] { String.valueOf(scheme) };
 
 			synchronized (dbLock) {
 				db = getWritableDatabase();
-				int rowsAffected = db.update(TABLE_COLORS, values,
-						schemeWhere, whereArgs);
+
+				final int rowsAffected = db.update(TABLE_COLORS, values,
+						WHERE_SCHEME_AND_COLOR, whereArgs);
 
 				if (rowsAffected == 0) {
+					values.put(FIELD_COLOR_SCHEME, scheme);
+					values.put(FIELD_COLOR_NUMBER, number);
 					db.insert(TABLE_COLORS, null, values);
 				}
 			}
