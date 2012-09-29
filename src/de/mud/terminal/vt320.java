@@ -2590,7 +2590,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               debug("ESC [ " + DCEvars[0] + " C");
             break;
           case 'd': // CVA
-            R = DCEvars[0];
+            R = DCEvars[0] - 1;
             if (R < 0)
               R = 0;
             else if (R >= height)
