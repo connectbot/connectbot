@@ -2663,9 +2663,9 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case 'S': /* ind aka 'scroll forward' */
             if (DCEvars[0] == 0)
-              insertLine(rows - 1, SCROLL_UP);
+              insertLine(getBottomMargin(), SCROLL_UP);
             else
-              insertLine(rows - 1, DCEvars[0], SCROLL_UP);
+              insertLine(getBottomMargin(), DCEvars[0], SCROLL_UP);
             break;
           case 'L':
             /* insert n lines */
@@ -2678,9 +2678,9 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case 'T': /* 'ri' aka scroll backward */
             if (DCEvars[0] == 0)
-              insertLine(0, SCROLL_DOWN);
+              insertLine(getTopMargin(), SCROLL_DOWN);
             else
-              insertLine(0, DCEvars[0], SCROLL_DOWN);
+              insertLine(getTopMargin(), DCEvars[0], SCROLL_DOWN);
             break;
           case 'M':
             if (debug > 1)
