@@ -188,6 +188,24 @@
         </exec>
     </target>
 
+    <property name="lint" location="${android.tools.dir}/lint${bat}" />
+
+    <target name="lint-xml">
+        <exec executable="${lint}">
+            <arg value="--xml" />
+            <arg value="lint-results.xml" />
+            <arg path="${basedir}" />
+        </exec>
+    </target>
+
+    <target name="lint-html">
+        <exec executable="${lint}">
+            <arg value="--html" />
+            <arg value="lint-results.html" />
+            <arg path="${basedir}" />
+        </exec>
+    </target>
+
 <!-- End custom ConnectBot stuff -->
 
 </project>
