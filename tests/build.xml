@@ -116,18 +116,17 @@
             <arg line="${adb.device.arg}" />
             <arg value="pull" />
             <arg value="${emma.dump.file}" />
-            <arg value="coverage.ec" />
+            <arg value="${out.absolute.dir}/coverage.ec" />
         </exec>
         <echo>Extracting XML coverage report...</echo>
         <emma>
             <report sourcepath="${tested.project.source.absolute.dir}:${tested.project.lib.source.path.value}"
                     verbosity="${verbosity}">
-                <!-- TODO: report.dir or something like should be introd
-uced if necessary -->
+                <!-- TODO: report.dir or something like should be introduced if necessary -->
                 <infileset file="${out.absolute.dir}/coverage.ec" />
                 <infileset file="${tested.project.out.absolute.dir}/coverage.em" />
                 <!-- TODO: reports in other, indicated by user formats -->
-                <xml outfile="${out.absolute.dir}/coverage.html" />
+                <xml outfile="${out.absolute.dir}/coverage.xml" />
            </report>
         </emma>
         <echo level="info">Cleaning up temporary files...</echo>
