@@ -62,6 +62,27 @@
     </target>
 -->
 
+    <!-- Import the actual build file.
+
+         To customize existing targets, there are two options:
+         - Customize only one target:
+             - copy/paste the target into this file, *before* the
+               <import> task.
+             - customize it to your needs.
+         - Customize the whole content of build.xml
+             - copy/paste the content of the rules files (minus the top node)
+               into this file, replacing the <import> task.
+             - customize to your needs.
+
+         ***********************
+         ****** IMPORTANT ******
+         ***********************
+         In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
+         in order to avoid having your file be overridden by tools such as "android update project"
+    -->
+    <!-- version-tag: custom -->
+    <import file="${sdk.dir}/tools/ant/build.xml" />
+
     <target name="coverage-xml" depends="-test-project-check">
 
        <property name="tested.project.absolute.dir" location="${tested.project.dir}" />
@@ -71,6 +92,14 @@
         <!-- Application package of the tested project extracted from its manifest file -->
         <xpath input="${tested.project.absolute.dir}/AndroidManifest.xml"
                 expression="/manifest/@package" output="tested.manifest.package" />
+
+        <getprojectpaths projectPath="${tested.project.absolute.dir}"
+                binOut="tested.project.out.absolute.dir"
+                srcOut="tested.project.source.absolute.dir" />
+
+        <getlibpath projectPath="${tested.project.absolute.dir}"
+                libraryFolderPathOut="tested.project.lib.source.path"
+                leaf="@{source.dir}" />
 
         <property name="emma.dump.file"
                 value="/data/data/${tested.manifest.package}/coverage.ec" />
@@ -91,41 +120,20 @@
         </exec>
         <echo>Extracting XML coverage report...</echo>
         <emma>
-            <report sourcepath="${tested.project.absolute.dir}/${source.dir}"
-                              verbosity="${verbosity}">
-                <infileset dir=".">
-                    <include name="coverage.ec" />
-                    <include name="coverage.em" />
-                </infileset>
-                <xml outfile="coverage/coverage.xml" />
+            <report sourcepath="${tested.project.source.absolute.dir}:${tested.project.lib.source.path.value}"
+                    verbosity="${verbosity}">
+                <!-- TODO: report.dir or something like should be introd
+uced if necessary -->
+                <infileset file="${out.absolute.dir}/coverage.ec" />
+                <infileset file="${tested.project.out.absolute.dir}/coverage.em" />
+                <!-- TODO: reports in other, indicated by user formats -->
+                <xml outfile="${out.absolute.dir}/coverage.html" />
            </report>
         </emma>
-        <echo>Cleaning up temporary files...</echo>
-        <delete dir="${instrumentation.absolute.dir}" />
-        <delete file="coverage.ec" />
-        <delete file="coverage.em" />
-        <echo>Saving the report file in ${basedir}/coverage/coverage.xml</echo>
+        <echo level="info">Cleaning up temporary files...</echo>
+        <delete file="${out.absolute.dir}/coverage.ec" />
+        <delete file="${out.absolute.dir}/coverage.em" />
+        <echo level="info">Saving the report file in ${out.absolute.dir}/coverage.xml</echo>
     </target>
-
-    <!-- Import the actual build file.
-
-         To customize existing targets, there are two options:
-         - Customize only one target:
-             - copy/paste the target into this file, *before* the
-               <import> task.
-             - customize it to your needs.
-         - Customize the whole content of build.xml
-             - copy/paste the content of the rules files (minus the top node)
-               into this file, replacing the <import> task.
-             - customize to your needs.
-
-         ***********************
-         ****** IMPORTANT ******
-         ***********************
-         In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
-         in order to avoid having your file be overridden by tools such as "android update project"
-    -->
-    <!-- version-tag: 1 -->
-    <import file="${sdk.dir}/tools/ant/build.xml" />
 
 </project>
