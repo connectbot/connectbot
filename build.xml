@@ -141,13 +141,6 @@
         <echo>Updated "msg_version" to: ${ant.project.name} ${manifest.version.name} (${git.revision} ${build.date})</echo>
     </target>
 
-    <target name="clean"
-        description="Clean up the result of the build process">
-        <delete dir="${out.absolute.dir}"/>
-        <delete dir="${gen.absolute.dir}"/>
-        <ant dir="tests" target="clean" />
-    </target>
-
     <!-- Translations come from launchpad.net and are placed in the
          locale/ subdirectory. -->
     <target name="translations-import">
