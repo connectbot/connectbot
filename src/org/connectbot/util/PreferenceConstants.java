@@ -24,9 +24,10 @@ import android.os.Build;
  *
  */
 public class PreferenceConstants {
-	public static final boolean PRE_ECLAIR = (Integer.parseInt(Build.VERSION.SDK) <= 4);
-	public static final boolean PRE_FROYO = PRE_ECLAIR ? true :
-		(Integer.parseInt(Build.VERSION.SDK) <= 7);
+	public static final int SDK_INT = Integer.parseInt(Build.VERSION.SDK);
+	public static final boolean PRE_ECLAIR = SDK_INT < 5;
+	public static final boolean PRE_FROYO = SDK_INT < 8;
+	public static final boolean PRE_HONEYCOMB = SDK_INT < 11;
 
 	public static final String MEMKEYS = "memkeys";
 	public static final String UPDATE = "update";
