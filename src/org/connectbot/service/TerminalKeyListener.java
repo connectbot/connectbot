@@ -186,28 +186,26 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				curMetaState |= KeyEvent.META_ALT_ON;
 			}
 
-			int key = event.getUnicodeChar(curMetaState);
+			int uchar = event.getUnicodeChar(curMetaState);
 			// no hard keyboard?  ALT-k should pass through to below
 			if ((orgMetaState & KeyEvent.META_ALT_ON) != 0 &&
 					(!hardKeyboard || hardKeyboardHidden)) {
-				key = 0;
+				uchar = 0;
 			}
 
-			if ((key & KeyCharacterMap.COMBINING_ACCENT) != 0) {
-				mDeadKey = key & KeyCharacterMap.COMBINING_ACCENT_MASK;
+			if ((uchar & KeyCharacterMap.COMBINING_ACCENT) != 0) {
+				mDeadKey = uchar & KeyCharacterMap.COMBINING_ACCENT_MASK;
 				return true;
 			}
 
 			if (mDeadKey != 0) {
-				key = KeyCharacterMap.getDeadChar(mDeadKey, keyCode);
+				uchar = KeyCharacterMap.getDeadChar(mDeadKey, keyCode);
 				mDeadKey = 0;
 			}
 
-			final boolean printing = (key != 0);
-
 			// otherwise pass through to existing session
 			// print normal keys
-			if (printing) {
+			if (uchar >= 0x20) {
 				metaState &= ~(META_SLASH | META_TAB);
 
 				// Remove shift and alt modifiers
@@ -227,7 +225,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 							&& sendFunctionKey(keyCode))
 						return true;
 
-					key = keyAsControl(key);
+					uchar = keyAsControl(uchar);
 				}
 
 				// handle pressing f-keys
@@ -236,11 +234,11 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 						&& sendFunctionKey(keyCode))
 					return true;
 
-				if (key < 0x80)
-					bridge.transport.write(key);
+				if (uchar < 0x80)
+					bridge.transport.write(uchar);
 				else
 					// TODO write encoding routine that doesn't allocate each time
-					bridge.transport.write(new String(Character.toChars(key))
+					bridge.transport.write(new String(Character.toChars(uchar))
 							.getBytes(encoding));
 
 				return true;
