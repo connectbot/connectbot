@@ -126,6 +126,11 @@
         <xpath input="AndroidManifest.xml" expression="/manifest/@android:versionName"
                     output="manifest.version.name" />
 
+        <!-- tell git to ignore changes to the version xml -->
+        <exec executable="git">
+            <arg line="update-index --assume-unchanged res/values/version.xml"/>
+        </exec>
+
         <!-- find out the description of the current Git commit -->
         <exec executable="git" outputproperty="git.revision">
             <arg line="describe --match 'v[0-9]*' --dirty"/>
