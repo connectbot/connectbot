@@ -43,6 +43,9 @@ public abstract class ActionBarWrapper {
 	public void addOnMenuVisibilityListener(OnMenuVisibilityListener listener) {
 	}
 
+	public void setDisplayHomeAsUpEnabled(boolean showHomeAsUp) {
+	}
+
 	private static class DummyActionBar extends ActionBarWrapper {
 	}
 
@@ -70,6 +73,11 @@ public abstract class ActionBarWrapper {
 					listener.onMenuVisibilityChanged(isVisible);
 				}
 			});
+		}
+
+		@Override
+		public void setDisplayHomeAsUpEnabled(boolean showHomeAsUp) {
+			actionBar.setDisplayHomeAsUpEnabled(showHomeAsUp);
 		}
 	}
 }
