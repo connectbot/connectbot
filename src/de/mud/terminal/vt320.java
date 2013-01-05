@@ -2733,6 +2733,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               debug("ESC [ " + DCEvars[0] + " J");
             break;
           case '@':
+            if (DCEvars[0] == 0) DCEvars[0] = 1;
             if (debug > 1)
               debug("ESC [ " + DCEvars[0] + " @");
             for (int i = 0; i < DCEvars[0]; i++)
