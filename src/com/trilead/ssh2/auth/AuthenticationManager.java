@@ -2,7 +2,13 @@
 package com.trilead.ssh2.auth;
 
 import java.io.IOException;
+import java.security.KeyPair;
+import java.security.PrivateKey;
 import java.security.SecureRandom;
+import java.security.interfaces.DSAPrivateKey;
+import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Vector;
 
 import com.trilead.ssh2.InteractiveCallback;
@@ -19,12 +25,8 @@ import com.trilead.ssh2.packets.PacketUserauthRequestPassword;
 import com.trilead.ssh2.packets.PacketUserauthRequestPublicKey;
 import com.trilead.ssh2.packets.Packets;
 import com.trilead.ssh2.packets.TypesWriter;
-import com.trilead.ssh2.signature.DSAPrivateKey;
 import com.trilead.ssh2.signature.DSASHA1Verify;
-import com.trilead.ssh2.signature.DSASignature;
-import com.trilead.ssh2.signature.RSAPrivateKey;
 import com.trilead.ssh2.signature.RSASHA1Verify;
-import com.trilead.ssh2.signature.RSASignature;
 import com.trilead.ssh2.transport.MessageHandler;
 import com.trilead.ssh2.transport.TransportManager;
 
@@ -161,14 +163,16 @@ public class AuthenticationManager implements MessageHandler
 	public boolean authenticatePublicKey(String user, char[] PEMPrivateKey, String password, SecureRandom rnd)
 			throws IOException
 	{
-		Object key = PEMDecoder.decode(PEMPrivateKey, password);
-		
-		return authenticatePublicKey(user, key, rnd);
+		KeyPair pair = PEMDecoder.decode(PEMPrivateKey, password);
+
+		return authenticatePublicKey(user, pair, rnd);
 	}
-	
-	public boolean authenticatePublicKey(String user, Object key, SecureRandom rnd)
+
+	public boolean authenticatePublicKey(String user, KeyPair pair, SecureRandom rnd)
 			throws IOException
 	{
+		PrivateKey key = pair.getPrivate();
+
 		try
 		{
 			initialize(user);
@@ -180,7 +184,7 @@ public class AuthenticationManager implements MessageHandler
 			{
 				DSAPrivateKey pk = (DSAPrivateKey) key;
 
-				byte[] pk_enc = DSASHA1Verify.encodeSSHDSAPublicKey(pk.getPublicKey());
+				byte[] pk_enc = DSASHA1Verify.encodeSSHDSAPublicKey((DSAPublicKey) pair.getPublic());
 
 				TypesWriter tw = new TypesWriter();
 
@@ -197,7 +201,7 @@ public class AuthenticationManager implements MessageHandler
 
 				byte[] msg = tw.getBytes();
 
-				DSASignature ds = DSASHA1Verify.generateSignature(msg, pk, rnd);
+				byte[] ds = DSASHA1Verify.generateSignature(msg, pk, rnd);
 
 				byte[] ds_enc = DSASHA1Verify.encodeSSHDSASignature(ds);
 
@@ -209,7 +213,7 @@ public class AuthenticationManager implements MessageHandler
 			{
 				RSAPrivateKey pk = (RSAPrivateKey) key;
 
-				byte[] pk_enc = RSASHA1Verify.encodeSSHRSAPublicKey(pk.getPublicKey());
+				byte[] pk_enc = RSASHA1Verify.encodeSSHRSAPublicKey((RSAPublicKey) pair.getPublic());
 
 				TypesWriter tw = new TypesWriter();
 				{
@@ -227,7 +231,7 @@ public class AuthenticationManager implements MessageHandler
 
 				byte[] msg = tw.getBytes();
 
-				RSASignature ds = RSASHA1Verify.generateSignature(msg, pk);
+				byte[] ds = RSASHA1Verify.generateSignature(msg, pk);
 
 				byte[] rsa_sig_enc = RSASHA1Verify.encodeSSHRSASignature(ds);
 

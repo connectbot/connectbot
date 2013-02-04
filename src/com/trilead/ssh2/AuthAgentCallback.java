@@ -1,5 +1,6 @@
 package com.trilead.ssh2;
 
+import java.security.KeyPair;
 import java.util.Map;
 
 /**
@@ -24,7 +25,7 @@ public interface AuthAgentCallback {
 	 * @param lifetime lifetime in seconds for key to be remembered
 	 * @return success or failure
 	 */
-	boolean addIdentity(Object key, String comment, boolean confirmUse, int lifetime);
+	boolean addIdentity(KeyPair pair, String comment, boolean confirmUse, int lifetime);
 
 	/**
 	 * @param publicKey byte blob containing the OpenSSH-format encoded public key
@@ -43,7 +44,7 @@ public interface AuthAgentCallback {
 	 *         containing a DSA or RSA private key of
 	 *         the user in Trilead object format.
 	 */
-	Object getPrivateKey(byte[] publicKey);
+	KeyPair getKeyPair(byte[] publicKey);
 
 	/**
 	 * @return

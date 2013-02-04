@@ -3,6 +3,8 @@ package com.trilead.ssh2.transport;
 
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.RSAPublicKey;
 
 import com.trilead.ssh2.ConnectionInfo;
 import com.trilead.ssh2.DHGexParameters;
@@ -27,12 +29,8 @@ import com.trilead.ssh2.packets.PacketKexDhGexRequestOld;
 import com.trilead.ssh2.packets.PacketKexInit;
 import com.trilead.ssh2.packets.PacketNewKeys;
 import com.trilead.ssh2.packets.Packets;
-import com.trilead.ssh2.signature.DSAPublicKey;
 import com.trilead.ssh2.signature.DSASHA1Verify;
-import com.trilead.ssh2.signature.DSASignature;
-import com.trilead.ssh2.signature.RSAPublicKey;
 import com.trilead.ssh2.signature.RSASHA1Verify;
-import com.trilead.ssh2.signature.RSASignature;
 
 
 /**
@@ -348,7 +346,7 @@ public class KexManager
 	{
 		if (kxs.np.server_host_key_algo.equals("ssh-rsa"))
 		{
-			RSASignature rs = RSASHA1Verify.decodeSSHRSASignature(sig);
+			byte[] rs = RSASHA1Verify.decodeSSHRSASignature(sig);
 			RSAPublicKey rpk = RSASHA1Verify.decodeSSHRSAPublicKey(hostkey);
 
 			log.log(50, "Verifying ssh-rsa signature");
@@ -358,7 +356,7 @@ public class KexManager
 
 		if (kxs.np.server_host_key_algo.equals("ssh-dss"))
 		{
-			DSASignature ds = DSASHA1Verify.decodeSSHDSASignature(sig);
+			byte[] ds = DSASHA1Verify.decodeSSHDSASignature(sig);
 			DSAPublicKey dpk = DSASHA1Verify.decodeSSHDSAPublicKey(hostkey);
 
 			log.log(50, "Verifying ssh-dss signature");

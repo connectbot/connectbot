@@ -5,15 +5,25 @@ import java.io.BufferedReader;
 import java.io.CharArrayReader;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.DigestException;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.DSAPrivateKeySpec;
+import java.security.spec.DSAPublicKeySpec;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAPrivateCrtKeySpec;
+import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.RSAPublicKeySpec;
 
 import com.trilead.ssh2.crypto.cipher.AES;
 import com.trilead.ssh2.crypto.cipher.BlockCipher;
 import com.trilead.ssh2.crypto.cipher.CBCMode;
 import com.trilead.ssh2.crypto.cipher.DES;
 import com.trilead.ssh2.crypto.cipher.DESede;
-import com.trilead.ssh2.crypto.digest.MD5;
-import com.trilead.ssh2.signature.DSAPrivateKey;
-import com.trilead.ssh2.signature.RSAPrivateKey;
 
 /**
  * PEM Support.
@@ -73,7 +83,12 @@ public class PEMDecoder
 		if (salt.length < 8)
 			throw new IllegalArgumentException("Salt needs to be at least 8 bytes for key generation.");
 
-		MD5 md5 = new MD5();
+		MessageDigest md5;
+		try {
+			md5 = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			throw new IllegalArgumentException("VM does not support MD5", e);
+		}
 
 		byte[] key = new byte[keyLen];
 		byte[] tmp = new byte[md5.getDigestLength()];
@@ -87,7 +102,13 @@ public class PEMDecoder
 
 			int copy = (keyLen < tmp.length) ? keyLen : tmp.length;
 
-			md5.digest(tmp, 0);
+			try {
+				md5.digest(tmp, 0, tmp.length);
+			} catch (DigestException e) {
+				IOException ex = new IOException("could not digest password");
+				ex.initCause(e);
+				throw ex;
+			}
 
 			System.arraycopy(tmp, 0, key, key.length - keyLen, copy);
 
@@ -308,7 +329,7 @@ public class PEMDecoder
 		return false;
 	}
 
-	public static Object decode(char[] pem, String password) throws IOException
+	public static KeyPair decode(char[] pem, String password) throws IOException
 	{
 		PEMStructure ps = parsePEM(pem);
 
@@ -345,7 +366,26 @@ public class PEMDecoder
 			if (dr.available() != 0)
 				throw new IOException("Padding in DSA PRIVATE KEY DER stream.");
 
-			return new DSAPrivateKey(p, q, g, y, x);
+			DSAPrivateKeySpec privSpec = new DSAPrivateKeySpec(x, p, q, g);
+			DSAPublicKeySpec pubSpec = new DSAPublicKeySpec(y, p, q, g);
+
+			PublicKey pubKey;
+			PrivateKey privKey;
+			try {
+				KeyFactory kf = KeyFactory.getInstance("DSA");
+				pubKey = kf.generatePublic(pubSpec);
+				privKey = kf.generatePrivate(privSpec);
+			} catch (NoSuchAlgorithmException e) {
+				IOException ex = new IOException();
+				ex.initCause(ex);
+				throw ex;
+			} catch (InvalidKeySpecException e) {
+				IOException ex = new IOException();
+				ex.initCause(ex);
+				throw ex;
+			}
+
+			return new KeyPair(pubKey, privKey);
 		}
 
 		if (ps.pemType == PEM_RSA_PRIVATE_KEY)
@@ -367,8 +407,33 @@ public class PEMDecoder
 			BigInteger n = dr.readInt();
 			BigInteger e = dr.readInt();
 			BigInteger d = dr.readInt();
+			// TODO: is this right?
+			BigInteger primeP = dr.readInt();
+			BigInteger primeQ = dr.readInt();
+			BigInteger expP = dr.readInt();
+			BigInteger expQ = dr.readInt();
+			BigInteger coeff = dr.readInt();
 
-			return new RSAPrivateKey(d, e, n);
+			RSAPrivateKeySpec privSpec = new RSAPrivateCrtKeySpec(n, e, d, primeP, primeQ, expP, expQ, coeff);
+			RSAPublicKeySpec pubSpec = new RSAPublicKeySpec(n, e);
+
+			PublicKey pubKey;
+			PrivateKey privKey;
+			try {
+			KeyFactory kf = KeyFactory.getInstance("RSA");
+			pubKey = kf.generatePublic(pubSpec);
+			privKey = kf.generatePrivate(privSpec);
+			} catch (NoSuchAlgorithmException ex) {
+				IOException ioex = new IOException();
+				ioex.initCause(ex);
+				throw ioex;
+			} catch (InvalidKeySpecException ex) {
+				IOException ioex = new IOException("invalid keyspec");
+				ioex.initCause(ex);
+				throw ioex;
+			}
+
+			return new KeyPair(pubKey, privKey);
 		}
 
 		throw new IOException("PEM problem: it is of unknown type");
