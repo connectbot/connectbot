@@ -37,7 +37,7 @@ import java.security.spec.ECPrivateKeySpec;
 import java.security.spec.ECPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
-import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -293,13 +293,17 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 				BigInteger n = tr.readMPINT();
 				BigInteger e = tr.readMPINT();
 				BigInteger d = tr.readMPINT();
-				tr.readMPINT(); // iqmp
-				tr.readMPINT(); // p
-				tr.readMPINT(); // q
+				BigInteger iqmp = tr.readMPINT();
+				BigInteger p = tr.readMPINT();
+				BigInteger q = tr.readMPINT();
 				comment = tr.readString();
 
+				// Derive the extra values Java needs.
+				BigInteger dmp1 = d.mod(p.subtract(BigInteger.ONE));
+				BigInteger dmq1 = d.mod(q.subtract(BigInteger.ONE));
+
 				pubSpec = new RSAPublicKeySpec(n, e);
-				privSpec = new RSAPrivateKeySpec(n, d);
+				privSpec = new RSAPrivateCrtKeySpec(n, e, d, p, q, dmp1, dmq1, iqmp);
 			} else if (type.equals("ssh-dss")) {
 				keyType = "DSA";
 
