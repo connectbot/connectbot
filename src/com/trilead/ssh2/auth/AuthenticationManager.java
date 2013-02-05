@@ -7,6 +7,8 @@ import java.security.PrivateKey;
 import java.security.SecureRandom;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Vector;
@@ -26,6 +28,7 @@ import com.trilead.ssh2.packets.PacketUserauthRequestPublicKey;
 import com.trilead.ssh2.packets.Packets;
 import com.trilead.ssh2.packets.TypesWriter;
 import com.trilead.ssh2.signature.DSASHA1Verify;
+import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
 import com.trilead.ssh2.transport.MessageHandler;
 import com.trilead.ssh2.transport.TransportManager;
@@ -239,7 +242,37 @@ public class AuthenticationManager implements MessageHandler
 						"ssh-rsa", pk_enc, rsa_sig_enc);
 
 				tm.sendMessage(ua.getPayload());
+			}
+			else if (key instanceof ECPrivateKey)
+			{
+				ECPrivateKey pk = (ECPrivateKey) key;
 
+				byte[] pk_enc = ECDSASHA2Verify.encodeSSHECDSAPublicKey((ECPublicKey) pair.getPublic());
+
+				TypesWriter tw = new TypesWriter();
+				{
+					byte[] H = tm.getSessionIdentifier();
+
+					tw.writeString(H, 0, H.length);
+					tw.writeByte(Packets.SSH_MSG_USERAUTH_REQUEST);
+					tw.writeString(user);
+					tw.writeString("ssh-connection");
+					tw.writeString("publickey");
+					tw.writeBoolean(true);
+					tw.writeString("ecdsa-sha2-nistp256");
+					tw.writeString(pk_enc, 0, pk_enc.length);
+				}
+
+				byte[] msg = tw.getBytes();
+
+				byte[] ds = ECDSASHA2Verify.generateSignature(msg, pk);
+
+				byte[] ec_sig_enc = ECDSASHA2Verify.encodeSSHECDSASignature(ds);
+
+				PacketUserauthRequestPublicKey ua = new PacketUserauthRequestPublicKey("ssh-connection", user,
+						"ecdsa-sha2-nistp256", pk_enc, ec_sig_enc);
+
+				tm.sendMessage(ua.getPayload());
 			}
 			else
 			{

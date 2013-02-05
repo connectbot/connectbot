@@ -17,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -28,6 +29,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.signature.DSASHA1Verify;
+import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
 
 
@@ -113,6 +115,14 @@ public class KnownHosts
 			synchronized (publicKeys)
 			{
 				publicKeys.add(new KnownHostsEntry(hostnames, dpk));
+			}
+		}
+		else if ("ecdsa-sha2-nistp256".equals(serverHostKeyAlgorithm))
+		{
+			ECPublicKey epk = ECDSASHA2Verify.decodeSSHECDSAPublicKey(serverHostKey);
+
+			synchronized (publicKeys) {
+				publicKeys.add(new KnownHostsEntry(hostnames, epk));
 			}
 		}
 		else
@@ -590,6 +600,10 @@ public class KnownHosts
 		{
 			remoteKey = DSASHA1Verify.decodeSSHDSAPublicKey(serverHostKey);
 		}
+		else if ("ecdsa-sha2-nistp256".equals(serverHostKeyAlgorithm))
+		{
+		    remoteKey = ECDSASHA2Verify.decodeSSHECDSAPublicKey(serverHostKey);
+		}
 		else
 			throw new IllegalArgumentException("Unknown hostkey type " + serverHostKeyAlgorithm);
 
@@ -705,7 +719,10 @@ public class KnownHosts
 			throw new IllegalArgumentException("Unknown hash type " + type);
 		}
 
-		if ("ssh-rsa".equals(keyType))
+		if ("ecdsa-sha2-nistp256".equals(keyType))
+		{
+		}
+		else if ("ssh-rsa".equals(keyType))
 		{
 		}
 		else if ("ssh-dss".equals(keyType))

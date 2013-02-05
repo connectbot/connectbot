@@ -31,6 +31,10 @@ import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.DSAPrivateKeySpec;
 import java.security.spec.DSAPublicKeySpec;
+import java.security.spec.ECParameterSpec;
+import java.security.spec.ECPoint;
+import java.security.spec.ECPrivateKeySpec;
+import java.security.spec.ECPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.RSAPrivateKeySpec;
@@ -43,6 +47,7 @@ import com.trilead.ssh2.log.Logger;
 import com.trilead.ssh2.packets.TypesReader;
 import com.trilead.ssh2.packets.TypesWriter;
 import com.trilead.ssh2.signature.DSASHA1Verify;
+import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
 
 /**
@@ -277,10 +282,14 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 
 			String type = tr.readString();
 
-			KeyPair pair;
 			String comment;
+			String keyType;
+			KeySpec pubSpec;
+			KeySpec privSpec;
 
 			if (type.equals("ssh-rsa")) {
+				keyType = "RSA";
+
 				BigInteger n = tr.readMPINT();
 				BigInteger e = tr.readMPINT();
 				BigInteger d = tr.readMPINT();
@@ -289,25 +298,11 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 				tr.readMPINT(); // q
 				comment = tr.readString();
 
-				KeySpec pubSpec = new RSAPublicKeySpec(n, e);
-				KeySpec privSpec = new RSAPrivateKeySpec(n, d);
-
-				PublicKey pubKey;
-				PrivateKey privKey;
-				try {
-					KeyFactory kf = KeyFactory.getInstance("RSA");
-					pubKey = kf.generatePublic(pubSpec);
-					privKey = kf.generatePrivate(privSpec);
-				} catch (NoSuchAlgorithmException ex) {
-					// TODO: log error
-					return;
-				} catch (InvalidKeySpecException ex) {
-					// TODO: log error
-					return;
-				}
-
-				pair = new KeyPair(pubKey, privKey);
+				pubSpec = new RSAPublicKeySpec(n, e);
+				privSpec = new RSAPrivateKeySpec(n, d);
 			} else if (type.equals("ssh-dss")) {
+				keyType = "DSA";
+
 				BigInteger p = tr.readMPINT();
 				BigInteger q = tr.readMPINT();
 				BigInteger g = tr.readMPINT();
@@ -315,28 +310,55 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 				BigInteger x = tr.readMPINT();
 				comment = tr.readString();
 
-				KeySpec pubSpec = new DSAPublicKeySpec(y, p, q, g);
-				KeySpec privSpec = new DSAPrivateKeySpec(x, p, q, g);
+				pubSpec = new DSAPublicKeySpec(y, p, q, g);
+				privSpec = new DSAPrivateKeySpec(x, p, q, g);
+			} else if (type.equals("ecdsa-sha2-nistp256")) {
+				keyType = "EC";
 
-				PublicKey pubKey;
-				PrivateKey privKey;
-				try {
-					KeyFactory kf = KeyFactory.getInstance("DSA");
-					pubKey = kf.generatePublic(pubSpec);
-					privKey = kf.generatePrivate(privSpec);
-				} catch (NoSuchAlgorithmException ex) {
-					// TODO: log error
-					return;
-				} catch (InvalidKeySpecException ex) {
-					// TODO: log error
+				String curveName = tr.readString();
+				byte[] groupBytes = tr.readByteString();
+				BigInteger exponent = tr.readMPINT();
+				comment = tr.readString();
+
+				if (!"nistp256".equals(curveName)) {
+					log.log(2, "Invalid curve name for ecdsa-sha2-nistp256: " + curveName);
+					os.write(SSH_AGENT_FAILURE);
 					return;
 				}
 
-				pair = new KeyPair(pubKey, privKey);
+				ECParameterSpec nistp256 = ECDSASHA2Verify.EllipticCurves.nistp256;
+				ECPoint group = ECDSASHA2Verify.decodeECPoint(groupBytes, nistp256.getCurve());
+				if (group == null) {
+					// TODO log error
+					os.write(SSH_AGENT_FAILURE);
+					return;
+				}
+
+				pubSpec = new ECPublicKeySpec(group, nistp256);
+				privSpec = new ECPrivateKeySpec(exponent, nistp256);
 			} else {
+				log.log(2, "Unknown key type: " + type);
 				os.write(SSH_AGENT_FAILURE);
 				return;
 			}
+
+			PublicKey pubKey;
+			PrivateKey privKey;
+			try {
+				KeyFactory kf = KeyFactory.getInstance(keyType);
+				pubKey = kf.generatePublic(pubSpec);
+				privKey = kf.generatePrivate(privSpec);
+			} catch (NoSuchAlgorithmException ex) {
+				// TODO: log error
+				 os.write(SSH_AGENT_FAILURE);
+				return;
+			} catch (InvalidKeySpecException ex) {
+				// TODO: log error
+				 os.write(SSH_AGENT_FAILURE);
+				return;
+			}
+
+			KeyPair pair = new KeyPair(pubKey, privKey);
 
 			boolean confirmUse = false;
 			int lifetime = 0;

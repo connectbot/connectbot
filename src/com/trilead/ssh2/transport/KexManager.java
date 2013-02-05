@@ -4,7 +4,10 @@ package com.trilead.ssh2.transport;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.trilead.ssh2.ConnectionInfo;
 import com.trilead.ssh2.DHGexParameters;
@@ -30,6 +33,7 @@ import com.trilead.ssh2.packets.PacketKexInit;
 import com.trilead.ssh2.packets.PacketNewKeys;
 import com.trilead.ssh2.packets.Packets;
 import com.trilead.ssh2.signature.DSASHA1Verify;
+import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
 
 
@@ -42,6 +46,20 @@ import com.trilead.ssh2.signature.RSASHA1Verify;
 public class KexManager
 {
 	private static final Logger log = Logger.getLogger(KexManager.class);
+
+	private static final Set<String> HOSTKEY_ALGS = new TreeSet<String>();
+	static {
+		HOSTKEY_ALGS.add("ecdsa-sha2-nistp256");
+		HOSTKEY_ALGS.add("ssh-rsa");
+		HOSTKEY_ALGS.add("ssh-dsa");
+	}
+
+	private static final Set<String> KEX_ALGS = new TreeSet<String>();
+	static {
+		KEX_ALGS.add("diffie-hellman-group-exchange-sha1");
+		KEX_ALGS.add("diffie-hellman-group14-sha1");
+		KEX_ALGS.add("diffie-hellman-group1-sha1");
+	}
 
 	KexState kxs;
 	int kexCount = 0;
@@ -307,43 +325,44 @@ public class KexManager
 
 	public static final String[] getDefaultServerHostkeyAlgorithmList()
 	{
-		return new String[] { "ssh-rsa", "ssh-dss" };
+		return HOSTKEY_ALGS.toArray(new String[HOSTKEY_ALGS.size()]);
 	}
 
 	public static final void checkServerHostkeyAlgorithmsList(String[] algos)
 	{
 		for (int i = 0; i < algos.length; i++)
 		{
-			if (("ssh-rsa".equals(algos[i]) == false) && ("ssh-dss".equals(algos[i]) == false))
+			if (!HOSTKEY_ALGS.contains(algos[i]))
 				throw new IllegalArgumentException("Unknown server host key algorithm '" + algos[i] + "'");
 		}
 	}
 
 	public static final String[] getDefaultKexAlgorithmList()
 	{
-		return new String[] { "diffie-hellman-group-exchange-sha1", "diffie-hellman-group14-sha1",
-				"diffie-hellman-group1-sha1" };
+		return KEX_ALGS.toArray(new String[KEX_ALGS.size()]);
 	}
 
 	public static final void checkKexAlgorithmList(String[] algos)
 	{
 		for (int i = 0; i < algos.length; i++)
 		{
-			if ("diffie-hellman-group-exchange-sha1".equals(algos[i]))
-				continue;
-
-			if ("diffie-hellman-group14-sha1".equals(algos[i]))
-				continue;
-
-			if ("diffie-hellman-group1-sha1".equals(algos[i]))
-				continue;
-
-			throw new IllegalArgumentException("Unknown kex algorithm '" + algos[i] + "'");
+			if (!KEX_ALGS.contains(algos[i]))
+				throw new IllegalArgumentException("Unknown kex algorithm '" + algos[i] + "'");
 		}
 	}
 
 	private boolean verifySignature(byte[] sig, byte[] hostkey) throws IOException
 	{
+		if (kxs.np.server_host_key_algo.equals("ecdsa-sha2-nistp256"))
+		{
+			byte[] rs = ECDSASHA2Verify.decodeSSHECDSASignature(sig);
+			ECPublicKey epk = ECDSASHA2Verify.decodeSSHECDSAPublicKey(hostkey);
+
+			log.log(50, "Verifying ecdsa-sha2-nistp256");
+
+			return ECDSASHA2Verify.verifySignature(kxs.H, rs, epk);
+		}
+
 		if (kxs.np.server_host_key_algo.equals("ssh-rsa"))
 		{
 			byte[] rs = RSASHA1Verify.decodeSSHRSASignature(sig);

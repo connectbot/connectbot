@@ -152,6 +152,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				algorithmName = "RSA";
 			else if ("ssh-dss".equals(serverHostKeyAlgorithm))
 				algorithmName = "DSA";
+			else if (serverHostKeyAlgorithm.startsWith("ecdsa-"))
+			    algorithmName = "EC";
 			else
 				algorithmName = serverHostKeyAlgorithm;
 
