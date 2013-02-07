@@ -267,7 +267,7 @@ public class AuthenticationManager implements MessageHandler
 
 				byte[] ds = ECDSASHA2Verify.generateSignature(msg, pk);
 
-				byte[] ec_sig_enc = ECDSASHA2Verify.encodeSSHECDSASignature(ds);
+				byte[] ec_sig_enc = ECDSASHA2Verify.encodeSSHECDSASignature(ds, pk.getParams());
 
 				PacketUserauthRequestPublicKey ua = new PacketUserauthRequestPublicKey("ssh-connection", user,
 						"ecdsa-sha2-nistp256", pk_enc, ec_sig_enc);

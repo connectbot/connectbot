@@ -117,7 +117,7 @@ public class KnownHosts
 				publicKeys.add(new KnownHostsEntry(hostnames, dpk));
 			}
 		}
-		else if ("ecdsa-sha2-nistp256".equals(serverHostKeyAlgorithm))
+		else if (serverHostKeyAlgorithm.startsWith(ECDSASHA2Verify.ECDSA_SHA2_PREFIX))
 		{
 			ECPublicKey epk = ECDSASHA2Verify.decodeSSHECDSAPublicKey(serverHostKey);
 
@@ -465,7 +465,7 @@ public class KnownHosts
 
 	private final boolean matchKeys(PublicKey key1, PublicKey key2)
 	{
-	    return key1.equals(key2);
+		return key1.equals(key2);
 	}
 
 	private final boolean pseudoRegex(char[] pattern, int i, char[] match, int j)
@@ -600,9 +600,9 @@ public class KnownHosts
 		{
 			remoteKey = DSASHA1Verify.decodeSSHDSAPublicKey(serverHostKey);
 		}
-		else if ("ecdsa-sha2-nistp256".equals(serverHostKeyAlgorithm))
+		else if (serverHostKeyAlgorithm.startsWith("ecdsa-sha2-"))
 		{
-		    remoteKey = ECDSASHA2Verify.decodeSSHECDSAPublicKey(serverHostKey);
+			remoteKey = ECDSASHA2Verify.decodeSSHECDSAPublicKey(serverHostKey);
 		}
 		else
 			throw new IllegalArgumentException("Unknown hostkey type " + serverHostKeyAlgorithm);
@@ -719,7 +719,7 @@ public class KnownHosts
 			throw new IllegalArgumentException("Unknown hash type " + type);
 		}
 
-		if ("ecdsa-sha2-nistp256".equals(keyType))
+		if (keyType.startsWith("ecdsa-sha2-"))
 		{
 		}
 		else if ("ssh-rsa".equals(keyType))

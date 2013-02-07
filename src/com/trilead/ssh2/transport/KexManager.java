@@ -50,6 +50,8 @@ public class KexManager
 	private static final Set<String> HOSTKEY_ALGS = new TreeSet<String>();
 	static {
 		HOSTKEY_ALGS.add("ecdsa-sha2-nistp256");
+		HOSTKEY_ALGS.add("ecdsa-sha2-nistp384");
+		HOSTKEY_ALGS.add("ecdsa-sha2-nistp521");
 		HOSTKEY_ALGS.add("ssh-rsa");
 		HOSTKEY_ALGS.add("ssh-dsa");
 	}
@@ -353,12 +355,12 @@ public class KexManager
 
 	private boolean verifySignature(byte[] sig, byte[] hostkey) throws IOException
 	{
-		if (kxs.np.server_host_key_algo.equals("ecdsa-sha2-nistp256"))
+		if (kxs.np.server_host_key_algo.startsWith("ecdsa-sha2-"))
 		{
 			byte[] rs = ECDSASHA2Verify.decodeSSHECDSASignature(sig);
 			ECPublicKey epk = ECDSASHA2Verify.decodeSSHECDSAPublicKey(hostkey);
 
-			log.log(50, "Verifying ecdsa-sha2-nistp256");
+			log.log(50, "Verifying ecdsa signature");
 
 			return ECDSASHA2Verify.verifySignature(kxs.H, rs, epk);
 		}

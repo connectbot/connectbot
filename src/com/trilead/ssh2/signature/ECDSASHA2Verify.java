@@ -3,7 +3,9 @@
  */
 package com.trilead.ssh2.signature;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
@@ -19,6 +21,8 @@ import java.security.spec.ECPublicKeySpec;
 import java.security.spec.EllipticCurve;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.trilead.ssh2.log.Logger;
 import com.trilead.ssh2.packets.TypesReader;
@@ -31,14 +35,34 @@ import com.trilead.ssh2.packets.TypesWriter;
 public class ECDSASHA2Verify {
 	private static final Logger log = Logger.getLogger(ECDSASHA2Verify.class);
 
+	public static final String ECDSA_SHA2_PREFIX = "ecdsa-sha2-";
+
+	private static final String NISTP256 = "nistp256";
+	private static final String NISTP384 = "nistp384";
+	private static final String NISTP521 = "nistp521";
+
+	private static final Map<String, ECParameterSpec> CURVES = new TreeMap<String, ECParameterSpec>();
+	static {
+		CURVES.put(NISTP256, EllipticCurves.nistp256);
+		CURVES.put(NISTP384, EllipticCurves.nistp384);
+		CURVES.put(NISTP521, EllipticCurves.nistp521);
+	}
+
+	private static final Map<Integer, String> CURVE_SIZES = new TreeMap<Integer, String>();
+	static {
+		CURVE_SIZES.put(256, NISTP256);
+		CURVE_SIZES.put(384, NISTP384);
+		CURVE_SIZES.put(521, NISTP521);
+	}
+
 	public static ECPublicKey decodeSSHECDSAPublicKey(byte[] key) throws IOException
 	{
 		TypesReader tr = new TypesReader(key);
 
 		String key_format = tr.readString();
 
-		if (key_format.equals("ecdsa-sha2-nistp256") == false)
-			throw new IllegalArgumentException("This is not an ecdsa-sha2-nistp256 public key");
+		if (key_format.startsWith(ECDSA_SHA2_PREFIX) == false)
+			throw new IllegalArgumentException("This is not an ECDSA public key");
 
 		String curveName = tr.readString();
 		byte[] groupBytes = tr.readByteString();
@@ -46,17 +70,22 @@ public class ECDSASHA2Verify {
 		if (tr.remain() != 0)
 			throw new IOException("Padding in ECDSA public key!");
 
-		if (!"nistp256".equals(curveName)) {
-			throw new IOException("Curve is not nistp256");
+		if (key_format.equals(ECDSA_SHA2_PREFIX + curveName) == false) {
+			throw new IOException("Key format is inconsistent with curve name: " + key_format
+					+ " != " + curveName);
 		}
 
-		ECParameterSpec nistp256 = ECDSASHA2Verify.EllipticCurves.nistp256;
-		ECPoint group = ECDSASHA2Verify.decodeECPoint(groupBytes, nistp256.getCurve());
+		ECParameterSpec params = CURVES.get(curveName);
+		if (params == null) {
+			throw new IOException("Curve is not supported: " + curveName);
+		}
+
+		ECPoint group = ECDSASHA2Verify.decodeECPoint(groupBytes, params.getCurve());
 		if (group == null) {
 			throw new IOException("Invalid ECDSA group");
 		}
 
-		KeySpec keySpec = new ECPublicKeySpec(group, nistp256);
+		KeySpec keySpec = new ECPublicKeySpec(group, params);
 
 		try {
 			KeyFactory kf = KeyFactory.getInstance("EC");
@@ -75,24 +104,45 @@ public class ECDSASHA2Verify {
 	public static byte[] encodeSSHECDSAPublicKey(ECPublicKey key) throws IOException {
 		TypesWriter tw = new TypesWriter();
 
-		tw.writeString("ecdsa-sha2-nistp256");
+		String curveName = getCurveName(key.getParams());
 
-		tw.writeString("nistp256");
+		String keyFormat = ECDSA_SHA2_PREFIX + curveName;
+
+		tw.writeString(keyFormat);
+
+		tw.writeString(curveName);
 
 		tw.writeBytes(encodeECPoint(key.getW(), key.getParams().getCurve()));
 
 		return tw.getBytes();
 	}
 
+	private static String getCurveName(ECParameterSpec params) throws IOException {
+		int fieldSize = getCurveSize(params);
+		String curveName = CURVE_SIZES.get(fieldSize);
+		if (curveName == null) {
+			throw new IOException("Unsupported curve field size: " + fieldSize);
+		}
+		return curveName;
+	}
+
+	private static int getCurveSize(ECParameterSpec params) {
+		return params.getCurve().getField().getFieldSize();
+	}
+
 	public static byte[] decodeSSHECDSASignature(byte[] sig) throws IOException {
 		byte[] rsArray = null;
 
-		/* Hopefully a server obeying the standard... */
 		TypesReader tr = new TypesReader(sig);
 
 		String sig_format = tr.readString();
-		if (sig_format.equals("ecdsa-sha2-nistp256") == false)
+		if (sig_format.startsWith(ECDSA_SHA2_PREFIX) == false)
 			throw new IOException("Peer sent wrong signature format");
+
+		String curveName = sig_format.substring(ECDSA_SHA2_PREFIX.length());
+		if (CURVES.containsKey(curveName) == false) {
+			throw new IOException("Unsupported curve: " + curveName);
+		}
 
 		rsArray = tr.readByteString();
 
@@ -119,44 +169,81 @@ public class ECDSASHA2Verify {
 		}
 
 		/* Calculate total output length */
-		int length = 6 + first + second;
-		byte[] asn1 = new byte[length];
+		ByteArrayOutputStream os = new ByteArrayOutputStream(6 + first + second);
 
 		/* ASN.1 SEQUENCE tag */
-		asn1[0] = (byte) 0x30;
+		os.write(0x30);
 
 		/* Size of SEQUENCE */
-		asn1[1] = (byte) (4 + first + second);
+		writeLength(4 + first + second, os);
 
 		/* ASN.1 INTEGER tag */
-		asn1[2] = (byte) 0x02;
+		os.write(0x02);
 
 		/* "r" INTEGER length */
-		asn1[3] = (byte) first;
+		writeLength(first, os);
 
 		/* Copy in the "r" INTEGER */
-		System.arraycopy(rArray, 0, asn1, (4 + first) - rArray.length, rArray.length);
+		if (first != rArray.length) {
+			os.write(0x00);
+		}
+		os.write(rArray);
 
 		/* ASN.1 INTEGER tag */
-		asn1[rArray.length + 4] = (byte) 0x02;
+		os.write(0x02);
 
 		/* "s" INTEGER length */
-		asn1[rArray.length + 5] = (byte) second;
+		writeLength(second, os);
 
 		/* Copy in the "s" INTEGER */
-		System.arraycopy(sArray, 0, asn1, (6 + first + second) - sArray.length, sArray.length);
+		if (second != sArray.length) {
+			os.write(0x00);
+		}
+		os.write(sArray);
 
-		return asn1;
+		return os.toByteArray();
 	}
 
-	public static byte[] encodeSSHECDSASignature(byte[] sig) throws IOException
+	private static final void writeLength(int length, OutputStream os) throws IOException {
+		if (length <= 0x7F) {
+			os.write(length);
+			return;
+		}
+
+		int numOctets = 0;
+		int lenCopy = length;
+		while (lenCopy != 0) {
+			lenCopy >>>= 8;
+			numOctets++;
+		}
+
+		os.write(0x80 | numOctets);
+
+		for (int i = (numOctets - 1) * 8; i >= 0; i -= 8) {
+			os.write((byte) (length >> i));
+		}
+	}
+
+	public static byte[] encodeSSHECDSASignature(byte[] sig, ECParameterSpec params) throws IOException
 	{
 		TypesWriter tw = new TypesWriter();
 
-		tw.writeString("ecdsa-sha2-nistp256");
+		String curveName = getCurveName(params);
+		tw.writeString(ECDSA_SHA2_PREFIX + curveName);
+
+		if ((sig[0] != 0x30) || (sig[1] != sig.length - 2) || (sig[2] != 0x02)) {
+			throw new IOException("Invalid signature format");
+		}
 
 		int rLength = sig[3];
+		if ((rLength + 6 > sig.length) || (sig[4 + rLength] != 0x02)) {
+			throw new IOException("Invalid signature format");
+		}
+
 		int sLength = sig[5 + rLength];
+		if (6 + rLength + sLength > sig.length) {
+			throw new IOException("Invalid signature format");
+		}
 
 		byte[] rArray = new byte[rLength];
 		byte[] sArray = new byte[sLength];
@@ -178,8 +265,10 @@ public class ECDSASHA2Verify {
 
 	public static byte[] generateSignature(byte[] message, ECPrivateKey pk) throws IOException
 	{
+		final String algo = getSignatureAlgorithmForParams(pk.getParams());
+
 		try {
-			Signature s = Signature.getInstance("SHA256withECDSA");
+			Signature s = Signature.getInstance(algo);
 			s.initSign(pk);
 			s.update(message);
 			return s.sign();
@@ -200,8 +289,10 @@ public class ECDSASHA2Verify {
 
 	public static boolean verifySignature(byte[] message, byte[] ds, ECPublicKey dpk) throws IOException
 	{
+		final String algo = getSignatureAlgorithmForParams(dpk.getParams());
+
 		try {
-			Signature s = Signature.getInstance("SHA256withECDSA");
+			Signature s = Signature.getInstance(algo);
 			s.initVerify(dpk);
 			s.update(message);
 			return s.verify(ds);
@@ -217,6 +308,17 @@ public class ECDSASHA2Verify {
 			IOException ex = new IOException();
 			ex.initCause(e);
 			throw ex;
+		}
+	}
+
+	private static String getSignatureAlgorithmForParams(ECParameterSpec params) {
+		int size = getCurveSize(params);
+		if (size <= 256) {
+			return "SHA256withECDSA";
+		} else if (size <= 384) {
+			return "SHA384withECDSA";
+		} else {
+			return "SHA512withECDSA";
 		}
 	}
 
@@ -289,6 +391,26 @@ public class ECDSASHA2Verify {
 				new ECPoint(new BigInteger("6B17D1F2E12C4247F8BCE6E563A440F277037D812DEB33A0F4A13945D898C296", 16),
 							new BigInteger("4FE342E2FE1A7F9B8EE7EB4A7C0F9E162BCE33576B315ECECBB6406837BF51F5", 16)),
 				new BigInteger("FFFFFFFF00000000FFFFFFFFFFFFFFFFBCE6FAADA7179E84F3B9CAC2FC632551", 16),
+				1);
+
+		public static ECParameterSpec nistp384 = new ECParameterSpec(
+				new EllipticCurve(
+						new ECFieldFp(new BigInteger("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFF0000000000000000FFFFFFFF", 16)),
+						new BigInteger("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFF0000000000000000FFFFFFFC", 16),
+						new BigInteger("B3312FA7E23EE7E4988E056BE3F82D19181D9C6EFE8141120314088F5013875AC656398D8A2ED19D2A85C8EDD3EC2AEF", 16)),
+				new ECPoint(new BigInteger("AA87CA22BE8B05378EB1C71EF320AD746E1D3B628BA79B9859F741E082542A385502F25DBF55296C3A545E3872760AB7", 16),
+							new BigInteger("3617DE4A96262C6F5D9E98BF9292DC29F8F41DBD289A147CE9DA3113B5F0B8C00A60B1CE1D7E819D7A431D7C90EA0E5F", 16)),
+				new BigInteger("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC7634D81F4372DDF581A0DB248B0A77AECEC196ACCC52973", 16),
+				1);
+
+		public static ECParameterSpec nistp521 = new ECParameterSpec(
+				new EllipticCurve(
+						new ECFieldFp(new BigInteger("01FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", 16)),
+						new BigInteger("01FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC", 16),
+						new BigInteger("0051953EB9618E1C9A1F929A21A0B68540EEA2DA725B99B315F3B8B489918EF109E156193951EC7E937B1652C0BD3BB1BF073573DF883D2C34F1EF451FD46B503F00", 16)),
+				new ECPoint(new BigInteger("00C6858E06B70404E9CD9E3ECB662395B4429C648139053FB521F828AF606B4D3DBAA14B5E77EFE75928FE1DC127A2FFA8DE3348B3C1856A429BF97E7E31C2E5BD66", 16),
+							new BigInteger("011839296A789A3BC0045C8A5FB42C7D1BD998F54449579B446817AFBD17273E662C97EE72995EF42640C550B9013FAD0761353C7086A272C24088BE94769FD16650", 16)),
+				new BigInteger("01FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA51868783BF2F966B7FCC0148F709A5D03BB5C9B8899C47AEBB6FB71E91386409", 16),
 				1);
 	}
 }
