@@ -322,6 +322,17 @@ public class ECDSASHA2Verify {
 		}
 	}
 
+	public static String getDigestAlgorithmForParams(ECParameterSpec params) {
+		int size = getCurveSize(params);
+		if (size <= 256) {
+			return "SHA256";
+		} else if (size <= 384) {
+			return "SHA384";
+		} else {
+			return "SHA512";
+		}
+	}
+
 	/**
 	 * Decode an OctetString to EllipticCurvePoint according to SECG 2.3.4
 	 */
@@ -370,16 +381,31 @@ public class ECDSASHA2Verify {
 		M[0] = 0x04;
 
 		{
-			byte[] affineX = group.getAffineX().toByteArray();
-			System.arraycopy(affineX, 0, M, 1, elementSize - affineX.length);
+			byte[] affineX = removeLeadingZeroes(group.getAffineX().toByteArray());
+			System.arraycopy(affineX, 0, M, 1, affineX.length);
 		}
 
 		{
-			byte[] affineY = group.getAffineY().toByteArray();
-			System.arraycopy(affineY, 0, M, 1 + elementSize, elementSize - affineY.length);
+			byte[] affineY = removeLeadingZeroes(group.getAffineY().toByteArray());
+			System.arraycopy(affineY, 0, M, 1 + elementSize, affineY.length);
 		}
 
 		return M;
+	}
+
+	private static byte[] removeLeadingZeroes(byte[] input) {
+		if (input[0] != 0x00) {
+			return input;
+		}
+
+		int pos = 1;
+		while (pos < input.length - 1 && input[pos] == 0x00) {
+			pos++;
+		}
+
+		byte[] output = new byte[input.length - pos];
+		System.arraycopy(input, pos, output, 0, output.length);
+		return output;
 	}
 
 	public static class EllipticCurves {
