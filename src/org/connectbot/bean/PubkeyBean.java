@@ -22,6 +22,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.EncodedKeySpec;
 import java.security.spec.InvalidKeySpecException;
@@ -190,6 +191,11 @@ public class PubkeyBean extends AbstractBean {
 			sb.append("-bit");
 		} else if (publicKey instanceof DSAPublicKey) {
 			sb.append("DSA 1024-bit");
+		} else if (publicKey instanceof ECPublicKey) {
+			int bits = ((ECPublicKey) publicKey).getParams().getCurve().getField().getFieldSize();
+			sb.append("EC ");
+			sb.append(bits);
+			sb.append("-bit");
 		} else {
 			sb.append("Unknown Key Type");
 		}

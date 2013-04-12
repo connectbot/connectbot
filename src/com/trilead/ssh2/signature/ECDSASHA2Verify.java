@@ -55,6 +55,23 @@ public class ECDSASHA2Verify {
 		CURVE_SIZES.put(521, NISTP521);
 	}
 
+	public static int[] getCurveSizes() {
+		int[] keys = new int[CURVE_SIZES.size()];
+		int i = 0;
+		for (Integer n : CURVE_SIZES.keySet().toArray(new Integer[keys.length])) {
+			keys[i++] = n;
+		}
+		return keys;
+	}
+
+	public static ECParameterSpec getCurveForSize(int size) {
+		final String name = CURVE_SIZES.get(size);
+		if (name == null) {
+			return null;
+		}
+		return CURVES.get(name);
+	}
+
 	public static ECPublicKey decodeSSHECDSAPublicKey(byte[] key) throws IOException
 	{
 		TypesReader tr = new TypesReader(key);
@@ -112,21 +129,30 @@ public class ECDSASHA2Verify {
 
 		tw.writeString(curveName);
 
-		tw.writeBytes(encodeECPoint(key.getW(), key.getParams().getCurve()));
+		byte[] encoded = encodeECPoint(key.getW(), key.getParams().getCurve());
+		tw.writeString(encoded, 0, encoded.length);
 
 		return tw.getBytes();
 	}
 
-	private static String getCurveName(ECParameterSpec params) throws IOException {
+	public static String getCurveName(ECParameterSpec params) throws IOException {
 		int fieldSize = getCurveSize(params);
-		String curveName = CURVE_SIZES.get(fieldSize);
+		final String curveName = getCurveName(fieldSize);
 		if (curveName == null) {
-			throw new IOException("Unsupported curve field size: " + fieldSize);
+			throw new IOException("invalid curve size " + fieldSize);
 		}
 		return curveName;
 	}
 
-	private static int getCurveSize(ECParameterSpec params) {
+	public static String getCurveName(int fieldSize) {
+		String curveName = CURVE_SIZES.get(fieldSize);
+		if (curveName == null) {
+			return null;
+		}
+		return curveName;
+	}
+
+	public static int getCurveSize(ECParameterSpec params) {
 		return params.getCurve().getField().getFieldSize();
 	}
 
@@ -258,7 +284,8 @@ public class ECDSASHA2Verify {
 		TypesWriter rsWriter = new TypesWriter();
 		rsWriter.writeMPInt(r);
 		rsWriter.writeMPInt(s);
-		tw.writeBytes(rsWriter.getBytes());
+		byte[] encoded = rsWriter.getBytes();
+		tw.writeString(encoded, 0, encoded.length);
 
 		return tw.getBytes();
 	}

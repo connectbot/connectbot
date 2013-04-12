@@ -6,7 +6,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *	 http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,10 +33,16 @@ import java.security.SecureRandom;
 import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPrivateCrtKey;
-import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.DSAPublicKeySpec;
+import java.security.spec.ECField;
+import java.security.spec.ECFieldFp;
+import java.security.spec.ECParameterSpec;
+import java.security.spec.ECPublicKeySpec;
+import java.security.spec.EllipticCurve;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.InvalidParameterSpecException;
 import java.security.spec.KeySpec;
@@ -55,10 +61,14 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.bouncycastle.math.ec.ECCurve;
+import org.bouncycastle.math.ec.ECPoint;
+
 import android.util.Log;
 
 import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.signature.DSASHA1Verify;
+import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
 
 public class PubkeyUtils {
@@ -173,19 +183,41 @@ public class PubkeyUtils {
 
 			pub = kf.generatePublic(pubKeySpec);
 		} catch (ClassCastException e) {
-			kf = KeyFactory.getInstance(PubkeyDatabase.KEY_TYPE_DSA);
-			priv = kf.generatePrivate(privKeySpec);
+			try {
+				kf = KeyFactory.getInstance(PubkeyDatabase.KEY_TYPE_DSA);
+				priv = kf.generatePrivate(privKeySpec);
 
-			DSAParams params = ((DSAPrivateKey) priv).getParams();
+				DSAParams params = ((DSAPrivateKey) priv).getParams();
 
-			// Calculate public key Y
-			BigInteger y = params.getG().modPow(((DSAPrivateKey) priv).getX(),
-					params.getP());
+				// Calculate public key Y
+				BigInteger y = params.getG().modPow(((DSAPrivateKey) priv).getX(),
+						params.getP());
 
-			pubKeySpec = new DSAPublicKeySpec(y, params.getP(), params.getQ(),
-					params.getG());
+				pubKeySpec = new DSAPublicKeySpec(y, params.getP(), params.getQ(),
+						params.getG());
 
-			pub = kf.generatePublic(pubKeySpec);
+				pub = kf.generatePublic(pubKeySpec);
+			} catch (ClassCastException e2) {
+				kf = KeyFactory.getInstance(PubkeyDatabase.KEY_TYPE_EC);
+				priv = kf.generatePrivate(privKeySpec);
+
+				ECParameterSpec params = ((ECPrivateKey) priv).getParams();
+
+				// Calculate public key Y
+				EllipticCurve curve = params.getCurve();
+				ECField field = curve.getField();
+				ECCurve bcCurve = new ECCurve.Fp(((ECFieldFp)field).getP(), curve.getA(), curve.getB());
+				java.security.spec.ECPoint generator = params.getGenerator();
+				ECPoint bcGenerator = bcCurve.createPoint(generator.getAffineX(), generator.getAffineY(), false);
+				ECPoint w = bcGenerator.multiply(((ECPrivateKey) priv).getS());
+
+				pubKeySpec = new ECPublicKeySpec(
+						new java.security.spec.ECPoint(w.getX().toBigInteger(),
+													   w.getY().toBigInteger()),
+													   params);
+
+				pub = kf.generatePublic(pubKeySpec);
+			}
 		}
 
 		return new KeyPair(pub, priv);
@@ -208,6 +240,11 @@ public class PubkeyUtils {
 			String data = "ssh-dss ";
 			data += String.valueOf(Base64.encode(DSASHA1Verify.encodeSSHDSAPublicKey((DSAPublicKey) pk)));
 			return data + " " + nickname;
+		} else if (pk instanceof ECPublicKey) {
+			ECPublicKey ecPub = (ECPublicKey) pk;
+			String keyType = ECDSASHA2Verify.getCurveName(ecPub.getParams().getCurve().getField().getFieldSize());
+			String keyData = String.valueOf(Base64.encode(ECDSASHA2Verify.encodeSSHECDSAPublicKey(ecPub)));
+			return ECDSASHA2Verify.ECDSA_SHA2_PREFIX + keyType + " " + keyData + " " + nickname;
 		}
 
 		throw new InvalidKeyException("Unknown key type");
@@ -228,6 +265,8 @@ public class PubkeyUtils {
 				return RSASHA1Verify.encodeSSHRSAPublicKey((RSAPublicKey) pair.getPublic());
 			} else if (pubKey instanceof DSAPublicKey) {
 				return DSASHA1Verify.encodeSSHDSAPublicKey((DSAPublicKey) pair.getPublic());
+			} else if (pubKey instanceof ECPublicKey) {
+				return ECDSASHA2Verify.encodeSSHECDSAPublicKey((ECPublicKey) pair.getPublic());
 			} else {
 				return null;
 			}

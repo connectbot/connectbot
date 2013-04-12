@@ -74,6 +74,12 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="DSA" />
+
+				<RadioButton
+					android:id="@+id/ec"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="EC" />
 			</RadioGroup>
 		</TableRow>
 
