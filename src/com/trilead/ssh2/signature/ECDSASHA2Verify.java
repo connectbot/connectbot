@@ -382,12 +382,13 @@ public class ECDSASHA2Verify {
 
 		{
 			byte[] affineX = removeLeadingZeroes(group.getAffineX().toByteArray());
-			System.arraycopy(affineX, 0, M, 1, affineX.length);
+			System.arraycopy(affineX, 0, M, 1 + elementSize - affineX.length, affineX.length);
 		}
 
 		{
 			byte[] affineY = removeLeadingZeroes(group.getAffineY().toByteArray());
-			System.arraycopy(affineY, 0, M, 1 + elementSize, affineY.length);
+			System.arraycopy(affineY, 0, M, 1 + elementSize + elementSize - affineY.length,
+							 affineY.length);
 		}
 
 		return M;

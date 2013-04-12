@@ -483,7 +483,7 @@ public class KexManager
 				return;
 			}
 
-			throw new IllegalStateException("Unkown KEX method!");
+			throw new IllegalStateException("Unknown KEX method!");
 		}
 
 		if (msg[0] == Packets.SSH_MSG_NEWKEYS)
