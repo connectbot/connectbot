@@ -174,64 +174,53 @@ public class PubkeyUtils {
 		PublicKey pub;
 		KeyFactory kf;
 
-		SimpleDERReader reader = new SimpleDERReader(encoded);
 		final String oid;
 		try {
-			if (!reader.readInt().equals(BigInteger.ZERO)) {
-				throw new InvalidKeySpecException("Not PKCS#8 encoded");
-			}
-
+			SimpleDERReader reader = new SimpleDERReader(encoded);
+			reader.resetInput(reader.readSequenceAsByteArray());
+			reader.readInt();
+			reader.resetInput(reader.readSequenceAsByteArray());
 			oid = reader.readOid();
+
+			kf = KeyFactory.getInstance(oid);
+			priv = kf.generatePrivate(privKeySpec);
 		} catch (IOException e) {
-			Log.w(TAG, "Could not read OID");
-			throw new InvalidKeySpecException(e);
+			Log.w(TAG, "Could not read OID", e);
+			throw new InvalidKeySpecException("Could not read key", e);
 		}
 
-		kf = KeyFactory.getInstance(oid);
-		Log.d(TAG, "here's the algo: " + kf.getAlgorithm());
-
-		try {
-			kf = KeyFactory.getInstance(PubkeyDatabase.KEY_TYPE_RSA);
-			priv = kf.generatePrivate(privKeySpec);
-
-			pubKeySpec = new RSAPublicKeySpec(((RSAPrivateCrtKey) priv)
-					.getModulus(), ((RSAPrivateCrtKey) priv)
-					.getPublicExponent());
+		if (priv instanceof RSAPrivateCrtKey) {
+			RSAPrivateCrtKey rsaPriv = (RSAPrivateCrtKey) priv;
+			pubKeySpec = new RSAPublicKeySpec(rsaPriv.getModulus(), rsaPriv.getPublicExponent());
 
 			pub = kf.generatePublic(pubKeySpec);
-		} catch (ClassCastException e) {
-			try {
-				kf = KeyFactory.getInstance(PubkeyDatabase.KEY_TYPE_DSA);
-				priv = kf.generatePrivate(privKeySpec);
+		} else if (priv instanceof DSAPrivateKey) {
+			DSAPrivateKey dsaPriv = (DSAPrivateKey) priv;
+			DSAParams params = dsaPriv.getParams();
 
-				DSAParams params = ((DSAPrivateKey) priv).getParams();
+			// Calculate public key Y
+			BigInteger y = params.getG().modPow(dsaPriv.getX(), params.getP());
 
-				// Calculate public key Y
-				BigInteger y = params.getG().modPow(((DSAPrivateKey) priv).getX(),
-						params.getP());
+			pubKeySpec = new DSAPublicKeySpec(y, params.getP(), params.getQ(), params.getG());
 
-				pubKeySpec = new DSAPublicKeySpec(y, params.getP(), params.getQ(),
-						params.getG());
+			pub = kf.generatePublic(pubKeySpec);
+		} else if (priv instanceof ECPrivateKey) {
+			ECPrivateKey ecPriv = (ECPrivateKey) priv;
+			ECParameterSpec params = ecPriv.getParams();
 
-				pub = kf.generatePublic(pubKeySpec);
-			} catch (ClassCastException e2) {
-				kf = KeyFactory.getInstance(PubkeyDatabase.KEY_TYPE_EC);
-				priv = kf.generatePrivate(privKeySpec);
+			// Calculate public key Y
+			ECPoint generator = params.getGenerator();
+			BigInteger[] wCoords = EcCore.multiplyPoint(new BigInteger[] {
+																generator.getAffineX(),
+																generator.getAffineY() },
+														ecPriv.getS(), params);
+			ECPoint w = new ECPoint(wCoords[0], wCoords[1]);
 
-				ECParameterSpec params = ((ECPrivateKey) priv).getParams();
+			pubKeySpec = new ECPublicKeySpec(w, params);
 
-				// Calculate public key Y
-				ECPoint generator = params.getGenerator();
-				BigInteger[] wCoords = EcCore.multiplyPoint(new BigInteger[] {
-																	generator.getAffineX(),
-																	generator.getAffineY() },
-															((ECPrivateKey) priv).getS(), params);
-				ECPoint w = new ECPoint(wCoords[0], wCoords[1]);
-
-				pubKeySpec = new ECPublicKeySpec(w, params);
-
-				pub = kf.generatePublic(pubKeySpec);
-			}
+			pub = kf.generatePublic(pubKeySpec);
+		} else {
+			throw new NoSuchAlgorithmException("Unknown OID: " + oid);
 		}
 
 		return new KeyPair(pub, priv);
