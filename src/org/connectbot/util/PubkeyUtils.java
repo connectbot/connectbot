@@ -38,11 +38,9 @@ import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.DSAPublicKeySpec;
-import java.security.spec.ECField;
-import java.security.spec.ECFieldFp;
 import java.security.spec.ECParameterSpec;
+import java.security.spec.ECPoint;
 import java.security.spec.ECPublicKeySpec;
-import java.security.spec.EllipticCurve;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.InvalidParameterSpecException;
 import java.security.spec.KeySpec;
@@ -61,8 +59,7 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.bouncycastle.math.ec.ECCurve;
-import org.bouncycastle.math.ec.ECPoint;
+import org.keyczar.jce.EcCore;
 
 import android.util.Log;
 
@@ -204,17 +201,14 @@ public class PubkeyUtils {
 				ECParameterSpec params = ((ECPrivateKey) priv).getParams();
 
 				// Calculate public key Y
-				EllipticCurve curve = params.getCurve();
-				ECField field = curve.getField();
-				ECCurve bcCurve = new ECCurve.Fp(((ECFieldFp)field).getP(), curve.getA(), curve.getB());
-				java.security.spec.ECPoint generator = params.getGenerator();
-				ECPoint bcGenerator = bcCurve.createPoint(generator.getAffineX(), generator.getAffineY(), false);
-				ECPoint w = bcGenerator.multiply(((ECPrivateKey) priv).getS());
+				ECPoint generator = params.getGenerator();
+				BigInteger[] wCoords = EcCore.multiplyPoint(new BigInteger[] {
+																	generator.getAffineX(),
+																	generator.getAffineY() },
+															((ECPrivateKey) priv).getS(), params);
+				ECPoint w = new ECPoint(wCoords[0], wCoords[1]);
 
-				pubKeySpec = new ECPublicKeySpec(
-						new java.security.spec.ECPoint(w.getX().toBigInteger(),
-													   w.getY().toBigInteger()),
-													   params);
+				pubKeySpec = new ECPublicKeySpec(w, params);
 
 				pub = kf.generatePublic(pubKeySpec);
 			}
