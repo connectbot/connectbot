@@ -14,6 +14,10 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.DSAPrivateKeySpec;
 import java.security.spec.DSAPublicKeySpec;
+import java.security.spec.ECParameterSpec;
+import java.security.spec.ECPoint;
+import java.security.spec.ECPrivateKeySpec;
+import java.security.spec.ECPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPrivateKeySpec;
@@ -24,6 +28,7 @@ import com.trilead.ssh2.crypto.cipher.BlockCipher;
 import com.trilead.ssh2.crypto.cipher.CBCMode;
 import com.trilead.ssh2.crypto.cipher.DES;
 import com.trilead.ssh2.crypto.cipher.DESede;
+import com.trilead.ssh2.signature.ECDSASHA2Verify;
 
 /**
  * PEM Support.
@@ -35,6 +40,7 @@ public class PEMDecoder
 {
 	public static final int PEM_RSA_PRIVATE_KEY = 1;
 	public static final int PEM_DSA_PRIVATE_KEY = 2;
+	public static final int PEM_EC_PRIVATE_KEY = 3;
 
 	private static final int hexToInt(char c)
 	{
@@ -171,6 +177,12 @@ public class PEMDecoder
 			{
 				endLine = "-----END RSA PRIVATE KEY-----";
 				ps.pemType = PEM_RSA_PRIVATE_KEY;
+				break;
+			}
+
+			if (line.startsWith("-----BEGIN EC PRIVATE KEY-----")) {
+				endLine = "-----END EC PRIVATE KEY-----";
+				ps.pemType = PEM_EC_PRIVATE_KEY;
 				break;
 			}
 		}
@@ -420,9 +432,72 @@ public class PEMDecoder
 			PublicKey pubKey;
 			PrivateKey privKey;
 			try {
-			KeyFactory kf = KeyFactory.getInstance("RSA");
-			pubKey = kf.generatePublic(pubSpec);
-			privKey = kf.generatePrivate(privSpec);
+				KeyFactory kf = KeyFactory.getInstance("RSA");
+				pubKey = kf.generatePublic(pubSpec);
+				privKey = kf.generatePrivate(privSpec);
+			} catch (NoSuchAlgorithmException ex) {
+				IOException ioex = new IOException();
+				ioex.initCause(ex);
+				throw ioex;
+			} catch (InvalidKeySpecException ex) {
+				IOException ioex = new IOException("invalid keyspec");
+				ioex.initCause(ex);
+				throw ioex;
+			}
+
+			return new KeyPair(pubKey, privKey);
+		}
+
+		if (ps.pemType == PEM_EC_PRIVATE_KEY) {
+			SimpleDERReader dr = new SimpleDERReader(ps.data);
+
+			byte[] seq = dr.readSequenceAsByteArray();
+
+			if (dr.available() != 0)
+				throw new IOException("Padding in EC PRIVATE KEY DER stream.");
+
+			dr.resetInput(seq);
+
+			BigInteger version = dr.readInt();
+
+			if ((version.compareTo(BigInteger.ONE) != 0))
+				throw new IOException("Wrong version (" + version + ") in EC PRIVATE KEY DER stream.");
+
+			byte[] privateBytes = dr.readOctetString();
+
+			String curveOid = null;
+			byte[] publicBytes = null;
+			while (dr.available() > 0) {
+				int type = dr.readConstructedType();
+				SimpleDERReader cr = dr.readConstructed();
+				switch (type) {
+				case 0:
+					curveOid = cr.readOid();
+					break;
+				case 1:
+					publicBytes = cr.readOctetString();
+					break;
+				}
+			}
+
+			ECParameterSpec params = ECDSASHA2Verify.getCurveForOID(curveOid);
+			if (params == null)
+				throw new IOException("invalid OID");
+
+			BigInteger s = new BigInteger(privateBytes);
+			byte[] publicBytesSlice = new byte[publicBytes.length - 1];
+			System.arraycopy(publicBytes, 1, publicBytesSlice, 0, publicBytesSlice.length);
+			ECPoint w = ECDSASHA2Verify.decodeECPoint(publicBytesSlice, params.getCurve());
+
+			ECPrivateKeySpec privSpec = new ECPrivateKeySpec(s, params);
+			ECPublicKeySpec pubSpec = new ECPublicKeySpec(w, params);
+
+			PublicKey pubKey;
+			PrivateKey privKey;
+			try {
+				KeyFactory kf = KeyFactory.getInstance("EC");
+				pubKey = kf.generatePublic(pubSpec);
+				privKey = kf.generatePrivate(privSpec);
 			} catch (NoSuchAlgorithmException ex) {
 				IOException ioex = new IOException();
 				ioex.initCause(ex);

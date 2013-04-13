@@ -44,6 +44,8 @@ public class PubkeyBean extends AbstractBean {
 
 	private static final String KEY_TYPE_DSA = "DSA";
 
+	private static final String KEY_TYPE_EC = "EC";
+
 	/* Database fields */
 	private long id;
 	private String nickname;
@@ -125,6 +127,11 @@ public class PubkeyBean extends AbstractBean {
 				publicKey = decodePublicKeyAs(pubKeySpec, KEY_TYPE_DSA);
 				if (publicKey != null) {
 					type = KEY_TYPE_DSA;
+				} else {
+					publicKey = decodePublicKeyAs(pubKeySpec, KEY_TYPE_EC);
+					if (publicKey != null) {
+						type = KEY_TYPE_EC;
+					}
 				}
 			}
 		}

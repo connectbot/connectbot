@@ -38,8 +38,11 @@ public class ECDSASHA2Verify {
 	public static final String ECDSA_SHA2_PREFIX = "ecdsa-sha2-";
 
 	private static final String NISTP256 = "nistp256";
+	private static final String NISTP256_OID = "1.2.840.10045.3.1.7";
 	private static final String NISTP384 = "nistp384";
+	private static final String NISTP384_OID = "1.3.132.0.34";
 	private static final String NISTP521 = "nistp521";
+	private static final String NISTP521_OID = "1.3.132.0.35";
 
 	private static final Map<String, ECParameterSpec> CURVES = new TreeMap<String, ECParameterSpec>();
 	static {
@@ -53,6 +56,13 @@ public class ECDSASHA2Verify {
 		CURVE_SIZES.put(256, NISTP256);
 		CURVE_SIZES.put(384, NISTP384);
 		CURVE_SIZES.put(521, NISTP521);
+	}
+
+	private static final Map<String, String> CURVE_OIDS = new TreeMap<String, String>();
+	static {
+		CURVE_OIDS.put(NISTP256_OID, NISTP256);
+		CURVE_OIDS.put(NISTP384_OID, NISTP256);
+		CURVE_OIDS.put(NISTP521_OID, NISTP256);
 	}
 
 	public static int[] getCurveSizes() {
@@ -154,6 +164,13 @@ public class ECDSASHA2Verify {
 
 	public static int getCurveSize(ECParameterSpec params) {
 		return params.getCurve().getField().getFieldSize();
+	}
+
+	public static ECParameterSpec getCurveForOID(String oid) {
+		String name = CURVE_OIDS.get(oid);
+		if (name == null)
+			return null;
+		return CURVES.get(name);
 	}
 
 	public static byte[] decodeSSHECDSASignature(byte[] sig) throws IOException {

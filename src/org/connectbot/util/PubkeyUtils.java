@@ -64,11 +64,14 @@ import org.keyczar.jce.EcCore;
 import android.util.Log;
 
 import com.trilead.ssh2.crypto.Base64;
+import com.trilead.ssh2.crypto.SimpleDERReader;
 import com.trilead.ssh2.signature.DSASHA1Verify;
 import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
 
 public class PubkeyUtils {
+	private static final String TAG = "PubkeyUtils";
+
 	public static final String PKCS8_START = "-----BEGIN PRIVATE KEY-----";
 	public static final String PKCS8_END = "-----END PRIVATE KEY-----";
 
@@ -170,6 +173,23 @@ public class PubkeyUtils {
 		PrivateKey priv;
 		PublicKey pub;
 		KeyFactory kf;
+
+		SimpleDERReader reader = new SimpleDERReader(encoded);
+		final String oid;
+		try {
+			if (!reader.readInt().equals(BigInteger.ZERO)) {
+				throw new InvalidKeySpecException("Not PKCS#8 encoded");
+			}
+
+			oid = reader.readOid();
+		} catch (IOException e) {
+			Log.w(TAG, "Could not read OID");
+			throw new InvalidKeySpecException(e);
+		}
+
+		kf = KeyFactory.getInstance(oid);
+		Log.d(TAG, "here's the algo: " + kf.getAlgorithm());
+
 		try {
 			kf = KeyFactory.getInstance(PubkeyDatabase.KEY_TYPE_RSA);
 			priv = kf.generatePrivate(privKeySpec);
