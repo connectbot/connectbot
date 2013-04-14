@@ -81,6 +81,10 @@ public class PubkeyUtils {
 	// Number of iterations for password hashing. PKCS#5 recommends 1000
 	private static final int ITERATIONS = 1000;
 
+	// Cannot be instantiated
+	private PubkeyUtils() {
+	}
+
 	public static String formatKey(Key key){
 		String algo = key.getAlgorithm();
 		String fmt = key.getFormat();
