@@ -34,8 +34,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -261,14 +259,6 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 		keyGenThread.start();
 	}
 
-	private Handler handler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			progress.dismiss();
-			GeneratePubkeyActivity.this.finish();
-		}
-	};
-
 	final private Runnable mKeyGen = new Runnable() {
 		public void run() {
 			try {
@@ -313,7 +303,12 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 				e.printStackTrace();
 			}
 
-			handler.sendEmptyMessage(0);
+			GeneratePubkeyActivity.this.runOnUiThread(new Runnable() {
+				public void run() {
+					progress.dismiss();
+					GeneratePubkeyActivity.this.finish();
+				}
+			});
 		}
 
 	};
