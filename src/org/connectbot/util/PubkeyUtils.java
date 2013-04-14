@@ -221,10 +221,10 @@ public class PubkeyUtils {
 
 			// Calculate public key Y
 			ECPoint generator = params.getGenerator();
-			BigInteger[] wCoords = EcCore.multiplyPoint(new BigInteger[] {
+			BigInteger[] wCoords = EcCore.multiplyPointA(new BigInteger[] {
 																generator.getAffineX(),
 																generator.getAffineY() },
-														ecPriv.getS(), params);
+														 ecPriv.getS(), params);
 			ECPoint w = new ECPoint(wCoords[0], wCoords[1]);
 
 			pub = kf.generatePublic(new ECPublicKeySpec(w, params));

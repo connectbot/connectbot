@@ -213,125 +213,127 @@ public final class EcCore {
 //  }
 //
 //  private static final BigInteger ZERO = BigInteger.ZERO;
+//  private static final BigInteger ONE = BigInteger.ONE;
+//  private static final BigInteger TWO = BigInteger.valueOf(2);
 // END connectbot-removed
-  private static final BigInteger ONE = BigInteger.ONE;
-  private static final BigInteger TWO = BigInteger.valueOf(2);
   private static final BigInteger THREE = BigInteger.valueOf(3);
-  private static final BigInteger FOUR = BigInteger.valueOf(4);
-  private static final BigInteger EIGHT = BigInteger.valueOf(8);
-
-//  private static BigInteger[] doublePointA(BigInteger[] P,
-//      ECParameterSpec params) {
-//    final BigInteger p = ((ECFieldFp) params.getCurve().getField()).getP();
-//    final BigInteger a = params.getCurve().getA();
-//
-//    if (P[0] == null || P[1] == null) return P;
-//
-//    BigInteger d = (P[0].pow(2).multiply(THREE).add(a)).multiply(P[1]
-//        .shiftLeft(1).modInverse(p));
-//    BigInteger[] R = new BigInteger[2];
-//    R[0] = d.pow(2).subtract(P[0].shiftLeft(1)).mod(p);
-//    R[1] = d.multiply(P[0].subtract(R[0])).subtract(P[1]).mod(p);
-//
-//    return R;
-//  }
-//
-//  private static BigInteger[] addPointsA(BigInteger[] P1, BigInteger[] P2,
-//      ECParameterSpec params) {
-//    final BigInteger p = ((ECFieldFp) params.getCurve().getField()).getP();
-//
-//    if (P2[0] == null || P2[1] == null) return P1;
-//
-//    if (P1[0] == null || P1[1] == null) return P2;
-//
-//    BigInteger d = (P2[1].subtract(P1[1])).multiply((P2[0].subtract(P1[0]))
-//        .modInverse(p));
-//    BigInteger[] R = new BigInteger[2];
-//    R[0] = d.pow(2).subtract(P1[0]).subtract(P2[0]).mod(p);
-//    R[1] = d.multiply(P1[0].subtract(R[0])).subtract(P1[1]).mod(p);
-//
-//    return R;
-//  }
-//
-//  private static BigInteger[] multiplyPointA(BigInteger[] P, BigInteger k,
-//      ECParameterSpec params) {
-//    BigInteger[] Q = new BigInteger[] {null, null};
-//
-//    for (int i = k.bitLength() - 1; i >= 0; i--) {
-//      Q = doublePointA(Q, params);
-//      if (k.testBit(i)) Q = addPointsA(Q, P, params);
-//    }
-//
-//    return Q;
-//  }
+// BEGIN connectbot-removed
+//  private static final BigInteger FOUR = BigInteger.valueOf(4);
+//  private static final BigInteger EIGHT = BigInteger.valueOf(8);
 // END connectbot-removed
 
-  private static BigInteger[] doublePointJ(BigInteger[] P,
+  private static BigInteger[] doublePointA(BigInteger[] P,
       ECParameterSpec params) {
     final BigInteger p = ((ECFieldFp) params.getCurve().getField()).getP();
-    BigInteger A, B, C, D;
+    final BigInteger a = params.getCurve().getA();
 
-    if (P[2].signum() == 0) // point at inf
-      return P;
+    if (P[0] == null || P[1] == null) return P;
 
-    A = FOUR.multiply(P[0]).multiply(P[1].pow(2)).mod(p);
-    B = EIGHT.multiply(P[1].pow(4)).mod(p);
-    C = THREE.multiply(P[0].subtract(P[2].pow(2))).multiply(
-        P[0].add(P[2].pow(2))).mod(p);
-    D = C.pow(2).subtract(A.add(A)).mod(p);
-
-    return new BigInteger[] {
-        D, C.multiply(A.subtract(D)).subtract(B).mod(p),
-        TWO.multiply(P[1]).multiply(P[2]).mod(p)};
-  }
-
-  private static BigInteger[] addPointsJA(BigInteger[] P1, BigInteger[] P2,
-      ECParameterSpec params) {
-    final BigInteger p = ((ECFieldFp) params.getCurve().getField()).getP();
-    BigInteger A, B, C, D;
-    BigInteger X3;
-
-    if (P1[2].signum() == 0) // point at inf
-      return new BigInteger[] {P2[0], P2[1], ONE};
-
-    A = P2[0].multiply(P1[2].pow(2)).mod(p);
-    B = P2[1].multiply(P1[2].pow(3)).mod(p);
-    C = A.subtract(P1[0]).mod(p);
-    D = B.subtract(P1[1]).mod(p);
-
-    X3 = D.pow(2)
-        .subtract(C.pow(3).add(TWO.multiply(P1[0]).multiply(C.pow(2)))).mod(p);
-    return new BigInteger[] {
-        X3,
-        D.multiply(P1[0].multiply(C.pow(2)).subtract(X3)).subtract(
-            P1[1].multiply(C.pow(3))).mod(p), P1[2].multiply(C).mod(p)};
-  }
-
-  // Binary NAF method for point multiplication
-  public static BigInteger[] multiplyPoint(BigInteger[] P, BigInteger k,
-      ECParameterSpec params) {
-    BigInteger h = THREE.multiply(k);
-
-    BigInteger[] Pneg = new BigInteger[] {P[0], P[1].negate()};
-    BigInteger[] R = new BigInteger[] {P[0], P[1], ONE};
-
-    int bitLen = h.bitLength();
-    for (int i = bitLen - 2; i > 0; --i) {
-      R = doublePointJ(R, params);
-      if (h.testBit(i)) R = addPointsJA(R, P, params);
-      if (k.testBit(i)) R = addPointsJA(R, Pneg, params);
-    }
-
-    // // <DEBUG>
-    // BigInteger[] SS = new BigInteger[] { R[0], R[1], R[2] };
-    // toAffine(SS, params);
-    // BigInteger[] RR = multiplyPointA(P, k, params);
-    // if (!SS[0].equals(RR[0]) || !SS[1].equals(RR[1]))
-    // throw new RuntimeException("Internal mult error");
-    // // </DEBUG>
+    BigInteger d = (P[0].pow(2).multiply(THREE).add(a)).multiply(P[1]
+        .shiftLeft(1).modInverse(p));
+    BigInteger[] R = new BigInteger[2];
+    R[0] = d.pow(2).subtract(P[0].shiftLeft(1)).mod(p);
+    R[1] = d.multiply(P[0].subtract(R[0])).subtract(P[1]).mod(p);
 
     return R;
   }
+
+  private static BigInteger[] addPointsA(BigInteger[] P1, BigInteger[] P2,
+      ECParameterSpec params) {
+    final BigInteger p = ((ECFieldFp) params.getCurve().getField()).getP();
+
+    if (P2[0] == null || P2[1] == null) return P1;
+
+    if (P1[0] == null || P1[1] == null) return P2;
+
+    BigInteger d = (P2[1].subtract(P1[1])).multiply((P2[0].subtract(P1[0]))
+        .modInverse(p));
+    BigInteger[] R = new BigInteger[2];
+    R[0] = d.pow(2).subtract(P1[0]).subtract(P2[0]).mod(p);
+    R[1] = d.multiply(P1[0].subtract(R[0])).subtract(P1[1]).mod(p);
+
+    return R;
+  }
+
+  public static BigInteger[] multiplyPointA(BigInteger[] P, BigInteger k,
+      ECParameterSpec params) {
+    BigInteger[] Q = new BigInteger[] {null, null};
+
+    for (int i = k.bitLength() - 1; i >= 0; i--) {
+      Q = doublePointA(Q, params);
+      if (k.testBit(i)) Q = addPointsA(Q, P, params);
+    }
+
+    return Q;
+  }
+
+// BEGIN connectbot-removed
+//  private static BigInteger[] doublePointJ(BigInteger[] P,
+//      ECParameterSpec params) {
+//    final BigInteger p = ((ECFieldFp) params.getCurve().getField()).getP();
+//    BigInteger A, B, C, D;
+//
+//    if (P[2].signum() == 0) // point at inf
+//      return P;
+//
+//    A = FOUR.multiply(P[0]).multiply(P[1].pow(2)).mod(p);
+//    B = EIGHT.multiply(P[1].pow(4)).mod(p);
+//    C = THREE.multiply(P[0].subtract(P[2].pow(2))).multiply(
+//        P[0].add(P[2].pow(2))).mod(p);
+//    D = C.pow(2).subtract(A.add(A)).mod(p);
+//
+//    return new BigInteger[] {
+//        D, C.multiply(A.subtract(D)).subtract(B).mod(p),
+//        TWO.multiply(P[1]).multiply(P[2]).mod(p)};
+//  }
+//
+//  private static BigInteger[] addPointsJA(BigInteger[] P1, BigInteger[] P2,
+//      ECParameterSpec params) {
+//    final BigInteger p = ((ECFieldFp) params.getCurve().getField()).getP();
+//    BigInteger A, B, C, D;
+//    BigInteger X3;
+//
+//    if (P1[2].signum() == 0) // point at inf
+//      return new BigInteger[] {P2[0], P2[1], ONE};
+//
+//    A = P2[0].multiply(P1[2].pow(2)).mod(p);
+//    B = P2[1].multiply(P1[2].pow(3)).mod(p);
+//    C = A.subtract(P1[0]).mod(p);
+//    D = B.subtract(P1[1]).mod(p);
+//
+//    X3 = D.pow(2)
+//        .subtract(C.pow(3).add(TWO.multiply(P1[0]).multiply(C.pow(2)))).mod(p);
+//    return new BigInteger[] {
+//        X3,
+//        D.multiply(P1[0].multiply(C.pow(2)).subtract(X3)).subtract(
+//            P1[1].multiply(C.pow(3))).mod(p), P1[2].multiply(C).mod(p)};
+//  }
+//
+//  // Binary NAF method for point multiplication
+//  public static BigInteger[] multiplyPoint(BigInteger[] P, BigInteger k,
+//      ECParameterSpec params) {
+//    BigInteger h = THREE.multiply(k);
+//
+//    BigInteger[] Pneg = new BigInteger[] {P[0], P[1].negate()};
+//    BigInteger[] R = new BigInteger[] {P[0], P[1], ONE};
+//
+//    int bitLen = h.bitLength();
+//    for (int i = bitLen - 2; i > 0; --i) {
+//      R = doublePointJ(R, params);
+//      if (h.testBit(i)) R = addPointsJA(R, P, params);
+//      if (k.testBit(i)) R = addPointsJA(R, Pneg, params);
+//    }
+//
+//    // // <DEBUG>
+//    // BigInteger[] SS = new BigInteger[] { R[0], R[1], R[2] };
+//    // toAffine(SS, params);
+//    // BigInteger[] RR = multiplyPointA(P, k, params);
+//    // if (!SS[0].equals(RR[0]) || !SS[1].equals(RR[1]))
+//    // throw new RuntimeException("Internal mult error");
+//    // // </DEBUG>
+//
+//    return R;
+//  }
 
 //  // Simultaneous multiple point multiplication, also known as Shamir's trick
 //  static BigInteger[] multiplyPoints(BigInteger[] P, BigInteger k,
