@@ -166,34 +166,47 @@ public class PubkeyUtils {
 		return kf.generatePublic(pubKeySpec);
 	}
 
-	public static KeyPair recoverKeyPair(byte[] encoded) throws NoSuchAlgorithmException, InvalidKeySpecException {
-		KeySpec privKeySpec = new PKCS8EncodedKeySpec(encoded);
-		KeySpec pubKeySpec;
+	static String getAlgorithmForOid(String oid) throws NoSuchAlgorithmException {
+		if ("1.2.840.10045.2.1".equals(oid)) {
+			return "EC";
+		} else if ("1.2.840.113549.1.1.1".equals(oid)) {
+			return "RSA";
+		} else if ("1.2.840.10040.4.1".equals(oid)) {
+			return "DSA";
+		} else {
+			throw new NoSuchAlgorithmException("Unknown algorithm OID " + oid);
+		}
+	}
 
-		PrivateKey priv;
-		PublicKey pub;
-		KeyFactory kf;
+	static String getOidFromPkcs8Encoded(byte[] encoded) throws NoSuchAlgorithmException {
+		if (encoded == null) {
+			throw new NoSuchAlgorithmException("encoding is null");
+		}
 
-		final String oid;
 		try {
 			SimpleDERReader reader = new SimpleDERReader(encoded);
 			reader.resetInput(reader.readSequenceAsByteArray());
 			reader.readInt();
 			reader.resetInput(reader.readSequenceAsByteArray());
-			oid = reader.readOid();
-
-			kf = KeyFactory.getInstance(oid);
-			priv = kf.generatePrivate(privKeySpec);
+			return reader.readOid();
 		} catch (IOException e) {
 			Log.w(TAG, "Could not read OID", e);
-			throw new InvalidKeySpecException("Could not read key", e);
+			throw new NoSuchAlgorithmException("Could not read key", e);
 		}
+	}
 
+	public static KeyPair recoverKeyPair(byte[] encoded) throws NoSuchAlgorithmException, InvalidKeySpecException {
+		final String algo = getAlgorithmForOid(getOidFromPkcs8Encoded(encoded));
+
+		final KeySpec privKeySpec = new PKCS8EncodedKeySpec(encoded);
+
+		final KeyFactory kf = KeyFactory.getInstance(algo);
+		final PrivateKey priv = kf.generatePrivate(privKeySpec);
+
+		final PublicKey pub;
 		if (priv instanceof RSAPrivateCrtKey) {
 			RSAPrivateCrtKey rsaPriv = (RSAPrivateCrtKey) priv;
-			pubKeySpec = new RSAPublicKeySpec(rsaPriv.getModulus(), rsaPriv.getPublicExponent());
-
-			pub = kf.generatePublic(pubKeySpec);
+			pub = kf.generatePublic(new RSAPublicKeySpec(rsaPriv.getModulus(), rsaPriv.getPublicExponent()));
 		} else if (priv instanceof DSAPrivateKey) {
 			DSAPrivateKey dsaPriv = (DSAPrivateKey) priv;
 			DSAParams params = dsaPriv.getParams();
@@ -201,9 +214,7 @@ public class PubkeyUtils {
 			// Calculate public key Y
 			BigInteger y = params.getG().modPow(dsaPriv.getX(), params.getP());
 
-			pubKeySpec = new DSAPublicKeySpec(y, params.getP(), params.getQ(), params.getG());
-
-			pub = kf.generatePublic(pubKeySpec);
+			pub = kf.generatePublic(new DSAPublicKeySpec(y, params.getP(), params.getQ(), params.getG()));
 		} else if (priv instanceof ECPrivateKey) {
 			ECPrivateKey ecPriv = (ECPrivateKey) priv;
 			ECParameterSpec params = ecPriv.getParams();
@@ -216,11 +227,9 @@ public class PubkeyUtils {
 														ecPriv.getS(), params);
 			ECPoint w = new ECPoint(wCoords[0], wCoords[1]);
 
-			pubKeySpec = new ECPublicKeySpec(w, params);
-
-			pub = kf.generatePublic(pubKeySpec);
+			pub = kf.generatePublic(new ECPublicKeySpec(w, params));
 		} else {
-			throw new NoSuchAlgorithmException("Unknown OID: " + oid);
+			throw new NoSuchAlgorithmException("Unknown algorithm: " + algo);
 		}
 
 		return new KeyPair(pub, priv);
