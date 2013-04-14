@@ -20,6 +20,7 @@ package org.connectbot.util;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.ECPublicKey;
@@ -318,5 +319,27 @@ public class PubkeyUtilsTest extends AndroidTestCase {
 
 		assertEquals(EC_KEY_pub_x, pubKey.getW().getAffineX());
 		assertEquals(EC_KEY_pub_y, pubKey.getW().getAffineY());
+	}
+
+	private static class MyPrivateKey implements PrivateKey {
+		public String getAlgorithm() {
+			throw new UnsupportedOperationException();
+		}
+
+		public byte[] getEncoded() {
+			throw new UnsupportedOperationException();
+		}
+
+		public String getFormat() {
+			throw new UnsupportedOperationException();
+		}
+	}
+
+	public void testRecoverPublicKey_FakeKey_Failure() throws Exception {
+		try {
+			PubkeyUtils.recoverPublicKey(null, new MyPrivateKey());
+			fail("Should not accept unknown key types");
+		} catch (NoSuchAlgorithmException expected) {
+		}
 	}
 }

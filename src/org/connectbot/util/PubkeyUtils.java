@@ -199,7 +199,8 @@ public class PubkeyUtils {
 		}
 	}
 
-	public static KeyPair recoverKeyPair(byte[] encoded) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public static KeyPair recoverKeyPair(byte[] encoded) throws NoSuchAlgorithmException,
+			InvalidKeySpecException {
 		final String algo = getAlgorithmForOid(getOidFromPkcs8Encoded(encoded));
 
 		final KeySpec privKeySpec = new PKCS8EncodedKeySpec(encoded);
@@ -207,10 +208,15 @@ public class PubkeyUtils {
 		final KeyFactory kf = KeyFactory.getInstance(algo);
 		final PrivateKey priv = kf.generatePrivate(privKeySpec);
 
-		final PublicKey pub;
+		return new KeyPair(recoverPublicKey(kf, priv), priv);
+	}
+
+	static PublicKey recoverPublicKey(KeyFactory kf, PrivateKey priv)
+			throws NoSuchAlgorithmException, InvalidKeySpecException {
 		if (priv instanceof RSAPrivateCrtKey) {
 			RSAPrivateCrtKey rsaPriv = (RSAPrivateCrtKey) priv;
-			pub = kf.generatePublic(new RSAPublicKeySpec(rsaPriv.getModulus(), rsaPriv.getPublicExponent()));
+			return kf.generatePublic(new RSAPublicKeySpec(rsaPriv.getModulus(), rsaPriv
+					.getPublicExponent()));
 		} else if (priv instanceof DSAPrivateKey) {
 			DSAPrivateKey dsaPriv = (DSAPrivateKey) priv;
 			DSAParams params = dsaPriv.getParams();
@@ -218,25 +224,22 @@ public class PubkeyUtils {
 			// Calculate public key Y
 			BigInteger y = params.getG().modPow(dsaPriv.getX(), params.getP());
 
-			pub = kf.generatePublic(new DSAPublicKeySpec(y, params.getP(), params.getQ(), params.getG()));
+			return kf.generatePublic(new DSAPublicKeySpec(y, params.getP(), params.getQ(), params
+					.getG()));
 		} else if (priv instanceof ECPrivateKey) {
 			ECPrivateKey ecPriv = (ECPrivateKey) priv;
 			ECParameterSpec params = ecPriv.getParams();
 
 			// Calculate public key Y
 			ECPoint generator = params.getGenerator();
-			BigInteger[] wCoords = EcCore.multiplyPointA(new BigInteger[] {
-																generator.getAffineX(),
-																generator.getAffineY() },
-														 ecPriv.getS(), params);
+			BigInteger[] wCoords = EcCore.multiplyPointA(new BigInteger[] { generator.getAffineX(),
+					generator.getAffineY() }, ecPriv.getS(), params);
 			ECPoint w = new ECPoint(wCoords[0], wCoords[1]);
 
-			pub = kf.generatePublic(new ECPublicKeySpec(w, params));
+			return kf.generatePublic(new ECPublicKeySpec(w, params));
 		} else {
-			throw new NoSuchAlgorithmException("Unknown algorithm: " + algo);
+			throw new NoSuchAlgorithmException("Key type must be RSA, DSA, or EC");
 		}
-
-		return new KeyPair(pub, priv);
 	}
 
 	/*
