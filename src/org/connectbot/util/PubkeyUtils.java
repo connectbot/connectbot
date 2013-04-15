@@ -120,35 +120,28 @@ public class PubkeyUtils {
 		return complete;
 	}
 
-	public static byte[] decrypt(byte[] complete, String secret) throws Exception {
+	public static byte[] decrypt(byte[] saltAndCiphertext, String secret) throws Exception {
 		try {
 			byte[] salt = new byte[SALT_SIZE];
-			byte[] ciphertext = new byte[complete.length - salt.length];
+			byte[] ciphertext = new byte[saltAndCiphertext.length - salt.length];
 
-			System.arraycopy(complete, 0, salt, 0, salt.length);
-			System.arraycopy(complete, salt.length, ciphertext, 0, ciphertext.length);
+			System.arraycopy(saltAndCiphertext, 0, salt, 0, salt.length);
+			System.arraycopy(saltAndCiphertext, salt.length, ciphertext, 0, ciphertext.length);
 
 			return Encryptor.decrypt(salt, ITERATIONS, secret, ciphertext);
 		} catch (Exception e) {
 			Log.d("decrypt", "Could not decrypt with new method", e);
 			// We might be using the old encryption method.
-			return cipher(Cipher.DECRYPT_MODE, complete, secret.getBytes());
+			return cipher(Cipher.DECRYPT_MODE, saltAndCiphertext, secret.getBytes());
 		}
 	}
 
-	public static byte[] getEncodedPublic(PublicKey pk) {
-		return new X509EncodedKeySpec(pk.getEncoded()).getEncoded();
-	}
-
-	public static byte[] getEncodedPrivate(PrivateKey pk) {
-		return new PKCS8EncodedKeySpec(pk.getEncoded()).getEncoded();
-	}
-
 	public static byte[] getEncodedPrivate(PrivateKey pk, String secret) throws Exception {
-		if (secret.length() > 0)
-			return encrypt(getEncodedPrivate(pk), secret);
-		else
-			return getEncodedPrivate(pk);
+		final byte[] encoded = pk.getEncoded();
+		if (secret == null || secret.length() == 0) {
+			return encoded;
+		}
+		return encrypt(pk.getEncoded(), secret);
 	}
 
 	public static PrivateKey decodePrivate(byte[] encoded, String keyType) throws NoSuchAlgorithmException, InvalidKeySpecException {

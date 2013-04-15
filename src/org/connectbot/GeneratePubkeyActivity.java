@@ -289,7 +289,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 				pubkey.setNickname(nickname.getText().toString());
 				pubkey.setType(keyType);
 				pubkey.setPrivateKey(PubkeyUtils.getEncodedPrivate(priv, secret));
-				pubkey.setPublicKey(PubkeyUtils.getEncodedPublic(pub));
+				pubkey.setPublicKey(pub.getEncoded());
 				pubkey.setEncrypted(encrypted);
 				pubkey.setStartup(unlockAtStartup.isChecked());
 				pubkey.setConfirmUse(confirmUse.isChecked());
