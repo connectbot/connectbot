@@ -19,6 +19,7 @@ import java.security.spec.ECPoint;
 import java.security.spec.ECPrivateKeySpec;
 import java.security.spec.ECPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
@@ -344,7 +345,11 @@ public class PEMDecoder
 	public static KeyPair decode(char[] pem, String password) throws IOException
 	{
 		PEMStructure ps = parsePEM(pem);
+		return decode(ps, password);
+	}
 
+	public static KeyPair decode(PEMStructure ps, String password) throws IOException
+	{
 		if (isPEMEncrypted(ps))
 		{
 			if (password == null)
@@ -381,23 +386,7 @@ public class PEMDecoder
 			DSAPrivateKeySpec privSpec = new DSAPrivateKeySpec(x, p, q, g);
 			DSAPublicKeySpec pubSpec = new DSAPublicKeySpec(y, p, q, g);
 
-			PublicKey pubKey;
-			PrivateKey privKey;
-			try {
-				KeyFactory kf = KeyFactory.getInstance("DSA");
-				pubKey = kf.generatePublic(pubSpec);
-				privKey = kf.generatePrivate(privSpec);
-			} catch (NoSuchAlgorithmException e) {
-				IOException ex = new IOException();
-				ex.initCause(ex);
-				throw ex;
-			} catch (InvalidKeySpecException e) {
-				IOException ex = new IOException();
-				ex.initCause(ex);
-				throw ex;
-			}
-
-			return new KeyPair(pubKey, privKey);
+			return generateKeyPair("DSA", privSpec, pubSpec);
 		}
 
 		if (ps.pemType == PEM_RSA_PRIVATE_KEY)
@@ -429,23 +418,7 @@ public class PEMDecoder
 			RSAPrivateKeySpec privSpec = new RSAPrivateCrtKeySpec(n, e, d, primeP, primeQ, expP, expQ, coeff);
 			RSAPublicKeySpec pubSpec = new RSAPublicKeySpec(n, e);
 
-			PublicKey pubKey;
-			PrivateKey privKey;
-			try {
-				KeyFactory kf = KeyFactory.getInstance("RSA");
-				pubKey = kf.generatePublic(pubSpec);
-				privKey = kf.generatePrivate(privSpec);
-			} catch (NoSuchAlgorithmException ex) {
-				IOException ioex = new IOException();
-				ioex.initCause(ex);
-				throw ioex;
-			} catch (InvalidKeySpecException ex) {
-				IOException ioex = new IOException("invalid keyspec");
-				ioex.initCause(ex);
-				throw ioex;
-			}
-
-			return new KeyPair(pubKey, privKey);
+			return generateKeyPair("RSA", privSpec, pubSpec);
 		}
 
 		if (ps.pemType == PEM_EC_PRIVATE_KEY) {
@@ -492,26 +465,30 @@ public class PEMDecoder
 			ECPrivateKeySpec privSpec = new ECPrivateKeySpec(s, params);
 			ECPublicKeySpec pubSpec = new ECPublicKeySpec(w, params);
 
-			PublicKey pubKey;
-			PrivateKey privKey;
-			try {
-				KeyFactory kf = KeyFactory.getInstance("EC");
-				pubKey = kf.generatePublic(pubSpec);
-				privKey = kf.generatePrivate(privSpec);
-			} catch (NoSuchAlgorithmException ex) {
-				IOException ioex = new IOException();
-				ioex.initCause(ex);
-				throw ioex;
-			} catch (InvalidKeySpecException ex) {
-				IOException ioex = new IOException("invalid keyspec");
-				ioex.initCause(ex);
-				throw ioex;
-			}
-
-			return new KeyPair(pubKey, privKey);
+			return generateKeyPair("EC", privSpec, pubSpec);
 		}
 
 		throw new IOException("PEM problem: it is of unknown type");
 	}
 
+	/**
+	 * Generate a {@code KeyPair} given an {@code algorithm} and {@code KeySpec}.
+	 */
+	private static KeyPair generateKeyPair(String algorithm, KeySpec privSpec, KeySpec pubSpec)
+			throws IOException {
+		try {
+			final KeyFactory kf = KeyFactory.getInstance(algorithm);
+			final PublicKey pubKey = kf.generatePublic(pubSpec);
+			final PrivateKey privKey = kf.generatePrivate(privSpec);
+			return new KeyPair(pubKey, privKey);
+		} catch (NoSuchAlgorithmException ex) {
+			IOException ioex = new IOException();
+			ioex.initCause(ex);
+			throw ioex;
+		} catch (InvalidKeySpecException ex) {
+			IOException ioex = new IOException("invalid keyspec");
+			ioex.initCause(ex);
+			throw ioex;
+		}
+	}
 }
