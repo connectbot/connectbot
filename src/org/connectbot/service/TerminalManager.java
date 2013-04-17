@@ -138,7 +138,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		for (PubkeyBean pubkey : pubkeys) {
 			try {
 				PrivateKey privKey = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType());
-				PublicKey pubKey = pubkey.getPublicKey();
+				PublicKey pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
 				KeyPair pair = new KeyPair(pubKey, privKey);
 
 				addKey(pubkey, pair);

@@ -270,7 +270,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			// load using internal generated format
 			try {
 				PrivateKey privKey = PubkeyUtils.decodePrivate(keybean.getPrivateKey(), keybean.getType(), password);
-				PublicKey pubKey = keybean.getPublicKey();
+				PublicKey pubKey = PubkeyUtils.decodePublic(keybean.getPublicKey(), keybean.getType());
 				Log.d(TAG, "Unlocked key " + PubkeyUtils.formatKey(pubKey));
 
 				pair = new KeyPair(pubKey, privKey);
@@ -342,7 +342,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		copyPublicToClipboard.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				try {
-					PublicKey pk = pubkey.getPublicKey();
+					PublicKey pk = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
 					String openSSHPubkey = PubkeyUtils.convertToOpenSSHFormat(pk, pubkey.getNickname());
 
 					clipboard.setText(openSSHPubkey);
