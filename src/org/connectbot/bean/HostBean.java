@@ -50,6 +50,7 @@ public class HostBean extends AbstractBean {
 	private boolean compression = false;
 	private String encoding = HostDatabase.ENCODING_DEFAULT;
 	private boolean stayConnected = false;
+	private boolean quickDisconnect = false;
 
 	public HostBean() {
 
@@ -202,6 +203,14 @@ public class HostBean extends AbstractBean {
 		return stayConnected;
 	}
 
+	public void setQuickDisconnect(boolean quickDisconnect) {
+		this.quickDisconnect = quickDisconnect;
+	}
+
+	public boolean getQuickDisconnect() {
+		return quickDisconnect;
+	}
+
 	public String getDescription() {
 		String description = String.format("%s@%s", username, hostname);
 
@@ -234,6 +243,7 @@ public class HostBean extends AbstractBean {
 		values.put(HostDatabase.FIELD_HOST_COMPRESSION, Boolean.toString(compression));
 		values.put(HostDatabase.FIELD_HOST_ENCODING, encoding);
 		values.put(HostDatabase.FIELD_HOST_STAYCONNECTED, stayConnected);
+		values.put(HostDatabase.FIELD_HOST_QUICKDISCONNECT, quickDisconnect);
 
 		return values;
 	}

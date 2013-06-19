@@ -429,7 +429,7 @@ public class TerminalBridge implements VDUDisplay {
 		disconnectThread.setName("Disconnect");
 		disconnectThread.start();
 
-		if (immediate) {
+		if (immediate || (host.getQuickDisconnect() && !host.getStayConnected())) {
 			awaitingClose = true;
 			if (disconnectListener != null)
 				disconnectListener.onDisconnected(TerminalBridge.this);
