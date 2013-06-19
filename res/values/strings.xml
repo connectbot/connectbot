@@ -269,6 +269,10 @@
 	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
 	<string name="hostpref_stayconnected_summary">"Try to reconnect to host if disconnected"</string>
 
+    <!-- Setting for whether we should prompt to close after getting disconnected -->
+    <string name="hostpref_quickdisconnect_title">"Close on disconnect"</string>
+    <string name="hostpref_quickdisconnect_summary">"Close immediately after remote disconnect without prompting."</string>
+
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
 	<string name="hostpref_delkey_title">"DEL Key"</string>
 	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
