@@ -7,7 +7,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketTimeoutException;
+import java.security.KeyPair;
 import java.security.SecureRandom;
+import java.security.Security;
+import java.util.Set;
 import java.util.Vector;
 
 import com.trilead.ssh2.auth.AuthenticationManager;
@@ -473,7 +476,7 @@ public class Connection
 	 * @return whether the connection is now authenticated.
 	 * @throws IOException
 	 */
-	public synchronized boolean authenticateWithPublicKey(String user, Object key)
+	public synchronized boolean authenticateWithPublicKey(String user, KeyPair pair)
 			throws IOException
 	{
 		if (tm == null)
@@ -491,10 +494,10 @@ public class Connection
 		if (user == null)
 			throw new IllegalArgumentException("user argument is null");
 
-		if (key == null)
-			throw new IllegalArgumentException("Key argument is null");
+		if (pair == null)
+			throw new IllegalArgumentException("Key pair argument is null");
 
-		authenticated = am.authenticatePublicKey(user, key, getOrCreateSecureRND());
+		authenticated = am.authenticatePublicKey(user, pair, getOrCreateSecureRND());
 
 		return authenticated;
 	}

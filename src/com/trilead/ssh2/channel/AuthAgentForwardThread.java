@@ -21,7 +21,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.interfaces.DSAPrivateKey;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.spec.DSAPrivateKeySpec;
+import java.security.spec.DSAPublicKeySpec;
+import java.security.spec.ECParameterSpec;
+import java.security.spec.ECPoint;
+import java.security.spec.ECPrivateKeySpec;
+import java.security.spec.ECPublicKeySpec;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+import java.security.spec.RSAPrivateCrtKeySpec;
+import java.security.spec.RSAPublicKeySpec;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -29,12 +46,9 @@ import com.trilead.ssh2.AuthAgentCallback;
 import com.trilead.ssh2.log.Logger;
 import com.trilead.ssh2.packets.TypesReader;
 import com.trilead.ssh2.packets.TypesWriter;
-import com.trilead.ssh2.signature.DSAPrivateKey;
 import com.trilead.ssh2.signature.DSASHA1Verify;
-import com.trilead.ssh2.signature.DSASignature;
-import com.trilead.ssh2.signature.RSAPrivateKey;
+import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
-import com.trilead.ssh2.signature.RSASignature;
 
 /**
  * AuthAgentForwardThread.
@@ -268,20 +282,31 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 
 			String type = tr.readString();
 
-			Object key;
 			String comment;
+			String keyType;
+			KeySpec pubSpec;
+			KeySpec privSpec;
 
 			if (type.equals("ssh-rsa")) {
+				keyType = "RSA";
+
 				BigInteger n = tr.readMPINT();
 				BigInteger e = tr.readMPINT();
 				BigInteger d = tr.readMPINT();
-				tr.readMPINT(); // iqmp
-				tr.readMPINT(); // p
-				tr.readMPINT(); // q
+				BigInteger iqmp = tr.readMPINT();
+				BigInteger p = tr.readMPINT();
+				BigInteger q = tr.readMPINT();
 				comment = tr.readString();
 
-				key = new RSAPrivateKey(d, e, n);
+				// Derive the extra values Java needs.
+				BigInteger dmp1 = d.mod(p.subtract(BigInteger.ONE));
+				BigInteger dmq1 = d.mod(q.subtract(BigInteger.ONE));
+
+				pubSpec = new RSAPublicKeySpec(n, e);
+				privSpec = new RSAPrivateCrtKeySpec(n, e, d, p, q, dmp1, dmq1, iqmp);
 			} else if (type.equals("ssh-dss")) {
+				keyType = "DSA";
+
 				BigInteger p = tr.readMPINT();
 				BigInteger q = tr.readMPINT();
 				BigInteger g = tr.readMPINT();
@@ -289,11 +314,55 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 				BigInteger x = tr.readMPINT();
 				comment = tr.readString();
 
-				key = new DSAPrivateKey(p, q, g, y, x);
+				pubSpec = new DSAPublicKeySpec(y, p, q, g);
+				privSpec = new DSAPrivateKeySpec(x, p, q, g);
+			} else if (type.equals("ecdsa-sha2-nistp256")) {
+				keyType = "EC";
+
+				String curveName = tr.readString();
+				byte[] groupBytes = tr.readByteString();
+				BigInteger exponent = tr.readMPINT();
+				comment = tr.readString();
+
+				if (!"nistp256".equals(curveName)) {
+					log.log(2, "Invalid curve name for ecdsa-sha2-nistp256: " + curveName);
+					os.write(SSH_AGENT_FAILURE);
+					return;
+				}
+
+				ECParameterSpec nistp256 = ECDSASHA2Verify.EllipticCurves.nistp256;
+				ECPoint group = ECDSASHA2Verify.decodeECPoint(groupBytes, nistp256.getCurve());
+				if (group == null) {
+					// TODO log error
+					os.write(SSH_AGENT_FAILURE);
+					return;
+				}
+
+				pubSpec = new ECPublicKeySpec(group, nistp256);
+				privSpec = new ECPrivateKeySpec(exponent, nistp256);
 			} else {
+				log.log(2, "Unknown key type: " + type);
 				os.write(SSH_AGENT_FAILURE);
 				return;
 			}
+
+			PublicKey pubKey;
+			PrivateKey privKey;
+			try {
+				KeyFactory kf = KeyFactory.getInstance(keyType);
+				pubKey = kf.generatePublic(pubSpec);
+				privKey = kf.generatePrivate(privSpec);
+			} catch (NoSuchAlgorithmException ex) {
+				// TODO: log error
+				 os.write(SSH_AGENT_FAILURE);
+				return;
+			} catch (InvalidKeySpecException ex) {
+				// TODO: log error
+				 os.write(SSH_AGENT_FAILURE);
+				return;
+			}
+
+			KeyPair pair = new KeyPair(pubKey, privKey);
 
 			boolean confirmUse = false;
 			int lifetime = 0;
@@ -313,7 +382,7 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 				}
 			}
 
-			if (authAgent.addIdentity(key, comment, confirmUse, lifetime))
+			if (authAgent.addIdentity(pair, comment, confirmUse, lifetime))
 				os.write(SSH_AGENT_SUCCESS);
 			else
 				os.write(SSH_AGENT_FAILURE);
@@ -390,7 +459,7 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 			if (failWhenLocked())
 				return;
 
-			byte[] publicKey = tr.readByteString();
+			byte[] publicKeyBytes = tr.readByteString();
 			byte[] challenge = tr.readByteString();
 
 			int flags = tr.readUINT32();
@@ -401,22 +470,23 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 				return;
 			}
 
-			Object trileadKey = authAgent.getPrivateKey(publicKey);
+			KeyPair pair = authAgent.getKeyPair(publicKeyBytes);
 
-			if (trileadKey == null) {
+			if (pair == null) {
 				os.write(SSH_AGENT_FAILURE);
 				return;
 			}
 
 			byte[] response;
 
-			if (trileadKey instanceof RSAPrivateKey) {
-				RSASignature signature = RSASHA1Verify.generateSignature(challenge,
-						(RSAPrivateKey) trileadKey);
+			PrivateKey privKey = pair.getPrivate();
+			if (privKey instanceof RSAPrivateKey) {
+				byte[] signature = RSASHA1Verify.generateSignature(challenge,
+						(RSAPrivateKey) privKey);
 				response = RSASHA1Verify.encodeSSHRSASignature(signature);
-			} else if (trileadKey instanceof DSAPrivateKey) {
-				DSASignature signature = DSASHA1Verify.generateSignature(challenge,
-						(DSAPrivateKey) trileadKey, new SecureRandom());
+			} else if (privKey instanceof DSAPrivateKey) {
+				byte[] signature = DSASHA1Verify.generateSignature(challenge,
+						(DSAPrivateKey) privKey, new SecureRandom());
 				response = DSASHA1Verify.encodeSSHDSASignature(signature);
 			} else {
 				os.write(SSH_AGENT_FAILURE);

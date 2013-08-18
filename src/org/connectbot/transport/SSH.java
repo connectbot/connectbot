@@ -22,14 +22,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.interfaces.DSAPrivateKey;
+import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -62,11 +68,7 @@ import com.trilead.ssh2.LocalPortForwarder;
 import com.trilead.ssh2.ServerHostKeyVerifier;
 import com.trilead.ssh2.Session;
 import com.trilead.ssh2.crypto.PEMDecoder;
-import com.trilead.ssh2.signature.DSAPrivateKey;
-import com.trilead.ssh2.signature.DSAPublicKey;
 import com.trilead.ssh2.signature.DSASHA1Verify;
-import com.trilead.ssh2.signature.RSAPrivateKey;
-import com.trilead.ssh2.signature.RSAPublicKey;
 import com.trilead.ssh2.signature.RSASHA1Verify;
 
 /**
@@ -141,7 +143,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			KnownHosts hosts = manager.hostdb.getKnownHosts();
 			Boolean result;
 
-			String matchName = String.format("%s:%d", hostname, port);
+			String matchName = String.format(Locale.US, "%s:%d", hostname, port);
 
 			String fingerprint = KnownHosts.createHexFingerprint(serverHostKeyAlgorithm, serverHostKey);
 
@@ -150,6 +152,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				algorithmName = "RSA";
 			else if ("ssh-dss".equals(serverHostKeyAlgorithm))
 				algorithmName = "DSA";
+			else if (serverHostKeyAlgorithm.startsWith("ecdsa-"))
+			    algorithmName = "EC";
 			else
 				algorithmName = serverHostKeyAlgorithm;
 
@@ -234,7 +238,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 							continue;
 
 						if (this.tryPublicKey(host.getUsername(), entry.getKey(),
-								entry.getValue().trileadKey)) {
+								entry.getValue().pair)) {
 							finishConnection();
 							break;
 						}
@@ -293,7 +297,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	 * @throws IOException
 	 */
 	private boolean tryPublicKey(PubkeyBean pubkey) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-		Object trileadKey = null;
+		KeyPair pair = null;
+
 		if(manager.isKeyLoaded(pubkey.getNickname())) {
 			// load this key from memory if its already there
 			Log.d(TAG, String.format("Found unlocked key '%s' already in-memory", pubkey.getNickname()));
@@ -303,7 +308,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 					return false;
 			}
 
-			trileadKey = manager.getKey(pubkey.getNickname());
+			pair = manager.getKey(pubkey.getNickname());
 		} else {
 			// otherwise load key from database and prompt for password as needed
 			String password = null;
@@ -318,7 +323,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 			if(PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType())) {
 				// load specific key using pem format
-				trileadKey = PEMDecoder.decode(new String(pubkey.getPrivateKey()).toCharArray(), password);
+				pair = PEMDecoder.decode(new String(pubkey.getPrivateKey()).toCharArray(), password);
 			} else {
 				// load using internal generated format
 				PrivateKey privKey;
@@ -332,26 +337,25 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 					return false;
 				}
 
-				PublicKey pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(),
-						pubkey.getType());
+				PublicKey pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
 
 				// convert key to trilead format
-				trileadKey = PubkeyUtils.convertToTrilead(privKey, pubKey);
+				pair = new KeyPair(pubKey, privKey);
 				Log.d(TAG, "Unlocked key " + PubkeyUtils.formatKey(pubKey));
 			}
 
 			Log.d(TAG, String.format("Unlocked key '%s'", pubkey.getNickname()));
 
 			// save this key in memory
-			manager.addKey(pubkey, trileadKey);
+			manager.addKey(pubkey, pair);
 		}
 
-		return tryPublicKey(host.getUsername(), pubkey.getNickname(), trileadKey);
+		return tryPublicKey(host.getUsername(), pubkey.getNickname(), pair);
 	}
 
-	private boolean tryPublicKey(String username, String keyNickname, Object trileadKey) throws IOException {
+	private boolean tryPublicKey(String username, String keyNickname, KeyPair pair) throws IOException {
 		//bridge.outputLine(String.format("Attempting 'publickey' with key '%s' [%s]...", keyNickname, trileadKey.toString()));
-		boolean success = connection.authenticateWithPublicKey(username, trileadKey);
+		boolean success = connection.authenticateWithPublicKey(username, pair);
 		if(!success)
 			bridge.outputLine(manager.res.getString(R.string.terminal_auth_pubkey_fail, keyNickname));
 		return success;
@@ -740,9 +744,9 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	@Override
 	public String getDefaultNickname(String username, String hostname, int port) {
 		if (port == DEFAULT_PORT) {
-			return String.format("%s@%s", username, hostname);
+			return String.format(Locale.US, "%s@%s", username, hostname);
 		} else {
-			return String.format("%s@%s:%d", username, hostname, port);
+			return String.format(Locale.US, "%s@%s:%d", username, hostname, port);
 		}
 	}
 
@@ -859,14 +863,15 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		Map<String,byte[]> pubKeys = new HashMap<String,byte[]>(manager.loadedKeypairs.size());
 
 		for (Entry<String,KeyHolder> entry : manager.loadedKeypairs.entrySet()) {
-			Object trileadKey = entry.getValue().trileadKey;
+			KeyPair pair = entry.getValue().pair;
 
 			try {
-				if (trileadKey instanceof RSAPrivateKey) {
-					RSAPublicKey pubkey = ((RSAPrivateKey) trileadKey).getPublicKey();
+				PrivateKey privKey = pair.getPrivate();
+				if (privKey instanceof RSAPrivateKey) {
+					RSAPublicKey pubkey = (RSAPublicKey) pair.getPublic();
 					pubKeys.put(entry.getKey(), RSASHA1Verify.encodeSSHRSAPublicKey(pubkey));
-				} else if (trileadKey instanceof DSAPrivateKey) {
-					DSAPublicKey pubkey = ((DSAPrivateKey) trileadKey).getPublicKey();
+				} else if (privKey instanceof DSAPrivateKey) {
+					DSAPublicKey pubkey = (DSAPublicKey) pair.getPublic();
 					pubKeys.put(entry.getKey(), DSASHA1Verify.encodeSSHDSAPublicKey(pubkey));
 				} else
 					continue;
@@ -878,7 +883,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		return pubKeys;
 	}
 
-	public Object getPrivateKey(byte[] publicKey) {
+	public KeyPair getKeyPair(byte[] publicKey) {
 		String nickname = manager.getKeyNickname(publicKey);
 
 		if (nickname == null)
@@ -902,13 +907,13 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		return result;
 	}
 
-	public boolean addIdentity(Object key, String comment, boolean confirmUse, int lifetime) {
+	public boolean addIdentity(KeyPair pair, String comment, boolean confirmUse, int lifetime) {
 		PubkeyBean pubkey = new PubkeyBean();
 //		pubkey.setType(PubkeyDatabase.KEY_TYPE_IMPORTED);
 		pubkey.setNickname(comment);
 		pubkey.setConfirmUse(confirmUse);
 		pubkey.setLifetime(lifetime);
-		manager.addKey(pubkey, key);
+		manager.addKey(pubkey, pair);
 		return true;
 	}
 

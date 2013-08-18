@@ -17,6 +17,9 @@
 
 package org.connectbot.service;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import org.connectbot.ConsoleActivity;
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
@@ -128,20 +131,46 @@ public abstract class ConnectionNotifier {
 	public abstract void hideRunningNotification(Service context);
 
 	private static class PreEclair extends ConnectionNotifier {
+		private static final Class<?>[] setForegroundSignature = new Class[] {boolean.class};
+		private Method setForeground = null;
+
 		private static class Holder {
 			private static final PreEclair sInstance = new PreEclair();
 		}
 
+		public PreEclair() {
+			try {
+				setForeground = Service.class.getMethod("setForeground", setForegroundSignature);
+			} catch (Exception e) {
+			}
+		}
+
 		@Override
 		public void showRunningNotification(Service context) {
-			context.setForeground(true);
-			getNotificationManager(context).notify(ONLINE_NOTIFICATION, newRunningNotification(context));
+			if (setForeground != null) {
+				Object[] setForegroundArgs = new Object[1];
+				setForegroundArgs[0] = Boolean.TRUE;
+				try {
+					setForeground.invoke(context, setForegroundArgs);
+				} catch (InvocationTargetException e) {
+				} catch (IllegalAccessException e) {
+				}
+				getNotificationManager(context).notify(ONLINE_NOTIFICATION, newRunningNotification(context));
+			}
 		}
 
 		@Override
 		public void hideRunningNotification(Service context) {
-			context.setForeground(false);
-			getNotificationManager(context).cancel(ONLINE_NOTIFICATION);
+			if (setForeground != null) {
+				Object[] setForegroundArgs = new Object[1];
+				setForegroundArgs[0] = Boolean.FALSE;
+				try {
+					setForeground.invoke(context, setForegroundArgs);
+				} catch (InvocationTargetException e) {
+				} catch (IllegalAccessException e) {
+				}
+				getNotificationManager(context).cancel(ONLINE_NOTIFICATION);
+			}
 		}
 	}
 

@@ -74,6 +74,12 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="DSA" />
+
+				<RadioButton
+					android:id="@+id/ec"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="EC" />
 			</RadioGroup>
 		</TableRow>
 
@@ -86,9 +92,9 @@
 
 			<EditText
 				android:id="@+id/bits"
+				android:inputType="number"
 				android:layout_height="wrap_content"
 				android:text="1024"
-				android:numeric="integer"
 				android:singleLine="true"
 				android:layout_weight="1" />
 		</TableRow>

@@ -19,6 +19,7 @@ package org.connectbot.service;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Arrays;
@@ -26,9 +27,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Map.Entry;
 
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
@@ -59,12 +60,10 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.nullwire.trace.ExceptionHandler;
-
 /**
- * Manager for SSH connections that runs as a background service. This service
- * holds a list of currently connected SSH bridges that are ready for connection
- * up to a GUI if needed.
+ * Manager for SSH connections that runs as a service. This service holds a list
+ * of currently connected SSH bridges that are ready for connection up to a GUI
+ * if needed.
  *
  * @author jsharkey
  */
@@ -120,9 +119,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	@Override
 	public void onCreate() {
-		Log.i(TAG, "Starting background service");
-
-		ExceptionHandler.register(this);
+		Log.i(TAG, "Starting service");
 
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
@@ -142,9 +139,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 			try {
 				PrivateKey privKey = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType());
 				PublicKey pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
-				Object trileadKey = PubkeyUtils.convertToTrilead(privKey, pubKey);
+				KeyPair pair = new KeyPair(pubKey, privKey);
 
-				addKey(pubkey, trileadKey);
+				addKey(pubkey, pair);
 			} catch (Exception e) {
 				Log.d(TAG, String.format("Problem adding key '%s' to in-memory cache", pubkey.getNickname()), e);
 			}
@@ -171,7 +168,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	@Override
 	public void onDestroy() {
-		Log.i(TAG, "Destroying background service");
+		Log.i(TAG, "Destroying service");
 
 		disconnectAll(true);
 
@@ -363,21 +360,21 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		return loadedKeypairs.containsKey(nickname);
 	}
 
-	public void addKey(PubkeyBean pubkey, Object trileadKey) {
-		addKey(pubkey, trileadKey, false);
+	public void addKey(PubkeyBean pubkey, KeyPair pair) {
+		addKey(pubkey, pair, false);
 	}
 
-	public void addKey(PubkeyBean pubkey, Object trileadKey, boolean force) {
+	public void addKey(PubkeyBean pubkey, KeyPair pair, boolean force) {
 		if (!savingKeys && !force)
 			return;
 
 		removeKey(pubkey.getNickname());
 
-		byte[] sshPubKey = PubkeyUtils.extractOpenSSHPublic(trileadKey);
+		byte[] sshPubKey = PubkeyUtils.extractOpenSSHPublic(pair);
 
 		KeyHolder keyHolder = new KeyHolder();
 		keyHolder.bean = pubkey;
-		keyHolder.trileadKey = trileadKey;
+		keyHolder.pair = pair;
 		keyHolder.openSSHPubkey = sshPubKey;
 
 		loadedKeypairs.put(pubkey.getNickname(), keyHolder);
@@ -417,18 +414,18 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 			return false;
 	}
 
-	public Object getKey(String nickname) {
+	public KeyPair getKey(String nickname) {
 		if (loadedKeypairs.containsKey(nickname)) {
 			KeyHolder keyHolder = loadedKeypairs.get(nickname);
-			return keyHolder.trileadKey;
+			return keyHolder.pair;
 		} else
 			return null;
 	}
 
-	public Object getKey(byte[] publicKey) {
+	public KeyPair getKey(byte[] publicKey) {
 		for (KeyHolder keyHolder : loadedKeypairs.values()) {
 			if (Arrays.equals(keyHolder.openSSHPubkey, publicKey))
-				return keyHolder.trileadKey;
+				return keyHolder.pair;
 		}
 		return null;
 	}
@@ -453,7 +450,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				idleTimer.schedule(new IdleTask(), IDLE_TIMEOUT);
 			}
 		} else {
-			Log.d(TAG, "Stopping background service immediately");
+			Log.d(TAG, "Stopping service immediately");
 			stopSelf();
 		}
 	}
@@ -648,7 +645,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	public static class KeyHolder {
 		public PubkeyBean bean;
-		public Object trileadKey;
+		public KeyPair pair;
 		public byte[] openSSHPubkey;
 	}
 

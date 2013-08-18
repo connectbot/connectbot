@@ -2590,7 +2590,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               debug("ESC [ " + DCEvars[0] + " C");
             break;
           case 'd': // CVA
-            R = DCEvars[0];
+            R = DCEvars[0] - 1;
             if (R < 0)
               R = 0;
             else if (R >= height)
@@ -2663,9 +2663,9 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case 'S': /* ind aka 'scroll forward' */
             if (DCEvars[0] == 0)
-              insertLine(rows - 1, SCROLL_UP);
+              insertLine(getBottomMargin(), SCROLL_UP);
             else
-              insertLine(rows - 1, DCEvars[0], SCROLL_UP);
+              insertLine(getBottomMargin(), DCEvars[0], SCROLL_UP);
             break;
           case 'L':
             /* insert n lines */
@@ -2678,9 +2678,9 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case 'T': /* 'ri' aka scroll backward */
             if (DCEvars[0] == 0)
-              insertLine(0, SCROLL_DOWN);
+              insertLine(getTopMargin(), SCROLL_DOWN);
             else
-              insertLine(0, DCEvars[0], SCROLL_DOWN);
+              insertLine(getTopMargin(), DCEvars[0], SCROLL_DOWN);
             break;
           case 'M':
             if (debug > 1)
@@ -2733,6 +2733,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               debug("ESC [ " + DCEvars[0] + " J");
             break;
           case '@':
+            if (DCEvars[0] == 0) DCEvars[0] = 1;
             if (debug > 1)
               debug("ESC [ " + DCEvars[0] + " @");
             for (int i = 0; i < DCEvars[0]; i++)

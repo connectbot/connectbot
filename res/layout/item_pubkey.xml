@@ -29,8 +29,10 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:src="@drawable/pubkey"
+		android:contentDescription="@string/image_description_key_is_locked"
 		android:layout_alignParentRight="true"
-		android:layout_alignParentTop="true" android:layout_marginLeft="10dip"/>
+		android:layout_alignParentTop="true"
+		android:layout_marginLeft="10dip"/>
 
 	<TextView
 		android:id="@android:id/text1"

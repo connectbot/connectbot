@@ -3,6 +3,8 @@ package com.trilead.ssh2.crypto;
 
 
 import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import com.trilead.ssh2.crypto.digest.HashForSSH2Types;
 
@@ -66,13 +68,18 @@ public class KeyMaterial
 		return res;
 	}
 
-	public static KeyMaterial create(String hashType, byte[] H, BigInteger K, byte[] SessionID, int keyLengthCS,
+	public static KeyMaterial create(String hashAlgo, byte[] H, BigInteger K, byte[] SessionID, int keyLengthCS,
 			int blockSizeCS, int macLengthCS, int keyLengthSC, int blockSizeSC, int macLengthSC)
 			throws IllegalArgumentException
 	{
 		KeyMaterial km = new KeyMaterial();
 
-		HashForSSH2Types sh = new HashForSSH2Types(hashType);
+		HashForSSH2Types sh;
+		try {
+			sh = new HashForSSH2Types(MessageDigest.getInstance(hashAlgo));
+		} catch (NoSuchAlgorithmException e) {
+			throw new IllegalArgumentException(e);
+		}
 
 		km.initial_iv_client_to_server = calculateKey(sh, K, H, (byte) 'A', SessionID, blockSizeCS);
 

@@ -56,7 +56,9 @@ public class TransportConnection
 	
 	ICompressor send_comp = null;
 	
-	boolean can_compress = false;
+	boolean can_recv_compress = false;
+
+	boolean can_send_compress = false;
 
 	byte[] recv_comp_buffer;
 	
@@ -117,16 +119,20 @@ public class TransportConnection
 	{
 		recv_comp = comp;
 		
-		if (comp != null)
+		if (comp != null) {
 			recv_comp_buffer = new byte[comp.getBufferSize()];
+			can_recv_compress |= recv_comp.canCompressPreauth();
+		}
 	}
 
 	public void changeSendCompression(ICompressor comp)
 	{
 		send_comp = comp;
 		
-		if (comp != null)
+		if (comp != null) {
 			send_comp_buffer = new byte[comp.getBufferSize()];
+			can_send_compress |= send_comp.canCompressPreauth();
+		}
 	}
 	
 	public void sendMessage(byte[] message) throws IOException
@@ -152,7 +158,7 @@ public class TransportConnection
 		else if (padd > 64)
 			padd = 64;
 		
-		if (send_comp != null && can_compress) {
+		if (send_comp != null && can_send_compress) {
 			if (send_comp_buffer.length < message.length + 1024)
 				send_comp_buffer = new byte[message.length + 1024];
 			len = send_comp.compress(message, off, len, send_comp_buffer);
@@ -313,7 +319,7 @@ public class TransportConnection
 					+ " bytes payload");
 		}
 
-		if (recv_comp != null && can_compress) {
+		if (recv_comp != null && can_recv_compress) {
 			int[] uncomp_len = new int[] { payload_length };
 			buffer = recv_comp.uncompress(buffer, off, uncomp_len);
 			
@@ -331,6 +337,7 @@ public class TransportConnection
 	 * 
 	 */
 	public void startCompression() {
-		can_compress = true;
+		can_recv_compress = true;
+		can_send_compress = true;
 	}
 }

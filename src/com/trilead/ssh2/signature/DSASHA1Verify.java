@@ -3,9 +3,19 @@ package com.trilead.ssh2.signature;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.Signature;
+import java.security.SignatureException;
+import java.security.interfaces.DSAParams;
+import java.security.interfaces.DSAPrivateKey;
+import java.security.interfaces.DSAPublicKey;
+import java.security.spec.DSAPublicKeySpec;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 
-import com.trilead.ssh2.crypto.digest.SHA1;
 import com.trilead.ssh2.log.Logger;
 import com.trilead.ssh2.packets.TypesReader;
 import com.trilead.ssh2.packets.TypesWriter;
@@ -38,7 +48,20 @@ public class DSASHA1Verify
 		if (tr.remain() != 0)
 			throw new IOException("Padding in DSA public key!");
 
-		return new DSAPublicKey(p, q, g, y);
+		try {
+			KeyFactory kf = KeyFactory.getInstance("DSA");
+
+			KeySpec ks = new DSAPublicKeySpec(y, p, q, g);
+			return (DSAPublicKey) kf.generatePublic(ks);
+		} catch (NoSuchAlgorithmException e) {
+			IOException ex = new IOException();
+			ex.initCause(e);
+			throw ex;
+		} catch (InvalidKeySpecException e) {
+			IOException ex = new IOException();
+			ex.initCause(e);
+			throw ex;
+		}
 	}
 
 	public static byte[] encodeSSHDSAPublicKey(DSAPublicKey pk) throws IOException
@@ -46,22 +69,44 @@ public class DSASHA1Verify
 		TypesWriter tw = new TypesWriter();
 
 		tw.writeString("ssh-dss");
-		tw.writeMPInt(pk.getP());
-		tw.writeMPInt(pk.getQ());
-		tw.writeMPInt(pk.getG());
+
+		DSAParams params = pk.getParams();
+		tw.writeMPInt(params.getP());
+		tw.writeMPInt(params.getQ());
+		tw.writeMPInt(params.getG());
 		tw.writeMPInt(pk.getY());
 
 		return tw.getBytes();
 	}
 
-	public static byte[] encodeSSHDSASignature(DSASignature ds)
+	/**
+	 * Convert from Java's signature ASN.1 encoding to the SSH spec.
+	 * <p>
+	 * Java ASN.1 encoding:
+	 * <pre>
+	 * SEQUENCE ::= {
+	 *    r INTEGER,
+	 *    s INTEGER
+	 * }
+	 * </pre>
+	 */
+	public static byte[] encodeSSHDSASignature(byte[] ds)
 	{
 		TypesWriter tw = new TypesWriter();
 
 		tw.writeString("ssh-dss");
 
-		byte[] r = ds.getR().toByteArray();
-		byte[] s = ds.getS().toByteArray();
+		int len, index;
+
+		index = 3;
+		len = ds[index++] & 0xff;
+		byte[] r = new byte[len];
+		System.arraycopy(ds, index, r, 0, r.length);
+
+		index = index + len + 1;
+		len = ds[index++] & 0xff;
+		byte[] s = new byte[len];
+		System.arraycopy(ds, index, s, 0, s.length);
 
 		byte[] a40 = new byte[40];
 
@@ -78,22 +123,21 @@ public class DSASHA1Verify
 		return tw.getBytes();
 	}
 
-	public static DSASignature decodeSSHDSASignature(byte[] sig) throws IOException
+	public static byte[] decodeSSHDSASignature(byte[] sig) throws IOException
 	{
 		byte[] rsArray = null;
 		
 		if (sig.length == 40)
 		{
 			/* OK, another broken SSH server. */
-			rsArray = sig;	
+			rsArray = sig;
 		}
 		else
 		{
-			/* Hopefully a server obeing the standard... */
+			/* Hopefully a server obeying the standard... */
 			TypesReader tr = new TypesReader(sig);
 
 			String sig_format = tr.readString();
-
 			if (sig_format.equals("ssh-dss") == false)
 				throw new IOException("Peer sent wrong signature format");
 
@@ -106,105 +150,106 @@ public class DSASHA1Verify
 				throw new IOException("Padding in DSA signature!");
 		}
 
-		/* Remember, s and r are unsigned ints. */
+		int i = 0;
+		int j = 0;
+		byte[] tmp;
 
-		byte[] tmp = new byte[20];
-
-		System.arraycopy(rsArray, 0, tmp, 0, 20);
-		BigInteger r = new BigInteger(1, tmp);
-
-		System.arraycopy(rsArray, 20, tmp, 0, 20);
-		BigInteger s = new BigInteger(1, tmp);
-
-		if (log.isEnabled())
-		{
-			log.log(30, "decoded ssh-dss signature: first bytes r(" + ((rsArray[0]) & 0xff) + "), s("
-					+ ((rsArray[20]) & 0xff) + ")");
+		if (rsArray[0] == 0 && rsArray[1] == 0 && rsArray[2] == 0) {
+			j = ((rsArray[i++] << 24) & 0xff000000) | ((rsArray[i++] << 16) & 0x00ff0000)
+					| ((rsArray[i++] << 8) & 0x0000ff00) | ((rsArray[i++]) & 0x000000ff);
+			i += j;
+			j = ((rsArray[i++] << 24) & 0xff000000) | ((rsArray[i++] << 16) & 0x00ff0000)
+					| ((rsArray[i++] << 8) & 0x0000ff00) | ((rsArray[i++]) & 0x000000ff);
+			tmp = new byte[j];
+			System.arraycopy(rsArray, i, tmp, 0, j);
+			rsArray = tmp;
 		}
 
-		return new DSASignature(r, s);
+		/* ASN.1 */
+		int frst = ((rsArray[0] & 0x80) != 0 ? 1 : 0);
+		int scnd = ((rsArray[20] & 0x80) != 0 ? 1 : 0);
+
+		/* Calculate output length */
+		int length = rsArray.length + 6 + frst + scnd;
+		tmp = new byte[length];
+
+		/* DER-encoding to match Java */
+		tmp[0] = (byte) 0x30;
+
+			if (rsArray.length != 40)
+				throw new IOException("Peer sent corrupt signature");
+		/* Calculate length */
+		tmp[1] = (byte) 0x2c;
+		tmp[1] += frst;
+		tmp[1] += scnd;
+
+		/* First item */
+		tmp[2] = (byte) 0x02;
+
+		/* First item length */
+		tmp[3] = (byte) 0x14;
+		tmp[3] += frst;
+
+		/* Copy in the data for first item */
+		System.arraycopy(rsArray, 0, tmp, 4 + frst, 20);
+
+		/* Second item */
+		tmp[4 + tmp[3]] = (byte) 0x02;
+
+		/* Second item length */
+		tmp[5 + tmp[3]] = (byte) 0x14;
+		tmp[5 + tmp[3]] += scnd;
+
+		/* Copy in the data for the second item */
+		System.arraycopy(rsArray, 20, tmp, 6 + tmp[3] + scnd, 20);
+
+		/* Swap buffers */
+		rsArray = tmp;
+
+		return rsArray;
 	}
 
-	public static boolean verifySignature(byte[] message, DSASignature ds, DSAPublicKey dpk) throws IOException
+	public static boolean verifySignature(byte[] message, byte[] ds, DSAPublicKey dpk) throws IOException
 	{
-		/* Inspired by Bouncycastle's DSASigner class */
-
-		SHA1 md = new SHA1();
-		md.update(message);
-		byte[] sha_message = new byte[md.getDigestLength()];
-		md.digest(sha_message);
-
-		BigInteger m = new BigInteger(1, sha_message);
-
-		BigInteger r = ds.getR();
-		BigInteger s = ds.getS();
-
-		BigInteger g = dpk.getG();
-		BigInteger p = dpk.getP();
-		BigInteger q = dpk.getQ();
-		BigInteger y = dpk.getY();
-
-		BigInteger zero = BigInteger.ZERO;
-
-		if (log.isEnabled())
-		{
-			log.log(60, "ssh-dss signature: m: " + m.toString(16));
-			log.log(60, "ssh-dss signature: r: " + r.toString(16));
-			log.log(60, "ssh-dss signature: s: " + s.toString(16));
-			log.log(60, "ssh-dss signature: g: " + g.toString(16));
-			log.log(60, "ssh-dss signature: p: " + p.toString(16));
-			log.log(60, "ssh-dss signature: q: " + q.toString(16));
-			log.log(60, "ssh-dss signature: y: " + y.toString(16));
+		try {
+			Signature s = Signature.getInstance("SHA1withDSA");
+			s.initVerify(dpk);
+			s.update(message);
+			return s.verify(ds);
+		} catch (NoSuchAlgorithmException e) {
+			IOException ex = new IOException("No such algorithm");
+			ex.initCause(e);
+			throw ex;
+		} catch (InvalidKeyException e) {
+			IOException ex = new IOException("No such algorithm");
+			ex.initCause(e);
+			throw ex;
+		} catch (SignatureException e) {
+			IOException ex = new IOException();
+			ex.initCause(e);
+			throw ex;
 		}
-
-		if (zero.compareTo(r) >= 0 || q.compareTo(r) <= 0)
-		{
-			log.log(20, "ssh-dss signature: zero.compareTo(r) >= 0 || q.compareTo(r) <= 0");
-			return false;
-		}
-
-		if (zero.compareTo(s) >= 0 || q.compareTo(s) <= 0)
-		{
-			log.log(20, "ssh-dss signature: zero.compareTo(s) >= 0 || q.compareTo(s) <= 0");
-			return false;
-		}
-
-		BigInteger w = s.modInverse(q);
-
-		BigInteger u1 = m.multiply(w).mod(q);
-		BigInteger u2 = r.multiply(w).mod(q);
-
-		u1 = g.modPow(u1, p);
-		u2 = y.modPow(u2, p);
-
-		BigInteger v = u1.multiply(u2).mod(p).mod(q);
-
-		return v.equals(r);
 	}
 
-	public static DSASignature generateSignature(byte[] message, DSAPrivateKey pk, SecureRandom rnd)
+	public static byte[] generateSignature(byte[] message, DSAPrivateKey pk, SecureRandom rnd) throws IOException
 	{
-		SHA1 md = new SHA1();
-		md.update(message);
-		byte[] sha_message = new byte[md.getDigestLength()];
-		md.digest(sha_message);
-
-		BigInteger m = new BigInteger(1, sha_message);
-		BigInteger k;
-		int qBitLength = pk.getQ().bitLength();
-
-		do
-		{
-			k = new BigInteger(qBitLength, rnd);
+		try {
+			Signature s = Signature.getInstance("SHA1withDSA");
+			s.initSign(pk);
+			s.update(message);
+			return s.sign();
+		} catch (NoSuchAlgorithmException e) {
+			IOException ex = new IOException();
+			ex.initCause(e);
+			throw ex;
+		} catch (InvalidKeyException e) {
+			IOException ex = new IOException();
+			ex.initCause(e);
+			throw ex;
+		} catch (SignatureException e) {
+			IOException ex = new IOException();
+			ex.initCause(e);
+			throw ex;
 		}
-		while (k.compareTo(pk.getQ()) >= 0);
-
-		BigInteger r = pk.getG().modPow(k, pk.getP()).mod(pk.getQ());
-
-		k = k.modInverse(pk.getQ()).multiply(m.add((pk).getX().multiply(r)));
-
-		BigInteger s = k.mod(pk.getQ());
-
-		return new DSASignature(r, s);
 	}
 }

@@ -1,3 +1,5 @@
 bin
 gen
 launchpad-*.tar.gz
+local.properties
+*~

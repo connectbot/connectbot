@@ -75,8 +75,6 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.nullwire.trace.ExceptionHandler;
-
 import de.mud.terminal.vt320;
 
 public class ConsoleActivity extends Activity {
@@ -97,6 +95,10 @@ public class ConsoleActivity extends Activity {
 	protected LayoutInflater inflater = null;
 
 	private SharedPreferences prefs = null;
+
+	// determines whether or not menuitem accelerators are bound
+	// otherwise they collide with an external keyboard's CTRL-char
+	private boolean hardKeyboard = false;
 
 	protected Uri requested;
 
@@ -128,6 +130,9 @@ public class ConsoleActivity extends Activity {
 	private Handler handler = new Handler();
 
 	private ImageView mKeyboardButton;
+
+	private ActionBarWrapper actionBar;
+	private boolean inActionBarMenu = false;
 
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
@@ -255,13 +260,22 @@ public class ConsoleActivity extends Activity {
 		booleanPromptGroup.setVisibility(View.GONE);
 	}
 
+	// more like configureLaxMode -- enable network IO on UI thread
+	private void configureStrictMode() {
+		try {
+			Class.forName("android.os.StrictMode");
+			StrictModeSetup.run();
+		} catch (ClassNotFoundException e) {
+		}
+	}
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
+		configureStrictMode();
+		hardKeyboard = getResources().getConfiguration().keyboard ==
+				Configuration.KEYBOARD_QWERTY;
 
 		this.setContentView(R.layout.act_console);
-
-		ExceptionHandler.register(this);
 
 		clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -355,6 +369,7 @@ public class ConsoleActivity extends Activity {
 
 				inputManager.showSoftInput(flip, InputMethodManager.SHOW_FORCED);
 				keyboardGroup.setVisibility(View.GONE);
+				actionBar.hide();
 			}
 		});
 
@@ -369,6 +384,7 @@ public class ConsoleActivity extends Activity {
 				handler.metaPress(TerminalKeyListener.META_CTRL_ON);
 
 				keyboardGroup.setVisibility(View.GONE);
+				actionBar.hide();
 			}
 		});
 
@@ -383,6 +399,20 @@ public class ConsoleActivity extends Activity {
 				handler.sendEscape();
 
 				keyboardGroup.setVisibility(View.GONE);
+				actionBar.hide();
+			}
+		});
+
+		actionBar = ActionBarWrapper.getActionBar(this);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.hide();
+		actionBar.addOnMenuVisibilityListener(new ActionBarWrapper.OnMenuVisibilityListener() {
+			public void onMenuVisibilityChanged(boolean isVisible) {
+				inActionBarMenu = isVisible;
+				if (isVisible == false) {
+					keyboardGroup.setVisibility(View.GONE);
+					actionBar.hide();
+				}
 			}
 		});
 
@@ -552,14 +582,16 @@ public class ConsoleActivity extends Activity {
 						&& Math.abs(event.getY() - lastY) < MAX_CLICK_DISTANCE) {
 					keyboardGroup.startAnimation(keyboard_fade_in);
 					keyboardGroup.setVisibility(View.VISIBLE);
+					actionBar.show();
 
 					handler.postDelayed(new Runnable() {
 						public void run() {
-							if (keyboardGroup.getVisibility() == View.GONE)
+							if (keyboardGroup.getVisibility() == View.GONE || inActionBarMenu)
 								return;
 
 							keyboardGroup.startAnimation(keyboard_fade_out);
 							keyboardGroup.setVisibility(View.GONE);
+							actionBar.hide();
 						}
 					}, KEYBOARD_DISPLAY_TIME);
 				}
@@ -620,7 +652,8 @@ public class ConsoleActivity extends Activity {
 		menu.setQwertyMode(true);
 
 		disconnect = menu.add(R.string.list_host_disconnect);
-		disconnect.setAlphabeticShortcut('w');
+		if (hardKeyboard)
+			disconnect.setAlphabeticShortcut('w');
 		if (!sessionOpen && disconnected)
 			disconnect.setTitle(R.string.console_menu_close);
 		disconnect.setEnabled(activeTerminal);
@@ -637,7 +670,8 @@ public class ConsoleActivity extends Activity {
 		});
 
 		copy = menu.add(R.string.console_menu_copy);
-		copy.setAlphabeticShortcut('c');
+		if (hardKeyboard)
+			copy.setAlphabeticShortcut('c');
 		copy.setIcon(android.R.drawable.ic_menu_set_as);
 		copy.setEnabled(activeTerminal);
 		copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -661,7 +695,8 @@ public class ConsoleActivity extends Activity {
 		});
 
 		paste = menu.add(R.string.console_menu_paste);
-		paste.setAlphabeticShortcut('v');
+		if (hardKeyboard)
+			paste.setAlphabeticShortcut('v');
 		paste.setIcon(android.R.drawable.ic_menu_edit);
 		paste.setEnabled(clipboard.hasText() && sessionOpen);
 		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -679,7 +714,8 @@ public class ConsoleActivity extends Activity {
 		});
 
 		portForward = menu.add(R.string.console_menu_portforwards);
-		portForward.setAlphabeticShortcut('f');
+		if (hardKeyboard)
+			portForward.setAlphabeticShortcut('f');
 		portForward.setIcon(android.R.drawable.ic_menu_manage);
 		portForward.setEnabled(sessionOpen && canForwardPorts);
 		portForward.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -695,7 +731,8 @@ public class ConsoleActivity extends Activity {
 		});
 
 		urlscan = menu.add(R.string.console_menu_urlscan);
-		urlscan.setAlphabeticShortcut('u');
+		if (hardKeyboard)
+			urlscan.setAlphabeticShortcut('u');
 		urlscan.setIcon(android.R.drawable.ic_menu_search);
 		urlscan.setEnabled(activeTerminal);
 		urlscan.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -720,7 +757,8 @@ public class ConsoleActivity extends Activity {
 		});
 
 		resize = menu.add(R.string.console_menu_resize);
-		resize.setAlphabeticShortcut('s');
+		if (hardKeyboard)
+			resize.setAlphabeticShortcut('s');
 		resize.setIcon(android.R.drawable.ic_menu_crop);
 		resize.setEnabled(sessionOpen);
 		resize.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -788,6 +826,19 @@ public class ConsoleActivity extends Activity {
 		resize.setEnabled(sessionOpen);
 
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				Intent intent = new Intent(this, HostListActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override

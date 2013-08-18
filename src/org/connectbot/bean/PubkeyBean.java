@@ -17,7 +17,12 @@
 
 package org.connectbot.bean;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.interfaces.ECPublicKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
 
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
@@ -31,6 +36,12 @@ import android.content.ContentValues;
 public class PubkeyBean extends AbstractBean {
 	public static final String BEAN_NAME = "pubkey";
 
+	private static final String KEY_TYPE_RSA = "RSA";
+
+	private static final String KEY_TYPE_DSA = "DSA";
+
+	private static final String KEY_TYPE_EC = "EC";
+
 	/* Database fields */
 	private long id;
 	private String nickname;
@@ -43,8 +54,9 @@ public class PubkeyBean extends AbstractBean {
 	private int lifetime = 0;
 
 	/* Transient values */
-	private boolean unlocked = false;
-	private Object unlockedPrivate = null;
+	private transient boolean unlocked = false;
+	private transient Object unlockedPrivate = null;
+	private transient String description;
 
 	@Override
 	public String getBeanName() {
@@ -89,11 +101,11 @@ public class PubkeyBean extends AbstractBean {
 			return privateKey.clone();
 	}
 
-	public void setPublicKey(byte[] publicKey) {
-		if (publicKey == null)
-			this.publicKey = null;
+	public void setPublicKey(byte[] encoded) {
+		if (encoded == null)
+			publicKey = null;
 		else
-			this.publicKey = publicKey.clone();
+			publicKey = encoded.clone();
 	}
 
 	public byte[] getPublicKey() {
@@ -149,6 +161,41 @@ public class PubkeyBean extends AbstractBean {
 
 	public Object getUnlockedPrivate() {
 		return unlockedPrivate;
+	}
+
+	public String getDescription() {
+		if (description == null) {
+			final StringBuilder sb = new StringBuilder();
+			try {
+				final PublicKey pubKey = PubkeyUtils.decodePublic(privateKey, type);
+				if (PubkeyDatabase.KEY_TYPE_RSA.equals(type)) {
+					int bits = ((RSAPublicKey) pubKey).getModulus().bitLength();
+					sb.append("RSA ");
+					sb.append(bits);
+					sb.append("-bit");
+				} else if (PubkeyDatabase.KEY_TYPE_DSA.equals(type)) {
+					sb.append("DSA 1024-bit");
+				} else if (PubkeyDatabase.KEY_TYPE_EC.equals(type)) {
+					int bits = ((ECPublicKey) pubKey).getParams().getCurve().getField()
+							.getFieldSize();
+					sb.append("EC ");
+					sb.append(bits);
+					sb.append("-bit");
+				} else {
+					sb.append("Unknown Key Type");
+				}
+			} catch (NoSuchAlgorithmException e) {
+				sb.append("Unknown Key Type");
+			} catch (InvalidKeySpecException e) {
+				sb.append("Unknown Key Type");
+			}
+
+			if (encrypted)
+				sb.append(" (encrypted)");
+
+			description = sb.toString();
+		}
+		return description;
 	}
 
 	/* (non-Javadoc)

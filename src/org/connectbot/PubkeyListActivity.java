@@ -43,32 +43,30 @@ import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.DialogInterface.OnClickListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.crypto.PEMDecoder;
@@ -162,7 +160,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				// handle toggling key in-memory on/off
 				if(loaded) {
 					bound.removeKey(pubkey.getNickname());
-					updateHandler.sendEmptyMessage(-1);
+					updateList();
 				} else {
 					handleAddKey(pubkey);
 				}
@@ -257,45 +255,43 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		}
 	}
 
-	protected void handleAddKey(PubkeyBean pubkey, String password) {
-		Object trileadKey = null;
-		if(PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType())) {
+	protected void handleAddKey(PubkeyBean keybean, String password) {
+		KeyPair pair = null;
+		if(PubkeyDatabase.KEY_TYPE_IMPORTED.equals(keybean.getType())) {
 			// load specific key using pem format
 			try {
-				trileadKey = PEMDecoder.decode(new String(pubkey.getPrivateKey()).toCharArray(), password);
+				pair = PEMDecoder.decode(new String(keybean.getPrivateKey()).toCharArray(), password);
 			} catch(Exception e) {
-				String message = getResources().getString(R.string.pubkey_failed_add, pubkey.getNickname());
+				String message = getResources().getString(R.string.pubkey_failed_add, keybean.getNickname());
 				Log.e(TAG, message, e);
-				Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG);
+				Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG).show();
 			}
-
 		} else {
 			// load using internal generated format
-			PrivateKey privKey = null;
-			PublicKey pubKey = null;
 			try {
-				privKey = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType(), password);
-				pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
+				PrivateKey privKey = PubkeyUtils.decodePrivate(keybean.getPrivateKey(), keybean.getType(), password);
+				PublicKey pubKey = PubkeyUtils.decodePublic(keybean.getPublicKey(), keybean.getType());
+				Log.d(TAG, "Unlocked key " + PubkeyUtils.formatKey(pubKey));
+
+				pair = new KeyPair(pubKey, privKey);
 			} catch (Exception e) {
-				String message = getResources().getString(R.string.pubkey_failed_add, pubkey.getNickname());
+				String message = getResources().getString(R.string.pubkey_failed_add, keybean.getNickname());
 				Log.e(TAG, message, e);
-				Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG);
+				Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG).show();
 				return;
 			}
-
-			// convert key to trilead format
-			trileadKey = PubkeyUtils.convertToTrilead(privKey, pubKey);
-			Log.d(TAG, "Unlocked key " + PubkeyUtils.formatKey(pubKey));
 		}
 
-		if(trileadKey == null) return;
+		if (pair == null) {
+		    return;
+		}
 
-		Log.d(TAG, String.format("Unlocked key '%s'", pubkey.getNickname()));
+		Log.d(TAG, String.format("Unlocked key '%s'", keybean.getNickname()));
 
 		// save this key in memory
-		bound.addKey(pubkey, trileadKey, true);
+		bound.addKey(keybean, pair, true);
 
-		updateHandler.sendEmptyMessage(-1);
+		updateList();
 	}
 
 	@Override
@@ -318,7 +314,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			public boolean onMenuItemClick(MenuItem item) {
 				if(loaded) {
 					bound.removeKey(pubkey.getNickname());
-					updateHandler.sendEmptyMessage(-1);
+					updateList();
 				} else {
 					handleAddKey(pubkey);
 					//bound.addKey(nickname, trileadKey);
@@ -336,7 +332,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				// toggle onstart status
 				pubkey.setStartup(!pubkey.isStartup());
 				pubkeydb.savePubkey(pubkey);
-				updateHandler.sendEmptyMessage(-1);
+				updateList();
 				return true;
 			}
 		});
@@ -410,7 +406,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 										.create().show();
 								else {
 									pubkeydb.savePubkey(pubkey);
-									updateHandler.sendEmptyMessage(-1);
+									updateList();
 								}
 							} catch (Exception e) {
 								Log.e(TAG, "Could not change private key password", e);
@@ -435,7 +431,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				// toggle confirm use
 				pubkey.setConfirmUse(!pubkey.isConfirmUse());
 				pubkeydb.savePubkey(pubkey);
-				updateHandler.sendEmptyMessage(-1);
+				updateList();
 				return true;
 			}
 		});
@@ -455,7 +451,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 							// delete from backend database and update gui
 							pubkeydb.deletePubkey(pubkey);
-							updateHandler.sendEmptyMessage(-1);
+							updateList();
 						}
 					})
 					.setNegativeButton(R.string.delete_neg, null).create().show();
@@ -465,14 +461,6 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		});
 
 	}
-
-
-	protected Handler updateHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			updateList();
-		}
-	};
 
 	protected void updateList() {
 		if (pubkeydb == null) return;
@@ -561,7 +549,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				pubkeydb = new PubkeyDatabase(this);
 			pubkeydb.savePubkey(pubkey);
 
-			updateHandler.sendEmptyMessage(-1);
+			updateList();
 		} catch(Exception e) {
 			Log.e(TAG, "Problem parsing imported private key", e);
 			Toast.makeText(PubkeyListActivity.this, R.string.pubkey_import_parse_problem, Toast.LENGTH_LONG).show();
@@ -661,8 +649,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				}
 			} else {
 				try {
-					PublicKey pub = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
-					holder.caption.setText(PubkeyUtils.describeKey(pub, pubkey.isEncrypted()));
+					holder.caption.setText(pubkey.getDescription());
 				} catch (Exception e) {
 					Log.e(TAG, "Error decoding public key at " + pubkey.getId(), e);
 					holder.caption.setText(R.string.pubkey_unknown_format);

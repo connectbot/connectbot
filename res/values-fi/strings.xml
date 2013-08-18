@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">Yksinkertainen ja tehokas avoimen lähdekoodin SSH-asiakasohjelma.</string>
+  <string name="service_desc">Ylläpitää SSH-yhteydet ja ladatut julkiset avaimet</string>
   <string name="title_hosts_list">Palvelimet</string>
   <string name="title_pubkey_list">Julkiset avaimet</string>
   <string name="title_port_forwards_list">Porttiohjaukset</string>
@@ -30,6 +31,7 @@
   <string name="pubkey_list_pick">Hae sijainnista /sdcard</string>
   <string name="pubkey_import_parse_problem">Ongelma käsiteltäessä tuotua avainparia</string>
   <string name="pubkey_unlock">Poista avaimen lukitus</string>
+  <string name="pubkey_failed_add">Väärä salasana avaimelle \'%1$s\'. Tunnistus epäonnistui.</string>
   <string name="pubkey_memory_load">Lataa muistiin</string>
   <string name="pubkey_memory_unload">Poista muistista</string>
   <string name="pubkey_load_on_start">Lataa avain käynnistyksen yhteydessä</string>
@@ -47,10 +49,13 @@
   <string name="prompt_type">Tyyppi:</string>
   <string name="prompt_password_can_be_blank">Huomio: salasana voi olla sisältämättä merkkejä</string>
   <string name="prompt_bits">Bittejä:</string>
+  <string name="prompt_pubkey_password">Salasana avaimelle \'%1$s\'</string>
+  <string name="prompt_allow_agent_to_use_key">Hyväksy etäyhteys:\nkäytä avainta \'%1$s\'</string>
   <string name="host_verification_failure_warning_header">VAROITUS: ETÄPÄÄN KONEEN TUNNISTE ON MUUTTUNUT!</string>
   <string name="host_verification_failure_warning">JOKU SAATTAA OLLA TEKEMÄSSÄ PAHOJAAN!\nOn mahdollista, että yhteyttäsi salakuunnellaan (niin kutsuttu man-in-the-middle -hyökkäys)!\nOn toki myös mahdollista, että palvelimen avainta vain on muutettu.</string>
   <string name="prompt_host_disconnected">Palvelin katkaisi yhteyden.\nSuljetaanko istunto?</string>
   <string name="prompt_continue_connecting">Haluatko varmasti\njatkaa yhdistämistä?</string>
+  <string name="host_authenticity_warning">Palvelimen \'%1$s\' aitoutta ei voida varmentaa</string>
   <string name="host_fingerprint">Palvelimen %1$s avaimen sormenjälki: %2$s</string>
   <string name="alert_passwords_do_not_match_msg">Salasanat eivät täsmää!</string>
   <string name="alert_wrong_password_msg">Väärä salasana!</string>
@@ -141,6 +146,7 @@
   <string name="portforward_dynamic">Dynaaminen (SOCKS)</string>
   <string name="portforward_pos">Luo porttiohjaus</string>
   <string name="portforward_done">Porttiohjaus luotu onnistuneesti</string>
+  <string name="portforward_problem">Ongelma luotaessa porttiohjausta. Ehkä käytät porttia joka on alle 1024 tai portti on jo käytössä?</string>
   <string name="portforward_menu_add">Lisää porttiohjaus</string>
   <string name="hint_userhost">tunnus\@palvelin</string>
   <string name="list_format_error">Käytä muotoa %1$s</string>
@@ -167,6 +173,7 @@
   <string name="list_camera_none">Ei mitään</string>
   <string name="list_delkey_backspace">Askelpalautin</string>
   <string name="list_delkey_del">Delete</string>
+  <string name="delete_message">Oletko varma että haluat poistaa: \'%1$s\'?</string>
   <string name="delete_pos">Kyllä, poista</string>
   <string name="delete_neg">Peru</string>
   <string name="wizard_agree">Hyväksy</string>
@@ -174,12 +181,21 @@
   <string name="wizard_back">Edellinen</string>
   <string name="terminal_no_hosts_connected">Yhteenkään palvelimeen ei ole yhdistetty</string>
   <string name="terminal_connecting">Muodostetaan %3$s-yhteys palvelimeen %1$s:%2$d</string>
+  <string name="terminal_sucess">Varmennettiin palvelin \'%1$s\' avain: %2$s</string>
   <string name="terminal_failed">Palvelimen avaimen varmistaminen epäonnistui</string>
   <string name="terminal_using_s2c_algorithm">Salausalgoritmi palvelimelta asiakkaalle: %1$s %2$s</string>
   <string name="terminal_using_c2s_algorithm">Salausalgoritmi asiakkaalta palvelimelle: %1$s %2$s</string>
   <string name="terminal_using_algorithm">Käytetään salausalgoritmia %1$s %2$s</string>
   <string name="terminal_auth">Kirjaudutaan</string>
+  <string name="terminal_auth_pass">Yritetään \'salasana\' tunnistusta</string>
+  <string name="terminal_auth_pass_fail">Varmennusmenetelmä \'password\' epäonnistui</string>
+  <string name="terminal_auth_pubkey_any">Yritetään \'publickey\' varmennusta millä tahansa muistissa olevalla julkisella avaimella</string>
   <string name="terminal_auth_pubkey_invalid">Valittu julkinen avain ei kelpaa, kokeile valita toinen avain palvelimen asetuksista</string>
+  <string name="terminal_auth_pubkey_specific">Yritetään \'publickey\' varmennusta tietyllä julkisella avaimella</string>
+  <string name="terminal_auth_pubkey_fail">Varmennusmenetelmä \'publickey\' avaimella \'%1$s\' epäonnistui</string>
+  <string name="terminal_auth_ki">Yritetään \'keyboard-interactive\' varmennusta</string>
+  <string name="terminal_auth_ki_fail">Varmennusmenetelmä \'keyboard-interactive\' epäonnistui</string>
+  <string name="terminal_auth_fail">[Palvelin ei tue \'password\' tai \'keyboard-interactive\' varmennusmenetelmiä.]</string>
   <string name="terminal_no_session">Istuntoa ei aloiteta palvelimen asetuksista johtuen</string>
   <string name="terminal_enable_portfoward">Ota käyttöön porttiohjaus %1$s</string>
   <string name="local_shell_unavailable">Virhe! Paikallista komentoriviä ei ole käytettävissä</string>

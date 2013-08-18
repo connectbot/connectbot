@@ -3,6 +3,11 @@ package com.trilead.ssh2.transport;
 
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPublicKey;
+import java.security.interfaces.RSAPublicKey;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.trilead.ssh2.ConnectionInfo;
 import com.trilead.ssh2.DHGexParameters;
@@ -13,8 +18,8 @@ import com.trilead.ssh2.crypto.CryptoWishList;
 import com.trilead.ssh2.crypto.KeyMaterial;
 import com.trilead.ssh2.crypto.cipher.BlockCipher;
 import com.trilead.ssh2.crypto.cipher.BlockCipherFactory;
-import com.trilead.ssh2.crypto.dh.DhExchange;
 import com.trilead.ssh2.crypto.dh.DhGroupExchange;
+import com.trilead.ssh2.crypto.dh.GenericDhExchange;
 import com.trilead.ssh2.crypto.digest.MAC;
 import com.trilead.ssh2.log.Logger;
 import com.trilead.ssh2.packets.PacketKexDHInit;
@@ -27,12 +32,9 @@ import com.trilead.ssh2.packets.PacketKexDhGexRequestOld;
 import com.trilead.ssh2.packets.PacketKexInit;
 import com.trilead.ssh2.packets.PacketNewKeys;
 import com.trilead.ssh2.packets.Packets;
-import com.trilead.ssh2.signature.DSAPublicKey;
 import com.trilead.ssh2.signature.DSASHA1Verify;
-import com.trilead.ssh2.signature.DSASignature;
-import com.trilead.ssh2.signature.RSAPublicKey;
+import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
-import com.trilead.ssh2.signature.RSASignature;
 
 
 /**
@@ -44,6 +46,25 @@ import com.trilead.ssh2.signature.RSASignature;
 public class KexManager
 {
 	private static final Logger log = Logger.getLogger(KexManager.class);
+
+	private static final Set<String> HOSTKEY_ALGS = new TreeSet<String>();
+	static {
+		HOSTKEY_ALGS.add("ecdsa-sha2-nistp256");
+		HOSTKEY_ALGS.add("ecdsa-sha2-nistp384");
+		HOSTKEY_ALGS.add("ecdsa-sha2-nistp521");
+		HOSTKEY_ALGS.add("ssh-rsa");
+		HOSTKEY_ALGS.add("ssh-dsa");
+	}
+
+	private static final Set<String> KEX_ALGS = new TreeSet<String>();
+	static {
+		KEX_ALGS.add("ecdh-sha2-nistp256");
+		KEX_ALGS.add("ecdh-sha2-nistp384");
+		KEX_ALGS.add("ecdh-sha2-nistp521");
+		KEX_ALGS.add("diffie-hellman-group-exchange-sha1");
+		KEX_ALGS.add("diffie-hellman-group14-sha1");
+		KEX_ALGS.add("diffie-hellman-group1-sha1");
+	}
 
 	KexState kxs;
 	int kexCount = 0;
@@ -243,7 +264,7 @@ public class KexManager
 			kxs = new KexState();
 
 			kxs.dhgexParameters = nextKEXdhgexParameters;
-			PacketKexInit kp = new PacketKexInit(nextKEXcryptoWishList, rnd);
+			PacketKexInit kp = new PacketKexInit(nextKEXcryptoWishList);
 			kxs.localKEX = kp;
 			tm.sendKexMessage(kp.getPayload());
 		}
@@ -261,7 +282,7 @@ public class KexManager
 			int enc_sc_key_len = BlockCipherFactory.getKeySize(kxs.np.enc_algo_server_to_client);
 			int enc_sc_block_len = BlockCipherFactory.getBlockSize(kxs.np.enc_algo_server_to_client);
 
-			km = KeyMaterial.create("SHA1", kxs.H, kxs.K, sessionId, enc_cs_key_len, enc_cs_block_len, mac_cs_key_len,
+			km = KeyMaterial.create(kxs.hashAlgo, kxs.H, kxs.K, sessionId, enc_cs_key_len, enc_cs_block_len, mac_cs_key_len,
 					enc_sc_key_len, enc_sc_block_len, mac_sc_key_len);
 		}
 		catch (IllegalArgumentException e)
@@ -309,46 +330,47 @@ public class KexManager
 
 	public static final String[] getDefaultServerHostkeyAlgorithmList()
 	{
-		return new String[] { "ssh-rsa", "ssh-dss" };
+		return HOSTKEY_ALGS.toArray(new String[HOSTKEY_ALGS.size()]);
 	}
 
 	public static final void checkServerHostkeyAlgorithmsList(String[] algos)
 	{
 		for (int i = 0; i < algos.length; i++)
 		{
-			if (("ssh-rsa".equals(algos[i]) == false) && ("ssh-dss".equals(algos[i]) == false))
+			if (!HOSTKEY_ALGS.contains(algos[i]))
 				throw new IllegalArgumentException("Unknown server host key algorithm '" + algos[i] + "'");
 		}
 	}
 
 	public static final String[] getDefaultKexAlgorithmList()
 	{
-		return new String[] { "diffie-hellman-group-exchange-sha1", "diffie-hellman-group14-sha1",
-				"diffie-hellman-group1-sha1" };
+		return KEX_ALGS.toArray(new String[KEX_ALGS.size()]);
 	}
 
 	public static final void checkKexAlgorithmList(String[] algos)
 	{
 		for (int i = 0; i < algos.length; i++)
 		{
-			if ("diffie-hellman-group-exchange-sha1".equals(algos[i]))
-				continue;
-
-			if ("diffie-hellman-group14-sha1".equals(algos[i]))
-				continue;
-
-			if ("diffie-hellman-group1-sha1".equals(algos[i]))
-				continue;
-
-			throw new IllegalArgumentException("Unknown kex algorithm '" + algos[i] + "'");
+			if (!KEX_ALGS.contains(algos[i]))
+				throw new IllegalArgumentException("Unknown kex algorithm '" + algos[i] + "'");
 		}
 	}
 
 	private boolean verifySignature(byte[] sig, byte[] hostkey) throws IOException
 	{
+		if (kxs.np.server_host_key_algo.startsWith("ecdsa-sha2-"))
+		{
+			byte[] rs = ECDSASHA2Verify.decodeSSHECDSASignature(sig);
+			ECPublicKey epk = ECDSASHA2Verify.decodeSSHECDSAPublicKey(hostkey);
+
+			log.log(50, "Verifying ecdsa signature");
+
+			return ECDSASHA2Verify.verifySignature(kxs.H, rs, epk);
+		}
+
 		if (kxs.np.server_host_key_algo.equals("ssh-rsa"))
 		{
-			RSASignature rs = RSASHA1Verify.decodeSSHRSASignature(sig);
+			byte[] rs = RSASHA1Verify.decodeSSHRSASignature(sig);
 			RSAPublicKey rpk = RSASHA1Verify.decodeSSHRSAPublicKey(hostkey);
 
 			log.log(50, "Verifying ssh-rsa signature");
@@ -358,7 +380,7 @@ public class KexManager
 
 		if (kxs.np.server_host_key_algo.equals("ssh-dss"))
 		{
-			DSASignature ds = DSASHA1Verify.decodeSSHDSASignature(sig);
+			byte[] ds = DSASHA1Verify.decodeSSHDSASignature(sig);
 			DSAPublicKey dpk = DSASHA1Verify.decodeSSHDSAPublicKey(hostkey);
 
 			log.log(50, "Verifying ssh-dss signature");
@@ -405,7 +427,7 @@ public class KexManager
 				 */
 				kxs = new KexState();
 				kxs.dhgexParameters = nextKEXdhgexParameters;
-				kip = new PacketKexInit(nextKEXcryptoWishList, rnd);
+				kip = new PacketKexInit(nextKEXcryptoWishList);
 				kxs.localKEX = kip;
 				tm.sendKexMessage(kip.getPayload());
 			}
@@ -440,19 +462,20 @@ public class KexManager
 					PacketKexDhGexRequest dhgexreq = new PacketKexDhGexRequest(kxs.dhgexParameters);
 					tm.sendKexMessage(dhgexreq.getPayload());
 				}
+				kxs.hashAlgo = "SHA1";
 				kxs.state = 1;
 				return;
 			}
 
 			if (kxs.np.kex_algo.equals("diffie-hellman-group1-sha1")
-					|| kxs.np.kex_algo.equals("diffie-hellman-group14-sha1"))
-			{
-				kxs.dhx = new DhExchange();
+					|| kxs.np.kex_algo.equals("diffie-hellman-group14-sha1")
+					|| kxs.np.kex_algo.equals("ecdh-sha2-nistp256")
+					|| kxs.np.kex_algo.equals("ecdh-sha2-nistp384")
+					|| kxs.np.kex_algo.equals("ecdh-sha2-nistp521")) {
+				kxs.dhx = GenericDhExchange.getInstance(kxs.np.kex_algo);
 
-				if (kxs.np.kex_algo.equals("diffie-hellman-group1-sha1"))
-					kxs.dhx.init(1, rnd);
-				else
-					kxs.dhx.init(14, rnd);
+				kxs.dhx.init(kxs.np.kex_algo);
+				kxs.hashAlgo = kxs.dhx.getHashAlgo();
 
 				PacketKexDHInit kp = new PacketKexDHInit(kxs.dhx.getE());
 				tm.sendKexMessage(kp.getPayload());
@@ -460,7 +483,7 @@ public class KexManager
 				return;
 			}
 
-			throw new IllegalStateException("Unkown KEX method!");
+			throw new IllegalStateException("Unknown KEX method!");
 		}
 
 		if (msg[0] == Packets.SSH_MSG_NEWKEYS)
@@ -581,7 +604,10 @@ public class KexManager
 		}
 
 		if (kxs.np.kex_algo.equals("diffie-hellman-group1-sha1")
-				|| kxs.np.kex_algo.equals("diffie-hellman-group14-sha1"))
+				|| kxs.np.kex_algo.equals("diffie-hellman-group14-sha1")
+				|| kxs.np.kex_algo.equals("ecdh-sha2-nistp256")
+				|| kxs.np.kex_algo.equals("ecdh-sha2-nistp384")
+				|| kxs.np.kex_algo.equals("ecdh-sha2-nistp521"))
 		{
 			if (kxs.state == 1)
 			{

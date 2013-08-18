@@ -191,7 +191,7 @@ public class RemoteX11AcceptThread extends Thread
 
 			/* Start forwarding traffic */
 
-			StreamForwarder r2l = new StreamForwarder(c, null, null, remote_is, x11_os, "RemoteToX11");
+			StreamForwarder r2l = new StreamForwarder(c, null, s, remote_is, x11_os, "RemoteToX11");
 			StreamForwarder l2r = new StreamForwarder(c, null, null, x11_is, remote_os, "X11ToRemote");
 
 			/* No need to start two threads, one can be executed in the current thread */

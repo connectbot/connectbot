@@ -33,10 +33,7 @@ import org.connectbot.util.PubkeyUtils;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -48,14 +45,25 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.SeekBar;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+import com.trilead.ssh2.signature.ECDSASHA2Verify;
+
 public class GeneratePubkeyActivity extends Activity implements OnEntropyGatheredListener {
-	public final static String TAG = "ConnectBot.GeneratePubkeyActivity";
+	/**
+     *
+     */
+    private static final int RSA_MINIMUM_BITS = 768;
+
+    public final static String TAG = "ConnectBot.GeneratePubkeyActivity";
 
 	final static int DEFAULT_BITS = 1024;
+
+	final static int[] ECDSA_SIZES = ECDSASHA2Verify.getCurveSizes();
+
+	final static int ECDSA_DEFAULT_BITS = ECDSA_SIZES[0];
 
 	private LayoutInflater inflater = null;
 
@@ -109,7 +117,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				if (checkedId == R.id.rsa) {
-					minBits = 768;
+					minBits = RSA_MINIMUM_BITS;
 
 					bitsSlider.setEnabled(true);
 					bitsSlider.setProgress(DEFAULT_BITS - minBits);
@@ -128,6 +136,16 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 					bitsText.setEnabled(false);
 
 					keyType = PubkeyDatabase.KEY_TYPE_DSA;
+				} else if (checkedId == R.id.ec) {
+					minBits = ECDSA_DEFAULT_BITS;
+
+					bitsSlider.setEnabled(true);
+					bitsSlider.setProgress(ECDSA_DEFAULT_BITS - minBits);
+
+					bitsText.setText(String.valueOf(ECDSA_DEFAULT_BITS));
+					bitsText.setEnabled(true);
+
+					keyType = PubkeyDatabase.KEY_TYPE_EC;
 				}
 			}
 		});
@@ -136,16 +154,16 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromTouch) {
-				// Stay evenly divisible by 8 because it looks nicer to have
-				// 2048 than 2043 bits.
+				if (PubkeyDatabase.KEY_TYPE_EC.equals(keyType)) {
+					bits = getClosestFieldSize(progress + minBits);
+					seekBar.setProgress(bits - minBits);
+				} else {
+					// Stay evenly divisible by 8 because it looks nicer to have
+					// 2048 than 2043 bits.
+					final int ourProgress = progress - (progress % 8);
+					bits = minBits + ourProgress;
+				}
 
-				int leftover = progress % 8;
-				int ourProgress = progress;
-
-				if (leftover > 0)
-					ourProgress += 8 - leftover;
-
-				bits = minBits + ourProgress;
 				bitsText.setText(String.valueOf(bits));
 			}
 
@@ -161,14 +179,18 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 		bitsText.setOnFocusChangeListener(new OnFocusChangeListener() {
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (!hasFocus) {
+				    final boolean isEc = PubkeyDatabase.KEY_TYPE_EC.equals(keyType);
 					try {
 						bits = Integer.parseInt(bitsText.getText().toString());
 						if (bits < minBits) {
 							bits = minBits;
 							bitsText.setText(String.valueOf(bits));
 						}
+						if (isEc) {
+							bits = getClosestFieldSize(bits);
+						}
 					} catch (NumberFormatException nfe) {
-						bits = DEFAULT_BITS;
+						bits = isEc ? ECDSA_DEFAULT_BITS : DEFAULT_BITS;
 						bitsText.setText(String.valueOf(bits));
 					}
 
@@ -237,21 +259,15 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 		keyGenThread.start();
 	}
 
-	private Handler handler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			progress.dismiss();
-			GeneratePubkeyActivity.this.finish();
-		}
-	};
-
 	final private Runnable mKeyGen = new Runnable() {
 		public void run() {
 			try {
 				boolean encrypted = false;
 
-				SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+				SecureRandom random = new SecureRandom();
 
+				// Work around JVM bug
+				random.nextInt();
 				random.setSeed(entropy);
 
 				KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(keyType);
@@ -273,7 +289,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 				pubkey.setNickname(nickname.getText().toString());
 				pubkey.setType(keyType);
 				pubkey.setPrivateKey(PubkeyUtils.getEncodedPrivate(priv, secret));
-				pubkey.setPublicKey(PubkeyUtils.getEncodedPublic(pub));
+				pubkey.setPublicKey(pub.getEncoded());
 				pubkey.setEncrypted(encrypted);
 				pubkey.setStartup(unlockAtStartup.isChecked());
 				pubkey.setConfirmUse(confirmUse.isChecked());
@@ -287,7 +303,12 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 				e.printStackTrace();
 			}
 
-			handler.sendEmptyMessage(0);
+			GeneratePubkeyActivity.this.runOnUiThread(new Runnable() {
+				public void run() {
+					progress.dismiss();
+					GeneratePubkeyActivity.this.finish();
+				}
+			});
 		}
 
 	};
@@ -314,5 +335,19 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 		}
 
 		return numSetBits;
+	}
+
+	private int getClosestFieldSize(int bits) {
+		int outBits = ECDSA_DEFAULT_BITS;
+		int distance = Math.abs(bits - ECDSA_DEFAULT_BITS);
+
+		for (int i = 1; i < ECDSA_SIZES.length; i++) {
+			int thisDistance = Math.abs(bits - ECDSA_SIZES[i]);
+			if (thisDistance < distance) {
+				distance = thisDistance;
+				outBits = ECDSA_SIZES[i];
+			}
+		}
+		return outBits;
 	}
 }

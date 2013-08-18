@@ -3,9 +3,17 @@ package com.trilead.ssh2.signature;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
+import java.security.SignatureException;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+import java.security.spec.RSAPublicKeySpec;
 
-import com.trilead.ssh2.crypto.SimpleDERReader;
-import com.trilead.ssh2.crypto.digest.SHA1;
 import com.trilead.ssh2.log.Logger;
 import com.trilead.ssh2.packets.TypesReader;
 import com.trilead.ssh2.packets.TypesWriter;
@@ -36,7 +44,20 @@ public class RSASHA1Verify
 		if (tr.remain() != 0)
 			throw new IOException("Padding in RSA public key!");
 
-		return new RSAPublicKey(e, n);
+		KeySpec keySpec = new RSAPublicKeySpec(n, e);
+
+		try {
+			KeyFactory kf = KeyFactory.getInstance("RSA");
+			return (RSAPublicKey) kf.generatePublic(keySpec);
+		} catch (NoSuchAlgorithmException nsae) {
+			IOException ioe = new IOException("No RSA KeyFactory available");
+			ioe.initCause(nsae);
+			throw ioe;
+		} catch (InvalidKeySpecException ikse) {
+			IOException ioe = new IOException("No RSA KeyFactory available");
+			ioe.initCause(ikse);
+			throw ioe;
+		}
 	}
 
 	public static byte[] encodeSSHRSAPublicKey(RSAPublicKey pk) throws IOException
@@ -44,13 +65,13 @@ public class RSASHA1Verify
 		TypesWriter tw = new TypesWriter();
 
 		tw.writeString("ssh-rsa");
-		tw.writeMPInt(pk.getE());
-		tw.writeMPInt(pk.getN());
+		tw.writeMPInt(pk.getPublicExponent());
+		tw.writeMPInt(pk.getModulus());
 
 		return tw.getBytes();
 	}
 
-	public static RSASignature decodeSSHRSASignature(byte[] sig) throws IOException
+	public static byte[] decodeSSHRSASignature(byte[] sig) throws IOException
 	{
 		TypesReader tr = new TypesReader(sig);
 
@@ -77,10 +98,22 @@ public class RSASHA1Verify
 		if (tr.remain() != 0)
 			throw new IOException("Padding in RSA signature!");
 
-		return new RSASignature(new BigInteger(1, s));
+		if (s[0] == 0 && s[1] == 0 && s[2] == 0) {
+			int i = 0;
+			int j = ((s[i++] << 24) & 0xff000000) | ((s[i++] << 16) & 0x00ff0000)
+					| ((s[i++] << 8) & 0x0000ff00) | ((s[i++]) & 0x000000ff);
+			i += j;
+			j = ((s[i++] << 24) & 0xff000000) | ((s[i++] << 16) & 0x00ff0000)
+					| ((s[i++] << 8) & 0x0000ff00) | ((s[i++]) & 0x000000ff);
+			byte[] tmp = new byte[j];
+			System.arraycopy(s, i, tmp, 0, j);
+			sig = tmp;
+		}
+
+		return s;
 	}
 
-	public static byte[] encodeSSHRSASignature(RSASignature sig) throws IOException
+	public static byte[] encodeSSHRSASignature(byte[] s) throws IOException
 	{
 		TypesWriter tw = new TypesWriter();
 
@@ -90,8 +123,6 @@ public class RSASHA1Verify
 		 * containing s (which is an integer, without lengths or padding, unsigned and in
 		 * network byte order)."
 		 */
-
-		byte[] s = sig.getS().toByteArray();
 
 		/* Remove first zero sign byte, if present */
 
@@ -103,183 +134,47 @@ public class RSASHA1Verify
 		return tw.getBytes();
 	}
 
-	public static RSASignature generateSignature(byte[] message, RSAPrivateKey pk) throws IOException
+	public static byte[] generateSignature(byte[] message, RSAPrivateKey pk) throws IOException
 	{
-		SHA1 md = new SHA1();
-		md.update(message);
-		byte[] sha_message = new byte[md.getDigestLength()];
-		md.digest(sha_message);
-
-		byte[] der_header = new byte[] { 0x30, 0x21, 0x30, 0x09, 0x06, 0x05, 0x2b, 0x0e, 0x03, 0x02, 0x1a, 0x05, 0x00,
-				0x04, 0x14 };
-
-		int rsa_block_len = (pk.getN().bitLength() + 7) / 8;
-
-		int num_pad = rsa_block_len - (2 + der_header.length + sha_message.length) - 1;
-
-		if (num_pad < 8)
-			throw new IOException("Cannot sign with RSA, message too long");
-
-		byte[] sig = new byte[der_header.length + sha_message.length + 2 + num_pad];
-
-		sig[0] = 0x01;
-
-		for (int i = 0; i < num_pad; i++)
-		{
-			sig[i + 1] = (byte) 0xff;
+		try {
+			Signature s = Signature.getInstance("SHA1withRSA");
+			s.initSign(pk);
+			s.update(message);
+			return s.sign();
+		} catch (NoSuchAlgorithmException e) {
+			IOException ex = new IOException();
+			ex.initCause(e);
+			throw ex;
+		} catch (InvalidKeyException e) {
+			IOException ex =  new IOException();
+			ex.initCause(e);
+			throw ex;
+		} catch (SignatureException e) {
+			IOException ex =  new IOException();
+			ex.initCause(e);
+			throw ex;
 		}
-
-		sig[num_pad + 1] = 0x00;
-
-		System.arraycopy(der_header, 0, sig, 2 + num_pad, der_header.length);
-		System.arraycopy(sha_message, 0, sig, 2 + num_pad + der_header.length, sha_message.length);
-
-		BigInteger m = new BigInteger(1, sig);
-
-		BigInteger s = m.modPow(pk.getD(), pk.getN());
-
-		return new RSASignature(s);
 	}
 
-	public static boolean verifySignature(byte[] message, RSASignature ds, RSAPublicKey dpk) throws IOException
+	public static boolean verifySignature(byte[] message, byte[] ds, RSAPublicKey dpk) throws IOException
 	{
-		SHA1 md = new SHA1();
-		md.update(message);
-		byte[] sha_message = new byte[md.getDigestLength()];
-		md.digest(sha_message);
-
-		BigInteger n = dpk.getN();
-		BigInteger e = dpk.getE();
-		BigInteger s = ds.getS();
-
-		if (n.compareTo(s) <= 0)
-		{
-			log.log(20, "ssh-rsa signature: n.compareTo(s) <= 0");
-			return false;
+		try {
+			Signature s = Signature.getInstance("SHA1withRSA");
+			s.initVerify(dpk);
+			s.update(message);
+			return s.verify(ds);
+		} catch (NoSuchAlgorithmException e) {
+			IOException ex = new IOException();
+			ex.initCause(e);
+			throw ex;
+		} catch (InvalidKeyException e) {
+			IOException ex = new IOException();
+			ex.initCause(e);
+			throw ex;
+		} catch (SignatureException e) {
+			IOException ex = new IOException();
+			ex.initCause(e);
+			throw ex;
 		}
-
-		int rsa_block_len = (n.bitLength() + 7) / 8;
-
-		/* And now the show begins */
-
-		if (rsa_block_len < 1)
-		{
-			log.log(20, "ssh-rsa signature: rsa_block_len < 1");
-			return false;
-		}
-
-		byte[] v = s.modPow(e, n).toByteArray();
-
-		int startpos = 0;
-
-		if ((v.length > 0) && (v[0] == 0x00))
-			startpos++;
-
-		if ((v.length - startpos) != (rsa_block_len - 1))
-		{
-			log.log(20, "ssh-rsa signature: (v.length - startpos) != (rsa_block_len - 1)");
-			return false;
-		}
-
-		if (v[startpos] != 0x01)
-		{
-			log.log(20, "ssh-rsa signature: v[startpos] != 0x01");
-			return false;
-		}
-
-		int pos = startpos + 1;
-
-		while (true)
-		{
-			if (pos >= v.length)
-			{
-				log.log(20, "ssh-rsa signature: pos >= v.length");
-				return false;
-			}
-			if (v[pos] == 0x00)
-				break;
-			if (v[pos] != (byte) 0xff)
-			{
-				log.log(20, "ssh-rsa signature: v[pos] != (byte) 0xff");
-				return false;
-			}
-			pos++;
-		}
-
-		int num_pad = pos - (startpos + 1);
-
-		if (num_pad < 8)
-		{
-			log.log(20, "ssh-rsa signature: num_pad < 8");
-			return false;
-		}
-
-		pos++;
-
-		if (pos >= v.length)
-		{
-			log.log(20, "ssh-rsa signature: pos >= v.length");
-			return false;
-		}
-
-		SimpleDERReader dr = new SimpleDERReader(v, pos, v.length - pos);
-
-		byte[] seq = dr.readSequenceAsByteArray();
-
-		if (dr.available() != 0)
-		{
-			log.log(20, "ssh-rsa signature: dr.available() != 0");
-			return false;
-		}
-
-		dr.resetInput(seq);
-
-		/* Read digestAlgorithm */
-
-		byte digestAlgorithm[] = dr.readSequenceAsByteArray();
-
-		/* Inspired by RFC 3347, however, ignoring the comment regarding old BER based implementations */
-
-		if ((digestAlgorithm.length < 8) || (digestAlgorithm.length > 9))
-		{
-			log.log(20, "ssh-rsa signature: (digestAlgorithm.length < 8) || (digestAlgorithm.length > 9)");
-			return false;
-		}
-
-		byte[] digestAlgorithm_sha1 = new byte[] { 0x06, 0x05, 0x2b, 0x0e, 0x03, 0x02, 0x1a, 0x05, 0x00 };
-
-		for (int i = 0; i < digestAlgorithm.length; i++)
-		{
-			if (digestAlgorithm[i] != digestAlgorithm_sha1[i])
-			{
-				log.log(20, "ssh-rsa signature: digestAlgorithm[i] != digestAlgorithm_sha1[i]");
-				return false;
-			}
-		}
-
-		byte[] digest = dr.readOctetString();
-
-		if (dr.available() != 0)
-		{
-			log.log(20, "ssh-rsa signature: dr.available() != 0 (II)");
-			return false;
-		}
-			
-		if (digest.length != sha_message.length)
-		{
-			log.log(20, "ssh-rsa signature: digest.length != sha_message.length");
-			return false;
-		}
-
-		for (int i = 0; i < sha_message.length; i++)
-		{
-			if (sha_message[i] != digest[i])
-			{
-				log.log(20, "ssh-rsa signature: sha_message[i] != digest[i]");
-				return false;
-			}
-		}
-
-		return true;
 	}
 }
