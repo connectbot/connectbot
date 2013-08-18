@@ -72,7 +72,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 	private String keymode = null;
 	private boolean hardKeyboard = false;
-	private boolean toshibaAC100 = false;
+	private boolean fullKeyboard = false;
 
 	private int metaState = 0;
 
@@ -105,7 +105,9 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		hardKeyboard = (manager.res.getConfiguration().keyboard
 				== Configuration.KEYBOARD_QWERTY);
 
-		toshibaAC100 = "TOSHIBA_AC_AND_AZ".equals(new Build().PRODUCT);
+		String product = new Build().PRODUCT;
+		fullKeyboard = "TOSHIBA_AC_AND_AZ".equals(product) ||
+		    "WW_epad".equals(product);
 
 		updateKeymode();
 	}
@@ -190,7 +192,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				curMetaState |= KeyEvent.META_ALT_ON;
 			}
 
-			int uchar = event.getUnicodeChar(curMetaState);
+			int uchar = event.getUnicodeChar(curMetaState & ~(fullKeyboard?0x7000:0));
 			// no hard keyboard?  ALT-k should pass through to below
 			if ((orgMetaState & KeyEvent.META_ALT_ON) != 0 &&
 					(!hardKeyboard || hardKeyboardHidden)) {
@@ -220,7 +222,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				}
 
 				if ((metaState & META_CTRL_MASK) != 0 ||
-				    (toshibaAC100 && (curMetaState & 8) != 0)) {
+				    (fullKeyboard && (curMetaState & 0x1008) != 0)) {
 					metaState &= ~META_CTRL_ON;
 					bridge.redraw();
 
@@ -235,7 +237,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 				// handle pressing f-keys
 				if ((hardKeyboard && !hardKeyboardHidden)
-						&& (curMetaState & (toshibaAC100? KeyEvent.META_ALT_LEFT_ON:KeyEvent.META_SHIFT_ON)) != 0
+						&& (curMetaState & (fullKeyboard? (KeyEvent.META_ALT_LEFT_ON|0x2000):KeyEvent.META_SHIFT_ON)) != 0
 						&& sendFunctionKey(keyCode))
 					return true;
 
@@ -275,7 +277,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			}
 			// try handling keymode shortcuts
 			if (hardKeyboard && !hardKeyboardHidden &&
-					!toshibaAC100 &&
+					!fullKeyboard &&
 					event.getRepeatCount() == 0) {
 				if (PreferenceConstants.KEYMODE_RIGHT.equals(keymode)) {
 					switch (keyCode) {
@@ -462,8 +464,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		// Support CTRL-A through CTRL-_
 		else if (key >= 0x41 && key <= 0x5F)
 			key -= 0x40;
-		// CTRL-space sends NULL
-		else if (key == 0x20)
+		// CTRL-space and CTRL-@ sends NULL
+		else if (key == 0x20 || key == 0x40)
 			key = 0x00;
 		// CTRL-? sends DEL
 		else if (key == 0x3F)
