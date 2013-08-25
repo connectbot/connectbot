@@ -43,36 +43,39 @@ import de.mud.terminal.vt320;
 public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceChangeListener {
 	private static final String TAG = "ConnectBot.OnKeyListener";
 
-	public final static int META_CTRL_ON = 0x01;
-	public final static int META_CTRL_LOCK = 0x02;
-	public final static int META_ALT_ON = 0x04;
-	public final static int META_ALT_LOCK = 0x08;
-	public final static int META_SHIFT_ON = 0x10;
-	public final static int META_SHIFT_LOCK = 0x20;
-	public final static int META_SLASH = 0x40;
-	public final static int META_TAB = 0x80;
-
-	// The bit mask of momentary and lock states for each
-	public final static int META_CTRL_MASK = META_CTRL_ON | META_CTRL_LOCK;
-	public final static int META_ALT_MASK = META_ALT_ON | META_ALT_LOCK;
-	public final static int META_SHIFT_MASK = META_SHIFT_ON | META_SHIFT_LOCK;
-
-	// backport constants from api level 11
-	public final static int KEYCODE_ESCAPE = 111;
-	public final static int HC_META_CTRL_ON = 4096;
+	// Constants for our private tracking of modifier state
+	public final static int OUR_CTRL_ON = 0x01;
+	public final static int OUR_CTRL_LOCK = 0x02;
+	public final static int OUR_ALT_ON = 0x04;
+	public final static int OUR_ALT_LOCK = 0x08;
+	public final static int OUR_SHIFT_ON = 0x10;
+	public final static int OUR_SHIFT_LOCK = 0x20;
+	private final static int OUR_SLASH = 0x40;
+	private final static int OUR_TAB = 0x80;
 
 	// All the transient key codes
-	public final static int META_TRANSIENT = META_CTRL_ON | META_ALT_ON
-			| META_SHIFT_ON;
+	private final static int OUR_TRANSIENT = OUR_CTRL_ON | OUR_ALT_ON
+			| OUR_SHIFT_ON | OUR_SLASH | OUR_TAB;
+
+	// The bit mask of momentary and lock states for each
+	private final static int OUR_CTRL_MASK = OUR_CTRL_ON | OUR_CTRL_LOCK;
+	private final static int OUR_ALT_MASK = OUR_ALT_ON | OUR_ALT_LOCK;
+	private final static int OUR_SHIFT_MASK = OUR_SHIFT_ON | OUR_SHIFT_LOCK;
+
+	// backport constants from api level 11
+	private final static int KEYCODE_ESCAPE = 111;
+	private final static int HC_META_CTRL_ON = 4096;
+	private final static int HC_META_ALT_MASK = KeyEvent.META_ALT_ON | KeyEvent.META_ALT_LEFT_ON
+			| KeyEvent.META_ALT_RIGHT_ON;
 
 	private final TerminalManager manager;
 	private final TerminalBridge bridge;
 	private final VDUBuffer buffer;
 
 	private String keymode = null;
-	private boolean hardKeyboard = false;
+	private final boolean deviceHasHardKeyboard;
 
-	private int metaState = 0;
+	private int ourMetaState = 0;
 
 	private int mDeadKey = 0;
 
@@ -100,7 +103,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		prefs = PreferenceManager.getDefaultSharedPreferences(manager);
 		prefs.registerOnSharedPreferenceChangeListener(this);
 
-		hardKeyboard = (manager.res.getConfiguration().keyboard
+		deviceHasHardKeyboard = (manager.res.getConfiguration().keyboard
 				== Configuration.KEYBOARD_QWERTY);
 
 		updateKeymode();
@@ -112,39 +115,43 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	 */
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
 		try {
-			final boolean hardKeyboardHidden = manager.hardKeyboardHidden;
+			// skip keys if we aren't connected yet or have been disconnected
+			if (bridge.isDisconnected() || bridge.transport == null)
+				return false;
+
+			final boolean interpretAsHardKeyboard = deviceHasHardKeyboard &&
+					!manager.hardKeyboardHidden;
+			final boolean rightModifiersAreSlashAndTab = interpretAsHardKeyboard &&
+					PreferenceConstants.KEYMODE_RIGHT.equals(keymode);
+			final boolean leftModifiersAreSlashAndTab = interpretAsHardKeyboard &&
+					PreferenceConstants.KEYMODE_LEFT.equals(keymode);
+			final boolean volumeKeysChangeFontSize = true;
+			final boolean shiftedNumbersAreFKeys = interpretAsHardKeyboard;
+			final boolean controlNumbersAreFKeys = !interpretAsHardKeyboard;
 
 			// Ignore all key-up events except for the special keys
 			if (event.getAction() == KeyEvent.ACTION_UP) {
-				// There's nothing here for virtual keyboard users.
-				if (!hardKeyboard || (hardKeyboard && hardKeyboardHidden))
-					return false;
-
-				// skip keys if we aren't connected yet or have been disconnected
-				if (bridge.isDisconnected() || bridge.transport == null)
-					return false;
-
-				if (PreferenceConstants.KEYMODE_RIGHT.equals(keymode)) {
+				if (rightModifiersAreSlashAndTab) {
 					if (keyCode == KeyEvent.KEYCODE_ALT_RIGHT
-							&& (metaState & META_SLASH) != 0) {
-						metaState &= ~(META_SLASH | META_TRANSIENT);
+							&& (ourMetaState & OUR_SLASH) != 0) {
+						ourMetaState &= ~OUR_TRANSIENT;
 						bridge.transport.write('/');
 						return true;
 					} else if (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT
-							&& (metaState & META_TAB) != 0) {
-						metaState &= ~(META_TAB | META_TRANSIENT);
+							&& (ourMetaState & OUR_TAB) != 0) {
+						ourMetaState &= ~OUR_TRANSIENT;
 						bridge.transport.write(0x09);
 						return true;
 					}
-				} else if (PreferenceConstants.KEYMODE_LEFT.equals(keymode)) {
+				} else if (leftModifiersAreSlashAndTab) {
 					if (keyCode == KeyEvent.KEYCODE_ALT_LEFT
-							&& (metaState & META_SLASH) != 0) {
-						metaState &= ~(META_SLASH | META_TRANSIENT);
+							&& (ourMetaState & OUR_SLASH) != 0) {
+						ourMetaState &= ~OUR_TRANSIENT;
 						bridge.transport.write('/');
 						return true;
 					} else if (keyCode == KeyEvent.KEYCODE_SHIFT_LEFT
-							&& (metaState & META_TAB) != 0) {
-						metaState &= ~(META_TAB | META_TRANSIENT);
+							&& (ourMetaState & OUR_TAB) != 0) {
+						ourMetaState &= ~OUR_TRANSIENT;
 						bridge.transport.write(0x09);
 						return true;
 					}
@@ -153,21 +160,19 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				return false;
 			}
 
-			// check for terminal resizing keys
-			if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-				bridge.increaseFontSize();
-				return true;
-			} else if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-				bridge.decreaseFontSize();
-				return true;
+			if (volumeKeysChangeFontSize) {
+				if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+					bridge.increaseFontSize();
+					return true;
+				} else if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+					bridge.decreaseFontSize();
+					return true;
+				}
 			}
-
-			// skip keys if we aren't connected yet or have been disconnected
-			if (bridge.isDisconnected() || bridge.transport == null)
-				return false;
 
 			bridge.resetScrollPosition();
 
+			// Handle potentially multi-character IME input.
 			if (keyCode == KeyEvent.KEYCODE_UNKNOWN &&
 					event.getAction() == KeyEvent.ACTION_MULTIPLE) {
 				byte[] input = event.getCharacters().getBytes(encoding);
@@ -175,23 +180,116 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				return true;
 			}
 
-			int curMetaState = event.getMetaState();
-			final int orgMetaState = curMetaState;
-
-			if ((metaState & META_SHIFT_MASK) != 0) {
-				curMetaState |= KeyEvent.META_SHIFT_ON;
+			/// Handle alt and shift keys if they aren't repeating
+			if (event.getRepeatCount() == 0) {
+				if (rightModifiersAreSlashAndTab) {
+					switch (keyCode) {
+					case KeyEvent.KEYCODE_ALT_RIGHT:
+						ourMetaState |= OUR_SLASH;
+						return true;
+					case KeyEvent.KEYCODE_SHIFT_RIGHT:
+						ourMetaState |= OUR_TAB;
+						return true;
+					case KeyEvent.KEYCODE_SHIFT_LEFT:
+						metaPress(OUR_SHIFT_ON);
+						return true;
+					case KeyEvent.KEYCODE_ALT_LEFT:
+						metaPress(OUR_ALT_ON);
+						return true;
+					}
+				} else if (leftModifiersAreSlashAndTab) {
+					switch (keyCode) {
+					case KeyEvent.KEYCODE_ALT_LEFT:
+						ourMetaState |= OUR_SLASH;
+						return true;
+					case KeyEvent.KEYCODE_SHIFT_LEFT:
+						ourMetaState |= OUR_TAB;
+						return true;
+					case KeyEvent.KEYCODE_SHIFT_RIGHT:
+						metaPress(OUR_SHIFT_ON);
+						return true;
+					case KeyEvent.KEYCODE_ALT_RIGHT:
+						metaPress(OUR_ALT_ON);
+						return true;
+					}
+				} else {
+					switch (keyCode) {
+					case KeyEvent.KEYCODE_ALT_LEFT:
+					case KeyEvent.KEYCODE_ALT_RIGHT:
+						metaPress(OUR_ALT_ON);
+						return true;
+					case KeyEvent.KEYCODE_SHIFT_LEFT:
+					case KeyEvent.KEYCODE_SHIFT_RIGHT:
+						metaPress(OUR_SHIFT_ON);
+						return true;
+					}
+				}
 			}
 
-			if ((metaState & META_ALT_MASK) != 0) {
-				curMetaState |= KeyEvent.META_ALT_ON;
+			if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+				if (selectingForCopy) {
+					if (selectionArea.isSelectingOrigin())
+						selectionArea.finishSelectingOrigin();
+					else {
+						if (clipboard != null) {
+							// copy selected area to clipboard
+							String copiedText = selectionArea.copyFrom(buffer);
+							clipboard.setText(copiedText);
+							// XXX STOPSHIP
+//							manager.notifyUser(manager.getString(
+//									R.string.console_copy_done,
+//									copiedText.length()));
+							selectingForCopy = false;
+							selectionArea.reset();
+						}
+					}
+				} else {
+					if ((ourMetaState & OUR_CTRL_ON) != 0) {
+						sendEscape();
+						ourMetaState &= ~OUR_CTRL_ON;
+					} else
+						metaPress(OUR_CTRL_ON);
+				}
+				bridge.redraw();
+				return true;
 			}
 
-			int uchar = event.getUnicodeChar(curMetaState);
-			// no hard keyboard?  ALT-k should pass through to below
-			if ((orgMetaState & KeyEvent.META_ALT_ON) != 0 &&
-					(!hardKeyboard || hardKeyboardHidden)) {
-				uchar = 0;
+			int derivedMetaState = event.getMetaState();
+			if ((ourMetaState & OUR_SHIFT_MASK) != 0)
+				derivedMetaState |= KeyEvent.META_SHIFT_ON;
+			if ((ourMetaState & OUR_ALT_MASK) != 0)
+				derivedMetaState |= KeyEvent.META_ALT_ON;
+			if ((ourMetaState & OUR_CTRL_MASK) != 0)
+				derivedMetaState |= HC_META_CTRL_ON;
+
+			if ((ourMetaState & OUR_TRANSIENT) != 0) {
+				ourMetaState &= ~OUR_TRANSIENT;
+				bridge.redraw();
 			}
+
+			// Test for modified numbers becoming function keys
+			if (shiftedNumbersAreFKeys && (derivedMetaState & KeyEvent.META_SHIFT_ON) != 0) {
+				if (sendFunctionKey(keyCode))
+					return true;
+			}
+			if (controlNumbersAreFKeys && (derivedMetaState & HC_META_CTRL_ON) != 0) {
+				if (sendFunctionKey(keyCode))
+					return true;
+			}
+
+			// Ask the system to use the keymap to give us the unicode character for this key,
+			// with our derived modifier state applied.
+			int uchar = event.getUnicodeChar(derivedMetaState & ~HC_META_CTRL_ON);
+			int ucharWithoutAlt = event.getUnicodeChar(
+			        derivedMetaState & ~(HC_META_ALT_MASK | HC_META_CTRL_ON));
+			if (uchar != ucharWithoutAlt) {
+				// The alt key was used to modify the character returned; therefore, drop the alt
+				// modifier from the state so we don't end up sending alt+key.
+				derivedMetaState &= ~HC_META_ALT_MASK;
+			}
+
+			// Remove shift from the modifier state as it has already been used by getUnicodeChar.
+			derivedMetaState &= ~KeyEvent.META_SHIFT_ON;
 
 			if ((uchar & KeyCharacterMap.COMBINING_ACCENT) != 0) {
 				mDeadKey = uchar & KeyCharacterMap.COMBINING_ACCENT_MASK;
@@ -203,116 +301,19 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				mDeadKey = 0;
 			}
 
-			// otherwise pass through to existing session
-			// print normal keys
+			// If we have a defined non-control character
 			if (uchar >= 0x20) {
-				metaState &= ~(META_SLASH | META_TAB);
-
-				// Remove shift and alt modifiers
-				final int lastMetaState = metaState;
-				metaState &= ~(META_SHIFT_ON | META_ALT_ON);
-				if (metaState != lastMetaState) {
-					bridge.redraw();
-				}
-
-				if ((metaState & META_CTRL_MASK) != 0) {
-					metaState &= ~META_CTRL_ON;
-					bridge.redraw();
-
-					// If there is no hard keyboard or there is a hard keyboard currently hidden,
-					// CTRL-1 through CTRL-9 will send F1 through F9
-					if ((!hardKeyboard || (hardKeyboard && hardKeyboardHidden))
-							&& sendFunctionKey(keyCode))
-						return true;
-
+				if ((derivedMetaState & HC_META_CTRL_ON) != 0)
 					uchar = keyAsControl(uchar);
-				}
-
-				// handle pressing f-keys
-				if ((hardKeyboard && !hardKeyboardHidden)
-						&& (curMetaState & KeyEvent.META_SHIFT_ON) != 0
-						&& sendFunctionKey(keyCode))
-					return true;
-
+				if ((derivedMetaState & KeyEvent.META_ALT_ON) != 0)
+					sendEscape();
 				if (uchar < 0x80)
 					bridge.transport.write(uchar);
 				else
 					// TODO write encoding routine that doesn't allocate each time
 					bridge.transport.write(new String(Character.toChars(uchar))
 							.getBytes(encoding));
-
 				return true;
-			}
-
-			// send ctrl and meta-keys as appropriate
-			if (!hardKeyboard || hardKeyboardHidden) {
-				int k = event.getUnicodeChar(0);
-				int k0 = k;
-				boolean sendCtrl = false;
-				boolean sendMeta = false;
-				if (k != 0) {
-					if ((orgMetaState & HC_META_CTRL_ON) != 0) {
-						k = keyAsControl(k);
-						if (k != k0)
-							sendCtrl = true;
-						// send F1-F10 via CTRL-1 through CTRL-0
-						if (!sendCtrl && sendFunctionKey(keyCode))
-							return true;
-					} else if ((orgMetaState & KeyEvent.META_ALT_ON) != 0) {
-						sendMeta = true;
-						sendEscape();
-					}
-					if (sendMeta || sendCtrl) {
-						bridge.transport.write(k);
-						return true;
-					}
-				}
-			}
-			// try handling keymode shortcuts
-			if (hardKeyboard && !hardKeyboardHidden &&
-					event.getRepeatCount() == 0) {
-				if (PreferenceConstants.KEYMODE_RIGHT.equals(keymode)) {
-					switch (keyCode) {
-					case KeyEvent.KEYCODE_ALT_RIGHT:
-						metaState |= META_SLASH;
-						return true;
-					case KeyEvent.KEYCODE_SHIFT_RIGHT:
-						metaState |= META_TAB;
-						return true;
-					case KeyEvent.KEYCODE_SHIFT_LEFT:
-						metaPress(META_SHIFT_ON);
-						return true;
-					case KeyEvent.KEYCODE_ALT_LEFT:
-						metaPress(META_ALT_ON);
-						return true;
-					}
-				} else if (PreferenceConstants.KEYMODE_LEFT.equals(keymode)) {
-					switch (keyCode) {
-					case KeyEvent.KEYCODE_ALT_LEFT:
-						metaState |= META_SLASH;
-						return true;
-					case KeyEvent.KEYCODE_SHIFT_LEFT:
-						metaState |= META_TAB;
-						return true;
-					case KeyEvent.KEYCODE_SHIFT_RIGHT:
-						metaPress(META_SHIFT_ON);
-						return true;
-					case KeyEvent.KEYCODE_ALT_RIGHT:
-						metaPress(META_ALT_ON);
-						return true;
-					}
-				} else {
-					switch (keyCode) {
-					case KeyEvent.KEYCODE_ALT_LEFT:
-					case KeyEvent.KEYCODE_ALT_RIGHT:
-						metaPress(META_ALT_ON);
-						return true;
-					case KeyEvent.KEYCODE_SHIFT_LEFT:
-					case KeyEvent.KEYCODE_SHIFT_RIGHT:
-						metaPress(META_SHIFT_ON);
-						return true;
-					}
-				}
 			}
 
 			// look for special chars
@@ -346,11 +347,9 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			case KeyEvent.KEYCODE_DEL:
 				((vt320) buffer).keyPressed(vt320.KEY_BACK_SPACE, ' ',
 						getStateForBuffer());
-				metaState &= ~META_TRANSIENT;
 				return true;
 			case KeyEvent.KEYCODE_ENTER:
 				((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', 0);
-				metaState &= ~META_TRANSIENT;
 				return true;
 
 			case KeyEvent.KEYCODE_DPAD_LEFT:
@@ -360,7 +359,6 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				} else {
 					((vt320) buffer).keyPressed(vt320.KEY_LEFT, ' ',
 							getStateForBuffer());
-					metaState &= ~META_TRANSIENT;
 					bridge.tryKeyVibrate();
 				}
 				return true;
@@ -372,7 +370,6 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				} else {
 					((vt320) buffer).keyPressed(vt320.KEY_UP, ' ',
 							getStateForBuffer());
-					metaState &= ~META_TRANSIENT;
 					bridge.tryKeyVibrate();
 				}
 				return true;
@@ -384,7 +381,6 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				} else {
 					((vt320) buffer).keyPressed(vt320.KEY_DOWN, ' ',
 							getStateForBuffer());
-					metaState &= ~META_TRANSIENT;
 					bridge.tryKeyVibrate();
 				}
 				return true;
@@ -396,40 +392,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				} else {
 					((vt320) buffer).keyPressed(vt320.KEY_RIGHT, ' ',
 							getStateForBuffer());
-					metaState &= ~META_TRANSIENT;
 					bridge.tryKeyVibrate();
 				}
-				return true;
-
-			case KeyEvent.KEYCODE_DPAD_CENTER:
-				if (selectingForCopy) {
-					if (selectionArea.isSelectingOrigin())
-						selectionArea.finishSelectingOrigin();
-					else {
-						if (clipboard != null) {
-							// copy selected area to clipboard
-							String copiedText = selectionArea.copyFrom(buffer);
-
-							clipboard.setText(copiedText);
-							// XXX STOPSHIP
-//							manager.notifyUser(manager.getString(
-//									R.string.console_copy_done,
-//									copiedText.length()));
-
-							selectingForCopy = false;
-							selectionArea.reset();
-						}
-					}
-				} else {
-					if ((metaState & META_CTRL_ON) != 0) {
-						sendEscape();
-						metaState &= ~META_CTRL_ON;
-					} else
-						metaPress(META_CTRL_ON);
-				}
-
-				bridge.redraw();
-
 				return true;
 			}
 
@@ -520,13 +484,13 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	 * @param code
 	 */
 	public void metaPress(int code) {
-		if ((metaState & (code << 1)) != 0) {
-			metaState &= ~(code << 1);
-		} else if ((metaState & code) != 0) {
-			metaState &= ~code;
-			metaState |= code << 1;
+		if ((ourMetaState & (code << 1)) != 0) {
+			ourMetaState &= ~(code << 1);
+		} else if ((ourMetaState & code) != 0) {
+			ourMetaState &= ~code;
+			ourMetaState |= code << 1;
 		} else
-			metaState |= code;
+			ourMetaState |= code;
 		bridge.redraw();
 	}
 
@@ -537,18 +501,18 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	private int getStateForBuffer() {
 		int bufferState = 0;
 
-		if ((metaState & META_CTRL_MASK) != 0)
+		if ((ourMetaState & OUR_CTRL_MASK) != 0)
 			bufferState |= vt320.KEY_CONTROL;
-		if ((metaState & META_SHIFT_MASK) != 0)
+		if ((ourMetaState & OUR_SHIFT_MASK) != 0)
 			bufferState |= vt320.KEY_SHIFT;
-		if ((metaState & META_ALT_MASK) != 0)
+		if ((ourMetaState & OUR_ALT_MASK) != 0)
 			bufferState |= vt320.KEY_ALT;
 
 		return bufferState;
 	}
 
 	public int getMetaState() {
-		return metaState;
+		return ourMetaState;
 	}
 
 	public int getDeadKey() {

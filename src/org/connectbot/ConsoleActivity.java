@@ -381,7 +381,7 @@ public class ConsoleActivity extends Activity {
 				TerminalView terminal = (TerminalView)flip;
 
 				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-				handler.metaPress(TerminalKeyListener.META_CTRL_ON);
+				handler.metaPress(TerminalKeyListener.OUR_CTRL_ON);
 
 				keyboardGroup.setVisibility(View.GONE);
 				actionBar.hide();

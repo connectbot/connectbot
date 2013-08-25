@@ -222,19 +222,19 @@ public class TerminalView extends View implements FontSizeChangedListener {
 
 				int metaState = bridge.getKeyHandler().getMetaState();
 
-				if ((metaState & TerminalKeyListener.META_SHIFT_ON) != 0)
+				if ((metaState & TerminalKeyListener.OUR_SHIFT_ON) != 0)
 					canvas.drawPath(shiftCursor, cursorStrokePaint);
-				else if ((metaState & TerminalKeyListener.META_SHIFT_LOCK) != 0)
+				else if ((metaState & TerminalKeyListener.OUR_SHIFT_LOCK) != 0)
 					canvas.drawPath(shiftCursor, cursorPaint);
 
-				if ((metaState & TerminalKeyListener.META_ALT_ON) != 0)
+				if ((metaState & TerminalKeyListener.OUR_ALT_ON) != 0)
 					canvas.drawPath(altCursor, cursorStrokePaint);
-				else if ((metaState & TerminalKeyListener.META_ALT_LOCK) != 0)
+				else if ((metaState & TerminalKeyListener.OUR_ALT_LOCK) != 0)
 					canvas.drawPath(altCursor, cursorPaint);
 
-				if ((metaState & TerminalKeyListener.META_CTRL_ON) != 0)
+				if ((metaState & TerminalKeyListener.OUR_CTRL_ON) != 0)
 					canvas.drawPath(ctrlCursor, cursorStrokePaint);
-				else if ((metaState & TerminalKeyListener.META_CTRL_LOCK) != 0)
+				else if ((metaState & TerminalKeyListener.OUR_CTRL_LOCK) != 0)
 					canvas.drawPath(ctrlCursor, cursorPaint);
 
 				// Restore previous clip region
