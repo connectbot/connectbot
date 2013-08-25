@@ -201,9 +201,6 @@
   <string name="terminal_enable_portfoward">Aktiviere Port Forwarding: %1$s</string>
   <string name="local_shell_unavailable">Fehler! Lokale Kommandozeile ist auf diesem Telefon nicht verfügbar.</string>
   <string name="notification_text">%1$s will ihre Aufmerksamkeit.</string>
-  <string name="upgrade">Neue Version</string>
-  <string name="upgrade_pos">Ja, aktualisieren</string>
-  <string name="upgrade_neg">Nicht jetzt</string>
   <string name="no">Nein</string>
   <string name="with_confirmation">Mit Bestätigung</string>
   <string name="yes">Ja</string>

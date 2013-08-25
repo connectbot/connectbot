@@ -201,9 +201,6 @@
   <string name="terminal_enable_portfoward">Włącz przekierowanie portu: %1$s</string>
   <string name="local_shell_unavailable">Niepowodzenie! Lokalna powłoka nie jest obsługiwana na tym telefonie.</string>
   <string name="notification_text">%1$s wymaga reakcji</string>
-  <string name="upgrade">Nowa wersja</string>
-  <string name="upgrade_pos">Tak, zaktualizuj</string>
-  <string name="upgrade_neg">Nie teraz</string>
   <string name="no">Nie</string>
   <string name="with_confirmation">Z potwierdzeniem</string>
   <string name="yes">Tak</string>

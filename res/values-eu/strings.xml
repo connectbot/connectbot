@@ -201,9 +201,6 @@
   <string name="terminal_enable_portfoward">Gaitu ataka birbidalketa: %1$s</string>
   <string name="local_shell_unavailable">Errorea! Shell lokala ez dago eskuragarri telefono honetan.</string>
   <string name="notification_text">%1$s-k zure arreta behar du.</string>
-  <string name="upgrade">Bertsio berria</string>
-  <string name="upgrade_pos">Bai, eguneratu</string>
-  <string name="upgrade_neg">Ez une honetan</string>
   <string name="no">Ez</string>
   <string name="with_confirmation">Berrespenarekin</string>
   <string name="yes">Bai</string>

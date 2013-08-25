@@ -201,9 +201,6 @@
   <string name="terminal_enable_portfoward">Port yönlendirmesini etkinleştir: %1$s</string>
   <string name="local_shell_unavailable">Başarısız! Yerel shell bu telefonda kullanılamıyor.</string>
   <string name="notification_text">%1$s sizi uyarıyor</string>
-  <string name="upgrade">Yeni sürüm</string>
-  <string name="upgrade_pos">Evet, yükselt</string>
-  <string name="upgrade_neg">Şimdi değil</string>
   <string name="no">Hayır</string>
   <string name="with_confirmation">teyitli</string>
   <string name="yes">Evet</string>

@@ -201,9 +201,6 @@
   <string name="terminal_enable_portfoward">Abilita il port forward: %1$s</string>
   <string name="local_shell_unavailable">Fallimento! La shell locale non è disponibile su questo telefono.</string>
   <string name="notification_text">%1$s richiede la tua attenzione.</string>
-  <string name="upgrade">Nuova versione</string>
-  <string name="upgrade_pos">Sì, aggiorna</string>
-  <string name="upgrade_neg">Non adesso</string>
   <string name="no">No</string>
   <string name="with_confirmation">Richiedi conferma</string>
   <string name="yes">Sì</string>

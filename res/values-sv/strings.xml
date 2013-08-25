@@ -197,9 +197,6 @@
   <string name="terminal_no_session">Session kommer inte att startas på grund av värd önskemål.</string>
   <string name="local_shell_unavailable">Misslyckande! Lokal shell är otillgänglig på denna telefon</string>
   <string name="notification_text">%1$s vill ha din uppmärksamhet.</string>
-  <string name="upgrade">Ny version</string>
-  <string name="upgrade_pos">Ja, uppgradera</string>
-  <string name="upgrade_neg">Inte just nu</string>
   <string name="with_confirmation">Med bekräftelse</string>
   <string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran. Submit error report to ConnectBot developers?</string>
   <string name="menu_colors_reset">Återställ</string>

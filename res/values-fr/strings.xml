@@ -201,9 +201,6 @@
   <string name="terminal_enable_portfoward">Activer la redirection de port : %1$s</string>
   <string name="local_shell_unavailable">Échec ! Le shell local est indisponible pour ce téphone.</string>
   <string name="notification_text">%1$s requiert votre attention.</string>
-  <string name="upgrade">Nouvelle version</string>
-  <string name="upgrade_pos">Oui, mettre à jour</string>
-  <string name="upgrade_neg">Pas maintenant</string>
   <string name="no">Non</string>
   <string name="with_confirmation">Après confirmation</string>
   <string name="yes">Oui</string>

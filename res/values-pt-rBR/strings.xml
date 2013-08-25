@@ -201,9 +201,6 @@
   <string name="terminal_enable_portfoward">Habilitar encaminhamento de porta: %1$s</string>
   <string name="local_shell_unavailable">Erro! O terminal local não está disponível neste telefone.</string>
   <string name="notification_text">%1$s deseja sua atenção.</string>
-  <string name="upgrade">Nova versão</string>
-  <string name="upgrade_pos">Sim, atualizar</string>
-  <string name="upgrade_neg">Agora não</string>
   <string name="no">Não</string>
   <string name="with_confirmation">Com confirmação</string>
   <string name="yes">Sim</string>

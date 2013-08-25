@@ -201,9 +201,6 @@
   <string name="terminal_enable_portfoward">启用端口转发：%1$s</string>
   <string name="local_shell_unavailable">失败! 本地Shell在该手机上不可用</string>
   <string name="notification_text">%1$s 需要你的注意</string>
-  <string name="upgrade">新版本</string>
-  <string name="upgrade_pos">是，升级</string>
-  <string name="upgrade_neg">暂时不</string>
   <string name="no">不</string>
   <string name="with_confirmation">已确认过</string>
   <string name="yes">是</string>

@@ -201,9 +201,6 @@
   <string name="terminal_enable_portfoward">Включить переадресацию порта: %1$s</string>
   <string name="local_shell_unavailable">Ошибка! На этом телефоне отсутствует локальная оболочка.</string>
   <string name="notification_text">%1$s требует внимания</string>
-  <string name="upgrade">Новая версия</string>
-  <string name="upgrade_pos">Да, обновить</string>
-  <string name="upgrade_neg">Не сейчас</string>
   <string name="no">Нет</string>
   <string name="with_confirmation">С подтверждением</string>
   <string name="yes">Да</string>

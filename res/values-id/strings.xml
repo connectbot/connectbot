@@ -159,9 +159,6 @@
   <string name="terminal_auth_ki_fail">Metode otentifikasi \'papan ketik interaktif\' gagal</string>
   <string name="terminal_auth_fail">[Host anda tidak mendukung otentifikasi \'kata sandi\' atau \'papan ketik interaktif\'.]</string>
   <string name="local_shell_unavailable">Gagal! Shell lokal tidak tersedia di telepon ini.</string>
-  <string name="upgrade">Versi baru</string>
-  <string name="upgrade_pos">Ya, perbarui</string>
-  <string name="upgrade_neg">Jangan sekarang</string>
   <string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran. Submit error report to ConnectBot developers?</string>
   <string name="color_red">merah</string>
   <string name="color_green">hijau</string>
