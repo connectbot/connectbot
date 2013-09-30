@@ -84,6 +84,27 @@
 			android:defaultValue="false"
 			/>
 
+		<CheckBoxPreference
+			android:key="shiftfkeys"
+			android:title="@string/pref_shiftfkeys_title"
+			android:summary="@string/pref_shiftfkeys_summary"
+			android:defaultValue="false"
+			/>
+
+		<CheckBoxPreference
+			android:key="ctrlfkeys"
+			android:title="@string/pref_ctrlfkeys_title"
+			android:summary="@string/pref_ctrlfkeys_summary"
+			android:defaultValue="false"
+			/>
+
+		<CheckBoxPreference
+			android:key="volumefont"
+			android:title="@string/pref_volumefont_title"
+			android:summary="@string/pref_volumefont_summary"
+			android:defaultValue="true"
+			/>
+
 		<ListPreference
 			android:key="keymode"
 			android:title="@string/pref_keymode_title"

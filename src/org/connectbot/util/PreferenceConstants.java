@@ -81,6 +81,10 @@ public class PreferenceConstants {
 
 	public static final String CONNECTION_PERSIST = "connPersist";
 
+	public static final String SHIFT_FKEYS = "shiftfkeys";
+	public static final String CTRL_FKEYS = "ctrlfkeys";
+	public static final String VOLUME_FONT = "volumefont";
+
 	/* Backup identifiers */
 	public static final String BACKUP_PREF_KEY = "prefs";
 }

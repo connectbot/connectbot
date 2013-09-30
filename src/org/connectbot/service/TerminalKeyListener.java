@@ -74,6 +74,9 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 	private String keymode = null;
 	private final boolean deviceHasHardKeyboard;
+	private boolean shiftedNumbersAreFKeysOnHardKeyboard;
+	private boolean controlNumbersAreFKeysOnSoftKeyboard;
+	private boolean volumeKeysChangeFontSize;
 
 	private int ourMetaState = 0;
 
@@ -106,7 +109,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		deviceHasHardKeyboard = (manager.res.getConfiguration().keyboard
 				== Configuration.KEYBOARD_QWERTY);
 
-		updateKeymode();
+		updatePrefs();
 	}
 
 	/**
@@ -125,9 +128,10 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					PreferenceConstants.KEYMODE_RIGHT.equals(keymode);
 			final boolean leftModifiersAreSlashAndTab = interpretAsHardKeyboard &&
 					PreferenceConstants.KEYMODE_LEFT.equals(keymode);
-			final boolean volumeKeysChangeFontSize = true;
-			final boolean shiftedNumbersAreFKeys = interpretAsHardKeyboard;
-			final boolean controlNumbersAreFKeys = !interpretAsHardKeyboard;
+			final boolean shiftedNumbersAreFKeys = shiftedNumbersAreFKeysOnHardKeyboard &&
+					interpretAsHardKeyboard;
+			final boolean controlNumbersAreFKeys = controlNumbersAreFKeysOnSoftKeyboard &&
+					!interpretAsHardKeyboard;
 
 			// Ignore all key-up events except for the special keys
 			if (event.getAction() == KeyEvent.ACTION_UP) {
@@ -525,13 +529,21 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-		if (PreferenceConstants.KEYMODE.equals(key)) {
-			updateKeymode();
+		if (PreferenceConstants.KEYMODE.equals(key) ||
+		    PreferenceConstants.SHIFT_FKEYS.equals(key) ||
+		    PreferenceConstants.CTRL_FKEYS.equals(key) ||
+		    PreferenceConstants.VOLUME_FONT.equals(key)) {
+			updatePrefs();
 		}
 	}
 
-	private void updateKeymode() {
+	private void updatePrefs() {
 		keymode = prefs.getString(PreferenceConstants.KEYMODE, PreferenceConstants.KEYMODE_RIGHT);
+		shiftedNumbersAreFKeysOnHardKeyboard =
+				prefs.getBoolean(PreferenceConstants.SHIFT_FKEYS, false);
+		controlNumbersAreFKeysOnSoftKeyboard =
+				prefs.getBoolean(PreferenceConstants.CTRL_FKEYS, false);
+		volumeKeysChangeFontSize = prefs.getBoolean(PreferenceConstants.VOLUME_FONT, true);
 	}
 
 	public void setCharset(String encoding) {

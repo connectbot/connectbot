@@ -39,6 +39,7 @@ import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences.Editor;
 import android.content.res.ColorStateList;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -160,9 +161,20 @@ public class HostListActivity extends ListActivity {
 				getResources().getText(R.string.app_name),
 				getResources().getText(R.string.title_hosts_list)));
 
-		// check for eula agreement
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+		// detect HTC Dream and apply special preferences
+		if (Build.MANUFACTURER.equals("HTC") && Build.DEVICE.equals("dream")) {
+			if (!prefs.contains(PreferenceConstants.SHIFT_FKEYS) &&
+			    !prefs.contains(PreferenceConstants.CTRL_FKEYS)) {
+				SharedPreferences.Editor editor = prefs.edit();
+				editor.putBoolean(PreferenceConstants.SHIFT_FKEYS, true);
+				editor.putBoolean(PreferenceConstants.CTRL_FKEYS, true);
+				editor.commit();
+			}
+		}
+
+		// check for eula agreement
 		boolean agreed = prefs.getBoolean(PreferenceConstants.EULA, false);
 		if(!agreed) {
 			this.startActivityForResult(new Intent(this, WizardActivity.class), REQUEST_EULA);
