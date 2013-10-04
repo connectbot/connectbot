@@ -14,3 +14,5 @@ Download the ProGuard distribution from its website at http://proguard.sourcefor
 When running ant to build ConnectBot and engage ProGuard, use:
 
 ant proguard release
+
+Testing
