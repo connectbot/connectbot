@@ -16,6 +16,36 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public final class MAC
 {
+	/**
+	 * From http://tools.ietf.org/html/rfc4253
+	 */
+	private static final String HMAC_MD5 = "hmac-md5";
+
+	/**
+	 * From http://tools.ietf.org/html/rfc4253
+	 */
+	private static final String HMAC_MD5_96 = "hmac-md5-96";
+
+	/**
+	 * From http://tools.ietf.org/html/rfc4253
+	 */
+	private static final String HMAC_SHA1 = "hmac-sha1";
+
+	/**
+	 * From http://tools.ietf.org/html/rfc4253
+	 */
+	private static final String HMAC_SHA1_96 = "hmac-sha1-96";
+
+	/**
+	 * From http://tools.ietf.org/html/rfc6668
+	 */
+	private static final String HMAC_SHA2_256 = "hmac-sha2-256";
+
+	/**
+	 * From http://tools.ietf.org/html/rfc6668
+	 */
+	private static final String HMAC_SHA2_512 = "hmac-sha2-512";
+
 	Mac mac;
 	int outSize;
 	int macSize;
@@ -23,7 +53,8 @@ public final class MAC
 
 	/* Higher Priority First */
 	private static final String[] MAC_LIST = {
-		"hmac-sha1-96", "hmac-sha1", "hmac-md5-96", "hmac-md5"
+		HMAC_SHA2_256, HMAC_SHA2_512,
+		HMAC_SHA1_96, HMAC_SHA1, HMAC_MD5_96, HMAC_MD5
 	};
 
 	public final static String[] getMacList()
@@ -39,27 +70,35 @@ public final class MAC
 
 	public final static int getKeyLen(String type)
 	{
-		if (type.equals("hmac-sha1"))
+		if (HMAC_SHA1.equals(type) || HMAC_SHA1_96.equals(type))
 			return 20;
-		if (type.equals("hmac-sha1-96"))
-			return 20;
-		if (type.equals("hmac-md5"))
+		if (HMAC_MD5.equals(type) || HMAC_MD5_96.equals(type))
 			return 16;
-		if (type.equals("hmac-md5-96"))
-			return 16;
+		if (HMAC_SHA2_256.equals(type))
+			return 32;
+		if (HMAC_SHA2_512.equals(type))
+			return 64;
 		throw new IllegalArgumentException("Unkown algorithm " + type);
 	}
 
 	public MAC(String type, byte[] key)
 	{
 		try {
-			if ("hmac-sha1".equals(type) || "hmac-sha1-96".equals(type))
+			if (HMAC_SHA1.equals(type) || HMAC_SHA1_96.equals(type))
 			{
 				mac = Mac.getInstance("HmacSHA1");
 			}
-			else if ("hmac-md5".equals(type) || "hmac-md5-96".equals(type))
+			else if (HMAC_MD5.equals(type) || HMAC_MD5_96.equals(type))
 			{
 				mac = Mac.getInstance("HmacMD5");
+			}
+			else if (HMAC_SHA2_256.equals(type))
+			{
+				mac = Mac.getInstance("HmacSHA256");
+			}
+			else if (HMAC_SHA2_512.equals(type))
+			{
+				mac = Mac.getInstance("HmacSHA512");
 			}
 			else
 				throw new IllegalArgumentException("Unkown algorithm " + type);
