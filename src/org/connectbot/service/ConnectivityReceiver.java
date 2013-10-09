@@ -75,11 +75,15 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 			mIsConnected = false;
 			mTerminalManager.onConnectivityLost();
 		} else if (!mIsConnected) {
-			NetworkInfo info = (NetworkInfo) intent.getExtras()
-					.get(ConnectivityManager.EXTRA_NETWORK_INFO);
+			try {
+				NetworkInfo info = (NetworkInfo) intent.getExtras()
+						.get(ConnectivityManager.EXTRA_NETWORK_INFO);
 
-			if (mIsConnected = (info.getState() == State.CONNECTED)) {
-				mTerminalManager.onConnectivityRestored();
+				if (mIsConnected = (info.getState() == State.CONNECTED)) {
+					mTerminalManager.onConnectivityRestored();
+				}
+			} catch (Exception e) {
+				Log.w(TAG,"Exception catched!");
 			}
 		}
 	}
