@@ -1,15 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="app_desc">Enkel, kraftfull, open-source SSH-klient.</string>
-  <string name="service_desc">Upprätthåller SSH anslutningar och laddade publika nycklar</string>
+  <string name="app_desc">Enkel och kraftfull SSH-klient baserad på öppen källkod.</string>
+  <string name="service_desc">Upprätthåller SSH-anslutningar och laddade publika nycklar</string>
   <string name="title_hosts_list">Värddatorer</string>
   <string name="title_pubkey_list">Publika nycklar</string>
   <string name="title_port_forwards_list">Vidarebefordring av portar</string>
-  <string name="title_host_editor">Redigera värd</string>
+  <string name="title_host_editor">Redigera värddator</string>
   <string name="title_help">Hjälp</string>
   <string name="title_colors">Färger</string>
   <string name="resolve_connect">Anslut</string>
-  <string name="resolve_entropy">Samla in Entropi</string>
+  <string name="resolve_entropy">Samla in entropi</string>
   <string name="menu_insert">Lägg till värd</string>
   <string name="menu_delete">Ta bort värd</string>
   <string name="menu_preferences">Inställningar</string>
@@ -70,7 +70,7 @@
   <string name="pref_emulation_category">Terminalemulering</string>
   <string name="pref_emulation_title">Emuleringsläge</string>
   <string name="pref_emulation_summary">Emuleringsläge för PTY-anslutningar</string>
-  <string name="pref_scrollback_title">Antal rader att rulla tillbaka</string>
+  <string name="pref_scrollback_title">Textbufferstorlek</string>
   <string name="pref_scrollback_summary">Storlek på textbuffer för varje konsol</string>
   <string name="pref_ui_category">Användargränssnitt</string>
   <string name="pref_rotation_title">Rotationsläge</string>
@@ -112,6 +112,7 @@
   <string name="hostpref_fontsize_title">Teckenstorlek</string>
   <string name="hostpref_pubkeyid_title">Använd publik nyckelverifiering</string>
   <string name="hostpref_authagent_title">Använd SSH-verifieringsagent</string>
+  <string name="hostpref_postlogin_title">Automatisering efter inloggning</string>
   <string name="hostpref_postlogin_summary">Kommandon att köras på fjärrservern när verifierad</string>
   <string name="hostpref_compression_title">Kompression</string>
   <string name="hostpref_compression_summary">Detta kan hjälpa på långsammare nätverk</string>
@@ -162,6 +163,7 @@
   <string name="list_host_portforwards">Ändra vidarebefodringar av portar</string>
   <string name="list_host_delete">Ta bort värd</string>
   <string name="list_host_empty">Använd snabbanslutningen\nnedan för att ansluta till en värd.</string>
+  <string name="list_rotation_default">Förvalt värde</string>
   <string name="list_rotation_land">Tvinga horisontellt läge</string>
   <string name="list_rotation_port">Tvinga vertikalt läge</string>
   <string name="list_rotation_auto">Automatiskt</string>
@@ -171,6 +173,7 @@
   <string name="list_camera_esc_a">Esc+A</string>
   <string name="list_camera_none">Ingen</string>
   <string name="list_delkey_backspace">Baksteg</string>
+  <string name="list_delkey_del">Ta bort</string>
   <string name="delete_message">Är du säker att du vill ta bort \'%1$s\'?</string>
   <string name="delete_pos">Ja, ta bort</string>
   <string name="delete_neg">Avbryt</string>
@@ -195,9 +198,12 @@
   <string name="terminal_auth_ki_fail">Autentiseringsmetoden \'keyboard-interactive\' misslyckades</string>
   <string name="terminal_auth_fail">[Din värd stödjer inte \'password\' eller \'keyboard-interactive\' autentiseringsmetoderna]</string>
   <string name="terminal_no_session">Session kommer inte att startas på grund av värd önskemål.</string>
+  <string name="terminal_enable_portfoward">Aktivera vidarebefodring av port: %1$s</string>
   <string name="local_shell_unavailable">Misslyckande! Lokal shell är otillgänglig på denna telefon</string>
   <string name="notification_text">%1$s vill ha din uppmärksamhet.</string>
+  <string name="no">Nej</string>
   <string name="with_confirmation">Med bekräftelse</string>
+  <string name="yes">Ja</string>
   <string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran. Submit error report to ConnectBot developers?</string>
   <string name="menu_colors_reset">Återställ</string>
   <string name="app_is_running">ConnectBot är igång</string>

@@ -6,10 +6,10 @@
   <string name="title_pubkey_list">Chiavi pubbliche</string>
   <string name="title_port_forwards_list">Inoltro porte</string>
   <string name="title_host_editor">Modifica connessione</string>
-  <string name="title_help">Aiuto</string>
+  <string name="title_help">Guida</string>
   <string name="title_colors">Colori</string>
   <string name="resolve_connect">Connetti</string>
-  <string name="resolve_entropy">Raccolta entropia</string>
+  <string name="resolve_entropy">Raccolta disordinata</string>
   <string name="menu_insert">Aggiungi connessione</string>
   <string name="menu_delete">Elimina connessione</string>
   <string name="menu_preferences">Preferenze</string>
@@ -211,4 +211,8 @@
   <string name="color_green">verde</string>
   <string name="color_blue">blu</string>
   <string name="color_gray">grigio</string>
+  <string name="image_description_connected">Connesso.</string>
+  <string name="image_description_key_is_locked">La chiave e\' bloccata.</string>
+  <string name="image_description_send_escape_character">Mandare un carattere escape.</string>
+  <string name="image_description_show_keyboard">Mostra la tastiera.</string>
 </resources>

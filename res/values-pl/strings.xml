@@ -70,8 +70,8 @@
   <string name="pref_emulation_category">Emulacja terminalu</string>
   <string name="pref_emulation_title">Tryb emulacji</string>
   <string name="pref_emulation_summary">Emulacja terminalu dla połączeń PTY</string>
-  <string name="pref_scrollback_title">Rozmiar bufora przewijania</string>
-  <string name="pref_scrollback_summary">Rozmiar pamięci dla bufora przewijania każdej konsoli</string>
+  <string name="pref_scrollback_title">Rozmiar buforu przewijania</string>
+  <string name="pref_scrollback_summary">Rozmiar pamięci dla buforu przewijania dla każdej konsoli</string>
   <string name="pref_ui_category">Interfejs użytkownika</string>
   <string name="pref_rotation_title">Sposób orientacji ekranu</string>
   <string name="pref_rotation_summary">Sposób orientacji ekranu przy wysuniętej/wsuniętej klawiaturze</string>
@@ -206,9 +206,16 @@
   <string name="yes">Tak</string>
   <string name="exceptions_submit_message">ConnectBot miał prawdopodobnie problem podczas ostatniego uruchomienia. Wysłać raport o błędzie?</string>
   <string name="menu_colors_reset">Przywróć</string>
-  <string name="app_is_running">Uruchomiono ConnectBot</string>
+  <string name="app_is_running">ConnectBot jest uruchomiony</string>
   <string name="color_red">czerwony</string>
   <string name="color_green">zielony</string>
   <string name="color_blue">niebieski</string>
   <string name="color_gray">szary</string>
+  <string name="colors_fg">FG:</string>
+  <string name="color_bg">BG:</string>
+  <string name="image_description_connected">Połączono</string>
+  <string name="image_description_key_is_locked">Klucz zablokowany</string>
+  <string name="image_description_toggle_control_character">Przełącz znak kontrolny</string>
+  <string name="image_description_send_escape_character">Wyślij znak ESC</string>
+  <string name="image_description_show_keyboard">Pokarz klawiaturę</string>
 </resources>

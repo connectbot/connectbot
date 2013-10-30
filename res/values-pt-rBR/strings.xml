@@ -211,4 +211,10 @@
   <string name="color_green">verde</string>
   <string name="color_blue">azul</string>
   <string name="color_gray">cinza</string>
+  <string name="colors_fg">PP:</string>
+  <string name="color_bg">SP:</string>
+  <string name="image_description_connected">Conectado.</string>
+  <string name="image_description_key_is_locked">A chave está bloqueada.</string>
+  <string name="image_description_send_escape_character">Enviar caractere de escape.</string>
+  <string name="image_description_show_keyboard">Exibir teclado</string>
 </resources>

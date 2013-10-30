@@ -211,4 +211,8 @@
   <string name="color_green">yeşil</string>
   <string name="color_blue">mavi</string>
   <string name="color_gray">gri</string>
+  <string name="colors_fg">ÖR:</string>
+  <string name="color_bg">AR:</string>
+  <string name="image_description_connected">Bağlandı.</string>
+  <string name="image_description_show_keyboard">Klavye göster.</string>
 </resources>

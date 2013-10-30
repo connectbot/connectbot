@@ -39,4 +39,7 @@
   <string name="color_green">أخضر</string>
   <string name="color_blue">أزرق</string>
   <string name="color_gray">رمادي</string>
+  <string name="image_description_connected">متصل</string>
+  <string name="image_description_key_is_locked">المفتاح مقفل</string>
+  <string name="image_description_show_keyboard">عرض لوحة المفاتيح</string>
 </resources>

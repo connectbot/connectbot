@@ -144,6 +144,8 @@
   <string name="list_host_delete">Eyða þjóni</string>
   <string name="list_host_empty">Notaðu boxið hér að neðan\ntil þess að tengjast á þjón.</string>
   <string name="list_rotation_default">Sjálfgefið</string>
+  <string name="list_rotation_land">þvinga á hlið</string>
+  <string name="list_rotation_port">þvinga beint</string>
   <string name="list_rotation_auto">Sjálfgefið</string>
   <string name="list_camera_ctrlaspace">Ctrl+A og Space</string>
   <string name="list_camera_ctrla">Ctrl+A</string>

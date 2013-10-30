@@ -1,26 +1,26 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="app_desc">Простой и мощный SSH клиент с открытым исходным кодом</string>
-  <string name="service_desc">Управляет SSH соединениями и загруженными ключами</string>
+  <string name="app_desc">Простой и мощный SSH-клиент с открытым исходным кодом.</string>
+  <string name="service_desc">Управляет SSH-соединениями и загруженными публичными ключами</string>
   <string name="title_hosts_list">Серверы</string>
   <string name="title_pubkey_list">Публичные ключи</string>
-  <string name="title_port_forwards_list">Переадресация портов</string>
-  <string name="title_host_editor">Изменить хост</string>
+  <string name="title_port_forwards_list">Проброс портов</string>
+  <string name="title_host_editor">Изменить сервер</string>
   <string name="title_help">Помощь</string>
-  <string name="title_colors">Цветовая схема</string>
+  <string name="title_colors">Настройка цветов</string>
   <string name="resolve_connect">Подключиться</string>
-  <string name="resolve_entropy">Создание ключа</string>
-  <string name="menu_insert">Добавить хост</string>
-  <string name="menu_delete">Удалить хост</string>
+  <string name="resolve_entropy">Сбор случайных данных</string>
+  <string name="menu_insert">Добавить сервер</string>
+  <string name="menu_delete">Удалить сервер</string>
   <string name="menu_preferences">Настройки</string>
-  <string name="help_intro">Для дополнительной информации выберите топик</string>
+  <string name="help_intro">Выберите то, о чём Вы хотите узнать</string>
   <string name="help_about">О ConnectBot</string>
   <string name="help_keyboard">Клавиатура</string>
   <string name="pubkey_generate">Генерировать</string>
-  <string name="pubkey_import">Импорт</string>
+  <string name="pubkey_import">Импортировать</string>
   <string name="pubkey_delete">Удалить ключ</string>
-  <string name="pubkey_gather_entropy">Получение шума</string>
-  <string name="pubkey_touch_prompt">Прикоснитесь сюда для получения шума: %1$d%% готово</string>
+  <string name="pubkey_gather_entropy">Сбор случайной информации</string>
+  <string name="pubkey_touch_prompt">Нажмите сюда для генерирования случайной информации: %1$d%% готово</string>
   <string name="pubkey_touch_hint">Для использования случайной выборки во время генерации ключа - перемещайте палец в области экрана ниже.</string>
   <string name="pubkey_generating">Генерирование пары ключей</string>
   <string name="pubkey_copy_private">Копировать приватный ключ</string>
@@ -211,4 +211,6 @@
   <string name="color_green">зелёный</string>
   <string name="color_blue">синий</string>
   <string name="color_gray">серый</string>
+  <string name="image_description_connected">Подключено</string>
+  <string name="image_description_show_keyboard">Показать клавиатуру</string>
 </resources>

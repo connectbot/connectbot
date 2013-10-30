@@ -211,4 +211,6 @@
   <string name="color_green">verde</string>
   <string name="color_blue">azul</string>
   <string name="color_gray">gris</string>
+  <string name="image_description_connected">Conectado</string>
+  <string name="image_description_show_keyboard">Mostrar teclado.</string>
 </resources>

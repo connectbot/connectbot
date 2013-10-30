@@ -211,4 +211,11 @@
   <string name="color_green">grün</string>
   <string name="color_blue">blau</string>
   <string name="color_gray">grau</string>
+  <string name="colors_fg">Schriftfarbe:</string>
+  <string name="color_bg">Hintergrundfarbe:</string>
+  <string name="image_description_connected">Verbunden.</string>
+  <string name="image_description_key_is_locked">Schlüssel ist gesperrt.</string>
+  <string name="image_description_toggle_control_character">Steuerzeichen umschalten</string>
+  <string name="image_description_send_escape_character">Escape-Zeichen senden.</string>
+  <string name="image_description_show_keyboard">Tastatur anzeigen.</string>
 </resources>

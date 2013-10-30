@@ -76,7 +76,7 @@
   <string name="pref_rotation_title">Biratze modua</string>
   <string name="pref_rotation_summary">Nola aldatu biratzea teklatua bistaratzean/izkutatzean.</string>
   <string name="pref_fullscreen_title">Pantaila osoa</string>
-  <string name="pref_fullscreen_summary">Izkutatu egoera-barra kontsola erabiltzean</string>
+  <string name="pref_fullscreen_summary">Ezkutatu egoera-barra kontsola erabiltzean</string>
   <string name="pref_memkeys_title">Gorde gakoak memorian</string>
   <string name="pref_memkeys_summary">Gogoratu desblokeatutako gakoak memorian zerbitzua amaitu arte</string>
   <string name="pref_update_title">Eguneraketak begiratu</string>
@@ -151,7 +151,7 @@
   <string name="portforward_menu_add">Gehitu ataka birbidalketa</string>
   <string name="hint_userhost">erabiltzailea\@ostalaria</string>
   <string name="list_format_error">Erabili %1$s formatua</string>
-  <string name="format_username">erabiltzailea</string>
+  <string name="format_username">erabiltzaile-izena</string>
   <string name="format_hostname">ostalaria</string>
   <string name="format_port">ataka</string>
   <string name="list_menu_pubkeys">Kudeatu gako publikoak</string>
@@ -211,4 +211,9 @@
   <string name="color_green">berdea</string>
   <string name="color_blue">urdina</string>
   <string name="color_gray">grisa</string>
+  <string name="image_description_connected">Konektatuta.</string>
+  <string name="image_description_key_is_locked">Gakoa blokeatuta dago.</string>
+  <string name="image_description_toggle_control_character">Txandakatu kontrol karakterea.</string>
+  <string name="image_description_send_escape_character">Bidali ihes karakterea.</string>
+  <string name="image_description_show_keyboard">Erakutsi teklatua.</string>
 </resources>

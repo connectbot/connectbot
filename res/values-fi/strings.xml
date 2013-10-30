@@ -210,4 +210,7 @@
   <string name="color_green">vihreä</string>
   <string name="color_blue">sininen</string>
   <string name="color_gray">harmaa</string>
+  <string name="image_description_connected">Yhdistetty.</string>
+  <string name="image_description_send_escape_character">Lähetä escape.</string>
+  <string name="image_description_show_keyboard">Näytä näppäimistö</string>
 </resources>
