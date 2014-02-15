@@ -585,7 +585,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 		public Boolean getResult() {
 			try {
-				return super.get(5000, TimeUnit.MILLISECONDS); // wait for 2 seconds
+				return super.get(5000, TimeUnit.MILLISECONDS); // wait for 5 seconds
 			} catch (InterruptedException e) {
 				return false;
 			} catch (ExecutionException e) {
