@@ -17,6 +17,9 @@
 package org.connectbot.service;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.connectbot.TerminalView;
 import org.connectbot.bean.SelectionArea;
@@ -25,6 +28,7 @@ import org.connectbot.util.PreferenceConstants;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.util.Log;
@@ -132,6 +136,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					interpretAsHardKeyboard;
 			final boolean controlNumbersAreFKeys = controlNumbersAreFKeysOnSoftKeyboard &&
 					!interpretAsHardKeyboard;
+			TransportWriter writer = new TransportWriter();
 
 			// Ignore all key-up events except for the special keys
 			if (event.getAction() == KeyEvent.ACTION_UP) {
@@ -139,25 +144,25 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					if (keyCode == KeyEvent.KEYCODE_ALT_RIGHT
 							&& (ourMetaState & OUR_SLASH) != 0) {
 						ourMetaState &= ~OUR_TRANSIENT;
-						bridge.transport.write('/');
-						return true;
+						writer.execute((int)'/');
+						return writer.getResult();
 					} else if (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT
 							&& (ourMetaState & OUR_TAB) != 0) {
 						ourMetaState &= ~OUR_TRANSIENT;
-						bridge.transport.write(0x09);
-						return true;
+						writer.execute(0x09);
+						return writer.getResult();
 					}
 				} else if (leftModifiersAreSlashAndTab) {
 					if (keyCode == KeyEvent.KEYCODE_ALT_LEFT
 							&& (ourMetaState & OUR_SLASH) != 0) {
 						ourMetaState &= ~OUR_TRANSIENT;
-						bridge.transport.write('/');
-						return true;
+						writer.execute((int)'/');
+						return writer.getResult();
 					} else if (keyCode == KeyEvent.KEYCODE_SHIFT_LEFT
 							&& (ourMetaState & OUR_TAB) != 0) {
 						ourMetaState &= ~OUR_TRANSIENT;
-						bridge.transport.write(0x09);
-						return true;
+						writer.execute(0x09);
+						return writer.getResult();
 					}
 				}
 
@@ -180,8 +185,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			if (keyCode == KeyEvent.KEYCODE_UNKNOWN &&
 					event.getAction() == KeyEvent.ACTION_MULTIPLE) {
 				byte[] input = event.getCharacters().getBytes(encoding);
-				bridge.transport.write(input);
-				return true;
+				writer.execute(input);
+				return writer.getResult();
 			}
 
 			/// Handle alt and shift keys if they aren't repeating
@@ -312,12 +317,12 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				if ((derivedMetaState & KeyEvent.META_ALT_ON) != 0)
 					sendEscape();
 				if (uchar < 0x80)
-					bridge.transport.write(uchar);
+					writer.execute(uchar);
 				else
 					// TODO write encoding routine that doesn't allocate each time
-					bridge.transport.write(new String(Character.toChars(uchar))
+					writer.execute(new String(Character.toChars(uchar))
 							.getBytes(encoding));
-				return true;
+				return writer.getResult();
 			}
 
 			// look for special chars
@@ -326,8 +331,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				sendEscape();
 				return true;
 			case KeyEvent.KEYCODE_TAB:
-				bridge.transport.write(0x09);
-				return true;
+				writer.execute(0x09);
+				return writer.getResult();
 			case KeyEvent.KEYCODE_CAMERA:
 
 				// check to see which shortcut the camera button triggers
@@ -335,15 +340,14 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 						PreferenceConstants.CAMERA,
 						PreferenceConstants.CAMERA_CTRLA_SPACE);
 				if(PreferenceConstants.CAMERA_CTRLA_SPACE.equals(camera)) {
-					bridge.transport.write(0x01);
-					bridge.transport.write(' ');
+					writer.execute(0x01, (int)' ');
 				} else if(PreferenceConstants.CAMERA_CTRLA.equals(camera)) {
-					bridge.transport.write(0x01);
+					writer.execute(0x01);
 				} else if(PreferenceConstants.CAMERA_ESC.equals(camera)) {
 					((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
 				} else if(PreferenceConstants.CAMERA_ESC_A.equals(camera)) {
 					((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
-					bridge.transport.write('a');
+					writer.execute((int) 'a');
 				}
 
 				break;
@@ -548,5 +552,47 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 	public void setCharset(String encoding) {
 		this.encoding = encoding;
+	}
+
+	class TransportWriter extends AsyncTask<Object, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(Object... args) {
+			try {
+				for(Object arg : args) {
+					if(arg instanceof byte[]) {
+						byte[] b = (byte[]) arg;
+						bridge.transport.write(b);
+					} else if(arg instanceof Integer) {
+						bridge.transport.write((Integer) arg);
+					}
+				}
+
+				return true;
+			} catch (IOException e) {
+				Log.e(TAG, "Problem while trying to handle an onKey() event", e);
+				try {
+					bridge.transport.flush();
+				} catch (IOException ioe) {
+					Log.d(TAG, "Our transport was closed, dispatching disconnect event");
+					bridge.dispatchDisconnect(false);
+				}
+			} catch (NullPointerException npe) {
+				Log.d(TAG, "Input before connection established ignored.");
+				return true;
+			}
+			return false;
+		}
+
+		public Boolean getResult() {
+			try {
+				return super.get(5000, TimeUnit.MILLISECONDS); // wait for 2 seconds
+			} catch (InterruptedException e) {
+				return false;
+			} catch (ExecutionException e) {
+				return false;
+			} catch (TimeoutException e) {
+				return false;
+			}
+		}
 	}
 }

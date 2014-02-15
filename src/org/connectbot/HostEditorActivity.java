@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.connectbot.bean.HostBean;
 import org.connectbot.service.TerminalBridge;
@@ -41,6 +41,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.CheckBoxPreference;
@@ -61,27 +62,35 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			this.table = table;
 			this.id = id;
 
-			cacheValues();
+			new AsyncTask<Void, Void, Void> () {
+				@Override
+				protected Void doInBackground(Void... args) {
+					cacheValues();
+					return null;
+				}
+			}.execute();
 		}
 
 		protected final void cacheValues() {
 			// fill a cursor and cache the values locally
 			// this makes sure we dont have any floating cursor to dispose later
 
-			SQLiteDatabase db = hostdb.getReadableDatabase();
-			Cursor cursor = db.query(table, null, "_id = ?",
+			synchronized(hostdb) {
+				SQLiteDatabase db = hostdb.getReadableDatabase();
+				Cursor cursor = db.query(table, null, "_id = ?",
 					new String[] { String.valueOf(id) }, null, null, null);
 
-			if (cursor.moveToFirst()) {
-				for(int i = 0; i < cursor.getColumnCount(); i++) {
-					String key = cursor.getColumnName(i);
-					if(key.equals(HostDatabase.FIELD_HOST_HOSTKEY)) continue;
-					String value = cursor.getString(i);
-					values.put(key, value);
+				if (cursor.moveToFirst()) {
+					for(int i = 0; i < cursor.getColumnCount(); i++) {
+						String key = cursor.getColumnName(i);
+						if(key.equals(HostDatabase.FIELD_HOST_HOSTKEY)) continue;
+						String value = cursor.getString(i);
+						values.put(key, value);
+					}
 				}
+				cursor.close();
+				db.close();
 			}
-			cursor.close();
-			db.close();
 
 //			db = pubkeydb.getReadableDatabase();
 //			cursor = db.query(PubkeyDatabase.TABLE_PUBKEYS,
@@ -115,18 +124,29 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			}
 
 			public boolean commit() {
-				//Log.d(this.getClass().toString(), "commit() changes back to database");
-				SQLiteDatabase db = hostdb.getWritableDatabase();
-				db.update(table, update, "_id = ?", new String[] { String.valueOf(id) });
-				db.close();
+				new AsyncTask<Void, Void, Void> () {
+					@Override
+					protected Void doInBackground(Void... args) {
+						synchronized(hostdb) {
+							//Log.d(this.getClass().toString(), "commit() changes back to database");
+							SQLiteDatabase db = hostdb.getWritableDatabase();
+							db.update(table, update, "_id = ?", new String[] { String.valueOf(id) });
+							db.close();
 
-				// make sure we refresh the parent cached values
-				cacheValues();
+							// make sure we refresh the parent cached values
+							cacheValues();
+						}
+						return null;
+					}
 
-				// and update any listeners
-				for(OnSharedPreferenceChangeListener listener : listeners) {
-					listener.onSharedPreferenceChanged(CursorPreferenceHack.this, null);
-				}
+					@Override
+					protected void onPostExecute(Void result) {
+						// and update any listeners
+						for(OnSharedPreferenceChangeListener listener : listeners) {
+							listener.onSharedPreferenceChanged(CursorPreferenceHack.this, null);
+						}
+				    }
+				}.execute();
 
 				return true;
 			}
@@ -306,8 +326,10 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 		bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
-		if(this.hostdb == null)
-			this.hostdb = new HostDatabase(this);
+		synchronized(hostdb) {
+			if(this.hostdb == null)
+				this.hostdb = new HostDatabase(this);
+		}
 
 		if(this.pubkeydb == null)
 			this.pubkeydb = new PubkeyDatabase(this);
@@ -319,9 +341,11 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 		unbindService(connection);
 
-		if(this.hostdb != null) {
-			this.hostdb.close();
-			this.hostdb = null;
+		synchronized(hostdb) {
+			if(this.hostdb != null) {
+				this.hostdb.close();
+				this.hostdb = null;
+			}
 		}
 
 		if(this.pubkeydb != null) {

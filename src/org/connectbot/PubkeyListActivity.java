@@ -47,6 +47,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
@@ -120,8 +121,10 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 		bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
-		if(pubkeydb == null)
-			pubkeydb = new PubkeyDatabase(this);
+		synchronized (pubkeydb) {
+			if (pubkeydb == null)
+				pubkeydb = new PubkeyDatabase(this);
+		}
 	}
 
 	@Override
@@ -130,9 +133,11 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 		unbindService(connection);
 
-		if(pubkeydb != null) {
-			pubkeydb.close();
-			pubkeydb = null;
+		synchronized (pubkeydb) {
+			if (pubkeydb != null) {
+				pubkeydb.close();
+				pubkeydb = null;
+			}
 		}
 	}
 
@@ -331,8 +336,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			public boolean onMenuItemClick(MenuItem item) {
 				// toggle onstart status
 				pubkey.setStartup(!pubkey.isStartup());
-				pubkeydb.savePubkey(pubkey);
-				updateList();
+				SavePubkeyAsyncTask async = new SavePubkeyAsyncTask();
+				async.execute(pubkey);
 				return true;
 			}
 		});
@@ -405,8 +410,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 										.setPositiveButton(android.R.string.ok, null)
 										.create().show();
 								else {
-									pubkeydb.savePubkey(pubkey);
-									updateList();
+									SavePubkeyAsyncTask async = new SavePubkeyAsyncTask();
+									async.execute(pubkey);
 								}
 							} catch (Exception e) {
 								Log.e(TAG, "Could not change private key password", e);
@@ -430,8 +435,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			public boolean onMenuItemClick(MenuItem item) {
 				// toggle confirm use
 				pubkey.setConfirmUse(!pubkey.isConfirmUse());
-				pubkeydb.savePubkey(pubkey);
-				updateList();
+				SavePubkeyAsyncTask async = new SavePubkeyAsyncTask();
+				async.execute(pubkey);
 				return true;
 			}
 		});
@@ -450,8 +455,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 								bound.removeKey(pubkey.getNickname());
 
 							// delete from backend database and update gui
-							pubkeydb.deletePubkey(pubkey);
-							updateList();
+							DeletePubkeyAsyncTask async = new DeletePubkeyAsyncTask();
+							async.execute(pubkey);
 						}
 					})
 					.setNegativeButton(R.string.delete_neg, null).create().show();
@@ -463,12 +468,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	}
 
 	protected void updateList() {
-		if (pubkeydb == null) return;
-
-		pubkeys = pubkeydb.allPubkeys();
-		PubkeyAdapter adapter = new PubkeyAdapter(this, pubkeys);
-
-		this.setListAdapter(adapter);
+		UpdateListTask async = new UpdateListTask();
+		async.execute();
 	}
 
 	@Override
@@ -545,9 +546,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			}
 
 			// write new value into database
-			if (pubkeydb == null)
-				pubkeydb = new PubkeyDatabase(this);
-			pubkeydb.savePubkey(pubkey);
+			SavePubkeyAsyncTask async = new SavePubkeyAsyncTask();
+			async.execute(pubkey);
 
 			updateList();
 		} catch(Exception e) {
@@ -668,6 +668,62 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			}
 
 			return convertView;
+		}
+	}
+
+	class SavePubkeyAsyncTask extends AsyncTask<PubkeyBean, Void, Void> {
+		@Override
+		protected Void doInBackground(PubkeyBean... args) {
+			PubkeyBean pubkey = args[0];
+			synchronized (pubkeydb) {
+				if (pubkeydb == null)
+					pubkeydb = new PubkeyDatabase(PubkeyListActivity.this);
+				pubkeydb.savePubkey(pubkey);
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(java.lang.Void result) {
+			updateList();
+		}
+	}
+
+	class DeletePubkeyAsyncTask extends AsyncTask<PubkeyBean, Void, Void> {
+		@Override
+		protected Void doInBackground(PubkeyBean... args) {
+			PubkeyBean pubkey = args[0];
+			synchronized (pubkeydb) {
+				if (pubkeydb == null)
+					pubkeydb = new PubkeyDatabase(PubkeyListActivity.this);
+				pubkeydb.deletePubkey(pubkey);
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(java.lang.Void result) {
+			updateList();
+		}
+	}
+
+	class UpdateListTask extends AsyncTask<Void, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(Void... args) {
+			synchronized (pubkeydb) {
+				if (pubkeydb == null)
+					return false;
+				pubkeys = pubkeydb.allPubkeys();
+			}
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			if (!result)
+				return;
+			PubkeyAdapter adapter = new PubkeyAdapter(PubkeyListActivity.this, pubkeys);
+			PubkeyListActivity.this.setListAdapter(adapter);
 		}
 	}
 }

@@ -33,12 +33,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Intent.ShortcutIconResource;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences.Editor;
 import android.content.res.ColorStateList;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -51,17 +52,17 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class HostListActivity extends ListActivity {
 	public final static int REQUEST_EDIT = 1;
@@ -115,8 +116,10 @@ public class HostListActivity extends ListActivity {
 		// start the terminal manager service
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
-		if(this.hostdb == null)
-			this.hostdb = new HostDatabase(this);
+		synchronized(hostdb) {
+			if(this.hostdb == null)
+				this.hostdb = new HostDatabase(this);
+		}
 	}
 
 	@Override
@@ -124,9 +127,11 @@ public class HostListActivity extends ListActivity {
 		super.onStop();
 		this.unbindService(connection);
 
-		if(this.hostdb != null) {
-			this.hostdb.close();
-			this.hostdb = null;
+		synchronized(hostdb) {
+			if(this.hostdb != null) {
+				this.hostdb.close();
+				this.hostdb = null;
+			}
 		}
 	}
 
@@ -377,8 +382,8 @@ public class HostListActivity extends ListActivity {
 							if(bridge != null)
 								bridge.dispatchDisconnect(true);
 
-							hostdb.deleteHost(host);
-							updateHandler.sendEmptyMessage(-1);
+							DeleteHostTask asyncTask = new DeleteHostTask();
+							asyncTask.execute(host);
 						}
 						})
 					.setNegativeButton(R.string.delete_neg, null).create().show();
@@ -404,17 +409,8 @@ public class HostListActivity extends ListActivity {
 			return false;
 		}
 
-		HostBean host = TransportFactory.findHost(hostdb, uri);
-		if (host == null) {
-			host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
-			host.setColor(HostDatabase.COLOR_GRAY);
-			host.setPubkeyId(HostDatabase.PUBKEYID_ANY);
-			hostdb.saveHost(host);
-		}
-
-		Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
-		intent.setData(uri);
-		startActivity(intent);
+		FindSaveHostTask async = new FindSaveHostTask();
+		async.execute(uri);
 
 		return true;
 	}
@@ -426,22 +422,8 @@ public class HostListActivity extends ListActivity {
 			edit.commit();
 		}
 
-		if (hostdb == null)
-			hostdb = new HostDatabase(this);
-
-		hosts = hostdb.getHosts(sortedByColor);
-
-		// Don't lose hosts that are connected via shortcuts but not in the database.
-		if (bound != null) {
-			for (TerminalBridge bridge : bound.bridges) {
-				if (!hosts.contains(bridge.host))
-					hosts.add(0, bridge.host);
-			}
-		}
-
-		HostAdapter adapter = new HostAdapter(this, hosts, bound);
-
-		this.setListAdapter(adapter);
+		UpdateListTask async = new UpdateListTask();
+		async.execute();
 	}
 
 	class HostAdapter extends ArrayAdapter<HostBean> {
@@ -565,6 +547,70 @@ public class HostListActivity extends ListActivity {
 			holder.caption.setText(nice);
 
 			return convertView;
+		}
+	}
+
+	class UpdateListTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... args) {
+			synchronized(hostdb) {
+				if (hostdb == null)
+					hostdb = new HostDatabase(HostListActivity.this);
+
+				hosts = hostdb.getHosts(sortedByColor);
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(java.lang.Void v) {
+			// Don't lose hosts that are connected via shortcuts but not in the database.
+			if (bound != null) {
+				for (TerminalBridge bridge : bound.bridges) {
+					if (!hosts.contains(bridge.host))
+						hosts.add(0, bridge.host);
+				}
+			}
+
+			HostAdapter adapter = new HostAdapter(HostListActivity.this, hosts, bound);
+
+			HostListActivity.this.setListAdapter(adapter);
+		}
+	}
+
+	class FindSaveHostTask extends AsyncTask<Uri, Void, Uri> {
+		@Override
+		protected Uri doInBackground(Uri... args) {
+			Uri uri = args[0];
+			synchronized(hostdb) {
+				HostBean host = TransportFactory.findHost(hostdb, uri);
+				if (host == null) {
+					host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
+					host.setColor(HostDatabase.COLOR_GRAY);
+					host.setPubkeyId(HostDatabase.PUBKEYID_ANY);
+					hostdb.saveHost(host);
+				}
+			}
+			return uri;
+		}
+
+		@Override
+		protected void onPostExecute(Uri uri) {
+			Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
+			intent.setData(uri);
+			startActivity(intent);
+		}
+	}
+
+	class DeleteHostTask extends AsyncTask<HostBean, Void, Void> {
+		@Override
+		protected Void doInBackground(HostBean... args) {
+			HostBean host = args[0];
+			synchronized(hostdb) {
+				hostdb.deleteHost(host);
+			}
+			updateHandler.sendEmptyMessage(-1);
+			return null;
 		}
 	}
 }

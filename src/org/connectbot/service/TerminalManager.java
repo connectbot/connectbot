@@ -52,6 +52,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
@@ -133,19 +134,29 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		// load all marked pubkeys into memory
 		updateSavingKeys();
-		List<PubkeyBean> pubkeys = pubkeydb.getAllStartPubkeys();
-
-		for (PubkeyBean pubkey : pubkeys) {
-			try {
-				PrivateKey privKey = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType());
-				PublicKey pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
-				KeyPair pair = new KeyPair(pubKey, privKey);
-
-				addKey(pubkey, pair);
-			} catch (Exception e) {
-				Log.d(TAG, String.format("Problem adding key '%s' to in-memory cache", pubkey.getNickname()), e);
+		new AsyncTask<Void, Void, List<PubkeyBean>> () {
+			@Override
+			protected List<PubkeyBean> doInBackground(Void... args) {
+				synchronized(pubkeydb) {
+					return pubkeydb.getAllStartPubkeys();
+				}
 			}
-		}
+
+			@Override
+			protected void onPostExecute(List<PubkeyBean> pubkeys) {
+				for (PubkeyBean pubkey : pubkeys) {
+					try {
+						PrivateKey privKey = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType());
+						PublicKey pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
+						KeyPair pair = new KeyPair(pubKey, privKey);
+
+						addKey(pubkey, pair);
+					} catch (Exception e) {
+						Log.d(TAG, String.format("Problem adding key '%s' to in-memory cache", pubkey.getNickname()), e);
+					}
+				}
+			}
+		}.execute();
 
 		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		wantKeyVibration = prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, true);
@@ -171,15 +182,18 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		Log.i(TAG, "Destroying service");
 
 		disconnectAll(true);
-
-		if(hostdb != null) {
-			hostdb.close();
-			hostdb = null;
+		synchronized(hostdb) {
+			if(hostdb != null) {
+				hostdb.close();
+				hostdb = null;
+			}
 		}
 
-		if(pubkeydb != null) {
-			pubkeydb.close();
-			pubkeydb = null;
+		synchronized(pubkeydb) {
+			if(pubkeydb != null) {
+				pubkeydb.close();
+				pubkeydb = null;
+			}
 		}
 
 		synchronized (this) {
@@ -284,7 +298,15 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 * to {@link HostDatabase}.
 	 */
 	private void touchHost(HostBean host) {
-		hostdb.touchHost(host);
+		new AsyncTask<HostBean, Void, Void> () {
+			@Override
+			protected Void doInBackground(HostBean... args) {
+				synchronized(hostdb) {
+					hostdb.touchHost(args[0]);
+				}
+				return null;
+			}
+		}.execute(host);
 	}
 
 	/**
