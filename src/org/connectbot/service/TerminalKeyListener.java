@@ -64,7 +64,11 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 	// backport constants from api level 11
 	private final static int KEYCODE_ESCAPE = 111;
-	private final static int HC_META_CTRL_ON = 4096;
+	private final static int HC_META_CTRL_ON = 0x1000;
+	private final static int HC_META_CTRL_LEFT_ON = 0x2000;
+	private final static int HC_META_CTRL_RIGHT_ON = 0x4000;
+	private final static int HC_META_CTRL_MASK = HC_META_CTRL_ON | HC_META_CTRL_RIGHT_ON
+			| HC_META_CTRL_LEFT_ON;
 	private final static int HC_META_ALT_MASK = KeyEvent.META_ALT_ON | KeyEvent.META_ALT_LEFT_ON
 			| KeyEvent.META_ALT_RIGHT_ON;
 
@@ -283,9 +287,9 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 			// Ask the system to use the keymap to give us the unicode character for this key,
 			// with our derived modifier state applied.
-			int uchar = event.getUnicodeChar(derivedMetaState & ~HC_META_CTRL_ON);
+			int uchar = event.getUnicodeChar(derivedMetaState & ~HC_META_CTRL_MASK);
 			int ucharWithoutAlt = event.getUnicodeChar(
-			        derivedMetaState & ~(HC_META_ALT_MASK | HC_META_CTRL_ON));
+			        derivedMetaState & ~(HC_META_ALT_MASK | HC_META_CTRL_MASK));
 			if (uchar != ucharWithoutAlt) {
 				// The alt key was used to modify the character returned; therefore, drop the alt
 				// modifier from the state so we don't end up sending alt+key.
