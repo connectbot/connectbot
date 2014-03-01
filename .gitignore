@@ -3,3 +3,4 @@ gen
 launchpad-*.tar.gz
 local.properties
 *~
+*.sublime-workspace
