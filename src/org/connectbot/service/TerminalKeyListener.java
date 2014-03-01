@@ -168,6 +168,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				return false;
 			}
 
+			//Log.i("CBKeyDebug", KeyEventUtil.describeKeyEvent(keyCode, event));
+
 			if (volumeKeysChangeFontSize) {
 				if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
 					bridge.increaseFontSize();
