@@ -111,6 +111,9 @@ public class ConsoleActivity extends Activity {
 	private TextView booleanPrompt;
 	private Button booleanYes, booleanNo;
 
+	private RelativeLayout keyboardGroup;
+	private Runnable keyboardGroupHider;
+
 	private TextView empty;
 
 	private Animation slide_left_in, slide_left_out, slide_right_in, slide_right_out, fade_stay_hidden, fade_out_delayed;
@@ -260,6 +263,34 @@ public class ConsoleActivity extends Activity {
 		booleanPromptGroup.setVisibility(View.GONE);
 	}
 
+	private void showEmulatedKeys() {
+		keyboardGroup.startAnimation(keyboard_fade_in);
+		keyboardGroup.setVisibility(View.VISIBLE);
+		actionBar.show();
+
+		if (keyboardGroupHider != null)
+			handler.removeCallbacks(keyboardGroupHider);
+		keyboardGroupHider = new Runnable() {
+			public void run() {
+				if (keyboardGroup.getVisibility() == View.GONE || inActionBarMenu)
+					return;
+
+				keyboardGroup.startAnimation(keyboard_fade_out);
+				keyboardGroup.setVisibility(View.GONE);
+				actionBar.hide();
+				keyboardGroupHider = null;
+			}
+		};
+		handler.postDelayed(keyboardGroupHider, KEYBOARD_DISPLAY_TIME);
+	}
+
+	private void hideEmulatedKeys() {
+		if (keyboardGroupHider != null)
+			handler.removeCallbacks(keyboardGroupHider);
+		keyboardGroup.setVisibility(View.GONE);
+		actionBar.hide();
+	}
+
 	// more like configureLaxMode -- enable network IO on UI thread
 	private void configureStrictMode() {
 		try {
@@ -358,7 +389,7 @@ public class ConsoleActivity extends Activity {
 
 		inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-		final RelativeLayout keyboardGroup = (RelativeLayout) findViewById(R.id.keyboard_group);
+		keyboardGroup = (RelativeLayout) findViewById(R.id.keyboard_group);
 
 		mKeyboardButton = (ImageView) findViewById(R.id.button_keyboard);
 		mKeyboardButton.setOnClickListener(new OnClickListener() {
@@ -368,8 +399,7 @@ public class ConsoleActivity extends Activity {
 					return;
 
 				inputManager.showSoftInput(flip, InputMethodManager.SHOW_FORCED);
-				keyboardGroup.setVisibility(View.GONE);
-				actionBar.hide();
+				hideEmulatedKeys();
 			}
 		});
 
@@ -382,9 +412,7 @@ public class ConsoleActivity extends Activity {
 
 				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
 				handler.metaPress(TerminalKeyListener.OUR_CTRL_ON);
-
-				keyboardGroup.setVisibility(View.GONE);
-				actionBar.hide();
+				hideEmulatedKeys();
 			}
 		});
 
@@ -397,9 +425,7 @@ public class ConsoleActivity extends Activity {
 
 				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
 				handler.sendEscape();
-
-				keyboardGroup.setVisibility(View.GONE);
-				actionBar.hide();
+				hideEmulatedKeys();
 			}
 		});
 
@@ -410,8 +436,7 @@ public class ConsoleActivity extends Activity {
 			public void onMenuVisibilityChanged(boolean isVisible) {
 				inActionBarMenu = isVisible;
 				if (isVisible == false) {
-					keyboardGroup.setVisibility(View.GONE);
-					actionBar.hide();
+					hideEmulatedKeys();
 				}
 			}
 		});
@@ -580,20 +605,7 @@ public class ConsoleActivity extends Activity {
 						&& event.getEventTime() - event.getDownTime() < CLICK_TIME
 						&& Math.abs(event.getX() - lastX) < MAX_CLICK_DISTANCE
 						&& Math.abs(event.getY() - lastY) < MAX_CLICK_DISTANCE) {
-					keyboardGroup.startAnimation(keyboard_fade_in);
-					keyboardGroup.setVisibility(View.VISIBLE);
-					actionBar.show();
-
-					handler.postDelayed(new Runnable() {
-						public void run() {
-							if (keyboardGroup.getVisibility() == View.GONE || inActionBarMenu)
-								return;
-
-							keyboardGroup.startAnimation(keyboard_fade_out);
-							keyboardGroup.setVisibility(View.GONE);
-							actionBar.hide();
-						}
-					}, KEYBOARD_DISPLAY_TIME);
+					showEmulatedKeys();
 				}
 
 				// pass any touch events back to detector
