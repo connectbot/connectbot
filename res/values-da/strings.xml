@@ -107,7 +107,7 @@
   <string name="list_update_daily">Dagligt</string>
   <string name="list_update_weekly">Ugenligt</string>
   <string name="list_update_never">Aldrig</string>
-  <string name="hostpref_nickname_title">Kaldenavn</string>
+  <string name="hostpref_nickname_title">Navn</string>
   <string name="hostpref_color_title">Farvekategori</string>
   <string name="hostpref_fontsize_title">Skriftstørrelse (pt)</string>
   <string name="hostpref_pubkeyid_title">Brug offentlig nøgleautorisering</string>

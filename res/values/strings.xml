@@ -250,7 +250,7 @@
 	<string name="list_update_never">"Never"</string>
 
 	<!-- Host nickname field preference title -->
-	<string name="hostpref_nickname_title">"Nickname"</string>
+	<string name="hostpref_nickname_title">"Name"</string>
 
 	<!-- Host color category preference title -->
 	<string name="hostpref_color_title">"Color category"</string>
