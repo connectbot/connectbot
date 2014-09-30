@@ -19,6 +19,5 @@ local.properties
 *.sublime-workspace
 
 # Android Studio
-.idea
-.gradle
+.gradle/
 build/
