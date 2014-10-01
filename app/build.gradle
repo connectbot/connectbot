@@ -16,6 +16,7 @@ android {
         }
 
         ndk {
+            moduleName "com_google_ase_Exec"
             ldLibs "log"
         }
 
