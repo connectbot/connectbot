@@ -19,13 +19,14 @@ package org.connectbot.service;
 
 import org.connectbot.util.PreferenceConstants;
 
+import android.annotation.TargetApi;
 import android.app.backup.BackupManager;
 import android.content.Context;
 
 /**
- * @author kroot
- *
+ * This is only invoked on Froyo and beyond.
  */
+@TargetApi(8)
 public abstract class BackupWrapper {
 	public static BackupWrapper getInstance() {
 		if (PreferenceConstants.PRE_FROYO)

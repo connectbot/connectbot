@@ -19,6 +19,7 @@ package org.connectbot;
 
 import org.connectbot.util.PreferenceConstants;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActionBar;
 
@@ -49,6 +50,11 @@ public abstract class ActionBarWrapper {
 	private static class DummyActionBar extends ActionBarWrapper {
 	}
 
+	/**
+	 * Real ActionBar delegate that is only invoked on Honeycomb
+	 * and later.
+	 */
+	@TargetApi(11)
 	private static class RealActionBar extends ActionBarWrapper {
 		private final ActionBar actionBar;
 

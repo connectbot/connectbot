@@ -17,6 +17,7 @@
 
 package org.connectbot.util;
 
+import android.annotation.TargetApi;
 import android.graphics.Paint;
 import android.text.AndroidCharacter;
 
@@ -61,6 +62,7 @@ public abstract class EastAsianWidth {
 		}
 	}
 
+	@TargetApi(8)
 	private static class FroyoAndBeyond extends EastAsianWidth {
 		private static class Holder {
 			private static final FroyoAndBeyond sInstance = new FroyoAndBeyond();

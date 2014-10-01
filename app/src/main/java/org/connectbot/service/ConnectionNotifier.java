@@ -26,6 +26,7 @@ import org.connectbot.bean.HostBean;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -174,6 +175,7 @@ public abstract class ConnectionNotifier {
 		}
 	}
 
+	@TargetApi(5)
 	private static class EclairAndBeyond extends ConnectionNotifier {
 		private static class Holder {
 			private static final EclairAndBeyond sInstance = new EclairAndBeyond();

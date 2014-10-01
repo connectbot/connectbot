@@ -23,6 +23,7 @@ import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.PubkeyDatabase;
 
+import android.annotation.TargetApi;
 import android.app.backup.BackupAgentHelper;
 import android.app.backup.BackupDataInput;
 import android.app.backup.BackupDataOutput;
@@ -32,9 +33,11 @@ import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
 /**
- * @author kroot
- *
+ * ConnectBot's backup agent. This is only loaded on API 8 and later by
+ * reading the AndroidManifest.xml, so it shouldn't affect any minimum
+ * SDK level.
  */
+@TargetApi(8)
 public class BackupAgent extends BackupAgentHelper {
 	@Override
 	public void onCreate() {
