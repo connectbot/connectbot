@@ -741,17 +741,17 @@ public class UberColorPickerDialog extends Dialog {
 			else if (y > 0)
 				y2 = jump;
 
-		 	mCoord[0] += x2;
-		 	mCoord[1] += y2;
+			mCoord[0] += x2;
+			mCoord[1] += y2;
 
-		 	if (mCoord[0] < -PALETTE_RADIUS)
-		 		mCoord[0] = -PALETTE_RADIUS;
-		 	else if (mCoord[0] > PALETTE_RADIUS)
-		 		mCoord[0] = PALETTE_RADIUS;
-		 	if (mCoord[1] < -PALETTE_RADIUS)
-		 		mCoord[1] = -PALETTE_RADIUS;
-		 	else if (mCoord[1] > PALETTE_RADIUS)
-		 		mCoord[1] = PALETTE_RADIUS;
+			if (mCoord[0] < -PALETTE_RADIUS)
+				mCoord[0] = -PALETTE_RADIUS;
+			else if (mCoord[0] > PALETTE_RADIUS)
+				mCoord[0] = PALETTE_RADIUS;
+			if (mCoord[1] < -PALETTE_RADIUS)
+				mCoord[1] = -PALETTE_RADIUS;
+			else if (mCoord[1] > PALETTE_RADIUS)
+				mCoord[1] = PALETTE_RADIUS;
 
 			float radius = (float)java.lang.Math.sqrt(mCoord[0] * mCoord[0] + mCoord[1] * mCoord[1]);
 			if (radius > PALETTE_RADIUS)

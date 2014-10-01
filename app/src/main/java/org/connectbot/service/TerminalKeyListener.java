@@ -291,7 +291,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			// with our derived modifier state applied.
 			int uchar = event.getUnicodeChar(derivedMetaState & ~HC_META_CTRL_MASK);
 			int ucharWithoutAlt = event.getUnicodeChar(
-			        derivedMetaState & ~(HC_META_ALT_MASK | HC_META_CTRL_MASK));
+					derivedMetaState & ~(HC_META_ALT_MASK | HC_META_CTRL_MASK));
 			if (uchar != ucharWithoutAlt) {
 				// The alt key was used to modify the character returned; therefore, drop the alt
 				// modifier from the state so we don't end up sending alt+key.
@@ -536,9 +536,9 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		if (PreferenceConstants.KEYMODE.equals(key) ||
-		    PreferenceConstants.SHIFT_FKEYS.equals(key) ||
-		    PreferenceConstants.CTRL_FKEYS.equals(key) ||
-		    PreferenceConstants.VOLUME_FONT.equals(key)) {
+				PreferenceConstants.SHIFT_FKEYS.equals(key) ||
+				PreferenceConstants.CTRL_FKEYS.equals(key) ||
+				PreferenceConstants.VOLUME_FONT.equals(key)) {
 			updatePrefs();
 		}
 	}

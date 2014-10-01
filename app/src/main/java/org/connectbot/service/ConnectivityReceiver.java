@@ -62,8 +62,8 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 		final String action = intent.getAction();
 
 		if (!action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-            Log.w(TAG, "onReceived() called: " + intent);
-            return;
+			Log.w(TAG, "onReceived() called: " + intent);
+			return;
 		}
 
 		boolean noConnectivity = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);

@@ -283,7 +283,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		}
 
 		if (pair == null) {
-		    return;
+			return;
 		}
 
 		Log.d(TAG, String.format("Unlocked key '%s'", keybean.getNickname()));

@@ -56,7 +56,7 @@ public class BackupAgent extends BackupAgentHelper {
 
 	@Override
 	public void onBackup(ParcelFileDescriptor oldState, BackupDataOutput data,
-             ParcelFileDescriptor newState) throws IOException {
+			ParcelFileDescriptor newState) throws IOException {
 		synchronized (HostDatabase.dbLock) {
 			super.onBackup(oldState, data, newState);
 		}

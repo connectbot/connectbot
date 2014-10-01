@@ -53,11 +53,11 @@ import com.trilead.ssh2.signature.ECDSASHA2Verify;
 
 public class GeneratePubkeyActivity extends Activity implements OnEntropyGatheredListener {
 	/**
-     *
-     */
-    private static final int RSA_MINIMUM_BITS = 768;
+	 *
+	 */
+	private static final int RSA_MINIMUM_BITS = 768;
 
-    public final static String TAG = "ConnectBot.GeneratePubkeyActivity";
+	public final static String TAG = "ConnectBot.GeneratePubkeyActivity";
 
 	final static int DEFAULT_BITS = 1024;
 
@@ -179,7 +179,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 		bitsText.setOnFocusChangeListener(new OnFocusChangeListener() {
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (!hasFocus) {
-				    final boolean isEc = PubkeyDatabase.KEY_TYPE_EC.equals(keyType);
+					final boolean isEc = PubkeyDatabase.KEY_TYPE_EC.equals(keyType);
 					try {
 						bits = Integer.parseInt(bitsText.getText().toString());
 						if (bits < minBits) {

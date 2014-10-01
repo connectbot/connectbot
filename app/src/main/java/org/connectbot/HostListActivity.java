@@ -166,7 +166,7 @@ public class HostListActivity extends ListActivity {
 		// detect HTC Dream and apply special preferences
 		if (Build.MANUFACTURER.equals("HTC") && Build.DEVICE.equals("dream")) {
 			if (!prefs.contains(PreferenceConstants.SHIFT_FKEYS) &&
-			    !prefs.contains(PreferenceConstants.CTRL_FKEYS)) {
+					!prefs.contains(PreferenceConstants.CTRL_FKEYS)) {
 				SharedPreferences.Editor editor = prefs.edit();
 				editor.putBoolean(PreferenceConstants.SHIFT_FKEYS, true);
 				editor.putBoolean(PreferenceConstants.CTRL_FKEYS, true);
