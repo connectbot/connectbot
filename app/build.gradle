@@ -1,6 +1,14 @@
+import java.text.SimpleDateFormat
+import org.ajoberstar.grgit.Grgit
+
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
+apply plugin: 'org.ajoberstar.release-opinion'
 apply from: '../config/quality.gradle'
+
+release {
+    grgit = Grgit.open(project.file('..'))
+}
 
 android {
     compileSdkVersion 20
@@ -8,12 +16,19 @@ android {
 
     defaultConfig {
         applicationId "org.connectbot"
+
         minSdkVersion 4
         targetSdkVersion 15
+
+        versionCode 365
+        versionName "${project.version.toString()}"
+
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_5
             targetCompatibility JavaVersion.VERSION_1_5
         }
+
+        buildConfigField "String", "BUILD_TIME", "\"${buildTime()}\""
 
         ndk {
             moduleName "com_google_ase_Exec"
@@ -30,7 +45,7 @@ android {
     }
 
     signingConfigs {
-        release
+        releaseSigning
     }
 
     buildTypes {
@@ -39,7 +54,7 @@ android {
             proguardFiles 'proguard.cfg'
 
             if (project.hasProperty('keystorePassword')) {
-                signingConfig signingConfigs.release
+                signingConfig signingConfigs.releaseSigning
             }
         }
 
@@ -49,9 +64,15 @@ android {
     }
 }
 
+def buildTime() {
+    def df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+    df.setTimeZone(TimeZone.getTimeZone("UTC"));
+    return df.format(new Date());
+}
+
 if (project.hasProperty('keystorePassword')) {
-    android.signingConfigs.release.storeFile file(keystoreFile)
-    android.signingConfigs.release.storePassword keystorePassword
-    android.signingConfigs.release.keyAlias keystoreAlias
-    android.signingConfigs.release.keyPassword keystorePassword
+    android.signingConfigs.releaseSigning.storeFile file(keystoreFile)
+    android.signingConfigs.releaseSigning.storePassword keystorePassword
+    android.signingConfigs.releaseSigning.keyAlias keystoreAlias
+    android.signingConfigs.releaseSigning.keyPassword keystorePassword
 }
