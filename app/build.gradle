@@ -31,5 +31,9 @@ android {
             runProguard true
             proguardFiles 'proguard.cfg'
         }
+
+        debug {
+            applicationIdSuffix ".debug"
+        }
     }
 }
