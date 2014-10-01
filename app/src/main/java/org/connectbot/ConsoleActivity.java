@@ -27,6 +27,7 @@ import org.connectbot.service.TerminalKeyListener;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.PreferenceConstants;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -40,6 +41,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -291,18 +293,14 @@ public class ConsoleActivity extends Activity {
 		actionBar.hide();
 	}
 
-	// more like configureLaxMode -- enable network IO on UI thread
-	private void configureStrictMode() {
-		try {
-			Class.forName("android.os.StrictMode");
-			StrictModeSetup.run();
-		} catch (ClassNotFoundException e) {
-		}
-	}
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		configureStrictMode();
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+			StrictModeSetup.run();
+		}
+
 		hardKeyboard = getResources().getConfiguration().keyboard ==
 				Configuration.KEYBOARD_QWERTY;
 
