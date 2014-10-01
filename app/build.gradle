@@ -27,14 +27,29 @@ android {
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
 
+    signingConfigs {
+        release
+    }
+
     buildTypes {
         release {
             runProguard true
             proguardFiles 'proguard.cfg'
+
+            if (project.hasProperty('keystorePassword')) {
+                signingConfig signingConfigs.release
+            }
         }
 
         debug {
             applicationIdSuffix ".debug"
         }
     }
+}
+
+if (project.hasProperty('keystorePassword')) {
+    android.signingConfigs.release.storeFile file(keystoreFile)
+    android.signingConfigs.release.storePassword keystorePassword
+    android.signingConfigs.release.keyAlias keystoreAlias
+    android.signingConfigs.release.keyPassword keystorePassword
 }
