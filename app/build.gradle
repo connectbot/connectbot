@@ -1,0 +1,34 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 20
+    buildToolsVersion "20.0.0"
+
+    defaultConfig {
+        applicationId "org.connectbot"
+        minSdkVersion 4
+        targetSdkVersion 15
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_5
+            targetCompatibility JavaVersion.VERSION_1_5
+        }
+
+        ndk {
+            ldLibs "log"
+        }
+
+        lintOptions {
+            abortOnError false
+        }
+
+        testApplicationId "org.connectbot.tests"
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+    }
+
+    buildTypes {
+        release {
+            runProguard true
+            proguardFiles 'proguard.cfg'
+        }
+    }
+}

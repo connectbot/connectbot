@@ -1,0 +1,27 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url 'https://dl.bintray.com/phildopus/maven'
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.2'
+        classpath 'us.phildop:gradle-sublimetext-plugin:0.5.1'
+    }
+}
+
+apply plugin: 'sublimeText'
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+sublimeText {
+    sublimeProjectName = 'connectbot'
+    defaultFolderExcludePatterns = ['bin', 'gen']
+}
