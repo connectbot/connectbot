@@ -18,25 +18,31 @@
 package org.connectbot;
 
 import org.connectbot.bean.HostBean;
-import org.connectbot.mock.BeanTestCase;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
-import android.test.AndroidTestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.connectbot.mock.BeanAssertions.assertMeetsEqualsContract;
+import static org.connectbot.mock.BeanAssertions.assertMeetsHashCodeContract;
 
 /**
  * @author Kenny Root
- * 
  */
-public class HostBeanTest extends AndroidTestCase {
+@Config(manifest = "../app/src/main/AndroidManifest.xml", emulateSdk = 16)
+@RunWith(RobolectricTestRunner.class)
+public class HostBeanTest {
 	private static final String[] FIELDS = { "nickname", "username",
 			"hostname", "port" };
 
-	HostBean host1;
-	HostBean host2;
+	private HostBean host1;
+	private HostBean host2;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-
+	@Before
+	public void setUp() {
 		host1 = new HostBean();
 		host1.setNickname("Home");
 		host1.setUsername("bob");
@@ -50,19 +56,16 @@ public class HostBeanTest extends AndroidTestCase {
 		host2.setPort(22);
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-
-	public void testIdEquality() {
+	@Test
+	public void id_Equality() {
 		host1.setId(1);
 		host2.setId(1);
 		assertTrue(host1.equals(host2));
 		assertTrue(host1.hashCode() == host2.hashCode());
 	}
 
-	public void testIdInequality() {
+	@Test
+	public void id_Inequality() {
 		host1.setId(1);
 		host2.setId(2);
 		// HostBeans shouldn't be equal when their IDs are not the same
@@ -72,7 +75,8 @@ public class HostBeanTest extends AndroidTestCase {
 				host1.hashCode() == host2.hashCode());
 	}
 
-	public void testIdEquality2() {
+	@Test
+	public void id_Equality2() {
 		host1.setId(1);
 		host2.setId(1);
 		host2.setNickname("Work");
@@ -86,11 +90,13 @@ public class HostBeanTest extends AndroidTestCase {
 				host1.hashCode() == host2.hashCode());
 	}
 
+	@Test
 	public void testBeanMeetsEqualsContract() {
-		BeanTestCase.assertMeetsEqualsContract(HostBean.class, FIELDS);
+		assertMeetsEqualsContract(HostBean.class, FIELDS);
 	}
 
+	@Test
 	public void testBeanMeetsHashCodeContract() {
-		BeanTestCase.assertMeetsHashCodeContract(HostBean.class, FIELDS);
+		assertMeetsHashCodeContract(HostBean.class, FIELDS);
 	}
 }

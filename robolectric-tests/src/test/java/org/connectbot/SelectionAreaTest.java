@@ -18,18 +18,26 @@
 package org.connectbot;
 
 import org.connectbot.bean.SelectionArea;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
-import android.test.AndroidTestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Kenny Root
  * 
  */
-public class SelectionAreaTest extends AndroidTestCase {
+@Config(manifest = "../app/src/main/AndroidManifest.xml", emulateSdk = 16)
+@RunWith(RobolectricTestRunner.class)
+public class SelectionAreaTest {
 	private static final int WIDTH = 80;
 	private static final int HEIGHT = 24;
 
-	public void testCreate() {
+	@Test
+	public void createSelectionArea() {
 		SelectionArea sa = new SelectionArea();
 
 		assertTrue(sa.getLeft() == 0);
@@ -39,7 +47,8 @@ public class SelectionAreaTest extends AndroidTestCase {
 		assertTrue(sa.isSelectingOrigin());
 	}
 
-	public void testCheckMovement() {
+	@Test
+	public void checkMovement() {
 		SelectionArea sa = new SelectionArea();
 
 		sa.setBounds(WIDTH, HEIGHT);
@@ -65,7 +74,8 @@ public class SelectionAreaTest extends AndroidTestCase {
 		assertTrue(sa.getBottom() == 0);
 	}
 
-	public void testBounds() {
+	@Test
+	public void boundsAreCorrect() {
 		SelectionArea sa = new SelectionArea();
 
 		sa.setBounds(WIDTH, HEIGHT);
@@ -99,7 +109,8 @@ public class SelectionAreaTest extends AndroidTestCase {
 				sa.getTop() == 0);
 	}
 
-	public void testSetThenMove() {
+	@Test
+	public void setThenMove() {
 		SelectionArea sa = new SelectionArea();
 
 		sa.setBounds(WIDTH, HEIGHT);

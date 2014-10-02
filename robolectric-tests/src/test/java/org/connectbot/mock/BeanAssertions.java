@@ -7,10 +7,16 @@ import junit.framework.TestCase;
 
 import java.lang.reflect.Field;
 
-public class BeanTestCase extends TestCase {
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+public class BeanAssertions {
 	private static final String TEST_STRING_VAL1 = "Some Value";
 	private static final String TEST_STRING_VAL2 = "Some Other Value";
+
+	private BeanAssertions() {
+	}
 
 	public static void assertMeetsEqualsContract(Class<?> classUnderTest,
 			String[] fieldNames) {

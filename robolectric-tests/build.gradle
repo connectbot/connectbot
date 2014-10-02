@@ -1,0 +1,48 @@
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2014 Kenny Root, Jeffrey Sharkey
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+apply plugin: 'java'
+
+evaluationDependsOn(':app')
+
+dependencies {
+	def androidModule = project(':app')
+	compile androidModule
+
+	testCompile androidModule.android.applicationVariants.toList().first().javaCompile.classpath
+	testCompile androidModule.android.applicationVariants.toList().first().javaCompile.outputs.files
+	testCompile files(androidModule.plugins.findPlugin("com.android.application").getBootClasspath())
+
+	// This gets the location of the SDK's Android Support Repo
+	androidModule.repositories {
+		all { ArtifactRepository repo ->
+			if (repo.url.toString().contains("extras/android/m2repository")) {
+				project.repositories.maven { url = repo.url }
+			}
+		}
+	}
+
+	testCompile 'junit:junit:4.10'
+	testCompile 'org.robolectric:robolectric:2.3'
+}
+
+tasks.withType(Test) {
+	scanForTestClasses = false
+	include "**/*Should.class"
+	include "**/*Test.class"
+	include "**/*Tests.class"
+}

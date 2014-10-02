@@ -17,6 +17,11 @@
 
 package org.connectbot.util;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -27,14 +32,18 @@ import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
 
-import android.test.AndroidTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Kenny Root
- *
  */
-public class PubkeyUtilsTest extends AndroidTestCase {
-	public void testEncodeHex_Null_Failure() throws Exception {
+@Config(manifest = "../app/src/main/AndroidManifest.xml", emulateSdk = 16)
+@RunWith(RobolectricTestRunner.class)
+public class PubkeyUtilsTest {
+	@Test
+	public void encodeHex_Null_Failure() throws Exception {
 		try {
 			PubkeyUtils.encodeHex(null);
 			fail("Should throw null pointer exception when argument is null");
@@ -42,7 +51,9 @@ public class PubkeyUtilsTest extends AndroidTestCase {
 			// success
 		}
 	}
-	public void testEncodeHex_Success() throws Exception {
+
+	@Test
+	public void encodeHex_Success() throws Exception {
 		byte[] input = {(byte) 0xFF, 0x00, (byte) 0xA5, 0x5A, 0x12, 0x23};
 		String expected = "ff00a55a1223";
 
@@ -50,7 +61,8 @@ public class PubkeyUtilsTest extends AndroidTestCase {
 				PubkeyUtils.encodeHex(input), expected);
 	}
 
-	public void testSha256_Empty_Success() throws Exception {
+	@Test
+	public void sha256_Empty_Success() throws Exception {
 		byte[] empty_hashed = new byte[] {
 				(byte) 0xe3, (byte) 0xb0, (byte) 0xc4, (byte) 0x42,
 				(byte) 0x98, (byte) 0xfc, (byte) 0x1c, (byte) 0x14,
@@ -234,19 +246,23 @@ public class PubkeyUtilsTest extends AndroidTestCase {
 	private static final BigInteger DSA_KEY_priv = new BigInteger("2950e4774fb2fffb5d33c937f0b58ffb0d45c200", 16);
 	private static final BigInteger DSA_KEY_pub = new BigInteger("0087b82cdf3232db3bec0d00e96c8393bc7f5629551ea1a00888961cf56e80a36f2a7b316bc10b1d367a5ea374235c9361a472a9176f6cf61f708b86a52b4fae814abd1f1bdd16eea94aea9281851032b1bad7567624c615d6899ca1c94ad614f14e767e49d2ba5223cd113a0d02b66183653cd346ae76d85843afe66520904274", 16);
 
-	public void testGetOidFromPkcs8Encoded_Ec_NistP256() throws Exception {
+	@Test
+	public void getOidFromPkcs8Encoded_Ec_NistP256() throws Exception {
 		assertEquals("1.2.840.10045.2.1", PubkeyUtils.getOidFromPkcs8Encoded(EC_KEY_PKCS8));
 	}
 
-	public void testGetOidFromPkcs8Encoded_Rsa() throws Exception {
+	@Test
+	public void getOidFromPkcs8Encoded_Rsa() throws Exception {
 		assertEquals("1.2.840.113549.1.1.1", PubkeyUtils.getOidFromPkcs8Encoded(RSA_KEY_PKCS8));
 	}
 
-	public void testGetOidFromPkcs8Encoded_Dsa() throws Exception {
+	@Test
+	public void getOidFromPkcs8Encoded_Dsa() throws Exception {
 		assertEquals("1.2.840.10040.4.1", PubkeyUtils.getOidFromPkcs8Encoded(DSA_KEY_PKCS8));
 	}
 
-	public void testGetOidFromPkcs8Encoded_Null_Failure() throws Exception {
+	@Test
+	public void getOidFromPkcs8Encoded_Null_Failure() throws Exception {
 		try {
 			PubkeyUtils.getOidFromPkcs8Encoded(null);
 			fail("Should throw NoSuchAlgorithmException");
@@ -254,7 +270,8 @@ public class PubkeyUtilsTest extends AndroidTestCase {
 		}
 	}
 
-	public void testGetOidFromPkcs8Encoded_NotCorrectDer_Failure() throws Exception {
+	@Test
+	public void getOidFromPkcs8Encoded_NotCorrectDer_Failure() throws Exception {
 		try {
 			PubkeyUtils.getOidFromPkcs8Encoded(new byte[] { 0x30, 0x01, 0x00 });
 			fail("Should throw NoSuchAlgorithmException");
@@ -262,19 +279,22 @@ public class PubkeyUtilsTest extends AndroidTestCase {
 		}
 	}
 
-	public void testGetAlgorithmForOid_Ecdsa() throws Exception {
+	@Test
+	public void getAlgorithmForOid_Ecdsa() throws Exception {
 		assertEquals("EC", PubkeyUtils.getAlgorithmForOid("1.2.840.10045.2.1"));
 	}
 
-	public void testGetAlgorithmForOid_Rsa() throws Exception {
+	@Test
+	public void getAlgorithmForOid_Rsa() throws Exception {
 		assertEquals("RSA", PubkeyUtils.getAlgorithmForOid("1.2.840.113549.1.1.1"));
 	}
 
-	public void testGetAlgorithmForOid_Dsa() throws Exception {
+	public void getAlgorithmForOid_Dsa() throws Exception {
 		assertEquals("DSA", PubkeyUtils.getAlgorithmForOid("1.2.840.10040.4.1"));
 	}
 
-	public void testGetAlgorithmForOid_NullInput_Failure() throws Exception {
+	@Test
+	public void getAlgorithmForOid_NullInput_Failure() throws Exception {
 		try {
 			PubkeyUtils.getAlgorithmForOid(null);
 			fail("Should throw NoSuchAlgorithmException");
@@ -282,7 +302,8 @@ public class PubkeyUtilsTest extends AndroidTestCase {
 		}
 	}
 
-	public void testGetAlgorithmForOid_UnknownOid_Failure() throws Exception {
+	@Test
+	public void getAlgorithmForOid_UnknownOid_Failure() throws Exception {
 		try {
 			PubkeyUtils.getAlgorithmForOid("1.3.66666.2000.4000.1");
 			fail("Should throw NoSuchAlgorithmException");
@@ -290,7 +311,8 @@ public class PubkeyUtilsTest extends AndroidTestCase {
 		}
 	}
 
-	public void testRecoverKeyPair_Dsa() throws Exception {
+	@Test
+	public void recoverKeyPair_Dsa() throws Exception {
 		KeyPair kp = PubkeyUtils.recoverKeyPair(DSA_KEY_PKCS8);
 
 		DSAPublicKey pubKey = (DSAPublicKey) kp.getPublic();
@@ -303,7 +325,8 @@ public class PubkeyUtilsTest extends AndroidTestCase {
 		assertEquals(params.getQ(), DSA_KEY_Q);
 	}
 
-	public void testRecoverKeyPair_Rsa() throws Exception {
+	@Test
+	public void recoverKeyPair_Rsa() throws Exception {
 		KeyPair kp = PubkeyUtils.recoverKeyPair(RSA_KEY_PKCS8);
 
 		RSAPublicKey pubKey = (RSAPublicKey) kp.getPublic();
@@ -312,7 +335,8 @@ public class PubkeyUtilsTest extends AndroidTestCase {
 		assertEquals(RSA_KEY_E, pubKey.getPublicExponent());
 	}
 
-	public void testRecoverKeyPair_Ec() throws Exception {
+	@Test
+	public void recoverKeyPair_Ec() throws Exception {
 		KeyPair kp = PubkeyUtils.recoverKeyPair(EC_KEY_PKCS8);
 
 		ECPublicKey pubKey = (ECPublicKey) kp.getPublic();
@@ -335,7 +359,8 @@ public class PubkeyUtilsTest extends AndroidTestCase {
 		}
 	}
 
-	public void testRecoverPublicKey_FakeKey_Failure() throws Exception {
+	@Test
+	public void recoverPublicKey_FakeKey_Failure() throws Exception {
 		try {
 			PubkeyUtils.recoverPublicKey(null, new MyPrivateKey());
 			fail("Should not accept unknown key types");
