@@ -28,7 +28,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 /**
  * @author Kenny Root
@@ -50,10 +49,7 @@ public class HelpActivity extends Activity {
 				getResources().getText(R.string.title_help)));
 
 		AssetManager am = this.getAssets();
-		LinearLayout content = (LinearLayout) findViewById(R.id.topics);
-
-		TextView versionString = (TextView) findViewById(R.id.version);
-		versionString.setText(BuildConfig.VERSION_NAME);
+		LinearLayout content = (LinearLayout)this.findViewById(R.id.topics);
 
 		try {
 			for (String name : am.list(HELPDIR)) {

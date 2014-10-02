@@ -26,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 /**
@@ -44,15 +43,11 @@ public class WizardActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.act_wizard);
 
-		flipper = (ViewFlipper) findViewById(R.id.wizard_flipper);
+		this.flipper = (ViewFlipper) findViewById(R.id.wizard_flipper);
 
 		// inflate the layout for EULA step
 		LayoutInflater inflater = LayoutInflater.from(this);
-
-		View eula = inflater.inflate(R.layout.wiz_eula, flipper, false);
-		TextView versionString = (TextView) eula.findViewById(R.id.version);
-		versionString.setText(BuildConfig.VERSION_NAME);
-		flipper.addView(eula);
+		this.flipper.addView(inflater.inflate(R.layout.wiz_eula, this.flipper, false));
 
 		// Add a view for each help topic we want the user to see.
 		String[] topics = getResources().getStringArray(R.array.list_wizard_topics);
