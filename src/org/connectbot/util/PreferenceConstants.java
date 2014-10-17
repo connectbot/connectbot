@@ -50,6 +50,7 @@ public class PreferenceConstants {
 	public static final String ROTATION_AUTOMATIC = "Automatic";
 
 	public static final String FULLSCREEN = "fullscreen";
+	public static final String TITLEBARHIDE = "titlebarhide";
 
 	public static final String KEYMODE = "keymode";
 

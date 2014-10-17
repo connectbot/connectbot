@@ -153,6 +153,11 @@
 	<!-- Summary for the rotation mode preference -->
 	<string name="pref_rotation_summary">"How to change rotation when keyboard popped in/out"</string>
 
+	<!-- Name for the titlebar hide preference -->
+	<string name="pref_titlebarhide_title">"Autohide title bar"</string>
+	<!-- Summary for the titlebar hide preference -->
+	<string name="pref_titlebarhide_summary">"Tap console to show title bar and access menu"</string>
+
 	<!-- Name for the full screen preference -->
 	<string name="pref_fullscreen_title">"Full screen"</string>
 	<!-- Summary for the full screen preference -->
