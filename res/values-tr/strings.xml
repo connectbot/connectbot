@@ -130,7 +130,7 @@
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Daha önce bağlanılmadı</string>
   <string name="bind_minutes">%1$s dakika önce</string>
-  <string name="bind_hours">%1$ saat önce</string>
+  <string name="bind_hours">%1$s saat önce</string>
   <string name="bind_days">%1$s gün önce</string>
   <string name="console_copy_done">%1$d byte panoya kopyalandı</string>
   <string name="console_copy_start">Kopyalanacak alanı seçmek için dokun ve sürükle ya da pad kullan</string>
