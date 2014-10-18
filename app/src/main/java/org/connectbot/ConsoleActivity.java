@@ -57,6 +57,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
@@ -138,6 +139,7 @@ public class ConsoleActivity extends Activity {
 
 	private ActionBarWrapper actionBar;
 	private boolean inActionBarMenu = false;
+	private boolean titleBarHide;
 
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
@@ -279,7 +281,9 @@ public class ConsoleActivity extends Activity {
 
 				keyboardGroup.startAnimation(keyboard_fade_out);
 				keyboardGroup.setVisibility(View.GONE);
-				actionBar.hide();
+				if (titleBarHide) {
+					actionBar.hide();
+				}
 				keyboardGroupHider = null;
 			}
 		};
@@ -290,7 +294,9 @@ public class ConsoleActivity extends Activity {
 		if (keyboardGroupHider != null)
 			handler.removeCallbacks(keyboardGroupHider);
 		keyboardGroup.setVisibility(View.GONE);
-		actionBar.hide();
+		if (titleBarHide) {
+			actionBar.hide();
+		}
 	}
 
 	@Override
@@ -304,10 +310,15 @@ public class ConsoleActivity extends Activity {
 		hardKeyboard = getResources().getConfiguration().keyboard ==
 				Configuration.KEYBOARD_QWERTY;
 
-		this.setContentView(R.layout.act_console);
-
 		clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+		titleBarHide = prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false);
+		if (titleBarHide) {
+			getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+		}
+
+		this.setContentView(R.layout.act_console);
 
 		// hide status bar if requested by user
 		if (prefs.getBoolean(PreferenceConstants.FULLSCREEN, false)) {
@@ -429,7 +440,9 @@ public class ConsoleActivity extends Activity {
 
 		actionBar = ActionBarWrapper.getActionBar(this);
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.hide();
+		if (titleBarHide) {
+			actionBar.hide();
+		}
 		actionBar.addOnMenuVisibilityListener(new ActionBarWrapper.OnMenuVisibilityListener() {
 			public void onMenuVisibilityChanged(boolean isVisible) {
 				inActionBarMenu = isVisible;

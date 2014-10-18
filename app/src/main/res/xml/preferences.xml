@@ -78,6 +78,13 @@
 			/>
 
 		<CheckBoxPreference
+			android:key="titlebarhide"
+			android:title="@string/pref_titlebarhide_title"
+			android:summary="@string/pref_titlebarhide_summary"
+			android:defaultValue="false"
+			/>
+
+		<CheckBoxPreference
 			android:key="fullscreen"
 			android:title="@string/pref_fullscreen_title"
 			android:summary="@string/pref_fullscreen_summary"
