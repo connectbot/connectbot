@@ -6,9 +6,9 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch
   # newest Android NDK
-  - if [ `uname -m` = x86_64 ]; then wget https://dl.google.com/android/ndk/android-ndk32-r10c-linux-x86_64.tar.bz2 -O ndk.tb2; else wget https://dl.google.com/android/ndk/android-ndk32-r10c-linux-x86.tar.bz2 -O ndk.tb2; fi
+  - if [ `uname -m` = x86_64 ]; then wget https://dl.google.com/android/ndk/android-ndk32-r10b-linux-x86_64.tar.bz2 -O ndk.tb2; else wget https://dl.google.com/android/ndk/android-ndk32-r10b-linux-x86.tar.bz2 -O ndk.tb2; fi
   - tar -jxf ndk.tb2
-  - echo "ndk.dir=`pwd`/android-ndk-r10c" >> local.properties
+  - echo "ndk.dir=`pwd`/android-ndk-r10b" >> local.properties
 
 android:
   components:
