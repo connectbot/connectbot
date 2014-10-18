@@ -1,0 +1,8 @@
+language: android
+jdk: openjdk7
+android:
+  components:
+    - build-tools-19.1.0
+    - extra-android-support
+  license:
+    - '.+'
