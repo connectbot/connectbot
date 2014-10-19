@@ -22,6 +22,7 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.Security;
 
 import org.connectbot.bean.PubkeyBean;
 import org.connectbot.util.EntropyDialog;
@@ -44,6 +45,7 @@ import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.SeekBar;
@@ -112,6 +114,11 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 		nickname.addTextChangedListener(textChecker);
 		password1.addTextChangedListener(textChecker);
 		password2.addTextChangedListener(textChecker);
+
+		// TODO add BC to provide EC for devices that don't have it.
+		if (Security.getProviders("KeyPairGenerator.EC") == null) {
+			((RadioButton) findViewById(R.id.ec)).setEnabled(false);
+		}
 
 		keyTypeGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
