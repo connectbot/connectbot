@@ -16,6 +16,8 @@
  */
 package org.connectbot.service;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.view.KeyEvent;
 
 public class KeyEventUtil {
@@ -75,10 +77,60 @@ public class KeyEventUtil {
 		return sb.append('"').toString();
 	}
 
+	private static class ClassCompat {
+		private static final ClassCompat INSTANCE;
+		static {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+				INSTANCE = new HCMR2AndNewer();
+			} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+				INSTANCE = new HCMR1AndNewer();
+			} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+				INSTANCE = new GingerbreadAndNewer();
+			} else {
+				INSTANCE = new ClassCompat();
+			}
+		}
+
+		private ClassCompat() {
+		}
+
+		public static void appendExtras(StringBuilder d, int keyCode, KeyEvent event) {
+			INSTANCE.appendForApi(d, keyCode, event);
+		}
+
+		protected void appendForApi(StringBuilder d, int keyCode, KeyEvent event) {
+		}
+
+		@TargetApi(9)
+		private static class GingerbreadAndNewer extends ClassCompat {
+			@Override
+			protected void appendForApi(StringBuilder d, int keyCode, KeyEvent event) {
+				super.appendForApi(d, keyCode, event);
+				d.append(", source=").append(event.getSource());
+
+			}
+		}
+		@TargetApi(12)
+		private static class HCMR1AndNewer extends GingerbreadAndNewer {
+			protected void appendForApi(StringBuilder d, int keyCode, KeyEvent event) {
+				super.appendForApi(d, keyCode, event);
+				d.append(", keyCodeToString=").append(KeyEvent.keyCodeToString(keyCode));
+			}
+		}
+
+		@TargetApi(13)
+		private static class HCMR2AndNewer extends HCMR1AndNewer {
+			@Override
+			protected void appendForApi(StringBuilder d, int keyCode, KeyEvent event) {
+				super.appendForApi(d, keyCode, event);
+				d.append(", modifiers=").append(Integer.toHexString(event.getModifiers()));
+			}
+		}
+	}
+
 	public static String describeKeyEvent(int keyCode, KeyEvent event) {
 		StringBuilder d = new StringBuilder();
 		d.append("keyCode=").append(keyCode);
-		d.append(", keyCodeToString=").append(KeyEvent.keyCodeToString(keyCode));
 		d.append(", event.toString=").append(event.toString());
 		d.append(", action=").append(event.getAction());
 		d.append(", characters=").append(printableRepresentation(event.getCharacters()));
@@ -88,11 +140,10 @@ public class KeyEventUtil {
 		d.append(", printingKey=").append(event.isPrintingKey());
 		d.append(", keyCode=").append(event.getKeyCode());
 		d.append(", metaState=0x").append(Integer.toHexString(event.getMetaState()));
-		d.append(", modifiers=0x").append(Integer.toHexString(event.getModifiers()));
 		d.append(", number=").append((int) event.getNumber());
 		d.append(", scanCode=").append(event.getScanCode());
-		d.append(", source=").append(event.getSource());
 		d.append(", unicodeChar=").append(event.getUnicodeChar());
+		ClassCompat.appendExtras(d, keyCode, event);
 		return d.toString();
 	}
 }
