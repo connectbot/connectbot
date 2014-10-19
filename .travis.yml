@@ -16,3 +16,5 @@ android:
     - extra-android-support
   license:
     - '.+'
+
+script: ./gradlew build check test
