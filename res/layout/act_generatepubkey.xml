@@ -67,13 +67,14 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="RSA"
-					android:paddingRight="30dip" />
+					android:paddingRight="3dip"/>
 
 				<RadioButton
 					android:id="@+id/dsa"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:text="DSA" />
+					android:text="DSA"
+					android:paddingRight="3dip"/>
 
 				<RadioButton
 					android:id="@+id/ec"
@@ -131,7 +132,7 @@
 				android:layout_weight="1" />
 		</TableRow>
 
-		<TableRow>
+		<TableRow android:paddingBottom="6dip">
 			<LinearLayout
 				android:paddingRight="10dip"
 				android:orientation="vertical"
@@ -178,6 +179,7 @@
 			android:layout_height="wrap_content"
 			android:id="@+id/save"
 			android:text="@string/pubkey_generate"
-			android:enabled="false" />
+			android:enabled="false"
+			android:layout_marginTop="6dip"/>
 	</TableLayout>
 </ScrollView>
