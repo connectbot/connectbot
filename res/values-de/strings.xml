@@ -107,7 +107,7 @@
   <string name="list_update_daily">Täglich</string>
   <string name="list_update_weekly">Wöchentlich</string>
   <string name="list_update_never">Niemals</string>
-  <string name="hostpref_nickname_title">Nutzername</string>
+  <string name="hostpref_nickname_title">Name</string>
   <string name="hostpref_color_title">Farbkategorie</string>
   <string name="hostpref_fontsize_title">Fontgröße (pt)</string>
   <string name="hostpref_pubkeyid_title">Verwende pubkey Authentisierung</string>

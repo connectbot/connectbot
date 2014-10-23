@@ -107,7 +107,7 @@
   <string name="list_update_daily">Diariamente</string>
   <string name="list_update_weekly">Semanalmente</string>
   <string name="list_update_never">Nunca</string>
-  <string name="hostpref_nickname_title">Apodo</string>
+  <string name="hostpref_nickname_title">Nombre</string>
   <string name="hostpref_color_title">Categoria de colores</string>
   <string name="hostpref_fontsize_title">Tamaño de la fuente (pt)</string>
   <string name="hostpref_pubkeyid_title">Usar clave de autenticación pública</string>

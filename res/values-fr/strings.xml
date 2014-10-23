@@ -107,7 +107,7 @@
   <string name="list_update_daily">Journalière</string>
   <string name="list_update_weekly">Hebdomadaire</string>
   <string name="list_update_never">Jamais</string>
-  <string name="hostpref_nickname_title">Surnom</string>
+  <string name="hostpref_nickname_title">Nom</string>
   <string name="hostpref_color_title">Catégorie de couleur</string>
   <string name="hostpref_fontsize_title">Taille de police (pt)</string>
   <string name="hostpref_pubkeyid_title">Utiliser l\'authentification par clé publique</string>
