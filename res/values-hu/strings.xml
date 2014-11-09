@@ -201,9 +201,6 @@
   <string name="terminal_enable_portfoward">Port átirányítás engedélyezése: %1$s</string>
   <string name="local_shell_unavailable">Hiba! Nincs lokális shell ezen a telefonon.</string>
   <string name="notification_text">%1$s a figyelmére szorul.</string>
-  <string name="upgrade">Új verzió</string>
-  <string name="upgrade_pos">Igen, frissítés</string>
-  <string name="upgrade_neg">Most nem</string>
   <string name="no">Nem</string>
   <string name="with_confirmation">Csak beleegyezéssel</string>
   <string name="yes">Igen</string>
@@ -214,4 +211,9 @@
   <string name="color_green">zöld</string>
   <string name="color_blue">kék</string>
   <string name="color_gray">szürke</string>
+  <string name="image_description_connected">Kapcsolódva</string>
+  <string name="image_description_key_is_locked">A Kulcs zárolva.</string>
+  <string name="image_description_toggle_control_character">Vezérlő jel i/n</string>
+  <string name="image_description_send_escape_character">Kilépő jel küldés</string>
+  <string name="image_description_show_keyboard">Billentyűzet megmutatása</string>
 </resources>

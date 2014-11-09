@@ -200,9 +200,6 @@
   <string name="terminal_enable_portfoward">Ota käyttöön porttiohjaus %1$s</string>
   <string name="local_shell_unavailable">Virhe! Paikallista komentoriviä ei ole käytettävissä</string>
   <string name="notification_text">%1$s kaipaa huomiotasi.</string>
-  <string name="upgrade">Uusi versio</string>
-  <string name="upgrade_pos">Kyllä, päivitä</string>
-  <string name="upgrade_neg">Ei juuri nyt</string>
   <string name="no">Ei</string>
   <string name="with_confirmation">Kysy varmistus</string>
   <string name="yes">Kyllä</string>
@@ -213,4 +210,7 @@
   <string name="color_green">vihreä</string>
   <string name="color_blue">sininen</string>
   <string name="color_gray">harmaa</string>
+  <string name="image_description_connected">Yhdistetty.</string>
+  <string name="image_description_send_escape_character">Lähetä escape.</string>
+  <string name="image_description_show_keyboard">Näytä näppäimistö</string>
 </resources>

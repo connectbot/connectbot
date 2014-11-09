@@ -201,9 +201,6 @@
   <string name="terminal_enable_portfoward">Habilitar encaminhamento de porta: %1$s</string>
   <string name="local_shell_unavailable">Erro! O terminal local não está disponível neste telefone.</string>
   <string name="notification_text">%1$s deseja sua atenção.</string>
-  <string name="upgrade">Nova versão</string>
-  <string name="upgrade_pos">Sim, atualizar</string>
-  <string name="upgrade_neg">Agora não</string>
   <string name="no">Não</string>
   <string name="with_confirmation">Com confirmação</string>
   <string name="yes">Sim</string>
@@ -214,4 +211,10 @@
   <string name="color_green">verde</string>
   <string name="color_blue">azul</string>
   <string name="color_gray">cinza</string>
+  <string name="colors_fg">PP:</string>
+  <string name="color_bg">SP:</string>
+  <string name="image_description_connected">Conectado.</string>
+  <string name="image_description_key_is_locked">A chave está bloqueada.</string>
+  <string name="image_description_send_escape_character">Enviar caractere de escape.</string>
+  <string name="image_description_show_keyboard">Exibir teclado</string>
 </resources>

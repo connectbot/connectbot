@@ -201,9 +201,6 @@
   <string name="terminal_enable_portfoward">Activar redirección de puerto: %1$s</string>
   <string name="local_shell_unavailable">¡Fallo! Su intérprete de órdenes local no está disponible en este teléfono.</string>
   <string name="notification_text">%1$s requiere de tu atención.</string>
-  <string name="upgrade">Nueva versión</string>
-  <string name="upgrade_pos">Sí, actualizar</string>
-  <string name="upgrade_neg">No en este momento</string>
   <string name="no">Denegar</string>
   <string name="with_confirmation">Con confirmación</string>
   <string name="yes">Sí</string>
@@ -214,4 +211,6 @@
   <string name="color_green">verde</string>
   <string name="color_blue">azul</string>
   <string name="color_gray">gris</string>
+  <string name="image_description_connected">Conectado</string>
+  <string name="image_description_show_keyboard">Mostrar teclado.</string>
 </resources>

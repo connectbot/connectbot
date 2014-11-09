@@ -153,10 +153,30 @@
 	<!-- Summary for the rotation mode preference -->
 	<string name="pref_rotation_summary">"How to change rotation when keyboard popped in/out"</string>
 
+	<!-- Name for the titlebar hide preference -->
+	<string name="pref_titlebarhide_title">"Autohide title bar"</string>
+	<!-- Summary for the titlebar hide preference -->
+	<string name="pref_titlebarhide_summary">"Tap console to show title bar and access menu"</string>
+
 	<!-- Name for the full screen preference -->
 	<string name="pref_fullscreen_title">"Full screen"</string>
 	<!-- Summary for the full screen preference -->
 	<string name="pref_fullscreen_summary">"Hide status bar while in console"</string>
+
+	<!-- Name for the shifted numbers are f-keys preference -->
+	<string name="pref_shiftfkeys_title">"Shift+num are F-keys"</string>
+	<!-- Summary for the shifted numbers are f-keys preference -->
+	<string name="pref_shiftfkeys_summary">"On hardware keyboards, number keys send F1-F10 with shift"</string>
+
+	<!-- Name for the ctrl'ed numbers are f-keys preference -->
+	<string name="pref_ctrlfkeys_title">"Ctrl+num are F-keys"</string>
+	<!-- Summary for the ctrl'ed numbers are f-keys preference -->
+	<string name="pref_ctrlfkeys_summary">"On software keyboards, number keys send F1-F10 with ctrl"</string>
+
+	<!-- Name for the volume keys control font size preference -->
+	<string name="pref_volumefont_title">"Volume keys change font size"</string>
+	<!-- Summary for the volume keys control font size preference -->
+	<string name="pref_volumefont_summary">"Font size can also be changed in per-host settings"</string>
 
 	<!-- Name for the memorize keys preference -->
 	<string name="pref_memkeys_title">"Remember keys in memory"</string>

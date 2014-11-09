@@ -78,10 +78,38 @@
 			/>
 
 		<CheckBoxPreference
+			android:key="titlebarhide"
+			android:title="@string/pref_titlebarhide_title"
+			android:summary="@string/pref_titlebarhide_summary"
+			android:defaultValue="false"
+			/>
+
+		<CheckBoxPreference
 			android:key="fullscreen"
 			android:title="@string/pref_fullscreen_title"
 			android:summary="@string/pref_fullscreen_summary"
 			android:defaultValue="false"
+			/>
+
+		<CheckBoxPreference
+			android:key="shiftfkeys"
+			android:title="@string/pref_shiftfkeys_title"
+			android:summary="@string/pref_shiftfkeys_summary"
+			android:defaultValue="false"
+			/>
+
+		<CheckBoxPreference
+			android:key="ctrlfkeys"
+			android:title="@string/pref_ctrlfkeys_title"
+			android:summary="@string/pref_ctrlfkeys_summary"
+			android:defaultValue="false"
+			/>
+
+		<CheckBoxPreference
+			android:key="volumefont"
+			android:title="@string/pref_volumefont_title"
+			android:summary="@string/pref_volumefont_summary"
+			android:defaultValue="true"
 			/>
 
 		<ListPreference

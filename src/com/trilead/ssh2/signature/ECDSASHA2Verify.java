@@ -118,11 +118,11 @@ public class ECDSASHA2Verify {
 			KeyFactory kf = KeyFactory.getInstance("EC");
 			return (ECPublicKey) kf.generatePublic(keySpec);
 		} catch (NoSuchAlgorithmException nsae) {
-			IOException ioe = new IOException("No RSA KeyFactory available");
+			IOException ioe = new IOException("No EC KeyFactory available");
 			ioe.initCause(nsae);
 			throw ioe;
 		} catch (InvalidKeySpecException ikse) {
-			IOException ioe = new IOException("No RSA KeyFactory available");
+			IOException ioe = new IOException("No EC KeyFactory available");
 			ioe.initCause(ikse);
 			throw ioe;
 		}

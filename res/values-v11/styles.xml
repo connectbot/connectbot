@@ -20,7 +20,6 @@
 <resources>
 	<style name="NoTitle" parent="android:Theme.Holo">
 		<item name="android:windowContentOverlay">@null</item>
-		<item name="android:windowActionBarOverlay">true</item>
 		<item name="android:actionBarStyle">@style/SolidActionBar</item>
 	</style>
 

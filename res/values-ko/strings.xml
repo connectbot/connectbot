@@ -179,9 +179,6 @@
   <string name="terminal_enable_portfoward">포트 포워딩 사용: %1$s</string>
   <string name="local_shell_unavailable">실패! 이 폰은 로컬 쉘을 사용할 수 없습니다.</string>
   <string name="notification_text">%1$s에서 알림이 있습니다.</string>
-  <string name="upgrade">새 버전</string>
-  <string name="upgrade_pos">네, 업그레이드</string>
-  <string name="upgrade_neg">나중에</string>
   <string name="no">아니오</string>
   <string name="with_confirmation">확인 작업 수행</string>
   <string name="yes">예</string>

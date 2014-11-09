@@ -79,8 +79,6 @@
   <string name="wizard_next">Seguent</string>
   <string name="wizard_back">Precedent</string>
   <string name="terminal_connecting">Connexion a %1$s:%2$d via %3$s</string>
-  <string name="upgrade">Version novèla</string>
-  <string name="upgrade_neg">Pas ara</string>
   <string name="no">Non</string>
   <string name="with_confirmation">Aprèp confirmacion</string>
   <string name="yes">Òc</string>

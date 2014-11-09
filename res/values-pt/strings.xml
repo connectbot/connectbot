@@ -71,6 +71,7 @@
   <string name="pref_emulation_title">Modo de emulação</string>
   <string name="pref_emulation_summary">Terminal de emulação para usar conecções PTY</string>
   <string name="pref_scrollback_title">Tamanho de Scrollback</string>
+  <string name="pref_scrollback_summary">Tamanho do buffer de scrollback em memória para cada consola</string>
   <string name="pref_ui_category">Interface de utilizador</string>
   <string name="pref_rotation_title">Modo de rotação</string>
   <string name="pref_rotation_summary">Como alterar a rotação quando o teclado é aberto/fechado</string>
@@ -90,6 +91,7 @@
   <string name="pref_keepalive_summary">Previne que o ecrã seja desligado quando se esta a utilizar a consola</string>
   <string name="pref_wifilock_title">Manter Wi-Fi activo</string>
   <string name="pref_wifilock_summary">Evitar que o Wi-Fi desligue quando uma sessão está activa</string>
+  <string name="pref_bumpyarrows_title">Cursores com vibração</string>
   <string name="pref_bumpyarrows_summary">Vibrar quando enviar teclas de cursor com a trackball; útil para ligações com atraso</string>
   <string name="pref_bell_category">Aviso sonoro do terminal</string>
   <string name="pref_bell_title">Aviso sonoro audível</string>
@@ -192,13 +194,13 @@
   <string name="terminal_auth_pubkey_invalid">A chave pública escolhida é inválida, tente escolher outra chave no editor de anfitriões</string>
   <string name="terminal_auth_pubkey_specific">A tentar autenticação de chave pública (publickey) com uma chave pública específica</string>
   <string name="terminal_auth_pubkey_fail">Autenticação pelo método de chave pública (publickey) com a chave \'%1$s\' falhou</string>
+  <string name="terminal_auth_ki">A tentar autenticação pelo método \'teclado-interactivo\'</string>
+  <string name="terminal_auth_ki_fail">Autenticação pelo método \'teclado-interactivo\' falhou</string>
+  <string name="terminal_auth_fail">[O seu anfitrião não suporta autenticação por \'password\' ou \'teclado-interactivo\'.]</string>
   <string name="terminal_no_session">A sessão não será iniciada devido a preferência do anfitrião.</string>
   <string name="terminal_enable_portfoward">Permitir redirecionamento de porta: %1$s</string>
   <string name="local_shell_unavailable">Falha! Shell local não está disponível neste telemóvel.</string>
   <string name="notification_text">%1$s requer a sua atenção.</string>
-  <string name="upgrade">Nova versão</string>
-  <string name="upgrade_pos">Sim, actualizar</string>
-  <string name="upgrade_neg">Não, por agora</string>
   <string name="no">Não</string>
   <string name="with_confirmation">com confirmação</string>
   <string name="yes">Sim</string>

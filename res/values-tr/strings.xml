@@ -130,7 +130,7 @@
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Daha önce bağlanılmadı</string>
   <string name="bind_minutes">%1$s dakika önce</string>
-  <string name="bind_hours">%1$ saat önce</string>
+  <string name="bind_hours">%1$s saat önce</string>
   <string name="bind_days">%1$s gün önce</string>
   <string name="console_copy_done">%1$d byte panoya kopyalandı</string>
   <string name="console_copy_start">Kopyalanacak alanı seçmek için dokun ve sürükle ya da pad kullan</string>
@@ -201,9 +201,6 @@
   <string name="terminal_enable_portfoward">Port yönlendirmesini etkinleştir: %1$s</string>
   <string name="local_shell_unavailable">Başarısız! Yerel shell bu telefonda kullanılamıyor.</string>
   <string name="notification_text">%1$s sizi uyarıyor</string>
-  <string name="upgrade">Yeni sürüm</string>
-  <string name="upgrade_pos">Evet, yükselt</string>
-  <string name="upgrade_neg">Şimdi değil</string>
   <string name="no">Hayır</string>
   <string name="with_confirmation">teyitli</string>
   <string name="yes">Evet</string>
@@ -214,4 +211,8 @@
   <string name="color_green">yeşil</string>
   <string name="color_blue">mavi</string>
   <string name="color_gray">gri</string>
+  <string name="colors_fg">ÖR:</string>
+  <string name="color_bg">AR:</string>
+  <string name="image_description_connected">Bağlandı.</string>
+  <string name="image_description_show_keyboard">Klavye göster.</string>
 </resources>

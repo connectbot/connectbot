@@ -144,6 +144,8 @@
   <string name="list_host_delete">Eyða þjóni</string>
   <string name="list_host_empty">Notaðu boxið hér að neðan\ntil þess að tengjast á þjón.</string>
   <string name="list_rotation_default">Sjálfgefið</string>
+  <string name="list_rotation_land">þvinga á hlið</string>
+  <string name="list_rotation_port">þvinga beint</string>
   <string name="list_rotation_auto">Sjálfgefið</string>
   <string name="list_camera_ctrlaspace">Ctrl+A og Space</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
@@ -166,9 +168,6 @@
   <string name="terminal_auth_pass_fail">Ekki tókst að tengjast með lykilorði</string>
   <string name="terminal_enable_portfoward">Áframsenda port: %1$s</string>
   <string name="notification_text">%1$s krefst athygli þinnar.</string>
-  <string name="upgrade">Ný útgáfa</string>
-  <string name="upgrade_pos">Já, uppfæra</string>
-  <string name="upgrade_neg">Ekki núna</string>
   <string name="no">Nei</string>
   <string name="with_confirmation">Með staðfestingu</string>
   <string name="yes">Já</string>

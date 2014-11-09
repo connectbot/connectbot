@@ -3,8 +3,6 @@ package com.trilead.ssh2.crypto;
 
 
 import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import com.trilead.ssh2.crypto.digest.HashForSSH2Types;
 
@@ -74,12 +72,7 @@ public class KeyMaterial
 	{
 		KeyMaterial km = new KeyMaterial();
 
-		HashForSSH2Types sh;
-		try {
-			sh = new HashForSSH2Types(MessageDigest.getInstance(hashAlgo));
-		} catch (NoSuchAlgorithmException e) {
-			throw new IllegalArgumentException(e);
-		}
+		HashForSSH2Types sh = new HashForSSH2Types(hashAlgo);
 
 		km.initial_iv_client_to_server = calculateKey(sh, K, H, (byte) 'A', SessionID, blockSizeCS);
 

@@ -50,6 +50,7 @@ public class PreferenceConstants {
 	public static final String ROTATION_AUTOMATIC = "Automatic";
 
 	public static final String FULLSCREEN = "fullscreen";
+	public static final String TITLEBARHIDE = "titlebarhide";
 
 	public static final String KEYMODE = "keymode";
 
@@ -80,6 +81,10 @@ public class PreferenceConstants {
 	public static final float DEFAULT_BELL_VOLUME = 0.25f;
 
 	public static final String CONNECTION_PERSIST = "connPersist";
+
+	public static final String SHIFT_FKEYS = "shiftfkeys";
+	public static final String CTRL_FKEYS = "ctrlfkeys";
+	public static final String VOLUME_FONT = "volumefont";
 
 	/* Backup identifiers */
 	public static final String BACKUP_PREF_KEY = "prefs";

@@ -61,6 +61,7 @@ public class KexManager
 		KEX_ALGS.add("ecdh-sha2-nistp256");
 		KEX_ALGS.add("ecdh-sha2-nistp384");
 		KEX_ALGS.add("ecdh-sha2-nistp521");
+		KEX_ALGS.add("diffie-hellman-group-exchange-sha256");
 		KEX_ALGS.add("diffie-hellman-group-exchange-sha1");
 		KEX_ALGS.add("diffie-hellman-group14-sha1");
 		KEX_ALGS.add("diffie-hellman-group1-sha1");
@@ -449,20 +450,24 @@ public class KexManager
 				ignore_next_kex_packet = true;
 			}
 
-			if (kxs.np.kex_algo.equals("diffie-hellman-group-exchange-sha1"))
+			if (kxs.np.kex_algo.equals("diffie-hellman-group-exchange-sha1")
+					|| kxs.np.kex_algo.equals("diffie-hellman-group-exchange-sha256"))
 			{
 				if (kxs.dhgexParameters.getMin_group_len() == 0 || csh.server_versioncomment.matches("OpenSSH_2\\.([0-4]\\.|5\\.[0-2]).*"))
 				{
 					PacketKexDhGexRequestOld dhgexreq = new PacketKexDhGexRequestOld(kxs.dhgexParameters);
 					tm.sendKexMessage(dhgexreq.getPayload());
-
 				}
 				else
 				{
 					PacketKexDhGexRequest dhgexreq = new PacketKexDhGexRequest(kxs.dhgexParameters);
 					tm.sendKexMessage(dhgexreq.getPayload());
 				}
-				kxs.hashAlgo = "SHA1";
+				if (kxs.np.kex_algo.endsWith("sha1")) {
+					kxs.hashAlgo = "SHA1";
+				} else {
+					kxs.hashAlgo = "SHA-256";
+				}
 				kxs.state = 1;
 				return;
 			}
@@ -538,7 +543,8 @@ public class KexManager
 		if ((kxs == null) || (kxs.state == 0))
 			throw new IOException("Unexpected Kex submessage!");
 
-		if (kxs.np.kex_algo.equals("diffie-hellman-group-exchange-sha1"))
+		if (kxs.np.kex_algo.equals("diffie-hellman-group-exchange-sha1")
+				|| kxs.np.kex_algo.equals("diffie-hellman-group-exchange-sha256"))
 		{
 			if (kxs.state == 1)
 			{
@@ -579,9 +585,10 @@ public class KexManager
 
 				try
 				{
-					kxs.H = kxs.dhgx.calculateH(csh.getClientString(), csh.getServerString(),
-							kxs.localKEX.getPayload(), kxs.remoteKEX.getPayload(), dhgexrpl.getHostKey(),
-							kxs.dhgexParameters);
+					kxs.H = kxs.dhgx.calculateH(kxs.hashAlgo,
+							csh.getClientString(), csh.getServerString(),
+							kxs.localKEX.getPayload(), kxs.remoteKEX.getPayload(),
+							dhgexrpl.getHostKey(), kxs.dhgexParameters);
 				}
 				catch (IllegalArgumentException e)
 				{

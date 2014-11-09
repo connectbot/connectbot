@@ -201,9 +201,6 @@
   <string name="terminal_enable_portfoward">Aktiver portvideresending: %1$s</string>
   <string name="local_shell_unavailable">Feil! Lokalt skall er utilgjengelig på denne telefonen.</string>
   <string name="notification_text">%1$s ønsker din oppmerksomhet.</string>
-  <string name="upgrade">Ny versjon</string>
-  <string name="upgrade_pos">Ja, oppgrader</string>
-  <string name="upgrade_neg">Ikke akkurat nå</string>
   <string name="no">Nei</string>
   <string name="with_confirmation">Med bekreftelse</string>
   <string name="yes">Ja</string>

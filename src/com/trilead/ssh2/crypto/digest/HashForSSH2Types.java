@@ -16,19 +16,10 @@ public class HashForSSH2Types
 {
 	MessageDigest md;
 
-	public HashForSSH2Types(MessageDigest md)
-	{
-		this.md = md;
-	}
-
 	public HashForSSH2Types(String type)
 	{
 		try {
-			if ("SHA1".equals(type) || "MD5".equals(type)) {
-				md = MessageDigest.getInstance(type);
-			} else {
-				throw new IllegalArgumentException("Unknown algorithm " + type);
-			}
+			md = MessageDigest.getInstance(type);
 		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException("Unsupported algorithm " + type);
 		}

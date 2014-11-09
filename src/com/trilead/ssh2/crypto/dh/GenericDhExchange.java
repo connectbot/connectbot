@@ -4,8 +4,6 @@ package com.trilead.ssh2.crypto.dh;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import com.trilead.ssh2.crypto.digest.HashForSSH2Types;
 import com.trilead.ssh2.log.Logger;
@@ -71,12 +69,7 @@ public abstract class GenericDhExchange
 	public byte[] calculateH(byte[] clientversion, byte[] serverversion, byte[] clientKexPayload,
 			byte[] serverKexPayload, byte[] hostKey) throws UnsupportedEncodingException
 	{
-		HashForSSH2Types hash;
-		try {
-			hash = new HashForSSH2Types(MessageDigest.getInstance(getHashAlgo()));
-		} catch (NoSuchAlgorithmException e) {
-			throw new UnsupportedOperationException(e);
-		}
+		HashForSSH2Types hash = new HashForSSH2Types(getHashAlgo());
 
 		if (log.isEnabled())
 		{

@@ -180,9 +180,6 @@
   <string name="terminal_auth_pubkey_fail">Spodletela avtentikacijska metoda \'publickey\' z ključem \'%1$s\'</string>
   <string name="terminal_auth_fail">[Vaš gostitelj ne podpira \'password\' ali \'keyboard-interactive\' avtentikacije.]</string>
   <string name="notification_text">%1$s želi vašo pozornost.</string>
-  <string name="upgrade">Nova različica</string>
-  <string name="upgrade_pos">Da, posodobi</string>
-  <string name="upgrade_neg">Ne ta trenutek</string>
   <string name="no">Ne</string>
   <string name="with_confirmation">S potrditvijo</string>
   <string name="yes">Da</string>
