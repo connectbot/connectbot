@@ -160,7 +160,7 @@ public class ConsoleActivity extends Activity {
 			TerminalBridge requestedBridge = bound.getConnectedBridge(requestedNickname);
 
 			// If we didn't find the requested connection, try opening it
-			if (requestedNickname != null && requestedBridge == null) {
+			if (requestedBridge == null) {
 				try {
 					Log.d(TAG, String.format("We couldnt find an existing bridge with URI=%s (nickname=%s), so creating one now", requested.toString(), requestedNickname));
 					requestedBridge = bound.openConnection(requested);
