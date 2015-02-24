@@ -88,8 +88,12 @@ public class TerminalBridge implements VDUDisplay {
 	private TerminalView parent = null;
 	private final Canvas canvas = new Canvas();
 
+	private boolean connected = false;
 	private boolean disconnected = false;
 	private boolean awaitingClose = false;
+	private boolean awaitingCommand = false;
+
+	private String injectedCommand;
 
 	private boolean forcedSize = false;
 	private int columns;
@@ -360,6 +364,7 @@ public class TerminalBridge implements VDUDisplay {
 	 * authentication. If called before authenticated, it will just fail.
 	 */
 	public void onConnected() {
+		connected = true;
 		disconnected = false;
 
 		((vt320) buffer).reset();
@@ -388,6 +393,10 @@ public class TerminalBridge implements VDUDisplay {
 
 		// finally send any post-login string, if requested
 		injectString(host.getPostLogin());
+
+		if (injectedCommand != null) {
+			injectCommand(injectedCommand, awaitingCommand);
+		}
 	}
 
 	/**
@@ -403,6 +412,45 @@ public class TerminalBridge implements VDUDisplay {
 		this.disconnectListener = disconnectListener;
 	}
 
+	public void injectCommand(final String command, boolean immediate) {
+		if (command == null) return;
+
+		Log.d(TAG, String.format("Someone injects command: %s", command));
+
+		// don't do this when not connected
+		synchronized (this) {
+			if (!connected) {
+				Log.d(TAG, "Inject command deferred until connnected");
+				injectedCommand = command;
+				awaitingCommand = immediate;
+				return;
+			}
+		}
+		injectedCommand = null;
+
+		if (immediate) {
+			Log.d(TAG, "Inject command immediately");
+			// don't ask, just inject
+			injectString(String.format("%s\n", command));
+			return;
+		}
+
+		Log.d(TAG, "Inject command permission request");
+		Thread commandPromptThread = new Thread(new Runnable() {
+			public void run() {
+				Boolean result = promptHelper.requestBooleanPrompt(null,
+					manager.res.getString(R.string.prompt_allow_command, command));
+				if (result == null || !result.booleanValue()) return;
+
+				Log.d(TAG, "Inject command allowed by prompt");
+				injectString(String.format("%s\n", command));
+			}
+		});
+		commandPromptThread.setName("CommandPrompt");
+		commandPromptThread.setDaemon(true);
+		commandPromptThread.start();
+	}
+
 	/**
 	 * Force disconnection of this terminal bridge.
 	 */
@@ -413,6 +461,7 @@ public class TerminalBridge implements VDUDisplay {
 				return;
 
 			disconnected = true;
+			connected = false;
 		}
 
 		// Cancel any pending prompts.

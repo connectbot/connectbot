@@ -43,6 +43,13 @@
 		android:defaultValue="true"
 		/>
 
+	<CheckBoxPreference
+		android:key="allowIntentExtraCmd"
+		android:title="@string/pref_intent_extra_command_title"
+		android:summary="@string/pref_intent_extra_command_summary"
+		android:defaultValue="false"
+		/>
+
 	<PreferenceCategory
 		android:title="@string/pref_emulation_category">
 

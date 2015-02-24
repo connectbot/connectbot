@@ -102,6 +102,7 @@ public class ConsoleActivity extends Activity {
 	private boolean hardKeyboard = false;
 
 	protected Uri requested;
+	protected String requestedCommand;
 
 	protected ClipboardManager clipboard;
 	private RelativeLayout stringPromptGroup;
@@ -332,7 +333,9 @@ public class ConsoleActivity extends Activity {
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
 		// handle requested console from incoming intent
-		requested = getIntent().getData();
+		Intent intent = getIntent();
+		requested = intent.getData();
+		requestedCommand = intent.getStringExtra("command");
 
 		inflater = LayoutInflater.from(this);
 
@@ -920,6 +923,7 @@ public class ConsoleActivity extends Activity {
 		Log.d(TAG, "onNewIntent called");
 
 		requested = intent.getData();
+		requestedCommand = intent.getStringExtra("command");
 
 		if (requested == null) {
 			Log.e(TAG, "Got null intent data in onNewIntent()");
@@ -1177,8 +1181,21 @@ public class ConsoleActivity extends Activity {
 				flip.setDisplayedChild(requestedIndex);
 				flip.getCurrentView().findViewById(R.id.terminal_overlay)
 						.startAnimation(fade_out_delayed);
+
+				// inject command into bridge if possible
+				if (requestedCommand != null) {
+					View view = findCurrentView(R.id.console_flip);
+					if(view != null && view instanceof TerminalView) {
+						TerminalView terminal = (TerminalView)view;
+						terminal.bridge.injectCommand(
+							requestedCommand, prefs.getBoolean(
+								PreferenceConstants.INTENT_EXTRA_COMMAND, false)
+						);
+					}
+					requestedCommand = null;
+				}
 			} catch (NullPointerException npe) {
-				Log.d(TAG, "View went away when we were about to display it", npe);
+				Log.d(TAG, String.format("View went away when we were about to display it (%d)", requestedIndex), npe);
 			}
 
 			updatePromptVisible();
