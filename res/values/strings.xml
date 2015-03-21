@@ -196,6 +196,13 @@
 	<!-- Summary for the keyboard shortcuts preference -->
 	<string name="pref_keymode_summary">"Select how to use Alt for '/' and Shift for Tab"</string>
 
+	<!-- Name for the sticky modifiers preference -->
+	<string name="pref_stickymodifiers_title">"Sticky modifiers"</string>
+	<!-- Summary for the sticky modifiers preference -->
+	<string name="pref_stickymodifiers_summary">"Modifier keys remain enabled until another key is pressed"</string>
+
+	<string name="only_alt">"Only alt"</string>
+
 	<!-- Name for the camera shortcut usage preference -->
 	<string name="pref_camera_title">"Camera shortcut"</string>
 	<!-- Summary for the camera shortcut usage preference -->

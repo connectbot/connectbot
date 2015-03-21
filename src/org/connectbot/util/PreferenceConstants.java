@@ -80,6 +80,10 @@ public class PreferenceConstants {
 	public static final String SHIFT_FKEYS = "shiftfkeys";
 	public static final String CTRL_FKEYS = "ctrlfkeys";
 	public static final String VOLUME_FONT = "volumefont";
+	public static final String STICKY_MODIFIERS = "stickymodifiers";
+	public static final String YES = "yes";
+	public static final String NO = "no";
+	public static final String ALT = "alt";
 
 	/* Backup identifiers */
 	public static final String BACKUP_PREF_KEY = "prefs";

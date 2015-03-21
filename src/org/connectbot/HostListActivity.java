@@ -172,6 +172,11 @@ public class HostListActivity extends ListActivity {
 				editor.putBoolean(PreferenceConstants.CTRL_FKEYS, true);
 				editor.commit();
 			}
+			if (!prefs.contains(PreferenceConstants.STICKY_MODIFIERS)) {
+				SharedPreferences.Editor editor = prefs.edit();
+				editor.putString(PreferenceConstants.STICKY_MODIFIERS, PreferenceConstants.YES);
+				editor.commit();
+			}
 		}
 
 		// check for eula agreement

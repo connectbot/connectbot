@@ -122,6 +122,15 @@
 			/>
 
 		<ListPreference
+			android:key="stickymodifiers"
+			android:title="@string/pref_stickymodifiers_title"
+			android:summary="@string/pref_stickymodifiers_summary"
+			android:entries="@array/list_stickymodifiers"
+			android:entryValues="@array/list_stickymodifiers_values"
+			android:defaultValue="no"
+			/>
+
+		<ListPreference
 			android:key="keymode"
 			android:title="@string/pref_keymode_title"
 			android:summary="@string/pref_keymode_summary"
