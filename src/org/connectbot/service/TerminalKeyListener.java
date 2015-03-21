@@ -292,7 +292,11 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			int uchar = event.getUnicodeChar(derivedMetaState & ~HC_META_CTRL_MASK);
 			int ucharWithoutAlt = event.getUnicodeChar(
 			        derivedMetaState & ~(HC_META_ALT_MASK | HC_META_CTRL_MASK));
-			if (uchar != ucharWithoutAlt) {
+			if (uchar == 0) {
+				// Keymap doesn't know the key with alt on it, so just go with the unmodified version
+				uchar = ucharWithoutAlt;
+			}
+			else if (uchar != ucharWithoutAlt) {
 				// The alt key was used to modify the character returned; therefore, drop the alt
 				// modifier from the state so we don't end up sending alt+key.
 				derivedMetaState &= ~HC_META_ALT_MASK;
