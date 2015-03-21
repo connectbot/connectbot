@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Skjul statusbar i konsol</string>
   <string name="pref_memkeys_title">Husk nøgler i hukommelsen</string>
   <string name="pref_memkeys_summary">Gem oplåste nøgler i hukommelsen indtil baggrunds servicen er afsluttet</string>
-  <string name="pref_update_title">Opdaterings tjek</string>
-  <string name="pref_update_summary">Maksimal tid mellem check for opdateringer til ConnectBot</string>
   <string name="pref_conn_persist_title">Vedvarende forbindelser</string>
   <string name="pref_conn_persist_summary">Tving forbindelser til at være aktive i baggrunden</string>
   <string name="pref_keymode_title">Biblioteksgenveje</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Slå fra</string>
   <string name="list_pubkeyids_none">Brug ikke tasterne</string>
   <string name="list_pubkeyids_any">Anvend enhver ulåst nøgle</string>
-  <string name="list_update_daily">Dagligt</string>
-  <string name="list_update_weekly">Ugenligt</string>
-  <string name="list_update_never">Aldrig</string>
   <string name="hostpref_nickname_title">Kaldenavn</string>
   <string name="hostpref_color_title">Farvekategori</string>
   <string name="hostpref_fontsize_title">Skriftstørrelse (pt)</string>

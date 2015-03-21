@@ -85,8 +85,6 @@
   <string name="pref_volumefont_summary">字體大小可以在每個主機設定內變更</string>
   <string name="pref_memkeys_title">將金鑰儲存在記憶體</string>
   <string name="pref_memkeys_summary">保持記憶體中的金鑰是解鎖狀態，直到背景服務結束</string>
-  <string name="pref_update_title">檢查更新</string>
-  <string name="pref_update_summary">將 ConnectBot 的檢查更新頻率設為最大</string>
   <string name="pref_conn_persist_title">保持連線</string>
   <string name="pref_conn_persist_summary">在背景執行時仍保持連線狀態</string>
   <string name="pref_keymode_title">快捷鍵</string>
@@ -110,9 +108,6 @@
   <string name="list_keymode_none">停用</string>
   <string name="list_pubkeyids_none">不使用公鑰</string>
   <string name="list_pubkeyids_any">使用任何解鎖金鑰</string>
-  <string name="list_update_daily">每日</string>
-  <string name="list_update_weekly">每週</string>
-  <string name="list_update_never">永不</string>
   <string name="hostpref_nickname_title">暱稱</string>
   <string name="hostpref_color_title">顏色類型</string>
   <string name="hostpref_fontsize_title">字體大小 (pt)</string>

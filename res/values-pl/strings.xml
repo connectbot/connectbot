@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Ukryj pasek statusu podczas pracy w konsoli</string>
   <string name="pref_memkeys_title">Zapamiętaj klucze w pamięci</string>
   <string name="pref_memkeys_summary">Trzymaj odblokowane klucze w pamięci dopóki usługa się nie rozłączy</string>
-  <string name="pref_update_title">Sprawdź aktualizacje</string>
-  <string name="pref_update_summary">Ustawienie częstości sprawdzania aktualizacji</string>
   <string name="pref_conn_persist_title">Utrzymuj połącznia</string>
   <string name="pref_conn_persist_summary">Wymuś utrzymanie połączeń, gdy aplikacja działa w tle</string>
   <string name="pref_keymode_title">Skróty klawiaturowe</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Wyłącz</string>
   <string name="list_pubkeyids_none">Nie używaj kluczy</string>
   <string name="list_pubkeyids_any">Użyj dowolnego odblokowanego klucza</string>
-  <string name="list_update_daily">Dziennie</string>
-  <string name="list_update_weekly">Tygodniowo</string>
-  <string name="list_update_never">Nigdy</string>
   <string name="hostpref_nickname_title">Nazwa skrócona</string>
   <string name="hostpref_color_title">Kolor kategorii</string>
   <string name="hostpref_fontsize_title">Rozmiar czcionki</string>

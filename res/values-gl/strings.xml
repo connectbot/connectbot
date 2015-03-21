@@ -72,8 +72,6 @@
   <string name="pref_fullscreen_summary">Esconder a barra de estado cando estea na consola</string>
   <string name="pref_memkeys_title">Recordar chaves en memoria</string>
   <string name="pref_memkeys_summary">Manter chaves desbloqueadas en memoria ata que o servicio de backend teña terminado</string>
-  <string name="pref_update_title">Comprobar actualizacións</string>
-  <string name="pref_update_summary">Establecer a frecuencia máxima para comprobar as actualizacións de ConnectBot</string>
   <string name="pref_conn_persist_title">Conexións persistentes</string>
   <string name="pref_conn_persist_summary">Manter conexións activas en segundo plano</string>
   <string name="pref_keymode_title">Atallos de teclado para directorios</string>
@@ -91,9 +89,6 @@
   <string name="list_keymode_none">Deshabilitar</string>
   <string name="list_pubkeyids_none">Non usar chaves</string>
   <string name="list_pubkeyids_any">Usar calquera chave desbloqueada</string>
-  <string name="list_update_daily">Diariamente</string>
-  <string name="list_update_weekly">Semanalmente</string>
-  <string name="list_update_never">Nunca</string>
   <string name="hostpref_fontsize_title">Tamaño da fonte (pt)</string>
   <string name="hostpref_postlogin_summary">Comandos a executar no servidor remoto unha vez autenticado</string>
   <string name="hostpref_compression_title">Compresión</string>

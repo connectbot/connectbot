@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Göm status medan konsol visas</string>
   <string name="pref_memkeys_title">Kom ihåg nycklar</string>
   <string name="pref_memkeys_summary">Behåll olåsta nycklar i minnet tills bakände-tjänst avslutas</string>
-  <string name="pref_update_title">Uppdateringskontroll</string>
-  <string name="pref_update_summary">Intervall för att söka efter ConnectBot-uppdateringar</string>
   <string name="pref_conn_persist_title">Kvarstående anslutningar</string>
   <string name="pref_conn_persist_summary">Tvinga anslutningar att fortsätta i bakgrunden</string>
   <string name="pref_keymode_title">Genvägar för katalog</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Avaktivera</string>
   <string name="list_pubkeyids_none">Använd inte knapparna</string>
   <string name="list_pubkeyids_any">Använd valfri olåst nyckel</string>
-  <string name="list_update_daily">Varje dag</string>
-  <string name="list_update_weekly">Varje vecka</string>
-  <string name="list_update_never">Aldrig</string>
   <string name="hostpref_nickname_title">Smeknamn</string>
   <string name="hostpref_color_title">Färgkategori</string>
   <string name="hostpref_fontsize_title">Teckenstorlek</string>

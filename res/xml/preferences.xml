@@ -27,15 +27,6 @@
 		android:defaultValue="true"
 		/>
 
-	<ListPreference
-		android:key="update"
-		android:title="@string/pref_update_title"
-		android:summary="@string/pref_update_summary"
-		android:entries="@array/list_update"
-		android:entryValues="@array/list_update_values"
-		android:defaultValue="Daily"
-		/>
-
 	<CheckBoxPreference
 		android:key="connPersist"
 		android:title="@string/pref_conn_persist_title"

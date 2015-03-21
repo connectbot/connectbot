@@ -183,11 +183,6 @@
 	<!-- Summary for the memorize keys preference -->
 	<string name="pref_memkeys_summary">"Keep unlocked keys in memory until backend service is terminated"</string>
 
-	<!-- Name for the update check preference -->
-	<string name="pref_update_title">"Update check"</string>
-	<!-- Summary for the update check preference -->
-	<string name="pref_update_summary">"Set the maximum frequency to check for ConnectBot updates"</string>
-
 	<!-- Name for the preference that forces the service to stay running in the background.-->
 	<string name="pref_conn_persist_title">"Persist connections"</string>
 	<!-- Summary for the preference that forces the service to stay running in the background. -->
@@ -246,13 +241,6 @@
 	<string name="list_pubkeyids_none">"Do not use keys"</string>
 	<!-- Preference to use any pubkey to authenticate to this host. -->
 	<string name="list_pubkeyids_any">"Use any unlocked key"</string>
-
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_daily">"Daily"</string>
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_weekly">"Weekly"</string>
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_never">"Never"</string>
 
 	<!-- Host nickname field preference title -->
 	<string name="hostpref_nickname_title">"Nickname"</string>

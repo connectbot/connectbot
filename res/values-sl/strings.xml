@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Skrij vrstico stanja, ko v konzoli</string>
   <string name="pref_memkeys_title">Zapomni ključe v spominu</string>
   <string name="pref_memkeys_summary">Hrani odklenjene ključe v spomnu dokler storitev v zaledju ni zaključena</string>
-  <string name="pref_update_title">Pregled posodobitev</string>
-  <string name="pref_update_summary">Nastavite največjo pogostost za preverjanje posodobitev za ConnectBota</string>
   <string name="pref_conn_persist_title">Obstojne povezave</string>
   <string name="pref_conn_persist_summary">Prisili povezave, da ostanejo povezane v ozadju</string>
   <string name="pref_keymode_title">Bližnjice mape</string>
@@ -101,9 +99,6 @@
   <string name="list_keymode_none">Onemogoči</string>
   <string name="list_pubkeyids_none">Ne uporabljaj ključev</string>
   <string name="list_pubkeyids_any">Uporabi kateregakoli odklenjenega ključa</string>
-  <string name="list_update_daily">Dnevno</string>
-  <string name="list_update_weekly">Tedensko</string>
-  <string name="list_update_never">Nikoli</string>
   <string name="hostpref_nickname_title">Vzdevek</string>
   <string name="hostpref_color_title">Barvna kategorija</string>
   <string name="hostpref_fontsize_title">Velikost pisave (pt)</string>

@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Konsolda iken durum çubuğunu gizle</string>
   <string name="pref_memkeys_title">Anahtarları bellekte tut</string>
   <string name="pref_memkeys_summary">Kilidi açılmış anahtarları arkadaki hizmetler sonlanana kadar bellekte tut</string>
-  <string name="pref_update_title">Güncellemelere bak</string>
-  <string name="pref_update_summary">ConnectBot güncellemelerine bakmak için en fazla sıklığı ayarla</string>
   <string name="pref_conn_persist_title">Bağlantıları sürekli tut</string>
   <string name="pref_conn_persist_summary">Arkaplanda iken bağlantıları bağlı tutmaya zorla</string>
   <string name="pref_keymode_title">Dizin kısayolları</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Devre Dışı Bırak</string>
   <string name="list_pubkeyids_none">Tuşları kullanma</string>
   <string name="list_pubkeyids_any">Herhangi bir tuşu kullan</string>
-  <string name="list_update_daily">Günlük</string>
-  <string name="list_update_weekly">Haftalık</string>
-  <string name="list_update_never">Asla</string>
   <string name="hostpref_nickname_title">Rumuz</string>
   <string name="hostpref_color_title">Renk kategorisi</string>
   <string name="hostpref_fontsize_title">Yazıtipi boyutu (pt)</string>
