@@ -34,6 +34,13 @@
 		android:defaultValue="true"
 		/>
 
+	<CheckBoxPreference
+		android:key="wifilock"
+		android:title="@string/pref_wifilock_title"
+		android:summary="@string/pref_wifilock_summary"
+		android:defaultValue="true"
+		/>
+
 	<PreferenceCategory
 		android:title="@string/pref_emulation_category">
 
@@ -83,6 +90,24 @@
 			/>
 
 		<CheckBoxPreference
+			android:key="volumefont"
+			android:title="@string/pref_volumefont_title"
+			android:summary="@string/pref_volumefont_summary"
+			android:defaultValue="true"
+			/>
+
+		<CheckBoxPreference
+			android:key="keepalive"
+			android:title="@string/pref_keepalive_title"
+			android:summary="@string/pref_keepalive_summary"
+			android:defaultValue="true"
+			/>
+	</PreferenceCategory>
+
+	<PreferenceCategory
+		android:title="@string/pref_keyboard_category">
+
+		<CheckBoxPreference
 			android:key="shiftfkeys"
 			android:title="@string/pref_shiftfkeys_title"
 			android:summary="@string/pref_shiftfkeys_summary"
@@ -94,13 +119,6 @@
 			android:title="@string/pref_ctrlfkeys_title"
 			android:summary="@string/pref_ctrlfkeys_summary"
 			android:defaultValue="false"
-			/>
-
-		<CheckBoxPreference
-			android:key="volumefont"
-			android:title="@string/pref_volumefont_title"
-			android:summary="@string/pref_volumefont_summary"
-			android:defaultValue="true"
 			/>
 
 		<ListPreference
@@ -119,20 +137,6 @@
 			android:entries="@array/list_camera"
 			android:entryValues="@array/list_camera_values"
 			android:defaultValue="Ctrl+A then Space"
-			/>
-
-		<CheckBoxPreference
-			android:key="keepalive"
-			android:title="@string/pref_keepalive_title"
-			android:summary="@string/pref_keepalive_summary"
-			android:defaultValue="true"
-			/>
-
-		<CheckBoxPreference
-			android:key="wifilock"
-			android:title="@string/pref_wifilock_title"
-			android:summary="@string/pref_wifilock_summary"
-			android:defaultValue="true"
 			/>
 
 		<CheckBoxPreference

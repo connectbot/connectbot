@@ -163,6 +163,9 @@
 	<!-- Summary for the full screen preference -->
 	<string name="pref_fullscreen_summary">"Hide status bar while in console"</string>
 
+	<!-- The category title for keyboard preferences -->
+	<string name="pref_keyboard_category">"Keyboard"</string>
+
 	<!-- Name for the shifted numbers are f-keys preference -->
 	<string name="pref_shiftfkeys_title">"Shift+num are F-keys"</string>
 	<!-- Summary for the shifted numbers are f-keys preference -->
