@@ -136,7 +136,7 @@
 			android:summary="@string/pref_keymode_summary"
 			android:entries="@array/list_keymode"
 			android:entryValues="@array/list_keymode_values"
-			android:defaultValue="Use right-side keys"
+			android:defaultValue="none"
 			/>
 
 		<ListPreference

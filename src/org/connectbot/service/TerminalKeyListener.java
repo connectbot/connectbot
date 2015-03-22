@@ -595,7 +595,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	}
 
 	private void updatePrefs() {
-		keymode = prefs.getString(PreferenceConstants.KEYMODE, PreferenceConstants.KEYMODE_RIGHT);
+		keymode = prefs.getString(PreferenceConstants.KEYMODE, PreferenceConstants.KEYMODE_NONE);
 		shiftedNumbersAreFKeysOnHardKeyboard =
 				prefs.getBoolean(PreferenceConstants.SHIFT_FKEYS, false);
 		controlNumbersAreFKeysOnSoftKeyboard =
