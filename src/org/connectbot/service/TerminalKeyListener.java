@@ -66,6 +66,12 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	private final static int KEYCODE_ESCAPE = 111;
 	private final static int KEYCODE_CTRL_LEFT = 113;
 	private final static int KEYCODE_CTRL_RIGHT = 114;
+	private final static int KEYCODE_INSERT = 124;
+	private final static int KEYCODE_FORWARD_DEL = 112;
+	private final static int KEYCODE_MOVE_HOME = 122;
+	private final static int KEYCODE_MOVE_END = 123;
+	private final static int KEYCODE_PAGE_DOWN = 93;
+	private final static int KEYCODE_PAGE_UP = 92;
 	private final static int HC_META_CTRL_ON = 0x1000;
 	private final static int HC_META_CTRL_LEFT_ON = 0x2000;
 	private final static int HC_META_CTRL_RIGHT_ON = 0x4000;
@@ -415,6 +421,31 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 							getStateForBuffer());
 					bridge.tryKeyVibrate();
 				}
+				return true;
+
+			case KEYCODE_INSERT:
+				((vt320) buffer).keyPressed(vt320.KEY_INSERT, ' ',
+						getStateForBuffer());
+				return true;
+			case KEYCODE_FORWARD_DEL:
+				((vt320) buffer).keyPressed(vt320.KEY_DELETE, ' ',
+						getStateForBuffer());
+				return true;
+			case KEYCODE_MOVE_HOME:
+				((vt320) buffer).keyPressed(vt320.KEY_HOME, ' ',
+						getStateForBuffer());
+				return true;
+			case KEYCODE_MOVE_END:
+				((vt320) buffer).keyPressed(vt320.KEY_END, ' ',
+						getStateForBuffer());
+				return true;
+			case KEYCODE_PAGE_UP:
+				((vt320) buffer).keyPressed(vt320.KEY_PAGE_UP, ' ',
+						getStateForBuffer());
+				return true;
+			case KEYCODE_PAGE_DOWN:
+				((vt320) buffer).keyPressed(vt320.KEY_PAGE_DOWN, ' ',
+						getStateForBuffer());
 				return true;
 			}
 
