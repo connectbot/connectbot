@@ -601,7 +601,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				prefs.getBoolean(PreferenceConstants.CTRL_FKEYS, false);
 		volumeKeysChangeFontSize = prefs.getBoolean(PreferenceConstants.VOLUME_FONT, true);
 		String stickyModifiers = prefs.getString(PreferenceConstants.STICKY_MODIFIERS,
-		                                         PreferenceConstants.NO);
+				PreferenceConstants.NO);
 		if (PreferenceConstants.ALT.equals(stickyModifiers)) {
 			stickyMetas = OUR_ALT_ON;
 		} else if (PreferenceConstants.YES.equals(stickyModifiers)) {
