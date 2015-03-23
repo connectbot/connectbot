@@ -8,6 +8,7 @@ env:
 cache:
   directories:
     - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/dists/
     - $HOME/.cache/ndk
 
 before_install:
