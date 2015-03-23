@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Ocultar a barra de estatus no modo terminal</string>
   <string name="pref_memkeys_title">Guardar as chaves em memória</string>
   <string name="pref_memkeys_summary">Manter chaves desbloqueadas na memória até que o serviço seja terminado</string>
-  <string name="pref_update_title">Procurar por atualizações</string>
-  <string name="pref_update_summary">Configurar frequencia para checar atualizações do ConnectBot</string>
   <string name="pref_conn_persist_title">Conexões persistentes</string>
   <string name="pref_conn_persist_summary">Forçar as conexões para que continuem conectadas mesmo em segundo plano</string>
   <string name="pref_keymode_title">Teclas de atalho</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Desabilitar</string>
   <string name="list_pubkeyids_none">Não usar chaves</string>
   <string name="list_pubkeyids_any">Usar qualquer chave pública</string>
-  <string name="list_update_daily">Diariamente</string>
-  <string name="list_update_weekly">Semanalmente</string>
-  <string name="list_update_never">Nunca</string>
   <string name="hostpref_nickname_title">Apelido</string>
   <string name="hostpref_color_title">Categoria de cor</string>
   <string name="hostpref_fontsize_title">Tamanho da fonte (pontos)</string>

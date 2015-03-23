@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Cacher la barre de notifications lorsque la console est active</string>
   <string name="pref_memkeys_title">Garder les clés en mémoire</string>
   <string name="pref_memkeys_summary">Garder les clés débloquées en mémoire tant que le service tourne en arrière-plan</string>
-  <string name="pref_update_title">Vérifier les mises à jour</string>
-  <string name="pref_update_summary">Régler la fréquence de vérification pour les mises à jour de ConnectBot</string>
   <string name="pref_conn_persist_title">Connexions persistantes</string>
   <string name="pref_conn_persist_summary">Forcer les connexions à rester connectées en arrière-plan</string>
   <string name="pref_keymode_title">Raccourcis de navigation</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Désactivé</string>
   <string name="list_pubkeyids_none">Ne pas utiliser les clés publiques</string>
   <string name="list_pubkeyids_any">Utiliser une clé pour l\'authentification</string>
-  <string name="list_update_daily">Journalière</string>
-  <string name="list_update_weekly">Hebdomadaire</string>
-  <string name="list_update_never">Jamais</string>
   <string name="hostpref_nickname_title">Surnom</string>
   <string name="hostpref_color_title">Catégorie de couleur</string>
   <string name="hostpref_fontsize_title">Taille de police (pt)</string>

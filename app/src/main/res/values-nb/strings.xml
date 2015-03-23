@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Gjem statuslinje mens du er i konsoll</string>
   <string name="pref_memkeys_title">Lagre nøkler</string>
   <string name="pref_memkeys_summary">Husk opplåste nøkler helt til programmet avsluttes</string>
-  <string name="pref_update_title">Se etter oppdateringer</string>
-  <string name="pref_update_summary">Angi hyppigheten for å se etter oppdateringer til ConnectBot</string>
   <string name="pref_conn_persist_title">Oppretthold forbindelser</string>
   <string name="pref_conn_persist_summary">Oppretthold forbindelser selv når programmet kjører i bakgrunnen</string>
   <string name="pref_keymode_title">Hurtigtaster for mapper</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Deaktiver</string>
   <string name="list_pubkeyids_none">Ikke bruk nøkler</string>
   <string name="list_pubkeyids_any">Bruk en vilkårlig ulåst tast</string>
-  <string name="list_update_daily">Daglig</string>
-  <string name="list_update_weekly">Ukentlig</string>
-  <string name="list_update_never">Aldri</string>
   <string name="hostpref_nickname_title">Kallenavn</string>
   <string name="hostpref_color_title">Fargeinndeling</string>
   <string name="hostpref_fontsize_title">Skriftstørrelse (pt)</string>

@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">להסתיר את שורת המצב בעת השימוש במסוף</string>
   <string name="pref_memkeys_title">לשמור את המפתחות בזיכרון</string>
   <string name="pref_memkeys_summary">להשאיר את המפתחות לאחר השחרור בזיכרון עד ששירות המנגנון מושבת</string>
-  <string name="pref_update_title">בדיקת עדכון</string>
-  <string name="pref_update_summary">הגדרת התדירות המרבית לבדיקת עדכונים של ConnectBot</string>
   <string name="pref_conn_persist_title">חיבורים עיקשים</string>
   <string name="pref_conn_persist_summary">לשמור על החיבורים פעילים ברקע</string>
   <string name="pref_keymode_title">קיצורי ספריות</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">נטרול</string>
   <string name="list_pubkeyids_none">לא להשתמש במפתחות</string>
   <string name="list_pubkeyids_any">שימוש במפתח כלשהו שאינו נעול</string>
-  <string name="list_update_daily">יומי</string>
-  <string name="list_update_weekly">שבועי</string>
-  <string name="list_update_never">לעולם לא</string>
   <string name="hostpref_nickname_title">כינוי</string>
   <string name="hostpref_color_title">קטגוריית הצבע</string>
   <string name="hostpref_fontsize_title">גודל הגופן (נק׳)</string>

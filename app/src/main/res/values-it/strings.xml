@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Nascondi la barra di stato in console</string>
   <string name="pref_memkeys_title">Mantieni chiavi in memoria</string>
   <string name="pref_memkeys_summary">Mantiene le chiavi in memoria finché il servizio non viene terminato</string>
-  <string name="pref_update_title">Controlla aggiornamenti</string>
-  <string name="pref_update_summary">Imposta la frequenza massima per il controllo degli aggiornamenti</string>
   <string name="pref_conn_persist_title">Connessioni permanenti</string>
   <string name="pref_conn_persist_summary">Forza connessioni a rimanere collegate in sottofondo</string>
   <string name="pref_keymode_title">Scorciatoie directory</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Disabilita</string>
   <string name="list_pubkeyids_none">Non usare chiavi</string>
   <string name="list_pubkeyids_any">Usa qualsiasi chiave sbloccata</string>
-  <string name="list_update_daily">Ogni giorno</string>
-  <string name="list_update_weekly">Ogni settimana</string>
-  <string name="list_update_never">Mai</string>
   <string name="hostpref_nickname_title">Soprannome</string>
   <string name="hostpref_color_title">Categoria colore</string>
   <string name="hostpref_fontsize_title">Dimensione caratteri (pt)</string>

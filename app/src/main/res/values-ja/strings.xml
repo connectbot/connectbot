@@ -76,8 +76,6 @@
   <string name="pref_fullscreen_summary">ステータスバーを隠蔽しコンソールとして利用</string>
   <string name="pref_memkeys_title">メモリに鍵を保持する</string>
   <string name="pref_memkeys_summary">バックエンドのサービスが終了しない限り、アンロックした鍵をメモリに保持します</string>
-  <string name="pref_update_title">更新を確認</string>
-  <string name="pref_update_summary">ConnectBotの更新をチェックする頻度を設定します</string>
   <string name="pref_conn_persist_title">持続的接続</string>
   <string name="pref_conn_persist_summary">バックグラウンドでの実行中に接続の持続を強制する</string>
   <string name="pref_keymode_title">ディレクトリのショートカット</string>
@@ -101,9 +99,6 @@
   <string name="list_keymode_none">無効</string>
   <string name="list_pubkeyids_none">公開鍵を使わない</string>
   <string name="list_pubkeyids_any">アンロックされた鍵のいずれかを使う</string>
-  <string name="list_update_daily">毎日</string>
-  <string name="list_update_weekly">毎週</string>
-  <string name="list_update_never">しない</string>
   <string name="hostpref_nickname_title">ニックネーム</string>
   <string name="hostpref_color_title">色の系統</string>
   <string name="hostpref_fontsize_title">フォントのサイズ (pt)</string>

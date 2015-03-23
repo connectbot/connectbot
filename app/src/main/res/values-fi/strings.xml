@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Piilota ilmoitusalue konsolikäytössä</string>
   <string name="pref_memkeys_title">Pidä avaimet muistissa</string>
   <string name="pref_memkeys_summary">Pitää avatut avaimet muistissa kunnes taustapalvelu suljetaan</string>
-  <string name="pref_update_title">Päivitysten tarkistus</string>
-  <string name="pref_update_summary">Kuinka usein ConnectBot enintään tarkistaa päivitykset</string>
   <string name="pref_conn_persist_title">Ylläpidä yhteys</string>
   <string name="pref_conn_persist_summary">Pakottaa yhteyden pysymään aktiivisena ohjelman ollessa taustalla</string>
   <string name="pref_keymode_title">Pikanäppäimet</string>
@@ -103,9 +101,6 @@
   <string name="list_keymode_none">Pois käytöstä</string>
   <string name="list_pubkeyids_none">Älä käytä avaimia</string>
   <string name="list_pubkeyids_any">Käytä mitä tahansa avattua avainta</string>
-  <string name="list_update_daily">Päivittäin</string>
-  <string name="list_update_weekly">Viikoittain</string>
-  <string name="list_update_never">Ei koskaan</string>
   <string name="hostpref_nickname_title">Lempinimi</string>
   <string name="hostpref_color_title">Väri</string>
   <string name="hostpref_fontsize_title">Kirjasimen koko (pistettä)</string>

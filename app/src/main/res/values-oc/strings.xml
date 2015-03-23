@@ -43,13 +43,9 @@
   <string name="alert_disconnect_msg">Connexion perduda</string>
   <string name="pref_ui_category">Interfàcia d\'utilizaire</string>
   <string name="pref_fullscreen_title">Ecran complet</string>
-  <string name="pref_update_title">Verificar las mesas a jorn</string>
   <string name="pref_conn_persist_title">Connexions persistentas</string>
   <string name="pref_keymode_title">Acorchis de navigacion</string>
   <string name="list_keymode_none">Desactivar</string>
-  <string name="list_update_daily">Cada jorn</string>
-  <string name="list_update_weekly">Cada setmana</string>
-  <string name="list_update_never">Pas jamai</string>
   <string name="hostpref_nickname_title">Escais</string>
   <string name="hostpref_encoding_title">Encodatge</string>
   <string name="hostpref_connection_category">Paramètre de connexion</string>

@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Sakrij statusnu liniju u konzoli</string>
   <string name="pref_memkeys_title">Zapamti ključeve u memoriji</string>
   <string name="pref_memkeys_summary">Čuvaj otključane ključeve u memoriji dok se ne zatvori pozadinski servis</string>
-  <string name="pref_update_title">Provjera nadogradnji</string>
-  <string name="pref_update_summary">Odredi učestalost za provjeru ConnectBot nadogradnji</string>
   <string name="pref_conn_persist_title">Održavaj konekcije</string>
   <string name="pref_conn_persist_summary">Prisili konekcije da ostanu spojene u pozadini</string>
   <string name="pref_keymode_title">Prečaci direktorija</string>

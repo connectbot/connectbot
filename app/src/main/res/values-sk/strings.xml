@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Skryť stavový riadok, keď je zobrazená konzola</string>
   <string name="pref_memkeys_title">Zapamätať kľúče v pamäti</string>
   <string name="pref_memkeys_summary">Ponechať odomknuté kľúče v pamäti pokiaľ nie je ukončená služba na pozadí.</string>
-  <string name="pref_update_title">Kontrolovať aktualizácie</string>
-  <string name="pref_update_summary">Nastaviť maximálnu frekvenciu kontroly aktualizácií pre ConnectBot</string>
   <string name="pref_conn_persist_title">Perzistentné pripojenia</string>
   <string name="pref_conn_persist_summary">Vynútiť spojenie aj v pozadí</string>
   <string name="pref_keymode_title">Skratky adresárov</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Vypnúť</string>
   <string name="list_pubkeyids_none">Nepoužívať kľúče</string>
   <string name="list_pubkeyids_any">Použiť ktorýkoľvek odomknutý kľúč</string>
-  <string name="list_update_daily">Denne</string>
-  <string name="list_update_weekly">Týždenne</string>
-  <string name="list_update_never">Nikdy</string>
   <string name="hostpref_nickname_title">Prezývka</string>
   <string name="hostpref_color_title">Farebná kategória</string>
   <string name="hostpref_fontsize_title">Veľkosť písma (bodov)</string>

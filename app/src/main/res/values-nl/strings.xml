@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Verberg status balk terwijl in console</string>
   <string name="pref_memkeys_title">Onthoud sleutels in geheugen</string>
   <string name="pref_memkeys_summary">Houd ontgrendelde sleutels in geheugen tot achtergrond service is gestopt</string>
-  <string name="pref_update_title">Update controle</string>
-  <string name="pref_update_summary">Stel de maximale frequentie in om te controleren voor ConnectBot updates</string>
   <string name="pref_conn_persist_title">Behoud verbindingen</string>
   <string name="pref_conn_persist_summary">Forceer dat de verbindingen actief blijven op de achtergrond</string>
   <string name="pref_keymode_title">Folder snelkoppelingen</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Schakel uit</string>
   <string name="list_pubkeyids_none">Gebruik sleutels niet</string>
   <string name="list_pubkeyids_any">Gebruik een willekeurige ontgrendelde sleutel</string>
-  <string name="list_update_daily">Dagelijks</string>
-  <string name="list_update_weekly">Wekelijks</string>
-  <string name="list_update_never">Nooit</string>
   <string name="hostpref_nickname_title">Bijnaam</string>
   <string name="hostpref_color_title">Kleur catogorie</string>
   <string name="hostpref_fontsize_title">Lettergrootte</string>

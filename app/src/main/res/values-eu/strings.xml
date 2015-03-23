@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Ezkutatu egoera-barra kontsola erabiltzean</string>
   <string name="pref_memkeys_title">Gorde gakoak memorian</string>
   <string name="pref_memkeys_summary">Gogoratu desblokeatutako gakoak memorian zerbitzua amaitu arte</string>
-  <string name="pref_update_title">Eguneraketak begiratu</string>
-  <string name="pref_update_summary">ConnectBot-en eguneraketarik dagoen begiratzeko maiztasun maximoa finkatu</string>
   <string name="pref_conn_persist_title">Konexio iraunkorrak</string>
   <string name="pref_conn_persist_summary">Behartu konexioak aktibo mantentzera atzeko planoko daudenean</string>
   <string name="pref_keymode_title">Direktorien laster-teklak</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Desgaitu</string>
   <string name="list_pubkeyids_none">Ez erabili gakorik</string>
   <string name="list_pubkeyids_any">Erabili desblokeatutako edozein gako</string>
-  <string name="list_update_daily">Egunero</string>
-  <string name="list_update_weekly">Astero</string>
-  <string name="list_update_never">Inoiz ez</string>
   <string name="hostpref_nickname_title">Goitizena</string>
   <string name="hostpref_color_title">Kolore kategoria</string>
   <string name="hostpref_fontsize_title">Letra-tamaina (pt)</string>

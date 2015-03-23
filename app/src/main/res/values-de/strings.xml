@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Statuszeile in der Konsole verbergen</string>
   <string name="pref_memkeys_title">Schlüssel im Speicher behalten</string>
   <string name="pref_memkeys_summary">Entsperrte Schlüssel im Speicher halten, bis der Hintergrunddienst beendet wurde</string>
-  <string name="pref_update_title">Aktualisierungen suchen</string>
-  <string name="pref_update_summary">Die maximale Frequenz einstellen, mit der nach ConnectBot Aktualisierungen gesucht werden soll</string>
   <string name="pref_conn_persist_title">Persistente Verbindungen</string>
   <string name="pref_conn_persist_summary">Erhalte Verbindungen auch im Hintergrund</string>
   <string name="pref_keymode_title">Verzeichniskürzel</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Ausschalten</string>
   <string name="list_pubkeyids_none">Keine Schlüssel verwenden</string>
   <string name="list_pubkeyids_any">Beliebigen entsperrten Schlüssel verwenden</string>
-  <string name="list_update_daily">Täglich</string>
-  <string name="list_update_weekly">Wöchentlich</string>
-  <string name="list_update_never">Niemals</string>
   <string name="hostpref_nickname_title">Nutzername</string>
   <string name="hostpref_color_title">Farbkategorie</string>
   <string name="hostpref_fontsize_title">Fontgröße (pt)</string>

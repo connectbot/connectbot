@@ -73,8 +73,6 @@
   <string name="pref_fullscreen_summary">콘솔일 때 상태 표시줄을 숨김</string>
   <string name="pref_memkeys_title">메모리에 키를 기억</string>
   <string name="pref_memkeys_summary">백엔드 서비스가 종료되기 전까지 잠금이 풀린 키들을 메모리에 유지합니다</string>
-  <string name="pref_update_title">업데이트 검사</string>
-  <string name="pref_update_summary">ConnectBot 업데이트 확인 주기 설정</string>
   <string name="pref_conn_persist_title">접속 유지</string>
   <string name="pref_conn_persist_summary">백그라운드 동안에도 강제로 연결된 상태 유지</string>
   <string name="pref_keymode_title">디렉터리 바로 가기</string>
@@ -97,9 +95,6 @@
   <string name="list_keymode_none">사용 안 함</string>
   <string name="list_pubkeyids_none">키 사용 안함</string>
   <string name="list_pubkeyids_any">잠금키 사용</string>
-  <string name="list_update_daily">매일</string>
-  <string name="list_update_weekly">매주</string>
-  <string name="list_update_never">하지 않음</string>
   <string name="hostpref_nickname_title">닉네임</string>
   <string name="hostpref_color_title">색상 카테고리</string>
   <string name="hostpref_fontsize_title">글꼴 크기 (pt)</string>

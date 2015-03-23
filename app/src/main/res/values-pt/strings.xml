@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Esconder a barra de notificação quando estiver na consola</string>
   <string name="pref_memkeys_title">Lembrar chaves em memoria</string>
   <string name="pref_memkeys_summary">Manter chaves desbloqueadas em memória até ao serviço de fundo terminar</string>
-  <string name="pref_update_title">Verificar actualizações</string>
-  <string name="pref_update_summary">Definir a frequência máxima para verificar actualizações do ConnectBot</string>
   <string name="pref_conn_persist_title">Persistir ligações</string>
   <string name="pref_conn_persist_summary">Forçar ligações a ficarem ligadas quando em segundo plano</string>
   <string name="pref_keymode_title">Atalhos de directoria</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Desactivar</string>
   <string name="list_pubkeyids_none">Não usar teclas</string>
   <string name="list_pubkeyids_any">Usar qualquer tecla não bloqueada</string>
-  <string name="list_update_daily">Diariamente</string>
-  <string name="list_update_weekly">Semanalmente</string>
-  <string name="list_update_never">Nunca</string>
   <string name="hostpref_nickname_title">Alcunha</string>
   <string name="hostpref_color_title">Categoria de cor</string>
   <string name="hostpref_fontsize_title">Tamanho da fonte (pt)</string>

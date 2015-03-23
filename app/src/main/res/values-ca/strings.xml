@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Amaga la barra d\'estat en consola</string>
   <string name="pref_memkeys_title">Recorda les claus en memòria</string>
   <string name="pref_memkeys_summary">Manté les claus descarregadesen memòria fins que el servei finalitzi</string>
-  <string name="pref_update_title">Comprova actualització</string>
-  <string name="pref_update_summary">Escull la freqüència màxima de comprovació d\'actualitzacions de ConnectBot</string>
   <string name="pref_conn_persist_title">Connexions persistents</string>
   <string name="pref_conn_persist_summary">Manté les connexions mentre l\'aplicació és en segon pla</string>
   <string name="pref_keymode_title">Drecera de carpetes</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Deshabilita</string>
   <string name="list_pubkeyids_none">No usis claus</string>
   <string name="list_pubkeyids_any">Fes servir qualsevol clau desbloquejada</string>
-  <string name="list_update_daily">Diàriament</string>
-  <string name="list_update_weekly">Setmanalment</string>
-  <string name="list_update_never">Mai</string>
   <string name="hostpref_nickname_title">Sobrenom</string>
   <string name="hostpref_color_title">Color de la categoria</string>
   <string name="hostpref_fontsize_title">Mida de la lletra (pt)</string>

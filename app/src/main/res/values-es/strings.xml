@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Esconder barra de estatus cuando este en consola</string>
   <string name="pref_memkeys_title">Recordar claves en memoria</string>
   <string name="pref_memkeys_summary">Recordar claves en memoria hasta que el servicio en segundo plano termine</string>
-  <string name="pref_update_title">Revisar por actualizaciones</string>
-  <string name="pref_update_summary">Establecer la frequencia maxima para revisar actualizaciones de ConnectBot</string>
   <string name="pref_conn_persist_title">Conexiones persistentes</string>
   <string name="pref_conn_persist_summary">Mantener conexiones activas en segundo plano</string>
   <string name="pref_keymode_title">Secuencia de teclas para directorios</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Desactivar</string>
   <string name="list_pubkeyids_none">No usar teclas</string>
   <string name="list_pubkeyids_any">Utilizar cualquier clave desbloqueada</string>
-  <string name="list_update_daily">Diariamente</string>
-  <string name="list_update_weekly">Semanalmente</string>
-  <string name="list_update_never">Nunca</string>
   <string name="hostpref_nickname_title">Apodo</string>
   <string name="hostpref_color_title">Categoria de colores</string>
   <string name="hostpref_fontsize_title">Tamaño de la fuente (pt)</string>
