@@ -26,7 +26,6 @@ import org.connectbot.service.FontSizeChangedListener;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -53,7 +52,7 @@ import de.mud.terminal.VDUBuffer;
 
 /**
  * User interface {@link View} for showing a TerminalBridge in an
- * {@link Activity}. Handles drawing bitmap updates and passing keystrokes down
+ * {@link android.app.Activity}. Handles drawing bitmap updates and passing keystrokes down
  * to terminal.
  *
  * @author jsharkey

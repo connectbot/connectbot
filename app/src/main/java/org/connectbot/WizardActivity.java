@@ -20,7 +20,6 @@ package org.connectbot;
 import org.connectbot.util.HelpTopicView;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
