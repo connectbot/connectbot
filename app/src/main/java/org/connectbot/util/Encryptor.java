@@ -59,8 +59,8 @@ public final class Encryptor
 	/**
 	* Private constructor that should never be called.
 	*/
-	private Encryptor()
-	{}
+	private Encryptor() {
+	}
 
 
 	/**

@@ -546,7 +546,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 					try {
 						known.addHostkey(new String[] { String.format("%s:%d", hostname, port) }, hostkeyalgo, hostkey);
-					} catch(Exception e) {
+					} catch (Exception e) {
 						Log.e(TAG, "Problem while adding a known host from database", e);
 					}
 				}

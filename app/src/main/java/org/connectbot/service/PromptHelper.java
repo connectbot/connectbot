@@ -122,8 +122,8 @@ public class PromptHelper {
 	public String requestStringPrompt(String instructions, String hint) {
 		String value = null;
 		try {
-			value = (String)this.requestPrompt(instructions, hint, String.class);
-		} catch(Exception e) {
+			value = (String) requestPrompt(instructions, hint, String.class);
+		} catch (Exception e) {
 		}
 		return value;
 	}
@@ -137,8 +137,8 @@ public class PromptHelper {
 	public Boolean requestBooleanPrompt(String instructions, String hint) {
 		Boolean value = null;
 		try {
-			value = (Boolean)this.requestPrompt(instructions, hint, Boolean.class);
-		} catch(Exception e) {
+			value = (Boolean) requestPrompt(instructions, hint, Boolean.class);
+		} catch (Exception e) {
 		}
 		return value;
 	}

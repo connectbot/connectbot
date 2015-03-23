@@ -49,7 +49,7 @@ public class HelpActivity extends Activity {
 				getResources().getText(R.string.title_help)));
 
 		AssetManager am = this.getAssets();
-		LinearLayout content = (LinearLayout)this.findViewById(R.id.topics);
+		LinearLayout content = (LinearLayout) findViewById(R.id.topics);
 
 		try {
 			for (String name : am.list(HELPDIR)) {

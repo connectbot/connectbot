@@ -230,7 +230,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 
 	private void startEntropyGather() {
 		final View entropyView = inflater.inflate(R.layout.dia_gatherentropy, null, false);
-		((EntropyView)entropyView.findViewById(R.id.entropy)).addOnEntropyGatheredListener(GeneratePubkeyActivity.this);
+		((EntropyView) entropyView.findViewById(R.id.entropy)).addOnEntropyGatheredListener(GeneratePubkeyActivity.this);
 		entropyDialog = new EntropyDialog(GeneratePubkeyActivity.this, entropyView);
 		entropyDialog.show();
 	}
@@ -248,7 +248,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 		for (int i = 0; i < 20; i++)
 			numSetBits += measureNumberOfSetBits(this.entropy[i]);
 
-		Log.d(TAG, "Entropy distribution=" + (int)(100.0 * numSetBits / 160.0) + "%");
+		Log.d(TAG, "Entropy distribution=" + (int) (100.0 * numSetBits / 160.0) + "%");
 
 		Log.d(TAG, "entropy gathered; attemping to generate key...");
 		startKeyGen();

@@ -288,7 +288,7 @@ public class TerminalBridge implements VDUDisplay {
 	 */
 	public String[] replyToChallenge(String name, String instruction, int numPrompts, String[] prompt, boolean[] echo) {
 		String[] responses = new String[numPrompts];
-		for(int i = 0; i < numPrompts; i++) {
+		for (int i = 0; i < numPrompts; i++) {
 			// request response from user for each prompt
 			responses[i] = promptHelper.requestStringPrompt(instruction, prompt[i]);
 		}
@@ -490,15 +490,15 @@ public class TerminalBridge implements VDUDisplay {
 
 		// read new metrics to get exact pixel dimensions
 		FontMetrics fm = defaultPaint.getFontMetrics();
-		charTop = (int)Math.ceil(fm.top);
+		charTop = (int) Math.ceil(fm.top);
 
 		float[] widths = new float[1];
 		defaultPaint.getTextWidths("X", widths);
-		charWidth = (int)Math.ceil(widths[0]);
-		charHeight = (int)Math.ceil(fm.descent - fm.top);
+		charWidth = (int) Math.ceil(widths[0]);
+		charHeight = (int) Math.ceil(fm.descent - fm.top);
 
 		// refresh any bitmap with new font size
-		if(parent != null)
+		if (parent != null)
 			parentChanged(parent);
 
 		for (FontSizeChangedListener ofscl : fontSizeChangedListeners)
@@ -571,7 +571,7 @@ public class TerminalBridge implements VDUDisplay {
 
 		// reallocate new bitmap if needed
 		boolean newBitmap = (bitmap == null);
-		if(bitmap != null)
+		if (bitmap != null)
 			newBitmap = (bitmap.getWidth() != width || bitmap.getHeight() != height);
 
 		if (newBitmap) {
@@ -603,9 +603,9 @@ public class TerminalBridge implements VDUDisplay {
 				buffer.setScreenSize(columns, rows, true);
 			}
 
-			if(transport != null)
+			if (transport != null)
 				transport.setDimensions(columns, rows, width, height);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			Log.e(TAG, "Problem while trying to resize screen or PTY", e);
 		}
 
@@ -664,7 +664,7 @@ public class TerminalBridge implements VDUDisplay {
 			boolean isWideCharacter = false;
 
 			// walk through all lines in the buffer
-			for(int l = 0; l < buffer.height; l++) {
+			for (int l = 0; l < buffer.height; l++) {
 
 				// check if this line is dirty and needs to be repainted
 				// also check for entire-buffer dirty flags
@@ -713,7 +713,7 @@ public class TerminalBridge implements VDUDisplay {
 						addr++;
 					else {
 						// determine the amount of continuous characters with the same settings and print them all at once
-						while(c + addr < buffer.width
+						while (c + addr < buffer.width
 								&& buffer.charAttributes[buffer.windowBase + l][c + addr] == currAttr) {
 							addr++;
 						}
@@ -739,7 +739,7 @@ public class TerminalBridge implements VDUDisplay {
 
 					// write the text string starting at 'c' for 'addr' number of characters
 					defaultPaint.setColor(fg);
-					if((currAttr & VDUBuffer.INVISIBLE) == 0)
+					if ((currAttr & VDUBuffer.INVISIBLE) == 0)
 						canvas.drawText(buffer.charArray[buffer.windowBase + l], c,
 							addr, c * charWidth, (l * charHeight) - charTop,
 							defaultPaint);
@@ -820,8 +820,8 @@ public class TerminalBridge implements VDUDisplay {
 
 		float[] widths = new float[1];
 		defaultPaint.getTextWidths("X", widths);
-		int termWidth = (int)widths[0] * cols;
-		int termHeight = (int)Math.ceil(fm.descent - fm.top) * rows;
+		int termWidth = (int) widths[0] * cols;
+		int termHeight = (int) Math.ceil(fm.descent - fm.top) * rows;
 
 		Log.d("fontsize", String.format("font size %f resulted in %d x %d", size, termWidth, termHeight));
 

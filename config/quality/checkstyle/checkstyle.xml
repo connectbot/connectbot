@@ -11,9 +11,20 @@
 				  value="Line has leading space characters; indentation should be performed with tabs only."/>
 			<property name="ignoreComments" value="true"/>
 		</module>
+
 		<module name="AvoidStarImport" />
 		<module name="IllegalImport" />
 		<module name="RedundantImport" />
 		<module name="UnusedImports" />
+		<module name="NoWhitespaceAfter">
+			<property name="tokens" value="BNOT,DEC,DOT,INC,LNOT,UNARY_MINUS,UNARY_PLUS" />
+		</module>
+		<module name="NoWhitespaceBefore" />
+		<module name="ParenPad" />
+		<module name="TypecastParenPad" />
+		<module name="WhitespaceAfter" />
+		<module name="WhitespaceAround">
+			<property name="allowEmptyMethods" value="true" />
+		</module>
 	</module>
 </module>

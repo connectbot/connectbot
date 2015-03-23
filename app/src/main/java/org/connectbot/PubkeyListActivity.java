@@ -120,7 +120,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 		bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
-		if(pubkeydb == null)
+		if (pubkeydb == null)
 			pubkeydb = new PubkeyDatabase(this);
 	}
 
@@ -130,7 +130,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 		unbindService(connection);
 
-		if(pubkeydb != null) {
+		if (pubkeydb != null) {
 			pubkeydb.close();
 			pubkeydb = null;
 		}
@@ -158,7 +158,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				boolean loaded = bound.isKeyLoaded(pubkey.getNickname());
 
 				// handle toggling key in-memory on/off
-				if(loaded) {
+				if (loaded) {
 					bound.removeKey(pubkey.getNickname());
 					updateList();
 				} else {
@@ -168,7 +168,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			}
 		});
 
-		clipboard = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+		clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 
 		inflater = LayoutInflater.from(this);
 	}
@@ -240,7 +240,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	protected void handleAddKey(final PubkeyBean pubkey) {
 		if (pubkey.isEncrypted()) {
 			final View view = inflater.inflate(R.layout.dia_password, null);
-			final EditText passwordField = (EditText)view.findViewById(android.R.id.text1);
+			final EditText passwordField = (EditText) view.findViewById(android.R.id.text1);
 
 			new AlertDialog.Builder(PubkeyListActivity.this)
 				.setView(view)
@@ -257,11 +257,11 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 	protected void handleAddKey(PubkeyBean keybean, String password) {
 		KeyPair pair = null;
-		if(PubkeyDatabase.KEY_TYPE_IMPORTED.equals(keybean.getType())) {
+		if (PubkeyDatabase.KEY_TYPE_IMPORTED.equals(keybean.getType())) {
 			// load specific key using pem format
 			try {
 				pair = PEMDecoder.decode(new String(keybean.getPrivateKey()).toCharArray(), password);
-			} catch(Exception e) {
+			} catch (Exception e) {
 				String message = getResources().getString(R.string.pubkey_failed_add, keybean.getNickname());
 				Log.e(TAG, message, e);
 				Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG).show();
@@ -312,7 +312,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		MenuItem load = menu.add(loaded ? R.string.pubkey_memory_unload : R.string.pubkey_memory_load);
 		load.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				if(loaded) {
+				if (loaded) {
 					bound.removeKey(pubkey.getNickname());
 					updateList();
 				} else {
@@ -380,15 +380,15 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		changePassword.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				final View changePasswordView = inflater.inflate(R.layout.dia_changepassword, null, false);
-				((TableRow)changePasswordView.findViewById(R.id.old_password_prompt))
+				((TableRow) changePasswordView.findViewById(R.id.old_password_prompt))
 					.setVisibility(pubkey.isEncrypted() ? View.VISIBLE : View.GONE);
 				new AlertDialog.Builder(PubkeyListActivity.this)
 					.setView(changePasswordView)
 					.setPositiveButton(R.string.button_change, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
-							String oldPassword = ((EditText)changePasswordView.findViewById(R.id.old_password)).getText().toString();
-							String password1 = ((EditText)changePasswordView.findViewById(R.id.password1)).getText().toString();
-							String password2 = ((EditText)changePasswordView.findViewById(R.id.password2)).getText().toString();
+							String oldPassword = ((EditText) changePasswordView.findViewById(R.id.old_password)).getText().toString();
+							String password1 = ((EditText) changePasswordView.findViewById(R.id.password1)).getText().toString();
+							String password2 = ((EditText) changePasswordView.findViewById(R.id.password2)).getText().toString();
 
 							if (!password1.equals(password2)) {
 								new AlertDialog.Builder(PubkeyListActivity.this)
@@ -446,7 +446,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 						public void onClick(DialogInterface dialog, int which) {
 
 							// dont forget to remove from in-memory
-							if(loaded)
+							if (loaded)
 								bound.removeKey(pubkey.getNickname());
 
 							// delete from backend database and update gui
@@ -550,7 +550,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			pubkeydb.savePubkey(pubkey);
 
 			updateList();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			Log.e(TAG, "Problem parsing imported private key", e);
 			Toast.makeText(PubkeyListActivity.this, R.string.pubkey_import_parse_problem, Toast.LENGTH_LONG).show();
 		}
@@ -578,8 +578,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		{
 			File[] files = sdcard.listFiles();
 			if (files != null) {
-				for(File file : sdcard.listFiles()) {
-					if(file.isDirectory()) continue;
+				for (File file : sdcard.listFiles()) {
+					if (file.isDirectory()) continue;
 					names.add(file.getName());
 				}
 			}

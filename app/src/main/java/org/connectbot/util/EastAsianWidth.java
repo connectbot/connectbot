@@ -56,7 +56,7 @@ public abstract class EastAsianWidth {
 			paint.getTextWidths(charArray, start, end, mWidths);
 			final int N = end - start;
 			for (int i = 0; i < N; i++)
-				wideAttribute[i] = (byte) (((int)mWidths[i] != charWidth) ?
+				wideAttribute[i] = (byte) (((int) mWidths[i] != charWidth) ?
 						AndroidCharacter.EAST_ASIAN_WIDTH_WIDE :
 						AndroidCharacter.EAST_ASIAN_WIDTH_NARROW);
 		}

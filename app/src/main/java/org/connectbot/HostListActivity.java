@@ -115,7 +115,7 @@ public class HostListActivity extends ListActivity {
 		// start the terminal manager service
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
-		if(this.hostdb == null)
+		if (this.hostdb == null)
 			this.hostdb = new HostDatabase(this);
 	}
 
@@ -124,7 +124,7 @@ public class HostListActivity extends ListActivity {
 		super.onStop();
 		this.unbindService(connection);
 
-		if(this.hostdb != null) {
+		if (this.hostdb != null) {
 			this.hostdb.close();
 			this.hostdb = null;
 		}
@@ -138,7 +138,7 @@ public class HostListActivity extends ListActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == REQUEST_EULA) {
-			if(resultCode == Activity.RESULT_OK) {
+			if (resultCode == Activity.RESULT_OK) {
 				// yay they agreed, so store that info
 				Editor edit = prefs.edit();
 				edit.putBoolean(PreferenceConstants.EULA, true);
@@ -188,7 +188,7 @@ public class HostListActivity extends ListActivity {
 
 		// check for eula agreement
 		boolean agreed = prefs.getBoolean(PreferenceConstants.EULA, false);
-		if(!agreed) {
+		if (!agreed) {
 			this.startActivityForResult(new Intent(this, WizardActivity.class), REQUEST_EULA);
 		}
 
@@ -241,14 +241,14 @@ public class HostListActivity extends ListActivity {
 
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-				if(event.getAction() == KeyEvent.ACTION_UP) return false;
-				if(keyCode != KeyEvent.KEYCODE_ENTER) return false;
+				if (event.getAction() == KeyEvent.ACTION_UP) return false;
+				if (keyCode != KeyEvent.KEYCODE_ENTER) return false;
 
 				return startConsoleActivity();
 			}
 		});
 
-		transportSpinner = (Spinner)findViewById(R.id.transport_selection);
+		transportSpinner = (Spinner) findViewById(R.id.transport_selection);
 		transportSpinner.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
 		ArrayAdapter<String> transportSelection = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, TransportFactory.getTransportNames());
@@ -288,7 +288,7 @@ public class HostListActivity extends ListActivity {
 		super.onCreateOptionsMenu(menu);
 
 		// don't offer menus when creating shortcut
-		if(makingShortcut) return true;
+		if (makingShortcut) return true;
 
 		// add host, ssh keys, about
 		sortcolor = menu.add(R.string.list_menu_sortcolor);
@@ -386,7 +386,7 @@ public class HostListActivity extends ListActivity {
 					.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 						// make sure we disconnect
-							if(bridge != null)
+							if (bridge != null)
 								bridge.dispatchDisconnect(true);
 
 							hostdb.deleteHost(host);
@@ -506,9 +506,9 @@ public class HostListActivity extends ListActivity {
 
 				holder = new ViewHolder();
 
-				holder.nickname = (TextView)convertView.findViewById(android.R.id.text1);
-				holder.caption = (TextView)convertView.findViewById(android.R.id.text2);
-				holder.icon = (ImageView)convertView.findViewById(android.R.id.icon);
+				holder.nickname = (TextView) convertView.findViewById(android.R.id.text1);
+				holder.caption = (TextView) convertView.findViewById(android.R.id.text2);
+				holder.icon = (ImageView) convertView.findViewById(android.R.id.icon);
 
 				convertView.setTag(holder);
 			} else
@@ -562,7 +562,7 @@ public class HostListActivity extends ListActivity {
 
 			String nice = context.getString(R.string.bind_never);
 			if (host.getLastConnect() > 0) {
-				int minutes = (int)((now - host.getLastConnect()) / 60);
+				int minutes = (int) ((now - host.getLastConnect()) / 60);
 				if (minutes >= 60) {
 					int hours = (minutes / 60);
 					if (hours >= 24) {

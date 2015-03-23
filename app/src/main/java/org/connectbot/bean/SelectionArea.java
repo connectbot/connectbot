@@ -148,7 +148,7 @@ public class SelectionArea {
 
 		StringBuffer buffer = new StringBuffer(size);
 
-		for(int y = getTop(); y <= getBottom(); y++) {
+		for (int y = getTop(); y <= getBottom(); y++) {
 			int lastNonSpace = buffer.length();
 
 			for (int x = getLeft(); x <= getRight(); x++) {

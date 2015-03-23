@@ -84,7 +84,7 @@ public class PortForwardListActivity extends ListActivity {
 
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
-		if(this.hostdb == null)
+		if (this.hostdb == null)
 			this.hostdb = new HostDatabase(this);
 	}
 
@@ -94,7 +94,7 @@ public class PortForwardListActivity extends ListActivity {
 
 		this.unbindService(connection);
 
-		if(this.hostdb != null) {
+		if (this.hostdb != null) {
 			this.hostdb.close();
 			this.hostdb = null;
 		}
@@ -177,7 +177,7 @@ public class PortForwardListActivity extends ListActivity {
 				// build dialog to prompt user about updating
 				final View portForwardView = inflater.inflate(R.layout.dia_portforward, null, false);
 				final EditText destEdit = (EditText) portForwardView.findViewById(R.id.portforward_destination);
-				final Spinner typeSpinner = (Spinner)portForwardView.findViewById(R.id.portforward_type);
+				final Spinner typeSpinner = (Spinner) portForwardView.findViewById(R.id.portforward_type);
 
 				typeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 					public void onItemSelected(AdapterView<?> value, View view,
@@ -403,8 +403,8 @@ public class PortForwardListActivity extends ListActivity {
 				convertView = inflater.inflate(R.layout.item_portforward, null, false);
 
 				holder = new ViewHolder();
-				holder.nickname = (TextView)convertView.findViewById(android.R.id.text1);
-				holder.caption = (TextView)convertView.findViewById(android.R.id.text2);
+				holder.nickname = (TextView) convertView.findViewById(android.R.id.text1);
+				holder.caption = (TextView) convertView.findViewById(android.R.id.text2);
 
 				convertView.setTag(holder);
 			} else

@@ -88,7 +88,7 @@ public class EntropyView extends View {
 	@Override
 	public void onDraw(Canvas c) {
 		String prompt = String.format(getResources().getString(R.string.pubkey_touch_prompt),
-			(int)(100.0 * (mEntropyByteIndex / 20.0)) + (int)(5.0 * (mEntropyBitIndex / 8.0)));
+			(int) (100.0 * (mEntropyByteIndex / 20.0)) + (int) (5.0 * (mEntropyBitIndex / 8.0)));
 		if (splitText > 0 ||
 				mPaint.measureText(prompt) > (getWidth() * 0.8)) {
 			if (splitText == 0)
@@ -132,9 +132,9 @@ public class EntropyView extends View {
 		// Get the lowest 4 bits of each X, Y input and concat to the entropy-gathering
 		// string.
 		if (mFlipFlop)
-				input = (byte)((((int)lastX & 0x0F) << 4) | ((int)lastY & 0x0F));
+				input = (byte) ((((int) lastX & 0x0F) << 4) | ((int) lastY & 0x0F));
 		else
-				input = (byte)((((int)lastY & 0x0F) << 4) | ((int)lastX & 0x0F));
+				input = (byte) ((((int) lastY & 0x0F) << 4) | ((int) lastX & 0x0F));
 		mFlipFlop = !mFlipFlop;
 
 		for (int i = 0; i < 4 && mEntropyByteIndex < SHA1_MAX_BYTES; i++) {

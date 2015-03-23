@@ -73,9 +73,9 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 					new String[] { String.valueOf(id) }, null, null, null);
 
 			if (cursor.moveToFirst()) {
-				for(int i = 0; i < cursor.getColumnCount(); i++) {
+				for (int i = 0; i < cursor.getColumnCount(); i++) {
 					String key = cursor.getColumnName(i);
-					if(key.equals(HostDatabase.FIELD_HOST_HOSTKEY)) continue;
+					if (key.equals(HostDatabase.FIELD_HOST_HOSTKEY)) continue;
 					String value = cursor.getString(i);
 					values.put(key, value);
 				}
@@ -124,7 +124,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 				cacheValues();
 
 				// and update any listeners
-				for(OnSharedPreferenceChangeListener listener : listeners) {
+				for (OnSharedPreferenceChangeListener listener : listeners) {
 					listener.onSharedPreferenceChanged(CursorPreferenceHack.this, null);
 				}
 
@@ -198,7 +198,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		public String getString(String key, String defValue) {
 			//Log.d(this.getClass().toString(), String.format("getString(key=%s, defValue=%s)", key, defValue));
 
-			if(!values.containsKey(key)) return defValue;
+			if (!values.containsKey(key)) return defValue;
 			return values.get(key);
 		}
 
@@ -269,7 +269,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		// add all existing pubkeys to our listpreference for user to choose from
 		// TODO: may be an issue here when this activity is recycled after adding a new pubkey
 		// TODO: should consider moving into onStart, but we dont have a good way of resetting the listpref after filling once
-		ListPreference pubkeyPref = (ListPreference)this.findPreference(HostDatabase.FIELD_HOST_PUBKEYID);
+		ListPreference pubkeyPref = (ListPreference) findPreference(HostDatabase.FIELD_HOST_PUBKEYID);
 
 		List<CharSequence> pubkeyNicks = new LinkedList<CharSequence>(Arrays.asList(pubkeyPref.getEntries()));
 		pubkeyNicks.addAll(pubkeydb.allValues(PubkeyDatabase.FIELD_PUBKEY_NICKNAME));
@@ -306,10 +306,10 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 		bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
-		if(this.hostdb == null)
+		if (this.hostdb == null)
 			this.hostdb = new HostDatabase(this);
 
-		if(this.pubkeydb == null)
+		if (this.pubkeydb == null)
 			this.pubkeydb = new PubkeyDatabase(this);
 	}
 
@@ -319,12 +319,12 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 		unbindService(connection);
 
-		if(this.hostdb != null) {
+		if (this.hostdb != null) {
 			this.hostdb.close();
 			this.hostdb = null;
 		}
 
-		if(this.pubkeydb != null) {
+		if (this.pubkeydb != null) {
 			this.pubkeydb.close();
 			this.pubkeydb = null;
 		}
@@ -333,10 +333,10 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 	private void updateSummaries() {
 		// for all text preferences, set hint as current database value
 		for (String key : this.pref.values.keySet()) {
-			if(key.equals(HostDatabase.FIELD_HOST_POSTLOGIN)) continue;
+			if (key.equals(HostDatabase.FIELD_HOST_POSTLOGIN)) continue;
 			Preference pref = this.findPreference(key);
-			if(pref == null) continue;
-			if(pref instanceof CheckBoxPreference) continue;
+			if (pref == null) continue;
+			if (pref instanceof CheckBoxPreference) continue;
 			CharSequence value = this.pref.getString(key, "");
 
 			if (key.equals(HostDatabase.FIELD_HOST_PUBKEYID)) {
@@ -344,9 +344,9 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 					int pubkeyId = Integer.parseInt((String) value);
 					if (pubkeyId >= 0)
 						pref.setSummary(pubkeydb.getNickname(pubkeyId));
-					else if(pubkeyId == HostDatabase.PUBKEYID_ANY)
+					else if (pubkeyId == HostDatabase.PUBKEYID_ANY)
 						pref.setSummary(R.string.list_pubkeyids_any);
-					else if(pubkeyId == HostDatabase.PUBKEYID_NEVER)
+					else if (pubkeyId == HostDatabase.PUBKEYID_NEVER)
 						pref.setSummary(R.string.list_pubkeyids_none);
 					continue;
 				} catch (NumberFormatException nfe) {

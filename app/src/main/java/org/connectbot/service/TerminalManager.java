@@ -172,12 +172,12 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		disconnectAll(true);
 
-		if(hostdb != null) {
+		if (hostdb != null) {
 			hostdb.close();
 			hostdb = null;
 		}
 
-		if(pubkeydb != null) {
+		if (pubkeydb != null) {
 			pubkeydb.close();
 			pubkeydb = null;
 		}
@@ -261,7 +261,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		int scrollback = 140;
 		try {
 			scrollback = Integer.parseInt(prefs.getString(PreferenceConstants.SCROLLBACK, "140"));
-		} catch(Exception e) {
+		} catch (Exception e) {
 		}
 		return scrollback;
 	}
@@ -400,7 +400,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	public boolean removeKey(byte[] publicKey) {
 		String nickname = null;
-		for (Entry<String,KeyHolder> entry : loadedKeypairs.entrySet()) {
+		for (Entry<String, KeyHolder> entry : loadedKeypairs.entrySet()) {
 			if (Arrays.equals(entry.getValue().openSSHPubkey, publicKey)) {
 				nickname = entry.getKey();
 				break;
@@ -431,7 +431,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 
 	public String getKeyNickname(byte[] publicKey) {
-		for (Entry<String,KeyHolder> entry : loadedKeypairs.entrySet()) {
+		for (Entry<String, KeyHolder> entry : loadedKeypairs.entrySet()) {
 			if (Arrays.equals(entry.getValue().openSSHPubkey, publicKey))
 				return entry.getKey();
 		}

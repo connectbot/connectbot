@@ -243,7 +243,7 @@ public class HostBean extends AbstractBean {
 		if (o == null || !(o instanceof HostBean))
 			return false;
 
-		HostBean host = (HostBean)o;
+		HostBean host = (HostBean) o;
 
 		if (id != -1 && host.getId() != -1)
 			return host.getId() == id;
@@ -283,7 +283,7 @@ public class HostBean extends AbstractBean {
 		int hash = 7;
 
 		if (id != -1)
-			return (int)id;
+			return (int) id;
 
 		hash = 31 * hash + (null == nickname ? 0 : nickname.hashCode());
 		hash = 31 * hash + (null == protocol ? 0 : protocol.hashCode());

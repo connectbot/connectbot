@@ -182,7 +182,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
 					bridge.increaseFontSize();
 					return true;
-				} else if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+				} else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
 					bridge.decreaseFontSize();
 					return true;
 				}
@@ -355,15 +355,15 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				String camera = manager.prefs.getString(
 						PreferenceConstants.CAMERA,
 						PreferenceConstants.CAMERA_CTRLA_SPACE);
-				if(PreferenceConstants.CAMERA_CTRLA_SPACE.equals(camera)) {
+				if (PreferenceConstants.CAMERA_CTRLA_SPACE.equals(camera)) {
 					bridge.transport.write(0x01);
 					bridge.transport.write(' ');
-				} else if(PreferenceConstants.CAMERA_CTRLA.equals(camera)) {
+				} else if (PreferenceConstants.CAMERA_CTRLA.equals(camera)) {
 					bridge.transport.write(0x01);
-				} else if(PreferenceConstants.CAMERA_ESC.equals(camera)) {
-					((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
-				} else if(PreferenceConstants.CAMERA_ESC_A.equals(camera)) {
-					((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+				} else if (PreferenceConstants.CAMERA_ESC.equals(camera)) {
+					((vt320) buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+				} else if (PreferenceConstants.CAMERA_ESC_A.equals(camera)) {
+					((vt320) buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
 					bridge.transport.write('a');
 				}
 
@@ -374,7 +374,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 						getStateForBuffer());
 				return true;
 			case KeyEvent.KEYCODE_ENTER:
-				((vt320)buffer).keyTyped(vt320.KEY_ENTER, ' ', 0);
+				((vt320) buffer).keyTyped(vt320.KEY_ENTER, ' ', 0);
 				return true;
 
 			case KeyEvent.KEYCODE_DPAD_LEFT:
@@ -480,7 +480,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	}
 
 	public void sendEscape() {
-		((vt320)buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
+		((vt320) buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
 	}
 
 	/**

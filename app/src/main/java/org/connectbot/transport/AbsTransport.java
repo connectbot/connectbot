@@ -40,7 +40,8 @@ public abstract class AbsTransport {
 
 	String emulation;
 
-	public AbsTransport() {}
+	public AbsTransport() {
+	}
 
 	public AbsTransport(HostBean host, TerminalBridge bridge, TerminalManager manager) {
 		this.host = host;
@@ -120,11 +121,11 @@ public abstract class AbsTransport {
 	 */
 	public abstract void setDimensions(int columns, int rows, int width, int height);
 
-	public void setOptions(Map<String,String> options) {
+	public void setOptions(Map<String, String> options) {
 		// do nothing
 	}
 
-	public Map<String,String> getOptions() {
+	public Map<String, String> getOptions() {
 		return null;
 	}
 

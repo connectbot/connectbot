@@ -173,7 +173,7 @@ public class TerminalView extends View implements FontSizeChangedListener {
 
 	@Override
 	public void onDraw(Canvas canvas) {
-		if(bridge.bitmap != null) {
+		if (bridge.bitmap != null) {
 			// draw the bitmap
 			bridge.onDraw();
 
@@ -213,7 +213,7 @@ public class TerminalView extends View implements FontSizeChangedListener {
 
 				final int deadKey = bridge.getKeyHandler().getDeadKey();
 				if (deadKey != 0) {
-					canvas.drawText(new char[] { (char)deadKey }, 0, 1, 0, 0, cursorStrokePaint);
+					canvas.drawText(new char[] { (char) deadKey }, 0, 1, 0, 0, cursorStrokePaint);
 				}
 
 				// Make sure we scale our decorations to the correct size.

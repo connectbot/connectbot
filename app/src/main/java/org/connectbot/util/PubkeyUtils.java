@@ -85,7 +85,7 @@ public class PubkeyUtils {
 	private PubkeyUtils() {
 	}
 
-	public static String formatKey(Key key){
+	public static String formatKey(Key key) {
 		String algo = key.getAlgorithm();
 		String fmt = key.getFormat();
 		byte[] encoded = key.getEncoded();

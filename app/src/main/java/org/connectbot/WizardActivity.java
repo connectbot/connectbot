@@ -54,10 +54,10 @@ public class WizardActivity extends Activity {
 			flipper.addView(new HelpTopicView(this).setTopic(topic));
 		}
 
-		next = (Button)this.findViewById(R.id.action_next);
+		next = (Button) findViewById(R.id.action_next);
 		next.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				if(isLastDisplayed()) {
+				if (isLastDisplayed()) {
 					// user walked past end of wizard, so return okay
 					WizardActivity.this.setResult(Activity.RESULT_OK);
 					WizardActivity.this.finish();
@@ -69,10 +69,10 @@ public class WizardActivity extends Activity {
 			}
 		});
 
-		prev = (Button)this.findViewById(R.id.action_prev);
+		prev = (Button) findViewById(R.id.action_prev);
 		prev.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				if(isFirstDisplayed()) {
+				if (isFirstDisplayed()) {
 					// user walked past beginning of wizard, so return that they cancelled
 					WizardActivity.this.setResult(Activity.RESULT_CANCELED);
 					WizardActivity.this.finish();

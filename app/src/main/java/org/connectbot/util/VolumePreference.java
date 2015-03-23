@@ -54,7 +54,7 @@ public class VolumePreference extends DialogPreference implements OnSeekBarChang
 		SeekBar sb = new SeekBar(getContext());
 
 		sb.setMax(100);
-		sb.setProgress((int)(getPersistedFloat(
+		sb.setProgress((int) (getPersistedFloat(
 				PreferenceConstants.DEFAULT_BELL_VOLUME) * 100));
 		sb.setPadding(10, 10, 10, 10);
 		sb.setOnSeekBarChangeListener(this);

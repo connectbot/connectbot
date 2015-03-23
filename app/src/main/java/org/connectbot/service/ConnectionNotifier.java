@@ -53,7 +53,7 @@ public abstract class ConnectionNotifier {
 	}
 
 	protected NotificationManager getNotificationManager(Context context) {
-		return (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+		return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
 	protected Notification newNotification(Context context) {

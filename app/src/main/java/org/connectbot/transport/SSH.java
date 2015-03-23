@@ -168,8 +168,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				bridge.outputLine(manager.res.getString(R.string.host_fingerprint, algorithmName, fingerprint));
 
 				result = bridge.promptHelper.requestBooleanPrompt(null, manager.res.getString(R.string.prompt_continue_connecting));
-				if(result == null) return false;
-				if(result.booleanValue()) {
+				if (result == null) return false;
+				if (result.booleanValue()) {
 					// save this key in known database
 					manager.hostdb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
 				}
@@ -192,8 +192,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 				// Users have no way to delete keys, so we'll prompt them for now.
 				result = bridge.promptHelper.requestBooleanPrompt(null, manager.res.getString(R.string.prompt_continue_connecting));
-				if(result == null) return false;
-				if(result.booleanValue()) {
+				if (result == null) return false;
+				if (result.booleanValue()) {
 					// save this key in known database
 					manager.hostdb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
 				}
@@ -212,7 +212,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				finishConnection();
 				return;
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			Log.d(TAG, "Host does not support 'none' authentication.");
 		}
 
@@ -262,7 +262,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				// it blocks until authentication finishes
 				bridge.outputLine(manager.res.getString(R.string.terminal_auth_ki));
 				interactiveCanContinue = false;
-				if(connection.authenticateWithKeyboardInteractive(host.getUsername(), this)) {
+				if (connection.authenticateWithKeyboardInteractive(host.getUsername(), this)) {
 					finishConnection();
 				} else {
 					bridge.outputLine(manager.res.getString(R.string.terminal_auth_ki_fail));
@@ -283,7 +283,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		} catch (IllegalStateException e) {
 			Log.e(TAG, "Connection went away while we were trying to authenticate", e);
 			return;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			Log.e(TAG, "Problem during handleAuthentication()", e);
 		}
 	}
@@ -299,7 +299,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	private boolean tryPublicKey(PubkeyBean pubkey) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
 		KeyPair pair = null;
 
-		if(manager.isKeyLoaded(pubkey.getNickname())) {
+		if (manager.isKeyLoaded(pubkey.getNickname())) {
 			// load this key from memory if its already there
 			Log.d(TAG, String.format("Found unlocked key '%s' already in-memory", pubkey.getNickname()));
 
@@ -321,7 +321,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 					return false;
 			}
 
-			if(PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType())) {
+			if (PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType())) {
 				// load specific key using pem format
 				pair = PEMDecoder.decode(new String(pubkey.getPrivateKey()).toCharArray(), password);
 			} else {
@@ -356,7 +356,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	private boolean tryPublicKey(String username, String keyNickname, KeyPair pair) throws IOException {
 		//bridge.outputLine(String.format("Attempting 'publickey' with key '%s' [%s]...", keyNickname, trileadKey.toString()));
 		boolean success = connection.authenticateWithPublicKey(username, pair);
-		if(!success)
+		if (!success)
 			bridge.outputLine(manager.res.getString(R.string.terminal_auth_pubkey_fail, keyNickname));
 		return success;
 	}
@@ -468,7 +468,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				// sleep to make sure we dont kill system
 				Thread.sleep(1000);
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			Log.e(TAG, "Problem in SSH connection thread during authentication", e);
 		}
 	}
@@ -668,7 +668,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 		if (HostDatabase.PORTFORWARD_LOCAL.equals(portForward.getType())) {
 			LocalPortForwarder lpf = null;
-			lpf = (LocalPortForwarder)portForward.getIdentifier();
+			lpf = (LocalPortForwarder) portForward.getIdentifier();
 
 			if (!portForward.isEnabled() || lpf == null) {
 				Log.d(TAG, String.format("Could not disable %s; it appears to be not enabled or have no handler", portForward.getNickname()));
@@ -698,7 +698,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			return true;
 		} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(portForward.getType())) {
 			DynamicPortForwarder dpf = null;
-			dpf = (DynamicPortForwarder)portForward.getIdentifier();
+			dpf = (DynamicPortForwarder) portForward.getIdentifier();
 
 			if (!portForward.isEnabled() || dpf == null) {
 				Log.d(TAG, String.format("Could not disable %s; it appears to be not enabled or have no handler", portForward.getNickname()));
@@ -796,7 +796,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	public String[] replyToChallenge(String name, String instruction, int numPrompts, String[] prompt, boolean[] echo) {
 		interactiveCanContinue = true;
 		String[] responses = new String[numPrompts];
-		for(int i = 0; i < numPrompts; i++) {
+		for (int i = 0; i < numPrompts; i++) {
 			// request response from user for each prompt
 			responses[i] = bridge.promptHelper.requestStringPrompt(instruction, prompt[i]);
 		}
@@ -859,10 +859,10 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		this.useAuthAgent = useAuthAgent;
 	}
 
-	public Map<String,byte[]> retrieveIdentities() {
-		Map<String,byte[]> pubKeys = new HashMap<String,byte[]>(manager.loadedKeypairs.size());
+	public Map<String, byte[]> retrieveIdentities() {
+		Map<String, byte[]> pubKeys = new HashMap<String, byte[]>(manager.loadedKeypairs.size());
 
-		for (Entry<String,KeyHolder> entry : manager.loadedKeypairs.entrySet()) {
+		for (Entry<String, KeyHolder> entry : manager.loadedKeypairs.entrySet()) {
 			KeyPair pair = entry.getValue().pair;
 
 			try {
