@@ -11,5 +11,9 @@
 				  value="Line has leading space characters; indentation should be performed with tabs only."/>
 			<property name="ignoreComments" value="true"/>
 		</module>
+		<module name="AvoidStarImport" />
+		<module name="IllegalImport" />
+		<module name="RedundantImport" />
+		<module name="UnusedImports" />
 	</module>
 </module>
