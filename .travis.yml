@@ -22,7 +22,7 @@ before_install:
 
 android:
   components:
-    - build-tools-19.1.0
+    - build-tools-22.0.0
     - extra-android-support
   license:
     - '.+'
