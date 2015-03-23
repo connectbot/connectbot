@@ -35,7 +35,7 @@ android {
 
     buildTypes {
         release {
-            runProguard true
+            minifyEnabled true
             proguardFiles 'proguard.cfg'
 
             if (project.hasProperty('keystorePassword')) {

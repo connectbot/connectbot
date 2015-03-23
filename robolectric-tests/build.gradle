@@ -25,7 +25,7 @@ dependencies {
 
 	testCompile androidModule.android.applicationVariants.toList().first().javaCompile.classpath
 	testCompile androidModule.android.applicationVariants.toList().first().javaCompile.outputs.files
-	testCompile files(androidModule.plugins.findPlugin("com.android.application").getBootClasspath())
+	testCompile files(androidModule.android.getBootClasspath())
 
 	// This gets the location of the SDK's Android Support Repo
 	androidModule.repositories {
