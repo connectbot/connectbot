@@ -1,6 +1,10 @@
 language: android
 jdk: openjdk7
 
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+
 before_install:
   # Required libs for Android build tools
   - sudo apt-get update
