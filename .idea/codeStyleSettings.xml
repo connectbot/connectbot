@@ -37,6 +37,8 @@
           </value>
         </option>
         <option name="RIGHT_MARGIN" value="100" />
+        <option name="JD_ALIGN_PARAM_COMMENTS" value="false" />
+        <option name="JD_ALIGN_EXCEPTION_COMMENTS" value="false" />
         <AndroidXmlCodeStyleSettings>
           <option name="USE_CUSTOM_SETTINGS" value="true" />
         </AndroidXmlCodeStyleSettings>
@@ -60,6 +62,9 @@
           </indentOptions>
         </codeStyleSettings>
         <codeStyleSettings language="JAVA">
+          <option name="INDENT_CASE_FROM_SWITCH" value="false" />
+          <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
+          <option name="SPACE_BEFORE_ARRAY_INITIALIZER_LBRACE" value="true" />
           <indentOptions>
             <option name="INDENT_SIZE" value="8" />
             <option name="CONTINUATION_INDENT_SIZE" value="16" />
