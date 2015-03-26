@@ -19,7 +19,10 @@
 -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+	<!-- Summary of what ConnectBot is; used as a short description in the Android running apps list -->
 	<string name="app_desc">"Simple, powerful, open-source SSH client."</string>
+
+	<!-- Summary of what the ConnectBot service does; displayed in the Android running apps list -->
 	<string name="service_desc">"Maintains SSH connections and loaded pubkeys"</string>
 
 	<!-- Window title for the Host List -->
