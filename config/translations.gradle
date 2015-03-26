@@ -24,7 +24,7 @@ def android2poArgs = ['--groups', 'strings',
 		'--android', getProjectDir().getPath() + '/src/main/res',
 		'--gettext', localeDir,
 		'--template', 'fortune/fortune.pot',
-		'--layout', "'fortune/fortune-%(locale)s.po'"]
+		'--layout', 'fortune/fortune-%(locale)s.po']
 
 task ensureLocalDirExists {
 	localeDir.mkdirs()
