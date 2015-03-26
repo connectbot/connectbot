@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">Un client SSH simple, open-source et puissant.</string>
   <string name="service_desc">Maintient les connexions SSH et les clefs publiques chargées</string>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">简洁、强大、开源的SSH客户端</string>
   <string name="service_desc">维护SSH连接及已装载的公钥</string>

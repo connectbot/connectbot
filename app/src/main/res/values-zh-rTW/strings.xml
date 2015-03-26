@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">簡單、強大、開放原始碼的SSH用戶端。</string>
   <string name="service_desc">管理 SSH 連線及載入公鑰</string>
@@ -79,6 +79,7 @@
   <string name="pref_titlebarhide_summary">輕觸終端機來顯示標題列並存取選單</string>
   <string name="pref_fullscreen_title">全螢幕</string>
   <string name="pref_fullscreen_summary">當在控制台時隱藏狀態列</string>
+  <string name="pref_keyboard_category">鍵盤</string>
   <string name="pref_shiftfkeys_title">Shift+num 為功能鍵</string>
   <string name="pref_shiftfkeys_summary">在硬體鍵盤上，shift 加數字鍵時傳送 F1-F10</string>
   <string name="pref_ctrlfkeys_title">Ctrl+num 為功能鍵</string>
@@ -91,6 +92,7 @@
   <string name="pref_conn_persist_summary">在背景執行時仍保持連線狀態</string>
   <string name="pref_keymode_title">快捷鍵</string>
   <string name="pref_keymode_summary">選擇如何使用 Alt 來叫出 \'/\' 和用 Shift 呼叫 Tab</string>
+  <string name="only_alt">只有Alt</string>
   <string name="pref_camera_title">照相快捷鍵</string>
   <string name="pref_camera_summary">選擇當照相按鈕按下時將要觸發的快捷鍵</string>
   <string name="pref_keepalive_title">保持螢幕喚醒</string>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">Cliente SSH simple, potente e open-source</string>
   <string name="title_hosts_list">Servidores</string>

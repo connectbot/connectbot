@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">Yksinkertainen ja tehokas avoimen lähdekoodin SSH-asiakasohjelma.</string>
   <string name="service_desc">Ylläpitää SSH-yhteydet ja ladatut julkiset avaimet</string>

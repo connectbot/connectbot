@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">Sederhana, tangguh, klien SSH dengan kode terbuka.</string>
   <string name="service_desc">"Mengelola koneksi SSH dan kunci publik  yang terrekam"</string>

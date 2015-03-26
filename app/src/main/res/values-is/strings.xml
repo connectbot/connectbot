@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="service_desc">Heldur utan um SSH tengingar og geymda \"pubkeys\"</string>
   <string name="title_hosts_list">Þjónar</string>
