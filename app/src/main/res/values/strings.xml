@@ -201,6 +201,7 @@
 	<!-- Summary for the sticky modifiers preference -->
 	<string name="pref_stickymodifiers_summary">"Modifier keys remain enabled until another key is pressed"</string>
 
+	<!-- Sticky modifier preference value description for when only the Alt key should be a sticky modifier. -->
 	<string name="only_alt">"Only alt"</string>
 
 	<!-- Name for the camera shortcut usage preference -->
