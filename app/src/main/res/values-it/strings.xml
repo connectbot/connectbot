@@ -206,6 +206,7 @@
   <string name="color_green">verde</string>
   <string name="color_blue">blu</string>
   <string name="color_gray">grigio</string>
+  <string name="color_bg">CS:</string>
   <string name="image_description_connected">Connesso.</string>
   <string name="image_description_key_is_locked">La chiave e\' bloccata.</string>
   <string name="image_description_send_escape_character">Mandare un carattere escape.</string>
