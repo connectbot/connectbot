@@ -1,6 +1,7 @@
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply from: '../config/quality.gradle'
+apply from: '../config/translations.gradle'
 
 android {
     compileSdkVersion 20
