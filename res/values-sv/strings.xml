@@ -125,7 +125,7 @@
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Aldrig ansluten</string>
   <string name="bind_minutes">%1$s minuter sedan</string>
-  <string name="bind_hours">%1$s timmar sendan</string>
+  <string name="bind_hours">%1$s timmar sedan</string>
   <string name="bind_days">%1$s dagar sedan</string>
   <string name="console_copy_done">Kopierade %1$d bytes till urklippshanteraren.</string>
   <string name="console_copy_start">Tryck och drag\neller använd bollen\nför att markera en yta för kopiering</string>

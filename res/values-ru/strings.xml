@@ -75,8 +75,11 @@
   <string name="pref_ui_category">Пользовательский интерфейс</string>
   <string name="pref_rotation_title">Настройки ориентации экрана</string>
   <string name="pref_rotation_summary">Настройки смены ориентации дисплея при пользовании клавиатурой</string>
+  <string name="pref_titlebarhide_title">Автоскрытие заголовка</string>
   <string name="pref_fullscreen_title">Полный экран</string>
   <string name="pref_fullscreen_summary">Убирать область статуса во время работы с консолью</string>
+  <string name="pref_ctrlfkeys_title">Ctrl+num аналогично F-keys</string>
+  <string name="pref_volumefont_title">Клавиша громкости регулирует размер шрифта</string>
   <string name="pref_memkeys_title">Запомнить ключи в памяти</string>
   <string name="pref_memkeys_summary">Держать ключи в памяти пока процессы работают</string>
   <string name="pref_conn_persist_title">Постоянные соединения</string>
@@ -207,5 +210,6 @@
   <string name="color_blue">синий</string>
   <string name="color_gray">серый</string>
   <string name="image_description_connected">Подключено</string>
+  <string name="image_description_key_is_locked">Ключ заблокирован</string>
   <string name="image_description_show_keyboard">Показать клавиатуру</string>
 </resources>
