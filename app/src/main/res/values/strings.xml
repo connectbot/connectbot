@@ -37,6 +37,8 @@
 	<string name="title_help">"Help"</string>
 	<!-- Window title for color list editing screen -->
 	<string name="title_colors">"Colors"</string>
+	<!-- Dialog title for color picker dialog -->
+	<string name="title_color_picker">"Pick a color"</string>
 
 	<string name="resolve_connect">"Connect"</string>
 	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
@@ -481,11 +483,11 @@
 	<string name="color_blue">"blue"</string>
 	<string name="color_gray">"gray"</string>
 
-	<!-- Very short label indicating the thing next to it is "foreground color." -->
-	<string name="colors_fg">"FG":</string>
+	<!-- Very short label indicating the number next to it is "foreground color" number. -->
+	<string name="colors_fg_label">"FG: %1$d"</string>
 
-	<!-- Very short label indicating the thing next to it is "background color." -->
-	<string name="color_bg">"BG:"</string>
+	<!-- Very short label indicating the number next to it is "background color" number. -->
+	<string name="color_bg_label">"BG: %1$d"</string>
 
 	<!-- Describes the image of the "connected to host" icon for accessibility purposes. -->
 	<string name="image_description_connected">"Connected."</string>

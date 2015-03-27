@@ -23,36 +23,35 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 
-	<TextView
-		android:text="@string/colors_fg"
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:id="@+id/fg_label"
-		android:paddingTop="12dp"
-		/>
+		android:id="@+id/spinners">
 
-	<Spinner
-		android:id="@+id/fg"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_toRightOf="@+id/fg_label"
-		/>
+		<Spinner
+			android:id="@+id/fg"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:minHeight="60dp"
+			android:layout_weight="1"
+			android:gravity="center"
+			/>
 
-	<Spinner
-		android:id="@+id/bg"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignTop="@+id/fg"
-		android:layout_alignParentRight="true"
-		/>
-
-	<TextView
-		android:text="@string/color_bg"
-		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:layout_toLeftOf="@+id/bg"
-		android:paddingTop="12dp"
-		/>
+		<Spinner
+			android:id="@+id/bg"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_alignTop="@id/fg"
+			android:layout_alignParentRight="true"
+			android:layout_toRightOf="@id/fg"
+			android:layout_alignParentStart="true"
+			android:minHeight="60dp"
+			android:layout_weight="1"
+			android:gravity="center"
+			/>
+	</LinearLayout>
 
 	<GridView
 		android:id="@+id/color_grid"
@@ -65,7 +64,8 @@
 		android:columnWidth="60dp"
 		android:stretchMode="columnWidth"
 		android:gravity="center"
-		android:layout_below="@+id/fg"
-		android:stackFromBottom="true" android:minHeight="60dp"/>
+		android:minHeight="60dp"
+		android:layout_below="@+id/spinners"
+		/>
 
 </RelativeLayout>
