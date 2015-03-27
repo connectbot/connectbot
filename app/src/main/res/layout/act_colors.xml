@@ -46,7 +46,6 @@
 			android:layout_alignTop="@id/fg"
 			android:layout_alignParentRight="true"
 			android:layout_toRightOf="@id/fg"
-			android:layout_alignParentStart="true"
 			android:minHeight="60dp"
 			android:layout_weight="1"
 			android:gravity="center"
