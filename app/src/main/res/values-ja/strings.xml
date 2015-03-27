@@ -8,6 +8,7 @@
   <string name="title_host_editor">ホストを編集</string>
   <string name="title_help">ヘルプ</string>
   <string name="title_colors">配色</string>
+  <string name="title_color_picker">色の取得</string>
   <string name="resolve_connect">接続</string>
   <string name="resolve_entropy">エントロピーの取得</string>
   <string name="menu_insert">ホストを追加</string>
@@ -79,6 +80,7 @@
   <string name="pref_titlebarhide_summary">タイトルバーとアクセスメニューを表示するにはコンソールをタップ</string>
   <string name="pref_fullscreen_title">全画面</string>
   <string name="pref_fullscreen_summary">ステータスバーを隠蔽しコンソールとして利用</string>
+  <string name="pref_keyboard_category">キーボード</string>
   <string name="pref_shiftfkeys_title">Shift+数字はFキー</string>
   <string name="pref_shiftfkeys_summary">ハードウェアキーボードで、shiftと数字キーでF1-F10を送信します</string>
   <string name="pref_ctrlfkeys_title">Ctrl+数字はFキー</string>
@@ -214,8 +216,8 @@
   <string name="color_green">緑</string>
   <string name="color_blue">青</string>
   <string name="color_gray">グレー</string>
-  <string name="colors_fg">FG:</string>
-  <string name="color_bg">BG:</string>
+  <string name="colors_fg_label">FG: %1$d</string>
+  <string name="color_bg_label">BG: %1$d</string>
   <string name="image_description_connected">接続しました。</string>
   <string name="image_description_key_is_locked">キーがロックされました。</string>
   <string name="image_description_toggle_control_character">コントロール文字を切り替えます。</string>

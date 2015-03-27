@@ -8,6 +8,7 @@
   <string name="title_host_editor">עריכת מארח</string>
   <string name="title_help">עזרה</string>
   <string name="title_colors">צבעים</string>
+  <string name="title_color_picker">בחירת צבע</string>
   <string name="resolve_connect">התחברות</string>
   <string name="resolve_entropy">נאסף גיבוב</string>
   <string name="menu_insert">הוספת מארח</string>
@@ -206,8 +207,8 @@
   <string name="color_green">ירוק</string>
   <string name="color_blue">כחול</string>
   <string name="color_gray">אפור</string>
-  <string name="colors_fg">קדמה:</string>
-  <string name="color_bg">רקע:</string>
+  <string name="colors_fg_label">קדמה:%1$d</string>
+  <string name="color_bg_label">רקע:%1$d</string>
   <string name="image_description_connected">יש חיבור.</string>
   <string name="image_description_key_is_locked">המפתח נעול.</string>
   <string name="image_description_toggle_control_character">החלפת מצב תווי בקרה.</string>

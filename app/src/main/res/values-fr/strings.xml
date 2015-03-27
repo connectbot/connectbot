@@ -214,8 +214,8 @@
   <string name="color_green">vert</string>
   <string name="color_blue">bleu</string>
   <string name="color_gray">gris</string>
-  <string name="colors_fg">PP :</string>
-  <string name="color_bg">AP :</string>
+  <string name="colors_fg_label">PP: %1$d</string>
+  <string name="color_bg_label">AP: %1$d</string>
   <string name="image_description_connected">Connecté</string>
   <string name="image_description_key_is_locked">Clef verrouillée</string>
   <string name="image_description_toggle_control_character">Activer/désactiver le caractère \"contrôle\"</string>

@@ -8,6 +8,7 @@
   <string name="title_host_editor">编辑主机</string>
   <string name="title_help">帮助</string>
   <string name="title_colors">颜色</string>
+  <string name="title_color_picker">选择一种颜色</string>
   <string name="resolve_connect">连接</string>
   <string name="resolve_entropy">收集杂乱数</string>
   <string name="menu_insert">添加主机</string>
@@ -77,6 +78,7 @@
   <string name="pref_rotation_summary">当键盘打开或关闭时屏幕如何旋转(水平或竖直)</string>
   <string name="pref_fullscreen_title">全屏</string>
   <string name="pref_fullscreen_summary">处于控制台时隐藏状态栏</string>
+  <string name="pref_keyboard_category">键盘</string>
   <string name="pref_shiftfkeys_title">Shift+num(数字键) 作为 功能键</string>
   <string name="pref_shiftfkeys_summary">在硬件键盘上，数字键和 shift 键组合发送 F1-F10</string>
   <string name="pref_ctrlfkeys_title">Ctrl+num(数字键) 作为 功能键</string>
@@ -212,8 +214,8 @@
   <string name="color_green">绿色</string>
   <string name="color_blue">蓝色</string>
   <string name="color_gray">灰色</string>
-  <string name="colors_fg">前景色:</string>
-  <string name="color_bg">背景色:</string>
+  <string name="colors_fg_label">前景色：%1$d</string>
+  <string name="color_bg_label">背景色：%1$d</string>
   <string name="image_description_connected">已连接。</string>
   <string name="image_description_key_is_locked">密钥已锁。</string>
   <string name="image_description_toggle_control_character">切换控制字符。</string>

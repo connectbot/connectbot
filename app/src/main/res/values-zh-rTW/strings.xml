@@ -8,6 +8,7 @@
   <string name="title_host_editor">編輯主機資訊</string>
   <string name="title_help">說明</string>
   <string name="title_colors">顏色</string>
+  <string name="title_color_picker">挑選顏色</string>
   <string name="resolve_connect">連線</string>
   <string name="resolve_entropy">收集用戶熵</string>
   <string name="menu_insert">新增主機</string>
@@ -216,8 +217,8 @@
   <string name="color_green">綠</string>
   <string name="color_blue">藍</string>
   <string name="color_gray">灰</string>
-  <string name="colors_fg">前景：</string>
-  <string name="color_bg">背景：</string>
+  <string name="colors_fg_label">前景：%1$d</string>
+  <string name="color_bg_label">背景：%1$d</string>
   <string name="image_description_connected">已連線。</string>
   <string name="image_description_key_is_locked">金鑰已鎖定。</string>
   <string name="image_description_toggle_control_character">切換控制字元</string>
