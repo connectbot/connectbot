@@ -61,8 +61,9 @@ import de.mud.terminal.vt320;
 public class TerminalBridge implements VDUDisplay {
 	public final static String TAG = "ConnectBot.TerminalBridge";
 
-	public final static int DEFAULT_FONT_SIZE = 10;
+	public final static int DEFAULT_FONT_SIZE_DP = 10;
 	private final static int FONT_SIZE_STEP = 2;
+	private final float displayDensity;
 
 	public Integer[] color;
 
@@ -107,7 +108,7 @@ public class TerminalBridge implements VDUDisplay {
 	public int charHeight = -1;
 	private int charTop = -1;
 
-	private float fontSize = -1;
+	private float fontSizeDp = -1;
 
 	private final List<FontSizeChangedListener> fontSizeChangedListeners;
 
@@ -143,6 +144,8 @@ public class TerminalBridge implements VDUDisplay {
 		emulation = null;
 		manager = null;
 
+		displayDensity = 1f;
+
 		defaultPaint = new Paint();
 
 		selectionArea = new SelectionArea();
@@ -169,6 +172,8 @@ public class TerminalBridge implements VDUDisplay {
 		emulation = manager.getEmulation();
 		scrollback = manager.getScrollback();
 
+		this.displayDensity = manager.getResources().getDisplayMetrics().density;
+
 		// create prompt helper to relay password and hostkey requests up to gui
 		promptHelper = new PromptHelper(this);
 
@@ -182,10 +187,11 @@ public class TerminalBridge implements VDUDisplay {
 
 		fontSizeChangedListeners = new LinkedList<FontSizeChangedListener>();
 
-		int hostFontSize = host.getFontSize();
-		if (hostFontSize <= 0)
-			hostFontSize = DEFAULT_FONT_SIZE;
-		setFontSize(hostFontSize);
+		int hostFontSizeDp = host.getFontSize();
+		if (hostFontSizeDp <= 0) {
+			hostFontSizeDp = DEFAULT_FONT_SIZE_DP;
+		}
+		setFontSize(hostFontSizeDp);
 
 		// create terminal buffer and handle outgoing data
 		// this is probably status reply information
@@ -384,7 +390,7 @@ public class TerminalBridge implements VDUDisplay {
 		relayThread.start();
 
 		// force font-size to make sure we resizePTY as needed
-		setFontSize(fontSize);
+		setFontSize(fontSizeDp);
 
 		// finally send any post-login string, if requested
 		injectString(host.getPostLogin());
@@ -480,13 +486,18 @@ public class TerminalBridge implements VDUDisplay {
 	/**
 	 * Request a different font size. Will make call to parentChanged() to make
 	 * sure we resize PTY if needed.
+	 *
+	 * @param sizeDp Size of font in dp
 	 */
-	/* package */ final void setFontSize(float size) {
-		if (size <= 0.0)
+	/* package */ final void setFontSize(float sizeDp) {
+		if (sizeDp <= 0.0) {
 			return;
+		}
 
-		defaultPaint.setTextSize(size);
-		fontSize = size;
+		final int fontSizePx = (int) (sizeDp * this.displayDensity + 0.5f);
+
+		defaultPaint.setTextSize(fontSizePx);
+		fontSizeDp = sizeDp;
 
 		// read new metrics to get exact pixel dimensions
 		FontMetrics fm = defaultPaint.getFontMetrics();
@@ -498,13 +509,15 @@ public class TerminalBridge implements VDUDisplay {
 		charHeight = (int) Math.ceil(fm.descent - fm.top);
 
 		// refresh any bitmap with new font size
-		if (parent != null)
+		if (parent != null) {
 			parentChanged(parent);
+		}
 
-		for (FontSizeChangedListener ofscl : fontSizeChangedListeners)
-			ofscl.onFontSizeChanged(size);
+		for (FontSizeChangedListener ofscl : fontSizeChangedListeners) {
+			ofscl.onFontSizeChanged(sizeDp);
+		}
 
-		host.setFontSize((int) fontSize);
+		host.setFontSize((int) sizeDp);
 		manager.hostdb.updateFontSize(host);
 
 		forcedSize = false;
@@ -771,51 +784,52 @@ public class TerminalBridge implements VDUDisplay {
 
 	/**
 	 * Resize terminal to fit [rows]x[cols] in screen of size [width]x[height]
-	 * @param rows
-	 * @param cols
-	 * @param width
-	 * @param height
+	 *
+	 * @param rows desired number of text rows
+	 * @param cols desired numbor of text colums
+	 * @param width width of screen in pixels
+	 * @param height height of screen in pixels
 	 */
 	public synchronized void resizeComputed(int cols, int rows, int width, int height) {
-		float size = 8.0f;
+		float sizeDp = 8.0f;
 		float step = 8.0f;
 		float limit = 0.125f;
 
 		int direction;
 
-		while ((direction = fontSizeCompare(size, cols, rows, width, height)) < 0)
-			size += step;
+		while ((direction = fontSizeCompare(sizeDp, cols, rows, width, height)) < 0)
+			sizeDp += step;
 
 		if (direction == 0) {
-			Log.d("fontsize", String.format("Found match at %f", size));
+			Log.d("fontsize", String.format("Found match at %f", sizeDp));
 			return;
 		}
 
 		step /= 2.0f;
-		size -= step;
+		sizeDp -= step;
 
-		while ((direction = fontSizeCompare(size, cols, rows, width, height)) != 0
+		while ((direction = fontSizeCompare(sizeDp, cols, rows, width, height)) != 0
 				&& step >= limit) {
 			step /= 2.0f;
 			if (direction > 0) {
-				size -= step;
+				sizeDp -= step;
 			} else {
-				size += step;
+				sizeDp += step;
 			}
 		}
 
 		if (direction > 0)
-			size -= step;
+			sizeDp -= step;
 
 		this.columns = cols;
 		this.rows = rows;
-		setFontSize(size);
+		setFontSize(sizeDp);
 		forcedSize = true;
 	}
 
-	private int fontSizeCompare(float size, int cols, int rows, int width, int height) {
+	private int fontSizeCompare(float sizeDp, int cols, int rows, int width, int height) {
 		// read new metrics to get exact pixel dimensions
-		defaultPaint.setTextSize(size);
+		defaultPaint.setTextSize((int) (sizeDp * this.displayDensity + 0.5f));
 		FontMetrics fm = defaultPaint.getFontMetrics();
 
 		float[] widths = new float[1];
@@ -823,7 +837,7 @@ public class TerminalBridge implements VDUDisplay {
 		int termWidth = (int) widths[0] * cols;
 		int termHeight = (int) Math.ceil(fm.descent - fm.top) * rows;
 
-		Log.d("fontsize", String.format("font size %f resulted in %d x %d", size, termWidth, termHeight));
+		Log.d("fontsize", String.format("font size %fdp resulted in %d x %d", sizeDp, termWidth, termHeight));
 
 		// Check to see if it fits in resolution specified.
 		if (termWidth > width || termHeight > height)
@@ -1003,16 +1017,16 @@ public class TerminalBridge implements VDUDisplay {
 	}
 
 	/**
-	 *
+	 * Convenience function to increase the font size by a given step.
 	 */
 	public void increaseFontSize() {
-		setFontSize(fontSize + FONT_SIZE_STEP);
+		setFontSize(fontSizeDp + FONT_SIZE_STEP);
 	}
 
 	/**
-	 *
+	 * Convenience function to decrease the font size by a given step.
 	 */
 	public void decreaseFontSize() {
-		setFontSize(fontSize - FONT_SIZE_STEP);
+		setFontSize(fontSizeDp - FONT_SIZE_STEP);
 	}
 }
