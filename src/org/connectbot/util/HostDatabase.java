@@ -47,7 +47,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public final static String TAG = "ConnectBot.HostDatabase";
 
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 23;
+	public final static int DB_VERSION = 24;
 
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -140,8 +140,13 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 	public static final Object[] dbLock = new Object[0];
 
+	/** Used during upgrades from DB version 23 to 24. */
+	private final float displayDensity;
+
 	public HostDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
+
+		this.displayDensity = context.getResources().getDisplayMetrics().density;
 
 		getWritableDatabase().close();
 	}
@@ -264,12 +269,15 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		case 22:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_QUICKDISCONNECT + " TEXT DEFAULT '" + Boolean.toString(false) + "'");
+		case 23:
+			db.execSQL("UPDATE " + TABLE_HOSTS
+					+ " SET " + FIELD_HOST_FONTSIZE + " = " + FIELD_HOST_FONTSIZE + " / " + displayDensity);
 		}
 	}
 
 	/**
 	 * Touch a specific host to update its "last connected" field.
-	 * @param nickname Nickname field of host to update
+	 * @param host host to update
 	 */
 	public void touchHost(HostBean host) {
 		long now = System.currentTimeMillis() / 1000;
@@ -358,8 +366,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	/**
-	 * @param hosts
-	 * @param c
+	 * @param c cursor to read from
 	 */
 	private List<HostBean> createHostBeans(Cursor c) {
 		List<HostBean> hosts = new LinkedList<HostBean>();
@@ -414,8 +421,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	/**
-	 * @param c
-	 * @return
+	 * @param c cursor with zero or more hosts
+	 * @return the first host from the cursor or {@code null} if none.
 	 */
 	private HostBean getFirstHostBean(Cursor c) {
 		HostBean host = null;
@@ -430,13 +437,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	/**
-	 * @param nickname
-	 * @param protocol
-	 * @param username
-	 * @param hostname
-	 * @param hostname2
-	 * @param port
-	 * @return
+	 * @param selection parameters describing the desired host
+	 * @return host matching selection or {@code null}.
 	 */
 	public HostBean findHost(Map<String, String> selection) {
 		StringBuilder selectionBuilder = new StringBuilder();
@@ -481,8 +483,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	/**
-	 * @param hostId
-	 * @return
+	 * @param hostId host id for the host
+	 * @return host matching the hostId or {@code null} if none match
 	 */
 	public HostBean findHostById(long hostId) {
 		HostBean host;
@@ -502,10 +504,10 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 	/**
 	 * Record the given hostkey into database under this nickname.
-	 * @param hostname
-	 * @param port
-	 * @param hostkeyalgo
-	 * @param hostkey
+	 * @param hostname hostname to match
+	 * @param port port to match
+	 * @param hostkeyalgo algorithm for host key
+	 * @param hostkey the bytes of the host key itself
 	 */
 	public void saveKnownHost(String hostname, int port, String hostkeyalgo, byte[] hostkey) {
 		ContentValues values = new ContentValues();
