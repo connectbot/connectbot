@@ -506,4 +506,6 @@
 	<!-- Describes the icon of the "show keyboard" button in the terminal view for accessibility
 	     purposes. -->
 	<string name="image_description_show_keyboard">Show keyboard.</string>
+    <string name="hostpref_closeondisconnect_title">Close on disconnect</string>
+    <string name="hostpref_closeondisconnect_summary">Automatically close the connection when the remote host disconnects</string>
 </resources>

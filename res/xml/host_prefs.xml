@@ -85,6 +85,12 @@
 		android:summary="@string/hostpref_stayconnected_summary"
 		/>
 
+    <CheckBoxPreference
+        android:key="closeondisconnect"
+        android:title="@string/hostpref_closeondisconnect_title"
+        android:summary="@string/hostpref_closeondisconnect_summary"
+        />
+
 	<ListPreference
 		android:key="delkey"
 		android:title="@string/hostpref_delkey_title"

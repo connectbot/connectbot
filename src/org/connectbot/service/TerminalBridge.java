@@ -442,6 +442,16 @@ public class TerminalBridge implements VDUDisplay {
 				manager.requestReconnect(this);
 				return;
 			}
+			if (host.getCloseOnDisconnect()) {
+				awaitingClose = true;
+
+				// Tell the TerminalManager that we can be destroyed now.
+				if (disconnectListener != null) {
+					disconnectListener.onDisconnected(TerminalBridge.this);
+				}
+
+				return;
+			}
 			Thread disconnectPromptThread = new Thread(new Runnable() {
 				public void run() {
 					Boolean result = promptHelper.requestBooleanPrompt(null,
