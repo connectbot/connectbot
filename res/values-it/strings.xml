@@ -8,6 +8,7 @@
   <string name="title_host_editor">Modifica connessione</string>
   <string name="title_help">Guida</string>
   <string name="title_colors">Colori</string>
+  <string name="title_color_picker">Scelta colore</string>
   <string name="resolve_connect">Connetti</string>
   <string name="resolve_entropy">Raccolta disordinata</string>
   <string name="menu_insert">Aggiungi connessione</string>
@@ -77,6 +78,7 @@
   <string name="pref_rotation_summary">Come cambiare rotazione quando la tastiera esce/rientra</string>
   <string name="pref_fullscreen_title">Schermo intero</string>
   <string name="pref_fullscreen_summary">Nascondi la barra di stato in console</string>
+  <string name="pref_keyboard_category">Tastiera</string>
   <string name="pref_memkeys_title">Mantieni chiavi in memoria</string>
   <string name="pref_memkeys_summary">Mantiene le chiavi in memoria finché il servizio non viene terminato</string>
   <string name="pref_conn_persist_title">Connessioni permanenti</string>
@@ -206,7 +208,8 @@
   <string name="color_green">verde</string>
   <string name="color_blue">blu</string>
   <string name="color_gray">grigio</string>
-  <string name="color_bg">CS:</string>
+  <string name="colors_fg_label">CP: %1$d</string>
+  <string name="color_bg_label">CS: %1$d</string>
   <string name="image_description_connected">Connesso.</string>
   <string name="image_description_key_is_locked">La chiave e\' bloccata.</string>
   <string name="image_description_send_escape_character">Mandare un carattere escape.</string>

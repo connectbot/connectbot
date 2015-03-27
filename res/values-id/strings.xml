@@ -6,6 +6,8 @@
   <string name="title_pubkey_list">Kunci Publik</string>
   <string name="title_host_editor">Ubah Host</string>
   <string name="title_help">Bantuan</string>
+  <string name="title_colors">Warna</string>
+  <string name="title_color_picker">Pilih warna</string>
   <string name="resolve_connect">Hubungi</string>
   <string name="resolve_entropy">Kumpulkan entropy</string>
   <string name="menu_insert">Tambahkan host</string>
@@ -75,6 +77,7 @@
   <string name="pref_rotation_summary">Bagaimana mengubah rotasi ketika papan ketik menyembul masuk/keluar</string>
   <string name="pref_fullscreen_title">Layar penuh</string>
   <string name="pref_fullscreen_summary">Sembunyikan bar status ketika dalam konsol</string>
+  <string name="pref_keyboard_category">Papan tik</string>
   <string name="pref_memkeys_title">Ingat kunci dalam memori</string>
   <string name="pref_memkeys_summary">Simpan kunci yang terbuka kedalam memori hingga layanan backend berakhir</string>
   <string name="pref_conn_persist_title">Pertahankan koneksi</string>
@@ -118,6 +121,8 @@
   <string name="hostpref_encoding_summary">Karakter pengkodean untuk host</string>
   <string name="hostpref_connection_category">Konfigurasi koneksi</string>
   <string name="hostpref_username_title">Nama pengguna</string>
+  <string name="hostpref_hostname_title">Host</string>
+  <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Tidak pernah terhubung</string>
   <string name="bind_minutes">%1$s menit yang lalu</string>
   <string name="bind_hours">%1$s jam yang lalu</string>
@@ -130,6 +135,8 @@
   <string name="console_menu_portforwards">Penerusan port</string>
   <string name="console_menu_resize">Paksakan ukuran</string>
   <string name="console_menu_urlscan">Pindai URL</string>
+  <string name="button_yes">Ya</string>
+  <string name="button_no">Tidak</string>
   <string name="portforward_local">Lokal</string>
   <string name="portforward_remote">Remote</string>
   <string name="portforward_dynamic">Dinamis (SOCKS)</string>
@@ -141,6 +148,7 @@
   <string name="list_format_error">Gunakan bentuk \"%1$s\"</string>
   <string name="format_username">pengguna</string>
   <string name="format_hostname">namahost</string>
+  <string name="format_port">Port</string>
   <string name="list_menu_pubkeys">Atur Pubkey</string>
   <string name="list_menu_sortcolor">Urutkan berdasarkan warna</string>
   <string name="list_menu_sortname">Urutkan berdasarkan nama</string>
@@ -155,7 +163,11 @@
   <string name="list_rotation_port">Paksakan bentuk tegak</string>
   <string name="list_rotation_auto">Otomatis</string>
   <string name="list_camera_ctrlaspace">Ctrl+A kemudian spasi</string>
+  <string name="list_camera_ctrla">Ctrl+A</string>
+  <string name="list_camera_esc">Esc</string>
   <string name="list_camera_none">Kosong</string>
+  <string name="list_delkey_backspace">Backspace</string>
+  <string name="list_delkey_del">Hapus</string>
   <string name="delete_message">Apakah anda yakin ingin menghapus %1$s?</string>
   <string name="delete_pos">Ya, hapus</string>
   <string name="delete_neg">Batal</string>
@@ -183,15 +195,18 @@
   <string name="terminal_enable_portfoward">Aktifkan port forward: %1$s</string>
   <string name="local_shell_unavailable">Gagal! Shell lokal tidak tersedia di telepon ini.</string>
   <string name="notification_text">%1$s memerlukan perhatian anda.</string>
+  <string name="no">Tidak</string>
   <string name="with_confirmation">Dengan konfirmasi</string>
+  <string name="yes">Ya</string>
   <string name="exceptions_submit_message">Sepertinya ConnectBot mengalami masalah saat berjalan sebelumnya. Kirim laporan galat ke para pengembang ConnectBot?</string>
+  <string name="menu_colors_reset">Atur ulang</string>
   <string name="app_is_running">ConnectBot sedang berjalan</string>
   <string name="color_red">merah</string>
   <string name="color_green">hijau</string>
   <string name="color_blue">biru</string>
   <string name="color_gray">abu-abu</string>
-  <string name="colors_fg">WD:</string>
-  <string name="color_bg">WB:</string>
+  <string name="colors_fg_label">WD: %1$d</string>
+  <string name="color_bg_label">WB: %1$d</string>
   <string name="image_description_connected">Tersambung.</string>
   <string name="image_description_key_is_locked">Pubkey terkunci.</string>
   <string name="image_description_toggle_control_character">Ubah-ubah karakter control.</string>

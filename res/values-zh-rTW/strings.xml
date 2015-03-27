@@ -8,6 +8,7 @@
   <string name="title_host_editor">編輯主機資訊</string>
   <string name="title_help">說明</string>
   <string name="title_colors">顏色</string>
+  <string name="title_color_picker">挑選顏色</string>
   <string name="resolve_connect">連線</string>
   <string name="resolve_entropy">收集用戶熵</string>
   <string name="menu_insert">新增主機</string>
@@ -79,6 +80,7 @@
   <string name="pref_titlebarhide_summary">輕觸終端機來顯示標題列並存取選單</string>
   <string name="pref_fullscreen_title">全螢幕</string>
   <string name="pref_fullscreen_summary">當在控制台時隱藏狀態列</string>
+  <string name="pref_keyboard_category">鍵盤</string>
   <string name="pref_shiftfkeys_title">Shift+num 為功能鍵</string>
   <string name="pref_shiftfkeys_summary">在硬體鍵盤上，shift 加數字鍵時傳送 F1-F10</string>
   <string name="pref_ctrlfkeys_title">Ctrl+num 為功能鍵</string>
@@ -91,6 +93,7 @@
   <string name="pref_conn_persist_summary">在背景執行時仍保持連線狀態</string>
   <string name="pref_keymode_title">快捷鍵</string>
   <string name="pref_keymode_summary">選擇如何使用 Alt 來叫出 \'/\' 和用 Shift 呼叫 Tab</string>
+  <string name="only_alt">只有Alt</string>
   <string name="pref_camera_title">照相快捷鍵</string>
   <string name="pref_camera_summary">選擇當照相按鈕按下時將要觸發的快捷鍵</string>
   <string name="pref_keepalive_title">保持螢幕喚醒</string>
@@ -214,8 +217,8 @@
   <string name="color_green">綠</string>
   <string name="color_blue">藍</string>
   <string name="color_gray">灰</string>
-  <string name="colors_fg">前景：</string>
-  <string name="color_bg">背景：</string>
+  <string name="colors_fg_label">前景：%1$d</string>
+  <string name="color_bg_label">背景：%1$d</string>
   <string name="image_description_connected">已連線。</string>
   <string name="image_description_key_is_locked">金鑰已鎖定。</string>
   <string name="image_description_toggle_control_character">切換控制字元</string>

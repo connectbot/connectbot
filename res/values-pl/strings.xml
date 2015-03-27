@@ -8,6 +8,7 @@
   <string name="title_host_editor">Edytuj host</string>
   <string name="title_help">Pomoc</string>
   <string name="title_colors">Kolory</string>
+  <string name="title_color_picker">Wybór koloru</string>
   <string name="resolve_connect">Połącz</string>
   <string name="resolve_entropy">Zbierz dane losowe</string>
   <string name="menu_insert">Dodaj host</string>
@@ -77,6 +78,7 @@
   <string name="pref_rotation_summary">Sposób orientacji ekranu przy wysuniętej/wsuniętej klawiaturze</string>
   <string name="pref_fullscreen_title">Pełny ekran</string>
   <string name="pref_fullscreen_summary">Ukryj pasek statusu podczas pracy w konsoli</string>
+  <string name="pref_keyboard_category">Klawiatura</string>
   <string name="pref_memkeys_title">Zapamiętaj klucze w pamięci</string>
   <string name="pref_memkeys_summary">Trzymaj odblokowane klucze w pamięci dopóki usługa się nie rozłączy</string>
   <string name="pref_conn_persist_title">Utrzymuj połącznia</string>
@@ -206,8 +208,8 @@
   <string name="color_green">zielony</string>
   <string name="color_blue">niebieski</string>
   <string name="color_gray">szary</string>
-  <string name="colors_fg">FG:</string>
-  <string name="color_bg">BG:</string>
+  <string name="colors_fg_label">FG: %1$d</string>
+  <string name="color_bg_label">BG: %1$d</string>
   <string name="image_description_connected">Połączono</string>
   <string name="image_description_key_is_locked">Klucz zablokowany</string>
   <string name="image_description_toggle_control_character">Przełącz znak kontrolny</string>
