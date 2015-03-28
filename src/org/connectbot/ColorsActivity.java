@@ -17,6 +17,7 @@
 
 package org.connectbot;
 
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -163,6 +164,7 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 		private final boolean mSquare;
 
 		private final int mResourceLabel;
+		private final NumberFormat mNumberFormatter;
 
 		private Paint mTextPaint;
 		private Paint mShadowPaint;
@@ -180,6 +182,8 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 
 			mSquare = square;
 			mResourceLabel = resourceLabel;
+
+			mNumberFormatter = NumberFormat.getIntegerInstance(getContext().getResources().getConfiguration().locale);
 
 			DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 
@@ -208,7 +212,7 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 			if (mResourceLabel != -1) {
 				mText = getContext().getResources().getString(mResourceLabel, number);
 			} else {
-				mText = Integer.toString(number);
+				mText = mNumberFormatter.format(number);
 			}
 		}
 
