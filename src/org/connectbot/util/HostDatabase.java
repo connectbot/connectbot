@@ -592,10 +592,13 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	/**
 	 * Returns a list of all the port forwards associated with a particular host ID.
 	 * @param host the host for which we want the port forward list
-	 * @return port forwards associated with host ID
+	 * @return port forwards associated with host ID or empty list if no match
 	 */
 	public List<PortForwardBean> getPortForwardsForHost(HostBean host) {
 		List<PortForwardBean> portForwards = new LinkedList<PortForwardBean>();
+		if (host == null) {
+			return portForwards;
+		}
 
 		synchronized (dbLock) {
 			SQLiteDatabase db = this.getReadableDatabase();
