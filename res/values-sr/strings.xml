@@ -454,7 +454,7 @@
 	<string name="terminal_auth_pubkey_any">"Покушавам аутентификацију кључем помоћу било којег јавног кључа у меморији"</string>
 	<string name="terminal_auth_pubkey_invalid">"Изабрани јавни кључ није исправан, покушајте поново изабрати кључ у уређивачу домаћина"</string>
 	<string name="terminal_auth_pubkey_specific">"Покушавам аутентификацију кључем помоћу наведеног јавног кључа"</string>
-	<string name="terminal_auth_pubkey_fail">"Метода аутентификације кључем помоћу кључа „1$s“ није успела"</string>
+	<string name="terminal_auth_pubkey_fail">"Метода аутентификације кључем помоћу кључа „%1$s“ није успела"</string>
 
 	<string name="terminal_auth_ki">"Покушавам аутентификацију интерактивном тастатуром"</string>
 	<string name="terminal_auth_ki_fail">"Метода аутентификације интерактивном тастатуром није успела"</string>
