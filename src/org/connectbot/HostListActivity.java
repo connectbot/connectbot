@@ -346,9 +346,10 @@ public class HostListActivity extends ListActivity {
 		// edit, disconnect, delete
 		MenuItem connect = menu.add(R.string.list_host_disconnect);
 		TerminalBridge bridge = null;
-                if (bound != null)
-                        bridge = bound.getConnectedBridge(host);
-		connect.setEnabled((bridge != null));
+		if (bound != null) {
+			bridge = bound.getConnectedBridge(host);
+		}
+		connect.setEnabled(bridge != null);
 		connect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				bridge.dispatchDisconnect(true);
