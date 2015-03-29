@@ -155,7 +155,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 				PubkeyBean pubkey = (PubkeyBean) getListView().getItemAtPosition(position);
-				boolean loaded = bound.isKeyLoaded(pubkey.getNickname());
+				boolean loaded = bound != null && bound.isKeyLoaded(pubkey.getNickname());
 
 				// handle toggling key in-memory on/off
 				if (loaded) {
@@ -307,7 +307,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 		// cant change password or clipboard imported keys
 		final boolean imported = PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType());
-		final boolean loaded = bound.isKeyLoaded(pubkey.getNickname());
+		final boolean loaded = bound != null && bound.isKeyLoaded(pubkey.getNickname());
 
 		MenuItem load = menu.add(loaded ? R.string.pubkey_memory_unload : R.string.pubkey_memory_load);
 		load.setOnMenuItemClickListener(new OnMenuItemClickListener() {
