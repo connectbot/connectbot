@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2007 Kenny Root, Jeffrey Sharkey
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+	<!-- app_name needs to be translated/transcribed in Serbian -->
+	<string name="app_name">Конектбот</string>
+
+	<!-- Summary of what ConnectBot is; used as a short description in the Android running apps list -->
+	<string name="app_desc">"Једноставан, моћан, ССХ клијент отвореног кôда."</string>
+
+	<!-- Summary of what the ConnectBot service does; displayed in the Android running apps list -->
+	<string name="service_desc">"Одржава ССХ везе и учитане јавне кључеве"</string>
+
+	<!-- Window title for the Host List -->
+	<string name="title_hosts_list">"Домаћини"</string>
+	<!-- Window title for the Pubkeys List -->
+	<string name="title_pubkey_list">"Јавни кључеви"</string>
+	<!-- Window title for the Port Forwards List -->
+	<string name="title_port_forwards_list">"Прослеђени портови"</string>
+	<!-- Window title when editing host details -->
+	<string name="title_host_editor">"Уреди домаћина"</string>
+	<!-- Window title for Help index -->
+	<string name="title_help">"Помоћ"</string>
+	<!-- Window title for color list editing screen -->
+	<string name="title_colors">"Боје"</string>
+	<!-- Dialog title for color picker dialog -->
+	<string name="title_color_picker">"Изаберите боју"</string>
+
+	<string name="resolve_connect">"Повежи"</string>
+	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
+	<string name="resolve_entropy">"Сакупи ентропију"</string>
+
+	<string name="menu_insert">"Додај домаћина"</string>
+	<string name="menu_delete">"Обриши домаћина"</string>
+	<string name="menu_preferences">"Поставке"</string>
+
+	<string name="help_intro">"Изаберите тему испод за више информација о поједином предмету."</string>
+	<string name="help_about">"О Конектботу"</string>
+	<string name="help_keyboard">"Тастатура"</string>
+
+	<string name="pubkey_generate">"Генериши"</string>
+	<string name="pubkey_import">"Увези"</string>
+	<string name="pubkey_delete">"Обриши кључ"</string>
+	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
+	<string name="pubkey_gather_entropy">"Сакупљам ентропију"</string>
+	<string name="pubkey_touch_prompt">"Додирните овде да бисте сакупили ентропију: %1$d%% завршено"</string>
+	<string name="pubkey_touch_hint">"Да бисте осигурали насумичност током генерисања кључа, померајте прст насумично преко поља испод."</string>
+	<string name="pubkey_generating">"Генеришем пар кључева..."</string>
+	<string name="pubkey_copy_private">"Копирај приватни кључ"</string>
+	<string name="pubkey_copy_public">"Копирај јавни кључ"</string>
+	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
+	<string name="pubkey_list_empty">"Тапните „Мени“ да бисте направили "\n"или увезли пар кључева."</string>
+	<string name="pubkey_unknown_format">"Непознат формат"</string>
+	<string name="pubkey_change_password">"Измени лозинку"</string>
+	<string name="pubkey_list_pick">"Изабери са /sdcard"</string>
+	<string name="pubkey_import_parse_problem">"Проблем рашчлањивања увезеног приватног кључа"</string>
+	<string name="pubkey_unlock">"Откључај кључ"</string>
+	<string name="pubkey_failed_add">"Лоша лозинка за кључ „%1$s“. Аутентификација није успела."</string>
+	<string name="pubkey_memory_load">"Учитај у меморију"</string>
+	<string name="pubkey_memory_unload">"Уклони из меморије"</string>
+	<string name="pubkey_load_on_start">"Учитај кључеве по покретању"</string>
+	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
+	<string name="pubkey_confirm_use">"Потврди пре употребе"</string>
+
+	<!-- Note that the '\n' splits lines, so it's actually "create port forwards" -->
+	<string name="portforward_list_empty">"Тапните „Мени“ да бисте направили"\n"прослеђење порта."</string>
+	<string name="portforward_edit">"Уреди прослеђење порта"</string>
+	<string name="portforward_delete">"Обриши прослеђење порта"</string>
+
+	<string name="prompt_nickname">"Надимак:"</string>
+	<!-- An example string that could be used as a nickname for a pubkey. -->
+	<string name="prompt_nickname_hint_pubkey">"Мој радни кључ"</string>
+	<!-- The source TCP port for port forwards. -->
+	<string name="prompt_source_port">"Изворни порт:"</string>
+	<!-- The "host:port" combination used for port forward destinations. -->
+	<string name="prompt_destination">"Одредиште:"</string>
+	<string name="prompt_old_password">"Стара лозинка:"</string>
+	<string name="prompt_password">"Лозинка:"</string>
+	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
+	<string name="prompt_again">"(поново)"</string>
+	<!-- Label for the user to select port forward type. -->
+	<string name="prompt_type">"Тип:"</string>
+	<string name="prompt_password_can_be_blank">"Напомена: лозинка може да буде празна"</string>
+	<!-- Prompt for the size of the private key in bits. -->
+	<string name="prompt_bits">"Бита:"</string>
+
+	<!-- Prompt for the password to unlock a certain pubkey. -->
+	<string name="prompt_pubkey_password">"Лозинка за кључ „%1$s“"</string>
+
+	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
+	<string name="prompt_allow_agent_to_use_key">"Дозволити удаљеном домаћину да"\n"користи тастер „%1$s“?"</string>
+
+	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
+	<string name="host_verification_failure_warning_header">"УПОЗОРЕЊЕ: ИДЕНТИФИКАЦИЈА УДАЉЕНОГ ДОМАЋИНА ЈЕ ИЗМЕЊЕНА!"</string>
+	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
+	<string name="host_verification_failure_warning">"МОГУЋЕ ЈЕ ДА НЕКО РАДИ НЕШТО ЛОШЕ!"\n"Неко вас можда управо прислушкује (човек-између напад)!"\n"Такође је могуће да је кључ домаћина управо измењен."</string>
+
+	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
+	<string name="prompt_host_disconnected">"Домаћин је прекинуо везу."\n"Да затворим сесију?"</string>
+	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
+	<string name="prompt_continue_connecting">"Желите ли заиста да"\n"наставите повезивање?"</string>
+
+	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
+	<string name="host_authenticity_warning">"Не могу да утврдим аутентичност домаћина „%1$s“."</string>
+	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
+	<string name="host_fingerprint">"Отисак домаћина %1$s је %2$s"</string>
+
+	<string name="alert_passwords_do_not_match_msg">"Лозинке се поклапају!"</string>
+	<string name="alert_wrong_password_msg">"Погрешна лозинка!"</string>
+	<string name="alert_key_corrupted_msg">"Изгледа да је приватни кључ покварен!"</string>
+	<string name="alert_sdcard_absent">"СД картица није уметнута!"</string>
+
+	<!-- Add a new item (e.g., host or pubkey) to the list. -->
+	<string name="button_add">"Додај"</string>
+	<!-- Change an existing item's (e.g., host or pubkey) details. -->
+	<string name="button_change">"Измени"</string>
+	<!-- Button that begins the generation of a public key pair. -->
+	<string name="button_generate">"Генериши кључ"</string>
+	<!-- Button that resizes the screen to the user-specified dimensions. -->
+	<string name="button_resize">"Промени величину"</string>
+
+	<string name="alert_disconnect_msg">"Веза изгубљена"</string>
+
+	<string name="msg_copyright">"Ауторско право &#169; 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/"</string>
+
+	<!-- The category title for terminal emulation preferences. -->
+	<string name="pref_emulation_category">"Емулација терминала"</string>
+
+	<!-- Name for the emulation terminal type preference. -->
+	<string name="pref_emulation_title">"Режим емулације"</string>
+	<!-- Description of the emulation terminal type preference. -->
+	<string name="pref_emulation_summary">"Режим емулације терминала за PTY везе"</string>
+
+	<!-- Name for the scrollback size preference -->
+	<string name="pref_scrollback_title">"Величина преписа"</string>
+	<!-- Description of the scrollback size preference -->
+	<string name="pref_scrollback_summary">"Величина бафера преписа који се држи у меморији за сваку конзолу"</string>
+
+	<!-- The category title for user interface preferences -->
+	<string name="pref_ui_category">"Корисничко сучеље"</string>
+
+	<!-- Name for the rotation mode preference -->
+	<string name="pref_rotation_title">"Режим ротације"</string>
+	<!-- Summary for the rotation mode preference -->
+	<string name="pref_rotation_summary">"Како променити ротацију при извлачењу/увлачењу тастатуре"</string>
+
+	<!-- Name for the titlebar hide preference -->
+	<string name="pref_titlebarhide_title">"Аутоматски сакриј траку наслова"</string>
+	<!-- Summary for the titlebar hide preference -->
+	<string name="pref_titlebarhide_summary">"Тапните конзолу да бисте приказали траку наслова и приступили менију"</string>
+
+	<!-- Name for the full screen preference -->
+	<string name="pref_fullscreen_title">"Цео екран"</string>
+	<!-- Summary for the full screen preference -->
+	<string name="pref_fullscreen_summary">"Сакриј траку стања при раду у конзоли"</string>
+
+	<!-- The category title for keyboard preferences -->
+	<string name="pref_keyboard_category">"Тастатура"</string>
+
+	<!-- Name for the shifted numbers are f-keys preference -->
+	<string name="pref_shiftfkeys_title">"Shift+num су F-тастери"</string>
+	<!-- Summary for the shifted numbers are f-keys preference -->
+	<string name="pref_shiftfkeys_summary">"На хардверским тастатурама, тастери бројева шаљу F1-F10 са Shift"</string>
+
+	<!-- Name for the ctrl'ed numbers are f-keys preference -->
+	<string name="pref_ctrlfkeys_title">"Ctrl+num су F-тастери"</string>
+	<!-- Summary for the ctrl'ed numbers are f-keys preference -->
+	<string name="pref_ctrlfkeys_summary">"На софтверским тастатурама, тастери бројева шаљу F1-F10 са Ctrl"</string>
+
+	<!-- Name for the volume keys control font size preference -->
+	<string name="pref_volumefont_title">"Тастери за звук мењају вел. фонта"</string>
+	<!-- Summary for the volume keys control font size preference -->
+	<string name="pref_volumefont_summary">"Величину фонта такође можете да мењате у поставкама по домаћину"</string>
+
+	<!-- Name for the memorize keys preference -->
+	<string name="pref_memkeys_title">"Држи кључеве у меморији"</string>
+	<!-- Summary for the memorize keys preference -->
+	<string name="pref_memkeys_summary">"Држи откључане кључеве у меморији док се позадински сервис не оконча"</string>
+
+	<!-- Name for the preference that forces the service to stay running in the background.-->
+	<string name="pref_conn_persist_title">"Трајне везе"</string>
+	<!-- Summary for the preference that forces the service to stay running in the background. -->
+	<string name="pref_conn_persist_summary">"Присили одржање веза при раду у позадини"</string>
+
+	<!-- Name for the keyboard shortcuts preference -->
+	<string name="pref_keymode_title">"Пречице директоријума"</string>
+	<!-- Summary for the keyboard shortcuts preference -->
+	<string name="pref_keymode_summary">"Одредите како користити Alt за „/“ и Shift за табулатор"</string>
+
+	<!-- Name for the sticky modifiers preference -->
+	<string name="pref_stickymodifiers_title">"Лепљиви модификатори"</string>
+	<!-- Summary for the sticky modifiers preference -->
+	<string name="pref_stickymodifiers_summary">"Модификаторски тастери остају укључени до притиска на други тастер"</string>
+
+	<!-- Sticky modifier preference value description for when only the Alt key should be a sticky modifier. -->
+	<string name="only_alt">"Само Alt"</string>
+
+	<!-- Name for the camera shortcut usage preference -->
+	<string name="pref_camera_title">"Пречица камере"</string>
+	<!-- Summary for the camera shortcut usage preference -->
+	<string name="pref_camera_summary">"Одредите пречицу за окидање по притиску на тастер камере"</string>
+
+	<!-- Name for the keep screen on preference -->
+	<string name="pref_keepalive_title">"Држи екран укљученим"</string>
+	<!-- Summary for the camera shortcut usage preference -->
+	<string name="pref_keepalive_summary">"Спречи искључивање екрана при раду у конзоли"</string>
+
+	<!-- Name for the Wi-Fi lock preference -->
+	<string name="pref_wifilock_title">"Држи бежични активним"</string>
+	<!-- Summary for the Wi-Fi lock preference -->
+	<string name="pref_wifilock_summary">"Спречи искључивање бежичног кад је сесија активна"</string>
+
+	<!-- Name for the haptic feedback (bumpy arrow) preference -->
+	<string name="pref_bumpyarrows_title">"Џомбасте стрелице"</string>
+	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
+	<string name="pref_bumpyarrows_summary">"Вибрирај по слању тастера стрелице са трекбола; корисно при спорим везама"</string>
+
+	<!-- Category title for the Terminal Bell preferences -->
+	<string name="pref_bell_category">"Звоно терминала"</string>
+
+	<!-- Checkbox preference title for the audible terminal bell feature -->
+	<string name="pref_bell_title">"Звучно звоно"</string>
+
+	<!-- Title for the slider preference to set the volume -->
+	<string name="pref_bell_volume_title">"Јачина звука звона"</string>
+
+	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
+	<string name="pref_bell_vibrate_title">"Вибрирај на звоно"</string>
+
+	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
+	<string name="pref_bell_notification_title">"Позадинска обавештења"</string>
+	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
+	<string name="pref_bell_notification_summary">"Прикажи обавештење кад терминал у позадини огласи звоно."</string>
+
+	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
+	<string name="list_keymode_right">"Користи тастере десне стране"</string>
+	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
+	<string name="list_keymode_left">"Користи тастере леве стране"</string>
+	<!-- Preference selection to indicate never to use special shortcut keys. -->
+	<string name="list_keymode_none">"Онемогући"</string>
+
+	<!-- Preference to not use pubkeys to authenticate to this host. -->
+	<string name="list_pubkeyids_none">"Не користи кључеве"</string>
+	<!-- Preference to use any pubkey to authenticate to this host. -->
+	<string name="list_pubkeyids_any">"Користи било који откључани кључ"</string>
+
+	<!-- Host nickname field preference title -->
+	<string name="hostpref_nickname_title">"Надимак"</string>
+
+	<!-- Host color category preference title -->
+	<string name="hostpref_color_title">"Категорија боје"</string>
+
+	<!-- Host's default font size when opening the terminal in points (pt) -->
+	<string name="hostpref_fontsize_title">"Величина фонта (pt)"</string>
+
+	<!-- Host pubkey usage preference title -->
+	<string name="hostpref_pubkeyid_title">"Користи аутентификацију кључем"</string>
+
+	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
+	<string name="hostpref_authagent_title">"Користи ССХ агента за аутентификацију"</string>
+
+	<!-- Host post-login automation preference title -->
+	<string name="hostpref_postlogin_title">"Аутоматизација по пријави"</string>
+	<!-- Host post-login automation preference summary -->
+	<string name="hostpref_postlogin_summary">"Наредбе за покретање на удаљеном серверу након аутентификације"</string>
+
+	<!-- Host compression preference title -->
+	<string name="hostpref_compression_title">"Компресија"</string>
+	<!-- Summary for compression preference -->
+	<string name="hostpref_compression_summary">"Ово може да помогне при спорим мрежама"</string>
+
+	<!-- Setting for whether we want a session to start up when we connect to a host -->
+	<string name="hostpref_wantsession_title">"Покрени сесију шкољке"</string>
+	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
+	<string name="hostpref_wantsession_summary">"Онемогућите да бисте користили само прослеђења портова"</string>
+
+	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
+	<string name="hostpref_stayconnected_title">"Остани повезан"</string>
+	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
+	<string name="hostpref_stayconnected_summary">"Покушај се поново повезати по прекиду везе"</string>
+
+	<!-- Setting for whether we should prompt to close after getting disconnected -->
+	<string name="hostpref_quickdisconnect_title">"Затвори по прекиду"</string>
+	<string name="hostpref_quickdisconnect_summary">"Затвори без питања одмах по прекиду везе."</string>
+
+	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_title">"DEL тастер"</string>
+	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
+	<string name="hostpref_delkey_summary">"Кôд тастера који се шаље притиском на DEL тастер"</string>
+
+	<!-- Host character encoding preference title -->
+	<string name="hostpref_encoding_title">"Кодирање"</string>
+	<!-- Host character encoding preference summary -->
+	<string name="hostpref_encoding_summary">"Кодирање за домаћина"</string>
+
+	<!-- Host preference category title for connection settings -->
+	<string name="hostpref_connection_category">"Поставке везе"</string>
+
+	<!-- Username field title for host editor preference -->
+	<string name="hostpref_username_title">"Корисничко име"</string>
+
+	<!-- Hostname field title for host editor preference -->
+	<string name="hostpref_hostname_title">"Домаћин"</string>
+
+	<!-- Port field title for host editor preference -->
+	<string name="hostpref_port_title">"Порт"</string>
+
+	<!-- Displayed to indicate a host has never been connected to. -->
+	<string name="bind_never">"Никад повезиван"</string>
+	<!-- The time that has elapsed since a host was connected to when it has been less than an hour. -->
+	<string name="bind_minutes">"пре %1$s минут(а)"</string>
+	<!-- The time that has elapsed since a host was connected to when it has been less than a day. -->
+	<string name="bind_hours">"пре %1$s сата(и)"</string>
+	<!-- The time that has elapsed since a host was connected to when it has been a day or more. -->
+	<string name="bind_days">"пре %1$s дан(а)"</string>
+
+	<!-- Message given when user copies from the terminal. -->
+	<string name="console_copy_done">"Копирано %1$d бајта на клипборд"</string>
+	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
+	<string name="console_copy_start">"Додирните и превуците"\n"или користите дирекциони контролер"\n"да изаберете површину за копирање</string>
+
+	<!-- Button to close the disconnected terminal window. -->
+	<string name="console_menu_close">"Затвори"</string>
+	<!-- Button to begin copying from the terminal to the clipboard. -->
+	<string name="console_menu_copy">"Копирај"</string>
+	<!-- Button to paste from the clipboard to the terminal. -->
+	<string name="console_menu_paste">"Налепи"</string>
+	<!-- Button that brings user to the Port Forwards List. -->
+	<string name="console_menu_portforwards">"Прослеђења портова"</string>
+	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
+	<string name="console_menu_resize">"Наметни величину"</string>
+	<!-- Button that brings up the list of URLs on the current screen -->
+	<string name="console_menu_urlscan">"Тражење УРЛова"</string>
+
+	<!-- Button label to answer "Yes" to a yes/no prompt -->
+	<string name="button_yes">"Да"</string>
+	<!-- Button label to answer "No" to a yes/no prompt -->
+	<string name="button_no">"Не"</string>
+
+	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
+	<string name="portforward_local">"локални"</string>
+	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
+	<string name="portforward_remote">"удаљени"</string>
+	<!-- Selection for a "dynamic" port forward. E.g., connections to a port listening locally is forwarded based on the SOCKS protocol to an arbitrary remote host and port. -->
+	<string name="portforward_dynamic">"динамички (СОЦКС)"</string>
+	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
+	<string name="portforward_pos">"Направи прослеђење порта"</string>
+
+	<string name="portforward_done">"Успешно направљено прослеђење порта"</string>
+	<string name="portforward_problem">"Појавио се проблем при прављењу прослеђења порта. Можда користите портове испод 1024 или је порт већ у употреби?"</string>
+
+	<string name="portforward_menu_add">"Додај прослеђење порта"</string>
+
+	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
+	<string name="hint_userhost">"korisnik@domacin"</string>
+
+	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
+	<string name="list_format_error">"Користи формат „%1$s“"</string>
+
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_username">"korisnik"</string>
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_hostname">"domacin"</string>
+	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
+	<string name="format_port">"port"</string>
+
+	<string name="list_menu_pubkeys">"Управљај кључевима"</string>
+	<!-- Selection choice to sort hosts by color. -->
+	<string name="list_menu_sortcolor">"Поређај по боји"</string>
+	<!-- Selection choice to sort hosts by nickname. -->
+	<string name="list_menu_sortname">"Поређај по имену"</string>
+	<string name="list_menu_settings">"Поставке"</string>
+
+	<string name="list_host_disconnect">"Прекини везу"</string>
+	<string name="list_host_edit">"Уреди домаћина"</string>
+	<string name="list_host_portforwards">"Уреди прослеђења портова"</string>
+	<string name="list_host_delete">"Обриши домаћина"</string>
+	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
+	<string name="list_host_empty">"Користите поље за брзо повезивање "\n"испод да бисте се повезали са домаћином."</string>
+
+	<!-- Default screen rotation preference selection -->
+	<string name="list_rotation_default">"Подразумевана"</string>
+	<string name="list_rotation_land">"Наметни пејзаж"</string>
+	<string name="list_rotation_port">"Наметни портрет"</string>
+	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
+	<string name="list_rotation_auto">"Аутоматска"</string>
+
+	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
+	<string name="list_camera_ctrlaspace">"Ctrl+A онда размакница"</string>
+	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A". -->
+	<string name="list_camera_ctrla">"Ctrl+A"</string>
+	<!-- Selection to indicate pressing the Camera button should send the "Esc" key. -->
+	<string name="list_camera_esc">"Esc"</string>
+	<!-- Selection to indicate pressing the Camera button should send "Esc+A". -->
+	<string name="list_camera_esc_a">"Esc+A"</string>
+	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
+	<string name="list_camera_none">"Ништа"</string>
+
+	<!-- Name for the backspace character -->
+	<string name="list_delkey_backspace">"Backspace"</string>
+	<!-- Name for the ASCII DEL character -->
+	<string name="list_delkey_del">"Обриши"</string>
+
+	<string name="delete_message">"Желите ли заиста да обришете „%1$s“?"</string>
+	<string name="delete_pos">"Да, обриши"</string>
+	<string name="delete_neg">"Одустани"</string>
+
+	<!-- Button to agree to license terms. -->
+	<string name="wizard_agree">"Прихваћам"</string>
+	<!-- Button to go to the next page in the first time start-up wizard. -->
+	<string name="wizard_next">"Следеће"</string>
+	<!-- Button to go to the previous page in the first time start-up wizard. -->
+	<string name="wizard_back">"Назад"</string>
+
+	<string name="terminal_no_hosts_connected">"Нема повезаних домаћина тренутно"</string>
+
+	<!-- Displayed in terminal when attempting to connect to a host. The first two
+	     variables are host:port and the third is the protocol (e.g., SSH) -->
+	<string name="terminal_connecting">"Повезујем се са %1$s:%2$d преко %3$s"</string>
+
+	<!-- Displays the host key to the user in the terminal -->
+	<string name="terminal_sucess">"Verified host '%1$s' key: %2$s"</string>
+	<string name="terminal_failed">"Host key verification failed."</string>
+
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_s2c_algorithm">"Сервер-клијент алгоритам: %1$s %2$s"</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_c2s_algorithm">"Клијент-сервер алгоритам: %1$s %2$s"</string>
+	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
+	<string name="terminal_using_algorithm">"Користим алгоритам: %1$s %2$s"</string>
+
+	<string name="terminal_auth">"Покушавам аутентификацију"</string>
+
+	<string name="terminal_auth_pass">"Покушавам аутентификацију лозинком"</string>
+	<string name="terminal_auth_pass_fail">"Метода аутентификације лозинком није успела"</string>
+
+	<string name="terminal_auth_pubkey_any">"Покушавам аутентификацију кључем помоћу било којег јавног кључа у меморији"</string>
+	<string name="terminal_auth_pubkey_invalid">"Изабрани јавни кључ није исправан, покушајте поново изабрати кључ у уређивачу домаћина"</string>
+	<string name="terminal_auth_pubkey_specific">"Покушавам аутентификацију кључем помоћу наведеног јавног кључа"</string>
+	<string name="terminal_auth_pubkey_fail">"Метода аутентификације кључем помоћу кључа „%1$s“ није успела"</string>
+
+	<string name="terminal_auth_ki">"Покушавам аутентификацију интерактивном тастатуром"</string>
+	<string name="terminal_auth_ki_fail">"Метода аутентификације интерактивном тастатуром није успела"</string>
+
+	<string name="terminal_auth_fail">"[Ваш домаћин не подржава аутентификацију лозинком или интерактивном тастатуром.]"</string>
+
+	<string name="terminal_no_session">"Сесија неће бити покренута због поставке домаћина."</string>
+	<string name="terminal_enable_portfoward">"Омогући прослеђење порта: %1$s"</string>
+
+	<string name="local_shell_unavailable">"Неуспех! Нема локалне шкољке на овом телефону."</string>
+
+	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
+	<string name="notification_text">"%1$s жели вашу пажњу."</string>
+
+	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
+	<string name="no">"Не"</string>
+	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
+	<string name="with_confirmation">"Тражи потврду"</string>
+	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
+	<string name="yes">"Да"</string>
+
+	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
+	<string name="exceptions_submit_message">"Чини се да је Конектбот имао проблем последњи пут кад је покренут.  Да пошаљем извештај о грешци програмерима?"</string>
+
+	<!-- Menu selection to reset colors to their defaults. -->
+	<string name="menu_colors_reset">"Ресетуј"</string>
+
+	<!-- Displayed in the notification bar that connections are active -->
+	<string name="app_is_running">"Конектбот је покренут"</string>
+
+	<string name="color_red">"црвена"</string>
+	<string name="color_green">"зелена"</string>
+	<string name="color_blue">"плава"</string>
+	<string name="color_gray">"сива"</string>
+
+	<!-- Very short label indicating the number next to it is "foreground color" number. -->
+	<string name="colors_fg_label">"FG: %1$d"</string>
+
+	<!-- Very short label indicating the number next to it is "background color" number. -->
+	<string name="color_bg_label">"BG: %1$d"</string>
+
+	<!-- Describes the image of the "connected to host" icon for accessibility purposes. -->
+	<string name="image_description_connected">"Повезан."</string>
+
+	<!-- Describes the icon of the "locked pubkey" icon for accessibility purposes. -->
+	<string name="image_description_key_is_locked">"Кључ је закључан."</string>
+
+	<!-- Describes the icon of the "send control character" button in the terminal view for
+	     accessibility purposes. -->
+	<string name="image_description_toggle_control_character">Мењај контролни знак.</string>
+
+	<!-- Describes the icon of the "send escape character" button in the terminal view for
+	     accessibility purposes. -->
+	<string name="image_description_send_escape_character">Пошаљи Esc знак.</string>
+
+	<!-- Describes the icon of the "show keyboard" button in the terminal view for accessibility
+	     purposes. -->
+	<string name="image_description_show_keyboard">Прикажи тастатуру.</string>
+</resources>
