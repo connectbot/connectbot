@@ -81,8 +81,9 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	}
 
 	/**
+	 * @param host
 	 * @param bridge
-	 * @param db
+	 * @param manager
 	 */
 	public SSH(HostBean host, TerminalBridge bridge, TerminalManager manager) {
 		super(host, bridge, manager);
