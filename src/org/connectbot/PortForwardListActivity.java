@@ -105,6 +105,7 @@ public class PortForwardListActivity extends ListActivity {
 		super.onCreate(icicle);
 
 		long hostId = this.getIntent().getLongExtra(Intent.EXTRA_TITLE, -1);
+		final String hostName = this.getIntent().getStringExtra(Intent.EXTRA_TEXT);
 
 		setContentView(R.layout.act_portforwardlist);
 
@@ -132,7 +133,7 @@ public class PortForwardListActivity extends ListActivity {
 			public void onServiceConnected(ComponentName className, IBinder service) {
 				TerminalManager bound = ((TerminalManager.TerminalBinder) service).getService();
 
-				hostBridge = bound.getConnectedBridge(host);
+				hostBridge = (host == null ? bound.getConnectedBridge(hostName) : bound.getConnectedBridge(host));
 				updateHandler.sendEmptyMessage(-1);
 			}
 

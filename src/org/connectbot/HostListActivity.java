@@ -370,6 +370,7 @@ public class HostListActivity extends ListActivity {
 			public boolean onMenuItemClick(MenuItem item) {
 				Intent intent = new Intent(HostListActivity.this, PortForwardListActivity.class);
 				intent.putExtra(Intent.EXTRA_TITLE, host.getId());
+				intent.putExtra(Intent.EXTRA_TEXT, host.getNickname());
 				HostListActivity.this.startActivityForResult(intent, REQUEST_EDIT);
 				return true;
 			}

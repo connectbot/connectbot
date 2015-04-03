@@ -633,6 +633,12 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	 * @return true on success
 	 */
 	public boolean savePortForward(PortForwardBean pfb) {
+
+		if(pfb.getHostId() == -1) {
+			Log.d(TAG, "Not saving an anonymous port forward");
+			return false;
+		}
+
 		boolean success = false;
 
 		synchronized (dbLock) {

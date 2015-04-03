@@ -20,6 +20,7 @@ package org.connectbot;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import org.connectbot.bean.PortForwardBean;
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
@@ -170,9 +171,7 @@ public class ConsoleActivity extends Activity {
 
 			// create views for all bridges on this service
 			for (TerminalBridge bridge : bound.bridges) {
-
 				final int currentIndex = addNewTerminalView(bridge);
-
 				// check to see if this bridge was requested
 				if (bridge == requestedBridge)
 					requestedIndex = currentIndex;
@@ -750,6 +749,7 @@ public class ConsoleActivity extends Activity {
 
 				Intent intent = new Intent(ConsoleActivity.this, PortForwardListActivity.class);
 				intent.putExtra(Intent.EXTRA_TITLE, bridge.host.getId());
+				intent.putExtra(Intent.EXTRA_TEXT, bridge.host.getNickname());
 				ConsoleActivity.this.startActivityForResult(intent, REQUEST_EDIT);
 				return true;
 			}

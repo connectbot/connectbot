@@ -173,6 +173,13 @@ public class PortForwardBean extends AbstractBean {
 	}
 
 	/**
+	 * @return the hostId
+	 */
+	public long getHostId() {
+		return hostId;
+	}
+
+	/**
 	 * @param enabled the enabled to set
 	 */
 	public void setEnabled(boolean enabled) {
