@@ -628,6 +628,54 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	/**
+	 * @param selection parameters describing the desired portforward to look for
+	 * @return true if such a portforward was found
+	 */
+	public boolean findPortForward(Map<String, String> selection) {
+		StringBuilder selectionBuilder = new StringBuilder();
+
+		Iterator<Entry<String, String>> i = selection.entrySet().iterator();
+
+		List<String> selectionValuesList = new LinkedList<String>();
+		int n = 0;
+		while (i.hasNext()) {
+			Entry<String, String> entry = i.next();
+
+			if (entry.getValue() == null)
+				continue;
+
+			if (n++ > 0)
+				selectionBuilder.append(" AND ");
+
+			selectionBuilder.append(entry.getKey())
+				.append(" = ?");
+
+			selectionValuesList.add(entry.getValue());
+		}
+
+		String selectionValues[] = new String[selectionValuesList.size()];
+		selectionValuesList.toArray(selectionValues);
+		selectionValuesList = null;
+
+		boolean res;
+
+		synchronized (dbLock) {
+			SQLiteDatabase db = getReadableDatabase();
+
+			Cursor c = db.query(TABLE_PORTFORWARDS,
+					new String[] { "_id" },
+					selectionBuilder.toString(),
+					selectionValues,
+					null, null, null);
+
+			res = c.getCount() > 0;
+			c.close();
+		}
+
+		return res;
+	}
+
+	/**
 	 * Update the parameters of a port forward in the database.
 	 * @param pfb {@link PortForwardBean} to save
 	 * @return true on success

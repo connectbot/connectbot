@@ -26,6 +26,7 @@ import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
 import org.connectbot.service.TerminalManager;
+import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.PreferenceConstants;
 
 import android.app.Activity;
@@ -156,6 +157,7 @@ public class ConsoleActivity extends Activity {
 
 			final String requestedNickname = (requested != null) ? requested.getFragment() : null;
 			int requestedIndex = 0;
+			boolean saveConnection = getIntent().getBooleanExtra(getString(R.string.EXTRA_SAVEHOST), false);
 
 			TerminalBridge requestedBridge = bound.getConnectedBridge(requestedNickname);
 
@@ -171,6 +173,12 @@ public class ConsoleActivity extends Activity {
 
 			if(requestedBridge != null) {
 
+				if(saveConnection && TransportFactory.findHost(bound.hostdb, requested) == null) {
+					// saving host if asked to, but only if it didn't already exist
+					Log.i(TAG, "Saving a new host");
+					bound.hostdb.saveHost(requestedBridge.host);
+				}
+
 				// handling portforward add from intent
 				String[] portForwardData = getIntent().getStringArrayExtra(getString(R.string.EXTRA_PORTFORWARD));
 				if (requestedBridge.canFowardPorts() && portForwardData != null && portForwardData.length == 4) {
@@ -183,6 +191,11 @@ public class ConsoleActivity extends Activity {
 							requestedBridge.enablePortForward(portFwd);
 						}
 
+						// saving to database only for permanent hosts and check for duplicate source ports too !
+						if(saveConnection && portFwd.getHostId() != -1 && !TransportFactory.findPortForwardConflict(bound.hostdb, portFwd)) {
+							bound.hostdb.savePortForward(portFwd);
+							Log.i(TAG, "Saving a new port forward to database");
+						}
 					} catch (NumberFormatException e) {
 						Log.e(TAG, "Wrong intent format");
 					}

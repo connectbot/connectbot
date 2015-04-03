@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.connectbot.bean.HostBean;
+import org.connectbot.bean.PortForwardBean;
 import org.connectbot.util.HostDatabase;
 
 import android.content.Context;
@@ -128,5 +129,20 @@ public class TransportFactory {
 		}
 
 		return hostdb.findHost(selection);
+	}
+
+	/**
+	 * @param hostdb Handle to HostDatabase
+	 * @param portForward PortForwardBean to find
+	 * @return true when port forward was found
+	 */
+	public static boolean findPortForwardConflict(HostDatabase hostdb, PortForwardBean portForward) {
+
+		Map<String, String> selection = new HashMap<String, String>();
+		selection.put(HostDatabase.FIELD_PORTFORWARD_HOSTID, String.valueOf(portForward.getHostId()));
+		selection.put(HostDatabase.FIELD_PORTFORWARD_TYPE, portForward.getType());
+		selection.put(HostDatabase.FIELD_PORTFORWARD_SOURCEPORT, String.valueOf(portForward.getSourcePort()));
+
+		return hostdb.findPortForward(selection);
 	}
 }
