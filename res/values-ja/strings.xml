@@ -93,6 +93,9 @@
   <string name="pref_conn_persist_summary">バックグラウンドでの実行中に接続の持続を強制する</string>
   <string name="pref_keymode_title">ディレクトリのショートカット</string>
   <string name="pref_keymode_summary">Altを\'/\'、ShiftをTabに割り当てます</string>
+  <string name="pref_stickymodifiers_title">スティッキー修飾キー</string>
+  <string name="pref_stickymodifiers_summary">別のキーが押されるまで、修飾キーは有効のままになります</string>
+  <string name="only_alt">alt のみ</string>
   <string name="pref_camera_title">カメラボタンショートカット</string>
   <string name="pref_camera_summary">カメラボタンが押されたときのショートカットを選びます</string>
   <string name="pref_keepalive_title">画面をスリープしない</string>
@@ -125,6 +128,8 @@
   <string name="hostpref_wantsession_summary">ポート転送のみ行う場合に無効にしてください</string>
   <string name="hostpref_stayconnected_title">接続の維持</string>
   <string name="hostpref_stayconnected_summary">接続が切れたら再接続を試みます</string>
+  <string name="hostpref_quickdisconnect_title">切断時に閉じる</string>
+  <string name="hostpref_quickdisconnect_summary">リモート切断後、プロンプトを表示せずにすぐに閉じます。</string>
   <string name="hostpref_delkey_title">DELキー</string>
   <string name="hostpref_delkey_summary">DELキーが押されたときに送るキーコード</string>
   <string name="hostpref_encoding_title">エンコーディング</string>

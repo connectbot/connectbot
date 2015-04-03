@@ -8,6 +8,7 @@
   <string name="title_host_editor">Edició del Servidor</string>
   <string name="title_help">Ajuda</string>
   <string name="title_colors">Colors</string>
+  <string name="title_color_picker">Trieu un color</string>
   <string name="resolve_connect">Connecta</string>
   <string name="resolve_entropy">Recull Entropia</string>
   <string name="menu_insert">Afegeix servidor</string>
@@ -77,6 +78,7 @@
   <string name="pref_rotation_summary">Com canvia la orientació quan el teclat s\'obre o es tanca</string>
   <string name="pref_fullscreen_title">Pantalla completa</string>
   <string name="pref_fullscreen_summary">Amaga la barra d\'estat en consola</string>
+  <string name="pref_keyboard_category">Teclat</string>
   <string name="pref_memkeys_title">Recorda les claus en memòria</string>
   <string name="pref_memkeys_summary">Manté les claus descarregadesen memòria fins que el servei finalitzi</string>
   <string name="pref_conn_persist_title">Connexions persistents</string>
@@ -206,4 +208,5 @@
   <string name="color_green">verd</string>
   <string name="color_blue">blau</string>
   <string name="color_gray">gris</string>
+  <string name="image_description_connected">Connectat.</string>
 </resources>
