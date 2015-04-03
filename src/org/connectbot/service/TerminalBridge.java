@@ -881,6 +881,14 @@ public class TerminalBridge implements VDUDisplay {
 		return transport.getPortForwards();
 	}
 
+	public boolean findPortForwardConflict(PortForwardBean pfbeanToFind) {
+		for(PortForwardBean pfbean : transport.getPortForwards()) {
+			if(pfbeanToFind.getSourcePort() == pfbean.getSourcePort()
+					&& pfbeanToFind.getType().equals(pfbean.getType())) return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Enables a port forward member. After calling this method, the port forward should
 	 * be operational.

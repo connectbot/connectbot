@@ -74,6 +74,18 @@ public class PortForwardBean extends AbstractBean {
 		setDest(dest);
 	}
 
+	/**
+	 * @param data String array containing the different parameters nickname / type / sourceport / destination
+	 */
+	public PortForwardBean(long hostId, String[] data) throws NumberFormatException {
+		this.hostId = hostId;
+		this.nickname = data[0];
+		this.type = data[1];
+		this.sourcePort = Integer.parseInt(data[2]);
+
+		setDest(data[3]);
+	}
+
 	public String getBeanName() {
 		return BEAN_NAME;
 	}

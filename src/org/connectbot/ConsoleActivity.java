@@ -169,6 +169,27 @@ public class ConsoleActivity extends Activity {
 				}
 			}
 
+			if(requestedBridge != null) {
+
+				// handling portforward add from intent
+				String[] portForwardData = getIntent().getStringArrayExtra(getString(R.string.EXTRA_PORTFORWARD));
+				if (requestedBridge.canFowardPorts() && portForwardData != null && portForwardData.length == 4) {
+					try {
+						PortForwardBean portFwd = new PortForwardBean(requestedBridge.host.getId(), portForwardData);
+
+						// look for the portforward in the bridge first to avoid duplicate source ports
+						if(!requestedBridge.findPortForwardConflict(portFwd)) {
+							requestedBridge.addPortForward(portFwd);
+							requestedBridge.enablePortForward(portFwd);
+						}
+
+					} catch (NumberFormatException e) {
+						Log.e(TAG, "Wrong intent format");
+					}
+				}
+			}
+
+
 			// create views for all bridges on this service
 			for (TerminalBridge bridge : bound.bridges) {
 				final int currentIndex = addNewTerminalView(bridge);
