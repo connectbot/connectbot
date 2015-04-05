@@ -10,3 +10,5 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - More context is given for failures to connect via SSH which should
   reveal why a host might be incompatible with ConnectBot.
+
+[unreleased]: https://github.com/connectbot/connectbot/compare/v1.8.3...HEAD
