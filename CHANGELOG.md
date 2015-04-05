@@ -6,3 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Key exchange and host key algorithm preference order was not being
   respected.
+
+### Added
+- More context is given for failures to connect via SSH which should
+  reveal why a host might be incompatible with ConnectBot.
