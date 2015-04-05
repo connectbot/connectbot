@@ -454,7 +454,11 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			Log.e(TAG, "Problem in SSH connection thread during authentication", e);
 
 			// Display the reason in the text.
-			bridge.outputLine(e.getCause().getMessage());
+			Throwable t = e.getCause();
+			do {
+				bridge.outputLine(t.getMessage());
+				t = t.getCause();
+			} while (t != null);
 
 			close();
 			onDisconnect();
