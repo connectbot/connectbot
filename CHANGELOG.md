@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Key exchange and host key algorithm preference order was not being
   respected.
+- DSA host key support was broken from the beginning of the v1.8 series.
 
 ### Added
 - More context is given for failures to connect via SSH which should
