@@ -294,8 +294,8 @@ public class ECDSASHA2Verify {
 		System.arraycopy(sig, 4, rArray, 0, rLength);
 		System.arraycopy(sig, 6 + rLength, sArray, 0, sLength);
 
-		BigInteger r = new BigInteger(rArray);
-		BigInteger s = new BigInteger(sArray);
+		BigInteger r = new BigInteger(1, rArray);
+		BigInteger s = new BigInteger(1, sArray);
 
 		// Write the <r,s> to its own types writer.
 		TypesWriter rsWriter = new TypesWriter();

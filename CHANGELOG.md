@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Key exchange and host key algorithm preference order was not being
   respected.
+- ECDH would sometimes fail because the shared secret would be encoded
+  as a negative integer.
 - DSA host key support was broken from the beginning of the v1.8 series.
 
 ### Added
