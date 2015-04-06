@@ -70,7 +70,7 @@ public class KexManager
 			HOSTKEY_ALGS.add("ecdsa-sha2-nistp521");
 		}
 		HOSTKEY_ALGS.add("ssh-rsa");
-		HOSTKEY_ALGS.add("ssh-dsa");
+		HOSTKEY_ALGS.add("ssh-dss");
 	}
 
 	private static final Set<String> KEX_ALGS = new LinkedHashSet<String>();
