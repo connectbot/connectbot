@@ -8,6 +8,7 @@
   <string name="title_host_editor">编辑主机</string>
   <string name="title_help">帮助</string>
   <string name="title_colors">颜色</string>
+  <string name="title_color_picker">选择一种颜色</string>
   <string name="resolve_connect">连接</string>
   <string name="resolve_entropy">收集杂乱数</string>
   <string name="menu_insert">添加主机</string>
@@ -77,10 +78,15 @@
   <string name="pref_rotation_summary">当键盘打开或关闭时屏幕如何旋转(水平或竖直)</string>
   <string name="pref_fullscreen_title">全屏</string>
   <string name="pref_fullscreen_summary">处于控制台时隐藏状态栏</string>
+  <string name="pref_keyboard_category">键盘</string>
+  <string name="pref_shiftfkeys_title">Shift+num(数字键) 作为 功能键</string>
+  <string name="pref_shiftfkeys_summary">在硬件键盘上，数字键和 shift 键组合发送 F1-F10</string>
+  <string name="pref_ctrlfkeys_title">Ctrl+num(数字键) 作为 功能键</string>
+  <string name="pref_ctrlfkeys_summary">在软件键盘上，数字键和 ctrl 键组合发送 F1-F10</string>
+  <string name="pref_volumefont_title">音量键用来改变字体大小</string>
+  <string name="pref_volumefont_summary">字体大小也可以在每个主机的设置中改变</string>
   <string name="pref_memkeys_title">在内存中记录密钥</string>
   <string name="pref_memkeys_summary">保留解锁的密匙于内存中直到后台服务停止</string>
-  <string name="pref_update_title">检查更新</string>
-  <string name="pref_update_summary">设置检查ConnectBot更新的最大频率</string>
   <string name="pref_conn_persist_title">保持联机</string>
   <string name="pref_conn_persist_summary">切换到后台时强制保持连接</string>
   <string name="pref_keymode_title">目录快捷方式</string>
@@ -104,9 +110,6 @@
   <string name="list_keymode_none">禁用</string>
   <string name="list_pubkeyids_none">不使用密匙</string>
   <string name="list_pubkeyids_any">使用解锁密匙</string>
-  <string name="list_update_daily">每天</string>
-  <string name="list_update_weekly">每周</string>
-  <string name="list_update_never">永不</string>
   <string name="hostpref_nickname_title">昵称</string>
   <string name="hostpref_color_title">颜色类型</string>
   <string name="hostpref_fontsize_title">字型大小 (pt)</string>
@@ -211,8 +214,8 @@
   <string name="color_green">绿色</string>
   <string name="color_blue">蓝色</string>
   <string name="color_gray">灰色</string>
-  <string name="colors_fg">前景色:</string>
-  <string name="color_bg">背景色:</string>
+  <string name="colors_fg_label">前景色：%1$d</string>
+  <string name="color_bg_label">背景色：%1$d</string>
   <string name="image_description_connected">已连接。</string>
   <string name="image_description_key_is_locked">密钥已锁。</string>
   <string name="image_description_toggle_control_character">切换控制字符。</string>

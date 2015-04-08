@@ -17,6 +17,7 @@
 
 package org.connectbot;
 
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,6 +31,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,11 +56,12 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 	private int mColorScheme;
 
 	private List<Integer> mColorList;
-	private HostDatabase hostdb;
+	private HostDatabase mHostDb;
 
 	private int mCurrentColor = 0;
 
 	private int[] mDefaultColors;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,10 +74,10 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 
 		mColorScheme = HostDatabase.DEFAULT_COLOR_SCHEME;
 
-		hostdb = new HostDatabase(this);
+		mHostDb = new HostDatabase(this);
 
-		mColorList = Arrays.asList(hostdb.getColorsForScheme(mColorScheme));
-		mDefaultColors = hostdb.getDefaultColorsForScheme(mColorScheme);
+		mColorList = Arrays.asList(mHostDb.getColorsForScheme(mColorScheme));
+		mDefaultColors = mHostDb.getDefaultColorsForScheme(mColorScheme);
 
 		mColorGrid = (GridView) findViewById(R.id.color_grid);
 		mColorGrid.setAdapter(new ColorsAdapter(true));
@@ -82,12 +85,12 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 		mColorGrid.setSelection(0);
 
 		mFgSpinner = (Spinner) findViewById(R.id.fg);
-		mFgSpinner.setAdapter(new ColorsAdapter(false));
+		mFgSpinner.setAdapter(new ColorsAdapter(false, R.string.colors_fg_label));
 		mFgSpinner.setSelection(mDefaultColors[0]);
 		mFgSpinner.setOnItemSelectedListener(this);
 
 		mBgSpinner = (Spinner) findViewById(R.id.bg);
-		mBgSpinner.setAdapter(new ColorsAdapter(false));
+		mBgSpinner.setAdapter(new ColorsAdapter(false, R.string.color_bg_label));
 		mBgSpinner.setSelection(mDefaultColors[1]);
 		mBgSpinner.setOnItemSelectedListener(this);
 	}
@@ -96,9 +99,9 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 	protected void onDestroy() {
 		super.onDestroy();
 
-		if (hostdb != null) {
-			hostdb.close();
-			hostdb = null;
+		if (mHostDb != null) {
+			mHostDb.close();
+			mHostDb = null;
 		}
 	}
 
@@ -106,22 +109,28 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 	protected void onResume() {
 		super.onResume();
 
-		if (hostdb == null)
-			hostdb = new HostDatabase(this);
+		if (mHostDb == null)
+			mHostDb = new HostDatabase(this);
 	}
 
 	private class ColorsAdapter extends BaseAdapter {
-		private boolean mSquareViews;
+		private final boolean mSquareViews;
+		private final int mResourceLabel;
 
 		public ColorsAdapter(boolean squareViews) {
+			this(squareViews, -1);
+		}
+
+		public ColorsAdapter(boolean squareViews, int resourceLabel) {
 			mSquareViews = squareViews;
+			mResourceLabel = resourceLabel;
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ColorView c;
 
 			if (convertView == null) {
-				c = new ColorView(ColorsActivity.this, mSquareViews);
+				c = new ColorView(ColorsActivity.this, mResourceLabel, mSquareViews);
 			} else {
 				c = (ColorView) convertView;
 			}
@@ -146,7 +155,16 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 	}
 
 	private class ColorView extends View {
-		private boolean mSquare;
+		/** The font size displayed in the GridView entries. */
+		private static final float FONT_SIZE_DP = 20f;
+
+		/** Margin around the GridView entries. */
+		private static final float MARGIN_DP = 10f;
+
+		private final boolean mSquare;
+
+		private final int mResourceLabel;
+		private final NumberFormat mNumberFormatter;
 
 		private Paint mTextPaint;
 		private Paint mShadowPaint;
@@ -159,14 +177,19 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 		private int mWidthCenter;
 		private int mHeightCenter;
 
-		public ColorView(Context context, boolean square) {
+		public ColorView(Context context, int resourceLabel, boolean square) {
 			super(context);
 
 			mSquare = square;
+			mResourceLabel = resourceLabel;
+
+			mNumberFormatter = NumberFormat.getIntegerInstance(getContext().getResources().getConfiguration().locale);
+
+			DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 
 			mTextPaint = new Paint();
 			mTextPaint.setAntiAlias(true);
-			mTextPaint.setTextSize(16);
+			mTextPaint.setTextSize((int) (metrics.density * FONT_SIZE_DP + 0.5f));
 			mTextPaint.setColor(0xFFFFFFFF);
 			mTextPaint.setTextAlign(Paint.Align.CENTER);
 
@@ -177,7 +200,8 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 			mShadowPaint.setStrokeWidth(4f);
 			mShadowPaint.setColor(0xFF000000);
 
-			setPadding(10, 10, 10, 10);
+			int marginPx = (int) (MARGIN_DP * metrics.density + 0.5f);
+			setPadding(marginPx, marginPx, marginPx, marginPx);
 		}
 
 		public void setColor(int color) {
@@ -185,7 +209,11 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 		}
 
 		public void setNumber(int number) {
-			mText = Integer.toString(number);
+			if (mResourceLabel != -1) {
+				mText = getContext().getResources().getString(mResourceLabel, number);
+			} else {
+				mText = mNumberFormatter.format(number);
+			}
 		}
 
 		@Override
@@ -193,10 +221,12 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 			int width = measureWidth(widthMeasureSpec);
 
 			int height;
-			if (mSquare)
+			if (mSquare) {
+				//noinspection SuspiciousNameCombination
 				height = width;
-			else
+			} else {
 				height = measureHeight(heightMeasureSpec);
+			}
 
 			mAscent = (int) mTextPaint.ascent();
 			mWidthCenter = width / 2;
@@ -206,7 +236,8 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 		}
 
 		private int measureWidth(int measureSpec) {
-			int result = 0;
+			int result;
+
 			int specMode = MeasureSpec.getMode(measureSpec);
 			int specSize = MeasureSpec.getSize(measureSpec);
 
@@ -228,7 +259,8 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 		}
 
 		private int measureHeight(int measureSpec) {
-			int result = 0;
+			int result;
+
 			int specMode = MeasureSpec.getMode(measureSpec);
 			int specSize = MeasureSpec.getSize(measureSpec);
 
@@ -248,7 +280,6 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 			}
 			return result;
 		}
-
 
 		@Override
 		protected void onDraw(Canvas canvas) {
@@ -273,7 +304,7 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 	public void onNothingSelected(AdapterView<?> arg0) { }
 
 	public void colorChanged(int value) {
-		hostdb.setGlobalColor(mCurrentColor, value);
+		mHostDb.setGlobalColor(mCurrentColor, value);
 		mColorList.set(mCurrentColor, value);
 		mColorGrid.invalidateViews();
 	}
@@ -294,7 +325,7 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 		}
 
 		if (needUpdate)
-			hostdb.setDefaultColorsForScheme(mColorScheme, mDefaultColors[0], mDefaultColors[1]);
+			mHostDb.setDefaultColorsForScheme(mColorScheme, mDefaultColors[0], mDefaultColors[1]);
 	}
 
 	@Override
@@ -309,8 +340,8 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 			public boolean onMenuItemClick(MenuItem arg0) {
 				// Reset each individual color to defaults.
 				for (int i = 0; i < Colors.defaults.length; i++) {
-					if (mColorList.get(i) != Colors.defaults[i]) {
-						hostdb.setGlobalColor(i, Colors.defaults[i]);
+					if (!mColorList.get(i).equals(Colors.defaults[i])) {
+						mHostDb.setGlobalColor(i, Colors.defaults[i]);
 						mColorList.set(i, Colors.defaults[i]);
 					}
 				}
@@ -319,7 +350,7 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 				// Reset the default FG/BG colors as well.
 				mFgSpinner.setSelection(HostDatabase.DEFAULT_FG_COLOR);
 				mBgSpinner.setSelection(HostDatabase.DEFAULT_BG_COLOR);
-				hostdb.setDefaultColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME,
+				mHostDb.setDefaultColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME,
 						HostDatabase.DEFAULT_FG_COLOR, HostDatabase.DEFAULT_BG_COLOR);
 
 				return true;

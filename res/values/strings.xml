@@ -19,7 +19,10 @@
 -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+	<!-- Summary of what ConnectBot is; used as a short description in the Android running apps list -->
 	<string name="app_desc">"Simple, powerful, open-source SSH client."</string>
+
+	<!-- Summary of what the ConnectBot service does; displayed in the Android running apps list -->
 	<string name="service_desc">"Maintains SSH connections and loaded pubkeys"</string>
 
 	<!-- Window title for the Host List -->
@@ -34,6 +37,8 @@
 	<string name="title_help">"Help"</string>
 	<!-- Window title for color list editing screen -->
 	<string name="title_colors">"Colors"</string>
+	<!-- Dialog title for color picker dialog -->
+	<string name="title_color_picker">"Pick a color"</string>
 
 	<string name="resolve_connect">"Connect"</string>
 	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
@@ -163,6 +168,9 @@
 	<!-- Summary for the full screen preference -->
 	<string name="pref_fullscreen_summary">"Hide status bar while in console"</string>
 
+	<!-- The category title for keyboard preferences -->
+	<string name="pref_keyboard_category">"Keyboard"</string>
+
 	<!-- Name for the shifted numbers are f-keys preference -->
 	<string name="pref_shiftfkeys_title">"Shift+num are F-keys"</string>
 	<!-- Summary for the shifted numbers are f-keys preference -->
@@ -183,11 +191,6 @@
 	<!-- Summary for the memorize keys preference -->
 	<string name="pref_memkeys_summary">"Keep unlocked keys in memory until backend service is terminated"</string>
 
-	<!-- Name for the update check preference -->
-	<string name="pref_update_title">"Update check"</string>
-	<!-- Summary for the update check preference -->
-	<string name="pref_update_summary">"Set the maximum frequency to check for ConnectBot updates"</string>
-
 	<!-- Name for the preference that forces the service to stay running in the background.-->
 	<string name="pref_conn_persist_title">"Persist connections"</string>
 	<!-- Summary for the preference that forces the service to stay running in the background. -->
@@ -197,6 +200,14 @@
 	<string name="pref_keymode_title">"Directory shortcuts"</string>
 	<!-- Summary for the keyboard shortcuts preference -->
 	<string name="pref_keymode_summary">"Select how to use Alt for '/' and Shift for Tab"</string>
+
+	<!-- Name for the sticky modifiers preference -->
+	<string name="pref_stickymodifiers_title">"Sticky modifiers"</string>
+	<!-- Summary for the sticky modifiers preference -->
+	<string name="pref_stickymodifiers_summary">"Modifier keys remain enabled until another key is pressed"</string>
+
+	<!-- Sticky modifier preference value description for when only the Alt key should be a sticky modifier. -->
+	<string name="only_alt">"Only alt"</string>
 
 	<!-- Name for the camera shortcut usage preference -->
 	<string name="pref_camera_title">"Camera shortcut"</string>
@@ -247,13 +258,6 @@
 	<!-- Preference to use any pubkey to authenticate to this host. -->
 	<string name="list_pubkeyids_any">"Use any unlocked key"</string>
 
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_daily">"Daily"</string>
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_weekly">"Weekly"</string>
-	<!-- Frequency for which to check for program updates. -->
-	<string name="list_update_never">"Never"</string>
-
 	<!-- Host nickname field preference title -->
 	<string name="hostpref_nickname_title">"Nickname"</string>
 
@@ -288,6 +292,10 @@
 	<string name="hostpref_stayconnected_title">"Stay connected"</string>
 	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
 	<string name="hostpref_stayconnected_summary">"Try to reconnect to host if disconnected"</string>
+
+	<!-- Setting for whether we should prompt to close after getting disconnected -->
+	<string name="hostpref_quickdisconnect_title">"Close on disconnect"</string>
+	<string name="hostpref_quickdisconnect_summary">"Close immediately after remote disconnect without prompting."</string>
 
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
 	<string name="hostpref_delkey_title">"DEL Key"</string>
@@ -479,11 +487,11 @@
 	<string name="color_blue">"blue"</string>
 	<string name="color_gray">"gray"</string>
 
-	<!-- Very short label indicating the thing next to it is "foreground color." -->
-	<string name="colors_fg">"FG":</string>
+	<!-- Very short label indicating the number next to it is "foreground color" number. -->
+	<string name="colors_fg_label">"FG: %1$d"</string>
 
-	<!-- Very short label indicating the thing next to it is "background color." -->
-	<string name="color_bg">"BG:"</string>
+	<!-- Very short label indicating the number next to it is "background color" number. -->
+	<string name="color_bg_label">"BG: %1$d"</string>
 
 	<!-- Describes the image of the "connected to host" icon for accessibility purposes. -->
 	<string name="image_description_connected">"Connected."</string>

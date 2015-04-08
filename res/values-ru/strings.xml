@@ -75,12 +75,13 @@
   <string name="pref_ui_category">Пользовательский интерфейс</string>
   <string name="pref_rotation_title">Настройки ориентации экрана</string>
   <string name="pref_rotation_summary">Настройки смены ориентации дисплея при пользовании клавиатурой</string>
+  <string name="pref_titlebarhide_title">Автоскрытие заголовка</string>
   <string name="pref_fullscreen_title">Полный экран</string>
   <string name="pref_fullscreen_summary">Убирать область статуса во время работы с консолью</string>
+  <string name="pref_ctrlfkeys_title">Ctrl+num аналогично F-keys</string>
+  <string name="pref_volumefont_title">Клавиша громкости регулирует размер шрифта</string>
   <string name="pref_memkeys_title">Запомнить ключи в памяти</string>
   <string name="pref_memkeys_summary">Держать ключи в памяти пока процессы работают</string>
-  <string name="pref_update_title">Проверка обновления</string>
-  <string name="pref_update_summary">Как часто проверять обновления для ConnectBot</string>
   <string name="pref_conn_persist_title">Постоянные соединения</string>
   <string name="pref_conn_persist_summary">Принудительно сохранять соединение в фоновом режиме.</string>
   <string name="pref_keymode_title">Ярлыки папок</string>
@@ -104,9 +105,6 @@
   <string name="list_keymode_none">Отключить</string>
   <string name="list_pubkeyids_none">Не использовать ключи</string>
   <string name="list_pubkeyids_any">Использовать любую свободную клавишу</string>
-  <string name="list_update_daily">Ежедневно</string>
-  <string name="list_update_weekly">Еженедельно</string>
-  <string name="list_update_never">Никогда</string>
   <string name="hostpref_nickname_title">Псевдоним</string>
   <string name="hostpref_color_title">Цвет для категории</string>
   <string name="hostpref_fontsize_title">Размер шрифта</string>
@@ -212,5 +210,6 @@
   <string name="color_blue">синий</string>
   <string name="color_gray">серый</string>
   <string name="image_description_connected">Подключено</string>
+  <string name="image_description_key_is_locked">Ключ заблокирован</string>
   <string name="image_description_show_keyboard">Показать клавиатуру</string>
 </resources>

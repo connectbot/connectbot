@@ -65,6 +65,14 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 	// backport constants from api level 11
 	private final static int KEYCODE_ESCAPE = 111;
+	private final static int KEYCODE_CTRL_LEFT = 113;
+	private final static int KEYCODE_CTRL_RIGHT = 114;
+	private final static int KEYCODE_INSERT = 124;
+	private final static int KEYCODE_FORWARD_DEL = 112;
+	private final static int KEYCODE_MOVE_HOME = 122;
+	private final static int KEYCODE_MOVE_END = 123;
+	private final static int KEYCODE_PAGE_DOWN = 93;
+	private final static int KEYCODE_PAGE_UP = 92;
 	private final static int HC_META_CTRL_ON = 0x1000;
 	private final static int HC_META_CTRL_LEFT_ON = 0x2000;
 	private final static int HC_META_CTRL_RIGHT_ON = 0x4000;
@@ -83,6 +91,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	private boolean shiftedNumbersAreFKeysOnHardKeyboard;
 	private boolean controlNumbersAreFKeysOnSoftKeyboard;
 	private boolean volumeKeysChangeFontSize;
+	private int stickyMetas;
 
 	private int ourMetaState = 0;
 
@@ -240,6 +249,10 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 						return true;
 					}
 				}
+				if (keyCode == KEYCODE_CTRL_LEFT || keyCode == KEYCODE_CTRL_RIGHT) {
+					metaPress(OUR_CTRL_ON);
+					return true;
+				}
 			}
 
 			if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
@@ -264,7 +277,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 						sendEscape();
 						ourMetaState &= ~OUR_CTRL_ON;
 					} else
-						metaPress(OUR_CTRL_ON);
+						metaPress(OUR_CTRL_ON, true);
 				}
 				bridge.redraw();
 				return true;
@@ -298,7 +311,11 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			int uchar = event.getUnicodeChar(derivedMetaState & ~HC_META_CTRL_MASK);
 			int ucharWithoutAlt = event.getUnicodeChar(
 			        derivedMetaState & ~(HC_META_ALT_MASK | HC_META_CTRL_MASK));
-			if (uchar != ucharWithoutAlt) {
+			if (uchar == 0) {
+				// Keymap doesn't know the key with alt on it, so just go with the unmodified version
+				uchar = ucharWithoutAlt;
+			}
+			else if (uchar != ucharWithoutAlt) {
 				// The alt key was used to modify the character returned; therefore, drop the alt
 				// modifier from the state so we don't end up sending alt+key.
 				derivedMetaState &= ~HC_META_ALT_MASK;
@@ -411,6 +428,31 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					bridge.tryKeyVibrate();
 				}
 				return true;
+
+			case KEYCODE_INSERT:
+				((vt320) buffer).keyPressed(vt320.KEY_INSERT, ' ',
+						getStateForBuffer());
+				return true;
+			case KEYCODE_FORWARD_DEL:
+				((vt320) buffer).keyPressed(vt320.KEY_DELETE, ' ',
+						getStateForBuffer());
+				return true;
+			case KEYCODE_MOVE_HOME:
+				((vt320) buffer).keyPressed(vt320.KEY_HOME, ' ',
+						getStateForBuffer());
+				return true;
+			case KEYCODE_MOVE_END:
+				((vt320) buffer).keyPressed(vt320.KEY_END, ' ',
+						getStateForBuffer());
+				return true;
+			case KEYCODE_PAGE_UP:
+				((vt320) buffer).keyPressed(vt320.KEY_PAGE_UP, ' ',
+						getStateForBuffer());
+				return true;
+			case KEYCODE_PAGE_DOWN:
+				((vt320) buffer).keyPressed(vt320.KEY_PAGE_DOWN, ' ',
+						getStateForBuffer());
+				return true;
 			}
 
 		} catch (IOException e) {
@@ -499,15 +541,23 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	 *
 	 * @param code
 	 */
-	public void metaPress(int code) {
+	public void metaPress(int code, boolean forceSticky) {
 		if ((ourMetaState & (code << 1)) != 0) {
 			ourMetaState &= ~(code << 1);
 		} else if ((ourMetaState & code) != 0) {
 			ourMetaState &= ~code;
 			ourMetaState |= code << 1;
-		} else
+		} else if (forceSticky || (stickyMetas & code) != 0) {
 			ourMetaState |= code;
+		} else {
+			// skip redraw
+			return;
+		}
 		bridge.redraw();
+	}
+
+	public void metaPress(int code) {
+		metaPress(code, false);
 	}
 
 	public void setTerminalKeyMode(String keymode) {
@@ -544,18 +594,28 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		if (PreferenceConstants.KEYMODE.equals(key) ||
 		    PreferenceConstants.SHIFT_FKEYS.equals(key) ||
 		    PreferenceConstants.CTRL_FKEYS.equals(key) ||
-		    PreferenceConstants.VOLUME_FONT.equals(key)) {
+		    PreferenceConstants.VOLUME_FONT.equals(key) ||
+		    PreferenceConstants.STICKY_MODIFIERS.equals(key)) {
 			updatePrefs();
 		}
 	}
 
 	private void updatePrefs() {
-		keymode = prefs.getString(PreferenceConstants.KEYMODE, PreferenceConstants.KEYMODE_RIGHT);
+		keymode = prefs.getString(PreferenceConstants.KEYMODE, PreferenceConstants.KEYMODE_NONE);
 		shiftedNumbersAreFKeysOnHardKeyboard =
 				prefs.getBoolean(PreferenceConstants.SHIFT_FKEYS, false);
 		controlNumbersAreFKeysOnSoftKeyboard =
 				prefs.getBoolean(PreferenceConstants.CTRL_FKEYS, false);
 		volumeKeysChangeFontSize = prefs.getBoolean(PreferenceConstants.VOLUME_FONT, true);
+		String stickyModifiers = prefs.getString(PreferenceConstants.STICKY_MODIFIERS,
+		                                         PreferenceConstants.NO);
+		if (PreferenceConstants.ALT.equals(stickyModifiers)) {
+			stickyMetas = OUR_ALT_ON;
+		} else if (PreferenceConstants.YES.equals(stickyModifiers)) {
+			stickyMetas = OUR_SHIFT_ON | OUR_CTRL_ON | OUR_ALT_ON;
+		} else {
+			stickyMetas = 0;
+		}
 	}
 
 	public void setCharset(String encoding) {

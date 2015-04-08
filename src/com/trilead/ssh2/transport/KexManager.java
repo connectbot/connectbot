@@ -2,6 +2,8 @@
 package com.trilead.ssh2.transport;
 
 import java.io.IOException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.ECPublicKey;
@@ -47,20 +49,36 @@ public class KexManager
 {
 	private static final Logger log = Logger.getLogger(KexManager.class);
 
+	private static final boolean supportsEc;
+	static {
+		KeyFactory keyFact;
+		try {
+			keyFact = KeyFactory.getInstance("EC");
+		} catch (NoSuchAlgorithmException ignored) {
+			keyFact = null;
+			log.log(10, "Disabling EC support due to lack of KeyFactory");
+		}
+		supportsEc = keyFact != null;
+	}
+
 	private static final Set<String> HOSTKEY_ALGS = new TreeSet<String>();
 	static {
-		HOSTKEY_ALGS.add("ecdsa-sha2-nistp256");
-		HOSTKEY_ALGS.add("ecdsa-sha2-nistp384");
-		HOSTKEY_ALGS.add("ecdsa-sha2-nistp521");
+		if (supportsEc) {
+			HOSTKEY_ALGS.add("ecdsa-sha2-nistp256");
+			HOSTKEY_ALGS.add("ecdsa-sha2-nistp384");
+			HOSTKEY_ALGS.add("ecdsa-sha2-nistp521");
+		}
 		HOSTKEY_ALGS.add("ssh-rsa");
 		HOSTKEY_ALGS.add("ssh-dsa");
 	}
 
 	private static final Set<String> KEX_ALGS = new TreeSet<String>();
 	static {
-		KEX_ALGS.add("ecdh-sha2-nistp256");
-		KEX_ALGS.add("ecdh-sha2-nistp384");
-		KEX_ALGS.add("ecdh-sha2-nistp521");
+		if (supportsEc) {
+			KEX_ALGS.add("ecdh-sha2-nistp256");
+			KEX_ALGS.add("ecdh-sha2-nistp384");
+			KEX_ALGS.add("ecdh-sha2-nistp521");
+		}
 		KEX_ALGS.add("diffie-hellman-group-exchange-sha256");
 		KEX_ALGS.add("diffie-hellman-group-exchange-sha1");
 		KEX_ALGS.add("diffie-hellman-group14-sha1");

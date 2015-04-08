@@ -422,7 +422,7 @@ public class ConsoleActivity extends Activity {
 				TerminalView terminal = (TerminalView)flip;
 
 				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-				handler.metaPress(TerminalKeyListener.OUR_CTRL_ON);
+				handler.metaPress(TerminalKeyListener.OUR_CTRL_ON, true);
 				hideEmulatedKeys();
 			}
 		});

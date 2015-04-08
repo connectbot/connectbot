@@ -71,16 +71,16 @@
 		<item>gray</item>
 	</string-array>
 
-	<string-array name="list_update" translatable="false">
-		<item>@string/list_update_daily</item>
-		<item>@string/list_update_weekly</item>
-		<item>@string/list_update_never</item>
+	<string-array name="list_stickymodifiers" translatable="false">
+		<item>@string/no</item>
+		<item>@string/only_alt</item>
+		<item>@string/yes</item>
 	</string-array>
 
-	<string-array name="list_update_values" translatable="false">
-		<item>Daily</item>
-		<item>Weekly</item>
-		<item>Never</item>
+	<string-array name="list_stickymodifiers_values" translatable="false">
+		<item>no</item>
+		<item>alt</item>
+		<item>yes</item>
 	</string-array>
 
 	<string-array name="list_keymode" translatable="false">

@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Skrýt stavový řádek když je zobrazena konzole</string>
   <string name="pref_memkeys_title">Uchovávat klíče v paměti</string>
   <string name="pref_memkeys_summary">Ponechat odemčené klíče v paměti dokud není ukončena služba na pozadí</string>
-  <string name="pref_update_title">Kontrolovat aktualizace</string>
-  <string name="pref_update_summary">Nastavit maximální frekvenci pro kontrolu aktualizací ConnectBota</string>
   <string name="pref_conn_persist_title">Trvalá spojení</string>
   <string name="pref_conn_persist_summary">Vynutit spojení i v pozadí</string>
   <string name="pref_keymode_title">Zkratky adresářů</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Vypnout</string>
   <string name="list_pubkeyids_none">Nepoužívat klíče</string>
   <string name="list_pubkeyids_any">Použít jakýkoliv odemčený klíč</string>
-  <string name="list_update_daily">Denně</string>
-  <string name="list_update_weekly">Týdně</string>
-  <string name="list_update_never">Nikdy</string>
   <string name="hostpref_nickname_title">Přezdívka</string>
   <string name="hostpref_color_title">Barevná kategorie</string>
   <string name="hostpref_fontsize_title">Velikost fontu (pt)</string>

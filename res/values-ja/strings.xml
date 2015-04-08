@@ -1,12 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">シンプルでパワフルなオープンソースのSSHクライアント</string>
+  <string name="service_desc">SSH接続とロードされた公開鍵の管理</string>
   <string name="title_hosts_list">ホスト</string>
   <string name="title_pubkey_list">公開鍵</string>
   <string name="title_port_forwards_list">ポート転送</string>
   <string name="title_host_editor">ホストを編集</string>
   <string name="title_help">ヘルプ</string>
   <string name="title_colors">配色</string>
+  <string name="title_color_picker">色の取得</string>
   <string name="resolve_connect">接続</string>
   <string name="resolve_entropy">エントロピーの取得</string>
   <string name="menu_insert">ホストを追加</string>
@@ -39,6 +41,7 @@
   <string name="portforward_edit">ポート転送を編集</string>
   <string name="portforward_delete">ポート転送を削除</string>
   <string name="prompt_nickname">鍵の名前</string>
+  <string name="prompt_nickname_hint_pubkey">私の作業用の鍵</string>
   <string name="prompt_source_port">ソースポート:</string>
   <string name="prompt_destination">転送先:</string>
   <string name="prompt_old_password">旧パスワード:</string>
@@ -64,6 +67,7 @@
   <string name="button_generate">鍵生成</string>
   <string name="button_resize">リサイズ</string>
   <string name="alert_disconnect_msg">接続が失われました．</string>
+  <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
   <string name="pref_emulation_category">端末エミュレート</string>
   <string name="pref_emulation_title">エミュレートモード</string>
   <string name="pref_emulation_summary">PTYで使う端末エミュレーションモード</string>
@@ -72,16 +76,26 @@
   <string name="pref_ui_category">ユーザーインターフェース</string>
   <string name="pref_rotation_title">画面の向き</string>
   <string name="pref_rotation_summary">キーボードのポップイン/アウト時の向きの変更</string>
+  <string name="pref_titlebarhide_title">タイトルバーを自動的に隠す</string>
+  <string name="pref_titlebarhide_summary">タイトルバーとアクセスメニューを表示するにはコンソールをタップ</string>
   <string name="pref_fullscreen_title">全画面</string>
   <string name="pref_fullscreen_summary">ステータスバーを隠蔽しコンソールとして利用</string>
+  <string name="pref_keyboard_category">キーボード</string>
+  <string name="pref_shiftfkeys_title">Shift+数字はFキー</string>
+  <string name="pref_shiftfkeys_summary">ハードウェアキーボードで、shiftと数字キーでF1-F10を送信します</string>
+  <string name="pref_ctrlfkeys_title">Ctrl+数字はFキー</string>
+  <string name="pref_ctrlfkeys_summary">ソフトウェアキーボードで、ctrlと数字キーでF1-F10を送信します</string>
+  <string name="pref_volumefont_title">音量ボタンでフォントサイズを変更する</string>
+  <string name="pref_volumefont_summary">フォントサイズはホストごとの設定でも変更することができます</string>
   <string name="pref_memkeys_title">メモリに鍵を保持する</string>
   <string name="pref_memkeys_summary">バックエンドのサービスが終了しない限り、アンロックした鍵をメモリに保持します</string>
-  <string name="pref_update_title">更新を確認</string>
-  <string name="pref_update_summary">ConnectBotの更新をチェックする頻度を設定します</string>
   <string name="pref_conn_persist_title">持続的接続</string>
   <string name="pref_conn_persist_summary">バックグラウンドでの実行中に接続の持続を強制する</string>
   <string name="pref_keymode_title">ディレクトリのショートカット</string>
   <string name="pref_keymode_summary">Altを\'/\'、ShiftをTabに割り当てます</string>
+  <string name="pref_stickymodifiers_title">スティッキー修飾キー</string>
+  <string name="pref_stickymodifiers_summary">別のキーが押されるまで、修飾キーは有効のままになります</string>
+  <string name="only_alt">alt のみ</string>
   <string name="pref_camera_title">カメラボタンショートカット</string>
   <string name="pref_camera_summary">カメラボタンが押されたときのショートカットを選びます</string>
   <string name="pref_keepalive_title">画面をスリープしない</string>
@@ -101,9 +115,6 @@
   <string name="list_keymode_none">無効</string>
   <string name="list_pubkeyids_none">公開鍵を使わない</string>
   <string name="list_pubkeyids_any">アンロックされた鍵のいずれかを使う</string>
-  <string name="list_update_daily">毎日</string>
-  <string name="list_update_weekly">毎週</string>
-  <string name="list_update_never">しない</string>
   <string name="hostpref_nickname_title">ニックネーム</string>
   <string name="hostpref_color_title">色の系統</string>
   <string name="hostpref_fontsize_title">フォントのサイズ (pt)</string>
@@ -117,6 +128,8 @@
   <string name="hostpref_wantsession_summary">ポート転送のみ行う場合に無効にしてください</string>
   <string name="hostpref_stayconnected_title">接続の維持</string>
   <string name="hostpref_stayconnected_summary">接続が切れたら再接続を試みます</string>
+  <string name="hostpref_quickdisconnect_title">切断時に閉じる</string>
+  <string name="hostpref_quickdisconnect_summary">リモート切断後、プロンプトを表示せずにすぐに閉じます。</string>
   <string name="hostpref_delkey_title">DELキー</string>
   <string name="hostpref_delkey_summary">DELキーが押されたときに送るキーコード</string>
   <string name="hostpref_encoding_title">エンコーディング</string>
@@ -146,6 +159,7 @@
   <string name="portforward_done">ポート転送の作成に成功しました．</string>
   <string name="portforward_problem">ポート転送の作成ができません．おそらく1024ポート以下か既に利用されているポートを指定されています．</string>
   <string name="portforward_menu_add">ポート転送の追加</string>
+  <string name="hint_userhost">ユーザ\@ホスト名</string>
   <string name="list_format_error">%1$s 形式を使ってください</string>
   <string name="format_username">ユーザ名</string>
   <string name="format_hostname">ホスト名</string>
@@ -164,7 +178,12 @@
   <string name="list_rotation_port">縦向き固定</string>
   <string name="list_rotation_auto">自動判定</string>
   <string name="list_camera_ctrlaspace">Ctrl+Aに続いてSpace</string>
+  <string name="list_camera_ctrla">Ctrl+A</string>
+  <string name="list_camera_esc">Escキー</string>
+  <string name="list_camera_esc_a">Esc+A</string>
   <string name="list_camera_none">なし</string>
+  <string name="list_delkey_backspace">Backspace</string>
+  <string name="list_delkey_del">Delete</string>
   <string name="delete_message">\'%1$s\'を削除してよろしいですか?</string>
   <string name="delete_pos">はい、削除します</string>
   <string name="delete_neg">キャンセル</string>
@@ -202,4 +221,11 @@
   <string name="color_green">緑</string>
   <string name="color_blue">青</string>
   <string name="color_gray">グレー</string>
+  <string name="colors_fg_label">FG: %1$d</string>
+  <string name="color_bg_label">BG: %1$d</string>
+  <string name="image_description_connected">接続しました。</string>
+  <string name="image_description_key_is_locked">キーがロックされました。</string>
+  <string name="image_description_toggle_control_character">コントロール文字を切り替えます。</string>
+  <string name="image_description_send_escape_character">エスケープ文字を送信します。</string>
+  <string name="image_description_show_keyboard">キーボードを表示します。</string>
 </resources>

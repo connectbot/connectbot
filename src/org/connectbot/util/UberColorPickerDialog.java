@@ -33,6 +33,8 @@
 
 package org.connectbot.util;
 
+import org.connectbot.R;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -80,7 +82,6 @@ public class UberColorPickerDialog extends Dialog {
 	 * @param context
 	 * @param listener
 	 * @param initialColor
-	 * @param showTitle If true, a title is shown across the top of the dialog.  If false a toast is shown instead.
 	 */
 	public UberColorPickerDialog(Context context,
 							OnColorChangedListener listener,
@@ -109,7 +110,7 @@ public class UberColorPickerDialog extends Dialog {
 		int screenWidth = dm.widthPixels;
 		int screenHeight = dm.heightPixels;
 
-		setTitle("Pick a color (try the trackball)");
+		setTitle(getContext().getResources().getString(R.string.title_color_picker));
 
 		try {
 			setContentView(new ColorPickerView(getContext(), l, screenWidth, screenHeight, mInitialColor));
@@ -132,20 +133,13 @@ public class UberColorPickerDialog extends Dialog {
 	 * I highly recommend adding new methods to the end of the list.  If you want to try to reorder the list, you're on your own.
 	 */
 	private static class ColorPickerView extends View {
-		private static int SWATCH_WIDTH = 95;
-		private static final int SWATCH_HEIGHT = 60;
+		private static int SWATCH_WIDTH_PORTRAIT_DP = 95;
+		private static int SWATCH_WIDTH_LANDSCAPE_DP = 110;
+		private static final int SWATCH_HEIGHT_DP = 60;
 
-		private static int PALETTE_POS_X = 0;
-		private static int PALETTE_POS_Y = SWATCH_HEIGHT;
-		private static final int PALETTE_DIM = SWATCH_WIDTH * 2;
-		private static final int PALETTE_RADIUS = PALETTE_DIM / 2;
-		private static final int PALETTE_CENTER_X = PALETTE_RADIUS;
-		private static final int PALETTE_CENTER_Y = PALETTE_RADIUS;
+		private static final int PALETTE_DIM_DP = SWATCH_WIDTH_PORTRAIT_DP * 2;
 
-		private static final int SLIDER_THICKNESS = 40;
-
-		private static int VIEW_DIM_X = PALETTE_DIM;
-		private static int VIEW_DIM_Y = SWATCH_HEIGHT;
+		private static final int SLIDER_THICKNESS_DP = 40;
 
 		//NEW_METHOD_WORK_NEEDED_HERE
 		private static final int METHOD_HS_V_PALETTE = 0;
@@ -158,13 +152,30 @@ public class UberColorPickerDialog extends Dialog {
 		private static final int TRACK_HS_PALETTE = 30;
 		private static final int TRACK_VER_VALUE_SLIDER = 31;
 
-		private static final int TEXT_SIZE = 12;
+		private static final int TEXT_SIZE_DP = 12;
+		private static final int TEXT_SIZE_LABEL_DP = 12;
+
+		private static final int BUTTON_TEXT_MARGIN_DP = 16;
+
 		private static int[] TEXT_HSV_POS = new int[2];
 		private static int[] TEXT_RGB_POS = new int[2];
 		private static int[] TEXT_YUV_POS = new int[2];
 		private static int[] TEXT_HEX_POS = new int[2];
 
 		private static final float PI = 3.141592653589793f;
+
+		private final int mSwatchWidthPx;
+		private final int mTextSizePx;
+		private final int mTextSizeLabelPx;
+		private final int mPalettePosX;
+		private final int mPalettePosY;
+		private final int mPaletteDimPx;
+		private final int mPaletteRadiusPx;
+		private final int mSliderThicknessPx;
+		private final int mViewDimXPx;
+		private final int mViewDimYPx;
+		private final int mPaletteCenterPx;
+		private final int mButtonTextMarginPx;
 
 		private int mMethod = METHOD_HS_V_PALETTE;
 		private int mTracking = TRACKED_NONE;	//What object on screen is currently being tracked for movement
@@ -224,6 +235,10 @@ public class UberColorPickerDialog extends Dialog {
 		throws Exception {
 			super(c);
 
+			DisplayMetrics metrics = c.getResources().getDisplayMetrics();
+			mTextSizePx = (int) (TEXT_SIZE_DP * metrics.density + 0.5f);
+			mTextSizeLabelPx = (int) (TEXT_SIZE_LABEL_DP * metrics.density + 0.5f);
+
 			//We need to make the dialog focusable to retrieve trackball events.
 			setFocusable(true);
 
@@ -235,55 +250,63 @@ public class UberColorPickerDialog extends Dialog {
 
 			updateAllFromHSV();
 
-			//Setup the layout based on whether this is a portrait or landscape orientation.
-			if (width <= height) {	//Portrait layout
-				SWATCH_WIDTH = (PALETTE_DIM + SLIDER_THICKNESS) / 2;
+			mPaletteDimPx = (int) (PALETTE_DIM_DP * metrics.density + 0.5f);
+			mSliderThicknessPx = (int) (SLIDER_THICKNESS_DP * metrics.density + 0.5f);
+			mButtonTextMarginPx = (int) (BUTTON_TEXT_MARGIN_DP * metrics.density + 0.5f);
 
-				PALETTE_POS_X = 0;
-				PALETTE_POS_Y = TEXT_SIZE * 4 + SWATCH_HEIGHT;
+			//Setup the layout based on whether this is a portrait or landscape orientation.
+			if (width <= height) {        //Portrait layout
+				mSwatchWidthPx = (int) (((PALETTE_DIM_DP + SLIDER_THICKNESS_DP) / 2) * metrics.density + 0.5f);
+				final int swatchHeightPx = (int) (SWATCH_HEIGHT_DP * metrics.density + 0.5f);
+
+				mPalettePosX = 0;
+				mPalettePosY = mTextSizePx * 4 + swatchHeightPx;
 
 				//Set more rects, lots of rects
-				mOldSwatchRect.set(0, TEXT_SIZE * 4, SWATCH_WIDTH, TEXT_SIZE * 4 + SWATCH_HEIGHT);
-				mNewSwatchRect.set(SWATCH_WIDTH, TEXT_SIZE * 4, SWATCH_WIDTH * 2, TEXT_SIZE * 4 + SWATCH_HEIGHT);
-				mPaletteRect.set(0, PALETTE_POS_Y, PALETTE_DIM, PALETTE_POS_Y + PALETTE_DIM);
-				mVerSliderRect.set(PALETTE_DIM, PALETTE_POS_Y, PALETTE_DIM + SLIDER_THICKNESS, PALETTE_POS_Y + PALETTE_DIM);
+				mOldSwatchRect.set(0, mTextSizePx * 4, mSwatchWidthPx, mTextSizePx * 4 + swatchHeightPx);
+				mNewSwatchRect.set(mSwatchWidthPx, mTextSizePx * 4, mSwatchWidthPx * 2, mTextSizePx * 4 + swatchHeightPx);
+				mPaletteRect.set(0, mPalettePosY, mPaletteDimPx, mPalettePosY + mPaletteDimPx);
+				mVerSliderRect.set(mPaletteDimPx, mPalettePosY, mPaletteDimPx + mSliderThicknessPx, mPalettePosY + mPaletteDimPx);
 
-				TEXT_HSV_POS[0] = 3;
+				TEXT_HSV_POS[0] = (int) (3 * metrics.density + 0.5f);
 				TEXT_HSV_POS[1] = 0;
-				TEXT_RGB_POS[0] = TEXT_HSV_POS[0] + 50;
+				TEXT_RGB_POS[0] = TEXT_HSV_POS[0] + (int) (50 * metrics.density + 0.5f);
 				TEXT_RGB_POS[1] = TEXT_HSV_POS[1];
-				TEXT_YUV_POS[0] = TEXT_HSV_POS[0] + 100;
+				TEXT_YUV_POS[0] = TEXT_HSV_POS[0] + (int) (100 * metrics.density + 0.5f);
 				TEXT_YUV_POS[1] = TEXT_HSV_POS[1];
-				TEXT_HEX_POS[0] = TEXT_HSV_POS[0] + 150;
+				TEXT_HEX_POS[0] = TEXT_HSV_POS[0] + (int) (150 * metrics.density + 0.5f);
 				TEXT_HEX_POS[1] = TEXT_HSV_POS[1];
 
-				VIEW_DIM_X = PALETTE_DIM + SLIDER_THICKNESS;
-				VIEW_DIM_Y = SWATCH_HEIGHT + PALETTE_DIM + TEXT_SIZE * 4;
-			}
-			else {	//Landscape layout
-				SWATCH_WIDTH = 110;
+				mViewDimXPx = mPaletteDimPx + mSliderThicknessPx;
+				mViewDimYPx = swatchHeightPx + mPaletteDimPx + mTextSizePx * 4;
+			} else {        //Landscape layout
+				mSwatchWidthPx = (int) (SWATCH_WIDTH_LANDSCAPE_DP * metrics.density + 0.5f);
+				final int swatchHeightPx = (int) (SWATCH_HEIGHT_DP * metrics.density + 0.5f);
 
-				PALETTE_POS_X = SWATCH_WIDTH;
-				PALETTE_POS_Y = 0;
+				mPalettePosX = mSwatchWidthPx;
+				mPalettePosY = 0;
 
 				//Set more rects, lots of rects
-				mOldSwatchRect.set(0, TEXT_SIZE * 7, SWATCH_WIDTH, TEXT_SIZE * 7 + SWATCH_HEIGHT);
-				mNewSwatchRect.set(0, TEXT_SIZE * 7 + SWATCH_HEIGHT, SWATCH_WIDTH, TEXT_SIZE * 7 + SWATCH_HEIGHT * 2);
-				mPaletteRect.set(SWATCH_WIDTH, PALETTE_POS_Y, SWATCH_WIDTH + PALETTE_DIM, PALETTE_POS_Y + PALETTE_DIM);
-				mVerSliderRect.set(SWATCH_WIDTH + PALETTE_DIM, PALETTE_POS_Y, SWATCH_WIDTH + PALETTE_DIM + SLIDER_THICKNESS, PALETTE_POS_Y + PALETTE_DIM);
+				mOldSwatchRect.set(0, mTextSizePx * 7, mSwatchWidthPx, mTextSizePx * 7 + swatchHeightPx);
+				mNewSwatchRect.set(0, mTextSizePx * 7 + mSliderThicknessPx, mSwatchWidthPx, mTextSizePx * 7 + swatchHeightPx * 2);
+				mPaletteRect.set(mSwatchWidthPx, mPalettePosY, mSwatchWidthPx + mPaletteDimPx, mPalettePosY + mPaletteDimPx);
+				mVerSliderRect.set(mSwatchWidthPx + mPaletteDimPx, mPalettePosY, mSwatchWidthPx + mPaletteDimPx + mSliderThicknessPx, mPalettePosY + mPaletteDimPx);
 
-				TEXT_HSV_POS[0] = 3;
+				TEXT_HSV_POS[0] = (int) (3 * metrics.density + 0.5f);
 				TEXT_HSV_POS[1] = 0;
 				TEXT_RGB_POS[0] = TEXT_HSV_POS[0];
-				TEXT_RGB_POS[1] = (int)(TEXT_HSV_POS[1] + TEXT_SIZE * 3.5);
-				TEXT_YUV_POS[0] = TEXT_HSV_POS[0] + 50;
-				TEXT_YUV_POS[1] = (int)(TEXT_HSV_POS[1] + TEXT_SIZE * 3.5);
-				TEXT_HEX_POS[0] = TEXT_HSV_POS[0] + 50;
+				TEXT_RGB_POS[1] = (int) (TEXT_HSV_POS[1] + mTextSizePx * 3.5);
+				TEXT_YUV_POS[0] = TEXT_HSV_POS[0] + (int) (50 * metrics.density + 0.5f);
+				TEXT_YUV_POS[1] = (int) (TEXT_HSV_POS[1] + mTextSizePx * 3.5);
+				TEXT_HEX_POS[0] = TEXT_HSV_POS[0] + (int) (50 * metrics.density + 0.5f);
 				TEXT_HEX_POS[1] = TEXT_HSV_POS[1];
 
-				VIEW_DIM_X = PALETTE_POS_X + PALETTE_DIM + SLIDER_THICKNESS;
-				VIEW_DIM_Y = Math.max(mNewSwatchRect.bottom, PALETTE_DIM);
+				mViewDimXPx = mPalettePosX + mPaletteDimPx + mSliderThicknessPx;
+				mViewDimYPx = Math.max(mNewSwatchRect.bottom, mPaletteDimPx);
 			}
+
+			mPaletteCenterPx = mPaletteDimPx / 2;
+			mPaletteRadiusPx = mPaletteDimPx / 2;
 
 			//Rainbows make everybody happy!
 			mSpectrumColorsRev = new int[] {
@@ -305,18 +328,18 @@ public class UberColorPickerDialog extends Dialog {
 			mSwatchNew.setColor(Color.HSVToColor(mHSV));
 
 			Shader shaderA = new SweepGradient(0, 0, mSpectrumColorsRev, null);
-			Shader shaderB = new RadialGradient(0, 0, PALETTE_CENTER_X, 0xFFFFFFFF, 0xFF000000, Shader.TileMode.CLAMP);
+			Shader shaderB = new RadialGradient(0, 0, mPaletteCenterPx, 0xFFFFFFFF, 0xFF000000, Shader.TileMode.CLAMP);
 			Shader shader = new ComposeShader(shaderA, shaderB, PorterDuff.Mode.SCREEN);
 			mOvalHueSat = new Paint(Paint.ANTI_ALIAS_FLAG);
 			mOvalHueSat.setShader(shader);
 			mOvalHueSat.setStyle(Paint.Style.FILL);
 			mOvalHueSat.setDither(true);
 
-			mVerSliderBM = Bitmap.createBitmap(SLIDER_THICKNESS, PALETTE_DIM, Bitmap.Config.RGB_565);
+			mVerSliderBM = Bitmap.createBitmap(mSliderThicknessPx, mPaletteDimPx, Bitmap.Config.RGB_565);
 			mVerSliderCv = new Canvas(mVerSliderBM);
 
 			for (int i = 0; i < 3; i++) {
-				mHorSlidersBM[i] = Bitmap.createBitmap(PALETTE_DIM, SLIDER_THICKNESS, Bitmap.Config.RGB_565);
+				mHorSlidersBM[i] = Bitmap.createBitmap(mPaletteDimPx, mSliderThicknessPx, Bitmap.Config.RGB_565);
 				mHorSlidersCv[i] = new Canvas(mHorSlidersBM[i]);
 			}
 
@@ -332,7 +355,7 @@ public class UberColorPickerDialog extends Dialog {
 			//Add Paints to represent the icon for the new method
 
 			shaderA = new SweepGradient(0, 0, mSpectrumColorsRev, null);
-			shaderB = new RadialGradient(0, 0, PALETTE_DIM / 2, 0xFFFFFFFF, 0xFF000000, Shader.TileMode.CLAMP);
+			shaderB = new RadialGradient(0, 0, mPaletteDimPx / 2, 0xFFFFFFFF, 0xFF000000, Shader.TileMode.CLAMP);
 			shader = new ComposeShader(shaderA, shaderB, PorterDuff.Mode.SCREEN);
 			mOvalHueSatSmall = new Paint(Paint.ANTI_ALIAS_FLAG);
 			mOvalHueSatSmall.setShader(shader);
@@ -345,7 +368,7 @@ public class UberColorPickerDialog extends Dialog {
 
 			//Make a basic text Paint.
 			mText = new Paint(Paint.ANTI_ALIAS_FLAG);
-			mText.setTextSize(TEXT_SIZE);
+			mText.setTextSize(mTextSizePx);
 			mText.setColor(Color.WHITE);
 
 			//Kickstart
@@ -375,7 +398,7 @@ public class UberColorPickerDialog extends Dialog {
 		private void drawSwatches(Canvas canvas) {
 			float[] hsv = new float[3];
 
-			mText.setTextSize(16);
+			mText.setTextSize(mTextSizePx);
 
 			//Draw the original swatch
 			canvas.drawRect(mOldSwatchRect, mSwatchOld);
@@ -384,17 +407,17 @@ public class UberColorPickerDialog extends Dialog {
 			//	hsv[1] = 0;
 			if (hsv[2] > .5)
 				mText.setColor(Color.BLACK);
-			canvas.drawText("Revert", mOldSwatchRect.left + SWATCH_WIDTH / 2 - mText.measureText("Revert") / 2, mOldSwatchRect.top + 16, mText);
+			canvas.drawText("Revert", mOldSwatchRect.left + mSwatchWidthPx / 2 - mText.measureText("Revert") / 2, mOldSwatchRect.top + mButtonTextMarginPx, mText);
 			mText.setColor(Color.WHITE);
 
 			//Draw the new swatch
 			canvas.drawRect(mNewSwatchRect, mSwatchNew);
 			if (mHSV[2] > .5)
 				mText.setColor(Color.BLACK);
-			canvas.drawText("Accept", mNewSwatchRect.left + SWATCH_WIDTH / 2 - mText.measureText("Accept") / 2, mNewSwatchRect.top + 16, mText);
+			canvas.drawText("Accept", mNewSwatchRect.left + mSwatchWidthPx / 2 - mText.measureText("Accept") / 2, mNewSwatchRect.top + mButtonTextMarginPx, mText);
 			mText.setColor(Color.WHITE);
 
-			mText.setTextSize(TEXT_SIZE);
+			mText.setTextSize(mTextSizePx);
 		}
 
 		/**
@@ -403,25 +426,25 @@ public class UberColorPickerDialog extends Dialog {
 		 */
 		private void writeColorParams(Canvas canvas) {
 			if (mHSVenabled) {
-				canvas.drawText("H: " + Integer.toString((int)(mHSV[0] / 360.0f * 255)), TEXT_HSV_POS[0], TEXT_HSV_POS[1] + TEXT_SIZE, mText);
-				canvas.drawText("S: " + Integer.toString((int)(mHSV[1] * 255)), TEXT_HSV_POS[0], TEXT_HSV_POS[1] + TEXT_SIZE * 2, mText);
-				canvas.drawText("V: " + Integer.toString((int)(mHSV[2] * 255)), TEXT_HSV_POS[0], TEXT_HSV_POS[1] + TEXT_SIZE * 3, mText);
+				canvas.drawText("H: " + Integer.toString((int) (mHSV[0] / 360.0f * 255)), TEXT_HSV_POS[0], TEXT_HSV_POS[1] + mTextSizePx, mText);
+				canvas.drawText("S: " + Integer.toString((int) (mHSV[1] * 255)), TEXT_HSV_POS[0], TEXT_HSV_POS[1] + mTextSizePx * 2, mText);
+				canvas.drawText("V: " + Integer.toString((int) (mHSV[2] * 255)), TEXT_HSV_POS[0], TEXT_HSV_POS[1] + mTextSizePx * 3, mText);
 			}
 
 			if (mRGBenabled) {
-				canvas.drawText("R: " + mRGB[0], TEXT_RGB_POS[0], TEXT_RGB_POS[1] + TEXT_SIZE, mText);
-				canvas.drawText("G: " + mRGB[1], TEXT_RGB_POS[0], TEXT_RGB_POS[1] + TEXT_SIZE * 2, mText);
-				canvas.drawText("B: " + mRGB[2], TEXT_RGB_POS[0], TEXT_RGB_POS[1] + TEXT_SIZE * 3, mText);
+				canvas.drawText("R: " + mRGB[0], TEXT_RGB_POS[0], TEXT_RGB_POS[1] + mTextSizePx, mText);
+				canvas.drawText("G: " + mRGB[1], TEXT_RGB_POS[0], TEXT_RGB_POS[1] + mTextSizePx * 2, mText);
+				canvas.drawText("B: " + mRGB[2], TEXT_RGB_POS[0], TEXT_RGB_POS[1] + mTextSizePx * 3, mText);
 			}
 
 			if (mYUVenabled) {
-				canvas.drawText("Y: " + Integer.toString((int)(mYUV[0] * 255)), TEXT_YUV_POS[0], TEXT_YUV_POS[1] + TEXT_SIZE, mText);
-				canvas.drawText("U: " + Integer.toString((int)((mYUV[1] + .5f) * 255)), TEXT_YUV_POS[0], TEXT_YUV_POS[1] + TEXT_SIZE * 2, mText);
-				canvas.drawText("V: " + Integer.toString((int)((mYUV[2] + .5f) * 255)), TEXT_YUV_POS[0], TEXT_YUV_POS[1] + TEXT_SIZE * 3, mText);
+				canvas.drawText("Y: " + Integer.toString((int) (mYUV[0] * 255)), TEXT_YUV_POS[0], TEXT_YUV_POS[1] + mTextSizePx, mText);
+				canvas.drawText("U: " + Integer.toString((int) ((mYUV[1] + .5f) * 255)), TEXT_YUV_POS[0], TEXT_YUV_POS[1] + mTextSizePx * 2, mText);
+				canvas.drawText("V: " + Integer.toString((int) ((mYUV[2] + .5f) * 255)), TEXT_YUV_POS[0], TEXT_YUV_POS[1] + mTextSizePx * 3, mText);
 			}
 
 			if (mHexenabled)
-				canvas.drawText("#" + mHexStr, TEXT_HEX_POS[0], TEXT_HEX_POS[1] + TEXT_SIZE, mText);
+				canvas.drawText("#" + mHexStr, TEXT_HEX_POS[0], TEXT_HEX_POS[1] + mTextSizePx, mText);
 		}
 
 		/**
@@ -444,9 +467,9 @@ public class UberColorPickerDialog extends Dialog {
 		 */
 		private void markVerSlider(Canvas canvas, int markerPos) {
 			mPosMarker.setColor(Color.BLACK);
-			canvas.drawRect(new Rect(0, markerPos - 2, SLIDER_THICKNESS, markerPos + 3), mPosMarker);
+			canvas.drawRect(new Rect(0, markerPos - 2, mSliderThicknessPx, markerPos + 3), mPosMarker);
 			mPosMarker.setColor(Color.WHITE);
-			canvas.drawRect(new Rect(0, markerPos, SLIDER_THICKNESS, markerPos + 1), mPosMarker);
+			canvas.drawRect(new Rect(0, markerPos, mSliderThicknessPx, markerPos + 1), mPosMarker);
 		}
 
 		/**
@@ -455,9 +478,9 @@ public class UberColorPickerDialog extends Dialog {
 		 */
 		private void hilightFocusedVerSlider(Canvas canvas) {
 			mPosMarker.setColor(Color.WHITE);
-			canvas.drawRect(new Rect(0, 0, SLIDER_THICKNESS, PALETTE_DIM), mPosMarker);
+			canvas.drawRect(new Rect(0, 0, mSliderThicknessPx, mPaletteDimPx), mPosMarker);
 			mPosMarker.setColor(Color.BLACK);
-			canvas.drawRect(new Rect(2, 2, SLIDER_THICKNESS - 2, PALETTE_DIM - 2), mPosMarker);
+			canvas.drawRect(new Rect(2, 2, mSliderThicknessPx - 2, mPaletteDimPx - 2), mPosMarker);
 		}
 
 		/**
@@ -466,9 +489,9 @@ public class UberColorPickerDialog extends Dialog {
 		 */
 		private void hilightFocusedOvalPalette(Canvas canvas) {
 			mPosMarker.setColor(Color.WHITE);
-			canvas.drawOval(new RectF(-PALETTE_RADIUS, -PALETTE_RADIUS, PALETTE_RADIUS, PALETTE_RADIUS), mPosMarker);
+			canvas.drawOval(new RectF(-mPaletteRadiusPx, -mPaletteRadiusPx, mPaletteRadiusPx, mPaletteRadiusPx), mPosMarker);
 			mPosMarker.setColor(Color.BLACK);
-			canvas.drawOval(new RectF(-PALETTE_RADIUS + 2, -PALETTE_RADIUS + 2, PALETTE_RADIUS - 2, PALETTE_RADIUS - 2), mPosMarker);
+			canvas.drawOval(new RectF(-mPaletteRadiusPx + 2, -mPaletteRadiusPx + 2, mPaletteRadiusPx - 2, mPaletteRadiusPx - 2), mPosMarker);
 		}
 
 		//NEW_METHOD_WORK_NEEDED_HERE
@@ -480,19 +503,19 @@ public class UberColorPickerDialog extends Dialog {
 		private void drawHSV1Palette(Canvas canvas) {
 			canvas.save();
 
-			canvas.translate(PALETTE_POS_X, PALETTE_POS_Y);
+			canvas.translate(mPalettePosX, mPalettePosY);
 
 			//Draw the 2D palette
-			canvas.translate(PALETTE_CENTER_X, PALETTE_CENTER_Y);
-			canvas.drawOval(new RectF(-PALETTE_RADIUS, -PALETTE_RADIUS, PALETTE_RADIUS, PALETTE_RADIUS), mOvalHueSat);
-			canvas.drawOval(new RectF(-PALETTE_RADIUS, -PALETTE_RADIUS, PALETTE_RADIUS, PALETTE_RADIUS), mValDimmer);
+			canvas.translate(mPaletteCenterPx, mPaletteCenterPx);
+			canvas.drawOval(new RectF(-mPaletteRadiusPx, -mPaletteRadiusPx, mPaletteRadiusPx, mPaletteRadiusPx), mOvalHueSat);
+			canvas.drawOval(new RectF(-mPaletteRadiusPx, -mPaletteRadiusPx, mPaletteRadiusPx, mPaletteRadiusPx), mValDimmer);
 			if (mFocusedControl == 0)
 				hilightFocusedOvalPalette(canvas);
 			mark2DPalette(canvas, mCoord[0], mCoord[1]);
-			canvas.translate(-PALETTE_CENTER_X, -PALETTE_CENTER_Y);
+			canvas.translate(-mPaletteCenterPx, -mPaletteCenterPx);
 
 			//Draw the 1D slider
-			canvas.translate(PALETTE_DIM, 0);
+			canvas.translate(mPaletteDimPx, 0);
 			canvas.drawBitmap(mVerSliderBM, 0, 0, null);
 			if (mFocusedControl == 1)
 				hilightFocusedVerSlider(canvas);
@@ -520,12 +543,12 @@ public class UberColorPickerDialog extends Dialog {
 			setOvalValDimmer();
 			setVerValSlider();
 
-			float angle = 2*PI - mHSV[0] / (180 / 3.1415927f);
-			float radius = mHSV[1] * PALETTE_RADIUS;
-			mCoord[0] = (int)(Math.cos(angle) * radius);
-			mCoord[1] = (int)(Math.sin(angle) * radius);
+			float angle = 2 * PI - mHSV[0] / (180 / 3.1415927f);
+			float radius = mHSV[1] * mPaletteRadiusPx;
+			mCoord[0] = (int) (Math.cos(angle) * radius);
+			mCoord[1] = (int) (Math.sin(angle) * radius);
 
-			mCoord[2] = PALETTE_DIM - (int)(mHSV[2] * PALETTE_DIM);
+			mCoord[2] = mPaletteDimPx - (int) (mHSV[2] * mPaletteDimPx);
 		}
 
 		//NEW_METHOD_WORK_NEEDED_HERE
@@ -558,7 +581,7 @@ public class UberColorPickerDialog extends Dialog {
 			GradientDrawable gradDraw = new GradientDrawable(Orientation.TOP_BOTTOM, colors);
 			gradDraw.setDither(true);
 			gradDraw.setLevel(10000);
-			gradDraw.setBounds(0, 0, SLIDER_THICKNESS, PALETTE_DIM);
+			gradDraw.setBounds(0, 0, mSliderThicknessPx, mPaletteDimPx);
 			gradDraw.draw(mVerSliderCv);
 		}
 
@@ -567,7 +590,7 @@ public class UberColorPickerDialog extends Dialog {
 		 */
 		@Override
 		protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-			setMeasuredDimension(VIEW_DIM_X, VIEW_DIM_Y);
+			setMeasuredDimension(mViewDimXPx, mViewDimYPx);
 		}
 
 		/**
@@ -744,18 +767,18 @@ public class UberColorPickerDialog extends Dialog {
 		 	mCoord[0] += x2;
 		 	mCoord[1] += y2;
 
-		 	if (mCoord[0] < -PALETTE_RADIUS)
-		 		mCoord[0] = -PALETTE_RADIUS;
-		 	else if (mCoord[0] > PALETTE_RADIUS)
-		 		mCoord[0] = PALETTE_RADIUS;
-		 	if (mCoord[1] < -PALETTE_RADIUS)
-		 		mCoord[1] = -PALETTE_RADIUS;
-		 	else if (mCoord[1] > PALETTE_RADIUS)
-		 		mCoord[1] = PALETTE_RADIUS;
+			if (mCoord[0] < -mPaletteRadiusPx)
+				mCoord[0] = -mPaletteRadiusPx;
+			else if (mCoord[0] > mPaletteRadiusPx)
+				mCoord[0] = mPaletteRadiusPx;
+			if (mCoord[1] < -mPaletteRadiusPx)
+				mCoord[1] = -mPaletteRadiusPx;
+			else if (mCoord[1] > mPaletteRadiusPx)
+				mCoord[1] = mPaletteRadiusPx;
 
-			float radius = (float)java.lang.Math.sqrt(mCoord[0] * mCoord[0] + mCoord[1] * mCoord[1]);
-			if (radius > PALETTE_RADIUS)
-				radius = PALETTE_RADIUS;
+			float radius = (float) java.lang.Math.sqrt(mCoord[0] * mCoord[0] + mCoord[1] * mCoord[1]);
+			if (radius > mPaletteRadiusPx)
+				radius = mPaletteRadiusPx;
 
 			float angle = (float)java.lang.Math.atan2(mCoord[1], mCoord[0]);
 			// need to turn angle [-PI ... PI] into unit [0....1]
@@ -771,7 +794,7 @@ public class UberColorPickerDialog extends Dialog {
 			float[] hsv = new float[3];
 			Color.colorToHSV(c, hsv);
 			mHSV[0] = hsv[0];
-			mHSV[1] = radius / PALETTE_RADIUS;
+			mHSV[1] = radius / mPaletteRadiusPx;
 			updateAllFromHSV();
 			mSwatchNew.setColor(Color.HSVToColor(mHSV));
 
@@ -797,7 +820,7 @@ public class UberColorPickerDialog extends Dialog {
 				mHSV[2] += (increase ? jump : -jump) / 256.0f;
 				mHSV[2] = pinToUnit(mHSV[2]);
 				updateAllFromHSV();
-				mCoord[2] = PALETTE_DIM - (int)(mHSV[2] * PALETTE_DIM);
+				mCoord[2] = mPaletteDimPx - (int) (mHSV[2] * mPaletteDimPx);
 
 				mSwatchNew.setColor(Color.HSVToColor(mHSV));
 
@@ -872,11 +895,11 @@ public class UberColorPickerDialog extends Dialog {
 			float y = event.getY();
 
 			//Generate coordinates which are palette=local with the origin at the upper left of the main 2D palette
-			int y2 = (int)(pin(round(y - PALETTE_POS_Y), PALETTE_DIM));
+			int y2 = (int) (pin(round(y - mPalettePosY), mPaletteDimPx));
 
 			//Generate coordinates which are palette-local with the origin at the center of the main 2D palette
-			float circlePinnedX = x - PALETTE_POS_X - PALETTE_CENTER_X;
-			float circlePinnedY = y - PALETTE_POS_Y - PALETTE_CENTER_Y;
+			float circlePinnedX = x - mPalettePosX - mPaletteCenterPx;
+			float circlePinnedY = y - mPalettePosY - mPaletteCenterPx;
 
 			//Is the event in a swatch?
 			boolean inSwatchOld = ptInRect(round(x), round(y), mOldSwatchRect);
@@ -886,11 +909,11 @@ public class UberColorPickerDialog extends Dialog {
 			float radius = (float)java.lang.Math.sqrt(circlePinnedX * circlePinnedX + circlePinnedY * circlePinnedY);
 
 			//Is the event in a circle-pinned 2D palette?
-			boolean inOvalPalette = radius <= PALETTE_RADIUS;
+			boolean inOvalPalette = radius <= mPaletteRadiusPx;
 
 			//Pin the radius
-			if (radius > PALETTE_RADIUS)
-				radius = PALETTE_RADIUS;
+			if (radius > mPaletteRadiusPx)
+				radius = mPaletteRadiusPx;
 
 			//Is the event in a vertical slider to the right of the main 2D palette
 			boolean inVerSlider = ptInRect(round(x), round(y), mVerSliderRect);
@@ -935,7 +958,7 @@ public class UberColorPickerDialog extends Dialog {
 						float[] hsv = new float[3];
 						Color.colorToHSV(c, hsv);
 						mHSV[0] = hsv[0];
-						mHSV[1] = radius / PALETTE_RADIUS;
+						mHSV[1] = radius / mPaletteRadiusPx;
 						updateAllFromHSV();
 						mSwatchNew.setColor(Color.HSVToColor(mHSV));
 
@@ -946,7 +969,7 @@ public class UberColorPickerDialog extends Dialog {
 					else if (mTracking == TRACK_VER_VALUE_SLIDER) {
 						if (mCoord[2] != y2) {
 							mCoord[2] = y2;
-							float value = 1.0f - (float)y2 / (float)PALETTE_DIM;
+							float value = 1.0f - (float) y2 / (float) mPaletteDimPx;
 
 							mHSV[2] = value;
 							updateAllFromHSV();

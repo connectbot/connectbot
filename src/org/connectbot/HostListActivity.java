@@ -165,11 +165,23 @@ public class HostListActivity extends ListActivity {
 
 		// detect HTC Dream and apply special preferences
 		if (Build.MANUFACTURER.equals("HTC") && Build.DEVICE.equals("dream")) {
+			SharedPreferences.Editor editor = prefs.edit();
+			boolean doCommit = false;
 			if (!prefs.contains(PreferenceConstants.SHIFT_FKEYS) &&
 			    !prefs.contains(PreferenceConstants.CTRL_FKEYS)) {
-				SharedPreferences.Editor editor = prefs.edit();
 				editor.putBoolean(PreferenceConstants.SHIFT_FKEYS, true);
 				editor.putBoolean(PreferenceConstants.CTRL_FKEYS, true);
+				doCommit = true;
+			}
+			if (!prefs.contains(PreferenceConstants.STICKY_MODIFIERS)) {
+				editor.putString(PreferenceConstants.STICKY_MODIFIERS, PreferenceConstants.YES);
+				doCommit = true;
+			}
+			if (!prefs.contains(PreferenceConstants.KEYMODE)) {
+				editor.putString(PreferenceConstants.KEYMODE, PreferenceConstants.KEYMODE_RIGHT);
+				doCommit = true;
+			}
+			if (doCommit) {
 				editor.commit();
 			}
 		}
@@ -333,8 +345,8 @@ public class HostListActivity extends ListActivity {
 
 		// edit, disconnect, delete
 		MenuItem connect = menu.add(R.string.list_host_disconnect);
-		final TerminalBridge bridge = bound.getConnectedBridge(host);
-		connect.setEnabled((bridge != null));
+		final TerminalBridge bridge = (bound == null) ? null : bound.getConnectedBridge(host);
+		connect.setEnabled(bridge != null);
 		connect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				bridge.dispatchDisconnect(true);

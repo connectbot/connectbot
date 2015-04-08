@@ -27,19 +27,17 @@
 		android:defaultValue="true"
 		/>
 
-	<ListPreference
-		android:key="update"
-		android:title="@string/pref_update_title"
-		android:summary="@string/pref_update_summary"
-		android:entries="@array/list_update"
-		android:entryValues="@array/list_update_values"
-		android:defaultValue="Daily"
-		/>
-
 	<CheckBoxPreference
 		android:key="connPersist"
 		android:title="@string/pref_conn_persist_title"
 		android:summary="@string/pref_conn_persist_summary"
+		android:defaultValue="true"
+		/>
+
+	<CheckBoxPreference
+		android:key="wifilock"
+		android:title="@string/pref_wifilock_title"
+		android:summary="@string/pref_wifilock_summary"
 		android:defaultValue="true"
 		/>
 
@@ -92,6 +90,24 @@
 			/>
 
 		<CheckBoxPreference
+			android:key="volumefont"
+			android:title="@string/pref_volumefont_title"
+			android:summary="@string/pref_volumefont_summary"
+			android:defaultValue="true"
+			/>
+
+		<CheckBoxPreference
+			android:key="keepalive"
+			android:title="@string/pref_keepalive_title"
+			android:summary="@string/pref_keepalive_summary"
+			android:defaultValue="true"
+			/>
+	</PreferenceCategory>
+
+	<PreferenceCategory
+		android:title="@string/pref_keyboard_category">
+
+		<CheckBoxPreference
 			android:key="shiftfkeys"
 			android:title="@string/pref_shiftfkeys_title"
 			android:summary="@string/pref_shiftfkeys_summary"
@@ -105,11 +121,13 @@
 			android:defaultValue="false"
 			/>
 
-		<CheckBoxPreference
-			android:key="volumefont"
-			android:title="@string/pref_volumefont_title"
-			android:summary="@string/pref_volumefont_summary"
-			android:defaultValue="true"
+		<ListPreference
+			android:key="stickymodifiers"
+			android:title="@string/pref_stickymodifiers_title"
+			android:summary="@string/pref_stickymodifiers_summary"
+			android:entries="@array/list_stickymodifiers"
+			android:entryValues="@array/list_stickymodifiers_values"
+			android:defaultValue="no"
 			/>
 
 		<ListPreference
@@ -118,7 +136,7 @@
 			android:summary="@string/pref_keymode_summary"
 			android:entries="@array/list_keymode"
 			android:entryValues="@array/list_keymode_values"
-			android:defaultValue="Use right-side keys"
+			android:defaultValue="none"
 			/>
 
 		<ListPreference
@@ -128,20 +146,6 @@
 			android:entries="@array/list_camera"
 			android:entryValues="@array/list_camera_values"
 			android:defaultValue="Ctrl+A then Space"
-			/>
-
-		<CheckBoxPreference
-			android:key="keepalive"
-			android:title="@string/pref_keepalive_title"
-			android:summary="@string/pref_keepalive_summary"
-			android:defaultValue="true"
-			/>
-
-		<CheckBoxPreference
-			android:key="wifilock"
-			android:title="@string/pref_wifilock_title"
-			android:summary="@string/pref_wifilock_summary"
-			android:defaultValue="true"
 			/>
 
 		<CheckBoxPreference

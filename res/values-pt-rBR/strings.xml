@@ -8,6 +8,7 @@
   <string name="title_host_editor">Edição de Host</string>
   <string name="title_help">Ajuda</string>
   <string name="title_colors">Cores</string>
+  <string name="title_color_picker">Escolha a cor</string>
   <string name="resolve_connect">Conectar</string>
   <string name="resolve_entropy">Sensibilidade</string>
   <string name="menu_insert">Adicionar Host</string>
@@ -77,10 +78,9 @@
   <string name="pref_rotation_summary">Como alterar a rotação da tela quando se conecta/desconecta um teclado</string>
   <string name="pref_fullscreen_title">Tela cheia</string>
   <string name="pref_fullscreen_summary">Ocultar a barra de estatus no modo terminal</string>
+  <string name="pref_keyboard_category">Teclado</string>
   <string name="pref_memkeys_title">Guardar as chaves em memória</string>
   <string name="pref_memkeys_summary">Manter chaves desbloqueadas na memória até que o serviço seja terminado</string>
-  <string name="pref_update_title">Procurar por atualizações</string>
-  <string name="pref_update_summary">Configurar frequencia para checar atualizações do ConnectBot</string>
   <string name="pref_conn_persist_title">Conexões persistentes</string>
   <string name="pref_conn_persist_summary">Forçar as conexões para que continuem conectadas mesmo em segundo plano</string>
   <string name="pref_keymode_title">Teclas de atalho</string>
@@ -104,9 +104,6 @@
   <string name="list_keymode_none">Desabilitar</string>
   <string name="list_pubkeyids_none">Não usar chaves</string>
   <string name="list_pubkeyids_any">Usar qualquer chave pública</string>
-  <string name="list_update_daily">Diariamente</string>
-  <string name="list_update_weekly">Semanalmente</string>
-  <string name="list_update_never">Nunca</string>
   <string name="hostpref_nickname_title">Apelido</string>
   <string name="hostpref_color_title">Categoria de cor</string>
   <string name="hostpref_fontsize_title">Tamanho da fonte (pontos)</string>
@@ -211,8 +208,8 @@
   <string name="color_green">verde</string>
   <string name="color_blue">azul</string>
   <string name="color_gray">cinza</string>
-  <string name="colors_fg">PP:</string>
-  <string name="color_bg">SP:</string>
+  <string name="colors_fg_label">PP: %1$d</string>
+  <string name="color_bg_label">SP: %1$d</string>
   <string name="image_description_connected">Conectado.</string>
   <string name="image_description_key_is_locked">A chave está bloqueada.</string>
   <string name="image_description_send_escape_character">Enviar caractere de escape.</string>

@@ -8,6 +8,7 @@
   <string name="title_host_editor">Host\'u Düzenle</string>
   <string name="title_help">Yardım</string>
   <string name="title_colors">Renkler</string>
+  <string name="title_color_picker">Bir renk seç</string>
   <string name="resolve_connect">Bağlan</string>
   <string name="resolve_entropy">Rastgele girdi topla</string>
   <string name="menu_insert">Host ekle</string>
@@ -77,10 +78,9 @@
   <string name="pref_rotation_summary">Klavye saklandığında/açıldığında dönüş nasıl değişir</string>
   <string name="pref_fullscreen_title">Tüm ekran</string>
   <string name="pref_fullscreen_summary">Konsolda iken durum çubuğunu gizle</string>
+  <string name="pref_keyboard_category">Klavye</string>
   <string name="pref_memkeys_title">Anahtarları bellekte tut</string>
   <string name="pref_memkeys_summary">Kilidi açılmış anahtarları arkadaki hizmetler sonlanana kadar bellekte tut</string>
-  <string name="pref_update_title">Güncellemelere bak</string>
-  <string name="pref_update_summary">ConnectBot güncellemelerine bakmak için en fazla sıklığı ayarla</string>
   <string name="pref_conn_persist_title">Bağlantıları sürekli tut</string>
   <string name="pref_conn_persist_summary">Arkaplanda iken bağlantıları bağlı tutmaya zorla</string>
   <string name="pref_keymode_title">Dizin kısayolları</string>
@@ -104,9 +104,6 @@
   <string name="list_keymode_none">Devre Dışı Bırak</string>
   <string name="list_pubkeyids_none">Tuşları kullanma</string>
   <string name="list_pubkeyids_any">Herhangi bir tuşu kullan</string>
-  <string name="list_update_daily">Günlük</string>
-  <string name="list_update_weekly">Haftalık</string>
-  <string name="list_update_never">Asla</string>
   <string name="hostpref_nickname_title">Rumuz</string>
   <string name="hostpref_color_title">Renk kategorisi</string>
   <string name="hostpref_fontsize_title">Yazıtipi boyutu (pt)</string>
@@ -211,8 +208,8 @@
   <string name="color_green">yeşil</string>
   <string name="color_blue">mavi</string>
   <string name="color_gray">gri</string>
-  <string name="colors_fg">ÖR:</string>
-  <string name="color_bg">AR:</string>
+  <string name="colors_fg_label">ÖR: %1$d</string>
+  <string name="color_bg_label">AR: %1$d</string>
   <string name="image_description_connected">Bağlandı.</string>
   <string name="image_description_show_keyboard">Klavye göster.</string>
 </resources>

@@ -79,8 +79,6 @@
   <string name="pref_fullscreen_summary">Rejtett állapotsor a konzol használata során</string>
   <string name="pref_memkeys_title">Kulcsok megörzése a memóriában</string>
   <string name="pref_memkeys_summary">Tartsa nyitva a memóriában lévő kulcsokat amíg a háttérszolgáltatás meg nem szűnik</string>
-  <string name="pref_update_title">Frissítés ellenőrzése</string>
-  <string name="pref_update_summary">ConnectBot frissítés ellenőrzésének maximális gyakorisága</string>
   <string name="pref_conn_persist_title">Kapcsolatok fenntartása</string>
   <string name="pref_conn_persist_summary">A háttérben tartsa fenn a kapcsolatokat</string>
   <string name="pref_keymode_title">Könyvtár hivatkozások</string>
@@ -104,9 +102,6 @@
   <string name="list_keymode_none">Tiltás</string>
   <string name="list_pubkeyids_none">Kulcsok használatának tiltása</string>
   <string name="list_pubkeyids_any">Bármely nyilvános kulcs használata</string>
-  <string name="list_update_daily">Naponta</string>
-  <string name="list_update_weekly">Hetente</string>
-  <string name="list_update_never">Soha</string>
   <string name="hostpref_nickname_title">Becenév</string>
   <string name="hostpref_color_title">Szín-kategória</string>
   <string name="hostpref_fontsize_title">Betűtipus mérete (pt)</string>

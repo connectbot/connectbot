@@ -81,8 +81,9 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	}
 
 	/**
+	 * @param host
 	 * @param bridge
-	 * @param db
+	 * @param manager
 	 */
 	public SSH(HostBean host, TerminalBridge bridge, TerminalManager manager) {
 		super(host, bridge, manager);
@@ -455,6 +456,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			// Display the reason in the text.
 			bridge.outputLine(e.getCause().getMessage());
 
+			close();
 			onDisconnect();
 			return;
 		}
@@ -489,8 +491,6 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	}
 
 	private void onDisconnect() {
-		close();
-
 		bridge.dispatchDisconnect(false);
 	}
 
@@ -521,6 +521,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		}
 
 		if ((newConditions & ChannelCondition.EOF) != 0) {
+			close();
 			onDisconnect();
 			throw new IOException("Remote end closed connection");
 		}

@@ -24,8 +24,8 @@ package org.connectbot.service;
 public interface FontSizeChangedListener {
 
 	/**
-	 * @param size
-	 *            new font size
+	 * @param sizeDp
+	 *            new font size in dp
 	 */
-	void onFontSizeChanged(float size);
+	void onFontSizeChanged(float sizeDp);
 }

@@ -8,6 +8,7 @@
   <string name="title_host_editor">Modifica connessione</string>
   <string name="title_help">Guida</string>
   <string name="title_colors">Colori</string>
+  <string name="title_color_picker">Scelta colore</string>
   <string name="resolve_connect">Connetti</string>
   <string name="resolve_entropy">Raccolta disordinata</string>
   <string name="menu_insert">Aggiungi connessione</string>
@@ -77,10 +78,9 @@
   <string name="pref_rotation_summary">Come cambiare rotazione quando la tastiera esce/rientra</string>
   <string name="pref_fullscreen_title">Schermo intero</string>
   <string name="pref_fullscreen_summary">Nascondi la barra di stato in console</string>
+  <string name="pref_keyboard_category">Tastiera</string>
   <string name="pref_memkeys_title">Mantieni chiavi in memoria</string>
   <string name="pref_memkeys_summary">Mantiene le chiavi in memoria finché il servizio non viene terminato</string>
-  <string name="pref_update_title">Controlla aggiornamenti</string>
-  <string name="pref_update_summary">Imposta la frequenza massima per il controllo degli aggiornamenti</string>
   <string name="pref_conn_persist_title">Connessioni permanenti</string>
   <string name="pref_conn_persist_summary">Forza connessioni a rimanere collegate in sottofondo</string>
   <string name="pref_keymode_title">Scorciatoie directory</string>
@@ -104,9 +104,6 @@
   <string name="list_keymode_none">Disabilita</string>
   <string name="list_pubkeyids_none">Non usare chiavi</string>
   <string name="list_pubkeyids_any">Usa qualsiasi chiave sbloccata</string>
-  <string name="list_update_daily">Ogni giorno</string>
-  <string name="list_update_weekly">Ogni settimana</string>
-  <string name="list_update_never">Mai</string>
   <string name="hostpref_nickname_title">Soprannome</string>
   <string name="hostpref_color_title">Categoria colore</string>
   <string name="hostpref_fontsize_title">Dimensione caratteri (pt)</string>
@@ -211,6 +208,8 @@
   <string name="color_green">verde</string>
   <string name="color_blue">blu</string>
   <string name="color_gray">grigio</string>
+  <string name="colors_fg_label">CP: %1$d</string>
+  <string name="color_bg_label">CS: %1$d</string>
   <string name="image_description_connected">Connesso.</string>
   <string name="image_description_key_is_locked">La chiave e\' bloccata.</string>
   <string name="image_description_send_escape_character">Mandare un carattere escape.</string>

@@ -73,8 +73,6 @@
   <string name="pref_fullscreen_summary">Fela stöðustiku þegar tenging er virk</string>
   <string name="pref_memkeys_title">Geyma lykla í minni</string>
   <string name="pref_memkeys_summary">Geyma ólæsta lykla í minni þangað til forritinu er lokað</string>
-  <string name="pref_update_title">Athuga með uppfærslu</string>
-  <string name="pref_update_summary">Velja hve oft ConnectBot leitar að uppfærslum</string>
   <string name="pref_conn_persist_title">Halda tengingum</string>
   <string name="pref_conn_persist_summary">Halda tengingum í gangi þegar þær eru í bakgrunni</string>
   <string name="pref_keymode_title">Orðabók</string>
@@ -97,9 +95,6 @@
   <string name="list_keymode_none">Afvirkja</string>
   <string name="list_pubkeyids_none">Ekki nota lykla</string>
   <string name="list_pubkeyids_any">Nota hvaða ólæsta lykil sem er</string>
-  <string name="list_update_daily">Daglega</string>
-  <string name="list_update_weekly">Vikulega</string>
-  <string name="list_update_never">Aldrei</string>
   <string name="hostpref_nickname_title">Gælunafn</string>
   <string name="hostpref_color_title">Lita flokk</string>
   <string name="hostpref_fontsize_title">Leturstærð (pt)</string>

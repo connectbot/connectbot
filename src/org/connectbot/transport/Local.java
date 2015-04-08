@@ -153,6 +153,11 @@ public class Local extends AbsTransport {
 
 	@Override
 	public void setDimensions(int columns, int rows, int width, int height) {
+		// We are not connected yet.
+		if (shellFd == null) {
+			return;
+		}
+
 		try {
 			Exec.setPtyWindowSize(shellFd, rows, columns, width, height);
 		} catch (Exception e) {

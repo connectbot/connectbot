@@ -30,11 +30,6 @@ public class PreferenceConstants {
 	public static final boolean PRE_HONEYCOMB = SDK_INT < 11;
 
 	public static final String MEMKEYS = "memkeys";
-	public static final String UPDATE = "update";
-
-	public static final String UPDATE_DAILY = "Daily";
-	public static final String UPDATE_WEEKLY = "Weekly";
-	public static final String UPDATE_NEVER = "Never";
 
 	public static final String LAST_CHECKED = "lastchecked";
 
@@ -56,6 +51,7 @@ public class PreferenceConstants {
 
 	public static final String KEYMODE_RIGHT = "Use right-side keys";
 	public static final String KEYMODE_LEFT = "Use left-side keys";
+	public static final String KEYMODE_NONE = "none";
 
 	public static final String CAMERA = "camera";
 
@@ -85,6 +81,10 @@ public class PreferenceConstants {
 	public static final String SHIFT_FKEYS = "shiftfkeys";
 	public static final String CTRL_FKEYS = "ctrlfkeys";
 	public static final String VOLUME_FONT = "volumefont";
+	public static final String STICKY_MODIFIERS = "stickymodifiers";
+	public static final String YES = "yes";
+	public static final String NO = "no";
+	public static final String ALT = "alt";
 
 	/* Backup identifiers */
 	public static final String BACKUP_PREF_KEY = "prefs";
