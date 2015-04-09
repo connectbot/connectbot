@@ -181,6 +181,8 @@ public class PubkeyBean extends AbstractBean {
 					sb.append("EC ");
 					sb.append(bits);
 					sb.append("-bit");
+				} else if (PubkeyDatabase.KEY_TYPE_ED25519.equals(type)) {
+					sb.append("Ed25519");
 				} else {
 					sb.append("Unknown Key Type");
 				}

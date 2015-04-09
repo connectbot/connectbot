@@ -656,7 +656,18 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			if (imported) {
 				try {
 					PEMStructure struct = PEMDecoder.parsePEM(new String(pubkey.getPrivateKey()).toCharArray());
-					String type = (struct.pemType == PEMDecoder.PEM_RSA_PRIVATE_KEY) ? "RSA" : "DSA";
+					String type;
+					if (struct.pemType == PEMDecoder.PEM_RSA_PRIVATE_KEY) {
+						type = "RSA";
+					} else if (struct.pemType == PEMDecoder.PEM_DSA_PRIVATE_KEY) {
+						type = "DSA";
+					} else if (struct.pemType == PEMDecoder.PEM_EC_PRIVATE_KEY) {
+						type = "EC";
+					} else if (struct.pemType == PEMDecoder.PEM_OPENSSH_PRIVATE_KEY) {
+						type = "OpenSSH";
+					} else {
+						throw new RuntimeException("Unexpected key type: " + struct.pemType);
+					}
 					pubkeyHolder.caption.setText(String.format("%s unknown-bit", type));
 				} catch (IOException e) {
 					Log.e(TAG, "Error decoding IMPORTED public key at " + pubkey.getId(), e);

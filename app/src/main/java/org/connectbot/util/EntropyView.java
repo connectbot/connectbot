@@ -33,7 +33,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class EntropyView extends View {
-	private static final int SHA1_MAX_BYTES = 20;
+	public static final int SHA1_MAX_BYTES = 20;
 	private static final int MILLIS_BETWEEN_INPUTS = 50;
 
 	private Paint mPaint;
