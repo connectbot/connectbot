@@ -132,9 +132,6 @@
   <string name="hostpref_hostname_title">主机</string>
   <string name="hostpref_port_title">端口</string>
   <string name="bind_never">尚未连接</string>
-  <string name="bind_minutes">已连接 %1$s 分钟</string>
-  <string name="bind_hours">已连接 %1$s 小时</string>
-  <string name="bind_days">已连接 %1$s 天</string>
   <string name="console_copy_done">已复制%1$d位</string>
   <string name="console_copy_start">点击拖动\n或使用触摸板\n来选择要复制的区域</string>
   <string name="console_menu_close">关闭</string>

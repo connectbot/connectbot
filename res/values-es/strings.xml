@@ -124,9 +124,6 @@
   <string name="hostpref_hostname_title">Host (equipo anfitrión)</string>
   <string name="hostpref_port_title">Puerto</string>
   <string name="bind_never">Nunca fué conectado</string>
-  <string name="bind_minutes">Hace %1$s minutos</string>
-  <string name="bind_hours">Hace %1$s horas</string>
-  <string name="bind_days">Hace %1$s días</string>
   <string name="console_copy_done">%1$d bytes copiados al portapaleles</string>
   <string name="console_copy_start">Toque y arrastre\no use la almohadilla direccional\npara seleccionar la zona a copiar</string>
   <string name="console_menu_close">Cerrar</string>

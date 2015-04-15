@@ -126,9 +126,6 @@
   <string name="hostpref_hostname_title">Servidor</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Mai connectat</string>
-  <string name="bind_minutes">Fa %1$s minuts</string>
-  <string name="bind_hours">Fa %1$s hores</string>
-  <string name="bind_days">Fa %1$s dies</string>
   <string name="console_copy_done">Copiats %1$d bytes al porta-retalls</string>
   <string name="console_copy_start">Toca i arrosega\no fes servir les tecles de direcció\nper escollir l\'àrea a copiar</string>
   <string name="console_menu_close">Tanca</string>

@@ -126,9 +126,6 @@
   <string name="hostpref_hostname_title">Host</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Nigdy nie połączono</string>
-  <string name="bind_minutes">%1$s minut temu</string>
-  <string name="bind_hours">%1$s godzin temu</string>
-  <string name="bind_days">%1$s dni temu</string>
   <string name="console_copy_done">Skopiowano %1$d bajtów do schowka</string>
   <string name="console_copy_start">Dotknij i przeciągnij\nlub użyj trackball\'a\naby zaznaczyć obszar do skopiowania</string>
   <string name="console_menu_close">Zamknij</string>

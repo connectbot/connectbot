@@ -139,9 +139,6 @@
   <string name="hostpref_hostname_title">Домаћин</string>
   <string name="hostpref_port_title">Порт</string>
   <string name="bind_never">Никад повезиван</string>
-  <string name="bind_minutes">пре %1$s минут(а)</string>
-  <string name="bind_hours">пре %1$s сата(и)</string>
-  <string name="bind_days">пре %1$s дан(а)</string>
   <string name="console_copy_done">Копирано %1$d бајта на клипборд</string>
   <string name="console_copy_start">Додирните и превуците\nили користите дирекциони контролер\nда изаберете површину за копирање</string>
   <string name="console_menu_close">Затвори</string>

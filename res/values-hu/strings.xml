@@ -124,9 +124,6 @@
   <string name="hostpref_hostname_title">Kiszolgáló</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Még nem csatlakozott</string>
-  <string name="bind_minutes">%1$s perce</string>
-  <string name="bind_hours">%1$s órája</string>
-  <string name="bind_days">%1$s napja</string>
   <string name="console_copy_done">%1$d bájt a vágólapra másolva</string>
   <string name="console_copy_start">Érintéssel és húzással\nvagy a hanyattegér használatával\njelölje ki a másolandó területet.</string>
   <string name="console_menu_close">Bezárás</string>

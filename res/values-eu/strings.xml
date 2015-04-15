@@ -124,9 +124,6 @@
   <string name="hostpref_hostname_title">Ostalaria</string>
   <string name="hostpref_port_title">Ataka</string>
   <string name="bind_never">Inoiz ez da konexiorik ezarri</string>
-  <string name="bind_minutes">Duela %1$s minutu</string>
-  <string name="bind_hours">Duela %1$s ordu</string>
-  <string name="bind_days">Duela %1$s egun</string>
   <string name="console_copy_done">%1$d byte kopiatuta arbelera</string>
   <string name="console_copy_start">Ukitu eta arrastatu\nedo erabili norabide kuxina\nkopiatu beharreko eremua hautatzeko</string>
   <string name="console_menu_close">Itxi</string>
