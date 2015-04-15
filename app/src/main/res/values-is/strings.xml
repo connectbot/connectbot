@@ -110,9 +110,6 @@
   <string name="hostpref_hostname_title">Þjónn</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Aldrei tengt</string>
-  <string name="bind_minutes">Fyrir %1$s mínútum síðan</string>
-  <string name="bind_hours">Fyrir %1$s tímum síðan</string>
-  <string name="bind_days">Fyrir %1$s dögum síðan</string>
   <string name="console_copy_done">Afritaði %1$d bæti</string>
   <string name="console_menu_close">Loka</string>
   <string name="console_menu_copy">Afrita</string>

@@ -124,9 +124,6 @@
   <string name="hostpref_hostname_title">Hostiteľ</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Nikdy nepripojený</string>
-  <string name="bind_minutes">Pred %1$s minútami</string>
-  <string name="bind_hours">Pred %1$s hodinami</string>
-  <string name="bind_days">Pred %1$s dňami</string>
   <string name="console_copy_done">%1$d bajtov skopírovaných do schránky</string>
   <string name="console_copy_start">Pre výber kopírovanej oblasti \nsa dotknite a ťahajte\nalebo použite smerové tlačidlo</string>
   <string name="console_menu_close">Zatvoriť</string>

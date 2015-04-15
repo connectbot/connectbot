@@ -124,9 +124,6 @@
   <string name="hostpref_hostname_title">Host</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Tidak pernah terhubung</string>
-  <string name="bind_minutes">%1$s menit yang lalu</string>
-  <string name="bind_hours">%1$s jam yang lalu</string>
-  <string name="bind_days">%1$s hari yang lalu</string>
   <string name="console_copy_done">Tersalin %1$d byte ke papan-klip</string>
   <string name="console_copy_start">Sentuh dan tarik\natau gunakan tombol panah\nuntuk memilih area yang akan disalin</string>
   <string name="console_menu_close">Tutup</string>

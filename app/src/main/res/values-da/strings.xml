@@ -124,9 +124,6 @@
   <string name="hostpref_hostname_title">Vært</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Aldrig forbundet</string>
-  <string name="bind_minutes">%1$s minutter siden</string>
-  <string name="bind_hours">%1$s timer siden</string>
-  <string name="bind_days">%1$s dage siden</string>
   <string name="console_copy_done">Kopier %1$d byte til udklipsholder</string>
   <string name="console_copy_start">Berør og flyt\neller brug piletasterne\nfor at vælge område at kopiere</string>
   <string name="console_menu_close">Luk</string>

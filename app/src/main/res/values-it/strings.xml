@@ -126,9 +126,6 @@
   <string name="hostpref_hostname_title">Host</string>
   <string name="hostpref_port_title">Porta</string>
   <string name="bind_never">Mai connesso</string>
-  <string name="bind_minutes">%1$s minuti fa</string>
-  <string name="bind_hours">%1$s ore fa</string>
-  <string name="bind_days">%1$s giorni fa</string>
   <string name="console_copy_done">%1$d byte copiati</string>
   <string name="console_copy_start">Tocca e trascina\noppure usa il pad direzionale\nper selezionare un\'area da copiare</string>
   <string name="console_menu_close">Chiudi</string>

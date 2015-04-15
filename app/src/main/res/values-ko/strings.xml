@@ -117,9 +117,6 @@
   <string name="hostpref_hostname_title">호스트</string>
   <string name="hostpref_port_title">포트</string>
   <string name="bind_never">연결된 적 없음</string>
-  <string name="bind_minutes">%1$s 분 전</string>
-  <string name="bind_hours">%1$s 시간 전</string>
-  <string name="bind_days">%1$s 일 전</string>
   <string name="console_copy_done">클립 보드에 %1$d 바이트가 복사되었습니다.</string>
   <string name="console_copy_start">터치 후 드래그 또는\n방향 키로\n복사 영역을 선택</string>
   <string name="console_menu_close">닫기</string>

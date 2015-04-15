@@ -118,9 +118,6 @@
   <string name="hostpref_hostname_title">Gostitelj</string>
   <string name="hostpref_port_title">Vrata</string>
   <string name="bind_never">Nikoli povezani</string>
-  <string name="bind_minutes">%1$s minut nazaj</string>
-  <string name="bind_hours">%1$s ur nazaj</string>
-  <string name="bind_days">%1$s dni nazaj</string>
   <string name="console_menu_close">Zapri</string>
   <string name="console_menu_copy">Kopiraj</string>
   <string name="console_menu_paste">Prilepi</string>

@@ -125,9 +125,6 @@
   <string name="hostpref_hostname_title">מארח</string>
   <string name="hostpref_port_title">פתחה</string>
   <string name="bind_never">לא חובר מעולם</string>
-  <string name="bind_minutes">לפני %1$s דקות</string>
-  <string name="bind_hours">לפני %1$s שעות</string>
-  <string name="bind_days">לפני %1$s ימים</string>
   <string name="console_copy_done">הועתקו %1$d בתים ללוח הגזירים</string>
   <string name="console_copy_start">יש לגעת ולגרור\nאו להשתמש בלוח כיוונים\nכדי לבחור אזור להעתקה</string>
   <string name="console_menu_close">סגירה</string>
