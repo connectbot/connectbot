@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   as a negative integer.
 - DSA host key support was broken from the beginning of the v1.8 series.
 - Connections would sometimes close when leaving ConnectBot.
+- Telnet port range too high will no longer cause crashes.
 
 ### Added
 - More context is given for failures to connect via SSH which should

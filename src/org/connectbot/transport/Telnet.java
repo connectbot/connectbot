@@ -287,7 +287,7 @@ public class Telnet extends AbsTransport {
 		host.setHostname(uri.getHost());
 
 		int port = uri.getPort();
-		if (port < 0)
+		if (port < 0 || port > 65535)
 			port = DEFAULT_PORT;
 		host.setPort(port);
 
@@ -309,7 +309,7 @@ public class Telnet extends AbsTransport {
 		selection.put(HostDatabase.FIELD_HOST_HOSTNAME, uri.getHost());
 
 		int port = uri.getPort();
-		if (port < 0)
+		if (port < 0 || port > 65535)
 			port = DEFAULT_PORT;
 		selection.put(HostDatabase.FIELD_HOST_PORT, Integer.toString(port));
 	}
