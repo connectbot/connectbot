@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - More context is given for failures to connect via SSH which should
   reveal why a host might be incompatible with ConnectBot.
+- SSH key exchange algorithm will now be printed upon connection.
 
 ## [1.8.3][1.8.3] - 2014-04-02
 ### Fixed

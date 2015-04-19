@@ -437,6 +437,11 @@
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
 	<string name="terminal_using_algorithm">"Using algorithm: %1$s %2$s"</string>
 
+	<!-- Displayed on the terminal during a SSH connection describing the cryptographic key
+	     exchange algorithm used to establish a shared secret between this program and the
+	     server. -->
+	<string name="terminal_kex_algorithm">Key exchange algorithm: %s</string>
+
 	<string name="terminal_auth">"Trying to authenticate"</string>
 
 	<string name="terminal_auth_pass">"Attempting 'password' authentication"</string>
