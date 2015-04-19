@@ -432,6 +432,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			connectionInfo = connection.connect(new HostKeyVerifier());
 			connected = true;
 
+			bridge.outputLine(manager.res.getString(R.string.terminal_kex_algorithm,
+					connectionInfo.keyExchangeAlgorithm));
 			if (connectionInfo.clientToServerCryptoAlgorithm
 					.equals(connectionInfo.serverToClientCryptoAlgorithm)
 					&& connectionInfo.clientToServerMACAlgorithm
