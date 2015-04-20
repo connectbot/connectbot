@@ -20,8 +20,11 @@ package org.connectbot.transport;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.util.Map;
@@ -123,10 +126,24 @@ public class Telnet extends AbsTransport {
 		return PROTOCOL;
 	}
 
+	private static void tryAllAddresses(Socket sock, String host, int port) throws IOException {
+		InetAddress[] addresses = InetAddress.getAllByName(host);
+		for (InetAddress addr : addresses) {
+			try {
+				sock.connect(new InetSocketAddress(addr, port));
+				return;
+			} catch (SocketTimeoutException e) {
+			}
+		}
+		throw new SocketTimeoutException("Could not connect; socket timed out");
+	}
+
 	@Override
 	public void connect() {
 		try {
-			socket = new Socket(host.getHostname(), host.getPort());
+			socket = new Socket();
+
+			tryAllAddresses(socket, host.getHostname(), host.getPort());
 
 			connected = true;
 
