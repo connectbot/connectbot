@@ -96,7 +96,7 @@ public class EcDhExchange extends GenericDhExchange {
 			throw (IOException) new IOException("Invalid ECDH key").initCause(e);
 		}
 
-		sharedSecret = new BigInteger(ka.generateSecret());
+		sharedSecret = new BigInteger(1, ka.generateSecret());
 	}
 
 	@Override

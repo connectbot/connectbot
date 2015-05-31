@@ -101,9 +101,6 @@
   <string name="hostpref_hostname_title">Máquina</string>
   <string name="hostpref_port_title">Porto</string>
   <string name="bind_never">Nunca conectado</string>
-  <string name="bind_minutes">Hai %1$s minutos</string>
-  <string name="bind_hours">Hai %1$s horas</string>
-  <string name="bind_days">Hai %1$s días</string>
   <string name="console_copy_done">Copiados %1$d bytes ao portapapeis</string>
   <string name="console_copy_start">Tocar e arrastrar\nou usar o cursor direccional\npara seleccionar a área a copiar</string>
   <string name="console_menu_close">Pechar</string>

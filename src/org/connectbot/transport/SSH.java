@@ -432,6 +432,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			connectionInfo = connection.connect(new HostKeyVerifier());
 			connected = true;
 
+			bridge.outputLine(manager.res.getString(R.string.terminal_kex_algorithm,
+					connectionInfo.keyExchangeAlgorithm));
 			if (connectionInfo.clientToServerCryptoAlgorithm
 					.equals(connectionInfo.serverToClientCryptoAlgorithm)
 					&& connectionInfo.clientToServerMACAlgorithm
@@ -454,7 +456,11 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			Log.e(TAG, "Problem in SSH connection thread during authentication", e);
 
 			// Display the reason in the text.
-			bridge.outputLine(e.getCause().getMessage());
+			Throwable t = e.getCause();
+			do {
+				bridge.outputLine(t.getMessage());
+				t = t.getCause();
+			} while (t != null);
 
 			close();
 			onDisconnect();

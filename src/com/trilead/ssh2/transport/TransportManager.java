@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.security.SecureRandom;
 import java.util.Vector;
@@ -144,67 +145,6 @@ public class TransportManager
 	Vector connectionMonitors = new Vector();
 	boolean monitorsWereInformed = false;
 
-	/**
-	 * There were reports that there are JDKs which use
-	 * the resolver even though one supplies a dotted IP
-	 * address in the Socket constructor. That is why we
-	 * try to generate the InetAdress "by hand".
-	 * 
-	 * @param host
-	 * @return the InetAddress
-	 * @throws UnknownHostException
-	 */
-	private InetAddress createInetAddress(String host) throws UnknownHostException
-	{
-		/* Check if it is a dotted IP4 address */
-
-		InetAddress addr = parseIPv4Address(host);
-
-		if (addr != null)
-			return addr;
-
-		return InetAddress.getByName(host);
-	}
-
-	private InetAddress parseIPv4Address(String host) throws UnknownHostException
-	{
-		if (host == null)
-			return null;
-
-		String[] quad = Tokenizer.parseTokens(host, '.');
-
-		if ((quad == null) || (quad.length != 4))
-			return null;
-
-		byte[] addr = new byte[4];
-
-		for (int i = 0; i < 4; i++)
-		{
-			int part = 0;
-
-			if ((quad[i].length() == 0) || (quad[i].length() > 3))
-				return null;
-
-			for (int k = 0; k < quad[i].length(); k++)
-			{
-				char c = quad[i].charAt(k);
-
-				/* No, Character.isDigit is not the same */
-				if ((c < '0') || (c > '9'))
-					return null;
-
-				part = part * 10 + (c - '0');
-			}
-
-			if (part > 255) /* 300.1.2.3 is invalid =) */
-				return null;
-
-			addr[i] = (byte) part;
-		}
-
-		return InetAddress.getByAddress(host, addr);
-	}
-
 	public TransportManager(String host, int port) throws IOException
 	{
 		this.hostname = host;
@@ -332,14 +272,23 @@ public class TransportManager
 		}
 	}
 
+	private static void tryAllAddresses(Socket sock, String host, int port, int connectTimeout) throws IOException {
+		InetAddress[] addresses = InetAddress.getAllByName(host);
+		for (InetAddress addr : addresses) {
+			try {
+				sock.connect(new InetSocketAddress(addr, port), connectTimeout);
+				return;
+			} catch (SocketTimeoutException e) {
+			}
+		}
+		throw new SocketTimeoutException("Could not connect; socket timed out");
+	}
+
 	private void establishConnection(ProxyData proxyData, int connectTimeout) throws IOException
 	{
-		/* See the comment for createInetAddress() */
-
 		if (proxyData == null)
 		{
-			InetAddress addr = createInetAddress(hostname);
-			sock.connect(new InetSocketAddress(addr, port), connectTimeout);
+			tryAllAddresses(sock, hostname, port, connectTimeout);
 			sock.setSoTimeout(0);
 			return;
 		}
@@ -350,8 +299,7 @@ public class TransportManager
 
 			/* At the moment, we only support HTTP proxies */
 
-			InetAddress addr = createInetAddress(pd.proxyHost);
-			sock.connect(new InetSocketAddress(addr, pd.proxyPort), connectTimeout);
+			tryAllAddresses(sock, pd.proxyHost, pd.proxyPort, connectTimeout);
 			sock.setSoTimeout(0);
 
 			/* OK, now tell the proxy where we actually want to connect to */

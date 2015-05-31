@@ -127,9 +127,6 @@
   <string name="hostpref_hostname_title">Узел</string>
   <string name="hostpref_port_title">Порт</string>
   <string name="bind_never">Не подключен</string>
-  <string name="bind_minutes">%1$s минут назад</string>
-  <string name="bind_hours">%1$s час(ов) назад</string>
-  <string name="bind_days">%1$s дней назад</string>
   <string name="console_copy_done">Скопировано %1$d байт в буфер обмена</string>
   <string name="console_copy_start">Для выделения области на экране используйте Touch and Drag или Directional Pad</string>
   <string name="console_menu_close">Закрыть</string>

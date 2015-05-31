@@ -124,9 +124,6 @@
   <string name="hostpref_hostname_title">Anfitrião</string>
   <string name="hostpref_port_title">Porto</string>
   <string name="bind_never">Nunca ligado</string>
-  <string name="bind_minutes">%1$s minutos atrás</string>
-  <string name="bind_hours">%1$s horas atrás</string>
-  <string name="bind_days">%1$s dias atrás</string>
   <string name="console_copy_done">Copiados %1$d bytes para a área de transferência</string>
   <string name="console_copy_start">Toque e arraste\nou use as teclas direcionais\npara selecionar a área a copiar</string>
   <string name="console_menu_close">Fechar</string>

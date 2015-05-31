@@ -170,7 +170,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public void onDestroy() {
 		Log.i(TAG, "Destroying service");
 
-		disconnectAll(true);
+		disconnectAll(true, false);
 
 		if(hostdb != null) {
 			hostdb.close();
@@ -199,7 +199,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	/**
 	 * Disconnect all currently connected bridges.
 	 */
-	private void disconnectAll(final boolean immediate) {
+	private void disconnectAll(final boolean immediate, final boolean excludeLocal) {
 		TerminalBridge[] tmpBridges = null;
 
 		synchronized (bridges) {
@@ -210,8 +210,11 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		if (tmpBridges != null) {
 			// disconnect and dispose of any existing bridges
-			for (int i = 0; i < tmpBridges.length; i++)
+			for (int i = 0; i < tmpBridges.length; i++) {
+				if (excludeLocal && !tmpBridges[i].isUsingNetwork())
+					continue;
 				tmpBridges[i].dispatchDisconnect(immediate);
+			}
 		}
 	}
 
@@ -476,16 +479,18 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		Log.i(TAG, "Someone bound to TerminalManager");
-
+		Log.i(TAG, "Someone bound to TerminalManager with " + bridges.size() + " bridges active");
+		keepServiceAlive();
 		setResizeAllowed(true);
-
-		stopIdleTimer();
-
-		// Make sure we stay running to maintain the bridges
-		startService(new Intent(this, TerminalManager.class));
-
 		return binder;
+	}
+
+	/**
+	 * Make sure we stay running to maintain the bridges. Later {@link #stopNow} should be called to stop the service.
+	 */
+	private void keepServiceAlive() {
+		stopIdleTimer();
+		startService(new Intent(this, TerminalManager.class));
 	}
 
 	@Override
@@ -500,17 +505,14 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	@Override
 	public void onRebind(Intent intent) {
 		super.onRebind(intent);
-
+		Log.i(TAG, "Someone rebound to TerminalManager with " + bridges.size() + " bridges active");
+		keepServiceAlive();
 		setResizeAllowed(true);
-
-		Log.i(TAG, "Someone rebound to TerminalManager");
-
-		stopIdleTimer();
 	}
 
 	@Override
 	public boolean onUnbind(Intent intent) {
-		Log.i(TAG, "Someone unbound from TerminalManager");
+		Log.i(TAG, "Someone unbound from TerminalManager with " + bridges.size() + " bridges active");
 
 		setResizeAllowed(true);
 
@@ -522,9 +524,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 
 	private class IdleTask extends TimerTask {
-		/* (non-Javadoc)
-		 * @see java.util.TimerTask#run()
-		 */
 		@Override
 		public void run() {
 			Log.d(TAG, String.format("Stopping service after timeout of ~%d seconds", IDLE_TIMEOUT / 1000));
@@ -657,7 +656,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		final Thread t = new Thread() {
 			@Override
 			public void run() {
-				disconnectAll(false);
+				disconnectAll(false, true);
 			}
 		};
 		t.setName("Disconnector");

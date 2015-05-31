@@ -124,9 +124,6 @@
   <string name="hostpref_hostname_title">Host</string>
   <string name="hostpref_port_title">Poort</string>
   <string name="bind_never">Nooit verbonden</string>
-  <string name="bind_minutes">%1$s minuten geleden</string>
-  <string name="bind_hours">%1$s uren geleden</string>
-  <string name="bind_days">%1$s dagen geleden</string>
   <string name="console_copy_done">%1$d bytes gekopieerd naar het klembord</string>
   <string name="console_copy_start">Tik en sleep\nof gebruik directioneel pad\nom velden te selecteren omte kopiëren</string>
   <string name="console_menu_close">Sluit</string>

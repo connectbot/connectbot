@@ -8,6 +8,7 @@ import java.security.SecureRandom;
 import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -61,7 +62,7 @@ public class KexManager
 		supportsEc = keyFact != null;
 	}
 
-	private static final Set<String> HOSTKEY_ALGS = new TreeSet<String>();
+	private static final Set<String> HOSTKEY_ALGS = new LinkedHashSet<String>();
 	static {
 		if (supportsEc) {
 			HOSTKEY_ALGS.add("ecdsa-sha2-nistp256");
@@ -69,10 +70,10 @@ public class KexManager
 			HOSTKEY_ALGS.add("ecdsa-sha2-nistp521");
 		}
 		HOSTKEY_ALGS.add("ssh-rsa");
-		HOSTKEY_ALGS.add("ssh-dsa");
+		HOSTKEY_ALGS.add("ssh-dss");
 	}
 
-	private static final Set<String> KEX_ALGS = new TreeSet<String>();
+	private static final Set<String> KEX_ALGS = new LinkedHashSet<String>();
 	static {
 		if (supportsEc) {
 			KEX_ALGS.add("ecdh-sha2-nistp256");

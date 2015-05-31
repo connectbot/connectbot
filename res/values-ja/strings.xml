@@ -139,9 +139,6 @@
   <string name="hostpref_hostname_title">ホスト</string>
   <string name="hostpref_port_title">ポート</string>
   <string name="bind_never">未接続</string>
-  <string name="bind_minutes">%1$s 分前</string>
-  <string name="bind_hours">%1$s 時間前</string>
-  <string name="bind_days">%1$s 日前</string>
   <string name="console_copy_done">クリップボードに %1$d バイトコピーしました．</string>
   <string name="console_copy_start">タッチしてドラッグ\nまたは方向パッドで\nコピー領域を選択</string>
   <string name="console_menu_close">切断</string>

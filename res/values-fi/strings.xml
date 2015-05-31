@@ -123,9 +123,6 @@
   <string name="hostpref_hostname_title">Palvelin</string>
   <string name="hostpref_port_title">Portti</string>
   <string name="bind_never">Ei koskaan yhdistetty</string>
-  <string name="bind_minutes">%1$s minuuttia sitten</string>
-  <string name="bind_hours">%1$s tuntia sitten</string>
-  <string name="bind_days">%1$s päivää sitten</string>
   <string name="console_copy_done">%1$d tavua kopioitu leikepöydälle</string>
   <string name="console_copy_start">Maalaa koskettamalla\ntai käytä nuolinäppäimiä\nvalitaksesi kopioitavan alueen</string>
   <string name="console_menu_close">Sulje</string>
