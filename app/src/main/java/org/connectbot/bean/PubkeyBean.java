@@ -167,7 +167,7 @@ public class PubkeyBean extends AbstractBean {
 		if (description == null) {
 			final StringBuilder sb = new StringBuilder();
 			try {
-				final PublicKey pubKey = PubkeyUtils.decodePublic(privateKey, type);
+				final PublicKey pubKey = PubkeyUtils.decodePublic(publicKey, type);
 				if (PubkeyDatabase.KEY_TYPE_RSA.equals(type)) {
 					int bits = ((RSAPublicKey) pubKey).getModulus().bitLength();
 					sb.append("RSA ");

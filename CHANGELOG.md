@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+
+## [1.8.4][1.8.4] - 2015-04-19
 ### Fixed
 - Key exchange and host key algorithm preference order was not being
   respected.
@@ -19,7 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - All addresses for a particular host will be tried when connecting
   (including IPv6).
 
-## [1.8.3][1.8.3] - 2014-04-02
+## [1.8.3][1.8.3] - 2015-04-02
 ### Fixed
 - Only enable EC support when the device supports it.
 - Default font size scales with the device display density.
@@ -27,5 +29,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Color picker color numbers are now localized
 
 
-[unreleased]: https://github.com/connectbot/connectbot/compare/v1.8.3...HEAD
+[unreleased]: https://github.com/connectbot/connectbot/compare/v1.8.4...HEAD
+[1.8.4]: https://github.com/connectbot/connectbot/compare/v1.8.3...v1.8.4
 [1.8.3]: https://github.com/connectbot/connectbot/compare/v1.8.2...v1.8.3
