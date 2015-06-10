@@ -369,11 +369,11 @@ public class ECDSASHA2Verify {
 	public static String getDigestAlgorithmForParams(ECParameterSpec params) {
 		int size = getCurveSize(params);
 		if (size <= 256) {
-			return "SHA256";
+			return "SHA-256";
 		} else if (size <= 384) {
-			return "SHA384";
+			return "SHA-384";
 		} else {
-			return "SHA512";
+			return "SHA-512";
 		}
 	}
 
