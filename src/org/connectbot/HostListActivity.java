@@ -229,6 +229,7 @@ public class HostListActivity extends ListActivity {
 
 				} else {
 					// otherwise just launch activity to show this host
+					contents.setClass(HostListActivity.this, ConsoleActivity.class);
 					HostListActivity.this.startActivity(contents);
 				}
 			}
