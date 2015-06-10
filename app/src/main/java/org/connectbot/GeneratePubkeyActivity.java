@@ -54,14 +54,11 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import com.trilead.ssh2.signature.ECDSASHA2Verify;
 
 public class GeneratePubkeyActivity extends Activity implements OnEntropyGatheredListener {
-	/**
-	 *
-	 */
 	private static final int RSA_MINIMUM_BITS = 768;
 
 	public final static String TAG = "ConnectBot.GeneratePubkeyActivity";
 
-	final static int DEFAULT_BITS = 1024;
+	final static int DEFAULT_BITS = 2048;
 
 	final static int[] ECDSA_SIZES = ECDSASHA2Verify.getCurveSizes();
 

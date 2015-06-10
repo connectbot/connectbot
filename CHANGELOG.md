@@ -10,6 +10,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   app you want to use.
 - The text in the entropy gathering dialog is now scaled correctly.
 
+### Changed
+- Default RSA key size is now 2048 bits.
+
 ## [1.8.4][1.8.4] - 2015-04-19
 ### Fixed
 - Key exchange and host key algorithm preference order was not being
