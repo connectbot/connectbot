@@ -51,18 +51,9 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:paddingTop="10dip"
+			android:autoLink="web"
 			android:text="@string/copyright_info"
 			android:textAppearance="?android:attr/textAppearanceSmall"
-			/>
-
-		<TextView
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:paddingTop="10dip"
-			android:autoLink="web"
-			android:text="You can view the full text at http://www.gnu.org/licenses/gpl-3.0.txt"
-			android:textSize="14sp"
-			android:textColor="#bebebe"
 			/>
 
  		<TextView
