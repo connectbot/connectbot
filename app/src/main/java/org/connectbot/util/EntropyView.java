@@ -66,7 +66,7 @@ public class EntropyView extends View {
 		mPaint.setAntiAlias(true);
 		mPaint.setTypeface(Typeface.DEFAULT);
 		mPaint.setTextAlign(Paint.Align.CENTER);
-		mPaint.setTextSize(16);
+		mPaint.setTextSize(16f * getResources().getDisplayMetrics().density);
 		mPaint.setColor(Color.WHITE);
 		mFontMetrics = mPaint.getFontMetrics();
 
