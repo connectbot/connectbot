@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Fixed
+- Pubkeys now have the correct strength listed in the pubkey list.
+- EC key operations would fail on some devices.
+- Connecting to a host from the host list no longer asks which
+  app you want to use.
 
 ## [1.8.4][1.8.4] - 2015-04-19
 ### Fixed
