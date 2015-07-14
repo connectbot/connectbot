@@ -483,6 +483,20 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		((vt320) buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
 	}
 
+	public void sendTab() {
+		try {
+	      bridge.transport.write(0x09);
+	    } catch (IOException e) {
+	    	Log.e(TAG, "Problem while trying to send TAB press.", e);
+			try {
+				bridge.transport.flush();
+			} catch (IOException ioe) {
+				Log.d(TAG, "Our transport was closed, dispatching disconnect event");
+				bridge.dispatchDisconnect(false);
+			}
+	    }
+	}
+
 	/**
 	 * @param key
 	 * @return successful
