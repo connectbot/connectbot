@@ -516,7 +516,7 @@ public class ConsoleActivity extends Activity {
 
 					View flip = findCurrentView(R.id.console_flip);
 					if(flip == null) return false;
-					TerminalView terminal = (TerminalView)flip;
+					TerminalView terminal = (TerminalView) flip;
 
 					// estimate how many rows we have scrolled through
 					// accumulate distance that doesn't trigger immediate scroll
