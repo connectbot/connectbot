@@ -441,7 +441,7 @@ public class ConsoleActivity extends Activity {
 			public void onClick(View view) {
 				View flip = findCurrentView(R.id.console_flip);
 				if (flip == null) return;
-				TerminalView terminal = (TerminalView)flip;
+				TerminalView terminal = (TerminalView) flip;
 
 				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
 				handler.sendTab();
