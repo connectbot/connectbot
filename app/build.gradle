@@ -4,13 +4,13 @@ apply from: '../config/quality.gradle'
 apply from: '../config/translations.gradle'
 
 android {
-    compileSdkVersion 20
-    buildToolsVersion "20.0.0"
+    compileSdkVersion 22
+    buildToolsVersion "21.0.0"
 
     defaultConfig {
         applicationId "org.connectbot"
         minSdkVersion 4
-        targetSdkVersion 15
+        targetSdkVersion 22
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_5
             targetCompatibility JavaVersion.VERSION_1_5
@@ -32,6 +32,10 @@ android {
 
     signingConfigs {
         release
+    }
+
+    dependencies {
+        compile "com.android.support:support-v4:22.0.+"
     }
 
     buildTypes {
