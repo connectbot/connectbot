@@ -1,5 +1,6 @@
 language: android
 jdk: openjdk7
+sudo: false
 
 env:
   global:
@@ -11,10 +12,14 @@ cache:
     - $HOME/.gradle/wrapper/dists/
     - $HOME/.cache/ndk
 
-before_install:
-  # Required libs for Android build tools
-  - sudo apt-get update
-  - sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch
+addons:
+  apt:
+    packages:
+      - libgd2-xpm
+      - ia32-libs
+      - la32-libs-multiarch
+
+before_script:
   # newest Android NDK
   - mkdir -p $HOME/.cache/ndk
   - if [ `uname -m` = x86_64 ]; then curl https://dl.google.com/android/ndk/android-ndk32-${NDK_VERSION}-linux-x86_64.tar.bz2 -z $HOME/.cache/ndk/ndk-${NDK_VERSION}-64.tb2 -o $HOME/.cache/ndk/ndk-${NDK_VERSION}-64.tb2; ln -sf $HOME/.cache/ndk/ndk-${NDK_VERSION}-64.tb2 ndk.tb2; else curl https://dl.google.com/android/ndk/android-ndk32-${NDK_VERSION}-linux-x86.tar.bz2 -z $HOME/.cache/ndk/ndk-${NDK_VERSION}-32.tb2 -o $HOME/.cache/ndk/ndk-${NDK_VERSION}-32.tb2; ln -sf $HOME/.cache/ndk/ndk-${NDK_VERSION}-32.tb2 ndk.tb2; fi
