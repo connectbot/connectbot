@@ -158,6 +158,17 @@
 			android:src="@+drawable/button_esc"
 			android:contentDescription="@string/image_description_send_escape_character"
 			/>
+    
+    <ImageView
+      android:id="@+id/button_tab"
+      android:paddingRight="15dip"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_toRightOf="@+id/button_esc"
+      android:layout_alignParentBottom="true"
+      android:src="@+drawable/button_tab"
+      android:contentDescription="@string/image_description_send_tab_character"
+      />
 
 	</RelativeLayout>
 
