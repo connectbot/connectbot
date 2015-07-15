@@ -17,7 +17,7 @@ addons:
     packages:
       - libgd2-xpm
       - ia32-libs
-      - la32-libs-multiarch
+      - ia32-libs-multiarch
 
 before_script:
   # newest Android NDK
