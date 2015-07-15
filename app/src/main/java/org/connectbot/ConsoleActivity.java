@@ -436,6 +436,19 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 
+		final ImageView tabButton = (ImageView) findViewById(R.id.button_tab);
+		tabButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View flip = findCurrentView(R.id.console_flip);
+				if (flip == null) return;
+				TerminalView terminal = (TerminalView)flip;
+
+				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+				handler.sendTab();
+				hideEmulatedKeys();
+			}
+		});
+
 		actionBar = ActionBarWrapper.getActionBar(this);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		if (titleBarHide) {
