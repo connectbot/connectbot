@@ -35,6 +35,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.support.v4.app.NotificationCompat;
 
 /**
  * @author Kenny Root
@@ -56,16 +57,17 @@ public abstract class ConnectionNotifier {
 		return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
-	protected Notification newNotification(Context context) {
-		Notification notification = new Notification();
-		notification.icon = R.drawable.notification_icon;
-		notification.when = System.currentTimeMillis();
+	protected NotificationCompat.Builder newNotificationBuilder(Context context) {
+		NotificationCompat.Builder builder =
+				new NotificationCompat.Builder(context)
+				.setSmallIcon(R.drawable.notification_icon)
+				.setWhen(System.currentTimeMillis());
 
-		return notification;
+		return builder;
 	}
 
 	protected Notification newActivityNotification(Context context, HostBean host) {
-		Notification notification = newNotification(context);
+		NotificationCompat.Builder builder = newNotificationBuilder(context);
 
 		Resources res = context.getResources();
 
@@ -79,45 +81,42 @@ public abstract class ConnectionNotifier {
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
 				notificationIntent, 0);
 
-		notification.setLatestEventInfo(context, res.getString(R.string.app_name), contentText, contentIntent);
+		builder.setContentTitle(res.getString(R.string.app_name))
+				.setContentText(contentText)
+				.setContentIntent(contentIntent);
 
-		notification.flags = Notification.FLAG_AUTO_CANCEL;
+		builder.setAutoCancel(true);
 
-		notification.flags |= Notification.DEFAULT_LIGHTS;
+		int ledOnMS = 300;
+		int ledOffMS = 1000;
+		builder.setDefaults(Notification.DEFAULT_LIGHTS);
 		if (HostDatabase.COLOR_RED.equals(host.getColor()))
-			notification.ledARGB = Color.RED;
+			builder.setLights(Color.RED, ledOnMS, ledOffMS);
 		else if (HostDatabase.COLOR_GREEN.equals(host.getColor()))
-			notification.ledARGB = Color.GREEN;
+			builder.setLights(Color.GREEN, ledOnMS, ledOffMS);
 		else if (HostDatabase.COLOR_BLUE.equals(host.getColor()))
-			notification.ledARGB = Color.BLUE;
+			builder.setLights(Color.BLUE, ledOnMS, ledOffMS);
 		else
-			notification.ledARGB = Color.WHITE;
-		notification.ledOnMS = 300;
-		notification.ledOffMS = 1000;
-		notification.flags |= Notification.FLAG_SHOW_LIGHTS;
+			builder.setLights(Color.WHITE, ledOnMS, ledOffMS);
 
-		return notification;
+		return builder.build();
 	}
 
 	protected Notification newRunningNotification(Context context) {
-		Notification notification = newNotification(context);
+		NotificationCompat.Builder builder = newNotificationBuilder(context);
 
-		notification.flags = Notification.FLAG_ONGOING_EVENT
-				| Notification.FLAG_NO_CLEAR;
-		notification.when = 0;
+		builder.setOngoing(true);
+		builder.setWhen(0);
 
-		notification.contentIntent = PendingIntent.getActivity(context,
+		builder.setContentIntent(PendingIntent.getActivity(context,
 				ONLINE_NOTIFICATION,
-				new Intent(context, ConsoleActivity.class), 0);
+				new Intent(context, ConsoleActivity.class), 0));
 
 		Resources res = context.getResources();
+		builder.setContentTitle(res.getString(R.string.app_name));
+		builder.setContentText(res.getString(R.string.app_is_running));
 
-		notification.setLatestEventInfo(context,
-				res.getString(R.string.app_name),
-				res.getString(R.string.app_is_running),
-				notification.contentIntent);
-
-		return notification;
+		return builder.build();
 	}
 
 	public void showActivityNotification(Service context, HostBean host) {
