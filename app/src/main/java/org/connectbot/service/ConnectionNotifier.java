@@ -44,7 +44,6 @@ import android.support.v4.app.NotificationCompat;
  */
 public abstract class ConnectionNotifier {
 	private static final int ONLINE_NOTIFICATION = 1;
-	private static final int ONLINE_NOTIFICATION_DISCONNECT = 1;
 	private static final int ACTIVITY_NOTIFICATION = 2;
 
 	public static ConnectionNotifier getInstance() {
@@ -58,7 +57,7 @@ public abstract class ConnectionNotifier {
 		return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
-	protected NotificationCompat.Builder  newNotificationBuilder(Context context) {
+	protected NotificationCompat.Builder newNotificationBuilder(Context context) {
 		NotificationCompat.Builder builder =
 				new NotificationCompat.Builder(context)
 				.setSmallIcon(R.drawable.notification_icon)
@@ -68,7 +67,7 @@ public abstract class ConnectionNotifier {
 	}
 
 	protected Notification newActivityNotification(Context context, HostBean host) {
-		NotificationCompat.Builder notification = newNotificationBuilder(context);
+		NotificationCompat.Builder builder = newNotificationBuilder(context);
 
 		Resources res = context.getResources();
 
@@ -82,42 +81,42 @@ public abstract class ConnectionNotifier {
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
 				notificationIntent, 0);
 
-		notification.setContentTitle(res.getString(R.string.app_name))
+		builder.setContentTitle(res.getString(R.string.app_name))
 				.setContentText(contentText)
 				.setContentIntent(contentIntent);
 
-		notification.setAutoCancel(true);
+		builder.setAutoCancel(true);
 
 		int ledOnMS = 300;
 		int ledOffMS = 1000;
-		notification.setDefaults(Notification.DEFAULT_LIGHTS);
+		builder.setDefaults(Notification.DEFAULT_LIGHTS);
 		if (HostDatabase.COLOR_RED.equals(host.getColor()))
-			notification.setLights(Color.RED, ledOnMS, ledOffMS);
+			builder.setLights(Color.RED, ledOnMS, ledOffMS);
 		else if (HostDatabase.COLOR_GREEN.equals(host.getColor()))
-			notification.setLights(Color.GREEN, ledOnMS, ledOffMS);
+			builder.setLights(Color.GREEN, ledOnMS, ledOffMS);
 		else if (HostDatabase.COLOR_BLUE.equals(host.getColor()))
-			notification.setLights(Color.BLUE, ledOnMS, ledOffMS);
+			builder.setLights(Color.BLUE, ledOnMS, ledOffMS);
 		else
-			notification.setLights(Color.WHITE, ledOnMS, ledOffMS);
+			builder.setLights(Color.WHITE, ledOnMS, ledOffMS);
 
-		return notification.build();
+		return builder.build();
 	}
 
 	protected Notification newRunningNotification(Context context) {
-		NotificationCompat.Builder notification = newNotificationBuilder(context);
+		NotificationCompat.Builder builder = newNotificationBuilder(context);
 
-		notification.setOngoing(true);
-		notification.setWhen(0);
+		builder.setOngoing(true);
+		builder.setWhen(0);
 
-		notification.setContentIntent(PendingIntent.getActivity(context,
+		builder.setContentIntent(PendingIntent.getActivity(context,
 				ONLINE_NOTIFICATION,
 				new Intent(context, ConsoleActivity.class), 0));
 
 		Resources res = context.getResources();
-		notification.setContentTitle(res.getString(R.string.app_name));
-		notification.setContentText(res.getString(R.string.app_is_running));
+		builder.setContentTitle(res.getString(R.string.app_name));
+		builder.setContentText(res.getString(R.string.app_is_running));
 
-		return notification.build();
+		return builder.build();
 	}
 
 	public void showActivityNotification(Service context, HostBean host) {
