@@ -4,7 +4,7 @@ sudo: false
 
 env:
   global:
-    - NDK_VERSION=r10b
+    - NDK_VERSION=r10e
 
 cache:
   directories:
@@ -15,15 +15,16 @@ cache:
 addons:
   apt:
     packages:
-      - libgd2-xpm
       - ia32-libs
       - ia32-libs-multiarch
+      - libgd2-xpm
+      - p7zip-full
 
 before_script:
   # newest Android NDK
   - mkdir -p $HOME/.cache/ndk
-  - if [ `uname -m` = x86_64 ]; then curl https://dl.google.com/android/ndk/android-ndk32-${NDK_VERSION}-linux-x86_64.tar.bz2 -z $HOME/.cache/ndk/ndk-${NDK_VERSION}-64.tb2 -o $HOME/.cache/ndk/ndk-${NDK_VERSION}-64.tb2; ln -sf $HOME/.cache/ndk/ndk-${NDK_VERSION}-64.tb2 ndk.tb2; else curl https://dl.google.com/android/ndk/android-ndk32-${NDK_VERSION}-linux-x86.tar.bz2 -z $HOME/.cache/ndk/ndk-${NDK_VERSION}-32.tb2 -o $HOME/.cache/ndk/ndk-${NDK_VERSION}-32.tb2; ln -sf $HOME/.cache/ndk/ndk-${NDK_VERSION}-32.tb2 ndk.tb2; fi
-  - tar -jxf ndk.tb2
+  - curl https://dl.google.com/android/ndk/android-ndk-${NDK_VERSION}-linux-x86_64.bin -z $HOME/.cache/ndk/ndk-${NDK_VERSION}.bin -o $HOME/.cache/ndk/ndk-${NDK_VERSION}.bin
+  - 7z x -y $HOME/.cache/ndk/ndk-${NDK_VERSION}.bin | grep -v 'ing  '
   - echo "ndk.dir=`pwd`/android-ndk-${NDK_VERSION}" >> local.properties
 
 android:
