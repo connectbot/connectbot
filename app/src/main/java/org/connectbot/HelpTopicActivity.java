@@ -28,7 +28,7 @@ import android.os.Bundle;
  *
  */
 public class HelpTopicActivity extends Activity {
-	public final static String TAG = "ConnectBot.HelpActivity";
+	public final static String TAG = "CB.HelpActivity";
 
 	@Override
 	public void onCreate(Bundle icicle) {

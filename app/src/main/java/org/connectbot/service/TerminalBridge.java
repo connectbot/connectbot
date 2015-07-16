@@ -59,7 +59,7 @@ import de.mud.terminal.vt320;
  */
 @SuppressWarnings("deprecation") // for ClipboardManager
 public class TerminalBridge implements VDUDisplay {
-	public final static String TAG = "ConnectBot.TerminalBridge";
+	public final static String TAG = "CB.TerminalBridge";
 
 	public final static int DEFAULT_FONT_SIZE_DP = 10;
 	private final static int FONT_SIZE_STEP = 2;

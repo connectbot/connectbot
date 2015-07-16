@@ -26,7 +26,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class SettingsActivity extends PreferenceActivity {
-	private static final String TAG = "ConnectBot.Settings";
+	private static final String TAG = "CB.Settings";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

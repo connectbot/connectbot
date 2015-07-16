@@ -56,7 +56,7 @@ import com.trilead.ssh2.signature.ECDSASHA2Verify;
 public class GeneratePubkeyActivity extends Activity implements OnEntropyGatheredListener {
 	private static final int RSA_MINIMUM_BITS = 768;
 
-	public final static String TAG = "ConnectBot.GeneratePubkeyActivity";
+	public final static String TAG = "CB.GeneratePubkeyAct";
 
 	final static int DEFAULT_BITS = 2048;
 

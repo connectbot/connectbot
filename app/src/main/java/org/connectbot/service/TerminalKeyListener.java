@@ -40,7 +40,7 @@ import de.mud.terminal.vt320;
  */
 @SuppressWarnings("deprecation") // for ClipboardManager
 public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceChangeListener {
-	private static final String TAG = "ConnectBot.OnKeyListener";
+	private static final String TAG = "CB.OnKeyListener";
 
 	// Constants for our private tracking of modifier state
 	public final static int OUR_CTRL_ON = 0x01;

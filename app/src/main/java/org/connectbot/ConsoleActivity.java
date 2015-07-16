@@ -79,7 +79,7 @@ import android.widget.ViewFlipper;
 import de.mud.terminal.vt320;
 
 public class ConsoleActivity extends Activity {
-	public final static String TAG = "ConnectBot.ConsoleActivity";
+	public final static String TAG = "CB.ConsoleActivity";
 
 	protected static final int REQUEST_EDIT = 1;
 

@@ -70,7 +70,7 @@ import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
 
 public class PubkeyUtils {
-	private static final String TAG = "PubkeyUtils";
+	private static final String TAG = "CB.PubkeyUtils";
 
 	public static final String PKCS8_START = "-----BEGIN PRIVATE KEY-----";
 	public static final String PKCS8_END = "-----END PRIVATE KEY-----";

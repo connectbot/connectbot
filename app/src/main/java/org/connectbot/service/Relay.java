@@ -36,7 +36,7 @@ import de.mud.terminal.vt320;
  * @author Kenny Root
  */
 public class Relay implements Runnable {
-	private static final String TAG = "ConnectBot.Relay";
+	private static final String TAG = "CB.Relay";
 
 	private static final int BUFFER_SIZE = 4096;
 

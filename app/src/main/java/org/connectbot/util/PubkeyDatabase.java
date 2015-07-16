@@ -35,7 +35,7 @@ import android.database.sqlite.SQLiteException;
  * @author Kenny Root
  */
 public class PubkeyDatabase extends RobustSQLiteOpenHelper {
-	public final static String TAG = "ConnectBot.PubkeyDatabase";
+	public final static String TAG = "CB.PubkeyDatabase";
 
 	public final static String DB_NAME = "pubkeys";
 	public final static int DB_VERSION = 2;

@@ -33,7 +33,7 @@ import android.util.Log;
  *
  */
 public class TransportFactory {
-	private static final String TAG = "ConnectBot.TransportFactory";
+	private static final String TAG = "CB.TransportFactory";
 
 	private static String[] transportNames = {
 		SSH.getProtocolName(),

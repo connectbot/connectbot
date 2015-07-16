@@ -224,7 +224,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		return this.pref;
 	}
 
-	protected static final String TAG = "ConnectBot.HostEditorActivity";
+	protected static final String TAG = "CB.HostEditorActivity";
 
 	protected HostDatabase hostdb = null;
 	private PubkeyDatabase pubkeydb = null;

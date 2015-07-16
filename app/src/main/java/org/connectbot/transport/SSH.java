@@ -90,7 +90,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	}
 
 	private static final String PROTOCOL = "ssh";
-	private static final String TAG = "ConnectBot.SSH";
+	private static final String TAG = "CB.SSH";
 	private static final int DEFAULT_PORT = 22;
 
 	private static final String AUTH_PUBLICKEY = "publickey",

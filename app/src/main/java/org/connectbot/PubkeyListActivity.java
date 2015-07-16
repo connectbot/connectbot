@@ -79,7 +79,7 @@ import com.trilead.ssh2.crypto.PEMStructure;
  * @author Kenny Root
  */
 public class PubkeyListActivity extends ListActivity implements EventListener {
-	public final static String TAG = "ConnectBot.PubkeyListActivity";
+	public final static String TAG = "CB.PubkeyListActivity";
 
 	private static final int MAX_KEYFILE_SIZE = 8192;
 	private static final int REQUEST_CODE_PICK_FILE = 1;

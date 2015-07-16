@@ -64,7 +64,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
  * @author Kenny Root
  */
 public class PortForwardListActivity extends ListActivity {
-	public final static String TAG = "ConnectBot.PortForwardListActivity";
+	public final static String TAG = "CB.PortForwardListAct";
 
 	private static final int LISTENER_CYCLE_TIME = 500;
 
