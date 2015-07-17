@@ -36,6 +36,6 @@ android:
   license:
     - '.+'
 
-script: ./gradlew build check createDebugCoverageReport
+script: ./gradlew build check jacocoTestDebugReport
 
 after_success: ./gradlew coveralls
