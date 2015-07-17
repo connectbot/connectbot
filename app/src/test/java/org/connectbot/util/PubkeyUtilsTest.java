@@ -17,9 +17,10 @@
 
 package org.connectbot.util;
 
+import org.connectbot.BuildConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.math.BigInteger;
@@ -39,8 +40,8 @@ import static org.junit.Assert.fail;
 /**
  * @author Kenny Root
  */
-@Config(manifest = "../app/src/main/AndroidManifest.xml", emulateSdk = 16)
-@RunWith(RobolectricTestRunner.class)
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class PubkeyUtilsTest {
 	@Test
 	public void encodeHex_Null_Failure() throws Exception {

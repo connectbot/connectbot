@@ -1,1 +1,1 @@
-include ':app', ':robolectric-tests'
+include ':app'
