@@ -36,4 +36,6 @@ android:
   license:
     - '.+'
 
-script: ./gradlew build check test
+script: ./gradlew build check createDebugCoverageReport
+
+after_success: ./gradlew coveralls
