@@ -40,7 +40,7 @@
 		android:text="x"
 		android:paddingLeft="10dip"
 		android:paddingRight="10dip"
-		android:gravity="right|bottom"
+		android:gravity="end|bottom"
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		/>
 

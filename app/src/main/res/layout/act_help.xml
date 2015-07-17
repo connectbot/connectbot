@@ -39,7 +39,7 @@
 			android:text="@string/msg_version"
 			android:paddingTop="2dip"
 			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:gravity="right"
+			android:gravity="end"
 			android:paddingRight="2dip"
 			/>
 

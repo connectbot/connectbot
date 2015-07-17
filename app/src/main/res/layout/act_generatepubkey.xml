@@ -36,7 +36,7 @@
 			<TextView
 				android:text="@string/prompt_nickname"
 				android:paddingRight="10dip"
-				android:gravity="right|center_vertical"
+				android:gravity="end|center_vertical"
 				android:textAppearance="?android:attr/textAppearanceMedium" />
 
 			<EditText
@@ -52,7 +52,7 @@
 				android:text="@string/prompt_type"
 				android:paddingRight="10dip"
 				android:textAppearance="?android:attr/textAppearanceMedium"
-				android:gravity="bottom|right"
+				android:gravity="bottom|end"
 				android:layout_gravity="center_vertical" />
 
 			<RadioGroup
@@ -89,7 +89,7 @@
 				android:text="@string/prompt_bits"
 				android:paddingRight="10dip"
 				android:textAppearance="?android:attr/textAppearanceMedium"
-				android:gravity="right|center_vertical" />
+				android:gravity="end|center_vertical" />
 
 			<EditText
 				android:id="@+id/bits"
@@ -110,14 +110,14 @@
 
 		<TextView
 			android:text="@string/prompt_password_can_be_blank"
-			android:gravity="left"
+			android:gravity="start"
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content" />
 
 		<TableRow>
 			<TextView
 				android:paddingRight="10dip"
-				android:gravity="right|center_vertical"
+				android:gravity="end|center_vertical"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textAppearance="?android:attr/textAppearanceMedium"
@@ -136,17 +136,17 @@
 			<LinearLayout
 				android:paddingRight="10dip"
 				android:orientation="vertical"
-				android:gravity="right|center_vertical">
+				android:gravity="end|center_vertical">
 
 				<TextView
-					android:gravity="right|bottom"
+					android:gravity="end|bottom"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:textAppearance="?android:attr/textAppearanceMedium"
 					android:text="@string/prompt_password" />
 
 				<TextView
-					android:gravity="right|top"
+					android:gravity="end|top"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:textAppearance="?android:attr/textAppearanceSmall"

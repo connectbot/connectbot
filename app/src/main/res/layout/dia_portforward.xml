@@ -35,7 +35,7 @@
 			<TextView
 				android:text="@string/prompt_nickname"
 				android:paddingRight="10dip"
-				android:gravity="right|center_vertical"
+				android:gravity="end|center_vertical"
 				android:textAppearance="?android:attr/textAppearanceMedium"
 				/>
 
@@ -53,7 +53,7 @@
 			<TextView
 				android:text="@string/prompt_type"
 				android:paddingRight="10dip"
-				android:gravity="right|center_vertical"
+				android:gravity="end|center_vertical"
 				android:textAppearance="?android:attr/textAppearanceMedium"
 				/>
 
@@ -70,7 +70,7 @@
 			<TextView
 				android:text="@string/prompt_source_port"
 				android:paddingRight="10dip"
-				android:gravity="right|center_vertical"
+				android:gravity="end|center_vertical"
 				android:textAppearance="?android:attr/textAppearanceMedium"
 				/>
 
@@ -88,7 +88,7 @@
 			<TextView
 				android:text="@string/prompt_destination"
 				android:paddingRight="10dip"
-				android:gravity="right|center_vertical"
+				android:gravity="end|center_vertical"
 				android:textAppearance="?android:attr/textAppearanceMedium"
 				/>
 

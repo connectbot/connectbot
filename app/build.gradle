@@ -1,7 +1,18 @@
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
+apply plugin: 'com.github.kt3k.coveralls'
 apply from: '../config/quality.gradle'
 apply from: '../config/translations.gradle'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.+'
+    }
+}
 
 android {
     compileSdkVersion 22
@@ -50,9 +61,12 @@ android {
 
         debug {
             applicationIdSuffix ".debug"
+            testCoverageEnabled true
         }
     }
 }
+
+coveralls.jacocoReportPath = 'build/reports/coverage/debug/report.xml'
 
 dependencies {
     testCompile 'junit:junit:4.12'
