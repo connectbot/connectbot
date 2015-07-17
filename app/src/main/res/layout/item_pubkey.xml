@@ -30,6 +30,7 @@
 		android:layout_height="wrap_content"
 		android:src="@drawable/pubkey"
 		android:contentDescription="@string/image_description_key_is_locked"
+		android:layout_alignParentEnd="true"
 		android:layout_alignParentRight="true"
 		android:layout_alignParentTop="true"
 		android:layout_marginLeft="10dip"/>
@@ -39,6 +40,7 @@
 		android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		android:text="Key Example"
+		android:layout_alignParentStart="true"
 		android:layout_alignParentLeft="true"
 		android:bufferType="normal" android:layout_width="wrap_content" android:layout_toLeftOf="@android:id/icon1"/>
 
