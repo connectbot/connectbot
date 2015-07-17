@@ -193,15 +193,17 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 				// Users have no way to delete keys, so we'll prompt them for now.
 				result = bridge.promptHelper.requestBooleanPrompt(null, manager.res.getString(R.string.prompt_continue_connecting));
-				if (result == null) return false;
-				if (result.booleanValue()) {
+				if (result != null && result.booleanValue()) {
 					// save this key in known database
 					manager.hostdb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
-				}
-				return result.booleanValue();
-
-				default:
+					return true;
+				} else {
 					return false;
+				}
+
+			default:
+				bridge.outputLine(manager.res.getString(R.string.terminal_failed, algorithmName, fingerprint));
+				return false;
 			}
 		}
 
