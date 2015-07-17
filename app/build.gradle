@@ -106,7 +106,7 @@ tasks.create(name: "jacocoTestDebugReport", type: JacocoReport, dependsOn: "test
     }
 }
 
-coveralls.jacocoReportPath = 'app/build/reports/jacoco/jacocoTestDebugReport/jacocoTestDebugReport.xml'
+coveralls.jacocoReportPath = "${project.buildDir}/reports/jacoco/jacocoTestDebugReport/jacocoTestDebugReport.xml"
 
 dependencies {
     testCompile 'junit:junit:4.12'
