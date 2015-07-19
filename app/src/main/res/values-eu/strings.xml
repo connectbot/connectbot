@@ -8,6 +8,7 @@
   <string name="title_host_editor">Editatu ostalaria</string>
   <string name="title_help">Laguntza</string>
   <string name="title_colors">Koloreak</string>
+  <string name="title_color_picker">Aukeratu kolorea</string>
   <string name="resolve_connect">Konektatu</string>
   <string name="resolve_entropy">Bildu entropia</string>
   <string name="menu_insert">Gehitu ostalaria</string>
@@ -75,8 +76,10 @@
   <string name="pref_ui_category">Erabiltzaile-interfazea</string>
   <string name="pref_rotation_title">Biratze modua</string>
   <string name="pref_rotation_summary">Nola aldatu biratzea teklatua bistaratzean/izkutatzean.</string>
+  <string name="pref_titlebarhide_title">Ezkutatu titulu-barra automatikoki</string>
   <string name="pref_fullscreen_title">Pantaila osoa</string>
   <string name="pref_fullscreen_summary">Ezkutatu egoera-barra kontsola erabiltzean</string>
+  <string name="pref_keyboard_category">Teklatua</string>
   <string name="pref_memkeys_title">Gorde gakoak memorian</string>
   <string name="pref_memkeys_summary">Gogoratu desblokeatutako gakoak memorian zerbitzua amaitu arte</string>
   <string name="pref_conn_persist_title">Konexio iraunkorrak</string>
