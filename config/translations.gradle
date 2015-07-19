@@ -40,33 +40,16 @@ task translationsImport(type: Exec, dependsOn: 'untarTranslations') {
 	executable = android2poExec
 	args = ['import'] + android2poArgs
 
-	// Save the output to print out.
-	standardOutput = new ByteArrayOutputStream()
-	errorOutput = new ByteArrayOutputStream()
-	ext.output = {
-		return standardOutput.toString()
-	}
-	ext.errs = {
-		return errorOutput.toString()
-	}
-
-	doLast {
-		println()
-		println("Translations import output:")
-		println("${translationsImport.output}")
-		println("${translationsImport.errs}")
-	}
+	logging.captureStandardOutput LogLevel.LIFECYCLE
+	logging.captureStandardError  LogLevel.ERROR
 }
 
 task exportFromAndroid(type: Exec) {
 	executable = android2poExec
 	args = ['export'] + android2poArgs
 
-	// Save the output to print out.
-	standardOutput = new ByteArrayOutputStream()
-	ext.output = {
-		return standardOutput.toString()
-	}
+	logging.captureStandardOutput LogLevel.LIFECYCLE
+	logging.captureStandardError  LogLevel.ERROR
 }
 
 task translationsExport(type: Tar, dependsOn: 'exportFromAndroid') {
