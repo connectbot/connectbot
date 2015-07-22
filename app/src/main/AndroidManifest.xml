@@ -41,7 +41,7 @@
 		android:backupAgent=".service.BackupAgent"
 		android:killAfterRestore="true">
 
-		<activity android:name=".HostListActivity" >
+		<activity android:name=".HostListActivity" android:launchMode="singleTop">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -78,7 +78,6 @@
 			android:launchMode="singleTop" android:hardwareAccelerated="false">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
-				<action android:name="org.connectbot.action.DISCONNECT" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
 				<data android:scheme="ssh" />

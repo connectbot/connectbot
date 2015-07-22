@@ -17,6 +17,7 @@
 
 package org.connectbot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.connectbot.bean.HostBean;
@@ -65,6 +66,9 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class HostListActivity extends ListActivity {
+	public final static String TAG = "CB.HostListActivity";
+	public static final String DISCONNECT_ACTION = "org.connectbot.action.DISCONNECT";
+
 	public final static int REQUEST_EDIT = 1;
 
 	public final static int REQUEST_EULA = 2;
@@ -88,6 +92,14 @@ public class HostListActivity extends ListActivity {
 
 	protected boolean makingShortcut = false;
 
+	private boolean waitingForDisconnectAll = false;
+
+	/**
+	 * Whether to close the activity when disconnectAll is called. True if this activity was
+	 * only brought to the foreground via the notification button to disconnect all hosts.
+	 */
+	private boolean closeOnDisconnectAll = true;
+
 	protected Handler updateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -101,6 +113,10 @@ public class HostListActivity extends ListActivity {
 
 			// update our listview binder to find the service
 			HostListActivity.this.updateList();
+
+			if (waitingForDisconnectAll) {
+				disconnectAll();
+			}
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
@@ -129,11 +145,33 @@ public class HostListActivity extends ListActivity {
 			this.hostdb.close();
 			this.hostdb = null;
 		}
+
+		closeOnDisconnectAll = true;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		// Must disconnectAll before setting closeOnDisconnectAll to know whether to keep the
+		// activity open after disconnecting.
+		if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0 &&
+				getIntent().getAction() == DISCONNECT_ACTION) {
+			Log.d(TAG, "Got disconnect all request");
+			disconnectAll();
+		}
+
+		// Still close on disconnect if waiting for a disconnect.
+		closeOnDisconnectAll = waitingForDisconnectAll && closeOnDisconnectAll;
+	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onNewIntent(android.content.Intent)
+	 */
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
 	}
 
 	@Override
@@ -394,13 +432,37 @@ public class HostListActivity extends ListActivity {
 							hostdb.deleteHost(host);
 							updateHandler.sendEmptyMessage(-1);
 						}
-						})
+					})
 					.setNegativeButton(R.string.delete_neg, null).create().show();
 
 				return true;
 			}
 		});
 	}
+	/**
+	 * Disconnects all active connections and closes the activity if appropriate.
+	 */
+	private void disconnectAll() {
+		// TODO(jklein24): Show a confirm dialog before actually disconnecting.
+		if (bound == null) {
+			waitingForDisconnectAll = true;
+			return;
+		}
+		// Copy the bridges list because bridges are removed from the array when disconnected.
+		for (TerminalBridge bridge : new ArrayList<TerminalBridge>(bound.bridges)) {
+			bridge.dispatchDisconnect(true);
+		}
+		updateHandler.sendEmptyMessage(-1);
+		waitingForDisconnectAll = false;
+
+		if (closeOnDisconnectAll) {
+			// Clear the intent so that the activity can be relaunched without closing.
+			// TODO(jlklein): Find a better way to do this.
+			setIntent(new Intent());
+			finish();
+		}
+	}
+
 
 	/**
 	 * @param text
