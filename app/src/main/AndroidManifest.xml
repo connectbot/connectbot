@@ -78,6 +78,7 @@
 			android:launchMode="singleTop" android:hardwareAccelerated="false">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
+				<action android:name="org.connectbot.action.DISCONNECT" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
 				<data android:scheme="ssh" />

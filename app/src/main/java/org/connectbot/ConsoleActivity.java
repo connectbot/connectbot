@@ -18,6 +18,8 @@
 package org.connectbot;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.connectbot.bean.SelectionArea;
@@ -80,6 +82,7 @@ import de.mud.terminal.vt320;
 
 public class ConsoleActivity extends Activity {
 	public final static String TAG = "CB.ConsoleActivity";
+	public static final String DISCONNECT_ACTION = "org.connectbot.action.DISCONNECT";
 
 	protected static final int REQUEST_EDIT = 1;
 
@@ -139,6 +142,8 @@ public class ConsoleActivity extends Activity {
 	private boolean inActionBarMenu = false;
 	private boolean titleBarHide;
 
+	private boolean waitingForDisconnectAll = false;
+
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
@@ -176,6 +181,13 @@ public class ConsoleActivity extends Activity {
 			}
 
 			setDisplayedTerminal(requestedIndex);
+
+			// This needs to happen after the views are constructed in order to
+			// know when it's safe to kill this activity.
+			if (waitingForDisconnectAll) {
+				waitingForDisconnectAll = false;
+				disconnectAll();
+			}
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
@@ -908,6 +920,11 @@ public class ConsoleActivity extends Activity {
 
 		if (forcedOrientation && bound != null)
 			bound.setResizeAllowed(true);
+
+		if (getIntent().getAction() == DISCONNECT_ACTION) {
+			Log.d(TAG, "Got disconnect request");
+			disconnectAll();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -918,6 +935,7 @@ public class ConsoleActivity extends Activity {
 		super.onNewIntent(intent);
 
 		Log.d(TAG, "onNewIntent called");
+		setIntent(intent);
 
 		requested = intent.getData();
 
@@ -1111,6 +1129,21 @@ public class ConsoleActivity extends Activity {
 			bound.hardKeyboardHidden = (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES);
 
 			mKeyboardButton.setVisibility(bound.hardKeyboardHidden ? View.VISIBLE : View.GONE);
+		}
+	}
+
+	/**
+	 * Disconnects and closes all open terminals.
+	 */
+	private void disconnectAll() {
+		// TODO(jklein24): Show a confirm dialog before actually disconnecting.
+		if (bound == null) {
+			waitingForDisconnectAll = true;
+			return;
+		}
+		// Copy the bridges list because bridges are removed from the array when disconnected.
+		for (TerminalBridge bridge : new ArrayList<TerminalBridge>(bound.bridges)) {
+			bridge.dispatchDisconnect(true);
 		}
 	}
 
