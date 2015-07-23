@@ -39,7 +39,10 @@ import android.graphics.PixelXorXfermode;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.view.MotionEventCompat;
+import android.view.InputDevice;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
@@ -317,6 +320,23 @@ public class TerminalView extends View implements FontSizeChangedListener {
 				return true;
 			}
 		};
+	}
+
+	@Override
+	public boolean onGenericMotionEvent(MotionEvent event) {
+		if ((MotionEventCompat.getSource(event) & InputDevice.SOURCE_CLASS_POINTER) != 0) {
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_SCROLL:
+				// Process scroll wheel movement:
+				float yDistance = MotionEventCompat.getAxisValue(event, MotionEvent.AXIS_VSCROLL);
+				if (yDistance != 0) {
+					int base = bridge.buffer.getWindowBase();
+					bridge.buffer.setWindowBase(base - Math.round(yDistance));
+					return true;
+				}
+			}
+		}
+		return super.onGenericMotionEvent(event);
 	}
 
 	public void propagateConsoleText(char[] rawText, int length) {
