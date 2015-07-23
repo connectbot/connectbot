@@ -442,27 +442,40 @@ public class HostListActivity extends ListActivity {
 	 * Disconnects all active connections and closes the activity if appropriate.
 	 */
 	private void disconnectAll() {
-		// TODO(jklein24): Show a confirm dialog before actually disconnecting.
 		if (bound == null) {
 			waitingForDisconnectAll = true;
 			return;
 		}
 
-		bound.disconnectAll(true, false);
-		updateHandler.sendEmptyMessage(-1);
-		waitingForDisconnectAll = false;
+		new AlertDialog.Builder(HostListActivity.this)
+			.setMessage(getString(R.string.disconnect_all_message))
+			.setPositiveButton(R.string.disconnect_all_pos, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					bound.disconnectAll(true, false);
+					updateHandler.sendEmptyMessage(-1);
+					waitingForDisconnectAll = false;
 
-		if (closeOnDisconnectAll) {
-			// Clear the intent so that the activity can be relaunched without closing.
-			// TODO(jlklein): Find a better way to do this.
-			setIntent(new Intent());
-			finish();
-		}
+					// Clear the intent so that the activity can be relaunched without closing.
+					// TODO(jlklein): Find a better way to do this.
+					setIntent(new Intent());
+
+					if (closeOnDisconnectAll) {
+						finish();
+					}
+				}
+			})
+			.setNegativeButton(R.string.disconnect_all_neg, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					waitingForDisconnectAll = false;
+					// Clear the intent so that the activity can be relaunched without closing.
+					// TODO(jlklein): Find a better way to do this.
+					setIntent(new Intent());
+				}
+			}).create().show();
 	}
 
 
 	/**
-	 * @param text
 	 * @return
 	 */
 	private boolean startConsoleActivity() {
