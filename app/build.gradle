@@ -41,10 +41,6 @@ android {
         applicationId "org.connectbot"
         minSdkVersion 4
         targetSdkVersion 22
-        compileOptions {
-            sourceCompatibility JavaVersion.VERSION_1_5
-            targetCompatibility JavaVersion.VERSION_1_5
-        }
 
         ndk {
             moduleName "com_google_ase_Exec"
