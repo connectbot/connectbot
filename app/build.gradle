@@ -108,7 +108,15 @@ tasks.create(name: "jacocoTestDebugReport", type: JacocoReport, dependsOn: "test
 
 coveralls.jacocoReportPath = "${project.buildDir}/reports/jacoco/jacocoTestDebugReport/jacocoTestDebugReport.xml"
 
+repositories {
+    maven {
+        url 'https://dl.bintray.com/connectbot/maven'
+    }
+}
+
 dependencies {
+    compile 'org.connectbot:sshlib:2.2.0'
+
     testCompile 'junit:junit:4.12'
     testCompile('org.robolectric:robolectric:3.0') {
         exclude group: 'commons-logging', module: 'commons-logging'
