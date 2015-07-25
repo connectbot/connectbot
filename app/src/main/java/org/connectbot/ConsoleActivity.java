@@ -145,9 +145,6 @@ public class ConsoleActivity extends Activity {
 
 			// let manager know about our event handling services
 			bound.disconnectHandler = disconnectHandler;
-
-			Log.d(TAG, String.format("Connected to TerminalManager and found bridges.size=%d", bound.bridges.size()));
-
 			bound.setResizeAllowed(true);
 
 			// clear out any existing bridges and record requested index
@@ -169,7 +166,7 @@ public class ConsoleActivity extends Activity {
 			}
 
 			// create views for all bridges on this service
-			for (TerminalBridge bridge : bound.bridges) {
+			for (TerminalBridge bridge : bound.getBridges()) {
 
 				final int currentIndex = addNewTerminalView(bridge);
 
@@ -182,12 +179,6 @@ public class ConsoleActivity extends Activity {
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
-			// tell each bridge to forget about our prompt handler
-			synchronized (bound.bridges) {
-				for (TerminalBridge bridge : bound.bridges)
-					bridge.promptHelper.setHandler(null);
-			}
-
 			flip.removeAllViews();
 			updateEmptyVisible();
 			bound = null;

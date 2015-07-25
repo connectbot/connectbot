@@ -70,7 +70,7 @@ import android.util.Log;
 public class TerminalManager extends Service implements BridgeDisconnectedListener, OnSharedPreferenceChangeListener {
 	public final static String TAG = "CB.TerminalManager";
 
-	public List<TerminalBridge> bridges = new LinkedList<TerminalBridge>();
+	private List<TerminalBridge> bridges = new LinkedList<TerminalBridge>();
 	public Map<HostBean, WeakReference<TerminalBridge>> mHostBridgeMap =
 		new HashMap<HostBean, WeakReference<TerminalBridge>>();
 	public Map<String, WeakReference<TerminalBridge>> mNicknameBridgeMap =
@@ -471,6 +471,10 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		}
 	}
 
+	public List<TerminalBridge> getBridges() {
+		return bridges;
+	}
+
 	public class TerminalBinder extends Binder {
 		public TerminalManager getService() {
 			return TerminalManager.this;
@@ -518,6 +522,11 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		if (bridges.size() == 0) {
 			stopWithDelay();
+		} else {
+			// tell each bridge to forget about their previous prompt handler
+			for (TerminalBridge bridge : bridges) {
+				bridge.promptHelper.setHandler(null);
+			}
 		}
 
 		return true;
