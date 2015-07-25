@@ -447,7 +447,7 @@ public class HostListActivity extends ListActivity {
 
 		// Don't lose hosts that are connected via shortcuts but not in the database.
 		if (bound != null) {
-			for (TerminalBridge bridge : bound.bridges) {
+			for (TerminalBridge bridge : bound.getBridges()) {
 				if (!hosts.contains(bridge.host))
 					hosts.add(0, bridge.host);
 			}
