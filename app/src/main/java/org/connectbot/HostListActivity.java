@@ -17,7 +17,6 @@
 
 package org.connectbot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.connectbot.bean.HostBean;
@@ -156,7 +155,7 @@ public class HostListActivity extends ListActivity {
 		// Must disconnectAll before setting closeOnDisconnectAll to know whether to keep the
 		// activity open after disconnecting.
 		if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0 &&
-				getIntent().getAction() == DISCONNECT_ACTION) {
+				DISCONNECT_ACTION.equals(getIntent().getAction())) {
 			Log.d(TAG, "Got disconnect all request");
 			disconnectAll();
 		}
@@ -422,18 +421,18 @@ public class HostListActivity extends ListActivity {
 			public boolean onMenuItemClick(MenuItem item) {
 				// prompt user to make sure they really want this
 				new AlertDialog.Builder(HostListActivity.this)
-					.setMessage(getString(R.string.delete_message, host.getNickname()))
-					.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-						// make sure we disconnect
-							if (bridge != null)
-								bridge.dispatchDisconnect(true);
+						.setMessage(getString(R.string.delete_message, host.getNickname()))
+						.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								// make sure we disconnect
+								if (bridge != null)
+									bridge.dispatchDisconnect(true);
 
-							hostdb.deleteHost(host);
-							updateHandler.sendEmptyMessage(-1);
-						}
-					})
-					.setNegativeButton(R.string.delete_neg, null).create().show();
+								hostdb.deleteHost(host);
+								updateHandler.sendEmptyMessage(-1);
+							}
+						})
+						.setNegativeButton(R.string.delete_neg, null).create().show();
 
 				return true;
 			}
@@ -448,10 +447,8 @@ public class HostListActivity extends ListActivity {
 			waitingForDisconnectAll = true;
 			return;
 		}
-		// Copy the bridges list because bridges are removed from the array when disconnected.
-		for (TerminalBridge bridge : new ArrayList<TerminalBridge>(bound.bridges)) {
-			bridge.dispatchDisconnect(true);
-		}
+
+		bound.disconnectAll(true, false);
 		updateHandler.sendEmptyMessage(-1);
 		waitingForDisconnectAll = false;
 
