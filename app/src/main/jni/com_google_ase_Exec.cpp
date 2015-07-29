@@ -79,7 +79,7 @@ int jniGetFDFromFileDescriptor(JNIEnv* env, jobject fileDescriptor) {
 
 static int create_subprocess(
   const char* cmd, const char* arg0, const char* arg1, int* pProcessId) {
-  char* devname;
+  char devname[32];
   int ptm;
   pid_t pid;
 
@@ -91,7 +91,7 @@ static int create_subprocess(
   fcntl(ptm, F_SETFD, FD_CLOEXEC);
 
   if(grantpt(ptm) || unlockpt(ptm) ||
-     ((devname = (char*) ptsname(ptm)) == 0)){
+     ptsname_r(ptm, devname, sizeof(devname))){
     LOG("[ trouble with /dev/ptmx - %s ]\n", strerror(errno));
     return -1;
   }
