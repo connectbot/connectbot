@@ -112,7 +112,7 @@
   <string name="list_keymode_none">Désactivé</string>
   <string name="list_pubkeyids_none">Ne pas utiliser les clés publiques</string>
   <string name="list_pubkeyids_any">Utiliser une clé pour l\'authentification</string>
-  <string name="hostpref_nickname_title">Surnom</string>
+  <string name="hostpref_nickname_title">Pseudonyme</string>
   <string name="hostpref_color_title">Catégorie de couleur</string>
   <string name="hostpref_fontsize_title">Taille de police (pt)</string>
   <string name="hostpref_pubkeyid_title">Utiliser l\'authentification par clé publique</string>

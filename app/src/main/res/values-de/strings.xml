@@ -104,7 +104,7 @@
   <string name="list_keymode_none">Ausschalten</string>
   <string name="list_pubkeyids_none">Keine Schlüssel verwenden</string>
   <string name="list_pubkeyids_any">Beliebigen entsperrten Schlüssel verwenden</string>
-  <string name="hostpref_nickname_title">Nutzername</string>
+  <string name="hostpref_nickname_title">Spitzname</string>
   <string name="hostpref_color_title">Farbkategorie</string>
   <string name="hostpref_fontsize_title">Fontgröße (pt)</string>
   <string name="hostpref_pubkeyid_title">Verwende pubkey Authentisierung</string>
