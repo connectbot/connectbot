@@ -18,7 +18,8 @@
  */
 -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
+           xmlns:tools="http://schemas.android.com/tools">
 	<!-- Summary of what ConnectBot is; used as a short description in the Android running apps list -->
 	<string name="app_desc">"Simple, powerful, open-source SSH client."</string>
 
@@ -435,7 +436,7 @@
 
 	<!-- Displayed in terminal when attempting to connect to a host. The first two
 	     variables are host:port and the third is the protocol (e.g., SSH) -->
-	<string name="terminal_connecting">"Connecting to %1$s:%2$d via %3$s"</string>
+	<string name="terminal_connecting" tools:ignore="PluralsCandidate">"Connecting to %1$s:%2$d via %3$s"</string>
 
 	<!-- Displays the host key to the user in the terminal -->
 	<string name="terminal_sucess">"Verified host '%1$s' key: %2$s"</string>
