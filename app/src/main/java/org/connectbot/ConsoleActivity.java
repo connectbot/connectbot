@@ -500,7 +500,8 @@ public class ConsoleActivity extends Activity {
 				}
 
 				// activate consider if within x tolerance
-				if (Math.abs(e1.getX() - e2.getX()) < ViewConfiguration.getTouchSlop() * 4) {
+				int touchSlop = ViewConfiguration.get(ConsoleActivity.this).getScaledTouchSlop();
+				if (Math.abs(e1.getX() - e2.getX()) < touchSlop * 4) {
 
 					View flip = findCurrentView(R.id.console_flip);
 					if (flip == null) return false;
