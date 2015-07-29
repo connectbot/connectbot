@@ -22,7 +22,7 @@
   <string name="pubkey_gather_entropy">Samlar in entropi</string>
   <string name="pubkey_touch_prompt">Rör vid rutan för att samla in slumpdata: %1$d%% klart</string>
   <string name="pubkey_touch_hint">För att försäkra dig om att nyckeln som skapas är slumpmässig, rör fingret slumpmässigt över skärmen.</string>
-  <string name="pubkey_generating">Genererar nyckelpar...</string>
+  <string name="pubkey_generating">Genererar nyckelpar…</string>
   <string name="pubkey_copy_private">Kopiera privat nyckel</string>
   <string name="pubkey_copy_public">Kopiera publik nyckel</string>
   <string name="pubkey_list_empty">Tryck på Meny för att\nskapa eller importera nyckelpar</string>

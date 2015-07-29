@@ -21,7 +21,7 @@
   <string name="pubkey_gather_entropy">엔트로피 수집 중</string>
   <string name="pubkey_touch_prompt">이 사각형의 랜덤으로 터치하세요: %1$d%% 완료</string>
   <string name="pubkey_touch_hint">키 생성시 랜덤을 보장하기 위해 아래의 사각형 안에서 손가락을 랜덤으로 이동하십시오.</string>
-  <string name="pubkey_generating">키 쌍 생성 중...</string>
+  <string name="pubkey_generating">키 쌍 생성 중…</string>
   <string name="pubkey_copy_private">개인 키 복사</string>
   <string name="pubkey_copy_public">공개 키 복사</string>
   <string name="pubkey_list_empty">메뉴 버튼을 눌러 키 쌍을\n만들거나 가져 옵니다.</string>

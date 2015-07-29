@@ -22,7 +22,7 @@
   <string name="pubkey_gather_entropy">Kumpulkan Entropy</string>
   <string name="pubkey_touch_prompt">Sentuh boks ini untuk mengumpulkan ke tidak tentuan: %1$d%% selesai</string>
   <string name="pubkey_touch_hint">Untuk memastikan ketidaktentuan selama pembuatan kunci, gerakkan tangan anda secara acak diatas kotak dibawah ini.</string>
-  <string name="pubkey_generating">Membuat pasangan kunci...</string>
+  <string name="pubkey_generating">Membuat pasangan kunci…</string>
   <string name="pubkey_copy_private">Salin kunci pribadi</string>
   <string name="pubkey_copy_public">Salin kunci publik</string>
   <string name="pubkey_list_empty">Sentuh Menu untuk membuat/atau mengimpor pasangan kunci.</string>

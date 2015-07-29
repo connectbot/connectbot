@@ -22,7 +22,7 @@
   <string name="pubkey_gather_entropy">Získavanie entropie</string>
   <string name="pubkey_touch_prompt">Dotknite sa plochy pre získanie náhodnosti: %1$d%% hotovo</string>
   <string name="pubkey_touch_hint">Pre zabezpečenie náhodnosti počas generovania kľúča pohybujte prstom náhodne po ploche nižšie.</string>
-  <string name="pubkey_generating">Generujem kľúčový pár...</string>
+  <string name="pubkey_generating">Generujem kľúčový pár…</string>
   <string name="pubkey_copy_private">Kopírovať súkromný kľúč</string>
   <string name="pubkey_copy_public">Kopírovať verejný kľúč</string>
   <string name="pubkey_list_empty">Ťukni na Menu pre vytvorenie\nalebo importovanie páru kľúčov.</string>

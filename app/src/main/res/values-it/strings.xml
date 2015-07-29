@@ -23,7 +23,7 @@
   <string name="pubkey_gather_entropy">Raccolta entropia</string>
   <string name="pubkey_touch_prompt">Tocca questo riquadro per raccogliere informazioni casuali: %1$d%% fatto</string>
   <string name="pubkey_touch_hint">Per poter assicurare una sorgente di casualità durante la generazione della chiave, muovere le dita casualmente sul riquadro sottostante.</string>
-  <string name="pubkey_generating">La coppia di chiavi viene generata...</string>
+  <string name="pubkey_generating">La coppia di chiavi viene generata…</string>
   <string name="pubkey_copy_private">Copia chiave privata</string>
   <string name="pubkey_copy_public">Copia chiave pubblica</string>
   <string name="pubkey_list_empty">Seleziona Menu per creare\no importare chiavi.</string>

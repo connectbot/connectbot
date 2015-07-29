@@ -22,7 +22,7 @@
   <string name="pubkey_gather_entropy">Indsamler entropi</string>
   <string name="pubkey_touch_prompt">Berør denne boks for at generere tilfældighed: %1$d%% færdig</string>
   <string name="pubkey_touch_hint">For at garantere tilfældig data til oprettelse af nøglen, skal du flytte din finger tilfældigt indenfor boksen nedenfor.</string>
-  <string name="pubkey_generating">Opretter nøglepar...</string>
+  <string name="pubkey_generating">Opretter nøglepar…</string>
   <string name="pubkey_copy_private">Kopier privat nøgle</string>
   <string name="pubkey_copy_public">Kopier offentlig nøgle</string>
   <string name="pubkey_list_empty">Tryk Menu for at oprette\nog importere nøglepar.</string>

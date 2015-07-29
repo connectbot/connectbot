@@ -23,7 +23,7 @@
   <string name="pubkey_gather_entropy">エントロピー収集中</string>
   <string name="pubkey_touch_prompt">この四角内をランダムに触ってください: %1$d%% 完了</string>
   <string name="pubkey_touch_hint">鍵作成時のランダムさを保証するため、下の四角内で指をランダムに動かしてください。</string>
-  <string name="pubkey_generating">鍵ペアを生成しています...</string>
+  <string name="pubkey_generating">鍵ペアを生成しています……</string>
   <string name="pubkey_copy_private">秘密鍵をコピー</string>
   <string name="pubkey_copy_public">公開鍵をコピー</string>
   <string name="pubkey_list_empty">Menuボタンを押して鍵の作成またはインポートを行ってください。</string>

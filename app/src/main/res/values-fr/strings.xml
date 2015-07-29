@@ -23,7 +23,7 @@
   <string name="pubkey_gather_entropy">Génération d\'entropie</string>
   <string name="pubkey_touch_prompt">Touchez cette boîte pour générer de l\'entropie : %1$d%% effectué</string>
   <string name="pubkey_touch_hint">Afin d\'assurer la qualité des nombres aléatoires utilisés pendant la génération de la clé, merci de bouger votre doigt de façon aléatoire sur la boîte ci-dessous.</string>
-  <string name="pubkey_generating">Génération de la paire de clés en cours...</string>
+  <string name="pubkey_generating">Génération de la paire de clés en cours…</string>
   <string name="pubkey_copy_private">Copier la clé privée</string>
   <string name="pubkey_copy_public">Copier la clé publique</string>
   <string name="pubkey_list_empty">Cliquer sur le Menu pour créer\nou importer des paires de clés.</string>

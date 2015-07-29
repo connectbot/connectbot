@@ -23,7 +23,7 @@
   <string name="pubkey_gather_entropy">正在收集熵</string>
   <string name="pubkey_touch_prompt">触摸这个方框来收集随机数：%1$d%% 完成</string>
   <string name="pubkey_touch_hint">请在方框内随机移动手指来生成随机密钥</string>
-  <string name="pubkey_generating">正在生成密钥对...</string>
+  <string name="pubkey_generating">正在生成密钥对……</string>
   <string name="pubkey_copy_private">复制私钥</string>
   <string name="pubkey_copy_public">复制公钥</string>
   <string name="pubkey_list_empty">点击\"菜单\"来创建或者导入密钥对</string>

@@ -23,7 +23,7 @@
   <string name="pubkey_gather_entropy">נאסף גיבוב</string>
   <string name="pubkey_touch_prompt">יש לגעת בתיבה זו כדי לאסוף נתונים אקראיים: %1$d%% הושלמו</string>
   <string name="pubkey_touch_hint">כדי להבטיח את האקראיות במהלך יצירת המפתח, עליך להעביר את האצבע באקראיות על התיבה שלהלן.</string>
-  <string name="pubkey_generating">צמד המפתחות נוצר...</string>
+  <string name="pubkey_generating">צמד המפתחות נוצר…</string>
   <string name="pubkey_copy_private">העתקת המפתח הפרטי</string>
   <string name="pubkey_copy_public">העתקת המפתח הציבורי</string>
   <string name="pubkey_list_empty">יש לגעת ב„תפריט“ כדי ליצור\nאו לייבא צמדי מפתחות.</string>

@@ -22,7 +22,7 @@
   <string name="pubkey_gather_entropy">Kerätään satunnaisdataa</string>
   <string name="pubkey_touch_prompt">Kosketa tätä laatikkoa kerätäksesi satunnaisdataa: %1$d%% valmiina</string>
   <string name="pubkey_touch_hint">Liikuta sormeasi alla olevan laatikon kohdalla sattumanvaraisesti varmistaaksesi avaimen luonnin satunnaisuuden.</string>
-  <string name="pubkey_generating">Luodaan avainparia...</string>
+  <string name="pubkey_generating">Luodaan avainparia…</string>
   <string name="pubkey_copy_private">Kopio yksityinen avain</string>
   <string name="pubkey_copy_public">Kopioi julkinen avain</string>
   <string name="pubkey_list_empty">Paina valikkopainiketta\nluodaksesi tai tuodaksesi\navainpareja.</string>

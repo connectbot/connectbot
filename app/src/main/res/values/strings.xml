@@ -59,7 +59,7 @@
 	<string name="pubkey_gather_entropy">"Gathering Entropy"</string>
 	<string name="pubkey_touch_prompt">"Touch this box to gather randomness: %1$d%% done"</string>
 	<string name="pubkey_touch_hint">"In order to assure randomness during the key generation, move your finger randomly over the box below."</string>
-	<string name="pubkey_generating">"Generating key pair..."</string>
+	<string name="pubkey_generating">"Generating key pair…"</string>
 	<string name="pubkey_copy_private">"Copy private key"</string>
 	<string name="pubkey_copy_public">"Copy public key"</string>
 	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->

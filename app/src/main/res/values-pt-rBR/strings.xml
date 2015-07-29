@@ -23,7 +23,7 @@
   <string name="pubkey_gather_entropy">Ajustando sensibilidade</string>
   <string name="pubkey_touch_prompt">Toque na caixa para testar sensibilidade: %1$d%% pronto</string>
   <string name="pubkey_touch_hint">Para garantir aleatoriedade durante a geração da chave, mova seu dedo aleatoriamente na caixa abaixo.</string>
-  <string name="pubkey_generating">Gerando par de chaves...</string>
+  <string name="pubkey_generating">Gerando par de chaves…</string>
   <string name="pubkey_copy_private">Copiar chave privada</string>
   <string name="pubkey_copy_public">Copiar chave pública</string>
   <string name="pubkey_list_empty">Pressione Menu para criar ou importar pares de chaves.</string>

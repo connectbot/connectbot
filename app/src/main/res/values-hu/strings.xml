@@ -22,7 +22,7 @@
   <string name="pubkey_gather_entropy">Entrópia gyűjtés</string>
   <string name="pubkey_touch_prompt">Érintse meg a dobozt a véletlenszerű generálásához: %1$d%% kész</string>
   <string name="pubkey_touch_hint">A kulcs egyediségének biztosítása érdekében mozgassa ujját véletlenszerűen az alábbi dobozban.</string>
-  <string name="pubkey_generating">Kulcspár generálása...</string>
+  <string name="pubkey_generating">Kulcspár generálása…</string>
   <string name="pubkey_copy_private">Privát kulcs másolása</string>
   <string name="pubkey_copy_public">Nyilvános kulcs másolása</string>
   <string name="pubkey_list_empty">Nyomjon Menu-t, kulcspár\n létrehozáshoz/importáláshoz.</string>

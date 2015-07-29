@@ -23,7 +23,7 @@
   <string name="pubkey_gather_entropy">Entropi Toplanıyor</string>
   <string name="pubkey_touch_prompt">Rastgele girdi toplamak için bu kutuya dokun: %1$d%% oluşturuldu</string>
   <string name="pubkey_touch_hint">Anahtar oluşturmada gerekli rastgele girdi kaydedebilmemiz için parmağınızı aşağıdaki kutu üzerinde rastgele haraket ettiriniz.</string>
-  <string name="pubkey_generating">Anahtar çifti oluşturuluyor...</string>
+  <string name="pubkey_generating">Anahtar çifti oluşturuluyor…</string>
   <string name="pubkey_copy_private">Özel-anahtarı kopyala</string>
   <string name="pubkey_copy_public">Umumi-anahtarı kopyala</string>
   <string name="pubkey_list_empty">Anahtar-çiftini oluşturmak için\nveya dişardan eklemek için \"Menü\"ye dokunun.</string>

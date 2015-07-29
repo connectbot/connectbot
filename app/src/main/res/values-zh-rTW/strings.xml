@@ -23,7 +23,7 @@
   <string name="pubkey_gather_entropy">正在收集用戶熵</string>
   <string name="pubkey_touch_prompt">觸摸此方框來收集隨機數：%1$d％完成</string>
   <string name="pubkey_touch_hint">由於金鑰產生的時候需要隨機資訊，請在下面的方框中隨意移動您的手指。</string>
-  <string name="pubkey_generating">正在產生金鑰對...</string>
+  <string name="pubkey_generating">正在產生金鑰對……</string>
   <string name="pubkey_copy_private">複製私鑰</string>
   <string name="pubkey_copy_public">複製公鑰</string>
   <string name="pubkey_list_empty">按「選單」鍵來產生\n或匯入金鑰對。</string>

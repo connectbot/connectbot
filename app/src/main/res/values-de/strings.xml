@@ -23,7 +23,7 @@
   <string name="pubkey_gather_entropy">Sammle Entropie</string>
   <string name="pubkey_touch_prompt">Berühren Sie diese Box, um Zufallszahlen zu erzeugen: %1$d%% fertig</string>
   <string name="pubkey_touch_hint">Um eine gute Zufallsverteilung zu gewährleisten, bewegen Sie Ihren Finger zufällig über die Box unten!</string>
-  <string name="pubkey_generating">Erzeuge Schlüsselpaar...</string>
+  <string name="pubkey_generating">Erzeuge Schlüsselpaar…</string>
   <string name="pubkey_copy_private">Privaten Schlüssel kopieren</string>
   <string name="pubkey_copy_public">Öffentlichen Schlüssel kopieren</string>
   <string name="pubkey_list_empty">\"Menu\" drücken, um Schlüsselpaare\nzu erzeugen oder zu importieren.</string>

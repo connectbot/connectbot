@@ -23,7 +23,7 @@
   <string name="pubkey_gather_entropy">Zbieranie danych losowych</string>
   <string name="pubkey_touch_prompt">Dotknij to pole, żeby losowo wygenerować dane. Ukończono: %1$d%%</string>
   <string name="pubkey_touch_hint">Dla niepowtarzalności klucza, poruszaj losowo palcem po polu poniżej.</string>
-  <string name="pubkey_generating">Generowanie pary kluczy...</string>
+  <string name="pubkey_generating">Generowanie pary kluczy…</string>
   <string name="pubkey_copy_private">Kopiuj klucz prywatny</string>
   <string name="pubkey_copy_public">Kopiuj klucz publiczny</string>
   <string name="pubkey_list_empty">Naciśnij \"Menu\", by utworzyć\nlub zaimportować parę kluczy.</string>

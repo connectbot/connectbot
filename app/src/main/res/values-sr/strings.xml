@@ -23,7 +23,7 @@
   <string name="pubkey_gather_entropy">Сакупљам ентропију</string>
   <string name="pubkey_touch_prompt">Додирните овде да бисте сакупили ентропију: %1$d%% завршено</string>
   <string name="pubkey_touch_hint">Да бисте осигурали насумичност током генерисања кључа, померајте прст насумично преко поља испод.</string>
-  <string name="pubkey_generating">Генеришем пар кључева...</string>
+  <string name="pubkey_generating">Генеришем пар кључева…</string>
   <string name="pubkey_copy_private">Копирај приватни кључ</string>
   <string name="pubkey_copy_public">Копирај јавни кључ</string>
   <string name="pubkey_list_empty">Тапните „Мени“ да бисте направили \nили увезли пар кључева.</string>
