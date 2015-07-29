@@ -563,7 +563,7 @@ public class ConsoleActivity extends Activity {
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
 						MotionEventCompat.getSource(event) == InputDevice.SOURCE_MOUSE &&
 						event.getAction() == MotionEvent.ACTION_DOWN) {
-					switch(event.getButtonState()) {
+					switch (event.getButtonState()) {
 						case MotionEvent.BUTTON_PRIMARY:
 							// Automatically start copy mode if using a mouse.
 							startCopyMode();
