@@ -199,7 +199,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	/**
 	 * Disconnect all currently connected bridges.
 	 */
-	private void disconnectAll(final boolean immediate, final boolean excludeLocal) {
+	public void disconnectAll(final boolean immediate, final boolean excludeLocal) {
 		TerminalBridge[] tmpBridges = null;
 
 		synchronized (bridges) {

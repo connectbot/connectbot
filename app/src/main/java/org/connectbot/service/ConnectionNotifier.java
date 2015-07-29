@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.connectbot.ConsoleActivity;
+import org.connectbot.HostListActivity;
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
 import org.connectbot.util.HostDatabase;
@@ -45,6 +46,7 @@ import android.support.v4.app.NotificationCompat;
 public abstract class ConnectionNotifier {
 	private static final int ONLINE_NOTIFICATION = 1;
 	private static final int ACTIVITY_NOTIFICATION = 2;
+	private static final int ONLINE_DISCONNECT_NOTIFICATION = 3;
 
 	public static ConnectionNotifier getInstance() {
 		if (PreferenceConstants.PRE_ECLAIR)
@@ -115,6 +117,17 @@ public abstract class ConnectionNotifier {
 		Resources res = context.getResources();
 		builder.setContentTitle(res.getString(R.string.app_name));
 		builder.setContentText(res.getString(R.string.app_is_running));
+
+		Intent disconnectIntent = new Intent(context, HostListActivity.class);
+		disconnectIntent.setAction(HostListActivity.DISCONNECT_ACTION);
+		builder.addAction(
+				android.R.drawable.ic_menu_close_clear_cancel,
+				res.getString(R.string.list_host_disconnect),
+				PendingIntent.getActivity(
+						context,
+						ONLINE_DISCONNECT_NOTIFICATION,
+						disconnectIntent,
+						0));
 
 		return builder.build();
 	}
