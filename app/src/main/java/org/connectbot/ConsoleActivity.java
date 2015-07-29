@@ -559,13 +559,23 @@ public class ConsoleActivity extends Activity {
 
 			public boolean onTouch(View v, MotionEvent event) {
 
-				// Automatically start copy mode if using a mouse.
+				// Handle mouse-specific actions.
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
 						MotionEventCompat.getSource(event) == InputDevice.SOURCE_MOUSE &&
-						event.getAction() == MotionEvent.ACTION_DOWN &&
-						// Ignore right clicks.
-						event.getButtonState() == MotionEvent.BUTTON_PRIMARY) {
-					startCopyMode();
+						event.getAction() == MotionEvent.ACTION_DOWN) {
+					switch(event.getButtonState()) {
+						case MotionEvent.BUTTON_PRIMARY:
+							// Automatically start copy mode if using a mouse.
+							startCopyMode();
+							break;
+						case MotionEvent.BUTTON_SECONDARY:
+							// Let the context menu show on right click.
+							return false;
+						case MotionEvent.BUTTON_TERTIARY:
+							// Middle click pastes.
+							pasteIntoTerminal();
+							return true;
+					}
 				}
 
 				// when copying, highlight the area
