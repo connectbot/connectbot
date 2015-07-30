@@ -48,6 +48,7 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -324,6 +325,7 @@ public class ConsoleActivity extends Activity {
 		inflater = LayoutInflater.from(this);
 
 		flip = (ViewFlipper) findViewById(R.id.console_flip);
+		registerForContextMenu(flip);
 		empty = (TextView) findViewById(android.R.id.empty);
 
 		stringPromptGroup = (RelativeLayout) findViewById(R.id.console_password_group);
@@ -455,7 +457,7 @@ public class ConsoleActivity extends Activity {
 		});
 
 		// detect fling gestures to switch between terminals
-		final GestureDetector detect = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
+		final GestureDetector detect = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
 			private float totalY = 0;
 
 			@Override
@@ -480,7 +482,13 @@ public class ConsoleActivity extends Activity {
 
 				}
 
-				return false;
+				return super.onFling(e1, e2, velocityX, velocityY);
+			}
+
+			@Override
+			public void onLongPress(MotionEvent e) {
+				super.onLongPress(e);
+				openContextMenu(flip);
 			}
 
 
@@ -500,7 +508,8 @@ public class ConsoleActivity extends Activity {
 				}
 
 				// activate consider if within x tolerance
-				if (Math.abs(e1.getX() - e2.getX()) < ViewConfiguration.getTouchSlop() * 4) {
+				int touchSlop = ViewConfiguration.get(ConsoleActivity.this).getScaledTouchSlop();
+				if (Math.abs(e1.getX() - e2.getX()) < touchSlop * 4) {
 
 					View flip = findCurrentView(R.id.console_flip);
 					if (flip == null) return false;
@@ -622,7 +631,8 @@ public class ConsoleActivity extends Activity {
 				}
 
 				// pass any touch events back to detector
-				return detect.onTouchEvent(event);
+				detect.onTouchEvent(event);
+				return true;
 			}
 
 		});
@@ -726,14 +736,7 @@ public class ConsoleActivity extends Activity {
 		paste.setEnabled(clipboard.hasText() && sessionOpen);
 		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				// force insert of clipboard text into current console
-				TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
-				TerminalBridge bridge = terminalView.bridge;
-
-				// pull string from clipboard and generate all events to force down
-				String clip = clipboard.getText().toString();
-				bridge.injectString(clip);
-
+				pasteIntoTerminal();
 				return true;
 			}
 		});
@@ -871,6 +874,32 @@ public class ConsoleActivity extends Activity {
 		super.onOptionsMenuClosed(menu);
 
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+		final View view = findCurrentView(R.id.console_flip);
+		boolean activeTerminal = (view instanceof TerminalView);
+		boolean sessionOpen = false;
+
+		if (activeTerminal) {
+			TerminalBridge bridge = ((TerminalView) view).bridge;
+			sessionOpen = bridge.isSessionOpen();
+		}
+
+		MenuItem paste = menu.add(R.string.console_menu_paste);
+		if (hardKeyboard)
+			paste.setAlphabeticShortcut('v');
+		paste.setIcon(android.R.drawable.ic_menu_edit);
+		paste.setEnabled(clipboard.hasText() && sessionOpen);
+		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				pasteIntoTerminal();
+				return true;
+			}
+		});
+
+
 	}
 
 	@Override
@@ -1112,6 +1141,16 @@ public class ConsoleActivity extends Activity {
 
 			mKeyboardButton.setVisibility(bound.hardKeyboardHidden ? View.VISIBLE : View.GONE);
 		}
+	}
+
+	private void pasteIntoTerminal() {
+		// force insert of clipboard text into current console
+		TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
+		TerminalBridge bridge = terminalView.bridge;
+
+		// pull string from clipboard and generate all events to force down
+		String clip = clipboard.getText().toString();
+		bridge.injectString(clip);
 	}
 
 	/**

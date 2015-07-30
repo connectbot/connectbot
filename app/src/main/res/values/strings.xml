@@ -425,6 +425,10 @@
 	<string name="delete_pos">"Yes, delete"</string>
 	<string name="delete_neg">"Cancel"</string>
 
+	<string name="disconnect_all_message">"Are you sure you want to disconnect from all connected hosts?"</string>
+	<string name="disconnect_all_pos">"Yes, disconnect"</string>
+	<string name="disconnect_all_neg">"Cancel"</string>
+
 	<!-- Button to agree to license terms. -->
 	<string name="wizard_agree">"Agree"</string>
 	<!-- Button to go to the next page in the first time start-up wizard. -->
