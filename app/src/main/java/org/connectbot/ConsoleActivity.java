@@ -46,10 +46,12 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MotionEventCompat;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
+import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -557,6 +559,25 @@ public class ConsoleActivity extends Activity {
 
 			public boolean onTouch(View v, MotionEvent event) {
 
+				// Handle mouse-specific actions.
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
+						MotionEventCompat.getSource(event) == InputDevice.SOURCE_MOUSE &&
+						event.getAction() == MotionEvent.ACTION_DOWN) {
+					switch (event.getButtonState()) {
+						case MotionEvent.BUTTON_PRIMARY:
+							// Automatically start copy mode if using a mouse.
+							startCopyMode();
+							break;
+						case MotionEvent.BUTTON_SECONDARY:
+							// Let the context menu show on right click.
+							return false;
+						case MotionEvent.BUTTON_TERTIARY:
+							// Middle click pastes.
+							pasteIntoTerminal();
+							return true;
+					}
+				}
+
 				// when copying, highlight the area
 				if (copySource != null && copySource.isSelectingForCopy()) {
 					int row = (int) Math.floor(event.getY() / copySource.charHeight);
@@ -564,7 +585,7 @@ public class ConsoleActivity extends Activity {
 
 					SelectionArea area = copySource.getSelectionArea();
 
-					switch(event.getAction()) {
+					switch (event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
 						// recording starting area
 						if (area.isSelectingOrigin()) {
@@ -636,7 +657,6 @@ public class ConsoleActivity extends Activity {
 			}
 
 		});
-
 	}
 
 	/**
@@ -711,19 +731,7 @@ public class ConsoleActivity extends Activity {
 		copy.setEnabled(activeTerminal);
 		copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				// mark as copying and reset any previous bounds
-				TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
-				copySource = terminalView.bridge;
-
-				SelectionArea area = copySource.getSelectionArea();
-				area.reset();
-				area.setBounds(copySource.buffer.getColumns(), copySource.buffer.getRows());
-
-				copySource.setSelectingForCopy(true);
-
-				// Make sure we show the initial selection
-				copySource.redraw();
-
+				startCopyMode();
 				Toast.makeText(ConsoleActivity.this, getString(R.string.console_copy_start), Toast.LENGTH_LONG).show();
 				return true;
 			}
@@ -994,6 +1002,21 @@ public class ConsoleActivity extends Activity {
 		super.onStop();
 
 		unbindService(connection);
+	}
+
+	private void startCopyMode() {
+		// mark as copying and reset any previous bounds
+		TerminalView terminalView = (TerminalView) findCurrentView(R.id.console_flip);
+		copySource = terminalView.bridge;
+
+		SelectionArea area = copySource.getSelectionArea();
+		area.reset();
+		area.setBounds(copySource.buffer.getColumns(), copySource.buffer.getRows());
+
+		copySource.setSelectingForCopy(true);
+
+		// Make sure we show the initial selection
+		copySource.redraw();
 	}
 
 	protected void shiftCurrentTerminal(final int direction) {
