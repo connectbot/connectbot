@@ -194,6 +194,7 @@
   <string name="terminal_using_s2c_algorithm">Сервер-клијент алгоритам: %1$s %2$s</string>
   <string name="terminal_using_c2s_algorithm">Клијент-сервер алгоритам: %1$s %2$s</string>
   <string name="terminal_using_algorithm">Користим алгоритам: %1$s %2$s</string>
+  <string name="terminal_kex_algorithm">Кеи Екцханге алгоритам: %s</string>
   <string name="terminal_auth">Покушавам аутентификацију</string>
   <string name="terminal_auth_pass">Покушавам аутентификацију лозинком</string>
   <string name="terminal_auth_pass_fail">Метода аутентификације лозинком није успела</string>

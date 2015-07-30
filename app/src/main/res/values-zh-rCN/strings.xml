@@ -225,5 +225,6 @@
   <string name="image_description_key_is_locked">密钥已锁。</string>
   <string name="image_description_toggle_control_character">切换控制字符。</string>
   <string name="image_description_send_escape_character">发送转义字符。</string>
+  <string name="image_description_send_tab_character">发送TAB键。</string>
   <string name="image_description_show_keyboard">显示键盘。</string>
 </resources>

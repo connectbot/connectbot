@@ -93,6 +93,8 @@
   <string name="pref_conn_persist_summary">在背景執行時仍保持連線狀態</string>
   <string name="pref_keymode_title">快捷鍵</string>
   <string name="pref_keymode_summary">選擇如何使用 Alt 來叫出 \'/\' 和用 Shift 呼叫 Tab</string>
+  <string name="pref_stickymodifiers_title">粘滯鍵</string>
+  <string name="pref_stickymodifiers_summary">粘滯鍵保持有效，直到按下另一個鍵</string>
   <string name="only_alt">只有Alt</string>
   <string name="pref_camera_title">照相快捷鍵</string>
   <string name="pref_camera_summary">選擇當照相按鈕按下時將要觸發的快捷鍵</string>
@@ -126,6 +128,8 @@
   <string name="hostpref_wantsession_summary">停用本偏好設定來僅使用連接埠轉址</string>
   <string name="hostpref_stayconnected_title">保持連線</string>
   <string name="hostpref_stayconnected_summary">斷線後與主機重新連線</string>
+  <string name="hostpref_quickdisconnect_title">連接斷開時關閉</string>
+  <string name="hostpref_quickdisconnect_summary">遠程連接斷開後，立即關閉不提示。</string>
   <string name="hostpref_delkey_title">DEL 鍵</string>
   <string name="hostpref_delkey_summary">當按下 DEL 鍵時，傳送金鑰代碼</string>
   <string name="hostpref_encoding_title">編碼</string>
@@ -190,6 +194,7 @@
   <string name="terminal_using_s2c_algorithm">伺服器到用戶端算法：%1$s %2$s</string>
   <string name="terminal_using_c2s_algorithm">用戶端到伺服器算法：%1$s %2$s</string>
   <string name="terminal_using_algorithm">使用演算法：%1$s %2$s</string>
+  <string name="terminal_kex_algorithm">密鑰交換算法: %s</string>
   <string name="terminal_auth">嘗試驗證</string>
   <string name="terminal_auth_pass">正在嘗試 \'密碼\' 認證</string>
   <string name="terminal_auth_pass_fail">認證方法 \'密碼\' 失敗</string>
@@ -220,5 +225,6 @@
   <string name="image_description_key_is_locked">金鑰已鎖定。</string>
   <string name="image_description_toggle_control_character">切換控制字元</string>
   <string name="image_description_send_escape_character">送出 Esc 字元。</string>
+  <string name="image_description_send_tab_character">發送TAB鍵。</string>
   <string name="image_description_show_keyboard">顯示鍵盤。</string>
 </resources>
