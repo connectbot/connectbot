@@ -22,7 +22,7 @@
   <string name="pubkey_gather_entropy">Zbiranje entropije</string>
   <string name="pubkey_touch_prompt">Dotaknite to polje za zbiranje naključnih vrednosti: %1$d%% končano</string>
   <string name="pubkey_touch_hint">Da bi zagotovili naključnost med ustvarjanjem ključa, naključno premikajte prst po polju spodaj.</string>
-  <string name="pubkey_generating">Ustvarjanje para ključev</string>
+  <string name="pubkey_generating">Ustvarjanje para ključev…</string>
   <string name="pubkey_copy_private">Kopirajte zasebni ključ</string>
   <string name="pubkey_copy_public">Kopirajte javni ključ</string>
   <string name="pubkey_list_empty">Dotaknite \"Meni\" za ustvarjanje\nali uvažanje para ključev</string>

@@ -8,6 +8,7 @@
   <string name="title_host_editor">Editar equipo remoto</string>
   <string name="title_help">Ayuda</string>
   <string name="title_colors">Colores</string>
+  <string name="title_color_picker">Escoger un color</string>
   <string name="resolve_connect">Conectar</string>
   <string name="resolve_entropy">Recolectar entropía</string>
   <string name="menu_insert">Añadir equipo remoto</string>
@@ -22,7 +23,7 @@
   <string name="pubkey_gather_entropy">Haciendo acopio de entropía</string>
   <string name="pubkey_touch_prompt">Toque esta caja para conseguir aleatoriedad: %1$d%% hecho</string>
   <string name="pubkey_touch_hint">Para poder conseguir aleatoriedad durante la generacion de la clave, mueva su dedo aleatoriamente sobre la caja a continuación.</string>
-  <string name="pubkey_generating">Generar llavero de claves</string>
+  <string name="pubkey_generating">Generar llavero de claves…</string>
   <string name="pubkey_copy_private">Copiar clave privada</string>
   <string name="pubkey_copy_public">Copiar clave pública</string>
   <string name="pubkey_list_empty">Presione menu para crear\nó importar un llavero de claves</string>
@@ -39,7 +40,7 @@
   <string name="portforward_list_empty">Presione Menu para crear\nó importar redireccionamientos.</string>
   <string name="portforward_edit">Editar redireccionamiento de puerto</string>
   <string name="portforward_delete">Eliminar redireccionamiento de puerto</string>
-  <string name="prompt_nickname">Nombre de usuario:</string>
+  <string name="prompt_nickname">Nombre:</string>
   <string name="prompt_nickname_hint_pubkey">Mi clave de trabajo</string>
   <string name="prompt_source_port">Puerto fuente:</string>
   <string name="prompt_destination">Destino:</string>
@@ -102,7 +103,7 @@
   <string name="list_keymode_none">Desactivar</string>
   <string name="list_pubkeyids_none">No usar teclas</string>
   <string name="list_pubkeyids_any">Utilizar cualquier clave desbloqueada</string>
-  <string name="hostpref_nickname_title">Apodo</string>
+  <string name="hostpref_nickname_title">Nombre</string>
   <string name="hostpref_color_title">Categoria de colores</string>
   <string name="hostpref_fontsize_title">Tamaño de la fuente (pt)</string>
   <string name="hostpref_pubkeyid_title">Usar clave de autenticación pública</string>

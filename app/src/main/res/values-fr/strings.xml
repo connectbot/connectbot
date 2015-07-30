@@ -40,7 +40,7 @@
   <string name="portforward_list_empty">Appuyez sur Menu pour créer\ndes redirections de port.</string>
   <string name="portforward_edit">Éditer la redirection de port</string>
   <string name="portforward_delete">Effacer la redirection de port</string>
-  <string name="prompt_nickname">Pseudonyme :</string>
+  <string name="prompt_nickname">Nom&#160;:</string>
   <string name="prompt_nickname_hint_pubkey">Ma clé de travail</string>
   <string name="prompt_source_port">Port source :</string>
   <string name="prompt_destination">Destination :</string>
@@ -112,7 +112,7 @@
   <string name="list_keymode_none">Désactivé</string>
   <string name="list_pubkeyids_none">Ne pas utiliser les clés publiques</string>
   <string name="list_pubkeyids_any">Utiliser une clé pour l\'authentification</string>
-  <string name="hostpref_nickname_title">Pseudonyme</string>
+  <string name="hostpref_nickname_title">Nom</string>
   <string name="hostpref_color_title">Catégorie de couleur</string>
   <string name="hostpref_fontsize_title">Taille de police (pt)</string>
   <string name="hostpref_pubkeyid_title">Utiliser l\'authentification par clé publique</string>

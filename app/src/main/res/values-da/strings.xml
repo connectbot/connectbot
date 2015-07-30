@@ -39,7 +39,7 @@
   <string name="portforward_list_empty">Tryk Menu for at oprette\nport-videresendelser.</string>
   <string name="portforward_edit">Rediger port-videresendelse</string>
   <string name="portforward_delete">Slet port-videresendelse</string>
-  <string name="prompt_nickname">Kaldenavn:</string>
+  <string name="prompt_nickname">Navn:</string>
   <string name="prompt_nickname_hint_pubkey">Min arbejdsnøgle</string>
   <string name="prompt_source_port">Kildeport:</string>
   <string name="prompt_destination">Destination:</string>
@@ -102,7 +102,7 @@
   <string name="list_keymode_none">Slå fra</string>
   <string name="list_pubkeyids_none">Brug ikke tasterne</string>
   <string name="list_pubkeyids_any">Anvend enhver ulåst nøgle</string>
-  <string name="hostpref_nickname_title">Kaldenavn</string>
+  <string name="hostpref_nickname_title">Navn</string>
   <string name="hostpref_color_title">Farvekategori</string>
   <string name="hostpref_fontsize_title">Skriftstørrelse (pt)</string>
   <string name="hostpref_pubkeyid_title">Brug offentlig nøgleautorisering</string>

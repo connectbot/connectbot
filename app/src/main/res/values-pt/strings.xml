@@ -22,7 +22,7 @@
   <string name="pubkey_gather_entropy">Recolhendo entropia</string>
   <string name="pubkey_touch_prompt">Toque nesta caixa para gerar aleariedade: %1$d%% completo</string>
   <string name="pubkey_touch_hint">Para assegurar aleatoriedade durante a geração da chave, mova o dedo aleatoriamente sobre a caixa a baixo.</string>
-  <string name="pubkey_generating">A gerar par de chaves</string>
+  <string name="pubkey_generating">A gerar par de chaves…</string>
   <string name="pubkey_copy_private">Copiar chave privada</string>
   <string name="pubkey_copy_public">Copiar chave pública</string>
   <string name="pubkey_list_empty">Carregue em Menu para criar\nou importar as chaves.</string>
