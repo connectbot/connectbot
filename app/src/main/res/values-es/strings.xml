@@ -174,7 +174,7 @@
   <string name="wizard_next">Siguiente</string>
   <string name="wizard_back">Atrás</string>
   <string name="terminal_no_hosts_connected">No hay equipos conectados ahora</string>
-  <string name="terminal_connecting">Canectando a %1$s:%2$d via %3$s</string>
+  <string name="terminal_connecting">Conectando a %1$s:%2$d via %3$s</string>
   <string name="terminal_sucess">Host (equipo anfitrion) \'%1$s\' clave: %2$s verifiado.</string>
   <string name="terminal_failed">Verificación del host (equipo anfitrion) fallida</string>
   <string name="terminal_using_s2c_algorithm">Algoritmo servidor-cliente: %1$s %2$s</string>
