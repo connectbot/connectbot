@@ -40,7 +40,7 @@
   <string name="portforward_list_empty">Seleziona Menu per creare\ninoltri delle porte.</string>
   <string name="portforward_edit">Modifica inoltro porte</string>
   <string name="portforward_delete">Elimina inoltro porta</string>
-  <string name="prompt_nickname">Nome utente:</string>
+  <string name="prompt_nickname">Soprannome:</string>
   <string name="prompt_nickname_hint_pubkey">La mia chiave di lavoro</string>
   <string name="prompt_source_port">Porta sorgente:</string>
   <string name="prompt_destination">Destinazione:</string>
