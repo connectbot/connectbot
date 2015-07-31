@@ -299,6 +299,15 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					return true;
 			}
 
+			// CTRL-SHIFT-V to paste.
+			if (keyCode == KeyEvent.KEYCODE_V
+					&& (derivedMetaState & HC_META_CTRL_ON) != 0
+					&& (derivedMetaState & KeyEvent.META_SHIFT_ON) != 0
+					&& clipboard.hasText()) {
+				bridge.injectString(clipboard.getText().toString());
+				return true;
+			}
+
 			// Ask the system to use the keymap to give us the unicode character for this key,
 			// with our derived modifier state applied.
 			int uchar = event.getUnicodeChar(derivedMetaState & ~HC_META_CTRL_MASK);
