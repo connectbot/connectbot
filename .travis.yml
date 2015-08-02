@@ -5,6 +5,8 @@ sudo: false
 env:
   global:
     - NDK_VERSION=r10e
+    # Coverity
+    - secure: "DTBBKdwZE5yxPjJQG8/wU/+LJ1A3MtUYNaf8O/yhmQNo4UcxQF+3KOoY5OK4vvoTewisUqnVRhXhD8rMYzBZiNtaGF8eSMGXVWUVb6YhOPQ0oMHKSmVgopEHzhoGa+9HDJ6xyQZdALJB8GVlwamTwO/1qk/xI02mjUNEtdk8cuc="
 
 cache:
   directories:
@@ -22,6 +24,14 @@ addons:
       - ia32-libs-multiarch
       - libgd2-xpm
       - p7zip-full
+  coverity_scan:
+    project:
+      name: "connectbot/connectbot"
+      description: "The first SSH client for Android."
+    notification_email: developers@connectbot.org
+    build_command_prepend: "./gradlew clean"
+    build_command: "./gradlew build"
+    branch_pattern: coverity_scan
 
 before_script:
   # newest Android NDK
