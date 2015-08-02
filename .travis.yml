@@ -23,6 +23,9 @@ addons:
       - libgd2-xpm
       - p7zip-full
 
+before_install:
+  - pip install codecov
+
 before_script:
   # newest Android NDK
   - mkdir -p $HOME/.cache/ndk
@@ -41,4 +44,6 @@ android:
 
 script: ./gradlew build check jacocoTestDebugReport
 
-after_success: ./gradlew coveralls
+after_success:
+  - ./gradlew coveralls
+  - codecov
