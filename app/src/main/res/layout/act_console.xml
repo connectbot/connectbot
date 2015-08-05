@@ -33,7 +33,7 @@
 		android:gravity="center"
 		/>
 
-	<ViewFlipper
+	<android.support.v4.view.ViewPager
 		android:id="@+id/console_flip"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
@@ -135,7 +135,7 @@
 			android:layout_alignParentBottom="true"
 			android:layout_alignParentEnd="true"
 			android:layout_alignParentRight="true"
-			android:src="@+drawable/button_keyboard"
+			android:src="@drawable/button_keyboard"
 			android:contentDescription="@string/image_description_show_keyboard"
 			/>
 
@@ -147,7 +147,7 @@
 			android:layout_alignParentStart="true"
 			android:layout_alignParentLeft="true"
 			android:layout_alignParentBottom="true"
-			android:src="@+drawable/button_ctrl"
+			android:src="@drawable/button_ctrl"
 			android:contentDescription="@string/image_description_toggle_control_character"
 			/>
 
@@ -158,7 +158,7 @@
 			android:layout_height="wrap_content"
 			android:layout_toRightOf="@+id/button_ctrl"
 			android:layout_alignParentBottom="true"
-			android:src="@+drawable/button_esc"
+			android:src="@drawable/button_esc"
 			android:contentDescription="@string/image_description_send_escape_character"
 			/>
     
@@ -169,7 +169,7 @@
       android:layout_height="wrap_content"
       android:layout_toRightOf="@+id/button_esc"
       android:layout_alignParentBottom="true"
-      android:src="@+drawable/button_tab"
+      android:src="@drawable/button_tab"
       android:contentDescription="@string/image_description_send_tab_character"
       />
 
