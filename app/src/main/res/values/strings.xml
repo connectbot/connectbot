@@ -530,8 +530,19 @@
 	     purposes. -->
 	<string name="image_description_show_keyboard">Show keyboard.</string>
 
+	<!-- Describes the icon of the "Arrow up" button in the terminal view for accessibility
+	     purposes. -->
 	<string name="image_description_up">Arrow Up</string>
+
+	<!-- Describes the icon of the "Arrow down" button in the terminal view for accessibility
+	     purposes. -->
 	<string name="image_description_down">Arrow Down</string>
+
+	<!-- Describes the icon of the "Arrow left" button in the terminal view for accessibility
+	     purposes. -->
 	<string name="image_description_left">Arrow Left</string>
+
+	<!-- Describes the icon of the "Arrow right" button in the terminal view for accessibility
+	     purposes. -->
 	<string name="image_description_right">Arrow Right</string>
 </resources>
