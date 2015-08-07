@@ -308,6 +308,20 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				return true;
 			}
 
+			if ((keyCode == KeyEvent.KEYCODE_EQUALS
+					&& (derivedMetaState & HC_META_CTRL_ON) != 0
+					&& (derivedMetaState & KeyEvent.META_SHIFT_ON) != 0)
+					|| (keyCode == KeyEvent.KEYCODE_PLUS
+					&& (derivedMetaState & HC_META_CTRL_ON) != 0)) {
+				bridge.increaseFontSize();
+				return true;
+			}
+
+			if (keyCode == KeyEvent.KEYCODE_MINUS && (derivedMetaState & HC_META_CTRL_ON) != 0) {
+				bridge.decreaseFontSize();
+				return true;
+			}
+
 			// Ask the system to use the keymap to give us the unicode character for this key,
 			// with our derived modifier state applied.
 			int uchar = event.getUnicodeChar(derivedMetaState & ~HC_META_CTRL_MASK);
