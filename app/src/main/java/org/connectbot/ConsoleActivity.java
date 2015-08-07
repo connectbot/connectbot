@@ -50,9 +50,11 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -98,6 +100,8 @@ public class ConsoleActivity extends Activity {
 	private static final int KEYBOARD_DISPLAY_TIME = 1500;
 
 	protected ViewPager pager = null;
+	protected TabLayout tabs = null;
+	protected Toolbar toolbar = null;
 	@Nullable
 	protected TerminalManager bound = null;
 	protected TerminalPagerAdapter adapter = null;
@@ -362,6 +366,7 @@ public class ConsoleActivity extends Activity {
 
 		inflater = LayoutInflater.from(this);
 
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		pager = (ViewPager) findViewById(R.id.console_flip);
 		registerForContextMenu(pager);
 		pager.addOnPageChangeListener(
@@ -371,6 +376,8 @@ public class ConsoleActivity extends Activity {
 						onTerminalChanged();
 					}
 				});
+		adapter = new TerminalPagerAdapter();
+		pager.setAdapter(adapter);
 
 		empty = (TextView) findViewById(android.R.id.empty);
 
@@ -463,6 +470,9 @@ public class ConsoleActivity extends Activity {
 				}
 			}
 		});
+
+		tabs = (TabLayout) findViewById(R.id.tabs);
+		tabs.setupWithViewPager(pager);
 
 		// detect fling gestures to switch between terminals
 		final GestureDetector detect = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
@@ -635,9 +645,6 @@ public class ConsoleActivity extends Activity {
 			}
 
 		});
-
-		adapter = new TerminalPagerAdapter();
-		pager.setAdapter(adapter);
 	}
 
 	/**
@@ -1223,6 +1230,13 @@ public class ConsoleActivity extends Activity {
 				return null;
 			}
 			return bridges.get(position);
+		}
+
+		@Override
+		public void notifyDataSetChanged() {
+			super.notifyDataSetChanged();
+			toolbar.setVisibility(this.getCount() > 1 ? View.VISIBLE : View.GONE);
+			tabs.setTabsFromPagerAdapter(this);
 		}
 
 		@Override
