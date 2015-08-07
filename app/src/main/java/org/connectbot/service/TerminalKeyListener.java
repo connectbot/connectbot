@@ -365,7 +365,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			}
 
 			// look for special chars
-			switch(keyCode) {
+			switch (keyCode) {
 			case KEYCODE_ESCAPE:
 				sendEscape();
 				return true;
@@ -518,6 +518,11 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				bridge.dispatchDisconnect(false);
 			}
 		}
+	}
+
+	public void sendPressedKey(int key) {
+		((vt320) buffer).keyPressed(key, ' ', getStateForBuffer());
+		bridge.tryKeyVibrate();
 	}
 
 	/**
