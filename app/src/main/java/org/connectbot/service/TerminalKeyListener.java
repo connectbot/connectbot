@@ -36,7 +36,6 @@ import de.mud.terminal.vt320;
 
 /**
  * @author kenny
- *
  */
 @SuppressWarnings("deprecation") // for ClipboardManager
 public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceChangeListener {
@@ -365,7 +364,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			}
 
 			// look for special chars
-			switch(keyCode) {
+			switch (keyCode) {
 			case KEYCODE_ESCAPE:
 				sendEscape();
 				return true;
@@ -490,13 +489,13 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		// Support CTRL-a through CTRL-z
 		if (key >= 0x61 && key <= 0x7A)
 			key -= 0x60;
-		// Support CTRL-A through CTRL-_
+			// Support CTRL-A through CTRL-_
 		else if (key >= 0x41 && key <= 0x5F)
 			key -= 0x40;
-		// CTRL-space sends NULL
+			// CTRL-space sends NULL
 		else if (key == 0x20)
 			key = 0x00;
-		// CTRL-? sends DEL
+			// CTRL-? sends DEL
 		else if (key == 0x3F)
 			key = 0x7F;
 		return key;
@@ -518,6 +517,11 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				bridge.dispatchDisconnect(false);
 			}
 		}
+	}
+
+	public void sendPressedKey(int key) {
+		((vt320) buffer).keyPressed(key, ' ', getStateForBuffer());
+		bridge.tryKeyVibrate();
 	}
 
 	/**
@@ -563,7 +567,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 	/**
 	 * Handle meta key presses where the key can be locked on.
-	 * <p>
+	 * <p/>
 	 * 1st press: next key to have meta state<br />
 	 * 2nd press: meta state is locked on<br />
 	 * 3rd press: disable meta state
