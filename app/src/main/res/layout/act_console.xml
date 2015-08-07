@@ -191,7 +191,7 @@
         android:background="#55f0f0f0"
         android:contentDescription="@string/image_description_up"
         android:padding="0dp"
-        android:text="@string/button_key_esc"
+        android:text="@string/button_key_up"
         android:textSize="10dip"
         />
 
@@ -222,7 +222,6 @@
         android:id="@+id/button_left"
         android:layout_width="0px"
         android:layout_weight="1"
-
         android:layout_height="30dip"
         android:layout_margin="0dp"
         android:background="#55f0f0f0"
