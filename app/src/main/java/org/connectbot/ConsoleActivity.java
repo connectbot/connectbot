@@ -17,16 +17,6 @@
 
 package org.connectbot;
 
-import java.lang.ref.WeakReference;
-import java.util.List;
-
-import org.connectbot.bean.SelectionArea;
-import org.connectbot.service.PromptHelper;
-import org.connectbot.service.TerminalBridge;
-import org.connectbot.service.TerminalKeyListener;
-import org.connectbot.service.TerminalManager;
-import org.connectbot.util.PreferenceConstants;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -74,11 +64,23 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import org.connectbot.bean.SelectionArea;
+import org.connectbot.service.PromptHelper;
+import org.connectbot.service.TerminalBridge;
+import org.connectbot.service.TerminalKeyListener;
+import org.connectbot.service.TerminalManager;
+import org.connectbot.util.PreferenceConstants;
+
+import java.lang.ref.WeakReference;
+import java.util.List;
+
 import de.mud.terminal.vt320;
 
 public class ConsoleActivity extends Activity {
@@ -115,7 +117,7 @@ public class ConsoleActivity extends Activity {
 	private TextView booleanPrompt;
 	private Button booleanYes, booleanNo;
 
-	private RelativeLayout keyboardGroup;
+	private LinearLayout keyboardGroup;
 	private Runnable keyboardGroupHider;
 
 	private TextView empty;
@@ -391,7 +393,7 @@ public class ConsoleActivity extends Activity {
 
 		inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-		keyboardGroup = (RelativeLayout) findViewById(R.id.keyboard_group);
+		keyboardGroup = (LinearLayout) findViewById(R.id.keyboard_group);
 
 		mKeyboardButton = (ImageView) findViewById(R.id.button_keyboard);
 		mKeyboardButton.setOnClickListener(new OnClickListener() {
