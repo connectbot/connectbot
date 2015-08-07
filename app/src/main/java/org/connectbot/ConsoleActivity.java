@@ -169,7 +169,7 @@ public class ConsoleActivity extends Activity {
 			adapter.notifyDataSetChanged();
 			requestedIndex = bound.getBridges().indexOf(requestedBridge);
 
-			pager.setCurrentItem(requestedIndex == -1 ? 0 : requestedIndex);
+			setDisplayedTerminal(requestedIndex == -1 ? 0 : requestedIndex);
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
@@ -207,6 +207,7 @@ public class ConsoleActivity extends Activity {
 		synchronized (pager) {
 			adapter.notifyDataSetChanged();
 			updateEmptyVisible();
+			updatePromptVisible();
 
 			// If we just closed the last bridge, go back to the previous activity.
 			if (pager.getChildCount() == 0) {
@@ -947,7 +948,7 @@ public class ConsoleActivity extends Activity {
 				}
 			}
 
-			pager.setCurrentItem(requestedIndex);
+			setDisplayedTerminal(requestedIndex);
 		}
 	}
 
@@ -998,17 +999,17 @@ public class ConsoleActivity extends Activity {
 	 */
 	protected void updatePromptVisible() {
 		// check if our currently-visible terminalbridge is requesting any prompt services
-		View view = adapter.getCurrentTerminalView();
+		TerminalView view = adapter.getCurrentTerminalView();
 
 		// Hide all the prompts in case a prompt request was canceled
 		hideAllPrompts();
 
-		if (!(view instanceof TerminalView)) {
+		if (view == null) {
 			// we dont have an active view, so hide any prompts
 			return;
 		}
 
-		PromptHelper prompt = ((TerminalView) view).bridge.promptHelper;
+		PromptHelper prompt = view.bridge.promptHelper;
 		if (String.class.equals(prompt.promptRequested)) {
 			stringPromptGroup.setVisibility(View.VISIBLE);
 
@@ -1084,6 +1085,17 @@ public class ConsoleActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Displays the child in the ViewPager at the requestedIndex and updates the prompts.
+	 *
+	 * @param requestedIndex the index of the terminal view to display
+	 */
+	private void setDisplayedTerminal(int requestedIndex) {
+		pager.setCurrentItem(requestedIndex);
+		updatePromptVisible();
+		updateEmptyVisible();
+	}
+
 	private void pasteIntoTerminal() {
 		// force insert of clipboard text into current console
 		TerminalView terminalView = (TerminalView) adapter.getCurrentTerminalView();
@@ -1124,6 +1136,10 @@ public class ConsoleActivity extends Activity {
 			final TerminalView terminal = new TerminalView(container.getContext(), bridge);
 			terminal.setId(R.id.console_flip);
 			view.addView(terminal, 0);
+
+			// Tag the view with its position so that it can be retrieved later.
+			// Unfortunately, position here != child position in the ViewPager.
+			view.setTag(position);
 
 			container.addView(view);
 			overlay.startAnimation(fade_out_delayed);
@@ -1169,7 +1185,7 @@ public class ConsoleActivity extends Activity {
 		}
 
 		public TerminalView getCurrentTerminalView() {
-			View currentView = pager.getChildAt(pager.getCurrentItem());
+			View currentView = pager.findViewWithTag(pager.getCurrentItem());
 			if (currentView == null) return null;
 			return (TerminalView) currentView.findViewById(R.id.console_flip);
 		}
