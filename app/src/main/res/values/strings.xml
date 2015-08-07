@@ -529,4 +529,9 @@
 	<!-- Describes the icon of the "show keyboard" button in the terminal view for accessibility
 	     purposes. -->
 	<string name="image_description_show_keyboard">Show keyboard.</string>
+
+	<string name="image_description_up">Arrow Up</string>
+	<string name="image_description_down">Arrow Down</string>
+	<string name="image_description_left">Arrow Left</string>
+	<string name="image_description_right">Arrow Right</string>
 </resources>

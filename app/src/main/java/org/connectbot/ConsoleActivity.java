@@ -405,7 +405,7 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 
-		final ImageView ctrlButton = (ImageView) findViewById(R.id.button_ctrl);
+		final Button ctrlButton = (Button) findViewById(R.id.button_ctrl);
 		ctrlButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				View flip = findCurrentView(R.id.console_flip);
@@ -418,7 +418,7 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 
-		final ImageView escButton = (ImageView) findViewById(R.id.button_esc);
+		final Button escButton = (Button) findViewById(R.id.button_esc);
 		escButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				View flip = findCurrentView(R.id.console_flip);
@@ -431,7 +431,7 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 
-		final ImageView tabButton = (ImageView) findViewById(R.id.button_tab);
+		final Button tabButton = (Button) findViewById(R.id.button_tab);
 		tabButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				View flip = findCurrentView(R.id.console_flip);
@@ -441,6 +441,51 @@ public class ConsoleActivity extends Activity {
 				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
 				handler.sendTab();
 				hideEmulatedKeys();
+			}
+		});
+		final Button upButton = (Button) findViewById(R.id.button_up);
+		upButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View flip = findCurrentView(R.id.console_flip);
+				if (flip == null) return;
+				TerminalView terminal = (TerminalView) flip;
+
+
+				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+				handler.sendPressedKey(vt320.KEY_UP);
+			}
+		});
+		final Button dnButton = (Button) findViewById(R.id.button_down);
+		dnButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View flip = findCurrentView(R.id.console_flip);
+				if (flip == null) return;
+				TerminalView terminal = (TerminalView) flip;
+
+				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+				handler.sendPressedKey(vt320.KEY_DOWN);
+			}
+		});
+		final Button leftButton = (Button) findViewById(R.id.button_left);
+		leftButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View flip = findCurrentView(R.id.console_flip);
+				if (flip == null) return;
+				TerminalView terminal = (TerminalView) flip;
+
+				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+				handler.sendPressedKey(vt320.KEY_LEFT);
+			}
+		});
+		final Button rightButton = (Button) findViewById(R.id.button_right);
+		rightButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View flip = findCurrentView(R.id.console_flip);
+				if (flip == null) return;
+				TerminalView terminal = (TerminalView) flip;
+
+				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+				handler.sendPressedKey(vt320.KEY_RIGHT);
 			}
 		});
 
