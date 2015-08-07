@@ -532,17 +532,32 @@
 
 	<!-- Describes the icon of the "Arrow up" button in the terminal view for accessibility
 	     purposes. -->
-	<string name="image_description_up">Arrow Up</string>
+	<string name="image_description_up">Arrow up</string>
 
 	<!-- Describes the icon of the "Arrow down" button in the terminal view for accessibility
 	     purposes. -->
-	<string name="image_description_down">Arrow Down</string>
+	<string name="image_description_down">Arrow down</string>
 
 	<!-- Describes the icon of the "Arrow left" button in the terminal view for accessibility
 	     purposes. -->
-	<string name="image_description_left">Arrow Left</string>
+	<string name="image_description_left">Arrow left</string>
 
 	<!-- Describes the icon of the "Arrow right" button in the terminal view for accessibility
 	     purposes. -->
-	<string name="image_description_right">Arrow Right</string>
+	<string name="image_description_right">Arrow right</string>
+
+	<!-- Text for the "Esc" button in virtual keyboard. -->
+	<string name="button_key_esc">Esc</string>
+	<!-- Text for the "Ctrl" button in virtual keyboard. -->
+	<string name="button_key_ctrl">Ctrl</string>
+	<!-- Text for the "Tab" button in virtual keyboard. -->
+	<string name="button_key_tab">Tab</string>
+	<!-- Text for the "up" button in virtual keyboard. -->
+	<string name="button_key_up">Up</string>
+	<!-- Text for the "down" button in virtual keyboard. -->
+	<string name="button_key_down">Down</string>
+	<!-- Text for the "left" button in virtual keyboard. -->
+	<string name="button_key_left">Left</string>
+	<!-- Text for the "right" button in virtual keyboard. -->
+	<string name="button_key_right">Right</string>
 </resources>

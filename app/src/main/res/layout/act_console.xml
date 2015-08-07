@@ -137,10 +137,10 @@
 				android:layout_alignParentEnd="true"
 				android:layout_alignParentRight="true"
 				android:layout_margin="0dp"
-				android:background="#55f0f0f0"
 				android:contentDescription="@string/image_description_show_keyboard"
 				android:padding="0dp"
 				android:src="@drawable/button_keyboard"
+				android:background="#55f0f0f0"
 				android:textSize="10dip"
 				/>
 
@@ -155,7 +155,7 @@
 				android:background="#55f0f0f0"
 				android:contentDescription="@string/image_description_toggle_control_character"
 				android:padding="0dp"
-				android:text="Ctrl"
+				android:text="@string/button_key_ctrl"
 				android:textSize="10dip"/>
 
 		<Button
@@ -168,7 +168,7 @@
 				android:background="#55f0f0f0"
 				android:contentDescription="@string/image_description_send_escape_character"
 				android:padding="0dp"
-				android:text="Esc"
+				android:text="@string/button_key_esc"
 				android:textSize="10dip"
 				/>
 
@@ -182,7 +182,7 @@
 				android:background="#55f0f0f0"
 				android:contentDescription="@string/image_description_send_tab_character"
 				android:padding="0dp"
-				android:text="Tab"
+				android:text="@string/button_key_tab"
 				android:textSize="10dip"
 				/>
 
@@ -196,7 +196,7 @@
 				android:background="#55f0f0f0"
 				android:contentDescription="@string/image_description_up"
 				android:padding="0dp"
-				android:text="Up"
+				android:text="@string/button_key_esc"
 				android:textSize="10dip"
 				/>
 
@@ -210,7 +210,7 @@
 				android:background="#55f0f0f0"
 				android:contentDescription="@string/image_description_down"
 				android:padding="0dp"
-				android:text="Down"
+				android:text="@string/button_key_down"
 				android:textSize="10dip"
 				/>
 
@@ -224,7 +224,7 @@
 				android:background="#55f0f0f0"
 				android:contentDescription="@string/image_description_left"
 				android:padding="0dp"
-				android:text="Left"
+				android:text="@string/button_key_left"
 				android:textSize="10dip"
 				/>
 
@@ -238,7 +238,7 @@
 				android:background="#55f0f0f0"
 				android:contentDescription="@string/image_description_right"
 				android:padding="0dp"
-				android:text="Right"
+				android:text="@string/button_key_right"
 				android:textSize="10dip"
 				/>
 
