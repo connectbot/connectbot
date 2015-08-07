@@ -173,6 +173,7 @@ public class ConsoleActivity extends Activity {
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
+			adapter.notifyDataSetChanged();
 			updateEmptyVisible();
 			bound = null;
 		}
@@ -195,6 +196,7 @@ public class ConsoleActivity extends Activity {
 			// they are sending nickname and requested
 			TerminalBridge bridge = (TerminalBridge) msg.obj;
 
+			adapter.notifyDataSetChanged();
 			if (bridge.isAwaitingClose())
 				closeBridge(bridge);
 		}
@@ -205,7 +207,6 @@ public class ConsoleActivity extends Activity {
 	 */
 	private void closeBridge(final TerminalBridge bridge) {
 		synchronized (pager) {
-			adapter.notifyDataSetChanged();
 			updateEmptyVisible();
 			updatePromptVisible();
 
