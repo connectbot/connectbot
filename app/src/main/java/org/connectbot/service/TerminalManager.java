@@ -22,6 +22,7 @@ import java.lang.ref.WeakReference;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -70,7 +71,7 @@ import android.util.Log;
 public class TerminalManager extends Service implements BridgeDisconnectedListener, OnSharedPreferenceChangeListener {
 	public final static String TAG = "CB.TerminalManager";
 
-	private List<TerminalBridge> bridges = new LinkedList<TerminalBridge>();
+	private ArrayList<TerminalBridge> bridges = new ArrayList<TerminalBridge>();
 	public Map<HostBean, WeakReference<TerminalBridge>> mHostBridgeMap =
 		new HashMap<HostBean, WeakReference<TerminalBridge>>();
 	public Map<String, WeakReference<TerminalBridge>> mNicknameBridgeMap =
@@ -471,7 +472,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		}
 	}
 
-	public List<TerminalBridge> getBridges() {
+	public ArrayList<TerminalBridge> getBridges() {
 		return bridges;
 	}
 
