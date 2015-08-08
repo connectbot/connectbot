@@ -120,59 +120,161 @@
 
 	</RelativeLayout>
 
-	<RelativeLayout
+	<LinearLayout
 		android:id="@+id/keyboard_group"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
-		android:padding="15dip"
+		android:background="#55000000"
+		android:padding="0dip"
 		android:visibility="gone">
+
+		<Button
+			android:id="@+id/button_ctrl"
+			android:layout_width="0px"
+			android:layout_weight="1"
+			android:layout_height="30dip"
+			android:layout_margin="0dp"
+			android:background="#55f0f0f0"
+			android:contentDescription="@string/image_description_toggle_control_character"
+			android:padding="0dp"
+			android:text="@string/button_key_ctrl"
+			android:textSize="10dip"
+			/>
+
+		<View
+			android:layout_width="1dp"
+			android:layout_height="match_parent"
+			android:background="#90000000"
+			/>
+
+		<Button
+			android:id="@+id/button_esc"
+			android:layout_width="0px"
+			android:layout_weight="1"
+			android:layout_height="30dip"
+			android:layout_margin="0dp"
+			android:background="#55f0f0f0"
+			android:contentDescription="@string/image_description_send_escape_character"
+			android:padding="0dp"
+			android:text="@string/button_key_esc"
+			android:textSize="10dip"
+			/>
+
+		<View
+			android:layout_width="1dp"
+			android:layout_height="match_parent"
+			android:background="#90000000"
+			/>
+
+		<Button
+			android:id="@+id/button_tab"
+			android:layout_width="0px"
+			android:layout_weight="1"
+			android:layout_height="30dip"
+			android:layout_margin="0dp"
+			android:background="#55f0f0f0"
+			android:contentDescription="@string/image_description_send_tab_character"
+			android:padding="0dp"
+			android:text="@string/button_key_tab"
+			android:textSize="10dip"
+			/>
+
+		<View
+			android:layout_width="1dp"
+			android:layout_height="match_parent"
+			android:background="#90000000"
+			/>
+
+		<Button
+			android:id="@+id/button_up"
+			android:layout_width="0px"
+			android:layout_weight="1"
+			android:layout_height="30dip"
+			android:layout_margin="0dp"
+			android:background="#55f0f0f0"
+			android:contentDescription="@string/image_description_up"
+			android:padding="0dp"
+			android:text="@string/button_key_up"
+			android:textSize="10dip"
+			/>
+
+		<View
+			android:layout_width="1dp"
+			android:layout_height="match_parent"
+			android:background="#90000000"
+			/>
+
+		<Button
+			android:id="@+id/button_down"
+			android:layout_width="0px"
+			android:layout_weight="1"
+			android:layout_height="30dip"
+			android:layout_margin="0dp"
+			android:background="#55f0f0f0"
+			android:contentDescription="@string/image_description_down"
+			android:padding="0dp"
+			android:text="@string/button_key_down"
+			android:textSize="10dip"
+			/>
+
+		<View
+			android:layout_width="1dp"
+			android:layout_height="match_parent"
+			android:background="#90000000"
+			/>
+
+		<Button
+			android:id="@+id/button_left"
+			android:layout_width="0px"
+			android:layout_weight="1"
+			android:layout_height="30dip"
+			android:layout_margin="0dp"
+			android:background="#55f0f0f0"
+			android:contentDescription="@string/image_description_left"
+			android:padding="0dp"
+			android:text="@string/button_key_left"
+			android:textSize="10dip"
+			/>
+
+		<View
+			android:layout_width="1dp"
+			android:layout_height="match_parent"
+			android:background="#90000000"
+			/>
+
+		<Button
+			android:id="@+id/button_right"
+			android:layout_width="0px"
+			android:layout_weight="1"
+			android:layout_height="30dip"
+			android:layout_margin="0dp"
+			android:background="#55f0f0f0"
+			android:contentDescription="@string/image_description_right"
+			android:padding="0dp"
+			android:text="@string/button_key_right"
+			android:textSize="10dip"
+			/>
+
+		<View
+			android:layout_width="1dp"
+			android:layout_height="match_parent"
+			android:background="#90000000"
+			/>
 
 		<ImageView
 			android:id="@+id/button_keyboard"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:layout_alignParentEnd="true"
-			android:layout_alignParentRight="true"
-			android:src="@drawable/button_keyboard"
+			android:layout_width="0px"
+			android:layout_weight="1"
+			android:layout_height="30dip"
+			android:layout_margin="0dp"
 			android:contentDescription="@string/image_description_show_keyboard"
+			android:padding="0dp"
+			android:src="@drawable/button_keyboard"
+			android:background="#55f0f0f0"
+			android:textSize="10dip"
 			/>
 
-		<ImageView
-			android:id="@+id/button_ctrl"
-			android:paddingRight="15dip"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentStart="true"
-			android:layout_alignParentLeft="true"
-			android:layout_alignParentBottom="true"
-			android:src="@drawable/button_ctrl"
-			android:contentDescription="@string/image_description_toggle_control_character"
-			/>
-
-		<ImageView
-			android:id="@+id/button_esc"
-			android:paddingRight="15dip"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_toRightOf="@+id/button_ctrl"
-			android:layout_alignParentBottom="true"
-			android:src="@drawable/button_esc"
-			android:contentDescription="@string/image_description_send_escape_character"
-			/>
-    
-    <ImageView
-      android:id="@+id/button_tab"
-      android:paddingRight="15dip"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_toRightOf="@+id/button_esc"
-      android:layout_alignParentBottom="true"
-      android:src="@drawable/button_tab"
-      android:contentDescription="@string/image_description_send_tab_character"
-      />
-
-	</RelativeLayout>
+	</LinearLayout>
 
 </RelativeLayout>

@@ -79,6 +79,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -116,7 +117,7 @@ public class ConsoleActivity extends Activity {
 	private TextView booleanPrompt;
 	private Button booleanYes, booleanNo;
 
-	private RelativeLayout keyboardGroup;
+	private LinearLayout keyboardGroup;
 	private Runnable keyboardGroupHider;
 
 	private TextView empty;
@@ -371,7 +372,7 @@ public class ConsoleActivity extends Activity {
 
 		inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-		keyboardGroup = (RelativeLayout) findViewById(R.id.keyboard_group);
+		keyboardGroup = (LinearLayout) findViewById(R.id.keyboard_group);
 
 		mKeyboardButton = (ImageView) findViewById(R.id.button_keyboard);
 		mKeyboardButton.setOnClickListener(new OnClickListener() {
@@ -385,7 +386,7 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 
-		final ImageView ctrlButton = (ImageView) findViewById(R.id.button_ctrl);
+		final Button ctrlButton = (Button) findViewById(R.id.button_ctrl);
 		ctrlButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				TerminalView terminal = adapter.getCurrentTerminalView();
@@ -397,7 +398,7 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 
-		final ImageView escButton = (ImageView) findViewById(R.id.button_esc);
+		final Button escButton = (Button) findViewById(R.id.button_esc);
 		escButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				TerminalView terminal = adapter.getCurrentTerminalView();
@@ -409,7 +410,7 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 
-		final ImageView tabButton = (ImageView) findViewById(R.id.button_tab);
+		final Button tabButton = (Button) findViewById(R.id.button_tab);
 		tabButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				TerminalView terminal = adapter.getCurrentTerminalView();
@@ -418,6 +419,51 @@ public class ConsoleActivity extends Activity {
 				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
 				handler.sendTab();
 				hideEmulatedKeys();
+			}
+		});
+		final Button upButton = (Button) findViewById(R.id.button_up);
+		upButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View flip = findCurrentView(R.id.console_flip);
+				if (flip == null) return;
+				TerminalView terminal = (TerminalView) flip;
+
+
+				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+				handler.sendPressedKey(vt320.KEY_UP);
+			}
+		});
+		final Button dnButton = (Button) findViewById(R.id.button_down);
+		dnButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View flip = findCurrentView(R.id.console_flip);
+				if (flip == null) return;
+				TerminalView terminal = (TerminalView) flip;
+
+				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+				handler.sendPressedKey(vt320.KEY_DOWN);
+			}
+		});
+		final Button leftButton = (Button) findViewById(R.id.button_left);
+		leftButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View flip = findCurrentView(R.id.console_flip);
+				if (flip == null) return;
+				TerminalView terminal = (TerminalView) flip;
+
+				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+				handler.sendPressedKey(vt320.KEY_LEFT);
+			}
+		});
+		final Button rightButton = (Button) findViewById(R.id.button_right);
+		rightButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View flip = findCurrentView(R.id.console_flip);
+				if (flip == null) return;
+				TerminalView terminal = (TerminalView) flip;
+
+				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+				handler.sendPressedKey(vt320.KEY_RIGHT);
 			}
 		});
 
