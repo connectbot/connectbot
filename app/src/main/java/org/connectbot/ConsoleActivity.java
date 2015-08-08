@@ -18,6 +18,7 @@
 package org.connectbot;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.connectbot.bean.HostBean;
@@ -1228,7 +1229,11 @@ public class ConsoleActivity extends Activity {
 		}
 
 		public TerminalBridge getItemAtPosition(int position) {
-			return bound.getBridges().get(position);
+			ArrayList<TerminalBridge> bridges = bound.getBridges();
+			if (position < 0 || position >= bridges.size()) {
+				return null;
+			}
+			return bridges.get(position);
 		}
 
 		@Override
@@ -1238,7 +1243,11 @@ public class ConsoleActivity extends Activity {
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			return bound.getBridges().get(position).host.getNickname();
+			TerminalBridge bridge = getItemAtPosition(position);
+			if (bridge == null) {
+				return "???";
+			}
+			return bridge.host.getNickname();
 		}
 
 		public TerminalView getCurrentTerminalView() {
