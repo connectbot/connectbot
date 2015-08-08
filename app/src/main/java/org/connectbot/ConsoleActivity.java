@@ -47,6 +47,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -197,8 +198,9 @@ public class ConsoleActivity extends Activity {
 			TerminalBridge bridge = (TerminalBridge) msg.obj;
 
 			adapter.notifyDataSetChanged();
-			if (bridge.isAwaitingClose())
+			if (bridge.isAwaitingClose()) {
 				closeBridge(bridge);
+			}
 		}
 	};
 
@@ -218,9 +220,10 @@ public class ConsoleActivity extends Activity {
 	}
 
 	protected View findCurrentView(int id) {
-		if (adapter.getCount() == 0) return null;
-		View view = pager.getChildAt(pager.getCurrentItem());
-		if (view == null) return null;
+		TerminalView view = adapter.getCurrentTerminalView();
+		if (view == null) {
+			return null;
+		}
 		return view.findViewById(id);
 	}
 
@@ -308,11 +311,7 @@ public class ConsoleActivity extends Activity {
 				new ViewPager.SimpleOnPageChangeListener() {
 					@Override
 					public void onPageSelected(int position) {
-						View overlay = findCurrentView(R.id.terminal_overlay);
-						if (overlay != null)
-							overlay.startAnimation(fade_out_delayed);
-						updateDefault();
-						updatePromptVisible();
+						onTerminalChanged();
 					}
 				});
 
@@ -1084,14 +1083,25 @@ public class ConsoleActivity extends Activity {
 	}
 
 	/**
+	 * Called whenever the displayed terminal is changed.
+	 */
+	private void onTerminalChanged() {
+		View overlay = findCurrentView(R.id.terminal_overlay);
+		if (overlay != null)
+			overlay.startAnimation(fade_out_delayed);
+		updateDefault();
+		updatePromptVisible();
+		ActivityCompat.invalidateOptionsMenu(ConsoleActivity.this);
+	}
+
+	/**
 	 * Displays the child in the ViewPager at the requestedIndex and updates the prompts.
 	 *
 	 * @param requestedIndex the index of the terminal view to display
 	 */
 	private void setDisplayedTerminal(int requestedIndex) {
 		pager.setCurrentItem(requestedIndex);
-		updatePromptVisible();
-		updateEmptyVisible();
+		onTerminalChanged();
 	}
 
 	private void pasteIntoTerminal() {
@@ -1135,9 +1145,8 @@ public class ConsoleActivity extends Activity {
 			terminal.setId(R.id.console_flip);
 			view.addView(terminal, 0);
 
-			// Tag the view with its position so that it can be retrieved later.
-			// Unfortunately, position here != child position in the ViewPager.
-			view.setTag(position);
+			// Tag the view with its bridge so it can be retrieved later.
+			view.setTag(bridge);
 
 			container.addView(view);
 			overlay.startAnimation(fade_out_delayed);
@@ -1157,7 +1166,7 @@ public class ConsoleActivity extends Activity {
 			TerminalView terminal = (TerminalView) view.findViewById(R.id.console_flip);
 			final HostBean host = terminal.bridge.host;
 			int itemIndex = -1;
-			int i =  0;
+			int i = 0;
 			for (TerminalBridge bridge : bound.getBridges()) {
 				if (bridge.host.equals(host)) {
 					itemIndex = i;
@@ -1172,6 +1181,10 @@ public class ConsoleActivity extends Activity {
 			}
 		}
 
+		public TerminalBridge getItemAtPosition(int position) {
+			return bound.getBridges().get(position);
+		}
+
 		@Override
 		public boolean isViewFromObject(View view, Object object) {
 			return view == object;
@@ -1183,7 +1196,7 @@ public class ConsoleActivity extends Activity {
 		}
 
 		public TerminalView getCurrentTerminalView() {
-			View currentView = pager.findViewWithTag(pager.getCurrentItem());
+			View currentView = pager.findViewWithTag(adapter.getItemAtPosition(pager.getCurrentItem()));
 			if (currentView == null) return null;
 			return (TerminalView) currentView.findViewById(R.id.console_flip);
 		}
