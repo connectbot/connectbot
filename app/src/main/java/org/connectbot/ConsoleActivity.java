@@ -225,9 +225,9 @@ public class ConsoleActivity extends Activity {
 	}
 
 	protected PromptHelper getCurrentPromptHelper() {
-		View view = adapter.getCurrentTerminalView();
-		if (!(view instanceof TerminalView)) return null;
-		return ((TerminalView) view).bridge.promptHelper;
+		TerminalView view = adapter.getCurrentTerminalView();
+		if (view == null) return null;
+		return view.bridge.promptHelper;
 	}
 
 	protected void hideAllPrompts() {
@@ -591,8 +591,6 @@ public class ConsoleActivity extends Activity {
 					}
 				}
 
-				Configuration config = getResources().getConfiguration();
-
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
 					lastX = event.getX();
 					lastY = event.getY();
@@ -646,14 +644,14 @@ public class ConsoleActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
-		View view = adapter.getCurrentTerminalView();
-		final boolean activeTerminal = (view instanceof TerminalView);
+		TerminalView view = adapter.getCurrentTerminalView();
+		final boolean activeTerminal = view != null;
 		boolean sessionOpen = false;
 		boolean disconnected = false;
 		boolean canForwardPorts = false;
 
 		if (activeTerminal) {
-			TerminalBridge bridge = ((TerminalView) view).bridge;
+			TerminalBridge bridge = view.bridge;
 			sessionOpen = bridge.isSessionOpen();
 			disconnected = bridge.isDisconnected();
 			canForwardPorts = bridge.canFowardPorts();
@@ -671,7 +669,7 @@ public class ConsoleActivity extends Activity {
 		disconnect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				// disconnect or close the currently visible session
-				TerminalView terminalView = (TerminalView) adapter.getCurrentTerminalView();
+				TerminalView terminalView = adapter.getCurrentTerminalView();
 				TerminalBridge bridge = terminalView.bridge;
 
 				bridge.dispatchDisconnect(true);
@@ -711,7 +709,7 @@ public class ConsoleActivity extends Activity {
 		portForward.setEnabled(sessionOpen && canForwardPorts);
 		portForward.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				TerminalView terminalView = (TerminalView) adapter.getCurrentTerminalView();
+				TerminalView terminalView = adapter.getCurrentTerminalView();
 				TerminalBridge bridge = terminalView.bridge;
 
 				Intent intent = new Intent(ConsoleActivity.this, PortForwardListActivity.class);
@@ -728,7 +726,7 @@ public class ConsoleActivity extends Activity {
 		urlscan.setEnabled(activeTerminal);
 		urlscan.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				final TerminalView terminalView = (TerminalView) adapter.getCurrentTerminalView();
+				final TerminalView terminalView = adapter.getCurrentTerminalView();
 
 				List<String> urls = terminalView.bridge.scanForURLs();
 
@@ -754,7 +752,7 @@ public class ConsoleActivity extends Activity {
 		resize.setEnabled(sessionOpen);
 		resize.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				final TerminalView terminalView = (TerminalView) adapter.getCurrentTerminalView();
+				final TerminalView terminalView = adapter.getCurrentTerminalView();
 
 				final View resizeView = inflater.inflate(R.layout.dia_resize, null, false);
 				new AlertDialog.Builder(ConsoleActivity.this)
@@ -792,14 +790,14 @@ public class ConsoleActivity extends Activity {
 
 		setVolumeControlStream(AudioManager.STREAM_NOTIFICATION);
 
-		final View view = adapter.getCurrentTerminalView();
-		boolean activeTerminal = (view instanceof TerminalView);
+		final TerminalView view = adapter.getCurrentTerminalView();
+		boolean activeTerminal = view != null;
 		boolean sessionOpen = false;
 		boolean disconnected = false;
 		boolean canForwardPorts = false;
 
 		if (activeTerminal) {
-			TerminalBridge bridge = ((TerminalView) view).bridge;
+			TerminalBridge bridge = view.bridge;
 			sessionOpen = bridge.isSessionOpen();
 			disconnected = bridge.isDisconnected();
 			canForwardPorts = bridge.canFowardPorts();
@@ -841,12 +839,12 @@ public class ConsoleActivity extends Activity {
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-		final View view = adapter.getCurrentTerminalView();
-		boolean activeTerminal = (view instanceof TerminalView);
+		final TerminalView view = adapter.getCurrentTerminalView();
+		boolean activeTerminal = view != null;
 		boolean sessionOpen = false;
 
 		if (activeTerminal) {
-			TerminalBridge bridge = ((TerminalView) view).bridge;
+			TerminalBridge bridge = view.bridge;
 			sessionOpen = bridge.isSessionOpen();
 		}
 
@@ -982,12 +980,11 @@ public class ConsoleActivity extends Activity {
 	 */
 	private void updateDefault() {
 		// update the current default terminal
-		View view = adapter.getCurrentTerminalView();
-		if (!(view instanceof TerminalView)) return;
+		TerminalView view = adapter.getCurrentTerminalView();
+		if (view == null) return;
 
-		TerminalView terminal = (TerminalView) view;
 		if (bound == null) return;
-		bound.defaultBridge = terminal.bridge;
+		bound.defaultBridge = view.bridge;
 	}
 
 	protected void updateEmptyVisible() {
@@ -1099,7 +1096,7 @@ public class ConsoleActivity extends Activity {
 
 	private void pasteIntoTerminal() {
 		// force insert of clipboard text into current console
-		TerminalView terminalView = (TerminalView) adapter.getCurrentTerminalView();
+		TerminalView terminalView = adapter.getCurrentTerminalView();
 		TerminalBridge bridge = terminalView.bridge;
 
 		// pull string from clipboard and generate all events to force down
