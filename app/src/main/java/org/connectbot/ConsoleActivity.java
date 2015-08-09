@@ -206,6 +206,61 @@ public class ConsoleActivity extends Activity {
 		}
 	};
 
+	protected OnClickListener emulatedKeysListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			onEmulatedKeyClicked(v);
+		}
+	};
+
+	private void onEmulatedKeyClicked(View v) {
+		View flip = findCurrentView(R.id.console_flip);
+		int viewId = v.getId();
+		boolean hideKeys = true;
+
+		if (flip == null)
+			return;
+
+		TerminalView terminal = (TerminalView) flip;
+		TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+
+		switch (viewId)	{
+		case R.id.button_ctrl:
+			handler.metaPress(TerminalKeyListener.OUR_CTRL_ON, true);
+			break;
+		case R.id.button_esc:
+			handler.sendEscape();
+			break;
+		case R.id.button_tab:
+			handler.sendTab();
+			break;
+		case R.id.button_up:
+			handler.sendPressedKey(vt320.KEY_UP);
+			hideKeys = false;
+			break;
+		case R.id.button_down:
+			handler.sendPressedKey(vt320.KEY_DOWN);
+			hideKeys = false;
+			break;
+		case R.id.button_left:
+			handler.sendPressedKey(vt320.KEY_LEFT);
+			hideKeys = false;
+			break;
+		case R.id.button_right:
+			handler.sendPressedKey(vt320.KEY_RIGHT);
+			hideKeys = false;
+			break;
+		}
+
+		if (hideKeys)
+			hideEmulatedKeys();
+		else
+			autoHideEmulatedKeys();
+
+		if (viewId != R.id.button_tab)
+			terminal.bridge.tryKeyVibrate();
+	}
+
 	/**
 	 * @param bridge
 	 */
@@ -244,7 +299,10 @@ public class ConsoleActivity extends Activity {
 		keyboardGroup.startAnimation(keyboard_fade_in);
 		keyboardGroup.setVisibility(View.VISIBLE);
 		actionBar.show();
+		autoHideEmulatedKeys();
+	}
 
+	private void autoHideEmulatedKeys() {
 		if (keyboardGroupHider != null)
 			handler.removeCallbacks(keyboardGroupHider);
 		keyboardGroupHider = new Runnable() {
@@ -387,86 +445,13 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 
-		final Button ctrlButton = (Button) findViewById(R.id.button_ctrl);
-		ctrlButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				TerminalView terminal = adapter.getCurrentTerminalView();
-				if (terminal == null) return;
-
-				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-				handler.metaPress(TerminalKeyListener.OUR_CTRL_ON, true);
-				hideEmulatedKeys();
-			}
-		});
-
-		final Button escButton = (Button) findViewById(R.id.button_esc);
-		escButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				TerminalView terminal = adapter.getCurrentTerminalView();
-				if (terminal == null) return;
-
-				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-				handler.sendEscape();
-				hideEmulatedKeys();
-			}
-		});
-
-		final Button tabButton = (Button) findViewById(R.id.button_tab);
-		tabButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				TerminalView terminal = adapter.getCurrentTerminalView();
-				if (terminal == null) return;
-
-				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-				handler.sendTab();
-				hideEmulatedKeys();
-			}
-		});
-		final Button upButton = (Button) findViewById(R.id.button_up);
-		upButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				View flip = findCurrentView(R.id.console_flip);
-				if (flip == null) return;
-				TerminalView terminal = (TerminalView) flip;
-
-
-				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-				handler.sendPressedKey(vt320.KEY_UP);
-			}
-		});
-		final Button dnButton = (Button) findViewById(R.id.button_down);
-		dnButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				View flip = findCurrentView(R.id.console_flip);
-				if (flip == null) return;
-				TerminalView terminal = (TerminalView) flip;
-
-				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-				handler.sendPressedKey(vt320.KEY_DOWN);
-			}
-		});
-		final Button leftButton = (Button) findViewById(R.id.button_left);
-		leftButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				View flip = findCurrentView(R.id.console_flip);
-				if (flip == null) return;
-				TerminalView terminal = (TerminalView) flip;
-
-				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-				handler.sendPressedKey(vt320.KEY_LEFT);
-			}
-		});
-		final Button rightButton = (Button) findViewById(R.id.button_right);
-		rightButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				View flip = findCurrentView(R.id.console_flip);
-				if (flip == null) return;
-				TerminalView terminal = (TerminalView) flip;
-
-				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-				handler.sendPressedKey(vt320.KEY_RIGHT);
-			}
-		});
+		findViewById(R.id.button_ctrl).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_esc).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_tab).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_up).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_down).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_left).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_right).setOnClickListener(emulatedKeysListener);
 
 		actionBar = ActionBarWrapper.getActionBar(this);
 		actionBar.setDisplayHomeAsUpEnabled(true);
