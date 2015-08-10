@@ -222,7 +222,7 @@ public class ConsoleActivity extends Activity {
 	}
 
 	protected View findCurrentView(int id) {
-		TerminalView view = adapter.getCurrentTerminalView();
+		View view = pager.findViewWithTag(adapter.getBridgeAtPosition(pager.getCurrentItem()));
 		if (view == null) {
 			return null;
 		}
@@ -425,9 +425,8 @@ public class ConsoleActivity extends Activity {
 		final Button upButton = (Button) findViewById(R.id.button_up);
 		upButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
-				View flip = findCurrentView(R.id.console_flip);
-				if (flip == null) return;
-				TerminalView terminal = (TerminalView) flip;
+				TerminalView terminal = adapter.getCurrentTerminalView();
+				if (terminal == null) return;
 
 
 				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
@@ -437,9 +436,8 @@ public class ConsoleActivity extends Activity {
 		final Button dnButton = (Button) findViewById(R.id.button_down);
 		dnButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
-				View flip = findCurrentView(R.id.console_flip);
-				if (flip == null) return;
-				TerminalView terminal = (TerminalView) flip;
+				TerminalView terminal = adapter.getCurrentTerminalView();
+				if (terminal == null) return;
 
 				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
 				handler.sendPressedKey(vt320.KEY_DOWN);
@@ -448,9 +446,8 @@ public class ConsoleActivity extends Activity {
 		final Button leftButton = (Button) findViewById(R.id.button_left);
 		leftButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
-				View flip = findCurrentView(R.id.console_flip);
-				if (flip == null) return;
-				TerminalView terminal = (TerminalView) flip;
+				TerminalView terminal = adapter.getCurrentTerminalView();
+				if (terminal == null) return;
 
 				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
 				handler.sendPressedKey(vt320.KEY_LEFT);
@@ -459,9 +456,8 @@ public class ConsoleActivity extends Activity {
 		final Button rightButton = (Button) findViewById(R.id.button_right);
 		rightButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
-				View flip = findCurrentView(R.id.console_flip);
-				if (flip == null) return;
-				TerminalView terminal = (TerminalView) flip;
+				TerminalView terminal = adapter.getCurrentTerminalView();
+				if (terminal == null) return;
 
 				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
 				handler.sendPressedKey(vt320.KEY_RIGHT);
@@ -1228,7 +1224,7 @@ public class ConsoleActivity extends Activity {
 			}
 		}
 
-		public TerminalBridge getItemAtPosition(int position) {
+		public TerminalBridge getBridgeAtPosition(int position) {
 			ArrayList<TerminalBridge> bridges = bound.getBridges();
 			if (position < 0 || position >= bridges.size()) {
 				return null;
@@ -1243,7 +1239,7 @@ public class ConsoleActivity extends Activity {
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			TerminalBridge bridge = getItemAtPosition(position);
+			TerminalBridge bridge = getBridgeAtPosition(position);
 			if (bridge == null) {
 				return "???";
 			}
@@ -1251,7 +1247,7 @@ public class ConsoleActivity extends Activity {
 		}
 
 		public TerminalView getCurrentTerminalView() {
-			View currentView = pager.findViewWithTag(adapter.getItemAtPosition(pager.getCurrentItem()));
+			View currentView = pager.findViewWithTag(getBridgeAtPosition(pager.getCurrentItem()));
 			if (currentView == null) return null;
 			return (TerminalView) currentView.findViewById(R.id.console_flip);
 		}
