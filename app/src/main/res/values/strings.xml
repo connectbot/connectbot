@@ -560,4 +560,7 @@
 	<string name="button_key_left">Left</string>
 	<!-- Text for the "right" button in virtual keyboard. -->
 	<string name="button_key_right">Right</string>
+
+	<!-- Menu item in console for to start the copy editor -->
+	<string name="console_menu_copy_edit">Copy Editor&#8230;</string>
 </resources>

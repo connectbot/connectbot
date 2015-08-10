@@ -68,6 +68,7 @@
 		<activity android:name=".HelpActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".HelpTopicActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".ColorsActivity" android:configChanges="keyboardHidden|orientation" />
+		<activity android:name=".CopyEditActivity" android:configChanges="keyboardHidden|orientation" />
 
 		<service android:name="org.connectbot.service.TerminalManager"
 			android:configChanges="keyboardHidden|orientation"
