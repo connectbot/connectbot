@@ -199,15 +199,17 @@ public class ConsoleActivity extends Activity {
 	protected Handler disconnectHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			Log.d(TAG, "Someone sending HANDLE_DISCONNECT to parentHandler");
+			synchronized (pager) {
+				Log.d(TAG, "Someone sending HANDLE_DISCONNECT to parentHandler");
 
-			// someone below us requested to display a password dialog
-			// they are sending nickname and requested
-			TerminalBridge bridge = (TerminalBridge) msg.obj;
+				// someone below us requested to display a password dialog
+				// they are sending nickname and requested
+				TerminalBridge bridge = (TerminalBridge) msg.obj;
 
-			adapter.notifyDataSetChanged();
-			if (bridge.isAwaitingClose()) {
-				closeBridge(bridge);
+				adapter.notifyDataSetChanged();
+				if (bridge.isAwaitingClose()) {
+					closeBridge(bridge);
+				}
 			}
 		}
 	};
@@ -266,14 +268,12 @@ public class ConsoleActivity extends Activity {
 	 * @param bridge
 	 */
 	private void closeBridge(final TerminalBridge bridge) {
-		synchronized (pager) {
-			updateEmptyVisible();
-			updatePromptVisible();
+		updateEmptyVisible();
+		updatePromptVisible();
 
-			// If we just closed the last bridge, go back to the previous activity.
-			if (pager.getChildCount() == 0) {
-				finish();
-			}
+		// If we just closed the last bridge, go back to the previous activity.
+		if (pager.getChildCount() == 0) {
+			finish();
 		}
 	}
 
