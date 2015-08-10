@@ -215,16 +215,14 @@ public class ConsoleActivity extends Activity {
 
 	private void onEmulatedKeyClicked(View v) {
 		View flip = findCurrentView(R.id.console_flip);
-		int viewId = v.getId();
-		boolean hideKeys = true;
-
 		if (flip == null)
 			return;
 
 		TerminalView terminal = (TerminalView) flip;
 		TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+		boolean hideKeys = true;
 
-		switch (viewId)	{
+		switch (v.getId())	{
 		case R.id.button_ctrl:
 			handler.metaPress(TerminalKeyListener.OUR_CTRL_ON, true);
 			break;
@@ -257,8 +255,7 @@ public class ConsoleActivity extends Activity {
 		else
 			autoHideEmulatedKeys();
 
-		if (viewId != R.id.button_tab)
-			terminal.bridge.tryKeyVibrate();
+		terminal.bridge.tryKeyVibrate();
 	}
 
 	/**
