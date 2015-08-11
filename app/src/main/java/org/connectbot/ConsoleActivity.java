@@ -214,11 +214,9 @@ public class ConsoleActivity extends Activity {
 	};
 
 	private void onEmulatedKeyClicked(View v) {
-		View flip = findCurrentView(R.id.console_flip);
-		if (flip == null)
-			return;
+		TerminalView terminal = adapter.getCurrentTerminalView();
+		if (terminal == null) return;
 
-		TerminalView terminal = (TerminalView) flip;
 		TerminalKeyListener handler = terminal.bridge.getKeyHandler();
 		boolean hideKeys = true;
 
@@ -274,7 +272,7 @@ public class ConsoleActivity extends Activity {
 	}
 
 	protected View findCurrentView(int id) {
-		TerminalView view = adapter.getCurrentTerminalView();
+		View view = pager.findViewWithTag(adapter.getBridgeAtPosition(pager.getCurrentItem()));
 		if (view == null) {
 			return null;
 		}
@@ -1210,7 +1208,7 @@ public class ConsoleActivity extends Activity {
 			}
 		}
 
-		public TerminalBridge getItemAtPosition(int position) {
+		public TerminalBridge getBridgeAtPosition(int position) {
 			ArrayList<TerminalBridge> bridges = bound.getBridges();
 			if (position < 0 || position >= bridges.size()) {
 				return null;
@@ -1225,7 +1223,7 @@ public class ConsoleActivity extends Activity {
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			TerminalBridge bridge = getItemAtPosition(position);
+			TerminalBridge bridge = getBridgeAtPosition(position);
 			if (bridge == null) {
 				return "???";
 			}
@@ -1233,7 +1231,7 @@ public class ConsoleActivity extends Activity {
 		}
 
 		public TerminalView getCurrentTerminalView() {
-			View currentView = pager.findViewWithTag(adapter.getItemAtPosition(pager.getCurrentItem()));
+			View currentView = pager.findViewWithTag(getBridgeAtPosition(pager.getCurrentItem()));
 			if (currentView == null) return null;
 			return (TerminalView) currentView.findViewById(R.id.console_flip);
 		}
