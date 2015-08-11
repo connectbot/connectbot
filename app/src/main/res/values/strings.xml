@@ -521,10 +521,10 @@
 	<!-- Describes the icon of the "send escape character" button in the terminal view for
 	     accessibility purposes. -->
 	<string name="image_description_send_escape_character">Send escape character.</string>
-  
-  <!-- Describes the icon of the "send tab character" button in the terminal view for
-       accessibility purposes. -->
-  <string name="image_description_send_tab_character">Send TAB character.</string>
+
+	<!-- Describes the icon of the "send tab character" button in the terminal view for
+	     accessibility purposes. -->
+	<string name="image_description_send_tab_character">Send TAB character.</string>
 
 	<!-- Describes the icon of the "show keyboard" button in the terminal view for accessibility
 	     purposes. -->
@@ -552,12 +552,4 @@
 	<string name="button_key_ctrl">Ctrl</string>
 	<!-- Text for the "Tab" button in virtual keyboard. -->
 	<string name="button_key_tab">Tab</string>
-	<!-- Text for the "up" button in virtual keyboard. -->
-	<string name="button_key_up">Up</string>
-	<!-- Text for the "down" button in virtual keyboard. -->
-	<string name="button_key_down">Down</string>
-	<!-- Text for the "left" button in virtual keyboard. -->
-	<string name="button_key_left">Left</string>
-	<!-- Text for the "right" button in virtual keyboard. -->
-	<string name="button_key_right">Right</string>
 </resources>
