@@ -83,6 +83,33 @@ android {
     }
 }
 
+def getGitDescription = { ->
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'describe', '--tags', '--dirty'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    } catch (ignored) {
+        return null;
+    }
+}
+
+// Insert the build number into strings.xml
+android.applicationVariants.all { variant ->
+    variant.mergeResources.doLast{
+        ext.env = System.getenv()
+        def buildNumber = getGitDescription()
+        if (buildNumber != null) {
+            File valuesFile = file("${buildDir}/intermediates/res/${variant.dirName}/values/values.xml")
+            String content = valuesFile.getText('UTF-8')
+            content = content.replaceAll(/\(working copy\)/, buildNumber)
+            valuesFile.write(content, 'UTF-8')
+        }
+    }
+}
+
 if (project.hasProperty('keystorePassword')) {
     android.signingConfigs.release.storeFile file(keystoreFile)
     android.signingConfigs.release.storePassword keystorePassword
