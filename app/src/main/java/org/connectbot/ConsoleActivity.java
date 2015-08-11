@@ -48,6 +48,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
@@ -97,6 +98,7 @@ public class ConsoleActivity extends Activity {
 	private static final int KEYBOARD_DISPLAY_TIME = 1500;
 
 	protected ViewPager pager = null;
+	@Nullable
 	protected TerminalManager bound = null;
 	protected TerminalPagerAdapter adapter = null;
 	protected LayoutInflater inflater = null;
@@ -903,8 +905,9 @@ public class ConsoleActivity extends Activity {
 		super.onPause();
 		Log.d(TAG, "onPause called");
 
-		if (forcedOrientation && bound != null)
+		if (forcedOrientation && bound != null) {
 			bound.setResizeAllowed(false);
+		}
 	}
 
 	@Override
@@ -922,8 +925,9 @@ public class ConsoleActivity extends Activity {
 
 		configureOrientation();
 
-		if (forcedOrientation && bound != null)
+		if (forcedOrientation && bound != null) {
 			bound.setResizeAllowed(true);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -1007,9 +1011,9 @@ public class ConsoleActivity extends Activity {
 	private void updateDefault() {
 		// update the current default terminal
 		TerminalView view = adapter.getCurrentTerminalView();
-		if (view == null) return;
-
-		if (bound == null) return;
+		if (view == null || bound == null) {
+			return;
+		}
 		bound.defaultBridge = view.bridge;
 	}
 
@@ -1189,10 +1193,15 @@ public class ConsoleActivity extends Activity {
 
 		@Override
 		public int getItemPosition(Object object) {
-			final View view = (View) object;
+			if (bound == null) {
+				return POSITION_NONE;
+			}
+
+			View view = (View) object;
 			TerminalView terminal = (TerminalView) view.findViewById(R.id.console_flip);
-			final HostBean host = terminal.bridge.host;
-			int itemIndex = -1;
+			HostBean host = terminal.bridge.host;
+
+			int itemIndex = POSITION_NONE;
 			int i = 0;
 			for (TerminalBridge bridge : bound.getBridges()) {
 				if (bridge.host.equals(host)) {
@@ -1201,14 +1210,14 @@ public class ConsoleActivity extends Activity {
 				}
 				i++;
 			}
-			if (itemIndex == -1) {
-				return POSITION_NONE;
-			} else {
-				return itemIndex;
-			}
+			return itemIndex;
 		}
 
 		public TerminalBridge getBridgeAtPosition(int position) {
+			if (bound == null) {
+				return null;
+			}
+
 			ArrayList<TerminalBridge> bridges = bound.getBridges();
 			if (position < 0 || position >= bridges.size()) {
 				return null;
