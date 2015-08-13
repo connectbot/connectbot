@@ -17,18 +17,6 @@
 
 package org.connectbot;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.connectbot.bean.HostBean;
-import org.connectbot.bean.SelectionArea;
-import org.connectbot.service.PromptHelper;
-import org.connectbot.service.TerminalBridge;
-import org.connectbot.service.TerminalKeyListener;
-import org.connectbot.service.TerminalManager;
-import org.connectbot.util.PreferenceConstants;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -54,7 +42,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.ClipboardManager;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.GestureDetector;
 import android.view.InputDevice;
 import android.view.KeyEvent;
@@ -66,7 +53,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -85,6 +71,19 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.connectbot.bean.HostBean;
+import org.connectbot.bean.SelectionArea;
+import org.connectbot.service.PromptHelper;
+import org.connectbot.service.TerminalBridge;
+import org.connectbot.service.TerminalKeyListener;
+import org.connectbot.service.TerminalManager;
+import org.connectbot.util.PreferenceConstants;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
 import de.mud.terminal.vt320;
 
 public class ConsoleActivity extends Activity {
@@ -308,7 +307,7 @@ public class ConsoleActivity extends Activity {
 		inflater = LayoutInflater.from(this);
 
 		pager = (ViewPager) findViewById(R.id.console_flip);
-		registerForContextMenu(pager);
+		// registerForContextMenu(pager);
 		pager.addOnPageChangeListener(
 				new ViewPager.SimpleOnPageChangeListener() {
 					@Override
@@ -482,14 +481,15 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 
+
 		// detect fling gestures to switch between terminals
 		final GestureDetector detect = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
 			private float totalY = 0;
 
 			@Override
 			public void onLongPress(MotionEvent e) {
+				Toast.makeText(ConsoleActivity.this,"Long Click !",Toast.LENGTH_SHORT).show();
 				super.onLongPress(e);
-				openContextMenu(pager);
 			}
 
 
@@ -553,8 +553,10 @@ public class ConsoleActivity extends Activity {
 
 		});
 
+
+
 		pager.setLongClickable(true);
-		pager.setOnTouchListener(new OnTouchListener() {
+		pager.setOnTouchListener(new View.OnTouchListener() {
 
 			public boolean onTouch(View v, MotionEvent event) {
 
@@ -567,13 +569,17 @@ public class ConsoleActivity extends Activity {
 						// Automatically start copy mode if using a mouse.
 						startCopyMode();
 						break;
+					/*
 					case MotionEvent.BUTTON_SECONDARY:
 						openContextMenu(pager);
 						return true;
+					*/
+
 					case MotionEvent.BUTTON_TERTIARY:
 						// Middle click pastes.
 						pasteIntoTerminal();
 						return true;
+
 					}
 				}
 
@@ -596,9 +602,6 @@ public class ConsoleActivity extends Activity {
 						}
 						return true;
 					case MotionEvent.ACTION_MOVE:
-						/* ignore when user hasn't moved since last time so
-						 * we can fine-tune with directional pad
-						 */
 						if (row == lastTouchRow && col == lastTouchCol)
 							return true;
 
@@ -613,9 +616,6 @@ public class ConsoleActivity extends Activity {
 						copySource.redraw();
 						return true;
 					case MotionEvent.ACTION_UP:
-						/* If they didn't move their finger, maybe they meant to
-						 * select the rest of the text with the directional pad.
-						 */
 						if (area.getLeft() == area.getRight() &&
 								area.getTop() == area.getBottom()) {
 							return true;
@@ -657,6 +657,7 @@ public class ConsoleActivity extends Activity {
 		adapter = new TerminalPagerAdapter();
 		pager.setAdapter(adapter);
 	}
+
 
 	/**
 	 *
@@ -883,6 +884,7 @@ public class ConsoleActivity extends Activity {
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 	}
 
+	/*
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 		final TerminalView view = adapter.getCurrentTerminalView();
@@ -908,6 +910,7 @@ public class ConsoleActivity extends Activity {
 
 
 	}
+	*/
 
 	@Override
 	public void onStart() {
