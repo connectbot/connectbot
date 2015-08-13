@@ -466,7 +466,8 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 		});
 
 		tabs = (TabLayout) findViewById(R.id.tabs);
-		tabs.setupWithViewPager(pager);
+		if (tabs != null)
+			tabs.setupWithViewPager(pager);
 
 		// detect fling gestures to switch between terminals
 		final GestureDetector detect = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
@@ -1229,8 +1230,10 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 		@Override
 		public void notifyDataSetChanged() {
 			super.notifyDataSetChanged();
-			toolbar.setVisibility(this.getCount() > 1 ? View.VISIBLE : View.GONE);
-			tabs.setTabsFromPagerAdapter(this);
+			if (tabs != null) {
+				toolbar.setVisibility(this.getCount() > 1 ? View.VISIBLE : View.GONE);
+				tabs.setTabsFromPagerAdapter(this);
+			}
 		}
 
 		@Override

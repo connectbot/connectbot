@@ -25,34 +25,18 @@
 	android:layout_height="fill_parent"
 	android:background="#ff000000">
 
-	<android.support.v7.widget.Toolbar
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/toolbar"
-			android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
-
-	<android.support.design.widget.TabLayout
-			android:id="@+id/tabs"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			app:tabIndicatorColor="@android:color/white"
-			android:background="#222222"/>
-
 	<TextView
 		android:id="@android:id/empty"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:text="@string/terminal_no_hosts_connected"
 		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:gravity="center"
-		android:layout_below="@id/toolbar"/>
+		android:gravity="center"/>
 
 	<android.support.v4.view.ViewPager
 		android:id="@+id/console_flip"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-		android:layout_below="@id/toolbar"
 		/>
 
 	<RelativeLayout
