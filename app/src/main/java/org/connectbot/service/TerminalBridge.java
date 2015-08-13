@@ -456,8 +456,19 @@ public class TerminalBridge implements VDUDisplay {
 						awaitingClose = true;
 
 						// Tell the TerminalManager that we can be destroyed now.
-						if (disconnectListener != null)
-							disconnectListener.onDisconnected(TerminalBridge.this);
+						if (disconnectListener != null) {
+							// The disconnect listener should be run on the main thread if possible.
+							if (parent != null) {
+								parent.post(new Runnable() {
+									@Override
+									public void run() {
+										disconnectListener.onDisconnected(TerminalBridge.this);
+									}
+								});
+							} else {
+								disconnectListener.onDisconnected(TerminalBridge.this);
+							}
+						}
 					}
 				}
 			});

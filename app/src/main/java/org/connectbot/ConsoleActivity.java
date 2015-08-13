@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.SelectionArea;
+import org.connectbot.service.BridgeDisconnectedListener;
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
@@ -90,7 +91,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.mud.terminal.vt320;
 
-public class ConsoleActivity extends Activity {
+public class ConsoleActivity extends Activity implements BridgeDisconnectedListener {
 	public final static String TAG = "CB.ConsoleActivity";
 
 	protected static final int REQUEST_EDIT = 1;
@@ -156,7 +157,7 @@ public class ConsoleActivity extends Activity {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
 
 			// let manager know about our event handling services
-			bound.disconnectHandler = disconnectHandler;
+			bound.disconnectListener = ConsoleActivity.this;
 			bound.setResizeAllowed(true);
 
 			final String requestedNickname = (requested != null) ? requested.getFragment() : null;
@@ -196,23 +197,16 @@ public class ConsoleActivity extends Activity {
 		}
 	};
 
-	protected Handler disconnectHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			synchronized (pager) {
-				Log.d(TAG, "Someone sending HANDLE_DISCONNECT to parentHandler");
+	public void onDisconnected(TerminalBridge bridge) {
+		synchronized (adapter) {
+			adapter.notifyDataSetChanged();
+			Log.d(TAG, "Someone sending HANDLE_DISCONNECT to parentHandler");
 
-				// someone below us requested to display a password dialog
-				// they are sending nickname and requested
-				TerminalBridge bridge = (TerminalBridge) msg.obj;
-
-				adapter.notifyDataSetChanged();
-				if (bridge.isAwaitingClose()) {
-					closeBridge(bridge);
-				}
+			if (bridge.isAwaitingClose()) {
+				closeBridge(bridge);
 			}
 		}
-	};
+	}
 
 	protected OnClickListener emulatedKeysListener = new OnClickListener() {
 		@Override
