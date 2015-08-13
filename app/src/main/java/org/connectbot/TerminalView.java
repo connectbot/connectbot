@@ -160,8 +160,6 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
         setLineSpacing(1.0f,1.09f);
         setTextIsSelectable(true);
 
-        setText("u0_a230@hammerhead:/ $ Hello World");
-
         // Enable accessibility features if a screen reader is active.
         new AccessibilityStateTester().execute((Void) null);
     }
