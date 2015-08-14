@@ -56,6 +56,13 @@
 	<!-- Title for the help page with the terms & conditions of the app. -->
 	<string name="terms_and_conditions">"Terms &amp; Conditions"</string>
 
+	<!-- Title for the help dialog showing keyboard shortcuts. -->
+	<string name="keyboard_shortcuts">"Keyboard Shortcuts"</string>
+	<!-- Text in a keyboard shortcuts list lined up to keys which increase the terminal font-size. -->
+	<string name="increase_font_size">"Increase Font Size"</string>
+	<!-- Text in a keyboard shortcuts list lined up to keys which decrease the terminal font-size. -->
+	<string name="decrease_font_size">"Decrease Font Size"</string>
+
 	<string name="pubkey_generate">"Generate"</string>
 	<string name="pubkey_import">"Import"</string>
 	<string name="pubkey_delete">"Delete key"</string>
