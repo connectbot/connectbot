@@ -64,10 +64,14 @@
 		<activity android:name=".HostEditorActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".PortForwardListActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".SettingsActivity" android:configChanges="keyboardHidden|orientation" />
-		<activity android:name=".WizardActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".HelpActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".HelpTopicActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".ColorsActivity" android:configChanges="keyboardHidden|orientation" />
+		<activity android:name=".EulaActivity"	android:parentActivityName=".HelpActivity"
+			  android:configChanges="keyboardHidden|orientation" >
+			<meta-data android:name="android.support.PARENT_ACTIVITY"
+				   android:value="org.connectbot.HelpActivity" />
+		</activity>
 
 		<service android:name="org.connectbot.service.TerminalManager"
 			android:configChanges="keyboardHidden|orientation"

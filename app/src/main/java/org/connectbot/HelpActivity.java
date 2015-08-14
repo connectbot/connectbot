@@ -73,5 +73,18 @@ public class HelpActivity extends Activity {
 			// TODO Auto-generated catch block
 			Log.e(TAG, "couldn't get list of help assets", e);
 		}
+
+		Button button = new Button(this);
+		final String topic = getResources().getString(R.string.terms_and_conditions);
+		button.setText(topic);
+
+		button.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(HelpActivity.this, EulaActivity.class);
+				HelpActivity.this.startActivity(intent);
+			}
+		});
+
+		content.addView(button);
 	}
 }

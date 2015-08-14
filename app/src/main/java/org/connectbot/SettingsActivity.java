@@ -45,11 +45,6 @@ public class SettingsActivity extends PreferenceActivity {
 
 			PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
 
-			// Since they were able to get to the Settings activity, they already agreed to the EULA
-			editor = preferences.edit();
-			editor.putBoolean(PreferenceConstants.EULA, true);
-			editor.commit();
-
 			addPreferencesFromResource(R.xml.preferences);
 		}
 

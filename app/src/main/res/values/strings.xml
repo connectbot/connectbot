@@ -53,6 +53,9 @@
 	<string name="help_about">"About ConnectBot"</string>
 	<string name="help_keyboard">"Keyboard"</string>
 
+	<!-- Title for the help page with the terms & conditions of the app. -->
+	<string name="terms_and_conditions">"Terms &amp; Conditions"</string>
+
 	<string name="pubkey_generate">"Generate"</string>
 	<string name="pubkey_import">"Import"</string>
 	<string name="pubkey_delete">"Delete key"</string>
@@ -428,13 +431,6 @@
 	<string name="disconnect_all_message">"Are you sure you want to disconnect from all connected hosts?"</string>
 	<string name="disconnect_all_pos">"Yes, disconnect"</string>
 	<string name="disconnect_all_neg">"Cancel"</string>
-
-	<!-- Button to agree to license terms. -->
-	<string name="wizard_agree">"Agree"</string>
-	<!-- Button to go to the next page in the first time start-up wizard. -->
-	<string name="wizard_next">"Next"</string>
-	<!-- Button to go to the previous page in the first time start-up wizard. -->
-	<string name="wizard_back">"Back"</string>
 
 	<string name="terminal_no_hosts_connected">"No hosts currently connected"</string>
 

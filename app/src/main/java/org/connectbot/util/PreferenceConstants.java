@@ -66,8 +66,6 @@ public class PreferenceConstants {
 
 	public static final String BUMPY_ARROWS = "bumpyarrows";
 
-	public static final String EULA = "eula";
-
 	public static final String SORT_BY_COLOR = "sortByColor";
 
 	public static final String BELL = "bell";
