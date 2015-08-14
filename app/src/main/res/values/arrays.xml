@@ -123,12 +123,6 @@
 		<item>@string/portforward_dynamic</item>
 	</string-array>
 
-	<string-array name="list_wizard_topics" translatable="false">
-		<item>Hints</item>
-		<item>PhysicalKeyboard</item>
-		<item>VirtualKeyboard</item>
-	</string-array>
-
 	<string-array name="list_delkey" translatable="false">
 		<item>@string/list_delkey_del</item>
 		<item>@string/list_delkey_backspace</item>
