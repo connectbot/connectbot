@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased][unreleased]
+### Added
+- Tabs are now used on large screens.
+
+### Removed
+- No more intro wizard on first start.
+
 ## [1.8.5][1.8.5] - 2014-08-11
 ### Added
 - Mouse support for right click and selection and mouse wheel
@@ -51,6 +58,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Color picker color numbers are now localized
 
 
+[unreleased]: https://github.com/connectbot/connectbot/compare/v1.8.5...HEAD
 [1.8.5]: https://github.com/connectbot/connectbot/compare/v1.8.4...v1.8.5
 [1.8.4]: https://github.com/connectbot/connectbot/compare/v1.8.3...v1.8.4
 [1.8.3]: https://github.com/connectbot/connectbot/compare/v1.8.2...v1.8.3
