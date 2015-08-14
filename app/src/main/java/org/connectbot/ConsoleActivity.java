@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.SelectionArea;
+import org.connectbot.service.BridgeDisconnectedListener;
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
@@ -50,9 +51,11 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -88,7 +91,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.mud.terminal.vt320;
 
-public class ConsoleActivity extends Activity {
+public class ConsoleActivity extends Activity implements BridgeDisconnectedListener {
 	public final static String TAG = "CB.ConsoleActivity";
 
 	protected static final int REQUEST_EDIT = 1;
@@ -98,6 +101,8 @@ public class ConsoleActivity extends Activity {
 	private static final int KEYBOARD_DISPLAY_TIME = 1500;
 
 	protected ViewPager pager = null;
+	protected TabLayout tabs = null;
+	protected Toolbar toolbar = null;
 	@Nullable
 	protected TerminalManager bound = null;
 	protected TerminalPagerAdapter adapter = null;
@@ -152,7 +157,7 @@ public class ConsoleActivity extends Activity {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
 
 			// let manager know about our event handling services
-			bound.disconnectHandler = disconnectHandler;
+			bound.disconnectListener = ConsoleActivity.this;
 			bound.setResizeAllowed(true);
 
 			final String requestedNickname = (requested != null) ? requested.getFragment() : null;
@@ -192,21 +197,16 @@ public class ConsoleActivity extends Activity {
 		}
 	};
 
-	protected Handler disconnectHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
+	public void onDisconnected(TerminalBridge bridge) {
+		synchronized (adapter) {
+			adapter.notifyDataSetChanged();
 			Log.d(TAG, "Someone sending HANDLE_DISCONNECT to parentHandler");
 
-			// someone below us requested to display a password dialog
-			// they are sending nickname and requested
-			TerminalBridge bridge = (TerminalBridge) msg.obj;
-
-			adapter.notifyDataSetChanged();
 			if (bridge.isAwaitingClose()) {
 				closeBridge(bridge);
 			}
 		}
-	};
+	}
 
 	protected OnClickListener emulatedKeysListener = new OnClickListener() {
 		@Override
@@ -262,14 +262,12 @@ public class ConsoleActivity extends Activity {
 	 * @param bridge
 	 */
 	private void closeBridge(final TerminalBridge bridge) {
-		synchronized (pager) {
-			updateEmptyVisible();
-			updatePromptVisible();
+		updateEmptyVisible();
+		updatePromptVisible();
 
-			// If we just closed the last bridge, go back to the previous activity.
-			if (pager.getChildCount() == 0) {
-				finish();
-			}
+		// If we just closed the last bridge, go back to the previous activity.
+		if (pager.getChildCount() == 0) {
+			finish();
 		}
 	}
 
@@ -362,6 +360,7 @@ public class ConsoleActivity extends Activity {
 
 		inflater = LayoutInflater.from(this);
 
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		pager = (ViewPager) findViewById(R.id.console_flip);
 		registerForContextMenu(pager);
 		pager.addOnPageChangeListener(
@@ -371,6 +370,8 @@ public class ConsoleActivity extends Activity {
 						onTerminalChanged();
 					}
 				});
+		adapter = new TerminalPagerAdapter();
+		pager.setAdapter(adapter);
 
 		empty = (TextView) findViewById(android.R.id.empty);
 
@@ -463,6 +464,10 @@ public class ConsoleActivity extends Activity {
 				}
 			}
 		});
+
+		tabs = (TabLayout) findViewById(R.id.tabs);
+		if (tabs != null)
+			tabs.setupWithViewPager(pager);
 
 		// detect fling gestures to switch between terminals
 		final GestureDetector detect = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
@@ -635,9 +640,6 @@ public class ConsoleActivity extends Activity {
 			}
 
 		});
-
-		adapter = new TerminalPagerAdapter();
-		pager.setAdapter(adapter);
 	}
 
 	/**
@@ -1223,6 +1225,15 @@ public class ConsoleActivity extends Activity {
 				return null;
 			}
 			return bridges.get(position);
+		}
+
+		@Override
+		public void notifyDataSetChanged() {
+			super.notifyDataSetChanged();
+			if (tabs != null) {
+				toolbar.setVisibility(this.getCount() > 1 ? View.VISIBLE : View.GONE);
+				tabs.setTabsFromPagerAdapter(this);
+			}
 		}
 
 		@Override
