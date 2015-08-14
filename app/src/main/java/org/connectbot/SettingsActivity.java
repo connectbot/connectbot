@@ -17,8 +17,6 @@
 
 package org.connectbot;
 
-import org.connectbot.util.PreferenceConstants;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
