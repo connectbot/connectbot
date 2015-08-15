@@ -98,7 +98,7 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 
 	private static final int CLICK_TIME = 400;
 	private static final float MAX_CLICK_DISTANCE = 25f;
-	private static final int KEYBOARD_DISPLAY_TIME = 1500;
+	private static final int KEYBOARD_DISPLAY_TIME = 3000;
 
 	protected ViewPager pager = null;
 	protected TabLayout tabs = null;
@@ -220,33 +220,83 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 		if (terminal == null) return;
 
 		TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-		boolean hideKeys = true;
+		boolean hideKeys = false;
 
 		switch (v.getId())	{
 		case R.id.button_ctrl:
 			handler.metaPress(TerminalKeyListener.OUR_CTRL_ON, true);
+			hideKeys = true;
 			break;
 		case R.id.button_esc:
 			handler.sendEscape();
+			hideKeys = true;
 			break;
 		case R.id.button_tab:
 			handler.sendTab();
+			hideKeys = true;
 			break;
+
 		case R.id.button_up:
 			handler.sendPressedKey(vt320.KEY_UP);
-			hideKeys = false;
 			break;
 		case R.id.button_down:
 			handler.sendPressedKey(vt320.KEY_DOWN);
-			hideKeys = false;
 			break;
 		case R.id.button_left:
 			handler.sendPressedKey(vt320.KEY_LEFT);
-			hideKeys = false;
 			break;
 		case R.id.button_right:
 			handler.sendPressedKey(vt320.KEY_RIGHT);
-			hideKeys = false;
+			break;
+
+		case R.id.button_home:
+			handler.sendPressedKey(vt320.KEY_HOME);
+			break;
+		case R.id.button_end:
+			handler.sendPressedKey(vt320.KEY_END);
+			break;
+		case R.id.button_pgup:
+			handler.sendPressedKey(vt320.KEY_PAGE_UP);
+			break;
+		case R.id.button_pgdn:
+			handler.sendPressedKey(vt320.KEY_PAGE_DOWN);
+			break;
+
+		case R.id.button_f1:
+			handler.sendPressedKey(vt320.KEY_F1);
+			break;
+		case R.id.button_f2:
+			handler.sendPressedKey(vt320.KEY_F2);
+			break;
+		case R.id.button_f3:
+			handler.sendPressedKey(vt320.KEY_F3);
+			break;
+		case R.id.button_f4:
+			handler.sendPressedKey(vt320.KEY_F4);
+			break;
+		case R.id.button_f5:
+			handler.sendPressedKey(vt320.KEY_F5);
+			break;
+		case R.id.button_f6:
+			handler.sendPressedKey(vt320.KEY_F6);
+			break;
+		case R.id.button_f7:
+			handler.sendPressedKey(vt320.KEY_F7);
+			break;
+		case R.id.button_f8:
+			handler.sendPressedKey(vt320.KEY_F8);
+			break;
+		case R.id.button_f9:
+			handler.sendPressedKey(vt320.KEY_F9);
+			break;
+		case R.id.button_f10:
+			handler.sendPressedKey(vt320.KEY_F10);
+			break;
+		case R.id.button_f11:
+			handler.sendPressedKey(vt320.KEY_F11);
+			break;
+		case R.id.button_f12:
+			handler.sendPressedKey(vt320.KEY_F12);
 			break;
 		}
 
@@ -453,6 +503,22 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 		findViewById(R.id.button_down).setOnClickListener(emulatedKeysListener);
 		findViewById(R.id.button_left).setOnClickListener(emulatedKeysListener);
 		findViewById(R.id.button_right).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_home).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_end).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_pgup).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_pgdn).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f1).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f2).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f3).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f4).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f5).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f6).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f7).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f8).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f9).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f10).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f11).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f12).setOnClickListener(emulatedKeysListener);
 
 		actionBar = ActionBarWrapper.getActionBar(this);
 		actionBar.setDisplayHomeAsUpEnabled(true);

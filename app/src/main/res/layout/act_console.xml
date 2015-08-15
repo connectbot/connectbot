@@ -126,155 +126,205 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:background="#55000000"
+		android:orientation="horizontal"
 		android:padding="0dip"
 		android:visibility="gone">
 
-		<Button
-			android:id="@+id/button_ctrl"
-			android:layout_width="0px"
-			android:layout_weight="1"
-			android:layout_height="30dip"
-			android:layout_margin="0dp"
-			android:background="#55f0f0f0"
-			android:contentDescription="@string/image_description_toggle_control_character"
-			android:padding="0dp"
-			android:text="@string/button_key_ctrl"
-			android:textSize="10dip"
-			/>
-
-		<View
-			android:layout_width="1dp"
+		<HorizontalScrollView
+			android:id="@+id/keyboard_hscroll"
+			android:layout_width="0dp"
 			android:layout_height="match_parent"
-			android:background="#90000000"
-			/>
-
-		<Button
-			android:id="@+id/button_esc"
-			android:layout_width="0px"
 			android:layout_weight="1"
-			android:layout_height="30dip"
-			android:layout_margin="0dp"
-			android:background="#55f0f0f0"
-			android:contentDescription="@string/image_description_send_escape_character"
 			android:padding="0dp"
-			android:text="@string/button_key_esc"
-			android:textSize="10dip"
-			/>
+			android:scrollbars="none">
 
-		<View
-			android:layout_width="1dp"
-			android:layout_height="match_parent"
-			android:background="#90000000"
-			/>
+			<LinearLayout
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:orientation="horizontal"
+				android:padding="0dp">
 
-		<Button
-			android:id="@+id/button_tab"
-			android:layout_width="0px"
-			android:layout_weight="1"
-			android:layout_height="30dip"
-			android:layout_margin="0dp"
-			android:background="#55f0f0f0"
-			android:contentDescription="@string/image_description_send_tab_character"
-			android:padding="0dp"
-			android:text="@string/button_key_tab"
-			android:textSize="10dip"
-			/>
+				<Button
+					android:id="@+id/button_ctrl"
+					style="@style/KeyboardButton"
+					android:contentDescription="@string/image_description_toggle_control_character"
+					android:text="@string/button_key_ctrl" />
 
-		<View
-			android:layout_width="1dp"
-			android:layout_height="match_parent"
-			android:background="#90000000"
-			/>
+				<View style="@style/KeyboardSeparator" />
 
-		<Button
-			android:id="@+id/button_up"
-			android:layout_width="0px"
-			android:layout_weight="1"
-			android:layout_height="30dip"
-			android:layout_margin="0dp"
-			android:background="#55f0f0f0"
-			android:contentDescription="@string/image_description_up"
-			android:padding="0dp"
-			android:text="@string/button_key_up"
-			android:textSize="10dip"
-			/>
+				<Button
+					android:id="@+id/button_esc"
+					style="@style/KeyboardButton"
+					android:contentDescription="@string/image_description_send_escape_character"
+					android:text="Esc" />
 
-		<View
-			android:layout_width="1dp"
-			android:layout_height="match_parent"
-			android:background="#90000000"
-			/>
+				<View style="@style/KeyboardSeparator" />
 
-		<Button
-			android:id="@+id/button_down"
-			android:layout_width="0px"
-			android:layout_weight="1"
-			android:layout_height="30dip"
-			android:layout_margin="0dp"
-			android:background="#55f0f0f0"
-			android:contentDescription="@string/image_description_down"
-			android:padding="0dp"
-			android:text="@string/button_key_down"
-			android:textSize="10dip"
-			/>
+				<Button
+					android:id="@+id/button_tab"
+					style="@style/KeyboardButton"
+					android:contentDescription="@string/image_description_send_tab_character"
 
-		<View
-			android:layout_width="1dp"
-			android:layout_height="match_parent"
-			android:background="#90000000"
-			/>
+					android:text="Tab" />
 
-		<Button
-			android:id="@+id/button_left"
-			android:layout_width="0px"
-			android:layout_weight="1"
-			android:layout_height="30dip"
-			android:layout_margin="0dp"
-			android:background="#55f0f0f0"
-			android:contentDescription="@string/image_description_left"
-			android:padding="0dp"
-			android:text="@string/button_key_left"
-			android:textSize="10dip"
-			/>
+				<View style="@style/KeyboardSeparator" />
 
-		<View
-			android:layout_width="1dp"
-			android:layout_height="match_parent"
-			android:background="#90000000"
-			/>
+				<Button
+					android:id="@+id/button_up"
+					style="@style/KeyboardButton"
+					android:contentDescription="@string/image_description_up"
 
-		<Button
-			android:id="@+id/button_right"
-			android:layout_width="0px"
-			android:layout_weight="1"
-			android:layout_height="30dip"
-			android:layout_margin="0dp"
-			android:background="#55f0f0f0"
-			android:contentDescription="@string/image_description_right"
-			android:padding="0dp"
-			android:text="@string/button_key_right"
-			android:textSize="10dip"
-			/>
+					android:text="@string/button_key_up" />
 
-		<View
-			android:layout_width="1dp"
-			android:layout_height="match_parent"
-			android:background="#90000000"
-			/>
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_down"
+					style="@style/KeyboardButton"
+					android:contentDescription="@string/image_description_down"
+					android:text="@string/button_key_down" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_left"
+					style="@style/KeyboardButton"
+					android:contentDescription="@string/image_description_left"
+					android:text="@string/button_key_left" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_right"
+					style="@style/KeyboardButton"
+					android:contentDescription="@string/image_description_right"
+					android:text="@string/button_key_right" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_home"
+					style="@style/KeyboardButton"
+					android:text="@string/button_key_home" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_end"
+					style="@style/KeyboardButton"
+					android:text="@string/button_key_end" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_pgup"
+					style="@style/KeyboardButton"
+					android:text="@string/button_key_pgup" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_pgdn"
+					style="@style/KeyboardButton"
+					android:text="@string/button_key_pgdn" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_f1"
+					style="@style/KeyboardButton"
+					android:text="@string/button_key_f1"
+
+					/>
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_f2"
+					style="@style/KeyboardButton"
+					android:text="@string/button_key_f2" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_f3"
+					style="@style/KeyboardButton"
+					android:text="@string/button_key_f3" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_f4"
+					style="@style/KeyboardButton"
+					android:text="@string/button_key_f4" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_f5"
+					style="@style/KeyboardButton"
+					android:text="@string/button_key_f5" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_f6"
+					style="@style/KeyboardButton"
+					android:text="@string/button_key_f6" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_f7"
+					style="@style/KeyboardButton"
+					android:text="@string/button_key_f7" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_f8"
+					style="@style/KeyboardButton"
+					android:text="@string/button_key_f8" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_f9"
+					style="@style/KeyboardButton"
+					android:text="@string/button_key_f9" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_f10"
+					style="@style/KeyboardButton"
+					android:text="@string/button_key_f10" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_f11"
+					style="@style/KeyboardButton"
+					android:text="@string/button_key_f11" />
+
+				<View style="@style/KeyboardSeparator" />
+
+				<Button
+					android:id="@+id/button_f12"
+					style="@style/KeyboardButton"
+					android:text="@string/button_key_f12" />
+			</LinearLayout>
+		</HorizontalScrollView>
+
+		<View style="@style/KeyboardSeparator" />
 
 		<ImageView
 			android:id="@+id/button_keyboard"
-			android:layout_width="0px"
-			android:layout_weight="1"
-			android:layout_height="30dip"
-			android:layout_margin="0dp"
+			style="@style/KeyboardKey"
+			android:background="#55b0b0f0"
 			android:contentDescription="@string/image_description_show_keyboard"
-			android:padding="0dp"
-			android:src="@drawable/button_keyboard"
-			android:background="#55f0f0f0"
-			android:textSize="10dip"
-			/>
-
+			android:src="@drawable/button_keyboard" />
 	</LinearLayout>
+
 
 </RelativeLayout>
