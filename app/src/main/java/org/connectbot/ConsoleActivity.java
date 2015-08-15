@@ -256,7 +256,7 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 			autoHideEmulatedKeys();
 
 		terminal.bridge.tryKeyVibrate();
-		if(titleBarHide) {
+		if (titleBarHide) {
 			actionBar.hide();
 		}
 	}
