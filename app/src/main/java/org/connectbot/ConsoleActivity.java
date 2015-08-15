@@ -17,6 +17,19 @@
 
 package org.connectbot;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.connectbot.bean.HostBean;
+import org.connectbot.bean.SelectionArea;
+import org.connectbot.service.BridgeDisconnectedListener;
+import org.connectbot.service.PromptHelper;
+import org.connectbot.service.TerminalBridge;
+import org.connectbot.service.TerminalKeyListener;
+import org.connectbot.service.TerminalManager;
+import org.connectbot.util.PreferenceConstants;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -37,8 +50,8 @@ import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -76,20 +89,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.connectbot.bean.HostBean;
-import org.connectbot.bean.SelectionArea;
-import org.connectbot.service.BridgeDisconnectedListener;
-import org.connectbot.service.PromptHelper;
-import org.connectbot.service.TerminalBridge;
-import org.connectbot.service.TerminalKeyListener;
-import org.connectbot.service.TerminalManager;
-import org.connectbot.util.PreferenceConstants;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
-
 import de.mud.terminal.vt320;
 
 public class ConsoleActivity extends Activity implements BridgeDisconnectedListener {
