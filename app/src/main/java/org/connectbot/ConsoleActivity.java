@@ -342,7 +342,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 		titleBarHide = prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false);
 		if (titleBarHide) {
-			getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+			supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 		}
 
 		this.setContentView(R.layout.act_console);
