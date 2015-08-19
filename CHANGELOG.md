@@ -5,9 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased][unreleased]
 ### Added
 - Tabs are now used on large screens.
+- Keyboard shortcuts and EULA in help menu.
 
 ### Removed
 - No more intro wizard on first start.
+- No more outdated physical or virtual keyboard instructions
 
 ## [1.8.5][1.8.5] - 2014-08-11
 ### Added
