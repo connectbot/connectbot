@@ -37,7 +37,7 @@
 			android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceMedium"
 			app:tabIndicatorColor="@android:color/white"
-			android:background="#222222"/>
+			android:background="?attr/colorPrimary"/>
 
 	<TextView
 			android:id="@android:id/empty"

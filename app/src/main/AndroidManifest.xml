@@ -78,7 +78,7 @@
 			android:description="@string/service_desc" />
 
 		<activity android:name=".ConsoleActivity" android:configChanges="keyboardHidden|orientation"
-			android:theme="@style/NoTitle" android:windowSoftInputMode="stateAlwaysVisible|adjustResize"
+			android:theme="@style/Theme.AppCompat" android:windowSoftInputMode="stateAlwaysVisible|adjustResize"
 			android:launchMode="singleTop" android:hardwareAccelerated="false">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />

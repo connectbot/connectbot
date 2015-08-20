@@ -30,7 +30,6 @@ import org.connectbot.service.TerminalKeyListener;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.PreferenceConstants;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -55,6 +54,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.ClipboardManager;
 import android.util.Log;
@@ -91,7 +92,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.mud.terminal.vt320;
 
-public class ConsoleActivity extends Activity implements BridgeDisconnectedListener {
+public class ConsoleActivity extends AppCompatActivity implements BridgeDisconnectedListener {
 	public final static String TAG = "CB.ConsoleActivity";
 
 	protected static final int REQUEST_EDIT = 1;
@@ -148,7 +149,7 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 
 	private ImageView mKeyboardButton;
 
-	private ActionBarWrapper actionBar;
+	private ActionBar actionBar;
 	private boolean inActionBarMenu = false;
 	private boolean titleBarHide;
 
@@ -341,7 +342,7 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 
 		titleBarHide = prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false);
 		if (titleBarHide) {
-			getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+			supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 		}
 
 		this.setContentView(R.layout.act_console);
@@ -451,12 +452,12 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 		findViewById(R.id.button_left).setOnClickListener(emulatedKeysListener);
 		findViewById(R.id.button_right).setOnClickListener(emulatedKeysListener);
 
-		actionBar = ActionBarWrapper.getActionBar(this);
+		actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		if (titleBarHide) {
 			actionBar.hide();
 		}
-		actionBar.addOnMenuVisibilityListener(new ActionBarWrapper.OnMenuVisibilityListener() {
+		actionBar.addOnMenuVisibilityListener(new ActionBar.OnMenuVisibilityListener() {
 			public void onMenuVisibilityChanged(boolean isVisible) {
 				inActionBarMenu = isVisible;
 				if (isVisible == false) {
