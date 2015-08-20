@@ -28,10 +28,10 @@
 		android:id="@+id/terminal_overlay"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:layout_centerInParent="true"
 		android:background="#aa000000"
 		android:padding="10dip"
-		android:layout_centerInParent="true"
+		android:textAppearance="?android:attr/textAppearanceLarge"
 		/>
 
 </RelativeLayout>

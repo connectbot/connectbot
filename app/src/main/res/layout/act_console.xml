@@ -29,9 +29,9 @@
 		android:id="@android:id/empty"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
+		android:gravity="center"
 		android:text="@string/terminal_no_hosts_connected"
-		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:gravity="center"/>
+		android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 	<android.support.v4.view.ViewPager
 		android:id="@+id/console_flip"
@@ -44,29 +44,29 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
-		android:padding="5dip"
 		android:background="#80000000"
 		android:fadingEdge="horizontal"
 		android:fadingEdgeLength="25dip"
+		android:padding="5dip"
 		android:visibility="gone"
 		>
 
 		<TextView
 			android:id="@+id/console_password_instructions"
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
 			android:layout_width="fill_parent"
-			android:visibility="gone"
+			android:layout_height="wrap_content"
 			android:layout_marginBottom="5dip"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:visibility="gone"
 			/>
 
 		<EditText
 			android:id="@+id/console_password"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
+			android:layout_below="@+id/console_password_instructions"
 			android:password="true"
 			android:singleLine="true"
-			android:layout_below="@+id/console_password_instructions"
 			/>
 
 	</RelativeLayout>
@@ -76,46 +76,46 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
-		android:padding="5dip"
 		android:background="#80000000"
 		android:fadingEdge="horizontal"
 		android:fadingEdgeLength="25dip"
+		android:padding="5dip"
 		android:visibility="gone"
 		>
 
 		<TextView
 			android:id="@+id/console_prompt"
-			android:layout_height="wrap_content"
 			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
 			android:textAppearance="?android:attr/textAppearanceMedium"
 			/>
 
 		<Button
 			android:id="@+id/console_prompt_no"
-			android:text="@string/button_no"
-			android:paddingTop="5dip"
-			android:paddingBottom="10dip"
-			android:paddingLeft="40dip"
-			android:paddingRight="40dip"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_alignParentEnd="true"
 			android:layout_alignParentRight="true"
 			android:layout_below="@+id/console_prompt"
 			android:clickable="false"
+			android:paddingBottom="10dip"
+			android:paddingLeft="40dip"
+			android:paddingRight="40dip"
+			android:paddingTop="5dip"
+			android:text="@string/button_no"
 			/>
 
 		<Button
 			android:id="@+id/console_prompt_yes"
-			android:text="@string/button_yes"
-			android:paddingTop="5dip"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/console_prompt"
+			android:layout_toLeftOf="@+id/console_prompt_no"
 			android:paddingBottom="10dip"
 			android:paddingLeft="40dip"
 			android:paddingRight="40dip"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_toLeftOf="@+id/console_prompt_no"
-			android:layout_below="@+id/console_prompt"
+			android:paddingTop="5dip"
+			android:text="@string/button_yes"
 			/>
 
 	</RelativeLayout>
@@ -132,9 +132,9 @@
 		<Button
 			android:id="@+id/button_ctrl"
 			android:layout_width="0px"
-			android:layout_weight="1"
 			android:layout_height="30dip"
 			android:layout_margin="0dp"
+			android:layout_weight="1"
 			android:background="#55f0f0f0"
 			android:contentDescription="@string/image_description_toggle_control_character"
 			android:padding="0dp"
@@ -151,9 +151,9 @@
 		<Button
 			android:id="@+id/button_esc"
 			android:layout_width="0px"
-			android:layout_weight="1"
 			android:layout_height="30dip"
 			android:layout_margin="0dp"
+			android:layout_weight="1"
 			android:background="#55f0f0f0"
 			android:contentDescription="@string/image_description_send_escape_character"
 			android:padding="0dp"
@@ -170,9 +170,9 @@
 		<Button
 			android:id="@+id/button_tab"
 			android:layout_width="0px"
-			android:layout_weight="1"
 			android:layout_height="30dip"
 			android:layout_margin="0dp"
+			android:layout_weight="1"
 			android:background="#55f0f0f0"
 			android:contentDescription="@string/image_description_send_tab_character"
 			android:padding="0dp"
@@ -189,9 +189,9 @@
 		<Button
 			android:id="@+id/button_up"
 			android:layout_width="0px"
-			android:layout_weight="1"
 			android:layout_height="30dip"
 			android:layout_margin="0dp"
+			android:layout_weight="1"
 			android:background="#55f0f0f0"
 			android:contentDescription="@string/image_description_up"
 			android:padding="0dp"
@@ -208,9 +208,9 @@
 		<Button
 			android:id="@+id/button_down"
 			android:layout_width="0px"
-			android:layout_weight="1"
 			android:layout_height="30dip"
 			android:layout_margin="0dp"
+			android:layout_weight="1"
 			android:background="#55f0f0f0"
 			android:contentDescription="@string/image_description_down"
 			android:padding="0dp"
@@ -227,9 +227,9 @@
 		<Button
 			android:id="@+id/button_left"
 			android:layout_width="0px"
-			android:layout_weight="1"
 			android:layout_height="30dip"
 			android:layout_margin="0dp"
+			android:layout_weight="1"
 			android:background="#55f0f0f0"
 			android:contentDescription="@string/image_description_left"
 			android:padding="0dp"
@@ -246,9 +246,9 @@
 		<Button
 			android:id="@+id/button_right"
 			android:layout_width="0px"
-			android:layout_weight="1"
 			android:layout_height="30dip"
 			android:layout_margin="0dp"
+			android:layout_weight="1"
 			android:background="#55f0f0f0"
 			android:contentDescription="@string/image_description_right"
 			android:padding="0dp"
@@ -265,13 +265,13 @@
 		<ImageView
 			android:id="@+id/button_keyboard"
 			android:layout_width="0px"
-			android:layout_weight="1"
 			android:layout_height="30dip"
 			android:layout_margin="0dp"
+			android:layout_weight="1"
+			android:background="#55f0f0f0"
 			android:contentDescription="@string/image_description_show_keyboard"
 			android:padding="0dp"
 			android:src="@drawable/button_keyboard"
-			android:background="#55f0f0f0"
 			android:textSize="10dip"
 			/>
 

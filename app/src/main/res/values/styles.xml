@@ -18,6 +18,7 @@
  */
 -->
 <resources>
+
 	<style name="NoTitle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
 		<item name="android:windowNoTitle">true</item>
 		<item name="android:windowContentOverlay">@null</item>
