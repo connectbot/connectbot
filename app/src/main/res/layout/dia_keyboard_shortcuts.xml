@@ -38,7 +38,7 @@
 				<TextView
 					android:text="@string/console_menu_paste"
 					android:padding="3dip"
-					android:gravity="right"
+					android:gravity="end"
 					android:layout_weight="1"
 					android:textAppearance="?android:attr/textAppearanceMedium"
 					/>
@@ -54,7 +54,7 @@
 					android:text="@string/increase_font_size"
 					android:padding="3dip"
 					android:layout_weight="1"
-					android:gravity="right"
+					android:gravity="end"
 					android:textAppearance="?android:attr/textAppearanceMedium"
 					/>
 			</TableRow>
@@ -68,7 +68,7 @@
 				<TextView
 					android:text="@string/decrease_font_size"
 					android:padding="3dip"
-					android:gravity="right"
+					android:gravity="end"
 					android:layout_weight="1"
 					android:textAppearance="?android:attr/textAppearanceMedium"
 					/>
