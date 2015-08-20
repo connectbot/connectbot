@@ -19,10 +19,10 @@
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="wrap_content"
-	android:orientation="vertical"
-	android:gravity="start|center_vertical"
 	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:gravity="start|center_vertical"
+	android:orientation="vertical"
 	android:padding="10dip"
 	>
 
@@ -30,20 +30,20 @@
 		android:id="@android:id/text1"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceLarge"
-		android:text="Tunnel Nickname"
-		android:layout_alignParentTop="true"
-		android:layout_alignParentStart="true"
 		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true"
+		android:layout_alignParentTop="true"
+		android:text="Tunnel Nickname"
+		android:textAppearance="?android:attr/textAppearanceLarge"
 		/>
 
 	<TextView
 		android:id="@android:id/text2"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		android:text="Local port 8080 to 192.168.1.1:80"
 		android:layout_below="@android:id/text1"
+		android:text="Local port 8080 to 192.168.1.1:80"
+		android:textAppearance="?android:attr/textAppearanceSmall"
 		/>
 
 </RelativeLayout>

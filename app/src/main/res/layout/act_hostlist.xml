@@ -20,36 +20,36 @@
 
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
+	android:orientation="vertical"
 	>
 
 	<LinearLayout
 		android:id="@+id/quickconnect"
-                android:orientation="horizontal"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
-		android:layout_alignParentStart="true"
 		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true"
+		android:orientation="horizontal"
 		>
 
 		<Spinner
 			android:id="@+id/transport_selection"
-			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
 			/>
 
 		<EditText
 			android:id="@+id/front_quickconnect"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
+			android:ellipsize="end"
+			android:focusableInTouchMode="true"
 			android:hint="username@hostname:port"
 			android:inputType="textEmailAddress"
 			android:maxLines="1"
-			android:ellipsize="end"
-			android:focusableInTouchMode="true"
 			android:singleLine="true"/>
 	</LinearLayout>
 
@@ -65,10 +65,10 @@
 		android:id="@android:id/empty"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
+		android:layout_above="@+id/quickconnect"
+		android:gravity="center"
 		android:text="@string/list_host_empty"
 		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:gravity="center"
-		android:layout_above="@+id/quickconnect"
 		/>
 
 </RelativeLayout>

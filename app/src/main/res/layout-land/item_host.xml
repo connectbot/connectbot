@@ -18,8 +18,9 @@
  */
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
 	android:id="@android:id/content"
+	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:padding="10dip"
@@ -27,38 +28,38 @@
 
 	<ImageView
 		android:id="@android:id/icon"
-		android:src="@drawable/connected"
-		android:contentDescription="@string/image_description_connected"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
+		android:contentDescription="@string/image_description_connected"
 		android:paddingTop="5dip"
+		android:src="@drawable/connected"
 		/>
 
 	<LinearLayout
-		android:orientation="horizontal"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
+		android:orientation="horizontal"
 		>
 
-	<TextView
-		android:id="@android:id/text1"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:singleLine="true"
-		android:ellipsize="end"
-		android:textAppearance="?android:attr/textAppearanceLarge"
-		/>
+		<TextView
+			android:id="@android:id/text1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:ellipsize="end"
+			android:singleLine="true"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			/>
 
-	<TextView
-		android:id="@android:id/text2"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:paddingLeft="10dip"
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		/>
+		<TextView
+			android:id="@android:id/text2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:paddingLeft="10dip"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			/>
 
-		
+
 	</LinearLayout>
 
 </RelativeLayout>
