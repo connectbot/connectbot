@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ ConnectBot: simple, powerful, open-source SSH client for Android
+  ~ Copyright 2015 Kenny Root, Jeffrey Sharkey
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+	<ScrollView
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="1">
+
+		<TableLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:padding="24dip"
+			android:stretchColumns="1">
+			<TableRow>
+				<TextView
+					android:text="Ctrl-Shift-V"
+					android:padding="3dip"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					/>
+				<TextView
+					android:text="@string/console_menu_paste"
+					android:padding="3dip"
+					android:gravity="right"
+					android:layout_weight="1"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					/>
+			</TableRow>
+
+			<TableRow>
+				<TextView
+					android:text="Ctrl and +"
+					android:padding="3dip"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					/>
+				<TextView
+					android:text="@string/increase_font_size"
+					android:padding="3dip"
+					android:layout_weight="1"
+					android:gravity="right"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					/>
+			</TableRow>
+
+			<TableRow>
+				<TextView
+					android:text="Ctrl and -"
+					android:padding="3dip"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					/>
+				<TextView
+					android:text="@string/decrease_font_size"
+					android:padding="3dip"
+					android:gravity="right"
+					android:layout_weight="1"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					/>
+			</TableRow>
+
+		</TableLayout>
+
+	</ScrollView>
+</RelativeLayout>
