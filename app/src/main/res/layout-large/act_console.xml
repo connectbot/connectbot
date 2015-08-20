@@ -35,7 +35,7 @@
 		android:id="@+id/tabs"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="#222222"
+		android:background="?attr/colorPrimary"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		app:tabIndicatorColor="@android:color/white"/>
 
