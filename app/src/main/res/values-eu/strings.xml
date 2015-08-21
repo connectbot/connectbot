@@ -172,9 +172,6 @@
   <string name="delete_message">Ziur zaude \'%1$s\' ezabatu nahi duzula?</string>
   <string name="delete_pos">Bai, ezabatu</string>
   <string name="delete_neg">Utzi</string>
-  <string name="wizard_agree">Ados</string>
-  <string name="wizard_next">Hurrengoa</string>
-  <string name="wizard_back">Atzera</string>
   <string name="terminal_no_hosts_connected">Ez dago ostalaririk konektatuta une honetan</string>
   <string name="terminal_connecting">%1$s:%2$d-ra konektatzen %3$s bidez</string>
   <string name="terminal_sucess">Egiaztatutako ostalaria \'%1$s\' gakoa: %2$s</string>

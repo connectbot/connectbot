@@ -179,9 +179,6 @@
   <string name="delete_message">Êtes-vous sûr de vouloir supprimer \'%1$s\' ?</string>
   <string name="delete_pos">Oui, supprimer</string>
   <string name="delete_neg">Annuler</string>
-  <string name="wizard_agree">Accepter</string>
-  <string name="wizard_next">Suivant</string>
-  <string name="wizard_back">Précédent</string>
   <string name="terminal_no_hosts_connected">Aucun hôte actuellement connecté</string>
   <string name="terminal_connecting">Connexion à %1$s:%2$d via %3$s</string>
   <string name="terminal_sucess">Clé de vérification de l\'hôte \'%1$s\' : %2$s</string>

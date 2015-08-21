@@ -170,9 +170,6 @@
   <string name="delete_message">האם אכן למחוק את \'%1$s\'?</string>
   <string name="delete_pos">כן, למחוק</string>
   <string name="delete_neg">ביטול</string>
-  <string name="wizard_agree">מוסכם</string>
-  <string name="wizard_next">הבא</string>
-  <string name="wizard_back">הקודם</string>
   <string name="terminal_no_hosts_connected">אין מארחים מחוברים כרגע</string>
   <string name="terminal_connecting">מתבצעת התחברות אל %1$s:%2$d דרך %3$s</string>
   <string name="terminal_sucess">מפתח של המארח המאומת \'%1$s\'‏: %2$s</string>

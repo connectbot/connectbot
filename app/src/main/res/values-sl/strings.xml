@@ -156,9 +156,6 @@
   <string name="delete_message">Ali ste prepričani, da želite izbrisati \'%1$s\'?</string>
   <string name="delete_pos">Da, izbriši.</string>
   <string name="delete_neg">Prekliči</string>
-  <string name="wizard_agree">Se strinjam</string>
-  <string name="wizard_next">Naprej</string>
-  <string name="wizard_back">Nazaj</string>
   <string name="terminal_no_hosts_connected">Trenutno ni noben gostitelj povezan</string>
   <string name="terminal_connecting">Povezujem se na %1$s:%2$d preko %3$s</string>
   <string name="terminal_sucess">Preverjen gostitelj \'%1$s\' ključ: %2$s</string>
