@@ -19,9 +19,9 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="horizontal"
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
+	android:orientation="horizontal"
 	android:paddingLeft="10dip"
 	android:paddingRight="10dip"
 	>
@@ -30,17 +30,17 @@
 		android:id="@+id/width"
 		android:layout_width="100dip"
 		android:layout_height="wrap_content"
-		android:singleLine="true"
 		android:numeric="integer"
+		android:singleLine="true"
 		android:text="80"/>
 
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="x"
+		android:gravity="end|bottom"
 		android:paddingLeft="10dip"
 		android:paddingRight="10dip"
-		android:gravity="end|bottom"
+		android:text="x"
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		/>
 
@@ -49,7 +49,7 @@
 		android:id="@+id/height"
 		android:layout_width="100dip"
 		android:layout_height="wrap_content"
-		android:singleLine="true"
 		android:numeric="integer"
+		android:singleLine="true"
 		android:text="25"/>
 </LinearLayout>

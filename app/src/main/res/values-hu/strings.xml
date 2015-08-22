@@ -169,9 +169,6 @@
   <string name="delete_message">Biztosan törli a \'%1$s\'-t?</string>
   <string name="delete_pos">Igen, törlés</string>
   <string name="delete_neg">Mégsem</string>
-  <string name="wizard_agree">Elfogad</string>
-  <string name="wizard_next">Következő</string>
-  <string name="wizard_back">Vissza</string>
   <string name="terminal_no_hosts_connected">Nincs csatlakozva</string>
   <string name="terminal_connecting">Csatlakozás %1$s:%2$d a %3$s protokollon</string>
   <string name="terminal_sucess">Azonosított \'%1$s\' gépnév kulcsa: %2$s</string>

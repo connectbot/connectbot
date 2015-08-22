@@ -43,6 +43,8 @@
           <option name="USE_CUSTOM_SETTINGS" value="true" />
         </AndroidXmlCodeStyleSettings>
         <XML>
+          <option name="XML_ALIGN_ATTRIBUTES" value="false" />
+          <option name="XML_WHITE_SPACE_AROUND_CDATA" value="1" />
           <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
         <codeStyleSettings language="Groovy">
@@ -76,7 +78,6 @@
           <option name="FORCE_REARRANGE_MODE" value="1" />
           <indentOptions>
             <option name="INDENT_SIZE" value="8" />
-            <option name="CONTINUATION_INDENT_SIZE" value="16" />
             <option name="TAB_SIZE" value="8" />
             <option name="USE_TAB_CHARACTER" value="true" />
           </indentOptions>

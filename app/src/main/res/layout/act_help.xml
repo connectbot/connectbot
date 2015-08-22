@@ -27,29 +27,29 @@
 
 	<LinearLayout
 		android:id="@+id/topics"
-		android:orientation="vertical"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center_horizontal"
+		android:orientation="vertical"
 		>
 
 		<TextView
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/msg_version"
-			android:paddingTop="2dip"
-			android:textAppearance="?android:attr/textAppearanceSmall"
 			android:gravity="end"
 			android:paddingRight="2dip"
+			android:paddingTop="2dip"
+			android:text="@string/msg_version"
+			android:textAppearance="?android:attr/textAppearanceSmall"
 			/>
 
 		<TextView
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/help_intro"
-			android:paddingTop="2dip"
-			android:textAppearance="?android:attr/textAppearanceMedium"
 			android:gravity="center_horizontal"
+			android:paddingTop="2dip"
+			android:text="@string/help_intro"
+			android:textAppearance="?android:attr/textAppearanceMedium"
 			/>
 
 	</LinearLayout>

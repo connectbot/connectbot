@@ -171,9 +171,6 @@
   <string name="delete_message">Estas segur que vols esborrar \'%1$s\'?</string>
   <string name="delete_pos">Sí, esborra</string>
   <string name="delete_neg">Cancel·la</string>
-  <string name="wizard_agree">Accepto</string>
-  <string name="wizard_next">Següent</string>
-  <string name="wizard_back">Enrere</string>
   <string name="terminal_no_hosts_connected">No hi ha servidors connectats actualment</string>
   <string name="terminal_connecting">Connectant a %1$s:%2$d via %3$s</string>
   <string name="terminal_sucess">Clau de servidor \'%1$s\' verificada: %2$s</string>

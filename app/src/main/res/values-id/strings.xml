@@ -168,9 +168,6 @@
   <string name="delete_message">Apakah anda yakin ingin menghapus %1$s?</string>
   <string name="delete_pos">Ya, hapus</string>
   <string name="delete_neg">Batal</string>
-  <string name="wizard_agree">Setuju</string>
-  <string name="wizard_next">Selanjutnya</string>
-  <string name="wizard_back">Sebelumnya</string>
   <string name="terminal_no_hosts_connected">Tidak ada host yang saat ini terhubung</string>
   <string name="terminal_connecting">Menyambungkan ke %1$s:%2$d melalui %3$s</string>
   <string name="terminal_sucess">Host terverifikasi \'%1$s\' kunci: %2$s</string>

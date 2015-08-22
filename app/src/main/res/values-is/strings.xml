@@ -148,9 +148,6 @@
   <string name="delete_message">Ert þú viss um að þú viljir eyða \'%1$s\'?</string>
   <string name="delete_pos">Já, eyða</string>
   <string name="delete_neg">Hætta við</string>
-  <string name="wizard_agree">Samþykkja</string>
-  <string name="wizard_next">Næsta</string>
-  <string name="wizard_back">Til baka</string>
   <string name="terminal_no_hosts_connected">Engir þjónar tengdir í augnablikinu</string>
   <string name="terminal_connecting">Tengist við %1$s:%2$d með %3$s</string>
   <string name="terminal_failed">Ekki tókst að staðfesta lykil þjóns.</string>

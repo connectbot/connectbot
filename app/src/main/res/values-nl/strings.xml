@@ -169,9 +169,6 @@
   <string name="delete_message">Weet je zeker dat je \'%1$s\' wilt verwijderen?</string>
   <string name="delete_pos">Ja, verwijder</string>
   <string name="delete_neg">Annuleren</string>
-  <string name="wizard_agree">Ga akkoord</string>
-  <string name="wizard_next">Volgende</string>
-  <string name="wizard_back">Terug</string>
   <string name="terminal_no_hosts_connected">Momenteel geen hosts verbonden</string>
   <string name="terminal_connecting">Bezig met verbinden naar %1$s:%2$d via %3$s</string>
   <string name="terminal_sucess">Gecontroleerde host \'%1$s\' sleutel: %2$s</string>

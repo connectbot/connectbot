@@ -184,9 +184,6 @@
   <string name="delete_message">\'%1$s\'を削除してよろしいですか?</string>
   <string name="delete_pos">はい、削除します</string>
   <string name="delete_neg">キャンセル</string>
-  <string name="wizard_agree">同意します</string>
-  <string name="wizard_next">次へ</string>
-  <string name="wizard_back">戻る</string>
   <string name="terminal_no_hosts_connected">接続済みのホストはありません．</string>
   <string name="terminal_connecting">%1$s:%2$dに%3$sで接続しています</string>
   <string name="terminal_sucess">ホスト\'%1$s\' キー%2$s を検証しました</string>
