@@ -711,8 +711,9 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		copy = menu.add(R.string.console_menu_copy);
 		if (hardKeyboard)
 			copy.setAlphabeticShortcut('c');
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			copy.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		}
 		copy.setIcon(android.R.drawable.ic_menu_set_as);
 		copy.setEnabled(activeTerminal);
 		copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -726,8 +727,9 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		paste = menu.add(R.string.console_menu_paste);
 		if (hardKeyboard)
 			paste.setAlphabeticShortcut('v');
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			paste.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		}
 		paste.setIcon(R.drawable.ic_action_paste);
 		paste.setIcon(android.R.drawable.ic_menu_edit);
 		paste.setEnabled(clipboard.hasText() && sessionOpen);
