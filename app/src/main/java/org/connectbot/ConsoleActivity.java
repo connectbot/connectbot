@@ -246,10 +246,12 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
-			Log.d(TAG, "KeyRepeater.onTouch(" + v.getId() + ", " +
-					event.getAction() + ", " +
-					event.getActionIndex() + ", " +
-					event.getActionMasked() + ");");
+			if (BuildConfig.DEBUG) {
+				Log.d(TAG, "KeyRepeater.onTouch(" + v.getId() + ", " +
+						event.getAction() + ", " +
+						event.getActionIndex() + ", " +
+						event.getActionMasked() + ");");
+			}
 			switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 				mDown = false;
@@ -593,24 +595,30 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 			}
 		});
 
-		// Show virtual keyboard and scroll back and forth
-		final HorizontalScrollView keyboardScroll = (HorizontalScrollView) findViewById(R.id.keyboard_hscroll);
-		showEmulatedKeys();
-		keyboardScroll.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				final int xscroll = keyboardScroll.getMaxScrollAmount();
-				Log.d(TAG, "smoothScrollBy(1)");
-				keyboardScroll.smoothScrollBy(xscroll, 0);
-				keyboardScroll.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						Log.d(TAG, "smoothScrollBy(2)");
-						keyboardScroll.smoothScrollBy(-xscroll, 0);
+		if(!hardKeyboard) {
+			// Show virtual keyboard and scroll back and forth
+			final HorizontalScrollView keyboardScroll = (HorizontalScrollView) findViewById(R.id.keyboard_hscroll);
+			showEmulatedKeys();
+			keyboardScroll.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					final int xscroll = findViewById(R.id.button_f12).getRight();
+					if (BuildConfig.DEBUG) {
+						Log.d(TAG, "smoothScrollBy(toEnd[" + xscroll + "])");
 					}
-				}, 1000);
-			}
-		}, 1000);
+					keyboardScroll.smoothScrollBy(xscroll, 0);
+					keyboardScroll.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							if (BuildConfig.DEBUG) {
+								Log.d(TAG, "smoothScrollBy(toStart[" + (-xscroll) + "])");
+							}
+							keyboardScroll.smoothScrollBy(-xscroll, 0);
+						}
+					}, 1000);
+				}
+			}, 1000);
+		}
 
 		tabs = (TabLayout) findViewById(R.id.tabs);
 		if (tabs != null)
