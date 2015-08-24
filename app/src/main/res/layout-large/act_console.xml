@@ -37,6 +37,8 @@
 		android:layout_height="wrap_content"
 		android:background="?attr/colorPrimary"
 		android:textAppearance="?android:attr/textAppearanceMedium"
+		app:tabMode="scrollable"
+		app:tabContentStart="60dp"
 		app:tabIndicatorColor="@android:color/white"/>
 
 	<TextView
