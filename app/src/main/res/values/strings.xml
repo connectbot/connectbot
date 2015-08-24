@@ -555,4 +555,37 @@
 	<string name="button_key_ctrl">Ctrl</string>
 	<!-- Text for the "Tab" button in virtual keyboard. -->
 	<string name="button_key_tab">Tab</string>
+
+	<!-- Text for the "Home" button in virtual keyboard. -->
+	<string name="button_key_home">Home</string>
+	<!-- Text for the "End" button in virtual keyboard. -->
+	<string name="button_key_end">End</string>
+	<!-- Text for the "Page Up" button in virtual keyboard. -->
+	<string name="button_key_pgup">PgUp</string>
+	<!-- Text for the "Page Down" button in virtual keyboard. -->
+	<string name="button_key_pgdn">PgDn</string>
+	<!-- Text for the "F1" button in virtual keyboard. -->
+	<string name="button_key_f1">F1</string>
+	<!-- Text for the "F2" button in virtual keyboard. -->
+	<string name="button_key_f2">F2</string>
+	<!-- Text for the "F3" button in virtual keyboard. -->
+	<string name="button_key_f3">F3</string>
+	<!-- Text for the "F4" button in virtual keyboard. -->
+	<string name="button_key_f4">F4</string>
+	<!-- Text for the "F5" button in virtual keyboard. -->
+	<string name="button_key_f5">F5</string>
+	<!-- Text for the "F6" button in virtual keyboard. -->
+	<string name="button_key_f6">F6</string>
+	<!-- Text for the "F7" button in virtual keyboard. -->
+	<string name="button_key_f7">F7</string>
+	<!-- Text for the "F8" button in virtual keyboard. -->
+	<string name="button_key_f8">F8</string>
+	<!-- Text for the "F9" button in virtual keyboard. -->
+	<string name="button_key_f9">F9</string>
+	<!-- Text for the "F10" button in virtual keyboard. -->
+	<string name="button_key_f10">F10</string>
+	<!-- Text for the "F11" button in virtual keyboard. -->
+	<string name="button_key_f11">F11</string>
+	<!-- Text for the "F12" button in virtual keyboard. -->
+	<string name="button_key_f12">F12</string>
 </resources>
