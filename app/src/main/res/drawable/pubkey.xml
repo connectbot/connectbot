@@ -21,10 +21,10 @@
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<item
-		android:state_checked="true"
-		android:drawable="@drawable/pubkey_unlocked" />
+		android:drawable="@drawable/pubkey_unlocked"
+		android:state_checked="true"/>
 
 	<item
-		android:drawable="@drawable/pubkey_locked" />
+		android:drawable="@drawable/pubkey_locked"/>
 
 </selector>

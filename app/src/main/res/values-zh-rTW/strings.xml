@@ -184,9 +184,6 @@
   <string name="delete_message">您確定要刪除 \'%1$s\'</string>
   <string name="delete_pos">是，刪除</string>
   <string name="delete_neg">取消</string>
-  <string name="wizard_agree">同意</string>
-  <string name="wizard_next">下一步</string>
-  <string name="wizard_back">返回</string>
   <string name="terminal_no_hosts_connected">目前沒有已連線主機</string>
   <string name="terminal_connecting">連接到 %1$s:%2$d，通過 %3$s</string>
   <string name="terminal_sucess">驗證主機 \'%1$s\' 金鑰： %2$s</string>

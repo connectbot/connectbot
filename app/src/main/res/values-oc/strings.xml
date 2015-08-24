@@ -71,9 +71,6 @@
   <string name="list_delkey_backspace">Retorn enrèire</string>
   <string name="list_delkey_del">Suprimir</string>
   <string name="delete_neg">Anullar</string>
-  <string name="wizard_agree">Acceptar</string>
-  <string name="wizard_next">Seguent</string>
-  <string name="wizard_back">Precedent</string>
   <string name="terminal_connecting">Connexion a %1$s:%2$d via %3$s</string>
   <string name="no">Non</string>
   <string name="with_confirmation">Aprèp confirmacion</string>

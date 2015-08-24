@@ -20,166 +20,171 @@
 
 <ScrollView
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
-	android:scrollbars="vertical"
-	android:layout_width="fill_parent">
+	android:scrollbars="vertical">
 
 	<TableLayout
-		android:orientation="vertical"
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
+		android:orientation="vertical"
 		android:paddingLeft="10dip"
 		android:paddingRight="10dip"
-		android:scrollbars="vertical"
-		android:layout_width="fill_parent">
+		android:scrollbars="vertical">
 
 		<TableRow>
+
 			<TextView
-				android:text="@string/prompt_nickname"
-				android:paddingRight="10dip"
 				android:gravity="end|center_vertical"
-				android:textAppearance="?android:attr/textAppearanceMedium" />
+				android:paddingRight="10dip"
+				android:text="@string/prompt_nickname"
+				android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 			<EditText
 				android:id="@+id/nickname"
-				android:hint="@string/prompt_nickname_hint_pubkey"
 				android:layout_height="wrap_content"
-				android:singleLine="true"
-				android:layout_weight="1" />
+				android:layout_weight="1"
+				android:hint="@string/prompt_nickname_hint_pubkey"
+				android:singleLine="true"/>
 		</TableRow>
 
 		<TableRow>
+
 			<TextView
-				android:text="@string/prompt_type"
-				android:paddingRight="10dip"
-				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_gravity="center_vertical"
 				android:gravity="bottom|end"
-				android:layout_gravity="center_vertical" />
+				android:paddingRight="10dip"
+				android:text="@string/prompt_type"
+				android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 			<RadioGroup
 				android:id="@+id/key_type"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:orientation="horizontal"
-				android:checkedButton="@+id/rsa">
+				android:checkedButton="@+id/rsa"
+				android:orientation="horizontal">
 
 				<RadioButton
 					android:id="@+id/rsa"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:text="RSA"
-					android:paddingRight="3dip"/>
+					android:paddingRight="3dip"
+					android:text="RSA"/>
 
 				<RadioButton
 					android:id="@+id/dsa"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:text="DSA"
-					android:paddingRight="3dip"/>
+					android:paddingRight="3dip"
+					android:text="DSA"/>
 
 				<RadioButton
 					android:id="@+id/ec"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:text="EC" />
+					android:text="EC"/>
 			</RadioGroup>
 		</TableRow>
 
 		<TableRow>
+
 			<TextView
-				android:text="@string/prompt_bits"
+				android:gravity="end|center_vertical"
 				android:paddingRight="10dip"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				android:gravity="end|center_vertical" />
+				android:text="@string/prompt_bits"
+				android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 			<EditText
 				android:id="@+id/bits"
-				android:inputType="number"
 				android:layout_height="wrap_content"
-				android:text="1024"
+				android:layout_weight="1"
+				android:inputType="number"
 				android:singleLine="true"
-				android:layout_weight="1" />
+				android:text="1024"/>
 		</TableRow>
 
 		<SeekBar
-			android:layout_height="wrap_content"
 			android:id="@+id/bits_slider"
 			android:layout_width="fill_parent"
-			android:paddingBottom="10dip"
+			android:layout_height="wrap_content"
 			android:max="3328"
-			android:progress="256" />
+			android:paddingBottom="10dip"
+			android:progress="256"/>
 
 		<TextView
-			android:text="@string/prompt_password_can_be_blank"
-			android:gravity="start"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_width="wrap_content" />
+			android:gravity="start"
+			android:text="@string/prompt_password_can_be_blank"/>
 
 		<TableRow>
+
 			<TextView
-				android:paddingRight="10dip"
-				android:gravity="end|center_vertical"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				android:text="@string/prompt_password" />
+				android:gravity="end|center_vertical"
+				android:paddingRight="10dip"
+				android:text="@string/prompt_password"
+				android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 			<EditText
 				android:id="@+id/password1"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_weight="1"
 				android:password="true"
-				android:singleLine="true"
-				android:layout_weight="1" />
+				android:singleLine="true"/>
 		</TableRow>
 
 		<TableRow android:paddingBottom="6dip">
+
 			<LinearLayout
-				android:paddingRight="10dip"
+				android:gravity="end|center_vertical"
 				android:orientation="vertical"
-				android:gravity="end|center_vertical">
+				android:paddingRight="10dip">
 
 				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
 					android:gravity="end|bottom"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textAppearance="?android:attr/textAppearanceMedium"
-					android:text="@string/prompt_password" />
+					android:text="@string/prompt_password"
+					android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 				<TextView
-					android:gravity="end|top"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textAppearance="?android:attr/textAppearanceSmall"
-					android:text="@string/prompt_again" />
+					android:gravity="end|top"
+					android:text="@string/prompt_again"
+					android:textAppearance="?android:attr/textAppearanceSmall"/>
 			</LinearLayout>
 
 			<EditText
 				android:id="@+id/password2"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_weight="1"
 				android:password="true"
-				android:singleLine="true"
-				android:layout_weight="1" />
+				android:singleLine="true"/>
 		</TableRow>
 
 		<CheckBox
+			android:id="@+id/unlock_at_startup"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:id="@+id/unlock_at_startup"
-			android:text="@string/pubkey_load_on_start" />
+			android:text="@string/pubkey_load_on_start"/>
 
 		<CheckBox
+			android:id="@+id/confirm_use"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:id="@+id/confirm_use"
-			android:text="@string/pubkey_confirm_use" />
+			android:text="@string/pubkey_confirm_use"/>
 
 		<Button
+			android:id="@+id/save"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:id="@+id/save"
-			android:text="@string/pubkey_generate"
+			android:layout_marginTop="6dip"
 			android:enabled="false"
-			android:layout_marginTop="6dip"/>
+			android:text="@string/pubkey_generate"/>
 	</TableLayout>
 </ScrollView>

@@ -172,9 +172,6 @@
   <string name="delete_message">Вы уверены, что хотите удалить \'%1$s\'?</string>
   <string name="delete_pos">Да, удалить</string>
   <string name="delete_neg">Отменить</string>
-  <string name="wizard_agree">Соглашаюсь</string>
-  <string name="wizard_next">Далее</string>
-  <string name="wizard_back">Назад</string>
   <string name="terminal_no_hosts_connected">Нет подключенных узлов</string>
   <string name="terminal_connecting">Подключение к %1$s:%2$d через %3$s</string>
   <string name="terminal_sucess">Проверенный узел \'%1$s\' ключ: %2$s</string>

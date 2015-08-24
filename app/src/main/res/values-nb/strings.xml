@@ -169,9 +169,6 @@
   <string name="delete_message">Er du sikker på at du vil slette \'%1$s\'?</string>
   <string name="delete_pos">Ja, slett</string>
   <string name="delete_neg">Avbryt</string>
-  <string name="wizard_agree">Godta</string>
-  <string name="wizard_next">Neste</string>
-  <string name="wizard_back">Tilbake</string>
   <string name="terminal_no_hosts_connected">Ingen verter tilkoblet for øyeblikket</string>
   <string name="terminal_connecting">Kobler til %1$s:%2$d via %3$s</string>
   <string name="terminal_sucess">Verifiserte vert \'%1$s\' sin nøkkel: %2$s</string>

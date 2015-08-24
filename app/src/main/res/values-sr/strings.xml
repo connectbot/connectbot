@@ -184,9 +184,6 @@
   <string name="delete_message">Желите ли заиста да обришете „%1$s“?</string>
   <string name="delete_pos">Да, обриши</string>
   <string name="delete_neg">Одустани</string>
-  <string name="wizard_agree">Прихваћам</string>
-  <string name="wizard_next">Следеће</string>
-  <string name="wizard_back">Назад</string>
   <string name="terminal_no_hosts_connected">Нема повезаних домаћина тренутно</string>
   <string name="terminal_connecting">Повезујем се са %1$s:%2$d преко %3$s</string>
   <string name="terminal_sucess">Verified host \'%1$s\' key: %2$s</string>

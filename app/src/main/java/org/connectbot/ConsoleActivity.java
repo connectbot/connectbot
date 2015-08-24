@@ -30,7 +30,6 @@ import org.connectbot.service.TerminalKeyListener;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.PreferenceConstants;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -55,6 +54,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.ClipboardManager;
 import android.util.Log;
@@ -83,6 +84,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -91,14 +93,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.mud.terminal.vt320;
 
-public class ConsoleActivity extends Activity implements BridgeDisconnectedListener {
+public class ConsoleActivity extends AppCompatActivity implements BridgeDisconnectedListener {
 	public final static String TAG = "CB.ConsoleActivity";
 
 	protected static final int REQUEST_EDIT = 1;
 
 	private static final int CLICK_TIME = 400;
 	private static final float MAX_CLICK_DISTANCE = 25f;
-	private static final int KEYBOARD_DISPLAY_TIME = 1500;
+	private static final int KEYBOARD_DISPLAY_TIME = 3000;
+	private static final int KEYBOARD_REPEAT_INITIAL = 500;
+	private static final int KEYBOARD_REPEAT = 100;
 
 	protected ViewPager pager = null;
 	protected TabLayout tabs = null;
@@ -148,7 +152,7 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 
 	private ImageView mKeyboardButton;
 
-	private ActionBarWrapper actionBar;
+	private ActionBar actionBar;
 	private boolean inActionBarMenu = false;
 	private boolean titleBarHide;
 
@@ -215,38 +219,143 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 		}
 	};
 
+	protected Handler keyRepeatHandler = new Handler();
+
+
+	/**
+	 * Handle repeatable virtual keys and touch events
+	 */
+	public class KeyRepeater implements Runnable, OnTouchListener {
+		private View mView;
+		private Handler mHandler;
+		private boolean mDown;
+
+		public KeyRepeater(Handler handler, View view) {
+			mView = view;
+			mHandler = handler;
+			mView.setOnTouchListener(this);
+			mDown = false;
+		}
+
+		@Override
+		public void run() {
+			mDown = true;
+			mHandler.removeCallbacks(this);
+			mHandler.postDelayed(this, KEYBOARD_REPEAT);
+			onEmulatedKeyClicked(mView);
+		}
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			if (BuildConfig.DEBUG) {
+				Log.d(TAG, "KeyRepeater.onTouch(" + v.getId() + ", " +
+						event.getAction() + ", " +
+						event.getActionIndex() + ", " +
+						event.getActionMasked() + ");");
+			}
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				mDown = false;
+				mHandler.postDelayed(this, KEYBOARD_REPEAT_INITIAL);
+				return (true);
+
+			case MotionEvent.ACTION_CANCEL:
+				keyRepeatHandler.removeCallbacks(this);
+				return (true);
+
+			case MotionEvent.ACTION_UP:
+				keyRepeatHandler.removeCallbacks(this);
+				if (!mDown) {
+					onEmulatedKeyClicked(mView);
+				}
+				return (true);
+			}
+			return false;
+		}
+	}
+
 	private void onEmulatedKeyClicked(View v) {
 		TerminalView terminal = adapter.getCurrentTerminalView();
 		if (terminal == null) return;
 
 		TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-		boolean hideKeys = true;
+		boolean hideKeys = false;
 
-		switch (v.getId())	{
+		switch (v.getId()) {
 		case R.id.button_ctrl:
 			handler.metaPress(TerminalKeyListener.OUR_CTRL_ON, true);
+			hideKeys = true;
 			break;
 		case R.id.button_esc:
 			handler.sendEscape();
+			hideKeys = true;
 			break;
 		case R.id.button_tab:
 			handler.sendTab();
+			hideKeys = true;
 			break;
+
 		case R.id.button_up:
 			handler.sendPressedKey(vt320.KEY_UP);
-			hideKeys = false;
 			break;
 		case R.id.button_down:
 			handler.sendPressedKey(vt320.KEY_DOWN);
-			hideKeys = false;
 			break;
 		case R.id.button_left:
 			handler.sendPressedKey(vt320.KEY_LEFT);
-			hideKeys = false;
 			break;
 		case R.id.button_right:
 			handler.sendPressedKey(vt320.KEY_RIGHT);
-			hideKeys = false;
+			break;
+
+		case R.id.button_home:
+			handler.sendPressedKey(vt320.KEY_HOME);
+			break;
+		case R.id.button_end:
+			handler.sendPressedKey(vt320.KEY_END);
+			break;
+		case R.id.button_pgup:
+			handler.sendPressedKey(vt320.KEY_PAGE_UP);
+			break;
+		case R.id.button_pgdn:
+			handler.sendPressedKey(vt320.KEY_PAGE_DOWN);
+			break;
+
+		case R.id.button_f1:
+			handler.sendPressedKey(vt320.KEY_F1);
+			break;
+		case R.id.button_f2:
+			handler.sendPressedKey(vt320.KEY_F2);
+			break;
+		case R.id.button_f3:
+			handler.sendPressedKey(vt320.KEY_F3);
+			break;
+		case R.id.button_f4:
+			handler.sendPressedKey(vt320.KEY_F4);
+			break;
+		case R.id.button_f5:
+			handler.sendPressedKey(vt320.KEY_F5);
+			break;
+		case R.id.button_f6:
+			handler.sendPressedKey(vt320.KEY_F6);
+			break;
+		case R.id.button_f7:
+			handler.sendPressedKey(vt320.KEY_F7);
+			break;
+		case R.id.button_f8:
+			handler.sendPressedKey(vt320.KEY_F8);
+			break;
+		case R.id.button_f9:
+			handler.sendPressedKey(vt320.KEY_F9);
+			break;
+		case R.id.button_f10:
+			handler.sendPressedKey(vt320.KEY_F10);
+			break;
+		case R.id.button_f11:
+			handler.sendPressedKey(vt320.KEY_F11);
+			break;
+		case R.id.button_f12:
+			handler.sendPressedKey(vt320.KEY_F12);
 			break;
 		}
 
@@ -256,6 +365,9 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 			autoHideEmulatedKeys();
 
 		terminal.bridge.tryKeyVibrate();
+		if (titleBarHide) {
+			actionBar.hide();
+		}
 	}
 
 	/**
@@ -341,7 +453,7 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 
 		titleBarHide = prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false);
 		if (titleBarHide) {
-			getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+			supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 		}
 
 		this.setContentView(R.layout.act_console);
@@ -446,17 +558,36 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 		findViewById(R.id.button_ctrl).setOnClickListener(emulatedKeysListener);
 		findViewById(R.id.button_esc).setOnClickListener(emulatedKeysListener);
 		findViewById(R.id.button_tab).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_up).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_down).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_left).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_right).setOnClickListener(emulatedKeysListener);
 
-		actionBar = ActionBarWrapper.getActionBar(this);
+		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_up));
+		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_down));
+		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_left));
+		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_right));
+
+		findViewById(R.id.button_home).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_end).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_pgup).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_pgdn).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f1).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f2).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f3).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f4).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f5).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f6).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f7).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f8).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f9).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f10).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f11).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f12).setOnClickListener(emulatedKeysListener);
+
+
+		actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		if (titleBarHide) {
 			actionBar.hide();
 		}
-		actionBar.addOnMenuVisibilityListener(new ActionBarWrapper.OnMenuVisibilityListener() {
+		actionBar.addOnMenuVisibilityListener(new ActionBar.OnMenuVisibilityListener() {
 			public void onMenuVisibilityChanged(boolean isVisible) {
 				inActionBarMenu = isVisible;
 				if (isVisible == false) {
@@ -464,6 +595,31 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 				}
 			}
 		});
+
+		if (!hardKeyboard) {
+			// Show virtual keyboard and scroll back and forth
+			final HorizontalScrollView keyboardScroll = (HorizontalScrollView) findViewById(R.id.keyboard_hscroll);
+			showEmulatedKeys();
+			keyboardScroll.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					final int xscroll = findViewById(R.id.button_f12).getRight();
+					if (BuildConfig.DEBUG) {
+						Log.d(TAG, "smoothScrollBy(toEnd[" + xscroll + "])");
+					}
+					keyboardScroll.smoothScrollBy(xscroll, 0);
+					keyboardScroll.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							if (BuildConfig.DEBUG) {
+								Log.d(TAG, "smoothScrollBy(toStart[" + (-xscroll) + "])");
+							}
+							keyboardScroll.smoothScrollBy(-xscroll, 0);
+						}
+					}, 1000);
+				}
+			}, 1000);
+		}
 
 		tabs = (TabLayout) findViewById(R.id.tabs);
 		if (tabs != null)
@@ -786,26 +942,26 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 
 				final View resizeView = inflater.inflate(R.layout.dia_resize, null, false);
 				new AlertDialog.Builder(ConsoleActivity.this)
-					.setView(resizeView)
-					.setPositiveButton(R.string.button_resize, new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							int width, height;
-							try {
-								width = Integer.parseInt(((EditText) resizeView
-										.findViewById(R.id.width))
-										.getText().toString());
-								height = Integer.parseInt(((EditText) resizeView
-										.findViewById(R.id.height))
-										.getText().toString());
-							} catch (NumberFormatException nfe) {
-								// TODO change this to a real dialog where we can
-								// make the input boxes turn red to indicate an error.
-								return;
-							}
+						.setView(resizeView)
+						.setPositiveButton(R.string.button_resize, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								int width, height;
+								try {
+									width = Integer.parseInt(((EditText) resizeView
+											.findViewById(R.id.width))
+											.getText().toString());
+									height = Integer.parseInt(((EditText) resizeView
+											.findViewById(R.id.height))
+											.getText().toString());
+								} catch (NumberFormatException nfe) {
+									// TODO change this to a real dialog where we can
+									// make the input boxes turn red to indicate an error.
+									return;
+								}
 
-							terminalView.forceSize(width, height);
-						}
-					}).setNegativeButton(android.R.string.cancel, null).create().show();
+								terminalView.forceSize(width, height);
+							}
+						}).setNegativeButton(android.R.string.cancel, null).create().show();
 
 				return true;
 			}
@@ -850,13 +1006,13 @@ public class ConsoleActivity extends Activity implements BridgeDisconnectedListe
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				Intent intent = new Intent(this, HostListActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
+		case android.R.id.home:
+			Intent intent = new Intent(this, HostListActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 

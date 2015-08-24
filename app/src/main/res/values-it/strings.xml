@@ -171,9 +171,6 @@
   <string name="delete_message">Sei sicuro di voler eliminare \'%1$s\'?</string>
   <string name="delete_pos">Sì, elimina</string>
   <string name="delete_neg">Annulla</string>
-  <string name="wizard_agree">Accetto</string>
-  <string name="wizard_next">Successiva</string>
-  <string name="wizard_back">Precedente</string>
   <string name="terminal_no_hosts_connected">Nessun host attualmente connesso</string>
   <string name="terminal_connecting">Connessione a %1$s:%2$d via %3$s</string>
   <string name="terminal_sucess">Host verificato \'%1$s\' chiave: %2$s</string>

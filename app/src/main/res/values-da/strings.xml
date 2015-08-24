@@ -169,9 +169,6 @@
   <string name="delete_message">Er du sikker på at du vil slette \'%1$s\'?</string>
   <string name="delete_pos">Ja, slet</string>
   <string name="delete_neg">Afbryd</string>
-  <string name="wizard_agree">Godkend</string>
-  <string name="wizard_next">Næste</string>
-  <string name="wizard_back">Tilbage</string>
   <string name="terminal_no_hosts_connected">Ingen forbindelser aktive i øjeblikket</string>
   <string name="terminal_connecting">Forbinder til %1$s:%2$d via %3$s</string>
   <string name="terminal_sucess">Verificeret vært \'%1$s\' nøgle: %2$s</string>
