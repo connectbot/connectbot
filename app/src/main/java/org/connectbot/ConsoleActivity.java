@@ -596,7 +596,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 		});
 
-		if(!hardKeyboard) {
+		if (!hardKeyboard) {
 			// Show virtual keyboard and scroll back and forth
 			final HorizontalScrollView keyboardScroll = (HorizontalScrollView) findViewById(R.id.keyboard_hscroll);
 			showEmulatedKeys();
