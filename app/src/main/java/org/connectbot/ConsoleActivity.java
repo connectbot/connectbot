@@ -623,7 +623,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 		tabs = (TabLayout) findViewById(R.id.tabs);
 		if (tabs != null)
-			tabs.setupWithViewPager(pager);
+			setupTabLayoutWithViewPager();
 
 		// detect fling gestures to switch between terminals
 		final GestureDetector detect = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
@@ -796,6 +796,32 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 
 		});
+	}
+
+	/**
+	 * Ties the {@link TabLayout} to the {@link ViewPager}.
+	 *
+	 * <p>This method will:
+	 * <ul>
+	 *     <li>Add a {@link ViewPager.OnPageChangeListener} that will forward events to
+	 *     this TabLayout.</li>
+	 *     <li>Populate the TabLayout's tabs from the ViewPager's {@link PagerAdapter}.</li>
+	 *     <li>Set our {@link TabLayout.OnTabSelectedListener} which will forward
+	 *     selected events to the ViewPager</li>
+	 * </ul>
+	 * </p>
+	 */
+	public void setupTabLayoutWithViewPager() {
+		tabs.setTabsFromPagerAdapter(adapter);
+		pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
+		tabs.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager));
+
+		if (adapter.getCount() > 0) {
+			final int curItem = pager.getCurrentItem();
+			if (tabs.getSelectedTabPosition() != curItem) {
+				tabs.getTabAt(curItem).select();
+			}
+		}
 	}
 
 	/**
