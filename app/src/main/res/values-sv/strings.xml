@@ -169,9 +169,6 @@
   <string name="delete_message">Är du säker att du vill ta bort \'%1$s\'?</string>
   <string name="delete_pos">Ja, ta bort</string>
   <string name="delete_neg">Avbryt</string>
-  <string name="wizard_agree">Godkänn</string>
-  <string name="wizard_next">Nästa</string>
-  <string name="wizard_back">Tillbaka</string>
   <string name="terminal_no_hosts_connected">Inga värdar anslutna</string>
   <string name="terminal_connecting">Ansluter till %1$s:%2$d via %3$s</string>
   <string name="terminal_sucess">Verifierad värd \'%1$s\' nyckel: %2$s</string>

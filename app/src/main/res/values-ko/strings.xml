@@ -156,9 +156,6 @@
   <string name="list_delkey_del">삭제</string>
   <string name="delete_pos">예, 삭제</string>
   <string name="delete_neg">취소</string>
-  <string name="wizard_agree">동의</string>
-  <string name="wizard_next">다음</string>
-  <string name="wizard_back">뒤로</string>
   <string name="terminal_no_hosts_connected">현재 연결된 호스트가 없음</string>
   <string name="terminal_connecting">%3$s(으)로 %1$s:%2$d에 연결 중</string>
   <string name="terminal_failed">호스트 키를 확인할 수 없습니다.</string>

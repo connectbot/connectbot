@@ -20,10 +20,12 @@ package org.connectbot;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -38,6 +40,9 @@ public class HelpActivity extends Activity {
 
 	public final static String HELPDIR = "help";
 	public final static String SUFFIX = ".html";
+
+	private LayoutInflater inflater = null;
+
 
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -73,5 +78,29 @@ public class HelpActivity extends Activity {
 			// TODO Auto-generated catch block
 			Log.e(TAG, "couldn't get list of help assets", e);
 		}
+
+		inflater = LayoutInflater.from(this);
+		Button shortcutsButton = new Button(this);
+		shortcutsButton.setText(getResources().getString(R.string.keyboard_shortcuts));
+		shortcutsButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				final View shortcuts = inflater.inflate(R.layout.dia_keyboard_shortcuts, null, false);
+				new AlertDialog.Builder(HelpActivity.this)
+						.setView(shortcuts)
+						.setTitle(R.string.keyboard_shortcuts)
+						.show();
+			}
+		});
+		content.addView(shortcutsButton);
+
+		Button eulaButton = new Button(this);
+		eulaButton.setText(getResources().getString(R.string.terms_and_conditions));
+		eulaButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(HelpActivity.this, EulaActivity.class);
+				HelpActivity.this.startActivity(intent);
+			}
+		});
+		content.addView(eulaButton);
 	}
 }

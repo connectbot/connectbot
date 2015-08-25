@@ -437,8 +437,7 @@ public class TerminalBridge implements VDUDisplay {
 
 		if (immediate || (host.getQuickDisconnect() && !host.getStayConnected())) {
 			awaitingClose = true;
-			if (disconnectListener != null)
-				disconnectListener.onDisconnected(TerminalBridge.this);
+			triggerDisconnectListener();
 		} else {
 			{
 				final String line = manager.res.getString(R.string.alert_disconnect_msg);
@@ -454,16 +453,32 @@ public class TerminalBridge implements VDUDisplay {
 							manager.res.getString(R.string.prompt_host_disconnected));
 					if (result == null || result.booleanValue()) {
 						awaitingClose = true;
-
-						// Tell the TerminalManager that we can be destroyed now.
-						if (disconnectListener != null)
-							disconnectListener.onDisconnected(TerminalBridge.this);
+						triggerDisconnectListener();
 					}
 				}
 			});
 			disconnectPromptThread.setName("DisconnectPrompt");
 			disconnectPromptThread.setDaemon(true);
 			disconnectPromptThread.start();
+		}
+	}
+
+	/**
+	 * Tells the TerminalManager that we can be destroyed now.
+	 */
+	private void triggerDisconnectListener() {
+		if (disconnectListener != null) {
+			// The disconnect listener should be run on the main thread if possible.
+			if (parent != null) {
+				parent.post(new Runnable() {
+					@Override
+					public void run() {
+						disconnectListener.onDisconnected(TerminalBridge.this);
+					}
+				});
+			} else {
+				disconnectListener.onDisconnected(TerminalBridge.this);
+			}
 		}
 	}
 

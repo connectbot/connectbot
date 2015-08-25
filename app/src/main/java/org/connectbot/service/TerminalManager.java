@@ -54,9 +54,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Binder;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -81,7 +79,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	public List<HostBean> disconnected = new LinkedList<HostBean>();
 
-	public Handler disconnectHandler = null;
+	public BridgeDisconnectedListener disconnectListener = null;
 
 	public Map<String, KeyHolder> loadedKeypairs = new HashMap<String, KeyHolder>();
 
@@ -329,6 +327,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 */
 	public void onDisconnected(TerminalBridge bridge) {
 		boolean shouldHideRunningNotification = false;
+		Log.d(TAG, "Bridge Disconnected. Removing it.");
 
 		synchronized (bridges) {
 			// remove this bridge from our list
@@ -345,6 +344,10 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 					mPendingReconnect.size() == 0) {
 				shouldHideRunningNotification = true;
 			}
+
+			// pass notification back up to gui
+			if (disconnectListener != null)
+				disconnectListener.onDisconnected(bridge);
 		}
 
 		synchronized (disconnected) {
@@ -354,10 +357,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		if (shouldHideRunningNotification) {
 			ConnectionNotifier.getInstance().hideRunningNotification(this);
 		}
-
-		// pass notification back up to gui
-		if (disconnectHandler != null)
-			Message.obtain(disconnectHandler, -1, bridge).sendToTarget();
 	}
 
 	public boolean isKeyLoaded(String nickname) {

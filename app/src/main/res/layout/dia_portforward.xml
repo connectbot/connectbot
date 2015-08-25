@@ -19,8 +19,8 @@
 -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="fill_parent"
 	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
 	android:scrollbars="vertical"
 	>
 
@@ -32,72 +32,77 @@
 		>
 
 		<TableRow>
+
 			<TextView
-				android:text="@string/prompt_nickname"
-				android:paddingRight="10dip"
 				android:gravity="end|center_vertical"
+				android:paddingRight="10dip"
+				android:text="@string/prompt_nickname"
 				android:textAppearance="?android:attr/textAppearanceMedium"
 				/>
 
 			<EditText
 				android:id="@+id/nickname"
-				android:hint="Internal Webserver"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:singleLine="true"
 				android:layout_weight="1"
+				android:hint="Internal Webserver"
+				android:singleLine="true"
 				/>
 		</TableRow>
 
 		<TableRow>
+
 			<TextView
-				android:text="@string/prompt_type"
-				android:paddingRight="10dip"
 				android:gravity="end|center_vertical"
+				android:paddingRight="10dip"
+				android:text="@string/prompt_type"
 				android:textAppearance="?android:attr/textAppearanceMedium"
 				/>
 
-			<Spinner android:id="@+id/portforward_type"
+			<Spinner
+				android:id="@+id/portforward_type"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
+				android:layout_weight="1"
 				android:entries="@array/list_portforward_types"
 				android:prompt="@string/prompt_type"
-				android:layout_weight="1"
 				/>
 		</TableRow>
 
 		<TableRow>
+
 			<TextView
-				android:text="@string/prompt_source_port"
-				android:paddingRight="10dip"
 				android:gravity="end|center_vertical"
+				android:paddingRight="10dip"
+				android:text="@string/prompt_source_port"
 				android:textAppearance="?android:attr/textAppearanceMedium"
 				/>
 
 			<EditText
 				android:id="@+id/portforward_source"
-				android:hint="8080"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
+				android:hint="8080"
 				android:inputType="number"
 				/>
 		</TableRow>
 
 		<TableRow>
+
 			<TextView
-				android:text="@string/prompt_destination"
-				android:paddingRight="10dip"
 				android:gravity="end|center_vertical"
+				android:paddingRight="10dip"
+				android:text="@string/prompt_destination"
 				android:textAppearance="?android:attr/textAppearanceMedium"
 				/>
 
 			<EditText
 				android:id="@+id/portforward_destination"
-				android:hint="localhost:80"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
+				android:hint="localhost:80"
 				android:inputType="textEmailAddress"
 				/>
 		</TableRow>

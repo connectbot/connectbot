@@ -171,9 +171,6 @@
   <string name="delete_message">\'%1$s\' silinecek onaylıyor musunuz?</string>
   <string name="delete_pos">Evet, sil</string>
   <string name="delete_neg">İptal Et</string>
-  <string name="wizard_agree">Kabul et</string>
-  <string name="wizard_next">İleri</string>
-  <string name="wizard_back">Geri dön</string>
   <string name="terminal_no_hosts_connected">Hiçbir sunucuya bağlanılmadı</string>
   <string name="terminal_connecting">%3$s ile %1$s:%2$d bağlanıyor</string>
   <string name="terminal_sucess">Host doğrulaması \'%1$s\' anahtar: %2$s</string>

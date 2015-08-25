@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2007 Kenny Root, Jeffrey Sharkey
+ * Copyright 2015 Kenny Root, Jeffrey Sharkey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
--->
-<resources>
-	<style name="NoTitle" parent="android:Theme.DeviceDefault">
-		<item name="android:windowContentOverlay">@null</item>
-		<item name="android:actionBarStyle">@style/SolidActionBar</item>
-	</style>
 
-	<style name="SolidActionBar" parent="android:Widget.Holo.ActionBar">
-		<item name="android:background">#222222</item>
-	</style>
-</resources>
+package org.connectbot;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+public class EulaActivity extends Activity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.act_eula);
+
+		this.setTitle(String.format("%s: %s",
+				getResources().getText(R.string.app_name),
+				getResources().getText(R.string.terms_and_conditions)));
+	}
+}

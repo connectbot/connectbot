@@ -166,9 +166,6 @@
   <string name="delete_message">Určitě chcete smazat \'%1$s\'?</string>
   <string name="delete_pos">Ano, smazat</string>
   <string name="delete_neg">Zrušit</string>
-  <string name="wizard_agree">Souhlasím</string>
-  <string name="wizard_next">Další</string>
-  <string name="wizard_back">Zpět</string>
   <string name="terminal_no_hosts_connected">Žádný host není připojený</string>
   <string name="terminal_connecting">Připojování k %1$s:%2$d přes %3$s</string>
   <string name="terminal_failed">Selhalo ověření klíče hosta</string>

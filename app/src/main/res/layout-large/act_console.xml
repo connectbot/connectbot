@@ -25,10 +25,27 @@
 	android:layout_height="fill_parent"
 	android:background="#ff000000">
 
+	<android.support.v7.widget.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+
+	<android.support.design.widget.TabLayout
+		android:id="@+id/tabs"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="?attr/colorPrimary"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		app:tabMode="scrollable"
+		app:tabContentStart="60dp"
+		app:tabIndicatorColor="@android:color/white"/>
+
 	<TextView
 		android:id="@android:id/empty"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
+		android:layout_below="@id/toolbar"
 		android:gravity="center"
 		android:text="@string/terminal_no_hosts_connected"
 		android:textAppearance="?android:attr/textAppearanceMedium"/>
@@ -37,6 +54,7 @@
 		android:id="@+id/console_flip"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
+		android:layout_below="@id/toolbar"
 		/>
 
 	<RelativeLayout
@@ -149,7 +167,6 @@
 					style="@style/KeyboardButton"
 					android:contentDescription="@string/image_description_toggle_control_character"
 					android:text="@string/button_key_ctrl"/>
-
 				<View style="@style/KeyboardSeparator"/>
 
 				<Button
@@ -321,6 +338,5 @@
 			android:contentDescription="@string/image_description_show_keyboard"
 			android:src="@drawable/button_keyboard"/>
 	</LinearLayout>
-
 
 </RelativeLayout>

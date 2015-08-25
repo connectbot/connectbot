@@ -21,14 +21,14 @@
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<item
-		android:state_checked="true"
-		android:drawable="@android:drawable/presence_online" />
+		android:drawable="@android:drawable/presence_online"
+		android:state_checked="true"/>
 
 	<item
-		android:state_expanded="true"
-		android:drawable="@android:drawable/presence_busy" />
+		android:drawable="@android:drawable/presence_busy"
+		android:state_expanded="true"/>
 
 	<item
-		android:drawable="@android:drawable/presence_invisible" />
+		android:drawable="@android:drawable/presence_invisible"/>
 
 </selector>

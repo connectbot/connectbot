@@ -26,7 +26,6 @@ import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.ComponentName;
@@ -69,8 +68,6 @@ public class HostListActivity extends ListActivity {
 	public static final String DISCONNECT_ACTION = "org.connectbot.action.DISCONNECT";
 
 	public final static int REQUEST_EDIT = 1;
-
-	public final static int REQUEST_EULA = 2;
 
 	protected TerminalManager bound = null;
 
@@ -175,17 +172,7 @@ public class HostListActivity extends ListActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == REQUEST_EULA) {
-			if (resultCode == Activity.RESULT_OK) {
-				// yay they agreed, so store that info
-				Editor edit = prefs.edit();
-				edit.putBoolean(PreferenceConstants.EULA, true);
-				edit.commit();
-			} else {
-				// user didnt agree, so close
-				this.finish();
-			}
-		} else if (requestCode == REQUEST_EDIT) {
+		if (requestCode == REQUEST_EDIT) {
 			this.updateList();
 		}
 	}
@@ -222,12 +209,6 @@ public class HostListActivity extends ListActivity {
 			if (doCommit) {
 				editor.commit();
 			}
-		}
-
-		// check for eula agreement
-		boolean agreed = prefs.getBoolean(PreferenceConstants.EULA, false);
-		if (!agreed) {
-			this.startActivityForResult(new Intent(this, WizardActivity.class), REQUEST_EULA);
 		}
 
 		this.makingShortcut = Intent.ACTION_CREATE_SHORTCUT.equals(getIntent().getAction())

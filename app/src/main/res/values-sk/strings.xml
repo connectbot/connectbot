@@ -169,9 +169,6 @@
   <string name="delete_message">Naozaj chcete zmazať \'%1$s\'?</string>
   <string name="delete_pos">Áno, vymazať</string>
   <string name="delete_neg">Zrušiť</string>
-  <string name="wizard_agree">Súhlasím</string>
-  <string name="wizard_next">Ďalej</string>
-  <string name="wizard_back">Späť</string>
   <string name="terminal_no_hosts_connected">Žiadny hostiteľ nie je pripijený</string>
   <string name="terminal_connecting">Pripájanie k %1$s:%2$d cez %3$s</string>
   <string name="terminal_sucess">Hostiteľ overený \'%1$s\' kľúč: %2$s</string>

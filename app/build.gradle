@@ -41,7 +41,7 @@ android {
 
     defaultConfig {
         applicationId "org.connectbot"
-        minSdkVersion 4
+        minSdkVersion 8
         targetSdkVersion 22
 
         ndk {
@@ -64,6 +64,8 @@ android {
 
     dependencies {
         compile "com.android.support:support-v4:22.2.1"
+        compile "com.android.support:appcompat-v7:22.2.1"
+        compile "com.android.support:design:22.2.1"
     }
 
     buildTypes {
@@ -79,6 +81,33 @@ android {
         debug {
             applicationIdSuffix ".debug"
             testCoverageEnabled true
+        }
+    }
+}
+
+def getGitDescription = { ->
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'describe', '--tags', '--dirty'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    } catch (ignored) {
+        return null;
+    }
+}
+
+// Insert the build number into strings.xml
+android.applicationVariants.all { variant ->
+    variant.mergeResources.doLast{
+        ext.env = System.getenv()
+        def buildNumber = getGitDescription()
+        if (buildNumber != null) {
+            File valuesFile = file("${buildDir}/intermediates/res/${variant.dirName}/values/values.xml")
+            String content = valuesFile.getText('UTF-8')
+            content = content.replaceAll(/\(working copy\)/, buildNumber)
+            valuesFile.write(content, 'UTF-8')
         }
     }
 }

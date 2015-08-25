@@ -53,7 +53,7 @@ public class IBM437 extends Charset {
 
 		}
 
-		private native int nDecode(char[] array, int arrPosition, int remaining, long outAddr, int absolutePos);
+//		private native int nDecode(char[] array, int arrPosition, int remaining, long outAddr, int absolutePos);
 
 
 		protected CoderResult decodeLoop(ByteBuffer bb, CharBuffer cb){
@@ -151,7 +151,7 @@ public class IBM437 extends Charset {
 			super(cs, 1, 1);
 		}
                    
-		private native void nEncode(long outAddr, int absolutePos, char[] array, int arrPosition, int[] res);
+//		private native void nEncode(long outAddr, int absolutePos, char[] array, int arrPosition, int[] res);
                                                                                                                           
 		protected CoderResult encodeLoop(CharBuffer cb, ByteBuffer bb){
                         int bbRemaining = bb.remaining();

@@ -522,7 +522,6 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 	public void sendPressedKey(int key) {
 		((vt320) buffer).keyPressed(key, ' ', getStateForBuffer());
-		bridge.tryKeyVibrate();
 	}
 
 	/**

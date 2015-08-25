@@ -17,7 +17,19 @@
 
 package org.connectbot;
 
-import android.app.Activity;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.connectbot.bean.HostBean;
+import org.connectbot.bean.SelectionArea;
+import org.connectbot.service.BridgeDisconnectedListener;
+import org.connectbot.service.PromptHelper;
+import org.connectbot.service.TerminalBridge;
+import org.connectbot.service.TerminalKeyListener;
+import org.connectbot.service.TerminalManager;
+import org.connectbot.util.PreferenceConstants;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -36,10 +48,15 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -65,6 +82,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -86,16 +104,21 @@ import java.util.List;
 
 import de.mud.terminal.vt320;
 
-public class ConsoleActivity extends Activity {
+public class ConsoleActivity extends AppCompatActivity implements BridgeDisconnectedListener {
 	public final static String TAG = "CB.ConsoleActivity";
 
 	protected static final int REQUEST_EDIT = 1;
 
 	private static final int CLICK_TIME = 400;
 	private static final float MAX_CLICK_DISTANCE = 25f;
-	private static final int KEYBOARD_DISPLAY_TIME = 1500;
+	private static final int KEYBOARD_DISPLAY_TIME = 3000;
+	private static final int KEYBOARD_REPEAT_INITIAL = 500;
+	private static final int KEYBOARD_REPEAT = 100;
 
 	protected ViewPager pager = null;
+	protected TabLayout tabs = null;
+	protected Toolbar toolbar = null;
+	@Nullable
 	protected TerminalManager bound = null;
 	protected TerminalPagerAdapter adapter = null;
 	protected LayoutInflater inflater = null;
@@ -140,7 +163,7 @@ public class ConsoleActivity extends Activity {
 
 	private ImageView mKeyboardButton;
 
-	private ActionBarWrapper actionBar;
+	private ActionBar actionBar;
 	private boolean inActionBarMenu = false;
 	private boolean titleBarHide;
 
@@ -149,7 +172,7 @@ public class ConsoleActivity extends Activity {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
 
 			// let manager know about our event handling services
-			bound.disconnectHandler = disconnectHandler;
+			bound.disconnectListener = ConsoleActivity.this;
 			bound.setResizeAllowed(true);
 
 			final String requestedNickname = (requested != null) ? requested.getFragment() : null;
@@ -189,39 +212,190 @@ public class ConsoleActivity extends Activity {
 		}
 	};
 
-	protected Handler disconnectHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
+	public void onDisconnected(TerminalBridge bridge) {
+		synchronized (adapter) {
+			adapter.notifyDataSetChanged();
 			Log.d(TAG, "Someone sending HANDLE_DISCONNECT to parentHandler");
 
-			// someone below us requested to display a password dialog
-			// they are sending nickname and requested
-			TerminalBridge bridge = (TerminalBridge) msg.obj;
-
-			adapter.notifyDataSetChanged();
 			if (bridge.isAwaitingClose()) {
 				closeBridge(bridge);
 			}
 		}
+	}
+
+	protected OnClickListener emulatedKeysListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			onEmulatedKeyClicked(v);
+		}
 	};
+
+	protected Handler keyRepeatHandler = new Handler();
+
+
+	/**
+	 * Handle repeatable virtual keys and touch events
+	 */
+	public class KeyRepeater implements Runnable, OnTouchListener {
+		private View mView;
+		private Handler mHandler;
+		private boolean mDown;
+
+		public KeyRepeater(Handler handler, View view) {
+			mView = view;
+			mHandler = handler;
+			mView.setOnTouchListener(this);
+			mDown = false;
+		}
+
+		@Override
+		public void run() {
+			mDown = true;
+			mHandler.removeCallbacks(this);
+			mHandler.postDelayed(this, KEYBOARD_REPEAT);
+			onEmulatedKeyClicked(mView);
+		}
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			if (BuildConfig.DEBUG) {
+				Log.d(TAG, "KeyRepeater.onTouch(" + v.getId() + ", " +
+						event.getAction() + ", " +
+						event.getActionIndex() + ", " +
+						event.getActionMasked() + ");");
+			}
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				mDown = false;
+				mHandler.postDelayed(this, KEYBOARD_REPEAT_INITIAL);
+				return (true);
+
+			case MotionEvent.ACTION_CANCEL:
+				keyRepeatHandler.removeCallbacks(this);
+				return (true);
+
+			case MotionEvent.ACTION_UP:
+				keyRepeatHandler.removeCallbacks(this);
+				if (!mDown) {
+					onEmulatedKeyClicked(mView);
+				}
+				return (true);
+			}
+			return false;
+		}
+	}
+
+	private void onEmulatedKeyClicked(View v) {
+		TerminalView terminal = adapter.getCurrentTerminalView();
+		if (terminal == null) return;
+
+		TerminalKeyListener handler = terminal.bridge.getKeyHandler();
+		boolean hideKeys = false;
+
+		switch (v.getId()) {
+		case R.id.button_ctrl:
+			handler.metaPress(TerminalKeyListener.OUR_CTRL_ON, true);
+			hideKeys = true;
+			break;
+		case R.id.button_esc:
+			handler.sendEscape();
+			hideKeys = true;
+			break;
+		case R.id.button_tab:
+			handler.sendTab();
+			hideKeys = true;
+			break;
+
+		case R.id.button_up:
+			handler.sendPressedKey(vt320.KEY_UP);
+			break;
+		case R.id.button_down:
+			handler.sendPressedKey(vt320.KEY_DOWN);
+			break;
+		case R.id.button_left:
+			handler.sendPressedKey(vt320.KEY_LEFT);
+			break;
+		case R.id.button_right:
+			handler.sendPressedKey(vt320.KEY_RIGHT);
+			break;
+
+		case R.id.button_home:
+			handler.sendPressedKey(vt320.KEY_HOME);
+			break;
+		case R.id.button_end:
+			handler.sendPressedKey(vt320.KEY_END);
+			break;
+		case R.id.button_pgup:
+			handler.sendPressedKey(vt320.KEY_PAGE_UP);
+			break;
+		case R.id.button_pgdn:
+			handler.sendPressedKey(vt320.KEY_PAGE_DOWN);
+			break;
+
+		case R.id.button_f1:
+			handler.sendPressedKey(vt320.KEY_F1);
+			break;
+		case R.id.button_f2:
+			handler.sendPressedKey(vt320.KEY_F2);
+			break;
+		case R.id.button_f3:
+			handler.sendPressedKey(vt320.KEY_F3);
+			break;
+		case R.id.button_f4:
+			handler.sendPressedKey(vt320.KEY_F4);
+			break;
+		case R.id.button_f5:
+			handler.sendPressedKey(vt320.KEY_F5);
+			break;
+		case R.id.button_f6:
+			handler.sendPressedKey(vt320.KEY_F6);
+			break;
+		case R.id.button_f7:
+			handler.sendPressedKey(vt320.KEY_F7);
+			break;
+		case R.id.button_f8:
+			handler.sendPressedKey(vt320.KEY_F8);
+			break;
+		case R.id.button_f9:
+			handler.sendPressedKey(vt320.KEY_F9);
+			break;
+		case R.id.button_f10:
+			handler.sendPressedKey(vt320.KEY_F10);
+			break;
+		case R.id.button_f11:
+			handler.sendPressedKey(vt320.KEY_F11);
+			break;
+		case R.id.button_f12:
+			handler.sendPressedKey(vt320.KEY_F12);
+			break;
+		}
+
+		if (hideKeys)
+			hideEmulatedKeys();
+		else
+			autoHideEmulatedKeys();
+
+		terminal.bridge.tryKeyVibrate();
+		if (titleBarHide) {
+			actionBar.hide();
+		}
+	}
 
 	/**
 	 * @param bridge
 	 */
 	private void closeBridge(final TerminalBridge bridge) {
-		synchronized (pager) {
-			updateEmptyVisible();
-			updatePromptVisible();
+		updateEmptyVisible();
+		updatePromptVisible();
 
-			// If we just closed the last bridge, go back to the previous activity.
-			if (pager.getChildCount() == 0) {
-				finish();
-			}
+		// If we just closed the last bridge, go back to the previous activity.
+		if (pager.getChildCount() == 0) {
+			finish();
 		}
 	}
 
 	protected View findCurrentView(int id) {
-		TerminalView view = adapter.getCurrentTerminalView();
+		View view = pager.findViewWithTag(adapter.getBridgeAtPosition(pager.getCurrentItem()));
 		if (view == null) {
 			return null;
 		}
@@ -243,7 +417,10 @@ public class ConsoleActivity extends Activity {
 		keyboardGroup.startAnimation(keyboard_fade_in);
 		keyboardGroup.setVisibility(View.VISIBLE);
 		actionBar.show();
+		autoHideEmulatedKeys();
+	}
 
+	private void autoHideEmulatedKeys() {
 		if (keyboardGroupHider != null)
 			handler.removeCallbacks(keyboardGroupHider);
 		keyboardGroupHider = new Runnable() {
@@ -287,7 +464,7 @@ public class ConsoleActivity extends Activity {
 
 		titleBarHide = prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false);
 		if (titleBarHide) {
-			getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+			supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 		}
 
 		this.setContentView(R.layout.act_console);
@@ -306,6 +483,7 @@ public class ConsoleActivity extends Activity {
 
 		inflater = LayoutInflater.from(this);
 
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		pager = (ViewPager) findViewById(R.id.console_flip);
 		// registerForContextMenu(pager);
 		pager.addOnPageChangeListener(
@@ -315,6 +493,8 @@ public class ConsoleActivity extends Activity {
 						onTerminalChanged();
 					}
 				});
+		adapter = new TerminalPagerAdapter();
+		pager.setAdapter(adapter);
 
 		empty = (TextView) findViewById(android.R.id.empty);
 
@@ -386,93 +566,39 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 
-		final Button ctrlButton = (Button) findViewById(R.id.button_ctrl);
-		ctrlButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				TerminalView terminal = adapter.getCurrentTerminalView();
-				if (terminal == null) return;
+		findViewById(R.id.button_ctrl).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_esc).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_tab).setOnClickListener(emulatedKeysListener);
 
-				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-				handler.metaPress(TerminalKeyListener.OUR_CTRL_ON, true);
-				hideEmulatedKeys();
-			}
-		});
+		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_up));
+		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_down));
+		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_left));
+		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_right));
 
-		final Button escButton = (Button) findViewById(R.id.button_esc);
-		escButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				TerminalView terminal = adapter.getCurrentTerminalView();
-				if (terminal == null) return;
-
-				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-				handler.sendEscape();
-				hideEmulatedKeys();
-			}
-		});
-
-		final Button tabButton = (Button) findViewById(R.id.button_tab);
-		tabButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				TerminalView terminal = adapter.getCurrentTerminalView();
-				if (terminal == null) return;
-
-				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-				handler.sendTab();
-				hideEmulatedKeys();
-			}
-		});
-		final Button upButton = (Button) findViewById(R.id.button_up);
-		upButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				View flip = findCurrentView(R.id.console_flip);
-				if (flip == null) return;
-				TerminalView terminal = (TerminalView) flip;
+		findViewById(R.id.button_home).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_end).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_pgup).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_pgdn).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f1).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f2).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f3).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f4).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f5).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f6).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f7).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f8).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f9).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f10).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f11).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_f12).setOnClickListener(emulatedKeysListener);
 
 
-				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-				handler.sendPressedKey(vt320.KEY_UP);
-			}
-		});
-		final Button dnButton = (Button) findViewById(R.id.button_down);
-		dnButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				View flip = findCurrentView(R.id.console_flip);
-				if (flip == null) return;
-				TerminalView terminal = (TerminalView) flip;
-
-				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-				handler.sendPressedKey(vt320.KEY_DOWN);
-			}
-		});
-		final Button leftButton = (Button) findViewById(R.id.button_left);
-		leftButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				View flip = findCurrentView(R.id.console_flip);
-				if (flip == null) return;
-				TerminalView terminal = (TerminalView) flip;
-
-				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-				handler.sendPressedKey(vt320.KEY_LEFT);
-			}
-		});
-		final Button rightButton = (Button) findViewById(R.id.button_right);
-		rightButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				View flip = findCurrentView(R.id.console_flip);
-				if (flip == null) return;
-				TerminalView terminal = (TerminalView) flip;
-
-				TerminalKeyListener handler = terminal.bridge.getKeyHandler();
-				handler.sendPressedKey(vt320.KEY_RIGHT);
-			}
-		});
-
-		actionBar = ActionBarWrapper.getActionBar(this);
+		actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		if (titleBarHide) {
 			actionBar.hide();
 		}
-		actionBar.addOnMenuVisibilityListener(new ActionBarWrapper.OnMenuVisibilityListener() {
+		actionBar.addOnMenuVisibilityListener(new ActionBar.OnMenuVisibilityListener() {
 			public void onMenuVisibilityChanged(boolean isVisible) {
 				inActionBarMenu = isVisible;
 				if (isVisible == false) {
@@ -481,6 +607,34 @@ public class ConsoleActivity extends Activity {
 			}
 		});
 
+		if (!hardKeyboard) {
+			// Show virtual keyboard and scroll back and forth
+			final HorizontalScrollView keyboardScroll = (HorizontalScrollView) findViewById(R.id.keyboard_hscroll);
+			showEmulatedKeys();
+			keyboardScroll.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					final int xscroll = findViewById(R.id.button_f12).getRight();
+					if (BuildConfig.DEBUG) {
+						Log.d(TAG, "smoothScrollBy(toEnd[" + xscroll + "])");
+					}
+					keyboardScroll.smoothScrollBy(xscroll, 0);
+					keyboardScroll.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							if (BuildConfig.DEBUG) {
+								Log.d(TAG, "smoothScrollBy(toStart[" + (-xscroll) + "])");
+							}
+							keyboardScroll.smoothScrollBy(-xscroll, 0);
+						}
+					}, 1000);
+				}
+			}, 1000);
+		}
+
+		tabs = (TabLayout) findViewById(R.id.tabs);
+		if (tabs != null)
+			setupTabLayoutWithViewPager();
 
 		// detect fling gestures to switch between terminals
 		final GestureDetector detect = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
@@ -652,9 +806,32 @@ public class ConsoleActivity extends Activity {
 			}
 
 		});
+	}
 
-		adapter = new TerminalPagerAdapter();
-		pager.setAdapter(adapter);
+	/**
+	 * Ties the {@link TabLayout} to the {@link ViewPager}.
+	 *
+	 * <p>This method will:
+	 * <ul>
+	 *     <li>Add a {@link ViewPager.OnPageChangeListener} that will forward events to
+	 *     this TabLayout.</li>
+	 *     <li>Populate the TabLayout's tabs from the ViewPager's {@link PagerAdapter}.</li>
+	 *     <li>Set our {@link TabLayout.OnTabSelectedListener} which will forward
+	 *     selected events to the ViewPager</li>
+	 * </ul>
+	 * </p>
+	 */
+	public void setupTabLayoutWithViewPager() {
+		tabs.setTabsFromPagerAdapter(adapter);
+		pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
+		tabs.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager));
+
+		if (adapter.getCount() > 0) {
+			final int curItem = pager.getCurrentItem();
+			if (tabs.getSelectedTabPosition() != curItem) {
+				tabs.getTabAt(curItem).select();
+			}
+		}
 	}
 
 
@@ -866,13 +1043,13 @@ public class ConsoleActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				Intent intent = new Intent(this, HostListActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
+		case android.R.id.home:
+			Intent intent = new Intent(this, HostListActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
@@ -925,8 +1102,9 @@ public class ConsoleActivity extends Activity {
 		super.onPause();
 		Log.d(TAG, "onPause called");
 
-		if (forcedOrientation && bound != null)
+		if (forcedOrientation && bound != null) {
 			bound.setResizeAllowed(false);
+		}
 	}
 
 	@Override
@@ -944,8 +1122,9 @@ public class ConsoleActivity extends Activity {
 
 		configureOrientation();
 
-		if (forcedOrientation && bound != null)
+		if (forcedOrientation && bound != null) {
 			bound.setResizeAllowed(true);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -1029,9 +1208,9 @@ public class ConsoleActivity extends Activity {
 	private void updateDefault() {
 		// update the current default terminal
 		TerminalView view = adapter.getCurrentTerminalView();
-		if (view == null) return;
-
-		if (bound == null) return;
+		if (view == null || bound == null) {
+			return;
+		}
 		bound.defaultBridge = view.bridge;
 	}
 
@@ -1211,10 +1390,15 @@ public class ConsoleActivity extends Activity {
 
 		@Override
 		public int getItemPosition(Object object) {
-			final View view = (View) object;
+			if (bound == null) {
+				return POSITION_NONE;
+			}
+
+			View view = (View) object;
 			TerminalView terminal = (TerminalView) view.findViewById(R.id.console_flip);
-			final HostBean host = terminal.bridge.host;
-			int itemIndex = -1;
+			HostBean host = terminal.bridge.host;
+
+			int itemIndex = POSITION_NONE;
 			int i = 0;
 			for (TerminalBridge bridge : bound.getBridges()) {
 				if (bridge.host.equals(host)) {
@@ -1223,19 +1407,28 @@ public class ConsoleActivity extends Activity {
 				}
 				i++;
 			}
-			if (itemIndex == -1) {
-				return POSITION_NONE;
-			} else {
-				return itemIndex;
-			}
+			return itemIndex;
 		}
 
-		public TerminalBridge getItemAtPosition(int position) {
+		public TerminalBridge getBridgeAtPosition(int position) {
+			if (bound == null) {
+				return null;
+			}
+
 			ArrayList<TerminalBridge> bridges = bound.getBridges();
 			if (position < 0 || position >= bridges.size()) {
 				return null;
 			}
 			return bridges.get(position);
+		}
+
+		@Override
+		public void notifyDataSetChanged() {
+			super.notifyDataSetChanged();
+			if (tabs != null) {
+				toolbar.setVisibility(this.getCount() > 1 ? View.VISIBLE : View.GONE);
+				tabs.setTabsFromPagerAdapter(this);
+			}
 		}
 
 		@Override
@@ -1245,7 +1438,7 @@ public class ConsoleActivity extends Activity {
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			TerminalBridge bridge = getItemAtPosition(position);
+			TerminalBridge bridge = getBridgeAtPosition(position);
 			if (bridge == null) {
 				return "???";
 			}
@@ -1253,7 +1446,7 @@ public class ConsoleActivity extends Activity {
 		}
 
 		public TerminalView getCurrentTerminalView() {
-			View currentView = pager.findViewWithTag(adapter.getItemAtPosition(pager.getCurrentItem()));
+			View currentView = pager.findViewWithTag(getBridgeAtPosition(pager.getCurrentItem()));
 			if (currentView == null) return null;
 			return (TerminalView) currentView.findViewById(R.id.console_flip);
 		}

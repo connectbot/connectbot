@@ -17,11 +17,11 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.connectbot"
-	android:versionName="1.8.4"
-	android:versionCode="374"
+	android:versionName="1.8.5"
+	android:versionCode="375"
 	android:installLocation="auto">
 
-	<uses-sdk android:targetSdkVersion="22" android:minSdkVersion="4" />
+	<uses-sdk />
 
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.VIBRATE" />
@@ -64,17 +64,21 @@
 		<activity android:name=".HostEditorActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".PortForwardListActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".SettingsActivity" android:configChanges="keyboardHidden|orientation" />
-		<activity android:name=".WizardActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".HelpActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".HelpTopicActivity" android:configChanges="keyboardHidden|orientation" />
 		<activity android:name=".ColorsActivity" android:configChanges="keyboardHidden|orientation" />
+		<activity android:name=".EulaActivity"	android:parentActivityName=".HelpActivity"
+			  android:configChanges="keyboardHidden|orientation" >
+			<meta-data android:name="android.support.PARENT_ACTIVITY"
+				   android:value="org.connectbot.HelpActivity" />
+		</activity>
 
 		<service android:name="org.connectbot.service.TerminalManager"
 			android:configChanges="keyboardHidden|orientation"
 			android:description="@string/service_desc" />
 
 		<activity android:name=".ConsoleActivity" android:configChanges="keyboardHidden|orientation"
-			android:theme="@style/NoTitle" android:windowSoftInputMode="stateAlwaysVisible|adjustResize"
+			android:theme="@style/Theme.AppCompat" android:windowSoftInputMode="stateAlwaysVisible|adjustResize"
 			android:launchMode="singleTop" android:hardwareAccelerated="false">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
