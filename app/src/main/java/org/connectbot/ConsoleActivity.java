@@ -618,17 +618,22 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 							}
 							keyboardScroll.smoothScrollBy(-xscroll, 0);
 						}
-					}, 1000);
+					}, 500);
 				}
-			}, 1000);
+			}, 500);
 		}
 
-		// Reset keyboard autohide timer when scrolling hscroll
+		// Reset keyboard auto-hide timer when scrolling
 		keyboardScroll.setOnTouchListener(
 				new OnTouchListener() {
 					public boolean onTouch(View v, MotionEvent event) {
-						if (event.getAction() == MotionEvent.ACTION_MOVE) {
+						switch (event.getAction()) {
+						case MotionEvent.ACTION_MOVE:
 							autoHideEmulatedKeys();
+							break;
+						case MotionEvent.ACTION_UP:
+							v.performClick();
+							break;
 						}
 						return (false);
 					}
