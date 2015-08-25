@@ -260,11 +260,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				return (true);
 
 			case MotionEvent.ACTION_CANCEL:
-				keyRepeatHandler.removeCallbacks(this);
+				mHandler.removeCallbacks(this);
 				return (true);
 
 			case MotionEvent.ACTION_UP:
-				keyRepeatHandler.removeCallbacks(this);
+				mHandler.removeCallbacks(this);
 				if (!mDown) {
 					onEmulatedKeyClicked(mView);
 				}
@@ -402,10 +402,12 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		booleanPromptGroup.setVisibility(View.GONE);
 	}
 
-	private void showEmulatedKeys() {
+	private void showEmulatedKeys(boolean showActionBar) {
 		keyboardGroup.startAnimation(keyboard_fade_in);
 		keyboardGroup.setVisibility(View.VISIBLE);
-		actionBar.show();
+		if (showActionBar) {
+			actionBar.show();
+		}
 		autoHideEmulatedKeys();
 	}
 
@@ -596,10 +598,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 		});
 
+		final HorizontalScrollView keyboardScroll = (HorizontalScrollView) findViewById(R.id.keyboard_hscroll);
 		if (!hardKeyboard) {
 			// Show virtual keyboard and scroll back and forth
-			final HorizontalScrollView keyboardScroll = (HorizontalScrollView) findViewById(R.id.keyboard_hscroll);
-			showEmulatedKeys();
+			showEmulatedKeys(false);
 			keyboardScroll.postDelayed(new Runnable() {
 				@Override
 				public void run() {
@@ -620,6 +622,15 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				}
 			}, 1000);
 		}
+		keyboardScroll.setOnTouchListener(
+				new OnTouchListener() {
+					public boolean onTouch(View v, MotionEvent event) {
+						if (event.getAction() == MotionEvent.ACTION_MOVE) {
+							autoHideEmulatedKeys();
+						}
+						return (false);
+					}
+				});
 
 		tabs = (TabLayout) findViewById(R.id.tabs);
 		if (tabs != null)
@@ -788,7 +799,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 						&& event.getEventTime() - event.getDownTime() < CLICK_TIME
 						&& Math.abs(event.getX() - lastX) < MAX_CLICK_DISTANCE
 						&& Math.abs(event.getY() - lastY) < MAX_CLICK_DISTANCE) {
-					showEmulatedKeys();
+					showEmulatedKeys(true);
 				}
 
 				// pass any touch events back to detector
