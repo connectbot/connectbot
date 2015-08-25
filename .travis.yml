@@ -14,6 +14,7 @@ cache:
     - $HOME/.gradle/wrapper/dists/
     - $HOME/.cache/ndk
     - $HOME/.cache/lint
+    - $HOME/android-ndk-${NDK_VERSION}
 before_cache:
   - find $HOME/.gradle -name "*.lock" -exec rm {} \;
   - rm -rf $HOME/.gradle/caches/[1-9]*
@@ -37,10 +38,8 @@ addons:
 
 before_script:
   # newest Android NDK
-  - mkdir -p $HOME/.cache/ndk
-  - curl https://dl.google.com/android/ndk/android-ndk-${NDK_VERSION}-linux-x86_64.bin -z $HOME/.cache/ndk/ndk-${NDK_VERSION}.bin -o $HOME/.cache/ndk/ndk-${NDK_VERSION}.bin
-  - 7z x -y $HOME/.cache/ndk/ndk-${NDK_VERSION}.bin | grep -v 'ing  '
-  - echo "ndk.dir=`pwd`/android-ndk-${NDK_VERSION}" >> local.properties
+  - ./scripts/fetch-android-ndk.sh $NDK_VERSION $HOME/android-ndk-${NDK_VERSION}
+  - echo "ndk.dir=$HOME/android-ndk-$NDK_VERSION" >> local.properties
   # For the lint checking mechanism
   - mkdir -p $HOME/.cache/lint
 
