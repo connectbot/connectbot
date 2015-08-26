@@ -258,7 +258,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 
 				final int deadKey = bridge.getKeyHandler().getDeadKey();
 				if (deadKey != 0) {
-					canvas.drawText(new char[] {(char) deadKey}, 0, 1, 0, 0, cursorStrokePaint);
+					canvas.drawText(new char[] { (char) deadKey }, 0, 1, 0, 0, cursorStrokePaint);
 				}
 
 				// Make sure we scale our decorations to the correct size.
@@ -290,16 +290,15 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 				SelectionArea area = bridge.getSelectionArea();
 				canvas.save(Canvas.CLIP_SAVE_FLAG);
 				canvas.clipRect(
-						area.getLeft() * bridge.charWidth,
-						area.getTop() * bridge.charHeight,
-						(area.getRight() + 1) * bridge.charWidth,
-						(area.getBottom() + 1) * bridge.charHeight
+					area.getLeft() * bridge.charWidth,
+					area.getTop() * bridge.charHeight,
+					(area.getRight() + 1) * bridge.charWidth,
+					(area.getBottom() + 1) * bridge.charHeight
 				);
 				canvas.drawPaint(cursorPaint);
 				canvas.restore();
 			}
 		}
-		super.onDraw(canvas);
 	}
 
 	public void notifyUser(String message) {
@@ -323,7 +322,6 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 
 	/**
 	 * Ask the {@link TerminalBridge} we're connected to to resize to a specific size.
-	 *
 	 * @param width
 	 * @param height
 	 */
@@ -333,7 +331,6 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 
 	/**
 	 * Sets the ability for the TerminalView to display Toast notifications to the user.
-	 *
 	 * @param value whether to enable notifications or not
 	 */
 	public void setNotifications(boolean value) {
@@ -348,13 +345,13 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 	@Override
 	public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
 		outAttrs.imeOptions |=
-				EditorInfo.IME_FLAG_NO_EXTRACT_UI |
-						EditorInfo.IME_FLAG_NO_ENTER_ACTION |
-						EditorInfo.IME_ACTION_NONE;
+			EditorInfo.IME_FLAG_NO_EXTRACT_UI |
+			EditorInfo.IME_FLAG_NO_ENTER_ACTION |
+			EditorInfo.IME_ACTION_NONE;
 		outAttrs.inputType = EditorInfo.TYPE_NULL;
 		return new BaseInputConnection(this, false) {
 			@Override
-			public boolean deleteSurroundingText(int leftLength, int rightLength) {
+			public boolean deleteSurroundingText (int leftLength, int rightLength) {
 				if (rightLength == 0 && leftLength == 0) {
 					return this.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
 				}
@@ -439,8 +436,8 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 	private class AccessibilityStateTester extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected Boolean doInBackground(Void... params) {
-            /*
-             * Presumably if the accessibility manager is not enabled, we don't
+			/*
+			 * Presumably if the accessibility manager is not enabled, we don't
 			 * need to send accessibility events.
 			 */
 			final AccessibilityManager accessibility = (AccessibilityManager) context
