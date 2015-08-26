@@ -17,6 +17,15 @@
 
 package org.connectbot;
 
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.connectbot.bean.SelectionArea;
+import org.connectbot.service.FontSizeChangedListener;
+import org.connectbot.service.TerminalBridge;
+import org.connectbot.service.TerminalKeyListener;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +44,7 @@ import android.support.v4.view.MotionEventCompat;
 import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
@@ -44,19 +54,10 @@ import android.view.inputmethod.InputConnection;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.connectbot.bean.SelectionArea;
-import org.connectbot.service.FontSizeChangedListener;
-import org.connectbot.service.TerminalBridge;
-import org.connectbot.service.TerminalKeyListener;
-
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import de.mud.terminal.VDUBuffer;
 
 /**
- * User interface {@link TextView} for showing a TerminalBridge in an
+ * User interface {@link View} for showing a TerminalBridge in an
  * {@link android.app.Activity}. Handles drawing bitmap updates and passing keystrokes down
  * to terminal.
  *
@@ -117,7 +118,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 		cursorStrokePaint.setStyle(Paint.Style.STROKE);
 
 		/*
-		 * Set up our cursor indicators on a 1x1 Path object which we can later
+	 * Set up our cursor indicators on a 1x1 Path object which we can later
 		 * transform to our character width and height
 		 */
 		// TODO make this into a resource somehow
@@ -148,7 +149,6 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 
 		mAccessibilityBuffer = new StringBuffer();
 
-
 		float displayDensity = 1f;
 		int fontSizePx = (int) (10 * displayDensity + 0.5f);
 
@@ -158,14 +158,22 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 		setTypeface(Typeface.MONOSPACE);
 		setLineSpacing(1.0f, 1.09f);
 		setTextIsSelectable(true);
+		setOnTouchListener(new OnTouchListener() {
+					   @Override
+					   public boolean onTouch(View v, MotionEvent event) {
+						   if (event.getAction() == MotionEvent.ACTION_DOWN) {
+							   syncBuffer();
+						   }
+						   return false;
+					   }
+				   }
+		);
 
 		// Enable accessibility features if a screen reader is active.
 		new AccessibilityStateTester().execute((Void) null);
 	}
 
-	@Override
-	public boolean performLongClick() {
-		Toast.makeText(getContext(), "Long Click TerminalView !", Toast.LENGTH_SHORT).show();
+	private void syncBuffer() {
 		VDUBuffer vb = bridge.getVDUBuffer();
 
 		int cols = vb.getColumns() - 1;
@@ -182,7 +190,6 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 			line = "";
 		}
 		setText(buff);
-		return super.performLongClick();
 	}
 
 	public void destroy() {
@@ -251,7 +258,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 
 				final int deadKey = bridge.getKeyHandler().getDeadKey();
 				if (deadKey != 0) {
-					canvas.drawText(new char[]{(char) deadKey}, 0, 1, 0, 0, cursorStrokePaint);
+					canvas.drawText(new char[] {(char) deadKey}, 0, 1, 0, 0, cursorStrokePaint);
 				}
 
 				// Make sure we scale our decorations to the correct size.
@@ -278,10 +285,8 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 				canvas.restore();
 			}
 
-			if (super.hasSelection()) {
-				super.getSelectionStart();
-				super.getSelectionEnd();
-
+			// draw any highlighted area
+			if (bridge.isSelectingForCopy()) {
 				SelectionArea area = bridge.getSelectionArea();
 				canvas.save(Canvas.CLIP_SAVE_FLAG);
 				canvas.clipRect(
@@ -366,14 +371,14 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 	public boolean onGenericMotionEvent(MotionEvent event) {
 		if ((MotionEventCompat.getSource(event) & InputDevice.SOURCE_CLASS_POINTER) != 0) {
 			switch (event.getAction()) {
-				case MotionEvent.ACTION_SCROLL:
-					// Process scroll wheel movement:
-					float yDistance = MotionEventCompat.getAxisValue(event, MotionEvent.AXIS_VSCROLL);
-					if (yDistance != 0) {
-						int base = bridge.buffer.getWindowBase();
-						bridge.buffer.setWindowBase(base - Math.round(yDistance));
-						return true;
-					}
+			case MotionEvent.ACTION_SCROLL:
+				// Process scroll wheel movement:
+				float yDistance = MotionEventCompat.getAxisValue(event, MotionEvent.AXIS_VSCROLL);
+				if (yDistance != 0) {
+					int base = bridge.buffer.getWindowBase();
+					bridge.buffer.setWindowBase(base - Math.round(yDistance));
+					return true;
+				}
 			}
 		}
 		return super.onGenericMotionEvent(event);
@@ -435,7 +440,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 		@Override
 		protected Boolean doInBackground(Void... params) {
             /*
-			 * Presumably if the accessibility manager is not enabled, we don't
+             * Presumably if the accessibility manager is not enabled, we don't
 			 * need to send accessibility events.
 			 */
 			final AccessibilityManager accessibility = (AccessibilityManager) context
