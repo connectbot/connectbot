@@ -633,7 +633,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 							break;
 						case MotionEvent.ACTION_UP:
 							v.performClick();
-							break;
+							return (true);
 						}
 						return (false);
 					}
