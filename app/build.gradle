@@ -55,7 +55,7 @@ android {
         }
 
         testApplicationId "org.connectbot.tests"
-        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
@@ -66,6 +66,16 @@ android {
         compile "com.android.support:support-v4:22.2.1"
         compile "com.android.support:appcompat-v7:22.2.1"
         compile "com.android.support:design:22.2.1"
+
+        androidTestCompile('com.android.support.test:runner:0.3') {
+            exclude module: "support-annotations"
+        }
+        androidTestCompile('com.android.support.test:rules:0.3') {
+            exclude module: "support-annotations"
+        }
+        androidTestCompile('com.android.support.test.espresso:espresso-core:2.2') {
+            exclude module: "support-annotations"
+        }
     }
 
     buildTypes {
@@ -82,6 +92,11 @@ android {
             applicationIdSuffix ".debug"
             testCoverageEnabled true
         }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'LICENSE.txt'
     }
 }
 
