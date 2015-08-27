@@ -87,7 +87,7 @@ def getGitDescription = { ->
     try {
         def stdout = new ByteArrayOutputStream()
         exec {
-            commandLine 'git', 'describe', '--tags', '--dirty'
+            commandLine 'git', 'describe', '--dirty'
             standardOutput = stdout
         }
         return stdout.toString().trim()
