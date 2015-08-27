@@ -90,7 +90,12 @@ static int create_subprocess(
   }
   fcntl(ptm, F_SETFD, FD_CLOEXEC);
 
-  if(grantpt(ptm) || unlockpt(ptm) ||
+  if(
+#if !defined(ANDROID)
+     /* this actually doesn't do anything on Android */
+     grantpt(ptm) ||
+#endif
+     unlockpt(ptm) ||
      ptsname_r(ptm, devname, sizeof(devname))){
     LOG("[ trouble with /dev/ptmx - %s ]\n", strerror(errno));
     return -1;
