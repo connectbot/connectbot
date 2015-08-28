@@ -17,12 +17,6 @@ buildscript {
     }
 }
 
-repositories {
-    maven {
-        url 'https://dl.bintray.com/connectbot/maven'
-    }
-}
-
 dependencies {
     compile 'org.connectbot:sshlib:2.2.0'
 
