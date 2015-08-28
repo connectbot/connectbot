@@ -72,6 +72,9 @@ android {
         androidTestCompile('com.android.support.test.espresso:espresso-core:2.2') {
             exclude module: "support-annotations"
         }
+        androidTestCompile('com.android.support.test.espresso:espresso-intents:2.2') {
+            exclude module: "support-annotations"
+        }
     }
 
     buildTypes {
