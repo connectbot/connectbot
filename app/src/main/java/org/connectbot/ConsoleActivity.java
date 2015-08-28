@@ -1357,7 +1357,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 			// and add our terminal view control, using index to place behind overlay
 			final TerminalView terminal = new TerminalView(container.getContext(), bridge);
-			terminal.setId(R.id.console_flip);
+			terminal.setId(R.id.terminal_view);
 			view.addView(terminal, 0);
 
 			// Tag the view with its bridge so it can be retrieved later.
@@ -1382,7 +1382,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 
 			View view = (View) object;
-			TerminalView terminal = (TerminalView) view.findViewById(R.id.console_flip);
+			TerminalView terminal = (TerminalView) view.findViewById(R.id.terminal_view);
 			HostBean host = terminal.bridge.host;
 
 			int itemIndex = POSITION_NONE;
@@ -1435,7 +1435,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		public TerminalView getCurrentTerminalView() {
 			View currentView = pager.findViewWithTag(getBridgeAtPosition(pager.getCurrentItem()));
 			if (currentView == null) return null;
-			return (TerminalView) currentView.findViewById(R.id.console_flip);
+			return (TerminalView) currentView.findViewById(R.id.terminal_view);
 		}
 	}
 }

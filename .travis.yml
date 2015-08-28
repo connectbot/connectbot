@@ -47,14 +47,14 @@ before_script:
 android:
   components:
     - build-tools-22.0.1
-    - android-22
+    - android-23
     - extra-android-support
     - extra-android-m2repository
   license:
     - '.+'
 
 script:
-  - ./gradlew build check jacocoTestDebugReport
+  - ./gradlew build check jacocoUnitTestDebugReport
   - ./scripts/check-lint-count.sh app/build/outputs/lint-results.xml $HOME/.cache/lint/issue-count.txt $HOME/.cache/lint/issue-count.txt
 
 after_success: ./gradlew coveralls

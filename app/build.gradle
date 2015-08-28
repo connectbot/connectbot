@@ -12,14 +12,8 @@ buildscript {
 
     dependencies {
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1x'
-        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.android.tools.build:gradle:1.3.0'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
-    }
-}
-
-repositories {
-    maven {
-        url 'https://dl.bintray.com/connectbot/maven'
     }
 }
 
@@ -36,36 +30,51 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "org.connectbot"
         minSdkVersion 8
-        targetSdkVersion 22
+        targetSdkVersion 23
 
         ndk {
             moduleName "com_google_ase_Exec"
             ldLibs "log"
         }
 
-        lintOptions {
-            abortOnError false
-            lintConfig file('lint.xml')
-        }
-
         testApplicationId "org.connectbot.tests"
-        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
-        release
+        if (project.hasProperty('keystorePassword')) {
+            release {
+                storeFile file(property('keystoreFile'))
+                storePassword property('keystorePassword')
+                keyAlias property('keystoreAlias')
+                keyPassword property('keystorePassword')
+            }
+        }
     }
 
     dependencies {
-        compile "com.android.support:support-v4:22.2.1"
-        compile "com.android.support:appcompat-v7:22.2.1"
-        compile "com.android.support:design:22.2.1"
+        compile "com.android.support:support-v4:23.0.0"
+        compile "com.android.support:appcompat-v7:23.0.0"
+        compile "com.android.support:design:23.0.0"
+
+        androidTestCompile('com.android.support.test:runner:0.3') {
+            exclude module: "support-annotations"
+        }
+        androidTestCompile('com.android.support.test:rules:0.3') {
+            exclude module: "support-annotations"
+        }
+        androidTestCompile('com.android.support.test.espresso:espresso-core:2.2') {
+            exclude module: "support-annotations"
+        }
+        androidTestCompile('com.android.support.test.espresso:espresso-intents:2.2') {
+            exclude module: "support-annotations"
+        }
     }
 
     buildTypes {
@@ -74,14 +83,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg'
 
             if (project.hasProperty('keystorePassword')) {
+                //noinspection GroovyAssignabilityCheck
                 signingConfig signingConfigs.release
             }
+
+            return true // this silences Android Studio's groovy inspector
         }
 
         debug {
             applicationIdSuffix ".debug"
             testCoverageEnabled true
         }
+    }
+
+    lintOptions {
+        abortOnError false
+        lintConfig file('lint.xml')
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'LICENSE.txt'
     }
 }
 
@@ -104,17 +126,10 @@ android.applicationVariants.all { variant ->
         ext.env = System.getenv()
         def buildNumber = getGitDescription()
         if (buildNumber != null) {
-            File valuesFile = file("${buildDir}/intermediates/res/${variant.dirName}/values/values.xml")
+            File valuesFile = file("${buildDir}/intermediates/res/merged/${variant.dirName}/values/values.xml")
             String content = valuesFile.getText('UTF-8')
             content = content.replaceAll(/\(working copy\)/, buildNumber)
             valuesFile.write(content, 'UTF-8')
         }
     }
-}
-
-if (project.hasProperty('keystorePassword')) {
-    android.signingConfigs.release.storeFile file(keystoreFile)
-    android.signingConfigs.release.storePassword keystorePassword
-    android.signingConfigs.release.keyAlias keystoreAlias
-    android.signingConfigs.release.keyPassword keystorePassword
 }

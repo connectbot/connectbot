@@ -32,6 +32,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.trilead.ssh2.KnownHosts;
@@ -155,6 +156,10 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		super.onCreate(db);
 
+		createTables(db);
+	}
+
+	private void createTables(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE " + TABLE_HOSTS
 				+ " (_id INTEGER PRIMARY KEY, "
 				+ FIELD_HOST_NICKNAME + " TEXT, "
@@ -201,6 +206,17 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 		db.execSQL(CREATE_TABLE_COLOR_DEFAULTS);
 		db.execSQL(CREATE_TABLE_COLOR_DEFAULTS_INDEX);
+	}
+
+	@VisibleForTesting
+	public void resetDatabase() {
+		SQLiteDatabase db = getWritableDatabase();
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOSTS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PORTFORWARDS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_COLORS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_COLOR_DEFAULTS);
+		createTables(db);
+		db.close();
 	}
 
 	@Override

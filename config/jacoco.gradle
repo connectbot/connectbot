@@ -16,9 +16,9 @@ tasks.withType(Test).whenTaskAdded {
 }
 
 // These tasks are for generating the coverage report after JUnit+robolectric tests have executed
-tasks.create(name: "jacocoTestDebugReport", type: JacocoReport, dependsOn: "testDebug") {
+tasks.create(name: "jacocoUnitTestDebugReport", type: JacocoReport, dependsOn: "testDebugUnitTest") {
 	group = "Reporting"
-	description = "Generate Jacoco coverage reports"
+	description = "Generate Jacoco coverage reports for unit tests"
 
 	classDirectories = fileTree(
 			dir: "${project.buildDir}/intermediates/classes/debug/",
@@ -30,7 +30,7 @@ tasks.create(name: "jacocoTestDebugReport", type: JacocoReport, dependsOn: "test
 	)
 
 	sourceDirectories = files("src/main/java", "src/debug/java")
-	executionData = files("${project.buildDir}/jacoco/testDebug.exec")
+	executionData = files("${project.buildDir}/jacoco/testDebugUnitTest.exec")
 
 	reports {
 		xml.enabled = true
@@ -38,4 +38,4 @@ tasks.create(name: "jacocoTestDebugReport", type: JacocoReport, dependsOn: "test
 	}
 }
 
-coveralls.jacocoReportPath = "${project.buildDir}/reports/jacoco/jacocoTestDebugReport/jacocoTestDebugReport.xml"
+coveralls.jacocoReportPath = "${project.buildDir}/reports/jacoco/jacocoUnitTestDebugReport/jacocoUnitTestDebugReport.xml"
