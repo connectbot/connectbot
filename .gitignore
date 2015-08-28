@@ -1,7 +1,3 @@
-# generated files
-bin/
-gen/
-
 # translation artifacts
 launchpad-*.tar.gz
 
