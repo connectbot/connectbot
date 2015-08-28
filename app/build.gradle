@@ -43,11 +43,6 @@ android {
             ldLibs "log"
         }
 
-        lintOptions {
-            abortOnError false
-            lintConfig file('lint.xml')
-        }
-
         testApplicationId "org.connectbot.tests"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -86,6 +81,11 @@ android {
             applicationIdSuffix ".debug"
             testCoverageEnabled true
         }
+    }
+
+    lintOptions {
+        abortOnError false
+        lintConfig file('lint.xml')
     }
 
     packagingOptions {
