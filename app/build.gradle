@@ -80,8 +80,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg'
 
             if (project.hasProperty('keystorePassword')) {
+                //noinspection GroovyAssignabilityCheck
                 signingConfig signingConfigs.release
             }
+
+            return true // this silences Android Studio's groovy inspector
         }
 
         debug {
