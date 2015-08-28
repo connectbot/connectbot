@@ -48,7 +48,14 @@ android {
     }
 
     signingConfigs {
-        release
+        if (project.hasProperty('keystorePassword')) {
+            release {
+                storeFile file(property('keystoreFile'))
+                storePassword property('keystorePassword')
+                keyAlias property('keystoreAlias')
+                keyPassword property('keystorePassword')
+            }
+        }
     }
 
     dependencies {
@@ -119,11 +126,4 @@ android.applicationVariants.all { variant ->
             valuesFile.write(content, 'UTF-8')
         }
     }
-}
-
-if (project.hasProperty('keystorePassword')) {
-    android.signingConfigs.release.storeFile file(keystoreFile)
-    android.signingConfigs.release.storePassword keystorePassword
-    android.signingConfigs.release.keyAlias keystoreAlias
-    android.signingConfigs.release.keyPassword keystorePassword
 }
