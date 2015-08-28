@@ -126,7 +126,7 @@ android.applicationVariants.all { variant ->
         ext.env = System.getenv()
         def buildNumber = getGitDescription()
         if (buildNumber != null) {
-            File valuesFile = file("${buildDir}/intermediates/res/${variant.dirName}/values/values.xml")
+            File valuesFile = file("${buildDir}/intermediates/res/merged/${variant.dirName}/values/values.xml")
             String content = valuesFile.getText('UTF-8')
             content = content.replaceAll(/\(working copy\)/, buildNumber)
             valuesFile.write(content, 'UTF-8')
