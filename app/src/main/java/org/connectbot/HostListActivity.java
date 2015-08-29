@@ -609,8 +609,8 @@ public class HostListActivity extends ListActivity {
 				holder.caption.setTextColor(chosen);
 			} else {
 				// selected, so revert back to default black text
-				holder.nickname.setTextAppearance(context, android.R.attr.textAppearanceLarge);
-				holder.caption.setTextAppearance(context, android.R.attr.textAppearanceSmall);
+				holder.nickname.setTextAppearance(context, android.R.style.TextAppearance_Large);
+				holder.caption.setTextAppearance(context, android.R.style.TextAppearance_Small);
 			}
 
 			CharSequence nice = context.getString(R.string.bind_never);
