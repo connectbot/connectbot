@@ -20,6 +20,7 @@ package org.connectbot;
 import java.util.List;
 
 import org.connectbot.bean.HostBean;
+import org.connectbot.service.OnHostStatusChangedListener;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.transport.TransportFactory;
@@ -57,13 +58,14 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class HostListActivity extends ListActivity {
+public class HostListActivity extends ListActivity implements OnHostStatusChangedListener {
 	public final static String TAG = "CB.HostListActivity";
 	public static final String DISCONNECT_ACTION = "org.connectbot.action.DISCONNECT";
 
@@ -96,13 +98,6 @@ public class HostListActivity extends ListActivity {
 	 */
 	private boolean closeOnDisconnectAll = true;
 
-	protected Handler updateHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			HostListActivity.this.updateList();
-		}
-	};
-
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
@@ -110,12 +105,16 @@ public class HostListActivity extends ListActivity {
 			// update our listview binder to find the service
 			HostListActivity.this.updateList();
 
+			bound.registerOnHostStatusChangedListener(HostListActivity.this);
+
 			if (waitingForDisconnectAll) {
 				disconnectAll();
 			}
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
+			bound.unregisterOnHostStatusChangedListener(HostListActivity.this);
+
 			bound = null;
 			HostListActivity.this.updateList();
 		}
@@ -161,9 +160,6 @@ public class HostListActivity extends ListActivity {
 		closeOnDisconnectAll = waitingForDisconnectAll && closeOnDisconnectAll;
 	}
 
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onNewIntent(android.content.Intent)
-	 */
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
@@ -370,7 +366,6 @@ public class HostListActivity extends ListActivity {
 		connect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				bridge.dispatchDisconnect(true);
-				updateHandler.sendEmptyMessage(-1);
 				return true;
 			}
 		});
@@ -410,7 +405,7 @@ public class HostListActivity extends ListActivity {
 									bridge.dispatchDisconnect(true);
 
 								hostdb.deleteHost(host);
-								updateHandler.sendEmptyMessage(-1);
+								updateList();
 							}
 						})
 						.setNegativeButton(R.string.delete_neg, null).create().show();
@@ -433,7 +428,6 @@ public class HostListActivity extends ListActivity {
 			.setPositiveButton(R.string.disconnect_all_pos, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					bound.disconnectAll(true, false);
-					updateHandler.sendEmptyMessage(-1);
 					waitingForDisconnectAll = false;
 
 					// Clear the intent so that the activity can be relaunched without closing.
@@ -511,8 +505,14 @@ public class HostListActivity extends ListActivity {
 		this.setListAdapter(adapter);
 	}
 
-	class HostAdapter extends ArrayAdapter<HostBean> {
-		private List<HostBean> hosts;
+	@Override
+	public void onHostStatusChanged() {
+		updateList();
+	}
+
+	static class HostAdapter extends BaseAdapter {
+		private final LayoutInflater inflater;
+		private final List<HostBean> hosts;
 		private final TerminalManager manager;
 		private final ColorStateList red, green, blue;
 
@@ -525,8 +525,7 @@ public class HostListActivity extends ListActivity {
 		}
 
 		public HostAdapter(Context context, List<HostBean> hosts, TerminalManager manager) {
-			super(context, R.layout.item_host, hosts);
-
+			this.inflater = LayoutInflater.from(context);
 			this.hosts = hosts;
 			this.manager = manager;
 
@@ -539,7 +538,7 @@ public class HostListActivity extends ListActivity {
 		 * Check if we're connected to a terminal with the given host.
 		 */
 		private int getConnectedState(HostBean host) {
-			// always disconnected if we dont have backend service
+			// always disconnected if we don't have backend service
 			if (this.manager == null)
 				return STATE_UNKNOWN;
 
@@ -550,6 +549,32 @@ public class HostListActivity extends ListActivity {
 				return STATE_DISCONNECTED;
 
 			return STATE_UNKNOWN;
+		}
+
+		@Override
+		public int getCount() {
+			return hosts.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return hosts.get(position);
+		}
+
+		/**
+		 * Use the database's IDs for the host.
+		 */
+		@Override
+		public long getItemId(int position) {
+			return hosts.get(position).getId();
+		}
+
+		/**
+		 * Since we're using the database's IDs, they're unchanging.
+		 */
+		@Override
+		public boolean hasStableIds() {
+			return true;
 		}
 
 		@Override
@@ -566,8 +591,9 @@ public class HostListActivity extends ListActivity {
 				holder.icon = (ImageView) convertView.findViewById(android.R.id.icon);
 
 				convertView.setTag(holder);
-			} else
+			} else {
 				holder = (ViewHolder) convertView.getTag();
+			}
 
 			HostBean host = hosts.get(position);
 			if (host == null) {
