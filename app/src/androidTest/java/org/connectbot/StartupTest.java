@@ -13,12 +13,10 @@ import org.junit.runner.RunWith;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.ViewAssertion;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -28,7 +26,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.pressBack;
-import static android.support.test.espresso.action.ViewActions.pressKey;
+import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
 import static android.support.test.espresso.action.ViewActions.pressMenuKey;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -64,7 +62,7 @@ public class StartupTest {
 
 		// Make sure we're still connected.
 		onData(withHostNickname("Local")).inAdapterView(withId(android.R.id.list))
-				.check(hostConnected())
+				.check(matches(hostConnected()))
 				.perform(longClick());
 
 		// Click on the disconnect context menu item.
@@ -72,7 +70,7 @@ public class StartupTest {
 
 		// Now make sure we're disconnected.
 		onData(withHostNickname("Local")).inAdapterView(withId(android.R.id.list))
-				.check(hostDisconnected());
+				.check(matches(hostDisconnected()));
 	}
 
 	@Test
@@ -86,7 +84,7 @@ public class StartupTest {
 
 		// Now make sure we're disconnected.
 		onData(withHostNickname("Local")).inAdapterView(withId(android.R.id.list))
-				.check(hostDisconnected());
+				.check(matches(hostDisconnected()));
 	}
 
 	private void startNewLocalConnection() {
@@ -95,9 +93,12 @@ public class StartupTest {
 		onView(withId(R.id.front_quickconnect)).perform(typeText("Local"));
 
 		Intents.init();
-		onView(withId(R.id.front_quickconnect)).perform(pressKey(KeyEvent.KEYCODE_ENTER));
-		intended(hasComponent(ConsoleActivity.class.getName()));
-		Intents.release();
+		try {
+			onView(withId(R.id.front_quickconnect)).perform(pressImeActionButton());
+			intended(hasComponent(ConsoleActivity.class.getName()));
+		} finally {
+			Intents.release();
+		}
 
 		onView(withId(R.id.console_flip)).check(matches(
 				hasDescendant(allOf(isDisplayed(), withId(R.id.terminal_view)))));
@@ -148,14 +149,14 @@ public class StartupTest {
 	}
 
 	@NonNull
-	private ViewAssertion hostDisconnected() {
-		return matches(hasDescendant(allOf(withId(android.R.id.icon),
-				withDrawableState(android.R.attr.state_expanded))));
+	private Matcher<View> hostDisconnected() {
+		return hasDescendant(allOf(withId(android.R.id.icon),
+				withDrawableState(android.R.attr.state_expanded)));
 	}
 
 	@NonNull
-	private ViewAssertion hostConnected() {
-		return matches(hasDescendant(allOf(withId(android.R.id.icon),
-				withDrawableState(android.R.attr.state_checked))));
+	private Matcher<View> hostConnected() {
+		return hasDescendant(allOf(withId(android.R.id.icon),
+				withDrawableState(android.R.attr.state_checked)));
 	}
 }

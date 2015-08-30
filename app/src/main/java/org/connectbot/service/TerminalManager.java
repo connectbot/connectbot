@@ -81,6 +81,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	public BridgeDisconnectedListener disconnectListener = null;
 
+	private final ArrayList<OnHostStatusChangedListener> hostStatusChangedListeners = new ArrayList<>();
+
 	public Map<String, KeyHolder> loadedKeypairs = new HashMap<String, KeyHolder>();
 
 	public Resources res;
@@ -252,6 +254,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		// also update database with new connected time
 		touchHost(host);
 
+		notifyHostStatusChanged();
+
 		return bridge;
 	}
 
@@ -353,6 +357,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		synchronized (disconnected) {
 			disconnected.add(bridge.host);
 		}
+
+		notifyHostStatusChanged();
 
 		if (shouldHideRunningNotification) {
 			ConnectionNotifier.getInstance().hideRunningNotification(this);
@@ -717,6 +723,30 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				bridge.startConnection();
 			}
 			mPendingReconnect.clear();
+		}
+	}
+
+	/**
+	 * Register a {@code listener} that wants to know when a host's status materially changes.
+	 * @see #hostStatusChangedListeners
+	 */
+	public void registerOnHostStatusChangedListener(OnHostStatusChangedListener listener) {
+		if (!hostStatusChangedListeners.contains(listener)) {
+			hostStatusChangedListeners.add(listener);
+		}
+	}
+
+	/**
+	 * Unregister a {@code listener} that wants to know when a host's status materially changes.
+	 * @see #hostStatusChangedListeners
+	 */
+	public void unregisterOnHostStatusChangedListener(OnHostStatusChangedListener listener) {
+		hostStatusChangedListeners.remove(listener);
+	}
+
+	private void notifyHostStatusChanged() {
+		for (OnHostStatusChangedListener listener : hostStatusChangedListeners) {
+			listener.onHostStatusChanged();
 		}
 	}
 }
