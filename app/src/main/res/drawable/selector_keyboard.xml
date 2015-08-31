@@ -17,25 +17,10 @@
  * limitations under the License.
  */
 -->
-<resources>
-
-	<style name="KeyboardKey">
-		<item name="android:layout_width">45dip</item>
-		<item name="android:layout_height">30dip</item>
-		<item name="android:layout_margin">0dp</item>
-		<item name="android:padding">0dp</item>
-		<item name="android:textSize">10sp</item>
-	</style>
-
-
-	<style name="KeyboardButton" parent="KeyboardKey">
-		<item name="android:background">@drawable/selector_keyboard</item>
-	</style>
-
-
-	<style name="KeyboardSeparator">
-		<item name="android:layout_width">1dip</item>
-		<item name="android:layout_height">match_parent</item>
-		<item name="android:background">#90000000</item>
-	</style>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:drawable="@color/key_background_selected"
+		android:state_selected="true"/>
+	<item android:drawable="@color/key_background_pressed"
+		android:state_pressed="true"/>
+	<item android:drawable="@color/key_background_normal"/>
+</selector>
