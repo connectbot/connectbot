@@ -51,6 +51,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -915,7 +916,8 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		copy = menu.add(R.string.console_menu_copy);
 		if (hardKeyboard)
 			copy.setAlphabeticShortcut('c');
-		copy.setIcon(android.R.drawable.ic_menu_set_as);
+		MenuItemCompat.setShowAsAction(copy, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+		copy.setIcon(R.drawable.ic_action_copy);
 		copy.setEnabled(activeTerminal);
 		copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
@@ -928,7 +930,8 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		paste = menu.add(R.string.console_menu_paste);
 		if (hardKeyboard)
 			paste.setAlphabeticShortcut('v');
-		paste.setIcon(android.R.drawable.ic_menu_edit);
+		MenuItemCompat.setShowAsAction(paste, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+		paste.setIcon(R.drawable.ic_action_paste);
 		paste.setEnabled(clipboard.hasText() && sessionOpen);
 		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
