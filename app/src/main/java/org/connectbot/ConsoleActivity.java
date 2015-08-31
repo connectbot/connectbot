@@ -103,6 +103,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	private static final int KEYBOARD_DISPLAY_TIME = 3000;
 	private static final int KEYBOARD_REPEAT_INITIAL = 500;
 	private static final int KEYBOARD_REPEAT = 100;
+	private static final String STATE_SELECTED_URI = "selectedUri";
 
 	protected ViewPager pager = null;
 	protected TabLayout tabs = null;
@@ -468,7 +469,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
 		// handle requested console from incoming intent
-		requested = getIntent().getData();
+		if (icicle == null) {
+			requested = getIntent().getData();
+		} else {
+			requested = Uri.parse(icicle.getString(STATE_SELECTED_URI));
+		}
 
 		inflater = LayoutInflater.from(this);
 
@@ -1170,6 +1175,18 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		super.onStop();
 
 		unbindService(connection);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		// Maintain selected host if connected.
+		if (adapter.getCurrentTerminalView() != null
+				&& !adapter.getCurrentTerminalView().bridge.isDisconnected()) {
+			Uri uri = adapter.getCurrentTerminalView().bridge.host.getUri();
+			savedInstanceState.putString(STATE_SELECTED_URI, uri.toString());
+		}
+
+		super.onSaveInstanceState(savedInstanceState);
 	}
 
 	private void startCopyMode() {
