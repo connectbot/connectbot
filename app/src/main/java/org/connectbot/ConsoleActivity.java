@@ -227,7 +227,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	/**
 	 * Handle repeatable virtual keys and touch events
 	 */
-	public class KeyRepeater implements Runnable, OnTouchListener {
+	public class KeyRepeater implements Runnable, OnTouchListener, OnClickListener {
 		private View mView;
 		private Handler mHandler;
 		private boolean mDown;
@@ -236,6 +236,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			mView = view;
 			mHandler = handler;
 			mView.setOnTouchListener(this);
+			mView.setOnClickListener(this);
 			mDown = false;
 		}
 
@@ -244,7 +245,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			mDown = true;
 			mHandler.removeCallbacks(this);
 			mHandler.postDelayed(this, KEYBOARD_REPEAT);
-			onEmulatedKeyClicked(mView);
+			mView.performClick();
 		}
 
 		@Override
@@ -259,20 +260,29 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			case MotionEvent.ACTION_DOWN:
 				mDown = false;
 				mHandler.postDelayed(this, KEYBOARD_REPEAT_INITIAL);
+				mView.setPressed(true);
 				return (true);
 
 			case MotionEvent.ACTION_CANCEL:
 				mHandler.removeCallbacks(this);
+				mView.setPressed(false);
 				return (true);
 
 			case MotionEvent.ACTION_UP:
 				mHandler.removeCallbacks(this);
+				mView.setPressed(false);
+
 				if (!mDown) {
-					onEmulatedKeyClicked(mView);
+					mView.performClick();
 				}
 				return (true);
 			}
 			return false;
+		}
+
+		@Override
+		public void onClick(View view) {
+			onEmulatedKeyClicked(view);
 		}
 	}
 
@@ -280,6 +290,9 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		TerminalView terminal = adapter.getCurrentTerminalView();
 		if (terminal == null) return;
 
+		if (BuildConfig.DEBUG) {
+			Log.d(TAG, "onEmulatedKeyClicked(" + v.getId() + ")");
+		}
 		TerminalKeyListener handler = terminal.bridge.getKeyHandler();
 		boolean hideKeys = false;
 
