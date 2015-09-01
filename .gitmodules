@@ -1,3 +1,0 @@
-[submodule "ci-support"]
-	path = ci-support
-	url = https://github.com/connectbot/ci-support
