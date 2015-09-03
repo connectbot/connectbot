@@ -8,11 +8,8 @@
 # number of lint warnings that existed.
 DEFAULT_NUMBER=207
 
-if [[ $# != 3 || ! -f $1 ]]; then \
-    echo "Usage: $0 <lint.xml file> <historical file> <success file>"
-    exit 1
-elif [[ ! -d $(dirname $3) ]]; then \
-    echo "Error: directory $(dirname $3) does not exist."
+if [[ $# != 2 || ! -f $1 ]]; then \
+    echo "Usage: $0 <lint.xml file> <historical.xml file>"
     exit 1
 fi
 
@@ -27,21 +24,31 @@ if [[ ! -x $xmllint ]]; then \
     exit 1
 fi
 
-if [[ -f $historical_file ]]; then \
-    historical_count="$(cat $historical_file)"
-else \
-    historical_count=$DEFAULT_NUMBER
+if [[ ! -f $2 ]]; then \
+  # no cache history, store this one and exit
+  cp $1 $2
+  exit 0
 fi
 
-new_count="$($xmllint --xpath 'count(//issue)' "$lint_file")"
+echo "cat //issue/location" | xmllint --shell $historical_file | grep '<location' >/tmp/hist.$$
+echo "cat //issue/location" | xmllint --shell $lint_file | grep '<location' >/tmp/lint.$$
 
-if [[ $new_count > $historical_count ]]; then \
-    echo "FAILURE: lint issues increased from $historical_count to $new_count"
+old_count=$(cat /tmp/hist.$$ | wc -l)
+new_count=$(cat /tmp/lint.$$ | wc -l)
+
+echo "Historical count : $old_count, new count : $new_count"
+
+if [[ $new_count > $old_count ]]; then \
+    echo "FAILURE: lint issues increased from $old_count to $new_count"
+    diff /tmp/lint.$$ /tmp/hist.$$
+    rm -f /tmp/lint.$$ /tmp/hist.$$
     exit 2
 fi
+
+rm -f /tmp/lint.$$ /tmp/hist.$$
 
 if [[ $TRAVIS_PULL_REQUEST == false ]]; then \
     # Okay, we either stayed the same or reduced our number.
     # Write it out so we can check it next build!
-    echo $new_count > $success_file
+    mv $lint_file $historical_file 
 fi
