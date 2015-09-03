@@ -4,10 +4,6 @@
 # Travis CI builds to fail when the number increases by exploiting the
 # caching mechanism.
 
-# This is to prime the system: when I submitted this change, this is the
-# number of lint warnings that existed.
-DEFAULT_NUMBER=207
-
 if [[ $# != 2 || ! -f $1 ]]; then \
     echo "Usage: $0 <lint.xml file> <historical.xml file>"
     exit 1
@@ -15,7 +11,6 @@ fi
 
 lint_file="$1"
 historical_file="$2"
-success_file="$3"
 
 xmllint="$(which xmllint)"
 
