@@ -22,5 +22,5 @@
 		android:state_selected="true"/>
 	<item android:drawable="@color/key_background_pressed"
 		android:state_pressed="true"/>
-	<item android:drawable="@color/key_background_normal"/>
+	<item android:drawable="@drawable/keyboard_button_border"/>
 </selector>

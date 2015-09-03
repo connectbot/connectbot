@@ -1250,6 +1250,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			return;
 		}
 		bound.defaultBridge = view.bridge;
+		setTitle(view.bridge.host.getNickname());
 	}
 
 	protected void updateEmptyVisible() {
