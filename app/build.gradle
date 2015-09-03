@@ -44,7 +44,7 @@ android {
         }
 
         testApplicationId "org.connectbot.tests"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "org.connectbot.FixJacocoTestRunner"
     }
 
     signingConfigs {
