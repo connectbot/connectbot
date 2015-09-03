@@ -19,28 +19,36 @@ if [[ ! -x $xmllint ]]; then \
     exit 1
 fi
 
-if [[ ! -f $2 ]]; then \
+if [[ ! -f $historical_file ]]; then \
   # no cache history, store this one and exit
-  cp $1 $2
+  cp $lint_file $historical_file
   exit 0
 fi
 
-echo "cat //issue/location" | xmllint --shell $historical_file | grep '<location' >/tmp/hist.$$
-echo "cat //issue/location" | xmllint --shell $lint_file | grep '<location' >/tmp/lint.$$
+tmp_dir="$(mktemp -d lint.XXXXXXXX)"
+trap "rm -rf $tmp_dir" EXIT ERROR
 
-old_count=$(cat /tmp/hist.$$ | wc -l)
-new_count=$(cat /tmp/lint.$$ | wc -l)
+lint_file="$tmp_dir/lint.txt"
+hist_file="$tmp_dir/hist.txt"
+
+echo "cat //issue/location" | \
+    xmllint --shell $historical_file | \
+    grep '<location' >$lint_file
+    
+echo "cat //issue/location" | \
+    xmllint --shell $lint_file | \
+    grep '<location' >$hist_file
+
+old_count=$(cat $lint_file | wc -l)
+new_count=$(cat $hist_file | wc -l)
 
 echo "Historical count : $old_count, new count : $new_count"
 
 if [[ $new_count > $old_count ]]; then \
     echo "FAILURE: lint issues increased from $old_count to $new_count"
-    diff /tmp/lint.$$ /tmp/hist.$$
-    rm -f /tmp/lint.$$ /tmp/hist.$$
+    diff $lint_file $hist_file
     exit 2
 fi
-
-rm -f /tmp/lint.$$ /tmp/hist.$$
 
 if [[ $TRAVIS_PULL_REQUEST == false ]]; then \
     # Okay, we either stayed the same or reduced our number.
