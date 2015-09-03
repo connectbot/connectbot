@@ -167,7 +167,7 @@
 	<ImageView
 		android:id="@+id/button_keyboard"
 		style="@style/KeyboardKey"
-		android:background="@color/keyboard_background"
+		android:background="@drawable/keyboard_keyboard_border"
 		android:contentDescription="@string/image_description_show_keyboard"
 		android:src="@drawable/ic_keyboard_white"/>
 </LinearLayout>
