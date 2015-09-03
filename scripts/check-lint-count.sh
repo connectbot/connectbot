@@ -28,30 +28,30 @@ fi
 tmp_dir="$(mktemp -d lint.XXXXXXXX)"
 trap "rm -rf $tmp_dir" 1 2 3 6 9 14 15
 
-lint_file="$tmp_dir/lint.txt"
-hist_file="$tmp_dir/hist.txt"
+lint_results="$tmp_dir/lint.txt"
+hist_results="$tmp_dir/hist.txt"
 
 echo "cat //issue/location" | \
     xmllint --shell $historical_file | \
-    grep '<location' >$lint_file
+    grep '<location' >$lint_results
     
 echo "cat //issue/location" | \
     xmllint --shell $lint_file | \
-    grep '<location' >$hist_file
+    grep '<location' >$hist_results
 
-old_count=$(cat $lint_file | wc -l)
-new_count=$(cat $hist_file | wc -l)
+old_count=$(cat $lint_results | wc -l)
+new_count=$(cat $hist_results | wc -l)
 
 echo "Historical count : $old_count, new count : $new_count"
 
 if [[ $new_count > $old_count ]]; then \
     echo "FAILURE: lint issues increased from $old_count to $new_count"
-    diff $lint_file $hist_file
+    diff $lint_results $hist_results
     exit 2
 fi
 
 if [[ $TRAVIS_PULL_REQUEST == false ]]; then \
     # Okay, we either stayed the same or reduced our number.
     # Write it out so we can check it next build!
-    mv $lint_file $historical_file 
+    cp $lint_file $historical_file 
 fi
