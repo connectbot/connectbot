@@ -47,6 +47,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.Trace;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -500,6 +501,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				new ViewPager.SimpleOnPageChangeListener() {
 					@Override
 					public void onPageSelected(int position) {
+						setTitle(adapter.getPageTitle(position));
 						onTerminalChanged();
 					}
 				});
@@ -1250,7 +1252,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			return;
 		}
 		bound.defaultBridge = view.bridge;
-		setTitle(view.bridge.host.getNickname());
 	}
 
 	protected void updateEmptyVisible() {
@@ -1368,6 +1369,8 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	 */
 	private void setDisplayedTerminal(int requestedIndex) {
 		pager.setCurrentItem(requestedIndex);
+		// set activity title
+		setTitle(adapter.getPageTitle(requestedIndex));
 		onTerminalChanged();
 	}
 
