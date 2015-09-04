@@ -500,6 +500,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				new ViewPager.SimpleOnPageChangeListener() {
 					@Override
 					public void onPageSelected(int position) {
+						setTitle(adapter.getPageTitle(position));
 						onTerminalChanged();
 					}
 				});
@@ -1250,7 +1251,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			return;
 		}
 		bound.defaultBridge = view.bridge;
-		setTitle(view.bridge.host.getNickname());
 	}
 
 	protected void updateEmptyVisible() {
@@ -1368,6 +1368,8 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	 */
 	private void setDisplayedTerminal(int requestedIndex) {
 		pager.setCurrentItem(requestedIndex);
+		// set activity title
+		setTitle(adapter.getPageTitle(requestedIndex));
 		onTerminalChanged();
 	}
 
