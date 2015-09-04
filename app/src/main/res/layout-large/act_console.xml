@@ -21,6 +21,7 @@
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:background="#ff000000">
@@ -29,7 +30,8 @@
 		android:id="@+id/toolbar"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+		android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+		tools:ignore="InconsistentLayout"/>
 
 	<android.support.design.widget.TabLayout
 		android:id="@+id/tabs"
@@ -39,7 +41,8 @@
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		app:tabMode="scrollable"
 		app:tabContentStart="60dp"
-		app:tabIndicatorColor="@android:color/white"/>
+		app:tabIndicatorColor="@android:color/white"
+		tools:ignore="InconsistentLayout"/>
 
 	<TextView
 		android:id="@android:id/empty"
