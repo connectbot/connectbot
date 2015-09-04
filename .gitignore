@@ -17,3 +17,4 @@ local.properties
 # Android Studio
 .gradle/
 build/
+app/app.iml
