@@ -4,21 +4,13 @@
 # Travis CI builds to fail when the number increases by exploiting the
 # caching mechanism.
 
-# This is to prime the system: when I submitted this change, this is the
-# number of lint warnings that existed.
-DEFAULT_NUMBER=207
-
-if [[ $# != 3 || ! -f $1 ]]; then \
-    echo "Usage: $0 <lint.xml file> <historical file> <success file>"
-    exit 1
-elif [[ ! -d $(dirname $3) ]]; then \
-    echo "Error: directory $(dirname $3) does not exist."
+if [[ $# != 2 || ! -f $1 ]]; then \
+    echo "Usage: $0 <lint.xml file> <historical.xml file>"
     exit 1
 fi
 
 lint_file="$1"
 historical_file="$2"
-success_file="$3"
 
 xmllint="$(which xmllint)"
 
@@ -27,21 +19,39 @@ if [[ ! -x $xmllint ]]; then \
     exit 1
 fi
 
-if [[ -f $historical_file ]]; then \
-    historical_count="$(cat $historical_file)"
-else \
-    historical_count=$DEFAULT_NUMBER
+if [[ ! -f $historical_file ]]; then \
+  # no cache history, store this one and exit
+  cp $lint_file $historical_file
+  exit 0
 fi
 
-new_count="$($xmllint --xpath 'count(//issue)' "$lint_file")"
+tmp_dir="$(mktemp -d lint.XXXXXXXX)"
+trap "rm -rf $tmp_dir" ERR EXIT
 
-if [[ $new_count > $historical_count ]]; then \
-    echo "FAILURE: lint issues increased from $historical_count to $new_count"
+lint_results="$tmp_dir/lint.txt"
+hist_results="$tmp_dir/hist.txt"
+
+echo "cat //issue/location" | \
+    xmllint --shell $historical_file | \
+    grep '<location' >$lint_results
+    
+echo "cat //issue/location" | \
+    xmllint --shell $lint_file | \
+    grep '<location' >$hist_results
+
+old_count=$(cat $lint_results | wc -l)
+new_count=$(cat $hist_results | wc -l)
+
+echo "Historical count : $old_count, new count : $new_count"
+
+if [[ $new_count > $old_count ]]; then \
+    echo "FAILURE: lint issues increased from $old_count to $new_count"
+    diff $lint_results $hist_results
     exit 2
 fi
 
 if [[ $TRAVIS_PULL_REQUEST == false ]]; then \
     # Okay, we either stayed the same or reduced our number.
     # Write it out so we can check it next build!
-    echo $new_count > $success_file
+    cp $lint_file $historical_file 
 fi
