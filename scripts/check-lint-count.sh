@@ -26,7 +26,7 @@ if [[ ! -f $historical_file ]]; then \
 fi
 
 tmp_dir="$(mktemp -d lint.XXXXXXXX)"
-trap "rm -rf $tmp_dir" 1 2 3 6 9 14 15
+trap "rm -rf $tmp_dir" ERR EXIT
 
 lint_results="$tmp_dir/lint.txt"
 hist_results="$tmp_dir/hist.txt"
