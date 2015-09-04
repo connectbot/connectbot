@@ -23,23 +23,30 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
-	android:padding="10dip"
+	android:minHeight="72dp"
 	>
 
 	<ImageView
 		android:id="@android:id/icon"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+		android:layout_width="40dp"
+		android:layout_height="40dp"
 		android:layout_alignParentRight="true"
+		android:layout_centerVertical="true"
+		android:layout_marginRight="16dp"
 		android:contentDescription="@string/image_description_connected"
-		android:paddingTop="5dip"
 		android:src="@drawable/connected"
 		/>
 
 	<LinearLayout
-		android:layout_width="fill_parent"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:orientation="horizontal"
+		android:layout_alignParentLeft="true"
+		android:layout_alignWithParentIfMissing="true"
+		android:layout_centerVertical="true"
+		android:layout_marginLeft="16dp"
+		android:layout_marginRight="16dp"
+		android:orientation="vertical"
+		android:layout_toLeftOf="@android:id/icon"
 		>
 
 		<TextView
@@ -48,17 +55,17 @@
 			android:layout_height="wrap_content"
 			android:ellipsize="end"
 			android:singleLine="true"
-			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:paddingTop="20dp"
+			android:textAppearance="@style/ListItemFirstLineText"
 			/>
 
 		<TextView
 			android:id="@android:id/text2"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:paddingLeft="10dip"
-			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:paddingBottom="20dp"
+			android:textAppearance="@style/ListItemSecondLineText"
 			/>
-
 
 	</LinearLayout>
 
