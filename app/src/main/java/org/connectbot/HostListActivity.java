@@ -17,6 +17,7 @@
 
 package org.connectbot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.connectbot.bean.HostBean;
@@ -368,6 +369,21 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 			}
 		});
 
+		MenuItem cloneHost = menu.add(R.string.connection_clone);
+		cloneHost.setVisible(bridge != null && !host.getNickname().matches(".* #[0-9]+$"));
+		cloneHost.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				HostBean clone = host.clone();
+				clone.setNickname(getTempNickname(host.getNickname()));
+				Uri uri = clone.getUri();
+				Intent contents = new Intent(Intent.ACTION_VIEW, uri);
+				contents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				contents.setClass(HostListActivity.this, ConsoleActivity.class);
+				HostListActivity.this.startActivity(contents);
+				return true;
+			}
+		});
+
 		MenuItem edit = menu.add(R.string.list_host_edit);
 		edit.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
@@ -412,6 +428,21 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 			}
 		});
 	}
+
+	private String getTempNickname(String nickName) {
+		List<String> nameList = new ArrayList<>();
+		for (TerminalBridge bridge : bound.getBridges()) {
+			String name = bridge.host.getNickname();
+			if(name.matches(".* #[0-9]+$"))
+				nameList.add(name);
+		}
+		int index = 1;
+		while (nameList.contains(nickName + " #" + index))
+			index++;
+
+		return (nickName + " #" + index);
+	}
+
 	/**
 	 * Disconnects all active connections and closes the activity if appropriate.
 	 */

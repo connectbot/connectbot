@@ -324,4 +324,29 @@ public class HostBean extends AbstractBean {
 		return Uri.parse(sb.toString());
 	}
 
+	public HostBean clone() {
+		HostBean clone = new HostBean();
+		clone.nickname = nickname;
+		clone.username = username;
+		clone.hostname = hostname;
+		clone.port = port;
+		clone.protocol = protocol;
+		clone.hostKeyAlgo = hostKeyAlgo;
+		if (hostKey != null)
+			clone.hostKey = hostKey.clone();
+		clone.lastConnect = lastConnect;
+		clone.color = color;
+		clone.useKeys = useKeys;
+		clone.useAuthAgent = useAuthAgent;
+		clone.postLogin = postLogin;
+		clone.pubkeyId = pubkeyId;
+		clone.wantSession = wantSession;
+		clone.delKey = delKey;
+		clone.fontSize = fontSize;
+		clone.compression = compression;
+		clone.encoding = encoding;
+		clone.stayConnected = stayConnected;
+		clone.quickDisconnect = quickDisconnect;
+		return (clone);
+	}
 }

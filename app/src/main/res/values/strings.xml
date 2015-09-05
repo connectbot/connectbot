@@ -588,4 +588,7 @@
 	<string name="button_key_f11">F11</string>
 	<!-- Text for the "F12" button in virtual keyboard. -->
 	<string name="button_key_f12">F12</string>
+
+	<!-- Host list context menu "Clone connection" -->
+	<string name="connection_clone">Clone connection</string>
 </resources>
