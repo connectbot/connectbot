@@ -433,7 +433,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 		List<String> nameList = new ArrayList<>();
 		for (TerminalBridge bridge : bound.getBridges()) {
 			String name = bridge.host.getNickname();
-			if(name.matches(".* #[0-9]+$"))
+			if (name.matches(".* #[0-9]+$"))
 				nameList.add(name);
 		}
 		int index = 1;
