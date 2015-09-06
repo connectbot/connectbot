@@ -22,6 +22,8 @@ import org.connectbot.util.HostDatabase;
 import android.content.ContentValues;
 import android.net.Uri;
 
+import java.util.Locale;
+
 /**
  * @author Kenny Root
  *
@@ -332,6 +334,6 @@ public class HostBean extends AbstractBean {
 	}
 
 	public Uri getCloneUri(int index) {
-		return Uri.parse(String.format("%s #%d", getUriString(), index));
+		return Uri.parse(String.format(Locale.US, "%s #%d", getUriString(), index));
 	}
 }
