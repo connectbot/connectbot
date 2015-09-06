@@ -331,7 +331,7 @@ public class HostBean extends AbstractBean {
 		return Uri.parse(getUriString());
 	}
 
-	public Uri getCloneUri( int index ) {
+	public Uri getCloneUri(int index) {
 		return Uri.parse(String.format("%s #%d", getUriString(), index));
 	}
 }

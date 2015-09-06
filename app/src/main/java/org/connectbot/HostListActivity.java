@@ -580,7 +580,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 			if (this.manager == null)
 				return false;
 			TerminalBridge bridge = manager.getConnectedBridge(host);
-			if(bridge != null)
+			if (bridge != null)
 				return bridge.isTemp();
 			return false;
 		}

@@ -182,7 +182,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				}
 			}
 
-			if(requestedBridge != null) {
+			if (requestedBridge != null) {
 				Intent intent = getIntent();
 				if (intent != null) {
 					requestedBridge.setTemp(intent.getBooleanExtra(IS_TEMPORARY, false));
