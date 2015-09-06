@@ -475,6 +475,9 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 		intent.setData(uri);
 		startActivity(intent);
 
+		// Clear the input box for the next entry.
+		quickconnect.setText("");
+
 		return true;
 	}
 
