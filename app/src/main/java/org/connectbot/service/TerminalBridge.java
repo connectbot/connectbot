@@ -125,6 +125,11 @@ public class TerminalBridge implements VDUDisplay {
 	protected BridgeDisconnectedListener disconnectListener = null;
 
 	/**
+	 * Boolean to indicate if this is a temporary connection (clone)
+	 */
+	public boolean temp = false;
+
+	/**
 	 * Create a new terminal bridge suitable for unit testing.
 	 */
 	public TerminalBridge() {
@@ -1043,5 +1048,13 @@ public class TerminalBridge implements VDUDisplay {
 	 */
 	public void decreaseFontSize() {
 		setFontSize(fontSizeDp - FONT_SIZE_STEP);
+	}
+
+	public boolean isTemp() {
+		return temp;
+	}
+
+	public void setTemp(boolean temp) {
+		this.temp = temp;
 	}
 }

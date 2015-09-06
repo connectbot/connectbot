@@ -17,7 +17,6 @@
 
 package org.connectbot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.connectbot.bean.HostBean;
@@ -369,14 +368,13 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 			}
 		});
 
-		MenuItem cloneHost = menu.add(R.string.connection_clone);
-		cloneHost.setVisible(bridge != null && !host.getNickname().matches(".* #[0-9]+$"));
+		MenuItem cloneHost = menu.add(R.string.clone_connection);
+		cloneHost.setVisible(bridge != null && !bridge.isTemp());
 		cloneHost.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
-				HostBean clone = host.clone();
-				clone.setNickname(getTempNickname(host.getNickname()));
-				Uri uri = clone.getUri();
+				Uri uri = host.getCloneUri(getConnectionIndex());
 				Intent contents = new Intent(Intent.ACTION_VIEW, uri);
+				contents.putExtra(ConsoleActivity.IS_TEMPORARY, true);
 				contents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				contents.setClass(HostListActivity.this, ConsoleActivity.class);
 				HostListActivity.this.startActivity(contents);
@@ -429,18 +427,13 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 		});
 	}
 
-	private String getTempNickname(String nickName) {
-		List<String> nameList = new ArrayList<>();
-		for (TerminalBridge bridge : bound.getBridges()) {
-			String name = bridge.host.getNickname();
-			if (name.matches(".* #[0-9]+$"))
-				nameList.add(name);
-		}
+	private int getConnectionIndex() {
 		int index = 1;
-		while (nameList.contains(nickName + " #" + index))
-			index++;
-
-		return (nickName + " #" + index);
+		for (TerminalBridge bridge : bound.getBridges()) {
+			if (bridge.isTemp())
+				index++;
+		}
+		return (index);
 	}
 
 	/**
@@ -580,6 +573,19 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 			return STATE_UNKNOWN;
 		}
 
+		/**
+		 * Check if this is a temporary connection.
+		 */
+		private boolean isTemp(HostBean host) {
+			if (this.manager == null)
+				return false;
+			TerminalBridge bridge = manager.getConnectedBridge(host);
+			if(bridge != null)
+				return bridge.isTemp();
+			return false;
+		}
+
+
 		@Override
 		public int getCount() {
 			return hosts.size();
@@ -669,10 +675,13 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 			}
 
 			CharSequence nice = context.getString(R.string.bind_never);
-			if (host.getLastConnect() > 0) {
-				nice = DateUtils.getRelativeTimeSpanString(host.getLastConnect() * 1000);
+			if (!isTemp(host)) {
+				if (host.getLastConnect() > 0) {
+					nice = DateUtils.getRelativeTimeSpanString(host.getLastConnect() * 1000);
+				}
+			} else {
+				nice = context.getString(R.string.cloned_connection);
 			}
-
 			holder.caption.setText(nice);
 
 			return convertView;

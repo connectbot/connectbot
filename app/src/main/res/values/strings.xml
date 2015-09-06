@@ -590,5 +590,8 @@
 	<string name="button_key_f12">F12</string>
 
 	<!-- Host list context menu "Clone connection" -->
-	<string name="connection_clone">Clone connection</string>
+	<string name="clone_connection">Clone connection</string>
+
+	<!-- Host list item "last connection date" for cloned connections -->
+	<string name="cloned_connection">Cloned connection</string>
 </resources>

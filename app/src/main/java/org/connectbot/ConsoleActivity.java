@@ -105,6 +105,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	private static final int KEYBOARD_REPEAT_INITIAL = 500;
 	private static final int KEYBOARD_REPEAT = 100;
 	private static final String STATE_SELECTED_URI = "selectedUri";
+	public static final String IS_TEMPORARY = "temporary";
 
 	protected ViewPager pager = null;
 	protected TabLayout tabs = null;
@@ -178,6 +179,13 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 					requestedBridge = bound.openConnection(requested);
 				} catch (Exception e) {
 					Log.e(TAG, "Problem while trying to create new requested bridge from URI", e);
+				}
+			}
+
+			if(requestedBridge != null) {
+				Intent intent = getIntent();
+				if (intent != null) {
+					requestedBridge.setTemp(intent.getBooleanExtra(IS_TEMPORARY, false));
 				}
 			}
 
@@ -1190,6 +1198,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 					Log.e(TAG, "Problem while trying to create new requested bridge from URI", e);
 					// TODO: We should display an error dialog here.
 					return;
+				}
+
+				if (requestedBridge != null && intent != null) {
+					requestedBridge.setTemp(intent.getBooleanExtra(IS_TEMPORARY, false));
 				}
 
 				adapter.notifyDataSetChanged();

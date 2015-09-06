@@ -305,48 +305,33 @@ public class HostBean extends AbstractBean {
 	}
 
 	/**
-	 * @return URI identifying this HostBean
+	 * @return String identifying this HostBean
 	 */
-	public Uri getUri() {
+	public String getUriString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(protocol)
-			.append("://");
+				.append("://");
 
 		if (username != null)
 			sb.append(Uri.encode(username))
-				.append('@');
+					.append('@');
 
 		sb.append(Uri.encode(hostname))
-			.append(':')
-			.append(port)
-			.append("/#")
-			.append(nickname);
-		return Uri.parse(sb.toString());
+				.append(':')
+				.append(port)
+				.append("/#")
+				.append(nickname);
+		return sb.toString();
 	}
 
-	public HostBean clone() {
-		HostBean clone = new HostBean();
-		clone.nickname = nickname;
-		clone.username = username;
-		clone.hostname = hostname;
-		clone.port = port;
-		clone.protocol = protocol;
-		clone.hostKeyAlgo = hostKeyAlgo;
-		if (hostKey != null)
-			clone.hostKey = hostKey.clone();
-		clone.lastConnect = lastConnect;
-		clone.color = color;
-		clone.useKeys = useKeys;
-		clone.useAuthAgent = useAuthAgent;
-		clone.postLogin = postLogin;
-		clone.pubkeyId = pubkeyId;
-		clone.wantSession = wantSession;
-		clone.delKey = delKey;
-		clone.fontSize = fontSize;
-		clone.compression = compression;
-		clone.encoding = encoding;
-		clone.stayConnected = stayConnected;
-		clone.quickDisconnect = quickDisconnect;
-		return (clone);
+	/**
+	 * @return URI identifying this HostBean
+	 */
+	public Uri getUri() {
+		return Uri.parse(getUriString());
+	}
+
+	public Uri getCloneUri( int index ) {
+		return Uri.parse(String.format("%s #%d", getUriString(), index));
 	}
 }
