@@ -34,6 +34,7 @@ import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
 import static android.support.test.espresso.action.ViewActions.pressMenuKey;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -94,6 +95,15 @@ public class StartupTest {
 		// Now make sure we're disconnected.
 		onData(withHostNickname("Local")).inAdapterView(withId(android.R.id.list))
 				.check(matches(hostDisconnected()));
+	}
+
+	@Test
+	public void localConnectionCanDelete() {
+		startNewLocalConnectionAndGoBack("Local");
+		onData(withHostNickname("Local")).inAdapterView(withId(android.R.id.list))
+				.perform(longClick());
+		onView(withText(R.string.list_host_delete)).perform(click());
+		onView(withText(R.string.delete_pos)).perform(click());
 	}
 
 	@Test
