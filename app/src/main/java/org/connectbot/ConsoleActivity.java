@@ -488,7 +488,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		if (icicle == null) {
 			requested = getIntent().getData();
 		} else {
-			requested = Uri.parse(icicle.getString(STATE_SELECTED_URI));
+			String uri = icicle.getString(STATE_SELECTED_URI);
+			if (uri != null) {
+				requested = Uri.parse(uri);
+			}
 		}
 
 		inflater = LayoutInflater.from(this);
