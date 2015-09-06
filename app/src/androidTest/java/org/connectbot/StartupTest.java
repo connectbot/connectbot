@@ -11,7 +11,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.espresso.matcher.BoundedMatcher;
@@ -19,6 +23,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -29,6 +34,7 @@ import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
 import static android.support.test.espresso.action.ViewActions.pressMenuKey;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -36,6 +42,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.connectbot.ConnectbotMatchers.hostConnected;
+import static org.connectbot.ConnectbotMatchers.hostDisconnected;
+import static org.connectbot.ConnectbotMatchers.withHostNickname;
+import static org.connectbot.ConnectbotMatchers.withTextColor;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -87,10 +97,60 @@ public class StartupTest {
 				.check(matches(hostDisconnected()));
 	}
 
+	@Test
+	public void localConnectionCanDelete() {
+		startNewLocalConnectionAndGoBack("Local");
+		onData(withHostNickname("Local")).inAdapterView(withId(android.R.id.list))
+				.perform(longClick());
+		onView(withText(R.string.list_host_delete)).perform(click());
+		onView(withText(R.string.delete_pos)).perform(click());
+	}
+
+	@Test
+	public void localConnectionCanChangeToRed() throws Exception {
+		startNewLocalConnectionAndGoBack("Local1");
+		changeColor("Local1", R.color.red, R.string.color_red);
+	}
+
+	/**
+	 * Changes the color of {@code hostName} from the {@link HostListActivity} to the {@code color}
+	 * from {@code R.color.[color]} with identifying {@code stringForColor} from
+	 * {@code R.string.[colorname]}.
+	 */
+	private void changeColor(String hostName, @ColorRes int color, @StringRes int stringForColor) {
+		// Bring up the context menu.
+		onData(withHostNickname(hostName)).inAdapterView(withId(android.R.id.list))
+				.perform(longClick());
+		onView(withText(R.string.list_host_edit)).perform(click());
+
+		// Click on the color category and select the desired one.
+		onView(withText(R.string.hostpref_color_title)).perform(click());
+		onView(withText(stringForColor)).perform(click());
+
+		// Go back to the host list.
+		onView(withText(R.string.hostpref_color_title)).perform(pressBack());
+
+		Resources res = InstrumentationRegistry.getTargetContext().getResources();
+		onData(withHostNickname(hostName)).inAdapterView(withId(android.R.id.list))
+				.check(matches(hasDescendant(allOf(withId(android.R.id.text1),
+						withTextColor(res.getColor(color))))));
+	}
+
+	private void startNewLocalConnectionAndGoBack(String name) {
+		startNewLocalConnection(name);
+		onView(withId(R.id.console_flip)).perform(closeSoftKeyboard(), pressBack());
+		onData(withHostNickname(name)).inAdapterView(withId(android.R.id.list))
+				.check(matches(isDisplayed()));
+	}
+
 	private void startNewLocalConnection() {
+		startNewLocalConnection("Local");
+	}
+
+	private void startNewLocalConnection(String name) {
 		onView(withId(R.id.transport_selection)).perform(click());
 		onData(allOf(is(instanceOf(String.class)), is("local"))).perform(click());
-		onView(withId(R.id.front_quickconnect)).perform(typeText("Local"));
+		onView(withId(R.id.front_quickconnect)).perform(typeText(name));
 
 		Intents.init();
 		try {
@@ -102,61 +162,5 @@ public class StartupTest {
 
 		onView(withId(R.id.console_flip)).check(matches(
 				hasDescendant(allOf(isDisplayed(), withId(R.id.terminal_view)))));
-	}
-
-	/**
-	 * Matches the nickname of a {@link HostBean}.
-	 */
-	public static Matcher<Object> withHostNickname(final String content) {
-		return new BoundedMatcher<Object, HostBean>(HostBean.class) {
-			@Override
-			public boolean matchesSafely(HostBean host) {
-				return host.getNickname().matches(content);
-			}
-
-			@Override
-			public void describeTo(Description description) {
-				description.appendText("with host nickname '" + content + "'");
-			}
-		};
-	}
-
-	/**
-	 * Matches the drawable state on an ImageView that is set with setImageState.
-	 */
-	public static Matcher<View> withDrawableState(final int expectedState) {
-		return new TypeSafeMatcher<View>() {
-			@Override
-			public boolean matchesSafely(View view) {
-				if (!(view instanceof ImageView)) {
-					return false;
-				}
-
-				int[] states = view.getDrawableState();
-				for (int state : states) {
-					if (state == expectedState) {
-						return true;
-					}
-				}
-				return false;
-			}
-
-			@Override
-			public void describeTo(Description description) {
-				description.appendText("with drawable state '" + expectedState + "'");
-			}
-		};
-	}
-
-	@NonNull
-	private Matcher<View> hostDisconnected() {
-		return hasDescendant(allOf(withId(android.R.id.icon),
-				withDrawableState(android.R.attr.state_expanded)));
-	}
-
-	@NonNull
-	private Matcher<View> hostConnected() {
-		return hasDescendant(allOf(withId(android.R.id.icon),
-				withDrawableState(android.R.attr.state_checked)));
 	}
 }

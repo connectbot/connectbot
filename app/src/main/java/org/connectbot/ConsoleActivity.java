@@ -154,7 +154,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 	private ImageView mKeyboardButton;
 
-	private ActionBar actionBar;
+	@Nullable private ActionBar actionBar;
 	private boolean inActionBarMenu = false;
 	private boolean titleBarHide;
 
@@ -380,7 +380,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			autoHideEmulatedKeys();
 
 		terminal.bridge.tryKeyVibrate();
-		if (titleBarHide) {
+		hideActionBarIfRequested();
+	}
+
+	private void hideActionBarIfRequested() {
+		if (titleBarHide && actionBar != null) {
 			actionBar.hide();
 		}
 	}
@@ -436,9 +440,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 				keyboardGroup.startAnimation(keyboard_fade_out);
 				keyboardGroup.setVisibility(View.GONE);
-				if (titleBarHide) {
-					actionBar.hide();
-				}
+				hideActionBarIfRequested();
 				keyboardGroupHider = null;
 			}
 		};
@@ -449,9 +451,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		if (keyboardGroupHider != null)
 			handler.removeCallbacks(keyboardGroupHider);
 		keyboardGroup.setVisibility(View.GONE);
-		if (titleBarHide) {
-			actionBar.hide();
-		}
+		hideActionBarIfRequested();
 	}
 
 	@Override
@@ -488,7 +488,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		if (icicle == null) {
 			requested = getIntent().getData();
 		} else {
-			requested = Uri.parse(icicle.getString(STATE_SELECTED_URI));
+			String uri = icicle.getString(STATE_SELECTED_URI);
+			if (uri != null) {
+				requested = Uri.parse(uri);
+			}
 		}
 
 		inflater = LayoutInflater.from(this);
@@ -605,18 +608,20 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 
 		actionBar = getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		if (titleBarHide) {
-			actionBar.hide();
-		}
-		actionBar.addOnMenuVisibilityListener(new ActionBar.OnMenuVisibilityListener() {
-			public void onMenuVisibilityChanged(boolean isVisible) {
-				inActionBarMenu = isVisible;
-				if (isVisible == false) {
-					hideEmulatedKeys();
-				}
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+			if (titleBarHide) {
+				actionBar.hide();
 			}
-		});
+			actionBar.addOnMenuVisibilityListener(new ActionBar.OnMenuVisibilityListener() {
+				public void onMenuVisibilityChanged(boolean isVisible) {
+					inActionBarMenu = isVisible;
+					if (isVisible == false) {
+						hideEmulatedKeys();
+					}
+				}
+			});
+		}
 
 		final HorizontalScrollView keyboardScroll = (HorizontalScrollView) findViewById(R.id.keyboard_hscroll);
 		if (!hardKeyboard) {

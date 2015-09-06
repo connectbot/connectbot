@@ -39,4 +39,28 @@
 		<item name="android:textColor">?android:textColorSecondary</item>
 		<item name="android:textSize">14sp</item>
 	</style>
+
+	<style name="ListItemFirstLineText.Red" parent="ListItemFirstLineText">
+		<item name="android:textColor">@color/red</item>
+	</style>
+
+	<style name="ListItemSecondLineText.Red" parent="ListItemSecondLineText">
+		<item name="android:textColor">@color/red</item>
+	</style>
+
+	<style name="ListItemFirstLineText.Green" parent="ListItemFirstLineText">
+		<item name="android:textColor">@color/green</item>
+	</style>
+
+	<style name="ListItemSecondLineText.Green" parent="ListItemSecondLineText">
+		<item name="android:textColor">@color/green</item>
+	</style>
+
+	<style name="ListItemFirstLineText.Blue" parent="ListItemFirstLineText">
+		<item name="android:textColor">@color/blue</item>
+	</style>
+
+	<style name="ListItemSecondLineText.Blue" parent="ListItemSecondLineText">
+		<item name="android:textColor">@color/blue</item>
+	</style>
 </resources>
