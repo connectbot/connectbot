@@ -637,10 +637,16 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 				chosenStyleSecondLine = R.style.ListItemSecondLineText;
 			}
 
-			holder.nickname.setTextAppearance(chosenStyleFirstLine);
-			holder.caption.setTextAppearance(chosenStyleSecondLine);
-
 			Context context = convertView.getContext();
+
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+				holder.nickname.setTextAppearance(context, chosenStyleFirstLine);
+				holder.caption.setTextAppearance(context, chosenStyleSecondLine);
+			} else {
+				holder.nickname.setTextAppearance(chosenStyleFirstLine);
+				holder.caption.setTextAppearance(chosenStyleSecondLine);
+			}
+
 			CharSequence nice = context.getString(R.string.bind_never);
 			if (host.getLastConnect() > 0) {
 				nice = DateUtils.getRelativeTimeSpanString(host.getLastConnect() * 1000);
