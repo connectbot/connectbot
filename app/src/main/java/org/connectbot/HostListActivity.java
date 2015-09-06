@@ -43,6 +43,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.annotation.StyleRes;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -620,26 +621,26 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 				break;
 			}
 
-			ColorStateList chosen = null;
-			if (HostDatabase.COLOR_RED.equals(host.getColor()))
-				chosen = this.red;
-			else if (HostDatabase.COLOR_GREEN.equals(host.getColor()))
-				chosen = this.green;
-			else if (HostDatabase.COLOR_BLUE.equals(host.getColor()))
-				chosen = this.blue;
-
-			Context context = convertView.getContext();
-
-			if (chosen != null) {
-				// set color normally if not selected
-				holder.nickname.setTextColor(chosen);
-				holder.caption.setTextColor(chosen);
+			@StyleRes final int chosenStyleFirstLine;
+			@StyleRes final int chosenStyleSecondLine;
+			if (HostDatabase.COLOR_RED.equals(host.getColor())) {
+				chosenStyleFirstLine = R.style.ListItemFirstLineText_Red;
+				chosenStyleSecondLine = R.style.ListItemSecondLineText_Red;
+			} else if (HostDatabase.COLOR_GREEN.equals(host.getColor())) {
+				chosenStyleFirstLine = R.style.ListItemFirstLineText_Green;
+				chosenStyleSecondLine = R.style.ListItemSecondLineText_Green;
+			} else if (HostDatabase.COLOR_BLUE.equals(host.getColor())) {
+				chosenStyleFirstLine = R.style.ListItemFirstLineText_Blue;
+				chosenStyleSecondLine = R.style.ListItemSecondLineText_Blue;
 			} else {
-				// selected, so revert back to default black text
-				holder.nickname.setTextAppearance(context, android.R.style.TextAppearance_Large);
-				holder.caption.setTextAppearance(context, android.R.style.TextAppearance_Small);
+				chosenStyleFirstLine = R.style.ListItemFirstLineText;
+				chosenStyleSecondLine = R.style.ListItemSecondLineText;
 			}
 
+			holder.nickname.setTextAppearance(chosenStyleFirstLine);
+			holder.caption.setTextAppearance(chosenStyleSecondLine);
+
+			Context context = convertView.getContext();
 			CharSequence nice = context.getString(R.string.bind_never);
 			if (host.getLastConnect() > 0) {
 				nice = DateUtils.getRelativeTimeSpanString(host.getLastConnect() * 1000);

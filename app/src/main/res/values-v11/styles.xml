@@ -17,6 +17,14 @@
  */
 -->
 <resources>
-	<style name="ListItemFirstLineText" parent="TextAppearance.AppCompat" />
-	<style name="ListItemSecondLineText" parent="TextAppearance.AppCompat" />
+
+	<style name="ListItemFirstLineText" parent="TextAppearance.AppCompat">
+		<item name="android:textColor">?android:textColorPrimary</item>
+		<item name="android:textSize">16sp</item>
+	</style>
+
+	<style name="ListItemSecondLineText" parent="TextAppearance.AppCompat">
+		<item name="android:textColor">?android:textColorSecondary</item>
+		<item name="android:textSize">14sp</item>
+	</style>
 </resources>
