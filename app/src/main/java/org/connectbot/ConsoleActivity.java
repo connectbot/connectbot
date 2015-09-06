@@ -605,18 +605,20 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 
 		actionBar = getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		if (titleBarHide) {
-			actionBar.hide();
-		}
-		actionBar.addOnMenuVisibilityListener(new ActionBar.OnMenuVisibilityListener() {
-			public void onMenuVisibilityChanged(boolean isVisible) {
-				inActionBarMenu = isVisible;
-				if (isVisible == false) {
-					hideEmulatedKeys();
-				}
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+			if (titleBarHide) {
+				actionBar.hide();
 			}
-		});
+			actionBar.addOnMenuVisibilityListener(new ActionBar.OnMenuVisibilityListener() {
+				public void onMenuVisibilityChanged(boolean isVisible) {
+					inActionBarMenu = isVisible;
+					if (isVisible == false) {
+						hideEmulatedKeys();
+					}
+				}
+			});
+		}
 
 		final HorizontalScrollView keyboardScroll = (HorizontalScrollView) findViewById(R.id.keyboard_hscroll);
 		if (!hardKeyboard) {
