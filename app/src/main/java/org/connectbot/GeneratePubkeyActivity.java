@@ -298,7 +298,7 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 				pubkey.setStartup(unlockAtStartup.isChecked());
 				pubkey.setConfirmUse(confirmUse.isChecked());
 
-				PubkeyDatabase pubkeydb = new PubkeyDatabase(GeneratePubkeyActivity.this);
+				PubkeyDatabase pubkeydb = PubkeyDatabase.get(GeneratePubkeyActivity.this);
 				pubkeydb.savePubkey(pubkey);
 				pubkeydb.close();
 			} catch (Exception e) {

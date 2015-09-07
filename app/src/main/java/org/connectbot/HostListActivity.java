@@ -127,7 +127,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
 		if (this.hostdb == null)
-			this.hostdb = new HostDatabase(this);
+			this.hostdb = HostDatabase.get(this);
 	}
 
 	@Override
@@ -210,7 +210,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 								|| Intent.ACTION_PICK.equals(getIntent().getAction());
 
 		// connect with hosts database and populate list
-		this.hostdb = new HostDatabase(this);
+		this.hostdb = HostDatabase.get(this);
 		ListView list = this.getListView();
 
 		this.sortedByColor = prefs.getBoolean(PreferenceConstants.SORT_BY_COLOR, false);
@@ -490,7 +490,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 		}
 
 		if (hostdb == null)
-			hostdb = new HostDatabase(this);
+			hostdb = HostDatabase.get(this);
 
 		hosts = hostdb.getHosts(sortedByColor);
 

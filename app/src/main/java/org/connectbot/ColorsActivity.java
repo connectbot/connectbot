@@ -74,7 +74,7 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 
 		mColorScheme = HostDatabase.DEFAULT_COLOR_SCHEME;
 
-		mHostDb = new HostDatabase(this);
+		mHostDb = HostDatabase.get(this);
 
 		mColorList = Arrays.asList(mHostDb.getColorsForScheme(mColorScheme));
 		mDefaultColors = mHostDb.getDefaultColorsForScheme(mColorScheme);
@@ -110,7 +110,7 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 		super.onResume();
 
 		if (mHostDb == null)
-			mHostDb = new HostDatabase(this);
+			mHostDb = HostDatabase.get(this);
 	}
 
 	private class ColorsAdapter extends BaseAdapter {

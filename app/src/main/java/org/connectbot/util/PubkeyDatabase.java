@@ -114,7 +114,7 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 	 * Delete a specific host by its <code>_id</code> value.
 	 */
 	public void deletePubkey(PubkeyBean pubkey) {
-		HostDatabase hostdb = new HostDatabase(context);
+		HostDatabase hostdb = HostDatabase.get(context);
 		hostdb.stopUsingPubkey(pubkey.getId());
 
 		SQLiteDatabase db = getWritableDatabase();

@@ -85,7 +85,7 @@ public class PortForwardListActivity extends ListActivity {
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
 		if (this.hostdb == null)
-			this.hostdb = new HostDatabase(this);
+			this.hostdb = HostDatabase.get(this);
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class PortForwardListActivity extends ListActivity {
 		setContentView(R.layout.act_portforwardlist);
 
 		// connect with hosts database and populate list
-		this.hostdb = new HostDatabase(this);
+		this.hostdb = HostDatabase.get(this);
 		host = hostdb.findHostById(hostId);
 
 		{

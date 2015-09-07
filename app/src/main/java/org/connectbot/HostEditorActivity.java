@@ -244,8 +244,8 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		// TODO: we could pass through a specific ContentProvider uri here
 		//this.getPreferenceManager().setSharedPreferencesName(uri);
 
-		this.hostdb = new HostDatabase(this);
-		this.pubkeydb = new PubkeyDatabase(this);
+		this.hostdb = HostDatabase.get(this);
+		this.pubkeydb = PubkeyDatabase.get(this);
 
 		host = hostdb.findHostById(hostId);
 
@@ -307,10 +307,10 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
 		if (this.hostdb == null)
-			this.hostdb = new HostDatabase(this);
+			this.hostdb = HostDatabase.get(this);
 
 		if (this.pubkeydb == null)
-			this.pubkeydb = new PubkeyDatabase(this);
+			this.pubkeydb = PubkeyDatabase.get(this);
 	}
 
 	@Override

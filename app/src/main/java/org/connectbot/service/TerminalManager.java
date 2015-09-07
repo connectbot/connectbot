@@ -129,8 +129,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		pubkeyTimer = new Timer("pubkeyTimer", true);
 
-		hostdb = new HostDatabase(this);
-		pubkeydb = new PubkeyDatabase(this);
+		hostdb = HostDatabase.get(this);
+		pubkeydb = PubkeyDatabase.get(this);
 
 		// load all marked pubkeys into memory
 		updateSavingKeys();

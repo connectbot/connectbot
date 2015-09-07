@@ -58,7 +58,7 @@ public class StartupTest {
 
 	@Before
 	public void makeDatabasePristine() {
-		HostDatabase db = new HostDatabase(InstrumentationRegistry.getTargetContext());
+		HostDatabase db = HostDatabase.get(InstrumentationRegistry.getTargetContext());
 		db.resetDatabase();
 
 		mActivityRule.launchActivity(new Intent());
