@@ -144,6 +144,21 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	/** Used during upgrades from DB version 23 to 24. */
 	private final float displayDensity;
 
+	private static final Object sInstanceLock = new Object();
+
+	private static HostDatabase sInstance;
+
+	public static HostDatabase get(Context context) {
+		synchronized (sInstanceLock) {
+			if (sInstance != null) {
+				return sInstance;
+			}
+
+			sInstance = new HostDatabase(context.getApplicationContext());
+			return sInstance;
+		}
+	}
+
 	public HostDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 

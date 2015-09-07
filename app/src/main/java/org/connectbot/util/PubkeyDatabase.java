@@ -61,6 +61,22 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 		addTableName(TABLE_PUBKEYS);
 	}
 
+	private static final Object sInstanceLock = new Object();
+
+	private static PubkeyDatabase sInstance;
+
+	public static PubkeyDatabase get(Context context) {
+		synchronized (sInstanceLock) {
+			if (sInstance != null) {
+				return sInstance;
+			}
+
+			Context appContext = context.getApplicationContext();
+			sInstance = new PubkeyDatabase(appContext);
+			return sInstance;
+		}
+	}
+
 	public PubkeyDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 
