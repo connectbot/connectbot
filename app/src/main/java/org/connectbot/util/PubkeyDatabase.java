@@ -100,11 +100,9 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 	public void deletePubkey(PubkeyBean pubkey) {
 		HostDatabase hostdb = new HostDatabase(context);
 		hostdb.stopUsingPubkey(pubkey.getId());
-		hostdb.close();
 
 		SQLiteDatabase db = getWritableDatabase();
 		db.delete(TABLE_PUBKEYS, "_id = ?", new String[] { Long.toString(pubkey.getId()) });
-		db.close();
 	}
 
 	/**
@@ -164,8 +162,6 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 			c.close();
 		}
 
-		db.close();
-
 		return pubkeys;
 	}
 
@@ -188,8 +184,6 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 
 			c.close();
 		}
-
-		db.close();
 
 		return pubkey;
 	}
@@ -230,8 +224,6 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 			c.close();
 		}
 
-		db.close();
-
 		return list;
 	}
 
@@ -249,8 +241,6 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 
 			c.close();
 		}
-
-		db.close();
 
 		return nickname;
 	}
@@ -321,8 +311,6 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 			long id = db.insert(TABLE_PUBKEYS, null, pubkey.getValues());
 			pubkey.setId(id);
 		}
-
-		db.close();
 
 		return pubkey;
 	}

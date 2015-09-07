@@ -148,8 +148,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		super(context, DB_NAME, null, DB_VERSION);
 
 		this.displayDensity = context.getResources().getDisplayMetrics().density;
-
-		getWritableDatabase().close();
 	}
 
 	@Override
@@ -216,7 +214,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_COLORS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_COLOR_DEFAULTS);
 		createTables(db);
-		db.close();
 	}
 
 	@Override
