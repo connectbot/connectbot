@@ -102,7 +102,13 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 		hostdb.stopUsingPubkey(pubkey.getId());
 
 		SQLiteDatabase db = getWritableDatabase();
-		db.delete(TABLE_PUBKEYS, "_id = ?", new String[] { Long.toString(pubkey.getId()) });
+		db.beginTransaction();
+		try {
+			db.delete(TABLE_PUBKEYS, "_id = ?", new String[] {Long.toString(pubkey.getId())});
+			db.setTransactionSuccessful();
+		} finally {
+			db.endTransaction();
+		}
 	}
 
 	/**
@@ -301,17 +307,26 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 
 		ContentValues values = pubkey.getValues();
 
-		if (pubkey.getId() > 0) {
-			values.remove("_id");
-			if (db.update(TABLE_PUBKEYS, values, "_id = ?", new String[] { String.valueOf(pubkey.getId()) }) > 0)
-				success = true;
-		}
+		db.beginTransaction();
+		try {
+			if (pubkey.getId() > 0) {
+				values.remove("_id");
+				if (db.update(TABLE_PUBKEYS, values, "_id = ?", new String[] {String.valueOf(pubkey.getId())}) > 0)
+					success = true;
+			}
 
-		if (!success) {
-			long id = db.insert(TABLE_PUBKEYS, null, pubkey.getValues());
-			pubkey.setId(id);
-		}
+			if (!success) {
+				long id = db.insert(TABLE_PUBKEYS, null, pubkey.getValues());
+				if (id != -1) {
+					// TODO add some error handling here?
+					pubkey.setId(id);
+				}
+			}
 
+			db.setTransactionSuccessful();
+		} finally {
+			db.endTransaction();
+		}
 		return pubkey;
 	}
 }
