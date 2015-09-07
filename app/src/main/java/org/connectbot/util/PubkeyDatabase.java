@@ -172,8 +172,8 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	/**
-	 * @param hostId
-	 * @return
+	 * @param pubkeyId database ID for a desired pubkey
+	 * @return object representing the pubkey
 	 */
 	public PubkeyBean findPubkeyById(long pubkeyId) {
 		SQLiteDatabase db = getReadableDatabase();
