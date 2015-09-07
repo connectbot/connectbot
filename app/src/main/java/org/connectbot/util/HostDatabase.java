@@ -501,7 +501,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 		String selectionValues[] = new String[selectionValuesList.size()];
 		selectionValuesList.toArray(selectionValues);
-		selectionValuesList = null;
 
 		HostBean host;
 
