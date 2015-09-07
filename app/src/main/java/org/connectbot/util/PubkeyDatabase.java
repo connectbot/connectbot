@@ -111,18 +111,6 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 		}
 	}
 
-	/**
-	 * Return a cursor that contains information about all known hosts.
-	 */
-	/*
-	public Cursor allPubkeys() {
-		SQLiteDatabase db = this.getReadableDatabase();
-		return db.query(TABLE_PUBKEYS, new String[] { "_id",
-				FIELD_PUBKEY_NICKNAME, FIELD_PUBKEY_TYPE, FIELD_PUBKEY_PRIVATE,
-				FIELD_PUBKEY_PUBLIC, FIELD_PUBKEY_ENCRYPTED, FIELD_PUBKEY_STARTUP },
-				null, null, null, null, null);
-	}*/
-
 	public List<PubkeyBean> allPubkeys() {
 		return getPubkeys(null, null);
 	}
@@ -250,53 +238,6 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 
 		return nickname;
 	}
-
-/*
-	public void setOnStart(long id, boolean onStart) {
-
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		ContentValues values = new ContentValues();
-		values.put(FIELD_PUBKEY_STARTUP, onStart ? 1 : 0);
-
-		db.update(TABLE_PUBKEYS, values, "_id = ?", new String[] { Long.toString(id) });
-
-	}
-
-	public boolean changePassword(long id, String oldPassword, String newPassword) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException {
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		Cursor c = db.query(TABLE_PUBKEYS, new String[] { FIELD_PUBKEY_TYPE,
-				FIELD_PUBKEY_PRIVATE, FIELD_PUBKEY_ENCRYPTED },
-				"_id = ?", new String[] { String.valueOf(id) },
-				null, null, null);
-
-		if (!c.moveToFirst())
-			return false;
-
-		String keyType = c.getString(0);
-		byte[] encPriv = c.getBlob(1);
-		c.close();
-
-		PrivateKey priv;
-		try {
-			priv = PubkeyUtils.decodePrivate(encPriv, keyType, oldPassword);
-		} catch (InvalidKeyException e) {
-			return false;
-		} catch (BadPaddingException e) {
-			return false;
-		} catch (InvalidKeySpecException e) {
-			return false;
-		}
-
-		ContentValues values = new ContentValues();
-		values.put(FIELD_PUBKEY_PRIVATE, PubkeyUtils.getEncodedPrivate(priv, newPassword));
-		values.put(FIELD_PUBKEY_ENCRYPTED, newPassword.length() > 0 ? 1 : 0);
-		db.update(TABLE_PUBKEYS, values, "_id = ?", new String[] { String.valueOf(id) });
-
-		return true;
-	}
-	*/
 
 	/**
 	 * @param pubkey
