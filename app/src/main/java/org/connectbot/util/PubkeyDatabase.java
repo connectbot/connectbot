@@ -77,7 +77,7 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 		}
 	}
 
-	public PubkeyDatabase(Context context) {
+	private PubkeyDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 
 		this.context = context;

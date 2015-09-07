@@ -159,7 +159,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		}
 	}
 
-	public HostDatabase(Context context) {
+	private HostDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 
 		this.displayDensity = context.getResources().getDisplayMetrics().density;
