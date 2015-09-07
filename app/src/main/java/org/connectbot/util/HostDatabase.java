@@ -303,8 +303,13 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 		synchronized (dbLock) {
 			SQLiteDatabase db = this.getWritableDatabase();
-
-			db.update(TABLE_HOSTS, values, "_id = ?", new String[] { String.valueOf(host.getId()) });
+			db.beginTransaction();
+			try {
+				db.update(TABLE_HOSTS, values, "_id = ?", new String[] {String.valueOf(host.getId())});
+				db.setTransactionSuccessful();
+			} finally {
+				db.endTransaction();
+			}
 		}
 	}
 
@@ -316,8 +321,13 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 		synchronized (dbLock) {
 			SQLiteDatabase db = this.getWritableDatabase();
-
-			id = db.insert(TABLE_HOSTS, null, host.getValues());
+			db.beginTransaction();
+			try {
+				id = db.insert(TABLE_HOSTS, null, host.getValues());
+				db.setTransactionSuccessful();
+			} finally {
+				db.endTransaction();
+			}
 		}
 
 		host.setId(id);
@@ -338,9 +348,14 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 		synchronized (dbLock) {
 			SQLiteDatabase db = getWritableDatabase();
-
-			db.update(TABLE_HOSTS, updates, "_id = ?",
-					new String[] { String.valueOf(id) });
+			db.beginTransaction();
+			try {
+				db.update(TABLE_HOSTS, updates, "_id = ?",
+						new String[] {String.valueOf(id)});
+				db.setTransactionSuccessful();
+			} finally {
+				db.endTransaction();
+			}
 
 		}
 
@@ -356,7 +371,13 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 		synchronized (dbLock) {
 			SQLiteDatabase db = this.getWritableDatabase();
-			db.delete(TABLE_HOSTS, "_id = ?", new String[] { String.valueOf(host.getId()) });
+			db.beginTransaction();
+			try {
+				db.delete(TABLE_HOSTS, "_id = ?", new String[] {String.valueOf(host.getId())});
+				db.setTransactionSuccessful();
+			} finally {
+				db.endTransaction();
+			}
 		}
 	}
 
@@ -594,8 +615,13 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 		synchronized (dbLock) {
 			SQLiteDatabase db = this.getWritableDatabase();
-
-			db.update(TABLE_HOSTS, values, FIELD_HOST_PUBKEYID + " = ?", new String[] { String.valueOf(pubkeyId) });
+			db.beginTransaction();
+			try {
+				db.update(TABLE_HOSTS, values, FIELD_HOST_PUBKEYID + " = ?", new String[] {String.valueOf(pubkeyId)});
+				db.setTransactionSuccessful();
+			} finally {
+				db.endTransaction();
+			}
 		}
 
 		Log.d(TAG, String.format("Set all hosts using pubkey id %d to -1", pubkeyId));
@@ -649,22 +675,28 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	 * @return true on success
 	 */
 	public boolean savePortForward(PortForwardBean pfb) {
-		boolean success = false;
-
 		synchronized (dbLock) {
 			SQLiteDatabase db = getWritableDatabase();
+			db.beginTransaction();
+			try {
+				if (pfb.getId() < 0) {
+					long addedId = db.insert(TABLE_PORTFORWARDS, null, pfb.getValues());
+					if (addedId == -1) {
+						return false;
+					}
+					pfb.setId(addedId);
+				} else {
+					if (db.update(TABLE_PORTFORWARDS, pfb.getValues(), "_id = ?", new String[] {String.valueOf(pfb.getId())}) <= 0) {
+						return false;
+					}
+				}
 
-			if (pfb.getId() < 0) {
-				long id = db.insert(TABLE_PORTFORWARDS, null, pfb.getValues());
-				pfb.setId(id);
-				success = true;
-			} else {
-				if (db.update(TABLE_PORTFORWARDS, pfb.getValues(), "_id = ?", new String[] { String.valueOf(pfb.getId()) }) > 0)
-					success = true;
+				db.setTransactionSuccessful();
+				return true;
+			} finally {
+				db.endTransaction();
 			}
 		}
-
-		return success;
 	}
 
 	/**
@@ -677,7 +709,13 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 		synchronized (dbLock) {
 			SQLiteDatabase db = this.getWritableDatabase();
-			db.delete(TABLE_PORTFORWARDS, "_id = ?", new String[] { String.valueOf(pfb.getId()) });
+			db.beginTransaction();
+			try {
+				db.delete(TABLE_PORTFORWARDS, "_id = ?", new String[] {String.valueOf(pfb.getId())});
+				db.setTransactionSuccessful();
+			} finally {
+				db.endTransaction();
+			}
 		}
 	}
 
@@ -711,9 +749,14 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		if (value == Colors.defaults[number]) {
 			synchronized (dbLock) {
 				db = getWritableDatabase();
-
-				db.delete(TABLE_COLORS,
-						WHERE_SCHEME_AND_COLOR, whereArgs);
+				db.beginTransaction();
+				try {
+					db.delete(TABLE_COLORS,
+							WHERE_SCHEME_AND_COLOR, whereArgs);
+					db.setTransactionSuccessful();
+				} finally {
+					db.endTransaction();
+				}
 			}
 		} else {
 			final ContentValues values = new ContentValues();
@@ -721,14 +764,19 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 			synchronized (dbLock) {
 				db = getWritableDatabase();
+				db.beginTransaction();
+				try {
+					final int rowsAffected = db.update(TABLE_COLORS, values,
+							WHERE_SCHEME_AND_COLOR, whereArgs);
 
-				final int rowsAffected = db.update(TABLE_COLORS, values,
-						WHERE_SCHEME_AND_COLOR, whereArgs);
-
-				if (rowsAffected == 0) {
-					values.put(FIELD_COLOR_SCHEME, scheme);
-					values.put(FIELD_COLOR_NUMBER, number);
-					db.insert(TABLE_COLORS, null, values);
+					if (rowsAffected == 0) {
+						values.put(FIELD_COLOR_SCHEME, scheme);
+						values.put(FIELD_COLOR_NUMBER, number);
+						db.insert(TABLE_COLORS, null, values);
+					}
+					db.setTransactionSuccessful();
+				} finally {
+					db.endTransaction();
 				}
 			}
 		}
@@ -780,13 +828,18 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 
 		synchronized (dbLock) {
 			db = getWritableDatabase();
+			db.beginTransaction();
+			try {
+				int rowsAffected = db.update(TABLE_COLOR_DEFAULTS, values,
+						schemeWhere, whereArgs);
 
-			int rowsAffected = db.update(TABLE_COLOR_DEFAULTS, values,
-					schemeWhere, whereArgs);
-
-			if (rowsAffected == 0) {
-				values.put(FIELD_COLOR_SCHEME, scheme);
-				db.insert(TABLE_COLOR_DEFAULTS, null, values);
+				if (rowsAffected == 0) {
+					values.put(FIELD_COLOR_SCHEME, scheme);
+					db.insert(TABLE_COLOR_DEFAULTS, null, values);
+				}
+				db.setTransactionSuccessful();
+			} finally {
+				db.endTransaction();
 			}
 		}
 	}
