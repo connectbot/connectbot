@@ -160,7 +160,11 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	private HostDatabase(Context context) {
-		super(context, DB_NAME, null, DB_VERSION);
+		this(context, DB_NAME);
+	}
+
+	private HostDatabase(Context context, String dbName) {
+		super(context, dbName, null, DB_VERSION);
 
 		this.displayDensity = context.getResources().getDisplayMetrics().density;
 	}
@@ -222,13 +226,10 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	@VisibleForTesting
-	public void resetDatabase() {
-		SQLiteDatabase db = getWritableDatabase();
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOSTS);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PORTFORWARDS);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_COLORS);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_COLOR_DEFAULTS);
-		createTables(db);
+	public static void resetInMemoryInstance(Context context) {
+		synchronized (sInstanceLock) {
+			sInstance = new HostDatabase(context, null);
+		}
 	}
 
 	@Override
