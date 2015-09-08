@@ -167,8 +167,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			bound.setResizeAllowed(true);
 
 			final String requestedNickname = (requested != null) ? requested.getFragment() : null;
-			int requestedIndex = 0;
-
 			TerminalBridge requestedBridge = bound.getConnectedBridge(requestedNickname);
 
 			// If we didn't find the requested connection, try opening it
@@ -183,9 +181,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 			// create views for all bridges on this service
 			adapter.notifyDataSetChanged();
-			requestedIndex = bound.getBridges().indexOf(requestedBridge);
+			int requestedIndex = bound.getBridges().indexOf(requestedBridge);
 
-			setDisplayedTerminal(requestedIndex == -1 ? 0 : requestedIndex);
+			if (requestedIndex != -1) {
+				setDisplayedTerminal(requestedIndex);
+			}
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
