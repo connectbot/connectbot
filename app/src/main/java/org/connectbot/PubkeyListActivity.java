@@ -120,8 +120,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 		bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
-		if (pubkeydb == null)
-			pubkeydb = PubkeyDatabase.get(this);
+		pubkeydb = PubkeyDatabase.get(this);
+		updateList();
 	}
 
 	@Override
@@ -141,11 +141,6 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		this.setTitle(String.format("%s: %s",
 				getResources().getText(R.string.app_name),
 				getResources().getText(R.string.title_pubkey_list)));
-
-		// connect with hosts database and populate list
-		pubkeydb = PubkeyDatabase.get(this);
-
-		updateList();
 
 		registerForContextMenu(getListView());
 
@@ -542,8 +537,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			}
 
 			// write new value into database
-			if (pubkeydb == null)
-				pubkeydb = PubkeyDatabase.get(this);
+			pubkeydb = PubkeyDatabase.get(this);
 			pubkeydb.savePubkey(pubkey);
 
 			updateList();
