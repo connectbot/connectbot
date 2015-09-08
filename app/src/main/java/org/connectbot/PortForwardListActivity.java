@@ -210,9 +210,12 @@ public class PortForwardListActivity extends ListActivity {
 									hostBridge.enablePortForward(pfb);
 								}
 
-								if (host != null && !hostdb.savePortForward(pfb))
-									throw new SQLException("Could not save port forward");
-
+								if (host != null) {
+									HostDatabase hostdb = HostDatabase.get(PortForwardListActivity.this);
+									if (!hostdb.savePortForward(pfb)) {
+										throw new SQLException("Could not save port forward");
+									}
+								}
 								updateHandler.sendEmptyMessage(-1);
 							} catch (Exception e) {
 								Log.e(TAG, "Could not update port forward", e);
@@ -307,8 +310,10 @@ public class PortForwardListActivity extends ListActivity {
 									}, LISTENER_CYCLE_TIME);
 
 
-								if (!hostdb.savePortForward(pfb))
+								HostDatabase hostdb = HostDatabase.get(PortForwardListActivity.this);
+								if (!hostdb.savePortForward(pfb)) {
 									throw new SQLException("Could not save port forward");
+								}
 
 								updateHandler.sendEmptyMessage(-1);
 							} catch (Exception e) {
