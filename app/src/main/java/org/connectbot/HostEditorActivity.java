@@ -100,7 +100,13 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			public boolean commit() {
 				//Log.d(this.getClass().toString(), "commit() changes back to database");
 				SQLiteDatabase db = hostdb.getWritableDatabase();
-				db.update(table, update, "_id = ?", new String[] { String.valueOf(id) });
+				db.beginTransaction();
+				try {
+					db.update(table, update, "_id = ?", new String[] {String.valueOf(id)});
+					db.setTransactionSuccessful();
+				} finally {
+					db.endTransaction();
+				}
 
 				// make sure we refresh the parent cached values
 				cacheValues();
