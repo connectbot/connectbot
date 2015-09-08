@@ -173,15 +173,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		disconnectAll(true, false);
 
-		if (hostdb != null) {
-			hostdb.close();
-			hostdb = null;
-		}
-
-		if (pubkeydb != null) {
-			pubkeydb.close();
-			pubkeydb = null;
-		}
+		hostdb = null;
+		pubkeydb = null;
 
 		synchronized (this) {
 			if (idleTimer != null)

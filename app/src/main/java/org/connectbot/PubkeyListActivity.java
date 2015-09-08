@@ -130,10 +130,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 		unbindService(connection);
 
-		if (pubkeydb != null) {
-			pubkeydb.close();
-			pubkeydb = null;
-		}
+		pubkeydb = null;
 	}
 
 	@Override

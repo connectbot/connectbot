@@ -66,9 +66,9 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 		protected final void cacheValues() {
 			// fill a cursor and cache the values locally
-			// this makes sure we dont have any floating cursor to dispose later
+			// this makes sure we don't have any floating cursor to dispose later
 
-			SQLiteDatabase db = hostdb.getReadableDatabase();
+			SQLiteDatabase db = hostdb.getWritableDatabase();
 			Cursor cursor = db.query(table, null, "_id = ?",
 					new String[] { String.valueOf(id) }, null, null, null);
 
@@ -81,23 +81,6 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 				}
 			}
 			cursor.close();
-			db.close();
-
-//			db = pubkeydb.getReadableDatabase();
-//			cursor = db.query(PubkeyDatabase.TABLE_PUBKEYS,
-//					new String[] { "_id", PubkeyDatabase.FIELD_PUBKEY_NICKNAME },
-//					null, null, null, null, null);
-//
-//			if (cursor.moveToFirst()) {
-//				do {
-//					String pubkeyid = String.valueOf(cursor.getLong(0));
-//					String value = cursor.getString(1);
-//					pubkeys.put(pubkeyid, value);
-//				} while (cursor.moveToNext());
-//			}
-//
-//			cursor.close();
-//			db.close();
 		}
 
 		public boolean contains(String key) {
@@ -118,7 +101,6 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 				//Log.d(this.getClass().toString(), "commit() changes back to database");
 				SQLiteDatabase db = hostdb.getWritableDatabase();
 				db.update(table, update, "_id = ?", new String[] { String.valueOf(id) });
-				db.close();
 
 				// make sure we refresh the parent cached values
 				cacheValues();
@@ -306,11 +288,8 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 		bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
-		if (this.hostdb == null)
-			this.hostdb = HostDatabase.get(this);
-
-		if (this.pubkeydb == null)
-			this.pubkeydb = PubkeyDatabase.get(this);
+		hostdb = HostDatabase.get(this);
+		pubkeydb = PubkeyDatabase.get(this);
 	}
 
 	@Override
@@ -319,15 +298,8 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 		unbindService(connection);
 
-		if (this.hostdb != null) {
-			this.hostdb.close();
-			this.hostdb = null;
-		}
-
-		if (this.pubkeydb != null) {
-			this.pubkeydb.close();
-			this.pubkeydb = null;
-		}
+		hostdb = null;
+		pubkeydb = null;
 	}
 
 	private void updateSummaries() {

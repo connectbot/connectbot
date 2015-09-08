@@ -126,8 +126,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 		// start the terminal manager service
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
-		if (this.hostdb == null)
-			this.hostdb = HostDatabase.get(this);
+		hostdb = HostDatabase.get(this);
 	}
 
 	@Override
@@ -135,10 +134,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 		super.onStop();
 		this.unbindService(connection);
 
-		if (this.hostdb != null) {
-			this.hostdb.close();
-			this.hostdb = null;
-		}
+		hostdb = null;
 
 		closeOnDisconnectAll = true;
 	}

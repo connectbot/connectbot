@@ -300,7 +300,6 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 
 				PubkeyDatabase pubkeydb = PubkeyDatabase.get(GeneratePubkeyActivity.this);
 				pubkeydb.savePubkey(pubkey);
-				pubkeydb.close();
 			} catch (Exception e) {
 				Log.e(TAG, "Could not generate key pair");
 

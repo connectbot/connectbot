@@ -84,8 +84,7 @@ public class PortForwardListActivity extends ListActivity {
 
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
-		if (this.hostdb == null)
-			this.hostdb = HostDatabase.get(this);
+		hostdb = HostDatabase.get(this);
 	}
 
 	@Override
@@ -94,10 +93,7 @@ public class PortForwardListActivity extends ListActivity {
 
 		this.unbindService(connection);
 
-		if (this.hostdb != null) {
-			this.hostdb.close();
-			this.hostdb = null;
-		}
+		hostdb = null;
 	}
 
 	@Override

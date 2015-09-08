@@ -53,24 +53,4 @@ public class BackupAgent extends BackupAgentHelper {
 		addHelper(PubkeyDatabase.DB_NAME, pubkeys);
 
 	}
-
-	@Override
-	public void onBackup(ParcelFileDescriptor oldState, BackupDataOutput data,
-			ParcelFileDescriptor newState) throws IOException {
-		synchronized (HostDatabase.dbLock) {
-			super.onBackup(oldState, data, newState);
-		}
-	}
-
-	@Override
-	public void onRestore(BackupDataInput data, int appVersionCode,
-			ParcelFileDescriptor newState) throws IOException {
-		Log.d("ConnectBot.BackupAgent", "onRestore called");
-
-		synchronized (HostDatabase.dbLock) {
-			Log.d("ConnectBot.BackupAgent", "onRestore in-lock");
-
-			super.onRestore(data, appVersionCode, newState);
-		}
-	}
 }
