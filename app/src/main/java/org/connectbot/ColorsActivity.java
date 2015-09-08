@@ -56,7 +56,6 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 	private int mColorScheme;
 
 	private List<Integer> mColorList;
-	private HostDatabase mHostDb;
 
 	private int mCurrentColor = 0;
 
@@ -74,10 +73,10 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 
 		mColorScheme = HostDatabase.DEFAULT_COLOR_SCHEME;
 
-		mHostDb = HostDatabase.get(this);
+		HostDatabase hostDb = HostDatabase.get(this);
 
-		mColorList = Arrays.asList(mHostDb.getColorsForScheme(mColorScheme));
-		mDefaultColors = mHostDb.getDefaultColorsForScheme(mColorScheme);
+		mColorList = Arrays.asList(hostDb.getColorsForScheme(mColorScheme));
+		mDefaultColors = hostDb.getDefaultColorsForScheme(mColorScheme);
 
 		mColorGrid = (GridView) findViewById(R.id.color_grid);
 		mColorGrid.setAdapter(new ColorsAdapter(true));
@@ -93,24 +92,6 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 		mBgSpinner.setAdapter(new ColorsAdapter(false, R.string.color_bg_label));
 		mBgSpinner.setSelection(mDefaultColors[1]);
 		mBgSpinner.setOnItemSelectedListener(this);
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-
-		if (mHostDb != null) {
-			mHostDb.close();
-			mHostDb = null;
-		}
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		if (mHostDb == null)
-			mHostDb = HostDatabase.get(this);
 	}
 
 	private class ColorsAdapter extends BaseAdapter {
@@ -304,7 +285,8 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 	public void onNothingSelected(AdapterView<?> arg0) { }
 
 	public void colorChanged(int value) {
-		mHostDb.setGlobalColor(mCurrentColor, value);
+		HostDatabase hostDb = HostDatabase.get(this);
+		hostDb.setGlobalColor(mCurrentColor, value);
 		mColorList.set(mCurrentColor, value);
 		mColorGrid.invalidateViews();
 	}
@@ -324,8 +306,10 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 			}
 		}
 
-		if (needUpdate)
-			mHostDb.setDefaultColorsForScheme(mColorScheme, mDefaultColors[0], mDefaultColors[1]);
+		if (needUpdate) {
+			HostDatabase hostDb = HostDatabase.get(this);
+			hostDb.setDefaultColorsForScheme(mColorScheme, mDefaultColors[0], mDefaultColors[1]);
+		}
 	}
 
 	@Override
@@ -338,10 +322,12 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 		reset.setIcon(android.R.drawable.ic_menu_revert);
 		reset.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem arg0) {
+				HostDatabase hostDb = HostDatabase.get(ColorsActivity.this);
+
 				// Reset each individual color to defaults.
 				for (int i = 0; i < Colors.defaults.length; i++) {
 					if (!mColorList.get(i).equals(Colors.defaults[i])) {
-						mHostDb.setGlobalColor(i, Colors.defaults[i]);
+						hostDb.setGlobalColor(i, Colors.defaults[i]);
 						mColorList.set(i, Colors.defaults[i]);
 					}
 				}
@@ -350,7 +336,7 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 				// Reset the default FG/BG colors as well.
 				mFgSpinner.setSelection(HostDatabase.DEFAULT_FG_COLOR);
 				mBgSpinner.setSelection(HostDatabase.DEFAULT_BG_COLOR);
-				mHostDb.setDefaultColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME,
+				hostDb.setDefaultColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME,
 						HostDatabase.DEFAULT_FG_COLOR, HostDatabase.DEFAULT_BG_COLOR);
 
 				return true;

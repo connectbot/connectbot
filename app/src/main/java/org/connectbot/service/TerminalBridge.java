@@ -273,7 +273,8 @@ public class TerminalBridge implements VDUDisplay {
 		transport.setEmulation(emulation);
 
 		if (transport.canForwardPorts()) {
-			for (PortForwardBean portForward : manager.hostdb.getPortForwardsForHost(host))
+			HostDatabase hostDb = HostDatabase.get(manager);
+			for (PortForwardBean portForward : hostDb.getPortForwardsForHost(host))
 				transport.addPortForward(portForward);
 		}
 
@@ -533,7 +534,8 @@ public class TerminalBridge implements VDUDisplay {
 		}
 
 		host.setFontSize((int) sizeDp);
-		manager.hostdb.updateFontSize(host);
+		HostDatabase hostDb = HostDatabase.get(manager);
+		hostDb.updateFontSize(host);
 
 		forcedSize = false;
 	}
@@ -950,11 +952,12 @@ public class TerminalBridge implements VDUDisplay {
 	}
 
 	public final void resetColors() {
-		int[] defaults = manager.hostdb.getDefaultColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
+		HostDatabase hostDb = HostDatabase.get(manager);
+		int[] defaults = hostDb.getDefaultColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
 		defaultFg = defaults[0];
 		defaultBg = defaults[1];
 
-		color = manager.hostdb.getColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
+		color = hostDb.getColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
 	}
 
 	private static Pattern urlPattern = null;
