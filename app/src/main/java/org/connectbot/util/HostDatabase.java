@@ -139,8 +139,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		addIndexName(TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index");
 	}
 
-	public static final Object[] dbLock = new Object[0];
-
 	/** Used during upgrades from DB version 23 to 24. */
 	private final float displayDensity;
 
@@ -317,14 +315,12 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(FIELD_HOST_LASTCONNECT, now);
 
-		synchronized (dbLock) {
-			mDb.beginTransaction();
-			try {
-				mDb.update(TABLE_HOSTS, values, "_id = ?", new String[] {String.valueOf(host.getId())});
-				mDb.setTransactionSuccessful();
-			} finally {
-				mDb.endTransaction();
-			}
+		mDb.beginTransaction();
+		try {
+			mDb.update(TABLE_HOSTS, values, "_id = ?", new String[] {String.valueOf(host.getId())});
+			mDb.setTransactionSuccessful();
+		} finally {
+			mDb.endTransaction();
 		}
 	}
 
@@ -334,14 +330,12 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public HostBean saveHost(HostBean host) {
 		long id;
 
-		synchronized (dbLock) {
-			mDb.beginTransaction();
-			try {
-				id = mDb.insert(TABLE_HOSTS, null, host.getValues());
-				mDb.setTransactionSuccessful();
-			} finally {
-				mDb.endTransaction();
-			}
+		mDb.beginTransaction();
+		try {
+			id = mDb.insert(TABLE_HOSTS, null, host.getValues());
+			mDb.setTransactionSuccessful();
+		} finally {
+			mDb.endTransaction();
 		}
 
 		host.setId(id);
@@ -360,16 +354,13 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		ContentValues updates = new ContentValues();
 		updates.put(FIELD_HOST_FONTSIZE, host.getFontSize());
 
-		synchronized (dbLock) {
-			mDb.beginTransaction();
-			try {
-				mDb.update(TABLE_HOSTS, updates, "_id = ?",
-						new String[] {String.valueOf(id)});
-				mDb.setTransactionSuccessful();
-			} finally {
-				mDb.endTransaction();
-			}
-
+		mDb.beginTransaction();
+		try {
+			mDb.update(TABLE_HOSTS, updates, "_id = ?",
+					new String[] {String.valueOf(id)});
+			mDb.setTransactionSuccessful();
+		} finally {
+			mDb.endTransaction();
 		}
 
 		return true;
@@ -379,17 +370,16 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	 * Delete a specific host by its <code>_id</code> value.
 	 */
 	public void deleteHost(HostBean host) {
-		if (host.getId() < 0)
+		if (host.getId() < 0) {
 			return;
+		}
 
-		synchronized (dbLock) {
-			mDb.beginTransaction();
-			try {
-				mDb.delete(TABLE_HOSTS, "_id = ?", new String[] {String.valueOf(host.getId())});
-				mDb.setTransactionSuccessful();
-			} finally {
-				mDb.endTransaction();
-			}
+		mDb.beginTransaction();
+		try {
+			mDb.delete(TABLE_HOSTS, "_id = ?", new String[] {String.valueOf(host.getId())});
+			mDb.setTransactionSuccessful();
+		} finally {
+			mDb.endTransaction();
 		}
 	}
 
@@ -401,13 +391,11 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		String sortField = sortColors ? FIELD_HOST_COLOR : FIELD_HOST_NICKNAME;
 		List<HostBean> hosts;
 
-		synchronized (dbLock) {
-			Cursor c = mDb.query(TABLE_HOSTS, null, null, null, null, null, sortField + " ASC");
+		Cursor c = mDb.query(TABLE_HOSTS, null, null, null, null, null, sortField + " ASC");
 
-			hosts = createHostBeans(c);
+		hosts = createHostBeans(c);
 
-			c.close();
-		}
+		c.close();
 
 		return hosts;
 	}
@@ -512,16 +500,12 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		String selectionValues[] = new String[selectionValuesList.size()];
 		selectionValuesList.toArray(selectionValues);
 
-		HostBean host;
+		Cursor c = mDb.query(TABLE_HOSTS, null,
+				selectionBuilder.toString(),
+				selectionValues,
+				null, null, null);
 
-		synchronized (dbLock) {
-			Cursor c = mDb.query(TABLE_HOSTS, null,
-					selectionBuilder.toString(),
-					selectionValues,
-					null, null, null);
-
-			host = getFirstHostBean(c);
-		}
+		HostBean host = getFirstHostBean(c);
 
 		return host;
 	}
@@ -531,17 +515,11 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	 * @return host matching the hostId or {@code null} if none match
 	 */
 	public HostBean findHostById(long hostId) {
-		HostBean host;
+		Cursor c = mDb.query(TABLE_HOSTS, null,
+				"_id = ?", new String[] {String.valueOf(hostId)},
+				null, null, null);
 
-		synchronized (dbLock) {
-			Cursor c = mDb.query(TABLE_HOSTS, null,
-					"_id = ?", new String[] { String.valueOf(hostId) },
-					null, null, null);
-
-			host = getFirstHostBean(c);
-		}
-
-		return host;
+		return getFirstHostBean(c);
 	}
 
 	/**
@@ -556,12 +534,10 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		values.put(FIELD_HOST_HOSTKEYALGO, hostkeyalgo);
 		values.put(FIELD_HOST_HOSTKEY, hostkey);
 
-		synchronized (dbLock) {
-			mDb.update(TABLE_HOSTS, values,
-					FIELD_HOST_HOSTNAME + " = ? AND " + FIELD_HOST_PORT + " = ?",
-					new String[] { hostname, String.valueOf(port) });
-			Log.d(TAG, String.format("Finished saving hostkey information for '%s'", hostname));
-		}
+		mDb.update(TABLE_HOSTS, values,
+				FIELD_HOST_HOSTNAME + " = ? AND " + FIELD_HOST_PORT + " = ?",
+				new String[] {hostname, String.valueOf(port)});
+		Log.d(TAG, String.format("Finished saving hostkey information for '%s'", hostname));
 	}
 
 	/**
@@ -571,35 +547,33 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public KnownHosts getKnownHosts() {
 		KnownHosts known = new KnownHosts();
 
-		synchronized (dbLock) {
-			Cursor c = mDb.query(TABLE_HOSTS, new String[] { FIELD_HOST_HOSTNAME,
-					FIELD_HOST_PORT, FIELD_HOST_HOSTKEYALGO, FIELD_HOST_HOSTKEY },
-					null, null, null, null, null);
+		Cursor c = mDb.query(TABLE_HOSTS, new String[] {FIELD_HOST_HOSTNAME,
+						FIELD_HOST_PORT, FIELD_HOST_HOSTKEYALGO, FIELD_HOST_HOSTKEY},
+				null, null, null, null, null);
 
-			if (c != null) {
-				int COL_HOSTNAME = c.getColumnIndexOrThrow(FIELD_HOST_HOSTNAME),
+		if (c != null) {
+			int COL_HOSTNAME = c.getColumnIndexOrThrow(FIELD_HOST_HOSTNAME),
 					COL_PORT = c.getColumnIndexOrThrow(FIELD_HOST_PORT),
 					COL_HOSTKEYALGO = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEYALGO),
 					COL_HOSTKEY = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEY);
 
-				while (c.moveToNext()) {
-					String hostname = c.getString(COL_HOSTNAME),
+			while (c.moveToNext()) {
+				String hostname = c.getString(COL_HOSTNAME),
 						hostkeyalgo = c.getString(COL_HOSTKEYALGO);
-					int port = c.getInt(COL_PORT);
-					byte[] hostkey = c.getBlob(COL_HOSTKEY);
+				int port = c.getInt(COL_PORT);
+				byte[] hostkey = c.getBlob(COL_HOSTKEY);
 
-					if (hostkeyalgo == null || hostkeyalgo.length() == 0) continue;
-					if (hostkey == null || hostkey.length == 0) continue;
+				if (hostkeyalgo == null || hostkeyalgo.length() == 0) continue;
+				if (hostkey == null || hostkey.length == 0) continue;
 
-					try {
-						known.addHostkey(new String[] { String.format("%s:%d", hostname, port) }, hostkeyalgo, hostkey);
-					} catch (Exception e) {
-						Log.e(TAG, "Problem while adding a known host from database", e);
-					}
+				try {
+					known.addHostkey(new String[] {String.format("%s:%d", hostname, port)}, hostkeyalgo, hostkey);
+				} catch (Exception e) {
+					Log.e(TAG, "Problem while adding a known host from database", e);
 				}
-
-				c.close();
 			}
+
+			c.close();
 		}
 
 		return known;
@@ -615,14 +589,12 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(FIELD_HOST_PUBKEYID, PUBKEYID_ANY);
 
-		synchronized (dbLock) {
-			mDb.beginTransaction();
-			try {
-				mDb.update(TABLE_HOSTS, values, FIELD_HOST_PUBKEYID + " = ?", new String[] {String.valueOf(pubkeyId)});
-				mDb.setTransactionSuccessful();
-			} finally {
-				mDb.endTransaction();
-			}
+		mDb.beginTransaction();
+		try {
+			mDb.update(TABLE_HOSTS, values, FIELD_HOST_PUBKEYID + " = ?", new String[] {String.valueOf(pubkeyId)});
+			mDb.setTransactionSuccessful();
+		} finally {
+			mDb.endTransaction();
 		}
 
 		Log.d(TAG, String.format("Set all hosts using pubkey id %d to -1", pubkeyId));
@@ -643,15 +615,14 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 			return portForwards;
 		}
 
-		synchronized (dbLock) {
-			Cursor c = mDb.query(TABLE_PORTFORWARDS, new String[] {
-					"_id", FIELD_PORTFORWARD_NICKNAME, FIELD_PORTFORWARD_TYPE, FIELD_PORTFORWARD_SOURCEPORT,
-					FIELD_PORTFORWARD_DESTADDR, FIELD_PORTFORWARD_DESTPORT },
-					FIELD_PORTFORWARD_HOSTID + " = ?", new String[] { String.valueOf(host.getId()) },
-					null, null, null);
+		Cursor c = mDb.query(TABLE_PORTFORWARDS, new String[] {
+						"_id", FIELD_PORTFORWARD_NICKNAME, FIELD_PORTFORWARD_TYPE, FIELD_PORTFORWARD_SOURCEPORT,
+						FIELD_PORTFORWARD_DESTADDR, FIELD_PORTFORWARD_DESTPORT},
+				FIELD_PORTFORWARD_HOSTID + " = ?", new String[] {String.valueOf(host.getId())},
+				null, null, null);
 
-			while (c.moveToNext()) {
-				PortForwardBean pfb = new PortForwardBean(
+		while (c.moveToNext()) {
+			PortForwardBean pfb = new PortForwardBean(
 					c.getInt(0),
 					host.getId(),
 					c.getString(1),
@@ -659,11 +630,10 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 					c.getInt(3),
 					c.getString(4),
 					c.getInt(5));
-				portForwards.add(pfb);
-			}
-
-			c.close();
+			portForwards.add(pfb);
 		}
+
+		c.close();
 
 		return portForwards;
 	}
@@ -674,26 +644,24 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	 * @return true on success
 	 */
 	public boolean savePortForward(PortForwardBean pfb) {
-		synchronized (dbLock) {
-			mDb.beginTransaction();
-			try {
-				if (pfb.getId() < 0) {
-					long addedId = mDb.insert(TABLE_PORTFORWARDS, null, pfb.getValues());
-					if (addedId == -1) {
-						return false;
-					}
-					pfb.setId(addedId);
-				} else {
-					if (mDb.update(TABLE_PORTFORWARDS, pfb.getValues(), "_id = ?", new String[] {String.valueOf(pfb.getId())}) <= 0) {
-						return false;
-					}
+		mDb.beginTransaction();
+		try {
+			if (pfb.getId() < 0) {
+				long addedId = mDb.insert(TABLE_PORTFORWARDS, null, pfb.getValues());
+				if (addedId == -1) {
+					return false;
 				}
-
-				mDb.setTransactionSuccessful();
-				return true;
-			} finally {
-				mDb.endTransaction();
+				pfb.setId(addedId);
+			} else {
+				if (mDb.update(TABLE_PORTFORWARDS, pfb.getValues(), "_id = ?", new String[] {String.valueOf(pfb.getId())}) <= 0) {
+					return false;
+				}
 			}
+
+			mDb.setTransactionSuccessful();
+			return true;
+		} finally {
+			mDb.endTransaction();
 		}
 	}
 
@@ -702,36 +670,33 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	 * @param pfb {@link PortForwardBean} to delete
 	 */
 	public void deletePortForward(PortForwardBean pfb) {
-		if (pfb.getId() < 0)
+		if (pfb.getId() < 0) {
 			return;
+		}
 
-		synchronized (dbLock) {
-			mDb.beginTransaction();
-			try {
-				mDb.delete(TABLE_PORTFORWARDS, "_id = ?", new String[] {String.valueOf(pfb.getId())});
-				mDb.setTransactionSuccessful();
-			} finally {
-				mDb.endTransaction();
-			}
+		mDb.beginTransaction();
+		try {
+			mDb.delete(TABLE_PORTFORWARDS, "_id = ?", new String[] {String.valueOf(pfb.getId())});
+			mDb.setTransactionSuccessful();
+		} finally {
+			mDb.endTransaction();
 		}
 	}
 
 	public Integer[] getColorsForScheme(int scheme) {
 		Integer[] colors = Colors.defaults.clone();
 
-		synchronized (dbLock) {
-			Cursor c = mDb.query(TABLE_COLORS, new String[] {
-					FIELD_COLOR_NUMBER, FIELD_COLOR_VALUE },
-					FIELD_COLOR_SCHEME + " = ?",
-					new String[] { String.valueOf(scheme) },
-					null, null, null);
+		Cursor c = mDb.query(TABLE_COLORS, new String[] {
+						FIELD_COLOR_NUMBER, FIELD_COLOR_VALUE},
+				FIELD_COLOR_SCHEME + " = ?",
+				new String[] {String.valueOf(scheme)},
+				null, null, null);
 
-			while (c.moveToNext()) {
-				colors[c.getInt(0)] = Integer.valueOf(c.getInt(1));
-			}
-
-			c.close();
+		while (c.moveToNext()) {
+			colors[c.getInt(0)] = Integer.valueOf(c.getInt(1));
 		}
+
+		c.close();
 
 		return colors;
 	}
@@ -742,35 +707,31 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		final String[] whereArgs = new String[] { String.valueOf(scheme), String.valueOf(number) };
 
 		if (value == Colors.defaults[number]) {
-			synchronized (dbLock) {
-				mDb.beginTransaction();
-				try {
-					mDb.delete(TABLE_COLORS,
-							WHERE_SCHEME_AND_COLOR, whereArgs);
-					mDb.setTransactionSuccessful();
-				} finally {
-					mDb.endTransaction();
-				}
+			mDb.beginTransaction();
+			try {
+				mDb.delete(TABLE_COLORS,
+						WHERE_SCHEME_AND_COLOR, whereArgs);
+				mDb.setTransactionSuccessful();
+			} finally {
+				mDb.endTransaction();
 			}
 		} else {
 			final ContentValues values = new ContentValues();
 			values.put(FIELD_COLOR_VALUE, value);
 
-			synchronized (dbLock) {
-				mDb.beginTransaction();
-				try {
-					final int rowsAffected = mDb.update(TABLE_COLORS, values,
-							WHERE_SCHEME_AND_COLOR, whereArgs);
+			mDb.beginTransaction();
+			try {
+				final int rowsAffected = mDb.update(TABLE_COLORS, values,
+						WHERE_SCHEME_AND_COLOR, whereArgs);
 
-					if (rowsAffected == 0) {
-						values.put(FIELD_COLOR_SCHEME, scheme);
-						values.put(FIELD_COLOR_NUMBER, number);
-						mDb.insert(TABLE_COLORS, null, values);
-					}
-					mDb.setTransactionSuccessful();
-				} finally {
-					mDb.endTransaction();
+				if (rowsAffected == 0) {
+					values.put(FIELD_COLOR_SCHEME, scheme);
+					values.put(FIELD_COLOR_NUMBER, number);
+					mDb.insert(TABLE_COLORS, null, values);
 				}
+				mDb.setTransactionSuccessful();
+			} finally {
+				mDb.endTransaction();
 			}
 		}
 	}
@@ -782,20 +743,18 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	public int[] getDefaultColorsForScheme(int scheme) {
 		int[] colors = new int[] { DEFAULT_FG_COLOR, DEFAULT_BG_COLOR };
 
-		synchronized (dbLock) {
-			Cursor c = mDb.query(TABLE_COLOR_DEFAULTS,
-					new String[] { FIELD_COLOR_FG, FIELD_COLOR_BG },
-					FIELD_COLOR_SCHEME + " = ?",
-					new String[] { String.valueOf(scheme) },
-					null, null, null);
+		Cursor c = mDb.query(TABLE_COLOR_DEFAULTS,
+				new String[] {FIELD_COLOR_FG, FIELD_COLOR_BG},
+				FIELD_COLOR_SCHEME + " = ?",
+				new String[] {String.valueOf(scheme)},
+				null, null, null);
 
-			if (c.moveToFirst()) {
-				colors[0] = c.getInt(0);
-				colors[1] = c.getInt(1);
-			}
-
-			c.close();
+		if (c.moveToFirst()) {
+			colors[0] = c.getInt(0);
+			colors[1] = c.getInt(1);
 		}
+
+		c.close();
 
 		return colors;
 	}
@@ -817,20 +776,18 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		values.put(FIELD_COLOR_FG, fg);
 		values.put(FIELD_COLOR_BG, bg);
 
-		synchronized (dbLock) {
-			mDb.beginTransaction();
-			try {
-				int rowsAffected = mDb.update(TABLE_COLOR_DEFAULTS, values,
-						schemeWhere, whereArgs);
+		mDb.beginTransaction();
+		try {
+			int rowsAffected = mDb.update(TABLE_COLOR_DEFAULTS, values,
+					schemeWhere, whereArgs);
 
-				if (rowsAffected == 0) {
-					values.put(FIELD_COLOR_SCHEME, scheme);
-					mDb.insert(TABLE_COLOR_DEFAULTS, null, values);
-				}
-				mDb.setTransactionSuccessful();
-			} finally {
-				mDb.endTransaction();
+			if (rowsAffected == 0) {
+				values.put(FIELD_COLOR_SCHEME, scheme);
+				mDb.insert(TABLE_COLOR_DEFAULTS, null, values);
 			}
+			mDb.setTransactionSuccessful();
+		} finally {
+			mDb.endTransaction();
 		}
 	}
 }
