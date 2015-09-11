@@ -21,6 +21,7 @@ import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
 
+import org.connectbot.data.ColorStorage;
 import org.connectbot.util.Colors;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.UberColorPickerDialog;
@@ -56,7 +57,7 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 	private int mColorScheme;
 
 	private int[] mColorList;
-	private HostDatabase mHostDb;
+	private ColorStorage mHostDb;
 
 	private int mCurrentColor = 0;
 
