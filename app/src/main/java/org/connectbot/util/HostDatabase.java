@@ -343,14 +343,18 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	}
 
 	/**
-	 * Create a new host using the given parameters.
+	 * Create a new or update an existing {@code host}.
 	 */
 	public HostBean saveHost(HostBean host) {
-		long id;
+		long id = host.getId();
 
 		mDb.beginTransaction();
 		try {
-			id = mDb.insert(TABLE_HOSTS, null, host.getValues());
+			if (id == -1) {
+				id = mDb.insert(TABLE_HOSTS, null, host.getValues());
+			} else {
+				mDb.update(TABLE_HOSTS, host.getValues(), "_id = ?", new String[] {String.valueOf(id)});
+			}
 			mDb.setTransactionSuccessful();
 		} finally {
 			mDb.endTransaction();
@@ -359,29 +363,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		host.setId(id);
 
 		return host;
-	}
-
-	/**
-	 * Update a field in a host record.
-	 */
-	public boolean updateFontSize(HostBean host) {
-		long id = host.getId();
-		if (id < 0)
-			return false;
-
-		ContentValues updates = new ContentValues();
-		updates.put(FIELD_HOST_FONTSIZE, host.getFontSize());
-
-		mDb.beginTransaction();
-		try {
-			mDb.update(TABLE_HOSTS, updates, "_id = ?",
-					new String[] {String.valueOf(id)});
-			mDb.setTransactionSuccessful();
-		} finally {
-			mDb.endTransaction();
-		}
-
-		return true;
 	}
 
 	/**

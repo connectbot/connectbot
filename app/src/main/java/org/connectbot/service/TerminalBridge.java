@@ -533,7 +533,7 @@ public class TerminalBridge implements VDUDisplay {
 		}
 
 		host.setFontSize((int) sizeDp);
-		manager.hostdb.updateFontSize(host);
+		manager.hostdb.saveHost(host);
 
 		forcedSize = false;
 	}
