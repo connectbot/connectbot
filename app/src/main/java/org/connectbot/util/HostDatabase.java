@@ -718,6 +718,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	public void setColorForScheme(int scheme, int number, int value) {
+		final SQLiteDatabase db;
+
 		final String[] whereArgs = new String[] { String.valueOf(scheme), String.valueOf(number) };
 
 		if (value == Colors.defaults[number]) {

@@ -87,6 +87,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	public Resources res;
 
+	public HostDatabase hostdb;
+	public PubkeyDatabase pubkeydb;
+
 	protected SharedPreferences prefs;
 
 	final private IBinder binder = new TerminalBinder();
@@ -126,9 +129,11 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		pubkeyTimer = new Timer("pubkeyTimer", true);
 
+		hostdb = HostDatabase.get(this);
+		pubkeydb = PubkeyDatabase.get(this);
+
 		// load all marked pubkeys into memory
 		updateSavingKeys();
-		PubkeyDatabase pubkeydb = PubkeyDatabase.get(this);
 		List<PubkeyBean> pubkeys = pubkeydb.getAllStartPubkeys();
 
 		for (PubkeyBean pubkey : pubkeys) {
@@ -167,6 +172,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		Log.i(TAG, "Destroying service");
 
 		disconnectAll(true, false);
+
+		hostdb = null;
+		pubkeydb = null;
 
 		synchronized (this) {
 			if (idleTimer != null)
@@ -262,12 +270,10 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 * format specified by an individual transport.
 	 */
 	public TerminalBridge openConnection(Uri uri) throws Exception {
-		HostDatabase hostdb = HostDatabase.get(this);
 		HostBean host = TransportFactory.findHost(hostdb, uri);
 
-		if (host == null) {
+		if (host == null)
 			host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
-		}
 
 		return openConnection(host);
 	}
@@ -277,7 +283,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 * to {@link HostDatabase}.
 	 */
 	private void touchHost(HostBean host) {
-		HostDatabase hostdb = HostDatabase.get(this);
 		hostdb.touchHost(host);
 	}
 

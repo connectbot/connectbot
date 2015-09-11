@@ -68,7 +68,6 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			// fill a cursor and cache the values locally
 			// this makes sure we don't have any floating cursor to dispose later
 
-			HostDatabase hostdb = HostDatabase.get(HostEditorActivity.this);
 			SQLiteDatabase db = hostdb.getWritableDatabase();
 			Cursor cursor = db.query(table, null, "_id = ?",
 					new String[] { String.valueOf(id) }, null, null, null);
@@ -99,7 +98,6 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			}
 
 			public boolean commit() {
-				HostDatabase hostdb = HostDatabase.get(HostEditorActivity.this);
 				SQLiteDatabase db = hostdb.getWritableDatabase();
 				db.beginTransaction();
 				try {
@@ -215,6 +213,9 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 	protected static final String TAG = "CB.HostEditorActivity";
 
+	protected HostDatabase hostdb = null;
+	private PubkeyDatabase pubkeydb = null;
+
 	private CursorPreferenceHack pref;
 	private ServiceConnection connection;
 
@@ -230,7 +231,8 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		// TODO: we could pass through a specific ContentProvider uri here
 		//this.getPreferenceManager().setSharedPreferencesName(uri);
 
-		HostDatabase hostdb = HostDatabase.get(this);
+		this.hostdb = HostDatabase.get(this);
+		this.pubkeydb = PubkeyDatabase.get(this);
 
 		host = hostdb.findHostById(hostId);
 
@@ -256,7 +258,6 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		// TODO: should consider moving into onStart, but we dont have a good way of resetting the listpref after filling once
 		ListPreference pubkeyPref = (ListPreference) findPreference(HostDatabase.FIELD_HOST_PUBKEYID);
 
-		PubkeyDatabase pubkeydb = PubkeyDatabase.get(this);
 		List<CharSequence> pubkeyNicks = new LinkedList<CharSequence>(Arrays.asList(pubkeyPref.getEntries()));
 		pubkeyNicks.addAll(pubkeydb.allValues(PubkeyDatabase.FIELD_PUBKEY_NICKNAME));
 		pubkeyPref.setEntries(pubkeyNicks.toArray(new CharSequence[pubkeyNicks.size()]));
@@ -291,6 +292,9 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		super.onStart();
 
 		bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
+
+		hostdb = HostDatabase.get(this);
+		pubkeydb = PubkeyDatabase.get(this);
 	}
 
 	@Override
@@ -298,11 +302,12 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		super.onStop();
 
 		unbindService(connection);
+
+		hostdb = null;
+		pubkeydb = null;
 	}
 
 	private void updateSummaries() {
-		PubkeyDatabase pubkeydb = PubkeyDatabase.get(this);
-
 		// for all text preferences, set hint as current database value
 		for (String key : this.pref.values.keySet()) {
 			if (key.equals(HostDatabase.FIELD_HOST_POSTLOGIN)) continue;

@@ -141,8 +141,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				String serverHostKeyAlgorithm, byte[] serverHostKey) throws IOException {
 
 			// read in all known hosts from hostdb
-			HostDatabase hostDb = HostDatabase.get(manager);
-			KnownHosts hosts = hostDb.getKnownHosts();
+			KnownHosts hosts = manager.hostdb.getKnownHosts();
 			Boolean result;
 
 			String matchName = String.format(Locale.US, "%s:%d", hostname, port);
@@ -173,7 +172,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				if (result == null) return false;
 				if (result.booleanValue()) {
 					// save this key in known database
-					hostDb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
+					manager.hostdb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
 				}
 				return result.booleanValue();
 
@@ -196,7 +195,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				result = bridge.promptHelper.requestBooleanPrompt(null, manager.res.getString(R.string.prompt_continue_connecting));
 				if (result != null && result.booleanValue()) {
 					// save this key in known database
-					hostDb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
+					manager.hostdb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
 					return true;
 				} else {
 					return false;
@@ -250,16 +249,13 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				} else {
 					bridge.outputLine(manager.res.getString(R.string.terminal_auth_pubkey_specific));
 					// use a specific key for this host, as requested
-					PubkeyDatabase pubkeyDb = PubkeyDatabase.get(manager);
-					PubkeyBean pubkey = pubkeyDb.findPubkeyById(pubkeyId);
+					PubkeyBean pubkey = manager.pubkeydb.findPubkeyById(pubkeyId);
 
-					if (pubkey == null) {
+					if (pubkey == null)
 						bridge.outputLine(manager.res.getString(R.string.terminal_auth_pubkey_invalid));
-					} else {
-						if (tryPublicKey(pubkey)) {
+					else
+						if (tryPublicKey(pubkey))
 							finishConnection();
-						}
-					}
 				}
 
 				pubkeysExhausted = true;
@@ -297,7 +293,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 	/**
 	 * Attempt connection with database row pointed to by cursor.
-	 * @param pubkey
+	 * @param cursor
 	 * @return true for successful authentication
 	 * @throws NoSuchAlgorithmException
 	 * @throws InvalidKeySpecException

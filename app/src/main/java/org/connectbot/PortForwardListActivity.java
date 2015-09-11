@@ -68,6 +68,8 @@ public class PortForwardListActivity extends ListActivity {
 
 	private static final int LISTENER_CYCLE_TIME = 500;
 
+	protected HostDatabase hostdb;
+
 	private List<PortForwardBean> portForwards;
 
 	private ServiceConnection connection = null;
@@ -81,6 +83,8 @@ public class PortForwardListActivity extends ListActivity {
 		super.onStart();
 
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
+
+		hostdb = HostDatabase.get(this);
 	}
 
 	@Override
@@ -88,6 +92,8 @@ public class PortForwardListActivity extends ListActivity {
 		super.onStop();
 
 		this.unbindService(connection);
+
+		hostdb = null;
 	}
 
 	@Override
@@ -99,7 +105,7 @@ public class PortForwardListActivity extends ListActivity {
 		setContentView(R.layout.act_portforwardlist);
 
 		// connect with hosts database and populate list
-		HostDatabase hostdb = HostDatabase.get(this);
+		this.hostdb = HostDatabase.get(this);
 		host = hostdb.findHostById(hostId);
 
 		{
@@ -338,7 +344,6 @@ public class PortForwardListActivity extends ListActivity {
 								if (hostBridge != null)
 									hostBridge.removePortForward(pfb);
 
-								HostDatabase hostdb = HostDatabase.get(PortForwardListActivity.this);
 								hostdb.deletePortForward(pfb);
 							} catch (Exception e) {
 								Log.e(TAG, "Could not delete port forward", e);
@@ -365,8 +370,8 @@ public class PortForwardListActivity extends ListActivity {
 		if (hostBridge != null) {
 			this.portForwards = hostBridge.getPortForwards();
 		} else {
-			HostDatabase hostdb = HostDatabase.get(this);
-			this.portForwards = hostdb.getPortForwardsForHost(host);
+			if (this.hostdb == null) return;
+			this.portForwards = this.hostdb.getPortForwardsForHost(host);
 		}
 
 		PortForwardAdapter adapter = new PortForwardAdapter(this, portForwards);

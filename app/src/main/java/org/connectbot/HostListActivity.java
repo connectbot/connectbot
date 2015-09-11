@@ -71,6 +71,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 
 	protected TerminalManager bound = null;
 
+	protected HostDatabase hostdb;
 	private List<HostBean> hosts;
 	protected LayoutInflater inflater = null;
 
@@ -123,12 +124,16 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 
 		// start the terminal manager service
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
+
+		hostdb = HostDatabase.get(this);
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
 		this.unbindService(connection);
+
+		hostdb = null;
 
 		closeOnDisconnectAll = true;
 	}
@@ -200,6 +205,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 								|| Intent.ACTION_PICK.equals(getIntent().getAction());
 
 		// connect with hosts database and populate list
+		this.hostdb = HostDatabase.get(this);
 		ListView list = this.getListView();
 
 		this.sortedByColor = prefs.getBoolean(PreferenceConstants.SORT_BY_COLOR, false);
@@ -392,7 +398,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 								if (bridge != null)
 									bridge.dispatchDisconnect(true);
 
-								HostDatabase.get(HostListActivity.this).deleteHost(host);
+								hostdb.deleteHost(host);
 								updateList();
 							}
 						})
@@ -453,7 +459,6 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 			return false;
 		}
 
-		HostDatabase hostdb = HostDatabase.get(this);
 		HostBean host = TransportFactory.findHost(hostdb, uri);
 		if (host == null) {
 			host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
@@ -479,7 +484,9 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 			edit.commit();
 		}
 
-		HostDatabase hostdb = HostDatabase.get(this);
+		if (hostdb == null)
+			hostdb = HostDatabase.get(this);
+
 		hosts = hostdb.getHosts(sortedByColor);
 
 		// Don't lose hosts that are connected via shortcuts but not in the database.
