@@ -26,6 +26,8 @@ import java.util.Map.Entry;
 
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
+import org.connectbot.data.ColorStorage;
+import org.connectbot.data.HostStorage;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -43,7 +45,7 @@ import com.trilead.ssh2.KnownHosts;
  *
  * @author jsharkey
  */
-public class HostDatabase extends RobustSQLiteOpenHelper {
+public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage, ColorStorage {
 
 	public final static String TAG = "CB.HostDatabase";
 
