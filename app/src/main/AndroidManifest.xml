@@ -65,8 +65,8 @@
 		<activity
 			android:name=".PubkeyListActivity"
 			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/title_pubkey_list"
-			android:parentActivityName=".HostListActivity">
+			android:label="@string/title_pubkey_list">
+
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="org.connectbot.HostListActivity"/>
@@ -75,8 +75,8 @@
 		<activity
 			android:name=".GeneratePubkeyActivity"
 			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/title_pubkey_generate"
-			android:parentActivityName=".PubkeyListActivity">
+			android:label="@string/title_pubkey_generate">
+
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="org.connectbot.PubkeyListActivity"/>
@@ -85,8 +85,8 @@
 		<activity
 			android:name=".HostEditorActivity"
 			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/title_host_editor"
-			android:parentActivityName=".HostListActivity">
+			android:label="@string/title_host_editor">
+
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="org.connectbot.HostListActivity"/>
@@ -95,8 +95,7 @@
 		<activity
 			android:name=".PortForwardListActivity"
 			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/title_port_forwards_list"
-			android:parentActivityName=".HostListActivity">
+			android:label="@string/title_port_forwards_list">
 
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
@@ -106,8 +105,7 @@
 		<activity
 			android:name=".SettingsActivity"
 			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/title_settings"
-			android:parentActivityName=".HostListActivity">
+			android:label="@string/title_settings">
 
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
@@ -117,8 +115,7 @@
 		<activity
 			android:name=".HelpActivity"
 			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/title_help"
-			android:parentActivityName=".HostListActivity">
+			android:label="@string/title_help">
 
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
@@ -128,8 +125,7 @@
 		<activity
 			android:name=".HelpTopicActivity"
 			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/title_help"
-			android:parentActivityName=".HelpActivity">
+			android:label="@string/title_help">
 
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
@@ -139,8 +135,7 @@
 		<activity
 			android:name=".ColorsActivity"
 			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/title_colors"
-			android:parentActivityName=".HostListActivity">
+			android:label="@string/title_colors">
 
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
@@ -150,8 +145,7 @@
 		<activity
 			android:name=".EulaActivity"
 			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/terms_and_conditions"
-			android:parentActivityName=".HelpActivity">
+			android:label="@string/terms_and_conditions">
 
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
