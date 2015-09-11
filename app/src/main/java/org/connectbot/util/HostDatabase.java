@@ -227,10 +227,26 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	@VisibleForTesting
-	public static void resetInMemoryInstance(Context context) {
-		synchronized (sInstanceLock) {
-			sInstance = new HostDatabase(context, null);
+	public void resetDatabase() {
+		try {
+			mDb.beginTransaction();
+
+			mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_HOSTS);
+			mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_PORTFORWARDS);
+			mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_COLORS);
+			mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_COLOR_DEFAULTS);
+
+			createTables(mDb);
+
+			mDb.setTransactionSuccessful();
+		} finally {
+			mDb.endTransaction();
 		}
+	}
+
+	@VisibleForTesting
+	public static void resetInMemoryInstance(Context context) {
+		get(context).resetDatabase();
 	}
 
 	@Override
