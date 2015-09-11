@@ -101,9 +101,9 @@ public class StartupTest {
 	}
 
 	@Test
-	public void localConnectionCanChangeToRed() throws Exception {
-		startNewLocalConnectionAndGoBack("Local1");
-		changeColor("Local1", R.color.red, R.string.color_red);
+	public void localConnectionCanChangeToRed() {
+		startNewLocalConnectionAndGoBack("RedLocal");
+		changeColor("RedLocal", R.color.red, R.string.color_red);
 	}
 
 	/**
