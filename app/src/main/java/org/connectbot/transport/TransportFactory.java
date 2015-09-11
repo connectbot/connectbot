@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.connectbot.bean.HostBean;
+import org.connectbot.data.HostStorage;
 import org.connectbot.util.HostDatabase;
 
 import android.content.Context;
@@ -112,10 +113,9 @@ public class TransportFactory {
 	/**
 	 * @param hostdb Handle to HostDatabase
 	 * @param uri URI to target server
-	 * @param host HostBean in which to put the results
 	 * @return true when host was found
 	 */
-	public static HostBean findHost(HostDatabase hostdb, Uri uri) {
+	public static HostBean findHost(HostStorage hostdb, Uri uri) {
 		AbsTransport transport = getTransport(uri.getScheme());
 
 		Map<String, String> selection = new HashMap<String, String>();

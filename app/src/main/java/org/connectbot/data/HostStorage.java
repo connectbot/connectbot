@@ -85,5 +85,5 @@ public interface HostStorage {
 	/**
 	 * Return all port forwards for the given {@code host}.
 	 */
-	PortForwardBean[] getPortForwardsForHost(HostBean host);
+	List<PortForwardBean> getPortForwardsForHost(HostBean host);
 }

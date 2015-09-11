@@ -35,6 +35,8 @@ import java.util.TimerTask;
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PubkeyBean;
+import org.connectbot.data.ColorStorage;
+import org.connectbot.data.HostStorage;
 import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
@@ -87,7 +89,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	public Resources res;
 
-	public HostDatabase hostdb;
+	public HostStorage hostdb;
+	public ColorStorage colordb;
 	public PubkeyDatabase pubkeydb;
 
 	protected SharedPreferences prefs;
@@ -130,6 +133,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		pubkeyTimer = new Timer("pubkeyTimer", true);
 
 		hostdb = HostDatabase.get(this);
+		colordb = HostDatabase.get(this);
 		pubkeydb = PubkeyDatabase.get(this);
 
 		// load all marked pubkeys into memory

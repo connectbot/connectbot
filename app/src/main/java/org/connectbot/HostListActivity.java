@@ -20,6 +20,7 @@ package org.connectbot;
 import java.util.List;
 
 import org.connectbot.bean.HostBean;
+import org.connectbot.data.HostStorage;
 import org.connectbot.service.OnHostStatusChangedListener;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
@@ -71,7 +72,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 
 	protected TerminalManager bound = null;
 
-	protected HostDatabase hostdb;
+	private HostStorage hostdb;
 	private List<HostBean> hosts;
 	protected LayoutInflater inflater = null;
 
