@@ -699,8 +699,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper {
 		}
 	}
 
-	public Integer[] getColorsForScheme(int scheme) {
-		Integer[] colors = Colors.defaults.clone();
+	public int[] getColorsForScheme(int scheme) {
+		int[] colors = Colors.defaults.clone();
 
 		Cursor c = mDb.query(TABLE_COLORS, new String[] {
 						FIELD_COLOR_NUMBER, FIELD_COLOR_VALUE},
