@@ -176,10 +176,6 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 		super.onCreate(icicle);
 		setContentView(R.layout.act_hostlist);
 
-		this.setTitle(String.format("%s: %s",
-				getResources().getText(R.string.app_name),
-				getResources().getText(R.string.title_hosts_list)));
-
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		// detect HTC Dream and apply special preferences

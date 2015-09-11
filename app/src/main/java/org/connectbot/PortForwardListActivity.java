@@ -117,14 +117,9 @@ public class PortForwardListActivity extends ListActivity {
 			final Resources resources = getResources();
 
 			if (nickname != null) {
-				this.setTitle(String.format("%s: %s (%s)",
-						resources.getText(R.string.app_name),
+				this.setTitle(String.format("%s (%s)",
 						resources.getText(R.string.title_port_forwards_list),
 						nickname));
-			} else {
-				this.setTitle(String.format("%s: %s",
-						resources.getText(R.string.app_name),
-						resources.getText(R.string.title_port_forwards_list)));
 			}
 		}
 
