@@ -516,7 +516,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 		private final LayoutInflater inflater;
 		private final List<HostBean> hosts;
 		private final TerminalManager manager;
-		private final ColorStateList red, green, blue;
+		private final Context context;
 
 		public final static int STATE_UNKNOWN = 1, STATE_CONNECTED = 2, STATE_DISCONNECTED = 3;
 
@@ -527,13 +527,10 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 		}
 
 		public HostAdapter(Context context, List<HostBean> hosts, TerminalManager manager) {
-			this.inflater = LayoutInflater.from(context);
+			this.context = context;
 			this.hosts = hosts;
 			this.manager = manager;
-
-			red = context.getResources().getColorStateList(R.color.red);
-			green = context.getResources().getColorStateList(R.color.green);
-			blue = context.getResources().getColorStateList(R.color.blue);
+			this.inflater = LayoutInflater.from(context);
 		}
 
 		/**
@@ -637,8 +634,8 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 				chosenStyleSecondLine = R.style.ListItemSecondLineText;
 			}
 
-			holder.nickname.setTextAppearance(chosenStyleFirstLine);
-			holder.caption.setTextAppearance(chosenStyleSecondLine);
+			holder.nickname.setTextAppearance(context, chosenStyleFirstLine);
+			holder.caption.setTextAppearance(context, chosenStyleSecondLine);
 
 			Context context = convertView.getContext();
 			CharSequence nice = context.getString(R.string.bind_never);
