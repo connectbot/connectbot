@@ -1,0 +1,54 @@
+language: android
+jdk: openjdk7
+sudo: false
+
+env:
+  global:
+    - NDK_VERSION=r10e
+    # Coverity
+    - secure: "DTBBKdwZE5yxPjJQG8/wU/+LJ1A3MtUYNaf8O/yhmQNo4UcxQF+3KOoY5OK4vvoTewisUqnVRhXhD8rMYzBZiNtaGF8eSMGXVWUVb6YhOPQ0oMHKSmVgopEHzhoGa+9HDJ6xyQZdALJB8GVlwamTwO/1qk/xI02mjUNEtdk8cuc="
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/dists/
+    - $HOME/.cache/ndk
+before_cache:
+  - find $HOME/.gradle -name "*.lock" -exec rm {} \;
+  - rm -rf $HOME/.gradle/caches/[1-9]*
+
+addons:
+  apt:
+    packages:
+      - ia32-libs
+      - ia32-libs-multiarch
+      - libgd2-xpm
+      - p7zip-full
+  coverity_scan:
+    project:
+      name: "connectbot/connectbot"
+      description: "The first SSH client for Android."
+    notification_email: developers@connectbot.org
+    build_command_prepend: "./gradlew clean"
+    build_command: "./gradlew build"
+    branch_pattern: coverity_scan
+
+before_script:
+  # newest Android NDK
+  - mkdir -p $HOME/.cache/ndk
+  - curl https://dl.google.com/android/ndk/android-ndk-${NDK_VERSION}-linux-x86_64.bin -z $HOME/.cache/ndk/ndk-${NDK_VERSION}.bin -o $HOME/.cache/ndk/ndk-${NDK_VERSION}.bin
+  - 7z x -y $HOME/.cache/ndk/ndk-${NDK_VERSION}.bin | grep -v 'ing  '
+  - echo "ndk.dir=`pwd`/android-ndk-${NDK_VERSION}" >> local.properties
+
+android:
+  components:
+    - build-tools-22.0.1
+    - android-22
+    - extra-android-support
+    - extra-android-m2repository
+  license:
+    - '.+'
+
+script: ./gradlew build check jacocoTestDebugReport
+
+after_success: ./gradlew coveralls

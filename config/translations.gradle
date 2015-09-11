@@ -1,0 +1,66 @@
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2015 Kenny Root, Jeffrey Sharkey
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+def localeDir = file('locale')
+def launchpadImportBasename = 'launchpad-import'
+def launchpadExportFile = getRootProject().file('launchpad-export.tar.gz')
+
+def android2poExec = 'a2po'
+def android2poArgs = ['--groups', 'strings',
+		'--android', getProjectDir().getPath() + '/src/main/res',
+		'--gettext', localeDir,
+		'--template', 'fortune/fortune.pot',
+		'--layout', 'fortune/fortune-%(locale)s.po']
+
+task ensureLocalDirExists {
+	localeDir.mkdirs()
+}
+
+task untarTranslations(type: Copy) {
+	from tarTree(resources.gzip(launchpadExportFile))
+	into localeDir
+}
+
+task translationsImport(type: Exec, dependsOn: 'untarTranslations') {
+	description "Import translations into ConnectBot from Launchpad's export function"
+	executable = android2poExec
+	args = ['import'] + android2poArgs
+
+	logging.captureStandardOutput LogLevel.LIFECYCLE
+	logging.captureStandardError  LogLevel.ERROR
+}
+
+task exportFromAndroid(type: Exec) {
+	executable = android2poExec
+	args = ['export'] + android2poArgs
+
+	logging.captureStandardOutput LogLevel.LIFECYCLE
+	logging.captureStandardError  LogLevel.ERROR
+}
+
+task translationsExport(type: Tar, dependsOn: 'exportFromAndroid') {
+	description "Export translations from ConnectBot in a format suitable to import into Launchpad"
+	baseName = launchpadImportBasename
+	from localeDir
+	compression = Compression.GZIP
+	doLast {
+		println()
+		println('Import file into Launchpad:')
+		println(getArchivePath())
+		println()
+	}
+}

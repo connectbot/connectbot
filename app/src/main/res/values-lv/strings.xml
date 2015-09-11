@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="title_help">Pagalba</string>
+  <string name="title_colors">Spalvos</string>
+  <string name="resolve_connect">Prisijungti</string>
+</resources>

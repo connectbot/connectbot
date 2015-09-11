@@ -1,6 +1,23 @@
-bin
-gen
+# generated files
+bin/
+gen/
+
+# translation artifacts
 launchpad-*.tar.gz
+
+# local config files
 local.properties
+
+# working files
 *~
+
+# OS X sucks
+.DS_Store
+
+# SublimeText working files
+*.sublime-project
 *.sublime-workspace
+
+# Android Studio
+.gradle/
+build/

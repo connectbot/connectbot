@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+		"-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+		"http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+<module name="Checker">
+	<module name="TreeWalker">
+		<property name="fileExtensions" value="java"/>
+		<module name="RegexpSinglelineJava">
+			<property name="format" value="^\t* +\t*\S"/>
+			<property name="message"
+				  value="Line has leading space characters; indentation should be performed with tabs only."/>
+			<property name="ignoreComments" value="true"/>
+		</module>
+
+		<module name="AvoidStarImport" />
+		<module name="IllegalImport" />
+		<module name="RedundantImport" />
+		<module name="UnusedImports" />
+		<module name="NoWhitespaceAfter">
+			<property name="tokens" value="BNOT,DEC,DOT,INC,LNOT,UNARY_MINUS,UNARY_PLUS" />
+		</module>
+		<module name="NoWhitespaceBefore" />
+		<module name="ParenPad" />
+		<module name="TypecastParenPad" />
+		<module name="WhitespaceAfter" />
+		<module name="WhitespaceAround">
+			<property name="allowEmptyMethods" value="true" />
+		</module>
+	</module>
+</module>
