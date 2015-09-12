@@ -37,8 +37,7 @@ public class HelpTopicActivity extends Activity {
 
 		String topic = getIntent().getStringExtra(Intent.EXTRA_TITLE);
 
-		this.setTitle(String.format("%s: %s - %s",
-				getResources().getText(R.string.app_name),
+		this.setTitle(String.format("%s: %s",
 				getResources().getText(R.string.title_help),
 				topic));
 

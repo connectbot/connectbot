@@ -49,10 +49,6 @@ public class HelpActivity extends Activity {
 		super.onCreate(icicle);
 		setContentView(R.layout.act_help);
 
-		this.setTitle(String.format("%s: %s",
-				getResources().getText(R.string.app_name),
-				getResources().getText(R.string.title_help)));
-
 		AssetManager am = this.getAssets();
 		LinearLayout content = (LinearLayout) findViewById(R.id.topics);
 

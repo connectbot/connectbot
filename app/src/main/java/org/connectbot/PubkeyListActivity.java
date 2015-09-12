@@ -134,9 +134,10 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		super.onCreate(icicle);
 		setContentView(R.layout.act_pubkeylist);
 
-		this.setTitle(String.format("%s: %s",
-				getResources().getText(R.string.app_name),
-				getResources().getText(R.string.title_pubkey_list)));
+		// connect with hosts database and populate list
+		pubkeydb = new PubkeyDatabase(this);
+
+		updateList();
 
 		registerForContextMenu(getListView());
 

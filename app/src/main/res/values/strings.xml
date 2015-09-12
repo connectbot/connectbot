@@ -40,6 +40,10 @@
 	<string name="title_colors">"Colors"</string>
 	<!-- Dialog title for color picker dialog -->
 	<string name="title_color_picker">"Pick a color"</string>
+	<!-- Window title for the global applications settings activity. -->
+	<string name="title_settings">Settings</string>
+	<!-- Window title when generating a new pubkey. -->
+	<string name="title_pubkey_generate">Generate</string>
 
 	<string name="resolve_connect">"Connect"</string>
 	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->

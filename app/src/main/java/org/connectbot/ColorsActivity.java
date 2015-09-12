@@ -69,10 +69,6 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 
 		setContentView(R.layout.act_colors);
 
-		this.setTitle(String.format("%s: %s",
-				getResources().getText(R.string.app_name),
-				getResources().getText(R.string.title_colors)));
-
 		mColorScheme = HostDatabase.DEFAULT_COLOR_SCHEME;
 
 		mHostDb = HostDatabase.get(this);
