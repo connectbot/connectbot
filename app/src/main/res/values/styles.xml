@@ -18,6 +18,12 @@
 -->
 <resources>
 
+	<style name="AppTheme" parent="Theme.AppCompat">
+		<item name="colorPrimary">@color/primary</item>
+		<item name="colorPrimaryDark">@color/dark_primary</item>
+		<item name="colorAccent">@color/accent</item>
+	</style>
+
 	<style name="KeyboardKey">
 		<item name="android:layout_width">45dip</item>
 		<item name="android:layout_height">30dip</item>

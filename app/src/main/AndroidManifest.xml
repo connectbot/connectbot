@@ -39,7 +39,8 @@
 		android:description="@string/app_desc"
 		android:allowBackup="true"
 		android:backupAgent=".service.BackupAgent"
-		android:killAfterRestore="true">
+		android:killAfterRestore="true"
+		android:theme="@style/AppTheme">
 
 		<activity
 			android:name=".HostListActivity"

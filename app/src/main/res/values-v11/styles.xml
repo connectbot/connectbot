@@ -18,6 +18,12 @@
 -->
 <resources>
 
+	<style name="AppTheme" parent="Theme.AppCompat">
+		<item name="colorPrimary">@color/primary</item>
+		<item name="colorPrimaryDark">@color/dark_primary</item>
+		<item name="colorAccent">@color/accent</item>
+	</style>
+
 	<style name="ListItemFirstLineText" parent="TextAppearance.AppCompat">
 		<item name="android:textColor">?android:textColorPrimary</item>
 		<item name="android:textSize">16sp</item>
