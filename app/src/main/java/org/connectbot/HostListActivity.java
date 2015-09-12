@@ -20,6 +20,7 @@ package org.connectbot;
 import java.util.List;
 
 import org.connectbot.bean.HostBean;
+import org.connectbot.data.HostStorage;
 import org.connectbot.service.OnHostStatusChangedListener;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
@@ -71,7 +72,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 
 	protected TerminalManager bound = null;
 
-	protected HostDatabase hostdb;
+	private HostStorage hostdb;
 	private List<HostBean> hosts;
 	protected LayoutInflater inflater = null;
 
@@ -125,8 +126,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 		// start the terminal manager service
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
-		if (this.hostdb == null)
-			this.hostdb = new HostDatabase(this);
+		hostdb = HostDatabase.get(this);
 	}
 
 	@Override
@@ -134,10 +134,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 		super.onStop();
 		this.unbindService(connection);
 
-		if (this.hostdb != null) {
-			this.hostdb.close();
-			this.hostdb = null;
-		}
+		hostdb = null;
 
 		closeOnDisconnectAll = true;
 	}
@@ -205,7 +202,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 								|| Intent.ACTION_PICK.equals(getIntent().getAction());
 
 		// connect with hosts database and populate list
-		this.hostdb = new HostDatabase(this);
+		this.hostdb = HostDatabase.get(this);
 		ListView list = this.getListView();
 
 		this.sortedByColor = prefs.getBoolean(PreferenceConstants.SORT_BY_COLOR, false);
@@ -485,7 +482,7 @@ public class HostListActivity extends ListActivity implements OnHostStatusChange
 		}
 
 		if (hostdb == null)
-			hostdb = new HostDatabase(this);
+			hostdb = HostDatabase.get(this);
 
 		hosts = hostdb.getHosts(sortedByColor);
 

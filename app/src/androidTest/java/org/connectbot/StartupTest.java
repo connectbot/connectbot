@@ -1,40 +1,34 @@
 package org.connectbot;
 
-import org.connectbot.bean.HostBean;
 import org.connectbot.util.HostDatabase;
-import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.action.CloseKeyboardAction;
 import android.support.test.espresso.intent.Intents;
-import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
 import static android.support.test.espresso.action.ViewActions.pressMenuKey;
 import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -58,8 +52,8 @@ public class StartupTest {
 
 	@Before
 	public void makeDatabasePristine() {
-		HostDatabase db = new HostDatabase(InstrumentationRegistry.getTargetContext());
-		db.resetDatabase();
+		Context testContext = InstrumentationRegistry.getTargetContext();
+		HostDatabase.resetInMemoryInstance(testContext);
 
 		mActivityRule.launchActivity(new Intent());
 	}
@@ -107,9 +101,9 @@ public class StartupTest {
 	}
 
 	@Test
-	public void localConnectionCanChangeToRed() throws Exception {
-		startNewLocalConnectionAndGoBack("Local1");
-		changeColor("Local1", R.color.red, R.string.color_red);
+	public void localConnectionCanChangeToRed() {
+		startNewLocalConnectionAndGoBack("RedLocal");
+		changeColor("RedLocal", R.color.red, R.string.color_red);
 	}
 
 	/**
@@ -162,5 +156,41 @@ public class StartupTest {
 
 		onView(withId(R.id.console_flip)).check(matches(
 				hasDescendant(allOf(isDisplayed(), withId(R.id.terminal_view)))));
+	}
+
+	/*
+	 * This is to work around a race condition where the software keyboard does not dismiss in time
+	 * and you get a Security Exception.
+	 *
+	 * From: https://code.google.com/p/android-test-kit/issues/detail?id=79#c7
+	 */
+	public static ViewAction closeSoftKeyboard() {
+		return new ViewAction() {
+			/**
+			 * The delay time to allow the soft keyboard to dismiss.
+			 */
+			private static final long KEYBOARD_DISMISSAL_DELAY_MILLIS = 1000L;
+
+			/**
+			 * The real {@link CloseKeyboardAction} instance.
+			 */
+			private final ViewAction mCloseSoftKeyboard = new CloseKeyboardAction();
+
+			@Override
+			public Matcher<View> getConstraints() {
+				return mCloseSoftKeyboard.getConstraints();
+			}
+
+			@Override
+			public String getDescription() {
+				return mCloseSoftKeyboard.getDescription();
+			}
+
+			@Override
+			public void perform(final UiController uiController, final View view) {
+				mCloseSoftKeyboard.perform(uiController, view);
+				uiController.loopMainThreadForAtLeast(KEYBOARD_DISMISSAL_DELAY_MILLIS);
+			}
+		};
 	}
 }

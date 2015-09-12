@@ -84,8 +84,7 @@ public class PortForwardListActivity extends ListActivity {
 
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
-		if (this.hostdb == null)
-			this.hostdb = new HostDatabase(this);
+		hostdb = HostDatabase.get(this);
 	}
 
 	@Override
@@ -94,10 +93,7 @@ public class PortForwardListActivity extends ListActivity {
 
 		this.unbindService(connection);
 
-		if (this.hostdb != null) {
-			this.hostdb.close();
-			this.hostdb = null;
-		}
+		hostdb = null;
 	}
 
 	@Override
@@ -109,7 +105,7 @@ public class PortForwardListActivity extends ListActivity {
 		setContentView(R.layout.act_portforwardlist);
 
 		// connect with hosts database and populate list
-		this.hostdb = new HostDatabase(this);
+		this.hostdb = HostDatabase.get(this);
 		host = hostdb.findHostById(hostId);
 
 		{
@@ -215,8 +211,9 @@ public class PortForwardListActivity extends ListActivity {
 									hostBridge.enablePortForward(pfb);
 								}
 
-								if (host != null && !hostdb.savePortForward(pfb))
+								if (host != null && !hostdb.savePortForward(pfb)) {
 									throw new SQLException("Could not save port forward");
+								}
 
 								updateHandler.sendEmptyMessage(-1);
 							} catch (Exception e) {
@@ -312,8 +309,9 @@ public class PortForwardListActivity extends ListActivity {
 									}, LISTENER_CYCLE_TIME);
 
 
-								if (!hostdb.savePortForward(pfb))
+								if (!hostdb.savePortForward(pfb)) {
 									throw new SQLException("Could not save port forward");
+								}
 
 								updateHandler.sendEmptyMessage(-1);
 							} catch (Exception e) {

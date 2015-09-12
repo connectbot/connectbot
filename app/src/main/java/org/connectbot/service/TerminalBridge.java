@@ -65,7 +65,7 @@ public class TerminalBridge implements VDUDisplay {
 	private final static int FONT_SIZE_STEP = 2;
 	private final float displayDensity;
 
-	public Integer[] color;
+	public int[] color;
 
 	public int defaultFg = HostDatabase.DEFAULT_FG_COLOR;
 	public int defaultBg = HostDatabase.DEFAULT_BG_COLOR;
@@ -533,7 +533,7 @@ public class TerminalBridge implements VDUDisplay {
 		}
 
 		host.setFontSize((int) sizeDp);
-		manager.hostdb.updateFontSize(host);
+		manager.hostdb.saveHost(host);
 
 		forcedSize = false;
 	}
@@ -950,11 +950,11 @@ public class TerminalBridge implements VDUDisplay {
 	}
 
 	public final void resetColors() {
-		int[] defaults = manager.hostdb.getDefaultColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
+		int[] defaults = manager.colordb.getDefaultColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
 		defaultFg = defaults[0];
 		defaultBg = defaults[1];
 
-		color = manager.hostdb.getColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
+		color = manager.colordb.getColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
 	}
 
 	private static Pattern urlPattern = null;

@@ -88,7 +88,6 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	private static final String ANDEXPLORER_TITLE = "explorer_title";
 	private static final String MIME_TYPE_ANDEXPLORER_FILE = "vnd.android.cursor.dir/lysesoft.andexplorer.file";
 
-	protected PubkeyDatabase pubkeydb;
 	private List<PubkeyBean> pubkeys;
 
 	protected ClipboardManager clipboard;
@@ -120,8 +119,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 
 		bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
-		if (pubkeydb == null)
-			pubkeydb = new PubkeyDatabase(this);
+		updateList();
 	}
 
 	@Override
@@ -129,22 +127,12 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		super.onStop();
 
 		unbindService(connection);
-
-		if (pubkeydb != null) {
-			pubkeydb.close();
-			pubkeydb = null;
-		}
 	}
 
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.act_pubkeylist);
-
-		// connect with hosts database and populate list
-		pubkeydb = new PubkeyDatabase(this);
-
-		updateList();
 
 		registerForContextMenu(getListView());
 
@@ -327,7 +315,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			public boolean onMenuItemClick(MenuItem item) {
 				// toggle onstart status
 				pubkey.setStartup(!pubkey.isStartup());
-				pubkeydb.savePubkey(pubkey);
+				PubkeyDatabase pubkeyDb = PubkeyDatabase.get(PubkeyListActivity.this);
+				pubkeyDb.savePubkey(pubkey);
 				updateList();
 				return true;
 			}
@@ -401,7 +390,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 										.setPositiveButton(android.R.string.ok, null)
 										.create().show();
 								else {
-									pubkeydb.savePubkey(pubkey);
+									PubkeyDatabase pubkeyDb = PubkeyDatabase.get(PubkeyListActivity.this);
+									pubkeyDb.savePubkey(pubkey);
 									updateList();
 								}
 							} catch (Exception e) {
@@ -426,7 +416,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			public boolean onMenuItemClick(MenuItem item) {
 				// toggle confirm use
 				pubkey.setConfirmUse(!pubkey.isConfirmUse());
-				pubkeydb.savePubkey(pubkey);
+				PubkeyDatabase pubkeyDb = PubkeyDatabase.get(PubkeyListActivity.this);
+				pubkeyDb.savePubkey(pubkey);
 				updateList();
 				return true;
 			}
@@ -442,11 +433,13 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 						public void onClick(DialogInterface dialog, int which) {
 
 							// dont forget to remove from in-memory
-							if (loaded)
+							if (loaded) {
 								bound.removeKey(pubkey.getNickname());
+							}
 
 							// delete from backend database and update gui
-							pubkeydb.deletePubkey(pubkey);
+							PubkeyDatabase pubkeyDb = PubkeyDatabase.get(PubkeyListActivity.this);
+							pubkeyDb.deletePubkey(pubkey);
 							updateList();
 						}
 					})
@@ -459,9 +452,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	}
 
 	protected void updateList() {
-		if (pubkeydb == null) return;
-
-		pubkeys = pubkeydb.allPubkeys();
+		PubkeyDatabase pubkeyDb = PubkeyDatabase.get(PubkeyListActivity.this);
+		pubkeys = pubkeyDb.allPubkeys();
 		PubkeyAdapter adapter = new PubkeyAdapter(this, pubkeys);
 
 		this.setListAdapter(adapter);
@@ -492,7 +484,7 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 	}
 
 	/**
-	 * @param name
+	 * @param file
 	 */
 	private void readKeyFromFile(File file) {
 		PubkeyBean pubkey = new PubkeyBean();
@@ -541,9 +533,8 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			}
 
 			// write new value into database
-			if (pubkeydb == null)
-				pubkeydb = new PubkeyDatabase(this);
-			pubkeydb.savePubkey(pubkey);
+			PubkeyDatabase pubkeyDb = PubkeyDatabase.get(this);
+			pubkeyDb.savePubkey(pubkey);
 
 			updateList();
 		} catch (Exception e) {

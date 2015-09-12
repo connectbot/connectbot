@@ -18,9 +18,8 @@
 package org.connectbot;
 
 import java.text.NumberFormat;
-import java.util.Arrays;
-import java.util.List;
 
+import org.connectbot.data.ColorStorage;
 import org.connectbot.util.Colors;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.UberColorPickerDialog;
@@ -55,8 +54,8 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 
 	private int mColorScheme;
 
-	private List<Integer> mColorList;
-	private HostDatabase mHostDb;
+	private int[] mColorList;
+	private ColorStorage mHostDb;
 
 	private int mCurrentColor = 0;
 
@@ -70,9 +69,9 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 
 		mColorScheme = HostDatabase.DEFAULT_COLOR_SCHEME;
 
-		mHostDb = new HostDatabase(this);
+		mHostDb = HostDatabase.get(this);
 
-		mColorList = Arrays.asList(mHostDb.getColorsForScheme(mColorScheme));
+		mColorList = mHostDb.getColorsForScheme(mColorScheme);
 		mDefaultColors = mHostDb.getDefaultColorsForScheme(mColorScheme);
 
 		mColorGrid = (GridView) findViewById(R.id.color_grid);
@@ -96,7 +95,6 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 		super.onDestroy();
 
 		if (mHostDb != null) {
-			mHostDb.close();
 			mHostDb = null;
 		}
 	}
@@ -105,8 +103,9 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 	protected void onResume() {
 		super.onResume();
 
-		if (mHostDb == null)
-			mHostDb = new HostDatabase(this);
+		if (mHostDb == null) {
+			mHostDb = HostDatabase.get(this);
+		}
 	}
 
 	private class ColorsAdapter extends BaseAdapter {
@@ -131,18 +130,18 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 				c = (ColorView) convertView;
 			}
 
-			c.setColor(mColorList.get(position));
+			c.setColor(mColorList[position]);
 			c.setNumber(position + 1);
 
 			return c;
 		}
 
 		public int getCount() {
-			return mColorList.size();
+			return mColorList.length;
 		}
 
 		public Object getItem(int position) {
-			return mColorList.get(position);
+			return mColorList[position];
 		}
 
 		public long getItemId(int position) {
@@ -290,7 +289,7 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 
 	private void editColor(int colorNumber) {
 		mCurrentColor = colorNumber;
-		new UberColorPickerDialog(this, this, mColorList.get(colorNumber)).show();
+		new UberColorPickerDialog(this, this, mColorList[colorNumber]).show();
 	}
 
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -301,7 +300,7 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 
 	public void colorChanged(int value) {
 		mHostDb.setGlobalColor(mCurrentColor, value);
-		mColorList.set(mCurrentColor, value);
+		mColorList[mCurrentColor] = value;
 		mColorGrid.invalidateViews();
 	}
 
@@ -320,8 +319,9 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 			}
 		}
 
-		if (needUpdate)
+		if (needUpdate) {
 			mHostDb.setDefaultColorsForScheme(mColorScheme, mDefaultColors[0], mDefaultColors[1]);
+		}
 	}
 
 	@Override
@@ -336,9 +336,9 @@ public class ColorsActivity extends Activity implements OnItemClickListener, OnC
 			public boolean onMenuItemClick(MenuItem arg0) {
 				// Reset each individual color to defaults.
 				for (int i = 0; i < Colors.defaults.length; i++) {
-					if (!mColorList.get(i).equals(Colors.defaults[i])) {
+					if (mColorList[i] != Colors.defaults[i]) {
 						mHostDb.setGlobalColor(i, Colors.defaults[i]);
-						mColorList.set(i, Colors.defaults[i]);
+						mColorList[i] = Colors.defaults[i];
 					}
 				}
 				mColorGrid.invalidateViews();

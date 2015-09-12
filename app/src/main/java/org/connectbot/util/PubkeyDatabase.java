@@ -61,7 +61,23 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 		addTableName(TABLE_PUBKEYS);
 	}
 
-	public PubkeyDatabase(Context context) {
+	private static final Object sInstanceLock = new Object();
+
+	private static PubkeyDatabase sInstance;
+
+	public static PubkeyDatabase get(Context context) {
+		synchronized (sInstanceLock) {
+			if (sInstance != null) {
+				return sInstance;
+			}
+
+			Context appContext = context.getApplicationContext();
+			sInstance = new PubkeyDatabase(appContext);
+			return sInstance;
+		}
+	}
+
+	private PubkeyDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 
 		this.context = context;
@@ -98,26 +114,18 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 	 * Delete a specific host by its <code>_id</code> value.
 	 */
 	public void deletePubkey(PubkeyBean pubkey) {
-		HostDatabase hostdb = new HostDatabase(context);
+		HostDatabase hostdb = HostDatabase.get(context);
 		hostdb.stopUsingPubkey(pubkey.getId());
-		hostdb.close();
 
 		SQLiteDatabase db = getWritableDatabase();
-		db.delete(TABLE_PUBKEYS, "_id = ?", new String[] { Long.toString(pubkey.getId()) });
-		db.close();
+		db.beginTransaction();
+		try {
+			db.delete(TABLE_PUBKEYS, "_id = ?", new String[] {Long.toString(pubkey.getId())});
+			db.setTransactionSuccessful();
+		} finally {
+			db.endTransaction();
+		}
 	}
-
-	/**
-	 * Return a cursor that contains information about all known hosts.
-	 */
-	/*
-	public Cursor allPubkeys() {
-		SQLiteDatabase db = this.getReadableDatabase();
-		return db.query(TABLE_PUBKEYS, new String[] { "_id",
-				FIELD_PUBKEY_NICKNAME, FIELD_PUBKEY_TYPE, FIELD_PUBKEY_PRIVATE,
-				FIELD_PUBKEY_PUBLIC, FIELD_PUBKEY_ENCRYPTED, FIELD_PUBKEY_STARTUP },
-				null, null, null, null, null);
-	}*/
 
 	public List<PubkeyBean> allPubkeys() {
 		return getPubkeys(null, null);
@@ -164,14 +172,12 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 			c.close();
 		}
 
-		db.close();
-
 		return pubkeys;
 	}
 
 	/**
-	 * @param hostId
-	 * @return
+	 * @param pubkeyId database ID for a desired pubkey
+	 * @return object representing the pubkey
 	 */
 	public PubkeyBean findPubkeyById(long pubkeyId) {
 		SQLiteDatabase db = getReadableDatabase();
@@ -188,8 +194,6 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 
 			c.close();
 		}
-
-		db.close();
 
 		return pubkey;
 	}
@@ -230,8 +234,6 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 			c.close();
 		}
 
-		db.close();
-
 		return list;
 	}
 
@@ -250,57 +252,8 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 			c.close();
 		}
 
-		db.close();
-
 		return nickname;
 	}
-
-/*
-	public void setOnStart(long id, boolean onStart) {
-
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		ContentValues values = new ContentValues();
-		values.put(FIELD_PUBKEY_STARTUP, onStart ? 1 : 0);
-
-		db.update(TABLE_PUBKEYS, values, "_id = ?", new String[] { Long.toString(id) });
-
-	}
-
-	public boolean changePassword(long id, String oldPassword, String newPassword) throws NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException {
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		Cursor c = db.query(TABLE_PUBKEYS, new String[] { FIELD_PUBKEY_TYPE,
-				FIELD_PUBKEY_PRIVATE, FIELD_PUBKEY_ENCRYPTED },
-				"_id = ?", new String[] { String.valueOf(id) },
-				null, null, null);
-
-		if (!c.moveToFirst())
-			return false;
-
-		String keyType = c.getString(0);
-		byte[] encPriv = c.getBlob(1);
-		c.close();
-
-		PrivateKey priv;
-		try {
-			priv = PubkeyUtils.decodePrivate(encPriv, keyType, oldPassword);
-		} catch (InvalidKeyException e) {
-			return false;
-		} catch (BadPaddingException e) {
-			return false;
-		} catch (InvalidKeySpecException e) {
-			return false;
-		}
-
-		ContentValues values = new ContentValues();
-		values.put(FIELD_PUBKEY_PRIVATE, PubkeyUtils.getEncodedPrivate(priv, newPassword));
-		values.put(FIELD_PUBKEY_ENCRYPTED, newPassword.length() > 0 ? 1 : 0);
-		db.update(TABLE_PUBKEYS, values, "_id = ?", new String[] { String.valueOf(id) });
-
-		return true;
-	}
-	*/
 
 	/**
 	 * @param pubkey
@@ -311,19 +264,26 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 
 		ContentValues values = pubkey.getValues();
 
-		if (pubkey.getId() > 0) {
-			values.remove("_id");
-			if (db.update(TABLE_PUBKEYS, values, "_id = ?", new String[] { String.valueOf(pubkey.getId()) }) > 0)
-				success = true;
+		db.beginTransaction();
+		try {
+			if (pubkey.getId() > 0) {
+				values.remove("_id");
+				if (db.update(TABLE_PUBKEYS, values, "_id = ?", new String[] {String.valueOf(pubkey.getId())}) > 0)
+					success = true;
+			}
+
+			if (!success) {
+				long id = db.insert(TABLE_PUBKEYS, null, pubkey.getValues());
+				if (id != -1) {
+					// TODO add some error handling here?
+					pubkey.setId(id);
+				}
+			}
+
+			db.setTransactionSuccessful();
+		} finally {
+			db.endTransaction();
 		}
-
-		if (!success) {
-			long id = db.insert(TABLE_PUBKEYS, null, pubkey.getValues());
-			pubkey.setId(id);
-		}
-
-		db.close();
-
 		return pubkey;
 	}
 }
