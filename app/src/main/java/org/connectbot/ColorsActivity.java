@@ -18,8 +18,6 @@
 package org.connectbot;
 
 import java.text.NumberFormat;
-import java.util.Arrays;
-import java.util.List;
 
 import org.connectbot.data.ColorStorage;
 import org.connectbot.util.Colors;

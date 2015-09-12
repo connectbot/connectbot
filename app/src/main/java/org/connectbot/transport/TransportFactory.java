@@ -22,7 +22,6 @@ import java.util.Map;
 
 import org.connectbot.bean.HostBean;
 import org.connectbot.data.HostStorage;
-import org.connectbot.util.HostDatabase;
 
 import android.content.Context;
 import android.net.Uri;
