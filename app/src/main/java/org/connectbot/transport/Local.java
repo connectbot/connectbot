@@ -25,15 +25,14 @@ import java.util.Map;
 
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
-import org.connectbot.service.TerminalBridge;
-import org.connectbot.service.TerminalManager;
 import org.connectbot.util.HostDatabase;
+
+import com.google.ase.Exec;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
-
-import com.google.ase.Exec;
 
 /**
  * @author Kenny Root
@@ -44,25 +43,21 @@ public class Local extends AbsTransport {
 	private static final String PROTOCOL = "local";
 
 	private static final String DEFAULT_URI = "local:#Local";
+	private final Killer killer;
 
 	private FileDescriptor shellFd;
+	private int shellPid;
 
 	private FileInputStream is;
 	private FileOutputStream os;
 
-	/**
-	 *
-	 */
 	public Local() {
+		killer = new AndroidKiller();
 	}
 
-	/**
-	 * @param host
-	 * @param bridge
-	 * @param manager
-	 */
-	public Local(HostBean host, TerminalBridge bridge, TerminalManager manager) {
-		super(host, bridge, manager);
+	@VisibleForTesting
+	public Local(Killer killer) {
+		this.killer = killer;
 	}
 
 	public static String getProtocolName() {
@@ -80,6 +75,7 @@ public class Local extends AbsTransport {
 				is.close();
 				is = null;
 			}
+			killer.killProcess(shellPid);
 		} catch (IOException e) {
 			Log.e(TAG, "Couldn't close shell", e);
 		}
@@ -97,7 +93,7 @@ public class Local extends AbsTransport {
 			return;
 		}
 
-		final int shellPid = pids[0];
+		shellPid = pids[0];
 		Runnable exitWatcher = new Runnable() {
 			public void run() {
 				Exec.waitFor(shellPid);
@@ -220,5 +216,16 @@ public class Local extends AbsTransport {
 	@Override
 	public boolean usesNetwork() {
 		return false;
+	}
+
+	private interface Killer {
+		void killProcess(int pid);
+	}
+
+	private static class AndroidKiller implements Killer {
+		@Override
+		public void killProcess(int pid) {
+			android.os.Process.killProcess(pid);
+		}
 	}
 }
