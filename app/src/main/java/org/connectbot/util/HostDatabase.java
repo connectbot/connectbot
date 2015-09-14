@@ -533,16 +533,18 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		values.put(FIELD_HOST_HOSTKEYALGO, hostkeyalgo);
 		values.put(FIELD_HOST_HOSTKEY, hostkey);
 
+		int numUpdated;
 		mDb.beginTransaction();
 		try {
-			mDb.update(TABLE_HOSTS, values,
+			numUpdated = mDb.update(TABLE_HOSTS, values,
 					FIELD_HOST_HOSTNAME + " = ? AND " + FIELD_HOST_PORT + " = ?",
 					new String[]{hostname, String.valueOf(port)});
 			mDb.setTransactionSuccessful();
 		} finally {
 			mDb.endTransaction();
 		}
-		Log.d(TAG, String.format("Finished saving hostkey information for '%s'", hostname));
+		Log.d(TAG, String.format("Finished saving hostkey information for '%s' (affected %d entries)",
+				hostname, numUpdated));
 	}
 
 	/**
@@ -563,8 +565,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 					COL_HOSTKEY = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEY);
 
 			while (c.moveToNext()) {
-				String hostname = c.getString(COL_HOSTNAME),
-						hostkeyalgo = c.getString(COL_HOSTKEYALGO);
+				String hostname = c.getString(COL_HOSTNAME);
+				String hostkeyalgo = c.getString(COL_HOSTKEYALGO);
 				int port = c.getInt(COL_PORT);
 				byte[] hostkey = c.getBlob(COL_HOSTKEY);
 
