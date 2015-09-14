@@ -533,9 +533,15 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		values.put(FIELD_HOST_HOSTKEYALGO, hostkeyalgo);
 		values.put(FIELD_HOST_HOSTKEY, hostkey);
 
-		mDb.update(TABLE_HOSTS, values,
-				FIELD_HOST_HOSTNAME + " = ? AND " + FIELD_HOST_PORT + " = ?",
-				new String[] {hostname, String.valueOf(port)});
+		mDb.beginTransaction();
+		try {
+			mDb.update(TABLE_HOSTS, values,
+					FIELD_HOST_HOSTNAME + " = ? AND " + FIELD_HOST_PORT + " = ?",
+					new String[]{hostname, String.valueOf(port)});
+			mDb.setTransactionSuccessful();
+		} finally {
+			mDb.endTransaction();
+		}
 		Log.d(TAG, String.format("Finished saving hostkey information for '%s'", hostname));
 	}
 
