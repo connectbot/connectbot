@@ -69,4 +69,7 @@
 	<style name="ListItemSecondLineText.Blue" parent="ListItemSecondLineText">
 		<item name="android:textColor">@color/blue</item>
 	</style>
+
+	<!-- This value is overridden for v11 and higher, but left empty here. -->
+	<style name="SelectableItem"></style>
 </resources>
