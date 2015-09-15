@@ -84,9 +84,9 @@ public class HostListActivity extends Activity implements OnHostStatusChangedLis
 	private List<HostBean> hosts;
 	protected LayoutInflater inflater = null;
 
-	private View mEmptyView;
-	private RecyclerView mRecyclerView;
+	private RecyclerView mHostListView;
 	private HostAdapter mAdapter;
+	private View mEmptyView;
 
 	protected boolean sortedByColor = false;
 
@@ -185,10 +185,10 @@ public class HostListActivity extends Activity implements OnHostStatusChangedLis
 		super.onCreate(icicle);
 		setContentView(R.layout.act_hostlist);
 
-		mRecyclerView = (RecyclerView) findViewById(R.id.list);
-		mRecyclerView.setHasFixedSize(true);
-		mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-		mRecyclerView.addItemDecoration(new HostListItemDecoration(this));
+		mHostListView = (RecyclerView) findViewById(R.id.list);
+		mHostListView.setHasFixedSize(true);
+		mHostListView.setLayoutManager(new LinearLayoutManager(this));
+		mHostListView.addItemDecoration(new HostListItemDecoration(this));
 
 		mEmptyView = findViewById(R.id.empty);
 
@@ -225,9 +225,7 @@ public class HostListActivity extends Activity implements OnHostStatusChangedLis
 
 		this.sortedByColor = prefs.getBoolean(PreferenceConstants.SORT_BY_COLOR, false);
 
-		//this.list.setSelector(R.drawable.highlight_disabled_pressed);
-
-		this.registerForContextMenu(mRecyclerView);
+		this.registerForContextMenu(mHostListView);
 
 		quickconnect = (TextView) this.findViewById(R.id.front_quickconnect);
 		quickconnect.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
@@ -415,7 +413,7 @@ public class HostListActivity extends Activity implements OnHostStatusChangedLis
 		}
 
 		mAdapter = new HostAdapter(this, hosts, bound);
-		mRecyclerView.setAdapter(mAdapter);
+		mHostListView.setAdapter(mAdapter);
 		adjustViewVisibility();
 	}
 
@@ -424,10 +422,13 @@ public class HostListActivity extends Activity implements OnHostStatusChangedLis
 		updateList();
 	}
 
+	/**
+	 * If the host list is empty, hides the list and shows the empty message; otherwise, shows
+	 * the list and hides the empty message.
+	 */
 	private void adjustViewVisibility() {
-		Log.d(TAG, "num items: " + mAdapter.getItemCount());
 		boolean isEmpty = mAdapter.getItemCount() == 0;
-		mRecyclerView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+		mHostListView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
 		mEmptyView.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
 	}
 
@@ -435,11 +436,11 @@ public class HostListActivity extends Activity implements OnHostStatusChangedLis
 		private final LayoutInflater inflater;
 		private final List<HostBean> hosts;
 		private final TerminalManager manager;
-		private Context context;
+		private final Context context;
 
 		public final static int STATE_UNKNOWN = 1, STATE_CONNECTED = 2, STATE_DISCONNECTED = 3;
 
-		public class ViewHolder extends RecyclerView.ViewHolder
+		class ViewHolder extends RecyclerView.ViewHolder
 				implements View.OnClickListener, View.OnCreateContextMenuListener {
 			public final ImageView icon;
 			public final TextView nickname;
@@ -645,6 +646,10 @@ public class HostListActivity extends Activity implements OnHostStatusChangedLis
 		}
 	}
 
+	/**
+	 * Item decorations for host list items, which adds a divider between items and leaves a
+	 * small offset at the top of the list to adhere to the Material Design spec.
+	 */
 	private class HostListItemDecoration extends RecyclerView.ItemDecoration {
 		private final int[] ATTRS = new int[]{
 			android.R.attr.listDivider
@@ -678,7 +683,8 @@ public class HostListActivity extends Activity implements OnHostStatusChangedLis
 		}
 
 		@Override
-		public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+		public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
+				RecyclerView.State state) {
 			int top = parent.getChildAdapterPosition(view) == 0 ? TOP_LIST_OFFSET : 0;
 			outRect.set(0, top, 0, mDivider.getIntrinsicHeight());
 		}
