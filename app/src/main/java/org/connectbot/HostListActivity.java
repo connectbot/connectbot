@@ -17,6 +17,7 @@
 
 package org.connectbot;
 
+import android.app.Activity;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -27,6 +28,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.List;
+import java.util.zip.Inflater;
 
 import org.connectbot.bean.HostBean;
 import org.connectbot.data.HostStorage;
@@ -38,6 +40,8 @@ import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ListActivity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -52,6 +56,9 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.StyleRes;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -65,6 +72,8 @@ import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -90,9 +99,6 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 	private MenuItem sortcolor;
 
 	private MenuItem sortlast;
-
-	private Spinner transportSpinner;
-	private TextView quickconnect;
 
 	private SharedPreferences prefs = null;
 
@@ -190,6 +196,7 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 		mEmptyView = findViewById(R.id.empty);
 
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		this.inflater = LayoutInflater.from(this);
 
 		// detect HTC Dream and apply special preferences
 		if (Build.MANUFACTURER.equals("HTC") && Build.DEVICE.equals("dream")) {
@@ -224,40 +231,18 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 
 		this.registerForContextMenu(mHostListView);
 
-		quickconnect = (TextView) this.findViewById(R.id.front_quickconnect);
-		quickconnect.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
-		quickconnect.setOnKeyListener(new OnKeyListener() {
-
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-				if (event.getAction() == KeyEvent.ACTION_UP) return false;
-				if (keyCode != KeyEvent.KEYCODE_ENTER) return false;
-
-				return startConsoleActivity();
-			}
-		});
-
-		transportSpinner = (Spinner) findViewById(R.id.transport_selection);
-		transportSpinner.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
-		ArrayAdapter<String> transportSelection = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, TransportFactory.getTransportNames());
-		transportSelection.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		transportSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
-				String formatHint = TransportFactory.getFormatHint(
-						(String) transportSpinner.getSelectedItem(),
-						HostListActivity.this);
-
-				quickconnect.setHint(formatHint);
-				quickconnect.setError(null);
-				quickconnect.requestFocus();
+		FloatingActionButton addHostButton =
+				(FloatingActionButton) findViewById(R.id.add_host_button);
+		addHostButton.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
+		addHostButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DialogFragment dialog = new AddHostDialogFragment();
+				dialog.show(getSupportFragmentManager(), "AddHostDialogFragment");
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {}
 		});
-		transportSpinner.setAdapter(transportSelection);
-
-		this.inflater = LayoutInflater.from(this);
 	}
 
 	@Override
@@ -360,18 +345,7 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 	/**
 	 * @return
 	 */
-	private boolean startConsoleActivity() {
-		Uri uri = TransportFactory.getUri((String) transportSpinner
-				.getSelectedItem(), quickconnect.getText().toString());
-
-		if (uri == null) {
-			quickconnect.setError(getString(R.string.list_format_error,
-					TransportFactory.getFormatHint(
-							(String) transportSpinner.getSelectedItem(),
-							HostListActivity.this)));
-			return false;
-		}
-
+	private boolean startConsoleActivity(Uri uri) {
 		HostBean host = TransportFactory.findHost(hostdb, uri);
 		if (host == null) {
 			host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
@@ -383,9 +357,6 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 		Intent intent = new Intent(HostListActivity.this, ConsoleActivity.class);
 		intent.setData(uri);
 		startActivity(intent);
-
-		// Clear the input box for the next entry.
-		quickconnect.setText("");
 
 		return true;
 	}
@@ -686,6 +657,99 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 				RecyclerView.State state) {
 			int top = parent.getChildAdapterPosition(view) == 0 ? TOP_LIST_OFFSET : 0;
 			outRect.set(0, top, 0, mDivider.getIntrinsicHeight());
+		}
+	}
+
+	public static class AddHostDialogFragment extends DialogFragment {
+		private TextView mAddressField;
+		private Spinner mSpinner;
+
+		HostListActivity mListener;
+
+		@Override
+		public void onAttach(Activity activity) {
+			super.onAttach(activity);
+			mListener = (HostListActivity) activity;
+		}
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+			View addHostDialog = inflater.inflate(R.layout.dia_add_host, null);
+			builder.setView(addHostDialog)
+					.setPositiveButton(R.string.button_add, null)
+					.setNegativeButton(R.string.button_cancel, null);
+			AlertDialog dialog = builder.create();
+
+			mAddressField = (TextView) addHostDialog.findViewById(R.id.front_quickconnect);
+			mAddressField.setOnKeyListener(new OnKeyListener() {
+
+				public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+					if (event.getAction() == KeyEvent.ACTION_UP) return false;
+					if (keyCode != KeyEvent.KEYCODE_ENTER) return false;
+
+					processNewUriEntered();
+					return true;
+				}
+			});
+
+			mSpinner = (Spinner) addHostDialog.findViewById(R.id.transport_selection);
+			ArrayAdapter<String> transportSelection = new ArrayAdapter<String>(getActivity(),
+					android.R.layout.simple_spinner_item, TransportFactory.getTransportNames());
+			transportSelection.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+				public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
+					String formatHint = TransportFactory.getFormatHint(
+							(String) mSpinner.getSelectedItem(),
+							getActivity());
+					mAddressField.setHint(formatHint);
+					mAddressField.setError(null);
+					mAddressField.requestFocus();
+				}
+
+				public void onNothingSelected(AdapterView<?> arg0) {
+				}
+			});
+			mSpinner.setAdapter(transportSelection);
+
+			return dialog;
+		}
+
+		@Override
+		public void onResume()
+		{
+			super.onResume();
+			final AlertDialog alertDialog = (AlertDialog) getDialog();
+			Button addButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+			addButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					processNewUriEntered();
+				}
+			});
+		}
+
+		/**
+		 * Processes the URI that has been entered. If it is a valid URI, adds that host
+		 * and starts ConsoleActivity; otherwise, shows an error in the address field.
+		 */
+		private void processNewUriEntered() {
+			Uri uri = TransportFactory.getUri((String) mSpinner
+					.getSelectedItem(), mAddressField.getText().toString());
+			if (uri == null) {
+				mAddressField.setError(getString(R.string.list_format_error,
+						TransportFactory.getFormatHint(
+								(String) mSpinner.getSelectedItem(),
+								getActivity())));
+				mAddressField.requestFocus();
+				return;
+			}
+
+			mListener.startConsoleActivity(uri);
+			getDialog().dismiss();
 		}
 	}
 }

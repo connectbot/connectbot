@@ -152,6 +152,8 @@
 
 	<!-- Add a new item (e.g., host or pubkey) to the list. -->
 	<string name="button_add">"Add"</string>
+	<!-- Cancel an action. -->
+	<string name="button_cancel">Cancel</string>
 	<!-- Change an existing item's (e.g., host or pubkey) details. -->
 	<string name="button_change">"Change"</string>
 	<!-- Button that begins the generation of a public key pair. -->
