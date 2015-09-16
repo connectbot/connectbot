@@ -68,24 +68,28 @@
 		/>
 		
 	<CheckBoxPreference
+		android:widgetLayout="@layout/switch_compat_preference_layout"
 		android:key="compression"
 		android:title="@string/hostpref_compression_title"
 		android:summary="@string/hostpref_compression_summary"
 		/>
 		
 	<CheckBoxPreference
+		android:widgetLayout="@layout/switch_compat_preference_layout"
 		android:key="wantsession"
 		android:title="@string/hostpref_wantsession_title"
 		android:summary="@string/hostpref_wantsession_summary"
 		/>
 
 	<CheckBoxPreference
+		android:widgetLayout="@layout/switch_compat_preference_layout"
 		android:key="stayconnected"
 		android:title="@string/hostpref_stayconnected_title"
 		android:summary="@string/hostpref_stayconnected_summary"
 		/>
 
 	<CheckBoxPreference
+		android:widgetLayout="@layout/switch_compat_preference_layout"
 		android:key="quickdisconnect"
 		android:title="@string/hostpref_quickdisconnect_title"
 		android:summary="@string/hostpref_quickdisconnect_summary"
