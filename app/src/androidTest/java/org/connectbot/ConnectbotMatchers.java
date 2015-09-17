@@ -2,7 +2,10 @@ package org.connectbot;
 
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.test.espresso.NoMatchingViewException;
+import android.support.test.espresso.ViewAssertion;
 import android.support.test.espresso.matcher.BoundedMatcher;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,22 +13,18 @@ import android.widget.TextView;
 import org.connectbot.bean.HostBean;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
-
-import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.hamcrest.CoreMatchers.allOf;
+import org.junit.Assert;
 
 public class ConnectbotMatchers {
 	/**
 	 * Matches the nickname of a {@link HostBean}.
 	 */
 	@NonNull
-	public static Matcher<Object> withHostNickname(final String content) {
-		return new BoundedMatcher<Object, HostBean>(HostBean.class) {
+	public static Matcher<RecyclerView.ViewHolder> withHostNickname(final String content) {
+		return new BoundedMatcher<RecyclerView.ViewHolder, HostListActivity.HostAdapter.ViewHolder>(HostListActivity.HostAdapter.ViewHolder.class) {
 			@Override
-			public boolean matchesSafely(HostBean host) {
-				return host.getNickname().matches(content);
+			public boolean matchesSafely(HostListActivity.HostAdapter.ViewHolder holder) {
+				return holder.host.getNickname().matches(content);
 			}
 
 			@Override
@@ -35,63 +34,90 @@ public class ConnectbotMatchers {
 		};
 	}
 
-	/**
-	 * Matches the drawable state on an ImageView that is set with setImageState.
-	 */
 	@NonNull
-	public static Matcher<View> withDrawableState(final int expectedState) {
-		return new TypeSafeMatcher<View>() {
+	public static Matcher<RecyclerView.ViewHolder> withConnectedHost() {
+		return new BoundedMatcher<RecyclerView.ViewHolder, HostListActivity.HostAdapter.ViewHolder>(HostListActivity.HostAdapter.ViewHolder.class) {
 			@Override
-			public boolean matchesSafely(View view) {
-				if (!(view instanceof ImageView)) {
-					return false;
-				}
-
-				int[] states = view.getDrawableState();
-				for (int state : states) {
-					if (state == expectedState) {
-						return true;
-					}
-				}
-				return false;
+			public boolean matchesSafely(HostListActivity.HostAdapter.ViewHolder holder) {
+				return hasDrawableState(holder.icon, android.R.attr.state_checked);
 			}
 
 			@Override
 			public void describeTo(Description description) {
-				description.appendText("with drawable state '" + expectedState + "'");
+				description.appendText("is displayed");
 			}
 		};
 	}
 
 	@NonNull
-	public static Matcher<View> withTextColor(@ColorInt final int expectedColor) {
-		return new TypeSafeMatcher<View>() {
+	public static Matcher<RecyclerView.ViewHolder> withDisconnectedHost() {
+		return new BoundedMatcher<RecyclerView.ViewHolder, HostListActivity.HostAdapter.ViewHolder>(HostListActivity.HostAdapter.ViewHolder.class) {
 			@Override
-			public boolean matchesSafely(View view) {
-				if (!(view instanceof TextView)) {
-					return false;
-				}
-
-				TextView tv = (TextView) view;
-				return tv.getCurrentTextColor() == expectedColor;
+			public boolean matchesSafely(HostListActivity.HostAdapter.ViewHolder holder) {
+				return hasDrawableState(holder.icon, android.R.attr.state_expanded);
 			}
 
 			@Override
 			public void describeTo(Description description) {
-				description.appendText("with color '" + Integer.toHexString(expectedColor) + "'");
+				description.appendText("is displayed");
 			}
 		};
 	}
 
 	@NonNull
-	public static Matcher<View> hostDisconnected() {
-		return hasDescendant(allOf(withId(android.R.id.icon),
-				withDrawableState(android.R.attr.state_expanded)));
+	public static Matcher<RecyclerView.ViewHolder> withColoredText(@ColorInt final int expectedColor) {
+		return new BoundedMatcher<RecyclerView.ViewHolder, HostListActivity.HostAdapter.ViewHolder>(HostListActivity.HostAdapter.ViewHolder.class) {
+			@Override
+			public boolean matchesSafely(HostListActivity.HostAdapter.ViewHolder holder) {
+				return hasTextColor(holder.nickname, expectedColor);
+			}
+
+			@Override
+			public void describeTo(Description description) {
+				description.appendText("is displayed");
+			}
+		};
+	}
+
+	private static boolean hasDrawableState(View view, final int expectedState) {
+		if (!(view instanceof ImageView)) {
+			return false;
+		}
+
+		int[] states = view.getDrawableState();
+		for (int state : states) {
+			if (state == expectedState) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean hasTextColor(View view, @ColorInt final int expectedColor) {
+		if (!(view instanceof TextView)) {
+			return false;
+		}
+
+		TextView tv = (TextView) view;
+		return tv.getCurrentTextColor() == expectedColor;
 	}
 
 	@NonNull
-	public static Matcher<View> hostConnected() {
-		return hasDescendant(allOf(withId(android.R.id.icon),
-				withDrawableState(android.R.attr.state_checked)));
+	public static ViewAssertion hasHolderItem(final Matcher<RecyclerView.ViewHolder> viewHolderMatcher) {
+		return new ViewAssertion() {
+			@Override public void check(View view, NoMatchingViewException e) {
+				if (!(view instanceof RecyclerView)) {
+					throw e;
+				}
+
+				boolean hasMatch = false;
+				RecyclerView rv = (RecyclerView) view;
+				for (int i = 0; i < rv.getChildCount(); i++) {
+					RecyclerView.ViewHolder vh = rv.findViewHolderForAdapterPosition(i);
+					hasMatch |= viewHolderMatcher.matches(vh);
+				}
+				Assert.assertTrue(hasMatch);
+			}
+		};
 	}
 }

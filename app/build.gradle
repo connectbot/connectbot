@@ -76,6 +76,12 @@ android {
         androidTestCompile('com.android.support.test.espresso:espresso-intents:2.2') {
             exclude module: "support-annotations"
         }
+        androidTestCompile ('com.android.support.test.espresso:espresso-contrib:2.2'){
+            exclude module: 'support-annotations'
+            exclude module: 'support-v4'
+            exclude module: 'support-v13'
+            exclude module: 'recyclerview-v7'
+        }
     }
 
     buildTypes {
