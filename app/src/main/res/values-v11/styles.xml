@@ -33,4 +33,8 @@
 		<item name="android:textColor">?android:textColorSecondary</item>
 		<item name="android:textSize">14sp</item>
 	</style>
+
+        <style name="SelectableItem">
+                <item name="android:background">?android:attr/selectableItemBackground</item>
+        </style>
 </resources>
