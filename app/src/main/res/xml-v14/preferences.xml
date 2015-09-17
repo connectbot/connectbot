@@ -20,21 +20,21 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<org.connectbot.SwitchCompatPreference
+	<SwitchPreference
 		android:key="memkeys"
 		android:title="@string/pref_memkeys_title"
 		android:summary="@string/pref_memkeys_summary"
 		android:defaultValue="true"
 		/>
 
-	<org.connectbot.SwitchCompatPreference
+	<SwitchPreference
 		android:key="connPersist"
 		android:title="@string/pref_conn_persist_title"
 		android:summary="@string/pref_conn_persist_summary"
 		android:defaultValue="true"
 		/>
 
-	<org.connectbot.SwitchCompatPreference
+	<SwitchPreference
 		android:key="wifilock"
 		android:title="@string/pref_wifilock_title"
 		android:summary="@string/pref_wifilock_summary"
@@ -75,28 +75,28 @@
 			android:defaultValue="Default"
 			/>
 
-		<org.connectbot.SwitchCompatPreference
+		<SwitchPreference
 			android:key="titlebarhide"
 			android:title="@string/pref_titlebarhide_title"
 			android:summary="@string/pref_titlebarhide_summary"
 			android:defaultValue="false"
 			/>
 
-		<org.connectbot.SwitchCompatPreference
+		<SwitchPreference
 			android:key="fullscreen"
 			android:title="@string/pref_fullscreen_title"
 			android:summary="@string/pref_fullscreen_summary"
 			android:defaultValue="false"
 			/>
 
-		<org.connectbot.SwitchCompatPreference
+		<SwitchPreference
 			android:key="volumefont"
 			android:title="@string/pref_volumefont_title"
 			android:summary="@string/pref_volumefont_summary"
 			android:defaultValue="true"
 			/>
 
-		<org.connectbot.SwitchCompatPreference
+		<SwitchPreference
 			android:key="keepalive"
 			android:title="@string/pref_keepalive_title"
 			android:summary="@string/pref_keepalive_summary"
@@ -107,14 +107,14 @@
 	<PreferenceCategory
 		android:title="@string/pref_keyboard_category">
 
-		<org.connectbot.SwitchCompatPreference
+		<SwitchPreference
 			android:key="shiftfkeys"
 			android:title="@string/pref_shiftfkeys_title"
 			android:summary="@string/pref_shiftfkeys_summary"
 			android:defaultValue="false"
 			/>
 
-		<org.connectbot.SwitchCompatPreference
+		<SwitchPreference
 			android:key="ctrlfkeys"
 			android:title="@string/pref_ctrlfkeys_title"
 			android:summary="@string/pref_ctrlfkeys_summary"
@@ -148,7 +148,7 @@
 			android:defaultValue="Ctrl+A then Space"
 			/>
 
-		<org.connectbot.SwitchCompatPreference
+		<SwitchPreference
 			android:key="bumpyarrows"
 			android:title="@string/pref_bumpyarrows_title"
 			android:summary="@string/pref_bumpyarrows_summary"
@@ -159,7 +159,7 @@
 	<PreferenceCategory
 		android:title="@string/pref_bell_category">
 
-		<org.connectbot.SwitchCompatPreference
+		<SwitchPreference
 			android:key="bell"
 			android:title="@string/pref_bell_title"
 			android:defaultValue="true"
@@ -170,13 +170,13 @@
 			android:title="@string/pref_bell_volume_title"
 			/>
 
-		<org.connectbot.SwitchCompatPreference
+		<SwitchPreference
 			android:key="bellVibrate"
 			android:title="@string/pref_bell_vibrate_title"
 			android:defaultValue="true"
 			/>
 
-		<org.connectbot.SwitchCompatPreference
+		<SwitchPreference
 			android:key="bellNotification"
 			android:title="@string/pref_bell_notification_title"
 			android:summary="@string/pref_bell_notification_summary"
