@@ -14,7 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.connectbot;
+package org.connectbot.util;
+
+import org.connectbot.R;
 
 import android.annotation.TargetApi;
 import android.content.Context;
