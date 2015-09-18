@@ -17,6 +17,10 @@
 
 package org.connectbot.bean;
 
+import org.connectbot.transport.Local;
+import org.connectbot.transport.SSH;
+import org.connectbot.transport.Telnet;
+import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 
 import android.content.ContentValues;
@@ -226,6 +230,29 @@ public class HostBean extends AbstractBean {
 		return values;
 	}
 
+	public static HostBean fromContentValues(ContentValues values) {
+		HostBean host = new HostBean();
+		host.setNickname(values.getAsString(HostDatabase.FIELD_HOST_NICKNAME));
+		host.setProtocol(values.getAsString(HostDatabase.FIELD_HOST_PROTOCOL));
+		host.setUsername(values.getAsString(HostDatabase.FIELD_HOST_USERNAME));
+		host.setHostname(values.getAsString(HostDatabase.FIELD_HOST_HOSTNAME));
+		host.setPort(values.getAsInteger(HostDatabase.FIELD_HOST_PORT));
+		host.setLastConnect(values.getAsLong(HostDatabase.FIELD_HOST_LASTCONNECT));
+		host.setColor(values.getAsString(HostDatabase.FIELD_HOST_COLOR));
+		host.setUseKeys(Boolean.valueOf(values.getAsString(HostDatabase.FIELD_HOST_USEKEYS)));
+		host.setUseAuthAgent(values.getAsString(HostDatabase.FIELD_HOST_USEAUTHAGENT));
+		host.setPostLogin(values.getAsString(HostDatabase.FIELD_HOST_POSTLOGIN));
+		host.setPubkeyId(values.getAsLong(HostDatabase.FIELD_HOST_PUBKEYID));
+		host.setWantSession(Boolean.valueOf(values.getAsString(HostDatabase.FIELD_HOST_WANTSESSION)));
+		host.setDelKey(values.getAsString(HostDatabase.FIELD_HOST_DELKEY));
+		host.setFontSize(values.getAsInteger(HostDatabase.FIELD_HOST_FONTSIZE));
+		host.setCompression(Boolean.valueOf(values.getAsString(HostDatabase.FIELD_HOST_COMPRESSION)));
+		host.setEncoding(values.getAsString(HostDatabase.FIELD_HOST_ENCODING));
+		host.setStayConnected(values.getAsBoolean(HostDatabase.FIELD_HOST_STAYCONNECTED));
+		host.setQuickDisconnect(values.getAsBoolean(HostDatabase.FIELD_HOST_QUICKDISCONNECT));
+		return host;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == null || !(o instanceof HostBean))
@@ -300,6 +327,40 @@ public class HostBean extends AbstractBean {
 			.append("/#")
 			.append(nickname);
 		return Uri.parse(sb.toString());
+	}
+
+	/**
+	 * Generates a "pretty" string to be used in the quick-connect host edit view.
+	 */
+	@Override
+	public String toString() {
+		if (protocol == null)
+			return "";
+
+		int defaultPort = TransportFactory.getTransport(protocol).getDefaultPort();
+
+		if (SSH.getProtocolName().equals(protocol)) {
+			if (username == null || hostname == null ||
+					username.equals("") || hostname.equals(""))
+				return "";
+
+			if (port == defaultPort)
+				return username + "@" + hostname;
+			else
+				return username + "@" + hostname + ":" + port;
+		} else if (Telnet.getProtocolName().equals(protocol)) {
+			if (hostname == null || hostname.equals(""))
+				return "";
+			else if (port == defaultPort)
+				return hostname;
+			else
+				return hostname + ":" + port;
+		} else if (Local.getProtocolName().equals(protocol)) {
+			return nickname;
+		}
+
+		// Fail gracefully.
+		return "";
 	}
 
 }
