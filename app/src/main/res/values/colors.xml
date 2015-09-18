@@ -27,9 +27,9 @@
 	<color name="primary">#00BCD4</color>
 
 	<color name="accent">#F4511E</color>
-        <color name="dark_accent">#BF360C</color>
+	<color name="dark_accent">#BF360C</color>
 
-        <color name="fab_color_pressed">#F4511E</color>
-        <color name="fab_color_normal">#F4511E</color>
+	<color name="fab_color_pressed">#F4511E</color>
+	<color name="fab_color_normal">#F4511E</color>
 
 </resources>
