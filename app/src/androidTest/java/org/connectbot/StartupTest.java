@@ -16,6 +16,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.action.CloseKeyboardAction;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -36,10 +37,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.connectbot.ConnectbotMatchers.hostConnected;
-import static org.connectbot.ConnectbotMatchers.hostDisconnected;
+import static org.connectbot.ConnectbotMatchers.hasHolderItem;
+import static org.connectbot.ConnectbotMatchers.withColoredText;
+import static org.connectbot.ConnectbotMatchers.withConnectedHost;
+import static org.connectbot.ConnectbotMatchers.withDisconnectedHost;
 import static org.connectbot.ConnectbotMatchers.withHostNickname;
-import static org.connectbot.ConnectbotMatchers.withTextColor;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -65,16 +67,16 @@ public class StartupTest {
 		onView(withId(R.id.console_flip)).perform(closeSoftKeyboard(), pressBack());
 
 		// Make sure we're still connected.
-		onData(withHostNickname("Local")).inAdapterView(withId(android.R.id.list))
-				.check(matches(hostConnected()))
-				.perform(longClick());
+		onView(withId(R.id.list))
+				.check(hasHolderItem(allOf(withHostNickname("Local"), withConnectedHost())))
+				.perform(RecyclerViewActions.actionOnHolderItem(
+						allOf(withHostNickname("Local"), withConnectedHost()), longClick()));
 
 		// Click on the disconnect context menu item.
 		onView(withText(R.string.list_host_disconnect)).check(matches(isDisplayed())).perform(click());
 
 		// Now make sure we're disconnected.
-		onData(withHostNickname("Local")).inAdapterView(withId(android.R.id.list))
-				.check(matches(hostDisconnected()));
+		onView(withId(R.id.list)).check(hasHolderItem(allOf(withHostNickname("Local"), withDisconnectedHost())));
 	}
 
 	@Test
@@ -87,15 +89,13 @@ public class StartupTest {
 		onView(withText(R.string.list_host_disconnect)).check(matches(isDisplayed())).perform(click());
 
 		// Now make sure we're disconnected.
-		onData(withHostNickname("Local")).inAdapterView(withId(android.R.id.list))
-				.check(matches(hostDisconnected()));
+		onView(withId(R.id.list)).check(hasHolderItem(allOf(withHostNickname("Local"), withDisconnectedHost())));
 	}
 
 	@Test
 	public void localConnectionCanDelete() {
 		startNewLocalConnectionAndGoBack("Local");
-		onData(withHostNickname("Local")).inAdapterView(withId(android.R.id.list))
-				.perform(longClick());
+		onView(withId(R.id.list)).perform(RecyclerViewActions.actionOnHolderItem(withHostNickname("Local"), longClick()));
 		onView(withText(R.string.list_host_delete)).perform(click());
 		onView(withText(R.string.delete_pos)).perform(click());
 	}
@@ -113,8 +113,7 @@ public class StartupTest {
 	 */
 	private void changeColor(String hostName, @ColorRes int color, @StringRes int stringForColor) {
 		// Bring up the context menu.
-		onData(withHostNickname(hostName)).inAdapterView(withId(android.R.id.list))
-				.perform(longClick());
+		onView(withId(R.id.list)).perform(RecyclerViewActions.actionOnHolderItem(withHostNickname(hostName), longClick()));
 		onView(withText(R.string.list_host_edit)).perform(click());
 
 		// Click on the color category and select the desired one.
@@ -125,16 +124,13 @@ public class StartupTest {
 		onView(withText(R.string.hostpref_color_title)).perform(pressBack());
 
 		Resources res = InstrumentationRegistry.getTargetContext().getResources();
-		onData(withHostNickname(hostName)).inAdapterView(withId(android.R.id.list))
-				.check(matches(hasDescendant(allOf(withId(android.R.id.text1),
-						withTextColor(res.getColor(color))))));
+		onView(withId(R.id.list)).check(hasHolderItem(withColoredText(res.getColor(color))));
 	}
 
 	private void startNewLocalConnectionAndGoBack(String name) {
 		startNewLocalConnection(name);
 		onView(withId(R.id.console_flip)).perform(closeSoftKeyboard(), pressBack());
-		onData(withHostNickname(name)).inAdapterView(withId(android.R.id.list))
-				.check(matches(isDisplayed()));
+		onView(withId(R.id.list)).check(hasHolderItem(withHostNickname(name)));
 	}
 
 	private void startNewLocalConnection() {

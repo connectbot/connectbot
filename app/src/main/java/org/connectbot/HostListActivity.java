@@ -21,6 +21,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -429,7 +430,8 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 		mEmptyView.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
 	}
 
-	private class HostAdapter extends RecyclerView.Adapter<HostAdapter.ViewHolder> {
+	@VisibleForTesting
+	protected class HostAdapter extends RecyclerView.Adapter<HostAdapter.ViewHolder> {
 		private final LayoutInflater inflater;
 		private final List<HostBean> hosts;
 		private final TerminalManager manager;
