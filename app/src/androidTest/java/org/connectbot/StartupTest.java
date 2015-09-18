@@ -24,6 +24,7 @@ import android.view.View;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.pressBack;
@@ -83,7 +84,7 @@ public class StartupTest {
 	public void localConnectionDisconnectConsoleActivity() {
 		startNewLocalConnection();
 
-		onView(withId(R.id.console_flip)).perform(pressMenuKey());
+		openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
 
 		// Click on the disconnect context menu item.
 		onView(withText(R.string.list_host_disconnect)).check(matches(isDisplayed())).perform(click());
