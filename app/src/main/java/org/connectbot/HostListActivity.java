@@ -28,7 +28,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 import org.connectbot.bean.HostBean;
 import org.connectbot.data.HostStorage;
@@ -41,7 +40,6 @@ import org.connectbot.util.PreferenceConstants;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -58,7 +56,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.StyleRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -72,7 +69,6 @@ import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -196,7 +192,6 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 		mEmptyView = findViewById(R.id.empty);
 
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		this.inflater = LayoutInflater.from(this);
 
 		// detect HTC Dream and apply special preferences
 		if (Build.MANUFACTURER.equals("HTC") && Build.DEVICE.equals("dream")) {
@@ -243,6 +238,8 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 
 			public void onNothingSelected(AdapterView<?> arg0) {}
 		});
+
+		this.inflater = LayoutInflater.from(this);
 	}
 
 	@Override
