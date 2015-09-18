@@ -60,25 +60,25 @@
 		android:summary="@string/hostpref_postlogin_summary"
 		/>
 
-	<org.connectbot.util.SwitchCompatPreference
+	<SwitchPreference
 		android:key="compression"
 		android:title="@string/hostpref_compression_title"
 		android:summary="@string/hostpref_compression_summary"
 		/>
 
-	<org.connectbot.util.SwitchCompatPreference
+	<SwitchPreference
 		android:key="wantsession"
 		android:title="@string/hostpref_wantsession_title"
 		android:summary="@string/hostpref_wantsession_summary"
 		/>
 
-	<org.connectbot.util.SwitchCompatPreference
+	<SwitchPreference
 		android:key="stayconnected"
 		android:title="@string/hostpref_stayconnected_title"
 		android:summary="@string/hostpref_stayconnected_summary"
 		/>
 
-	<org.connectbot.util.SwitchCompatPreference
+	<SwitchPreference
 		android:key="quickdisconnect"
 		android:title="@string/hostpref_quickdisconnect_title"
 		android:summary="@string/hostpref_quickdisconnect_summary"

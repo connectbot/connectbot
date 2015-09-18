@@ -72,4 +72,8 @@
 
 	<!-- This value is overridden for v11 and higher, but left empty here. -->
 	<style name="SelectableItem"></style>
+
+	<style name="SwitchCompatTheme" parent="Theme.AppCompat">
+		<item name="colorAccent">@color/accent</item>
+	</style>
 </resources>
