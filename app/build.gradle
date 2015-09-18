@@ -5,6 +5,12 @@ apply from: '../config/quality.gradle'
 apply from: '../config/translations.gradle'
 apply from: '../config/jacoco.gradle'
 
+ext {
+    supportLibraryVersion = '23.0.1'
+    testRunnerVersion = '0.3'
+    espressoVersion = '2.2'
+}
+
 buildscript {
     repositories {
         jcenter()
@@ -59,24 +65,24 @@ android {
     }
 
     dependencies {
-        compile 'com.android.support:recyclerview-v7:+'
-        compile "com.android.support:support-v4:23.0.1"
-        compile "com.android.support:appcompat-v7:23.0.1"
-        compile "com.android.support:design:23.0.1"
+        compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
+        compile "com.android.support:support-v4:$supportLibraryVersion"
+        compile "com.android.support:appcompat-v7:$supportLibraryVersion"
+        compile "com.android.support:design:$supportLibraryVersion"
 
-        androidTestCompile('com.android.support.test:runner:0.3') {
+        androidTestCompile("com.android.support.test:runner:$testRunnerVersion") {
             exclude module: "support-annotations"
         }
-        androidTestCompile('com.android.support.test:rules:0.3') {
+        androidTestCompile("com.android.support.test:rules:$testRunnerVersion") {
             exclude module: "support-annotations"
         }
-        androidTestCompile('com.android.support.test.espresso:espresso-core:2.2') {
+        androidTestCompile("com.android.support.test.espresso:espresso-core:$espressoVersion") {
             exclude module: "support-annotations"
         }
-        androidTestCompile('com.android.support.test.espresso:espresso-intents:2.2') {
+        androidTestCompile("com.android.support.test.espresso:espresso-intents:$espressoVersion") {
             exclude module: "support-annotations"
         }
-        androidTestCompile ('com.android.support.test.espresso:espresso-contrib:2.2'){
+        androidTestCompile("com.android.support.test.espresso:espresso-contrib:$espressoVersion") {
             exclude module: 'support-annotations'
             exclude module: 'support-v4'
             exclude module: 'support-v13'
