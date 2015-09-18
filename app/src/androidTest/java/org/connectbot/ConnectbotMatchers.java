@@ -44,7 +44,7 @@ public class ConnectbotMatchers {
 
 			@Override
 			public void describeTo(Description description) {
-				description.appendText("is displayed");
+				description.appendText("is connected status");
 			}
 		};
 	}
@@ -59,7 +59,7 @@ public class ConnectbotMatchers {
 
 			@Override
 			public void describeTo(Description description) {
-				description.appendText("is displayed");
+				description.appendText("is disconnected status");
 			}
 		};
 	}
@@ -74,7 +74,7 @@ public class ConnectbotMatchers {
 
 			@Override
 			public void describeTo(Description description) {
-				description.appendText("is displayed");
+				description.appendText("is text color " + expectedColor);
 			}
 		};
 	}
