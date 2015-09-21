@@ -19,11 +19,10 @@ package org.connectbot;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-public class SettingsActivity extends PreferenceActivity {
+public class SettingsActivity extends AppCompatPreferenceActivity {
 	private static final String TAG = "CB.Settings";
 
 	@Override
@@ -47,7 +46,6 @@ public class SettingsActivity extends PreferenceActivity {
 		}
 
 		// TODO: add parse checking here to make sure we have integer value for scrollback
-
 	}
 
 }
