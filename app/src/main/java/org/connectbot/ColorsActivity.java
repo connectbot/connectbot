@@ -25,11 +25,11 @@ import org.connectbot.util.HostDatabase;
 import org.connectbot.util.UberColorPickerDialog;
 import org.connectbot.util.UberColorPickerDialog.OnColorChangedListener;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,7 +47,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
  * @author Kenny Root
  *
  */
-public class ColorsActivity extends Activity implements OnItemClickListener, OnColorChangedListener, OnItemSelectedListener {
+public class ColorsActivity extends AppCompatActivity implements OnItemClickListener, OnColorChangedListener, OnItemSelectedListener {
 	private GridView mColorGrid;
 	private Spinner mFgSpinner;
 	private Spinner mBgSpinner;

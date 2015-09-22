@@ -17,16 +17,6 @@
 
 package org.connectbot;
 
-import android.app.Activity;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.VisibleForTesting;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-
 import java.util.List;
 
 import org.connectbot.bean.HostBean;
@@ -38,6 +28,7 @@ import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -54,8 +45,11 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.StyleRes;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -74,7 +68,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class HostListActivity extends AppCompatActivity implements OnHostStatusChangedListener {
+public class HostListActivity extends AppCompatListActivity implements OnHostStatusChangedListener {
 	public final static String TAG = "CB.HostListActivity";
 	public static final String DISCONNECT_ACTION = "org.connectbot.action.DISCONNECT";
 
@@ -85,10 +79,6 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 	private HostStorage hostdb;
 	private List<HostBean> hosts;
 	protected LayoutInflater inflater = null;
-
-	private RecyclerView mHostListView;
-	private HostAdapter mAdapter;
-	private View mEmptyView;
 
 	protected boolean sortedByColor = false;
 
@@ -184,10 +174,10 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 		super.onCreate(icicle);
 		setContentView(R.layout.act_hostlist);
 
-		mHostListView = (RecyclerView) findViewById(R.id.list);
-		mHostListView.setHasFixedSize(true);
-		mHostListView.setLayoutManager(new LinearLayoutManager(this));
-		mHostListView.addItemDecoration(new HostListItemDecoration(this));
+		mListView = (RecyclerView) findViewById(R.id.list);
+		mListView.setHasFixedSize(true);
+		mListView.setLayoutManager(new LinearLayoutManager(this));
+		mListView.addItemDecoration(new ListItemDecoration(this));
 
 		mEmptyView = findViewById(R.id.empty);
 
@@ -224,7 +214,7 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 
 		this.sortedByColor = prefs.getBoolean(PreferenceConstants.SORT_BY_COLOR, false);
 
-		this.registerForContextMenu(mHostListView);
+		this.registerForContextMenu(mListView);
 
 		FloatingActionButton addHostButton =
 				(FloatingActionButton) findViewById(R.id.add_host_button);
@@ -338,7 +328,6 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 			}).create().show();
 	}
 
-
 	/**
 	 * @return
 	 */
@@ -379,7 +368,7 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 		}
 
 		mAdapter = new HostAdapter(this, hosts, bound);
-		mHostListView.setAdapter(mAdapter);
+		mListView.setAdapter(mAdapter);
 		adjustViewVisibility();
 	}
 
@@ -388,136 +377,122 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 		updateList();
 	}
 
-	/**
-	 * If the host list is empty, hides the list and shows the empty message; otherwise, shows
-	 * the list and hides the empty message.
-	 */
-	private void adjustViewVisibility() {
-		boolean isEmpty = mAdapter.getItemCount() == 0;
-		mHostListView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
-		mEmptyView.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
-	}
+	private class HostViewHolder extends ItemViewHolder {
+		public final ImageView icon;
+		public final TextView nickname;
+		public final TextView caption;
 
-	@VisibleForTesting
-	protected class HostAdapter extends RecyclerView.Adapter<HostAdapter.ViewHolder> {
-		private final LayoutInflater inflater;
-		private final List<HostBean> hosts;
-		private final TerminalManager manager;
-		private final Context context;
+		public HostBean host;
 
-		public final static int STATE_UNKNOWN = 1, STATE_CONNECTED = 2, STATE_DISCONNECTED = 3;
+		public HostViewHolder(View v) {
+			super(v);
 
-		class ViewHolder extends RecyclerView.ViewHolder
-				implements View.OnClickListener, View.OnCreateContextMenuListener {
-			public final ImageView icon;
-			public final TextView nickname;
-			public final TextView caption;
-			public HostBean host;
+			icon = (ImageView) v.findViewById(android.R.id.icon);
+			nickname = (TextView) v.findViewById(android.R.id.text1);
+			caption = (TextView) v.findViewById(android.R.id.text2);
+		}
 
-			public ViewHolder(View v) {
-				super(v);
-				v.setOnClickListener(this);
-				v.setOnCreateContextMenuListener(this);
+		@Override
+		public void onClick(View v) {
+			// launch off to console details
+			Uri uri = host.getUri();
 
-				icon = (ImageView) v.findViewById(android.R.id.icon);
-				nickname = (TextView) v.findViewById(android.R.id.text1);
-				caption = (TextView) v.findViewById(android.R.id.text2);
-			}
+			Intent contents = new Intent(Intent.ACTION_VIEW, uri);
+			contents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-			@Override
-			public void onClick(View v) {
-				// launch off to console details
-				Uri uri = host.getUri();
+			if (makingShortcut) {
+				// create shortcut if requested
+				ShortcutIconResource icon = Intent.ShortcutIconResource.fromContext(
+						HostListActivity.this, R.drawable.icon);
 
-				Intent contents = new Intent(Intent.ACTION_VIEW, uri);
-				contents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				Intent intent = new Intent();
+				intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, contents);
+				intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, host.getNickname());
+				intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
 
-				if (makingShortcut) {
-					// create shortcut if requested
-					ShortcutIconResource icon = Intent.ShortcutIconResource.fromContext(
-							HostListActivity.this, R.drawable.icon);
+				setResult(RESULT_OK, intent);
+				finish();
 
-					Intent intent = new Intent();
-					intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, contents);
-					intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, host.getNickname());
-					intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
-
-					setResult(RESULT_OK, intent);
-					finish();
-
-				} else {
-					// otherwise just launch activity to show this host
-					contents.setClass(HostListActivity.this, ConsoleActivity.class);
-					HostListActivity.this.startActivity(contents);
-				}
-			}
-
-			@Override
-			public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-				menu.setHeaderTitle(host.getNickname());
-
-				// edit, disconnect, delete
-				MenuItem connect = menu.add(R.string.list_host_disconnect);
-				final TerminalBridge bridge = (bound == null) ? null : bound.getConnectedBridge(host);
-				connect.setEnabled(bridge != null);
-				connect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-					public boolean onMenuItemClick(MenuItem item) {
-						bridge.dispatchDisconnect(true);
-						return true;
-					}
-				});
-
-				MenuItem edit = menu.add(R.string.list_host_edit);
-				edit.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-					public boolean onMenuItemClick(MenuItem item) {
-						Intent intent = new Intent(HostListActivity.this, HostEditorActivity.class);
-						intent.putExtra(Intent.EXTRA_TITLE, host.getId());
-						HostListActivity.this.startActivityForResult(intent, REQUEST_EDIT);
-						return true;
-					}
-				});
-
-				MenuItem portForwards = menu.add(R.string.list_host_portforwards);
-				portForwards.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-					public boolean onMenuItemClick(MenuItem item) {
-						Intent intent = new Intent(HostListActivity.this, PortForwardListActivity.class);
-						intent.putExtra(Intent.EXTRA_TITLE, host.getId());
-						HostListActivity.this.startActivityForResult(intent, REQUEST_EDIT);
-						return true;
-					}
-				});
-				if (!TransportFactory.canForwardPorts(host.getProtocol()))
-					portForwards.setEnabled(false);
-
-				MenuItem delete = menu.add(R.string.list_host_delete);
-				delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-					public boolean onMenuItemClick(MenuItem item) {
-						// prompt user to make sure they really want this
-						new AlertDialog.Builder(HostListActivity.this)
-								.setMessage(getString(R.string.delete_message, host.getNickname()))
-								.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int which) {
-										// make sure we disconnect
-										if (bridge != null)
-											bridge.dispatchDisconnect(true);
-
-										hostdb.deleteHost(host);
-										updateList();
-									}
-								})
-								.setNegativeButton(R.string.delete_neg, null).create().show();
-
-						return true;
-					}
-				});
+			} else {
+				// otherwise just launch activity to show this host
+				contents.setClass(HostListActivity.this, ConsoleActivity.class);
+				HostListActivity.this.startActivity(contents);
 			}
 		}
 
+		@Override
+		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+			menu.setHeaderTitle(host.getNickname());
+
+			// edit, disconnect, delete
+			MenuItem connect = menu.add(R.string.list_host_disconnect);
+			final TerminalBridge bridge = (bound == null) ? null : bound.getConnectedBridge(host);
+			connect.setEnabled(bridge != null);
+			connect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					bridge.dispatchDisconnect(true);
+					return true;
+				}
+			});
+
+			MenuItem edit = menu.add(R.string.list_host_edit);
+			edit.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					Intent intent = new Intent(HostListActivity.this, HostEditorActivity.class);
+					intent.putExtra(Intent.EXTRA_TITLE, host.getId());
+					HostListActivity.this.startActivityForResult(intent, REQUEST_EDIT);
+					return true;
+				}
+			});
+
+			MenuItem portForwards = menu.add(R.string.list_host_portforwards);
+			portForwards.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					Intent intent = new Intent(HostListActivity.this, PortForwardListActivity.class);
+					intent.putExtra(Intent.EXTRA_TITLE, host.getId());
+					HostListActivity.this.startActivityForResult(intent, REQUEST_EDIT);
+					return true;
+				}
+			});
+			if (!TransportFactory.canForwardPorts(host.getProtocol()))
+				portForwards.setEnabled(false);
+
+			MenuItem delete = menu.add(R.string.list_host_delete);
+			delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					// prompt user to make sure they really want this
+					new AlertDialog.Builder(HostListActivity.this)
+							.setMessage(getString(R.string.delete_message, host.getNickname()))
+							.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int which) {
+									// make sure we disconnect
+									if (bridge != null)
+										bridge.dispatchDisconnect(true);
+
+									hostdb.deleteHost(host);
+									updateList();
+								}
+							})
+							.setNegativeButton(R.string.delete_neg, null).create().show();
+
+					return true;
+				}
+			});
+		}
+	}
+
+	@VisibleForTesting
+	private class HostAdapter extends ItemAdapter {
+		private final List<HostBean> hosts;
+		private final TerminalManager manager;
+
+		public final static int STATE_UNKNOWN = 1, STATE_CONNECTED = 2, STATE_DISCONNECTED = 3;
+
 		public HostAdapter(Context context, List<HostBean> hosts, TerminalManager manager) {
-			this.context = context;
+			super(context);
+
 			this.hosts = hosts;
 			this.manager = manager;
-			this.inflater = LayoutInflater.from(context);
 		}
 
 		/**
@@ -538,36 +513,38 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 		}
 
 		@Override
-		public HostAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		public HostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 			View v = LayoutInflater.from(parent.getContext())
 					.inflate(R.layout.item_host, parent, false);
-			ViewHolder vh = new ViewHolder(v);
+			HostViewHolder vh = new HostViewHolder(v);
 			return vh;
 		}
 
 		@Override
-		public void onBindViewHolder(ViewHolder holder, int position) {
+		public void onBindViewHolder(ItemViewHolder holder, int position) {
+			HostViewHolder hostHolder = (HostViewHolder) holder;
+
 			HostBean host = hosts.get(position);
 			if (host == null) {
 				// Well, something bad happened. We can't continue.
 				Log.e("HostAdapter", "Host bean is null!");
 
-				holder.nickname.setText("Error during lookup");
-				holder.caption.setText("see 'adb logcat' for more");
+				hostHolder.nickname.setText("Error during lookup");
+				hostHolder.caption.setText("see 'adb logcat' for more");
 			}
-			holder.host = host;
+			hostHolder.host = host;
 
-			holder.nickname.setText(host.getNickname());
+			hostHolder.nickname.setText(host.getNickname());
 
 			switch (this.getConnectedState(host)) {
 			case STATE_UNKNOWN:
-				holder.icon.setImageState(new int[] { }, true);
+				hostHolder.icon.setImageState(new int[] { }, true);
 				break;
 			case STATE_CONNECTED:
-				holder.icon.setImageState(new int[] { android.R.attr.state_checked }, true);
+				hostHolder.icon.setImageState(new int[] { android.R.attr.state_checked }, true);
 				break;
 			case STATE_DISCONNECTED:
-				holder.icon.setImageState(new int[] { android.R.attr.state_expanded }, true);
+				hostHolder.icon.setImageState(new int[] { android.R.attr.state_expanded }, true);
 				break;
 			}
 
@@ -587,19 +564,15 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 				chosenStyleSecondLine = R.style.ListItemSecondLineText;
 			}
 
-			holder.nickname.setTextAppearance(context, chosenStyleFirstLine);
-			holder.caption.setTextAppearance(context, chosenStyleSecondLine);
+			hostHolder.nickname.setTextAppearance(context, chosenStyleFirstLine);
+			hostHolder.caption.setTextAppearance(context, chosenStyleSecondLine);
 
 			CharSequence nice = context.getString(R.string.bind_never);
 			if (host.getLastConnect() > 0) {
 				nice = DateUtils.getRelativeTimeSpanString(host.getLastConnect() * 1000);
 			}
 
-			holder.caption.setText(nice);
-		}
-
-		public HostBean getItem(int position) {
-			return hosts.get(position);
+			hostHolder.caption.setText(nice);
 		}
 
 		@Override
@@ -613,140 +586,96 @@ public class HostListActivity extends AppCompatActivity implements OnHostStatusC
 		}
 	}
 
-	/**
-	 * Item decorations for host list items, which adds a divider between items and leaves a
-	 * small offset at the top of the list to adhere to the Material Design spec.
-	 */
-	private class HostListItemDecoration extends RecyclerView.ItemDecoration {
-		private final int[] ATTRS = new int[]{
-			android.R.attr.listDivider
-		};
-
-		private final int TOP_LIST_OFFSET = 8;
-
-		private Drawable mDivider;
-
-		public HostListItemDecoration(Context c) {
-			final TypedArray a = c.obtainStyledAttributes(ATTRS);
-			mDivider = a.getDrawable(0);
-			a.recycle();
-		}
-
-		@Override
-		public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-			final int left = parent.getPaddingLeft();
-			final int right = parent.getWidth() - parent.getPaddingRight();
-
-			final int childCount = parent.getChildCount();
-			for (int i = 0; i < childCount; i++) {
-				final View child = parent.getChildAt(i);
-				final RecyclerView.LayoutParams params =
-						(RecyclerView.LayoutParams) child.getLayoutParams();
-				final int top = child.getBottom() + params.bottomMargin;
-				final int bottom = top + mDivider.getIntrinsicHeight();
-				mDivider.setBounds(left, top, right, bottom);
-				mDivider.draw(c);
-			}
-		}
-
-		@Override
-		public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
-				RecyclerView.State state) {
-			int top = parent.getChildAdapterPosition(view) == 0 ? TOP_LIST_OFFSET : 0;
-			outRect.set(0, top, 0, mDivider.getIntrinsicHeight());
-		}
-	}
-
 	public static class AddHostDialogFragment extends DialogFragment {
-		private TextView mAddressField;
-		private Spinner mSpinner;
+			private TextView mAddressField;
+			private Spinner mSpinner;
 
-		HostListActivity mListener;
+			HostListActivity mListener;
 
-		@Override
-		public void onAttach(Activity activity) {
-			super.onAttach(activity);
-			mListener = (HostListActivity) activity;
-		}
-
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			LayoutInflater inflater = getActivity().getLayoutInflater();
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-			View addHostDialog = inflater.inflate(R.layout.dia_add_host, null);
-			builder.setView(addHostDialog)
-					.setPositiveButton(R.string.button_add, null)
-					.setNegativeButton(R.string.button_cancel, null);
-			AlertDialog dialog = builder.create();
-
-			mAddressField = (TextView) addHostDialog.findViewById(R.id.front_quickconnect);
-			mAddressField.setOnKeyListener(new OnKeyListener() {
-
-				public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-					if (event.getAction() == KeyEvent.ACTION_UP) return false;
-					if (keyCode != KeyEvent.KEYCODE_ENTER) return false;
-
-					processNewUriEntered();
-					return true;
-				}
-			});
-
-			mSpinner = (Spinner) addHostDialog.findViewById(R.id.transport_selection);
-			ArrayAdapter<String> transportSelection = new ArrayAdapter<String>(getActivity(),
-					android.R.layout.simple_spinner_item, TransportFactory.getTransportNames());
-			transportSelection.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-				public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
-					String formatHint = TransportFactory.getFormatHint(
-							(String) mSpinner.getSelectedItem(),
-							getActivity());
-					mAddressField.setHint(formatHint);
-					mAddressField.setError(null);
-					mAddressField.requestFocus();
-				}
-
-				public void onNothingSelected(AdapterView<?> arg0) {
-				}
-			});
-			mSpinner.setAdapter(transportSelection);
-
-			return dialog;
-		}
-
-		@Override
-		public void onResume()
-		{
-			super.onResume();
-			final AlertDialog alertDialog = (AlertDialog) getDialog();
-			Button addButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-			addButton.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					processNewUriEntered();
-				}
-			});
-		}
-
-		/**
-		 * Processes the URI that has been entered. If it is a valid URI, adds that host
-		 * and starts ConsoleActivity; otherwise, shows an error in the address field.
-		 */
-		private void processNewUriEntered() {
-			Uri uri = TransportFactory.getUri((String) mSpinner
-					.getSelectedItem(), mAddressField.getText().toString());
-			if (uri == null) {
-				mAddressField.setError(getString(R.string.list_format_error,
-						TransportFactory.getFormatHint(
-								(String) mSpinner.getSelectedItem(),
-								getActivity())));
-				mAddressField.requestFocus();
-				return;
+			@Override
+			public void onAttach(Activity activity) {
+				super.onAttach(activity);
+				mListener = (HostListActivity) activity;
 			}
 
-			mListener.startConsoleActivity(uri);
-			getDialog().dismiss();
+			@Override
+			public Dialog onCreateDialog(Bundle savedInstanceState) {
+				LayoutInflater inflater = getActivity().getLayoutInflater();
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+				View addHostDialog = inflater.inflate(R.layout.dia_add_host, null);
+				builder.setView(addHostDialog)
+						.setPositiveButton(R.string.button_add, null)
+						.setNegativeButton(R.string.button_cancel, null);
+				AlertDialog dialog = builder.create();
+
+				mAddressField = (TextView) addHostDialog.findViewById(R.id.front_quickconnect);
+				mAddressField.setOnKeyListener(new OnKeyListener() {
+
+					public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+						if (event.getAction() == KeyEvent.ACTION_UP) return false;
+						if (keyCode != KeyEvent.KEYCODE_ENTER) return false;
+
+						processNewUriEntered();
+						return true;
+					}
+				});
+
+				mSpinner = (Spinner) addHostDialog.findViewById(R.id.transport_selection);
+				ArrayAdapter<String> transportSelection = new ArrayAdapter<String>(getActivity(),
+						android.R.layout.simple_spinner_item, TransportFactory.getTransportNames());
+				transportSelection.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+					public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
+						String formatHint = TransportFactory.getFormatHint(
+								(String) mSpinner.getSelectedItem(),
+								getActivity());
+						mAddressField.setHint(formatHint);
+						mAddressField.setError(null);
+						mAddressField.requestFocus();
+					}
+
+					public void onNothingSelected(AdapterView<?> arg0) {
+					}
+				});
+				mSpinner.setAdapter(transportSelection);
+
+				return dialog;
+			}
+
+			@Override
+			public void onResume()
+			{
+				super.onResume();
+				final AlertDialog alertDialog = (AlertDialog) getDialog();
+				Button addButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+				addButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						processNewUriEntered();
+					}
+				});
+			}
+
+			/**
+			 * Processes the URI that has been entered. If it is a valid URI, adds that host
+			 * and starts ConsoleActivity; otherwise, shows an error in the address field.
+			 */
+			private void processNewUriEntered() {
+				Uri uri = TransportFactory.getUri((String) mSpinner
+						.getSelectedItem(), mAddressField.getText().toString());
+				if (uri == null) {
+					mAddressField.setError(getString(R.string.list_format_error,
+							TransportFactory.getFormatHint(
+									(String) mSpinner.getSelectedItem(),
+									getActivity())));
+					mAddressField.requestFocus();
+					return;
+				}
+
+				mListener.startConsoleActivity(uri);
+				getDialog().dismiss();
+			}
 		}
-	}
 }

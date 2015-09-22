@@ -37,8 +37,11 @@ import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 import org.openintents.intents.FileManagerIntents;
 
+import com.trilead.ssh2.crypto.Base64;
+import com.trilead.ssh2.crypto.PEMDecoder;
+import com.trilead.ssh2.crypto.PEMStructure;
+
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
@@ -50,6 +53,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
+import android.support.annotation.VisibleForTesting;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -60,17 +66,11 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.trilead.ssh2.crypto.Base64;
-import com.trilead.ssh2.crypto.PEMDecoder;
-import com.trilead.ssh2.crypto.PEMStructure;
 
 /**
  * List public keys in database by nickname and describe their properties. Allow users to import,
@@ -78,7 +78,7 @@ import com.trilead.ssh2.crypto.PEMStructure;
  *
  * @author Kenny Root
  */
-public class PubkeyListActivity extends ListActivity implements EventListener {
+public class PubkeyListActivity extends AppCompatListActivity implements EventListener {
 	public final static String TAG = "CB.PubkeyListActivity";
 
 	private static final int MAX_KEYFILE_SIZE = 8192;
@@ -134,23 +134,14 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		super.onCreate(icicle);
 		setContentView(R.layout.act_pubkeylist);
 
-		registerForContextMenu(getListView());
+		mListView = (RecyclerView) findViewById(R.id.list);
+		mListView.setHasFixedSize(true);
+		mListView.setLayoutManager(new LinearLayoutManager(this));
+		mListView.addItemDecoration(new ListItemDecoration(this));
 
-		getListView().setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-				PubkeyBean pubkey = (PubkeyBean) getListView().getItemAtPosition(position);
-				boolean loaded = bound != null && bound.isKeyLoaded(pubkey.getNickname());
+		mEmptyView = findViewById(R.id.empty);
 
-				// handle toggling key in-memory on/off
-				if (loaded) {
-					bound.removeKey(pubkey.getNickname());
-					updateList();
-				} else {
-					handleAddKey(pubkey);
-				}
-
-			}
-		});
+		registerForContextMenu(mListView);
 
 		clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 
@@ -278,185 +269,13 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 		updateList();
 	}
 
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-		// Create menu to handle deleting and editing pubkey
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-		final PubkeyBean pubkey = (PubkeyBean) getListView().getItemAtPosition(info.position);
-
-		menu.setHeaderTitle(pubkey.getNickname());
-
-		// TODO: option load/unload key from in-memory list
-		// prompt for password as needed for passworded keys
-
-		// cant change password or clipboard imported keys
-		final boolean imported = PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType());
-		final boolean loaded = bound != null && bound.isKeyLoaded(pubkey.getNickname());
-
-		MenuItem load = menu.add(loaded ? R.string.pubkey_memory_unload : R.string.pubkey_memory_load);
-		load.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				if (loaded) {
-					bound.removeKey(pubkey.getNickname());
-					updateList();
-				} else {
-					handleAddKey(pubkey);
-					//bound.addKey(nickname, trileadKey);
-				}
-				return true;
-			}
-		});
-
-		onstartToggle = menu.add(R.string.pubkey_load_on_start);
-		onstartToggle.setEnabled(!pubkey.isEncrypted());
-		onstartToggle.setCheckable(true);
-		onstartToggle.setChecked(pubkey.isStartup());
-		onstartToggle.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				// toggle onstart status
-				pubkey.setStartup(!pubkey.isStartup());
-				PubkeyDatabase pubkeyDb = PubkeyDatabase.get(PubkeyListActivity.this);
-				pubkeyDb.savePubkey(pubkey);
-				updateList();
-				return true;
-			}
-		});
-
-		MenuItem copyPublicToClipboard = menu.add(R.string.pubkey_copy_public);
-		copyPublicToClipboard.setEnabled(!imported);
-		copyPublicToClipboard.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				try {
-					PublicKey pk = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
-					String openSSHPubkey = PubkeyUtils.convertToOpenSSHFormat(pk, pubkey.getNickname());
-
-					clipboard.setText(openSSHPubkey);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return true;
-			}
-		});
-
-		MenuItem copyPrivateToClipboard = menu.add(R.string.pubkey_copy_private);
-		copyPrivateToClipboard.setEnabled(!pubkey.isEncrypted() || imported);
-		copyPrivateToClipboard.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				try {
-					String data = null;
-
-					if (imported)
-						data = new String(pubkey.getPrivateKey());
-					else {
-						PrivateKey pk = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType());
-						data = PubkeyUtils.exportPEM(pk, null);
-					}
-
-					clipboard.setText(data);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return true;
-			}
-		});
-
-		MenuItem changePassword = menu.add(R.string.pubkey_change_password);
-		changePassword.setEnabled(!imported);
-		changePassword.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				final View changePasswordView = inflater.inflate(R.layout.dia_changepassword, null, false);
-				((TableRow) changePasswordView.findViewById(R.id.old_password_prompt))
-					.setVisibility(pubkey.isEncrypted() ? View.VISIBLE : View.GONE);
-				new AlertDialog.Builder(PubkeyListActivity.this)
-					.setView(changePasswordView)
-					.setPositiveButton(R.string.button_change, new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							String oldPassword = ((EditText) changePasswordView.findViewById(R.id.old_password)).getText().toString();
-							String password1 = ((EditText) changePasswordView.findViewById(R.id.password1)).getText().toString();
-							String password2 = ((EditText) changePasswordView.findViewById(R.id.password2)).getText().toString();
-
-							if (!password1.equals(password2)) {
-								new AlertDialog.Builder(PubkeyListActivity.this)
-									.setMessage(R.string.alert_passwords_do_not_match_msg)
-									.setPositiveButton(android.R.string.ok, null)
-									.create().show();
-								return;
-							}
-
-							try {
-								if (!pubkey.changePassword(oldPassword, password1))
-									new AlertDialog.Builder(PubkeyListActivity.this)
-										.setMessage(R.string.alert_wrong_password_msg)
-										.setPositiveButton(android.R.string.ok, null)
-										.create().show();
-								else {
-									PubkeyDatabase pubkeyDb = PubkeyDatabase.get(PubkeyListActivity.this);
-									pubkeyDb.savePubkey(pubkey);
-									updateList();
-								}
-							} catch (Exception e) {
-								Log.e(TAG, "Could not change private key password", e);
-								new AlertDialog.Builder(PubkeyListActivity.this)
-									.setMessage(R.string.alert_key_corrupted_msg)
-									.setPositiveButton(android.R.string.ok, null)
-									.create().show();
-							}
-						}
-					})
-					.setNegativeButton(android.R.string.cancel, null).create().show();
-
-			return true;
-			}
-		});
-
-		confirmUse = menu.add(R.string.pubkey_confirm_use);
-		confirmUse.setCheckable(true);
-		confirmUse.setChecked(pubkey.isConfirmUse());
-		confirmUse.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				// toggle confirm use
-				pubkey.setConfirmUse(!pubkey.isConfirmUse());
-				PubkeyDatabase pubkeyDb = PubkeyDatabase.get(PubkeyListActivity.this);
-				pubkeyDb.savePubkey(pubkey);
-				updateList();
-				return true;
-			}
-		});
-
-		MenuItem delete = menu.add(R.string.pubkey_delete);
-		delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				// prompt user to make sure they really want this
-				new AlertDialog.Builder(PubkeyListActivity.this)
-					.setMessage(getString(R.string.delete_message, pubkey.getNickname()))
-					.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-
-							// dont forget to remove from in-memory
-							if (loaded) {
-								bound.removeKey(pubkey.getNickname());
-							}
-
-							// delete from backend database and update gui
-							PubkeyDatabase pubkeyDb = PubkeyDatabase.get(PubkeyListActivity.this);
-							pubkeyDb.deletePubkey(pubkey);
-							updateList();
-						}
-					})
-					.setNegativeButton(R.string.delete_neg, null).create().show();
-
-				return true;
-			}
-		});
-
-	}
-
 	protected void updateList() {
 		PubkeyDatabase pubkeyDb = PubkeyDatabase.get(PubkeyListActivity.this);
 		pubkeys = pubkeyDb.allPubkeys();
-		PubkeyAdapter adapter = new PubkeyAdapter(this, pubkeys);
 
-		this.setListAdapter(adapter);
+		mAdapter = new PubkeyAdapter(this, pubkeys);
+		mListView.setAdapter(mAdapter);
+		adjustViewVisibility();
 	}
 
 	@Override
@@ -589,40 +408,237 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 			.setNegativeButton(android.R.string.cancel, null).create().show();
 	}
 
-	class PubkeyAdapter extends ArrayAdapter<PubkeyBean> {
-		private List<PubkeyBean> pubkeys;
+	private class PubkeyViewHolder extends ItemViewHolder {
+		public final ImageView icon;
+		public final TextView nickname;
+		public final TextView caption;
 
-		class ViewHolder {
-			public TextView nickname;
-			public TextView caption;
-			public ImageView icon;
+		public PubkeyBean pubkey;
+
+		public PubkeyViewHolder(View v) {
+			super(v);
+
+			icon = (ImageView) v.findViewById(android.R.id.icon);
+			nickname = (TextView) v.findViewById(android.R.id.text1);
+			caption = (TextView) v.findViewById(android.R.id.text2);
 		}
 
-		public PubkeyAdapter(Context context, List<PubkeyBean> pubkeys) {
-			super(context, R.layout.item_pubkey, pubkeys);
+		@Override
+		public void onClick(View v) {
+			boolean loaded = bound != null && bound.isKeyLoaded(pubkey.getNickname());
 
+			// handle toggling key in-memory on/off
+			if (loaded) {
+				bound.removeKey(pubkey.getNickname());
+				updateList();
+			} else {
+				handleAddKey(pubkey);
+			}
+		}
+
+		@Override
+		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+			// Create menu to handle deleting and editing pubkey
+			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+			menu.setHeaderTitle(pubkey.getNickname());
+
+			// TODO: option load/unload key from in-memory list
+			// prompt for password as needed for passworded keys
+
+			// cant change password or clipboard imported keys
+			final boolean imported = PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType());
+			final boolean loaded = bound != null && bound.isKeyLoaded(pubkey.getNickname());
+
+			MenuItem load = menu.add(loaded ? R.string.pubkey_memory_unload : R.string.pubkey_memory_load);
+			load.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					if (loaded) {
+						bound.removeKey(pubkey.getNickname());
+						updateList();
+					} else {
+						handleAddKey(pubkey);
+						//bound.addKey(nickname, trileadKey);
+					}
+					return true;
+				}
+			});
+
+			onstartToggle = menu.add(R.string.pubkey_load_on_start);
+			onstartToggle.setEnabled(!pubkey.isEncrypted());
+			onstartToggle.setCheckable(true);
+			onstartToggle.setChecked(pubkey.isStartup());
+			onstartToggle.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					// toggle onstart status
+					pubkey.setStartup(!pubkey.isStartup());
+					PubkeyDatabase pubkeyDb = PubkeyDatabase.get(PubkeyListActivity.this);
+					pubkeyDb.savePubkey(pubkey);
+					updateList();
+					return true;
+				}
+			});
+
+			MenuItem copyPublicToClipboard = menu.add(R.string.pubkey_copy_public);
+			copyPublicToClipboard.setEnabled(!imported);
+			copyPublicToClipboard.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					try {
+						PublicKey pk = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
+						String openSSHPubkey = PubkeyUtils.convertToOpenSSHFormat(pk, pubkey.getNickname());
+
+						clipboard.setText(openSSHPubkey);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return true;
+				}
+			});
+
+			MenuItem copyPrivateToClipboard = menu.add(R.string.pubkey_copy_private);
+			copyPrivateToClipboard.setEnabled(!pubkey.isEncrypted() || imported);
+			copyPrivateToClipboard.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					try {
+						String data = null;
+
+						if (imported)
+							data = new String(pubkey.getPrivateKey());
+						else {
+							PrivateKey pk = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType());
+							data = PubkeyUtils.exportPEM(pk, null);
+						}
+
+						clipboard.setText(data);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return true;
+				}
+			});
+
+			MenuItem changePassword = menu.add(R.string.pubkey_change_password);
+			changePassword.setEnabled(!imported);
+			changePassword.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					final View changePasswordView = inflater.inflate(R.layout.dia_changepassword, null, false);
+					((TableRow) changePasswordView.findViewById(R.id.old_password_prompt))
+							.setVisibility(pubkey.isEncrypted() ? View.VISIBLE : View.GONE);
+					new AlertDialog.Builder(PubkeyListActivity.this)
+							.setView(changePasswordView)
+							.setPositiveButton(R.string.button_change, new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int which) {
+									String oldPassword = ((EditText) changePasswordView.findViewById(R.id.old_password)).getText().toString();
+									String password1 = ((EditText) changePasswordView.findViewById(R.id.password1)).getText().toString();
+									String password2 = ((EditText) changePasswordView.findViewById(R.id.password2)).getText().toString();
+
+									if (!password1.equals(password2)) {
+										new AlertDialog.Builder(PubkeyListActivity.this)
+												.setMessage(R.string.alert_passwords_do_not_match_msg)
+												.setPositiveButton(android.R.string.ok, null)
+												.create().show();
+										return;
+									}
+
+									try {
+										if (!pubkey.changePassword(oldPassword, password1))
+											new AlertDialog.Builder(PubkeyListActivity.this)
+													.setMessage(R.string.alert_wrong_password_msg)
+													.setPositiveButton(android.R.string.ok, null)
+													.create().show();
+										else {
+											PubkeyDatabase pubkeyDb = PubkeyDatabase.get(PubkeyListActivity.this);
+											pubkeyDb.savePubkey(pubkey);
+											updateList();
+										}
+									} catch (Exception e) {
+										Log.e(TAG, "Could not change private key password", e);
+										new AlertDialog.Builder(PubkeyListActivity.this)
+												.setMessage(R.string.alert_key_corrupted_msg)
+												.setPositiveButton(android.R.string.ok, null)
+												.create().show();
+									}
+								}
+							})
+							.setNegativeButton(android.R.string.cancel, null).create().show();
+
+					return true;
+				}
+			});
+
+			confirmUse = menu.add(R.string.pubkey_confirm_use);
+			confirmUse.setCheckable(true);
+			confirmUse.setChecked(pubkey.isConfirmUse());
+			confirmUse.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					// toggle confirm use
+					pubkey.setConfirmUse(!pubkey.isConfirmUse());
+					PubkeyDatabase pubkeyDb = PubkeyDatabase.get(PubkeyListActivity.this);
+					pubkeyDb.savePubkey(pubkey);
+					updateList();
+					return true;
+				}
+			});
+
+			MenuItem delete = menu.add(R.string.pubkey_delete);
+			delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					// prompt user to make sure they really want this
+					new AlertDialog.Builder(PubkeyListActivity.this)
+							.setMessage(getString(R.string.delete_message, pubkey.getNickname()))
+							.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int which) {
+
+									// dont forget to remove from in-memory
+									if (loaded) {
+										bound.removeKey(pubkey.getNickname());
+									}
+
+									// delete from backend database and update gui
+									PubkeyDatabase pubkeyDb = PubkeyDatabase.get(PubkeyListActivity.this);
+									pubkeyDb.deletePubkey(pubkey);
+									updateList();
+								}
+							})
+							.setNegativeButton(R.string.delete_neg, null).create().show();
+
+					return true;
+				}
+			});
+		}
+	}
+
+	@VisibleForTesting
+	private class PubkeyAdapter extends ItemAdapter {
+		private final List<PubkeyBean> pubkeys;
+
+		public PubkeyAdapter(Context context, List<PubkeyBean> pubkeys) {
+			super(context);
 			this.pubkeys = pubkeys;
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder holder;
+		public PubkeyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+			View v = LayoutInflater.from(parent.getContext())
+					.inflate(R.layout.item_pubkey, parent, false);
+			PubkeyViewHolder vh = new PubkeyViewHolder(v);
+			return vh;
+		}
 
-			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.item_pubkey, null, false);
-
-				holder = new ViewHolder();
-
-				holder.nickname = (TextView) convertView.findViewById(android.R.id.text1);
-				holder.caption = (TextView) convertView.findViewById(android.R.id.text2);
-				holder.icon = (ImageView) convertView.findViewById(android.R.id.icon1);
-
-				convertView.setTag(holder);
-			} else
-				holder = (ViewHolder) convertView.getTag();
+		public void onBindViewHolder(ItemViewHolder holder, int position) {
+			PubkeyViewHolder pubkeyHolder = (PubkeyViewHolder) holder;
 
 			PubkeyBean pubkey = pubkeys.get(position);
-			holder.nickname.setText(pubkey.getNickname());
+			if (pubkey == null) {
+				// Well, something bad happened. We can't continue.
+				Log.e("PubkeyAdapter", "Pubkey bean is null!");
+
+				pubkeyHolder.nickname.setText("Error during lookup");
+				pubkeyHolder.caption.setText("see 'adb logcat' for more");
+			}
+			pubkeyHolder.pubkey = pubkey;
+
+			pubkeyHolder.nickname.setText(pubkey.getNickname());
 
 			boolean imported = PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType());
 
@@ -630,31 +646,39 @@ public class PubkeyListActivity extends ListActivity implements EventListener {
 				try {
 					PEMStructure struct = PEMDecoder.parsePEM(new String(pubkey.getPrivateKey()).toCharArray());
 					String type = (struct.pemType == PEMDecoder.PEM_RSA_PRIVATE_KEY) ? "RSA" : "DSA";
-					holder.caption.setText(String.format("%s unknown-bit", type));
+					pubkeyHolder.caption.setText(String.format("%s unknown-bit", type));
 				} catch (IOException e) {
 					Log.e(TAG, "Error decoding IMPORTED public key at " + pubkey.getId(), e);
 				}
 			} else {
 				try {
-					holder.caption.setText(pubkey.getDescription());
+					pubkeyHolder.caption.setText(pubkey.getDescription());
 				} catch (Exception e) {
 					Log.e(TAG, "Error decoding public key at " + pubkey.getId(), e);
-					holder.caption.setText(R.string.pubkey_unknown_format);
+					pubkeyHolder.caption.setText(R.string.pubkey_unknown_format);
 				}
 			}
 
 			if (bound == null) {
-				holder.icon.setVisibility(View.GONE);
+				pubkeyHolder.icon.setVisibility(View.GONE);
 			} else {
-				holder.icon.setVisibility(View.VISIBLE);
+				pubkeyHolder.icon.setVisibility(View.VISIBLE);
 
 				if (bound.isKeyLoaded(pubkey.getNickname()))
-					holder.icon.setImageState(new int[] { android.R.attr.state_checked }, true);
+					pubkeyHolder.icon.setImageState(new int[] { android.R.attr.state_checked }, true);
 				else
-					holder.icon.setImageState(new int[] {  }, true);
+					pubkeyHolder.icon.setImageState(new int[] { }, true);
 			}
+		}
 
-			return convertView;
+		@Override
+		public int getItemCount() {
+			return pubkeys.size();
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return pubkeys.get(position).getId();
 		}
 	}
 }
