@@ -310,6 +310,27 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			hideKeys = true;
 			break;
 
+			case R.id.button_pipe:
+				handler.sendPressedKey(vt320.KEY_PIPE);
+				break;
+			case R.id.button_left_bracket:
+				handler.sendPressedKey(vt320.KEY_LEFT_BRACKET);
+				break;
+			case R.id.button_right_bracket:
+				handler.sendPressedKey(vt320.KEY_RIGHT_BRACKET);
+				break;
+			case R.id.button_left_brace:
+				handler.sendPressedKey(vt320.KEY_LEFT_BRACE);
+				break;
+			case R.id.button_right_brace:
+				handler.sendPressedKey(vt320.KEY_RIGHT_BRACE);
+				break;
+			case R.id.button_back_slash:
+				handler.sendPressedKey(vt320.KEY_BACK_SLASH);
+				break;
+
+
+
 		case R.id.button_up:
 			handler.sendPressedKey(vt320.KEY_UP);
 			break;
@@ -588,6 +609,13 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_down));
 		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_left));
 		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_right));
+
+		findViewById(R.id.button_pipe).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_left_bracket).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_right_bracket).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_left_brace).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_right_brace).setOnClickListener(emulatedKeysListener);
+		findViewById(R.id.button_back_slash).setOnClickListener(emulatedKeysListener);
 
 		findViewById(R.id.button_home).setOnClickListener(emulatedKeysListener);
 		findViewById(R.id.button_end).setOnClickListener(emulatedKeysListener);
