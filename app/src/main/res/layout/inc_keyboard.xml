@@ -59,6 +59,32 @@
 				android:text="@string/button_key_tab"/>
 
 			<Button
+				android:id="@+id/button_pipe"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_pipe"/>
+
+			<Button
+				android:id="@+id/button_left_bracket"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_left_bracket"/>
+			<Button
+				android:id="@+id/button_right_bracket"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_right_bracket"/>
+			<Button
+				android:id="@+id/button_left_brace"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_left_brace"/>
+			<Button
+				android:id="@+id/button_right_brace"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_right_brace"/>
+			<Button
+				android:id="@+id/button_back_slash"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_back_slash"/>
+
+			<Button
 				android:id="@+id/button_up"
 				style="@style/KeyboardButton"
 				android:contentDescription="@string/image_description_up"
