@@ -320,6 +320,24 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			handler.sendTab();
 			hideKeys = true;
 			break;
+		case R.id.button_pipe:
+			handler.sendPressedKey(vt320.KEY_PIPE);
+			break;
+		case R.id.button_left_bracket:
+			handler.sendPressedKey(vt320.KEY_LEFT_BRACKET);
+			break;
+		case R.id.button_right_bracket:
+			handler.sendPressedKey(vt320.KEY_RIGHT_BRACKET);
+			break;
+		case R.id.button_left_brace:
+			handler.sendPressedKey(vt320.KEY_LEFT_BRACE);
+			break;
+		case R.id.button_right_brace:
+			handler.sendPressedKey(vt320.KEY_RIGHT_BRACE);
+			break;
+		case R.id.button_back_slash:
+			handler.sendPressedKey(vt320.KEY_BACK_SLASH);
+			break;
 
 		case R.id.button_up:
 			handler.sendPressedKey(vt320.KEY_UP);

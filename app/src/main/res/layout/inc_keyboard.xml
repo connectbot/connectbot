@@ -62,6 +62,32 @@
 				android:contentDescription="@string/image_description_send_tab_character"
 				app:srcCompat="@drawable/ic_keyboard_tab" />
 
+			<Button
+				android:id="@+id/button_pipe"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_pipe"/>
+
+			<Button
+				android:id="@+id/button_left_bracket"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_left_bracket"/>
+			<Button
+				android:id="@+id/button_right_bracket"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_right_bracket"/>
+			<Button
+				android:id="@+id/button_left_brace"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_left_brace"/>
+			<Button
+				android:id="@+id/button_right_brace"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_right_brace"/>
+			<Button
+				android:id="@+id/button_back_slash"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_back_slash"/>
+
 			<ImageView
 				android:id="@+id/button_up"
 				style="@style/KeyboardButton"

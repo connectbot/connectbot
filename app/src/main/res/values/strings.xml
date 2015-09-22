@@ -597,6 +597,14 @@
 	<!-- Text for the "Ctrl" button in virtual keyboard. -->
 	<string name="button_key_ctrl">Ctrl</string>
 
+	<!-- other common use keys not available on hardware keyboard -->
+	<string name="button_key_pipe">|</string>
+	<string name="button_key_left_bracket">[</string>
+	<string name="button_key_right_bracket">]</string>
+	<string name="button_key_left_brace">{</string>
+	<string name="button_key_right_brace">}</string>
+	<string name="button_key_back_slash">\\</string>
+
 	<!-- Text for the "Home" button in virtual keyboard. -->
 	<string name="button_key_home">Home</string>
 	<!-- Text for the "End" button in virtual keyboard. -->
