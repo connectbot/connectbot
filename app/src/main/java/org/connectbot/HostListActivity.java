@@ -483,7 +483,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 
 	@VisibleForTesting
 	private class HostAdapter extends ItemAdapter {
-		 private final List<HostBean> hosts;
+		private final List<HostBean> hosts;
 		private final TerminalManager manager;
 
 		public final static int STATE_UNKNOWN = 1, STATE_CONNECTED = 2, STATE_DISCONNECTED = 3;

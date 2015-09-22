@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.connectbot.bean.HostBean;
 import org.connectbot.service.TerminalBridge;
@@ -46,7 +46,6 @@ import android.os.IBinder;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.util.Log;
 
 public class HostEditorActivity extends AppCompatPreferenceActivity implements OnSharedPreferenceChangeListener {
