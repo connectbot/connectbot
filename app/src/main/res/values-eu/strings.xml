@@ -80,12 +80,16 @@
   <string name="pref_fullscreen_title">Pantaila osoa</string>
   <string name="pref_fullscreen_summary">Ezkutatu egoera-barra kontsola erabiltzean</string>
   <string name="pref_keyboard_category">Teklatua</string>
+  <string name="pref_shiftfkeys_title">Maius+num F-teklak dira</string>
+  <string name="pref_ctrlfkeys_title">Ktrl+num F-teklak dira</string>
+  <string name="pref_volumefont_title">Bolumenaren teklek letra-tamaina aldatzea</string>
   <string name="pref_memkeys_title">Gorde gakoak memorian</string>
   <string name="pref_memkeys_summary">Gogoratu desblokeatutako gakoak memorian zerbitzua amaitu arte</string>
   <string name="pref_conn_persist_title">Konexio iraunkorrak</string>
   <string name="pref_conn_persist_summary">Behartu konexioak aktibo mantentzera atzeko planoko daudenean</string>
   <string name="pref_keymode_title">Direktorien laster-teklak</string>
   <string name="pref_keymode_summary">Zehaztu nola erabili Alt \'/\'-entzat eta Shift Tab-entzat</string>
+  <string name="only_alt">Alt soilik</string>
   <string name="pref_camera_title">Kameraren laster-tekla</string>
   <string name="pref_camera_summary">Zehaztu kameraren botoia sakatzean aktibatu nahi duzun laster-tekla</string>
   <string name="pref_keepalive_title">Mantendu pantaila aktibo</string>
@@ -118,6 +122,7 @@
   <string name="hostpref_wantsession_summary">Desgaitu aukera hau ataka birbidalketak bakarrik erabiltzeko</string>
   <string name="hostpref_stayconnected_title">Konektatuta mantendu</string>
   <string name="hostpref_stayconnected_summary">Saiatu ostalarira birkonektatzen deskonektatzean</string>
+  <string name="hostpref_quickdisconnect_title">Itxi deskonektatzean</string>
   <string name="hostpref_delkey_title">DEL tekla</string>
   <string name="hostpref_delkey_summary">DEL tekla sakatzean bidaltzen den tekla-kodea</string>
   <string name="hostpref_encoding_title">Kodeketa</string>
@@ -179,6 +184,7 @@
   <string name="terminal_using_s2c_algorithm">Zerbitzari-bezero algoritmoa: %1$s %2$s</string>
   <string name="terminal_using_c2s_algorithm">Bezero-zerbitzari algoritmoa: %1$s %2$s</string>
   <string name="terminal_using_algorithm">Uneko algoritmoa: %1$s %2$s</string>
+  <string name="terminal_kex_algorithm">Gako-trukerako algoritmoa: %s</string>
   <string name="terminal_auth">Autentifikatzen saiatzen</string>
   <string name="terminal_auth_pass">\'Pasahitz bidez\' autentifikatzen saiatzen</string>
   <string name="terminal_auth_pass_fail">\'Pasahitz bidezko\' autentifikatzeak huts egin du</string>
