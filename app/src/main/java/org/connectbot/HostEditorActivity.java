@@ -46,6 +46,7 @@ import android.os.IBinder;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.SwitchPreference;
 import android.util.Log;
 
 public class HostEditorActivity extends AppCompatPreferenceActivity implements OnSharedPreferenceChangeListener {
@@ -312,7 +313,7 @@ public class HostEditorActivity extends AppCompatPreferenceActivity implements O
 			if (key.equals(HostDatabase.FIELD_HOST_POSTLOGIN)) continue;
 			Preference pref = this.findPreference(key);
 			if (pref == null) continue;
-			if (pref instanceof CheckBoxPreference) continue;
+			if (pref instanceof CheckBoxPreference || pref instanceof SwitchPreference) continue;
 			CharSequence value = this.pref.getString(key, "");
 
 			if (key.equals(HostDatabase.FIELD_HOST_PUBKEYID)) {
