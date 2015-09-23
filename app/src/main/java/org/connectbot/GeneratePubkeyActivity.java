@@ -31,10 +31,10 @@ import org.connectbot.util.OnEntropyGatheredListener;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -53,7 +53,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.trilead.ssh2.signature.ECDSASHA2Verify;
 
-public class GeneratePubkeyActivity extends Activity implements OnEntropyGatheredListener {
+public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntropyGatheredListener {
 	private static final int RSA_MINIMUM_BITS = 768;
 
 	public final static String TAG = "CB.GeneratePubkeyAct";
