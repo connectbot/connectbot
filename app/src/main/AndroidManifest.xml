@@ -44,6 +44,7 @@
 
 		<activity
 			android:name=".HostListActivity"
+			android:label="@string/title_hosts_list"
 			android:launchMode="singleTop">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
