@@ -188,11 +188,23 @@ public class PortForwardListActivity extends AppCompatListActivity {
 										break;
 									}
 
+									// Why length(), not isEmpty(), is used: http://stackoverflow.com/q/10606725
+									String sourcePort = sourcePortEdit.getText().toString();
+									if (sourcePort.length() == 0) {
+										sourcePort = sourcePortEdit.getHint().toString();
+									}
+
+									String destination = destEdit.getText().toString();
+									if (destination.length() == 0) {
+										destination = destEdit.getHint().toString();
+									}
+
 									PortForwardBean portForward = new PortForwardBean(
 											host != null ? host.getId() : -1,
-											nicknameEdit.getText().toString(), type,
-											sourcePortEdit.getText().toString(),
-											destEdit.getText().toString());
+											nicknameEdit.getText().toString(),
+											type,
+											sourcePort,
+											destination);
 
 									if (hostBridge != null) {
 										hostBridge.addPortForward(portForward);
