@@ -76,14 +76,25 @@
   <string name="pref_ui_category">Interfaz de usuario</string>
   <string name="pref_rotation_title">Modo de rotación</string>
   <string name="pref_rotation_summary">Como cambiar la rotación cuando se abra el teclado.</string>
+  <string name="pref_titlebarhide_title">Ocultar automáticamente la barra de título</string>
+  <string name="pref_titlebarhide_summary">Tocar la pantalla para que se muestre la barra de título y el menú de acceso</string>
   <string name="pref_fullscreen_title">Pantalla completa</string>
   <string name="pref_fullscreen_summary">Esconder barra de estatus cuando este en consola</string>
+  <string name="pref_keyboard_category">Teclado</string>
+  <string name="pref_shiftfkeys_title">Mayús+num son las teclas de función F1 a F10</string>
+  <string name="pref_shiftfkeys_summary">En teclados hardware, las teclas de los números + la tecla Mayús son las teclas de función F1 a F10</string>
+  <string name="pref_ctrlfkeys_title">Ctrl+num son las teclas de función F1 a F10</string>
+  <string name="pref_ctrlfkeys_summary">En teclados hardware, las teclas de los números + la tecla Ctrl son las teclas de función F1 a F10</string>
+  <string name="pref_volumefont_title">Las teclas de volumen cambian el tamaño de letra</string>
+  <string name="pref_volumefont_summary">El tamaño de letra puede cambiarse en la configuración de la conexión al host</string>
   <string name="pref_memkeys_title">Recordar claves en memoria</string>
   <string name="pref_memkeys_summary">Recordar claves en memoria hasta que el servicio en segundo plano termine</string>
   <string name="pref_conn_persist_title">Conexiones persistentes</string>
   <string name="pref_conn_persist_summary">Mantener conexiones activas en segundo plano</string>
   <string name="pref_keymode_title">Secuencia de teclas para directorios</string>
   <string name="pref_keymode_summary">Especifique como usar Alt para \'/\' y Shit para Tab</string>
+  <string name="pref_stickymodifiers_title">Corrección de errores al teclear</string>
+  <string name="only_alt">Detener solamente</string>
   <string name="pref_camera_title">Boton de la Cámara</string>
   <string name="pref_camera_summary">Especifique que secuencia de teclas activar cuando presione el botón de la cámara</string>
   <string name="pref_keepalive_title">Mantener pantalla activa</string>
@@ -116,6 +127,8 @@
   <string name="hostpref_wantsession_summary">Desactive esta preferencia para usar sólo reenvíos por puerto</string>
   <string name="hostpref_stayconnected_title">Mantenerse conectado</string>
   <string name="hostpref_stayconnected_summary">Intentar reconectar al equipo si se desconecta</string>
+  <string name="hostpref_quickdisconnect_title">Cerrar al desconectar</string>
+  <string name="hostpref_quickdisconnect_summary">Cerrar inmediatamente tras la desconexión remota sin confirmación</string>
   <string name="hostpref_delkey_title">Tecla DEL</string>
   <string name="hostpref_delkey_summary">El código clave que se envía cuando se pulsa tecla DEL</string>
   <string name="hostpref_encoding_title">Codificando</string>
@@ -177,6 +190,7 @@
   <string name="terminal_using_s2c_algorithm">Algoritmo servidor-cliente: %1$s %2$s</string>
   <string name="terminal_using_c2s_algorithm">Algoritmo cliente-servidor: %1$s %2$s</string>
   <string name="terminal_using_algorithm">Algoritmo que se esta usando: %1$s %2$s</string>
+  <string name="terminal_kex_algorithm">Algoritmo de intercambio de claves: %s</string>
   <string name="terminal_auth">Intentando autenticar</string>
   <string name="terminal_auth_pass">Intentando autenticación de la contraseña</string>
   <string name="terminal_auth_pass_fail">Método de autenticación \'password\' fallido</string>
@@ -201,6 +215,11 @@
   <string name="color_green">verde</string>
   <string name="color_blue">azul</string>
   <string name="color_gray">gris</string>
+  <string name="colors_fg_label">Color de fondo: %1$d</string>
+  <string name="color_bg_label">Color de fondo: %1$d</string>
   <string name="image_description_connected">Conectado</string>
+  <string name="image_description_key_is_locked">Clave pública bloqueada.</string>
+  <string name="image_description_toggle_control_character">Activar el envío de la pulsación de tecla Control.</string>
+  <string name="image_description_send_escape_character">Enviar una pulsación de la tecla Escape.</string>
   <string name="image_description_show_keyboard">Mostrar teclado.</string>
 </resources>

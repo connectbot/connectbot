@@ -191,6 +191,7 @@
   <string name="terminal_using_s2c_algorithm">サーバtoクライアント アルゴリズム: %1$s %2$s</string>
   <string name="terminal_using_c2s_algorithm">クライアントからサーバ アルゴリズム: %1$s %2$s</string>
   <string name="terminal_using_algorithm">使用アルゴリズム: %1$s %2$s</string>
+  <string name="terminal_kex_algorithm">鍵交換アルゴリズム： %s</string>
   <string name="terminal_auth">認証を試行中</string>
   <string name="terminal_auth_pass">\'password\' 認証を試行</string>
   <string name="terminal_auth_pass_fail">\'password\' 認証失敗</string>
