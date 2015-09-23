@@ -224,12 +224,6 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 			allowSave = false;
 
 		save.setEnabled(allowSave);
-
-		if (allowSave) {
-			save.getBackground().setColorFilter(getResources().getColor(R.color.accent, getTheme()), PorterDuff.Mode.SRC_IN);
-		} else {
-			save.getBackground().setColorFilter(null);
-		}
 	}
 
 	private void startEntropyGather() {
