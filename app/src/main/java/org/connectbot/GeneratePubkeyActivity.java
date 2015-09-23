@@ -35,7 +35,6 @@ import com.trilead.ssh2.signature.ECDSASHA2Verify;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
