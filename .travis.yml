@@ -32,7 +32,7 @@ addons:
       description: "The first SSH client for Android."
     notification_email: developers@connectbot.org
     build_command_prepend: "./gradlew clean"
-    build_command: "./gradlew build"
+    build_command: "./gradlew assemble"
     branch_pattern: coverity_scan
 
 before_script:
@@ -54,7 +54,7 @@ android:
     - '.+'
 
 script:
-  - ./gradlew build check jacocoUnitTestDebugReport
+  - ./gradlew clean build check jacocoUnitTestDebugReport
   - ./scripts/check-lint-count.sh app/build/outputs/lint-results.xml $HOME/.cache/lint/lint-results.xml
 
 after_success: ./gradlew coveralls
