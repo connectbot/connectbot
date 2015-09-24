@@ -35,7 +35,6 @@ import com.trilead.ssh2.signature.ECDSASHA2Verify;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -224,12 +223,6 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 			allowSave = false;
 
 		save.setEnabled(allowSave);
-
-		if (allowSave) {
-			save.getBackground().setColorFilter(getResources().getColor(R.color.accent, getTheme()), PorterDuff.Mode.SRC_IN);
-		} else {
-			save.getBackground().setColorFilter(null);
-		}
 	}
 
 	private void startEntropyGather() {
