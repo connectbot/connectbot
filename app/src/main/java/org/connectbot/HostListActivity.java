@@ -500,14 +500,17 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 		 */
 		private int getConnectedState(HostBean host) {
 			// always disconnected if we don't have backend service
-			if (this.manager == null)
+			if (this.manager == null || host == null) {
 				return STATE_UNKNOWN;
+			}
 
-			if (manager.getConnectedBridge(host) != null)
+			if (manager.getConnectedBridge(host) != null) {
 				return STATE_CONNECTED;
+			}
 
-			if (manager.disconnected.contains(host))
+			if (manager.disconnected.contains(host)) {
 				return STATE_DISCONNECTED;
+			}
 
 			return STATE_UNKNOWN;
 		}
@@ -525,16 +528,14 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			HostViewHolder hostHolder = (HostViewHolder) holder;
 
 			HostBean host = hosts.get(position);
+			hostHolder.host = host;
 			if (host == null) {
 				// Well, something bad happened. We can't continue.
 				Log.e("HostAdapter", "Host bean is null!");
-
 				hostHolder.nickname.setText("Error during lookup");
-				hostHolder.caption.setText("see 'adb logcat' for more");
+			} else {
+				hostHolder.nickname.setText(host.getNickname());
 			}
-			hostHolder.host = host;
-
-			hostHolder.nickname.setText(host.getNickname());
 
 			switch (this.getConnectedState(host)) {
 			case STATE_UNKNOWN:

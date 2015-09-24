@@ -629,16 +629,15 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			PubkeyViewHolder pubkeyHolder = (PubkeyViewHolder) holder;
 
 			PubkeyBean pubkey = pubkeys.get(position);
+			pubkeyHolder.pubkey = pubkey;
 			if (pubkey == null) {
 				// Well, something bad happened. We can't continue.
 				Log.e("PubkeyAdapter", "Pubkey bean is null!");
 
 				pubkeyHolder.nickname.setText("Error during lookup");
-				pubkeyHolder.caption.setText("see 'adb logcat' for more");
+			} else {
+				pubkeyHolder.nickname.setText(pubkey.getNickname());
 			}
-			pubkeyHolder.pubkey = pubkey;
-
-			pubkeyHolder.nickname.setText(pubkey.getNickname());
 
 			boolean imported = PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType());
 
