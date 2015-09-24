@@ -223,13 +223,13 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 		if (nickname.getText().length() == 0)
 			allowSave = false;
 
-		save.setEnabled(allowSave);
-
 		if (allowSave) {
-			save.getBackground().setColorFilter(getResources().getColor(R.color.accent, getTheme()), PorterDuff.Mode.SRC_IN);
+			save.getBackground().setColorFilter(getResources().getColor(R.color.accent), PorterDuff.Mode.SRC_IN);
 		} else {
 			save.getBackground().setColorFilter(null);
 		}
+
+		save.setEnabled(allowSave);
 	}
 
 	private void startEntropyGather() {
