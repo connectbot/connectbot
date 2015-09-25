@@ -756,7 +756,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 					boolean mouseReport = ((vt320) bridge.buffer).isMouseReportEnabled();
 
 					// MouseReport can be "defeated" using the shift key.
-					if ((!mouseReport || shiftOn) && event.getAction() == MotionEvent.ACTION_DOWN){
+					if ((!mouseReport || shiftOn) && event.getAction() == MotionEvent.ACTION_DOWN) {
 						switch (event.getButtonState()) {
 						case MotionEvent.BUTTON_PRIMARY:
 							// Automatically start copy mode if using a mouse.
@@ -770,10 +770,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 							pasteIntoTerminal();
 							return true;
 						}
-					} else if (event.getAction() == MotionEvent.ACTION_DOWN){
+					} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
 						((vt320) bridge.buffer).mousePressed(
 								col, row, mouseEventToJavaModifiers(event));
-					} else if (event.getAction() == MotionEvent.ACTION_UP){
+					} else if (event.getAction() == MotionEvent.ACTION_UP) {
 						((vt320) bridge.buffer).mouseReleased(col, row);
 					}
 				}
