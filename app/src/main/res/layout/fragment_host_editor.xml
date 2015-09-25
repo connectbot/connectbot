@@ -67,7 +67,7 @@
           android:layout_weight="1"
           android:layout_height="wrap_content"
           android:maxLines="1"
-          android:inputType="text"
+          android:inputType="textNoSuggestions"
           />
 
     </android.support.design.widget.TextInputLayout>
@@ -109,7 +109,7 @@
           android:layout_height="wrap_content"
           android:hint="@string/hostpref_username_title"
           android:maxLines="1"
-          android:inputType="text"
+          android:inputType="textNoSuggestions"
           />
 
     </android.support.design.widget.TextInputLayout>
@@ -126,7 +126,7 @@
           android:layout_height="wrap_content"
           android:hint="@string/hostpref_hostname_title"
           android:maxLines="1"
-          android:inputType="text"
+          android:inputType="textNoSuggestions"
           />
 
     </android.support.design.widget.TextInputLayout>
