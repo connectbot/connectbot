@@ -39,6 +39,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -143,16 +145,12 @@ public class PortForwardListActivity extends AppCompatListActivity {
 		this.registerForContextMenu(mListView);
 
 		this.inflater = LayoutInflater.from(this);
-	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-
-		MenuItem add = menu.add(R.string.portforward_menu_add);
-		add.setIcon(android.R.drawable.ic_menu_add);
-		add.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
+		FloatingActionButton addPortForwardButton =
+				(FloatingActionButton) findViewById(R.id.add_port_forward_button);
+		addPortForwardButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
 				// build dialog to prompt user about updating
 				final View portForwardView = inflater.inflate(R.layout.dia_portforward, null, false);
 				final EditText destEdit = (EditText) portForwardView.findViewById(R.id.portforward_destination);
@@ -168,55 +166,53 @@ public class PortForwardListActivity extends AppCompatListActivity {
 				});
 
 				new AlertDialog.Builder(PortForwardListActivity.this)
-					.setView(portForwardView)
-					.setPositiveButton(R.string.portforward_pos, new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							try {
-								final EditText nicknameEdit = (EditText) portForwardView.findViewById(R.id.nickname);
-								final EditText sourcePortEdit = (EditText) portForwardView.findViewById(R.id.portforward_source);
+						.setView(portForwardView)
+						.setPositiveButton(R.string.portforward_pos, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								try {
+									final EditText nicknameEdit = (EditText) portForwardView.findViewById(R.id.nickname);
+									final EditText sourcePortEdit = (EditText) portForwardView.findViewById(R.id.portforward_source);
 
-								String type = HostDatabase.PORTFORWARD_LOCAL;
-								switch (typeSpinner.getSelectedItemPosition()) {
-								case 0:
-									type = HostDatabase.PORTFORWARD_LOCAL;
-									break;
-								case 1:
-									type = HostDatabase.PORTFORWARD_REMOTE;
-									break;
-								case 2:
-									type = HostDatabase.PORTFORWARD_DYNAMIC5;
-									break;
+									String type = HostDatabase.PORTFORWARD_LOCAL;
+									switch (typeSpinner.getSelectedItemPosition()) {
+									case 0:
+										type = HostDatabase.PORTFORWARD_LOCAL;
+										break;
+									case 1:
+										type = HostDatabase.PORTFORWARD_REMOTE;
+										break;
+									case 2:
+										type = HostDatabase.PORTFORWARD_DYNAMIC5;
+										break;
+									}
+
+									PortForwardBean portForward = new PortForwardBean(
+											host != null ? host.getId() : -1,
+											nicknameEdit.getText().toString(), type,
+											sourcePortEdit.getText().toString(),
+											destEdit.getText().toString());
+
+									if (hostBridge != null) {
+										hostBridge.addPortForward(portForward);
+										hostBridge.enablePortForward(portForward);
+									}
+
+									if (host != null && !hostdb.savePortForward(portForward)) {
+										throw new SQLException("Could not save port forward");
+									}
+
+									updateHandler.sendEmptyMessage(-1);
+								} catch (Exception e) {
+									Log.e(TAG, "Could not update port forward", e);
+									// TODO Show failure dialog.
 								}
-
-								PortForwardBean portForward = new PortForwardBean(
-										host != null ? host.getId() : -1,
-										nicknameEdit.getText().toString(), type,
-										sourcePortEdit.getText().toString(),
-										destEdit.getText().toString());
-
-								if (hostBridge != null) {
-									hostBridge.addPortForward(portForward);
-									hostBridge.enablePortForward(portForward);
-								}
-
-								if (host != null && !hostdb.savePortForward(portForward)) {
-									throw new SQLException("Could not save port forward");
-								}
-
-								updateHandler.sendEmptyMessage(-1);
-							} catch (Exception e) {
-								Log.e(TAG, "Could not update port forward", e);
-								// TODO Show failure dialog.
 							}
-						}
-					})
-					.setNegativeButton(R.string.delete_neg, null).create().show();
-
-				return true;
+						})
+						.setNegativeButton(R.string.delete_neg, null).create().show();
 			}
-		});
 
-		return true;
+			public void onNothingSelected(AdapterView<?> arg0) {}
+		});
 	}
 
 	protected Handler updateHandler = new Handler() {
