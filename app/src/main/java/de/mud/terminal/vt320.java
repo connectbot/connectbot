@@ -336,6 +336,10 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     this(80, 24);
   }
 
+  public boolean isMouseReportEnabled() {
+    return mouserpt != 0;
+  }
+
   /**
    * Terminal is mouse-aware and requires (x,y) coordinates of
    * on the terminal (character coordinates) and the button clicked.

@@ -753,7 +753,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 						MotionEventCompat.getSource(event) == InputDevice.SOURCE_MOUSE) {
 					int meta = event.getMetaState();
 					boolean shiftOn = (event.getMetaState() & KeyEvent.META_SHIFT_ON) != 0;
-					if (shiftOn && event.getAction() == MotionEvent.ACTION_DOWN){
+					boolean mouseReport = ((vt320) bridge.buffer).isMouseReportEnabled();
+
+					// MouseReport can be "defeated" using the shift key.
+					if ((!mouseReport || shiftOn) && event.getAction() == MotionEvent.ACTION_DOWN){
 						switch (event.getButtonState()) {
 						case MotionEvent.BUTTON_PRIMARY:
 							// Automatically start copy mode if using a mouse.
@@ -851,9 +854,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	}
 
 	/**
-	 *
-	 * @param mouseEvent
-	 * @return
+	 * Takes an android mouse event and produces a Java InputEvent modifiers int which can be
+	 * passed to vt320.
+	 * @param mouseEvent The {@link MotionEvent} which should be a mouse click or release.
+	 * @return A Java InputEvent modifier int. See
+	 * http://docs.oracle.com/javase/7/docs/api/java/awt/event/InputEvent.html
 	 */
 	@TargetApi(14)
 	private static int mouseEventToJavaModifiers(MotionEvent mouseEvent) {
