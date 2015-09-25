@@ -30,6 +30,7 @@ import org.connectbot.service.TerminalKeyListener;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.PreferenceConstants;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -743,31 +744,39 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		pager.setOnTouchListener(new OnTouchListener() {
 
 			public boolean onTouch(View v, MotionEvent event) {
+				TerminalBridge bridge = adapter.getCurrentTerminalView().bridge;
+				int row = (int) Math.floor(event.getY() / bridge.charHeight);
+				int col = (int) Math.floor(event.getX() / bridge.charWidth);
 
 				// Handle mouse-specific actions.
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
-						MotionEventCompat.getSource(event) == InputDevice.SOURCE_MOUSE &&
-						event.getAction() == MotionEvent.ACTION_DOWN) {
-					switch (event.getButtonState()) {
-					case MotionEvent.BUTTON_PRIMARY:
-						// Automatically start copy mode if using a mouse.
-						startCopyMode();
-						break;
-					case MotionEvent.BUTTON_SECONDARY:
-						openContextMenu(pager);
-						return true;
-					case MotionEvent.BUTTON_TERTIARY:
-						// Middle click pastes.
-						pasteIntoTerminal();
-						return true;
+						MotionEventCompat.getSource(event) == InputDevice.SOURCE_MOUSE) {
+					int meta = event.getMetaState();
+					boolean shiftOn = (event.getMetaState() & KeyEvent.META_SHIFT_ON) != 0;
+					if (shiftOn && event.getAction() == MotionEvent.ACTION_DOWN){
+						switch (event.getButtonState()) {
+						case MotionEvent.BUTTON_PRIMARY:
+							// Automatically start copy mode if using a mouse.
+							startCopyMode();
+							break;
+						case MotionEvent.BUTTON_SECONDARY:
+							openContextMenu(pager);
+							return true;
+						case MotionEvent.BUTTON_TERTIARY:
+							// Middle click pastes.
+							pasteIntoTerminal();
+							return true;
+						}
+					} else if (event.getAction() == MotionEvent.ACTION_DOWN){
+						((vt320) bridge.buffer).mousePressed(
+								col, row, mouseEventToJavaModifiers(event));
+					} else if (event.getAction() == MotionEvent.ACTION_UP){
+						((vt320) bridge.buffer).mouseReleased(col, row);
 					}
 				}
 
 				// when copying, highlight the area
 				if (copySource != null && copySource.isSelectingForCopy()) {
-					int row = (int) Math.floor(event.getY() / copySource.charHeight);
-					int col = (int) Math.floor(event.getX() / copySource.charWidth);
-
 					SelectionArea area = copySource.getSelectionArea();
 
 					switch (event.getAction()) {
@@ -839,6 +848,38 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 
 		});
+	}
+
+	/**
+	 *
+	 * @param mouseEvent
+	 * @return
+	 */
+	@TargetApi(14)
+	private static int mouseEventToJavaModifiers(MotionEvent mouseEvent) {
+		if (MotionEventCompat.getSource(mouseEvent) != InputDevice.SOURCE_MOUSE) return 0;
+
+		int mods = 0;
+
+		// See http://docs.oracle.com/javase/7/docs/api/constant-values.html
+		int buttonState = mouseEvent.getButtonState();
+		if ((buttonState & MotionEvent.BUTTON_PRIMARY) != 0)
+			mods |= 16;
+		if ((buttonState & MotionEvent.BUTTON_SECONDARY) != 0)
+			mods |= 8;
+		if ((buttonState & MotionEvent.BUTTON_TERTIARY) != 0)
+			mods |= 4;
+
+		// Note: Meta and Ctrl are intentionally swapped here to keep logic in vt320 simple.
+		int meta = mouseEvent.getMetaState();
+		if ((meta & KeyEvent.META_META_ON) != 0)
+			mods |= 2;
+		if ((meta & KeyEvent.META_SHIFT_ON) != 0)
+			mods |= 1;
+		if ((meta & KeyEvent.META_CTRL_ON) != 0)
+			mods |= 4;
+
+		return mods;
 	}
 
 	/**

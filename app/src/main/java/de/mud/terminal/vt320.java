@@ -376,9 +376,8 @@ public void setScreenSize(int c, int r, boolean broadcast) {
    * of the release.
    * @param x
    * @param y
-   * @param modifiers
    */
-  public void mouseReleased(int x, int y, int modifiers) {
+  public void mouseReleased(int x, int y) {
     if (mouserpt == 0)
       return;
 

@@ -61,9 +61,8 @@ public interface VDUInput {
    * of the release.
    * @param x
    * @param y
-   * @param modifiers
    */
-  void mouseReleased(int x, int y, int modifiers);
+  void mouseReleased(int x, int y);
 
   /**
    * Override the standard key codes used by the terminal emulation.
