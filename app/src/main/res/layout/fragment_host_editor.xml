@@ -20,7 +20,8 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	tools:context="org.connectbot.HostEditorFragment">
+	tools:context="org.connectbot.HostEditorFragment"
+    >
 
   <LinearLayout
       android:layout_width="wrap_content"
@@ -28,31 +29,37 @@
       android:orientation="vertical"
       android:layout_marginStart="4dp"
       android:layout_marginLeft="4dp"
-      android:layout_marginBottom="4dp" >
+      android:layout_marginBottom="4dp"
+      >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/protocol_spinner_label"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        />
 
     <Spinner
         android:id="@+id/transport_selector"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        />
 
   </LinearLayout>
 
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:animateLayoutChanges="true">
+      android:animateLayoutChanges="true"
+      tools:ignore="UnusedAttribute"
+      >
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/quickconnect_field_container"
         android:layout_width="0dp"
         android:layout_weight ="1"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
       <EditText
           android:id="@+id/quickconnect_field"
@@ -60,7 +67,8 @@
           android:layout_weight="1"
           android:layout_height="wrap_content"
           android:maxLines="1"
-          android:inputType="text" />
+          android:inputType="text"
+          />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -72,7 +80,8 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_expand_more"
         android:contentDescription="@string/expand"
-        android:background="#00000000" />
+        android:background="#00000000"
+        />
 
   </LinearLayout>
 
@@ -82,13 +91,17 @@
       android:layout_height="wrap_content"
       android:orientation="vertical"
       android:layout_marginLeft="56dp"
+      android:layout_marginStart="56dp"
       android:visibility="gone"
-      android:animateLayoutChanges="true">
+      android:animateLayoutChanges="true"
+      tools:ignore="UnusedAttribute"
+      >
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/username_field_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
       <EditText
           android:id="@+id/username_edit_text"
@@ -96,14 +109,16 @@
           android:layout_height="wrap_content"
           android:hint="@string/hostpref_username_title"
           android:maxLines="1"
-          android:inputType="text" />
+          android:inputType="text"
+          />
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/hostname_field_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
       <EditText
           android:id="@+id/hostname_edit_text"
@@ -111,14 +126,16 @@
           android:layout_height="wrap_content"
           android:hint="@string/hostpref_hostname_title"
           android:maxLines="1"
-          android:inputType="text" />
+          android:inputType="text"
+          />
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/port_field_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
       <EditText
           android:id="@+id/port_edit_text"
@@ -126,7 +143,8 @@
           android:layout_height="wrap_content"
           android:inputType="number"
           android:hint="@string/hostpref_port_title"
-          android:maxLines="1" />
+          android:maxLines="1"
+          />
 
     </android.support.design.widget.TextInputLayout>
 
