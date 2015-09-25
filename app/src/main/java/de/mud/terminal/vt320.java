@@ -376,6 +376,38 @@ public void setScreenSize(int c, int r, boolean broadcast) {
   }
 
   /**
+   * Passes mouse wheel events to the terminal.
+   * @param down True if scrolling down the page. False if scrolling up.
+   * @param x
+   * @param y
+   * @param ctrl
+   * @param shift
+   * @param meta
+   */
+  public void mouseWheel(boolean down, int x, int y, boolean ctrl, boolean shift, boolean meta) {
+   if (mouserpt == 0 || mouserpt == 9)
+    return;
+
+   int mods = 0;
+   if (ctrl) mods |= 2;
+   if (shift) mods |= 1;
+   if (meta) mods |= 4;
+
+   int mousecode = ((down ? 0 : 1) + 96) | 0x20 | ((mods & 7) << 2);
+
+   byte b[] = new byte[6];
+
+   b[0] = 27;
+   b[1] = (byte) '[';
+   b[2] = (byte) 'M';
+   b[3] = (byte) mousecode;
+   b[4] = (byte) (0x20 + x + 1);
+   b[5] = (byte) (0x20 + y + 1);
+
+   write(b); // FIXME: writeSpecial here
+  }
+
+  /**
    * Terminal is mouse-aware and requires the coordinates and button
    * of the release.
    * @param x

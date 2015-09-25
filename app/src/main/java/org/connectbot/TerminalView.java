@@ -52,6 +52,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.widget.Toast;
 import de.mud.terminal.VDUBuffer;
+import de.mud.terminal.vt320;
 
 /**
  * User interface {@link View} for showing a TerminalBridge in an
@@ -329,7 +330,20 @@ public class TerminalView extends View implements FontSizeChangedListener {
 			case MotionEvent.ACTION_SCROLL:
 				// Process scroll wheel movement:
 				float yDistance = MotionEventCompat.getAxisValue(event, MotionEvent.AXIS_VSCROLL);
-				if (yDistance != 0) {
+				boolean mouseReport = ((vt320) bridge.buffer).isMouseReportEnabled();
+				if (mouseReport) {
+					int row = (int) Math.floor(event.getY() / bridge.charHeight);
+					int col = (int) Math.floor(event.getX() / bridge.charWidth);
+
+					((vt320) bridge.buffer).mouseWheel(
+							yDistance > 0,
+							col,
+							row,
+							(event.getMetaState() & KeyEvent.META_CTRL_ON) != 0,
+							(event.getMetaState() & KeyEvent.META_SHIFT_ON) != 0,
+							(event.getMetaState() & KeyEvent.META_META_ON) != 0);
+					return true;
+				} else if (yDistance != 0) {
 					int base = bridge.buffer.getWindowBase();
 					bridge.buffer.setWindowBase(base - Math.round(yDistance));
 					return true;
