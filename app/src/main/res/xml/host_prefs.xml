@@ -40,13 +40,6 @@
 		android:singleLine="true"
 		/>
 
-<!--
-	<CheckBoxPreference
-		android:key="usekeys"
-		android:title="Use SSH keys"
-		/>
--->
-
 	<ListPreference
 		android:key="pubkeyid"
 		android:title="@string/hostpref_pubkeyid_title"
@@ -66,26 +59,26 @@
 		android:title="@string/hostpref_postlogin_title"
 		android:summary="@string/hostpref_postlogin_summary"
 		/>
-		
-	<CheckBoxPreference
+
+	<org.connectbot.util.SwitchCompatPreference
 		android:key="compression"
 		android:title="@string/hostpref_compression_title"
 		android:summary="@string/hostpref_compression_summary"
 		/>
-		
-	<CheckBoxPreference
+
+	<org.connectbot.util.SwitchCompatPreference
 		android:key="wantsession"
 		android:title="@string/hostpref_wantsession_title"
 		android:summary="@string/hostpref_wantsession_summary"
 		/>
 
-	<CheckBoxPreference
+	<org.connectbot.util.SwitchCompatPreference
 		android:key="stayconnected"
 		android:title="@string/hostpref_stayconnected_title"
 		android:summary="@string/hostpref_stayconnected_summary"
 		/>
 
-	<CheckBoxPreference
+	<org.connectbot.util.SwitchCompatPreference
 		android:key="quickdisconnect"
 		android:title="@string/hostpref_quickdisconnect_title"
 		android:summary="@string/hostpref_quickdisconnect_summary"
@@ -104,10 +97,10 @@
 		android:title="@string/hostpref_encoding_title"
 		android:summary="@string/hostpref_encoding_summary"
 		/>
-	
+
 	<PreferenceCategory
 		android:title="@string/hostpref_connection_category">
-		
+
 		<EditTextPreference
 			android:key="username"
 			android:title="@string/hostpref_username_title"

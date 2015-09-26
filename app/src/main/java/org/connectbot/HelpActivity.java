@@ -19,11 +19,11 @@ package org.connectbot;
 
 import java.io.IOException;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +35,7 @@ import android.widget.LinearLayout;
  * @author Kenny Root
  *
  */
-public class HelpActivity extends Activity {
+public class HelpActivity extends AppCompatActivity {
 	public final static String TAG = "CB.HelpActivity";
 
 	public final static String HELPDIR = "help";
@@ -48,10 +48,6 @@ public class HelpActivity extends Activity {
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.act_help);
-
-		this.setTitle(String.format("%s: %s",
-				getResources().getText(R.string.app_name),
-				getResources().getText(R.string.title_help)));
 
 		AssetManager am = this.getAssets();
 		LinearLayout content = (LinearLayout) findViewById(R.id.topics);

@@ -292,9 +292,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	}
 
 	/**
-	 * Attempt connection with database row pointed to by cursor.
-	 * @param cursor
-	 * @return true for successful authentication
+	 * Attempt connection with given {@code pubkey}.
+	 * @return {@code true} for successful authentication
 	 * @throws NoSuchAlgorithmException
 	 * @throws InvalidKeySpecException
 	 * @throws IOException

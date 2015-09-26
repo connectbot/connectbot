@@ -24,15 +24,15 @@
 	android:orientation="vertical"
 	>
 
-	<ListView
-		android:id="@android:id/list"
+	<android.support.v7.widget.RecyclerView
+		android:id="@+id/list"
 		android:layout_width="fill_parent"
 		android:layout_height="0dip"
 		android:layout_weight="1"
 		/>
 
 	<TextView
-		android:id="@android:id/empty"
+		android:id="@+id/empty"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:gravity="center"

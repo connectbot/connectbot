@@ -31,10 +31,13 @@ import org.connectbot.util.OnEntropyGatheredListener;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
-import android.app.Activity;
+import com.trilead.ssh2.signature.ECDSASHA2Verify;
+
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -51,9 +54,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
-import com.trilead.ssh2.signature.ECDSASHA2Verify;
-
-public class GeneratePubkeyActivity extends Activity implements OnEntropyGatheredListener {
+public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntropyGatheredListener {
 	private static final int RSA_MINIMUM_BITS = 768;
 
 	public final static String TAG = "CB.GeneratePubkeyAct";
@@ -222,6 +223,12 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 		if (nickname.getText().length() == 0)
 			allowSave = false;
 
+		if (allowSave) {
+			save.getBackground().setColorFilter(getResources().getColor(R.color.accent), PorterDuff.Mode.SRC_IN);
+		} else {
+			save.getBackground().setColorFilter(null);
+		}
+
 		save.setEnabled(allowSave);
 	}
 
@@ -298,9 +305,8 @@ public class GeneratePubkeyActivity extends Activity implements OnEntropyGathere
 				pubkey.setStartup(unlockAtStartup.isChecked());
 				pubkey.setConfirmUse(confirmUse.isChecked());
 
-				PubkeyDatabase pubkeydb = new PubkeyDatabase(GeneratePubkeyActivity.this);
+				PubkeyDatabase pubkeydb = PubkeyDatabase.get(GeneratePubkeyActivity.this);
 				pubkeydb.savePubkey(pubkey);
-				pubkeydb.close();
 			} catch (Exception e) {
 				Log.e(TAG, "Could not generate key pair");
 

@@ -19,15 +19,15 @@ package org.connectbot;
 
 import org.connectbot.util.HelpTopicView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * @author Kenny Root
  *
  */
-public class HelpTopicActivity extends Activity {
+public class HelpTopicActivity extends AppCompatActivity {
 	public final static String TAG = "CB.HelpActivity";
 
 	@Override
@@ -37,8 +37,7 @@ public class HelpTopicActivity extends Activity {
 
 		String topic = getIntent().getStringExtra(Intent.EXTRA_TITLE);
 
-		this.setTitle(String.format("%s: %s - %s",
-				getResources().getText(R.string.app_name),
+		this.setTitle(String.format("%s: %s",
 				getResources().getText(R.string.title_help),
 				topic));
 

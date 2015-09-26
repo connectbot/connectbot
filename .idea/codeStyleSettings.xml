@@ -42,6 +42,34 @@
         <AndroidXmlCodeStyleSettings>
           <option name="USE_CUSTOM_SETTINGS" value="true" />
         </AndroidXmlCodeStyleSettings>
+        <Objective-C-extensions>
+          <option name="GENERATE_INSTANCE_VARIABLES_FOR_PROPERTIES" value="ASK" />
+          <option name="RELEASE_STYLE" value="IVAR" />
+          <option name="TYPE_QUALIFIERS_PLACEMENT" value="BEFORE" />
+          <file>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Import" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Macro" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Typedef" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Enum" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Constant" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Global" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Struct" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="FunctionPredecl" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Function" />
+          </file>
+          <class>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Property" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Synthesize" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="InitMethod" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="StaticMethod" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="InstanceMethod" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="DeallocMethod" />
+          </class>
+          <extensions>
+            <pair source="cpp" header="h" />
+            <pair source="c" header="h" />
+          </extensions>
+        </Objective-C-extensions>
         <XML>
           <option name="XML_ALIGN_ATTRIBUTES" value="false" />
           <option name="XML_WHITE_SPACE_AROUND_CDATA" value="1" />
@@ -49,17 +77,11 @@
         </XML>
         <codeStyleSettings language="Groovy">
           <indentOptions>
-            <option name="INDENT_SIZE" value="8" />
-            <option name="CONTINUATION_INDENT_SIZE" value="16" />
-            <option name="TAB_SIZE" value="8" />
             <option name="USE_TAB_CHARACTER" value="true" />
           </indentOptions>
         </codeStyleSettings>
         <codeStyleSettings language="HTML">
           <indentOptions>
-            <option name="INDENT_SIZE" value="8" />
-            <option name="CONTINUATION_INDENT_SIZE" value="16" />
-            <option name="TAB_SIZE" value="8" />
             <option name="USE_TAB_CHARACTER" value="true" />
           </indentOptions>
         </codeStyleSettings>
@@ -68,17 +90,23 @@
           <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
           <option name="SPACE_BEFORE_ARRAY_INITIALIZER_LBRACE" value="true" />
           <indentOptions>
-            <option name="INDENT_SIZE" value="8" />
-            <option name="CONTINUATION_INDENT_SIZE" value="16" />
-            <option name="TAB_SIZE" value="8" />
+            <option name="USE_TAB_CHARACTER" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="JSON">
+          <indentOptions>
+            <option name="USE_TAB_CHARACTER" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="ObjectiveC">
+          <indentOptions>
             <option name="USE_TAB_CHARACTER" value="true" />
           </indentOptions>
         </codeStyleSettings>
         <codeStyleSettings language="XML">
           <option name="FORCE_REARRANGE_MODE" value="1" />
           <indentOptions>
-            <option name="INDENT_SIZE" value="8" />
-            <option name="TAB_SIZE" value="8" />
+            <option name="CONTINUATION_INDENT_SIZE" value="4" />
             <option name="USE_TAB_CHARACTER" value="true" />
           </indentOptions>
           <arrangement>

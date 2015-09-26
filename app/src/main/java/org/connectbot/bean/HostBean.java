@@ -36,8 +36,6 @@ public class HostBean extends AbstractBean {
 	private String hostname = null;
 	private int port = 22;
 	private String protocol = "ssh";
-	private String hostKeyAlgo = null;
-	private byte[] hostKey = null;
 	private long lastConnect = -1;
 	private String color;
 	private boolean useKeys = true;
@@ -108,24 +106,6 @@ public class HostBean extends AbstractBean {
 		return protocol;
 	}
 
-	public void setHostKeyAlgo(String hostKeyAlgo) {
-		this.hostKeyAlgo = hostKeyAlgo;
-	}
-	public String getHostKeyAlgo() {
-		return hostKeyAlgo;
-	}
-	public void setHostKey(byte[] hostKey) {
-		if (hostKey == null)
-			this.hostKey = null;
-		else
-			this.hostKey = hostKey.clone();
-	}
-	public byte[] getHostKey() {
-		if (hostKey == null)
-			return null;
-		else
-			return hostKey.clone();
-	}
 	public void setLastConnect(long lastConnect) {
 		this.lastConnect = lastConnect;
 	}
@@ -229,8 +209,6 @@ public class HostBean extends AbstractBean {
 		values.put(HostDatabase.FIELD_HOST_USERNAME, username);
 		values.put(HostDatabase.FIELD_HOST_HOSTNAME, hostname);
 		values.put(HostDatabase.FIELD_HOST_PORT, port);
-		values.put(HostDatabase.FIELD_HOST_HOSTKEYALGO, hostKeyAlgo);
-		values.put(HostDatabase.FIELD_HOST_HOSTKEY, hostKey);
 		values.put(HostDatabase.FIELD_HOST_LASTCONNECT, lastConnect);
 		values.put(HostDatabase.FIELD_HOST_COLOR, color);
 		values.put(HostDatabase.FIELD_HOST_USEKEYS, Boolean.toString(useKeys));

@@ -1,23 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
- * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2007 Kenny Root, Jeffrey Sharkey
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ ~ ConnectBot: simple, powerful, open-source SSH client for Android
+ ~ Copyright 2015 Kenny Root, Jeffrey Sharkey
+ ~
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~     http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing, software
+ ~ distributed under the License is distributed on an "AS IS" BASIS,
+ ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ~ See the License for the specific language governing permissions and
+ ~ limitations under the License.
  */
 -->
 <resources>
+
+	<style name="AppTheme" parent="Theme.AppCompat">
+		<item name="colorPrimary">@color/primary</item>
+		<item name="colorPrimaryDark">@color/dark_primary</item>
+		<item name="colorAccent">@color/accent</item>
+	</style>
 
 	<style name="KeyboardKey">
 		<item name="android:layout_width">45dip</item>
@@ -27,15 +32,48 @@
 		<item name="android:textSize">10sp</item>
 	</style>
 
-
 	<style name="KeyboardButton" parent="KeyboardKey">
-		<item name="android:background">#55f0f0f0</item>
+		<item name="android:background">@drawable/keyboard_button_selector</item>
 	</style>
 
+	<style name="ListItemFirstLineText">
+		<item name="android:textColor">?android:textColorPrimary</item>
+		<item name="android:textSize">16sp</item>
+	</style>
 
-	<style name="KeyboardSeparator">
-		<item name="android:layout_width">1dip</item>
-		<item name="android:layout_height">match_parent</item>
-		<item name="android:background">#90000000</item>
+	<style name="ListItemSecondLineText">
+		<item name="android:textColor">?android:textColorSecondary</item>
+		<item name="android:textSize">14sp</item>
+	</style>
+
+	<style name="ListItemFirstLineText.Red" parent="ListItemFirstLineText">
+		<item name="android:textColor">@color/red</item>
+	</style>
+
+	<style name="ListItemSecondLineText.Red" parent="ListItemSecondLineText">
+		<item name="android:textColor">@color/red</item>
+	</style>
+
+	<style name="ListItemFirstLineText.Green" parent="ListItemFirstLineText">
+		<item name="android:textColor">@color/green</item>
+	</style>
+
+	<style name="ListItemSecondLineText.Green" parent="ListItemSecondLineText">
+		<item name="android:textColor">@color/green</item>
+	</style>
+
+	<style name="ListItemFirstLineText.Blue" parent="ListItemFirstLineText">
+		<item name="android:textColor">@color/blue</item>
+	</style>
+
+	<style name="ListItemSecondLineText.Blue" parent="ListItemSecondLineText">
+		<item name="android:textColor">@color/blue</item>
+	</style>
+
+	<!-- This value is overridden for v11 and higher, but left empty here. -->
+	<style name="SelectableItem"></style>
+
+	<style name="SwitchCompatTheme" parent="Theme.AppCompat">
+		<item name="colorAccent">@color/accent</item>
 	</style>
 </resources>

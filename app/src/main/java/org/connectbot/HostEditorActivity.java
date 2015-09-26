@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.connectbot.bean.HostBean;
 import org.connectbot.service.TerminalBridge;
@@ -46,10 +46,10 @@ import android.os.IBinder;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
+import android.preference.SwitchPreference;
 import android.util.Log;
 
-public class HostEditorActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
+public class HostEditorActivity extends AppCompatPreferenceActivity implements OnSharedPreferenceChangeListener {
 	public class CursorPreferenceHack implements SharedPreferences {
 		protected final String table;
 		protected final long id;
@@ -66,9 +66,9 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 		protected final void cacheValues() {
 			// fill a cursor and cache the values locally
-			// this makes sure we dont have any floating cursor to dispose later
+			// this makes sure we don't have any floating cursor to dispose later
 
-			SQLiteDatabase db = hostdb.getReadableDatabase();
+			SQLiteDatabase db = hostdb.getWritableDatabase();
 			Cursor cursor = db.query(table, null, "_id = ?",
 					new String[] { String.valueOf(id) }, null, null, null);
 
@@ -81,23 +81,6 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 				}
 			}
 			cursor.close();
-			db.close();
-
-//			db = pubkeydb.getReadableDatabase();
-//			cursor = db.query(PubkeyDatabase.TABLE_PUBKEYS,
-//					new String[] { "_id", PubkeyDatabase.FIELD_PUBKEY_NICKNAME },
-//					null, null, null, null, null);
-//
-//			if (cursor.moveToFirst()) {
-//				do {
-//					String pubkeyid = String.valueOf(cursor.getLong(0));
-//					String value = cursor.getString(1);
-//					pubkeys.put(pubkeyid, value);
-//				} while (cursor.moveToNext());
-//			}
-//
-//			cursor.close();
-//			db.close();
 		}
 
 		public boolean contains(String key) {
@@ -115,10 +98,14 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			}
 
 			public boolean commit() {
-				//Log.d(this.getClass().toString(), "commit() changes back to database");
 				SQLiteDatabase db = hostdb.getWritableDatabase();
-				db.update(table, update, "_id = ?", new String[] { String.valueOf(id) });
-				db.close();
+				db.beginTransaction();
+				try {
+					db.update(table, update, "_id = ?", new String[] {String.valueOf(id)});
+					db.setTransactionSuccessful();
+				} finally {
+					db.endTransaction();
+				}
 
 				// make sure we refresh the parent cached values
 				cacheValues();
@@ -244,8 +231,8 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 		// TODO: we could pass through a specific ContentProvider uri here
 		//this.getPreferenceManager().setSharedPreferencesName(uri);
 
-		this.hostdb = new HostDatabase(this);
-		this.pubkeydb = new PubkeyDatabase(this);
+		this.hostdb = HostDatabase.get(this);
+		this.pubkeydb = PubkeyDatabase.get(this);
 
 		host = hostdb.findHostById(hostId);
 
@@ -306,11 +293,8 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 		bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
-		if (this.hostdb == null)
-			this.hostdb = new HostDatabase(this);
-
-		if (this.pubkeydb == null)
-			this.pubkeydb = new PubkeyDatabase(this);
+		hostdb = HostDatabase.get(this);
+		pubkeydb = PubkeyDatabase.get(this);
 	}
 
 	@Override
@@ -319,15 +303,8 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 
 		unbindService(connection);
 
-		if (this.hostdb != null) {
-			this.hostdb.close();
-			this.hostdb = null;
-		}
-
-		if (this.pubkeydb != null) {
-			this.pubkeydb.close();
-			this.pubkeydb = null;
-		}
+		hostdb = null;
+		pubkeydb = null;
 	}
 
 	private void updateSummaries() {
@@ -336,7 +313,7 @@ public class HostEditorActivity extends PreferenceActivity implements OnSharedPr
 			if (key.equals(HostDatabase.FIELD_HOST_POSTLOGIN)) continue;
 			Preference pref = this.findPreference(key);
 			if (pref == null) continue;
-			if (pref instanceof CheckBoxPreference) continue;
+			if (pref instanceof CheckBoxPreference || pref instanceof SwitchPreference) continue;
 			CharSequence value = this.pref.getString(key, "");
 
 			if (key.equals(HostDatabase.FIELD_HOST_PUBKEYID)) {

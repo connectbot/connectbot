@@ -17,18 +17,14 @@
 
 package org.connectbot;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-public class EulaActivity extends Activity {
+public class EulaActivity extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.act_eula);
-
-		this.setTitle(String.format("%s: %s",
-				getResources().getText(R.string.app_name),
-				getResources().getText(R.string.terms_and_conditions)));
 	}
 }

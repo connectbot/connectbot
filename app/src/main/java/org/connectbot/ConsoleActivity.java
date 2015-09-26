@@ -51,6 +51,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -102,6 +103,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	private static final int KEYBOARD_DISPLAY_TIME = 3000;
 	private static final int KEYBOARD_REPEAT_INITIAL = 500;
 	private static final int KEYBOARD_REPEAT = 100;
+	private static final String STATE_SELECTED_URI = "selectedUri";
 
 	protected ViewPager pager = null;
 	protected TabLayout tabs = null;
@@ -151,7 +153,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 	private ImageView mKeyboardButton;
 
-	private ActionBar actionBar;
+	@Nullable private ActionBar actionBar;
 	private boolean inActionBarMenu = false;
 	private boolean titleBarHide;
 
@@ -164,8 +166,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			bound.setResizeAllowed(true);
 
 			final String requestedNickname = (requested != null) ? requested.getFragment() : null;
-			int requestedIndex = 0;
-
 			TerminalBridge requestedBridge = bound.getConnectedBridge(requestedNickname);
 
 			// If we didn't find the requested connection, try opening it
@@ -180,9 +180,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 			// create views for all bridges on this service
 			adapter.notifyDataSetChanged();
-			requestedIndex = bound.getBridges().indexOf(requestedBridge);
+			int requestedIndex = bound.getBridges().indexOf(requestedBridge);
 
-			setDisplayedTerminal(requestedIndex == -1 ? 0 : requestedIndex);
+			if (requestedIndex != -1) {
+				setDisplayedTerminal(requestedIndex);
+			}
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
@@ -224,7 +226,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	/**
 	 * Handle repeatable virtual keys and touch events
 	 */
-	public class KeyRepeater implements Runnable, OnTouchListener {
+	public class KeyRepeater implements Runnable, OnTouchListener, OnClickListener {
 		private View mView;
 		private Handler mHandler;
 		private boolean mDown;
@@ -233,6 +235,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			mView = view;
 			mHandler = handler;
 			mView.setOnTouchListener(this);
+			mView.setOnClickListener(this);
 			mDown = false;
 		}
 
@@ -241,7 +244,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			mDown = true;
 			mHandler.removeCallbacks(this);
 			mHandler.postDelayed(this, KEYBOARD_REPEAT);
-			onEmulatedKeyClicked(mView);
+			mView.performClick();
 		}
 
 		@Override
@@ -256,20 +259,29 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			case MotionEvent.ACTION_DOWN:
 				mDown = false;
 				mHandler.postDelayed(this, KEYBOARD_REPEAT_INITIAL);
+				mView.setPressed(true);
 				return (true);
 
 			case MotionEvent.ACTION_CANCEL:
-				keyRepeatHandler.removeCallbacks(this);
+				mHandler.removeCallbacks(this);
+				mView.setPressed(false);
 				return (true);
 
 			case MotionEvent.ACTION_UP:
-				keyRepeatHandler.removeCallbacks(this);
+				mHandler.removeCallbacks(this);
+				mView.setPressed(false);
+
 				if (!mDown) {
-					onEmulatedKeyClicked(mView);
+					mView.performClick();
 				}
 				return (true);
 			}
 			return false;
+		}
+
+		@Override
+		public void onClick(View view) {
+			onEmulatedKeyClicked(view);
 		}
 	}
 
@@ -277,6 +289,9 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		TerminalView terminal = adapter.getCurrentTerminalView();
 		if (terminal == null) return;
 
+		if (BuildConfig.DEBUG) {
+			Log.d(TAG, "onEmulatedKeyClicked(" + v.getId() + ")");
+		}
 		TerminalKeyListener handler = terminal.bridge.getKeyHandler();
 		boolean hideKeys = false;
 
@@ -364,7 +379,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			autoHideEmulatedKeys();
 
 		terminal.bridge.tryKeyVibrate();
-		if (titleBarHide) {
+		hideActionBarIfRequested();
+	}
+
+	private void hideActionBarIfRequested() {
+		if (titleBarHide && actionBar != null) {
 			actionBar.hide();
 		}
 	}
@@ -401,10 +420,12 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		booleanPromptGroup.setVisibility(View.GONE);
 	}
 
-	private void showEmulatedKeys() {
+	private void showEmulatedKeys(boolean showActionBar) {
 		keyboardGroup.startAnimation(keyboard_fade_in);
 		keyboardGroup.setVisibility(View.VISIBLE);
-		actionBar.show();
+		if (showActionBar) {
+			actionBar.show();
+		}
 		autoHideEmulatedKeys();
 	}
 
@@ -418,9 +439,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 				keyboardGroup.startAnimation(keyboard_fade_out);
 				keyboardGroup.setVisibility(View.GONE);
-				if (titleBarHide) {
-					actionBar.hide();
-				}
+				hideActionBarIfRequested();
 				keyboardGroupHider = null;
 			}
 		};
@@ -431,9 +450,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		if (keyboardGroupHider != null)
 			handler.removeCallbacks(keyboardGroupHider);
 		keyboardGroup.setVisibility(View.GONE);
-		if (titleBarHide) {
-			actionBar.hide();
-		}
+		hideActionBarIfRequested();
 	}
 
 	@Override
@@ -467,7 +484,14 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
 		// handle requested console from incoming intent
-		requested = getIntent().getData();
+		if (icicle == null) {
+			requested = getIntent().getData();
+		} else {
+			String uri = icicle.getString(STATE_SELECTED_URI);
+			if (uri != null) {
+				requested = Uri.parse(uri);
+			}
+		}
 
 		inflater = LayoutInflater.from(this);
 
@@ -477,6 +501,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				new ViewPager.SimpleOnPageChangeListener() {
 					@Override
 					public void onPageSelected(int position) {
+						setTitle(adapter.getPageTitle(position));
 						onTerminalChanged();
 					}
 				});
@@ -581,23 +606,25 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 
 		actionBar = getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		if (titleBarHide) {
-			actionBar.hide();
-		}
-		actionBar.addOnMenuVisibilityListener(new ActionBar.OnMenuVisibilityListener() {
-			public void onMenuVisibilityChanged(boolean isVisible) {
-				inActionBarMenu = isVisible;
-				if (isVisible == false) {
-					hideEmulatedKeys();
-				}
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+			if (titleBarHide) {
+				actionBar.hide();
 			}
-		});
+			actionBar.addOnMenuVisibilityListener(new ActionBar.OnMenuVisibilityListener() {
+				public void onMenuVisibilityChanged(boolean isVisible) {
+					inActionBarMenu = isVisible;
+					if (isVisible == false) {
+						hideEmulatedKeys();
+					}
+				}
+			});
+		}
 
+		final HorizontalScrollView keyboardScroll = (HorizontalScrollView) findViewById(R.id.keyboard_hscroll);
 		if (!hardKeyboard) {
 			// Show virtual keyboard and scroll back and forth
-			final HorizontalScrollView keyboardScroll = (HorizontalScrollView) findViewById(R.id.keyboard_hscroll);
-			showEmulatedKeys();
+			showEmulatedKeys(false);
 			keyboardScroll.postDelayed(new Runnable() {
 				@Override
 				public void run() {
@@ -614,10 +641,26 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 							}
 							keyboardScroll.smoothScrollBy(-xscroll, 0);
 						}
-					}, 1000);
+					}, 500);
 				}
-			}, 1000);
+			}, 500);
 		}
+
+		// Reset keyboard auto-hide timer when scrolling
+		keyboardScroll.setOnTouchListener(
+				new OnTouchListener() {
+					public boolean onTouch(View v, MotionEvent event) {
+						switch (event.getAction()) {
+						case MotionEvent.ACTION_MOVE:
+							autoHideEmulatedKeys();
+							break;
+						case MotionEvent.ACTION_UP:
+							v.performClick();
+							return (true);
+						}
+						return (false);
+					}
+				});
 
 		tabs = (TabLayout) findViewById(R.id.tabs);
 		if (tabs != null)
@@ -762,7 +805,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 						&& event.getEventTime() - event.getDownTime() < CLICK_TIME
 						&& Math.abs(event.getX() - lastX) < MAX_CLICK_DISTANCE
 						&& Math.abs(event.getY() - lastY) < MAX_CLICK_DISTANCE) {
-					showEmulatedKeys();
+					showEmulatedKeys(true);
 				}
 
 				// pass any touch events back to detector
@@ -866,7 +909,8 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		copy = menu.add(R.string.console_menu_copy);
 		if (hardKeyboard)
 			copy.setAlphabeticShortcut('c');
-		copy.setIcon(android.R.drawable.ic_menu_set_as);
+		MenuItemCompat.setShowAsAction(copy, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+		copy.setIcon(R.drawable.ic_action_copy);
 		copy.setEnabled(activeTerminal);
 		copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
@@ -879,7 +923,8 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		paste = menu.add(R.string.console_menu_paste);
 		if (hardKeyboard)
 			paste.setAlphabeticShortcut('v');
-		paste.setIcon(android.R.drawable.ic_menu_edit);
+		MenuItemCompat.setShowAsAction(paste, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+		paste.setIcon(R.drawable.ic_action_paste);
 		paste.setEnabled(clipboard.hasText() && sessionOpen);
 		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
@@ -1120,6 +1165,18 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		unbindService(connection);
 	}
 
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		// Maintain selected host if connected.
+		if (adapter.getCurrentTerminalView() != null
+				&& !adapter.getCurrentTerminalView().bridge.isDisconnected()) {
+			Uri uri = adapter.getCurrentTerminalView().bridge.host.getUri();
+			savedInstanceState.putString(STATE_SELECTED_URI, uri.toString());
+		}
+
+		super.onSaveInstanceState(savedInstanceState);
+	}
+
 	private void startCopyMode() {
 		// mark as copying and reset any previous bounds
 		TerminalView terminalView = (TerminalView) adapter.getCurrentTerminalView();
@@ -1264,6 +1321,8 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	 */
 	private void setDisplayedTerminal(int requestedIndex) {
 		pager.setCurrentItem(requestedIndex);
+		// set activity title
+		setTitle(adapter.getPageTitle(requestedIndex));
 		onTerminalChanged();
 	}
 
@@ -1305,7 +1364,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 			// and add our terminal view control, using index to place behind overlay
 			final TerminalView terminal = new TerminalView(container.getContext(), bridge);
-			terminal.setId(R.id.console_flip);
+			terminal.setId(R.id.terminal_view);
 			view.addView(terminal, 0);
 
 			// Tag the view with its bridge so it can be retrieved later.
@@ -1330,7 +1389,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 
 			View view = (View) object;
-			TerminalView terminal = (TerminalView) view.findViewById(R.id.console_flip);
+			TerminalView terminal = (TerminalView) view.findViewById(R.id.terminal_view);
 			HostBean host = terminal.bridge.host;
 
 			int itemIndex = POSITION_NONE;
@@ -1383,7 +1442,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		public TerminalView getCurrentTerminalView() {
 			View currentView = pager.findViewWithTag(getBridgeAtPosition(pager.getCurrentItem()));
 			if (currentView == null) return null;
-			return (TerminalView) currentView.findViewById(R.id.console_flip);
+			return (TerminalView) currentView.findViewById(R.id.terminal_view);
 		}
 	}
 }

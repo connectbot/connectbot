@@ -17,19 +17,14 @@
 
 package org.connectbot.service;
 
-import java.io.IOException;
-
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.PubkeyDatabase;
 
 import android.annotation.TargetApi;
 import android.app.backup.BackupAgentHelper;
-import android.app.backup.BackupDataInput;
-import android.app.backup.BackupDataOutput;
 import android.app.backup.FileBackupHelper;
 import android.app.backup.SharedPreferencesBackupHelper;
-import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
 /**
@@ -52,25 +47,5 @@ public class BackupAgent extends BackupAgentHelper {
 		FileBackupHelper pubkeys = new FileBackupHelper(this, "../databases/" + PubkeyDatabase.DB_NAME);
 		addHelper(PubkeyDatabase.DB_NAME, pubkeys);
 
-	}
-
-	@Override
-	public void onBackup(ParcelFileDescriptor oldState, BackupDataOutput data,
-			ParcelFileDescriptor newState) throws IOException {
-		synchronized (HostDatabase.dbLock) {
-			super.onBackup(oldState, data, newState);
-		}
-	}
-
-	@Override
-	public void onRestore(BackupDataInput data, int appVersionCode,
-			ParcelFileDescriptor newState) throws IOException {
-		Log.d("ConnectBot.BackupAgent", "onRestore called");
-
-		synchronized (HostDatabase.dbLock) {
-			Log.d("ConnectBot.BackupAgent", "onRestore in-lock");
-
-			super.onRestore(data, appVersionCode, newState);
-		}
 	}
 }

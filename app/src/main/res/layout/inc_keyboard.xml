@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ ConnectBot: simple, powerful, open-source SSH client for Android
+  ~ Copyright 2015 Kenny Root, Jeffrey Sharkey
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<LinearLayout android:id="@+id/keyboard_group"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:layout_alignParentBottom="true"
+	android:background="@color/key_background_layout"
+	android:orientation="horizontal"
+	android:padding="0dip"
+	android:visibility="gone">
+
+
+	<HorizontalScrollView
+		android:id="@+id/keyboard_hscroll"
+		android:layout_width="0dp"
+		android:layout_height="match_parent"
+		android:layout_weight="1"
+		android:padding="0dp"
+		android:scrollbars="none">
+
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:orientation="horizontal"
+			android:padding="0dp">
+
+			<Button
+				android:id="@+id/button_ctrl"
+				style="@style/KeyboardButton"
+				android:contentDescription="@string/image_description_toggle_control_character"
+				android:text="@string/button_key_ctrl"/>
+
+			<Button
+				android:id="@+id/button_esc"
+				style="@style/KeyboardButton"
+				android:contentDescription="@string/image_description_send_escape_character"
+				android:text="@string/button_key_esc"/>
+
+			<Button
+				android:id="@+id/button_tab"
+				style="@style/KeyboardButton"
+				android:contentDescription="@string/image_description_send_tab_character"
+				android:text="@string/button_key_tab"/>
+
+			<Button
+				android:id="@+id/button_up"
+				style="@style/KeyboardButton"
+				android:contentDescription="@string/image_description_up"
+				android:text="@string/button_key_up"/>
+
+			<Button
+				android:id="@+id/button_down"
+				style="@style/KeyboardButton"
+				android:contentDescription="@string/image_description_down"
+				android:text="@string/button_key_down"/>
+
+			<Button
+				android:id="@+id/button_left"
+				style="@style/KeyboardButton"
+				android:contentDescription="@string/image_description_left"
+				android:text="@string/button_key_left"/>
+
+			<Button
+				android:id="@+id/button_right"
+				style="@style/KeyboardButton"
+				android:contentDescription="@string/image_description_right"
+				android:text="@string/button_key_right"/>
+
+			<Button
+				android:id="@+id/button_home"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_home"/>
+
+			<Button
+				android:id="@+id/button_end"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_end"/>
+
+			<Button
+				android:id="@+id/button_pgup"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_pgup"/>
+
+			<Button
+				android:id="@+id/button_pgdn"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_pgdn"/>
+
+			<Button
+				android:id="@+id/button_f1"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_f1"/>
+
+			<Button
+				android:id="@+id/button_f2"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_f2"/>
+
+			<Button
+				android:id="@+id/button_f3"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_f3"/>
+
+			<Button
+				android:id="@+id/button_f4"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_f4"/>
+
+			<Button
+				android:id="@+id/button_f5"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_f5"/>
+
+			<Button
+				android:id="@+id/button_f6"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_f6"/>
+
+			<Button
+				android:id="@+id/button_f7"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_f7"/>
+
+			<Button
+				android:id="@+id/button_f8"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_f8"/>
+
+			<Button
+				android:id="@+id/button_f9"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_f9"/>
+
+			<Button
+				android:id="@+id/button_f10"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_f10"/>
+
+			<Button
+				android:id="@+id/button_f11"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_f11"/>
+
+			<Button
+				android:id="@+id/button_f12"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_f12"/>
+		</LinearLayout>
+	</HorizontalScrollView>
+
+	<ImageView
+		android:id="@+id/button_keyboard"
+		style="@style/KeyboardKey"
+		android:background="@drawable/keyboard_keyboard_border"
+		android:contentDescription="@string/image_description_show_keyboard"
+		android:src="@drawable/ic_keyboard_white"/>
+</LinearLayout>

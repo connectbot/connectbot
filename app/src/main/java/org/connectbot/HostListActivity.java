@@ -20,30 +20,36 @@ package org.connectbot;
 import java.util.List;
 
 import org.connectbot.bean.HostBean;
+import org.connectbot.data.HostStorage;
+import org.connectbot.service.OnHostStatusChangedListener;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ListActivity;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Intent.ShortcutIconResource;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences.Editor;
-import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.annotation.StyleRes;
+import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -51,19 +57,18 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
-public class HostListActivity extends ListActivity {
+public class HostListActivity extends AppCompatListActivity implements OnHostStatusChangedListener {
 	public final static String TAG = "CB.HostListActivity";
 	public static final String DISCONNECT_ACTION = "org.connectbot.action.DISCONNECT";
 
@@ -71,7 +76,7 @@ public class HostListActivity extends ListActivity {
 
 	protected TerminalManager bound = null;
 
-	protected HostDatabase hostdb;
+	private HostStorage hostdb;
 	private List<HostBean> hosts;
 	protected LayoutInflater inflater = null;
 
@@ -80,9 +85,6 @@ public class HostListActivity extends ListActivity {
 	private MenuItem sortcolor;
 
 	private MenuItem sortlast;
-
-	private Spinner transportSpinner;
-	private TextView quickconnect;
 
 	private SharedPreferences prefs = null;
 
@@ -96,13 +98,6 @@ public class HostListActivity extends ListActivity {
 	 */
 	private boolean closeOnDisconnectAll = true;
 
-	protected Handler updateHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			HostListActivity.this.updateList();
-		}
-	};
-
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
@@ -110,12 +105,16 @@ public class HostListActivity extends ListActivity {
 			// update our listview binder to find the service
 			HostListActivity.this.updateList();
 
+			bound.registerOnHostStatusChangedListener(HostListActivity.this);
+
 			if (waitingForDisconnectAll) {
 				disconnectAll();
 			}
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
+			bound.unregisterOnHostStatusChangedListener(HostListActivity.this);
+
 			bound = null;
 			HostListActivity.this.updateList();
 		}
@@ -128,8 +127,7 @@ public class HostListActivity extends ListActivity {
 		// start the terminal manager service
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
-		if (this.hostdb == null)
-			this.hostdb = new HostDatabase(this);
+		hostdb = HostDatabase.get(this);
 	}
 
 	@Override
@@ -137,10 +135,7 @@ public class HostListActivity extends ListActivity {
 		super.onStop();
 		this.unbindService(connection);
 
-		if (this.hostdb != null) {
-			this.hostdb.close();
-			this.hostdb = null;
-		}
+		hostdb = null;
 
 		closeOnDisconnectAll = true;
 	}
@@ -161,9 +156,6 @@ public class HostListActivity extends ListActivity {
 		closeOnDisconnectAll = waitingForDisconnectAll && closeOnDisconnectAll;
 	}
 
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onNewIntent(android.content.Intent)
-	 */
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
@@ -182,9 +174,12 @@ public class HostListActivity extends ListActivity {
 		super.onCreate(icicle);
 		setContentView(R.layout.act_hostlist);
 
-		this.setTitle(String.format("%s: %s",
-				getResources().getText(R.string.app_name),
-				getResources().getText(R.string.title_hosts_list)));
+		mListView = (RecyclerView) findViewById(R.id.list);
+		mListView.setHasFixedSize(true);
+		mListView.setLayoutManager(new LinearLayoutManager(this));
+		mListView.addItemDecoration(new ListItemDecoration(this));
+
+		mEmptyView = findViewById(R.id.empty);
 
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -215,77 +210,24 @@ public class HostListActivity extends ListActivity {
 								|| Intent.ACTION_PICK.equals(getIntent().getAction());
 
 		// connect with hosts database and populate list
-		this.hostdb = new HostDatabase(this);
-		ListView list = this.getListView();
+		this.hostdb = HostDatabase.get(this);
 
 		this.sortedByColor = prefs.getBoolean(PreferenceConstants.SORT_BY_COLOR, false);
 
-		//this.list.setSelector(R.drawable.highlight_disabled_pressed);
+		this.registerForContextMenu(mListView);
 
-		list.setOnItemClickListener(new OnItemClickListener() {
-
-			public synchronized void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-				// launch off to console details
-				HostBean host = (HostBean) parent.getAdapter().getItem(position);
-				Uri uri = host.getUri();
-
-				Intent contents = new Intent(Intent.ACTION_VIEW, uri);
-				contents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-				if (makingShortcut) {
-					// create shortcut if requested
-					ShortcutIconResource icon = Intent.ShortcutIconResource.fromContext(HostListActivity.this, R.drawable.icon);
-
-					Intent intent = new Intent();
-					intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, contents);
-					intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, host.getNickname());
-					intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
-
-					setResult(RESULT_OK, intent);
-					finish();
-
-				} else {
-					// otherwise just launch activity to show this host
-					contents.setClass(HostListActivity.this, ConsoleActivity.class);
-					HostListActivity.this.startActivity(contents);
-				}
+		FloatingActionButton addHostButton =
+				(FloatingActionButton) findViewById(R.id.add_host_button);
+		addHostButton.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
+		addHostButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DialogFragment dialog = new AddHostDialogFragment();
+				dialog.show(getSupportFragmentManager(), "AddHostDialogFragment");
 			}
+
+			public void onNothingSelected(AdapterView<?> arg0) {}
 		});
-
-		this.registerForContextMenu(list);
-
-		quickconnect = (TextView) this.findViewById(R.id.front_quickconnect);
-		quickconnect.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
-		quickconnect.setOnKeyListener(new OnKeyListener() {
-
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-				if (event.getAction() == KeyEvent.ACTION_UP) return false;
-				if (keyCode != KeyEvent.KEYCODE_ENTER) return false;
-
-				return startConsoleActivity();
-			}
-		});
-
-		transportSpinner = (Spinner) findViewById(R.id.transport_selection);
-		transportSpinner.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
-		ArrayAdapter<String> transportSelection = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, TransportFactory.getTransportNames());
-		transportSelection.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		transportSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
-				String formatHint = TransportFactory.getFormatHint(
-						(String) transportSpinner.getSelectedItem(),
-						HostListActivity.this);
-
-				quickconnect.setHint(formatHint);
-				quickconnect.setError(null);
-				quickconnect.requestFocus();
-			}
-			public void onNothingSelected(AdapterView<?> arg0) { }
-		});
-		transportSpinner.setAdapter(transportSelection);
 
 		this.inflater = LayoutInflater.from(this);
 	}
@@ -351,74 +293,6 @@ public class HostListActivity extends ListActivity {
 
 	}
 
-
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-
-		// create menu to handle hosts
-
-		// create menu to handle deleting and sharing lists
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-		final HostBean host = (HostBean) this.getListView().getItemAtPosition(info.position);
-
-		menu.setHeaderTitle(host.getNickname());
-
-		// edit, disconnect, delete
-		MenuItem connect = menu.add(R.string.list_host_disconnect);
-		final TerminalBridge bridge = (bound == null) ? null : bound.getConnectedBridge(host);
-		connect.setEnabled(bridge != null);
-		connect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				bridge.dispatchDisconnect(true);
-				updateHandler.sendEmptyMessage(-1);
-				return true;
-			}
-		});
-
-		MenuItem edit = menu.add(R.string.list_host_edit);
-		edit.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				Intent intent = new Intent(HostListActivity.this, HostEditorActivity.class);
-				intent.putExtra(Intent.EXTRA_TITLE, host.getId());
-				HostListActivity.this.startActivityForResult(intent, REQUEST_EDIT);
-				return true;
-			}
-		});
-
-		MenuItem portForwards = menu.add(R.string.list_host_portforwards);
-		portForwards.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				Intent intent = new Intent(HostListActivity.this, PortForwardListActivity.class);
-				intent.putExtra(Intent.EXTRA_TITLE, host.getId());
-				HostListActivity.this.startActivityForResult(intent, REQUEST_EDIT);
-				return true;
-			}
-		});
-		if (!TransportFactory.canForwardPorts(host.getProtocol()))
-			portForwards.setEnabled(false);
-
-		MenuItem delete = menu.add(R.string.list_host_delete);
-		delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				// prompt user to make sure they really want this
-				new AlertDialog.Builder(HostListActivity.this)
-						.setMessage(getString(R.string.delete_message, host.getNickname()))
-						.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								// make sure we disconnect
-								if (bridge != null)
-									bridge.dispatchDisconnect(true);
-
-								hostdb.deleteHost(host);
-								updateHandler.sendEmptyMessage(-1);
-							}
-						})
-						.setNegativeButton(R.string.delete_neg, null).create().show();
-
-				return true;
-			}
-		});
-	}
 	/**
 	 * Disconnects all active connections and closes the activity if appropriate.
 	 */
@@ -433,7 +307,6 @@ public class HostListActivity extends ListActivity {
 			.setPositiveButton(R.string.disconnect_all_pos, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					bound.disconnectAll(true, false);
-					updateHandler.sendEmptyMessage(-1);
 					waitingForDisconnectAll = false;
 
 					// Clear the intent so that the activity can be relaunched without closing.
@@ -455,22 +328,10 @@ public class HostListActivity extends ListActivity {
 			}).create().show();
 	}
 
-
 	/**
 	 * @return
 	 */
-	private boolean startConsoleActivity() {
-		Uri uri = TransportFactory.getUri((String) transportSpinner
-				.getSelectedItem(), quickconnect.getText().toString());
-
-		if (uri == null) {
-			quickconnect.setError(getString(R.string.list_format_error,
-					TransportFactory.getFormatHint(
-							(String) transportSpinner.getSelectedItem(),
-							HostListActivity.this)));
-			return false;
-		}
-
+	private boolean startConsoleActivity(Uri uri) {
 		HostBean host = TransportFactory.findHost(hostdb, uri);
 		if (host == null) {
 			host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
@@ -494,7 +355,7 @@ public class HostListActivity extends ListActivity {
 		}
 
 		if (hostdb == null)
-			hostdb = new HostDatabase(this);
+			hostdb = HostDatabase.get(this);
 
 		hosts = hostdb.getHosts(sortedByColor);
 
@@ -506,121 +367,316 @@ public class HostListActivity extends ListActivity {
 			}
 		}
 
-		HostAdapter adapter = new HostAdapter(this, hosts, bound);
-
-		this.setListAdapter(adapter);
+		mAdapter = new HostAdapter(this, hosts, bound);
+		mListView.setAdapter(mAdapter);
+		adjustViewVisibility();
 	}
 
-	class HostAdapter extends ArrayAdapter<HostBean> {
-		private List<HostBean> hosts;
+	@Override
+	public void onHostStatusChanged() {
+		updateList();
+	}
+
+	private class HostViewHolder extends ItemViewHolder {
+		public final ImageView icon;
+		public final TextView nickname;
+		public final TextView caption;
+
+		public HostBean host;
+
+		public HostViewHolder(View v) {
+			super(v);
+
+			icon = (ImageView) v.findViewById(android.R.id.icon);
+			nickname = (TextView) v.findViewById(android.R.id.text1);
+			caption = (TextView) v.findViewById(android.R.id.text2);
+		}
+
+		@Override
+		public void onClick(View v) {
+			// launch off to console details
+			Uri uri = host.getUri();
+
+			Intent contents = new Intent(Intent.ACTION_VIEW, uri);
+			contents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+			if (makingShortcut) {
+				// create shortcut if requested
+				ShortcutIconResource icon = Intent.ShortcutIconResource.fromContext(
+						HostListActivity.this, R.drawable.icon);
+
+				Intent intent = new Intent();
+				intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, contents);
+				intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, host.getNickname());
+				intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
+
+				setResult(RESULT_OK, intent);
+				finish();
+
+			} else {
+				// otherwise just launch activity to show this host
+				contents.setClass(HostListActivity.this, ConsoleActivity.class);
+				HostListActivity.this.startActivity(contents);
+			}
+		}
+
+		@Override
+		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+			menu.setHeaderTitle(host.getNickname());
+
+			// edit, disconnect, delete
+			MenuItem connect = menu.add(R.string.list_host_disconnect);
+			final TerminalBridge bridge = (bound == null) ? null : bound.getConnectedBridge(host);
+			connect.setEnabled(bridge != null);
+			connect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					bridge.dispatchDisconnect(true);
+					return true;
+				}
+			});
+
+			MenuItem edit = menu.add(R.string.list_host_edit);
+			edit.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					Intent intent = new Intent(HostListActivity.this, HostEditorActivity.class);
+					intent.putExtra(Intent.EXTRA_TITLE, host.getId());
+					HostListActivity.this.startActivityForResult(intent, REQUEST_EDIT);
+					return true;
+				}
+			});
+
+			MenuItem portForwards = menu.add(R.string.list_host_portforwards);
+			portForwards.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					Intent intent = new Intent(HostListActivity.this, PortForwardListActivity.class);
+					intent.putExtra(Intent.EXTRA_TITLE, host.getId());
+					HostListActivity.this.startActivityForResult(intent, REQUEST_EDIT);
+					return true;
+				}
+			});
+			if (!TransportFactory.canForwardPorts(host.getProtocol()))
+				portForwards.setEnabled(false);
+
+			MenuItem delete = menu.add(R.string.list_host_delete);
+			delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					// prompt user to make sure they really want this
+					new AlertDialog.Builder(HostListActivity.this)
+							.setMessage(getString(R.string.delete_message, host.getNickname()))
+							.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int which) {
+									// make sure we disconnect
+									if (bridge != null)
+										bridge.dispatchDisconnect(true);
+
+									hostdb.deleteHost(host);
+									updateList();
+								}
+							})
+							.setNegativeButton(R.string.delete_neg, null).create().show();
+
+					return true;
+				}
+			});
+		}
+	}
+
+	@VisibleForTesting
+	private class HostAdapter extends ItemAdapter {
+		private final List<HostBean> hosts;
 		private final TerminalManager manager;
-		private final ColorStateList red, green, blue;
 
 		public final static int STATE_UNKNOWN = 1, STATE_CONNECTED = 2, STATE_DISCONNECTED = 3;
 
-		class ViewHolder {
-			public TextView nickname;
-			public TextView caption;
-			public ImageView icon;
-		}
-
 		public HostAdapter(Context context, List<HostBean> hosts, TerminalManager manager) {
-			super(context, R.layout.item_host, hosts);
+			super(context);
 
 			this.hosts = hosts;
 			this.manager = manager;
-
-			red = context.getResources().getColorStateList(R.color.red);
-			green = context.getResources().getColorStateList(R.color.green);
-			blue = context.getResources().getColorStateList(R.color.blue);
 		}
 
 		/**
 		 * Check if we're connected to a terminal with the given host.
 		 */
 		private int getConnectedState(HostBean host) {
-			// always disconnected if we dont have backend service
-			if (this.manager == null)
+			// always disconnected if we don't have backend service
+			if (this.manager == null || host == null) {
 				return STATE_UNKNOWN;
+			}
 
-			if (manager.getConnectedBridge(host) != null)
+			if (manager.getConnectedBridge(host) != null) {
 				return STATE_CONNECTED;
+			}
 
-			if (manager.disconnected.contains(host))
+			if (manager.disconnected.contains(host)) {
 				return STATE_DISCONNECTED;
+			}
 
 			return STATE_UNKNOWN;
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder holder;
+		public HostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+			View v = LayoutInflater.from(parent.getContext())
+					.inflate(R.layout.item_host, parent, false);
+			HostViewHolder vh = new HostViewHolder(v);
+			return vh;
+		}
 
-			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.item_host, null, false);
-
-				holder = new ViewHolder();
-
-				holder.nickname = (TextView) convertView.findViewById(android.R.id.text1);
-				holder.caption = (TextView) convertView.findViewById(android.R.id.text2);
-				holder.icon = (ImageView) convertView.findViewById(android.R.id.icon);
-
-				convertView.setTag(holder);
-			} else
-				holder = (ViewHolder) convertView.getTag();
+		@Override
+		public void onBindViewHolder(ItemViewHolder holder, int position) {
+			HostViewHolder hostHolder = (HostViewHolder) holder;
 
 			HostBean host = hosts.get(position);
+			hostHolder.host = host;
 			if (host == null) {
 				// Well, something bad happened. We can't continue.
 				Log.e("HostAdapter", "Host bean is null!");
-
-				holder.nickname.setText("Error during lookup");
-				holder.caption.setText("see 'adb logcat' for more");
-				return convertView;
+				hostHolder.nickname.setText("Error during lookup");
+			} else {
+				hostHolder.nickname.setText(host.getNickname());
 			}
-
-			holder.nickname.setText(host.getNickname());
 
 			switch (this.getConnectedState(host)) {
 			case STATE_UNKNOWN:
-				holder.icon.setImageState(new int[] { }, true);
+				hostHolder.icon.setImageState(new int[] { }, true);
 				break;
 			case STATE_CONNECTED:
-				holder.icon.setImageState(new int[] { android.R.attr.state_checked }, true);
+				hostHolder.icon.setImageState(new int[] { android.R.attr.state_checked }, true);
 				break;
 			case STATE_DISCONNECTED:
-				holder.icon.setImageState(new int[] { android.R.attr.state_expanded }, true);
+				hostHolder.icon.setImageState(new int[] { android.R.attr.state_expanded }, true);
 				break;
 			}
 
-			ColorStateList chosen = null;
-			if (HostDatabase.COLOR_RED.equals(host.getColor()))
-				chosen = this.red;
-			else if (HostDatabase.COLOR_GREEN.equals(host.getColor()))
-				chosen = this.green;
-			else if (HostDatabase.COLOR_BLUE.equals(host.getColor()))
-				chosen = this.blue;
-
-			Context context = convertView.getContext();
-
-			if (chosen != null) {
-				// set color normally if not selected
-				holder.nickname.setTextColor(chosen);
-				holder.caption.setTextColor(chosen);
+			@StyleRes final int chosenStyleFirstLine;
+			@StyleRes final int chosenStyleSecondLine;
+			if (HostDatabase.COLOR_RED.equals(host.getColor())) {
+				chosenStyleFirstLine = R.style.ListItemFirstLineText_Red;
+				chosenStyleSecondLine = R.style.ListItemSecondLineText_Red;
+			} else if (HostDatabase.COLOR_GREEN.equals(host.getColor())) {
+				chosenStyleFirstLine = R.style.ListItemFirstLineText_Green;
+				chosenStyleSecondLine = R.style.ListItemSecondLineText_Green;
+			} else if (HostDatabase.COLOR_BLUE.equals(host.getColor())) {
+				chosenStyleFirstLine = R.style.ListItemFirstLineText_Blue;
+				chosenStyleSecondLine = R.style.ListItemSecondLineText_Blue;
 			} else {
-				// selected, so revert back to default black text
-				holder.nickname.setTextAppearance(context, android.R.attr.textAppearanceLarge);
-				holder.caption.setTextAppearance(context, android.R.attr.textAppearanceSmall);
+				chosenStyleFirstLine = R.style.ListItemFirstLineText;
+				chosenStyleSecondLine = R.style.ListItemSecondLineText;
 			}
+
+			hostHolder.nickname.setTextAppearance(context, chosenStyleFirstLine);
+			hostHolder.caption.setTextAppearance(context, chosenStyleSecondLine);
 
 			CharSequence nice = context.getString(R.string.bind_never);
 			if (host.getLastConnect() > 0) {
 				nice = DateUtils.getRelativeTimeSpanString(host.getLastConnect() * 1000);
 			}
 
-			holder.caption.setText(nice);
+			hostHolder.caption.setText(nice);
+		}
 
-			return convertView;
+		@Override
+		public long getItemId(int position) {
+			return hosts.get(position).getId();
+		}
+
+		@Override
+		public int getItemCount() {
+			return hosts.size();
 		}
 	}
+
+	public static class AddHostDialogFragment extends DialogFragment {
+			private TextView mAddressField;
+			private Spinner mSpinner;
+
+			HostListActivity mListener;
+
+			@Override
+			public void onAttach(Activity activity) {
+				super.onAttach(activity);
+				mListener = (HostListActivity) activity;
+			}
+
+			@Override
+			public Dialog onCreateDialog(Bundle savedInstanceState) {
+				LayoutInflater inflater = getActivity().getLayoutInflater();
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+				View addHostDialog = inflater.inflate(R.layout.dia_add_host, null);
+				builder.setView(addHostDialog)
+						.setPositiveButton(R.string.button_add, null)
+						.setNegativeButton(R.string.button_cancel, null);
+				AlertDialog dialog = builder.create();
+
+				mAddressField = (TextView) addHostDialog.findViewById(R.id.front_quickconnect);
+				mAddressField.setOnKeyListener(new OnKeyListener() {
+
+					public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+						if (event.getAction() == KeyEvent.ACTION_UP) return false;
+						if (keyCode != KeyEvent.KEYCODE_ENTER) return false;
+
+						processNewUriEntered();
+						return true;
+					}
+				});
+
+				mSpinner = (Spinner) addHostDialog.findViewById(R.id.transport_selection);
+				ArrayAdapter<String> transportSelection = new ArrayAdapter<String>(getActivity(),
+						android.R.layout.simple_spinner_item, TransportFactory.getTransportNames());
+				transportSelection.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+					public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
+						String formatHint = TransportFactory.getFormatHint(
+								(String) mSpinner.getSelectedItem(),
+								getActivity());
+						mAddressField.setHint(formatHint);
+						mAddressField.setError(null);
+						mAddressField.requestFocus();
+					}
+
+					public void onNothingSelected(AdapterView<?> arg0) {
+					}
+				});
+				mSpinner.setAdapter(transportSelection);
+
+				return dialog;
+			}
+
+			@Override
+			public void onResume()
+			{
+				super.onResume();
+				final AlertDialog alertDialog = (AlertDialog) getDialog();
+				Button addButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+				addButton.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						processNewUriEntered();
+					}
+				});
+			}
+
+			/**
+			 * Processes the URI that has been entered. If it is a valid URI, adds that host
+			 * and starts ConsoleActivity; otherwise, shows an error in the address field.
+			 */
+			private void processNewUriEntered() {
+				Uri uri = TransportFactory.getUri((String) mSpinner
+						.getSelectedItem(), mAddressField.getText().toString());
+				if (uri == null) {
+					mAddressField.setError(getString(R.string.list_format_error,
+							TransportFactory.getFormatHint(
+									(String) mSpinner.getSelectedItem(),
+									getActivity())));
+					mAddressField.requestFocus();
+					return;
+				}
+
+				mListener.startConsoleActivity(uri);
+				getDialog().dismiss();
+			}
+		}
 }

@@ -22,7 +22,7 @@ package org.connectbot.util;
  *
  */
 public class Colors {
-	public final static Integer[] defaults = new Integer[] {
+	public final static int[] defaults = new int[] {
 			0xff000000, // black
 			0xffcc0000, // red
 			0xff00cc00, // green

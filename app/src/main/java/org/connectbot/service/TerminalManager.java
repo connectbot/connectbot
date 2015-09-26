@@ -35,6 +35,8 @@ import java.util.TimerTask;
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PubkeyBean;
+import org.connectbot.data.ColorStorage;
+import org.connectbot.data.HostStorage;
 import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
@@ -81,11 +83,14 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	public BridgeDisconnectedListener disconnectListener = null;
 
+	private final ArrayList<OnHostStatusChangedListener> hostStatusChangedListeners = new ArrayList<>();
+
 	public Map<String, KeyHolder> loadedKeypairs = new HashMap<String, KeyHolder>();
 
 	public Resources res;
 
-	public HostDatabase hostdb;
+	public HostStorage hostdb;
+	public ColorStorage colordb;
 	public PubkeyDatabase pubkeydb;
 
 	protected SharedPreferences prefs;
@@ -127,8 +132,9 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		pubkeyTimer = new Timer("pubkeyTimer", true);
 
-		hostdb = new HostDatabase(this);
-		pubkeydb = new PubkeyDatabase(this);
+		hostdb = HostDatabase.get(this);
+		colordb = HostDatabase.get(this);
+		pubkeydb = PubkeyDatabase.get(this);
 
 		// load all marked pubkeys into memory
 		updateSavingKeys();
@@ -171,15 +177,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		disconnectAll(true, false);
 
-		if (hostdb != null) {
-			hostdb.close();
-			hostdb = null;
-		}
-
-		if (pubkeydb != null) {
-			pubkeydb.close();
-			pubkeydb = null;
-		}
+		hostdb = null;
+		pubkeydb = null;
 
 		synchronized (this) {
 			if (idleTimer != null)
@@ -251,6 +250,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		// also update database with new connected time
 		touchHost(host);
+
+		notifyHostStatusChanged();
 
 		return bridge;
 	}
@@ -353,6 +354,8 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		synchronized (disconnected) {
 			disconnected.add(bridge.host);
 		}
+
+		notifyHostStatusChanged();
 
 		if (shouldHideRunningNotification) {
 			ConnectionNotifier.getInstance().hideRunningNotification(this);
@@ -717,6 +720,30 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				bridge.startConnection();
 			}
 			mPendingReconnect.clear();
+		}
+	}
+
+	/**
+	 * Register a {@code listener} that wants to know when a host's status materially changes.
+	 * @see #hostStatusChangedListeners
+	 */
+	public void registerOnHostStatusChangedListener(OnHostStatusChangedListener listener) {
+		if (!hostStatusChangedListeners.contains(listener)) {
+			hostStatusChangedListeners.add(listener);
+		}
+	}
+
+	/**
+	 * Unregister a {@code listener} that wants to know when a host's status materially changes.
+	 * @see #hostStatusChangedListeners
+	 */
+	public void unregisterOnHostStatusChangedListener(OnHostStatusChangedListener listener) {
+		hostStatusChangedListeners.remove(listener);
+	}
+
+	private void notifyHostStatusChanged() {
+		for (OnHostStatusChangedListener listener : hostStatusChangedListeners) {
+			listener.onHostStatusChanged();
 		}
 	}
 }
