@@ -143,7 +143,6 @@
   <string name="portforward_pos">Создать перенаправление порта</string>
   <string name="portforward_done">Перенаправление порта успешно завершено</string>
   <string name="portforward_problem">Не удалось создать перенаправление порта. Может быть вы используете порты меньше чем 1024 или пор уже используется?</string>
-  <string name="portforward_menu_add">Добавить перенаправление порта</string>
   <string name="hint_userhost">пользователь\@имяхоста</string>
   <string name="list_format_error">Используйте формат %1$s</string>
   <string name="format_username">имя пользователя</string>

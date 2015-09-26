@@ -139,7 +139,6 @@
   <string name="portforward_pos">Luo porttiohjaus</string>
   <string name="portforward_done">Porttiohjaus luotu onnistuneesti</string>
   <string name="portforward_problem">Ongelma luotaessa porttiohjausta. Ehkä käytät porttia joka on alle 1024 tai portti on jo käytössä?</string>
-  <string name="portforward_menu_add">Lisää porttiohjaus</string>
   <string name="hint_userhost">tunnus\@palvelin</string>
   <string name="list_format_error">Käytä muotoa %1$s</string>
   <string name="format_username">käyttäjätunnus</string>

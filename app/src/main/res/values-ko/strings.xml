@@ -132,7 +132,6 @@
   <string name="portforward_dynamic">동적 (SOCKS)</string>
   <string name="portforward_pos">포트 포워딩 만들기</string>
   <string name="portforward_done">포트 포워딩을 만드는 데 성공했습니다.</string>
-  <string name="portforward_menu_add">포트 포워딩 추가</string>
   <string name="list_format_error">%1$s 형식을 사용</string>
   <string name="format_username">사용자 이름</string>
   <string name="format_hostname">호스트 이름</string>

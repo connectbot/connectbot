@@ -17,6 +17,7 @@
 
 package org.connectbot;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import org.connectbot.bean.HostBean;
@@ -40,13 +41,11 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
@@ -76,6 +75,9 @@ public class PortForwardListActivity extends AppCompatListActivity {
 	private ServiceConnection connection = null;
 	protected TerminalBridge hostBridge = null;
 	protected LayoutInflater inflater = null;
+
+
+	protected Handler updateHandler = new Handler(new WeakReference<>(this));
 
 	private HostBean host;
 
@@ -152,7 +154,7 @@ public class PortForwardListActivity extends AppCompatListActivity {
 			@Override
 			public void onClick(View v) {
 				// build dialog to prompt user about updating
-				final View portForwardView = inflater.inflate(R.layout.dia_portforward, null, false);
+				final View portForwardView = View.inflate(PortForwardListActivity.this, R.layout.dia_portforward, null);
 				final EditText destEdit = (EditText) portForwardView.findViewById(R.id.portforward_destination);
 				final Spinner typeSpinner = (Spinner) portForwardView.findViewById(R.id.portforward_type);
 
@@ -215,13 +217,6 @@ public class PortForwardListActivity extends AppCompatListActivity {
 		});
 	}
 
-	protected Handler updateHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			PortForwardListActivity.this.updateList();
-		}
-	};
-
 	protected void updateList() {
 		if (hostBridge != null) {
 			this.portForwards = hostBridge.getPortForwards();
@@ -272,7 +267,7 @@ public class PortForwardListActivity extends AppCompatListActivity {
 			MenuItem edit = menu.add(R.string.portforward_edit);
 			edit.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {
-					final View editTunnelView = inflater.inflate(R.layout.dia_portforward, null, false);
+					final View editTunnelView = View.inflate(PortForwardListActivity.this, R.layout.dia_portforward, null);
 
 					final Spinner typeSpinner = (Spinner) editTunnelView.findViewById(R.id.portforward_type);
 					if (HostDatabase.PORTFORWARD_LOCAL.equals(portForward.getType()))
@@ -426,6 +421,20 @@ public class PortForwardListActivity extends AppCompatListActivity {
 		@Override
 		public int getItemCount() {
 			return portForwards.size();
+		}
+	}
+
+	private static class Handler extends android.os.Handler {
+
+		private WeakReference<PortForwardListActivity> mActivity;
+
+		Handler(WeakReference<PortForwardListActivity> activity) {
+			mActivity = activity;
+		}
+
+		@Override
+		public void handleMessage(Message msg) {
+			mActivity.get().updateList();
 		}
 	}
 }

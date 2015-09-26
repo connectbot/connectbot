@@ -35,6 +35,17 @@
 		android:clipToPadding="false"
 		/>
 
+	<TextView
+		android:id="@+id/empty"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:gravity="center"
+		android:text="@string/portforward_list_empty"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:paddingBottom="88dp"
+		android:clipToPadding="false"
+	/>
+
 	<android.support.design.widget.FloatingActionButton
 		android:id="@+id/add_port_forward_button"
 		android:layout_width="wrap_content"

@@ -155,7 +155,6 @@
   <string name="portforward_pos">Направи прослеђење порта</string>
   <string name="portforward_done">Успешно направљено прослеђење порта</string>
   <string name="portforward_problem">Појавио се проблем при прављењу прослеђења порта. Можда користите портове испод 1024 или је порт већ у употреби?</string>
-  <string name="portforward_menu_add">Додај прослеђење порта</string>
   <string name="hint_userhost">korisnik\@domacin</string>
   <string name="list_format_error">Користи формат „%1$s“</string>
   <string name="format_username">korisnik</string>

@@ -385,8 +385,6 @@
 	<string name="portforward_done">"Successfully created port forward"</string>
 	<string name="portforward_problem">"Problem creating port forward, maybe you're using ports under 1024 or port is already used?"</string>
 
-	<string name="portforward_menu_add">"Add port forward"</string>
-
 	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
 	<string name="hint_userhost">"user@hostname"</string>
 
