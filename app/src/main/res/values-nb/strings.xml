@@ -140,7 +140,6 @@
   <string name="portforward_pos">Opprett portvideresending</string>
   <string name="portforward_done">Vellykket oppretting av portvideresending</string>
   <string name="portforward_problem">Mislyktes å opprette portvideresending. Bruker du porter under 1024, eller er denne porten allerede tatt?</string>
-  <string name="portforward_menu_add">Legg til portvideresending</string>
   <string name="hint_userhost">bruker\@vert</string>
   <string name="list_format_error">Use the format %1$s</string>
   <string name="format_username">brukernavn</string>

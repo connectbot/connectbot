@@ -140,7 +140,6 @@
   <string name="portforward_pos">Opret port-videresendelse</string>
   <string name="portforward_done">Port-videresendelse oprettet</string>
   <string name="portforward_problem">Der opstod problemer ved oprettelsen af port-videresendelse. Måske bruger du en port lavere end 1025, eller en port som allerede er i brug.</string>
-  <string name="portforward_menu_add">Tilføj port-videresendelse</string>
   <string name="hint_userhost">brugernavn\@vært</string>
   <string name="list_format_error">Anvend formatet %1$s</string>
   <string name="format_username">brugernavn</string>

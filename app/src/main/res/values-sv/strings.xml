@@ -140,7 +140,6 @@
   <string name="portforward_pos">Skapa vidarebefodring av port</string>
   <string name="portforward_done">Vidarebefodring av port skapad.</string>
   <string name="portforward_problem">Lyckades inte att skapa en vidarebefodring av port, är den under 1024 eller används den kanske?</string>
-  <string name="portforward_menu_add">Lägg till vidarebefodring av port.</string>
   <string name="hint_userhost">användarnamn\@värdnamn</string>
   <string name="list_format_error">Använd formatet %1$s</string>
   <string name="format_username">användarnamn</string>

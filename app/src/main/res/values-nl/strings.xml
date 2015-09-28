@@ -140,7 +140,6 @@
   <string name="portforward_pos">Maak port forward</string>
   <string name="portforward_done">Succesvol port forward gemaakt</string>
   <string name="portforward_problem">Probleem met het maken van een port forward, misschien gebruik je poort onder 1024 of is de poort al gebruikt?</string>
-  <string name="portforward_menu_add">Voeg port forward toe</string>
   <string name="hint_userhost">gebruiker\@hostnaam</string>
   <string name="list_format_error">Gebruik het formaat %1$s</string>
   <string name="format_username">gebruiker</string>

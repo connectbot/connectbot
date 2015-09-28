@@ -142,7 +142,6 @@
   <string name="portforward_pos">Port yönlendirmesi oluştur</string>
   <string name="portforward_done">Port yönlendirmesi başarıyla oluşturuldu</string>
   <string name="portforward_problem">Port yönlendirmesi oluşturmada hata oldu, port 1024 altı yada meşgul bir port kullanmakdan kaynaklanabilir</string>
-  <string name="portforward_menu_add">Port yönlendirmesi ekle</string>
   <string name="hint_userhost">kullanici\@sunucuadi</string>
   <string name="list_format_error">%1$s formatında kullanın</string>
   <string name="format_username">kullanıcı adı</string>

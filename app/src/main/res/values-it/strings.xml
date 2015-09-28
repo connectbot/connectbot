@@ -142,7 +142,6 @@
   <string name="portforward_pos">Crea inoltro porta</string>
   <string name="portforward_done">Inoltro della porta impostato correttamente</string>
   <string name="portforward_problem">Problema configurando l\'inoltro della porta, forse si cerca di usare una porta più bassa di 1024 o la porta è già in uso?</string>
-  <string name="portforward_menu_add">Aggiungi inoltro di una porta</string>
   <string name="hint_userhost">utente\@host</string>
   <string name="list_format_error">Usa il formato %1$s</string>
   <string name="format_username">nome utente</string>

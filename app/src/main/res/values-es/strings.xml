@@ -154,7 +154,6 @@
   <string name="portforward_pos">Crear reenvio de puerto</string>
   <string name="portforward_done">Creacion satisfactoria del reenvio de puerto</string>
   <string name="portforward_problem">Problema al crear el puerto de reenvio, tal vez usted está usando puertos menores de 1024 o el puerto ya está siendo utilizado?</string>
-  <string name="portforward_menu_add">Añadir redirección de puertos</string>
   <string name="hint_userhost">usuario\@equipo</string>
   <string name="list_format_error">Usar formato %1$s</string>
   <string name="format_username">Usuario</string>

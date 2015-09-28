@@ -150,7 +150,6 @@
   <string name="portforward_pos">Créer la redirection de port</string>
   <string name="portforward_done">Redirection de port créée avec succès</string>
   <string name="portforward_problem">Problème de création de la redirection de port, peut-être utilisez-vous un port sous le 1024 ou un déjà utilisé ?</string>
-  <string name="portforward_menu_add">Ajouter une redirection de port</string>
   <string name="hint_userhost">utilisateur\@serveur</string>
   <string name="list_format_error">Utilisez le format \"%1$s\"</string>
   <string name="format_username">utilisateur</string>

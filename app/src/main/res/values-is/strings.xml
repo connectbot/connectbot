@@ -122,7 +122,6 @@
   <string name="portforward_pos">Áframsenda port</string>
   <string name="portforward_done">Áframsendi port farsællega</string>
   <string name="portforward_problem">Gat ekki áframsent portið, varstu að nota port minna en 1024? Eða er portið nú þegar áframsent?</string>
-  <string name="portforward_menu_add">Áframsenda port</string>
   <string name="hint_userhost">notandi\@þjónn</string>
   <string name="format_username">notendanafn</string>
   <string name="format_hostname">þjónn</string>

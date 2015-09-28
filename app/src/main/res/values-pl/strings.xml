@@ -142,7 +142,6 @@
   <string name="portforward_pos">Utwórz przekierowanie portu</string>
   <string name="portforward_done">Pomyślnie utworzono przekierowanie portu</string>
   <string name="portforward_problem">Wystąpił problem podczas tworzenia przekierowania, być może użyłeś portu niższego niż 1024 lub port jest już używany?</string>
-  <string name="portforward_menu_add">Dodaj przekierowanie portu</string>
   <string name="hint_userhost">użytkownik\@host</string>
   <string name="list_format_error">Proszę użyć formatu %1$s</string>
   <string name="format_username">Nazwa użytkownika</string>
