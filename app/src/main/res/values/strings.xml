@@ -594,4 +594,9 @@
 	<string name="button_key_f11">F11</string>
 	<!-- Text for the "F12" button in virtual keyboard. -->
 	<string name="button_key_f12">F12</string>
+	<!-- Label for spinner which allows user to select SSH/Telnet/Local. -->
+	<string name="protocol_spinner_label">Protocol</string>
+	<!-- Label for button which expands/collapses section. -->
+	<string name="expand">Expand</string>
+
 </resources>

@@ -1,0 +1,155 @@
+<!--
+  ~ ConnectBot: simple, powerful, open-source SSH client for Android
+  ~ Copyright 2015 Kenny Root, Jeffrey Sharkey
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	tools:context="org.connectbot.HostEditorFragment"
+    >
+
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:layout_marginStart="4dp"
+      android:layout_marginLeft="4dp"
+      android:layout_marginBottom="4dp"
+      >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/protocol_spinner_label"
+        android:textSize="12sp"
+        />
+
+    <Spinner
+        android:id="@+id/transport_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+  </LinearLayout>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:animateLayoutChanges="true"
+      tools:ignore="UnusedAttribute"
+      >
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/quickconnect_field_container"
+        android:layout_width="0dp"
+        android:layout_weight ="1"
+        android:layout_height="wrap_content"
+        >
+
+      <EditText
+          android:id="@+id/quickconnect_field"
+          android:layout_width="match_parent"
+          android:layout_weight="1"
+          android:layout_height="wrap_content"
+          android:maxLines="1"
+          android:inputType="textNoSuggestions"
+          />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <ImageButton
+        android:id="@+id/expand_collapse_button"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_expand_more"
+        android:contentDescription="@string/expand"
+        android:background="#00000000"
+        />
+
+  </LinearLayout>
+
+  <LinearLayout
+      android:id="@+id/uri_parts_container"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:layout_marginLeft="56dp"
+      android:layout_marginStart="56dp"
+      android:visibility="gone"
+      android:animateLayoutChanges="true"
+      tools:ignore="UnusedAttribute"
+      >
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/username_field_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+      <EditText
+          android:id="@+id/username_edit_text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/hostpref_username_title"
+          android:maxLines="1"
+          android:inputType="textNoSuggestions"
+          />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/hostname_field_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+      <EditText
+          android:id="@+id/hostname_edit_text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/hostpref_hostname_title"
+          android:maxLines="1"
+          android:inputType="textNoSuggestions"
+          />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/port_field_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+      <EditText
+          android:id="@+id/port_edit_text"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:inputType="number"
+          android:hint="@string/hostpref_port_title"
+          android:maxLines="1"
+          />
+
+    </android.support.design.widget.TextInputLayout>
+
+  </LinearLayout>
+
+  <View style="@style/Divider" />
+
+</LinearLayout>
