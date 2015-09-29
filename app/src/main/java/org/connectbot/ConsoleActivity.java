@@ -756,25 +756,39 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 					boolean mouseReport = ((vt320) bridge.buffer).isMouseReportEnabled();
 
 					// MouseReport can be "defeated" using the shift key.
-					if ((!mouseReport || shiftOn) && event.getAction() == MotionEvent.ACTION_DOWN) {
-						switch (event.getButtonState()) {
-						case MotionEvent.BUTTON_PRIMARY:
-							// Automatically start copy mode if using a mouse.
-							startCopyMode();
-							break;
-						case MotionEvent.BUTTON_SECONDARY:
-							openContextMenu(pager);
-							return true;
-						case MotionEvent.BUTTON_TERTIARY:
-							// Middle click pastes.
-							pasteIntoTerminal();
-							return true;
+					if ((!mouseReport || shiftOn)) {
+						if (event.getAction() == MotionEvent.ACTION_DOWN) {
+							switch (event.getButtonState()) {
+							case MotionEvent.BUTTON_PRIMARY:
+								// Automatically start copy mode if using a mouse.
+								startCopyMode();
+								break;
+							case MotionEvent.BUTTON_SECONDARY:
+								openContextMenu(pager);
+								return true;
+							case MotionEvent.BUTTON_TERTIARY:
+								// Middle click pastes.
+								pasteIntoTerminal();
+								return true;
+							}
 						}
 					} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
 						((vt320) bridge.buffer).mousePressed(
 								col, row, mouseEventToJavaModifiers(event));
 					} else if (event.getAction() == MotionEvent.ACTION_UP) {
 						((vt320) bridge.buffer).mouseReleased(col, row);
+					} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+						int buttonState = event.getButtonState();
+						int button = (buttonState & MotionEvent.BUTTON_PRIMARY) != 0 ? 0 :
+								(buttonState & MotionEvent.BUTTON_SECONDARY) != 0 ? 1 :
+								(buttonState & MotionEvent.BUTTON_TERTIARY) != 0 ? 2 : 3;
+						((vt320) bridge.buffer).mouseMoved(
+								button,
+								col,
+								row,
+								(event.getMetaState() & KeyEvent.META_CTRL_ON) != 0,
+								(event.getMetaState() & KeyEvent.META_SHIFT_ON) != 0,
+								(event.getMetaState() & KeyEvent.META_META_ON) != 0);
 					}
 				}
 

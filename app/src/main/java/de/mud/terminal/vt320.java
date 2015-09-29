@@ -385,26 +385,63 @@ public void setScreenSize(int c, int r, boolean broadcast) {
    * @param meta
    */
   public void mouseWheel(boolean down, int x, int y, boolean ctrl, boolean shift, boolean meta) {
-   if (mouserpt == 0 || mouserpt == 9)
-    return;
+    if (mouserpt == 0 || mouserpt == 9)
+      return;
 
-   int mods = 0;
-   if (ctrl) mods |= 2;
-   if (shift) mods |= 1;
-   if (meta) mods |= 4;
+    int mods = 0;
+    if (ctrl) mods |= 16;
+    if (shift) mods |= 4;
+    if (meta) mods |= 8;
 
-   int mousecode = ((down ? 0 : 1) + 96) | 0x20 | ((mods & 7) << 2);
+    int mousecode = ((down ? 0 : 1) + 96) | 0x20 | mods;
 
-   byte b[] = new byte[6];
+    byte b[] = new byte[6];
 
-   b[0] = 27;
-   b[1] = (byte) '[';
-   b[2] = (byte) 'M';
-   b[3] = (byte) mousecode;
-   b[4] = (byte) (0x20 + x + 1);
-   b[5] = (byte) (0x20 + y + 1);
+    b[0] = 27;
+    b[1] = (byte) '[';
+    b[2] = (byte) 'M';
+    b[3] = (byte) mousecode;
+    b[4] = (byte) (0x20 + x + 1);
+    b[5] = (byte) (0x20 + y + 1);
 
-   write(b); // FIXME: writeSpecial here
+    write(b); // FIXME: writeSpecial here
+  }
+
+  /**
+   * Passes mouse move events to the terminal.
+   * @param button The mouse button pressed. 3 indicates no button is pressed.
+   * @param x
+   * @param y
+   * @param ctrl
+   * @param shift
+   * @param meta
+   */
+  public void mouseMoved(int button, int x, int y, boolean ctrl, boolean shift, boolean meta) {
+    if (mouserpt != 1002 && mouserpt != 1003)
+      return;
+
+    // 1002 only reports drags. 1003 reports any movement.
+    if (mouserpt == 1002 && button == 3)
+      return;
+
+    int mods = 0;
+    if (ctrl) mods |= 16;
+    if (shift) mods |= 4;
+    if (meta) mods |= 8;
+
+    // Normal mouse code plus additional 32 to indicate movement.
+    int mousecode = (button + 0x40) | mods;
+
+    byte b[] = new byte[6];
+
+    b[0] = 27;
+    b[1] = (byte) '[';
+    b[2] = (byte) 'M';
+    b[3] = (byte) mousecode;
+    b[4] = (byte) (0x20 + x + 1);
+    b[5] = (byte) (0x20 + y + 1);
+
+    write(b); // FIXME: writeSpecial here
   }
 
   /**
