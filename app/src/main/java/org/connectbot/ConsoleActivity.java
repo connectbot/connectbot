@@ -745,56 +745,20 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 			public boolean onTouch(View v, MotionEvent event) {
 				TerminalBridge bridge = adapter.getCurrentTerminalView().bridge;
-				int row = (int) Math.floor(event.getY() / bridge.charHeight);
-				int col = (int) Math.floor(event.getX() / bridge.charWidth);
 
 				// Handle mouse-specific actions.
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
 						MotionEventCompat.getSource(event) == InputDevice.SOURCE_MOUSE) {
-					int meta = event.getMetaState();
-					boolean shiftOn = (event.getMetaState() & KeyEvent.META_SHIFT_ON) != 0;
-					boolean mouseReport = ((vt320) bridge.buffer).isMouseReportEnabled();
-
-					// MouseReport can be "defeated" using the shift key.
-					if ((!mouseReport || shiftOn)) {
-						if (event.getAction() == MotionEvent.ACTION_DOWN) {
-							switch (event.getButtonState()) {
-							case MotionEvent.BUTTON_PRIMARY:
-								// Automatically start copy mode if using a mouse.
-								startCopyMode();
-								break;
-							case MotionEvent.BUTTON_SECONDARY:
-								openContextMenu(pager);
-								return true;
-							case MotionEvent.BUTTON_TERTIARY:
-								// Middle click pastes.
-								pasteIntoTerminal();
-								return true;
-							}
-						}
-					} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
-						((vt320) bridge.buffer).mousePressed(
-								col, row, mouseEventToJavaModifiers(event));
-					} else if (event.getAction() == MotionEvent.ACTION_UP) {
-						((vt320) bridge.buffer).mouseReleased(col, row);
-					} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-						int buttonState = event.getButtonState();
-						int button = (buttonState & MotionEvent.BUTTON_PRIMARY) != 0 ? 0 :
-								(buttonState & MotionEvent.BUTTON_SECONDARY) != 0 ? 1 :
-								(buttonState & MotionEvent.BUTTON_TERTIARY) != 0 ? 2 : 3;
-						((vt320) bridge.buffer).mouseMoved(
-								button,
-								col,
-								row,
-								(event.getMetaState() & KeyEvent.META_CTRL_ON) != 0,
-								(event.getMetaState() & KeyEvent.META_SHIFT_ON) != 0,
-								(event.getMetaState() & KeyEvent.META_META_ON) != 0);
+					if (onMouseEvent(event, bridge)) {
+						return true;
 					}
 				}
 
 				// when copying, highlight the area
 				if (copySource != null && copySource.isSelectingForCopy()) {
 					SelectionArea area = copySource.getSelectionArea();
+					int row = (int) Math.floor(event.getY() / bridge.charHeight);
+					int col = (int) Math.floor(event.getX() / bridge.charWidth);
 
 					switch (event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
@@ -862,6 +826,61 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 				// pass any touch events back to detector
 				return detect.onTouchEvent(event);
+			}
+
+			/**
+			 * @param event
+			 * @param bridge
+			 * @return True if the event is handled.
+			 */
+			@TargetApi(14)
+			private boolean onMouseEvent(MotionEvent event, TerminalBridge bridge) {
+				int row = (int) Math.floor(event.getY() / bridge.charHeight);
+				int col = (int) Math.floor(event.getX() / bridge.charWidth);
+				int meta = event.getMetaState();
+				boolean shiftOn = (meta & KeyEvent.META_SHIFT_ON) != 0;
+				boolean mouseReport = ((vt320) bridge.buffer).isMouseReportEnabled();
+
+				// MouseReport can be "defeated" using the shift key.
+				if ((!mouseReport || shiftOn)) {
+					if (event.getAction() == MotionEvent.ACTION_DOWN) {
+						switch (event.getButtonState()) {
+						case MotionEvent.BUTTON_PRIMARY:
+							// Automatically start copy mode if using a mouse.
+							startCopyMode();
+							break;
+						case MotionEvent.BUTTON_SECONDARY:
+							openContextMenu(pager);
+							return true;
+						case MotionEvent.BUTTON_TERTIARY:
+							// Middle click pastes.
+							pasteIntoTerminal();
+							return true;
+						}
+					}
+				} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					((vt320) bridge.buffer).mousePressed(
+							col, row, mouseEventToJavaModifiers(event));
+					return true;
+				} else if (event.getAction() == MotionEvent.ACTION_UP) {
+					((vt320) bridge.buffer).mouseReleased(col, row);
+					return true;
+				} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+					int buttonState = event.getButtonState();
+					int button = (buttonState & MotionEvent.BUTTON_PRIMARY) != 0 ? 0 :
+							(buttonState & MotionEvent.BUTTON_SECONDARY) != 0 ? 1 :
+									(buttonState & MotionEvent.BUTTON_TERTIARY) != 0 ? 2 : 3;
+					((vt320) bridge.buffer).mouseMoved(
+							button,
+							col,
+							row,
+							(meta & KeyEvent.META_CTRL_ON) != 0,
+							(meta & KeyEvent.META_SHIFT_ON) != 0,
+							(meta & KeyEvent.META_META_ON) != 0);
+					return true;
+				}
+
+				return false;
 			}
 
 		});
