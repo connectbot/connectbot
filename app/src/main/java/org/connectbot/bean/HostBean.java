@@ -31,7 +31,9 @@ import android.net.Uri;
  *
  */
 public class HostBean extends AbstractBean {
+
 	public static final String BEAN_NAME = "host";
+	private static final int DEFAULT_FONT_SIZE = 10;
 
 	/* Database fields */
 	private long id = -1;
@@ -48,7 +50,7 @@ public class HostBean extends AbstractBean {
 	private long pubkeyId = -1;
 	private boolean wantSession = true;
 	private String delKey = HostDatabase.DELKEY_DEL;
-	private int fontSize = -1;
+	private int fontSize = DEFAULT_FONT_SIZE;
 	private boolean compression = false;
 	private String encoding = HostDatabase.ENCODING_DEFAULT;
 	private boolean stayConnected = false;

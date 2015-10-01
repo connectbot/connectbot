@@ -19,6 +19,7 @@ package org.connectbot;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -33,7 +34,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.connectbot.bean.HostBean;
 import org.connectbot.transport.SSH;
@@ -46,6 +49,8 @@ public class HostEditorFragment extends Fragment {
 	private static final String ARG_EXISTING_HOST = "existingHost";
 	private static final String ARG_IS_EXPANDED = "isExpanded";
 	private static final String ARG_QUICKCONNECT_STRING = "quickConnectString";
+
+	private static final int MINIMUM_FONT_SIZE = 8;
 
 	// The host being edited.
 	private HostBean mHost;
@@ -67,6 +72,10 @@ public class HostEditorFragment extends Fragment {
 	// first field, etc.
 	private boolean mUriFieldEditInProgress = false;
 
+	// Values for the colors displayed in the color Spinner. These are not necessarily the same as
+	// the text in the Spinner because the text is localized while these values are not.
+	private TypedArray mColorValues;
+
 	private Spinner mTransportSpinner;
 	private TextInputLayout mQuickConnectContainer;
 	private EditText mQuickConnectField;
@@ -78,6 +87,10 @@ public class HostEditorFragment extends Fragment {
 	private EditText mHostnameField;
 	private View mPortContainer;
 	private EditText mPortField;
+	private EditText mNicknameField;
+	private Spinner mColorSelector;
+	private TextView mFontSizeText;
+	private SeekBar mFontSizeSeekBar;
 
 	public static HostEditorFragment newInstance(HostBean existingHost) {
 		HostEditorFragment fragment = new HostEditorFragment();
@@ -209,17 +222,64 @@ public class HostEditorFragment extends Fragment {
 		mUsernameContainer = view.findViewById(R.id.username_field_container);
 		mUsernameField = (EditText) view.findViewById(R.id.username_edit_text);
 		mUsernameField.setText(mHost.getUsername());
-		mUsernameField.addTextChangedListener(new UriDataUpdater(HostDatabase.FIELD_HOST_USERNAME));
+		mUsernameField.addTextChangedListener(new HostTextFieldWatcher(HostDatabase.FIELD_HOST_USERNAME));
 
 		mHostnameContainer = view.findViewById(R.id.hostname_field_container);
 		mHostnameField = (EditText) view.findViewById(R.id.hostname_edit_text);
 		mHostnameField.setText(mHost.getHostname());
-		mHostnameField.addTextChangedListener(new UriDataUpdater(HostDatabase.FIELD_HOST_HOSTNAME));
+		mHostnameField.addTextChangedListener(new HostTextFieldWatcher(HostDatabase.FIELD_HOST_HOSTNAME));
 
 		mPortContainer = view.findViewById(R.id.port_field_container);
 		mPortField = (EditText) view.findViewById(R.id.port_edit_text);
 		mPortField.setText(Integer.toString(mHost.getPort()));
-		mPortField.addTextChangedListener(new UriDataUpdater(HostDatabase.FIELD_HOST_PORT));
+		mPortField.addTextChangedListener(new HostTextFieldWatcher(HostDatabase.FIELD_HOST_PORT));
+
+		mNicknameField = (EditText) view.findViewById(R.id.nickname_field);
+		mNicknameField.setText(mHost.getNickname());
+		mNicknameField.addTextChangedListener(
+				new HostTextFieldWatcher(HostDatabase.FIELD_HOST_NICKNAME));
+
+		mColorSelector = (Spinner) view.findViewById(R.id.color_selector);
+		if (mHost.getColor() != null) {
+			// Unfortunately, TypedArray doesn't have an indexOf(String) function, so search through
+			// the array for the saved color.
+			for (int i = 0; i < mColorValues.getIndexCount(); i++) {
+				if (mHost.getColor().equals(mColorValues.getString(i))) {
+					mColorSelector.setSelection(i);
+					break;
+				}
+			}
+		}
+		mColorSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				mHost.setColor(mColorValues.getString(position));
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+			}
+		});
+
+		mFontSizeText = (TextView) view.findViewById(R.id.font_size_text);
+		mFontSizeSeekBar = (SeekBar) view.findViewById(R.id.font_size_bar);
+		mFontSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				int fontSize = MINIMUM_FONT_SIZE + progress;
+				mHost.setFontSize(fontSize);
+				mFontSizeText.setText(Integer.toString(fontSize));
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+			}
+		});
+		mFontSizeSeekBar.setProgress(mHost.getFontSize() - MINIMUM_FONT_SIZE);
 
 		setUriPartsContainerExpanded(mIsUriEditorExpanded);
 
@@ -234,6 +294,10 @@ public class HostEditorFragment extends Fragment {
 		} catch (ClassCastException e) {
 			throw new ClassCastException(context.toString() + " must implement Listener");
 		}
+
+		// Now that the fragment is attached to an Activity, fetch the array from the attached
+		// Activity's resources.
+		mColorValues = getResources().obtainTypedArray(R.array.list_color_values);
 	}
 
 	@Override
@@ -297,11 +361,11 @@ public class HostEditorFragment extends Fragment {
 		public void onHostUpdated(HostBean host);
 	}
 
-	private class UriDataUpdater implements TextWatcher {
+	private class HostTextFieldWatcher implements TextWatcher {
 
 		private final String mFieldType;
 
-		public UriDataUpdater(String fieldType) {
+		public HostTextFieldWatcher(String fieldType) {
 			mFieldType = fieldType;
 		}
 
@@ -325,15 +389,28 @@ public class HostEditorFragment extends Fragment {
 				} catch (NumberFormatException e) {
 					return;
 				}
+			} else if (HostDatabase.FIELD_HOST_NICKNAME.equals(mFieldType)) {
+				mHost.setNickname(text);
 			} else {
 				throw new RuntimeException("Invalid field type.");
 			}
 
-			if (!mUriFieldEditInProgress) {
-				mUriFieldEditInProgress = true;
-				mQuickConnectField.setText(mHost.toString());
-				mUriFieldEditInProgress = false;
+			if (isUriRelatedField(mFieldType)) {
+				mNicknameField.setText(mHost.toString());
+				mHost.setNickname(mHost.toString());
+
+				if (!mUriFieldEditInProgress) {
+					mUriFieldEditInProgress = true;
+					mQuickConnectField.setText(mHost.toString());
+					mUriFieldEditInProgress = false;
+				}
 			}
+		}
+
+		private boolean isUriRelatedField(String fieldType) {
+			return HostDatabase.FIELD_HOST_USERNAME.equals(fieldType) ||
+					HostDatabase.FIELD_HOST_HOSTNAME.equals(fieldType) ||
+					HostDatabase.FIELD_HOST_PORT.equals(fieldType);
 		}
 	}
 }
