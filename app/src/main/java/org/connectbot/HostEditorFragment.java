@@ -304,6 +304,7 @@ public class HostEditorFragment extends Fragment {
 	public void onDetach() {
 		super.onDetach();
 		mListener = null;
+		mColorValues.recycle();
 	}
 
 	@Override
