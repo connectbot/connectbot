@@ -60,7 +60,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.ClipboardManager;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.GestureDetector;
 import android.view.InputDevice;
 import android.view.KeyEvent;
@@ -498,7 +497,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		pager = (ViewPager) findViewById(R.id.console_flip);
-		registerForContextMenu(pager);
 		pager.addOnPageChangeListener(
 				new ViewPager.SimpleOnPageChangeListener() {
 					@Override
@@ -673,13 +671,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			private float totalY = 0;
 
 			@Override
-			public void onLongPress(MotionEvent e) {
-				super.onLongPress(e);
-				openContextMenu(pager);
-			}
-
-
-			@Override
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 
 				// if copying, then ignore
@@ -749,13 +740,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 						MotionEventCompat.getSource(event) == InputDevice.SOURCE_MOUSE &&
 						event.getAction() == MotionEvent.ACTION_DOWN) {
 					switch (event.getButtonState()) {
-					case MotionEvent.BUTTON_PRIMARY:
-						// Automatically start copy mode if using a mouse.
-						startCopyMode();
-						break;
-					case MotionEvent.BUTTON_SECONDARY:
-						openContextMenu(pager);
-						return true;
 					case MotionEvent.BUTTON_TERTIARY:
 						// Middle click pastes.
 						pasteIntoTerminal();
@@ -771,16 +755,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 					SelectionArea area = copySource.getSelectionArea();
 
 					switch (event.getAction()) {
-					case MotionEvent.ACTION_DOWN:
-						// recording starting area
-						if (area.isSelectingOrigin()) {
-							area.setRow(row);
-							area.setColumn(col);
-							lastTouchRow = row;
-							lastTouchCol = col;
-							copySource.redraw();
-						}
-						return true;
 					case MotionEvent.ACTION_MOVE:
 						/* ignore when user hasn't moved since last time so
 						 * we can fine-tune with directional pad
@@ -1092,32 +1066,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		super.onOptionsMenuClosed(menu);
 
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
-	}
-
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-		final TerminalView view = adapter.getCurrentTerminalView();
-		boolean activeTerminal = view != null;
-		boolean sessionOpen = false;
-
-		if (activeTerminal) {
-			TerminalBridge bridge = view.bridge;
-			sessionOpen = bridge.isSessionOpen();
-		}
-
-		MenuItem paste = menu.add(R.string.console_menu_paste);
-		if (hardKeyboard)
-			paste.setAlphabeticShortcut('v');
-		paste.setIcon(android.R.drawable.ic_menu_edit);
-		paste.setEnabled(clipboard.hasText() && sessionOpen);
-		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				pasteIntoTerminal();
-				return true;
-			}
-		});
-
-
 	}
 
 	@Override

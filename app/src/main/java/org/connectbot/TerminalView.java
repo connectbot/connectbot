@@ -37,6 +37,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PixelXorXfermode;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.view.MotionEventCompat;
@@ -50,7 +51,9 @@ import android.view.accessibility.AccessibilityManager;
 import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import de.mud.terminal.VDUBuffer;
 
 /**
@@ -60,7 +63,7 @@ import de.mud.terminal.VDUBuffer;
  *
  * @author jsharkey
  */
-public class TerminalView extends View implements FontSizeChangedListener {
+public class TerminalView extends TextView implements FontSizeChangedListener {
 
 	private final Context context;
 	public final TerminalBridge bridge;
@@ -115,7 +118,7 @@ public class TerminalView extends View implements FontSizeChangedListener {
 		cursorStrokePaint.setStyle(Paint.Style.STROKE);
 
 		/*
-		 * Set up our cursor indicators on a 1x1 Path object which we can later
+	 * Set up our cursor indicators on a 1x1 Path object which we can later
 		 * transform to our character width and height
 		 */
 		// TODO make this into a resource somehow
@@ -146,8 +149,47 @@ public class TerminalView extends View implements FontSizeChangedListener {
 
 		mAccessibilityBuffer = new StringBuffer();
 
+		float displayDensity = 1f;
+		int fontSizePx = (int) (10 * displayDensity + 0.5f);
+
+		// setTextScaleX(1.5f);
+		setTextSize(fontSizePx);
+		setTextColor(0xff00ff00);
+		setTypeface(Typeface.MONOSPACE);
+		setLineSpacing(1.0f, 1.09f);
+		setTextIsSelectable(true);
+		setOnTouchListener(new OnTouchListener() {
+					   @Override
+					   public boolean onTouch(View v, MotionEvent event) {
+						   if (event.getAction() == MotionEvent.ACTION_DOWN) {
+							   syncBuffer();
+						   }
+						   return false;
+					   }
+				   }
+		);
+
 		// Enable accessibility features if a screen reader is active.
 		new AccessibilityStateTester().execute((Void) null);
+	}
+
+	private void syncBuffer() {
+		VDUBuffer vb = bridge.getVDUBuffer();
+
+		int cols = vb.getColumns() - 1;
+		int rows = vb.getBottomMargin();
+		String line = "";
+		String buff = "";
+
+
+		for (int r = 0; r <= rows; r++) {
+			for (int c = 0; c < cols; c++) {
+				line += vb.getChar(c, r);
+			}
+			buff += line.replaceAll("\\s+$", "") + "\n";
+			line = "";
+		}
+		setText(buff);
 	}
 
 	public void destroy() {
