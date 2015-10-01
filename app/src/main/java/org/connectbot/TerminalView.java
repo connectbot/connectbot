@@ -40,7 +40,6 @@ import android.graphics.PixelXorXfermode;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.support.v4.view.MotionEventCompat;
 import android.view.InputDevice;
 import android.view.KeyEvent;
@@ -328,8 +327,6 @@ public class TerminalView extends View implements FontSizeChangedListener {
 	@Override
 	@TargetApi(12)
 	public boolean onGenericMotionEvent(MotionEvent event) {
-		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB) return false;
-
 		if ((MotionEventCompat.getSource(event) & InputDevice.SOURCE_CLASS_POINTER) != 0) {
 			switch (event.getAction()) {
 			case MotionEvent.ACTION_SCROLL:
