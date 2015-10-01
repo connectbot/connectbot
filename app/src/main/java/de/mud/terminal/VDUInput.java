@@ -57,13 +57,23 @@ public interface VDUInput {
   void mousePressed(int x, int y, int modifiers);
 
   /**
+   * Passes mouse wheel events to the terminal.
+   * @param down True if scrolling down the page. False if scrolling up.
+   * @param x
+   * @param y
+   * @param ctrl
+   * @param shift
+   * @param meta
+   */
+  public void mouseWheel(boolean down, int x, int y, boolean ctrl, boolean shift, boolean meta);
+
+  /**
    * Terminal is mouse-aware and requires the coordinates and button
    * of the release.
    * @param x
    * @param y
-   * @param modifiers
    */
-  void mouseReleased(int x, int y, int modifiers);
+  void mouseReleased(int x, int y);
 
   /**
    * Override the standard key codes used by the terminal emulation.
