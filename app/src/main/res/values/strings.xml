@@ -596,5 +596,6 @@
 	<string name="protocol_spinner_label">Protocol</string>
 	<!-- Label for button which expands/collapses section. -->
 	<string name="expand">Expand</string>
+	<string name="hostpref_authagent_with_confirmation">require confirmation</string>
 
 </resources>
