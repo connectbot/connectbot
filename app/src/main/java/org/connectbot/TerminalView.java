@@ -27,6 +27,7 @@ import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
 
 import android.annotation.TargetApi;
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -38,11 +39,19 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PixelXorXfermode;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.view.MotionEventCompat;
+import android.support.v4.view.ViewPager;
+import android.text.ClipboardManager;
+import android.view.ActionMode;
+import android.view.GestureDetector;
 import android.view.InputDevice;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -51,6 +60,7 @@ import android.view.accessibility.AccessibilityManager;
 import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
+import android.widget.TextView;
 import android.widget.Toast;
 import de.mud.terminal.VDUBuffer;
 import de.mud.terminal.vt320;
@@ -62,10 +72,18 @@ import de.mud.terminal.vt320;
  *
  * @author jsharkey
  */
-public class TerminalView extends View implements FontSizeChangedListener {
+public class TerminalView extends TextView implements FontSizeChangedListener {
 
 	private final Context context;
 	public final TerminalBridge bridge;
+
+	private final ViewPager viewPager;
+	private GestureDetector gestureDetector;
+
+	private ClipboardManager clipboard;
+	private ActionMode selectionActionMode = null;
+	private String currentSelection = "";
+
 	private final Paint paint;
 	private final Paint cursorPaint;
 	private final Paint cursorStrokePaint;
@@ -96,16 +114,18 @@ public class TerminalView extends View implements FontSizeChangedListener {
 	private static final String SCREENREADER_INTENT_ACTION = "android.accessibilityservice.AccessibilityService";
 	private static final String SCREENREADER_INTENT_CATEGORY = "android.accessibilityservice.category.FEEDBACK_SPOKEN";
 
-	public TerminalView(Context context, TerminalBridge bridge) {
+	public TerminalView(Context context, TerminalBridge bridge, ViewPager pager) {
 		super(context);
 
 		this.context = context;
 		this.bridge = bridge;
-		paint = new Paint();
+		this.viewPager = pager;
 
 		setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 		setFocusable(true);
 		setFocusableInTouchMode(true);
+
+		paint = new Paint();
 
 		cursorPaint = new Paint();
 		cursorPaint.setColor(bridge.color[bridge.defaultFg]);
@@ -142,6 +162,7 @@ public class TerminalView extends View implements FontSizeChangedListener {
 		scaleMatrix = new Matrix();
 
 		bridge.addFontSizeChangedListener(this);
+		bridge.terminalView = this;
 
 		// connect our view up to the bridge
 		setOnKeyListener(bridge.getKeyHandler());
@@ -150,6 +171,261 @@ public class TerminalView extends View implements FontSizeChangedListener {
 
 		// Enable accessibility features if a screen reader is active.
 		new AccessibilityStateTester().execute((Void) null);
+
+		clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+
+		setTextColor(0x00000000);
+		setTypeface(Typeface.MONOSPACE);
+		onFontSizeChanged(bridge.getFontSize());
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			setTextIsSelectable(true);
+
+			this.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
+				private static final int PASTE = 0;
+
+				@Override
+				@SuppressLint("NewApi")
+				public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+					TerminalView.this.selectionActionMode = mode;
+
+					menu.add(0, PASTE, 2, "Paste")
+							.setIcon(R.drawable.ic_action_paste)
+							.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+					return true;
+				}
+
+				@Override
+				@SuppressLint("NewApi")
+				public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+					if (item.getItemId() == PASTE) {
+						String clip = clipboard.getText().toString();
+						TerminalView.this.bridge.injectString(clip);
+						mode.finish();
+						return true;
+					}
+
+					return false;
+				}
+
+				@Override
+				public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+					return false;
+				}
+
+				@Override
+				public void onDestroyActionMode(ActionMode mode) {
+				}
+			});
+
+			gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+				private TerminalBridge bridge = TerminalView.this.bridge;
+				private float totalY = 0;
+
+				@Override
+				public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+					// if releasing then reset total scroll
+					if (e2.getAction() == MotionEvent.ACTION_UP) {
+						totalY = 0;
+					}
+
+					totalY += distanceY;
+					final int moved = (int) (totalY / bridge.charHeight);
+
+					if (moved != 0) {
+						int base = bridge.buffer.getWindowBase();
+						bridge.buffer.setWindowBase(base + moved);
+						totalY = 0;
+
+						copyBufferToText();
+					}
+
+					return true;
+				}
+
+				@Override
+				public boolean onSingleTapConfirmed(MotionEvent e) {
+					viewPager.performClick();
+					return super.onSingleTapConfirmed(e);
+				}
+			});
+		}
+	}
+
+	public void copyCurrentSelectionToClipboard() {
+		ClipboardManager clipboard =
+				(ClipboardManager) TerminalView.this.context.getSystemService(Context.CLIPBOARD_SERVICE);
+		if (currentSelection.length() != 0) {
+			clipboard.setText(currentSelection);
+		}
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB &&
+			selectionActionMode != null) {
+			selectionActionMode.finish();
+			selectionActionMode = null;
+		}
+	}
+
+	@Override
+	protected void onSelectionChanged(int selStart, int selEnd) {
+		currentSelection = getText().toString().substring(selStart, selEnd);
+		super.onSelectionChanged(selStart, selEnd);
+	}
+
+	@Override
+	public boolean performLongClick() {
+		copyBufferToText();
+		return super.performLongClick();
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			return false;
+		}
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
+				MotionEventCompat.getSource(event) == InputDevice.SOURCE_MOUSE) {
+			if (onMouseEvent(event, bridge)) {
+				return true;
+			}
+		}
+
+		super.onTouchEvent(event);
+		if (gestureDetector != null) {
+			gestureDetector.onTouchEvent(event);
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param event
+	 * @param bridge
+	 * @return True if the event is handled.
+	 */
+	@TargetApi(14)
+	private boolean onMouseEvent(MotionEvent event, TerminalBridge bridge) {
+		int row = (int) Math.floor(event.getY() / bridge.charHeight);
+		int col = (int) Math.floor(event.getX() / bridge.charWidth);
+		int meta = event.getMetaState();
+		boolean shiftOn = (meta & KeyEvent.META_SHIFT_ON) != 0;
+		boolean mouseReport = ((vt320) bridge.buffer).isMouseReportEnabled();
+
+		// MouseReport can be "defeated" using the shift key.
+		if ((!mouseReport || shiftOn)) {
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				switch (event.getButtonState()) {
+				case MotionEvent.BUTTON_TERTIARY:
+					// Middle click pastes.
+					String clip = clipboard.getText().toString();
+					bridge.injectString(clip);
+					return true;
+				}
+			}
+		} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			((vt320) bridge.buffer).mousePressed(
+					col, row, mouseEventToJavaModifiers(event));
+			return true;
+		} else if (event.getAction() == MotionEvent.ACTION_UP) {
+			((vt320) bridge.buffer).mouseReleased(col, row);
+			return true;
+		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+			int buttonState = event.getButtonState();
+			int button = (buttonState & MotionEvent.BUTTON_PRIMARY) != 0 ? 0 :
+					(buttonState & MotionEvent.BUTTON_SECONDARY) != 0 ? 1 :
+							(buttonState & MotionEvent.BUTTON_TERTIARY) != 0 ? 2 : 3;
+			((vt320) bridge.buffer).mouseMoved(
+					button,
+					col,
+					row,
+					(meta & KeyEvent.META_CTRL_ON) != 0,
+					(meta & KeyEvent.META_SHIFT_ON) != 0,
+					(meta & KeyEvent.META_META_ON) != 0);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Takes an android mouse event and produces a Java InputEvent modifiers int which can be
+	 * passed to vt320.
+	 * @param mouseEvent The {@link MotionEvent} which should be a mouse click or release.
+	 * @return A Java InputEvent modifier int. See
+	 * http://docs.oracle.com/javase/7/docs/api/java/awt/event/InputEvent.html
+	 */
+	@TargetApi(14)
+	private static int mouseEventToJavaModifiers(MotionEvent mouseEvent) {
+		if (MotionEventCompat.getSource(mouseEvent) != InputDevice.SOURCE_MOUSE) return 0;
+
+		int mods = 0;
+
+		// See http://docs.oracle.com/javase/7/docs/api/constant-values.html
+		int buttonState = mouseEvent.getButtonState();
+		if ((buttonState & MotionEvent.BUTTON_PRIMARY) != 0)
+			mods |= 16;
+		if ((buttonState & MotionEvent.BUTTON_SECONDARY) != 0)
+			mods |= 8;
+		if ((buttonState & MotionEvent.BUTTON_TERTIARY) != 0)
+			mods |= 4;
+
+		// Note: Meta and Ctrl are intentionally swapped here to keep logic in vt320 simple.
+		int meta = mouseEvent.getMetaState();
+		if ((meta & KeyEvent.META_META_ON) != 0)
+			mods |= 2;
+		if ((meta & KeyEvent.META_SHIFT_ON) != 0)
+			mods |= 1;
+		if ((meta & KeyEvent.META_CTRL_ON) != 0)
+			mods |= 4;
+
+		return mods;
+	}
+
+	@Override
+	@TargetApi(12)
+	public boolean onGenericMotionEvent(MotionEvent event) {
+		if ((MotionEventCompat.getSource(event) & InputDevice.SOURCE_CLASS_POINTER) != 0) {
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_SCROLL:
+				// Process scroll wheel movement:
+				float yDistance = MotionEventCompat.getAxisValue(event, MotionEvent.AXIS_VSCROLL);
+				if (yDistance != 0) {
+					int base = bridge.buffer.getWindowBase();
+					bridge.buffer.setWindowBase(base - Math.round(yDistance));
+					return true;
+				}
+			}
+		}
+		return super.onGenericMotionEvent(event);
+	}
+
+	private void copyBufferToText() {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			// It is pointless to run this function because the textView is not selectable pre-Honeycomb.
+			return;
+		}
+
+		VDUBuffer vb = bridge.getVDUBuffer();
+
+		String line = "";
+		String buffer = "";
+
+		int windowBase = vb.getWindowBase();
+		int rowBegin = vb.getTopMargin();
+		int rowEnd = vb.getBottomMargin();
+		int numCols = vb.getColumns() - 1;
+
+		for (int r = rowBegin; r <= rowEnd; r++) {
+			for (int c = 0; c < numCols; c++) {
+				line += vb.charArray[windowBase + r][c];
+			}
+			buffer += line.replaceAll("\\s+$", "") + "\n";
+			line = "";
+		}
+
+		setText(buffer);
 	}
 
 	public void destroy() {
@@ -168,6 +444,9 @@ public class TerminalView extends View implements FontSizeChangedListener {
 
 	public void onFontSizeChanged(float size) {
 		scaleCursors();
+		setTextSize(size);
+		setLineSpacing(0.0f, 1.1f); // KLUDGE: doesnt work on certain font sizes
+		copyBufferToText();
 	}
 
 	private void scaleCursors() {
@@ -246,19 +525,22 @@ public class TerminalView extends View implements FontSizeChangedListener {
 			}
 
 			// draw any highlighted area
-			if (bridge.isSelectingForCopy()) {
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB &&
+				bridge.isSelectingForCopy()) {
 				SelectionArea area = bridge.getSelectionArea();
 				canvas.save(Canvas.CLIP_SAVE_FLAG);
 				canvas.clipRect(
-					area.getLeft() * bridge.charWidth,
-					area.getTop() * bridge.charHeight,
-					(area.getRight() + 1) * bridge.charWidth,
-					(area.getBottom() + 1) * bridge.charHeight
+						area.getLeft() * bridge.charWidth,
+						area.getTop() * bridge.charHeight,
+						(area.getRight() + 1) * bridge.charWidth,
+						(area.getBottom() + 1) * bridge.charHeight
 				);
 				canvas.drawPaint(cursorPaint);
 				canvas.restore();
 			}
 		}
+
+		super.onDraw(canvas);
 	}
 
 	public void notifyUser(String message) {
@@ -322,37 +604,6 @@ public class TerminalView extends View implements FontSizeChangedListener {
 				return true;
 			}
 		};
-	}
-
-	@Override
-	@TargetApi(12)
-	public boolean onGenericMotionEvent(MotionEvent event) {
-		if ((MotionEventCompat.getSource(event) & InputDevice.SOURCE_CLASS_POINTER) != 0) {
-			switch (event.getAction()) {
-			case MotionEvent.ACTION_SCROLL:
-				// Process scroll wheel movement:
-				float yDistance = MotionEventCompat.getAxisValue(event, MotionEvent.AXIS_VSCROLL);
-				boolean mouseReport = ((vt320) bridge.buffer).isMouseReportEnabled();
-				if (mouseReport) {
-					int row = (int) Math.floor(event.getY() / bridge.charHeight);
-					int col = (int) Math.floor(event.getX() / bridge.charWidth);
-
-					((vt320) bridge.buffer).mouseWheel(
-							yDistance > 0,
-							col,
-							row,
-							(event.getMetaState() & KeyEvent.META_CTRL_ON) != 0,
-							(event.getMetaState() & KeyEvent.META_SHIFT_ON) != 0,
-							(event.getMetaState() & KeyEvent.META_META_ON) != 0);
-					return true;
-				} else if (yDistance != 0) {
-					int base = bridge.buffer.getWindowBase();
-					bridge.buffer.setWindowBase(base - Math.round(yDistance));
-					return true;
-				}
-			}
-		}
-		return super.onGenericMotionEvent(event);
 	}
 
 	public void propagateConsoleText(char[] rawText, int length) {

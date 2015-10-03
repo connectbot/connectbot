@@ -71,6 +71,7 @@ public class TerminalBridge implements VDUDisplay {
 	public int defaultBg = HostDatabase.DEFAULT_BG_COLOR;
 
 	protected final TerminalManager manager;
+	public TerminalView terminalView;
 
 	public HostBean host;
 
@@ -341,6 +342,33 @@ public class TerminalBridge implements VDUDisplay {
 	}
 
 	/**
+	 * Only intended for pre-Honeycomb devices.
+	 */
+	public void setSelectingForCopy(boolean selectingForCopy) {
+		this.selectingForCopy = selectingForCopy;
+	}
+
+	/**
+	 * Only intended for pre-Honeycomb devices.
+	 */
+	public boolean isSelectingForCopy() {
+		return selectingForCopy;
+	}
+
+	/**
+	 * Only intended for pre-Honeycomb devices.
+	 */
+	public SelectionArea getSelectionArea() {
+		return selectionArea;
+	}
+
+	public void copyCurrentSelection() {
+		if (terminalView != null) {
+			terminalView.copyCurrentSelectionToClipboard();
+		}
+	}
+
+	/**
 	 * Inject a specific string into this terminal. Used for post-login strings
 	 * and pasting clipboard.
 	 */
@@ -482,18 +510,6 @@ public class TerminalBridge implements VDUDisplay {
 		}
 	}
 
-	public void setSelectingForCopy(boolean selectingForCopy) {
-		this.selectingForCopy = selectingForCopy;
-	}
-
-	public boolean isSelectingForCopy() {
-		return selectingForCopy;
-	}
-
-	public SelectionArea getSelectionArea() {
-		return selectionArea;
-	}
-
 	public synchronized void tryKeyVibrate() {
 		manager.tryKeyVibrate();
 	}
@@ -536,6 +552,10 @@ public class TerminalBridge implements VDUDisplay {
 		manager.hostdb.saveHost(host);
 
 		forcedSize = false;
+	}
+
+	public float getFontSize() {
+		return fontSizeDp;
 	}
 
 	/**
