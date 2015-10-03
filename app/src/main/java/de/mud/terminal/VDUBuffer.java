@@ -731,6 +731,7 @@ public class VDUBuffer {
     char cbuf[][];
     int abuf[][];
     int maxSize = bufSize;
+    int oldAbsR = screenBase + getCursorRow();
 
     if (w < 1 || h < 1) return;
 
@@ -778,14 +779,18 @@ public class VDUBuffer {
     int C = getCursorColumn();
     if (C < 0)
       C = 0;
-    else if (C >= width)
-      C = width - 1;
+    else if (C >= w)
+      C = w - 1;
 
     int R = getCursorRow();
+    // If the screen size has grown and now there are more rows on the screen,
+    // slide the cursor down to the end of the text.
+    if (R + screenBase <= oldAbsR)
+      R = oldAbsR - screenBase;
     if (R < 0)
       R = 0;
-    else if (R >= height)
-      R = height - 1;
+    else if (R >= h)
+      R = h - 1;
 
     setCursorPosition(C, R);
 
