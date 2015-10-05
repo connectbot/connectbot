@@ -162,23 +162,13 @@ public void setScreenSize(int c, int r, boolean broadcast) {
 
     super.setScreenSize(c,r,false);
 
-    boolean cursorChanged = false;
-
-    // Don't let the cursor go off the screen.
-    if (C >= c) {
-      C = c - 1;
-      cursorChanged = true;
-    }
-
+    // Don't let the cursor go off the screen. Scroll down if needed.
     if (R >= r) {
-      R = r - 1;
-      cursorChanged = true;
+      screenBase += R - (r - 1);
+      setWindowBase(screenBase);
     }
-
-    if (cursorChanged) {
-      setCursorPosition(C, R);
-      redraw();
-    }
+    R = getCursorRow();
+    C = getCursorColumn();
 
     if (broadcast) {
       setWindowSize(c, r); /* broadcast up */
