@@ -30,7 +30,6 @@ import org.connectbot.service.TerminalKeyListener;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.PreferenceConstants;
 
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -662,6 +661,15 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		if (tabs != null)
 			setupTabLayoutWithViewPager();
 
+		pager.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (keyboardGroup.getVisibility() == View.GONE) {
+					showEmulatedKeys(false);
+				}
+			}
+		});
+
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 			pager.setOnTouchListener(new OnTouchListener() {
 				public boolean onTouch(View v, MotionEvent event) {
@@ -669,10 +677,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 					boolean isCopyingInProgress =
 						(copySource != null && copySource.isSelectingForCopy());
-
-					if (!isCopyingInProgress && keyboardGroup.getVisibility() == View.GONE) {
-						showEmulatedKeys(true);
-					}
 
 					// when copying, highlight the area
 					if (isCopyingInProgress) {

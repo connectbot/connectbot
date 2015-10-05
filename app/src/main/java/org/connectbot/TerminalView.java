@@ -26,8 +26,8 @@ import org.connectbot.service.FontSizeChangedListener;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
 
-import android.annotation.TargetApi;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -391,7 +391,20 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 			case MotionEvent.ACTION_SCROLL:
 				// Process scroll wheel movement:
 				float yDistance = MotionEventCompat.getAxisValue(event, MotionEvent.AXIS_VSCROLL);
-				if (yDistance != 0) {
+				boolean mouseReport = ((vt320) bridge.buffer).isMouseReportEnabled();
+				if (mouseReport) {
+					int row = (int) Math.floor(event.getY() / bridge.charHeight);
+					int col = (int) Math.floor(event.getX() / bridge.charWidth);
+
+							((vt320) bridge.buffer).mouseWheel(
+											yDistance > 0,
+											col,
+											row,
+											(event.getMetaState() & KeyEvent.META_CTRL_ON) != 0,
+											(event.getMetaState() & KeyEvent.META_SHIFT_ON) != 0,
+											(event.getMetaState() & KeyEvent.META_META_ON) != 0);
+					return true;
+				} else if (yDistance != 0) {
 					int base = bridge.buffer.getWindowBase();
 					bridge.buffer.setWindowBase(base - Math.round(yDistance));
 					return true;
@@ -530,10 +543,10 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 				SelectionArea area = bridge.getSelectionArea();
 				canvas.save(Canvas.CLIP_SAVE_FLAG);
 				canvas.clipRect(
-						area.getLeft() * bridge.charWidth,
-						area.getTop() * bridge.charHeight,
-						(area.getRight() + 1) * bridge.charWidth,
-						(area.getBottom() + 1) * bridge.charHeight
+					area.getLeft() * bridge.charWidth,
+					area.getTop() * bridge.charHeight,
+					(area.getRight() + 1) * bridge.charWidth,
+					(area.getBottom() + 1) * bridge.charHeight
 				);
 				canvas.drawPaint(cursorPaint);
 				canvas.restore();
