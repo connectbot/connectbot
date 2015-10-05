@@ -25,6 +25,7 @@ import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.FontSizeChangedListener;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
+import org.connectbot.util.TerminalViewPager;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -44,7 +45,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.ViewPager;
 import android.text.ClipboardManager;
 import android.view.ActionMode;
 import android.view.GestureDetector;
@@ -77,7 +77,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 	private final Context context;
 	public final TerminalBridge bridge;
 
-	private final ViewPager viewPager;
+	private final TerminalViewPager viewPager;
 	private GestureDetector gestureDetector;
 
 	private ClipboardManager clipboard;
@@ -114,7 +114,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 	private static final String SCREENREADER_INTENT_ACTION = "android.accessibilityservice.AccessibilityService";
 	private static final String SCREENREADER_INTENT_CATEGORY = "android.accessibilityservice.category.FEEDBACK_SPOKEN";
 
-	public TerminalView(Context context, TerminalBridge bridge, ViewPager pager) {
+	public TerminalView(Context context, TerminalBridge bridge, TerminalViewPager pager) {
 		super(context);
 
 		this.context = context;
@@ -292,6 +292,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 			if (onMouseEvent(event, bridge)) {
 				return true;
 			}
+			viewPager.setPagingEnabled(true);
 		}
 
 		super.onTouchEvent(event);
@@ -327,24 +328,26 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 				}
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			viewPager.setPagingEnabled(false);
 			((vt320) bridge.buffer).mousePressed(
-					col, row, mouseEventToJavaModifiers(event));
+				col, row, mouseEventToJavaModifiers(event));
 			return true;
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
+			viewPager.setPagingEnabled(true);
 			((vt320) bridge.buffer).mouseReleased(col, row);
 			return true;
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			int buttonState = event.getButtonState();
 			int button = (buttonState & MotionEvent.BUTTON_PRIMARY) != 0 ? 0 :
-					(buttonState & MotionEvent.BUTTON_SECONDARY) != 0 ? 1 :
-							(buttonState & MotionEvent.BUTTON_TERTIARY) != 0 ? 2 : 3;
+				(buttonState & MotionEvent.BUTTON_SECONDARY) != 0 ? 1 :
+				(buttonState & MotionEvent.BUTTON_TERTIARY) != 0 ? 2 : 3;
 			((vt320) bridge.buffer).mouseMoved(
-					button,
-					col,
-					row,
-					(meta & KeyEvent.META_CTRL_ON) != 0,
-					(meta & KeyEvent.META_SHIFT_ON) != 0,
-					(meta & KeyEvent.META_META_ON) != 0);
+				button,
+				col,
+				row,
+				(meta & KeyEvent.META_CTRL_ON) != 0,
+				(meta & KeyEvent.META_SHIFT_ON) != 0,
+				(meta & KeyEvent.META_META_ON) != 0);
 			return true;
 		}
 

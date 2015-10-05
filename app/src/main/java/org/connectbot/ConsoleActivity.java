@@ -29,6 +29,7 @@ import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.PreferenceConstants;
+import org.connectbot.util.TerminalViewPager;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -53,7 +54,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -99,7 +99,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	private static final int KEYBOARD_REPEAT = 100;
 	private static final String STATE_SELECTED_URI = "selectedUri";
 
-	protected ViewPager pager = null;
+	protected TerminalViewPager pager = null;
 	protected TabLayout tabs = null;
 	protected Toolbar toolbar = null;
 	@Nullable
@@ -490,10 +490,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-		pager = (ViewPager) findViewById(R.id.console_flip);
+		pager = (TerminalViewPager) findViewById(R.id.console_flip);
 
 		pager.addOnPageChangeListener(
-				new ViewPager.SimpleOnPageChangeListener() {
+				new TerminalViewPager.SimpleOnPageChangeListener() {
 					@Override
 					public void onPageSelected(int position) {
 						setTitle(adapter.getPageTitle(position));
