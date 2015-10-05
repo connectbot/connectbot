@@ -269,7 +269,9 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 
 	@Override
 	protected void onSelectionChanged(int selStart, int selEnd) {
-		currentSelection = getText().toString().substring(selStart, selEnd);
+		if (selStart <= selEnd) {
+			currentSelection = getText().toString().substring(selStart, selEnd);
+		}
 		super.onSelectionChanged(selStart, selEnd);
 	}
 
