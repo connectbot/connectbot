@@ -22,6 +22,13 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+/**
+ * Custom ViewPager {@link ViewPager} which is used to swipe between TerminalViews
+ * {@link org.connectbot.TerminalView}. Also allows temporary disabling of paging
+ * functionality to prevent event intercepts.
+ *
+ * @author rhansby
+ */
 public class TerminalViewPager extends ViewPager {
 	private boolean enabled;
 
