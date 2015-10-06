@@ -35,6 +35,7 @@ import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -173,7 +174,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 
 		clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
 
-		setTextColor(0x00000000);
+		setTextColor(Color.TRANSPARENT);
 		setTypeface(Typeface.MONOSPACE);
 		onFontSizeChanged(bridge.getFontSize());
 
