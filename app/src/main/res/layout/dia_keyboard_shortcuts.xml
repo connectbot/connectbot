@@ -30,7 +30,7 @@
 			android:stretchColumns="1">
 			<TableRow>
 				<TextView
-					android:text="Ctrl-Shift-V"
+					android:text="@string/paste_shortcut"
 					android:padding="3dip"
 					android:textAppearance="?android:attr/textAppearanceMedium"
 					/>
@@ -45,7 +45,7 @@
 
 			<TableRow>
 				<TextView
-					android:text="Ctrl and +"
+					android:text="@string/increase_font_shortcut"
 					android:padding="3dip"
 					android:textAppearance="?android:attr/textAppearanceMedium"
 					/>
@@ -60,7 +60,7 @@
 
 			<TableRow>
 				<TextView
-					android:text="Ctrl and -"
+					android:text="@string/decrease_font_shortcut"
 					android:padding="3dip"
 					android:textAppearance="?android:attr/textAppearanceMedium"
 					/>

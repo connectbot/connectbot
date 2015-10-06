@@ -51,7 +51,8 @@ public class HelpActivity extends AppCompatActivity {
 		Button shortcutsButton = (Button) findViewById(R.id.shortcuts_button);
 		shortcutsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				final View shortcuts = inflater.inflate(R.layout.dia_keyboard_shortcuts, null, false);
+				final View shortcuts = inflater.inflate(R.layout.dia_keyboard_shortcuts,
+						null, false);
 				new AlertDialog.Builder(HelpActivity.this)
 						.setView(shortcuts)
 						.setTitle(R.string.keyboard_shortcuts)
