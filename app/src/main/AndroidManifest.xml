@@ -134,16 +134,6 @@
 		</activity>
 
 		<activity
-			android:name=".HelpTopicActivity"
-			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/title_help">
-
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.connectbot.HelpActivity"/>
-		</activity>
-
-		<activity
 			android:name=".ColorsActivity"
 			android:configChanges="keyboardHidden|orientation"
 			android:label="@string/title_colors">
@@ -157,6 +147,15 @@
 			android:name=".EulaActivity"
 			android:configChanges="keyboardHidden|orientation"
 			android:label="@string/terms_and_conditions">
+
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="org.connectbot.HelpActivity"/>
+		</activity>
+
+		<activity
+			android:name=".HintsActivity"
+			android:label="@string/hints">
 
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
