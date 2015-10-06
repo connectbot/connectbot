@@ -46,6 +46,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.view.MotionEventCompat;
 import android.text.ClipboardManager;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.GestureDetector;
 import android.view.InputDevice;
@@ -421,7 +422,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 
 	private void copyBufferToText() {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-			// It is pointless to run this function because the textView is not selectable pre-Honeycomb.
+			// Do not run this function because the textView is not selectable pre-Honeycomb.
 			return;
 		}
 
@@ -463,7 +464,27 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 	public void onFontSizeChanged(float size) {
 		scaleCursors();
 		setTextSize(size);
-		setLineSpacing(0.0f, 1.1f); // KLUDGE: doesnt work on certain font sizes
+
+		int iterationGuard = 100;
+		int heightDifference = 100;
+		float lineSpacingMultiplier = 1.0f;
+
+		while (Math.abs(heightDifference) > 0) {
+			if (heightDifference > 0) {
+				lineSpacingMultiplier += 0.01f;
+			} else {
+				lineSpacingMultiplier -= 0.01f;
+			}
+
+			setLineSpacing(0.0f, lineSpacingMultiplier);
+			heightDifference = bridge.charHeight - getLineHeight();
+
+			iterationGuard--;
+			if (iterationGuard < 0) {
+				break;
+			}
+		}
+
 		copyBufferToText();
 	}
 
