@@ -173,6 +173,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.act_hostlist);
+		setTitle(R.string.title_hosts_list);
 
 		mListView = (RecyclerView) findViewById(R.id.list);
 		mListView.setHasFixedSize(true);
