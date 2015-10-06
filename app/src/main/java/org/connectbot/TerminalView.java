@@ -54,7 +54,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
@@ -67,7 +66,7 @@ import de.mud.terminal.VDUBuffer;
 import de.mud.terminal.vt320;
 
 /**
- * User interface {@link View} for showing a TerminalBridge in an
+ * User interface {@link TextView} for showing a TerminalBridge in an
  * {@link android.app.Activity}. Handles drawing bitmap updates and passing keystrokes down
  * to terminal.
  *
