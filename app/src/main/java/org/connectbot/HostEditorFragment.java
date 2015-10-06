@@ -17,6 +17,9 @@
 
 package org.connectbot;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -49,14 +52,22 @@ import org.connectbot.util.HostDatabase;
 
 public class HostEditorFragment extends Fragment {
 
+	private static final String ARG_EXISTING_HOST_ID = "existingHostId";
 	private static final String ARG_EXISTING_HOST = "existingHost";
 	private static final String ARG_IS_EXPANDED = "isExpanded";
+	private static final String ARG_PUBKEY_NAMES = "pubkeyNames";
+	private static final String ARG_PUBKEY_VALUES = "pubkeyValues";
 	private static final String ARG_QUICKCONNECT_STRING = "quickConnectString";
 
 	private static final int MINIMUM_FONT_SIZE = 8;
 
 	// The host being edited.
 	private HostBean mHost;
+
+	// The pubkey lists (names and values). Note that these are declared as ArrayLists rather than
+	// Lists because Bundles can only contain ArrayLists, not general Lists.
+	private ArrayList<String> mPubkeyNames;
+	private ArrayList<String> mPubkeyValues;
 	
 	// Whether the host is being created for the first time (as opposed to an existing one being
 	// edited).
@@ -112,12 +123,16 @@ public class HostEditorFragment extends Fragment {
 	private Spinner mDelKeySpinner;
 	private Spinner mEncodingSpinner;
 
-	public static HostEditorFragment newInstance(HostBean existingHost) {
+	public static HostEditorFragment newInstance(
+			HostBean existingHost, ArrayList<String> pubkeyNames, ArrayList<String> pubkeyValues) {
 		HostEditorFragment fragment = new HostEditorFragment();
 		Bundle args = new Bundle();
 		if (existingHost != null) {
+			args.putLong(ARG_EXISTING_HOST_ID, existingHost.getId());
 			args.putParcelable(ARG_EXISTING_HOST, existingHost.getValues());
 		}
+		args.putStringArrayList(ARG_PUBKEY_NAMES, pubkeyNames);
+		args.putStringArrayList(ARG_PUBKEY_VALUES, pubkeyValues);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -135,9 +150,13 @@ public class HostEditorFragment extends Fragment {
 		mIsCreating = existingHostParcelable == null;
 		if (existingHostParcelable != null) {
 			mHost = HostBean.fromContentValues((ContentValues) existingHostParcelable);
+			mHost.setId(bundle.getLong(ARG_EXISTING_HOST_ID));
 		} else {
 			mHost = new HostBean();
 		}
+
+		mPubkeyNames = bundle.getStringArrayList(ARG_PUBKEY_NAMES);
+		mPubkeyValues = bundle.getStringArrayList(ARG_PUBKEY_VALUES);
 
 		mIsUriEditorExpanded = bundle.getBoolean(ARG_IS_EXPANDED);
 	}
@@ -154,7 +173,7 @@ public class HostEditorFragment extends Fragment {
 		transportSelection.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mTransportSpinner.setAdapter(transportSelection);
 		for (int i = 0; i < transportNames.length; i++) {
-			if (transportNames.equals(mHost.getProtocol())) {
+			if (transportNames[i].equals(mHost.getProtocol())) {
 				mTransportSpinner.setSelection(i);
 				break;
 			}
@@ -171,6 +190,7 @@ public class HostEditorFragment extends Fragment {
 
 				mHost.setProtocol(protocol);
 				mHost.setPort(TransportFactory.getTransport(protocol).getDefaultPort());
+				handleHostChange();
 
 				mQuickConnectContainer.setHint(
 						TransportFactory.getFormatHint(protocol, getActivity()));
@@ -208,10 +228,12 @@ public class HostEditorFragment extends Fragment {
 		mQuickConnectField.setText(oldQuickConnect == null ? mHost.toString() : oldQuickConnect);
 		mQuickConnectField.addTextChangedListener(new TextWatcher() {
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {}
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
 
 			@Override
 			public void afterTextChanged(Editable s) {
@@ -265,8 +287,8 @@ public class HostEditorFragment extends Fragment {
 				new HostTextFieldWatcher(HostDatabase.FIELD_HOST_NICKNAME));
 
 		mColorSelector = (Spinner) view.findViewById(R.id.color_selector);
-		for (int i = 0; i < mColorValues.getIndexCount(); i++) {
-			if (mHost.getColor().equals(mColorValues.getString(i))) {
+		for (int i = 0; i < mColorValues.length(); i++) {
+			if (mColorValues.getString(i).equals(mHost.getColor())) {
 				mColorSelector.setSelection(i);
 				break;
 			}
@@ -275,6 +297,7 @@ public class HostEditorFragment extends Fragment {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				mHost.setColor(mColorValues.getString(position));
+				handleHostChange();
 			}
 
 			@Override
@@ -289,6 +312,7 @@ public class HostEditorFragment extends Fragment {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				int fontSize = MINIMUM_FONT_SIZE + progress;
 				mHost.setFontSize(fontSize);
+				handleHostChange();
 				mFontSizeText.setText(Integer.toString(fontSize));
 			}
 
@@ -303,8 +327,30 @@ public class HostEditorFragment extends Fragment {
 		mFontSizeSeekBar.setProgress(mHost.getFontSize() - MINIMUM_FONT_SIZE);
 
 		mPubkeySpinner = (Spinner) view.findViewById(R.id.pubkey_spinner);
-		// TODO: Set up spinner. This requires passing pubkey data into the fragment from the
-		// activity and will be part of an upcoming PR.
+		final String[] pubkeyNames = new String[mPubkeyNames.size()];
+		mPubkeyNames.toArray(pubkeyNames);
+		ArrayAdapter<String> pubkeySelection = new ArrayAdapter<String>(
+				getActivity(), android.R.layout.simple_spinner_item, pubkeyNames);
+		pubkeySelection.setDropDownViewResource(
+				android.R.layout.simple_spinner_dropdown_item);
+		mPubkeySpinner.setAdapter(pubkeySelection);
+		for (int i = 0; i < pubkeyNames.length; i++) {
+			if (mHost.getPubkeyId() == Integer.parseInt(mPubkeyValues.get(i))) {
+				mPubkeySpinner.setSelection(i);
+				break;
+			}
+		}
+		mPubkeySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				mHost.setPubkeyId(Integer.parseInt(mPubkeyValues.get(position)));
+				handleHostChange();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+			}
+		});
 
 		mUseSshConfirmationContainer = view.findViewById(R.id.ssh_confirmation_container);
 		mUseSshAuthSwitch = (SwitchCompat) view.findViewById(R.id.use_ssh_auth_switch);
@@ -323,19 +369,21 @@ public class HostEditorFragment extends Fragment {
 				} else {
 					mHost.setUseAuthAgent(/* don't use */ mSshAuthValues.getString(0));
 				}
+				handleHostChange();
 			}
 		};
-		mUseSshAuthSwitch.setOnCheckedChangeListener(authSwitchListener);
-		mSshAuthConfirmationCheckbox.setOnCheckedChangeListener(authSwitchListener);
 		if (mHost.getUseAuthAgent() == null ||
 				mHost.getUseAuthAgent().equals(mSshAuthValues.getString(0))) {
 			mUseSshAuthSwitch.setChecked(false);
 			mSshAuthConfirmationCheckbox.setChecked(false);
 		} else {
 			mUseSshAuthSwitch.setChecked(true);
+			mUseSshConfirmationContainer.setVisibility(View.VISIBLE);
 			mSshAuthConfirmationCheckbox.setChecked(
 					mHost.getUseAuthAgent().equals(mSshAuthValues.getString(1)));
 		}
+		mUseSshAuthSwitch.setOnCheckedChangeListener(authSwitchListener);
+		mSshAuthConfirmationCheckbox.setOnCheckedChangeListener(authSwitchListener);
 
 		mCompressionSwitch = (SwitchCompat) view.findViewById(R.id.compression_switch);
 		mCompressionSwitch.setChecked(mHost.getCompression());
@@ -363,7 +411,7 @@ public class HostEditorFragment extends Fragment {
 				new HostTextFieldWatcher(HostDatabase.FIELD_HOST_POSTLOGIN));
 
 		mDelKeySpinner = (Spinner) view.findViewById(R.id.del_key_spinner);
-		for (int i = 0; i < mDelKeyValues.getIndexCount(); i++) {
+		for (int i = 0; i < mDelKeyValues.length(); i++) {
 			if (mHost.getDelKey().equals(mDelKeyValues.getString(i))) {
 				mDelKeySpinner.setSelection(i);
 				break;
@@ -373,6 +421,7 @@ public class HostEditorFragment extends Fragment {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				mHost.setDelKey(mDelKeyValues.getString(position));
+				handleHostChange();
 			}
 
 			@Override
@@ -381,8 +430,8 @@ public class HostEditorFragment extends Fragment {
 		});
 
 		mEncodingSpinner = (Spinner) view.findViewById(R.id.encoding_spinner);
-		// TODO: Set up spinner. This requires passing pubkey data into the fragment from the
-		// activity and will be part of an upcoming PR.
+		// The spinner is initialized in setCharsetData() because Charset data is not always
+		// available when this fragment is created.
 
 		setUriPartsContainerExpanded(mIsUriEditorExpanded);
 
@@ -418,10 +467,48 @@ public class HostEditorFragment extends Fragment {
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
 
+		savedInstanceState.putLong(ARG_EXISTING_HOST_ID, mHost.getId());
 		savedInstanceState.putParcelable(ARG_EXISTING_HOST, mHost.getValues());
 		savedInstanceState.putBoolean(ARG_IS_EXPANDED, mIsUriEditorExpanded);
 		savedInstanceState.putString(
 				ARG_QUICKCONNECT_STRING, mQuickConnectField.getText().toString());
+		savedInstanceState.putStringArrayList(ARG_PUBKEY_NAMES, mPubkeyNames);
+		savedInstanceState.putStringArrayList(ARG_PUBKEY_VALUES, mPubkeyValues);
+	}
+
+	/**
+	 * Sets the Charset encoding data for the editor.
+	 * @param data A map from Charset display name to Charset value (i.e., unique ID for the
+	 *     Charset).
+	 */
+	public void setCharsetData(final Map<String, String> data) {
+		if (mEncodingSpinner != null) {
+			final String[] encodingNames = new String[data.keySet().size()];
+			data.keySet().toArray(encodingNames);
+			ArrayAdapter<String> encodingSelection = new ArrayAdapter<String>(
+					getActivity(), android.R.layout.simple_spinner_item, encodingNames);
+			encodingSelection.setDropDownViewResource(
+					android.R.layout.simple_spinner_dropdown_item);
+			mEncodingSpinner.setAdapter(encodingSelection);
+			for (int i = 0; i < encodingNames.length; i++) {
+				if (mHost.getEncoding() != null &&
+						mHost.getEncoding().equals(data.get(encodingNames[i]))) {
+					mEncodingSpinner.setSelection(i);
+					break;
+				}
+			}
+			mEncodingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+				@Override
+				public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+					mHost.setEncoding(data.get(encodingNames[position]));
+					handleHostChange();
+				}
+
+				@Override
+				public void onNothingSelected(AdapterView<?> parent) {
+				}
+			});
+		}
 	}
 
 	private void setUriPartsContainerExpanded(boolean expanded) {
@@ -463,10 +550,33 @@ public class HostEditorFragment extends Fragment {
 		mHost.setHostname(host.getHostname());
 		mHost.setNickname(host.getNickname());
 		mHost.setPort(host.getPort());
+		handleHostChange();
+	}
+
+	private void handleHostChange() {
+		String protocol = (String) mTransportSpinner.getSelectedItem();
+		String quickConnectString = mQuickConnectField.getText().toString();
+		if (protocol == null || protocol.equals("") ||
+				quickConnectString == null || quickConnectString.equals("")) {
+			// Invalid protocol and/or string, so don't do anything.
+			mListener.onHostInvalidated();
+			return;
+		}
+
+		Uri uri = TransportFactory.getUri(protocol, quickConnectString);
+		if (uri == null) {
+			// Valid string, but does not accurately describe a URI.
+			mListener.onHostInvalidated();
+			return;
+		}
+
+		// Now, the host is confirmed to have a valid URI.
+		mListener.onValidHostConfigured(mHost);
 	}
 
 	public interface Listener {
-		public void onHostUpdated(HostBean host);
+		public void onValidHostConfigured(HostBean host);
+		public void onHostInvalidated();
 	}
 
 	private class HostTextFieldWatcher implements TextWatcher {
@@ -515,6 +625,7 @@ public class HostEditorFragment extends Fragment {
 					mUriFieldEditInProgress = false;
 				}
 			}
+			handleHostChange();
 		}
 
 		private boolean isUriRelatedField(String fieldType) {
@@ -545,6 +656,7 @@ public class HostEditorFragment extends Fragment {
 			} else {
 				throw new RuntimeException("Invalid field type.");
 			}
+			handleHostChange();
 		}
 	}
 }

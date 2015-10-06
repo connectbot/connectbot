@@ -598,5 +598,9 @@
 	<string name="expand">Expand</string>
 	<!-- Label for checkbox which, when check, makes SSL authorization require confirmation. -->
 	<string name="hostpref_authagent_with_confirmation">require confirmation</string>
+	<!-- Text for button which, when clicked, adds a new host. -->
+	<string name="hostpref_add_host">Add host</string>
+	<!-- Text for button which, when clicked, saves an existing host. -->
+	<string name="hostpref_edit_host">Save host</string>
 
 </resources>
