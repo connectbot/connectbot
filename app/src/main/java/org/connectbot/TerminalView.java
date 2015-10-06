@@ -162,7 +162,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 		scaleMatrix = new Matrix();
 
 		bridge.addFontSizeChangedListener(this);
-		bridge.terminalView = this;
+		bridge.parentChanged(this);
 
 		// connect our view up to the bridge
 		setOnKeyListener(bridge.getKeyHandler());

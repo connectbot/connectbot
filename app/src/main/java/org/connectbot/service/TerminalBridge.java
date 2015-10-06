@@ -71,7 +71,6 @@ public class TerminalBridge implements VDUDisplay {
 	public int defaultBg = HostDatabase.DEFAULT_BG_COLOR;
 
 	protected final TerminalManager manager;
-	public TerminalView terminalView;
 
 	public HostBean host;
 
@@ -363,8 +362,8 @@ public class TerminalBridge implements VDUDisplay {
 	}
 
 	public void copyCurrentSelection() {
-		if (terminalView != null) {
-			terminalView.copyCurrentSelectionToClipboard();
+		if (parent != null) {
+			parent.copyCurrentSelectionToClipboard();
 		}
 	}
 
