@@ -156,6 +156,7 @@ public class HostEditorFragment extends Fragment {
 		for (int i = 0; i < transportNames.length; i++) {
 			if (transportNames.equals(mHost.getProtocol())) {
 				mTransportSpinner.setSelection(i);
+				break;
 			}
 		}
 		mTransportSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
