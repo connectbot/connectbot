@@ -29,6 +29,7 @@ import org.connectbot.util.TerminalViewPager;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -46,7 +47,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.view.MotionEventCompat;
 import android.text.ClipboardManager;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.GestureDetector;
 import android.view.InputDevice;
@@ -461,31 +461,21 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 		scaleCursors();
 	}
 
-	public void onFontSizeChanged(float size) {
+	public void onFontSizeChanged(final float size) {
 		scaleCursors();
-		setTextSize(size);
 
-		int iterationGuard = 100;
-		int heightDifference = 100;
-		float lineSpacingMultiplier = 1.0f;
+		((Activity) context).runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				setTextSize(size);
 
-		while (Math.abs(heightDifference) > 0) {
-			if (heightDifference > 0) {
-				lineSpacingMultiplier += 0.01f;
-			} else {
-				lineSpacingMultiplier -= 0.01f;
+				// For the TextView to line up with the bitmap text, lineHeight must be equal to
+				// the bridge's charHeight. See TextView.getLineHeight(), which has been reversed to
+				// derive lineSpacingMultiplier.
+				float lineSpacingMultiplier = (float) bridge.charHeight / getPaint().getFontMetricsInt(null);
+				setLineSpacing(0.0f, lineSpacingMultiplier);
 			}
-
-			setLineSpacing(0.0f, lineSpacingMultiplier);
-			heightDifference = bridge.charHeight - getLineHeight();
-
-			iterationGuard--;
-			if (iterationGuard < 0) {
-				break;
-			}
-		}
-
-		copyBufferToText();
+		});
 	}
 
 	private void scaleCursors() {
