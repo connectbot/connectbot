@@ -27,7 +27,6 @@ import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
 import org.connectbot.util.TerminalViewPager;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -181,43 +180,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			setTextIsSelectable(true);
 
-			this.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
-				private static final int PASTE = 0;
-
-				@Override
-				@SuppressLint("NewApi")
-				public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-					TerminalView.this.selectionActionMode = mode;
-
-					menu.add(0, PASTE, 2, "Paste")
-							.setIcon(R.drawable.ic_action_paste)
-							.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-					return true;
-				}
-
-				@Override
-				@SuppressLint("NewApi")
-				public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-					if (item.getItemId() == PASTE) {
-						String clip = clipboard.getText().toString();
-						TerminalView.this.bridge.injectString(clip);
-						mode.finish();
-						return true;
-					}
-
-					return false;
-				}
-
-				@Override
-				public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-					return false;
-				}
-
-				@Override
-				public void onDestroyActionMode(ActionMode mode) {
-				}
-			});
+			initSelectionCallback();
 
 			gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
 				private TerminalBridge bridge = TerminalView.this.bridge;
@@ -251,6 +214,45 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 				}
 			});
 		}
+	}
+
+	@TargetApi(11)
+	private void initSelectionCallback() {
+		this.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
+			private static final int PASTE = 0;
+
+			@Override
+			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+				TerminalView.this.selectionActionMode = mode;
+
+				menu.add(0, PASTE, 2, "Paste")
+						.setIcon(R.drawable.ic_action_paste)
+						.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+				return true;
+			}
+
+			@Override
+			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+				if (item.getItemId() == PASTE) {
+					String clip = clipboard.getText().toString();
+					TerminalView.this.bridge.injectString(clip);
+					mode.finish();
+					return true;
+				}
+
+				return false;
+			}
+
+			@Override
+			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+				return false;
+			}
+
+			@Override
+			public void onDestroyActionMode(ActionMode mode) {
+			}
+		});
 	}
 
 	public void copyCurrentSelectionToClipboard() {
