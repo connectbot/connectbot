@@ -202,7 +202,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 						bridge.buffer.setWindowBase(base + moved);
 						totalY = 0;
 
-						copyBufferToText();
+						refreshTextFromBuffer();
 					}
 
 					return true;
@@ -280,7 +280,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 
 	@Override
 	public boolean performLongClick() {
-		copyBufferToText();
+		refreshTextFromBuffer();
 		return super.performLongClick();
 	}
 
@@ -422,7 +422,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 		return super.onGenericMotionEvent(event);
 	}
 
-	private void copyBufferToText() {
+	private void refreshTextFromBuffer() {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 			// Do not run this function because the textView is not selectable pre-Honeycomb.
 			return;
