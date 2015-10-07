@@ -50,7 +50,7 @@
 			android:summary="@string/pref_emulation_summary"
 			android:entries="@array/list_emulation_modes"
 			android:entryValues="@array/list_emulation_modes"
-			android:defaultValue="screen"
+			android:defaultValue="xterm-256color"
 			/>
 
 		<EditTextPreference
