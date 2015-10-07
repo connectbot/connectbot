@@ -253,9 +253,11 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			// Selection may be beginning. Sync the TextView with the buffer.
 			refreshTextFromBuffer();
 		}
 
+		// Mouse input is treated differently:
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
 				MotionEventCompat.getSource(event) == InputDevice.SOURCE_MOUSE) {
 			if (onMouseEvent(event, bridge)) {
@@ -263,6 +265,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 			}
 			viewPager.setPagingEnabled(true);
 		} else if (gestureDetector != null) {
+			// The gesture detector should not be called if touch event was from mouse.
 			gestureDetector.onTouchEvent(event);
 		}
 
