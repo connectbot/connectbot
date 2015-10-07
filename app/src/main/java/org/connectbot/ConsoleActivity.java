@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.connectbot.bean.HostBean;
-import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.BridgeDisconnectedListener;
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
