@@ -209,8 +209,6 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 					int base = bridge.buffer.getWindowBase();
 					bridge.buffer.setWindowBase(base + moved);
 					totalY = 0;
-
-					refreshTextFromBuffer();
 				}
 
 				return true;
@@ -253,13 +251,11 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 	}
 
 	@Override
-	public boolean performLongClick() {
-		refreshTextFromBuffer();
-		return super.performLongClick();
-	}
-
-	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			refreshTextFromBuffer();
+		}
+
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
 				MotionEventCompat.getSource(event) == InputDevice.SOURCE_MOUSE) {
 			if (onMouseEvent(event, bridge)) {
@@ -416,7 +412,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 				}
 
 				// Begin "selection mode"
-				refreshTextFromBuffer();
+
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 					closeSelectionActionMode();
 				}
