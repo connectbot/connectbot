@@ -137,9 +137,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 	private MenuItem disconnect, copy, paste, portForward, resize, urlscan;
 
-	protected TerminalBridge copySource = null;
-	private int lastTouchRow, lastTouchCol;
-
 	private boolean forcedOrientation;
 
 	private Handler handler = new Handler();
@@ -669,78 +666,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				}
 			}
 		});
-
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-			pager.setOnTouchListener(new OnTouchListener() {
-				public boolean onTouch(View v, MotionEvent event) {
-					TerminalBridge bridge = adapter.getCurrentTerminalView().bridge;
-
-					boolean isCopyingInProgress =
-						(copySource != null && copySource.isSelectingForCopy());
-
-					// when copying, highlight the area
-					if (isCopyingInProgress) {
-						SelectionArea area = copySource.getSelectionArea();
-						int row = (int) Math.floor(event.getY() / bridge.charHeight);
-						int col = (int) Math.floor(event.getX() / bridge.charWidth);
-
-						switch (event.getAction()) {
-						case MotionEvent.ACTION_DOWN:
-							// recording starting area
-							if (area.isSelectingOrigin()) {
-								area.setRow(row);
-								area.setColumn(col);
-								lastTouchRow = row;
-								lastTouchCol = col;
-								copySource.redraw();
-							}
-							return true;
-						case MotionEvent.ACTION_MOVE:
-							/* ignore when user hasn't moved since last time so
-							 * we can fine-tune with directional pad
-							 */
-							if (row == lastTouchRow && col == lastTouchCol)
-								return true;
-
-							// if the user moves, start the selection for other corner
-							area.finishSelectingOrigin();
-
-							// update selected area
-							area.setRow(row);
-							area.setColumn(col);
-							lastTouchRow = row;
-							lastTouchCol = col;
-							copySource.redraw();
-							return true;
-						case MotionEvent.ACTION_UP:
-							/* If they didn't move their finger, maybe they meant to
-							 * select the rest of the text with the directional pad.
-							 */
-							if (area.getLeft() == area.getRight() &&
-									area.getTop() == area.getBottom()) {
-								return true;
-							}
-
-							// copy selected area to clipboard
-							String copiedText = area.copyFrom(copySource.buffer);
-
-							clipboard.setText(copiedText);
-							Toast.makeText(ConsoleActivity.this, getString(R.string.console_copy_done, copiedText.length()), Toast.LENGTH_LONG).show();
-							// fall through to clear state
-
-						case MotionEvent.ACTION_CANCEL:
-							// make sure we clear any highlighted area
-							area.reset();
-							copySource.setSelectingForCopy(false);
-							copySource.redraw();
-							return true;
-						}
-					}
-
-					return true;
-				}
-			});
-		}
 	}
 
 	/**
@@ -843,7 +768,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			copy.setEnabled(activeTerminal);
 			copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {
-					startCopyMode();
+					adapter.getCurrentTerminalView().startPreHoneycombCopyMode();
 					Toast.makeText(ConsoleActivity.this, getString(R.string.console_copy_start), Toast.LENGTH_LONG).show();
 					return true;
 				}
@@ -1108,24 +1033,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		}
 
 		super.onSaveInstanceState(savedInstanceState);
-	}
-
-	/**
-	 * Only intended for pre-Honeycomb devices.
-	 */
-	private void startCopyMode() {
-		// mark as copying and reset any previous bounds
-		TerminalView terminalView = (TerminalView) adapter.getCurrentTerminalView();
-		copySource = terminalView.bridge;
-
-		SelectionArea area = copySource.getSelectionArea();
-		area.reset();
-		area.setBounds(copySource.buffer.getColumns(), copySource.buffer.getRows());
-
-		copySource.setSelectingForCopy(true);
-
-		// Make sure we show the initial selection
-		copySource.redraw();
 	}
 
 	/**

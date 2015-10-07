@@ -70,6 +70,10 @@ import de.mud.terminal.vt320;
  * {@link android.app.Activity}. Handles drawing bitmap updates and passing keystrokes down
  * to terminal.
  *
+ * On Honeycomb devices and above (>= APIv11), a TextView with transparent text (which is identical
+ * to the bitmap) is drawn above the bitmap. This TextView exists to allow the user to
+ * select and copy text.
+ *
  * @author jsharkey
  */
 public class TerminalView extends TextView implements FontSizeChangedListener {
@@ -83,6 +87,9 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 	private ClipboardManager clipboard;
 	private ActionMode selectionActionMode = null;
 	private String currentSelection = "";
+
+	// These are only used for pre-Honeycomb copying.
+	private int lastTouchedRow, lastTouchedCol;
 
 	private final Paint paint;
 	private final Paint cursorPaint;
@@ -178,43 +185,43 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 		setTypeface(Typeface.MONOSPACE);
 		onFontSizeChanged(bridge.getFontSize());
 
+		// Allow selection of and copying text for Honeycomb and above devices.
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			setTextIsSelectable(true);
-
 			setCustomSelectionActionModeCallback(new TextSelectionActionModeCallback());
-
-			gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-				private TerminalBridge bridge = TerminalView.this.bridge;
-				private float totalY = 0;
-
-				@Override
-				public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-					// if releasing then reset total scroll
-					if (e2.getAction() == MotionEvent.ACTION_UP) {
-						totalY = 0;
-					}
-
-					totalY += distanceY;
-					final int moved = (int) (totalY / bridge.charHeight);
-
-					if (moved != 0) {
-						int base = bridge.buffer.getWindowBase();
-						bridge.buffer.setWindowBase(base + moved);
-						totalY = 0;
-
-						refreshTextFromBuffer();
-					}
-
-					return true;
-				}
-
-				@Override
-				public boolean onSingleTapConfirmed(MotionEvent e) {
-					viewPager.performClick();
-					return super.onSingleTapConfirmed(e);
-				}
-			});
 		}
+
+		gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+			private TerminalBridge bridge = TerminalView.this.bridge;
+			private float totalY = 0;
+
+			@Override
+			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+				// if releasing then reset total scroll
+				if (e2.getAction() == MotionEvent.ACTION_UP) {
+					totalY = 0;
+				}
+
+				totalY += distanceY;
+				final int moved = (int) (totalY / bridge.charHeight);
+
+				if (moved != 0) {
+					int base = bridge.buffer.getWindowBase();
+					bridge.buffer.setWindowBase(base + moved);
+					totalY = 0;
+
+					refreshTextFromBuffer();
+				}
+
+				return true;
+			}
+
+			@Override
+			public boolean onSingleTapConfirmed(MotionEvent e) {
+				viewPager.performClick();
+				return super.onSingleTapConfirmed(e);
+			}
+		});
 	}
 
 	@TargetApi(11)
@@ -253,10 +260,6 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-			return false;
-		}
-
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
 				MotionEventCompat.getSource(event) == InputDevice.SOURCE_MOUSE) {
 			if (onMouseEvent(event, bridge)) {
@@ -265,6 +268,76 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 			viewPager.setPagingEnabled(true);
 		} else if (gestureDetector != null) {
 			gestureDetector.onTouchEvent(event);
+		}
+
+		// Old version of copying, only for pre-Honeycomb.
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			// when copying, highlight the area
+			if (bridge.isSelectingForCopy()) {
+				SelectionArea area = bridge.getSelectionArea();
+				int row = (int) Math.floor(event.getY() / bridge.charHeight);
+				int col = (int) Math.floor(event.getX() / bridge.charWidth);
+
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					// recording starting area
+					viewPager.setPagingEnabled(false);
+					if (area.isSelectingOrigin()) {
+						area.setRow(row);
+						area.setColumn(col);
+						lastTouchedRow = row;
+						lastTouchedCol = col;
+						bridge.redraw();
+					}
+					return true;
+				case MotionEvent.ACTION_MOVE:
+							/* ignore when user hasn't moved since last time so
+							 * we can fine-tune with directional pad
+							 */
+					if (row == lastTouchedRow && col == lastTouchedCol)
+						return true;
+
+					// if the user moves, start the selection for other corner
+					area.finishSelectingOrigin();
+
+					// update selected area
+					area.setRow(row);
+					area.setColumn(col);
+					lastTouchedRow = row;
+					lastTouchedCol = col;
+					bridge.redraw();
+					return true;
+				case MotionEvent.ACTION_UP:
+							/* If they didn't move their finger, maybe they meant to
+							 * select the rest of the text with the directional pad.
+							 */
+					if (area.getLeft() == area.getRight() &&
+							area.getTop() == area.getBottom()) {
+						return true;
+					}
+
+					// copy selected area to clipboard
+					String copiedText = area.copyFrom(bridge.buffer);
+
+					clipboard.setText(copiedText);
+					Toast.makeText(
+						context,
+						context.getString(R.string.console_copy_done, copiedText.length()),
+						Toast.LENGTH_LONG).show();
+
+					// fall through to clear state
+
+				case MotionEvent.ACTION_CANCEL:
+					// make sure we clear any highlighted area
+					area.reset();
+					bridge.setSelectingForCopy(false);
+					bridge.redraw();
+					viewPager.setPagingEnabled(true);
+					return true;
+				}
+			}
+
+			return true;
 		}
 
 		super.onTouchEvent(event);
@@ -483,6 +556,21 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 		}
 
 		setText(buffer);
+	}
+
+	/**
+	 * Only intended for pre-Honeycomb devices.
+	 */
+	public void startPreHoneycombCopyMode() {
+		// mark as copying and reset any previous bounds
+		SelectionArea area = bridge.getSelectionArea();
+		area.reset();
+		area.setBounds(bridge.buffer.getColumns(), bridge.buffer.getRows());
+
+		bridge.setSelectingForCopy(true);
+
+		// Make sure we show the initial selection
+		bridge.redraw();
 	}
 
 	public void destroy() {
