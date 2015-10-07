@@ -288,11 +288,10 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 
 			menu.clear();
 
-			// TODO: these need to be localized
-			menu.add(0, COPY, 0, "Copy")
+			menu.add(0, COPY, 0, R.string.console_menu_copy)
 					.setIcon(R.drawable.ic_action_copy)
 					.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_IF_ROOM);
-			menu.add(0, PASTE, 1, "Paste")
+			menu.add(0, PASTE, 1, R.string.console_menu_paste)
 					.setIcon(R.drawable.ic_action_paste)
 					.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
