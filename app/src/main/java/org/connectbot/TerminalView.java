@@ -402,7 +402,8 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 		int col = (int) Math.floor(event.getX() / bridge.charWidth);
 		int meta = event.getMetaState();
 		boolean shiftOn = (meta & KeyEvent.META_SHIFT_ON) != 0;
-		boolean mouseReport = ((vt320) bridge.buffer).isMouseReportEnabled();
+		vt320 vtBuffer = (vt320) bridge.buffer;
+		boolean mouseReport = vtBuffer.isMouseReportEnabled();
 
 		// MouseReport can be "defeated" using the shift key.
 		if (!mouseReport || shiftOn) {
@@ -439,19 +440,19 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			viewPager.setPagingEnabled(false);
-			((vt320) bridge.buffer).mousePressed(
-				col, row, mouseEventToJavaModifiers(event));
+			vtBuffer.mousePressed(
+					col, row, mouseEventToJavaModifiers(event));
 			return true;
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
 			viewPager.setPagingEnabled(true);
-			((vt320) bridge.buffer).mouseReleased(col, row);
+			vtBuffer.mouseReleased(col, row);
 			return true;
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			int buttonState = event.getButtonState();
 			int button = (buttonState & MotionEvent.BUTTON_PRIMARY) != 0 ? 0 :
 				(buttonState & MotionEvent.BUTTON_SECONDARY) != 0 ? 1 :
 				(buttonState & MotionEvent.BUTTON_TERTIARY) != 0 ? 2 : 3;
-			((vt320) bridge.buffer).mouseMoved(
+			vtBuffer.mouseMoved(
 				button,
 				col,
 				row,
@@ -506,18 +507,19 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 			case MotionEvent.ACTION_SCROLL:
 				// Process scroll wheel movement:
 				float yDistance = MotionEventCompat.getAxisValue(event, MotionEvent.AXIS_VSCROLL);
-				boolean mouseReport = ((vt320) bridge.buffer).isMouseReportEnabled();
+				vt320 vtBuffer = (vt320) bridge.buffer;
+				boolean mouseReport = vtBuffer.isMouseReportEnabled();
 				if (mouseReport) {
 					int row = (int) Math.floor(event.getY() / bridge.charHeight);
 					int col = (int) Math.floor(event.getX() / bridge.charWidth);
 
-							((vt320) bridge.buffer).mouseWheel(
-											yDistance > 0,
-											col,
-											row,
-											(event.getMetaState() & KeyEvent.META_CTRL_ON) != 0,
-											(event.getMetaState() & KeyEvent.META_SHIFT_ON) != 0,
-											(event.getMetaState() & KeyEvent.META_META_ON) != 0);
+					vtBuffer.mouseWheel(
+							yDistance > 0,
+							col,
+							row,
+							(event.getMetaState() & KeyEvent.META_CTRL_ON) != 0,
+							(event.getMetaState() & KeyEvent.META_SHIFT_ON) != 0,
+							(event.getMetaState() & KeyEvent.META_META_ON) != 0);
 					return true;
 				} else if (yDistance != 0) {
 					int base = bridge.buffer.getWindowBase();
