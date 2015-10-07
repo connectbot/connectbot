@@ -90,6 +90,13 @@
 			/>
 
 		<org.connectbot.util.SwitchCompatPreference
+			android:key="pgupdngesture"
+			android:title="@string/pref_pg_updn_gesture_title"
+			android:summary="@string/pref_pg_updn_gesture_summary"
+			android:defaultValue="false"
+			/>
+
+		<org.connectbot.util.SwitchCompatPreference
 			android:key="volumefont"
 			android:title="@string/pref_volumefont_title"
 			android:summary="@string/pref_volumefont_summary"

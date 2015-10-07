@@ -83,7 +83,7 @@
 	<string name="page_updn_header">"Page Up / Page Down"</string>
 
 	<!-- Instructions about paging up and down in the terminal. -->
-	<string name="page_updn_content">"Swiping your finger up and down on the left third of the screen	will send a page up and page down key to the remote host. Many programs	map this to scrolling back into history such as irssi or tinyfugue."</string>
+	<string name="page_updn_content">"NOTE: This must be enabled in settings."\n\n"Swiping your finger up and down on the left third of the screen	will send a page up and page down key to the remote host. Many programs	map this to scrolling back into history such as irssi or tinyfugue."</string>
 
 	<!-- Captions for images showing the page up/down gestures. -->
 	<string name="page_up">"Page up"</string>
@@ -235,6 +235,11 @@
 	<string name="pref_titlebarhide_title">"Autohide title bar"</string>
 	<!-- Summary for the titlebar hide preference -->
 	<string name="pref_titlebarhide_summary">"Tap console to show title bar and access menu"</string>
+
+	<!-- Name for the page up/down gesture preference -->
+	<string name="pref_pg_updn_gesture_title">"Page up/down gesture"</string>
+	<!-- Summary for the full screen preference -->
+	<string name="pref_pg_updn_gesture_summary">"Swipe the left third of the screen to send pg up/dn to the terminal"</string>
 
 	<!-- Name for the full screen preference -->
 	<string name="pref_fullscreen_title">"Full screen"</string>

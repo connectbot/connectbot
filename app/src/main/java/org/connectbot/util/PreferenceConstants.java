@@ -46,6 +46,7 @@ public class PreferenceConstants {
 
 	public static final String FULLSCREEN = "fullscreen";
 	public static final String TITLEBARHIDE = "titlebarhide";
+	public static final String PG_UPDN_GESTURE = "pgupdngesture";
 
 	public static final String KEYMODE = "keymode";
 
