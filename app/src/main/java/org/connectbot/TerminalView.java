@@ -181,7 +181,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			setTextIsSelectable(true);
 
-			initSelectionCallback();
+			setCustomSelectionActionModeCallback(new TextSelectionActionModeCallback());
 
 			gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
 				private TerminalBridge bridge = TerminalView.this.bridge;
@@ -218,42 +218,11 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 	}
 
 	@TargetApi(11)
-	private void initSelectionCallback() {
-		this.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
-			private static final int PASTE = 0;
-
-			@Override
-			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-				TerminalView.this.selectionActionMode = mode;
-
-				menu.add(0, PASTE, 2, "Paste")
-						.setIcon(R.drawable.ic_action_paste)
-						.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
-				return true;
-			}
-
-			@Override
-			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-				if (item.getItemId() == PASTE) {
-					String clip = clipboard.getText().toString();
-					TerminalView.this.bridge.injectString(clip);
-					mode.finish();
-					return true;
-				}
-
-				return false;
-			}
-
-			@Override
-			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-				return false;
-			}
-
-			@Override
-			public void onDestroyActionMode(ActionMode mode) {
-			}
-		});
+	private void closeSelectionActionMode() {
+		if (selectionActionMode != null) {
+			selectionActionMode.finish();
+			selectionActionMode = null;
+		}
 	}
 
 	public void copyCurrentSelectionToClipboard() {
@@ -263,10 +232,8 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 			clipboard.setText(currentSelection);
 		}
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB &&
-			selectionActionMode != null) {
-			selectionActionMode.finish();
-			selectionActionMode = null;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			closeSelectionActionMode();
 		}
 	}
 
@@ -296,14 +263,61 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 				return true;
 			}
 			viewPager.setPagingEnabled(true);
-		}
-
-		super.onTouchEvent(event);
-		if (gestureDetector != null) {
+		} else if (gestureDetector != null) {
 			gestureDetector.onTouchEvent(event);
 		}
 
+		super.onTouchEvent(event);
+
 		return true;
+	}
+
+	@TargetApi(11)
+	private class TextSelectionActionModeCallback implements ActionMode.Callback {
+		private static final int COPY = 0;
+		private static final int PASTE = 1;
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false;
+		}
+
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			TerminalView.this.selectionActionMode = mode;
+
+			menu.clear();
+
+			// TODO: these need to be localized
+			menu.add(0, COPY, 0, "Copy")
+					.setIcon(R.drawable.ic_action_copy)
+					.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_IF_ROOM);
+			menu.add(0, PASTE, 1, "Paste")
+					.setIcon(R.drawable.ic_action_paste)
+					.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+			return true;
+		}
+
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			switch (item.getItemId()) {
+			case COPY:
+				copyCurrentSelectionToClipboard();
+				return true;
+			case PASTE:
+				String clip = clipboard.getText().toString();
+				TerminalView.this.bridge.injectString(clip);
+				mode.finish();
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+		}
 	}
 
 	/**
@@ -320,15 +334,37 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 		boolean mouseReport = ((vt320) bridge.buffer).isMouseReportEnabled();
 
 		// MouseReport can be "defeated" using the shift key.
-		if ((!mouseReport || shiftOn)) {
+		if (!mouseReport || shiftOn) {
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
-				switch (event.getButtonState()) {
-				case MotionEvent.BUTTON_TERTIARY:
+				if (event.getButtonState() == MotionEvent.BUTTON_TERTIARY) {
 					// Middle click pastes.
 					String clip = clipboard.getText().toString();
 					bridge.injectString(clip);
 					return true;
 				}
+
+				// Begin "selection mode"
+				refreshTextFromBuffer();
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					closeSelectionActionMode();
+				}
+			} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+				// In the middle of selection.
+
+				if (selectionActionMode == null) {
+					selectionActionMode = startActionMode(new TextSelectionActionModeCallback());
+				}
+
+				int selectionStart = getSelectionStart();
+				int selectionEnd = getSelectionEnd();
+
+				if (selectionStart > selectionEnd) {
+					int tempStart = selectionStart;
+					selectionStart = selectionEnd;
+					selectionEnd = tempStart;
+				}
+
+				currentSelection = getText().toString().substring(selectionStart, selectionEnd);
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			viewPager.setPagingEnabled(false);
@@ -422,6 +458,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 		return super.onGenericMotionEvent(event);
 	}
 
+	// TODO: cleanup and possibly optimize
 	private void refreshTextFromBuffer() {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 			// Do not run this function because the textView is not selectable pre-Honeycomb.
