@@ -2198,23 +2198,20 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             DCEvars[DCEvar] = 0;
             term_state = TSTATE_DCEQ;
             break;
-          case 's': // XTERM_SAVE missing!
+          case 's':
             for (int i = 0; i <= DCEvar; i++) {
               switch (DCEvars[i]) {
               case 9:
-              case 1000:	/* xterm style mouse report on */
+              case 1000:
               case 1001:
               case 1002:
               case 1003:
                 mouserptSaved = mouserpt;
                 break;
               default:
-                debug("ESC [ ? " + DCEvars[0] + " r, unimplemented!");
+                debug("ESC [ ? " + DCEvars[0] + " s, unimplemented!");
               }
             }
-            if (true || debug > 1)
-              debug("ESC [ ? " + DCEvars[0] + " s unimplemented!");
-            break;
           case 'r': // XTERM_RESTORE
             if (true || debug > 1)
               debug("ESC [ ? " + DCEvars[0] + " r");
