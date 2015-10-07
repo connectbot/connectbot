@@ -2212,6 +2212,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 debug("ESC [ ? " + DCEvars[0] + " s, unimplemented!");
               }
             }
+            break;
           case 'r': // XTERM_RESTORE
             if (true || debug > 1)
               debug("ESC [ ? " + DCEvars[0] + " r");
