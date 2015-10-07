@@ -25,6 +25,8 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -32,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
@@ -76,6 +79,12 @@ public class HostEditorFragment extends Fragment {
 	// the text in the Spinner because the text is localized while these values are not.
 	private TypedArray mColorValues;
 
+	// Likewise, but for SSH auth agent values.
+	private TypedArray mSshAuthValues;
+
+	// Likewise, but for DEL key values.
+	private TypedArray mDelKeyValues;
+
 	private Spinner mTransportSpinner;
 	private TextInputLayout mQuickConnectContainer;
 	private EditText mQuickConnectField;
@@ -91,6 +100,17 @@ public class HostEditorFragment extends Fragment {
 	private Spinner mColorSelector;
 	private TextView mFontSizeText;
 	private SeekBar mFontSizeSeekBar;
+	private Spinner mPubkeySpinner;
+	private View mUseSshConfirmationContainer;
+	private SwitchCompat mUseSshAuthSwitch;
+	private AppCompatCheckBox mSshAuthConfirmationCheckbox;
+	private SwitchCompat mCompressionSwitch;
+	private SwitchCompat mStartShellSwitch;
+	private SwitchCompat mStayConnectedSwitch;
+	private SwitchCompat mCloseOnDisconnectSwitch;
+	private EditText mPostLoginAutomationField;
+	private Spinner mDelKeySpinner;
+	private Spinner mEncodingSpinner;
 
 	public static HostEditorFragment newInstance(HostBean existingHost) {
 		HostEditorFragment fragment = new HostEditorFragment();
@@ -128,12 +148,17 @@ public class HostEditorFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_host_editor, container, false);
 
 		mTransportSpinner = (Spinner) view.findViewById(R.id.transport_selector);
+		String[] transportNames = TransportFactory.getTransportNames();
 		ArrayAdapter<String> transportSelection = new ArrayAdapter<>(
-				getActivity(),
-				android.R.layout.simple_spinner_item,
-				TransportFactory.getTransportNames());
+				getActivity(), android.R.layout.simple_spinner_item, transportNames);
 		transportSelection.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mTransportSpinner.setAdapter(transportSelection);
+		for (int i = 0; i < transportNames.length; i++) {
+			if (transportNames.equals(mHost.getProtocol())) {
+				mTransportSpinner.setSelection(i);
+				break;
+			}
+		}
 		mTransportSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -240,14 +265,10 @@ public class HostEditorFragment extends Fragment {
 				new HostTextFieldWatcher(HostDatabase.FIELD_HOST_NICKNAME));
 
 		mColorSelector = (Spinner) view.findViewById(R.id.color_selector);
-		if (mHost.getColor() != null) {
-			// Unfortunately, TypedArray doesn't have an indexOf(String) function, so search through
-			// the array for the saved color.
-			for (int i = 0; i < mColorValues.getIndexCount(); i++) {
-				if (mHost.getColor().equals(mColorValues.getString(i))) {
-					mColorSelector.setSelection(i);
-					break;
-				}
+		for (int i = 0; i < mColorValues.getIndexCount(); i++) {
+			if (mHost.getColor().equals(mColorValues.getString(i))) {
+				mColorSelector.setSelection(i);
+				break;
 			}
 		}
 		mColorSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -281,6 +302,88 @@ public class HostEditorFragment extends Fragment {
 		});
 		mFontSizeSeekBar.setProgress(mHost.getFontSize() - MINIMUM_FONT_SIZE);
 
+		mPubkeySpinner = (Spinner) view.findViewById(R.id.pubkey_spinner);
+		// TODO: Set up spinner. This requires passing pubkey data into the fragment from the
+		// activity and will be part of an upcoming PR.
+
+		mUseSshConfirmationContainer = view.findViewById(R.id.ssh_confirmation_container);
+		mUseSshAuthSwitch = (SwitchCompat) view.findViewById(R.id.use_ssh_auth_switch);
+		mSshAuthConfirmationCheckbox =
+				(AppCompatCheckBox) view.findViewById(R.id.ssh_auth_confirmation_checkbox);
+		CompoundButton.OnCheckedChangeListener authSwitchListener = new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				mUseSshConfirmationContainer.setVisibility(
+						mUseSshAuthSwitch.isChecked() ? View.VISIBLE : View.GONE);
+				if (mUseSshAuthSwitch.isChecked()) {
+					mHost.setUseAuthAgent(
+							mSshAuthConfirmationCheckbox.isChecked() ?
+									/* require confirmation */ mSshAuthValues.getString(1) :
+									/* don't require confirmation */ mSshAuthValues.getString(2));
+				} else {
+					mHost.setUseAuthAgent(/* don't use */ mSshAuthValues.getString(0));
+				}
+			}
+		};
+		mUseSshAuthSwitch.setOnCheckedChangeListener(authSwitchListener);
+		mSshAuthConfirmationCheckbox.setOnCheckedChangeListener(authSwitchListener);
+		if (mHost.getUseAuthAgent() == null ||
+				mHost.getUseAuthAgent().equals(mSshAuthValues.getString(0))) {
+			mUseSshAuthSwitch.setChecked(false);
+			mSshAuthConfirmationCheckbox.setChecked(false);
+		} else {
+			mUseSshAuthSwitch.setChecked(true);
+			mSshAuthConfirmationCheckbox.setChecked(
+					mHost.getUseAuthAgent().equals(mSshAuthValues.getString(1)));
+		}
+
+		mCompressionSwitch = (SwitchCompat) view.findViewById(R.id.compression_switch);
+		mCompressionSwitch.setChecked(mHost.getCompression());
+		mCompressionSwitch.setOnCheckedChangeListener(
+				new HostSwitchWatcher(HostDatabase.FIELD_HOST_COMPRESSION));
+
+		mStartShellSwitch = (SwitchCompat) view.findViewById(R.id.start_shell_switch);
+		mStartShellSwitch.setChecked(mHost.getWantSession());
+		mStartShellSwitch.setOnCheckedChangeListener(
+				new HostSwitchWatcher(HostDatabase.FIELD_HOST_WANTSESSION));
+
+		mStayConnectedSwitch = (SwitchCompat) view.findViewById(R.id.stay_connected_switch);
+		mStayConnectedSwitch.setChecked(mHost.getStayConnected());
+		mStayConnectedSwitch.setOnCheckedChangeListener(
+				new HostSwitchWatcher(HostDatabase.FIELD_HOST_STAYCONNECTED));
+
+		mCloseOnDisconnectSwitch = (SwitchCompat) view.findViewById(R.id.close_on_disconnect_switch);
+		mCloseOnDisconnectSwitch.setChecked(mHost.getQuickDisconnect());
+		mCloseOnDisconnectSwitch.setOnCheckedChangeListener(
+				new HostSwitchWatcher(HostDatabase.FIELD_HOST_QUICKDISCONNECT));
+
+		mPostLoginAutomationField = (EditText) view.findViewById(R.id.post_login_automation_field);
+		mPostLoginAutomationField.setText(mHost.getPostLogin());
+		mPostLoginAutomationField.addTextChangedListener(
+				new HostTextFieldWatcher(HostDatabase.FIELD_HOST_POSTLOGIN));
+
+		mDelKeySpinner = (Spinner) view.findViewById(R.id.del_key_spinner);
+		for (int i = 0; i < mDelKeyValues.getIndexCount(); i++) {
+			if (mHost.getDelKey().equals(mDelKeyValues.getString(i))) {
+				mDelKeySpinner.setSelection(i);
+				break;
+			}
+		}
+		mDelKeySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				mHost.setDelKey(mDelKeyValues.getString(position));
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+			}
+		});
+
+		mEncodingSpinner = (Spinner) view.findViewById(R.id.encoding_spinner);
+		// TODO: Set up spinner. This requires passing pubkey data into the fragment from the
+		// activity and will be part of an upcoming PR.
+
 		setUriPartsContainerExpanded(mIsUriEditorExpanded);
 
 		return view;
@@ -295,9 +398,11 @@ public class HostEditorFragment extends Fragment {
 			throw new ClassCastException(context.toString() + " must implement Listener");
 		}
 
-		// Now that the fragment is attached to an Activity, fetch the array from the attached
+		// Now that the fragment is attached to an Activity, fetch the arrays from the attached
 		// Activity's resources.
 		mColorValues = getResources().obtainTypedArray(R.array.list_color_values);
+		mSshAuthValues = getResources().obtainTypedArray(R.array.list_authagent_values);
+		mDelKeyValues = getResources().obtainTypedArray(R.array.list_delkey_values);
 	}
 
 	@Override
@@ -305,6 +410,8 @@ public class HostEditorFragment extends Fragment {
 		super.onDetach();
 		mListener = null;
 		mColorValues.recycle();
+		mSshAuthValues.recycle();
+		mDelKeyValues.recycle();
 	}
 
 	@Override
@@ -392,6 +499,8 @@ public class HostEditorFragment extends Fragment {
 				}
 			} else if (HostDatabase.FIELD_HOST_NICKNAME.equals(mFieldType)) {
 				mHost.setNickname(text);
+			} else if (HostDatabase.FIELD_HOST_POSTLOGIN.equals(mFieldType)) {
+				mHost.setPostLogin(text);
 			} else {
 				throw new RuntimeException("Invalid field type.");
 			}
@@ -412,6 +521,30 @@ public class HostEditorFragment extends Fragment {
 			return HostDatabase.FIELD_HOST_USERNAME.equals(fieldType) ||
 					HostDatabase.FIELD_HOST_HOSTNAME.equals(fieldType) ||
 					HostDatabase.FIELD_HOST_PORT.equals(fieldType);
+		}
+	}
+
+	private class HostSwitchWatcher implements CompoundButton.OnCheckedChangeListener {
+
+		private final String mFieldType;
+
+		public HostSwitchWatcher(String fieldType) {
+			mFieldType = fieldType;
+		}
+
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			if (HostDatabase.FIELD_HOST_COMPRESSION.equals(mFieldType)) {
+				mHost.setCompression(isChecked);
+			} else if (HostDatabase.FIELD_HOST_WANTSESSION.equals(mFieldType)) {
+				mHost.setWantSession(isChecked);
+			} else if (HostDatabase.FIELD_HOST_STAYCONNECTED.equals(mFieldType)) {
+				mHost.setStayConnected(isChecked);
+			} else if (HostDatabase.FIELD_HOST_QUICKDISCONNECT.equals(mFieldType)) {
+				mHost.setQuickDisconnect(isChecked);
+			} else {
+				throw new RuntimeException("Invalid field type.");
+			}
 		}
 	}
 }
