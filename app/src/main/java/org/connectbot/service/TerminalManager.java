@@ -257,7 +257,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 
 	public String getEmulation() {
-		return prefs.getString(PreferenceConstants.EMULATION, "screen");
+		return prefs.getString(PreferenceConstants.EMULATION, "xterm-256color");
 	}
 
 	public int getScrollback() {
