@@ -672,6 +672,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
   boolean capslock = false;
   boolean numlock = false;
   int mouserpt = 0;
+  int mouserptSaved = 0;
   byte mousebut = 0;
 
   boolean useibmcharset = false;
@@ -2197,9 +2198,20 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             DCEvars[DCEvar] = 0;
             term_state = TSTATE_DCEQ;
             break;
-          case 's': // XTERM_SAVE missing!
-            if (true || debug > 1)
-              debug("ESC [ ? " + DCEvars[0] + " s unimplemented!");
+          case 's':
+            for (int i = 0; i <= DCEvar; i++) {
+              switch (DCEvars[i]) {
+              case 9:
+              case 1000:
+              case 1001:
+              case 1002:
+              case 1003:
+                mouserptSaved = mouserpt;
+                break;
+              default:
+                debug("ESC [ ? " + DCEvars[0] + " s, unimplemented!");
+              }
+            }
             break;
           case 'r': // XTERM_RESTORE
             if (true || debug > 1)
@@ -2227,7 +2239,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 case 1001:
                 case 1002:
                 case 1003:
-                  mouserpt = DCEvars[i];
+                  mouserpt = mouserptSaved;
                   break;
                 default:
                   debug("ESC [ ? " + DCEvars[0] + " r, unimplemented!");
