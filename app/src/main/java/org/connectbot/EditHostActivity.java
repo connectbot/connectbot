@@ -94,18 +94,21 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 		// Note that the lists must be explicitly declared as ArrayLists because Bundle only accepts
 		// ArrayLists of Strings.
 		ArrayList<String> pubkeyNames = new ArrayList<>();
+		ArrayList<String> pubkeyValues = new ArrayList<>();
+
+		// First, add default pubkey names and values (e.g., "use any" and "don't use any").
 		TypedArray defaultPubkeyNames = getResources().obtainTypedArray(R.array.list_pubkeyids);
 		for (int i = 0; i < defaultPubkeyNames.length(); i++) {
 			pubkeyNames.add(defaultPubkeyNames.getString(i));
 		}
-		for (CharSequence cs : mPubkeyDb.allValues(PubkeyDatabase.FIELD_PUBKEY_NICKNAME)) {
-			pubkeyNames.add(cs.toString());
-		}
-
-		ArrayList<String> pubkeyValues = new ArrayList<>();
 		TypedArray defaultPubkeyValues = getResources().obtainTypedArray(R.array.list_pubkeyids_value);
 		for (int i = 0; i < defaultPubkeyValues.length(); i++) {
 			pubkeyValues.add(defaultPubkeyValues.getString(i));
+		}
+
+		// Now, add pubkeys which have been added by the user.
+		for (CharSequence cs : mPubkeyDb.allValues(PubkeyDatabase.FIELD_PUBKEY_NICKNAME)) {
+			pubkeyNames.add(cs.toString());
 		}
 		for (CharSequence cs : mPubkeyDb.allValues("_id")) {
 			pubkeyValues.add(cs.toString());
@@ -131,6 +134,8 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 				menu);
 
 		mSaveHostButton = menu.getItem(0);
+
+		// If the new host is being created, it can't be added until modifications have been made.
 		mSaveHostButton.setEnabled(!mIsCreating);
 
 		return super.onCreateOptionsMenu(menu);
@@ -205,7 +210,9 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 			mSaveHostButton.setEnabled(false);
 	}
 
-	public static class CharsetHolder {
+	// Private static class used to generate a list of available Charsets. Note that this class
+	// must not be initialized by the UI thread because it blocks on disk access.
+	private static class CharsetHolder {
 		private static boolean mInitialized = false;
 
 		// Map from Charset display name to Charset value (i.e., unique ID).

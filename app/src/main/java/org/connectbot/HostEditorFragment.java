@@ -553,6 +553,12 @@ public class HostEditorFragment extends Fragment {
 		handleHostChange();
 	}
 
+	/**
+	 * Handles a change in the host caused by the user adjusting the values of one of the widgets
+	 * in this fragment. If the change has resulted in a valid host, the new value is sent back
+	 * to the listener; however, if the change ha resulted in an invalid host, the listener is
+	 * notified.
+	 */
 	private void handleHostChange() {
 		String protocol = (String) mTransportSpinner.getSelectedItem();
 		String quickConnectString = mQuickConnectField.getText().toString();
