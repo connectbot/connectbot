@@ -34,4 +34,14 @@
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		/>
 
+	<org.connectbot.util.TerminalTextViewOverlay
+		android:id="@+id/terminal_text_overlay"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_centerInParent="true"
+		android:background="@android:color/transparent"
+		android:isScrollContainer="false"
+		android:ellipsize="end"
+		/>
+
 </RelativeLayout>

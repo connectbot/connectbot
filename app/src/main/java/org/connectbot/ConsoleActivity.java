@@ -28,6 +28,7 @@ import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.PreferenceConstants;
+import org.connectbot.util.TerminalTextViewOverlay;
 import org.connectbot.util.TerminalViewPager;
 
 import android.app.AlertDialog;
@@ -1148,9 +1149,9 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	 * Called whenever the displayed terminal is changed.
 	 */
 	private void onTerminalChanged() {
-		View overlay = findCurrentView(R.id.terminal_overlay);
-		if (overlay != null)
-			overlay.startAnimation(fade_out_delayed);
+		View terminalNameOverlay = findCurrentView(R.id.terminal_name_overlay);
+		if (terminalNameOverlay != null)
+			terminalNameOverlay.startAnimation(fade_out_delayed);
 		updateDefault();
 		updatePromptVisible();
 		ActivityCompat.invalidateOptionsMenu(ConsoleActivity.this);
@@ -1203,12 +1204,16 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			RelativeLayout view = (RelativeLayout) inflater.inflate(
 					R.layout.item_terminal, container, false);
 
-			// set the terminal overlay text
-			TextView overlay = (TextView) view.findViewById(R.id.terminal_overlay);
-			overlay.setText(bridge.host.getNickname());
+			// set the terminal name overlay text
+			TextView terminalNameOverlay = (TextView) view.findViewById(R.id.terminal_name_overlay);
+			terminalNameOverlay.setText(bridge.host.getNickname());
+
+			TerminalTextViewOverlay terminalTextViewOverlay =
+						(TerminalTextViewOverlay) view.findViewById(R.id.terminal_text_overlay);
 
 			// and add our terminal view control, using index to place behind overlay
-			final TerminalView terminal = new TerminalView(container.getContext(), bridge, pager);
+			final TerminalView terminal = new TerminalView(
+				container.getContext(), bridge, terminalTextViewOverlay, pager);
 			terminal.setId(R.id.terminal_view);
 			view.addView(terminal, 0);
 
@@ -1216,7 +1221,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			view.setTag(bridge);
 
 			container.addView(view);
-			overlay.startAnimation(fade_out_delayed);
+			terminalNameOverlay.startAnimation(fade_out_delayed);
 			return view;
 		}
 
