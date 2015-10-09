@@ -25,6 +25,7 @@ import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.FontSizeChangedListener;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
+import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.TerminalViewPager;
 
 import android.annotation.TargetApi;
@@ -32,6 +33,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Canvas;
@@ -45,6 +47,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v4.view.MotionEventCompat;
 import android.text.ClipboardManager;
 import android.view.ActionMode;
@@ -54,6 +57,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
@@ -83,6 +87,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 
 	private final TerminalViewPager viewPager;
 	private GestureDetector gestureDetector;
+	private SharedPreferences prefs;
 
 	private ClipboardManager clipboard;
 	private ActionMode selectionActionMode = null;
@@ -180,6 +185,7 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 		new AccessibilityStateTester().execute((Void) null);
 
 		clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+		prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
 		setTextColor(Color.TRANSPARENT);
 		setTypeface(Typeface.MONOSPACE);
@@ -202,13 +208,35 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 					totalY = 0;
 				}
 
-				totalY += distanceY;
-				final int moved = (int) (totalY / bridge.charHeight);
+				// activate consider if within x tolerance
+				int touchSlop =
+						ViewConfiguration.get(TerminalView.this.context).getScaledTouchSlop();
+				if (Math.abs(e1.getX() - e2.getX()) < touchSlop * 4) {
+					// estimate how many rows we have scrolled through
+					// accumulate distance that doesn't trigger immediate scroll
+					totalY += distanceY;
+					final int moved = (int) (totalY / bridge.charHeight);
 
-				if (moved != 0) {
-					int base = bridge.buffer.getWindowBase();
-					bridge.buffer.setWindowBase(base + moved);
-					totalY = 0;
+					// Consume as pg up/dn only if towards left third of screen with the gesture
+					// enabled.
+					boolean pgUpDnGestureEnabled =
+							prefs.getBoolean(PreferenceConstants.PG_UPDN_GESTURE, false);
+					if (e2.getX() <= getWidth() / 3 && pgUpDnGestureEnabled) {
+						// otherwise consume as pgup/pgdown for every 5 lines
+						if (moved > 5) {
+							((vt320) bridge.buffer).keyPressed(vt320.KEY_PAGE_DOWN, ' ', 0);
+							bridge.tryKeyVibrate();
+							totalY = 0;
+						} else if (moved < -5) {
+							((vt320) bridge.buffer).keyPressed(vt320.KEY_PAGE_UP, ' ', 0);
+							bridge.tryKeyVibrate();
+							totalY = 0;
+						}
+					} else if (moved != 0) {
+						int base = bridge.buffer.getWindowBase();
+						bridge.buffer.setWindowBase(base + moved);
+						totalY = 0;
+					}
 				}
 
 				return true;
