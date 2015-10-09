@@ -158,7 +158,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			else
 				algorithmName = serverHostKeyAlgorithm;
 
-			switch(hosts.verifyHostkey(matchName, serverHostKeyAlgorithm, serverHostKey)) {
+			switch (hosts.verifyHostkey(matchName, serverHostKeyAlgorithm, serverHostKey)) {
 			case KnownHosts.HOSTKEY_IS_OK:
 				bridge.outputLine(manager.res.getString(R.string.terminal_sucess, algorithmName, fingerprint));
 				return true;
