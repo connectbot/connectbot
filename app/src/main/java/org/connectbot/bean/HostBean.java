@@ -47,7 +47,7 @@ public class HostBean extends AbstractBean {
 	private boolean useKeys = true;
 	private String useAuthAgent = HostDatabase.AUTHAGENT_NO;
 	private String postLogin = null;
-	private long pubkeyId = -1;
+	private long pubkeyId = HostDatabase.PUBKEYID_ANY;
 	private boolean wantSession = true;
 	private String delKey = HostDatabase.DELKEY_DEL;
 	private int fontSize = DEFAULT_FONT_SIZE;
@@ -226,8 +226,8 @@ public class HostBean extends AbstractBean {
 		values.put(HostDatabase.FIELD_HOST_FONTSIZE, fontSize);
 		values.put(HostDatabase.FIELD_HOST_COMPRESSION, Boolean.toString(compression));
 		values.put(HostDatabase.FIELD_HOST_ENCODING, encoding);
-		values.put(HostDatabase.FIELD_HOST_STAYCONNECTED, stayConnected);
-		values.put(HostDatabase.FIELD_HOST_QUICKDISCONNECT, quickDisconnect);
+		values.put(HostDatabase.FIELD_HOST_STAYCONNECTED, Boolean.toString(stayConnected));
+		values.put(HostDatabase.FIELD_HOST_QUICKDISCONNECT, Boolean.toString(quickDisconnect));
 
 		return values;
 	}
