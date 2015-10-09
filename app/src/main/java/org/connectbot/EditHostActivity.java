@@ -19,10 +19,7 @@ package org.connectbot;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import android.content.ComponentName;
@@ -32,7 +29,6 @@ import android.content.ServiceConnection;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -124,6 +120,9 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.fragment_container, fragment).commit();
 		}
+
+		defaultPubkeyNames.recycle();
+		defaultPubkeyValues.recycle();
 	}
 
 	@Override
@@ -173,7 +172,7 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 		} else {
 			// If CharsetHolder is uninitialized, initialize it in an AsyncTask. This is necessary
 			// because Charset must touch the disk, which cannot be performed on the UI thread.
-			new AsyncTask<Void, Void, Void>() {
+			AsyncTask<Void, Void, Void> charsetTask = new AsyncTask<Void, Void, Void>() {
 
 				@Override
 				protected Void doInBackground(Void... unused) {
@@ -185,7 +184,8 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 				protected void onPostExecute(Void unused) {
 					fragment.setCharsetData(CharsetHolder.getCharsetData());
 				}
-			}.execute();
+			};
+			charsetTask.execute();
 		}
 	}
 
@@ -219,7 +219,7 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 		private static Map<String, String> mData;
 
 		public static Map<String, String> getCharsetData() {
-			if (mData== null)
+			if (mData == null)
 				initialize();
 
 			return mData;

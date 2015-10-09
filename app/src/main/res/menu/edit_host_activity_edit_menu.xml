@@ -18,13 +18,13 @@
 
 <menu
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:yourapp="http://schemas.android.com/apk/res-auto"
+	xmlns:connectbot="http://schemas.android.com/apk/res-auto"
 	>
 
 	<item android:id="@+id/save"
 		android:icon="@drawable/ic_add"
 		android:title="@string/hostpref_edit_host"
-		yourapp:showAsAction="always|withText"
+        connectbot:showAsAction="always|withText"
 		/>
 
 </menu>
