@@ -57,6 +57,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
@@ -136,6 +137,14 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 		setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 		setFocusable(true);
 		setFocusableInTouchMode(true);
+
+		// Some things TerminalView uses is unsupported in hardware acceleration
+		// so this is using software rendering until we can replace all the
+		// instances.
+		// See: https://developer.android.com/guide/topics/graphics/hardware-accel.html#unsupported
+		if (Build.VERSION.SDK_INT >= 11) {
+			setLayerTypeToSoftware();
+		}
 
 		paint = new Paint();
 
@@ -248,6 +257,11 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 				return super.onSingleTapConfirmed(e);
 			}
 		});
+	}
+
+	@TargetApi(11)
+	private void setLayerTypeToSoftware() {
+		setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 	}
 
 	@TargetApi(11)
