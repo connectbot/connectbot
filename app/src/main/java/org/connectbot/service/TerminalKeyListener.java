@@ -147,19 +147,19 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 			// Ignore all key-up events except for the special keys
 			if (event.getAction() == KeyEvent.ACTION_UP) {
-				if (rightModifiersAreSlashAndTab) {
-					if (keyCode == KeyEvent.KEYCODE_ALT_RIGHT
-							&& (ourMetaState & OUR_SLASH) != 0) {
-						ourMetaState &= ~OUR_TRANSIENT;
-						bridge.transport.write('/');
-						return true;
-					} else if (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT
-							&& (ourMetaState & OUR_TAB) != 0) {
-						ourMetaState &= ~OUR_TRANSIENT;
-						bridge.transport.write(0x09);
-						return true;
-					}
-				} else if (leftModifiersAreSlashAndTab) {
+//				if (rightModifiersAreSlashAndTab) {
+//					if (keyCode == KeyEvent.KEYCODE_ALT_RIGHT
+//							&& (ourMetaState & OUR_SLASH) != 0) {
+//						ourMetaState &= ~OUR_TRANSIENT;
+//						bridge.transport.write('/');
+//						return true;
+//					} else if (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT
+//							&& (ourMetaState & OUR_TAB) != 0) {
+//						ourMetaState &= ~OUR_TRANSIENT;
+//						bridge.transport.write(0x09);
+//						return true;
+//					}
+//				} else if (leftModifiersAreSlashAndTab)
 					if (keyCode == KeyEvent.KEYCODE_ALT_LEFT
 							&& (ourMetaState & OUR_SLASH) != 0) {
 						ourMetaState &= ~OUR_TRANSIENT;
@@ -171,9 +171,6 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 						bridge.transport.write(0x09);
 						return true;
 					}
-				}
-
-				return false;
 			}
 
 			//Log.i("CBKeyDebug", KeyEventUtil.describeKeyEvent(keyCode, event));
