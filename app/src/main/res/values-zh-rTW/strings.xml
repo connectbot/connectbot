@@ -155,7 +155,6 @@
   <string name="portforward_pos">建立連接埠轉址</string>
   <string name="portforward_done">成功建立連接埠轉址</string>
   <string name="portforward_problem">新增連接埠時發生問題，可能您正在使用 1024 以下的埠或是埠被佔用?</string>
-  <string name="portforward_menu_add">新增連接埠轉址</string>
   <string name="hint_userhost">使用者名稱\@主機名稱</string>
   <string name="list_format_error">使用 %1$s 格式</string>
   <string name="format_username">使用者名稱</string>

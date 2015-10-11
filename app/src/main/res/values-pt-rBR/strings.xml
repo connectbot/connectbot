@@ -142,7 +142,6 @@
   <string name="portforward_pos">Criar encaminhamento de porta</string>
   <string name="portforward_done">Encaminhamento de porta criado com sucesso</string>
   <string name="portforward_problem">Problema na criação do redirecionamento de portas, talvez você esteja usando portas menores que 1024 ou a porta já esteja sendo usada.</string>
-  <string name="portforward_menu_add">Adicionar encaminhamento de porta</string>
   <string name="hint_userhost">usuario\@nome_do_host</string>
   <string name="list_format_error">Use o formato %1$s</string>
   <string name="format_username">usuário</string>

@@ -140,7 +140,6 @@
   <string name="portforward_pos">Vytvoriť presmerovanie portu</string>
   <string name="portforward_done">Premerovanie portu úspešne vytvorené</string>
   <string name="portforward_problem">Problém s vytvorením presmerovania portu, možno používate port menší ako 1024 alebo je už obsadený?</string>
-  <string name="portforward_menu_add">Pridať presmerovanie portu</string>
   <string name="hint_userhost">používateľské_meno\@hostiteľ</string>
   <string name="list_format_error">Použite formát \"%1$s\"</string>
   <string name="format_username">užívateľské meno</string>

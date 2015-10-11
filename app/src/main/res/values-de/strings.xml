@@ -142,7 +142,6 @@
   <string name="portforward_pos">Port-Weiterleitung anlegen</string>
   <string name="portforward_done">Port-Weiterleitung angelegt.</string>
   <string name="portforward_problem">Konnte Port-Weiterleitung nicht anlegen. Verwenden Sie Ports kleiner als 1024, oder wird der Port bereits verwendet?</string>
-  <string name="portforward_menu_add">Port-Weiterleitung hinzufügen</string>
   <string name="hint_userhost">benutzer\@hostname</string>
   <string name="list_format_error">Benutze das Format %1$s</string>
   <string name="format_username">Benutzername</string>

@@ -137,7 +137,6 @@
   <string name="portforward_dynamic">Dynamický (SOCKS)</string>
   <string name="portforward_pos">Vytvořit přesměrování portu</string>
   <string name="portforward_done">Přesměrování portu úspěšně vytvořeno</string>
-  <string name="portforward_menu_add">Přidat přesměrování portu</string>
   <string name="hint_userhost">user\@hostname</string>
   <string name="list_format_error">Použijte formát %1$s</string>
   <string name="format_username">uživatelské jméno</string>

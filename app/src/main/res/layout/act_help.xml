@@ -52,5 +52,23 @@
 			android:textAppearance="?android:attr/textAppearanceMedium"
 			/>
 
+		<Button
+			android:id="@+id/hints_button"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/hints"/>
+
+		<Button
+			android:id="@+id/shortcuts_button"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/keyboard_shortcuts"/>
+
+		<Button
+			android:id="@+id/eula_button"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/terms_and_conditions"/>
+
 	</LinearLayout>
 </ScrollView>

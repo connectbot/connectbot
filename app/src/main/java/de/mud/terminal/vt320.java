@@ -162,23 +162,13 @@ public void setScreenSize(int c, int r, boolean broadcast) {
 
     super.setScreenSize(c,r,false);
 
-    boolean cursorChanged = false;
-
-    // Don't let the cursor go off the screen.
-    if (C >= c) {
-      C = c - 1;
-      cursorChanged = true;
-    }
-
+    // Don't let the cursor go off the screen. Scroll down if needed.
     if (R >= r) {
-      R = r - 1;
-      cursorChanged = true;
+      screenBase += R - (r - 1);
+      setWindowBase(screenBase);
     }
-
-    if (cursorChanged) {
-      setCursorPosition(C, R);
-      redraw();
-    }
+    R = getCursorRow();
+    C = getCursorColumn();
 
     if (broadcast) {
       setWindowSize(c, r); /* broadcast up */
@@ -336,6 +326,10 @@ public void setScreenSize(int c, int r, boolean broadcast) {
     this(80, 24);
   }
 
+  public boolean isMouseReportEnabled() {
+    return mouserpt != 0;
+  }
+
   /**
    * Terminal is mouse-aware and requires (x,y) coordinates of
    * on the terminal (character coordinates) and the button clicked.
@@ -372,13 +366,81 @@ public void setScreenSize(int c, int r, boolean broadcast) {
   }
 
   /**
+   * Passes mouse wheel events to the terminal.
+   * @param down True if scrolling down the page. False if scrolling up.
+   * @param x
+   * @param y
+   * @param ctrl
+   * @param shift
+   * @param meta
+   */
+  public void mouseWheel(boolean down, int x, int y, boolean ctrl, boolean shift, boolean meta) {
+    if (mouserpt == 0 || mouserpt == 9)
+      return;
+
+    int mods = 0;
+    if (ctrl) mods |= 16;
+    if (shift) mods |= 4;
+    if (meta) mods |= 8;
+
+    int mousecode = ((down ? 0 : 1) + 96) | 0x20 | mods;
+
+    byte b[] = new byte[6];
+
+    b[0] = 27;
+    b[1] = (byte) '[';
+    b[2] = (byte) 'M';
+    b[3] = (byte) mousecode;
+    b[4] = (byte) (0x20 + x + 1);
+    b[5] = (byte) (0x20 + y + 1);
+
+    write(b); // FIXME: writeSpecial here
+  }
+
+  /**
+   * Passes mouse move events to the terminal.
+   * @param button The mouse button pressed. 3 indicates no button is pressed.
+   * @param x
+   * @param y
+   * @param ctrl
+   * @param shift
+   * @param meta
+   */
+  public void mouseMoved(int button, int x, int y, boolean ctrl, boolean shift, boolean meta) {
+    if (mouserpt != 1002 && mouserpt != 1003)
+      return;
+
+    // 1002 only reports drags. 1003 reports any movement.
+    if (mouserpt == 1002 && button == 3)
+      return;
+
+    int mods = 0;
+    if (ctrl) mods |= 16;
+    if (shift) mods |= 4;
+    if (meta) mods |= 8;
+
+    // Normal mouse code plus additional 32 to indicate movement.
+    int mousecode = (button + 0x40) | mods;
+
+    byte b[] = new byte[6];
+
+    b[0] = 27;
+    b[1] = (byte) '[';
+    b[2] = (byte) 'M';
+    b[3] = (byte) mousecode;
+    b[4] = (byte) (0x20 + x + 1);
+    b[5] = (byte) (0x20 + y + 1);
+
+    write(b); // FIXME: writeSpecial here
+  }
+
+  /**
    * Terminal is mouse-aware and requires the coordinates and button
    * of the release.
    * @param x
    * @param y
-   * @param modifiers
    */
-  public void mouseReleased(int x, int y, int modifiers) {
+  public void mouseReleased(int x, int y) {
     if (mouserpt == 0)
       return;
 
@@ -610,6 +672,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
   boolean capslock = false;
   boolean numlock = false;
   int mouserpt = 0;
+  int mouserptSaved = 0;
   byte mousebut = 0;
 
   boolean useibmcharset = false;
@@ -2162,9 +2225,20 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             DCEvars[DCEvar] = 0;
             term_state = TSTATE_DCEQ;
             break;
-          case 's': // XTERM_SAVE missing!
-            if (true || debug > 1)
-              debug("ESC [ ? " + DCEvars[0] + " s unimplemented!");
+          case 's':
+            for (int i = 0; i <= DCEvar; i++) {
+              switch (DCEvars[i]) {
+              case 9:
+              case 1000:
+              case 1001:
+              case 1002:
+              case 1003:
+                mouserptSaved = mouserpt;
+                break;
+              default:
+                debug("ESC [ ? " + DCEvars[0] + " s, unimplemented!");
+              }
+            }
             break;
           case 'r': // XTERM_RESTORE
             if (true || debug > 1)
@@ -2192,7 +2266,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 case 1001:
                 case 1002:
                 case 1003:
-                  mouserpt = DCEvars[i];
+                  mouserpt = mouserptSaved;
                   break;
                 default:
                   debug("ESC [ ? " + DCEvars[0] + " r, unimplemented!");

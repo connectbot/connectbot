@@ -141,7 +141,6 @@
   <string name="portforward_pos">יצירת הפניית פתחות</string>
   <string name="portforward_done">הפניית הפתחות נוצרה בהצלחה</string>
   <string name="portforward_problem">אירעה שגיאה ביצירת הפניית פתחות, יתכן שניסית להשתמש בפתחות מתחת ל־1024 או שהפתחה כבר בשימוש?</string>
-  <string name="portforward_menu_add">הוספת הפניית פתחות</string>
   <string name="hint_userhost">user\@hostname</string>
   <string name="list_format_error">יש להשתמש בצורה „%1$s“</string>
   <string name="format_username">username</string>

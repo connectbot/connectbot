@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2007 Kenny Root, Jeffrey Sharkey
+ * Copyright 2015 Kenny Root, Jeffrey Sharkey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,32 +17,14 @@
 
 package org.connectbot;
 
-import org.connectbot.util.HelpTopicView;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-/**
- * @author Kenny Root
- *
- */
-public class HelpTopicActivity extends AppCompatActivity {
-	public final static String TAG = "CB.HelpActivity";
+public class HintsActivity extends AppCompatActivity {
 
 	@Override
-	public void onCreate(Bundle icicle) {
-		super.onCreate(icicle);
-		setContentView(R.layout.act_help_topic);
-
-		String topic = getIntent().getStringExtra(Intent.EXTRA_TITLE);
-
-		this.setTitle(String.format("%s: %s",
-				getResources().getText(R.string.title_help),
-				topic));
-
-		HelpTopicView helpTopic = (HelpTopicView) findViewById(R.id.topic_text);
-
-		helpTopic.setTopic(topic);
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.act_hints);
 	}
 }

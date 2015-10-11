@@ -140,7 +140,6 @@
   <string name="portforward_pos">Port átirányítás létrehozása</string>
   <string name="portforward_done">Sikeres port átirányítás</string>
   <string name="portforward_problem">Probléma a port átirányítás létrehozása során, 1024 alatti vagy már használatban lévő portot választott?</string>
-  <string name="portforward_menu_add">Port átirányítás hozzáadása</string>
   <string name="hint_userhost">felhasználó\@gépnév</string>
   <string name="list_format_error">A %1$s formátum használata</string>
   <string name="format_username">felhasználónév</string>
