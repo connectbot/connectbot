@@ -140,7 +140,6 @@
   <string name="portforward_pos">Buat penerusan port</string>
   <string name="portforward_done">Berhasil membuat penerusan port</string>
   <string name="portforward_problem">Masalah dalam membuat penerusan port, mungkin Anda menggunakan nomor port di bawah 1024 atau nomor port telah digunakan?</string>
-  <string name="portforward_menu_add">Tambah penerusan port</string>
   <string name="hint_userhost">pengguna\@namahost</string>
   <string name="list_format_error">Gunakan bentuk \"%1$s\"</string>
   <string name="format_username">pengguna</string>

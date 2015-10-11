@@ -50,7 +50,7 @@
 			android:summary="@string/pref_emulation_summary"
 			android:entries="@array/list_emulation_modes"
 			android:entryValues="@array/list_emulation_modes"
-			android:defaultValue="screen"
+			android:defaultValue="xterm-256color"
 			/>
 
 		<EditTextPreference
@@ -86,6 +86,13 @@
 			android:key="fullscreen"
 			android:title="@string/pref_fullscreen_title"
 			android:summary="@string/pref_fullscreen_summary"
+			android:defaultValue="false"
+			/>
+
+		<org.connectbot.util.SwitchCompatPreference
+			android:key="pgupdngesture"
+			android:title="@string/pref_pg_updn_gesture_title"
+			android:summary="@string/pref_pg_updn_gesture_summary"
 			android:defaultValue="false"
 			/>
 

@@ -155,7 +155,6 @@
   <string name="portforward_pos">ポート転送の作成</string>
   <string name="portforward_done">ポート転送の作成に成功しました．</string>
   <string name="portforward_problem">ポート転送の作成ができません．おそらく1024ポート以下か既に利用されているポートを指定されています．</string>
-  <string name="portforward_menu_add">ポート転送の追加</string>
   <string name="hint_userhost">ユーザ\@ホスト名</string>
   <string name="list_format_error">%1$s 形式を使ってください</string>
   <string name="format_username">ユーザ名</string>

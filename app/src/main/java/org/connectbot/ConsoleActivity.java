@@ -22,13 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.connectbot.bean.HostBean;
-import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.BridgeDisconnectedListener;
 import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.PreferenceConstants;
+import org.connectbot.util.TerminalViewPager;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -49,20 +49,15 @@ import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.ClipboardManager;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.GestureDetector;
-import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -73,7 +68,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -99,14 +93,12 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 	protected static final int REQUEST_EDIT = 1;
 
-	private static final int CLICK_TIME = 400;
-	private static final float MAX_CLICK_DISTANCE = 25f;
 	private static final int KEYBOARD_DISPLAY_TIME = 3000;
 	private static final int KEYBOARD_REPEAT_INITIAL = 500;
 	private static final int KEYBOARD_REPEAT = 100;
 	private static final String STATE_SELECTED_URI = "selectedUri";
 
-	protected ViewPager pager = null;
+	protected TerminalViewPager pager = null;
 	protected TabLayout tabs = null;
 	protected Toolbar toolbar = null;
 	@Nullable
@@ -139,14 +131,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	private Animation fade_out_delayed;
 
 	private Animation keyboard_fade_in, keyboard_fade_out;
-	private float lastX, lastY;
 
 	private InputMethodManager inputManager;
 
 	private MenuItem disconnect, copy, paste, portForward, resize, urlscan;
-
-	protected TerminalBridge copySource = null;
-	private int lastTouchRow, lastTouchCol;
 
 	private boolean forcedOrientation;
 
@@ -518,10 +506,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		inflater = LayoutInflater.from(this);
 
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
-		pager = (ViewPager) findViewById(R.id.console_flip);
-		registerForContextMenu(pager);
+
+		pager = (TerminalViewPager) findViewById(R.id.console_flip);
+
 		pager.addOnPageChangeListener(
-				new ViewPager.SimpleOnPageChangeListener() {
+				new TerminalViewPager.SimpleOnPageChangeListener() {
 					@Override
 					public void onPageSelected(int position) {
 						setTitle(adapter.getPageTitle(position));
@@ -696,176 +685,13 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		if (tabs != null)
 			setupTabLayoutWithViewPager();
 
-		// detect fling gestures to switch between terminals
-		final GestureDetector detect = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
-			private float totalY = 0;
-
+		pager.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onLongPress(MotionEvent e) {
-				super.onLongPress(e);
-				openContextMenu(pager);
+			public void onClick(View v) {
+				if (keyboardGroup.getVisibility() == View.GONE) {
+					showEmulatedKeys(false);
+				}
 			}
-
-
-			@Override
-			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-
-				// if copying, then ignore
-				if (copySource != null && copySource.isSelectingForCopy())
-					return false;
-
-				if (e1 == null || e2 == null)
-					return false;
-
-				// if releasing then reset total scroll
-				if (e2.getAction() == MotionEvent.ACTION_UP) {
-					totalY = 0;
-				}
-
-				// activate consider if within x tolerance
-				int touchSlop = ViewConfiguration.get(ConsoleActivity.this).getScaledTouchSlop();
-				if (Math.abs(e1.getX() - e2.getX()) < touchSlop * 4) {
-
-					View view = adapter.getCurrentTerminalView();
-					if (view == null) return false;
-					TerminalView terminal = (TerminalView) view;
-
-					// estimate how many rows we have scrolled through
-					// accumulate distance that doesn't trigger immediate scroll
-					totalY += distanceY;
-					final int moved = (int) (totalY / terminal.bridge.charHeight);
-
-					// consume as scrollback only if towards right half of screen
-					if (e2.getX() > view.getWidth() / 2) {
-						if (moved != 0) {
-							int base = terminal.bridge.buffer.getWindowBase();
-							terminal.bridge.buffer.setWindowBase(base + moved);
-							totalY = 0;
-							return true;
-						}
-					} else {
-						// otherwise consume as pgup/pgdown for every 5 lines
-						if (moved > 5) {
-							((vt320) terminal.bridge.buffer).keyPressed(vt320.KEY_PAGE_DOWN, ' ', 0);
-							terminal.bridge.tryKeyVibrate();
-							totalY = 0;
-							return true;
-						} else if (moved < -5) {
-							((vt320) terminal.bridge.buffer).keyPressed(vt320.KEY_PAGE_UP, ' ', 0);
-							terminal.bridge.tryKeyVibrate();
-							totalY = 0;
-							return true;
-						}
-
-					}
-
-				}
-
-				return false;
-			}
-
-
-		});
-
-		pager.setLongClickable(true);
-		pager.setOnTouchListener(new OnTouchListener() {
-
-			public boolean onTouch(View v, MotionEvent event) {
-
-				// Handle mouse-specific actions.
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
-						MotionEventCompat.getSource(event) == InputDevice.SOURCE_MOUSE &&
-						event.getAction() == MotionEvent.ACTION_DOWN) {
-					switch (event.getButtonState()) {
-					case MotionEvent.BUTTON_PRIMARY:
-						// Automatically start copy mode if using a mouse.
-						startCopyMode();
-						break;
-					case MotionEvent.BUTTON_SECONDARY:
-						openContextMenu(pager);
-						return true;
-					case MotionEvent.BUTTON_TERTIARY:
-						// Middle click pastes.
-						pasteIntoTerminal();
-						return true;
-					}
-				}
-
-				// when copying, highlight the area
-				if (copySource != null && copySource.isSelectingForCopy()) {
-					int row = (int) Math.floor(event.getY() / copySource.charHeight);
-					int col = (int) Math.floor(event.getX() / copySource.charWidth);
-
-					SelectionArea area = copySource.getSelectionArea();
-
-					switch (event.getAction()) {
-					case MotionEvent.ACTION_DOWN:
-						// recording starting area
-						if (area.isSelectingOrigin()) {
-							area.setRow(row);
-							area.setColumn(col);
-							lastTouchRow = row;
-							lastTouchCol = col;
-							copySource.redraw();
-						}
-						return true;
-					case MotionEvent.ACTION_MOVE:
-						/* ignore when user hasn't moved since last time so
-						 * we can fine-tune with directional pad
-						 */
-						if (row == lastTouchRow && col == lastTouchCol)
-							return true;
-
-						// if the user moves, start the selection for other corner
-						area.finishSelectingOrigin();
-
-						// update selected area
-						area.setRow(row);
-						area.setColumn(col);
-						lastTouchRow = row;
-						lastTouchCol = col;
-						copySource.redraw();
-						return true;
-					case MotionEvent.ACTION_UP:
-						/* If they didn't move their finger, maybe they meant to
-						 * select the rest of the text with the directional pad.
-						 */
-						if (area.getLeft() == area.getRight() &&
-								area.getTop() == area.getBottom()) {
-							return true;
-						}
-
-						// copy selected area to clipboard
-						String copiedText = area.copyFrom(copySource.buffer);
-
-						clipboard.setText(copiedText);
-						Toast.makeText(ConsoleActivity.this, getString(R.string.console_copy_done, copiedText.length()), Toast.LENGTH_LONG).show();
-						// fall through to clear state
-
-					case MotionEvent.ACTION_CANCEL:
-						// make sure we clear any highlighted area
-						area.reset();
-						copySource.setSelectingForCopy(false);
-						copySource.redraw();
-						return true;
-					}
-				}
-
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					lastX = event.getX();
-					lastY = event.getY();
-				} else if (event.getAction() == MotionEvent.ACTION_UP
-						&& keyboardGroup.getVisibility() == View.GONE
-						&& event.getEventTime() - event.getDownTime() < CLICK_TIME
-						&& Math.abs(event.getX() - lastX) < MAX_CLICK_DISTANCE
-						&& Math.abs(event.getY() - lastY) < MAX_CLICK_DISTANCE) {
-					showEmulatedKeys(true);
-				}
-
-				// pass any touch events back to detector
-				return detect.onTouchEvent(event);
-			}
-
 		});
 	}
 
@@ -960,19 +786,21 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 		});
 
-		copy = menu.add(R.string.console_menu_copy);
-		if (hardKeyboard)
-			copy.setAlphabeticShortcut('c');
-		MenuItemCompat.setShowAsAction(copy, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-		copy.setIcon(R.drawable.ic_action_copy);
-		copy.setEnabled(activeTerminal);
-		copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				startCopyMode();
-				Toast.makeText(ConsoleActivity.this, getString(R.string.console_copy_start), Toast.LENGTH_LONG).show();
-				return true;
-			}
-		});
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			copy = menu.add(R.string.console_menu_copy);
+			if (hardKeyboard)
+				copy.setAlphabeticShortcut('c');
+			MenuItemCompat.setShowAsAction(copy, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+			copy.setIcon(R.drawable.ic_action_copy);
+			copy.setEnabled(activeTerminal);
+			copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					adapter.getCurrentTerminalView().startPreHoneycombCopyMode();
+					Toast.makeText(ConsoleActivity.this, getString(R.string.console_copy_start), Toast.LENGTH_LONG).show();
+					return true;
+				}
+			});
+		}
 
 		paste = menu.add(R.string.console_menu_paste);
 		if (hardKeyboard)
@@ -1093,7 +921,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			disconnect.setTitle(R.string.list_host_disconnect);
 		else
 			disconnect.setTitle(R.string.console_menu_close);
-		copy.setEnabled(activeTerminal);
+
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			copy.setEnabled(activeTerminal);
+		}
 		paste.setEnabled(clipboard.hasText() && sessionOpen);
 		portForward.setEnabled(sessionOpen && canForwardPorts);
 		urlscan.setEnabled(activeTerminal);
@@ -1120,32 +951,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		super.onOptionsMenuClosed(menu);
 
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
-	}
-
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-		final TerminalView view = adapter.getCurrentTerminalView();
-		boolean activeTerminal = view != null;
-		boolean sessionOpen = false;
-
-		if (activeTerminal) {
-			TerminalBridge bridge = view.bridge;
-			sessionOpen = bridge.isSessionOpen();
-		}
-
-		MenuItem paste = menu.add(R.string.console_menu_paste);
-		if (hardKeyboard)
-			paste.setAlphabeticShortcut('v');
-		paste.setIcon(android.R.drawable.ic_menu_edit);
-		paste.setEnabled(clipboard.hasText() && sessionOpen);
-		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				pasteIntoTerminal();
-				return true;
-			}
-		});
-
-
 	}
 
 	@Override
@@ -1255,21 +1060,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		}
 
 		super.onSaveInstanceState(savedInstanceState);
-	}
-
-	private void startCopyMode() {
-		// mark as copying and reset any previous bounds
-		TerminalView terminalView = (TerminalView) adapter.getCurrentTerminalView();
-		copySource = terminalView.bridge;
-
-		SelectionArea area = copySource.getSelectionArea();
-		area.reset();
-		area.setBounds(copySource.buffer.getColumns(), copySource.buffer.getRows());
-
-		copySource.setSelectingForCopy(true);
-
-		// Make sure we show the initial selection
-		copySource.redraw();
 	}
 
 	/**
@@ -1443,7 +1233,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			overlay.setText(bridge.host.getNickname());
 
 			// and add our terminal view control, using index to place behind overlay
-			final TerminalView terminal = new TerminalView(container.getContext(), bridge);
+			final TerminalView terminal = new TerminalView(container.getContext(), bridge, pager);
 			terminal.setId(R.id.terminal_view);
 			view.addView(terminal, 0);
 
@@ -1521,7 +1311,9 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 		public TerminalView getCurrentTerminalView() {
 			View currentView = pager.findViewWithTag(getBridgeAtPosition(pager.getCurrentItem()));
-			if (currentView == null) return null;
+			if (currentView == null) {
+				return null;
+			}
 			return (TerminalView) currentView.findViewById(R.id.terminal_view);
 		}
 	}

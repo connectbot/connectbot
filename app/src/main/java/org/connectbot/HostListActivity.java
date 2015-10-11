@@ -173,6 +173,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.act_hostlist);
+		setTitle(R.string.title_hosts_list);
 
 		mListView = (RecyclerView) findViewById(R.id.list);
 		mListView.setHasFixedSize(true);
@@ -222,8 +223,8 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 		addHostButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DialogFragment dialog = new AddHostDialogFragment();
-				dialog.show(getSupportFragmentManager(), "AddHostDialogFragment");
+				Intent intent = EditHostActivity.createIntentForNewHost(HostListActivity.this);
+				startActivityForResult(intent, REQUEST_EDIT);
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {}
@@ -438,8 +439,8 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			MenuItem edit = menu.add(R.string.list_host_edit);
 			edit.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {
-					Intent intent = new Intent(HostListActivity.this, HostEditorActivity.class);
-					intent.putExtra(Intent.EXTRA_TITLE, host.getId());
+					Intent intent = EditHostActivity.createIntentForExistingHost(
+							HostListActivity.this, host.getId());
 					HostListActivity.this.startActivityForResult(intent, REQUEST_EDIT);
 					return true;
 				}

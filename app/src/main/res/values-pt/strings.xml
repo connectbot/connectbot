@@ -140,7 +140,6 @@
   <string name="portforward_pos">Criar redirecionamento de portas</string>
   <string name="portforward_done">Redirecionamento de porta criado com sucesso</string>
   <string name="portforward_problem">Problema ao criar redirecionamento de porta, talvez esteja a usar portas abaixo de 1024 ou a porta já esteja em uso?</string>
-  <string name="portforward_menu_add">Adicionar redirecionamento de porta</string>
   <string name="hint_userhost">utilizador\@servidor</string>
   <string name="list_format_error">Use o formato %1$s</string>
   <string name="format_username">nome do utilizador</string>

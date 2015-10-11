@@ -142,7 +142,6 @@
   <string name="portforward_pos">Crea redireccionament de ports</string>
   <string name="portforward_done">Redireccionament creat correctament</string>
   <string name="portforward_problem">Problemes creant el redireccionament de ports, potser s\'usen ports per sota del 1024 o el port és en ús actualment?</string>
-  <string name="portforward_menu_add">Afegeix redireccionament de ports</string>
   <string name="hint_userhost">usuari\@servidor</string>
   <string name="list_format_error">Usa el format %1$s</string>
   <string name="format_username">Usuari</string>

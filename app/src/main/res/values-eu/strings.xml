@@ -148,7 +148,6 @@
   <string name="portforward_pos">Sortu ataka birbidalketa</string>
   <string name="portforward_done">Ataka birbidalketa ongi sortu da</string>
   <string name="portforward_problem">Arazoa ataka birbidalketa sortzean, behar bada erabilitako ataka 1024 baino txikiagoa da edo dagoeneko erabiltzen den ataka bat da?</string>
-  <string name="portforward_menu_add">Gehitu ataka birbidalketa</string>
   <string name="hint_userhost">erabiltzailea\@ostalaria</string>
   <string name="list_format_error">Erabili %1$s formatua</string>
   <string name="format_username">erabiltzaile-izena</string>

@@ -128,7 +128,6 @@
   <string name="portforward_remote">Oddaljeno</string>
   <string name="portforward_pos">Ustvari posredovanje vrat</string>
   <string name="portforward_done">Uspešno ustvarjeno posredovanje vrat</string>
-  <string name="portforward_menu_add">Dodaj posredovanje vrat</string>
   <string name="hint_userhost">uporabnik\@gostitelj</string>
   <string name="list_format_error">Uporabi vrsto %1$s</string>
   <string name="format_username">Uporabniško ime</string>

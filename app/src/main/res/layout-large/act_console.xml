@@ -53,7 +53,7 @@
 		android:text="@string/terminal_no_hosts_connected"
 		android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-	<android.support.v4.view.ViewPager
+	<org.connectbot.util.TerminalViewPager
 		android:id="@+id/console_flip"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"

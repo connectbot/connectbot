@@ -155,7 +155,6 @@
   <string name="portforward_pos">创建端口转发</string>
   <string name="portforward_done">创建端口转发成功</string>
   <string name="portforward_problem">创建端口转发失败，可能你选择的端口小于1024或该端口已被占用？</string>
-  <string name="portforward_menu_add">添加端口转发</string>
   <string name="hint_userhost">用户名\@主机名</string>
   <string name="list_format_error">使用格式 \"%1$s\"</string>
   <string name="format_username">用户名</string>
