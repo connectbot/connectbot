@@ -18,18 +18,38 @@
 <LinearLayout android:id="@+id/keyboard_group"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
-	android:layout_height="wrap_content"
+	android:layout_height="60dp"
 	android:layout_alignParentBottom="true"
 	android:background="@color/key_background_layout"
-	android:orientation="horizontal"
+	android:orientation="vertical"
 	android:padding="0dip"
 	android:visibility="gone">
 
+  <LinearLayout
+    android:layout_width="90dp"
+    android:layout_height="30dp"
+    android:orientation="horizontal"
+    android:padding="0dp">
+
+    <Button
+      android:id="@+id/button_input"
+      style="@style/KeyboardButton"
+      android:background="@drawable/keyboard_keyboard_border"
+      android:contentDescription="@string/image_description_show_input_field"
+      android:text="@string/button_key_input"/>
+
+    <ImageView
+      android:id="@+id/button_keyboard"
+      style="@style/KeyboardKey"
+      android:background="@drawable/keyboard_keyboard_border"
+      android:contentDescription="@string/image_description_show_keyboard"
+      android:src="@drawable/ic_keyboard_white"/>
+  </LinearLayout>
 
 	<HorizontalScrollView
 		android:id="@+id/keyboard_hscroll"
-		android:layout_width="0dp"
-		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		android:layout_height="30dp"
 		android:layout_weight="1"
 		android:padding="0dp"
 		android:scrollbars="none">
@@ -164,10 +184,4 @@
 		</LinearLayout>
 	</HorizontalScrollView>
 
-	<ImageView
-		android:id="@+id/button_keyboard"
-		style="@style/KeyboardKey"
-		android:background="@drawable/keyboard_keyboard_border"
-		android:contentDescription="@string/image_description_show_keyboard"
-		android:src="@drawable/ic_keyboard_white"/>
 </LinearLayout>
