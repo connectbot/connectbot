@@ -661,7 +661,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			@Override
 			public void onClick(View v) {
 				if (keyboardGroup.getVisibility() == View.GONE) {
-					showEmulatedKeys(false);
+					showEmulatedKeys(true);
 				}
 			}
 		});
