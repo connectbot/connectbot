@@ -156,6 +156,14 @@ public class TerminalTextViewOverlay extends TextView {
 		closeSelectionActionMode();
 	}
 
+	private void pasteClipboard() {
+		String clip = "";
+		if (clipboard.hasText()) {
+			clip = clipboard.getText().toString();
+		}
+		parent.bridge.injectString(clip);
+	}
+
 	@Override
 	protected void onSelectionChanged(int selStart, int selEnd) {
 		if (selStart <= selEnd) {
@@ -246,8 +254,7 @@ public class TerminalTextViewOverlay extends TextView {
 			if (event.getAction() == MotionEvent.ACTION_DOWN) {
 				if (event.getButtonState() == MotionEvent.BUTTON_TERTIARY) {
 					// Middle click pastes.
-					String clip = clipboard.getText().toString();
-					bridge.injectString(clip);
+					pasteClipboard();
 					return true;
 				}
 
@@ -377,8 +384,7 @@ public class TerminalTextViewOverlay extends TextView {
 				copyCurrentSelectionToClipboard();
 				return true;
 			case PASTE:
-				String clip = clipboard.getText().toString();
-				TerminalTextViewOverlay.this.parent.bridge.injectString(clip);
+				pasteClipboard();
 				mode.finish();
 				return true;
 			}
