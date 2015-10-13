@@ -585,27 +585,27 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 		});
 
-    mInputButton = (Button) findViewById(R.id.button_input);
-    mInputButton.setOnClickListener(new OnClickListener() {
-      public void onClick(View view) {
-					View v = adapter.getCurrentTerminalView();
-					if (v == null) return;
-					final TerminalView terminal = (TerminalView) v;
+		mInputButton = (Button) findViewById(R.id.button_input);
+		mInputButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				View v = adapter.getCurrentTerminalView();
+				if (v == null) return;
+				final TerminalView terminal = (TerminalView) v;
 
-					//final TerminalView terminal = (TerminalView)flip;
-					Thread promptThread = new Thread(new Runnable() {
-									public void run() {
-											String inj = getCurrentPromptHelper().requestStringPrompt(null, "");
-											terminal.bridge.injectString(inj);
-									}
-							});
-					promptThread.setName("Prompt");
-					promptThread.setDaemon(true);
-					promptThread.start();
-
-							keyboardGroup.setVisibility(View.GONE);
+				//final TerminalView terminal = (TerminalView)flip;
+				Thread promptThread = new Thread(new Runnable() {
+					public void run() {
+						String inj = getCurrentPromptHelper().requestStringPrompt(null, "");
+						terminal.bridge.injectString(inj);
 					}
 				});
+				promptThread.setName("Prompt");
+				promptThread.setDaemon(true);
+				promptThread.start();
+
+				keyboardGroup.setVisibility(View.GONE);
+			}
+		});
 
 
 		findViewById(R.id.button_ctrl).setOnClickListener(emulatedKeysListener);
