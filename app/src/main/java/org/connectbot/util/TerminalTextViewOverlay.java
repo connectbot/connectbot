@@ -55,6 +55,7 @@ public class TerminalTextViewOverlay extends TextView {
 	private ActionMode selectionActionMode;
 	private ClipboardManager clipboard;
 
+	private int oldBufferHeight = 0;
 	private int oldScrollY = -1;
 
 	public TerminalTextViewOverlay(Context context) {
@@ -82,15 +83,14 @@ public class TerminalTextViewOverlay extends TextView {
 		clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
 	}
 
-	// TODO: optimize: instead of always copying the entire buffer, instead append() as needed.
 	public void refreshTextFromBuffer() {
 		VDUBuffer vb = parent.bridge.getVDUBuffer();
+		int numRows = vb.getBufferSize();
+		int numCols = vb.getColumns() - 1;
+		oldBufferHeight = numRows;
 
 		String line = "";
 		String buffer = "";
-
-		int numRows = vb.getBufferSize();
-		int numCols = vb.getColumns() - 1;
 
 		for (int r = 0; r < numRows && vb.charArray[r] != null; r++) {
 			for (int c = 0; c < numCols; c++) {
@@ -103,6 +103,31 @@ public class TerminalTextViewOverlay extends TextView {
 		oldScrollY = vb.getWindowBase() * getLineHeight();
 
 		setText(buffer);
+	}
+
+	/**
+	 * If there is a new line in the buffer, add an empty line
+	 * in this TextView, so that selection seems to move up with the
+	 * rest of the buffer.
+	 */
+	public void onBufferChanged() {
+		VDUBuffer vb = parent.bridge.getVDUBuffer();
+		int numRows = vb.getBufferSize();
+		int numNewRows = numRows - oldBufferHeight;
+
+		if (numNewRows <= 0) {
+			return;
+		}
+
+		String newLines = "";
+		for (int i = 0; i < numNewRows; i++) {
+			newLines += "\n";
+		}
+
+		oldScrollY = (vb.getWindowBase() + numNewRows) * getLineHeight();
+		oldBufferHeight = numRows;
+
+		append(newLines);
 	}
 
 	@Override

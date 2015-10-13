@@ -557,6 +557,15 @@ public class TerminalView extends View implements FontSizeChangedListener {
 				postDelayed(mEventSender, ACCESSIBILITY_EVENT_THRESHOLD);
 			}
 		}
+
+		((Activity) context).runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				if (terminalTextViewOverlay != null) {
+					terminalTextViewOverlay.onBufferChanged();
+				}
+			}
+		});
 	}
 
 	private class AccessibilityEventSender implements Runnable {
