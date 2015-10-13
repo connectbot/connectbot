@@ -1,10 +1,6 @@
 Google Play
 ----------------
 
-TODO
-----------------
-* Add mosh support same as irssi-connectbot
-
 [![Get it on Google Play][2]][1]
 
   [1]: https://play.google.com/store/apps/details?id=org.connectbot

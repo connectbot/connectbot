@@ -157,7 +157,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	private Handler handler = new Handler();
 
 	private ImageView mKeyboardButton;
-  private Button mInputButton;
+	private Button mInputButton;
 
 	@Nullable private ActionBar actionBar;
 	private boolean inActionBarMenu = false;
@@ -588,29 +588,24 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
     mInputButton = (Button) findViewById(R.id.button_input);
     mInputButton.setOnClickListener(new OnClickListener() {
       public void onClick(View view) {
-          //View flip = findCurrentView(R.id.console_flip);
-          //if (flip == null)
-              //return;
-
-
 					View v = adapter.getCurrentTerminalView();
 					if (v == null) return;
 					final TerminalView terminal = (TerminalView) v;
 
-          //final TerminalView terminal = (TerminalView)flip;
-          Thread promptThread = new Thread(new Runnable() {
-                  public void run() {
-                      String inj = getCurrentPromptHelper().requestStringPrompt(null, "");
-                      terminal.bridge.injectString(inj);
-                  }
-              });
-          promptThread.setName("Prompt");
-          promptThread.setDaemon(true);
-          promptThread.start();
+					//final TerminalView terminal = (TerminalView)flip;
+					Thread promptThread = new Thread(new Runnable() {
+									public void run() {
+											String inj = getCurrentPromptHelper().requestStringPrompt(null, "");
+											terminal.bridge.injectString(inj);
+									}
+							});
+					promptThread.setName("Prompt");
+					promptThread.setDaemon(true);
+					promptThread.start();
 
-              keyboardGroup.setVisibility(View.GONE);
-          }
-        });
+							keyboardGroup.setVisibility(View.GONE);
+					}
+				});
 
 
 		findViewById(R.id.button_ctrl).setOnClickListener(emulatedKeysListener);
@@ -1394,22 +1389,22 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			stringPromptGroup.setVisibility(View.VISIBLE);
 
 			String instructions = prompt.promptInstructions;
-      		boolean password = prompt.passwordRequested;
+			boolean password = prompt.passwordRequested;
 			if (instructions != null && instructions.length() > 0) {
 				stringPromptInstructions.setVisibility(View.VISIBLE);
 				stringPromptInstructions.setText(instructions);
 			} else
 				stringPromptInstructions.setVisibility(View.GONE);
 
-      if (password) {
-          stringPrompt.setInputType(InputType.TYPE_CLASS_TEXT |
-				  InputType.TYPE_TEXT_VARIATION_PASSWORD);
-          stringPrompt.setTransformationMethod(PasswordTransformationMethod.getInstance());
-      } else {
-          stringPrompt.setInputType(InputType.TYPE_CLASS_TEXT |
-                                    InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
-          stringPrompt.setTransformationMethod(SingleLineTransformationMethod.getInstance());
-      }
+			if (password) {
+				stringPrompt.setInputType(InputType.TYPE_CLASS_TEXT |
+					InputType.TYPE_TEXT_VARIATION_PASSWORD);
+				stringPrompt.setTransformationMethod(PasswordTransformationMethod.getInstance());
+			} else {
+				stringPrompt.setInputType(InputType.TYPE_CLASS_TEXT |
+					InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
+				stringPrompt.setTransformationMethod(SingleLineTransformationMethod.getInstance());
+			}
 
 			stringPrompt.setText("");
 			stringPrompt.setHint(prompt.promptHint);
