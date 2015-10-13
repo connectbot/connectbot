@@ -779,7 +779,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			paste.setAlphabeticShortcut('v');
 		MenuItemCompat.setShowAsAction(paste, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
 		paste.setIcon(R.drawable.ic_action_paste);
-		paste.setEnabled(clipboard.hasText() && sessionOpen);
+		paste.setEnabled(sessionOpen);
 		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				pasteIntoTerminal();
@@ -897,7 +897,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 			copy.setEnabled(activeTerminal);
 		}
-		paste.setEnabled(clipboard.hasText() && sessionOpen);
+		paste.setEnabled(sessionOpen);
 		portForward.setEnabled(sessionOpen && canForwardPorts);
 		urlscan.setEnabled(activeTerminal);
 		resize.setEnabled(sessionOpen);
@@ -1174,7 +1174,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		TerminalBridge bridge = terminalView.bridge;
 
 		// pull string from clipboard and generate all events to force down
-		String clip = clipboard.getText().toString();
+		String clip = "";
+		if (clipboard.hasText()) {
+			clip = clipboard.getText().toString();
+		}
 		bridge.injectString(clip);
 	}
 

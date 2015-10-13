@@ -405,7 +405,10 @@ public class TerminalView extends TextView implements FontSizeChangedListener {
 				copyCurrentSelectionToClipboard();
 				return true;
 			case PASTE:
-				String clip = clipboard.getText().toString();
+				String clip = "";
+				if (clipboard.hasText()) {
+					clip = clipboard.getText().toString();
+				}
 				TerminalView.this.bridge.injectString(clip);
 				mode.finish();
 				return true;
