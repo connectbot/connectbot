@@ -61,6 +61,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
@@ -169,47 +170,48 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 	}
 
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.pubkey_list_activity_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 
-		MenuItem generatekey = menu.add(R.string.pubkey_generate);
-		generatekey.setIcon(android.R.drawable.ic_menu_manage);
-		generatekey.setIntent(new Intent(PubkeyListActivity.this, GeneratePubkeyActivity.class));
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.add_new_key_icon:
+			startActivity(new Intent(this, GeneratePubkeyActivity.class));
+			return true;
+		case R.id.import_existing_key_icon:
+			Uri sdcard = Uri.fromFile(Environment.getExternalStorageDirectory());
+			String pickerTitle = getString(R.string.pubkey_list_pick);
 
-		MenuItem importkey = menu.add(R.string.pubkey_import);
-		importkey.setIcon(android.R.drawable.ic_menu_upload);
-		importkey.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				Uri sdcard = Uri.fromFile(Environment.getExternalStorageDirectory());
-				String pickerTitle = getString(R.string.pubkey_list_pick);
+			// Try to use OpenIntent's file browser to pick a file
+			Intent intent = new Intent(FileManagerIntents.ACTION_PICK_FILE);
+			intent.setData(sdcard);
+			intent.putExtra(FileManagerIntents.EXTRA_TITLE, pickerTitle);
+			intent.putExtra(FileManagerIntents.EXTRA_BUTTON_TEXT, getString(android.R.string.ok));
 
-				// Try to use OpenIntent's file browser to pick a file
-				Intent intent = new Intent(FileManagerIntents.ACTION_PICK_FILE);
-				intent.setData(sdcard);
-				intent.putExtra(FileManagerIntents.EXTRA_TITLE, pickerTitle);
-				intent.putExtra(FileManagerIntents.EXTRA_BUTTON_TEXT, getString(android.R.string.ok));
+			try {
+				startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
+			} catch (ActivityNotFoundException e) {
+				// If OI didn't work, try AndExplorer
+				intent = new Intent(Intent.ACTION_PICK);
+				intent.setDataAndType(sdcard, MIME_TYPE_ANDEXPLORER_FILE);
+				intent.putExtra(ANDEXPLORER_TITLE, pickerTitle);
 
 				try {
 					startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
-				} catch (ActivityNotFoundException e) {
-					// If OI didn't work, try AndExplorer
-					intent = new Intent(Intent.ACTION_PICK);
-					intent.setDataAndType(sdcard, MIME_TYPE_ANDEXPLORER_FILE);
-					intent.putExtra(ANDEXPLORER_TITLE, pickerTitle);
-
-					try {
-						startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
-					} catch (ActivityNotFoundException e1) {
-						pickFileSimple();
-					}
+				} catch (ActivityNotFoundException e1) {
+					pickFileSimple();
 				}
-
-				return true;
 			}
-		});
-
-		return true;
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	protected void handleAddKey(final PubkeyBean pubkey) {

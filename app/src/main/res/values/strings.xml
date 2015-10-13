@@ -652,5 +652,9 @@
 	<string name="hostpref_add_host">Add host</string>
 	<!-- Text for button which, when clicked, saves an existing host. -->
 	<string name="hostpref_edit_host">Save host</string>
+	<!-- Text for button which, when clicked, brings up an editor for adding a new pubkey. -->
+	<string name="pubkey_add_new">Add new pubkey</string>
+	<!-- Text for button which, when clicked, brings up picker to import an existing pubkey. -->
+	<string name="pubkey_import_existing">Import existing pubkey</string>
 
 </resources>
