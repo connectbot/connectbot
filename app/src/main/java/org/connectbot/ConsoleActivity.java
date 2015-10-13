@@ -31,6 +31,7 @@ import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.TerminalTextViewOverlay;
 import org.connectbot.util.TerminalViewPager;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -443,6 +444,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		hideActionBarIfRequested();
 	}
 
+	@TargetApi(11)
+	private void requestActionBar() {
+		supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+	}
+
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
@@ -458,8 +464,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		titleBarHide = prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false);
-		if (titleBarHide) {
-			supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+		if (titleBarHide && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			// This is a separate method because Gradle does not uniformly respect the conditional
+			// Build check. See: https://code.google.com/p/android/issues/detail?id=137195
+			requestActionBar();
 		}
 
 		this.setContentView(R.layout.act_console);
