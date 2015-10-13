@@ -3,7 +3,7 @@ Google Play
 
 TODO
 ----------------
-* Add an Input field so keyboard completions can work properly with swiftkey etc
+* Input field seems buggy.  Enter should hide the field again.
 * Add mosh support same as irssi-connectbot
 
 [![Get it on Google Play][2]][1]

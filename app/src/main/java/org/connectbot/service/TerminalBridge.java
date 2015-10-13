@@ -296,7 +296,8 @@ public class TerminalBridge implements VDUDisplay {
 		String[] responses = new String[numPrompts];
 		for (int i = 0; i < numPrompts; i++) {
 			// request response from user for each prompt
-			responses[i] = promptHelper.requestStringPrompt(instruction, prompt[i]);
+			//responses[i] = promptHelper.requestStringPrompt(instruction, prompt[i]);
+			responses[i] = promptHelper.requestPasswordPrompt(instruction, prompt[i]);
 		}
 		return responses;
 	}

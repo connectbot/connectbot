@@ -21,6 +21,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.SingleLineTransformationMethod;
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.service.BridgeDisconnectedListener;
@@ -60,6 +62,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.ClipboardManager;
+import android.text.InputType;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
@@ -154,6 +157,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	private Handler handler = new Handler();
 
 	private ImageView mKeyboardButton;
+  private Button mInputButton;
 
 	@Nullable private ActionBar actionBar;
 	private boolean inActionBarMenu = false;
@@ -580,6 +584,34 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				hideEmulatedKeys();
 			}
 		});
+
+    mInputButton = (Button) findViewById(R.id.button_input);
+    mInputButton.setOnClickListener(new OnClickListener() {
+      public void onClick(View view) {
+          //View flip = findCurrentView(R.id.console_flip);
+          //if (flip == null)
+              //return;
+
+
+					View v = adapter.getCurrentTerminalView();
+					if (v == null) return;
+					final TerminalView terminal = (TerminalView) v;
+
+          //final TerminalView terminal = (TerminalView)flip;
+          Thread promptThread = new Thread(new Runnable() {
+                  public void run() {
+                      String inj = getCurrentPromptHelper().requestStringPrompt(null, "");
+                      terminal.bridge.injectString(inj);
+                  }
+              });
+          promptThread.setName("Prompt");
+          promptThread.setDaemon(true);
+          promptThread.start();
+
+              keyboardGroup.setVisibility(View.GONE);
+          }
+        });
+
 
 		findViewById(R.id.button_ctrl).setOnClickListener(emulatedKeysListener);
 		findViewById(R.id.button_esc).setOnClickListener(emulatedKeysListener);
@@ -1362,11 +1394,23 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			stringPromptGroup.setVisibility(View.VISIBLE);
 
 			String instructions = prompt.promptInstructions;
+      		boolean password = prompt.passwordRequested;
 			if (instructions != null && instructions.length() > 0) {
 				stringPromptInstructions.setVisibility(View.VISIBLE);
 				stringPromptInstructions.setText(instructions);
 			} else
 				stringPromptInstructions.setVisibility(View.GONE);
+
+      if (password) {
+          stringPrompt.setInputType(InputType.TYPE_CLASS_TEXT |
+				  InputType.TYPE_TEXT_VARIATION_PASSWORD);
+          stringPrompt.setTransformationMethod(PasswordTransformationMethod.getInstance());
+      } else {
+          stringPrompt.setInputType(InputType.TYPE_CLASS_TEXT |
+                                    InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
+          stringPrompt.setTransformationMethod(SingleLineTransformationMethod.getInstance());
+      }
+
 			stringPrompt.setText("");
 			stringPrompt.setHint(prompt.promptHint);
 			stringPrompt.requestFocus();
