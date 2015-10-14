@@ -26,10 +26,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.annotation.Nullable;
 import android.support.v4.view.MotionEventCompat;
 import android.text.ClipboardManager;
-import android.util.AttributeSet;
 import android.view.ActionMode;
 import android.view.InputDevice;
 import android.view.KeyEvent;
@@ -50,7 +48,7 @@ import de.mud.terminal.vt320;
  */
 @TargetApi(11)
 public class TerminalTextViewOverlay extends TextView {
-	public TerminalView parent;
+	public TerminalView terminalView; // ryan: this name sucks
 	private String currentSelection = "";
 	private ActionMode selectionActionMode;
 	private ClipboardManager clipboard;
@@ -58,33 +56,20 @@ public class TerminalTextViewOverlay extends TextView {
 	private int oldBufferHeight = 0;
 	private int oldScrollY = -1;
 
-	public TerminalTextViewOverlay(Context context) {
+	public TerminalTextViewOverlay(Context context, TerminalView terminalView) {
 		super(context);
-		init();
-	}
 
-	public TerminalTextViewOverlay(Context context, @Nullable AttributeSet attrs) {
-		super(context, attrs);
-		init();
-	}
+		this.terminalView = terminalView;
+		clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
 
-	@TargetApi(21)
-	public TerminalTextViewOverlay(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-		init();
-	}
-
-	private void init() {
 		setTextColor(Color.TRANSPARENT);
 		setTypeface(Typeface.MONOSPACE);
 		setTextIsSelectable(true);
 		setCustomSelectionActionModeCallback(new TextSelectionActionModeCallback());
-
-		clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
 	}
 
 	public void refreshTextFromBuffer() {
-		VDUBuffer vb = parent.bridge.getVDUBuffer();
+		VDUBuffer vb = terminalView.bridge.getVDUBuffer();
 		int numRows = vb.getBufferSize();
 		int numCols = vb.getColumns() - 1;
 		oldBufferHeight = numRows;
@@ -111,7 +96,7 @@ public class TerminalTextViewOverlay extends TextView {
 	 * rest of the buffer.
 	 */
 	public void onBufferChanged() {
-		VDUBuffer vb = parent.bridge.getVDUBuffer();
+		VDUBuffer vb = terminalView.bridge.getVDUBuffer();
 		int numRows = vb.getBufferSize();
 		int numNewRows = numRows - oldBufferHeight;
 
@@ -161,7 +146,7 @@ public class TerminalTextViewOverlay extends TextView {
 		if (clipboard.hasText()) {
 			clip = clipboard.getText().toString();
 		}
-		parent.bridge.injectString(clip);
+		terminalView.bridge.injectString(clip);
 	}
 
 	@Override
@@ -176,7 +161,7 @@ public class TerminalTextViewOverlay extends TextView {
 	public void scrollTo(int x, int y) {
 		int lineMultiple = y / getLineHeight();
 
-		TerminalBridge bridge = parent.bridge;
+		TerminalBridge bridge = terminalView.bridge;
 		bridge.buffer.setWindowBase(lineMultiple);
 
 		super.scrollTo(0, lineMultiple * getLineHeight());
@@ -192,12 +177,12 @@ public class TerminalTextViewOverlay extends TextView {
 		// Mouse input is treated differently:
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
 				MotionEventCompat.getSource(event) == InputDevice.SOURCE_MOUSE) {
-			if (onMouseEvent(event, parent.bridge)) {
+			if (onMouseEvent(event, terminalView.bridge)) {
 				return true;
 			}
-			parent.viewPager.setPagingEnabled(true);
+			terminalView.viewPager.setPagingEnabled(true);
 		} else {
-			parent.onTouchEvent(event);
+			terminalView.onTouchEvent(event);
 		}
 
 		super.onTouchEvent(event);
@@ -214,11 +199,11 @@ public class TerminalTextViewOverlay extends TextView {
 				// Process scroll wheel movement:
 				float yDistance = MotionEventCompat.getAxisValue(event, MotionEvent.AXIS_VSCROLL);
 
-				vt320 vtBuffer = (vt320) parent.bridge.buffer;
+				vt320 vtBuffer = (vt320) terminalView.bridge.buffer;
 				boolean mouseReport = vtBuffer.isMouseReportEnabled();
 				if (mouseReport) {
-					int row = (int) Math.floor(event.getY() / parent.bridge.charHeight);
-					int col = (int) Math.floor(event.getX() / parent.bridge.charWidth);
+					int row = (int) Math.floor(event.getY() / terminalView.bridge.charHeight);
+					int col = (int) Math.floor(event.getX() / terminalView.bridge.charWidth);
 
 					vtBuffer.mouseWheel(
 							yDistance > 0,
@@ -282,12 +267,12 @@ public class TerminalTextViewOverlay extends TextView {
 				currentSelection = getText().toString().substring(selectionStart, selectionEnd);
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			parent.viewPager.setPagingEnabled(false);
+			terminalView.viewPager.setPagingEnabled(false);
 			vtBuffer.mousePressed(
 					col, row, mouseEventToJavaModifiers(event));
 			return true;
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
-			parent.viewPager.setPagingEnabled(true);
+			terminalView.viewPager.setPagingEnabled(true);
 			vtBuffer.mouseReleased(col, row);
 			return true;
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
@@ -349,7 +334,7 @@ public class TerminalTextViewOverlay extends TextView {
 
 	@Override
 	public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
-		return parent.onCreateInputConnection(outAttrs);
+		return terminalView.onCreateInputConnection(outAttrs);
 	}
 
 	private class TextSelectionActionModeCallback implements ActionMode.Callback {

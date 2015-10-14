@@ -53,12 +53,13 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import de.mud.terminal.VDUBuffer;
 import de.mud.terminal.vt320;
@@ -70,7 +71,7 @@ import de.mud.terminal.vt320;
  *
  * @author jsharkey
  */
-public class TerminalView extends View implements FontSizeChangedListener {
+public class TerminalView extends FrameLayout implements FontSizeChangedListener {
 	private final Context context;
 	public final TerminalBridge bridge;
 
@@ -113,12 +114,13 @@ public class TerminalView extends View implements FontSizeChangedListener {
 	private static final String SCREENREADER_INTENT_ACTION = "android.accessibilityservice.AccessibilityService";
 	private static final String SCREENREADER_INTENT_CATEGORY = "android.accessibilityservice.category.FEEDBACK_SPOKEN";
 
-	public TerminalView(Context context, TerminalBridge bridge, final TerminalTextViewOverlay terminalTextViewOverlay, TerminalViewPager pager) {
+	public TerminalView(Context context, TerminalBridge bridge, TerminalViewPager pager) {
 		super(context);
+
+		setWillNotDraw(false);
 
 		this.context = context;
 		this.bridge = bridge;
-		this.terminalTextViewOverlay = terminalTextViewOverlay;
 		this.viewPager = pager;
 
 		setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
@@ -175,8 +177,11 @@ public class TerminalView extends View implements FontSizeChangedListener {
 		// connect our view up to the bridge
 		setOnKeyListener(bridge.getKeyHandler());
 
-		if (terminalTextViewOverlay != null) {
-			terminalTextViewOverlay.parent = this;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			terminalTextViewOverlay = new TerminalTextViewOverlay(context, this);
+			terminalTextViewOverlay.setLayoutParams(
+					new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			addView(terminalTextViewOverlay, 0);
 
 			// Once terminalTextViewOverlay is active, allow it to handle key events instead.
 			terminalTextViewOverlay.setOnKeyListener(bridge.getKeyHandler());
@@ -253,7 +258,9 @@ public class TerminalView extends View implements FontSizeChangedListener {
 	}
 
 	public void copyCurrentSelectionToClipboard() {
-		terminalTextViewOverlay.copyCurrentSelectionToClipboard();
+		if (terminalTextViewOverlay != null) {
+			terminalTextViewOverlay.copyCurrentSelectionToClipboard();
+		}
 	}
 
 	@Override
@@ -474,8 +481,6 @@ public class TerminalView extends View implements FontSizeChangedListener {
 				canvas.restore();
 			}
 		}
-
-		super.onDraw(canvas);
 	}
 
 	public void notifyUser(String message) {

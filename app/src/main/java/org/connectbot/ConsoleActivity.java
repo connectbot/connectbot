@@ -28,7 +28,6 @@ import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.PreferenceConstants;
-import org.connectbot.util.TerminalTextViewOverlay;
 import org.connectbot.util.TerminalViewPager;
 
 import android.annotation.TargetApi;
@@ -1216,12 +1215,8 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			TextView terminalNameOverlay = (TextView) view.findViewById(R.id.terminal_name_overlay);
 			terminalNameOverlay.setText(bridge.host.getNickname());
 
-			TerminalTextViewOverlay terminalTextViewOverlay =
-						(TerminalTextViewOverlay) view.findViewById(R.id.terminal_text_overlay);
-
 			// and add our terminal view control, using index to place behind overlay
-			final TerminalView terminal = new TerminalView(
-				container.getContext(), bridge, terminalTextViewOverlay, pager);
+			final TerminalView terminal = new TerminalView(container.getContext(), bridge, pager);
 			terminal.setId(R.id.terminal_view);
 			view.addView(terminal, 0);
 
