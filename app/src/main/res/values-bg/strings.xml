@@ -14,7 +14,6 @@
   <string name="help_about">Относно ConnectBot</string>
   <string name="help_keyboard">Клавиатура</string>
   <string name="pubkey_generate">Генериране</string>
-  <string name="pubkey_import">Импортиране</string>
   <string name="pubkey_delete">Клавиш Delete</string>
   <string name="pubkey_copy_private">Копира частния ключ</string>
   <string name="pubkey_copy_public">Копира публичния ключ</string>

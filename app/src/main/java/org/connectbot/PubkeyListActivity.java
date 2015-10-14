@@ -216,7 +216,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 	protected void handleAddKey(final PubkeyBean pubkey) {
 		if (pubkey.isEncrypted()) {
-			final View view = inflater.inflate(R.layout.dia_password, null);
+			final View view = View.inflate(this, R.layout.dia_password, null);
 			final EditText passwordField = (EditText) view.findViewById(android.R.id.text1);
 
 			new AlertDialog.Builder(PubkeyListActivity.this)
@@ -523,7 +523,8 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			changePassword.setEnabled(!imported);
 			changePassword.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {
-					final View changePasswordView = inflater.inflate(R.layout.dia_changepassword, null, false);
+					final View changePasswordView =
+							View.inflate(PubkeyListActivity.this, R.layout.dia_changepassword, null);
 					((TableRow) changePasswordView.findViewById(R.id.old_password_prompt))
 							.setVisibility(pubkey.isEncrypted() ? View.VISIBLE : View.GONE);
 					new AlertDialog.Builder(PubkeyListActivity.this)

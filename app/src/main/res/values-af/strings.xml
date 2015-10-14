@@ -13,7 +13,6 @@
   <string name="help_about">Aangaande ConnectBot</string>
   <string name="help_keyboard">Sleutelbord</string>
   <string name="pubkey_generate">Genereer</string>
-  <string name="pubkey_import">Voer in</string>
   <string name="pubkey_delete">Verwyder sleutel</string>
   <string name="pubkey_gather_entropy">Versamel Ewekansigheid</string>
   <string name="pubkey_touch_prompt">Raak hierdie boks om ewekansigheid te versamel: %1$d%% voltooi</string>

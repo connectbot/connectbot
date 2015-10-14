@@ -16,7 +16,6 @@
   <string name="help_about">Acerca de ConnectBot</string>
   <string name="help_keyboard">Teclado</string>
   <string name="pubkey_generate">Xerar</string>
-  <string name="pubkey_import">Importar</string>
   <string name="pubkey_delete">Borrar a chave</string>
   <string name="pubkey_gather_entropy">Xerando Entropía</string>
   <string name="pubkey_touch_prompt">Toca esta casiña para xerar aleatoriedade: %1$d%% feito</string>

@@ -17,7 +17,6 @@
   <string name="help_about">Mengenai ConnectBot</string>
   <string name="help_keyboard">Papan Ketik</string>
   <string name="pubkey_generate">Buat</string>
-  <string name="pubkey_import">Impor</string>
   <string name="pubkey_delete">Tombol Hapus</string>
   <string name="pubkey_gather_entropy">Kumpulkan Entropy</string>
   <string name="pubkey_touch_prompt">Sentuh boks ini untuk mengumpulkan ke tidak tentuan: %1$d%% selesai</string>

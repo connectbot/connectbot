@@ -17,7 +17,6 @@
   <string name="help_about">A ConnectBot névjegye</string>
   <string name="help_keyboard">Billentyűzet</string>
   <string name="pubkey_generate">Generálás</string>
-  <string name="pubkey_import">Importálás</string>
   <string name="pubkey_delete">Kulcs törlése</string>
   <string name="pubkey_gather_entropy">Entrópia gyűjtés</string>
   <string name="pubkey_touch_prompt">Érintse meg a dobozt a véletlenszerű generálásához: %1$d%% kész</string>

@@ -17,7 +17,6 @@
   <string name="help_about">Om ConnectBot</string>
   <string name="help_keyboard">Tangentbord</string>
   <string name="pubkey_generate">Generera</string>
-  <string name="pubkey_import">Importera</string>
   <string name="pubkey_delete">Ta bort nyckel</string>
   <string name="pubkey_gather_entropy">Samlar in entropi</string>
   <string name="pubkey_touch_prompt">Rör vid rutan för att samla in slumpdata: %1$d%% klart</string>

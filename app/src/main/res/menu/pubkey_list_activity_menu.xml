@@ -24,13 +24,13 @@
 	<item android:id="@+id/add_new_key_icon"
 		android:icon="@drawable/ic_add_box"
 		android:title="@string/pubkey_add_new"
-		connectbot:showAsAction="always"
+		connectbot:showAsAction="ifRoom"
 		/>
 
 	<item android:id="@+id/import_existing_key_icon"
 		android:icon="@drawable/ic_folder_open"
 		android:title="@string/pubkey_import_existing"
-		connectbot:showAsAction="always"
+		connectbot:showAsAction="ifRoom"
 		/>
 
 </menu>

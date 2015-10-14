@@ -17,7 +17,6 @@
   <string name="help_about">Sobre ConnectBot</string>
   <string name="help_keyboard">Teclado</string>
   <string name="pubkey_generate">Gerar</string>
-  <string name="pubkey_import">Importar</string>
   <string name="pubkey_delete">Apagar a chave</string>
   <string name="pubkey_gather_entropy">Recolhendo entropia</string>
   <string name="pubkey_touch_prompt">Toque nesta caixa para gerar aleariedade: %1$d%% completo</string>
