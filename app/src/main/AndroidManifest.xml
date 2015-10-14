@@ -170,7 +170,6 @@
 		<activity
 			android:name=".ConsoleActivity"
 			android:configChanges="keyboardHidden|orientation"
-			android:hardwareAccelerated="false"
 			android:launchMode="singleTop"
 			android:theme="@style/Theme.AppCompat"
 			android:windowSoftInputMode="stateAlwaysVisible|adjustResize">
