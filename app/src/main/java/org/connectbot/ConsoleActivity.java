@@ -779,7 +779,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			paste.setAlphabeticShortcut('v');
 		MenuItemCompat.setShowAsAction(paste, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
 		paste.setIcon(R.drawable.ic_action_paste);
-		paste.setEnabled(sessionOpen);
+		paste.setEnabled(activeTerminal);
 		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			public boolean onMenuItemClick(MenuItem item) {
 				pasteIntoTerminal();
@@ -897,7 +897,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 			copy.setEnabled(activeTerminal);
 		}
-		paste.setEnabled(sessionOpen);
+		paste.setEnabled(activeTerminal);
 		portForward.setEnabled(sessionOpen && canForwardPorts);
 		urlscan.setEnabled(activeTerminal);
 		resize.setEnabled(sessionOpen);
