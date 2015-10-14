@@ -18,7 +18,6 @@
   <string name="help_about">על אודות ConnectBot</string>
   <string name="help_keyboard">מקלדת</string>
   <string name="pubkey_generate">יצירה</string>
-  <string name="pubkey_import">יבוא</string>
   <string name="pubkey_delete">מחיקת מפתח</string>
   <string name="pubkey_gather_entropy">נאסף גיבוב</string>
   <string name="pubkey_touch_prompt">יש לגעת בתיבה זו כדי לאסוף נתונים אקראיים: %1$d%% הושלמו</string>

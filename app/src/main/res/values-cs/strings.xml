@@ -17,7 +17,6 @@
   <string name="help_about">O aplikaci ConnectBot</string>
   <string name="help_keyboard">Klávesnice</string>
   <string name="pubkey_generate">Vygenerovat</string>
-  <string name="pubkey_import">Importovat</string>
   <string name="pubkey_delete">Smazat klíč</string>
   <string name="pubkey_gather_entropy">Získávání entropie</string>
   <string name="pubkey_touch_prompt">Dotkněte se plochy pro získání náhodnosti: %1$d%% hotovo</string>

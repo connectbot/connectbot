@@ -15,7 +15,6 @@
   <string name="help_about">За ConnectBot</string>
   <string name="help_keyboard">Тастатура</string>
   <string name="pubkey_generate">Генерирај</string>
-  <string name="pubkey_import">Увези</string>
   <string name="pubkey_delete">Одстрани клуч</string>
   <string name="pubkey_generating">Се генерира пар на клучеви…</string>
   <string name="pubkey_copy_private">Копирај го приватниот клуч</string>

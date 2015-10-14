@@ -17,7 +17,6 @@
   <string name="help_about">О ConnectBot</string>
   <string name="help_keyboard">Клавиатура</string>
   <string name="pubkey_generate">Генерировать</string>
-  <string name="pubkey_import">Импортировать</string>
   <string name="pubkey_delete">Удалить ключ</string>
   <string name="pubkey_gather_entropy">Сбор случайной информации</string>
   <string name="pubkey_touch_prompt">Нажмите сюда для генерирования случайной информации: %1$d%% готово</string>

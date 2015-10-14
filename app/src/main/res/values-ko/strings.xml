@@ -16,7 +16,6 @@
   <string name="help_about">ConnectBot 정보</string>
   <string name="help_keyboard">키보드</string>
   <string name="pubkey_generate">생성</string>
-  <string name="pubkey_import">가져오기</string>
   <string name="pubkey_delete">키 삭제</string>
   <string name="pubkey_gather_entropy">엔트로피 수집 중</string>
   <string name="pubkey_touch_prompt">이 사각형의 랜덤으로 터치하세요: %1$d%% 완료</string>

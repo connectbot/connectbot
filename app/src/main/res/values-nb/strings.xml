@@ -17,7 +17,6 @@
   <string name="help_about">Om ConnectBot</string>
   <string name="help_keyboard">Tastatur</string>
   <string name="pubkey_generate">Generer</string>
-  <string name="pubkey_import">Importer</string>
   <string name="pubkey_delete">Slett nøkkel</string>
   <string name="pubkey_gather_entropy">Samler entropi</string>
   <string name="pubkey_touch_prompt">Berør denne boksen for å samle tilfeldige tall: %1$d%% ferdig</string>
