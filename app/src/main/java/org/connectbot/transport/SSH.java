@@ -101,7 +101,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 	static final Pattern hostmask;
 	static {
-		hostmask = Pattern.compile("^(.+)@([0-9a-z.-]+)(:(\\d+))?$", Pattern.CASE_INSENSITIVE);
+		hostmask = Pattern.compile("^(.+)@(([0-9a-z.-]+)|(\\[[a-f:0-9]+\\]))(:(\\d+))?$", Pattern.CASE_INSENSITIVE);
 	}
 
 	private boolean compression = false;
@@ -158,7 +158,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			else
 				algorithmName = serverHostKeyAlgorithm;
 
-			switch(hosts.verifyHostkey(matchName, serverHostKeyAlgorithm, serverHostKey)) {
+			switch (hosts.verifyHostkey(matchName, serverHostKeyAlgorithm, serverHostKey)) {
 			case KnownHosts.HOSTKEY_IS_OK:
 				bridge.outputLine(manager.res.getString(R.string.terminal_sucess, algorithmName, fingerprint));
 				return true;
@@ -772,9 +772,9 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			.append("://")
 			.append(Uri.encode(matcher.group(1)))
 			.append('@')
-			.append(matcher.group(2));
+			.append(Uri.encode(matcher.group(2)));
 
-		String portString = matcher.group(4);
+		String portString = matcher.group(6);
 		int port = DEFAULT_PORT;
 		if (portString != null) {
 			try {

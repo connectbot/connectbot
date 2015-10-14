@@ -200,7 +200,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 				+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "', "
 				+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
 				+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "', "
-				+ FIELD_HOST_STAYCONNECTED + " TEXT, "
+				+ FIELD_HOST_STAYCONNECTED + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
 				+ FIELD_HOST_QUICKDISCONNECT + " TEXT DEFAULT '" + Boolean.toString(false) + "')");
 
 		db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS

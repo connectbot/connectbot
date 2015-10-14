@@ -299,6 +299,14 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					return true;
 			}
 
+			// CTRL-SHIFT-C to copy.
+			if (keyCode == KeyEvent.KEYCODE_C
+					&& (derivedMetaState & HC_META_CTRL_ON) != 0
+					&& (derivedMetaState & KeyEvent.META_SHIFT_ON) != 0) {
+				bridge.copyCurrentSelection();
+				return true;
+			}
+
 			// CTRL-SHIFT-V to paste.
 			if (keyCode == KeyEvent.KEYCODE_V
 					&& (derivedMetaState & HC_META_CTRL_ON) != 0
