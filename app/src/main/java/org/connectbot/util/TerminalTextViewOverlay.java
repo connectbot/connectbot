@@ -329,7 +329,8 @@ public class TerminalTextViewOverlay extends TextView {
 
 	@Override
 	public boolean onCheckIsTextEditor() {
-		return true;
+		// This prevents a cursor being displayed within the text.
+		return false;
 	}
 
 	@Override
