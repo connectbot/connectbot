@@ -30,6 +30,7 @@ import org.connectbot.service.TerminalManager;
 import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.TerminalViewPager;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -442,6 +443,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		hideActionBarIfRequested();
 	}
 
+	@TargetApi(11)
+	private void requestActionBar() {
+		supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+	}
+
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
@@ -457,8 +463,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		titleBarHide = prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false);
-		if (titleBarHide) {
-			supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+		if (titleBarHide && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			// This is a separate method because Gradle does not uniformly respect the conditional
+			// Build check. See: https://code.google.com/p/android/issues/detail?id=137195
+			requestActionBar();
 		}
 
 		this.setContentView(R.layout.act_console);
@@ -1148,9 +1156,9 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	 * Called whenever the displayed terminal is changed.
 	 */
 	private void onTerminalChanged() {
-		View overlay = findCurrentView(R.id.terminal_overlay);
-		if (overlay != null)
-			overlay.startAnimation(fade_out_delayed);
+		View terminalNameOverlay = findCurrentView(R.id.terminal_name_overlay);
+		if (terminalNameOverlay != null)
+			terminalNameOverlay.startAnimation(fade_out_delayed);
 		updateDefault();
 		updatePromptVisible();
 		ActivityCompat.invalidateOptionsMenu(ConsoleActivity.this);
@@ -1203,9 +1211,9 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			RelativeLayout view = (RelativeLayout) inflater.inflate(
 					R.layout.item_terminal, container, false);
 
-			// set the terminal overlay text
-			TextView overlay = (TextView) view.findViewById(R.id.terminal_overlay);
-			overlay.setText(bridge.host.getNickname());
+			// set the terminal name overlay text
+			TextView terminalNameOverlay = (TextView) view.findViewById(R.id.terminal_name_overlay);
+			terminalNameOverlay.setText(bridge.host.getNickname());
 
 			// and add our terminal view control, using index to place behind overlay
 			final TerminalView terminal = new TerminalView(container.getContext(), bridge, pager);
@@ -1216,7 +1224,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			view.setTag(bridge);
 
 			container.addView(view);
-			overlay.startAnimation(fade_out_delayed);
+			terminalNameOverlay.startAnimation(fade_out_delayed);
 			return view;
 		}
 
