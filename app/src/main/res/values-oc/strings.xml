@@ -15,7 +15,6 @@
   <string name="help_about">A prepaus de ConnectBot</string>
   <string name="help_keyboard">Clavièr</string>
   <string name="pubkey_generate">Generar</string>
-  <string name="pubkey_import">Importar</string>
   <string name="pubkey_delete">Suprimir la clau</string>
   <string name="pubkey_gather_entropy">Generacion d\'aleatòri</string>
   <string name="pubkey_touch_prompt">Tocatz aquesta bóstia per recuperar un nombre aleatòri : %1$d%% fach</string>

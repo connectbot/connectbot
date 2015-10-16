@@ -16,7 +16,6 @@
   <string name="help_about">Um ConnectBot</string>
   <string name="help_keyboard">Lyklaborð</string>
   <string name="pubkey_generate">Búa til</string>
-  <string name="pubkey_import">Flytja inn</string>
   <string name="pubkey_delete">Eyða lykli</string>
   <string name="pubkey_gather_entropy">Safna bitum af handahófi</string>
   <string name="pubkey_touch_prompt">Snertu kassann til þess að safna bitum af handahófi, %1$d%% búið.</string>

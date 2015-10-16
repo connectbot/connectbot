@@ -113,7 +113,6 @@
 	<string name="paste_shortcut">Ctrl-Shift-V</string>
 
 	<string name="pubkey_generate">"Generate"</string>
-	<string name="pubkey_import">"Import"</string>
 	<string name="pubkey_delete">"Delete key"</string>
 	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
 	<string name="pubkey_gather_entropy">"Gathering Entropy"</string>
@@ -656,5 +655,9 @@
 	<string name="hostpref_add_host">Add host</string>
 	<!-- Text for button which, when clicked, saves an existing host. -->
 	<string name="hostpref_edit_host">Save host</string>
+	<!-- Text for button which, when clicked, brings up an editor for adding a new pubkey. -->
+	<string name="pubkey_add_new">Add new pubkey</string>
+	<!-- Text for button which, when clicked, brings up picker to import an existing pubkey. -->
+	<string name="pubkey_import_existing">Import existing pubkey</string>
 
 </resources>

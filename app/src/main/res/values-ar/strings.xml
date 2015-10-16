@@ -15,7 +15,6 @@
   <string name="help_about">حول البرنامج</string>
   <string name="help_keyboard">لوحة المفاتيح</string>
   <string name="pubkey_generate">توليد</string>
-  <string name="pubkey_import">استيراد</string>
   <string name="pubkey_delete">حذف المفتاح</string>
   <string name="pubkey_touch_hint">للتاكد من العشوائية خلال توليد المفتاح , حرك اصبعك بشكل عشوائي فوق المربع في الاسفل</string>
   <string name="pubkey_generating">جاري توليد المفتاح</string>

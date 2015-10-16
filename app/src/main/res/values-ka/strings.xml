@@ -10,6 +10,5 @@
   <string name="help_about">ConnectBot-ის შესახებ</string>
   <string name="help_keyboard">კლავიატურა</string>
   <string name="pubkey_generate">გენერირება</string>
-  <string name="pubkey_import">იმპორტი</string>
   <string name="pubkey_delete">გასაღების წაშლა</string>
 </resources>
