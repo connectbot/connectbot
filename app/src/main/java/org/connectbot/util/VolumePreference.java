@@ -18,6 +18,7 @@
 package org.connectbot.util;
 
 import android.content.Context;
+import android.os.Build;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
@@ -56,7 +57,13 @@ public class VolumePreference extends DialogPreference implements OnSeekBarChang
 		sb.setMax(100);
 		sb.setProgress((int) (getPersistedFloat(
 				PreferenceConstants.DEFAULT_BELL_VOLUME) * 100));
-		sb.setPadding(10, 10, 10, 10);
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			sb.setPadding(75, 70, 75, 10);
+		} else {
+			sb.setPadding(10, 10, 10, 10);
+		}
+
 		sb.setOnSeekBarChangeListener(this);
 
 		return sb;
