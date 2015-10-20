@@ -170,10 +170,15 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 			// create views for all bridges on this service
 			adapter.notifyDataSetChanged();
-			int requestedIndex = bound.getBridges().indexOf(requestedBridge);
+			final int requestedIndex = bound.getBridges().indexOf(requestedBridge);
 
 			if (requestedIndex != -1) {
-				setDisplayedTerminal(requestedIndex);
+				pager.post(new Runnable() {
+					@Override
+					public void run() {
+						setDisplayedTerminal(requestedIndex);
+					}
+				});
 			}
 		}
 
