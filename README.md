@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/connectbot/connectbot.svg?branch=master)](
+https://travis-ci.org/connectbot/connectbot)
+
 Google Play
 ----------------
 
