@@ -6,7 +6,7 @@ apply from: '../config/translations.gradle'
 apply from: '../config/jacoco.gradle'
 
 ext {
-    supportLibraryVersion = '23.0.1'
+    supportLibraryVersion = '23.1.0'
     testRunnerVersion = '0.3'
     espressoVersion = '2.2'
 }
