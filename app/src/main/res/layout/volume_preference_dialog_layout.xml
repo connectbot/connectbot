@@ -17,13 +17,15 @@
  -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="fill_parent"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/abc_dialog_padding_material"
-    android:paddingStart="@dimen/abc_dialog_padding_material"
-    android:paddingEnd="@dimen/abc_dialog_padding_material"
-    android:paddingRight="@dimen/abc_dialog_padding_material"
+	tools:ignore="PrivateResource"
+    android:paddingLeft="?attr/dialogPreferredPadding"
+    android:paddingStart="?attr/dialogPreferredPadding"
+    android:paddingEnd="?attr/dialogPreferredPadding"
+    android:paddingRight="?attr/dialogPreferredPadding"
     >
 
     <ImageView
