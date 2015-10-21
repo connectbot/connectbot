@@ -40,6 +40,7 @@
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/icon"
+				android:contentDescription="@string/protocol_spinner_label"
 				style="@style/ListItemIcon"
 				/>
 
@@ -206,6 +207,7 @@
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/icon"
+				android:contentDescription="@string/hostpref_color_title"
 				style="@style/ListItemIcon"
 				/>
 
@@ -237,6 +239,7 @@
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/icon"
+				android:contentDescription="@string/hostpref_fontsize_title"
 				style="@style/ListItemIcon"
 				/>
 
@@ -270,9 +273,9 @@
 					android:id="@+id/font_size_text"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_alignParentRight="true"
 					android:layout_gravity="center_vertical"
 					android:layout_marginRight="16dp"
+					android:layout_marginEnd="16dp"
 					android:inputType="number"
 					android:maxLines="1"
 					tools:text="10"
@@ -292,6 +295,7 @@
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/icon"
+				android:contentDescription="@string/hostpref_pubkeyid_title"
 				style="@style/ListItemIcon"
 				/>
 
@@ -324,6 +328,7 @@
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/icon"
+				android:contentDescription="@string/hostpref_delkey_title"
 				style="@style/ListItemIcon"
 				/>
 
@@ -356,6 +361,7 @@
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/icon"
+				android:contentDescription="@string/hostpref_encoding_title"
 				style="@style/ListItemIcon"
 				/>
 
@@ -394,15 +400,8 @@
 					android:layout_width="24dp"
 					android:layout_height="24dp"
 					android:src="@drawable/icon"
+					android:contentDescription="@string/hostpref_authagent_title"
 					style="@style/ListItemIcon"
-					/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/hostpref_authagent_title"
-					android:paddingBottom="24dp"
-					style="@style/ListItemFirstLineText.WithIcon"
 					/>
 
 				<android.support.v7.widget.SwitchCompat
@@ -414,6 +413,17 @@
 					android:layout_marginRight="16dp"
 					android:layout_marginEnd="16dp"
 					android:layout_centerVertical="true"
+					/>
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_toLeftOf="@id/use_ssh_auth_switch"
+					android:layout_toStartOf="@id/use_ssh_auth_switch"
+					android:text="@string/hostpref_authagent_title"
+					android:paddingBottom="24dp"
+					style="@style/ListItemFirstLineText.WithIcon"
+					tools:ignore="RelativeOverlap"
 					/>
 
 			</RelativeLayout>
@@ -432,6 +442,7 @@
 					android:textSize="14sp"
 					android:layout_marginTop="8dp"
 					android:layout_marginLeft="72dp"
+					android:layout_marginStart="72dp"
 					/>
 
 				<android.support.v7.widget.AppCompatCheckBox
@@ -457,6 +468,7 @@
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/icon"
+				android:contentDescription="@string/hostpref_compression_title"
 				style="@style/ListItemIcon"
 				/>
 
@@ -501,6 +513,7 @@
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/icon"
+				android:contentDescription="@string/hostpref_wantsession_title"
 				style="@style/ListItemIcon"
 				/>
 
@@ -545,6 +558,7 @@
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/icon"
+				android:contentDescription="@string/hostpref_stayconnected_title"
 				style="@style/ListItemIcon"
 				/>
 
@@ -589,6 +603,7 @@
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/icon"
+				android:contentDescription="@string/hostpref_quickdisconnect_title"
 				style="@style/ListItemIcon"
 				/>
 
@@ -633,6 +648,7 @@
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/icon"
+				android:contentDescription="@string/hostpref_postlogin_title"
 				style="@style/ListItemIcon"
 				/>
 
