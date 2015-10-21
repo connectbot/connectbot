@@ -8,14 +8,7 @@
   <string name="title_host_editor">Editare gazdă</string>
   <string name="title_help">Ajutor</string>
   <string name="title_colors">Culori</string>
-  <string name="resolve_connect">Conectează-te</string>
-  <string name="resolve_entropy">Genereaza sursă entropie</string>
-  <string name="menu_insert">Adaugă gazdă</string>
-  <string name="menu_delete">Sterge gazdă</string>
-  <string name="menu_preferences">Setări</string>
   <string name="help_intro">Selecteaza un subiect pentru a accesa mai multe informatii</string>
-  <string name="help_about">Despre ConnectBot</string>
-  <string name="help_keyboard">Tastatură</string>
   <string name="pubkey_generate">Generează</string>
   <string name="pubkey_delete">Șterge cheia</string>
   <string name="pubkey_gather_entropy">Genereaza sursa entropie</string>

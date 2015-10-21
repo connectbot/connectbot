@@ -9,14 +9,7 @@
   <string name="title_help">Laguntza</string>
   <string name="title_colors">Koloreak</string>
   <string name="title_color_picker">Aukeratu kolorea</string>
-  <string name="resolve_connect">Konektatu</string>
-  <string name="resolve_entropy">Bildu entropia</string>
-  <string name="menu_insert">Gehitu ostalaria</string>
-  <string name="menu_delete">Ezabatu ostalaria</string>
-  <string name="menu_preferences">Hobespenak</string>
   <string name="help_intro">Mesedez, hautatu beheko gaietako bat informazio gehiago nahi izanez gero.</string>
-  <string name="help_about">ConnectBot-i buruz</string>
-  <string name="help_keyboard">Teklatua</string>
   <string name="terms_and_conditions">Baldintzak</string>
   <string name="keyboard_shortcuts">Laster-teklak</string>
   <string name="increase_font_size">Handiagotu letra-tamaina</string>
@@ -67,7 +60,6 @@
   <string name="alert_sdcard_absent">Ez da aurkitu SD txartelik!</string>
   <string name="button_add">Gehitu</string>
   <string name="button_change">Aldatu</string>
-  <string name="button_generate">Sortu gakoa</string>
   <string name="button_resize">Aldatu tamaina</string>
   <string name="alert_disconnect_msg">Konexioa galdu da</string>
   <string name="msg_copyright">Copyright-a © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -148,9 +140,7 @@
   <string name="portforward_remote">Urrunekoa</string>
   <string name="portforward_dynamic">Dinamikoa (SOCKS)</string>
   <string name="portforward_pos">Sortu ataka birbidalketa</string>
-  <string name="portforward_done">Ataka birbidalketa ongi sortu da</string>
   <string name="portforward_problem">Arazoa ataka birbidalketa sortzean, behar bada erabilitako ataka 1024 baino txikiagoa da edo dagoeneko erabiltzen den ataka bat da?</string>
-  <string name="hint_userhost">erabiltzailea\@ostalaria</string>
   <string name="list_format_error">Erabili %1$s formatua</string>
   <string name="format_username">erabiltzaile-izena</string>
   <string name="format_hostname">ostalaria</string>
@@ -205,7 +195,6 @@
   <string name="no">Ez</string>
   <string name="with_confirmation">Berrespenarekin</string>
   <string name="yes">Bai</string>
-  <string name="exceptions_submit_message">Dirudienez ConnectBot-ek arazo bat izan zuen azken exekuzioan. ConnectBot-en garatzaileei errore-txostena bidali?</string>
   <string name="menu_colors_reset">Berrezarri</string>
   <string name="app_is_running">ConnectBot martxan dago</string>
   <string name="color_red">gorria</string>

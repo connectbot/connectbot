@@ -9,14 +9,7 @@
   <string name="title_help">Hilfe</string>
   <string name="title_colors">Farben</string>
   <string name="title_color_picker">Farbe wählen</string>
-  <string name="resolve_connect">Verbinden</string>
-  <string name="resolve_entropy">Sammle Entropie</string>
-  <string name="menu_insert">Host hinzufügen</string>
-  <string name="menu_delete">Host löschen</string>
-  <string name="menu_preferences">Einstellungen</string>
   <string name="help_intro">Für mehr Informationen wählen Sie eine Überschrift!</string>
-  <string name="help_about">Über ConnectBot</string>
-  <string name="help_keyboard">Tastatur</string>
   <string name="pubkey_generate">Erzeugen</string>
   <string name="pubkey_delete">Schlüssel löschen</string>
   <string name="pubkey_gather_entropy">Sammle Entropie</string>
@@ -63,7 +56,6 @@
   <string name="alert_sdcard_absent">SD-Karte nicht eingesteckt!</string>
   <string name="button_add">Hinzufügen</string>
   <string name="button_change">Ändern</string>
-  <string name="button_generate">Schlüssel erzeugen</string>
   <string name="button_resize">Größe ändern</string>
   <string name="alert_disconnect_msg">Die Verbindung wurde getrennt.</string>
   <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -138,9 +130,7 @@
   <string name="portforward_remote">Entfernt</string>
   <string name="portforward_dynamic">Dynamisch (SOCKS)</string>
   <string name="portforward_pos">Port-Weiterleitung anlegen</string>
-  <string name="portforward_done">Port-Weiterleitung angelegt.</string>
   <string name="portforward_problem">Konnte Port-Weiterleitung nicht anlegen. Verwenden Sie Ports kleiner als 1024, oder wird der Port bereits verwendet?</string>
-  <string name="hint_userhost">benutzer\@hostname</string>
   <string name="list_format_error">Benutze das Format %1$s</string>
   <string name="format_username">Benutzername</string>
   <string name="format_hostname">Hostname</string>
@@ -192,7 +182,6 @@
   <string name="no">Nein</string>
   <string name="with_confirmation">Mit Bestätigung</string>
   <string name="yes">Ja</string>
-  <string name="exceptions_submit_message">Scheinbar hatte ConnectBot Probleme bei der letzten Benutzung. Fehlermeldung an die ConnectBot übermitteln?</string>
   <string name="menu_colors_reset">Zurücksetzen</string>
   <string name="app_is_running">ConnectBot läuft</string>
   <string name="color_red">rot</string>

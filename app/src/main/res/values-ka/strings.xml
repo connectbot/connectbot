@@ -3,12 +3,6 @@
   <string name="title_host_editor">ჰოსტის შეცვლა</string>
   <string name="title_help">დახმარება</string>
   <string name="title_colors">ფერი</string>
-  <string name="resolve_connect">დაკავშირება</string>
-  <string name="menu_insert">ჰოსტის დამატება</string>
-  <string name="menu_delete">ჰოსტის წაშლა</string>
-  <string name="menu_preferences">პარამეტრები</string>
-  <string name="help_about">ConnectBot-ის შესახებ</string>
-  <string name="help_keyboard">კლავიატურა</string>
   <string name="pubkey_generate">გენერირება</string>
   <string name="pubkey_delete">გასაღების წაშლა</string>
 </resources>

@@ -7,14 +7,7 @@
   <string name="title_host_editor">호스트 편집</string>
   <string name="title_help">도움말</string>
   <string name="title_colors">색상</string>
-  <string name="resolve_connect">접속</string>
-  <string name="resolve_entropy">엔트로피 수집</string>
-  <string name="menu_insert">호스트 추가</string>
-  <string name="menu_delete">호스트 삭제</string>
-  <string name="menu_preferences">기본 설정</string>
   <string name="help_intro">아래의 제목들을 선택하면 특정 주제의 정보를 더 알 수 있습니다.</string>
-  <string name="help_about">ConnectBot 정보</string>
-  <string name="help_keyboard">키보드</string>
   <string name="pubkey_generate">생성</string>
   <string name="pubkey_delete">키 삭제</string>
   <string name="pubkey_gather_entropy">엔트로피 수집 중</string>
@@ -57,7 +50,6 @@
   <string name="alert_sdcard_absent">SD 카드가 삽입되지 않습니다!</string>
   <string name="button_add">추가</string>
   <string name="button_change">바꾸기</string>
-  <string name="button_generate">키 생성</string>
   <string name="button_resize">크기 조정</string>
   <string name="alert_disconnect_msg">연결이 끊어짐</string>
   <string name="pref_emulation_category">터미널 에뮬레이션</string>
@@ -129,7 +121,6 @@
   <string name="portforward_remote">원격</string>
   <string name="portforward_dynamic">동적 (SOCKS)</string>
   <string name="portforward_pos">포트 포워딩 만들기</string>
-  <string name="portforward_done">포트 포워딩을 만드는 데 성공했습니다.</string>
   <string name="list_format_error">%1$s 형식을 사용</string>
   <string name="format_username">사용자 이름</string>
   <string name="format_hostname">호스트 이름</string>
@@ -168,7 +159,6 @@
   <string name="no">아니오</string>
   <string name="with_confirmation">확인 작업 수행</string>
   <string name="yes">예</string>
-  <string name="exceptions_submit_message">마지막으로 ConnectBot이 실행했을 때 문제가 있었던 것 같습니다. ConnectBot 개발자에 오류 보고서를 보내시겠습니까?</string>
   <string name="menu_colors_reset">초기화</string>
   <string name="app_is_running">ConnectBot 실행 중</string>
   <string name="color_red">빨간색</string>
