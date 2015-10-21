@@ -170,17 +170,22 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 			// create views for all bridges on this service
 			adapter.notifyDataSetChanged();
-			int requestedIndex = bound.getBridges().indexOf(requestedBridge);
+			final int requestedIndex = bound.getBridges().indexOf(requestedBridge);
 
 			if (requestedIndex != -1) {
-				setDisplayedTerminal(requestedIndex);
+				pager.post(new Runnable() {
+					@Override
+					public void run() {
+						setDisplayedTerminal(requestedIndex);
+					}
+				});
 			}
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
+			bound = null;
 			adapter.notifyDataSetChanged();
 			updateEmptyVisible();
-			bound = null;
 		}
 	};
 
@@ -1035,8 +1040,8 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		// Maintain selected host if connected.
 		if (adapter.getCurrentTerminalView() != null
 				&& !adapter.getCurrentTerminalView().bridge.isDisconnected()) {
-			Uri uri = adapter.getCurrentTerminalView().bridge.host.getUri();
-			savedInstanceState.putString(STATE_SELECTED_URI, uri.toString());
+			requested = adapter.getCurrentTerminalView().bridge.host.getUri();
+			savedInstanceState.putString(STATE_SELECTED_URI, requested.toString());
 		}
 
 		super.onSaveInstanceState(savedInstanceState);
