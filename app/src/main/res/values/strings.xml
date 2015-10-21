@@ -602,6 +602,9 @@
 	     purposes. -->
 	<string name="image_description_right">Arrow right</string>
 
+	<!-- Describes the "volume" icon in the bell volume dialog for accessibility purposes. -->
+	<string name="image_description_volume">Volume</string>
+
 	<!-- Text for the "Esc" button in virtual keyboard. -->
 	<string name="button_key_esc">Esc</string>
 	<!-- Text for the "Ctrl" button in virtual keyboard. -->
