@@ -204,6 +204,7 @@ public class HostEditorFragment extends Fragment {
 
 		mQuickConnectContainer =
 				(TextInputLayout) view.findViewById(R.id.quickconnect_field_container);
+		mQuickConnectContainer.requestFocus();
 
 		mQuickConnectField = (EditText) view.findViewById(R.id.quickconnect_field);
 		String oldQuickConnect = savedInstanceState == null ?
