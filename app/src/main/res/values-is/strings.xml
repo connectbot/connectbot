@@ -68,7 +68,7 @@
   <string name="pref_ui_category">Notenda viðmót</string>
   <string name="pref_rotation_title">Snúnings hamur</string>
   <string name="pref_rotation_summary">Hvernig breyta skal snúningnum þegar lyklaborðið er sýnilegt/falið</string>
-  <string name="pref_fullscreen_title">Fylla skjáinn</string>
+  <string name="pref_fullscreen_title">Fullskjáhamur</string>
   <string name="pref_fullscreen_summary">Fela stöðustiku þegar tenging er virk</string>
   <string name="pref_memkeys_title">Geyma lykla í minni</string>
   <string name="pref_memkeys_summary">Geyma ólæsta lykla í minni þangað til forritinu er lokað</string>
@@ -82,7 +82,6 @@
   <string name="pref_keepalive_summary">Banna skjánum að slokkna þegar tenging er virk</string>
   <string name="pref_wifilock_title">Halda þráðlausu neti í gangi</string>
   <string name="pref_wifilock_summary">Halda þráðlausu neti í gangi þegar tenging er virk</string>
-  <string name="pref_bumpyarrows_summary">Titra þegar örvar eru sendar með trackball; sniðugt fyrir óstöðugar tengingar</string>
   <string name="pref_bell_category">Terminal bjalla</string>
   <string name="pref_bell_title">Bjalla með hljóði</string>
   <string name="pref_bell_volume_title">Hljóðstyrkur bjöllu</string>
@@ -106,7 +105,7 @@
   <string name="hostpref_encoding_title">Kóðun</string>
   <string name="hostpref_connection_category">Stillingar fyrir tengingu</string>
   <string name="hostpref_username_title">Notendanafn</string>
-  <string name="hostpref_hostname_title">Þjónn</string>
+  <string name="hostpref_hostname_title">Hýsill</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Aldrei tengt</string>
   <string name="console_copy_done">Afritaði %1$d bæti</string>
@@ -159,7 +158,7 @@
   <string name="with_confirmation">Með staðfestingu</string>
   <string name="yes">Já</string>
   <string name="exceptions_submit_message">Það lítur út fyrir að ConnectBot hafi verið í vandræðum síðast þegar það keyrði. Viltu senda villu greiningu á höfunda forritsins?</string>
-  <string name="menu_colors_reset">Endurstilla</string>
+  <string name="menu_colors_reset">Frumstilla</string>
   <string name="app_is_running">ConnectBot er í gangi</string>
   <string name="color_red">rauður</string>
   <string name="color_green">grænn</string>

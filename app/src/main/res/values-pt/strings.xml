@@ -89,7 +89,6 @@
   <string name="pref_wifilock_title">Manter Wi-Fi activo</string>
   <string name="pref_wifilock_summary">Evitar que o Wi-Fi desligue quando uma sessão está activa</string>
   <string name="pref_bumpyarrows_title">Cursores com vibração</string>
-  <string name="pref_bumpyarrows_summary">Vibrar quando enviar teclas de cursor com a trackball; útil para ligações com atraso</string>
   <string name="pref_bell_category">Aviso sonoro do terminal</string>
   <string name="pref_bell_title">Aviso sonoro audível</string>
   <string name="pref_bell_volume_title">Volume do aviso sonoro</string>

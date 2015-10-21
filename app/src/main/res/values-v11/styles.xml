@@ -25,16 +25,23 @@
 	</style>
 
 	<style name="ListItemFirstLineText" parent="TextAppearance.AppCompat">
+		<item name="android:layout_alignParentTop">true</item>
 		<item name="android:textColor">?android:textColorPrimary</item>
 		<item name="android:textSize">16sp</item>
+		<item name="android:paddingTop">20dp</item>
+		<item name="android:layout_alignParentLeft">true</item>
 	</style>
 
 	<style name="ListItemSecondLineText" parent="TextAppearance.AppCompat">
+		<item name="android:layout_alignParentBottom">true</item>
 		<item name="android:textColor">?android:textColorSecondary</item>
 		<item name="android:textSize">14sp</item>
+		<item name="android:paddingBottom">20dp</item>
+		<item name="android:layout_alignParentLeft">true</item>
 	</style>
 
-        <style name="SelectableItem">
-                <item name="android:background">?android:attr/selectableItemBackground</item>
-        </style>
+	<style name="SelectableItem">
+		<item name="android:background">?android:attr/selectableItemBackground</item>
+	</style>
+	
 </resources>

@@ -89,7 +89,6 @@
   <string name="pref_wifilock_title">Hold Wi-Fi aktiv</string>
   <string name="pref_wifilock_summary">Undgå at Wi-Fi slår fra imens en session er aktiv</string>
   <string name="pref_bumpyarrows_title">Vibrerende pile</string>
-  <string name="pref_bumpyarrows_summary">Vibrér når der afsendes piletaster fra trackballen; nyttig ved langsomme forbindelser</string>
   <string name="pref_bell_category">Terminalklokke</string>
   <string name="pref_bell_title">Hørbar klokke</string>
   <string name="pref_bell_volume_title">Klokke volume</string>
