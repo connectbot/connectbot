@@ -20,10 +20,10 @@
     android:layout_height="wrap_content"
     android:layout_width="fill_parent"
     android:orientation="horizontal"
-    android:paddingLeft="24dp"
-    android:paddingStart="24dp"
-    android:paddingEnd="24dp"
-    android:paddingRight="24dp"
+    android:paddingLeft="@dimen/abc_dialog_padding_material"
+    android:paddingStart="@dimen/abc_dialog_padding_material"
+    android:paddingEnd="@dimen/abc_dialog_padding_material"
+    android:paddingRight="@dimen/abc_dialog_padding_material"
     >
 
     <ImageView
@@ -39,12 +39,9 @@
     <SeekBar
         android:id="@+id/volume_bar"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:max="100"
-        android:padding="0dp"
         android:progress="0"
         android:secondaryProgress="0"
         />

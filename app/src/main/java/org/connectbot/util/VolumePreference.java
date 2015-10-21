@@ -54,11 +54,12 @@ public class VolumePreference extends DialogPreference implements OnSeekBarChang
 
 	@Override
 	protected void onBindDialogView(View view) {
+		super.onBindDialogView(view);
+		
 		SeekBar volumeBar = (SeekBar) view.findViewById(R.id.volume_bar);
 		volumeBar.setProgress((int) (getPersistedFloat(
 				PreferenceConstants.DEFAULT_BELL_VOLUME) * 100));
 		volumeBar.setOnSeekBarChangeListener(this);
-		super.onBindDialogView(view);
 	}
 
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
