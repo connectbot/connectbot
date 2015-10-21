@@ -33,7 +33,7 @@ import android.net.Uri;
 public class HostBean extends AbstractBean {
 
 	public static final String BEAN_NAME = "host";
-	private static final int DEFAULT_FONT_SIZE = 10;
+	public static final int DEFAULT_FONT_SIZE = 10;
 
 	/* Database fields */
 	private long id = -1;

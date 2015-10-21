@@ -91,7 +91,6 @@
   <string name="pref_wifilock_title">Mantieni Wi-Fi attivo</string>
   <string name="pref_wifilock_summary">Non spegne la connessione Wi-Fi quando una sessione è attiva</string>
   <string name="pref_bumpyarrows_title">Vibrazione frecce</string>
-  <string name="pref_bumpyarrows_summary">Vibra quando si inviano movimenti con la trackball; utile per connessioni lente</string>
   <string name="pref_bell_category">Campanella del terminale</string>
   <string name="pref_bell_title">Campanella udibile</string>
   <string name="pref_bell_volume_title">Volume della campanella</string>

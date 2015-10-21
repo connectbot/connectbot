@@ -90,7 +90,6 @@
   <string name="pref_wifilock_title">Wi-Fi selalu aktif</string>
   <string name="pref_wifilock_summary">Jaga Wi-Fi agar tidak padam ketika sesi aktif</string>
   <string name="pref_bumpyarrows_title">Panah belok</string>
-  <string name="pref_bumpyarrows_summary">Getarkan saat mengirim tombol panah dari trackball, berguna untuk koneksi lambat</string>
   <string name="pref_bell_category">Bel terminal</string>
   <string name="pref_bell_title">Bel berdering</string>
   <string name="pref_bell_volume_title">Volume dering</string>

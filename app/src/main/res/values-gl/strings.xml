@@ -79,7 +79,6 @@
   <string name="pref_keepalive_summary">Evitar que a pantalla se apague ao traballar nunha consola</string>
   <string name="pref_wifilock_title">Manter a Wi-Fi activa</string>
   <string name="pref_wifilock_summary">Evitar que a Wi-Fi se apague mentres a sesión está activa</string>
-  <string name="pref_bumpyarrows_summary">Vibrar ao enviar teclas de dirección dende o trackball; útil para conexións con retardos</string>
   <string name="pref_bell_category">Timbre do terminal</string>
   <string name="pref_bell_title">Timbre audible</string>
   <string name="pref_bell_volume_title">Volume do timbre</string>
