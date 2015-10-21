@@ -318,6 +318,7 @@ public class HostEditorFragment extends Fragment {
 
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
+				mFontSizeText.clearFocus();
 			}
 
 			@Override
