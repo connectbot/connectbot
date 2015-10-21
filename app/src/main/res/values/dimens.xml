@@ -20,4 +20,6 @@
 	<dimen name="list_item_text_margin_left">72dp</dimen>
 	<dimen name="list_item_left_right_padding">16dp</dimen>
 	<dimen name="list_item_top_bottom_padding">20dp</dimen>
+	<dimen name="list_item_first_line_text_size">16sp</dimen>
+	<dimen name="list_item_second_line_text_size">14sp</dimen>
 </resources>

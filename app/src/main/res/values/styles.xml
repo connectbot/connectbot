@@ -47,7 +47,7 @@
 	<style name="ListItemFirstLineText">
 		<item name="android:layout_alignParentTop">true</item>
 		<item name="android:textColor">?android:textColorPrimary</item>
-		<item name="android:textSize">@dimen/list_item_left_right_padding</item>
+		<item name="android:textSize">@dimen/list_item_first_line_text_size</item>
 		<item name="android:paddingTop">@dimen/list_item_top_bottom_padding</item>
 		<item name="android:layout_alignParentLeft">true</item>
 	</style>
@@ -60,7 +60,7 @@
 	<style name="ListItemSecondLineText">
 		<item name="android:layout_alignParentBottom">true</item>
 		<item name="android:textColor">?android:textColorSecondary</item>
-		<item name="android:textSize">14sp</item>
+		<item name="android:textSize">@dimen/list_item_second_line_text_size</item>
 		<item name="android:paddingBottom">@dimen/list_item_top_bottom_padding</item>
 		<item name="android:layout_alignParentLeft">true</item>
 	</style>
