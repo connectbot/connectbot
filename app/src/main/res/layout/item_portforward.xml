@@ -18,32 +18,34 @@
  */
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
-	android:gravity="start|center_vertical"
+	android:minHeight="72dp"
+	android:layout_centerVertical="true"
 	android:orientation="vertical"
-	android:padding="10dip"
-	>
+	android:layout_marginLeft="16dp"
+	android:layout_marginStart="16dp"
+	style="@style/SelectableItem">
 
 	<TextView
 		android:id="@android:id/text1"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignParentLeft="true"
-		android:layout_alignParentStart="true"
-		android:layout_alignParentTop="true"
-		android:text="Tunnel Nickname"
-		android:textAppearance="?android:attr/textAppearanceLarge"
-		/>
+		android:ellipsize="end"
+		android:paddingTop="20dp"
+		android:singleLine="true"
+		android:textAppearance="@style/ListItemFirstLineText"
+		tools:text="Tunnel Nickname"/>
 
 	<TextView
 		android:id="@android:id/text2"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_below="@android:id/text1"
-		android:text="Local port 8080 to 192.168.1.1:80"
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		/>
+		android:paddingBottom="20dp"
+		android:textAppearance="@style/ListItemSecondLineText"
+		tools:text="Local port 8080 to 192.168.1.1:80"/>
 
-</RelativeLayout>
+</LinearLayout>
