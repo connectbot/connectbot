@@ -655,5 +655,11 @@
 	<string name="pubkey_add_new">Add new pubkey</string>
 	<!-- Text for button which, when clicked, brings up picker to import an existing pubkey. -->
 	<string name="pubkey_import_existing">Import existing pubkey</string>
+	<!-- Text for dialog which explains that the host URI is invalid and asks to discard. -->
+	<string name="discard_host_changes_message">Host URI is invalid. Would you like to discard changes?</string>
+	<!-- Text for button which discards changes to the host. -->
+	<string name="discard_host_button">Discard</string>
+	<!-- Text for button which does not discard changes and keeps editing. -->
+	<string name="discard_host_cancel_button">Keep editing</string>
 
 </resources>
