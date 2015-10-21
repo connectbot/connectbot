@@ -45,17 +45,7 @@
 	<!-- Window title when generating a new pubkey. -->
 	<string name="title_pubkey_generate">Generate</string>
 
-	<string name="resolve_connect">"Connect"</string>
-	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="resolve_entropy">"Gather Entropy"</string>
-
-	<string name="menu_insert">"Add Host"</string>
-	<string name="menu_delete">"Delete Host"</string>
-	<string name="menu_preferences">"Preferences"</string>
-
 	<string name="help_intro">"Please select a topic below for more information on a particular subject."</string>
-	<string name="help_about">"About ConnectBot"</string>
-	<string name="help_keyboard">"Keyboard"</string>
 
 	<!-- Title for the help page with the terms & conditions of the app. -->
 	<string name="terms_and_conditions">"Terms &amp; Conditions"</string>
@@ -200,8 +190,6 @@
 	<string name="button_cancel">Cancel</string>
 	<!-- Change an existing item's (e.g., host or pubkey) details. -->
 	<string name="button_change">"Change"</string>
-	<!-- Button that begins the generation of a public key pair. -->
-	<string name="button_generate">"Generate Key"</string>
 	<!-- Button that resizes the screen to the user-specified dimensions. -->
 	<string name="button_resize">"Resize"</string>
 
@@ -431,11 +419,7 @@
 	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
 	<string name="portforward_pos">"Create port forward"</string>
 
-	<string name="portforward_done">"Successfully created port forward"</string>
 	<string name="portforward_problem">"Problem creating port forward, maybe you're using ports under 1024 or port is already used?"</string>
-
-	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
-	<string name="hint_userhost">"user@hostname"</string>
 
 	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
 	<string name="list_format_error">"Use the format \"%1$s\""</string>
@@ -543,9 +527,6 @@
 	<string name="with_confirmation">"With confirmation"</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
 	<string name="yes">"Yes"</string>
-
-	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
-	<string name="exceptions_submit_message">"It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?"</string>
 
 	<!-- Menu selection to reset colors to their defaults. -->
 	<string name="menu_colors_reset">"Reset"</string>
