@@ -89,7 +89,6 @@
   <string name="pref_wifilock_title">Håll trådlöst nätverk aktivt</string>
   <string name="pref_wifilock_summary">Hindra att trådlöst nätverk slås av under en aktiv session</string>
   <string name="pref_bumpyarrows_title">Aktiva piltangenter</string>
-  <string name="pref_bumpyarrows_summary">Vibrera när piltangenter sänds från pekdon; bra för långsamma anslutningar</string>
   <string name="pref_bell_category">Terminal-ljud</string>
   <string name="pref_bell_title">Aktivt</string>
   <string name="pref_bell_volume_title">Ljudvolym</string>

@@ -89,7 +89,6 @@
   <string name="pref_wifilock_title">Ponechat Wi-Fi aktivní</string>
   <string name="pref_wifilock_summary">Zabránit Wi-Fi ve vypnutí když je sezení aktivní</string>
   <string name="pref_bumpyarrows_title">Hmatová odezva šipek</string>
-  <string name="pref_bumpyarrows_summary">Vibrovat při posílání kurzorových kláves z trackballu; užitečná pro špatná spojení</string>
   <string name="pref_bell_category">Zvonek terminálu</string>
   <string name="pref_bell_title">Zvukové upozornění</string>
   <string name="pref_bell_volume_title">Hlasitost zvonku</string>

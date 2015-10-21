@@ -102,7 +102,6 @@
   <string name="pref_wifilock_title">Држи бежични активним</string>
   <string name="pref_wifilock_summary">Спречи искључивање бежичног кад је сесија активна</string>
   <string name="pref_bumpyarrows_title">Џомбасте стрелице</string>
-  <string name="pref_bumpyarrows_summary">Вибрирај по слању тастера стрелице са трекбола; корисно при спорим везама</string>
   <string name="pref_bell_category">Звоно терминала</string>
   <string name="pref_bell_title">Звучно звоно</string>
   <string name="pref_bell_volume_title">Јачина звука звона</string>

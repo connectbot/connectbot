@@ -92,7 +92,6 @@
   <string name="pref_wifilock_title">Держать Wi-Fi включенным</string>
   <string name="pref_wifilock_summary">Препятствовать отключению Wi-Fi при активном сеансе</string>
   <string name="pref_bumpyarrows_title">Настройки обратной связи при нажатии</string>
-  <string name="pref_bumpyarrows_summary">Вибросигнал при передаче клавиш управления курсором с трекбола; полезно при медленном соединении</string>
   <string name="pref_bell_category">Настройки звукового сигнала в терминале</string>
   <string name="pref_bell_title">Включить звонок</string>
   <string name="pref_bell_volume_title">Громкость сигнала</string>

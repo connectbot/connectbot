@@ -91,7 +91,6 @@
   <string name="pref_wifilock_title">Wstrzymaj usypianie Wi-Fi</string>
   <string name="pref_wifilock_summary">Wstrzymaj usypianie Wi-Fi gdy sesja jest aktywna</string>
   <string name="pref_bumpyarrows_title">Podskakujące strzałki</string>
-  <string name="pref_bumpyarrows_summary">Wibruj kiedy emulowane są klawisze strzałek; użyteczne dla wolnych połączeń</string>
   <string name="pref_bell_category">Brzęczyk terminalu</string>
   <string name="pref_bell_title">Brzęczyk słyszalny</string>
   <string name="pref_bell_volume_title">Głośność brzęczyka</string>
