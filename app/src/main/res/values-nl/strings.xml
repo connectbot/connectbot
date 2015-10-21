@@ -89,7 +89,6 @@
   <string name="pref_wifilock_title">Houd Wi-Fi actief</string>
   <string name="pref_wifilock_summary">Voorkom Wi-Fi van uitgaan wanneer er een sessie actief is</string>
   <string name="pref_bumpyarrows_title">Hobbelige pijlen</string>
-  <string name="pref_bumpyarrows_summary">Tril als pijl knoppen worden gestuurd van trackball; handig voor langzame verbindingen</string>
   <string name="pref_bell_category">Terminal bel</string>
   <string name="pref_bell_title">Hoorbare bel</string>
   <string name="pref_bell_volume_title">Bel volume</string>

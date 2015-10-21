@@ -102,7 +102,6 @@
   <string name="pref_wifilock_title">保持 Wi-Fi 連線</string>
   <string name="pref_wifilock_summary">連線階段未結束前，避免 Wi-Fi 關閉</string>
   <string name="pref_bumpyarrows_title">觸覺方向鍵</string>
-  <string name="pref_bumpyarrows_summary">當用軌跡球發出模擬方向鍵時振動; 對延遲連線特別有用</string>
   <string name="pref_bell_category">終端鈴聲</string>
   <string name="pref_bell_title">響鈴</string>
   <string name="pref_bell_volume_title">鈴聲音量</string>

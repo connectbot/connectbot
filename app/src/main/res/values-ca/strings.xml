@@ -91,7 +91,6 @@
   <string name="pref_wifilock_title">Manté activa la Wi-Fi</string>
   <string name="pref_wifilock_summary">Evita que la Wi-Fi s\'apagui mentre hi ha una sessió activa</string>
   <string name="pref_bumpyarrows_title">Cursors vibrants</string>
-  <string name="pref_bumpyarrows_summary">Vibra quan s\'envien els cursors de direcció amb la rodeta; útil per connexions lentes</string>
   <string name="pref_bell_category">So del Terminal</string>
   <string name="pref_bell_title">So activat</string>
   <string name="pref_bell_volume_title">Volum del so</string>

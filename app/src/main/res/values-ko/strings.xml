@@ -82,7 +82,6 @@
   <string name="pref_wifilock_title">Wi-Fi 켜짐 유지</string>
   <string name="pref_wifilock_summary">세션이 유효한 동안 Wi-Fi가 꺼지지 않도록 함</string>
   <string name="pref_bumpyarrows_title">방향키 진동</string>
-  <string name="pref_bumpyarrows_summary">트랙볼로 방향키를 보낼 때 진동합니다; 연결이 느린 경우 유용</string>
   <string name="pref_bell_category">터미널 벨</string>
   <string name="pref_bell_title">벨소리</string>
   <string name="pref_bell_volume_title">벨 볼륨</string>

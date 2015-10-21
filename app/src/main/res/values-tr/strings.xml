@@ -91,7 +91,6 @@
   <string name="pref_wifilock_title">Wi-Fi etkin tut</string>
   <string name="pref_wifilock_summary">Bir oturum etkinken Wi-Fi kapanmasını engelle</string>
   <string name="pref_bumpyarrows_title">dalgalı oklar</string>
-  <string name="pref_bumpyarrows_summary">Okları izotop ile kullanırken titret; düşük bağlantılar için kullanışlıdır</string>
   <string name="pref_bell_category">Terminal zili</string>
   <string name="pref_bell_title">Sesli zil</string>
   <string name="pref_bell_volume_title">Zil ses düzeyi</string>

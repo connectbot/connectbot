@@ -91,7 +91,6 @@
   <string name="pref_wifilock_title">Manter a rede Wi-Fi ativo</string>
   <string name="pref_wifilock_summary">Evitar que a rede Wi-Fi seja desligada quando alguma sesão está ativa</string>
   <string name="pref_bumpyarrows_title">Feedback de rolagem</string>
-  <string name="pref_bumpyarrows_summary">Vibrar quando pressionar o botão principal (trackball)</string>
   <string name="pref_bell_category">Alerta do terminal</string>
   <string name="pref_bell_title">Alerta audível</string>
   <string name="pref_bell_volume_title">Volume dos alerta</string>
