@@ -25,7 +25,7 @@ addons:
       - ia32-libs-multiarch
       - libgd2-xpm
       - p7zip-full
-      - libxml2-utils # ./scripts/check-lint-count.sh
+      - xqilla # ./scripts/check-lint-count.sh
   coverity_scan:
     project:
       name: "connectbot/connectbot"

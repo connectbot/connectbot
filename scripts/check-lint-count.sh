@@ -12,10 +12,10 @@ fi
 lint_file="$1"
 historical_file="$2"
 
-xmllint="$(which xmllint)"
+xqilla="$(which xqilla)"
 
-if [[ ! -x $xmllint ]]; then \
-    echo "Error: cannot find xmllint"
+if [[ ! -x $xqilla ]]; then \
+    echo "Error: cannot find xqilla"
     exit 1
 fi
 
@@ -31,22 +31,22 @@ trap "rm -rf $tmp_dir" ERR EXIT
 lint_results="$tmp_dir/lint.txt"
 hist_results="$tmp_dir/hist.txt"
 
-echo "cat //issue/location" | \
-    xmllint --shell $historical_file | \
-    grep '<location' >$lint_results
-    
-echo "cat //issue/location" | \
-    xmllint --shell $lint_file | \
-    grep '<location' >$hist_results
+run_query() {
+  local xqilla_script='string-join(//issue/location/(concat("file=", @file, " line=", @line, " column=", @column, " reason=", ../@summary)), "&#10;")'
+  xqilla -i $1 <(echo $xqilla_script) | sed "s,$PWD/,,g" > $2
+}
 
-old_count=$(cat $lint_results | wc -l)
-new_count=$(cat $hist_results | wc -l)
+run_query $lint_file $lint_results
+run_query $historical_file $hist_results
 
-echo "Historical count : $old_count, new count : $new_count"
+old_count=$(cat $hist_results | wc -l)
+new_count=$(cat $lint_results | wc -l)
+
+echo "Historical count: $old_count, new count: $new_count"
 
 if [[ $new_count > $old_count ]]; then \
     echo "FAILURE: lint issues increased from $old_count to $new_count"
-    diff $lint_results $hist_results
+    diff -u $hist_results $lint_results
     exit 2
 fi
 
