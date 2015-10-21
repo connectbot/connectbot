@@ -5,8 +5,8 @@
 # caching mechanism.
 
 if [[ $# != 2 || ! -f $1 ]]; then \
-    echo "Usage: $0 <lint.xml file> <historical.xml file>"
-    exit 1
+  echo "Usage: $0 <lint.xml file> <historical.xml file>"
+  exit 1
 fi
 
 lint_file="$1"
@@ -15,8 +15,8 @@ historical_file="$2"
 xqilla="$(which xqilla)"
 
 if [[ ! -x $xqilla ]]; then \
-    echo "Error: cannot find xqilla"
-    exit 1
+  echo "Error: cannot find xqilla"
+  exit 1
 fi
 
 if [[ ! -f $historical_file ]]; then \
@@ -45,13 +45,13 @@ new_count=$(wc -l < "$lint_results")
 echo "Historical count: $old_count, new count: $new_count"
 
 if [[ $new_count > $old_count ]]; then \
-    echo "FAILURE: lint issues increased from $old_count to $new_count"
-    diff -u "$hist_results" "$lint_results"
-    exit 2
+  echo "FAILURE: lint issues increased from $old_count to $new_count"
+  diff -u "$hist_results" "$lint_results"
+  exit 2
 fi
 
 if [[ $TRAVIS_PULL_REQUEST == false ]]; then \
-    # Okay, we either stayed the same or reduced our number.
-    # Write it out so we can check it next build!
-    cp "$lint_file" "$historical_file"
+  # Okay, we either stayed the same or reduced our number.
+  # Write it out so we can check it next build!
+  cp "$lint_file" "$historical_file"
 fi
