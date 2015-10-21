@@ -9,14 +9,7 @@
   <string name="title_help">說明</string>
   <string name="title_colors">顏色</string>
   <string name="title_color_picker">挑選顏色</string>
-  <string name="resolve_connect">連線</string>
-  <string name="resolve_entropy">收集用戶熵</string>
-  <string name="menu_insert">新增主機</string>
-  <string name="menu_delete">刪除主機</string>
-  <string name="menu_preferences">設定</string>
   <string name="help_intro">請在下列選擇一個主題以查看更多內容。</string>
-  <string name="help_about">關於 ConnectBot</string>
-  <string name="help_keyboard">鍵盤</string>
   <string name="pubkey_generate">產生</string>
   <string name="pubkey_delete">刪除金鑰</string>
   <string name="pubkey_gather_entropy">正在收集用戶熵</string>
@@ -63,7 +56,6 @@
   <string name="alert_sdcard_absent">沒有插入 SD 卡！</string>
   <string name="button_add">新增</string>
   <string name="button_change">變更</string>
-  <string name="button_generate">產生金鑰</string>
   <string name="button_resize">調整大小</string>
   <string name="alert_disconnect_msg">連線中斷</string>
   <string name="msg_copyright">版權所有 © 2007-2008 Kenny Root http://the-b.org/ , Jeffrey Sharkey http://jsharkey.org/</string>
@@ -151,9 +143,7 @@
   <string name="portforward_remote">遠端</string>
   <string name="portforward_dynamic">動態 (SOCKS)</string>
   <string name="portforward_pos">建立連接埠轉址</string>
-  <string name="portforward_done">成功建立連接埠轉址</string>
   <string name="portforward_problem">新增連接埠時發生問題，可能您正在使用 1024 以下的埠或是埠被佔用?</string>
-  <string name="hint_userhost">使用者名稱\@主機名稱</string>
   <string name="list_format_error">使用 %1$s 格式</string>
   <string name="format_username">使用者名稱</string>
   <string name="format_hostname">主機名稱</string>
@@ -206,7 +196,6 @@
   <string name="no">否</string>
   <string name="with_confirmation">已確認過</string>
   <string name="yes">是</string>
-  <string name="exceptions_submit_message">ConnectBot 在上次執行時出現異常。回報給 ConnectBot 開發者?</string>
   <string name="menu_colors_reset">重設</string>
   <string name="app_is_running">ConnectBot 執行中</string>
   <string name="color_red">紅</string>

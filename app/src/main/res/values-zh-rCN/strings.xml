@@ -11,14 +11,7 @@
   <string name="title_color_picker">选取一种颜色</string>
   <string name="title_settings">设置</string>
   <string name="title_pubkey_generate">生成</string>
-  <string name="resolve_connect">连接</string>
-  <string name="resolve_entropy">收集熵</string>
-  <string name="menu_insert">添加主机</string>
-  <string name="menu_delete">删除主机</string>
-  <string name="menu_preferences">设置</string>
   <string name="help_intro">请在下面主题中选择一个以查看更多内容</string>
-  <string name="help_about">关于ConnectBot</string>
-  <string name="help_keyboard">键盘</string>
   <string name="terms_and_conditions">条款与条件</string>
   <string name="keyboard_shortcuts">键盘快捷键</string>
   <string name="increase_font_size">增加字体大小</string>
@@ -70,7 +63,6 @@
   <string name="button_add">添加</string>
   <string name="button_cancel">取消</string>
   <string name="button_change">修改</string>
-  <string name="button_generate">生成密钥</string>
   <string name="button_resize">改变窗口大小</string>
   <string name="alert_disconnect_msg">连接中断</string>
   <string name="msg_copyright">版权所有 ©2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -158,9 +150,7 @@
   <string name="portforward_remote">远端</string>
   <string name="portforward_dynamic">动态套接字(SOCKS)</string>
   <string name="portforward_pos">创建端口转发</string>
-  <string name="portforward_done">创建端口转发成功</string>
   <string name="portforward_problem">创建端口转发失败，可能你选择的端口小于1024或该端口已被占用？</string>
-  <string name="hint_userhost">用户名\@主机名</string>
   <string name="list_format_error">使用格式 \"%1$s\"</string>
   <string name="format_username">用户名</string>
   <string name="format_hostname">主机名</string>
@@ -216,7 +206,6 @@
   <string name="no">不</string>
   <string name="with_confirmation">需要确认</string>
   <string name="yes">确定</string>
-  <string name="exceptions_submit_message">ConnectBot 上次运行时出现异常，是否提交报告至 ConnectBot 开发者？</string>
   <string name="menu_colors_reset">重置</string>
   <string name="app_is_running">ConnectBot 正在运行</string>
   <string name="color_red">红色</string>

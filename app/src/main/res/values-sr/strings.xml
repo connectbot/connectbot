@@ -9,14 +9,7 @@
   <string name="title_help">Помоћ</string>
   <string name="title_colors">Боје</string>
   <string name="title_color_picker">Изаберите боју</string>
-  <string name="resolve_connect">Повежи</string>
-  <string name="resolve_entropy">Сакупи ентропију</string>
-  <string name="menu_insert">Додај домаћина</string>
-  <string name="menu_delete">Обриши домаћина</string>
-  <string name="menu_preferences">Поставке</string>
   <string name="help_intro">Изаберите тему испод за више информација о поједином предмету.</string>
-  <string name="help_about">О Конектботу</string>
-  <string name="help_keyboard">Тастатура</string>
   <string name="pubkey_generate">Генериши</string>
   <string name="pubkey_delete">Обриши кључ</string>
   <string name="pubkey_gather_entropy">Сакупљам ентропију</string>
@@ -63,7 +56,6 @@
   <string name="alert_sdcard_absent">СД картица није уметнута!</string>
   <string name="button_add">Додај</string>
   <string name="button_change">Измени</string>
-  <string name="button_generate">Генериши кључ</string>
   <string name="button_resize">Промени величину</string>
   <string name="alert_disconnect_msg">Веза изгубљена</string>
   <string name="msg_copyright">Ауторско право © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -151,9 +143,7 @@
   <string name="portforward_remote">удаљени</string>
   <string name="portforward_dynamic">динамички (СОЦКС)</string>
   <string name="portforward_pos">Направи прослеђење порта</string>
-  <string name="portforward_done">Успешно направљено прослеђење порта</string>
   <string name="portforward_problem">Појавио се проблем при прављењу прослеђења порта. Можда користите портове испод 1024 или је порт већ у употреби?</string>
-  <string name="hint_userhost">korisnik\@domacin</string>
   <string name="list_format_error">Користи формат „%1$s“</string>
   <string name="format_username">korisnik</string>
   <string name="format_hostname">domacin</string>
@@ -206,7 +196,6 @@
   <string name="no">Не</string>
   <string name="with_confirmation">Тражи потврду</string>
   <string name="yes">Да</string>
-  <string name="exceptions_submit_message">"Чини се да је Конектбот имао проблем последњи пут кад је покренут.  Да пошаљем извештај о грешци програмерима?"</string>
   <string name="menu_colors_reset">Ресетуј</string>
   <string name="app_is_running">Конектбот је покренут</string>
   <string name="color_red">црвена</string>

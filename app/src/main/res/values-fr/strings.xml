@@ -9,14 +9,7 @@
   <string name="title_help">Aide</string>
   <string name="title_colors">Couleurs</string>
   <string name="title_color_picker">Choisissez une couleur</string>
-  <string name="resolve_connect">Connexion</string>
-  <string name="resolve_entropy">Générer de l\'entropie</string>
-  <string name="menu_insert">Ajouter un serveur</string>
-  <string name="menu_delete">Supprimer le serveur</string>
-  <string name="menu_preferences">Préférences</string>
   <string name="help_intro">Sélectionnez un sujet ci-dessous pour plus d\'informations.</string>
-  <string name="help_about">À propos de ConnectBot</string>
-  <string name="help_keyboard">Clavier</string>
   <string name="pubkey_generate">Générer</string>
   <string name="pubkey_delete">Supprimer la clé</string>
   <string name="pubkey_gather_entropy">Génération d\'entropie</string>
@@ -63,7 +56,6 @@
   <string name="alert_sdcard_absent">Pas de carte SD dans le lecteur !</string>
   <string name="button_add">Ajouter</string>
   <string name="button_change">Changer</string>
-  <string name="button_generate">Générer une clé</string>
   <string name="button_resize">Retailler</string>
   <string name="alert_disconnect_msg">Connexion perdue</string>
   <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -146,9 +138,7 @@
   <string name="portforward_remote">Distant</string>
   <string name="portforward_dynamic">Dynamique (SOCKS)</string>
   <string name="portforward_pos">Créer la redirection de port</string>
-  <string name="portforward_done">Redirection de port créée avec succès</string>
   <string name="portforward_problem">Problème de création de la redirection de port, peut-être utilisez-vous un port sous le 1024 ou un déjà utilisé ?</string>
-  <string name="hint_userhost">utilisateur\@serveur</string>
   <string name="list_format_error">Utilisez le format \"%1$s\"</string>
   <string name="format_username">utilisateur</string>
   <string name="format_hostname">nom d\'hôte</string>
@@ -200,7 +190,6 @@
   <string name="no">Non</string>
   <string name="with_confirmation">Après confirmation</string>
   <string name="yes">Oui</string>
-  <string name="exceptions_submit_message">Il semblerait que ConnectBot ait eu un problème lors de sa dernière utilisation. Voulez-vous envoyer un rapport d\'erreur aux développeurs de ConnectBot ?</string>
   <string name="menu_colors_reset">Réinitialiser</string>
   <string name="app_is_running">ConnectBot est en cours</string>
   <string name="color_red">rouge</string>

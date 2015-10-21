@@ -11,14 +11,7 @@
   <string name="title_color_picker">色の取得</string>
   <string name="title_settings">設定</string>
   <string name="title_pubkey_generate">生成</string>
-  <string name="resolve_connect">接続</string>
-  <string name="resolve_entropy">エントロピーの取得</string>
-  <string name="menu_insert">ホストを追加</string>
-  <string name="menu_delete">ホストを削除</string>
-  <string name="menu_preferences">設定</string>
   <string name="help_intro">特定の情報について知りたいときは、以下のトピックを選択してください。</string>
-  <string name="help_about">ConnectBotについて</string>
-  <string name="help_keyboard">キーボード</string>
   <string name="terms_and_conditions">利用規約</string>
   <string name="keyboard_shortcuts">キーボードショートカット</string>
   <string name="increase_font_size">フォントサイズを大きくする</string>
@@ -70,7 +63,6 @@
   <string name="button_add">追加</string>
   <string name="button_cancel">キャンセル</string>
   <string name="button_change">変更</string>
-  <string name="button_generate">鍵生成</string>
   <string name="button_resize">リサイズ</string>
   <string name="alert_disconnect_msg">接続が失われました．</string>
   <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -158,9 +150,7 @@
   <string name="portforward_remote">リモート</string>
   <string name="portforward_dynamic">動的 (SOCKS)</string>
   <string name="portforward_pos">ポート転送の作成</string>
-  <string name="portforward_done">ポート転送の作成に成功しました．</string>
   <string name="portforward_problem">ポート転送の作成ができません．おそらく1024ポート以下か既に利用されているポートを指定されています．</string>
-  <string name="hint_userhost">ユーザ\@ホスト名</string>
   <string name="list_format_error">%1$s 形式を使ってください</string>
   <string name="format_username">ユーザ名</string>
   <string name="format_hostname">ホスト名</string>
@@ -216,7 +206,6 @@
   <string name="no">いいえ</string>
   <string name="with_confirmation">確認が必要</string>
   <string name="yes">はい</string>
-  <string name="exceptions_submit_message">前回ConnectBot実行時に問題が発生したようです。ConnectBotの開発者にエラーレポートを送信しますか?</string>
   <string name="menu_colors_reset">リセット</string>
   <string name="app_is_running">ConnectBot起動中</string>
   <string name="color_red">赤</string>
