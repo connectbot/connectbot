@@ -21,38 +21,54 @@
 <RelativeLayout
 	android:id="@android:id/content"
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
-	android:padding="10dip">
+	android:minHeight="72dp"
+	style="@style/SelectableItem">
 
 	<ImageView
 		android:id="@android:id/icon"
-		android:layout_width="wrap_content"
-		android:layout_height="fill_parent"
-		android:layout_alignParentEnd="true"
-		android:layout_alignParentRight="true"
-		android:layout_centerVertical="true"
+		android:layout_width="40dp"
+		android:layout_height="40dp"
 		android:contentDescription="@string/image_description_key_is_locked"
-		android:src="@drawable/pubkey"/>
+		android:src="@drawable/pubkey"
+		style="@style/ListItemIcon"/>
 
-	<TextView
-		android:id="@android:id/text1"
+	<LinearLayout
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentStart="true"
-		android:layout_toLeftOf="@android:id/icon1"
-		android:bufferType="normal"
-		android:text="Key Example"
-		android:textAppearance="?android:attr/textAppearanceLarge"/>
+		android:layout_alignWithParentIfMissing="true"
+		android:layout_centerVertical="true"
+		android:layout_marginEnd="16dp"
+		android:layout_marginLeft="72dp"
+		android:layout_marginRight="16dp"
+		android:layout_marginStart="72dp"
+		android:layout_toRightOf="@android:id/icon"
+		android:layout_toEndOf="@android:id/icon"
+		android:orientation="vertical"
+		>
 
-	<TextView
-		android:id="@android:id/text2"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@android:id/text1"
-		android:text="DSA 1024-bit"
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		/>
+		<TextView
+			android:id="@android:id/text1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:ellipsize="end"
+			android:paddingTop="20dp"
+			android:singleLine="true"
+			android:textAppearance="@style/ListItemFirstLineText"
+			tools:text="Key Example"/>
+
+		<TextView
+			android:id="@android:id/text2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:paddingBottom="20dp"
+			android:textAppearance="@style/ListItemSecondLineText"
+			tools:text="DSA 1024-bit"/>
+
+	</LinearLayout>
 
 </RelativeLayout>
