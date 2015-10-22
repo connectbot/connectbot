@@ -204,6 +204,7 @@ public class HostEditorFragment extends Fragment {
 
 		mQuickConnectContainer =
 				(TextInputLayout) view.findViewById(R.id.quickconnect_field_container);
+		/* Request focus on creation because elements in this fragment do not autofocus. */
 		mQuickConnectContainer.requestFocus();
 
 		mQuickConnectField = (EditText) view.findViewById(R.id.quickconnect_field);
@@ -319,6 +320,7 @@ public class HostEditorFragment extends Fragment {
 
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
+				/* Clear focus on font size EditText so its text value can update. */
 				mFontSizeText.clearFocus();
 			}
 
