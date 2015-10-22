@@ -8,14 +8,7 @@
   <string name="title_help">Bantuan</string>
   <string name="title_colors">Warna</string>
   <string name="title_color_picker">Pilih warna</string>
-  <string name="resolve_connect">Hubungi</string>
-  <string name="resolve_entropy">Kumpulkan entropy</string>
-  <string name="menu_insert">Tambahkan host</string>
-  <string name="menu_delete">Hapus Host</string>
-  <string name="menu_preferences">Kesukaan</string>
   <string name="help_intro">Silahkan pilih sebuah topik dibawah untuk informasi lebih lanjut di suatu subjek tertentu.</string>
-  <string name="help_about">Mengenai ConnectBot</string>
-  <string name="help_keyboard">Papan Ketik</string>
   <string name="pubkey_generate">Buat</string>
   <string name="pubkey_delete">Tombol Hapus</string>
   <string name="pubkey_gather_entropy">Kumpulkan Entropy</string>
@@ -62,7 +55,6 @@
   <string name="alert_sdcard_absent">SD card belum dimasukan!</string>
   <string name="button_add">Tambahkan</string>
   <string name="button_change">Ubah</string>
-  <string name="button_generate">Buat Kunci</string>
   <string name="button_resize">Ubah ukuran</string>
   <string name="alert_disconnect_msg">Koneksi terputus</string>
   <string name="msg_copyright">Hak Cipta © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -136,9 +128,7 @@
   <string name="portforward_remote">Remote</string>
   <string name="portforward_dynamic">Dinamis (SOCKS)</string>
   <string name="portforward_pos">Buat penerusan port</string>
-  <string name="portforward_done">Berhasil membuat penerusan port</string>
   <string name="portforward_problem">Masalah dalam membuat penerusan port, mungkin Anda menggunakan nomor port di bawah 1024 atau nomor port telah digunakan?</string>
-  <string name="hint_userhost">pengguna\@namahost</string>
   <string name="list_format_error">Gunakan bentuk \"%1$s\"</string>
   <string name="format_username">pengguna</string>
   <string name="format_hostname">namahost</string>
@@ -189,7 +179,6 @@
   <string name="no">Tidak</string>
   <string name="with_confirmation">Dengan konfirmasi</string>
   <string name="yes">Ya</string>
-  <string name="exceptions_submit_message">Sepertinya ConnectBot mengalami masalah saat berjalan sebelumnya. Kirim laporan galat ke para pengembang ConnectBot?</string>
   <string name="menu_colors_reset">Atur ulang</string>
   <string name="app_is_running">ConnectBot sedang berjalan</string>
   <string name="color_red">merah</string>

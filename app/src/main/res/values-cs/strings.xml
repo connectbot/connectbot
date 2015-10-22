@@ -8,14 +8,7 @@
   <string name="title_host_editor">Upravit hostitele</string>
   <string name="title_help">Nápověda</string>
   <string name="title_colors">Barvy</string>
-  <string name="resolve_connect">Připojit</string>
-  <string name="resolve_entropy">Získat entropii</string>
-  <string name="menu_insert">Přidat hostitele</string>
-  <string name="menu_delete">Smazat hostitele</string>
-  <string name="menu_preferences">Nastavení</string>
   <string name="help_intro">Prosím, vyberte následující téma pro více informací na daný subjekt.</string>
-  <string name="help_about">O aplikaci ConnectBot</string>
-  <string name="help_keyboard">Klávesnice</string>
   <string name="pubkey_generate">Vygenerovat</string>
   <string name="pubkey_delete">Smazat klíč</string>
   <string name="pubkey_gather_entropy">Získávání entropie</string>
@@ -62,7 +55,6 @@
   <string name="alert_sdcard_absent">Není vložena SD karta!</string>
   <string name="button_add">Přidat</string>
   <string name="button_change">Změnit</string>
-  <string name="button_generate">Generovat klíč</string>
   <string name="button_resize">Změnit velikost</string>
   <string name="alert_disconnect_msg">Spojení ztraceno</string>
   <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -134,8 +126,6 @@
   <string name="portforward_remote">Vzdálený</string>
   <string name="portforward_dynamic">Dynamický (SOCKS)</string>
   <string name="portforward_pos">Vytvořit přesměrování portu</string>
-  <string name="portforward_done">Přesměrování portu úspěšně vytvořeno</string>
-  <string name="hint_userhost">user\@hostname</string>
   <string name="list_format_error">Použijte formát %1$s</string>
   <string name="format_username">uživatelské jméno</string>
   <string name="format_hostname">jméno hosta</string>
@@ -178,7 +168,6 @@
   <string name="no">Ne</string>
   <string name="with_confirmation">S potvrzením</string>
   <string name="yes">Ano</string>
-  <string name="exceptions_submit_message">Vypadá to že měl ConnectBot problém když naposledy běžel. Odeslat hlášení o chybě vývojářům ConnectBota?</string>
   <string name="menu_colors_reset">Obnovit</string>
   <string name="app_is_running">ConnectBot běží</string>
   <string name="color_red">červená</string>
