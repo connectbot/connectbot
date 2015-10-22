@@ -226,7 +226,6 @@
   <string name="image_description_right">Tecla cursor a la derecha</string>
   <string name="button_key_esc">Escape</string>
   <string name="button_key_ctrl">Ctrl</string>
-  <string name="button_key_tab">TAB (Tabulador)</string>
   <string name="button_key_home">Inicio</string>
   <string name="button_key_end">Finalizar</string>
   <string name="button_key_pgup">Re Pág</string>
