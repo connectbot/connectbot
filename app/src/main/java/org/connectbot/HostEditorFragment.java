@@ -113,6 +113,7 @@ public class HostEditorFragment extends Fragment {
 	private EditText mHostnameField;
 	private View mPortContainer;
 	private EditText mPortField;
+	private View mNicknameItem;
 	private EditText mNicknameField;
 	private View mColorItem;
 	private TextView mColorText;
@@ -258,6 +259,8 @@ public class HostEditorFragment extends Fragment {
 		mPortField = (EditText) view.findViewById(R.id.port_edit_text);
 		mPortField.setText(Integer.toString(mHost.getPort()));
 		mPortField.addTextChangedListener(new HostTextFieldWatcher(HostDatabase.FIELD_HOST_PORT));
+
+		mNicknameItem = view.findViewById(R.id.nickname_item);
 
 		setTransportType(mHost.getProtocol(), /* setDefaultPortInModel */ false);
 
@@ -568,16 +571,19 @@ public class HostEditorFragment extends Fragment {
 			mHostnameContainer.setVisibility(View.VISIBLE);
 			mPortContainer.setVisibility(View.VISIBLE);
 			mExpandCollapseButton.setVisibility(View.VISIBLE);
+			mNicknameItem.setVisibility(View.VISIBLE);
 		} else if (Telnet.getProtocolName().equals(protocol)) {
 			mUsernameContainer.setVisibility(View.GONE);
 			mHostnameContainer.setVisibility(View.VISIBLE);
 			mPortContainer.setVisibility(View.VISIBLE);
 			mExpandCollapseButton.setVisibility(View.VISIBLE);
+			mNicknameItem.setVisibility(View.VISIBLE);
 		} else {
 			// Local protocol has only one field, so no need to show the URI parts
 			// container.
 			setUriPartsContainerExpanded(false);
-			mExpandCollapseButton.setVisibility(View.INVISIBLE);
+			mExpandCollapseButton.setVisibility(View.GONE);
+			mNicknameItem.setVisibility(View.GONE);
 		}
 	}
 
