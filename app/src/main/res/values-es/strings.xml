@@ -11,14 +11,7 @@
   <string name="title_color_picker">Escoger un color</string>
   <string name="title_settings">Ajustes</string>
   <string name="title_pubkey_generate">Generar</string>
-  <string name="resolve_connect">Conectar</string>
-  <string name="resolve_entropy">Recolectar entropía</string>
-  <string name="menu_insert">Añadir equipo remoto</string>
-  <string name="menu_delete">Eliminar máquina</string>
-  <string name="menu_preferences">Configuración</string>
   <string name="help_intro">Por favor seleccione un tema a continuación para más información sobre una materia en particular.</string>
-  <string name="help_about">Acerca de ConnectBot</string>
-  <string name="help_keyboard">Teclado</string>
   <string name="terms_and_conditions">Términos y condiciones</string>
   <string name="keyboard_shortcuts">Atajos de teclado</string>
   <string name="increase_font_size">Aumentar el tamaño de letra</string>
@@ -70,7 +63,6 @@
   <string name="button_add">Añadir</string>
   <string name="button_cancel">Cancelar</string>
   <string name="button_change">Modificar</string>
-  <string name="button_generate">Generar clave</string>
   <string name="button_resize">Redimensionar</string>
   <string name="alert_disconnect_msg">Conexión perdida</string>
   <string name="msg_copyright">Todos los derechos reservados © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -158,9 +150,7 @@
   <string name="portforward_remote">Remoto</string>
   <string name="portforward_dynamic">Dinámicos (SOCKS)</string>
   <string name="portforward_pos">Crear reenvio de puerto</string>
-  <string name="portforward_done">Creacion satisfactoria del reenvio de puerto</string>
   <string name="portforward_problem">Problema al crear el puerto de reenvio, tal vez usted está usando puertos menores de 1024 o el puerto ya está siendo utilizado?</string>
-  <string name="hint_userhost">usuario\@equipo</string>
   <string name="list_format_error">Usar formato %1$s</string>
   <string name="format_username">Usuario</string>
   <string name="format_hostname">nombre del host</string>
@@ -216,7 +206,6 @@
   <string name="no">Denegar</string>
   <string name="with_confirmation">Con confirmación</string>
   <string name="yes">Sí</string>
-  <string name="exceptions_submit_message">Parece que ConnectBot tuvo un problema en su última ejecución. Enviar reporte de error a los desarrolladores de ConnectBot?</string>
   <string name="menu_colors_reset">Restablecer</string>
   <string name="app_is_running">ConnectBot está ejecutándose</string>
   <string name="color_red">rojo</string>

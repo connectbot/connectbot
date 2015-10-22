@@ -8,14 +8,7 @@
   <string name="title_host_editor">Изменить сервер</string>
   <string name="title_help">Помощь</string>
   <string name="title_colors">Настройка цветов</string>
-  <string name="resolve_connect">Подключиться</string>
-  <string name="resolve_entropy">Сбор случайных данных</string>
-  <string name="menu_insert">Добавить сервер</string>
-  <string name="menu_delete">Удалить сервер</string>
-  <string name="menu_preferences">Настройки</string>
   <string name="help_intro">Выберите то, о чём Вы хотите узнать</string>
-  <string name="help_about">О ConnectBot</string>
-  <string name="help_keyboard">Клавиатура</string>
   <string name="pubkey_generate">Генерировать</string>
   <string name="pubkey_delete">Удалить ключ</string>
   <string name="pubkey_gather_entropy">Сбор случайной информации</string>
@@ -62,7 +55,6 @@
   <string name="alert_sdcard_absent">SD карта не вставлена!</string>
   <string name="button_add">Добавить</string>
   <string name="button_change">Изменить</string>
-  <string name="button_generate">Генерировать ключ</string>
   <string name="button_resize">Изменить размер</string>
   <string name="alert_disconnect_msg">Соединение потеряно</string>
   <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -139,9 +131,7 @@
   <string name="portforward_remote">Удалённый</string>
   <string name="portforward_dynamic">Динамический (SOCKS)</string>
   <string name="portforward_pos">Создать перенаправление порта</string>
-  <string name="portforward_done">Перенаправление порта успешно завершено</string>
   <string name="portforward_problem">Не удалось создать перенаправление порта. Может быть вы используете порты меньше чем 1024 или пор уже используется?</string>
-  <string name="hint_userhost">пользователь\@имяхоста</string>
   <string name="list_format_error">Используйте формат %1$s</string>
   <string name="format_username">имя пользователя</string>
   <string name="format_hostname">имяхоста</string>
@@ -193,7 +183,6 @@
   <string name="no">Нет</string>
   <string name="with_confirmation">С подтверждением</string>
   <string name="yes">Да</string>
-  <string name="exceptions_submit_message">Возможно, при последнем запуске программы возникла проблема. Отправить разработчикам отчет об ошибке?</string>
   <string name="menu_colors_reset">Сбросить</string>
   <string name="app_is_running">ConnectBot запущен</string>
   <string name="color_red">красный</string>

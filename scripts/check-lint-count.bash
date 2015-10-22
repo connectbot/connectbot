@@ -32,7 +32,7 @@ lint_results="$tmp_dir/lint.txt"
 hist_results="$tmp_dir/hist.txt"
 
 run_query() {
-  local xqilla_script='string-join(//issue/location/(concat("file=", @file, " line=", @line, " column=", @column, " reason=", ../@summary)), "&#10;")'
+  local xqilla_script='string-join(//issue/location/(concat("file=", @file, " line=", @line, " column=", @column, " message=", ../@message)), "&#10;")'
   xqilla -i "$1" <(echo "$xqilla_script") | sed "s,$PWD/,,g" > "$2"
 }
 

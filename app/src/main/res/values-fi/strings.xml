@@ -8,14 +8,7 @@
   <string name="title_host_editor">Muokaa palvelinta</string>
   <string name="title_help">Ohje</string>
   <string name="title_colors">Värit</string>
-  <string name="resolve_connect">Yhdistä</string>
-  <string name="resolve_entropy">Satunnaisdatan keräys</string>
-  <string name="menu_insert">Lisää palvelin</string>
-  <string name="menu_delete">Poista palvelin</string>
-  <string name="menu_preferences">Asetukset</string>
   <string name="help_intro">Valitse alta aihe, josta haluat lisätietoja.</string>
-  <string name="help_about">Tietoja ConnectBotista</string>
-  <string name="help_keyboard">Näppäimistö</string>
   <string name="pubkey_generate">Luo</string>
   <string name="pubkey_delete">Poista avain</string>
   <string name="pubkey_gather_entropy">Kerätään satunnaisdataa</string>
@@ -62,7 +55,6 @@
   <string name="alert_sdcard_absent">Laitteessa ei ole muistikorttia!</string>
   <string name="button_add">Lisää</string>
   <string name="button_change">Muokkaa</string>
-  <string name="button_generate">Luo avain</string>
   <string name="button_resize">Muuta kokoa</string>
   <string name="alert_disconnect_msg">Yhteys katkesi</string>
   <string name="msg_copyright">Tekijänoikeudet © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -135,9 +127,7 @@
   <string name="portforward_remote">Etä</string>
   <string name="portforward_dynamic">Dynaaminen (SOCKS)</string>
   <string name="portforward_pos">Luo porttiohjaus</string>
-  <string name="portforward_done">Porttiohjaus luotu onnistuneesti</string>
   <string name="portforward_problem">Ongelma luotaessa porttiohjausta. Ehkä käytät porttia joka on alle 1024 tai portti on jo käytössä?</string>
-  <string name="hint_userhost">tunnus\@palvelin</string>
   <string name="list_format_error">Käytä muotoa %1$s</string>
   <string name="format_username">käyttäjätunnus</string>
   <string name="format_hostname">palvelin</string>
@@ -189,7 +179,6 @@
   <string name="no">Ei</string>
   <string name="with_confirmation">Kysy varmistus</string>
   <string name="yes">Kyllä</string>
-  <string name="exceptions_submit_message">ConnectBotilla vaikutti olevan ongelmia kun sitä käytettiin edellisen kerran. Lähetetäänkö virheraportti ohjelman kehittäjille?</string>
   <string name="menu_colors_reset">Palauta</string>
   <string name="app_is_running">ConnectBot on käynnissä</string>
   <string name="color_red">punainen</string>

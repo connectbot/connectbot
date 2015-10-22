@@ -8,14 +8,7 @@
   <string name="title_host_editor">Upraviť Hostiteľa</string>
   <string name="title_help">Nápoveda</string>
   <string name="title_colors">Farby</string>
-  <string name="resolve_connect">Pripojiť</string>
-  <string name="resolve_entropy">Získať entropiu</string>
-  <string name="menu_insert">Pridať hostiteľa</string>
-  <string name="menu_delete">Zmazať hostiteľa</string>
-  <string name="menu_preferences">Nastavenia</string>
   <string name="help_intro">Prosím, vyberte si tému pre viac informácií o danom subjekte.</string>
-  <string name="help_about">O programe ConnectBot</string>
-  <string name="help_keyboard">Klávesnica</string>
   <string name="pubkey_generate">Vygenerovať</string>
   <string name="pubkey_delete">Zmazať kľúč</string>
   <string name="pubkey_gather_entropy">Získavanie entropie</string>
@@ -62,7 +55,6 @@
   <string name="alert_sdcard_absent">Nie je vložená SD karta!</string>
   <string name="button_add">Pridať</string>
   <string name="button_change">Zmeniť</string>
-  <string name="button_generate">Vygenerovať kľúč</string>
   <string name="button_resize">Zmeniť veľkosť</string>
   <string name="alert_disconnect_msg">Spojenie stratené</string>
   <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -136,9 +128,7 @@
   <string name="portforward_remote">Vzdialený</string>
   <string name="portforward_dynamic">Dynamický (SOCKS)</string>
   <string name="portforward_pos">Vytvoriť presmerovanie portu</string>
-  <string name="portforward_done">Premerovanie portu úspešne vytvorené</string>
   <string name="portforward_problem">Problém s vytvorením presmerovania portu, možno používate port menší ako 1024 alebo je už obsadený?</string>
-  <string name="hint_userhost">používateľské_meno\@hostiteľ</string>
   <string name="list_format_error">Použite formát \"%1$s\"</string>
   <string name="format_username">užívateľské meno</string>
   <string name="format_hostname">meno hostiteľa</string>
@@ -190,7 +180,6 @@
   <string name="no">Nie</string>
   <string name="with_confirmation">S potvrdením</string>
   <string name="yes">Áno</string>
-  <string name="exceptions_submit_message">Ostatné spustenie ConnectBot asi skončilo chybou. Zaslať chýbovú správu vývojárom ConnectBot?</string>
   <string name="menu_colors_reset">Pôvodné</string>
   <string name="app_is_running">ConnectBot je spustený</string>
   <string name="color_red">červená</string>
