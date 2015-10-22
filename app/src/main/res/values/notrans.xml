@@ -21,13 +21,4 @@
 	<string name="app_name" translatable="false">ConnectBot</string>
 
 	<string name="copyright_info" translatable="false">ConnectBot is provided under the Apache License, Version 2.0 (the &#x201C;License&#x201D;).  Here are a few key points:\n\nYou may not use this program except in compliance with the License. You may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &#x201C;AS IS&#x201D; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</string>
-
-	<!-- "Up" button in virtual keyboard. -->
-	<string name="button_key_up">\u25B2</string>
-	<!-- "Down" button in virtual keyboard. -->
-	<string name="button_key_down">\u25BC</string>
-	<!-- "Left" button in virtual keyboard. -->
-	<string name="button_key_left">\u25C0</string>
-	<!-- "Right" button in virtual keyboard. -->
-	<string name="button_key_right">\u25B6</string>
 </resources>

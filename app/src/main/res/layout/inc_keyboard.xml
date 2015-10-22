@@ -15,8 +15,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<LinearLayout android:id="@+id/keyboard_group"
+<LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/keyboard_group"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:layout_alignParentBottom="true"
@@ -44,123 +45,128 @@
 				android:id="@+id/button_ctrl"
 				style="@style/KeyboardButton"
 				android:contentDescription="@string/image_description_toggle_control_character"
-				android:text="@string/button_key_ctrl"/>
+				android:text="@string/button_key_ctrl" />
 
 			<Button
 				android:id="@+id/button_esc"
 				style="@style/KeyboardButton"
 				android:contentDescription="@string/image_description_send_escape_character"
-				android:text="@string/button_key_esc"/>
+				android:text="@string/button_key_esc" />
 
-			<Button
+			<ImageView
 				android:id="@+id/button_tab"
 				style="@style/KeyboardButton"
+				android:padding="6dp"
 				android:contentDescription="@string/image_description_send_tab_character"
-				android:text="@string/button_key_tab"/>
+				android:src="@drawable/ic_keyboard_tab" />
 
-			<Button
+			<ImageView
 				android:id="@+id/button_up"
 				style="@style/KeyboardButton"
+				android:padding="4dp"
 				android:contentDescription="@string/image_description_up"
-				android:text="@string/button_key_up"/>
+				android:src="@drawable/ic_keyboard_arrow_up" />
 
-			<Button
+			<ImageView
 				android:id="@+id/button_down"
 				style="@style/KeyboardButton"
+				android:padding="4dp"
 				android:contentDescription="@string/image_description_down"
-				android:text="@string/button_key_down"/>
+				android:src="@drawable/ic_keyboard_arrow_down" />
 
-			<Button
+			<ImageView
 				android:id="@+id/button_left"
 				style="@style/KeyboardButton"
+				android:padding="4dp"
 				android:contentDescription="@string/image_description_left"
-				android:text="@string/button_key_left"/>
+				android:src="@drawable/ic_keyboard_arrow_left" />
 
-			<Button
+			<ImageView
 				android:id="@+id/button_right"
 				style="@style/KeyboardButton"
+				android:padding="4dp"
 				android:contentDescription="@string/image_description_right"
-				android:text="@string/button_key_right"/>
+				android:src="@drawable/ic_keyboard_arrow_right" />
 
 			<Button
 				android:id="@+id/button_home"
 				style="@style/KeyboardButton"
-				android:text="@string/button_key_home"/>
+				android:text="@string/button_key_home" />
 
 			<Button
 				android:id="@+id/button_end"
 				style="@style/KeyboardButton"
-				android:text="@string/button_key_end"/>
+				android:text="@string/button_key_end" />
 
 			<Button
 				android:id="@+id/button_pgup"
 				style="@style/KeyboardButton"
-				android:text="@string/button_key_pgup"/>
+				android:text="@string/button_key_pgup" />
 
 			<Button
 				android:id="@+id/button_pgdn"
 				style="@style/KeyboardButton"
-				android:text="@string/button_key_pgdn"/>
+				android:text="@string/button_key_pgdn" />
 
 			<Button
 				android:id="@+id/button_f1"
 				style="@style/KeyboardButton"
-				android:text="@string/button_key_f1"/>
+				android:text="@string/button_key_f1" />
 
 			<Button
 				android:id="@+id/button_f2"
 				style="@style/KeyboardButton"
-				android:text="@string/button_key_f2"/>
+				android:text="@string/button_key_f2" />
 
 			<Button
 				android:id="@+id/button_f3"
 				style="@style/KeyboardButton"
-				android:text="@string/button_key_f3"/>
+				android:text="@string/button_key_f3" />
 
 			<Button
 				android:id="@+id/button_f4"
 				style="@style/KeyboardButton"
-				android:text="@string/button_key_f4"/>
+				android:text="@string/button_key_f4" />
 
 			<Button
 				android:id="@+id/button_f5"
 				style="@style/KeyboardButton"
-				android:text="@string/button_key_f5"/>
+				android:text="@string/button_key_f5" />
 
 			<Button
 				android:id="@+id/button_f6"
 				style="@style/KeyboardButton"
-				android:text="@string/button_key_f6"/>
+				android:text="@string/button_key_f6" />
 
 			<Button
 				android:id="@+id/button_f7"
 				style="@style/KeyboardButton"
-				android:text="@string/button_key_f7"/>
+				android:text="@string/button_key_f7" />
 
 			<Button
 				android:id="@+id/button_f8"
 				style="@style/KeyboardButton"
-				android:text="@string/button_key_f8"/>
+				android:text="@string/button_key_f8" />
 
 			<Button
 				android:id="@+id/button_f9"
 				style="@style/KeyboardButton"
-				android:text="@string/button_key_f9"/>
+				android:text="@string/button_key_f9" />
 
 			<Button
 				android:id="@+id/button_f10"
 				style="@style/KeyboardButton"
-				android:text="@string/button_key_f10"/>
+				android:text="@string/button_key_f10" />
 
 			<Button
 				android:id="@+id/button_f11"
 				style="@style/KeyboardButton"
-				android:text="@string/button_key_f11"/>
+				android:text="@string/button_key_f11" />
 
 			<Button
 				android:id="@+id/button_f12"
 				style="@style/KeyboardButton"
-				android:text="@string/button_key_f12"/>
+				android:text="@string/button_key_f12" />
 		</LinearLayout>
 	</HorizontalScrollView>
 
@@ -169,5 +175,5 @@
 		style="@style/KeyboardKey"
 		android:background="@drawable/keyboard_keyboard_border"
 		android:contentDescription="@string/image_description_show_keyboard"
-		android:src="@drawable/ic_keyboard_white"/>
+		android:src="@drawable/ic_keyboard" />
 </LinearLayout>

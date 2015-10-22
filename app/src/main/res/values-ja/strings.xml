@@ -226,7 +226,6 @@
   <string name="image_description_right">右矢印</string>
   <string name="button_key_esc">Esc</string>
   <string name="button_key_ctrl">Ctrl</string>
-  <string name="button_key_tab">Tab</string>
   <string name="button_key_home">Home</string>
   <string name="button_key_end">End</string>
   <string name="button_key_pgup">PgUp</string>
