@@ -17,19 +17,6 @@
 
 package org.connectbot;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.connectbot.bean.HostBean;
-import org.connectbot.service.BridgeDisconnectedListener;
-import org.connectbot.service.PromptHelper;
-import org.connectbot.service.TerminalBridge;
-import org.connectbot.service.TerminalKeyListener;
-import org.connectbot.service.TerminalManager;
-import org.connectbot.util.PreferenceConstants;
-import org.connectbot.util.TerminalViewPager;
-
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -87,6 +74,20 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.connectbot.bean.HostBean;
+import org.connectbot.service.BridgeDisconnectedListener;
+import org.connectbot.service.PromptHelper;
+import org.connectbot.service.TerminalBridge;
+import org.connectbot.service.TerminalKeyListener;
+import org.connectbot.service.TerminalManager;
+import org.connectbot.util.PreferenceConstants;
+import org.connectbot.util.TerminalViewPager;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
 import de.mud.terminal.vt320;
 
 public class ConsoleActivity extends AppCompatActivity implements BridgeDisconnectedListener {
@@ -437,7 +438,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				if (keyboardGroup.getVisibility() == View.GONE || inActionBarMenu)
 					return;
 
-				if(keyboardAlwaysVisible == false) {
+				if (keyboardAlwaysVisible == false) {
 					keyboardGroup.startAnimation(keyboard_fade_out);
 					keyboardGroup.setVisibility(View.GONE);
 				}
@@ -449,7 +450,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	}
 
 	private void hideEmulatedKeys() {
-		if(keyboardAlwaysVisible == false) {
+		if (keyboardAlwaysVisible == false) {
 			if (keyboardGroupHider != null)
 				handler.removeCallbacks(keyboardGroupHider);
 			keyboardGroup.setVisibility(View.GONE);
@@ -579,7 +580,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		keyboardGroup = (LinearLayout) findViewById(R.id.keyboard_group);
 
 		keyboardAlwaysVisible = prefs.getBoolean(PreferenceConstants.KEY_ALWAYS_VISIVLE, false);
-		if(keyboardAlwaysVisible) {
+		if (keyboardAlwaysVisible) {
 			// equivalent to android:layout_above=keyboard_group
 			RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
 					ViewGroup.LayoutParams.MATCH_PARENT,
