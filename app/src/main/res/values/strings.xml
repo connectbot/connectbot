@@ -18,8 +18,7 @@
  */
 -->
 
-<resources xmlns:tools="http://schemas.android.com/tools"
-	xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:tools="http://schemas.android.com/tools">
 	<!-- Summary of what ConnectBot is; used as a short description in the Android running apps list -->
 	<string name="app_desc">"Simple, powerful, open-source SSH client."</string>
 
@@ -643,7 +642,7 @@
 	<string name="discard_host_button">Discard</string>
 	<!-- Text for button which does not discard changes and keeps editing. -->
 	<string name="discard_host_cancel_button">Keep editing</string>
-    <string name="pref_alwaysvisible_title">Keyboard always visible</string>
-    <string name="pref_alwaysvisible_summary">Always show the special keys</string>
 
+	<string name="pref_alwaysvisible_title">Keyboard always visible</string>
+	<string name="pref_alwaysvisible_summary">Always show the special keys</string>
 </resources>
