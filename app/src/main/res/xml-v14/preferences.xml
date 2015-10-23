@@ -114,7 +114,14 @@
 	<PreferenceCategory
 		android:title="@string/pref_keyboard_category">
 
-		<SwitchPreference
+        <SwitchPreference
+            android:key="alwaysvisible"
+            android:title="@string/pref_alwaysvisible_title"
+            android:summary="@string/pref_alwaysvisible_summary"
+            android:defaultValue="false"
+            />
+
+        <SwitchPreference
 			android:key="shiftfkeys"
 			android:title="@string/pref_shiftfkeys_title"
 			android:summary="@string/pref_shiftfkeys_summary"
