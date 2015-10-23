@@ -590,9 +590,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 			// Show virtual keyboard
 			keyboardGroup.setVisibility(View.VISIBLE);
-
-			// We don't need the show keyboard button
-			findViewById(R.id.button_keyboard).setVisibility(View.GONE);
 		}
 
 		mKeyboardButton = (ImageView) findViewById(R.id.button_keyboard);
