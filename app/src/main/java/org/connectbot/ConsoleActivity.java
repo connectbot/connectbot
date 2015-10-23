@@ -172,6 +172,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			adapter.notifyDataSetChanged();
 			final int requestedIndex = bound.getBridges().indexOf(requestedBridge);
 
+			if (requestedBridge != null)
+				requestedBridge.promptHelper.setHandler(promptHandler);
+
+
 			if (requestedIndex != -1) {
 				pager.post(new Runnable() {
 					@Override
