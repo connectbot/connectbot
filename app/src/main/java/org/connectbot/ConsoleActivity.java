@@ -31,7 +31,6 @@ import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.TerminalViewPager;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -857,7 +856,8 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				final TerminalView terminalView = adapter.getCurrentTerminalView();
 
 				final View resizeView = inflater.inflate(R.layout.dia_resize, null, false);
-				new AlertDialog.Builder(ConsoleActivity.this)
+				new android.support.v7.app.AlertDialog.Builder(
+								ConsoleActivity.this, R.style.AlertDialogTheme)
 						.setView(resizeView)
 						.setPositiveButton(R.string.button_resize, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {

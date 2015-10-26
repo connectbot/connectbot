@@ -28,7 +28,6 @@ import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 
-import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -295,7 +294,8 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			return;
 		}
 
-		new AlertDialog.Builder(HostListActivity.this)
+		new android.support.v7.app.AlertDialog.Builder(
+				HostListActivity.this, R.style.AlertDialogTheme)
 			.setMessage(getString(R.string.disconnect_all_message))
 			.setPositiveButton(R.string.disconnect_all_pos, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
@@ -454,7 +454,8 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {
 					// prompt user to make sure they really want this
-					new AlertDialog.Builder(HostListActivity.this)
+					new android.support.v7.app.AlertDialog.Builder(
+									HostListActivity.this, R.style.AlertDialogTheme)
 							.setMessage(getString(R.string.delete_message, host.getNickname()))
 							.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int which) {
