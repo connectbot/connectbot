@@ -60,8 +60,6 @@
   <string name="alert_wrong_password_msg">間違ったパスワードです．</string>
   <string name="alert_key_corrupted_msg">秘密鍵が壊れています!</string>
   <string name="alert_sdcard_absent">SD カードが挿入されていません．</string>
-  <string name="button_add">追加</string>
-  <string name="button_cancel">キャンセル</string>
   <string name="button_change">変更</string>
   <string name="button_resize">リサイズ</string>
   <string name="alert_disconnect_msg">接続が失われました．</string>
@@ -151,7 +149,6 @@
   <string name="portforward_dynamic">動的 (SOCKS)</string>
   <string name="portforward_pos">ポート転送の作成</string>
   <string name="portforward_problem">ポート転送の作成ができません．おそらく1024ポート以下か既に利用されているポートを指定されています．</string>
-  <string name="list_format_error">%1$s 形式を使ってください</string>
   <string name="format_username">ユーザ名</string>
   <string name="format_hostname">ホスト名</string>
   <string name="format_port">ポート</string>

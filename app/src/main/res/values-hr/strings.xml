@@ -53,7 +53,6 @@
   <string name="alert_wrong_password_msg">Kriva zaporka!</string>
   <string name="alert_key_corrupted_msg">Privatni ključ je oštećen!</string>
   <string name="alert_sdcard_absent">SD kartica nije umetnuta!</string>
-  <string name="button_add">Dodaj</string>
   <string name="button_change">Promijeni</string>
   <string name="button_resize">Promijeni veličinu</string>
   <string name="alert_disconnect_msg">Veza prekinuta</string>

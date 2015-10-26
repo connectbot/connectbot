@@ -53,7 +53,6 @@
   <string name="alert_wrong_password_msg">Kata sandi salah!</string>
   <string name="alert_key_corrupted_msg">Kunci pribadi nampaknya telah rusak!</string>
   <string name="alert_sdcard_absent">SD card belum dimasukan!</string>
-  <string name="button_add">Tambahkan</string>
   <string name="button_change">Ubah</string>
   <string name="button_resize">Ubah ukuran</string>
   <string name="alert_disconnect_msg">Koneksi terputus</string>
@@ -129,7 +128,6 @@
   <string name="portforward_dynamic">Dinamis (SOCKS)</string>
   <string name="portforward_pos">Buat penerusan port</string>
   <string name="portforward_problem">Masalah dalam membuat penerusan port, mungkin Anda menggunakan nomor port di bawah 1024 atau nomor port telah digunakan?</string>
-  <string name="list_format_error">Gunakan bentuk \"%1$s\"</string>
   <string name="format_username">pengguna</string>
   <string name="format_hostname">namahost</string>
   <string name="format_port">Port</string>

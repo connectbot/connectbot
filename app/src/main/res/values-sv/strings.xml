@@ -53,7 +53,6 @@
   <string name="alert_wrong_password_msg">Felaktigt lösenord!</string>
   <string name="alert_key_corrupted_msg">Privata nyckeln ser ut att vara korrupt!</string>
   <string name="alert_sdcard_absent">SD-kort ej isatt!</string>
-  <string name="button_add">Lägg till</string>
   <string name="button_change">Ändra</string>
   <string name="button_resize">Ändra storlek</string>
   <string name="alert_disconnect_msg">Anslutningen förlorad</string>
@@ -129,7 +128,6 @@
   <string name="portforward_dynamic">Dynamisk (SOCKS)</string>
   <string name="portforward_pos">Skapa vidarebefodring av port</string>
   <string name="portforward_problem">Lyckades inte att skapa en vidarebefodring av port, är den under 1024 eller används den kanske?</string>
-  <string name="list_format_error">Använd formatet %1$s</string>
   <string name="format_username">användarnamn</string>
   <string name="format_hostname">värdnamn</string>
   <string name="format_port">port</string>

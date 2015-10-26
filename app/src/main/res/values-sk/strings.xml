@@ -53,7 +53,6 @@
   <string name="alert_wrong_password_msg">Nesprávne heslo!</string>
   <string name="alert_key_corrupted_msg">Súkromný kľúč vyzerá poškodene!</string>
   <string name="alert_sdcard_absent">Nie je vložená SD karta!</string>
-  <string name="button_add">Pridať</string>
   <string name="button_change">Zmeniť</string>
   <string name="button_resize">Zmeniť veľkosť</string>
   <string name="alert_disconnect_msg">Spojenie stratené</string>
@@ -129,7 +128,6 @@
   <string name="portforward_dynamic">Dynamický (SOCKS)</string>
   <string name="portforward_pos">Vytvoriť presmerovanie portu</string>
   <string name="portforward_problem">Problém s vytvorením presmerovania portu, možno používate port menší ako 1024 alebo je už obsadený?</string>
-  <string name="list_format_error">Použite formát \"%1$s\"</string>
   <string name="format_username">užívateľské meno</string>
   <string name="format_hostname">meno hostiteľa</string>
   <string name="format_port">port</string>
