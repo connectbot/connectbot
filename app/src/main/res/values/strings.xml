@@ -219,7 +219,7 @@
 	<!-- Summary for the titlebar hide preference -->
 	<string name="pref_titlebarhide_summary">"Tap console to show title bar and access menu"</string>
 
-	<!-- Name for the special keys always visible preference -->
+	<!-- Preference title for special keys always visible preference -->
 	<string name="pref_alwaysvisible_title">Special keys always visible</string>
 
 	<!-- Name for the page up/down gesture preference -->
