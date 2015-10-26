@@ -53,7 +53,6 @@
   <string name="alert_wrong_password_msg">Väärä salasana!</string>
   <string name="alert_key_corrupted_msg">Yksityinen avain vaikuttaa korruptoituneelta.</string>
   <string name="alert_sdcard_absent">Laitteessa ei ole muistikorttia!</string>
-  <string name="button_add">Lisää</string>
   <string name="button_change">Muokkaa</string>
   <string name="button_resize">Muuta kokoa</string>
   <string name="alert_disconnect_msg">Yhteys katkesi</string>
@@ -128,7 +127,6 @@
   <string name="portforward_dynamic">Dynaaminen (SOCKS)</string>
   <string name="portforward_pos">Luo porttiohjaus</string>
   <string name="portforward_problem">Ongelma luotaessa porttiohjausta. Ehkä käytät porttia joka on alle 1024 tai portti on jo käytössä?</string>
-  <string name="list_format_error">Käytä muotoa %1$s</string>
   <string name="format_username">käyttäjätunnus</string>
   <string name="format_hostname">palvelin</string>
   <string name="format_port">portti</string>

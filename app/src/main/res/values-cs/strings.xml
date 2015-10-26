@@ -53,7 +53,6 @@
   <string name="alert_wrong_password_msg">Špatné heslo!</string>
   <string name="alert_key_corrupted_msg">Soukromý klíč vypadá poškozeně!</string>
   <string name="alert_sdcard_absent">Není vložena SD karta!</string>
-  <string name="button_add">Přidat</string>
   <string name="button_change">Změnit</string>
   <string name="button_resize">Změnit velikost</string>
   <string name="alert_disconnect_msg">Spojení ztraceno</string>
@@ -126,7 +125,6 @@
   <string name="portforward_remote">Vzdálený</string>
   <string name="portforward_dynamic">Dynamický (SOCKS)</string>
   <string name="portforward_pos">Vytvořit přesměrování portu</string>
-  <string name="list_format_error">Použijte formát %1$s</string>
   <string name="format_username">uživatelské jméno</string>
   <string name="format_hostname">jméno hosta</string>
   <string name="format_port">port</string>

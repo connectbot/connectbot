@@ -46,7 +46,6 @@
   <string name="alert_wrong_password_msg">¡Contrasinal incorrecto!</string>
   <string name="alert_key_corrupted_msg">¡A chave privada parece corrupta!</string>
   <string name="alert_sdcard_absent">¡A tarxeta SD non está inserida!</string>
-  <string name="button_add">Engadir</string>
   <string name="button_change">Modificar</string>
   <string name="button_resize">Redimensionar</string>
   <string name="alert_disconnect_msg">Conexión Perdida</string>
@@ -100,5 +99,4 @@
   <string name="console_menu_resize">Forzar tamaño</string>
   <string name="console_menu_urlscan">Escanear URLs</string>
   <string name="portforward_remote">Remoto</string>
-  <string name="list_format_error">Use the format %1$s</string>
 </resources>

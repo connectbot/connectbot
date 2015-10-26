@@ -34,7 +34,6 @@
   <string name="alert_passwords_do_not_match_msg">Паролите не съвпадат!</string>
   <string name="alert_wrong_password_msg">Грешна парола!</string>
   <string name="alert_sdcard_absent">SD картата не е поставена</string>
-  <string name="button_add">Добавяне</string>
   <string name="button_change">Промяна</string>
   <string name="button_resize">Промяна на размера на екрана</string>
   <string name="alert_disconnect_msg">Връзката изгубена</string>
@@ -45,6 +44,5 @@
   <string name="console_menu_copy">Копиране</string>
   <string name="console_menu_paste">Поставяне</string>
   <string name="console_menu_portforwards">Пренасочване на портове</string>
-  <string name="list_format_error">Use the format %1$s</string>
   <string name="list_host_disconnect">Прекъсване на връзката</string>
 </resources>

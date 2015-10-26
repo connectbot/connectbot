@@ -53,7 +53,6 @@
   <string name="alert_wrong_password_msg">Feil passord!</string>
   <string name="alert_key_corrupted_msg">Privat nøkkel ser ut til å være korrupt!</string>
   <string name="alert_sdcard_absent">SD-kortet er ikke satt inn!</string>
-  <string name="button_add">Legg til</string>
   <string name="button_change">Endre</string>
   <string name="button_resize">Endre størrelse</string>
   <string name="alert_disconnect_msg">Mistet tilkobling</string>
@@ -129,7 +128,6 @@
   <string name="portforward_dynamic">Dynamisk (SOCKS)</string>
   <string name="portforward_pos">Opprett portvideresending</string>
   <string name="portforward_problem">Mislyktes å opprette portvideresending. Bruker du porter under 1024, eller er denne porten allerede tatt?</string>
-  <string name="list_format_error">Use the format %1$s</string>
   <string name="format_username">brukernavn</string>
   <string name="format_hostname">vertsnavn</string>
   <string name="format_port">port</string>

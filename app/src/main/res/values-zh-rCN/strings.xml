@@ -60,8 +60,6 @@
   <string name="alert_wrong_password_msg">密码错误！</string>
   <string name="alert_key_corrupted_msg">私钥似乎已损坏！</string>
   <string name="alert_sdcard_absent">没有插入SD卡！</string>
-  <string name="button_add">添加</string>
-  <string name="button_cancel">取消</string>
   <string name="button_change">修改</string>
   <string name="button_resize">改变窗口大小</string>
   <string name="alert_disconnect_msg">连接中断</string>
@@ -151,7 +149,6 @@
   <string name="portforward_dynamic">动态套接字(SOCKS)</string>
   <string name="portforward_pos">创建端口转发</string>
   <string name="portforward_problem">创建端口转发失败，可能你选择的端口小于1024或该端口已被占用？</string>
-  <string name="list_format_error">使用格式 \"%1$s\"</string>
   <string name="format_username">用户名</string>
   <string name="format_hostname">主机名</string>
   <string name="format_port">端口</string>

@@ -28,7 +28,6 @@
   <string name="prompt_type">Tipe :</string>
   <string name="prompt_bits">Bits :</string>
   <string name="alert_wrong_password_msg">Marrit senhal</string>
-  <string name="button_add">Apondre</string>
   <string name="button_change">Cambiar</string>
   <string name="button_resize">Redimensionar</string>
   <string name="alert_disconnect_msg">Connexion perduda</string>
@@ -50,7 +49,6 @@
   <string name="button_no">Non</string>
   <string name="portforward_remote">Distant</string>
   <string name="portforward_dynamic">Dinamic (SOCKS)</string>
-  <string name="list_format_error">Use the format %1$s</string>
   <string name="format_username">nom d\'utilizaire</string>
   <string name="format_hostname">nom d\'òste</string>
   <string name="list_menu_sortname">Triar per nom</string>

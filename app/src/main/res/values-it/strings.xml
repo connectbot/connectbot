@@ -54,7 +54,6 @@
   <string name="alert_wrong_password_msg">Password errata!</string>
   <string name="alert_key_corrupted_msg">La chiave privata sembra corrotta!</string>
   <string name="alert_sdcard_absent">Scheda SD non trovata!</string>
-  <string name="button_add">Aggiungi</string>
   <string name="button_change">Modifica</string>
   <string name="button_resize">Ridimensiona</string>
   <string name="alert_disconnect_msg">Connessione persa</string>
@@ -131,7 +130,6 @@
   <string name="portforward_dynamic">Dinamica (SOCKS)</string>
   <string name="portforward_pos">Crea inoltro porta</string>
   <string name="portforward_problem">Problema configurando l\'inoltro della porta, forse si cerca di usare una porta più bassa di 1024 o la porta è già in uso?</string>
-  <string name="list_format_error">Usa il formato %1$s</string>
   <string name="format_username">nome utente</string>
   <string name="format_hostname">nome host</string>
   <string name="format_port">porta</string>

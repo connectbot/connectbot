@@ -54,7 +54,6 @@
   <string name="alert_wrong_password_msg">Yanlış parola!</string>
   <string name="alert_key_corrupted_msg">Kişisel anahtar bozuk görünüyor</string>
   <string name="alert_sdcard_absent">SD kart takılmamış!</string>
-  <string name="button_add">Ekle</string>
   <string name="button_change">Değiştir</string>
   <string name="button_resize">Yeniden boyutlandır</string>
   <string name="alert_disconnect_msg">Bağlantı Kesildi</string>
@@ -131,7 +130,6 @@
   <string name="portforward_dynamic">Dinamik (SOCKS)</string>
   <string name="portforward_pos">Port yönlendirmesi oluştur</string>
   <string name="portforward_problem">Port yönlendirmesi oluşturmada hata oldu, port 1024 altı yada meşgul bir port kullanmakdan kaynaklanabilir</string>
-  <string name="list_format_error">%1$s formatında kullanın</string>
   <string name="format_username">kullanıcı adı</string>
   <string name="format_hostname">sunucu adı</string>
   <string name="format_port">port</string>
