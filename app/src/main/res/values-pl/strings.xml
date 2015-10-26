@@ -54,7 +54,6 @@
   <string name="alert_wrong_password_msg">Nieprawidłowe hasło!</string>
   <string name="alert_key_corrupted_msg">Klucz prywatny wydaje się być uszkodzony!</string>
   <string name="alert_sdcard_absent">Brak karty SD</string>
-  <string name="button_add">Dodaj</string>
   <string name="button_change">Zmień</string>
   <string name="button_resize">Zmień rozmiar</string>
   <string name="alert_disconnect_msg">Połączenie utracone</string>
@@ -131,7 +130,6 @@
   <string name="portforward_dynamic">Dynamiczny (SOCKS)</string>
   <string name="portforward_pos">Utwórz przekierowanie portu</string>
   <string name="portforward_problem">Wystąpił problem podczas tworzenia przekierowania, być może użyłeś portu niższego niż 1024 lub port jest już używany?</string>
-  <string name="list_format_error">Proszę użyć formatu %1$s</string>
   <string name="format_username">Nazwa użytkownika</string>
   <string name="format_hostname">nazwa_hostu</string>
   <string name="format_port">port</string>

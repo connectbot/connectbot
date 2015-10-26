@@ -54,7 +54,6 @@
   <string name="alert_wrong_password_msg">La contrasenya no és correcta.</string>
   <string name="alert_key_corrupted_msg">Les claus privades semblen malmèses!</string>
   <string name="alert_sdcard_absent">La targeta SD no es troba present!</string>
-  <string name="button_add">Afegeix</string>
   <string name="button_change">Canvia</string>
   <string name="button_resize">Redimensiona</string>
   <string name="alert_disconnect_msg">Connexió perduda</string>
@@ -131,7 +130,6 @@
   <string name="portforward_dynamic">Dinàmic (SOCKS)</string>
   <string name="portforward_pos">Crea redireccionament de ports</string>
   <string name="portforward_problem">Problemes creant el redireccionament de ports, potser s\'usen ports per sota del 1024 o el port és en ús actualment?</string>
-  <string name="list_format_error">Usa el format %1$s</string>
   <string name="format_username">Usuari</string>
   <string name="format_hostname">servidor</string>
   <string name="format_port">port</string>

@@ -54,7 +54,6 @@
   <string name="alert_wrong_password_msg">ססמה שגויה!</string>
   <string name="alert_key_corrupted_msg">המפתח הפרטי נראה פגום!</string>
   <string name="alert_sdcard_absent">לא הוכנס כרטיס SD!</string>
-  <string name="button_add">הוספה</string>
   <string name="button_change">החלפה</string>
   <string name="button_resize">שינוי גודל</string>
   <string name="alert_disconnect_msg">החיבור אבד</string>
@@ -130,7 +129,6 @@
   <string name="portforward_dynamic">דינמי (SOCKS)</string>
   <string name="portforward_pos">יצירת הפניית פתחות</string>
   <string name="portforward_problem">אירעה שגיאה ביצירת הפניית פתחות, יתכן שניסית להשתמש בפתחות מתחת ל־1024 או שהפתחה כבר בשימוש?</string>
-  <string name="list_format_error">יש להשתמש בצורה „%1$s“</string>
   <string name="format_username">username</string>
   <string name="format_hostname">hostname</string>
   <string name="format_port">port</string>

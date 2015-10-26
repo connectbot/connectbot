@@ -45,7 +45,6 @@
   <string name="alert_wrong_password_msg">Погрешна лозинка!</string>
   <string name="alert_key_corrupted_msg">Приватниот клуч е корумпиран!</string>
   <string name="alert_sdcard_absent">СД картичката не е ставена!</string>
-  <string name="button_add">Додај</string>
   <string name="button_change">Промени</string>
   <string name="button_resize">Промени големина</string>
   <string name="alert_disconnect_msg">Врската е изгубена</string>

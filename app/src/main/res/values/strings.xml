@@ -184,10 +184,6 @@
 	<string name="alert_key_corrupted_msg">"Private key appears corrupt!"</string>
 	<string name="alert_sdcard_absent">"SD card is not inserted!"</string>
 
-	<!-- Add a new item (e.g., host or pubkey) to the list. -->
-	<string name="button_add">"Add"</string>
-	<!-- Cancel an action. -->
-	<string name="button_cancel">Cancel</string>
 	<!-- Change an existing item's (e.g., host or pubkey) details. -->
 	<string name="button_change">"Change"</string>
 	<!-- Button that resizes the screen to the user-specified dimensions. -->
@@ -420,9 +416,6 @@
 	<string name="portforward_pos">"Create port forward"</string>
 
 	<string name="portforward_problem">"Problem creating port forward, maybe you're using ports under 1024 or port is already used?"</string>
-
-	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
-	<string name="list_format_error">"Use the format \"%1$s\""</string>
 
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
 	<string name="format_username">"username"</string>

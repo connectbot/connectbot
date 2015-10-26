@@ -54,7 +54,6 @@
   <string name="alert_wrong_password_msg">Falsches Passwort!</string>
   <string name="alert_key_corrupted_msg">Geheimer Schlüssel scheint korrupt!</string>
   <string name="alert_sdcard_absent">SD-Karte nicht eingesteckt!</string>
-  <string name="button_add">Hinzufügen</string>
   <string name="button_change">Ändern</string>
   <string name="button_resize">Größe ändern</string>
   <string name="alert_disconnect_msg">Die Verbindung wurde getrennt.</string>
@@ -131,7 +130,6 @@
   <string name="portforward_dynamic">Dynamisch (SOCKS)</string>
   <string name="portforward_pos">Port-Weiterleitung anlegen</string>
   <string name="portforward_problem">Konnte Port-Weiterleitung nicht anlegen. Verwenden Sie Ports kleiner als 1024, oder wird der Port bereits verwendet?</string>
-  <string name="list_format_error">Benutze das Format %1$s</string>
   <string name="format_username">Benutzername</string>
   <string name="format_hostname">Hostname</string>
   <string name="format_port">Anschluss</string>

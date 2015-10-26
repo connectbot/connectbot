@@ -53,7 +53,6 @@
   <string name="alert_wrong_password_msg">Forkert adgangskode!</string>
   <string name="alert_key_corrupted_msg">Privat nøgle synes ødelagt!</string>
   <string name="alert_sdcard_absent">SD-kort er ikke sat i!</string>
-  <string name="button_add">Tilføj</string>
   <string name="button_change">Ændre</string>
   <string name="button_resize">Ændre størrelse</string>
   <string name="alert_disconnect_msg">Forbindelse tabt</string>
@@ -129,7 +128,6 @@
   <string name="portforward_dynamic">Dynamisk (SOCKS)</string>
   <string name="portforward_pos">Opret port-videresendelse</string>
   <string name="portforward_problem">Der opstod problemer ved oprettelsen af port-videresendelse. Måske bruger du en port lavere end 1025, eller en port som allerede er i brug.</string>
-  <string name="list_format_error">Anvend formatet %1$s</string>
   <string name="format_username">brugernavn</string>
   <string name="format_hostname">værtsnavn</string>
   <string name="format_port">port</string>
