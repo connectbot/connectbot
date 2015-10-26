@@ -234,7 +234,7 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 
 	private void showDiscardDialog() {
 		android.support.v7.app.AlertDialog.Builder builder =
-				new android.support.v7.app.AlertDialog.Builder(this);
+				new android.support.v7.app.AlertDialog.Builder(this, R.style.AlertDialogTheme);
 		builder.setMessage(R.string.discard_host_changes_message)
 				.setPositiveButton(R.string.discard_host_button, new DialogInterface.OnClickListener() {
 					@Override
