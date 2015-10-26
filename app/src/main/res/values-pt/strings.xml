@@ -53,7 +53,6 @@
   <string name="alert_wrong_password_msg">Palavra passe errada!</string>
   <string name="alert_key_corrupted_msg">Chave privada parece estar corrupta.</string>
   <string name="alert_sdcard_absent">Cartão SD não parece estar inserido!</string>
-  <string name="button_add">Adicionar</string>
   <string name="button_change">Alterar</string>
   <string name="button_resize">Redimensionar</string>
   <string name="alert_disconnect_msg">Ligação Perdida</string>
@@ -129,7 +128,6 @@
   <string name="portforward_dynamic">Dinamico (SOCKS)</string>
   <string name="portforward_pos">Criar redirecionamento de portas</string>
   <string name="portforward_problem">Problema ao criar redirecionamento de porta, talvez esteja a usar portas abaixo de 1024 ou a porta já esteja em uso?</string>
-  <string name="list_format_error">Use o formato %1$s</string>
   <string name="format_username">nome do utilizador</string>
   <string name="format_hostname">endereço</string>
   <string name="format_port">porto</string>

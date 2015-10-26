@@ -53,7 +53,6 @@
   <string name="alert_wrong_password_msg">Hibás jelszó!</string>
   <string name="alert_key_corrupted_msg">Sérült privát kulcs!</string>
   <string name="alert_sdcard_absent">Nincs SD kártya!</string>
-  <string name="button_add">Hozzáadás</string>
   <string name="button_change">Módosítás</string>
   <string name="button_resize">Átméretezés</string>
   <string name="alert_disconnect_msg">A kapcsolat megszakadt</string>
@@ -129,7 +128,6 @@
   <string name="portforward_dynamic">Dinamikus (SOCKS)</string>
   <string name="portforward_pos">Port átirányítás létrehozása</string>
   <string name="portforward_problem">Probléma a port átirányítás létrehozása során, 1024 alatti vagy már használatban lévő portot választott?</string>
-  <string name="list_format_error">A %1$s formátum használata</string>
   <string name="format_username">felhasználónév</string>
   <string name="format_hostname">gépnév</string>
   <string name="format_port">port</string>

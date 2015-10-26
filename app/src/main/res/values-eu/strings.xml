@@ -58,7 +58,6 @@
   <string name="alert_wrong_password_msg">Pasahitz okerra!</string>
   <string name="alert_key_corrupted_msg">Gako pribatua hondatuta dagoela dirudi!</string>
   <string name="alert_sdcard_absent">Ez da aurkitu SD txartelik!</string>
-  <string name="button_add">Gehitu</string>
   <string name="button_change">Aldatu</string>
   <string name="button_resize">Aldatu tamaina</string>
   <string name="alert_disconnect_msg">Konexioa galdu da</string>
@@ -141,7 +140,6 @@
   <string name="portforward_dynamic">Dinamikoa (SOCKS)</string>
   <string name="portforward_pos">Sortu ataka birbidalketa</string>
   <string name="portforward_problem">Arazoa ataka birbidalketa sortzean, behar bada erabilitako ataka 1024 baino txikiagoa da edo dagoeneko erabiltzen den ataka bat da?</string>
-  <string name="list_format_error">Erabili %1$s formatua</string>
   <string name="format_username">erabiltzaile-izena</string>
   <string name="format_hostname">ostalaria</string>
   <string name="format_port">ataka</string>

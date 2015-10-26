@@ -52,7 +52,6 @@
   <string name="alert_wrong_password_msg">Rangt lykilorð!</string>
   <string name="alert_key_corrupted_msg">Einka lykillinn lítur út fyrir að vera skemmdur!</string>
   <string name="alert_sdcard_absent">SD kort er ekki til staðar!</string>
-  <string name="button_add">Bæta við</string>
   <string name="button_change">Breyta</string>
   <string name="button_resize">Breyta stærð</string>
   <string name="alert_disconnect_msg">Tengingu tapað</string>

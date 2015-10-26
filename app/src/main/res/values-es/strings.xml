@@ -60,8 +60,6 @@
   <string name="alert_wrong_password_msg">¡Contraseña errónea!</string>
   <string name="alert_key_corrupted_msg">¡La clave privada parece corrupta!</string>
   <string name="alert_sdcard_absent">¡Tarjeta SD no insertada!</string>
-  <string name="button_add">Añadir</string>
-  <string name="button_cancel">Cancelar</string>
   <string name="button_change">Modificar</string>
   <string name="button_resize">Redimensionar</string>
   <string name="alert_disconnect_msg">Conexión perdida</string>
@@ -151,7 +149,6 @@
   <string name="portforward_dynamic">Dinámicos (SOCKS)</string>
   <string name="portforward_pos">Crear reenvio de puerto</string>
   <string name="portforward_problem">Problema al crear el puerto de reenvio, tal vez usted está usando puertos menores de 1024 o el puerto ya está siendo utilizado?</string>
-  <string name="list_format_error">Usar formato %1$s</string>
   <string name="format_username">Usuario</string>
   <string name="format_hostname">nombre del host</string>
   <string name="format_port">puerto</string>

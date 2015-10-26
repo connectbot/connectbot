@@ -30,5 +30,4 @@
   <string name="prompt_password">Wagwoord:</string>
   <string name="prompt_type">Tipe:</string>
   <string name="prompt_password_can_be_blank">Nota: wagwoord kan leeg gelos word</string>
-  <string name="list_format_error">Use the format %1$s</string>
 </resources>

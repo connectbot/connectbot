@@ -54,7 +54,6 @@
   <string name="alert_wrong_password_msg">Погрешна лозинка!</string>
   <string name="alert_key_corrupted_msg">Изгледа да је приватни кључ покварен!</string>
   <string name="alert_sdcard_absent">СД картица није уметнута!</string>
-  <string name="button_add">Додај</string>
   <string name="button_change">Измени</string>
   <string name="button_resize">Промени величину</string>
   <string name="alert_disconnect_msg">Веза изгубљена</string>
@@ -144,7 +143,6 @@
   <string name="portforward_dynamic">динамички (СОЦКС)</string>
   <string name="portforward_pos">Направи прослеђење порта</string>
   <string name="portforward_problem">Појавио се проблем при прављењу прослеђења порта. Можда користите портове испод 1024 или је порт већ у употреби?</string>
-  <string name="list_format_error">Користи формат „%1$s“</string>
   <string name="format_username">korisnik</string>
   <string name="format_hostname">domacin</string>
   <string name="format_port">port</string>
