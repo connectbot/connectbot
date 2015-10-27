@@ -26,7 +26,6 @@ import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.HostDatabase;
 
-import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,7 +35,6 @@ import android.content.res.Resources;
 import android.database.SQLException;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.VisibleForTesting;
@@ -167,7 +165,8 @@ public class PortForwardListActivity extends AppCompatListActivity {
 					}
 				});
 
-				new AlertDialog.Builder(PortForwardListActivity.this)
+				new android.support.v7.app.AlertDialog.Builder(
+								PortForwardListActivity.this, R.style.AlertDialogTheme)
 						.setView(portForwardView)
 						.setPositiveButton(R.string.portforward_pos, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
@@ -312,7 +311,8 @@ public class PortForwardListActivity extends AppCompatListActivity {
 						}
 					});
 
-					new AlertDialog.Builder(PortForwardListActivity.this)
+					new android.support.v7.app.AlertDialog.Builder(
+									PortForwardListActivity.this, R.style.AlertDialogTheme)
 							.setView(editTunnelView)
 							.setPositiveButton(R.string.button_change, new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int which) {
@@ -368,7 +368,8 @@ public class PortForwardListActivity extends AppCompatListActivity {
 			delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {
 					// prompt user to make sure they really want this
-					new AlertDialog.Builder(PortForwardListActivity.this)
+					new android.support.v7.app.AlertDialog.Builder(
+									PortForwardListActivity.this, R.style.AlertDialogTheme)
 							.setMessage(getString(R.string.delete_message, portForward.getNickname()))
 							.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int which) {

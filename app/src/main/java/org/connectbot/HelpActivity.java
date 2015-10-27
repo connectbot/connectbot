@@ -17,7 +17,6 @@
 
 package org.connectbot;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -53,7 +52,8 @@ public class HelpActivity extends AppCompatActivity {
 			public void onClick(View v) {
 				final View shortcuts = inflater.inflate(R.layout.dia_keyboard_shortcuts,
 						null, false);
-				new AlertDialog.Builder(HelpActivity.this)
+				new android.support.v7.app.AlertDialog.Builder(
+								HelpActivity.this, R.style.AlertDialogTheme)
 						.setView(shortcuts)
 						.setTitle(R.string.keyboard_shortcuts)
 						.show();
