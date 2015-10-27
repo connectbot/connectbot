@@ -24,6 +24,10 @@
 		<item name="colorAccent">@color/accent</item>
 	</style>
 
+	<style name="AlertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+		<item name="colorAccent">@color/accent</item>
+	</style>
+
 	<style name="KeyboardKey">
 		<item name="android:layout_width">45dip</item>
 		<item name="android:layout_height">30dip</item>
@@ -100,5 +104,7 @@
 	<style name="SwitchCompatTheme" parent="Theme.AppCompat">
 		<item name="colorAccent">@color/accent</item>
 	</style>
+
+
 
 </resources>
