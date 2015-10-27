@@ -41,7 +41,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/icon"
+				android:src="@drawable/ic_laptop"
 				android:contentDescription="@string/protocol_spinner_label"
 				style="@style/ListItemIcon"
 				/>
@@ -178,6 +178,14 @@
 			android:layout_height="wrap_content"
 			>
 
+			<ImageView
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:src="@drawable/ic_person"
+				android:contentDescription="@string/hostpref_color_title"
+				style="@style/ListItemIcon"
+				/>
+
 			<android.support.design.widget.TextInputLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -209,7 +217,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/icon"
+				android:src="@drawable/ic_palette"
 				android:contentDescription="@string/hostpref_color_title"
 				style="@style/ListItemIcon"
 				/>
@@ -241,7 +249,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/icon"
+				android:src="@drawable/ic_format_size"
 				android:contentDescription="@string/hostpref_fontsize_title"
 				style="@style/ListItemIcon"
 				/>
@@ -297,7 +305,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/icon"
+				android:src="@drawable/ic_vpn_key"
 				android:contentDescription="@string/hostpref_pubkeyid_title"
 				style="@style/ListItemIcon"
 				/>
@@ -330,7 +338,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/icon"
+				android:src="@drawable/ic_keyboard"
 				android:contentDescription="@string/hostpref_delkey_title"
 				style="@style/ListItemIcon"
 				/>
@@ -363,7 +371,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/icon"
+				android:src="@drawable/ic_code"
 				android:contentDescription="@string/hostpref_encoding_title"
 				style="@style/ListItemIcon"
 				/>
@@ -402,7 +410,7 @@
 				<ImageView
 					android:layout_width="24dp"
 					android:layout_height="24dp"
-					android:src="@drawable/icon"
+					android:src="@drawable/ic_vpn_lock"
 					android:contentDescription="@string/hostpref_authagent_title"
 					style="@style/ListItemIcon"
 					/>
@@ -470,7 +478,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/icon"
+				android:src="@drawable/ic_zip"
 				android:contentDescription="@string/hostpref_compression_title"
 				style="@style/ListItemIcon"
 				/>
@@ -515,7 +523,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/icon"
+				android:src="@drawable/ic_laptop"
 				android:contentDescription="@string/hostpref_wantsession_title"
 				style="@style/ListItemIcon"
 				/>
@@ -560,7 +568,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/icon"
+				android:src="@drawable/ic_sync"
 				android:contentDescription="@string/hostpref_stayconnected_title"
 				style="@style/ListItemIcon"
 				/>
@@ -605,7 +613,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/icon"
+				android:src="@drawable/ic_sync_disabled"
 				android:contentDescription="@string/hostpref_quickdisconnect_title"
 				style="@style/ListItemIcon"
 				/>
@@ -650,7 +658,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/icon"
+				android:src="@drawable/ic_android"
 				android:contentDescription="@string/hostpref_postlogin_title"
 				style="@style/ListItemIcon"
 				/>
