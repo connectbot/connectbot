@@ -13,9 +13,27 @@
   <string name="title_pubkey_generate">生成</string>
   <string name="help_intro">特定の情報について知りたいときは、以下のトピックを選択してください。</string>
   <string name="terms_and_conditions">利用規約</string>
+  <string name="hints">ヒント</string>
+  <string name="host_shortcuts_header">ホスト ショートカット</string>
+  <string name="host_shortcuts_content">Androidのデスクトップ上で長押しすると、頻繁に使用するSSHホストへ直接ショートカットを作成します。</string>
+  <string name="scroll_hints_header">後方にスクロール/前方にスクロール</string>
+  <string name="scroll_hints_content">画面の右側を指でスワイプすることで、ローカル端末のバッファの履歴を後方および前方にスクロールすることができます。</string>
+  <string name="scrolling_back">後方にスクロール中</string>
+  <string name="scrolling_forward">前方にスクロール中</string>
+  <string name="page_updn_header">ページアップ/ページダウン</string>
+  <string name="page_updn_content">注: これは、設定で有効にする必要があります。\n\n画面の左側の三分の一で上下に指をスワイプすると、リモートホストへページアップ、ページダウンキーを送信します。irssiやtinyfugueなど、多くのプログラムは、これを履歴のスクロールバックにマップします。</string>
+  <string name="page_up">ページアップ</string>
+  <string name="page_down">ページダウン</string>
+  <string name="switching_hosts_header">ホストの切り替え中</string>
+  <string name="switching_hosts_content">画面の片側から反対側に指をスワイプすると、現在接続されたホストの間で切り替わります。</string>
+  <string name="next_host">次のホスト</string>
+  <string name="prev_host">前のホスト</string>
   <string name="keyboard_shortcuts">キーボードショートカット</string>
   <string name="increase_font_size">フォントサイズを大きくする</string>
+  <string name="increase_font_shortcut">Ctrl と +</string>
   <string name="decrease_font_size">フォントサイズを小さくする</string>
+  <string name="decrease_font_shortcut">Ctrl と -</string>
+  <string name="paste_shortcut">Ctrl-Shift-V</string>
   <string name="pubkey_generate">生成</string>
   <string name="pubkey_delete">鍵を削除</string>
   <string name="pubkey_gather_entropy">エントロピー収集中</string>
@@ -74,6 +92,8 @@
   <string name="pref_rotation_summary">キーボードのポップイン/アウト時の向きの変更</string>
   <string name="pref_titlebarhide_title">タイトルバーを自動的に隠す</string>
   <string name="pref_titlebarhide_summary">タイトルバーとアクセスメニューを表示するにはコンソールをタップ</string>
+  <string name="pref_pg_updn_gesture_title">ページアップ/ページダウン ジェスチャ</string>
+  <string name="pref_pg_updn_gesture_summary">画面の左の三分の一をスワイプすると、端末にページアップ/ダウンを送信します</string>
   <string name="pref_fullscreen_title">全画面</string>
   <string name="pref_fullscreen_summary">ステータスバーを隠蔽しコンソールとして利用</string>
   <string name="pref_keyboard_category">キーボード</string>
@@ -99,6 +119,7 @@
   <string name="pref_wifilock_title">Wi-Fiをスリープしない</string>
   <string name="pref_wifilock_summary">セッションが有効な間Wi-FiがOFFになるのを防ぎます</string>
   <string name="pref_bumpyarrows_title">矢印で振動</string>
+  <string name="pref_bumpyarrows_summary">矢印キーを送信するときに振動します。タイムラグのある接続時に便利です</string>
   <string name="pref_bell_category">端末音設定</string>
   <string name="pref_bell_title">ベル音</string>
   <string name="pref_bell_volume_title">ボリューム設定</string>
@@ -221,6 +242,7 @@
   <string name="image_description_down">下矢印</string>
   <string name="image_description_left">左矢印</string>
   <string name="image_description_right">右矢印</string>
+  <string name="image_description_volume">音量</string>
   <string name="button_key_esc">Esc</string>
   <string name="button_key_ctrl">Ctrl</string>
   <string name="button_key_home">Home</string>
@@ -239,4 +261,14 @@
   <string name="button_key_f10">F10</string>
   <string name="button_key_f11">F11</string>
   <string name="button_key_f12">F12</string>
+  <string name="protocol_spinner_label">プロトコル</string>
+  <string name="expand">展開</string>
+  <string name="hostpref_authagent_with_confirmation">確認が必要</string>
+  <string name="hostpref_add_host">ホストを追加</string>
+  <string name="hostpref_edit_host">ホストを保存</string>
+  <string name="pubkey_add_new">新しい公開鍵を追加</string>
+  <string name="pubkey_import_existing">既存の公開鍵をインポート</string>
+  <string name="discard_host_changes_message">ホストURIが正しくありません。変更を破棄しますか?</string>
+  <string name="discard_host_button">破棄</string>
+  <string name="discard_host_cancel_button">編集を続ける</string>
 </resources>
