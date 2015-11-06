@@ -49,6 +49,7 @@ public class PreferenceConstants {
 	public static final String PG_UPDN_GESTURE = "pgupdngesture";
 
 	public static final String KEYMODE = "keymode";
+	public static final String KEY_ALWAYS_VISIVLE = "alwaysvisible";
 
 	public static final String KEYMODE_RIGHT = "Use right-side keys";
 	public static final String KEYMODE_LEFT = "Use left-side keys";

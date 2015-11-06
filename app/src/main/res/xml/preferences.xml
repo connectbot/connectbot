@@ -115,6 +115,12 @@
 		android:title="@string/pref_keyboard_category">
 
 		<org.connectbot.util.SwitchCompatPreference
+			android:key="alwaysvisible"
+			android:title="@string/pref_alwaysvisible_title"
+			android:defaultValue="false"
+			/>
+
+		<org.connectbot.util.SwitchCompatPreference
 			android:key="shiftfkeys"
 			android:title="@string/pref_shiftfkeys_title"
 			android:summary="@string/pref_shiftfkeys_summary"

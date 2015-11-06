@@ -145,6 +145,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	@Nullable private ActionBar actionBar;
 	private boolean inActionBarMenu = false;
 	private boolean titleBarHide;
+	private boolean keyboardAlwaysVisible = false;
 
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
@@ -435,8 +436,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				if (keyboardGroup.getVisibility() == View.GONE || inActionBarMenu)
 					return;
 
-				keyboardGroup.startAnimation(keyboard_fade_out);
-				keyboardGroup.setVisibility(View.GONE);
+				if (keyboardAlwaysVisible == false) {
+					keyboardGroup.startAnimation(keyboard_fade_out);
+					keyboardGroup.setVisibility(View.GONE);
+				}
 				hideActionBarIfRequested();
 				keyboardGroupHider = null;
 			}
@@ -445,9 +448,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	}
 
 	private void hideEmulatedKeys() {
-		if (keyboardGroupHider != null)
-			handler.removeCallbacks(keyboardGroupHider);
-		keyboardGroup.setVisibility(View.GONE);
+		if (keyboardAlwaysVisible == false) {
+			if (keyboardGroupHider != null)
+				handler.removeCallbacks(keyboardGroupHider);
+			keyboardGroup.setVisibility(View.GONE);
+		}
 		hideActionBarIfRequested();
 	}
 
@@ -503,7 +508,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 
 		pager = (TerminalViewPager) findViewById(R.id.console_flip);
-
 		pager.addOnPageChangeListener(
 				new TerminalViewPager.SimpleOnPageChangeListener() {
 					@Override
@@ -572,6 +576,19 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 		keyboardGroup = (LinearLayout) findViewById(R.id.keyboard_group);
+
+		keyboardAlwaysVisible = prefs.getBoolean(PreferenceConstants.KEY_ALWAYS_VISIVLE, false);
+		if (keyboardAlwaysVisible) {
+			// equivalent to android:layout_above=keyboard_group
+			RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+					ViewGroup.LayoutParams.MATCH_PARENT,
+					ViewGroup.LayoutParams.MATCH_PARENT);
+			layoutParams.addRule(RelativeLayout.ABOVE, R.id.keyboard_group);
+			pager.setLayoutParams(layoutParams);
+
+			// Show virtual keyboard
+			keyboardGroup.setVisibility(View.VISIBLE);
+		}
 
 		mKeyboardButton = (ImageView) findViewById(R.id.button_keyboard);
 		mKeyboardButton.setOnClickListener(new OnClickListener() {

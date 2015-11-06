@@ -219,6 +219,9 @@
 	<!-- Summary for the titlebar hide preference -->
 	<string name="pref_titlebarhide_summary">"Tap console to show title bar and access menu"</string>
 
+	<!-- Title for special keys always visible preference -->
+	<string name="pref_alwaysvisible_title">Special keys always visible</string>
+
 	<!-- Name for the page up/down gesture preference -->
 	<string name="pref_pg_updn_gesture_title">"Page up/down gesture"</string>
 	<!-- Summary for the full screen preference -->
@@ -636,5 +639,4 @@
 	<string name="discard_host_button">Discard</string>
 	<!-- Text for button which does not discard changes and keeps editing. -->
 	<string name="discard_host_cancel_button">Keep editing</string>
-
 </resources>

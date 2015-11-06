@@ -78,6 +78,7 @@
   <string name="pref_rotation_summary">Comment changer l\'orientation de l\'écran suivant si le clavier est déplié</string>
   <string name="pref_titlebarhide_title">Masquer automatiquement la barre de titre</string>
   <string name="pref_titlebarhide_summary">Appuyez sur console pour montrer la barre de titre et accèder au menu</string>
+  <string name="pref_alwaysvisible_title">Toujours afficher les touches spéciales</string>
   <string name="pref_fullscreen_title">Plein écran</string>
   <string name="pref_fullscreen_summary">Cacher la barre de notifications lorsque la console est active</string>
   <string name="pref_keyboard_category">Clavier</string>
