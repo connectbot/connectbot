@@ -54,6 +54,7 @@
 		android:layout_alignParentRight="true"
 		android:layout_margin="16dp"
 		android:src="@drawable/ic_add"
+		android:tint="@android:color/white"
 		app:backgroundTint="@color/accent"
 		app:rippleColor="@color/dark_accent" />
 
