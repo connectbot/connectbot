@@ -8,16 +8,8 @@
   <string name="title_host_editor">Redigera värddator</string>
   <string name="title_help">Hjälp</string>
   <string name="title_colors">Färger</string>
-  <string name="resolve_connect">Anslut</string>
-  <string name="resolve_entropy">Samla in entropi</string>
-  <string name="menu_insert">Lägg till värd</string>
-  <string name="menu_delete">Ta bort värd</string>
-  <string name="menu_preferences">Inställningar</string>
   <string name="help_intro">Var god välj ett ämne nedan som du skulle vilja ha mer information om.</string>
-  <string name="help_about">Om ConnectBot</string>
-  <string name="help_keyboard">Tangentbord</string>
   <string name="pubkey_generate">Generera</string>
-  <string name="pubkey_import">Importera</string>
   <string name="pubkey_delete">Ta bort nyckel</string>
   <string name="pubkey_gather_entropy">Samlar in entropi</string>
   <string name="pubkey_touch_prompt">Rör vid rutan för att samla in slumpdata: %1$d%% klart</string>
@@ -61,9 +53,7 @@
   <string name="alert_wrong_password_msg">Felaktigt lösenord!</string>
   <string name="alert_key_corrupted_msg">Privata nyckeln ser ut att vara korrupt!</string>
   <string name="alert_sdcard_absent">SD-kort ej isatt!</string>
-  <string name="button_add">Lägg till</string>
   <string name="button_change">Ändra</string>
-  <string name="button_generate">Generera nyckel</string>
   <string name="button_resize">Ändra storlek</string>
   <string name="alert_disconnect_msg">Anslutningen förlorad</string>
   <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -90,7 +80,6 @@
   <string name="pref_wifilock_title">Håll trådlöst nätverk aktivt</string>
   <string name="pref_wifilock_summary">Hindra att trådlöst nätverk slås av under en aktiv session</string>
   <string name="pref_bumpyarrows_title">Aktiva piltangenter</string>
-  <string name="pref_bumpyarrows_summary">Vibrera när piltangenter sänds från pekdon; bra för långsamma anslutningar</string>
   <string name="pref_bell_category">Terminal-ljud</string>
   <string name="pref_bell_title">Aktivt</string>
   <string name="pref_bell_volume_title">Ljudvolym</string>
@@ -138,10 +127,7 @@
   <string name="portforward_remote">Fjärr</string>
   <string name="portforward_dynamic">Dynamisk (SOCKS)</string>
   <string name="portforward_pos">Skapa vidarebefodring av port</string>
-  <string name="portforward_done">Vidarebefodring av port skapad.</string>
   <string name="portforward_problem">Lyckades inte att skapa en vidarebefodring av port, är den under 1024 eller används den kanske?</string>
-  <string name="hint_userhost">användarnamn\@värdnamn</string>
-  <string name="list_format_error">Använd formatet %1$s</string>
   <string name="format_username">användarnamn</string>
   <string name="format_hostname">värdnamn</string>
   <string name="format_port">port</string>
@@ -192,7 +178,6 @@
   <string name="no">Nej</string>
   <string name="with_confirmation">Med bekräftelse</string>
   <string name="yes">Ja</string>
-  <string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran. Submit error report to ConnectBot developers?</string>
   <string name="menu_colors_reset">Återställ</string>
   <string name="app_is_running">ConnectBot är igång</string>
   <string name="color_red">röd</string>

@@ -9,16 +9,8 @@
   <string name="title_help">עזרה</string>
   <string name="title_colors">צבעים</string>
   <string name="title_color_picker">בחירת צבע</string>
-  <string name="resolve_connect">התחברות</string>
-  <string name="resolve_entropy">נאסף גיבוב</string>
-  <string name="menu_insert">הוספת מארח</string>
-  <string name="menu_delete">מחיקת מארח</string>
-  <string name="menu_preferences">העדפות</string>
   <string name="help_intro">נא לבחור נושא להלן לקבל פרטים נוספים בנוגע לנושא מסוים.</string>
-  <string name="help_about">על אודות ConnectBot</string>
-  <string name="help_keyboard">מקלדת</string>
   <string name="pubkey_generate">יצירה</string>
-  <string name="pubkey_import">יבוא</string>
   <string name="pubkey_delete">מחיקת מפתח</string>
   <string name="pubkey_gather_entropy">נאסף גיבוב</string>
   <string name="pubkey_touch_prompt">יש לגעת בתיבה זו כדי לאסוף נתונים אקראיים: %1$d%% הושלמו</string>
@@ -62,9 +54,7 @@
   <string name="alert_wrong_password_msg">ססמה שגויה!</string>
   <string name="alert_key_corrupted_msg">המפתח הפרטי נראה פגום!</string>
   <string name="alert_sdcard_absent">לא הוכנס כרטיס SD!</string>
-  <string name="button_add">הוספה</string>
   <string name="button_change">החלפה</string>
-  <string name="button_generate">יצירת מפתח</string>
   <string name="button_resize">שינוי גודל</string>
   <string name="alert_disconnect_msg">החיבור אבד</string>
   <string name="msg_copyright">כל הזכויות שמורות © 2007‎-2008 ל־Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -91,7 +81,6 @@
   <string name="pref_wifilock_title">להשאיר את הרשת האלחוטית פעילה</string>
   <string name="pref_wifilock_summary">למנוע את כיבוי מתאם הרשת האלחוטית כאשר ישנו חלון פעיל</string>
   <string name="pref_bumpyarrows_title">חצים עם רטט</string>
-  <string name="pref_bumpyarrows_summary">המכשיר ירטוט בעת שליחת מקשי חצים מכדור הגלילה; שימוש לחיבורים אטיים</string>
   <string name="pref_bell_category">פעמון מסוף</string>
   <string name="pref_bell_title">פעמון עם צליל</string>
   <string name="pref_bell_volume_title">עצמת הפעמון</string>
@@ -139,10 +128,7 @@
   <string name="portforward_remote">מרוחק</string>
   <string name="portforward_dynamic">דינמי (SOCKS)</string>
   <string name="portforward_pos">יצירת הפניית פתחות</string>
-  <string name="portforward_done">הפניית הפתחות נוצרה בהצלחה</string>
   <string name="portforward_problem">אירעה שגיאה ביצירת הפניית פתחות, יתכן שניסית להשתמש בפתחות מתחת ל־1024 או שהפתחה כבר בשימוש?</string>
-  <string name="hint_userhost">user\@hostname</string>
-  <string name="list_format_error">יש להשתמש בצורה „%1$s“</string>
   <string name="format_username">username</string>
   <string name="format_hostname">hostname</string>
   <string name="format_port">port</string>
@@ -193,7 +179,6 @@
   <string name="no">לא</string>
   <string name="with_confirmation">עם אימות</string>
   <string name="yes">כן</string>
-  <string name="exceptions_submit_message">מתברר כי חלה תקלה ב־ConnectBot במהלך ההפעלה האחרונה. האם לשלוח את הדיווח למפתחים של ConnectBot?</string>
   <string name="menu_colors_reset">איפוס</string>
   <string name="app_is_running">ConnectBot פעיל</string>
   <string name="color_red">אדום</string>

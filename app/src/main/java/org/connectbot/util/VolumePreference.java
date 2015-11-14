@@ -24,6 +24,8 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+import org.connectbot.R;
+
 /**
  * @author kenny
  *
@@ -46,20 +48,18 @@ public class VolumePreference extends DialogPreference implements OnSeekBarChang
 	}
 
 	private void setupLayout(Context context, AttributeSet attrs) {
+		setDialogLayoutResource(R.layout.volume_preference_dialog_layout);
 		setPersistent(true);
 	}
 
 	@Override
-	protected View onCreateDialogView() {
-		SeekBar sb = new SeekBar(getContext());
-
-		sb.setMax(100);
-		sb.setProgress((int) (getPersistedFloat(
+	protected void onBindDialogView(View view) {
+		super.onBindDialogView(view);
+		
+		SeekBar volumeBar = (SeekBar) view.findViewById(R.id.volume_bar);
+		volumeBar.setProgress((int) (getPersistedFloat(
 				PreferenceConstants.DEFAULT_BELL_VOLUME) * 100));
-		sb.setPadding(10, 10, 10, 10);
-		sb.setOnSeekBarChangeListener(this);
-
-		return sb;
+		volumeBar.setOnSeekBarChangeListener(this);
 	}
 
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

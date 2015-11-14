@@ -7,16 +7,8 @@
   <string name="title_host_editor">Editar servidor</string>
   <string name="title_help">Axuda</string>
   <string name="title_colors">Cores</string>
-  <string name="resolve_connect">Conectar</string>
-  <string name="resolve_entropy">Xerar entropía</string>
-  <string name="menu_insert">Engadir un servidor</string>
-  <string name="menu_delete">Borrar servidor</string>
-  <string name="menu_preferences">Preferencias</string>
   <string name="help_intro">Seleccione un apartado dos seguintes para máis información dun tema particular</string>
-  <string name="help_about">Acerca de ConnectBot</string>
-  <string name="help_keyboard">Teclado</string>
   <string name="pubkey_generate">Xerar</string>
-  <string name="pubkey_import">Importar</string>
   <string name="pubkey_delete">Borrar a chave</string>
   <string name="pubkey_gather_entropy">Xerando Entropía</string>
   <string name="pubkey_touch_prompt">Toca esta casiña para xerar aleatoriedade: %1$d%% feito</string>
@@ -54,9 +46,7 @@
   <string name="alert_wrong_password_msg">¡Contrasinal incorrecto!</string>
   <string name="alert_key_corrupted_msg">¡A chave privada parece corrupta!</string>
   <string name="alert_sdcard_absent">¡A tarxeta SD non está inserida!</string>
-  <string name="button_add">Engadir</string>
   <string name="button_change">Modificar</string>
-  <string name="button_generate">Xerar chave</string>
   <string name="button_resize">Redimensionar</string>
   <string name="alert_disconnect_msg">Conexión Perdida</string>
   <string name="msg_copyright">Todos os dereitos reservados © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -80,7 +70,6 @@
   <string name="pref_keepalive_summary">Evitar que a pantalla se apague ao traballar nunha consola</string>
   <string name="pref_wifilock_title">Manter a Wi-Fi activa</string>
   <string name="pref_wifilock_summary">Evitar que a Wi-Fi se apague mentres a sesión está activa</string>
-  <string name="pref_bumpyarrows_summary">Vibrar ao enviar teclas de dirección dende o trackball; útil para conexións con retardos</string>
   <string name="pref_bell_category">Timbre do terminal</string>
   <string name="pref_bell_title">Timbre audible</string>
   <string name="pref_bell_volume_title">Volume do timbre</string>
@@ -110,6 +99,4 @@
   <string name="console_menu_resize">Forzar tamaño</string>
   <string name="console_menu_urlscan">Escanear URLs</string>
   <string name="portforward_remote">Remoto</string>
-  <string name="list_format_error">Use the format %1$s</string>
-  <string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran. Submit error report to ConnectBot developers?</string>
 </resources>

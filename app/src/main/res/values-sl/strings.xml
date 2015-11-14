@@ -8,16 +8,8 @@
   <string name="title_host_editor">Urejanje gostitelja</string>
   <string name="title_help">Pomoč</string>
   <string name="title_colors">Barve</string>
-  <string name="resolve_connect">Poveži</string>
-  <string name="resolve_entropy">Zberi entropijo</string>
-  <string name="menu_insert">Dodaj gostitelja</string>
-  <string name="menu_delete">Odstrani gostitelja</string>
-  <string name="menu_preferences">Možnosti</string>
   <string name="help_intro">Izberite temo spodaj za več informacij o določeni zadevi.</string>
-  <string name="help_about">O ConnectBotu</string>
-  <string name="help_keyboard">Tipkovnica</string>
   <string name="pubkey_generate">Ustvari</string>
-  <string name="pubkey_import">Uvozi javni ključ</string>
   <string name="pubkey_delete">Izbriši ključ</string>
   <string name="pubkey_gather_entropy">Zbiranje entropije</string>
   <string name="pubkey_touch_prompt">Dotaknite to polje za zbiranje naključnih vrednosti: %1$d%% končano</string>
@@ -61,9 +53,7 @@
   <string name="alert_wrong_password_msg">Napačno geslo!</string>
   <string name="alert_key_corrupted_msg">Zasebni ključ izgleda pokvarjen!</string>
   <string name="alert_sdcard_absent">Kartica SD ni vstavljena!</string>
-  <string name="button_add">Dodaj</string>
   <string name="button_change">Spremeni</string>
-  <string name="button_generate">Ustvari ključ</string>
   <string name="button_resize">Spremeni velikost</string>
   <string name="alert_disconnect_msg">Povezava prekinjena</string>
   <string name="msg_copyright">Avtorske pravice © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -127,9 +117,6 @@
   <string name="portforward_local">Krajevno</string>
   <string name="portforward_remote">Oddaljeno</string>
   <string name="portforward_pos">Ustvari posredovanje vrat</string>
-  <string name="portforward_done">Uspešno ustvarjeno posredovanje vrat</string>
-  <string name="hint_userhost">uporabnik\@gostitelj</string>
-  <string name="list_format_error">Uporabi vrsto %1$s</string>
   <string name="format_username">Uporabniško ime</string>
   <string name="format_hostname">ime gostitelja</string>
   <string name="format_port">vrata</string>
@@ -171,7 +158,6 @@
   <string name="no">Ne</string>
   <string name="with_confirmation">S potrditvijo</string>
   <string name="yes">Da</string>
-  <string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran. Submit error report to ConnectBot developers?</string>
   <string name="menu_colors_reset">Ponastavi</string>
   <string name="app_is_running">ConnectBot je dejaven</string>
   <string name="color_red">rdeča</string>

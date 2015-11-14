@@ -28,9 +28,6 @@ import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -47,25 +44,19 @@ import android.preference.PreferenceManager;
 import android.support.annotation.StyleRes;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
-import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 public class HostListActivity extends AppCompatListActivity implements OnHostStatusChangedListener {
@@ -303,7 +294,8 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			return;
 		}
 
-		new AlertDialog.Builder(HostListActivity.this)
+		new android.support.v7.app.AlertDialog.Builder(
+				HostListActivity.this, R.style.AlertDialogTheme)
 			.setMessage(getString(R.string.disconnect_all_message))
 			.setPositiveButton(R.string.disconnect_all_pos, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
@@ -462,7 +454,8 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {
 					// prompt user to make sure they really want this
-					new AlertDialog.Builder(HostListActivity.this)
+					new android.support.v7.app.AlertDialog.Builder(
+									HostListActivity.this, R.style.AlertDialogTheme)
 							.setMessage(getString(R.string.delete_message, host.getNickname()))
 							.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int which) {
@@ -587,97 +580,4 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			return hosts.size();
 		}
 	}
-
-	public static class AddHostDialogFragment extends DialogFragment {
-			private TextView mAddressField;
-			private Spinner mSpinner;
-
-			HostListActivity mListener;
-
-			@Override
-			public void onAttach(Activity activity) {
-				super.onAttach(activity);
-				mListener = (HostListActivity) activity;
-			}
-
-			@Override
-			public Dialog onCreateDialog(Bundle savedInstanceState) {
-				LayoutInflater inflater = getActivity().getLayoutInflater();
-				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-				View addHostDialog = inflater.inflate(R.layout.dia_add_host, null);
-				builder.setView(addHostDialog)
-						.setPositiveButton(R.string.button_add, null)
-						.setNegativeButton(R.string.button_cancel, null);
-				AlertDialog dialog = builder.create();
-
-				mAddressField = (TextView) addHostDialog.findViewById(R.id.front_quickconnect);
-				mAddressField.setOnKeyListener(new OnKeyListener() {
-
-					public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-						if (event.getAction() == KeyEvent.ACTION_UP) return false;
-						if (keyCode != KeyEvent.KEYCODE_ENTER) return false;
-
-						processNewUriEntered();
-						return true;
-					}
-				});
-
-				mSpinner = (Spinner) addHostDialog.findViewById(R.id.transport_selection);
-				ArrayAdapter<String> transportSelection = new ArrayAdapter<String>(getActivity(),
-						android.R.layout.simple_spinner_item, TransportFactory.getTransportNames());
-				transportSelection.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-					public void onItemSelected(AdapterView<?> arg0, View view, int position, long id) {
-						String formatHint = TransportFactory.getFormatHint(
-								(String) mSpinner.getSelectedItem(),
-								getActivity());
-						mAddressField.setHint(formatHint);
-						mAddressField.setError(null);
-						mAddressField.requestFocus();
-					}
-
-					public void onNothingSelected(AdapterView<?> arg0) {
-					}
-				});
-				mSpinner.setAdapter(transportSelection);
-
-				return dialog;
-			}
-
-			@Override
-			public void onResume()
-			{
-				super.onResume();
-				final AlertDialog alertDialog = (AlertDialog) getDialog();
-				Button addButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-				addButton.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						processNewUriEntered();
-					}
-				});
-			}
-
-			/**
-			 * Processes the URI that has been entered. If it is a valid URI, adds that host
-			 * and starts ConsoleActivity; otherwise, shows an error in the address field.
-			 */
-			private void processNewUriEntered() {
-				Uri uri = TransportFactory.getUri((String) mSpinner
-						.getSelectedItem(), mAddressField.getText().toString());
-				if (uri == null) {
-					mAddressField.setError(getString(R.string.list_format_error,
-							TransportFactory.getFormatHint(
-									(String) mSpinner.getSelectedItem(),
-									getActivity())));
-					mAddressField.requestFocus();
-					return;
-				}
-
-				mListener.startConsoleActivity(uri);
-				getDialog().dismiss();
-			}
-		}
 }

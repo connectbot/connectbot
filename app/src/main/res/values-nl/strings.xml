@@ -8,16 +8,8 @@
   <string name="title_host_editor">Host bewerken</string>
   <string name="title_help">Help</string>
   <string name="title_colors">Kleuren</string>
-  <string name="resolve_connect">Verbinden</string>
-  <string name="resolve_entropy">Verzamel Entropie</string>
-  <string name="menu_insert">Host Toevoegen</string>
-  <string name="menu_delete">Host verwijderen</string>
-  <string name="menu_preferences">Voorkeuren</string>
   <string name="help_intro">Selecteer hieronder een onderwerp voor meer informatie over een onderwerp.</string>
-  <string name="help_about">Over ConnectBot</string>
-  <string name="help_keyboard">Toetsenbord</string>
   <string name="pubkey_generate">Genereren</string>
-  <string name="pubkey_import">Importeren</string>
   <string name="pubkey_delete">Sleutel verwijderen</string>
   <string name="pubkey_gather_entropy">Bezig met het verzamelen van Entropie</string>
   <string name="pubkey_touch_prompt">Raak dit vierkant aan om willekeurigheid te verzamelen: %1$d%% gedaan</string>
@@ -61,9 +53,7 @@
   <string name="alert_wrong_password_msg">Verkeerd wachtwoord!</string>
   <string name="alert_key_corrupted_msg">Privé sleutel lijkt corrupt!</string>
   <string name="alert_sdcard_absent">SD kaart niet aanwezig!</string>
-  <string name="button_add">Voeg toe</string>
   <string name="button_change">Verander</string>
-  <string name="button_generate">Genereer sleutel</string>
   <string name="button_resize">Verander formaat</string>
   <string name="alert_disconnect_msg">Verbinding verloren</string>
   <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -90,7 +80,6 @@
   <string name="pref_wifilock_title">Houd Wi-Fi actief</string>
   <string name="pref_wifilock_summary">Voorkom Wi-Fi van uitgaan wanneer er een sessie actief is</string>
   <string name="pref_bumpyarrows_title">Hobbelige pijlen</string>
-  <string name="pref_bumpyarrows_summary">Tril als pijl knoppen worden gestuurd van trackball; handig voor langzame verbindingen</string>
   <string name="pref_bell_category">Terminal bel</string>
   <string name="pref_bell_title">Hoorbare bel</string>
   <string name="pref_bell_volume_title">Bel volume</string>
@@ -138,10 +127,7 @@
   <string name="portforward_remote">Op afstand</string>
   <string name="portforward_dynamic">Dynamisch (SOCKS)</string>
   <string name="portforward_pos">Maak port forward</string>
-  <string name="portforward_done">Succesvol port forward gemaakt</string>
   <string name="portforward_problem">Probleem met het maken van een port forward, misschien gebruik je poort onder 1024 of is de poort al gebruikt?</string>
-  <string name="hint_userhost">gebruiker\@hostnaam</string>
-  <string name="list_format_error">Gebruik het formaat %1$s</string>
   <string name="format_username">gebruiker</string>
   <string name="format_hostname">hostnaam</string>
   <string name="format_port">poort</string>
@@ -192,7 +178,6 @@
   <string name="no">Nee</string>
   <string name="with_confirmation">Met toestemming</string>
   <string name="yes">Ja</string>
-  <string name="exceptions_submit_message">Het lijkt erop dat ConnectBot een probleem had de laatste keer dat het gebruikt werd. Wilt u een foutenrapport naar de ConnectBot ontwikkelaars sturen?</string>
   <string name="menu_colors_reset">Terug naar standaardinstellingen</string>
   <string name="app_is_running">ConnectBot werkt (Connecties zijn actief)</string>
   <string name="color_red">rood</string>

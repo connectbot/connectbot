@@ -9,16 +9,8 @@
   <string name="title_help">Pomoc</string>
   <string name="title_colors">Kolory</string>
   <string name="title_color_picker">Wybór koloru</string>
-  <string name="resolve_connect">Połącz</string>
-  <string name="resolve_entropy">Zbierz dane losowe</string>
-  <string name="menu_insert">Dodaj host</string>
-  <string name="menu_delete">Usuń host</string>
-  <string name="menu_preferences">Ustawienia</string>
   <string name="help_intro">Proszę wybrać temat poniżej aby uzyskać więcej informacji na konkretny temat.</string>
-  <string name="help_about">O ConnectBot</string>
-  <string name="help_keyboard">Klawiatura</string>
   <string name="pubkey_generate">Wygeneruj</string>
-  <string name="pubkey_import">Importuj</string>
   <string name="pubkey_delete">Usuń klucz</string>
   <string name="pubkey_gather_entropy">Zbieranie danych losowych</string>
   <string name="pubkey_touch_prompt">Dotknij to pole, żeby losowo wygenerować dane. Ukończono: %1$d%%</string>
@@ -62,9 +54,7 @@
   <string name="alert_wrong_password_msg">Nieprawidłowe hasło!</string>
   <string name="alert_key_corrupted_msg">Klucz prywatny wydaje się być uszkodzony!</string>
   <string name="alert_sdcard_absent">Brak karty SD</string>
-  <string name="button_add">Dodaj</string>
   <string name="button_change">Zmień</string>
-  <string name="button_generate">Generuj klucz</string>
   <string name="button_resize">Zmień rozmiar</string>
   <string name="alert_disconnect_msg">Połączenie utracone</string>
   <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -92,7 +82,6 @@
   <string name="pref_wifilock_title">Wstrzymaj usypianie Wi-Fi</string>
   <string name="pref_wifilock_summary">Wstrzymaj usypianie Wi-Fi gdy sesja jest aktywna</string>
   <string name="pref_bumpyarrows_title">Podskakujące strzałki</string>
-  <string name="pref_bumpyarrows_summary">Wibruj kiedy emulowane są klawisze strzałek; użyteczne dla wolnych połączeń</string>
   <string name="pref_bell_category">Brzęczyk terminalu</string>
   <string name="pref_bell_title">Brzęczyk słyszalny</string>
   <string name="pref_bell_volume_title">Głośność brzęczyka</string>
@@ -140,10 +129,7 @@
   <string name="portforward_remote">Zdalny</string>
   <string name="portforward_dynamic">Dynamiczny (SOCKS)</string>
   <string name="portforward_pos">Utwórz przekierowanie portu</string>
-  <string name="portforward_done">Pomyślnie utworzono przekierowanie portu</string>
   <string name="portforward_problem">Wystąpił problem podczas tworzenia przekierowania, być może użyłeś portu niższego niż 1024 lub port jest już używany?</string>
-  <string name="hint_userhost">użytkownik\@host</string>
-  <string name="list_format_error">Proszę użyć formatu %1$s</string>
   <string name="format_username">Nazwa użytkownika</string>
   <string name="format_hostname">nazwa_hostu</string>
   <string name="format_port">port</string>
@@ -194,7 +180,6 @@
   <string name="no">Nie</string>
   <string name="with_confirmation">Z potwierdzeniem</string>
   <string name="yes">Tak</string>
-  <string name="exceptions_submit_message">ConnectBot miał prawdopodobnie problem podczas ostatniego uruchomienia. Wysłać raport o błędzie?</string>
   <string name="menu_colors_reset">Przywróć</string>
   <string name="app_is_running">ConnectBot jest uruchomiony</string>
   <string name="color_red">czerwony</string>

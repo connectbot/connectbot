@@ -8,16 +8,8 @@
   <string name="title_host_editor">Rediger vert</string>
   <string name="title_help">Hjelp</string>
   <string name="title_colors">Farger</string>
-  <string name="resolve_connect">Koble til</string>
-  <string name="resolve_entropy">Samle entropi</string>
-  <string name="menu_insert">Legg til vert</string>
-  <string name="menu_delete">Slett vert</string>
-  <string name="menu_preferences">Innstillinger</string>
   <string name="help_intro">Velg en overskrift nedenfor for mer informasjon om et bestemt emne.</string>
-  <string name="help_about">Om ConnectBot</string>
-  <string name="help_keyboard">Tastatur</string>
   <string name="pubkey_generate">Generer</string>
-  <string name="pubkey_import">Importer</string>
   <string name="pubkey_delete">Slett nøkkel</string>
   <string name="pubkey_gather_entropy">Samler entropi</string>
   <string name="pubkey_touch_prompt">Berør denne boksen for å samle tilfeldige tall: %1$d%% ferdig</string>
@@ -61,9 +53,7 @@
   <string name="alert_wrong_password_msg">Feil passord!</string>
   <string name="alert_key_corrupted_msg">Privat nøkkel ser ut til å være korrupt!</string>
   <string name="alert_sdcard_absent">SD-kortet er ikke satt inn!</string>
-  <string name="button_add">Legg til</string>
   <string name="button_change">Endre</string>
-  <string name="button_generate">Generer nøkkel</string>
   <string name="button_resize">Endre størrelse</string>
   <string name="alert_disconnect_msg">Mistet tilkobling</string>
   <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -90,7 +80,6 @@
   <string name="pref_wifilock_title">Hold Wi-Fi aktiv</string>
   <string name="pref_wifilock_summary">Hindre Wi-Fi å koble fra når en økt er aktiv</string>
   <string name="pref_bumpyarrows_title">Vibrerende piler</string>
-  <string name="pref_bumpyarrows_summary">Vibrer når pilkommandoer sendes med styrekule; nyttig for trege forbindelser</string>
   <string name="pref_bell_category">Terminalklokke</string>
   <string name="pref_bell_title">Varselklokke</string>
   <string name="pref_bell_volume_title">Klokkevolum</string>
@@ -138,10 +127,7 @@
   <string name="portforward_remote">Ekstern</string>
   <string name="portforward_dynamic">Dynamisk (SOCKS)</string>
   <string name="portforward_pos">Opprett portvideresending</string>
-  <string name="portforward_done">Vellykket oppretting av portvideresending</string>
   <string name="portforward_problem">Mislyktes å opprette portvideresending. Bruker du porter under 1024, eller er denne porten allerede tatt?</string>
-  <string name="hint_userhost">bruker\@vert</string>
-  <string name="list_format_error">Use the format %1$s</string>
   <string name="format_username">brukernavn</string>
   <string name="format_hostname">vertsnavn</string>
   <string name="format_port">port</string>
@@ -192,7 +178,6 @@
   <string name="no">Nei</string>
   <string name="with_confirmation">Med bekreftelse</string>
   <string name="yes">Ja</string>
-  <string name="exceptions_submit_message">Det ser ut som ConnectBot hadde et problem forrige gang den kjørte. Vil du sende en feilrapport til utviklerne av ConnectBot?</string>
   <string name="menu_colors_reset">Tilbakestill</string>
   <string name="app_is_running">ConnectBot kjører</string>
   <string name="color_red">rød</string>

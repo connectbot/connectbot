@@ -9,16 +9,12 @@
   <string name="title_help">Laguntza</string>
   <string name="title_colors">Koloreak</string>
   <string name="title_color_picker">Aukeratu kolorea</string>
-  <string name="resolve_connect">Konektatu</string>
-  <string name="resolve_entropy">Bildu entropia</string>
-  <string name="menu_insert">Gehitu ostalaria</string>
-  <string name="menu_delete">Ezabatu ostalaria</string>
-  <string name="menu_preferences">Hobespenak</string>
   <string name="help_intro">Mesedez, hautatu beheko gaietako bat informazio gehiago nahi izanez gero.</string>
-  <string name="help_about">ConnectBot-i buruz</string>
-  <string name="help_keyboard">Teklatua</string>
+  <string name="terms_and_conditions">Baldintzak</string>
+  <string name="keyboard_shortcuts">Laster-teklak</string>
+  <string name="increase_font_size">Handiagotu letra-tamaina</string>
+  <string name="decrease_font_size">Txikiagotu letra-tamaina</string>
   <string name="pubkey_generate">Sortu</string>
-  <string name="pubkey_import">Inportatu</string>
   <string name="pubkey_delete">Ezabatu gakoa</string>
   <string name="pubkey_gather_entropy">Entropia biltzen</string>
   <string name="pubkey_touch_prompt">Ukitu kaxa hau ausazkotasuna lortzeko: %1$d%% eginda</string>
@@ -62,9 +58,7 @@
   <string name="alert_wrong_password_msg">Pasahitz okerra!</string>
   <string name="alert_key_corrupted_msg">Gako pribatua hondatuta dagoela dirudi!</string>
   <string name="alert_sdcard_absent">Ez da aurkitu SD txartelik!</string>
-  <string name="button_add">Gehitu</string>
   <string name="button_change">Aldatu</string>
-  <string name="button_generate">Sortu gakoa</string>
   <string name="button_resize">Aldatu tamaina</string>
   <string name="alert_disconnect_msg">Konexioa galdu da</string>
   <string name="msg_copyright">Copyright-a © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -97,7 +91,6 @@
   <string name="pref_wifilock_title">Mantendu WiFi-a aktibo</string>
   <string name="pref_wifilock_summary">Galarazi WiFi-a itzaltzea saio aktibo bat dagoen bitartean</string>
   <string name="pref_bumpyarrows_title">Bibraziodun geziak</string>
-  <string name="pref_bumpyarrows_summary">Bibratu trackball bidez erakusle-geziak bidaltzean; atzerapendun konexioentzat egokia</string>
   <string name="pref_bell_category">Terminalaren txirrina</string>
   <string name="pref_bell_title">Txirrin entzungarria</string>
   <string name="pref_bell_volume_title">Txirrinaren bolumena</string>
@@ -146,10 +139,7 @@
   <string name="portforward_remote">Urrunekoa</string>
   <string name="portforward_dynamic">Dinamikoa (SOCKS)</string>
   <string name="portforward_pos">Sortu ataka birbidalketa</string>
-  <string name="portforward_done">Ataka birbidalketa ongi sortu da</string>
   <string name="portforward_problem">Arazoa ataka birbidalketa sortzean, behar bada erabilitako ataka 1024 baino txikiagoa da edo dagoeneko erabiltzen den ataka bat da?</string>
-  <string name="hint_userhost">erabiltzailea\@ostalaria</string>
-  <string name="list_format_error">Erabili %1$s formatua</string>
   <string name="format_username">erabiltzaile-izena</string>
   <string name="format_hostname">ostalaria</string>
   <string name="format_port">ataka</string>
@@ -176,6 +166,8 @@
   <string name="delete_message">Ziur zaude \'%1$s\' ezabatu nahi duzula?</string>
   <string name="delete_pos">Bai, ezabatu</string>
   <string name="delete_neg">Utzi</string>
+  <string name="disconnect_all_pos">Bai, deskonektatu</string>
+  <string name="disconnect_all_neg">Utzi</string>
   <string name="terminal_no_hosts_connected">Ez dago ostalaririk konektatuta une honetan</string>
   <string name="terminal_connecting">%1$s:%2$d-ra konektatzen %3$s bidez</string>
   <string name="terminal_sucess">Egiaztatutako ostalaria \'%1$s\' gakoa: %2$s</string>
@@ -201,7 +193,6 @@
   <string name="no">Ez</string>
   <string name="with_confirmation">Berrespenarekin</string>
   <string name="yes">Bai</string>
-  <string name="exceptions_submit_message">Dirudienez ConnectBot-ek arazo bat izan zuen azken exekuzioan. ConnectBot-en garatzaileei errore-txostena bidali?</string>
   <string name="menu_colors_reset">Berrezarri</string>
   <string name="app_is_running">ConnectBot martxan dago</string>
   <string name="color_red">gorria</string>
@@ -212,5 +203,12 @@
   <string name="image_description_key_is_locked">Gakoa blokeatuta dago.</string>
   <string name="image_description_toggle_control_character">Txandakatu kontrol karakterea.</string>
   <string name="image_description_send_escape_character">Bidali ihes karakterea.</string>
+  <string name="image_description_send_tab_character">Bidali TAB karakterea.</string>
   <string name="image_description_show_keyboard">Erakutsi teklatua.</string>
+  <string name="image_description_up">Gora gezia</string>
+  <string name="image_description_down">Behera gezia</string>
+  <string name="image_description_left">Ezkerra gezia</string>
+  <string name="image_description_right">Eskuina gezia</string>
+  <string name="button_key_esc">Esc</string>
+  <string name="button_key_ctrl">Ktrl</string>
 </resources>

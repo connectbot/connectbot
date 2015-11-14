@@ -25,7 +25,7 @@ addons:
       - ia32-libs-multiarch
       - libgd2-xpm
       - p7zip-full
-      - libxml2-utils # ./scripts/check-lint-count.sh
+      - xqilla # ./scripts/check-lint-count.bash
   coverity_scan:
     project:
       name: "connectbot/connectbot"
@@ -46,15 +46,18 @@ before_script:
 
 android:
   components:
-    - build-tools-22.0.1
+    - platform-tools
+    - tools
+    - build-tools-23.0.1
     - android-23
     - extra-android-support
     - extra-android-m2repository
   license:
-    - '.+'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
 
 script:
   - ./gradlew clean build check jacocoUnitTestDebugReport
-  - ./scripts/check-lint-count.sh app/build/outputs/lint-results.xml $HOME/.cache/lint/lint-results.xml
+  - ./scripts/check-lint-count.bash app/build/outputs/lint-results.xml $HOME/.cache/lint/lint-results.xml
 
 after_success: ./gradlew coveralls

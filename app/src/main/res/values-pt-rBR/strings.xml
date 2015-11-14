@@ -9,16 +9,8 @@
   <string name="title_help">Ajuda</string>
   <string name="title_colors">Cores</string>
   <string name="title_color_picker">Escolha a cor</string>
-  <string name="resolve_connect">Conectar</string>
-  <string name="resolve_entropy">Sensibilidade</string>
-  <string name="menu_insert">Adicionar Host</string>
-  <string name="menu_delete">Apagar host</string>
-  <string name="menu_preferences">Preferências</string>
   <string name="help_intro">Escolha um dos tópicos abaixo para maiores informações</string>
-  <string name="help_about">Sobre o ConnectBot</string>
-  <string name="help_keyboard">Teclado</string>
   <string name="pubkey_generate">Gerar</string>
-  <string name="pubkey_import">Importar</string>
   <string name="pubkey_delete">Apagar chave</string>
   <string name="pubkey_gather_entropy">Ajustando sensibilidade</string>
   <string name="pubkey_touch_prompt">Toque na caixa para testar sensibilidade: %1$d%% pronto</string>
@@ -62,9 +54,7 @@
   <string name="alert_wrong_password_msg">Senha incorreta!</string>
   <string name="alert_key_corrupted_msg">A chave privada parece estar corrompida!</string>
   <string name="alert_sdcard_absent">O cartão SD não está inserido!</string>
-  <string name="button_add">Adicionar</string>
   <string name="button_change">Alterar</string>
-  <string name="button_generate">Gerar chave</string>
   <string name="button_resize">Redimensionar</string>
   <string name="alert_disconnect_msg">Conexão perdida</string>
   <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -92,7 +82,6 @@
   <string name="pref_wifilock_title">Manter a rede Wi-Fi ativo</string>
   <string name="pref_wifilock_summary">Evitar que a rede Wi-Fi seja desligada quando alguma sesão está ativa</string>
   <string name="pref_bumpyarrows_title">Feedback de rolagem</string>
-  <string name="pref_bumpyarrows_summary">Vibrar quando pressionar o botão principal (trackball)</string>
   <string name="pref_bell_category">Alerta do terminal</string>
   <string name="pref_bell_title">Alerta audível</string>
   <string name="pref_bell_volume_title">Volume dos alerta</string>
@@ -140,10 +129,7 @@
   <string name="portforward_remote">Remoto</string>
   <string name="portforward_dynamic">Dinâmico (SOCKS)</string>
   <string name="portforward_pos">Criar encaminhamento de porta</string>
-  <string name="portforward_done">Encaminhamento de porta criado com sucesso</string>
   <string name="portforward_problem">Problema na criação do redirecionamento de portas, talvez você esteja usando portas menores que 1024 ou a porta já esteja sendo usada.</string>
-  <string name="hint_userhost">usuario\@nome_do_host</string>
-  <string name="list_format_error">Use o formato %1$s</string>
   <string name="format_username">usuário</string>
   <string name="format_hostname">nome do host</string>
   <string name="format_port">porta</string>
@@ -194,7 +180,6 @@
   <string name="no">Não</string>
   <string name="with_confirmation">Com confirmação</string>
   <string name="yes">Sim</string>
-  <string name="exceptions_submit_message">Aparentemente o ConnectBot teve um problema na última execução. Deseja enviar relatório de erro aos desenvolvedores do aplicativo?</string>
   <string name="menu_colors_reset">Reiniciar</string>
   <string name="app_is_running">ConnectBot está executando</string>
   <string name="color_red">vermelho</string>

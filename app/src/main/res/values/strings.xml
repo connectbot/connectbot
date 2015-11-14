@@ -45,17 +45,7 @@
 	<!-- Window title when generating a new pubkey. -->
 	<string name="title_pubkey_generate">Generate</string>
 
-	<string name="resolve_connect">"Connect"</string>
-	<!-- Menu selection where user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="resolve_entropy">"Gather Entropy"</string>
-
-	<string name="menu_insert">"Add Host"</string>
-	<string name="menu_delete">"Delete Host"</string>
-	<string name="menu_preferences">"Preferences"</string>
-
 	<string name="help_intro">"Please select a topic below for more information on a particular subject."</string>
-	<string name="help_about">"About ConnectBot"</string>
-	<string name="help_keyboard">"Keyboard"</string>
 
 	<!-- Title for the help page with the terms & conditions of the app. -->
 	<string name="terms_and_conditions">"Terms &amp; Conditions"</string>
@@ -113,7 +103,6 @@
 	<string name="paste_shortcut">Ctrl-Shift-V</string>
 
 	<string name="pubkey_generate">"Generate"</string>
-	<string name="pubkey_import">"Import"</string>
 	<string name="pubkey_delete">"Delete key"</string>
 	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
 	<string name="pubkey_gather_entropy">"Gathering Entropy"</string>
@@ -195,14 +184,8 @@
 	<string name="alert_key_corrupted_msg">"Private key appears corrupt!"</string>
 	<string name="alert_sdcard_absent">"SD card is not inserted!"</string>
 
-	<!-- Add a new item (e.g., host or pubkey) to the list. -->
-	<string name="button_add">"Add"</string>
-	<!-- Cancel an action. -->
-	<string name="button_cancel">Cancel</string>
 	<!-- Change an existing item's (e.g., host or pubkey) details. -->
 	<string name="button_change">"Change"</string>
-	<!-- Button that begins the generation of a public key pair. -->
-	<string name="button_generate">"Generate Key"</string>
 	<!-- Button that resizes the screen to the user-specified dimensions. -->
 	<string name="button_resize">"Resize"</string>
 
@@ -235,6 +218,9 @@
 	<string name="pref_titlebarhide_title">"Autohide title bar"</string>
 	<!-- Summary for the titlebar hide preference -->
 	<string name="pref_titlebarhide_summary">"Tap console to show title bar and access menu"</string>
+
+	<!-- Title for special keys always visible preference -->
+	<string name="pref_alwaysvisible_title">Special keys always visible</string>
 
 	<!-- Name for the page up/down gesture preference -->
 	<string name="pref_pg_updn_gesture_title">"Page up/down gesture"</string>
@@ -432,14 +418,7 @@
 	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
 	<string name="portforward_pos">"Create port forward"</string>
 
-	<string name="portforward_done">"Successfully created port forward"</string>
 	<string name="portforward_problem">"Problem creating port forward, maybe you're using ports under 1024 or port is already used?"</string>
-
-	<!-- The string to present in the quick-connect box to hint the user to the format for connecting to hosts. -->
-	<string name="hint_userhost">"user@hostname"</string>
-
-	<!-- Hint given to user when the format they're using is incorrect in the quick-connect box. -->
-	<string name="list_format_error">"Use the format \"%1$s\""</string>
 
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
 	<string name="format_username">"username"</string>
@@ -545,9 +524,6 @@
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
 	<string name="yes">"Yes"</string>
 
-	<!-- String displayed to user when they're asked to submit exceptions to the ConnectBot developers -->
-	<string name="exceptions_submit_message">"It appears ConnectBot had a problem last time it ran.  Submit error report to ConnectBot developers?"</string>
-
 	<!-- Menu selection to reset colors to their defaults. -->
 	<string name="menu_colors_reset">"Reset"</string>
 
@@ -603,12 +579,13 @@
 	     purposes. -->
 	<string name="image_description_right">Arrow right</string>
 
+	<!-- Describes the "volume" icon in the bell volume dialog for accessibility purposes. -->
+	<string name="image_description_volume">Volume</string>
+
 	<!-- Text for the "Esc" button in virtual keyboard. -->
 	<string name="button_key_esc">Esc</string>
 	<!-- Text for the "Ctrl" button in virtual keyboard. -->
 	<string name="button_key_ctrl">Ctrl</string>
-	<!-- Text for the "Tab" button in virtual keyboard. -->
-	<string name="button_key_tab">Tab</string>
 
 	<!-- other common use keys not available on hardware keyboard -->
 	<string name="button_key_pipe">|</string>
@@ -660,5 +637,14 @@
 	<string name="hostpref_add_host">Add host</string>
 	<!-- Text for button which, when clicked, saves an existing host. -->
 	<string name="hostpref_edit_host">Save host</string>
-
+	<!-- Text for button which, when clicked, brings up an editor for adding a new pubkey. -->
+	<string name="pubkey_add_new">Add new pubkey</string>
+	<!-- Text for button which, when clicked, brings up picker to import an existing pubkey. -->
+	<string name="pubkey_import_existing">Import existing pubkey</string>
+	<!-- Text for dialog which explains that the host URI is invalid and asks to discard. -->
+	<string name="discard_host_changes_message">Host URI is invalid. Would you like to discard changes?</string>
+	<!-- Text for button which discards changes to the host. -->
+	<string name="discard_host_button">Discard</string>
+	<!-- Text for button which does not discard changes and keeps editing. -->
+	<string name="discard_host_cancel_button">Keep editing</string>
 </resources>

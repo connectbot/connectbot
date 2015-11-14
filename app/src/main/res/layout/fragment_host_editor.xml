@@ -19,41 +19,55 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
+	android:layout_height="match_parent"
+	android:fillViewport="true"
 	tools:context="org.connectbot.HostEditorFragment"
 	>
 
 	<LinearLayout
+		android:focusable="true"
+		android:focusableInTouchMode="true"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
 		>
 
-		<LinearLayout
-			android:layout_width="wrap_content"
+		<RelativeLayout
+			android:id="@+id/protocol_item"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:layout_marginStart="4dp"
-			android:layout_marginLeft="4dp"
-			android:layout_marginBottom="4dp"
 			>
 
+			<ImageView
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:src="@drawable/ic_laptop"
+				android:contentDescription="@string/protocol_spinner_label"
+				style="@style/ListItemIcon"
+				/>
+
 			<TextView
+				android:id="@+id/protocol_title"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/protocol_spinner_label"
-				android:textSize="12sp"
+				style="@style/ListItemFirstLineText.WithIcon"
 				/>
 
-			<Spinner
-				android:id="@+id/transport_selector"
+			<TextView
+				android:id="@+id/protocol_text"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_below="@id/protocol_title"
+				tools:text="ssh"
+				style="@style/ListItemSecondLineText.WithIcon"
 				/>
 
-		</LinearLayout>
+		</RelativeLayout>
 
 		<LinearLayout
+			android:layout_marginLeft="68dp"
+			android:layout_marginStart="68dp"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:animateLayoutChanges="true"
@@ -96,8 +110,10 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
-			android:layout_marginLeft="56dp"
-			android:layout_marginStart="56dp"
+			android:layout_marginLeft="68dp"
+			android:layout_marginStart="68dp"
+			android:layout_marginRight="48dp"
+			android:layout_marginEnd="48dp"
 			android:visibility="gone"
 			android:animateLayoutChanges="true"
 			tools:ignore="UnusedAttribute"
@@ -156,118 +172,228 @@
 
 		</LinearLayout>
 
-		<View style="@style/Divider"
-			/>
-
-		<android.support.design.widget.TextInputLayout
+		<RelativeLayout
+			android:id="@+id/nickname_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			>
 
-			<EditText
-				android:id="@+id/nickname_field"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:maxLines="1"
-				android:inputType="text"
-				android:hint="@string/hostpref_nickname_title"
+			<ImageView
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:src="@drawable/ic_person"
+				android:contentDescription="@string/hostpref_color_title"
+				style="@style/ListItemIcon"
 				/>
 
-		</android.support.design.widget.TextInputLayout>
+			<android.support.design.widget.TextInputLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="68dp"
+				android:layout_marginStart="68dp"
+				android:layout_marginRight="16dp"
+				android:layout_marginEnd="16dp"
+				>
 
-		<LinearLayout
+				<EditText
+					android:id="@+id/nickname_field"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:maxLines="1"
+					android:inputType="text"
+					android:hint="@string/hostpref_nickname_title"
+					/>
+
+			</android.support.design.widget.TextInputLayout>
+
+		</RelativeLayout>
+
+		<RelativeLayout
+			android:id="@+id/color_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:layout_marginStart="4dp"
-			android:layout_marginLeft="4dp"
-			android:layout_marginBottom="4dp"
 			>
 
+			<ImageView
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:src="@drawable/ic_palette"
+				android:contentDescription="@string/hostpref_color_title"
+				style="@style/ListItemIcon"
+				/>
+
 			<TextView
+				android:id="@+id/color_title"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/hostpref_color_title"
-				android:textSize="12sp"
+				style="@style/ListItemFirstLineText.WithIcon"
 				/>
 
-			<Spinner
-				android:id="@+id/color_selector"
+			<TextView
+				android:id="@+id/color_text"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:entries="@array/list_colors"
-				android:entryValues="@array/list_color_values"
+				android:layout_below="@id/color_title"
+				tools:text="gray"
+				style="@style/ListItemSecondLineText.WithIcon"
 				/>
 
-		</LinearLayout>
+		</RelativeLayout>
 
-		<LinearLayout
+		<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:layout_marginStart="4dp"
-			android:layout_marginLeft="4dp"
-			android:layout_marginBottom="4dp"
 			>
+
+			<ImageView
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:src="@drawable/ic_format_size"
+				android:contentDescription="@string/hostpref_fontsize_title"
+				style="@style/ListItemIcon"
+				/>
+
+			<TextView
+				android:id="@+id/font_size_title"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/hostpref_fontsize_title"
+				style="@style/ListItemFirstLineText.WithIcon"
+				/>
 
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginLeft="62dp"
+				android:layout_marginStart="62dp"
+				android:paddingBottom="8dp"
+				android:layout_below="@id/font_size_title"
 				>
 
-				<TextView
-					android:layout_width="wrap_content"
+				<SeekBar
+					android:id="@+id/font_size_bar"
+					android:layout_width="0dp"
+					android:layout_weight="1"
 					android:layout_height="wrap_content"
-					android:text="@string/hostpref_fontsize_title"
-					android:textSize="12sp"
+					android:layout_gravity="center"
+					android:max="32"
 					/>
 
-				<TextView
+				<EditText
 					android:id="@+id/font_size_text"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textSize="12sp"
+					android:layout_gravity="center_vertical"
+					android:layout_marginRight="16dp"
+					android:layout_marginEnd="16dp"
+					android:inputType="number"
+					android:maxLines="1"
+					tools:text="10"
 					/>
 
 			</LinearLayout>
 
-			<SeekBar
-				android:id="@+id/font_size_bar"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:max="32"
-				/>
+		</RelativeLayout>
 
-		</LinearLayout>
-
-		<View style="@style/Divider"
-			/>
-
-		<LinearLayout
-			android:layout_width="wrap_content"
+		<RelativeLayout
+			android:id="@+id/pubkey_item"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:layout_marginStart="4dp"
-			android:layout_marginLeft="4dp"
-			android:layout_marginBottom="4dp"
 			>
 
+			<ImageView
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:src="@drawable/ic_vpn_key"
+				android:contentDescription="@string/hostpref_pubkeyid_title"
+				style="@style/ListItemIcon"
+				/>
+
 			<TextView
+				android:id="@+id/pubkey_title"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/hostpref_pubkeyid_title"
-				android:textSize="12sp"
+				style="@style/ListItemFirstLineText.WithIcon"
 				/>
 
-			<Spinner
-				android:id="@+id/pubkey_spinner"
+			<TextView
+				android:id="@+id/pubkey_text"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:entries="@array/list_pubkeyids"
-				android:entryValues="@array/list_pubkeyids_value"
+				android:layout_below="@id/pubkey_title"
+				tools:text="Use any key"
+				style="@style/ListItemSecondLineText.WithIcon"
 				/>
 
-		</LinearLayout>
+		</RelativeLayout>
+
+		<RelativeLayout
+			android:id="@+id/delkey_item"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			>
+
+			<ImageView
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:src="@drawable/ic_keyboard"
+				android:contentDescription="@string/hostpref_delkey_title"
+				style="@style/ListItemIcon"
+				/>
+
+			<TextView
+				android:id="@+id/delkey_title"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/hostpref_delkey_title"
+				style="@style/ListItemFirstLineText.WithIcon"
+				/>
+
+			<TextView
+				android:id="@+id/delkey_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/delkey_title"
+				tools:text="Delete"
+				style="@style/ListItemSecondLineText.WithIcon"
+				/>
+
+		</RelativeLayout>
+
+		<RelativeLayout
+			android:id="@+id/encoding_item"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			>
+
+			<ImageView
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:src="@drawable/ic_code"
+				android:contentDescription="@string/hostpref_encoding_title"
+				style="@style/ListItemIcon"
+				/>
+
+			<TextView
+				android:id="@+id/encoding_title"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/hostpref_encoding_title"
+				style="@style/ListItemFirstLineText.WithIcon"
+				/>
+
+			<TextView
+				android:id="@+id/encoding_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/encoding_title"
+				tools:text="UTF-8"
+				style="@style/ListItemSecondLineText.WithIcon"
+				/>
+
+		</RelativeLayout>
 
 		<LinearLayout
 			android:layout_width="match_parent"
@@ -276,14 +402,17 @@
 			>
 
 			<RelativeLayout
+				android:id="@+id/use_ssh_auth_item"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				>
 
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/hostpref_authagent_title"
+				<ImageView
+					android:layout_width="24dp"
+					android:layout_height="24dp"
+					android:src="@drawable/ic_vpn_lock"
+					android:contentDescription="@string/hostpref_authagent_title"
+					style="@style/ListItemIcon"
 					/>
 
 				<android.support.v7.widget.SwitchCompat
@@ -292,14 +421,28 @@
 					android:layout_height="wrap_content"
 					android:layout_alignParentRight="true"
 					android:layout_alignParentEnd="true"
+					android:layout_marginRight="16dp"
+					android:layout_marginEnd="16dp"
+					android:layout_centerVertical="true"
+					/>
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_toLeftOf="@id/use_ssh_auth_switch"
+					android:layout_toStartOf="@id/use_ssh_auth_switch"
+					android:text="@string/hostpref_authagent_title"
+					android:paddingBottom="24dp"
+					style="@style/ListItemFirstLineText.WithIcon"
+					tools:ignore="RelativeOverlap"
 					/>
 
 			</RelativeLayout>
 
 			<RelativeLayout
-				android:id="@+id/ssh_confirmation_container"
+				android:id="@+id/ssh_auth_confirmation_item"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
+				android:layout_height="32dp"
 				android:visibility="gone"
 				>
 
@@ -307,6 +450,10 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:text="@string/hostpref_authagent_with_confirmation"
+					android:textSize="14sp"
+					android:layout_marginTop="8dp"
+					android:layout_marginLeft="72dp"
+					android:layout_marginStart="72dp"
 					/>
 
 				<android.support.v7.widget.AppCompatCheckBox
@@ -315,6 +462,7 @@
 					android:layout_height="wrap_content"
 					android:layout_alignParentRight="true"
 					android:layout_alignParentEnd="true"
+					android:padding="16dp"
 					/>
 
 			</RelativeLayout>
@@ -322,14 +470,25 @@
 		</LinearLayout>
 
 		<RelativeLayout
+			android:id="@+id/compression_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			>
 
+			<ImageView
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:src="@drawable/ic_zip"
+				android:contentDescription="@string/hostpref_compression_title"
+				style="@style/ListItemIcon"
+				/>
+
 			<TextView
-				android:layout_width="match_parent"
+				android:id="@+id/compression_title"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/hostpref_compression_title"
+				style="@style/ListItemFirstLineText.WithIcon"
 				/>
 
 			<android.support.v7.widget.SwitchCompat
@@ -338,19 +497,43 @@
 				android:layout_height="wrap_content"
 				android:layout_alignParentRight="true"
 				android:layout_alignParentEnd="true"
+				android:layout_marginRight="16dp"
+				android:layout_marginEnd="16dp"
+				android:layout_centerVertical="true"
+				/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_toLeftOf="@id/compression_switch"
+				android:layout_toStartOf="@id/compression_switch"
+				android:layout_below="@id/compression_title"
+				android:text="@string/hostpref_compression_summary"
+				style="@style/ListItemSecondLineText.WithIcon"
 				/>
 
 		</RelativeLayout>
 
 		<RelativeLayout
+			android:id="@+id/start_shell_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			>
 
+			<ImageView
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:src="@drawable/ic_laptop"
+				android:contentDescription="@string/hostpref_wantsession_title"
+				style="@style/ListItemIcon"
+				/>
+
 			<TextView
-				android:layout_width="match_parent"
+				android:id="@+id/shell_session_title"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/hostpref_wantsession_title"
+				style="@style/ListItemFirstLineText.WithIcon"
 				/>
 
 			<android.support.v7.widget.SwitchCompat
@@ -359,19 +542,43 @@
 				android:layout_height="wrap_content"
 				android:layout_alignParentRight="true"
 				android:layout_alignParentEnd="true"
+				android:layout_marginRight="16dp"
+				android:layout_marginEnd="16dp"
+				android:layout_centerVertical="true"
+				/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/hostpref_wantsession_summary"
+				android:layout_toLeftOf="@id/start_shell_switch"
+				android:layout_toStartOf="@id/start_shell_switch"
+				android:layout_below="@id/shell_session_title"
+				style="@style/ListItemSecondLineText.WithIcon"
 				/>
 
 		</RelativeLayout>
 
 		<RelativeLayout
+			android:id="@+id/stay_connected_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			>
 
+			<ImageView
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:src="@drawable/ic_sync"
+				android:contentDescription="@string/hostpref_stayconnected_title"
+				style="@style/ListItemIcon"
+				/>
+
 			<TextView
-				android:layout_width="match_parent"
+				android:id="@+id/stay_connected_title"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/hostpref_stayconnected_title"
+				style="@style/ListItemFirstLineText.WithIcon"
 				/>
 
 			<android.support.v7.widget.SwitchCompat
@@ -380,19 +587,43 @@
 				android:layout_height="wrap_content"
 				android:layout_alignParentRight="true"
 				android:layout_alignParentEnd="true"
+				android:layout_marginRight="16dp"
+				android:layout_marginEnd="16dp"
+				android:layout_centerVertical="true"
+				/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/hostpref_stayconnected_summary"
+				android:layout_toLeftOf="@id/stay_connected_switch"
+				android:layout_toStartOf="@id/stay_connected_switch"
+				android:layout_below="@id/stay_connected_title"
+				style="@style/ListItemSecondLineText.WithIcon"
 				/>
 
 		</RelativeLayout>
 
 		<RelativeLayout
+			android:id="@+id/close_on_disconnect_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			>
 
+			<ImageView
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:src="@drawable/ic_sync_disabled"
+				android:contentDescription="@string/hostpref_quickdisconnect_title"
+				style="@style/ListItemIcon"
+				/>
+
 			<TextView
-				android:layout_width="match_parent"
+				android:id="@+id/close_on_disconnect_title"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/hostpref_quickdisconnect_title"
+				style="@style/ListItemFirstLineText.WithIcon"
 				/>
 
 			<android.support.v7.widget.SwitchCompat
@@ -401,81 +632,70 @@
 				android:layout_height="wrap_content"
 				android:layout_alignParentRight="true"
 				android:layout_alignParentEnd="true"
+				android:layout_marginRight="16dp"
+				android:layout_marginEnd="16dp"
+				android:layout_centerVertical="true"
+				/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/hostpref_quickdisconnect_summary"
+				android:layout_toLeftOf="@id/close_on_disconnect_switch"
+				android:layout_toStartOf="@id/close_on_disconnect_switch"
+				android:layout_below="@id/close_on_disconnect_title"
+				style="@style/ListItemSecondLineText.WithIcon"
 				/>
 
 		</RelativeLayout>
 
 		<RelativeLayout
+			android:id="@+id/postlogin_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			>
 
+			<ImageView
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:src="@drawable/ic_android"
+				android:contentDescription="@string/hostpref_postlogin_title"
+				style="@style/ListItemIcon"
+				/>
+
 			<TextView
-				android:layout_width="match_parent"
+				android:id="@+id/postlogin_title"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/hostpref_postlogin_title"
+				style="@style/ListItemFirstLineText.WithIcon"
+				/>
+
+			<TextView
+				android:id="@+id/postlogin_summary"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/hostpref_postlogin_summary"
+				android:layout_below="@id/postlogin_title"
+				android:layout_alignParentBottom="false"
+				android:paddingBottom="2dp"
+				style="@style/ListItemSecondLineText.WithIcon"
 				/>
 
 			<EditText
 				android:id="@+id/post_login_automation_field"
 				android:layout_height="wrap_content"
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
+				android:layout_marginLeft="72dp"
+				android:layout_marginStart="72dp"
+				android:layout_below="@id/postlogin_summary"
 				android:inputType="textMultiLine"
 				android:lines="8"
 				android:minLines="2"
 				/>
 
+
 		</RelativeLayout>
-
-		<LinearLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:layout_marginStart="4dp"
-			android:layout_marginLeft="4dp"
-			android:layout_marginBottom="4dp"
-			>
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/hostpref_delkey_title"
-				android:textSize="12sp"
-				/>
-
-			<Spinner
-				android:id="@+id/del_key_spinner"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:entries="@array/list_delkey"
-				android:entryValues="@array/list_delkey_values"
-				/>
-
-		</LinearLayout>
-
-		<LinearLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:layout_marginStart="4dp"
-			android:layout_marginLeft="4dp"
-			android:layout_marginBottom="4dp"
-				>
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/hostpref_encoding_title"
-				android:textSize="12sp"
-				/>
-
-			<Spinner
-				android:id="@+id/encoding_spinner"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				/>
-
-		</LinearLayout>
 
 	</LinearLayout>
 

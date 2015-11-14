@@ -4,7 +4,5 @@
   <string name="pubkey_list_empty">Tap Menu to create\nor import key pairs.</string>
   <string name="portforward_list_empty">Tap Menu to create\nport forwards.</string>
   <string name="hostpref_color_title">Colour category</string>
-  <string name="list_format_error">Use the format %1$s</string>
   <string name="list_menu_sortcolor">Sort by colour</string>
-  <string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran. Submit error report to ConnectBot developers?</string>
 </resources>

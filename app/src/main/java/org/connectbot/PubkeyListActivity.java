@@ -41,7 +41,6 @@ import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.crypto.PEMDecoder;
 import com.trilead.ssh2.crypto.PEMStructure;
 
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
@@ -61,6 +60,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
@@ -169,55 +169,57 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 	}
 
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.pubkey_list_activity_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 
-		MenuItem generatekey = menu.add(R.string.pubkey_generate);
-		generatekey.setIcon(android.R.drawable.ic_menu_manage);
-		generatekey.setIntent(new Intent(PubkeyListActivity.this, GeneratePubkeyActivity.class));
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.add_new_key_icon:
+			startActivity(new Intent(this, GeneratePubkeyActivity.class));
+			return true;
+		case R.id.import_existing_key_icon:
+			Uri sdcard = Uri.fromFile(Environment.getExternalStorageDirectory());
+			String pickerTitle = getString(R.string.pubkey_list_pick);
 
-		MenuItem importkey = menu.add(R.string.pubkey_import);
-		importkey.setIcon(android.R.drawable.ic_menu_upload);
-		importkey.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				Uri sdcard = Uri.fromFile(Environment.getExternalStorageDirectory());
-				String pickerTitle = getString(R.string.pubkey_list_pick);
+			// Try to use OpenIntent's file browser to pick a file
+			Intent intent = new Intent(FileManagerIntents.ACTION_PICK_FILE);
+			intent.setData(sdcard);
+			intent.putExtra(FileManagerIntents.EXTRA_TITLE, pickerTitle);
+			intent.putExtra(FileManagerIntents.EXTRA_BUTTON_TEXT, getString(android.R.string.ok));
 
-				// Try to use OpenIntent's file browser to pick a file
-				Intent intent = new Intent(FileManagerIntents.ACTION_PICK_FILE);
-				intent.setData(sdcard);
-				intent.putExtra(FileManagerIntents.EXTRA_TITLE, pickerTitle);
-				intent.putExtra(FileManagerIntents.EXTRA_BUTTON_TEXT, getString(android.R.string.ok));
+			try {
+				startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
+			} catch (ActivityNotFoundException e) {
+				// If OI didn't work, try AndExplorer
+				intent = new Intent(Intent.ACTION_PICK);
+				intent.setDataAndType(sdcard, MIME_TYPE_ANDEXPLORER_FILE);
+				intent.putExtra(ANDEXPLORER_TITLE, pickerTitle);
 
 				try {
 					startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
-				} catch (ActivityNotFoundException e) {
-					// If OI didn't work, try AndExplorer
-					intent = new Intent(Intent.ACTION_PICK);
-					intent.setDataAndType(sdcard, MIME_TYPE_ANDEXPLORER_FILE);
-					intent.putExtra(ANDEXPLORER_TITLE, pickerTitle);
-
-					try {
-						startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
-					} catch (ActivityNotFoundException e1) {
-						pickFileSimple();
-					}
+				} catch (ActivityNotFoundException e1) {
+					pickFileSimple();
 				}
-
-				return true;
 			}
-		});
-
-		return true;
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	protected void handleAddKey(final PubkeyBean pubkey) {
 		if (pubkey.isEncrypted()) {
-			final View view = inflater.inflate(R.layout.dia_password, null);
+			final View view = View.inflate(this, R.layout.dia_password, null);
 			final EditText passwordField = (EditText) view.findViewById(android.R.id.text1);
 
-			new AlertDialog.Builder(PubkeyListActivity.this)
+			new android.support.v7.app.AlertDialog.Builder(
+					PubkeyListActivity.this, R.style.AlertDialogTheme)
 				.setView(view)
 				.setPositiveButton(R.string.pubkey_unlock, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
@@ -374,7 +376,8 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		final String state = Environment.getExternalStorageState();
 		if (!Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)
 				&& !Environment.MEDIA_MOUNTED.equals(state)) {
-			new AlertDialog.Builder(PubkeyListActivity.this)
+			new android.support.v7.app.AlertDialog.Builder(
+					PubkeyListActivity.this, R.style.AlertDialogTheme)
 				.setMessage(R.string.alert_sdcard_absent)
 				.setNegativeButton(android.R.string.cancel, null).create().show();
 			return;
@@ -396,7 +399,8 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		Log.d(TAG, names.toString());
 
 		// prompt user to select any file from the sdcard root
-		new AlertDialog.Builder(PubkeyListActivity.this)
+		new android.support.v7.app.AlertDialog.Builder(
+				PubkeyListActivity.this, R.style.AlertDialogTheme)
 			.setTitle(R.string.pubkey_list_pick)
 			.setItems(namesList, new OnClickListener() {
 				public void onClick(DialogInterface arg0, int arg1) {
@@ -521,10 +525,12 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			changePassword.setEnabled(!imported);
 			changePassword.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {
-					final View changePasswordView = inflater.inflate(R.layout.dia_changepassword, null, false);
+					final View changePasswordView =
+							View.inflate(PubkeyListActivity.this, R.layout.dia_changepassword, null);
 					((TableRow) changePasswordView.findViewById(R.id.old_password_prompt))
 							.setVisibility(pubkey.isEncrypted() ? View.VISIBLE : View.GONE);
-					new AlertDialog.Builder(PubkeyListActivity.this)
+					new android.support.v7.app.AlertDialog.Builder(
+									PubkeyListActivity.this, R.style.AlertDialogTheme)
 							.setView(changePasswordView)
 							.setPositiveButton(R.string.button_change, new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int which) {
@@ -533,7 +539,9 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 									String password2 = ((EditText) changePasswordView.findViewById(R.id.password2)).getText().toString();
 
 									if (!password1.equals(password2)) {
-										new AlertDialog.Builder(PubkeyListActivity.this)
+										new android.support.v7.app.AlertDialog.Builder(
+														PubkeyListActivity.this,
+														R.style.AlertDialogTheme)
 												.setMessage(R.string.alert_passwords_do_not_match_msg)
 												.setPositiveButton(android.R.string.ok, null)
 												.create().show();
@@ -542,7 +550,9 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 									try {
 										if (!pubkey.changePassword(oldPassword, password1))
-											new AlertDialog.Builder(PubkeyListActivity.this)
+											new android.support.v7.app.AlertDialog.Builder(
+															PubkeyListActivity.this,
+															R.style.AlertDialogTheme)
 													.setMessage(R.string.alert_wrong_password_msg)
 													.setPositiveButton(android.R.string.ok, null)
 													.create().show();
@@ -553,7 +563,9 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 										}
 									} catch (Exception e) {
 										Log.e(TAG, "Could not change private key password", e);
-										new AlertDialog.Builder(PubkeyListActivity.this)
+										new android.support.v7.app.AlertDialog.Builder(
+														PubkeyListActivity.this,
+														R.style.AlertDialogTheme)
 												.setMessage(R.string.alert_key_corrupted_msg)
 												.setPositiveButton(android.R.string.ok, null)
 												.create().show();
@@ -584,7 +596,8 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {
 					// prompt user to make sure they really want this
-					new AlertDialog.Builder(PubkeyListActivity.this)
+					new android.support.v7.app.AlertDialog.Builder(
+									PubkeyListActivity.this, R.style.AlertDialogTheme)
 							.setMessage(getString(R.string.delete_message, pubkey.getNickname()))
 							.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int which) {

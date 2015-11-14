@@ -18,6 +18,7 @@
 package org.connectbot;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 
 import android.content.ContentValues;
@@ -29,19 +30,18 @@ import android.os.Parcelable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.connectbot.bean.HostBean;
@@ -59,7 +59,10 @@ public class HostEditorFragment extends Fragment {
 	private static final String ARG_PUBKEY_VALUES = "pubkeyValues";
 	private static final String ARG_QUICKCONNECT_STRING = "quickConnectString";
 
+	// Note: The "max" value for mFontSizeSeekBar is 32. If these font values change, this value
+	// must be changed in the SeekBar's XML.
 	private static final int MINIMUM_FONT_SIZE = 8;
+	private static final int MAXIMUM_FONT_SIZE = 40;
 
 	// The host being edited.
 	private HostBean mHost;
@@ -68,10 +71,6 @@ public class HostEditorFragment extends Fragment {
 	// Lists because Bundles can only contain ArrayLists, not general Lists.
 	private ArrayList<String> mPubkeyNames;
 	private ArrayList<String> mPubkeyValues;
-	
-	// Whether the host is being created for the first time (as opposed to an existing one being
-	// edited).
-	private boolean mIsCreating;
 
 	// The listener for changes to this host.
 	private Listener mListener;
@@ -86,17 +85,24 @@ public class HostEditorFragment extends Fragment {
 	// first field, etc.
 	private boolean mUriFieldEditInProgress = false;
 
-	// Values for the colors displayed in the color Spinner. These are not necessarily the same as
-	// the text in the Spinner because the text is localized while these values are not.
+	// Names and values for the colors displayed in the color Spinner. Names are localized, while
+	// values are the same across languages, so the values are the ones saved to the database.
+	private TypedArray mColorNames;
 	private TypedArray mColorValues;
 
-	// Likewise, but for SSH auth agent values.
+	// Likewise, but for SSH auth agent.
+	private TypedArray mSshAuthNames;
 	private TypedArray mSshAuthValues;
 
-	// Likewise, but for DEL key values.
+	// Likewise, but for DEL key.
+	private TypedArray mDelKeyNames;
 	private TypedArray mDelKeyValues;
 
-	private Spinner mTransportSpinner;
+	// A map from Charset display name to Charset value (i.e., unique ID for the Charset).
+	private Map<String, String> mCharsetData;
+
+	private View mTransportItem;
+	private TextView mTransportText;
 	private TextInputLayout mQuickConnectContainer;
 	private EditText mQuickConnectField;
 	private ImageButton mExpandCollapseButton;
@@ -107,21 +113,31 @@ public class HostEditorFragment extends Fragment {
 	private EditText mHostnameField;
 	private View mPortContainer;
 	private EditText mPortField;
+	private View mNicknameItem;
 	private EditText mNicknameField;
-	private Spinner mColorSelector;
-	private TextView mFontSizeText;
+	private View mColorItem;
+	private TextView mColorText;
+	private EditText mFontSizeText;
 	private SeekBar mFontSizeSeekBar;
-	private Spinner mPubkeySpinner;
-	private View mUseSshConfirmationContainer;
+	private View mPubkeyItem;
+	private TextView mPubkeyText;
+	private View mDelKeyItem;
+	private TextView mDelKeyText;
+	private View mEncodingItem;
+	private TextView mEncodingText;
+	private View mUseSshAuthItem;
 	private SwitchCompat mUseSshAuthSwitch;
-	private AppCompatCheckBox mSshAuthConfirmationCheckbox;
+	private View mUseSshConfirmationItem;
+	private AppCompatCheckBox mUseSshConfirmationCheckbox;
+	private View mCompressionItem;
 	private SwitchCompat mCompressionSwitch;
+	private View mStartShellItem;
 	private SwitchCompat mStartShellSwitch;
+	private View mStayConnectedItem;
 	private SwitchCompat mStayConnectedSwitch;
+	private View mCloseOnDisconnectItem;
 	private SwitchCompat mCloseOnDisconnectSwitch;
 	private EditText mPostLoginAutomationField;
-	private Spinner mDelKeySpinner;
-	private Spinner mEncodingSpinner;
 
 	public static HostEditorFragment newInstance(
 			HostBean existingHost, ArrayList<String> pubkeyNames, ArrayList<String> pubkeyValues) {
@@ -147,7 +163,6 @@ public class HostEditorFragment extends Fragment {
 		Bundle bundle = savedInstanceState == null ? getArguments() : savedInstanceState;
 
 		Parcelable existingHostParcelable = bundle.getParcelable(ARG_EXISTING_HOST);
-		mIsCreating = existingHostParcelable == null;
 		if (existingHostParcelable != null) {
 			mHost = HostBean.fromContentValues((ContentValues) existingHostParcelable);
 			mHost.setId(bundle.getLong(ARG_EXISTING_HOST_ID));
@@ -166,61 +181,32 @@ public class HostEditorFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_host_editor, container, false);
 
-		mTransportSpinner = (Spinner) view.findViewById(R.id.transport_selector);
-		String[] transportNames = TransportFactory.getTransportNames();
-		ArrayAdapter<String> transportSelection = new ArrayAdapter<>(
-				getActivity(), android.R.layout.simple_spinner_item, transportNames);
-		transportSelection.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		mTransportSpinner.setAdapter(transportSelection);
-		for (int i = 0; i < transportNames.length; i++) {
-			if (transportNames[i].equals(mHost.getProtocol())) {
-				mTransportSpinner.setSelection(i);
-				break;
-			}
-		}
-		mTransportSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		mTransportItem = view.findViewById(R.id.protocol_item);
+		mTransportItem.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				String protocol = (String) mTransportSpinner.getSelectedItem();
-				if (protocol == null) {
-					// During initialization, protocol can be null before the list of dropdown items
-					// has been generated. Return early in that case.
-					return;
+			public void onClick(View v) {
+				PopupMenu menu = new PopupMenu(getActivity(), v);
+				for (String name : TransportFactory.getTransportNames()) {
+					menu.getMenu().add(name);
 				}
-
-				mHost.setProtocol(protocol);
-				mHost.setPort(TransportFactory.getTransport(protocol).getDefaultPort());
-				handleHostChange();
-
-				mQuickConnectContainer.setHint(
-						TransportFactory.getFormatHint(protocol, getActivity()));
-
-				// Different protocols have different field types, so show only the fields needed.
-				if (SSH.getProtocolName().equals(protocol)) {
-					mUsernameContainer.setVisibility(View.VISIBLE);
-					mHostnameContainer.setVisibility(View.VISIBLE);
-					mPortContainer.setVisibility(View.VISIBLE);
-					mExpandCollapseButton.setVisibility(View.VISIBLE);
-				} else if (Telnet.getProtocolName().equals(protocol)) {
-					mUsernameContainer.setVisibility(View.GONE);
-					mHostnameContainer.setVisibility(View.VISIBLE);
-					mPortContainer.setVisibility(View.VISIBLE);
-					mExpandCollapseButton.setVisibility(View.VISIBLE);
-				} else {
-					// Local protocol has only one field, so no need to show the URI parts
-					// container.
-					setUriPartsContainerExpanded(false);
-					mExpandCollapseButton.setVisibility(View.INVISIBLE);
-				}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
+				menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+						setTransportType(
+								item.getTitle().toString(), /* setDefaultPortInModel */ true);
+						return true;
+					}
+				});
+				menu.show();
 			}
 		});
 
+		mTransportText = (TextView) view.findViewById(R.id.protocol_text);
+
 		mQuickConnectContainer =
 				(TextInputLayout) view.findViewById(R.id.quickconnect_field_container);
+		/* Request focus on creation because elements in this fragment do not autofocus. */
+		mQuickConnectContainer.requestFocus();
 
 		mQuickConnectField = (EditText) view.findViewById(R.id.quickconnect_field);
 		String oldQuickConnect = savedInstanceState == null ?
@@ -237,15 +223,8 @@ public class HostEditorFragment extends Fragment {
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				if (mTransportSpinner.getSelectedItem() == null) {
-					// During initialization, protocol can be null before the list of dropdown items
-					// has been generated. Return early in that case.
-					return;
-				}
-
 				if (!mUriFieldEditInProgress) {
-					applyQuickConnectString(
-							s.toString(), (String) mTransportSpinner.getSelectedItem());
+					applyQuickConnectString(s.toString(), mHost.getProtocol());
 
 					mUriFieldEditInProgress = true;
 					mUsernameField.setText(mHost.getUsername());
@@ -281,43 +260,71 @@ public class HostEditorFragment extends Fragment {
 		mPortField.setText(Integer.toString(mHost.getPort()));
 		mPortField.addTextChangedListener(new HostTextFieldWatcher(HostDatabase.FIELD_HOST_PORT));
 
+		mNicknameItem = view.findViewById(R.id.nickname_item);
+
+		setTransportType(mHost.getProtocol(), /* setDefaultPortInModel */ false);
+
 		mNicknameField = (EditText) view.findViewById(R.id.nickname_field);
 		mNicknameField.setText(mHost.getNickname());
 		mNicknameField.addTextChangedListener(
 				new HostTextFieldWatcher(HostDatabase.FIELD_HOST_NICKNAME));
 
-		mColorSelector = (Spinner) view.findViewById(R.id.color_selector);
-		for (int i = 0; i < mColorValues.length(); i++) {
-			if (mColorValues.getString(i).equals(mHost.getColor())) {
-				mColorSelector.setSelection(i);
-				break;
-			}
-		}
-		mColorSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		mColorItem = view.findViewById(R.id.color_item);
+		mColorItem.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				mHost.setColor(mColorValues.getString(position));
-				handleHostChange();
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
+			public void onClick(View v) {
+				PopupMenu menu = new PopupMenu(getActivity(), v);
+				for (int i = 0; i < mColorNames.length(); i++) {
+					menu.getMenu().add(mColorNames.getText(i));
+				}
+				menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+						for (int i = 0; i < mColorNames.length(); i++) {
+							if (item.getTitle().toString().equals(mColorNames.getText(i).toString())) {
+								mHost.setColor(mColorValues.getText(i).toString());
+								mColorText.setText(mColorNames.getText(i));
+								return true;
+							}
+						}
+						return false;
+					}
+				});
+				menu.show();
 			}
 		});
 
-		mFontSizeText = (TextView) view.findViewById(R.id.font_size_text);
+		mColorText = (TextView) view.findViewById(R.id.color_text);
+		for (int i = 0; i < mColorValues.length(); i++) {
+			if (mColorValues.getText(i).toString().equals(mHost.getColor())) {
+				mColorText.setText(mColorNames.getText(i));
+				break;
+			}
+		}
+
+		mFontSizeText = (EditText) view.findViewById(R.id.font_size_text);
+		mFontSizeText.setText(Integer.toString(mHost.getFontSize()));
+		mFontSizeText.addTextChangedListener(
+				new HostTextFieldWatcher(HostDatabase.FIELD_HOST_FONTSIZE));
+		mFontSizeText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus)
+					mFontSizeText.setText(Integer.toString(mHost.getFontSize()));
+			}
+		});
+
 		mFontSizeSeekBar = (SeekBar) view.findViewById(R.id.font_size_bar);
 		mFontSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				int fontSize = MINIMUM_FONT_SIZE + progress;
-				mHost.setFontSize(fontSize);
-				handleHostChange();
-				mFontSizeText.setText(Integer.toString(fontSize));
+				setFontSize(MINIMUM_FONT_SIZE + progress);
 			}
 
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
+				/* Clear focus on font size EditText so its text value can update. */
+				mFontSizeText.clearFocus();
 			}
 
 			@Override
@@ -326,116 +333,295 @@ public class HostEditorFragment extends Fragment {
 		});
 		mFontSizeSeekBar.setProgress(mHost.getFontSize() - MINIMUM_FONT_SIZE);
 
-		mPubkeySpinner = (Spinner) view.findViewById(R.id.pubkey_spinner);
-		final String[] pubkeyNames = new String[mPubkeyNames.size()];
-		mPubkeyNames.toArray(pubkeyNames);
-		ArrayAdapter<String> pubkeySelection = new ArrayAdapter<String>(
-				getActivity(), android.R.layout.simple_spinner_item, pubkeyNames);
-		pubkeySelection.setDropDownViewResource(
-				android.R.layout.simple_spinner_dropdown_item);
-		mPubkeySpinner.setAdapter(pubkeySelection);
-		for (int i = 0; i < pubkeyNames.length; i++) {
-			if (mHost.getPubkeyId() == Integer.parseInt(mPubkeyValues.get(i))) {
-				mPubkeySpinner.setSelection(i);
-				break;
-			}
-		}
-		mPubkeySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		mPubkeyItem = view.findViewById(R.id.pubkey_item);
+		mPubkeyItem.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				mHost.setPubkeyId(Integer.parseInt(mPubkeyValues.get(position)));
-				handleHostChange();
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
+			public void onClick(View v) {
+				PopupMenu menu = new PopupMenu(getActivity(), v);
+				for (String name : mPubkeyNames) {
+					menu.getMenu().add(name);
+				}
+				menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+						for (int i = 0; i < mPubkeyNames.size(); i++) {
+							if (mPubkeyNames.get(i).equals(item.getTitle())) {
+								mHost.setPubkeyId(Long.parseLong(mPubkeyValues.get(i)));
+								mPubkeyText.setText(mPubkeyNames.get(i));
+								return true;
+							}
+						}
+						return false;
+					}
+				});
+				menu.show();
 			}
 		});
 
-		mUseSshConfirmationContainer = view.findViewById(R.id.ssh_confirmation_container);
+		mPubkeyText = (TextView) view.findViewById(R.id.pubkey_text);
+		for (int i = 0; i < mPubkeyValues.size(); i++) {
+			if (mHost.getPubkeyId() == Long.parseLong(mPubkeyValues.get(i))) {
+				mPubkeyText.setText(mPubkeyNames.get(i));
+				break;
+			}
+		}
+
+		mDelKeyItem = view.findViewById(R.id.delkey_item);
+		mDelKeyItem.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PopupMenu menu = new PopupMenu(getActivity(), v);
+				for (int i = 0; i < mDelKeyNames.length(); i++) {
+					menu.getMenu().add(mDelKeyNames.getText(i));
+				}
+				menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+						for (int i = 0; i < mDelKeyNames.length(); i++) {
+							if (mDelKeyNames.getText(i).equals(item.getTitle())) {
+								mHost.setDelKey(mDelKeyValues.getText(i).toString());
+								mDelKeyText.setText(mDelKeyNames.getText(i));
+								return true;
+							}
+						}
+						return false;
+					}
+				});
+				menu.show();
+			}
+		});
+
+		mDelKeyText = (TextView) view.findViewById(R.id.delkey_text);
+		for (int i = 0; i < mDelKeyValues.length(); i++) {
+			if (mDelKeyValues.getText(i).toString().equals(mHost.getDelKey())) {
+				mDelKeyText.setText(mDelKeyNames.getText(i));
+				break;
+			}
+		}
+
+		mEncodingItem = view.findViewById(R.id.encoding_item);
+		mEncodingItem.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PopupMenu menu = new PopupMenu(getActivity(), v);
+				for (String displayName : mCharsetData.keySet()) {
+					menu.getMenu().add(displayName);
+				}
+				menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+						for (String displayName : mCharsetData.keySet()) {
+							if (displayName.equals(item.getTitle())) {
+								mHost.setEncoding(mCharsetData.get(displayName));
+								mEncodingText.setText(displayName);
+								return true;
+							}
+						}
+						return false;
+					}
+				});
+				menu.show();
+			}
+		});
+
+		// The encoding text is initialized in setCharsetData() because Charset data is not always
+		// available when this fragment is created.
+		mEncodingText = (TextView) view.findViewById(R.id.encoding_text);
+
+		mUseSshAuthItem = view.findViewById(R.id.use_ssh_auth_item);
+		mUseSshAuthItem.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mUseSshAuthSwitch.toggle();
+			}
+		});
+
 		mUseSshAuthSwitch = (SwitchCompat) view.findViewById(R.id.use_ssh_auth_switch);
-		mSshAuthConfirmationCheckbox =
-				(AppCompatCheckBox) view.findViewById(R.id.ssh_auth_confirmation_checkbox);
-		CompoundButton.OnCheckedChangeListener authSwitchListener = new CompoundButton.OnCheckedChangeListener() {
+		mUseSshAuthSwitch.setChecked(mHost.getUseAuthAgent() != null &&
+				!mHost.getUseAuthAgent().equals(mSshAuthValues.getString(0)));
+		mUseSshAuthSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				mUseSshConfirmationContainer.setVisibility(
-						mUseSshAuthSwitch.isChecked() ? View.VISIBLE : View.GONE);
-				if (mUseSshAuthSwitch.isChecked()) {
-					mHost.setUseAuthAgent(
-							mSshAuthConfirmationCheckbox.isChecked() ?
-									/* require confirmation */ mSshAuthValues.getString(1) :
-									/* don't require confirmation */ mSshAuthValues.getString(2));
-				} else {
-					mHost.setUseAuthAgent(/* don't use */ mSshAuthValues.getString(0));
-				}
-				handleHostChange();
+				processSshAuthChange();
 			}
-		};
-		if (mHost.getUseAuthAgent() == null ||
-				mHost.getUseAuthAgent().equals(mSshAuthValues.getString(0))) {
-			mUseSshAuthSwitch.setChecked(false);
-			mSshAuthConfirmationCheckbox.setChecked(false);
-		} else {
-			mUseSshAuthSwitch.setChecked(true);
-			mUseSshConfirmationContainer.setVisibility(View.VISIBLE);
-			mSshAuthConfirmationCheckbox.setChecked(
-					mHost.getUseAuthAgent().equals(mSshAuthValues.getString(1)));
-		}
-		mUseSshAuthSwitch.setOnCheckedChangeListener(authSwitchListener);
-		mSshAuthConfirmationCheckbox.setOnCheckedChangeListener(authSwitchListener);
+		});
+
+		mUseSshConfirmationItem = view.findViewById(R.id.ssh_auth_confirmation_item);
+		mUseSshConfirmationItem.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mUseSshConfirmationCheckbox.toggle();
+			}
+		});
+
+		mUseSshConfirmationCheckbox =
+				(AppCompatCheckBox) view.findViewById(R.id.ssh_auth_confirmation_checkbox);
+		mUseSshConfirmationCheckbox.setChecked(mHost.getUseAuthAgent() != null &&
+				mHost.getUseAuthAgent().equals(mSshAuthValues.getString(1)));
+		mUseSshConfirmationCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				processSshAuthChange();
+			}
+		});
+
+		processSshAuthChange();
+
+		mCompressionItem = view.findViewById(R.id.compression_item);
+		mCompressionItem.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mCompressionSwitch.toggle();
+			}
+		});
 
 		mCompressionSwitch = (SwitchCompat) view.findViewById(R.id.compression_switch);
 		mCompressionSwitch.setChecked(mHost.getCompression());
-		mCompressionSwitch.setOnCheckedChangeListener(
-				new HostSwitchWatcher(HostDatabase.FIELD_HOST_COMPRESSION));
+		mCompressionSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				mHost.setCompression(isChecked);
+				handleHostChange();
+			}
+		});
+
+		mStartShellItem = view.findViewById(R.id.start_shell_item);
+		mStartShellItem.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mStartShellSwitch.toggle();
+			}
+		});
 
 		mStartShellSwitch = (SwitchCompat) view.findViewById(R.id.start_shell_switch);
 		mStartShellSwitch.setChecked(mHost.getWantSession());
-		mStartShellSwitch.setOnCheckedChangeListener(
-				new HostSwitchWatcher(HostDatabase.FIELD_HOST_WANTSESSION));
+		mStartShellSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				mHost.setWantSession(isChecked);
+				handleHostChange();
+			}
+		});
+
+		mStayConnectedItem = view.findViewById(R.id.stay_connected_item);
+		mStayConnectedItem.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mStayConnectedSwitch.toggle();
+			}
+		});
 
 		mStayConnectedSwitch = (SwitchCompat) view.findViewById(R.id.stay_connected_switch);
 		mStayConnectedSwitch.setChecked(mHost.getStayConnected());
-		mStayConnectedSwitch.setOnCheckedChangeListener(
-				new HostSwitchWatcher(HostDatabase.FIELD_HOST_STAYCONNECTED));
+		mStayConnectedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				mHost.setStayConnected(isChecked);
+				handleHostChange();
+			}
+		});
+
+		mCloseOnDisconnectItem = view.findViewById(R.id.close_on_disconnect_item);
+		mCloseOnDisconnectItem.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mCloseOnDisconnectSwitch.toggle();
+			}
+		});
 
 		mCloseOnDisconnectSwitch = (SwitchCompat) view.findViewById(R.id.close_on_disconnect_switch);
 		mCloseOnDisconnectSwitch.setChecked(mHost.getQuickDisconnect());
-		mCloseOnDisconnectSwitch.setOnCheckedChangeListener(
-				new HostSwitchWatcher(HostDatabase.FIELD_HOST_QUICKDISCONNECT));
+		mCloseOnDisconnectSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				mHost.setQuickDisconnect(isChecked);
+				handleHostChange();
+			}
+		});
 
 		mPostLoginAutomationField = (EditText) view.findViewById(R.id.post_login_automation_field);
 		mPostLoginAutomationField.setText(mHost.getPostLogin());
 		mPostLoginAutomationField.addTextChangedListener(
 				new HostTextFieldWatcher(HostDatabase.FIELD_HOST_POSTLOGIN));
 
-		mDelKeySpinner = (Spinner) view.findViewById(R.id.del_key_spinner);
-		for (int i = 0; i < mDelKeyValues.length(); i++) {
-			if (mHost.getDelKey().equals(mDelKeyValues.getString(i))) {
-				mDelKeySpinner.setSelection(i);
-				break;
-			}
-		}
-		mDelKeySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				mHost.setDelKey(mDelKeyValues.getString(position));
-				handleHostChange();
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-			}
-		});
-
-		mEncodingSpinner = (Spinner) view.findViewById(R.id.encoding_spinner);
-		// The spinner is initialized in setCharsetData() because Charset data is not always
-		// available when this fragment is created.
-
 		setUriPartsContainerExpanded(mIsUriEditorExpanded);
 
 		return view;
+	}
+
+	/**
+	 * @param protocol The protocol to set.
+	 * @param setDefaultPortInModel True if the model's port should be updated to the default port
+	 *     for the given protocol.
+	 */
+	private void setTransportType(String protocol, boolean setDefaultPortInModel) {
+		mHost.setProtocol(protocol);
+		if (setDefaultPortInModel)
+			mHost.setPort(TransportFactory.getTransport(protocol).getDefaultPort());
+		handleHostChange();
+
+		mTransportText.setText(protocol);
+
+		mQuickConnectContainer.setHint(
+				TransportFactory.getFormatHint(protocol, getActivity()));
+
+		// Different protocols have different field types, so show only the fields needed.
+		if (SSH.getProtocolName().equals(protocol)) {
+			mUsernameContainer.setVisibility(View.VISIBLE);
+			mHostnameContainer.setVisibility(View.VISIBLE);
+			mPortContainer.setVisibility(View.VISIBLE);
+			mExpandCollapseButton.setVisibility(View.VISIBLE);
+			mNicknameItem.setVisibility(View.VISIBLE);
+		} else if (Telnet.getProtocolName().equals(protocol)) {
+			mUsernameContainer.setVisibility(View.GONE);
+			mHostnameContainer.setVisibility(View.VISIBLE);
+			mPortContainer.setVisibility(View.VISIBLE);
+			mExpandCollapseButton.setVisibility(View.VISIBLE);
+			mNicknameItem.setVisibility(View.VISIBLE);
+		} else {
+			// Local protocol has only one field, so no need to show the URI parts
+			// container.
+			setUriPartsContainerExpanded(false);
+			mExpandCollapseButton.setVisibility(View.GONE);
+			mNicknameItem.setVisibility(View.GONE);
+		}
+	}
+
+	private void setFontSize(int fontSize) {
+		if (fontSize < MINIMUM_FONT_SIZE)
+			fontSize = MINIMUM_FONT_SIZE;
+
+		if (fontSize > MAXIMUM_FONT_SIZE)
+			fontSize = MAXIMUM_FONT_SIZE;
+
+		mHost.setFontSize(fontSize);
+
+		if (mFontSizeSeekBar.getProgress() + MINIMUM_FONT_SIZE != fontSize) {
+			mFontSizeSeekBar.setProgress(fontSize - MINIMUM_FONT_SIZE);
+		}
+
+		if (!mFontSizeText.isFocused() &&
+				Integer.parseInt(mFontSizeText.getText().toString()) != fontSize) {
+			mFontSizeText.setText(Integer.toString(fontSize));
+		}
+
+		handleHostChange();
+	}
+
+	private void processSshAuthChange() {
+		mUseSshConfirmationItem.setVisibility(
+				mUseSshAuthSwitch.isChecked() ? View.VISIBLE : View.GONE);
+
+		if (mUseSshAuthSwitch.isChecked()) {
+			mHost.setUseAuthAgent(
+					mUseSshConfirmationCheckbox.isChecked() ?
+									/* require confirmation */ mSshAuthValues.getString(1) :
+									/* don't require confirmation */ mSshAuthValues.getString(2));
+		} else {
+			mHost.setUseAuthAgent(/* don't use */ mSshAuthValues.getString(0));
+		}
+
+		handleHostChange();
 	}
 
 	@Override
@@ -449,8 +635,11 @@ public class HostEditorFragment extends Fragment {
 
 		// Now that the fragment is attached to an Activity, fetch the arrays from the attached
 		// Activity's resources.
+		mColorNames = getResources().obtainTypedArray(R.array.list_colors);
 		mColorValues = getResources().obtainTypedArray(R.array.list_color_values);
+		mSshAuthNames = getResources().obtainTypedArray(R.array.list_authagent);
 		mSshAuthValues = getResources().obtainTypedArray(R.array.list_authagent_values);
+		mDelKeyNames = getResources().obtainTypedArray(R.array.list_delkey);
 		mDelKeyValues = getResources().obtainTypedArray(R.array.list_delkey_values);
 	}
 
@@ -458,8 +647,11 @@ public class HostEditorFragment extends Fragment {
 	public void onDetach() {
 		super.onDetach();
 		mListener = null;
+		mColorNames.recycle();
 		mColorValues.recycle();
+		mSshAuthNames.recycle();
 		mSshAuthValues.recycle();
+		mDelKeyNames.recycle();
 		mDelKeyValues.recycle();
 	}
 
@@ -482,32 +674,17 @@ public class HostEditorFragment extends Fragment {
 	 *     Charset).
 	 */
 	public void setCharsetData(final Map<String, String> data) {
-		if (mEncodingSpinner != null) {
-			final String[] encodingNames = new String[data.keySet().size()];
-			data.keySet().toArray(encodingNames);
-			ArrayAdapter<String> encodingSelection = new ArrayAdapter<String>(
-					getActivity(), android.R.layout.simple_spinner_item, encodingNames);
-			encodingSelection.setDropDownViewResource(
-					android.R.layout.simple_spinner_dropdown_item);
-			mEncodingSpinner.setAdapter(encodingSelection);
-			for (int i = 0; i < encodingNames.length; i++) {
-				if (mHost.getEncoding() != null &&
-						mHost.getEncoding().equals(data.get(encodingNames[i]))) {
-					mEncodingSpinner.setSelection(i);
-					break;
+		mCharsetData = data;
+
+		if (mEncodingText != null) {
+			Iterator it = data.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry<String, String> pair = (Map.Entry) it.next();
+				if (pair.getValue().equals(mHost.getEncoding())) {
+					mEncodingText.setText(pair.getKey());
+					return;
 				}
 			}
-			mEncodingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-				@Override
-				public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-					mHost.setEncoding(data.get(encodingNames[position]));
-					handleHostChange();
-				}
-
-				@Override
-				public void onNothingSelected(AdapterView<?> parent) {
-				}
-			});
 		}
 	}
 
@@ -560,16 +737,14 @@ public class HostEditorFragment extends Fragment {
 	 * notified.
 	 */
 	private void handleHostChange() {
-		String protocol = (String) mTransportSpinner.getSelectedItem();
 		String quickConnectString = mQuickConnectField.getText().toString();
-		if (protocol == null || protocol.equals("") ||
-				quickConnectString == null || quickConnectString.equals("")) {
+		if (quickConnectString == null || quickConnectString.equals("")) {
 			// Invalid protocol and/or string, so don't do anything.
 			mListener.onHostInvalidated();
 			return;
 		}
 
-		Uri uri = TransportFactory.getUri(protocol, quickConnectString);
+		Uri uri = TransportFactory.getUri(mHost.getProtocol(), quickConnectString);
 		if (uri == null) {
 			// Valid string, but does not accurately describe a URI.
 			mListener.onHostInvalidated();
@@ -581,8 +756,8 @@ public class HostEditorFragment extends Fragment {
 	}
 
 	public interface Listener {
-		public void onValidHostConfigured(HostBean host);
-		public void onHostInvalidated();
+		void onValidHostConfigured(HostBean host);
+		void onHostInvalidated();
 	}
 
 	private class HostTextFieldWatcher implements TextWatcher {
@@ -617,6 +792,14 @@ public class HostEditorFragment extends Fragment {
 				mHost.setNickname(text);
 			} else if (HostDatabase.FIELD_HOST_POSTLOGIN.equals(mFieldType)) {
 				mHost.setPostLogin(text);
+			} else if (HostDatabase.FIELD_HOST_FONTSIZE.equals(mFieldType)) {
+				int fontSize = HostBean.DEFAULT_FONT_SIZE;
+				try {
+					fontSize = Integer.parseInt(text);
+				} catch (NumberFormatException e) {
+				} finally {
+					setFontSize(fontSize);
+				}
 			} else {
 				throw new RuntimeException("Invalid field type.");
 			}
@@ -638,31 +821,6 @@ public class HostEditorFragment extends Fragment {
 			return HostDatabase.FIELD_HOST_USERNAME.equals(fieldType) ||
 					HostDatabase.FIELD_HOST_HOSTNAME.equals(fieldType) ||
 					HostDatabase.FIELD_HOST_PORT.equals(fieldType);
-		}
-	}
-
-	private class HostSwitchWatcher implements CompoundButton.OnCheckedChangeListener {
-
-		private final String mFieldType;
-
-		public HostSwitchWatcher(String fieldType) {
-			mFieldType = fieldType;
-		}
-
-		@Override
-		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-			if (HostDatabase.FIELD_HOST_COMPRESSION.equals(mFieldType)) {
-				mHost.setCompression(isChecked);
-			} else if (HostDatabase.FIELD_HOST_WANTSESSION.equals(mFieldType)) {
-				mHost.setWantSession(isChecked);
-			} else if (HostDatabase.FIELD_HOST_STAYCONNECTED.equals(mFieldType)) {
-				mHost.setStayConnected(isChecked);
-			} else if (HostDatabase.FIELD_HOST_QUICKDISCONNECT.equals(mFieldType)) {
-				mHost.setQuickDisconnect(isChecked);
-			} else {
-				throw new RuntimeException("Invalid field type.");
-			}
-			handleHostChange();
 		}
 	}
 }

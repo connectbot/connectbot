@@ -16,11 +16,15 @@
  ~ limitations under the License.
  */
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 	<style name="AppTheme" parent="Theme.AppCompat">
 		<item name="colorPrimary">@color/primary</item>
 		<item name="colorPrimaryDark">@color/dark_primary</item>
+		<item name="colorAccent">@color/accent</item>
+	</style>
+
+	<style name="AlertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
 		<item name="colorAccent">@color/accent</item>
 	</style>
 
@@ -36,14 +40,38 @@
 		<item name="android:background">@drawable/keyboard_button_selector</item>
 	</style>
 
+	<style name="ListItemIcon">
+		<item name="android:layout_marginLeft">@dimen/list_item_left_right_padding</item>
+		<item name="android:layout_marginStart" tools:ignore="NewApi">@dimen/list_item_left_right_padding</item>
+		<item name="android:layout_centerVertical">true</item>
+		<item name="android:layout_alignParentLeft">true</item>
+		<item name="android:layout_alignParentStart" tools:ignore="NewApi">true</item>
+	</style>
+
 	<style name="ListItemFirstLineText">
+		<item name="android:layout_alignParentTop">true</item>
 		<item name="android:textColor">?android:textColorPrimary</item>
-		<item name="android:textSize">16sp</item>
+		<item name="android:textSize">@dimen/list_item_first_line_text_size</item>
+		<item name="android:paddingTop">@dimen/list_item_top_bottom_padding</item>
+		<item name="android:layout_alignParentLeft">true</item>
+	</style>
+
+	<style name="ListItemFirstLineText.WithIcon" parent="ListItemFirstLineText">
+		<item name="android:layout_marginLeft">@dimen/list_item_text_margin_left</item>
+		<item name="android:layout_marginStart" tools:ignore="NewApi">@dimen/list_item_text_margin_left</item>
 	</style>
 
 	<style name="ListItemSecondLineText">
+		<item name="android:layout_alignParentBottom">true</item>
 		<item name="android:textColor">?android:textColorSecondary</item>
-		<item name="android:textSize">14sp</item>
+		<item name="android:textSize">@dimen/list_item_second_line_text_size</item>
+		<item name="android:paddingBottom">@dimen/list_item_top_bottom_padding</item>
+		<item name="android:layout_alignParentLeft">true</item>
+	</style>
+
+	<style name="ListItemSecondLineText.WithIcon" parent="ListItemSecondLineText">
+		<item name="android:layout_marginLeft">@dimen/list_item_text_margin_left</item>
+		<item name="android:layout_marginStart" tools:ignore="NewApi">@dimen/list_item_text_margin_left</item>
 	</style>
 
 	<style name="ListItemFirstLineText.Red" parent="ListItemFirstLineText">
@@ -77,10 +105,6 @@
 		<item name="colorAccent">@color/accent</item>
 	</style>
 
-	<style name="Divider">
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">1dp</item>
-		<item name="android:background">?android:attr/listDivider</item>
-	</style>
+
 
 </resources>

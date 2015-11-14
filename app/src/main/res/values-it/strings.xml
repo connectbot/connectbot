@@ -9,16 +9,8 @@
   <string name="title_help">Guida</string>
   <string name="title_colors">Colori</string>
   <string name="title_color_picker">Scelta colore</string>
-  <string name="resolve_connect">Connetti</string>
-  <string name="resolve_entropy">Raccolta disordinata</string>
-  <string name="menu_insert">Aggiungi connessione</string>
-  <string name="menu_delete">Elimina connessione</string>
-  <string name="menu_preferences">Preferenze</string>
   <string name="help_intro">Seleziona un argomento dalla lista per ottenere maggiori informazioni.</string>
-  <string name="help_about">Informazioni su ConnectBot</string>
-  <string name="help_keyboard">Tastiera</string>
   <string name="pubkey_generate">Genera</string>
-  <string name="pubkey_import">Importa</string>
   <string name="pubkey_delete">Elimina chiave</string>
   <string name="pubkey_gather_entropy">Raccolta entropia</string>
   <string name="pubkey_touch_prompt">Tocca questo riquadro per raccogliere informazioni casuali: %1$d%% fatto</string>
@@ -62,9 +54,7 @@
   <string name="alert_wrong_password_msg">Password errata!</string>
   <string name="alert_key_corrupted_msg">La chiave privata sembra corrotta!</string>
   <string name="alert_sdcard_absent">Scheda SD non trovata!</string>
-  <string name="button_add">Aggiungi</string>
   <string name="button_change">Modifica</string>
-  <string name="button_generate">Genera le chiavi</string>
   <string name="button_resize">Ridimensiona</string>
   <string name="alert_disconnect_msg">Connessione persa</string>
   <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
@@ -92,7 +82,6 @@
   <string name="pref_wifilock_title">Mantieni Wi-Fi attivo</string>
   <string name="pref_wifilock_summary">Non spegne la connessione Wi-Fi quando una sessione è attiva</string>
   <string name="pref_bumpyarrows_title">Vibrazione frecce</string>
-  <string name="pref_bumpyarrows_summary">Vibra quando si inviano movimenti con la trackball; utile per connessioni lente</string>
   <string name="pref_bell_category">Campanella del terminale</string>
   <string name="pref_bell_title">Campanella udibile</string>
   <string name="pref_bell_volume_title">Volume della campanella</string>
@@ -140,10 +129,7 @@
   <string name="portforward_remote">Remota</string>
   <string name="portforward_dynamic">Dinamica (SOCKS)</string>
   <string name="portforward_pos">Crea inoltro porta</string>
-  <string name="portforward_done">Inoltro della porta impostato correttamente</string>
   <string name="portforward_problem">Problema configurando l\'inoltro della porta, forse si cerca di usare una porta più bassa di 1024 o la porta è già in uso?</string>
-  <string name="hint_userhost">utente\@host</string>
-  <string name="list_format_error">Usa il formato %1$s</string>
   <string name="format_username">nome utente</string>
   <string name="format_hostname">nome host</string>
   <string name="format_port">porta</string>
@@ -194,7 +180,6 @@
   <string name="no">No</string>
   <string name="with_confirmation">Richiedi conferma</string>
   <string name="yes">Sì</string>
-  <string name="exceptions_submit_message">Sembrerebbe che ConnectBot abbia avuto un problema durante l\'ultima esecuzione. Inviare una segnalazione d\'errore agli sviluppatori di ConnectBot?</string>
   <string name="menu_colors_reset">Reimposta</string>
   <string name="app_is_running">ConnectBot è in esecuzione</string>
   <string name="color_red">rosso</string>

@@ -24,6 +24,7 @@ import java.util.Map;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.TypedArray;
@@ -46,6 +47,8 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 
 	private static final String EXTRA_EXISTING_HOST_ID = "org.connectbot.existing_host_id";
 	private static final long NO_HOST_ID = -1;
+	private static final int ENABLED_ALPHA = 255;
+	private static final int DISABLED_ALPHA = 130;
 
 	private HostDatabase mHostDb;
 	private PubkeyDatabase mPubkeyDb;
@@ -135,7 +138,7 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 		mSaveHostButton = menu.getItem(0);
 
 		// If the new host is being created, it can't be added until modifications have been made.
-		mSaveHostButton.setEnabled(!mIsCreating);
+		setAddSaveButtonEnabled(!mIsCreating);
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -144,14 +147,8 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.save:
-				mHostDb.saveHost(mHost);
-
-				if (mBridge != null) {
-					// If the console is already open, apply the new encoding now. If the console
-					// was not yet opened, this will be applied automatically when it is opened.
-					mBridge.setCharset(mHost.getEncoding());
-				}
-				finish();
+			case android.R.id.home:
+				attemptSaveAndExit();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -200,14 +197,64 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 	public void onValidHostConfigured(HostBean host) {
 		mHost = host;
 		if (mSaveHostButton != null)
-			mSaveHostButton.setEnabled(true);
+			setAddSaveButtonEnabled(true);
 	}
 
 	@Override
 	public void onHostInvalidated() {
 		mHost = null;
 		if (mSaveHostButton != null)
-			mSaveHostButton.setEnabled(false);
+			setAddSaveButtonEnabled(false);
+	}
+
+	@Override
+	public void onBackPressed() {
+		attemptSaveAndExit();
+	}
+
+	/**
+	 * If the host represents a valid URI, save it and exit; otherwise, pop up a dialog asking
+	 * the user if he/she wants to discard the changes.
+	 */
+	private void attemptSaveAndExit() {
+		if (mHost == null) {
+			showDiscardDialog();
+			return;
+		}
+
+		mHostDb.saveHost(mHost);
+
+		if (mBridge != null) {
+			// If the console is already open, apply the new encoding now. If the console
+			// was not yet opened, this will be applied automatically when it is opened.
+			mBridge.setCharset(mHost.getEncoding());
+		}
+		finish();
+	}
+
+	private void showDiscardDialog() {
+		android.support.v7.app.AlertDialog.Builder builder =
+				new android.support.v7.app.AlertDialog.Builder(this, R.style.AlertDialogTheme);
+		builder.setMessage(R.string.discard_host_changes_message)
+				.setPositiveButton(R.string.discard_host_button, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// Do not save to the database - just exit.
+						finish();
+					}
+				})
+				.setNegativeButton(R.string.discard_host_cancel_button, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// Do nothing.
+					}
+				});
+		builder.show();
+	}
+
+	private void setAddSaveButtonEnabled(boolean enabled) {
+		mSaveHostButton.setEnabled(enabled);
+		mSaveHostButton.getIcon().setAlpha(enabled ? ENABLED_ALPHA : DISABLED_ALPHA);
 	}
 
 	// Private static class used to generate a list of available Charsets. Note that this class

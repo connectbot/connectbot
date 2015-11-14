@@ -6,16 +6,8 @@
   <string name="title_port_forwards_list">Redireccions de pòrts</string>
   <string name="title_host_editor">Modificar lo servidor</string>
   <string name="title_help">Ajuda</string>
-  <string name="resolve_connect">Connexion</string>
-  <string name="resolve_entropy">Generacion d\'aleatòri</string>
-  <string name="menu_insert">Apondre un servidor</string>
-  <string name="menu_delete">Supprimir lo servidor</string>
-  <string name="menu_preferences">Preferéncias</string>
   <string name="help_intro">Seleccionatz un subjècte çaijós per mai d\'entresenhas.</string>
-  <string name="help_about">A prepaus de ConnectBot</string>
-  <string name="help_keyboard">Clavièr</string>
   <string name="pubkey_generate">Generar</string>
-  <string name="pubkey_import">Importar</string>
   <string name="pubkey_delete">Suprimir la clau</string>
   <string name="pubkey_gather_entropy">Generacion d\'aleatòri</string>
   <string name="pubkey_touch_prompt">Tocatz aquesta bóstia per recuperar un nombre aleatòri : %1$d%% fach</string>
@@ -36,9 +28,7 @@
   <string name="prompt_type">Tipe :</string>
   <string name="prompt_bits">Bits :</string>
   <string name="alert_wrong_password_msg">Marrit senhal</string>
-  <string name="button_add">Apondre</string>
   <string name="button_change">Cambiar</string>
-  <string name="button_generate">Generar una clau</string>
   <string name="button_resize">Redimensionar</string>
   <string name="alert_disconnect_msg">Connexion perduda</string>
   <string name="pref_ui_category">Interfàcia d\'utilizaire</string>
@@ -59,7 +49,6 @@
   <string name="button_no">Non</string>
   <string name="portforward_remote">Distant</string>
   <string name="portforward_dynamic">Dinamic (SOCKS)</string>
-  <string name="list_format_error">Use the format %1$s</string>
   <string name="format_username">nom d\'utilizaire</string>
   <string name="format_hostname">nom d\'òste</string>
   <string name="list_menu_sortname">Triar per nom</string>
@@ -75,7 +64,6 @@
   <string name="no">Non</string>
   <string name="with_confirmation">Aprèp confirmacion</string>
   <string name="yes">Òc</string>
-  <string name="exceptions_submit_message">It appears ConnectBot had a problem last time it ran. Submit error report to ConnectBot developers?</string>
   <string name="menu_colors_reset">Reïnicializar</string>
   <string name="color_red">roge</string>
   <string name="color_green">verd</string>
