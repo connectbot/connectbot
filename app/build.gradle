@@ -42,7 +42,11 @@ android {
     defaultConfig {
         applicationId "org.connectbot"
         minSdkVersion 4
+        maxSdkVersion 7
         targetSdkVersion 22
+
+        versionName "1.8.6+build2"
+        versionCode 376
 
         ndk {
             moduleName "com_google_ase_Exec"
