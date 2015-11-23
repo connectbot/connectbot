@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased][unreleased]
+## [1.9.0-alpha1][1.9.0-alpha1]
 ### Changed
 - Major Material Design overhaul of UI.
 - Improved cut-and-paste interface.
@@ -70,7 +70,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Color picker color numbers are now localized
 
 
-[unreleased]: https://github.com/connectbot/connectbot/compare/v1.8.6...HEAD
+[1.9.0-alpha1]: https://github.com/connectbot/connectbot/compare/v1.8.6...v1.9.0-alpha1
 [1.8.6]: https://github.com/connectbot/connectbot/compare/v1.8.5...v1.8.6
 [1.8.5]: https://github.com/connectbot/connectbot/compare/v1.8.4...v1.8.5
 [1.8.4]: https://github.com/connectbot/connectbot/compare/v1.8.3...v1.8.4

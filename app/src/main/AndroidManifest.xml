@@ -17,8 +17,6 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.connectbot"
-	android:versionName="1.8.6"
-	android:versionCode="376"
 	android:installLocation="auto">
 
 	<uses-sdk />

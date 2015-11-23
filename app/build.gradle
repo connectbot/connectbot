@@ -41,6 +41,9 @@ android {
 
     defaultConfig {
         applicationId "org.connectbot"
+        versionName "1.9.0-alpha1"
+        versionCode 19001
+
         minSdkVersion 8
         targetSdkVersion 23
 
