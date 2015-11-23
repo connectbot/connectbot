@@ -45,8 +45,8 @@ android {
         maxSdkVersion 7
         targetSdkVersion 22
 
-        versionName "1.8.6+build2"
-        versionCode 376
+        versionName "1.8.7"
+        versionCode 377
 
         ndk {
             moduleName "com_google_ase_Exec"
