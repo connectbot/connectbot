@@ -13,9 +13,27 @@
   <string name="title_pubkey_generate">生成</string>
   <string name="help_intro">请在下面主题中选择一个以查看更多内容</string>
   <string name="terms_and_conditions">条款与条件</string>
+  <string name="hints">提示</string>
+  <string name="host_shortcuts_header">主机的快捷方式</string>
+  <string name="host_shortcuts_content">长按 Android 桌面创建直接指向经常使用的 SSH 主机的快捷方式。</string>
+  <string name="scroll_hints_header">向后滚动/向前滚动</string>
+  <string name="scroll_hints_content">在屏幕右侧向上滑动你的手指允许你向后滚动在本地终端缓冲区历史中向前。</string>
+  <string name="scrolling_back">向后滚动</string>
+  <string name="scrolling_forward">向前滚动</string>
+  <string name="page_updn_header">向上翻页/向下翻页</string>
+  <string name="page_updn_content">注意: 这必须在设置中启用。\n\n在屏幕左侧的三分之一以内用手指向上和向下滑动将向远程主机发送向上翻页和向下翻页键。许多程序映射为在历史中向后滚动如 irssi 或 tinyfugue。</string>
+  <string name="page_up">向上翻页</string>
+  <string name="page_down">向下翻页</string>
+  <string name="switching_hosts_header">切换主机</string>
+  <string name="switching_hosts_content">用手指从屏幕的一侧滑到另一侧将在当前连接的主机之间进行切换。</string>
+  <string name="next_host">下一个主机</string>
+  <string name="prev_host">上一个主机</string>
   <string name="keyboard_shortcuts">键盘快捷键</string>
   <string name="increase_font_size">增加字体大小</string>
+  <string name="increase_font_shortcut">Ctrl 加 +</string>
   <string name="decrease_font_size">减少字体大小</string>
+  <string name="decrease_font_shortcut">Ctrl 加 -</string>
+  <string name="paste_shortcut">Ctrl-Shift-V</string>
   <string name="pubkey_generate">生成</string>
   <string name="pubkey_delete">删除密钥</string>
   <string name="pubkey_gather_entropy">正在收集熵</string>
@@ -74,6 +92,8 @@
   <string name="pref_rotation_summary">当键盘打开或关闭时屏幕如何旋转(水平或竖直)</string>
   <string name="pref_titlebarhide_title">自动隐藏标题栏</string>
   <string name="pref_titlebarhide_summary">触击控制台显示标题栏和访问菜单</string>
+  <string name="pref_pg_updn_gesture_title">向上/向下翻页 手势</string>
+  <string name="pref_pg_updn_gesture_summary">在屏幕左侧的三分之一以内滑动向终端发送向上/向下翻页</string>
   <string name="pref_fullscreen_title">全屏</string>
   <string name="pref_fullscreen_summary">处于控制台时隐藏状态栏</string>
   <string name="pref_keyboard_category">键盘</string>
@@ -99,6 +119,7 @@
   <string name="pref_wifilock_title">保持WI-FI激活</string>
   <string name="pref_wifilock_summary">会话运行时禁止Wi-Fi关闭</string>
   <string name="pref_bumpyarrows_title">触摸反馈</string>
+  <string name="pref_bumpyarrows_summary">发送箭头键时振动；这对有延迟的连接有帮助</string>
   <string name="pref_bell_category">终端响铃</string>
   <string name="pref_bell_title">响铃</string>
   <string name="pref_bell_volume_title">铃声音量</string>
@@ -221,6 +242,7 @@
   <string name="image_description_down">向下的箭头</string>
   <string name="image_description_left">向左的箭头</string>
   <string name="image_description_right">向右的箭头</string>
+  <string name="image_description_volume">音量</string>
   <string name="button_key_esc">Esc</string>
   <string name="button_key_ctrl">Ctrl</string>
   <string name="button_key_home">Home</string>
@@ -239,4 +261,14 @@
   <string name="button_key_f10">F10</string>
   <string name="button_key_f11">F11</string>
   <string name="button_key_f12">F12</string>
+  <string name="protocol_spinner_label">协议</string>
+  <string name="expand">展开</string>
+  <string name="hostpref_authagent_with_confirmation">需要确认</string>
+  <string name="hostpref_add_host">添加主机</string>
+  <string name="hostpref_edit_host">保存主机</string>
+  <string name="pubkey_add_new">添加新的公钥</string>
+  <string name="pubkey_import_existing">导入已有的公钥</string>
+  <string name="discard_host_changes_message">主机 URI 无效。你要放弃更改吗？</string>
+  <string name="discard_host_button">放弃</string>
+  <string name="discard_host_cancel_button">继续编辑</string>
 </resources>
