@@ -15,6 +15,7 @@
   <string name="terms_and_conditions">Conditions générales d\'utilisation</string>
   <string name="hints">Astuces</string>
   <string name="host_shortcuts_header">Raccourcis serveur</string>
+  <string name="host_shortcuts_content">Appuyez longuement sur le bureau Android pour créer des raccourcis vers les clients SSH fréquemment utilisés.</string>
   <string name="next_host">Serveur suivant</string>
   <string name="prev_host">Serveur précédent</string>
   <string name="keyboard_shortcuts">Raccourcis clavier</string>
