@@ -370,7 +370,8 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 		updateList();
 	}
 
-	private class HostViewHolder extends ItemViewHolder {
+	@VisibleForTesting
+	public class HostViewHolder extends ItemViewHolder {
 		public final ImageView icon;
 		public final TextView nickname;
 		public final TextView caption;
