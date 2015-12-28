@@ -21,9 +21,9 @@ public class ConnectbotMatchers {
 	 */
 	@NonNull
 	public static Matcher<RecyclerView.ViewHolder> withHostNickname(final String content) {
-		return new BoundedMatcher<RecyclerView.ViewHolder, HostListActivity.HostAdapter.ViewHolder>(HostListActivity.HostAdapter.ViewHolder.class) {
+		return new BoundedMatcher<RecyclerView.ViewHolder, HostListActivity.HostViewHolder>(HostListActivity.HostViewHolder.class) {
 			@Override
-			public boolean matchesSafely(HostListActivity.HostAdapter.ViewHolder holder) {
+			public boolean matchesSafely(HostListActivity.HostViewHolder holder) {
 				return holder.host.getNickname().matches(content);
 			}
 
@@ -36,9 +36,9 @@ public class ConnectbotMatchers {
 
 	@NonNull
 	public static Matcher<RecyclerView.ViewHolder> withConnectedHost() {
-		return new BoundedMatcher<RecyclerView.ViewHolder, HostListActivity.HostAdapter.ViewHolder>(HostListActivity.HostAdapter.ViewHolder.class) {
+		return new BoundedMatcher<RecyclerView.ViewHolder, HostListActivity.HostViewHolder>(HostListActivity.HostViewHolder.class) {
 			@Override
-			public boolean matchesSafely(HostListActivity.HostAdapter.ViewHolder holder) {
+			public boolean matchesSafely(HostListActivity.HostViewHolder holder) {
 				return hasDrawableState(holder.icon, android.R.attr.state_checked);
 			}
 
@@ -51,9 +51,9 @@ public class ConnectbotMatchers {
 
 	@NonNull
 	public static Matcher<RecyclerView.ViewHolder> withDisconnectedHost() {
-		return new BoundedMatcher<RecyclerView.ViewHolder, HostListActivity.HostAdapter.ViewHolder>(HostListActivity.HostAdapter.ViewHolder.class) {
+		return new BoundedMatcher<RecyclerView.ViewHolder, HostListActivity.HostViewHolder>(HostListActivity.HostViewHolder.class) {
 			@Override
-			public boolean matchesSafely(HostListActivity.HostAdapter.ViewHolder holder) {
+			public boolean matchesSafely(HostListActivity.HostViewHolder holder) {
 				return hasDrawableState(holder.icon, android.R.attr.state_expanded);
 			}
 
@@ -66,9 +66,9 @@ public class ConnectbotMatchers {
 
 	@NonNull
 	public static Matcher<RecyclerView.ViewHolder> withColoredText(@ColorInt final int expectedColor) {
-		return new BoundedMatcher<RecyclerView.ViewHolder, HostListActivity.HostAdapter.ViewHolder>(HostListActivity.HostAdapter.ViewHolder.class) {
+		return new BoundedMatcher<RecyclerView.ViewHolder, HostListActivity.HostViewHolder>(HostListActivity.HostViewHolder.class) {
 			@Override
-			public boolean matchesSafely(HostListActivity.HostAdapter.ViewHolder holder) {
+			public boolean matchesSafely(HostListActivity.HostViewHolder holder) {
 				return hasTextColor(holder.nickname, expectedColor);
 			}
 
