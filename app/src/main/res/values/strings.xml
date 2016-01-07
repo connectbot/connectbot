@@ -432,6 +432,7 @@
 	<string name="list_menu_sortcolor">"Sort by color"</string>
 	<!-- Selection choice to sort hosts by nickname. -->
 	<string name="list_menu_sortname">"Sort by name"</string>
+	<string name="list_menu_disconnect">"Disconnect All"</string>
 	<string name="list_menu_settings">"Settings"</string>
 
 	<string name="list_host_disconnect">"Disconnect"</string>

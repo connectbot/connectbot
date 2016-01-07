@@ -17,17 +17,6 @@
 
 package org.connectbot;
 
-import java.util.List;
-
-import org.connectbot.bean.HostBean;
-import org.connectbot.data.HostStorage;
-import org.connectbot.service.OnHostStatusChangedListener;
-import org.connectbot.service.TerminalBridge;
-import org.connectbot.service.TerminalManager;
-import org.connectbot.transport.TransportFactory;
-import org.connectbot.util.HostDatabase;
-import org.connectbot.util.PreferenceConstants;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -59,6 +48,17 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.connectbot.bean.HostBean;
+import org.connectbot.data.HostStorage;
+import org.connectbot.service.OnHostStatusChangedListener;
+import org.connectbot.service.TerminalBridge;
+import org.connectbot.service.TerminalManager;
+import org.connectbot.transport.TransportFactory;
+import org.connectbot.util.HostDatabase;
+import org.connectbot.util.PreferenceConstants;
+
+import java.util.List;
+
 public class HostListActivity extends AppCompatListActivity implements OnHostStatusChangedListener {
 	public final static String TAG = "CB.HostListActivity";
 	public static final String DISCONNECT_ACTION = "org.connectbot.action.DISCONNECT";
@@ -76,6 +76,8 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 	private MenuItem sortcolor;
 
 	private MenuItem sortlast;
+
+	private MenuItem disconnectall;
 
 	private SharedPreferences prefs = null;
 
@@ -233,6 +235,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 
 		sortcolor.setVisible(!sortedByColor);
 		sortlast.setVisible(sortedByColor);
+		disconnectall.setEnabled(bound.getBridges().size() > 0);
 
 		return true;
 	}
@@ -272,6 +275,17 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 		MenuItem colors = menu.add(R.string.title_colors);
 		colors.setIcon(android.R.drawable.ic_menu_slideshow);
 		colors.setIntent(new Intent(HostListActivity.this, ColorsActivity.class));
+
+		disconnectall = menu.add(R.string.list_menu_disconnect);
+		disconnectall.setIcon(android.R.drawable.ic_menu_delete);
+		final HostListActivity self = this;
+		disconnectall.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem menuItem) {
+				self.disconnectAll();
+				return false;
+			}
+		});
 
 		MenuItem settings = menu.add(R.string.list_menu_settings);
 		settings.setIcon(android.R.drawable.ic_menu_preferences);
