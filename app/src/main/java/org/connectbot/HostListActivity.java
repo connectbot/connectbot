@@ -278,11 +278,10 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 
 		disconnectall = menu.add(R.string.list_menu_disconnect);
 		disconnectall.setIcon(android.R.drawable.ic_menu_delete);
-		final HostListActivity self = this;
 		disconnectall.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem menuItem) {
-				self.disconnectAll();
+				disconnectAll();
 				return false;
 			}
 		});
