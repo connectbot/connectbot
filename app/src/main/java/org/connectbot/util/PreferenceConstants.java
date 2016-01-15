@@ -66,6 +66,8 @@ public class PreferenceConstants {
 
 	public static final String WIFI_LOCK = "wifilock";
 
+	public static final String AUTH_TRIES = "authtries";
+
 	public static final String BUMPY_ARROWS = "bumpyarrows";
 
 	public static final String SORT_BY_COLOR = "sortByColor";

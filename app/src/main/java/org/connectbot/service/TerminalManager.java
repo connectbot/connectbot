@@ -226,6 +226,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		TerminalBridge bridge = new TerminalBridge(this, host);
 		bridge.setOnDisconnectedListener(this);
+		bridge.authTries = Integer.parseInt(prefs.getString(PreferenceConstants.AUTH_TRIES, "20"));
 		bridge.startConnection();
 
 		synchronized (bridges) {

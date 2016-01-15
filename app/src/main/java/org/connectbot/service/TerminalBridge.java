@@ -74,6 +74,8 @@ public class TerminalBridge implements VDUDisplay {
 
 	public HostBean host;
 
+	public int authTries;	// max authentication attempts for SSH connections
+
 	/* package */ AbsTransport transport;
 
 	final Paint defaultPaint;
@@ -270,6 +272,7 @@ public class TerminalBridge implements VDUDisplay {
 		// TODO make this more abstract so we don't litter on AbsTransport
 		transport.setCompression(host.getCompression());
 		transport.setUseAuthAgent(host.getUseAuthAgent());
+		transport.setAuthTries(authTries);
 		transport.setEmulation(emulation);
 
 		if (transport.canForwardPorts()) {

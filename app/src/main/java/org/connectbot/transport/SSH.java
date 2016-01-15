@@ -97,14 +97,13 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		AUTH_PASSWORD = "password",
 		AUTH_KEYBOARDINTERACTIVE = "keyboard-interactive";
 
-	private final static int AUTH_TRIES = 20;
-
 	static final Pattern hostmask;
 	static {
 		hostmask = Pattern.compile("^(.+)@(([0-9a-z.-]+)|(\\[[a-f:0-9]+\\]))(:(\\d+))?$", Pattern.CASE_INSENSITIVE);
 	}
 
 	private boolean compression = false;
+	private int authTries = 20;
 	private volatile boolean authenticated = false;
 	private volatile boolean connected = false;
 	private volatile boolean sessionOpen = false;
@@ -471,7 +470,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		try {
 			// enter a loop to keep trying until authentication
 			int tries = 0;
-			while (connected && !connection.isAuthenticationComplete() && tries++ < AUTH_TRIES) {
+			while (connected && !connection.isAuthenticationComplete() && tries++ < authTries) {
 				authenticate();
 
 				// sleep to make sure we dont kill system
@@ -865,6 +864,11 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	@Override
 	public void setUseAuthAgent(String useAuthAgent) {
 		this.useAuthAgent = useAuthAgent;
+	}
+
+	@Override
+	public void setAuthTries(int authTries) {
+		this.authTries = authTries;
 	}
 
 	public Map<String, byte[]> retrieveIdentities() {

@@ -193,6 +193,14 @@
 
 	<string name="msg_copyright">"Copyright &#169; 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/"</string>
 
+	<!-- The category title for connection preferences. -->
+	<string name="pref_conn_category">"Connection"</string>
+
+	<!-- Name for the authentication tries preference -->
+	<string name="pref_authtries_title">"Maximum authentication attempts"</string>
+	<!-- Description of the authentication tries preference -->
+	<string name="pref_authtries_summary">"Number of retries when attempting to authenticate with an SSH server"</string>
+
 	<!-- The category title for terminal emulation preferences. -->
 	<string name="pref_emulation_category">"Terminal emulation"</string>
 

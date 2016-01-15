@@ -20,26 +20,39 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<org.connectbot.util.SwitchCompatPreference
-		android:key="memkeys"
-		android:title="@string/pref_memkeys_title"
-		android:summary="@string/pref_memkeys_summary"
-		android:defaultValue="true"
-		/>
+	<PreferenceCategory
+		android:title="@string/pref_conn_category">
 
-	<org.connectbot.util.SwitchCompatPreference
-		android:key="connPersist"
-		android:title="@string/pref_conn_persist_title"
-		android:summary="@string/pref_conn_persist_summary"
-		android:defaultValue="true"
-		/>
+		<org.connectbot.util.SwitchCompatPreference
+			android:key="memkeys"
+			android:title="@string/pref_memkeys_title"
+			android:summary="@string/pref_memkeys_summary"
+			android:defaultValue="true"
+			/>
 
-	<org.connectbot.util.SwitchCompatPreference
-		android:key="wifilock"
-		android:title="@string/pref_wifilock_title"
-		android:summary="@string/pref_wifilock_summary"
-		android:defaultValue="true"
-		/>
+		<org.connectbot.util.SwitchCompatPreference
+			android:key="connPersist"
+			android:title="@string/pref_conn_persist_title"
+			android:summary="@string/pref_conn_persist_summary"
+			android:defaultValue="true"
+			/>
+
+		<org.connectbot.util.SwitchCompatPreference
+			android:key="wifilock"
+			android:title="@string/pref_wifilock_title"
+			android:summary="@string/pref_wifilock_summary"
+			android:defaultValue="true"
+			/>
+
+		<EditTextPreference
+			android:key="authtries"
+			android:title="@string/pref_authtries_title"
+			android:summary="@string/pref_authtries_summary"
+			android:defaultValue="20"
+			android:numeric="integer"
+			/>
+
+	</PreferenceCategory>
 
 	<PreferenceCategory
 		android:title="@string/pref_emulation_category">

@@ -137,6 +137,10 @@ public abstract class AbsTransport {
 		// do nothing
 	}
 
+	public void setAuthTries(int authTries) {
+		// do nothing
+	}
+
 	public void setEmulation(String emulation) {
 		this.emulation = emulation;
 	}
