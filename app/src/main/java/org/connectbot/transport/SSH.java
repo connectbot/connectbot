@@ -185,8 +185,10 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				String border = new String(atsigns);
 
 				bridge.outputLine(border);
-				bridge.outputLine(manager.res.getString(R.string.host_verification_failure_warning));
+				bridge.outputLine(header);
 				bridge.outputLine(border);
+
+				bridge.outputLine(manager.res.getString(R.string.host_verification_failure_warning));
 
 				bridge.outputLine(String.format(manager.res.getString(R.string.host_fingerprint),
 						algorithmName, fingerprint));

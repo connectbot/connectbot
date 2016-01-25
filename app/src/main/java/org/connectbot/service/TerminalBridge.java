@@ -320,23 +320,31 @@ public class TerminalBridge implements VDUDisplay {
 	}
 
 	/**
-	 * Convenience method for writing a line into the underlying MUD buffer.
+	 * Convenience method for writing text into the underlying terminal buffer.
 	 * Should never be called once the session is established.
 	 */
-	public final void outputLine(String line) {
-		if (transport != null && transport.isSessionOpen())
-			Log.e(TAG, "Session established, cannot use outputLine!", new IOException("outputLine call traceback"));
+	public final void outputLine(String output) {
+		if (transport != null && transport.isSessionOpen()) {
+			Log.e(TAG, "Session established, cannot use outputLine!",
+					new IOException("outputLine call traceback"));
+		}
 
 		synchronized (localOutput) {
-			final String s = line + "\r\n";
+			for (String line : output.split("\n")) {
+				if (line.length() > 0 && line.charAt(line.length() - 1) == '\r') {
+					line = line.substring(0, line.length() - 1);
+				}
 
-			localOutput.add(s);
+				final String s = line + "\r\n";
 
-			((vt320) buffer).putString(s);
+				localOutput.add(s);
 
-			// For accessibility
-			final char[] charArray = s.toCharArray();
-			propagateConsoleText(charArray, charArray.length);
+				((vt320) buffer).putString(s);
+
+				// For accessibility
+				final char[] charArray = s.toCharArray();
+				propagateConsoleText(charArray, charArray.length);
+			}
 		}
 	}
 
