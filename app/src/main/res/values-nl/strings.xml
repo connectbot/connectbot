@@ -8,7 +8,12 @@
   <string name="title_host_editor">Host bewerken</string>
   <string name="title_help">Help</string>
   <string name="title_colors">Kleuren</string>
+  <string name="title_color_picker">Kies een kleur</string>
+  <string name="title_settings">Instellingen</string>
   <string name="help_intro">Selecteer hieronder een onderwerp voor meer informatie over een onderwerp.</string>
+  <string name="terms_and_conditions">Algemene voorwaarden</string>
+  <string name="hints">Tips</string>
+  <string name="host_shortcuts_content">Druk lang op de Android desktop om een directe snelkoppeling te maken naar veelgebruikte SSH hosts.</string>
   <string name="pubkey_generate">Genereren</string>
   <string name="pubkey_delete">Sleutel verwijderen</string>
   <string name="pubkey_gather_entropy">Bezig met het verzamelen van Entropie</string>
