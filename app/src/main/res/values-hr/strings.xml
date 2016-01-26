@@ -38,8 +38,8 @@
   <string name="prompt_old_password">Stara zaporka:</string>
   <string name="prompt_password">Zaporka</string>
   <string name="prompt_again">(ponovo)</string>
-  <string name="prompt_type">Type:</string>
-  <string name="prompt_password_can_be_blank">Uputa: zaporka može biti prazna</string>
+  <string name="prompt_type">Vrsta:</string>
+  <string name="prompt_password_can_be_blank">Uputa: lozinka može biti prazna</string>
   <string name="prompt_bits">Bits:</string>
   <string name="prompt_pubkey_password">Zaporka za ključ \'%1$s\'</string>
   <string name="prompt_allow_agent_to_use_key">Dopusti udaljenom računalu da\nkoristi ključ \'%1$s\'?</string>

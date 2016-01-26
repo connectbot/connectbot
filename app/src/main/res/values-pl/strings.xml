@@ -9,7 +9,14 @@
   <string name="title_help">Pomoc</string>
   <string name="title_colors">Kolory</string>
   <string name="title_color_picker">Wybór koloru</string>
+  <string name="title_pubkey_generate">Generuj</string>
   <string name="help_intro">Proszę wybrać temat poniżej aby uzyskać więcej informacji na konkretny temat.</string>
+  <string name="terms_and_conditions">Zasady i warunki</string>
+  <string name="hints">Podpowiedzi</string>
+  <string name="host_shortcuts_content">Kliknij i przytrzymaj palec na pulpicie aby stworzyć bezpośrednie skróty do często używanych hostów SSH</string>
+  <string name="scroll_hints_header">Przewijanie do tyłu / Przewijanie do przodu</string>
+  <string name="scrolling_back">Przewijanie do tyłu</string>
+  <string name="scrolling_forward">Przewijanie do przodu</string>
   <string name="pubkey_generate">Wygeneruj</string>
   <string name="pubkey_delete">Usuń klucz</string>
   <string name="pubkey_gather_entropy">Zbieranie danych losowych</string>
@@ -193,4 +200,10 @@
   <string name="image_description_toggle_control_character">Przełącz znak kontrolny</string>
   <string name="image_description_send_escape_character">Wyślij znak ESC</string>
   <string name="image_description_show_keyboard">Pokarz klawiaturę</string>
+  <string name="protocol_spinner_label">Protokół</string>
+  <string name="expand">Rozwiń</string>
+  <string name="hostpref_authagent_with_confirmation">wymaga potwierdzenia</string>
+  <string name="hostpref_add_host">Dodaj host</string>
+  <string name="hostpref_edit_host">Zapisz host</string>
+  <string name="pubkey_add_new">Dodaj nowy klucz publiczny</string>
 </resources>
