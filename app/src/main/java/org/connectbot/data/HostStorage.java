@@ -78,9 +78,19 @@ public interface HostStorage {
 	KnownHosts getKnownHosts();
 
 	/**
+	 * Returns the list of host key algorithms known for the host.
+	 */
+	List<String> getHostKeyAlgorithmsForHost(String hostname, int port);
+
+	/**
 	 * Adds a known host to the database for later retrieval using {@link #getKnownHosts()}.
 	 */
 	void saveKnownHost(String hostname, int port, String serverHostKeyAlgorithm, byte[] serverHostKey);
+
+	/**
+	 * Removes a known host from the database.
+	 */
+	void removeKnownHost(String host, int port, String serverHostKeyAlgorithm, byte[] serverHostKey);
 
 	/**
 	 * Return all port forwards for the given {@code host}.

@@ -62,10 +62,10 @@ import com.trilead.ssh2.Connection;
 import com.trilead.ssh2.ConnectionInfo;
 import com.trilead.ssh2.ConnectionMonitor;
 import com.trilead.ssh2.DynamicPortForwarder;
+import com.trilead.ssh2.ExtendedServerHostKeyVerifier;
 import com.trilead.ssh2.InteractiveCallback;
 import com.trilead.ssh2.KnownHosts;
 import com.trilead.ssh2.LocalPortForwarder;
-import com.trilead.ssh2.ServerHostKeyVerifier;
 import com.trilead.ssh2.Session;
 import com.trilead.ssh2.crypto.PEMDecoder;
 import com.trilead.ssh2.signature.DSASHA1Verify;
@@ -136,7 +136,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	private String useAuthAgent = HostDatabase.AUTHAGENT_NO;
 	private String agentLockPassphrase;
 
-	public class HostKeyVerifier implements ServerHostKeyVerifier {
+	public class HostKeyVerifier extends ExtendedServerHostKeyVerifier {
 		public boolean verifyServerHostKey(String hostname, int port,
 				String serverHostKeyAlgorithm, byte[] serverHostKey) throws IOException {
 
@@ -209,6 +209,20 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			}
 		}
 
+		@Override
+		public List<String> getKnownKeyAlgorithmsForHost(String host, int port) {
+			return manager.hostdb.getHostKeyAlgorithmsForHost(host, port);
+		}
+
+		@Override
+		public void removeServerHostKey(String host, int port, String algorithm, byte[] hostKey) {
+			manager.hostdb.removeKnownHost(host, port, algorithm, hostKey);
+		}
+
+		@Override
+		public void addServerHostKey(String host, int port, String algorithm, byte[] hostKey) {
+			manager.hostdb.saveKnownHost(host, port, algorithm, hostKey);
+		}
 	}
 
 	private void authenticate() {

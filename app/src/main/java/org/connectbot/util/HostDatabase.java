@@ -18,6 +18,8 @@
 package org.connectbot.util;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,7 +52,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	public final static String TAG = "CB.HostDatabase";
 
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 24;
+	public final static int DB_VERSION = 25;
 
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -58,8 +60,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	public final static String FIELD_HOST_USERNAME = "username";
 	public final static String FIELD_HOST_HOSTNAME = "hostname";
 	public final static String FIELD_HOST_PORT = "port";
-	public final static String FIELD_HOST_HOSTKEYALGO = "hostkeyalgo";
-	public final static String FIELD_HOST_HOSTKEY = "hostkey";
 	public final static String FIELD_HOST_LASTCONNECT = "lastconnect";
 	public final static String FIELD_HOST_COLOR = "color";
 	public final static String FIELD_HOST_USEKEYS = "usekeys";
@@ -73,6 +73,11 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	public final static String FIELD_HOST_ENCODING = "encoding";
 	public final static String FIELD_HOST_STAYCONNECTED = "stayconnected";
 	public final static String FIELD_HOST_QUICKDISCONNECT = "quickdisconnect";
+
+	public final static String TABLE_KNOWNHOSTS = "knownhosts";
+	public final static String FIELD_KNOWNHOSTS_HOSTID = "hostid";
+	public final static String FIELD_KNOWNHOSTS_HOSTKEYALGO = "hostkeyalgo";
+	public final static String FIELD_KNOWNHOSTS_HOSTKEY = "hostkey";
 
 	public final static String TABLE_PORTFORWARDS = "portforwards";
 	public final static String FIELD_PORTFORWARD_HOSTID = "hostid";
@@ -119,11 +124,35 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	public static final int DEFAULT_COLOR_SCHEME = 0;
 
 	// Table creation strings
+	public static final String TABLE_HOSTS_COLUMNS = "_id INTEGER PRIMARY KEY, "
+			+ FIELD_HOST_NICKNAME + " TEXT, "
+			+ FIELD_HOST_PROTOCOL + " TEXT DEFAULT 'ssh', "
+			+ FIELD_HOST_USERNAME + " TEXT, "
+			+ FIELD_HOST_HOSTNAME + " TEXT, "
+			+ FIELD_HOST_PORT + " INTEGER, "
+			+ FIELD_HOST_LASTCONNECT + " INTEGER, "
+			+ FIELD_HOST_COLOR + " TEXT, "
+			+ FIELD_HOST_USEKEYS + " TEXT, "
+			+ FIELD_HOST_USEAUTHAGENT + " TEXT, "
+			+ FIELD_HOST_POSTLOGIN + " TEXT, "
+			+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ", "
+			+ FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "', "
+			+ FIELD_HOST_FONTSIZE + " INTEGER, "
+			+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "', "
+			+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
+			+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "', "
+			+ FIELD_HOST_STAYCONNECTED + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
+			+ FIELD_HOST_QUICKDISCONNECT + " TEXT DEFAULT '" + Boolean.toString(false) + "'";
+
+	public static final String CREATE_TABLE_HOSTS = "CREATE TABLE " + TABLE_HOSTS
+			+ " (" + TABLE_HOSTS_COLUMNS + ")";
+
 	public static final String CREATE_TABLE_COLOR_DEFAULTS =
 		"CREATE TABLE " + TABLE_COLOR_DEFAULTS
 		+ " (" + FIELD_COLOR_SCHEME + " INTEGER NOT NULL, "
 		+ FIELD_COLOR_FG + " INTEGER NOT NULL DEFAULT " + DEFAULT_FG_COLOR + ", "
 		+ FIELD_COLOR_BG + " INTEGER NOT NULL DEFAULT " + DEFAULT_BG_COLOR + ")";
+
 	public static final String CREATE_TABLE_COLOR_DEFAULTS_INDEX =
 		"CREATE INDEX " + TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index ON "
 		+ TABLE_COLOR_DEFAULTS + " (" + FIELD_COLOR_SCHEME + ");";
@@ -133,6 +162,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 
 	static {
 		addTableName(TABLE_HOSTS);
+		addTableName(TABLE_KNOWNHOSTS);
+		addIndexName(TABLE_KNOWNHOSTS + FIELD_KNOWNHOSTS_HOSTID + "index");
 		addTableName(TABLE_PORTFORWARDS);
 		addIndexName(TABLE_PORTFORWARDS + FIELD_PORTFORWARD_HOSTID + "index");
 		addTableName(TABLE_COLORS);
@@ -180,28 +211,16 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	}
 
 	private void createTables(SQLiteDatabase db) {
-		db.execSQL("CREATE TABLE " + TABLE_HOSTS
+		db.execSQL(CREATE_TABLE_HOSTS);
+
+		db.execSQL("CREATE TABLE " + TABLE_KNOWNHOSTS
 				+ " (_id INTEGER PRIMARY KEY, "
-				+ FIELD_HOST_NICKNAME + " TEXT, "
-				+ FIELD_HOST_PROTOCOL + " TEXT DEFAULT 'ssh', "
-				+ FIELD_HOST_USERNAME + " TEXT, "
-				+ FIELD_HOST_HOSTNAME + " TEXT, "
-				+ FIELD_HOST_PORT + " INTEGER, "
-				+ FIELD_HOST_HOSTKEYALGO + " TEXT, "
-				+ FIELD_HOST_HOSTKEY + " BLOB, "
-				+ FIELD_HOST_LASTCONNECT + " INTEGER, "
-				+ FIELD_HOST_COLOR + " TEXT, "
-				+ FIELD_HOST_USEKEYS + " TEXT, "
-				+ FIELD_HOST_USEAUTHAGENT + " TEXT, "
-				+ FIELD_HOST_POSTLOGIN + " TEXT, "
-				+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ", "
-				+ FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "', "
-				+ FIELD_HOST_FONTSIZE + " INTEGER, "
-				+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "', "
-				+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
-				+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "', "
-				+ FIELD_HOST_STAYCONNECTED + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
-				+ FIELD_HOST_QUICKDISCONNECT + " TEXT DEFAULT '" + Boolean.toString(false) + "')");
+				+ FIELD_KNOWNHOSTS_HOSTID + " INTEGER, "
+				+ FIELD_KNOWNHOSTS_HOSTKEYALGO + " TEXT, "
+				+ FIELD_KNOWNHOSTS_HOSTKEY + " BLOB)");
+
+		db.execSQL("CREATE INDEX " + TABLE_KNOWNHOSTS + FIELD_KNOWNHOSTS_HOSTID + "index ON "
+				+ TABLE_KNOWNHOSTS + " (" + FIELD_KNOWNHOSTS_HOSTID + ");");
 
 		db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS
 				+ " (_id INTEGER PRIMARY KEY, "
@@ -234,6 +253,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 			mDb.beginTransaction();
 
 			mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_HOSTS);
+			mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_KNOWNHOSTS);
 			mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_PORTFORWARDS);
 			mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_COLORS);
 			mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_COLOR_DEFAULTS);
@@ -311,7 +331,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_FONTSIZE + " INTEGER");
 		case 21:
-			db.execSQL("DROP TABLE " + TABLE_COLOR_DEFAULTS);
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_COLOR_DEFAULTS);
 			db.execSQL(CREATE_TABLE_COLOR_DEFAULTS);
 			db.execSQL(CREATE_TABLE_COLOR_DEFAULTS_INDEX);
 		case 22:
@@ -320,6 +340,47 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		case 23:
 			db.execSQL("UPDATE " + TABLE_HOSTS
 					+ " SET " + FIELD_HOST_FONTSIZE + " = " + FIELD_HOST_FONTSIZE + " / " + displayDensity);
+		case 24:
+			// Move all the existing known hostkeys into their own table.
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_KNOWNHOSTS);
+			db.execSQL("CREATE TABLE " + TABLE_KNOWNHOSTS
+					+ " (_id INTEGER PRIMARY KEY, "
+					+ FIELD_KNOWNHOSTS_HOSTID + " INTEGER, "
+					+ FIELD_KNOWNHOSTS_HOSTKEYALGO + " TEXT, "
+					+ FIELD_KNOWNHOSTS_HOSTKEY + " BLOB)");
+			db.execSQL("INSERT INTO " + TABLE_KNOWNHOSTS + " ("
+					+ FIELD_KNOWNHOSTS_HOSTID + ", "
+					+ FIELD_KNOWNHOSTS_HOSTKEYALGO + ", "
+					+ FIELD_KNOWNHOSTS_HOSTKEY + ") "
+					+ "SELECT _id, "
+					+ FIELD_KNOWNHOSTS_HOSTKEYALGO + ", "
+					+ FIELD_KNOWNHOSTS_HOSTKEY
+					+ " FROM " + TABLE_HOSTS);
+			// Work around SQLite not supporting dropping columns
+			db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOSTS + "_upgrade");
+			db.execSQL("CREATE TABLE " + TABLE_HOSTS + "_upgrade (" + TABLE_HOSTS_COLUMNS + ")");
+			db.execSQL("INSERT INTO " + TABLE_HOSTS + "_upgrade SELECT _id, "
+					+ FIELD_HOST_NICKNAME + ", "
+					+ FIELD_HOST_PROTOCOL + ", "
+					+ FIELD_HOST_USERNAME + ", "
+					+ FIELD_HOST_HOSTNAME + ", "
+					+ FIELD_HOST_PORT + ", "
+					+ FIELD_HOST_LASTCONNECT + ", "
+					+ FIELD_HOST_COLOR + ", "
+					+ FIELD_HOST_USEKEYS + ", "
+					+ FIELD_HOST_USEAUTHAGENT + ", "
+					+ FIELD_HOST_POSTLOGIN + ", "
+					+ FIELD_HOST_PUBKEYID + ", "
+					+ FIELD_HOST_DELKEY + ", "
+					+ FIELD_HOST_FONTSIZE + ", "
+					+ FIELD_HOST_WANTSESSION + ", "
+					+ FIELD_HOST_COMPRESSION + ", "
+					+ FIELD_HOST_ENCODING + ", "
+					+ FIELD_HOST_STAYCONNECTED + ", "
+					+ FIELD_HOST_QUICKDISCONNECT
+					+ " FROM " + TABLE_HOSTS);
+			db.execSQL("DROP TABLE " + TABLE_HOSTS);
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS + "_upgrade RENAME TO " + TABLE_HOSTS);
 		}
 	}
 
@@ -530,21 +591,37 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 */
 	public void saveKnownHost(String hostname, int port, String hostkeyalgo, byte[] hostkey) {
 		ContentValues values = new ContentValues();
-		values.put(FIELD_HOST_HOSTKEYALGO, hostkeyalgo);
-		values.put(FIELD_HOST_HOSTKEY, hostkey);
+		values.put(FIELD_KNOWNHOSTS_HOSTKEYALGO, hostkeyalgo);
+		values.put(FIELD_KNOWNHOSTS_HOSTKEY, hostkey);
+
+		HashMap<String, String> selection = new HashMap<>();
+		selection.put(FIELD_HOST_HOSTNAME, hostname);
+		selection.put(FIELD_HOST_PORT, String.valueOf(port));
+		HostBean hostBean = findHost(selection);
+
+		if (hostBean == null) {
+			Log.e(TAG, "Tried to save known host for " + hostname + ":" + port
+					+ " it doesn't exist in the database");
+			return;
+		}
 
 		int numUpdated;
 		mDb.beginTransaction();
 		try {
-			numUpdated = mDb.update(TABLE_HOSTS, values,
-					FIELD_HOST_HOSTNAME + " = ? AND " + FIELD_HOST_PORT + " = ?",
-					new String[]{hostname, String.valueOf(port)});
+			numUpdated = mDb.update(TABLE_KNOWNHOSTS, values,
+					FIELD_KNOWNHOSTS_HOSTID + " = ?",
+					new String[] {String.valueOf(hostBean.getId())});
 			mDb.setTransactionSuccessful();
 		} finally {
 			mDb.endTransaction();
 		}
 		Log.d(TAG, String.format("Finished saving hostkey information for '%s' (affected %d entries)",
 				hostname, numUpdated));
+	}
+
+	@Override
+	public void removeKnownHost(String host, int port, String serverHostKeyAlgorithm, byte[] serverHostKey) {
+		throw new UnsupportedOperationException("removeKnownHost is not implemented");
 	}
 
 	/**
@@ -554,15 +631,18 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	public KnownHosts getKnownHosts() {
 		KnownHosts known = new KnownHosts();
 
-		Cursor c = mDb.query(TABLE_HOSTS, new String[] {FIELD_HOST_HOSTNAME,
-						FIELD_HOST_PORT, FIELD_HOST_HOSTKEYALGO, FIELD_HOST_HOSTKEY},
+		Cursor c = mDb.query(TABLE_HOSTS + " LEFT OUTER JOIN " + TABLE_KNOWNHOSTS
+						+ " ON " + TABLE_HOSTS + "._id = "
+						+ TABLE_KNOWNHOSTS + "." + FIELD_KNOWNHOSTS_HOSTID,
+				new String[] {FIELD_HOST_HOSTNAME, FIELD_HOST_PORT, FIELD_KNOWNHOSTS_HOSTKEYALGO,
+						FIELD_KNOWNHOSTS_HOSTKEY},
 				null, null, null, null, null);
 
 		if (c != null) {
 			int COL_HOSTNAME = c.getColumnIndexOrThrow(FIELD_HOST_HOSTNAME),
 					COL_PORT = c.getColumnIndexOrThrow(FIELD_HOST_PORT),
-					COL_HOSTKEYALGO = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEYALGO),
-					COL_HOSTKEY = c.getColumnIndexOrThrow(FIELD_HOST_HOSTKEY);
+					COL_HOSTKEYALGO = c.getColumnIndexOrThrow(FIELD_KNOWNHOSTS_HOSTKEYALGO),
+					COL_HOSTKEY = c.getColumnIndexOrThrow(FIELD_KNOWNHOSTS_HOSTKEY);
 
 			while (c.moveToNext()) {
 				String hostname = c.getString(COL_HOSTNAME);
@@ -584,6 +664,39 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		}
 
 		return known;
+	}
+
+	@Override
+	public List<String> getHostKeyAlgorithmsForHost(String hostname, int port) {
+		HashMap<String, String> selection = new HashMap<>();
+		selection.put(FIELD_HOST_HOSTNAME, hostname);
+		selection.put(FIELD_HOST_PORT, String.valueOf(port));
+		HostBean hostBean = findHost(selection);
+
+		if (hostBean == null) {
+			return null;
+		}
+
+		ArrayList<String> knownAlgorithms = new ArrayList<>();
+
+		Cursor c = mDb.query(TABLE_KNOWNHOSTS, new String[] {FIELD_KNOWNHOSTS_HOSTKEYALGO},
+				FIELD_KNOWNHOSTS_HOSTID + " = ?",
+				new String[] {String.valueOf(hostBean.getId())}, null, null, null);
+
+		if (c != null) {
+			int COL_ALGO = c.getColumnIndexOrThrow(FIELD_KNOWNHOSTS_HOSTKEYALGO);
+
+			while (c.moveToNext()) {
+				String keyAlgo = c.getString(COL_ALGO);
+				if (keyAlgo != null) {
+					knownAlgorithms.add(keyAlgo);
+				}
+			}
+
+			c.close();
+		}
+
+		return knownAlgorithms;
 	}
 
 	/**
