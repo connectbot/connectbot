@@ -6,9 +6,9 @@ apply from: '../config/translations.gradle'
 apply from: '../config/jacoco.gradle'
 
 ext {
-    supportLibraryVersion = '23.1.0'
-    testRunnerVersion = '0.3'
-    espressoVersion = '2.2'
+    supportLibraryVersion = '23.1.1'
+    testRunnerVersion = '0.4.1'
+    espressoVersion = '2.2.1'
 }
 
 buildscript {
@@ -43,7 +43,7 @@ dependencies {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "org.connectbot"
