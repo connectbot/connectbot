@@ -21,9 +21,6 @@ before_cache:
 addons:
   apt:
     packages:
-      - ia32-libs
-      - ia32-libs-multiarch
-      - libgd2-xpm
       - p7zip-full
       - xqilla # ./scripts/check-lint-count.bash
   coverity_scan:
@@ -48,7 +45,7 @@ android:
   components:
     - platform-tools
     - tools
-    - build-tools-23.0.1
+    - build-tools-23.0.2
     - android-23
     - extra-android-support
     - extra-android-m2repository
