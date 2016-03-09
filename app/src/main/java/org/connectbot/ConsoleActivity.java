@@ -420,8 +420,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	}
 
 	private void showEmulatedKeys(boolean showActionBar) {
-		keyboardGroup.startAnimation(keyboard_fade_in);
-		keyboardGroup.setVisibility(View.VISIBLE);
+		if (keyboardGroup.getVisibility() == View.GONE) {
+			keyboardGroup.startAnimation(keyboard_fade_in);
+			keyboardGroup.setVisibility(View.VISIBLE);
+		}
 		if (showActionBar) {
 			actionBar.show();
 		}
@@ -693,9 +695,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		pager.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (keyboardGroup.getVisibility() == View.GONE) {
-					showEmulatedKeys(true);
-				}
+				showEmulatedKeys(true);
 			}
 		});
 	}
