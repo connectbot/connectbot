@@ -434,9 +434,11 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 			return;
 		}
 
+		String[] hostIdArg = new String[] {String.valueOf(host.getId())};
 		mDb.beginTransaction();
 		try {
-			mDb.delete(TABLE_HOSTS, "_id = ?", new String[] {String.valueOf(host.getId())});
+			mDb.delete(TABLE_KNOWNHOSTS, FIELD_KNOWNHOSTS_HOSTID + " = ?", hostIdArg);
+			mDb.delete(TABLE_HOSTS, "_id = ?", hostIdArg);
 			mDb.setTransactionSuccessful();
 		} finally {
 			mDb.endTransaction();
@@ -590,10 +592,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * @param hostkey the bytes of the host key itself
 	 */
 	public void saveKnownHost(String hostname, int port, String hostkeyalgo, byte[] hostkey) {
-		ContentValues values = new ContentValues();
-		values.put(FIELD_KNOWNHOSTS_HOSTKEYALGO, hostkeyalgo);
-		values.put(FIELD_KNOWNHOSTS_HOSTKEY, hostkey);
-
 		HashMap<String, String> selection = new HashMap<>();
 		selection.put(FIELD_HOST_HOSTNAME, hostname);
 		selection.put(FIELD_HOST_PORT, String.valueOf(port));
@@ -605,18 +603,23 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 			return;
 		}
 
-		int numUpdated;
+		ContentValues values = new ContentValues();
+		values.put(FIELD_KNOWNHOSTS_HOSTKEYALGO, hostkeyalgo);
+		values.put(FIELD_KNOWNHOSTS_HOSTKEY, hostkey);
+		values.put(FIELD_KNOWNHOSTS_HOSTID, hostBean.getId());
+
 		mDb.beginTransaction();
 		try {
-			numUpdated = mDb.update(TABLE_KNOWNHOSTS, values,
-					FIELD_KNOWNHOSTS_HOSTID + " = ?",
-					new String[] {String.valueOf(hostBean.getId())});
+			mDb.delete(TABLE_KNOWNHOSTS, FIELD_KNOWNHOSTS_HOSTID + " = ? AND "
+							+ FIELD_KNOWNHOSTS_HOSTKEYALGO + " = ?",
+					new String[] {String.valueOf(hostBean.getId()), hostkeyalgo});
+			mDb.insert(TABLE_KNOWNHOSTS, null, values);
 			mDb.setTransactionSuccessful();
 		} finally {
 			mDb.endTransaction();
 		}
-		Log.d(TAG, String.format("Finished saving hostkey information for '%s' (affected %d entries)",
-				hostname, numUpdated));
+		Log.d(TAG, String.format("Finished saving hostkey information for '%s:%d' algo %s",
+				hostname, port, hostkeyalgo));
 	}
 
 	@Override
