@@ -28,6 +28,8 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
@@ -69,6 +71,7 @@ import com.trilead.ssh2.LocalPortForwarder;
 import com.trilead.ssh2.Session;
 import com.trilead.ssh2.crypto.PEMDecoder;
 import com.trilead.ssh2.signature.DSASHA1Verify;
+import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
 
 /**
@@ -897,6 +900,9 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				} else if (privKey instanceof DSAPrivateKey) {
 					DSAPublicKey pubkey = (DSAPublicKey) pair.getPublic();
 					pubKeys.put(entry.getKey(), DSASHA1Verify.encodeSSHDSAPublicKey(pubkey));
+				} else if (privKey instanceof ECPrivateKey) {
+					ECPublicKey pubkey = (ECPublicKey) pair.getPublic();
+					pubKeys.put(entry.getKey(), ECDSASHA2Verify.encodeSSHECDSAPublicKey(pubkey));
 				} else
 					continue;
 			} catch (IOException e) {
