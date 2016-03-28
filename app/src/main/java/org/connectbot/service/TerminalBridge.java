@@ -417,12 +417,14 @@ public class TerminalBridge implements VDUDisplay {
 		else
 			((vt320) buffer).setBackspace(vt320.DELETE_IS_DEL);
 
-		// create thread to relay incoming connection data to buffer
-		relay = new Relay(this, transport, (vt320) buffer, host.getEncoding());
-		Thread relayThread = new Thread(relay);
-		relayThread.setDaemon(true);
-		relayThread.setName("Relay");
-		relayThread.start();
+		if (isSessionOpen()) {
+			// create thread to relay incoming connection data to buffer
+			relay = new Relay(this, transport, (vt320) buffer, host.getEncoding());
+			Thread relayThread = new Thread(relay);
+			relayThread.setDaemon(true);
+			relayThread.setName("Relay");
+			relayThread.start();
+		}
 
 		// force font-size to make sure we resizePTY as needed
 		setFontSize(fontSizeDp);
