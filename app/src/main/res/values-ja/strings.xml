@@ -92,6 +92,7 @@
   <string name="pref_rotation_summary">キーボードのポップイン/アウト時の向きの変更</string>
   <string name="pref_titlebarhide_title">タイトルバーを自動的に隠す</string>
   <string name="pref_titlebarhide_summary">タイトルバーとアクセスメニューを表示するにはコンソールをタップ</string>
+  <string name="pref_alwaysvisible_title">特殊キーを常に表示</string>
   <string name="pref_pg_updn_gesture_title">ページアップ/ページダウン ジェスチャ</string>
   <string name="pref_pg_updn_gesture_summary">画面の左の三分の一をスワイプすると、端末にページアップ/ダウンを送信します</string>
   <string name="pref_fullscreen_title">全画面</string>
@@ -176,6 +177,7 @@
   <string name="list_menu_pubkeys">公開鍵管理</string>
   <string name="list_menu_sortcolor">色でソート</string>
   <string name="list_menu_sortname">名前順でソート</string>
+  <string name="list_menu_disconnect">すべて切断</string>
   <string name="list_menu_settings">設定</string>
   <string name="list_host_disconnect">切断</string>
   <string name="list_host_edit">接続ホストの編集</string>

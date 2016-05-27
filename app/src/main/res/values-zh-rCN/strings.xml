@@ -92,6 +92,7 @@
   <string name="pref_rotation_summary">当键盘打开或关闭时屏幕如何旋转(水平或竖直)</string>
   <string name="pref_titlebarhide_title">自动隐藏标题栏</string>
   <string name="pref_titlebarhide_summary">触击控制台显示标题栏和访问菜单</string>
+  <string name="pref_alwaysvisible_title">特殊键始终可见</string>
   <string name="pref_pg_updn_gesture_title">向上/向下翻页 手势</string>
   <string name="pref_pg_updn_gesture_summary">在屏幕左侧的三分之一以内滑动向终端发送向上/向下翻页</string>
   <string name="pref_fullscreen_title">全屏</string>
@@ -176,6 +177,7 @@
   <string name="list_menu_pubkeys">管理公钥</string>
   <string name="list_menu_sortcolor">按颜色排序</string>
   <string name="list_menu_sortname">按名称排序</string>
+  <string name="list_menu_disconnect">断开所有连接</string>
   <string name="list_menu_settings">设置</string>
   <string name="list_host_disconnect">断开连接</string>
   <string name="list_host_edit">编辑主机</string>
