@@ -4,7 +4,7 @@ sudo: false
 
 env:
   global:
-    - NDK_VERSION=r10e
+    - NDK_VERSION=r11c
     # Coverity
     - secure: "DTBBKdwZE5yxPjJQG8/wU/+LJ1A3MtUYNaf8O/yhmQNo4UcxQF+3KOoY5OK4vvoTewisUqnVRhXhD8rMYzBZiNtaGF8eSMGXVWUVb6YhOPQ0oMHKSmVgopEHzhoGa+9HDJ6xyQZdALJB8GVlwamTwO/1qk/xI02mjUNEtdk8cuc="
 
@@ -21,7 +21,6 @@ before_cache:
 addons:
   apt:
     packages:
-      - p7zip-full
       - xqilla # ./scripts/check-lint-count.bash
   coverity_scan:
     project:
@@ -35,8 +34,8 @@ addons:
 before_script:
   # newest Android NDK
   - mkdir -p $HOME/.cache/ndk
-  - curl https://dl.google.com/android/ndk/android-ndk-${NDK_VERSION}-linux-x86_64.bin -z $HOME/.cache/ndk/ndk-${NDK_VERSION}.bin -o $HOME/.cache/ndk/ndk-${NDK_VERSION}.bin
-  - 7z x -y $HOME/.cache/ndk/ndk-${NDK_VERSION}.bin | grep -v 'ing  '
+  - curl https://dl.google.com/android/repository/android-ndk-${NDK_VERSION}-linux-x86_64.zip -z $HOME/.cache/ndk/ndk-${NDK_VERSION}.zip -o $HOME/.cache/ndk/ndk-${NDK_VERSION}.zip
+  - unzip -q $HOME/.cache/ndk/ndk-${NDK_VERSION}.zip
   - echo "ndk.dir=`pwd`/android-ndk-${NDK_VERSION}" >> local.properties
   # For the lint checking mechanism
   - mkdir -p $HOME/.cache/lint
