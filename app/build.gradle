@@ -69,6 +69,8 @@ android {
             ldLibs "log"
         }
 
+        vectorDrawables.useSupportLibrary = true
+
         testApplicationId "org.connectbot.tests"
         testInstrumentationRunner "org.connectbot.FixJacocoTestRunner"
     }
