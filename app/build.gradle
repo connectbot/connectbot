@@ -1,16 +1,3 @@
-apply plugin: 'android-sdk-manager'
-apply plugin: 'com.android.application'
-apply plugin: 'com.github.kt3k.coveralls'
-apply from: '../config/quality.gradle'
-apply from: '../config/translations.gradle'
-apply from: '../config/jacoco.gradle'
-
-ext {
-    supportLibraryVersion = '23.4.0'
-    testRunnerVersion = '0.4.1'
-    espressoVersion = '2.2.1'
-}
-
 buildscript {
     repositories {
         jcenter()
@@ -22,6 +9,19 @@ buildscript {
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
     }
 }
+
+ext {
+    supportLibraryVersion = '23.4.0'
+    testRunnerVersion = '0.4.1'
+    espressoVersion = '2.2.1'
+}
+
+apply plugin: 'android-sdk-manager'
+apply plugin: 'com.android.application'
+apply plugin: 'com.github.kt3k.coveralls'
+apply from: '../config/quality.gradle'
+apply from: '../config/translations.gradle'
+apply from: '../config/jacoco.gradle'
 
 repositories {
     maven {
