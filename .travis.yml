@@ -53,7 +53,11 @@ android:
     - 'google-gdk-license-.+'
 
 script:
-  - ./gradlew clean build check jacocoUnitTestDebugReport
-  - ./scripts/check-lint-count.bash app/build/outputs/lint-results.xml $HOME/.cache/lint/lint-results.xml
+  # Split up to reduce memory requirements
+  - ./gradlew clean
+  - ./gradlew assemble
+  - ./gradlew check
+  - ./gradlew jacocoUnitTestDebugReport
+  - ./scripts/check-lint-count.bash app/build/outputs/lint-results-debug.xml $HOME/.cache/lint/lint-results.xml
 
 after_success: ./gradlew coveralls

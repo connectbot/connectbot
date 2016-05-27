@@ -1,16 +1,3 @@
-apply plugin: 'android-sdk-manager'
-apply plugin: 'com.android.application'
-apply plugin: 'com.github.kt3k.coveralls'
-apply from: '../config/quality.gradle'
-apply from: '../config/translations.gradle'
-apply from: '../config/jacoco.gradle'
-
-ext {
-    supportLibraryVersion = '23.1.1'
-    testRunnerVersion = '0.4.1'
-    espressoVersion = '2.2.1'
-}
-
 buildscript {
     repositories {
         jcenter()
@@ -18,10 +5,26 @@ buildscript {
 
     dependencies {
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1x'
-        classpath 'com.android.tools.build:gradle:1.4.0-beta3'
-        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
+        classpath 'com.android.tools.build:gradle:2.1.0'
     }
 }
+
+plugins {
+    id 'info.vividcode.android.sdk-manager' version '0.9.0'
+}
+
+ext {
+    supportLibraryVersion = '23.4.0'
+    testRunnerVersion = '0.5'
+    espressoVersion = '2.2.2'
+}
+
+apply plugin: 'info.vividcode.android.sdk-manager'
+apply plugin: 'com.android.application'
+apply plugin: 'com.github.kt3k.coveralls'
+apply from: '../config/quality.gradle'
+apply from: '../config/translations.gradle'
+apply from: '../config/jacoco.gradle'
 
 repositories {
     maven {
@@ -41,9 +44,17 @@ dependencies {
     }
 }
 
+def isCi = "true".equals(System.getenv("CI"))
+def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
+
+    dexOptions {
+        // Skip pre-dexing when running on a CI or when disabled via -Dpre-dex=false
+        preDexLibraries = preDexEnabled && !isCi
+    }
 
     defaultConfig {
         applicationId "org.connectbot"
@@ -92,10 +103,7 @@ android {
             exclude module: "support-annotations"
         }
         androidTestCompile("com.android.support.test.espresso:espresso-contrib:$espressoVersion") {
-            exclude module: 'support-annotations'
-            exclude module: 'support-v4'
-            exclude module: 'support-v13'
-            exclude module: 'recyclerview-v7'
+            exclude group: 'com.android.support'
         }
     }
 
