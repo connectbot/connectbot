@@ -54,6 +54,6 @@ android:
 
 script:
   - ./gradlew clean build check jacocoUnitTestDebugReport
-  - ./scripts/check-lint-count.bash app/build/outputs/lint-results.xml $HOME/.cache/lint/lint-results.xml
+  - ./scripts/check-lint-count.bash app/build/outputs/lint-results-debug.xml $HOME/.cache/lint/lint-results.xml
 
 after_success: ./gradlew coveralls
