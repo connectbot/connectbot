@@ -1,29 +1,33 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">Enkel og omfattende SSH-klient med åpen kildekode.</string>
-  <string name="service_desc">Opprettholder SSH-tilkoblinger og innlastede offentlige nøkler</string>
+  <string name="service_desc">For SSH-tilkoblinger og offentlige nøkler</string>
   <string name="title_hosts_list">Verter</string>
   <string name="title_pubkey_list">Offentlige nøkler</string>
   <string name="title_port_forwards_list">Portvideresending</string>
   <string name="title_host_editor">Rediger vert</string>
   <string name="title_help">Hjelp</string>
   <string name="title_colors">Farger</string>
+  <string name="title_color_picker">Velg en farge</string>
   <string name="title_settings">Innstillinger</string>
   <string name="title_pubkey_generate">Generer</string>
   <string name="help_intro">Velg en overskrift nedenfor for mer informasjon om et bestemt emne.</string>
-  <string name="terms_and_conditions">Vilkår og betingelser</string>
+  <string name="terms_and_conditions">Brukervilkår</string>
   <string name="hints">Hint</string>
   <string name="host_shortcuts_header">Snarveier for verter</string>
+  <string name="scroll_hints_header">Bla opp/Bla ned</string>
+  <string name="scroll_hints_content">Dra fingeren opp eller ned for å bla i terminalen</string>
   <string name="scrolling_back">Bla frem</string>
-  <string name="page_up">Side opp</string>
-  <string name="page_down">Side ned</string>
+  <string name="scrolling_forward">Bla frem</string>
+  <string name="page_up">Opp én side</string>
+  <string name="page_down">Ned én side</string>
   <string name="switching_hosts_header">Bytt vert</string>
   <string name="switching_hosts_content">Dra fingeren over skjermen for å bytte mellom tilkoblede verrter</string>
   <string name="next_host">Neste vert</string>
   <string name="prev_host">Forrige vert</string>
   <string name="keyboard_shortcuts">Hurtigtaster</string>
-  <string name="increase_font_size">Øk skriftstørrelse</string>
-  <string name="increase_font_shortcut">ctrl og +</string>
+  <string name="increase_font_size">Større skrift</string>
+  <string name="increase_font_shortcut">Ctrl og +</string>
   <string name="decrease_font_size">Minsk skriftstørrelse</string>
   <string name="decrease_font_shortcut">Ctrl og -</string>
   <string name="paste_shortcut">Ctrl-Shift-V</string>
@@ -85,6 +89,7 @@
   <string name="pref_rotation_summary">Hvordan rotasjonsretning endres når tastatur skyves inn/ut</string>
   <string name="pref_fullscreen_title">Full skjerm</string>
   <string name="pref_fullscreen_summary">Gjem statuslinje mens du er i konsoll</string>
+  <string name="pref_keyboard_category">Tastatur</string>
   <string name="pref_memkeys_title">Lagre nøkler</string>
   <string name="pref_memkeys_summary">Husk opplåste nøkler helt til programmet avsluttes</string>
   <string name="pref_conn_persist_title">Oppretthold forbindelser</string>
