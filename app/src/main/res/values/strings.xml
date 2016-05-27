@@ -542,8 +542,13 @@
 	<!-- Very short label indicating the number next to it is "background color" number. -->
 	<string name="color_bg_label">"BG: %1$d"</string>
 
-	<!-- Describes the image of the "connected to host" icon for accessibility purposes. -->
+	<!-- Accessibility text for connection state in list of hosts when the host is currently
+	 connected. -->
 	<string name="image_description_connected">"Connected."</string>
+
+	<!-- Accessibility text for connection state in list of hosts when the host is currently
+	     disconnected after having been previously connected. -->
+	<string name="image_description_disconnected">"Disconnected."</string>
 
 	<!-- Describes the icon of the "locked pubkey" icon for accessibility purposes. -->
 	<string name="image_description_key_is_locked">"Key is locked."</string>

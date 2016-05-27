@@ -20,13 +20,12 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:fillViewport="true"
 	tools:context="org.connectbot.HostEditorFragment"
 	>
 
 	<LinearLayout
-		android:focusable="true"
-		android:focusableInTouchMode="true"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
@@ -42,7 +41,7 @@
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/ic_laptop"
-				android:contentDescription="@string/protocol_spinner_label"
+				android:contentDescription="@null"
 				style="@style/ListItemIcon"
 				/>
 
@@ -51,11 +50,12 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/protocol_spinner_label"
+				android:labelFor="@+id/protocol_text"
 				style="@style/ListItemFirstLineText.WithIcon"
 				/>
 
 			<TextView
-				android:id="@+id/protocol_text"
+				android:id="@id/protocol_text"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_below="@id/protocol_title"
@@ -79,10 +79,12 @@
 				android:layout_width="0dp"
 				android:layout_weight ="1"
 				android:layout_height="wrap_content"
+				android:accessibilityLiveRegion="polite"
+				android:labelFor="@+id/quickconnect_field"
 				>
 
 				<EditText
-					android:id="@+id/quickconnect_field"
+					android:id="@id/quickconnect_field"
 					android:layout_width="match_parent"
 					android:layout_weight="1"
 					android:layout_height="wrap_content"
@@ -123,10 +125,12 @@
 				android:id="@+id/username_field_container"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:accessibilityLiveRegion="polite"
+				android:labelFor="@+id/username_edit_text"
 				>
 
 				<EditText
-					android:id="@+id/username_edit_text"
+					android:id="@id/username_edit_text"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:hint="@string/hostpref_username_title"
@@ -140,10 +144,12 @@
 				android:id="@+id/hostname_field_container"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:accessibilityLiveRegion="polite"
+				android:labelFor="@+id/hostname_edit_text"
 				>
 
 				<EditText
-					android:id="@+id/hostname_edit_text"
+					android:id="@id/hostname_edit_text"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:hint="@string/hostpref_hostname_title"
@@ -157,10 +163,12 @@
 				android:id="@+id/port_field_container"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:accessibilityLiveRegion="polite"
+				android:labelFor="@+id/port_edit_text"
 				>
 
 				<EditText
-					android:id="@+id/port_edit_text"
+					android:id="@id/port_edit_text"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:inputType="number"
@@ -182,21 +190,25 @@
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/ic_person"
-				android:contentDescription="@string/hostpref_color_title"
+				android:contentDescription="@null"
 				style="@style/ListItemIcon"
 				/>
 
 			<android.support.design.widget.TextInputLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="68dp"
-				android:layout_marginStart="68dp"
-				android:layout_marginRight="16dp"
 				android:layout_marginEnd="16dp"
+				android:layout_marginLeft="68dp"
+				android:layout_marginRight="16dp"
+				android:layout_marginStart="68dp"
+				android:accessibilityLiveRegion="polite"
+				android:contentDescription="@string/hostpref_nickname_title"
+				android:labelFor="@+id/nickname_field"
+				tools:ignore="UnusedAttribute"
 				>
 
 				<EditText
-					android:id="@+id/nickname_field"
+					android:id="@id/nickname_field"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:maxLines="1"
@@ -212,13 +224,14 @@
 			android:id="@+id/color_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:focusable="true"
 			>
 
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/ic_palette"
-				android:contentDescription="@string/hostpref_color_title"
+				android:contentDescription="@null"
 				style="@style/ListItemIcon"
 				/>
 
@@ -244,13 +257,14 @@
 		<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:focusable="true"
 			>
 
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/ic_format_size"
-				android:contentDescription="@string/hostpref_fontsize_title"
+				android:contentDescription="@null"
 				style="@style/ListItemIcon"
 				/>
 
@@ -259,6 +273,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/hostpref_fontsize_title"
+				android:labelFor="@+id/font_size_bar"
 				style="@style/ListItemFirstLineText.WithIcon"
 				/>
 
@@ -272,7 +287,7 @@
 				>
 
 				<SeekBar
-					android:id="@+id/font_size_bar"
+					android:id="@id/font_size_bar"
 					android:layout_width="0dp"
 					android:layout_weight="1"
 					android:layout_height="wrap_content"
@@ -300,13 +315,14 @@
 			android:id="@+id/pubkey_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:focusable="true"
 			>
 
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/ic_vpn_key"
-				android:contentDescription="@string/hostpref_pubkeyid_title"
+				android:contentDescription="@null"
 				style="@style/ListItemIcon"
 				/>
 
@@ -333,13 +349,14 @@
 			android:id="@+id/delkey_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:focusable="true"
 			>
 
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/ic_keyboard"
-				android:contentDescription="@string/hostpref_delkey_title"
+				android:contentDescription="@null"
 				style="@style/ListItemIcon"
 				/>
 
@@ -366,13 +383,14 @@
 			android:id="@+id/encoding_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:focusable="true"
 			>
 
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/ic_code"
-				android:contentDescription="@string/hostpref_encoding_title"
+				android:contentDescription="@null"
 				style="@style/ListItemIcon"
 				/>
 
@@ -399,6 +417,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
+			android:focusable="true"
 			>
 
 			<RelativeLayout
@@ -411,7 +430,7 @@
 					android:layout_width="24dp"
 					android:layout_height="24dp"
 					android:src="@drawable/ic_vpn_lock"
-					android:contentDescription="@string/hostpref_authagent_title"
+					android:contentDescription="@null"
 					style="@style/ListItemIcon"
 					/>
 
@@ -469,197 +488,54 @@
 
 		</LinearLayout>
 
-		<RelativeLayout
+		<org.connectbot.views.CheckableMenuItem
 			android:id="@+id/compression_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			>
+			android:icon="@drawable/ic_zip"
+			android:title="@string/hostpref_compression_title"
+			app:summary="@string/hostpref_compression_summary"
+			/>
 
-			<ImageView
-				android:layout_width="24dp"
-				android:layout_height="24dp"
-				android:src="@drawable/ic_zip"
-				android:contentDescription="@string/hostpref_compression_title"
-				style="@style/ListItemIcon"
-				/>
-
-			<TextView
-				android:id="@+id/compression_title"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/hostpref_compression_title"
-				style="@style/ListItemFirstLineText.WithIcon"
-				/>
-
-			<android.support.v7.widget.SwitchCompat
-				android:id="@+id/compression_switch"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentRight="true"
-				android:layout_alignParentEnd="true"
-				android:layout_marginRight="16dp"
-				android:layout_marginEnd="16dp"
-				android:layout_centerVertical="true"
-				/>
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_toLeftOf="@id/compression_switch"
-				android:layout_toStartOf="@id/compression_switch"
-				android:layout_below="@id/compression_title"
-				android:text="@string/hostpref_compression_summary"
-				style="@style/ListItemSecondLineText.WithIcon"
-				/>
-
-		</RelativeLayout>
-
-		<RelativeLayout
+		<org.connectbot.views.CheckableMenuItem
 			android:id="@+id/start_shell_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			>
+			android:icon="@drawable/ic_laptop"
+			android:title="@string/hostpref_wantsession_title"
+			app:summary="@string/hostpref_wantsession_summary"
+			/>
 
-			<ImageView
-				android:layout_width="24dp"
-				android:layout_height="24dp"
-				android:src="@drawable/ic_laptop"
-				android:contentDescription="@string/hostpref_wantsession_title"
-				style="@style/ListItemIcon"
-				/>
-
-			<TextView
-				android:id="@+id/shell_session_title"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/hostpref_wantsession_title"
-				style="@style/ListItemFirstLineText.WithIcon"
-				/>
-
-			<android.support.v7.widget.SwitchCompat
-				android:id="@+id/start_shell_switch"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentRight="true"
-				android:layout_alignParentEnd="true"
-				android:layout_marginRight="16dp"
-				android:layout_marginEnd="16dp"
-				android:layout_centerVertical="true"
-				/>
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/hostpref_wantsession_summary"
-				android:layout_toLeftOf="@id/start_shell_switch"
-				android:layout_toStartOf="@id/start_shell_switch"
-				android:layout_below="@id/shell_session_title"
-				style="@style/ListItemSecondLineText.WithIcon"
-				/>
-
-		</RelativeLayout>
-
-		<RelativeLayout
+		<org.connectbot.views.CheckableMenuItem
 			android:id="@+id/stay_connected_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			>
+			android:icon="@drawable/ic_sync"
+			android:title="@string/hostpref_stayconnected_title"
+			app:summary="@string/hostpref_stayconnected_summary"
+			/>
 
-			<ImageView
-				android:layout_width="24dp"
-				android:layout_height="24dp"
-				android:src="@drawable/ic_sync"
-				android:contentDescription="@string/hostpref_stayconnected_title"
-				style="@style/ListItemIcon"
-				/>
-
-			<TextView
-				android:id="@+id/stay_connected_title"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/hostpref_stayconnected_title"
-				style="@style/ListItemFirstLineText.WithIcon"
-				/>
-
-			<android.support.v7.widget.SwitchCompat
-				android:id="@+id/stay_connected_switch"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentRight="true"
-				android:layout_alignParentEnd="true"
-				android:layout_marginRight="16dp"
-				android:layout_marginEnd="16dp"
-				android:layout_centerVertical="true"
-				/>
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/hostpref_stayconnected_summary"
-				android:layout_toLeftOf="@id/stay_connected_switch"
-				android:layout_toStartOf="@id/stay_connected_switch"
-				android:layout_below="@id/stay_connected_title"
-				style="@style/ListItemSecondLineText.WithIcon"
-				/>
-
-		</RelativeLayout>
-
-		<RelativeLayout
+		<org.connectbot.views.CheckableMenuItem
 			android:id="@+id/close_on_disconnect_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			>
-
-			<ImageView
-				android:layout_width="24dp"
-				android:layout_height="24dp"
-				android:src="@drawable/ic_sync_disabled"
-				android:contentDescription="@string/hostpref_quickdisconnect_title"
-				style="@style/ListItemIcon"
-				/>
-
-			<TextView
-				android:id="@+id/close_on_disconnect_title"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/hostpref_quickdisconnect_title"
-				style="@style/ListItemFirstLineText.WithIcon"
-				/>
-
-			<android.support.v7.widget.SwitchCompat
-				android:id="@+id/close_on_disconnect_switch"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentRight="true"
-				android:layout_alignParentEnd="true"
-				android:layout_marginRight="16dp"
-				android:layout_marginEnd="16dp"
-				android:layout_centerVertical="true"
-				/>
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/hostpref_quickdisconnect_summary"
-				android:layout_toLeftOf="@id/close_on_disconnect_switch"
-				android:layout_toStartOf="@id/close_on_disconnect_switch"
-				android:layout_below="@id/close_on_disconnect_title"
-				style="@style/ListItemSecondLineText.WithIcon"
-				/>
-
-		</RelativeLayout>
+			android:icon="@drawable/ic_sync_disabled"
+			android:title="@string/hostpref_quickdisconnect_title"
+			app:summary="@string/hostpref_quickdisconnect_summary"
+			/>
 
 		<RelativeLayout
 			android:id="@+id/postlogin_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:focusable="true"
 			>
 
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
 				android:src="@drawable/ic_android"
-				android:contentDescription="@string/hostpref_postlogin_title"
+				android:contentDescription="@null"
 				style="@style/ListItemIcon"
 				/>
 
@@ -668,6 +544,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/hostpref_postlogin_title"
+				android:labelFor="@+id/post_login_automation_field"
 				style="@style/ListItemFirstLineText.WithIcon"
 				/>
 
@@ -683,7 +560,7 @@
 				/>
 
 			<EditText
-				android:id="@+id/post_login_automation_field"
+				android:id="@id/post_login_automation_field"
 				android:layout_height="wrap_content"
 				android:layout_width="match_parent"
 				android:layout_marginLeft="72dp"
@@ -693,7 +570,6 @@
 				android:lines="8"
 				android:minLines="2"
 				/>
-
 
 		</RelativeLayout>
 

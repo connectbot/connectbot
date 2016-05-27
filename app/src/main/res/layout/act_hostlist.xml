@@ -55,6 +55,7 @@
 		android:layout_margin="16dp"
 		android:src="@drawable/ic_add"
 		android:tint="@android:color/white"
+		android:contentDescription="@string/hostpref_add_host"
 		app:backgroundTint="@color/accent"
 		app:rippleColor="@color/dark_accent" />
 

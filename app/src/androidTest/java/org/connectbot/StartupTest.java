@@ -122,7 +122,7 @@ public class StartupTest {
 		onView(withText(stringForColor)).perform(click());
 
 		// Go back to the host list.
-		onView(withText(R.string.hostpref_color_title)).perform(pressBack());
+		onView(withId(R.id.save)).perform(click());
 
 		Resources res = InstrumentationRegistry.getTargetContext().getResources();
 		onView(withId(R.id.list)).check(hasHolderItem(withColoredText(res.getColor(color))));
