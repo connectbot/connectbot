@@ -15,8 +15,8 @@ plugins {
 
 ext {
     supportLibraryVersion = '23.4.0'
-    testRunnerVersion = '0.4.1'
-    espressoVersion = '2.2.1'
+    testRunnerVersion = '0.5'
+    espressoVersion = '2.2.2'
 }
 
 apply plugin: 'info.vividcode.android.sdk-manager'
@@ -103,10 +103,7 @@ android {
             exclude module: "support-annotations"
         }
         androidTestCompile("com.android.support.test.espresso:espresso-contrib:$espressoVersion") {
-            exclude module: 'support-annotations'
-            exclude module: 'support-v4'
-            exclude module: 'support-v13'
-            exclude module: 'recyclerview-v7'
+            exclude group: 'com.android.support'
         }
     }
 
