@@ -709,11 +709,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	}
 
 	/**
-	 * Ties the {@link TabLayout} to the {@link ViewPager}.
+	 * Ties the {@link TabLayout} to the {@link TerminalViewPager}.
 	 *
 	 * <p>This method will:
 	 * <ul>
-	 *     <li>Add a {@link ViewPager.OnPageChangeListener} that will forward events to
+	 *     <li>Add a {@link TerminalViewPager.OnPageChangeListener} that will forward events to
 	 *     this TabLayout.</li>
 	 *     <li>Populate the TabLayout's tabs from the ViewPager's {@link PagerAdapter}.</li>
 	 *     <li>Set our {@link TabLayout.OnTabSelectedListener} which will forward
