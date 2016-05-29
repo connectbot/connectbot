@@ -183,33 +183,124 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			startActivity(new Intent(this, GeneratePubkeyActivity.class));
 			return true;
 		case R.id.import_existing_key_icon:
-			Uri sdcard = Uri.fromFile(Environment.getExternalStorageDirectory());
-			String pickerTitle = getString(R.string.pubkey_list_pick);
-
-			// Try to use OpenIntent's file browser to pick a file
-			Intent intent = new Intent(FileManagerIntents.ACTION_PICK_FILE);
-			intent.setData(sdcard);
-			intent.putExtra(FileManagerIntents.EXTRA_TITLE, pickerTitle);
-			intent.putExtra(FileManagerIntents.EXTRA_BUTTON_TEXT, getString(android.R.string.ok));
-
-			try {
-				startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
-			} catch (ActivityNotFoundException e) {
-				// If OI didn't work, try AndExplorer
-				intent = new Intent(Intent.ACTION_PICK);
-				intent.setDataAndType(sdcard, MIME_TYPE_ANDEXPLORER_FILE);
-				intent.putExtra(ANDEXPLORER_TITLE, pickerTitle);
-
-				try {
-					startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
-				} catch (ActivityNotFoundException e1) {
-					pickFileSimple();
-				}
-			}
+			importExistingKey();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private boolean importExistingKey() {
+		Uri sdcard = Uri.fromFile(Environment.getExternalStorageDirectory());
+		String pickerTitle = getString(R.string.pubkey_list_pick);
+
+		return importExistingKeyKitKat() || importExistingKeyOpenIntents(sdcard, pickerTitle)
+				|| importExistingKeyAndExplorer(sdcard, pickerTitle) || pickFileSimple();
+	}
+
+	/**
+	 * Fires an intent to spin up the "file chooser" UI and select a private key.
+	 */
+	public boolean importExistingKeyKitKat() {
+		// ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
+		// browser.
+		Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+
+		// Filter to only show results that can be "opened", such as a
+		// file (as opposed to a list of contacts or timezones)
+		intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+		// PKCS#8 MIME types aren't widely supported, so we'll try */* fro now.
+		intent.setType("*/*");
+
+		try {
+			startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
+			return true;
+		} catch (ActivityNotFoundException e) {
+			return false;
+		}
+	}
+
+	/**
+	 * Imports an existing key using the OpenIntents-style request.
+	 */
+	private boolean importExistingKeyOpenIntents(Uri sdcard, String pickerTitle) {
+		// Try to use OpenIntent's file browser to pick a file
+		Intent intent = new Intent(FileManagerIntents.ACTION_PICK_FILE);
+		intent.setData(sdcard);
+		intent.putExtra(FileManagerIntents.EXTRA_TITLE, pickerTitle);
+		intent.putExtra(FileManagerIntents.EXTRA_BUTTON_TEXT, getString(android.R.string.ok));
+
+		try {
+			startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
+			return true;
+		} catch (ActivityNotFoundException e) {
+			return false;
+		}
+	}
+
+	private boolean importExistingKeyAndExplorer(Uri sdcard, String pickerTitle) {
+		Intent intent;// If OI didn't work, try AndExplorer
+		intent = new Intent(Intent.ACTION_PICK);
+		intent.setDataAndType(sdcard, MIME_TYPE_ANDEXPLORER_FILE);
+		intent.putExtra(ANDEXPLORER_TITLE, pickerTitle);
+
+		try {
+			startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
+			return true;
+		} catch (ActivityNotFoundException e) {
+			return false;
+		}
+	}
+
+	/**
+	 * Builds a simple list of files to pick from.
+	 */
+	private boolean pickFileSimple() {
+		// build list of all files in sdcard root
+		final File sdcard = Environment.getExternalStorageDirectory();
+		Log.d(TAG, sdcard.toString());
+
+		// Don't show a dialog if the SD card is completely absent.
+		final String state = Environment.getExternalStorageState();
+		if (!Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)
+				&& !Environment.MEDIA_MOUNTED.equals(state)) {
+			new android.support.v7.app.AlertDialog.Builder(
+					PubkeyListActivity.this, R.style.AlertDialogTheme)
+					.setMessage(R.string.alert_sdcard_absent)
+					.setNegativeButton(android.R.string.cancel, null).create().show();
+			return true;
+		}
+
+		List<String> names = new LinkedList<String>();
+		{
+			File[] files = sdcard.listFiles();
+			if (files != null) {
+				for (File file : sdcard.listFiles()) {
+					if (file.isDirectory()) continue;
+					names.add(file.getName());
+				}
+			}
+		}
+		Collections.sort(names);
+
+		final String[] namesList = names.toArray(new String[] {});
+		Log.d(TAG, names.toString());
+
+		// prompt user to select any file from the sdcard root
+		new android.support.v7.app.AlertDialog.Builder(
+				PubkeyListActivity.this, R.style.AlertDialogTheme)
+				.setTitle(R.string.pubkey_list_pick)
+				.setItems(namesList, new OnClickListener() {
+					public void onClick(DialogInterface arg0, int arg1) {
+						String name = namesList[arg1];
+
+						readKeyFromFile(new File(sdcard, name));
+					}
+				})
+				.setNegativeButton(android.R.string.cancel, null).create().show();
+
+		return true;
 	}
 
 	protected void handleAddKey(final PubkeyBean pubkey) {
@@ -280,18 +371,18 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		super.onActivityResult(requestCode, resultCode, intent);
+	protected void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+		super.onActivityResult(requestCode, resultCode, resultData);
 
 		switch (requestCode) {
 		case REQUEST_CODE_PICK_FILE:
-			if (resultCode == RESULT_OK && intent != null) {
-				Uri uri = intent.getData();
+			if (resultCode == RESULT_OK && resultData != null) {
+				Uri uri = resultData.getData();
 				try {
 					if (uri != null) {
 						readKeyFromFile(new File(URI.create(uri.toString())));
 					} else {
-						String filename = intent.getDataString();
+						String filename = resultData.getDataString();
 						if (filename != null)
 							readKeyFromFile(new File(URI.create(filename)));
 					}
