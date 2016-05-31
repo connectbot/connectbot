@@ -17,12 +17,19 @@
 
 package org.connectbot;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -43,6 +50,7 @@ import com.trilead.ssh2.crypto.PEMStructure;
 
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -80,7 +88,7 @@ import android.widget.Toast;
 public class PubkeyListActivity extends AppCompatListActivity implements EventListener {
 	public final static String TAG = "CB.PubkeyListActivity";
 
-	private static final int MAX_KEYFILE_SIZE = 8192;
+	private static final int MAX_KEYFILE_SIZE = 32768;
 	private static final int REQUEST_CODE_PICK_FILE = 1;
 
 	// Constants for AndExplorer's file picking intent
@@ -146,28 +154,6 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 		inflater = LayoutInflater.from(this);
 	}
-
-	/**
-	 * Read given file into memory as <code>byte[]</code>.
-	 */
-	protected static byte[] readRaw(File file) throws Exception {
-		InputStream is = new FileInputStream(file);
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-
-		int bytesRead;
-		byte[] buffer = new byte[1024];
-		while ((bytesRead = is.read(buffer)) != -1) {
-			os.write(buffer, 0, bytesRead);
-		}
-
-		os.flush();
-		os.close();
-		is.close();
-
-		return os.toByteArray();
-
-	}
-
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -295,7 +281,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 					public void onClick(DialogInterface arg0, int arg1) {
 						String name = namesList[arg1];
 
-						readKeyFromFile(new File(sdcard, name));
+						readKeyFromFile(Uri.fromFile(new File(sdcard, name)));
 					}
 				})
 				.setNegativeButton(android.R.string.cancel, null).create().show();
@@ -380,11 +366,12 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 				Uri uri = resultData.getData();
 				try {
 					if (uri != null) {
-						readKeyFromFile(new File(URI.create(uri.toString())));
+						readKeyFromFile(uri);
 					} else {
 						String filename = resultData.getDataString();
-						if (filename != null)
-							readKeyFromFile(new File(URI.create(filename)));
+						if (filename != null) {
+							readKeyFromFile(Uri.parse(filename));
+						}
 					}
 				} catch (IllegalArgumentException e) {
 					Log.e(TAG, "Couldn't read from picked file", e);
@@ -394,64 +381,103 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		}
 	}
 
+	public static byte[] getBytesFromInputStream(InputStream is, int maxSize) throws IOException {
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		byte[] buffer = new byte[0xFFFF];
+
+		for (int len; (len = is.read(buffer)) != -1 && os.size() < maxSize; ) {
+			os.write(buffer, 0, len);
+		}
+
+		if (os.size() >= maxSize) {
+			throw new IOException("File was too big");
+		}
+
+		os.flush();
+		return os.toByteArray();
+	}
+
+	private KeyPair readPKCS8Key(byte[] keyData) {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(keyData)));
+
+		// parse the actual key once to check if its encrypted
+		// then save original file contents into our database
+		try {
+			ByteArrayOutputStream keyBytes = new ByteArrayOutputStream();
+
+			String line;
+			boolean inKey = false;
+			while ((line = reader.readLine()) != null) {
+				if (line.equals(PubkeyUtils.PKCS8_START)) {
+					inKey = true;
+				} else if (line.equals(PubkeyUtils.PKCS8_END)) {
+					break;
+				} else if (inKey) {
+					keyBytes.write(line.getBytes("US-ASCII"));
+				}
+			}
+
+			if (keyBytes.size() > 0) {
+				byte[] decoded = Base64.decode(keyBytes.toString().toCharArray());
+
+				return PubkeyUtils.recoverKeyPair(decoded);
+			}
+		} catch (Exception e) {
+			return null;
+		}
+		return null;
+	}
+
 	/**
-	 * @param file
+	 * @param uri URI to private key to read.
 	 */
-	private void readKeyFromFile(File file) {
+	private void readKeyFromFile(Uri uri) {
 		PubkeyBean pubkey = new PubkeyBean();
 
 		// find the exact file selected
-		pubkey.setNickname(file.getName());
+		pubkey.setNickname(uri.getLastPathSegment());
 
-		if (file.length() > MAX_KEYFILE_SIZE) {
+		byte[] keyData;
+		try {
+			ContentResolver resolver = getContentResolver();
+			keyData = getBytesFromInputStream(resolver.openInputStream(uri), MAX_KEYFILE_SIZE);
+		} catch (IOException e) {
 			Toast.makeText(PubkeyListActivity.this,
 					R.string.pubkey_import_parse_problem,
 					Toast.LENGTH_LONG).show();
 			return;
 		}
 
-		// parse the actual key once to check if its encrypted
-		// then save original file contents into our database
-		try {
-			byte[] raw = readRaw(file);
-
-			String data = new String(raw);
-			if (data.startsWith(PubkeyUtils.PKCS8_START)) {
-				int start = data.indexOf(PubkeyUtils.PKCS8_START) + PubkeyUtils.PKCS8_START.length();
-				int end = data.indexOf(PubkeyUtils.PKCS8_END);
-
-				if (end > start) {
-					char[] encoded = data.substring(start, end - 1).toCharArray();
-					Log.d(TAG, "encoded: " + new String(encoded));
-					byte[] decoded = Base64.decode(encoded);
-
-					KeyPair kp = PubkeyUtils.recoverKeyPair(decoded);
-
+		KeyPair kp;
+		if ((kp = readPKCS8Key(keyData)) != null) {
+			pubkey.setType(kp.getPrivate().getAlgorithm());
+			pubkey.setPrivateKey(kp.getPrivate().getEncoded());
+			pubkey.setPublicKey(kp.getPublic().getEncoded());
+		} else {
+			try {
+				PEMStructure struct = PEMDecoder.parsePEM(new String(keyData).toCharArray());
+				boolean encrypted = PEMDecoder.isPEMEncrypted(struct);
+				pubkey.setEncrypted(encrypted);
+				if (!encrypted) {
+					kp = PEMDecoder.decode(struct, null);
 					pubkey.setType(kp.getPrivate().getAlgorithm());
 					pubkey.setPrivateKey(kp.getPrivate().getEncoded());
 					pubkey.setPublicKey(kp.getPublic().getEncoded());
 				} else {
-					Log.e(TAG, "Problem parsing PKCS#8 file; corrupt?");
-					Toast.makeText(PubkeyListActivity.this,
-							R.string.pubkey_import_parse_problem,
-							Toast.LENGTH_LONG).show();
+					pubkey.setType(PubkeyDatabase.KEY_TYPE_IMPORTED);
+					pubkey.setPrivateKey(keyData);
 				}
-			} else {
-				PEMStructure struct = PEMDecoder.parsePEM(new String(raw).toCharArray());
-				pubkey.setEncrypted(PEMDecoder.isPEMEncrypted(struct));
-				pubkey.setType(PubkeyDatabase.KEY_TYPE_IMPORTED);
-				pubkey.setPrivateKey(raw);
+			} catch (IOException e) {
+				Log.e(TAG, "Problem parsing imported private key", e);
+				Toast.makeText(PubkeyListActivity.this, R.string.pubkey_import_parse_problem, Toast.LENGTH_LONG).show();
 			}
-
-			// write new value into database
-			PubkeyDatabase pubkeyDb = PubkeyDatabase.get(this);
-			pubkeyDb.savePubkey(pubkey);
-
-			updateList();
-		} catch (Exception e) {
-			Log.e(TAG, "Problem parsing imported private key", e);
-			Toast.makeText(PubkeyListActivity.this, R.string.pubkey_import_parse_problem, Toast.LENGTH_LONG).show();
 		}
+
+		// write new value into database
+		PubkeyDatabase pubkeyDb = PubkeyDatabase.get(this);
+		pubkeyDb.savePubkey(pubkey);
+
+		updateList();
 	}
 
 	/**
