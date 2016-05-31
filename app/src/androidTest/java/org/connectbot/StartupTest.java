@@ -61,7 +61,7 @@ public class StartupTest {
 		mActivityRule.launchActivity(new Intent());
 	}
 
-	//@Test
+	@Test
 	public void localConnectionDisconnectFromHostList() {
 		startNewLocalConnection();
 
@@ -80,7 +80,7 @@ public class StartupTest {
 		onView(withId(R.id.list)).check(hasHolderItem(allOf(withHostNickname("Local"), withDisconnectedHost())));
 	}
 
-	//@Test
+	@Test
 	public void localConnectionDisconnectConsoleActivity() {
 		startNewLocalConnection();
 
@@ -93,7 +93,7 @@ public class StartupTest {
 		onView(withId(R.id.list)).check(hasHolderItem(allOf(withHostNickname("Local"), withDisconnectedHost())));
 	}
 
-	//@Test
+	@Test
 	public void localConnectionCanDelete() {
 		startNewLocalConnectionAndGoBack("Local");
 		onView(withId(R.id.list)).perform(RecyclerViewActions.actionOnHolderItem(withHostNickname("Local"), longClick()));
