@@ -139,13 +139,16 @@ public class StartupTest {
 	}
 
 	private void startNewLocalConnection(String name) {
-		onView(withId(R.id.transport_selection)).perform(click());
-		onData(allOf(is(instanceOf(String.class)), is("local"))).perform(click());
-		onView(withId(R.id.front_quickconnect)).perform(typeText(name));
+		onView(withId(R.id.add_host_button)).perform(click());
+		onView(withId(R.id.protocol_text)).perform(click());
+		onView(withText("local")).perform(click());
+		onView(withId(R.id.quickconnect_field)).perform(typeText(name));
+		onView(withId(R.id.save)).perform(click());
 
 		Intents.init();
 		try {
-			onView(withId(R.id.front_quickconnect)).perform(pressImeActionButton());
+			onView(withId(R.id.list)).perform(RecyclerViewActions.actionOnHolderItem(
+					withHostNickname(name), click()));
 			intended(hasComponent(ConsoleActivity.class.getName()));
 		} finally {
 			Intents.release();
