@@ -101,7 +101,7 @@ public class StartupTest {
 		onView(withText(R.string.delete_pos)).perform(click());
 	}
 
-	//@Test
+	@Test
 	public void localConnectionCanChangeToRed() {
 		startNewLocalConnectionAndGoBack("RedLocal");
 		changeColor("RedLocal", R.color.red, R.string.color_red);

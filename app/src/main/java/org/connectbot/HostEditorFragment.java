@@ -38,6 +38,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -176,6 +177,14 @@ public class HostEditorFragment extends Fragment {
 		mIsUriEditorExpanded = bundle.getBoolean(ARG_IS_EXPANDED);
 	}
 
+	private void hideKeyboard() {
+		View view = getActivity().getCurrentFocus();
+		if (view != null) {
+			((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).
+					hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+		}
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -198,6 +207,7 @@ public class HostEditorFragment extends Fragment {
 					}
 				});
 				menu.show();
+				hideKeyboard();
 			}
 		});
 
@@ -291,6 +301,7 @@ public class HostEditorFragment extends Fragment {
 					}
 				});
 				menu.show();
+				hideKeyboard();
 			}
 		});
 
@@ -315,6 +326,12 @@ public class HostEditorFragment extends Fragment {
 		});
 
 		mFontSizeSeekBar = (SeekBar) view.findViewById(R.id.font_size_bar);
+		mFontSizeSeekBar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				hideKeyboard();
+			}
+		});
 		mFontSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -355,6 +372,7 @@ public class HostEditorFragment extends Fragment {
 					}
 				});
 				menu.show();
+				hideKeyboard();
 			}
 		});
 
@@ -388,6 +406,7 @@ public class HostEditorFragment extends Fragment {
 					}
 				});
 				menu.show();
+				hideKeyboard();
 			}
 		});
 
@@ -421,6 +440,7 @@ public class HostEditorFragment extends Fragment {
 					}
 				});
 				menu.show();
+				hideKeyboard();
 			}
 		});
 
@@ -433,10 +453,17 @@ public class HostEditorFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				mUseSshAuthSwitch.toggle();
+				hideKeyboard();
 			}
 		});
 
 		mUseSshAuthSwitch = (SwitchCompat) view.findViewById(R.id.use_ssh_auth_switch);
+		mUseSshAuthSwitch.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				hideKeyboard();
+			}
+		});
 		mUseSshAuthSwitch.setChecked(mHost.getUseAuthAgent() != null &&
 				!mHost.getUseAuthAgent().equals(mSshAuthValues.getString(0)));
 		mUseSshAuthSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -451,11 +478,18 @@ public class HostEditorFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				mUseSshConfirmationCheckbox.toggle();
+				hideKeyboard();
 			}
 		});
 
 		mUseSshConfirmationCheckbox =
 				(AppCompatCheckBox) view.findViewById(R.id.ssh_auth_confirmation_checkbox);
+		mUseSshConfirmationCheckbox.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				hideKeyboard();
+			}
+		});
 		mUseSshConfirmationCheckbox.setChecked(mHost.getUseAuthAgent() != null &&
 				mHost.getUseAuthAgent().equals(mSshAuthValues.getString(1)));
 		mUseSshConfirmationCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -472,10 +506,17 @@ public class HostEditorFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				mCompressionSwitch.toggle();
+				hideKeyboard();
 			}
 		});
 
 		mCompressionSwitch = (SwitchCompat) view.findViewById(R.id.compression_switch);
+		mCompressionSwitch.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				hideKeyboard();
+			}
+		});
 		mCompressionSwitch.setChecked(mHost.getCompression());
 		mCompressionSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
@@ -490,10 +531,17 @@ public class HostEditorFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				mStartShellSwitch.toggle();
+				hideKeyboard();
 			}
 		});
 
 		mStartShellSwitch = (SwitchCompat) view.findViewById(R.id.start_shell_switch);
+		mStartShellSwitch.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				hideKeyboard();
+			}
+		});
 		mStartShellSwitch.setChecked(mHost.getWantSession());
 		mStartShellSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
@@ -508,10 +556,17 @@ public class HostEditorFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				mStayConnectedSwitch.toggle();
+				hideKeyboard();
 			}
 		});
 
 		mStayConnectedSwitch = (SwitchCompat) view.findViewById(R.id.stay_connected_switch);
+		mStayConnectedSwitch.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				hideKeyboard();
+			}
+		});
 		mStayConnectedSwitch.setChecked(mHost.getStayConnected());
 		mStayConnectedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
@@ -526,10 +581,17 @@ public class HostEditorFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				mCloseOnDisconnectSwitch.toggle();
+				hideKeyboard();
 			}
 		});
 
 		mCloseOnDisconnectSwitch = (SwitchCompat) view.findViewById(R.id.close_on_disconnect_switch);
+		mCloseOnDisconnectSwitch.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				hideKeyboard();
+			}
+		});
 		mCloseOnDisconnectSwitch.setChecked(mHost.getQuickDisconnect());
 		mCloseOnDisconnectSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
