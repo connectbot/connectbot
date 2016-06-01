@@ -207,7 +207,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				}
 
 			default:
-				bridge.outputLine(manager.res.getString(R.string.terminal_failed, algorithmName, fingerprint));
+				bridge.outputLine(manager.res.getString(R.string.terminal_failed));
 				return false;
 			}
 		}
