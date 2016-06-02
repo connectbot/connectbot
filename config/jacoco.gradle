@@ -12,22 +12,41 @@ tasks.withType(Test).whenTaskAdded {
 	it.jacoco.classDumpFile = file("${project.buildDir}/jacoco/dump")
 }
 
+def coverageClassDirectories = fileTree(
+		dir: "${project.buildDir}/intermediates/classes/debug/",
+		excludes: ['**/R.class',
+				   '**/R$*.class',
+				   '**/*$ViewInjector*.*',
+				   '**/BuildConfig.*',
+				   '**/Manifest*.*']
+)
+
+def coverageSourceDirectories = files("src/main/java", "src/debug/java")
+
 // These tasks are for generating the coverage report after JUnit+robolectric tests have executed
 tasks.create(name: "jacocoUnitTestDebugReport", type: JacocoReport, dependsOn: "testDebugUnitTest") {
 	group = "Reporting"
 	description = "Generate Jacoco coverage reports for unit tests"
 
-	classDirectories = fileTree(
-			dir: "${project.buildDir}/intermediates/classes/debug/",
-			excludes: ['**/R.class',
-				   '**/R$*.class',
-				   '**/*$ViewInjector*.*',
-				   '**/BuildConfig.*',
-				   '**/Manifest*.*']
-	)
+	classDirectories = coverageClassDirectories
+	sourceDirectories = coverageSourceDirectories
 
-	sourceDirectories = files("src/main/java", "src/debug/java")
 	executionData = files("${project.buildDir}/jacoco/testDebugUnitTest.exec")
+
+	reports {
+		xml.enabled = true
+		html.enabled = true
+	}
+}
+
+tasks.create(name: "jacocoCombinedReport", type: JacocoReport, dependsOn: ["jacocoUnitTestDebugReport", "createDebugCoverageReport"]) {
+	group = "Reporting"
+	description = "Generates JaCoCo coverage reports of combined Android Tests and Unit Tests"
+
+	classDirectories = coverageClassDirectories
+	sourceDirectories = coverageSourceDirectories
+
+	executionData = fileTree(dir: project.buildDir, includes: ["**/*.exec", "**/*.ec"])
 
 	reports {
 		xml.enabled = true
