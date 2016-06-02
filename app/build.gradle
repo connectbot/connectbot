@@ -4,13 +4,17 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1x'
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.6.3'
+        classpath 'com.android.tools.build:gradle:2.2.0-alpha2'
+        if (rootProject.hasProperty('jacocoVersion')) {
+            classpath "org.jacoco:org.jacoco.core:${rootProject.jacocoVersion}"
+        }
     }
 }
 
 plugins {
     id 'info.vividcode.android.sdk-manager' version '0.9.0'
+    id 'jacoco'
 }
 
 ext {
@@ -123,6 +127,14 @@ android {
         debug {
             applicationIdSuffix ".debug"
             testCoverageEnabled true
+        }
+    }
+
+    testOptions {
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
         }
     }
 

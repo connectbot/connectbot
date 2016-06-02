@@ -1,10 +1,7 @@
-apply plugin: 'jacoco'
-
 // By default, Android Gradle plugin uses JaCoCo version 0.7.1, which works great in JUnit on the JVM.
 // But that will fail on Android Lollipop/ART runtime, which requires 0.7.3 or higher.
 if (rootProject.hasProperty('jacocoVersion')) {
-	android.jacoco.version = rootProject.property('jacocoVersion')
-	jacoco.toolVersion = rootProject.property('jacocoVersion')
+	jacoco.toolVersion = "${rootProject.jacocoVersion}"
 } else {
 	println "Using the default JaCoCo version of: ${jacoco.toolVersion}"
 }

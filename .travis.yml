@@ -1,5 +1,5 @@
 language: android
-jdk: openjdk7
+jdk: oraclejdk8
 sudo: false
 
 env:
