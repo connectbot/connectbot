@@ -54,4 +54,4 @@ tasks.create(name: "jacocoCombinedReport", type: JacocoReport, dependsOn: ["jaco
 	}
 }
 
-coveralls.jacocoReportPath = "${project.buildDir}/reports/jacoco/jacocoUnitTestDebugReport/jacocoUnitTestDebugReport.xml"
+coveralls.jacocoReportPath = "${project.buildDir}/reports/jacoco/jacocoCombinedReport/jacocoCombinedReport.xml"
