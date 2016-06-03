@@ -17,6 +17,7 @@
 
 package org.connectbot;
 
+import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -235,7 +236,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 
 		sortcolor.setVisible(!sortedByColor);
 		sortlast.setVisible(sortedByColor);
-		disconnectall.setEnabled(bound.getBridges().size() > 0);
+		disconnectall.setEnabled(bound == null ? false : bound.getBridges().size() > 0);
 
 		return true;
 	}
@@ -531,6 +532,12 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			return vh;
 		}
 
+		@TargetApi(16)
+		private void hideFromAccessibility(View view, boolean hide) {
+			view.setImportantForAccessibility(hide ?
+					View.IMPORTANT_FOR_ACCESSIBILITY_NO : View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+		}
+
 		@Override
 		public void onBindViewHolder(ItemViewHolder holder, int position) {
 			HostViewHolder hostHolder = (HostViewHolder) holder;
@@ -548,12 +555,24 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			switch (this.getConnectedState(host)) {
 			case STATE_UNKNOWN:
 				hostHolder.icon.setImageState(new int[] { }, true);
+				hostHolder.icon.setContentDescription(null);
+				if (Build.VERSION.SDK_INT >= 16) {
+					hideFromAccessibility(hostHolder.icon, true);
+				}
 				break;
 			case STATE_CONNECTED:
 				hostHolder.icon.setImageState(new int[] { android.R.attr.state_checked }, true);
+				hostHolder.icon.setContentDescription(getString(R.string.image_description_connected));
+				if (Build.VERSION.SDK_INT >= 16) {
+					hideFromAccessibility(hostHolder.icon, false);
+				}
 				break;
 			case STATE_DISCONNECTED:
 				hostHolder.icon.setImageState(new int[] { android.R.attr.state_expanded }, true);
+				hostHolder.icon.setContentDescription(getString(R.string.image_description_disconnected));
+				if (Build.VERSION.SDK_INT >= 16) {
+					hideFromAccessibility(hostHolder.icon, false);
+				}
 				break;
 			}
 

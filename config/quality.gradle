@@ -1,8 +1,7 @@
 apply plugin: 'checkstyle'
 
 checkstyle {
-    // This can't go past 6.7 until we upgrade to Gradle 2.7
-    toolVersion = "6.7"
+    toolVersion = '6.19'
 }
 
 check.dependsOn 'checkstyle'

@@ -1,10 +1,7 @@
-apply plugin: 'jacoco'
-
 // By default, Android Gradle plugin uses JaCoCo version 0.7.1, which works great in JUnit on the JVM.
 // But that will fail on Android Lollipop/ART runtime, which requires 0.7.3 or higher.
 if (rootProject.hasProperty('jacocoVersion')) {
-	android.jacoco.version = rootProject.property('jacocoVersion')
-	jacoco.toolVersion = rootProject.property('jacocoVersion')
+	jacoco.toolVersion = "${rootProject.jacocoVersion}"
 } else {
 	println "Using the default JaCoCo version of: ${jacoco.toolVersion}"
 }
@@ -15,21 +12,25 @@ tasks.withType(Test).whenTaskAdded {
 	it.jacoco.classDumpFile = file("${project.buildDir}/jacoco/dump")
 }
 
+def coverageClassDirectories = fileTree(
+		dir: "${project.buildDir}/intermediates/classes/debug/",
+		excludes: ['**/R.class',
+				   '**/R$*.class',
+				   '**/*$ViewInjector*.*',
+				   '**/BuildConfig.*',
+				   '**/Manifest*.*']
+)
+
+def coverageSourceDirectories = files("src/main/java", "src/debug/java")
+
 // These tasks are for generating the coverage report after JUnit+robolectric tests have executed
 tasks.create(name: "jacocoUnitTestDebugReport", type: JacocoReport, dependsOn: "testDebugUnitTest") {
 	group = "Reporting"
 	description = "Generate Jacoco coverage reports for unit tests"
 
-	classDirectories = fileTree(
-			dir: "${project.buildDir}/intermediates/classes/debug/",
-			excludes: ['**/R.class',
-				   '**/R$*.class',
-				   '**/*$ViewInjector*.*',
-				   '**/BuildConfig.*',
-				   '**/Manifest*.*']
-	)
+	classDirectories = coverageClassDirectories
+	sourceDirectories = coverageSourceDirectories
 
-	sourceDirectories = files("src/main/java", "src/debug/java")
 	executionData = files("${project.buildDir}/jacoco/testDebugUnitTest.exec")
 
 	reports {
@@ -38,4 +39,19 @@ tasks.create(name: "jacocoUnitTestDebugReport", type: JacocoReport, dependsOn: "
 	}
 }
 
-coveralls.jacocoReportPath = "${project.buildDir}/reports/jacoco/jacocoUnitTestDebugReport/jacocoUnitTestDebugReport.xml"
+tasks.create(name: "jacocoCombinedReport", type: JacocoReport, dependsOn: ["jacocoUnitTestDebugReport", "createDebugCoverageReport"]) {
+	group = "Reporting"
+	description = "Generates JaCoCo coverage reports of combined Android Tests and Unit Tests"
+
+	classDirectories = coverageClassDirectories
+	sourceDirectories = coverageSourceDirectories
+
+	executionData = fileTree(dir: project.buildDir, includes: ["**/*.exec", "**/*.ec"])
+
+	reports {
+		xml.enabled = true
+		html.enabled = true
+	}
+}
+
+coveralls.jacocoReportPath = "${project.buildDir}/reports/jacoco/jacocoCombinedReport/jacocoCombinedReport.xml"
