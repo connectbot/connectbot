@@ -499,8 +499,8 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 
 	/**
 	 * Ask the {@link TerminalBridge} we're connected to to resize to a specific size.
-	 * @param width
-	 * @param height
+	 * @param width width in characters
+	 * @param height heigh in characters
 	 */
 	public void forceSize(int width, int height) {
 		bridge.resizeComputed(width, height, getWidth(), getHeight());
