@@ -359,11 +359,6 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 		bridge.redraw();
 	}
 
-	public void destroy() {
-		// tell bridge to destroy its bitmap
-		bridge.parentDestroyed();
-	}
-
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
