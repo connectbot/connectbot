@@ -101,8 +101,8 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 	// Related to Accessibility Features
 	private boolean mAccessibilityInitialized = false;
 	private boolean mAccessibilityActive = true;
-	private Object[] mAccessibilityLock = new Object[0];
-	private StringBuffer mAccessibilityBuffer;
+	private final Object[] mAccessibilityLock = new Object[0];
+	private final StringBuffer mAccessibilityBuffer;
 	private Pattern mControlCodes = null;
 	private Matcher mCodeMatcher = null;
 	private AccessibilityEventSender mEventSender = null;
@@ -577,19 +577,22 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 		public void run() {
 			synchronized (mAccessibilityLock) {
 				if (mCodeMatcher == null) {
-					mCodeMatcher = mControlCodes.matcher(mAccessibilityBuffer);
+					mCodeMatcher = mControlCodes.matcher(mAccessibilityBuffer.toString());
 				} else {
-					mCodeMatcher.reset(mAccessibilityBuffer);
+					mCodeMatcher.reset(mAccessibilityBuffer.toString());
 				}
 
 				// Strip all control codes out.
-				mAccessibilityBuffer = new StringBuffer(mCodeMatcher.replaceAll(" "));
+				mAccessibilityBuffer.setLength(0);
+				while (mCodeMatcher.find()) {
+					mCodeMatcher.appendReplacement(mAccessibilityBuffer, " ");
+				}
 
 				// Apply Backspaces using backspace character sequence
 				int i = mAccessibilityBuffer.indexOf(BACKSPACE_CODE);
 				while (i != -1) {
-					mAccessibilityBuffer = mAccessibilityBuffer.replace(i == 0 ? 0 : i - 1, i
-							+ BACKSPACE_CODE.length(), "");
+					mAccessibilityBuffer.replace(i == 0 ? 0 : i - 1,
+							i + BACKSPACE_CODE.length(), "");
 					i = mAccessibilityBuffer.indexOf(BACKSPACE_CODE);
 				}
 
@@ -680,7 +683,10 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 				mEventSender = new AccessibilityEventSender();
 				postDelayed(mEventSender, ACCESSIBILITY_EVENT_THRESHOLD);
 			} else {
-				mAccessibilityBuffer = null;
+				synchronized (mAccessibilityLock) {
+					mAccessibilityBuffer.setLength(0);
+					mAccessibilityBuffer.trimToSize();
+				}
 			}
 		}
 	}
