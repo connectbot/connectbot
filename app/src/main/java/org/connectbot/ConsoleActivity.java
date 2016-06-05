@@ -233,8 +233,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		public KeyRepeater(Handler handler, View view) {
 			mView = view;
 			mHandler = handler;
-			mView.setOnTouchListener(this);
-			mView.setOnClickListener(this);
 			mDown = false;
 		}
 
@@ -608,10 +606,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		findViewById(R.id.button_esc).setOnClickListener(emulatedKeysListener);
 		findViewById(R.id.button_tab).setOnClickListener(emulatedKeysListener);
 
-		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_up));
-		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_down));
-		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_left));
-		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_right));
+		addKeyRepeater(findViewById(R.id.button_up));
+		addKeyRepeater(findViewById(R.id.button_up));
+		addKeyRepeater(findViewById(R.id.button_down));
+		addKeyRepeater(findViewById(R.id.button_left));
+		addKeyRepeater(findViewById(R.id.button_right));
 
 		findViewById(R.id.button_home).setOnClickListener(emulatedKeysListener);
 		findViewById(R.id.button_end).setOnClickListener(emulatedKeysListener);
@@ -698,6 +697,12 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				showEmulatedKeys(true);
 			}
 		});
+	}
+
+	private void addKeyRepeater(View view) {
+		KeyRepeater keyRepeater = new KeyRepeater(keyRepeatHandler, view);
+		view.setOnClickListener(keyRepeater);
+		view.setOnTouchListener(keyRepeater);
 	}
 
 	/**
