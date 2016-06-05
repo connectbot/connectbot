@@ -92,7 +92,7 @@ public class EntropyView extends View {
 		if (splitText > 0 ||
 				mPaint.measureText(prompt) > (getWidth() * 0.8)) {
 			if (splitText == 0)
-				splitText = prompt.indexOf(" ", prompt.length() / 2);
+				splitText = prompt.indexOf(' ', prompt.length() / 2);
 
 			c.drawText(prompt.substring(0, splitText),
 					getWidth() / 2.0f,
