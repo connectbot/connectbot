@@ -387,8 +387,10 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		{
 			File[] files = sdcard.listFiles();
 			if (files != null) {
-				for (File file : sdcard.listFiles()) {
-					if (file.isDirectory()) continue;
+				for (File file : files) {
+					if (file == null || file.isDirectory()) {
+						continue;
+					}
 					names.add(file.getName());
 				}
 			}
