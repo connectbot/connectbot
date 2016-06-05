@@ -71,11 +71,11 @@ android:
 
 script:
   # Split up to reduce memory requirements
-  - ./gradlew --stacktrace clean
-  - ./gradlew --stacktrace assemble
-  - ./gradlew --stacktrace check
-  - ./gradlew --stacktrace jacocoUnitTestDebugReport
-  - ./gradlew --stacktrace jacocoCombinedReport
+  - ./gradlew --stacktrace --info clean
+  - ./gradlew --stacktrace --info assemble
+  - ./gradlew --stacktrace --info check
+  - ./gradlew --stacktrace --info jacocoUnitTestDebugReport
+  - ./gradlew --stacktrace --info jacocoCombinedReport
   - ./scripts/check-lint-count.bash app/build/outputs/lint-results-debug.xml $HOME/.cache/lint/lint-results.xml
 
 after_success: ./gradlew coveralls
