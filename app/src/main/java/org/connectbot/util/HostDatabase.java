@@ -816,7 +816,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 				null, null, null);
 
 		while (c.moveToNext()) {
-			colors[c.getInt(0)] = Integer.valueOf(c.getInt(1));
+			colors[c.getInt(0)] = c.getInt(1);
 		}
 
 		c.close();
