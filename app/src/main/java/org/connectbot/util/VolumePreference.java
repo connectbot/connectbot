@@ -38,16 +38,16 @@ public class VolumePreference extends DialogPreference implements OnSeekBarChang
 	public VolumePreference(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
-		setupLayout(context, attrs);
+		setupLayout();
 	}
 
 	public VolumePreference(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 
-		setupLayout(context, attrs);
+		setupLayout();
 	}
 
-	private void setupLayout(Context context, AttributeSet attrs) {
+	private void setupLayout() {
 		setDialogLayoutResource(R.layout.volume_preference_dialog_layout);
 		setPersistent(true);
 	}
