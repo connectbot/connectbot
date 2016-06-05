@@ -74,15 +74,15 @@ public class TerminalTextViewOverlay extends TextView {
 		int numCols = vb.getColumns() - 1;
 		oldBufferHeight = numRows;
 
-		String line = "";
-		String buffer = "";
+		StringBuilder buffer = new StringBuilder();
 
 		for (int r = 0; r < numRows && vb.charArray[r] != null; r++) {
 			for (int c = 0; c < numCols; c++) {
-				line += vb.charArray[r][c];
+				buffer.append(vb.charArray[r][c]);
 			}
-			buffer += line.replaceAll("\\s+$", "") + "\n";
-			line = "";
+			while (Character.isWhitespace(buffer.charAt(buffer.length()))) {
+				buffer.setLength(buffer.length() - 1);
+			}
 		}
 
 		oldScrollY = vb.getWindowBase() * getLineHeight();
@@ -104,9 +104,9 @@ public class TerminalTextViewOverlay extends TextView {
 			return;
 		}
 
-		String newLines = "";
+		StringBuilder newLines = new StringBuilder(numNewRows);
 		for (int i = 0; i < numNewRows; i++) {
-			newLines += "\n";
+			newLines.append('\n');
 		}
 
 		oldScrollY = (vb.getWindowBase() + numNewRows) * getLineHeight();
