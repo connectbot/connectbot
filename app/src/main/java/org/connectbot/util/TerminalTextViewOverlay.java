@@ -80,7 +80,7 @@ public class TerminalTextViewOverlay extends TextView {
 			for (int c = 0; c < numCols; c++) {
 				buffer.append(vb.charArray[r][c]);
 			}
-			while (Character.isWhitespace(buffer.charAt(buffer.length()))) {
+			while (Character.isWhitespace(buffer.charAt(buffer.length() - 1))) {
 				buffer.setLength(buffer.length() - 1);
 			}
 		}
