@@ -443,8 +443,6 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		@Override
 		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 			// Create menu to handle deleting and editing pubkey
-			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-
 			menu.setHeaderTitle(pubkey.getNickname());
 
 			// TODO: option load/unload key from in-memory list
