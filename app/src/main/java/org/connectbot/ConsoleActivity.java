@@ -368,6 +368,9 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		case R.id.button_f12:
 			handler.sendPressedKey(vt320.KEY_F12);
 			break;
+		default:
+			Log.e(TAG, "Unknown emulated key clicked: " + v.getId());
+			break;
 		}
 
 		if (hideKeys)
