@@ -170,7 +170,7 @@ public class SelectionArea {
 				buffer.delete(lastNonSpace + 1, buffer.length());
 
 			if (y != bottom)
-				buffer.append("\n");
+				buffer.append('\n');
 		}
 
 		return buffer.toString();
@@ -194,7 +194,7 @@ public class SelectionArea {
 		buffer.append(maxRows);
 		buffer.append(", isSelectingOrigin=");
 		buffer.append(isSelectingOrigin());
-		buffer.append("]");
+		buffer.append(']');
 
 		return buffer.toString();
 	}
