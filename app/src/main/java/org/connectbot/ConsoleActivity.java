@@ -233,8 +233,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		public KeyRepeater(Handler handler, View view) {
 			mView = view;
 			mHandler = handler;
-			mView.setOnTouchListener(this);
-			mView.setOnClickListener(this);
 			mDown = false;
 		}
 
@@ -369,6 +367,9 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			break;
 		case R.id.button_f12:
 			handler.sendPressedKey(vt320.KEY_F12);
+			break;
+		default:
+			Log.e(TAG, "Unknown emulated key clicked: " + v.getId());
 			break;
 		}
 
@@ -608,10 +609,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		findViewById(R.id.button_esc).setOnClickListener(emulatedKeysListener);
 		findViewById(R.id.button_tab).setOnClickListener(emulatedKeysListener);
 
-		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_up));
-		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_down));
-		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_left));
-		new KeyRepeater(keyRepeatHandler, findViewById(R.id.button_right));
+		addKeyRepeater(findViewById(R.id.button_up));
+		addKeyRepeater(findViewById(R.id.button_up));
+		addKeyRepeater(findViewById(R.id.button_down));
+		addKeyRepeater(findViewById(R.id.button_left));
+		addKeyRepeater(findViewById(R.id.button_right));
 
 		findViewById(R.id.button_home).setOnClickListener(emulatedKeysListener);
 		findViewById(R.id.button_end).setOnClickListener(emulatedKeysListener);
@@ -698,6 +700,12 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				showEmulatedKeys(true);
 			}
 		});
+	}
+
+	private void addKeyRepeater(View view) {
+		KeyRepeater keyRepeater = new KeyRepeater(keyRepeatHandler, view);
+		view.setOnClickListener(keyRepeater);
+		view.setOnTouchListener(keyRepeater);
 	}
 
 	/**
@@ -1029,7 +1037,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				try {
 					Log.d(TAG, String.format("We couldnt find an existing bridge with URI=%s (nickname=%s)," +
 							"so creating one now", requested.toString(), requested.getFragment()));
-					requestedBridge = bound.openConnection(requested);
+					bound.openConnection(requested);
 				} catch (Exception e) {
 					Log.e(TAG, "Problem while trying to create new requested bridge from URI", e);
 					// TODO: We should display an error dialog here.
@@ -1059,9 +1067,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		// Maintain selected host if connected.
-		if (adapter.getCurrentTerminalView() != null
-				&& !adapter.getCurrentTerminalView().bridge.isDisconnected()) {
-			requested = adapter.getCurrentTerminalView().bridge.host.getUri();
+		TerminalView currentTerminalView = adapter.getCurrentTerminalView();
+		if (currentTerminalView != null
+				&& !currentTerminalView.bridge.isDisconnected()) {
+			requested = currentTerminalView.bridge.host.getUri();
 			savedInstanceState.putString(STATE_SELECTED_URI, requested.toString());
 		}
 

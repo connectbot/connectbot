@@ -65,7 +65,6 @@ import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TableRow;
@@ -387,8 +386,10 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		{
 			File[] files = sdcard.listFiles();
 			if (files != null) {
-				for (File file : sdcard.listFiles()) {
-					if (file.isDirectory()) continue;
+				for (File file : files) {
+					if (file == null || file.isDirectory()) {
+						continue;
+					}
 					names.add(file.getName());
 				}
 			}
@@ -443,8 +444,6 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		@Override
 		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 			// Create menu to handle deleting and editing pubkey
-			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-
 			menu.setHeaderTitle(pubkey.getNickname());
 
 			// TODO: option load/unload key from in-memory list

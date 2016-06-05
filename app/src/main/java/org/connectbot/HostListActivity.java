@@ -574,6 +574,8 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 					hideFromAccessibility(hostHolder.icon, false);
 				}
 				break;
+			default:
+				Log.e("HostAdapter", "Unknown host state encountered: " + getConnectedState(host));
 			}
 
 			@StyleRes final int chosenStyleFirstLine;

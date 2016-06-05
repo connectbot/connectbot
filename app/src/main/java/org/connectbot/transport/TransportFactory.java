@@ -120,7 +120,7 @@ public class TransportFactory {
 		Map<String, String> selection = new HashMap<String, String>();
 
 		transport.getSelectionArgs(uri, selection);
-		if (selection.size() == 0) {
+		if (selection.isEmpty()) {
 			Log.e(TAG, String.format("Transport %s failed to do something useful with URI=%s",
 					uri.getScheme(), uri.toString()));
 			throw new IllegalStateException("Failed to get needed selection arguments");

@@ -615,7 +615,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 			final AccessibilityManager accessibility = (AccessibilityManager) context
 					.getSystemService(Context.ACCESSIBILITY_SERVICE);
 			if (!accessibility.isEnabled()) {
-				return false;
+				return Boolean.FALSE;
 			}
 
 			/*
@@ -632,10 +632,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 
 			boolean foundScreenReader = false;
 
-			final int N = screenReaders.size();
-			for (int i = 0; i < N; i++) {
-				final ResolveInfo screenReader = screenReaders.get(i);
-
+			for (ResolveInfo screenReader : screenReaders) {
 				/*
 				 * All screen readers are expected to implement a content
 				 * provider that responds to:

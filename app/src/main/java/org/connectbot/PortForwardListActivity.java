@@ -68,8 +68,6 @@ public class PortForwardListActivity extends AppCompatListActivity {
 
 	protected HostDatabase hostdb;
 
-	private List<PortForwardBean> portForwards;
-
 	private ServiceConnection connection = null;
 	protected TerminalBridge hostBridge = null;
 	protected LayoutInflater inflater = null;
@@ -229,11 +227,12 @@ public class PortForwardListActivity extends AppCompatListActivity {
 	}
 
 	protected void updateList() {
+		List<PortForwardBean> portForwards;
 		if (hostBridge != null) {
-			this.portForwards = hostBridge.getPortForwards();
+			portForwards = hostBridge.getPortForwards();
 		} else {
 			if (this.hostdb == null) return;
-			this.portForwards = this.hostdb.getPortForwardsForHost(host);
+			portForwards = this.hostdb.getPortForwardsForHost(host);
 		}
 
 		mAdapter = new PortForwardAdapter(this, portForwards);
@@ -271,8 +270,6 @@ public class PortForwardListActivity extends AppCompatListActivity {
 		@Override
 		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 			// Create menu to handle deleting and editing port forward
-			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-
 			menu.setHeaderTitle(portForward.getNickname());
 
 			MenuItem edit = menu.add(R.string.portforward_edit);
