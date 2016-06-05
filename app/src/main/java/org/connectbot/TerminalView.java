@@ -615,7 +615,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 			final AccessibilityManager accessibility = (AccessibilityManager) context
 					.getSystemService(Context.ACCESSIBILITY_SERVICE);
 			if (!accessibility.isEnabled()) {
-				return false;
+				return Boolean.FALSE;
 			}
 
 			/*
