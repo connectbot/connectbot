@@ -1067,9 +1067,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		// Maintain selected host if connected.
-		if (adapter.getCurrentTerminalView() != null
-				&& !adapter.getCurrentTerminalView().bridge.isDisconnected()) {
-			requested = adapter.getCurrentTerminalView().bridge.host.getUri();
+		TerminalView currentTerminalView = adapter.getCurrentTerminalView();
+		if (currentTerminalView != null
+				&& !currentTerminalView.bridge.isDisconnected()) {
+			requested = currentTerminalView.bridge.host.getUri();
 			savedInstanceState.putString(STATE_SELECTED_URI, requested.toString());
 		}
 
