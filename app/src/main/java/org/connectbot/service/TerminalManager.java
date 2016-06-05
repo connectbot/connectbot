@@ -340,8 +340,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				connectivityManager.decRef();
 			}
 
-			if (bridges.size() == 0 &&
-					mPendingReconnect.size() == 0) {
+			if (bridges.isEmpty() && mPendingReconnect.isEmpty()) {
 				shouldHideRunningNotification = true;
 			}
 
