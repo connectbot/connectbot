@@ -413,7 +413,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			.setNegativeButton(android.R.string.cancel, null).create().show();
 	}
 
-	private class PubkeyViewHolder extends ItemViewHolder {
+	public class PubkeyViewHolder extends ItemViewHolder {
 		public final ImageView icon;
 		public final TextView nickname;
 		public final TextView caption;

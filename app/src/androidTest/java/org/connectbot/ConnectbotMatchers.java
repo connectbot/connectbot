@@ -34,6 +34,23 @@ public class ConnectbotMatchers {
 		};
 	}
 
+	/**
+	 * Matches the nickname of a {@link org.connectbot.bean.PubkeyBean}.
+	 */
+	@NonNull
+	public static Matcher<RecyclerView.ViewHolder> withPubkeyNickname(final String content) {
+		return new BoundedMatcher<RecyclerView.ViewHolder, PubkeyListActivity.PubkeyViewHolder>(PubkeyListActivity.PubkeyViewHolder.class) {
+			@Override
+			public boolean matchesSafely(PubkeyListActivity.PubkeyViewHolder holder) {
+				return holder.pubkey.getNickname().matches(content);
+			}
+
+			@Override
+			public void describeTo(Description description) {
+				description.appendText("with host nickname '" + content + "'");
+			}
+		};
+	}
 	@NonNull
 	public static Matcher<RecyclerView.ViewHolder> withConnectedHost() {
 		return new BoundedMatcher<RecyclerView.ViewHolder, HostListActivity.HostViewHolder>(HostListActivity.HostViewHolder.class) {

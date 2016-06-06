@@ -27,6 +27,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.Paint.FontMetrics;
+import android.support.annotation.VisibleForTesting;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -157,7 +158,7 @@ public class EntropyView extends View {
 
 		// SHA1PRNG only keeps 160 bits of entropy.
 		if (mEntropyByteIndex >= SHA1_MAX_BYTES) {
-			for (OnEntropyGatheredListener listener: listeners) {
+			for (OnEntropyGatheredListener listener : listeners) {
 				listener.onEntropyGathered(mEntropy);
 			}
 		}
@@ -165,5 +166,12 @@ public class EntropyView extends View {
 		invalidate();
 
 		return true;
+	}
+
+	@VisibleForTesting
+	public void notifyListeners() {
+		for (OnEntropyGatheredListener listener : listeners) {
+			listener.onEntropyGathered(mEntropy);
+		}
 	}
 }

@@ -27,6 +27,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.support.annotation.VisibleForTesting;
 
 /**
  * Public Key Encryption database. Contains private and public key pairs
@@ -65,6 +66,8 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 
 	private static PubkeyDatabase sInstance;
 
+	private final SQLiteDatabase mDb;
+
 	public static PubkeyDatabase get(Context context) {
 		synchronized (sInstanceLock) {
 			if (sInstance != null) {
@@ -81,12 +84,17 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 		super(context, DB_NAME, null, DB_VERSION);
 
 		this.context = context;
+		mDb = getWritableDatabase();
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		super.onCreate(db);
 
+		createTables(db);
+	}
+
+	private void createTables(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE " + TABLE_PUBKEYS
 				+ " (_id INTEGER PRIMARY KEY, "
 				+ FIELD_PUBKEY_NICKNAME + " TEXT, "
@@ -117,13 +125,12 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 		HostDatabase hostdb = HostDatabase.get(context);
 		hostdb.stopUsingPubkey(pubkey.getId());
 
-		SQLiteDatabase db = getWritableDatabase();
-		db.beginTransaction();
+		mDb.beginTransaction();
 		try {
-			db.delete(TABLE_PUBKEYS, "_id = ?", new String[] {Long.toString(pubkey.getId())});
-			db.setTransactionSuccessful();
+			mDb.delete(TABLE_PUBKEYS, "_id = ?", new String[] {Long.toString(pubkey.getId())});
+			mDb.setTransactionSuccessful();
 		} finally {
-			db.endTransaction();
+			mDb.endTransaction();
 		}
 	}
 
@@ -136,11 +143,9 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	private List<PubkeyBean> getPubkeys(String selection, String[] selectionArgs) {
-		SQLiteDatabase db = getReadableDatabase();
-
 		List<PubkeyBean> pubkeys = new LinkedList<PubkeyBean>();
 
-		Cursor c = db.query(TABLE_PUBKEYS, null, selection, selectionArgs, null, null, null);
+		Cursor c = mDb.query(TABLE_PUBKEYS, null, selection, selectionArgs, null, null, null);
 
 		if (c != null) {
 			final int COL_ID = c.getColumnIndexOrThrow("_id"),
@@ -180,9 +185,7 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 	 * @return object representing the pubkey
 	 */
 	public PubkeyBean findPubkeyById(long pubkeyId) {
-		SQLiteDatabase db = getReadableDatabase();
-
-		Cursor c = db.query(TABLE_PUBKEYS, null,
+		Cursor c = mDb.query(TABLE_PUBKEYS, null,
 				"_id = ?", new String[] { String.valueOf(pubkeyId) },
 				null, null, null);
 
@@ -221,8 +224,7 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 	public List<CharSequence> allValues(String column) {
 		List<CharSequence> list = new LinkedList<CharSequence>();
 
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor c = db.query(TABLE_PUBKEYS, new String[] { "_id", column },
+		Cursor c = mDb.query(TABLE_PUBKEYS, new String[] { "_id", column },
 				null, null, null, null, "_id ASC");
 
 		if (c != null) {
@@ -240,8 +242,7 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 	public String getNickname(long id) {
 		String nickname = null;
 
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor c = db.query(TABLE_PUBKEYS, new String[] { "_id",
+		Cursor c = mDb.query(TABLE_PUBKEYS, new String[] { "_id",
 				FIELD_PUBKEY_NICKNAME }, "_id = ?",
 				new String[] { Long.toString(id) }, null, null, null);
 
@@ -259,31 +260,51 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 	 * @param pubkey
 	 */
 	public PubkeyBean savePubkey(PubkeyBean pubkey) {
-		SQLiteDatabase db = this.getWritableDatabase();
 		boolean success = false;
 
 		ContentValues values = pubkey.getValues();
 
-		db.beginTransaction();
+		mDb.beginTransaction();
 		try {
 			if (pubkey.getId() > 0) {
 				values.remove("_id");
-				if (db.update(TABLE_PUBKEYS, values, "_id = ?", new String[] {String.valueOf(pubkey.getId())}) > 0)
+				if (mDb.update(TABLE_PUBKEYS, values, "_id = ?", new String[] {String.valueOf(pubkey.getId())}) > 0)
 					success = true;
 			}
 
 			if (!success) {
-				long id = db.insert(TABLE_PUBKEYS, null, pubkey.getValues());
+				long id = mDb.insert(TABLE_PUBKEYS, null, pubkey.getValues());
 				if (id != -1) {
 					// TODO add some error handling here?
 					pubkey.setId(id);
 				}
 			}
 
-			db.setTransactionSuccessful();
+			mDb.setTransactionSuccessful();
 		} finally {
-			db.endTransaction();
+			mDb.endTransaction();
 		}
 		return pubkey;
+	}
+
+
+	@VisibleForTesting
+	public void resetDatabase() {
+		try {
+			mDb.beginTransaction();
+
+			mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_PUBKEYS);
+
+			createTables(mDb);
+
+			mDb.setTransactionSuccessful();
+		} finally {
+			mDb.endTransaction();
+		}
+	}
+
+	@VisibleForTesting
+	public static void resetInMemoryInstance(Context context) {
+		get(context).resetDatabase();
 	}
 }
