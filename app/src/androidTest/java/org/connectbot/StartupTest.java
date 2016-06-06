@@ -114,7 +114,7 @@ public class StartupTest {
 	public void canScrollTerminal() {
 		startNewLocalConnection();
 		onView(withId(R.id.terminal_view))
-				.perform(longClick()).perform(swipeUp()).perform(swipeDown());
+				.perform(closeSoftKeyboard(), longClick(), swipeUp(), swipeDown());
 	}
 
 	/**
