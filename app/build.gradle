@@ -71,6 +71,7 @@ android {
         ndk {
             moduleName "com_google_ase_Exec"
             ldLibs "log"
+            stl "system"
         }
 
         testApplicationId "org.connectbot.tests"

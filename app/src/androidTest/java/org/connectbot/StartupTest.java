@@ -30,6 +30,8 @@ import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
 import static android.support.test.espresso.action.ViewActions.pressMenuKey;
+import static android.support.test.espresso.action.ViewActions.swipeDown;
+import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
@@ -105,6 +107,14 @@ public class StartupTest {
 	public void localConnectionCanChangeToRed() {
 		startNewLocalConnectionAndGoBack("RedLocal");
 		changeColor("RedLocal", R.color.red, R.string.color_red);
+	}
+
+
+	@Test
+	public void canScrollTerminal() {
+		startNewLocalConnection();
+		onView(withId(R.id.terminal_view))
+				.perform(closeSoftKeyboard(), longClick(), swipeUp(), swipeDown());
 	}
 
 	/**
