@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2007 Kenny Root, Jeffrey Sharkey
+ * Copyright 2016 Kenny Root, Jeffrey Sharkey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,13 @@
 
 package org.connectbot.util;
 
-public interface OnEntropyGatheredListener {
-	void onEntropyGathered(byte[] entropy);
+import java.security.KeyPair;
+
+/**
+ * Created by kenny on 6/6/16.
+ */
+public interface OnKeyGeneratedListener {
+	void onGenerationError(Exception e);
+
+	void onGenerationSuccess(KeyPair keyPair);
 }

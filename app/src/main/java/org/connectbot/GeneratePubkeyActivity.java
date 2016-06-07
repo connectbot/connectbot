@@ -28,6 +28,7 @@ import org.connectbot.bean.PubkeyBean;
 import org.connectbot.util.EntropyDialog;
 import org.connectbot.util.EntropyView;
 import org.connectbot.util.OnEntropyGatheredListener;
+import org.connectbot.util.OnKeyGeneratedListener;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
@@ -37,6 +38,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -54,27 +56,26 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
-public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntropyGatheredListener {
+public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntropyGatheredListener,
+		OnKeyGeneratedListener {
 	private static final int RSA_MINIMUM_BITS = 768;
 
 	public final static String TAG = "CB.GeneratePubkeyAct";
 
-	final static int DEFAULT_BITS = 2048;
+	private final static int DEFAULT_BITS = 2048;
 
-	final static int[] ECDSA_SIZES = ECDSASHA2Verify.getCurveSizes();
+	private final static int[] ECDSA_SIZES = ECDSASHA2Verify.getCurveSizes();
 
-	final static int ECDSA_DEFAULT_BITS = ECDSA_SIZES[0];
+	private final static int ECDSA_DEFAULT_BITS = ECDSA_SIZES[0];
 
 	private LayoutInflater inflater = null;
 
 	private EditText nickname;
-	private RadioGroup keyTypeGroup;
 	private SeekBar bitsSlider;
 	private EditText bitsText;
 	private CheckBox unlockAtStartup;
 	private CheckBox confirmUse;
 	private Button save;
-	private Dialog entropyDialog;
 	private ProgressDialog progress;
 
 	private EditText password1, password2;
@@ -85,6 +86,8 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 
 	private byte[] entropy;
 
+	private OnKeyGeneratedListener listener;
+
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
@@ -93,7 +96,7 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 
 		nickname = (EditText) findViewById(R.id.nickname);
 
-		keyTypeGroup = (RadioGroup) findViewById(R.id.key_type);
+		RadioGroup keyTypeGroup = (RadioGroup) findViewById(R.id.key_type);
 
 		bitsText = (EditText) findViewById(R.id.bits);
 		bitsSlider = (SeekBar) findViewById(R.id.bits_slider);
@@ -235,8 +238,13 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 	private void startEntropyGather() {
 		final View entropyView = inflater.inflate(R.layout.dia_gatherentropy, null, false);
 		((EntropyView) entropyView.findViewById(R.id.entropy)).addOnEntropyGatheredListener(GeneratePubkeyActivity.this);
-		entropyDialog = new EntropyDialog(GeneratePubkeyActivity.this, entropyView);
+		Dialog entropyDialog = new EntropyDialog(GeneratePubkeyActivity.this, entropyView);
 		entropyDialog.show();
+	}
+
+	@VisibleForTesting
+	void setListener(OnKeyGeneratedListener listener) {
+		this.listener = listener;
 	}
 
 	public void onEntropyGathered(byte[] entropy) {
@@ -258,6 +266,40 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 		startKeyGen();
 	}
 
+	private static class KeyGeneratorRunnable implements Runnable {
+		private final String keyType;
+		private final int numBits;
+		private final byte[] entropy;
+		private final OnKeyGeneratedListener listener;
+
+		KeyGeneratorRunnable(String keyType, int numBits, byte[] entropy,
+				OnKeyGeneratedListener listener) {
+			this.keyType = keyType;
+			this.numBits = numBits;
+			this.entropy = entropy;
+			this.listener = listener;
+		}
+
+		@Override
+		public void run() {
+			SecureRandom random = new SecureRandom();
+
+			// Work around JVM bug
+			random.nextInt();
+			random.setSeed(entropy);
+
+			try {
+				KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(keyType);
+
+				keyPairGen.initialize(numBits, random);
+
+				listener.onGenerationSuccess(keyPairGen.generateKeyPair());
+			} catch (Exception e) {
+				listener.onGenerationError(e);
+			}
+		}
+	}
+
 	private void startKeyGen() {
 		progress = new ProgressDialog(GeneratePubkeyActivity.this);
 		progress.setMessage(GeneratePubkeyActivity.this.getResources().getText(R.string.pubkey_generating));
@@ -265,63 +307,70 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 		progress.setCancelable(false);
 		progress.show();
 
-		Thread keyGenThread = new Thread(mKeyGen);
-		keyGenThread.setName("KeyGen");
+		KeyGeneratorRunnable keyGen = new KeyGeneratorRunnable(keyType, bits, entropy, this);
+		Thread keyGenThread = new Thread(keyGen);
+		keyGenThread.setName("KeyGen " + keyType + " " + bits);
 		keyGenThread.start();
 	}
 
-	final private Runnable mKeyGen = new Runnable() {
-		public void run() {
-			try {
-				boolean encrypted = false;
+	public void onGenerationSuccess(KeyPair pair) {
+		try {
+			boolean encrypted = false;
 
-				SecureRandom random = new SecureRandom();
+			PrivateKey priv = pair.getPrivate();
+			PublicKey pub = pair.getPublic();
 
-				// Work around JVM bug
-				random.nextInt();
-				random.setSeed(entropy);
+			String secret = password1.getText().toString();
+			if (secret.length() > 0)
+				encrypted = true;
 
-				KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(keyType);
+			//Log.d(TAG, "private: " + PubkeyUtils.formatKey(priv));
+			Log.d(TAG, "public: " + PubkeyUtils.formatKey(pub));
 
-				keyPairGen.initialize(bits, random);
+			PubkeyBean pubkey = new PubkeyBean();
+			pubkey.setNickname(nickname.getText().toString());
+			pubkey.setType(keyType);
+			pubkey.setPrivateKey(PubkeyUtils.getEncodedPrivate(priv, secret));
+			pubkey.setPublicKey(pub.getEncoded());
+			pubkey.setEncrypted(encrypted);
+			pubkey.setStartup(unlockAtStartup.isChecked());
+			pubkey.setConfirmUse(confirmUse.isChecked());
 
-				KeyPair pair = keyPairGen.generateKeyPair();
-				PrivateKey priv = pair.getPrivate();
-				PublicKey pub = pair.getPublic();
-
-				String secret = password1.getText().toString();
-				if (secret.length() > 0)
-					encrypted = true;
-
-				Log.d(TAG, "private: " + PubkeyUtils.formatKey(priv));
-				Log.d(TAG, "public: " + PubkeyUtils.formatKey(pub));
-
-				PubkeyBean pubkey = new PubkeyBean();
-				pubkey.setNickname(nickname.getText().toString());
-				pubkey.setType(keyType);
-				pubkey.setPrivateKey(PubkeyUtils.getEncodedPrivate(priv, secret));
-				pubkey.setPublicKey(pub.getEncoded());
-				pubkey.setEncrypted(encrypted);
-				pubkey.setStartup(unlockAtStartup.isChecked());
-				pubkey.setConfirmUse(confirmUse.isChecked());
-
-				PubkeyDatabase pubkeydb = PubkeyDatabase.get(GeneratePubkeyActivity.this);
-				pubkeydb.savePubkey(pubkey);
-			} catch (Exception e) {
-				Log.e(TAG, "Could not generate key pair");
-
-				e.printStackTrace();
-			}
-
-			GeneratePubkeyActivity.this.runOnUiThread(new Runnable() {
-				public void run() {
-					progress.dismiss();
-					GeneratePubkeyActivity.this.finish();
-				}
-			});
+			PubkeyDatabase pubkeydb = PubkeyDatabase.get(GeneratePubkeyActivity.this);
+			pubkeydb.savePubkey(pubkey);
+		} catch (Exception e) {
+			Log.e(TAG, "Could not generate key pair");
+			e.printStackTrace();
 		}
 
-	};
+		// Chain this up for testing purposes. This is used to implement an IdlingResource
+		if (listener != null) {
+			listener.onGenerationSuccess(pair);
+		}
+
+		dismissActivity();
+	}
+
+	public void onGenerationError(Exception e) {
+		Log.e(TAG, "Could not generate key pair");
+		e.printStackTrace();
+
+		// Chain this up for testing purposes. This is used to implement an IdlingResource
+		if (listener != null) {
+			listener.onGenerationError(e);
+		}
+
+		dismissActivity();
+	}
+
+	private void dismissActivity() {
+		runOnUiThread(new Runnable() {
+			public void run() {
+				progress.dismiss();
+				GeneratePubkeyActivity.this.finish();
+			}
+		});
+	}
 
 	final private TextWatcher textChecker = new TextWatcher() {
 		public void afterTextChanged(Editable s) {}
