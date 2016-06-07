@@ -122,6 +122,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 		this.context = context;
 		this.bridge = bridge;
 		this.viewPager = pager;
+		mAccessibilityBuffer = new StringBuffer();
 
 		setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 		setFocusable(true);
@@ -171,9 +172,6 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 		tempDst = new RectF();
 		scaleMatrix = new Matrix();
 
-		bridge.addFontSizeChangedListener(this);
-		bridge.parentChanged(this);
-
 		// connect our view up to the bridge
 		setOnKeyListener(bridge.getKeyHandler());
 
@@ -187,13 +185,11 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 			terminalTextViewOverlay.setOnKeyListener(bridge.getKeyHandler());
 		}
 
-		mAccessibilityBuffer = new StringBuffer();
-
-		// Enable accessibility features if a screen reader is active.
-		new AccessibilityStateTester().execute((Void) null);
-
 		clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
 		prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+		bridge.addFontSizeChangedListener(this);
+		bridge.parentChanged(this);
 
 		onFontSizeChanged(bridge.getFontSize());
 
@@ -250,6 +246,9 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 				return super.onSingleTapConfirmed(e);
 			}
 		});
+
+		// Enable accessibility features if a screen reader is active.
+		new AccessibilityStateTester().execute((Void) null);
 	}
 
 	@TargetApi(11)
