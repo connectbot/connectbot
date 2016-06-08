@@ -6,6 +6,7 @@ buildscript {
     dependencies {
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.6.3'
         classpath 'com.android.tools.build:gradle:2.2.0-alpha2'
+        classpath 'com.github.gfx.ribbonizer:plugin:0.5.0'
         if (rootProject.hasProperty('jacocoVersion')) {
             classpath "org.jacoco:org.jacoco.core:${rootProject.jacocoVersion}"
         }
@@ -26,6 +27,7 @@ ext {
 apply plugin: 'info.vividcode.android.sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'com.github.kt3k.coveralls'
+apply plugin: 'com.github.gfx.ribbonizer'
 apply from: '../config/quality.gradle'
 apply from: '../config/translations.gradle'
 apply from: '../config/jacoco.gradle'
