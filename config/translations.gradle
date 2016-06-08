@@ -33,6 +33,9 @@ task ensureLocalDirExists {
 task untarTranslations(type: Copy) {
 	from tarTree(resources.gzip(launchpadExportFile))
 	into localeDir
+
+        // Unsupported Android locales
+        exclude '**/*-oc.po', '**/*-ca@valencia.po'
 }
 
 task translationsImport(type: Exec, dependsOn: 'untarTranslations') {
