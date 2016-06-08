@@ -23,15 +23,14 @@ import android.os.Build;
  * @author Kenny Root
  *
  */
-public class PreferenceConstants {
-	public static final int SDK_INT = Integer.parseInt(Build.VERSION.SDK);
-	public static final boolean PRE_ECLAIR = SDK_INT < 5;
-	public static final boolean PRE_FROYO = SDK_INT < 8;
-	public static final boolean PRE_HONEYCOMB = SDK_INT < 11;
+public final class PreferenceConstants {
+	private PreferenceConstants() {
+	}
+
+	public static final boolean PRE_ECLAIR = Build.VERSION.SDK_INT < 5;
+	public static final boolean PRE_FROYO = Build.VERSION.SDK_INT < 8;
 
 	public static final String MEMKEYS = "memkeys";
-
-	public static final String LAST_CHECKED = "lastchecked";
 
 	public static final String SCROLLBACK = "scrollback";
 
@@ -42,7 +41,6 @@ public class PreferenceConstants {
 	public static final String ROTATION_DEFAULT = "Default";
 	public static final String ROTATION_LANDSCAPE = "Force landscape";
 	public static final String ROTATION_PORTRAIT = "Force portrait";
-	public static final String ROTATION_AUTOMATIC = "Automatic";
 
 	public static final String FULLSCREEN = "fullscreen";
 	public static final String TITLEBARHIDE = "titlebarhide";

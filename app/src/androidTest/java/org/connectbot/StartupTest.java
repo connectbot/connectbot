@@ -16,7 +16,6 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.action.CloseKeyboardAction;
-import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -31,6 +30,7 @@ import static android.support.test.espresso.action.ViewActions.swipeDown;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnHolderItem;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
@@ -67,7 +67,7 @@ public class StartupTest {
 		// Make sure we're still connected.
 		onView(withId(R.id.list))
 				.check(hasHolderItem(allOf(withHostNickname("Local"), withConnectedHost())))
-				.perform(RecyclerViewActions.actionOnHolderItem(
+				.perform(actionOnHolderItem(
 						allOf(withHostNickname("Local"), withConnectedHost()), longClick()));
 
 		// Click on the disconnect context menu item.
@@ -93,7 +93,7 @@ public class StartupTest {
 	@Test
 	public void localConnectionCanDelete() {
 		startNewLocalConnectionAndGoBack("Local");
-		onView(withId(R.id.list)).perform(RecyclerViewActions.actionOnHolderItem(withHostNickname("Local"), longClick()));
+		onView(withId(R.id.list)).perform(actionOnHolderItem(withHostNickname("Local"), longClick()));
 		onView(withText(R.string.list_host_delete)).perform(click());
 		onView(withText(R.string.delete_pos)).perform(click());
 	}
@@ -104,12 +104,31 @@ public class StartupTest {
 		changeColor("RedLocal", R.color.red, R.string.color_red);
 	}
 
-
 	@Test
 	public void canScrollTerminal() {
 		startNewLocalConnection();
 		onView(withId(R.id.terminal_view))
 				.perform(closeSoftKeyboard(), longClick(), swipeUp(), swipeDown());
+	}
+
+	@Test
+	public void addHostThenCancelAndDiscard() {
+		onView(withId(R.id.add_host_button)).perform(click());
+		onView(withId(R.id.quickconnect_field)).perform(typeText("abandoned"), closeSoftKeyboard(),
+				pressBack());
+		onView(withText(R.string.discard_host_changes_message)).check(matches(isDisplayed()));
+		onView(withText(R.string.discard_host_button)).perform(click());
+		onView(withId(R.id.list)).check(matches(isDisplayed()));
+	}
+
+	@Test
+	public void addHostThenCancelAndKeepEditing() {
+		onView(withId(R.id.add_host_button)).perform(click());
+		onView(withId(R.id.quickconnect_field)).perform(typeText("abandoned"), closeSoftKeyboard(),
+				pressBack());
+		onView(withText(R.string.discard_host_changes_message)).check(matches(isDisplayed()));
+		onView(withText(R.string.discard_host_cancel_button)).perform(click());
+		onView(withId(R.id.quickconnect_field)).check(matches(isDisplayed()));
 	}
 
 	/**
@@ -119,7 +138,7 @@ public class StartupTest {
 	 */
 	private void changeColor(String hostName, @ColorRes int color, @StringRes int stringForColor) {
 		// Bring up the context menu.
-		onView(withId(R.id.list)).perform(RecyclerViewActions.actionOnHolderItem(withHostNickname(hostName), longClick()));
+		onView(withId(R.id.list)).perform(actionOnHolderItem(withHostNickname(hostName), longClick()));
 		onView(withText(R.string.list_host_edit)).perform(click());
 
 		// Click on the color category and select the desired one.
@@ -152,7 +171,7 @@ public class StartupTest {
 
 		Intents.init();
 		try {
-			onView(withId(R.id.list)).perform(RecyclerViewActions.actionOnHolderItem(
+			onView(withId(R.id.list)).perform(actionOnHolderItem(
 					withHostNickname(name), click()));
 			intended(hasComponent(ConsoleActivity.class.getName()));
 		} finally {
