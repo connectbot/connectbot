@@ -26,10 +26,6 @@ def android2poArgs = ['--groups', 'strings',
 		'--template', 'fortune/fortune.pot',
 		'--layout', 'fortune/fortune-%(locale)s.po']
 
-task ensureLocalDirExists {
-	localeDir.mkdirs()
-}
-
 task untarTranslations(type: Copy) {
 	from tarTree(resources.gzip(launchpadExportFile))
 	into localeDir
@@ -39,7 +35,9 @@ task untarTranslations(type: Copy) {
 }
 
 task translationsImport(type: Exec, dependsOn: 'untarTranslations') {
-	description "Import translations into ConnectBot from Launchpad's export function"
+	group = "Translations"
+	description = "Import translations into ConnectBot from Launchpad's export function"
+
 	executable = android2poExec
 	args = ['import'] + android2poArgs
 
@@ -56,7 +54,9 @@ task exportFromAndroid(type: Exec) {
 }
 
 task translationsExport(type: Tar, dependsOn: 'exportFromAndroid') {
-	description "Export translations from ConnectBot in a format suitable to import into Launchpad"
+	group = "Translations"
+	description = "Export translations from ConnectBot in a format suitable to import into Launchpad"
+
 	baseName = launchpadImportBasename
 	from localeDir
 	compression = Compression.GZIP
