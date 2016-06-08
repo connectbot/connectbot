@@ -1,2 +1,16 @@
 <?xml version='1.0' encoding='utf-8'?>
-<resources/>
+<resources>
+  <string name="app_desc">کلاینت SSH ساده، قدرتمند، کد باز</string>
+  <string name="service_desc">کانکشن‌های SSH و کلیدهای همگانی بارگذاری شده را نگه می‌دارد</string>
+  <string name="title_hosts_list">میزبان‌ها</string>
+  <string name="title_pubkey_list">کلیدهای همگانی</string>
+  <string name="title_host_editor">ویرایش میزبان</string>
+  <string name="title_help">راهنما</string>
+  <string name="title_colors">رنگ‌ها</string>
+  <string name="title_color_picker">رنگی برگزینید</string>
+  <string name="title_settings">تنظیمات</string>
+  <string name="title_pubkey_generate">تولید</string>
+  <string name="help_intro">برای اطلاعات بیشتر درباره یک موضوع خاص، لطفاً روی یک تاپیک زیر کلیک کنید.</string>
+  <string name="terms_and_conditions">بندها و پیمان</string>
+  <string name="host_shortcuts_content">برای ایجاد میانبر به میزبان‌های پرکاربرد، دستکتاپ اندروید را بفشارید و کمی نگهدارید.</string>
+</resources>
