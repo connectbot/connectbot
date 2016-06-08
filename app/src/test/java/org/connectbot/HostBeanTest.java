@@ -24,7 +24,9 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.connectbot.mock.BeanAssertions.assertMeetsEqualsContract;
 import static org.connectbot.mock.BeanAssertions.assertMeetsHashCodeContract;
@@ -88,6 +90,61 @@ public class HostBeanTest {
 		assertTrue(
 				"HostBeans hashCodes are not equal when their ID is the same but other fields are different!",
 				host1.hashCode() == host2.hashCode());
+	}
+
+	@Test
+	public void equals_Empty_Success() {
+		HostBean bean1 = new HostBean();
+		HostBean bean2 = new HostBean();
+		assertEquals(bean1, bean2);
+	}
+
+	@Test
+	public void equals_NicknameDifferent_Failure() {
+		host1.setNickname("Work");
+		assertNotEquals(host1, host2);
+	}
+
+	@Test
+	public void equals_NicknameNull_Failure() {
+		host1.setNickname(null);
+		assertNotEquals(host1, host2);
+	}
+
+	@Test
+	public void equals_ProtocolNull_Failure() {
+		host1.setProtocol(null);
+		assertNotEquals(host1, host2);
+	}
+
+	@Test
+	public void equals_ProtocolDifferent_Failure() {
+		host1.setProtocol("fake");
+		assertNotEquals(host1, host2);
+	}
+
+	@Test
+	public void equals_UserDifferent_Failure() {
+		host1.setUsername("joe");
+		assertNotEquals(host1, host2);
+	}
+
+	@Test
+	public void equals_UserNull_Failure() {
+		host1.setUsername(null);
+		assertNotEquals(host1, host2);
+	}
+
+	@Test
+	public void equals_HostDifferent_Failure() {
+		host1.setHostname("work.example.com");
+		assertNotEquals(host1, host2);
+	}
+
+	@Test
+	public void equals_HostNull_Failure() {
+		host1.setHostname(null);
+		assertNotEquals(host1, host2);
 	}
 
 	@Test
