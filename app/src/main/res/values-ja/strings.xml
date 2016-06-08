@@ -235,6 +235,7 @@
   <string name="colors_fg_label">FG: %1$d</string>
   <string name="color_bg_label">BG: %1$d</string>
   <string name="image_description_connected">接続しました。</string>
+  <string name="image_description_disconnected">切断しました。</string>
   <string name="image_description_key_is_locked">キーがロックされました。</string>
   <string name="image_description_toggle_control_character">コントロール文字を切り替えます。</string>
   <string name="image_description_send_escape_character">エスケープ文字を送信します。</string>

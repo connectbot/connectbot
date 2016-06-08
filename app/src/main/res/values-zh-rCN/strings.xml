@@ -235,6 +235,7 @@
   <string name="colors_fg_label">前景色：%1$d</string>
   <string name="color_bg_label">背景色：%1$d</string>
   <string name="image_description_connected">已连接。</string>
+  <string name="image_description_disconnected">已断开连接。</string>
   <string name="image_description_key_is_locked">密钥已锁。</string>
   <string name="image_description_toggle_control_character">切换控制字符。</string>
   <string name="image_description_send_escape_character">发送转义字符。</string>
