@@ -1,0 +1,1478 @@
+# Japanese translations for PROJECT.
+# Copyright (C) 2015 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2016-06-08 10:10-0700\n"
+"PO-Revision-Date: 2016-06-07 06:23+0000\n"
+"Last-Translator: Kenny Root <Unknown>\n"
+"Language-Team: ja <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2016-06-07 06:32+0000\n"
+"X-Generator: Launchpad (build 18097)\n"
+"Generated-By: Babel 1.3\n"
+
+#. Summary of what ConnectBot is; used as a short description in the Android
+#. running apps list
+msgctxt "app_desc"
+msgid "Simple, powerful, open-source SSH client."
+msgstr "シンプルでパワフルなオープンソースのSSHクライアント"
+
+#. Summary of what the ConnectBot service does; displayed in the Android
+#. running apps list
+msgctxt "service_desc"
+msgid "Maintains SSH connections and loaded pubkeys"
+msgstr "SSH接続とロードされた公開鍵の管理"
+
+#. Window title for the Host List
+msgctxt "title_hosts_list"
+msgid "Hosts"
+msgstr "ホスト"
+
+#. Window title for the Pubkeys List
+msgctxt "title_pubkey_list"
+msgid "Pubkeys"
+msgstr "公開鍵"
+
+#. Window title for the Port Forwards List
+msgctxt "title_port_forwards_list"
+msgid "Port forwards"
+msgstr "ポート転送"
+
+#. Window title when editing host details
+msgctxt "title_host_editor"
+msgid "Edit Host"
+msgstr "ホストを編集"
+
+#. Window title for Help index
+msgctxt "title_help"
+msgid "Help"
+msgstr "ヘルプ"
+
+#. Window title for color list editing screen
+msgctxt "title_colors"
+msgid "Colors"
+msgstr "配色"
+
+#. Dialog title for color picker dialog
+msgctxt "title_color_picker"
+msgid "Pick a color"
+msgstr "色の取得"
+
+#. Window title for the global applications settings activity.
+msgctxt "title_settings"
+msgid "Settings"
+msgstr "設定"
+
+#. Window title when generating a new pubkey.
+msgctxt "title_pubkey_generate"
+msgid "Generate"
+msgstr "生成"
+
+msgctxt "help_intro"
+msgid ""
+"Please select a topic below for more information on a particular subject."
+msgstr "特定の情報について知りたいときは、以下のトピックを選択してください。"
+
+#. Title for the help page with the terms & conditions of the app.
+msgctxt "terms_and_conditions"
+msgid "Terms & Conditions"
+msgstr "利用規約"
+
+#. Title for the help page with the hints about the app.
+msgctxt "hints"
+msgid "Hints"
+msgstr "ヒント"
+
+#. Header text for instructions about creating host shortcuts.
+msgctxt "host_shortcuts_header"
+msgid "Host Shortcuts"
+msgstr "ホスト ショートカット"
+
+#. Instructions about creating host shortcuts.
+msgctxt "host_shortcuts_content"
+msgid ""
+"Long-press on your Android desktop to create direct shortcuts to frequently-"
+"used SSH hosts."
+msgstr "Androidのデスクトップ上で長押しすると、頻繁に使用するSSHホストへ直接ショートカットを作成します。"
+
+#. Header text for instructions about scrolling the terminal.
+msgctxt "scroll_hints_header"
+msgid "Scroll back / Scroll forward"
+msgstr "後方にスクロール/前方にスクロール"
+
+#. Instructions about scrolling the terminal.
+msgctxt "scroll_hints_content"
+msgid ""
+"Swiping your finger up on the right side of the screen allows you to scroll "
+"backward and forward in the local terminal buffer history."
+msgstr "画面の右側を指でスワイプすることで、ローカル端末のバッファの履歴を後方および前方にスクロールすることができます。"
+
+#. Captions for images showing the scroll back/forward gestures.
+msgctxt "scrolling_back"
+msgid "Scrolling back"
+msgstr "後方にスクロール中"
+
+msgctxt "scrolling_forward"
+msgid "Scrolling forward"
+msgstr "前方にスクロール中"
+
+#. Header text for instructions about paging up and down in the terminal.
+msgctxt "page_updn_header"
+msgid "Page Up / Page Down"
+msgstr "ページアップ/ページダウン"
+
+#. Instructions about paging up and down in the terminal.
+msgctxt "page_updn_content"
+msgid ""
+"NOTE: This must be enabled in settings.\n"
+"\n"
+"Swiping your finger up and down on the left third of the screen will send a "
+"page up and page down key to the remote host. Many programs map this to "
+"scrolling back into history such as irssi or tinyfugue."
+msgstr ""
+"注: これは、設定で有効にする必要があります。\n"
+"\n"
+"画面の左側の三分の一で上下に指をスワイプすると、リモートホストへページアップ、ページダウンキーを送信します。irssiやtinyfugueなど、多くのプロ"
+"グラムは、これを履歴のスクロールバックにマップします。"
+
+#. Captions for images showing the page up/down gestures.
+msgctxt "page_up"
+msgid "Page up"
+msgstr "ページアップ"
+
+msgctxt "page_down"
+msgid "Page down"
+msgstr "ページダウン"
+
+msgctxt "switching_hosts_header"
+msgid "Switching Hosts"
+msgstr "ホストの切り替え中"
+
+#. Instructions about switching to the next and previous host in the terminal.
+msgctxt "switching_hosts_content"
+msgid ""
+"Swiping your finger from one side of the screen to the other will switch "
+"between currently connected hosts."
+msgstr "画面の片側から反対側に指をスワイプすると、現在接続されたホストの間で切り替わります。"
+
+#. Captions for images showing the next/previous host gestures.
+msgctxt "next_host"
+msgid "Next host"
+msgstr "次のホスト"
+
+msgctxt "prev_host"
+msgid "Previous host"
+msgstr "前のホスト"
+
+#. Title for the help dialog showing keyboard shortcuts.
+msgctxt "keyboard_shortcuts"
+msgid "Keyboard Shortcuts"
+msgstr "キーボードショートカット"
+
+#. Text in a keyboard shortcuts list lined up to keys which increase the
+#. terminal font-size.
+msgctxt "increase_font_size"
+msgid "Increase Font Size"
+msgstr "フォントサイズを大きくする"
+
+#. Keyboard shortcut for increasing the font size.
+msgctxt "increase_font_shortcut"
+msgid "Ctrl and +"
+msgstr "Ctrl と +"
+
+#. Text in a keyboard shortcuts list lined up to keys which decrease the
+#. terminal font-size.
+msgctxt "decrease_font_size"
+msgid "Decrease Font Size"
+msgstr "フォントサイズを小さくする"
+
+#. Keyboard shortcut for decreasing the font size.
+msgctxt "decrease_font_shortcut"
+msgid "Ctrl and -"
+msgstr "Ctrl と -"
+
+#. Keyboard shortcut for pasting into the terminal.
+msgctxt "paste_shortcut"
+msgid "Ctrl-Shift-V"
+msgstr "Ctrl-Shift-V"
+
+msgctxt "pubkey_generate"
+msgid "Generate"
+msgstr "生成"
+
+msgctxt "pubkey_delete"
+msgid "Delete key"
+msgstr "鍵を削除"
+
+#. Dialog title when user must move finger randomly over an area to gather
+#. entropy (collect random bits)
+msgctxt "pubkey_gather_entropy"
+msgid "Gathering Entropy"
+msgstr "エントロピー収集中"
+
+#, c-format
+msgctxt "pubkey_touch_prompt"
+msgid "Touch this box to gather randomness: %1$d%% done"
+msgstr "この四角内をランダムに触ってください: %1$d%% 完了"
+
+msgctxt "pubkey_touch_hint"
+msgid ""
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
+msgstr "鍵作成時のランダムさを保証するため、下の四角内で指をランダムに動かしてください。"
+
+msgctxt "pubkey_generating"
+msgid "Generating key pair…"
+msgstr "鍵ペアを生成しています……"
+
+msgctxt "pubkey_copy_private"
+msgid "Copy private key"
+msgstr "秘密鍵をコピー"
+
+msgctxt "pubkey_copy_public"
+msgid "Copy public key"
+msgstr "公開鍵をコピー"
+
+#. Note that the '\n' just splits lines, so it's actually "create or import"
+msgctxt "pubkey_list_empty"
+msgid ""
+"Tap \"Menu\" to create\n"
+"or import key pairs."
+msgstr "Menuボタンを押して鍵の作成またはインポートを行ってください。"
+
+msgctxt "pubkey_unknown_format"
+msgid "Unknown format"
+msgstr "不明なフォーマット"
+
+msgctxt "pubkey_change_password"
+msgid "Change password"
+msgstr "パスワードを変更"
+
+#. When attempting to import a pubkey, this is the title for the dialog box
+#. where the user should pick the desired file from the SD card contents.
+msgctxt "pubkey_list_pick"
+msgid "Pick from /sdcard"
+msgstr "SDカードから選ぶ"
+
+#. Message shown to the user when a selected pubkey to import was not
+#. parseable for some reason.
+msgctxt "pubkey_import_parse_problem"
+msgid "Problem parsing imported private key"
+msgstr "インポートした秘密鍵を解析時に問題発生"
+
+msgctxt "pubkey_unlock"
+msgid "Unlock key"
+msgstr "鍵をアンロック"
+
+#. Feedback given to the user when the password that they have entered for the
+#. pubkey is incorrect.
+#, c-format
+msgctxt "pubkey_failed_add"
+msgid "Bad password for key '%1$s'. Authentication failed."
+msgstr "鍵 '%1$s' のパスワードが正しくありません。認証に失敗しました。"
+
+#. Context menu entry that allows a user to load a pubkey entry into memory.
+#. This is equivalent to "unlocking" a password-protected pubkey entry.
+msgctxt "pubkey_memory_load"
+msgid "Load into memory"
+msgstr "メモリにロード"
+
+#. Context menu entry that allows a user to unload a pubkey entry from memory.
+#. This is equivalent to "locking" a password-protected pubkey entry.
+msgctxt "pubkey_memory_unload"
+msgid "Unload from memory"
+msgstr "メモリからアンロード"
+
+#. Context menu checkbox that indicates that this pubkey entry should attempt
+#. to be loaded upon starting the app.
+msgctxt "pubkey_load_on_start"
+msgid "Load key on start"
+msgstr "起動時に鍵をロード"
+
+#. Pubkey preference asking user whether the key use should be confirmed via
+#. prompt before it can be used for authentication
+msgctxt "pubkey_confirm_use"
+msgid "Confirm before use"
+msgstr "使用時に確認する"
+
+#. When the list of port forwards for a host is empty, this text is is shown
+#. in the space where the list of port forwards are normally present. Note that
+#. the '\n' splits lines, so it's actually "create port forwards"
+msgctxt "portforward_list_empty"
+msgid ""
+"Tap \"Menu\" to create\n"
+"port forwards."
+msgstr ""
+"MENUをタップして\n"
+"ポート転送を作成します．"
+
+#. Context menu action where a user can edite the selected port forward for
+#. the host.
+msgctxt "portforward_edit"
+msgid "Edit port forward"
+msgstr "ポート転送を編集"
+
+#. Context menu action where a user can delete the selected port forward from
+#. the host.
+msgctxt "portforward_delete"
+msgid "Delete port forward"
+msgstr "ポート転送を削除"
+
+msgctxt "prompt_nickname"
+msgid "Nickname:"
+msgstr "鍵の名前"
+
+#. An example string that could be used as a nickname for a pubkey.
+msgctxt "prompt_nickname_hint_pubkey"
+msgid "My work key"
+msgstr "私の作業用の鍵"
+
+#. The source TCP port for port forwards.
+msgctxt "prompt_source_port"
+msgid "Source port:"
+msgstr "ソースポート:"
+
+#. The "host:port" combination used for port forward destinations.
+msgctxt "prompt_destination"
+msgid "Destination:"
+msgstr "転送先:"
+
+#. Prompt presented to the user when the server requests that they change
+#. their password. This is the entry for the old password.
+msgctxt "prompt_old_password"
+msgid "Old password:"
+msgstr "旧パスワード:"
+
+#. Prompt for user to enter their password to log into the host when using
+#. 'password' authentication.
+msgctxt "prompt_password"
+msgid "Password:"
+msgstr "パスワード:"
+
+#. Added after a "Password:" prompt to indicate user needs to confirm entry.
+msgctxt "prompt_again"
+msgid "(again)"
+msgstr "(再入力)"
+
+#. Label for the user to select port forward type.
+msgctxt "prompt_type"
+msgid "Type:"
+msgstr "タイプ:"
+
+#. Hint given below the password input box that lets them know that they are
+#. allowed to leave the field blank.
+msgctxt "prompt_password_can_be_blank"
+msgid "Note: password can be blank"
+msgstr "備考: パスワードは空欄にできます。"
+
+#. Prompt for the size of the private key in bits.
+msgctxt "prompt_bits"
+msgid "Bits:"
+msgstr "ビット長:"
+
+#. Prompt for the password to unlock a certain pubkey.
+#, c-format
+msgctxt "prompt_pubkey_password"
+msgid "Password for key '%1$s'"
+msgstr "鍵 '%1$s' のパスワード"
+
+#. Prompt for whether to allow SSH Authentication Agent to use the specified
+#. key. Note that the '\n' means split the line so it's actually "host to use
+#. key"
+#, c-format
+msgctxt "prompt_allow_agent_to_use_key"
+msgid ""
+"Allow remote host to\n"
+"use key '%1$s'?"
+msgstr "リモートホストが鍵 '%1$s' を使用することを許可しますか?"
+
+#. The header of the warning a user gets when the host key has changed. Note
+#. that this can be a very serious attack, so we try to be as "loud" to the
+#. user as possible.
+msgctxt "host_verification_failure_warning_header"
+msgid "WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!"
+msgstr "警告: リモートホストのIDが変わっています!"
+
+#. The body of the warning a user gets when the host key has changed. Note
+#. that this can be a very serious attack, so we try to be as "loud" to the
+#. user as possible.
+msgctxt "host_verification_failure_warning"
+msgid ""
+"IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"It is also possible that the host key has just been changed."
+msgstr ""
+"何者かが不正を行っている可能性があります!\n"
+"現在誰かに盗聴されているかもしれません (中間者攻撃)!\n"
+"単にホストキーが変更されただけの可能性もあります。"
+
+#. Prompt user gets when the remote host has disconnected unexpectedly.
+msgctxt "prompt_host_disconnected"
+msgid ""
+"Host has disconnected.\n"
+"Close session?"
+msgstr ""
+"ホスト切断されました．\n"
+"セッションを閉じますか？"
+
+#. Prompt user must answer yes or no to when the remote host fails
+#. verification of encryption fingerprint
+msgctxt "prompt_continue_connecting"
+msgid ""
+"Are you sure you want\n"
+"to continue connecting?"
+msgstr "このまま接続しますか?"
+
+#. Sent to user when the remote public encryption key fingerprint doesn't
+#. match the local database
+#, c-format
+msgctxt "host_authenticity_warning"
+msgid "The authenticity of host '%1$s' can't be established."
+msgstr "ホスト '%1$s' の確認ができませんでした。"
+
+#. First field is encryption algorithm. Second is the actual fingerprint in
+#. hex digits
+#, c-format
+msgctxt "host_fingerprint"
+msgid "Host %1$s key fingerprint is %2$s"
+msgstr "ホストの%1$sキーフィンガープリントは%2$s"
+
+msgctxt "alert_passwords_do_not_match_msg"
+msgid "Passwords do not match!"
+msgstr "パスワードが一致しません！"
+
+msgctxt "alert_wrong_password_msg"
+msgid "Wrong password!"
+msgstr "間違ったパスワードです．"
+
+msgctxt "alert_key_corrupted_msg"
+msgid "Private key appears corrupt!"
+msgstr "秘密鍵が壊れています!"
+
+msgctxt "alert_sdcard_absent"
+msgid "SD card is not inserted!"
+msgstr "SD カードが挿入されていません．"
+
+#. Change an existing item's (e.g., host or pubkey) details.
+msgctxt "button_change"
+msgid "Change"
+msgstr "変更"
+
+#. Button that resizes the screen to the user-specified dimensions.
+msgctxt "button_resize"
+msgid "Resize"
+msgstr "リサイズ"
+
+msgctxt "alert_disconnect_msg"
+msgid "Connection Lost"
+msgstr "接続が失われました．"
+
+msgctxt "msg_copyright"
+msgid ""
+"Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
+"http://jsharkey.org/"
+msgstr ""
+"Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
+"http://jsharkey.org/"
+
+#. The category title for terminal emulation preferences.
+msgctxt "pref_emulation_category"
+msgid "Terminal emulation"
+msgstr "端末エミュレート"
+
+#. Name for the emulation terminal type preference.
+msgctxt "pref_emulation_title"
+msgid "Emulation mode"
+msgstr "エミュレートモード"
+
+#. Description of the emulation terminal type preference.
+msgctxt "pref_emulation_summary"
+msgid "Terminal emulation mode to use for PTY connections"
+msgstr "PTYで使う端末エミュレーションモード"
+
+#. Name for the scrollback size preference
+msgctxt "pref_scrollback_title"
+msgid "Scrollback size"
+msgstr "スクロールサイズ"
+
+#. Description of the scrollback size preference
+msgctxt "pref_scrollback_summary"
+msgid "Size of scrollback buffer to keep in memory for each console"
+msgstr "メモリに保持するスクロールバッファのサイズ"
+
+#. The category title for user interface preferences
+msgctxt "pref_ui_category"
+msgid "User interface"
+msgstr "ユーザーインターフェース"
+
+#. Name for the rotation mode preference
+msgctxt "pref_rotation_title"
+msgid "Rotation mode"
+msgstr "画面の向き"
+
+#. Summary for the rotation mode preference
+msgctxt "pref_rotation_summary"
+msgid "How to change rotation when keyboard popped in/out"
+msgstr "キーボードのポップイン/アウト時の向きの変更"
+
+#. Name for the titlebar hide preference
+msgctxt "pref_titlebarhide_title"
+msgid "Autohide title bar"
+msgstr "タイトルバーを自動的に隠す"
+
+#. Summary for the titlebar hide preference
+msgctxt "pref_titlebarhide_summary"
+msgid "Tap console to show title bar and access menu"
+msgstr "タイトルバーとアクセスメニューを表示するにはコンソールをタップ"
+
+#. Title for special keys always visible preference
+msgctxt "pref_alwaysvisible_title"
+msgid "Special keys always visible"
+msgstr "特殊キーを常に表示"
+
+#. Name for the page up/down gesture preference
+msgctxt "pref_pg_updn_gesture_title"
+msgid "Page up/down gesture"
+msgstr "ページアップ/ページダウン ジェスチャ"
+
+#. Summary for the full screen preference
+msgctxt "pref_pg_updn_gesture_summary"
+msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
+msgstr "画面の左の三分の一をスワイプすると、端末にページアップ/ダウンを送信します"
+
+#. Name for the full screen preference
+msgctxt "pref_fullscreen_title"
+msgid "Full screen"
+msgstr "全画面"
+
+#. Summary for the full screen preference
+msgctxt "pref_fullscreen_summary"
+msgid "Hide status bar while in console"
+msgstr "ステータスバーを隠蔽しコンソールとして利用"
+
+#. The category title for keyboard preferences
+msgctxt "pref_keyboard_category"
+msgid "Keyboard"
+msgstr "キーボード"
+
+#. Name for the shifted numbers are f-keys preference
+msgctxt "pref_shiftfkeys_title"
+msgid "Shift+num are F-keys"
+msgstr "Shift+数字はFキー"
+
+#. Summary for the shifted numbers are f-keys preference
+msgctxt "pref_shiftfkeys_summary"
+msgid "On hardware keyboards, number keys send F1-F10 with shift"
+msgstr "ハードウェアキーボードで、shiftと数字キーでF1-F10を送信します"
+
+#. Name for the ctrl'ed numbers are f-keys preference
+msgctxt "pref_ctrlfkeys_title"
+msgid "Ctrl+num are F-keys"
+msgstr "Ctrl+数字はFキー"
+
+#. Summary for the ctrl'ed numbers are f-keys preference
+msgctxt "pref_ctrlfkeys_summary"
+msgid "On software keyboards, number keys send F1-F10 with ctrl"
+msgstr "ソフトウェアキーボードで、ctrlと数字キーでF1-F10を送信します"
+
+#. Name for the volume keys control font size preference
+msgctxt "pref_volumefont_title"
+msgid "Volume keys change font size"
+msgstr "音量ボタンでフォントサイズを変更する"
+
+#. Summary for the volume keys control font size preference
+msgctxt "pref_volumefont_summary"
+msgid "Font size can also be changed in per-host settings"
+msgstr "フォントサイズはホストごとの設定でも変更することができます"
+
+#. Name for the memorize keys preference
+msgctxt "pref_memkeys_title"
+msgid "Remember keys in memory"
+msgstr "メモリに鍵を保持する"
+
+#. Summary for the memorize keys preference
+msgctxt "pref_memkeys_summary"
+msgid "Keep unlocked keys in memory until backend service is terminated"
+msgstr "バックエンドのサービスが終了しない限り、アンロックした鍵をメモリに保持します"
+
+#. Name for the preference that forces the service to stay running in the
+#. background.
+msgctxt "pref_conn_persist_title"
+msgid "Persist connections"
+msgstr "持続的接続"
+
+#. Summary for the preference that forces the service to stay running in the
+#. background.
+msgctxt "pref_conn_persist_summary"
+msgid "Force connections to stay connected while in background"
+msgstr "バックグラウンドでの実行中に接続の持続を強制する"
+
+#. Name for the keyboard shortcuts preference
+msgctxt "pref_keymode_title"
+msgid "Directory shortcuts"
+msgstr "ディレクトリのショートカット"
+
+#. Summary for the keyboard shortcuts preference
+msgctxt "pref_keymode_summary"
+msgid "Select how to use Alt for '/' and Shift for Tab"
+msgstr "Altを'/'、ShiftをTabに割り当てます"
+
+#. Name for the sticky modifiers preference
+msgctxt "pref_stickymodifiers_title"
+msgid "Sticky modifiers"
+msgstr "スティッキー修飾キー"
+
+#. Summary for the sticky modifiers preference
+msgctxt "pref_stickymodifiers_summary"
+msgid "Modifier keys remain enabled until another key is pressed"
+msgstr "別のキーが押されるまで、修飾キーは有効のままになります"
+
+#. Sticky modifier preference value description for when only the Alt key
+#. should be a sticky modifier.
+msgctxt "only_alt"
+msgid "Only alt"
+msgstr "alt のみ"
+
+#. Name for the camera shortcut usage preference
+msgctxt "pref_camera_title"
+msgid "Camera shortcut"
+msgstr "カメラボタンショートカット"
+
+#. Summary for the camera shortcut usage preference
+msgctxt "pref_camera_summary"
+msgid "Select which shortcut to trigger when the camera button is pushed"
+msgstr "カメラボタンが押されたときのショートカットを選びます"
+
+#. Name for the keep screen on preference
+msgctxt "pref_keepalive_title"
+msgid "Keep screen awake"
+msgstr "画面をスリープしない"
+
+#. Summary for the camera shortcut usage preference
+msgctxt "pref_keepalive_summary"
+msgid "Prevent the screen from turning off when working in a console"
+msgstr "コンソール作業中に画面がOFFになるのを防ぎます"
+
+#. Name for the Wi-Fi lock preference
+msgctxt "pref_wifilock_title"
+msgid "Keep Wi-Fi active"
+msgstr "Wi-Fiをスリープしない"
+
+#. Summary for the Wi-Fi lock preference
+msgctxt "pref_wifilock_summary"
+msgid "Prevent Wi-Fi from turning off when a session is active"
+msgstr "セッションが有効な間Wi-FiがOFFになるのを防ぎます"
+
+#. Name for the haptic feedback (bumpy arrow) preference
+msgctxt "pref_bumpyarrows_title"
+msgid "Bumpy arrows"
+msgstr "矢印で振動"
+
+#. Summary for the haptic feedback (bumpy arrow) preference
+msgctxt "pref_bumpyarrows_summary"
+msgid "Vibrate when sending arrow keys; useful for laggy connections"
+msgstr "矢印キーを送信するときに振動します。タイムラグのある接続時に便利です"
+
+#. Category title for the Terminal Bell preferences
+msgctxt "pref_bell_category"
+msgid "Terminal bell"
+msgstr "端末音設定"
+
+#. Checkbox preference title for the audible terminal bell feature
+msgctxt "pref_bell_title"
+msgid "Audible bell"
+msgstr "ベル音"
+
+#. Title for the slider preference to set the volume
+msgctxt "pref_bell_volume_title"
+msgid "Bell volume"
+msgstr "ボリューム設定"
+
+#. Checkbox preference title for the vibrate on terminal bell feature
+msgctxt "pref_bell_vibrate_title"
+msgid "Vibrate on bell"
+msgstr "バイブレーション"
+
+#. Checkbox preference title for the receive notifications on terminal bell
+#. feature
+msgctxt "pref_bell_notification_title"
+msgid "Background notifications"
+msgstr "バックグラウンド通知"
+
+#. Brief summary of the feature that is enabled when the checkbox preference
+#. for the receive notifications on terminal bell feature is checked
+msgctxt "pref_bell_notification_summary"
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
+msgstr "バックグランドで実行中の端末がベルを鳴らしたとき通知します"
+
+#. Preference selection to indicate use of right side of keyboard for special
+#. shortcuts.
+msgctxt "list_keymode_right"
+msgid "Use right-side keys"
+msgstr "右側のキーで使う"
+
+#. Preference selection to indicate use of left side of keyboard for special
+#. shortcuts.
+msgctxt "list_keymode_left"
+msgid "Use left-side keys"
+msgstr "左側のキーで使う"
+
+#. Preference selection to indicate never to use special shortcut keys.
+msgctxt "list_keymode_none"
+msgid "Disable"
+msgstr "無効"
+
+#. Preference to not use pubkeys to authenticate to this host.
+msgctxt "list_pubkeyids_none"
+msgid "Do not use keys"
+msgstr "公開鍵を使わない"
+
+#. Preference to use any pubkey to authenticate to this host.
+msgctxt "list_pubkeyids_any"
+msgid "Use any unlocked key"
+msgstr "アンロックされた鍵のいずれかを使う"
+
+#. Host nickname field preference title
+msgctxt "hostpref_nickname_title"
+msgid "Nickname"
+msgstr "ニックネーム"
+
+#. Host color category preference title
+msgctxt "hostpref_color_title"
+msgid "Color category"
+msgstr "色の系統"
+
+#. Host's default font size when opening the terminal in points (pt)
+msgctxt "hostpref_fontsize_title"
+msgid "Font size (pt)"
+msgstr "フォントのサイズ (pt)"
+
+#. Host pubkey usage preference title
+msgctxt "hostpref_pubkeyid_title"
+msgid "Use pubkey authentication"
+msgstr "公開鍵認証を使用"
+
+#. Preference title for the SSH Authentication Agent Forwarding for a host
+#. connection
+msgctxt "hostpref_authagent_title"
+msgid "Use SSH auth agent"
+msgstr "SSH認証エージェントを使う"
+
+#. Host post-login automation preference title
+msgctxt "hostpref_postlogin_title"
+msgid "Post-login automation"
+msgstr "ログイン後の自動実行"
+
+#. Host post-login automation preference summary
+msgctxt "hostpref_postlogin_summary"
+msgid "Commands to run on remote server once authenticated"
+msgstr "認証後にリモートで実行するコマンド"
+
+#. Host compression preference title
+msgctxt "hostpref_compression_title"
+msgid "Compression"
+msgstr "圧縮"
+
+#. Summary for compression preference
+msgctxt "hostpref_compression_summary"
+msgid "This may help with slower networks"
+msgstr "遅いネットワークで有効かもしれません"
+
+#. Setting for whether we want a session to start up when we connect to a host
+msgctxt "hostpref_wantsession_title"
+msgid "Start shell session"
+msgstr "シェルセッションを使う"
+
+#. Summary for field asking whether a shell session should be started up upon
+#. connection or not
+msgctxt "hostpref_wantsession_summary"
+msgid "Disable this preference to only use port forwards"
+msgstr "ポート転送のみ行う場合に無効にしてください"
+
+#. Setting for whether the host should be reconnected to automatically upon
+#. disconnect
+msgctxt "hostpref_stayconnected_title"
+msgid "Stay connected"
+msgstr "接続の維持"
+
+#. Summary for preference asking whether the host should be reconnected to
+#. when it disconnects
+msgctxt "hostpref_stayconnected_summary"
+msgid "Try to reconnect to host if disconnected"
+msgstr "接続が切れたら再接続を試みます"
+
+#. Setting for whether we should prompt to close after getting disconnected
+msgctxt "hostpref_quickdisconnect_title"
+msgid "Close on disconnect"
+msgstr "切断時に閉じる"
+
+msgctxt "hostpref_quickdisconnect_summary"
+msgid "Close immediately after remote disconnect without prompting."
+msgstr "リモート切断後、プロンプトを表示せずにすぐに閉じます。"
+
+#. Setting for what key code is sent to the server when DEL key is pressed.
+msgctxt "hostpref_delkey_title"
+msgid "DEL Key"
+msgstr "DELキー"
+
+#. Summary for field asking what key code is sent to the server when DEL key
+#. is pressed.
+msgctxt "hostpref_delkey_summary"
+msgid "The key code sent when DEL key is pressed"
+msgstr "DELキーが押されたときに送るキーコード"
+
+#. Host character encoding preference title
+msgctxt "hostpref_encoding_title"
+msgid "Encoding"
+msgstr "エンコーディング"
+
+#. Host character encoding preference summary
+msgctxt "hostpref_encoding_summary"
+msgid "Character encoding for the host"
+msgstr "ホスト側の文字エンコーディング"
+
+#. Host preference category title for connection settings
+msgctxt "hostpref_connection_category"
+msgid "Connection settings"
+msgstr "接続設定"
+
+#. Username field title for host editor preference
+msgctxt "hostpref_username_title"
+msgid "Username"
+msgstr "ユーザ名"
+
+#. Hostname field title for host editor preference
+msgctxt "hostpref_hostname_title"
+msgid "Host"
+msgstr "ホスト"
+
+#. Port field title for host editor preference
+msgctxt "hostpref_port_title"
+msgid "Port"
+msgstr "ポート"
+
+#. Displayed to indicate a host has never been connected to.
+msgctxt "bind_never"
+msgid "Never connected"
+msgstr "未接続"
+
+#. Message given when user copies from the terminal.
+#, c-format
+msgctxt "console_copy_done"
+msgid "Copied %1$d bytes to clipboard"
+msgstr "クリップボードに %1$d バイトコピーしました．"
+
+#. Instructions for how to copy from the terminal. The '\n' entries are to
+#. split lines to improve readability and prevent wrapping off the screen.
+msgctxt "console_copy_start"
+msgid ""
+"Touch and drag\n"
+"or use directional pad\n"
+"to select area to copy"
+msgstr ""
+"タッチしてドラッグ\n"
+"または方向パッドで\n"
+"コピー領域を選択"
+
+#. Button to close the disconnected terminal window.
+msgctxt "console_menu_close"
+msgid "Close"
+msgstr "切断"
+
+#. Button to begin copying from the terminal to the clipboard.
+msgctxt "console_menu_copy"
+msgid "Copy"
+msgstr "コピー"
+
+#. Button to paste from the clipboard to the terminal.
+msgctxt "console_menu_paste"
+msgid "Paste"
+msgstr "貼り付け"
+
+#. Button that brings user to the Port Forwards List.
+msgctxt "console_menu_portforwards"
+msgid "Port Forwards"
+msgstr "ポート転送"
+
+#. Button that brings user to the terminal resizing dialog where they can
+#. force a size.
+msgctxt "console_menu_resize"
+msgid "Force Size"
+msgstr "サイズ強制"
+
+#. Button that brings up the list of URLs on the current screen
+msgctxt "console_menu_urlscan"
+msgid "URL Scan"
+msgstr "URL スキャン"
+
+#. Button label to answer "Yes" to a yes/no prompt
+msgctxt "button_yes"
+msgid "Yes"
+msgstr "はい"
+
+#. Button label to answer "No" to a yes/no prompt
+msgctxt "button_no"
+msgid "No"
+msgstr "いいえ"
+
+#. Selection for a "local" port forward. E.g., connections to a port listening
+#. locally is forwarded to the remote end's listening port.
+msgctxt "portforward_local"
+msgid "Local"
+msgstr "ローカル"
+
+#. Selection for a "remote" port forward. E.g., connections to a port
+#. listening remotely is forwarded to the local end's listening port.
+msgctxt "portforward_remote"
+msgid "Remote"
+msgstr "リモート"
+
+#. Selection for a "dynamic" port forward. E.g., connections to a port
+#. listening locally is forwarded based on the SOCKS protocol to an arbitrary
+#. remote host and port.
+msgctxt "portforward_dynamic"
+msgid "Dynamic (SOCKS)"
+msgstr "動的 (SOCKS)"
+
+#. Button that commits the port forward to be made from the Port Forward
+#. Creation dialog.
+msgctxt "portforward_pos"
+msgid "Create port forward"
+msgstr "ポート転送の作成"
+
+msgctxt "portforward_problem"
+msgid ""
+"Problem creating port forward, maybe you're using ports under 1024 or port "
+"is already used?"
+msgstr "ポート転送の作成ができません．おそらく1024ポート以下か既に利用されているポートを指定されています．"
+
+#. Part of the formatting hints that will be used like: username@hostname:port
+msgctxt "format_username"
+msgid "username"
+msgstr "ユーザ名"
+
+#. Part of the formatting hints that will be used like: username@hostname:port
+msgctxt "format_hostname"
+msgid "hostname"
+msgstr "ホスト名"
+
+#. Part of the formatting hints that will be used like: username@hostname:port
+msgctxt "format_port"
+msgid "port"
+msgstr "ポート"
+
+msgctxt "list_menu_pubkeys"
+msgid "Manage Pubkeys"
+msgstr "公開鍵管理"
+
+#. Selection choice to sort hosts by color.
+msgctxt "list_menu_sortcolor"
+msgid "Sort by color"
+msgstr "色でソート"
+
+#. Selection choice to sort hosts by nickname.
+msgctxt "list_menu_sortname"
+msgid "Sort by name"
+msgstr "名前順でソート"
+
+msgctxt "list_menu_disconnect"
+msgid "Disconnect All"
+msgstr "すべて切断"
+
+msgctxt "list_menu_settings"
+msgid "Settings"
+msgstr "設定"
+
+msgctxt "list_host_disconnect"
+msgid "Disconnect"
+msgstr "切断"
+
+msgctxt "list_host_edit"
+msgid "Edit host"
+msgstr "接続ホストの編集"
+
+msgctxt "list_host_portforwards"
+msgid "Edit port forwards"
+msgstr "ポート転送の編集"
+
+msgctxt "list_host_delete"
+msgid "Delete host"
+msgstr "接続ホストの削除"
+
+#. Note that the '\n' splits the lines so it's actually "quick-connect box
+#. below to connect"
+msgctxt "list_host_empty"
+msgid "No hosts created yet."
+msgstr ""
+"下のquick-connect box\n"
+"を使ってホストに接続できます."
+
+#. Default screen rotation preference selection
+msgctxt "list_rotation_default"
+msgid "Default"
+msgstr "デフォルト"
+
+msgctxt "list_rotation_land"
+msgid "Force landscape"
+msgstr "横向き固定"
+
+msgctxt "list_rotation_port"
+msgid "Force portrait"
+msgstr "縦向き固定"
+
+#. Selection to indicate the rotation should be selected automatically based
+#. on the tilt sensor.
+msgctxt "list_rotation_auto"
+msgid "Automatic"
+msgstr "自動判定"
+
+#. Selection to indicate pressing the Camera button should send "Ctrl+A then
+#. Space".
+msgctxt "list_camera_ctrlaspace"
+msgid "Ctrl+A then Space"
+msgstr "Ctrl+Aに続いてSpace"
+
+#. Selection to indicate pressing the Camera button should send "Ctrl+A".
+msgctxt "list_camera_ctrla"
+msgid "Ctrl+A"
+msgstr "Ctrl+A"
+
+#. Selection to indicate pressing the Camera button should send the "Esc" key.
+msgctxt "list_camera_esc"
+msgid "Esc"
+msgstr "Escキー"
+
+#. Selection to indicate pressing the Camera button should send "Esc+A".
+msgctxt "list_camera_esc_a"
+msgid "Esc+A"
+msgstr "Esc+A"
+
+#. Selection to indicate pressing the Camera button should send nothing at
+#. all.
+msgctxt "list_camera_none"
+msgid "None"
+msgstr "なし"
+
+#. Name for the backspace character
+msgctxt "list_delkey_backspace"
+msgid "Backspace"
+msgstr "Backspace"
+
+#. Name for the ASCII DEL character
+msgctxt "list_delkey_del"
+msgid "Delete"
+msgstr "Delete"
+
+#, c-format
+msgctxt "delete_message"
+msgid "Are you sure you want to delete '%1$s'?"
+msgstr "'%1$s'を削除してよろしいですか?"
+
+msgctxt "delete_pos"
+msgid "Yes, delete"
+msgstr "はい、削除します"
+
+msgctxt "delete_neg"
+msgid "Cancel"
+msgstr "キャンセル"
+
+msgctxt "disconnect_all_message"
+msgid "Are you sure you want to disconnect from all connected hosts?"
+msgstr "接続されたホストをすべて切断してもよろしいですか?"
+
+msgctxt "disconnect_all_pos"
+msgid "Yes, disconnect"
+msgstr "はい、切断します"
+
+msgctxt "disconnect_all_neg"
+msgid "Cancel"
+msgstr "キャンセル"
+
+msgctxt "terminal_no_hosts_connected"
+msgid "No hosts currently connected"
+msgstr "接続済みのホストはありません．"
+
+#. Displayed in terminal when attempting to connect to a host. The first two
+#. variables are host:port and the third is the protocol (e.g., SSH)
+#, c-format
+msgctxt "terminal_connecting"
+msgid "Connecting to %1$s:%2$d via %3$s"
+msgstr "%1$s:%2$dに%3$sで接続しています"
+
+#. Displays the host key to the user in the terminal
+#, c-format
+msgctxt "terminal_sucess"
+msgid "Verified host '%1$s' key: %2$s"
+msgstr "ホスト'%1$s' キー%2$s を検証しました"
+
+msgctxt "terminal_failed"
+msgid "Host key verification failed."
+msgstr "ホストキーが検証できません"
+
+#. Displayed on the terminal describing the cryptographic algorithm names
+#, c-format
+msgctxt "terminal_using_s2c_algorithm"
+msgid "Server-to-client algorithm: %1$s %2$s"
+msgstr "サーバtoクライアント アルゴリズム: %1$s %2$s"
+
+#. Displayed on the terminal describing the cryptographic algorithm names
+#, c-format
+msgctxt "terminal_using_c2s_algorithm"
+msgid "Client-to-server algorithm: %1$s %2$s"
+msgstr "クライアントからサーバ アルゴリズム: %1$s %2$s"
+
+#. Displayed on the terminal describing the cryptographic algorithm names
+#, c-format
+msgctxt "terminal_using_algorithm"
+msgid "Using algorithm: %1$s %2$s"
+msgstr "使用アルゴリズム: %1$s %2$s"
+
+#. Displayed on the terminal during a SSH connection describing the
+#. cryptographic key              exchange algorithm used to establish a shared
+#. secret between this program and the              server.
+#, c-format
+msgctxt "terminal_kex_algorithm"
+msgid "Key exchange algorithm: %s"
+msgstr "鍵交換アルゴリズム： %s"
+
+msgctxt "terminal_auth"
+msgid "Trying to authenticate"
+msgstr "認証を試行中"
+
+msgctxt "terminal_auth_pass"
+msgid "Attempting 'password' authentication"
+msgstr "'password' 認証を試行"
+
+msgctxt "terminal_auth_pass_fail"
+msgid "Authentication method 'password' failed"
+msgstr "'password' 認証失敗"
+
+msgctxt "terminal_auth_pubkey_any"
+msgid "Attempting 'publickey' authentication with any in-memory public keys"
+msgstr "メモリ上の公開鍵による 'publickey' 認証を試行"
+
+msgctxt "terminal_auth_pubkey_invalid"
+msgid "Selected public key is invalid, try reselecting key in host editor"
+msgstr "選択された公開鍵は無効です、ホストの編集で選び直してください"
+
+msgctxt "terminal_auth_pubkey_specific"
+msgid "Attempting 'publickey' authentication with a specific public key"
+msgstr "指定された公開鍵による 'publickey' 認証を試行"
+
+#, c-format
+msgctxt "terminal_auth_pubkey_fail"
+msgid "Authentication method 'publickey' with key '%1$s' failed"
+msgstr "鍵 '%1$s' での 'publickey' 認証に失敗"
+
+msgctxt "terminal_auth_ki"
+msgid "Attempting 'keyboard-interactive' authentication"
+msgstr "'keyboard-interactive' 認証を試行"
+
+msgctxt "terminal_auth_ki_fail"
+msgid "Authentication method 'keyboard-interactive' failed"
+msgstr "'keyboard-interactive' 認証に失敗"
+
+msgctxt "terminal_auth_fail"
+msgid ""
+"[Your host doesn't support 'password' or 'keyboard-interactive' "
+"authentication.]"
+msgstr "[ホストは 'password' や 'keyboard-interactive' 認証をサポートしていません.]"
+
+msgctxt "terminal_no_session"
+msgid "Session will not be started due to host preference."
+msgstr "ホスト設定によりセッションを開始しません"
+
+#, c-format
+msgctxt "terminal_enable_portfoward"
+msgid "Enable port forward: %1$s"
+msgstr "ポート転送 %1$s を有効化"
+
+msgctxt "local_shell_unavailable"
+msgid "Failure! Local shell is unavailable on this phone."
+msgstr "エラー! この電話機にはローカルシェルがありません."
+
+#. Text sent to the user to alert them that a Terminal Bell is received in a
+#. background session
+#, c-format
+msgctxt "notification_text"
+msgid "%1$s wants your attention."
+msgstr "%1$s でベルが鳴りました"
+
+#. Preference selection for SSH Authentication Agent to never use pubkeys
+msgctxt "no"
+msgid "No"
+msgstr "いいえ"
+
+#. Preference selection for SSH Authentication Agent to be able to use pubkeys
+#. "with confirmation" only
+msgctxt "with_confirmation"
+msgid "With confirmation"
+msgstr "確認が必要"
+
+#. Preference selection for SSH Authentication Agent to be able to use pubkeys
+msgctxt "yes"
+msgid "Yes"
+msgstr "はい"
+
+#. Menu selection to reset colors to their defaults.
+msgctxt "menu_colors_reset"
+msgid "Reset"
+msgstr "リセット"
+
+#. Displayed in the notification bar that connections are active
+msgctxt "app_is_running"
+msgid "ConnectBot is running"
+msgstr "ConnectBot起動中"
+
+msgctxt "color_red"
+msgid "red"
+msgstr "赤"
+
+msgctxt "color_green"
+msgid "green"
+msgstr "緑"
+
+msgctxt "color_blue"
+msgid "blue"
+msgstr "青"
+
+msgctxt "color_gray"
+msgid "gray"
+msgstr "グレー"
+
+#. Very short label indicating the number next to it is "foreground color"
+#. number.
+#, c-format
+msgctxt "colors_fg_label"
+msgid "FG: %1$d"
+msgstr "FG: %1$d"
+
+#. Very short label indicating the number next to it is "background color"
+#. number.
+#, c-format
+msgctxt "color_bg_label"
+msgid "BG: %1$d"
+msgstr "BG: %1$d"
+
+#. Accessibility text for connection state in list of hosts when the host is
+#. currently          connected.
+msgctxt "image_description_connected"
+msgid "Connected."
+msgstr "接続しました。"
+
+#. Accessibility text for connection state in list of hosts when the host is
+#. currently              disconnected after having been previously connected.
+msgctxt "image_description_disconnected"
+msgid "Disconnected."
+msgstr "切断しました"
+
+#. Describes the icon of the "locked pubkey" icon for accessibility purposes.
+msgctxt "image_description_key_is_locked"
+msgid "Key is locked."
+msgstr "キーがロックされました。"
+
+#. Describes the icon of the "send control character" button in the terminal
+#. view for              accessibility purposes.
+msgctxt "image_description_toggle_control_character"
+msgid "Toggle control character."
+msgstr "コントロール文字を切り替えます。"
+
+#. Describes the icon of the "send escape character" button in the terminal
+#. view for              accessibility purposes.
+msgctxt "image_description_send_escape_character"
+msgid "Send escape character."
+msgstr "エスケープ文字を送信します。"
+
+#. Describes the icon of the "send tab character" button in the terminal view
+#. for              accessibility purposes.
+msgctxt "image_description_send_tab_character"
+msgid "Send TAB character."
+msgstr "Tabキーを送信します。"
+
+#. Describes the icon of the "show keyboard" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_show_keyboard"
+msgid "Show keyboard."
+msgstr "キーボードを表示します。"
+
+#. Describes the icon of the "Arrow up" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_up"
+msgid "Arrow up"
+msgstr "上矢印"
+
+#. Describes the icon of the "Arrow down" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_down"
+msgid "Arrow down"
+msgstr "下矢印"
+
+#. Describes the icon of the "Arrow left" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_left"
+msgid "Arrow left"
+msgstr "左矢印"
+
+#. Describes the icon of the "Arrow right" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_right"
+msgid "Arrow right"
+msgstr "右矢印"
+
+#. Describes the "volume" icon in the bell volume dialog for accessibility
+#. purposes.
+msgctxt "image_description_volume"
+msgid "Volume"
+msgstr "音量"
+
+#. Text for the "Esc" button in virtual keyboard.
+msgctxt "button_key_esc"
+msgid "Esc"
+msgstr "Esc"
+
+#. Text for the "Ctrl" button in virtual keyboard.
+msgctxt "button_key_ctrl"
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#. Text for the "Home" button in virtual keyboard.
+msgctxt "button_key_home"
+msgid "Home"
+msgstr "Home"
+
+#. Text for the "End" button in virtual keyboard.
+msgctxt "button_key_end"
+msgid "End"
+msgstr "End"
+
+#. Text for the "Page Up" button in virtual keyboard.
+msgctxt "button_key_pgup"
+msgid "PgUp"
+msgstr "PgUp"
+
+#. Text for the "Page Down" button in virtual keyboard.
+msgctxt "button_key_pgdn"
+msgid "PgDn"
+msgstr "PgDn"
+
+#. Text for the "F1" button in virtual keyboard.
+msgctxt "button_key_f1"
+msgid "F1"
+msgstr "F1"
+
+#. Text for the "F2" button in virtual keyboard.
+msgctxt "button_key_f2"
+msgid "F2"
+msgstr "F2"
+
+#. Text for the "F3" button in virtual keyboard.
+msgctxt "button_key_f3"
+msgid "F3"
+msgstr "F3"
+
+#. Text for the "F4" button in virtual keyboard.
+msgctxt "button_key_f4"
+msgid "F4"
+msgstr "F4"
+
+#. Text for the "F5" button in virtual keyboard.
+msgctxt "button_key_f5"
+msgid "F5"
+msgstr "F5"
+
+#. Text for the "F6" button in virtual keyboard.
+msgctxt "button_key_f6"
+msgid "F6"
+msgstr "F6"
+
+#. Text for the "F7" button in virtual keyboard.
+msgctxt "button_key_f7"
+msgid "F7"
+msgstr "F7"
+
+#. Text for the "F8" button in virtual keyboard.
+msgctxt "button_key_f8"
+msgid "F8"
+msgstr "F8"
+
+#. Text for the "F9" button in virtual keyboard.
+msgctxt "button_key_f9"
+msgid "F9"
+msgstr "F9"
+
+#. Text for the "F10" button in virtual keyboard.
+msgctxt "button_key_f10"
+msgid "F10"
+msgstr "F10"
+
+#. Text for the "F11" button in virtual keyboard.
+msgctxt "button_key_f11"
+msgid "F11"
+msgstr "F11"
+
+#. Text for the "F12" button in virtual keyboard.
+msgctxt "button_key_f12"
+msgid "F12"
+msgstr "F12"
+
+#. Label for spinner which allows user to select SSH/Telnet/Local.
+msgctxt "protocol_spinner_label"
+msgid "Protocol"
+msgstr "プロトコル"
+
+#. Label for button which expands/collapses section.
+msgctxt "expand"
+msgid "Expand"
+msgstr "展開"
+
+#. Label for checkbox which, when check, makes SSL authorization require
+#. confirmation.
+msgctxt "hostpref_authagent_with_confirmation"
+msgid "require confirmation"
+msgstr "確認が必要"
+
+#. Text for button which, when clicked, adds a new host.
+msgctxt "hostpref_add_host"
+msgid "Add host"
+msgstr "ホストを追加"
+
+#. Text for button which, when clicked, saves an existing host.
+msgctxt "hostpref_edit_host"
+msgid "Save host"
+msgstr "ホストを保存"
+
+#. Text for button which, when clicked, brings up an editor for adding a new
+#. pubkey.
+msgctxt "pubkey_add_new"
+msgid "Add new pubkey"
+msgstr "新しい公開鍵を追加"
+
+#. Text for button which, when clicked, brings up picker to import an existing
+#. pubkey.
+msgctxt "pubkey_import_existing"
+msgid "Import existing pubkey"
+msgstr "既存の公開鍵をインポート"
+
+#. Text for dialog which explains that the host URI is invalid and asks to
+#. discard.
+msgctxt "discard_host_changes_message"
+msgid "Host URI is invalid. Would you like to discard changes?"
+msgstr "ホストURIが正しくありません。変更を破棄しますか?"
+
+#. Text for button which discards changes to the host.
+msgctxt "discard_host_button"
+msgid "Discard"
+msgstr "破棄"
+
+#. Text for button which does not discard changes and keeps editing.
+msgctxt "discard_host_cancel_button"
+msgid "Keep editing"
+msgstr "編集を続ける"
