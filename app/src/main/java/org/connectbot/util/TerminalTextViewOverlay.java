@@ -84,6 +84,7 @@ public class TerminalTextViewOverlay extends TextView {
 					Character.isWhitespace(buffer.charAt(buffer.length() - 1))) {
 				buffer.setLength(buffer.length() - 1);
 			}
+			buffer.append('\n');
 		}
 
 		oldScrollY = vb.getWindowBase() * getLineHeight();
