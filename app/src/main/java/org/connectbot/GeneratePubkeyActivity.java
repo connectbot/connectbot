@@ -25,6 +25,7 @@ import java.security.SecureRandom;
 import java.security.Security;
 
 import org.connectbot.bean.PubkeyBean;
+import org.connectbot.util.Ed25519Provider;
 import org.connectbot.util.EntropyDialog;
 import org.connectbot.util.EntropyView;
 import org.connectbot.util.OnEntropyGatheredListener;
@@ -58,15 +59,14 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntropyGatheredListener,
 		OnKeyGeneratedListener {
-	private static final int RSA_MINIMUM_BITS = 768;
+	static {
+		// Since this class deals with EdDSA keys, we need to make sure this is available.
+		Ed25519Provider.insertIfNeeded();
+	}
 
 	public final static String TAG = "CB.GeneratePubkeyAct";
 
-	private final static int DEFAULT_BITS = 2048;
-
 	private final static int[] ECDSA_SIZES = ECDSASHA2Verify.getCurveSizes();
-
-	private final static int ECDSA_DEFAULT_BITS = ECDSA_SIZES[0];
 
 	private LayoutInflater inflater = null;
 
@@ -80,11 +80,31 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 
 	private EditText password1, password2;
 
-	private String keyType = PubkeyDatabase.KEY_TYPE_RSA;
-	private int minBits = 768;
-	private int bits = DEFAULT_BITS;
+	private KeyType keyType;
+
+	private int bits;
 
 	private byte[] entropy;
+
+	private enum KeyType {
+		RSA(PubkeyDatabase.KEY_TYPE_RSA, 1024, 16384, 2048),
+		DSA(PubkeyDatabase.KEY_TYPE_DSA, 1024, 1024, 1024),
+		EC(PubkeyDatabase.KEY_TYPE_EC, ECDSA_SIZES[0], ECDSA_SIZES[ECDSA_SIZES.length - 1],
+				ECDSA_SIZES[0]),
+		ED25519(PubkeyDatabase.KEY_TYPE_ED25519, 256, 256, 256);
+
+		public final String name;
+		public final int minimumBits;
+		public final int maximumBits;
+		public final int defaultBits;
+
+		KeyType(String name, int minimumBits, int maximumBits, int defaultBits) {
+			this.name = name;
+			this.minimumBits = minimumBits;
+			this.maximumBits = maximumBits;
+			this.defaultBits = defaultBits;
+		}
+	}
 
 	private OnKeyGeneratedListener listener;
 
@@ -116,6 +136,8 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 		password1.addTextChangedListener(textChecker);
 		password2.addTextChangedListener(textChecker);
 
+		setKeyType(KeyType.RSA);
+
 		// TODO add BC to provide EC for devices that don't have it.
 		if (Security.getProviders("KeyPairGenerator.EC") == null) {
 			((RadioButton) findViewById(R.id.ec)).setEnabled(false);
@@ -125,35 +147,13 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				if (checkedId == R.id.rsa) {
-					minBits = RSA_MINIMUM_BITS;
-
-					bitsSlider.setEnabled(true);
-					bitsSlider.setProgress(DEFAULT_BITS - minBits);
-
-					bitsText.setText(String.valueOf(DEFAULT_BITS));
-					bitsText.setEnabled(true);
-
-					keyType = PubkeyDatabase.KEY_TYPE_RSA;
+					setKeyType(KeyType.RSA);
 				} else if (checkedId == R.id.dsa) {
-					// DSA keys can only be 1024 bits
-
-					bitsSlider.setEnabled(false);
-					bitsSlider.setProgress(DEFAULT_BITS - minBits);
-
-					bitsText.setText(String.valueOf(DEFAULT_BITS));
-					bitsText.setEnabled(false);
-
-					keyType = PubkeyDatabase.KEY_TYPE_DSA;
+					setKeyType(KeyType.DSA);
 				} else if (checkedId == R.id.ec) {
-					minBits = ECDSA_DEFAULT_BITS;
-
-					bitsSlider.setEnabled(true);
-					bitsSlider.setProgress(ECDSA_DEFAULT_BITS - minBits);
-
-					bitsText.setText(String.valueOf(ECDSA_DEFAULT_BITS));
-					bitsText.setEnabled(true);
-
-					keyType = PubkeyDatabase.KEY_TYPE_EC;
+					setKeyType(KeyType.EC);
+				} else if (checkedId == R.id.ed25519) {
+					setKeyType(KeyType.ED25519);
 				}
 			}
 		});
@@ -162,17 +162,7 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromTouch) {
-				if (PubkeyDatabase.KEY_TYPE_EC.equals(keyType)) {
-					bits = getClosestFieldSize(progress + minBits);
-					seekBar.setProgress(bits - minBits);
-				} else {
-					// Stay evenly divisible by 8 because it looks nicer to have
-					// 2048 than 2043 bits.
-					final int ourProgress = progress - (progress % 8);
-					bits = minBits + ourProgress;
-				}
-
-				bitsText.setText(String.valueOf(bits));
+				setBits(keyType.minimumBits + progress);
 			}
 
 			public void onStartTrackingTouch(SeekBar seekBar) {
@@ -180,29 +170,20 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 			}
 
 			public void onStopTrackingTouch(SeekBar seekBar) {
-				// We don't care about the stop.
+				setBits(bits);
 			}
 		});
 
 		bitsText.setOnFocusChangeListener(new OnFocusChangeListener() {
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (!hasFocus) {
-					final boolean isEc = PubkeyDatabase.KEY_TYPE_EC.equals(keyType);
+					int newBits;
 					try {
-						bits = Integer.parseInt(bitsText.getText().toString());
-						if (bits < minBits) {
-							bits = minBits;
-							bitsText.setText(String.valueOf(bits));
-						}
-						if (isEc) {
-							bits = getClosestFieldSize(bits);
-						}
+						newBits = Integer.parseInt(bitsText.getText().toString());
 					} catch (NumberFormatException nfe) {
-						bits = isEc ? ECDSA_DEFAULT_BITS : DEFAULT_BITS;
-						bitsText.setText(String.valueOf(bits));
+						newBits = keyType.defaultBits;
 					}
-
-					bitsSlider.setProgress(bits - minBits);
+					setBits(newBits);
 				}
 			}
 		});
@@ -215,6 +196,51 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 			}
 		});
 
+	}
+
+	private void setKeyType(KeyType newKeyType) {
+		keyType = newKeyType;
+		resetBitDefaults();
+
+		switch (newKeyType) {
+		case RSA:
+		case EC:
+			setAllowBitStrengthChange(true);
+			break;
+		case DSA:
+		case ED25519:
+			setAllowBitStrengthChange(false);
+			break;
+		default:
+			throw new AssertionError("Impossible key type encountered");
+		}
+	}
+
+	private void setAllowBitStrengthChange(boolean enabled) {
+		bitsSlider.setEnabled(enabled);
+		bitsText.setEnabled(enabled);
+	}
+
+	private void resetBitDefaults() {
+		bitsSlider.setMax(keyType.maximumBits - keyType.minimumBits);
+		setBits(keyType.defaultBits);
+	}
+
+	private void setBits(int newBits) {
+		if (newBits < keyType.minimumBits || newBits > keyType.maximumBits) {
+			newBits = keyType.defaultBits;
+		}
+
+		if (keyType == KeyType.EC) {
+			bits = getClosestFieldSize(newBits);
+		} else {
+			// Stay evenly divisible by 8 because it looks nicer to have
+			// 2048 than 2043 bits.
+			bits = newBits - (newBits % 8);
+		}
+
+		bitsSlider.setProgress(newBits - keyType.minimumBits);
+		bitsText.setText(String.valueOf(bits));
 	}
 
 	private void checkEntries() {
@@ -237,8 +263,8 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 
 	private void startEntropyGather() {
 		final View entropyView = inflater.inflate(R.layout.dia_gatherentropy, null, false);
-		((EntropyView) entropyView.findViewById(R.id.entropy)).addOnEntropyGatheredListener(GeneratePubkeyActivity.this);
-		Dialog entropyDialog = new EntropyDialog(GeneratePubkeyActivity.this, entropyView);
+		((EntropyView) entropyView.findViewById(R.id.entropy)).addOnEntropyGatheredListener(this);
+		Dialog entropyDialog = new EntropyDialog(this, entropyView);
 		entropyDialog.show();
 	}
 
@@ -257,12 +283,13 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 		this.entropy = entropy.clone();
 
 		int numSetBits = 0;
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < EntropyView.SHA1_MAX_BYTES; i++)
 			numSetBits += measureNumberOfSetBits(this.entropy[i]);
 
-		Log.d(TAG, "Entropy distribution=" + (int) (100.0 * numSetBits / 160.0) + "%");
+		double proportionOfBitsSet = numSetBits / (double) (8 * EntropyView.SHA1_MAX_BYTES);
+		Log.d(TAG, "Entropy gathered; population of ones is " +
+				(int) (100.0 * proportionOfBitsSet) + "%");
 
-		Log.d(TAG, "entropy gathered; attemping to generate key...");
 		startKeyGen();
 	}
 
@@ -307,7 +334,8 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 		progress.setCancelable(false);
 		progress.show();
 
-		KeyGeneratorRunnable keyGen = new KeyGeneratorRunnable(keyType, bits, entropy, this);
+		Log.d(TAG, "Starting generation of " + keyType + " of strength " + bits);
+		KeyGeneratorRunnable keyGen = new KeyGeneratorRunnable(keyType.name, bits, entropy, this);
 		Thread keyGenThread = new Thread(keyGen);
 		keyGenThread.setName("KeyGen " + keyType + " " + bits);
 		keyGenThread.start();
@@ -329,7 +357,7 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 
 			PubkeyBean pubkey = new PubkeyBean();
 			pubkey.setNickname(nickname.getText().toString());
-			pubkey.setType(keyType);
+			pubkey.setType(keyType.name);
 			pubkey.setPrivateKey(PubkeyUtils.getEncodedPrivate(priv, secret));
 			pubkey.setPublicKey(pub.getEncoded());
 			pubkey.setEncrypted(encrypted);
@@ -397,8 +425,8 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 	}
 
 	private int getClosestFieldSize(int bits) {
-		int outBits = ECDSA_DEFAULT_BITS;
-		int distance = Math.abs(bits - ECDSA_DEFAULT_BITS);
+		int outBits = ECDSA_SIZES[0];
+		int distance = Math.abs(bits - outBits);
 
 		for (int i = 1; i < ECDSA_SIZES.length; i++) {
 			int thisDistance = Math.abs(bits - ECDSA_SIZES[i]);

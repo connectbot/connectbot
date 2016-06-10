@@ -54,7 +54,8 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 	public final static String KEY_TYPE_RSA = "RSA",
 		KEY_TYPE_DSA = "DSA",
 		KEY_TYPE_IMPORTED = "IMPORTED",
-		KEY_TYPE_EC = "EC";
+		KEY_TYPE_EC = "EC",
+		KEY_TYPE_ED25519 = "ED25519";
 
 	private Context context;
 

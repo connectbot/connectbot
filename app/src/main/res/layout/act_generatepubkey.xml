@@ -48,7 +48,7 @@
 				android:singleLine="true"/>
 		</TableRow>
 
-		<TableRow>
+		<TableRow android:focusable="false">
 
 			<TextView
 				android:layout_gravity="center_vertical"
@@ -62,7 +62,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:checkedButton="@+id/rsa"
-				android:orientation="horizontal">
+				android:orientation="vertical">
 
 				<RadioButton
 					android:id="@+id/rsa"
@@ -83,6 +83,12 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="EC"/>
+
+				<RadioButton
+					android:id="@+id/ed25519"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="Ed25519"/>
 			</RadioGroup>
 		</TableRow>
 
@@ -109,7 +115,7 @@
 			android:layout_height="wrap_content"
 			android:max="3328"
 			android:paddingBottom="10dip"
-			android:progress="256"/>
+			android:progress="2048"/>
 
 		<TextView
 			android:layout_width="wrap_content"

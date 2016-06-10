@@ -5,7 +5,7 @@ buildscript {
 
     dependencies {
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.6.3'
-        classpath 'com.android.tools.build:gradle:2.2.0-alpha2'
+        classpath 'com.android.tools.build:gradle:2.2.0-alpha3'
         classpath 'com.github.gfx.ribbonizer:plugin:0.5.0'
         if (rootProject.hasProperty('jacocoVersion')) {
             classpath "org.jacoco:org.jacoco.core:${rootProject.jacocoVersion}"
@@ -39,7 +39,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.connectbot:sshlib:2.2.4'
+    compile 'org.connectbot:sshlib:2.2.5-SNAPSHOT'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
@@ -68,7 +68,7 @@ android {
         versionCode 19001
 
         minSdkVersion 8
-        targetSdkVersion 23
+        targetSdkVersion 22
 
         ndk {
             moduleName "com_google_ase_Exec"
