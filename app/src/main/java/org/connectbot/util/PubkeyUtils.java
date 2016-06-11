@@ -62,14 +62,20 @@ import javax.crypto.spec.SecretKeySpec;
 import org.keyczar.jce.EcCore;
 
 import android.util.Log;
+import net.i2p.crypto.eddsa.EdDSAPublicKey;
 
 import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.crypto.SimpleDERReader;
 import com.trilead.ssh2.signature.DSASHA1Verify;
 import com.trilead.ssh2.signature.ECDSASHA2Verify;
+import com.trilead.ssh2.signature.Ed25519Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
 
 public class PubkeyUtils {
+	static {
+		Ed25519Provider.insertIfNeeded();
+	}
+
 	private static final String TAG = "CB.PubkeyUtils";
 
 	public static final String PKCS8_START = "-----BEGIN PRIVATE KEY-----";
@@ -257,6 +263,11 @@ public class PubkeyUtils {
 			String keyType = ECDSASHA2Verify.getCurveName(ecPub.getParams().getCurve().getField().getFieldSize());
 			String keyData = String.valueOf(Base64.encode(ECDSASHA2Verify.encodeSSHECDSAPublicKey(ecPub)));
 			return ECDSASHA2Verify.ECDSA_SHA2_PREFIX + keyType + " " + keyData + " " + nickname;
+		} else if (pk instanceof EdDSAPublicKey) {
+			EdDSAPublicKey edPub = (EdDSAPublicKey) pk;
+			return Ed25519Verify.ED25519_ID + " " +
+					String.valueOf(Base64.encode(Ed25519Verify.encodeSSHEd25519PublicKey(edPub))) +
+					" " + nickname;
 		}
 
 		throw new InvalidKeyException("Unknown key type");

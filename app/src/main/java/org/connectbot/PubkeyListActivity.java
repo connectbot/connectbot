@@ -20,16 +20,10 @@ package org.connectbot;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.nio.charset.Charset;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -226,7 +220,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 	}
 
 	private boolean importExistingKeyAndExplorer(Uri sdcard, String pickerTitle) {
-		Intent intent;// If OI didn't work, try AndExplorer
+		Intent intent;
 		intent = new Intent(Intent.ACTION_PICK);
 		intent.setDataAndType(sdcard, MIME_TYPE_ANDEXPLORER_FILE);
 		intent.putExtra(ANDEXPLORER_TITLE, pickerTitle);
@@ -450,7 +444,8 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 		KeyPair kp;
 		if ((kp = readPKCS8Key(keyData)) != null) {
-			pubkey.setType(kp.getPrivate().getAlgorithm());
+			String algorithm = convertAlgorithmName(kp.getPrivate().getAlgorithm());
+			pubkey.setType(algorithm);
 			pubkey.setPrivateKey(kp.getPrivate().getEncoded());
 			pubkey.setPublicKey(kp.getPublic().getEncoded());
 		} else {
@@ -460,7 +455,8 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 				pubkey.setEncrypted(encrypted);
 				if (!encrypted) {
 					kp = PEMDecoder.decode(struct, null);
-					pubkey.setType(kp.getPrivate().getAlgorithm());
+					String algorithm = convertAlgorithmName(kp.getPrivate().getAlgorithm());
+					pubkey.setType(algorithm);
 					pubkey.setPrivateKey(kp.getPrivate().getEncoded());
 					pubkey.setPublicKey(kp.getPublic().getEncoded());
 				} else {
@@ -480,54 +476,12 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		updateList();
 	}
 
-	/**
-	 *
-	 */
-	private void pickFileSimple() {
-		// build list of all files in sdcard root
-		final File sdcard = Environment.getExternalStorageDirectory();
-		Log.d(TAG, sdcard.toString());
-
-		// Don't show a dialog if the SD card is completely absent.
-		final String state = Environment.getExternalStorageState();
-		if (!Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)
-				&& !Environment.MEDIA_MOUNTED.equals(state)) {
-			new android.support.v7.app.AlertDialog.Builder(
-					PubkeyListActivity.this, R.style.AlertDialogTheme)
-				.setMessage(R.string.alert_sdcard_absent)
-				.setNegativeButton(android.R.string.cancel, null).create().show();
-			return;
+	private String convertAlgorithmName(String algorithm) {
+		if ("EdDSA".equals(algorithm)) {
+			return PubkeyDatabase.KEY_TYPE_ED25519;
+		} else {
+			return algorithm;
 		}
-
-		List<String> names = new LinkedList<String>();
-		{
-			File[] files = sdcard.listFiles();
-			if (files != null) {
-				for (File file : files) {
-					if (file == null || file.isDirectory()) {
-						continue;
-					}
-					names.add(file.getName());
-				}
-			}
-		}
-		Collections.sort(names);
-
-		final String[] namesList = names.toArray(new String[] {});
-		Log.d(TAG, names.toString());
-
-		// prompt user to select any file from the sdcard root
-		new android.support.v7.app.AlertDialog.Builder(
-				PubkeyListActivity.this, R.style.AlertDialogTheme)
-			.setTitle(R.string.pubkey_list_pick)
-			.setItems(namesList, new OnClickListener() {
-				public void onClick(DialogInterface arg0, int arg1) {
-					String name = namesList[arg1];
-
-					readKeyFromFile(new File(sdcard, name));
-				}
-			})
-			.setNegativeButton(android.R.string.cancel, null).create().show();
 	}
 
 	public class PubkeyViewHolder extends ItemViewHolder {
