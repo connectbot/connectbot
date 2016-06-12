@@ -280,18 +280,20 @@ public class PubkeyUtils {
 	 */
 
 	/**
-	 * @param trileadKey
+	 * @param pair KeyPair to convert to an OpenSSH public key
 	 * @return OpenSSH-encoded pubkey
 	 */
 	public static byte[] extractOpenSSHPublic(KeyPair pair) {
 		try {
 			PublicKey pubKey = pair.getPublic();
 			if (pubKey instanceof RSAPublicKey) {
-				return RSASHA1Verify.encodeSSHRSAPublicKey((RSAPublicKey) pair.getPublic());
+				return RSASHA1Verify.encodeSSHRSAPublicKey((RSAPublicKey) pubKey);
 			} else if (pubKey instanceof DSAPublicKey) {
-				return DSASHA1Verify.encodeSSHDSAPublicKey((DSAPublicKey) pair.getPublic());
+				return DSASHA1Verify.encodeSSHDSAPublicKey((DSAPublicKey) pubKey);
 			} else if (pubKey instanceof ECPublicKey) {
-				return ECDSASHA2Verify.encodeSSHECDSAPublicKey((ECPublicKey) pair.getPublic());
+				return ECDSASHA2Verify.encodeSSHECDSAPublicKey((ECPublicKey) pubKey);
+			} else if (pubKey instanceof EdDSAPublicKey) {
+				return Ed25519Verify.encodeSSHEd25519PublicKey((EdDSAPublicKey) pubKey);
 			} else {
 				return null;
 			}
