@@ -61,15 +61,15 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.keyczar.jce.EcCore;
 
-import android.util.Log;
-import net.i2p.crypto.eddsa.EdDSAPublicKey;
-
 import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.crypto.SimpleDERReader;
 import com.trilead.ssh2.signature.DSASHA1Verify;
 import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.Ed25519Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
+
+import android.util.Log;
+import net.i2p.crypto.eddsa.EdDSAPublicKey;
 
 public class PubkeyUtils {
 	static {
@@ -161,6 +161,23 @@ public class PubkeyUtils {
 			return decodePrivate(decrypt(encoded, secret), keyType);
 		else
 			return decodePrivate(encoded, keyType);
+	}
+
+	public static int getBitStrength(byte[] encoded, String keyType) throws InvalidKeySpecException,
+			NoSuchAlgorithmException {
+		final PublicKey pubKey = PubkeyUtils.decodePublic(encoded, keyType);
+		if (PubkeyDatabase.KEY_TYPE_RSA.equals(keyType)) {
+			return ((RSAPublicKey) pubKey).getModulus().bitLength();
+		} else if (PubkeyDatabase.KEY_TYPE_DSA.equals(keyType)) {
+			return 1024;
+		} else if (PubkeyDatabase.KEY_TYPE_EC.equals(keyType)) {
+			return ((ECPublicKey) pubKey).getParams().getCurve().getField()
+					.getFieldSize();
+		} else if (PubkeyDatabase.KEY_TYPE_ED25519.equals(keyType)) {
+			return 256;
+		} else {
+			return 0;
+		}
 	}
 
 	public static PublicKey decodePublic(byte[] encoded, String keyType) throws NoSuchAlgorithmException, InvalidKeySpecException {

@@ -93,9 +93,9 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 	protected ClipboardManager clipboard;
 
-	protected LayoutInflater inflater = null;
+	private LayoutInflater inflater = null;
 
-	protected TerminalManager bound = null;
+	private TerminalManager bound = null;
 
 	private MenuItem onstartToggle = null;
 	private MenuItem confirmUse = null;
@@ -745,7 +745,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 				}
 			} else {
 				try {
-					pubkeyHolder.caption.setText(pubkey.getDescription());
+					pubkeyHolder.caption.setText(pubkey.getDescription(getApplicationContext()));
 				} catch (Exception e) {
 					Log.e(TAG, "Error decoding public key at " + pubkey.getId(), e);
 					pubkeyHolder.caption.setText(R.string.pubkey_unknown_format);
