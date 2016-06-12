@@ -16,64 +16,60 @@
   ~ limitations under the License.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
-	<ScrollView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content">
 
-		<TableLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:padding="24dip"
-			android:stretchColumns="1">
-			<TableRow>
-				<TextView
-					android:text="@string/paste_shortcut"
-					android:padding="3dip"
-					android:textAppearance="?android:attr/textAppearanceMedium"
-					/>
-				<TextView
-					android:text="@string/console_menu_paste"
-					android:padding="3dip"
-					android:gravity="end"
-					android:layout_weight="1"
-					android:textAppearance="?android:attr/textAppearanceMedium"
-					/>
-			</TableRow>
+	<TableLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:padding="24dip"
+		android:stretchColumns="1">
+		<TableRow>
+			<TextView
+				android:text="@string/paste_shortcut"
+				android:padding="3dip"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				/>
+			<TextView
+				android:text="@string/console_menu_paste"
+				android:padding="3dip"
+				android:gravity="end"
+				android:layout_weight="1"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				/>
+		</TableRow>
 
-			<TableRow>
-				<TextView
-					android:text="@string/increase_font_shortcut"
-					android:padding="3dip"
-					android:textAppearance="?android:attr/textAppearanceMedium"
-					/>
-				<TextView
-					android:text="@string/increase_font_size"
-					android:padding="3dip"
-					android:layout_weight="1"
-					android:gravity="end"
-					android:textAppearance="?android:attr/textAppearanceMedium"
-					/>
-			</TableRow>
+		<TableRow>
+			<TextView
+				android:text="@string/increase_font_shortcut"
+				android:padding="3dip"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				/>
+			<TextView
+				android:text="@string/increase_font_size"
+				android:padding="3dip"
+				android:layout_weight="1"
+				android:gravity="end"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				/>
+		</TableRow>
 
-			<TableRow>
-				<TextView
-					android:text="@string/decrease_font_shortcut"
-					android:padding="3dip"
-					android:textAppearance="?android:attr/textAppearanceMedium"
-					/>
-				<TextView
-					android:text="@string/decrease_font_size"
-					android:padding="3dip"
-					android:gravity="end"
-					android:layout_weight="1"
-					android:textAppearance="?android:attr/textAppearanceMedium"
-					/>
-			</TableRow>
+		<TableRow>
+			<TextView
+				android:text="@string/decrease_font_shortcut"
+				android:padding="3dip"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				/>
+			<TextView
+				android:text="@string/decrease_font_size"
+				android:padding="3dip"
+				android:gravity="end"
+				android:layout_weight="1"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				/>
+		</TableRow>
 
-		</TableLayout>
+	</TableLayout>
 
-	</ScrollView>
-</RelativeLayout>
+</ScrollView>

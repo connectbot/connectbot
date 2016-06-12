@@ -49,7 +49,6 @@ import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.EncryptedPrivateKeyInfo;
 import javax.crypto.IllegalBlockSizeException;
@@ -57,19 +56,24 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 import org.keyczar.jce.EcCore;
-
-import android.util.Log;
 
 import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.crypto.SimpleDERReader;
 import com.trilead.ssh2.signature.DSASHA1Verify;
 import com.trilead.ssh2.signature.ECDSASHA2Verify;
+import com.trilead.ssh2.signature.Ed25519Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
 
+import android.util.Log;
+import net.i2p.crypto.eddsa.EdDSAPublicKey;
+
 public class PubkeyUtils {
+	static {
+		Ed25519Provider.insertIfNeeded();
+	}
+
 	private static final String TAG = "CB.PubkeyUtils";
 
 	public static final String PKCS8_START = "-----BEGIN PRIVATE KEY-----";
@@ -97,13 +101,6 @@ public class PubkeyUtils {
 		return MessageDigest.getInstance("SHA-256").digest(data);
 	}
 
-	public static byte[] cipher(int mode, byte[] data, byte[] secret) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-		SecretKeySpec secretKeySpec = new SecretKeySpec(sha256(secret), "AES");
-		Cipher c = Cipher.getInstance("AES");
-		c.init(mode, secretKeySpec);
-		return c.doFinal(data);
-	}
-
 	public static byte[] encrypt(byte[] cleartext, String secret) throws Exception {
 		byte[] salt = new byte[SALT_SIZE];
 
@@ -121,19 +118,13 @@ public class PubkeyUtils {
 	}
 
 	public static byte[] decrypt(byte[] saltAndCiphertext, String secret) throws Exception {
-		try {
-			byte[] salt = new byte[SALT_SIZE];
-			byte[] ciphertext = new byte[saltAndCiphertext.length - salt.length];
+		byte[] salt = new byte[SALT_SIZE];
+		byte[] ciphertext = new byte[saltAndCiphertext.length - salt.length];
 
-			System.arraycopy(saltAndCiphertext, 0, salt, 0, salt.length);
-			System.arraycopy(saltAndCiphertext, salt.length, ciphertext, 0, ciphertext.length);
+		System.arraycopy(saltAndCiphertext, 0, salt, 0, salt.length);
+		System.arraycopy(saltAndCiphertext, salt.length, ciphertext, 0, ciphertext.length);
 
-			return Encryptor.decrypt(salt, ITERATIONS, secret, ciphertext);
-		} catch (Exception e) {
-			Log.d("decrypt", "Could not decrypt with new method", e);
-			// We might be using the old encryption method.
-			return cipher(Cipher.DECRYPT_MODE, saltAndCiphertext, secret.getBytes());
-		}
+		return Encryptor.decrypt(salt, ITERATIONS, secret, ciphertext);
 	}
 
 	public static byte[] getEncodedPrivate(PrivateKey pk, String secret) throws Exception {
@@ -155,6 +146,23 @@ public class PubkeyUtils {
 			return decodePrivate(decrypt(encoded, secret), keyType);
 		else
 			return decodePrivate(encoded, keyType);
+	}
+
+	public static int getBitStrength(byte[] encoded, String keyType) throws InvalidKeySpecException,
+			NoSuchAlgorithmException {
+		final PublicKey pubKey = PubkeyUtils.decodePublic(encoded, keyType);
+		if (PubkeyDatabase.KEY_TYPE_RSA.equals(keyType)) {
+			return ((RSAPublicKey) pubKey).getModulus().bitLength();
+		} else if (PubkeyDatabase.KEY_TYPE_DSA.equals(keyType)) {
+			return 1024;
+		} else if (PubkeyDatabase.KEY_TYPE_EC.equals(keyType)) {
+			return ((ECPublicKey) pubKey).getParams().getCurve().getField()
+					.getFieldSize();
+		} else if (PubkeyDatabase.KEY_TYPE_ED25519.equals(keyType)) {
+			return 256;
+		} else {
+			return 0;
+		}
 	}
 
 	public static PublicKey decodePublic(byte[] encoded, String keyType) throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -257,6 +265,11 @@ public class PubkeyUtils {
 			String keyType = ECDSASHA2Verify.getCurveName(ecPub.getParams().getCurve().getField().getFieldSize());
 			String keyData = String.valueOf(Base64.encode(ECDSASHA2Verify.encodeSSHECDSAPublicKey(ecPub)));
 			return ECDSASHA2Verify.ECDSA_SHA2_PREFIX + keyType + " " + keyData + " " + nickname;
+		} else if (pk instanceof EdDSAPublicKey) {
+			EdDSAPublicKey edPub = (EdDSAPublicKey) pk;
+			return Ed25519Verify.ED25519_ID + " " +
+					String.valueOf(Base64.encode(Ed25519Verify.encodeSSHEd25519PublicKey(edPub))) +
+					" " + nickname;
 		}
 
 		throw new InvalidKeyException("Unknown key type");
@@ -267,18 +280,20 @@ public class PubkeyUtils {
 	 */
 
 	/**
-	 * @param trileadKey
+	 * @param pair KeyPair to convert to an OpenSSH public key
 	 * @return OpenSSH-encoded pubkey
 	 */
 	public static byte[] extractOpenSSHPublic(KeyPair pair) {
 		try {
 			PublicKey pubKey = pair.getPublic();
 			if (pubKey instanceof RSAPublicKey) {
-				return RSASHA1Verify.encodeSSHRSAPublicKey((RSAPublicKey) pair.getPublic());
+				return RSASHA1Verify.encodeSSHRSAPublicKey((RSAPublicKey) pubKey);
 			} else if (pubKey instanceof DSAPublicKey) {
-				return DSASHA1Verify.encodeSSHDSAPublicKey((DSAPublicKey) pair.getPublic());
+				return DSASHA1Verify.encodeSSHDSAPublicKey((DSAPublicKey) pubKey);
 			} else if (pubKey instanceof ECPublicKey) {
-				return ECDSASHA2Verify.encodeSSHECDSAPublicKey((ECPublicKey) pair.getPublic());
+				return ECDSASHA2Verify.encodeSSHECDSAPublicKey((ECPublicKey) pubKey);
+			} else if (pubKey instanceof EdDSAPublicKey) {
+				return Ed25519Verify.encodeSSHEd25519PublicKey((EdDSAPublicKey) pubKey);
 			} else {
 				return null;
 			}
@@ -338,7 +353,7 @@ public class PubkeyUtils {
 
 	private static final char[] HEX_DIGITS = { '0', '1', '2', '3', '4', '5', '6',
 			'7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-	protected static String encodeHex(byte[] bytes) {
+	static String encodeHex(byte[] bytes) {
 		final char[] hex = new char[bytes.length * 2];
 
 		int i = 0;

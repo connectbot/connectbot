@@ -68,7 +68,7 @@ android {
         versionCode 19001
 
         minSdkVersion 8
-        targetSdkVersion 22
+        targetSdkVersion 23
 
         ndk {
             moduleName "com_google_ase_Exec"
