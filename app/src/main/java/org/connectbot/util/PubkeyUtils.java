@@ -49,7 +49,6 @@ import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.EncryptedPrivateKeyInfo;
 import javax.crypto.IllegalBlockSizeException;
@@ -57,7 +56,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 import org.keyczar.jce.EcCore;
 
@@ -103,13 +101,6 @@ public class PubkeyUtils {
 		return MessageDigest.getInstance("SHA-256").digest(data);
 	}
 
-	public static byte[] cipher(int mode, byte[] data, byte[] secret) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-		SecretKeySpec secretKeySpec = new SecretKeySpec(sha256(secret), "AES");
-		Cipher c = Cipher.getInstance("AES");
-		c.init(mode, secretKeySpec);
-		return c.doFinal(data);
-	}
-
 	public static byte[] encrypt(byte[] cleartext, String secret) throws Exception {
 		byte[] salt = new byte[SALT_SIZE];
 
@@ -127,19 +118,13 @@ public class PubkeyUtils {
 	}
 
 	public static byte[] decrypt(byte[] saltAndCiphertext, String secret) throws Exception {
-		try {
-			byte[] salt = new byte[SALT_SIZE];
-			byte[] ciphertext = new byte[saltAndCiphertext.length - salt.length];
+		byte[] salt = new byte[SALT_SIZE];
+		byte[] ciphertext = new byte[saltAndCiphertext.length - salt.length];
 
-			System.arraycopy(saltAndCiphertext, 0, salt, 0, salt.length);
-			System.arraycopy(saltAndCiphertext, salt.length, ciphertext, 0, ciphertext.length);
+		System.arraycopy(saltAndCiphertext, 0, salt, 0, salt.length);
+		System.arraycopy(saltAndCiphertext, salt.length, ciphertext, 0, ciphertext.length);
 
-			return Encryptor.decrypt(salt, ITERATIONS, secret, ciphertext);
-		} catch (Exception e) {
-			Log.d("decrypt", "Could not decrypt with new method", e);
-			// We might be using the old encryption method.
-			return cipher(Cipher.DECRYPT_MODE, saltAndCiphertext, secret.getBytes());
-		}
+		return Encryptor.decrypt(salt, ITERATIONS, secret, ciphertext);
 	}
 
 	public static byte[] getEncodedPrivate(PrivateKey pk, String secret) throws Exception {
