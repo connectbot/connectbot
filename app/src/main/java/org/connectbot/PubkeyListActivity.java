@@ -42,6 +42,7 @@ import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.crypto.PEMDecoder;
 import com.trilead.ssh2.crypto.PEMStructure;
 
+import android.annotation.TargetApi;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.ContentResolver;
@@ -51,6 +52,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
@@ -174,13 +176,18 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		Uri sdcard = Uri.fromFile(Environment.getExternalStorageDirectory());
 		String pickerTitle = getString(R.string.pubkey_list_pick);
 
-		return importExistingKeyKitKat() || importExistingKeyOpenIntents(sdcard, pickerTitle)
-				|| importExistingKeyAndExplorer(sdcard, pickerTitle) || pickFileSimple();
+		if (Build.VERSION.SDK_INT >= 19 && importExistingKeyKitKat()) {
+			return true;
+		} else {
+			return importExistingKeyOpenIntents(sdcard, pickerTitle)
+					|| importExistingKeyAndExplorer(sdcard, pickerTitle) || pickFileSimple();
+		}
 	}
 
 	/**
 	 * Fires an intent to spin up the "file chooser" UI and select a private key.
 	 */
+	@TargetApi(19)
 	public boolean importExistingKeyKitKat() {
 		// ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
 		// browser.
