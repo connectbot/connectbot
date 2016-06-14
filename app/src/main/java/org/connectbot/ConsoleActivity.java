@@ -30,6 +30,7 @@ import org.connectbot.service.TerminalManager;
 import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.TerminalViewPager;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -880,6 +881,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			public boolean onMenuItemClick(MenuItem item) {
 				final TerminalView terminalView = adapter.getCurrentTerminalView();
 
+				@SuppressLint("InflateParams")  // Dialogs do not have a parent view.
 				final View resizeView = inflater.inflate(R.layout.dia_resize, null, false);
 				new android.support.v7.app.AlertDialog.Builder(
 								ConsoleActivity.this, R.style.AlertDialogTheme)
