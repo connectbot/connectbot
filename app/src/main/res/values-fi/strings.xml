@@ -112,7 +112,10 @@
   <string name="hostpref_hostname_title">Palvelin</string>
   <string name="hostpref_port_title">Portti</string>
   <string name="bind_never">Ei koskaan yhdistetty</string>
-  <string name="console_copy_done">%1$d tavua kopioitu leikepöydälle</string>
+  <plurals name="console_copy_done">
+    <item quantity="one">%1$d tavu kopioitu leikepöydälle</item>
+    <item quantity="other">%1$d tavua kopioitu leikepöydälle</item>
+  </plurals>
   <string name="console_copy_start">Maalaa koskettamalla\ntai käytä nuolinäppäimiä\nvalitaksesi kopioitavan alueen</string>
   <string name="console_menu_close">Sulje</string>
   <string name="console_menu_copy">Kopioi</string>

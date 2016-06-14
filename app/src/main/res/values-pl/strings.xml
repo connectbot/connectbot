@@ -122,7 +122,12 @@
   <string name="hostpref_hostname_title">Host</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Nigdy nie połączono</string>
-  <string name="console_copy_done">Skopiowano %1$d bajtów do schowka</string>
+  <plurals name="console_copy_done">
+    <item quantity="one">Skopiowano %1$d bajtów do schowka</item>
+    <item quantity="few">Skopiowano %1$d bajt do schowka</item>
+    <item quantity="many">Skopiowano %1$d bajtów do schowka</item>
+    <item quantity="other">Skopiowano %1$d bajtów do schowka</item>
+  </plurals>
   <string name="console_copy_start">Dotknij i przeciągnij\nlub użyj trackball\'a\naby zaznaczyć obszar do skopiowania</string>
   <string name="console_menu_close">Zamknij</string>
   <string name="console_menu_copy">Kopiuj</string>

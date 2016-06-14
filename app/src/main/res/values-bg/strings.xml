@@ -39,7 +39,10 @@
   <string name="alert_disconnect_msg">Връзката изгубена</string>
   <string name="msg_copyright">Запазени права © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
   <string name="list_keymode_none">Забраняване</string>
-  <string name="console_copy_done">Копирани %1$d байта в клипборда</string>
+  <plurals name="console_copy_done">
+    <item quantity="one">Копирани %1$d байт в клипборда</item>
+    <item quantity="other">Копирани %1$d байта в клипборда</item>
+  </plurals>
   <string name="console_menu_close">Затваряне</string>
   <string name="console_menu_copy">Копиране</string>
   <string name="console_menu_paste">Поставяне</string>

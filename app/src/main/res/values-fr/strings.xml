@@ -138,7 +138,10 @@
   <string name="hostpref_hostname_title">Serveur</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Jamais connecté</string>
-  <string name="console_copy_done">%1$d octets copiés dans le presse-papier</string>
+  <plurals name="console_copy_done">
+    <item quantity="one">%1$d octet copié dans le presse-papier</item>
+    <item quantity="other">%1$d octets copiés dans le presse-papier</item>
+  </plurals>
   <string name="console_copy_start">Touchez et tirez, ou utilisez\nles touches directionnelles\npour sélectionner la région\nà copier</string>
   <string name="console_menu_close">Fermer</string>
   <string name="console_menu_copy">Copier</string>

@@ -11,6 +11,7 @@ msgstr ""
 "PO-Revision-Date: 2015-10-08 05:21+0000\n"
 "Last-Translator: Stefán Örvar Sigmundsson "
 "<stefan.orvar.sigmundsson@emi.is>\n"
+"Language: is\n"
 "Language-Team: is <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=((n == 1) ? 0 : 1)\n"
 "MIME-Version: 1.0\n"
@@ -871,10 +872,12 @@ msgid "Never connected"
 msgstr "Aldrei tengt"
 
 #. Message given when user copies from the terminal.
-#, c-format
+#, c-format, fuzzy
 msgctxt "console_copy_done"
-msgid "Copied %1$d bytes to clipboard"
-msgstr "Afritaði %1$d bæti"
+msgid "Copied %1$d byte to clipboard"
+msgid_plural "Copied %1$d bytes to clipboard"
+msgstr[0] "Afritaði %1$d bæti"
+msgstr[1] "Afritaði %1$d bæti"
 
 #. Instructions for how to copy from the terminal. The '\n' entries are to
 #. split lines to improve readability and prevent wrapping off the screen.

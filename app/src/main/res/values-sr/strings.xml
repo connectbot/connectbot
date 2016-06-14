@@ -128,7 +128,12 @@
   <string name="hostpref_hostname_title">Домаћин</string>
   <string name="hostpref_port_title">Порт</string>
   <string name="bind_never">Никад повезиван</string>
-  <string name="console_copy_done">Копирано %1$d бајта на клипборд</string>
+  <plurals name="console_copy_done">
+    <item quantity="one"/>
+    <item quantity="few"/>
+    <item quantity="many"/>
+    <item quantity="other">Копирано %1$d бајта на клипборд</item>
+  </plurals>
   <string name="console_copy_start">Додирните и превуците\nили користите дирекциони контролер\nда изаберете површину за копирање</string>
   <string name="console_menu_close">Затвори</string>
   <string name="console_menu_copy">Копирај</string>

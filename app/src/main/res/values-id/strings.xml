@@ -131,7 +131,9 @@
   <string name="hostpref_hostname_title">Host</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Tidak pernah terhubung</string>
-  <string name="console_copy_done">Tersalin %1$d byte ke papan-klip</string>
+  <plurals name="console_copy_done">
+    <item quantity="other">Tersalin %1$d byte ke papan-klip</item>
+  </plurals>
   <string name="console_copy_start">Sentuh dan tarik\natau gunakan tombol panah\nuntuk memilih area yang akan disalin</string>
   <string name="console_menu_close">Tutup</string>
   <string name="console_menu_copy">Salin</string>

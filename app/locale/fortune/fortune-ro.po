@@ -10,6 +10,7 @@ msgstr ""
 "POT-Creation-Date: 2016-06-12 23:13-0700\n"
 "PO-Revision-Date: 2015-07-30 18:02+0000\n"
 "Last-Translator: Kenny Root <Unknown>\n"
+"Language: ro\n"
 "Language-Team: ro <LL@li.org>\n"
 "Plural-Forms: nplurals=3; plural=(((n == 0) || ((n != 1) && (((n % 100) "
 ">= 1 && (n % 100) <= 19)))) ? 1 : (n == 1) ? 0 : 2)\n"
@@ -857,10 +858,12 @@ msgid "Never connected"
 msgstr ""
 
 #. Message given when user copies from the terminal.
-#, c-format
+#, c-format, fuzzy
 msgctxt "console_copy_done"
-msgid "Copied %1$d bytes to clipboard"
-msgstr ""
+msgid "Copied %1$d byte to clipboard"
+msgid_plural "Copied %1$d bytes to clipboard"
+msgstr[0] ""
+msgstr[1] ""
 
 #. Instructions for how to copy from the terminal. The '\n' entries are to
 #. split lines to improve readability and prevent wrapping off the screen.

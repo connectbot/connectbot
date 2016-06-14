@@ -156,7 +156,9 @@
   <string name="hostpref_hostname_title">ホスト</string>
   <string name="hostpref_port_title">ポート</string>
   <string name="bind_never">未接続</string>
-  <string name="console_copy_done">クリップボードに %1$d バイトコピーしました．</string>
+  <plurals name="console_copy_done">
+    <item quantity="other">クリップボードに %1$d バイトコピーしました．</item>
+  </plurals>
   <string name="console_copy_start">タッチしてドラッグ\nまたは方向パッドで\nコピー領域を選択</string>
   <string name="console_menu_close">切断</string>
   <string name="console_menu_copy">コピー</string>

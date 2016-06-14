@@ -113,7 +113,10 @@
   <string name="hostpref_hostname_title">Värd</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Aldrig ansluten</string>
-  <string name="console_copy_done">Kopierade %1$d bytes till urklippshanteraren.</string>
+  <plurals name="console_copy_done">
+    <item quantity="one">Kopierade %1$d byte till urklippshanteraren.</item>
+    <item quantity="other">Kopierade %1$d bytes till urklippshanteraren.</item>
+  </plurals>
   <string name="console_copy_start">Tryck och drag\neller använd bollen\nför att markera en yta för kopiering</string>
   <string name="console_menu_close">Stäng</string>
   <string name="console_menu_copy">Kopiera</string>

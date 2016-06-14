@@ -134,7 +134,10 @@
   <string name="hostpref_hostname_title">Host (equipo anfitrión)</string>
   <string name="hostpref_port_title">Puerto</string>
   <string name="bind_never">Nunca fué conectado</string>
-  <string name="console_copy_done">%1$d bytes copiados al portapaleles</string>
+  <plurals name="console_copy_done">
+    <item quantity="one">%1$d byte copiado al portapapeles</item>
+    <item quantity="other">%1$d bytes copiados al portapapeles</item>
+  </plurals>
   <string name="console_copy_start">Toque y arrastre\no use la almohadilla direccional\npara seleccionar la zona a copiar</string>
   <string name="console_menu_close">Cerrar</string>
   <string name="console_menu_copy">Copiar</string>

@@ -113,7 +113,10 @@
   <string name="hostpref_hostname_title">Anfitrião</string>
   <string name="hostpref_port_title">Porto</string>
   <string name="bind_never">Nunca ligado</string>
-  <string name="console_copy_done">Copiados %1$d bytes para a área de transferência</string>
+  <plurals name="console_copy_done">
+    <item quantity="one">Copiado %1$d byte para a área de transferência</item>
+    <item quantity="other">Copiados %1$d bytes para a área de transferência</item>
+  </plurals>
   <string name="console_copy_start">Toque e arraste\nou use as teclas direcionais\npara selecionar a área a copiar</string>
   <string name="console_menu_close">Fechar</string>
   <string name="console_menu_copy">Copiar</string>

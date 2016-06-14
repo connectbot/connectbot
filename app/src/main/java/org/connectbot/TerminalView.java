@@ -319,9 +319,10 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 
 					clipboard.setText(copiedText);
 					Toast.makeText(
-						context,
-						context.getString(R.string.console_copy_done, copiedText.length()),
-						Toast.LENGTH_LONG).show();
+							context,
+							context.getResources().getQuantityString(R.plurals.console_copy_done,
+									copiedText.length(), copiedText.length()),
+							Toast.LENGTH_LONG).show();
 
 					// fall through to clear state
 

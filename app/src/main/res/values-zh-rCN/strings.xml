@@ -156,7 +156,9 @@
   <string name="hostpref_hostname_title">主机</string>
   <string name="hostpref_port_title">端口</string>
   <string name="bind_never">尚未连接</string>
-  <string name="console_copy_done">复制了 %1$d 字节到剪贴板</string>
+  <plurals name="console_copy_done">
+    <item quantity="other">复制了 %1$d 字节到剪贴板</item>
+  </plurals>
   <string name="console_copy_start">点击拖动\n或使用触摸板\n来选择要复制的区域</string>
   <string name="console_menu_close">关闭</string>
   <string name="console_menu_copy">复制</string>

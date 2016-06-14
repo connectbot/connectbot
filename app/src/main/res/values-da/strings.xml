@@ -113,7 +113,10 @@
   <string name="hostpref_hostname_title">Vært</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Aldrig forbundet</string>
-  <string name="console_copy_done">Kopier %1$d byte til udklipsholder</string>
+  <plurals name="console_copy_done">
+    <item quantity="one">Kopier %1$d byte til udklipsholder</item>
+    <item quantity="other">Kopier %1$d bytes til udklipsholder</item>
+  </plurals>
   <string name="console_copy_start">Berør og flyt\neller brug piletasterne\nfor at vælge område at kopiere</string>
   <string name="console_menu_close">Luk</string>
   <string name="console_menu_copy">Kopier</string>

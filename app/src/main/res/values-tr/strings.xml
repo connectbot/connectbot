@@ -115,7 +115,9 @@
   <string name="hostpref_hostname_title">Sunucu</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Daha önce bağlanılmadı</string>
-  <string name="console_copy_done">%1$d byte panoya kopyalandı</string>
+  <plurals name="console_copy_done">
+    <item quantity="other">%1$d byte panoya kopyalandı</item>
+  </plurals>
   <string name="console_copy_start">Kopyalanacak alanı seçmek için dokun ve sürükle ya da pad kullan</string>
   <string name="console_menu_close">Kapat</string>
   <string name="console_menu_copy">Kopyala</string>

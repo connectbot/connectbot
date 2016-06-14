@@ -140,7 +140,11 @@
   <string name="hostpref_connection_category">Nastavení připojení</string>
   <string name="hostpref_username_title">Uživatelské jméno</string>
   <string name="bind_never">Nikdy nepřipojen</string>
-  <string name="console_copy_done">Zkopírováno %1$d bajtů do schránky</string>
+  <plurals name="console_copy_done">
+    <item quantity="one">Zkopírováno %1$d bajtů do schránky</item>
+    <item quantity="few">Zkopírováno %1$d bajt do schránky</item>
+    <item quantity="other">Zkopírováno %1$d bajtů do schránky</item>
+  </plurals>
   <string name="console_copy_start">Stiskněte a táhněte\nnebo použijte směrový ovladač\npro výběr oblasti ke zkopírování</string>
   <string name="console_menu_close">Zavřít</string>
   <string name="console_menu_copy">Kopírovat</string>

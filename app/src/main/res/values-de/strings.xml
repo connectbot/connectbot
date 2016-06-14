@@ -146,7 +146,10 @@
   <string name="hostpref_hostname_title">Host</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Nie verbunden</string>
-  <string name="console_copy_done">%1$d Byte in die Zwischenablage kopiert</string>
+  <plurals name="console_copy_done">
+    <item quantity="one">%1$d Byte in die Zwischenablage kopiert</item>
+    <item quantity="other">%1$d Bytes in die Zwischenablage kopiert</item>
+  </plurals>
   <string name="console_copy_start">Berühren und ziehen\noder Trackball verwenden\num zu kopierenden Bereich auszuwählen</string>
   <string name="console_menu_close">Schließen</string>
   <string name="console_menu_copy">Kopieren</string>
