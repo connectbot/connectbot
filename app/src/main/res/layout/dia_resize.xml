@@ -19,6 +19,7 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
 	android:orientation="horizontal"
@@ -30,26 +31,22 @@
 		android:id="@+id/width"
 		android:layout_width="100dip"
 		android:layout_height="wrap_content"
-		android:numeric="integer"
-		android:singleLine="true"
+		android:inputType="number"
 		android:text="80"/>
 
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:gravity="end|bottom"
 		android:paddingLeft="10dip"
 		android:paddingRight="10dip"
-		android:text="x"
+		android:text="×"
 		android:textAppearance="?android:attr/textAppearanceLarge"
-		/>
-
+		tools:ignore="HardcodedText"/>
 
 	<EditText
 		android:id="@+id/height"
 		android:layout_width="100dip"
 		android:layout_height="wrap_content"
-		android:numeric="integer"
-		android:singleLine="true"
+		android:inputType="number"
 		android:text="25"/>
 </LinearLayout>
