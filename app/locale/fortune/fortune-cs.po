@@ -10,6 +10,7 @@ msgstr ""
 "POT-Creation-Date: 2016-06-12 23:13-0700\n"
 "PO-Revision-Date: 2016-04-13 20:17+0000\n"
 "Last-Translator: Martin Horáček <martinhoracek8@gmail.com>\n"
+"Language: cs\n"
 "Language-Team: cs <LL@li.org>\n"
 "Plural-Forms: nplurals=3; plural=(((n >= 2 && n <= 4)) ? 1 : (n == 1) ? 0"
 " : 2)\n"
@@ -872,10 +873,13 @@ msgid "Never connected"
 msgstr "Nikdy nepřipojen"
 
 #. Message given when user copies from the terminal.
-#, c-format
+#, c-format, fuzzy
 msgctxt "console_copy_done"
-msgid "Copied %1$d bytes to clipboard"
-msgstr "Zkopírováno %1$d bajtů do schránky"
+msgid "Copied %1$d byte to clipboard"
+msgid_plural "Copied %1$d bytes to clipboard"
+msgstr[0] "Zkopírováno %1$d bajt do schránky"
+msgstr[1] "Zkopírováno %1$d bajtů do schránky"
+msgstr[2] "Zkopírováno %1$d bajtů do schránky"
 
 #. Instructions for how to copy from the terminal. The '\n' entries are to
 #. split lines to improve readability and prevent wrapping off the screen.

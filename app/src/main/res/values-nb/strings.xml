@@ -136,7 +136,10 @@
   <string name="hostpref_hostname_title">Vert</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Aldri tilkoblet</string>
-  <string name="console_copy_done">Kopierte %1$d bytes til utklippstavle</string>
+  <plurals name="console_copy_done">
+    <item quantity="one">Kopierte %1$d bytes til utklippstavle</item>
+    <item quantity="other">Kopierte %1$d bytes til utklippstavle</item>
+  </plurals>
   <string name="console_copy_start">Trykk og dra, eller\nbruk styrekule for å\nvelge område å\nkopiere fra</string>
   <string name="console_menu_close">Lukk</string>
   <string name="console_menu_copy">Kopier</string>

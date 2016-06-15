@@ -90,7 +90,10 @@
   <string name="hostpref_hostname_title">Máquina</string>
   <string name="hostpref_port_title">Porto</string>
   <string name="bind_never">Nunca conectado</string>
-  <string name="console_copy_done">Copiados %1$d bytes ao portapapeis</string>
+  <plurals name="console_copy_done">
+    <item quantity="one">Copiado %1$d byte ao portapapeis</item>
+    <item quantity="other">Copiados %1$d bytes ao portapapeis</item>
+  </plurals>
   <string name="console_copy_start">Tocar e arrastrar\nou usar o cursor direccional\npara seleccionar a área a copiar</string>
   <string name="console_menu_close">Pechar</string>
   <string name="console_menu_copy">Copiar</string>

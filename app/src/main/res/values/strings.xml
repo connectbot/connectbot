@@ -387,7 +387,11 @@
 	<string name="bind_never">"Never connected"</string>
 
 	<!-- Message given when user copies from the terminal. -->
-	<string name="console_copy_done">"Copied %1$d bytes to clipboard"</string>
+	<plurals name="console_copy_done">
+		<item quantity="one">"Copied %1$d byte to clipboard"</item>
+		<item quantity="other">"Copied %1$d bytes to clipboard"</item>
+	</plurals>
+
 	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
 	<string name="console_copy_start">"Touch and drag"\n"or use directional pad"\n"to select area to copy"</string>
 

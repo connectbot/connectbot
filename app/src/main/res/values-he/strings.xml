@@ -114,7 +114,12 @@
   <string name="hostpref_hostname_title">מארח</string>
   <string name="hostpref_port_title">פתחה</string>
   <string name="bind_never">לא חובר מעולם</string>
-  <string name="console_copy_done">הועתקו %1$d בתים ללוח הגזירים</string>
+  <plurals name="console_copy_done">
+    <item quantity="one"/>
+    <item quantity="two"/>
+    <item quantity="many"/>
+    <item quantity="other">הועתקו %1$d בתים ללוח הגזירים</item>
+  </plurals>
   <string name="console_copy_start">יש לגעת ולגרור\nאו להשתמש בלוח כיוונים\nכדי לבחור אזור להעתקה</string>
   <string name="console_menu_close">סגירה</string>
   <string name="console_menu_copy">העתקה</string>

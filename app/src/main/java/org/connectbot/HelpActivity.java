@@ -17,6 +17,7 @@
 
 package org.connectbot;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -50,8 +51,10 @@ public class HelpActivity extends AppCompatActivity {
 		Button shortcutsButton = (Button) findViewById(R.id.shortcuts_button);
 		shortcutsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				@SuppressLint("InflateParams")  // Dialogs do not have a parent view.
 				final View shortcuts = inflater.inflate(R.layout.dia_keyboard_shortcuts,
 						null, false);
+
 				new android.support.v7.app.AlertDialog.Builder(
 								HelpActivity.this, R.style.AlertDialogTheme)
 						.setView(shortcuts)

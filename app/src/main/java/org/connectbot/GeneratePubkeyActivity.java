@@ -35,6 +35,7 @@ import org.connectbot.util.PubkeyUtils;
 
 import com.trilead.ssh2.signature.ECDSASHA2Verify;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.PorterDuff;
@@ -262,7 +263,9 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 	}
 
 	private void startEntropyGather() {
+		@SuppressLint("InflateParams")  // Dialogs do not have a parent view.
 		final View entropyView = inflater.inflate(R.layout.dia_gatherentropy, null, false);
+
 		((EntropyView) entropyView.findViewById(R.id.entropy)).addOnEntropyGatheredListener(this);
 		Dialog entropyDialog = new EntropyDialog(this, entropyView);
 		entropyDialog.show();

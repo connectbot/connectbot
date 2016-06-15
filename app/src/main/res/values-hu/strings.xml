@@ -113,7 +113,9 @@
   <string name="hostpref_hostname_title">Kiszolgáló</string>
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Még nem csatlakozott</string>
-  <string name="console_copy_done">%1$d bájt a vágólapra másolva</string>
+  <plurals name="console_copy_done">
+    <item quantity="other">%1$d bájt a vágólapra másolva</item>
+  </plurals>
   <string name="console_copy_start">Érintéssel és húzással\nvagy a hanyattegér használatával\njelölje ki a másolandó területet.</string>
   <string name="console_menu_close">Bezárás</string>
   <string name="console_menu_copy">Másolás</string>

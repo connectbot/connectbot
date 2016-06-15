@@ -128,7 +128,9 @@
   <string name="hostpref_hostname_title">主機</string>
   <string name="hostpref_port_title">連接埠</string>
   <string name="bind_never">從未連線</string>
-  <string name="console_copy_done">複製 %1$d 位元組到剪貼簿</string>
+  <plurals name="console_copy_done">
+    <item quantity="other">複製 %1$d 位元組到剪貼簿</item>
+  </plurals>
   <string name="console_copy_start">滑動手指\n或使用軌跡球\n選擇要複製的區域</string>
   <string name="console_menu_close">關閉</string>
   <string name="console_menu_copy">複製</string>

@@ -116,7 +116,12 @@
   <string name="hostpref_hostname_title">Узел</string>
   <string name="hostpref_port_title">Порт</string>
   <string name="bind_never">Не подключен</string>
-  <string name="console_copy_done">Скопировано %1$d байт в буфер обмена</string>
+  <plurals name="console_copy_done">
+    <item quantity="one">Скопировано %1$d байт в буфер обмена</item>
+    <item quantity="few">Скопировано %1$d байт в буфер обмена</item>
+    <item quantity="many">Скопировано %1$d байт в буфер обмена</item>
+    <item quantity="other">Скопировано %1$d байт в буфер обмена</item>
+  </plurals>
   <string name="console_copy_start">Для выделения области на экране используйте Touch and Drag или Directional Pad</string>
   <string name="console_menu_close">Закрыть</string>
   <string name="console_menu_copy">Копировать</string>

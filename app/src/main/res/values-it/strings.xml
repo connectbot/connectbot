@@ -149,7 +149,10 @@
   <string name="hostpref_hostname_title">Host</string>
   <string name="hostpref_port_title">Porta</string>
   <string name="bind_never">Mai connesso</string>
-  <string name="console_copy_done">%1$d byte copiati</string>
+  <plurals name="console_copy_done">
+    <item quantity="one">%1$d byte copiati</item>
+    <item quantity="other">%1$d byte copiati</item>
+  </plurals>
   <string name="console_copy_start">Tocca e trascina\noppure usa il pad direzionale\nper selezionare un\'area da copiare</string>
   <string name="console_menu_close">Chiudi</string>
   <string name="console_menu_copy">Copia</string>

@@ -852,8 +852,10 @@ msgstr ""
 #. Message given when user copies from the terminal.
 #, c-format
 msgctxt "console_copy_done"
-msgid "Copied %1$d bytes to clipboard"
-msgstr ""
+msgid "Copied %1$d byte to clipboard"
+msgid_plural "Copied %1$d bytes to clipboard"
+msgstr[0] ""
+msgstr[1] ""
 
 #. Instructions for how to copy from the terminal. The '\n' entries are to
 #. split lines to improve readability and prevent wrapping off the screen.

@@ -10,6 +10,7 @@ msgstr ""
 "POT-Creation-Date: 2016-06-12 23:13-0700\n"
 "PO-Revision-Date: 2016-01-20 18:06+0000\n"
 "Last-Translator: Łukasz Bartkowicz <fredixggaming@gmail.com>\n"
+"Language: pl\n"
 "Language-Team: pl <LL@li.org>\n"
 "Plural-Forms: nplurals=4; plural=(((((n % 10) >= 2 && (n % 10) <= 4)) && "
 "(!(((n % 100) >= 12 && (n % 100) <= 14)))) ? 1 : ((((n != 1) && (((n % "
@@ -872,10 +873,14 @@ msgid "Never connected"
 msgstr "Nigdy nie połączono"
 
 #. Message given when user copies from the terminal.
-#, c-format
+#, c-format, fuzzy
 msgctxt "console_copy_done"
-msgid "Copied %1$d bytes to clipboard"
-msgstr "Skopiowano %1$d bajtów do schowka"
+msgid "Copied %1$d byte to clipboard"
+msgid_plural "Copied %1$d bytes to clipboard"
+msgstr[0] "Skopiowano %1$d bajt do schowka"
+msgstr[1] "Skopiowano %1$d bajtów do schowka"
+msgstr[2] "Skopiowano %1$d bajtów do schowka"
+msgstr[3] "Skopiowano %1$d bajtów do schowka"
 
 #. Instructions for how to copy from the terminal. The '\n' entries are to
 #. split lines to improve readability and prevent wrapping off the screen.
