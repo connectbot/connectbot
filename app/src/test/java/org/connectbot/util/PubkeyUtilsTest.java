@@ -368,4 +368,9 @@ public class PubkeyUtilsTest {
 		} catch (NoSuchAlgorithmException expected) {
 		}
 	}
+
+	@Test
+	public void getRSAPublicExponentFromPkcs8Encoded_Success() throws Exception {
+		assertEquals(RSA_KEY_E, PubkeyUtils.getRSAPublicExponentFromPkcs8Encoded(RSA_KEY_PKCS8));
+	}
 }

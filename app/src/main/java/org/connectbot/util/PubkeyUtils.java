@@ -36,6 +36,7 @@ import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPrivateCrtKey;
+import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.DSAPublicKeySpec;
 import java.security.spec.ECParameterSpec;
@@ -200,6 +201,34 @@ public class PubkeyUtils {
 		}
 	}
 
+	static BigInteger getRSAPublicExponentFromPkcs8Encoded(byte[] encoded) throws InvalidKeySpecException {
+		if (encoded == null) {
+			throw new InvalidKeySpecException("encoded key is null");
+		}
+
+		try {
+			SimpleDERReader reader = new SimpleDERReader(encoded);
+			reader.resetInput(reader.readSequenceAsByteArray());
+			if (!reader.readInt().equals(BigInteger.ZERO)) {
+				throw new InvalidKeySpecException("PKCS#8 is not version 0");
+			}
+
+			reader.readSequenceAsByteArray();  // OID sequence
+			reader.resetInput(reader.readOctetString());  // RSA key bytes
+			reader.resetInput(reader.readSequenceAsByteArray());  // RSA key sequence
+
+			if (!reader.readInt().equals(BigInteger.ZERO)) {
+				throw new InvalidKeySpecException("RSA key is not version 0");
+			}
+
+			reader.readInt();  // modulus
+			return reader.readInt();  // public exponent
+		} catch (IOException e) {
+			Log.w(TAG, "Could not read public exponent", e);
+			throw new InvalidKeySpecException("Could not read key", e);
+		}
+	}
+
 	public static KeyPair recoverKeyPair(byte[] encoded) throws NoSuchAlgorithmException,
 			InvalidKeySpecException {
 		final String algo = getAlgorithmForOid(getOidFromPkcs8Encoded(encoded));
@@ -218,6 +247,10 @@ public class PubkeyUtils {
 			RSAPrivateCrtKey rsaPriv = (RSAPrivateCrtKey) priv;
 			return kf.generatePublic(new RSAPublicKeySpec(rsaPriv.getModulus(), rsaPriv
 					.getPublicExponent()));
+		} else if (priv instanceof RSAPrivateKey) {
+			BigInteger publicExponent = getRSAPublicExponentFromPkcs8Encoded(priv.getEncoded());
+			RSAPrivateKey rsaPriv = (RSAPrivateKey) priv;
+			return kf.generatePublic(new RSAPublicKeySpec(rsaPriv.getModulus(), publicExponent));
 		} else if (priv instanceof DSAPrivateKey) {
 			DSAPrivateKey dsaPriv = (DSAPrivateKey) priv;
 			DSAParams params = dsaPriv.getParams();
