@@ -38,6 +38,9 @@ public final class PreferenceConstants {
 
 	public static final String ROTATION = "rotation";
 
+	public static final String BACKUP_KEYS = "backupkeys";
+	public static final boolean BACKUP_KEYS_DEFAULT = false;
+
 	public static final String ROTATION_DEFAULT = "Default";
 	public static final String ROTATION_LANDSCAPE = "Force landscape";
 	public static final String ROTATION_PORTRAIT = "Force portrait";

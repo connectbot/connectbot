@@ -25,6 +25,8 @@ import android.annotation.TargetApi;
 import android.app.backup.BackupAgentHelper;
 import android.app.backup.FileBackupHelper;
 import android.app.backup.SharedPreferencesBackupHelper;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -38,14 +40,17 @@ public class BackupAgent extends BackupAgentHelper {
 	public void onCreate() {
 		Log.d("ConnectBot.BackupAgent", "onCreate called");
 
-		SharedPreferencesBackupHelper prefs = new SharedPreferencesBackupHelper(this, getPackageName() + "_preferences");
-		addHelper(PreferenceConstants.BACKUP_PREF_KEY, prefs);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+		SharedPreferencesBackupHelper prefsHelper = new SharedPreferencesBackupHelper(this, getPackageName() + "_preferences");
+		addHelper(PreferenceConstants.BACKUP_PREF_KEY, prefsHelper);
 
 		FileBackupHelper hosts = new FileBackupHelper(this, "../databases/" + HostDatabase.DB_NAME);
 		addHelper(HostDatabase.DB_NAME, hosts);
 
-		FileBackupHelper pubkeys = new FileBackupHelper(this, "../databases/" + PubkeyDatabase.DB_NAME);
-		addHelper(PubkeyDatabase.DB_NAME, pubkeys);
-
+		if (prefs.getBoolean(PreferenceConstants.BACKUP_KEYS, PreferenceConstants.BACKUP_KEYS_DEFAULT)) {
+			FileBackupHelper pubkeys = new FileBackupHelper(this, "../databases/" + PubkeyDatabase.DB_NAME);
+			addHelper(PubkeyDatabase.DB_NAME, pubkeys);
+		}
 	}
 }
