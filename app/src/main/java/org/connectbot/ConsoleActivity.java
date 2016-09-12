@@ -600,8 +600,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				View terminal = adapter.getCurrentTerminalView();
 				if (terminal == null)
 					return;
-
-				inputManager.showSoftInput(terminal, InputMethodManager.SHOW_FORCED);
+				InputMethodManager inputMethodManager =
+					(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+				inputMethodManager.toggleSoftInputFromWindow(terminal.getApplicationWindowToken(),
+																										 InputMethodManager.SHOW_FORCED, 0);
+				terminal.requestFocus();
 				hideEmulatedKeys();
 			}
 		});
