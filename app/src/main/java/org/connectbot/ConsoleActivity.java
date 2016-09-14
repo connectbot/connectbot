@@ -601,9 +601,9 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				if (terminal == null)
 					return;
 				InputMethodManager inputMethodManager =
-					(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+					(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 				inputMethodManager.toggleSoftInputFromWindow(terminal.getApplicationWindowToken(),
-																										 InputMethodManager.SHOW_FORCED, 0);
+					InputMethodManager.SHOW_FORCED, 0);
 				terminal.requestFocus();
 				hideEmulatedKeys();
 			}
