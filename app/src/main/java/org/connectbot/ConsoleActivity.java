@@ -41,6 +41,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
@@ -70,6 +71,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -140,6 +142,8 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	private boolean forcedOrientation;
 
 	private Handler handler = new Handler();
+
+	private View contentView;
 
 	private ImageView mKeyboardButton;
 
@@ -704,6 +708,27 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				showEmulatedKeys(true);
 			}
 		});
+
+		// Change keyboard button image according to soft keyboard visibility
+		// How to detect keyboard visibility: http://stackoverflow.com/q/4745988
+		contentView = findViewById(android.R.id.content);
+		contentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+				@Override
+				public void onGlobalLayout() {
+					Rect r = new Rect();
+					contentView.getWindowVisibleDisplayFrame(r);
+					int screenHeight = contentView.getRootView().getHeight();
+					int keypadHeight = screenHeight - r.bottom;
+
+					if (keypadHeight > screenHeight * 0.15) {
+						// keyboard is opened
+						mKeyboardButton.setImageResource(R.drawable.ic_keyboard_hide);
+					} else {
+						// keyboard is closed
+						mKeyboardButton.setImageResource(R.drawable.ic_keyboard);
+					}
+				}
+			});
 	}
 
 	private void addKeyRepeater(View view) {
