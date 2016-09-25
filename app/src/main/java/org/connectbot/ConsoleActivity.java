@@ -723,9 +723,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 					if (keypadHeight > screenHeight * 0.15) {
 						// keyboard is opened
 						mKeyboardButton.setImageResource(R.drawable.ic_keyboard_hide);
+						mKeyboardButton.setContentDescription(getResources().getText(R.string.image_description_hide_keyboard));
 					} else {
 						// keyboard is closed
 						mKeyboardButton.setImageResource(R.drawable.ic_keyboard);
+						mKeyboardButton.setContentDescription(getResources().getText(R.string.image_description_show_keyboard));
 					}
 				}
 			});
