@@ -35,6 +35,7 @@ import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.connectbot.ConnectbotMatchers.hasHolderItem;
@@ -56,6 +57,12 @@ public class StartupTest {
 		HostDatabase.resetInMemoryInstance(testContext);
 
 		mActivityRule.launchActivity(new Intent());
+	}
+
+	@Test
+	public void localConnectionCanToggleKeyboard() {
+		startNewLocalConnection();
+		hideAndShowKeyboard();
 	}
 
 	@Test
@@ -150,6 +157,14 @@ public class StartupTest {
 
 		Resources res = InstrumentationRegistry.getTargetContext().getResources();
 		onView(withId(R.id.list)).check(hasHolderItem(withColoredText(res.getColor(color))));
+	}
+
+	private void hideAndShowKeyboard() {
+		onView(withContentDescription(R.string.image_description_hide_keyboard)).perform(click());
+		onView(withId(R.id.console_flip)).perform(click());
+		onView(withContentDescription(R.string.image_description_show_keyboard)).perform(click());
+		onView(withId(R.id.console_flip)).perform(pressBack()).perform(click());
+		onView(withContentDescription(R.string.image_description_show_keyboard)).perform(click());
 	}
 
 	private void startNewLocalConnectionAndGoBack(String name) {
