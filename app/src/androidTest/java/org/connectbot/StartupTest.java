@@ -1,6 +1,7 @@
 package org.connectbot;
 
 import org.connectbot.util.HostDatabase;
+import org.connectbot.util.PreferenceConstants;
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Rule;
@@ -9,7 +10,9 @@ import org.junit.runner.RunWith;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
 import android.support.test.InstrumentationRegistry;
@@ -35,6 +38,7 @@ import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -47,6 +51,11 @@ import static org.hamcrest.CoreMatchers.allOf;
 
 @RunWith(AndroidJUnit4.class)
 public class StartupTest {
+	/**
+	 * The delay time to allow the soft keyboard to dismiss.
+	 */
+	private static final long KEYBOARD_DISMISSAL_DELAY_MILLIS = 1000L;
+
 	@Rule
 	public final ActivityTestRule<HostListActivity> mActivityRule = new ActivityTestRule<>(
 			HostListActivity.class, false, false);
@@ -60,9 +69,18 @@ public class StartupTest {
 	}
 
 	@Test
-	public void localConnectionCanToggleKeyboard() {
+	public void canToggleSoftKeyboardVisibility() {
+		// First change preferences so that show/hide keyboard button will not auto-hide
+		Context testContext = InstrumentationRegistry.getTargetContext();
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(testContext);
+		SharedPreferences.Editor editor = settings.edit();
+		boolean wasAlwaysVisible = settings.getBoolean(PreferenceConstants.KEY_ALWAYS_VISIVLE, false);
+		editor.putBoolean(PreferenceConstants.KEY_ALWAYS_VISIVLE, true).commit();
+
 		startNewLocalConnection();
-		hideAndShowKeyboard();
+		hideAndShowSoftKeyboard();
+
+		editor.putBoolean(PreferenceConstants.KEY_ALWAYS_VISIVLE, wasAlwaysVisible).commit();
 	}
 
 	@Test
@@ -159,12 +177,14 @@ public class StartupTest {
 		onView(withId(R.id.list)).check(hasHolderItem(withColoredText(res.getColor(color))));
 	}
 
-	private void hideAndShowKeyboard() {
+	private void hideAndShowSoftKeyboard() {
+		onView(withId(R.id.console_flip)).perform(closeSoftKeyboard());
+		onView(withContentDescription(R.string.image_description_show_keyboard)).perform(click());
+		onView(withId(R.id.console_flip)).perform(loopMainThreadFor(KEYBOARD_DISMISSAL_DELAY_MILLIS));
 		onView(withContentDescription(R.string.image_description_hide_keyboard)).perform(click());
-		onView(withId(R.id.console_flip)).perform(click());
+		onView(withId(R.id.console_flip)).perform(loopMainThreadFor(KEYBOARD_DISMISSAL_DELAY_MILLIS));
 		onView(withContentDescription(R.string.image_description_show_keyboard)).perform(click());
-		onView(withId(R.id.console_flip)).perform(pressBack()).perform(click());
-		onView(withContentDescription(R.string.image_description_show_keyboard)).perform(click());
+		onView(withId(R.id.console_flip)).perform(pressBack());
 	}
 
 	private void startNewLocalConnectionAndGoBack(String name) {
@@ -206,11 +226,6 @@ public class StartupTest {
 	public static ViewAction closeSoftKeyboard() {
 		return new ViewAction() {
 			/**
-			 * The delay time to allow the soft keyboard to dismiss.
-			 */
-			private static final long KEYBOARD_DISMISSAL_DELAY_MILLIS = 1000L;
-
-			/**
 			 * The real {@link CloseKeyboardAction} instance.
 			 */
 			private final ViewAction mCloseSoftKeyboard = new CloseKeyboardAction();
@@ -229,6 +244,26 @@ public class StartupTest {
 			public void perform(final UiController uiController, final View view) {
 				mCloseSoftKeyboard.perform(uiController, view);
 				uiController.loopMainThreadForAtLeast(KEYBOARD_DISMISSAL_DELAY_MILLIS);
+			}
+		};
+	}
+
+	public static ViewAction loopMainThreadFor(final long millis) {
+		return new ViewAction() {
+
+			@Override
+			public Matcher<View> getConstraints() {
+				return isEnabled();
+			}
+
+			@Override
+			public String getDescription() {
+				return "Rturns an action that loops the main thread for at least " + millis +"ms.";
+			}
+
+			@Override
+			public void perform(final UiController uiController, final View view) {
+				uiController.loopMainThreadForAtLeast(millis);
 			}
 		};
 	}
