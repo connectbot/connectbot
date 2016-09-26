@@ -574,6 +574,10 @@
 	     accessibility purposes. -->
 	<string name="image_description_send_tab_character">Send TAB character.</string>
 
+	<!-- Describes the icon of the "hide keyboard" button in the terminal view for accessibility
+	     purposes. -->
+	<string name="image_description_hide_keyboard">Hide keyboard.</string>
+
 	<!-- Describes the icon of the "show keyboard" button in the terminal view for accessibility
 	     purposes. -->
 	<string name="image_description_show_keyboard">Show keyboard.</string>
