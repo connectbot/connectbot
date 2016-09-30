@@ -37,6 +37,7 @@
 		android:scrollbars="none">
 
 		<LinearLayout
+			android:id="@+id/emulated_keys_layout"
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
 			android:orientation="horizontal"

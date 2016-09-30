@@ -33,6 +33,7 @@ import org.connectbot.util.TerminalViewPager;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -60,6 +61,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.text.ClipboardManager;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -90,6 +92,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.mud.terminal.vt320;
+
 
 public class ConsoleActivity extends AppCompatActivity implements BridgeDisconnectedListener {
 	public final static String TAG = "CB.ConsoleActivity";
@@ -128,6 +131,8 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 	private LinearLayout keyboardGroup;
 	private Runnable keyboardGroupHider;
+	private LinearLayout emulatedKeys;
+	private int[] emulatedKeyMap;
 
 	private TextView empty;
 
@@ -147,6 +152,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 	@Nullable private ActionBar actionBar;
 	private boolean inActionBarMenu = false;
+	private boolean inEmulatedKeyDrag = false;
 	private boolean titleBarHide;
 	private boolean keyboardAlwaysVisible = false;
 
@@ -446,7 +452,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		keyboardGroupHider = new Runnable() {
 			@Override
 			public void run() {
-				if (keyboardGroup.getVisibility() == View.GONE || inActionBarMenu) {
+				if (keyboardGroup.getVisibility() == View.GONE || inActionBarMenu || inEmulatedKeyDrag) {
 					return;
 				}
 
@@ -627,34 +633,30 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				hideEmulatedKeys();
 			}
 		});
+		emulatedKeys = (LinearLayout) findViewById(R.id.emulated_keys_layout);
+		View emulatedKeyButton;
 
-		findViewById(R.id.button_ctrl).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_esc).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_tab).setOnClickListener(emulatedKeysListener);
+		emulatedKeyMap = loadEmulatedKeyMap();
+		for (int i = 0, j = 0; i < emulatedKeyMap.length; i++) {
+			emulatedKeyButton = emulatedKeys.findViewById(emulatedKeyMap[i]);
+			if (emulatedKeyButton != null) {
+				emulatedKeys.removeView(emulatedKeyButton);
+				emulatedKeys.addView(emulatedKeyButton, j++);
+			}
+		}
+
+		for (int i = 0; i < emulatedKeys.getChildCount(); i++) {
+			emulatedKeyButton = emulatedKeys.getChildAt(i);
+			emulatedKeyButton.setOnClickListener(emulatedKeysListener);
+			emulatedKeyButton.setOnLongClickListener(new KeyLongClickListener());
+			emulatedKeyButton.setOnDragListener(new KeyDragListener());
+		}
 
 		addKeyRepeater(findViewById(R.id.button_up));
 		addKeyRepeater(findViewById(R.id.button_up));
 		addKeyRepeater(findViewById(R.id.button_down));
 		addKeyRepeater(findViewById(R.id.button_left));
 		addKeyRepeater(findViewById(R.id.button_right));
-
-		findViewById(R.id.button_home).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_end).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_pgup).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_pgdn).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_f1).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_f2).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_f3).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_f4).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_f5).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_f6).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_f7).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_f8).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_f9).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_f10).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_f11).setOnClickListener(emulatedKeysListener);
-		findViewById(R.id.button_f12).setOnClickListener(emulatedKeysListener);
-
 
 		actionBar = getSupportActionBar();
 		if (actionBar != null) {
@@ -680,7 +682,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			keyboardScroll.postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					final int xscroll = findViewById(R.id.button_f12).getRight();
+					final int xscroll = emulatedKeys.getRight();
 					if (BuildConfig.DEBUG) {
 						Log.d(TAG, "smoothScrollBy(toEnd[" + xscroll + "])");
 					}
@@ -1390,5 +1392,101 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 			return (TerminalView) currentView.findViewById(R.id.terminal_view);
 		}
+	}
+
+	@TargetApi(11)
+	private final class KeyLongClickListener implements View.OnLongClickListener {
+		@Override
+		public boolean onLongClick(View view) {
+			Rect rect = new Rect(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
+			ClipData data = ClipData.newPlainText("", "");
+			View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+			view.startDrag(data, shadowBuilder, view, 1);
+			return true;
+		}
+	}
+
+	@TargetApi(11)
+	private class KeyDragListener implements View.OnDragListener {
+		private final HorizontalScrollView keyboardScroll = (HorizontalScrollView) findViewById(R.id.keyboard_hscroll);
+		private boolean saved = true;
+		private int itemWidth;
+
+		@Override
+		public boolean onDrag(View dropTarget, DragEvent event) {
+
+			View dragged = (View) event.getLocalState();
+
+			switch (event.getAction()) {
+			case DragEvent.ACTION_DRAG_STARTED:
+				itemWidth = dragged.getWidth();
+				inEmulatedKeyDrag = true;
+				break;
+
+			case DragEvent.ACTION_DRAG_ENTERED:
+				break;
+
+			case DragEvent.ACTION_DRAG_LOCATION:
+				final int translatedX = (int) (dropTarget.getX() + event.getX()) - keyboardScroll.getScrollX();
+				final int scrollThreshold = itemWidth;
+				int move = translatedX - scrollThreshold;
+				if (move < 0) {
+					keyboardScroll.smoothScrollBy(move, 0);
+					break;
+				}
+				move = translatedX + scrollThreshold - keyboardScroll.getWidth();
+				if (move > 0) {
+					keyboardScroll.smoothScrollBy(move, 0);
+				}
+				break;
+
+			case DragEvent.ACTION_DROP:
+				saved = false;
+				emulatedKeys.removeView(dragged);
+				emulatedKeys.addView(dragged, (int) (dropTarget.getX() / itemWidth));
+				break;
+			case DragEvent.ACTION_DRAG_EXITED:
+				break;
+			case DragEvent.ACTION_DRAG_ENDED:
+				if (!saved) {
+					saveEmulatedKeyMap();
+					saved = true;
+				}
+				inEmulatedKeyDrag = false;
+				break;
+
+			default:
+				break;
+			}
+			return true;
+		}
+	}
+
+	public void saveEmulatedKeyMap() {
+		String delim = "";
+		View emulatedKeyButton;
+		SharedPreferences.Editor edit = prefs.edit();
+		int count = emulatedKeys.getChildCount();
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < count; i++) {
+			emulatedKeyButton = emulatedKeys.getChildAt(i);
+			sb.append(delim + getResources().getResourceEntryName(emulatedKeyButton.getId()));
+			delim = " ";
+		}
+		String emulatedKeyMap = sb.toString();
+		edit.putString(PreferenceConstants.KEY_MAP, emulatedKeyMap);
+		edit.commit();
+	}
+
+	public int[] loadEmulatedKeyMap() {
+		int[] ret;
+		String[] emulatedKeyMap = prefs.getString(PreferenceConstants.KEY_MAP, "").split(" +");
+		int count = emulatedKeyMap.length;
+		ret = new int[count];
+		for (int i = 0; i < count; i++) {
+			ret[i] = this.getResources().getIdentifier(emulatedKeyMap[i], "id", this.getPackageName());
+		}
+		return ret;
 	}
 }
