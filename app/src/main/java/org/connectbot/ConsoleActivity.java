@@ -20,6 +20,7 @@ package org.connectbot;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.connectbot.bean.HostBean;
 import org.connectbot.service.BridgeDisconnectedListener;
@@ -77,7 +78,9 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -694,6 +697,12 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 								Log.d(TAG, "smoothScrollBy(toStart[" + -xscroll + "])");
 							}
 							keyboardScroll.smoothScrollBy(-xscroll, 0);
+							keyboardScroll.postDelayed(new Runnable() {
+								@Override
+								public void run() {
+									shakeChildren(emulatedKeys);
+								}
+							}, 500);
 						}
 					}, 500);
 				}
@@ -750,6 +759,30 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 					}
 				}
 			});
+	}
+
+	private void shakeChildren(LinearLayout l) {
+		Random rand = new Random();
+		for (int i = 0; i < l.getChildCount(); i++) {
+			View v = l.getChildAt(i);
+			AnimationSet animationSet = new AnimationSet(true);
+			RotateAnimation rotate = new RotateAnimation(
+					-rand.nextInt(5),
+					rand.nextInt(5),
+					Animation.RELATIVE_TO_SELF, rand.nextFloat() * 0.5f + 0.3f,
+					Animation.RELATIVE_TO_SELF, rand.nextFloat() * 0.5f + 0.3f);
+			rotate.setDuration(rand.nextInt(70) + 150);
+			rotate.setRepeatMode(Animation.REVERSE);
+			Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.keyboard_shake);
+			anim.setRepeatMode(Animation.RESTART);
+			animationSet.addAnimation(anim);
+			animationSet.addAnimation(rotate);
+			animationSet.setRepeatCount(10);
+			animationSet.setFillAfter(false);
+
+			v.clearAnimation();
+			v.startAnimation(animationSet);
+		}
 	}
 
 	private void addKeyRepeater(View view) {
