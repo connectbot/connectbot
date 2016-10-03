@@ -66,7 +66,6 @@
 				android:id="@+id/button_pipe"
 				style="@style/KeyboardButton"
 				android:text="@string/button_key_pipe"/>
-
 			<Button
 				android:id="@+id/button_left_bracket"
 				style="@style/KeyboardButton"
@@ -87,6 +86,31 @@
 				android:id="@+id/button_back_slash"
 				style="@style/KeyboardButton"
 				android:text="@string/button_key_back_slash"/>
+
+			<Button
+				android:id="@+id/button_less_than"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_less_than"/>
+
+			<Button
+				android:id="@+id/button_greater_than"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_greater_than"/>
+
+			<Button
+				android:id="@+id/button_dollar"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_dollar"/>
+
+			<Button
+				android:id="@+id/button_ampersand"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_ampersand"/>
+
+			<Button
+				android:id="@+id/button_slash"
+				style="@style/KeyboardButton"
+				android:text="@string/button_key_slash"/>
 
 			<ImageView
 				android:id="@+id/button_up"

@@ -339,6 +339,23 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			handler.sendPressedKey(vt320.KEY_BACK_SLASH);
 			break;
 
+		case R.id.button_less_than:
+			handler.sendPressedKey(vt320.KEY_LESS_THAN);
+			break;
+		case R.id.button_greater_than:
+			handler.sendPressedKey(vt320.KEY_GREATER_THAN);
+			break;
+
+		case R.id.button_dollar:
+			handler.sendPressedKey(vt320.KEY_DOLLAR);
+			break;
+		case R.id.button_ampersand:
+			handler.sendPressedKey(vt320.KEY_AMPERSAND);
+			break;
+		case R.id.button_slash:
+			handler.sendPressedKey(vt320.KEY_SLASH);
+			break;
+
 		case R.id.button_up:
 			handler.sendPressedKey(vt320.KEY_UP);
 			break;
