@@ -519,6 +519,12 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 	}
 
+	@TargetApi(11)
+	private void addDragAndDropFunctionality(View emulatedKeyButton) {
+		emulatedKeyButton.setOnLongClickListener(new KeyLongClickListener());
+		emulatedKeyButton.setOnDragListener(new KeyDragListener());
+	}
+
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
@@ -686,8 +692,9 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		for (int i = 0; i < emulatedKeys.getChildCount(); i++) {
 			emulatedKeyButton = emulatedKeys.getChildAt(i);
 			emulatedKeyButton.setOnClickListener(emulatedKeysListener);
-			emulatedKeyButton.setOnLongClickListener(new KeyLongClickListener());
-			emulatedKeyButton.setOnDragListener(new KeyDragListener());
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				addDragAndDropFunctionality(emulatedKeyButton);
+			}
 		}
 
 		addKeyRepeater(findViewById(R.id.button_up));
