@@ -107,6 +107,8 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 	private Matcher mCodeMatcher = null;
 	private AccessibilityEventSender mEventSender = null;
 
+	private char[] singleDeadKey = new char[1];
+
 	private static final String BACKSPACE_CODE = "\\x08\\x1b\\[K";
 	private static final String CONTROL_CODE_PATTERN = "\\x1b\\[K[^m]+[m|:]";
 
@@ -435,7 +437,8 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 
 				final int deadKey = bridge.getKeyHandler().getDeadKey();
 				if (deadKey != 0) {
-					canvas.drawText(new char[] { (char) deadKey }, 0, 1, 0, 0, cursorStrokePaint);
+					singleDeadKey[0] = (char) deadKey;
+					canvas.drawText(singleDeadKey, 0, 1, 0, 0, cursorStrokePaint);
 				}
 
 				// Make sure we scale our decorations to the correct size.
