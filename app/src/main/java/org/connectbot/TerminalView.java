@@ -641,19 +641,22 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 				final Cursor cursor = cr.query(
 						Uri.parse("content://" + screenReader.serviceInfo.packageName
 								+ ".providers.StatusProvider"), null, null, null, null);
-				if (cursor != null && cursor.moveToFirst()) {
-					/*
-					 * These content providers use a special cursor that only has
-					 * one element, an integer that is 1 if the screen reader is
-					 * running.
-					 */
-					final int status = cursor.getInt(0);
+				if (cursor != null) {
+					try {
+						cursor.moveToFirst();
+						/*
+						 * These content providers use a special cursor that only has
+						 * one element, an integer that is 1 if the screen reader is
+						 * running.
+						 */
+						final int status = cursor.getInt(0);
 
-					cursor.close();
-
-					if (status == 1) {
-						foundScreenReader = true;
-						break;
+						if (status == 1) {
+							foundScreenReader = true;
+							break;
+						}
+					} finally {
+						cursor.close();
 					}
 				}
 			}
