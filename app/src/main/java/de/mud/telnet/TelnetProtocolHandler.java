@@ -345,7 +345,6 @@ public abstract class TelnetProtocolHandler {
 
         // Write out as a single sequence.
         write(arrayListToBytes(byteArray));
-
       }
       break;
     default:
