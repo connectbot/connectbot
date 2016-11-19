@@ -219,12 +219,11 @@ public abstract class TelnetProtocolHandler {
    * @return
    */
   private byte[] arrayListToBytes(ArrayList<Byte> byteArray) {
-    byte[] bytes=new byte[byteArray.size()];
+    byte[] bytes = new byte[byteArray.size()];
 
-    for(int i=0; i < byteArray.size(); i++) {
-      bytes[i]=byteArray.get(i);
+    for(int i = 0; i < byteArray.size(); i++) {
+      bytes[i] = byteArray.get(i);
     }
-
     return bytes;
   }
 
