@@ -137,7 +137,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 	private InputMethodManager inputManager;
 
-	private MenuItem disconnect, copy, paste, portForward, resize, urlscan;
+	private MenuItem disconnect, copy, paste, portForward, resize, urlscan, reconnect;
 
 	private boolean forcedOrientation;
 
@@ -940,6 +940,22 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 		});
 
+		reconnect = menu.add(R.string.console_menu_reconnect);
+		if (hardKeyboard)
+			reconnect.setAlphabeticShortcut('s');
+		reconnect.setIcon(android.R.drawable.ic_menu_crop);
+		reconnect.setEnabled(!sessionOpen || disconnected);
+		reconnect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {
+				final TerminalView terminalView = adapter.getCurrentTerminalView();
+				TerminalBridge bridge = terminalView.bridge;
+
+				bound.requestReconnect(bridge);
+
+				return true;
+			}
+		});
+
 		return true;
 	}
 
@@ -975,6 +991,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		portForward.setEnabled(sessionOpen && canForwardPorts);
 		urlscan.setEnabled(activeTerminal);
 		resize.setEnabled(sessionOpen);
+		reconnect.setEnabled(!sessionOpen || disconnected);
 
 		return true;
 	}
