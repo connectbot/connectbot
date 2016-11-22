@@ -711,7 +711,23 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				if (bridge == null) {
 					continue;
 				}
-				bridge.startConnection();
+				int sleepVal = 1000;
+				int retryLimit = 0;
+				int retryCount = 50;
+				while ( ( retryLimit >= 0 || retryCount <= retryLimit ) && bridge.isDisconnected() ){
+					try {
+						Thread.sleep(sleepVal);
+					} catch(InterruptedException ex) {
+						Thread.currentThread().interrupt();
+					}
+
+					bridge.startConnection();
+					if ( retryCount < 8 ) {
+						sleepVal = sleepVal * 2;
+					}
+					retryCount++;
+					Log.d(TAG, String.format("Retries %s", retryCount));
+				}
 			}
 			mPendingReconnect.clear();
 		}
