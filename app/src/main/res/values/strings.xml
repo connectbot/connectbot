@@ -265,6 +265,11 @@
 	<!-- Summary for the preference that forces the service to stay running in the background. -->
 	<string name="pref_conn_persist_summary">"Force connections to stay connected while in background"</string>
 
+	<!-- Name for the retries size preference -->
+	<string name="pref_retries_title">"Persist retries"</string>
+	<!-- Description of the retries size preference -->
+	<string name="pref_retries_summary">"Number of retries to make when attempting to persist connections.  Set 0 for unlimited."</string>
+
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">"Directory shortcuts"</string>
 	<!-- Summary for the keyboard shortcuts preference -->
@@ -412,6 +417,8 @@
 	<string name="console_menu_resize">"Force Size"</string>
 	<!-- Button that brings up the list of URLs on the current screen -->
 	<string name="console_menu_urlscan">"URL Scan"</string>
+	<!-- Button that reconnects a dead connection -->
+	<string name="console_menu_reconnect">"Reconnect"</string>
 
 	<!-- Button label to answer "Yes" to a yes/no prompt -->
 	<string name="button_yes">"Yes"</string>

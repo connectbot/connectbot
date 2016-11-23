@@ -259,6 +259,15 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		return prefs.getString(PreferenceConstants.EMULATION, "xterm-256color");
 	}
 
+	public int getRetries() {
+		int retries = 20;
+		try {
+			retries = Integer.parseInt(prefs.getString(PreferenceConstants.PERSIST_RETRIES, "20"));
+		} catch (Exception e) {
+		}
+		return retries;
+	}
+
 	public int getScrollback() {
 		int scrollback = 140;
 		try {
@@ -711,20 +720,31 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				if (bridge == null) {
 					continue;
 				}
-				int sleepVal = 1000;
-				int retryLimit = 0;
-				int retryCount = 50;
-				while ( ( retryLimit >= 0 || retryCount <= retryLimit ) && bridge.isDisconnected() ){
+
+				int sleepVal = 1500;
+				int retryLimit = getRetries();
+				int retryCount = 0;
+
+				try {
+					Thread.sleep(sleepVal);
+				} catch(InterruptedException ex) {
+					Thread.currentThread().interrupt();
+				}
+
+				while ( ( retryLimit == 0 || retryCount <= retryLimit ) && bridge.isDisconnected() ){
+
+					bridge.startConnection();
+
+					if ( retryCount < 8 ) {
+						sleepVal = sleepVal * 2;
+					}
+
 					try {
 						Thread.sleep(sleepVal);
 					} catch(InterruptedException ex) {
 						Thread.currentThread().interrupt();
 					}
 
-					bridge.startConnection();
-					if ( retryCount < 8 ) {
-						sleepVal = sleepVal * 2;
-					}
 					retryCount++;
 					Log.d(TAG, String.format("Retries %s", retryCount));
 				}

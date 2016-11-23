@@ -34,6 +34,14 @@
 		android:defaultValue="true"
 		/>
 
+	<EditTextPreference
+		android:key="retries"
+		android:title="@string/pref_retries_title"
+		android:summary="@string/pref_retries_summary"
+		android:defaultValue="20"
+		android:numeric="integer"
+		/>
+
 	<org.connectbot.util.SwitchCompatPreference
 		android:key="wifilock"
 		android:title="@string/pref_wifilock_title"

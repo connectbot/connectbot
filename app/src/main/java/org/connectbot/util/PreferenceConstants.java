@@ -78,6 +78,7 @@ public final class PreferenceConstants {
 	public static final float DEFAULT_BELL_VOLUME = 0.25f;
 
 	public static final String CONNECTION_PERSIST = "connPersist";
+	public static final String PERSIST_RETRIES = "retries";
 
 	public static final String SHIFT_FKEYS = "shiftfkeys";
 	public static final String CTRL_FKEYS = "ctrlfkeys";
