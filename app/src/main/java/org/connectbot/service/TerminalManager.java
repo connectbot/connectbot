@@ -721,7 +721,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 					continue;
 				}
 
-				int sleepVal = 1500;
+				int sleepVal = 500;
 				int retryLimit = getRetries();
 				int retryCount = 0;
 
@@ -746,7 +746,16 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 					}
 
 					retryCount++;
-					Log.d(TAG, String.format("Retries %s", retryCount));
+					Log.d(TAG, String.format("Retries %s session stat: %s", retryCount, bridge.isSessionOpen() ));
+
+					while(bridge.isConnecting()){
+						try {
+							Thread.sleep(500);
+						} catch(InterruptedException ex) {
+							Thread.currentThread().interrupt();
+						}
+						Log.d(TAG, String.format("Sleeping while wait on connecting"));
+					}
 				}
 			}
 			mPendingReconnect.clear();

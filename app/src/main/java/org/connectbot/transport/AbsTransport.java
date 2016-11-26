@@ -212,6 +212,7 @@ public abstract class AbsTransport {
 	}
 
 	public abstract boolean isConnected();
+	public abstract boolean isConnecting();
 	public abstract boolean isSessionOpen();
 
 	/**

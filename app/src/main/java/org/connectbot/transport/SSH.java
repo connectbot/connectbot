@@ -119,6 +119,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	private boolean compression = false;
 	private volatile boolean authenticated = false;
 	private volatile boolean connected = false;
+	private volatile boolean connecting = false;
 	private volatile boolean sessionOpen = false;
 
 	private boolean pubkeysExhausted = false;
@@ -439,6 +440,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 	@Override
 	public void connect() {
+		connecting = true;
 		connection = new Connection(host.getHostname(), host.getPort());
 		connection.addConnectionMonitor(this);
 
@@ -495,6 +497,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 			close();
 			onDisconnect();
+			connecting = false;
 			return;
 		}
 
@@ -510,6 +513,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		} catch (Exception e) {
 			Log.e(TAG, "Problem in SSH connection thread during authentication", e);
 		}
+		connecting = false;
 	}
 
 	@Override
@@ -605,6 +609,11 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	@Override
 	public boolean isConnected() {
 		return connected;
+	}
+
+	@Override
+	public boolean isConnecting() {
+		return connecting;
 	}
 
 	public void connectionLost(Throwable reason) {

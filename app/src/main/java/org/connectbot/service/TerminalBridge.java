@@ -442,6 +442,15 @@ public class TerminalBridge implements VDUDisplay {
 		return false;
 	}
 
+	/**
+	 * @return whether a connection process is ongoin or not
+	 */
+	public boolean isConnecting() {
+		if (transport != null)
+			return transport.isConnecting();
+		return false;
+	}
+
 	public void setOnDisconnectedListener(BridgeDisconnectedListener disconnectListener) {
 		this.disconnectListener = disconnectListener;
 	}

@@ -134,6 +134,11 @@ public class Local extends AbsTransport {
 	}
 
 	@Override
+	public boolean isConnecting() {
+		return is != null && os != null;
+	}
+
+	@Override
 	public boolean isSessionOpen() {
 		return is != null && os != null;
 	}
