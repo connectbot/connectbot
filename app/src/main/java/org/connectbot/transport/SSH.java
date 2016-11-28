@@ -448,7 +448,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		}
 	}
 
-	public void connectInternal() {
+	private void connectInternal() {
 		connection = new Connection(host.getHostname(), host.getPort());
 		connection.addConnectionMonitor(this);
 
