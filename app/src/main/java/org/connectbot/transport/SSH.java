@@ -441,6 +441,14 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	@Override
 	public void connect() {
 		connecting = true;
+		try {
+			connectInternal();
+		} finally {
+			connecting = false;
+		}
+	}
+
+	public void connectInternal() {
 		connection = new Connection(host.getHostname(), host.getPort());
 		connection.addConnectionMonitor(this);
 
@@ -497,7 +505,6 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 			close();
 			onDisconnect();
-			connecting = false;
 			return;
 		}
 
@@ -513,7 +520,6 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		} catch (Exception e) {
 			Log.e(TAG, "Problem in SSH connection thread during authentication", e);
 		}
-		connecting = false;
 	}
 
 	@Override

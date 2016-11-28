@@ -120,6 +120,11 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	public boolean hardKeyboardHidden;
 
+	public final static int MINIMUM_RETRY_INTERVAL = 1000; // minimum milliseconds to delay waiting for network and SSH connections
+	public final static int MAXIMUM_RETRY_MULTIPLIER = 8; // maximum number of iterations to increase sleepVal.  Controls upper buond of delay.
+	public final static int RETRY_SLEEP_MULTIPLIER = 2; // sets rate of stepback on retries
+	public final static int MAXIMUM_CONNECTING_WAIT = 30; // sets maximum amount of invertals of MINIMUM_RETRY_INTERVAL to wait before timing out on connecting status
+
 	@Override
 	public void onCreate() {
 		Log.i(TAG, "Starting service");
@@ -721,7 +726,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 					continue;
 				}
 
-				int sleepVal = 500;
+				int sleepVal = MINIMUM_RETRY_INTERVAL;
 				int retryLimit = getRetries();
 				int retryCount = 0;
 
@@ -731,12 +736,12 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 					Thread.currentThread().interrupt();
 				}
 
-				while ( ( retryLimit == 0 || retryCount <= retryLimit ) && bridge.isDisconnected() ){
+				while ((retryLimit == 0 || retryCount <= retryLimit) && bridge.isDisconnected()){
 
 					bridge.startConnection();
 
-					if ( retryCount < 8 ) {
-						sleepVal = sleepVal * 2;
+					if (retryCount < MAXIMUM_RETRY_MULTIPLIER) {
+						sleepVal = sleepVal * RETRY_SLEEP_MULTIPLIER;
 					}
 
 					try {
@@ -748,12 +753,14 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 					retryCount++;
 					Log.d(TAG, String.format("Retries %s session stat: %s", retryCount, bridge.isSessionOpen() ));
 
-					while(bridge.isConnecting()){
+					int connectingCount = 0;
+					while(bridge.isConnecting() && connectingCount<=MAXIMUM_CONNECTING_WAIT){
 						try {
-							Thread.sleep(500);
+							Thread.sleep(MINIMUM_RETRY_INTERVAL);
 						} catch(InterruptedException ex) {
 							Thread.currentThread().interrupt();
 						}
+						connectingCount++;
 						Log.d(TAG, String.format("Sleeping while wait on connecting"));
 					}
 				}

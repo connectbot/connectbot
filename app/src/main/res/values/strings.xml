@@ -265,9 +265,9 @@
 	<!-- Summary for the preference that forces the service to stay running in the background. -->
 	<string name="pref_conn_persist_summary">"Force connections to stay connected while in background"</string>
 
-	<!-- Name for the retries size preference -->
+	<!-- Name for the preference that sets the number of retries to attempt when attempting to persist in the background. -->
 	<string name="pref_retries_title">"Persist retries"</string>
-	<!-- Description of the retries size preference -->
+	<!-- Summary for the number of persist retries preference -->
 	<string name="pref_retries_summary">"Number of retries to make when attempting to persist connections.  Set 0 for unlimited."</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
