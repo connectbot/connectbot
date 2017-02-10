@@ -64,6 +64,7 @@ public final class PreferenceConstants {
 	public static final String CAMERA_ESC_A = "Esc+A";
 
 	public static final String KEEP_ALIVE = "keepalive";
+	public static final String KEEP_ALIVE_MENU = "menukeepalive";
 
 	public static final String WIFI_LOCK = "wifilock";
 

@@ -285,8 +285,13 @@
 
 	<!-- Name for the keep screen on preference -->
 	<string name="pref_keepalive_title">"Keep screen awake"</string>
-	<!-- Summary for the camera shortcut usage preference -->
+	<!-- Summary for the prevent the screen from turning off when working in a console preference -->
 	<string name="pref_keepalive_summary">"Prevent the screen from turning off when working in a console"</string>
+
+	<!-- Name for the add menu button to switch screen always on preference -->
+	<string name="pref_menu_keepalive_title">"Add menu button to switch screen always on"</string>
+	<!-- Summary for add menu button in console to switch screen always on preference -->
+	<string name="pref_menu_keepalive_summary">"Add menu button in console to switch screen always on"</string>
 
 	<!-- Name for the Wi-Fi lock preference -->
 	<string name="pref_wifilock_title">"Keep Wi-Fi active"</string>

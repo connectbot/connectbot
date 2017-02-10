@@ -116,6 +116,13 @@
 			android:summary="@string/pref_keepalive_summary"
 			android:defaultValue="true"
 			/>
+
+		<org.connectbot.util.SwitchCompatPreference
+			android:key="menukeepalive"
+			android:title="@string/pref_menu_keepalive_title"
+			android:summary="@string/pref_menu_keepalive_summary"
+			android:defaultValue="false"
+			/>
 	</PreferenceCategory>
 
 	<PreferenceCategory

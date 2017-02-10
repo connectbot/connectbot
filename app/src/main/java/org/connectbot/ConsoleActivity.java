@@ -137,7 +137,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 	private InputMethodManager inputManager;
 
-	private MenuItem disconnect, copy, paste, portForward, resize, urlscan;
+	private MenuItem disconnect, copy, paste, keepon, portForward, resize, urlscan;
 
 	private boolean forcedOrientation;
 
@@ -792,6 +792,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		}
 	}
 
+	public boolean isScreenAlwaysOn() {
+		WindowManager.LayoutParams attrs = getWindow().getAttributes();
+		return ((attrs.flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) == WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -858,6 +862,26 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				return true;
 			}
 		});
+
+		if (prefs.getBoolean(PreferenceConstants.KEEP_ALIVE_MENU, false)) {
+			keepon = menu.add(R.string.pref_keepalive_title);
+			if (hardKeyboard)
+				paste.setAlphabeticShortcut('k');
+			MenuItemCompat.setShowAsAction(keepon, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+			keepon.setIcon(isScreenAlwaysOn() ? R.drawable.ic_screenon : R.drawable.ic_screenon_off);
+			keepon.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				public boolean onMenuItemClick(MenuItem item) {
+					if (!isScreenAlwaysOn()) {
+						keepon.setIcon(R.drawable.ic_screenon);
+						getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+					} else {
+						keepon.setIcon(R.drawable.ic_screenon_off);
+						getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+					}
+					return true;
+				}
+			});
+		}
 
 		portForward = menu.add(R.string.console_menu_portforwards);
 		if (hardKeyboard)
