@@ -797,6 +797,18 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		return ((attrs.flags & WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) == WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
+	public void setScreenAlwaysOn(boolean alwaysOn) {
+		if (alwaysOn) {
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		} else {
+			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		}
+		if(keepon != null) {
+			keepon.setChecked(alwaysOn);
+			keepon.setIcon(alwaysOn ? R.drawable.ic_screenon : R.drawable.ic_screenon_off);
+		}
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -864,20 +876,17 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		});
 
 		if (prefs.getBoolean(PreferenceConstants.KEEP_ALIVE_MENU, false)) {
+			boolean isAlwaysOn = isScreenAlwaysOn();
 			keepon = menu.add(R.string.pref_keepalive_title);
 			if (hardKeyboard)
 				paste.setAlphabeticShortcut('k');
 			MenuItemCompat.setShowAsAction(keepon, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-			keepon.setIcon(isScreenAlwaysOn() ? R.drawable.ic_screenon : R.drawable.ic_screenon_off);
+			keepon.setCheckable(true);
+			keepon.setChecked(isAlwaysOn);
+			keepon.setIcon(isAlwaysOn ? R.drawable.ic_screenon : R.drawable.ic_screenon_off);
 			keepon.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				public boolean onMenuItemClick(MenuItem item) {
-					if (!isScreenAlwaysOn()) {
-						keepon.setIcon(R.drawable.ic_screenon);
-						getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-					} else {
-						keepon.setIcon(R.drawable.ic_screenon_off);
-						getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-					}
+					setScreenAlwaysOn(!isScreenAlwaysOn());
 					return true;
 				}
 			});
@@ -1047,12 +1056,12 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		super.onResume();
 		Log.d(TAG, "onResume called");
 
-		// Make sure we don't let the screen fall asleep.
-		// This also keeps the Wi-Fi chipset from disconnecting us.
-		if (prefs.getBoolean(PreferenceConstants.KEEP_ALIVE, true)) {
-			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		if (keepon != null) {
+			if (keepon.isChecked()) {
+				setScreenAlwaysOn(true);
+			}
 		} else {
-			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			setScreenAlwaysOn(prefs.getBoolean(PreferenceConstants.KEEP_ALIVE, true));
 		}
 
 		configureOrientation();
