@@ -803,7 +803,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		} else {
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		}
-		if(keepon != null) {
+		if (keepon != null) {
 			keepon.setChecked(alwaysOn);
 			keepon.setIcon(alwaysOn ? R.drawable.ic_screenon : R.drawable.ic_screenon_off);
 		}
