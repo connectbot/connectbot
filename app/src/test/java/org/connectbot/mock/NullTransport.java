@@ -100,6 +100,11 @@ public class NullTransport extends AbsTransport {
 	}
 
 	@Override
+ 	public boolean isConnecting() {
+ 		return false;
+ 	}
+
+	@Override
 	public boolean isSessionOpen() {
 		// TODO Auto-generated method stub
 		return false;
