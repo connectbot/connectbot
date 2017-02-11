@@ -26,6 +26,8 @@
 package de.mud.telnet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 /**
  * This is a telnet protocol handler. The handler needs implementations
  * for several methods to handle the telnet options and to be able to
@@ -212,6 +214,20 @@ public abstract class TelnetProtocolHandler {
   }
 
   /**
+   * Helper Method to convert ArrayList<Bytes> to Byte[] array.
+   * @param byteArray
+   * @return
+   */
+  private byte[] arrayListToBytes(ArrayList<Byte> byteArray) {
+    byte[] bytes = new byte[byteArray.size()];
+
+    for(int i = 0; i < byteArray.size(); i++) {
+      bytes[i] = byteArray.get(i);
+    }
+    return bytes;
+  }
+
+  /**
    * Send the new Window Size (via NAWS)
    */
   public void setWindowSize(int columns,int rows)
@@ -220,59 +236,118 @@ public abstract class TelnetProtocolHandler {
 
     if (receivedDX[TELOPT_NAWS] != DO) {
     	System.err.println("not allowed to send NAWS? (DONT NAWS)");
-	return;
+	    return;
     }
-    write(IAC);write(SB);write(TELOPT_NAWS);
-    write((byte) (columns >> 8));
-    write((byte) (columns & 0xff));
-    write((byte) (rows >> 8));
-    write((byte) (rows & 0xff));
-    write(IAC);write(SE);
+
+    // Use List to hold and send entire sequence at one time.
+    ArrayList<Byte> byteArray = new ArrayList<>();
+
+    byteArray.add(IAC);
+    byteArray.add(SB);
+    byteArray.add(TELOPT_NAWS);
+    byteArray.add((byte) (columns >> 8));
+    byteArray.add((byte) (columns & 0xff));
+    byteArray.add((byte) (rows >> 8));
+    byteArray.add((byte) (rows & 0xff));
+    byteArray.add(IAC);
+    byteArray.add(SE);
+
+    // Write out as a single sequence.
+    write(arrayListToBytes(byteArray));
   }
 
 
   /**
    * Handle an incoming IAC SB &lt;type&gt; &lt;bytes&gt; IAC SE
    * @param type type of SB
-   * @param sbata byte array as &lt;bytes&gt;
+   * @param sbdata byte array as &lt;bytes&gt;
    */
   private void handle_sb(byte type, byte[] sbdata)
     throws IOException {
-    if(debug > 1)
+    if (debug > 1)
       System.err.println("TelnetIO.handle_sb("+type+")");
-    switch (type) {
-    case TELOPT_TTYPE:
-      if (sbdata.length>0 && sbdata[0]==TELQUAL_SEND) {
-        write(IACSB);write(TELOPT_TTYPE);write(TELQUAL_IS);
-        /* FIXME: need more logic here if we use
-         * more than one terminal type
-         */
-        String ttype = getTerminalType();
-        if(ttype == null) ttype = "dumb";
-        write(ttype.getBytes());
-        write(IACSE);
-      }
-      break;
-    case TELOPT_CHARSET:
-        System.out.println("Got SB CHARSET");
 
-      String charsetStr = new String(sbdata, "US-ASCII");
-      if (charsetStr.startsWith("TTABLE ")) {
-        charsetStr = charsetStr.substring(7);
-      }
-      String[] charsets = charsetStr.split(charsetStr.substring(0,0));
-      String myCharset = getCharsetName();
-      for (String charset : charsets) {
-        if (charset.equals(myCharset)) {
-          write(IACSB);write(TELOPT_CHARSET);write(CHARSET_ACCEPTED);
-          write(charset.getBytes());
-          write(IACSE);
-          System.out.println("Sent our charset!");
-          return;
+    switch(type) {
+    case TELOPT_TTYPE: {
+        if(sbdata.length > 0 && sbdata[0]==TELQUAL_SEND) {
+
+          // Use List to hold and send entire sequence at one time.
+          ArrayList<Byte> byteArray = new ArrayList<>();
+
+          // Get Terminal Type
+          /* FIXME: need more logic here if we use
+           * more than one terminal type
+           * should be option in connection setup.
+           */
+          String ttype = getTerminalType();
+          if(ttype == null) {
+            // Set Default of ansi for telnet.
+            ttype = "ansi";
+          }
+
+          byteArray.add(IAC);
+          byteArray.add(SB);
+          byteArray.add(TELOPT_TTYPE);
+          byteArray.add(TELQUAL_IS);
+
+          for(byte b : ttype.getBytes()) {
+            byteArray.add(b);
+          }
+
+          byteArray.add(IAC);
+          byteArray.add(SE);
+
+          // Write out as a single sequence.
+          write(arrayListToBytes(byteArray));
         }
       }
-      write(IACSB);write(TELOPT_CHARSET);write(CHARSET_REJECTED);
-      write(IACSE);
+      break;
+    case TELOPT_CHARSET: {
+        System.out.println("Got SB CHARSET");
+
+        // Use List to hold and send entire sequence at one time.
+        ArrayList<Byte> byteArray = new ArrayList<>();
+
+        byteArray.add(IAC);
+        byteArray.add(SB);
+        byteArray.add(TELOPT_CHARSET);
+
+        String charsetStr = new String(sbdata, "US-ASCII");
+        if(charsetStr.startsWith("TTABLE ")) {
+          charsetStr = charsetStr.substring(7);
+        }
+        String[] charsets = charsetStr.split(charsetStr.substring(0, 0));
+        String myCharset = getCharsetName();
+        for(String charset : charsets) {
+          if(charset.equals(myCharset)) {
+
+            byteArray.add(CHARSET_ACCEPTED);
+
+            for(byte b : charset.getBytes()) {
+              byteArray.add(b);
+            }
+
+            byteArray.add(IAC);
+            byteArray.add(SE);
+
+            // Write out as a single sequence.
+            write(arrayListToBytes(byteArray));
+
+            System.out.println("Sent our charset!");
+            return;
+          }
+        }
+
+        // Rejected.
+        byteArray.add(CHARSET_REJECTED);
+        byteArray.add(IAC);
+        byteArray.add(SE);
+
+        // Write out as a single sequence.
+        write(arrayListToBytes(byteArray));
+      }
+      break;
+    default:
       break;
     }
   }
@@ -520,31 +595,44 @@ public abstract class TelnetProtocolHandler {
           if(debug > 2) System.err.println("BINARY");
           reply = WILL;
           break;
-        case TELOPT_NAWS:
-          if(debug > 2) System.err.println("NAWS");
-          int[] size = getWindowSize();
-          receivedDX[b] = DO;
-          if(size == null) {
-            // this shouldn't happen
-            write(IAC);
-            write(WONT);
-            write(TELOPT_NAWS);
-            reply = WONT;
-            sentWX[b] = WONT;
-            break;
+        case TELOPT_NAWS: {
+            if(debug > 2) System.err.println("NAWS");
+
+            // Use List to hold and send entire sequence at one time.
+            ArrayList<Byte> byteArray = new ArrayList<>();
+
+            int[] size = getWindowSize();
+            receivedDX[b] = DO;
+            if(size == null) {
+              // this shouldn't happen
+              byteArray.add(IAC);
+              byteArray.add(WONT);
+              byteArray.add(TELOPT_NAWS);
+
+              // Write out as a single sequence.
+              write(arrayListToBytes(byteArray));
+
+              reply = WONT;
+              sentWX[b] = WONT;
+              break;
+            }
+
+            reply = WILL;
+            sentWX[b] = WILL;
+
+            byteArray.add(IAC);
+            byteArray.add(SB);
+            byteArray.add(TELOPT_NAWS);
+            byteArray.add((byte) (size[0] >> 8));
+            byteArray.add((byte) (size[0] & 0xff));
+            byteArray.add((byte) (size[1] >> 8));
+            byteArray.add((byte) (size[1] & 0xff));
+            byteArray.add(IAC);
+            byteArray.add(SE);
+
+            // Write out as a single sequence.
+            write(arrayListToBytes(byteArray));
           }
-          reply = WILL;
-          sentWX[b] = WILL;
-          sendbuf[0]=IAC;
-          sendbuf[1]=WILL;
-          sendbuf[2]=TELOPT_NAWS;
-          write(sendbuf);
-          write(IAC);write(SB);write(TELOPT_NAWS);
-          write((byte) (size[0] >> 8));
-          write((byte) (size[0] & 0xff));
-          write((byte) (size[1] >> 8));
-          write((byte) (size[1] & 0xff));
-          write(IAC);write(SE);
           break;
         default:
           if(debug > 2) System.err.println("<UNKNOWN,"+b+">");

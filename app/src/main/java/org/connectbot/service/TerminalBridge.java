@@ -443,7 +443,7 @@ public class TerminalBridge implements VDUDisplay {
 	}
 
 	/**
-	 * @return whether a connection process is ongoin or not
+	 * @return whether a connection process is ongoing or not
 	 */
 	public boolean isConnecting() {
 		if (transport != null)
