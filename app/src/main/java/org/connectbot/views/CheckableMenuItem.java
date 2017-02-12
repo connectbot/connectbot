@@ -83,7 +83,7 @@ public class CheckableMenuItem extends RelativeLayout {
 			@Override
 			protected void onPopulateEventForVirtualView(int virtualViewId, AccessibilityEvent event) {
 				if (virtualViewId != HOST_ID) {
-					throw new IllegalArgumentException("Only HOST_ID (" + HOST_ID + ") supported; requested " + virtualViewId);
+					return;
 				}
 
 				event.setContentDescription(mTitle.getText() + " " + mSummary.getText());
@@ -94,7 +94,7 @@ public class CheckableMenuItem extends RelativeLayout {
 			@Override
 			protected void onPopulateNodeForVirtualView(int virtualViewId, AccessibilityNodeInfoCompat node) {
 				if (virtualViewId != HOST_ID) {
-					throw new IllegalArgumentException("Only HOST_ID (" + HOST_ID + ") supported; requested " + virtualViewId);
+					return;
 				}
 
 				mTmpRect.set(0, 0, CheckableMenuItem.this.getWidth(), CheckableMenuItem.this.getHeight());
@@ -112,7 +112,7 @@ public class CheckableMenuItem extends RelativeLayout {
 			@Override
 			protected boolean onPerformActionForVirtualView(int virtualViewId, int action, Bundle arguments) {
 				if (virtualViewId != HOST_ID) {
-					throw new IllegalArgumentException("Only HOST_ID (" + HOST_ID + ") supported; requested " + virtualViewId);
+					return false;
 				}
 
 				if (action == AccessibilityNodeInfoCompat.ACTION_CLICK) {
