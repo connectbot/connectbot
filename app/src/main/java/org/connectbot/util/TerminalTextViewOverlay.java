@@ -153,7 +153,7 @@ public class TerminalTextViewOverlay extends TextView {
 
 	@Override
 	protected void onSelectionChanged(int selStart, int selEnd) {
-		if (selStart <= selEnd) {
+		if (selStart >= 0 && selEnd >= 0 && selStart <= selEnd) {
 			currentSelection = getText().toString().substring(selStart, selEnd);
 		}
 		super.onSelectionChanged(selStart, selEnd);
