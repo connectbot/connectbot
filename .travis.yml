@@ -33,6 +33,9 @@ addons:
     branch_pattern: coverity_scan
 
 before_script:
+  # Accept the Android licenses
+  - echo -ne "\n8933bad161af4178b1185d1a37fbf41ea5269c55" >> $ANDROID_HOME/licenses/android-sdk-license
+  - echo -ne "\n84831b9409646a918e30573bab4c9c91346d8abd\n504667f4c0de7af1a06de9f4b1727b84351f2910" >> $ANDROID_HOME/licenses/android-sdk-preview-license
   # Create and start emulator as early as possible
   - echo no | android create avd --force -n test -t android-22 --abi default/armeabi-v7a -s "768x1280" --device "Nexus 4" -c 128M
   - emulator -avd test -no-audio -no-window &
