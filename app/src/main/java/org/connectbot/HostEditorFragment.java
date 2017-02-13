@@ -436,6 +436,7 @@ public class HostEditorFragment extends Fragment {
 		});
 
 		mUseSshAuthSwitch = (SwitchCompat) view.findViewById(R.id.use_ssh_auth_switch);
+		//noinspection ResourceType
 		mUseSshAuthSwitch.setChecked(mHost.getUseAuthAgent() != null &&
 				!mHost.getUseAuthAgent().equals(mSshAuthValues.getString(0)));
 		mUseSshAuthSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -455,6 +456,7 @@ public class HostEditorFragment extends Fragment {
 
 		mUseSshConfirmationCheckbox =
 				(AppCompatCheckBox) view.findViewById(R.id.ssh_auth_confirmation_checkbox);
+		//noinspection ResourceType
 		mUseSshConfirmationCheckbox.setChecked(mHost.getUseAuthAgent() != null &&
 				mHost.getUseAuthAgent().equals(mSshAuthValues.getString(1)));
 		mUseSshConfirmationCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -580,6 +582,7 @@ public class HostEditorFragment extends Fragment {
 				mUseSshAuthSwitch.isChecked() ? View.VISIBLE : View.GONE);
 
 		if (mUseSshAuthSwitch.isChecked()) {
+			//noinspection ResourceType
 			mHost.setUseAuthAgent(
 					mUseSshConfirmationCheckbox.isChecked() ?
 									/* require confirmation */ mSshAuthValues.getString(1) :
