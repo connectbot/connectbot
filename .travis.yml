@@ -36,7 +36,7 @@ addons:
 before_script:
   # Install Android stuff
   - curl -L $ANDROID_TOOLS_URL -o $HOME/tools.zip
-  - unzip -q $HOME/tools.zip -d $ANDROID_HOME
+  - unzip -oq $HOME/tools.zip -d $ANDROID_HOME
   - mkdir $ANDROID_HOME/licenses
   - echo -ne "\n8933bad161af4178b1185d1a37fbf41ea5269c55" >> $ANDROID_HOME/licenses/android-sdk-license
   - echo -ne "\n84831b9409646a918e30573bab4c9c91346d8abd\n504667f4c0de7af1a06de9f4b1727b84351f2910" >> $ANDROID_HOME/licenses/android-sdk-preview-license
@@ -45,11 +45,9 @@ before_script:
   - $ANDROID_HOME/tools/bin/sdkmanager 'build-tools;23.0.3'
   - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-23'
   - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-22' # for emulator
-  - $ANDROID_HOME/tools/bin/sdkmanager 'extras;android;compatibility'
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;android;m2repository'
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;m2repository'
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;google_play_services'
-  - $ANDROID_HOME/tools/bin/sdkmanager 'patcher;v1'
   - $ANDROID_HOME/tools/bin/sdkmanager 'system-images;android-22;default;armeabi-v7a'
   - $ANDROID_HOME/tools/bin/sdkmanager ndk-bundle
   # Create and start emulator as early as possible
@@ -58,7 +56,7 @@ before_script:
   # Download the emulator support stuff
   - mkdir -p $HOME/.cache/ci-support
   - curl -L https://github.com/connectbot/ci-support/archive/master.zip -z $HOME/.cache/ci-support/master.zip -o $HOME/.cache/ci-support/master.zip
-  - unzip -q $HOME/.cache/ci-support/master.zip -d $HOME
+  - unzip -oq $HOME/.cache/ci-support/master.zip -d $HOME
   # For the lint checking mechanism
   - mkdir -p $HOME/.cache/lint
   ### The rest of the commands need the emulator running
