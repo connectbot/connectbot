@@ -43,6 +43,8 @@ import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
+import com.google.android.gms.security.ProviderInstaller;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -67,7 +69,7 @@ import android.util.Log;
  *
  * @author jsharkey
  */
-public class TerminalManager extends Service implements BridgeDisconnectedListener, OnSharedPreferenceChangeListener {
+public class TerminalManager extends Service implements BridgeDisconnectedListener, OnSharedPreferenceChangeListener, ProviderInstaller.ProviderInstallListener {
 	public final static String TAG = "CB.TerminalManager";
 
 	private ArrayList<TerminalBridge> bridges = new ArrayList<TerminalBridge>();
@@ -164,6 +166,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		connectivityManager = new ConnectivityReceiver(this, lockingWifi);
 
+		ProviderInstaller.installIfNeededAsync(this, this);
 	}
 
 	private void updateSavingKeys() {
@@ -474,6 +477,16 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	public ArrayList<TerminalBridge> getBridges() {
 		return bridges;
+	}
+
+	@Override
+	public void onProviderInstalled() {
+		Log.i(TAG, "ProviderInstaller installation succeeded");
+	}
+
+	@Override
+	public void onProviderInstallFailed(int i, Intent intent) {
+		Log.i(TAG, "ProviderInstaller installation failed");
 	}
 
 	public class TerminalBinder extends Binder {
