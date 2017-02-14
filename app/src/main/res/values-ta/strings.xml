@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="title_help">உதவி</string>
+  <string name="title_colors">வண்ணங்கள்</string>
+  <string name="title_color_picker">நிறத்தை தேர்ந்தெடு</string>
+  <string name="title_settings">அமைப்புகள்</string>
+  <string name="page_up">பக்கத்தின் மேலே</string>
+  <string name="page_down">பக்கத்தின் கீழே</string>
+  <string name="keyboard_shortcuts">விசைப்பலகை குறுக்குவழிகள்</string>
+  <string name="increase_font_size">எழுத்துரு அளவை கூட்டு</string>
+  <string name="decrease_font_size">எழுத்துரு அளவை குறை</string>
+  <string name="pubkey_generate">உருவாக்கு</string>
+  <string name="pubkey_change_password">கடவுச்சொல்லை மாற்று</string>
+  <string name="prompt_nickname">புனைப்பெயர்:</string>
+  <string name="prompt_password">கடவுச்சொல்:</string>
+  <string name="button_change">மாற்று</string>
+  <string name="button_resize">அளவு மாற்று</string>
+  <string name="pref_fullscreen_title">முழுத்திரை</string>
+  <string name="pref_keyboard_category">விசைப்பலகை</string>
+  <string name="list_keymode_none">செயல்நீக்கு</string>
+  <string name="hostpref_nickname_title">புனைப்பெயர்</string>
+  <string name="hostpref_compression_title">சுருக்குதல்</string>
+  <string name="hostpref_stayconnected_title">எப்பொழுதும் இணைந்திரு</string>
+  <string name="hostpref_encoding_title">குறியீட்டு முறை</string>
+  <string name="hostpref_username_title">பயனாளர் பெயர்</string>
+  <string name="hostpref_hostname_title">புரவல்கணினி</string>
+  <string name="console_menu_close">மூடுக</string>
+  <string name="console_menu_copy">படியெடு</string>
+</resources>
