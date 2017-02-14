@@ -38,7 +38,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 			// Blow away all the preferences
 			SharedPreferences.Editor editor = preferences.edit();
 			editor.clear();
-			editor.commit();
+			editor.apply();
 
 			PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
 

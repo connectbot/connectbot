@@ -4,7 +4,8 @@ sudo: true  # For the 7.5GB limit
 
 env:
   global:
-    - NDK_VERSION=r11c
+    - ANDROID_TOOLS_URL="https://dl.google.com/android/repository/tools_r25.2.3-linux.zip"
+    - ANDROID_NDK_HOME="$ANDROID_HOME/ndk-bundle"
     # Coverity
     - secure: "DTBBKdwZE5yxPjJQG8/wU/+LJ1A3MtUYNaf8O/yhmQNo4UcxQF+3KOoY5OK4vvoTewisUqnVRhXhD8rMYzBZiNtaGF8eSMGXVWUVb6YhOPQ0oMHKSmVgopEHzhoGa+9HDJ6xyQZdALJB8GVlwamTwO/1qk/xI02mjUNEtdk8cuc="
 
@@ -33,18 +34,29 @@ addons:
     branch_pattern: coverity_scan
 
 before_script:
+  # Install Android stuff
+  - curl -L $ANDROID_TOOLS_URL -o $HOME/tools.zip
+  - unzip -oq $HOME/tools.zip -d $ANDROID_HOME
+  - mkdir $ANDROID_HOME/licenses
+  - echo -ne "\n8933bad161af4178b1185d1a37fbf41ea5269c55" >> $ANDROID_HOME/licenses/android-sdk-license
+  - echo -ne "\n84831b9409646a918e30573bab4c9c91346d8abd\n504667f4c0de7af1a06de9f4b1727b84351f2910" >> $ANDROID_HOME/licenses/android-sdk-preview-license
+  - $ANDROID_HOME/tools/bin/sdkmanager tools
+  - $ANDROID_HOME/tools/bin/sdkmanager platform-tools
+  - $ANDROID_HOME/tools/bin/sdkmanager 'build-tools;23.0.3'
+  - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-23'
+  - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-22' # for emulator
+  - $ANDROID_HOME/tools/bin/sdkmanager 'extras;android;m2repository'
+  - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;m2repository'
+  - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;google_play_services'
+  - $ANDROID_HOME/tools/bin/sdkmanager 'system-images;android-22;default;armeabi-v7a'
+  - $ANDROID_HOME/tools/bin/sdkmanager ndk-bundle
   # Create and start emulator as early as possible
   - echo no | android create avd --force -n test -t android-22 --abi default/armeabi-v7a -s "768x1280" --device "Nexus 4" -c 128M
   - emulator -avd test -no-audio -no-window &
   # Download the emulator support stuff
   - mkdir -p $HOME/.cache/ci-support
   - curl -L https://github.com/connectbot/ci-support/archive/master.zip -z $HOME/.cache/ci-support/master.zip -o $HOME/.cache/ci-support/master.zip
-  - unzip -q $HOME/.cache/ci-support/master.zip -d $HOME
-  # newest Android NDK
-  - mkdir -p $HOME/.cache/ndk
-  - curl https://dl.google.com/android/repository/android-ndk-${NDK_VERSION}-linux-x86_64.zip -z $HOME/.cache/ndk/ndk-${NDK_VERSION}.zip -o $HOME/.cache/ndk/ndk-${NDK_VERSION}.zip
-  - unzip -q $HOME/.cache/ndk/ndk-$NDK_VERSION.zip -d $HOME
-  - echo "ndk.dir=$HOME/android-ndk-$NDK_VERSION" >> local.properties
+  - unzip -oq $HOME/.cache/ci-support/master.zip -d $HOME
   # For the lint checking mechanism
   - mkdir -p $HOME/.cache/lint
   ### The rest of the commands need the emulator running
@@ -54,20 +66,6 @@ before_script:
   - adb install -r $HOME/ci-support-master/apk/android_emulator_hacks.apk
   - adb shell pm grant no.finn.android_emulator_hacks android.permission.SET_ANIMATION_SCALE
   - adb shell am start -n no.finn.android_emulator_hacks/no.finn.android_emulator_hacks.HackActivity
-
-android:
-  components:
-    - platform-tools
-    - tools
-    - build-tools-23.0.3
-    - android-23
-    - android-22 # for emulator
-    - sys-img-armeabi-v7a-android-22
-    - extra-android-support
-    - extra-android-m2repository
-  license:
-    - 'android-sdk-license-.+'
-    - 'google-gdk-license-.+'
 
 script:
   # Split up to reduce memory requirements
