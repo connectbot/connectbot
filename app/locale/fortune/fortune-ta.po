@@ -1,77 +1,73 @@
-# Romanian translations for PROJECT.
-# Copyright (C) 2015 ORGANIZATION
-# This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+# Tamil translation for connectbot
+# Copyright (c) 2016 Rosetta Contributors and Canonical Ltd 2016
+# This file is distributed under the same license as the connectbot package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-06-12 23:13-0700\n"
-"PO-Revision-Date: 2015-07-30 18:02+0000\n"
-"Last-Translator: Kenny Root <Unknown>\n"
-"Language: ro\n"
-"Language-Team: ro <LL@li.org>\n"
-"Plural-Forms: nplurals=3; plural=(((n == 0) || ((n != 1) && (((n % 100) "
-">= 1 && (n % 100) <= 19)))) ? 1 : (n == 1) ? 0 : 2)\n"
+"Project-Id-Version: connectbot\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2016-06-13 10:13-0700\n"
+"PO-Revision-Date: 2016-06-13 12:31+0000\n"
+"Last-Translator: Bala Krish <hackin9u@gmail.com>\n"
+"Language-Team: Tamil <ta@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2017-02-13 01:36+0000\n"
 "X-Generator: Launchpad (build 18326)\n"
-"Generated-By: Babel 1.3\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
 msgctxt "app_desc"
 msgid "Simple, powerful, open-source SSH client."
-msgstr "Un client SSH simplu, flexibil, open-source"
+msgstr ""
 
 #. Summary of what the ConnectBot service does; displayed in the Android
 #. running apps list
 msgctxt "service_desc"
 msgid "Maintains SSH connections and loaded pubkeys"
-msgstr "Managementul conexiunilor si al cheilor publice"
+msgstr ""
 
 #. Window title for the Host List
 msgctxt "title_hosts_list"
 msgid "Hosts"
-msgstr "Gazde"
+msgstr ""
 
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
 msgid "Pubkeys"
-msgstr "Chei publice"
+msgstr ""
 
 #. Window title for the Port Forwards List
 msgctxt "title_port_forwards_list"
 msgid "Port forwards"
-msgstr "Redirectări trafic"
+msgstr ""
 
 #. Window title when editing host details
 msgctxt "title_host_editor"
 msgid "Edit Host"
-msgstr "Editare gazdă"
+msgstr ""
 
 #. Window title for Help index
 msgctxt "title_help"
 msgid "Help"
-msgstr "Ajutor"
+msgstr "உதவி"
 
 #. Window title for color list editing screen
 msgctxt "title_colors"
 msgid "Colors"
-msgstr "Culori"
+msgstr "வண்ணங்கள்"
 
 #. Dialog title for color picker dialog
 msgctxt "title_color_picker"
 msgid "Pick a color"
-msgstr ""
+msgstr "நிறத்தை தேர்ந்தெடு"
 
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr ""
+msgstr "அமைப்புகள்"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
@@ -81,7 +77,7 @@ msgstr ""
 msgctxt "help_intro"
 msgid ""
 "Please select a topic below for more information on a particular subject."
-msgstr "Selecteaza un subiect pentru a accesa mai multe informatii"
+msgstr ""
 
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
@@ -144,11 +140,11 @@ msgstr ""
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
 msgid "Page up"
-msgstr ""
+msgstr "பக்கத்தின் மேலே"
 
 msgctxt "page_down"
 msgid "Page down"
-msgstr ""
+msgstr "பக்கத்தின் கீழே"
 
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
@@ -173,13 +169,13 @@ msgstr ""
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "விசைப்பலகை குறுக்குவழிகள்"
 
 #. Text in a keyboard shortcuts list lined up to keys which increase the
 #. terminal font-size.
 msgctxt "increase_font_size"
 msgid "Increase Font Size"
-msgstr ""
+msgstr "எழுத்துரு அளவை கூட்டு"
 
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
@@ -190,7 +186,7 @@ msgstr ""
 #. terminal font-size.
 msgctxt "decrease_font_size"
 msgid "Decrease Font Size"
-msgstr ""
+msgstr "எழுத்துரு அளவை குறை"
 
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
@@ -204,73 +200,71 @@ msgstr ""
 
 msgctxt "pubkey_generate"
 msgid "Generate"
-msgstr "Generează"
+msgstr "உருவாக்கு"
 
 msgctxt "pubkey_delete"
 msgid "Delete key"
-msgstr "Șterge cheia"
+msgstr ""
 
 #. Dialog title when user must move finger randomly over an area to gather
 #. entropy (collect random bits)
 msgctxt "pubkey_gather_entropy"
 msgid "Gathering Entropy"
-msgstr "Genereaza sursa entropie"
+msgstr ""
 
 #, c-format
 msgctxt "pubkey_touch_prompt"
 msgid "Touch this box to gather randomness: %1$d%% done"
-msgstr "Apasa aceasta zona pentru a genera entropie: %1$d%% finalizat"
+msgstr ""
 
 msgctxt "pubkey_touch_hint"
 msgid ""
 "In order to assure randomness during the key generation, move your finger "
 "randomly over the box below."
 msgstr ""
-"Pentru a va asigura un grad inalt de stocasticitate in timpul generarii "
-"cheii, miscati cat mai aleator degetul in zona de mai jos"
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
-msgstr "Generare cheie …"
+msgstr ""
 
 msgctxt "pubkey_copy_private"
 msgid "Copy private key"
-msgstr "Copiaza cheia privata"
+msgstr ""
 
 msgctxt "pubkey_copy_public"
 msgid "Copy public key"
-msgstr "Copiaza cheia publica"
+msgstr ""
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
 msgid ""
 "Tap \"Menu\" to create\n"
 "or import key pairs."
-msgstr "Apasa \"Menu\" pentru a crea sau pentru a importa chei."
+msgstr ""
 
 msgctxt "pubkey_unknown_format"
 msgid "Unknown format"
-msgstr "Format necunoscut"
+msgstr ""
 
 msgctxt "pubkey_change_password"
 msgid "Change password"
-msgstr "Schimbă parola"
+msgstr "கடவுச்சொல்லை மாற்று"
 
 #. When attempting to import a pubkey, this is the title for the dialog box
 #. where the user should pick the desired file from the SD card contents.
 msgctxt "pubkey_list_pick"
 msgid "Pick from /sdcard"
-msgstr "Selecteaza de pe /card SD"
+msgstr ""
 
 #. Message shown to the user when a selected pubkey to import was not
 #. parseable for some reason.
 msgctxt "pubkey_import_parse_problem"
 msgid "Problem parsing imported private key"
-msgstr "A aparut o eroare in timpul citirii cheii private"
+msgstr ""
 
 msgctxt "pubkey_unlock"
 msgid "Unlock key"
-msgstr "Decripteaza cheia"
+msgstr ""
 
 #. Feedback given to the user when the password that they have entered for the
 #. pubkey is incorrect.
@@ -278,32 +272,30 @@ msgstr "Decripteaza cheia"
 msgctxt "pubkey_failed_add"
 msgid "Bad password for key '%1$s'. Authentication failed."
 msgstr ""
-"Parola gresita pentru cheia '%1$s'. Autenticitatea cererii nu poate fi "
-"verificata."
 
 #. Context menu entry that allows a user to load a pubkey entry into memory.
 #. This is equivalent to "unlocking" a password-protected pubkey entry.
 msgctxt "pubkey_memory_load"
 msgid "Load into memory"
-msgstr "Incarca in memorie"
+msgstr ""
 
 #. Context menu entry that allows a user to unload a pubkey entry from memory.
 #. This is equivalent to "locking" a password-protected pubkey entry.
 msgctxt "pubkey_memory_unload"
 msgid "Unload from memory"
-msgstr "Sterge din memorie"
+msgstr ""
 
 #. Context menu checkbox that indicates that this pubkey entry should attempt
 #. to be loaded upon starting the app.
 msgctxt "pubkey_load_on_start"
 msgid "Load key on start"
-msgstr "Incarca cheia la start"
+msgstr ""
 
 #. Pubkey preference asking user whether the key use should be confirmed via
 #. prompt before it can be used for authentication
 msgctxt "pubkey_confirm_use"
 msgid "Confirm before use"
-msgstr "Confirma alegerea inainte de folosirea cheii"
+msgstr ""
 
 #. When the list of port forwards for a host is empty, this text is is shown
 #. in the space where the list of port forwards are normally present. Note that
@@ -312,77 +304,77 @@ msgctxt "portforward_list_empty"
 msgid ""
 "Tap \"Menu\" to create\n"
 "port forwards."
-msgstr "Apasa \"Menu\" pentru a crea redirectari de trafic"
+msgstr ""
 
 #. Context menu action where a user can edite the selected port forward for
 #. the host.
 msgctxt "portforward_edit"
 msgid "Edit port forward"
-msgstr "Editeaza redirectari trafic"
+msgstr ""
 
 #. Context menu action where a user can delete the selected port forward from
 #. the host.
 msgctxt "portforward_delete"
 msgid "Delete port forward"
-msgstr "Sterge redirectari trafic"
+msgstr ""
 
 msgctxt "prompt_nickname"
 msgid "Nickname:"
-msgstr "Poreclă:"
+msgstr "புனைப்பெயர்:"
 
 #. An example string that could be used as a nickname for a pubkey.
 msgctxt "prompt_nickname_hint_pubkey"
 msgid "My work key"
-msgstr "Cheia mea"
+msgstr ""
 
 #. The source TCP port for port forwards.
 msgctxt "prompt_source_port"
 msgid "Source port:"
-msgstr "Port sursă"
+msgstr ""
 
 #. The "host:port" combination used for port forward destinations.
 msgctxt "prompt_destination"
 msgid "Destination:"
-msgstr "Destinație"
+msgstr ""
 
 #. Prompt presented to the user when the server requests that they change
 #. their password. This is the entry for the old password.
 msgctxt "prompt_old_password"
 msgid "Old password:"
-msgstr "Parola veche:"
+msgstr ""
 
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
 msgctxt "prompt_password"
 msgid "Password:"
-msgstr "Parolă:"
+msgstr "கடவுச்சொல்:"
 
 #. Added after a "Password:" prompt to indicate user needs to confirm entry.
 msgctxt "prompt_again"
 msgid "(again)"
-msgstr "(din nou)"
+msgstr ""
 
 #. Label for the user to select port forward type.
 msgctxt "prompt_type"
 msgid "Type:"
-msgstr "Mod redirectare:"
+msgstr ""
 
 #. Hint given below the password input box that lets them know that they are
 #. allowed to leave the field blank.
 msgctxt "prompt_password_can_be_blank"
 msgid "Note: password can be blank"
-msgstr "Nota: parola"
+msgstr ""
 
 #. Prompt for the size of the private key in bits.
 msgctxt "prompt_bits"
 msgid "Bits:"
-msgstr "Biți:"
+msgstr ""
 
 #. Prompt for the password to unlock a certain pubkey.
 #, c-format
 msgctxt "prompt_pubkey_password"
 msgid "Password for key '%1$s'"
-msgstr "Parola pentru cheia '%1$s'"
+msgstr ""
 
 #. Prompt for whether to allow SSH Authentication Agent to use the specified
 #. key. Note that the '\n' means split the line so it's actually "host to use
@@ -393,15 +385,13 @@ msgid ""
 "Allow remote host to\n"
 "use key '%1$s'?"
 msgstr ""
-"Acceptați utilizarea cheii '%1$s' \n"
-"de către agentul de autentificare?"
 
 #. The header of the warning a user gets when the host key has changed. Note
 #. that this can be a very serious attack, so we try to be as "loud" to the
 #. user as possible.
 msgctxt "host_verification_failure_warning_header"
 msgid "WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!"
-msgstr "ATENTIE: IDENTITATEA SISTEMULUI CONECTAT S-A SCHIMBAT!"
+msgstr ""
 
 #. The body of the warning a user gets when the host key has changed. Note
 #. that this can be a very serious attack, so we try to be as "loud" to the
@@ -461,12 +451,12 @@ msgstr ""
 #. Change an existing item's (e.g., host or pubkey) details.
 msgctxt "button_change"
 msgid "Change"
-msgstr ""
+msgstr "மாற்று"
 
 #. Button that resizes the screen to the user-specified dimensions.
 msgctxt "button_resize"
 msgid "Resize"
-msgstr ""
+msgstr "அளவு மாற்று"
 
 msgctxt "alert_disconnect_msg"
 msgid "Connection Lost"
@@ -546,7 +536,7 @@ msgstr ""
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
 msgid "Full screen"
-msgstr ""
+msgstr "முழுத்திரை"
 
 #. Summary for the full screen preference
 msgctxt "pref_fullscreen_summary"
@@ -556,7 +546,7 @@ msgstr ""
 #. The category title for keyboard preferences
 msgctxt "pref_keyboard_category"
 msgid "Keyboard"
-msgstr ""
+msgstr "விசைப்பலகை"
 
 #. Name for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_title"
@@ -724,7 +714,7 @@ msgstr ""
 #. Preference selection to indicate never to use special shortcut keys.
 msgctxt "list_keymode_none"
 msgid "Disable"
-msgstr ""
+msgstr "செயல்நீக்கு"
 
 #. Preference to not use pubkeys to authenticate to this host.
 msgctxt "list_pubkeyids_none"
@@ -739,7 +729,7 @@ msgstr ""
 #. Host nickname field preference title
 msgctxt "hostpref_nickname_title"
 msgid "Nickname"
-msgstr ""
+msgstr "புனைப்பெயர்"
 
 #. Host color category preference title
 msgctxt "hostpref_color_title"
@@ -775,7 +765,7 @@ msgstr ""
 #. Host compression preference title
 msgctxt "hostpref_compression_title"
 msgid "Compression"
-msgstr ""
+msgstr "சுருக்குதல்"
 
 #. Summary for compression preference
 msgctxt "hostpref_compression_summary"
@@ -797,7 +787,7 @@ msgstr ""
 #. disconnect
 msgctxt "hostpref_stayconnected_title"
 msgid "Stay connected"
-msgstr ""
+msgstr "எப்பொழுதும் இணைந்திரு"
 
 #. Summary for preference asking whether the host should be reconnected to
 #. when it disconnects
@@ -828,7 +818,7 @@ msgstr ""
 #. Host character encoding preference title
 msgctxt "hostpref_encoding_title"
 msgid "Encoding"
-msgstr ""
+msgstr "குறியீட்டு முறை"
 
 #. Host character encoding preference summary
 msgctxt "hostpref_encoding_summary"
@@ -843,12 +833,12 @@ msgstr ""
 #. Username field title for host editor preference
 msgctxt "hostpref_username_title"
 msgid "Username"
-msgstr ""
+msgstr "பயனாளர் பெயர்"
 
 #. Hostname field title for host editor preference
 msgctxt "hostpref_hostname_title"
 msgid "Host"
-msgstr ""
+msgstr "புரவல்கணினி"
 
 #. Port field title for host editor preference
 msgctxt "hostpref_port_title"
@@ -878,12 +868,12 @@ msgstr ""
 #. Button to close the disconnected terminal window.
 msgctxt "console_menu_close"
 msgid "Close"
-msgstr ""
+msgstr "மூடுக"
 
 #. Button to begin copying from the terminal to the clipboard.
 msgctxt "console_menu_copy"
 msgid "Copy"
-msgstr ""
+msgstr "படியெடு"
 
 #. Button to paste from the clipboard to the terminal.
 msgctxt "console_menu_paste"

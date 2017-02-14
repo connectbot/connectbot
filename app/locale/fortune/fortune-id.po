@@ -16,6 +16,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2017-02-13 01:36+0000\n"
+"X-Generator: Launchpad (build 18326)\n"
 "Generated-By: Babel 1.3\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
@@ -76,10 +78,11 @@ msgid "Generate"
 msgstr "Buat"
 
 msgctxt "help_intro"
-msgid "Please select a topic below for more information on a particular subject."
+msgid ""
+"Please select a topic below for more information on a particular subject."
 msgstr ""
-"Silahkan pilih sebuah topik dibawah untuk informasi lebih lanjut di suatu"
-" subjek tertentu."
+"Silahkan pilih sebuah topik dibawah untuk informasi lebih lanjut di suatu "
+"subjek tertentu."
 
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
@@ -99,8 +102,8 @@ msgstr "Jalan Pintas ke Host"
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
 msgid ""
-"Long-press on your Android desktop to create direct shortcuts to "
-"frequently-used SSH hosts."
+"Long-press on your Android desktop to create direct shortcuts to frequently-"
+"used SSH hosts."
 msgstr ""
 "Long-press pada destop Android untuk membuat jalan pintas ke Host yang "
 "sering digunakan."
@@ -113,8 +116,8 @@ msgstr "Gulung mundur / Gulung maju"
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
 msgid ""
-"Swiping your finger up on the right side of the screen allows you to "
-"scroll backward and forward in the local terminal buffer history."
+"Swiping your finger up on the right side of the screen allows you to scroll "
+"backward and forward in the local terminal buffer history."
 msgstr ""
 
 #. Captions for images showing the scroll back/forward gestures.
@@ -136,9 +139,9 @@ msgctxt "page_updn_content"
 msgid ""
 "NOTE: This must be enabled in settings.\n"
 "\n"
-"Swiping your finger up and down on the left third of the screen will send"
-" a page up and page down key to the remote host. Many programs map this "
-"to scrolling back into history such as irssi or tinyfugue."
+"Swiping your finger up and down on the left third of the screen will send a "
+"page up and page down key to the remote host. Many programs map this to "
+"scrolling back into history such as irssi or tinyfugue."
 msgstr ""
 
 #. Captions for images showing the page up/down gestures.
@@ -223,11 +226,11 @@ msgstr "Sentuh boks ini untuk mengumpulkan ke tidak tentuan: %1$d%% selesai"
 
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger"
-" randomly over the box below."
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
 msgstr ""
-"Untuk memastikan ketidaktentuan selama pembuatan kunci, gerakkan tangan "
-"anda secara acak diatas kotak dibawah ini."
+"Untuk memastikan ketidaktentuan selama pembuatan kunci, gerakkan tangan anda "
+"secara acak diatas kotak dibawah ini."
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
@@ -409,8 +412,7 @@ msgstr "PERINGATAN: IDENTIFIKASI REMOTE HOST TELAH BERUBAH!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle "
-"attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "KEMUNGKINAN SESEORANG SEDANG BERBUAT KOTOR!\n"
@@ -513,8 +515,7 @@ msgstr "Ukuran Scrollback"
 msgctxt "pref_scrollback_summary"
 msgid "Size of scrollback buffer to keep in memory for each console"
 msgstr ""
-"Ukuran penyangga scrollback yang harus tersimpan di memori pada setiap "
-"konsol"
+"Ukuran penyangga scrollback yang harus tersimpan di memori pada setiap konsol"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -609,7 +610,8 @@ msgstr "Ingat kunci dalam memori"
 #. Summary for the memorize keys preference
 msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
-msgstr "Simpan kunci yang terbuka kedalam memori hingga layanan backend berakhir"
+msgstr ""
+"Simpan kunci yang terbuka kedalam memori hingga layanan backend berakhir"
 
 #. Name for the preference that forces the service to stay running in the
 #. background.
@@ -718,7 +720,8 @@ msgstr "Pemberitahuan di belakang layar"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid "Send notification when a terminal running in the background sounds a bell."
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
 msgstr ""
 "Kirim pemberitahuan ketika sebuah terminal berjalan di belakang dengan "
 "membunyikan sebuah nada dering"
@@ -875,11 +878,10 @@ msgid "Never connected"
 msgstr "Tidak pernah terhubung"
 
 #. Message given when user copies from the terminal.
-#, c-format, fuzzy
+#, c-format
 msgctxt "console_copy_done"
-msgid "Copied %1$d byte to clipboard"
-msgid_plural "Copied %1$d bytes to clipboard"
-msgstr[0] "Tersalin %1$d byte ke papan-klip"
+msgid "Copied %1$d bytes to clipboard"
+msgstr "Tersalin %1$d byte ke papan-klip"
 
 #. Instructions for how to copy from the terminal. The '\n' entries are to
 #. split lines to improve readability and prevent wrapping off the screen.
@@ -961,11 +963,11 @@ msgstr "Buat penerusan port"
 
 msgctxt "portforward_problem"
 msgid ""
-"Problem creating port forward, maybe you're using ports under 1024 or "
-"port is already used?"
+"Problem creating port forward, maybe you're using ports under 1024 or port "
+"is already used?"
 msgstr ""
-"Masalah dalam membuat penerusan port, mungkin Anda menggunakan nomor port"
-" di bawah 1024 atau nomor port telah digunakan?"
+"Masalah dalam membuat penerusan port, mungkin Anda menggunakan nomor port di "
+"bawah 1024 atau nomor port telah digunakan?"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
@@ -1171,14 +1173,13 @@ msgstr "Metoda otentifikasi 'kata sandi' gagal"
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
 msgstr ""
-"Mencoba otentifikasi 'kunci publik' dengan kunci publik apapun dalam "
-"memori"
+"Mencoba otentifikasi 'kunci publik' dengan kunci publik apapun dalam memori"
 
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
 msgstr ""
-"Kunci publik yang dipilih tidak valid, coba pilih kembali kunci dalam "
-"editor host"
+"Kunci publik yang dipilih tidak valid, coba pilih kembali kunci dalam editor "
+"host"
 
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
@@ -1543,4 +1544,3 @@ msgstr ""
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
 msgstr ""
-

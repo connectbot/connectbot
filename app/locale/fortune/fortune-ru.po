@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2016-06-12 23:13-0700\n"
-"PO-Revision-Date: 2015-09-23 04:39+0000\n"
-"Last-Translator: Kenny Root <Unknown>\n"
+"PO-Revision-Date: 2016-12-10 23:43+0000\n"
+"Last-Translator: Alexander Kuporosov <cca.alexk@gmail.com>\n"
 "Language: ru\n"
 "Language-Team: ru <LL@li.org>\n"
 "Plural-Forms: nplurals=4; plural=(((((n % 10) >= 2 && (n % 10) <= 4)) && "
@@ -19,6 +19,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2017-02-13 01:36+0000\n"
+"X-Generator: Launchpad (build 18326)\n"
 "Generated-By: Babel 1.3\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
@@ -66,31 +68,32 @@ msgstr "Настройка цветов"
 #. Dialog title for color picker dialog
 msgctxt "title_color_picker"
 msgid "Pick a color"
-msgstr ""
+msgstr "Выбор цвета"
 
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr ""
+msgstr "Параметры"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
 msgid "Generate"
-msgstr ""
+msgstr "Генерация"
 
 msgctxt "help_intro"
-msgid "Please select a topic below for more information on a particular subject."
+msgid ""
+"Please select a topic below for more information on a particular subject."
 msgstr "Выберите то, о чём Вы хотите узнать"
 
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
 msgid "Terms & Conditions"
-msgstr ""
+msgstr "Условия использования"
 
 #. Title for the help page with the hints about the app.
 msgctxt "hints"
 msgid "Hints"
-msgstr ""
+msgstr "Подсказки"
 
 #. Header text for instructions about creating host shortcuts.
 msgctxt "host_shortcuts_header"
@@ -100,8 +103,8 @@ msgstr ""
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
 msgid ""
-"Long-press on your Android desktop to create direct shortcuts to "
-"frequently-used SSH hosts."
+"Long-press on your Android desktop to create direct shortcuts to frequently-"
+"used SSH hosts."
 msgstr ""
 
 #. Header text for instructions about scrolling the terminal.
@@ -112,8 +115,8 @@ msgstr ""
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
 msgid ""
-"Swiping your finger up on the right side of the screen allows you to "
-"scroll backward and forward in the local terminal buffer history."
+"Swiping your finger up on the right side of the screen allows you to scroll "
+"backward and forward in the local terminal buffer history."
 msgstr ""
 
 #. Captions for images showing the scroll back/forward gestures.
@@ -135,19 +138,19 @@ msgctxt "page_updn_content"
 msgid ""
 "NOTE: This must be enabled in settings.\n"
 "\n"
-"Swiping your finger up and down on the left third of the screen will send"
-" a page up and page down key to the remote host. Many programs map this "
-"to scrolling back into history such as irssi or tinyfugue."
+"Swiping your finger up and down on the left third of the screen will send a "
+"page up and page down key to the remote host. Many programs map this to "
+"scrolling back into history such as irssi or tinyfugue."
 msgstr ""
 
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
 msgid "Page up"
-msgstr ""
+msgstr "Стр. вверх"
 
 msgctxt "page_down"
 msgid "Page down"
-msgstr ""
+msgstr "Стр. вниз"
 
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
@@ -172,13 +175,13 @@ msgstr ""
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "Горячие клавиши"
 
 #. Text in a keyboard shortcuts list lined up to keys which increase the
 #. terminal font-size.
 msgctxt "increase_font_size"
 msgid "Increase Font Size"
-msgstr ""
+msgstr "Увеличить размер шрифта"
 
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
@@ -189,7 +192,7 @@ msgstr ""
 #. terminal font-size.
 msgctxt "decrease_font_size"
 msgid "Decrease Font Size"
-msgstr ""
+msgstr "Уменьшить размер шрифта"
 
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
@@ -222,11 +225,11 @@ msgstr "Нажмите сюда для генерирования случайн
 
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger"
-" randomly over the box below."
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
 msgstr ""
-"Для использования случайной выборки во время генерации ключа - "
-"перемещайте палец в области экрана ниже."
+"Для использования случайной выборки во время генерации ключа - перемещайте "
+"палец в области экрана ниже."
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
@@ -404,12 +407,11 @@ msgstr "ВНИМАНИЕ! ИДЕНТИФИКАЦИЯ УДАЛЕННОГО ХОС
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle "
-"attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
-"Похоже есть возможность что вас ломают. Или кто то изменил ключ на "
-"удаленном хосте."
+"Похоже есть возможность что вас ломают. Или кто то изменил ключ на удаленном "
+"хосте."
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
@@ -505,7 +507,7 @@ msgstr "Размер прокрутки"
 #. Description of the scrollback size preference
 msgctxt "pref_scrollback_summary"
 msgid "Size of scrollback buffer to keep in memory for each console"
-msgstr "Размер буфера прокруктки в памяти для каждой консоли"
+msgstr "Размер буфера прокрутки в памяти для каждой консоли"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -515,12 +517,12 @@ msgstr "Пользовательский интерфейс"
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
 msgid "Rotation mode"
-msgstr "Настройки ориентации экрана"
+msgstr "Ориентация экрана"
 
 #. Summary for the rotation mode preference
 msgctxt "pref_rotation_summary"
 msgid "How to change rotation when keyboard popped in/out"
-msgstr "Настройки смены ориентации дисплея при пользовании клавиатурой"
+msgstr "Ориентация экрана при использовании клавиатуры"
 
 #. Name for the titlebar hide preference
 msgctxt "pref_titlebarhide_title"
@@ -560,7 +562,7 @@ msgstr "Убирать область статуса во время работ�
 #. The category title for keyboard preferences
 msgctxt "pref_keyboard_category"
 msgid "Keyboard"
-msgstr ""
+msgstr "Клавиатура"
 
 #. Name for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_title"
@@ -709,7 +711,8 @@ msgstr "Фоновые уведомления"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid "Send notification when a terminal running in the background sounds a bell."
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
 msgstr "Включить уведомления для терминала работающего в фоновом процессе"
 
 #. Preference selection to indicate use of right side of keyboard for special
@@ -864,14 +867,10 @@ msgid "Never connected"
 msgstr "Не подключен"
 
 #. Message given when user copies from the terminal.
-#, c-format, fuzzy
+#, c-format
 msgctxt "console_copy_done"
-msgid "Copied %1$d byte to clipboard"
-msgid_plural "Copied %1$d bytes to clipboard"
-msgstr[0] "Скопировано %1$d байт в буфер обмена"
-msgstr[1] "Скопировано %1$d байт в буфер обмена"
-msgstr[2] "Скопировано %1$d байт в буфер обмена"
-msgstr[3] "Скопировано %1$d байт в буфер обмена"
+msgid "Copied %1$d bytes to clipboard"
+msgstr "Скопировано %1$d байт в буфер обмена"
 
 #. Instructions for how to copy from the terminal. The '\n' entries are to
 #. split lines to improve readability and prevent wrapping off the screen.
@@ -881,8 +880,8 @@ msgid ""
 "or use directional pad\n"
 "to select area to copy"
 msgstr ""
-"Для выделения области на экране используйте Touch and Drag или "
-"Directional Pad"
+"Для выделения области на экране используйте Touch and Drag или Directional "
+"Pad"
 
 #. Button to close the disconnected terminal window.
 msgctxt "console_menu_close"
@@ -952,11 +951,11 @@ msgstr "Создать перенаправление порта"
 
 msgctxt "portforward_problem"
 msgid ""
-"Problem creating port forward, maybe you're using ports under 1024 or "
-"port is already used?"
+"Problem creating port forward, maybe you're using ports under 1024 or port "
+"is already used?"
 msgstr ""
-"Не удалось создать перенаправление порта. Может быть вы используете порты"
-" меньше чем 1024 или пор уже используется?"
+"Не удалось создать перенаправление порта. Может быть вы используете порты "
+"меньше чем 1024 или пор уже используется?"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
@@ -1096,7 +1095,7 @@ msgstr ""
 
 msgctxt "disconnect_all_neg"
 msgid "Cancel"
-msgstr ""
+msgstr "Отмена"
 
 msgctxt "terminal_no_hosts_connected"
 msgid "No hosts currently connected"
@@ -1187,8 +1186,7 @@ msgid ""
 "[Your host doesn't support 'password' or 'keyboard-interactive' "
 "authentication.]"
 msgstr ""
-"Ваш хост не поддерживает 'password' и 'keyboard-interactive' типа "
-"авторизации"
+"Ваш хост не поддерживает 'password' и 'keyboard-interactive' типа авторизации"
 
 msgctxt "terminal_no_session"
 msgid "Session will not be started due to host preference."
@@ -1276,7 +1274,7 @@ msgstr "Подключено"
 #. currently              disconnected after having been previously connected.
 msgctxt "image_description_disconnected"
 msgid "Disconnected."
-msgstr ""
+msgstr "Отключено."
 
 #. Describes the icon of the "locked pubkey" icon for accessibility purposes.
 msgctxt "image_description_key_is_locked"
@@ -1311,13 +1309,13 @@ msgstr "Показать клавиатуру"
 #. accessibility              purposes.
 msgctxt "image_description_up"
 msgid "Arrow up"
-msgstr ""
+msgstr "Стрелка вверх"
 
 #. Describes the icon of the "Arrow down" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_down"
 msgid "Arrow down"
-msgstr ""
+msgstr "Стрелка вниз"
 
 #. Describes the icon of the "Arrow left" button in the terminal view for
 #. accessibility              purposes.
@@ -1335,17 +1333,17 @@ msgstr ""
 #. purposes.
 msgctxt "image_description_volume"
 msgid "Volume"
-msgstr ""
+msgstr "Громкость"
 
 #. Text for the "Esc" button in virtual keyboard.
 msgctxt "button_key_esc"
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #. Text for the "Ctrl" button in virtual keyboard.
 msgctxt "button_key_ctrl"
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. Text for the "Home" button in virtual keyboard.
 msgctxt "button_key_home"
@@ -1360,82 +1358,82 @@ msgstr ""
 #. Text for the "Page Up" button in virtual keyboard.
 msgctxt "button_key_pgup"
 msgid "PgUp"
-msgstr ""
+msgstr "PgUp"
 
 #. Text for the "Page Down" button in virtual keyboard.
 msgctxt "button_key_pgdn"
 msgid "PgDn"
-msgstr ""
+msgstr "PgDn"
 
 #. Text for the "F1" button in virtual keyboard.
 msgctxt "button_key_f1"
 msgid "F1"
-msgstr ""
+msgstr "F1"
 
 #. Text for the "F2" button in virtual keyboard.
 msgctxt "button_key_f2"
 msgid "F2"
-msgstr ""
+msgstr "F2"
 
 #. Text for the "F3" button in virtual keyboard.
 msgctxt "button_key_f3"
 msgid "F3"
-msgstr ""
+msgstr "F3"
 
 #. Text for the "F4" button in virtual keyboard.
 msgctxt "button_key_f4"
 msgid "F4"
-msgstr ""
+msgstr "F4"
 
 #. Text for the "F5" button in virtual keyboard.
 msgctxt "button_key_f5"
 msgid "F5"
-msgstr ""
+msgstr "F5"
 
 #. Text for the "F6" button in virtual keyboard.
 msgctxt "button_key_f6"
 msgid "F6"
-msgstr ""
+msgstr "F6"
 
 #. Text for the "F7" button in virtual keyboard.
 msgctxt "button_key_f7"
 msgid "F7"
-msgstr ""
+msgstr "F7"
 
 #. Text for the "F8" button in virtual keyboard.
 msgctxt "button_key_f8"
 msgid "F8"
-msgstr ""
+msgstr "F8"
 
 #. Text for the "F9" button in virtual keyboard.
 msgctxt "button_key_f9"
 msgid "F9"
-msgstr ""
+msgstr "F9"
 
 #. Text for the "F10" button in virtual keyboard.
 msgctxt "button_key_f10"
 msgid "F10"
-msgstr ""
+msgstr "F10"
 
 #. Text for the "F11" button in virtual keyboard.
 msgctxt "button_key_f11"
 msgid "F11"
-msgstr ""
+msgstr "F11"
 
 #. Text for the "F12" button in virtual keyboard.
 msgctxt "button_key_f12"
 msgid "F12"
-msgstr ""
+msgstr "F12"
 
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
 msgid "Protocol"
-msgstr ""
+msgstr "Протокол"
 
 #. Label for button which expands/collapses section.
 msgctxt "expand"
 msgid "Expand"
-msgstr ""
+msgstr "Развернуть"
 
 #. Label for checkbox which, when check, makes SSL authorization require
 #. confirmation.
@@ -1474,7 +1472,7 @@ msgstr ""
 #. Text for button which discards changes to the host.
 msgctxt "discard_host_button"
 msgid "Discard"
-msgstr ""
+msgstr "Не сохранять"
 
 #. Text for button which does not discard changes and keeps editing.
 msgctxt "discard_host_cancel_button"
@@ -1488,7 +1486,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_rsa_bits"
 msgid "RSA %d-bit"
-msgstr ""
+msgstr "RSA %d-bit"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the DSA algorithm with a
@@ -1497,7 +1495,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_dsa_bits"
 msgid "DSA %d-bit"
-msgstr ""
+msgstr "DSA %d-bit"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Elliptic Curve (EC)
@@ -1506,7 +1504,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_ec_bits"
 msgid "EC %d-bit"
-msgstr ""
+msgstr "EC %d-bit"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Ed25519 algorithm
@@ -1514,7 +1512,7 @@ msgstr ""
 #. "Ed25519").
 msgctxt "key_type_ed25519"
 msgid "Ed25519"
-msgstr ""
+msgstr "Ed25519"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of an unknown algorithm.
@@ -1527,5 +1525,4 @@ msgstr ""
 #. that the key is encrypted (i.e,              password protected).
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
-msgstr ""
-
+msgstr "(зашифровано)"

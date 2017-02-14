@@ -9,7 +9,19 @@
   <string name="title_help">說明</string>
   <string name="title_colors">顏色</string>
   <string name="title_color_picker">挑選顏色</string>
+  <string name="title_settings">設置</string>
+  <string name="title_pubkey_generate">生成</string>
   <string name="help_intro">請在下列選擇一個主題以查看更多內容。</string>
+  <string name="terms_and_conditions">條款與條件</string>
+  <string name="page_updn_header">向上翻頁/向下翻頁</string>
+  <string name="page_updn_content">注意: 這必須在設置中啟用。\n\n在屏幕左側的三分之一以內用手指向上和向下滑動將向遠程主機發送向上翻頁和向下翻頁鍵。許多程序映射為在歷史中向後滾動如 irssi 或 tinyfugue。</string>
+  <string name="page_up">向上翻頁</string>
+  <string name="page_down">向下翻頁</string>
+  <string name="switching_hosts_header">切換主機</string>
+  <string name="switching_hosts_content">用手指從屏幕的一側滑到另一側將在當前連接的主機之間進行切換。</string>
+  <string name="next_host">下一個主機</string>
+  <string name="prev_host">上一個主機</string>
+  <string name="keyboard_shortcuts">鍵盤快捷鍵</string>
   <string name="pubkey_generate">產生</string>
   <string name="pubkey_delete">刪除金鑰</string>
   <string name="pubkey_gather_entropy">正在收集用戶熵</string>
@@ -210,4 +222,12 @@
   <string name="image_description_send_escape_character">送出 Esc 字元。</string>
   <string name="image_description_send_tab_character">發送TAB鍵。</string>
   <string name="image_description_show_keyboard">顯示鍵盤。</string>
+  <string name="discard_host_button">放棄變更</string>
+  <string name="discard_host_cancel_button">繼續編輯</string>
+  <string name="key_type_rsa_bits">RSA%d位</string>
+  <string name="key_type_dsa_bits">DSA%d位</string>
+  <string name="key_type_ec_bits">EC%d位</string>
+  <string name="key_type_ed25519">Ed25519</string>
+  <string name="key_type_unknown">未知的密鑰類型</string>
+  <string name="key_attribute_encrypted">（加密的）</string>
 </resources>

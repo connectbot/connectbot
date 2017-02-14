@@ -15,20 +15,21 @@
   <string name="terms_and_conditions">Termini e condizioni</string>
   <string name="hints">Suggerimenti</string>
   <string name="host_shortcuts_header">Tasti rapidi host</string>
-  <string name="host_shortcuts_content">Premere a lungi sul desktop del tuo Android per creare collegamenti diretti agli host SSH usati più di frequente.</string>
+  <string name="host_shortcuts_content">Premere a lungo sul desktop di Android per creare collegamenti diretti agli host SSH usati frequentemente.</string>
   <string name="scroll_hints_header">Scorri indietro / Scorri avanti</string>
   <string name="scrolling_back">Scorrimento indietro</string>
   <string name="scrolling_forward">Scorrimento in avanti</string>
   <string name="page_updn_header">Pagina su / Pagina giù</string>
   <string name="page_up">Pagina su</string>
   <string name="page_down">Pagina giù</string>
-  <string name="switching_hosts_header">Scambio degli host</string>
+  <string name="switching_hosts_header">Scambia degli host</string>
+  <string name="switching_hosts_content">Scorrere il dito da un lato all\'altro dello schermo passa tra gli host attualmente connessi.</string>
   <string name="next_host">Host successivo</string>
   <string name="prev_host">Host precedente</string>
   <string name="keyboard_shortcuts">Scorciatoie da tastiera</string>
   <string name="increase_font_size">Aumenta dimensione carattere</string>
   <string name="increase_font_shortcut">Ctrl e +</string>
-  <string name="decrease_font_size">Diminuisci dimensione carattere</string>
+  <string name="decrease_font_size">Diminuisce la dimensione del carattere</string>
   <string name="decrease_font_shortcut">Ctrl e -</string>
   <string name="paste_shortcut">Ctrl-Shift-V</string>
   <string name="pubkey_generate">Genera</string>
@@ -88,8 +89,10 @@
   <string name="pref_rotation_title">Modalità rotazione</string>
   <string name="pref_rotation_summary">Come cambiare rotazione quando la tastiera esce/rientra</string>
   <string name="pref_titlebarhide_title">Nascondi automaticamente la barra del titolo</string>
+  <string name="pref_titlebarhide_summary">Tocca la console per mostrare la barra del titolo e il menu principale</string>
   <string name="pref_alwaysvisible_title">Tasti speciali sempre visibili</string>
-  <string name="pref_pg_updn_gesture_title">Gesture per pagina su/giù</string>
+  <string name="pref_pg_updn_gesture_title">Gesto per pagina su/giù</string>
+  <string name="pref_pg_updn_gesture_summary">Scorri con le dita nel primo terzo dello schermo a sinistra per scorrere di una pagina in su/giù nel terminale.</string>
   <string name="pref_fullscreen_title">Schermo intero</string>
   <string name="pref_fullscreen_summary">Nascondi la barra di stato in console</string>
   <string name="pref_keyboard_category">Tastiera</string>
@@ -231,6 +234,7 @@
   <string name="colors_fg_label">CP: %1$d</string>
   <string name="color_bg_label">CS: %1$d</string>
   <string name="image_description_connected">Connesso.</string>
+  <string name="image_description_disconnected">Disconnesso.</string>
   <string name="image_description_key_is_locked">La chiave e\' bloccata.</string>
   <string name="image_description_send_escape_character">Mandare un carattere escape.</string>
   <string name="image_description_send_tab_character">Invia carattere TAB.</string>
@@ -268,4 +272,10 @@
   <string name="discard_host_changes_message">URI dell\'host non valido. Annullare le modifiche?</string>
   <string name="discard_host_button">Scarta</string>
   <string name="discard_host_cancel_button">Continua la modifica</string>
+  <string name="key_type_rsa_bits">%d bit per RSA</string>
+  <string name="key_type_dsa_bits">%d bit per DSA</string>
+  <string name="key_type_ec_bits">%d bit per EC</string>
+  <string name="key_type_ed25519">Ed25519</string>
+  <string name="key_type_unknown">Combinazione sconosciuta</string>
+  <string name="key_attribute_encrypted">(criptato)</string>
 </resources>

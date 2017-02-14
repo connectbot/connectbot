@@ -90,6 +90,7 @@
   <string name="pref_rotation_title">Rotationsmodus</string>
   <string name="pref_rotation_summary">Wie soll die Rotation beim Ein-/Ausklappen der Tastatur verändert werden</string>
   <string name="pref_titlebarhide_title">Titelleiste ausblenden</string>
+  <string name="pref_titlebarhide_summary">Tippe in die Konsole um die Titelleiste und das Menu einzublenden</string>
   <string name="pref_alwaysvisible_title">Zusatztasten immer sichtbar</string>
   <string name="pref_pg_updn_gesture_title">Bild auf/ab Geste</string>
   <string name="pref_pg_updn_gesture_summary">Ziehe deinen Finger über das linke Drittel des Bildschirms um Bild auf/ab an die Konsole zu schicken</string>
@@ -97,7 +98,11 @@
   <string name="pref_fullscreen_summary">Statuszeile in der Konsole verbergen</string>
   <string name="pref_keyboard_category">Tastatur</string>
   <string name="pref_shiftfkeys_title">Shift+Nummer sind F-Tasten</string>
+  <string name="pref_shiftfkeys_summary">Hardware Tastaturen schicken F1-F10 durch Shift+Nummer</string>
+  <string name="pref_ctrlfkeys_title">Strg+Nummer sind F-Tasten</string>
+  <string name="pref_ctrlfkeys_summary">Software Tastaturen schicken F1-F10 durch Shift+Nummer</string>
   <string name="pref_volumefont_title">Lautstärketasten ändern die Schriftgröße</string>
+  <string name="pref_volumefont_summary">Die Schriftgröße kann auch in den Einstellungen pro Host geändert werden</string>
   <string name="pref_memkeys_title">Schlüssel im Speicher behalten</string>
   <string name="pref_memkeys_summary">Entsperrte Schlüssel im Speicher halten, bis der Hintergrunddienst beendet wurde</string>
   <string name="pref_conn_persist_title">Persistente Verbindungen</string>
@@ -112,6 +117,7 @@
   <string name="pref_wifilock_title">WLAN aktiviert lassen</string>
   <string name="pref_wifilock_summary">Verhindern, dass während einer aktiven Sitzung WLAN deaktiviert wird</string>
   <string name="pref_bumpyarrows_title">Vibrierende Pfeiltasten</string>
+  <string name="pref_bumpyarrows_summary">Vibrieren wenn Pfeil-Tasten gesendet werden; nützlich bei schlechten Verbindungen</string>
   <string name="pref_bell_category">Terminalglocke</string>
   <string name="pref_bell_title">Hörbare Glocke</string>
   <string name="pref_bell_volume_title">Glockenlautstärke</string>
@@ -136,6 +142,7 @@
   <string name="hostpref_wantsession_summary">Diese Einstellung abwählen, um ausschließlich Port-Weiterleitungen zu verwenden</string>
   <string name="hostpref_stayconnected_title">Verbindung halten</string>
   <string name="hostpref_stayconnected_summary">Verbindung bei Verbindungsabbruch wiederherstellen</string>
+  <string name="hostpref_quickdisconnect_title">Schließe bei Disconnect</string>
   <string name="hostpref_quickdisconnect_summary">Schließe ohne Rückfrage, wenn Zielrechner die Verbindung abbricht.</string>
   <string name="hostpref_delkey_title">DEL Taste</string>
   <string name="hostpref_delkey_summary">Zu sendender Tastencode wenn DEL gedrückt wird</string>
@@ -201,6 +208,7 @@
   <string name="terminal_using_s2c_algorithm">Server zu Client Algorithmus: %1$s %2$s</string>
   <string name="terminal_using_c2s_algorithm">Client zu Server Algorithmus: %1$s %2$s</string>
   <string name="terminal_using_algorithm">Benutze Algorithmus: %1$s %2$s</string>
+  <string name="terminal_kex_algorithm">Schlüsselaustausch Algorithmus: %s</string>
   <string name="terminal_auth">Versuche zu authentisieren.</string>
   <string name="terminal_auth_pass">Versuche Authentisierung mit Passwort.</string>
   <string name="terminal_auth_pass_fail">Authentisierungsmethode \'Passwort\' fehlgeschlagen.</string>
@@ -227,6 +235,7 @@
   <string name="colors_fg_label">SF: %1$d</string>
   <string name="color_bg_label">HF: %1$d</string>
   <string name="image_description_connected">Verbunden.</string>
+  <string name="image_description_disconnected">Verbindung getrennt.</string>
   <string name="image_description_key_is_locked">Schlüssel ist gesperrt.</string>
   <string name="image_description_toggle_control_character">Steuerzeichen umschalten</string>
   <string name="image_description_send_escape_character">Escape-Zeichen senden.</string>
@@ -254,4 +263,19 @@
   <string name="button_key_f10">F10</string>
   <string name="button_key_f11">F10</string>
   <string name="button_key_f12">F12</string>
+  <string name="protocol_spinner_label">Protokoll</string>
+  <string name="expand">Aufklappen</string>
+  <string name="hostpref_add_host">Host hinzufügen</string>
+  <string name="hostpref_edit_host">Host speichern</string>
+  <string name="pubkey_add_new">Neuen öffentlichen Schlüssel hinzufügen</string>
+  <string name="pubkey_import_existing">Vorhandenen öffentlichen Schlüssel importieren</string>
+  <string name="discard_host_changes_message">Host URI ist ungültig. Wollen Sie die Änderungen verwerfen?</string>
+  <string name="discard_host_button">Verwerfen</string>
+  <string name="discard_host_cancel_button">Weiter bearbeiten</string>
+  <string name="key_type_rsa_bits">RSA %d-bit</string>
+  <string name="key_type_dsa_bits">DSA %d-bit</string>
+  <string name="key_type_ec_bits">EC %d-bit</string>
+  <string name="key_type_ed25519">Ed25519</string>
+  <string name="key_type_unknown">Schlüsseltyp unbekannt</string>
+  <string name="key_attribute_encrypted">(verschlüsselt)</string>
 </resources>

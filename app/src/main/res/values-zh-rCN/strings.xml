@@ -276,4 +276,10 @@
   <string name="discard_host_changes_message">主机 URI 无效。你要放弃更改吗？</string>
   <string name="discard_host_button">放弃</string>
   <string name="discard_host_cancel_button">继续编辑</string>
+  <string name="key_type_rsa_bits">RSA%d位</string>
+  <string name="key_type_dsa_bits">DSA%d位</string>
+  <string name="key_type_ec_bits">EC%d位</string>
+  <string name="key_type_ed25519">Ed25519</string>
+  <string name="key_type_unknown">未知的密钥类型</string>
+  <string name="key_attribute_encrypted">（暗号化）</string>
 </resources>
