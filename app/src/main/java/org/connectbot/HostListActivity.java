@@ -197,7 +197,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 				doCommit = true;
 			}
 			if (doCommit) {
-				editor.commit();
+				editor.apply();
 			}
 		}
 
@@ -358,7 +358,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 		if (prefs.getBoolean(PreferenceConstants.SORT_BY_COLOR, false) != sortedByColor) {
 			Editor edit = prefs.edit();
 			edit.putBoolean(PreferenceConstants.SORT_BY_COLOR, sortedByColor);
-			edit.commit();
+			edit.apply();
 		}
 
 		if (hostdb == null)

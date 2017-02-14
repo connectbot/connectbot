@@ -75,7 +75,7 @@ public class StartupTest {
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(testContext);
 		SharedPreferences.Editor editor = settings.edit();
 		boolean wasAlwaysVisible = settings.getBoolean(PreferenceConstants.KEY_ALWAYS_VISIVLE, false);
-		editor.putBoolean(PreferenceConstants.KEY_ALWAYS_VISIVLE, true).commit();
+		editor.putBoolean(PreferenceConstants.KEY_ALWAYS_VISIVLE, true).apply();
 
 		startNewLocalConnection();
 		hideAndShowSoftKeyboard();
