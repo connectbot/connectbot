@@ -84,7 +84,7 @@
 				android:labelFor="@+id/quickconnect_field"
 				>
 
-				<EditText
+				<android.support.design.widget.TextInputEditText
 					android:id="@id/quickconnect_field"
 					android:layout_width="match_parent"
 					android:layout_weight="1"
@@ -130,7 +130,7 @@
 				android:labelFor="@+id/username_edit_text"
 				>
 
-				<EditText
+				<android.support.design.widget.TextInputEditText
 					android:id="@id/username_edit_text"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
 				android:labelFor="@+id/hostname_edit_text"
 				>
 
-				<EditText
+				<android.support.design.widget.TextInputEditText
 					android:id="@id/hostname_edit_text"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -168,7 +168,7 @@
 				android:labelFor="@+id/port_edit_text"
 				>
 
-				<EditText
+				<android.support.design.widget.TextInputEditText
 					android:id="@id/port_edit_text"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -208,7 +208,7 @@
 				tools:ignore="UnusedAttribute"
 				>
 
-				<EditText
+				<android.support.design.widget.TextInputEditText
 					android:id="@id/nickname_field"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
