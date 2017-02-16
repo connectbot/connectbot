@@ -120,7 +120,6 @@
   <string name="hostpref_stayconnected_title">Permanecer ligado</string>
   <string name="hostpref_stayconnected_summary">Tentar ligar de novo ao anfitrião se desligar</string>
   <string name="hostpref_delkey_title">Tecla DEL</string>
-  <string name="hostpref_delkey_summary">O código de tecla a enviar quando a tecla DEL é pressionada</string>
   <string name="hostpref_encoding_title">Codificação</string>
   <string name="hostpref_encoding_summary">Codificação de caractéres para o anfitrião</string>
   <string name="hostpref_connection_category">Configuração da Ligação</string>

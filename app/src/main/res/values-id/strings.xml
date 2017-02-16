@@ -123,7 +123,6 @@
   <string name="hostpref_wantsession_summary">Non-aktifkan kesukaan ini hanya untuk port forwards</string>
   <string name="hostpref_stayconnected_summary">Coba menyambungkan kembali ke host jika terputus</string>
   <string name="hostpref_delkey_title">Tombol DEL</string>
-  <string name="hostpref_delkey_summary">Kode kunci terkirim ketika tombol DEL ditekan</string>
   <string name="hostpref_encoding_title">Pengkodean</string>
   <string name="hostpref_encoding_summary">Karakter pengkodean untuk host</string>
   <string name="hostpref_connection_category">Konfigurasi koneksi</string>

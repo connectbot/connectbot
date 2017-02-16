@@ -107,7 +107,6 @@
   <string name="hostpref_stayconnected_title">Manté connectat</string>
   <string name="hostpref_stayconnected_summary">Intenta reconnectar al servidor si es desconnecta</string>
   <string name="hostpref_delkey_title">Tecla DEL</string>
-  <string name="hostpref_delkey_summary">El codi enviat al pulsar la tecla DEL</string>
   <string name="hostpref_encoding_title">Codificació</string>
   <string name="hostpref_encoding_summary">Codificació de caràcters per el servidor</string>
   <string name="hostpref_connection_category">Paràmetres de connexió</string>

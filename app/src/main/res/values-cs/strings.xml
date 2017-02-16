@@ -146,7 +146,6 @@
   <string name="hostpref_quickdisconnect_title">Zavřit po ukončení spojení</string>
   <string name="hostpref_quickdisconnect_summary">Zavřít bez potvrzení ihned po vzdáleném ukončení spojení.</string>
   <string name="hostpref_delkey_title">Klávesa DEL</string>
-  <string name="hostpref_delkey_summary">Kód klávesy odeslaný při stisku DEL</string>
   <string name="hostpref_encoding_title">Kódování</string>
   <string name="hostpref_encoding_summary">Kódování znaků na hostovi</string>
   <string name="hostpref_connection_category">Nastavení připojení</string>

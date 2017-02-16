@@ -105,7 +105,6 @@
   <string name="hostpref_stayconnected_title">Maradjon csatlakozva</string>
   <string name="hostpref_stayconnected_summary">Újracsatlakozás ha a kapcsolat megszakad</string>
   <string name="hostpref_delkey_title">DEL billentyű</string>
-  <string name="hostpref_delkey_summary">Az a billenytű kód amit a DEL lenyomásakor küldünk</string>
   <string name="hostpref_encoding_title">Karakterkódolás</string>
   <string name="hostpref_encoding_summary">A kiszolgáló karakterkódolása</string>
   <string name="hostpref_connection_category">Kapcsolat beállításai</string>

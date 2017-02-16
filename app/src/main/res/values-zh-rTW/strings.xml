@@ -132,7 +132,6 @@
   <string name="hostpref_quickdisconnect_title">連接斷開時關閉</string>
   <string name="hostpref_quickdisconnect_summary">遠程連接斷開後，立即關閉不提示。</string>
   <string name="hostpref_delkey_title">DEL 鍵</string>
-  <string name="hostpref_delkey_summary">當按下 DEL 鍵時，傳送金鑰代碼</string>
   <string name="hostpref_encoding_title">編碼</string>
   <string name="hostpref_encoding_summary">主機的字元編碼</string>
   <string name="hostpref_connection_category">連線設定</string>

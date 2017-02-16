@@ -145,7 +145,6 @@
   <string name="hostpref_quickdisconnect_title">Schließe bei Disconnect</string>
   <string name="hostpref_quickdisconnect_summary">Schließe ohne Rückfrage, wenn Zielrechner die Verbindung abbricht.</string>
   <string name="hostpref_delkey_title">DEL Taste</string>
-  <string name="hostpref_delkey_summary">Zu sendender Tastencode wenn DEL gedrückt wird</string>
   <string name="hostpref_encoding_title">Zeichensatz</string>
   <string name="hostpref_encoding_summary">Zeichen-Encoding für den Host</string>
   <string name="hostpref_connection_category">Verbindungseinstellungen</string>

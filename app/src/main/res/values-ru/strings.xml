@@ -119,7 +119,6 @@
   <string name="hostpref_stayconnected_title">Держать подключение</string>
   <string name="hostpref_stayconnected_summary">Пытаться переподключиться при отключении узла</string>
   <string name="hostpref_delkey_title">Клавиша DEL</string>
-  <string name="hostpref_delkey_summary">Послать данный код при нажатие клавиши DEL</string>
   <string name="hostpref_encoding_title">Кодировка</string>
   <string name="hostpref_encoding_summary">Кодировка символов узла</string>
   <string name="hostpref_connection_category">Настройки соединения</string>

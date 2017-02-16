@@ -106,7 +106,6 @@
   <string name="hostpref_stayconnected_title">להשאיר את החיבור פעיל</string>
   <string name="hostpref_stayconnected_summary">לנסות להתחבר שוב למארח לאחר ניתוק</string>
   <string name="hostpref_delkey_title">מקש DEL</string>
-  <string name="hostpref_delkey_summary">קוד המקש בעת לחיצה על מקש ה־DEL</string>
   <string name="hostpref_encoding_title">קידוד</string>
   <string name="hostpref_encoding_summary">קידוד תווים בצד המארח</string>
   <string name="hostpref_connection_category">הגדרות חיבור</string>

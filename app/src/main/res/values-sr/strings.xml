@@ -120,7 +120,6 @@
   <string name="hostpref_quickdisconnect_title">Затвори по прекиду</string>
   <string name="hostpref_quickdisconnect_summary">Затвори без питања одмах по прекиду везе.</string>
   <string name="hostpref_delkey_title">DEL тастер</string>
-  <string name="hostpref_delkey_summary">Кôд тастера који се шаље притиском на DEL тастер</string>
   <string name="hostpref_encoding_title">Кодирање</string>
   <string name="hostpref_encoding_summary">Кодирање за домаћина</string>
   <string name="hostpref_connection_category">Поставке везе</string>

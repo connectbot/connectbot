@@ -132,7 +132,6 @@
   <string name="hostpref_stayconnected_summary">Tentar reconectar ao host caso a conexão seja perdida</string>
   <string name="hostpref_quickdisconnect_title">Fechar ao desconectar</string>
   <string name="hostpref_delkey_title">Tecla DEL</string>
-  <string name="hostpref_delkey_summary">Código a ser enviado quando a tecla DEL for pressionada</string>
   <string name="hostpref_encoding_title">Codificação</string>
   <string name="hostpref_encoding_summary">Codificação de caracteres para o host</string>
   <string name="hostpref_connection_category">Configurações de conexão</string>

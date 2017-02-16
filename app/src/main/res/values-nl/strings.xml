@@ -112,7 +112,6 @@
   <string name="hostpref_stayconnected_title">Blijf verbonden</string>
   <string name="hostpref_stayconnected_summary">Verbinding automatisch proberen te herstellen</string>
   <string name="hostpref_delkey_title">Del-toets</string>
-  <string name="hostpref_delkey_summary">De toetscode als de DEL-knop in wordt gedrukt</string>
   <string name="hostpref_encoding_title">Codering</string>
   <string name="hostpref_encoding_summary">Tekencodering voor de host</string>
   <string name="hostpref_connection_category">Verbindings instellingen</string>

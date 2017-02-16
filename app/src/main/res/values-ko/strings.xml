@@ -98,7 +98,6 @@
   <string name="hostpref_stayconnected_title">연결 유지</string>
   <string name="hostpref_stayconnected_summary">연결이 끊기면 다시 연결을 시도</string>
   <string name="hostpref_delkey_title">삭제 키</string>
-  <string name="hostpref_delkey_summary">삭제 키를 눌렀을 때 보낼 키 코드</string>
   <string name="hostpref_encoding_title">인코딩</string>
   <string name="hostpref_encoding_summary">호스트의 문자 인코딩</string>
   <string name="hostpref_connection_category">접속 설정</string>

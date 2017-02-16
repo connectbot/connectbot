@@ -126,7 +126,6 @@
   <string name="hostpref_quickdisconnect_title">Cerrar al desconectar</string>
   <string name="hostpref_quickdisconnect_summary">Cerrar inmediatamente tras la desconexión remota sin confirmación</string>
   <string name="hostpref_delkey_title">Tecla DEL</string>
-  <string name="hostpref_delkey_summary">El código clave que se envía cuando se pulsa tecla DEL</string>
   <string name="hostpref_encoding_title">Codificando</string>
   <string name="hostpref_encoding_summary">Codificación de caracteres para la maquina</string>
   <string name="hostpref_connection_category">Opciones de Conexión</string>

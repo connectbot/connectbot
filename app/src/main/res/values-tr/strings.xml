@@ -112,7 +112,6 @@
   <string name="hostpref_stayconnected_title">Bağlı kal</string>
   <string name="hostpref_stayconnected_summary">Bağlantı koparsa tekrar bağlanmayı dene</string>
   <string name="hostpref_delkey_title">DEL tuşu</string>
-  <string name="hostpref_delkey_summary">DEL yani sil tuşuna basıldığında gönderilecek key kodu</string>
   <string name="hostpref_encoding_title">Dil Kodlaması</string>
   <string name="hostpref_encoding_summary">Sunucu karakter kodlaması</string>
   <string name="hostpref_connection_category">Bağlantı ayarları</string>

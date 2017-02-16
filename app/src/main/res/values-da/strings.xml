@@ -105,7 +105,6 @@
   <string name="hostpref_stayconnected_title">Oprethold forbindelse</string>
   <string name="hostpref_stayconnected_summary">Forbind igen hvis forbindelsen tabes</string>
   <string name="hostpref_delkey_title">Slet tast</string>
-  <string name="hostpref_delkey_summary">Tast som sendes når slet tasten benyttes</string>
   <string name="hostpref_encoding_title">Tekstkodning</string>
   <string name="hostpref_encoding_summary">Tekstkodning for værten</string>
   <string name="hostpref_connection_category">Forbindelsesindstillinger</string>

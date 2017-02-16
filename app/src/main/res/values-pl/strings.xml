@@ -114,7 +114,6 @@
   <string name="hostpref_stayconnected_title">Pozostań połączony</string>
   <string name="hostpref_stayconnected_summary">Spróbuj połączyć się z hostem ponownie po przerwaniu połączenia</string>
   <string name="hostpref_delkey_title">Klawisz DEL</string>
-  <string name="hostpref_delkey_summary">Kod klawisza wysyłany przy wciśnięciu DEL</string>
   <string name="hostpref_encoding_title">Kodowanie</string>
   <string name="hostpref_encoding_summary">Kodowanie znaków dla hostu</string>
   <string name="hostpref_connection_category">Ustawienia połączenia</string>
