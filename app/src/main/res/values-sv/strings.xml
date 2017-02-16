@@ -105,10 +105,7 @@
   <string name="hostpref_stayconnected_title">Fortsätt vara ansluten</string>
   <string name="hostpref_stayconnected_summary">Försök återansluta till värden om frånkopplad</string>
   <string name="hostpref_delkey_title">DEL-tangent</string>
-  <string name="hostpref_delkey_summary">Tangentkoden som sänds när DEL-tangenten trycks ner</string>
   <string name="hostpref_encoding_title">Teckenkodning</string>
-  <string name="hostpref_encoding_summary">Teckenkodning för värddatorn</string>
-  <string name="hostpref_connection_category">Anslutningsinställningar</string>
   <string name="hostpref_username_title">Användarnamn</string>
   <string name="hostpref_hostname_title">Värd</string>
   <string name="hostpref_port_title">Port</string>
@@ -179,7 +176,6 @@
   <string name="local_shell_unavailable">Misslyckande! Lokal shell är otillgänglig på denna telefon</string>
   <string name="notification_text">%1$s vill ha din uppmärksamhet.</string>
   <string name="no">Nej</string>
-  <string name="with_confirmation">Med bekräftelse</string>
   <string name="yes">Ja</string>
   <string name="menu_colors_reset">Återställ</string>
   <string name="app_is_running">ConnectBot är igång</string>

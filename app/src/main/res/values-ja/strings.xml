@@ -148,10 +148,7 @@
   <string name="hostpref_quickdisconnect_title">切断時に閉じる</string>
   <string name="hostpref_quickdisconnect_summary">リモート切断後、プロンプトを表示せずにすぐに閉じます。</string>
   <string name="hostpref_delkey_title">DELキー</string>
-  <string name="hostpref_delkey_summary">DELキーが押されたときに送るキーコード</string>
   <string name="hostpref_encoding_title">エンコーディング</string>
-  <string name="hostpref_encoding_summary">ホスト側の文字エンコーディング</string>
-  <string name="hostpref_connection_category">接続設定</string>
   <string name="hostpref_username_title">ユーザ名</string>
   <string name="hostpref_hostname_title">ホスト</string>
   <string name="hostpref_port_title">ポート</string>
@@ -226,7 +223,6 @@
   <string name="local_shell_unavailable">エラー! この電話機にはローカルシェルがありません.</string>
   <string name="notification_text">%1$s でベルが鳴りました</string>
   <string name="no">いいえ</string>
-  <string name="with_confirmation">確認が必要</string>
   <string name="yes">はい</string>
   <string name="menu_colors_reset">リセット</string>
   <string name="app_is_running">ConnectBot起動中</string>

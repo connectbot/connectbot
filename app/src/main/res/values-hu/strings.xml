@@ -105,10 +105,7 @@
   <string name="hostpref_stayconnected_title">Maradjon csatlakozva</string>
   <string name="hostpref_stayconnected_summary">Újracsatlakozás ha a kapcsolat megszakad</string>
   <string name="hostpref_delkey_title">DEL billentyű</string>
-  <string name="hostpref_delkey_summary">Az a billenytű kód amit a DEL lenyomásakor küldünk</string>
   <string name="hostpref_encoding_title">Karakterkódolás</string>
-  <string name="hostpref_encoding_summary">A kiszolgáló karakterkódolása</string>
-  <string name="hostpref_connection_category">Kapcsolat beállításai</string>
   <string name="hostpref_username_title">Felhasználónév</string>
   <string name="hostpref_hostname_title">Kiszolgáló</string>
   <string name="hostpref_port_title">Port</string>
@@ -178,7 +175,6 @@
   <string name="local_shell_unavailable">Hiba! Nincs lokális shell ezen a telefonon.</string>
   <string name="notification_text">%1$s a figyelmére szorul.</string>
   <string name="no">Nem</string>
-  <string name="with_confirmation">Csak beleegyezéssel</string>
   <string name="yes">Igen</string>
   <string name="menu_colors_reset">Visszaállít</string>
   <string name="app_is_running">ConnectBot már fut</string>

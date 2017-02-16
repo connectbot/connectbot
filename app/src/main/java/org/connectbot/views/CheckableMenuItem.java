@@ -150,9 +150,13 @@ public class CheckableMenuItem extends RelativeLayout {
 			Resources res = context.getResources();
 
 			ImageView icon = (ImageView) mRootView.findViewById(R.id.icon);
-			icon.setImageDrawable(res.getDrawable(iconRes));
 			mTitle.setText(titleRes);
-			mSummary.setText(summaryRes);
+			if (iconRes != 0) {
+				icon.setImageDrawable(res.getDrawable(iconRes));
+			}
+			if (summaryRes != 0) {
+				mSummary.setText(summaryRes);
+			}
 		}
 	}
 

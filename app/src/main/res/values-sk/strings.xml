@@ -105,10 +105,7 @@
   <string name="hostpref_stayconnected_title">Zostať pripojený</string>
   <string name="hostpref_stayconnected_summary">Znovu sa pripojiť pri odpojení</string>
   <string name="hostpref_delkey_title">Klávesa DEL</string>
-  <string name="hostpref_delkey_summary">Kód stlačenej DEL klávesy</string>
   <string name="hostpref_encoding_title">Kódovanie</string>
-  <string name="hostpref_encoding_summary">Kódovanie znakov hostiteľa</string>
-  <string name="hostpref_connection_category">Nastavenia pripojenia</string>
   <string name="hostpref_username_title">Užívateľské meno</string>
   <string name="hostpref_hostname_title">Hostiteľ</string>
   <string name="hostpref_port_title">Port</string>
@@ -180,7 +177,6 @@
   <string name="local_shell_unavailable">Chyba! Lokálny shell je nedostupný na tomto telefóne.</string>
   <string name="notification_text">%1$s vyžaduje vašu pozornosť.</string>
   <string name="no">Nie</string>
-  <string name="with_confirmation">S potvrdením</string>
   <string name="yes">Áno</string>
   <string name="menu_colors_reset">Pôvodné</string>
   <string name="app_is_running">ConnectBot je spustený</string>

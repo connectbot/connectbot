@@ -130,10 +130,7 @@
   <string name="hostpref_quickdisconnect_title">Fermer à la déconnexion</string>
   <string name="hostpref_quickdisconnect_summary">Fermer immédiatement sans confirmation lorsque le serveur a fermé la connexion</string>
   <string name="hostpref_delkey_title">Touche SUPPR</string>
-  <string name="hostpref_delkey_summary">Le code de touche envoyé quand la touche SUPPR est appuyée.</string>
   <string name="hostpref_encoding_title">Encodage</string>
-  <string name="hostpref_encoding_summary">Jeu de caractères à utiliser pour le serveur</string>
-  <string name="hostpref_connection_category">Paramètres de connexion</string>
   <string name="hostpref_username_title">Nom d\'utilisateur</string>
   <string name="hostpref_hostname_title">Serveur</string>
   <string name="hostpref_port_title">Port</string>
@@ -207,7 +204,6 @@
   <string name="local_shell_unavailable">Échec ! Le shell local est indisponible pour ce téléphone.</string>
   <string name="notification_text">%1$s requiert votre attention.</string>
   <string name="no">Non</string>
-  <string name="with_confirmation">Après confirmation</string>
   <string name="yes">Oui</string>
   <string name="menu_colors_reset">Réinitialiser</string>
   <string name="app_is_running">ConnectBot est en cours</string>

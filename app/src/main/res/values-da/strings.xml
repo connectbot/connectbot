@@ -105,10 +105,7 @@
   <string name="hostpref_stayconnected_title">Oprethold forbindelse</string>
   <string name="hostpref_stayconnected_summary">Forbind igen hvis forbindelsen tabes</string>
   <string name="hostpref_delkey_title">Slet tast</string>
-  <string name="hostpref_delkey_summary">Tast som sendes når slet tasten benyttes</string>
   <string name="hostpref_encoding_title">Tekstkodning</string>
-  <string name="hostpref_encoding_summary">Tekstkodning for værten</string>
-  <string name="hostpref_connection_category">Forbindelsesindstillinger</string>
   <string name="hostpref_username_title">Brugernavn</string>
   <string name="hostpref_hostname_title">Vært</string>
   <string name="hostpref_port_title">Port</string>
@@ -179,7 +176,6 @@
   <string name="local_shell_unavailable">Fejl! Lokal konsol er ikke tilgængelig på denne telefon.</string>
   <string name="notification_text">%1$s vil have din opmærksomhed.</string>
   <string name="no">Nej</string>
-  <string name="with_confirmation">Med godkendelse</string>
   <string name="yes">Ja</string>
   <string name="menu_colors_reset">Nulstil</string>
   <string name="app_is_running">ConnectBot kører</string>

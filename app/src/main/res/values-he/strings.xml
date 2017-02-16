@@ -106,10 +106,7 @@
   <string name="hostpref_stayconnected_title">להשאיר את החיבור פעיל</string>
   <string name="hostpref_stayconnected_summary">לנסות להתחבר שוב למארח לאחר ניתוק</string>
   <string name="hostpref_delkey_title">מקש DEL</string>
-  <string name="hostpref_delkey_summary">קוד המקש בעת לחיצה על מקש ה־DEL</string>
   <string name="hostpref_encoding_title">קידוד</string>
-  <string name="hostpref_encoding_summary">קידוד תווים בצד המארח</string>
-  <string name="hostpref_connection_category">הגדרות חיבור</string>
   <string name="hostpref_username_title">שם משתמש</string>
   <string name="hostpref_hostname_title">מארח</string>
   <string name="hostpref_port_title">פתחה</string>
@@ -182,7 +179,6 @@
   <string name="local_shell_unavailable">תקלה! המעטפת המקומית אינה זמינה במכשיר זה.</string>
   <string name="notification_text">ל־%1$s נדרשת תשומת הלב שלך.</string>
   <string name="no">לא</string>
-  <string name="with_confirmation">עם אימות</string>
   <string name="yes">כן</string>
   <string name="menu_colors_reset">איפוס</string>
   <string name="app_is_running">ConnectBot פעיל</string>

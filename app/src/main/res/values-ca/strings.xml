@@ -107,10 +107,7 @@
   <string name="hostpref_stayconnected_title">Manté connectat</string>
   <string name="hostpref_stayconnected_summary">Intenta reconnectar al servidor si es desconnecta</string>
   <string name="hostpref_delkey_title">Tecla DEL</string>
-  <string name="hostpref_delkey_summary">El codi enviat al pulsar la tecla DEL</string>
   <string name="hostpref_encoding_title">Codificació</string>
-  <string name="hostpref_encoding_summary">Codificació de caràcters per el servidor</string>
-  <string name="hostpref_connection_category">Paràmetres de connexió</string>
   <string name="hostpref_username_title">Nom d\'usuari</string>
   <string name="hostpref_hostname_title">Servidor</string>
   <string name="hostpref_port_title">Port</string>
@@ -181,7 +178,6 @@
   <string name="local_shell_unavailable">Fallada! El shell local no està disponible en aquest telèfon.</string>
   <string name="notification_text">%1$s necessita la teva atenció.</string>
   <string name="no">No</string>
-  <string name="with_confirmation">Amb confirmació</string>
   <string name="yes">Sí</string>
   <string name="menu_colors_reset">Reinicia</string>
   <string name="app_is_running">El ConnectBot està en marxa</string>

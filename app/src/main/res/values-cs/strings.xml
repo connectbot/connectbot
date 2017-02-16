@@ -146,10 +146,7 @@
   <string name="hostpref_quickdisconnect_title">Zavřit po ukončení spojení</string>
   <string name="hostpref_quickdisconnect_summary">Zavřít bez potvrzení ihned po vzdáleném ukončení spojení.</string>
   <string name="hostpref_delkey_title">Klávesa DEL</string>
-  <string name="hostpref_delkey_summary">Kód klávesy odeslaný při stisku DEL</string>
   <string name="hostpref_encoding_title">Kódování</string>
-  <string name="hostpref_encoding_summary">Kódování znaků na hostovi</string>
-  <string name="hostpref_connection_category">Nastavení připojení</string>
   <string name="hostpref_username_title">Uživatelské jméno</string>
   <string name="hostpref_hostname_title">Hostitelský server</string>
   <string name="hostpref_port_title">Port</string>
@@ -226,7 +223,6 @@
   <string name="local_shell_unavailable">Selhání! Místní shell není na tomto telefonu podporován</string>
   <string name="notification_text">%1$s žádá pozornost.</string>
   <string name="no">Ne</string>
-  <string name="with_confirmation">S potvrzením</string>
   <string name="yes">Ano</string>
   <string name="menu_colors_reset">Obnovit</string>
   <string name="app_is_running">ConnectBot běží</string>

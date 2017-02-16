@@ -126,10 +126,7 @@
   <string name="hostpref_quickdisconnect_title">Cerrar al desconectar</string>
   <string name="hostpref_quickdisconnect_summary">Cerrar inmediatamente tras la desconexión remota sin confirmación</string>
   <string name="hostpref_delkey_title">Tecla DEL</string>
-  <string name="hostpref_delkey_summary">El código clave que se envía cuando se pulsa tecla DEL</string>
   <string name="hostpref_encoding_title">Codificando</string>
-  <string name="hostpref_encoding_summary">Codificación de caracteres para la maquina</string>
-  <string name="hostpref_connection_category">Opciones de Conexión</string>
   <string name="hostpref_username_title">Nombre de usuario</string>
   <string name="hostpref_hostname_title">Host (equipo anfitrión)</string>
   <string name="hostpref_port_title">Puerto</string>
@@ -204,7 +201,6 @@
   <string name="local_shell_unavailable">¡Fallo! Su intérprete de órdenes local no está disponible en este teléfono.</string>
   <string name="notification_text">%1$s requiere de tu atención.</string>
   <string name="no">Denegar</string>
-  <string name="with_confirmation">Con confirmación</string>
   <string name="yes">Sí</string>
   <string name="menu_colors_reset">Restablecer</string>
   <string name="app_is_running">ConnectBot está ejecutándose</string>

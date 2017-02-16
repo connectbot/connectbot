@@ -120,10 +120,7 @@
   <string name="hostpref_quickdisconnect_title">Затвори по прекиду</string>
   <string name="hostpref_quickdisconnect_summary">Затвори без питања одмах по прекиду везе.</string>
   <string name="hostpref_delkey_title">DEL тастер</string>
-  <string name="hostpref_delkey_summary">Кôд тастера који се шаље притиском на DEL тастер</string>
   <string name="hostpref_encoding_title">Кодирање</string>
-  <string name="hostpref_encoding_summary">Кодирање за домаћина</string>
-  <string name="hostpref_connection_category">Поставке везе</string>
   <string name="hostpref_username_title">Корисничко име</string>
   <string name="hostpref_hostname_title">Домаћин</string>
   <string name="hostpref_port_title">Порт</string>
@@ -197,7 +194,6 @@
   <string name="local_shell_unavailable">Неуспех! Нема локалне шкољке на овом телефону.</string>
   <string name="notification_text">%1$s жели вашу пажњу.</string>
   <string name="no">Не</string>
-  <string name="with_confirmation">Тражи потврду</string>
   <string name="yes">Да</string>
   <string name="menu_colors_reset">Ресетуј</string>
   <string name="app_is_running">Конектбот је покренут</string>

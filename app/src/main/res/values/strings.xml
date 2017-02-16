@@ -368,16 +368,9 @@
 
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
 	<string name="hostpref_delkey_title">"DEL Key"</string>
-	<!-- Summary for field asking what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_summary">"The key code sent when DEL key is pressed"</string>
 
 	<!-- Host character encoding preference title -->
 	<string name="hostpref_encoding_title">"Encoding"</string>
-	<!-- Host character encoding preference summary -->
-	<string name="hostpref_encoding_summary">"Character encoding for the host"</string>
-
-	<!-- Host preference category title for connection settings -->
-	<string name="hostpref_connection_category">"Connection settings"</string>
 
 	<!-- Username field title for host editor preference -->
 	<string name="hostpref_username_title">"Username"</string>
@@ -529,8 +522,6 @@
 
 	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
 	<string name="no">"No"</string>
-	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys "with confirmation" only -->
-	<string name="with_confirmation">"With confirmation"</string>
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
 	<string name="yes">"Yes"</string>
 

@@ -132,10 +132,7 @@
   <string name="hostpref_stayconnected_summary">Tentar reconectar ao host caso a conexão seja perdida</string>
   <string name="hostpref_quickdisconnect_title">Fechar ao desconectar</string>
   <string name="hostpref_delkey_title">Tecla DEL</string>
-  <string name="hostpref_delkey_summary">Código a ser enviado quando a tecla DEL for pressionada</string>
   <string name="hostpref_encoding_title">Codificação</string>
-  <string name="hostpref_encoding_summary">Codificação de caracteres para o host</string>
-  <string name="hostpref_connection_category">Configurações de conexão</string>
   <string name="hostpref_username_title">Usuário</string>
   <string name="hostpref_hostname_title">Anfitrião (host)</string>
   <string name="hostpref_port_title">Porta</string>
@@ -206,7 +203,6 @@
   <string name="local_shell_unavailable">Erro! O terminal local não está disponível neste telefone.</string>
   <string name="notification_text">%1$s deseja sua atenção.</string>
   <string name="no">Não</string>
-  <string name="with_confirmation">Com confirmação</string>
   <string name="yes">Sim</string>
   <string name="menu_colors_reset">Reiniciar</string>
   <string name="app_is_running">ConnectBot está executando</string>

@@ -123,10 +123,7 @@
   <string name="hostpref_wantsession_summary">Non-aktifkan kesukaan ini hanya untuk port forwards</string>
   <string name="hostpref_stayconnected_summary">Coba menyambungkan kembali ke host jika terputus</string>
   <string name="hostpref_delkey_title">Tombol DEL</string>
-  <string name="hostpref_delkey_summary">Kode kunci terkirim ketika tombol DEL ditekan</string>
   <string name="hostpref_encoding_title">Pengkodean</string>
-  <string name="hostpref_encoding_summary">Karakter pengkodean untuk host</string>
-  <string name="hostpref_connection_category">Konfigurasi koneksi</string>
   <string name="hostpref_username_title">Nama pengguna</string>
   <string name="hostpref_hostname_title">Host</string>
   <string name="hostpref_port_title">Port</string>
@@ -195,7 +192,6 @@
   <string name="local_shell_unavailable">Gagal! Shell lokal tidak tersedia di telepon ini.</string>
   <string name="notification_text">%1$s memerlukan perhatian anda.</string>
   <string name="no">Tidak</string>
-  <string name="with_confirmation">Dengan konfirmasi</string>
   <string name="yes">Ya</string>
   <string name="menu_colors_reset">Atur ulang</string>
   <string name="app_is_running">ConnectBot sedang berjalan</string>

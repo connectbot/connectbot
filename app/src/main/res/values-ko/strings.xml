@@ -98,10 +98,7 @@
   <string name="hostpref_stayconnected_title">연결 유지</string>
   <string name="hostpref_stayconnected_summary">연결이 끊기면 다시 연결을 시도</string>
   <string name="hostpref_delkey_title">삭제 키</string>
-  <string name="hostpref_delkey_summary">삭제 키를 눌렀을 때 보낼 키 코드</string>
   <string name="hostpref_encoding_title">인코딩</string>
-  <string name="hostpref_encoding_summary">호스트의 문자 인코딩</string>
-  <string name="hostpref_connection_category">접속 설정</string>
   <string name="hostpref_username_title">사용자 이름</string>
   <string name="hostpref_hostname_title">호스트</string>
   <string name="hostpref_port_title">포트</string>
@@ -157,7 +154,6 @@
   <string name="local_shell_unavailable">실패! 이 폰은 로컬 쉘을 사용할 수 없습니다.</string>
   <string name="notification_text">%1$s에서 알림이 있습니다.</string>
   <string name="no">아니오</string>
-  <string name="with_confirmation">확인 작업 수행</string>
   <string name="yes">예</string>
   <string name="menu_colors_reset">초기화</string>
   <string name="app_is_running">ConnectBot 실행 중</string>

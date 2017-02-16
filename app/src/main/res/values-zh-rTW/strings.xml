@@ -132,10 +132,7 @@
   <string name="hostpref_quickdisconnect_title">連接斷開時關閉</string>
   <string name="hostpref_quickdisconnect_summary">遠程連接斷開後，立即關閉不提示。</string>
   <string name="hostpref_delkey_title">DEL 鍵</string>
-  <string name="hostpref_delkey_summary">當按下 DEL 鍵時，傳送金鑰代碼</string>
   <string name="hostpref_encoding_title">編碼</string>
-  <string name="hostpref_encoding_summary">主機的字元編碼</string>
-  <string name="hostpref_connection_category">連線設定</string>
   <string name="hostpref_username_title">使用者名稱</string>
   <string name="hostpref_hostname_title">主機</string>
   <string name="hostpref_port_title">連接埠</string>
@@ -206,7 +203,6 @@
   <string name="local_shell_unavailable">失敗！此手機 Shell 不可用。</string>
   <string name="notification_text">%1$s 需要您的注意。</string>
   <string name="no">否</string>
-  <string name="with_confirmation">已確認過</string>
   <string name="yes">是</string>
   <string name="menu_colors_reset">重設</string>
   <string name="app_is_running">ConnectBot 執行中</string>

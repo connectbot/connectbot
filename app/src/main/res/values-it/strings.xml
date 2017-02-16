@@ -144,10 +144,7 @@
   <string name="hostpref_quickdisconnect_title">Chiudi alla disconnessione</string>
   <string name="hostpref_quickdisconnect_summary">Chiudi immediatamente senza conferma dopo la disconnessione del computer remoto.</string>
   <string name="hostpref_delkey_title">Tasto CANC</string>
-  <string name="hostpref_delkey_summary">Il codice di tastiera inviato quando viene premuto il tasto CANC</string>
   <string name="hostpref_encoding_title">Codifica</string>
-  <string name="hostpref_encoding_summary">Codifica dei caratteri per la connessione</string>
-  <string name="hostpref_connection_category">Impostazioni di connessione</string>
   <string name="hostpref_username_title">Nome utente</string>
   <string name="hostpref_hostname_title">Host</string>
   <string name="hostpref_port_title">Porta</string>
@@ -223,7 +220,6 @@
   <string name="local_shell_unavailable">Fallimento! La shell locale non è disponibile su questo telefono.</string>
   <string name="notification_text">%1$s richiede la tua attenzione.</string>
   <string name="no">No</string>
-  <string name="with_confirmation">Richiedi conferma</string>
   <string name="yes">Sì</string>
   <string name="menu_colors_reset">Reimposta</string>
   <string name="app_is_running">ConnectBot è in esecuzione</string>

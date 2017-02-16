@@ -148,10 +148,7 @@
   <string name="hostpref_quickdisconnect_title">连接断开时关闭</string>
   <string name="hostpref_quickdisconnect_summary">远程连接断开后，立即关闭不提示。</string>
   <string name="hostpref_delkey_title">DEL键</string>
-  <string name="hostpref_delkey_summary">按下DEL键时发送给服务器的键值</string>
   <string name="hostpref_encoding_title">编码</string>
-  <string name="hostpref_encoding_summary">主机的字符编码</string>
-  <string name="hostpref_connection_category">连接设置</string>
   <string name="hostpref_username_title">用户名</string>
   <string name="hostpref_hostname_title">主机</string>
   <string name="hostpref_port_title">端口</string>
@@ -226,7 +223,6 @@
   <string name="local_shell_unavailable">失败! 本地Shell在该手机上不可用</string>
   <string name="notification_text">%1$s 需要你关注。</string>
   <string name="no">不</string>
-  <string name="with_confirmation">需要确认</string>
   <string name="yes">确定</string>
   <string name="menu_colors_reset">重置</string>
   <string name="app_is_running">ConnectBot 正在运行</string>

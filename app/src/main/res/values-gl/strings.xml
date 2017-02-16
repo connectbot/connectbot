@@ -84,8 +84,6 @@
   <string name="hostpref_compression_summary">Esto podería axudar en redes lentas</string>
   <string name="hostpref_wantsession_title">Comezar sesión de shell</string>
   <string name="hostpref_encoding_title">Codificación</string>
-  <string name="hostpref_encoding_summary">Codificación de caracteres para a máquina remota</string>
-  <string name="hostpref_connection_category">Configuracion da conexión</string>
   <string name="hostpref_username_title">Nome de usuario</string>
   <string name="hostpref_hostname_title">Máquina</string>
   <string name="hostpref_port_title">Porto</string>

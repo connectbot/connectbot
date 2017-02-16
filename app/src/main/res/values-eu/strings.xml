@@ -117,10 +117,7 @@
   <string name="hostpref_stayconnected_summary">Saiatu ostalarira birkonektatzen deskonektatzean</string>
   <string name="hostpref_quickdisconnect_title">Itxi deskonektatzean</string>
   <string name="hostpref_delkey_title">DEL tekla</string>
-  <string name="hostpref_delkey_summary">DEL tekla sakatzean bidaltzen den tekla-kodea</string>
   <string name="hostpref_encoding_title">Kodeketa</string>
-  <string name="hostpref_encoding_summary">Ostalariarentzako karaktere kodeketa</string>
-  <string name="hostpref_connection_category">Konexio hobespenak</string>
   <string name="hostpref_username_title">Erabiltzaile-izena</string>
   <string name="hostpref_hostname_title">Ostalaria</string>
   <string name="hostpref_port_title">Ataka</string>
@@ -194,7 +191,6 @@
   <string name="local_shell_unavailable">Errorea! Shell lokala ez dago eskuragarri telefono honetan.</string>
   <string name="notification_text">%1$s-k zure arreta behar du.</string>
   <string name="no">Ez</string>
-  <string name="with_confirmation">Berrespenarekin</string>
   <string name="yes">Bai</string>
   <string name="menu_colors_reset">Berrezarri</string>
   <string name="app_is_running">ConnectBot martxan dago</string>

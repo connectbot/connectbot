@@ -94,7 +94,6 @@
   <string name="hostpref_stayconnected_title">Halda tengingu</string>
   <string name="hostpref_stayconnected_summary">Reyna að endurtengjast ef aftenging verður</string>
   <string name="hostpref_encoding_title">Kóðun</string>
-  <string name="hostpref_connection_category">Stillingar fyrir tengingu</string>
   <string name="hostpref_username_title">Notendanafn</string>
   <string name="hostpref_hostname_title">Hýsill</string>
   <string name="hostpref_port_title">Port</string>
@@ -147,7 +146,6 @@
   <string name="terminal_enable_portfoward">Áframsenda port: %1$s</string>
   <string name="notification_text">%1$s krefst athygli þinnar.</string>
   <string name="no">Nei</string>
-  <string name="with_confirmation">Með staðfestingu</string>
   <string name="yes">Já</string>
   <string name="menu_colors_reset">Frumstilla</string>
   <string name="app_is_running">ConnectBot er í gangi</string>

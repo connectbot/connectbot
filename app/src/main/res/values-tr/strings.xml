@@ -112,10 +112,7 @@
   <string name="hostpref_stayconnected_title">Bağlı kal</string>
   <string name="hostpref_stayconnected_summary">Bağlantı koparsa tekrar bağlanmayı dene</string>
   <string name="hostpref_delkey_title">DEL tuşu</string>
-  <string name="hostpref_delkey_summary">DEL yani sil tuşuna basıldığında gönderilecek key kodu</string>
   <string name="hostpref_encoding_title">Dil Kodlaması</string>
-  <string name="hostpref_encoding_summary">Sunucu karakter kodlaması</string>
-  <string name="hostpref_connection_category">Bağlantı ayarları</string>
   <string name="hostpref_username_title">Kullanıcı Adı</string>
   <string name="hostpref_hostname_title">Sunucu</string>
   <string name="hostpref_port_title">Port</string>
@@ -185,7 +182,6 @@
   <string name="local_shell_unavailable">Başarısız! Yerel shell bu telefonda kullanılamıyor.</string>
   <string name="notification_text">%1$s sizi uyarıyor</string>
   <string name="no">Hayır</string>
-  <string name="with_confirmation">teyitli</string>
   <string name="yes">Evet</string>
   <string name="menu_colors_reset">Sıfırla</string>
   <string name="app_is_running">ConnectBot çalışıyor</string>

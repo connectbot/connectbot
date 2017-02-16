@@ -112,10 +112,7 @@
   <string name="hostpref_stayconnected_title">Blijf verbonden</string>
   <string name="hostpref_stayconnected_summary">Verbinding automatisch proberen te herstellen</string>
   <string name="hostpref_delkey_title">Del-toets</string>
-  <string name="hostpref_delkey_summary">De toetscode als de DEL-knop in wordt gedrukt</string>
   <string name="hostpref_encoding_title">Codering</string>
-  <string name="hostpref_encoding_summary">Tekencodering voor de host</string>
-  <string name="hostpref_connection_category">Verbindings instellingen</string>
   <string name="hostpref_username_title">Gebruikersnaam</string>
   <string name="hostpref_hostname_title">Host</string>
   <string name="hostpref_port_title">Poort</string>
@@ -187,7 +184,6 @@
   <string name="local_shell_unavailable">Mislukking! Lokale shell is niet beschikbaar op deze telefoon.</string>
   <string name="notification_text">%1$s wil je aandacht.</string>
   <string name="no">Nee</string>
-  <string name="with_confirmation">Met toestemming</string>
   <string name="yes">Ja</string>
   <string name="menu_colors_reset">Terug naar standaardinstellingen</string>
   <string name="app_is_running">ConnectBot werkt (Connecties zijn actief)</string>

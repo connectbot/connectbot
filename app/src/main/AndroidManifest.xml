@@ -92,16 +92,6 @@
 		</activity>
 
 		<activity
-			android:name=".HostEditorActivity"
-			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/title_host_editor">
-
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.connectbot.HostListActivity"/>
-		</activity>
-
-		<activity
 			android:name=".PortForwardListActivity"
 			android:configChanges="keyboardHidden|orientation"
 			android:label="@string/title_port_forwards_list">
