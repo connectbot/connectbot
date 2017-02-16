@@ -29,6 +29,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
+		android:animateLayoutChanges="true"
 		>
 
 		<RelativeLayout
@@ -77,7 +78,7 @@
 			<android.support.design.widget.TextInputLayout
 				android:id="@+id/quickconnect_field_container"
 				android:layout_width="0dp"
-				android:layout_weight ="1"
+				android:layout_weight="1"
 				android:layout_height="wrap_content"
 				android:accessibilityLiveRegion="polite"
 				android:labelFor="@+id/quickconnect_field"
@@ -96,8 +97,8 @@
 
 			<ImageButton
 				android:id="@+id/expand_collapse_button"
-				android:layout_width="16dp"
-				android:layout_height="16dp"
+				android:layout_width="48dp"
+				android:layout_height="48dp"
 				android:layout_gravity="center"
 				android:layout_margin="16dp"
 				android:src="@drawable/ic_expand_more"
@@ -413,80 +414,21 @@
 
 		</RelativeLayout>
 
-		<LinearLayout
+		<org.connectbot.views.CheckableMenuItem
+			android:id="@+id/use_ssh_auth_item"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:focusable="true"
-			>
+			android:icon="@drawable/ic_vpn_lock"
+			android:title="@string/hostpref_authagent_title"
+			/>
 
-			<RelativeLayout
-				android:id="@+id/use_ssh_auth_item"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				>
-
-				<ImageView
-					android:layout_width="24dp"
-					android:layout_height="24dp"
-					android:src="@drawable/ic_vpn_lock"
-					android:contentDescription="@null"
-					style="@style/ListItemIcon"
-					/>
-
-				<android.support.v7.widget.SwitchCompat
-					android:id="@+id/use_ssh_auth_switch"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_alignParentRight="true"
-					android:layout_alignParentEnd="true"
-					android:layout_marginRight="16dp"
-					android:layout_marginEnd="16dp"
-					android:layout_centerVertical="true"
-					/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_toLeftOf="@id/use_ssh_auth_switch"
-					android:layout_toStartOf="@id/use_ssh_auth_switch"
-					android:text="@string/hostpref_authagent_title"
-					android:paddingBottom="24dp"
-					style="@style/ListItemFirstLineText.WithIcon"
-					tools:ignore="RelativeOverlap"
-					/>
-
-			</RelativeLayout>
-
-			<RelativeLayout
-				android:id="@+id/ssh_auth_confirmation_item"
-				android:layout_width="match_parent"
-				android:layout_height="32dp"
-				android:visibility="gone"
-				>
-
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="@string/hostpref_authagent_with_confirmation"
-					android:textSize="14sp"
-					android:layout_marginTop="8dp"
-					android:layout_marginLeft="72dp"
-					android:layout_marginStart="72dp"
-					/>
-
-				<android.support.v7.widget.AppCompatCheckBox
-					android:id="@+id/ssh_auth_confirmation_checkbox"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_alignParentRight="true"
-					android:layout_alignParentEnd="true"
-					android:padding="16dp"
-					/>
-
-			</RelativeLayout>
-
-		</LinearLayout>
+		<org.connectbot.views.CheckableMenuItem
+			android:id="@+id/ssh_auth_confirmation_item"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:title="@string/hostpref_authagent_with_confirmation"
+			android:visibility="gone"
+			/>
 
 		<org.connectbot.views.CheckableMenuItem
 			android:id="@+id/compression_item"

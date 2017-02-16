@@ -105,18 +105,6 @@
 		<item>-1</item>
 	</string-array>
 
-	<string-array name="list_authagent" translatable="false">
-		<item>@string/no</item>
-		<item>@string/with_confirmation</item>
-		<item>@string/yes</item>
-	</string-array>
-
-	<string-array name="list_authagent_values" translatable="false">
-		<item>no</item>
-		<item>confirm</item>
-		<item>yes</item>
-	</string-array>
-
 	<string-array name="list_portforward_types" translatable="false">
 		<item>@string/portforward_local</item>
 		<item>@string/portforward_remote</item>

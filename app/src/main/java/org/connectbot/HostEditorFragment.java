@@ -29,9 +29,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -91,10 +89,6 @@ public class HostEditorFragment extends Fragment {
 	private TypedArray mColorNames;
 	private TypedArray mColorValues;
 
-	// Likewise, but for SSH auth agent.
-	private TypedArray mSshAuthNames;
-	private TypedArray mSshAuthValues;
-
 	// Likewise, but for DEL key.
 	private TypedArray mDelKeyNames;
 	private TypedArray mDelKeyValues;
@@ -126,17 +120,11 @@ public class HostEditorFragment extends Fragment {
 	private TextView mDelKeyText;
 	private View mEncodingItem;
 	private TextView mEncodingText;
-	private View mUseSshAuthItem;
-	private SwitchCompat mUseSshAuthSwitch;
-	private View mUseSshConfirmationItem;
-	private AppCompatCheckBox mUseSshConfirmationCheckbox;
-	private View mCompressionItem;
+	private CheckableMenuItem mUseSshAuthSwitch;
+	private CheckableMenuItem mUseSshConfirmationSwitch;
 	private CheckableMenuItem mCompressionSwitch;
-	private View mStartShellItem;
 	private CheckableMenuItem mStartShellSwitch;
-	private View mStayConnectedItem;
 	private CheckableMenuItem mStayConnectedSwitch;
-	private View mCloseOnDisconnectItem;
 	private CheckableMenuItem mCloseOnDisconnectSwitch;
 	private EditText mPostLoginAutomationField;
 
@@ -427,18 +415,7 @@ public class HostEditorFragment extends Fragment {
 		// available when this fragment is created.
 		mEncodingText = (TextView) view.findViewById(R.id.encoding_text);
 
-		mUseSshAuthItem = view.findViewById(R.id.use_ssh_auth_item);
-		mUseSshAuthItem.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mUseSshAuthSwitch.toggle();
-			}
-		});
-
-		mUseSshAuthSwitch = (SwitchCompat) view.findViewById(R.id.use_ssh_auth_switch);
-		//noinspection ResourceType
-		mUseSshAuthSwitch.setChecked(mHost.getUseAuthAgent() != null &&
-				!mHost.getUseAuthAgent().equals(mSshAuthValues.getString(0)));
+		mUseSshAuthSwitch = (CheckableMenuItem) view.findViewById(R.id.use_ssh_auth_item);
 		mUseSshAuthSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -446,20 +423,8 @@ public class HostEditorFragment extends Fragment {
 			}
 		});
 
-		mUseSshConfirmationItem = view.findViewById(R.id.ssh_auth_confirmation_item);
-		mUseSshConfirmationItem.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mUseSshConfirmationCheckbox.toggle();
-			}
-		});
-
-		mUseSshConfirmationCheckbox =
-				(AppCompatCheckBox) view.findViewById(R.id.ssh_auth_confirmation_checkbox);
-		//noinspection ResourceType
-		mUseSshConfirmationCheckbox.setChecked(mHost.getUseAuthAgent() != null &&
-				mHost.getUseAuthAgent().equals(mSshAuthValues.getString(1)));
-		mUseSshConfirmationCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		mUseSshConfirmationSwitch = (CheckableMenuItem) view.findViewById(R.id.ssh_auth_confirmation_item);
+		mUseSshAuthSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				processSshAuthChange();
@@ -578,17 +543,17 @@ public class HostEditorFragment extends Fragment {
 	}
 
 	private void processSshAuthChange() {
-		mUseSshConfirmationItem.setVisibility(
+		mUseSshConfirmationSwitch.setVisibility(
 				mUseSshAuthSwitch.isChecked() ? View.VISIBLE : View.GONE);
 
 		if (mUseSshAuthSwitch.isChecked()) {
 			//noinspection ResourceType
 			mHost.setUseAuthAgent(
-					mUseSshConfirmationCheckbox.isChecked() ?
-									/* require confirmation */ mSshAuthValues.getString(1) :
-									/* don't require confirmation */ mSshAuthValues.getString(2));
+					mUseSshConfirmationSwitch.isChecked() ?
+									HostDatabase.AUTHAGENT_CONFIRM :
+									HostDatabase.AUTHAGENT_YES);
 		} else {
-			mHost.setUseAuthAgent(/* don't use */ mSshAuthValues.getString(0));
+			mHost.setUseAuthAgent(HostDatabase.AUTHAGENT_NO);
 		}
 
 		handleHostChange();
@@ -607,8 +572,6 @@ public class HostEditorFragment extends Fragment {
 		// Activity's resources.
 		mColorNames = getResources().obtainTypedArray(R.array.list_colors);
 		mColorValues = getResources().obtainTypedArray(R.array.list_color_values);
-		mSshAuthNames = getResources().obtainTypedArray(R.array.list_authagent);
-		mSshAuthValues = getResources().obtainTypedArray(R.array.list_authagent_values);
 		mDelKeyNames = getResources().obtainTypedArray(R.array.list_delkey);
 		mDelKeyValues = getResources().obtainTypedArray(R.array.list_delkey_values);
 	}
@@ -619,8 +582,6 @@ public class HostEditorFragment extends Fragment {
 		mListener = null;
 		mColorNames.recycle();
 		mColorValues.recycle();
-		mSshAuthNames.recycle();
-		mSshAuthValues.recycle();
 		mDelKeyNames.recycle();
 		mDelKeyValues.recycle();
 	}
