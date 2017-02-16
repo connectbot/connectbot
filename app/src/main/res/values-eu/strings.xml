@@ -118,8 +118,6 @@
   <string name="hostpref_quickdisconnect_title">Itxi deskonektatzean</string>
   <string name="hostpref_delkey_title">DEL tekla</string>
   <string name="hostpref_encoding_title">Kodeketa</string>
-  <string name="hostpref_encoding_summary">Ostalariarentzako karaktere kodeketa</string>
-  <string name="hostpref_connection_category">Konexio hobespenak</string>
   <string name="hostpref_username_title">Erabiltzaile-izena</string>
   <string name="hostpref_hostname_title">Ostalaria</string>
   <string name="hostpref_port_title">Ataka</string>

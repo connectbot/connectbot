@@ -113,8 +113,6 @@
   <string name="hostpref_stayconnected_summary">Bağlantı koparsa tekrar bağlanmayı dene</string>
   <string name="hostpref_delkey_title">DEL tuşu</string>
   <string name="hostpref_encoding_title">Dil Kodlaması</string>
-  <string name="hostpref_encoding_summary">Sunucu karakter kodlaması</string>
-  <string name="hostpref_connection_category">Bağlantı ayarları</string>
   <string name="hostpref_username_title">Kullanıcı Adı</string>
   <string name="hostpref_hostname_title">Sunucu</string>
   <string name="hostpref_port_title">Port</string>

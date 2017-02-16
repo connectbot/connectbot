@@ -149,8 +149,6 @@
   <string name="hostpref_quickdisconnect_summary">リモート切断後、プロンプトを表示せずにすぐに閉じます。</string>
   <string name="hostpref_delkey_title">DELキー</string>
   <string name="hostpref_encoding_title">エンコーディング</string>
-  <string name="hostpref_encoding_summary">ホスト側の文字エンコーディング</string>
-  <string name="hostpref_connection_category">接続設定</string>
   <string name="hostpref_username_title">ユーザ名</string>
   <string name="hostpref_hostname_title">ホスト</string>
   <string name="hostpref_port_title">ポート</string>

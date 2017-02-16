@@ -149,8 +149,6 @@
   <string name="hostpref_quickdisconnect_summary">远程连接断开后，立即关闭不提示。</string>
   <string name="hostpref_delkey_title">DEL键</string>
   <string name="hostpref_encoding_title">编码</string>
-  <string name="hostpref_encoding_summary">主机的字符编码</string>
-  <string name="hostpref_connection_category">连接设置</string>
   <string name="hostpref_username_title">用户名</string>
   <string name="hostpref_hostname_title">主机</string>
   <string name="hostpref_port_title">端口</string>

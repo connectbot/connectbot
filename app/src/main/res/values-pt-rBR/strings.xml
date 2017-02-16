@@ -133,8 +133,6 @@
   <string name="hostpref_quickdisconnect_title">Fechar ao desconectar</string>
   <string name="hostpref_delkey_title">Tecla DEL</string>
   <string name="hostpref_encoding_title">Codificação</string>
-  <string name="hostpref_encoding_summary">Codificação de caracteres para o host</string>
-  <string name="hostpref_connection_category">Configurações de conexão</string>
   <string name="hostpref_username_title">Usuário</string>
   <string name="hostpref_hostname_title">Anfitrião (host)</string>
   <string name="hostpref_port_title">Porta</string>

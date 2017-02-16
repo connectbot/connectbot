@@ -106,8 +106,6 @@
   <string name="hostpref_stayconnected_summary">Försök återansluta till värden om frånkopplad</string>
   <string name="hostpref_delkey_title">DEL-tangent</string>
   <string name="hostpref_encoding_title">Teckenkodning</string>
-  <string name="hostpref_encoding_summary">Teckenkodning för värddatorn</string>
-  <string name="hostpref_connection_category">Anslutningsinställningar</string>
   <string name="hostpref_username_title">Användarnamn</string>
   <string name="hostpref_hostname_title">Värd</string>
   <string name="hostpref_port_title">Port</string>

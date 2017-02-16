@@ -106,8 +106,6 @@
   <string name="hostpref_stayconnected_summary">Znovu sa pripojiť pri odpojení</string>
   <string name="hostpref_delkey_title">Klávesa DEL</string>
   <string name="hostpref_encoding_title">Kódovanie</string>
-  <string name="hostpref_encoding_summary">Kódovanie znakov hostiteľa</string>
-  <string name="hostpref_connection_category">Nastavenia pripojenia</string>
   <string name="hostpref_username_title">Užívateľské meno</string>
   <string name="hostpref_hostname_title">Hostiteľ</string>
   <string name="hostpref_port_title">Port</string>

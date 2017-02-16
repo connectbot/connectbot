@@ -107,8 +107,6 @@
   <string name="hostpref_stayconnected_summary">לנסות להתחבר שוב למארח לאחר ניתוק</string>
   <string name="hostpref_delkey_title">מקש DEL</string>
   <string name="hostpref_encoding_title">קידוד</string>
-  <string name="hostpref_encoding_summary">קידוד תווים בצד המארח</string>
-  <string name="hostpref_connection_category">הגדרות חיבור</string>
   <string name="hostpref_username_title">שם משתמש</string>
   <string name="hostpref_hostname_title">מארח</string>
   <string name="hostpref_port_title">פתחה</string>

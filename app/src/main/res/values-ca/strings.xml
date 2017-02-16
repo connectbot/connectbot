@@ -108,8 +108,6 @@
   <string name="hostpref_stayconnected_summary">Intenta reconnectar al servidor si es desconnecta</string>
   <string name="hostpref_delkey_title">Tecla DEL</string>
   <string name="hostpref_encoding_title">Codificació</string>
-  <string name="hostpref_encoding_summary">Codificació de caràcters per el servidor</string>
-  <string name="hostpref_connection_category">Paràmetres de connexió</string>
   <string name="hostpref_username_title">Nom d\'usuari</string>
   <string name="hostpref_hostname_title">Servidor</string>
   <string name="hostpref_port_title">Port</string>

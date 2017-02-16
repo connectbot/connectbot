@@ -120,8 +120,6 @@
   <string name="hostpref_stayconnected_summary">Пытаться переподключиться при отключении узла</string>
   <string name="hostpref_delkey_title">Клавиша DEL</string>
   <string name="hostpref_encoding_title">Кодировка</string>
-  <string name="hostpref_encoding_summary">Кодировка символов узла</string>
-  <string name="hostpref_connection_category">Настройки соединения</string>
   <string name="hostpref_username_title">Имя пользователя</string>
   <string name="hostpref_hostname_title">Узел</string>
   <string name="hostpref_port_title">Порт</string>

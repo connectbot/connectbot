@@ -371,11 +371,6 @@
 
 	<!-- Host character encoding preference title -->
 	<string name="hostpref_encoding_title">"Encoding"</string>
-	<!-- Host character encoding preference summary -->
-	<string name="hostpref_encoding_summary">"Character encoding for the host"</string>
-
-	<!-- Host preference category title for connection settings -->
-	<string name="hostpref_connection_category">"Connection settings"</string>
 
 	<!-- Username field title for host editor preference -->
 	<string name="hostpref_username_title">"Username"</string>

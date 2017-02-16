@@ -105,8 +105,6 @@
   <string name="hostpref_stayconnected_summary">Yritä yhdistää palvelimeen uudelleen yhteyden katkeamisen jälkeen</string>
   <string name="hostpref_delkey_title">Del-näppäin</string>
   <string name="hostpref_encoding_title">Merkistökoodaus</string>
-  <string name="hostpref_encoding_summary">Palvelimella käytettävä merkistökoodaus</string>
-  <string name="hostpref_connection_category">Yhteysasetukset</string>
   <string name="hostpref_username_title">Käyttäjätunnus</string>
   <string name="hostpref_hostname_title">Palvelin</string>
   <string name="hostpref_port_title">Portti</string>

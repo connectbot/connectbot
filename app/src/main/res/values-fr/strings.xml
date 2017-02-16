@@ -131,8 +131,6 @@
   <string name="hostpref_quickdisconnect_summary">Fermer immédiatement sans confirmation lorsque le serveur a fermé la connexion</string>
   <string name="hostpref_delkey_title">Touche SUPPR</string>
   <string name="hostpref_encoding_title">Encodage</string>
-  <string name="hostpref_encoding_summary">Jeu de caractères à utiliser pour le serveur</string>
-  <string name="hostpref_connection_category">Paramètres de connexion</string>
   <string name="hostpref_username_title">Nom d\'utilisateur</string>
   <string name="hostpref_hostname_title">Serveur</string>
   <string name="hostpref_port_title">Port</string>

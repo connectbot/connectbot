@@ -101,8 +101,6 @@
   <string name="hostpref_stayconnected_summary">Poskusi se ponovno povezati, če se prekine povezava</string>
   <string name="hostpref_delkey_title">Tipka DEL</string>
   <string name="hostpref_encoding_title">Kodiranje</string>
-  <string name="hostpref_encoding_summary">Kodiranje znakov za gostitelja</string>
-  <string name="hostpref_connection_category">Nastavitve povezave</string>
   <string name="hostpref_username_title">Uporabniško ime</string>
   <string name="hostpref_hostname_title">Gostitelj</string>
   <string name="hostpref_port_title">Vrata</string>

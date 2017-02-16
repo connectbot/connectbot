@@ -121,8 +121,6 @@
   <string name="hostpref_quickdisconnect_summary">Затвори без питања одмах по прекиду везе.</string>
   <string name="hostpref_delkey_title">DEL тастер</string>
   <string name="hostpref_encoding_title">Кодирање</string>
-  <string name="hostpref_encoding_summary">Кодирање за домаћина</string>
-  <string name="hostpref_connection_category">Поставке везе</string>
   <string name="hostpref_username_title">Корисничко име</string>
   <string name="hostpref_hostname_title">Домаћин</string>
   <string name="hostpref_port_title">Порт</string>

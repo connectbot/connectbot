@@ -115,8 +115,6 @@
   <string name="hostpref_stayconnected_summary">Spróbuj połączyć się z hostem ponownie po przerwaniu połączenia</string>
   <string name="hostpref_delkey_title">Klawisz DEL</string>
   <string name="hostpref_encoding_title">Kodowanie</string>
-  <string name="hostpref_encoding_summary">Kodowanie znaków dla hostu</string>
-  <string name="hostpref_connection_category">Ustawienia połączenia</string>
   <string name="hostpref_username_title">Nazwa użytkownika</string>
   <string name="hostpref_hostname_title">Host</string>
   <string name="hostpref_port_title">Port</string>

@@ -121,8 +121,6 @@
   <string name="hostpref_stayconnected_summary">Tentar ligar de novo ao anfitrião se desligar</string>
   <string name="hostpref_delkey_title">Tecla DEL</string>
   <string name="hostpref_encoding_title">Codificação</string>
-  <string name="hostpref_encoding_summary">Codificação de caractéres para o anfitrião</string>
-  <string name="hostpref_connection_category">Configuração da Ligação</string>
   <string name="hostpref_username_title">Nome do Utilizador</string>
   <string name="hostpref_hostname_title">Anfitrião</string>
   <string name="hostpref_port_title">Porto</string>

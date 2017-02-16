@@ -94,7 +94,6 @@
   <string name="hostpref_stayconnected_title">Halda tengingu</string>
   <string name="hostpref_stayconnected_summary">Reyna að endurtengjast ef aftenging verður</string>
   <string name="hostpref_encoding_title">Kóðun</string>
-  <string name="hostpref_connection_category">Stillingar fyrir tengingu</string>
   <string name="hostpref_username_title">Notendanafn</string>
   <string name="hostpref_hostname_title">Hýsill</string>
   <string name="hostpref_port_title">Port</string>

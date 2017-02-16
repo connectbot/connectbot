@@ -145,8 +145,6 @@
   <string name="hostpref_quickdisconnect_summary">Chiudi immediatamente senza conferma dopo la disconnessione del computer remoto.</string>
   <string name="hostpref_delkey_title">Tasto CANC</string>
   <string name="hostpref_encoding_title">Codifica</string>
-  <string name="hostpref_encoding_summary">Codifica dei caratteri per la connessione</string>
-  <string name="hostpref_connection_category">Impostazioni di connessione</string>
   <string name="hostpref_username_title">Nome utente</string>
   <string name="hostpref_hostname_title">Host</string>
   <string name="hostpref_port_title">Porta</string>

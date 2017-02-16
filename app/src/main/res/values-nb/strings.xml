@@ -129,8 +129,6 @@
   <string name="hostpref_stayconnected_summary">Forsøk å koble til på nytt ved frakobling</string>
   <string name="hostpref_delkey_title">DEL-knapp</string>
   <string name="hostpref_encoding_title">Tegnkoding</string>
-  <string name="hostpref_encoding_summary">Tegnkoding for verten</string>
-  <string name="hostpref_connection_category">Tilkoblingsinnstillinger</string>
   <string name="hostpref_username_title">Brukernavn</string>
   <string name="hostpref_hostname_title">Vert</string>
   <string name="hostpref_port_title">Port</string>
