@@ -51,6 +51,7 @@ import android.text.ClipboardManager;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.accessibility.AccessibilityEvent;
@@ -78,6 +79,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 	private TerminalTextViewOverlay terminalTextViewOverlay;
 	public final TerminalViewPager viewPager;
 	private GestureDetector gestureDetector;
+	private ScaleGestureDetector scaleDetector;
 	private SharedPreferences prefs;
 
 	// These are only used for pre-Honeycomb copying.
@@ -249,6 +251,9 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 			}
 		});
 
+		// Enable pinch to zoom (change font size)
+		scaleDetector = new ScaleGestureDetector(context, new ScaleListener());
+
 		// Enable accessibility features if a screen reader is active.
 		new AccessibilityStateTester().execute((Void) null);
 	}
@@ -266,6 +271,8 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		scaleDetector.onTouchEvent(event);
+
 		if (gestureDetector != null) {
 			gestureDetector.onTouchEvent(event);
 		}
@@ -686,6 +693,22 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 					mAccessibilityBuffer.trimToSize();
 				}
 			}
+		}
+	}
+
+	private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+		@Override
+		public boolean onScale(ScaleGestureDetector detector) {
+				float mScaleFactor = detector.getScaleFactor();
+
+				if (mScaleFactor > 1.1) {
+					bridge.increaseFontSize();
+					return true;
+				} else if (mScaleFactor < 0.9) {
+					bridge.decreaseFontSize();
+					return true;
+				}
+				return false;
 		}
 	}
 }
