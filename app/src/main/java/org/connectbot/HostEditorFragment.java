@@ -127,6 +127,7 @@ public class HostEditorFragment extends Fragment {
 	private CheckableMenuItem mStayConnectedSwitch;
 	private CheckableMenuItem mCloseOnDisconnectSwitch;
 	private EditText mPostLoginAutomationField;
+	private HostTextFieldWatcher mFontSizeTextChangeListener;
 
 	public static HostEditorFragment newInstance(
 			HostBean existingHost, ArrayList<String> pubkeyNames, ArrayList<String> pubkeyValues) {
@@ -291,8 +292,8 @@ public class HostEditorFragment extends Fragment {
 
 		mFontSizeText = (EditText) view.findViewById(R.id.font_size_text);
 		mFontSizeText.setText(Integer.toString(mHost.getFontSize()));
-		mFontSizeText.addTextChangedListener(
-				new HostTextFieldWatcher(HostDatabase.FIELD_HOST_FONTSIZE));
+		mFontSizeTextChangeListener = new HostTextFieldWatcher(HostDatabase.FIELD_HOST_FONTSIZE);
+		mFontSizeText.addTextChangedListener(mFontSizeTextChangeListener);
 		mFontSizeText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
@@ -534,9 +535,10 @@ public class HostEditorFragment extends Fragment {
 			mFontSizeSeekBar.setProgress(fontSize - MINIMUM_FONT_SIZE);
 		}
 
-		if (!mFontSizeText.isFocused() &&
-				Integer.parseInt(mFontSizeText.getText().toString()) != fontSize) {
+		if (Integer.parseInt(mFontSizeText.getText().toString()) != fontSize) {
+			mFontSizeText.removeTextChangedListener(mFontSizeTextChangeListener);
 			mFontSizeText.setText(Integer.toString(fontSize));
+			mFontSizeText.addTextChangedListener(mFontSizeTextChangeListener);
 		}
 
 		handleHostChange();

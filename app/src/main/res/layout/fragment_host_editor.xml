@@ -298,8 +298,8 @@
 
 				<EditText
 					android:id="@+id/font_size_text"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
+					android:layout_width="48dp"
+					android:layout_height="48dp"
 					android:layout_gravity="center_vertical"
 					android:layout_marginRight="16dp"
 					android:layout_marginEnd="16dp"
