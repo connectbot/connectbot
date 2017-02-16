@@ -184,7 +184,6 @@
   <string name="local_shell_unavailable">Başarısız! Yerel shell bu telefonda kullanılamıyor.</string>
   <string name="notification_text">%1$s sizi uyarıyor</string>
   <string name="no">Hayır</string>
-  <string name="with_confirmation">teyitli</string>
   <string name="yes">Evet</string>
   <string name="menu_colors_reset">Sıfırla</string>
   <string name="app_is_running">ConnectBot çalışıyor</string>

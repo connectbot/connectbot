@@ -156,7 +156,6 @@
   <string name="local_shell_unavailable">실패! 이 폰은 로컬 쉘을 사용할 수 없습니다.</string>
   <string name="notification_text">%1$s에서 알림이 있습니다.</string>
   <string name="no">아니오</string>
-  <string name="with_confirmation">확인 작업 수행</string>
   <string name="yes">예</string>
   <string name="menu_colors_reset">초기화</string>
   <string name="app_is_running">ConnectBot 실행 중</string>

@@ -181,7 +181,6 @@
   <string name="local_shell_unavailable">תקלה! המעטפת המקומית אינה זמינה במכשיר זה.</string>
   <string name="notification_text">ל־%1$s נדרשת תשומת הלב שלך.</string>
   <string name="no">לא</string>
-  <string name="with_confirmation">עם אימות</string>
   <string name="yes">כן</string>
   <string name="menu_colors_reset">איפוס</string>
   <string name="app_is_running">ConnectBot פעיל</string>

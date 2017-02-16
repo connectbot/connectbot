@@ -196,7 +196,6 @@
   <string name="local_shell_unavailable">Неуспех! Нема локалне шкољке на овом телефону.</string>
   <string name="notification_text">%1$s жели вашу пажњу.</string>
   <string name="no">Не</string>
-  <string name="with_confirmation">Тражи потврду</string>
   <string name="yes">Да</string>
   <string name="menu_colors_reset">Ресетуј</string>
   <string name="app_is_running">Конектбот је покренут</string>

@@ -225,7 +225,6 @@
   <string name="local_shell_unavailable">失败! 本地Shell在该手机上不可用</string>
   <string name="notification_text">%1$s 需要你关注。</string>
   <string name="no">不</string>
-  <string name="with_confirmation">需要确认</string>
   <string name="yes">确定</string>
   <string name="menu_colors_reset">重置</string>
   <string name="app_is_running">ConnectBot 正在运行</string>

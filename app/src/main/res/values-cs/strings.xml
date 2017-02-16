@@ -225,7 +225,6 @@
   <string name="local_shell_unavailable">Selhání! Místní shell není na tomto telefonu podporován</string>
   <string name="notification_text">%1$s žádá pozornost.</string>
   <string name="no">Ne</string>
-  <string name="with_confirmation">S potvrzením</string>
   <string name="yes">Ano</string>
   <string name="menu_colors_reset">Obnovit</string>
   <string name="app_is_running">ConnectBot běží</string>

@@ -225,7 +225,6 @@
   <string name="local_shell_unavailable">エラー! この電話機にはローカルシェルがありません.</string>
   <string name="notification_text">%1$s でベルが鳴りました</string>
   <string name="no">いいえ</string>
-  <string name="with_confirmation">確認が必要</string>
   <string name="yes">はい</string>
   <string name="menu_colors_reset">リセット</string>
   <string name="app_is_running">ConnectBot起動中</string>

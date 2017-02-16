@@ -178,7 +178,6 @@
   <string name="local_shell_unavailable">Fejl! Lokal konsol er ikke tilgængelig på denne telefon.</string>
   <string name="notification_text">%1$s vil have din opmærksomhed.</string>
   <string name="no">Nej</string>
-  <string name="with_confirmation">Med godkendelse</string>
   <string name="yes">Ja</string>
   <string name="menu_colors_reset">Nulstil</string>
   <string name="app_is_running">ConnectBot kører</string>

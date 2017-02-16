@@ -177,7 +177,6 @@
   <string name="local_shell_unavailable">Hiba! Nincs lokális shell ezen a telefonon.</string>
   <string name="notification_text">%1$s a figyelmére szorul.</string>
   <string name="no">Nem</string>
-  <string name="with_confirmation">Csak beleegyezéssel</string>
   <string name="yes">Igen</string>
   <string name="menu_colors_reset">Visszaállít</string>
   <string name="app_is_running">ConnectBot már fut</string>

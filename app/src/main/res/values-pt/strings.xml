@@ -193,7 +193,6 @@
   <string name="local_shell_unavailable">Falha! Shell local não está disponível neste telemóvel.</string>
   <string name="notification_text">%1$s requer a sua atenção.</string>
   <string name="no">Não</string>
-  <string name="with_confirmation">com confirmação</string>
   <string name="yes">Sim</string>
   <string name="menu_colors_reset">Limpar</string>
   <string name="app_is_running">O ConnectBot esta a ser executado</string>

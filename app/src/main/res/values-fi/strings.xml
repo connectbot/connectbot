@@ -177,7 +177,6 @@
   <string name="local_shell_unavailable">Virhe! Paikallista komentoriviä ei ole käytettävissä</string>
   <string name="notification_text">%1$s kaipaa huomiotasi.</string>
   <string name="no">Ei</string>
-  <string name="with_confirmation">Kysy varmistus</string>
   <string name="yes">Kyllä</string>
   <string name="menu_colors_reset">Palauta</string>
   <string name="app_is_running">ConnectBot on käynnissä</string>

@@ -205,7 +205,6 @@
   <string name="local_shell_unavailable">Erro! O terminal local não está disponível neste telefone.</string>
   <string name="notification_text">%1$s deseja sua atenção.</string>
   <string name="no">Não</string>
-  <string name="with_confirmation">Com confirmação</string>
   <string name="yes">Sim</string>
   <string name="menu_colors_reset">Reiniciar</string>
   <string name="app_is_running">ConnectBot está executando</string>

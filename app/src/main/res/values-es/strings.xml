@@ -203,7 +203,6 @@
   <string name="local_shell_unavailable">¡Fallo! Su intérprete de órdenes local no está disponible en este teléfono.</string>
   <string name="notification_text">%1$s requiere de tu atención.</string>
   <string name="no">Denegar</string>
-  <string name="with_confirmation">Con confirmación</string>
   <string name="yes">Sí</string>
   <string name="menu_colors_reset">Restablecer</string>
   <string name="app_is_running">ConnectBot está ejecutándose</string>

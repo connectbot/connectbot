@@ -222,7 +222,6 @@
   <string name="local_shell_unavailable">Fallimento! La shell locale non è disponibile su questo telefono.</string>
   <string name="notification_text">%1$s richiede la tua attenzione.</string>
   <string name="no">No</string>
-  <string name="with_confirmation">Richiedi conferma</string>
   <string name="yes">Sì</string>
   <string name="menu_colors_reset">Reimposta</string>
   <string name="app_is_running">ConnectBot è in esecuzione</string>

@@ -206,7 +206,6 @@
   <string name="local_shell_unavailable">Échec ! Le shell local est indisponible pour ce téléphone.</string>
   <string name="notification_text">%1$s requiert votre attention.</string>
   <string name="no">Non</string>
-  <string name="with_confirmation">Après confirmation</string>
   <string name="yes">Oui</string>
   <string name="menu_colors_reset">Réinitialiser</string>
   <string name="app_is_running">ConnectBot est en cours</string>

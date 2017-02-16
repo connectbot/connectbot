@@ -195,7 +195,6 @@
   <string name="local_shell_unavailable">Ошибка! На этом телефоне отсутствует локальная оболочка.</string>
   <string name="notification_text">%1$s требует внимания</string>
   <string name="no">Нет</string>
-  <string name="with_confirmation">С подтверждением</string>
   <string name="yes">Да</string>
   <string name="menu_colors_reset">Сбросить</string>
   <string name="app_is_running">ConnectBot запущен</string>

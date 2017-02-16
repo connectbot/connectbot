@@ -180,7 +180,6 @@
   <string name="local_shell_unavailable">Fallada! El shell local no està disponible en aquest telèfon.</string>
   <string name="notification_text">%1$s necessita la teva atenció.</string>
   <string name="no">No</string>
-  <string name="with_confirmation">Amb confirmació</string>
   <string name="yes">Sí</string>
   <string name="menu_colors_reset">Reinicia</string>
   <string name="app_is_running">El ConnectBot està en marxa</string>

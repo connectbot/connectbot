@@ -189,7 +189,6 @@
   <string name="local_shell_unavailable">Niepowodzenie! Lokalna powłoka nie jest obsługiwana na tym telefonie.</string>
   <string name="notification_text">%1$s wymaga reakcji</string>
   <string name="no">Nie</string>
-  <string name="with_confirmation">Z potwierdzeniem</string>
   <string name="yes">Tak</string>
   <string name="menu_colors_reset">Przywróć</string>
   <string name="app_is_running">ConnectBot jest uruchomiony</string>

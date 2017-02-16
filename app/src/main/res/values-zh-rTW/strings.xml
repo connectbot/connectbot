@@ -205,7 +205,6 @@
   <string name="local_shell_unavailable">失敗！此手機 Shell 不可用。</string>
   <string name="notification_text">%1$s 需要您的注意。</string>
   <string name="no">否</string>
-  <string name="with_confirmation">已確認過</string>
   <string name="yes">是</string>
   <string name="menu_colors_reset">重設</string>
   <string name="app_is_running">ConnectBot 執行中</string>

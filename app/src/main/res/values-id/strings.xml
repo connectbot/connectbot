@@ -194,7 +194,6 @@
   <string name="local_shell_unavailable">Gagal! Shell lokal tidak tersedia di telepon ini.</string>
   <string name="notification_text">%1$s memerlukan perhatian anda.</string>
   <string name="no">Tidak</string>
-  <string name="with_confirmation">Dengan konfirmasi</string>
   <string name="yes">Ya</string>
   <string name="menu_colors_reset">Atur ulang</string>
   <string name="app_is_running">ConnectBot sedang berjalan</string>
