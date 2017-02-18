@@ -184,12 +184,12 @@ public class TerminalTextViewOverlay extends TextView {
 			}
 			terminalView.viewPager.setPagingEnabled(true);
 		} else {
-			terminalView.onTouchEvent(event);
+			if (terminalView.onTouchEvent(event)) {
+				return true;
+			}
 		}
 
-		super.onTouchEvent(event);
-
-		return true;
+		return super.onTouchEvent(event);
 	}
 
 	@Override
