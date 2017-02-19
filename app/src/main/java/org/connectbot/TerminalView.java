@@ -200,14 +200,12 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 			private TerminalBridge bridge = TerminalView.this.bridge;
 			private float totalY = 0;
 
+			/**
+			 * This should only handle scrolling when terminalTextViewOverlay is {@code null}, but
+			 * we need to handle the page up/down gesture if it's enabled.
+			 */
 			@Override
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-				// The terminalTextViewOverlay handles scrolling. Only handle scrolling if it
-				// is not available (i.e. on pre-Honeycomb devices).
-				if (terminalTextViewOverlay != null) {
-					return false;
-				}
-
 				// activate consider if within x tolerance
 				int touchSlop =
 						ViewConfiguration.get(TerminalView.this.context).getScaledTouchSlop();
@@ -221,7 +219,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 					// enabled.
 					boolean pgUpDnGestureEnabled =
 							prefs.getBoolean(PreferenceConstants.PG_UPDN_GESTURE, false);
-					if (e2.getX() <= getWidth() / 3 && pgUpDnGestureEnabled) {
+					if (pgUpDnGestureEnabled && e2.getX() <= getWidth() / 3) {
 						// otherwise consume as pgup/pgdown for every 5 lines
 						if (moved > 5) {
 							((vt320) bridge.buffer).keyPressed(vt320.KEY_PAGE_DOWN, ' ', 0);
@@ -232,14 +230,16 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 							bridge.tryKeyVibrate();
 							totalY = 0;
 						}
-					} else if (moved != 0) {
+						return true;
+					} else if (terminalTextViewOverlay == null && moved != 0) {
 						int base = bridge.buffer.getWindowBase();
 						bridge.buffer.setWindowBase(base + moved);
 						totalY = 0;
+						return false;
 					}
 				}
 
-				return true;
+				return false;
 			}
 
 			@Override
@@ -266,8 +266,8 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if (gestureDetector != null) {
-			gestureDetector.onTouchEvent(event);
+		if (gestureDetector != null && gestureDetector.onTouchEvent(event)) {
+			return true;
 		}
 
 		// Old version of copying, only for pre-Honeycomb.
@@ -341,9 +341,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 			return true;
 		}
 
-		super.onTouchEvent(event);
-
-		return true;
+		return super.onTouchEvent(event);
 	}
 
 	/**

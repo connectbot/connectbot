@@ -986,15 +986,8 @@ public class TerminalBridge implements VDUDisplay {
 		color = manager.colordb.getColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
 	}
 
-	private static Pattern urlPattern = null;
-
-	/**
-	 * @return
-	 */
-	public List<String> scanForURLs() {
-		List<String> urls = new LinkedList<String>();
-
-		if (urlPattern == null) {
+	private static class PatternHolder {
+		static {
 			// based on http://www.ietf.org/rfc/rfc2396.txt
 			String scheme = "[A-Za-z][-+.0-9A-Za-z]*";
 			String unreserved = "[-._~0-9A-Za-z]";
@@ -1024,13 +1017,21 @@ public class TerminalBridge implements VDUDisplay {
 			String uriRegex = scheme + ":" + hierPart + "(?:" + query + ")?(?:#" + fragment + ")?";
 			urlPattern = Pattern.compile(uriRegex);
 		}
+		private static final Pattern urlPattern;
+	}
+
+	/**
+	 * @return
+	 */
+	public List<String> scanForURLs() {
+		List<String> urls = new LinkedList<String>();
 
 		char[] visibleBuffer = new char[buffer.height * buffer.width];
 		for (int l = 0; l < buffer.height; l++)
 			System.arraycopy(buffer.charArray[buffer.windowBase + l], 0,
 					visibleBuffer, l * buffer.width, buffer.width);
 
-		Matcher urlMatcher = urlPattern.matcher(new String(visibleBuffer));
+		Matcher urlMatcher = PatternHolder.urlPattern.matcher(new String(visibleBuffer));
 		while (urlMatcher.find())
 			urls.add(urlMatcher.group());
 

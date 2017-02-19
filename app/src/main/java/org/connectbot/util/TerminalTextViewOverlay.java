@@ -75,16 +75,23 @@ public class TerminalTextViewOverlay extends TextView {
 		oldBufferHeight = numRows;
 
 		StringBuilder buffer = new StringBuilder();
+		int previousTotalLength = 0;
 
 		for (int r = 0; r < numRows && vb.charArray[r] != null; r++) {
 			for (int c = 0; c < numCols; c++) {
 				buffer.append(vb.charArray[r][c]);
 			}
-			while (buffer.length() > 0 &&
+
+			// Truncate all the new whitespace without removing the old data.
+			while (buffer.length() > previousTotalLength &&
 					Character.isWhitespace(buffer.charAt(buffer.length() - 1))) {
 				buffer.setLength(buffer.length() - 1);
 			}
+
+			// Make sure each line ends with a carriage return and then remember the buffer
+			// at that length.
 			buffer.append('\n');
+			previousTotalLength = buffer.length();
 		}
 
 		oldScrollY = vb.getWindowBase() * getLineHeight();
@@ -184,12 +191,12 @@ public class TerminalTextViewOverlay extends TextView {
 			}
 			terminalView.viewPager.setPagingEnabled(true);
 		} else {
-			terminalView.onTouchEvent(event);
+			if (terminalView.onTouchEvent(event)) {
+				return true;
+			}
 		}
 
-		super.onTouchEvent(event);
-
-		return true;
+		return super.onTouchEvent(event);
 	}
 
 	@Override
