@@ -644,7 +644,10 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 								+ ".providers.StatusProvider"), null, null, null, null);
 				if (cursor != null) {
 					try {
-						cursor.moveToFirst();
+						if (!cursor.moveToFirst()) {
+							continue;
+						}
+
 						/*
 						 * These content providers use a special cursor that only has
 						 * one element, an integer that is 1 if the screen reader is
