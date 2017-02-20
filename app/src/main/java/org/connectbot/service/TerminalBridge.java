@@ -61,7 +61,7 @@ import de.mud.terminal.vt320;
 public class TerminalBridge implements VDUDisplay {
 	public final static String TAG = "CB.TerminalBridge";
 
-	public final static int DEFAULT_FONT_SIZE_DP = 10;
+	private final static int DEFAULT_FONT_SIZE_DP = 10;
 	private final static int FONT_SIZE_STEP = 2;
 	private final float displayDensity;
 
@@ -96,13 +96,10 @@ public class TerminalBridge implements VDUDisplay {
 	private int columns;
 	private int rows;
 
-	/* package */ final TerminalKeyListener keyListener;
+	private final TerminalKeyListener keyListener;
 
 	private boolean selectingForCopy = false;
 	private final SelectionArea selectionArea;
-
-	// TODO add support for the new clipboard API
-	private ClipboardManager clipboard;
 
 	public int charWidth = -1;
 	public int charHeight = -1;
@@ -122,7 +119,7 @@ public class TerminalBridge implements VDUDisplay {
 
 	public PromptHelper promptHelper;
 
-	protected BridgeDisconnectedListener disconnectListener = null;
+	private BridgeDisconnectedListener disconnectListener = null;
 
 	/**
 	 * Create a new terminal bridge suitable for unit testing.
@@ -157,7 +154,7 @@ public class TerminalBridge implements VDUDisplay {
 
 		transport = null;
 
-		keyListener = new TerminalKeyListener(manager, this, buffer, null);
+		keyListener = new TerminalKeyListener(null, this, buffer, null);
 	}
 
 	/**
@@ -263,6 +260,11 @@ public class TerminalBridge implements VDUDisplay {
 	 */
 	protected void startConnection() {
 		transport = TransportFactory.getTransport(host.getProtocol());
+		if (transport == null) {
+			Log.i(TAG, "No transport found for " + host.getProtocol());
+			return;
+		}
+
 		transport.setBridge(this);
 		transport.setManager(manager);
 		transport.setHost(host);
@@ -287,18 +289,6 @@ public class TerminalBridge implements VDUDisplay {
 		connectionThread.setName("Connection");
 		connectionThread.setDaemon(true);
 		connectionThread.start();
-	}
-
-	/**
-	 * Handle challenges from keyboard-interactive authentication mode.
-	 */
-	public String[] replyToChallenge(String name, String instruction, int numPrompts, String[] prompt, boolean[] echo) {
-		String[] responses = new String[numPrompts];
-		for (int i = 0; i < numPrompts; i++) {
-			// request response from user for each prompt
-			responses[i] = promptHelper.requestStringPrompt(instruction, prompt[i]);
-		}
-		return responses;
 	}
 
 	/**
@@ -607,7 +597,7 @@ public class TerminalBridge implements VDUDisplay {
 		if (width <= 0 || height <= 0)
 			return;
 
-		clipboard = (ClipboardManager) parent.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+		ClipboardManager clipboard = (ClipboardManager) parent.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
 		keyListener.setClipboardManager(clipboard);
 
 		if (!forcedSize) {

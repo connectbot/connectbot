@@ -111,10 +111,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 	private final static int AUTH_TRIES = 20;
 
-	static final Pattern hostmask;
-	static {
-		hostmask = Pattern.compile("^(.+)@(([0-9a-z.-]+)|(\\[[a-f:0-9]+\\]))(:(\\d+))?$", Pattern.CASE_INSENSITIVE);
-	}
+	private static final Pattern hostmask = Pattern.compile(
+			"^(.+)@(([0-9a-z.-]+)|(\\[[a-f:0-9]+\\]))(:(\\d+))?$", Pattern.CASE_INSENSITIVE);
 
 	private boolean compression = false;
 	private volatile boolean authenticated = false;
@@ -126,7 +124,6 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 	private Connection connection;
 	private Session session;
-	private ConnectionInfo connectionInfo;
 
 	private OutputStream stdin;
 	private InputStream stdout;
@@ -183,12 +180,14 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				bridge.outputLine(manager.res.getString(R.string.host_fingerprint, algorithmName, fingerprint));
 
 				result = bridge.promptHelper.requestBooleanPrompt(null, manager.res.getString(R.string.prompt_continue_connecting));
-				if (result == null) return false;
-				if (result.booleanValue()) {
+				if (result == null) {
+					return false;
+				}
+				if (result) {
 					// save this key in known database
 					manager.hostdb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
 				}
-				return result.booleanValue();
+				return result;
 
 			case KnownHosts.HOSTKEY_HAS_CHANGED:
 				String header = String.format("@   %s   @",
@@ -209,7 +208,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 				// Users have no way to delete keys, so we'll prompt them for now.
 				result = bridge.promptHelper.requestBooleanPrompt(null, manager.res.getString(R.string.prompt_continue_connecting));
-				if (result != null && result.booleanValue()) {
+				if (result != null && result) {
 					// save this key in known database
 					manager.hostdb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
 					return true;
@@ -460,7 +459,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			Logger.enabled = true;
 			Logger.logger = logger;
 			*/
-			connectionInfo = connection.connect(new HostKeyVerifier());
+			ConnectionInfo connectionInfo = connection.connect(new HostKeyVerifier());
 			connected = true;
 
 			bridge.outputLine(manager.res.getString(R.string.terminal_kex_algorithm,

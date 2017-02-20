@@ -37,6 +37,7 @@ import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.HostDatabase;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
@@ -248,6 +249,7 @@ public class Telnet extends AbsTransport {
 		}
 	}
 
+	@SuppressLint("DefaultLocale")
 	@Override
 	public String getDefaultNickname(String username, String hostname, int port) {
 		if (port == DEFAULT_PORT) {
