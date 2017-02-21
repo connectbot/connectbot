@@ -19,7 +19,7 @@ plugins {
 }
 
 ext {
-    supportLibraryVersion = '23.4.0'
+    supportLibraryVersion = '25.1.1'
     testRunnerVersion = '0.5'
     espressoVersion = '2.2.2'
 }
@@ -55,8 +55,8 @@ def isCi = "true".equals(System.getenv("CI"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
 
     dexOptions {
         // Skip pre-dexing when running on a CI or when disabled via -Dpre-dex=false
