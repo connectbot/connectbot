@@ -96,6 +96,7 @@ android {
         compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
         compile "com.android.support:support-v4:$supportLibraryVersion"
         compile "com.android.support:appcompat-v7:$supportLibraryVersion"
+        compile "com.android.support:preference-v7:$supportLibraryVersion"
         compile "com.android.support:design:$supportLibraryVersion"
 
         androidTestCompile("com.android.support.test:runner:$testRunnerVersion") {
