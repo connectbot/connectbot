@@ -17,6 +17,7 @@
   -->
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:id="@+id/keyboard_group"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
@@ -58,35 +59,35 @@
 				style="@style/KeyboardButton"
 				android:padding="6dp"
 				android:contentDescription="@string/image_description_send_tab_character"
-				android:src="@drawable/ic_keyboard_tab" />
+				app:srcCompat="@drawable/ic_keyboard_tab" />
 
 			<ImageView
 				android:id="@+id/button_up"
 				style="@style/KeyboardButton"
 				android:padding="4dp"
 				android:contentDescription="@string/image_description_up"
-				android:src="@drawable/ic_keyboard_arrow_up" />
+				app:srcCompat="@drawable/ic_keyboard_arrow_up" />
 
 			<ImageView
 				android:id="@+id/button_down"
 				style="@style/KeyboardButton"
 				android:padding="4dp"
 				android:contentDescription="@string/image_description_down"
-				android:src="@drawable/ic_keyboard_arrow_down" />
+				app:srcCompat="@drawable/ic_keyboard_arrow_down" />
 
 			<ImageView
 				android:id="@+id/button_left"
 				style="@style/KeyboardButton"
 				android:padding="4dp"
 				android:contentDescription="@string/image_description_left"
-				android:src="@drawable/ic_keyboard_arrow_left" />
+				app:srcCompat="@drawable/ic_keyboard_arrow_left" />
 
 			<ImageView
 				android:id="@+id/button_right"
 				style="@style/KeyboardButton"
 				android:padding="4dp"
 				android:contentDescription="@string/image_description_right"
-				android:src="@drawable/ic_keyboard_arrow_right" />
+				app:srcCompat="@drawable/ic_keyboard_arrow_right" />
 
 			<Button
 				android:id="@+id/button_home"
@@ -175,5 +176,5 @@
 		style="@style/KeyboardKey"
 		android:background="@drawable/keyboard_keyboard_border"
 		android:contentDescription="@string/image_description_show_keyboard"
-		android:src="@drawable/ic_keyboard" />
+		app:srcCompat="@drawable/ic_keyboard" />
 </LinearLayout>

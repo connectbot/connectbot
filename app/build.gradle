@@ -71,6 +71,8 @@ android {
         minSdkVersion 9
         targetSdkVersion 23
 
+        vectorDrawables.useSupportLibrary = true
+
         ndk {
             moduleName "com_google_ase_Exec"
             ldLibs "log"

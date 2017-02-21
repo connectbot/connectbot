@@ -25,9 +25,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.accessibility.AccessibilityEventCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
@@ -147,12 +149,14 @@ public class CheckableMenuItem extends RelativeLayout {
 
 			typedArray.recycle();
 
-			Resources res = context.getResources();
-
 			ImageView icon = (ImageView) mRootView.findViewById(R.id.icon);
 			mTitle.setText(titleRes);
 			if (iconRes != 0) {
-				icon.setImageDrawable(res.getDrawable(iconRes));
+				Resources resources = context.getResources();
+				Resources.Theme theme = context.getTheme();
+				Drawable iconDrawable = VectorDrawableCompat.create(resources, iconRes, theme);
+
+				icon.setImageDrawable(iconDrawable);
 			}
 			if (summaryRes != 0) {
 				mSummary.setText(summaryRes);
