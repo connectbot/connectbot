@@ -21,7 +21,7 @@ import org.connectbot.bean.HostBean;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
@@ -34,8 +34,8 @@ import static org.connectbot.mock.BeanAssertions.assertMeetsHashCodeContract;
 /**
  * @author Kenny Root
  */
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class HostBeanTest {
 	private static final String[] FIELDS = { "nickname", "username",
 			"hostname", "port" };
