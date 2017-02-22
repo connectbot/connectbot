@@ -20,7 +20,7 @@ package org.connectbot;
 import org.connectbot.bean.SelectionArea;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertFalse;
@@ -30,8 +30,8 @@ import static org.junit.Assert.assertTrue;
  * @author Kenny Root
  * 
  */
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class SelectionAreaTest {
 	private static final int WIDTH = 80;
 	private static final int HEIGHT = 24;

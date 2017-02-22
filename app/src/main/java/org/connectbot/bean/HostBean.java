@@ -23,6 +23,7 @@ import org.connectbot.transport.Telnet;
 import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.net.Uri;
 
@@ -197,6 +198,7 @@ public class HostBean extends AbstractBean {
 		return quickDisconnect;
 	}
 
+	@SuppressLint("DefaultLocale")
 	public String getDescription() {
 		String description = String.format("%s@%s", username, hostname);
 

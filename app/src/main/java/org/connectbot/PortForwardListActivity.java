@@ -26,6 +26,7 @@ import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.HostDatabase;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -267,6 +268,7 @@ public class PortForwardListActivity extends AppCompatListActivity {
 			}
 		}
 
+		@SuppressLint("DefaultLocale")
 		@Override
 		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 			// Create menu to handle deleting and editing port forward
@@ -404,8 +406,7 @@ public class PortForwardListActivity extends AppCompatListActivity {
 		public PortForwardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 			View v = LayoutInflater.from(parent.getContext())
 					.inflate(R.layout.item_portforward, parent, false);
-			PortForwardViewHolder vh = new PortForwardViewHolder(v);
-			return vh;
+			return new PortForwardViewHolder(v);
 		}
 
 		@Override

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ ConnectBot: simple, powerful, open-source SSH client for Android
-  ~ Copyright 2015 Kenny Root, Jeffrey Sharkey
+  ~ Copyright 2017 Kenny Root, Jeffrey Sharkey
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,11 +16,13 @@
   ~ limitations under the License.
   -->
 
-<resources>
-	<dimen name="list_item_text_margin_left">72dp</dimen>
-	<dimen name="list_item_left_right_padding">16dp</dimen>
-	<dimen name="list_item_top_bottom_padding">20dp</dimen>
-	<dimen name="list_item_first_line_text_size">16sp</dimen>
-	<dimen name="list_item_second_line_text_size">14sp</dimen>
-	<dimen name="alert_default_padding">18dp</dimen>
-</resources>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<fragment
+		android:name="org.connectbot.SettingsFragment"
+		android:tag=".SettingsFragment"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"/>
+</FrameLayout>

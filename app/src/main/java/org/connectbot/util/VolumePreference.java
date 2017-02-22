@@ -17,56 +17,61 @@
 
 package org.connectbot.util;
 
-import android.content.Context;
-import android.preference.DialogPreference;
-import android.util.AttributeSet;
-import android.view.View;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
-
 import org.connectbot.R;
 
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.support.v7.preference.DialogPreference;
+import android.util.AttributeSet;
+
 /**
- * @author kenny
+ * @author Kenny Root
  *
  */
-public class VolumePreference extends DialogPreference implements OnSeekBarChangeListener {
-	/**
-	 * @param context
-	 * @param attrs
-	 */
+public class VolumePreference extends DialogPreference {
+	private int mVolume = (int) PreferenceConstants.DEFAULT_BELL_VOLUME * 100;
+
+	public VolumePreference(Context context) {
+		this(context, null);
+	}
+
 	public VolumePreference(Context context, AttributeSet attrs) {
-		super(context, attrs);
-
-		setupLayout();
+		this(context, attrs, R.attr.dialogPreferenceStyle);
 	}
 
-	public VolumePreference(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-
-		setupLayout();
+	public VolumePreference(Context context, AttributeSet attrs, int defStyleAttr) {
+		this(context, attrs, defStyleAttr, defStyleAttr);
 	}
 
-	private void setupLayout() {
-		setDialogLayoutResource(R.layout.volume_preference_dialog_layout);
+	public VolumePreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+		super(context, attrs, defStyleAttr, defStyleRes);
+
 		setPersistent(true);
 	}
 
 	@Override
-	protected void onBindDialogView(View view) {
-		super.onBindDialogView(view);
-		
-		SeekBar volumeBar = (SeekBar) view.findViewById(R.id.volume_bar);
-		volumeBar.setProgress((int) (getPersistedFloat(
-				PreferenceConstants.DEFAULT_BELL_VOLUME) * 100));
-		volumeBar.setOnSeekBarChangeListener(this);
+	public int getDialogLayoutResource() {
+		return R.layout.volume_preference_dialog_layout;
 	}
 
-	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-		persistFloat(progress / 100f);
+	@Override
+	protected Object onGetDefaultValue(TypedArray a, int index) {
+		return a.getInt(index, 100);
 	}
 
-	public void onStartTrackingTouch(SeekBar seekBar) { }
+	@Override
+	protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
+		setVolume(restorePersistedValue ?
+				(int) (getPersistedFloat(mVolume) * 100) : (int) defaultValue);
+	}
 
-	public void onStopTrackingTouch(SeekBar seekBar) { }
+	public int getVolume() {
+		return mVolume;
+	}
+
+	public void setVolume(int volume) {
+		mVolume = volume;
+
+		persistFloat(mVolume / 100f);
+	}
 }

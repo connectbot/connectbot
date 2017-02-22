@@ -41,7 +41,6 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PixelXorXfermode;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -142,7 +141,6 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 
 		cursorPaint = new Paint();
 		cursorPaint.setColor(bridge.color[bridge.defaultFg]);
-		cursorPaint.setXfermode(new PixelXorXfermode(bridge.color[bridge.defaultBg]));
 		cursorPaint.setAntiAlias(true);
 
 		cursorStrokePaint = new Paint(cursorPaint);
@@ -644,7 +642,10 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 								+ ".providers.StatusProvider"), null, null, null, null);
 				if (cursor != null) {
 					try {
-						cursor.moveToFirst();
+						if (!cursor.moveToFirst()) {
+							continue;
+						}
+
 						/*
 						 * These content providers use a special cursor that only has
 						 * one element, an integer that is 1 if the screen reader is

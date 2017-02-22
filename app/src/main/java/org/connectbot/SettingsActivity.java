@@ -17,35 +17,13 @@
 
 package org.connectbot;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 
-public class SettingsActivity extends AppCompatPreferenceActivity {
-	private static final String TAG = "CB.Settings";
-
+public class SettingsActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		try {
-			addPreferencesFromResource(R.xml.preferences);
-		} catch (ClassCastException e) {
-			Log.e(TAG, "Shared preferences are corrupt! Resetting to default values.");
-
-			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-			// Blow away all the preferences
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.clear();
-			editor.apply();
-
-			PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
-
-			addPreferencesFromResource(R.xml.preferences);
-		}
-
-		// TODO: add parse checking here to make sure we have integer value for scrollback
+		setContentView(R.layout.activity_settings);
 	}
-
 }

@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -657,7 +658,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 				if (hostkey == null || hostkey.length == 0) continue;
 
 				try {
-					known.addHostkey(new String[] {String.format("%s:%d", hostname, port)}, hostkeyalgo, hostkey);
+					known.addHostkey(new String[] {String.format(Locale.US, "%s:%d", hostname, port)},
+							hostkeyalgo, hostkey);
 				} catch (Exception e) {
 					Log.e(TAG, "Problem while adding a known host from database", e);
 				}

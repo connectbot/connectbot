@@ -17,10 +17,10 @@
 
 <ScrollView
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:fillViewport="true"
 	tools:context="org.connectbot.HostEditorFragment"
 	>
@@ -41,7 +41,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/ic_laptop"
+				app:srcCompat="@drawable/ic_laptop"
 				android:contentDescription="@null"
 				style="@style/ListItemIcon"
 				/>
@@ -190,7 +190,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/ic_person"
+				app:srcCompat="@drawable/ic_person"
 				android:contentDescription="@null"
 				style="@style/ListItemIcon"
 				/>
@@ -231,7 +231,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/ic_palette"
+				app:srcCompat="@drawable/ic_palette"
 				android:contentDescription="@null"
 				style="@style/ListItemIcon"
 				/>
@@ -264,7 +264,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/ic_format_size"
+				app:srcCompat="@drawable/ic_format_size"
 				android:contentDescription="@null"
 				style="@style/ListItemIcon"
 				/>
@@ -322,7 +322,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/ic_vpn_key"
+				app:srcCompat="@drawable/ic_vpn_key"
 				android:contentDescription="@null"
 				style="@style/ListItemIcon"
 				/>
@@ -356,7 +356,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/ic_keyboard"
+				app:srcCompat="@drawable/ic_keyboard"
 				android:contentDescription="@null"
 				style="@style/ListItemIcon"
 				/>
@@ -390,7 +390,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/ic_code"
+				app:srcCompat="@drawable/ic_code"
 				android:contentDescription="@null"
 				style="@style/ListItemIcon"
 				/>
@@ -476,7 +476,7 @@
 			<ImageView
 				android:layout_width="24dp"
 				android:layout_height="24dp"
-				android:src="@drawable/ic_android"
+				app:srcCompat="@drawable/ic_android"
 				android:contentDescription="@null"
 				style="@style/ListItemIcon"
 				/>

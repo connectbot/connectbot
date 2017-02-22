@@ -16,36 +16,47 @@
   ~ limitations under the License.
  -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="wrap_content"
-    android:layout_width="fill_parent"
-    android:orientation="horizontal"
-	tools:ignore="PrivateResource"
-    android:paddingLeft="?attr/dialogPreferredPadding"
-    android:paddingStart="?attr/dialogPreferredPadding"
-    android:paddingEnd="?attr/dialogPreferredPadding"
-    android:paddingRight="?attr/dialogPreferredPadding"
-    >
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_marginTop="48dp"
+	android:layout_marginBottom="48dp"
+	android:overScrollMode="ifContentScrolls">
 
-    <ImageView
-        android:id="@+id/volume_up"
-        android:contentDescription="@string/image_description_volume"
-        android:layout_marginBottom="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_height="36dp"
-        android:layout_width="36dp"
-        android:src="@drawable/ic_volume_up"
-        />
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:paddingBottom="@dimen/alert_default_padding"
+		android:paddingTop="@dimen/alert_default_padding"
+		android:paddingStart="?dialogPreferredPadding"
+		android:paddingLeft="?dialogPreferredPadding"
+		android:paddingEnd="?dialogPreferredPadding"
+		android:paddingRight="?dialogPreferredPadding"
+		android:theme="@style/AlertDialogTheme"
+		>
 
-    <SeekBar
-        android:id="@+id/volume_bar"
-        android:layout_gravity="center_vertical"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:max="100"
-        android:progress="0"
-        android:secondaryProgress="0"
-        />
+		<ImageView
+			android:id="@+id/volume_up"
+			android:layout_width="36dp"
+			android:layout_height="36dp"
+			android:layout_marginBottom="@dimen/alert_default_padding"
+			android:layout_marginTop="24dp"
+			android:contentDescription="@string/image_description_volume"
+			android:src="@drawable/ic_volume_up"
+			/>
 
-</LinearLayout>
+		<SeekBar
+			android:id="@+id/volume_bar"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:max="100"
+			android:progress="0"
+			android:secondaryProgress="0"
+			/>
+
+	</LinearLayout>
+
+</ScrollView>

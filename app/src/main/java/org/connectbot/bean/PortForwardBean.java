@@ -19,6 +19,7 @@ package org.connectbot.bean;
 
 import org.connectbot.util.HostDatabase;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 
 
@@ -203,6 +204,7 @@ public class PortForwardBean extends AbstractBean {
 	/**
 	 * @return human readable description of the port forward
 	 */
+	@SuppressLint("DefaultLocale")
 	public CharSequence getDescription() {
 		String description = "Unknown type";
 
@@ -210,10 +212,6 @@ public class PortForwardBean extends AbstractBean {
 			description = String.format("Local port %d to %s:%d", sourcePort, destAddr, destPort);
 		} else if (HostDatabase.PORTFORWARD_REMOTE.equals(type)) {
 			description = String.format("Remote port %d to %s:%d", sourcePort, destAddr, destPort);
-/* I don't think we need the SOCKS4 type.
-		} else if (HostDatabase.PORTFORWARD_DYNAMIC4.equals(type)) {
-			description = String.format("Dynamic port %d (SOCKS4)", sourcePort);
-*/
 		} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(type)) {
 			description = String.format("Dynamic port %d (SOCKS)", sourcePort);
 		}

@@ -21,22 +21,21 @@ import org.connectbot.service.TerminalManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import android.content.ComponentName;
 import android.content.Intent;
-import android.os.Build;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.KITKAT, packageName = "org.connectbot")
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 22)
 public class HostListActivityTest {
 	private void mockBindToService(TerminalManager terminalManager) {
 		TerminalManager.TerminalBinder stubBinder = mock(TerminalManager.TerminalBinder.class);
@@ -52,6 +51,8 @@ public class HostListActivityTest {
 		HostListActivity activity = Robolectric.buildActivity(HostListActivity.class).create().start().get();
 
 		Intent serviceIntent = new Intent(activity, TerminalManager.class);
-		assertThat(shadowOf(activity).getNextStartedService()).isEqualTo(serviceIntent);
+		Intent actualIntent = shadowOf(activity).getNextStartedService();
+
+		assertTrue(actualIntent.filterEquals(serviceIntent));
 	}
 }
