@@ -20,16 +20,17 @@ package org.connectbot;
 import org.connectbot.util.VolumePreference;
 import org.connectbot.util.VolumePreferenceFragment;
 
+import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompatDividers;
+
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
 
 /**
  * Created by kenny on 2/20/17.
  */
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends PreferenceFragmentCompatDividers {
 	public SettingsFragment() {
 	}
 
@@ -53,7 +54,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 	}
 
 	@Override
-	public void onCreatePreferences(Bundle bundle, String s) {
-		addPreferencesFromResource(R.xml.preferences);
+	public void onCreatePreferencesFix(Bundle bundle, String rootKey) {
+		setPreferencesFromResource(R.xml.preferences, rootKey);
 	}
 }
