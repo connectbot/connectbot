@@ -7,18 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-06-12 23:13-0700\n"
+"POT-Creation-Date: 2017-02-28 00:29-0800\n"
 "PO-Revision-Date: 2015-09-23 04:39+0000\n"
 "Last-Translator: Kenny Root <Unknown>\n"
 "Language: sv\n"
 "Language-Team: sv <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=((n == 1) ? 0 : 1)\n"
+"Plural-Forms: nplurals=2; plural=((((n == 1)) && ((0 == 0))) ? 0 : 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-13 01:36+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 2.3.4\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -78,10 +76,8 @@ msgid "Generate"
 msgstr ""
 
 msgctxt "help_intro"
-msgid ""
-"Please select a topic below for more information on a particular subject."
-msgstr ""
-"Var god välj ett ämne nedan som du skulle vilja ha mer information om."
+msgid "Please select a topic below for more information on a particular subject."
+msgstr "Var god välj ett ämne nedan som du skulle vilja ha mer information om."
 
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
@@ -101,8 +97,8 @@ msgstr ""
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
 msgid ""
-"Long-press on your Android desktop to create direct shortcuts to frequently-"
-"used SSH hosts."
+"Long-press on your Android desktop to create direct shortcuts to "
+"frequently-used SSH hosts."
 msgstr ""
 
 #. Header text for instructions about scrolling the terminal.
@@ -113,8 +109,8 @@ msgstr ""
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
 msgid ""
-"Swiping your finger up on the right side of the screen allows you to scroll "
-"backward and forward in the local terminal buffer history."
+"Swiping your finger up on the right side of the screen allows you to "
+"scroll backward and forward in the local terminal buffer history."
 msgstr ""
 
 #. Captions for images showing the scroll back/forward gestures.
@@ -136,9 +132,9 @@ msgctxt "page_updn_content"
 msgid ""
 "NOTE: This must be enabled in settings.\n"
 "\n"
-"Swiping your finger up and down on the left third of the screen will send a "
-"page up and page down key to the remote host. Many programs map this to "
-"scrolling back into history such as irssi or tinyfugue."
+"Swiping your finger up and down on the left third of the screen will send"
+" a page up and page down key to the remote host. Many programs map this "
+"to scrolling back into history such as irssi or tinyfugue."
 msgstr ""
 
 #. Captions for images showing the page up/down gestures.
@@ -223,11 +219,11 @@ msgstr "Rör vid rutan för att samla in slumpdata: %1$d%% klart"
 
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr ""
-"För att försäkra dig om att nyckeln som skapas är slumpmässig, rör fingret "
-"slumpmässigt över skärmen."
+"För att försäkra dig om att nyckeln som skapas är slumpmässig, rör "
+"fingret slumpmässigt över skärmen."
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
@@ -411,7 +407,8 @@ msgstr "VARNING: IDENTIFIERING AV FJÄRRVÄRD HAR ÄNDRATS!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "MÖJLIGT INTRÅNGSFÖRSÖK!\n"
@@ -513,6 +510,17 @@ msgstr "Textbufferstorlek"
 msgctxt "pref_scrollback_summary"
 msgid "Size of scrollback buffer to keep in memory for each console"
 msgstr "Storlek på textbuffer för varje konsol"
+
+#. Title of the preference used to enable or disable the back-up of pubkeys.
+msgctxt "pref_backupkeys_title"
+msgid "Backup pubkeys"
+msgstr ""
+
+#. Summary for the preference used to enable or disable the back-up of
+#. pubkeys.
+msgctxt "pref_backupkeys_summary"
+msgid "Keep back-ups of the private keys using Android's backup mechanism"
+msgstr ""
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -716,10 +724,10 @@ msgstr "Bakgrundsmeddelanden"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
+msgid "Send notification when a terminal running in the background sounds a bell."
 msgstr ""
-"Skicka meddelande när en terminal som körs i bakgrunden skickar ljudsignal."
+"Skicka meddelande när en terminal som körs i bakgrunden skickar "
+"ljudsignal."
 
 #. Preference selection to indicate use of right side of keyboard for special
 #. shortcuts.
@@ -804,7 +812,8 @@ msgstr "Starta shell-session"
 msgctxt "hostpref_wantsession_summary"
 msgid "Disable this preference to only use port forwards"
 msgstr ""
-"Inaktivera denna inställning för att bara använda vidarebefodring av portar"
+"Inaktivera denna inställning för att bara använda vidarebefodring av "
+"portar"
 
 #. Setting for whether the host should be reconnected to automatically upon
 #. disconnect
@@ -832,26 +841,10 @@ msgctxt "hostpref_delkey_title"
 msgid "DEL Key"
 msgstr "DEL-tangent"
 
-#. Summary for field asking what key code is sent to the server when DEL key
-#. is pressed.
-msgctxt "hostpref_delkey_summary"
-msgid "The key code sent when DEL key is pressed"
-msgstr "Tangentkoden som sänds när DEL-tangenten trycks ner"
-
 #. Host character encoding preference title
 msgctxt "hostpref_encoding_title"
 msgid "Encoding"
 msgstr "Teckenkodning"
-
-#. Host character encoding preference summary
-msgctxt "hostpref_encoding_summary"
-msgid "Character encoding for the host"
-msgstr "Teckenkodning för värddatorn"
-
-#. Host preference category title for connection settings
-msgctxt "hostpref_connection_category"
-msgid "Connection settings"
-msgstr "Anslutningsinställningar"
 
 #. Username field title for host editor preference
 msgctxt "hostpref_username_title"
@@ -876,8 +869,10 @@ msgstr "Aldrig ansluten"
 #. Message given when user copies from the terminal.
 #, c-format
 msgctxt "console_copy_done"
-msgid "Copied %1$d bytes to clipboard"
-msgstr "Kopierade %1$d bytes till urklippshanteraren."
+msgid "Copied %1$d byte to clipboard"
+msgid_plural "Copied %1$d bytes to clipboard"
+msgstr[0] ""
+msgstr[1] ""
 
 #. Instructions for how to copy from the terminal. The '\n' entries are to
 #. split lines to improve readability and prevent wrapping off the screen.
@@ -959,11 +954,11 @@ msgstr "Skapa vidarebefodring av port"
 
 msgctxt "portforward_problem"
 msgid ""
-"Problem creating port forward, maybe you're using ports under 1024 or port "
-"is already used?"
+"Problem creating port forward, maybe you're using ports under 1024 or "
+"port is already used?"
 msgstr ""
-"Lyckades inte att skapa en vidarebefodring av port, är den under 1024 eller "
-"används den kanske?"
+"Lyckades inte att skapa en vidarebefodring av port, är den under 1024 "
+"eller används den kanske?"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
@@ -1168,13 +1163,11 @@ msgstr "Autentiseringsmetoden 'password' misslyckades"
 
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
-msgstr ""
-"Försöker 'publik nyckel' verifiering med en nyckel från det lokala minnet"
+msgstr "Försöker 'publik nyckel' verifiering med en nyckel från det lokala minnet"
 
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
-msgstr ""
-"Vald publik nyckel är ogiltig, försök välj ny nyckel i värd redigerare"
+msgstr "Vald publik nyckel är ogiltig, försök välj ny nyckel i värd redigerare"
 
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
@@ -1225,12 +1218,6 @@ msgstr "%1$s vill ha din uppmärksamhet."
 msgctxt "no"
 msgid "No"
 msgstr "Nej"
-
-#. Preference selection for SSH Authentication Agent to be able to use pubkeys
-#. "with confirmation" only
-msgctxt "with_confirmation"
-msgid "With confirmation"
-msgstr "Med bekräftelse"
 
 #. Preference selection for SSH Authentication Agent to be able to use pubkeys
 msgctxt "yes"
@@ -1310,6 +1297,12 @@ msgstr ""
 #. for              accessibility purposes.
 msgctxt "image_description_send_tab_character"
 msgid "Send TAB character."
+msgstr ""
+
+#. Describes the icon of the "hide keyboard" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_hide_keyboard"
+msgid "Hide keyboard."
 msgstr ""
 
 #. Describes the icon of the "show keyboard" button in the terminal view for
@@ -1539,3 +1532,4 @@ msgstr ""
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
 msgstr ""
+
