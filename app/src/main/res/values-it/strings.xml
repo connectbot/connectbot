@@ -277,7 +277,7 @@
   <string name="image_description_hide_keyboard">Nascondi tastiera.</string>
   <string name="image_description_toggle_control_character">Commuta carattere di controllo.</string>
   <string name="pref_backupkeys_title">Backup chiavi pubbliche</string>
-  <string name="page_updn_content">NOTA: Deve essere abilitato nelle impostazioni.[...]</string>
+  <string name="page_updn_content">NOTA: Deve essere abilitato nelle impostazioni.[…]</string>
   <string name="pref_backupkeys_summary">Mantieni backup delle chiavi private usando la funzione di backup di Android</string>
   <string name="pref_stickymodifiers_title">Modificatori persistenti</string>
   <string name="pref_stickymodifiers_summary">I modificatori rimangono attivi finché un altro tasto non viene premuto</string>
