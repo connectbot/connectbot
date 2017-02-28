@@ -20,8 +20,6 @@ package org.connectbot.service;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.security.KeyPair;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -143,10 +141,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		for (PubkeyBean pubkey : pubkeys) {
 			try {
-				PrivateKey privKey = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType());
-				PublicKey pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
-				KeyPair pair = new KeyPair(pubKey, privKey);
-
+				KeyPair pair = PubkeyUtils.convertToKeyPair(pubkey, null);
 				addKey(pubkey, pair);
 			} catch (Exception e) {
 				Log.d(TAG, String.format("Problem adding key '%s' to in-memory cache", pubkey.getNickname()), e);
