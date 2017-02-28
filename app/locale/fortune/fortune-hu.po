@@ -7,18 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-06-12 23:13-0700\n"
+"POT-Creation-Date: 2017-02-28 00:29-0800\n"
 "PO-Revision-Date: 2015-09-23 04:36+0000\n"
 "Last-Translator: Kenny Root <Unknown>\n"
 "Language: hu\n"
 "Language-Team: hu <LL@li.org>\n"
-"Plural-Forms: nplurals=1; plural=(0)\n"
+"Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-13 01:36+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 2.3.4\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -78,10 +76,8 @@ msgid "Generate"
 msgstr ""
 
 msgctxt "help_intro"
-msgid ""
-"Please select a topic below for more information on a particular subject."
-msgstr ""
-"Válaszon témakört az alábbiak közül egy adott téma részletes leírásához."
+msgid "Please select a topic below for more information on a particular subject."
+msgstr "Válaszon témakört az alábbiak közül egy adott téma részletes leírásához."
 
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
@@ -101,8 +97,8 @@ msgstr ""
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
 msgid ""
-"Long-press on your Android desktop to create direct shortcuts to frequently-"
-"used SSH hosts."
+"Long-press on your Android desktop to create direct shortcuts to "
+"frequently-used SSH hosts."
 msgstr ""
 
 #. Header text for instructions about scrolling the terminal.
@@ -113,8 +109,8 @@ msgstr ""
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
 msgid ""
-"Swiping your finger up on the right side of the screen allows you to scroll "
-"backward and forward in the local terminal buffer history."
+"Swiping your finger up on the right side of the screen allows you to "
+"scroll backward and forward in the local terminal buffer history."
 msgstr ""
 
 #. Captions for images showing the scroll back/forward gestures.
@@ -136,9 +132,9 @@ msgctxt "page_updn_content"
 msgid ""
 "NOTE: This must be enabled in settings.\n"
 "\n"
-"Swiping your finger up and down on the left third of the screen will send a "
-"page up and page down key to the remote host. Many programs map this to "
-"scrolling back into history such as irssi or tinyfugue."
+"Swiping your finger up and down on the left third of the screen will send"
+" a page up and page down key to the remote host. Many programs map this "
+"to scrolling back into history such as irssi or tinyfugue."
 msgstr ""
 
 #. Captions for images showing the page up/down gestures.
@@ -223,11 +219,11 @@ msgstr "Érintse meg a dobozt a véletlenszerű generálásához: %1$d%% kész"
 
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr ""
-"A kulcs egyediségének biztosítása érdekében mozgassa ujját véletlenszerűen "
-"az alábbi dobozban."
+"A kulcs egyediségének biztosítása érdekében mozgassa ujját "
+"véletlenszerűen az alábbi dobozban."
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
@@ -411,12 +407,14 @@ msgstr "FIGYELEM: A TÁVOLI GÉP AZONOSÍTÓJA MEGVÁLTOZOTT!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "FELTEHETŐEN VALAKI GYANÚS DOLGOKAT MŰVEL! \n"
-"Valaki feltehetően megpróbál lehallgatni (man-in-the-middle attack) téged! \\"
-" nDe az is lehetséges, hogy a távoli fél kulcsa közben megváltozott."
+"Valaki feltehetően megpróbál lehallgatni (man-in-the-middle attack) "
+"téged! \\ nDe az is lehetséges, hogy a távoli fél kulcsa közben "
+"megváltozott."
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
@@ -512,6 +510,17 @@ msgctxt "pref_scrollback_summary"
 msgid "Size of scrollback buffer to keep in memory for each console"
 msgstr "Az előzmények memóriában tartandó mérete konzolonként"
 
+#. Title of the preference used to enable or disable the back-up of pubkeys.
+msgctxt "pref_backupkeys_title"
+msgid "Backup pubkeys"
+msgstr ""
+
+#. Summary for the preference used to enable or disable the back-up of
+#. pubkeys.
+msgctxt "pref_backupkeys_summary"
+msgid "Keep back-ups of the private keys using Android's backup mechanism"
+msgstr ""
+
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
 msgid "User interface"
@@ -606,8 +615,8 @@ msgstr "Kulcsok megörzése a memóriában"
 msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
 msgstr ""
-"Tartsa nyitva a memóriában lévő kulcsokat amíg a háttérszolgáltatás meg nem "
-"szűnik"
+"Tartsa nyitva a memóriában lévő kulcsokat amíg a háttérszolgáltatás meg "
+"nem szűnik"
 
 #. Name for the preference that forces the service to stay running in the
 #. background.
@@ -667,8 +676,7 @@ msgstr "Tartsa ébren a képernyőt"
 #. Summary for the camera shortcut usage preference
 msgctxt "pref_keepalive_summary"
 msgid "Prevent the screen from turning off when working in a console"
-msgstr ""
-"Akadályozza meg a képernyővédő bekapcsolását konzolon végzett munka alatt"
+msgstr "Akadályozza meg a képernyővédő bekapcsolását konzolon végzett munka alatt"
 
 #. Name for the Wi-Fi lock preference
 msgctxt "pref_wifilock_title"
@@ -719,8 +727,7 @@ msgstr "Háttér figyelmeztetések"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
+msgid "Send notification when a terminal running in the background sounds a bell."
 msgstr "Küldjön értesítőt amikor a háttérben futó terminál csenget."
 
 #. Preference selection to indicate use of right side of keyboard for special
@@ -784,8 +791,7 @@ msgstr "Bejelentkezést követő automatikus parancsok"
 #. Host post-login automation preference summary
 msgctxt "hostpref_postlogin_summary"
 msgid "Commands to run on remote server once authenticated"
-msgstr ""
-"Olyan parancsok amelyek a bejelentkezést követően kerülnek futtatásra"
+msgstr "Olyan parancsok amelyek a bejelentkezést követően kerülnek futtatásra"
 
 #. Host compression preference title
 msgctxt "hostpref_compression_title"
@@ -834,26 +840,10 @@ msgctxt "hostpref_delkey_title"
 msgid "DEL Key"
 msgstr "DEL billentyű"
 
-#. Summary for field asking what key code is sent to the server when DEL key
-#. is pressed.
-msgctxt "hostpref_delkey_summary"
-msgid "The key code sent when DEL key is pressed"
-msgstr "Az a billenytű kód amit a DEL lenyomásakor küldünk"
-
 #. Host character encoding preference title
 msgctxt "hostpref_encoding_title"
 msgid "Encoding"
 msgstr "Karakterkódolás"
-
-#. Host character encoding preference summary
-msgctxt "hostpref_encoding_summary"
-msgid "Character encoding for the host"
-msgstr "A kiszolgáló karakterkódolása"
-
-#. Host preference category title for connection settings
-msgctxt "hostpref_connection_category"
-msgid "Connection settings"
-msgstr "Kapcsolat beállításai"
 
 #. Username field title for host editor preference
 msgctxt "hostpref_username_title"
@@ -878,8 +868,10 @@ msgstr "Még nem csatlakozott"
 #. Message given when user copies from the terminal.
 #, c-format
 msgctxt "console_copy_done"
-msgid "Copied %1$d bytes to clipboard"
-msgstr "%1$d bájt a vágólapra másolva"
+msgid "Copied %1$d byte to clipboard"
+msgid_plural "Copied %1$d bytes to clipboard"
+msgstr[0] ""
+msgstr[1] ""
 
 #. Instructions for how to copy from the terminal. The '\n' entries are to
 #. split lines to improve readability and prevent wrapping off the screen.
@@ -961,8 +953,8 @@ msgstr "Port átirányítás létrehozása"
 
 msgctxt "portforward_problem"
 msgid ""
-"Problem creating port forward, maybe you're using ports under 1024 or port "
-"is already used?"
+"Problem creating port forward, maybe you're using ports under 1024 or "
+"port is already used?"
 msgstr ""
 "Probléma a port átirányítás létrehozása során, 1024 alatti vagy már "
 "használatban lévő portot választott?"
@@ -1176,8 +1168,7 @@ msgstr ""
 
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
-msgstr ""
-"A nyilvános kulcs hibás, próbálja újra kiválasztani az állomás kezelőből"
+msgstr "A nyilvános kulcs hibás, próbálja újra kiválasztani az állomás kezelőből"
 
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
@@ -1228,12 +1219,6 @@ msgstr "%1$s a figyelmére szorul."
 msgctxt "no"
 msgid "No"
 msgstr "Nem"
-
-#. Preference selection for SSH Authentication Agent to be able to use pubkeys
-#. "with confirmation" only
-msgctxt "with_confirmation"
-msgid "With confirmation"
-msgstr "Csak beleegyezéssel"
 
 #. Preference selection for SSH Authentication Agent to be able to use pubkeys
 msgctxt "yes"
@@ -1313,6 +1298,12 @@ msgstr "Kilépő jel küldés"
 #. for              accessibility purposes.
 msgctxt "image_description_send_tab_character"
 msgid "Send TAB character."
+msgstr ""
+
+#. Describes the icon of the "hide keyboard" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_hide_keyboard"
+msgid "Hide keyboard."
 msgstr ""
 
 #. Describes the icon of the "show keyboard" button in the terminal view for
@@ -1542,3 +1533,4 @@ msgstr ""
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
 msgstr ""
+

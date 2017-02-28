@@ -8,16 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-06-12 23:13-0700\n"
+"POT-Creation-Date: 2017-02-28 00:29-0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-13 01:36+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
-"Generated-By: Babel 1.3\n"
+"Generated-By: Babel 2.3.4\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -821,25 +819,9 @@ msgctxt "hostpref_delkey_title"
 msgid "DEL Key"
 msgstr ""
 
-#. Summary for field asking what key code is sent to the server when DEL key
-#. is pressed.
-msgctxt "hostpref_delkey_summary"
-msgid "The key code sent when DEL key is pressed"
-msgstr ""
-
 #. Host character encoding preference title
 msgctxt "hostpref_encoding_title"
 msgid "Encoding"
-msgstr ""
-
-#. Host character encoding preference summary
-msgctxt "hostpref_encoding_summary"
-msgid "Character encoding for the host"
-msgstr ""
-
-#. Host preference category title for connection settings
-msgctxt "hostpref_connection_category"
-msgid "Connection settings"
 msgstr ""
 
 #. Username field title for host editor preference
@@ -1204,12 +1186,6 @@ msgstr ""
 #. Preference selection for SSH Authentication Agent to never use pubkeys
 msgctxt "no"
 msgid "No"
-msgstr ""
-
-#. Preference selection for SSH Authentication Agent to be able to use pubkeys
-#. "with confirmation" only
-msgctxt "with_confirmation"
-msgid "With confirmation"
 msgstr ""
 
 #. Preference selection for SSH Authentication Agent to be able to use pubkeys
