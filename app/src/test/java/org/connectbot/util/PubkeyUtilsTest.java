@@ -62,25 +62,6 @@ public class PubkeyUtilsTest {
 				PubkeyUtils.encodeHex(input), expected);
 	}
 
-	@Test
-	public void sha256_Empty_Success() throws Exception {
-		byte[] empty_hashed = new byte[] {
-				(byte) 0xe3, (byte) 0xb0, (byte) 0xc4, (byte) 0x42,
-				(byte) 0x98, (byte) 0xfc, (byte) 0x1c, (byte) 0x14,
-				(byte) 0x9a, (byte) 0xfb, (byte) 0xf4, (byte) 0xc8,
-				(byte) 0x99, (byte) 0x6f, (byte) 0xb9, (byte) 0x24,
-				(byte) 0x27, (byte) 0xae, (byte) 0x41, (byte) 0xe4,
-				(byte) 0x64, (byte) 0x9b, (byte) 0x93, (byte) 0x4c,
-				(byte) 0xa4, (byte) 0x95, (byte) 0x99, (byte) 0x1b,
-				(byte) 0x78, (byte) 0x52, (byte) 0xb8, (byte) 0x55,
-		};
-
-		final byte[] empty = new byte[] {};
-
-		assertTrue("Empty string should be equal to known test vector",
-				Arrays.equals(empty_hashed, PubkeyUtils.sha256(empty)));
-	}
-
 	/* openssl ecparam -genkey -name prime256v1 -noout | openssl pkcs8 -topk8 -outform d -nocrypt | recode ../x1 | sed 's/0x/(byte) 0x/g' */
 	private static final byte[] EC_KEY_PKCS8 = new byte[] { (byte) 0x30, (byte) 0x81, (byte) 0x87,
 			(byte) 0x02, (byte) 0x01, (byte) 0x00, (byte) 0x30, (byte) 0x13, (byte) 0x06,

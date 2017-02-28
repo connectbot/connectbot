@@ -25,7 +25,6 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyPair;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -98,11 +97,7 @@ public class PubkeyUtils {
 			", bytes=" + encoded.length + "]";
 	}
 
-	public static byte[] sha256(byte[] data) throws NoSuchAlgorithmException {
-		return MessageDigest.getInstance("SHA-256").digest(data);
-	}
-
-	public static byte[] encrypt(byte[] cleartext, String secret) throws Exception {
+	private static byte[] encrypt(byte[] cleartext, String secret) throws Exception {
 		byte[] salt = new byte[SALT_SIZE];
 
 		byte[] ciphertext = Encryptor.encrypt(salt, ITERATIONS, secret, cleartext);
