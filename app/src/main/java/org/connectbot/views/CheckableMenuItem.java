@@ -49,6 +49,9 @@ import android.widget.TextView;
 public class CheckableMenuItem extends RelativeLayout {
 	private static final String ACCESSIBILITY_EVENT_CLASS_NAME = "android.widget.Switch";
 
+	private final Rect mPlaceHolderRect = new Rect(0, 0, 1, 1);
+	private static final String PLACEHOLDER_STRING = "";
+
 	private final View mRootView;
 	private final TextView mTitle;
 	private final TextView mSummary;
@@ -85,6 +88,8 @@ public class CheckableMenuItem extends RelativeLayout {
 			@Override
 			protected void onPopulateEventForVirtualView(int virtualViewId, AccessibilityEvent event) {
 				if (virtualViewId != HOST_ID) {
+					// TODO(kroot): remove this when the bug is fixed.
+					event.setContentDescription(PLACEHOLDER_STRING);
 					return;
 				}
 
@@ -96,6 +101,9 @@ public class CheckableMenuItem extends RelativeLayout {
 			@Override
 			protected void onPopulateNodeForVirtualView(int virtualViewId, AccessibilityNodeInfoCompat node) {
 				if (virtualViewId != HOST_ID) {
+					// TODO(kroot): remove this when the bug is fixed.
+					node.setBoundsInParent(mPlaceHolderRect);
+					node.setContentDescription(PLACEHOLDER_STRING);
 					return;
 				}
 

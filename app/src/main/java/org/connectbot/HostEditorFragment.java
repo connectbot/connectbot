@@ -533,7 +533,13 @@ public class HostEditorFragment extends Fragment {
 			mFontSizeSeekBar.setProgress(fontSize - MINIMUM_FONT_SIZE);
 		}
 
-		if (Integer.parseInt(mFontSizeText.getText().toString()) != fontSize) {
+		Integer fontSizeFromEditText = null;
+		try {
+			fontSizeFromEditText = Integer.parseInt(mFontSizeText.getText().toString());
+		} catch (NumberFormatException ignored) {
+		}
+
+		if (fontSizeFromEditText == null || fontSizeFromEditText != fontSize) {
 			mFontSizeText.removeTextChangedListener(mFontSizeTextChangeListener);
 			mFontSizeText.setText(Integer.toString(fontSize));
 			mFontSizeText.addTextChangedListener(mFontSizeTextChangeListener);

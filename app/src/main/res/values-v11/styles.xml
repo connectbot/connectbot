@@ -18,13 +18,6 @@
 -->
 <resources>
 
-	<style name="AppTheme" parent="@style/PreferenceFixTheme">
-		<item name="colorPrimary">@color/primary</item>
-		<item name="colorPrimaryDark">@color/dark_primary</item>
-		<item name="colorAccent">@color/accent</item>
-		<item name="alertDialogTheme">@style/AlertDialogTheme</item>
-	</style>
-
 	<style name="ListItemFirstLineText" parent="TextAppearance.AppCompat">
 		<item name="android:layout_alignParentTop">true</item>
 		<item name="android:textColor">?android:textColorPrimary</item>

@@ -25,7 +25,6 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyPair;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -58,9 +57,11 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
+import org.connectbot.bean.PubkeyBean;
 import org.keyczar.jce.EcCore;
 
 import com.trilead.ssh2.crypto.Base64;
+import com.trilead.ssh2.crypto.PEMDecoder;
 import com.trilead.ssh2.crypto.SimpleDERReader;
 import com.trilead.ssh2.signature.DSASHA1Verify;
 import com.trilead.ssh2.signature.ECDSASHA2Verify;
@@ -98,11 +99,7 @@ public class PubkeyUtils {
 			", bytes=" + encoded.length + "]";
 	}
 
-	public static byte[] sha256(byte[] data) throws NoSuchAlgorithmException {
-		return MessageDigest.getInstance("SHA-256").digest(data);
-	}
-
-	public static byte[] encrypt(byte[] cleartext, String secret) throws Exception {
+	private static byte[] encrypt(byte[] cleartext, String secret) throws Exception {
 		byte[] salt = new byte[SALT_SIZE];
 
 		byte[] ciphertext = Encryptor.encrypt(salt, ITERATIONS, secret, cleartext);
@@ -118,7 +115,7 @@ public class PubkeyUtils {
 		return complete;
 	}
 
-	public static byte[] decrypt(byte[] saltAndCiphertext, String secret) throws Exception {
+	private static byte[] decrypt(byte[] saltAndCiphertext, String secret) throws Exception {
 		byte[] salt = new byte[SALT_SIZE];
 		byte[] ciphertext = new byte[saltAndCiphertext.length - salt.length];
 
@@ -226,6 +223,30 @@ public class PubkeyUtils {
 		} catch (IOException e) {
 			Log.w(TAG, "Could not read public exponent", e);
 			throw new InvalidKeySpecException("Could not read key", e);
+		}
+	}
+
+	public static KeyPair convertToKeyPair(PubkeyBean keybean, String password) throws BadPasswordException {
+		if (PubkeyDatabase.KEY_TYPE_IMPORTED.equals(keybean.getType())) {
+			// load specific key using pem format
+			try {
+				return PEMDecoder.decode(new String(keybean.getPrivateKey()).toCharArray(), password);
+			} catch (Exception e) {
+				Log.e(TAG, "Cannot decode imported key", e);
+				throw new BadPasswordException();
+			}
+		} else {
+			// load using internal generated format
+			try {
+				PrivateKey privKey = PubkeyUtils.decodePrivate(keybean.getPrivateKey(), keybean.getType(), password);
+				PublicKey pubKey = PubkeyUtils.decodePublic(keybean.getPublicKey(), keybean.getType());
+				Log.d(TAG, "Unlocked key " + PubkeyUtils.formatKey(pubKey));
+
+				return new KeyPair(pubKey, privKey);
+			} catch (Exception e) {
+				Log.e(TAG, "Cannot decode pubkey from database", e);
+				throw new BadPasswordException();
+			}
 		}
 	}
 
@@ -396,5 +417,8 @@ public class PubkeyUtils {
 		}
 
 		return String.valueOf(hex);
+	}
+
+	public static class BadPasswordException extends Exception {
 	}
 }
