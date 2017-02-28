@@ -311,29 +311,11 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 	protected void handleAddKey(PubkeyBean keybean, String password) {
 		KeyPair pair = null;
-		if (PubkeyDatabase.KEY_TYPE_IMPORTED.equals(keybean.getType())) {
-			// load specific key using pem format
-			try {
-				pair = PEMDecoder.decode(new String(keybean.getPrivateKey()).toCharArray(), password);
-			} catch (Exception e) {
-				String message = getResources().getString(R.string.pubkey_failed_add, keybean.getNickname());
-				Log.e(TAG, message, e);
-				Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG).show();
-			}
-		} else {
-			// load using internal generated format
-			try {
-				PrivateKey privKey = PubkeyUtils.decodePrivate(keybean.getPrivateKey(), keybean.getType(), password);
-				PublicKey pubKey = PubkeyUtils.decodePublic(keybean.getPublicKey(), keybean.getType());
-				Log.d(TAG, "Unlocked key " + PubkeyUtils.formatKey(pubKey));
-
-				pair = new KeyPair(pubKey, privKey);
-			} catch (Exception e) {
-				String message = getResources().getString(R.string.pubkey_failed_add, keybean.getNickname());
-				Log.e(TAG, message, e);
-				Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG).show();
-				return;
-			}
+		try {
+			pair = PubkeyUtils.convertToKeyPair(keybean, password);
+		} catch (PubkeyUtils.BadPasswordException e) {
+			String message = getResources().getString(R.string.pubkey_failed_add, keybean.getNickname());
+			Toast.makeText(PubkeyListActivity.this, message, Toast.LENGTH_LONG).show();
 		}
 
 		if (pair == null) {
