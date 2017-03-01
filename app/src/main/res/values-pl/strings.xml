@@ -121,9 +121,9 @@
   <string name="bind_never">Nigdy nie połączono</string>
   <plurals name="console_copy_done">
     <item quantity="one">Skopiowano %1$d bajtów do schowka</item>
-    <item quantity="few">Skopiowano %1$d bajt do schowka</item>
-    <item quantity="many">Skopiowano %1$d bajtów do schowka</item>
-    <item quantity="other">Skopiowano %1$d bajtów do schowka</item>
+    <item quantity="few">Skopiowano %1$d bajtów do schowka</item>
+    <item quantity="many">Skopiowano %1$d bajt do schowka</item>
+    <item quantity="other"/>
   </plurals>
   <string name="console_copy_start">Dotknij i przeciągnij\nlub użyj trackball\'a\naby zaznaczyć obszar do skopiowania</string>
   <string name="console_menu_close">Zamknij</string>

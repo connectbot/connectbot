@@ -15,6 +15,7 @@
   <string name="terms_and_conditions">Termos &amp; Condições</string>
   <string name="hints">Sugestões</string>
   <string name="scrolling_forward">Rolagem para frente</string>
+  <string name="page_updn_header">Página acima</string>
   <string name="page_up">Página acima</string>
   <string name="page_down">Página abaixo</string>
   <string name="increase_font_size">Aumentar Tamanho da Fonte</string>
@@ -82,7 +83,7 @@
   <string name="pref_pg_updn_gesture_title">Movimento de página para cima/baixo</string>
   <string name="pref_fullscreen_title">Ecrã completo</string>
   <string name="pref_fullscreen_summary">Esconder a barra de notificação quando estiver na consola</string>
-  <string name="pref_memkeys_title">Lembrar chaves em memoría</string>
+  <string name="pref_memkeys_title">Lembrar chaves em memoria</string>
   <string name="pref_memkeys_summary">Manter chaves desbloqueadas em memória até ao serviço de fundo terminar</string>
   <string name="pref_conn_persist_title">Persistir ligações</string>
   <string name="pref_conn_persist_summary">Forçar ligações a ficarem ligadas quando em segundo plano</string>

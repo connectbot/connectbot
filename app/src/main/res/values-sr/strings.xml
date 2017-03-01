@@ -126,10 +126,10 @@
   <string name="hostpref_port_title">Порт</string>
   <string name="bind_never">Никад повезиван</string>
   <plurals name="console_copy_done">
-    <item quantity="one"/>
-    <item quantity="few"/>
-    <item quantity="many"/>
-    <item quantity="other">Копирано %1$d бајта на клипборд</item>
+    <item quantity="one">Копирано %1$d бајта на клипборд</item>
+    <item quantity="few">Копирано %1$d бајта на клипборд</item>
+    <item quantity="many">Копирано %1$d бајта на клипборд</item>
+    <item quantity="other"/>
   </plurals>
   <string name="console_copy_start">Додирните и превуците\nили користите дирекциони контролер\nда изаберете површину за копирање</string>
   <string name="console_menu_close">Затвори</string>

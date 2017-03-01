@@ -100,7 +100,7 @@
   <string name="bind_never">Aldrei tengt</string>
   <plurals name="console_copy_done">
     <item quantity="one">Afritaði %1$d bæti</item>
-    <item quantity="other">Afritaði %1$d bæti</item>
+    <item quantity="other">Afritaði %1$d bytes</item>
   </plurals>
   <string name="console_menu_close">Loka</string>
   <string name="console_menu_copy">Afrita</string>
