@@ -38,10 +38,10 @@ import org.connectbot.data.HostStorage;
 import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
+import org.connectbot.util.ProviderLoader;
+import org.connectbot.util.ProviderLoaderListener;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
-
-import com.google.android.gms.security.ProviderInstaller;
 
 import android.app.Service;
 import android.content.Context;
@@ -67,7 +67,7 @@ import android.util.Log;
  *
  * @author jsharkey
  */
-public class TerminalManager extends Service implements BridgeDisconnectedListener, OnSharedPreferenceChangeListener, ProviderInstaller.ProviderInstallListener {
+public class TerminalManager extends Service implements BridgeDisconnectedListener, OnSharedPreferenceChangeListener, ProviderLoaderListener {
 	public final static String TAG = "CB.TerminalManager";
 
 	private ArrayList<TerminalBridge> bridges = new ArrayList<TerminalBridge>();
@@ -161,7 +161,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		connectivityManager = new ConnectivityReceiver(this, lockingWifi);
 
-		ProviderInstaller.installIfNeededAsync(this, this);
+		ProviderLoader.load(this, this);
 	}
 
 	private void updateSavingKeys() {
@@ -475,13 +475,13 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	}
 
 	@Override
-	public void onProviderInstalled() {
-		Log.i(TAG, "ProviderInstaller installation succeeded");
+	public void onProviderLoaderSuccess() {
+		Log.d(TAG, "Installed crypto provider successfully");
 	}
 
 	@Override
-	public void onProviderInstallFailed(int i, Intent intent) {
-		Log.i(TAG, "ProviderInstaller installation failed");
+	public void onProviderLoaderError() {
+		Log.e(TAG, "Failure while installing crypto provider");
 	}
 
 	public class TerminalBinder extends Binder {

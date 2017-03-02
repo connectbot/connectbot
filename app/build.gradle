@@ -38,19 +38,6 @@ repositories {
     }
 }
 
-dependencies {
-    compile 'org.connectbot:sshlib:2.2.5-SNAPSHOT'
-    compile 'com.google.android.gms:play-services-base:10.0.1'
-
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.19'
-    testCompile 'org.assertj:assertj-core:1.7.0'
-    testCompile('org.robolectric:robolectric:3.2.2') {
-        exclude group: 'commons-logging', module: 'commons-logging'
-        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
-    }
-}
-
 def isCi = "true".equals(System.getenv("CI"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
@@ -137,6 +124,28 @@ android {
         }
     }
 
+    flavorDimensions "license"
+
+    productFlavors {
+        // This product flavor uses the Conscrypt library which is open
+        // source and licensed under Apache 2.
+        oss {
+            dimension "license"
+            versionNameSuffix "-oss"
+            ndk {
+                abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+            }
+        }
+
+        // This product flavor uses the Google Play Services library for
+        // ProviderInstaller. It uses Conscrypt under-the-hood, but the
+        // Google Play Services SDK itself is not open source.
+        google {
+            dimension "license"
+            versionNameSuffix ""
+        }
+    }
+
     lintOptions {
         abortOnError false
         lintConfig file('lint.xml')
@@ -145,6 +154,21 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'LICENSE.txt'
+    }
+}
+
+// Dependencies must be below the android block to allow productFlavor specific deps.
+dependencies {
+    compile 'org.connectbot:sshlib:2.2.5-SNAPSHOT'
+    googleCompile 'com.google.android.gms:play-services-base:10.0.1'
+    ossCompile 'org.conscrypt:conscrypt-android:1.0.0.RC2'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.assertj:assertj-core:1.7.0'
+    testCompile('org.robolectric:robolectric:3.2.2') {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 }
 
