@@ -7,7 +7,7 @@ Get the App
 <a href="https://play.google.com/store/apps/details?id=org.connectbot" target="_blank">
 <img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="80"/></a>
 
-ConnectBot is also avalaible through F-Droid, a free and open-source android applications repository, but this version isn't build by the ConnectBot team. You can find it here : [ConnectBot on F-Droid](https://f-droid.org/repository/browse/?fdid=org.connectbot)
+ConnectBot is also avalaible through F-Droid, a free and open-source Android applications repository, but this version isn't built by the ConnectBot team. You can find it here: [ConnectBot on F-Droid](https://f-droid.org/repository/browse/?fdid=org.connectbot)
 
 Translations
 ----------------
