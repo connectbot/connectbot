@@ -7,6 +7,7 @@ buildscript {
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.6.3'
         classpath 'com.android.tools.build:gradle:2.2.3'
         classpath 'com.github.gfx.ribbonizer:plugin:0.5.0'
+        classpath 'com.trickyandroid:jacoco-everywhere:0.2.1'
         if (rootProject.hasProperty('jacocoVersion')) {
             classpath "org.jacoco:org.jacoco.core:${rootProject.jacocoVersion}"
         }
@@ -15,7 +16,6 @@ buildscript {
 
 plugins {
     id 'info.vividcode.android.sdk-manager' version '0.9.0'
-    id 'jacoco'
 }
 
 ext {
@@ -28,9 +28,9 @@ apply plugin: 'info.vividcode.android.sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'com.github.gfx.ribbonizer'
+apply plugin: 'jacoco-everywhere'
 apply from: '../config/quality.gradle'
 apply from: '../config/translations.gradle'
-apply from: '../config/jacoco.gradle'
 
 repositories {
     maven {
@@ -134,14 +134,6 @@ android {
         debug {
             applicationIdSuffix ".debug"
             testCoverageEnabled true
-        }
-    }
-
-    testOptions {
-        unitTests.all {
-            jacoco {
-                includeNoLocationClasses = true
-            }
         }
     }
 
