@@ -7,6 +7,7 @@ buildscript {
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.6.3'
         classpath 'com.android.tools.build:gradle:2.2.3'
         classpath 'com.github.gfx.ribbonizer:plugin:0.5.0'
+        classpath 'com.trickyandroid:jacoco-everywhere:0.2.1'
         if (rootProject.hasProperty('jacocoVersion')) {
             classpath "org.jacoco:org.jacoco.core:${rootProject.jacocoVersion}"
         }
@@ -15,7 +16,6 @@ buildscript {
 
 plugins {
     id 'info.vividcode.android.sdk-manager' version '0.9.0'
-    id 'jacoco'
 }
 
 ext {
@@ -28,26 +28,13 @@ apply plugin: 'info.vividcode.android.sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'com.github.gfx.ribbonizer'
+apply plugin: 'jacoco-everywhere'
 apply from: '../config/quality.gradle'
 apply from: '../config/translations.gradle'
-apply from: '../config/jacoco.gradle'
 
 repositories {
     maven {
         url 'https://oss.jfrog.org/artifactory/oss-snapshot-local/'
-    }
-}
-
-dependencies {
-    compile 'org.connectbot:sshlib:2.2.5-SNAPSHOT'
-    compile 'com.google.android.gms:play-services-base:10.0.1'
-
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.19'
-    testCompile 'org.assertj:assertj-core:1.7.0'
-    testCompile('org.robolectric:robolectric:3.2.2') {
-        exclude group: 'commons-logging', module: 'commons-logging'
-        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 }
 
@@ -137,11 +124,25 @@ android {
         }
     }
 
-    testOptions {
-        unitTests.all {
-            jacoco {
-                includeNoLocationClasses = true
+    flavorDimensions "license"
+
+    productFlavors {
+        // This product flavor uses the Conscrypt library which is open
+        // source and licensed under Apache 2.
+        oss {
+            dimension "license"
+            versionNameSuffix "-oss"
+            ndk {
+                abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
             }
+        }
+
+        // This product flavor uses the Google Play Services library for
+        // ProviderInstaller. It uses Conscrypt under-the-hood, but the
+        // Google Play Services SDK itself is not open source.
+        google {
+            dimension "license"
+            versionNameSuffix ""
         }
     }
 
@@ -153,6 +154,21 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'LICENSE.txt'
+    }
+}
+
+// Dependencies must be below the android block to allow productFlavor specific deps.
+dependencies {
+    compile 'org.connectbot:sshlib:2.2.5-SNAPSHOT'
+    googleCompile 'com.google.android.gms:play-services-base:10.0.1'
+    ossCompile 'org.conscrypt:conscrypt-android:1.0.0.RC2'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.assertj:assertj-core:1.7.0'
+    testCompile('org.robolectric:robolectric:3.2.2') {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 }
 

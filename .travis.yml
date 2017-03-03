@@ -72,8 +72,7 @@ script:
   - ./gradlew --stacktrace --info clean
   - ./gradlew --stacktrace --info assemble
   - ./gradlew --stacktrace --info check
-  - ./gradlew --stacktrace --info jacocoUnitTestDebugReport
-  - ./gradlew --stacktrace --info jacocoCombinedReport
-  - ./scripts/check-lint-count.bash app/build/outputs/lint-results-debug.xml $HOME/.cache/lint/lint-results.xml
+  - ./gradlew --stacktrace --info connectedCheck
+  - ./scripts/check-lint-count.bash app/build/outputs/lint-results-googleDebug.xml $HOME/.cache/lint/lint-results.xml
 
 after_success: ./gradlew coveralls
