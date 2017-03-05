@@ -72,10 +72,10 @@ before_script:
 
 script:
   # Split up to reduce memory requirements
-  - ./gradlew --stacktrace --info clean
-  - ./gradlew --stacktrace --info assemble
-  - ./gradlew --stacktrace --info check
-  - ./gradlew --stacktrace --info connectedCheck
+  - ./gradlew --stacktrace clean
+  - ./gradlew --stacktrace assemble
+  - ./gradlew --stacktrace check
+  - ./gradlew --stacktrace connectedCheck
   - ./scripts/check-lint-count.bash app/build/outputs/lint-results-googleDebug.xml $HOME/.cache/lint/lint-results.xml
 
 after_success: ./gradlew coveralls
