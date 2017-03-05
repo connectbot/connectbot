@@ -22,8 +22,11 @@ before_cache:
 
 addons:
   apt:
+    sources:
+      - ubuntu-toolchain-r-test
     packages:
       - xqilla # ./scripts/check-lint-count.bash
+      - libstdc++6-4.7-dev
   coverity_scan:
     project:
       name: "connectbot/connectbot"
