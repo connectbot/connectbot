@@ -41,6 +41,8 @@ repositories {
 def isCi = "true".equals(System.getenv("CI"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
+coveralls.jacocoReportPath = 'build/reports/coverage/google/debug/report.xml'
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
