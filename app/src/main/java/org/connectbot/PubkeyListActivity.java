@@ -71,7 +71,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,16 +90,9 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 	private static final String ANDEXPLORER_TITLE = "explorer_title";
 	private static final String MIME_TYPE_ANDEXPLORER_FILE = "vnd.android.cursor.dir/lysesoft.andexplorer.file";
 
-	private List<PubkeyBean> pubkeys;
-
 	protected ClipboardManager clipboard;
 
-	private LayoutInflater inflater = null;
-
 	private TerminalManager bound = null;
-
-	private MenuItem onstartToggle = null;
-	private MenuItem confirmUse = null;
 
 	private ServiceConnection connection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
@@ -147,8 +139,6 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		registerForContextMenu(mListView);
 
 		clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-
-		inflater = LayoutInflater.from(this);
 	}
 
 	@Override
@@ -332,9 +322,8 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 	protected void updateList() {
 		PubkeyDatabase pubkeyDb = PubkeyDatabase.get(PubkeyListActivity.this);
-		pubkeys = pubkeyDb.allPubkeys();
 
-		mAdapter = new PubkeyAdapter(this, pubkeys);
+		mAdapter = new PubkeyAdapter(this, pubkeyDb.allPubkeys());
 		mListView.setAdapter(mAdapter);
 		adjustViewVisibility();
 	}
@@ -527,7 +516,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 				}
 			});
 
-			onstartToggle = menu.add(R.string.pubkey_load_on_start);
+			MenuItem onstartToggle = menu.add(R.string.pubkey_load_on_start);
 			onstartToggle.setEnabled(!pubkey.isEncrypted());
 			onstartToggle.setCheckable(true);
 			onstartToggle.setChecked(pubkey.isStartup());
@@ -586,7 +575,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 				public boolean onMenuItemClick(MenuItem item) {
 					final View changePasswordView =
 							View.inflate(PubkeyListActivity.this, R.layout.dia_changepassword, null);
-					((TableRow) changePasswordView.findViewById(R.id.old_password_prompt))
+					changePasswordView.findViewById(R.id.old_password_prompt)
 							.setVisibility(pubkey.isEncrypted() ? View.VISIBLE : View.GONE);
 					new android.support.v7.app.AlertDialog.Builder(
 									PubkeyListActivity.this, R.style.AlertDialogTheme)
@@ -637,7 +626,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 				}
 			});
 
-			confirmUse = menu.add(R.string.pubkey_confirm_use);
+			MenuItem confirmUse = menu.add(R.string.pubkey_confirm_use);
 			confirmUse.setCheckable(true);
 			confirmUse.setChecked(pubkey.isConfirmUse());
 			confirmUse.setOnMenuItemClickListener(new OnMenuItemClickListener() {
@@ -693,8 +682,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		public PubkeyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 			View v = LayoutInflater.from(parent.getContext())
 					.inflate(R.layout.item_pubkey, parent, false);
-			PubkeyViewHolder vh = new PubkeyViewHolder(v);
-			return vh;
+			return new PubkeyViewHolder(v);
 		}
 
 		public void onBindViewHolder(ItemViewHolder holder, int position) {
