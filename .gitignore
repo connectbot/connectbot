@@ -17,3 +17,6 @@ local.properties
 # Android Studio
 .gradle/
 build/
+
+# Android gradle native build
+\.externalNativeBuild/

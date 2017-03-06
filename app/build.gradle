@@ -19,7 +19,7 @@ plugins {
 }
 
 ext {
-    supportLibraryVersion = '25.1.1'
+    supportLibraryVersion = '25.2.0'
     testRunnerVersion = '0.5'
     espressoVersion = '2.2.2'
 }
@@ -63,9 +63,7 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         ndk {
-            moduleName "com_google_ase_Exec"
-            ldLibs "log"
-            stl "system"
+            abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'mips'
         }
 
         testApplicationId "org.connectbot.tests"
@@ -156,6 +154,11 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'LICENSE.txt'
+    }
+    externalNativeBuild {
+        cmake {
+            path 'CMakeLists.txt'
+        }
     }
 }
 
