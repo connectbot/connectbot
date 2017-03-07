@@ -45,17 +45,18 @@ before_script:
   - echo -ne "\n84831b9409646a918e30573bab4c9c91346d8abd\n504667f4c0de7af1a06de9f4b1727b84351f2910" >> $ANDROID_HOME/licenses/android-sdk-preview-license
   - $ANDROID_HOME/tools/bin/sdkmanager tools
   - $ANDROID_HOME/tools/bin/sdkmanager platform-tools
+  - $ANDROID_HOME/tools/bin/sdkmanager 'emulator'
+  - $ANDROID_HOME/tools/bin/sdkmanager 'system-images;android-22;default;armeabi-v7a'
+  # Create and start emulator as early as possible
+  - $ANDROID_HOME/tools/bin/avdmanager create avd --force --name test --package 'system-images;android-22;default;armeabi-v7a' --abi armeabi-v7a --device 'Nexus 4' --sdcard 128M
+  - $ANDROID_HOME/emulator/emulator -avd test -skin 768x1280 -no-audio -no-window &
   - $ANDROID_HOME/tools/bin/sdkmanager 'build-tools;23.0.3'
   - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-23'
   - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-22' # for emulator
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;android;m2repository'
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;m2repository'
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;google_play_services'
-  - $ANDROID_HOME/tools/bin/sdkmanager 'system-images;android-22;default;armeabi-v7a'
   - $ANDROID_HOME/tools/bin/sdkmanager ndk-bundle
-  # Create and start emulator as early as possible
-  - echo no | android create avd --force -n test -t android-22 --abi default/armeabi-v7a -s "768x1280" --device "Nexus 4" -c 128M
-  - emulator -avd test -no-audio -no-window &
   # Download the emulator support stuff
   - mkdir -p $HOME/.cache/ci-support
   - curl -L https://github.com/connectbot/ci-support/archive/master.zip -z $HOME/.cache/ci-support/master.zip -o $HOME/.cache/ci-support/master.zip
