@@ -39,7 +39,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 		final ConnectivityManager cm =
 				(ConnectivityManager) manager.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-		final WifiManager wm = (WifiManager) manager.getSystemService(Context.WIFI_SERVICE);
+		final WifiManager wm = (WifiManager) manager.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 		mWifiLock = wm.createWifiLock(TAG);
 
 		final NetworkInfo info = cm.getActiveNetworkInfo();
