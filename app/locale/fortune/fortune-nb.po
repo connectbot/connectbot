@@ -8,14 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2016-04-05 19:49+0000\n"
-"Last-Translator: Kjetil Birkeland Moe <kjetil@skifremme.no>\n"
-"Language: nb\n"
+"PO-Revision-Date: 2017-02-28 23:25+0000\n"
+"Last-Translator: Kenny Root <Unknown>\n"
 "Language-Team: nb <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Launchpad-Export-Date: 2017-03-01 00:01+0000\n"
+"X-Generator: Launchpad (build 18329)\n"
+"Language: nb\n"
 "Generated-By: Babel 2.3.4\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
@@ -76,7 +78,8 @@ msgid "Generate"
 msgstr "Generer"
 
 msgctxt "help_intro"
-msgid "Please select a topic below for more information on a particular subject."
+msgid ""
+"Please select a topic below for more information on a particular subject."
 msgstr "Velg en overskrift nedenfor for mer informasjon om et bestemt emne."
 
 #. Title for the help page with the terms & conditions of the app.
@@ -97,8 +100,8 @@ msgstr "Snarveier for verter"
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
 msgid ""
-"Long-press on your Android desktop to create direct shortcuts to "
-"frequently-used SSH hosts."
+"Long-press on your Android desktop to create direct shortcuts to frequently-"
+"used SSH hosts."
 msgstr ""
 
 #. Header text for instructions about scrolling the terminal.
@@ -109,8 +112,8 @@ msgstr "Bla opp/Bla ned"
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
 msgid ""
-"Swiping your finger up on the right side of the screen allows you to "
-"scroll backward and forward in the local terminal buffer history."
+"Swiping your finger up on the right side of the screen allows you to scroll "
+"backward and forward in the local terminal buffer history."
 msgstr "Dra fingeren opp eller ned for å bla i terminalen"
 
 #. Captions for images showing the scroll back/forward gestures.
@@ -132,9 +135,9 @@ msgctxt "page_updn_content"
 msgid ""
 "NOTE: This must be enabled in settings.\n"
 "\n"
-"Swiping your finger up and down on the left third of the screen will send"
-" a page up and page down key to the remote host. Many programs map this "
-"to scrolling back into history such as irssi or tinyfugue."
+"Swiping your finger up and down on the left third of the screen will send a "
+"page up and page down key to the remote host. Many programs map this to "
+"scrolling back into history such as irssi or tinyfugue."
 msgstr ""
 
 #. Captions for images showing the page up/down gestures.
@@ -219,11 +222,11 @@ msgstr "Berør denne boksen for å samle tilfeldige tall: %1$d%% ferdig"
 
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger"
-" randomly over the box below."
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
 msgstr ""
-"Beveg fingeren over boksen nedenfor for å sikre vilkårlighet ved "
-"generering av nøkkel."
+"Beveg fingeren over boksen nedenfor for å sikre vilkårlighet ved generering "
+"av nøkkel."
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
@@ -407,8 +410,7 @@ msgstr "ADVARSEL: EKSTERN VERT IDENTIFIKASJON HAR BLITT ENDRET!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle "
-"attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "DET KAN VÆRE UGLER I MOSEN!\n"
@@ -724,7 +726,8 @@ msgstr "Bakgrunnsvarsling"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid "Send notification when a terminal running in the background sounds a bell."
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
 msgstr "Vis varsling når en terminal i bakgrunnen gir et klokkevarsel."
 
 #. Preference selection to indicate use of right side of keyboard for special
@@ -788,7 +791,8 @@ msgstr "Kommandoer etter innlogging"
 #. Host post-login automation preference summary
 msgctxt "hostpref_postlogin_summary"
 msgid "Commands to run on remote server once authenticated"
-msgstr "Kommandoer som kjøres på tilkoblet tjener etter vellykket autentisering"
+msgstr ""
+"Kommandoer som kjøres på tilkoblet tjener etter vellykket autentisering"
 
 #. Host compression preference title
 msgctxt "hostpref_compression_title"
@@ -809,7 +813,8 @@ msgstr "Start skallsesjon"
 #. connection or not
 msgctxt "hostpref_wantsession_summary"
 msgid "Disable this preference to only use port forwards"
-msgstr "Deaktiver denne innstillingen og benytt denne kun for portvideresending"
+msgstr ""
+"Deaktiver denne innstillingen og benytt denne kun for portvideresending"
 
 #. Setting for whether the host should be reconnected to automatically upon
 #. disconnect
@@ -867,8 +872,8 @@ msgstr "Aldri tilkoblet"
 msgctxt "console_copy_done"
 msgid "Copied %1$d byte to clipboard"
 msgid_plural "Copied %1$d bytes to clipboard"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Kopiert %1$d byte til utklippstavle"
+msgstr[1] "Kopierte %1$d bytes til utklippstavle"
 
 #. Instructions for how to copy from the terminal. The '\n' entries are to
 #. split lines to improve readability and prevent wrapping off the screen.
@@ -951,11 +956,11 @@ msgstr "Opprett portvideresending"
 
 msgctxt "portforward_problem"
 msgid ""
-"Problem creating port forward, maybe you're using ports under 1024 or "
-"port is already used?"
+"Problem creating port forward, maybe you're using ports under 1024 or port "
+"is already used?"
 msgstr ""
-"Mislyktes å opprette portvideresending. Bruker du porter under 1024, "
-"eller er denne porten allerede tatt?"
+"Mislyktes å opprette portvideresending. Bruker du porter under 1024, eller "
+"er denne porten allerede tatt?"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
@@ -1531,4 +1536,3 @@ msgstr ""
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
 msgstr ""
-

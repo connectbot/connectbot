@@ -8,14 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2015-09-23 04:37+0000\n"
+"PO-Revision-Date: 2017-02-28 23:23+0000\n"
 "Last-Translator: Kenny Root <Unknown>\n"
-"Language: ko\n"
 "Language-Team: ko <LL@li.org>\n"
-"Plural-Forms: nplurals=1; plural=(0)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Launchpad-Export-Date: 2017-03-01 00:01+0000\n"
+"X-Generator: Launchpad (build 18329)\n"
+"Language: ko\n"
 "Generated-By: Babel 2.3.4\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
@@ -76,7 +78,8 @@ msgid "Generate"
 msgstr ""
 
 msgctxt "help_intro"
-msgid "Please select a topic below for more information on a particular subject."
+msgid ""
+"Please select a topic below for more information on a particular subject."
 msgstr "아래의 제목들을 선택하면 특정 주제의 정보를 더 알 수 있습니다."
 
 #. Title for the help page with the terms & conditions of the app.
@@ -97,8 +100,8 @@ msgstr ""
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
 msgid ""
-"Long-press on your Android desktop to create direct shortcuts to "
-"frequently-used SSH hosts."
+"Long-press on your Android desktop to create direct shortcuts to frequently-"
+"used SSH hosts."
 msgstr ""
 
 #. Header text for instructions about scrolling the terminal.
@@ -109,8 +112,8 @@ msgstr ""
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
 msgid ""
-"Swiping your finger up on the right side of the screen allows you to "
-"scroll backward and forward in the local terminal buffer history."
+"Swiping your finger up on the right side of the screen allows you to scroll "
+"backward and forward in the local terminal buffer history."
 msgstr ""
 
 #. Captions for images showing the scroll back/forward gestures.
@@ -132,9 +135,9 @@ msgctxt "page_updn_content"
 msgid ""
 "NOTE: This must be enabled in settings.\n"
 "\n"
-"Swiping your finger up and down on the left third of the screen will send"
-" a page up and page down key to the remote host. Many programs map this "
-"to scrolling back into history such as irssi or tinyfugue."
+"Swiping your finger up and down on the left third of the screen will send a "
+"page up and page down key to the remote host. Many programs map this to "
+"scrolling back into history such as irssi or tinyfugue."
 msgstr ""
 
 #. Captions for images showing the page up/down gestures.
@@ -219,8 +222,8 @@ msgstr "이 사각형의 랜덤으로 터치하세요: %1$d%% 완료"
 
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger"
-" randomly over the box below."
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
 msgstr "키 생성시 랜덤을 보장하기 위해 아래의 사각형 안에서 손가락을 랜덤으로 이동하십시오."
 
 msgctxt "pubkey_generating"
@@ -403,8 +406,7 @@ msgstr "경고: 원격 호스트의 식별이 바뀌었습니다!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle "
-"attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "누군가가 나쁜 짓을 하고 있는 것일 수 있습니다!\n"
@@ -718,7 +720,8 @@ msgstr "백그라운드 알림"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid "Send notification when a terminal running in the background sounds a bell."
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
 msgstr "백그라운드에서 실행중인 터미널 벨을 울리 때 알립니다."
 
 #. Preference selection to indicate use of right side of keyboard for special
@@ -861,7 +864,7 @@ msgstr "연결된 적 없음"
 msgctxt "console_copy_done"
 msgid "Copied %1$d byte to clipboard"
 msgid_plural "Copied %1$d bytes to clipboard"
-msgstr[0] ""
+msgstr[0] "클립 보드에 %1$d 바이트가 복사되었습니다."
 
 #. Instructions for how to copy from the terminal. The '\n' entries are to
 #. split lines to improve readability and prevent wrapping off the screen.
@@ -943,8 +946,8 @@ msgstr "포트 포워딩 만들기"
 
 msgctxt "portforward_problem"
 msgid ""
-"Problem creating port forward, maybe you're using ports under 1024 or "
-"port is already used?"
+"Problem creating port forward, maybe you're using ports under 1024 or port "
+"is already used?"
 msgstr ""
 
 #. Part of the formatting hints that will be used like: username@hostname:port
@@ -1517,4 +1520,3 @@ msgstr ""
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
 msgstr ""
-

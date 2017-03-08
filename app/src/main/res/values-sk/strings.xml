@@ -113,7 +113,7 @@
   <plurals name="console_copy_done">
     <item quantity="one">%1$d bajty skopírovaných do schránky</item>
     <item quantity="few">%1$d bajtov skopírovaných do schránky</item>
-    <item quantity="other">%1$d bajtov skopírovaných do schránky</item>
+    <item quantity="other">%1$d bajty skopírovaných do schránky</item>
   </plurals>
   <string name="console_copy_start">Pre výber kopírovanej oblasti \nsa dotknite a ťahajte\nalebo použite smerové tlačidlo</string>
   <string name="console_menu_close">Zatvoriť</string>

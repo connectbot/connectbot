@@ -43,7 +43,7 @@
   <string name="portforward_list_empty">Appuyez sur Menu pour créer\ndes redirections de port.</string>
   <string name="portforward_edit">Éditer la redirection de port</string>
   <string name="portforward_delete">Effacer la redirection de port</string>
-  <string name="prompt_nickname">Nom&#160;:</string>
+  <string name="prompt_nickname">Nom :</string>
   <string name="prompt_nickname_hint_pubkey">Ma clé de travail</string>
   <string name="prompt_source_port">Port source :</string>
   <string name="prompt_destination">Destination :</string>
