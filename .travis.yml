@@ -77,6 +77,6 @@ script:
   - ./gradlew --stacktrace assemble
   - ./gradlew --stacktrace check
   - ./gradlew --stacktrace connectedCheck
-  - ./scripts/check-lint-count.bash app/build/outputs/lint-results-googleDebug.xml $HOME/.cache/lint/lint-results.xml
+  - ./scripts/check-lint-count.bash app/build/reports/lint-results.xml $HOME/.cache/lint/lint-results.xml
 
 after_success: ./gradlew coveralls
