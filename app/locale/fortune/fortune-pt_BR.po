@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-02-28 23:39+0000\n"
-"Last-Translator: Kenny Root <Unknown>\n"
+"PO-Revision-Date: 2017-03-08 08:36+0000\n"
+"Last-Translator: Ícaro Hoff <icarohoff@gmail.com>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2017-03-01 00:01+0000\n"
-"X-Generator: Launchpad (build 18329)\n"
+"X-Launchpad-Export-Date: 2017-03-08 08:44+0000\n"
+"X-Generator: Launchpad (build 18330)\n"
 "Language: pt_BR\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -103,11 +103,13 @@ msgid ""
 "Long-press on your Android desktop to create direct shortcuts to frequently-"
 "used SSH hosts."
 msgstr ""
+"Pressione e segure em sua área de trabalho para criar atalhos diretos para "
+"seus hospedeiros SSH mais usados."
 
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
 msgid "Scroll back / Scroll forward"
-msgstr ""
+msgstr "Role para trás / Role para frente"
 
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
@@ -115,6 +117,8 @@ msgid ""
 "Swiping your finger up on the right side of the screen allows you to scroll "
 "backward and forward in the local terminal buffer history."
 msgstr ""
+"Passando seu dedo para cima no lado direito da tela irá possibilitar uma "
+"rolagem para trás e para frente na história presente no buffer do terminal."
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
@@ -139,6 +143,12 @@ msgid ""
 "page up and page down key to the remote host. Many programs map this to "
 "scrolling back into history such as irssi or tinyfugue."
 msgstr ""
+"NOTA: Isso deve estar ativado nas configurações.\n"
+"\n"
+"Passando seu dedo para cima e para baixo na terceira parte da esquerda da "
+"tela irá enviar um comandos de page up e page down para o hospedeiro remoto. "
+"Muitos programas mapeiam isso como rolagem traseira no histórico, tais como "
+"irssi ou tinyfugue."
 
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
@@ -151,7 +161,7 @@ msgstr ""
 
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
-msgstr ""
+msgstr "Trocando de hospedeiro"
 
 #. Instructions about switching to the next and previous host in the terminal.
 msgctxt "switching_hosts_content"
@@ -159,6 +169,8 @@ msgid ""
 "Swiping your finger from one side of the screen to the other will switch "
 "between currently connected hosts."
 msgstr ""
+"Passando seu dedo de um lado da tela para o outro irá trocar os hospedeiros "
+"atualmente conectados."
 
 #. Captions for images showing the next/previous host gestures.
 msgctxt "next_host"
@@ -552,7 +564,7 @@ msgstr "Teclas especiais sempre visíveis"
 #. Name for the page up/down gesture preference
 msgctxt "pref_pg_updn_gesture_title"
 msgid "Page up/down gesture"
-msgstr ""
+msgstr "Gesto de page up/down"
 
 #. Summary for the full screen preference
 msgctxt "pref_pg_updn_gesture_summary"
@@ -579,7 +591,7 @@ msgstr "Teclado"
 #. Name for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_title"
 msgid "Shift+num are F-keys"
-msgstr ""
+msgstr "Shift +número são as teclas Fn"
 
 #. Summary for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_summary"
@@ -1180,7 +1192,7 @@ msgstr ""
 #, c-format
 msgctxt "terminal_auth_pubkey_fail"
 msgid "Authentication method 'publickey' with key '%1$s' failed"
-msgstr "Metodo de autenticação 'publickey' com a chave '%1$s' falhou"
+msgstr "Método de autenticação 'publickey' com a chave '%1$s' falhou"
 
 msgctxt "terminal_auth_ki"
 msgid "Attempting 'keyboard-interactive' authentication"
@@ -1188,7 +1200,7 @@ msgstr "Tentando autenticação 'teclado-interativo'"
 
 msgctxt "terminal_auth_ki_fail"
 msgid "Authentication method 'keyboard-interactive' failed"
-msgstr "Metodo de autenticação 'interativa por teclado' falhou"
+msgstr "Método de autenticação 'interativa por teclado' falhou"
 
 msgctxt "terminal_auth_fail"
 msgid ""

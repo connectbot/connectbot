@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">簡單、強大、開放原始碼的SSH用戶端。</string>
-  <string name="service_desc">管理 SSH 連線及載入公鑰</string>
+  <string name="service_desc">維護 SSH 連線及公鑰</string>
   <string name="title_hosts_list">主機清單</string>
   <string name="title_pubkey_list">公鑰</string>
   <string name="title_port_forwards_list">連接埠轉址</string>
@@ -16,12 +16,12 @@
   <string name="hints">提示</string>
   <string name="host_shortcuts_header">主機捷徑</string>
   <string name="host_shortcuts_content">長按 Android 桌面以新增常用主機捷徑</string>
-  <string name="page_updn_header">向上翻頁/向下翻頁</string>
+  <string name="page_updn_header">上一頁/下一頁</string>
   <string name="page_updn_content">注意: 這必須在設置中啟用。\n\n在屏幕左側的三分之一以內用手指向上和向下滑動將向遠程主機發送向上翻頁和向下翻頁鍵。許多程序映射為在歷史中向後滾動如 irssi 或 tinyfugue。</string>
-  <string name="page_up">向上翻頁</string>
-  <string name="page_down">向下翻頁</string>
+  <string name="page_up">上一頁</string>
+  <string name="page_down">下一頁</string>
   <string name="switching_hosts_header">切換主機</string>
-  <string name="switching_hosts_content">用手指從屏幕的一側滑到另一側將在當前連接的主機之間進行切換。</string>
+  <string name="switching_hosts_content">用手指從螢幕的一側滑到另一側將在當前連接的主機之間進行切換。</string>
   <string name="next_host">下一個主機</string>
   <string name="prev_host">上一個主機</string>
   <string name="keyboard_shortcuts">鍵盤快捷鍵</string>
@@ -35,7 +35,7 @@
   <string name="pubkey_gather_entropy">正在收集用戶熵</string>
   <string name="pubkey_touch_prompt">觸摸此方框來收集隨機數：%1$d％完成</string>
   <string name="pubkey_touch_hint">由於金鑰產生的時候需要隨機資訊，請在下面的方框中隨意移動您的手指。</string>
-  <string name="pubkey_generating">正在產生金鑰對……</string>
+  <string name="pubkey_generating">正在產生金鑰對…</string>
   <string name="pubkey_copy_private">複製私鑰</string>
   <string name="pubkey_copy_public">複製公鑰</string>
   <string name="pubkey_list_empty">按「選單」鍵來產生\n或匯入金鑰對。</string>
@@ -58,17 +58,17 @@
   <string name="prompt_destination">目的連接埠：</string>
   <string name="prompt_old_password">舊密碼：</string>
   <string name="prompt_password">密碼：</string>
-  <string name="prompt_again">(再輸入一遍密碼)</string>
+  <string name="prompt_again">(再輸入一次密碼)</string>
   <string name="prompt_type">轉址類型：</string>
   <string name="prompt_password_can_be_blank">注意：密碼可以為空白</string>
   <string name="prompt_bits">位元：</string>
-  <string name="prompt_pubkey_password">公鑰「%1$s」的密碼</string>
+  <string name="prompt_pubkey_password">公鑰\"%1$s\"的密碼</string>
   <string name="prompt_allow_agent_to_use_key">允許遠端主機\n使用金鑰 \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">警告：遠端主機的識別已變更！</string>
-  <string name="host_verification_failure_warning">可能某人正在做非善意的事情!\n可能有人正在側錄您的連線(中間攻擊法)!\n但也許僅僅是主機金鑰已變更。</string>
-  <string name="prompt_host_disconnected">主機已經中斷。\n是否關閉本次連線階段？</string>
+  <string name="host_verification_failure_warning">可能某人正在做非善意的事情！\n可能有人正在側錄您的連線(中間攻擊法)！\n但也許僅僅是主機金鑰已變更。</string>
+  <string name="prompt_host_disconnected">已經中斷連線。\n是否關閉本次階段？</string>
   <string name="prompt_continue_connecting">是否要繼續連線？</string>
-  <string name="host_authenticity_warning">主機「%1$s」的驗證無法建立</string>
+  <string name="host_authenticity_warning">主機\"%1$s\"的驗證無法建立。</string>
   <string name="host_fingerprint">主機 %1$s 金鑰指紋是 %2$s</string>
   <string name="alert_passwords_do_not_match_msg">密碼不符！</string>
   <string name="alert_wrong_password_msg">錯誤的密碼！</string>
@@ -160,11 +160,11 @@
   <string name="console_menu_urlscan">URL 掃描</string>
   <string name="button_yes">是</string>
   <string name="button_no">否</string>
-  <string name="portforward_local">本機</string>
+  <string name="portforward_local">本地端</string>
   <string name="portforward_remote">遠端</string>
   <string name="portforward_dynamic">動態 (SOCKS)</string>
   <string name="portforward_pos">建立連接埠轉址</string>
-  <string name="portforward_problem">新增連接埠時發生問題，可能您正在使用 1024 以下的埠或是埠被佔用?</string>
+  <string name="portforward_problem">新增連接埠時發生問題，可能您正在使用 1024 以下的埠或是埠已被佔用？</string>
   <string name="format_username">使用者名稱</string>
   <string name="format_hostname">主機名稱</string>
   <string name="format_port">連接埠</string>
@@ -197,7 +197,7 @@
   <string name="disconnect_all_neg">取消</string>
   <string name="terminal_no_hosts_connected">目前沒有已連線主機</string>
   <string name="terminal_connecting">連接到 %1$s:%2$d，通過 %3$s</string>
-  <string name="terminal_sucess">驗證主機 \'%1$s\' 金鑰： %2$s</string>
+  <string name="terminal_sucess">驗證主機 \'%1$s\' 金鑰：%2$s</string>
   <string name="terminal_failed">主機驗證失敗</string>
   <string name="terminal_using_s2c_algorithm">伺服器到用戶端算法：%1$s %2$s</string>
   <string name="terminal_using_c2s_algorithm">用戶端到伺服器算法：%1$s %2$s</string>
@@ -230,9 +230,9 @@
   <string name="image_description_connected">已連線。</string>
   <string name="image_description_disconnected">已中斷連線。</string>
   <string name="image_description_key_is_locked">金鑰已鎖定。</string>
-  <string name="image_description_toggle_control_character">切換控制字元</string>
+  <string name="image_description_toggle_control_character">切換控制字元。</string>
   <string name="image_description_send_escape_character">送出 Esc 字元。</string>
-  <string name="image_description_send_tab_character">發送TAB鍵。</string>
+  <string name="image_description_send_tab_character">發送 TAB 鍵。</string>
   <string name="image_description_show_keyboard">顯示鍵盤。</string>
   <string name="image_description_up">方向上鍵</string>
   <string name="image_description_down">方向下鍵</string>

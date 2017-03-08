@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-02-28 23:41+0000\n"
-"Last-Translator: Kenny Root <Unknown>\n"
+"PO-Revision-Date: 2017-03-08 08:41+0000\n"
+"Last-Translator: Patrik Zanotto Guerra <p.guerra.rs@gmail.com>\n"
 "Language-Team: pt <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2017-03-01 00:01+0000\n"
-"X-Generator: Launchpad (build 18329)\n"
+"X-Launchpad-Export-Date: 2017-03-08 08:44+0000\n"
+"X-Generator: Launchpad (build 18330)\n"
 "Language: pt\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -95,7 +95,7 @@ msgstr "Sugestões"
 #. Header text for instructions about creating host shortcuts.
 msgctxt "host_shortcuts_header"
 msgid "Host Shortcuts"
-msgstr ""
+msgstr "Configurações Padrão"
 
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
@@ -542,7 +542,7 @@ msgstr "Como alterar a rotação quando o teclado é aberto/fechado"
 #. Name for the titlebar hide preference
 msgctxt "pref_titlebarhide_title"
 msgid "Autohide title bar"
-msgstr ""
+msgstr "Esconder titulo automaticamente"
 
 #. Summary for the titlebar hide preference
 msgctxt "pref_titlebarhide_summary"
@@ -612,7 +612,7 @@ msgstr ""
 #. Name for the memorize keys preference
 msgctxt "pref_memkeys_title"
 msgid "Remember keys in memory"
-msgstr "Lembrar chaves em memoria"
+msgstr "Lembrar chaves em memória"
 
 #. Summary for the memorize keys preference
 msgctxt "pref_memkeys_summary"

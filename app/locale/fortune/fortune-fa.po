@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2016-06-08 07:16+0000\n"
-"Last-Translator: sajady <sajady@gmail.com>\n"
+"PO-Revision-Date: 2017-03-02 11:21+0000\n"
+"Last-Translator: Mojtaba NorouziZadeh <Unknown>\n"
 "Language-Team: fa <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=((((n == 0)) || ((n == 1))) ? 0 : 1);\n"
-"X-Launchpad-Export-Date: 2017-03-01 00:01+0000\n"
-"X-Generator: Launchpad (build 18329)\n"
+"X-Launchpad-Export-Date: 2017-03-08 08:44+0000\n"
+"X-Generator: Launchpad (build 18330)\n"
 "Language: fa\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -45,7 +45,7 @@ msgstr "کلیدهای همگانی"
 #. Window title for the Port Forwards List
 msgctxt "title_port_forwards_list"
 msgid "Port forwards"
-msgstr ""
+msgstr "پورت فوروارد"
 
 #. Window title when editing host details
 msgctxt "title_host_editor"
@@ -91,12 +91,12 @@ msgstr "بندها و پیمان"
 #. Title for the help page with the hints about the app.
 msgctxt "hints"
 msgid "Hints"
-msgstr ""
+msgstr "راهنمایی‌ها"
 
 #. Header text for instructions about creating host shortcuts.
 msgctxt "host_shortcuts_header"
 msgid "Host Shortcuts"
-msgstr ""
+msgstr "میانبرهای میزبان"
 
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
@@ -110,7 +110,7 @@ msgstr ""
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
 msgid "Scroll back / Scroll forward"
-msgstr ""
+msgstr "اسکرول به جلو / اسکرول به عقب"
 
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
@@ -118,20 +118,22 @@ msgid ""
 "Swiping your finger up on the right side of the screen allows you to scroll "
 "backward and forward in the local terminal buffer history."
 msgstr ""
+"انگشت خود را در سمت راست گذاشته و به بالا و پایین بکشید تا بتوانید تاریخچه "
+"ترمینال را مرور کنید"
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
 msgid "Scrolling back"
-msgstr ""
+msgstr "اسکرول به عقب"
 
 msgctxt "scrolling_forward"
 msgid "Scrolling forward"
-msgstr ""
+msgstr "اسکرول به جلو"
 
 #. Header text for instructions about paging up and down in the terminal.
 msgctxt "page_updn_header"
 msgid "Page Up / Page Down"
-msgstr ""
+msgstr "صفحه بالایی / صفحه پایینی"
 
 #. Instructions about paging up and down in the terminal.
 msgctxt "page_updn_content"
@@ -141,20 +143,20 @@ msgid ""
 "Swiping your finger up and down on the left third of the screen will send a "
 "page up and page down key to the remote host. Many programs map this to "
 "scrolling back into history such as irssi or tinyfugue."
-msgstr ""
+msgstr "توجه: این می بایست در تنظیمات فعال شده باشد"
 
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
 msgid "Page up"
-msgstr ""
+msgstr "صفحه بالایی"
 
 msgctxt "page_down"
 msgid "Page down"
-msgstr ""
+msgstr "صفحه پایینی"
 
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
-msgstr ""
+msgstr "سوئیچ کردن دربین میزبان ها"
 
 #. Instructions about switching to the next and previous host in the terminal.
 msgctxt "switching_hosts_content"
@@ -162,146 +164,150 @@ msgid ""
 "Swiping your finger from one side of the screen to the other will switch "
 "between currently connected hosts."
 msgstr ""
+"گذاشتن و کشیدن انگشت از یکطرف صفحه به طرف دیگر آن میان هاست های متصل شده "
+"کنونی سوئیچ میکند"
 
 #. Captions for images showing the next/previous host gestures.
 msgctxt "next_host"
 msgid "Next host"
-msgstr ""
+msgstr "هاست بعدی"
 
 msgctxt "prev_host"
 msgid "Previous host"
-msgstr ""
+msgstr "میزبان قبلی"
 
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "میانبُرهای صفحه‌کلید"
 
 #. Text in a keyboard shortcuts list lined up to keys which increase the
 #. terminal font-size.
 msgctxt "increase_font_size"
 msgid "Increase Font Size"
-msgstr ""
+msgstr "افزایش اندازۀ قلم"
 
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
 msgid "Ctrl and +"
-msgstr ""
+msgstr "کلید \" Ctrl \" و کلید \" + \""
 
 #. Text in a keyboard shortcuts list lined up to keys which decrease the
 #. terminal font-size.
 msgctxt "decrease_font_size"
 msgid "Decrease Font Size"
-msgstr ""
+msgstr "کاهش اندازۀ قلم"
 
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
 msgid "Ctrl and -"
-msgstr ""
+msgstr "کلید \" Ctrl \" و کلید \" - \""
 
 #. Keyboard shortcut for pasting into the terminal.
 msgctxt "paste_shortcut"
 msgid "Ctrl-Shift-V"
-msgstr ""
+msgstr "کلید \" Ctrl \" و کلید \" Shift \" و کلید \" v \""
 
 msgctxt "pubkey_generate"
 msgid "Generate"
-msgstr ""
+msgstr "تولید"
 
 msgctxt "pubkey_delete"
 msgid "Delete key"
-msgstr ""
+msgstr "حذف کلید"
 
 #. Dialog title when user must move finger randomly over an area to gather
 #. entropy (collect random bits)
 msgctxt "pubkey_gather_entropy"
 msgid "Gathering Entropy"
-msgstr ""
+msgstr "جمع آوری لگاریتمی اتفاقی"
 
 #, c-format
 msgctxt "pubkey_touch_prompt"
 msgid "Touch this box to gather randomness: %1$d%% done"
-msgstr ""
+msgstr "برای جمع آوری اتفاقی این جعبه را لمس کنید:  %1$d%% انجام شد"
 
 msgctxt "pubkey_touch_hint"
 msgid ""
 "In order to assure randomness during the key generation, move your finger "
 "randomly over the box below."
 msgstr ""
+"به منظور اطمینان از تصادفی بودن در زمان تولید کلید، انگشت خود را به طور "
+"تصادفی در طول کادر زیر  حرکت دهید."
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
-msgstr ""
+msgstr "تولید کلید جفت شونده …"
 
 msgctxt "pubkey_copy_private"
 msgid "Copy private key"
-msgstr ""
+msgstr "کپی کردن کلید خصوصی"
 
 msgctxt "pubkey_copy_public"
 msgid "Copy public key"
-msgstr ""
+msgstr "کپی کردن کلید عمومی"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
 msgid ""
 "Tap \"Menu\" to create\n"
 "or import key pairs."
-msgstr ""
+msgstr "بر روی \"Menu\" بزنید تا کلیدهای جفت را بسازید و یا وارد کنید."
 
 msgctxt "pubkey_unknown_format"
 msgid "Unknown format"
-msgstr ""
+msgstr "فرمت ناشناس"
 
 msgctxt "pubkey_change_password"
 msgid "Change password"
-msgstr ""
+msgstr "تغییر گذرواژه"
 
 #. When attempting to import a pubkey, this is the title for the dialog box
 #. where the user should pick the desired file from the SD card contents.
 msgctxt "pubkey_list_pick"
 msgid "Pick from /sdcard"
-msgstr ""
+msgstr "انتخاب از / کارت SD"
 
 #. Message shown to the user when a selected pubkey to import was not
 #. parseable for some reason.
 msgctxt "pubkey_import_parse_problem"
 msgid "Problem parsing imported private key"
-msgstr ""
+msgstr "مشکلی در تفسیر کلید خصوصی وارد شده، هست"
 
 msgctxt "pubkey_unlock"
 msgid "Unlock key"
-msgstr ""
+msgstr "بازکردن کلید"
 
 #. Feedback given to the user when the password that they have entered for the
 #. pubkey is incorrect.
 #, c-format
 msgctxt "pubkey_failed_add"
 msgid "Bad password for key '%1$s'. Authentication failed."
-msgstr ""
+msgstr "گذرواژه نامناسب برای کلید  '%1$s' . احراز هویت ناموفق بود."
 
 #. Context menu entry that allows a user to load a pubkey entry into memory.
 #. This is equivalent to "unlocking" a password-protected pubkey entry.
 msgctxt "pubkey_memory_load"
 msgid "Load into memory"
-msgstr ""
+msgstr "بارگذاری در حافظه"
 
 #. Context menu entry that allows a user to unload a pubkey entry from memory.
 #. This is equivalent to "locking" a password-protected pubkey entry.
 msgctxt "pubkey_memory_unload"
 msgid "Unload from memory"
-msgstr ""
+msgstr "تخلیه کردن از حافظه"
 
 #. Context menu checkbox that indicates that this pubkey entry should attempt
 #. to be loaded upon starting the app.
 msgctxt "pubkey_load_on_start"
 msgid "Load key on start"
-msgstr ""
+msgstr "بارگذاری کلید در زمان آغاز"
 
 #. Pubkey preference asking user whether the key use should be confirmed via
 #. prompt before it can be used for authentication
 msgctxt "pubkey_confirm_use"
 msgid "Confirm before use"
-msgstr ""
+msgstr "قبل از استفاده تایید کنید"
 
 #. When the list of port forwards for a host is empty, this text is is shown
 #. in the space where the list of port forwards are normally present. Note that
@@ -326,7 +332,7 @@ msgstr ""
 
 msgctxt "prompt_nickname"
 msgid "Nickname:"
-msgstr ""
+msgstr "نام مستعار:"
 
 #. An example string that could be used as a nickname for a pubkey.
 msgctxt "prompt_nickname_hint_pubkey"
@@ -336,51 +342,51 @@ msgstr ""
 #. The source TCP port for port forwards.
 msgctxt "prompt_source_port"
 msgid "Source port:"
-msgstr ""
+msgstr "پورت منبع:"
 
 #. The "host:port" combination used for port forward destinations.
 msgctxt "prompt_destination"
 msgid "Destination:"
-msgstr ""
+msgstr ":مقصد"
 
 #. Prompt presented to the user when the server requests that they change
 #. their password. This is the entry for the old password.
 msgctxt "prompt_old_password"
 msgid "Old password:"
-msgstr ""
+msgstr "گذرواژه قدیمی:"
 
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
 msgctxt "prompt_password"
 msgid "Password:"
-msgstr ""
+msgstr "گذرواژه:"
 
 #. Added after a "Password:" prompt to indicate user needs to confirm entry.
 msgctxt "prompt_again"
 msgid "(again)"
-msgstr ""
+msgstr "(دوباره)"
 
 #. Label for the user to select port forward type.
 msgctxt "prompt_type"
 msgid "Type:"
-msgstr ""
+msgstr "نوع:"
 
 #. Hint given below the password input box that lets them know that they are
 #. allowed to leave the field blank.
 msgctxt "prompt_password_can_be_blank"
 msgid "Note: password can be blank"
-msgstr ""
+msgstr "توجه: گذرواژه می تواند خالی باشد"
 
 #. Prompt for the size of the private key in bits.
 msgctxt "prompt_bits"
 msgid "Bits:"
-msgstr ""
+msgstr "بیت ها:"
 
 #. Prompt for the password to unlock a certain pubkey.
 #, c-format
 msgctxt "prompt_pubkey_password"
 msgid "Password for key '%1$s'"
-msgstr ""
+msgstr "گذرواژه برای کلید '%1$s'"
 
 #. Prompt for whether to allow SSH Authentication Agent to use the specified
 #. key. Note that the '\n' means split the line so it's actually "host to use
@@ -391,13 +397,15 @@ msgid ""
 "Allow remote host to\n"
 "use key '%1$s'?"
 msgstr ""
+"اجازه به میزبان راه دور برای\n"
+"استفاده از کلید '%1$s'"
 
 #. The header of the warning a user gets when the host key has changed. Note
 #. that this can be a very serious attack, so we try to be as "loud" to the
 #. user as possible.
 msgctxt "host_verification_failure_warning_header"
 msgid "WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!"
-msgstr ""
+msgstr "هشدار: تعیین هویت میزبان راه دور تغییر کرده است!"
 
 #. The body of the warning a user gets when the host key has changed. Note
 #. that this can be a very serious attack, so we try to be as "loud" to the
@@ -415,6 +423,8 @@ msgid ""
 "Host has disconnected.\n"
 "Close session?"
 msgstr ""
+"اتصال میزبان قطع شد.\n"
+"سیژن را ببندم؟"
 
 #. Prompt user must answer yes or no to when the remote host fails
 #. verification of encryption fingerprint
@@ -423,112 +433,118 @@ msgid ""
 "Are you sure you want\n"
 "to continue connecting?"
 msgstr ""
+"مطمئن هستید که میخواهید\n"
+"به برقراری اتصال، ادامه دهید؟"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
 #. match the local database
 #, c-format
 msgctxt "host_authenticity_warning"
 msgid "The authenticity of host '%1$s' can't be established."
-msgstr ""
+msgstr "میزبان '%1$s' نمیتواند احراز هویت شود."
 
 #. First field is encryption algorithm. Second is the actual fingerprint in
 #. hex digits
 #, c-format
 msgctxt "host_fingerprint"
 msgid "Host %1$s key fingerprint is %2$s"
-msgstr ""
+msgstr "%2$s کلید اثرانگشت میزبان  %1$s  می باشد"
 
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
-msgstr ""
+msgstr "گذرواژه همسان نیست!"
 
 msgctxt "alert_wrong_password_msg"
 msgid "Wrong password!"
-msgstr ""
+msgstr "گذرواژه اشتباه است!"
 
 msgctxt "alert_key_corrupted_msg"
 msgid "Private key appears corrupt!"
-msgstr ""
+msgstr "به نظر میرسد که تاریخ، کلید خصوصی، به سر رسیده است!"
 
 msgctxt "alert_sdcard_absent"
 msgid "SD card is not inserted!"
-msgstr ""
+msgstr "کارت SD قرار نگرفته است!"
 
 #. Change an existing item's (e.g., host or pubkey) details.
 msgctxt "button_change"
 msgid "Change"
-msgstr ""
+msgstr "تغییر دادن"
 
 #. Button that resizes the screen to the user-specified dimensions.
 msgctxt "button_resize"
 msgid "Resize"
-msgstr ""
+msgstr "تغییر اندازه"
 
 msgctxt "alert_disconnect_msg"
 msgid "Connection Lost"
-msgstr ""
+msgstr "اتصال قطع شد"
 
 msgctxt "msg_copyright"
 msgid ""
 "Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
 "http://jsharkey.org/"
 msgstr ""
+"حق طبع و نشر © 2007-2008  Kenny Root  http://the-b.org/ و effrey Sharkey "
+"http://jsharkey.org/"
 
 #. The category title for terminal emulation preferences.
 msgctxt "pref_emulation_category"
 msgid "Terminal emulation"
-msgstr ""
+msgstr "شبیه ساز ترمینال"
 
 #. Name for the emulation terminal type preference.
 msgctxt "pref_emulation_title"
 msgid "Emulation mode"
-msgstr ""
+msgstr "حالت شبیه سازی"
 
 #. Description of the emulation terminal type preference.
 msgctxt "pref_emulation_summary"
 msgid "Terminal emulation mode to use for PTY connections"
-msgstr ""
+msgstr "حالت شبیه ساز ترمینال برای استفاده شدن برای اتصالات PTY"
 
 #. Name for the scrollback size preference
 msgctxt "pref_scrollback_title"
 msgid "Scrollback size"
-msgstr ""
+msgstr "اندازه اسکرول به عقب"
 
 #. Description of the scrollback size preference
 msgctxt "pref_scrollback_summary"
 msgid "Size of scrollback buffer to keep in memory for each console"
-msgstr ""
+msgstr "اندازه حائل اسکرول به عقب برای هر کنسول تا در حافظه نگهداری شود"
 
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr ""
+msgstr "پشتیبان گیری از کلیدهای عمومی"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
 msgstr ""
+"نگهداشتن پشتیبان گیری های کلیدهای خصوصی با استفاده از ماشین پشتیبان گیر "
+"اندروید"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
 msgid "User interface"
-msgstr ""
+msgstr "رابط کاربری"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
 msgid "Rotation mode"
-msgstr ""
+msgstr "حالت چرخش"
 
 #. Summary for the rotation mode preference
 msgctxt "pref_rotation_summary"
 msgid "How to change rotation when keyboard popped in/out"
-msgstr ""
+msgstr "چگونگی تغییر چرخش، زمانی که صفحه کلید ظاهرشده/ظاهرنشده است"
 
 #. Name for the titlebar hide preference
 msgctxt "pref_titlebarhide_title"
 msgid "Autohide title bar"
-msgstr ""
+msgstr "مخفی شدن خودکار  نوار عنوان"
 
 #. Summary for the titlebar hide preference
 msgctxt "pref_titlebarhide_summary"

@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-02-28 23:59+0000\n"
-"Last-Translator: Kenny Root <Unknown>\n"
+"PO-Revision-Date: 2017-03-08 08:40+0000\n"
+"Last-Translator: Po-Chun Huang <Unknown>\n"
 "Language-Team: zh_Hant_TW <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2017-03-01 00:01+0000\n"
-"X-Generator: Launchpad (build 18329)\n"
+"X-Launchpad-Export-Date: 2017-03-08 08:44+0000\n"
+"X-Generator: Launchpad (build 18330)\n"
 "Language: zh_Hant_TW\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -30,7 +30,7 @@ msgstr "簡單、強大、開放原始碼的SSH用戶端。"
 #. running apps list
 msgctxt "service_desc"
 msgid "Maintains SSH connections and loaded pubkeys"
-msgstr "管理 SSH 連線及載入公鑰"
+msgstr "維護 SSH 連線及公鑰"
 
 #. Window title for the Host List
 msgctxt "title_hosts_list"
@@ -128,7 +128,7 @@ msgstr ""
 #. Header text for instructions about paging up and down in the terminal.
 msgctxt "page_updn_header"
 msgid "Page Up / Page Down"
-msgstr "向上翻頁/向下翻頁"
+msgstr "上一頁/下一頁"
 
 #. Instructions about paging up and down in the terminal.
 msgctxt "page_updn_content"
@@ -146,11 +146,11 @@ msgstr ""
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
 msgid "Page up"
-msgstr "向上翻頁"
+msgstr "上一頁"
 
 msgctxt "page_down"
 msgid "Page down"
-msgstr "向下翻頁"
+msgstr "下一頁"
 
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
@@ -161,7 +161,7 @@ msgctxt "switching_hosts_content"
 msgid ""
 "Swiping your finger from one side of the screen to the other will switch "
 "between currently connected hosts."
-msgstr "用手指從屏幕的一側滑到另一側將在當前連接的主機之間進行切換。"
+msgstr "用手指從螢幕的一側滑到另一側將在當前連接的主機之間進行切換。"
 
 #. Captions for images showing the next/previous host gestures.
 msgctxt "next_host"
@@ -231,7 +231,7 @@ msgstr "由於金鑰產生的時候需要隨機資訊，請在下面的方框中
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
-msgstr "正在產生金鑰對……"
+msgstr "正在產生金鑰對…"
 
 msgctxt "pubkey_copy_private"
 msgid "Copy private key"
@@ -362,7 +362,7 @@ msgstr "密碼："
 #. Added after a "Password:" prompt to indicate user needs to confirm entry.
 msgctxt "prompt_again"
 msgid "(again)"
-msgstr "(再輸入一遍密碼)"
+msgstr "(再輸入一次密碼)"
 
 #. Label for the user to select port forward type.
 msgctxt "prompt_type"
@@ -384,7 +384,7 @@ msgstr "位元："
 #, c-format
 msgctxt "prompt_pubkey_password"
 msgid "Password for key '%1$s'"
-msgstr "公鑰「%1$s」的密碼"
+msgstr "公鑰\"%1$s\"的密碼"
 
 #. Prompt for whether to allow SSH Authentication Agent to use the specified
 #. key. Note that the '\n' means split the line so it's actually "host to use
@@ -414,8 +414,8 @@ msgid ""
 "Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
-"可能某人正在做非善意的事情!\n"
-"可能有人正在側錄您的連線(中間攻擊法)!\n"
+"可能某人正在做非善意的事情！\n"
+"可能有人正在側錄您的連線(中間攻擊法)！\n"
 "但也許僅僅是主機金鑰已變更。"
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
@@ -424,8 +424,8 @@ msgid ""
 "Host has disconnected.\n"
 "Close session?"
 msgstr ""
-"主機已經中斷。\n"
-"是否關閉本次連線階段？"
+"已經中斷連線。\n"
+"是否關閉本次階段？"
 
 #. Prompt user must answer yes or no to when the remote host fails
 #. verification of encryption fingerprint
@@ -440,7 +440,7 @@ msgstr "是否要繼續連線？"
 #, c-format
 msgctxt "host_authenticity_warning"
 msgid "The authenticity of host '%1$s' can't be established."
-msgstr "主機「%1$s」的驗證無法建立"
+msgstr "主機\"%1$s\"的驗證無法建立。"
 
 #. First field is encryption algorithm. Second is the actual fingerprint in
 #. hex digits
@@ -928,7 +928,7 @@ msgstr "否"
 #. locally is forwarded to the remote end's listening port.
 msgctxt "portforward_local"
 msgid "Local"
-msgstr "本機"
+msgstr "本地端"
 
 #. Selection for a "remote" port forward. E.g., connections to a port
 #. listening remotely is forwarded to the local end's listening port.
@@ -953,7 +953,7 @@ msgctxt "portforward_problem"
 msgid ""
 "Problem creating port forward, maybe you're using ports under 1024 or port "
 "is already used?"
-msgstr "新增連接埠時發生問題，可能您正在使用 1024 以下的埠或是埠被佔用?"
+msgstr "新增連接埠時發生問題，可能您正在使用 1024 以下的埠或是埠已被佔用？"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
@@ -1110,7 +1110,7 @@ msgstr "連接到 %1$s:%2$d，通過 %3$s"
 #, c-format
 msgctxt "terminal_sucess"
 msgid "Verified host '%1$s' key: %2$s"
-msgstr "驗證主機 '%1$s' 金鑰： %2$s"
+msgstr "驗證主機 '%1$s' 金鑰：%2$s"
 
 msgctxt "terminal_failed"
 msgid "Host key verification failed."
@@ -1276,7 +1276,7 @@ msgstr "金鑰已鎖定。"
 #. view for              accessibility purposes.
 msgctxt "image_description_toggle_control_character"
 msgid "Toggle control character."
-msgstr "切換控制字元"
+msgstr "切換控制字元。"
 
 #. Describes the icon of the "send escape character" button in the terminal
 #. view for              accessibility purposes.
@@ -1288,7 +1288,7 @@ msgstr "送出 Esc 字元。"
 #. for              accessibility purposes.
 msgctxt "image_description_send_tab_character"
 msgid "Send TAB character."
-msgstr "發送TAB鍵。"
+msgstr "發送 TAB 鍵。"
 
 #. Describes the icon of the "hide keyboard" button in the terminal view for
 #. accessibility              purposes.
