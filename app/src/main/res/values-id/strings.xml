@@ -27,6 +27,7 @@
   <string name="keyboard_shortcuts">Pintasan Papan Ketik</string>
   <string name="increase_font_size">Besarkan Ukuran Fonta</string>
   <string name="increase_font_shortcut">Kontrol dan +</string>
+  <string name="decrease_font_size">Kecilkan Ukuran Huruf</string>
   <string name="pubkey_generate">Buat</string>
   <string name="pubkey_delete">Tombol Hapus</string>
   <string name="pubkey_gather_entropy">Kumpulkan Entropy</string>

@@ -261,6 +261,7 @@
   <string name="button_key_f12">F12</string>
   <string name="protocol_spinner_label">Protokoll</string>
   <string name="expand">Aufklappen</string>
+  <string name="hostpref_authagent_with_confirmation">Bestätigung nötig</string>
   <string name="hostpref_add_host">Host hinzufügen</string>
   <string name="hostpref_edit_host">Host speichern</string>
   <string name="pubkey_add_new">Neuen öffentlichen Schlüssel hinzufügen</string>

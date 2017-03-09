@@ -87,6 +87,8 @@
   <string name="pref_emulation_summary">设置使用PTY连接时的终端模式</string>
   <string name="pref_scrollback_title">回滚长度</string>
   <string name="pref_scrollback_summary">在内存中为每个控制台保留的回滚缓存长度</string>
+  <string name="pref_backupkeys_title">备份公钥</string>
+  <string name="pref_backupkeys_summary">使用安卓的备份机制，保存私钥的备份</string>
   <string name="pref_ui_category">用户界面</string>
   <string name="pref_rotation_title">旋转模式</string>
   <string name="pref_rotation_summary">当键盘打开或关闭时屏幕如何旋转(水平或竖直)</string>
@@ -238,6 +240,7 @@
   <string name="image_description_toggle_control_character">切换控制字符。</string>
   <string name="image_description_send_escape_character">发送转义字符。</string>
   <string name="image_description_send_tab_character">发送TAB键。</string>
+  <string name="image_description_hide_keyboard">隐藏键盘</string>
   <string name="image_description_show_keyboard">显示键盘。</string>
   <string name="image_description_up">向上的箭头</string>
   <string name="image_description_down">向下的箭头</string>
