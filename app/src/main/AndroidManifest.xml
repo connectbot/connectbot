@@ -32,12 +32,13 @@
 	<supports-screens />
 
 	<application
-		android:icon="@drawable/icon"
-		android:label="@string/app_name"
-		android:description="@string/app_desc"
 		android:allowBackup="true"
 		android:backupAgent=".service.BackupAgent"
+		android:description="@string/app_desc"
+		android:icon="@drawable/icon"
 		android:killAfterRestore="true"
+		android:label="@string/app_name"
+		android:supportsRtl="true"
 		android:theme="@style/AppTheme">
 
 		<activity

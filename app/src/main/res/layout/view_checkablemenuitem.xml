@@ -21,27 +21,29 @@
 
 	<ImageView
 		android:id="@+id/icon"
+		style="@style/ListItemIcon"
 		android:layout_width="24dp"
 		android:layout_height="24dp"
 		android:contentDescription="@null"
-		style="@style/ListItemIcon"
 		/>
 
 	<TextView
 		android:id="@+id/title"
+		style="@style/ListItemFirstLineText.WithIcon"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		style="@style/ListItemFirstLineText.WithIcon"
+		android:gravity="left|start"
 		/>
 
 	<TextView
 		android:id="@+id/summary"
+		style="@style/ListItemSecondLineText.WithIcon"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_below="@id/title"
 		android:layout_toLeftOf="@+id/checkbox_switch"
 		android:layout_toStartOf="@id/checkbox_switch"
-		android:layout_below="@id/title"
-		style="@style/ListItemSecondLineText.WithIcon"
+		android:gravity="left|start"
 		/>
 
 	<android.support.v7.widget.SwitchCompat

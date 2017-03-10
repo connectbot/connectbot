@@ -55,6 +55,7 @@
 		<item name="android:textSize">@dimen/list_item_first_line_text_size</item>
 		<item name="android:paddingTop">@dimen/list_item_top_bottom_padding</item>
 		<item name="android:layout_alignParentLeft">true</item>
+		<item name="android:layout_alignParentStart" tools:ignore="NewApi">true</item>
 	</style>
 
 	<style name="ListItemFirstLineText.WithIcon" parent="ListItemFirstLineText">
@@ -68,6 +69,7 @@
 		<item name="android:textSize">@dimen/list_item_second_line_text_size</item>
 		<item name="android:paddingBottom">@dimen/list_item_top_bottom_padding</item>
 		<item name="android:layout_alignParentLeft">true</item>
+		<item name="android:layout_alignParentStart" tools:ignore="NewApi">true</item>
 	</style>
 
 	<style name="ListItemSecondLineText.WithIcon" parent="ListItemSecondLineText">

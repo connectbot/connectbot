@@ -27,18 +27,19 @@
 	<TableLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
+		android:paddingEnd="10dip"
 		android:paddingLeft="10dip"
 		android:paddingRight="10dip"
-		>
+		android:paddingStart="10dip">
 
 		<TableRow>
 
 			<TextView
 				android:gravity="end|center_vertical"
+				android:paddingEnd="10dip"
 				android:paddingRight="10dip"
 				android:text="@string/prompt_nickname"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				/>
+				android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 			<EditText
 				android:id="@+id/nickname"
@@ -54,10 +55,10 @@
 
 			<TextView
 				android:gravity="end|center_vertical"
+				android:paddingEnd="10dip"
 				android:paddingRight="10dip"
 				android:text="@string/prompt_type"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				/>
+				android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 			<Spinner
 				android:id="@+id/portforward_type"
@@ -73,10 +74,10 @@
 
 			<TextView
 				android:gravity="end|center_vertical"
+				android:paddingEnd="10dip"
 				android:paddingRight="10dip"
 				android:text="@string/prompt_source_port"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				/>
+				android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 			<EditText
 				android:id="@+id/portforward_source"
@@ -92,10 +93,10 @@
 
 			<TextView
 				android:gravity="end|center_vertical"
+				android:paddingEnd="10dip"
 				android:paddingRight="10dip"
 				android:text="@string/prompt_destination"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				/>
+				android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 			<EditText
 				android:id="@+id/portforward_destination"
