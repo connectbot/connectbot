@@ -28,14 +28,17 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
+		android:paddingEnd="10dip"
 		android:paddingLeft="10dip"
 		android:paddingRight="10dip"
+		android:paddingStart="10dip"
 		android:scrollbars="vertical">
 
 		<TableRow>
 
 			<TextView
 				android:gravity="end|center_vertical"
+				android:paddingEnd="10dip"
 				android:paddingRight="10dip"
 				android:text="@string/prompt_nickname"
 				android:textAppearance="?android:attr/textAppearanceMedium"/>
@@ -53,6 +56,7 @@
 			<TextView
 				android:layout_gravity="center_vertical"
 				android:gravity="bottom|end"
+				android:paddingEnd="10dip"
 				android:paddingRight="10dip"
 				android:text="@string/prompt_type"
 				android:textAppearance="?android:attr/textAppearanceMedium"/>
@@ -68,6 +72,7 @@
 					android:id="@+id/rsa"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					android:paddingEnd="3dip"
 					android:paddingRight="3dip"
 					android:text="RSA"/>
 
@@ -75,6 +80,7 @@
 					android:id="@+id/dsa"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					android:paddingEnd="3dip"
 					android:paddingRight="3dip"
 					android:text="DSA"/>
 
@@ -96,6 +102,7 @@
 
 			<TextView
 				android:gravity="end|center_vertical"
+				android:paddingEnd="10dip"
 				android:paddingRight="10dip"
 				android:text="@string/prompt_bits"
 				android:textAppearance="?android:attr/textAppearanceMedium"/>
@@ -129,6 +136,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:gravity="end|center_vertical"
+				android:paddingEnd="10dip"
 				android:paddingRight="10dip"
 				android:text="@string/prompt_password"
 				android:textAppearance="?android:attr/textAppearanceMedium"/>
@@ -147,6 +155,7 @@
 			<LinearLayout
 				android:gravity="end|center_vertical"
 				android:orientation="vertical"
+				android:paddingEnd="10dip"
 				android:paddingRight="10dip">
 
 				<TextView

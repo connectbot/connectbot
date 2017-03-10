@@ -98,11 +98,12 @@
 			android:layout_below="@+id/console_prompt"
 			android:clickable="false"
 			android:paddingBottom="10dip"
+			android:paddingEnd="40dip"
 			android:paddingLeft="40dip"
 			android:paddingRight="40dip"
+			android:paddingStart="40dip"
 			android:paddingTop="5dip"
-			android:text="@string/button_no"
-			/>
+			android:text="@string/button_no"/>
 
 		<Button
 			android:id="@+id/console_prompt_yes"
@@ -110,12 +111,14 @@
 			android:layout_height="wrap_content"
 			android:layout_below="@+id/console_prompt"
 			android:layout_toLeftOf="@+id/console_prompt_no"
+			android:layout_toStartOf="@+id/console_prompt_no"
 			android:paddingBottom="10dip"
+			android:paddingEnd="40dip"
 			android:paddingLeft="40dip"
 			android:paddingRight="40dip"
+			android:paddingStart="40dip"
 			android:paddingTop="5dip"
-			android:text="@string/button_yes"
-			/>
+			android:text="@string/button_yes"/>
 
 	</RelativeLayout>
 

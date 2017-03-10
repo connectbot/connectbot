@@ -16,7 +16,7 @@
  ~ limitations under the License.
  */
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 	<style name="ListItemFirstLineText" parent="TextAppearance.AppCompat">
 		<item name="android:layout_alignParentTop">true</item>
@@ -24,6 +24,7 @@
 		<item name="android:textSize">16sp</item>
 		<item name="android:paddingTop">20dp</item>
 		<item name="android:layout_alignParentLeft">true</item>
+		<item name="android:layout_alignParentStart" tools:ignore="NewApi">true</item>
 	</style>
 
 	<style name="ListItemSecondLineText" parent="TextAppearance.AppCompat">
@@ -32,6 +33,7 @@
 		<item name="android:textSize">14sp</item>
 		<item name="android:paddingBottom">20dp</item>
 		<item name="android:layout_alignParentLeft">true</item>
+		<item name="android:layout_alignParentStart" tools:ignore="NewApi">true</item>
 	</style>
 
 	<style name="SelectableItem">

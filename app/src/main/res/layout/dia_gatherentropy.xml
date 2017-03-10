@@ -22,9 +22,10 @@
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
+	android:paddingEnd="10dip"
 	android:paddingLeft="10dip"
 	android:paddingRight="10dip"
-	>
+	android:paddingStart="10dip">
 
 	<TextView
 		android:layout_width="fill_parent"
