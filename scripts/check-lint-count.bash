@@ -47,7 +47,9 @@ echo "Historical count: $old_count, new count: $new_count"
 if [[ $new_count > $old_count ]]; then \
   echo "FAILURE: lint issues increased from $old_count to $new_count"
   diff -u "$hist_results" "$lint_results"
-  exit 2
+  if [[ $TRAVIS_PULL_REQUEST != false ]]; then \
+    exit 2
+  fi
 fi
 
 if [[ $TRAVIS_PULL_REQUEST == false ]]; then \
