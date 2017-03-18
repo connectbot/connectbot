@@ -1,13 +1,13 @@
 [![Build Status](https://travis-ci.org/connectbot/connectbot.svg?branch=master)](
 https://travis-ci.org/connectbot/connectbot)
 
-Google Play
+Get the App
 ----------------
 
-[![Get it on Google Play][2]][1]
+<a href="https://play.google.com/store/apps/details?id=org.connectbot" target="_blank">
+<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="80"/></a>
 
-  [1]: https://play.google.com/store/apps/details?id=org.connectbot
-  [2]: https://developer.android.com/images/brand/en_generic_rgb_wo_60.png
+ConnectBot is also avalaible through F-Droid, a free and open-source Android applications repository, but this version isn't built by the ConnectBot team. You can find it here: [ConnectBot on F-Droid](https://f-droid.org/repository/browse/?fdid=org.connectbot)
 
 Translations
 ----------------
