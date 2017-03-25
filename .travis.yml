@@ -36,6 +36,9 @@ addons:
     build_command: "./gradlew assemble"
     branch_pattern: coverity_scan
 
+before_install:
+  - pip install codecov
+
 before_script:
   # Install Android stuff
   - curl -L $ANDROID_TOOLS_URL -o $HOME/tools.zip
@@ -79,4 +82,6 @@ script:
   - ./gradlew --stacktrace connectedCheck
   - ./scripts/check-lint-count.bash app/build/reports/lint-results.xml $HOME/.cache/lint/lint-results.xml
 
-after_success: ./gradlew coveralls
+after_success:
+  - ./gradlew coveralls
+  - codecov
