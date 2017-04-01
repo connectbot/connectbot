@@ -499,7 +499,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		if (key >= 0x61 && key <= 0x7A)
 			key -= 0x60;
 		// Support CTRL-A through CTRL-_
-		else if (key >= 0x41 && key <= 0x5F)
+		else if (key >= 0x40 && key <= 0x5F)
 			key -= 0x40;
 		// CTRL-space sends NULL
 		else if (key == 0x20)
