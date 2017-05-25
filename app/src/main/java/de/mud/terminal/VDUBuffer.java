@@ -104,6 +104,12 @@ public class VDUBuffer {
   public final static long COLOR_FG = 0x7fffffc0L;       /* 0000 0000 0000 0000 0000 0000 0000 0000  0111 1111 1111 1111 1111 1111 1100 0000 */
   /** background color mask */
   public final static long COLOR_BG = 0xffffff80000000L; /* 0000 0000 1111 1111 1111 1111 1111 1111  1000 0000 0000 0000 0000 0000 0000 0000 */
+  /** how much to left shift the red component */
+  public final static int COLOR_RED_SHIFT = 16;
+  /** how much to left shift the green component */
+  public final static int COLOR_GREEN_SHIFT = 8;
+  /** how much to left shift the blue component */
+  public final static int COLOR_BLUE_SHIFT = 0;
 
   /**
    * Create a new video display buffer with the passed width and height in
