@@ -1638,7 +1638,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               if (R > getTopMargin())
                 R--;
               else
-                insertLine(R, 1, SCROLL_DOWN);
+                insertLine(R, SCROLL_DOWN);
               if (debug > 1)
                 debug("RI");
               break;
@@ -1654,7 +1654,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 debugStr.setLength(0);
               }
               if (R == getBottomMargin() || R == rows - 1)
-                insertLine(R, 1, SCROLL_UP);
+                insertLine(R);
               else
                 R++;
               if (debug > 1)
@@ -1662,7 +1662,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               break;
             case NEL:
               if (R == getBottomMargin() || R == rows - 1)
-                insertLine(R, 1, SCROLL_UP);
+                insertLine(R);
               else
                 R++;
               C = 0;
@@ -1737,7 +1737,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               /*C = 0;*/
             }
             if (R == getBottomMargin() || R >= rows - 1)
-              insertLine(R, 1, SCROLL_UP);
+              insertLine(R);
             else
               R++;
             break;
@@ -1783,7 +1783,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                     R++;
                   else {
                     if (debug > 3) debug("scrolling due to wrap at " + R);
-                    insertLine(R, 1, SCROLL_UP);
+                    insertLine(R);
                   }
                   C = 0;
                 } else {
@@ -1863,7 +1863,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                       R++;
                     else {
                       if (debug > 3) debug("scrolling due to wrap at " + R);
-                      insertLine(R, 1, SCROLL_UP);
+                      insertLine(R);
                     }
                     C = 0;
                   } else {
@@ -1970,11 +1970,11 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             if (C >= columns) C = columns - 1;
             break;
           case 'I': // RI
-            insertLine(R, 1, SCROLL_DOWN);
+            insertLine(R, SCROLL_DOWN);
             break;
           case 'E': /* NEL */
             if (R == getBottomMargin() || R == rows - 1)
-              insertLine(R, 1, SCROLL_UP);
+              insertLine(R);
             else
               R++;
             C = 0;
@@ -1983,7 +1983,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case 'D': /* IND */
             if (R == getBottomMargin() || R == rows - 1)
-              insertLine(R, 1, SCROLL_UP);
+              insertLine(R);
             else
               R++;
             if (debug > 1)
@@ -2004,7 +2004,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             if (R > getTopMargin()) { // just go up 1 line.
               R--;
             } else { // scroll down
-              insertLine(R, 1, SCROLL_DOWN);
+              insertLine(R, SCROLL_DOWN);
             }
             /* else do nothing ; */
             if (debug > 2)
@@ -2745,9 +2745,9 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case 'S': /* ind aka 'scroll forward' */
             if (DCEvars[0] == 0)
-              insertLine(getBottomMargin(), SCROLL_UP);
+              insertLine(getBottomMargin());
             else
-              insertLine(getBottomMargin(), DCEvars[0], SCROLL_UP);
+              insertLine(getBottomMargin(), DCEvars[0]);
             break;
           case 'L':
             /* insert n lines */
