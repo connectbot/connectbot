@@ -1638,7 +1638,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               if (R > getTopMargin())
                 R--;
               else
-                insertLine(R, NORMAL, SCROLL_DOWN);
+                insertLine(R, attributes & COLOR_BG, SCROLL_DOWN);
               if (debug > 1)
                 debug("RI");
               break;
@@ -1654,7 +1654,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 debugStr.setLength(0);
               }
               if (R == getBottomMargin() || R == rows - 1)
-                insertLine(R, NORMAL);
+                insertLine(R, attributes & COLOR_BG);
               else
                 R++;
               if (debug > 1)
@@ -1662,7 +1662,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               break;
             case NEL:
               if (R == getBottomMargin() || R == rows - 1)
-                insertLine(R, NORMAL);
+                insertLine(R, attributes & COLOR_BG);
               else
                 R++;
               C = 0;
@@ -1737,7 +1737,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               /*C = 0;*/
             }
             if (R == getBottomMargin() || R >= rows - 1)
-              insertLine(R, NORMAL);
+              insertLine(R, attributes & COLOR_BG);
             else
               R++;
             break;
@@ -1783,6 +1783,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                     R++;
                   else {
                     if (debug > 3) debug("scrolling due to wrap at " + R);
+                    // Don't fill wrapped line with background color
                     insertLine(R, NORMAL);
                   }
                   C = 0;
@@ -1863,6 +1864,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                       R++;
                     else {
                       if (debug > 3) debug("scrolling due to wrap at " + R);
+                      // Don't fill wrapped line with background color
                       insertLine(R, NORMAL);
                     }
                     C = 0;
@@ -1970,11 +1972,11 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             if (C >= columns) C = columns - 1;
             break;
           case 'I': // RI
-            insertLine(R, NORMAL, SCROLL_DOWN);
+            insertLine(R, attributes & COLOR_BG, SCROLL_DOWN);
             break;
           case 'E': /* NEL */
             if (R == getBottomMargin() || R == rows - 1)
-              insertLine(R, NORMAL);
+              insertLine(R, attributes & COLOR_BG);
             else
               R++;
             C = 0;
@@ -1983,7 +1985,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case 'D': /* IND */
             if (R == getBottomMargin() || R == rows - 1)
-              insertLine(R, NORMAL);
+              insertLine(R, attributes & COLOR_BG);
             else
               R++;
             if (debug > 1)
@@ -2004,7 +2006,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             if (R > getTopMargin()) { // just go up 1 line.
               R--;
             } else { // scroll down
-              insertLine(R, NORMAL, SCROLL_DOWN);
+              insertLine(R, attributes & COLOR_BG, SCROLL_DOWN);
             }
             /* else do nothing ; */
             if (debug > 2)
@@ -2745,33 +2747,33 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             break;
           case 'S': /* ind aka 'scroll forward' */
             if (DCEvars[0] == 0)
-              insertLine(getBottomMargin(), NORMAL);
+              insertLine(getBottomMargin(), attributes & COLOR_BG);
             else
-              insertLine(getBottomMargin(), NORMAL, DCEvars[0]);
+              insertLine(getBottomMargin(), attributes & COLOR_BG, DCEvars[0]);
             break;
           case 'L':
             /* insert n lines */
             if (DCEvars[0] == 0)
-              insertLine(R, NORMAL, SCROLL_DOWN);
+              insertLine(R, attributes & COLOR_BG, SCROLL_DOWN);
             else
-              insertLine(R, NORMAL, DCEvars[0], SCROLL_DOWN);
+              insertLine(R, attributes & COLOR_BG, DCEvars[0], SCROLL_DOWN);
             if (debug > 1)
               debug("ESC [ " + DCEvars[0] + "" + (c) + " (at R " + R + ")");
             break;
           case 'T': /* 'ri' aka scroll backward */
             if (DCEvars[0] == 0)
-              insertLine(getTopMargin(), NORMAL, SCROLL_DOWN);
+              insertLine(getTopMargin(), attributes & COLOR_BG, SCROLL_DOWN);
             else
-              insertLine(getTopMargin(), NORMAL, DCEvars[0], SCROLL_DOWN);
+              insertLine(getTopMargin(), attributes & COLOR_BG, DCEvars[0], SCROLL_DOWN);
             break;
           case 'M':
             if (debug > 1)
               debug("ESC [ " + DCEvars[0] + "" + (c) + " at R=" + R);
             if (DCEvars[0] == 0)
-              deleteLine(R, NORMAL);
+              deleteLine(R, attributes & COLOR_BG);
             else
               for (int i = 0; i < DCEvars[0]; i++)
-                deleteLine(R, NORMAL);
+                deleteLine(R, attributes & COLOR_BG);
             break;
           case 'K':
             if (debug > 1)
