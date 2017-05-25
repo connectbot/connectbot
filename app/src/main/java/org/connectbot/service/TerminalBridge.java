@@ -723,14 +723,14 @@ public class TerminalBridge implements VDUDisplay {
 				// walk through all characters in this line
 				for (int c = 0; c < buffer.width; c++) {
 					int addr = 0;
-					int currAttr = buffer.charAttributes[buffer.windowBase + l][c];
+					long currAttr = buffer.charAttributes[buffer.windowBase + l][c];
 
 					{
 						int fgcolor = defaultFg;
 
 						// check if foreground color attribute is set
 						if ((currAttr & VDUBuffer.COLOR_FG) != 0)
-							fgcolor = ((currAttr & VDUBuffer.COLOR_FG) >> VDUBuffer.COLOR_FG_SHIFT) - 1;
+							fgcolor = (int) ((currAttr & VDUBuffer.COLOR_FG) >> VDUBuffer.COLOR_FG_SHIFT) - 1;
 
 						if (fgcolor < 8 && (currAttr & VDUBuffer.BOLD) != 0)
 							fg = color[fgcolor + 8];
@@ -740,7 +740,7 @@ public class TerminalBridge implements VDUDisplay {
 
 					// check if background color attribute is set
 					if ((currAttr & VDUBuffer.COLOR_BG) != 0)
-						bg = color[((currAttr & VDUBuffer.COLOR_BG) >> VDUBuffer.COLOR_BG_SHIFT) - 1];
+						bg = color[(int) ((currAttr & VDUBuffer.COLOR_BG) >> VDUBuffer.COLOR_BG_SHIFT) - 1];
 					else
 						bg = color[defaultBg];
 

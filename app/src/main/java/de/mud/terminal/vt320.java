@@ -654,9 +654,10 @@ public void setScreenSize(int c, int r, boolean broadcast) {
 
   // X - COLUMNS, Y - ROWS
   int R,C;
-  int attributes = 0;
+  long attributes = 0;
 
-  int Sc,Sr,Sa,Stm,Sbm;
+  int Sc,Sr,Stm,Sbm;
+  long Sa;
   char Sgr,Sgl;
   char Sgx[];
 
@@ -2442,7 +2443,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
 	    newcolor =	((DCEvars[0] & 1) << 2)	|
 	    		 (DCEvars[0] & 2)	|
 	    		((DCEvars[0] & 4) >> 2) ;
-            attributes |= (newcolor+1) << COLOR_FG_SHIFT;
+            attributes |= (long)(newcolor+1) << COLOR_FG_SHIFT;
 
 	    break;
 	  }
@@ -2456,7 +2457,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
 	    newcolor =	((DCEvars[0] & 1) << 2)	|
 	    		 (DCEvars[0] & 2)	|
 	    		((DCEvars[0] & 4) >> 2) ;
-            attributes |= (newcolor+1) << COLOR_BG_SHIFT;
+            attributes |= (long)(newcolor+1) << COLOR_BG_SHIFT;
 	    break;
           }
 
@@ -2898,10 +2899,10 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                     if ((ncolor & 8) == 8)
                       attributes |= BOLD;
                     ncolor = ((ncolor & 1) << 2) | (ncolor & 2) | ((ncolor & 4) >> 2);
-                    attributes |= ((ncolor) + 1) << COLOR_FG_SHIFT;
+                    attributes |= (long)((ncolor) + 1) << COLOR_FG_SHIFT;
                     ncolor = DCEvars[i + 2];
                     ncolor = ((ncolor & 1) << 2) | (ncolor & 2) | ((ncolor & 4) >> 2);
-                    attributes |= ((ncolor) + 1) << COLOR_BG_SHIFT;
+                    attributes |= (long)((ncolor) + 1) << COLOR_BG_SHIFT;
                     i += 2;
                   } else {
                     attributes |= LOW;
@@ -2963,12 +2964,12 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 case 36:
                 case 37:
                   attributes &= ~COLOR_FG;
-                  attributes |= ((DCEvars[i] - 30) + 1)<< COLOR_FG_SHIFT;
+                  attributes |= (long)((DCEvars[i] - 30) + 1)<< COLOR_FG_SHIFT;
                   break;
                 case 38:
                   if (DCEvars[i+1] == 5) {
                     attributes &= ~COLOR_FG;
-                    attributes |= ((DCEvars[i + 2]) + 1) << COLOR_FG_SHIFT;
+                    attributes |= (long)((DCEvars[i + 2]) + 1) << COLOR_FG_SHIFT;
                     i += 2;
                   }
                   break;
@@ -2984,12 +2985,12 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 case 46:
                 case 47:
                   attributes &= ~COLOR_BG;
-                  attributes |= ((DCEvars[i] - 40) + 1) << COLOR_BG_SHIFT;
+                  attributes |= (long)((DCEvars[i] - 40) + 1) << COLOR_BG_SHIFT;
                   break;
                 case 48:
                   if (DCEvars[i+1] == 5) {
                     attributes &= ~COLOR_BG;
-                    attributes |= (DCEvars[i + 2] + 1) << COLOR_BG_SHIFT;
+                    attributes |= (long)(DCEvars[i + 2] + 1) << COLOR_BG_SHIFT;
                     i += 2;
                   }
                   break;
@@ -3005,7 +3006,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 case 96:
                 case 97:
                   attributes &= ~COLOR_FG;
-                  attributes |= ((DCEvars[i] - 82) + 1) << COLOR_FG_SHIFT;
+                  attributes |= (long)((DCEvars[i] - 82) + 1) << COLOR_FG_SHIFT;
                   break;
                 case 100:
                 case 101:
@@ -3016,7 +3017,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                 case 106:
                 case 107:
                   attributes &= ~COLOR_BG;
-                  attributes |= ((DCEvars[i] - 92) + 1) << COLOR_BG_SHIFT;
+                  attributes |= (long)((DCEvars[i] - 92) + 1) << COLOR_BG_SHIFT;
                   break;
 
                 default:
