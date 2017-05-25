@@ -73,10 +73,10 @@ public class VDUBuffer {
    *  |||| |||| |||| |||| |||| |||| |||| ||||  |||| |||| |||| |||| |||| |||| |||| |`--- Invert
    *  |||| |||| |||| |||| |||| |||| |||| ||||  |||| |||| |||| |||| |||| |||| |||| `---- Low
    *  |||| |||| |||| |||| |||| |||| |||| ||||  |||| |||| |||| |||| |||| |||| |||`------ Invisible
-   *  |||| |||| |||| |||| |||| |||| |||| ||||  |||| |||| |||| |||| ||`+-++++-+++------- Foreground Color
-   *  |||| |||| |||| |||| |||| |||| |||| ||||  |||| |||| |`++-++++-++------------------ Background Color
-   *  |||| |||| |||| |||| |||| |||| |||| ||||  |||| |||| `----------------------------- Fullwidth character
-   *  `+++-++++-++++-++++-++++-++++-++++-++++--++++-++++------------------------------- Reserved for future use
+   *  |||| |||| |||| |||| |||| |||| |||| ||||  |||| |||| |||| |||| |||| |||| ||`------- Fullwidth character
+   *  |||| |||| |||| |||| |||| |||| |||| ||||  |`++-++++-++++-++++-++++-++++-++-------- Foreground Color
+   *  |||| |||| `+++-++++-++++-++++-++++-++++--+--------------------------------------- Background Color
+   *  `+++-++++------------------------------------------------------------------------ Reserved for future use
    */
 
   /** Make character normal. */
@@ -92,18 +92,18 @@ public class VDUBuffer {
   /** Invisible character. */
   public final static long INVISIBLE = 0x10;
   /** Unicode full-width character (CJK, et al.) */
-  public final static long FULLWIDTH = 0x8000000;
+  public final static long FULLWIDTH = 0x20;
 
   /** how much to left shift the foreground color */
-  public final static int COLOR_FG_SHIFT = 5;
+  public final static int COLOR_FG_SHIFT = 6;
   /** how much to left shift the background color */
-  public final static int COLOR_BG_SHIFT = 14;
+  public final static int COLOR_BG_SHIFT = 31;
   /** color mask */
-  public final static long COLOR = 0x7fffe0;    /* 0000 0000 0111 1111 1111 1111 1110 0000 */
+  public final static long COLOR = 0xffffffffffffc0L;    /* 0000 0000 1111 1111 1111 1111 1111 1111  1111 1111 1111 1111 1111 1111 1100 0000 */
   /** foreground color mask */
-  public final static long COLOR_FG = 0x3fe0;   /* 0000 0000 0000 0000 0011 1111 1110 0000 */
+  public final static long COLOR_FG = 0x7fffffc0L;       /* 0000 0000 0000 0000 0000 0000 0000 0000  0111 1111 1111 1111 1111 1111 1100 0000 */
   /** background color mask */
-  public final static long COLOR_BG = 0x7fc000; /* 0000 0000 0111 1111 1100 0000 0000 0000 */
+  public final static long COLOR_BG = 0xffffff80000000L; /* 0000 0000 1111 1111 1111 1111 1111 1111  1000 0000 0000 0000 0000 0000 0000 0000 */
 
   /**
    * Create a new video display buffer with the passed width and height in
