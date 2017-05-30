@@ -286,23 +286,25 @@ public class VDUBuffer {
    * The current line and all previous lines are scrolled one line up. The
    * top line is lost. You need to call redraw() to update the screen.
    * @param l the y-coordinate to insert the line
+   * @param attributes character attributes
    * @see #deleteLine
    * @see #redraw
    */
-  public void insertLine(int l) {
-    insertLine(l, 1, SCROLL_UP);
+  public void insertLine(int l, long attributes) {
+    insertLine(l, attributes, 1, SCROLL_UP);
   }
 
   /**
    * Insert blank lines at a specific position.
    * You need to call redraw() to update the screen
    * @param l the y-coordinate to insert the line
+   * @param attributes character attributes
    * @param n amount of lines to be inserted
    * @see #deleteLine
    * @see #redraw
    */
-  public void insertLine(int l, int n) {
-    insertLine(l, n, SCROLL_UP);
+  public void insertLine(int l, long attributes, int n) {
+    insertLine(l, attributes, n, SCROLL_UP);
   }
 
   /**
@@ -310,14 +312,15 @@ public class VDUBuffer {
    * the argument.
    * You need to call redraw() to update the screen
    * @param l the y-coordinate to insert the line
+   * @param attributes character attributes
    * @param scrollDown scroll down
    * @see #deleteLine
    * @see #SCROLL_UP
    * @see #SCROLL_DOWN
    * @see #redraw
    */
-  public void insertLine(int l, boolean scrollDown) {
-    insertLine(l, 1, scrollDown);
+  public void insertLine(int l, long attributes, boolean scrollDown) {
+    insertLine(l, attributes, 1, scrollDown);
   }
 
   /**
@@ -325,6 +328,7 @@ public class VDUBuffer {
    * The current line and all previous lines are scrolled one line up. The
    * top line is lost. You need to call redraw() to update the screen.
    * @param l the y-coordinate to insert the line
+   * @param attributes character attributes
    * @param n number of lines to be inserted
    * @param scrollDown scroll down
    * @see #deleteLine
@@ -332,7 +336,7 @@ public class VDUBuffer {
    * @see #SCROLL_DOWN
    * @see #redraw
    */
-  public synchronized void insertLine(int l, int n, boolean scrollDown) {
+  public synchronized void insertLine(int l, long attributes, int n, boolean scrollDown) {
     char cbuf[][] = null;
     long abuf[][] = null;
     int offset = 0;
