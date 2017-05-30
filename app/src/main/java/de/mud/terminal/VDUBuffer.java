@@ -476,6 +476,7 @@ public class VDUBuffer {
       cbuf[(newScreenBase + l) + (scrollDown ? i : -i)] = new char[width];
       Arrays.fill(cbuf[(newScreenBase + l) + (scrollDown ? i : -i)], ' ');
       abuf[(newScreenBase + l) + (scrollDown ? i : -i)] = new long[width];
+      Arrays.fill(abuf[(newScreenBase + l) + (scrollDown ? i : -i)], attributes);
     }
 
     charArray = cbuf;
@@ -519,7 +520,7 @@ public class VDUBuffer {
     charArray[newBottomRow] = discardedChars;
     charAttributes[newBottomRow] = discardedAttributes;
     Arrays.fill(charArray[newBottomRow], ' ');
-    Arrays.fill(charAttributes[newBottomRow], 0);
+    Arrays.fill(charAttributes[newBottomRow], attributes);
 
     markLine(l, bottom - l);
   }
