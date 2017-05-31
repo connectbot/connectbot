@@ -497,9 +497,10 @@ public class VDUBuffer {
    * up to fill the space and a blank line is inserted at the end of the
    * screen.
    * @param l the y-coordinate to insert the line
+   * @param attributes character attributes
    * @see #deleteLine
    */
-  public void deleteLine(int l) {
+  public void deleteLine(int l, long attributes) {
     int bottom = (l > bottomMargin ? height - 1:
             (l < topMargin?topMargin:bottomMargin + 1));
     int numRows = bottom - l - 1;

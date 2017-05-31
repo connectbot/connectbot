@@ -2768,10 +2768,10 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             if (debug > 1)
               debug("ESC [ " + DCEvars[0] + "" + (c) + " at R=" + R);
             if (DCEvars[0] == 0)
-              deleteLine(R);
+              deleteLine(R, NORMAL);
             else
               for (int i = 0; i < DCEvars[0]; i++)
-                deleteLine(R);
+                deleteLine(R, NORMAL);
             break;
           case 'K':
             if (debug > 1)
