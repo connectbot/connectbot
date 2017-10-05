@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/accent"
+		android:elevation="4dp"
+		android:orientation="vertical"
+		android:paddingBottom="12dp"
+		android:paddingLeft="24dp"
+		android:paddingRight="24dp"
+		android:paddingTop="12dp">
+
+		<TextView
+			android:id="@+id/textView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/agent_select_agent"
+			android:textAppearance="?android:textAppearanceLarge"/>
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:paddingBottom="16dp"
+		android:paddingLeft="24dp"
+		android:paddingRight="24dp"
+		android:paddingTop="24dp">
+
+		<TextView
+			android:id="@+id/textViewInfo"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingBottom="24dp"
+			android:text="@string/agent_select_agent_description"/>
+
+		<android.support.v7.widget.RecyclerView
+			android:id="@+id/agent_recycler"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			tools:listitem="@layout/agent_selection_item"/>
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="end"
+		android:orientation="horizontal"
+		android:padding="8dp">
+
+		<Button
+			android:id="@+id/button_cancel"
+			style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@android:string/cancel"/>
+
+		<Button
+			android:id="@+id/button_select"
+			style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="Select"/>
+	</LinearLayout>
+</LinearLayout>

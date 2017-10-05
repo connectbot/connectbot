@@ -22,6 +22,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.connectbot.bean.AgentBean;
+import org.connectbot.bean.HostBean;
+import org.connectbot.service.TerminalBridge;
+import org.connectbot.service.TerminalManager;
+import org.connectbot.util.AgentDatabase;
+import org.connectbot.util.HostDatabase;
+import org.connectbot.util.PubkeyDatabase;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,19 +37,13 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
-import org.connectbot.bean.HostBean;
-import org.connectbot.service.TerminalBridge;
-import org.connectbot.service.TerminalManager;
-import org.connectbot.util.HostDatabase;
-import org.connectbot.util.PubkeyDatabase;
 
 public class EditHostActivity extends AppCompatActivity implements HostEditorFragment.Listener {
 
@@ -54,6 +56,7 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 	private PubkeyDatabase mPubkeyDb;
 	private ServiceConnection mTerminalConnection;
 	private HostBean mHost;
+	private AgentBean mAgentBean;
 	private TerminalBridge mBridge;
 	private boolean mIsCreating;
 	private MenuItem mSaveHostButton;
@@ -223,6 +226,18 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 			showDiscardDialog();
 			return;
 		}
+		// check if an agent has been selected
+		if (mAgentBean != null) {
+			AgentDatabase agentDatabase = AgentDatabase.get(getApplicationContext());
+			// delete the old one
+			long oldAgentId = mHost.getAuthAgentId();
+			if (oldAgentId != HostDatabase.AGENTID_NONE) {
+				agentDatabase.deleteAgentById(oldAgentId);
+			}
+			// save the new one
+			agentDatabase.saveAgent(mAgentBean);
+			mHost.setAuthAgentId(mAgentBean.getId());
+		}
 
 		mHostDb.saveHost(mHost);
 
@@ -257,6 +272,16 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 	private void setAddSaveButtonEnabled(boolean enabled) {
 		mSaveHostButton.setEnabled(enabled);
 		mSaveHostButton.getIcon().setAlpha(enabled ? ENABLED_ALPHA : DISABLED_ALPHA);
+	}
+
+	@Override
+	public void onAgentKeySelectionSuccess(AgentBean agentBean) {
+		mAgentBean = agentBean;
+	}
+
+	@Override
+	public void onAgentKeySelectionClear() {
+		mAgentBean = null;
 	}
 
 	// Private static class used to generate a list of available Charsets. Note that this class

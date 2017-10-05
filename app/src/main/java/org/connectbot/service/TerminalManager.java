@@ -35,6 +35,7 @@ import org.connectbot.bean.PubkeyBean;
 import org.connectbot.data.ColorStorage;
 import org.connectbot.data.HostStorage;
 import org.connectbot.transport.TransportFactory;
+import org.connectbot.util.AgentDatabase;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.ProviderLoader;
@@ -88,6 +89,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public HostStorage hostdb;
 	public ColorStorage colordb;
 	public PubkeyDatabase pubkeydb;
+	public AgentDatabase agentdb;
 
 	protected SharedPreferences prefs;
 
@@ -130,6 +132,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		hostdb = HostDatabase.get(this);
 		colordb = HostDatabase.get(this);
 		pubkeydb = PubkeyDatabase.get(this);
+		agentdb = AgentDatabase.get(this);
 
 		// load all marked pubkeys into memory
 		updateSavingKeys();
@@ -158,6 +161,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		connectivityManager = new ConnectivityReceiver(this, lockingWifi);
 
 		ProviderLoader.load(this, this);
+
 	}
 
 	private void updateSavingKeys() {
@@ -501,6 +505,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	private void keepServiceAlive() {
 		stopIdleTimer();
 		startService(new Intent(this, TerminalManager.class));
+		startService(new Intent(this, AgentManager.class));
 	}
 
 	@Override
@@ -542,6 +547,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		@Override
 		public void run() {
 			Log.d(TAG, String.format("Stopping service after timeout of ~%d seconds", IDLE_TIMEOUT / 1000));
+			stopService(new Intent(TerminalManager.this, AgentManager.class));
 			TerminalManager.this.stopNow();
 		}
 	}

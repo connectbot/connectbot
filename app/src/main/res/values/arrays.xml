@@ -96,11 +96,13 @@
 	</string-array>
 
 	<string-array name="list_pubkeyids" translatable="false">
+		<item>@string/list_pubkeyids_agent</item>
 		<item>@string/list_pubkeyids_none</item>
 		<item>@string/list_pubkeyids_any</item>
 	</string-array>
 
 	<string-array name="list_pubkeyids_value" translatable="false">
+		<item>-3</item>
 		<item>-2</item>
 		<item>-1</item>
 	</string-array>

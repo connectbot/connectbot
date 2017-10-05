@@ -25,6 +25,7 @@
 
 	<!-- Summary of what the ConnectBot service does; displayed in the Android running apps list -->
 	<string name="service_desc">"Maintains SSH connections and loaded pubkeys"</string>
+	<string name="agent_service_desc">"Manages communication with key agents"</string>
 
 	<!-- Window title for the Host List -->
 	<string name="title_hosts_list">"Hosts"</string>
@@ -322,6 +323,8 @@
 	<!-- Preference selection to indicate never to use special shortcut keys. -->
 	<string name="list_keymode_none">"Disable"</string>
 
+	<!-- Preference to use an external agent to authenticate to this host. -->
+	<string name="list_pubkeyids_agent">"Use external agent"</string>
 	<!-- Preference to not use pubkeys to authenticate to this host. -->
 	<string name="list_pubkeyids_none">"Do not use keys"</string>
 	<!-- Preference to use any pubkey to authenticate to this host. -->
@@ -673,4 +676,22 @@
 	     Added to the end of a key description to indicate that the key is encrypted (i.e,
 	     password protected). -->
 	<string name="key_attribute_encrypted">(encrypted)</string>
+	<string name="agent_selected_agent_key">Agent: %1$s\nKey: %2$s</string>
+	<string name="agent_no_ssh_agents_installed">No SSH-Agents installed</string>
+	<string name="agent_selection_cancelled">Agent selection cancelled</string>
+	<string name="agent_key_selection_successful">Agent key selection successful</string>
+	<string name="agent_key_selection_cancelled">Agent key selection cancelled</string>
+	<string name="agent_key_selection_failed">Agent key selection failed: %1$s</string>
+	<string name="agent_select_agent_description">These are the installed agents. Please select one:</string>
+	<string name="agent_select_agent">Select Agent</string>
+	<string name="agent_error_decoding_key">Error decoding public key</string>
+	<string name="agent_key_algorithm_not_supported">Key algorithm not supported</string>
+	<string name="agent_internal_error">Internal error: %1$s</string>
+	<string name="agent_unknown_result_code">Unknown result code</string>
+	<string name="agent_pending_intent_result_null">PendingIntent result is null</string>
+	<string name="agent_unknown">Unknown</string>
+	<string name="agent_attempting_to_authenticate">Attempting to authenticate via ssh-agent</string>
+	<string name="agent_could_not_be_found">The ssh-agent couldn\'t be found</string>
+	<string name="agent_calling_ssh_agent">Calling ssh-agent: %1$s</string>
+	<string name="agent_failed_to_authenticate_via_ssh_agent">Failed to authenticate via ssh-agent</string>
 </resources>

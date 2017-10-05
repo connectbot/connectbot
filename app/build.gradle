@@ -205,6 +205,7 @@ tasks.withType(JavaCompile) {
 // Dependencies must be below the android block to allow productFlavor specific deps.
 dependencies {
     implementation 'org.connectbot:sshlib:2.2.6'
+    implementation 'org.sufficientlysecure:sshauthentication-api:1.0'
     googleImplementation 'com.google.android.gms:play-services-base:15.0.1'
     ossImplementation 'org.conscrypt:conscrypt-android:1.1.3'
 

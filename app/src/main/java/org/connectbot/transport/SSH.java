@@ -44,6 +44,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.connectbot.R;
+import org.connectbot.bean.AgentBean;
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
 import org.connectbot.bean.PubkeyBean;
@@ -54,12 +55,7 @@ import org.connectbot.util.Ed25519Provider;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
-
-import android.content.Context;
-import android.net.Uri;
-import android.util.Log;
-import net.i2p.crypto.eddsa.EdDSAPrivateKey;
-import net.i2p.crypto.eddsa.EdDSAPublicKey;
+import org.connectbot.util.AgentSignatureProxy;
 
 import com.trilead.ssh2.AuthAgentCallback;
 import com.trilead.ssh2.ChannelCondition;
@@ -77,6 +73,12 @@ import com.trilead.ssh2.signature.DSASHA1Verify;
 import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.Ed25519Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
+
+import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
+import net.i2p.crypto.eddsa.EdDSAPrivateKey;
+import net.i2p.crypto.eddsa.EdDSAPublicKey;
 
 /**
  * @author Kenny Root
@@ -276,6 +278,22 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 							break;
 						}
 					}
+				} else if (pubkeyId == HostDatabase.PUBKEYID_AGENT) {
+					// use a ssh agent to authenticate
+					bridge.outputLine(manager.getString(R.string.agent_attempting_to_authenticate));
+					AgentBean agentBean = manager.agentdb.findAgentById(host.getAuthAgentId());
+					if (agentBean == null) {
+						bridge.outputLine(manager.getString(R.string.agent_could_not_be_found));
+						return;
+					}
+					bridge.outputLine(manager.getString(R.string.agent_calling_ssh_agent,
+							agentBean.getAgentAppName(manager.getApplicationContext())));
+
+					if (tryAgentAuthentication(host.getUsername(), agentBean)) {
+						finishConnection();
+					} else {
+						bridge.outputLine(manager.getString(R.string.agent_failed_to_authenticate_via_ssh_agent));
+					}
 				} else {
 					bridge.outputLine(manager.res.getString(R.string.terminal_auth_pubkey_specific));
 					// use a specific key for this host, as requested
@@ -315,7 +333,6 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			}
 		} catch (IllegalStateException e) {
 			Log.e(TAG, "Connection went away while we were trying to authenticate", e);
-			return;
 		} catch (Exception e) {
 			Log.e(TAG, "Problem during handleAuthentication()", e);
 		}
@@ -391,6 +408,22 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		if (!success)
 			bridge.outputLine(manager.res.getString(R.string.terminal_auth_pubkey_fail, keyNickname));
 		return success;
+	}
+
+	/**
+	 * Try authentication via an external authentication agent
+	 *
+	 * @return {@code true} for successful authentication
+	 */
+	private boolean tryAgentAuthentication(String username, AgentBean agentBean) {
+		try {
+			AgentSignatureProxy sshAgentSignatureManager =
+					new AgentSignatureProxy(manager.getApplicationContext(), agentBean);
+			return connection.authenticateWithPublicKey(username, sshAgentSignatureManager);
+		} catch (InvalidKeySpecException | NoSuchAlgorithmException | IOException e) {
+			Log.e(TAG , "Couldn't authenticate via agent", e);
+			return false;
+		}
 	}
 
 	/**

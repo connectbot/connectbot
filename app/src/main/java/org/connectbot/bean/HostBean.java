@@ -47,6 +47,7 @@ public class HostBean extends AbstractBean {
 	private String color;
 	private boolean useKeys = true;
 	private String useAuthAgent = HostDatabase.AUTHAGENT_NO;
+	private long authAgentId = HostDatabase.AGENTID_NONE;
 	private String postLogin = null;
 	private long pubkeyId = HostDatabase.PUBKEYID_ANY;
 	private boolean wantSession = true;
@@ -136,6 +137,12 @@ public class HostBean extends AbstractBean {
 	}
 	public String getUseAuthAgent() {
 		return useAuthAgent;
+	}
+	public long getAuthAgentId() {
+		return authAgentId;
+	}
+	public void setAuthAgentId(long authAgent) {
+		this.authAgentId = authAgent;
 	}
 	public void setPostLogin(String postLogin) {
 		this.postLogin = postLogin;
@@ -230,6 +237,7 @@ public class HostBean extends AbstractBean {
 		values.put(HostDatabase.FIELD_HOST_ENCODING, encoding);
 		values.put(HostDatabase.FIELD_HOST_STAYCONNECTED, Boolean.toString(stayConnected));
 		values.put(HostDatabase.FIELD_HOST_QUICKDISCONNECT, Boolean.toString(quickDisconnect));
+		values.put(HostDatabase.FIELD_HOST_AGENTID, authAgentId);
 
 		return values;
 	}
@@ -254,6 +262,7 @@ public class HostBean extends AbstractBean {
 		host.setEncoding(values.getAsString(HostDatabase.FIELD_HOST_ENCODING));
 		host.setStayConnected(values.getAsBoolean(HostDatabase.FIELD_HOST_STAYCONNECTED));
 		host.setQuickDisconnect(values.getAsBoolean(HostDatabase.FIELD_HOST_QUICKDISCONNECT));
+		host.setAuthAgentId(values.getAsLong(HostDatabase.FIELD_HOST_AGENTID));
 		return host;
 	}
 

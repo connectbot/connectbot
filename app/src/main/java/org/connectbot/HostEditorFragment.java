@@ -18,16 +18,32 @@
 package org.connectbot;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import org.connectbot.bean.AgentBean;
+import org.connectbot.bean.HostBean;
+import org.connectbot.transport.SSH;
+import org.connectbot.transport.Telnet;
+import org.connectbot.transport.TransportFactory;
+import org.connectbot.util.AgentDatabase;
+import org.connectbot.util.AgentKeySelection;
+import org.connectbot.util.AgentKeySelection.AgentKeySelectionCallback;
+import org.connectbot.util.AgentKeySelectionRetainerFragment;
+import org.connectbot.util.HostDatabase;
+import org.connectbot.views.CheckableMenuItem;
+import org.openintents.ssh.authentication.util.SshAuthenticationApiUtils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.ResolveInfo;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.PopupMenu;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -40,15 +56,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.connectbot.bean.HostBean;
-import org.connectbot.transport.SSH;
-import org.connectbot.transport.Telnet;
-import org.connectbot.transport.TransportFactory;
-import org.connectbot.util.HostDatabase;
-import org.connectbot.views.CheckableMenuItem;
-
-public class HostEditorFragment extends Fragment {
+public class HostEditorFragment extends Fragment implements AgentKeySelectionCallback {
 
 	private static final String ARG_EXISTING_HOST_ID = "existingHostId";
 	private static final String ARG_EXISTING_HOST = "existingHost";
@@ -128,6 +138,8 @@ public class HostEditorFragment extends Fragment {
 	private EditText mPostLoginAutomationField;
 	private HostTextFieldWatcher mFontSizeTextChangeListener;
 
+	private AgentKeySelectionRetainerFragment mAgentKeySelectionRetainerFragment;
+
 	public static HostEditorFragment newInstance(
 			HostBean existingHost, ArrayList<String> pubkeyNames, ArrayList<String> pubkeyValues) {
 		HostEditorFragment fragment = new HostEditorFragment();
@@ -163,7 +175,10 @@ public class HostEditorFragment extends Fragment {
 		mPubkeyValues = bundle.getStringArrayList(ARG_PUBKEY_VALUES);
 
 		mIsUriEditorExpanded = bundle.getBoolean(ARG_IS_EXPANDED);
+
+		updateAgentKeySelectionRetainer();
 	}
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -331,8 +346,15 @@ public class HostEditorFragment extends Fragment {
 					public boolean onMenuItemClick(MenuItem item) {
 						for (int i = 0; i < mPubkeyNames.size(); i++) {
 							if (mPubkeyNames.get(i).equals(item.getTitle())) {
-								mHost.setPubkeyId(Long.parseLong(mPubkeyValues.get(i)));
-								mPubkeyText.setText(mPubkeyNames.get(i));
+								long pubKeyId = Long.parseLong(mPubkeyValues.get(i));
+								mHost.setPubkeyId(pubKeyId);
+								if (pubKeyId == HostDatabase.PUBKEYID_AGENT) {
+									// Pick a key from an agent
+									selectKeyFromAgent();
+								} else {
+									mPubkeyText.setText(mPubkeyNames.get(i));
+									mListener.onAgentKeySelectionClear();
+								}
 								return true;
 							}
 						}
@@ -344,12 +366,8 @@ public class HostEditorFragment extends Fragment {
 		});
 
 		mPubkeyText = view.findViewById(R.id.pubkey_text);
-		for (int i = 0; i < mPubkeyValues.size(); i++) {
-			if (mHost.getPubkeyId() == Long.parseLong(mPubkeyValues.get(i))) {
-				mPubkeyText.setText(mPubkeyNames.get(i));
-				break;
-			}
-		}
+
+		updatePubKeyDescription();
 
 		mDelKeyItem = view.findViewById(R.id.delkey_item);
 		mDelKeyItem.setOnClickListener(new View.OnClickListener() {
@@ -483,6 +501,129 @@ public class HostEditorFragment extends Fragment {
 		return view;
 	}
 
+	private void updatePubKeyDescription() {
+		if (mHost.getPubkeyId() == HostDatabase.PUBKEYID_AGENT) {
+			AgentDatabase agentDatabase = AgentDatabase.get(getContext());
+			AgentBean agentBean = agentDatabase.findAgentById(mHost.getAuthAgentId());
+			if (agentBean != null) {
+				mPubkeyText.setText(getAgentKeyDescription(agentBean));
+			}
+		} else {
+			for (int i = 0; i < mPubkeyValues.size(); i++) {
+				if (mHost.getPubkeyId() == Long.parseLong(mPubkeyValues.get(i))) {
+					mPubkeyText.setText(mPubkeyNames.get(i));
+					break;
+				}
+			}
+		}
+	}
+
+	private String getAgentKeyDescription(AgentBean agentBean) {
+		return getString(R.string.agent_selected_agent_key,
+				agentBean.getAgentAppName(getContext()),
+				agentBean.getDescription());
+	}
+
+	private void selectKeyFromAgent() {
+		// select an agent first
+		selectAgent();
+	}
+
+	private void selectAgent() {
+		List<ResolveInfo> providerInfo = SshAuthenticationApiUtils
+				.getAuthenticationProviderInfo(getContext());
+
+		if (providerInfo.isEmpty()) {
+			Toast.makeText(getContext(), getString(R.string.agent_no_ssh_agents_installed),
+					Toast.LENGTH_SHORT)
+					.show();
+			return;
+		}
+
+		List<String> providerPackage = SshAuthenticationApiUtils
+				.getAuthenticationProviderPackageNames(providerInfo);
+
+		if (providerInfo.size() == 1) {
+			onAgentSelected(providerPackage.get(0));
+		}
+
+		List<String> providerLabel = SshAuthenticationApiUtils
+				.getAuthenticationProviderLabel(getContext(), providerInfo);
+
+		AgentSelectionDialog agentSelectionDialog = AgentSelectionDialog
+				.newInstance(providerPackage, providerLabel);
+
+		agentSelectionDialog.show(getFragmentManager(), AgentSelectionDialog.TAG);
+	}
+
+	public void onAgentSelected(String agentName) {
+		if (agentName == null) {
+			Toast.makeText(getContext(), getString(R.string.agent_selection_cancelled),
+					Toast.LENGTH_SHORT)
+					.show();
+			return;
+		}
+		// now select the key from this agent
+		selectKey(agentName);
+	}
+
+	private void selectKey(String agentName) {
+		if (mAgentKeySelectionRetainerFragment == null) {
+			mAgentKeySelectionRetainerFragment = new AgentKeySelectionRetainerFragment();
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction()
+					.add(mAgentKeySelectionRetainerFragment, AgentKeySelectionRetainerFragment.TAG)
+					.commit();
+		}
+
+		AgentKeySelection keySelectionManager = new AgentKeySelection(
+				getActivity().getApplicationContext(), mHost, agentName, this);
+		mAgentKeySelectionRetainerFragment.setAgentKeySelection(keySelectionManager);
+
+		keySelectionManager.selectKeyFromAgent();
+	}
+
+	public void onAgentKeySelectionSuccess(AgentBean agentBean) {
+		mListener.onAgentKeySelectionSuccess(agentBean);
+		Toast.makeText(getContext(), getString(R.string.agent_key_selection_successful),
+				Toast.LENGTH_SHORT)
+				.show();
+		mPubkeyText.setText(getAgentKeyDescription(agentBean));
+		removeAgentKeySelectionRetainer();
+	}
+
+	public void onAgentKeySelectionError(String message) {
+		Toast.makeText(getContext(), getString(R.string.agent_key_selection_failed, message),
+				Toast.LENGTH_LONG)
+				.show();
+		removeAgentKeySelectionRetainer();
+	}
+
+	public void onAgentKeySelectionCancel() {
+		Toast.makeText(getContext(), getString(R.string.agent_key_selection_cancelled),
+				Toast.LENGTH_SHORT)
+				.show();
+		removeAgentKeySelectionRetainer();
+	}
+
+	private void removeAgentKeySelectionRetainer() {
+		FragmentManager fragmentManager = getFragmentManager();
+		fragmentManager.beginTransaction()
+				.remove(mAgentKeySelectionRetainerFragment)
+				.commit();
+		mAgentKeySelectionRetainerFragment = null;
+	}
+
+	private void updateAgentKeySelectionRetainer() {
+		FragmentManager fragmentManager = getFragmentManager();
+		mAgentKeySelectionRetainerFragment = (AgentKeySelectionRetainerFragment) fragmentManager
+				.findFragmentByTag(AgentKeySelectionRetainerFragment.TAG);
+
+		if (mAgentKeySelectionRetainerFragment != null) {
+			mAgentKeySelectionRetainerFragment.setResultCallback(this);
+		}
+	}
+
 	/**
 	 * @param protocol The protocol to set.
 	 * @param setDefaultPortInModel True if the model's port should be updated to the default port
@@ -591,6 +732,10 @@ public class HostEditorFragment extends Fragment {
 		mColorValues.recycle();
 		mDelKeyNames.recycle();
 		mDelKeyValues.recycle();
+
+		if (mAgentKeySelectionRetainerFragment != null) {
+			mAgentKeySelectionRetainerFragment.setResultCallback(null);
+		}
 	}
 
 	@Override
@@ -694,6 +839,8 @@ public class HostEditorFragment extends Fragment {
 	public interface Listener {
 		void onValidHostConfigured(HostBean host);
 		void onHostInvalidated();
+		void onAgentKeySelectionSuccess(AgentBean agentBean);
+		void onAgentKeySelectionClear();
 	}
 
 	private class HostTextFieldWatcher implements TextWatcher {

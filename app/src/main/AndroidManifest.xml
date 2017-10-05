@@ -167,6 +167,11 @@
 			android:configChanges="keyboardHidden|orientation"
 			android:description="@string/service_desc"/>
 
+		<service
+			android:name="org.connectbot.service.AgentManager"
+			android:configChanges="keyboardHidden|orientation"
+			android:description="@string/agent_service_desc"/>
+
 		<activity
 			android:name=".ConsoleActivity"
 			android:configChanges="keyboardHidden|orientation"
@@ -187,6 +192,11 @@
 				<!-- format:  local://  -->
 			</intent-filter>
 		</activity>
+
+		<activity
+			android:name=".AgentActivity"
+			android:theme="@style/Theme.AppCompat.Transparent"
+			android:windowSoftInputMode="stateUnchanged"/>
 
 		<meta-data
 			android:name="com.google.android.backup.api_key"

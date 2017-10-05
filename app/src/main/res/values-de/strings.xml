@@ -282,4 +282,15 @@
   <string name="key_type_ed25519">Ed25519</string>
   <string name="key_type_unknown">Schlüsseltyp unbekannt</string>
   <string name="key_attribute_encrypted">(verschlüsselt)</string>
+  <string name="agent_selected_agent_key">Agent: %1$s\nSchlüssel: %2$s</string>
+  <string name="agent_no_ssh_agents_installed">Kein SSH-Agent installiert</string>
+  <string name="agent_selection_cancelled">Agent Auswahl abgebrochen</string>
+  <string name="agent_key_selection_successful">Schlüssel Auswahl erfolgreich</string>
+  <string name="agent_key_selection_cancelled">Schlüssel Auswahl abgebrochen</string>
+  <string name="agent_key_selection_failed">Schlüssel Auswahl fehlgeschlagen: %1$s</string>
+  <string name="agent_unknown">Unbekannt</string>
+  <string name="agent_attempting_to_authenticate">Versuche Authentifizierung über SSH-Agent</string>
+  <string name="agent_could_not_be_found">Der SSH-Agent kann nicht gefunden werden</string>
+  <string name="agent_calling_ssh_agent">Calling ssh-agent: %1$s</string>
+  <string name="agent_failed_to_authenticate_via_ssh_agent">Authentifizierung über SSH-Agent fehlgeschlagen</string>
 </resources>
