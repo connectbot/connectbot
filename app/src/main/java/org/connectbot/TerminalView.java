@@ -437,7 +437,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 				if (cursorColumn < 0 || cursorRow < 0)
 					return;
 
-				int currentAttribute = bridge.buffer.getAttributes(
+				long currentAttribute = bridge.buffer.getAttributes(
 						cursorColumn, cursorRow);
 				boolean onWideCharacter = (currentAttribute & VDUBuffer.FULLWIDTH) != 0;
 
