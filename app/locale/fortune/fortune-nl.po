@@ -774,7 +774,7 @@ msgstr "Bijnaam"
 #. Host color category preference title
 msgctxt "hostpref_color_title"
 msgid "Color category"
-msgstr "Kleur catogorie"
+msgstr "Kleur categorie"
 
 #. Host's default font size when opening the terminal in points (pt)
 msgctxt "hostpref_fontsize_title"

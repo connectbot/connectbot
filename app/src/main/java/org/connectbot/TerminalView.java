@@ -37,7 +37,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -86,6 +89,8 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 	private final Paint paint;
 	private final Paint cursorPaint;
 	private final Paint cursorStrokePaint;
+	private final Paint cursorInversionPaint;
+	private final Paint cursorMetaInversionPaint;
 
 	// Cursor paints to distinguish modes
 	private Path ctrlCursor, altCursor, shiftCursor;
@@ -143,7 +148,26 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 		cursorPaint.setColor(bridge.color[bridge.defaultFg]);
 		cursorPaint.setAntiAlias(true);
 
-		cursorStrokePaint = new Paint(cursorPaint);
+		cursorInversionPaint = new Paint();
+		cursorInversionPaint.setColorFilter(new ColorMatrixColorFilter(new ColorMatrix(new float[] {
+				-1, 0, 0, 0, 255,
+				0, -1, 0, 0, 255,
+				0, 0, -1, 0, 255,
+				0, 0, 0, 1, 0
+		})));
+		cursorInversionPaint.setAntiAlias(true);
+
+		cursorMetaInversionPaint = new Paint();
+		cursorMetaInversionPaint.setColorFilter(
+				new ColorMatrixColorFilter(new ColorMatrix(new float[] {
+						-1f, 0, 0, 0, 255,
+						0, -1f, 0, 0, 255,
+						0, 0, -1f, 0, 255,
+						0, 0, 0, 0.5f, 0
+				})));
+		cursorMetaInversionPaint.setAntiAlias(true);
+
+		cursorStrokePaint = new Paint(cursorInversionPaint);
 		cursorStrokePaint.setStrokeWidth(0.1f);
 		cursorStrokePaint.setStyle(Paint.Style.STROKE);
 
@@ -413,7 +437,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 				if (cursorColumn < 0 || cursorRow < 0)
 					return;
 
-				int currentAttribute = bridge.buffer.getAttributes(
+				long currentAttribute = bridge.buffer.getAttributes(
 						cursorColumn, cursorRow);
 				boolean onWideCharacter = (currentAttribute & VDUBuffer.FULLWIDTH) != 0;
 
@@ -429,8 +453,18 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 				canvas.clipRect(0, 0,
 						bridge.charWidth * (onWideCharacter ? 2 : 1),
 						bridge.charHeight);
-				canvas.drawPaint(cursorPaint);
 
+				int metaState = bridge.getKeyHandler().getMetaState();
+				if (y + bridge.charHeight < bridge.bitmap.getHeight()) {
+					Bitmap underCursor = Bitmap.createBitmap(bridge.bitmap, x, y,
+							bridge.charWidth * (onWideCharacter ? 2 : 1), bridge.charHeight);
+					if (metaState == 0)
+						canvas.drawBitmap(underCursor, 0, 0, cursorInversionPaint);
+					else
+						canvas.drawBitmap(underCursor, 0, 0, cursorMetaInversionPaint);
+				} else {
+					canvas.drawPaint(cursorPaint);
+				}
 				final int deadKey = bridge.getKeyHandler().getDeadKey();
 				if (deadKey != 0) {
 					singleDeadKey[0] = (char) deadKey;
@@ -440,22 +474,20 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 				// Make sure we scale our decorations to the correct size.
 				canvas.concat(scaleMatrix);
 
-				int metaState = bridge.getKeyHandler().getMetaState();
-
 				if ((metaState & TerminalKeyListener.OUR_SHIFT_ON) != 0)
 					canvas.drawPath(shiftCursor, cursorStrokePaint);
 				else if ((metaState & TerminalKeyListener.OUR_SHIFT_LOCK) != 0)
-					canvas.drawPath(shiftCursor, cursorPaint);
+					canvas.drawPath(shiftCursor, cursorInversionPaint);
 
 				if ((metaState & TerminalKeyListener.OUR_ALT_ON) != 0)
 					canvas.drawPath(altCursor, cursorStrokePaint);
 				else if ((metaState & TerminalKeyListener.OUR_ALT_LOCK) != 0)
-					canvas.drawPath(altCursor, cursorPaint);
+					canvas.drawPath(altCursor, cursorInversionPaint);
 
 				if ((metaState & TerminalKeyListener.OUR_CTRL_ON) != 0)
 					canvas.drawPath(ctrlCursor, cursorStrokePaint);
 				else if ((metaState & TerminalKeyListener.OUR_CTRL_LOCK) != 0)
-					canvas.drawPath(ctrlCursor, cursorPaint);
+					canvas.drawPath(ctrlCursor, cursorInversionPaint);
 
 				// Restore previous clip region
 				canvas.restore();

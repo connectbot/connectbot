@@ -46,7 +46,7 @@ public class VDUBuffer {
   public int height, width;                          /* rows and columns */
   public boolean[] update;        /* contains the lines that need update */
   public char[][] charArray;                  /* contains the characters */
-  public int[][] charAttributes;             /* contains character attrs */
+  public long[][] charAttributes;            /* contains character attrs */
   public int bufSize;
   public int maxBufSize;                                 /* buffer sizes */
   public int screenBase;                      /* the actual screen start */
@@ -67,43 +67,49 @@ public class VDUBuffer {
 
   /*  Attributes bit-field usage:
    *
-   *  8421 8421 8421 8421 8421 8421 8421 8421
-   *  |||| |||| |||| |||| |||| |||| |||| |||`- Bold
-   *  |||| |||| |||| |||| |||| |||| |||| ||`-- Underline
-   *  |||| |||| |||| |||| |||| |||| |||| |`--- Invert
-   *  |||| |||| |||| |||| |||| |||| |||| `---- Low
-   *  |||| |||| |||| |||| |||| |||| |||`------ Invisible
-   *  |||| |||| |||| |||| ||`+-++++-+++------- Foreground Color
-   *  |||| |||| |`++-++++-++------------------ Background Color
-   *  |||| |||| `----------------------------- Fullwidth character
-   *  `+++-++++------------------------------- Reserved for future use
+   *  8421 8421 8421 8421 8421 8421 8421 8421  8421 8421 8421 8421 8421 8421 8421 8421
+   *  |||| |||| |||| |||| |||| |||| |||| ||||  |||| |||| |||| |||| |||| |||| |||| |||`- Bold
+   *  |||| |||| |||| |||| |||| |||| |||| ||||  |||| |||| |||| |||| |||| |||| |||| ||`-- Underline
+   *  |||| |||| |||| |||| |||| |||| |||| ||||  |||| |||| |||| |||| |||| |||| |||| |`--- Invert
+   *  |||| |||| |||| |||| |||| |||| |||| ||||  |||| |||| |||| |||| |||| |||| |||| `---- Low
+   *  |||| |||| |||| |||| |||| |||| |||| ||||  |||| |||| |||| |||| |||| |||| |||`------ Invisible
+   *  |||| |||| |||| |||| |||| |||| |||| ||||  |||| |||| |||| |||| |||| |||| ||`------- Fullwidth character
+   *  |||| |||| |||| |||| |||| |||| |||| ||||  |`++-++++-++++-++++-++++-++++-++-------- Foreground Color
+   *  |||| |||| `+++-++++-++++-++++-++++-++++--+--------------------------------------- Background Color
+   *  `+++-++++------------------------------------------------------------------------ Reserved for future use
    */
 
   /** Make character normal. */
-  public final static int NORMAL = 0x00;
+  public final static long NORMAL = 0x00;
   /** Make character bold. */
-  public final static int BOLD = 0x01;
+  public final static long BOLD = 0x01;
   /** Underline character. */
-  public final static int UNDERLINE = 0x02;
+  public final static long UNDERLINE = 0x02;
   /** Invert character. */
-  public final static int INVERT = 0x04;
+  public final static long INVERT = 0x04;
   /** Lower intensity character. */
-  public final static int LOW = 0x08;
+  public final static long LOW = 0x08;
   /** Invisible character. */
-  public final static int INVISIBLE = 0x10;
+  public final static long INVISIBLE = 0x10;
   /** Unicode full-width character (CJK, et al.) */
-  public final static int FULLWIDTH = 0x8000000;
+  public final static long FULLWIDTH = 0x20;
 
   /** how much to left shift the foreground color */
-  public final static int COLOR_FG_SHIFT = 5;
+  public final static int COLOR_FG_SHIFT = 6;
   /** how much to left shift the background color */
-  public final static int COLOR_BG_SHIFT = 14;
+  public final static int COLOR_BG_SHIFT = 31;
   /** color mask */
-  public final static int COLOR = 0x7fffe0;    /* 0000 0000 0111 1111 1111 1111 1110 0000 */
+  public final static long COLOR = 0xffffffffffffc0L;    /* 0000 0000 1111 1111 1111 1111 1111 1111  1111 1111 1111 1111 1111 1111 1100 0000 */
   /** foreground color mask */
-  public final static int COLOR_FG = 0x3fe0;   /* 0000 0000 0000 0000 0011 1111 1110 0000 */
+  public final static long COLOR_FG = 0x7fffffc0L;       /* 0000 0000 0000 0000 0000 0000 0000 0000  0111 1111 1111 1111 1111 1111 1100 0000 */
   /** background color mask */
-  public final static int COLOR_BG = 0x7fc000; /* 0000 0000 0111 1111 1100 0000 0000 0000 */
+  public final static long COLOR_BG = 0xffffff80000000L; /* 0000 0000 1111 1111 1111 1111 1111 1111  1000 0000 0000 0000 0000 0000 0000 0000 */
+  /** how much to left shift the red component */
+  public final static int COLOR_RED_SHIFT = 16;
+  /** how much to left shift the green component */
+  public final static int COLOR_GREEN_SHIFT = 8;
+  /** how much to left shift the blue component */
+  public final static int COLOR_BLUE_SHIFT = 0;
 
   /**
    * Create a new video display buffer with the passed width and height in
@@ -157,7 +163,7 @@ public class VDUBuffer {
    * @see #redraw
    */
 
-  public void putChar(int c, int l, char ch, int attributes) {
+  public void putChar(int c, int l, char ch, long attributes) {
     charArray[screenBase + l][c] = ch;
     charAttributes[screenBase + l][c] = attributes;
     if (l < height)
@@ -180,7 +186,7 @@ public class VDUBuffer {
    * @param l y-coordinate (line)
    * @see #putChar
    */
-  public int getAttributes(int c, int l) {
+  public long getAttributes(int c, int l) {
     return charAttributes[screenBase + l][c];
   }
 
@@ -202,7 +208,7 @@ public class VDUBuffer {
    * @see #deleteChar
    * @see #redraw
    */
-  public void insertChar(int c, int l, char ch, int attributes) {
+  public void insertChar(int c, int l, char ch, long attributes) {
     System.arraycopy(charArray[screenBase + l], c,
                      charArray[screenBase + l], c + 1, width - c - 1);
     System.arraycopy(charAttributes[screenBase + l], c,
@@ -270,7 +276,7 @@ public class VDUBuffer {
    * @see #deleteLine
    * @see #redraw
    */
-  public void putString(int c, int l, String s, int attributes) {
+  public void putString(int c, int l, String s, long attributes) {
     for (int i = 0; i < s.length() && c + i < width; i++)
       putChar(c + i, l, s.charAt(i), attributes);
   }
@@ -328,7 +334,7 @@ public class VDUBuffer {
    */
   public synchronized void insertLine(int l, int n, boolean scrollDown) {
     char cbuf[][] = null;
-    int abuf[][] = null;
+    long abuf[][] = null;
     int offset = 0;
     int oldBase = screenBase;
 
@@ -354,7 +360,7 @@ public class VDUBuffer {
       int size = bottom - l - (n - 1);
       if(size < 0) size = 0;
       cbuf = new char[size][];
-      abuf = new int[size][];
+      abuf = new long[size][];
 
       System.arraycopy(charArray, oldBase + l, cbuf, 0, bottom - l - (n - 1));
       System.arraycopy(charAttributes, oldBase + l,
@@ -383,7 +389,7 @@ public class VDUBuffer {
           }
 
           cbuf = new char[newBufSize][];
-          abuf = new int[newBufSize][];
+          abuf = new long[newBufSize][];
         } else {
           offset = n;
           cbuf = charArray;
@@ -465,7 +471,7 @@ public class VDUBuffer {
     for (int i = 0; i < n; i++) {
       cbuf[(newScreenBase + l) + (scrollDown ? i : -i)] = new char[width];
       Arrays.fill(cbuf[(newScreenBase + l) + (scrollDown ? i : -i)], ' ');
-      abuf[(newScreenBase + l) + (scrollDown ? i : -i)] = new int[width];
+      abuf[(newScreenBase + l) + (scrollDown ? i : -i)] = new long[width];
     }
 
     charArray = cbuf;
@@ -495,7 +501,7 @@ public class VDUBuffer {
     int numRows = bottom - l - 1;
 
     char[] discardedChars = charArray[screenBase + l];
-    int[] discardedAttributes = charAttributes[screenBase + l];
+    long[] discardedAttributes = charAttributes[screenBase + l];
 
     if (numRows > 0) {
 	    System.arraycopy(charArray, screenBase + l + 1,
@@ -525,7 +531,7 @@ public class VDUBuffer {
    * @see #deleteLine
    * @see #redraw
    */
-  public void deleteArea(int c, int l, int w, int h, int curAttr) {
+  public void deleteArea(int c, int l, int w, int h, long curAttr) {
     int endColumn = c + w;
     int targetRow = screenBase + l;
     for (int i = 0; i < h && l + i < height; i++) {
@@ -686,7 +692,7 @@ public class VDUBuffer {
     if (amount < height) amount = height;
     if (amount < maxBufSize) {
       char cbuf[][] = new char[amount][width];
-      int abuf[][] = new int[amount][width];
+      long abuf[][] = new long[amount][width];
       int copyStart = bufSize - amount < 0 ? 0 : bufSize - amount;
       int copyCount = bufSize - amount < 0 ? bufSize : amount;
       if (charArray != null)
@@ -729,7 +735,7 @@ public class VDUBuffer {
    */
   public void setScreenSize(int w, int h, boolean broadcast) {
     char cbuf[][];
-    int abuf[][];
+    long abuf[][];
     int maxSize = bufSize;
     int oldAbsR = screenBase + getCursorRow();
 
@@ -755,7 +761,7 @@ public class VDUBuffer {
 
 
     cbuf = new char[bufSize][w];
-    abuf = new int[bufSize][w];
+    abuf = new long[bufSize][w];
 
 
     for (int i = 0; i < bufSize; i++) {
