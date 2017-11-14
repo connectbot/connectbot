@@ -168,12 +168,12 @@ public class TerminalTextViewOverlay extends TextView {
 
 	@Override
 	public void scrollTo(int x, int y) {
-		int lineMultiple = y / getLineHeight();
+		int lineMultiple = (y * 2 + 1) / (getLineHeight() * 2);
 
 		TerminalBridge bridge = terminalView.bridge;
 		bridge.buffer.setWindowBase(lineMultiple);
 
-		super.scrollTo(0, lineMultiple * getLineHeight());
+		super.scrollTo(0, y);
 	}
 
 	@Override
@@ -181,6 +181,8 @@ public class TerminalTextViewOverlay extends TextView {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			// Selection may be beginning. Sync the TextView with the buffer.
 			refreshTextFromBuffer();
+		} else if (event.getAction() == MotionEvent.ACTION_UP) {
+			super.scrollTo(0, terminalView.bridge.buffer.getWindowBase() * getLineHeight());
 		}
 
 		// Mouse input is treated differently:
