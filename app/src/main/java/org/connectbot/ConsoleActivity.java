@@ -1185,9 +1185,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				TextView urlView = (TextView) view;
 
 				String url = urlView.getText().toString();
-				if (url.contains("://"))
-					url = "http://" + url;
-
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 				context.startActivity(intent);
 			} catch (Exception e) {
