@@ -100,7 +100,7 @@
   <string name="list_pubkeyids_none">Gebruik sleutels niet</string>
   <string name="list_pubkeyids_any">Gebruik een willekeurige ontgrendelde sleutel</string>
   <string name="hostpref_nickname_title">Bijnaam</string>
-  <string name="hostpref_color_title">Kleur catogorie</string>
+  <string name="hostpref_color_title">Kleur categorie</string>
   <string name="hostpref_fontsize_title">Lettergrootte</string>
   <string name="hostpref_pubkeyid_title">Gebruik pubkey authenticatie</string>
   <string name="hostpref_authagent_title">Gebruik SSH auth agent</string>
