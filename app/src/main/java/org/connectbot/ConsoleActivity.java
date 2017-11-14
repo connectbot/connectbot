@@ -1490,7 +1490,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		@Override
 		public boolean onDrag(View dropTarget, DragEvent event) {
 
-			View dragged = (View) event.getLocalState();
+			Object localState = event.getLocalState();
+			if (!(localState instanceof Button))
+				return false;
+
+			View dragged = (View) localState;
 
 			switch (event.getAction()) {
 			case DragEvent.ACTION_DRAG_STARTED:
