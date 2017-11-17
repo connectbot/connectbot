@@ -2526,6 +2526,9 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             DCEvars[DCEvar] = DCEvars[DCEvar] * 10 + (c) - 48;
             term_state = TSTATE_CSI;
             break;
+          case ':':
+            DCEvars[DCEvar] |= (1<<31);
+            /* intentionally fall-through here */
           case ';':
             DCEvar++;
             DCEvars[DCEvar] = 0;
@@ -2875,6 +2878,15 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             if (DCEvar == 0 && DCEvars[0] == 0)
               attributes = 0;
             for (int i = 0; i <= DCEvar; i++) {
+              int params = 0;
+              int maxparams;
+              /* find and scrub colon-separated groups */
+              int lastcolon = i;
+              while ((DCEvars[lastcolon] & (1<<31)) != 0)
+                DCEvars[lastcolon++] &= ~(1<<31);
+              /* colon-separated groups not starting with 38 or 48 are skipped */
+              if ((lastcolon > i) && (DCEvars[i] != 38) && (DCEvars[i] != 48))
+                continue;
               switch (DCEvars[i]) {
                 case 0:
                   if (DCEvar > 0) {
@@ -2967,18 +2979,29 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                   attributes |= (long)((DCEvars[i] - 30) + 1)<< COLOR_FG_SHIFT;
                   break;
                 case 38:
-                  if (DCEvars[i+1] == 5) {
-                    attributes &= ~COLOR_FG;
-                    attributes |= (long)((DCEvars[i + 2]) + 1) << COLOR_FG_SHIFT;
-                    i += 2;
-                  } else if (DCEvars[i+1] == 2) {
-                    attributes &= ~COLOR_FG;
-                    int newcolor = DCEvars[i + 2] << COLOR_RED_SHIFT |
-                                   DCEvars[i + 3] << COLOR_GREEN_SHIFT |
-                                   DCEvars[i + 4] << COLOR_BLUE_SHIFT;
-                    attributes |= (long)(newcolor + 257) << COLOR_FG_SHIFT;
-                    i += 4;
+                  maxparams = ((lastcolon > i) ? lastcolon : DCEvar) - i;
+                  if (maxparams >= 1) {
+                    if (DCEvars[i+1] == 5) {
+                      params = 2;
+                      if (params <= maxparams) {
+                        attributes &= ~COLOR_FG;
+                        attributes |= (long)((DCEvars[i+2]) + 1) << COLOR_FG_SHIFT;
+                      }
+                    } else if (DCEvars[i+1] == 2) {
+                      params = 4;
+                      if (params <= maxparams) {
+                        attributes &= ~COLOR_FG;
+                        int newcolor = Math.min(Math.max(DCEvars[i+2], 0), 255) << COLOR_RED_SHIFT |
+                                       Math.min(Math.max(DCEvars[i+3], 0), 255) << COLOR_GREEN_SHIFT |
+                                       Math.min(Math.max(DCEvars[i+4], 0), 255) << COLOR_BLUE_SHIFT;
+                        attributes |= (long)(newcolor + 257) << COLOR_FG_SHIFT;
+                      }
+                    }
                   }
+                  if (lastcolon > i)
+                    i = lastcolon;
+                  else
+                    i += params;
                   break;
                 case 39:
                   attributes &= ~COLOR_FG;
@@ -2995,18 +3018,29 @@ public void setScreenSize(int c, int r, boolean broadcast) {
                   attributes |= (long)((DCEvars[i] - 40) + 1) << COLOR_BG_SHIFT;
                   break;
                 case 48:
-                  if (DCEvars[i+1] == 5) {
-                    attributes &= ~COLOR_BG;
-                    attributes |= (long)(DCEvars[i + 2] + 1) << COLOR_BG_SHIFT;
-                    i += 2;
-                  } else if (DCEvars[i+1] == 2) {
-                    attributes &= ~COLOR_BG;
-                    int newcolor = DCEvars[i + 2] << COLOR_RED_SHIFT |
-                                   DCEvars[i + 3] << COLOR_GREEN_SHIFT |
-                                   DCEvars[i + 4] << COLOR_BLUE_SHIFT;
-                    attributes |= (long)(newcolor + 257) << COLOR_BG_SHIFT;
-                    i += 4;
+                  maxparams = (lastcolon > i) ? lastcolon - i: DCEvar - i;
+                  if (maxparams >= 1) {
+                    if (DCEvars[i+1] == 5) {
+                      params = 2;
+                      if (params <= maxparams) {
+                        attributes &= ~COLOR_BG;
+                        attributes |= (long)((DCEvars[i+2]) + 1) << COLOR_BG_SHIFT;
+                      }
+                    } else if (DCEvars[i+1] == 2) {
+                      params = 4;
+                      if (params <= maxparams) {
+                        attributes &= ~COLOR_BG;
+                        int newcolor = Math.min(Math.max(DCEvars[i+2], 0), 255) << COLOR_RED_SHIFT |
+                                       Math.min(Math.max(DCEvars[i+3], 0), 255) << COLOR_GREEN_SHIFT |
+                                       Math.min(Math.max(DCEvars[i+4], 0), 255) << COLOR_BLUE_SHIFT;
+                        attributes |= (long)(newcolor + 257) << COLOR_BG_SHIFT;
+                      }
+                    }
                   }
+                  if (lastcolon > i)
+                    i = lastcolon;
+                  else
+                    i += params;
                   break;
                 case 49:
                   attributes &= ~COLOR_BG;
