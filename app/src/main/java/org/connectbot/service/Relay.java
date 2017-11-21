@@ -78,8 +78,8 @@ public class Relay implements Runnable {
 		newCd.onUnmappableCharacter(CodingErrorAction.REPLACE);
 		newCd.onMalformedInput(CodingErrorAction.REPLACE);
 
-		currentCharset = charset;
 		synchronized (this) {
+		    currentCharset = charset;
 			decoder = newCd;
 		}
 	}
