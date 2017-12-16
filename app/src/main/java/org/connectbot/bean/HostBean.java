@@ -21,6 +21,7 @@ import org.connectbot.transport.Local;
 import org.connectbot.transport.SSH;
 import org.connectbot.transport.Telnet;
 import org.connectbot.transport.TransportFactory;
+import org.connectbot.util.FontManager;
 import org.connectbot.util.HostDatabase;
 
 import android.annotation.SuppressLint;
@@ -56,7 +57,7 @@ public class HostBean extends AbstractBean {
 	private String encoding = HostDatabase.ENCODING_DEFAULT;
 	private boolean stayConnected = false;
 	private boolean quickDisconnect = false;
-	private String font = null;
+	private String font = FontManager.SYSTEM_FONT;
 
 	public HostBean() {
 
@@ -235,6 +236,7 @@ public class HostBean extends AbstractBean {
 		values.put(HostDatabase.FIELD_HOST_WANTSESSION, Boolean.toString(wantSession));
 		values.put(HostDatabase.FIELD_HOST_DELKEY, delKey);
 		values.put(HostDatabase.FIELD_HOST_FONTSIZE, fontSize);
+		values.put(HostDatabase.FIELD_HOST_FONT, font);
 		values.put(HostDatabase.FIELD_HOST_COMPRESSION, Boolean.toString(compression));
 		values.put(HostDatabase.FIELD_HOST_ENCODING, encoding);
 		values.put(HostDatabase.FIELD_HOST_STAYCONNECTED, Boolean.toString(stayConnected));
@@ -259,6 +261,7 @@ public class HostBean extends AbstractBean {
 		host.setWantSession(Boolean.valueOf(values.getAsString(HostDatabase.FIELD_HOST_WANTSESSION)));
 		host.setDelKey(values.getAsString(HostDatabase.FIELD_HOST_DELKEY));
 		host.setFontSize(values.getAsInteger(HostDatabase.FIELD_HOST_FONTSIZE));
+		host.setFont(values.getAsString(HostDatabase.FIELD_HOST_FONT));
 		host.setCompression(Boolean.valueOf(values.getAsString(HostDatabase.FIELD_HOST_COMPRESSION)));
 		host.setEncoding(values.getAsString(HostDatabase.FIELD_HOST_ENCODING));
 		host.setStayConnected(values.getAsBoolean(HostDatabase.FIELD_HOST_STAYCONNECTED));

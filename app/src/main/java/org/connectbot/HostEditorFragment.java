@@ -43,6 +43,7 @@ import android.support.v7.widget.PopupMenu;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -302,8 +303,12 @@ public class HostEditorFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				PopupMenu menu = new PopupMenu(getActivity(), v);
-				for (String fontName : FontManager.getAvaliableFonts(getContext())) {
-					menu.getMenu().add(applyFontToText(fontName));
+				for (String fontName : FontManager.getAvailableFonts()) {
+					String resolvedFontName = FontManager.isSystemFont(fontName)
+							? getResources().getString(R.string.system_font_name)
+							: fontName;
+
+					menu.getMenu().add(applyFontToText(resolvedFontName));
 				}
 
 
@@ -311,10 +316,8 @@ public class HostEditorFragment extends Fragment {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
 						String selectedFontName = item.getTitle().toString();
-						Typeface selectedFont = FontManager.loadFont(getContext(), selectedFontName);
+						applyHostTypeface(selectedFontName);
 						mHost.setFont(selectedFontName);
-						mFontText.setTypeface(selectedFont);
-						mFontText.setText(selectedFontName);
 						return true;
 					}
 				});
@@ -322,6 +325,9 @@ public class HostEditorFragment extends Fragment {
 			}
 		});
 		mFontText = (TextView) view.findViewById(R.id.font_text);
+		if (!TextUtils.isEmpty(mHost.getFont())) {
+			applyHostTypeface(mHost.getFont());
+		}
 
 		mFontSizeText = (EditText) view.findViewById(R.id.font_size_text);
 		mFontSizeText.setText(Integer.toString(mHost.getFontSize()));
@@ -521,6 +527,12 @@ public class HostEditorFragment extends Fragment {
 		spannableStringBuilder.setSpan(new CustomTypefaceSpan(typeface), 0,
 				fontName.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
 		return spannableStringBuilder;
+	}
+
+	private void applyHostTypeface(String selectedFontName) {
+		Typeface selectedFont = FontManager.loadFont(getContext(), selectedFontName);
+		mFontText.setTypeface(selectedFont);
+		mFontText.setText(selectedFontName);
 	}
 
 	/**

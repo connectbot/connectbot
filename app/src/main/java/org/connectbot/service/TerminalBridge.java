@@ -31,6 +31,7 @@ import org.connectbot.bean.PortForwardBean;
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.transport.AbsTransport;
 import org.connectbot.transport.TransportFactory;
+import org.connectbot.util.FontManager;
 import org.connectbot.util.HostDatabase;
 
 import android.content.Context;
@@ -40,7 +41,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.FontMetrics;
-import android.graphics.Typeface;
 import android.text.ClipboardManager;
 import android.util.Log;
 import de.mud.terminal.VDUBuffer;
@@ -60,7 +60,6 @@ import de.mud.terminal.vt320;
 @SuppressWarnings("deprecation") // for ClipboardManager
 public class TerminalBridge implements VDUDisplay {
 	public final static String TAG = "CB.TerminalBridge";
-	public static final String FONT_PATH = "fonts/Hack-Regular.ttf";
 
 	private final static int DEFAULT_FONT_SIZE_DP = 10;
 	private final static int FONT_SIZE_STEP = 2;
@@ -178,6 +177,7 @@ public class TerminalBridge implements VDUDisplay {
 		// create our default paint
 		defaultPaint = new Paint();
 		defaultPaint.setAntiAlias(true);
+		defaultPaint.setTypeface(FontManager.loadFont(manager.getBaseContext(), host.getFont()));
 		defaultPaint.setFakeBoldText(true); // more readable?
 
 		localOutput = new LinkedList<String>();
@@ -598,7 +598,6 @@ public class TerminalBridge implements VDUDisplay {
 			return;
 
 		ClipboardManager clipboard = (ClipboardManager) parent.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-//		defaultPaint.setTypeface(Typeface.createFromAsset(parent.getContext().getAssets(), FONT_PATH));
 		keyListener.setClipboardManager(clipboard);
 
 		if (!forcedSize) {

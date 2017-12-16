@@ -53,7 +53,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	public final static String TAG = "CB.HostDatabase";
 
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 25;
+	public final static int DB_VERSION = 26;
 
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -70,6 +70,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	public final static String FIELD_HOST_WANTSESSION = "wantsession";
 	public final static String FIELD_HOST_DELKEY = "delkey";
 	public final static String FIELD_HOST_FONTSIZE = "fontsize";
+	public final static String FIELD_HOST_FONT = "font";
 	public final static String FIELD_HOST_COMPRESSION = "compression";
 	public final static String FIELD_HOST_ENCODING = "encoding";
 	public final static String FIELD_HOST_STAYCONNECTED = "stayconnected";
@@ -99,6 +100,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 
 	public final static int DEFAULT_FG_COLOR = 7;
 	public final static int DEFAULT_BG_COLOR = 0;
+
+	public final static String DEFAULT_FONT = FontManager.SYSTEM_FONT;
 
 	public final static String COLOR_RED = "red";
 	public final static String COLOR_GREEN = "green";
@@ -139,6 +142,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 			+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ", "
 			+ FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "', "
 			+ FIELD_HOST_FONTSIZE + " INTEGER, "
+			+ FIELD_HOST_FONT + " TEXT DEFAULT '" + DEFAULT_FONT + "', "
 			+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "', "
 			+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
 			+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "', "
@@ -382,6 +386,10 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 					+ " FROM " + TABLE_HOSTS);
 			db.execSQL("DROP TABLE " + TABLE_HOSTS);
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS + "_upgrade RENAME TO " + TABLE_HOSTS);
+
+		case 25:
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_FONT + " TEXT DEFAULT '" + DEFAULT_FONT + "'");
 		}
 	}
 
@@ -484,6 +492,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 			COL_WANTSESSION = c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION),
 			COL_DELKEY = c.getColumnIndexOrThrow(FIELD_HOST_DELKEY),
 			COL_FONTSIZE = c.getColumnIndexOrThrow(FIELD_HOST_FONTSIZE),
+			COL_FONT = c.getColumnIndexOrThrow(FIELD_HOST_FONT),
 			COL_COMPRESSION = c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION),
 			COL_ENCODING = c.getColumnIndexOrThrow(FIELD_HOST_ENCODING),
 			COL_STAYCONNECTED = c.getColumnIndexOrThrow(FIELD_HOST_STAYCONNECTED),
@@ -507,6 +516,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 			host.setWantSession(Boolean.valueOf(c.getString(COL_WANTSESSION)));
 			host.setDelKey(c.getString(COL_DELKEY));
 			host.setFontSize(c.getInt(COL_FONTSIZE));
+			host.setFont(c.getString(COL_FONT));
 			host.setCompression(Boolean.valueOf(c.getString(COL_COMPRESSION)));
 			host.setEncoding(c.getString(COL_ENCODING));
 			host.setStayConnected(Boolean.valueOf(c.getString(COL_STAYCONNECTED)));

@@ -26,23 +26,22 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import org.connectbot.R;
-
 import android.content.Context;
 import android.graphics.Typeface;
 
 public class FontManager {
 	private static String FONT_DIRECTORY = "fonts";
-	private static Set<String> FONTS = new HashSet<>(Arrays.asList("Hack"));
+	public static String SYSTEM_FONT = "System";
+	private static Set<String> FONTS = new HashSet<>(Arrays.asList( "Hack"));
 
 	public static Typeface loadFont(Context context, String fontName) {
-		if (!getAvaliableFonts(context).contains(fontName)) {
+		if (!FONTS.contains(fontName) && !isSystemFont(fontName)) {
 			throw new IllegalArgumentException(String.format(Locale.getDefault(),
 					"%s font not found in FontManager", fontName));
 		}
 
-		if (fontName.equals(getSystemFontName(context))) {
-			return Typeface.DEFAULT;
+		if (isSystemFont(fontName)) {
+			return Typeface.MONOSPACE;
 		}
 
 		try {
@@ -61,13 +60,13 @@ public class FontManager {
 		}
 	}
 
-	public static List<String> getAvaliableFonts(Context context) {
-		List<String> customFonts = new ArrayList<>(FONTS);
-		customFonts.add(0, getSystemFontName(context));
-		return customFonts;
+	public static boolean isSystemFont(String fontName) {
+		return SYSTEM_FONT.equals(fontName);
 	}
 
-	private static String getSystemFontName(Context context) {
-		return context.getResources().getString(R.string.system_font_name);
+	public static List<String> getAvailableFonts() {
+		ArrayList<String> availableFonts = new ArrayList<>(FONTS);
+		availableFonts.add(0, SYSTEM_FONT);
+		return availableFonts;
 	}
 }
