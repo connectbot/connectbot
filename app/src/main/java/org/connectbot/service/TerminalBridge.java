@@ -60,6 +60,7 @@ import de.mud.terminal.vt320;
 @SuppressWarnings("deprecation") // for ClipboardManager
 public class TerminalBridge implements VDUDisplay {
 	public final static String TAG = "CB.TerminalBridge";
+	public static final String FONT_PATH = "fonts/Hack-Regular.ttf";
 
 	private final static int DEFAULT_FONT_SIZE_DP = 10;
 	private final static int FONT_SIZE_STEP = 2;
@@ -177,7 +178,6 @@ public class TerminalBridge implements VDUDisplay {
 		// create our default paint
 		defaultPaint = new Paint();
 		defaultPaint.setAntiAlias(true);
-		defaultPaint.setTypeface(Typeface.MONOSPACE);
 		defaultPaint.setFakeBoldText(true); // more readable?
 
 		localOutput = new LinkedList<String>();
@@ -598,6 +598,7 @@ public class TerminalBridge implements VDUDisplay {
 			return;
 
 		ClipboardManager clipboard = (ClipboardManager) parent.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+//		defaultPaint.setTypeface(Typeface.createFromAsset(parent.getContext().getAssets(), FONT_PATH));
 		keyListener.setClipboardManager(clipboard);
 
 		if (!forcedSize) {

@@ -21,9 +21,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.connectbot.bean.HostBean;
+import org.connectbot.transport.SSH;
+import org.connectbot.transport.Telnet;
+import org.connectbot.transport.TransportFactory;
+import org.connectbot.util.CustomTypefaceSpan;
+import org.connectbot.util.HostDatabase;
+import org.connectbot.views.CheckableMenuItem;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -31,6 +40,8 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.PopupMenu;
 import android.text.Editable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -41,13 +52,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import org.connectbot.bean.HostBean;
-import org.connectbot.transport.SSH;
-import org.connectbot.transport.Telnet;
-import org.connectbot.transport.TransportFactory;
-import org.connectbot.util.HostDatabase;
-import org.connectbot.views.CheckableMenuItem;
 
 public class HostEditorFragment extends Fragment {
 
@@ -62,6 +66,7 @@ public class HostEditorFragment extends Fragment {
 	// must be changed in the SeekBar's XML.
 	private static final int MINIMUM_FONT_SIZE = 8;
 	private static final int MAXIMUM_FONT_SIZE = 40;
+	public static final String FONT_PATH = "fonts/Hack-Regular.ttf";
 
 	// The host being edited.
 	private HostBean mHost;
@@ -114,6 +119,7 @@ public class HostEditorFragment extends Fragment {
 	private TextView mColorText;
 	private EditText mFontSizeText;
 	private SeekBar mFontSizeSeekBar;
+	private View mFontItem;
 	private View mPubkeyItem;
 	private TextView mPubkeyText;
 	private View mDelKeyItem;
@@ -289,6 +295,38 @@ public class HostEditorFragment extends Fragment {
 				break;
 			}
 		}
+
+		mFontItem = view.findViewById(R.id.font_item);
+		mFontItem.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PopupMenu menu = new PopupMenu(getActivity(), v);
+				menu.getMenu().add("Системный");
+
+				Typeface customTypeface = Typeface.createFromAsset(getContext().getAssets(), FONT_PATH);
+				String fontName = "Hack";
+				SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(fontName);
+				spannableStringBuilder.setSpan(new CustomTypefaceSpan(customTypeface), 0,
+						fontName.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+				menu.getMenu().add(spannableStringBuilder);
+
+				menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+//						for (int i = 0; i < mColorNames.length(); i++) {
+//							if (item.getTitle().toString().equals(mColorNames.getText(i).toString())) {
+//								mHost.setColor(mColorValues.getText(i).toString());
+//								mColorText.setText(mColorNames.getText(i));
+//								return true;
+//							}
+//						}
+//						return false;
+						return true;
+					}
+				});
+				menu.show();
+			}
+		});
 
 		mFontSizeText = (EditText) view.findViewById(R.id.font_size_text);
 		mFontSizeText.setText(Integer.toString(mHost.getFontSize()));

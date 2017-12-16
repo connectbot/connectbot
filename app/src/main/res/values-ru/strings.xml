@@ -119,6 +119,7 @@
   <string name="list_pubkeyids_none">Не использовать ключи</string>
   <string name="list_pubkeyids_any">Использовать любую свободную клавишу</string>
   <string name="hostpref_nickname_title">Псевдоним</string>
+  <string name="hostpref_font_title">Шрифт</string>
   <string name="hostpref_color_title">Цвет для категории</string>
   <string name="hostpref_fontsize_title">Размер шрифта</string>
   <string name="hostpref_pubkeyid_title">Использовать аутентификацию по открытому ключу</string>

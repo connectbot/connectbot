@@ -336,6 +336,9 @@
 	<!-- Host's default font size when opening the terminal in points (pt) -->
 	<string name="hostpref_fontsize_title">"Font size (pt)"</string>
 
+	<!-- Host font category preference title -->
+	<string name="hostpref_font_title">"Font category"</string>
+
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">"Use pubkey authentication"</string>
 
