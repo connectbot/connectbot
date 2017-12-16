@@ -56,6 +56,7 @@ public class HostBean extends AbstractBean {
 	private String encoding = HostDatabase.ENCODING_DEFAULT;
 	private boolean stayConnected = false;
 	private boolean quickDisconnect = false;
+	private String font = null;
 
 	public HostBean() {
 
@@ -196,6 +197,14 @@ public class HostBean extends AbstractBean {
 
 	public boolean getQuickDisconnect() {
 		return quickDisconnect;
+	}
+
+	public void setFont(String font) {
+		this.font = font;
+	}
+
+	public String getFont() {
+		return font;
 	}
 
 	@SuppressLint("DefaultLocale")
@@ -366,5 +375,4 @@ public class HostBean extends AbstractBean {
 		// Fail gracefully.
 		return "";
 	}
-
 }

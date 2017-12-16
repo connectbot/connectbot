@@ -339,6 +339,9 @@
 	<!-- Host font category preference title -->
 	<string name="hostpref_font_title">"Font category"</string>
 
+	<!-- Host font category preference title -->
+	<string name="system_font_name">"System"</string>
+
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">"Use pubkey authentication"</string>
 
