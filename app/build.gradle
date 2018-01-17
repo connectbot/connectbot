@@ -1,12 +1,13 @@
 buildscript {
     repositories {
+        google()
         jcenter()
     }
 
     dependencies {
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.6.3'
-        classpath 'com.android.tools.build:gradle:2.3.0'
-        classpath 'com.github.gfx.ribbonizer:plugin:0.5.0'
+        classpath 'com.android.tools.build:gradle:3.1.0-alpha08'
+        classpath 'com.github.gfx.ribbonizer:plugin:0.6.0'
         classpath 'com.trickyandroid:jacoco-everywhere:0.2.1'
         if (rootProject.hasProperty('jacocoVersion')) {
             classpath "org.jacoco:org.jacoco.core:${rootProject.jacocoVersion}"
@@ -19,7 +20,7 @@ plugins {
 }
 
 ext {
-    supportLibraryVersion = '25.3.0'
+    supportLibraryVersion = '27.0.2'
     testRunnerVersion = '0.5'
     espressoVersion = '2.2.2'
 }
@@ -33,6 +34,8 @@ apply from: '../config/quality.gradle'
 apply from: '../config/translations.gradle'
 
 repositories {
+    google()
+    jcenter()
     maven {
         url 'https://oss.jfrog.org/artifactory/oss-snapshot-local/'
     }
@@ -44,8 +47,8 @@ def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 coveralls.jacocoReportPath = 'build/reports/coverage/google/debug/report.xml'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     dexOptions {
         // Skip pre-dexing when running on a CI or when disabled via -Dpre-dex=false
@@ -57,8 +60,8 @@ android {
         versionName "1.9.2"
         versionCode 19200
 
-        minSdkVersion 9
-        targetSdkVersion 23
+        minSdkVersion 14
+        targetSdkVersion 27
 
         vectorDrawables.useSupportLibrary = true
 
@@ -164,9 +167,9 @@ android {
 
 // Dependencies must be below the android block to allow productFlavor specific deps.
 dependencies {
-    compile 'org.connectbot:sshlib:2.2.5-SNAPSHOT'
-    googleCompile 'com.google.android.gms:play-services-base:10.0.1'
-    ossCompile 'org.conscrypt:conscrypt-android:1.0.0.RC2'
+    compile 'org.connectbot:sshlib:2.2.5'
+    googleCompile 'com.google.android.gms:play-services-base:11.8.0'
+    ossCompile 'org.conscrypt:conscrypt-android:1.0.0.RC14'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
@@ -196,7 +199,7 @@ android.applicationVariants.all { variant ->
         ext.env = System.getenv()
         def buildNumber = getGitDescription()
         if (buildNumber != null) {
-            File valuesFile = file("${buildDir}/intermediates/res/merged/${variant.dirName}/values/values.xml")
+            File valuesFile = file("${buildDir}/intermediates/incremental/${variant.mergeResources.name}/merged.dir/values/values.xml")
             String content = valuesFile.getText('UTF-8')
             content = content.replaceAll(/\(working copy\)/, buildNumber)
             valuesFile.write(content, 'UTF-8')

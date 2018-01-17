@@ -29,7 +29,13 @@
 
 	<uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
 
-	<supports-screens />
+	<supports-screens
+		android:anyDensity="true"
+		android:largeScreens="true"
+		android:normalScreens="true"
+		android:resizeable="true"
+		android:smallScreens="true"
+		android:xlargeScreens="true" />
 
 	<application
 		android:allowBackup="true"
@@ -41,10 +47,15 @@
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme">
 
+		<meta-data
+			android:name="android.max_aspect"
+			android:value="2.1" />
+
 		<activity
 			android:name=".HostListActivity"
 			android:label="@string/app_name"
-			android:launchMode="singleTop">
+			android:launchMode="singleTop"
+			android:resizeableActivity="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				<category android:name="android.intent.category.LAUNCHER"/>
