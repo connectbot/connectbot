@@ -209,7 +209,7 @@
 	<!-- Title of the preference used to enable or disable the back-up of pubkeys. -->
 	<string name="pref_backupkeys_title">Backup pubkeys</string>
 	<!-- Summary for the preference used to enable or disable the back-up of pubkeys. -->
-	<string name="pref_backupkeys_summary">Keep back-ups of the private keys using Android\'s backup mechanism</string>
+	<string name="pref_backupkeys_summary">Keep back-ups of the public keys using Android\'s backup mechanism</string>
 
 	<!-- The category title for user interface preferences -->
 	<string name="pref_ui_category">"User interface"</string>
