@@ -64,7 +64,7 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         ndk {
-            abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'mips'
+            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
         }
 
         testApplicationId "org.connectbot.tests"
