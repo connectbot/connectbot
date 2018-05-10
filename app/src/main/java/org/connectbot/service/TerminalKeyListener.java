@@ -24,6 +24,7 @@ import org.connectbot.util.PreferenceConstants;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.util.Log;
@@ -85,6 +86,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 	private String keymode = null;
 	private final boolean deviceHasHardKeyboard;
+	private final boolean deviceHasFullKeyboard;
 	private boolean shiftedNumbersAreFKeysOnHardKeyboard;
 	private boolean controlNumbersAreFKeysOnSoftKeyboard;
 	private boolean volumeKeysChangeFontSize;
@@ -121,6 +123,10 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		deviceHasHardKeyboard = (manager.res.getConfiguration().keyboard
 				== Configuration.KEYBOARD_QWERTY);
 
+		String product = new Build().PRODUCT;
+		deviceHasFullKeyboard = "TOSHIBA_AC_AND_AZ".equals(product) ||
+		    "WW_epad".equals(product);
+
 		updatePrefs();
 	}
 
@@ -142,8 +148,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					PreferenceConstants.KEYMODE_LEFT.equals(keymode);
 			final boolean shiftedNumbersAreFKeys = shiftedNumbersAreFKeysOnHardKeyboard &&
 					interpretAsHardKeyboard;
-			final boolean controlNumbersAreFKeys = controlNumbersAreFKeysOnSoftKeyboard &&
-					!interpretAsHardKeyboard;
+			final boolean controlNumbersAreFKeys = (controlNumbersAreFKeysOnSoftKeyboard &&
+					!interpretAsHardKeyboard) || deviceHasFullKeyboard;
 
 			// Ignore all key-up events except for the special keys
 			if (event.getAction() == KeyEvent.ACTION_UP) {
@@ -199,7 +205,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			}
 
 			/// Handle alt and shift keys if they aren't repeating
-			if (event.getRepeatCount() == 0) {
+			if (!deviceHasFullKeyboard && event.getRepeatCount() == 0) {
 				if (rightModifiersAreSlashAndTab) {
 					switch (keyCode) {
 					case KeyEvent.KEYCODE_ALT_RIGHT:
@@ -294,7 +300,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				if (sendFunctionKey(keyCode))
 					return true;
 			}
-			if (controlNumbersAreFKeys && (derivedMetaState & HC_META_CTRL_ON) != 0) {
+			if (controlNumbersAreFKeys && (derivedMetaState & (deviceHasFullKeyboard? HC_META_CTRL_LEFT_ON : HC_META_CTRL_ON)) != 0) {
 				if (sendFunctionKey(keyCode))
 					return true;
 			}
@@ -501,8 +507,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		// Support CTRL-A through CTRL-_
 		else if (key >= 0x40 && key <= 0x5F)
 			key -= 0x40;
-		// CTRL-space sends NULL
-		else if (key == 0x20)
+		// CTRL-space and CTRL-@ sends NULL
+		else if (key == 0x20 || key == 0x40)
 			key = 0x00;
 		// CTRL-? sends DEL
 		else if (key == 0x3F)
