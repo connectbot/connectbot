@@ -774,7 +774,7 @@ public class TerminalBridge implements VDUDisplay {
 					}
 
 					// Save the current clip region
-					canvas.save(Canvas.CLIP_SAVE_FLAG);
+					canvas.save(Canvas.ALL_SAVE_FLAG);
 
 					// clear this dirty area with background color
 					defaultPaint.setColor(bg);
