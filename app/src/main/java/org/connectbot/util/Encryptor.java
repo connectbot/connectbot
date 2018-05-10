@@ -17,7 +17,7 @@
 
 package org.connectbot.util;
 
-/**
+/*
  * This class is from:
  *
  * Encryptor.java
