@@ -29,6 +29,7 @@ import org.connectbot.util.PreferenceConstants;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -36,6 +37,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
 /**
@@ -48,6 +50,9 @@ public abstract class ConnectionNotifier {
 	private static final int ACTIVITY_NOTIFICATION = 2;
 	private static final int ONLINE_DISCONNECT_NOTIFICATION = 3;
 
+	private String id = "my_connectbot_channel";
+	NotificationChannel nc;
+
 	public static ConnectionNotifier getInstance() {
 		if (PreferenceConstants.PRE_ECLAIR)
 			return PreEclair.Holder.sInstance;
@@ -59,17 +64,23 @@ public abstract class ConnectionNotifier {
 		return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
-	protected NotificationCompat.Builder newNotificationBuilder(Context context) {
+	protected NotificationCompat.Builder newNotificationBuilder(Context context, String id) {
 		NotificationCompat.Builder builder =
-				new NotificationCompat.Builder(context)
+				new NotificationCompat.Builder(context, id)
 				.setSmallIcon(R.drawable.notification_icon)
 				.setWhen(System.currentTimeMillis());
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			nc = new NotificationChannel(id, context.getString(R.string.app_name),
+					NotificationManager.IMPORTANCE_DEFAULT);
+			getNotificationManager(context).createNotificationChannel(nc);
+		}
 
 		return builder;
 	}
 
 	protected Notification newActivityNotification(Context context, HostBean host) {
-		NotificationCompat.Builder builder = newNotificationBuilder(context);
+		NotificationCompat.Builder builder = newNotificationBuilder(context, id);
 
 		Resources res = context.getResources();
 
@@ -105,7 +116,7 @@ public abstract class ConnectionNotifier {
 	}
 
 	protected Notification newRunningNotification(Context context) {
-		NotificationCompat.Builder builder = newNotificationBuilder(context);
+		NotificationCompat.Builder builder = newNotificationBuilder(context, id);
 
 		builder.setOngoing(true);
 		builder.setWhen(0);

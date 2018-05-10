@@ -20,3 +20,4 @@ build/
 
 # Android gradle native build
 \.externalNativeBuild/
+.idea/
