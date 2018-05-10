@@ -71,12 +71,17 @@ public abstract class ConnectionNotifier {
 				.setWhen(System.currentTimeMillis());
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			nc = new NotificationChannel(id, context.getString(R.string.app_name),
-					NotificationManager.IMPORTANCE_DEFAULT);
-			getNotificationManager(context).createNotificationChannel(nc);
+			createNotificationChannel(context, id);
 		}
 
 		return builder;
+	}
+
+	@TargetApi(Build.VERSION_CODES.O)
+	private void createNotificationChannel(Context context, String id) {
+		nc = new NotificationChannel(id, context.getString(R.string.app_name),
+				NotificationManager.IMPORTANCE_DEFAULT);
+		getNotificationManager(context).createNotificationChannel(nc);
 	}
 
 	protected Notification newActivityNotification(Context context, HostBean host) {
