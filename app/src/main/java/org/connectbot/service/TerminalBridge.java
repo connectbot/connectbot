@@ -43,6 +43,7 @@ import android.graphics.Paint.FontMetrics;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.text.ClipboardManager;
 import android.util.Log;
 import de.mud.terminal.VDUBuffer;
@@ -65,7 +66,8 @@ public class TerminalBridge implements VDUDisplay {
 
 	private final static int DEFAULT_FONT_SIZE_DP = 10;
 	private final static int FONT_SIZE_STEP = 2;
-	private final float displayDensity;
+	private float displayDensity;
+	private float systemFontScale;
 
 	public int[] color;
 
@@ -171,8 +173,6 @@ public class TerminalBridge implements VDUDisplay {
 		emulation = manager.getEmulation();
 		scrollback = manager.getScrollback();
 
-		this.displayDensity = manager.getResources().getDisplayMetrics().density;
-
 		// create prompt helper to relay password and hostkey requests up to gui
 		promptHelper = new PromptHelper(this);
 
@@ -181,6 +181,8 @@ public class TerminalBridge implements VDUDisplay {
 		defaultPaint.setAntiAlias(true);
 		defaultPaint.setTypeface(Typeface.MONOSPACE);
 		defaultPaint.setFakeBoldText(true); // more readable?
+
+		refreshOverlayFontSize();
 
 		localOutput = new LinkedList<String>();
 
@@ -522,7 +524,7 @@ public class TerminalBridge implements VDUDisplay {
 			return;
 		}
 
-		final int fontSizePx = (int) (sizeDp * this.displayDensity + 0.5f);
+		final int fontSizePx = (int) (sizeDp * displayDensity *	systemFontScale + 0.5f);
 
 		defaultPaint.setTextSize(fontSizePx);
 		fontSizeDp = sizeDp;
@@ -612,6 +614,7 @@ public class TerminalBridge implements VDUDisplay {
 
 			columns = newColumns;
 			rows = newRows;
+			refreshOverlayFontSize();
 		}
 
 		// reallocate new bitmap if needed
@@ -867,7 +870,7 @@ public class TerminalBridge implements VDUDisplay {
 
 	private int fontSizeCompare(float sizeDp, int cols, int rows, int width, int height) {
 		// read new metrics to get exact pixel dimensions
-		defaultPaint.setTextSize((int) (sizeDp * this.displayDensity + 0.5f));
+		defaultPaint.setTextSize((int) (sizeDp * displayDensity * systemFontScale + 0.5f));
 		FontMetrics fm = defaultPaint.getFontMetrics();
 
 		float[] widths = new float[1];
@@ -885,6 +888,18 @@ public class TerminalBridge implements VDUDisplay {
 			return 0;
 
 		return -1;
+	}
+
+	void refreshOverlayFontSize() {
+		float newDensity = manager.getResources().getDisplayMetrics().density;
+		float newFontScale = Settings.System.getFloat(manager.getContentResolver(),
+				Settings.System.FONT_SCALE, 1.0f);
+		if (newDensity != displayDensity || newFontScale != systemFontScale) {
+			displayDensity = newDensity;
+			systemFontScale = newFontScale;
+			defaultPaint.setTextSize((int) (fontSizeDp * displayDensity * systemFontScale + 0.5f));
+			setFontSize(fontSizeDp);
+		}
 	}
 
 	/**
