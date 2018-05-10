@@ -2,13 +2,14 @@ buildscript {
     repositories {
         google()
         jcenter()
+        google()
     }
 
     dependencies {
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.2'
-        classpath 'com.android.tools.build:gradle:3.1.0-alpha09'
-        classpath 'com.github.gfx.ribbonizer:plugin:1.0.0'
-        classpath 'com.trickyandroid:jacoco-everywhere:0.2.1'
+        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.github.gfx.ribbonizer:ribbonizer-plugin:2.1.0'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.3'
         if (rootProject.hasProperty('jacocoVersion')) {
             classpath "org.jacoco:org.jacoco.core:${rootProject.jacocoVersion}"
         }
@@ -29,7 +30,7 @@ apply plugin: 'info.vividcode.android.sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'com.github.gfx.ribbonizer'
-apply plugin: 'jacoco-everywhere'
+apply plugin: 'jacoco-android'
 apply from: '../config/quality.gradle'
 apply from: '../config/translations.gradle'
 
@@ -66,7 +67,7 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         ndk {
-            abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'mips'
+            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
         }
 
         testApplicationId "org.connectbot.tests"

@@ -41,6 +41,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Typeface;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.ClipboardManager;
 import android.util.Log;
 import de.mud.terminal.VDUBuffer;
@@ -496,16 +498,12 @@ public class TerminalBridge implements VDUDisplay {
 	private void triggerDisconnectListener() {
 		if (disconnectListener != null) {
 			// The disconnect listener should be run on the main thread if possible.
-			if (parent != null) {
-				parent.post(new Runnable() {
-					@Override
-					public void run() {
-						disconnectListener.onDisconnected(TerminalBridge.this);
-					}
-				});
-			} else {
-				disconnectListener.onDisconnected(TerminalBridge.this);
-			}
+			new Handler(Looper.getMainLooper()).post(new Runnable() {
+				@Override
+				public void run() {
+					disconnectListener.onDisconnected(TerminalBridge.this);
+				}
+			});
 		}
 	}
 
