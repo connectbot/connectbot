@@ -423,7 +423,7 @@ public class HostEditorFragment extends Fragment {
 		});
 
 		mUseSshConfirmationSwitch = (CheckableMenuItem) view.findViewById(R.id.ssh_auth_confirmation_item);
-		mUseSshAuthSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		mUseSshConfirmationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				processSshAuthChange();
