@@ -35,9 +35,11 @@ public abstract class EastAsianWidth {
 
 	/**
 	 * @param charArray
-	 * @param i
-	 * @param position
+	 * @param start
+	 * @param end
 	 * @param wideAttribute
+	 * @param paint
+	 * @param charWidth
 	 */
 	public abstract void measure(char[] charArray, int start, int end,
 			byte[] wideAttribute, Paint paint, int charWidth);

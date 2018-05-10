@@ -533,7 +533,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	}
 
 	/**
-	 * @param key
+	 * @param keyCode
 	 * @return successful
 	 */
 	private boolean sendFunctionKey(int keyCode) {

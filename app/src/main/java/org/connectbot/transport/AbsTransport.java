@@ -229,8 +229,7 @@ public abstract class AbsTransport {
 
 	/**
 	 * @param uri
-	 * @param selectionKeys
-	 * @param selectionValues
+	 * @param selection
 	 */
 	public abstract void getSelectionArgs(Uri uri, Map<String, String> selection);
 

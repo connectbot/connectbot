@@ -132,7 +132,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 	}
 
 	/**
-	 * @param mLockingWifi
+	 * @param lockingWifi
 	 */
 	public void setWantWifiLock(boolean lockingWifi) {
 		synchronized (mLock) {
