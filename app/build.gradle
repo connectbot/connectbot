@@ -22,8 +22,8 @@ plugins {
 
 ext {
     supportLibraryVersion = '27.0.2'
-    testRunnerVersion = '0.5'
-    espressoVersion = '2.2.2'
+    testRunnerVersion = '1.0.2'
+    espressoVersion = '3.0.2'
 }
 
 apply plugin: 'info.vividcode.android.sdk-manager'
@@ -71,6 +71,11 @@ android {
 
         testApplicationId "org.connectbot.tests"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        // The following argument makes the Android Test Orchestrator run its
+        // "pm clear" command after each test invocation. This command ensures
+        // that the app's state is completely cleared between tests.
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
     signingConfigs {
@@ -90,6 +95,8 @@ android {
         implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
         implementation "com.takisoft.fix:preference-v7:$supportLibraryVersion.0"
         implementation "com.android.support:design:$supportLibraryVersion"
+
+        androidTestUtil "com.android.support.test:orchestrator:$testRunnerVersion"
 
         androidTestImplementation("com.android.support.test:runner:$testRunnerVersion") {
             exclude module: "support-annotations"
@@ -149,6 +156,15 @@ android {
         google {
             dimension "license"
             versionNameSuffix ""
+        }
+    }
+
+    testOptions {
+        execution 'ANDROID_TEST_ORCHESTRATOR'
+        animationsDisabled true
+
+        unitTests {
+            includeAndroidResources = true
         }
     }
 
