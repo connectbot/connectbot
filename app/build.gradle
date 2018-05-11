@@ -173,7 +173,7 @@ android {
 dependencies {
     implementation 'org.connectbot:sshlib:2.2.5'
     googleImplementation 'com.google.android.gms:play-services-base:11.8.0'
-    ossImplementation 'org.conscrypt:conscrypt-android:1.0.0.RC14'
+    ossImplementation 'org.conscrypt:conscrypt-android:1.1.2'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.13.0'
