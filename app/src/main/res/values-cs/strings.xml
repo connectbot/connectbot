@@ -155,8 +155,8 @@
   <string name="bind_never">Nikdy nepřipojen</string>
   <plurals name="console_copy_done">
     <item quantity="one">Zkopírováno %1$d bajtů do schránky</item>
-    <item quantity="few">Zkopírováno %1$d bajtů do schránky</item>
-    <item quantity="many">Zkopírováno %1$d bajt do schránky</item>
+    <item quantity="few">Zkopírováno %1$d bajt do schránky</item>
+    <item quantity="many">Zkopírováno %1$d bajtů do schránky</item>
     <item quantity="other"/>
   </plurals>
   <string name="console_copy_start">Stiskněte a táhněte\nnebo použijte směrový ovladač\npro výběr oblasti ke zkopírování</string>

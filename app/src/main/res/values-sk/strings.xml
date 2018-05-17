@@ -111,8 +111,8 @@
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Nikdy nepripojený</string>
   <plurals name="console_copy_done">
-    <item quantity="one">%1$d bajty skopírovaných do schránky</item>
-    <item quantity="few">%1$d bajtov skopírovaných do schránky</item>
+    <item quantity="one">%1$d bajtov skopírovaných do schránky</item>
+    <item quantity="few">%1$d bajty skopírovaných do schránky</item>
     <item quantity="many">%1$d bajty skopírovaných do schránky</item>
     <item quantity="other"/>
   </plurals>

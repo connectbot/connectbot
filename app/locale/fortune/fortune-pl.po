@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-10-24 23:16+0000\n"
+"PO-Revision-Date: 2018-05-17 13:57+0000\n"
 "Last-Translator: 5th <fifth@launchpad.leemail.me>\n"
 "Language-Team: pl <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 "0)) && (!((n == 1)))) && (((n % 10) >= 0 && (n % 10) <= 1))) || (((0 == 0)) "
 "&& (((n % 10) >= 5 && (n % 10) <= 9)))) || (((0 == 0)) && (((n % 100) >= 12 "
 "&& (n % 100) <= 14)))) ? 2 : (((n == 1)) && ((0 == 0))) ? 0 : 3);\n"
-"X-Launchpad-Export-Date: 2018-05-17 03:41+0000\n"
+"X-Launchpad-Export-Date: 2018-05-17 14:00+0000\n"
 "X-Generator: Launchpad (build 18658)\n"
 "Language: pl\n"
 "Generated-By: Babel 2.3.4\n"
@@ -100,7 +100,7 @@ msgstr "Podpowiedzi"
 #. Header text for instructions about creating host shortcuts.
 msgctxt "host_shortcuts_header"
 msgid "Host Shortcuts"
-msgstr ""
+msgstr "Skróty hosta"
 
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
@@ -158,7 +158,7 @@ msgstr ""
 
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
-msgstr ""
+msgstr "Zmiana hosta"
 
 #. Instructions about switching to the next and previous host in the terminal.
 msgctxt "switching_hosts_content"
@@ -170,11 +170,11 @@ msgstr ""
 #. Captions for images showing the next/previous host gestures.
 msgctxt "next_host"
 msgid "Next host"
-msgstr ""
+msgstr "Następny host"
 
 msgctxt "prev_host"
 msgid "Previous host"
-msgstr ""
+msgstr "Poprzedni host"
 
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
@@ -523,7 +523,7 @@ msgstr "Rozmiar pamięci dla buforu przewijania dla każdej konsoli"
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr ""
+msgstr "Kopia zapasowa kluczy publicznych"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
@@ -549,7 +549,7 @@ msgstr "Sposób orientacji ekranu przy wysuniętej/wsuniętej klawiaturze"
 #. Name for the titlebar hide preference
 msgctxt "pref_titlebarhide_title"
 msgid "Autohide title bar"
-msgstr ""
+msgstr "Automatycznie chowaj pasek tytułowy"
 
 #. Summary for the titlebar hide preference
 msgctxt "pref_titlebarhide_summary"
@@ -559,7 +559,7 @@ msgstr ""
 #. Title for special keys always visible preference
 msgctxt "pref_alwaysvisible_title"
 msgid "Special keys always visible"
-msgstr ""
+msgstr "Specjalne klawisze zawsze widoczne"
 
 #. Name for the page up/down gesture preference
 msgctxt "pref_pg_updn_gesture_title"
@@ -609,7 +609,7 @@ msgstr ""
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
 msgid "Volume keys change font size"
-msgstr ""
+msgstr "Klawisz głośności zmienia wielkość czcionki"
 
 #. Summary for the volume keys control font size preference
 msgctxt "pref_volumefont_summary"
@@ -662,7 +662,7 @@ msgstr ""
 #. should be a sticky modifier.
 msgctxt "only_alt"
 msgid "Only alt"
-msgstr ""
+msgstr "Tylko Alt"
 
 #. Name for the camera shortcut usage preference
 msgctxt "pref_camera_title"
@@ -703,6 +703,8 @@ msgstr "Podskakujące strzałki"
 msgctxt "pref_bumpyarrows_summary"
 msgid "Vibrate when sending arrow keys; useful for laggy connections"
 msgstr ""
+"Wibruj przy wysyłaniu klawisza strzałki. Przydatne przy kiepskich "
+"połączeniach"
 
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
@@ -1099,11 +1101,11 @@ msgstr "Anuluj"
 
 msgctxt "disconnect_all_message"
 msgid "Are you sure you want to disconnect from all connected hosts?"
-msgstr ""
+msgstr "Czy jesteś pewien, że chcesz rozłączyć się ze wszystkimi hostami?"
 
 msgctxt "disconnect_all_pos"
 msgid "Yes, disconnect"
-msgstr ""
+msgstr "Tak, rozłącz"
 
 msgctxt "disconnect_all_neg"
 msgid "Cancel"
@@ -1154,7 +1156,7 @@ msgstr "Użyty algorytm: %1$s %2$s"
 #, c-format
 msgctxt "terminal_kex_algorithm"
 msgid "Key exchange algorithm: %s"
-msgstr ""
+msgstr "Algorytm wymiany kluczy: %s"
 
 msgctxt "terminal_auth"
 msgid "Trying to authenticate"
@@ -1370,17 +1372,17 @@ msgstr ""
 #. Text for the "End" button in virtual keyboard.
 msgctxt "button_key_end"
 msgid "End"
-msgstr ""
+msgstr "End"
 
 #. Text for the "Page Up" button in virtual keyboard.
 msgctxt "button_key_pgup"
 msgid "PgUp"
-msgstr ""
+msgstr "PgUp"
 
 #. Text for the "Page Down" button in virtual keyboard.
 msgctxt "button_key_pgdn"
 msgid "PgDn"
-msgstr ""
+msgstr "PgDn"
 
 #. Text for the "F1" button in virtual keyboard.
 msgctxt "button_key_f1"
@@ -1478,13 +1480,13 @@ msgstr "Dodaj nowy klucz publiczny"
 #. pubkey.
 msgctxt "pubkey_import_existing"
 msgid "Import existing pubkey"
-msgstr ""
+msgstr "Importuj istniejący klucz publiczny"
 
 #. Text for dialog which explains that the host URI is invalid and asks to
 #. discard.
 msgctxt "discard_host_changes_message"
 msgid "Host URI is invalid. Would you like to discard changes?"
-msgstr ""
+msgstr "Niepoprawne URI hosta. Czy chcesz odrzucić zmiany?"
 
 #. Text for button which discards changes to the host.
 msgctxt "discard_host_button"

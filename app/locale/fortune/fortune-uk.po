@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-09-30 10:25+0000\n"
+"PO-Revision-Date: 2018-05-17 13:56+0000\n"
 "Last-Translator: Dak  Dik <Unknown>\n"
 "Language-Team: uk <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 "0)) && (((n % 10) == 0))) || (((0 == 0)) && (((n % 10) >= 5 && (n % 10) <= "
 "9)))) || (((0 == 0)) && (((n % 100) >= 11 && (n % 100) <= 14)))) ? 2 : ((((0 "
 "== 0)) && (((n % 10) == 1))) && (!(((n % 100) == 11)))) ? 0 : 3);\n"
-"X-Launchpad-Export-Date: 2018-05-17 03:40+0000\n"
+"X-Launchpad-Export-Date: 2018-05-17 14:00+0000\n"
 "X-Generator: Launchpad (build 18658)\n"
 "Language: uk\n"
 "Generated-By: Babel 2.3.4\n"
@@ -84,12 +84,14 @@ msgstr "Генерувати"
 msgctxt "help_intro"
 msgid ""
 "Please select a topic below for more information on a particular subject."
-msgstr "Для додаткової інформації виберіть топік"
+msgstr ""
+"Будь ласка, виберіть тему нижче, щоб отримати більше інформації про певний "
+"суб'єкт."
 
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
 msgid "Terms & Conditions"
-msgstr ""
+msgstr "Загальні положення та умови"
 
 #. Title for the help page with the hints about the app.
 msgctxt "hints"
@@ -111,7 +113,7 @@ msgstr ""
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
 msgid "Scroll back / Scroll forward"
-msgstr ""
+msgstr "Прокручування назад/ Прокручування вперед"
 
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
@@ -123,16 +125,16 @@ msgstr ""
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
 msgid "Scrolling back"
-msgstr ""
+msgstr "Прокрутити назад"
 
 msgctxt "scrolling_forward"
 msgid "Scrolling forward"
-msgstr ""
+msgstr "Прокрутити вперед"
 
 #. Header text for instructions about paging up and down in the terminal.
 msgctxt "page_updn_header"
 msgid "Page Up / Page Down"
-msgstr ""
+msgstr "Сторінка вверх/ Сторінка вниз"
 
 #. Instructions about paging up and down in the terminal.
 msgctxt "page_updn_content"
@@ -147,7 +149,7 @@ msgstr ""
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
 msgid "Page up"
-msgstr ""
+msgstr "Сторінка вгору"
 
 msgctxt "page_down"
 msgid "Page down"
@@ -155,7 +157,7 @@ msgstr "Сторінка вниз"
 
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
-msgstr ""
+msgstr "Перемикання між хостами"
 
 #. Instructions about switching to the next and previous host in the terminal.
 msgctxt "switching_hosts_content"
@@ -167,43 +169,43 @@ msgstr ""
 #. Captions for images showing the next/previous host gestures.
 msgctxt "next_host"
 msgid "Next host"
-msgstr ""
+msgstr "Наступний хост"
 
 msgctxt "prev_host"
 msgid "Previous host"
-msgstr ""
+msgstr "Попередній хост"
 
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "Комбінації клавіш"
 
 #. Text in a keyboard shortcuts list lined up to keys which increase the
 #. terminal font-size.
 msgctxt "increase_font_size"
 msgid "Increase Font Size"
-msgstr ""
+msgstr "Збільшити розмір шрифту"
 
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
 msgid "Ctrl and +"
-msgstr ""
+msgstr "Ctrl +"
 
 #. Text in a keyboard shortcuts list lined up to keys which decrease the
 #. terminal font-size.
 msgctxt "decrease_font_size"
 msgid "Decrease Font Size"
-msgstr ""
+msgstr "Зменшити розмір шрифту"
 
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
 msgid "Ctrl and -"
-msgstr ""
+msgstr "Ctrl -"
 
 #. Keyboard shortcut for pasting into the terminal.
 msgctxt "paste_shortcut"
 msgid "Ctrl-Shift-V"
-msgstr ""
+msgstr "Ctrl-Shift-V"
 
 msgctxt "pubkey_generate"
 msgid "Generate"
@@ -211,7 +213,7 @@ msgstr "Генерувати"
 
 msgctxt "pubkey_delete"
 msgid "Delete key"
-msgstr "Вилучити ключ"
+msgstr "Видалити ключ"
 
 #. Dialog title when user must move finger randomly over an area to gather
 #. entropy (collect random bits)
@@ -229,18 +231,20 @@ msgid ""
 "In order to assure randomness during the key generation, move your finger "
 "randomly over the box below."
 msgstr ""
+"Щоб забезпечити випадковість під час генерації ключа, довільно переміщайте "
+"палець над полем що є нижче."
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
-msgstr ""
+msgstr "Створення пари ключів ..."
 
 msgctxt "pubkey_copy_private"
 msgid "Copy private key"
-msgstr ""
+msgstr "Скопіювати приватний ключ"
 
 msgctxt "pubkey_copy_public"
 msgid "Copy public key"
-msgstr ""
+msgstr "Скопіювати відкритий ключ"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
@@ -248,12 +252,12 @@ msgid ""
 "Tap \"Menu\" to create\n"
 "or import key pairs."
 msgstr ""
-"Tap Menu to create\n"
-"or import key pairs."
+"Натисніть \"Menu\" щоб створити\n"
+"чи імпортувати ключі (пару)."
 
 msgctxt "pubkey_unknown_format"
 msgid "Unknown format"
-msgstr ""
+msgstr "Невідомий формат"
 
 msgctxt "pubkey_change_password"
 msgid "Change password"
@@ -263,7 +267,7 @@ msgstr "Змінити пароль"
 #. where the user should pick the desired file from the SD card contents.
 msgctxt "pubkey_list_pick"
 msgid "Pick from /sdcard"
-msgstr "Завантажити з SD карти"
+msgstr "Взяти з SD карти"
 
 #. Message shown to the user when a selected pubkey to import was not
 #. parseable for some reason.
@@ -280,13 +284,13 @@ msgstr "Розблокувати ключ"
 #, c-format
 msgctxt "pubkey_failed_add"
 msgid "Bad password for key '%1$s'. Authentication failed."
-msgstr ""
+msgstr "Поагний пароль для ключа '%1$s'. Автентифікація не виконана."
 
 #. Context menu entry that allows a user to load a pubkey entry into memory.
 #. This is equivalent to "unlocking" a password-protected pubkey entry.
 msgctxt "pubkey_memory_load"
 msgid "Load into memory"
-msgstr ""
+msgstr "Завантажити в пам'ять"
 
 #. Context menu entry that allows a user to unload a pubkey entry from memory.
 #. This is equivalent to "locking" a password-protected pubkey entry.
@@ -298,7 +302,7 @@ msgstr ""
 #. to be loaded upon starting the app.
 msgctxt "pubkey_load_on_start"
 msgid "Load key on start"
-msgstr ""
+msgstr "Завантажувати ключ при старті"
 
 #. Pubkey preference asking user whether the key use should be confirmed via
 #. prompt before it can be used for authentication
@@ -331,12 +335,12 @@ msgstr ""
 
 msgctxt "prompt_nickname"
 msgid "Nickname:"
-msgstr ""
+msgstr "Нік:"
 
 #. An example string that could be used as a nickname for a pubkey.
 msgctxt "prompt_nickname_hint_pubkey"
 msgid "My work key"
-msgstr ""
+msgstr "Мій робочий ключ"
 
 #. The source TCP port for port forwards.
 msgctxt "prompt_source_port"
@@ -346,46 +350,46 @@ msgstr ""
 #. The "host:port" combination used for port forward destinations.
 msgctxt "prompt_destination"
 msgid "Destination:"
-msgstr ""
+msgstr "Призначення:"
 
 #. Prompt presented to the user when the server requests that they change
 #. their password. This is the entry for the old password.
 msgctxt "prompt_old_password"
 msgid "Old password:"
-msgstr ""
+msgstr "Старий пароль:"
 
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
 msgctxt "prompt_password"
 msgid "Password:"
-msgstr ""
+msgstr "Пароль"
 
 #. Added after a "Password:" prompt to indicate user needs to confirm entry.
 msgctxt "prompt_again"
 msgid "(again)"
-msgstr ""
+msgstr "(знову)"
 
 #. Label for the user to select port forward type.
 msgctxt "prompt_type"
 msgid "Type:"
-msgstr ""
+msgstr "Тип:"
 
 #. Hint given below the password input box that lets them know that they are
 #. allowed to leave the field blank.
 msgctxt "prompt_password_can_be_blank"
 msgid "Note: password can be blank"
-msgstr ""
+msgstr "Зауважте: пароль може бути порожнім"
 
 #. Prompt for the size of the private key in bits.
 msgctxt "prompt_bits"
 msgid "Bits:"
-msgstr ""
+msgstr "Біти:"
 
 #. Prompt for the password to unlock a certain pubkey.
 #, c-format
 msgctxt "prompt_pubkey_password"
 msgid "Password for key '%1$s'"
-msgstr ""
+msgstr "Пароль до ключа '%1$s'"
 
 #. Prompt for whether to allow SSH Authentication Agent to use the specified
 #. key. Note that the '\n' means split the line so it's actually "host to use
@@ -438,7 +442,7 @@ msgstr ""
 #, c-format
 msgctxt "host_authenticity_warning"
 msgid "The authenticity of host '%1$s' can't be established."
-msgstr ""
+msgstr "Аутентичність хоста '%1$s' неможливо встановити"
 
 #. First field is encryption algorithm. Second is the actual fingerprint in
 #. hex digits
@@ -457,7 +461,7 @@ msgstr "Неправильний пароль!"
 
 msgctxt "alert_key_corrupted_msg"
 msgid "Private key appears corrupt!"
-msgstr ""
+msgstr "Приватний ключ пошкоджено"
 
 msgctxt "alert_sdcard_absent"
 msgid "SD card is not inserted!"
@@ -547,6 +551,7 @@ msgstr "Автоматичне приховуваня головної  пане
 msgctxt "pref_titlebarhide_summary"
 msgid "Tap console to show title bar and access menu"
 msgstr ""
+"Натисніть на консоль, щоб відобразити панель заголовку та  меню доступу"
 
 #. Title for special keys always visible preference
 msgctxt "pref_alwaysvisible_title"
@@ -581,7 +586,7 @@ msgstr "Клавіатура"
 #. Name for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_title"
 msgid "Shift+num are F-keys"
-msgstr ""
+msgstr "Shift+num є  F-keys"
 
 #. Summary for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_summary"
@@ -591,7 +596,7 @@ msgstr ""
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
 msgid "Ctrl+num are F-keys"
-msgstr ""
+msgstr "Ctrl+num є F-keys"
 
 #. Summary for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_summary"
@@ -601,12 +606,12 @@ msgstr ""
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
 msgid "Volume keys change font size"
-msgstr ""
+msgstr "Кнопки Гучності змінюють розмір букв"
 
 #. Summary for the volume keys control font size preference
 msgctxt "pref_volumefont_summary"
 msgid "Font size can also be changed in per-host settings"
-msgstr ""
+msgstr "Розмір букв також можна змінити на налаштуваннях хоту"
 
 #. Name for the memorize keys preference
 msgctxt "pref_memkeys_title"
@@ -624,7 +629,7 @@ msgstr ""
 #. background.
 msgctxt "pref_conn_persist_title"
 msgid "Persist connections"
-msgstr ""
+msgstr "Постійні  з'єднання"
 
 #. Summary for the preference that forces the service to stay running in the
 #. background.
@@ -681,7 +686,7 @@ msgstr ""
 #. Name for the Wi-Fi lock preference
 msgctxt "pref_wifilock_title"
 msgid "Keep Wi-Fi active"
-msgstr ""
+msgstr "Тримати Wi-Fi активним"
 
 #. Summary for the Wi-Fi lock preference
 msgctxt "pref_wifilock_summary"
@@ -701,7 +706,7 @@ msgstr ""
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
 msgid "Terminal bell"
-msgstr ""
+msgstr "Звуки терміналу"
 
 #. Checkbox preference title for the audible terminal bell feature
 msgctxt "pref_bell_title"

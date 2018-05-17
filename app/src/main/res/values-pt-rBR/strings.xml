@@ -21,6 +21,7 @@
   <string name="scrolling_back">Rolando para trás</string>
   <string name="scrolling_forward">Rolando para frente</string>
   <string name="page_updn_header">Page Up / Page Down</string>
+  <string name="page_updn_content">NOTA: Isso deve estar ativado nas configurações.\n\nPassando seu dedo para cima e para baixo na terceira parte da esquerda da tela irá enviar um comandos de page up e page down para o hospedeiro remoto. Muitos programas mapeiam isso como rolagem traseira no histórico, tais como irssi ou tinyfugue.</string>
   <string name="page_up">Página para cima</string>
   <string name="page_down">Página para baixo</string>
   <string name="switching_hosts_header">Trocando de hospedeiro</string>

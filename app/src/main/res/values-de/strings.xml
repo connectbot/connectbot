@@ -14,6 +14,7 @@
   <string name="help_intro">Für mehr Informationen wählen Sie eine Überschrift!</string>
   <string name="terms_and_conditions">Nutzungsbedingungen</string>
   <string name="hints">Tipps</string>
+  <string name="host_shortcuts_header">Host-Verknüpfungen</string>
   <string name="host_shortcuts_content">Drücke lange auf dein Android Desktop um Verknüpfungen zu häufig genutzten SSH Verbindungen zu erstellen.</string>
   <string name="scroll_hints_header">Zurück / vorwärts scrollen</string>
   <string name="scroll_hints_content">Ziehe deinen Finger auf der rechten Bildseite hoch und runter um im Konsolenverlauf zu scrollen.</string>
@@ -86,6 +87,8 @@
   <string name="pref_emulation_summary">Terminalemulationsmodus für PTY Verbindungen</string>
   <string name="pref_scrollback_title">Bildlaufpuffergröße</string>
   <string name="pref_scrollback_summary">Größe des Bildlaufpuffers, der für jede Konsole im Speicher gehalten wird</string>
+  <string name="pref_backupkeys_title">Sicherung Öffentliche Schlüssel</string>
+  <string name="pref_backupkeys_summary">Bewahren Sie Backups der privaten Schlüssel mit dem Backup-Mechanismus von Android auf</string>
   <string name="pref_ui_category">Benutzungsschnittstelle</string>
   <string name="pref_rotation_title">Rotationsmodus</string>
   <string name="pref_rotation_summary">Wie soll die Rotation beim Ein-/Ausklappen der Tastatur verändert werden</string>
@@ -109,6 +112,8 @@
   <string name="pref_conn_persist_summary">Erhalte Verbindungen auch im Hintergrund</string>
   <string name="pref_keymode_title">Verzeichniskürzel</string>
   <string name="pref_keymode_summary">Einstellen, wie Alt für \'/\' und Hochstellen für \'Tab\' verwendet werden sollen</string>
+  <string name="pref_stickymodifiers_title">Sticky Modifikatoren</string>
+  <string name="pref_stickymodifiers_summary">Modifizierungs-Tasten bleiben aktiviert, bis eine andere Taste gedrückt wird</string>
   <string name="only_alt">Nur Alt</string>
   <string name="pref_camera_title">Kamerakürzel</string>
   <string name="pref_camera_summary">Welches Kürzel soll durch Drücken des Kamerauslösers aktiviert werden</string>
@@ -236,6 +241,7 @@
   <string name="image_description_toggle_control_character">Steuerzeichen umschalten</string>
   <string name="image_description_send_escape_character">Escape-Zeichen senden.</string>
   <string name="image_description_send_tab_character">Sende TAB Zeichen.</string>
+  <string name="image_description_hide_keyboard">Tastatur verbergen</string>
   <string name="image_description_show_keyboard">Tastatur anzeigen.</string>
   <string name="image_description_up">Pfeil nach oben</string>
   <string name="image_description_down">Pfeil nach unten</string>
@@ -244,6 +250,7 @@
   <string name="image_description_volume">Lautstärke</string>
   <string name="button_key_esc">Esc</string>
   <string name="button_key_ctrl">Strg</string>
+  <string name="button_key_home">Start</string>
   <string name="button_key_end">Ende</string>
   <string name="button_key_pgup">Bild auf</string>
   <string name="button_key_pgdn">Bild ab</string>

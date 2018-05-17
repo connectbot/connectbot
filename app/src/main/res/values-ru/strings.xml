@@ -140,9 +140,9 @@
   <string name="hostpref_port_title">Порт</string>
   <string name="bind_never">Не подключен</string>
   <plurals name="console_copy_done">
-    <item quantity="one">Скопировано %1$d байтов в буфер обмена</item>
-    <item quantity="few">Скопировано %1$d байт в буфер обмена</item>
-    <item quantity="many">Скопировано %1$d байта в буфер обмена</item>
+    <item quantity="one">Скопировано %1$d байт в буфер обмена</item>
+    <item quantity="few">Скопировано %1$d байта в буфер обмена</item>
+    <item quantity="many">Скопировано %1$d байтов в буфер обмена</item>
     <item quantity="other"/>
   </plurals>
   <string name="console_copy_start">Для выделения области на экране используйте Touch and Drag или Directional Pad</string>
