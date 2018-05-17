@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2011-02-23 18:38+0000\n"
-"Last-Translator: Kenny Root <Unknown>\n"
+"PO-Revision-Date: 2017-09-30 10:25+0000\n"
+"Last-Translator: Dak  Dik <Unknown>\n"
 "Language-Team: uk <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -19,8 +19,8 @@ msgstr ""
 "0)) && (((n % 10) == 0))) || (((0 == 0)) && (((n % 10) >= 5 && (n % 10) <= "
 "9)))) || (((0 == 0)) && (((n % 100) >= 11 && (n % 100) <= 14)))) ? 2 : ((((0 "
 "== 0)) && (((n % 10) == 1))) && (!(((n % 100) == 11)))) ? 0 : 3);\n"
-"X-Launchpad-Export-Date: 2017-03-08 08:44+0000\n"
-"X-Generator: Launchpad (build 18330)\n"
+"X-Launchpad-Export-Date: 2018-05-17 03:40+0000\n"
+"X-Generator: Launchpad (build 18658)\n"
 "Language: uk\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -74,12 +74,12 @@ msgstr ""
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr ""
+msgstr "Налаштування"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
 msgid "Generate"
-msgstr ""
+msgstr "Генерувати"
 
 msgctxt "help_intro"
 msgid ""
@@ -151,7 +151,7 @@ msgstr ""
 
 msgctxt "page_down"
 msgid "Page down"
-msgstr ""
+msgstr "Сторінка вниз"
 
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
@@ -402,7 +402,7 @@ msgstr ""
 #. user as possible.
 msgctxt "host_verification_failure_warning_header"
 msgid "WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!"
-msgstr ""
+msgstr "УВАГА: ІДИНТИФІКАТОР ВІДДАЛЕНОГО ХОСТУ ЗМІНИВСЯ!"
 
 #. The body of the warning a user gets when the host key has changed. Note
 #. that this can be a very serious attack, so we try to be as "loud" to the
@@ -420,6 +420,8 @@ msgid ""
 "Host has disconnected.\n"
 "Close session?"
 msgstr ""
+"Хост відключений.\n"
+"Закрити сеанс?"
 
 #. Prompt user must answer yes or no to when the remote host fails
 #. verification of encryption fingerprint
@@ -428,6 +430,8 @@ msgid ""
 "Are you sure you want\n"
 "to continue connecting?"
 msgstr ""
+"Ви впевнені, що бажаєте\n"
+"продовжити підключення?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
 #. match the local database
@@ -445,11 +449,11 @@ msgstr ""
 
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
-msgstr ""
+msgstr "Паролі не співпадають!"
 
 msgctxt "alert_wrong_password_msg"
 msgid "Wrong password!"
-msgstr ""
+msgstr "Неправильний пароль!"
 
 msgctxt "alert_key_corrupted_msg"
 msgid "Private key appears corrupt!"
@@ -457,42 +461,44 @@ msgstr ""
 
 msgctxt "alert_sdcard_absent"
 msgid "SD card is not inserted!"
-msgstr ""
+msgstr "SD картка не вставлена!"
 
 #. Change an existing item's (e.g., host or pubkey) details.
 msgctxt "button_change"
 msgid "Change"
-msgstr ""
+msgstr "Змінити"
 
 #. Button that resizes the screen to the user-specified dimensions.
 msgctxt "button_resize"
 msgid "Resize"
-msgstr ""
+msgstr "Зміна розміру"
 
 msgctxt "alert_disconnect_msg"
 msgid "Connection Lost"
-msgstr ""
+msgstr "З'єднання втрачено"
 
 msgctxt "msg_copyright"
 msgid ""
 "Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
 "http://jsharkey.org/"
 msgstr ""
+"Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
+"http://jsharkey.org/"
 
 #. The category title for terminal emulation preferences.
 msgctxt "pref_emulation_category"
 msgid "Terminal emulation"
-msgstr ""
+msgstr "Емуляція терміналу"
 
 #. Name for the emulation terminal type preference.
 msgctxt "pref_emulation_title"
 msgid "Emulation mode"
-msgstr ""
+msgstr "Режим емуляції"
 
 #. Description of the emulation terminal type preference.
 msgctxt "pref_emulation_summary"
 msgid "Terminal emulation mode to use for PTY connections"
-msgstr ""
+msgstr "Режим емуляції терміналу, який використовуватиме для з'єднання PTY"
 
 #. Name for the scrollback size preference
 msgctxt "pref_scrollback_title"
@@ -507,33 +513,35 @@ msgstr ""
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr ""
+msgstr "Резервна копія відкритих ключів"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
 msgstr ""
+"Зберігайте резервні копії приватних ключів за допомогою резервного механізму "
+"Android"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
 msgid "User interface"
-msgstr ""
+msgstr "Користувацький інтерфейс"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
 msgid "Rotation mode"
-msgstr ""
+msgstr "Режим обертання"
 
 #. Summary for the rotation mode preference
 msgctxt "pref_rotation_summary"
 msgid "How to change rotation when keyboard popped in/out"
-msgstr ""
+msgstr "Як змінювати обертання якщо клавітура  появляється/приховується"
 
 #. Name for the titlebar hide preference
 msgctxt "pref_titlebarhide_title"
 msgid "Autohide title bar"
-msgstr ""
+msgstr "Автоматичне приховуваня головної  панелі"
 
 #. Summary for the titlebar hide preference
 msgctxt "pref_titlebarhide_summary"
@@ -543,12 +551,12 @@ msgstr ""
 #. Title for special keys always visible preference
 msgctxt "pref_alwaysvisible_title"
 msgid "Special keys always visible"
-msgstr ""
+msgstr "Особливі клавіші завжди показувати"
 
 #. Name for the page up/down gesture preference
 msgctxt "pref_pg_updn_gesture_title"
 msgid "Page up/down gesture"
-msgstr ""
+msgstr "Жест, сторінка вверх/вниз"
 
 #. Summary for the full screen preference
 msgctxt "pref_pg_updn_gesture_summary"
@@ -558,17 +566,17 @@ msgstr ""
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
 msgid "Full screen"
-msgstr ""
+msgstr "На весь екран"
 
 #. Summary for the full screen preference
 msgctxt "pref_fullscreen_summary"
 msgid "Hide status bar while in console"
-msgstr ""
+msgstr "Приховати панель стану поки в режимі консолі"
 
 #. The category title for keyboard preferences
 msgctxt "pref_keyboard_category"
 msgid "Keyboard"
-msgstr ""
+msgstr "Клавіатура"
 
 #. Name for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_title"
@@ -609,6 +617,8 @@ msgstr ""
 msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
 msgstr ""
+"Утримувати розблоковані ключі в пам'яті, поки не буде завершено "
+"обслуговування бекенду"
 
 #. Name for the preference that forces the service to stay running in the
 #. background.

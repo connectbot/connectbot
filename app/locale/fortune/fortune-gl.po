@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-02-28 23:02+0000\n"
-"Last-Translator: Kenny Root <Unknown>\n"
+"PO-Revision-Date: 2017-08-24 14:24+0000\n"
+"Last-Translator: Hadrián Candela <Unknown>\n"
 "Language-Team: gl <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2017-03-08 08:44+0000\n"
-"X-Generator: Launchpad (build 18330)\n"
+"X-Launchpad-Export-Date: 2018-05-17 03:40+0000\n"
+"X-Generator: Launchpad (build 18658)\n"
 "Language: gl\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -30,7 +30,7 @@ msgstr "Cliente SSH simple, potente e open-source"
 #. running apps list
 msgctxt "service_desc"
 msgid "Maintains SSH connections and loaded pubkeys"
-msgstr ""
+msgstr "Mantén as conexións SSH e as chaves cargadas"
 
 #. Window title for the Host List
 msgctxt "title_hosts_list"
@@ -65,17 +65,17 @@ msgstr "Cores"
 #. Dialog title for color picker dialog
 msgctxt "title_color_picker"
 msgid "Pick a color"
-msgstr ""
+msgstr "Escolle a cor"
 
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr ""
+msgstr "Axustes"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
 msgid "Generate"
-msgstr ""
+msgstr "Xerar"
 
 msgctxt "help_intro"
 msgid ""
@@ -87,17 +87,17 @@ msgstr ""
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
 msgid "Terms & Conditions"
-msgstr ""
+msgstr "Términos e Condicións"
 
 #. Title for the help page with the hints about the app.
 msgctxt "hints"
 msgid "Hints"
-msgstr ""
+msgstr "Consellos"
 
 #. Header text for instructions about creating host shortcuts.
 msgctxt "host_shortcuts_header"
 msgid "Host Shortcuts"
-msgstr ""
+msgstr "Atallos do servidor"
 
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
@@ -105,11 +105,13 @@ msgid ""
 "Long-press on your Android desktop to create direct shortcuts to frequently-"
 "used SSH hosts."
 msgstr ""
+"Pulsación longa no teu Escritorio Android para crear enlaces directos a "
+"servidores SSH de uso habitual."
 
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
 msgid "Scroll back / Scroll forward"
-msgstr ""
+msgstr "Desprazar atrás / Desprazar adiante"
 
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
@@ -117,20 +119,22 @@ msgid ""
 "Swiping your finger up on the right side of the screen allows you to scroll "
 "backward and forward in the local terminal buffer history."
 msgstr ""
+"Deslizando o teu dedo no lado dereito da pantalla permítelle desprazarse "
+"cara atrás e adiante na historia do buffer do terminal local."
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
 msgid "Scrolling back"
-msgstr ""
+msgstr "Desprazamento atrás"
 
 msgctxt "scrolling_forward"
 msgid "Scrolling forward"
-msgstr ""
+msgstr "Desprazamento adiante"
 
 #. Header text for instructions about paging up and down in the terminal.
 msgctxt "page_updn_header"
 msgid "Page Up / Page Down"
-msgstr ""
+msgstr "Re Páx / Av Páx"
 
 #. Instructions about paging up and down in the terminal.
 msgctxt "page_updn_content"
@@ -141,19 +145,24 @@ msgid ""
 "page up and page down key to the remote host. Many programs map this to "
 "scrolling back into history such as irssi or tinyfugue."
 msgstr ""
+"NOTA: Isto debe ser habilitado nos axustes.\n"
+"\n"
+"Swiping your finger up and down on the left third of the screen will send a "
+"page up and page down key to the remote host. Many programs map this to "
+"scrolling back into history such as irssi or tinyfugue."
 
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
 msgid "Page up"
-msgstr ""
+msgstr "Re Páx"
 
 msgctxt "page_down"
 msgid "Page down"
-msgstr ""
+msgstr "Av Páx"
 
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
-msgstr ""
+msgstr "Trocando servidores"
 
 #. Instructions about switching to the next and previous host in the terminal.
 msgctxt "switching_hosts_content"
@@ -161,47 +170,49 @@ msgid ""
 "Swiping your finger from one side of the screen to the other will switch "
 "between currently connected hosts."
 msgstr ""
+"Deslizando o teu dedo de un lado a outro da pantalla trocará entre os "
+"servidores actualmente conectados."
 
 #. Captions for images showing the next/previous host gestures.
 msgctxt "next_host"
 msgid "Next host"
-msgstr ""
+msgstr "Seguinte servidor"
 
 msgctxt "prev_host"
 msgid "Previous host"
-msgstr ""
+msgstr "Anterior servidor"
 
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "Atallos de teclado"
 
 #. Text in a keyboard shortcuts list lined up to keys which increase the
 #. terminal font-size.
 msgctxt "increase_font_size"
 msgid "Increase Font Size"
-msgstr ""
+msgstr "Aumentar tamaño de fonte"
 
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
 msgid "Ctrl and +"
-msgstr ""
+msgstr "Ctrl e +"
 
 #. Text in a keyboard shortcuts list lined up to keys which decrease the
 #. terminal font-size.
 msgctxt "decrease_font_size"
 msgid "Decrease Font Size"
-msgstr ""
+msgstr "Diminuir tamaño de fonte"
 
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
 msgid "Ctrl and -"
-msgstr ""
+msgstr "Ctrl e -"
 
 #. Keyboard shortcut for pasting into the terminal.
 msgctxt "paste_shortcut"
 msgid "Ctrl-Shift-V"
-msgstr ""
+msgstr "Ctrl-Shift-V"
 
 msgctxt "pubkey_generate"
 msgid "Generate"
@@ -280,7 +291,7 @@ msgstr "Desbloquear chave"
 #, c-format
 msgctxt "pubkey_failed_add"
 msgid "Bad password for key '%1$s'. Authentication failed."
-msgstr ""
+msgstr "Contrasinal inválido para chave '%1$s'. Erro na autenticación."
 
 #. Context menu entry that allows a user to load a pubkey entry into memory.
 #. This is equivalent to "unlocking" a password-protected pubkey entry.
@@ -379,13 +390,13 @@ msgstr "Nota: o contrasinal pode quedar baleiro"
 #. Prompt for the size of the private key in bits.
 msgctxt "prompt_bits"
 msgid "Bits:"
-msgstr ""
+msgstr "Bits:"
 
 #. Prompt for the password to unlock a certain pubkey.
 #, c-format
 msgctxt "prompt_pubkey_password"
 msgid "Password for key '%1$s'"
-msgstr ""
+msgstr "Contrasinal para a chave '%1$s'"
 
 #. Prompt for whether to allow SSH Authentication Agent to use the specified
 #. key. Note that the '\n' means split the line so it's actually "host to use
@@ -396,6 +407,8 @@ msgid ""
 "Allow remote host to\n"
 "use key '%1$s'?"
 msgstr ""
+"Permitir que o servidor remoto\n"
+"use a chave %1$s?"
 
 #. The header of the warning a user gets when the host key has changed. Note
 #. that this can be a very serious attack, so we try to be as "loud" to the
@@ -442,14 +455,14 @@ msgstr ""
 #, c-format
 msgctxt "host_authenticity_warning"
 msgid "The authenticity of host '%1$s' can't be established."
-msgstr ""
+msgstr "A autenticidade do servidor '%1$s' non pode ser establecida"
 
 #. First field is encryption algorithm. Second is the actual fingerprint in
 #. hex digits
 #, c-format
 msgctxt "host_fingerprint"
 msgid "Host %1$s key fingerprint is %2$s"
-msgstr ""
+msgstr "O servidor %1$s ten a pegada dixital %2$s"
 
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
@@ -517,13 +530,14 @@ msgstr "Tamaño de búfer que quedará en memoria para cada consola"
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr ""
+msgstr "Respaldo de chaves públicas"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
 msgstr ""
+"Respaldar as chaves privadas utilizando o mecanismo de respaldo de Android"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -543,27 +557,29 @@ msgstr "Como cambiar a rotación ao abrir/pechar o teclado"
 #. Name for the titlebar hide preference
 msgctxt "pref_titlebarhide_title"
 msgid "Autohide title bar"
-msgstr ""
+msgstr "Agochar automaticamente a barra de título"
 
 #. Summary for the titlebar hide preference
 msgctxt "pref_titlebarhide_summary"
 msgid "Tap console to show title bar and access menu"
-msgstr ""
+msgstr "Prema consola para mostrar a barra de título e o menú de aceso"
 
 #. Title for special keys always visible preference
 msgctxt "pref_alwaysvisible_title"
 msgid "Special keys always visible"
-msgstr ""
+msgstr "Teclas especiais sempre visibeis"
 
 #. Name for the page up/down gesture preference
 msgctxt "pref_pg_updn_gesture_title"
 msgid "Page up/down gesture"
-msgstr ""
+msgstr "Xesto de Re/Av Páx"
 
 #. Summary for the full screen preference
 msgctxt "pref_pg_updn_gesture_summary"
 msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
 msgstr ""
+"Pase sobre o tercio esquerdo da pantalla para enviar comandos de Re/Av Páx  "
+"no terminal"
 
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
@@ -578,37 +594,38 @@ msgstr "Esconder a barra de estado cando estea na consola"
 #. The category title for keyboard preferences
 msgctxt "pref_keyboard_category"
 msgid "Keyboard"
-msgstr ""
+msgstr "Teclado"
 
 #. Name for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_title"
 msgid "Shift+num are F-keys"
-msgstr ""
+msgstr "Ctrl+num son teclas-Fn"
 
 #. Summary for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_summary"
 msgid "On hardware keyboards, number keys send F1-F10 with shift"
-msgstr ""
+msgstr "En teclados físicos, as teclas numéricas envían F1-F10 con Shift"
 
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
 msgid "Ctrl+num are F-keys"
-msgstr ""
+msgstr "Ctrl+num son teclas-F"
 
 #. Summary for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_summary"
 msgid "On software keyboards, number keys send F1-F10 with ctrl"
-msgstr ""
+msgstr "En teclados virtuais, as teclas numéricas envían F1-F10 con Crtl"
 
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
 msgid "Volume keys change font size"
-msgstr ""
+msgstr "As teclas de volume cambian o tamaño da fonte"
 
 #. Summary for the volume keys control font size preference
 msgctxt "pref_volumefont_summary"
 msgid "Font size can also be changed in per-host settings"
 msgstr ""
+"O tamaño da fonte tamén pode cambiarse nas configuracións do servidor"
 
 #. Name for the memorize keys preference
 msgctxt "pref_memkeys_title"
@@ -642,23 +659,24 @@ msgstr "Atallos de teclado para directorios"
 #. Summary for the keyboard shortcuts preference
 msgctxt "pref_keymode_summary"
 msgid "Select how to use Alt for '/' and Shift for Tab"
-msgstr ""
+msgstr "Seleccione para usar Alt para '/' e Shift para Tab"
 
 #. Name for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_title"
 msgid "Sticky modifiers"
-msgstr ""
+msgstr "Modificadores aderidos"
 
 #. Summary for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_summary"
 msgid "Modifier keys remain enabled until another key is pressed"
 msgstr ""
+"Teclas modificadoras se manteñen habilitadas ata que se presiona outra tecla"
 
 #. Sticky modifier preference value description for when only the Alt key
 #. should be a sticky modifier.
 msgctxt "only_alt"
 msgid "Only alt"
-msgstr ""
+msgstr "Só Alt"
 
 #. Name for the camera shortcut usage preference
 msgctxt "pref_camera_title"
@@ -668,7 +686,7 @@ msgstr "Atallo de teclado para a cámara"
 #. Summary for the camera shortcut usage preference
 msgctxt "pref_camera_summary"
 msgid "Select which shortcut to trigger when the camera button is pushed"
-msgstr ""
+msgstr "Seleccione que atallo executar cando se prema o botón da cámara"
 
 #. Name for the keep screen on preference
 msgctxt "pref_keepalive_title"
@@ -698,7 +716,7 @@ msgstr ""
 #. Summary for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_summary"
 msgid "Vibrate when sending arrow keys; useful for laggy connections"
-msgstr ""
+msgstr "Vibrar ao enviar as teclas de frecha; útil para conexións lentas"
 
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
@@ -731,19 +749,19 @@ msgstr "Notificacións en segundo plano"
 msgctxt "pref_bell_notification_summary"
 msgid ""
 "Send notification when a terminal running in the background sounds a bell."
-msgstr ""
+msgstr "Enviar notificación cando un terminal en segundo plano emite son"
 
 #. Preference selection to indicate use of right side of keyboard for special
 #. shortcuts.
 msgctxt "list_keymode_right"
 msgid "Use right-side keys"
-msgstr ""
+msgstr "Usar atallos especiais da direita"
 
 #. Preference selection to indicate use of left side of keyboard for special
 #. shortcuts.
 msgctxt "list_keymode_left"
 msgid "Use left-side keys"
-msgstr ""
+msgstr "Usar atallos especiais da esquerda"
 
 #. Preference selection to indicate never to use special shortcut keys.
 msgctxt "list_keymode_none"
@@ -763,12 +781,12 @@ msgstr "Usar calquera chave desbloqueada"
 #. Host nickname field preference title
 msgctxt "hostpref_nickname_title"
 msgid "Nickname"
-msgstr ""
+msgstr "Alcume"
 
 #. Host color category preference title
 msgctxt "hostpref_color_title"
 msgid "Color category"
-msgstr ""
+msgstr "Cor da categoría"
 
 #. Host's default font size when opening the terminal in points (pt)
 msgctxt "hostpref_fontsize_title"
@@ -778,18 +796,18 @@ msgstr "Tamaño da fonte (pt)"
 #. Host pubkey usage preference title
 msgctxt "hostpref_pubkeyid_title"
 msgid "Use pubkey authentication"
-msgstr ""
+msgstr "Usar autenticación de chave pública"
 
 #. Preference title for the SSH Authentication Agent Forwarding for a host
 #. connection
 msgctxt "hostpref_authagent_title"
 msgid "Use SSH auth agent"
-msgstr ""
+msgstr "Usar axente de autenticación SSH"
 
 #. Host post-login automation preference title
 msgctxt "hostpref_postlogin_title"
 msgid "Post-login automation"
-msgstr ""
+msgstr "Automatización post-acceso"
 
 #. Host post-login automation preference summary
 msgctxt "hostpref_postlogin_summary"
@@ -815,33 +833,33 @@ msgstr "Comezar sesión de shell"
 #. connection or not
 msgctxt "hostpref_wantsession_summary"
 msgid "Disable this preference to only use port forwards"
-msgstr ""
+msgstr "Deshabilite esta preferencia para usar só redirección de portos"
 
 #. Setting for whether the host should be reconnected to automatically upon
 #. disconnect
 msgctxt "hostpref_stayconnected_title"
 msgid "Stay connected"
-msgstr ""
+msgstr "Manter conectado"
 
 #. Summary for preference asking whether the host should be reconnected to
 #. when it disconnects
 msgctxt "hostpref_stayconnected_summary"
 msgid "Try to reconnect to host if disconnected"
-msgstr ""
+msgstr "Tentar reconectar ao servidor se é desconectado"
 
 #. Setting for whether we should prompt to close after getting disconnected
 msgctxt "hostpref_quickdisconnect_title"
 msgid "Close on disconnect"
-msgstr ""
+msgstr "Fechar ao desconectar"
 
 msgctxt "hostpref_quickdisconnect_summary"
 msgid "Close immediately after remote disconnect without prompting."
-msgstr ""
+msgstr "Fechar inmediatamente en desconexión remota sen preguntar."
 
 #. Setting for what key code is sent to the server when DEL key is pressed.
 msgctxt "hostpref_delkey_title"
 msgid "DEL Key"
-msgstr ""
+msgstr "Tecla Supr"
 
 #. Host character encoding preference title
 msgctxt "hostpref_encoding_title"
@@ -922,18 +940,18 @@ msgstr "Escanear URLs"
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"
 msgid "Yes"
-msgstr ""
+msgstr "Si"
 
 #. Button label to answer "No" to a yes/no prompt
 msgctxt "button_no"
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #. Selection for a "local" port forward. E.g., connections to a port listening
 #. locally is forwarded to the remote end's listening port.
 msgctxt "portforward_local"
 msgid "Local"
-msgstr ""
+msgstr "Local"
 
 #. Selection for a "remote" port forward. E.g., connections to a port
 #. listening remotely is forwarded to the local end's listening port.
@@ -946,198 +964,200 @@ msgstr "Remoto"
 #. remote host and port.
 msgctxt "portforward_dynamic"
 msgid "Dynamic (SOCKS)"
-msgstr ""
+msgstr "Dinámica (SOCKS)"
 
 #. Button that commits the port forward to be made from the Port Forward
 #. Creation dialog.
 msgctxt "portforward_pos"
 msgid "Create port forward"
-msgstr ""
+msgstr "Crear redirección de porto"
 
 msgctxt "portforward_problem"
 msgid ""
 "Problem creating port forward, maybe you're using ports under 1024 or port "
 "is already used?"
 msgstr ""
+"Problema na creación da redirección de portos, está usando portos menores "
+"que 1024 ou o porto xa estaba en uso?"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
 msgid "username"
-msgstr ""
+msgstr "usuario"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_hostname"
 msgid "hostname"
-msgstr ""
+msgstr "nome do servidor"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_port"
 msgid "port"
-msgstr ""
+msgstr "porto"
 
 msgctxt "list_menu_pubkeys"
 msgid "Manage Pubkeys"
-msgstr ""
+msgstr "Xerir chaves públicas"
 
 #. Selection choice to sort hosts by color.
 msgctxt "list_menu_sortcolor"
 msgid "Sort by color"
-msgstr ""
+msgstr "Ordenar por cor"
 
 #. Selection choice to sort hosts by nickname.
 msgctxt "list_menu_sortname"
 msgid "Sort by name"
-msgstr ""
+msgstr "Ordenar por nome"
 
 msgctxt "list_menu_disconnect"
 msgid "Disconnect All"
-msgstr ""
+msgstr "Desconectar todo"
 
 msgctxt "list_menu_settings"
 msgid "Settings"
-msgstr ""
+msgstr "Axustes"
 
 msgctxt "list_host_disconnect"
 msgid "Disconnect"
-msgstr ""
+msgstr "Desconectar"
 
 msgctxt "list_host_edit"
 msgid "Edit host"
-msgstr ""
+msgstr "Editar servidor"
 
 msgctxt "list_host_portforwards"
 msgid "Edit port forwards"
-msgstr ""
+msgstr "Editar redireccións de porto"
 
 msgctxt "list_host_delete"
 msgid "Delete host"
-msgstr ""
+msgstr "Borrar servidor"
 
 #. Note that the '\n' splits the lines so it's actually "quick-connect box
 #. below to connect"
 msgctxt "list_host_empty"
 msgid "No hosts created yet."
-msgstr ""
+msgstr "Todavía non se crearon servidores"
 
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
 msgid "Default"
-msgstr ""
+msgstr "Por defecto"
 
 msgctxt "list_rotation_land"
 msgid "Force landscape"
-msgstr ""
+msgstr "Forzar horizontal"
 
 msgctxt "list_rotation_port"
 msgid "Force portrait"
-msgstr ""
+msgstr "Forzar vertical"
 
 #. Selection to indicate the rotation should be selected automatically based
 #. on the tilt sensor.
 msgctxt "list_rotation_auto"
 msgid "Automatic"
-msgstr ""
+msgstr "Automática"
 
 #. Selection to indicate pressing the Camera button should send "Ctrl+A then
 #. Space".
 msgctxt "list_camera_ctrlaspace"
 msgid "Ctrl+A then Space"
-msgstr ""
+msgstr "Ctrl+A e despois espacio"
 
 #. Selection to indicate pressing the Camera button should send "Ctrl+A".
 msgctxt "list_camera_ctrla"
 msgid "Ctrl+A"
-msgstr ""
+msgstr "Ctrl+A"
 
 #. Selection to indicate pressing the Camera button should send the "Esc" key.
 msgctxt "list_camera_esc"
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #. Selection to indicate pressing the Camera button should send "Esc+A".
 msgctxt "list_camera_esc_a"
 msgid "Esc+A"
-msgstr ""
+msgstr "Esc+A"
 
 #. Selection to indicate pressing the Camera button should send nothing at
 #. all.
 msgctxt "list_camera_none"
 msgid "None"
-msgstr ""
+msgstr "Ningún"
 
 #. Name for the backspace character
 msgctxt "list_delkey_backspace"
 msgid "Backspace"
-msgstr ""
+msgstr "Retroceso"
 
 #. Name for the ASCII DEL character
 msgctxt "list_delkey_del"
 msgid "Delete"
-msgstr ""
+msgstr "Borrar"
 
 #, c-format
 msgctxt "delete_message"
 msgid "Are you sure you want to delete '%1$s'?"
-msgstr ""
+msgstr "Está seguro de querer borrar '%1$s'?"
 
 msgctxt "delete_pos"
 msgid "Yes, delete"
-msgstr ""
+msgstr "Si, borrar"
 
 msgctxt "delete_neg"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 msgctxt "disconnect_all_message"
 msgid "Are you sure you want to disconnect from all connected hosts?"
-msgstr ""
+msgstr "Está seguro de querer desconectar de todos os servidores?"
 
 msgctxt "disconnect_all_pos"
 msgid "Yes, disconnect"
-msgstr ""
+msgstr "Si, desconectar"
 
 msgctxt "disconnect_all_neg"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 msgctxt "terminal_no_hosts_connected"
 msgid "No hosts currently connected"
-msgstr ""
+msgstr "Non hai servidores actualmente conectados"
 
 #. Displayed in terminal when attempting to connect to a host. The first two
 #. variables are host:port and the third is the protocol (e.g., SSH)
 #, c-format
 msgctxt "terminal_connecting"
 msgid "Connecting to %1$s:%2$d via %3$s"
-msgstr ""
+msgstr "Conectando a %1$s:%2$d via %3$s"
 
 #. Displays the host key to the user in the terminal
 #, c-format
 msgctxt "terminal_sucess"
 msgid "Verified host '%1$s' key: %2$s"
-msgstr ""
+msgstr "Servidor verificado '%1$s' chave: %2$s"
 
 msgctxt "terminal_failed"
 msgid "Host key verification failed."
-msgstr ""
+msgstr "Fallou a verificación da chave do servidor"
 
 #. Displayed on the terminal describing the cryptographic algorithm names
 #, c-format
 msgctxt "terminal_using_s2c_algorithm"
 msgid "Server-to-client algorithm: %1$s %2$s"
-msgstr ""
+msgstr "Algoritmo servidor-a-cliente: %1$s %2$s"
 
 #. Displayed on the terminal describing the cryptographic algorithm names
 #, c-format
 msgctxt "terminal_using_c2s_algorithm"
 msgid "Client-to-server algorithm: %1$s %2$s"
-msgstr ""
+msgstr "Algoritmo cliente-a-servidor: %1$s %2$s"
 
 #. Displayed on the terminal describing the cryptographic algorithm names
 #, c-format
 msgctxt "terminal_using_algorithm"
 msgid "Using algorithm: %1$s %2$s"
-msgstr ""
+msgstr "Utilizando algoritmo: %1$s %2$s"
 
 #. Displayed on the terminal during a SSH connection describing the
 #. cryptographic key              exchange algorithm used to establish a shared
@@ -1145,341 +1165,348 @@ msgstr ""
 #, c-format
 msgctxt "terminal_kex_algorithm"
 msgid "Key exchange algorithm: %s"
-msgstr ""
+msgstr "Algoritmo de intercambio de chave: %s"
 
 msgctxt "terminal_auth"
 msgid "Trying to authenticate"
-msgstr ""
+msgstr "Intentando autenticar"
 
 msgctxt "terminal_auth_pass"
 msgid "Attempting 'password' authentication"
-msgstr ""
+msgstr "Intentando autenticación por contrasinal"
 
 msgctxt "terminal_auth_pass_fail"
 msgid "Authentication method 'password' failed"
-msgstr ""
+msgstr "Fallou o método de autenticación por contrasinal"
 
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
 msgstr ""
+"Intentanto autenticación de chave pública con calquera chave pública en "
+"memoria"
 
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
 msgstr ""
+"A chave pública seleccionada é inválida, intenta reseleccionar a chave no "
+"editor de servidor"
 
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
 msgstr ""
+"Intentando autenticación por chave pública cunha chave pública específica"
 
 #, c-format
 msgctxt "terminal_auth_pubkey_fail"
 msgid "Authentication method 'publickey' with key '%1$s' failed"
-msgstr ""
+msgstr "Fallou o métode de autenticación por chave pública coa chave '%1$s'"
 
 msgctxt "terminal_auth_ki"
 msgid "Attempting 'keyboard-interactive' authentication"
-msgstr ""
+msgstr "Intentando autenticación interactiva por teclado"
 
 msgctxt "terminal_auth_ki_fail"
 msgid "Authentication method 'keyboard-interactive' failed"
-msgstr ""
+msgstr "Fallou o método de autenticación interactiva por teclado"
 
 msgctxt "terminal_auth_fail"
 msgid ""
 "[Your host doesn't support 'password' or 'keyboard-interactive' "
 "authentication.]"
 msgstr ""
+"[O teu servidor non permite autenticación por contrasinal nen interactiva "
+"por teclado.]"
 
 msgctxt "terminal_no_session"
 msgid "Session will not be started due to host preference."
-msgstr ""
+msgstr "Non se iniciará a sesión debido ás configuracións de servidor"
 
 #, c-format
 msgctxt "terminal_enable_portfoward"
 msgid "Enable port forward: %1$s"
-msgstr ""
+msgstr "Habilitar redirección de porto: %1$s"
 
 msgctxt "local_shell_unavailable"
 msgid "Failure! Local shell is unavailable on this phone."
-msgstr ""
+msgstr "Erro! O terminal local non está disponíbel neste teléfono."
 
 #. Text sent to the user to alert them that a Terminal Bell is received in a
 #. background session
 #, c-format
 msgctxt "notification_text"
 msgid "%1$s wants your attention."
-msgstr ""
+msgstr "%1$s require a túa atención."
 
 #. Preference selection for SSH Authentication Agent to never use pubkeys
 msgctxt "no"
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #. Preference selection for SSH Authentication Agent to be able to use pubkeys
 msgctxt "yes"
 msgid "Yes"
-msgstr ""
+msgstr "Si"
 
 #. Menu selection to reset colors to their defaults.
 msgctxt "menu_colors_reset"
 msgid "Reset"
-msgstr ""
+msgstr "Reiniciar"
 
 #. Displayed in the notification bar that connections are active
 msgctxt "app_is_running"
 msgid "ConnectBot is running"
-msgstr ""
+msgstr "ConnectBot está en execución"
 
 msgctxt "color_red"
 msgid "red"
-msgstr ""
+msgstr "vermello"
 
 msgctxt "color_green"
 msgid "green"
-msgstr ""
+msgstr "verde"
 
 msgctxt "color_blue"
 msgid "blue"
-msgstr ""
+msgstr "azul"
 
 msgctxt "color_gray"
 msgid "gray"
-msgstr ""
+msgstr "gris"
 
 #. Very short label indicating the number next to it is "foreground color"
 #. number.
 #, c-format
 msgctxt "colors_fg_label"
 msgid "FG: %1$d"
-msgstr ""
+msgstr "FG: %1$d"
 
 #. Very short label indicating the number next to it is "background color"
 #. number.
 #, c-format
 msgctxt "color_bg_label"
 msgid "BG: %1$d"
-msgstr ""
+msgstr "BG: %1$d"
 
 #. Accessibility text for connection state in list of hosts when the host is
 #. currently          connected.
 msgctxt "image_description_connected"
 msgid "Connected."
-msgstr ""
+msgstr "Conectado."
 
 #. Accessibility text for connection state in list of hosts when the host is
 #. currently              disconnected after having been previously connected.
 msgctxt "image_description_disconnected"
 msgid "Disconnected."
-msgstr ""
+msgstr "Desconectado."
 
 #. Describes the icon of the "locked pubkey" icon for accessibility purposes.
 msgctxt "image_description_key_is_locked"
 msgid "Key is locked."
-msgstr ""
+msgstr "A chave está bloqueada"
 
 #. Describes the icon of the "send control character" button in the terminal
 #. view for              accessibility purposes.
 msgctxt "image_description_toggle_control_character"
 msgid "Toggle control character."
-msgstr ""
+msgstr "Mudar carácter de control"
 
 #. Describes the icon of the "send escape character" button in the terminal
 #. view for              accessibility purposes.
 msgctxt "image_description_send_escape_character"
 msgid "Send escape character."
-msgstr ""
+msgstr "Enviar carácter escape"
 
 #. Describes the icon of the "send tab character" button in the terminal view
 #. for              accessibility purposes.
 msgctxt "image_description_send_tab_character"
 msgid "Send TAB character."
-msgstr ""
+msgstr "Enviar carácter TAB"
 
 #. Describes the icon of the "hide keyboard" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_hide_keyboard"
 msgid "Hide keyboard."
-msgstr ""
+msgstr "Agochar teclado."
 
 #. Describes the icon of the "show keyboard" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_show_keyboard"
 msgid "Show keyboard."
-msgstr ""
+msgstr "Amosar teclado."
 
 #. Describes the icon of the "Arrow up" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_up"
 msgid "Arrow up"
-msgstr ""
+msgstr "Frecha arriba"
 
 #. Describes the icon of the "Arrow down" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_down"
 msgid "Arrow down"
-msgstr ""
+msgstr "Frecha abaixo"
 
 #. Describes the icon of the "Arrow left" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_left"
 msgid "Arrow left"
-msgstr ""
+msgstr "Frecha esquerda"
 
 #. Describes the icon of the "Arrow right" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_right"
 msgid "Arrow right"
-msgstr ""
+msgstr "Frecha dereita"
 
 #. Describes the "volume" icon in the bell volume dialog for accessibility
 #. purposes.
 msgctxt "image_description_volume"
 msgid "Volume"
-msgstr ""
+msgstr "Volume"
 
 #. Text for the "Esc" button in virtual keyboard.
 msgctxt "button_key_esc"
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #. Text for the "Ctrl" button in virtual keyboard.
 msgctxt "button_key_ctrl"
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. Text for the "Home" button in virtual keyboard.
 msgctxt "button_key_home"
 msgid "Home"
-msgstr ""
+msgstr "Inicio"
 
 #. Text for the "End" button in virtual keyboard.
 msgctxt "button_key_end"
 msgid "End"
-msgstr ""
+msgstr "Fin"
 
 #. Text for the "Page Up" button in virtual keyboard.
 msgctxt "button_key_pgup"
 msgid "PgUp"
-msgstr ""
+msgstr "Re Páx"
 
 #. Text for the "Page Down" button in virtual keyboard.
 msgctxt "button_key_pgdn"
 msgid "PgDn"
-msgstr ""
+msgstr "Av Páx"
 
 #. Text for the "F1" button in virtual keyboard.
 msgctxt "button_key_f1"
 msgid "F1"
-msgstr ""
+msgstr "F1"
 
 #. Text for the "F2" button in virtual keyboard.
 msgctxt "button_key_f2"
 msgid "F2"
-msgstr ""
+msgstr "F2"
 
 #. Text for the "F3" button in virtual keyboard.
 msgctxt "button_key_f3"
 msgid "F3"
-msgstr ""
+msgstr "F3"
 
 #. Text for the "F4" button in virtual keyboard.
 msgctxt "button_key_f4"
 msgid "F4"
-msgstr ""
+msgstr "F4"
 
 #. Text for the "F5" button in virtual keyboard.
 msgctxt "button_key_f5"
 msgid "F5"
-msgstr ""
+msgstr "F5"
 
 #. Text for the "F6" button in virtual keyboard.
 msgctxt "button_key_f6"
 msgid "F6"
-msgstr ""
+msgstr "F6"
 
 #. Text for the "F7" button in virtual keyboard.
 msgctxt "button_key_f7"
 msgid "F7"
-msgstr ""
+msgstr "F7"
 
 #. Text for the "F8" button in virtual keyboard.
 msgctxt "button_key_f8"
 msgid "F8"
-msgstr ""
+msgstr "F8"
 
 #. Text for the "F9" button in virtual keyboard.
 msgctxt "button_key_f9"
 msgid "F9"
-msgstr ""
+msgstr "F9"
 
 #. Text for the "F10" button in virtual keyboard.
 msgctxt "button_key_f10"
 msgid "F10"
-msgstr ""
+msgstr "F10"
 
 #. Text for the "F11" button in virtual keyboard.
 msgctxt "button_key_f11"
 msgid "F11"
-msgstr ""
+msgstr "F11"
 
 #. Text for the "F12" button in virtual keyboard.
 msgctxt "button_key_f12"
 msgid "F12"
-msgstr ""
+msgstr "F12"
 
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
 msgid "Protocol"
-msgstr ""
+msgstr "Protocolo"
 
 #. Label for button which expands/collapses section.
 msgctxt "expand"
 msgid "Expand"
-msgstr ""
+msgstr "Expandir"
 
 #. Label for checkbox which, when check, makes SSL authorization require
 #. confirmation.
 msgctxt "hostpref_authagent_with_confirmation"
 msgid "require confirmation"
-msgstr ""
+msgstr "require confirmación"
 
 #. Text for button which, when clicked, adds a new host.
 msgctxt "hostpref_add_host"
 msgid "Add host"
-msgstr ""
+msgstr "Engadir servidor"
 
 #. Text for button which, when clicked, saves an existing host.
 msgctxt "hostpref_edit_host"
 msgid "Save host"
-msgstr ""
+msgstr "Gardar servidor"
 
 #. Text for button which, when clicked, brings up an editor for adding a new
 #. pubkey.
 msgctxt "pubkey_add_new"
 msgid "Add new pubkey"
-msgstr ""
+msgstr "Engadir nova chave pública"
 
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
 msgid "Import existing pubkey"
-msgstr ""
+msgstr "Importar chave pública existente"
 
 #. Text for dialog which explains that the host URI is invalid and asks to
 #. discard.
 msgctxt "discard_host_changes_message"
 msgid "Host URI is invalid. Would you like to discard changes?"
-msgstr ""
+msgstr "A URI do servidor é inválida. Queres descartar os cambios?"
 
 #. Text for button which discards changes to the host.
 msgctxt "discard_host_button"
 msgid "Discard"
-msgstr ""
+msgstr "Descartar"
 
 #. Text for button which does not discard changes and keeps editing.
 msgctxt "discard_host_cancel_button"
 msgid "Keep editing"
-msgstr ""
+msgstr "Continuar editando"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the RSA algorithm with a
@@ -1488,7 +1515,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_rsa_bits"
 msgid "RSA %d-bit"
-msgstr ""
+msgstr "RSA %d-bit"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the DSA algorithm with a
@@ -1497,7 +1524,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_dsa_bits"
 msgid "DSA %d-bit"
-msgstr ""
+msgstr "DSA %d-bit"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Elliptic Curve (EC)
@@ -1506,7 +1533,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_ec_bits"
 msgid "EC %d-bit"
-msgstr ""
+msgstr "EC %d-bit"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Ed25519 algorithm
@@ -1514,17 +1541,17 @@ msgstr ""
 #. "Ed25519").
 msgctxt "key_type_ed25519"
 msgid "Ed25519"
-msgstr ""
+msgstr "Ed25519"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of an unknown algorithm.
 msgctxt "key_type_unknown"
 msgid "Key type unknown"
-msgstr ""
+msgstr "Tipo de chave descoñecido"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Added to the end of a key description to indicate
 #. that the key is encrypted (i.e,              password protected).
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
-msgstr ""
+msgstr "(encriptada)"

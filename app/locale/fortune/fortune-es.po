@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-02-28 23:00+0000\n"
-"Last-Translator: Kenny Root <Unknown>\n"
+"PO-Revision-Date: 2018-03-30 13:17+0000\n"
+"Last-Translator: cousteau <Unknown>\n"
 "Language-Team: es <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2017-03-08 08:44+0000\n"
-"X-Generator: Launchpad (build 18330)\n"
+"X-Launchpad-Export-Date: 2018-05-17 03:41+0000\n"
+"X-Generator: Launchpad (build 18658)\n"
 "Language: es\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -92,12 +92,12 @@ msgstr "Términos y condiciones"
 #. Title for the help page with the hints about the app.
 msgctxt "hints"
 msgid "Hints"
-msgstr ""
+msgstr "Sugerencias"
 
 #. Header text for instructions about creating host shortcuts.
 msgctxt "host_shortcuts_header"
 msgid "Host Shortcuts"
-msgstr ""
+msgstr "Atajos a servidores"
 
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
@@ -105,6 +105,8 @@ msgid ""
 "Long-press on your Android desktop to create direct shortcuts to frequently-"
 "used SSH hosts."
 msgstr ""
+"Mantenga pulsado en su escritorio Android para crear accesos directos a "
+"servidores SSH que usa habitualmente."
 
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
@@ -130,7 +132,7 @@ msgstr ""
 #. Header text for instructions about paging up and down in the terminal.
 msgctxt "page_updn_header"
 msgid "Page Up / Page Down"
-msgstr ""
+msgstr "Re Pág / Av Pág"
 
 #. Instructions about paging up and down in the terminal.
 msgctxt "page_updn_content"
@@ -145,15 +147,15 @@ msgstr ""
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
 msgid "Page up"
-msgstr ""
+msgstr "Retroceder página"
 
 msgctxt "page_down"
 msgid "Page down"
-msgstr ""
+msgstr "Avanzar página"
 
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
-msgstr ""
+msgstr "Cambiar servidores"
 
 #. Instructions about switching to the next and previous host in the terminal.
 msgctxt "switching_hosts_content"
@@ -161,15 +163,17 @@ msgid ""
 "Swiping your finger from one side of the screen to the other will switch "
 "between currently connected hosts."
 msgstr ""
+"Deslice el dedo de un lado a otro de la pantalla para alternar entre "
+"servidores actualmente conectados."
 
 #. Captions for images showing the next/previous host gestures.
 msgctxt "next_host"
 msgid "Next host"
-msgstr ""
+msgstr "Servidor siguiente"
 
 msgctxt "prev_host"
 msgid "Previous host"
-msgstr ""
+msgstr "Servidor anterior"
 
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
@@ -185,7 +189,7 @@ msgstr "Aumentar el tamaño de letra"
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
 msgid "Ctrl and +"
-msgstr ""
+msgstr "Ctrl +"
 
 #. Text in a keyboard shortcuts list lined up to keys which decrease the
 #. terminal font-size.
@@ -196,7 +200,7 @@ msgstr "Disminuir el tamaño de letra"
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
 msgid "Ctrl and -"
-msgstr ""
+msgstr "Ctrl -"
 
 #. Keyboard shortcut for pasting into the terminal.
 msgctxt "paste_shortcut"
@@ -1382,7 +1386,7 @@ msgstr "Inicio"
 #. Text for the "End" button in virtual keyboard.
 msgctxt "button_key_end"
 msgid "End"
-msgstr "Finalizar"
+msgstr "Fin"
 
 #. Text for the "Page Up" button in virtual keyboard.
 msgctxt "button_key_pgup"

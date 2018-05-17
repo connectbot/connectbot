@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-03-08 08:41+0000\n"
-"Last-Translator: Patrik Zanotto Guerra <p.guerra.rs@gmail.com>\n"
+"PO-Revision-Date: 2017-03-23 17:55+0000\n"
+"Last-Translator: Marcos Alano <Unknown>\n"
 "Language-Team: pt <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2017-03-08 08:44+0000\n"
-"X-Generator: Launchpad (build 18330)\n"
+"X-Launchpad-Export-Date: 2018-05-17 03:40+0000\n"
+"X-Generator: Launchpad (build 18658)\n"
 "Language: pt\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -24,18 +24,18 @@ msgstr ""
 #. running apps list
 msgctxt "app_desc"
 msgid "Simple, powerful, open-source SSH client."
-msgstr "Simples e poderoso cliente SSH open-source"
+msgstr "Cliente SSH open source simples e poderoso"
 
 #. Summary of what the ConnectBot service does; displayed in the Android
 #. running apps list
 msgctxt "service_desc"
 msgid "Maintains SSH connections and loaded pubkeys"
-msgstr "Manter ligações SSH e chaves públicas carregadas"
+msgstr "Mantém conexões SSH and chaves públicas carregadas"
 
 #. Window title for the Host List
 msgctxt "title_hosts_list"
 msgid "Hosts"
-msgstr "Máquinas"
+msgstr "Servidores"
 
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
@@ -50,7 +50,7 @@ msgstr "Redireciomento de portas"
 #. Window title when editing host details
 msgctxt "title_host_editor"
 msgid "Edit Host"
-msgstr "Editar a Máquina"
+msgstr "Editar Servidor"
 
 #. Window title for Help index
 msgctxt "title_help"
@@ -75,12 +75,12 @@ msgstr "Configurações"
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
 msgid "Generate"
-msgstr "Criar"
+msgstr "Gerar"
 
 msgctxt "help_intro"
 msgid ""
 "Please select a topic below for more information on a particular subject."
-msgstr "Selecione um tópico para mais informações sobre o assunto."
+msgstr "Selecione um tópico abaixo para mais informações sobre o assuno"
 
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
