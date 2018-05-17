@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="app_desc">簡單、強大、開放原始碼的SSH用戶端。</string>
+  <string name="app_desc">簡潔有力、開源的 SSH 用戶端。</string>
   <string name="service_desc">維護 SSH 連線及公鑰</string>
   <string name="title_hosts_list">主機清單</string>
   <string name="title_pubkey_list">公鑰</string>
@@ -16,6 +16,9 @@
   <string name="hints">提示</string>
   <string name="host_shortcuts_header">主機捷徑</string>
   <string name="host_shortcuts_content">長按 Android 桌面以新增常用主機捷徑</string>
+  <string name="scroll_hints_header">向前/向後捲動</string>
+  <string name="scrolling_back">向後捲動</string>
+  <string name="scrolling_forward">向前捲動</string>
   <string name="page_updn_header">上一頁/下一頁</string>
   <string name="page_updn_content">注意: 這必須在設置中啟用。\n\n在屏幕左側的三分之一以內用手指向上和向下滑動將向遠程主機發送向上翻頁和向下翻頁鍵。許多程序映射為在歷史中向後滾動如 irssi 或 tinyfugue。</string>
   <string name="page_up">上一頁</string>
@@ -84,6 +87,7 @@
   <string name="pref_scrollback_title">回溯記憶體大小</string>
   <string name="pref_scrollback_summary">在記憶體中為每個控制台保留的回溯緩衝大小</string>
   <string name="pref_backupkeys_title">備份公鑰</string>
+  <string name="pref_backupkeys_summary">備份私鑰(使用Andriod備份機制)</string>
   <string name="pref_ui_category">使用者介面</string>
   <string name="pref_rotation_title">螢幕旋轉模式</string>
   <string name="pref_rotation_summary">當鍵盤視窗出現或隱藏時要如何改變螢幕轉向</string>
@@ -234,6 +238,7 @@
   <string name="image_description_toggle_control_character">切換控制字元。</string>
   <string name="image_description_send_escape_character">送出 Esc 字元。</string>
   <string name="image_description_send_tab_character">發送 TAB 鍵。</string>
+  <string name="image_description_hide_keyboard">隱藏鍵盤</string>
   <string name="image_description_show_keyboard">顯示鍵盤。</string>
   <string name="image_description_up">方向上鍵</string>
   <string name="image_description_down">方向下鍵</string>

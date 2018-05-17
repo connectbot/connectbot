@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">Một client SSH mã nguồn mở đơn giản và mạnh mẽ</string>
-  <string name="service_desc">Duy trì các kết nối SSH và các mã pubkeys đã load</string>
+  <string name="service_desc">Duy trì các kết nối SSH và các mã pubkeys đã nạp</string>
   <string name="title_hosts_list">Các máy chủ</string>
   <string name="title_pubkey_list">Pubkeys</string>
   <string name="title_port_forwards_list">Cổng chuyển tiếp (port forwards)</string>

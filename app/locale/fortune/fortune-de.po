@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-03-08 08:42+0000\n"
-"Last-Translator: Florian Schrön <Unknown>\n"
+"PO-Revision-Date: 2018-05-17 13:46+0000\n"
+"Last-Translator: Kenny Root <Unknown>\n"
 "Language-Team: de <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2018-05-17 03:41+0000\n"
+"X-Launchpad-Export-Date: 2018-05-17 14:00+0000\n"
 "X-Generator: Launchpad (build 18658)\n"
 "Language: de\n"
 "Generated-By: Babel 2.3.4\n"
@@ -95,7 +95,7 @@ msgstr "Tipps"
 #. Header text for instructions about creating host shortcuts.
 msgctxt "host_shortcuts_header"
 msgid "Host Shortcuts"
-msgstr ""
+msgstr "Host-Verknüpfungen"
 
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
@@ -527,13 +527,15 @@ msgstr ""
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr ""
+msgstr "Sicherung Öffentliche Schlüssel"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
 msgstr ""
+"Bewahren Sie Backups der privaten Schlüssel mit dem Backup-Mechanismus von "
+"Android auf"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -662,12 +664,13 @@ msgstr ""
 #. Name for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_title"
 msgid "Sticky modifiers"
-msgstr ""
+msgstr "Sticky Modifikatoren"
 
 #. Summary for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_summary"
 msgid "Modifier keys remain enabled until another key is pressed"
 msgstr ""
+"Modifizierungs-Tasten bleiben aktiviert, bis eine andere Taste gedrückt wird"
 
 #. Sticky modifier preference value description for when only the Alt key
 #. should be a sticky modifier.
@@ -1338,7 +1341,7 @@ msgstr "Sende TAB Zeichen."
 #. accessibility              purposes.
 msgctxt "image_description_hide_keyboard"
 msgid "Hide keyboard."
-msgstr ""
+msgstr "Tastatur verbergen"
 
 #. Describes the icon of the "show keyboard" button in the terminal view for
 #. accessibility              purposes.
@@ -1389,7 +1392,7 @@ msgstr "Strg"
 #. Text for the "Home" button in virtual keyboard.
 msgctxt "button_key_home"
 msgid "Home"
-msgstr ""
+msgstr "Start"
 
 #. Text for the "End" button in virtual keyboard.
 msgctxt "button_key_end"
