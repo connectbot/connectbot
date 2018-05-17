@@ -32,7 +32,6 @@ apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'com.github.gfx.ribbonizer'
 apply plugin: 'jacoco-android'
 apply from: '../config/quality.gradle'
-apply from: '../config/translations.gradle'
 
 repositories {
     google()

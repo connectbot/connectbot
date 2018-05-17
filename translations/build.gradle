@@ -15,28 +15,49 @@
  * limitations under the License.
  */
 
-def localeDir = file('locale')
-def launchpadImportBasename = 'launchpad-import'
-def launchpadExportFile = getRootProject().file('launchpad-export.tar.gz')
+plugins {
+    id 'com.palantir.python.miniconda' version '0.8.0'
+}
 
-def android2poExec = 'a2po'
+apply plugin: 'com.palantir.python.miniconda'
+
+miniconda {
+    minicondaVersion = '4.5.1'
+    pythonVersion = 3
+    packages = ['python']
+}
+
+def localeDir = project(':app').file('locale')
+def launchpadImportBasename = 'launchpad-import'
+def launchpadExportFile = rootProject.file('launchpad-export.tar.gz')
+
+def android2poUrl = 'git+https://github.com/kruton/android2po.git#egg=android2po'
+def android2poExec = "${miniconda.buildEnvironmentDirectory}/bin/a2po"
 def android2poArgs = ['--groups', 'strings',
-		'--android', getProjectDir().getPath() + '/src/main/res',
+		'--android', project(':app').file('src/main/res'),
 		'--gettext', localeDir,
 		'--template', 'fortune/fortune.pot',
 		'--layout', 'fortune/fortune-%(locale)s.po']
+
+task installAndroid2Po(type: Exec) {
+	dependsOn 'setupPython'
+	executable "${miniconda.buildEnvironmentDirectory}/bin/pip"
+	args 'install', android2poUrl
+}
 
 task untarTranslations(type: Copy) {
 	from tarTree(resources.gzip(launchpadExportFile))
 	into localeDir
 
-        // Unsupported Android locales
-        exclude '**/*-oc.po', '**/*-ca@valencia.po'
+	// Unsupported Android locales
+	exclude '**/*-oc.po', '**/*-ca@valencia.po'
 }
 
-task translationsImport(type: Exec, dependsOn: 'untarTranslations') {
+task translationsImport(type: Exec) {
 	group = "Translations"
 	description = "Import translations into ConnectBot from Launchpad's export function"
+
+	dependsOn 'installAndroid2Po', 'untarTranslations'
 
 	executable = android2poExec
 	args = ['import'] + android2poArgs
@@ -46,6 +67,8 @@ task translationsImport(type: Exec, dependsOn: 'untarTranslations') {
 }
 
 task exportFromAndroid(type: Exec) {
+	dependsOn 'installAndroid2Po'
+
 	executable = android2poExec
 	args = ['export'] + android2poArgs
 
