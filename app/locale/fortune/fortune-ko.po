@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-02-28 23:23+0000\n"
-"Last-Translator: Kenny Root <Unknown>\n"
+"PO-Revision-Date: 2017-08-29 12:48+0000\n"
+"Last-Translator: Minsu <skyplus@gmail.com>\n"
 "Language-Team: ko <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2017-03-08 08:44+0000\n"
-"X-Generator: Launchpad (build 18330)\n"
+"X-Launchpad-Export-Date: 2018-05-17 03:40+0000\n"
+"X-Generator: Launchpad (build 18658)\n"
 "Language: ko\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -70,7 +70,7 @@ msgstr ""
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr ""
+msgstr "설정"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
@@ -178,7 +178,7 @@ msgstr ""
 #. terminal font-size.
 msgctxt "increase_font_size"
 msgid "Increase Font Size"
-msgstr ""
+msgstr "글꼴 크기 확대"
 
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
@@ -189,7 +189,7 @@ msgstr ""
 #. terminal font-size.
 msgctxt "decrease_font_size"
 msgid "Decrease Font Size"
-msgstr ""
+msgstr "글꼴 크기 축소"
 
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
@@ -510,13 +510,13 @@ msgstr "각 콘솔별로 메모리에 담아 둘 스크롤 버퍼의 크기"
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr ""
+msgstr "공개키 백업"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
-msgstr ""
+msgstr "Android의 백업 메커니즘을 사용하여 비공개 키 백업 유지"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -536,27 +536,27 @@ msgstr "키보드 팝 인/아웃시 회전 방법"
 #. Name for the titlebar hide preference
 msgctxt "pref_titlebarhide_title"
 msgid "Autohide title bar"
-msgstr ""
+msgstr "제목 표시 줄 자동 숨기기"
 
 #. Summary for the titlebar hide preference
 msgctxt "pref_titlebarhide_summary"
 msgid "Tap console to show title bar and access menu"
-msgstr ""
+msgstr "제목 표시 줄과 액세스 메뉴를 표시하려면 콘솔을 누르십시오."
 
 #. Title for special keys always visible preference
 msgctxt "pref_alwaysvisible_title"
 msgid "Special keys always visible"
-msgstr ""
+msgstr "특수 키 항상 보이기"
 
 #. Name for the page up/down gesture preference
 msgctxt "pref_pg_updn_gesture_title"
 msgid "Page up/down gesture"
-msgstr ""
+msgstr "페이지 업 / 다운 동작"
 
 #. Summary for the full screen preference
 msgctxt "pref_pg_updn_gesture_summary"
 msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
-msgstr ""
+msgstr "화면의 왼쪽 세번째 지점을 스와이프 하여 페이지 업 / 다운을 터미널로 보냅니다."
 
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
@@ -576,32 +576,32 @@ msgstr ""
 #. Name for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_title"
 msgid "Shift+num are F-keys"
-msgstr ""
+msgstr "Shift+num을 F-keys로 보내기"
 
 #. Summary for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_summary"
 msgid "On hardware keyboards, number keys send F1-F10 with shift"
-msgstr ""
+msgstr "하드웨어 키보드에서, 숫자 키를 shift + F1-F10로 입력합니다."
 
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
 msgid "Ctrl+num are F-keys"
-msgstr ""
+msgstr "Ctrl+num을 F-keys로 보내기"
 
 #. Summary for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_summary"
 msgid "On software keyboards, number keys send F1-F10 with ctrl"
-msgstr ""
+msgstr "소프트웨어 키보드에서, 숫자 키를 ctrl + F1-F10로 입력합니다."
 
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
 msgid "Volume keys change font size"
-msgstr ""
+msgstr "볼륨키로 글꼴 크기 변경"
 
 #. Summary for the volume keys control font size preference
 msgctxt "pref_volumefont_summary"
 msgid "Font size can also be changed in per-host settings"
-msgstr ""
+msgstr "글꼴 크기는 호스트별 설정에서도 변경할 수 있습니다."
 
 #. Name for the memorize keys preference
 msgctxt "pref_memkeys_title"
@@ -689,7 +689,7 @@ msgstr "방향키 진동"
 #. Summary for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_summary"
 msgid "Vibrate when sending arrow keys; useful for laggy connections"
-msgstr ""
+msgstr "화살표 키를 보낼 때 진동; 느린 연결에서 유용합니다."
 
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
@@ -749,7 +749,7 @@ msgstr "키 사용 안함"
 #. Preference to use any pubkey to authenticate to this host.
 msgctxt "list_pubkeyids_any"
 msgid "Use any unlocked key"
-msgstr "잠금키 사용"
+msgstr "잠금이 풀린 키들을 사용"
 
 #. Host nickname field preference title
 msgctxt "hostpref_nickname_title"
@@ -823,11 +823,11 @@ msgstr "연결이 끊기면 다시 연결을 시도"
 #. Setting for whether we should prompt to close after getting disconnected
 msgctxt "hostpref_quickdisconnect_title"
 msgid "Close on disconnect"
-msgstr ""
+msgstr "닫을 때 연결 해제"
 
 msgctxt "hostpref_quickdisconnect_summary"
 msgid "Close immediately after remote disconnect without prompting."
-msgstr ""
+msgstr "원격 연결 해제 후 메시지 없이 즉시 닫습니다."
 
 #. Setting for what key code is sent to the server when DEL key is pressed.
 msgctxt "hostpref_delkey_title"
@@ -981,7 +981,7 @@ msgstr "이름순 정렬"
 
 msgctxt "list_menu_disconnect"
 msgid "Disconnect All"
-msgstr ""
+msgstr "연결 모두 끊기"
 
 msgctxt "list_menu_settings"
 msgid "Settings"
@@ -1082,11 +1082,11 @@ msgstr "취소"
 
 msgctxt "disconnect_all_message"
 msgid "Are you sure you want to disconnect from all connected hosts?"
-msgstr ""
+msgstr "연결된 모든 호스트 에서 연결을 해제 하시겠습니까?"
 
 msgctxt "disconnect_all_pos"
 msgid "Yes, disconnect"
-msgstr ""
+msgstr "네, 연결 종료"
 
 msgctxt "disconnect_all_neg"
 msgid "Cancel"
@@ -1262,7 +1262,7 @@ msgstr ""
 #. currently              disconnected after having been previously connected.
 msgctxt "image_description_disconnected"
 msgid "Disconnected."
-msgstr ""
+msgstr "연결 해제됨."
 
 #. Describes the icon of the "locked pubkey" icon for accessibility purposes.
 msgctxt "image_description_key_is_locked"
@@ -1327,7 +1327,7 @@ msgstr ""
 #. purposes.
 msgctxt "image_description_volume"
 msgid "Volume"
-msgstr ""
+msgstr "볼륨"
 
 #. Text for the "Esc" button in virtual keyboard.
 msgctxt "button_key_esc"
@@ -1422,7 +1422,7 @@ msgstr ""
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
 msgid "Protocol"
-msgstr ""
+msgstr "프로토콜"
 
 #. Label for button which expands/collapses section.
 msgctxt "expand"
@@ -1433,7 +1433,7 @@ msgstr ""
 #. confirmation.
 msgctxt "hostpref_authagent_with_confirmation"
 msgid "require confirmation"
-msgstr ""
+msgstr "확인 필요"
 
 #. Text for button which, when clicked, adds a new host.
 msgctxt "hostpref_add_host"
@@ -1461,17 +1461,17 @@ msgstr ""
 #. discard.
 msgctxt "discard_host_changes_message"
 msgid "Host URI is invalid. Would you like to discard changes?"
-msgstr ""
+msgstr "호스트 URI가 유효하지 않습니다. 변경 사항을 취소 하시겠습니까?"
 
 #. Text for button which discards changes to the host.
 msgctxt "discard_host_button"
 msgid "Discard"
-msgstr ""
+msgstr "버리기"
 
 #. Text for button which does not discard changes and keeps editing.
 msgctxt "discard_host_cancel_button"
 msgid "Keep editing"
-msgstr ""
+msgstr "계속 편집하기"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the RSA algorithm with a

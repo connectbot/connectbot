@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-03-08 08:36+0000\n"
-"Last-Translator: Ícaro Hoff <icarohoff@gmail.com>\n"
+"PO-Revision-Date: 2017-12-04 12:10+0000\n"
+"Last-Translator: Rodrigo Henrique <Unknown>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2017-03-08 08:44+0000\n"
-"X-Generator: Launchpad (build 18330)\n"
+"X-Launchpad-Export-Date: 2018-05-17 03:40+0000\n"
+"X-Generator: Launchpad (build 18658)\n"
 "Language: pt_BR\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -132,7 +132,7 @@ msgstr "Rolando para frente"
 #. Header text for instructions about paging up and down in the terminal.
 msgctxt "page_updn_header"
 msgid "Page Up / Page Down"
-msgstr ""
+msgstr "Page Up / Page Down"
 
 #. Instructions about paging up and down in the terminal.
 msgctxt "page_updn_content"
@@ -143,21 +143,15 @@ msgid ""
 "page up and page down key to the remote host. Many programs map this to "
 "scrolling back into history such as irssi or tinyfugue."
 msgstr ""
-"NOTA: Isso deve estar ativado nas configurações.\n"
-"\n"
-"Passando seu dedo para cima e para baixo na terceira parte da esquerda da "
-"tela irá enviar um comandos de page up e page down para o hospedeiro remoto. "
-"Muitos programas mapeiam isso como rolagem traseira no histórico, tais como "
-"irssi ou tinyfugue."
 
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
 msgid "Page up"
-msgstr ""
+msgstr "Página para cima"
 
 msgctxt "page_down"
 msgid "Page down"
-msgstr ""
+msgstr "Página para baixo"
 
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
@@ -522,13 +516,15 @@ msgstr "Tamanho do buffer de memória a manter para cada terminal"
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr ""
+msgstr "Salavar chaves publicas"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
 msgstr ""
+"Mantenha os backups das chaves privadas usando o mecanismo de backup do "
+"Android"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -601,7 +597,7 @@ msgstr "Em teclados físicos, as teclas numéricas enviam F1 à F10 com shift"
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
 msgid "Ctrl+num are F-keys"
-msgstr ""
+msgstr "Ctrl+num are F-keys"
 
 #. Summary for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_summary"
@@ -655,18 +651,20 @@ msgstr "Selecione para usar Alt para '/' e Shift para Tab"
 #. Name for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_title"
 msgid "Sticky modifiers"
-msgstr ""
+msgstr "modificar Sticky"
 
 #. Summary for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_summary"
 msgid "Modifier keys remain enabled until another key is pressed"
 msgstr ""
+"As teclas de modificação permanecem ativadas até que outra tecla seja "
+"pressionada"
 
 #. Sticky modifier preference value description for when only the Alt key
 #. should be a sticky modifier.
 msgctxt "only_alt"
 msgid "Only alt"
-msgstr ""
+msgstr "Somente alt"
 
 #. Name for the camera shortcut usage preference
 msgctxt "pref_camera_title"
@@ -846,7 +844,7 @@ msgstr "Fechar ao desconectar"
 
 msgctxt "hostpref_quickdisconnect_summary"
 msgid "Close immediately after remote disconnect without prompting."
-msgstr ""
+msgstr "Feche imediatamente e após desligar remotamente sem avisar."
 
 #. Setting for what key code is sent to the server when DEL key is pressed.
 msgctxt "hostpref_delkey_title"
@@ -1003,7 +1001,7 @@ msgstr "Ordenar por nome"
 
 msgctxt "list_menu_disconnect"
 msgid "Disconnect All"
-msgstr ""
+msgstr "Desconectar tudo"
 
 msgctxt "list_menu_settings"
 msgid "Settings"
@@ -1104,15 +1102,15 @@ msgstr "Cancelar"
 
 msgctxt "disconnect_all_message"
 msgid "Are you sure you want to disconnect from all connected hosts?"
-msgstr ""
+msgstr "Tem certeza de que deseja desconectar de todos os hosts conectados?"
 
 msgctxt "disconnect_all_pos"
 msgid "Yes, disconnect"
-msgstr ""
+msgstr "Sim, desconectar"
 
 msgctxt "disconnect_all_neg"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 msgctxt "terminal_no_hosts_connected"
 msgid "No hosts currently connected"
@@ -1159,7 +1157,7 @@ msgstr "Usando o algoritmo: %1$s %2$s"
 #, c-format
 msgctxt "terminal_kex_algorithm"
 msgid "Key exchange algorithm: %s"
-msgstr ""
+msgstr "Algoritmo de troca de chaves: %s"
 
 msgctxt "terminal_auth"
 msgid "Trying to authenticate"
@@ -1289,7 +1287,7 @@ msgstr "Conectado."
 #. currently              disconnected after having been previously connected.
 msgctxt "image_description_disconnected"
 msgid "Disconnected."
-msgstr ""
+msgstr "Desconectado."
 
 #. Describes the icon of the "locked pubkey" icon for accessibility purposes.
 msgctxt "image_description_key_is_locked"
@@ -1300,7 +1298,7 @@ msgstr "A chave está bloqueada."
 #. view for              accessibility purposes.
 msgctxt "image_description_toggle_control_character"
 msgid "Toggle control character."
-msgstr ""
+msgstr "Alternar o caractere de controle."
 
 #. Describes the icon of the "send escape character" button in the terminal
 #. view for              accessibility purposes.
@@ -1312,13 +1310,13 @@ msgstr "Enviar caractere de escape."
 #. for              accessibility purposes.
 msgctxt "image_description_send_tab_character"
 msgid "Send TAB character."
-msgstr ""
+msgstr "Enviar caractere TAB"
 
 #. Describes the icon of the "hide keyboard" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_hide_keyboard"
 msgid "Hide keyboard."
-msgstr ""
+msgstr "Esconder teclado"
 
 #. Describes the icon of the "show keyboard" button in the terminal view for
 #. accessibility              purposes.
@@ -1330,175 +1328,175 @@ msgstr "Exibir teclado"
 #. accessibility              purposes.
 msgctxt "image_description_up"
 msgid "Arrow up"
-msgstr ""
+msgstr "Seta acima"
 
 #. Describes the icon of the "Arrow down" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_down"
 msgid "Arrow down"
-msgstr ""
+msgstr "Seta abaixo"
 
 #. Describes the icon of the "Arrow left" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_left"
 msgid "Arrow left"
-msgstr ""
+msgstr "Seta para esquerda"
 
 #. Describes the icon of the "Arrow right" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_right"
 msgid "Arrow right"
-msgstr ""
+msgstr "Seta para direita"
 
 #. Describes the "volume" icon in the bell volume dialog for accessibility
 #. purposes.
 msgctxt "image_description_volume"
 msgid "Volume"
-msgstr ""
+msgstr "Volume"
 
 #. Text for the "Esc" button in virtual keyboard.
 msgctxt "button_key_esc"
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #. Text for the "Ctrl" button in virtual keyboard.
 msgctxt "button_key_ctrl"
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. Text for the "Home" button in virtual keyboard.
 msgctxt "button_key_home"
 msgid "Home"
-msgstr ""
+msgstr "Início"
 
 #. Text for the "End" button in virtual keyboard.
 msgctxt "button_key_end"
 msgid "End"
-msgstr ""
+msgstr "Finalizar"
 
 #. Text for the "Page Up" button in virtual keyboard.
 msgctxt "button_key_pgup"
 msgid "PgUp"
-msgstr ""
+msgstr "PageUp"
 
 #. Text for the "Page Down" button in virtual keyboard.
 msgctxt "button_key_pgdn"
 msgid "PgDn"
-msgstr ""
+msgstr "PageDn"
 
 #. Text for the "F1" button in virtual keyboard.
 msgctxt "button_key_f1"
 msgid "F1"
-msgstr ""
+msgstr "F1"
 
 #. Text for the "F2" button in virtual keyboard.
 msgctxt "button_key_f2"
 msgid "F2"
-msgstr ""
+msgstr "F2"
 
 #. Text for the "F3" button in virtual keyboard.
 msgctxt "button_key_f3"
 msgid "F3"
-msgstr ""
+msgstr "F3"
 
 #. Text for the "F4" button in virtual keyboard.
 msgctxt "button_key_f4"
 msgid "F4"
-msgstr ""
+msgstr "F4"
 
 #. Text for the "F5" button in virtual keyboard.
 msgctxt "button_key_f5"
 msgid "F5"
-msgstr ""
+msgstr "F5"
 
 #. Text for the "F6" button in virtual keyboard.
 msgctxt "button_key_f6"
 msgid "F6"
-msgstr ""
+msgstr "F6"
 
 #. Text for the "F7" button in virtual keyboard.
 msgctxt "button_key_f7"
 msgid "F7"
-msgstr ""
+msgstr "F7"
 
 #. Text for the "F8" button in virtual keyboard.
 msgctxt "button_key_f8"
 msgid "F8"
-msgstr ""
+msgstr "F8"
 
 #. Text for the "F9" button in virtual keyboard.
 msgctxt "button_key_f9"
 msgid "F9"
-msgstr ""
+msgstr "F9"
 
 #. Text for the "F10" button in virtual keyboard.
 msgctxt "button_key_f10"
 msgid "F10"
-msgstr ""
+msgstr "F10"
 
 #. Text for the "F11" button in virtual keyboard.
 msgctxt "button_key_f11"
 msgid "F11"
-msgstr ""
+msgstr "F11"
 
 #. Text for the "F12" button in virtual keyboard.
 msgctxt "button_key_f12"
 msgid "F12"
-msgstr ""
+msgstr "F12"
 
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
 msgid "Protocol"
-msgstr ""
+msgstr "Protocolo"
 
 #. Label for button which expands/collapses section.
 msgctxt "expand"
 msgid "Expand"
-msgstr ""
+msgstr "Expandir"
 
 #. Label for checkbox which, when check, makes SSL authorization require
 #. confirmation.
 msgctxt "hostpref_authagent_with_confirmation"
 msgid "require confirmation"
-msgstr ""
+msgstr "requer confirmação"
 
 #. Text for button which, when clicked, adds a new host.
 msgctxt "hostpref_add_host"
 msgid "Add host"
-msgstr ""
+msgstr "Adicionar host"
 
 #. Text for button which, when clicked, saves an existing host.
 msgctxt "hostpref_edit_host"
 msgid "Save host"
-msgstr ""
+msgstr "Salvar host"
 
 #. Text for button which, when clicked, brings up an editor for adding a new
 #. pubkey.
 msgctxt "pubkey_add_new"
 msgid "Add new pubkey"
-msgstr ""
+msgstr "Adicionar nova chave publica"
 
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
 msgid "Import existing pubkey"
-msgstr ""
+msgstr "Inportar chaves publica existente"
 
 #. Text for dialog which explains that the host URI is invalid and asks to
 #. discard.
 msgctxt "discard_host_changes_message"
 msgid "Host URI is invalid. Would you like to discard changes?"
-msgstr ""
+msgstr "Host URI é inválido. Gostaria de descartar as mudanças?"
 
 #. Text for button which discards changes to the host.
 msgctxt "discard_host_button"
 msgid "Discard"
-msgstr ""
+msgstr "Rejeitar"
 
 #. Text for button which does not discard changes and keeps editing.
 msgctxt "discard_host_cancel_button"
 msgid "Keep editing"
-msgstr ""
+msgstr "Continue editando"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the RSA algorithm with a
@@ -1507,7 +1505,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_rsa_bits"
 msgid "RSA %d-bit"
-msgstr ""
+msgstr "RSA %d-bit"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the DSA algorithm with a
@@ -1516,7 +1514,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_dsa_bits"
 msgid "DSA %d-bit"
-msgstr ""
+msgstr "DSA %d-bit"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Elliptic Curve (EC)
@@ -1525,7 +1523,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_ec_bits"
 msgid "EC %d-bit"
-msgstr ""
+msgstr "EC %d-bit"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Ed25519 algorithm
@@ -1533,17 +1531,17 @@ msgstr ""
 #. "Ed25519").
 msgctxt "key_type_ed25519"
 msgid "Ed25519"
-msgstr ""
+msgstr "Ed25519"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of an unknown algorithm.
 msgctxt "key_type_unknown"
 msgid "Key type unknown"
-msgstr ""
+msgstr "Tipo de chave desconhecido"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Added to the end of a key description to indicate
 #. that the key is encrypted (i.e,              password protected).
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
-msgstr ""
+msgstr "(criptografado)"

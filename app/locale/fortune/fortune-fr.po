@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-02-28 23:02+0000\n"
-"Last-Translator: Kenny Root <Unknown>\n"
+"PO-Revision-Date: 2018-01-02 13:04+0000\n"
+"Last-Translator: John <Unknown>\n"
 "Language-Team: fr <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2017-03-08 08:44+0000\n"
-"X-Generator: Launchpad (build 18330)\n"
+"X-Launchpad-Export-Date: 2018-05-17 03:41+0000\n"
+"X-Generator: Launchpad (build 18658)\n"
 "Language: fr\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -109,7 +109,7 @@ msgstr ""
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
 msgid "Scroll back / Scroll forward"
-msgstr ""
+msgstr "Défilement avant / arrière"
 
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
@@ -117,20 +117,22 @@ msgid ""
 "Swiping your finger up on the right side of the screen allows you to scroll "
 "backward and forward in the local terminal buffer history."
 msgstr ""
+"Glisser votre doigt verticalement sur le côté droit de l'écran vous permet "
+"de naviguer dans l'historique du terminal local."
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
 msgid "Scrolling back"
-msgstr ""
+msgstr "Défilement arrière"
 
 msgctxt "scrolling_forward"
 msgid "Scrolling forward"
-msgstr ""
+msgstr "Défilement avant"
 
 #. Header text for instructions about paging up and down in the terminal.
 msgctxt "page_updn_header"
 msgid "Page Up / Page Down"
-msgstr ""
+msgstr "Page suivante / Page précédente"
 
 #. Instructions about paging up and down in the terminal.
 msgctxt "page_updn_content"
@@ -141,19 +143,24 @@ msgid ""
 "page up and page down key to the remote host. Many programs map this to "
 "scrolling back into history such as irssi or tinyfugue."
 msgstr ""
+"NOTA : cette fonctionnalité doit être activée dans les paramètres.\n"
+"\n"
+"Glisser votre doigt verticalement sur le tiers gauche de l'écran enverra "
+"''page suivante'' et ''page précédente'' au serveur distant. De nombreux "
+"programmes interprètent cela comme un retour arrière dans l'historique."
 
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
 msgid "Page up"
-msgstr ""
+msgstr "Page précédente"
 
 msgctxt "page_down"
 msgid "Page down"
-msgstr ""
+msgstr "Page suivante"
 
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
-msgstr ""
+msgstr "Changer de serveur"
 
 #. Instructions about switching to the next and previous host in the terminal.
 msgctxt "switching_hosts_content"
@@ -161,6 +168,8 @@ msgid ""
 "Swiping your finger from one side of the screen to the other will switch "
 "between currently connected hosts."
 msgstr ""
+"Glisser votre doigt depuis un bord de l'écran vers l'autre pour naviguer "
+"entre les serveurs actuellement connectés."
 
 #. Captions for images showing the next/previous host gestures.
 msgctxt "next_host"
@@ -185,7 +194,7 @@ msgstr "Agrandir la police"
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
 msgid "Ctrl and +"
-msgstr ""
+msgstr "Ctrl et +"
 
 #. Text in a keyboard shortcuts list lined up to keys which decrease the
 #. terminal font-size.
@@ -196,12 +205,12 @@ msgstr "Diminuer la police"
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
 msgid "Ctrl and -"
-msgstr ""
+msgstr "Ctrl et -"
 
 #. Keyboard shortcut for pasting into the terminal.
 msgctxt "paste_shortcut"
 msgid "Ctrl-Shift-V"
-msgstr ""
+msgstr "Ctrl+Shift+V"
 
 msgctxt "pubkey_generate"
 msgid "Generate"
@@ -521,13 +530,15 @@ msgstr "Taille de l'historique à garder en mémoire pour chaque console"
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr ""
+msgstr "Sauvegarde clé privée"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
 msgstr ""
+"Conserver une copie de la clé privée en utilisant le système de sauvegarde "
+"d'Android."
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -564,12 +575,14 @@ msgstr "Toujours afficher les touches spéciales"
 #. Name for the page up/down gesture preference
 msgctxt "pref_pg_updn_gesture_title"
 msgid "Page up/down gesture"
-msgstr ""
+msgstr "Geste page suivante/précédente"
 
 #. Summary for the full screen preference
 msgctxt "pref_pg_updn_gesture_summary"
 msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
 msgstr ""
+"Faites glisser votre doigt sur le tiers gauche de l'écran pour envoyer "
+"''Page suivante/précédente'' au terminal."
 
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
@@ -658,18 +671,20 @@ msgstr "Définir quel couple de touches Alt et Shift utiliser pour '/' et Tab"
 #. Name for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_title"
 msgid "Sticky modifiers"
-msgstr ""
+msgstr "Touches de combinaison ''collantes''"
 
 #. Summary for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_summary"
 msgid "Modifier keys remain enabled until another key is pressed"
 msgstr ""
+"Les touches de combinaison restent actives jusqu'à l'utilisation d'une autre "
+"touche."
 
 #. Sticky modifier preference value description for when only the Alt key
 #. should be a sticky modifier.
 msgctxt "only_alt"
 msgid "Only alt"
-msgstr ""
+msgstr "Uniquement Alt"
 
 #. Name for the camera shortcut usage preference
 msgctxt "pref_camera_title"
@@ -1011,7 +1026,7 @@ msgstr "Trier par nom"
 
 msgctxt "list_menu_disconnect"
 msgid "Disconnect All"
-msgstr ""
+msgstr "Tout déconnecter"
 
 msgctxt "list_menu_settings"
 msgid "Settings"
@@ -1167,7 +1182,7 @@ msgstr "Utilisation de l'algorithme de chiffrement : %1$s %2$s"
 #, c-format
 msgctxt "terminal_kex_algorithm"
 msgid "Key exchange algorithm: %s"
-msgstr ""
+msgstr "Algorithme d'échange de clés : %s"
 
 msgctxt "terminal_auth"
 msgid "Trying to authenticate"
@@ -1298,7 +1313,7 @@ msgstr "Connecté"
 #. currently              disconnected after having been previously connected.
 msgctxt "image_description_disconnected"
 msgid "Disconnected."
-msgstr ""
+msgstr "Déconnecté"
 
 #. Describes the icon of the "locked pubkey" icon for accessibility purposes.
 msgctxt "image_description_key_is_locked"
@@ -1327,7 +1342,7 @@ msgstr "Envoyer une tabulation"
 #. accessibility              purposes.
 msgctxt "image_description_hide_keyboard"
 msgid "Hide keyboard."
-msgstr ""
+msgstr "Masquer le clavier"
 
 #. Describes the icon of the "show keyboard" button in the terminal view for
 #. accessibility              purposes.
@@ -1363,97 +1378,97 @@ msgstr "Flèche droite"
 #. purposes.
 msgctxt "image_description_volume"
 msgid "Volume"
-msgstr ""
+msgstr "Volume"
 
 #. Text for the "Esc" button in virtual keyboard.
 msgctxt "button_key_esc"
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #. Text for the "Ctrl" button in virtual keyboard.
 msgctxt "button_key_ctrl"
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. Text for the "Home" button in virtual keyboard.
 msgctxt "button_key_home"
 msgid "Home"
-msgstr ""
+msgstr "Début"
 
 #. Text for the "End" button in virtual keyboard.
 msgctxt "button_key_end"
 msgid "End"
-msgstr ""
+msgstr "Fin"
 
 #. Text for the "Page Up" button in virtual keyboard.
 msgctxt "button_key_pgup"
 msgid "PgUp"
-msgstr ""
+msgstr "PgPréc"
 
 #. Text for the "Page Down" button in virtual keyboard.
 msgctxt "button_key_pgdn"
 msgid "PgDn"
-msgstr ""
+msgstr "PgSuiv"
 
 #. Text for the "F1" button in virtual keyboard.
 msgctxt "button_key_f1"
 msgid "F1"
-msgstr ""
+msgstr "F1"
 
 #. Text for the "F2" button in virtual keyboard.
 msgctxt "button_key_f2"
 msgid "F2"
-msgstr ""
+msgstr "F2"
 
 #. Text for the "F3" button in virtual keyboard.
 msgctxt "button_key_f3"
 msgid "F3"
-msgstr ""
+msgstr "F3"
 
 #. Text for the "F4" button in virtual keyboard.
 msgctxt "button_key_f4"
 msgid "F4"
-msgstr ""
+msgstr "F4"
 
 #. Text for the "F5" button in virtual keyboard.
 msgctxt "button_key_f5"
 msgid "F5"
-msgstr ""
+msgstr "F5"
 
 #. Text for the "F6" button in virtual keyboard.
 msgctxt "button_key_f6"
 msgid "F6"
-msgstr ""
+msgstr "F6"
 
 #. Text for the "F7" button in virtual keyboard.
 msgctxt "button_key_f7"
 msgid "F7"
-msgstr ""
+msgstr "F7"
 
 #. Text for the "F8" button in virtual keyboard.
 msgctxt "button_key_f8"
 msgid "F8"
-msgstr ""
+msgstr "F8"
 
 #. Text for the "F9" button in virtual keyboard.
 msgctxt "button_key_f9"
 msgid "F9"
-msgstr ""
+msgstr "F9"
 
 #. Text for the "F10" button in virtual keyboard.
 msgctxt "button_key_f10"
 msgid "F10"
-msgstr ""
+msgstr "F10"
 
 #. Text for the "F11" button in virtual keyboard.
 msgctxt "button_key_f11"
 msgid "F11"
-msgstr ""
+msgstr "F11"
 
 #. Text for the "F12" button in virtual keyboard.
 msgctxt "button_key_f12"
 msgid "F12"
-msgstr ""
+msgstr "F12"
 
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
@@ -1516,7 +1531,7 @@ msgstr "Continuer l'édition"
 #, c-format
 msgctxt "key_type_rsa_bits"
 msgid "RSA %d-bit"
-msgstr ""
+msgstr "RSA %d-bit"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the DSA algorithm with a
@@ -1525,7 +1540,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_dsa_bits"
 msgid "DSA %d-bit"
-msgstr ""
+msgstr "DSA %d-bit"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Elliptic Curve (EC)
@@ -1534,7 +1549,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_ec_bits"
 msgid "EC %d-bit"
-msgstr ""
+msgstr "EC %d-bit"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Ed25519 algorithm
@@ -1542,17 +1557,17 @@ msgstr ""
 #. "Ed25519").
 msgctxt "key_type_ed25519"
 msgid "Ed25519"
-msgstr ""
+msgstr "Ed25519"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of an unknown algorithm.
 msgctxt "key_type_unknown"
 msgid "Key type unknown"
-msgstr ""
+msgstr "Type de clé inconnu"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Added to the end of a key description to indicate
 #. that the key is encrypted (i.e,              password protected).
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
-msgstr ""
+msgstr "(chiffrée)"

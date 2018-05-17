@@ -7,7 +7,10 @@
   <string name="title_host_editor">호스트 편집</string>
   <string name="title_help">도움말</string>
   <string name="title_colors">색상</string>
+  <string name="title_settings">설정</string>
   <string name="help_intro">아래의 제목들을 선택하면 특정 주제의 정보를 더 알 수 있습니다.</string>
+  <string name="increase_font_size">글꼴 크기 확대</string>
+  <string name="decrease_font_size">글꼴 크기 축소</string>
   <string name="pubkey_generate">생성</string>
   <string name="pubkey_delete">키 삭제</string>
   <string name="pubkey_gather_entropy">엔트로피 수집 중</string>
@@ -56,11 +59,24 @@
   <string name="pref_emulation_summary">PTY 연결 용 터미널 에뮬레이션 모드</string>
   <string name="pref_scrollback_title">스크롤 크기</string>
   <string name="pref_scrollback_summary">각 콘솔별로 메모리에 담아 둘 스크롤 버퍼의 크기</string>
+  <string name="pref_backupkeys_title">공개키 백업</string>
+  <string name="pref_backupkeys_summary">Android의 백업 메커니즘을 사용하여 비공개 키 백업 유지</string>
   <string name="pref_ui_category">사용자 인터페이스</string>
   <string name="pref_rotation_title">회전 모드</string>
   <string name="pref_rotation_summary">키보드 팝 인/아웃시 회전 방법</string>
+  <string name="pref_titlebarhide_title">제목 표시 줄 자동 숨기기</string>
+  <string name="pref_titlebarhide_summary">제목 표시 줄과 액세스 메뉴를 표시하려면 콘솔을 누르십시오.</string>
+  <string name="pref_alwaysvisible_title">특수 키 항상 보이기</string>
+  <string name="pref_pg_updn_gesture_title">페이지 업 / 다운 동작</string>
+  <string name="pref_pg_updn_gesture_summary">화면의 왼쪽 세번째 지점을 스와이프 하여 페이지 업 / 다운을 터미널로 보냅니다.</string>
   <string name="pref_fullscreen_title">전체 화면</string>
   <string name="pref_fullscreen_summary">콘솔일 때 상태 표시줄을 숨김</string>
+  <string name="pref_shiftfkeys_title">Shift+num을 F-keys로 보내기</string>
+  <string name="pref_shiftfkeys_summary">하드웨어 키보드에서, 숫자 키를 shift + F1-F10로 입력합니다.</string>
+  <string name="pref_ctrlfkeys_title">Ctrl+num을 F-keys로 보내기</string>
+  <string name="pref_ctrlfkeys_summary">소프트웨어 키보드에서, 숫자 키를 ctrl + F1-F10로 입력합니다.</string>
+  <string name="pref_volumefont_title">볼륨키로 글꼴 크기 변경</string>
+  <string name="pref_volumefont_summary">글꼴 크기는 호스트별 설정에서도 변경할 수 있습니다.</string>
   <string name="pref_memkeys_title">메모리에 키를 기억</string>
   <string name="pref_memkeys_summary">백엔드 서비스가 종료되기 전까지 잠금이 풀린 키들을 메모리에 유지합니다</string>
   <string name="pref_conn_persist_title">접속 유지</string>
@@ -73,6 +89,7 @@
   <string name="pref_wifilock_title">Wi-Fi 켜짐 유지</string>
   <string name="pref_wifilock_summary">세션이 유효한 동안 Wi-Fi가 꺼지지 않도록 함</string>
   <string name="pref_bumpyarrows_title">방향키 진동</string>
+  <string name="pref_bumpyarrows_summary">화살표 키를 보낼 때 진동; 느린 연결에서 유용합니다.</string>
   <string name="pref_bell_category">터미널 벨</string>
   <string name="pref_bell_title">벨소리</string>
   <string name="pref_bell_volume_title">벨 볼륨</string>
@@ -83,7 +100,7 @@
   <string name="list_keymode_left">왼쪽의 키들 사용</string>
   <string name="list_keymode_none">사용 안 함</string>
   <string name="list_pubkeyids_none">키 사용 안함</string>
-  <string name="list_pubkeyids_any">잠금키 사용</string>
+  <string name="list_pubkeyids_any">잠금이 풀린 키들을 사용</string>
   <string name="hostpref_nickname_title">닉네임</string>
   <string name="hostpref_color_title">색상 카테고리</string>
   <string name="hostpref_fontsize_title">글꼴 크기 (pt)</string>
@@ -97,6 +114,8 @@
   <string name="hostpref_wantsession_summary">포트 포워드만 사용할 경우 이 설정을 해제 하세요</string>
   <string name="hostpref_stayconnected_title">연결 유지</string>
   <string name="hostpref_stayconnected_summary">연결이 끊기면 다시 연결을 시도</string>
+  <string name="hostpref_quickdisconnect_title">닫을 때 연결 해제</string>
+  <string name="hostpref_quickdisconnect_summary">원격 연결 해제 후 메시지 없이 즉시 닫습니다.</string>
   <string name="hostpref_delkey_title">삭제 키</string>
   <string name="hostpref_encoding_title">인코딩</string>
   <string name="hostpref_username_title">사용자 이름</string>
@@ -125,6 +144,7 @@
   <string name="list_menu_pubkeys">개인키 관리자</string>
   <string name="list_menu_sortcolor">색상순 정렬</string>
   <string name="list_menu_sortname">이름순 정렬</string>
+  <string name="list_menu_disconnect">연결 모두 끊기</string>
   <string name="list_menu_settings">설정</string>
   <string name="list_host_disconnect">연결끊기</string>
   <string name="list_host_edit">호스트 편집</string>
@@ -141,6 +161,8 @@
   <string name="list_delkey_del">삭제</string>
   <string name="delete_pos">예, 삭제</string>
   <string name="delete_neg">취소</string>
+  <string name="disconnect_all_message">연결된 모든 호스트 에서 연결을 해제 하시겠습니까?</string>
+  <string name="disconnect_all_pos">네, 연결 종료</string>
   <string name="terminal_no_hosts_connected">현재 연결된 호스트가 없음</string>
   <string name="terminal_connecting">%3$s(으)로 %1$s:%2$d에 연결 중</string>
   <string name="terminal_failed">호스트 키를 확인할 수 없습니다.</string>
@@ -161,4 +183,11 @@
   <string name="color_green">녹색</string>
   <string name="color_blue">파란색</string>
   <string name="color_gray">회색</string>
+  <string name="image_description_disconnected">연결 해제됨.</string>
+  <string name="image_description_volume">볼륨</string>
+  <string name="protocol_spinner_label">프로토콜</string>
+  <string name="hostpref_authagent_with_confirmation">확인 필요</string>
+  <string name="discard_host_changes_message">호스트 URI가 유효하지 않습니다. 변경 사항을 취소 하시겠습니까?</string>
+  <string name="discard_host_button">버리기</string>
+  <string name="discard_host_cancel_button">계속 편집하기</string>
 </resources>

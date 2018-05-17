@@ -87,6 +87,8 @@
   <string name="pref_emulation_summary">Režim emulace terminálu použitý při PTY spojeních</string>
   <string name="pref_scrollback_title">Velikost historie</string>
   <string name="pref_scrollback_summary">Velikost historie uložená v paměti pro každou konzoli</string>
+  <string name="pref_backupkeys_title">Zálohovat veřejné klíče</string>
+  <string name="pref_backupkeys_summary">Udržovat zálohy privátních klíčů pomocí Android zálohovacího mechanismu</string>
   <string name="pref_ui_category">Uživatelské rozhraní</string>
   <string name="pref_rotation_title">Režim rotace</string>
   <string name="pref_rotation_summary">Jak změnit rotaci když se zobrazí / skryje klávesnice</string>
@@ -152,9 +154,10 @@
   <string name="hostpref_port_title">Port</string>
   <string name="bind_never">Nikdy nepřipojen</string>
   <plurals name="console_copy_done">
-    <item quantity="one">Zkopírováno %1$d bajt do schránky</item>
+    <item quantity="one">Zkopírováno %1$d bajtů do schránky</item>
     <item quantity="few">Zkopírováno %1$d bajtů do schránky</item>
-    <item quantity="other">Zkopírováno %1$d bajtů do schránky</item>
+    <item quantity="many">Zkopírováno %1$d bajt do schránky</item>
+    <item quantity="other"/>
   </plurals>
   <string name="console_copy_start">Stiskněte a táhněte\nnebo použijte směrový ovladač\npro výběr oblasti ke zkopírování</string>
   <string name="console_menu_close">Zavřít</string>
@@ -237,6 +240,7 @@
   <string name="image_description_key_is_locked">Klíč je zamčený</string>
   <string name="image_description_send_escape_character">Odeslat stisk klávesy Esc</string>
   <string name="image_description_send_tab_character">Poslat stisk klávesy TAB</string>
+  <string name="image_description_hide_keyboard">Skrýt klávesnici</string>
   <string name="image_description_show_keyboard">Zobrazit klávesnici.</string>
   <string name="image_description_up">Šipka nahoru</string>
   <string name="image_description_down">Šipka dolů</string>

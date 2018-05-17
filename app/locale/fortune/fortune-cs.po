@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-03-08 08:41+0000\n"
+"PO-Revision-Date: 2017-10-08 10:14+0000\n"
 "Last-Translator: Martin Černáč <me@martincernac.cz>\n"
 "Language-Team: cs <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=((((n >= 2 && n <= 4)) && ((0 == 0))) ? 1 : "
 "(!((0 == 0))) ? 2 : (((n == 1)) && ((0 == 0))) ? 0 : 3);\n"
-"X-Launchpad-Export-Date: 2017-03-08 08:44+0000\n"
-"X-Generator: Launchpad (build 18330)\n"
+"X-Launchpad-Export-Date: 2018-05-17 03:41+0000\n"
+"X-Generator: Launchpad (build 18658)\n"
 "Language: cs\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -523,13 +523,14 @@ msgstr "Velikost historie uložená v paměti pro každou konzoli"
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr ""
+msgstr "Zálohovat veřejné klíče"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
 msgstr ""
+"Udržovat zálohy privátních klíčů pomocí Android zálohovacího mechanismu"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -1316,7 +1317,7 @@ msgstr "Poslat stisk klávesy TAB"
 #. accessibility              purposes.
 msgctxt "image_description_hide_keyboard"
 msgid "Hide keyboard."
-msgstr ""
+msgstr "Skrýt klávesnici"
 
 #. Describes the icon of the "show keyboard" button in the terminal view for
 #. accessibility              purposes.
