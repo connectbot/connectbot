@@ -143,7 +143,7 @@ public class StartupTest {
 				pressBack());
 		onView(withText(R.string.discard_host_changes_message)).check(matches(isDisplayed()));
 		onView(withText(R.string.discard_host_button)).perform(click());
-		onView(withId(R.id.list)).check(matches(isDisplayed()));
+		onView(withId(R.id.add_host_button)).check(matches(isDisplayed()));
 	}
 
 	@Test
