@@ -160,7 +160,8 @@ android {
     }
 
     testOptions {
-        execution 'ANDROID_TEST_ORCHESTRATOR'
+        // temporarily disable the orchestrator as this breaks coverage: https://issuetracker.google.com/issues/72758547
+        //execution 'ANDROID_TEST_ORCHESTRATOR'
         animationsDisabled true
 
         unitTests {
