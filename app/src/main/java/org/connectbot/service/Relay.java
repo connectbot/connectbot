@@ -65,14 +65,16 @@ public class Relay implements Runnable {
 	public void setCharset(String encoding) {
 		Log.d("ConnectBot.Relay", "changing charset to " + encoding);
 		Charset charset;
-		if (encoding.equals("CP437"))
+		if (encoding.equals("CP437")) {
 			charset = new IBM437("IBM437",
-					new String[] { "IBM437", "CP437" });
-		else
+					new String[] {"IBM437", "CP437"});
+		} else {
 			charset = Charset.forName(encoding);
+		}
 
-		if (charset == currentCharset || charset == null)
+		if (charset == null || charset.equals(currentCharset)) {
 			return;
+		}
 
 		CharsetDecoder newCd = charset.newDecoder();
 		newCd.onUnmappableCharacter(CodingErrorAction.REPLACE);

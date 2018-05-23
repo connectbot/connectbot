@@ -1229,10 +1229,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		Log.d(TAG, String.format("onConfigurationChanged; requestedOrientation=%d, newConfig.orientation=%d", getRequestedOrientation(), newConfig.orientation));
 		if (bound != null) {
 			if (forcedOrientation &&
-					(newConfig.orientation != Configuration.ORIENTATION_LANDSCAPE &&
+					((newConfig.orientation != Configuration.ORIENTATION_LANDSCAPE &&
 							getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) ||
 					(newConfig.orientation != Configuration.ORIENTATION_PORTRAIT &&
-							getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT))
+							getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)))
 				bound.setResizeAllowed(false);
 			else
 				bound.setResizeAllowed(true);
