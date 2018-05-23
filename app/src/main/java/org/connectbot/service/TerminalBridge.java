@@ -325,7 +325,7 @@ public class TerminalBridge implements VDUDisplay {
 		}
 
 		synchronized (localOutput) {
-			for (String line : output.split("\n")) {
+			for (String line : output.split("\n", -1)) {
 				if (line.length() > 0 && line.charAt(line.length() - 1) == '\r') {
 					line = line.substring(0, line.length() - 1);
 				}

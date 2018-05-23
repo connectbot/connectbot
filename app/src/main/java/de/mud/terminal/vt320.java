@@ -1273,7 +1273,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
 				int colorIndex = Integer.parseInt(colorData[1]);
 
 				if ("rgb:".equals(colorData[2].substring(0, 4))) {
-					String[] rgb = colorData[2].substring(4).split("/");
+					String[] rgb = colorData[2].substring(4).split("/", -1);
 
 					int red = Integer.parseInt(rgb[0].substring(0, 2), 16) & 0xFF;
 					int green = Integer.parseInt(rgb[1].substring(0, 2), 16) & 0xFF;
