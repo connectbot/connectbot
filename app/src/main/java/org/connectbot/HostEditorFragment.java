@@ -677,7 +677,7 @@ public class HostEditorFragment extends Fragment {
 	 */
 	private void handleHostChange() {
 		String quickConnectString = mQuickConnectField.getText().toString();
-		if (quickConnectString == null || quickConnectString.equals("")) {
+		if (quickConnectString.isEmpty()) {
 			// Invalid protocol and/or string, so don't do anything.
 			mListener.onHostInvalidated();
 			return;
