@@ -17,6 +17,7 @@ buildscript {
 }
 
 plugins {
+    id 'com.github.ben-manes.versions' version '0.17.0'
     id 'info.vividcode.android.sdk-manager' version '0.9.0'
 }
 
