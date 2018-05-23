@@ -286,6 +286,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		case 10:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY);
+			// fall through
 		case 11:
 			db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS
 					+ " (_id INTEGER PRIMARY KEY, "
@@ -295,21 +296,27 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 					+ FIELD_PORTFORWARD_SOURCEPORT + " INTEGER NOT NULL DEFAULT 8080, "
 					+ FIELD_PORTFORWARD_DESTADDR + " TEXT, "
 					+ FIELD_PORTFORWARD_DESTPORT + " INTEGER)");
+			// fall through
 		case 12:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "'");
+			// fall through
 		case 13:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "'");
+			// fall through
 		case 14:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "'");
+			// fall through
 		case 15:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_PROTOCOL + " TEXT DEFAULT 'ssh'");
+			// fall through
 		case 16:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "'");
+			// fall through
 		case 17:
 			db.execSQL("CREATE INDEX " + TABLE_PORTFORWARDS + FIELD_PORTFORWARD_HOSTID + "index ON "
 					+ TABLE_PORTFORWARDS + " (" + FIELD_PORTFORWARD_HOSTID + ");");
@@ -322,25 +329,32 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 					+ FIELD_COLOR_SCHEME + " INTEGER)");
 			db.execSQL("CREATE INDEX " + TABLE_COLORS + FIELD_COLOR_SCHEME + "index ON "
 					+ TABLE_COLORS + " (" + FIELD_COLOR_SCHEME + ");");
+			// fall through
 		case 18:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_USEAUTHAGENT + " TEXT DEFAULT '" + AUTHAGENT_NO + "'");
+			// fall through
 		case 19:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_STAYCONNECTED + " TEXT");
+			// fall through
 		case 20:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_FONTSIZE + " INTEGER");
+			// fall through
 		case 21:
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_COLOR_DEFAULTS);
 			db.execSQL(CREATE_TABLE_COLOR_DEFAULTS);
 			db.execSQL(CREATE_TABLE_COLOR_DEFAULTS_INDEX);
+			// fall through
 		case 22:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_QUICKDISCONNECT + " TEXT DEFAULT '" + Boolean.toString(false) + "'");
+			// fall through
 		case 23:
 			db.execSQL("UPDATE " + TABLE_HOSTS
 					+ " SET " + FIELD_HOST_FONTSIZE + " = " + FIELD_HOST_FONTSIZE + " / " + displayDensity);
+			// fall through
 		case 24:
 			// Move all the existing known hostkeys into their own table.
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_KNOWNHOSTS);
