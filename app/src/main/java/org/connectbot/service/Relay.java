@@ -88,6 +88,7 @@ public class Relay implements Runnable {
 		return currentCharset;
 	}
 
+	@Override
 	public void run() {
 		byteBuffer = ByteBuffer.allocate(BUFFER_SIZE);
 		charBuffer = CharBuffer.allocate(BUFFER_SIZE);

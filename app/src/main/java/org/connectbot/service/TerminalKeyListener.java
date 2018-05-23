@@ -128,6 +128,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	 * Handle onKey() events coming down from a {@link org.connectbot.TerminalView} above us.
 	 * Modify the keys to make more sense to a host then pass it to the transport.
 	 */
+	@Override
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
 		try {
 			// skip keys if we aren't connected yet or have been disconnected
@@ -630,6 +631,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		this.clipboard = clipboard;
 	}
 
+	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		if (PreferenceConstants.KEYMODE.equals(key) ||

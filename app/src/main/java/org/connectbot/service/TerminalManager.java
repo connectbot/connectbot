@@ -614,6 +614,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	/* (non-Javadoc)
 	 * @see android.content.SharedPreferences.OnSharedPreferenceChangeListener#onSharedPreferenceChanged(android.content.SharedPreferences, java.lang.String)
 	 */
+	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		if (PreferenceConstants.BELL.equals(key)) {

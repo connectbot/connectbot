@@ -151,6 +151,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	private boolean keyboardAlwaysVisible = false;
 
 	private ServiceConnection connection = new ServiceConnection() {
+		@Override
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
 
@@ -189,6 +190,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 		}
 
+		@Override
 		public void onServiceDisconnected(ComponentName className) {
 			bound = null;
 			adapter.notifyDataSetChanged();
@@ -204,6 +206,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		}
 	};
 
+	@Override
 	public void onDisconnected(TerminalBridge bridge) {
 		synchronized (adapter) {
 			adapter.notifyDataSetChanged();
@@ -441,6 +444,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		}
 
 		keyboardGroupHider = new Runnable() {
+			@Override
 			public void run() {
 				if (keyboardGroup.getVisibility() == View.GONE || inActionBarMenu) {
 					return;
@@ -535,6 +539,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		stringPromptInstructions = (TextView) findViewById(R.id.console_password_instructions);
 		stringPrompt = (EditText) findViewById(R.id.console_password);
 		stringPrompt.setOnKeyListener(new OnKeyListener() {
+			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (event.getAction() == KeyEvent.ACTION_UP) return false;
 				if (keyCode != KeyEvent.KEYCODE_ENTER) return false;
@@ -559,6 +564,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 		booleanYes = (Button) findViewById(R.id.console_prompt_yes);
 		booleanYes.setOnClickListener(new OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				PromptHelper helper = getCurrentPromptHelper();
 				if (helper == null) return;
@@ -569,6 +575,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 		Button booleanNo = (Button) findViewById(R.id.console_prompt_no);
 		booleanNo.setOnClickListener(new OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				PromptHelper helper = getCurrentPromptHelper();
 				if (helper == null) return;
@@ -607,6 +614,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 		mKeyboardButton = (ImageView) findViewById(R.id.button_keyboard);
 		mKeyboardButton.setOnClickListener(new OnClickListener() {
+			@Override
 			public void onClick(View view) {
 				View terminal = adapter.getCurrentTerminalView();
 				if (terminal == null)
@@ -655,6 +663,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				actionBar.hide();
 			}
 			actionBar.addOnMenuVisibilityListener(new ActionBar.OnMenuVisibilityListener() {
+				@Override
 				public void onMenuVisibilityChanged(boolean isVisible) {
 					inActionBarMenu = isVisible;
 					if (!isVisible) {
@@ -692,6 +701,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		// Reset keyboard auto-hide timer when scrolling
 		keyboardScroll.setOnTouchListener(
 				new OnTouchListener() {
+					@Override
 					public boolean onTouch(View v, MotionEvent event) {
 						switch (event.getAction()) {
 						case MotionEvent.ACTION_MOVE:
@@ -827,6 +837,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		disconnect.setEnabled(activeTerminal);
 		disconnect.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
 		disconnect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				// disconnect or close the currently visible session
 				TerminalView terminalView = adapter.getCurrentTerminalView();
@@ -845,6 +856,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			copy.setIcon(R.drawable.ic_action_copy);
 			copy.setEnabled(activeTerminal);
 			copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					adapter.getCurrentTerminalView().startPreHoneycombCopyMode();
 					Toast.makeText(ConsoleActivity.this, getString(R.string.console_copy_start), Toast.LENGTH_LONG).show();
@@ -860,6 +872,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		paste.setIcon(R.drawable.ic_action_paste);
 		paste.setEnabled(activeTerminal);
 		paste.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				pasteIntoTerminal();
 				return true;
@@ -872,6 +885,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		portForward.setIcon(android.R.drawable.ic_menu_manage);
 		portForward.setEnabled(sessionOpen && canForwardPorts);
 		portForward.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				TerminalView terminalView = adapter.getCurrentTerminalView();
 				TerminalBridge bridge = terminalView.bridge;
@@ -889,6 +903,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		urlscan.setIcon(android.R.drawable.ic_menu_search);
 		urlscan.setEnabled(activeTerminal);
 		urlscan.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				final TerminalView terminalView = adapter.getCurrentTerminalView();
 
@@ -915,6 +930,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		resize.setIcon(android.R.drawable.ic_menu_crop);
 		resize.setEnabled(sessionOpen);
 		resize.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				final TerminalView terminalView = adapter.getCurrentTerminalView();
 
@@ -924,6 +940,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 								ConsoleActivity.this, R.style.AlertDialogTheme)
 						.setView(resizeView)
 						.setPositiveButton(R.string.button_resize, new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								int width, height;
 								try {
@@ -1177,13 +1194,14 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		}
 	}
 
-	private class URLItemListener implements OnItemClickListener {
+	private static class URLItemListener implements OnItemClickListener {
 		private WeakReference<Context> contextRef;
 
 		URLItemListener(Context context) {
 			this.contextRef = new WeakReference<Context>(context);
 		}
 
+		@Override
 		public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
 			Context context = contextRef.get();
 

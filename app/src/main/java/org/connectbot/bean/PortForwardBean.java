@@ -75,6 +75,7 @@ public class PortForwardBean extends AbstractBean {
 		setDest(dest);
 	}
 
+	@Override
 	public String getBeanName() {
 		return BEAN_NAME;
 	}
@@ -222,6 +223,7 @@ public class PortForwardBean extends AbstractBean {
 	/**
 	 * @return
 	 */
+	@Override
 	public ContentValues getValues() {
 		ContentValues values = new ContentValues();
 
