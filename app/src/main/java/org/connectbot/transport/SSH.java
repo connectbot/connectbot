@@ -146,6 +146,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	private String agentLockPassphrase;
 
 	public class HostKeyVerifier extends ExtendedServerHostKeyVerifier {
+		@Override
 		public boolean verifyServerHostKey(String hostname, int port,
 				String serverHostKeyAlgorithm, byte[] serverHostKey) throws IOException {
 
@@ -606,6 +607,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		return connected;
 	}
 
+	@Override
 	public void connectionLost(Throwable reason) {
 		onDisconnect();
 	}
@@ -896,6 +898,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		this.useAuthAgent = useAuthAgent;
 	}
 
+	@Override
 	public Map<String, byte[]> retrieveIdentities() {
 		Map<String, byte[]> pubKeys = new HashMap<String, byte[]>(manager.loadedKeypairs.size());
 
@@ -950,6 +953,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		return result;
 	}
 
+	@Override
 	public boolean addIdentity(KeyPair pair, String comment, boolean confirmUse, int lifetime) {
 		PubkeyBean pubkey = new PubkeyBean();
 //		pubkey.setType(PubkeyDatabase.KEY_TYPE_IMPORTED);
@@ -960,19 +964,23 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		return true;
 	}
 
+	@Override
 	public boolean removeAllIdentities() {
 		manager.loadedKeypairs.clear();
 		return true;
 	}
 
+	@Override
 	public boolean removeIdentity(byte[] publicKey) {
 		return manager.removeKey(publicKey);
 	}
 
+	@Override
 	public boolean isAgentLocked() {
 		return agentLockPassphrase != null;
 	}
 
+	@Override
 	public boolean requestAgentUnlock(String unlockPassphrase) {
 		if (agentLockPassphrase == null)
 			return false;
@@ -983,6 +991,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		return agentLockPassphrase == null;
 	}
 
+	@Override
 	public boolean setAgentLock(String lockPassphrase) {
 		if (agentLockPassphrase != null)
 			return false;

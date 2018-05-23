@@ -286,6 +286,7 @@ public class TerminalBridge implements VDUDisplay {
 		outputLine(manager.res.getString(R.string.terminal_connecting, host.getHostname(), host.getPort(), host.getProtocol()));
 
 		Thread connectionThread = new Thread(new Runnable() {
+			@Override
 			public void run() {
 				transport.connect();
 			}
@@ -378,6 +379,7 @@ public class TerminalBridge implements VDUDisplay {
 			return;
 
 		Thread injectStringThread = new Thread(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					transport.write(string.getBytes(host.getEncoding()));
@@ -458,6 +460,7 @@ public class TerminalBridge implements VDUDisplay {
 		// disconnection request hangs if we havent really connected to a host yet
 		// temporary fix is to just spawn disconnection into a thread
 		Thread disconnectThread = new Thread(new Runnable() {
+			@Override
 			public void run() {
 				if (transport != null && transport.isConnected())
 					transport.close();
@@ -479,6 +482,7 @@ public class TerminalBridge implements VDUDisplay {
 				return;
 			}
 			Thread disconnectPromptThread = new Thread(new Runnable() {
+				@Override
 				public void run() {
 					Boolean result = promptHelper.requestBooleanPrompt(null,
 							manager.res.getString(R.string.prompt_host_disconnected));
@@ -691,10 +695,12 @@ public class TerminalBridge implements VDUDisplay {
 		bitmap = null;
 	}
 
+	@Override
 	public void setVDUBuffer(VDUBuffer buffer) {
 		this.buffer = buffer;
 	}
 
+	@Override
 	public VDUBuffer getVDUBuffer() {
 		return buffer;
 	}
@@ -814,12 +820,14 @@ public class TerminalBridge implements VDUDisplay {
 		fullRedraw = false;
 	}
 
+	@Override
 	public void redraw() {
 		if (parent != null)
 			parent.postInvalidate();
 	}
 
 	// We don't have a scroll bar.
+	@Override
 	public void updateScrollBar() {
 	}
 
@@ -981,12 +989,14 @@ public class TerminalBridge implements VDUDisplay {
 	/* (non-Javadoc)
 	 * @see de.mud.terminal.VDUDisplay#setColor(byte, byte, byte, byte)
 	 */
+	@Override
 	public void setColor(int index, int red, int green, int blue) {
 		// Don't allow the system colors to be overwritten for now. May violate specs.
 		if (index < color.length && index >= 16)
 			color[index] = 0xff000000 | red << 16 | green << 8 | blue;
 	}
 
+	@Override
 	public final void resetColors() {
 		int[] defaults = manager.colordb.getDefaultColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
 		defaultFg = defaults[0];
