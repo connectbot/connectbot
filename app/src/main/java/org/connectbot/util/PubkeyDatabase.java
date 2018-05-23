@@ -17,7 +17,7 @@
 
 package org.connectbot.util;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.connectbot.bean.PubkeyBean;
@@ -144,7 +144,7 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 	}
 
 	private List<PubkeyBean> getPubkeys(String selection, String[] selectionArgs) {
-		List<PubkeyBean> pubkeys = new LinkedList<PubkeyBean>();
+		List<PubkeyBean> pubkeys = new ArrayList<>();
 
 		Cursor c = mDb.query(TABLE_PUBKEYS, null, selection, selectionArgs, null, null, null);
 
@@ -223,7 +223,7 @@ public class PubkeyDatabase extends RobustSQLiteOpenHelper {
 	 * in a ListPreference. Sorted by <code>_id</code> ascending.
 	 */
 	public List<CharSequence> allValues(String column) {
-		List<CharSequence> list = new LinkedList<CharSequence>();
+		List<CharSequence> list = new ArrayList<>();
 
 		Cursor c = mDb.query(TABLE_PUBKEYS, new String[] { "_id", column },
 				null, null, null, null, "_id ASC");

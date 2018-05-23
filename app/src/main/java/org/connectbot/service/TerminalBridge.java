@@ -19,7 +19,7 @@ package org.connectbot.service;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -152,9 +152,9 @@ public class TerminalBridge implements VDUDisplay {
 		selectionArea = new SelectionArea();
 		scrollback = 1;
 
-		localOutput = new LinkedList<String>();
+		localOutput = new ArrayList<>();
 
-		fontSizeChangedListeners = new LinkedList<FontSizeChangedListener>();
+		fontSizeChangedListeners = new ArrayList<>();
 
 		transport = null;
 
@@ -184,9 +184,9 @@ public class TerminalBridge implements VDUDisplay {
 
 		refreshOverlayFontSize();
 
-		localOutput = new LinkedList<String>();
+		localOutput = new ArrayList<>();
 
-		fontSizeChangedListeners = new LinkedList<FontSizeChangedListener>();
+		fontSizeChangedListeners = new ArrayList<>();
 
 		int hostFontSizeDp = host.getFontSize();
 		if (hostFontSizeDp <= 0) {
@@ -1043,7 +1043,7 @@ public class TerminalBridge implements VDUDisplay {
 	 * @return
 	 */
 	public List<String> scanForURLs() {
-		List<String> urls = new LinkedList<String>();
+		List<String> urls = new ArrayList<>();
 
 		char[] visibleBuffer = new char[buffer.height * buffer.width];
 		for (int l = 0; l < buffer.height; l++)
