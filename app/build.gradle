@@ -26,7 +26,6 @@ ext {
     espressoVersion = '3.0.2'
 }
 
-apply plugin: 'info.vividcode.android.sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'com.github.gfx.ribbonizer'
