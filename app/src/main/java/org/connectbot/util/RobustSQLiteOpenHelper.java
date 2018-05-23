@@ -17,7 +17,7 @@
 
 package org.connectbot.util;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -32,8 +32,8 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
  *
  */
 public abstract class RobustSQLiteOpenHelper extends SQLiteOpenHelper {
-	private static List<String> mTableNames = new LinkedList<String>();
-	private static List<String> mIndexNames = new LinkedList<String>();
+	private static List<String> mTableNames = new ArrayList<>();
+	private static List<String> mIndexNames = new ArrayList<>();
 
 	public RobustSQLiteOpenHelper(Context context, String name,
 			CursorFactory factory, int version) {

@@ -23,7 +23,6 @@ import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -78,7 +77,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	public TerminalBridge defaultBridge = null;
 
-	public List<HostBean> disconnected = new LinkedList<HostBean>();
+	public List<HostBean> disconnected = new ArrayList<>();
 
 	public BridgeDisconnectedListener disconnectListener = null;
 
@@ -115,8 +114,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	private boolean savingKeys;
 
-	protected List<WeakReference<TerminalBridge>> mPendingReconnect
-			= new LinkedList<WeakReference<TerminalBridge>>();
+	protected List<WeakReference<TerminalBridge>> mPendingReconnect = new ArrayList<>();
 
 	public boolean hardKeyboardHidden;
 
