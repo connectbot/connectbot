@@ -143,11 +143,11 @@ public class EntropyView extends View {
 		for (int i = 0; i < 4 && mEntropyByteIndex < SHA1_MAX_BYTES; i++) {
 			if ((input & 0x3) == 0x1) {
 				mEntropy[mEntropyByteIndex] = (byte) (mEntropy[mEntropyByteIndex] << 1);
-				mEntropy[mEntropyByteIndex] |= 1;
+				mEntropy[mEntropyByteIndex] = (byte) (mEntropy[mEntropyByteIndex] | 1);
 				mEntropyBitIndex++;
 				input >>= 2;
 			} else if ((input & 0x3) == 0x2) {
-				mEntropy[mEntropyByteIndex] <<= 1;
+				mEntropy[mEntropyByteIndex] = (byte) (mEntropy[mEntropyByteIndex] << 1);
 				mEntropyBitIndex++;
 				input >>= 2;
 			}

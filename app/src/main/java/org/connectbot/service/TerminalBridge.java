@@ -883,7 +883,7 @@ public class TerminalBridge implements VDUDisplay {
 
 		float[] widths = new float[1];
 		defaultPaint.getTextWidths("X", widths);
-		int termWidth = (int) widths[0] * cols;
+		int termWidth = ((int) widths[0]) * cols;
 		int termHeight = (int) Math.ceil(fm.descent - fm.top) * rows;
 
 		Log.d("fontsize", String.format("font size %fdp resulted in %d x %d", sizeDp, termWidth, termHeight));
