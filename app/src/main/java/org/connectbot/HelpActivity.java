@@ -39,7 +39,7 @@ public class HelpActivity extends AppCompatActivity {
 		super.onCreate(icicle);
 		setContentView(R.layout.act_help);
 
-		Button hintsButton = (Button) findViewById(R.id.hints_button);
+		Button hintsButton = findViewById(R.id.hints_button);
 		hintsButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -49,7 +49,7 @@ public class HelpActivity extends AppCompatActivity {
 		});
 
 		inflater = LayoutInflater.from(this);
-		Button shortcutsButton = (Button) findViewById(R.id.shortcuts_button);
+		Button shortcutsButton = findViewById(R.id.shortcuts_button);
 		shortcutsButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -65,7 +65,7 @@ public class HelpActivity extends AppCompatActivity {
 			}
 		});
 
-		Button eulaButton = (Button) findViewById(R.id.eula_button);
+		Button eulaButton = findViewById(R.id.eula_button);
 		eulaButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

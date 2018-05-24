@@ -35,7 +35,6 @@ import android.support.annotation.StyleRes;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -171,7 +170,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 		setContentView(R.layout.act_hostlist);
 		setTitle(R.string.title_hosts_list);
 
-		mListView = (RecyclerView) findViewById(R.id.list);
+		mListView = findViewById(R.id.list);
 		mListView.setHasFixedSize(true);
 		mListView.setLayoutManager(new LinearLayoutManager(this));
 		mListView.addItemDecoration(new ListItemDecoration(this));
@@ -213,8 +212,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 
 		this.registerForContextMenu(mListView);
 
-		FloatingActionButton addHostButton =
-				(FloatingActionButton) findViewById(R.id.add_host_button);
+		FloatingActionButton addHostButton = findViewById(R.id.add_host_button);
 		addHostButton.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
 		addHostButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -401,9 +399,9 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 		public HostViewHolder(View v) {
 			super(v);
 
-			icon = (ImageView) v.findViewById(android.R.id.icon);
-			nickname = (TextView) v.findViewById(android.R.id.text1);
-			caption = (TextView) v.findViewById(android.R.id.text2);
+			icon = v.findViewById(android.R.id.icon);
+			nickname = v.findViewById(android.R.id.text1);
+			caption = v.findViewById(android.R.id.text2);
 		}
 
 		@Override

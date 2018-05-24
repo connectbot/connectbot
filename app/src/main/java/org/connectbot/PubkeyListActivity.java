@@ -58,7 +58,6 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -131,7 +130,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		super.onCreate(icicle);
 		setContentView(R.layout.act_pubkeylist);
 
-		mListView = (RecyclerView) findViewById(R.id.list);
+		mListView = findViewById(R.id.list);
 		mListView.setHasFixedSize(true);
 		mListView.setLayoutManager(new LinearLayoutManager(this));
 		mListView.addItemDecoration(new ListItemDecoration(this));
@@ -286,7 +285,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 	protected void handleAddKey(final PubkeyBean pubkey) {
 		if (pubkey.isEncrypted()) {
 			final View view = View.inflate(this, R.layout.dia_password, null);
-			final EditText passwordField = (EditText) view.findViewById(android.R.id.text1);
+			final EditText passwordField = view.findViewById(android.R.id.text1);
 
 			new android.support.v7.app.AlertDialog.Builder(
 					PubkeyListActivity.this, R.style.AlertDialogTheme)
@@ -476,9 +475,9 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		public PubkeyViewHolder(View v) {
 			super(v);
 
-			icon = (ImageView) v.findViewById(android.R.id.icon);
-			nickname = (TextView) v.findViewById(android.R.id.text1);
-			caption = (TextView) v.findViewById(android.R.id.text2);
+			icon = v.findViewById(android.R.id.icon);
+			nickname = v.findViewById(android.R.id.text1);
+			caption = v.findViewById(android.R.id.text2);
 		}
 
 		@Override

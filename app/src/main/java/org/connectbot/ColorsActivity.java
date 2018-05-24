@@ -74,17 +74,17 @@ public class ColorsActivity extends AppCompatActivity implements OnItemClickList
 		mColorList = mHostDb.getColorsForScheme(mColorScheme);
 		mDefaultColors = mHostDb.getDefaultColorsForScheme(mColorScheme);
 
-		mColorGrid = (GridView) findViewById(R.id.color_grid);
+		mColorGrid = findViewById(R.id.color_grid);
 		mColorGrid.setAdapter(new ColorsAdapter(true));
 		mColorGrid.setOnItemClickListener(this);
 		mColorGrid.setSelection(0);
 
-		mFgSpinner = (Spinner) findViewById(R.id.fg);
+		mFgSpinner = findViewById(R.id.fg);
 		mFgSpinner.setAdapter(new ColorsAdapter(false, R.string.colors_fg_label));
 		mFgSpinner.setSelection(mDefaultColors[0]);
 		mFgSpinner.setOnItemSelectedListener(this);
 
-		mBgSpinner = (Spinner) findViewById(R.id.bg);
+		mBgSpinner = findViewById(R.id.bg);
 		mBgSpinner.setAdapter(new ColorsAdapter(false, R.string.color_bg_label));
 		mBgSpinner.setSelection(mDefaultColors[1]);
 		mBgSpinner.setOnItemSelectedListener(this);

@@ -52,7 +52,6 @@ import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.SeekBar;
@@ -115,21 +114,21 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 
 		setContentView(R.layout.act_generatepubkey);
 
-		nickname = (EditText) findViewById(R.id.nickname);
+		nickname = findViewById(R.id.nickname);
 
-		RadioGroup keyTypeGroup = (RadioGroup) findViewById(R.id.key_type);
+		RadioGroup keyTypeGroup = findViewById(R.id.key_type);
 
-		bitsText = (EditText) findViewById(R.id.bits);
-		bitsSlider = (SeekBar) findViewById(R.id.bits_slider);
+		bitsText = findViewById(R.id.bits);
+		bitsSlider = findViewById(R.id.bits_slider);
 
-		password1 = (EditText) findViewById(R.id.password1);
-		password2 = (EditText) findViewById(R.id.password2);
+		password1 = findViewById(R.id.password1);
+		password2 = findViewById(R.id.password2);
 
-		unlockAtStartup = (CheckBox) findViewById(R.id.unlock_at_startup);
+		unlockAtStartup = findViewById(R.id.unlock_at_startup);
 
-		confirmUse = (CheckBox) findViewById(R.id.confirm_use);
+		confirmUse = findViewById(R.id.confirm_use);
 
-		save = (Button) findViewById(R.id.save);
+		save = findViewById(R.id.save);
 
 		inflater = LayoutInflater.from(this);
 
@@ -141,7 +140,7 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 
 		// TODO add BC to provide EC for devices that don't have it.
 		if (Security.getProviders("KeyPairGenerator.EC") == null) {
-			((RadioButton) findViewById(R.id.ec)).setEnabled(false);
+			findViewById(R.id.ec).setEnabled(false);
 		}
 
 		keyTypeGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
