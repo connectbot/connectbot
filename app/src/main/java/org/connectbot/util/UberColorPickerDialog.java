@@ -163,7 +163,7 @@ public class UberColorPickerDialog extends Dialog {
 		private static int[] TEXT_YUV_POS = new int[2];
 		private static int[] TEXT_HEX_POS = new int[2];
 
-		private static final float PI = 3.141592653589793f;
+		private static final float PI = 3.1415927f;
 
 		private final int mSwatchWidthPx;
 		private final int mTextSizePx;
