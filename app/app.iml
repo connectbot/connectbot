@@ -147,6 +147,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/shaders" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/annotation_processor_list" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/apk_list" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/app_classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/blame" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/check-manifest" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/cmake" />
@@ -167,9 +168,13 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/shaders" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/split_list" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/tmp" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/transforms" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/unit_test_config_directory" />
+      <excludeFolder url="file://$MODULE_DIR$/build/jacoco" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
       <excludeFolder url="file://$MODULE_DIR$/build/reports" />
+      <excludeFolder url="file://$MODULE_DIR$/build/test-results" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 27 Platform" jdkType="Android SDK" />
@@ -208,7 +213,6 @@
     <orderEntry type="library" name="Gradle: com.android.support:preference-v14-27.0.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.apache.maven:maven-artifact-manager:2.2.1@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.apache.maven:maven-settings:2.2.1@jar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.assertj:assertj-core:3.9.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: org.connectbot:sshlib:2.2.5@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.robolectric:robolectric:3.6.1@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: net.sf.kxml:kxml2:2.3.0@jar" level="project" />
@@ -237,6 +241,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: org.apache.maven.wagon:wagon-http-shared:1.0-beta-6@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.apache.ant:ant-launcher:1.8.0@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.ow2.asm:asm-commons:5.0.1@jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.assertj:assertj-core:3.10.0@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.apache.maven:maven-profile:2.2.1@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.robolectric:shadowapi:3.6.1@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-annotations:27.0.2@jar" level="project" />

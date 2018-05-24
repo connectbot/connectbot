@@ -209,7 +209,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.13.0'
-    testImplementation 'org.assertj:assertj-core:3.9.0'
+    testImplementation 'org.assertj:assertj-core:3.10.0'
     testImplementation('org.robolectric:robolectric:3.6.1') {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
