@@ -249,7 +249,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			return true;
 		}
 
-		List<String> names = new LinkedList<String>();
+		List<String> names = new LinkedList<>();
 		{
 			File[] files = sdcard.listFiles();
 			if (files != null) {
