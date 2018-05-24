@@ -17,7 +17,7 @@
 
 package org.connectbot.util;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import org.connectbot.R;
 
@@ -40,7 +40,7 @@ public class EntropyView extends View {
 	private FontMetrics mFontMetrics;
 	private boolean mFlipFlop;
 	private long mLastTime;
-	private Vector<OnEntropyGatheredListener> listeners;
+	private ArrayList<OnEntropyGatheredListener> listeners;
 
 	private byte[] mEntropy;
 	private int mEntropyByteIndex;
@@ -75,7 +75,7 @@ public class EntropyView extends View {
 		mEntropyByteIndex = 0;
 		mEntropyBitIndex = 0;
 
-		listeners = new Vector<>();
+		listeners = new ArrayList<>();
 	}
 
 	public void addOnEntropyGatheredListener(OnEntropyGatheredListener listener) {
