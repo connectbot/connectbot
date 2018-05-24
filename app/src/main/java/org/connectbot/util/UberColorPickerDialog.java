@@ -956,6 +956,7 @@ public class UberColorPickerDialog extends Dialog {
 							mFocusedControl = 1;
 						}
 					}
+					// fall through
 				case MotionEvent.ACTION_MOVE:
 					//NEW_METHOD_WORK_NEEDED_HERE
 					//To add a new method, replicate and extend the entries in this list,
