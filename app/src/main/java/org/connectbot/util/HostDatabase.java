@@ -481,7 +481,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * @param c cursor to read from
 	 */
 	private List<HostBean> createHostBeans(Cursor c) {
-		List<HostBean> hosts = new LinkedList<HostBean>();
+		List<HostBean> hosts = new LinkedList<>();
 
 		final int COL_ID = c.getColumnIndexOrThrow("_id"),
 			COL_NICKNAME = c.getColumnIndexOrThrow(FIELD_HOST_NICKNAME),
@@ -557,7 +557,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 
 		Iterator<Entry<String, String>> i = selection.entrySet().iterator();
 
-		List<String> selectionValuesList = new LinkedList<String>();
+		List<String> selectionValuesList = new LinkedList<>();
 		int n = 0;
 		while (i.hasNext()) {
 			Entry<String, String> entry = i.next();
@@ -749,7 +749,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * @return port forwards associated with host ID or empty list if no match
 	 */
 	public List<PortForwardBean> getPortForwardsForHost(HostBean host) {
-		List<PortForwardBean> portForwards = new LinkedList<PortForwardBean>();
+		List<PortForwardBean> portForwards = new LinkedList<>();
 		if (host == null) {
 			return portForwards;
 		}

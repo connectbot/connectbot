@@ -69,11 +69,9 @@ import android.util.Log;
 public class TerminalManager extends Service implements BridgeDisconnectedListener, OnSharedPreferenceChangeListener, ProviderLoaderListener {
 	public final static String TAG = "CB.TerminalManager";
 
-	private ArrayList<TerminalBridge> bridges = new ArrayList<TerminalBridge>();
-	public Map<HostBean, WeakReference<TerminalBridge>> mHostBridgeMap =
-		new HashMap<HostBean, WeakReference<TerminalBridge>>();
-	public Map<String, WeakReference<TerminalBridge>> mNicknameBridgeMap =
-		new HashMap<String, WeakReference<TerminalBridge>>();
+	private ArrayList<TerminalBridge> bridges = new ArrayList<>();
+	public Map<HostBean, WeakReference<TerminalBridge>> mHostBridgeMap = new HashMap<>();
+	public Map<String, WeakReference<TerminalBridge>> mNicknameBridgeMap = new HashMap<>();
 
 	public TerminalBridge defaultBridge = null;
 
@@ -83,7 +81,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	private final ArrayList<OnHostStatusChangedListener> hostStatusChangedListeners = new ArrayList<>();
 
-	public Map<String, KeyHolder> loadedKeypairs = new HashMap<String, KeyHolder>();
+	public Map<String, KeyHolder> loadedKeypairs = new HashMap<>();
 
 	public Resources res;
 
@@ -226,7 +224,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		synchronized (bridges) {
 			bridges.add(bridge);
-			WeakReference<TerminalBridge> wr = new WeakReference<TerminalBridge>(bridge);
+			WeakReference<TerminalBridge> wr = new WeakReference<>(bridge);
 			mHostBridgeMap.put(bridge.host, wr);
 			mNicknameBridgeMap.put(bridge.host.getNickname(), wr);
 		}
@@ -699,7 +697,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 */
 	public void requestReconnect(TerminalBridge bridge) {
 		synchronized (mPendingReconnect) {
-			mPendingReconnect.add(new WeakReference<TerminalBridge>(bridge));
+			mPendingReconnect.add(new WeakReference<>(bridge));
 			if (!bridge.isUsingNetwork() ||
 					connectivityManager.isConnected()) {
 				reconnectPending();

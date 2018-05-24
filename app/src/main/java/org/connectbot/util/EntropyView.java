@@ -75,7 +75,7 @@ public class EntropyView extends View {
 		mEntropyByteIndex = 0;
 		mEntropyBitIndex = 0;
 
-		listeners = new Vector<OnEntropyGatheredListener>();
+		listeners = new Vector<>();
 	}
 
 	public void addOnEntropyGatheredListener(OnEntropyGatheredListener listener) {

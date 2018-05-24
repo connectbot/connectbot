@@ -134,7 +134,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		| ChannelCondition.CLOSED
 		| ChannelCondition.EOF;
 
-	private List<PortForwardBean> portForwards = new LinkedList<PortForwardBean>();
+	private List<PortForwardBean> portForwards = new LinkedList<>();
 
 	private int columns;
 	private int rows;
@@ -580,7 +580,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 	@Override
 	public Map<String, String> getOptions() {
-		Map<String, String> options = new HashMap<String, String>();
+		Map<String, String> options = new HashMap<>();
 
 		options.put("compression", Boolean.toString(compression));
 
@@ -900,7 +900,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 	@Override
 	public Map<String, byte[]> retrieveIdentities() {
-		Map<String, byte[]> pubKeys = new HashMap<String, byte[]>(manager.loadedKeypairs.size());
+		Map<String, byte[]> pubKeys = new HashMap<>(manager.loadedKeypairs.size());
 
 		for (Entry<String, KeyHolder> entry : manager.loadedKeypairs.entrySet()) {
 			KeyPair pair = entry.getValue().pair;

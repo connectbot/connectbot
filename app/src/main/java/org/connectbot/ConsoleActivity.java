@@ -916,7 +916,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				URLItemListener urlListener = new URLItemListener(ConsoleActivity.this);
 				urlListView.setOnItemClickListener(urlListener);
 
-				urlListView.setAdapter(new ArrayAdapter<String>(ConsoleActivity.this, android.R.layout.simple_list_item_1, urls));
+				urlListView.setAdapter(new ArrayAdapter<>(ConsoleActivity.this, android.R.layout.simple_list_item_1, urls));
 				urlDialog.setContentView(urlListView);
 				urlDialog.show();
 
@@ -1198,7 +1198,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		private WeakReference<Context> contextRef;
 
 		URLItemListener(Context context) {
-			this.contextRef = new WeakReference<Context>(context);
+			this.contextRef = new WeakReference<>(context);
 		}
 
 		@Override
