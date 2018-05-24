@@ -71,6 +71,7 @@ public class XmlBuilder {
 		return this;
 	}
 
+	@Override
 	public String toString() {
 		return sb.toString();
 	}

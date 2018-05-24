@@ -109,6 +109,7 @@ public class PubkeyListActivityTest {
 	public Activity getDisplayedActivityInstance() {
 		final Activity[] currentActivity = new Activity[1];
 		getInstrumentation().runOnMainSync(new Runnable() {
+			@Override
 			public void run() {
 				Collection<Activity> resumedActivities = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(RESUMED);
 				if (resumedActivities.iterator().hasNext()) {
