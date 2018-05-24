@@ -18,7 +18,6 @@
 package org.connectbot;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
 import android.content.ContentValues;
