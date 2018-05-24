@@ -47,7 +47,7 @@ import de.mud.terminal.vt320;
  * @author rhansby
  */
 @TargetApi(11)
-public class TerminalTextViewOverlay extends TextView {
+public class TerminalTextViewOverlay extends android.support.v7.widget.AppCompatTextView {
 	public TerminalView terminalView; // ryan: this name sucks
 	private String currentSelection = "";
 	private ActionMode selectionActionMode;
