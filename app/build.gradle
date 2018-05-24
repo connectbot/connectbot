@@ -222,7 +222,7 @@ def getGitDescription = { ->
         }
         return stdout.toString().trim()
     } catch (ignored) {
-        return null;
+        return null
     }
 }
 
