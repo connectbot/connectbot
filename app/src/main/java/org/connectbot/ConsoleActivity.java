@@ -594,6 +594,13 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			layoutParams.addRule(RelativeLayout.ABOVE, R.id.keyboard_group);
 			pager.setLayoutParams(layoutParams);
 
+			layoutParams = new RelativeLayout.LayoutParams(
+					ViewGroup.LayoutParams.MATCH_PARENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT);
+			layoutParams.addRule(RelativeLayout.ABOVE, R.id.keyboard_group);
+			findViewById(R.id.console_password_group).setLayoutParams(layoutParams);
+			findViewById(R.id.console_boolean_group).setLayoutParams(layoutParams);
+
 			// Show virtual keyboard
 			keyboardGroup.setVisibility(View.VISIBLE);
 		}
@@ -1145,6 +1152,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 		PromptHelper prompt = view.bridge.promptHelper;
 		if (String.class.equals(prompt.promptRequested)) {
+			hideEmulatedKeys();
 			stringPromptGroup.setVisibility(View.VISIBLE);
 
 			String instructions = prompt.promptInstructions;
@@ -1158,6 +1166,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			stringPrompt.requestFocus();
 
 		} else if (Boolean.class.equals(prompt.promptRequested)) {
+			hideEmulatedKeys();
 			booleanPromptGroup.setVisibility(View.VISIBLE);
 			booleanPrompt.setText(prompt.promptHint);
 			booleanYes.requestFocus();

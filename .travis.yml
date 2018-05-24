@@ -51,7 +51,7 @@ before_script:
   # Create and start emulator as early as possible
   - $ANDROID_HOME/tools/bin/avdmanager create avd --force --name test --package 'system-images;android-22;default;armeabi-v7a' --abi armeabi-v7a --device 'Nexus 4' --sdcard 128M
   - $ANDROID_HOME/emulator/emulator -avd test -skin 768x1280 -no-audio -no-window &
-  - $ANDROID_HOME/tools/bin/sdkmanager 'build-tools;23.0.3' >  /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager 'build-tools;27.0.3' > /dev/null
   - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-23' > /dev/null
   - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-22' > /dev/null # for emulator
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;android;m2repository' > /dev/null

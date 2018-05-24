@@ -415,6 +415,7 @@ public class HostEditorFragment extends Fragment {
 		mEncodingText = (TextView) view.findViewById(R.id.encoding_text);
 
 		mUseSshAuthSwitch = (CheckableMenuItem) view.findViewById(R.id.use_ssh_auth_item);
+		mUseSshAuthSwitch.setChecked(!mHost.getUseAuthAgent().equals(HostDatabase.AUTHAGENT_NO));
 		mUseSshAuthSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -423,7 +424,8 @@ public class HostEditorFragment extends Fragment {
 		});
 
 		mUseSshConfirmationSwitch = (CheckableMenuItem) view.findViewById(R.id.ssh_auth_confirmation_item);
-		mUseSshAuthSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		mUseSshConfirmationSwitch.setChecked(mHost.getUseAuthAgent().equals(HostDatabase.AUTHAGENT_CONFIRM));
+		mUseSshConfirmationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				processSshAuthChange();

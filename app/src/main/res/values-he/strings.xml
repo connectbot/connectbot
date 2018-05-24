@@ -112,8 +112,8 @@
   <string name="hostpref_port_title">פתחה</string>
   <string name="bind_never">לא חובר מעולם</string>
   <plurals name="console_copy_done">
-    <item quantity="one">הועתקו %1$d בתים ללוח הגזירים</item>
-    <item quantity="two"/>
+    <item quantity="one"/>
+    <item quantity="two">הועתקו %1$d בתים ללוח הגזירים</item>
     <item quantity="many"/>
     <item quantity="other"/>
   </plurals>

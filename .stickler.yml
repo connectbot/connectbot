@@ -1,0 +1,3 @@
+linters:
+  checkstyle:
+    config: ./config/quality/checkstyle/checkstyle.xml
