@@ -178,7 +178,9 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'LICENSE.txt'
+        exclude '**/*.gwt.xml'
     }
+
     externalNativeBuild {
         cmake {
             path 'CMakeLists.txt'
@@ -188,9 +190,10 @@ android {
 
 tasks.withType(JavaCompile) {
     options.compilerArgs += [
-            '-Xep:SynchronizeOnNonFinalField:OFF',
             '-Xep:ClassCanBeStatic:OFF',
+            '-Xep:ClassNewInstance:OFF',
             '-Xep:DefaultCharset:OFF',
+            '-Xep:SynchronizeOnNonFinalField:OFF',
             '-XepExcludedPaths:' +
                     '.*/app/src/main/java/de/mud/.*|' +
                     '.*/app/src/main/java/org/apache/.*|' +
