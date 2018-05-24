@@ -85,11 +85,7 @@ public class TransportFactory {
 
 	public static boolean canForwardPorts(String protocol) {
 		// TODO uh, make this have less knowledge about its children
-		if (SSH.getProtocolName().equals(protocol)) {
-			return true;
-		} else {
-			return false;
-		}
+		return SSH.getProtocolName().equals(protocol);
 	}
 
 	/**
