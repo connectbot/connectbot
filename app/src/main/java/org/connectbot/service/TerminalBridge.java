@@ -486,7 +486,7 @@ public class TerminalBridge implements VDUDisplay {
 				public void run() {
 					Boolean result = promptHelper.requestBooleanPrompt(null,
 							manager.res.getString(R.string.prompt_host_disconnected));
-					if (result == null || result.booleanValue()) {
+					if (result == null || result) {
 						awaitingClose = true;
 						triggerDisconnectListener();
 					}
