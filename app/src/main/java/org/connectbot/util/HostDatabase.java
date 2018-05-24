@@ -21,7 +21,6 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -486,7 +485,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * @param c cursor to read from
 	 */
 	private List<HostBean> createHostBeans(Cursor c) {
-		List<HostBean> hosts = new LinkedList<>();
+		List<HostBean> hosts = new ArrayList<>();
 
 		final int COL_ID = c.getColumnIndexOrThrow("_id"),
 			COL_NICKNAME = c.getColumnIndexOrThrow(FIELD_HOST_NICKNAME),
@@ -563,7 +562,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 
 		Iterator<Entry<String, String>> i = selection.entrySet().iterator();
 
-		List<String> selectionValuesList = new LinkedList<>();
+		List<String> selectionValuesList = new ArrayList<>();
 		int n = 0;
 		while (i.hasNext()) {
 			Entry<String, String> entry = i.next();
@@ -759,7 +758,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 */
 	@Override
 	public List<PortForwardBean> getPortForwardsForHost(HostBean host) {
-		List<PortForwardBean> portForwards = new LinkedList<>();
+		List<PortForwardBean> portForwards = new ArrayList<>();
 		if (host == null) {
 			return portForwards;
 		}

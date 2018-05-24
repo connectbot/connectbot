@@ -34,8 +34,8 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -134,7 +134,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		| ChannelCondition.CLOSED
 		| ChannelCondition.EOF;
 
-	private List<PortForwardBean> portForwards = new LinkedList<>();
+	private List<PortForwardBean> portForwards = new ArrayList<>();
 
 	private int columns;
 	private int rows;

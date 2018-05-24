@@ -27,9 +27,9 @@ import java.io.InputStreamReader;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EventListener;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.connectbot.bean.PubkeyBean;
@@ -251,7 +251,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			return true;
 		}
 
-		List<String> names = new LinkedList<>();
+		List<String> names = new ArrayList<>();
 		{
 			File[] files = sdcard.listFiles();
 			if (files != null) {
