@@ -547,7 +547,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 						clipboard.setText(openSSHPubkey);
 					} catch (Exception e) {
-						e.printStackTrace();
+						Log.d(TAG, "Error converting to OpenSSH format", e);
 					}
 					return true;
 				}
@@ -570,7 +570,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 						clipboard.setText(data);
 					} catch (Exception e) {
-						e.printStackTrace();
+						Log.d(TAG, "Error copying private key", e);
 					}
 					return true;
 				}
