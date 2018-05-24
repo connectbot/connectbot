@@ -355,7 +355,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 			if (PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType())) {
 				// load specific key using pem format
-				pair = PEMDecoder.decode(new String(pubkey.getPrivateKey()).toCharArray(), password);
+				pair = PEMDecoder.decode(new String(pubkey.getPrivateKey(), "UTF-8").toCharArray(), password);
 			} else {
 				// load using internal generated format
 				PrivateKey privKey;
