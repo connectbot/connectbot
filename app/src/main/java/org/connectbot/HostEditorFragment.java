@@ -616,9 +616,7 @@ public class HostEditorFragment extends Fragment {
 		mCharsetData = data;
 
 		if (mEncodingText != null) {
-			Iterator<Map.Entry<String, String>> it = data.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, String> pair = it.next();
+			for (Map.Entry<String, String> pair : data.entrySet()) {
 				if (pair.getValue().equals(mHost.getEncoding())) {
 					mEncodingText.setText(pair.getKey());
 					return;
