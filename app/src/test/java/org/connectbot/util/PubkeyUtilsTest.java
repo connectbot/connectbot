@@ -331,14 +331,15 @@ public class PubkeyUtilsTest {
 	}
 
 	private static class MyPrivateKey implements PrivateKey {
+		@Override
 		public String getAlgorithm() {
 			throw new UnsupportedOperationException();
 		}
-
+		@Override
 		public byte[] getEncoded() {
 			throw new UnsupportedOperationException();
 		}
-
+		@Override
 		public String getFormat() {
 			throw new UnsupportedOperationException();
 		}
