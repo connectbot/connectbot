@@ -29,7 +29,7 @@ import android.util.AttributeSet;
  *
  */
 public class VolumePreference extends DialogPreference {
-	private int mVolume = (int) PreferenceConstants.DEFAULT_BELL_VOLUME * 100;
+	private int mVolume = (int) (PreferenceConstants.DEFAULT_BELL_VOLUME * 100);
 
 	public VolumePreference(Context context) {
 		this(context, null);
