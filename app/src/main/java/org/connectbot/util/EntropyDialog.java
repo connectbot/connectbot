@@ -43,6 +43,7 @@ public class EntropyDialog extends Dialog implements OnEntropyGatheredListener {
 		((EntropyView) findViewById(R.id.entropy)).addOnEntropyGatheredListener(this);
 	}
 
+	@Override
 	public void onEntropyGathered(byte[] entropy) {
 		this.dismiss();
 	}

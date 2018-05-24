@@ -76,11 +76,13 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 		mPubkeyDb = PubkeyDatabase.get(this);
 
 		mTerminalConnection = new ServiceConnection() {
+			@Override
 			public void onServiceConnected(ComponentName className, IBinder service) {
 				TerminalManager bound = ((TerminalManager.TerminalBinder) service).getService();
 				mBridge = bound.getConnectedBridge(mHost);
 			}
 
+			@Override
 			public void onServiceDisconnected(ComponentName name) {
 				mBridge = null;
 			}

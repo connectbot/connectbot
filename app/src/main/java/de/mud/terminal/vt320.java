@@ -55,6 +55,7 @@ public abstract class vt320 extends VDUBuffer implements VDUInput {
    * send terminal answers requests like status and type information.
    * @param b the array of bytes to be sent
    */
+  @Override
   public abstract void write(byte[] b);
 
   /**
@@ -337,6 +338,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
    * @param y
    * @param modifiers
    */
+  @Override
   public void mousePressed(int x, int y, int modifiers) {
     if (mouserpt == 0)
       return;
@@ -374,6 +376,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
    * @param shift
    * @param meta
    */
+  @Override
   public void mouseWheel(boolean down, int x, int y, boolean ctrl, boolean shift, boolean meta) {
     if (mouserpt == 0 || mouserpt == 9)
       return;
@@ -440,6 +443,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
    * @param x
    * @param y
    */
+  @Override
   public void mouseReleased(int x, int y) {
     if (mouserpt == 0)
       return;
@@ -503,6 +507,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
    * Override the standard key codes used by the terminal emulation.
    * @param codes a properties object containing key code definitions
    */
+  @Override
   public void setKeyCodes(Properties codes) {
     String res, prefixes[] = {"", "S", "C", "A"};
     int i;
@@ -926,6 +931,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
   /**
    * main keytyping event handler...
    */
+  @Override
   public void keyPressed(int keyCode, char keyChar, int modifiers) {
     boolean control = (modifiers & VDUInput.KEY_CONTROL) != 0;
     boolean shift = (modifiers & VDUInput.KEY_SHIFT) != 0;
@@ -1069,6 +1075,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
    * Handle key Typed events for the terminal, this will get
    * all normal key types, but no shift/alt/control/numlock.
    */
+  @Override
   public void keyTyped(int keyCode, char keyChar, int modifiers) {
     boolean control = (modifiers & VDUInput.KEY_CONTROL) != 0;
     boolean shift = (modifiers & VDUInput.KEY_SHIFT) != 0;

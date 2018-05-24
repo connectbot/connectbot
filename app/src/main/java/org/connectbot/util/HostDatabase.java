@@ -248,6 +248,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		db.execSQL(CREATE_TABLE_COLOR_DEFAULTS_INDEX);
 	}
 
+	@Override
 	@VisibleForTesting
 	public void resetDatabase() {
 		try {
@@ -403,6 +404,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * Touch a specific host to update its "last connected" field.
 	 * @param host host to update
 	 */
+	@Override
 	public void touchHost(HostBean host) {
 		long now = System.currentTimeMillis() / 1000;
 
@@ -421,6 +423,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	/**
 	 * Create a new or update an existing {@code host}.
 	 */
+	@Override
 	public HostBean saveHost(HostBean host) {
 		long id = host.getId();
 
@@ -444,6 +447,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	/**
 	 * Delete a specific host by its <code>_id</code> value.
 	 */
+	@Override
 	public void deleteHost(HostBean host) {
 		if (host.getId() < 0) {
 			return;
@@ -464,6 +468,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * Return a cursor that contains information about all known hosts.
 	 * @param sortColors If true, sort by color, otherwise sort by nickname.
 	 */
+	@Override
 	public List<HostBean> getHosts(boolean sortColors) {
 		String sortField = sortColors ? FIELD_HOST_COLOR : FIELD_HOST_NICKNAME;
 		List<HostBean> hosts;
@@ -552,6 +557,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * @param selection parameters describing the desired host
 	 * @return host matching selection or {@code null}.
 	 */
+	@Override
 	public HostBean findHost(Map<String, String> selection) {
 		StringBuilder selectionBuilder = new StringBuilder();
 
@@ -591,6 +597,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * @param hostId host id for the host
 	 * @return host matching the hostId or {@code null} if none match
 	 */
+	@Override
 	public HostBean findHostById(long hostId) {
 		Cursor c = mDb.query(TABLE_HOSTS, null,
 				"_id = ?", new String[] {String.valueOf(hostId)},
@@ -606,6 +613,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * @param hostkeyalgo algorithm for host key
 	 * @param hostkey the bytes of the host key itself
 	 */
+	@Override
 	public void saveKnownHost(String hostname, int port, String hostkeyalgo, byte[] hostkey) {
 		HashMap<String, String> selection = new HashMap<>();
 		selection.put(FIELD_HOST_HOSTNAME, hostname);
@@ -646,6 +654,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * Build list of known hosts for Trilead library.
 	 * @return
 	 */
+	@Override
 	public KnownHosts getKnownHosts() {
 		KnownHosts known = new KnownHosts();
 
@@ -748,6 +757,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * @param host the host for which we want the port forward list
 	 * @return port forwards associated with host ID or empty list if no match
 	 */
+	@Override
 	public List<PortForwardBean> getPortForwardsForHost(HostBean host) {
 		List<PortForwardBean> portForwards = new LinkedList<>();
 		if (host == null) {
@@ -822,6 +832,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		}
 	}
 
+	@Override
 	public int[] getColorsForScheme(int scheme) {
 		int[] colors = Colors.defaults.clone();
 
@@ -875,10 +886,12 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		}
 	}
 
+	@Override
 	public void setGlobalColor(int number, int value) {
 		setColorForScheme(DEFAULT_COLOR_SCHEME, number, value);
 	}
 
+	@Override
 	public int[] getDefaultColorsForScheme(int scheme) {
 		int[] colors = new int[] { DEFAULT_FG_COLOR, DEFAULT_BG_COLOR };
 
@@ -902,6 +915,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		return getDefaultColorsForScheme(DEFAULT_COLOR_SCHEME);
 	}
 
+	@Override
 	public void setDefaultColorsForScheme(int scheme, int fg, int bg) {
 		SQLiteDatabase db;
 

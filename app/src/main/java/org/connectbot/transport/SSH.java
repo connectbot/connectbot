@@ -832,6 +832,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	/**
 	 * Handle challenges from keyboard-interactive authentication mode.
 	 */
+	@Override
 	public String[] replyToChallenge(String name, String instruction, int numPrompts, String[] prompt, boolean[] echo) {
 		interactiveCanContinue = true;
 		String[] responses = new String[numPrompts];
@@ -929,6 +930,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		return pubKeys;
 	}
 
+	@Override
 	public KeyPair getKeyPair(byte[] publicKey) {
 		String nickname = manager.getKeyNickname(publicKey);
 

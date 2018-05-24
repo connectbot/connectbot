@@ -319,6 +319,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	/**
 	 * Called by child bridge when somehow it's been disconnected.
 	 */
+	@Override
 	public void onDisconnected(TerminalBridge bridge) {
 		boolean shouldHideRunningNotification = false;
 		Log.d(TAG, "Bridge Disconnected. Removing it.");

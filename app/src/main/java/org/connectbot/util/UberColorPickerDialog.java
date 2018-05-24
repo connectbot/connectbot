@@ -100,6 +100,7 @@ public class UberColorPickerDialog extends Dialog {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		OnColorChangedListener l = new OnColorChangedListener() {
+			@Override
 			public void colorChanged(int color) {
 				mListener.colorChanged(color);
 				dismiss();
