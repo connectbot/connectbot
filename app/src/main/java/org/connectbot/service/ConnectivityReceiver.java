@@ -91,7 +91,8 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 			NetworkInfo info = (NetworkInfo) intent.getExtras()
 					.get(ConnectivityManager.EXTRA_NETWORK_INFO);
 
-			if (mIsConnected = (info.getState() == State.CONNECTED)) {
+			mIsConnected = (info.getState() == State.CONNECTED);
+			if (mIsConnected) {
 				mTerminalManager.onConnectivityRestored();
 			}
 		}
