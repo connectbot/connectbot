@@ -236,7 +236,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 
 		sortcolor.setVisible(!sortedByColor);
 		sortlast.setVisible(sortedByColor);
-		disconnectall.setEnabled(bound == null ? false : bound.getBridges().size() > 0);
+		disconnectall.setEnabled(bound != null && bound.getBridges().size() > 0);
 
 		return true;
 	}

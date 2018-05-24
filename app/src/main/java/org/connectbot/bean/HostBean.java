@@ -291,10 +291,7 @@ public class HostBean extends AbstractBean {
 		} else if (!hostname.equals(host.getHostname()))
 			return false;
 
-		if (port != host.getPort())
-			return false;
-
-		return true;
+		return port == host.getPort();
 	}
 
 	@Override
