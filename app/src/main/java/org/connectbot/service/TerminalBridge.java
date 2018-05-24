@@ -166,7 +166,7 @@ public class TerminalBridge implements VDUDisplay {
 	 * launch thread to start SSH connection and handle any hostkey verification
 	 * and password authentication.
 	 */
-	public TerminalBridge(final TerminalManager manager, final HostBean host) throws IOException {
+	public TerminalBridge(final TerminalManager manager, final HostBean host) {
 		this.manager = manager;
 		this.host = host;
 

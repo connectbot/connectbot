@@ -233,8 +233,7 @@ public class UberColorPickerDialog extends Dialog {
 		 * @param color  The initial color
 		 * @throws Exception
 		 */
-		ColorPickerView(Context c, OnColorChangedListener l, int width, int height, int color)
-				throws Exception {
+		ColorPickerView(Context c, OnColorChangedListener l, int width, int height, int color) {
 			super(c);
 
 			DisplayMetrics metrics = c.getResources().getDisplayMetrics();
