@@ -121,6 +121,7 @@ public class ColorsActivity extends AppCompatActivity implements OnItemClickList
 			mResourceLabel = resourceLabel;
 		}
 
+		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ColorView c;
 
@@ -136,14 +137,17 @@ public class ColorsActivity extends AppCompatActivity implements OnItemClickList
 			return c;
 		}
 
+		@Override
 		public int getCount() {
 			return mColorList.length;
 		}
 
+		@Override
 		public Object getItem(int position) {
 			return mColorList[position];
 		}
 
+		@Override
 		public long getItemId(int position) {
 			return position;
 		}
@@ -292,18 +296,22 @@ public class ColorsActivity extends AppCompatActivity implements OnItemClickList
 		new UberColorPickerDialog(this, this, mColorList[colorNumber]).show();
 	}
 
+	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		editColor(position);
 	}
 
+	@Override
 	public void onNothingSelected(AdapterView<?> arg0) { }
 
+	@Override
 	public void colorChanged(int value) {
 		mHostDb.setGlobalColor(mCurrentColor, value);
 		mColorList[mCurrentColor] = value;
 		mColorGrid.invalidateViews();
 	}
 
+	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
 		boolean needUpdate = false;
@@ -333,6 +341,7 @@ public class ColorsActivity extends AppCompatActivity implements OnItemClickList
 		reset.setNumericShortcut('1');
 		reset.setIcon(android.R.drawable.ic_menu_revert);
 		reset.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
 			public boolean onMenuItemClick(MenuItem arg0) {
 				// Reset each individual color to defaults.
 				for (int i = 0; i < Colors.defaults.length; i++) {

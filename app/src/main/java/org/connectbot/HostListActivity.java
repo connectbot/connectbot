@@ -93,6 +93,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 	private boolean closeOnDisconnectAll = true;
 
 	private ServiceConnection connection = new ServiceConnection() {
+		@Override
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
 
@@ -106,6 +107,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			}
 		}
 
+		@Override
 		public void onServiceDisconnected(ComponentName className) {
 			bound.unregisterOnHostStatusChangedListener(HostListActivity.this);
 
@@ -252,6 +254,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 		sortcolor = menu.add(R.string.list_menu_sortcolor);
 		sortcolor.setIcon(android.R.drawable.ic_menu_share);
 		sortcolor.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				sortedByColor = true;
 				updateList();
@@ -262,6 +265,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 		sortlast = menu.add(R.string.list_menu_sortname);
 		sortlast.setIcon(android.R.drawable.ic_menu_share);
 		sortlast.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				sortedByColor = false;
 				updateList();
@@ -312,6 +316,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 				HostListActivity.this, R.style.AlertDialogTheme)
 			.setMessage(getString(R.string.disconnect_all_message))
 			.setPositiveButton(R.string.disconnect_all_pos, new DialogInterface.OnClickListener() {
+				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					bound.disconnectAll(true, false);
 					waitingForDisconnectAll = false;
@@ -326,6 +331,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 				}
 			})
 			.setNegativeButton(R.string.disconnect_all_neg, new DialogInterface.OnClickListener() {
+				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					waitingForDisconnectAll = false;
 					// Clear the intent so that the activity can be relaunched without closing.
@@ -437,6 +443,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			final TerminalBridge bridge = (bound == null) ? null : bound.getConnectedBridge(host);
 			connect.setEnabled(bridge != null);
 			connect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					bridge.dispatchDisconnect(true);
 					return true;
@@ -445,6 +452,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 
 			MenuItem edit = menu.add(R.string.list_host_edit);
 			edit.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					Intent intent = EditHostActivity.createIntentForExistingHost(
 							HostListActivity.this, host.getId());
@@ -455,6 +463,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 
 			MenuItem portForwards = menu.add(R.string.list_host_portforwards);
 			portForwards.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					Intent intent = new Intent(HostListActivity.this, PortForwardListActivity.class);
 					intent.putExtra(Intent.EXTRA_TITLE, host.getId());
@@ -467,12 +476,14 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 
 			MenuItem delete = menu.add(R.string.list_host_delete);
 			delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					// prompt user to make sure they really want this
 					new android.support.v7.app.AlertDialog.Builder(
 									HostListActivity.this, R.style.AlertDialogTheme)
 							.setMessage(getString(R.string.delete_message, host.getNickname()))
 							.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
+								@Override
 								public void onClick(DialogInterface dialog, int which) {
 									// make sure we disconnect
 									if (bridge != null)

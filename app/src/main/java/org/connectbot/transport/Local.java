@@ -95,6 +95,7 @@ public class Local extends AbsTransport {
 
 		shellPid = pids[0];
 		Runnable exitWatcher = new Runnable() {
+			@Override
 			public void run() {
 				Exec.waitFor(shellPid);
 
