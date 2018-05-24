@@ -67,9 +67,9 @@ public class CheckableMenuItem extends RelativeLayout {
 
 		mRootView = inflate(context, R.layout.view_checkablemenuitem, this);
 
-		mTitle = (TextView) mRootView.findViewById(R.id.title);
-		mSummary = (TextView) mRootView.findViewById(R.id.summary);
-		mSwitch = (SwitchCompat) findViewById(R.id.checkbox_switch);
+		mTitle = mRootView.findViewById(R.id.title);
+		mSummary = mRootView.findViewById(R.id.summary);
+		mSwitch = findViewById(R.id.checkbox_switch);
 
 		setFocusable(true);
 
@@ -157,7 +157,7 @@ public class CheckableMenuItem extends RelativeLayout {
 
 			typedArray.recycle();
 
-			ImageView icon = (ImageView) mRootView.findViewById(R.id.icon);
+			ImageView icon = mRootView.findViewById(R.id.icon);
 			mTitle.setText(titleRes);
 			if (iconRes != 0) {
 				Resources resources = context.getResources();

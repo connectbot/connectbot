@@ -519,9 +519,9 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 		inflater = LayoutInflater.from(this);
 
-		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		toolbar = findViewById(R.id.toolbar);
 
-		pager = (TerminalViewPager) findViewById(R.id.console_flip);
+		pager = findViewById(R.id.console_flip);
 		pager.addOnPageChangeListener(
 				new TerminalViewPager.SimpleOnPageChangeListener() {
 					@Override
@@ -533,11 +533,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		adapter = new TerminalPagerAdapter();
 		pager.setAdapter(adapter);
 
-		empty = (TextView) findViewById(android.R.id.empty);
+		empty = findViewById(android.R.id.empty);
 
-		stringPromptGroup = (RelativeLayout) findViewById(R.id.console_password_group);
-		stringPromptInstructions = (TextView) findViewById(R.id.console_password_instructions);
-		stringPrompt = (EditText) findViewById(R.id.console_password);
+		stringPromptGroup = findViewById(R.id.console_password_group);
+		stringPromptInstructions = findViewById(R.id.console_password_instructions);
+		stringPrompt = findViewById(R.id.console_password);
 		stringPrompt.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -559,10 +559,10 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 		});
 
-		booleanPromptGroup = (RelativeLayout) findViewById(R.id.console_boolean_group);
-		booleanPrompt = (TextView) findViewById(R.id.console_prompt);
+		booleanPromptGroup = findViewById(R.id.console_boolean_group);
+		booleanPrompt = findViewById(R.id.console_prompt);
 
-		booleanYes = (Button) findViewById(R.id.console_prompt_yes);
+		booleanYes = findViewById(R.id.console_prompt_yes);
 		booleanYes.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -573,7 +573,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 		});
 
-		Button booleanNo = (Button) findViewById(R.id.console_prompt_no);
+		Button booleanNo = findViewById(R.id.console_prompt_no);
 		booleanNo.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -590,7 +590,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		keyboard_fade_in = AnimationUtils.loadAnimation(this, R.anim.keyboard_fade_in);
 		keyboard_fade_out = AnimationUtils.loadAnimation(this, R.anim.keyboard_fade_out);
 
-		keyboardGroup = (LinearLayout) findViewById(R.id.keyboard_group);
+		keyboardGroup = findViewById(R.id.keyboard_group);
 
 		keyboardAlwaysVisible = prefs.getBoolean(PreferenceConstants.KEY_ALWAYS_VISIVLE, false);
 		if (keyboardAlwaysVisible) {
@@ -612,7 +612,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			keyboardGroup.setVisibility(View.VISIBLE);
 		}
 
-		mKeyboardButton = (ImageView) findViewById(R.id.button_keyboard);
+		mKeyboardButton = findViewById(R.id.button_keyboard);
 		mKeyboardButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -673,7 +673,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			});
 		}
 
-		final HorizontalScrollView keyboardScroll = (HorizontalScrollView) findViewById(R.id.keyboard_hscroll);
+		final HorizontalScrollView keyboardScroll = findViewById(R.id.keyboard_hscroll);
 		if (!hardKeyboard) {
 			// Show virtual keyboard and scroll back and forth
 			showEmulatedKeys(false);
@@ -715,7 +715,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 					}
 				});
 
-		tabs = (TabLayout) findViewById(R.id.tabs);
+		tabs = findViewById(R.id.tabs);
 		if (tabs != null)
 			setupTabLayoutWithViewPager();
 
@@ -1303,7 +1303,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 					R.layout.item_terminal, container, false);
 
 			// set the terminal name overlay text
-			TextView terminalNameOverlay = (TextView) view.findViewById(R.id.terminal_name_overlay);
+			TextView terminalNameOverlay = view.findViewById(R.id.terminal_name_overlay);
 			terminalNameOverlay.setText(bridge.host.getNickname());
 
 			// and add our terminal view control, using index to place behind overlay
@@ -1333,7 +1333,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 
 			View view = (View) object;
-			TerminalView terminal = (TerminalView) view.findViewById(R.id.terminal_view);
+			TerminalView terminal = view.findViewById(R.id.terminal_view);
 			HostBean host = terminal.bridge.host;
 
 			int itemIndex = POSITION_NONE;

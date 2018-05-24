@@ -48,7 +48,7 @@ public class VolumePreferenceFragment extends PreferenceDialogFragmentCompat {
 	protected void onBindDialogView(View view) {
 		super.onBindDialogView(view);
 
-		mVolumeBar = (SeekBar) view.findViewById(R.id.volume_bar);
+		mVolumeBar = view.findViewById(R.id.volume_bar);
 
 		Integer volumeLevel = null;
 		DialogPreference preference = getPreference();
