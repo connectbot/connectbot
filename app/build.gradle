@@ -208,7 +208,7 @@ dependencies {
     ossImplementation 'org.conscrypt:conscrypt-android:1.1.2'
 
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.13.0'
+    testImplementation 'org.mockito:mockito-core:2.18.3'
     testImplementation 'org.assertj:assertj-core:3.10.0'
     testImplementation('org.robolectric:robolectric:3.6.1') {
         exclude group: 'commons-logging', module: 'commons-logging'
