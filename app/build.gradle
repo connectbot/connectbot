@@ -186,6 +186,18 @@ android {
     }
 }
 
+tasks.withType(JavaCompile) {
+    options.compilerArgs += [
+            '-Xep:SynchronizeOnNonFinalField:OFF',
+            '-Xep:ClassCanBeStatic:OFF',
+            '-Xep:DefaultCharset:OFF',
+            '-XepExcludedPaths:' +
+                    '.*/app/src/main/java/de/mud/.*|' +
+                    '.*/app/src/main/java/org/apache/.*|' +
+                    '.*/app/src/main/java/org/keyczar/.*',
+    ]
+}
+
 // Dependencies must be below the android block to allow productFlavor specific deps.
 dependencies {
     implementation 'org.connectbot:sshlib:2.2.5'
