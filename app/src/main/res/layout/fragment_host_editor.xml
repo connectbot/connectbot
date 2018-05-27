@@ -256,6 +256,36 @@
 		</RelativeLayout>
 
 		<RelativeLayout
+			android:id="@+id/font_item"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:focusable="true">
+
+			<ImageView
+				style="@style/ListItemIcon"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:contentDescription="@null"
+				app:srcCompat="@drawable/ic_font" />
+
+			<TextView
+				android:id="@+id/font_title"
+				style="@style/ListItemFirstLineText.WithIcon"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/hostpref_font_title" />
+
+			<TextView
+				android:id="@+id/font_text"
+				style="@style/ListItemSecondLineText.WithIcon"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/font_title"
+				tools:text="font" />
+
+		</RelativeLayout>
+
+		<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:focusable="true"

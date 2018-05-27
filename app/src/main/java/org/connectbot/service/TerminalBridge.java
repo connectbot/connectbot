@@ -42,10 +42,14 @@ import android.graphics.Paint;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Typeface;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Looper;
 import android.provider.Settings;
+import android.support.v4.provider.FontRequest;
+import android.support.v4.provider.FontsContractCompat;
 import android.text.ClipboardManager;
 import android.util.Log;
+import android.widget.Toast;
 import de.mud.terminal.VDUBuffer;
 import de.mud.terminal.VDUDisplay;
 import de.mud.terminal.vt320;
@@ -76,6 +80,7 @@ public class TerminalBridge implements VDUDisplay {
 
 	protected final TerminalManager manager;
 
+	static private Handler fontHandler;
 	public HostBean host;
 
 	/* package */ AbsTransport transport;
@@ -179,7 +184,6 @@ public class TerminalBridge implements VDUDisplay {
 		// create our default paint
 		defaultPaint = new Paint();
 		defaultPaint.setAntiAlias(true);
-		defaultPaint.setTypeface(Typeface.MONOSPACE);
 		defaultPaint.setFakeBoldText(true); // more readable?
 
 		refreshOverlayFontSize();
@@ -253,6 +257,53 @@ public class TerminalBridge implements VDUDisplay {
 		selectionArea = new SelectionArea();
 
 		keyListener = new TerminalKeyListener(manager, this, buffer, host.getEncoding());
+	}
+
+	void setFont(String fontName) {
+		if (fontName.equals(HostDatabase.DEFAULT_FONT)) {
+			defaultPaint.setTypeface(Typeface.MONOSPACE);
+			setFontSize(host.getFontSize());
+		} else {
+			FontRequest request = new FontRequest(
+					"com.google.android.gms.fonts",
+					"com.google.android.gms",
+					"name=" + fontName,
+					R.array.com_google_android_gms_fonts_certs);
+			FontsContractCompat.FontRequestCallback callback = new FontsContractCompat
+					.FontRequestCallback() {
+				@Override
+				public void onTypefaceRetrieved(Typeface typeface) {
+					defaultPaint.setTypeface(typeface);
+					setFontSize(host.getFontSize());
+				}
+
+				@Override
+				public void onTypefaceRequestFailed(int reason) {
+					Toast.makeText(manager.getBaseContext(), manager.getBaseContext().getString(R.string.error_download_typeface)
+							.concat(String.format(Locale.getDefault(), " %d)", reason)),
+							Toast.LENGTH_LONG)
+							.show();
+					// fall back to monospace
+					host.setFont(HostDatabase.DEFAULT_FONT);
+					defaultPaint.setTypeface(Typeface.MONOSPACE);
+					setFontSize(host.getFontSize());
+				}
+			};
+
+			FontsContractCompat
+					.requestFont(
+							manager.getBaseContext(), request, callback,
+							getHandlerThreadHandler());
+		}
+	}
+
+	private Handler getHandlerThreadHandler() {
+		if (fontHandler == null) {
+			HandlerThread handlerThread = new HandlerThread("fonts");
+			handlerThread.start();
+			fontHandler = new Handler(handlerThread.getLooper());
+		}
+		return fontHandler;
 	}
 
 	public PromptHelper getPromptHelper() {
@@ -421,6 +472,8 @@ public class TerminalBridge implements VDUDisplay {
 			relayThread.setName("Relay");
 			relayThread.start();
 		}
+
+		setFont(host.getFont());
 
 		// force font-size to make sure we resizePTY as needed
 		setFontSize(fontSizeDp);
@@ -618,6 +671,7 @@ public class TerminalBridge implements VDUDisplay {
 
 			columns = newColumns;
 			rows = newRows;
+			setFont(host.getFont());
 			refreshOverlayFontSize();
 		}
 

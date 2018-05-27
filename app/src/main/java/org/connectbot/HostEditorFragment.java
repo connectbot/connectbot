@@ -113,6 +113,8 @@ public class HostEditorFragment extends Fragment {
 	private TextView mColorText;
 	private EditText mFontSizeText;
 	private SeekBar mFontSizeSeekBar;
+	private View mFontItem;
+	private TextView mFontText;
 	private View mPubkeyItem;
 	private TextView mPubkeyText;
 	private View mDelKeyItem;
@@ -291,6 +293,39 @@ public class HostEditorFragment extends Fragment {
 
 		mFontSizeText = view.findViewById(R.id.font_size_text);
 		mFontSizeText.setText(Integer.toString(mHost.getFontSize()));
+		mFontItem = view.findViewById(R.id.font_item);
+		mFontText = view.findViewById(R.id.font_text);
+
+		mFontItem.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PopupMenu menu = new PopupMenu(getActivity(), v);
+				menu.getMenu().add(HostDatabase.DEFAULT_FONT);
+				// using Google Play Service's font provider, so if services are not available,
+				// downloadable fonts aren't either.
+				if (BuildConfig.FLAVOR.equals("google")) {
+					for (String name : getResources().getStringArray(R.array.fontNames)) {
+						menu.getMenu().add(name);
+					}
+				} else {
+					mFontItem.setVisibility(View.GONE); // just use monospace
+				}
+
+				menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+						String selectedFontName = item.getTitle().toString();
+						mHost.setFont(selectedFontName);
+						mFontText.setText(selectedFontName);
+						return true;
+					}
+				});
+				menu.show();
+			}
+		});
+		if (mHost.getFont() != null) {
+			mFontText.setText(mHost.getFont());
+		}
 		mFontSizeTextChangeListener = new HostTextFieldWatcher(HostDatabase.FIELD_HOST_FONTSIZE);
 		mFontSizeText.addTextChangedListener(mFontSizeTextChangeListener);
 		mFontSizeText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
