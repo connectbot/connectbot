@@ -59,7 +59,7 @@ public class XmlBuilder {
 				throw new RuntimeException("UTF-8 unavailable");
 			}
 		} else if (data instanceof Integer) {
-			sb.append(String.format("<%s>%d</%s>", field, (Integer) data, field));
+			sb.append(String.format("<%s>%d</%s>", field, data, field));
 		} else if (data instanceof Long) {
 			sb.append(String.format("<%s>%d</%s>", field, (Long) data, field));
 		} else if (data instanceof byte[]) {

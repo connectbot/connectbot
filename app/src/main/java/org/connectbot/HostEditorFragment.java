@@ -17,9 +17,6 @@
 
 package org.connectbot;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -47,6 +44,10 @@ import org.connectbot.transport.Telnet;
 import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.views.CheckableMenuItem;
+
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Map;
 
 public class HostEditorFragment extends Fragment {
 
@@ -216,7 +217,7 @@ public class HostEditorFragment extends Fragment {
 					mUriFieldEditInProgress = true;
 					mUsernameField.setText(mHost.getUsername());
 					mHostnameField.setText(mHost.getHostname());
-					mPortField.setText(Integer.toString(mHost.getPort()));
+					mPortField.setText(String.format(Locale.getDefault(), "%d", mHost.getPort()));
 					mUriFieldEditInProgress = false;
 				}
 			}
@@ -290,7 +291,7 @@ public class HostEditorFragment extends Fragment {
 		}
 
 		mFontSizeText = view.findViewById(R.id.font_size_text);
-		mFontSizeText.setText(Integer.toString(mHost.getFontSize()));
+		mFontSizeText.setText(String.format(Locale.getDefault(), "%d", mHost.getFontSize()));
 		mFontSizeTextChangeListener = new HostTextFieldWatcher(HostDatabase.FIELD_HOST_FONTSIZE);
 		mFontSizeText.addTextChangedListener(mFontSizeTextChangeListener);
 		mFontSizeText.setOnFocusChangeListener(new View.OnFocusChangeListener() {

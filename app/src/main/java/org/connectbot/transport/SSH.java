@@ -315,7 +315,6 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			}
 		} catch (IllegalStateException e) {
 			Log.e(TAG, "Connection went away while we were trying to authenticate", e);
-			return;
 		} catch (Exception e) {
 			Log.e(TAG, "Problem during handleAuthentication()", e);
 		}
@@ -920,11 +919,10 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				} else if (privKey instanceof EdDSAPrivateKey) {
 					EdDSAPublicKey pubkey = (EdDSAPublicKey) pair.getPublic();
 					pubKeys.put(entry.getKey(), Ed25519Verify.encodeSSHEd25519PublicKey(pubkey));
-				} else
-					continue;
+				} else {
+                }
 			} catch (IOException e) {
-				continue;
-			}
+            }
 		}
 
 		return pubKeys;

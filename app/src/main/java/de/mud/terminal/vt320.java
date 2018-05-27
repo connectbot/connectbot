@@ -27,6 +27,7 @@ package de.mud.terminal;
 
 import android.text.AndroidCharacter;
 
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -851,34 +852,34 @@ public void setScreenSize(int c, int r, boolean broadcast) {
    */
   static String unEscape(String tmp) {
     int idx = 0, oldidx = 0;
-    String cmd;
+    StringBuilder cmd;
     // f.println("unescape("+tmp+")");
-    cmd = "";
+    cmd = new StringBuilder();
     while ((idx = tmp.indexOf('\\', oldidx)) >= 0 &&
             ++idx <= tmp.length()) {
-      cmd += tmp.substring(oldidx, idx - 1);
-      if (idx == tmp.length()) return cmd;
+      cmd.append(tmp.substring(oldidx, idx - 1));
+      if (idx == tmp.length()) return cmd.toString();
       switch (tmp.charAt(idx)) {
         case 'b':
-          cmd += "\b";
+          cmd.append("\b");
           break;
         case 'e':
-          cmd += "\u001b";
+          cmd.append("\u001b");
           break;
         case 'n':
-          cmd += "\n";
+          cmd.append("\n");
           break;
         case 'r':
-          cmd += "\r";
+          cmd.append("\r");
           break;
         case 't':
-          cmd += "\t";
+          cmd.append("\t");
           break;
         case 'v':
-          cmd += "\u000b";
+          cmd.append("\u000b");
           break;
         case 'a':
-          cmd += "\u0012";
+          cmd.append("\u0012");
           break;
         default :
           if ((tmp.charAt(idx) >= '0') && (tmp.charAt(idx) <= '9')) {
@@ -886,16 +887,16 @@ public void setScreenSize(int c, int r, boolean broadcast) {
             for (i = idx; i < tmp.length(); i++)
               if ((tmp.charAt(i) < '0') || (tmp.charAt(i) > '9'))
                 break;
-            cmd += (char) Integer.parseInt(tmp.substring(idx, i));
+            cmd.append((char) Integer.parseInt(tmp.substring(idx, i)));
             idx = i - 1;
           } else
-            cmd += tmp.substring(idx, ++idx);
+            cmd.append(tmp.substring(idx, ++idx));
           break;
       }
       oldidx = ++idx;
     }
-    if (oldidx <= tmp.length()) cmd += tmp.substring(oldidx);
-    return cmd;
+    if (oldidx <= tmp.length()) cmd.append(tmp.substring(oldidx));
+    return cmd.toString();
   }
 
   /**
@@ -1034,7 +1035,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
       case KEY_BACK_SPACE:
         writeSpecial(BackSpace[xind]);
 	if (localecho) {
-	  if (BackSpace[xind] == "\b") {
+	  if (Objects.equals(BackSpace[xind], "\b")) {
 	    putString("\b \b"); // make the last char 'deleted'
 	  } else {
 	    putString(BackSpace[xind]); // echo it
@@ -1260,7 +1261,6 @@ public void setScreenSize(int c, int r, boolean broadcast) {
 
     if (!((keyChar == 8) || (keyChar == 127) || (keyChar == '\r') || (keyChar == '\n'))) {
       write(keyChar);
-      return;
     }
   }
 

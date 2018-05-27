@@ -90,7 +90,7 @@ public class IBM437 extends Charset {
                                     char in = (char)(bArr[i] & 0xFF);
                                     if(in >= 26){
                                         int index = (int)in - 26;
-                                        cArr[cStart++] = (char)arr[index];
+                                        cArr[cStart++] = arr[index];
                                     }else {
                                         cArr[cStart++] = (char)(in & 0xFF);
                                     }
