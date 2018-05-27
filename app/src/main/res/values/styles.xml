@@ -38,7 +38,7 @@
 	</style>
 
 	<style name="KeyboardButton" parent="KeyboardKey">
-		<item name="android:background">@drawable/keyboard_button_selector</item>
+		<item name="background">@drawable/keyboard_button_selector</item>
 	</style>
 
 	<style name="ListItemIcon">

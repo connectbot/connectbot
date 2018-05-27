@@ -50,6 +50,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -68,7 +69,7 @@ import de.mud.terminal.vt320;
 
 /**
  * User interface {@link View} for showing a TerminalBridge in an
- * {@link android.app.Activity}. Handles drawing bitmap updates and passing keystrokes down
+ * {@link AppCompatActivity}. Handles drawing bitmap updates and passing keystrokes down
  * to terminal.
  *
  * @author jsharkey
@@ -590,7 +591,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 			}
 		}
 
-		((Activity) context).runOnUiThread(new Runnable() {
+		((AppCompatActivity) context).runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				if (terminalTextViewOverlay != null) {

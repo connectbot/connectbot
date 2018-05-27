@@ -26,7 +26,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.v4.view.MotionEventCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.ClipboardManager;
 import android.view.ActionMode;
 import android.view.InputDevice;
@@ -47,7 +48,7 @@ import de.mud.terminal.vt320;
  * @author rhansby
  */
 @TargetApi(11)
-public class TerminalTextViewOverlay extends android.support.v7.widget.AppCompatTextView {
+public class TerminalTextViewOverlay extends AppCompatTextView {
 	public TerminalView terminalView; // ryan: this name sucks
 	private String currentSelection = "";
 	private ActionMode selectionActionMode;
@@ -186,8 +187,8 @@ public class TerminalTextViewOverlay extends android.support.v7.widget.AppCompat
 		}
 
 		// Mouse input is treated differently:
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH &&
-				MotionEventCompat.getSource(event) == InputDevice.SOURCE_MOUSE) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH && event.getSource()
+				== InputDevice.SOURCE_MOUSE) {
 			if (onMouseEvent(event, terminalView.bridge)) {
 				return true;
 			}
@@ -204,11 +205,11 @@ public class TerminalTextViewOverlay extends android.support.v7.widget.AppCompat
 	@Override
 	@TargetApi(12)
 	public boolean onGenericMotionEvent(MotionEvent event) {
-		if ((MotionEventCompat.getSource(event) & InputDevice.SOURCE_CLASS_POINTER) != 0) {
+		if ((event.getSource() & InputDevice.SOURCE_CLASS_POINTER) != 0) {
 			switch (event.getAction()) {
 			case MotionEvent.ACTION_SCROLL:
 				// Process scroll wheel movement:
-				float yDistance = MotionEventCompat.getAxisValue(event, MotionEvent.AXIS_VSCROLL);
+				float yDistance = event.getAxisValue(MotionEvent.AXIS_VSCROLL);
 
 				vt320 vtBuffer = (vt320) terminalView.bridge.buffer;
 				boolean mouseReport = vtBuffer.isMouseReportEnabled();
@@ -313,7 +314,7 @@ public class TerminalTextViewOverlay extends android.support.v7.widget.AppCompat
 	 */
 	@TargetApi(14)
 	private static int mouseEventToJavaModifiers(MotionEvent mouseEvent) {
-		if (MotionEventCompat.getSource(mouseEvent) != InputDevice.SOURCE_MOUSE) return 0;
+		if (mouseEvent.getSource() != InputDevice.SOURCE_MOUSE) return 0;
 
 		int mods = 0;
 
@@ -364,12 +365,10 @@ public class TerminalTextViewOverlay extends android.support.v7.widget.AppCompat
 
 			menu.clear();
 
-			menu.add(0, COPY, 0, R.string.console_menu_copy)
-					.setIcon(R.drawable.ic_action_copy)
-					.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_IF_ROOM);
-			menu.add(0, PASTE, 1, R.string.console_menu_paste)
-					.setIcon(R.drawable.ic_action_paste)
-					.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_IF_ROOM);
+			MenuItemCompat.setShowAsAction(menu.add(0, COPY, 0, R.string.console_menu_copy)
+					.setIcon(R.drawable.ic_action_copy),MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_IF_ROOM);
+			MenuItemCompat.setShowAsAction(menu.add(0, PASTE, 1, R.string.console_menu_paste)
+					.setIcon(R.drawable.ic_action_paste),MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 			return true;
 		}

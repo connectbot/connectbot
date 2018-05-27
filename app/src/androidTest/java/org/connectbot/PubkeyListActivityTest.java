@@ -41,6 +41,7 @@ import android.support.test.espresso.ViewAction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
@@ -106,8 +107,8 @@ public class PubkeyListActivityTest {
 		}
 	}
 
-	public Activity getDisplayedActivityInstance() {
-		final Activity[] currentActivity = new Activity[1];
+	public AppCompatActivity getDisplayedActivityInstance() {
+		final AppCompatActivity[] currentActivity = new AppCompatActivity[1];
 		getInstrumentation().runOnMainSync(new Runnable() {
 			@Override
 			public void run() {

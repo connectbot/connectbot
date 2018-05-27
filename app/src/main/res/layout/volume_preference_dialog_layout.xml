@@ -18,7 +18,8 @@
 
 <ScrollView
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:layout_marginTop="48dp"
 	android:layout_marginBottom="48dp"
@@ -44,7 +45,7 @@
 			android:layout_marginBottom="@dimen/alert_default_padding"
 			android:layout_marginTop="24dp"
 			android:contentDescription="@string/image_description_volume"
-			android:src="@drawable/ic_volume_up"
+			app:srcCompat="@drawable/ic_volume_up"
 			/>
 
 		<SeekBar

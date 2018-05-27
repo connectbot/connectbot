@@ -101,7 +101,7 @@
 				android:layout_height="48dp"
 				android:layout_gravity="center"
 				android:layout_margin="16dp"
-				android:src="@drawable/ic_expand_more"
+				app:srcCompat="@drawable/ic_expand_more"
 				android:contentDescription="@string/expand"
 				android:background="#00000000"
 				/>

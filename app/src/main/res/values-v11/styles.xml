@@ -37,7 +37,7 @@
 	</style>
 
 	<style name="SelectableItem">
-		<item name="android:background">?android:attr/selectableItemBackground</item>
+		<item name="background">?attr/selectableItemBackground</item>
 	</style>
 	
 </resources>

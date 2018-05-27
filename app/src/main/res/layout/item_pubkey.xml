@@ -18,8 +18,8 @@
  */
 -->
 
-<RelativeLayout
-	android:id="@android:id/content"
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@android:id/content"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="fill_parent"
@@ -32,7 +32,7 @@
 		android:layout_width="40dp"
 		android:layout_height="40dp"
 		android:contentDescription="@string/image_description_key_is_locked"
-		android:src="@drawable/pubkey"
+		app:srcCompat="@drawable/pubkey"
 		style="@style/ListItemIcon"/>
 
 	<LinearLayout
