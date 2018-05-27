@@ -33,6 +33,7 @@ import org.connectbot.util.TerminalViewPager;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Dialog;
+import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -58,7 +59,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -1274,8 +1274,8 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 		// pull string from clipboard and generate all events to force down
 		String clip = "";
-		if (clipboard.hasText()) {
-			clip = clipboard.getText().toString();
+		if (clipboard.hasPrimaryClip()) {
+			clip = clipboard.getPrimaryClip().getItemAt(0).getText().toString();
 		}
 		bridge.injectString(clip);
 	}

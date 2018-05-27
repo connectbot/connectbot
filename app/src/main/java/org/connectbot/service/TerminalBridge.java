@@ -17,6 +17,7 @@
 
 package org.connectbot.service;
 
+import android.content.ClipboardManager;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -44,7 +45,6 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.text.ClipboardManager;
 import android.util.Log;
 import de.mud.terminal.VDUBuffer;
 import de.mud.terminal.VDUDisplay;

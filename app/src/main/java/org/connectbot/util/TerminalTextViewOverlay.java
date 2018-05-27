@@ -22,12 +22,13 @@ import org.connectbot.TerminalView;
 import org.connectbot.service.TerminalBridge;
 
 import android.annotation.TargetApi;
+import android.content.ClipboardManager;
+import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.view.MotionEventCompat;
-import android.text.ClipboardManager;
 import android.view.ActionMode;
 import android.view.InputDevice;
 import android.view.KeyEvent;
@@ -51,7 +52,7 @@ public class TerminalTextViewOverlay extends android.support.v7.widget.AppCompat
 	public TerminalView terminalView; // ryan: this name sucks
 	private String currentSelection = "";
 	private ActionMode selectionActionMode;
-	private ClipboardManager clipboard;
+	private android.content.ClipboardManager clipboard;
 
 	private int oldBufferHeight = 0;
 	private int oldScrollY = -1;
@@ -145,15 +146,15 @@ public class TerminalTextViewOverlay extends android.support.v7.widget.AppCompat
 
 	public void copyCurrentSelectionToClipboard() {
 		if (currentSelection.length() != 0) {
-			clipboard.setText(currentSelection);
+			clipboard.setPrimaryClip(ClipData.newPlainText("CopySelection", currentSelection));
 		}
 		closeSelectionActionMode();
 	}
 
 	private void pasteClipboard() {
 		String clip = "";
-		if (clipboard.hasText()) {
-			clip = clipboard.getText().toString();
+		if (clipboard.hasPrimaryClip()) {
+			clip = clipboard.getPrimaryClip().getItemAt(0).getText().toString();
 		}
 		terminalView.bridge.injectString(clip);
 	}

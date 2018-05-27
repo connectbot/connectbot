@@ -16,6 +16,8 @@
  */
 package org.connectbot.service;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import java.io.IOException;
 
 import org.connectbot.bean.SelectionArea;
@@ -25,7 +27,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
-import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -257,7 +258,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 						if (clipboard != null) {
 							// copy selected area to clipboard
 							String copiedText = selectionArea.copyFrom(buffer);
-							clipboard.setText(copiedText);
+							clipboard.setPrimaryClip(ClipData.newPlainText("copiedText", copiedText));
 							// XXX STOPSHIP
 //							manager.notifyUser(manager.getString(
 //									R.string.console_copy_done,
@@ -312,8 +313,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			if (keyCode == KeyEvent.KEYCODE_V
 					&& (derivedMetaState & HC_META_CTRL_ON) != 0
 					&& (derivedMetaState & KeyEvent.META_SHIFT_ON) != 0
-					&& clipboard.hasText()) {
-				bridge.injectString(clipboard.getText().toString());
+					&& clipboard.hasPrimaryClip()) {
+				bridge.injectString(clipboard.getPrimaryClip().getItemAt(0).getText().toString());
 				return true;
 			}
 
@@ -627,7 +628,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		return mDeadKey;
 	}
 
-	public void setClipboardManager(ClipboardManager clipboard) {
+	void setClipboardManager(ClipboardManager clipboard) {
 		this.clipboard = clipboard;
 	}
 

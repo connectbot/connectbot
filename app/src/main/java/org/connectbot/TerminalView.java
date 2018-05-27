@@ -31,6 +31,8 @@ import org.connectbot.util.TerminalViewPager;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -49,7 +51,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.text.ClipboardManager;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -341,7 +342,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 					// copy selected area to clipboard
 					String copiedText = area.copyFrom(bridge.buffer);
 
-					clipboard.setText(copiedText);
+					clipboard.setPrimaryClip(ClipData.newPlainText("CopySelection", area.copyFrom(bridge.buffer)));
 					Toast.makeText(
 							context,
 							context.getResources().getQuantityString(R.plurals.console_copy_done,

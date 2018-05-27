@@ -44,6 +44,8 @@ import com.trilead.ssh2.crypto.PEMStructure;
 
 import android.annotation.TargetApi;
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -58,7 +60,6 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -545,7 +546,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 						PublicKey pk = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
 						String openSSHPubkey = PubkeyUtils.convertToOpenSSHFormat(pk, pubkey.getNickname());
 
-						clipboard.setText(openSSHPubkey);
+						clipboard.setPrimaryClip(ClipData.newPlainText("Key", openSSHPubkey));
 					} catch (Exception e) {
 						Log.d(TAG, "Error converting to OpenSSH format", e);
 					}
@@ -568,7 +569,8 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 							data = PubkeyUtils.exportPEM(pk, null);
 						}
 
-						clipboard.setText(data);
+						clipboard.setPrimaryClip(ClipData.newPlainText("Data", data));
+
 					} catch (Exception e) {
 						Log.d(TAG, "Error copying private key", e);
 					}
