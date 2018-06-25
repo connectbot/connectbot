@@ -214,6 +214,19 @@ dependencies {
 }
 
 task getGitDescription {
+    // Make sure the git clone is not shallow so git describe works.
+    def dummyOutputStream = new OutputStream() {
+        @Override
+        public void write(int b) {}
+    }
+    exec {
+        executable 'git'
+        args 'fetch', '--unshallow'
+        standardOutput = dummyOutputStream
+        errorOutput = dummyOutputStream
+        ignoreExitValue true
+    }
+
     new ByteArrayOutputStream().withStream { os ->
         exec {
             executable 'git'
