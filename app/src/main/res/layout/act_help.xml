@@ -20,6 +20,7 @@
 
 <ScrollView
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:layout_weight="1"
@@ -34,14 +35,18 @@
 		>
 
 		<TextView
+			android:id="@+id/version"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:gravity="end"
+			android:paddingStart="2dip"
 			android:paddingEnd="2dip"
 			android:paddingRight="2dip"
 			android:paddingTop="2dip"
-			android:text="@string/msg_version"
-			android:textAppearance="?android:attr/textAppearanceSmall"/>
+			android:text="ConnectBot (working version)"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			tools:ignore="HardcodedText"
+			/>
 
 		<TextView
 			android:layout_width="fill_parent"
