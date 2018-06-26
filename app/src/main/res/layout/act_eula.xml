@@ -73,11 +73,13 @@
 			/>
 
 		<TextView
+			android:id="@+id/version"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:paddingTop="10dip"
-			android:text="@string/msg_version"
+			android:text="ConnectBot (working version)"
 			android:textAppearance="?android:attr/textAppearanceSmall"
+			tools:ignore="HardcodedText"
 			/>
 
 	</LinearLayout>

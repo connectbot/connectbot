@@ -17,6 +17,8 @@
 
 package org.connectbot;
 
+import org.connectbot.util.Version;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -26,5 +28,7 @@ public class EulaActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.act_eula);
+
+		Version.setVersionText(getApplicationContext(), findViewById(R.id.version));
 	}
 }

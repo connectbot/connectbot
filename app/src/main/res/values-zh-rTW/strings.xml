@@ -17,6 +17,7 @@
   <string name="host_shortcuts_header">主機捷徑</string>
   <string name="host_shortcuts_content">長按 Android 桌面以新增常用主機捷徑</string>
   <string name="scroll_hints_header">向前/向後捲動</string>
+  <string name="scroll_hints_content">在屏幕右側向上滑動你的手指允許你向後滾動在本地終端緩衝區歷史中向前。</string>
   <string name="scrolling_back">向後捲動</string>
   <string name="scrolling_forward">向前捲動</string>
   <string name="page_updn_header">上一頁/下一頁</string>
@@ -95,6 +96,7 @@
   <string name="pref_titlebarhide_summary">輕觸終端機來顯示標題列並存取選單</string>
   <string name="pref_alwaysvisible_title">特殊鍵永遠顯示</string>
   <string name="pref_pg_updn_gesture_title">上下頁手勢</string>
+  <string name="pref_pg_updn_gesture_summary">在屏幕左側的三分之一以內滑動向終端發送向上/向下翻頁</string>
   <string name="pref_fullscreen_title">全螢幕</string>
   <string name="pref_fullscreen_summary">當在控制台時隱藏狀態列</string>
   <string name="pref_keyboard_category">鍵盤</string>
