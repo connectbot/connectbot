@@ -660,20 +660,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		public byte[] openSSHPubkey;
 	}
 
-	/**
-	 * Called when connectivity to the network is lost and it doesn't appear
-	 * we'll be getting a different connection any time soon.
-	 */
-	public void onConnectivityLost() {
-		final Thread t = new Thread() {
-			@Override
-			public void run() {
-				disconnectAll(false, true);
-			}
-		};
-		t.setName("Disconnector");
-		t.start();
-	}
 
 	/**
 	 * Called when connectivity to the network is restored.
