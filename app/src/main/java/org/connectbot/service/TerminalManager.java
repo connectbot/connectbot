@@ -318,35 +318,42 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	/**
 	 * Called by child bridge when somehow it's been disconnected.
+	 *
+	 * This can be called twice, on disconnect and once the user
+	 * has descided to close the connection...
 	 */
 	@Override
 	public void onDisconnected(TerminalBridge bridge) {
 		boolean shouldHideRunningNotification = false;
-		Log.d(TAG, "Bridge Disconnected. Removing it.");
+		Log.d(TAG, "onDisconnected(), bridge: " + bridge.host.getNickname());
+
 
 		synchronized (bridges) {
 			// remove this bridge from our list
-			bridges.remove(bridge);
+			if (bridge.isAwaitingClose()) {
+				bridges.remove(bridge);
 
-			mHostBridgeMap.remove(bridge.host);
-			mNicknameBridgeMap.remove(bridge.host.getNickname());
+				mHostBridgeMap.remove(bridge.host);
+				mNicknameBridgeMap.remove(bridge.host.getNickname());
 
-			if (bridge.isUsingNetwork()) {
-				connectivityManager.decRef();
+				if (bridge.isUsingNetwork()) {
+					connectivityManager.decRef();
+				}
+
+				if (bridges.isEmpty() && mPendingReconnect.isEmpty()) {
+					shouldHideRunningNotification = true;
+				}
 			}
-
-			if (bridges.isEmpty() && mPendingReconnect.isEmpty()) {
-				shouldHideRunningNotification = true;
-			}
-
-			// pass notification back up to gui
-			if (disconnectListener != null)
-				disconnectListener.onDisconnected(bridge);
 		}
 
 		synchronized (disconnected) {
-			disconnected.add(bridge.host);
+			if (!disconnected.contains(bridge.host))
+				disconnected.add(bridge.host);
 		}
+
+		// pass notification back up to gui
+		if (disconnectListener != null)
+			disconnectListener.onDisconnected(bridge);
 
 		notifyHostStatusChanged();
 

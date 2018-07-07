@@ -208,9 +208,12 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 	@Override
 	public void onDisconnected(TerminalBridge bridge) {
+
+		Log.d(TAG, "onDisconnected() bridge: " + bridge.host.getNickname());
+
+		ActivityCompat.invalidateOptionsMenu(ConsoleActivity.this);
 		synchronized (adapter) {
 			adapter.notifyDataSetChanged();
-			Log.d(TAG, "Someone sending HANDLE_DISCONNECT to parentHandler");
 
 			if (bridge.isAwaitingClose()) {
 				closeBridge(bridge);

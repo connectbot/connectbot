@@ -471,7 +471,6 @@ public class TerminalBridge implements VDUDisplay {
 
 		if (immediate || (host.getQuickDisconnect() && !host.getStayConnected())) {
 			awaitingClose = true;
-			triggerDisconnectListener();
 		} else {
 			{
 				final String line = manager.res.getString(R.string.alert_disconnect_msg);
@@ -496,10 +495,13 @@ public class TerminalBridge implements VDUDisplay {
 			disconnectPromptThread.setDaemon(true);
 			disconnectPromptThread.start();
 		}
+
+		// Notify listener about disconnect in any case...
+		triggerDisconnectListener();
 	}
 
 	/**
-	 * Tells the TerminalManager that we can be destroyed now.
+	 * Tells the TerminalManager that Terminal Bridge is disconnected.
 	 */
 	private void triggerDisconnectListener() {
 		if (disconnectListener != null) {
