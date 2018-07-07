@@ -135,7 +135,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 	private Animation keyboard_fade_in, keyboard_fade_out;
 
-	private MenuItem disconnect, copy, paste, portForward, resize, urlscan;
+	private MenuItem disconnect, reconnect, copy, paste, portForward, resize, urlscan;
 
 	private boolean forcedOrientation;
 
@@ -835,7 +835,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		disconnect = menu.add(R.string.list_host_disconnect);
 		if (hardKeyboard)
 			disconnect.setAlphabeticShortcut('w');
-		if (!sessionOpen && disconnected)
+		if (disconnected)
 			disconnect.setTitle(R.string.console_menu_close);
 		disconnect.setEnabled(activeTerminal);
 		disconnect.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
@@ -850,6 +850,24 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				return true;
 			}
 		});
+
+		if (disconnected) {
+			reconnect = menu.add(R.string.console_menu_reconnect);
+			if (hardKeyboard)
+				disconnect.setAlphabeticShortcut('r');
+			reconnect.setTitle(R.string.console_menu_reconnect);
+			reconnect.setEnabled(activeTerminal);
+			reconnect.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
+				public boolean onMenuItemClick(MenuItem item) {
+					// Reconnect the currently visible session
+					TerminalView terminalView = adapter.getCurrentTerminalView();
+					TerminalBridge bridge = terminalView.bridge;
+					bound.requestReconnect(bridge);
+					return true;
+				}
+			});
+		}
 
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 			copy = menu.add(R.string.console_menu_copy);

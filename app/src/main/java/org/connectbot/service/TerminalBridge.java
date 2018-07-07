@@ -444,9 +444,12 @@ public class TerminalBridge implements VDUDisplay {
 
 	/**
 	 * Force disconnection of this terminal bridge.
+	 *
+	 * @param immediate whether to close terminal window immediately
 	 */
 	public void dispatchDisconnect(boolean immediate) {
 		// We don't need to do this multiple times.
+		Log.d(TAG, "dispatchDisconnect, disconnected " + disconnected);
 		synchronized (this) {
 			if (disconnected && !immediate)
 				return;

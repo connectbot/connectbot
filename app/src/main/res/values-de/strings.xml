@@ -282,4 +282,5 @@
   <string name="key_type_ed25519">Ed25519</string>
   <string name="key_type_unknown">Schlüsseltyp unbekannt</string>
   <string name="key_attribute_encrypted">(verschlüsselt)</string>
+    <string name="console_menu_reconnect">Erneut verbinden</string>
 </resources>

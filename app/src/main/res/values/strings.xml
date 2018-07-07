@@ -395,6 +395,8 @@
 
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">"Close"</string>
+	<!-- Button to reconnect the disconnected terminal window. -->
+	<string name="console_menu_reconnect">Reconnect</string>
 	<!-- Button to begin copying from the terminal to the clipboard. -->
 	<string name="console_menu_copy">"Copy"</string>
 	<!-- Button to paste from the clipboard to the terminal. -->
