@@ -62,6 +62,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	private final static int OUR_SHIFT_MASK = OUR_SHIFT_ON | OUR_SHIFT_LOCK;
 
 	// backport constants from api level 11
+	private final static int KEYCODE_BACK = 4;
 	private final static int KEYCODE_ESCAPE = 111;
 	private final static int KEYCODE_CTRL_LEFT = 113;
 	private final static int KEYCODE_CTRL_RIGHT = 114;
@@ -78,6 +79,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			| HC_META_CTRL_LEFT_ON;
 	private final static int HC_META_ALT_MASK = KeyEvent.META_ALT_ON | KeyEvent.META_ALT_LEFT_ON
 			| KeyEvent.META_ALT_RIGHT_ON;
+	private final static int FLAG_VIRTUAL_HARD_KEY = 64;
 
 	private final TerminalManager manager;
 	private final TerminalBridge bridge;
@@ -370,6 +372,13 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					// TODO write encoding routine that doesn't allocate each time
 					bridge.transport.write(new String(Character.toChars(uchar))
 							.getBytes(encoding));
+				return true;
+			}
+
+			// If hardware keyboard pressed the BACK key, it works as the ESC key
+			if (keyCode == KEYCODE_BACK && interpretAsHardKeyboard
+					&& ((event.getFlags() & KeyEvent.FLAG_VIRTUAL_HARD_KEY) != KeyEvent.FLAG_VIRTUAL_HARD_KEY)) {
+				sendEscape();
 				return true;
 			}
 
