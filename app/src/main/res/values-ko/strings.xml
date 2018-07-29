@@ -190,4 +190,6 @@
   <string name="discard_host_changes_message">호스트 URI가 유효하지 않습니다. 변경 사항을 취소 하시겠습니까?</string>
   <string name="discard_host_button">버리기</string>
   <string name="discard_host_cancel_button">계속 편집하기</string>
+  <string name="pref_backesckey_title">Back 키를 ESC 키로 사용</string>
+  <string name="pref_backesckey_summary">하드웨어 키보드에서 Back 키가 ESC 키를 보내게 합니다</string>
 </resources>
