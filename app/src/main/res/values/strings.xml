@@ -298,6 +298,11 @@
 	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
 	<string name="pref_bumpyarrows_summary">"Vibrate when sending arrow keys; useful for laggy connections"</string>
 
+	<!-- Name for the Back key as the ESC key preference -->
+	<string name="pref_backesckey_title">"The Back key as the ESC key"</string>
+	<!-- Summary for the Back key as the ESC key preference -->
+	<string name="pref_backesckey_summary">"On hardware keyboards, the Back key sends the ESC key"</string>
+
 	<!-- Category title for the Terminal Bell preferences -->
 	<string name="pref_bell_category">"Terminal bell"</string>
 

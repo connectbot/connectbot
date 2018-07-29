@@ -147,6 +147,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					interpretAsHardKeyboard;
 			final boolean controlNumbersAreFKeys = controlNumbersAreFKeysOnSoftKeyboard &&
 					!interpretAsHardKeyboard;
+			final boolean backKeyAsEscKey = interpretAsHardKeyboard &&
+					prefs.getBoolean(PreferenceConstants.BACKKEY_AS_ESCKEY, false);
 
 			// Ignore all key-up events except for the special keys
 			if (event.getAction() == KeyEvent.ACTION_UP) {
@@ -376,7 +378,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			}
 
 			// If hardware keyboard pressed the BACK key, it works as the ESC key
-			if (keyCode == KEYCODE_BACK && interpretAsHardKeyboard
+			if (backKeyAsEscKey && keyCode == KEYCODE_BACK
 					&& ((event.getFlags() & KeyEvent.FLAG_VIRTUAL_HARD_KEY) != KeyEvent.FLAG_VIRTUAL_HARD_KEY)) {
 				sendEscape();
 				return true;
