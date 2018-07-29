@@ -379,7 +379,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 			// If hardware keyboard pressed the BACK key, it works as the ESC key
 			if (backKeyAsEscKey && keyCode == KEYCODE_BACK
-					&& ((event.getFlags() & KeyEvent.FLAG_VIRTUAL_HARD_KEY) != KeyEvent.FLAG_VIRTUAL_HARD_KEY)) {
+					&& ((event.getFlags() & FLAG_VIRTUAL_HARD_KEY) != FLAG_VIRTUAL_HARD_KEY)) {
 				sendEscape();
 				return true;
 			}
