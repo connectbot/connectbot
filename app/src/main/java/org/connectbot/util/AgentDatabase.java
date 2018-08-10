@@ -17,7 +17,7 @@
 
 package org.connectbot.util;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.connectbot.bean.AgentBean;
@@ -162,7 +162,7 @@ public class AgentDatabase extends RobustSQLiteOpenHelper {
 	 * @param c cursor to read from
 	 */
 	private List<AgentBean> createAgentBeans(Cursor c) {
-		List<AgentBean> agents = new LinkedList<AgentBean>();
+		List<AgentBean> agents = new ArrayList<>();
 
 		final int COL_ID = c.getColumnIndexOrThrow("_id"),
 				COL_KEY_IDENTIFIER = c.getColumnIndexOrThrow(FIELD_AGENT_KEY_IDENTIFIER),
