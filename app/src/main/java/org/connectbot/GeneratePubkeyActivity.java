@@ -52,7 +52,6 @@ import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.SeekBar;
@@ -115,21 +114,21 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 
 		setContentView(R.layout.act_generatepubkey);
 
-		nickname = (EditText) findViewById(R.id.nickname);
+		nickname = findViewById(R.id.nickname);
 
-		RadioGroup keyTypeGroup = (RadioGroup) findViewById(R.id.key_type);
+		RadioGroup keyTypeGroup = findViewById(R.id.key_type);
 
-		bitsText = (EditText) findViewById(R.id.bits);
-		bitsSlider = (SeekBar) findViewById(R.id.bits_slider);
+		bitsText = findViewById(R.id.bits);
+		bitsSlider = findViewById(R.id.bits_slider);
 
-		password1 = (EditText) findViewById(R.id.password1);
-		password2 = (EditText) findViewById(R.id.password2);
+		password1 = findViewById(R.id.password1);
+		password2 = findViewById(R.id.password2);
 
-		unlockAtStartup = (CheckBox) findViewById(R.id.unlock_at_startup);
+		unlockAtStartup = findViewById(R.id.unlock_at_startup);
 
-		confirmUse = (CheckBox) findViewById(R.id.confirm_use);
+		confirmUse = findViewById(R.id.confirm_use);
 
-		save = (Button) findViewById(R.id.save);
+		save = findViewById(R.id.save);
 
 		inflater = LayoutInflater.from(this);
 
@@ -141,11 +140,12 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 
 		// TODO add BC to provide EC for devices that don't have it.
 		if (Security.getProviders("KeyPairGenerator.EC") == null) {
-			((RadioButton) findViewById(R.id.ec)).setEnabled(false);
+			findViewById(R.id.ec).setEnabled(false);
 		}
 
 		keyTypeGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
+			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				if (checkedId == R.id.rsa) {
 					setKeyType(KeyType.RSA);
@@ -161,21 +161,25 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 
 		bitsSlider.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
+			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromTouch) {
 				setBits(keyType.minimumBits + progress);
 			}
 
+			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
 				// We don't care about the start.
 			}
 
+			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				setBits(bits);
 			}
 		});
 
 		bitsText.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (!hasFocus) {
 					int newBits;
@@ -190,6 +194,7 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 		});
 
 		save.setOnClickListener(new OnClickListener() {
+			@Override
 			public void onClick(View view) {
 				GeneratePubkeyActivity.this.save.setEnabled(false);
 
@@ -276,6 +281,7 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 		this.listener = listener;
 	}
 
+	@Override
 	public void onEntropyGathered(byte[] entropy) {
 		// For some reason the entropy dialog was aborted, exit activity
 		if (entropy == null) {
@@ -344,6 +350,7 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 		keyGenThread.start();
 	}
 
+	@Override
 	public void onGenerationSuccess(KeyPair pair) {
 		try {
 			boolean encrypted = false;
@@ -382,6 +389,7 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 		dismissActivity();
 	}
 
+	@Override
 	public void onGenerationError(Exception e) {
 		Log.e(TAG, "Could not generate key pair");
 		e.printStackTrace();
@@ -396,6 +404,7 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 
 	private void dismissActivity() {
 		runOnUiThread(new Runnable() {
+			@Override
 			public void run() {
 				progress.dismiss();
 				GeneratePubkeyActivity.this.finish();
@@ -404,11 +413,14 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 	}
 
 	final private TextWatcher textChecker = new TextWatcher() {
+		@Override
 		public void afterTextChanged(Editable s) {}
 
+		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count,
 				int after) {}
 
+		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
 				int count) {
 			checkEntries();

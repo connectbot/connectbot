@@ -18,6 +18,7 @@
 package org.connectbot.util;
 
 import org.connectbot.BuildConfig;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -271,6 +272,8 @@ public class PubkeyUtilsTest {
 		assertEquals("RSA", PubkeyUtils.getAlgorithmForOid("1.2.840.113549.1.1.1"));
 	}
 
+	@Test
+	@Ignore
 	public void getAlgorithmForOid_Dsa() throws Exception {
 		assertEquals("DSA", PubkeyUtils.getAlgorithmForOid("1.2.840.10040.4.1"));
 	}
@@ -328,14 +331,15 @@ public class PubkeyUtilsTest {
 	}
 
 	private static class MyPrivateKey implements PrivateKey {
+		@Override
 		public String getAlgorithm() {
 			throw new UnsupportedOperationException();
 		}
-
+		@Override
 		public byte[] getEncoded() {
 			throw new UnsupportedOperationException();
 		}
-
+		@Override
 		public String getFormat() {
 			throw new UnsupportedOperationException();
 		}

@@ -35,14 +35,17 @@ public class IBM437 extends Charset {
             super(csName, aliases);
         }
 
+        @Override
         public boolean contains(Charset cs) {
             return cs.name().equalsIgnoreCase("IBM367") || cs.name().equalsIgnoreCase("IBM437") || cs.name().equalsIgnoreCase("US-ASCII") ;
         }
 
+        @Override
         public CharsetDecoder newDecoder() {
             return new Decoder(this);
         }
 
+        @Override
         public CharsetEncoder newEncoder() {
             return new Encoder(this);
         }
@@ -56,6 +59,7 @@ public class IBM437 extends Charset {
 //		private native int nDecode(char[] array, int arrPosition, int remaining, long outAddr, int absolutePos);
 
 
+		@Override
 		protected CoderResult decodeLoop(ByteBuffer bb, CharBuffer cb){
                         int cbRemaining = cb.remaining();
 /* TODO: support direct byte buffers
@@ -153,6 +157,7 @@ public class IBM437 extends Charset {
                    
 //		private native void nEncode(long outAddr, int absolutePos, char[] array, int arrPosition, int[] res);
                                                                                                                           
+		@Override
 		protected CoderResult encodeLoop(CharBuffer cb, ByteBuffer bb){
                         int bbRemaining = bb.remaining();
 /* TODO: support direct byte buffers

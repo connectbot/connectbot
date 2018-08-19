@@ -22,5 +22,5 @@ package org.connectbot.util;
  *
  */
 public interface OnDbWrittenListener {
-	public void onDbWritten();
+	void onDbWritten();
 }

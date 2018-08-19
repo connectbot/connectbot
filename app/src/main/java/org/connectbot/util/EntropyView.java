@@ -17,7 +17,7 @@
 
 package org.connectbot.util;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import org.connectbot.R;
 
@@ -40,7 +40,7 @@ public class EntropyView extends View {
 	private FontMetrics mFontMetrics;
 	private boolean mFlipFlop;
 	private long mLastTime;
-	private Vector<OnEntropyGatheredListener> listeners;
+	private ArrayList<OnEntropyGatheredListener> listeners;
 
 	private byte[] mEntropy;
 	private int mEntropyByteIndex;
@@ -75,7 +75,7 @@ public class EntropyView extends View {
 		mEntropyByteIndex = 0;
 		mEntropyBitIndex = 0;
 
-		listeners = new Vector<OnEntropyGatheredListener>();
+		listeners = new ArrayList<>();
 	}
 
 	public void addOnEntropyGatheredListener(OnEntropyGatheredListener listener) {
@@ -142,12 +142,12 @@ public class EntropyView extends View {
 
 		for (int i = 0; i < 4 && mEntropyByteIndex < SHA1_MAX_BYTES; i++) {
 			if ((input & 0x3) == 0x1) {
-				mEntropy[mEntropyByteIndex] <<= 1;
-				mEntropy[mEntropyByteIndex] |= 1;
+				mEntropy[mEntropyByteIndex] = (byte) (mEntropy[mEntropyByteIndex] << 1);
+				mEntropy[mEntropyByteIndex] = (byte) (mEntropy[mEntropyByteIndex] | 1);
 				mEntropyBitIndex++;
 				input >>= 2;
 			} else if ((input & 0x3) == 0x2) {
-				mEntropy[mEntropyByteIndex] <<= 1;
+				mEntropy[mEntropyByteIndex] = (byte) (mEntropy[mEntropyByteIndex] << 1);
 				mEntropyBitIndex++;
 				input >>= 2;
 			}

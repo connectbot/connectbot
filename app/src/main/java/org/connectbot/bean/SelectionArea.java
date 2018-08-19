@@ -146,7 +146,7 @@ public class SelectionArea {
 	public String copyFrom(VDUBuffer vb) {
 		int size = (getRight() - getLeft() + 1) * (getBottom() - getTop() + 1);
 
-		StringBuffer buffer = new StringBuffer(size);
+		StringBuilder buffer = new StringBuilder(size);
 
 		for (int y = getTop(); y <= getBottom(); y++) {
 			int lastNonSpace = buffer.length();

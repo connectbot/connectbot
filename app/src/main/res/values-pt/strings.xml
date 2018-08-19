@@ -1,17 +1,17 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="app_desc">Simples e poderoso cliente SSH open-source</string>
-  <string name="service_desc">Manter ligações SSH e chaves públicas carregadas</string>
-  <string name="title_hosts_list">Máquinas</string>
+  <string name="app_desc">Cliente SSH open source simples e poderoso</string>
+  <string name="service_desc">Mantém conexões SSH and chaves públicas carregadas</string>
+  <string name="title_hosts_list">Servidores</string>
   <string name="title_pubkey_list">Chaves Públicas</string>
   <string name="title_port_forwards_list">Redireciomento de portas</string>
-  <string name="title_host_editor">Editar a Máquina</string>
+  <string name="title_host_editor">Editar Servidor</string>
   <string name="title_help">Ajuda</string>
   <string name="title_colors">Cores</string>
   <string name="title_color_picker">Selecione uma cor</string>
   <string name="title_settings">Configurações</string>
-  <string name="title_pubkey_generate">Criar</string>
-  <string name="help_intro">Selecione um tópico para mais informações sobre o assunto.</string>
+  <string name="title_pubkey_generate">Gerar</string>
+  <string name="help_intro">Selecione um tópico abaixo para mais informações sobre o assuno</string>
   <string name="terms_and_conditions">Termos &amp; Condições</string>
   <string name="hints">Sugestões</string>
   <string name="host_shortcuts_header">Configurações Padrão</string>

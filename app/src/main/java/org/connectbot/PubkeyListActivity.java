@@ -27,9 +27,9 @@ import java.io.InputStreamReader;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EventListener;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.connectbot.bean.PubkeyBean;
@@ -58,7 +58,6 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -95,6 +94,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 	private TerminalManager bound = null;
 
 	private ServiceConnection connection = new ServiceConnection() {
+		@Override
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
 
@@ -102,6 +102,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			updateList();
 		}
 
+		@Override
 		public void onServiceDisconnected(ComponentName className) {
 			bound = null;
 			updateList();
@@ -129,7 +130,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		super.onCreate(icicle);
 		setContentView(R.layout.act_pubkeylist);
 
-		mListView = (RecyclerView) findViewById(R.id.list);
+		mListView = findViewById(R.id.list);
 		mListView.setHasFixedSize(true);
 		mListView.setLayoutManager(new LinearLayoutManager(this));
 		mListView.addItemDecoration(new ListItemDecoration(this));
@@ -249,7 +250,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			return true;
 		}
 
-		List<String> names = new LinkedList<String>();
+		List<String> names = new ArrayList<>();
 		{
 			File[] files = sdcard.listFiles();
 			if (files != null) {
@@ -269,6 +270,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 				PubkeyListActivity.this, R.style.AlertDialogTheme)
 				.setTitle(R.string.pubkey_list_pick)
 				.setItems(namesList, new OnClickListener() {
+					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
 						String name = namesList[arg1];
 
@@ -283,12 +285,13 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 	protected void handleAddKey(final PubkeyBean pubkey) {
 		if (pubkey.isEncrypted()) {
 			final View view = View.inflate(this, R.layout.dia_password, null);
-			final EditText passwordField = (EditText) view.findViewById(android.R.id.text1);
+			final EditText passwordField = view.findViewById(android.R.id.text1);
 
 			new android.support.v7.app.AlertDialog.Builder(
 					PubkeyListActivity.this, R.style.AlertDialogTheme)
 				.setView(view)
 				.setPositiveButton(R.string.pubkey_unlock, new DialogInterface.OnClickListener() {
+					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						handleAddKey(pubkey, passwordField.getText().toString());
 					}
@@ -472,9 +475,9 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		public PubkeyViewHolder(View v) {
 			super(v);
 
-			icon = (ImageView) v.findViewById(android.R.id.icon);
-			nickname = (TextView) v.findViewById(android.R.id.text1);
-			caption = (TextView) v.findViewById(android.R.id.text2);
+			icon = v.findViewById(android.R.id.icon);
+			nickname = v.findViewById(android.R.id.text1);
+			caption = v.findViewById(android.R.id.text2);
 		}
 
 		@Override
@@ -504,6 +507,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 			MenuItem load = menu.add(loaded ? R.string.pubkey_memory_unload : R.string.pubkey_memory_load);
 			load.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					if (loaded) {
 						bound.removeKey(pubkey.getNickname());
@@ -521,6 +525,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			onstartToggle.setCheckable(true);
 			onstartToggle.setChecked(pubkey.isStartup());
 			onstartToggle.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					// toggle onstart status
 					pubkey.setStartup(!pubkey.isStartup());
@@ -534,6 +539,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			MenuItem copyPublicToClipboard = menu.add(R.string.pubkey_copy_public);
 			copyPublicToClipboard.setEnabled(!imported);
 			copyPublicToClipboard.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					try {
 						PublicKey pk = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
@@ -541,7 +547,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 						clipboard.setText(openSSHPubkey);
 					} catch (Exception e) {
-						e.printStackTrace();
+						Log.d(TAG, "Error converting to OpenSSH format", e);
 					}
 					return true;
 				}
@@ -550,6 +556,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			MenuItem copyPrivateToClipboard = menu.add(R.string.pubkey_copy_private);
 			copyPrivateToClipboard.setEnabled(!pubkey.isEncrypted() || imported);
 			copyPrivateToClipboard.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					try {
 						String data = null;
@@ -563,7 +570,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 						clipboard.setText(data);
 					} catch (Exception e) {
-						e.printStackTrace();
+						Log.d(TAG, "Error copying private key", e);
 					}
 					return true;
 				}
@@ -572,6 +579,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			MenuItem changePassword = menu.add(R.string.pubkey_change_password);
 			changePassword.setEnabled(!imported);
 			changePassword.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					final View changePasswordView =
 							View.inflate(PubkeyListActivity.this, R.layout.dia_changepassword, null);
@@ -581,6 +589,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 									PubkeyListActivity.this, R.style.AlertDialogTheme)
 							.setView(changePasswordView)
 							.setPositiveButton(R.string.button_change, new DialogInterface.OnClickListener() {
+								@Override
 								public void onClick(DialogInterface dialog, int which) {
 									String oldPassword = ((EditText) changePasswordView.findViewById(R.id.old_password)).getText().toString();
 									String password1 = ((EditText) changePasswordView.findViewById(R.id.password1)).getText().toString();
@@ -630,6 +639,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			confirmUse.setCheckable(true);
 			confirmUse.setChecked(pubkey.isConfirmUse());
 			confirmUse.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					// toggle confirm use
 					pubkey.setConfirmUse(!pubkey.isConfirmUse());
@@ -642,12 +652,14 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 			MenuItem delete = menu.add(R.string.pubkey_delete);
 			delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					// prompt user to make sure they really want this
 					new android.support.v7.app.AlertDialog.Builder(
 									PubkeyListActivity.this, R.style.AlertDialogTheme)
 							.setMessage(getString(R.string.delete_message, pubkey.getNickname()))
 							.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
+								@Override
 								public void onClick(DialogInterface dialog, int which) {
 
 									// dont forget to remove from in-memory
@@ -685,6 +697,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			return new PubkeyViewHolder(v);
 		}
 
+		@Override
 		public void onBindViewHolder(ItemViewHolder holder, int position) {
 			PubkeyViewHolder pubkeyHolder = (PubkeyViewHolder) holder;
 

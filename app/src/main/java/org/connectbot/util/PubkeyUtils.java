@@ -230,7 +230,7 @@ public class PubkeyUtils {
 		if (PubkeyDatabase.KEY_TYPE_IMPORTED.equals(keybean.getType())) {
 			// load specific key using pem format
 			try {
-				return PEMDecoder.decode(new String(keybean.getPrivateKey()).toCharArray(), password);
+				return PEMDecoder.decode(new String(keybean.getPrivateKey(), "UTF-8").toCharArray(), password);
 			} catch (Exception e) {
 				Log.e(TAG, "Cannot decode imported key", e);
 				throw new BadPasswordException();

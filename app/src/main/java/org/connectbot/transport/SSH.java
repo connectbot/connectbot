@@ -34,8 +34,8 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -134,7 +134,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		| ChannelCondition.CLOSED
 		| ChannelCondition.EOF;
 
-	private List<PortForwardBean> portForwards = new LinkedList<PortForwardBean>();
+	private List<PortForwardBean> portForwards = new ArrayList<>();
 
 	private int columns;
 	private int rows;
@@ -146,6 +146,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	private String agentLockPassphrase;
 
 	public class HostKeyVerifier extends ExtendedServerHostKeyVerifier {
+		@Override
 		public boolean verifyServerHostKey(String hostname, int port,
 				String serverHostKeyAlgorithm, byte[] serverHostKey) throws IOException {
 
@@ -354,7 +355,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 			if (PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType())) {
 				// load specific key using pem format
-				pair = PEMDecoder.decode(new String(pubkey.getPrivateKey()).toCharArray(), password);
+				pair = PEMDecoder.decode(new String(pubkey.getPrivateKey(), "UTF-8").toCharArray(), password);
 			} else {
 				// load using internal generated format
 				PrivateKey privKey;
@@ -579,7 +580,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 	@Override
 	public Map<String, String> getOptions() {
-		Map<String, String> options = new HashMap<String, String>();
+		Map<String, String> options = new HashMap<>();
 
 		options.put("compression", Boolean.toString(compression));
 
@@ -606,6 +607,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		return connected;
 	}
 
+	@Override
 	public void connectionLost(Throwable reason) {
 		onDisconnect();
 	}
@@ -830,6 +832,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	/**
 	 * Handle challenges from keyboard-interactive authentication mode.
 	 */
+	@Override
 	public String[] replyToChallenge(String name, String instruction, int numPrompts, String[] prompt, boolean[] echo) {
 		interactiveCanContinue = true;
 		String[] responses = new String[numPrompts];
@@ -896,8 +899,9 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		this.useAuthAgent = useAuthAgent;
 	}
 
+	@Override
 	public Map<String, byte[]> retrieveIdentities() {
-		Map<String, byte[]> pubKeys = new HashMap<String, byte[]>(manager.loadedKeypairs.size());
+		Map<String, byte[]> pubKeys = new HashMap<>(manager.loadedKeypairs.size());
 
 		for (Entry<String, KeyHolder> entry : manager.loadedKeypairs.entrySet()) {
 			KeyPair pair = entry.getValue().pair;
@@ -926,6 +930,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		return pubKeys;
 	}
 
+	@Override
 	public KeyPair getKeyPair(byte[] publicKey) {
 		String nickname = manager.getKeyNickname(publicKey);
 
@@ -950,6 +955,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		return result;
 	}
 
+	@Override
 	public boolean addIdentity(KeyPair pair, String comment, boolean confirmUse, int lifetime) {
 		PubkeyBean pubkey = new PubkeyBean();
 //		pubkey.setType(PubkeyDatabase.KEY_TYPE_IMPORTED);
@@ -960,19 +966,23 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		return true;
 	}
 
+	@Override
 	public boolean removeAllIdentities() {
 		manager.loadedKeypairs.clear();
 		return true;
 	}
 
+	@Override
 	public boolean removeIdentity(byte[] publicKey) {
 		return manager.removeKey(publicKey);
 	}
 
+	@Override
 	public boolean isAgentLocked() {
 		return agentLockPassphrase != null;
 	}
 
+	@Override
 	public boolean requestAgentUnlock(String unlockPassphrase) {
 		if (agentLockPassphrase == null)
 			return false;
@@ -983,6 +993,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		return agentLockPassphrase == null;
 	}
 
+	@Override
 	public boolean setAgentLock(String lockPassphrase) {
 		if (agentLockPassphrase != null)
 			return false;

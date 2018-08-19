@@ -457,7 +457,7 @@ public abstract class TelnetProtocolHandler {
       if (b>=128)
         b=(byte)(b-256);
       if(debug > 2) {
-        Byte B = Byte.valueOf(b);
+        Byte B = b;
         System.err.print("byte: " + B.intValue()+ " ");
       }
       switch (neg_state) {

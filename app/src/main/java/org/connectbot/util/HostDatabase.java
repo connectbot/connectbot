@@ -21,7 +21,6 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -227,7 +226,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 				+ " (_id INTEGER PRIMARY KEY, "
 				+ FIELD_PORTFORWARD_HOSTID + " INTEGER, "
 				+ FIELD_PORTFORWARD_NICKNAME + " TEXT, "
-				+ FIELD_PORTFORWARD_TYPE + " TEXT NOT NULL DEFAULT " + PORTFORWARD_LOCAL + ", "
+				+ FIELD_PORTFORWARD_TYPE + " TEXT NOT NULL DEFAULT '" + PORTFORWARD_LOCAL + "', "
 				+ FIELD_PORTFORWARD_SOURCEPORT + " INTEGER NOT NULL DEFAULT 8080, "
 				+ FIELD_PORTFORWARD_DESTADDR + " TEXT, "
 				+ FIELD_PORTFORWARD_DESTPORT + " TEXT)");
@@ -248,6 +247,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		db.execSQL(CREATE_TABLE_COLOR_DEFAULTS_INDEX);
 	}
 
+	@Override
 	@VisibleForTesting
 	public void resetDatabase() {
 		try {
@@ -286,30 +286,37 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		case 10:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY);
+			// fall through
 		case 11:
 			db.execSQL("CREATE TABLE " + TABLE_PORTFORWARDS
 					+ " (_id INTEGER PRIMARY KEY, "
 					+ FIELD_PORTFORWARD_HOSTID + " INTEGER, "
 					+ FIELD_PORTFORWARD_NICKNAME + " TEXT, "
-					+ FIELD_PORTFORWARD_TYPE + " TEXT NOT NULL DEFAULT " + PORTFORWARD_LOCAL + ", "
+					+ FIELD_PORTFORWARD_TYPE + " TEXT NOT NULL DEFAULT '" + PORTFORWARD_LOCAL + "', "
 					+ FIELD_PORTFORWARD_SOURCEPORT + " INTEGER NOT NULL DEFAULT 8080, "
 					+ FIELD_PORTFORWARD_DESTADDR + " TEXT, "
 					+ FIELD_PORTFORWARD_DESTPORT + " INTEGER)");
+			// fall through
 		case 12:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "'");
+			// fall through
 		case 13:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "'");
+			// fall through
 		case 14:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "'");
+			// fall through
 		case 15:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_PROTOCOL + " TEXT DEFAULT 'ssh'");
+			// fall through
 		case 16:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "'");
+			// fall through
 		case 17:
 			db.execSQL("CREATE INDEX " + TABLE_PORTFORWARDS + FIELD_PORTFORWARD_HOSTID + "index ON "
 					+ TABLE_PORTFORWARDS + " (" + FIELD_PORTFORWARD_HOSTID + ");");
@@ -322,25 +329,32 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 					+ FIELD_COLOR_SCHEME + " INTEGER)");
 			db.execSQL("CREATE INDEX " + TABLE_COLORS + FIELD_COLOR_SCHEME + "index ON "
 					+ TABLE_COLORS + " (" + FIELD_COLOR_SCHEME + ");");
+			// fall through
 		case 18:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_USEAUTHAGENT + " TEXT DEFAULT '" + AUTHAGENT_NO + "'");
+			// fall through
 		case 19:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_STAYCONNECTED + " TEXT");
+			// fall through
 		case 20:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_FONTSIZE + " INTEGER");
+			// fall through
 		case 21:
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_COLOR_DEFAULTS);
 			db.execSQL(CREATE_TABLE_COLOR_DEFAULTS);
 			db.execSQL(CREATE_TABLE_COLOR_DEFAULTS_INDEX);
+			// fall through
 		case 22:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
 					+ " ADD COLUMN " + FIELD_HOST_QUICKDISCONNECT + " TEXT DEFAULT '" + Boolean.toString(false) + "'");
+			// fall through
 		case 23:
 			db.execSQL("UPDATE " + TABLE_HOSTS
 					+ " SET " + FIELD_HOST_FONTSIZE + " = " + FIELD_HOST_FONTSIZE + " / " + displayDensity);
+			// fall through
 		case 24:
 			// Move all the existing known hostkeys into their own table.
 			db.execSQL("DROP TABLE IF EXISTS " + TABLE_KNOWNHOSTS);
@@ -389,6 +403,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * Touch a specific host to update its "last connected" field.
 	 * @param host host to update
 	 */
+	@Override
 	public void touchHost(HostBean host) {
 		long now = System.currentTimeMillis() / 1000;
 
@@ -407,6 +422,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	/**
 	 * Create a new or update an existing {@code host}.
 	 */
+	@Override
 	public HostBean saveHost(HostBean host) {
 		long id = host.getId();
 
@@ -430,6 +446,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	/**
 	 * Delete a specific host by its <code>_id</code> value.
 	 */
+	@Override
 	public void deleteHost(HostBean host) {
 		if (host.getId() < 0) {
 			return;
@@ -450,6 +467,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * Return a cursor that contains information about all known hosts.
 	 * @param sortColors If true, sort by color, otherwise sort by nickname.
 	 */
+	@Override
 	public List<HostBean> getHosts(boolean sortColors) {
 		String sortField = sortColors ? FIELD_HOST_COLOR : FIELD_HOST_NICKNAME;
 		List<HostBean> hosts;
@@ -467,7 +485,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * @param c cursor to read from
 	 */
 	private List<HostBean> createHostBeans(Cursor c) {
-		List<HostBean> hosts = new LinkedList<HostBean>();
+		List<HostBean> hosts = new ArrayList<>();
 
 		final int COL_ID = c.getColumnIndexOrThrow("_id"),
 			COL_NICKNAME = c.getColumnIndexOrThrow(FIELD_HOST_NICKNAME),
@@ -538,12 +556,13 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * @param selection parameters describing the desired host
 	 * @return host matching selection or {@code null}.
 	 */
+	@Override
 	public HostBean findHost(Map<String, String> selection) {
 		StringBuilder selectionBuilder = new StringBuilder();
 
 		Iterator<Entry<String, String>> i = selection.entrySet().iterator();
 
-		List<String> selectionValuesList = new LinkedList<String>();
+		List<String> selectionValuesList = new ArrayList<>();
 		int n = 0;
 		while (i.hasNext()) {
 			Entry<String, String> entry = i.next();
@@ -577,6 +596,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * @param hostId host id for the host
 	 * @return host matching the hostId or {@code null} if none match
 	 */
+	@Override
 	public HostBean findHostById(long hostId) {
 		Cursor c = mDb.query(TABLE_HOSTS, null,
 				"_id = ?", new String[] {String.valueOf(hostId)},
@@ -592,6 +612,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * @param hostkeyalgo algorithm for host key
 	 * @param hostkey the bytes of the host key itself
 	 */
+	@Override
 	public void saveKnownHost(String hostname, int port, String hostkeyalgo, byte[] hostkey) {
 		HashMap<String, String> selection = new HashMap<>();
 		selection.put(FIELD_HOST_HOSTNAME, hostname);
@@ -632,6 +653,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * Build list of known hosts for Trilead library.
 	 * @return
 	 */
+	@Override
 	public KnownHosts getKnownHosts() {
 		KnownHosts known = new KnownHosts();
 
@@ -734,8 +756,9 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	 * @param host the host for which we want the port forward list
 	 * @return port forwards associated with host ID or empty list if no match
 	 */
+	@Override
 	public List<PortForwardBean> getPortForwardsForHost(HostBean host) {
-		List<PortForwardBean> portForwards = new LinkedList<PortForwardBean>();
+		List<PortForwardBean> portForwards = new ArrayList<>();
 		if (host == null) {
 			return portForwards;
 		}
@@ -808,6 +831,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		}
 	}
 
+	@Override
 	public int[] getColorsForScheme(int scheme) {
 		int[] colors = Colors.defaults.clone();
 
@@ -861,10 +885,12 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		}
 	}
 
+	@Override
 	public void setGlobalColor(int number, int value) {
 		setColorForScheme(DEFAULT_COLOR_SCHEME, number, value);
 	}
 
+	@Override
 	public int[] getDefaultColorsForScheme(int scheme) {
 		int[] colors = new int[] { DEFAULT_FG_COLOR, DEFAULT_BG_COLOR };
 
@@ -888,6 +914,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		return getDefaultColorsForScheme(DEFAULT_COLOR_SCHEME);
 	}
 
+	@Override
 	public void setDefaultColorsForScheme(int scheme, int fg, int bg) {
 		SQLiteDatabase db;
 

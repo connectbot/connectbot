@@ -41,7 +41,6 @@ import android.os.Message;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -104,7 +103,7 @@ public class PortForwardListActivity extends AppCompatListActivity {
 
 		setContentView(R.layout.act_portforwardlist);
 
-		mListView = (RecyclerView) findViewById(R.id.list);
+		mListView = findViewById(R.id.list);
 		mListView.setHasFixedSize(true);
 		mListView.setLayoutManager(new LinearLayoutManager(this));
 		mListView.addItemDecoration(new ListItemDecoration(this));
@@ -127,6 +126,7 @@ public class PortForwardListActivity extends AppCompatListActivity {
 		}
 
 		connection = new ServiceConnection() {
+			@Override
 			public void onServiceConnected(ComponentName className, IBinder service) {
 				TerminalManager bound = ((TerminalManager.TerminalBinder) service).getService();
 
@@ -134,6 +134,7 @@ public class PortForwardListActivity extends AppCompatListActivity {
 				updateHandler.sendEmptyMessage(-1);
 			}
 
+			@Override
 			public void onServiceDisconnected(ComponentName name) {
 				hostBridge = null;
 			}
@@ -146,20 +147,22 @@ public class PortForwardListActivity extends AppCompatListActivity {
 		this.inflater = LayoutInflater.from(this);
 
 		FloatingActionButton addPortForwardButton =
-				(FloatingActionButton) findViewById(R.id.add_port_forward_button);
+				findViewById(R.id.add_port_forward_button);
 		addPortForwardButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// build dialog to prompt user about updating
 				final View portForwardView = View.inflate(PortForwardListActivity.this, R.layout.dia_portforward, null);
-				final EditText destEdit = (EditText) portForwardView.findViewById(R.id.portforward_destination);
-				final Spinner typeSpinner = (Spinner) portForwardView.findViewById(R.id.portforward_type);
+				final EditText destEdit = portForwardView.findViewById(R.id.portforward_destination);
+				final Spinner typeSpinner = portForwardView.findViewById(R.id.portforward_type);
 
 				typeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+					@Override
 					public void onItemSelected(AdapterView<?> value, View view,
 							int position, long id) {
 						destEdit.setEnabled(position != 2);
 					}
+					@Override
 					public void onNothingSelected(AdapterView<?> arg0) {
 					}
 				});
@@ -168,10 +171,11 @@ public class PortForwardListActivity extends AppCompatListActivity {
 								PortForwardListActivity.this, R.style.AlertDialogTheme)
 						.setView(portForwardView)
 						.setPositiveButton(R.string.portforward_pos, new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								try {
-									final EditText nicknameEdit = (EditText) portForwardView.findViewById(R.id.nickname);
-									final EditText sourcePortEdit = (EditText) portForwardView.findViewById(R.id.portforward_source);
+									final EditText nicknameEdit = portForwardView.findViewById(R.id.nickname);
+									final EditText sourcePortEdit = portForwardView.findViewById(R.id.portforward_source);
 
 									String type = HostDatabase.PORTFORWARD_LOCAL;
 									switch (typeSpinner.getSelectedItemPosition()) {
@@ -250,8 +254,8 @@ public class PortForwardListActivity extends AppCompatListActivity {
 		public PortForwardViewHolder(View v) {
 			super(v);
 
-			nickname = (TextView) v.findViewById(android.R.id.text1);
-			caption = (TextView) v.findViewById(android.R.id.text2);
+			nickname = v.findViewById(android.R.id.text1);
+			caption = v.findViewById(android.R.id.text2);
 		}
 
 		@Override
@@ -276,10 +280,11 @@ public class PortForwardListActivity extends AppCompatListActivity {
 
 			MenuItem edit = menu.add(R.string.portforward_edit);
 			edit.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					final View editTunnelView = View.inflate(PortForwardListActivity.this, R.layout.dia_portforward, null);
 
-					final Spinner typeSpinner = (Spinner) editTunnelView.findViewById(R.id.portforward_type);
+					final Spinner typeSpinner = editTunnelView.findViewById(R.id.portforward_type);
 					if (HostDatabase.PORTFORWARD_LOCAL.equals(portForward.getType()))
 						typeSpinner.setSelection(0);
 					else if (HostDatabase.PORTFORWARD_REMOTE.equals(portForward.getType()))
@@ -287,13 +292,13 @@ public class PortForwardListActivity extends AppCompatListActivity {
 					else
 						typeSpinner.setSelection(2);
 
-					final EditText nicknameEdit = (EditText) editTunnelView.findViewById(R.id.nickname);
+					final EditText nicknameEdit = editTunnelView.findViewById(R.id.nickname);
 					nicknameEdit.setText(portForward.getNickname());
 
-					final EditText sourcePortEdit = (EditText) editTunnelView.findViewById(R.id.portforward_source);
+					final EditText sourcePortEdit = editTunnelView.findViewById(R.id.portforward_source);
 					sourcePortEdit.setText(String.valueOf(portForward.getSourcePort()));
 
-					final EditText destEdit = (EditText) editTunnelView.findViewById(R.id.portforward_destination);
+					final EditText destEdit = editTunnelView.findViewById(R.id.portforward_destination);
 					if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(portForward.getType())) {
 						destEdit.setEnabled(false);
 					} else {
@@ -301,11 +306,13 @@ public class PortForwardListActivity extends AppCompatListActivity {
 					}
 
 					typeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+						@Override
 						public void onItemSelected(AdapterView<?> value, View view,
 								int position, long id) {
 							destEdit.setEnabled(position != 2);
 						}
 
+						@Override
 						public void onNothingSelected(AdapterView<?> arg0) {
 						}
 					});
@@ -314,6 +321,7 @@ public class PortForwardListActivity extends AppCompatListActivity {
 									PortForwardListActivity.this, R.style.AlertDialogTheme)
 							.setView(editTunnelView)
 							.setPositiveButton(R.string.button_change, new DialogInterface.OnClickListener() {
+								@Override
 								public void onClick(DialogInterface dialog, int which) {
 									try {
 										if (hostBridge != null)
@@ -339,6 +347,7 @@ public class PortForwardListActivity extends AppCompatListActivity {
 										// Use the new settings for the existing connection.
 										if (hostBridge != null)
 											updateHandler.postDelayed(new Runnable() {
+												@Override
 												public void run() {
 													hostBridge.enablePortForward(portForward);
 													updateHandler.sendEmptyMessage(-1);
@@ -365,12 +374,14 @@ public class PortForwardListActivity extends AppCompatListActivity {
 
 			MenuItem delete = menu.add(R.string.portforward_delete);
 			delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					// prompt user to make sure they really want this
 					new android.support.v7.app.AlertDialog.Builder(
 									PortForwardListActivity.this, R.style.AlertDialogTheme)
 							.setMessage(getString(R.string.delete_message, portForward.getNickname()))
 							.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
+								@Override
 								public void onClick(DialogInterface dialog, int which) {
 									try {
 										// Delete the port forward from the host if needed.
