@@ -1,13 +1,12 @@
 [![Build Status](https://travis-ci.org/connectbot/connectbot.svg?branch=master)](
 https://travis-ci.org/connectbot/connectbot)
 
-Google Play
-----------------
-
-[![Get it on Google Play][2]][1]
-
-  [1]: https://play.google.com/store/apps/details?id=org.connectbot
-  [2]: https://developer.android.com/images/brand/en_generic_rgb_wo_60.png
+<a href="https://f-droid.org/packages/org.connectbot/" target="_blank">
+  <img src="https://f-droid.org/badge/get-it-on.png" height="80"/>
+</a>
+<a href="https://play.google.com/store/apps/details?id=org.connectbot" target="_blank">
+  <img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="80"/>
+</a>
 
 Translations
 ----------------
@@ -28,3 +27,9 @@ similar to the following with the full path to your SDK:
 sdk.dir=/opt/android-sdk
 ndk.dir=/opt/android-ndk
 ```
+
+License
+----------------
+Connectbot is under Apache License 2.0.
+
+Google Play and the Google Play logo are trademarks of Google Inc. 
