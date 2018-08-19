@@ -422,6 +422,12 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			return connection.authenticateWithPublicKey(username, sshAgentSignatureManager);
 		} catch (InvalidKeySpecException | NoSuchAlgorithmException | IOException e) {
 			Log.e(TAG , "Couldn't authenticate via agent", e);
+			String errorMsg = "\n" + e.getMessage() + "\n";
+			Throwable cause = e.getCause();
+			if (cause != null) {
+				errorMsg += cause.getMessage() + "\n";
+			}
+			bridge.outputLine(errorMsg);
 			return false;
 		}
 	}
