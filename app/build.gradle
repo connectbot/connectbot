@@ -20,6 +20,7 @@ plugins {
     id 'com.github.ben-manes.versions' version '0.20.0'
     id 'info.vividcode.android.sdk-manager' version '0.9.0'
     id 'net.ltgt.errorprone' version '0.0.14'
+    id 'com.gladed.androidgitversion' version '0.4.4'
 }
 
 ext {
@@ -47,6 +48,10 @@ def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 coveralls.jacocoReportPath = 'build/reports/coverage/google/debug/report.xml'
 
+androidGitVersion {
+    prefix = "v"
+}
+
 android {
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
@@ -58,8 +63,8 @@ android {
 
     defaultConfig {
         applicationId "org.connectbot"
-        versionName "1.9.2 (working copy)"
-        versionCode 19200
+        versionName androidGitVersion.name()
+        versionCode androidGitVersion.code()
 
         minSdkVersion 14
         targetSdkVersion 27
@@ -214,40 +219,3 @@ dependencies {
     testImplementation 'org.robolectric:robolectric:3.6.1'
 }
 
-task getGitDescription {
-    // Make sure the git clone is not shallow so git describe works.
-    def dummyOutputStream = new OutputStream() {
-        @Override
-        public void write(int b) {}
-    }
-    exec {
-        executable 'git'
-        args 'fetch', '--unshallow'
-        standardOutput = dummyOutputStream
-        errorOutput = dummyOutputStream
-        ignoreExitValue true
-    }
-
-    new ByteArrayOutputStream().withStream { os ->
-        exec {
-            executable 'git'
-            args 'describe', '--dirty'
-            standardOutput = os
-        }
-
-        // Versions will be in the form vX.Y.Z-NNN-gABCDEFG, so trim off the leading
-        // 'v' to make it compliant with Semantic Versioning.
-        def trimmedVersion = os.toString().trim()
-        if (trimmedVersion.charAt(0) == 'v') {
-            trimmedVersion = trimmedVersion.substring(1)
-        }
-
-        project.ext.gitDescription = trimmedVersion
-    }
-}
-
-task updateAndroidVersion {
-    dependsOn getGitDescription
-    android.defaultConfig.versionName "$gitDescription"
-}
-preBuild.dependsOn(updateAndroidVersion)
