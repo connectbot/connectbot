@@ -716,12 +716,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 			portForward.setEnabled(false);
 
-			try {
-				lpf.close();
-			} catch (IOException e) {
-				Log.e(TAG, "Could not stop local port forwarder, setting enabled to false", e);
-				return false;
-			}
+			lpf.close();
 
 			return true;
 		} else if (HostDatabase.PORTFORWARD_REMOTE.equals(portForward.getType())) {
@@ -746,12 +741,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 			portForward.setEnabled(false);
 
-			try {
-				dpf.close();
-			} catch (IOException e) {
-				Log.e(TAG, "Could not stop dynamic port forwarder, setting enabled to false", e);
-				return false;
-			}
+			dpf.close();
 
 			return true;
 		} else {
