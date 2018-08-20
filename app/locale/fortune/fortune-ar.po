@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2015-07-30 17:49+0000\n"
-"Last-Translator: Kenny Root <Unknown>\n"
+"PO-Revision-Date: 2018-08-06 15:09+0000\n"
+"Last-Translator: Mustafa Wahhudi <Unknown>\n"
 "Language-Team: ar <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n % 100 >= "
 "3 && n % 100 <= 10 ? 3 : n % 100 >= 11 && n % 100 <= 99 ? 4 : 5;\n"
-"X-Launchpad-Export-Date: 2018-06-03 23:28+0000\n"
-"X-Generator: Launchpad (build 18667)\n"
+"X-Launchpad-Export-Date: 2018-08-20 05:36+0000\n"
+"X-Generator: Launchpad (build 18752)\n"
 "Language: ar\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -66,17 +66,17 @@ msgstr "الألوان"
 #. Dialog title for color picker dialog
 msgctxt "title_color_picker"
 msgid "Pick a color"
-msgstr ""
+msgstr "إختر لوناً"
 
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr ""
+msgstr "الإعدادات"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
 msgid "Generate"
-msgstr ""
+msgstr "إنشاء"
 
 msgctxt "help_intro"
 msgid ""
@@ -86,12 +86,12 @@ msgstr "الرجاء اختار من الاسفل من اجل معلومات ا�
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
 msgid "Terms & Conditions"
-msgstr ""
+msgstr "الشروط والأحكام"
 
 #. Title for the help page with the hints about the app.
 msgctxt "hints"
 msgid "Hints"
-msgstr ""
+msgstr "التلميحات"
 
 #. Header text for instructions about creating host shortcuts.
 msgctxt "host_shortcuts_header"
@@ -104,11 +104,13 @@ msgid ""
 "Long-press on your Android desktop to create direct shortcuts to frequently-"
 "used SSH hosts."
 msgstr ""
+"قم بالضغط مطولاً على الشاشة الرئيسية لأندرويد لإنشاء روابط مباشرة لخوادم SSH "
+"المستخدمة كثيراً."
 
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
 msgid "Scroll back / Scroll forward"
-msgstr ""
+msgstr "تمرير للخلف \\ تمرير للأمام"
 
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
@@ -116,6 +118,8 @@ msgid ""
 "Swiping your finger up on the right side of the screen allows you to scroll "
 "backward and forward in the local terminal buffer history."
 msgstr ""
+"إنّ مسح إصبعك للأعلى في الجزء الأيمن من الشاشة يسمح لك بالتمرير للخلف "
+"والأمام في تاريخ الطرفية المحلية."
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
