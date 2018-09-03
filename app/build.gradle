@@ -6,8 +6,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.2'
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.android.tools.build:gradle:3.1.4'
         classpath 'com.github.gfx.ribbonizer:ribbonizer-plugin:2.1.0'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.3'
         if (rootProject.hasProperty('jacocoVersion')) {
@@ -17,9 +16,11 @@ buildscript {
 }
 
 plugins {
-    id 'com.github.ben-manes.versions' version '0.17.0'
+    id 'com.github.ben-manes.versions' version '0.20.0'
     id 'info.vividcode.android.sdk-manager' version '0.9.0'
     id 'net.ltgt.errorprone' version '0.0.14'
+    id 'com.gladed.androidgitversion' version '0.4.4'
+    id 'com.github.kt3k.coveralls' version '2.8.2'
 }
 
 ext {
@@ -29,7 +30,6 @@ ext {
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'com.github.gfx.ribbonizer'
 apply plugin: 'jacoco-android'
 apply from: '../config/quality.gradle'
@@ -47,6 +47,11 @@ def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 coveralls.jacocoReportPath = 'build/reports/coverage/google/debug/report.xml'
 
+androidGitVersion {
+    prefix = "v"
+    codeFormat = 'MMNNPPBBB'
+}
+
 android {
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
@@ -58,8 +63,8 @@ android {
 
     defaultConfig {
         applicationId "org.connectbot"
-        versionName "1.9.2"
-        versionCode 19200
+        versionName androidGitVersion.name()
+        versionCode androidGitVersion.code()
 
         minSdkVersion 14
         targetSdkVersion 27
@@ -94,7 +99,7 @@ android {
         implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
         implementation "com.android.support:support-v4:$supportLibraryVersion"
         implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
-        implementation "com.takisoft.fix:preference-v7:$supportLibraryVersion.0"
+        implementation "com.takisoft.fix:preference-v7:$supportLibraryVersion.1"
         implementation "com.android.support:design:$supportLibraryVersion"
 
         androidTestUtil "com.android.support.test:orchestrator:$testRunnerVersion"
@@ -121,6 +126,7 @@ android {
     }
     buildTypes {
         release {
+            shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg'
 
@@ -203,42 +209,13 @@ tasks.withType(JavaCompile) {
 
 // Dependencies must be below the android block to allow productFlavor specific deps.
 dependencies {
-    implementation 'org.connectbot:sshlib:2.2.5'
+    implementation 'org.connectbot:sshlib:2.2.7'
     googleImplementation 'com.google.android.gms:play-services-base:15.0.1'
-    ossImplementation 'org.conscrypt:conscrypt-android:1.1.2'
+    ossImplementation 'org.conscrypt:conscrypt-android:1.1.3'
 
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.18.3'
+    testImplementation 'org.mockito:mockito-core:2.19.0'
     testImplementation 'org.assertj:assertj-core:3.10.0'
-    testImplementation('org.robolectric:robolectric:3.6.1') {
-        exclude group: 'commons-logging', module: 'commons-logging'
-        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
-    }
+    testImplementation 'org.robolectric:robolectric:3.6.1'
 }
 
-def getGitDescription = { ->
-    try {
-        def stdout = new ByteArrayOutputStream()
-        exec {
-            commandLine 'git', 'describe', '--dirty'
-            standardOutput = stdout
-        }
-        return stdout.toString().trim()
-    } catch (ignored) {
-        return null
-    }
-}
-
-// Insert the build number into strings.xml
-android.applicationVariants.all { variant ->
-    variant.mergeResources.doLast{
-        ext.env = System.getenv()
-        def buildNumber = getGitDescription()
-        if (buildNumber != null) {
-            File valuesFile = file("${buildDir}/intermediates/incremental/${variant.mergeResources.name}/merged.dir/values/values.xml")
-            String content = valuesFile.getText('UTF-8')
-            content = content.replaceAll(/\(working copy\)/, buildNumber)
-            valuesFile.write(content, 'UTF-8')
-        }
-    }
-}
