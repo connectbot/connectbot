@@ -27,6 +27,7 @@ addons:
     packages:
       - xqilla # ./scripts/check-lint-count.bash
       - libstdc++6-4.7-dev
+      - oracle-java8-installer
   coverity_scan:
     project:
       name: "connectbot/connectbot"
