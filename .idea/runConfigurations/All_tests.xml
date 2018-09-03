@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="All tests" type="JUnit" factoryName="JUnit">
+  <configuration default="false" name="All tests" type="AndroidJUnit" factoryName="Android JUnit">
     <extension name="coverage" enabled="false" merge="false" runner="idea">
       <pattern>
         <option name="PATTERN" value="org.connectbot.*" />
@@ -27,3 +28,4 @@
     <method />
   </configuration>
 </component>
+
