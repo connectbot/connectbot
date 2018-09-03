@@ -72,7 +72,7 @@ public class TerminalTextViewOverlay extends android.support.v7.widget.AppCompat
 	public void refreshTextFromBuffer() {
 		VDUBuffer vb = terminalView.bridge.getVDUBuffer();
 		int numRows = vb.getBufferSize();
-		int numCols = vb.getColumns() - 1;
+		int numCols = vb.getColumns();
 		oldBufferHeight = numRows;
 
 		StringBuilder buffer = new StringBuilder();

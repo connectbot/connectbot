@@ -7,7 +7,15 @@
   <string name="title_host_editor">تعديل مخدم</string>
   <string name="title_help">مساعدة</string>
   <string name="title_colors">الألوان</string>
+  <string name="title_color_picker">إختر لوناً</string>
+  <string name="title_settings">الإعدادات</string>
+  <string name="title_pubkey_generate">إنشاء</string>
   <string name="help_intro">الرجاء اختار من الاسفل من اجل معلومات اكثر عن هذا الموضوع</string>
+  <string name="terms_and_conditions">الشروط والأحكام</string>
+  <string name="hints">التلميحات</string>
+  <string name="host_shortcuts_content">قم بالضغط مطولاً على الشاشة الرئيسية لأندرويد لإنشاء روابط مباشرة لخوادم SSH المستخدمة كثيراً.</string>
+  <string name="scroll_hints_header">تمرير للخلف \\ تمرير للأمام</string>
+  <string name="scroll_hints_content">إنّ مسح إصبعك للأعلى في الجزء الأيمن من الشاشة يسمح لك بالتمرير للخلف والأمام في تاريخ الطرفية المحلية.</string>
   <string name="pubkey_generate">توليد</string>
   <string name="pubkey_delete">حذف المفتاح</string>
   <string name="pubkey_touch_hint">للتاكد من العشوائية خلال توليد المفتاح , حرك اصبعك بشكل عشوائي فوق المربع في الاسفل</string>

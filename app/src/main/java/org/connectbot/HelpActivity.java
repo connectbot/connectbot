@@ -17,6 +17,8 @@
 
 package org.connectbot;
 
+import org.connectbot.util.Version;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +40,8 @@ public class HelpActivity extends AppCompatActivity {
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.act_help);
+
+		Version.setVersionText(getApplicationContext(), findViewById(R.id.version));
 
 		Button hintsButton = findViewById(R.id.hints_button);
 		hintsButton.setOnClickListener(new OnClickListener() {
