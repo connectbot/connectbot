@@ -1,0 +1,7 @@
+android-lint:latest
+blueocean:latest
+build-pipeline-plugin:latest
+checkstyle:latest
+docker-slaves:latest
+jacoco:latest
+workflow-aggregator:latest

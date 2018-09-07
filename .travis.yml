@@ -29,7 +29,7 @@ addons:
       - inotify-tools
       - libstdc++6-4.7-dev
       - oracle-java8-installer
-      - xqilla # ./scripts/check-lint-count.bash
+      - xqilla # ./ci/check-lint-count.bash
   coverity_scan:
     project:
       name: "connectbot/connectbot"
@@ -91,6 +91,6 @@ script:
       inotifywait -t 20 -e create $HOME/emulator-status;
     done;
     ./gradlew --stacktrace connectedCheck
-  - ./scripts/check-lint-count.bash app/build/reports/lint-results.xml $HOME/.cache/lint/lint-results.xml
+  - ./ci/check-lint-count.bash app/build/reports/lint-results.xml $HOME/.cache/lint/lint-results.xml
 
 after_success: ./gradlew coveralls
