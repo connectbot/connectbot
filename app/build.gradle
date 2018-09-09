@@ -54,7 +54,6 @@ androidGitVersion {
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
 
     dexOptions {
         // Skip pre-dexing when running on a CI or when disabled via -Dpre-dex=false
