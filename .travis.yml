@@ -11,11 +11,12 @@ env:
 
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/dists/
+    - $HOME/.android/build-cache/
     - $HOME/.cache/ci-support
     - $HOME/.cache/lint
     - $HOME/.cache/ndk
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 before_cache:
   - find $HOME/.gradle -name "*.lock" -exec rm {} \;
   - rm -rf $HOME/.gradle/caches/[1-9]*
@@ -25,8 +26,10 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - xqilla # ./scripts/check-lint-count.bash
+      - inotify-tools
       - libstdc++6-4.7-dev
+      - oracle-java8-installer
+      - xqilla # ./ci/check-lint-count.bash
   coverity_scan:
     project:
       name: "connectbot/connectbot"
@@ -47,13 +50,12 @@ before_script:
   - $ANDROID_HOME/tools/bin/sdkmanager tools > /dev/null
   - $ANDROID_HOME/tools/bin/sdkmanager platform-tools > /dev/null
   - $ANDROID_HOME/tools/bin/sdkmanager 'emulator' > /dev/null
-  - $ANDROID_HOME/tools/bin/sdkmanager 'system-images;android-22;default;armeabi-v7a' > /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager 'system-images;android-16;default;armeabi-v7a' > /dev/null
   # Create and start emulator as early as possible
-  - $ANDROID_HOME/tools/bin/avdmanager create avd --force --name test --package 'system-images;android-22;default;armeabi-v7a' --abi armeabi-v7a --device 'Nexus 4' --sdcard 128M
+  - $ANDROID_HOME/tools/bin/avdmanager create avd --force --name test --package 'system-images;android-16;default;armeabi-v7a' --abi armeabi-v7a --device 'Nexus 4' --sdcard 128M
   - $ANDROID_HOME/emulator/emulator -avd test -skin 768x1280 -no-audio -no-window &
-  - $ANDROID_HOME/tools/bin/sdkmanager 'build-tools;27.0.3' > /dev/null
-  - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-23' > /dev/null
-  - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-22' > /dev/null # for emulator
+  - $ANDROID_HOME/tools/bin/sdkmanager 'build-tools;28.0.2' > /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-27' > /dev/null
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;android;m2repository' > /dev/null
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;m2repository' > /dev/null
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;google_play_services' > /dev/null
@@ -64,20 +66,31 @@ before_script:
   - unzip -oq $HOME/.cache/ci-support/master.zip -d $HOME
   # For the lint checking mechanism
   - mkdir -p $HOME/.cache/lint
+  # Try to download Gradle deps while Android is booting
+  - ./gradlew --parallel -Dorg.gradle.parallel.intra=true resolveDependencies
   ### The rest of the commands need the emulator running
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
-  # Install our ci-support stuff to make the emulator tests more reliable.
-  - adb install -r $HOME/ci-support-master/apk/android_emulator_hacks.apk
-  - adb shell pm grant no.finn.android_emulator_hacks android.permission.SET_ANIMATION_SCALE
-  - adb shell am start -n no.finn.android_emulator_hacks/no.finn.android_emulator_hacks.HackActivity
+  - mkdir -p $HOME/emulator-status
+  - |
+    ( android-wait-for-emulator > /dev/null;
+    adb shell input keyevent 82 &
+    # Install our ci-support stuff to make the emulator tests more reliable.
+    adb install -r $HOME/ci-support-master/apk/android_emulator_hacks.apk;
+    adb shell pm grant no.finn.android_emulator_hacks android.permission.SET_ANIMATION_SCALE;
+    adb shell am start -n no.finn.android_emulator_hacks/no.finn.android_emulator_hacks.HackActivity;
+    touch $HOME/emulator-status/ready ) &
 
 script:
   # Split up to reduce memory requirements
-  - ./gradlew --stacktrace clean
   - ./gradlew --stacktrace assemble
   - ./gradlew --stacktrace check
-  - ./gradlew --stacktrace connectedCheck
-  - ./scripts/check-lint-count.bash app/build/reports/lint-results.xml $HOME/.cache/lint/lint-results.xml
+  - |
+    # Note there might be a race condition where we create the file between the check
+    # and the inotifywait, so we use a timeout and a loop to minimize the chances of
+    # waiting forever.
+    while [[ ! -f $HOME/emulator-status/ready ]]; do
+      inotifywait -t 20 -e create $HOME/emulator-status;
+    done;
+    ./gradlew --stacktrace connectedCheck
+  - ./ci/check-lint-count.bash app/build/reports/lint-results.xml $HOME/.cache/lint/lint-results.xml
 
 after_success: ./gradlew coveralls
