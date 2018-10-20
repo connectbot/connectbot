@@ -21,10 +21,16 @@ Compiling
 ----------------
 
 To compile ConnectBot using gradlew, you must first specify where your
-Android SDK and NDK are via the local.properties file. Insert a line
-similar to the following with the full path to your SDK:
+Android SDK is via the ANDROID_SDK_HOME environment variable.
 
-```
-sdk.dir=/opt/android-sdk
-ndk.dir=/opt/android-ndk
+To run the Jenkins CI pipeline locally, you can use
+`jenkinsfile-runner` which can be invoked like this:
+
+```sh
+docker run -it -v $(pwd):/workspace \
+    -v jenkinsfile-runner-cache:/var/jenkinsfile-runner-cache \
+    -v jenkinsfile-runner:/var/jenkinsfile-runner \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v $(which docker):$(which docker) \
+    jenkins/jenkinsfile-runner
 ```

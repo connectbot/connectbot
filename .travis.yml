@@ -29,7 +29,7 @@ addons:
       - inotify-tools
       - libstdc++6-4.7-dev
       - oracle-java8-installer
-      - xqilla # ./scripts/check-lint-count.bash
+      - xqilla # ./ci/check-lint-count.bash
   coverity_scan:
     project:
       name: "connectbot/connectbot"
@@ -54,7 +54,7 @@ before_script:
   # Create and start emulator as early as possible
   - $ANDROID_HOME/tools/bin/avdmanager create avd --force --name test --package 'system-images;android-16;default;armeabi-v7a' --abi armeabi-v7a --device 'Nexus 4' --sdcard 128M
   - $ANDROID_HOME/emulator/emulator -avd test -skin 768x1280 -no-audio -no-window &
-  - $ANDROID_HOME/tools/bin/sdkmanager 'build-tools;27.0.3' > /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager 'build-tools;28.0.2' > /dev/null
   - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-27' > /dev/null
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;android;m2repository' > /dev/null
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;m2repository' > /dev/null
@@ -91,6 +91,6 @@ script:
       inotifywait -t 20 -e create $HOME/emulator-status;
     done;
     ./gradlew --stacktrace connectedCheck
-  - ./scripts/check-lint-count.bash app/build/reports/lint-results.xml $HOME/.cache/lint/lint-results.xml
+  - ./ci/check-lint-count.bash app/build/reports/lint-results.xml $HOME/.cache/lint/lint-results.xml
 
 after_success: ./gradlew coveralls
