@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-10-08 10:14+0000\n"
-"Last-Translator: Martin Černáč <me@martincernac.cz>\n"
+"PO-Revision-Date: 2018-09-19 06:47+0000\n"
+"Last-Translator: Pavel Borecki <Unknown>\n"
 "Language-Team: cs <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=((((n >= 2 && n <= 4)) && ((0 == 0))) ? 1 : "
 "(!((0 == 0))) ? 2 : (((n == 1)) && ((0 == 0))) ? 0 : 3);\n"
-"X-Launchpad-Export-Date: 2018-06-03 23:28+0000\n"
-"X-Generator: Launchpad (build 18667)\n"
+"X-Launchpad-Export-Date: 2018-11-01 01:01+0000\n"
+"X-Generator: Launchpad (build 18810)\n"
 "Language: cs\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -81,7 +81,7 @@ msgstr "Vytvořit"
 msgctxt "help_intro"
 msgid ""
 "Please select a topic below for more information on a particular subject."
-msgstr "Prosím, vyberte následující téma pro více informací na daný subjekt."
+msgstr "Více informací o daném předmětu se dozvíte výběrem tématu níže."
 
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
@@ -96,7 +96,7 @@ msgstr "Rady"
 #. Header text for instructions about creating host shortcuts.
 msgctxt "host_shortcuts_header"
 msgid "Host Shortcuts"
-msgstr "Zástupce hosta"
+msgstr "Zástupce hostitele"
 
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
@@ -104,13 +104,13 @@ msgid ""
 "Long-press on your Android desktop to create direct shortcuts to frequently-"
 "used SSH hosts."
 msgstr ""
-"Dlouhý klik na ploše pro vytvoření zástupce pro nejvíce používaného SSH "
-"hosta."
+"Pro nejčastěji používané hostitele je možné si dlouhým ťuknutím na ploše "
+"vytvářet zástupce."
 
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
 msgid "Scroll back / Scroll forward"
-msgstr "Posunout zpět / Posunout vpřed"
+msgstr "Posunout zpět/vpřed"
 
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
@@ -118,8 +118,8 @@ msgid ""
 "Swiping your finger up on the right side of the screen allows you to scroll "
 "backward and forward in the local terminal buffer history."
 msgstr ""
-"Přejetím prstu nahoru po pravé části obrazovky se můžete posouvat dopředu a "
-"dozadu v historii příkazů."
+"Přejížděním prstu nahoru/dolů po pravé části obrazovky se můžete posouvat "
+"dopředu a dozadu v historii zobrazení."
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
@@ -128,12 +128,12 @@ msgstr "Posunutí zpět"
 
 msgctxt "scrolling_forward"
 msgid "Scrolling forward"
-msgstr "Posunout dopředu"
+msgstr "Posunutí dopředu"
 
 #. Header text for instructions about paging up and down in the terminal.
 msgctxt "page_updn_header"
 msgid "Page Up / Page Down"
-msgstr "Nahoru / Dolů"
+msgstr "O stránku nahoru/dolů"
 
 #. Instructions about paging up and down in the terminal.
 msgctxt "page_updn_content"
@@ -143,7 +143,12 @@ msgid ""
 "Swiping your finger up and down on the left third of the screen will send a "
 "page up and page down key to the remote host. Many programs map this to "
 "scrolling back into history such as irssi or tinyfugue."
-msgstr "Pozn.: Musí být povoleno v nastavení."
+msgstr ""
+"Pozn.: Je třeba, aby bylo zapnuto v nastavení.\n"
+"\n"
+"Přejížděním prstu nahoru a dolů na levé třetině obrazovky vyvolá odesílání "
+"stisků kláves page up a page down na protějšek. Mnohé programy (jako "
+"například irssi nebo tinyfugue) toto mapují na posouvání v historii."
 
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
@@ -156,7 +161,7 @@ msgstr "O stránku dolů"
 
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
-msgstr "Přepinání hostů"
+msgstr "Přepínání hostitelů"
 
 #. Instructions about switching to the next and previous host in the terminal.
 msgctxt "switching_hosts_content"
@@ -164,17 +169,17 @@ msgid ""
 "Swiping your finger from one side of the screen to the other will switch "
 "between currently connected hosts."
 msgstr ""
-"Přejetím prstu z jedné strany displeje na druhý. se můžete přepínat mezi "
-"připojenými hosty."
+"Přejížděním prstu z jedné strany displeje na druhý se můžete přepínat mezi "
+"připojenými hostiteli."
 
 #. Captions for images showing the next/previous host gestures.
 msgctxt "next_host"
 msgid "Next host"
-msgstr "Další host"
+msgstr "Další hostitel"
 
 msgctxt "prev_host"
 msgid "Previous host"
-msgstr "Předchozí host"
+msgstr "Předchozí hostitel"
 
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
@@ -185,7 +190,7 @@ msgstr "Klávesové zkratky"
 #. terminal font-size.
 msgctxt "increase_font_size"
 msgid "Increase Font Size"
-msgstr "Zvětšit velikost písma"
+msgstr "Zvětšit písmo"
 
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
@@ -196,7 +201,7 @@ msgstr "Ctrl a +"
 #. terminal font-size.
 msgctxt "decrease_font_size"
 msgid "Decrease Font Size"
-msgstr "Zmenšit velikost písma"
+msgstr "Zmenšit písmo"
 
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
@@ -210,7 +215,7 @@ msgstr "Ctrl-Shift-V"
 
 msgctxt "pubkey_generate"
 msgid "Generate"
-msgstr "Vygenerovat"
+msgstr "Vytvořit"
 
 msgctxt "pubkey_delete"
 msgid "Delete key"
@@ -232,12 +237,12 @@ msgid ""
 "In order to assure randomness during the key generation, move your finger "
 "randomly over the box below."
 msgstr ""
-"Pro zajištění náhodnosti během generování klíče pohybujte prstem náhodně po "
+"Pro zajištění náhodnosti během vytváření klíče pohybujte prstem náhodně po "
 "ploše níže."
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
-msgstr "Generování páru klíčů…"
+msgstr "Vytváření dvojice klíčů…"
 
 msgctxt "pubkey_copy_private"
 msgid "Copy private key"
@@ -253,7 +258,7 @@ msgid ""
 "Tap \"Menu\" to create\n"
 "or import key pairs."
 msgstr ""
-"Zvolte \"Menu\" pro vytvoření\n"
+"Zvolte „Nabídka“ pro vytvoření\n"
 "nebo import párů klíčů."
 
 msgctxt "pubkey_unknown_format"
@@ -285,13 +290,13 @@ msgstr "Odemknout klíč"
 #, c-format
 msgctxt "pubkey_failed_add"
 msgid "Bad password for key '%1$s'. Authentication failed."
-msgstr "Špatné heslo pro klíč '%1$s'. Ověření selhalo."
+msgstr "Chybné heslo pro klíč „%1$s“. Ověření se nezdařilo."
 
 #. Context menu entry that allows a user to load a pubkey entry into memory.
 #. This is equivalent to "unlocking" a password-protected pubkey entry.
 msgctxt "pubkey_memory_load"
 msgid "Load into memory"
-msgstr "Nahrát do paměti"
+msgstr "Načíst do paměti"
 
 #. Context menu entry that allows a user to unload a pubkey entry from memory.
 #. This is equivalent to "locking" a password-protected pubkey entry.
@@ -303,7 +308,7 @@ msgstr "Odstranit z paměti"
 #. to be loaded upon starting the app.
 msgctxt "pubkey_load_on_start"
 msgid "Load key on start"
-msgstr "Nahrát klíč při startu"
+msgstr "Načíst klíč při startu"
 
 #. Pubkey preference asking user whether the key use should be confirmed via
 #. prompt before it can be used for authentication
@@ -319,7 +324,7 @@ msgid ""
 "Tap \"Menu\" to create\n"
 "port forwards."
 msgstr ""
-"Zvolte \"Menu\" pro vytvoření\n"
+"Zvolte „Nabídka“ pro vytvoření\n"
 "přesměrování portů."
 
 #. Context menu action where a user can edite the selected port forward for
@@ -336,7 +341,7 @@ msgstr "Smazat přesměrování portů"
 
 msgctxt "prompt_nickname"
 msgid "Nickname:"
-msgstr "Přezdívka:"
+msgstr "Stručný název:"
 
 #. An example string that could be used as a nickname for a pubkey.
 msgctxt "prompt_nickname_hint_pubkey"
@@ -368,7 +373,7 @@ msgstr "Heslo:"
 #. Added after a "Password:" prompt to indicate user needs to confirm entry.
 msgctxt "prompt_again"
 msgid "(again)"
-msgstr "(znovu)"
+msgstr "(zopakování)"
 
 #. Label for the user to select port forward type.
 msgctxt "prompt_type"
@@ -379,7 +384,7 @@ msgstr "Typ:"
 #. allowed to leave the field blank.
 msgctxt "prompt_password_can_be_blank"
 msgid "Note: password can be blank"
-msgstr "Poznámka: heslo může být prázdné"
+msgstr "Poznámka: heslo není povinné"
 
 #. Prompt for the size of the private key in bits.
 msgctxt "prompt_bits"
@@ -390,7 +395,7 @@ msgstr "Počet bitů:"
 #, c-format
 msgctxt "prompt_pubkey_password"
 msgid "Password for key '%1$s'"
-msgstr "Heslo pro klíč '%1$s'"
+msgstr "Heslo pro klíč „%1$s“"
 
 #. Prompt for whether to allow SSH Authentication Agent to use the specified
 #. key. Note that the '\n' means split the line so it's actually "host to use
@@ -401,15 +406,15 @@ msgid ""
 "Allow remote host to\n"
 "use key '%1$s'?"
 msgstr ""
-"Povolit vzdálenému počítači\n"
-"použít klíč '%1$s'?"
+"Umožnit vzdálenému počítači\n"
+"použít klíč „%1$s“?"
 
 #. The header of the warning a user gets when the host key has changed. Note
 #. that this can be a very serious attack, so we try to be as "loud" to the
 #. user as possible.
 msgctxt "host_verification_failure_warning_header"
 msgid "WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!"
-msgstr "VAROVÁNÍ: IDENTIFIKACE VZDÁLENÉHO HOSTA SE ZMĚNILA!"
+msgstr "VAROVÁNÍ: IDENTIFIKACE VZDÁLENÉHO HOSTITELE SE ZMĚNILA!"
 
 #. The body of the warning a user gets when the host key has changed. Note
 #. that this can be a very serious attack, so we try to be as "loud" to the
@@ -430,7 +435,7 @@ msgid ""
 "Host has disconnected.\n"
 "Close session?"
 msgstr ""
-"Host se odpojil.\n"
+"Hostitel se odpojil.\n"
 "Ukončit sezení?"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -448,7 +453,7 @@ msgstr ""
 #, c-format
 msgctxt "host_authenticity_warning"
 msgid "The authenticity of host '%1$s' can't be established."
-msgstr "Nelze ověřit autenticitu počítače '%1$s'."
+msgstr "Nelze ověřit nepodvrženost počítače „%1$s“."
 
 #. First field is encryption algorithm. Second is the actual fingerprint in
 #. hex digits
@@ -459,11 +464,11 @@ msgstr "Otisk klíče počítače %1$s je %2$s"
 
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
-msgstr "Hesla se neshodují!"
+msgstr "Zadání hesla se neshodují!"
 
 msgctxt "alert_wrong_password_msg"
 msgid "Wrong password!"
-msgstr "Špatné heslo!"
+msgstr "Chybné heslo!"
 
 msgctxt "alert_key_corrupted_msg"
 msgid "Private key appears corrupt!"
@@ -513,7 +518,7 @@ msgstr "Režim emulace terminálu použitý při PTY spojeních"
 #. Name for the scrollback size preference
 msgctxt "pref_scrollback_title"
 msgid "Scrollback size"
-msgstr "Velikost historie"
+msgstr "Hloubka historie"
 
 #. Description of the scrollback size preference
 msgctxt "pref_scrollback_summary"
@@ -613,12 +618,12 @@ msgstr ""
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
 msgid "Volume keys change font size"
-msgstr "Tlačítka ovládání hlasitosti mění velikost fontu"
+msgstr "Tlačítka ovládání hlasitosti mění velikost písma"
 
 #. Summary for the volume keys control font size preference
 msgctxt "pref_volumefont_summary"
 msgid "Font size can also be changed in per-host settings"
-msgstr "Velikost fontu lze upravit v nastavení jednotlivých hostitelů"
+msgstr "Velikost písma lze upravit v nastavení pro jednotlivé hostitele"
 
 #. Name for the memorize keys preference
 msgctxt "pref_memkeys_title"
@@ -641,7 +646,7 @@ msgstr "Trvalá spojení"
 #. background.
 msgctxt "pref_conn_persist_summary"
 msgid "Force connections to stay connected while in background"
-msgstr "Vynutit spojení i v pozadí"
+msgstr "Vynutit spojení i na pozadí"
 
 #. Name for the keyboard shortcuts preference
 msgctxt "pref_keymode_title"
@@ -651,7 +656,7 @@ msgstr "Zkratky adresářů"
 #. Summary for the keyboard shortcuts preference
 msgctxt "pref_keymode_summary"
 msgid "Select how to use Alt for '/' and Shift for Tab"
-msgstr "Volba použití kláves Alt pro znak \"/\" a Shift pro tabulátor"
+msgstr "Volba použití kláves Alt pro znak „/“ a Shift pro tabulátor"
 
 #. Name for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_title"
@@ -682,12 +687,12 @@ msgstr "Vyberte kterou zkratku použít když je stisknuto tlačítko fotoapará
 #. Name for the keep screen on preference
 msgctxt "pref_keepalive_title"
 msgid "Keep screen awake"
-msgstr "Ponechat zapnutou obrazovku"
+msgstr "Udržovat obrazovku zapnutou"
 
 #. Summary for the camera shortcut usage preference
 msgctxt "pref_keepalive_summary"
 msgid "Prevent the screen from turning off when working in a console"
-msgstr "Zabránit obrazovce ve vypnutí při práci v konzoli"
+msgstr "Při práci v konzoli zabránit zhasnutí obrazovky"
 
 #. Name for the Wi-Fi lock preference
 msgctxt "pref_wifilock_title"
@@ -735,7 +740,7 @@ msgstr "Vibrovat při zvonku"
 #. feature
 msgctxt "pref_bell_notification_title"
 msgid "Background notifications"
-msgstr "Upozornění v pozadí"
+msgstr "Upozornění na pozadí"
 
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked

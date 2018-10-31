@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2015-07-30 17:59+0000\n"
-"Last-Translator: Kenny Root <Unknown>\n"
+"PO-Revision-Date: 2018-10-15 11:10+0000\n"
+"Last-Translator: Filip Janevski <Unknown>\n"
 "Language-Team: mk <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;\n"
-"X-Launchpad-Export-Date: 2018-06-03 23:28+0000\n"
-"X-Generator: Launchpad (build 18667)\n"
+"X-Launchpad-Export-Date: 2018-11-01 01:00+0000\n"
+"X-Generator: Launchpad (build 18810)\n"
 "Language: mk\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -30,7 +30,7 @@ msgstr "Едноставен но моќен SSH клиент со отворе�
 #. running apps list
 msgctxt "service_desc"
 msgid "Maintains SSH connections and loaded pubkeys"
-msgstr "Ги оддрѓува SSH конекциите и вчитаните pub клучеви"
+msgstr "Ги одржува SSH конекциите и вчитаните pub клучеви"
 
 #. Window title for the Host List
 msgctxt "title_hosts_list"
@@ -45,12 +45,12 @@ msgstr "Pub клучеви"
 #. Window title for the Port Forwards List
 msgctxt "title_port_forwards_list"
 msgid "Port forwards"
-msgstr ""
+msgstr "Проследување на порти"
 
 #. Window title when editing host details
 msgctxt "title_host_editor"
 msgid "Edit Host"
-msgstr "Промени хост"
+msgstr "Уреди хост"
 
 #. Window title for Help index
 msgctxt "title_help"
@@ -65,17 +65,17 @@ msgstr "Бои"
 #. Dialog title for color picker dialog
 msgctxt "title_color_picker"
 msgid "Pick a color"
-msgstr ""
+msgstr "Одбери боја"
 
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr ""
+msgstr "Подесувања"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
 msgid "Generate"
-msgstr ""
+msgstr "Генерирај"
 
 msgctxt "help_intro"
 msgid ""
@@ -85,17 +85,17 @@ msgstr "Одбеи тема од подолу наведените за пове
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
 msgid "Terms & Conditions"
-msgstr ""
+msgstr "Услови и правила"
 
 #. Title for the help page with the hints about the app.
 msgctxt "hints"
 msgid "Hints"
-msgstr ""
+msgstr "Совети"
 
 #. Header text for instructions about creating host shortcuts.
 msgctxt "host_shortcuts_header"
 msgid "Host Shortcuts"
-msgstr ""
+msgstr "Кратенки за хостот"
 
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
@@ -103,11 +103,13 @@ msgid ""
 "Long-press on your Android desktop to create direct shortcuts to frequently-"
 "used SSH hosts."
 msgstr ""
+"Долго притиснете на десктопот на Android за да креирате директни кратенки до "
+"често користените SSH хостови."
 
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
 msgid "Scroll back / Scroll forward"
-msgstr ""
+msgstr "Скролувајте назад / Скролувајте напред"
 
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
@@ -115,20 +117,22 @@ msgid ""
 "Swiping your finger up on the right side of the screen allows you to scroll "
 "backward and forward in the local terminal buffer history."
 msgstr ""
+"Со повлекување на екранот на десната страна можете да разгледувате низ "
+"историјата на локалниот терминал."
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
 msgid "Scrolling back"
-msgstr ""
+msgstr "Скролувајте назад"
 
 msgctxt "scrolling_forward"
 msgid "Scrolling forward"
-msgstr ""
+msgstr "Скролувајте напред"
 
 #. Header text for instructions about paging up and down in the terminal.
 msgctxt "page_updn_header"
 msgid "Page Up / Page Down"
-msgstr ""
+msgstr "Страна нагоре / Страна надолу"
 
 #. Instructions about paging up and down in the terminal.
 msgctxt "page_updn_content"
@@ -139,19 +143,23 @@ msgid ""
 "page up and page down key to the remote host. Many programs map this to "
 "scrolling back into history such as irssi or tinyfugue."
 msgstr ""
+"ЗАБЕЛЕШКА: Ова мора да биде овозможено во поставките\n"
+"\n"
+"Повлекувајќи го прстот нагоре и надолу на левата третина од екранот, ќе "
+"испрати сигнал страница нагоре или страница надолу до оддалечениот хост."
 
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
 msgid "Page up"
-msgstr ""
+msgstr "Страна нагоре"
 
 msgctxt "page_down"
 msgid "Page down"
-msgstr ""
+msgstr "Страна надолу"
 
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
-msgstr ""
+msgstr "Промена на хостови"
 
 #. Instructions about switching to the next and previous host in the terminal.
 msgctxt "switching_hosts_content"
@@ -159,47 +167,49 @@ msgid ""
 "Swiping your finger from one side of the screen to the other will switch "
 "between currently connected hosts."
 msgstr ""
+"Повлекувајќи со прстот од едната странан на екранот до другата ќе го промени "
+"хостот за кој сте поврзани."
 
 #. Captions for images showing the next/previous host gestures.
 msgctxt "next_host"
 msgid "Next host"
-msgstr ""
+msgstr "Следен хост"
 
 msgctxt "prev_host"
 msgid "Previous host"
-msgstr ""
+msgstr "Претходен хост"
 
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "Кратенки на тастатурата"
 
 #. Text in a keyboard shortcuts list lined up to keys which increase the
 #. terminal font-size.
 msgctxt "increase_font_size"
 msgid "Increase Font Size"
-msgstr ""
+msgstr "Зголеми големина на фонт"
 
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
 msgid "Ctrl and +"
-msgstr ""
+msgstr "Ctrl и +"
 
 #. Text in a keyboard shortcuts list lined up to keys which decrease the
 #. terminal font-size.
 msgctxt "decrease_font_size"
 msgid "Decrease Font Size"
-msgstr ""
+msgstr "Намали големина на фонт"
 
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
 msgid "Ctrl and -"
-msgstr ""
+msgstr "Ctrl и -"
 
 #. Keyboard shortcut for pasting into the terminal.
 msgctxt "paste_shortcut"
 msgid "Ctrl-Shift-V"
-msgstr ""
+msgstr "Ctrl-Shift-V"
 
 msgctxt "pubkey_generate"
 msgid "Generate"
@@ -213,18 +223,20 @@ msgstr "Одстрани клуч"
 #. entropy (collect random bits)
 msgctxt "pubkey_gather_entropy"
 msgid "Gathering Entropy"
-msgstr ""
+msgstr "Собирање на ентропија"
 
 #, c-format
 msgctxt "pubkey_touch_prompt"
 msgid "Touch this box to gather randomness: %1$d%% done"
-msgstr ""
+msgstr "Допрете го ова поле за да се соберат случаите: %1$d%% направено"
 
 msgctxt "pubkey_touch_hint"
 msgid ""
 "In order to assure randomness during the key generation, move your finger "
 "randomly over the box below."
 msgstr ""
+"Со цел да се осигура случајност за време на генерирање на клучот, поместете "
+"го Вашиот прст по случаен избор во полето подолу."
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
@@ -310,18 +322,20 @@ msgid ""
 "Tap \"Menu\" to create\n"
 "port forwards."
 msgstr ""
+"Притисни мени за да направиш\n"
+"проследување на порти."
 
 #. Context menu action where a user can edite the selected port forward for
 #. the host.
 msgctxt "portforward_edit"
 msgid "Edit port forward"
-msgstr ""
+msgstr "Промени проследување на порта"
 
 #. Context menu action where a user can delete the selected port forward from
 #. the host.
 msgctxt "portforward_delete"
 msgid "Delete port forward"
-msgstr ""
+msgstr "Избриши проследување на порта"
 
 msgctxt "prompt_nickname"
 msgid "Nickname:"
@@ -444,7 +458,7 @@ msgstr "Автентичноста на '%1$s' не може да биде по�
 #, c-format
 msgctxt "host_fingerprint"
 msgid "Host %1$s key fingerprint is %2$s"
-msgstr ""
+msgstr "Отпечаток на клучот на хостот %1$s е %2$s"
 
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
@@ -481,6 +495,8 @@ msgid ""
 "Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
 "http://jsharkey.org/"
 msgstr ""
+"Авторско право © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
+"http://jsharkey.org/"
 
 #. The category title for terminal emulation preferences.
 msgctxt "pref_emulation_category"
@@ -510,13 +526,15 @@ msgstr ""
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr ""
+msgstr "Резервен pub клуч"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
 msgstr ""
+"Чувајте ги резервните копии на приватните клучеви користејќи го резервниот "
+"механизам на Android"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
