@@ -204,6 +204,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.19.0'
     testImplementation 'org.assertj:assertj-core:3.10.0'
-    testImplementation 'org.robolectric:robolectric:3.6.1'
+    testImplementation 'org.robolectric:robolectric:3.8'
 }
 
