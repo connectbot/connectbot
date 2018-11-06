@@ -193,7 +193,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.1'
     implementation "androidx.preference:preference:$supportLibraryVersion"
     implementation "com.takisoft.preferencex:preferencex:$supportLibraryVersion"
-    implementation 'com.google.android.material:material:1.1.0-alpha01'
+    implementation "com.google.android.material:material:$supportLibraryVersion"
 
     androidTestUtil "androidx.test:orchestrator:$testRunnerVersion"
     androidTestImplementation "androidx.test.ext:junit:$supportLibraryVersion"
