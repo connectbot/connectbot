@@ -212,8 +212,10 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 
 		this.registerForContextMenu(mListView);
 
+		View addHostButtonContainer = findViewById(R.id.add_host_button_container);
+		addHostButtonContainer.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
+
 		FloatingActionButton addHostButton = findViewById(R.id.add_host_button);
-		addHostButton.setVisibility(makingShortcut ? View.GONE : View.VISIBLE);
 		addHostButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
