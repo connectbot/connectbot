@@ -38,9 +38,9 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
-import android.support.annotation.VisibleForTesting;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.annotation.VisibleForTesting;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -167,7 +167,7 @@ public class PortForwardListActivity extends AppCompatListActivity {
 					}
 				});
 
-				new android.support.v7.app.AlertDialog.Builder(
+				new androidx.appcompat.app.AlertDialog.Builder(
 								PortForwardListActivity.this, R.style.AlertDialogTheme)
 						.setView(portForwardView)
 						.setPositiveButton(R.string.portforward_pos, new DialogInterface.OnClickListener() {
@@ -317,7 +317,7 @@ public class PortForwardListActivity extends AppCompatListActivity {
 						}
 					});
 
-					new android.support.v7.app.AlertDialog.Builder(
+					new androidx.appcompat.app.AlertDialog.Builder(
 									PortForwardListActivity.this, R.style.AlertDialogTheme)
 							.setView(editTunnelView)
 							.setPositiveButton(R.string.button_change, new DialogInterface.OnClickListener() {
@@ -377,7 +377,7 @@ public class PortForwardListActivity extends AppCompatListActivity {
 				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					// prompt user to make sure they really want this
-					new android.support.v7.app.AlertDialog.Builder(
+					new androidx.appcompat.app.AlertDialog.Builder(
 									PortForwardListActivity.this, R.style.AlertDialogTheme)
 							.setMessage(getString(R.string.delete_message, portForward.getNickname()))
 							.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {

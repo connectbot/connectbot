@@ -27,7 +27,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 /**
  * Public Key Encryption database. Contains private and public key pairs

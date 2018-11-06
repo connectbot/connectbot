@@ -1,11 +1,11 @@
 package org.connectbot;
 
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.espresso.ViewAssertion;
-import android.support.test.espresso.matcher.BoundedMatcher;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.test.espresso.NoMatchingViewException;
+import androidx.test.espresso.ViewAssertion;
+import androidx.test.espresso.matcher.BoundedMatcher;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;

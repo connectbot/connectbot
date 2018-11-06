@@ -22,9 +22,9 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.VisibleForTesting;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 

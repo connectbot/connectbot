@@ -25,7 +25,7 @@ import org.connectbot.bean.PortForwardBean;
 
 import com.trilead.ssh2.KnownHosts;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 /**
  * Interface that defines the operation used to interact with the storage layer.
