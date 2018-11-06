@@ -913,7 +913,7 @@ public class UberColorPickerDialog extends Dialog {
 			float y = event.getY();
 
 			//Generate coordinates which are palette=local with the origin at the upper left of the main 2D palette
-			int y2 = (int) (pin(round(y - mPalettePosY), mPaletteDimPx));
+			int y2 = (int) pin(round(y - mPalettePosY), mPaletteDimPx);
 
 			//Generate coordinates which are palette-local with the origin at the center of the main 2D palette
 			float circlePinnedX = x - mPalettePosX - mPaletteCenterPx;

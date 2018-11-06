@@ -330,7 +330,7 @@ public class HostEditorFragment extends Fragment {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
 						for (int i = 0; i < mPubkeyNames.size(); i++) {
-							if (mPubkeyNames.get(i).equals(item.getTitle())) {
+							if (mPubkeyNames.get(i).equals(item.getTitle().toString())) {
 								mHost.setPubkeyId(Long.parseLong(mPubkeyValues.get(i)));
 								mPubkeyText.setText(mPubkeyNames.get(i));
 								return true;
@@ -363,7 +363,7 @@ public class HostEditorFragment extends Fragment {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
 						for (int i = 0; i < mDelKeyNames.length(); i++) {
-							if (mDelKeyNames.getText(i).equals(item.getTitle())) {
+							if (mDelKeyNames.getText(i).equals(item.getTitle().toString())) {
 								mHost.setDelKey(mDelKeyValues.getText(i).toString());
 								mDelKeyText.setText(mDelKeyNames.getText(i));
 								return true;
@@ -396,7 +396,7 @@ public class HostEditorFragment extends Fragment {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
 						for (String displayName : mCharsetData.keySet()) {
-							if (displayName.equals(item.getTitle())) {
+							if (displayName.equals(item.getTitle().toString())) {
 								mHost.setEncoding(mCharsetData.get(displayName));
 								mEncodingText.setText(displayName);
 								return true;
