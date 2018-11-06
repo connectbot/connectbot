@@ -206,9 +206,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation "androidx.test:core:$supportLibraryVersion"
     testImplementation "androidx.test.ext:junit:$supportLibraryVersion"
-    testImplementation 'org.mockito:mockito-core:2.19.0'
-    testImplementation 'org.assertj:assertj-core:3.10.0'
-    testImplementation 'org.robolectric:robolectric:4.0'
+    testImplementation 'org.mockito:mockito-core:2.23.0'
+    testImplementation 'org.assertj:assertj-core:3.11.1'
+    testImplementation 'org.robolectric:robolectric:4.0.1'
 
     errorprone "com.google.errorprone:error_prone_core:2.3.2"
     errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"
