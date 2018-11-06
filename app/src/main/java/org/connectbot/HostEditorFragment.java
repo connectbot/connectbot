@@ -363,7 +363,7 @@ public class HostEditorFragment extends Fragment {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
 						for (int i = 0; i < mDelKeyNames.length(); i++) {
-							if (mDelKeyNames.getText(i).equals(item.getTitle().toString())) {
+							if (mDelKeyNames.getText(i).toString().equals(item.getTitle().toString())) {
 								mHost.setDelKey(mDelKeyValues.getText(i).toString());
 								mDelKeyText.setText(mDelKeyNames.getText(i));
 								return true;
