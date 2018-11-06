@@ -18,7 +18,7 @@ buildscript {
 plugins {
     id 'com.github.ben-manes.versions' version '0.20.0'
     id 'info.vividcode.android.sdk-manager' version '0.9.0'
-    id 'net.ltgt.errorprone' version '0.0.14'
+    id 'net.ltgt.errorprone' version '0.6'
     id 'com.gladed.androidgitversion' version '0.4.4'
     id 'com.github.kt3k.coveralls' version '2.8.2'
 }
@@ -168,17 +168,18 @@ android {
     }
 }
 
+import net.ltgt.gradle.errorprone.CheckSeverity
+
 tasks.withType(JavaCompile) {
-    options.compilerArgs += [
-            '-Xep:ClassCanBeStatic:OFF',
-            '-Xep:ClassNewInstance:OFF',
-            '-Xep:DefaultCharset:OFF',
-            '-Xep:SynchronizeOnNonFinalField:OFF',
-            '-XepExcludedPaths:' +
-                    '.*/app/src/main/java/de/mud/.*|' +
-                    '.*/app/src/main/java/org/apache/.*|' +
-                    '.*/app/src/main/java/org/keyczar/.*',
-    ]
+    options.errorprone {
+        check("ClassCanBeStatic", CheckSeverity.OFF)
+        check("ClassNewInstance", CheckSeverity.OFF)
+        check("DefaultCharset", CheckSeverity.OFF)
+        check("SynchronizeOnNonFinalField", CheckSeverity.OFF)
+        excludedPaths = '.*/app/src/main/java/de/mud/.*|' +
+                        '.*/app/src/main/java/org/apache/.*|' +
+                        '.*/app/src/main/java/org/keyczar/.*'
+    }
 }
 
 // Dependencies must be below the android block to allow productFlavor specific deps.
@@ -208,5 +209,8 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.19.0'
     testImplementation 'org.assertj:assertj-core:3.10.0'
     testImplementation 'org.robolectric:robolectric:4.0'
+
+    errorprone "com.google.errorprone:error_prone_core:2.3.2"
+    errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"
 }
 
