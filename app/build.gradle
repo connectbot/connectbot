@@ -19,7 +19,7 @@ plugins {
     id 'com.github.ben-manes.versions' version '0.20.0'
     id 'info.vividcode.android.sdk-manager' version '0.9.0'
     id 'net.ltgt.errorprone' version '0.6'
-    id 'com.gladed.androidgitversion' version '0.4.4'
+    id 'com.gladed.androidgitversion' version '0.4.5'
     id 'com.github.kt3k.coveralls' version '2.8.2'
 }
 
@@ -166,6 +166,12 @@ android {
             path 'CMakeLists.txt'
         }
     }
+
+    jacoco {
+        if (rootProject.hasProperty('jacocoVersion')) {
+            version "${rootProject.jacocoVersion}"
+        }
+    }
 }
 
 import net.ltgt.gradle.errorprone.CheckSeverity
@@ -186,7 +192,7 @@ tasks.withType(JavaCompile) {
 dependencies {
     implementation 'org.connectbot:sshlib:2.2.9'
     googleImplementation 'com.google.android.gms:play-services-base:16.0.1'
-    ossImplementation 'org.conscrypt:conscrypt-android:1.4.0'
+    ossImplementation 'org.conscrypt:conscrypt-android:1.4.1'
 
     implementation "androidx.recyclerview:recyclerview:$supportLibraryVersion"
     implementation "androidx.legacy:legacy-support-v4:$supportLibraryVersion"
