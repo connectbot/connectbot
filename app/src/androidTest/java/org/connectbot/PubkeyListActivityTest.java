@@ -38,8 +38,8 @@ import androidx.test.espresso.IdlingPolicy;
 import androidx.test.espresso.IdlingResource;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.view.View;
 

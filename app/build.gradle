@@ -195,7 +195,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0-alpha01'
 
     androidTestUtil "androidx.test:orchestrator:$testRunnerVersion"
-    androidTestImplementation "androidx.test:runner:$testRunnerVersion"
+    androidTestImplementation "androidx.test.ext:junit:$supportLibraryVersion"
     androidTestImplementation "androidx.test:rules:$testRunnerVersion"
 
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
@@ -203,8 +203,10 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
 
     testImplementation 'junit:junit:4.12'
+    testImplementation "androidx.test:core:$supportLibraryVersion"
+    testImplementation "androidx.test.ext:junit:$supportLibraryVersion"
     testImplementation 'org.mockito:mockito-core:2.19.0'
     testImplementation 'org.assertj:assertj-core:3.10.0'
-    testImplementation 'org.robolectric:robolectric:3.8'
+    testImplementation 'org.robolectric:robolectric:4.0'
 }
 
