@@ -188,6 +188,27 @@ tasks.withType(JavaCompile) {
     }
 }
 
+// Do not want any release candidates for updates.
+dependencyUpdates {
+    revision = "release"
+    checkForGradleUpdate = false
+    outputFormatter = "json"
+
+    // Android apparently marks their "alpha" as "release" so we have to reject them.
+    resolutionStrategy {
+        componentSelection { rules ->
+            rules.all { ComponentSelection selection ->
+                boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'preview'].any { qualifier ->
+                    selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+                }
+                if (rejected) {
+                    selection.reject('Release candidate')
+                }
+            }
+        }
+    }
+}
+
 // Dependencies must be below the android block to allow productFlavor specific deps.
 dependencies {
     implementation 'org.connectbot:sshlib:2.2.9'
