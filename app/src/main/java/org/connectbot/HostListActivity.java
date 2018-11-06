@@ -31,10 +31,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.annotation.StyleRes;
-import android.support.annotation.VisibleForTesting;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.annotation.StyleRes;
+import androidx.annotation.VisibleForTesting;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -310,7 +310,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			return;
 		}
 
-		new android.support.v7.app.AlertDialog.Builder(
+		new androidx.appcompat.app.AlertDialog.Builder(
 				HostListActivity.this, R.style.AlertDialogTheme)
 			.setMessage(getString(R.string.disconnect_all_message))
 			.setPositiveButton(R.string.disconnect_all_pos, new DialogInterface.OnClickListener() {
@@ -477,7 +477,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					// prompt user to make sure they really want this
-					new android.support.v7.app.AlertDialog.Builder(
+					new androidx.appcompat.app.AlertDialog.Builder(
 									HostListActivity.this, R.style.AlertDialogTheme)
 							.setMessage(getString(R.string.delete_message, host.getNickname()))
 							.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {

@@ -24,9 +24,9 @@ plugins {
 }
 
 ext {
-    supportLibraryVersion = '28.0.0'
-    testRunnerVersion = '1.0.2'
-    espressoVersion = '3.0.2'
+    supportLibraryVersion = '1.0.0'
+    testRunnerVersion = '1.1.0'
+    espressoVersion = '3.1.0'
 }
 
 apply plugin: 'com.android.application'
@@ -75,7 +75,7 @@ android {
         }
 
         testApplicationId "org.connectbot.tests"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // The following argument makes the Android Test Orchestrator run its
         // "pm clear" command after each test invocation. This command ensures
@@ -187,19 +187,20 @@ dependencies {
     googleImplementation 'com.google.android.gms:play-services-base:16.0.1'
     ossImplementation 'org.conscrypt:conscrypt-android:1.4.0'
 
-    implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
-    implementation "com.android.support:support-v4:$supportLibraryVersion"
-    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
-    implementation "com.takisoft.fix:preference-v7:$supportLibraryVersion.0"
-    implementation "com.android.support:design:$supportLibraryVersion"
+    implementation "androidx.recyclerview:recyclerview:$supportLibraryVersion"
+    implementation "androidx.legacy:legacy-support-v4:$supportLibraryVersion"
+    implementation 'androidx.appcompat:appcompat:1.0.1'
+    implementation "androidx.preference:preference:$supportLibraryVersion"
+    implementation "com.takisoft.preferencex:preferencex:$supportLibraryVersion"
+    implementation 'com.google.android.material:material:1.1.0-alpha01'
 
-    androidTestUtil "com.android.support.test:orchestrator:$testRunnerVersion"
+    androidTestUtil "androidx.test:orchestrator:$testRunnerVersion"
+    androidTestImplementation "androidx.test:runner:$testRunnerVersion"
+    androidTestImplementation "androidx.test:rules:$testRunnerVersion"
 
-    androidTestImplementation "com.android.support.test:runner:$testRunnerVersion"
-    androidTestImplementation "com.android.support.test:rules:$testRunnerVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$espressoVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.19.0'
