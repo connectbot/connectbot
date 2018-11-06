@@ -689,7 +689,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 						@Override
 						public void run() {
 							if (BuildConfig.DEBUG) {
-								Log.d(TAG, "smoothScrollBy(toStart[" + (-xscroll) + "])");
+								Log.d(TAG, "smoothScrollBy(toStart[" + -xscroll + "])");
 							}
 							keyboardScroll.smoothScrollBy(-xscroll, 0);
 						}
