@@ -406,6 +406,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	@Override
 	public void touchHost(HostBean host) {
 		long now = System.currentTimeMillis() / 1000;
+		host.setLastConnect(now);
 
 		ContentValues values = new ContentValues();
 		values.put(FIELD_HOST_LASTCONNECT, now);
