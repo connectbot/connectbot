@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.connectbot;
+package org.connectbot;   
 
 import android.annotation.TargetApi;
 import android.content.ComponentName;
@@ -59,7 +59,7 @@ import org.connectbot.util.PreferenceConstants;
 
 import java.util.List;
 
-public class HostListActivity extends AppCompatListActivity implements OnHostStatusChangedListener {
+public class HostListActivity extends AppCompatListActivity implements OnHostStatusChangedListener{
 	public final static String TAG = "CB.HostListActivity";
 	public static final String DISCONNECT_ACTION = "org.connectbot.action.DISCONNECT";
 
