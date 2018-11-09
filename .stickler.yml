@@ -1,3 +1,4 @@
+---
 linters:
   checkstyle:
-    config: ./config/quality/checkstyle/checkstyle.xml
+    config: './config/quality/checkstyle/checkstyle.xml'
