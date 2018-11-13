@@ -26,9 +26,9 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.PopupMenu;
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.widget.PopupMenu;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -365,7 +365,7 @@ public class HostEditorFragment extends Fragment {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
 						for (int i = 0; i < mPubkeyNames.size(); i++) {
-							if (mPubkeyNames.get(i).equals(item.getTitle())) {
+							if (mPubkeyNames.get(i).equals(item.getTitle().toString())) {
 								mHost.setPubkeyId(Long.parseLong(mPubkeyValues.get(i)));
 								mPubkeyText.setText(mPubkeyNames.get(i));
 								return true;
@@ -398,7 +398,7 @@ public class HostEditorFragment extends Fragment {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
 						for (int i = 0; i < mDelKeyNames.length(); i++) {
-							if (mDelKeyNames.getText(i).equals(item.getTitle())) {
+							if (mDelKeyNames.getText(i).toString().equals(item.getTitle().toString())) {
 								mHost.setDelKey(mDelKeyValues.getText(i).toString());
 								mDelKeyText.setText(mDelKeyNames.getText(i));
 								return true;
@@ -431,7 +431,7 @@ public class HostEditorFragment extends Fragment {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
 						for (String displayName : mCharsetData.keySet()) {
-							if (displayName.equals(item.getTitle())) {
+							if (displayName.equals(item.getTitle().toString())) {
 								mHost.setEncoding(mCharsetData.get(displayName));
 								mEncodingText.setText(displayName);
 								return true;

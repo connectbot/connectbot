@@ -50,14 +50,14 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import com.google.android.material.tabs.TabLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -689,7 +689,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 						@Override
 						public void run() {
 							if (BuildConfig.DEBUG) {
-								Log.d(TAG, "smoothScrollBy(toStart[" + (-xscroll) + "])");
+								Log.d(TAG, "smoothScrollBy(toStart[" + -xscroll + "])");
 							}
 							keyboardScroll.smoothScrollBy(-xscroll, 0);
 						}
@@ -936,7 +936,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 				@SuppressLint("InflateParams")  // Dialogs do not have a parent view.
 				final View resizeView = inflater.inflate(R.layout.dia_resize, null, false);
-				new android.support.v7.app.AlertDialog.Builder(
+				new androidx.appcompat.app.AlertDialog.Builder(
 								ConsoleActivity.this, R.style.AlertDialogTheme)
 						.setView(resizeView)
 						.setPositiveButton(R.string.button_resize, new DialogInterface.OnClickListener() {

@@ -29,7 +29,4 @@
 	<color name="accent">#40C4FF</color>
 	<color name="dark_accent">#00B0FF</color>
 
-	<color name="fab_color_pressed">#F4511E</color>
-	<color name="fab_color_normal">#F4511E</color>
-
 </resources>

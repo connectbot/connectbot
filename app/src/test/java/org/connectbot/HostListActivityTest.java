@@ -21,12 +21,12 @@ import org.connectbot.service.TerminalManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
+import android.app.Application;
 import android.content.ComponentName;
 import android.content.Intent;
+import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -34,13 +34,12 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 22)
+@RunWith(AndroidJUnit4.class)
 public class HostListActivityTest {
 	private void mockBindToService(TerminalManager terminalManager) {
 		TerminalManager.TerminalBinder stubBinder = mock(TerminalManager.TerminalBinder.class);
 		when(stubBinder.getService()).thenReturn(terminalManager);
-		shadowOf(RuntimeEnvironment.application).setComponentNameAndServiceForBindService(new ComponentName("org.connectbot", TerminalManager.class.getName()), stubBinder);
+		shadowOf((Application) ApplicationProvider.getApplicationContext()).setComponentNameAndServiceForBindService(new ComponentName("org.connectbot", TerminalManager.class.getName()), stubBinder);
 	}
 
 	@Test

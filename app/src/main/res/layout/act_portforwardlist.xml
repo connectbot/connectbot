@@ -27,7 +27,7 @@
 
 	<!-- paddingBottom is calculated with FloatingActionButton's height (56dp) and
 	     margins (16dp): 56dp + (2 x 16dp) = 88dp. -->
-	<android.support.v7.widget.RecyclerView
+	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/list"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
@@ -46,7 +46,7 @@
 		android:clipToPadding="false"
 	/>
 
-	<android.support.design.widget.FloatingActionButton
+	<com.google.android.material.floatingactionbutton.FloatingActionButton
 		android:id="@+id/add_port_forward_button"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"

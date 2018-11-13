@@ -36,7 +36,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.trilead.ssh2.KnownHosts;
@@ -413,6 +413,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	@Override
 	public void touchHost(HostBean host) {
 		long now = System.currentTimeMillis() / 1000;
+		host.setLastConnect(now);
 
 		ContentValues values = new ContentValues();
 		values.put(FIELD_HOST_LASTCONNECT, now);

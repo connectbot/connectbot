@@ -497,7 +497,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 			// draw any highlighted area
 			if (terminalTextViewOverlay == null && bridge.isSelectingForCopy()) {
 				SelectionArea area = bridge.getSelectionArea();
-				canvas.save(Canvas.ALL_SAVE_FLAG);
+				canvas.save();
 				canvas.clipRect(
 					area.getLeft() * bridge.charWidth,
 					area.getTop() * bridge.charHeight,

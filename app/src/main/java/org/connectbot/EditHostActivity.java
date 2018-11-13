@@ -30,8 +30,8 @@ import android.content.ServiceConnection;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.IBinder;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -235,8 +235,8 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 	}
 
 	private void showDiscardDialog() {
-		android.support.v7.app.AlertDialog.Builder builder =
-				new android.support.v7.app.AlertDialog.Builder(this, R.style.AlertDialogTheme);
+		androidx.appcompat.app.AlertDialog.Builder builder =
+				new androidx.appcompat.app.AlertDialog.Builder(this, R.style.AlertDialogTheme);
 		builder.setMessage(R.string.discard_host_changes_message)
 				.setPositiveButton(R.string.discard_host_button, new DialogInterface.OnClickListener() {
 					@Override

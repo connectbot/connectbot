@@ -56,8 +56,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
-import android.support.annotation.VisibleForTesting;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.annotation.VisibleForTesting;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -243,7 +243,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		final String state = Environment.getExternalStorageState();
 		if (!Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)
 				&& !Environment.MEDIA_MOUNTED.equals(state)) {
-			new android.support.v7.app.AlertDialog.Builder(
+			new androidx.appcompat.app.AlertDialog.Builder(
 					PubkeyListActivity.this, R.style.AlertDialogTheme)
 					.setMessage(R.string.alert_sdcard_absent)
 					.setNegativeButton(android.R.string.cancel, null).create().show();
@@ -266,7 +266,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 		Log.d(TAG, names.toString());
 
 		// prompt user to select any file from the sdcard root
-		new android.support.v7.app.AlertDialog.Builder(
+		new androidx.appcompat.app.AlertDialog.Builder(
 				PubkeyListActivity.this, R.style.AlertDialogTheme)
 				.setTitle(R.string.pubkey_list_pick)
 				.setItems(namesList, new OnClickListener() {
@@ -287,7 +287,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 			final View view = View.inflate(this, R.layout.dia_password, null);
 			final EditText passwordField = view.findViewById(android.R.id.text1);
 
-			new android.support.v7.app.AlertDialog.Builder(
+			new androidx.appcompat.app.AlertDialog.Builder(
 					PubkeyListActivity.this, R.style.AlertDialogTheme)
 				.setView(view)
 				.setPositiveButton(R.string.pubkey_unlock, new DialogInterface.OnClickListener() {
@@ -585,7 +585,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 							View.inflate(PubkeyListActivity.this, R.layout.dia_changepassword, null);
 					changePasswordView.findViewById(R.id.old_password_prompt)
 							.setVisibility(pubkey.isEncrypted() ? View.VISIBLE : View.GONE);
-					new android.support.v7.app.AlertDialog.Builder(
+					new androidx.appcompat.app.AlertDialog.Builder(
 									PubkeyListActivity.this, R.style.AlertDialogTheme)
 							.setView(changePasswordView)
 							.setPositiveButton(R.string.button_change, new DialogInterface.OnClickListener() {
@@ -596,7 +596,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 									String password2 = ((EditText) changePasswordView.findViewById(R.id.password2)).getText().toString();
 
 									if (!password1.equals(password2)) {
-										new android.support.v7.app.AlertDialog.Builder(
+										new androidx.appcompat.app.AlertDialog.Builder(
 														PubkeyListActivity.this,
 														R.style.AlertDialogTheme)
 												.setMessage(R.string.alert_passwords_do_not_match_msg)
@@ -607,7 +607,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 									try {
 										if (!pubkey.changePassword(oldPassword, password1))
-											new android.support.v7.app.AlertDialog.Builder(
+											new androidx.appcompat.app.AlertDialog.Builder(
 															PubkeyListActivity.this,
 															R.style.AlertDialogTheme)
 													.setMessage(R.string.alert_wrong_password_msg)
@@ -620,7 +620,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 										}
 									} catch (Exception e) {
 										Log.e(TAG, "Could not change private key password", e);
-										new android.support.v7.app.AlertDialog.Builder(
+										new androidx.appcompat.app.AlertDialog.Builder(
 														PubkeyListActivity.this,
 														R.style.AlertDialogTheme)
 												.setMessage(R.string.alert_key_corrupted_msg)
@@ -655,7 +655,7 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 				@Override
 				public boolean onMenuItemClick(MenuItem item) {
 					// prompt user to make sure they really want this
-					new android.support.v7.app.AlertDialog.Builder(
+					new androidx.appcompat.app.AlertDialog.Builder(
 									PubkeyListActivity.this, R.style.AlertDialogTheme)
 							.setMessage(getString(R.string.delete_message, pubkey.getNickname()))
 							.setPositiveButton(R.string.delete_pos, new DialogInterface.OnClickListener() {
