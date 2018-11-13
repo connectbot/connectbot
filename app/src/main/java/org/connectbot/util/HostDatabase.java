@@ -100,7 +100,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	public final static int DEFAULT_FG_COLOR = 7;
 	public final static int DEFAULT_BG_COLOR = 0;
 
-	public final static String DEFAULT_FONT ="monospace";
+	public final static String DEFAULT_FONT = "monospace";
 
 	public final static String COLOR_RED = "red";
 	public final static String COLOR_GREEN = "green";
