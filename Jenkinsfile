@@ -2,6 +2,10 @@ pipeline {
   agent {
     dockerfile {
       dir 'ci/builder'
+      args "${env.JAVA_OPTS ? "-e JAVA_OPTS=\"$env.JAVA_OPTS\"" : ''} " +
+           "${env.GRADLE_BUILD_CACHE ? " -e GRADLE_BUILD_CACHE=\"$env.GRADLE_BUILD_CACHE\"" : ''} " +
+           "${env.MAVEN_REPO_CACHE ? " -e MAVEN_REPO_CACHE=\"$env.MAVEN_REPO_CACHE\"" : ''} " +
+           "${env.DOCKER_NETWORK ? " --network \"$env.DOCKER_NETWORK\"" : ''}"
     }
   }
 

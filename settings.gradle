@@ -1,2 +1,25 @@
+ext.GRADLE_BUILD_CACHE = System.getenv("GRADLE_BUILD_CACHE")?.trim()
+ext.MAVEN_REPO_CACHE = System.getenv("MAVEN_REPO_CACHE")?.trim()
+
+if (MAVEN_REPO_CACHE) {
+    pluginManagement {
+        repositories {
+            maven { url MAVEN_REPO_CACHE }
+        }
+    }
+}
+
+buildCache {
+    local {
+        enabled = !GRADLE_BUILD_CACHE
+    }
+    if (GRADLE_BUILD_CACHE) {
+        remote(HttpBuildCache) {
+            url = GRADLE_BUILD_CACHE
+            push = true
+        }
+    }
+}
+
 include ':app'
 include ':translations'
