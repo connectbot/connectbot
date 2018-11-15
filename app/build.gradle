@@ -1,10 +1,4 @@
 buildscript {
-    repositories {
-        google()
-        jcenter()
-        google()
-    }
-
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'com.github.gfx.ribbonizer:ribbonizer-plugin:2.1.0'
