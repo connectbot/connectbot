@@ -10,6 +10,11 @@ ENV JAVA_OPTS ""
 ENV GRADLE_BUILD_CACHE ""
 
 USER root
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        socat \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN mkdir -p $ANDROID_HOME && chown -R jenkins $ANDROID_HOME
 USER jenkins
 

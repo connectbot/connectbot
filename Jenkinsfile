@@ -23,6 +23,16 @@ pipeline {
         junit 'app/build/test-results/**/*.xml'
       }
     }
+
+    stage('Device test') {
+      steps {
+        script {
+          sh "ANDROID_ADB_SERVER_ADDRESS=${env.ANDROID_ADB_SERVER_ADDRESS ?: "host.docker.internal"} " +
+             "ANDROID_ADB_SERVER_PORT=${env.ANDROID_ADB_SERVER_PORT ?: "5037"} " +
+             "./gradlew connectedCheck --stacktrace --no-daemon"
+        }
+      }
+    }
   }
 
   post {

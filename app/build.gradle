@@ -15,6 +15,7 @@ plugins {
     id 'net.ltgt.errorprone' version '0.6'
     id 'com.gladed.androidgitversion' version '0.4.5'
     id 'com.github.kt3k.coveralls' version '2.8.2'
+    id 'com.github.johnrengelman.processes' version '0.5.0'
 }
 
 ext {
@@ -180,6 +181,36 @@ tasks.withType(JavaCompile) {
                         '.*/app/src/main/java/org/apache/.*|' +
                         '.*/app/src/main/java/org/keyczar/.*'
     }
+}
+
+/*
+ * This works around a deficiency in ddmlib's 
+ * com/android/ddmlib/AndroidDebugBridge.java where it doesn't support anything
+ * other than 127.0.0.1 for the host of ADB. This allows us to run tests
+ * in a Docker container but forward to a real device.
+ */
+import com.github.jengelman.gradle.plugins.processes.tasks.Fork
+task startAdbForwarding(type: Fork) {
+    onlyIf { System.getenv("ANDROID_ADB_SERVER_ADDRESS") != null }
+
+    def androidAdbServerAddress = System.getenv("ANDROID_ADB_SERVER_ADDRESS")
+    commandLine 'socat', 'TCP-LISTEN:5037,reuseaddr,fork', "TCP:${androidAdbServerAddress}:5037"
+}
+
+task stopAdbForwarding {
+    onlyIf { System.getenv("ANDROID_ADB_SERVER_ADDRESS") != null }
+    doLast {
+        startAdbForwarding.processHandle.abort()
+    }
+}
+
+afterEvaluate {
+    tasks.all { t ->
+        if (t.name.startsWith("connected") && t.name.endsWith("AndroidTest")) {
+            t.dependsOn(startAdbForwarding)
+        }
+    }
+    connectedAndroidTest.finalizedBy(stopAdbForwarding)
 }
 
 // Do not want any release candidates for updates.

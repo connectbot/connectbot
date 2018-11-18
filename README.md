@@ -46,6 +46,7 @@ docker run -it -v $(pwd):/workspace \
     -v jenkinsfile-runner:/var/jenkinsfile-runner \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v $(which docker):$(which docker) \
+    -e ANDROID_ADB_SERVER_ADDRESS=host.docker.internal \
     jenkins/jenkinsfile-runner
 ```
 
