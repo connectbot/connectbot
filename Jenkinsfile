@@ -39,9 +39,11 @@ pipeline {
   post {
     always {
       jacoco(
-        execPattern: 'app/build/jacoco/*.exec',
-        classPattern: 'app/build/intermediates/classes/google/release',
-        sourcePattern: 'app/src/main/java/org/connectbot'
+        execPattern: 'app/build/jacoco/*.exec, app/build/outputs/code-coverage/connected/**/*.ec',
+        sourcePattern: 'app/src/*/java',
+        classPattern: 'app/build/intermediates/javac/**/classes',
+        inclusionPattern: 'org/connectbot/**/*.class',
+        exclusionPattern: '**/R$*.class, **/*$ViewInjector*.*, **/BuildConfig.*, **/Manifest*.*'
       )
 
       dir('app/build') {
