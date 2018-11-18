@@ -49,6 +49,8 @@ import static org.connectbot.ConnectbotMatchers.withConnectedHost;
 import static org.connectbot.ConnectbotMatchers.withDisconnectedHost;
 import static org.connectbot.ConnectbotMatchers.withHostNickname;
 import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assume.assumeThat;
 
 @RunWith(AndroidJUnit4.class)
 public class StartupTest {
@@ -74,9 +76,8 @@ public class StartupTest {
 		Context testContext = ApplicationProvider.getApplicationContext();
 
 		// This test doesn't work on devices with hardware keyboards.
-		if (testContext.getResources().getConfiguration().hardKeyboardHidden != Configuration.HARDKEYBOARDHIDDEN_YES) {
-			return;
-		}
+		assumeThat(testContext.getResources().getConfiguration().hardKeyboardHidden,
+				equalTo(Configuration.HARDKEYBOARDHIDDEN_YES));
 
 		// First change preferences so that show/hide keyboard button will not auto-hide
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(testContext);
