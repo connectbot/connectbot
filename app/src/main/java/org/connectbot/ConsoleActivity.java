@@ -1558,6 +1558,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		edit.apply();
 	}
 
+	@SuppressWarnings("StringSplitter")
 	public int[] loadEmulatedKeyMap() {
 		int[] ret;
 		String[] emulatedKeyMap = prefs.getString(PreferenceConstants.KEY_MAP, "").split(" +");
