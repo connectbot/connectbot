@@ -183,6 +183,10 @@ tasks.withType(JavaCompile) {
     }
 }
 
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+
 /*
  * This works around a deficiency in ddmlib's 
  * com/android/ddmlib/AndroidDebugBridge.java where it doesn't support anything
@@ -208,9 +212,9 @@ afterEvaluate {
     tasks.all { t ->
         if (t.name.startsWith("connected") && t.name.endsWith("AndroidTest")) {
             t.dependsOn(startAdbForwarding)
+            t.finalizedBy(stopAdbForwarding)
         }
     }
-    connectedAndroidTest.finalizedBy(stopAdbForwarding)
 }
 
 // Do not want any release candidates for updates.
