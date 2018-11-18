@@ -692,9 +692,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		for (int i = 0; i < emulatedKeys.getChildCount(); i++) {
 			emulatedKeyButton = emulatedKeys.getChildAt(i);
 			emulatedKeyButton.setOnClickListener(emulatedKeysListener);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				addDragAndDropFunctionality(emulatedKeyButton);
-			}
+			addDragAndDropFunctionality(emulatedKeyButton);
 		}
 
 		addKeyRepeater(findViewById(R.id.button_up));
