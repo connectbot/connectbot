@@ -242,25 +242,25 @@ dependencies {
 
     implementation "androidx.recyclerview:recyclerview:$supportLibraryVersion"
     implementation "androidx.legacy:legacy-support-v4:$supportLibraryVersion"
-    implementation 'androidx.appcompat:appcompat:1.0.1'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation "androidx.preference:preference:$supportLibraryVersion"
     implementation "com.takisoft.preferencex:preferencex:$supportLibraryVersion"
     implementation "com.google.android.material:material:$supportLibraryVersion"
 
     androidTestUtil "androidx.test:orchestrator:$testRunnerVersion"
-    androidTestImplementation "androidx.test.ext:junit:$supportLibraryVersion"
+    androidTestImplementation "androidx.test:core:$supportLibraryVersion"
     androidTestImplementation "androidx.test:rules:$testRunnerVersion"
-
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    androidTestImplementation "androidx.test.ext:junit:$supportLibraryVersion"
 
     testImplementation 'junit:junit:4.12'
     testImplementation "androidx.test:core:$supportLibraryVersion"
     testImplementation "androidx.test.ext:junit:$supportLibraryVersion"
     testImplementation 'org.mockito:mockito-core:2.23.0'
     testImplementation 'org.assertj:assertj-core:3.11.1'
-    testImplementation 'org.robolectric:robolectric:4.0.1'
+    testImplementation 'org.robolectric:robolectric:4.0.2'
 
     errorprone "com.google.errorprone:error_prone_core:2.3.2"
     errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"
