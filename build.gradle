@@ -15,6 +15,12 @@ buildscript {
     }
 }
 
+plugins {
+  id "com.diffplug.gradle.spotless" version "3.16.0"
+}
+
+apply plugin: "com.diffplug.gradle.spotless"
+
 if (MAVEN_REPO_CACHE) {
     allprojects {
         buildscript {
@@ -52,6 +58,22 @@ subprojects {
         } else if ("com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
             project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
         }
+    }
+}
+
+spotless {
+    groovyGradle {
+        target '*.gradle', 'config/**/*.gradle'
+        greclipse()
+        paddedCell()
+        indentWithSpaces(4)
+    }
+
+    format 'misc', {
+        target '**/*.md', '**/.gitignore'
+
+        trimTrailingWhitespace()
+        endWithNewline()
     }
 }
 
