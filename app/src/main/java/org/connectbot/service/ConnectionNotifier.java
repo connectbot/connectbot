@@ -17,15 +17,11 @@
 
 package org.connectbot.service;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import org.connectbot.ConsoleActivity;
 import org.connectbot.HostListActivity;
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
 import org.connectbot.util.HostDatabase;
-import org.connectbot.util.PreferenceConstants;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -45,26 +41,29 @@ import androidx.core.app.NotificationCompat;
  *
  * Based on the concept from jasta's blog post.
  */
-public abstract class ConnectionNotifier {
+public class ConnectionNotifier {
 	private static final int ONLINE_NOTIFICATION = 1;
 	private static final int ACTIVITY_NOTIFICATION = 2;
 	private static final int ONLINE_DISCONNECT_NOTIFICATION = 3;
 
-	private String id = "my_connectbot_channel";
-	NotificationChannel nc;
+	private static final String NOTIFICATION_CHANNEL = "my_connectbot_channel";
 
-	public static ConnectionNotifier getInstance() {
-		if (PreferenceConstants.PRE_ECLAIR)
-			return PreEclair.Holder.sInstance;
-		else
-			return EclairAndBeyond.Holder.sInstance;
+	private static class Holder {
+		private static final ConnectionNotifier sInstance = new ConnectionNotifier();
 	}
 
-	protected NotificationManager getNotificationManager(Context context) {
+	private ConnectionNotifier() {
+	}
+
+	public static ConnectionNotifier getInstance() {
+		return Holder.sInstance;
+	}
+
+	private NotificationManager getNotificationManager(Context context) {
 		return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
-	protected NotificationCompat.Builder newNotificationBuilder(Context context, String id) {
+	private NotificationCompat.Builder newNotificationBuilder(Context context, String id) {
 		NotificationCompat.Builder builder =
 				new NotificationCompat.Builder(context, id)
 				.setSmallIcon(R.drawable.notification_icon)
@@ -79,13 +78,13 @@ public abstract class ConnectionNotifier {
 
 	@TargetApi(Build.VERSION_CODES.O)
 	private void createNotificationChannel(Context context, String id) {
-		nc = new NotificationChannel(id, context.getString(R.string.app_name),
+		NotificationChannel nc = new NotificationChannel(id, context.getString(R.string.app_name),
 				NotificationManager.IMPORTANCE_DEFAULT);
 		getNotificationManager(context).createNotificationChannel(nc);
 	}
 
-	protected Notification newActivityNotification(Context context, HostBean host) {
-		NotificationCompat.Builder builder = newNotificationBuilder(context, id);
+	private Notification newActivityNotification(Context context, HostBean host) {
+		NotificationCompat.Builder builder = newNotificationBuilder(context, NOTIFICATION_CHANNEL);
 
 		Resources res = context.getResources();
 
@@ -120,8 +119,8 @@ public abstract class ConnectionNotifier {
 		return builder.build();
 	}
 
-	protected Notification newRunningNotification(Context context) {
-		NotificationCompat.Builder builder = newNotificationBuilder(context, id);
+	private Notification newRunningNotification(Context context) {
+		NotificationCompat.Builder builder = newNotificationBuilder(context, NOTIFICATION_CHANNEL);
 
 		builder.setOngoing(true);
 		builder.setWhen(0);
@@ -148,75 +147,15 @@ public abstract class ConnectionNotifier {
 		return builder.build();
 	}
 
-	public void showActivityNotification(Service context, HostBean host) {
+	void showActivityNotification(Service context, HostBean host) {
 		getNotificationManager(context).notify(ACTIVITY_NOTIFICATION, newActivityNotification(context, host));
 	}
 
-	public void hideActivityNotification(Service context) {
-		getNotificationManager(context).cancel(ACTIVITY_NOTIFICATION);
+	void showRunningNotification(Service context) {
+		context.startForeground(ONLINE_NOTIFICATION, newRunningNotification(context));
 	}
 
-	public abstract void showRunningNotification(Service context);
-	public abstract void hideRunningNotification(Service context);
-
-	private static class PreEclair extends ConnectionNotifier {
-		private static final Class<?>[] setForegroundSignature = new Class[] {boolean.class};
-		private Method setForeground = null;
-
-		private static class Holder {
-			private static final PreEclair sInstance = new PreEclair();
-		}
-
-		public PreEclair() {
-			try {
-				setForeground = Service.class.getMethod("setForeground", setForegroundSignature);
-			} catch (Exception e) {
-			}
-		}
-
-		@Override
-		public void showRunningNotification(Service context) {
-			if (setForeground != null) {
-				Object[] setForegroundArgs = new Object[1];
-				setForegroundArgs[0] = Boolean.TRUE;
-				try {
-					setForeground.invoke(context, setForegroundArgs);
-				} catch (InvocationTargetException e) {
-				} catch (IllegalAccessException e) {
-				}
-				getNotificationManager(context).notify(ONLINE_NOTIFICATION, newRunningNotification(context));
-			}
-		}
-
-		@Override
-		public void hideRunningNotification(Service context) {
-			if (setForeground != null) {
-				Object[] setForegroundArgs = new Object[1];
-				setForegroundArgs[0] = Boolean.FALSE;
-				try {
-					setForeground.invoke(context, setForegroundArgs);
-				} catch (InvocationTargetException e) {
-				} catch (IllegalAccessException e) {
-				}
-				getNotificationManager(context).cancel(ONLINE_NOTIFICATION);
-			}
-		}
-	}
-
-	@TargetApi(5)
-	private static class EclairAndBeyond extends ConnectionNotifier {
-		private static class Holder {
-			private static final EclairAndBeyond sInstance = new EclairAndBeyond();
-		}
-
-		@Override
-		public void showRunningNotification(Service context) {
-			context.startForeground(ONLINE_NOTIFICATION, newRunningNotification(context));
-		}
-
-		@Override
-		public void hideRunningNotification(Service context) {
-			context.stopForeground(true);
-		}
+	void hideRunningNotification(Service context) {
+		context.stopForeground(true);
 	}
 }
