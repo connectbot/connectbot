@@ -13,9 +13,9 @@ buildscript {
     }
 }
 
-plugins { id "com.diffplug.gradle.spotless" version "3.16.0" }
+plugins { id 'com.diffplug.gradle.spotless' version '3.16.0' }
 
-apply plugin: "com.diffplug.gradle.spotless"
+apply plugin: 'com.diffplug.gradle.spotless'
 
 if (MAVEN_REPO_CACHE) {
     allprojects {
@@ -55,7 +55,7 @@ subprojects {
 
 spotless {
     groovyGradle {
-        target '*.gradle', 'config/**/*.gradle'
+        target '**/*.gradle'
         greclipse()
         paddedCell()
         indentWithSpaces(4)

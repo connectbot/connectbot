@@ -27,6 +27,7 @@ ext {
 apply plugin: 'com.android.application'
 apply plugin: 'com.github.gfx.ribbonizer'
 apply plugin: 'jacoco-android'
+apply plugin: 'com.diffplug.gradle.spotless'
 apply from: '../config/quality.gradle'
 
 repositories {
@@ -166,6 +167,13 @@ android {
         if (rootProject.hasProperty('jacocoVersion')) {
             version "${rootProject.jacocoVersion}"
         }
+    }
+}
+
+spotless {
+    java {
+        target '**/*.java'
+        removeUnusedImports()
     }
 }
 
