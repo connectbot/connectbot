@@ -26,47 +26,30 @@ import android.content.Context;
 /**
  * This is only invoked on Froyo and beyond.
  */
-@TargetApi(8)
-public abstract class BackupWrapper {
+public class BackupWrapper {
+	private static class Holder {
+		private static final BackupWrapper sInstance = new BackupWrapper();
+	}
+
+	private BackupWrapper() {
+	}
+
 	public static BackupWrapper getInstance() {
-		if (PreferenceConstants.PRE_FROYO)
-			return PreFroyo.Holder.sInstance;
-		else
-			return FroyoAndBeyond.Holder.sInstance;
+		return Holder.sInstance;
 	}
 
-	public abstract void onDataChanged(Context context);
+	private static BackupManager mBackupManager;
 
-	private static class PreFroyo extends BackupWrapper {
-		private static class Holder {
-			private static final PreFroyo sInstance = new PreFroyo();
-		}
-
-		@Override
-		public void onDataChanged(Context context) {
-			// do nothing for now
+	public void onDataChanged(Context context) {
+		checkBackupManager(context);
+		if (mBackupManager != null) {
+			mBackupManager.dataChanged();
 		}
 	}
 
-	private static class FroyoAndBeyond extends BackupWrapper {
-		private static class Holder {
-			private static final FroyoAndBeyond sInstance = new FroyoAndBeyond();
-		}
-
-		private static BackupManager mBackupManager;
-
-		@Override
-		public void onDataChanged(Context context) {
-			checkBackupManager(context);
-			if (mBackupManager != null) {
-				mBackupManager.dataChanged();
-			}
-		}
-
-		private void checkBackupManager(Context context) {
-			if (mBackupManager == null) {
-				mBackupManager = new BackupManager(context);
-			}
+	private void checkBackupManager(Context context) {
+		if (mBackupManager == null) {
+			mBackupManager = new BackupManager(context);
 		}
 	}
 }
