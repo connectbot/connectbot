@@ -33,9 +33,7 @@ apply from: '../config/quality.gradle'
 repositories {
     google()
     jcenter()
-    maven {
-        url 'https://oss.jfrog.org/artifactory/oss-snapshot-local/'
-    }
+    maven { url 'https://oss.jfrog.org/artifactory/oss-snapshot-local/' }
 }
 
 def isCi = "true".equals(System.getenv("CI"))
@@ -141,9 +139,7 @@ android {
         //execution 'ANDROID_TEST_ORCHESTRATOR'
         animationsDisabled true
 
-        unitTests {
-            includeAndroidResources = true
-        }
+        unitTests { includeAndroidResources = true }
     }
 
     lintOptions {
@@ -157,11 +153,7 @@ android {
         exclude '**/*.gwt.xml'
     }
 
-    externalNativeBuild {
-        cmake {
-            path 'CMakeLists.txt'
-        }
-    }
+    externalNativeBuild { cmake { path 'CMakeLists.txt' } }
 
     jacoco {
         if (rootProject.hasProperty('jacocoVersion')) {
@@ -186,8 +178,8 @@ tasks.withType(JavaCompile) {
         check("DefaultCharset", CheckSeverity.OFF)
         check("SynchronizeOnNonFinalField", CheckSeverity.OFF)
         excludedPaths = '.*/app/src/main/java/de/mud/.*|' +
-                        '.*/app/src/main/java/org/apache/.*|' +
-                        '.*/app/src/main/java/org/keyczar/.*'
+                '.*/app/src/main/java/org/apache/.*|' +
+                '.*/app/src/main/java/org/keyczar/.*'
     }
 }
 
@@ -235,7 +227,14 @@ dependencyUpdates {
     resolutionStrategy {
         componentSelection { rules ->
             rules.all { ComponentSelection selection ->
-                boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'preview'].any { qualifier ->
+                boolean rejected = [
+                    'alpha',
+                    'beta',
+                    'rc',
+                    'cr',
+                    'm',
+                    'preview'
+                ].any { qualifier ->
                     selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
                 }
                 if (rejected) {
