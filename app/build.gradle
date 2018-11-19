@@ -36,8 +36,8 @@ repositories {
     maven { url 'https://oss.jfrog.org/artifactory/oss-snapshot-local/' }
 }
 
-def isCi = "true".equals(System.getenv("CI"))
-def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+def isCi = "true" == System.getenv("CI")
+def preDexEnabled = "true" == System.getProperty("pre-dex", "true")
 
 coveralls.jacocoReportPath = 'build/reports/coverage/google/debug/report.xml'
 
