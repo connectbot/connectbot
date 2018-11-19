@@ -17,9 +17,6 @@
 
 package org.connectbot.service;
 
-import org.connectbot.util.PreferenceConstants;
-
-import android.annotation.TargetApi;
 import android.app.backup.BackupManager;
 import android.content.Context;
 
