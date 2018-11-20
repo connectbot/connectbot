@@ -1,10 +1,45 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        google()
+buildscript {
+    project.ext.MAVEN_REPO_CACHE = System.getenv("MAVEN_REPO_CACHE")?.trim()
+    if (MAVEN_REPO_CACHE) {
+        repositories {
+            maven { url MAVEN_REPO_CACHE }
+        }
+    } else {
+        repositories {
+            google()
+            jcenter()
+            google()
+        }
+    }
+}
+
+if (MAVEN_REPO_CACHE) {
+    allprojects {
+        buildscript {
+            repositories {
+                maven { url MAVEN_REPO_CACHE }
+            }
+        }
+        repositories {
+            maven { url MAVEN_REPO_CACHE }
+        }
+    }
+} else {
+    allprojects {
+        buildscript {
+            repositories {
+                google()
+                jcenter()
+                google()
+            }
+        }
+        repositories {
+            google()
+            jcenter()
+            google()
+        }
     }
 }
 

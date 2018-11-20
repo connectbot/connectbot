@@ -592,7 +592,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 		keyboardGroup = findViewById(R.id.keyboard_group);
 
-		keyboardAlwaysVisible = prefs.getBoolean(PreferenceConstants.KEY_ALWAYS_VISIVLE, false);
+		keyboardAlwaysVisible = prefs.getBoolean(PreferenceConstants.KEY_ALWAYS_VISIBLE, false);
 		if (keyboardAlwaysVisible) {
 			// equivalent to android:layout_above=keyboard_group
 			RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(

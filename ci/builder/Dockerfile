@@ -6,8 +6,15 @@ ENV ANDROID_HOME /opt/android
 ENV ANDROID_SDK_HOME $ANDROID_HOME
 ENV ANDROID_NDK_HOME $ANDROID_HOME/ndk-bundle
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
+ENV JAVA_OPTS ""
+ENV GRADLE_BUILD_CACHE ""
 
 USER root
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        socat \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN mkdir -p $ANDROID_HOME && chown -R jenkins $ANDROID_HOME
 USER jenkins
 

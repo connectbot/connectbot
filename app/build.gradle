@@ -1,10 +1,4 @@
 buildscript {
-    repositories {
-        google()
-        jcenter()
-        google()
-    }
-
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'com.github.gfx.ribbonizer:ribbonizer-plugin:2.1.0'
@@ -21,6 +15,7 @@ plugins {
     id 'net.ltgt.errorprone' version '0.6'
     id 'com.gladed.androidgitversion' version '0.4.5'
     id 'com.github.kt3k.coveralls' version '2.8.2'
+    id 'com.github.johnrengelman.processes' version '0.5.0'
 }
 
 ext {
@@ -188,6 +183,40 @@ tasks.withType(JavaCompile) {
     }
 }
 
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+
+/*
+ * This works around a deficiency in ddmlib's 
+ * com/android/ddmlib/AndroidDebugBridge.java where it doesn't support anything
+ * other than 127.0.0.1 for the host of ADB. This allows us to run tests
+ * in a Docker container but forward to a real device.
+ */
+import com.github.jengelman.gradle.plugins.processes.tasks.Fork
+task startAdbForwarding(type: Fork) {
+    onlyIf { System.getenv("ANDROID_ADB_SERVER_ADDRESS") != null }
+
+    def androidAdbServerAddress = System.getenv("ANDROID_ADB_SERVER_ADDRESS")
+    commandLine 'socat', 'TCP-LISTEN:5037,reuseaddr,fork', "TCP:${androidAdbServerAddress}:5037"
+}
+
+task stopAdbForwarding {
+    onlyIf { System.getenv("ANDROID_ADB_SERVER_ADDRESS") != null }
+    doLast {
+        startAdbForwarding.processHandle.abort()
+    }
+}
+
+afterEvaluate {
+    tasks.all { t ->
+        if (t.name.startsWith("connected") && t.name.endsWith("AndroidTest")) {
+            t.dependsOn(startAdbForwarding)
+            t.finalizedBy(stopAdbForwarding)
+        }
+    }
+}
+
 // Do not want any release candidates for updates.
 dependencyUpdates {
     revision = "release"
@@ -217,25 +246,25 @@ dependencies {
 
     implementation "androidx.recyclerview:recyclerview:$supportLibraryVersion"
     implementation "androidx.legacy:legacy-support-v4:$supportLibraryVersion"
-    implementation 'androidx.appcompat:appcompat:1.0.1'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation "androidx.preference:preference:$supportLibraryVersion"
     implementation "com.takisoft.preferencex:preferencex:$supportLibraryVersion"
     implementation "com.google.android.material:material:$supportLibraryVersion"
 
     androidTestUtil "androidx.test:orchestrator:$testRunnerVersion"
-    androidTestImplementation "androidx.test.ext:junit:$supportLibraryVersion"
+    androidTestImplementation "androidx.test:core:$supportLibraryVersion"
     androidTestImplementation "androidx.test:rules:$testRunnerVersion"
-
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    androidTestImplementation "androidx.test.ext:junit:$supportLibraryVersion"
 
     testImplementation 'junit:junit:4.12'
     testImplementation "androidx.test:core:$supportLibraryVersion"
     testImplementation "androidx.test.ext:junit:$supportLibraryVersion"
     testImplementation 'org.mockito:mockito-core:2.23.0'
     testImplementation 'org.assertj:assertj-core:3.11.1'
-    testImplementation 'org.robolectric:robolectric:4.0.1'
+    testImplementation 'org.robolectric:robolectric:4.0.2'
 
     errorprone "com.google.errorprone:error_prone_core:2.3.2"
     errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"
