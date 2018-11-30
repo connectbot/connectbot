@@ -53,6 +53,6 @@ docker run -it -v $(pwd):/workspace \
 
 ## Translations
 
-If you'd like to correct or contribute new translatitions to ConnectBot,
+If you'd like to correct or contribute new translations to ConnectBot,
 then head on over to [ConnectBot's translations project](
 https://translations.launchpad.net/connectbot/trunk/+pots/fortune)
