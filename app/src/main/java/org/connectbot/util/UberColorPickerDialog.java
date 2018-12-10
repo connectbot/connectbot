@@ -100,6 +100,7 @@ public class UberColorPickerDialog extends Dialog {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		OnColorChangedListener l = new OnColorChangedListener() {
+			@Override
 			public void colorChanged(int color) {
 				mListener.colorChanged(color);
 				dismiss();
@@ -162,7 +163,7 @@ public class UberColorPickerDialog extends Dialog {
 		private static int[] TEXT_YUV_POS = new int[2];
 		private static int[] TEXT_HEX_POS = new int[2];
 
-		private static final float PI = 3.141592653589793f;
+		private static final float PI = 3.1415927f;
 
 		private final int mSwatchWidthPx;
 		private final int mTextSizePx;
@@ -232,8 +233,7 @@ public class UberColorPickerDialog extends Dialog {
 		 * @param color  The initial color
 		 * @throws Exception
 		 */
-		ColorPickerView(Context c, OnColorChangedListener l, int width, int height, int color)
-				throws Exception {
+		ColorPickerView(Context c, OnColorChangedListener l, int width, int height, int color) {
 			super(c);
 
 			DisplayMetrics metrics = c.getResources().getDisplayMetrics();
@@ -913,7 +913,7 @@ public class UberColorPickerDialog extends Dialog {
 			float y = event.getY();
 
 			//Generate coordinates which are palette=local with the origin at the upper left of the main 2D palette
-			int y2 = (int) (pin(round(y - mPalettePosY), mPaletteDimPx));
+			int y2 = (int) pin(round(y - mPalettePosY), mPaletteDimPx);
 
 			//Generate coordinates which are palette-local with the origin at the center of the main 2D palette
 			float circlePinnedX = x - mPalettePosX - mPaletteCenterPx;
@@ -956,6 +956,7 @@ public class UberColorPickerDialog extends Dialog {
 							mFocusedControl = 1;
 						}
 					}
+					// fall through
 				case MotionEvent.ACTION_MOVE:
 					//NEW_METHOD_WORK_NEEDED_HERE
 					//To add a new method, replicate and extend the entries in this list,

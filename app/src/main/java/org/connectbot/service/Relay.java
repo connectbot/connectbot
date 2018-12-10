@@ -27,8 +27,8 @@ import java.nio.charset.CodingErrorAction;
 
 import org.apache.harmony.niochar.charset.additional.IBM437;
 import org.connectbot.transport.AbsTransport;
-import org.connectbot.util.EastAsianWidth;
 
+import android.text.AndroidCharacter;
 import android.util.Log;
 import de.mud.terminal.vt320;
 
@@ -65,14 +65,16 @@ public class Relay implements Runnable {
 	public void setCharset(String encoding) {
 		Log.d("ConnectBot.Relay", "changing charset to " + encoding);
 		Charset charset;
-		if (encoding.equals("CP437"))
+		if (encoding.equals("CP437")) {
 			charset = new IBM437("IBM437",
-					new String[] { "IBM437", "CP437" });
-		else
+					new String[] {"IBM437", "CP437"});
+		} else {
 			charset = Charset.forName(encoding);
+		}
 
-		if (charset == currentCharset || charset == null)
+		if (charset == null || charset.equals(currentCharset)) {
 			return;
+		}
 
 		CharsetDecoder newCd = charset.newDecoder();
 		newCd.onUnmappableCharacter(CodingErrorAction.REPLACE);
@@ -88,6 +90,7 @@ public class Relay implements Runnable {
 		return currentCharset;
 	}
 
+	@Override
 	public void run() {
 		byteBuffer = ByteBuffer.allocate(BUFFER_SIZE);
 		charBuffer = CharBuffer.allocate(BUFFER_SIZE);
@@ -104,13 +107,9 @@ public class Relay implements Runnable {
 		byteBuffer.limit(0);
 		int bytesToRead;
 		int offset;
-		int charWidth;
-
-		EastAsianWidth measurer = EastAsianWidth.getInstance();
 
 		try {
 			while (true) {
-				charWidth = bridge.charWidth;
 				bytesToRead = byteBuffer.capacity() - byteBuffer.limit();
 				offset = byteBuffer.arrayOffset() + byteBuffer.limit();
 				bytesRead = transport.read(byteArray, offset, bytesToRead);
@@ -131,7 +130,7 @@ public class Relay implements Runnable {
 
 					offset = charBuffer.position();
 
-					measurer.measure(charArray, 0, offset, wideAttribute, bridge.defaultPaint, charWidth);
+					AndroidCharacter.getEastAsianWidths(charArray, 0, offset, wideAttribute);
 					buffer.putString(charArray, wideAttribute, 0, charBuffer.position());
 					bridge.propagateConsoleText(charArray, charBuffer.position());
 					charBuffer.clear();

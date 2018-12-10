@@ -21,7 +21,7 @@ import org.connectbot.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.preference.DialogPreference;
+import androidx.preference.DialogPreference;
 import android.util.AttributeSet;
 
 /**
@@ -29,7 +29,7 @@ import android.util.AttributeSet;
  *
  */
 public class VolumePreference extends DialogPreference {
-	private int mVolume = (int) PreferenceConstants.DEFAULT_BELL_VOLUME * 100;
+	private int mVolume = (int) (PreferenceConstants.DEFAULT_BELL_VOLUME * 100);
 
 	public VolumePreference(Context context) {
 		this(context, null);

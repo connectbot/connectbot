@@ -128,8 +128,7 @@
   <plurals name="console_copy_done">
     <item quantity="one">Копирано %1$d бајта на клипборд</item>
     <item quantity="few">Копирано %1$d бајта на клипборд</item>
-    <item quantity="many">Копирано %1$d бајта на клипборд</item>
-    <item quantity="other"/>
+    <item quantity="other">Копирано %1$d бајта на клипборд</item>
   </plurals>
   <string name="console_copy_start">Додирните и превуците\nили користите дирекциони контролер\nда изаберете површину за копирање</string>
   <string name="console_menu_close">Затвори</string>

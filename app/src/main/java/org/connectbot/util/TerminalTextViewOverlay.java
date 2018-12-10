@@ -26,7 +26,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.v4.view.MotionEventCompat;
+import androidx.core.view.MotionEventCompat;
 import android.text.ClipboardManager;
 import android.view.ActionMode;
 import android.view.InputDevice;
@@ -47,7 +47,7 @@ import de.mud.terminal.vt320;
  * @author rhansby
  */
 @TargetApi(11)
-public class TerminalTextViewOverlay extends TextView {
+public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompatTextView {
 	public TerminalView terminalView; // ryan: this name sucks
 	private String currentSelection = "";
 	private ActionMode selectionActionMode;
@@ -71,7 +71,7 @@ public class TerminalTextViewOverlay extends TextView {
 	public void refreshTextFromBuffer() {
 		VDUBuffer vb = terminalView.bridge.getVDUBuffer();
 		int numRows = vb.getBufferSize();
-		int numCols = vb.getColumns() - 1;
+		int numCols = vb.getColumns();
 		oldBufferHeight = numRows;
 
 		StringBuilder buffer = new StringBuilder();

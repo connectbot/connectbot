@@ -1,21 +1,16 @@
 apply plugin: 'checkstyle'
 
 checkstyle {
-    toolVersion = '6.19'
+    toolVersion = '8.10'
+    configDir = rootProject.file('config/quality/checkstyle')
 }
 
 check.dependsOn 'checkstyle'
 
 task checkstyle(type: Checkstyle) {
-    configFile file("${project.rootDir}/config/quality/checkstyle/checkstyle.xml")
-    configProperties.checkstyleSuppressionsPath = file("${project.rootDir}/config/quality/checkstyle/suppressions.xml").absolutePath
-
     source 'src/main/java'
     include 'org/connectbot/**/*.java'
     exclude '**/gen/**'
-
-    def configProps = ['proj.module.dir': projectDir.absolutePath]
-    configProperties configProps
 
     classpath = files()
 }

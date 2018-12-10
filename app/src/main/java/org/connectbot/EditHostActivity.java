@@ -30,8 +30,8 @@ import android.content.ServiceConnection;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.IBinder;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -76,11 +76,13 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 		mPubkeyDb = PubkeyDatabase.get(this);
 
 		mTerminalConnection = new ServiceConnection() {
+			@Override
 			public void onServiceConnected(ComponentName className, IBinder service) {
 				TerminalManager bound = ((TerminalManager.TerminalBinder) service).getService();
 				mBridge = bound.getConnectedBridge(mHost);
 			}
 
+			@Override
 			public void onServiceDisconnected(ComponentName name) {
 				mBridge = null;
 			}
@@ -233,8 +235,8 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 	}
 
 	private void showDiscardDialog() {
-		android.support.v7.app.AlertDialog.Builder builder =
-				new android.support.v7.app.AlertDialog.Builder(this, R.style.AlertDialogTheme);
+		androidx.appcompat.app.AlertDialog.Builder builder =
+				new androidx.appcompat.app.AlertDialog.Builder(this, R.style.AlertDialogTheme);
 		builder.setMessage(R.string.discard_host_changes_message)
 				.setPositiveButton(R.string.discard_host_button, new DialogInterface.OnClickListener() {
 					@Override

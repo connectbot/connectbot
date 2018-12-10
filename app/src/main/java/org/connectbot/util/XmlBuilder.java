@@ -17,6 +17,8 @@
 
 package org.connectbot.util;
 
+import java.io.UnsupportedEncodingException;
+
 import com.trilead.ssh2.crypto.Base64;
 
 /**
@@ -50,8 +52,12 @@ public class XmlBuilder {
 				}
 			}
 
-			sb.append(String.format("<%s>%s</%s>", field,
-					binary ? new String(Base64.encode(input.getBytes())) : input, field));
+			try {
+				sb.append(String.format("<%s>%s</%s>", field,
+						binary ? new String(Base64.encode(input.getBytes("UTF-8"))) : input, field));
+			} catch (UnsupportedEncodingException e) {
+				throw new RuntimeException("UTF-8 unavailable");
+			}
 		} else if (data instanceof Integer) {
 			sb.append(String.format("<%s>%d</%s>", field, (Integer) data, field));
 		} else if (data instanceof Long) {
@@ -65,6 +71,7 @@ public class XmlBuilder {
 		return this;
 	}
 
+	@Override
 	public String toString() {
 		return sb.toString();
 	}

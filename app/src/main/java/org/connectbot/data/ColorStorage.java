@@ -21,11 +21,11 @@ package org.connectbot.data;
  * Created by kroot on 9/11/15.
  */
 public interface ColorStorage {
-	public int[] getColorsForScheme(int colorScheme);
+	int[] getColorsForScheme(int colorScheme);
 
-	public void setGlobalColor(int mCurrentColor, int value);
+	void setGlobalColor(int mCurrentColor, int value);
 
-	public int[] getDefaultColorsForScheme(int colorScheme);
+	int[] getDefaultColorsForScheme(int colorScheme);
 
-	public void setDefaultColorsForScheme(int mColorScheme, int mDefaultColor, int mDefaultColor1);
+	void setDefaultColorsForScheme(int mColorScheme, int mDefaultColor, int mDefaultColor1);
 }

@@ -22,5 +22,5 @@ package org.connectbot.service;
  * changed status (e.g., connected, disconnected, name changed, etc).
  */
 public interface OnHostStatusChangedListener {
-	public void onHostStatusChanged();
+	void onHostStatusChanged();
 }

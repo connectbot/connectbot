@@ -112,6 +112,7 @@ public class KeyEventUtil {
 		}
 		@TargetApi(12)
 		private static class HCMR1AndNewer extends GingerbreadAndNewer {
+			@Override
 			protected void appendForApi(StringBuilder d, int keyCode, KeyEvent event) {
 				super.appendForApi(d, keyCode, event);
 				d.append(", keyCodeToString=").append(KeyEvent.keyCodeToString(keyCode));

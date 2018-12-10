@@ -85,11 +85,7 @@ public class TransportFactory {
 
 	public static boolean canForwardPorts(String protocol) {
 		// TODO uh, make this have less knowledge about its children
-		if (SSH.getProtocolName().equals(protocol)) {
-			return true;
-		} else {
-			return false;
-		}
+		return SSH.getProtocolName().equals(protocol);
 	}
 
 	/**
@@ -117,7 +113,7 @@ public class TransportFactory {
 	public static HostBean findHost(HostStorage hostdb, Uri uri) {
 		AbsTransport transport = getTransport(uri.getScheme());
 
-		Map<String, String> selection = new HashMap<String, String>();
+		Map<String, String> selection = new HashMap<>();
 
 		transport.getSelectionArgs(uri, selection);
 		if (selection.isEmpty()) {

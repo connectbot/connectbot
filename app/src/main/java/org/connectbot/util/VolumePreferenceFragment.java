@@ -20,9 +20,9 @@ package org.connectbot.util;
 import org.connectbot.R;
 
 import android.os.Bundle;
-import android.support.v7.preference.DialogPreference;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceDialogFragmentCompat;
+import androidx.preference.DialogPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceDialogFragmentCompat;
 import android.view.View;
 import android.widget.SeekBar;
 
@@ -48,7 +48,7 @@ public class VolumePreferenceFragment extends PreferenceDialogFragmentCompat {
 	protected void onBindDialogView(View view) {
 		super.onBindDialogView(view);
 
-		mVolumeBar = (SeekBar) view.findViewById(R.id.volume_bar);
+		mVolumeBar = view.findViewById(R.id.volume_bar);
 
 		Integer volumeLevel = null;
 		DialogPreference preference = getPreference();

@@ -18,7 +18,6 @@
 package org.connectbot;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
 import android.content.ContentValues;
@@ -27,9 +26,9 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.PopupMenu;
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.widget.PopupMenu;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -191,12 +190,12 @@ public class HostEditorFragment extends Fragment {
 			}
 		});
 
-		mTransportText = (TextView) view.findViewById(R.id.protocol_text);
+		mTransportText = view.findViewById(R.id.protocol_text);
 
 		mQuickConnectContainer =
-				(TextInputLayout) view.findViewById(R.id.quickconnect_field_container);
+				view.findViewById(R.id.quickconnect_field_container);
 
-		mQuickConnectField = (EditText) view.findViewById(R.id.quickconnect_field);
+		mQuickConnectField = view.findViewById(R.id.quickconnect_field);
 		String oldQuickConnect = savedInstanceState == null ?
 				null : savedInstanceState.getString(ARG_QUICKCONNECT_STRING);
 		mQuickConnectField.setText(oldQuickConnect == null ? mHost.toString() : oldQuickConnect);
@@ -223,7 +222,7 @@ public class HostEditorFragment extends Fragment {
 			}
 		});
 
-		mExpandCollapseButton = (ImageButton) view.findViewById(R.id.expand_collapse_button);
+		mExpandCollapseButton = view.findViewById(R.id.expand_collapse_button);
 		mExpandCollapseButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -234,17 +233,17 @@ public class HostEditorFragment extends Fragment {
 		mUriPartsContainer = view.findViewById(R.id.uri_parts_container);
 
 		mUsernameContainer = view.findViewById(R.id.username_field_container);
-		mUsernameField = (EditText) view.findViewById(R.id.username_edit_text);
+		mUsernameField = view.findViewById(R.id.username_edit_text);
 		mUsernameField.setText(mHost.getUsername());
 		mUsernameField.addTextChangedListener(new HostTextFieldWatcher(HostDatabase.FIELD_HOST_USERNAME));
 
 		mHostnameContainer = view.findViewById(R.id.hostname_field_container);
-		mHostnameField = (EditText) view.findViewById(R.id.hostname_edit_text);
+		mHostnameField = view.findViewById(R.id.hostname_edit_text);
 		mHostnameField.setText(mHost.getHostname());
 		mHostnameField.addTextChangedListener(new HostTextFieldWatcher(HostDatabase.FIELD_HOST_HOSTNAME));
 
 		mPortContainer = view.findViewById(R.id.port_field_container);
-		mPortField = (EditText) view.findViewById(R.id.port_edit_text);
+		mPortField = view.findViewById(R.id.port_edit_text);
 		mPortField.setText(Integer.toString(mHost.getPort()));
 		mPortField.addTextChangedListener(new HostTextFieldWatcher(HostDatabase.FIELD_HOST_PORT));
 
@@ -252,7 +251,7 @@ public class HostEditorFragment extends Fragment {
 
 		setTransportType(mHost.getProtocol(), /* setDefaultPortInModel */ false);
 
-		mNicknameField = (EditText) view.findViewById(R.id.nickname_field);
+		mNicknameField = view.findViewById(R.id.nickname_field);
 		mNicknameField.setText(mHost.getNickname());
 		mNicknameField.addTextChangedListener(
 				new HostTextFieldWatcher(HostDatabase.FIELD_HOST_NICKNAME));
@@ -282,7 +281,7 @@ public class HostEditorFragment extends Fragment {
 			}
 		});
 
-		mColorText = (TextView) view.findViewById(R.id.color_text);
+		mColorText = view.findViewById(R.id.color_text);
 		for (int i = 0; i < mColorValues.length(); i++) {
 			if (mColorValues.getText(i).toString().equals(mHost.getColor())) {
 				mColorText.setText(mColorNames.getText(i));
@@ -290,7 +289,7 @@ public class HostEditorFragment extends Fragment {
 			}
 		}
 
-		mFontSizeText = (EditText) view.findViewById(R.id.font_size_text);
+		mFontSizeText = view.findViewById(R.id.font_size_text);
 		mFontSizeText.setText(Integer.toString(mHost.getFontSize()));
 		mFontSizeTextChangeListener = new HostTextFieldWatcher(HostDatabase.FIELD_HOST_FONTSIZE);
 		mFontSizeText.addTextChangedListener(mFontSizeTextChangeListener);
@@ -302,7 +301,7 @@ public class HostEditorFragment extends Fragment {
 			}
 		});
 
-		mFontSizeSeekBar = (SeekBar) view.findViewById(R.id.font_size_bar);
+		mFontSizeSeekBar = view.findViewById(R.id.font_size_bar);
 		mFontSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -331,7 +330,7 @@ public class HostEditorFragment extends Fragment {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
 						for (int i = 0; i < mPubkeyNames.size(); i++) {
-							if (mPubkeyNames.get(i).equals(item.getTitle())) {
+							if (mPubkeyNames.get(i).equals(item.getTitle().toString())) {
 								mHost.setPubkeyId(Long.parseLong(mPubkeyValues.get(i)));
 								mPubkeyText.setText(mPubkeyNames.get(i));
 								return true;
@@ -344,7 +343,7 @@ public class HostEditorFragment extends Fragment {
 			}
 		});
 
-		mPubkeyText = (TextView) view.findViewById(R.id.pubkey_text);
+		mPubkeyText = view.findViewById(R.id.pubkey_text);
 		for (int i = 0; i < mPubkeyValues.size(); i++) {
 			if (mHost.getPubkeyId() == Long.parseLong(mPubkeyValues.get(i))) {
 				mPubkeyText.setText(mPubkeyNames.get(i));
@@ -364,7 +363,7 @@ public class HostEditorFragment extends Fragment {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
 						for (int i = 0; i < mDelKeyNames.length(); i++) {
-							if (mDelKeyNames.getText(i).equals(item.getTitle())) {
+							if (mDelKeyNames.getText(i).toString().equals(item.getTitle().toString())) {
 								mHost.setDelKey(mDelKeyValues.getText(i).toString());
 								mDelKeyText.setText(mDelKeyNames.getText(i));
 								return true;
@@ -377,7 +376,7 @@ public class HostEditorFragment extends Fragment {
 			}
 		});
 
-		mDelKeyText = (TextView) view.findViewById(R.id.delkey_text);
+		mDelKeyText = view.findViewById(R.id.delkey_text);
 		for (int i = 0; i < mDelKeyValues.length(); i++) {
 			if (mDelKeyValues.getText(i).toString().equals(mHost.getDelKey())) {
 				mDelKeyText.setText(mDelKeyNames.getText(i));
@@ -397,7 +396,7 @@ public class HostEditorFragment extends Fragment {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
 						for (String displayName : mCharsetData.keySet()) {
-							if (displayName.equals(item.getTitle())) {
+							if (displayName.equals(item.getTitle().toString())) {
 								mHost.setEncoding(mCharsetData.get(displayName));
 								mEncodingText.setText(displayName);
 								return true;
@@ -412,9 +411,10 @@ public class HostEditorFragment extends Fragment {
 
 		// The encoding text is initialized in setCharsetData() because Charset data is not always
 		// available when this fragment is created.
-		mEncodingText = (TextView) view.findViewById(R.id.encoding_text);
+		mEncodingText = view.findViewById(R.id.encoding_text);
 
-		mUseSshAuthSwitch = (CheckableMenuItem) view.findViewById(R.id.use_ssh_auth_item);
+		mUseSshAuthSwitch = view.findViewById(R.id.use_ssh_auth_item);
+		mUseSshAuthSwitch.setChecked(!mHost.getUseAuthAgent().equals(HostDatabase.AUTHAGENT_NO));
 		mUseSshAuthSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -422,8 +422,9 @@ public class HostEditorFragment extends Fragment {
 			}
 		});
 
-		mUseSshConfirmationSwitch = (CheckableMenuItem) view.findViewById(R.id.ssh_auth_confirmation_item);
-		mUseSshAuthSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		mUseSshConfirmationSwitch = view.findViewById(R.id.ssh_auth_confirmation_item);
+		mUseSshConfirmationSwitch.setChecked(mHost.getUseAuthAgent().equals(HostDatabase.AUTHAGENT_CONFIRM));
+		mUseSshConfirmationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				processSshAuthChange();
@@ -432,7 +433,7 @@ public class HostEditorFragment extends Fragment {
 
 		processSshAuthChange();
 
-		mCompressionSwitch = (CheckableMenuItem) view.findViewById(R.id.compression_item);
+		mCompressionSwitch = view.findViewById(R.id.compression_item);
 		mCompressionSwitch.setChecked(mHost.getCompression());
 		mCompressionSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
@@ -442,7 +443,7 @@ public class HostEditorFragment extends Fragment {
 			}
 		});
 
-		mStartShellSwitch = (CheckableMenuItem) view.findViewById(R.id.start_shell_item);
+		mStartShellSwitch = view.findViewById(R.id.start_shell_item);
 		mStartShellSwitch.setChecked(mHost.getWantSession());
 		mStartShellSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
@@ -452,7 +453,7 @@ public class HostEditorFragment extends Fragment {
 			}
 		});
 
-		mStayConnectedSwitch = (CheckableMenuItem) view.findViewById(R.id.stay_connected_item);
+		mStayConnectedSwitch = view.findViewById(R.id.stay_connected_item);
 		mStayConnectedSwitch.setChecked(mHost.getStayConnected());
 		mStayConnectedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
@@ -462,7 +463,7 @@ public class HostEditorFragment extends Fragment {
 			}
 		});
 
-		mCloseOnDisconnectSwitch = (CheckableMenuItem) view.findViewById(R.id.close_on_disconnect_item);
+		mCloseOnDisconnectSwitch = view.findViewById(R.id.close_on_disconnect_item);
 		mCloseOnDisconnectSwitch.setChecked(mHost.getQuickDisconnect());
 		mCloseOnDisconnectSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
@@ -472,7 +473,7 @@ public class HostEditorFragment extends Fragment {
 			}
 		});
 
-		mPostLoginAutomationField = (EditText) view.findViewById(R.id.post_login_automation_field);
+		mPostLoginAutomationField = view.findViewById(R.id.post_login_automation_field);
 		mPostLoginAutomationField.setText(mHost.getPostLogin());
 		mPostLoginAutomationField.addTextChangedListener(
 				new HostTextFieldWatcher(HostDatabase.FIELD_HOST_POSTLOGIN));
@@ -614,9 +615,7 @@ public class HostEditorFragment extends Fragment {
 		mCharsetData = data;
 
 		if (mEncodingText != null) {
-			Iterator it = data.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, String> pair = (Map.Entry) it.next();
+			for (Map.Entry<String, String> pair : data.entrySet()) {
 				if (pair.getValue().equals(mHost.getEncoding())) {
 					mEncodingText.setText(pair.getKey());
 					return;
@@ -675,7 +674,7 @@ public class HostEditorFragment extends Fragment {
 	 */
 	private void handleHostChange() {
 		String quickConnectString = mQuickConnectField.getText().toString();
-		if (quickConnectString == null || quickConnectString.equals("")) {
+		if (quickConnectString.isEmpty()) {
 			// Invalid protocol and/or string, so don't do anything.
 			mListener.onHostInvalidated();
 			return;

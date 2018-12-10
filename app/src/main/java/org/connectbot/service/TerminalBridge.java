@@ -19,7 +19,7 @@ package org.connectbot.service;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,6 +41,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Typeface;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.Settings;
 import android.text.ClipboardManager;
 import android.util.Log;
 import de.mud.terminal.VDUBuffer;
@@ -63,7 +66,8 @@ public class TerminalBridge implements VDUDisplay {
 
 	private final static int DEFAULT_FONT_SIZE_DP = 10;
 	private final static int FONT_SIZE_STEP = 2;
-	private final float displayDensity;
+	private float displayDensity;
+	private float systemFontScale;
 
 	public int[] color;
 
@@ -148,9 +152,9 @@ public class TerminalBridge implements VDUDisplay {
 		selectionArea = new SelectionArea();
 		scrollback = 1;
 
-		localOutput = new LinkedList<String>();
+		localOutput = new ArrayList<>();
 
-		fontSizeChangedListeners = new LinkedList<FontSizeChangedListener>();
+		fontSizeChangedListeners = new ArrayList<>();
 
 		transport = null;
 
@@ -162,14 +166,12 @@ public class TerminalBridge implements VDUDisplay {
 	 * launch thread to start SSH connection and handle any hostkey verification
 	 * and password authentication.
 	 */
-	public TerminalBridge(final TerminalManager manager, final HostBean host) throws IOException {
+	public TerminalBridge(final TerminalManager manager, final HostBean host) {
 		this.manager = manager;
 		this.host = host;
 
 		emulation = manager.getEmulation();
 		scrollback = manager.getScrollback();
-
-		this.displayDensity = manager.getResources().getDisplayMetrics().density;
 
 		// create prompt helper to relay password and hostkey requests up to gui
 		promptHelper = new PromptHelper(this);
@@ -180,9 +182,11 @@ public class TerminalBridge implements VDUDisplay {
 		defaultPaint.setTypeface(Typeface.MONOSPACE);
 		defaultPaint.setFakeBoldText(true); // more readable?
 
-		localOutput = new LinkedList<String>();
+		refreshOverlayFontSize();
 
-		fontSizeChangedListeners = new LinkedList<FontSizeChangedListener>();
+		localOutput = new ArrayList<>();
+
+		fontSizeChangedListeners = new ArrayList<>();
 
 		int hostFontSizeDp = host.getFontSize();
 		if (hostFontSizeDp <= 0) {
@@ -282,6 +286,7 @@ public class TerminalBridge implements VDUDisplay {
 		outputLine(manager.res.getString(R.string.terminal_connecting, host.getHostname(), host.getPort(), host.getProtocol()));
 
 		Thread connectionThread = new Thread(new Runnable() {
+			@Override
 			public void run() {
 				transport.connect();
 			}
@@ -320,7 +325,7 @@ public class TerminalBridge implements VDUDisplay {
 		}
 
 		synchronized (localOutput) {
-			for (String line : output.split("\n")) {
+			for (String line : output.split("\n", -1)) {
 				if (line.length() > 0 && line.charAt(line.length() - 1) == '\r') {
 					line = line.substring(0, line.length() - 1);
 				}
@@ -374,6 +379,7 @@ public class TerminalBridge implements VDUDisplay {
 			return;
 
 		Thread injectStringThread = new Thread(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					transport.write(string.getBytes(host.getEncoding()));
@@ -454,6 +460,7 @@ public class TerminalBridge implements VDUDisplay {
 		// disconnection request hangs if we havent really connected to a host yet
 		// temporary fix is to just spawn disconnection into a thread
 		Thread disconnectThread = new Thread(new Runnable() {
+			@Override
 			public void run() {
 				if (transport != null && transport.isConnected())
 					transport.close();
@@ -475,10 +482,11 @@ public class TerminalBridge implements VDUDisplay {
 				return;
 			}
 			Thread disconnectPromptThread = new Thread(new Runnable() {
+				@Override
 				public void run() {
 					Boolean result = promptHelper.requestBooleanPrompt(null,
 							manager.res.getString(R.string.prompt_host_disconnected));
-					if (result == null || result.booleanValue()) {
+					if (result == null || result) {
 						awaitingClose = true;
 						triggerDisconnectListener();
 					}
@@ -496,16 +504,12 @@ public class TerminalBridge implements VDUDisplay {
 	private void triggerDisconnectListener() {
 		if (disconnectListener != null) {
 			// The disconnect listener should be run on the main thread if possible.
-			if (parent != null) {
-				parent.post(new Runnable() {
-					@Override
-					public void run() {
-						disconnectListener.onDisconnected(TerminalBridge.this);
-					}
-				});
-			} else {
-				disconnectListener.onDisconnected(TerminalBridge.this);
-			}
+			new Handler(Looper.getMainLooper()).post(new Runnable() {
+				@Override
+				public void run() {
+					disconnectListener.onDisconnected(TerminalBridge.this);
+				}
+			});
 		}
 	}
 
@@ -519,12 +523,12 @@ public class TerminalBridge implements VDUDisplay {
 	 *
 	 * @param sizeDp Size of font in dp
 	 */
-	private final void setFontSize(float sizeDp) {
+	private void setFontSize(float sizeDp) {
 		if (sizeDp <= 0.0) {
 			return;
 		}
 
-		final int fontSizePx = (int) (sizeDp * this.displayDensity + 0.5f);
+		final int fontSizePx = (int) (sizeDp * displayDensity *	systemFontScale + 0.5f);
 
 		defaultPaint.setTextSize(fontSizePx);
 		fontSizeDp = sizeDp;
@@ -614,6 +618,7 @@ public class TerminalBridge implements VDUDisplay {
 
 			columns = newColumns;
 			rows = newRows;
+			refreshOverlayFontSize();
 		}
 
 		// reallocate new bitmap if needed
@@ -690,10 +695,12 @@ public class TerminalBridge implements VDUDisplay {
 		bitmap = null;
 	}
 
+	@Override
 	public void setVDUBuffer(VDUBuffer buffer) {
 		this.buffer = buffer;
 	}
 
+	@Override
 	public VDUBuffer getVDUBuffer() {
 		return buffer;
 	}
@@ -773,7 +780,7 @@ public class TerminalBridge implements VDUDisplay {
 					}
 
 					// Save the current clip region
-					canvas.save(Canvas.CLIP_SAVE_FLAG);
+					canvas.save();
 
 					// clear this dirty area with background color
 					defaultPaint.setColor(bg);
@@ -813,12 +820,14 @@ public class TerminalBridge implements VDUDisplay {
 		fullRedraw = false;
 	}
 
+	@Override
 	public void redraw() {
 		if (parent != null)
 			parent.postInvalidate();
 	}
 
 	// We don't have a scroll bar.
+	@Override
 	public void updateScrollBar() {
 	}
 
@@ -869,12 +878,12 @@ public class TerminalBridge implements VDUDisplay {
 
 	private int fontSizeCompare(float sizeDp, int cols, int rows, int width, int height) {
 		// read new metrics to get exact pixel dimensions
-		defaultPaint.setTextSize((int) (sizeDp * this.displayDensity + 0.5f));
+		defaultPaint.setTextSize((int) (sizeDp * displayDensity * systemFontScale + 0.5f));
 		FontMetrics fm = defaultPaint.getFontMetrics();
 
 		float[] widths = new float[1];
 		defaultPaint.getTextWidths("X", widths);
-		int termWidth = (int) widths[0] * cols;
+		int termWidth = ((int) widths[0]) * cols;
 		int termHeight = (int) Math.ceil(fm.descent - fm.top) * rows;
 
 		Log.d("fontsize", String.format("font size %fdp resulted in %d x %d", sizeDp, termWidth, termHeight));
@@ -887,6 +896,18 @@ public class TerminalBridge implements VDUDisplay {
 			return 0;
 
 		return -1;
+	}
+
+	void refreshOverlayFontSize() {
+		float newDensity = manager.getResources().getDisplayMetrics().density;
+		float newFontScale = Settings.System.getFloat(manager.getContentResolver(),
+				Settings.System.FONT_SCALE, 1.0f);
+		if (newDensity != displayDensity || newFontScale != systemFontScale) {
+			displayDensity = newDensity;
+			systemFontScale = newFontScale;
+			defaultPaint.setTextSize((int) (fontSizeDp * displayDensity * systemFontScale + 0.5f));
+			setFontSize(fontSizeDp);
+		}
 	}
 
 	/**
@@ -968,12 +989,14 @@ public class TerminalBridge implements VDUDisplay {
 	/* (non-Javadoc)
 	 * @see de.mud.terminal.VDUDisplay#setColor(byte, byte, byte, byte)
 	 */
+	@Override
 	public void setColor(int index, int red, int green, int blue) {
 		// Don't allow the system colors to be overwritten for now. May violate specs.
 		if (index < color.length && index >= 16)
 			color[index] = 0xff000000 | red << 16 | green << 8 | blue;
 	}
 
+	@Override
 	public final void resetColors() {
 		int[] defaults = manager.colordb.getDefaultColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
 		defaultFg = defaults[0];
@@ -1020,7 +1043,7 @@ public class TerminalBridge implements VDUDisplay {
 	 * @return
 	 */
 	public List<String> scanForURLs() {
-		List<String> urls = new LinkedList<String>();
+		List<String> urls = new ArrayList<>();
 
 		char[] visibleBuffer = new char[buffer.height * buffer.width];
 		for (int l = 0; l < buffer.height; l++)

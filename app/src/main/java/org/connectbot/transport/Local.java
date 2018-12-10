@@ -31,7 +31,7 @@ import com.google.ase.Exec;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 import android.util.Log;
 
 /**
@@ -95,6 +95,7 @@ public class Local extends AbsTransport {
 
 		shellPid = pids[0];
 		Runnable exitWatcher = new Runnable() {
+			@Override
 			public void run() {
 				Exec.waitFor(shellPid);
 

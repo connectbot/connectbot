@@ -1,13 +1,8 @@
 buildscript {
-    repositories {
-        jcenter()
-    }
-
     dependencies {
-        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.6.3'
-        classpath 'com.android.tools.build:gradle:2.3.0'
-        classpath 'com.github.gfx.ribbonizer:plugin:0.5.0'
-        classpath 'com.trickyandroid:jacoco-everywhere:0.2.1'
+        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.github.gfx.ribbonizer:ribbonizer-plugin:2.1.0'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.3'
         if (rootProject.hasProperty('jacocoVersion')) {
             classpath "org.jacoco:org.jacoco.core:${rootProject.jacocoVersion}"
         }
@@ -15,24 +10,28 @@ buildscript {
 }
 
 plugins {
+    id 'com.github.ben-manes.versions' version '0.20.0'
     id 'info.vividcode.android.sdk-manager' version '0.9.0'
+    id 'net.ltgt.errorprone' version '0.6'
+    id 'com.gladed.androidgitversion' version '0.4.5'
+    id 'com.github.kt3k.coveralls' version '2.8.2'
+    id 'com.github.johnrengelman.processes' version '0.5.0'
 }
 
 ext {
-    supportLibraryVersion = '25.3.0'
-    testRunnerVersion = '0.5'
-    espressoVersion = '2.2.2'
+    supportLibraryVersion = '1.0.0'
+    testRunnerVersion = '1.1.0'
+    espressoVersion = '3.1.0'
 }
 
-apply plugin: 'info.vividcode.android.sdk-manager'
 apply plugin: 'com.android.application'
-apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'com.github.gfx.ribbonizer'
-apply plugin: 'jacoco-everywhere'
+apply plugin: 'jacoco-android'
 apply from: '../config/quality.gradle'
-apply from: '../config/translations.gradle'
 
 repositories {
+    google()
+    jcenter()
     maven {
         url 'https://oss.jfrog.org/artifactory/oss-snapshot-local/'
     }
@@ -43,9 +42,13 @@ def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 coveralls.jacocoReportPath = 'build/reports/coverage/google/debug/report.xml'
 
+androidGitVersion {
+    prefix = "v"
+    codeFormat = 'MMNNPPBBB'
+}
+
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 28
 
     dexOptions {
         // Skip pre-dexing when running on a CI or when disabled via -Dpre-dex=false
@@ -54,20 +57,25 @@ android {
 
     defaultConfig {
         applicationId "org.connectbot"
-        versionName "1.9.2"
-        versionCode 19200
+        versionName androidGitVersion.name()
+        versionCode androidGitVersion.code()
 
-        minSdkVersion 9
-        targetSdkVersion 23
+        minSdkVersion 14
+        targetSdkVersion 27
 
         vectorDrawables.useSupportLibrary = true
 
         ndk {
-            abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'mips'
+            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
         }
 
         testApplicationId "org.connectbot.tests"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // The following argument makes the Android Test Orchestrator run its
+        // "pm clear" command after each test invocation. This command ensures
+        // that the app's state is completely cleared between tests.
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
     signingConfigs {
@@ -81,32 +89,13 @@ android {
         }
     }
 
-    dependencies {
-        compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
-        compile "com.android.support:support-v4:$supportLibraryVersion"
-        compile "com.android.support:appcompat-v7:$supportLibraryVersion"
-        compile "com.takisoft.fix:preference-v7:$supportLibraryVersion.0"
-        compile "com.android.support:design:$supportLibraryVersion"
-
-        androidTestCompile("com.android.support.test:runner:$testRunnerVersion") {
-            exclude module: "support-annotations"
-        }
-        androidTestCompile("com.android.support.test:rules:$testRunnerVersion") {
-            exclude module: "support-annotations"
-        }
-        androidTestCompile("com.android.support.test.espresso:espresso-core:$espressoVersion") {
-            exclude module: "support-annotations"
-        }
-        androidTestCompile("com.android.support.test.espresso:espresso-intents:$espressoVersion") {
-            exclude module: "support-annotations"
-        }
-        androidTestCompile("com.android.support.test.espresso:espresso-contrib:$espressoVersion") {
-            exclude group: 'com.android.support'
-        }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
-
     buildTypes {
         release {
+            shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg'
 
@@ -146,6 +135,16 @@ android {
         }
     }
 
+    testOptions {
+        // temporarily disable the orchestrator as this breaks coverage: https://issuetracker.google.com/issues/72758547
+        //execution 'ANDROID_TEST_ORCHESTRATOR'
+        animationsDisabled true
+
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
     lintOptions {
         abortOnError false
         lintConfig file('lint.xml')
@@ -154,52 +153,120 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'LICENSE.txt'
+        exclude '**/*.gwt.xml'
     }
+
     externalNativeBuild {
         cmake {
             path 'CMakeLists.txt'
+        }
+    }
+
+    jacoco {
+        if (rootProject.hasProperty('jacocoVersion')) {
+            version "${rootProject.jacocoVersion}"
+        }
+    }
+}
+
+import net.ltgt.gradle.errorprone.CheckSeverity
+
+tasks.withType(JavaCompile) {
+    options.errorprone {
+        check("ClassCanBeStatic", CheckSeverity.OFF)
+        check("ClassNewInstance", CheckSeverity.OFF)
+        check("DefaultCharset", CheckSeverity.OFF)
+        check("SynchronizeOnNonFinalField", CheckSeverity.OFF)
+        excludedPaths = '.*/app/src/main/java/de/mud/.*|' +
+                        '.*/app/src/main/java/org/apache/.*|' +
+                        '.*/app/src/main/java/org/keyczar/.*'
+    }
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+
+/*
+ * This works around a deficiency in ddmlib's 
+ * com/android/ddmlib/AndroidDebugBridge.java where it doesn't support anything
+ * other than 127.0.0.1 for the host of ADB. This allows us to run tests
+ * in a Docker container but forward to a real device.
+ */
+import com.github.jengelman.gradle.plugins.processes.tasks.Fork
+task startAdbForwarding(type: Fork) {
+    onlyIf { System.getenv("ANDROID_ADB_SERVER_ADDRESS") != null }
+
+    def androidAdbServerAddress = System.getenv("ANDROID_ADB_SERVER_ADDRESS")
+    commandLine 'socat', 'TCP-LISTEN:5037,reuseaddr,fork', "TCP:${androidAdbServerAddress}:5037"
+}
+
+task stopAdbForwarding {
+    onlyIf { System.getenv("ANDROID_ADB_SERVER_ADDRESS") != null }
+    doLast {
+        startAdbForwarding.processHandle.abort()
+    }
+}
+
+afterEvaluate {
+    tasks.all { t ->
+        if (t.name.startsWith("connected") && t.name.endsWith("AndroidTest")) {
+            t.dependsOn(startAdbForwarding)
+            t.finalizedBy(stopAdbForwarding)
+        }
+    }
+}
+
+// Do not want any release candidates for updates.
+dependencyUpdates {
+    revision = "release"
+    checkForGradleUpdate = false
+    outputFormatter = "json"
+
+    // Android apparently marks their "alpha" as "release" so we have to reject them.
+    resolutionStrategy {
+        componentSelection { rules ->
+            rules.all { ComponentSelection selection ->
+                boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'preview'].any { qualifier ->
+                    selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+                }
+                if (rejected) {
+                    selection.reject('Release candidate')
+                }
+            }
         }
     }
 }
 
 // Dependencies must be below the android block to allow productFlavor specific deps.
 dependencies {
-    compile 'org.connectbot:sshlib:2.2.5-SNAPSHOT'
-    googleCompile 'com.google.android.gms:play-services-base:10.0.1'
-    ossCompile 'org.conscrypt:conscrypt-android:1.0.0.RC2'
+    implementation 'org.connectbot:sshlib:2.2.9'
+    googleImplementation 'com.google.android.gms:play-services-base:16.0.1'
+    ossImplementation 'org.conscrypt:conscrypt-android:1.4.1'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.19'
-    testCompile 'org.assertj:assertj-core:1.7.0'
-    testCompile('org.robolectric:robolectric:3.2.2') {
-        exclude group: 'commons-logging', module: 'commons-logging'
-        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
-    }
+    implementation "androidx.recyclerview:recyclerview:$supportLibraryVersion"
+    implementation "androidx.legacy:legacy-support-v4:$supportLibraryVersion"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation "androidx.preference:preference:$supportLibraryVersion"
+    implementation "com.takisoft.preferencex:preferencex:$supportLibraryVersion"
+    implementation "com.google.android.material:material:$supportLibraryVersion"
+
+    androidTestUtil "androidx.test:orchestrator:$testRunnerVersion"
+    androidTestImplementation "androidx.test:core:$supportLibraryVersion"
+    androidTestImplementation "androidx.test:rules:$testRunnerVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    androidTestImplementation "androidx.test.ext:junit:$supportLibraryVersion"
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation "androidx.test:core:$supportLibraryVersion"
+    testImplementation "androidx.test.ext:junit:$supportLibraryVersion"
+    testImplementation 'org.mockito:mockito-core:2.23.0'
+    testImplementation 'org.assertj:assertj-core:3.11.1'
+    testImplementation 'org.robolectric:robolectric:4.0.2'
+
+    errorprone "com.google.errorprone:error_prone_core:2.3.2"
+    errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"
 }
 
-def getGitDescription = { ->
-    try {
-        def stdout = new ByteArrayOutputStream()
-        exec {
-            commandLine 'git', 'describe', '--dirty'
-            standardOutput = stdout
-        }
-        return stdout.toString().trim()
-    } catch (ignored) {
-        return null;
-    }
-}
-
-// Insert the build number into strings.xml
-android.applicationVariants.all { variant ->
-    variant.mergeResources.doLast{
-        ext.env = System.getenv()
-        def buildNumber = getGitDescription()
-        if (buildNumber != null) {
-            File valuesFile = file("${buildDir}/intermediates/res/merged/${variant.dirName}/values/values.xml")
-            String content = valuesFile.getText('UTF-8')
-            content = content.replaceAll(/\(working copy\)/, buildNumber)
-            valuesFile.write(content, 'UTF-8')
-        }
-    }
-}

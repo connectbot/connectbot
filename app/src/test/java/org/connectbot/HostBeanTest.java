@@ -24,6 +24,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -34,8 +36,7 @@ import static org.connectbot.mock.BeanAssertions.assertMeetsHashCodeContract;
 /**
  * @author Kenny Root
  */
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@RunWith(AndroidJUnit4.class)
 public class HostBeanTest {
 	private static final String[] FIELDS = { "nickname", "username",
 			"hostname", "port" };

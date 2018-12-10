@@ -75,7 +75,7 @@
 			tools:ignore="UnusedAttribute"
 			>
 
-			<android.support.design.widget.TextInputLayout
+			<com.google.android.material.textfield.TextInputLayout
 				android:id="@+id/quickconnect_field_container"
 				android:layout_width="0dp"
 				android:layout_weight="1"
@@ -84,7 +84,7 @@
 				android:labelFor="@+id/quickconnect_field"
 				>
 
-				<android.support.design.widget.TextInputEditText
+				<com.google.android.material.textfield.TextInputEditText
 					android:id="@id/quickconnect_field"
 					android:layout_width="match_parent"
 					android:layout_weight="1"
@@ -93,7 +93,7 @@
 					android:inputType="textNoSuggestions"
 					/>
 
-			</android.support.design.widget.TextInputLayout>
+			</com.google.android.material.textfield.TextInputLayout>
 
 			<ImageButton
 				android:id="@+id/expand_collapse_button"
@@ -122,7 +122,7 @@
 			tools:ignore="UnusedAttribute"
 			>
 
-			<android.support.design.widget.TextInputLayout
+			<com.google.android.material.textfield.TextInputLayout
 				android:id="@+id/username_field_container"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
 				android:labelFor="@+id/username_edit_text"
 				>
 
-				<android.support.design.widget.TextInputEditText
+				<com.google.android.material.textfield.TextInputEditText
 					android:id="@id/username_edit_text"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -139,9 +139,9 @@
 					android:inputType="textNoSuggestions"
 					/>
 
-			</android.support.design.widget.TextInputLayout>
+			</com.google.android.material.textfield.TextInputLayout>
 
-			<android.support.design.widget.TextInputLayout
+			<com.google.android.material.textfield.TextInputLayout
 				android:id="@+id/hostname_field_container"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
 				android:labelFor="@+id/hostname_edit_text"
 				>
 
-				<android.support.design.widget.TextInputEditText
+				<com.google.android.material.textfield.TextInputEditText
 					android:id="@id/hostname_edit_text"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -158,9 +158,9 @@
 					android:inputType="textNoSuggestions"
 					/>
 
-			</android.support.design.widget.TextInputLayout>
+			</com.google.android.material.textfield.TextInputLayout>
 
-			<android.support.design.widget.TextInputLayout
+			<com.google.android.material.textfield.TextInputLayout
 				android:id="@+id/port_field_container"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -168,7 +168,7 @@
 				android:labelFor="@+id/port_edit_text"
 				>
 
-				<android.support.design.widget.TextInputEditText
+				<com.google.android.material.textfield.TextInputEditText
 					android:id="@id/port_edit_text"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -177,7 +177,7 @@
 					android:maxLines="1"
 					/>
 
-			</android.support.design.widget.TextInputLayout>
+			</com.google.android.material.textfield.TextInputLayout>
 
 		</LinearLayout>
 
@@ -195,7 +195,7 @@
 				style="@style/ListItemIcon"
 				/>
 
-			<android.support.design.widget.TextInputLayout
+			<com.google.android.material.textfield.TextInputLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginEnd="16dp"
@@ -208,7 +208,7 @@
 				tools:ignore="UnusedAttribute"
 				>
 
-				<android.support.design.widget.TextInputEditText
+				<com.google.android.material.textfield.TextInputEditText
 					android:id="@id/nickname_field"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -217,7 +217,7 @@
 					android:hint="@string/hostpref_nickname_title"
 					/>
 
-			</android.support.design.widget.TextInputLayout>
+			</com.google.android.material.textfield.TextInputLayout>
 
 		</RelativeLayout>
 

@@ -28,7 +28,7 @@
 
 	<!-- paddingBottom is calculated with FloatingActionButton's height (56dp) and
 	     margins (16dp): 56dp + (2 x 16dp) = 88dp. -->
-	<android.support.v7.widget.RecyclerView
+	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/list"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
@@ -45,18 +45,25 @@
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		/>
 
-	<android.support.design.widget.FloatingActionButton
-		android:id="@+id/add_host_button"
-		android:layout_width="wrap_content"
+	<FrameLayout
+		android:id="@+id/add_host_button_container"
 		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentEnd="true"
-		android:layout_alignParentRight="true"
-		android:layout_margin="16dp"
-		android:src="@drawable/ic_add"
-		android:tint="@android:color/white"
-		android:contentDescription="@string/hostpref_add_host"
-		app:backgroundTint="@color/accent"
-		app:rippleColor="@color/dark_accent" />
+		android:layout_alignParentRight="true">
+
+		<com.google.android.material.floatingactionbutton.FloatingActionButton
+			android:id="@+id/add_host_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_margin="16dp"
+			android:src="@drawable/ic_add"
+			android:tint="@android:color/white"
+			android:contentDescription="@string/hostpref_add_host"
+			app:backgroundTint="@color/accent"
+			app:rippleColor="@color/dark_accent" />
+
+	</FrameLayout>
 
 </RelativeLayout>

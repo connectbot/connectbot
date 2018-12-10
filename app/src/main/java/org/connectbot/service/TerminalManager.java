@@ -23,7 +23,6 @@ import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -70,21 +69,19 @@ import android.util.Log;
 public class TerminalManager extends Service implements BridgeDisconnectedListener, OnSharedPreferenceChangeListener, ProviderLoaderListener {
 	public final static String TAG = "CB.TerminalManager";
 
-	private ArrayList<TerminalBridge> bridges = new ArrayList<TerminalBridge>();
-	public Map<HostBean, WeakReference<TerminalBridge>> mHostBridgeMap =
-		new HashMap<HostBean, WeakReference<TerminalBridge>>();
-	public Map<String, WeakReference<TerminalBridge>> mNicknameBridgeMap =
-		new HashMap<String, WeakReference<TerminalBridge>>();
+	private ArrayList<TerminalBridge> bridges = new ArrayList<>();
+	public Map<HostBean, WeakReference<TerminalBridge>> mHostBridgeMap = new HashMap<>();
+	public Map<String, WeakReference<TerminalBridge>> mNicknameBridgeMap = new HashMap<>();
 
 	public TerminalBridge defaultBridge = null;
 
-	public List<HostBean> disconnected = new LinkedList<HostBean>();
+	public List<HostBean> disconnected = new ArrayList<>();
 
 	public BridgeDisconnectedListener disconnectListener = null;
 
 	private final ArrayList<OnHostStatusChangedListener> hostStatusChangedListeners = new ArrayList<>();
 
-	public Map<String, KeyHolder> loadedKeypairs = new HashMap<String, KeyHolder>();
+	public Map<String, KeyHolder> loadedKeypairs = new HashMap<>();
 
 	public Resources res;
 
@@ -115,8 +112,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	private boolean savingKeys;
 
-	protected List<WeakReference<TerminalBridge>> mPendingReconnect
-			= new LinkedList<WeakReference<TerminalBridge>>();
+	protected List<WeakReference<TerminalBridge>> mPendingReconnect = new ArrayList<>();
 
 	public boolean hardKeyboardHidden;
 
@@ -228,7 +224,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		synchronized (bridges) {
 			bridges.add(bridge);
-			WeakReference<TerminalBridge> wr = new WeakReference<TerminalBridge>(bridge);
+			WeakReference<TerminalBridge> wr = new WeakReference<>(bridge);
 			mHostBridgeMap.put(bridge.host, wr);
 			mNicknameBridgeMap.put(bridge.host.getNickname(), wr);
 		}
@@ -323,6 +319,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	/**
 	 * Called by child bridge when somehow it's been disconnected.
 	 */
+	@Override
 	public void onDisconnected(TerminalBridge bridge) {
 		boolean shouldHideRunningNotification = false;
 		Log.d(TAG, "Bridge Disconnected. Removing it.");
@@ -614,6 +611,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	/* (non-Javadoc)
 	 * @see android.content.SharedPreferences.OnSharedPreferenceChangeListener#onSharedPreferenceChanged(android.content.SharedPreferences, java.lang.String)
 	 */
+	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		if (PreferenceConstants.BELL.equals(key)) {
@@ -700,7 +698,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 */
 	public void requestReconnect(TerminalBridge bridge) {
 		synchronized (mPendingReconnect) {
-			mPendingReconnect.add(new WeakReference<TerminalBridge>(bridge));
+			mPendingReconnect.add(new WeakReference<>(bridge));
 			if (!bridge.isUsingNetwork() ||
 					connectivityManager.isConnected()) {
 				reconnectPending();

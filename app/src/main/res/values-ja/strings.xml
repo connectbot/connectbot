@@ -87,6 +87,8 @@
   <string name="pref_emulation_summary">PTYで使う端末エミュレーションモード</string>
   <string name="pref_scrollback_title">スクロールサイズ</string>
   <string name="pref_scrollback_summary">メモリに保持するスクロールバッファのサイズ</string>
+  <string name="pref_backupkeys_title">公開鍵をバックアップ</string>
+  <string name="pref_backupkeys_summary">Android のバックアップの仕組みを使用して秘密鍵のバックアップを保存します</string>
   <string name="pref_ui_category">ユーザーインターフェース</string>
   <string name="pref_rotation_title">画面の向き</string>
   <string name="pref_rotation_summary">キーボードのポップイン/アウト時の向きの変更</string>
@@ -238,6 +240,7 @@
   <string name="image_description_toggle_control_character">コントロール文字を切り替えます。</string>
   <string name="image_description_send_escape_character">エスケープ文字を送信します。</string>
   <string name="image_description_send_tab_character">Tabキーを送信します。</string>
+  <string name="image_description_hide_keyboard">キーボードを非表示。</string>
   <string name="image_description_show_keyboard">キーボードを表示します。</string>
   <string name="image_description_up">上矢印</string>
   <string name="image_description_down">下矢印</string>

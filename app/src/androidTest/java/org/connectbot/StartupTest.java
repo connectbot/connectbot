@@ -11,43 +11,46 @@ import org.junit.runner.RunWith;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
-import android.support.annotation.ColorRes;
-import android.support.annotation.StringRes;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.UiController;
-import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.action.CloseKeyboardAction;
-import android.support.test.espresso.intent.Intents;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.annotation.ColorRes;
+import androidx.annotation.StringRes;
+import androidx.test.core.app.ApplicationProvider;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.action.CloseKeyboardAction;
+import androidx.test.espresso.intent.Intents;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
 import android.view.View;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.longClick;
-import static android.support.test.espresso.action.ViewActions.pressBack;
-import static android.support.test.espresso.action.ViewActions.swipeDown;
-import static android.support.test.espresso.action.ViewActions.swipeUp;
-import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnHolderItem;
-import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
-import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.longClick;
+import static androidx.test.espresso.action.ViewActions.pressBack;
+import static androidx.test.espresso.action.ViewActions.swipeDown;
+import static androidx.test.espresso.action.ViewActions.swipeUp;
+import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnHolderItem;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.connectbot.ConnectbotMatchers.hasHolderItem;
 import static org.connectbot.ConnectbotMatchers.withColoredText;
 import static org.connectbot.ConnectbotMatchers.withConnectedHost;
 import static org.connectbot.ConnectbotMatchers.withDisconnectedHost;
 import static org.connectbot.ConnectbotMatchers.withHostNickname;
 import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assume.assumeThat;
 
 @RunWith(AndroidJUnit4.class)
 public class StartupTest {
@@ -62,7 +65,7 @@ public class StartupTest {
 
 	@Before
 	public void makeDatabasePristine() {
-		Context testContext = InstrumentationRegistry.getTargetContext();
+		Context testContext = ApplicationProvider.getApplicationContext();
 		HostDatabase.resetInMemoryInstance(testContext);
 
 		mActivityRule.launchActivity(new Intent());
@@ -70,17 +73,24 @@ public class StartupTest {
 
 	@Test
 	public void canToggleSoftKeyboardVisibility() {
+		Context testContext = ApplicationProvider.getApplicationContext();
+
+		// This test doesn't work on devices with hardware keyboards.
+		assumeThat(testContext.getResources().getConfiguration().hardKeyboardHidden,
+				equalTo(Configuration.HARDKEYBOARDHIDDEN_YES));
+
 		// First change preferences so that show/hide keyboard button will not auto-hide
-		Context testContext = InstrumentationRegistry.getTargetContext();
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(testContext);
 		SharedPreferences.Editor editor = settings.edit();
-		boolean wasAlwaysVisible = settings.getBoolean(PreferenceConstants.KEY_ALWAYS_VISIVLE, false);
-		editor.putBoolean(PreferenceConstants.KEY_ALWAYS_VISIVLE, true).apply();
+		boolean wasAlwaysVisible = settings.getBoolean(PreferenceConstants.KEY_ALWAYS_VISIBLE, false);
+		try {
+			editor.putBoolean(PreferenceConstants.KEY_ALWAYS_VISIBLE, true).commit();
 
-		startNewLocalConnection();
-		hideAndShowSoftKeyboard();
-
-		editor.putBoolean(PreferenceConstants.KEY_ALWAYS_VISIVLE, wasAlwaysVisible).commit();
+			startNewLocalConnection();
+			hideAndShowSoftKeyboard();
+		} finally {
+			editor.putBoolean(PreferenceConstants.KEY_ALWAYS_VISIBLE, wasAlwaysVisible).commit();
+		}
 	}
 
 	@Test
@@ -106,7 +116,7 @@ public class StartupTest {
 	public void localConnectionDisconnectConsoleActivity() {
 		startNewLocalConnection();
 
-		openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+		openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext());
 
 		// Click on the disconnect context menu item.
 		onView(withText(R.string.list_host_disconnect)).check(matches(isDisplayed())).perform(click());
@@ -143,7 +153,7 @@ public class StartupTest {
 				pressBack());
 		onView(withText(R.string.discard_host_changes_message)).check(matches(isDisplayed()));
 		onView(withText(R.string.discard_host_button)).perform(click());
-		onView(withId(R.id.list)).check(matches(isDisplayed()));
+		onView(withId(R.id.add_host_button)).check(matches(isDisplayed()));
 	}
 
 	@Test
@@ -173,7 +183,7 @@ public class StartupTest {
 		// Go back to the host list.
 		onView(withId(R.id.save)).perform(click());
 
-		Resources res = InstrumentationRegistry.getTargetContext().getResources();
+		Resources res = ApplicationProvider.getApplicationContext().getResources();
 		onView(withId(R.id.list)).check(hasHolderItem(withColoredText(res.getColor(color))));
 	}
 
@@ -258,7 +268,7 @@ public class StartupTest {
 
 			@Override
 			public String getDescription() {
-				return "Rturns an action that loops the main thread for at least " + millis +"ms.";
+				return "Returns an action that loops the main thread for at least " + millis + "ms.";
 			}
 
 			@Override

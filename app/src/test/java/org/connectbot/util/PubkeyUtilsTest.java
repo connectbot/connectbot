@@ -17,12 +17,6 @@
 
 package org.connectbot.util;
 
-import org.connectbot.BuildConfig;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -31,17 +25,20 @@ import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.Arrays;
+
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
  * @author Kenny Root
  */
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@RunWith(AndroidJUnit4.class)
 public class PubkeyUtilsTest {
 	@Test
 	public void encodeHex_Null_Failure() throws Exception {
@@ -271,6 +268,8 @@ public class PubkeyUtilsTest {
 		assertEquals("RSA", PubkeyUtils.getAlgorithmForOid("1.2.840.113549.1.1.1"));
 	}
 
+	@Test
+	@Ignore
 	public void getAlgorithmForOid_Dsa() throws Exception {
 		assertEquals("DSA", PubkeyUtils.getAlgorithmForOid("1.2.840.10040.4.1"));
 	}
@@ -328,14 +327,15 @@ public class PubkeyUtilsTest {
 	}
 
 	private static class MyPrivateKey implements PrivateKey {
+		@Override
 		public String getAlgorithm() {
 			throw new UnsupportedOperationException();
 		}
-
+		@Override
 		public byte[] getEncoded() {
 			throw new UnsupportedOperationException();
 		}
-
+		@Override
 		public String getFormat() {
 			throw new UnsupportedOperationException();
 		}
