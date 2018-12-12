@@ -1,0 +1,64 @@
+# This workflow imports translations from Launchpad
+
+name: Translations import
+on:
+  schedule:
+  - cron: '0 19 * * *'
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+
+    env:
+      BAZAAR_URI: lp:~kennyr/connectbot/po-output
+      PO_SUBDIR: app/locale
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Install bazaar
+      run: |
+        sudo apt-get update && \
+        sudo apt-get install -y --no-install-recommends \
+            bzr \
+            ca-certificates \
+            rsync
+
+    - name: Branch Bazaar translation exports
+      run: |
+        cd ${{ runner.temp }}
+        bzr branch lp:~kennyr/connectbot/po-output
+        cd po-output
+        echo "::set-env name=REVNO::$(bzr revno)"
+
+    - name: Copy exported translations to workspace
+      run: |
+        rsync -av --exclude .bzr --exclude '**/oc.po' --exclude '**/ca@valencia.po' \
+            "${{ runner.temp }}/${BAZAAR_URI##*/}/" "${GITHUB_WORKSPACE}/${PO_SUBDIR}/"
+        echo $REVNO > "${GITHUB_WORKSPACE}/${PO_SUBDIR}/.revno"
+
+    - name: Try importing the translations
+      run: |
+        TRANSLATIONS_ONLY=1 ./gradlew :translations:importToAndroid
+
+    - name: Create pull request
+      uses: peter-evans/create-pull-request@v1.6.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        COMMIT_MESSAGE: |
+          Automated translations import
+
+          Translations imported from Launchpad.
+        COMMIT_AUTHOR_EMAIL: no-reply+translations@connectbot.org
+        COMMIT_AUTHOR_NAME: Translations Bot
+        PULL_REQUEST_TITLE: '[Translations] Automatic update'
+        PULL_REQUEST_BODY: |
+          Automated import of translations from Launchpad.
+        PULL_REQUEST_LABELS: translations, automated pr
+        PULL_REQUEST_ASSIGNEES: kruton
+        PULL_REQUEST_REVIEWERS: kruton
+        PULL_REQUEST_BRANCH: translations/import
+        BRANCH_SUFFIX: none
+
+    - name: Report pull request creation
+      run: echo "Created pull request number ${{ env.PULL_REQUEST_NUMBER }}"

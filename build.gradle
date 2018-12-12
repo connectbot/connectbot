@@ -2,6 +2,7 @@
 
 buildscript {
     project.ext.MAVEN_REPO_CACHE = System.getenv("MAVEN_REPO_CACHE")?.trim()
+    project.ext.TRANSLATIONS_ONLY = System.getenv("TRANSLATIONS_ONLY")?.trim()
     if (MAVEN_REPO_CACHE) {
         repositories { maven { url MAVEN_REPO_CACHE } }
     } else {
@@ -14,7 +15,6 @@ buildscript {
 }
 
 plugins { id 'com.diffplug.gradle.spotless' version '3.16.0' }
-
 apply plugin: 'com.diffplug.gradle.spotless'
 
 if (MAVEN_REPO_CACHE) {
@@ -53,20 +53,8 @@ subprojects {
     }
 }
 
-spotless {
-    groovyGradle {
-        target '**/*.gradle'
-        greclipse()
-        paddedCell()
-        indentWithSpaces(4)
-    }
-
-    format 'misc', {
-        target '**/*.md', '**/.gitignore'
-
-        trimTrailingWhitespace()
-        endWithNewline()
-    }
+if (!TRANSLATIONS_ONLY) {
+    apply from: 'spotless.gradle'
 }
 
 task resolveDependencies {

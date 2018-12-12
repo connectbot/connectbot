@@ -1,5 +1,6 @@
 ext.GRADLE_BUILD_CACHE = System.getenv("GRADLE_BUILD_CACHE")?.trim()
 ext.MAVEN_REPO_CACHE = System.getenv("MAVEN_REPO_CACHE")?.trim()
+ext.TRANSLATIONS_ONLY = System.getenv("TRANSLATIONS_ONLY")?.trim()
 
 if (MAVEN_REPO_CACHE) {
     pluginManagement {
@@ -17,5 +18,7 @@ buildCache {
     }
 }
 
-include ':app'
+if (!TRANSLATIONS_ONLY) {
+    include ':app'
+}
 include ':translations'

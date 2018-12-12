@@ -20,28 +20,29 @@ plugins { id 'com.palantir.python.miniconda' version '0.8.0' }
 apply plugin: 'com.palantir.python.miniconda'
 
 miniconda {
-    minicondaVersion = '4.5.1'
+    minicondaVersion = '4.7.12.1'
     pythonVersion = 3
     packages = ['python']
 }
 
-def localeDir = project(':app').file('locale')
+def appDir = '../app/'
+def localeDir = file(appDir + 'locale')
 def launchpadImportBasename = 'launchpad-import'
 def launchpadExportFile = rootProject.file('launchpad-export.tar.gz')
 
-def android2poUrl = 'git+https://github.com/kruton/android2po.git#egg=android2po'
+def android2poUrl = 'git+https://github.com/miracle2k/android2po.git#egg=android2po'
 def android2poExec = "${miniconda.buildEnvironmentDirectory}/bin/a2po"
 def android2poArgs = [
     '--groups',
     'strings',
     '--android',
-    project(':app').file('src/main/res'),
+    file(appDir + 'src/main/res'),
     '--gettext',
     localeDir,
     '--template',
     'fortune/fortune.pot',
     '--layout',
-    'fortune/fortune-%(locale)s.po'
+    'fortune/%(locale)s.po'
 ]
 
 task installAndroid2Po(type: Exec) {
@@ -55,20 +56,27 @@ task untarTranslations(type: Copy) {
     into localeDir
 
     // Unsupported Android locales
-    exclude '**/*-oc.po', '**/*-ca@valencia.po'
+    exclude '**/oc.po', '**/ca@valencia.po'
 }
 
-task translationsImport(type: Exec) {
+task importToAndroid(type: Exec) {
     group = "Translations"
-    description = "Import translations into ConnectBot from Launchpad's export function"
+    description = "Import translations into ConnectBot from app/locale directory."
 
-    dependsOn 'installAndroid2Po', 'untarTranslations'
+    dependsOn 'installAndroid2Po'
 
     executable = android2poExec
-    args = ['import']+ android2poArgs
+    args = ['import'] + android2poArgs
 
     logging.captureStandardOutput LogLevel.LIFECYCLE
     logging.captureStandardError  LogLevel.ERROR
+}
+
+task translationsImport {
+    group = "Translations"
+    description = "Import translations from a Launchpad export tarball."
+
+    dependsOn 'untarTranslations', 'importToAndroid'
 }
 
 task exportFromAndroid(type: Exec) {
@@ -81,10 +89,11 @@ task exportFromAndroid(type: Exec) {
     logging.captureStandardError  LogLevel.ERROR
 }
 
-task translationsExport(type: Tar, dependsOn: 'exportFromAndroid') {
+task translationsExport(type: Tar) {
     group = "Translations"
     description = "Export translations from ConnectBot in a format suitable to import into Launchpad"
 
+    dependsOn 'exportFromAndroid'
     baseName = launchpadImportBasename
     from localeDir
     compression = Compression.GZIP
