@@ -44,6 +44,7 @@
 		android:icon="@mipmap/icon"
 		android:killAfterRestore="true"
 		android:label="@string/app_name"
+		android:roundIcon="@mipmap/icon_round"
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme">
 
