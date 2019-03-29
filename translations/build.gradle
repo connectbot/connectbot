@@ -15,9 +15,7 @@
  * limitations under the License.
  */
 
-plugins {
-    id 'com.palantir.python.miniconda' version '0.8.0'
-}
+plugins { id 'com.palantir.python.miniconda' version '0.8.0' }
 
 apply plugin: 'com.palantir.python.miniconda'
 
@@ -33,60 +31,67 @@ def launchpadExportFile = rootProject.file('launchpad-export.tar.gz')
 
 def android2poUrl = 'git+https://github.com/kruton/android2po.git#egg=android2po'
 def android2poExec = "${miniconda.buildEnvironmentDirectory}/bin/a2po"
-def android2poArgs = ['--groups', 'strings',
-		'--android', project(':app').file('src/main/res'),
-		'--gettext', localeDir,
-		'--template', 'fortune/fortune.pot',
-		'--layout', 'fortune/fortune-%(locale)s.po']
+def android2poArgs = [
+    '--groups',
+    'strings',
+    '--android',
+    project(':app').file('src/main/res'),
+    '--gettext',
+    localeDir,
+    '--template',
+    'fortune/fortune.pot',
+    '--layout',
+    'fortune/fortune-%(locale)s.po'
+]
 
 task installAndroid2Po(type: Exec) {
-	dependsOn 'setupPython'
-	executable "${miniconda.buildEnvironmentDirectory}/bin/pip"
-	args 'install', android2poUrl
+    dependsOn 'setupPython'
+    executable "${miniconda.buildEnvironmentDirectory}/bin/pip"
+    args 'install', android2poUrl
 }
 
 task untarTranslations(type: Copy) {
-	from tarTree(resources.gzip(launchpadExportFile))
-	into localeDir
+    from tarTree(resources.gzip(launchpadExportFile))
+    into localeDir
 
-	// Unsupported Android locales
-	exclude '**/*-oc.po', '**/*-ca@valencia.po'
+    // Unsupported Android locales
+    exclude '**/*-oc.po', '**/*-ca@valencia.po'
 }
 
 task translationsImport(type: Exec) {
-	group = "Translations"
-	description = "Import translations into ConnectBot from Launchpad's export function"
+    group = "Translations"
+    description = "Import translations into ConnectBot from Launchpad's export function"
 
-	dependsOn 'installAndroid2Po', 'untarTranslations'
+    dependsOn 'installAndroid2Po', 'untarTranslations'
 
-	executable = android2poExec
-	args = ['import'] + android2poArgs
+    executable = android2poExec
+    args = ['import']+ android2poArgs
 
-	logging.captureStandardOutput LogLevel.LIFECYCLE
-	logging.captureStandardError  LogLevel.ERROR
+    logging.captureStandardOutput LogLevel.LIFECYCLE
+    logging.captureStandardError  LogLevel.ERROR
 }
 
 task exportFromAndroid(type: Exec) {
-	dependsOn 'installAndroid2Po'
+    dependsOn 'installAndroid2Po'
 
-	executable = android2poExec
-	args = ['export'] + android2poArgs
+    executable = android2poExec
+    args = ['export']+ android2poArgs
 
-	logging.captureStandardOutput LogLevel.LIFECYCLE
-	logging.captureStandardError  LogLevel.ERROR
+    logging.captureStandardOutput LogLevel.LIFECYCLE
+    logging.captureStandardError  LogLevel.ERROR
 }
 
 task translationsExport(type: Tar, dependsOn: 'exportFromAndroid') {
-	group = "Translations"
-	description = "Export translations from ConnectBot in a format suitable to import into Launchpad"
+    group = "Translations"
+    description = "Export translations from ConnectBot in a format suitable to import into Launchpad"
 
-	baseName = launchpadImportBasename
-	from localeDir
-	compression = Compression.GZIP
-	doLast {
-		println()
-		println('Import file into Launchpad:')
-		println(getArchivePath())
-		println()
-	}
+    baseName = launchpadImportBasename
+    from localeDir
+    compression = Compression.GZIP
+    doLast {
+        println()
+        println('Import file into Launchpad:')
+        println(getArchivePath())
+        println()
+    }
 }

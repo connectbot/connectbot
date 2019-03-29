@@ -33,7 +33,6 @@ import org.junit.runner.RunWith;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import androidx.test.espresso.IdlingPolicies;
 import androidx.test.espresso.IdlingPolicy;
 import androidx.test.espresso.IdlingResource;
 import androidx.test.espresso.UiController;
