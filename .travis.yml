@@ -1,5 +1,5 @@
 language: android
-jdk: oraclejdk8
+jdk: openjdk8
 sudo: true  # For the 7.5GB limit
 
 env:
@@ -27,7 +27,6 @@ addons:
     packages:
       - inotify-tools
       - libstdc++6-4.7-dev
-      - oracle-java8-installer
       - xqilla # ./ci/check-lint-count.bash
   coverity_scan:
     project:
