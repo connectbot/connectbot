@@ -8,12 +8,16 @@ client for Android that lets you connect to remote servers over a
 cryptographically secure link.
 
 
-## Google Play
+## Install
 
 [![Get it on Google Play][2]][1]
 
   [1]: https://play.google.com/store/apps/details?id=org.connectbot
   [2]: https://developer.android.com/images/brand/en_generic_rgb_wo_60.png
+
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+    alt="Get it on F-Droid"
+    height="80">](https://f-droid.org/packages/org.connectbot)
 
 
 ## Compiling
