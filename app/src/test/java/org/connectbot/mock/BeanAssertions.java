@@ -3,7 +3,6 @@
  */
 package org.connectbot.mock;
 
-import junit.framework.TestCase;
 
 import java.lang.reflect.Field;
 

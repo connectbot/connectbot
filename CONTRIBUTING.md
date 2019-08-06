@@ -53,8 +53,7 @@ ConnectBot is maintained by a small number of people and we don't have access to
 
 * Push your changes to a topic branch in your fork of the repository.
 * Start a [pull request](https://github.com/connectbot/connectbot/compare/) for ConnectBot.
-  
+
 ## Additional resources
 
 * [#connectbot IRC channel](http://webchat.freenode.net/?channels=%23connectbot&uio=OT10cnVlJjExPTIwNQa5) on [Freenode](https://freenode.net/).
-

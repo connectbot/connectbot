@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/connectbot/connectbot.svg?branch=master)](
-https://travis-ci.org/connectbot/connectbot)
+[![Build Status](https://travis-ci.com/connectbot/connectbot.svg?branch=master)](
+https://travis-ci.com/connectbot/connectbot)
 
 # ConnectBot
 

@@ -3,16 +3,12 @@ ext.MAVEN_REPO_CACHE = System.getenv("MAVEN_REPO_CACHE")?.trim()
 
 if (MAVEN_REPO_CACHE) {
     pluginManagement {
-        repositories {
-            maven { url MAVEN_REPO_CACHE }
-        }
+        repositories { maven { url MAVEN_REPO_CACHE } }
     }
 }
 
 buildCache {
-    local {
-        enabled = !GRADLE_BUILD_CACHE
-    }
+    local { enabled = !GRADLE_BUILD_CACHE }
     if (GRADLE_BUILD_CACHE) {
         remote(HttpBuildCache) {
             url = GRADLE_BUILD_CACHE

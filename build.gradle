@@ -3,9 +3,7 @@
 buildscript {
     project.ext.MAVEN_REPO_CACHE = System.getenv("MAVEN_REPO_CACHE")?.trim()
     if (MAVEN_REPO_CACHE) {
-        repositories {
-            maven { url MAVEN_REPO_CACHE }
-        }
+        repositories { maven { url MAVEN_REPO_CACHE } }
     } else {
         repositories {
             google()
@@ -15,16 +13,16 @@ buildscript {
     }
 }
 
+plugins { id 'com.diffplug.gradle.spotless' version '3.16.0' }
+
+apply plugin: 'com.diffplug.gradle.spotless'
+
 if (MAVEN_REPO_CACHE) {
     allprojects {
         buildscript {
-            repositories {
-                maven { url MAVEN_REPO_CACHE }
-            }
+            repositories { maven { url MAVEN_REPO_CACHE } }
         }
-        repositories {
-            maven { url MAVEN_REPO_CACHE }
-        }
+        repositories { maven { url MAVEN_REPO_CACHE } }
     }
 } else {
     allprojects {
@@ -52,6 +50,22 @@ subprojects {
         } else if ("com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
             project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
         }
+    }
+}
+
+spotless {
+    groovyGradle {
+        target '**/*.gradle'
+        greclipse()
+        paddedCell()
+        indentWithSpaces(4)
+    }
+
+    format 'misc', {
+        target '**/*.md', '**/.gitignore'
+
+        trimTrailingWhitespace()
+        endWithNewline()
     }
 }
 
