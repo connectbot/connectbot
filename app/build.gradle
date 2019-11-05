@@ -248,8 +248,8 @@ dependencyUpdates {
 // Dependencies must be below the android block to allow productFlavor specific deps.
 dependencies {
     implementation 'org.connectbot:sshlib:2.2.9'
-    googleImplementation 'com.google.android.gms:play-services-base:16.0.1'
-    ossImplementation 'org.conscrypt:conscrypt-android:1.4.1'
+    googleImplementation 'com.google.android.gms:play-services-basement:17.1.0'
+    ossImplementation 'org.conscrypt:conscrypt-android:2.2.1'
 
     implementation "androidx.recyclerview:recyclerview:$supportLibraryVersion"
     implementation "androidx.legacy:legacy-support-v4:$supportLibraryVersion"
