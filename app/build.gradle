@@ -60,7 +60,7 @@ android {
         versionCode androidGitVersion.code()
 
         minSdkVersion 14
-        targetSdkVersion 27
+        targetSdkVersion 28
 
         vectorDrawables.useSupportLibrary = true
 
