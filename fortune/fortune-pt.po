@@ -7,18 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-02-28 00:29-0800\n"
+"POT-Creation-Date: 2019-11-04 23:48-0800\n"
 "PO-Revision-Date: 2017-03-23 17:55+0000\n"
 "Last-Translator: Marcos Alano <Unknown>\n"
+"Language: pt\n"
 "Language-Team: pt <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(((n >= 0 && n <= 1)) ? 0 : 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2018-11-01 01:00+0000\n"
-"X-Generator: Launchpad (build 18810)\n"
-"Language: pt\n"
-"Generated-By: Babel 2.3.4\n"
+"Generated-By: Babel 2.7.0\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -78,8 +76,7 @@ msgid "Generate"
 msgstr "Gerar"
 
 msgctxt "help_intro"
-msgid ""
-"Please select a topic below for more information on a particular subject."
+msgid "Please select a topic below for more information on a particular subject."
 msgstr "Selecione um tópico abaixo para mais informações sobre o assuno"
 
 #. Title for the help page with the terms & conditions of the app.
@@ -100,8 +97,8 @@ msgstr "Configurações Padrão"
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
 msgid ""
-"Long-press on your Android desktop to create direct shortcuts to frequently-"
-"used SSH hosts."
+"Long-press on your Android desktop to create direct shortcuts to "
+"frequently-used SSH hosts."
 msgstr ""
 
 #. Header text for instructions about scrolling the terminal.
@@ -112,8 +109,8 @@ msgstr ""
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
 msgid ""
-"Swiping your finger up on the right side of the screen allows you to scroll "
-"backward and forward in the local terminal buffer history."
+"Swiping your finger up on the right side of the screen allows you to "
+"scroll backward and forward in the local terminal buffer history."
 msgstr ""
 
 #. Captions for images showing the scroll back/forward gestures.
@@ -135,9 +132,9 @@ msgctxt "page_updn_content"
 msgid ""
 "NOTE: This must be enabled in settings.\n"
 "\n"
-"Swiping your finger up and down on the left third of the screen will send a "
-"page up and page down key to the remote host. Many programs map this to "
-"scrolling back into history such as irssi or tinyfugue."
+"Swiping your finger up and down on the left third of the screen will send"
+" a page up and page down key to the remote host. Many programs map this "
+"to scrolling back into history such as irssi or tinyfugue."
 msgstr ""
 
 #. Captions for images showing the page up/down gestures.
@@ -149,6 +146,8 @@ msgctxt "page_down"
 msgid "Page down"
 msgstr "Página abaixo"
 
+#. Header text for instructions about switching to the next and previous host
+#. in the terminal.
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
 msgstr ""
@@ -222,8 +221,8 @@ msgstr "Toque nesta caixa para gerar aleariedade: %1$d%% completo"
 
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr ""
 "Para assegurar aleatoriedade durante a geração da chave, mova o dedo "
 "aleatoriamente sobre a caixa a baixo."
@@ -410,7 +409,8 @@ msgstr "AVISO: a identificação do anfitrião remoto mudou!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "É POSSÍVEL QUE ALGUÉM ESTEJA A FAZER ALGO ERRADO!\n"
@@ -485,8 +485,8 @@ msgid ""
 "Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
 "http://jsharkey.org/"
 msgstr ""
-"Direitos de Autor © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
-"http://jsharkey.org/"
+"Direitos de Autor © 2007-2008 Kenny Root http://the-b.org/, Jeffrey "
+"Sharkey http://jsharkey.org/"
 
 #. The category title for terminal emulation preferences.
 msgctxt "pref_emulation_category"
@@ -617,8 +617,7 @@ msgstr "Lembrar chaves em memória"
 #. Summary for the memorize keys preference
 msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
-msgstr ""
-"Manter chaves desbloqueadas em memória até ao serviço de fundo terminar"
+msgstr "Manter chaves desbloqueadas em memória até ao serviço de fundo terminar"
 
 #. Name for the preference that forces the service to stay running in the
 #. background.
@@ -676,8 +675,7 @@ msgstr "Mantar ecrã activo"
 #. Summary for the camera shortcut usage preference
 msgctxt "pref_keepalive_summary"
 msgid "Prevent the screen from turning off when working in a console"
-msgstr ""
-"Previne que o ecrã seja desligado quando se esta a utilizar a consola"
+msgstr "Previne que o ecrã seja desligado quando se esta a utilizar a consola"
 
 #. Name for the Wi-Fi lock preference
 msgctxt "pref_wifilock_title"
@@ -728,11 +726,10 @@ msgstr "Notificações em segundo plano"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
+msgid "Send notification when a terminal running in the background sounds a bell."
 msgstr ""
-"Enviar notificação quando um terminal a correr em segundo plano enviar um "
-"aviso sonoro."
+"Enviar notificação quando um terminal a correr em segundo plano enviar um"
+" aviso sonoro."
 
 #. Preference selection to indicate use of right side of keyboard for special
 #. shortcuts.
@@ -816,8 +813,7 @@ msgstr "Iniciar sessão de shell"
 #. connection or not
 msgctxt "hostpref_wantsession_summary"
 msgid "Disable this preference to only use port forwards"
-msgstr ""
-"Desactivar esta preferência para usar apenas redirecionamento de portas"
+msgstr "Desactivar esta preferência para usar apenas redirecionamento de portas"
 
 #. Setting for whether the host should be reconnected to automatically upon
 #. disconnect
@@ -958,8 +954,8 @@ msgstr "Criar redirecionamento de portas"
 
 msgctxt "portforward_problem"
 msgid ""
-"Problem creating port forward, maybe you're using ports under 1024 or port "
-"is already used?"
+"Problem creating port forward, maybe you're using ports under 1024 or "
+"port is already used?"
 msgstr ""
 "Problema ao criar redirecionamento de porta, talvez esteja a usar portas "
 "abaixo de 1024 ou a porta já esteja em uso?"
@@ -1168,14 +1164,14 @@ msgstr "Autenticação pelo método 'password' falhou"
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
 msgstr ""
-"A tentar autenticação de chave pública (pubkey) com todas as chaves públicas "
-"em memória"
+"A tentar autenticação de chave pública (pubkey) com todas as chaves "
+"públicas em memória"
 
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
 msgstr ""
-"A chave pública escolhida é inválida, tente escolher outra chave no editor "
-"de anfitriões"
+"A chave pública escolhida é inválida, tente escolher outra chave no "
+"editor de anfitriões"
 
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
@@ -1544,3 +1540,4 @@ msgstr ""
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
 msgstr ""
+

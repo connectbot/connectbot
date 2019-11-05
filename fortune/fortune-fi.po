@@ -7,18 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-02-28 00:29-0800\n"
+"POT-Creation-Date: 2019-11-04 23:48-0800\n"
 "PO-Revision-Date: 2017-02-28 23:01+0000\n"
 "Last-Translator: Kenny Root <Unknown>\n"
+"Language: fi\n"
 "Language-Team: fi <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=((((n == 1)) && ((0 == 0))) ? 0 : 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2018-11-01 01:00+0000\n"
-"X-Generator: Launchpad (build 18810)\n"
-"Language: fi\n"
-"Generated-By: Babel 2.3.4\n"
+"Generated-By: Babel 2.7.0\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -78,8 +76,7 @@ msgid "Generate"
 msgstr ""
 
 msgctxt "help_intro"
-msgid ""
-"Please select a topic below for more information on a particular subject."
+msgid "Please select a topic below for more information on a particular subject."
 msgstr "Valitse alta aihe, josta haluat lisätietoja."
 
 #. Title for the help page with the terms & conditions of the app.
@@ -100,8 +97,8 @@ msgstr ""
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
 msgid ""
-"Long-press on your Android desktop to create direct shortcuts to frequently-"
-"used SSH hosts."
+"Long-press on your Android desktop to create direct shortcuts to "
+"frequently-used SSH hosts."
 msgstr ""
 
 #. Header text for instructions about scrolling the terminal.
@@ -112,8 +109,8 @@ msgstr ""
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
 msgid ""
-"Swiping your finger up on the right side of the screen allows you to scroll "
-"backward and forward in the local terminal buffer history."
+"Swiping your finger up on the right side of the screen allows you to "
+"scroll backward and forward in the local terminal buffer history."
 msgstr ""
 
 #. Captions for images showing the scroll back/forward gestures.
@@ -135,9 +132,9 @@ msgctxt "page_updn_content"
 msgid ""
 "NOTE: This must be enabled in settings.\n"
 "\n"
-"Swiping your finger up and down on the left third of the screen will send a "
-"page up and page down key to the remote host. Many programs map this to "
-"scrolling back into history such as irssi or tinyfugue."
+"Swiping your finger up and down on the left third of the screen will send"
+" a page up and page down key to the remote host. Many programs map this "
+"to scrolling back into history such as irssi or tinyfugue."
 msgstr ""
 
 #. Captions for images showing the page up/down gestures.
@@ -149,6 +146,8 @@ msgctxt "page_down"
 msgid "Page down"
 msgstr ""
 
+#. Header text for instructions about switching to the next and previous host
+#. in the terminal.
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
 msgstr ""
@@ -222,8 +221,8 @@ msgstr "Kosketa tätä laatikkoa kerätäksesi satunnaisdataa: %1$d%% valmiina"
 
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr ""
 "Liikuta sormeasi alla olevan laatikon kohdalla sattumanvaraisesti "
 "varmistaaksesi avaimen luonnin satunnaisuuden."
@@ -411,12 +410,13 @@ msgstr "VAROITUS: ETÄPÄÄN KONEEN TUNNISTE ON MUUTTUNUT!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "JOKU SAATTAA OLLA TEKEMÄSSÄ PAHOJAAN!\n"
-"On mahdollista, että yhteyttäsi salakuunnellaan (niin kutsuttu man-in-the-"
-"middle -hyökkäys)!\n"
+"On mahdollista, että yhteyttäsi salakuunnellaan (niin kutsuttu man-in-"
+"the-middle -hyökkäys)!\n"
 "On toki myös mahdollista, että palvelimen avainta vain on muutettu."
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
@@ -487,8 +487,8 @@ msgid ""
 "Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
 "http://jsharkey.org/"
 msgstr ""
-"Tekijänoikeudet © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
-"http://jsharkey.org/"
+"Tekijänoikeudet © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey"
+" http://jsharkey.org/"
 
 #. The category title for terminal emulation preferences.
 msgctxt "pref_emulation_category"
@@ -514,7 +514,8 @@ msgstr "Vierityspuskurin koko"
 msgctxt "pref_scrollback_summary"
 msgid "Size of scrollback buffer to keep in memory for each console"
 msgstr ""
-"Konsolikohtainen koko vierityspuskurille, jossa pidetään konsolin historiaa"
+"Konsolikohtainen koko vierityspuskurille, jossa pidetään konsolin "
+"historiaa"
 
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
@@ -540,8 +541,7 @@ msgstr "Näytön pyöritys"
 #. Summary for the rotation mode preference
 msgctxt "pref_rotation_summary"
 msgid "How to change rotation when keyboard popped in/out"
-msgstr ""
-"Miten näyttöä pyöritetään kun näppäimistö tulee näkyviin/poistuu näkyvistä"
+msgstr "Miten näyttöä pyöritetään kun näppäimistö tulee näkyviin/poistuu näkyvistä"
 
 #. Name for the titlebar hide preference
 msgctxt "pref_titlebarhide_title"
@@ -730,10 +730,8 @@ msgstr "Taustailmoitukset"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
-msgstr ""
-"Näyttää ilmoituksen kun taustalla olevassa päätteessä soitetaan kelloa."
+msgid "Send notification when a terminal running in the background sounds a bell."
+msgstr "Näyttää ilmoituksen kun taustalla olevassa päätteessä soitetaan kelloa."
 
 #. Preference selection to indicate use of right side of keyboard for special
 #. shortcuts.
@@ -958,11 +956,11 @@ msgstr "Luo porttiohjaus"
 
 msgctxt "portforward_problem"
 msgid ""
-"Problem creating port forward, maybe you're using ports under 1024 or port "
-"is already used?"
+"Problem creating port forward, maybe you're using ports under 1024 or "
+"port is already used?"
 msgstr ""
-"Ongelma luotaessa porttiohjausta. Ehkä käytät porttia joka on alle 1024 tai "
-"portti on jo käytössä?"
+"Ongelma luotaessa porttiohjausta. Ehkä käytät porttia joka on alle 1024 "
+"tai portti on jo käytössä?"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
@@ -1199,7 +1197,8 @@ msgid ""
 "[Your host doesn't support 'password' or 'keyboard-interactive' "
 "authentication.]"
 msgstr ""
-"[Palvelin ei tue 'password' tai 'keyboard-interactive' varmennusmenetelmiä.]"
+"[Palvelin ei tue 'password' tai 'keyboard-interactive' "
+"varmennusmenetelmiä.]"
 
 msgctxt "terminal_no_session"
 msgid "Session will not be started due to host preference."
@@ -1539,3 +1538,4 @@ msgstr ""
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
 msgstr ""
+

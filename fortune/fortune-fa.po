@@ -7,18 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-03-09 17:40+0000\n"
-"Last-Translator: Kenny Root <Unknown>\n"
+"POT-Creation-Date: 2019-11-04 23:48-0800\n"
+"PO-Revision-Date: 2018-11-22 20:35+0000\n"
+"Last-Translator: S. Mostafa Ahangarha <ahangarha@gmail.com>\n"
+"Language: fa\n"
 "Language-Team: fa <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=((((n == 0)) || ((n == 1))) ? 0 : 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=((((n == 0)) || ((n == 1))) ? 0 : 1);\n"
-"X-Launchpad-Export-Date: 2018-11-01 01:00+0000\n"
-"X-Generator: Launchpad (build 18810)\n"
-"Language: fa\n"
-"Generated-By: Babel 2.3.4\n"
+"Generated-By: Babel 2.7.0\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -78,10 +76,8 @@ msgid "Generate"
 msgstr "تولید"
 
 msgctxt "help_intro"
-msgid ""
-"Please select a topic below for more information on a particular subject."
-msgstr ""
-"برای اطلاعات بیشتر درباره یک موضوع خاص، لطفاً روی یک تاپیک زیر کلیک کنید."
+msgid "Please select a topic below for more information on a particular subject."
+msgstr "برای اطلاعات بیشتر درباره یک موضوع خاص، لطفاً روی یک تاپیک زیر کلیک کنید."
 
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
@@ -101,11 +97,11 @@ msgstr "میانبرهای میزبان"
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
 msgid ""
-"Long-press on your Android desktop to create direct shortcuts to frequently-"
-"used SSH hosts."
+"Long-press on your Android desktop to create direct shortcuts to "
+"frequently-used SSH hosts."
 msgstr ""
-"برای ایجاد میانبر به میزبان‌های پرکاربرد، دستکتاپ اندروید را بفشارید و کمی "
-"نگهدارید."
+"برای ایجاد میانبر به میزبان‌های پرکاربرد، دستکتاپ اندروید را بفشارید و "
+"کمی نگهدارید."
 
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
@@ -115,11 +111,11 @@ msgstr "اسکرول به جلو / اسکرول به عقب"
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
 msgid ""
-"Swiping your finger up on the right side of the screen allows you to scroll "
-"backward and forward in the local terminal buffer history."
+"Swiping your finger up on the right side of the screen allows you to "
+"scroll backward and forward in the local terminal buffer history."
 msgstr ""
-"انگشت خود را در سمت راست گذاشته و به بالا و پایین بکشید تا بتوانید تاریخچه "
-"ترمینال را مرور کنید"
+"انگشت خود را در سمت راست گذاشته و به بالا و پایین بکشید تا بتوانید "
+"تاریخچه ترمینال را مرور کنید"
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
@@ -140,9 +136,9 @@ msgctxt "page_updn_content"
 msgid ""
 "NOTE: This must be enabled in settings.\n"
 "\n"
-"Swiping your finger up and down on the left third of the screen will send a "
-"page up and page down key to the remote host. Many programs map this to "
-"scrolling back into history such as irssi or tinyfugue."
+"Swiping your finger up and down on the left third of the screen will send"
+" a page up and page down key to the remote host. Many programs map this "
+"to scrolling back into history such as irssi or tinyfugue."
 msgstr "توجه: این می بایست در تنظیمات فعال شده باشد"
 
 #. Captions for images showing the page up/down gestures.
@@ -154,6 +150,8 @@ msgctxt "page_down"
 msgid "Page down"
 msgstr "صفحه پایینی"
 
+#. Header text for instructions about switching to the next and previous host
+#. in the terminal.
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
 msgstr "سوئیچ کردن دربین میزبان ها"
@@ -229,8 +227,8 @@ msgstr "برای جمع آوری اتفاقی این جعبه را لمس کنی
 
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr ""
 "به منظور اطمینان از تصادفی بودن در زمان تولید کلید، انگشت خود را به طور "
 "تصادفی در طول کادر زیر  حرکت دهید."
@@ -413,7 +411,8 @@ msgstr "هشدار: تعیین هویت میزبان راه دور تغییر ک
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 
@@ -554,7 +553,7 @@ msgstr ""
 #. Title for special keys always visible preference
 msgctxt "pref_alwaysvisible_title"
 msgid "Special keys always visible"
-msgstr ""
+msgstr "کلیدهای ویژه همواره دیده شوند"
 
 #. Name for the page up/down gesture preference
 msgctxt "pref_pg_updn_gesture_title"
@@ -569,17 +568,17 @@ msgstr ""
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
 msgid "Full screen"
-msgstr ""
+msgstr "تمام صفحه"
 
 #. Summary for the full screen preference
 msgctxt "pref_fullscreen_summary"
 msgid "Hide status bar while in console"
-msgstr ""
+msgstr "پنهان‌سازی نوار وضعیت حین کار در کنسول"
 
 #. The category title for keyboard preferences
 msgctxt "pref_keyboard_category"
 msgid "Keyboard"
-msgstr ""
+msgstr "صفحه‌کلید"
 
 #. Name for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_title"
@@ -604,7 +603,7 @@ msgstr ""
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
 msgid "Volume keys change font size"
-msgstr ""
+msgstr "کلیدهای صدا، اندازه متن را تغییر دهند"
 
 #. Summary for the volume keys control font size preference
 msgctxt "pref_volumefont_summary"
@@ -625,18 +624,18 @@ msgstr ""
 #. background.
 msgctxt "pref_conn_persist_title"
 msgid "Persist connections"
-msgstr ""
+msgstr "اتصال مداوم"
 
 #. Summary for the preference that forces the service to stay running in the
 #. background.
 msgctxt "pref_conn_persist_summary"
 msgid "Force connections to stay connected while in background"
-msgstr ""
+msgstr "اتصال‌ها حتی زمانی که برنامه در پس‌زمینه است برقرار باقی بنمانند"
 
 #. Name for the keyboard shortcuts preference
 msgctxt "pref_keymode_title"
 msgid "Directory shortcuts"
-msgstr ""
+msgstr "میان‌برهای پوشه"
 
 #. Summary for the keyboard shortcuts preference
 msgctxt "pref_keymode_summary"
@@ -662,32 +661,32 @@ msgstr ""
 #. Name for the camera shortcut usage preference
 msgctxt "pref_camera_title"
 msgid "Camera shortcut"
-msgstr ""
+msgstr "میان‌بر دوربین"
 
 #. Summary for the camera shortcut usage preference
 msgctxt "pref_camera_summary"
 msgid "Select which shortcut to trigger when the camera button is pushed"
-msgstr ""
+msgstr "انتخاب کنید که با فشرده شدن دکمه دوربین، چه میان‌بری فعال شود"
 
 #. Name for the keep screen on preference
 msgctxt "pref_keepalive_title"
 msgid "Keep screen awake"
-msgstr ""
+msgstr "صفحه روشن نگه‌داشته شود"
 
 #. Summary for the camera shortcut usage preference
 msgctxt "pref_keepalive_summary"
 msgid "Prevent the screen from turning off when working in a console"
-msgstr ""
+msgstr "در حین کار در کنسول، مانع از خاموش شدن صفحه نمایش می‌شود"
 
 #. Name for the Wi-Fi lock preference
 msgctxt "pref_wifilock_title"
 msgid "Keep Wi-Fi active"
-msgstr ""
+msgstr "وای‌فای فعال نگه داشته شود"
 
 #. Summary for the Wi-Fi lock preference
 msgctxt "pref_wifilock_summary"
 msgid "Prevent Wi-Fi from turning off when a session is active"
-msgstr ""
+msgstr "تا زمانی که جلسه فعال است، مانع از خاموش شدن وای‌فای می‌شود"
 
 #. Name for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_title"
@@ -723,36 +722,35 @@ msgstr ""
 #. feature
 msgctxt "pref_bell_notification_title"
 msgid "Background notifications"
-msgstr ""
+msgstr "اعلان‌های پس‌زمینه"
 
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
-msgstr ""
+msgid "Send notification when a terminal running in the background sounds a bell."
+msgstr "فرستادن اعلان زمانی که یک پایانه در حال اجرا، زنگی را به صدا در می‌آورد."
 
 #. Preference selection to indicate use of right side of keyboard for special
 #. shortcuts.
 msgctxt "list_keymode_right"
 msgid "Use right-side keys"
-msgstr ""
+msgstr "استفاده از کلیدهای سمت راست"
 
 #. Preference selection to indicate use of left side of keyboard for special
 #. shortcuts.
 msgctxt "list_keymode_left"
 msgid "Use left-side keys"
-msgstr ""
+msgstr "استفاده از کلیدهای سمت چپ"
 
 #. Preference selection to indicate never to use special shortcut keys.
 msgctxt "list_keymode_none"
 msgid "Disable"
-msgstr ""
+msgstr "غیرفعال"
 
 #. Preference to not use pubkeys to authenticate to this host.
 msgctxt "list_pubkeyids_none"
 msgid "Do not use keys"
-msgstr ""
+msgstr "از کلیدها استفاده نکن"
 
 #. Preference to use any pubkey to authenticate to this host.
 msgctxt "list_pubkeyids_any"
@@ -762,22 +760,22 @@ msgstr ""
 #. Host nickname field preference title
 msgctxt "hostpref_nickname_title"
 msgid "Nickname"
-msgstr ""
+msgstr "لقب"
 
 #. Host color category preference title
 msgctxt "hostpref_color_title"
 msgid "Color category"
-msgstr ""
+msgstr "دسته‌بندی رنگی"
 
 #. Host's default font size when opening the terminal in points (pt)
 msgctxt "hostpref_fontsize_title"
 msgid "Font size (pt)"
-msgstr ""
+msgstr "اندازه متن (pt)"
 
 #. Host pubkey usage preference title
 msgctxt "hostpref_pubkeyid_title"
 msgid "Use pubkey authentication"
-msgstr ""
+msgstr "تصدیق هویت با استفاده از کلید عمومی"
 
 #. Preference title for the SSH Authentication Agent Forwarding for a host
 #. connection
@@ -788,27 +786,27 @@ msgstr ""
 #. Host post-login automation preference title
 msgctxt "hostpref_postlogin_title"
 msgid "Post-login automation"
-msgstr ""
+msgstr "خودکارسازی پس از ورود"
 
 #. Host post-login automation preference summary
 msgctxt "hostpref_postlogin_summary"
 msgid "Commands to run on remote server once authenticated"
-msgstr ""
+msgstr "دستوراتی که پس از تصدیق هویت باید روی کارساز راه‌دور اجرا شوند"
 
 #. Host compression preference title
 msgctxt "hostpref_compression_title"
 msgid "Compression"
-msgstr ""
+msgstr "فشرده‌سازی"
 
 #. Summary for compression preference
 msgctxt "hostpref_compression_summary"
 msgid "This may help with slower networks"
-msgstr ""
+msgstr "این گزینه می‌تواند برای شبکه‌های کند مفید باشد"
 
 #. Setting for whether we want a session to start up when we connect to a host
 msgctxt "hostpref_wantsession_title"
 msgid "Start shell session"
-msgstr ""
+msgstr "آغاز جلسه Shell"
 
 #. Summary for field asking whether a shell session should be started up upon
 #. connection or not
@@ -820,27 +818,27 @@ msgstr ""
 #. disconnect
 msgctxt "hostpref_stayconnected_title"
 msgid "Stay connected"
-msgstr ""
+msgstr "متصل بماند"
 
 #. Summary for preference asking whether the host should be reconnected to
 #. when it disconnects
 msgctxt "hostpref_stayconnected_summary"
 msgid "Try to reconnect to host if disconnected"
-msgstr ""
+msgstr "در صورت قطع ارتباط، دوباره وصل شود"
 
 #. Setting for whether we should prompt to close after getting disconnected
 msgctxt "hostpref_quickdisconnect_title"
 msgid "Close on disconnect"
-msgstr ""
+msgstr "بستن در صورت قطع ارتباط"
 
 msgctxt "hostpref_quickdisconnect_summary"
 msgid "Close immediately after remote disconnect without prompting."
-msgstr ""
+msgstr "در صورت قطع شدن از کارساز راه‌دور، بلادرنگ و بدون اعلان بسته شود."
 
 #. Setting for what key code is sent to the server when DEL key is pressed.
 msgctxt "hostpref_delkey_title"
 msgid "DEL Key"
-msgstr ""
+msgstr "کلید DEL"
 
 #. Host character encoding preference title
 msgctxt "hostpref_encoding_title"
@@ -850,22 +848,22 @@ msgstr ""
 #. Username field title for host editor preference
 msgctxt "hostpref_username_title"
 msgid "Username"
-msgstr ""
+msgstr "نام کاربری"
 
 #. Hostname field title for host editor preference
 msgctxt "hostpref_hostname_title"
 msgid "Host"
-msgstr ""
+msgstr "میزبان"
 
 #. Port field title for host editor preference
 msgctxt "hostpref_port_title"
 msgid "Port"
-msgstr ""
+msgstr "درگاه"
 
 #. Displayed to indicate a host has never been connected to.
 msgctxt "bind_never"
 msgid "Never connected"
-msgstr ""
+msgstr "ناکنون وصل نشده"
 
 #. Message given when user copies from the terminal.
 #, c-format
@@ -887,7 +885,7 @@ msgstr ""
 #. Button to close the disconnected terminal window.
 msgctxt "console_menu_close"
 msgid "Close"
-msgstr ""
+msgstr "بستن"
 
 #. Button to begin copying from the terminal to the clipboard.
 msgctxt "console_menu_copy"
@@ -918,24 +916,24 @@ msgstr ""
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"
 msgid "Yes"
-msgstr ""
+msgstr "بله"
 
 #. Button label to answer "No" to a yes/no prompt
 msgctxt "button_no"
 msgid "No"
-msgstr ""
+msgstr "خیر"
 
 #. Selection for a "local" port forward. E.g., connections to a port listening
 #. locally is forwarded to the remote end's listening port.
 msgctxt "portforward_local"
 msgid "Local"
-msgstr ""
+msgstr "محلی"
 
 #. Selection for a "remote" port forward. E.g., connections to a port
 #. listening remotely is forwarded to the local end's listening port.
 msgctxt "portforward_remote"
 msgid "Remote"
-msgstr ""
+msgstr "راه‌دور"
 
 #. Selection for a "dynamic" port forward. E.g., connections to a port
 #. listening locally is forwarded based on the SOCKS protocol to an arbitrary
@@ -952,54 +950,54 @@ msgstr ""
 
 msgctxt "portforward_problem"
 msgid ""
-"Problem creating port forward, maybe you're using ports under 1024 or port "
-"is already used?"
+"Problem creating port forward, maybe you're using ports under 1024 or "
+"port is already used?"
 msgstr ""
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
 msgid "username"
-msgstr ""
+msgstr "نام کاربری"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_hostname"
 msgid "hostname"
-msgstr ""
+msgstr "نام میزبان"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_port"
 msgid "port"
-msgstr ""
+msgstr "درگاه"
 
 msgctxt "list_menu_pubkeys"
 msgid "Manage Pubkeys"
-msgstr ""
+msgstr "مدیریت کلیدهای عمومی"
 
 #. Selection choice to sort hosts by color.
 msgctxt "list_menu_sortcolor"
 msgid "Sort by color"
-msgstr ""
+msgstr "مرتب‌سازی بر اساس رنگ"
 
 #. Selection choice to sort hosts by nickname.
 msgctxt "list_menu_sortname"
 msgid "Sort by name"
-msgstr ""
+msgstr "مرتب‌سازی بر اساس نام"
 
 msgctxt "list_menu_disconnect"
 msgid "Disconnect All"
-msgstr ""
+msgstr "قطع همه اتصال‌ها"
 
 msgctxt "list_menu_settings"
 msgid "Settings"
-msgstr ""
+msgstr "تنظیمات"
 
 msgctxt "list_host_disconnect"
 msgid "Disconnect"
-msgstr ""
+msgstr "قطع اتصال"
 
 msgctxt "list_host_edit"
 msgid "Edit host"
-msgstr ""
+msgstr "ویرایش میزبان"
 
 msgctxt "list_host_portforwards"
 msgid "Edit port forwards"
@@ -1007,32 +1005,32 @@ msgstr ""
 
 msgctxt "list_host_delete"
 msgid "Delete host"
-msgstr ""
+msgstr "پاک کردن میزبان"
 
 #. Note that the '\n' splits the lines so it's actually "quick-connect box
 #. below to connect"
 msgctxt "list_host_empty"
 msgid "No hosts created yet."
-msgstr ""
+msgstr "میزبانی تا کنون ایجاد نشده است."
 
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
 msgid "Default"
-msgstr ""
+msgstr "پیش‌گزیده"
 
 msgctxt "list_rotation_land"
 msgid "Force landscape"
-msgstr ""
+msgstr "الزام بر حالت افقی"
 
 msgctxt "list_rotation_port"
 msgid "Force portrait"
-msgstr ""
+msgstr "الزام بر حالت عمودی"
 
 #. Selection to indicate the rotation should be selected automatically based
 #. on the tilt sensor.
 msgctxt "list_rotation_auto"
 msgid "Automatic"
-msgstr ""
+msgstr "خوکار"
 
 #. Selection to indicate pressing the Camera button should send "Ctrl+A then
 #. Space".
@@ -1043,62 +1041,62 @@ msgstr ""
 #. Selection to indicate pressing the Camera button should send "Ctrl+A".
 msgctxt "list_camera_ctrla"
 msgid "Ctrl+A"
-msgstr ""
+msgstr "Ctrl+A"
 
 #. Selection to indicate pressing the Camera button should send the "Esc" key.
 msgctxt "list_camera_esc"
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #. Selection to indicate pressing the Camera button should send "Esc+A".
 msgctxt "list_camera_esc_a"
 msgid "Esc+A"
-msgstr ""
+msgstr "Esc+A"
 
 #. Selection to indicate pressing the Camera button should send nothing at
 #. all.
 msgctxt "list_camera_none"
 msgid "None"
-msgstr ""
+msgstr "هیچ"
 
 #. Name for the backspace character
 msgctxt "list_delkey_backspace"
 msgid "Backspace"
-msgstr ""
+msgstr "Backspace"
 
 #. Name for the ASCII DEL character
 msgctxt "list_delkey_del"
 msgid "Delete"
-msgstr ""
+msgstr "Delete"
 
 #, c-format
 msgctxt "delete_message"
 msgid "Are you sure you want to delete '%1$s'?"
-msgstr ""
+msgstr "مطمئنید که می‌خواهید «%1$s» را پاک کنید؟"
 
 msgctxt "delete_pos"
 msgid "Yes, delete"
-msgstr ""
+msgstr "بله، پاک کن"
 
 msgctxt "delete_neg"
 msgid "Cancel"
-msgstr ""
+msgstr "لغو"
 
 msgctxt "disconnect_all_message"
 msgid "Are you sure you want to disconnect from all connected hosts?"
-msgstr ""
+msgstr "آیا مطمئنید که می‌خواهید تمام اتصال‌ها را قطع کنید؟"
 
 msgctxt "disconnect_all_pos"
 msgid "Yes, disconnect"
-msgstr ""
+msgstr "بله، قطع کن"
 
 msgctxt "disconnect_all_neg"
 msgid "Cancel"
-msgstr ""
+msgstr "لغو"
 
 msgctxt "terminal_no_hosts_connected"
 msgid "No hosts currently connected"
-msgstr ""
+msgstr "هیچ میزانی در حال حاضر وصل نیست"
 
 #. Displayed in terminal when attempting to connect to a host. The first two
 #. variables are host:port and the third is the protocol (e.g., SSH)
@@ -1111,29 +1109,29 @@ msgstr ""
 #, c-format
 msgctxt "terminal_sucess"
 msgid "Verified host '%1$s' key: %2$s"
-msgstr ""
+msgstr "میزبان «%1$s» با کلید: %2$s معتبر است"
 
 msgctxt "terminal_failed"
 msgid "Host key verification failed."
-msgstr ""
+msgstr "اعتبارسنجی کلید میزبان ناموفق بود."
 
 #. Displayed on the terminal describing the cryptographic algorithm names
 #, c-format
 msgctxt "terminal_using_s2c_algorithm"
 msgid "Server-to-client algorithm: %1$s %2$s"
-msgstr ""
+msgstr "الگوریتم کارساز-به-کارخواه: %1$s %2$s"
 
 #. Displayed on the terminal describing the cryptographic algorithm names
 #, c-format
 msgctxt "terminal_using_c2s_algorithm"
 msgid "Client-to-server algorithm: %1$s %2$s"
-msgstr ""
+msgstr "الگوریتم کارخواه-به-کارساز: %1$s %2$s"
 
 #. Displayed on the terminal describing the cryptographic algorithm names
 #, c-format
 msgctxt "terminal_using_algorithm"
 msgid "Using algorithm: %1$s %2$s"
-msgstr ""
+msgstr "در حال استفاده از الگوریتم: %1$s %2$s"
 
 #. Displayed on the terminal during a SSH connection describing the
 #. cryptographic key              exchange algorithm used to establish a shared
@@ -1141,7 +1139,7 @@ msgstr ""
 #, c-format
 msgctxt "terminal_kex_algorithm"
 msgid "Key exchange algorithm: %s"
-msgstr ""
+msgstr "الگوریتم تبادل کلید: %s"
 
 msgctxt "terminal_auth"
 msgid "Trying to authenticate"
@@ -1209,64 +1207,64 @@ msgstr ""
 #. Preference selection for SSH Authentication Agent to never use pubkeys
 msgctxt "no"
 msgid "No"
-msgstr ""
+msgstr "خیر"
 
 #. Preference selection for SSH Authentication Agent to be able to use pubkeys
 msgctxt "yes"
 msgid "Yes"
-msgstr ""
+msgstr "بله"
 
 #. Menu selection to reset colors to their defaults.
 msgctxt "menu_colors_reset"
 msgid "Reset"
-msgstr ""
+msgstr "تنظیم دوباره"
 
 #. Displayed in the notification bar that connections are active
 msgctxt "app_is_running"
 msgid "ConnectBot is running"
-msgstr ""
+msgstr "برنامه کانکت‌بات در حال اجراست"
 
 msgctxt "color_red"
 msgid "red"
-msgstr ""
+msgstr "قرمز"
 
 msgctxt "color_green"
 msgid "green"
-msgstr ""
+msgstr "سبز"
 
 msgctxt "color_blue"
 msgid "blue"
-msgstr ""
+msgstr "آبی"
 
 msgctxt "color_gray"
 msgid "gray"
-msgstr ""
+msgstr "خاکستری"
 
 #. Very short label indicating the number next to it is "foreground color"
 #. number.
 #, c-format
 msgctxt "colors_fg_label"
 msgid "FG: %1$d"
-msgstr ""
+msgstr "متن: %1$d"
 
 #. Very short label indicating the number next to it is "background color"
 #. number.
 #, c-format
 msgctxt "color_bg_label"
 msgid "BG: %1$d"
-msgstr ""
+msgstr "پشت: %1$d"
 
 #. Accessibility text for connection state in list of hosts when the host is
 #. currently          connected.
 msgctxt "image_description_connected"
 msgid "Connected."
-msgstr ""
+msgstr "وصل."
 
 #. Accessibility text for connection state in list of hosts when the host is
 #. currently              disconnected after having been previously connected.
 msgctxt "image_description_disconnected"
 msgid "Disconnected."
-msgstr ""
+msgstr "قطع."
 
 #. Describes the icon of the "locked pubkey" icon for accessibility purposes.
 msgctxt "image_description_key_is_locked"
@@ -1295,53 +1293,53 @@ msgstr ""
 #. accessibility              purposes.
 msgctxt "image_description_hide_keyboard"
 msgid "Hide keyboard."
-msgstr ""
+msgstr "پنهان‌سازی صفحه‌کلید."
 
 #. Describes the icon of the "show keyboard" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_show_keyboard"
 msgid "Show keyboard."
-msgstr ""
+msgstr "نمایش صفحه‌کلید"
 
 #. Describes the icon of the "Arrow up" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_up"
 msgid "Arrow up"
-msgstr ""
+msgstr "فلش بالا"
 
 #. Describes the icon of the "Arrow down" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_down"
 msgid "Arrow down"
-msgstr ""
+msgstr "فلش پایین"
 
 #. Describes the icon of the "Arrow left" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_left"
 msgid "Arrow left"
-msgstr ""
+msgstr "فلش چپ"
 
 #. Describes the icon of the "Arrow right" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_right"
 msgid "Arrow right"
-msgstr ""
+msgstr "فلش راست"
 
 #. Describes the "volume" icon in the bell volume dialog for accessibility
 #. purposes.
 msgctxt "image_description_volume"
 msgid "Volume"
-msgstr ""
+msgstr "بلندی صدا"
 
 #. Text for the "Esc" button in virtual keyboard.
 msgctxt "button_key_esc"
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #. Text for the "Ctrl" button in virtual keyboard.
 msgctxt "button_key_ctrl"
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. Text for the "Home" button in virtual keyboard.
 msgctxt "button_key_home"
@@ -1376,52 +1374,52 @@ msgstr ""
 #. Text for the "F3" button in virtual keyboard.
 msgctxt "button_key_f3"
 msgid "F3"
-msgstr ""
+msgstr "F3"
 
 #. Text for the "F4" button in virtual keyboard.
 msgctxt "button_key_f4"
 msgid "F4"
-msgstr ""
+msgstr "F4"
 
 #. Text for the "F5" button in virtual keyboard.
 msgctxt "button_key_f5"
 msgid "F5"
-msgstr ""
+msgstr "F5"
 
 #. Text for the "F6" button in virtual keyboard.
 msgctxt "button_key_f6"
 msgid "F6"
-msgstr ""
+msgstr "F6"
 
 #. Text for the "F7" button in virtual keyboard.
 msgctxt "button_key_f7"
 msgid "F7"
-msgstr ""
+msgstr "F7"
 
 #. Text for the "F8" button in virtual keyboard.
 msgctxt "button_key_f8"
 msgid "F8"
-msgstr ""
+msgstr "F8"
 
 #. Text for the "F9" button in virtual keyboard.
 msgctxt "button_key_f9"
 msgid "F9"
-msgstr ""
+msgstr "F9"
 
 #. Text for the "F10" button in virtual keyboard.
 msgctxt "button_key_f10"
 msgid "F10"
-msgstr ""
+msgstr "F10"
 
 #. Text for the "F11" button in virtual keyboard.
 msgctxt "button_key_f11"
 msgid "F11"
-msgstr ""
+msgstr "F11"
 
 #. Text for the "F12" button in virtual keyboard.
 msgctxt "button_key_f12"
 msgid "F12"
-msgstr ""
+msgstr "F12"
 
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
@@ -1442,24 +1440,24 @@ msgstr ""
 #. Text for button which, when clicked, adds a new host.
 msgctxt "hostpref_add_host"
 msgid "Add host"
-msgstr ""
+msgstr "افزودن میزبان"
 
 #. Text for button which, when clicked, saves an existing host.
 msgctxt "hostpref_edit_host"
 msgid "Save host"
-msgstr ""
+msgstr "ذخیره میزبان"
 
 #. Text for button which, when clicked, brings up an editor for adding a new
 #. pubkey.
 msgctxt "pubkey_add_new"
 msgid "Add new pubkey"
-msgstr ""
+msgstr "افزودن کلید عمومی جدید"
 
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
 msgid "Import existing pubkey"
-msgstr ""
+msgstr "وارد کردن کلید عمومی موجود"
 
 #. Text for dialog which explains that the host URI is invalid and asks to
 #. discard.
@@ -1524,3 +1522,4 @@ msgstr ""
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
 msgstr ""
+

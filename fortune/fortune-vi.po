@@ -7,18 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-02-28 00:29-0800\n"
+"POT-Creation-Date: 2019-11-04 23:48-0800\n"
 "PO-Revision-Date: 2018-05-17 13:52+0000\n"
 "Last-Translator: Hami <Unknown>\n"
+"Language: vi\n"
 "Language-Team: vi <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=(0)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2018-11-01 01:00+0000\n"
-"X-Generator: Launchpad (build 18810)\n"
-"Language: vi\n"
-"Generated-By: Babel 2.3.4\n"
+"Generated-By: Babel 2.7.0\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -78,8 +76,7 @@ msgid "Generate"
 msgstr "Tạo khoá"
 
 msgctxt "help_intro"
-msgid ""
-"Please select a topic below for more information on a particular subject."
+msgid "Please select a topic below for more information on a particular subject."
 msgstr ""
 "Hãy chọn một trong các topic bên dưới để biết thêm thông tin của từng "
 "subject cụ thể."
@@ -102,11 +99,11 @@ msgstr "Phím tắt cho Host"
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
 msgid ""
-"Long-press on your Android desktop to create direct shortcuts to frequently-"
-"used SSH hosts."
+"Long-press on your Android desktop to create direct shortcuts to "
+"frequently-used SSH hosts."
 msgstr ""
-"Nhấn giữ lâu lên desktop trên app Android của bạn để tạo ra các shortcuts "
-"đến những host SSH thường dùng."
+"Nhấn giữ lâu lên desktop trên app Android của bạn để tạo ra các shortcuts"
+" đến những host SSH thường dùng."
 
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
@@ -116,11 +113,11 @@ msgstr "Cuộn trang lên / Cuộn trang xuống"
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
 msgid ""
-"Swiping your finger up on the right side of the screen allows you to scroll "
-"backward and forward in the local terminal buffer history."
+"Swiping your finger up on the right side of the screen allows you to "
+"scroll backward and forward in the local terminal buffer history."
 msgstr ""
-"Khi ở local termial buffer history, vuốt lên ở phía bên phải màn hình để có "
-"thể cuộn lên và xuống màn hình đó."
+"Khi ở local termial buffer history, vuốt lên ở phía bên phải màn hình để "
+"có thể cuộn lên và xuống màn hình đó."
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
@@ -141,9 +138,9 @@ msgctxt "page_updn_content"
 msgid ""
 "NOTE: This must be enabled in settings.\n"
 "\n"
-"Swiping your finger up and down on the left third of the screen will send a "
-"page up and page down key to the remote host. Many programs map this to "
-"scrolling back into history such as irssi or tinyfugue."
+"Swiping your finger up and down on the left third of the screen will send"
+" a page up and page down key to the remote host. Many programs map this "
+"to scrolling back into history such as irssi or tinyfugue."
 msgstr "Chú ý: tính năng này phải được kích hoạt trong settings"
 
 #. Captions for images showing the page up/down gestures.
@@ -155,6 +152,8 @@ msgctxt "page_down"
 msgid "Page down"
 msgstr "Trang dưới"
 
+#. Header text for instructions about switching to the next and previous host
+#. in the terminal.
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
 msgstr "Đổi Hosts"
@@ -224,16 +223,15 @@ msgstr "Thu thập thông tin ngẫu nhiên (Entropy)"
 #, c-format
 msgctxt "pubkey_touch_prompt"
 msgid "Touch this box to gather randomness: %1$d%% done"
-msgstr ""
-"Chạm vào hộp thoại này để thu thập thông tin ngẫu nhiên: hoàn thành %1$d%%"
+msgstr "Chạm vào hộp thoại này để thu thập thông tin ngẫu nhiên: hoàn thành %1$d%%"
 
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr ""
-"Để đảm bảo tính ngẫu nhiên khi tạo key, hãy di chuyển ngón tay bạn một cách "
-"ngẫu nhiên trên khắp box bên dưới."
+"Để đảm bảo tính ngẫu nhiên khi tạo key, hãy di chuyển ngón tay bạn một "
+"cách ngẫu nhiên trên khắp box bên dưới."
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
@@ -415,7 +413,8 @@ msgstr "CẢNH BÁO: ĐỊNH DANH CỦA HOST TRUY CẬP TỪ XA ĐÃ BỊ THAY �
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "CÓ DẤU HIỆU CÓ NGƯỜI ĐANG THỰC HIỆN ĐIỀU BẤT THƯỜNG!\n"
@@ -490,8 +489,8 @@ msgid ""
 "Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
 "http://jsharkey.org/"
 msgstr ""
-"Bản quyền thuộc về © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
-"http://jsharkey.org/"
+"Bản quyền thuộc về © 2007-2008 Kenny Root http://the-b.org/, Jeffrey "
+"Sharkey http://jsharkey.org/"
 
 #. The category title for terminal emulation preferences.
 msgctxt "pref_emulation_category"
@@ -516,8 +515,7 @@ msgstr "Kích cỡ của Scrollback"
 #. Description of the scrollback size preference
 msgctxt "pref_scrollback_summary"
 msgid "Size of scrollback buffer to keep in memory for each console"
-msgstr ""
-"Kích cỡ của bộ nhớ đệm dành cho Scrollback để lưu bộ nhớ cho từng console"
+msgstr "Kích cỡ của bộ nhớ đệm dành cho Scrollback để lưu bộ nhớ cho từng console"
 
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
@@ -528,8 +526,7 @@ msgstr "Backup pubkeys (sao lưu)"
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
-msgstr ""
-"Giữ bản lưu của các khoá bí mật sử dùng cơ chế sao lưu backup của Android"
+msgstr "Giữ bản lưu của các khoá bí mật sử dùng cơ chế sao lưu backup của Android"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -594,8 +591,7 @@ msgstr "Phím Shift & F1-F10"
 #. Summary for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_summary"
 msgid "On hardware keyboards, number keys send F1-F10 with shift"
-msgstr ""
-"Với bàn phím cứng, phím Shift kết hợp với các phím số  để thay cho F1-F10"
+msgstr "Với bàn phím cứng, phím Shift kết hợp với các phím số  để thay cho F1-F10"
 
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
@@ -605,8 +601,7 @@ msgstr "Phím Ctrl & F1-F10"
 #. Summary for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_summary"
 msgid "On software keyboards, number keys send F1-F10 with ctrl"
-msgstr ""
-"Với bàn phím cứng, phím Ctrl kết hợp với các phím số  để thay cho F1-F10"
+msgstr "Với bàn phím cứng, phím Ctrl kết hợp với các phím số  để thay cho F1-F10"
 
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
@@ -648,8 +643,7 @@ msgstr "Các phím tắt của thư mục"
 #. Summary for the keyboard shortcuts preference
 msgctxt "pref_keymode_summary"
 msgid "Select how to use Alt for '/' and Shift for Tab"
-msgstr ""
-"Chọn cách dùng phím Alt thay cho phím '/' và phím Shift thay cho phím Tab"
+msgstr "Chọn cách dùng phím Alt thay cho phím '/' và phím Shift thay cho phím Tab"
 
 #. Name for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_title"
@@ -659,8 +653,7 @@ msgstr "Các thay đổi đỉnh đính lên top"
 #. Summary for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_summary"
 msgid "Modifier keys remain enabled until another key is pressed"
-msgstr ""
-"Các phím điều chỉnh vẫn được kích hoạt cho đến khi một phím khác được nhấn"
+msgstr "Các phím điều chỉnh vẫn được kích hoạt cho đến khi một phím khác được nhấn"
 
 #. Sticky modifier preference value description for when only the Alt key
 #. should be a sticky modifier.
@@ -697,7 +690,8 @@ msgstr "Giữ kết nối Wi-Fi"
 msgctxt "pref_wifilock_summary"
 msgid "Prevent Wi-Fi from turning off when a session is active"
 msgstr ""
-"Giữ kết nối Wi-Fi không bị tắt khi đang có một phiên làm việc đang hoạt động"
+"Giữ kết nối Wi-Fi không bị tắt khi đang có một phiên làm việc đang hoạt "
+"động"
 
 #. Name for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_title"
@@ -708,7 +702,8 @@ msgstr ""
 msgctxt "pref_bumpyarrows_summary"
 msgid "Vibrate when sending arrow keys; useful for laggy connections"
 msgstr ""
-"Rung khi gửi các phím mũi tên. Hữu dụng khi các kết nối không ổn định (lag)"
+"Rung khi gửi các phím mũi tên. Hữu dụng khi các kết nối không ổn định "
+"(lag)"
 
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
@@ -739,10 +734,8 @@ msgstr "Thông báo nhắc background"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
-msgstr ""
-"Gửi thông báo nhắc khi một Terminal đang chạy ở background phát chuông"
+msgid "Send notification when a terminal running in the background sounds a bell."
+msgstr "Gửi thông báo nhắc khi một Terminal đang chạy ở background phát chuông"
 
 #. Preference selection to indicate use of right side of keyboard for special
 #. shortcuts.
@@ -805,8 +798,7 @@ msgstr "Tự động sau khi login"
 #. Host post-login automation preference summary
 msgctxt "hostpref_postlogin_summary"
 msgid "Commands to run on remote server once authenticated"
-msgstr ""
-"Các lệnh sẽ chạy ở server truy cập đến ngay sau khi xác thực thành công"
+msgstr "Các lệnh sẽ chạy ở server truy cập đến ngay sau khi xác thực thành công"
 
 #. Host compression preference title
 msgctxt "hostpref_compression_title"
@@ -827,8 +819,7 @@ msgstr "Bắt đầu phiên làm việc"
 #. connection or not
 msgctxt "hostpref_wantsession_summary"
 msgid "Disable this preference to only use port forwards"
-msgstr ""
-"Vô hiệu hoá tuỳ chọn này để chỉ dùng các cổng chuyển tiếp (port forward)"
+msgstr "Vô hiệu hoá tuỳ chọn này để chỉ dùng các cổng chuyển tiếp (port forward)"
 
 #. Setting for whether the host should be reconnected to automatically upon
 #. disconnect
@@ -968,11 +959,11 @@ msgstr "Tạo cổng chuyển tiếp (port forward)"
 
 msgctxt "portforward_problem"
 msgid ""
-"Problem creating port forward, maybe you're using ports under 1024 or port "
-"is already used?"
+"Problem creating port forward, maybe you're using ports under 1024 or "
+"port is already used?"
 msgstr ""
-"Không thể tạo cổng chuyển tiếp. Có thể bạn đang dùng cổng nhỏ hơn 1024 hoặc "
-"cổng bạn chọn đã bị sử dụng?"
+"Không thể tạo cổng chuyển tiếp. Có thể bạn đang dùng cổng nhỏ hơn 1024 "
+"hoặc cổng bạn chọn đã bị sử dụng?"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
@@ -1176,19 +1167,18 @@ msgstr "Phương thức xác thực 'mật khẩu' thất bại"
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
 msgstr ""
-"Thử xác thực 'publickey' với các khoá công khai (public key) bất kì có trong "
-"bộ nhớ trong"
+"Thử xác thực 'publickey' với các khoá công khai (public key) bất kì có "
+"trong bộ nhớ trong"
 
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
 msgstr ""
-"Khoá công khai đã chọn không hợp lệ, hãy thử chọn lại khoá trong trình chỉnh "
-"sửa Host"
+"Khoá công khai đã chọn không hợp lệ, hãy thử chọn lại khoá trong trình "
+"chỉnh sửa Host"
 
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
-msgstr ""
-"Thử xác thực 'publickey' với một khoá công khai (public key) được chỉ định"
+msgstr "Thử xác thực 'publickey' với một khoá công khai (public key) được chỉ định"
 
 #, c-format
 msgctxt "terminal_auth_pubkey_fail"
@@ -1549,3 +1539,4 @@ msgstr "Không xác định được loại thuật toán sinh key"
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
 msgstr "(đã mã hoá)"
+
