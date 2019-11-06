@@ -1,610 +1,265 @@
 <?xml version='1.0' encoding='utf-8'?>
-<!--
-/*
- * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2007 Kenny Root, Jeffrey Sharkey
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
--->
-
-<resources xmlns:tools="http://schemas.android.com/tools"
-	xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-	<!-- Summary of what ConnectBot is; used as a short description in the Android running apps list -->
-	<string name="app_desc">Простой и мощный SSH-клиент с открытым исходным кодом.</string>
-
-	<!-- Summary of what the ConnectBot service does; displayed in the Android running apps list -->
-	<string name="service_desc">Управление SSH-подключениями и загруженными публичными ключами</string>
-
-	<!-- Window title for the Host List -->
-	<string name="title_hosts_list">Серверы</string>
-	<!-- Window title for the Pubkeys List -->
-	<string name="title_pubkey_list">Публичные ключи</string>
-	<!-- Window title for the Port Forwards List -->
-	<string name="title_port_forwards_list">Проброс портов</string>
-	<!-- Window title when editing host details -->
-	<string name="title_host_editor">Изменить сервер</string>
-	<!-- Window title for Help index -->
-	<string name="title_help">Помощь</string>
-	<!-- Window title for color list editing screen -->
-	<string name="title_colors">Настройка цветов</string>
-	<!-- Dialog title for color picker dialog -->
-	<string name="title_color_picker">Выбор цвета</string>
-	<!-- Window title for the global applications settings activity. -->
-	<string name="title_settings">Настройки</string>
-	<!-- Window title when generating a new pubkey. -->
-	<string name="title_pubkey_generate">Генерация</string>
-
-	<string name="help_intro">Выберите то, о чём Вы хотите узнать</string>
-
-	<!-- Title for the help page with the terms & conditions of the app. -->
-	<string name="terms_and_conditions">Условия использования</string>
-
-	<!-- Title for the help page with the hints about the app. -->
-	<string name="hints">Подсказки</string>
-
-	<!-- Header text for instructions about creating host shortcuts. -->
-	<string name="host_shortcuts_header">Ярлыки серверов</string>
-
-	<!-- Instructions about creating host shortcuts. -->
-	<string name="host_shortcuts_content">Для создания ярлыков для часто используемых серверов SSH произведите долгое нажатие на экране вашего устройства.</string>
-
-	<!-- Header text for instructions about scrolling the terminal. -->
-	<string name="scroll_hints_header">Прокрутка назад / Прокрутка вперёд</string>
-
-	<!-- Instructions about scrolling the terminal. -->
-	<string name="scroll_hints_content">Проводя пальцем вверх по правой стороне экрана, Вы можете прокручивать назад и вперед историю локального буфера терминала.</string>
-
-	<!-- Captions for images showing the scroll back/forward gestures. -->
-	<string name="scrolling_back">Прокрутка назад</string>
-	<string name="scrolling_forward">Прокрутка вперёд</string>
-
-	<!-- Header text for instructions about paging up and down in the terminal. -->
-	<string name="page_updn_header">Страница вверх / Страница вниз</string>
-
-	<!-- Instructions about paging up and down in the terminal. -->
-	<string name="page_updn_content">ПРИМЕЧАНИЕ: Это должно быть включено в настройках\n\nПроведение пальцем вверх и вниз в левой трети экрана будет посылать на удалённый сервер нажатия клавиш \"страница вверх\" и \"страница вниз\". Многие программы используют это для прокрутки по истории, такие как irssi или tinyfugue.</string>
-
-	<!-- Captions for images showing the page up/down gestures. -->
-	<string name="page_up">Стр. вверх</string>
-	<string name="page_down">Стр. вниз</string>
-
-	<!-- Header text for instructions about switching to the next and previous host in the terminal. -->
-	<string name="switching_hosts_header">Переключение серверов</string>
-
-	<!-- Instructions about switching to the next and previous host in the terminal. -->
-	<string name="switching_hosts_content">Перемещение пальца от одной стороны экрана к другой будет переключать между серверами, к которым сейчас есть подключения.</string>
-
-	<!-- Captions for images showing the next/previous host gestures. -->
-	<string name="next_host">Следующий сервер</string>
-	<string name="prev_host">Предыдущий сервер</string>
-
-	<!-- Title for the help dialog showing keyboard shortcuts. -->
-	<string name="keyboard_shortcuts">Горячие клавиши</string>
-	<!-- Text in a keyboard shortcuts list lined up to keys which increase the terminal font-size. -->
-	<string name="increase_font_size">Увеличить размер шрифта</string>
-	<!-- Keyboard shortcut for increasing the font size. -->
-	<string name="increase_font_shortcut">Ctrl и +</string>
-	<!-- Text in a keyboard shortcuts list lined up to keys which decrease the terminal font-size. -->
-	<string name="decrease_font_size">Уменьшить шрифт</string>
-	<!-- Keyboard shortcut for decreasing the font size. -->
-	<string name="decrease_font_shortcut">Ctrl и -</string>
-
-	<string name="pubkey_generate">Генерировать</string>
-	<string name="pubkey_delete">Удалить ключ</string>
-	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
-	<string name="pubkey_gather_entropy">Сбор энтропии</string>
-	<string name="pubkey_touch_prompt">Касайтесь поля, чтобы генерировать случайную информацию: %1$d%% завершено</string>
-	<string name="pubkey_touch_hint">Чтобы обеспечить случайную выборку, при генерации ключа, водите пальцем случайным образом по полю ниже.</string>
-	<string name="pubkey_generating">Генерация пары ключей…</string>
-	<string name="pubkey_copy_private">Копирование закрытого ключа</string>
-	<string name="pubkey_copy_public">Копирование открытого ключа</string>
-	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
-	<string name="pubkey_list_empty">Выберите Меню для создания или импорта пары ключей</string>
-	<string name="pubkey_unknown_format">Неизвестный формат</string>
-	<string name="pubkey_change_password">Сменить пароль</string>
-	<!-- When attempting to import a pubkey, this is the title for the dialog box where the user should pick the desired file from the SD card contents. -->
-	<string name="pubkey_list_pick">Загрузить с SD карты</string>
-	<!-- Message shown to the user when a selected pubkey to import was not parseable for some reason. -->
-	<string name="pubkey_import_parse_problem">Проблема разбора импортированного закрытого ключа</string>
-	<string name="pubkey_unlock">Разблокировать ключ</string>
-	<!-- Feedback given to the user when the password that they have entered for the pubkey is incorrect. -->
-	<string name="pubkey_failed_add">Неверный пароль для ключа \'%1$s\'. Авторизация не удалась</string>
-	<!-- Context menu entry that allows a user to load a pubkey entry into memory. This is equivalent to "unlocking" a password-protected pubkey entry. -->
-	<string name="pubkey_memory_load">Загрузить в память</string>
-	<!-- Context menu entry that allows a user to unload a pubkey entry from memory. This is equivalent to "locking" a password-protected pubkey entry. -->
-	<string name="pubkey_memory_unload">Выгрузить из памяти</string>
-	<!-- Context menu checkbox that indicates that this pubkey entry should attempt to be loaded upon starting the app. -->
-	<string name="pubkey_load_on_start">Загружать ключ при старте</string>
-	<!-- Pubkey preference asking user whether the key use should be confirmed via prompt before it can be used for authentication -->
-	<string name="pubkey_confirm_use">Подтверждать перед использованием</string>
-
-	<!-- When the list of port forwards for a host is empty, this text is is shown in the space where the list of port forwards are normally present. Note that the '\n' splits lines, so it's actually "create port forwards" -->
-	<string name="portforward_list_empty">Выберите Меню для переадресации порта</string>
-	<!-- Context menu action where a user can edite the selected port forward for the host. -->
-	<string name="portforward_edit">Правка переадресации порта</string>
-	<!-- Context menu action where a user can delete the selected port forward from the host. -->
-	<string name="portforward_delete">Удалить переадресацию порта</string>
-
-	<string name="prompt_nickname">Псевдоним:</string>
-	<!-- An example string that could be used as a nickname for a pubkey. -->
-	<string name="prompt_nickname_hint_pubkey">Мой рабочий ключ</string>
-	<!-- The source TCP port for port forwards. -->
-	<string name="prompt_source_port">С порта:</string>
-	<!-- The "host:port" combination used for port forward destinations. -->
-	<string name="prompt_destination">На порт:</string>
-	<!-- Prompt presented to the user when the server requests that they change their password. This is the entry for the old password. -->
-	<string name="prompt_old_password">Старый пароль:</string>
-	<!-- Prompt for user to enter their password to log into the host when using 'password' authentication. -->
-	<string name="prompt_password">Пароль:</string>
-	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
-	<string name="prompt_again">(повторить)</string>
-	<!-- Label for the user to select port forward type. -->
-	<string name="prompt_type">Тип:</string>
-	<!-- Hint given below the password input box that lets them know that they are allowed to leave the field blank. -->
-	<string name="prompt_password_can_be_blank">Примечание: пароль не может быть пустым</string>
-	<!-- Prompt for the size of the private key in bits. -->
-	<string name="prompt_bits">Бит:</string>
-
-	<!-- Prompt for the password to unlock a certain pubkey. -->
-	<string name="prompt_pubkey_password">Пароль для ключа \'%1$s\'</string>
-
-	<!-- Prompt for whether to allow SSH Authentication Agent to use the specified key. Note that the '\n' means split the line so it's actually "host to use key" -->
-	<string name="prompt_allow_agent_to_use_key">Разрешить удалённому\nсерверу использовать ключ \'%1$s\'?</string>
-
-	<!-- The header of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning_header">ВНИМАНИЕ! ИДЕНТИФИКАЦИЯ УДАЛЕННОГО СЕРВЕРА ЗАМЕНЕНА</string>
-	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
-	<string name="host_verification_failure_warning">Похоже есть возможность что вас ломают. Или кто-то изменил ключ на удаленном сервере.</string>
-
-	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
-	<string name="prompt_host_disconnected">Сервер отключился.\nЗакрыть сессию ?</string>
-	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
-	<string name="prompt_continue_connecting">Хотите продолжить\nпопытки соединения?</string>
-
-	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
-	<string name="host_authenticity_warning">Подлинность сервера \'%1$s\' не может быть установлена</string>
-	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
-	<string name="host_fingerprint">Отпечаток ключа сервера %1$s - %2$s</string>
-
-	<string name="alert_passwords_do_not_match_msg">Пароли не совпадают!</string>
-	<string name="alert_wrong_password_msg">Неверный пароль!</string>
-	<string name="alert_key_corrupted_msg">Возможно закрытый ключ повреждён!</string>
-	<string name="alert_sdcard_absent">SD карта не вставлена!</string>
-
-	<!-- Change an existing item's (e.g., host or pubkey) details. -->
-	<string name="button_change">Изменить</string>
-	<!-- Button that resizes the screen to the user-specified dimensions. -->
-	<string name="button_resize">Изменить размер</string>
-
-	<string name="alert_disconnect_msg">Соединение потеряно</string>
-
-	<string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
-
-	<!-- The category title for terminal emulation preferences. -->
-	<string name="pref_emulation_category">Эмулятор терминала</string>
-
-	<!-- Name for the emulation terminal type preference. -->
-	<string name="pref_emulation_title">Режим эмуляции</string>
-	<!-- Description of the emulation terminal type preference. -->
-	<string name="pref_emulation_summary">Режим эмуляции терминала для PTY соединений</string>
-
-	<!-- Name for the scrollback size preference -->
-	<string name="pref_scrollback_title">Размер прокрутки</string>
-	<!-- Description of the scrollback size preference -->
-	<string name="pref_scrollback_summary">Размер буфера прокрутки в памяти для каждой консоли</string>
-
-	<!-- Title of the preference used to enable or disable the back-up of pubkeys. -->
-	<string name="pref_backupkeys_title">Резервировать открытые ключи</string>
-	<!-- Summary for the preference used to enable or disable the back-up of pubkeys. -->
-	<string name="pref_backupkeys_summary">Сохранять резервные копии открытых ключей, используя механизм резервного копирования Android</string>
-
-	<!-- The category title for user interface preferences -->
-	<string name="pref_ui_category">Пользовательский интерфейс</string>
-
-	<!-- Name for the rotation mode preference -->
-	<string name="pref_rotation_title">Ориентация экрана</string>
-	<!-- Summary for the rotation mode preference -->
-	<string name="pref_rotation_summary">Ориентация экрана при использовании клавиатуры</string>
-
-	<!-- Name for the titlebar hide preference -->
-	<string name="pref_titlebarhide_title">Автоскрытие заголовка</string>
-	<!-- Summary for the titlebar hide preference -->
-	<string name="pref_titlebarhide_summary">Нажмите на консоль, чтобы показать заголовок и меню</string>
-
-	<!-- Title for special keys always visible preference -->
-	<string name="pref_alwaysvisible_title">Специальные клавиши всегда видны</string>
-
-	<!-- Name for the page up/down gesture preference -->
-	<string name="pref_pg_updn_gesture_title">Жест для Page Up/Down</string>
-	<!-- Summary for the full screen preference -->
-	<string name="pref_pg_updn_gesture_summary">Проведите по левой трети экрана, чтобы послать в терминал Page Up/Down</string>
-
-	<!-- Name for the full screen preference -->
-	<string name="pref_fullscreen_title">Полный экран</string>
-	<!-- Summary for the full screen preference -->
-	<string name="pref_fullscreen_summary">Убирать панель статуса во время работы с консолью</string>
-
-	<!-- The category title for keyboard preferences -->
-	<string name="pref_keyboard_category">Клавиатура</string>
-
-	<!-- Name for the shifted numbers are f-keys preference -->
-	<string name="pref_shiftfkeys_title">Shift+Num как F-клавиши</string>
-	<!-- Summary for the shifted numbers are f-keys preference -->
-	<string name="pref_shiftfkeys_summary">На аппаратной клавиатуре цифровые клавиши при нажатии Shift будут посылать F1-F10</string>
-
-	<!-- Name for the ctrl'ed numbers are f-keys preference -->
-	<string name="pref_ctrlfkeys_title">Ctrl+Num как F-клавиши</string>
-	<!-- Summary for the ctrl'ed numbers are f-keys preference -->
-	<string name="pref_ctrlfkeys_summary">На экранной клавиатуре цифровые клавиши при нажатии Ctrl будут посылать F1-F10</string>
-
-	<!-- Name for the volume keys control font size preference -->
-	<string name="pref_volumefont_title">Клавиши громкости меняют размер шрифта</string>
-	<!-- Summary for the volume keys control font size preference -->
-	<string name="pref_volumefont_summary">Размер шрифта также может быть настроен для каждого сервера отдельно</string>
-
-	<!-- Name for the memorize keys preference -->
-	<string name="pref_memkeys_title">Запомнить ключи в памяти</string>
-	<!-- Summary for the memorize keys preference -->
-	<string name="pref_memkeys_summary">Держать ключи в памяти пока процессы работают</string>
-
-	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">Постоянные соединения</string>
-	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">Принудительно сохранять соединения в фоновом режиме.</string>
-
-	<!-- Name for the keyboard shortcuts preference -->
-	<string name="pref_keymode_title">Ярлыки папок</string>
-	<!-- Summary for the keyboard shortcuts preference -->
-	<string name="pref_keymode_summary">Выберите, как использовать Alt вместо \'/\' и Shift вместо Tab</string>
-
-	<!-- Name for the sticky modifiers preference -->
-	<string name="pref_stickymodifiers_title">Залипание модификаторов</string>
-	<!-- Summary for the sticky modifiers preference -->
-	<string name="pref_stickymodifiers_summary">Клавиши-модификаторы остаются активными до тех пор, пока не будет нажата другая клавиша</string>
-
-	<!-- Sticky modifier preference value description for when only the Alt key should be a sticky modifier. -->
-	<string name="only_alt">Только Alt</string>
-
-	<!-- Name for the camera shortcut usage preference -->
-	<string name="pref_camera_title">Ярлык камеры</string>
-	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_camera_summary">Выберите ярлык, запускаемый при нажатии клавиши камеры</string>
-
-	<!-- Name for the keep screen on preference -->
-	<string name="pref_keepalive_title">Держать экран включенным</string>
-	<!-- Summary for the camera shortcut usage preference -->
-	<string name="pref_keepalive_summary">Препятствовать отключению экрана при работе в консоли</string>
-
-	<!-- Name for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_title">Держать Wi-Fi включенным</string>
-	<!-- Summary for the Wi-Fi lock preference -->
-	<string name="pref_wifilock_summary">Препятствовать отключению Wi-Fi при активном сеансе</string>
-
-	<!-- Name for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_title">Настройки обратной связи при нажатии</string>
-	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_summary">Вибрировать при отсылке клавиш со стерлками. Полезно для медленных соединений</string>
-
-	<!-- Category title for the Terminal Bell preferences -->
-	<string name="pref_bell_category">Звуковой сигнал терминала</string>
-
-	<!-- Checkbox preference title for the audible terminal bell feature -->
-	<string name="pref_bell_title">Включить звонок</string>
-
-	<!-- Title for the slider preference to set the volume -->
-	<string name="pref_bell_volume_title">Громкость сигнала</string>
-
-	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
-	<string name="pref_bell_vibrate_title">Виброотклик</string>
-
-	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
-	<string name="pref_bell_notification_title">Фоновые уведомления</string>
-	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
-	<string name="pref_bell_notification_summary">Включить уведомления для терминала работающего в фоновом процессе</string>
-
-	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
-	<string name="list_keymode_right">Для специальных функций использовать клавиши с правой стороны</string>
-	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
-	<string name="list_keymode_left">Использовать клавиши с левой стороны</string>
-	<!-- Preference selection to indicate never to use special shortcut keys. -->
-	<string name="list_keymode_none">Отключить</string>
-
-	<!-- Preference to not use pubkeys to authenticate to this host. -->
-	<string name="list_pubkeyids_none">Не использовать ключи</string>
-	<!-- Preference to use any pubkey to authenticate to this host. -->
-	<string name="list_pubkeyids_any">Используйте любой разблокированный ключ</string>
-
-	<!-- Host nickname field preference title -->
-	<string name="hostpref_nickname_title">Псевдоним</string>
-
-	<!-- Host color category preference title -->
-	<string name="hostpref_color_title">Цвет для категории</string>
-
-	<!-- Host's default font size when opening the terminal in points (pt) -->
-	<string name="hostpref_fontsize_title">Размер шрифта (пикс.)</string>
-
-	<!-- Host pubkey usage preference title -->
-	<string name="hostpref_pubkeyid_title">Использовать авторизацию по открытому ключу</string>
-
-	<!-- Preference title for the SSH Authentication Agent Forwarding for a host connection -->
-	<string name="hostpref_authagent_title">Использовать агента SSH</string>
-
-	<!-- Host post-login automation preference title -->
-	<string name="hostpref_postlogin_title">Автоматизация после авторизации</string>
-	<!-- Host post-login automation preference summary -->
-	<string name="hostpref_postlogin_summary">Комманды, выполняемые на удаленной машине после подключения</string>
-
-	<!-- Host compression preference title -->
-	<string name="hostpref_compression_title">Сжатие</string>
-	<!-- Summary for compression preference -->
-	<string name="hostpref_compression_summary">Это может быть полезным в медленных сетях</string>
-
-	<!-- Setting for whether we want a session to start up when we connect to a host -->
-	<string name="hostpref_wantsession_title">Начать сеанс оболочки</string>
-	<!-- Summary for field asking whether a shell session should be started up upon connection or not -->
-	<string name="hostpref_wantsession_summary">Отключите эту настройку, чтобы использовать только переадресацию портов</string>
-
-	<!-- Setting for whether the host should be reconnected to automatically upon disconnect -->
-	<string name="hostpref_stayconnected_title">Держать подключение</string>
-	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
-	<string name="hostpref_stayconnected_summary">Пытаться переподключиться при отключении узла</string>
-
-	<!-- Setting for whether we should prompt to close after getting disconnected -->
-	<string name="hostpref_quickdisconnect_title">Закрыть при отключении</string>
-	<string name="hostpref_quickdisconnect_summary">Закрыть сразу после удаленного отключения без запроса</string>
-
-	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
-	<string name="hostpref_delkey_title">Клавиша DEL</string>
-
-	<!-- Host character encoding preference title -->
-	<string name="hostpref_encoding_title">Кодировка</string>
-
-	<!-- Username field title for host editor preference -->
-	<string name="hostpref_username_title">Имя пользователя</string>
-
-	<!-- Hostname field title for host editor preference -->
-	<string name="hostpref_hostname_title">Сервер</string>
-
-	<!-- Port field title for host editor preference -->
-	<string name="hostpref_port_title">Порт</string>
-
-	<!-- Displayed to indicate a host has never been connected to. -->
-	<string name="bind_never">Ни когда не подключался</string>
-
-	<!-- Message given when user copies from the terminal. -->
-	<plurals name="console_copy_done">
-		<item quantity="one">Скопировано %1$d байт в буфер обмена</item>
-		<item quantity="other">Скопировано %1$d байт в буфер обмена</item>
-	</plurals>
-
-	<!-- Instructions for how to copy from the terminal. The '\n' entries are to split lines to improve readability and prevent wrapping off the screen. -->
-	<string name="console_copy_start">Коснитесь и перетащите\nили используйте геймпад, чтобы\nвыбрать область для копирования</string>
-
-	<!-- Button to close the disconnected terminal window. -->
-	<string name="console_menu_close">Закрыть</string>
-	<!-- Button to begin copying from the terminal to the clipboard. -->
-	<string name="console_menu_copy">Копировать</string>
-	<!-- Button to paste from the clipboard to the terminal. -->
-	<string name="console_menu_paste">Вставить</string>
-	<!-- Button that brings user to the Port Forwards List. -->
-	<string name="console_menu_portforwards">Перенаправления портов</string>
-	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
-	<string name="console_menu_resize">Зафиксировать размер</string>
-	<!-- Button that brings up the list of URLs on the current screen -->
-	<string name="console_menu_urlscan">Список URL</string>
-
-	<!-- Button label to answer "Yes" to a yes/no prompt -->
-	<string name="button_yes">Да</string>
-	<!-- Button label to answer "No" to a yes/no prompt -->
-	<string name="button_no">Нет</string>
-
-	<!-- Selection for a "local" port forward. E.g., connections to a port listening locally is forwarded to the remote end's listening port. -->
-	<string name="portforward_local">Локальный</string>
-	<!-- Selection for a "remote" port forward. E.g., connections to a port listening remotely is forwarded to the local end's listening port. -->
-	<string name="portforward_remote">Удалённый</string>
-	<!-- Selection for a "dynamic" port forward. E.g., connections to a port listening locally is forwarded based on the SOCKS protocol to an arbitrary remote host and port. -->
-	<string name="portforward_dynamic">Динамический (SOCKS)</string>
-	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
-	<string name="portforward_pos">Создать перенаправление порта</string>
-
-	<string name="portforward_problem">Не удалось создать перенаправление порта. Может быть вы используете порты меньше чем 1024 или пор уже используется?</string>
-
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_username">имя пользователя</string>
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_hostname">имя сервера</string>
-	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
-	<string name="format_port">порт</string>
-
-	<string name="list_menu_pubkeys">Управление открытыми ключами</string>
-	<!-- Selection choice to sort hosts by color. -->
-	<string name="list_menu_sortcolor">Сортировать по цвету</string>
-	<!-- Selection choice to sort hosts by nickname. -->
-	<string name="list_menu_sortname">Сортировать по имени</string>
-	<string name="list_menu_disconnect">Отключиться от всех</string>
-	<string name="list_menu_settings">Настройки</string>
-
-	<string name="list_host_disconnect">Отключить</string>
-	<string name="list_host_edit">Редактировать сервер</string>
-	<string name="list_host_portforwards">Редактировать перенаправление портов</string>
-	<string name="list_host_delete">Удалить сервер</string>
-	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
-	<string name="list_host_empty">Серверы ещё не добавлены</string>
-
-	<!-- Default screen rotation preference selection -->
-	<string name="list_rotation_default">По умолчанию</string>
-	<string name="list_rotation_land">Только альбомная</string>
-	<string name="list_rotation_port">Только портретная</string>
-	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
-	<string name="list_rotation_auto">Автоматически</string>
-
-	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
-	<string name="list_camera_ctrlaspace">Ctrl+A затем пробел</string>
-
-	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
-	<string name="list_camera_none">Ни чего</string>
-
-	<string name="delete_message">Вы уверены, что хотите удалить \'%1$s\'?</string>
-	<string name="delete_pos">Да, удалить</string>
-	<string name="delete_neg">Отменить</string>
-
-	<string name="disconnect_all_message">Вы действительно хотите отключиться от всех подключенных серверов?</string>
-	<string name="disconnect_all_pos">Да, отключиться</string>
-	<string name="disconnect_all_neg">Отмена</string>
-
-	<string name="terminal_no_hosts_connected">На данный момент нет подключенных серверов</string>
-
-	<!-- Displayed in terminal when attempting to connect to a host. The first two
-	     variables are host:port and the third is the protocol (e.g., SSH) -->
-	<string name="terminal_connecting">Подключение к %1$s:%2$d через %3$s</string>
-
-	<!-- Displays the host key to the user in the terminal -->
-	<string name="terminal_sucess">Проверенный узел \'%1$s\' ключ: %2$s</string>
-	<string name="terminal_failed">Ошибка проверки ключа сервера.</string>
-
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_s2c_algorithm">Алгоритм сервер-клиент: %1$s %2$s</string>
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_c2s_algorithm">Алгоритм клиент-сервер: %1$s %2$s</string>
-	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
-	<string name="terminal_using_algorithm">Используемый алгоритм: %1$s %2$s</string>
-
-	<!-- Displayed on the terminal during a SSH connection describing the cryptographic key
-	     exchange algorithm used to establish a shared secret between this program and the
-	     server. -->
-	<string name="terminal_kex_algorithm">Алгоритм обмена ключами: %s</string>
-
-	<string name="terminal_auth">Пробуем авторизоваться</string>
-
-	<string name="terminal_auth_pass">Попытка авторизации \'по паролю\'</string>
-	<string name="terminal_auth_pass_fail">Авторизация \'по паролю\' не удалась</string>
-
-	<string name="terminal_auth_pubkey_any">Попытка авторизации публичными ключами из памяти</string>
-	<string name="terminal_auth_pubkey_invalid">Выбранный открытый ключ неверен, выберите другой в редакторе сервера</string>
-	<string name="terminal_auth_pubkey_specific">Попытка авторизации с определённым открытым ключом</string>
-	<string name="terminal_auth_pubkey_fail">Авторизация открытым ключом \'%1$s\' не удалась</string>
-
-	<string name="terminal_auth_ki">Попытка \'интерактивной с клавиатурой\' авторизации</string>
-	<string name="terminal_auth_ki_fail">Авторизация \'интерактивная с клавиатурой\' не удалась</string>
-
-	<string name="terminal_auth_fail">Ваш сервер не поддерживает авторизацию \'по паролю\' и \'интерактивную с клавиатурой\'</string>
-
-	<string name="terminal_no_session">Настройки сервера не позволяют запустить данную сессию</string>
-	<string name="terminal_enable_portfoward">Включить переадресацию порта: %1$s</string>
-
-	<string name="local_shell_unavailable">Ошибка! На данном устройстве отсутствует локальная оболочка.</string>
-
-	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
-	<string name="notification_text">%1$s требует Вашего внимания</string>
-
-	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
-	<string name="no">Нет</string>
-	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
-	<string name="yes">Да</string>
-
-	<!-- Menu selection to reset colors to their defaults. -->
-	<string name="menu_colors_reset">Сбросить</string>
-
-	<!-- Displayed in the notification bar that connections are active -->
-	<string name="app_is_running">ConnectBot запущен</string>
-
-	<string name="color_red">красный</string>
-	<string name="color_green">зелёный</string>
-	<string name="color_blue">синий</string>
-	<string name="color_gray">серый</string>
-
-	<!-- Very short label indicating the number next to it is "foreground color" number. -->
-	<string name="colors_fg_label">"ПП: %1$d"</string>
-
-	<!-- Very short label indicating the number next to it is "background color" number. -->
-	<string name="color_bg_label">"ЗП: %1$d"</string>
-
-	<!-- Accessibility text for connection state in list of hosts when the host is currently
-	 connected. -->
-	<string name="image_description_connected">Подключено.</string>
-
-	<!-- Accessibility text for connection state in list of hosts when the host is currently
-	     disconnected after having been previously connected. -->
-	<string name="image_description_disconnected">Отключено.</string>
-
-	<!-- Describes the icon of the "locked pubkey" icon for accessibility purposes. -->
-	<string name="image_description_key_is_locked">Ключ заблокирован</string>
-
-	<!-- Describes the icon of the "send control character" button in the terminal view for
-	     accessibility purposes. -->
-	<string name="image_description_toggle_control_character">Toggle control character.</string>
-
-	<!-- Describes the icon of the "send escape character" button in the terminal view for
-	     accessibility purposes. -->
-	<string name="image_description_send_escape_character">Послать символ Esc</string>
-
-	<!-- Describes the icon of the "send tab character" button in the terminal view for
-	     accessibility purposes. -->
-	<string name="image_description_send_tab_character">Послать символ Tab</string>
-
-	<!-- Describes the icon of the "hide keyboard" button in the terminal view for accessibility
-	     purposes. -->
-	<string name="image_description_hide_keyboard">Скрыть клавиатуру.</string>
-
-	<!-- Describes the icon of the "show keyboard" button in the terminal view for accessibility
-	     purposes. -->
-	<string name="image_description_show_keyboard">Показать клавиатуру.</string>
-
-	<!-- Describes the icon of the "Arrow up" button in the terminal view for accessibility
-	     purposes. -->
-	<string name="image_description_up">Стрелка вверх</string>
-
-	<!-- Describes the icon of the "Arrow down" button in the terminal view for accessibility
-	     purposes. -->
-	<string name="image_description_down">Стрелка вниз</string>
-
-	<!-- Describes the icon of the "Arrow left" button in the terminal view for accessibility
-	     purposes. -->
-	<string name="image_description_left">Стрелка влево</string>
-
-	<!-- Describes the icon of the "Arrow right" button in the terminal view for accessibility
-	     purposes. -->
-	<string name="image_description_right">Стрелка вправо</string>
-
-	<!-- Describes the "volume" icon in the bell volume dialog for accessibility purposes. -->
-	<string name="image_description_volume">Громкость</string>
-
-	<!-- Label for spinner which allows user to select SSH/Telnet/Local. -->
-	<string name="protocol_spinner_label">Протокол</string>
-	<!-- Label for button which expands/collapses section. -->
-	<string name="expand">Развернуть</string>
-	<!-- Label for checkbox which, when check, makes SSL authorization require confirmation. -->
-	<string name="hostpref_authagent_with_confirmation">требуется подтверждение</string>
-	<!-- Text for button which, when clicked, adds a new host. -->
-	<string name="hostpref_add_host">Добавить сервер</string>
-	<!-- Text for button which, when clicked, saves an existing host. -->
-	<string name="hostpref_edit_host">Сохранить сервер</string>
-	<!-- Text for button which, when clicked, brings up an editor for adding a new pubkey. -->
-	<string name="pubkey_add_new">Добавить новый публичный ключ</string>
-	<!-- Text for button which, when clicked, brings up picker to import an existing pubkey. -->
-	<string name="pubkey_import_existing">Импортировать существующий ключ</string>
-	<!-- Text for dialog which explains that the host URI is invalid and asks to discard. -->
-	<string name="discard_host_changes_message">URI сервера неверен. Хотите отменить изменения?</string>
-	<!-- Text for button which discards changes to the host. -->
-	<string name="discard_host_button">Отменить</string>
-	<!-- Text for button which does not discard changes and keeps editing. -->
-	<string name="discard_host_cancel_button">Продолжить редактирование</string>
-	<!-- In a list of all the key pairs the user has generated or imported into their device.
-	     Describes a key type of an unknown algorithm. -->
-	<string name="key_type_unknown">Неизвестный тип ключа</string>
-	<!-- In a list of all the key pairs the user has generated or imported into their device.
-	     Added to the end of a key description to indicate that the key is encrypted (i.e,
-	     password protected). -->
-	<string name="key_attribute_encrypted">(зашифровано)</string>
+<resources>
+  <string name="app_desc">Простой и мощный SSH-клиент с открытым исходным кодом.</string>
+  <string name="service_desc">Управляет SSH-соединениями и загруженными публичными ключами</string>
+  <string name="title_hosts_list">Серверы</string>
+  <string name="title_pubkey_list">Публичные ключи</string>
+  <string name="title_port_forwards_list">Проброс портов</string>
+  <string name="title_host_editor">Изменить сервер</string>
+  <string name="title_help">Помощь</string>
+  <string name="title_colors">Настройка цветов</string>
+  <string name="title_color_picker">Выбор цвета</string>
+  <string name="title_settings">Параметры</string>
+  <string name="title_pubkey_generate">Генерация</string>
+  <string name="help_intro">Выберите то, о чём Вы хотите узнать</string>
+  <string name="terms_and_conditions">Условия использования</string>
+  <string name="hints">Подсказки</string>
+  <string name="host_shortcuts_content">Для создания ярлыков на часто используемые хосты SSH произведите долгое нажатие на десктопе вашего андроида.</string>
+  <string name="scroll_hints_header">Прокрутка назад / Прокрутка вперёд</string>
+  <string name="page_updn_content">ПРИМЕЧАНИЕ: Это должно быть включено в настройках\n\nПроведение пальцем вверх и вниз в левой трети экрана будет посылать на удалённый хост нажатия клавиш \"страница вверх\" и \"страница вниз\". Многие программы используют это для прокрутки по истории, такие как irssi или tinyfugue.</string>
+  <string name="page_up">Стр. вверх</string>
+  <string name="page_down">Стр. вниз</string>
+  <string name="switching_hosts_header">Переключение хостов</string>
+  <string name="switching_hosts_content">Перемещение пальца от одной стороны экрана к другой будет переключать между хостами, к которым сейчас есть подключения.</string>
+  <string name="next_host">Следующий хост</string>
+  <string name="prev_host">Предыдущий хост</string>
+  <string name="keyboard_shortcuts">Горячие клавиши</string>
+  <string name="increase_font_size">Увеличить размер шрифта</string>
+  <string name="decrease_font_size">Уменьшить размер шрифта</string>
+  <string name="pubkey_generate">Генерировать</string>
+  <string name="pubkey_delete">Удалить ключ</string>
+  <string name="pubkey_gather_entropy">Сбор случайной информации</string>
+  <string name="pubkey_touch_prompt">Нажмите сюда для генерирования случайной информации: %1$d%% готово</string>
+  <string name="pubkey_touch_hint">Для использования случайной выборки во время генерации ключа - перемещайте палец в области экрана ниже.</string>
+  <string name="pubkey_generating">Генерирование пары ключей…</string>
+  <string name="pubkey_copy_private">Копировать приватный ключ</string>
+  <string name="pubkey_copy_public">Копировать публичный ключ</string>
+  <string name="pubkey_list_empty">Выберите Меню для создания или импорта пары ключей</string>
+  <string name="pubkey_unknown_format">Неизвестный формат</string>
+  <string name="pubkey_change_password">Сменить пароль</string>
+  <string name="pubkey_list_pick">Загрузить с SD карты</string>
+  <string name="pubkey_import_parse_problem">Проблема при распозновании импортированного частного ключа</string>
+  <string name="pubkey_unlock">Разблокировать ключ</string>
+  <string name="pubkey_failed_add">Неверный пароль для ключа \'%1$s\'. Аутентификация не удалась</string>
+  <string name="pubkey_memory_load">Загрузить в память</string>
+  <string name="pubkey_memory_unload">Выгрузить из памяти</string>
+  <string name="pubkey_load_on_start">Загружать ключ при старте</string>
+  <string name="pubkey_confirm_use">Подтверждение перед использованием</string>
+  <string name="portforward_list_empty">Выберите Меню для переадресации порта</string>
+  <string name="portforward_edit">Правка переадресации порта</string>
+  <string name="portforward_delete">Удалить переадресацию порта</string>
+  <string name="prompt_nickname">Псевдоним:</string>
+  <string name="prompt_nickname_hint_pubkey">Мой рабочий ключ</string>
+  <string name="prompt_source_port">С порта</string>
+  <string name="prompt_destination">На порт</string>
+  <string name="prompt_old_password">Старый пароль:</string>
+  <string name="prompt_password">Пароль:</string>
+  <string name="prompt_again">(повторить)</string>
+  <string name="prompt_type">Тип переадресации</string>
+  <string name="prompt_password_can_be_blank">Поле для ввода пароля не может быть пустым</string>
+  <string name="prompt_bits">Размер в битах</string>
+  <string name="prompt_pubkey_password">Пароль для ключа \'%1$s\'</string>
+  <string name="prompt_allow_agent_to_use_key">Использовать ключ \'%1$s\'?</string>
+  <string name="host_verification_failure_warning_header">ВНИМАНИЕ! ИДЕНТИФИКАЦИЯ УДАЛЕННОГО ХОСТА ЗАМЕНЕНА</string>
+  <string name="host_verification_failure_warning">Похоже есть возможность что вас ломают. Или кто то изменил ключ на удаленном хосте.</string>
+  <string name="prompt_host_disconnected">Хост отвалился.\nЗакрыть сессию ?</string>
+  <string name="prompt_continue_connecting">Хотите продолжить\nпопытки соединения?</string>
+  <string name="host_authenticity_warning">Подлинность хоста \'%1$s\' не может быть установлена</string>
+  <string name="host_fingerprint">Подпись (fingerprint) host-ключа для сервера %1$s - %2$s</string>
+  <string name="alert_passwords_do_not_match_msg">Пароли не совпадают!</string>
+  <string name="alert_wrong_password_msg">Неверный пароль!</string>
+  <string name="alert_key_corrupted_msg">Возможно частный ключ повреждён!</string>
+  <string name="alert_sdcard_absent">SD карта не вставлена!</string>
+  <string name="button_change">Изменить</string>
+  <string name="button_resize">Изменить размер</string>
+  <string name="alert_disconnect_msg">Соединение потеряно</string>
+  <string name="msg_copyright">Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/</string>
+  <string name="pref_emulation_category">Эмулятор терминала</string>
+  <string name="pref_emulation_title">Режим эмуляции</string>
+  <string name="pref_emulation_summary">Режим эмуляции терминала для использования PTY соединений</string>
+  <string name="pref_scrollback_title">Размер прокрутки</string>
+  <string name="pref_scrollback_summary">Размер буфера прокрутки в памяти для каждой консоли</string>
+  <string name="pref_ui_category">Пользовательский интерфейс</string>
+  <string name="pref_rotation_title">Ориентация экрана</string>
+  <string name="pref_rotation_summary">Ориентация экрана при использовании клавиатуры</string>
+  <string name="pref_titlebarhide_title">Автоскрытие заголовка</string>
+  <string name="pref_titlebarhide_summary">Нажмите на консоль, чтобы показать заголовок и меню</string>
+  <string name="pref_pg_updn_gesture_summary">Проведите по левой трети экрана, чтобы послать pg up/dn в терминал</string>
+  <string name="pref_fullscreen_title">Полный экран</string>
+  <string name="pref_fullscreen_summary">Убирать область статуса во время работы с консолью</string>
+  <string name="pref_keyboard_category">Клавиатура</string>
+  <string name="pref_shiftfkeys_summary">На аппаратной клавиатуре цифровые клавиши при нажатии shift будут посылать F1-F10</string>
+  <string name="pref_ctrlfkeys_title">Ctrl+num аналогично F-keys</string>
+  <string name="pref_ctrlfkeys_summary">На экранной клавиатуре цифровые клавиши при нажатии ctrl будут посылать F1-F10</string>
+  <string name="pref_volumefont_title">Клавиша громкости регулирует размер шрифта</string>
+  <string name="pref_volumefont_summary">Размер шрифта также может быть настроен для каждого хоста отдельно</string>
+  <string name="pref_memkeys_title">Запомнить ключи в памяти</string>
+  <string name="pref_memkeys_summary">Держать ключи в памяти пока процессы работают</string>
+  <string name="pref_conn_persist_title">Постоянные соединения</string>
+  <string name="pref_conn_persist_summary">Принудительно сохранять соединение в фоновом режиме.</string>
+  <string name="pref_keymode_title">Ярлыки папок</string>
+  <string name="pref_keymode_summary">Выберите, как использовать Alt вместо \'/\' и Shift вместо Tab</string>
+  <string name="pref_camera_title">Ярлык камеры</string>
+  <string name="pref_camera_summary">Выберите ярлык, запускаемый при нажатии клавиши камеры</string>
+  <string name="pref_keepalive_title">Держать экран включенным</string>
+  <string name="pref_keepalive_summary">Препятствовать отключению экрана при работе в консоли</string>
+  <string name="pref_wifilock_title">Держать Wi-Fi включенным</string>
+  <string name="pref_wifilock_summary">Препятствовать отключению Wi-Fi при активном сеансе</string>
+  <string name="pref_bumpyarrows_title">Настройки обратной связи при нажатии</string>
+  <string name="pref_bumpyarrows_summary">Вибрировать при отсылке клавиш со стерлками. Полезно для медленных соединений</string>
+  <string name="pref_bell_category">Настройки звукового сигнала в терминале</string>
+  <string name="pref_bell_title">Включить звонок</string>
+  <string name="pref_bell_volume_title">Громкость сигнала</string>
+  <string name="pref_bell_vibrate_title">Виброзвонок</string>
+  <string name="pref_bell_notification_title">Фоновые уведомления</string>
+  <string name="pref_bell_notification_summary">Включить уведомления для терминала работающего в фоновом процессе</string>
+  <string name="list_keymode_right">Для специальных функций использовать клавиши с правой стороны</string>
+  <string name="list_keymode_left">Использовать клавиши с левой стороны</string>
+  <string name="list_keymode_none">Отключить</string>
+  <string name="list_pubkeyids_none">Не использовать ключи</string>
+  <string name="list_pubkeyids_any">Использовать любую свободную клавишу</string>
+  <string name="hostpref_nickname_title">Псевдоним</string>
+  <string name="hostpref_color_title">Цвет для категории</string>
+  <string name="hostpref_fontsize_title">Размер шрифта</string>
+  <string name="hostpref_pubkeyid_title">Использовать аутентификацию по открытому ключу</string>
+  <string name="hostpref_authagent_title">Использовать SSH протокол для соединения</string>
+  <string name="hostpref_postlogin_title">Автоматизация после авторизации</string>
+  <string name="hostpref_postlogin_summary">Комманды, выполняемые на удаленной машине после подключения</string>
+  <string name="hostpref_compression_title">Сжатие</string>
+  <string name="hostpref_compression_summary">Это может быть полезным в медленных сетях</string>
+  <string name="hostpref_wantsession_title">Начать сеанс оболочки</string>
+  <string name="hostpref_wantsession_summary">Выключить для использования только переадресации портов</string>
+  <string name="hostpref_stayconnected_title">Держать подключение</string>
+  <string name="hostpref_stayconnected_summary">Пытаться переподключиться при отключении узла</string>
+  <string name="hostpref_quickdisconnect_title">Закрыть при дисконнекте</string>
+  <string name="hostpref_quickdisconnect_summary">Закрыть сразу же после дисконнекта без запроса</string>
+  <string name="hostpref_delkey_title">Клавиша DEL</string>
+  <string name="hostpref_encoding_title">Кодировка</string>
+  <string name="hostpref_username_title">Имя пользователя</string>
+  <string name="hostpref_hostname_title">Узел</string>
+  <string name="hostpref_port_title">Порт</string>
+  <string name="bind_never">Не подключен</string>
+  <plurals name="console_copy_done">
+    <item quantity="one">Скопировано %1$d байт в буфер обмена</item>
+    <item quantity="few">Скопировано %1$d байта в буфер обмена</item>
+    <item quantity="many">Скопировано %1$d байтов в буфер обмена</item>
+    <item quantity="other"/>
+  </plurals>
+  <string name="console_copy_start">Для выделения области на экране используйте Touch and Drag или Directional Pad</string>
+  <string name="console_menu_close">Закрыть</string>
+  <string name="console_menu_copy">Копировать</string>
+  <string name="console_menu_paste">Вставить</string>
+  <string name="console_menu_portforwards">Перенаправления портов</string>
+  <string name="console_menu_resize">Зафиксировать размер</string>
+  <string name="console_menu_urlscan">Список URL</string>
+  <string name="button_yes">Да</string>
+  <string name="button_no">Нет</string>
+  <string name="portforward_local">Локальный</string>
+  <string name="portforward_remote">Удалённый</string>
+  <string name="portforward_dynamic">Динамический (SOCKS)</string>
+  <string name="portforward_pos">Создать перенаправление порта</string>
+  <string name="portforward_problem">Не удалось создать перенаправление порта. Может быть вы используете порты меньше чем 1024 или пор уже используется?</string>
+  <string name="format_username">имя пользователя</string>
+  <string name="format_hostname">имяхоста</string>
+  <string name="format_port">порт</string>
+  <string name="list_menu_pubkeys">Управление открытыми ключами</string>
+  <string name="list_menu_sortcolor">Сортировать по цвету</string>
+  <string name="list_menu_sortname">Сортировать по имени</string>
+  <string name="list_menu_disconnect">Отключиться от всех</string>
+  <string name="list_menu_settings">Настройки</string>
+  <string name="list_host_disconnect">Разорвать соединение</string>
+  <string name="list_host_edit">Редактировать хост</string>
+  <string name="list_host_portforwards">Редактировать перенаправление портов</string>
+  <string name="list_host_delete">Удалить хост</string>
+  <string name="list_host_empty">Для быстрого подключения к хосту используйте чекбокс внизу</string>
+  <string name="list_rotation_default">По умолчанию</string>
+  <string name="list_rotation_land">Только альбомная ориентация</string>
+  <string name="list_rotation_port">Только портретная ориетация</string>
+  <string name="list_rotation_auto">Автоматически</string>
+  <string name="list_camera_ctrlaspace">Ctrl+A затем пробел</string>
+  <string name="list_camera_ctrla">Ctrl+A</string>
+  <string name="list_camera_esc">Esc</string>
+  <string name="list_camera_esc_a">Esc+A</string>
+  <string name="list_camera_none">Нет</string>
+  <string name="list_delkey_backspace">Backspace</string>
+  <string name="list_delkey_del">Удалить</string>
+  <string name="delete_message">Вы уверены, что хотите удалить \'%1$s\'?</string>
+  <string name="delete_pos">Да, удалить</string>
+  <string name="delete_neg">Отменить</string>
+  <string name="disconnect_all_message">Вы действительно хотите отключиться от всех подключенных хостов?</string>
+  <string name="disconnect_all_pos">Да, отключиться</string>
+  <string name="disconnect_all_neg">Отмена</string>
+  <string name="terminal_no_hosts_connected">Нет подключенных узлов</string>
+  <string name="terminal_connecting">Подключение к %1$s:%2$d через %3$s</string>
+  <string name="terminal_sucess">Проверенный узел \'%1$s\' ключ: %2$s</string>
+  <string name="terminal_failed">Проверка ключа узла провалена</string>
+  <string name="terminal_using_s2c_algorithm">Алгоритм сервер-клиент: %1$s %2$s</string>
+  <string name="terminal_using_c2s_algorithm">Алгоритм клиент-сервер: %1$s %2$s</string>
+  <string name="terminal_using_algorithm">Используемый алгоритм: %1$s %2$s</string>
+  <string name="terminal_kex_algorithm">Алгоритм обмена ключами: %s</string>
+  <string name="terminal_auth">Пытаюсь аутентифицироваться</string>
+  <string name="terminal_auth_pass">Попытка \'password\' авторизации</string>
+  <string name="terminal_auth_pass_fail">Неуспешная попытка \'password\' авторизации</string>
+  <string name="terminal_auth_pubkey_any">Попытка \'publickey\' авторизации с публичными ключами в памяти</string>
+  <string name="terminal_auth_pubkey_invalid">Выбранный открытый ключ неверен, выберите другой в редакторе узлов</string>
+  <string name="terminal_auth_pubkey_specific">Попытка \'publickey\' авторизации</string>
+  <string name="terminal_auth_pubkey_fail">Неуспешная авторизация \'publickey\' с ключом \'%1$s\'</string>
+  <string name="terminal_auth_ki">Попытка \'keyboard-interactive\' авторизации</string>
+  <string name="terminal_auth_ki_fail">Неуспешная авторизация</string>
+  <string name="terminal_auth_fail">Ваш хост не поддерживает \'password\' и \'keyboard-interactive\' типа авторизации</string>
+  <string name="terminal_no_session">Настройки хоста не позволяют запустить данную сессию</string>
+  <string name="terminal_enable_portfoward">Включить переадресацию порта: %1$s</string>
+  <string name="local_shell_unavailable">Ошибка! На этом телефоне отсутствует локальная оболочка.</string>
+  <string name="notification_text">%1$s требует внимания</string>
+  <string name="no">Нет</string>
+  <string name="yes">Да</string>
+  <string name="menu_colors_reset">Сбросить</string>
+  <string name="app_is_running">ConnectBot запущен</string>
+  <string name="color_red">красный</string>
+  <string name="color_green">зелёный</string>
+  <string name="color_blue">синий</string>
+  <string name="color_gray">серый</string>
+  <string name="image_description_connected">Подключено</string>
+  <string name="image_description_disconnected">Отключено.</string>
+  <string name="image_description_key_is_locked">Ключ заблокирован</string>
+  <string name="image_description_send_escape_character">Послать символ escape</string>
+  <string name="image_description_send_tab_character">Послать символ TAB</string>
+  <string name="image_description_show_keyboard">Показать клавиатуру</string>
+  <string name="image_description_up">Стрелка вверх</string>
+  <string name="image_description_down">Стрелка вниз</string>
+  <string name="image_description_left">Стрелка влево</string>
+  <string name="image_description_right">Стрелка вправо</string>
+  <string name="image_description_volume">Громкость</string>
+  <string name="button_key_esc">Esc</string>
+  <string name="button_key_ctrl">Ctrl</string>
+  <string name="button_key_pgup">PgUp</string>
+  <string name="button_key_pgdn">PgDn</string>
+  <string name="button_key_f1">F1</string>
+  <string name="button_key_f2">F2</string>
+  <string name="button_key_f3">F3</string>
+  <string name="button_key_f4">F4</string>
+  <string name="button_key_f5">F5</string>
+  <string name="button_key_f6">F6</string>
+  <string name="button_key_f7">F7</string>
+  <string name="button_key_f8">F8</string>
+  <string name="button_key_f9">F9</string>
+  <string name="button_key_f10">F10</string>
+  <string name="button_key_f11">F11</string>
+  <string name="button_key_f12">F12</string>
+  <string name="protocol_spinner_label">Протокол</string>
+  <string name="expand">Развернуть</string>
+  <string name="hostpref_authagent_with_confirmation">Требуется подтверждение</string>
+  <string name="hostpref_add_host">Добавить хост</string>
+  <string name="hostpref_edit_host">Сохранить хост</string>
+  <string name="pubkey_add_new">Добавить новый публичный ключ</string>
+  <string name="pubkey_import_existing">Импортировать существующий ключ</string>
+  <string name="discard_host_changes_message">URI хоста неверен. Хотите отказаться от изменений?</string>
+  <string name="discard_host_button">Не сохранять</string>
+  <string name="discard_host_cancel_button">Продолжить редактирование</string>
+  <string name="key_type_rsa_bits">RSA %d-bit</string>
+  <string name="key_type_dsa_bits">DSA %d-bit</string>
+  <string name="key_type_ec_bits">EC %d-bit</string>
+  <string name="key_type_ed25519">Ed25519</string>
+  <string name="key_type_unknown">Неизвестный тип ключа</string>
+  <string name="key_attribute_encrypted">(зашифровано)</string>
 </resources>
