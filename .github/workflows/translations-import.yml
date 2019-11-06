@@ -3,7 +3,8 @@
 name: Translations import
 on:
   schedule:
-  - cron: '0 19 * * *'
+  # Runs at 10PM PST
+  - cron: '0 6 * * *'
 
 jobs:
   import:
