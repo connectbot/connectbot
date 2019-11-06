@@ -1,96 +1,101 @@
-#, fuzzy
+# Thai translation for connectbot
+# Copyright (c) 2016 Rosetta Contributors and Canonical Ltd 2016
+# This file is distributed under the same license as the connectbot package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Project-Id-Version: connectbot\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2016-02-29 04:40+0000\n"
+"Last-Translator: qoopooh <qoopooh@gmail.com>\n"
+"Language-Team: Thai <th@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Launchpad-Export-Date: 2018-11-01 01:00+0000\n"
 "X-Generator: Launchpad (build 18810)\n"
+"Language: th\n"
 "Generated-By: Babel 2.3.4\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
 msgctxt "app_desc"
 msgid "Simple, powerful, open-source SSH client."
-msgstr ""
+msgstr "ใช้ง่าย, มีประสิทธิภาพ, โอเพนซอร์ส SSH ไคลเอนท์"
 
 #. Summary of what the ConnectBot service does; displayed in the Android
 #. running apps list
 msgctxt "service_desc"
 msgid "Maintains SSH connections and loaded pubkeys"
-msgstr ""
+msgstr "จัดการการเชื่อมต่อ SSH และใส่กุญแจสาธารณะ"
 
 #. Window title for the Host List
 msgctxt "title_hosts_list"
 msgid "Hosts"
-msgstr ""
+msgstr "เครื่องปลายทางต่าง ๆ"
 
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
 msgid "Pubkeys"
-msgstr ""
+msgstr "กุญแจสาธารณะ"
 
 #. Window title for the Port Forwards List
 msgctxt "title_port_forwards_list"
 msgid "Port forwards"
-msgstr ""
+msgstr "ฟอร์เวิร์ดพอร์ต"
 
 #. Window title when editing host details
 msgctxt "title_host_editor"
 msgid "Edit Host"
-msgstr ""
+msgstr "แก้ไขโฮสต์"
 
 #. Window title for Help index
 msgctxt "title_help"
 msgid "Help"
-msgstr ""
+msgstr "ช่วยเหลือ"
 
 #. Window title for color list editing screen
 msgctxt "title_colors"
 msgid "Colors"
-msgstr ""
+msgstr "สี"
 
 #. Dialog title for color picker dialog
 msgctxt "title_color_picker"
 msgid "Pick a color"
-msgstr ""
+msgstr "เลือกสี"
 
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr ""
+msgstr "ค่าตั้ง"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
 msgid "Generate"
-msgstr ""
+msgstr "สร้าง"
 
 msgctxt "help_intro"
 msgid ""
 "Please select a topic below for more information on a particular subject."
-msgstr ""
+msgstr "กรุณาเลือกหัวข้อเฉพาะที่ต้องการข้อมูลเพิ่มเติม"
 
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
 msgid "Terms & Conditions"
-msgstr ""
+msgstr "เงื่อนไขและข้อตกลงต่างๆ"
 
 #. Title for the help page with the hints about the app.
 msgctxt "hints"
 msgid "Hints"
-msgstr ""
+msgstr "ข้อแนะนำ"
 
 #. Header text for instructions about creating host shortcuts.
 msgctxt "host_shortcuts_header"
 msgid "Host Shortcuts"
-msgstr ""
+msgstr "ทางลัดเครื่องปลายทาง"
 
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
@@ -144,8 +149,6 @@ msgctxt "page_down"
 msgid "Page down"
 msgstr ""
 
-#. Header text for instructions about switching to the next and previous host
-#. in the terminal.
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
 msgstr ""

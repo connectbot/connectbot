@@ -1,25 +1,31 @@
-#, fuzzy
+# Arabic translations for PROJECT.
+# Copyright (C) 2015 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2018-08-06 15:09+0000\n"
+"Last-Translator: Mustafa Wahhudi <Unknown>\n"
+"Language-Team: ar <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n % 100 >= "
+"3 && n % 100 <= 10 ? 3 : n % 100 >= 11 && n % 100 <= 99 ? 4 : 5;\n"
 "X-Launchpad-Export-Date: 2018-11-01 01:00+0000\n"
 "X-Generator: Launchpad (build 18810)\n"
+"Language: ar\n"
 "Generated-By: Babel 2.3.4\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
 msgctxt "app_desc"
 msgid "Simple, powerful, open-source SSH client."
-msgstr ""
+msgstr "عميل SSH مفتوح المصدر و بسيط وقوي"
 
 #. Summary of what the ConnectBot service does; displayed in the Android
 #. running apps list
@@ -30,62 +36,62 @@ msgstr ""
 #. Window title for the Host List
 msgctxt "title_hosts_list"
 msgid "Hosts"
-msgstr ""
+msgstr "المخدمات"
 
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
 msgid "Pubkeys"
-msgstr ""
+msgstr "المفاتيح العامة"
 
 #. Window title for the Port Forwards List
 msgctxt "title_port_forwards_list"
 msgid "Port forwards"
-msgstr ""
+msgstr "تحويلات المنافذ"
 
 #. Window title when editing host details
 msgctxt "title_host_editor"
 msgid "Edit Host"
-msgstr ""
+msgstr "تعديل مخدم"
 
 #. Window title for Help index
 msgctxt "title_help"
 msgid "Help"
-msgstr ""
+msgstr "مساعدة"
 
 #. Window title for color list editing screen
 msgctxt "title_colors"
 msgid "Colors"
-msgstr ""
+msgstr "الألوان"
 
 #. Dialog title for color picker dialog
 msgctxt "title_color_picker"
 msgid "Pick a color"
-msgstr ""
+msgstr "إختر لوناً"
 
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr ""
+msgstr "الإعدادات"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
 msgid "Generate"
-msgstr ""
+msgstr "إنشاء"
 
 msgctxt "help_intro"
 msgid ""
 "Please select a topic below for more information on a particular subject."
-msgstr ""
+msgstr "الرجاء اختار من الاسفل من اجل معلومات اكثر عن هذا الموضوع"
 
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
 msgid "Terms & Conditions"
-msgstr ""
+msgstr "الشروط والأحكام"
 
 #. Title for the help page with the hints about the app.
 msgctxt "hints"
 msgid "Hints"
-msgstr ""
+msgstr "التلميحات"
 
 #. Header text for instructions about creating host shortcuts.
 msgctxt "host_shortcuts_header"
@@ -98,11 +104,13 @@ msgid ""
 "Long-press on your Android desktop to create direct shortcuts to frequently-"
 "used SSH hosts."
 msgstr ""
+"قم بالضغط مطولاً على الشاشة الرئيسية لأندرويد لإنشاء روابط مباشرة لخوادم SSH "
+"المستخدمة كثيراً."
 
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
 msgid "Scroll back / Scroll forward"
-msgstr ""
+msgstr "تمرير للخلف \\ تمرير للأمام"
 
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
@@ -110,6 +118,8 @@ msgid ""
 "Swiping your finger up on the right side of the screen allows you to scroll "
 "backward and forward in the local terminal buffer history."
 msgstr ""
+"إنّ مسح إصبعك للأعلى في الجزء الأيمن من الشاشة يسمح لك بالتمرير للخلف "
+"والأمام في تاريخ الطرفية المحلية."
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
@@ -144,8 +154,6 @@ msgctxt "page_down"
 msgid "Page down"
 msgstr ""
 
-#. Header text for instructions about switching to the next and previous host
-#. in the terminal.
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
 msgstr ""
@@ -200,11 +208,11 @@ msgstr ""
 
 msgctxt "pubkey_generate"
 msgid "Generate"
-msgstr ""
+msgstr "توليد"
 
 msgctxt "pubkey_delete"
 msgid "Delete key"
-msgstr ""
+msgstr "حذف المفتاح"
 
 #. Dialog title when user must move finger randomly over an area to gather
 #. entropy (collect random bits)
@@ -222,45 +230,47 @@ msgid ""
 "In order to assure randomness during the key generation, move your finger "
 "randomly over the box below."
 msgstr ""
+"للتاكد من العشوائية خلال توليد المفتاح , حرك اصبعك بشكل عشوائي فوق المربع في "
+"الاسفل"
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
-msgstr ""
+msgstr "جاري توليد المفتاح"
 
 msgctxt "pubkey_copy_private"
 msgid "Copy private key"
-msgstr ""
+msgstr "نسخ مفتاح خاص"
 
 msgctxt "pubkey_copy_public"
 msgid "Copy public key"
-msgstr ""
+msgstr "نسخ مفتاح عام"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
 msgid ""
 "Tap \"Menu\" to create\n"
 "or import key pairs."
-msgstr ""
+msgstr "حدد  القائمة  لانشاء او استيراد المفاتيح"
 
 msgctxt "pubkey_unknown_format"
 msgid "Unknown format"
-msgstr ""
+msgstr "صيغة غير معروفة"
 
 msgctxt "pubkey_change_password"
 msgid "Change password"
-msgstr ""
+msgstr "تغيير كلمة المرور"
 
 #. When attempting to import a pubkey, this is the title for the dialog box
 #. where the user should pick the desired file from the SD card contents.
 msgctxt "pubkey_list_pick"
 msgid "Pick from /sdcard"
-msgstr ""
+msgstr "اختار من بطاقة الذاكرة"
 
 #. Message shown to the user when a selected pubkey to import was not
 #. parseable for some reason.
 msgctxt "pubkey_import_parse_problem"
 msgid "Problem parsing imported private key"
-msgstr ""
+msgstr "مشكلة في تفسير المفتاح الخاص المستورد"
 
 msgctxt "pubkey_unlock"
 msgid "Unlock key"
@@ -305,6 +315,8 @@ msgid ""
 "Tap \"Menu\" to create\n"
 "port forwards."
 msgstr ""
+"Tap Menu to create\n"
+"port forwards."
 
 #. Context menu action where a user can edite the selected port forward for
 #. the host.
@@ -896,12 +908,12 @@ msgstr ""
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"
 msgid "Yes"
-msgstr ""
+msgstr "نعم"
 
 #. Button label to answer "No" to a yes/no prompt
 msgctxt "button_no"
 msgid "No"
-msgstr ""
+msgstr "ﻻ"
 
 #. Selection for a "local" port forward. E.g., connections to a port listening
 #. locally is forwarded to the remote end's listening port.
@@ -1187,38 +1199,38 @@ msgstr ""
 #. Preference selection for SSH Authentication Agent to never use pubkeys
 msgctxt "no"
 msgid "No"
-msgstr ""
+msgstr "ﻻ"
 
 #. Preference selection for SSH Authentication Agent to be able to use pubkeys
 msgctxt "yes"
 msgid "Yes"
-msgstr ""
+msgstr "نعم"
 
 #. Menu selection to reset colors to their defaults.
 msgctxt "menu_colors_reset"
 msgid "Reset"
-msgstr ""
+msgstr "إعادة ضبط"
 
 #. Displayed in the notification bar that connections are active
 msgctxt "app_is_running"
 msgid "ConnectBot is running"
-msgstr ""
+msgstr "البرنامج يعمل"
 
 msgctxt "color_red"
 msgid "red"
-msgstr ""
+msgstr "أحمر"
 
 msgctxt "color_green"
 msgid "green"
-msgstr ""
+msgstr "أخضر"
 
 msgctxt "color_blue"
 msgid "blue"
-msgstr ""
+msgstr "أزرق"
 
 msgctxt "color_gray"
 msgid "gray"
-msgstr ""
+msgstr "رمادي"
 
 #. Very short label indicating the number next to it is "foreground color"
 #. number.
@@ -1238,7 +1250,7 @@ msgstr ""
 #. currently          connected.
 msgctxt "image_description_connected"
 msgid "Connected."
-msgstr ""
+msgstr "متصل"
 
 #. Accessibility text for connection state in list of hosts when the host is
 #. currently              disconnected after having been previously connected.
@@ -1249,7 +1261,7 @@ msgstr ""
 #. Describes the icon of the "locked pubkey" icon for accessibility purposes.
 msgctxt "image_description_key_is_locked"
 msgid "Key is locked."
-msgstr ""
+msgstr "المفتاح مقفل"
 
 #. Describes the icon of the "send control character" button in the terminal
 #. view for              accessibility purposes.
@@ -1279,7 +1291,7 @@ msgstr ""
 #. accessibility              purposes.
 msgctxt "image_description_show_keyboard"
 msgid "Show keyboard."
-msgstr ""
+msgstr "عرض لوحة المفاتيح"
 
 #. Describes the icon of the "Arrow up" button in the terminal view for
 #. accessibility              purposes.

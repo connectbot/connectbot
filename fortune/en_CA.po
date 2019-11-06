@@ -1,18 +1,23 @@
-#, fuzzy
+# English (Canada) translations for PROJECT.
+# Copyright (C) 2015 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2011-02-23 18:22+0000\n"
+"Last-Translator: Kenny Root <Unknown>\n"
+"Language-Team: en_CA <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Launchpad-Export-Date: 2018-11-01 01:00+0000\n"
 "X-Generator: Launchpad (build 18810)\n"
+"Language: en_CA\n"
 "Generated-By: Babel 2.3.4\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
@@ -55,7 +60,7 @@ msgstr ""
 #. Window title for color list editing screen
 msgctxt "title_colors"
 msgid "Colors"
-msgstr ""
+msgstr "Colours"
 
 #. Dialog title for color picker dialog
 msgctxt "title_color_picker"
@@ -144,8 +149,6 @@ msgctxt "page_down"
 msgid "Page down"
 msgstr ""
 
-#. Header text for instructions about switching to the next and previous host
-#. in the terminal.
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
 msgstr ""
@@ -241,6 +244,8 @@ msgid ""
 "Tap \"Menu\" to create\n"
 "or import key pairs."
 msgstr ""
+"Tap Menu to create\n"
+"or import key pairs."
 
 msgctxt "pubkey_unknown_format"
 msgid "Unknown format"
@@ -305,6 +310,8 @@ msgid ""
 "Tap \"Menu\" to create\n"
 "port forwards."
 msgstr ""
+"Tap Menu to create\n"
+"port forwards."
 
 #. Context menu action where a user can edite the selected port forward for
 #. the host.
@@ -745,7 +752,7 @@ msgstr ""
 #. Host color category preference title
 msgctxt "hostpref_color_title"
 msgid "Color category"
-msgstr ""
+msgstr "Colour category"
 
 #. Host's default font size when opening the terminal in points (pt)
 msgctxt "hostpref_fontsize_title"
@@ -956,7 +963,7 @@ msgstr ""
 #. Selection choice to sort hosts by color.
 msgctxt "list_menu_sortcolor"
 msgid "Sort by color"
-msgstr ""
+msgstr "Sort by colour"
 
 #. Selection choice to sort hosts by nickname.
 msgctxt "list_menu_sortname"
