@@ -1,18 +1,23 @@
-#, fuzzy
+# Tamil translation for connectbot
+# Copyright (c) 2016 Rosetta Contributors and Canonical Ltd 2016
+# This file is distributed under the same license as the connectbot package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Project-Id-Version: connectbot\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2016-06-13 12:31+0000\n"
+"Last-Translator: Bala Krish <hackin9u@gmail.com>\n"
+"Language-Team: Tamil <ta@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Launchpad-Export-Date: 2018-11-01 01:00+0000\n"
 "X-Generator: Launchpad (build 18810)\n"
+"Language: ta\n"
 "Generated-By: Babel 2.3.4\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
@@ -50,22 +55,22 @@ msgstr ""
 #. Window title for Help index
 msgctxt "title_help"
 msgid "Help"
-msgstr ""
+msgstr "உதவி"
 
 #. Window title for color list editing screen
 msgctxt "title_colors"
 msgid "Colors"
-msgstr ""
+msgstr "வண்ணங்கள்"
 
 #. Dialog title for color picker dialog
 msgctxt "title_color_picker"
 msgid "Pick a color"
-msgstr ""
+msgstr "நிறத்தை தேர்ந்தெடு"
 
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr ""
+msgstr "அமைப்புகள்"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
@@ -138,14 +143,12 @@ msgstr ""
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
 msgid "Page up"
-msgstr ""
+msgstr "பக்கத்தின் மேலே"
 
 msgctxt "page_down"
 msgid "Page down"
-msgstr ""
+msgstr "பக்கத்தின் கீழே"
 
-#. Header text for instructions about switching to the next and previous host
-#. in the terminal.
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
 msgstr ""
@@ -169,13 +172,13 @@ msgstr ""
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "விசைப்பலகை குறுக்குவழிகள்"
 
 #. Text in a keyboard shortcuts list lined up to keys which increase the
 #. terminal font-size.
 msgctxt "increase_font_size"
 msgid "Increase Font Size"
-msgstr ""
+msgstr "எழுத்துரு அளவை கூட்டு"
 
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
@@ -186,7 +189,7 @@ msgstr ""
 #. terminal font-size.
 msgctxt "decrease_font_size"
 msgid "Decrease Font Size"
-msgstr ""
+msgstr "எழுத்துரு அளவை குறை"
 
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
@@ -200,7 +203,7 @@ msgstr ""
 
 msgctxt "pubkey_generate"
 msgid "Generate"
-msgstr ""
+msgstr "உருவாக்கு"
 
 msgctxt "pubkey_delete"
 msgid "Delete key"
@@ -248,7 +251,7 @@ msgstr ""
 
 msgctxt "pubkey_change_password"
 msgid "Change password"
-msgstr ""
+msgstr "கடவுச்சொல்லை மாற்று"
 
 #. When attempting to import a pubkey, this is the title for the dialog box
 #. where the user should pick the desired file from the SD card contents.
@@ -320,7 +323,7 @@ msgstr ""
 
 msgctxt "prompt_nickname"
 msgid "Nickname:"
-msgstr ""
+msgstr "புனைப்பெயர்:"
 
 #. An example string that could be used as a nickname for a pubkey.
 msgctxt "prompt_nickname_hint_pubkey"
@@ -347,7 +350,7 @@ msgstr ""
 #. 'password' authentication.
 msgctxt "prompt_password"
 msgid "Password:"
-msgstr ""
+msgstr "கடவுச்சொல்:"
 
 #. Added after a "Password:" prompt to indicate user needs to confirm entry.
 msgctxt "prompt_again"
@@ -451,12 +454,12 @@ msgstr ""
 #. Change an existing item's (e.g., host or pubkey) details.
 msgctxt "button_change"
 msgid "Change"
-msgstr ""
+msgstr "மாற்று"
 
 #. Button that resizes the screen to the user-specified dimensions.
 msgctxt "button_resize"
 msgid "Resize"
-msgstr ""
+msgstr "அளவு மாற்று"
 
 msgctxt "alert_disconnect_msg"
 msgid "Connection Lost"
@@ -547,7 +550,7 @@ msgstr ""
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
 msgid "Full screen"
-msgstr ""
+msgstr "முழுத்திரை"
 
 #. Summary for the full screen preference
 msgctxt "pref_fullscreen_summary"
@@ -557,7 +560,7 @@ msgstr ""
 #. The category title for keyboard preferences
 msgctxt "pref_keyboard_category"
 msgid "Keyboard"
-msgstr ""
+msgstr "விசைப்பலகை"
 
 #. Name for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_title"
@@ -725,7 +728,7 @@ msgstr ""
 #. Preference selection to indicate never to use special shortcut keys.
 msgctxt "list_keymode_none"
 msgid "Disable"
-msgstr ""
+msgstr "செயல்நீக்கு"
 
 #. Preference to not use pubkeys to authenticate to this host.
 msgctxt "list_pubkeyids_none"
@@ -740,7 +743,7 @@ msgstr ""
 #. Host nickname field preference title
 msgctxt "hostpref_nickname_title"
 msgid "Nickname"
-msgstr ""
+msgstr "புனைப்பெயர்"
 
 #. Host color category preference title
 msgctxt "hostpref_color_title"
@@ -776,7 +779,7 @@ msgstr ""
 #. Host compression preference title
 msgctxt "hostpref_compression_title"
 msgid "Compression"
-msgstr ""
+msgstr "சுருக்குதல்"
 
 #. Summary for compression preference
 msgctxt "hostpref_compression_summary"
@@ -798,7 +801,7 @@ msgstr ""
 #. disconnect
 msgctxt "hostpref_stayconnected_title"
 msgid "Stay connected"
-msgstr ""
+msgstr "எப்பொழுதும் இணைந்திரு"
 
 #. Summary for preference asking whether the host should be reconnected to
 #. when it disconnects
@@ -823,17 +826,17 @@ msgstr ""
 #. Host character encoding preference title
 msgctxt "hostpref_encoding_title"
 msgid "Encoding"
-msgstr ""
+msgstr "குறியீட்டு முறை"
 
 #. Username field title for host editor preference
 msgctxt "hostpref_username_title"
 msgid "Username"
-msgstr ""
+msgstr "பயனாளர் பெயர்"
 
 #. Hostname field title for host editor preference
 msgctxt "hostpref_hostname_title"
 msgid "Host"
-msgstr ""
+msgstr "புரவல்கணினி"
 
 #. Port field title for host editor preference
 msgctxt "hostpref_port_title"
@@ -865,12 +868,12 @@ msgstr ""
 #. Button to close the disconnected terminal window.
 msgctxt "console_menu_close"
 msgid "Close"
-msgstr ""
+msgstr "மூடுக"
 
 #. Button to begin copying from the terminal to the clipboard.
 msgctxt "console_menu_copy"
 msgid "Copy"
-msgstr ""
+msgstr "படியெடு"
 
 #. Button to paste from the clipboard to the terminal.
 msgctxt "console_menu_paste"

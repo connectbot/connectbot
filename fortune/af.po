@@ -1,18 +1,23 @@
-#, fuzzy
+# Afrikaans translations for PROJECT.
+# Copyright (C) 2015 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2011-02-23 17:37+0000\n"
+"Last-Translator: Kenny Root <Unknown>\n"
+"Language-Team: af <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Launchpad-Export-Date: 2018-11-01 01:00+0000\n"
 "X-Generator: Launchpad (build 18810)\n"
+"Language: af\n"
 "Generated-By: Babel 2.3.4\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
@@ -30,32 +35,32 @@ msgstr ""
 #. Window title for the Host List
 msgctxt "title_hosts_list"
 msgid "Hosts"
-msgstr ""
+msgstr "Gashere"
 
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
 msgid "Pubkeys"
-msgstr ""
+msgstr "Publieke Sleutels"
 
 #. Window title for the Port Forwards List
 msgctxt "title_port_forwards_list"
 msgid "Port forwards"
-msgstr ""
+msgstr "Poort aansturings"
 
 #. Window title when editing host details
 msgctxt "title_host_editor"
 msgid "Edit Host"
-msgstr ""
+msgstr "Redigeer Gasheer"
 
 #. Window title for Help index
 msgctxt "title_help"
 msgid "Help"
-msgstr ""
+msgstr "Hulp"
 
 #. Window title for color list editing screen
 msgctxt "title_colors"
 msgid "Colors"
-msgstr ""
+msgstr "Kleure"
 
 #. Dialog title for color picker dialog
 msgctxt "title_color_picker"
@@ -144,8 +149,6 @@ msgctxt "page_down"
 msgid "Page down"
 msgstr ""
 
-#. Header text for instructions about switching to the next and previous host
-#. in the terminal.
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
 msgstr ""
@@ -200,28 +203,30 @@ msgstr ""
 
 msgctxt "pubkey_generate"
 msgid "Generate"
-msgstr ""
+msgstr "Genereer"
 
 msgctxt "pubkey_delete"
 msgid "Delete key"
-msgstr ""
+msgstr "Verwyder sleutel"
 
 #. Dialog title when user must move finger randomly over an area to gather
 #. entropy (collect random bits)
 msgctxt "pubkey_gather_entropy"
 msgid "Gathering Entropy"
-msgstr ""
+msgstr "Versamel Ewekansigheid"
 
 #, c-format
 msgctxt "pubkey_touch_prompt"
 msgid "Touch this box to gather randomness: %1$d%% done"
-msgstr ""
+msgstr "Raak hierdie boks om ewekansigheid te versamel: %1$d%% voltooi"
 
 msgctxt "pubkey_touch_hint"
 msgid ""
 "In order to assure randomness during the key generation, move your finger "
 "randomly over the box below."
 msgstr ""
+"Om ewekansigheid te verseker gedurende die sleutel generering, beweeg u "
+"vinger ewekansig oor die boks hieronder."
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
@@ -229,11 +234,11 @@ msgstr ""
 
 msgctxt "pubkey_copy_private"
 msgid "Copy private key"
-msgstr ""
+msgstr "Dupliseer privaat sleutel"
 
 msgctxt "pubkey_copy_public"
 msgid "Copy public key"
-msgstr ""
+msgstr "Dupliseer publieke sleutel"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
@@ -241,20 +246,22 @@ msgid ""
 "Tap \"Menu\" to create\n"
 "or import key pairs."
 msgstr ""
+"Tap Menu to create\n"
+"or import key pairs."
 
 msgctxt "pubkey_unknown_format"
 msgid "Unknown format"
-msgstr ""
+msgstr "Onbekende formaat"
 
 msgctxt "pubkey_change_password"
 msgid "Change password"
-msgstr ""
+msgstr "Verander wagwoord"
 
 #. When attempting to import a pubkey, this is the title for the dialog box
 #. where the user should pick the desired file from the SD card contents.
 msgctxt "pubkey_list_pick"
 msgid "Pick from /sdcard"
-msgstr ""
+msgstr "Kies van /sdcard"
 
 #. Message shown to the user when a selected pubkey to import was not
 #. parseable for some reason.
@@ -264,7 +271,7 @@ msgstr ""
 
 msgctxt "pubkey_unlock"
 msgid "Unlock key"
-msgstr ""
+msgstr "Ontsluit sleutel"
 
 #. Feedback given to the user when the password that they have entered for the
 #. pubkey is incorrect.
@@ -277,7 +284,7 @@ msgstr ""
 #. This is equivalent to "unlocking" a password-protected pubkey entry.
 msgctxt "pubkey_memory_load"
 msgid "Load into memory"
-msgstr ""
+msgstr "Laai na geheue"
 
 #. Context menu entry that allows a user to unload a pubkey entry from memory.
 #. This is equivalent to "locking" a password-protected pubkey entry.
@@ -295,7 +302,7 @@ msgstr ""
 #. prompt before it can be used for authentication
 msgctxt "pubkey_confirm_use"
 msgid "Confirm before use"
-msgstr ""
+msgstr "Bevestig voor gebruik"
 
 #. When the list of port forwards for a host is empty, this text is is shown
 #. in the space where the list of port forwards are normally present. Note that
@@ -305,22 +312,24 @@ msgid ""
 "Tap \"Menu\" to create\n"
 "port forwards."
 msgstr ""
+"Tap Menu to create\n"
+"port forwards."
 
 #. Context menu action where a user can edite the selected port forward for
 #. the host.
 msgctxt "portforward_edit"
 msgid "Edit port forward"
-msgstr ""
+msgstr "Redigeer poort aansturing"
 
 #. Context menu action where a user can delete the selected port forward from
 #. the host.
 msgctxt "portforward_delete"
 msgid "Delete port forward"
-msgstr ""
+msgstr "Verwyder poort aanstuur"
 
 msgctxt "prompt_nickname"
 msgid "Nickname:"
-msgstr ""
+msgstr "Bynaam:"
 
 #. An example string that could be used as a nickname for a pubkey.
 msgctxt "prompt_nickname_hint_pubkey"
@@ -330,24 +339,24 @@ msgstr ""
 #. The source TCP port for port forwards.
 msgctxt "prompt_source_port"
 msgid "Source port:"
-msgstr ""
+msgstr "Oorsprong poort:"
 
 #. The "host:port" combination used for port forward destinations.
 msgctxt "prompt_destination"
 msgid "Destination:"
-msgstr ""
+msgstr "Bestemming:"
 
 #. Prompt presented to the user when the server requests that they change
 #. their password. This is the entry for the old password.
 msgctxt "prompt_old_password"
 msgid "Old password:"
-msgstr ""
+msgstr "Ou wagwoord:"
 
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
 msgctxt "prompt_password"
 msgid "Password:"
-msgstr ""
+msgstr "Wagwoord:"
 
 #. Added after a "Password:" prompt to indicate user needs to confirm entry.
 msgctxt "prompt_again"
@@ -357,13 +366,13 @@ msgstr ""
 #. Label for the user to select port forward type.
 msgctxt "prompt_type"
 msgid "Type:"
-msgstr ""
+msgstr "Tipe:"
 
 #. Hint given below the password input box that lets them know that they are
 #. allowed to leave the field blank.
 msgctxt "prompt_password_can_be_blank"
 msgid "Note: password can be blank"
-msgstr ""
+msgstr "Nota: wagwoord kan leeg gelos word"
 
 #. Prompt for the size of the private key in bits.
 msgctxt "prompt_bits"
