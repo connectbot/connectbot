@@ -10,18 +10,18 @@ buildscript {
 }
 
 plugins {
-    id 'com.github.ben-manes.versions' version '0.20.0'
+    id 'com.github.ben-manes.versions' version '0.27.0'
     id 'info.vividcode.android.sdk-manager' version '0.9.0'
     id 'net.ltgt.errorprone' version '0.6'
-    id 'com.gladed.androidgitversion' version '0.4.5'
-    id 'com.github.kt3k.coveralls' version '2.8.2'
+    id 'com.gladed.androidgitversion' version '0.4.10'
+    id 'com.github.kt3k.coveralls' version '2.8.4'
     id 'com.github.johnrengelman.processes' version '0.5.0'
 }
 
 ext {
     supportLibraryVersion = '1.0.0'
-    testRunnerVersion = '1.1.0'
-    espressoVersion = '3.1.0'
+    testRunnerVersion = '1.2.0'
+    espressoVersion = '3.2.0'
 }
 
 apply plugin: 'com.android.application'
@@ -248,12 +248,12 @@ dependencyUpdates {
 // Dependencies must be below the android block to allow productFlavor specific deps.
 dependencies {
     implementation 'org.connectbot:sshlib:2.2.9'
-    googleImplementation 'com.google.android.gms:play-services-basement:17.1.0'
+    googleImplementation 'com.google.android.gms:play-services-basement:17.1.1'
     ossImplementation 'org.conscrypt:conscrypt-android:2.2.1'
 
     implementation "androidx.recyclerview:recyclerview:$supportLibraryVersion"
     implementation "androidx.legacy:legacy-support-v4:$supportLibraryVersion"
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation "androidx.preference:preference:$supportLibraryVersion"
     implementation "com.takisoft.preferencex:preferencex:$supportLibraryVersion"
     implementation "com.google.android.material:material:$supportLibraryVersion"
@@ -271,7 +271,7 @@ dependencies {
     testImplementation "androidx.test.ext:junit:$supportLibraryVersion"
     testImplementation 'org.mockito:mockito-core:2.23.0'
     testImplementation 'org.assertj:assertj-core:3.11.1'
-    testImplementation 'org.robolectric:robolectric:4.0.2'
+    testImplementation 'org.robolectric:robolectric:4.3.1'
 
     errorprone "com.google.errorprone:error_prone_core:2.3.2"
     errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"
