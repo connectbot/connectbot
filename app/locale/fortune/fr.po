@@ -15,8 +15,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2018-11-01 01:00+0000\n"
-"X-Generator: Launchpad (build 18810)\n"
+"X-Launchpad-Export-Date: 2019-11-07 05:48+0000\n"
+"X-Generator: Launchpad (build 469f241f4e73cc0bdffa4e30654052a2af068e06)\n"
 "Language: fr\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -158,6 +158,8 @@ msgctxt "page_down"
 msgid "Page down"
 msgstr "Page suivante"
 
+#. Header text for instructions about switching to the next and previous host
+#. in the terminal.
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
 msgstr "Changer de serveur"
