@@ -6,7 +6,7 @@ sudo: true  # For the 7.5GB limit
 env:
   global:
     - EMU_ABI=x86_64
-    - EMU_API=29
+    - EMU_API=28
     - EMU_FLAVOR=default
     - ANDROID_TOOLS_URL="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip"
     - ANDROID_HOME="$HOME/android-sdk-linux"
@@ -84,11 +84,6 @@ before_script:
   - mkdir -p $HOME/emulator-status
   - |
     ( android-wait-for-emulator;
-    adb shell input keyevent 82 &
-    # Install our ci-support stuff to make the emulator tests more reliable.
-    adb install -r $HOME/ci-support-master/apk/android_emulator_hacks.apk;
-    adb shell pm grant no.finn.android_emulator_hacks android.permission.SET_ANIMATION_SCALE;
-    adb shell am start -n no.finn.android_emulator_hacks/no.finn.android_emulator_hacks.HackActivity;
     touch $HOME/emulator-status/ready ) &
 
 script:

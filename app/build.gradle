@@ -69,7 +69,7 @@ android {
         }
 
         testApplicationId "org.connectbot.tests"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "org.connectbot.ConnectbotJUnitRunner"
 
         // The following argument makes the Android Test Orchestrator run its
         // "pm clear" command after each test invocation. This command ensures
@@ -259,12 +259,14 @@ dependencies {
     implementation "com.google.android.material:material:$supportLibraryVersion"
 
     androidTestUtil "androidx.test:orchestrator:$testRunnerVersion"
+    androidTestUtil "com.linkedin.testbutler:test-butler-app:1.4.0"
     androidTestImplementation "androidx.test:core:$supportLibraryVersion"
     androidTestImplementation "androidx.test:rules:$testRunnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
     androidTestImplementation "androidx.test.ext:junit:$supportLibraryVersion"
+    androidTestImplementation "com.linkedin.testbutler:test-butler-library:1.4.0"
 
     testImplementation 'junit:junit:4.12'
     testImplementation "androidx.test:core:$supportLibraryVersion"
