@@ -11,7 +11,7 @@ env:
     - ANDROID_TOOLS_URL="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip"
     - ANDROID_HOME="$HOME/android-sdk-linux"
     - JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-    - PATH="$JAVA_HOME/bin:$HOME/bin:$ANDROID_HOME/emulator:ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH"
+    - PATH="$JAVA_HOME/bin:$HOME/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH"
     - TERM=dumb
     # Coverity
     - secure: "DTBBKdwZE5yxPjJQG8/wU/+LJ1A3MtUYNaf8O/yhmQNo4UcxQF+3KOoY5OK4vvoTewisUqnVRhXhD8rMYzBZiNtaGF8eSMGXVWUVb6YhOPQ0oMHKSmVgopEHzhoGa+9HDJ6xyQZdALJB8GVlwamTwO/1qk/xI02mjUNEtdk8cuc="
@@ -51,24 +51,25 @@ before_script:
   # Install Android stuff
   - curl -L $ANDROID_TOOLS_URL -o $HOME/tools.zip
   - unzip -oq $HOME/tools.zip -d $ANDROID_HOME
-  - yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
-  - $ANDROID_HOME/tools/bin/sdkmanager tools | tr '\r' '\n' | uniq
-  - $ANDROID_HOME/tools/bin/sdkmanager platform-tools | tr '\r' '\n' | uniq
-  - $ANDROID_HOME/tools/bin/sdkmanager --channel=3 'emulator' | tr '\r' '\n' | uniq
-  - $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-${EMU_API}" | tr '\r' '\n' | uniq
-  - $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-${EMU_API};${EMU_FLAVOR};${EMU_ABI}" | tr '\r' '\n' | uniq
+  - yes | sdkmanager --licenses
+  - sdkmanager tools | tr '\r' '\n' | uniq
+  - sdkmanager platform-tools | tr '\r' '\n' | uniq
+  - sdkmanager emulator | tr '\r' '\n' | uniq
+  - sdkmanager "platforms;android-${EMU_API}" | tr '\r' '\n' | uniq
+  - sdkmanager "system-images;android-${EMU_API};${EMU_FLAVOR};${EMU_ABI}" | tr '\r' '\n' | uniq
   # Allow use of KVM
   - sudo adduser $USER libvirt
   - sudo adduser $USER kvm
   # Create and start emulator as early as possible
-  - $ANDROID_HOME/tools/bin/avdmanager create avd --force --name test --package "system-images;android-${EMU_API};${EMU_FLAVOR};${EMU_ABI}" --abi ${EMU_ABI} --device 'Nexus 4' --sdcard 128M
-  - sudo -E sudo -u $USER -E bash -c "$ANDROID_HOME/emulator/emulator -avd test -skin 768x1280 -no-audio -no-window -no-boot-anim -no-snapshot -camera-back none -camera-front none -qemu -m 2048 &"
-  - $ANDROID_HOME/tools/bin/sdkmanager 'build-tools;29.0.2' | tr '\r' '\n' | uniq
-  - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-28' | tr '\r' '\n' | uniq
-  - $ANDROID_HOME/tools/bin/sdkmanager 'extras;android;m2repository' | tr '\r' '\n' | uniq
-  - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;m2repository' | tr '\r' '\n' | uniq
-  - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;google_play_services' | tr '\r' '\n' | uniq
-  - $ANDROID_HOME/tools/bin/sdkmanager ndk-bundle | tr '\r' '\n' | uniq
+  - adb start-server
+  - avdmanager create avd --force --name test --package "system-images;android-${EMU_API};${EMU_FLAVOR};${EMU_ABI}" --abi ${EMU_ABI} --device 'Nexus 4' --sdcard 128M
+  - sudo -E sudo -u $USER -E bash -c "$ANDROID_HOME/emulator/emulator-headless -avd test -skin 768x1280 -no-audio -no-window -no-boot-anim -no-snapshot -camera-back none -camera-front none -qemu -m 2048 &"
+  - sdkmanager 'build-tools;29.0.2' | tr '\r' '\n' | uniq
+  - sdkmanager 'platforms;android-28' | tr '\r' '\n' | uniq
+  - sdkmanager 'extras;android;m2repository' | tr '\r' '\n' | uniq
+  - sdkmanager 'extras;google;m2repository' | tr '\r' '\n' | uniq
+  - sdkmanager 'extras;google;google_play_services' | tr '\r' '\n' | uniq
+  - sdkmanager ndk-bundle | tr '\r' '\n' | uniq
   # Download the emulator support stuff
   - mkdir -p $HOME/.cache/ci-support
   - curl -L https://github.com/connectbot/ci-support/archive/master.zip -z $HOME/.cache/ci-support/master.zip -o $HOME/.cache/ci-support/master.zip
@@ -80,24 +81,13 @@ before_script:
   - mkdir -p $HOME/.cache/lint
   # Try to download Gradle deps while Android is booting
   - ./gradlew --parallel -Dorg.gradle.parallel.intra=true resolveDependencies
-  ### The rest of the commands need the emulator running
-  - mkdir -p $HOME/emulator-status
-  - |
-    ( android-wait-for-emulator;
-    touch $HOME/emulator-status/ready ) &
 
 script:
   # Split up to reduce memory requirements
   - ./gradlew --stacktrace assemble
   - ./gradlew --stacktrace check
-  - |
-    # Note there might be a race condition where we create the file between the check
-    # and the inotifywait, so we use a timeout and a loop to minimize the chances of
-    # waiting forever.
-    while [[ ! -f $HOME/emulator-status/ready ]]; do
-      inotifywait -t 20 -e create $HOME/emulator-status;
-    done;
-    ./gradlew --stacktrace connectedCheck
+  - android-wait-for-emulator
+  - ./gradlew --stacktrace connectedCheck
   - ./ci/check-lint-count.bash app/build/reports/lint-results.xml $HOME/.cache/lint/lint-results.xml
 
 after_success: ./gradlew coveralls
