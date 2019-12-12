@@ -153,7 +153,7 @@
   <string name="hostpref_username_title">Имя пользователя</string>
   <string name="hostpref_hostname_title">Сервер</string>
   <string name="hostpref_port_title">Порт</string>
-  <string name="bind_never">Ни когда не подключался</string>
+  <string name="bind_never">Никогда не подключался</string>
   <plurals name="console_copy_done">
     <item quantity="one">Скопировано %1$d байт в буфер обмена</item>
     <item quantity="few"/>
