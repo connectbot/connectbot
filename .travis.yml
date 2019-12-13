@@ -63,7 +63,7 @@ before_script:
   # Create and start emulator as early as possible
   - adb start-server
   - avdmanager create avd --force --name test --package "system-images;android-${EMU_API};${EMU_FLAVOR};${EMU_ABI}" --abi ${EMU_ABI} --device 'Nexus 4' --sdcard 128M
-  - sudo -E sudo -u $USER -E bash -c "$ANDROID_HOME/emulator/emulator-headless -avd test -skin 768x1280 -no-audio -no-window -no-boot-anim -no-snapshot -camera-back none -camera-front none -qemu -m 2048 &"
+  - sudo -E sudo -u $USER -E bash -c "$ANDROID_HOME/emulator/emulator -avd test -skin 768x1280 -no-audio -no-window -no-boot-anim -no-snapshot -camera-back none -camera-front none -qemu -m 2048 &"
   - sdkmanager 'build-tools;29.0.2' | tr '\r' '\n' | uniq
   - sdkmanager 'platforms;android-28' | tr '\r' '\n' | uniq
   - sdkmanager 'extras;android;m2repository' | tr '\r' '\n' | uniq
