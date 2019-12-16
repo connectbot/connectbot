@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
 #
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
@@ -16,8 +17,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n % 100 >= "
 "3 && n % 100 <= 10 ? 3 : n % 100 >= 11 && n % 100 <= 99 ? 4 : 5;\n"
-"X-Launchpad-Export-Date: 2018-11-01 01:00+0000\n"
-"X-Generator: Launchpad (build 18810)\n"
+"X-Launchpad-Export-Date: 2019-11-07 05:48+0000\n"
+"X-Generator: Launchpad (build 469f241f4e73cc0bdffa4e30654052a2af068e06)\n"
 "Language: ar\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -25,7 +26,7 @@ msgstr ""
 #. running apps list
 msgctxt "app_desc"
 msgid "Simple, powerful, open-source SSH client."
-msgstr "عميل SSH مفتوح المصدر و بسيط وقوي"
+msgstr "عميل SSH بسيط وقوي ومفتوح المصدر."
 
 #. Summary of what the ConnectBot service does; displayed in the Android
 #. running apps list
@@ -36,7 +37,7 @@ msgstr ""
 #. Window title for the Host List
 msgctxt "title_hosts_list"
 msgid "Hosts"
-msgstr "المخدمات"
+msgstr "الخوادم"
 
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
@@ -51,12 +52,12 @@ msgstr "تحويلات المنافذ"
 #. Window title when editing host details
 msgctxt "title_host_editor"
 msgid "Edit Host"
-msgstr "تعديل مخدم"
+msgstr "تعديل خادم"
 
 #. Window title for Help index
 msgctxt "title_help"
 msgid "Help"
-msgstr "مساعدة"
+msgstr "المساعدة"
 
 #. Window title for color list editing screen
 msgctxt "title_colors"
@@ -76,11 +77,10 @@ msgstr "الإعدادات"
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
 msgid "Generate"
-msgstr "إنشاء"
+msgstr "توليد"
 
 msgctxt "help_intro"
-msgid ""
-"Please select a topic below for more information on a particular subject."
+msgid "Please select a topic below for more information on a particular subject."
 msgstr "الرجاء اختار من الاسفل من اجل معلومات اكثر عن هذا الموضوع"
 
 #. Title for the help page with the terms & conditions of the app.
@@ -101,11 +101,11 @@ msgstr ""
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
 msgid ""
-"Long-press on your Android desktop to create direct shortcuts to frequently-"
-"used SSH hosts."
+"Long-press on your Android desktop to create direct shortcuts to "
+"frequently-used SSH hosts."
 msgstr ""
-"قم بالضغط مطولاً على الشاشة الرئيسية لأندرويد لإنشاء روابط مباشرة لخوادم SSH "
-"المستخدمة كثيراً."
+"قم بالضغط مطولاً على الشاشة الرئيسية لأندرويد لإنشاء روابط مباشرة لخوادم "
+"SSH المستخدمة كثيراً."
 
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
@@ -115,8 +115,8 @@ msgstr "تمرير للخلف \\ تمرير للأمام"
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
 msgid ""
-"Swiping your finger up on the right side of the screen allows you to scroll "
-"backward and forward in the local terminal buffer history."
+"Swiping your finger up on the right side of the screen allows you to "
+"scroll backward and forward in the local terminal buffer history."
 msgstr ""
 "إنّ مسح إصبعك للأعلى في الجزء الأيمن من الشاشة يسمح لك بالتمرير للخلف "
 "والأمام في تاريخ الطرفية المحلية."
@@ -124,11 +124,11 @@ msgstr ""
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
 msgid "Scrolling back"
-msgstr ""
+msgstr "التمرير إلى الوراء"
 
 msgctxt "scrolling_forward"
 msgid "Scrolling forward"
-msgstr ""
+msgstr "التمرير إلى الأمام"
 
 #. Header text for instructions about paging up and down in the terminal.
 msgctxt "page_updn_header"
@@ -140,20 +140,22 @@ msgctxt "page_updn_content"
 msgid ""
 "NOTE: This must be enabled in settings.\n"
 "\n"
-"Swiping your finger up and down on the left third of the screen will send a "
-"page up and page down key to the remote host. Many programs map this to "
-"scrolling back into history such as irssi or tinyfugue."
+"Swiping your finger up and down on the left third of the screen will send"
+" a page up and page down key to the remote host. Many programs map this "
+"to scrolling back into history such as irssi or tinyfugue."
 msgstr ""
 
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
 msgid "Page up"
-msgstr ""
+msgstr "صفحة لأعلى"
 
 msgctxt "page_down"
 msgid "Page down"
-msgstr ""
+msgstr "اسفل الصفحة"
 
+#. Header text for instructions about switching to the next and previous host
+#. in the terminal.
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
 msgstr ""
@@ -168,22 +170,22 @@ msgstr ""
 #. Captions for images showing the next/previous host gestures.
 msgctxt "next_host"
 msgid "Next host"
-msgstr ""
+msgstr "الخادم التالي"
 
 msgctxt "prev_host"
 msgid "Previous host"
-msgstr ""
+msgstr "الخادم السابق"
 
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "اختصارات لوحة المفاتيح"
 
 #. Text in a keyboard shortcuts list lined up to keys which increase the
 #. terminal font-size.
 msgctxt "increase_font_size"
 msgid "Increase Font Size"
-msgstr ""
+msgstr "تكبير حجم الخط"
 
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
@@ -227,30 +229,32 @@ msgstr ""
 
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr ""
-"للتاكد من العشوائية خلال توليد المفتاح , حرك اصبعك بشكل عشوائي فوق المربع في "
-"الاسفل"
+"للتأكد من العشوائية أثناء عملية توليد المفتاح ، قم بتحريك أصبعك بشكل "
+"عشوائي فوق المربع في الأسفل."
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
-msgstr "جاري توليد المفتاح"
+msgstr "جاري توليد زوج المفاتيح…"
 
 msgctxt "pubkey_copy_private"
 msgid "Copy private key"
-msgstr "نسخ مفتاح خاص"
+msgstr "نسخ المفتاح الخاص"
 
 msgctxt "pubkey_copy_public"
 msgid "Copy public key"
-msgstr "نسخ مفتاح عام"
+msgstr "نسخ المفتاح العام"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
 msgid ""
 "Tap \"Menu\" to create\n"
 "or import key pairs."
-msgstr "حدد  القائمة  لانشاء او استيراد المفاتيح"
+msgstr ""
+"اضغط على القائمة  لإنشاء \n"
+"أو استيراد أزواج المفاتيح."
 
 msgctxt "pubkey_unknown_format"
 msgid "Unknown format"
@@ -258,7 +262,7 @@ msgstr "صيغة غير معروفة"
 
 msgctxt "pubkey_change_password"
 msgid "Change password"
-msgstr "تغيير كلمة المرور"
+msgstr "تعديل الكلمة السرية"
 
 #. When attempting to import a pubkey, this is the title for the dialog box
 #. where the user should pick the desired file from the SD card contents.
@@ -305,7 +309,7 @@ msgstr ""
 #. prompt before it can be used for authentication
 msgctxt "pubkey_confirm_use"
 msgid "Confirm before use"
-msgstr ""
+msgstr "تأكيد قبل الإستخدام"
 
 #. When the list of port forwards for a host is empty, this text is is shown
 #. in the space where the list of port forwards are normally present. Note that
@@ -332,34 +336,34 @@ msgstr ""
 
 msgctxt "prompt_nickname"
 msgid "Nickname:"
-msgstr ""
+msgstr "الكنية:"
 
 #. An example string that could be used as a nickname for a pubkey.
 msgctxt "prompt_nickname_hint_pubkey"
 msgid "My work key"
-msgstr ""
+msgstr "مفتاح عملي"
 
 #. The source TCP port for port forwards.
 msgctxt "prompt_source_port"
 msgid "Source port:"
-msgstr ""
+msgstr "المنفذ المنبعي:"
 
 #. The "host:port" combination used for port forward destinations.
 msgctxt "prompt_destination"
 msgid "Destination:"
-msgstr ""
+msgstr "الوِجهة:"
 
 #. Prompt presented to the user when the server requests that they change
 #. their password. This is the entry for the old password.
 msgctxt "prompt_old_password"
 msgid "Old password:"
-msgstr ""
+msgstr "الكلمة السرية القديمة:"
 
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
 msgctxt "prompt_password"
 msgid "Password:"
-msgstr ""
+msgstr "الكلمة السرية:"
 
 #. Added after a "Password:" prompt to indicate user needs to confirm entry.
 msgctxt "prompt_again"
@@ -411,7 +415,8 @@ msgstr ""
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 
@@ -446,11 +451,11 @@ msgstr ""
 
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
-msgstr ""
+msgstr "الكلمات السرية غير متطابقة!"
 
 msgctxt "alert_wrong_password_msg"
 msgid "Wrong password!"
-msgstr ""
+msgstr "الكلمة السرية خاطئة!"
 
 msgctxt "alert_key_corrupted_msg"
 msgid "Private key appears corrupt!"
@@ -463,16 +468,16 @@ msgstr ""
 #. Change an existing item's (e.g., host or pubkey) details.
 msgctxt "button_change"
 msgid "Change"
-msgstr ""
+msgstr "تعديل"
 
 #. Button that resizes the screen to the user-specified dimensions.
 msgctxt "button_resize"
 msgid "Resize"
-msgstr ""
+msgstr "غيّر الحجم"
 
 msgctxt "alert_disconnect_msg"
 msgid "Connection Lost"
-msgstr ""
+msgstr "ضاع الإتصال"
 
 msgctxt "msg_copyright"
 msgid ""
@@ -508,7 +513,7 @@ msgstr ""
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr ""
+msgstr "النسخ الإحتياطي للمفاتيح العمومية"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
@@ -569,7 +574,7 @@ msgstr ""
 #. The category title for keyboard preferences
 msgctxt "pref_keyboard_category"
 msgid "Keyboard"
-msgstr ""
+msgstr "لوحة المفاتيح"
 
 #. Name for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_title"
@@ -718,8 +723,7 @@ msgstr ""
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
+msgid "Send notification when a terminal running in the background sounds a bell."
 msgstr ""
 
 #. Preference selection to indicate use of right side of keyboard for special
@@ -737,7 +741,7 @@ msgstr ""
 #. Preference selection to indicate never to use special shortcut keys.
 msgctxt "list_keymode_none"
 msgid "Disable"
-msgstr ""
+msgstr "تعطيل"
 
 #. Preference to not use pubkeys to authenticate to this host.
 msgctxt "list_pubkeyids_none"
@@ -752,17 +756,17 @@ msgstr ""
 #. Host nickname field preference title
 msgctxt "hostpref_nickname_title"
 msgid "Nickname"
-msgstr ""
+msgstr "الكنية"
 
 #. Host color category preference title
 msgctxt "hostpref_color_title"
 msgid "Color category"
-msgstr ""
+msgstr "فئة اللون"
 
 #. Host's default font size when opening the terminal in points (pt)
 msgctxt "hostpref_fontsize_title"
 msgid "Font size (pt)"
-msgstr ""
+msgstr "حجم الخط (pt)"
 
 #. Host pubkey usage preference title
 msgctxt "hostpref_pubkeyid_title"
@@ -840,7 +844,7 @@ msgstr ""
 #. Username field title for host editor preference
 msgctxt "hostpref_username_title"
 msgid "Username"
-msgstr ""
+msgstr "إسم المستخدم"
 
 #. Hostname field title for host editor preference
 msgctxt "hostpref_hostname_title"
@@ -864,6 +868,10 @@ msgid "Copied %1$d byte to clipboard"
 msgid_plural "Copied %1$d bytes to clipboard"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 #. Instructions for how to copy from the terminal. The '\n' entries are to
 #. split lines to improve readability and prevent wrapping off the screen.
@@ -877,28 +885,28 @@ msgstr ""
 #. Button to close the disconnected terminal window.
 msgctxt "console_menu_close"
 msgid "Close"
-msgstr ""
+msgstr "إغلاق"
 
 #. Button to begin copying from the terminal to the clipboard.
 msgctxt "console_menu_copy"
 msgid "Copy"
-msgstr ""
+msgstr "نسخ"
 
 #. Button to paste from the clipboard to the terminal.
 msgctxt "console_menu_paste"
 msgid "Paste"
-msgstr ""
+msgstr "لصق"
 
 #. Button that brings user to the Port Forwards List.
 msgctxt "console_menu_portforwards"
 msgid "Port Forwards"
-msgstr ""
+msgstr "تحويلات المنافذ"
 
 #. Button that brings user to the terminal resizing dialog where they can
 #. force a size.
 msgctxt "console_menu_resize"
 msgid "Force Size"
-msgstr ""
+msgstr "افرض الحجم"
 
 #. Button that brings up the list of URLs on the current screen
 msgctxt "console_menu_urlscan"
@@ -913,19 +921,19 @@ msgstr "نعم"
 #. Button label to answer "No" to a yes/no prompt
 msgctxt "button_no"
 msgid "No"
-msgstr "ﻻ"
+msgstr "لا"
 
 #. Selection for a "local" port forward. E.g., connections to a port listening
 #. locally is forwarded to the remote end's listening port.
 msgctxt "portforward_local"
 msgid "Local"
-msgstr ""
+msgstr "المحلي"
 
 #. Selection for a "remote" port forward. E.g., connections to a port
 #. listening remotely is forwarded to the local end's listening port.
 msgctxt "portforward_remote"
 msgid "Remote"
-msgstr ""
+msgstr "بُعديّ"
 
 #. Selection for a "dynamic" port forward. E.g., connections to a port
 #. listening locally is forwarded based on the SOCKS protocol to an arbitrary
@@ -938,42 +946,42 @@ msgstr ""
 #. Creation dialog.
 msgctxt "portforward_pos"
 msgid "Create port forward"
-msgstr ""
+msgstr "انشاء تحويل منفذي"
 
 msgctxt "portforward_problem"
 msgid ""
-"Problem creating port forward, maybe you're using ports under 1024 or port "
-"is already used?"
+"Problem creating port forward, maybe you're using ports under 1024 or "
+"port is already used?"
 msgstr ""
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
 msgid "username"
-msgstr ""
+msgstr "username"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_hostname"
 msgid "hostname"
-msgstr ""
+msgstr "hostname"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_port"
 msgid "port"
-msgstr ""
+msgstr "port"
 
 msgctxt "list_menu_pubkeys"
 msgid "Manage Pubkeys"
-msgstr ""
+msgstr "إدارة المفاتيح العمومية"
 
 #. Selection choice to sort hosts by color.
 msgctxt "list_menu_sortcolor"
 msgid "Sort by color"
-msgstr ""
+msgstr "فرز بحسب اللون"
 
 #. Selection choice to sort hosts by nickname.
 msgctxt "list_menu_sortname"
 msgid "Sort by name"
-msgstr ""
+msgstr "فرز بحسب الإسم"
 
 msgctxt "list_menu_disconnect"
 msgid "Disconnect All"
@@ -981,23 +989,23 @@ msgstr ""
 
 msgctxt "list_menu_settings"
 msgid "Settings"
-msgstr ""
+msgstr "الإعدادات"
 
 msgctxt "list_host_disconnect"
 msgid "Disconnect"
-msgstr ""
+msgstr "قطع الاتصال"
 
 msgctxt "list_host_edit"
 msgid "Edit host"
-msgstr ""
+msgstr "تعديل الخادم"
 
 msgctxt "list_host_portforwards"
 msgid "Edit port forwards"
-msgstr ""
+msgstr "تعديل التحويلات المنفذية"
 
 msgctxt "list_host_delete"
 msgid "Delete host"
-msgstr ""
+msgstr "احذف الخادم"
 
 #. Note that the '\n' splits the lines so it's actually "quick-connect box
 #. below to connect"
@@ -1008,7 +1016,7 @@ msgstr ""
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
 msgid "Default"
-msgstr ""
+msgstr "افتراضي"
 
 msgctxt "list_rotation_land"
 msgid "Force landscape"
@@ -1022,7 +1030,7 @@ msgstr ""
 #. on the tilt sensor.
 msgctxt "list_rotation_auto"
 msgid "Automatic"
-msgstr ""
+msgstr "تلقائي"
 
 #. Selection to indicate pressing the Camera button should send "Ctrl+A then
 #. Space".
@@ -1049,7 +1057,7 @@ msgstr ""
 #. all.
 msgctxt "list_camera_none"
 msgid "None"
-msgstr ""
+msgstr "لا شيء"
 
 #. Name for the backspace character
 msgctxt "list_delkey_backspace"
@@ -1059,7 +1067,7 @@ msgstr ""
 #. Name for the ASCII DEL character
 msgctxt "list_delkey_del"
 msgid "Delete"
-msgstr ""
+msgstr "احذف"
 
 #, c-format
 msgctxt "delete_message"
@@ -1072,7 +1080,7 @@ msgstr ""
 
 msgctxt "delete_neg"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 msgctxt "disconnect_all_message"
 msgid "Are you sure you want to disconnect from all connected hosts?"
@@ -1080,11 +1088,11 @@ msgstr ""
 
 msgctxt "disconnect_all_pos"
 msgid "Yes, disconnect"
-msgstr ""
+msgstr "نعم ، اقطع الإتصال"
 
 msgctxt "disconnect_all_neg"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 msgctxt "terminal_no_hosts_connected"
 msgid "No hosts currently connected"
@@ -1095,7 +1103,7 @@ msgstr ""
 #, c-format
 msgctxt "terminal_connecting"
 msgid "Connecting to %1$s:%2$d via %3$s"
-msgstr ""
+msgstr "جارٍ الاتصال بِـ %1$s:%2$d عبر %3$s"
 
 #. Displays the host key to the user in the terminal
 #, c-format
@@ -1199,7 +1207,7 @@ msgstr ""
 #. Preference selection for SSH Authentication Agent to never use pubkeys
 msgctxt "no"
 msgid "No"
-msgstr "ﻻ"
+msgstr "لا"
 
 #. Preference selection for SSH Authentication Agent to be able to use pubkeys
 msgctxt "yes"
@@ -1209,7 +1217,7 @@ msgstr "نعم"
 #. Menu selection to reset colors to their defaults.
 msgctxt "menu_colors_reset"
 msgid "Reset"
-msgstr "إعادة ضبط"
+msgstr "صفّر"
 
 #. Displayed in the notification bar that connections are active
 msgctxt "app_is_running"
@@ -1250,18 +1258,18 @@ msgstr ""
 #. currently          connected.
 msgctxt "image_description_connected"
 msgid "Connected."
-msgstr "متصل"
+msgstr "متصل."
 
 #. Accessibility text for connection state in list of hosts when the host is
 #. currently              disconnected after having been previously connected.
 msgctxt "image_description_disconnected"
 msgid "Disconnected."
-msgstr ""
+msgstr "غير متّصل."
 
 #. Describes the icon of the "locked pubkey" icon for accessibility purposes.
 msgctxt "image_description_key_is_locked"
 msgid "Key is locked."
-msgstr "المفتاح مقفل"
+msgstr "المفتاح مقفل."
 
 #. Describes the icon of the "send control character" button in the terminal
 #. view for              accessibility purposes.
@@ -1291,7 +1299,7 @@ msgstr ""
 #. accessibility              purposes.
 msgctxt "image_description_show_keyboard"
 msgid "Show keyboard."
-msgstr "عرض لوحة المفاتيح"
+msgstr "عرض لوحة المفاتيح."
 
 #. Describes the icon of the "Arrow up" button in the terminal view for
 #. accessibility              purposes.
@@ -1321,7 +1329,7 @@ msgstr ""
 #. purposes.
 msgctxt "image_description_volume"
 msgid "Volume"
-msgstr ""
+msgstr "الصّوت"
 
 #. Text for the "Esc" button in virtual keyboard.
 msgctxt "button_key_esc"
@@ -1336,7 +1344,7 @@ msgstr ""
 #. Text for the "Home" button in virtual keyboard.
 msgctxt "button_key_home"
 msgid "Home"
-msgstr ""
+msgstr "الرئيسية"
 
 #. Text for the "End" button in virtual keyboard.
 msgctxt "button_key_end"
@@ -1460,7 +1468,7 @@ msgstr ""
 #. Text for button which discards changes to the host.
 msgctxt "discard_host_button"
 msgid "Discard"
-msgstr ""
+msgstr "تجاهل"
 
 #. Text for button which does not discard changes and keeps editing.
 msgctxt "discard_host_cancel_button"
@@ -1514,3 +1522,4 @@ msgstr ""
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
 msgstr ""
+
