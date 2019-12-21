@@ -15,7 +15,9 @@
   <string name="terms_and_conditions">Şartlar &amp; Koşullar</string>
   <string name="hints">İpuçları</string>
   <string name="host_shortcuts_header">Host kısayolları</string>
+  <string name="page_updn_header">Bir sayfa aşağı / yukarı</string>
   <string name="page_up">Bir sayfa yukarı</string>
+  <string name="page_down">Bir sayfa aşağı</string>
   <string name="keyboard_shortcuts">Klavye Kısayolları</string>
   <string name="increase_font_size">Yazıtipi Boyutunu Büyüt</string>
   <string name="decrease_font_size">Yazıtipi Boyutunu Küçült</string>
