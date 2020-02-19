@@ -1,0 +1,40 @@
+# Basque translation for connectbot
+# Copyright (c) 2015 Rosetta Contributors and Canonical Ltd 2015
+# This file is distributed under the same license as the connectbot package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: connectbot\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2015-03-16 11:12+0000\n"
+"PO-Revision-Date: 2015-09-12 12:09+0000\n"
+"Last-Translator: Asier Iturralde Sarasola <Unknown>\n"
+"Language-Team: Basque <eu@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2019-11-06 05:49+0000\n"
+"X-Generator: Launchpad (build 469f241f4e73cc0bdffa4e30654052a2af068e06)\n"
+
+#. Tag line used in the graphics describing the ConnectBot application.
+msgctxt "tag-line"
+msgid "The first SSH client for Android."
+msgstr "Androiderako lehen SSH bezeroa"
+
+#. A description of the ConnectBot SSH application used in the Play Store.
+msgctxt "store-description"
+msgid ""
+"ConnectBot is a powerful open-source Secure Shell (SSH) client.  It can "
+"manage simultaneous SSH sessions, create secure tunnels, and copy/paste "
+"between other applications.\n"
+"\n"
+"This client allows you to connect to Secure Shell servers that typically run "
+"on UNIX-based servers."
+msgstr ""
+"ConnectBot kode irekiko Secure Shell (SSH) bezero ahaltsua da. Aldibereko "
+"SSH saioak kudea ditzake, tunel seguruak sortu eta beste aplikazioen artean "
+"kopiatu/itsatsi.\n"
+"\n"
+"Bezero honek UNIXen oinarritutako zerbitzarietan exekutatu ohi diren Secure "
+"Shell zerbitzarietara konektatzeko aukera ematen dizu."

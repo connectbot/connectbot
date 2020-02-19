@@ -1,0 +1,1524 @@
+# Korean translations for PROJECT.
+# Copyright (C) 2015 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2017-02-28 00:29-0800\n"
+"PO-Revision-Date: 2017-08-29 12:48+0000\n"
+"Last-Translator: Minsu <skyplus@gmail.com>\n"
+"Language-Team: ko <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Launchpad-Export-Date: 2019-11-07 05:48+0000\n"
+"X-Generator: Launchpad (build 469f241f4e73cc0bdffa4e30654052a2af068e06)\n"
+"Language: ko\n"
+"Generated-By: Babel 2.3.4\n"
+
+#. Summary of what ConnectBot is; used as a short description in the Android
+#. running apps list
+msgctxt "app_desc"
+msgid "Simple, powerful, open-source SSH client."
+msgstr "간단하고, 강력한, 오픈소스 SSH 클라이언트."
+
+#. Summary of what the ConnectBot service does; displayed in the Android
+#. running apps list
+msgctxt "service_desc"
+msgid "Maintains SSH connections and loaded pubkeys"
+msgstr ""
+
+#. Window title for the Host List
+msgctxt "title_hosts_list"
+msgid "Hosts"
+msgstr "호스트"
+
+#. Window title for the Pubkeys List
+msgctxt "title_pubkey_list"
+msgid "Pubkeys"
+msgstr "공개키"
+
+#. Window title for the Port Forwards List
+msgctxt "title_port_forwards_list"
+msgid "Port forwards"
+msgstr "포트 포워딩"
+
+#. Window title when editing host details
+msgctxt "title_host_editor"
+msgid "Edit Host"
+msgstr "호스트 편집"
+
+#. Window title for Help index
+msgctxt "title_help"
+msgid "Help"
+msgstr "도움말"
+
+#. Window title for color list editing screen
+msgctxt "title_colors"
+msgid "Colors"
+msgstr "색상"
+
+#. Dialog title for color picker dialog
+msgctxt "title_color_picker"
+msgid "Pick a color"
+msgstr ""
+
+#. Window title for the global applications settings activity.
+msgctxt "title_settings"
+msgid "Settings"
+msgstr "설정"
+
+#. Window title when generating a new pubkey.
+msgctxt "title_pubkey_generate"
+msgid "Generate"
+msgstr ""
+
+msgctxt "help_intro"
+msgid ""
+"Please select a topic below for more information on a particular subject."
+msgstr "아래의 제목들을 선택하면 특정 주제의 정보를 더 알 수 있습니다."
+
+#. Title for the help page with the terms & conditions of the app.
+msgctxt "terms_and_conditions"
+msgid "Terms & Conditions"
+msgstr ""
+
+#. Title for the help page with the hints about the app.
+msgctxt "hints"
+msgid "Hints"
+msgstr ""
+
+#. Header text for instructions about creating host shortcuts.
+msgctxt "host_shortcuts_header"
+msgid "Host Shortcuts"
+msgstr ""
+
+#. Instructions about creating host shortcuts.
+msgctxt "host_shortcuts_content"
+msgid ""
+"Long-press on your Android desktop to create direct shortcuts to frequently-"
+"used SSH hosts."
+msgstr ""
+
+#. Header text for instructions about scrolling the terminal.
+msgctxt "scroll_hints_header"
+msgid "Scroll back / Scroll forward"
+msgstr ""
+
+#. Instructions about scrolling the terminal.
+msgctxt "scroll_hints_content"
+msgid ""
+"Swiping your finger up on the right side of the screen allows you to scroll "
+"backward and forward in the local terminal buffer history."
+msgstr ""
+
+#. Captions for images showing the scroll back/forward gestures.
+msgctxt "scrolling_back"
+msgid "Scrolling back"
+msgstr ""
+
+msgctxt "scrolling_forward"
+msgid "Scrolling forward"
+msgstr ""
+
+#. Header text for instructions about paging up and down in the terminal.
+msgctxt "page_updn_header"
+msgid "Page Up / Page Down"
+msgstr ""
+
+#. Instructions about paging up and down in the terminal.
+msgctxt "page_updn_content"
+msgid ""
+"NOTE: This must be enabled in settings.\n"
+"\n"
+"Swiping your finger up and down on the left third of the screen will send a "
+"page up and page down key to the remote host. Many programs map this to "
+"scrolling back into history such as irssi or tinyfugue."
+msgstr ""
+
+#. Captions for images showing the page up/down gestures.
+msgctxt "page_up"
+msgid "Page up"
+msgstr ""
+
+msgctxt "page_down"
+msgid "Page down"
+msgstr ""
+
+#. Header text for instructions about switching to the next and previous host
+#. in the terminal.
+msgctxt "switching_hosts_header"
+msgid "Switching Hosts"
+msgstr ""
+
+#. Instructions about switching to the next and previous host in the terminal.
+msgctxt "switching_hosts_content"
+msgid ""
+"Swiping your finger from one side of the screen to the other will switch "
+"between currently connected hosts."
+msgstr ""
+
+#. Captions for images showing the next/previous host gestures.
+msgctxt "next_host"
+msgid "Next host"
+msgstr ""
+
+msgctxt "prev_host"
+msgid "Previous host"
+msgstr ""
+
+#. Title for the help dialog showing keyboard shortcuts.
+msgctxt "keyboard_shortcuts"
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#. Text in a keyboard shortcuts list lined up to keys which increase the
+#. terminal font-size.
+msgctxt "increase_font_size"
+msgid "Increase Font Size"
+msgstr "글꼴 크기 확대"
+
+#. Keyboard shortcut for increasing the font size.
+msgctxt "increase_font_shortcut"
+msgid "Ctrl and +"
+msgstr ""
+
+#. Text in a keyboard shortcuts list lined up to keys which decrease the
+#. terminal font-size.
+msgctxt "decrease_font_size"
+msgid "Decrease Font Size"
+msgstr "글꼴 크기 축소"
+
+#. Keyboard shortcut for decreasing the font size.
+msgctxt "decrease_font_shortcut"
+msgid "Ctrl and -"
+msgstr ""
+
+#. Keyboard shortcut for pasting into the terminal.
+msgctxt "paste_shortcut"
+msgid "Ctrl-Shift-V"
+msgstr ""
+
+msgctxt "pubkey_generate"
+msgid "Generate"
+msgstr "생성"
+
+msgctxt "pubkey_delete"
+msgid "Delete key"
+msgstr "키 삭제"
+
+#. Dialog title when user must move finger randomly over an area to gather
+#. entropy (collect random bits)
+msgctxt "pubkey_gather_entropy"
+msgid "Gathering Entropy"
+msgstr "엔트로피 수집 중"
+
+#, c-format
+msgctxt "pubkey_touch_prompt"
+msgid "Touch this box to gather randomness: %1$d%% done"
+msgstr "이 사각형의 랜덤으로 터치하세요: %1$d%% 완료"
+
+msgctxt "pubkey_touch_hint"
+msgid ""
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
+msgstr "키 생성시 랜덤을 보장하기 위해 아래의 사각형 안에서 손가락을 랜덤으로 이동하십시오."
+
+msgctxt "pubkey_generating"
+msgid "Generating key pair…"
+msgstr "키 쌍 생성 중…"
+
+msgctxt "pubkey_copy_private"
+msgid "Copy private key"
+msgstr "개인 키 복사"
+
+msgctxt "pubkey_copy_public"
+msgid "Copy public key"
+msgstr "공개 키 복사"
+
+#. Note that the '\n' just splits lines, so it's actually "create or import"
+msgctxt "pubkey_list_empty"
+msgid ""
+"Tap \"Menu\" to create\n"
+"or import key pairs."
+msgstr ""
+"메뉴 버튼을 눌러 키 쌍을\n"
+"만들거나 가져 옵니다."
+
+msgctxt "pubkey_unknown_format"
+msgid "Unknown format"
+msgstr "알 수 없는 형식"
+
+msgctxt "pubkey_change_password"
+msgid "Change password"
+msgstr "암호 바꾸기"
+
+#. When attempting to import a pubkey, this is the title for the dialog box
+#. where the user should pick the desired file from the SD card contents.
+msgctxt "pubkey_list_pick"
+msgid "Pick from /sdcard"
+msgstr "/sdcard에서 선택"
+
+#. Message shown to the user when a selected pubkey to import was not
+#. parseable for some reason.
+msgctxt "pubkey_import_parse_problem"
+msgid "Problem parsing imported private key"
+msgstr "가져온 개인키 분석 중 문제 발생"
+
+msgctxt "pubkey_unlock"
+msgid "Unlock key"
+msgstr "키 잠금 해제"
+
+#. Feedback given to the user when the password that they have entered for the
+#. pubkey is incorrect.
+#, c-format
+msgctxt "pubkey_failed_add"
+msgid "Bad password for key '%1$s'. Authentication failed."
+msgstr ""
+
+#. Context menu entry that allows a user to load a pubkey entry into memory.
+#. This is equivalent to "unlocking" a password-protected pubkey entry.
+msgctxt "pubkey_memory_load"
+msgid "Load into memory"
+msgstr "메모리에 올리기"
+
+#. Context menu entry that allows a user to unload a pubkey entry from memory.
+#. This is equivalent to "locking" a password-protected pubkey entry.
+msgctxt "pubkey_memory_unload"
+msgid "Unload from memory"
+msgstr "메모리에서 내리기"
+
+#. Context menu checkbox that indicates that this pubkey entry should attempt
+#. to be loaded upon starting the app.
+msgctxt "pubkey_load_on_start"
+msgid "Load key on start"
+msgstr "시작할 때 키를 올리기"
+
+#. Pubkey preference asking user whether the key use should be confirmed via
+#. prompt before it can be used for authentication
+msgctxt "pubkey_confirm_use"
+msgid "Confirm before use"
+msgstr "사용 전에 확인"
+
+#. When the list of port forwards for a host is empty, this text is is shown
+#. in the space where the list of port forwards are normally present. Note that
+#. the '\n' splits lines, so it's actually "create port forwards"
+msgctxt "portforward_list_empty"
+msgid ""
+"Tap \"Menu\" to create\n"
+"port forwards."
+msgstr ""
+"메뉴를 눌러\n"
+"포트 포워딩을 만듭니다."
+
+#. Context menu action where a user can edite the selected port forward for
+#. the host.
+msgctxt "portforward_edit"
+msgid "Edit port forward"
+msgstr "포트 포워딩 편집"
+
+#. Context menu action where a user can delete the selected port forward from
+#. the host.
+msgctxt "portforward_delete"
+msgid "Delete port forward"
+msgstr "포트 포워딩을 삭제"
+
+msgctxt "prompt_nickname"
+msgid "Nickname:"
+msgstr "대화명:"
+
+#. An example string that could be used as a nickname for a pubkey.
+msgctxt "prompt_nickname_hint_pubkey"
+msgid "My work key"
+msgstr "내 작업 키"
+
+#. The source TCP port for port forwards.
+msgctxt "prompt_source_port"
+msgid "Source port:"
+msgstr "원본 포트:"
+
+#. The "host:port" combination used for port forward destinations.
+msgctxt "prompt_destination"
+msgid "Destination:"
+msgstr "설명:"
+
+#. Prompt presented to the user when the server requests that they change
+#. their password. This is the entry for the old password.
+msgctxt "prompt_old_password"
+msgid "Old password:"
+msgstr "이전 암호:"
+
+#. Prompt for user to enter their password to log into the host when using
+#. 'password' authentication.
+msgctxt "prompt_password"
+msgid "Password:"
+msgstr "암호:"
+
+#. Added after a "Password:" prompt to indicate user needs to confirm entry.
+msgctxt "prompt_again"
+msgid "(again)"
+msgstr "(다시)"
+
+#. Label for the user to select port forward type.
+msgctxt "prompt_type"
+msgid "Type:"
+msgstr "종류:"
+
+#. Hint given below the password input box that lets them know that they are
+#. allowed to leave the field blank.
+msgctxt "prompt_password_can_be_blank"
+msgid "Note: password can be blank"
+msgstr "참고: 암호는 비워둘 수 있습니다."
+
+#. Prompt for the size of the private key in bits.
+msgctxt "prompt_bits"
+msgid "Bits:"
+msgstr "비트:"
+
+#. Prompt for the password to unlock a certain pubkey.
+#, c-format
+msgctxt "prompt_pubkey_password"
+msgid "Password for key '%1$s'"
+msgstr ""
+
+#. Prompt for whether to allow SSH Authentication Agent to use the specified
+#. key. Note that the '\n' means split the line so it's actually "host to use
+#. key"
+#, c-format
+msgctxt "prompt_allow_agent_to_use_key"
+msgid ""
+"Allow remote host to\n"
+"use key '%1$s'?"
+msgstr ""
+
+#. The header of the warning a user gets when the host key has changed. Note
+#. that this can be a very serious attack, so we try to be as "loud" to the
+#. user as possible.
+msgctxt "host_verification_failure_warning_header"
+msgid "WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!"
+msgstr "경고: 원격 호스트의 식별이 바뀌었습니다!"
+
+#. The body of the warning a user gets when the host key has changed. Note
+#. that this can be a very serious attack, so we try to be as "loud" to the
+#. user as possible.
+msgctxt "host_verification_failure_warning"
+msgid ""
+"IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"It is also possible that the host key has just been changed."
+msgstr ""
+"누군가가 나쁜 짓을 하고 있는 것일 수 있습니다!\n"
+"지금 누군가가 당신을 도청하고 있을 수도 있습니다 (중간자 공격)!\n"
+"또는, 단순히 호스트 키가 바뀐 것일 수도 있습니다."
+
+#. Prompt user gets when the remote host has disconnected unexpectedly.
+msgctxt "prompt_host_disconnected"
+msgid ""
+"Host has disconnected.\n"
+"Close session?"
+msgstr ""
+"호스트 연결이 끊겼습니다.\n"
+"세션을 닫을까요?"
+
+#. Prompt user must answer yes or no to when the remote host fails
+#. verification of encryption fingerprint
+msgctxt "prompt_continue_connecting"
+msgid ""
+"Are you sure you want\n"
+"to continue connecting?"
+msgstr ""
+"정말로 연결을 진행하기\n"
+"바랍니까?"
+
+#. Sent to user when the remote public encryption key fingerprint doesn't
+#. match the local database
+#, c-format
+msgctxt "host_authenticity_warning"
+msgid "The authenticity of host '%1$s' can't be established."
+msgstr ""
+
+#. First field is encryption algorithm. Second is the actual fingerprint in
+#. hex digits
+#, c-format
+msgctxt "host_fingerprint"
+msgid "Host %1$s key fingerprint is %2$s"
+msgstr "호스트 %1$s 키 지문은 %2$s"
+
+msgctxt "alert_passwords_do_not_match_msg"
+msgid "Passwords do not match!"
+msgstr "암호가 맞지 않습니다!"
+
+msgctxt "alert_wrong_password_msg"
+msgid "Wrong password!"
+msgstr "잘못된 암호입니다!"
+
+msgctxt "alert_key_corrupted_msg"
+msgid "Private key appears corrupt!"
+msgstr "개인 키가 손상되었습니다!"
+
+msgctxt "alert_sdcard_absent"
+msgid "SD card is not inserted!"
+msgstr "SD 카드가 삽입되지 않습니다!"
+
+#. Change an existing item's (e.g., host or pubkey) details.
+msgctxt "button_change"
+msgid "Change"
+msgstr "바꾸기"
+
+#. Button that resizes the screen to the user-specified dimensions.
+msgctxt "button_resize"
+msgid "Resize"
+msgstr "크기 조정"
+
+msgctxt "alert_disconnect_msg"
+msgid "Connection Lost"
+msgstr "연결이 끊어짐"
+
+msgctxt "msg_copyright"
+msgid ""
+"Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
+"http://jsharkey.org/"
+msgstr ""
+
+#. The category title for terminal emulation preferences.
+msgctxt "pref_emulation_category"
+msgid "Terminal emulation"
+msgstr "터미널 에뮬레이션"
+
+#. Name for the emulation terminal type preference.
+msgctxt "pref_emulation_title"
+msgid "Emulation mode"
+msgstr "에뮬레이션 모드"
+
+#. Description of the emulation terminal type preference.
+msgctxt "pref_emulation_summary"
+msgid "Terminal emulation mode to use for PTY connections"
+msgstr "PTY 연결 용 터미널 에뮬레이션 모드"
+
+#. Name for the scrollback size preference
+msgctxt "pref_scrollback_title"
+msgid "Scrollback size"
+msgstr "스크롤 크기"
+
+#. Description of the scrollback size preference
+msgctxt "pref_scrollback_summary"
+msgid "Size of scrollback buffer to keep in memory for each console"
+msgstr "각 콘솔별로 메모리에 담아 둘 스크롤 버퍼의 크기"
+
+#. Title of the preference used to enable or disable the back-up of pubkeys.
+msgctxt "pref_backupkeys_title"
+msgid "Backup pubkeys"
+msgstr "공개키 백업"
+
+#. Summary for the preference used to enable or disable the back-up of
+#. pubkeys.
+msgctxt "pref_backupkeys_summary"
+msgid "Keep back-ups of the private keys using Android's backup mechanism"
+msgstr "Android의 백업 메커니즘을 사용하여 비공개 키 백업 유지"
+
+#. The category title for user interface preferences
+msgctxt "pref_ui_category"
+msgid "User interface"
+msgstr "사용자 인터페이스"
+
+#. Name for the rotation mode preference
+msgctxt "pref_rotation_title"
+msgid "Rotation mode"
+msgstr "회전 모드"
+
+#. Summary for the rotation mode preference
+msgctxt "pref_rotation_summary"
+msgid "How to change rotation when keyboard popped in/out"
+msgstr "키보드 팝 인/아웃시 회전 방법"
+
+#. Name for the titlebar hide preference
+msgctxt "pref_titlebarhide_title"
+msgid "Autohide title bar"
+msgstr "제목 표시 줄 자동 숨기기"
+
+#. Summary for the titlebar hide preference
+msgctxt "pref_titlebarhide_summary"
+msgid "Tap console to show title bar and access menu"
+msgstr "제목 표시 줄과 액세스 메뉴를 표시하려면 콘솔을 누르십시오."
+
+#. Title for special keys always visible preference
+msgctxt "pref_alwaysvisible_title"
+msgid "Special keys always visible"
+msgstr "특수 키 항상 보이기"
+
+#. Name for the page up/down gesture preference
+msgctxt "pref_pg_updn_gesture_title"
+msgid "Page up/down gesture"
+msgstr "페이지 업 / 다운 동작"
+
+#. Summary for the full screen preference
+msgctxt "pref_pg_updn_gesture_summary"
+msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
+msgstr "화면의 왼쪽 세번째 지점을 스와이프 하여 페이지 업 / 다운을 터미널로 보냅니다."
+
+#. Name for the full screen preference
+msgctxt "pref_fullscreen_title"
+msgid "Full screen"
+msgstr "전체 화면"
+
+#. Summary for the full screen preference
+msgctxt "pref_fullscreen_summary"
+msgid "Hide status bar while in console"
+msgstr "콘솔일 때 상태 표시줄을 숨김"
+
+#. The category title for keyboard preferences
+msgctxt "pref_keyboard_category"
+msgid "Keyboard"
+msgstr ""
+
+#. Name for the shifted numbers are f-keys preference
+msgctxt "pref_shiftfkeys_title"
+msgid "Shift+num are F-keys"
+msgstr "Shift+num을 F-keys로 보내기"
+
+#. Summary for the shifted numbers are f-keys preference
+msgctxt "pref_shiftfkeys_summary"
+msgid "On hardware keyboards, number keys send F1-F10 with shift"
+msgstr "하드웨어 키보드에서, 숫자 키를 shift + F1-F10로 입력합니다."
+
+#. Name for the ctrl'ed numbers are f-keys preference
+msgctxt "pref_ctrlfkeys_title"
+msgid "Ctrl+num are F-keys"
+msgstr "Ctrl+num을 F-keys로 보내기"
+
+#. Summary for the ctrl'ed numbers are f-keys preference
+msgctxt "pref_ctrlfkeys_summary"
+msgid "On software keyboards, number keys send F1-F10 with ctrl"
+msgstr "소프트웨어 키보드에서, 숫자 키를 ctrl + F1-F10로 입력합니다."
+
+#. Name for the volume keys control font size preference
+msgctxt "pref_volumefont_title"
+msgid "Volume keys change font size"
+msgstr "볼륨키로 글꼴 크기 변경"
+
+#. Summary for the volume keys control font size preference
+msgctxt "pref_volumefont_summary"
+msgid "Font size can also be changed in per-host settings"
+msgstr "글꼴 크기는 호스트별 설정에서도 변경할 수 있습니다."
+
+#. Name for the memorize keys preference
+msgctxt "pref_memkeys_title"
+msgid "Remember keys in memory"
+msgstr "메모리에 키를 기억"
+
+#. Summary for the memorize keys preference
+msgctxt "pref_memkeys_summary"
+msgid "Keep unlocked keys in memory until backend service is terminated"
+msgstr "백엔드 서비스가 종료되기 전까지 잠금이 풀린 키들을 메모리에 유지합니다"
+
+#. Name for the preference that forces the service to stay running in the
+#. background.
+msgctxt "pref_conn_persist_title"
+msgid "Persist connections"
+msgstr "접속 유지"
+
+#. Summary for the preference that forces the service to stay running in the
+#. background.
+msgctxt "pref_conn_persist_summary"
+msgid "Force connections to stay connected while in background"
+msgstr "백그라운드 동안에도 강제로 연결된 상태 유지"
+
+#. Name for the keyboard shortcuts preference
+msgctxt "pref_keymode_title"
+msgid "Directory shortcuts"
+msgstr "디렉터리 바로 가기"
+
+#. Summary for the keyboard shortcuts preference
+msgctxt "pref_keymode_summary"
+msgid "Select how to use Alt for '/' and Shift for Tab"
+msgstr ""
+
+#. Name for the sticky modifiers preference
+msgctxt "pref_stickymodifiers_title"
+msgid "Sticky modifiers"
+msgstr ""
+
+#. Summary for the sticky modifiers preference
+msgctxt "pref_stickymodifiers_summary"
+msgid "Modifier keys remain enabled until another key is pressed"
+msgstr ""
+
+#. Sticky modifier preference value description for when only the Alt key
+#. should be a sticky modifier.
+msgctxt "only_alt"
+msgid "Only alt"
+msgstr ""
+
+#. Name for the camera shortcut usage preference
+msgctxt "pref_camera_title"
+msgid "Camera shortcut"
+msgstr "카메라 바로 가기"
+
+#. Summary for the camera shortcut usage preference
+msgctxt "pref_camera_summary"
+msgid "Select which shortcut to trigger when the camera button is pushed"
+msgstr "카메라 버튼을 눌러 실행할 바로 가기 선택"
+
+#. Name for the keep screen on preference
+msgctxt "pref_keepalive_title"
+msgid "Keep screen awake"
+msgstr "화면 켜짐 유지"
+
+#. Summary for the camera shortcut usage preference
+msgctxt "pref_keepalive_summary"
+msgid "Prevent the screen from turning off when working in a console"
+msgstr "콘솔 작업 중 화면이 꺼지는 것을 방지"
+
+#. Name for the Wi-Fi lock preference
+msgctxt "pref_wifilock_title"
+msgid "Keep Wi-Fi active"
+msgstr "Wi-Fi 켜짐 유지"
+
+#. Summary for the Wi-Fi lock preference
+msgctxt "pref_wifilock_summary"
+msgid "Prevent Wi-Fi from turning off when a session is active"
+msgstr "세션이 유효한 동안 Wi-Fi가 꺼지지 않도록 함"
+
+#. Name for the haptic feedback (bumpy arrow) preference
+msgctxt "pref_bumpyarrows_title"
+msgid "Bumpy arrows"
+msgstr "방향키 진동"
+
+#. Summary for the haptic feedback (bumpy arrow) preference
+msgctxt "pref_bumpyarrows_summary"
+msgid "Vibrate when sending arrow keys; useful for laggy connections"
+msgstr "화살표 키를 보낼 때 진동; 느린 연결에서 유용합니다."
+
+#. Category title for the Terminal Bell preferences
+msgctxt "pref_bell_category"
+msgid "Terminal bell"
+msgstr "터미널 벨"
+
+#. Checkbox preference title for the audible terminal bell feature
+msgctxt "pref_bell_title"
+msgid "Audible bell"
+msgstr "벨소리"
+
+#. Title for the slider preference to set the volume
+msgctxt "pref_bell_volume_title"
+msgid "Bell volume"
+msgstr "벨 볼륨"
+
+#. Checkbox preference title for the vibrate on terminal bell feature
+msgctxt "pref_bell_vibrate_title"
+msgid "Vibrate on bell"
+msgstr "진동 벨"
+
+#. Checkbox preference title for the receive notifications on terminal bell
+#. feature
+msgctxt "pref_bell_notification_title"
+msgid "Background notifications"
+msgstr "백그라운드 알림"
+
+#. Brief summary of the feature that is enabled when the checkbox preference
+#. for the receive notifications on terminal bell feature is checked
+msgctxt "pref_bell_notification_summary"
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
+msgstr "백그라운드에서 실행중인 터미널 벨을 울리 때 알립니다."
+
+#. Preference selection to indicate use of right side of keyboard for special
+#. shortcuts.
+msgctxt "list_keymode_right"
+msgid "Use right-side keys"
+msgstr "오른쪽의 키들 사용"
+
+#. Preference selection to indicate use of left side of keyboard for special
+#. shortcuts.
+msgctxt "list_keymode_left"
+msgid "Use left-side keys"
+msgstr "왼쪽의 키들 사용"
+
+#. Preference selection to indicate never to use special shortcut keys.
+msgctxt "list_keymode_none"
+msgid "Disable"
+msgstr "사용 안 함"
+
+#. Preference to not use pubkeys to authenticate to this host.
+msgctxt "list_pubkeyids_none"
+msgid "Do not use keys"
+msgstr "키 사용 안함"
+
+#. Preference to use any pubkey to authenticate to this host.
+msgctxt "list_pubkeyids_any"
+msgid "Use any unlocked key"
+msgstr "잠금이 풀린 키들을 사용"
+
+#. Host nickname field preference title
+msgctxt "hostpref_nickname_title"
+msgid "Nickname"
+msgstr "닉네임"
+
+#. Host color category preference title
+msgctxt "hostpref_color_title"
+msgid "Color category"
+msgstr "색상 카테고리"
+
+#. Host's default font size when opening the terminal in points (pt)
+msgctxt "hostpref_fontsize_title"
+msgid "Font size (pt)"
+msgstr "글꼴 크기 (pt)"
+
+#. Host pubkey usage preference title
+msgctxt "hostpref_pubkeyid_title"
+msgid "Use pubkey authentication"
+msgstr "공개 키 인증 사용"
+
+#. Preference title for the SSH Authentication Agent Forwarding for a host
+#. connection
+msgctxt "hostpref_authagent_title"
+msgid "Use SSH auth agent"
+msgstr "SSH 인증 에이전트 사용"
+
+#. Host post-login automation preference title
+msgctxt "hostpref_postlogin_title"
+msgid "Post-login automation"
+msgstr "로그인 후 자동 실행"
+
+#. Host post-login automation preference summary
+msgctxt "hostpref_postlogin_summary"
+msgid "Commands to run on remote server once authenticated"
+msgstr "인증 후 원격 서버에서 실행될 명령어들"
+
+#. Host compression preference title
+msgctxt "hostpref_compression_title"
+msgid "Compression"
+msgstr "압축"
+
+#. Summary for compression preference
+msgctxt "hostpref_compression_summary"
+msgid "This may help with slower networks"
+msgstr "네트워크가 느린 경우 유용"
+
+#. Setting for whether we want a session to start up when we connect to a host
+msgctxt "hostpref_wantsession_title"
+msgid "Start shell session"
+msgstr "쉘 세션 시작"
+
+#. Summary for field asking whether a shell session should be started up upon
+#. connection or not
+msgctxt "hostpref_wantsession_summary"
+msgid "Disable this preference to only use port forwards"
+msgstr "포트 포워드만 사용할 경우 이 설정을 해제 하세요"
+
+#. Setting for whether the host should be reconnected to automatically upon
+#. disconnect
+msgctxt "hostpref_stayconnected_title"
+msgid "Stay connected"
+msgstr "연결 유지"
+
+#. Summary for preference asking whether the host should be reconnected to
+#. when it disconnects
+msgctxt "hostpref_stayconnected_summary"
+msgid "Try to reconnect to host if disconnected"
+msgstr "연결이 끊기면 다시 연결을 시도"
+
+#. Setting for whether we should prompt to close after getting disconnected
+msgctxt "hostpref_quickdisconnect_title"
+msgid "Close on disconnect"
+msgstr "닫을 때 연결 해제"
+
+msgctxt "hostpref_quickdisconnect_summary"
+msgid "Close immediately after remote disconnect without prompting."
+msgstr "원격 연결 해제 후 메시지 없이 즉시 닫습니다."
+
+#. Setting for what key code is sent to the server when DEL key is pressed.
+msgctxt "hostpref_delkey_title"
+msgid "DEL Key"
+msgstr "삭제 키"
+
+#. Host character encoding preference title
+msgctxt "hostpref_encoding_title"
+msgid "Encoding"
+msgstr "인코딩"
+
+#. Username field title for host editor preference
+msgctxt "hostpref_username_title"
+msgid "Username"
+msgstr "사용자 이름"
+
+#. Hostname field title for host editor preference
+msgctxt "hostpref_hostname_title"
+msgid "Host"
+msgstr "호스트"
+
+#. Port field title for host editor preference
+msgctxt "hostpref_port_title"
+msgid "Port"
+msgstr "포트"
+
+#. Displayed to indicate a host has never been connected to.
+msgctxt "bind_never"
+msgid "Never connected"
+msgstr "연결된 적 없음"
+
+#. Message given when user copies from the terminal.
+#, c-format
+msgctxt "console_copy_done"
+msgid "Copied %1$d byte to clipboard"
+msgid_plural "Copied %1$d bytes to clipboard"
+msgstr[0] "클립 보드에 %1$d 바이트가 복사되었습니다."
+
+#. Instructions for how to copy from the terminal. The '\n' entries are to
+#. split lines to improve readability and prevent wrapping off the screen.
+msgctxt "console_copy_start"
+msgid ""
+"Touch and drag\n"
+"or use directional pad\n"
+"to select area to copy"
+msgstr ""
+"터치 후 드래그 또는\n"
+"방향 키로\n"
+"복사 영역을 선택"
+
+#. Button to close the disconnected terminal window.
+msgctxt "console_menu_close"
+msgid "Close"
+msgstr "닫기"
+
+#. Button to begin copying from the terminal to the clipboard.
+msgctxt "console_menu_copy"
+msgid "Copy"
+msgstr "복사"
+
+#. Button to paste from the clipboard to the terminal.
+msgctxt "console_menu_paste"
+msgid "Paste"
+msgstr "붙여넣기"
+
+#. Button that brings user to the Port Forwards List.
+msgctxt "console_menu_portforwards"
+msgid "Port Forwards"
+msgstr "포트 포워드"
+
+#. Button that brings user to the terminal resizing dialog where they can
+#. force a size.
+msgctxt "console_menu_resize"
+msgid "Force Size"
+msgstr "크기 고정"
+
+#. Button that brings up the list of URLs on the current screen
+msgctxt "console_menu_urlscan"
+msgid "URL Scan"
+msgstr "URL 검색"
+
+#. Button label to answer "Yes" to a yes/no prompt
+msgctxt "button_yes"
+msgid "Yes"
+msgstr "예"
+
+#. Button label to answer "No" to a yes/no prompt
+msgctxt "button_no"
+msgid "No"
+msgstr "아니오"
+
+#. Selection for a "local" port forward. E.g., connections to a port listening
+#. locally is forwarded to the remote end's listening port.
+msgctxt "portforward_local"
+msgid "Local"
+msgstr "로컬"
+
+#. Selection for a "remote" port forward. E.g., connections to a port
+#. listening remotely is forwarded to the local end's listening port.
+msgctxt "portforward_remote"
+msgid "Remote"
+msgstr "원격"
+
+#. Selection for a "dynamic" port forward. E.g., connections to a port
+#. listening locally is forwarded based on the SOCKS protocol to an arbitrary
+#. remote host and port.
+msgctxt "portforward_dynamic"
+msgid "Dynamic (SOCKS)"
+msgstr "동적 (SOCKS)"
+
+#. Button that commits the port forward to be made from the Port Forward
+#. Creation dialog.
+msgctxt "portforward_pos"
+msgid "Create port forward"
+msgstr "포트 포워딩 만들기"
+
+msgctxt "portforward_problem"
+msgid ""
+"Problem creating port forward, maybe you're using ports under 1024 or port "
+"is already used?"
+msgstr ""
+
+#. Part of the formatting hints that will be used like: username@hostname:port
+msgctxt "format_username"
+msgid "username"
+msgstr "사용자 이름"
+
+#. Part of the formatting hints that will be used like: username@hostname:port
+msgctxt "format_hostname"
+msgid "hostname"
+msgstr "호스트 이름"
+
+#. Part of the formatting hints that will be used like: username@hostname:port
+msgctxt "format_port"
+msgid "port"
+msgstr "포트"
+
+msgctxt "list_menu_pubkeys"
+msgid "Manage Pubkeys"
+msgstr "개인키 관리자"
+
+#. Selection choice to sort hosts by color.
+msgctxt "list_menu_sortcolor"
+msgid "Sort by color"
+msgstr "색상순 정렬"
+
+#. Selection choice to sort hosts by nickname.
+msgctxt "list_menu_sortname"
+msgid "Sort by name"
+msgstr "이름순 정렬"
+
+msgctxt "list_menu_disconnect"
+msgid "Disconnect All"
+msgstr "연결 모두 끊기"
+
+msgctxt "list_menu_settings"
+msgid "Settings"
+msgstr "설정"
+
+msgctxt "list_host_disconnect"
+msgid "Disconnect"
+msgstr "연결끊기"
+
+msgctxt "list_host_edit"
+msgid "Edit host"
+msgstr "호스트 편집"
+
+msgctxt "list_host_portforwards"
+msgid "Edit port forwards"
+msgstr "포트 포워딩 편집"
+
+msgctxt "list_host_delete"
+msgid "Delete host"
+msgstr "호스트 삭제"
+
+#. Note that the '\n' splits the lines so it's actually "quick-connect box
+#. below to connect"
+msgctxt "list_host_empty"
+msgid "No hosts created yet."
+msgstr ""
+"아래의 빠른-연결 상자로\n"
+"호스트에 연결할 수 있습니다."
+
+#. Default screen rotation preference selection
+msgctxt "list_rotation_default"
+msgid "Default"
+msgstr "기본"
+
+msgctxt "list_rotation_land"
+msgid "Force landscape"
+msgstr "가로 고정"
+
+msgctxt "list_rotation_port"
+msgid "Force portrait"
+msgstr "세로 고정"
+
+#. Selection to indicate the rotation should be selected automatically based
+#. on the tilt sensor.
+msgctxt "list_rotation_auto"
+msgid "Automatic"
+msgstr "자동"
+
+#. Selection to indicate pressing the Camera button should send "Ctrl+A then
+#. Space".
+msgctxt "list_camera_ctrlaspace"
+msgid "Ctrl+A then Space"
+msgstr "Ctrl+A 후 Space"
+
+#. Selection to indicate pressing the Camera button should send "Ctrl+A".
+msgctxt "list_camera_ctrla"
+msgid "Ctrl+A"
+msgstr ""
+
+#. Selection to indicate pressing the Camera button should send the "Esc" key.
+msgctxt "list_camera_esc"
+msgid "Esc"
+msgstr ""
+
+#. Selection to indicate pressing the Camera button should send "Esc+A".
+msgctxt "list_camera_esc_a"
+msgid "Esc+A"
+msgstr ""
+
+#. Selection to indicate pressing the Camera button should send nothing at
+#. all.
+msgctxt "list_camera_none"
+msgid "None"
+msgstr "없음"
+
+#. Name for the backspace character
+msgctxt "list_delkey_backspace"
+msgid "Backspace"
+msgstr "백스페이스"
+
+#. Name for the ASCII DEL character
+msgctxt "list_delkey_del"
+msgid "Delete"
+msgstr "삭제"
+
+#, c-format
+msgctxt "delete_message"
+msgid "Are you sure you want to delete '%1$s'?"
+msgstr ""
+
+msgctxt "delete_pos"
+msgid "Yes, delete"
+msgstr "예, 삭제"
+
+msgctxt "delete_neg"
+msgid "Cancel"
+msgstr "취소"
+
+msgctxt "disconnect_all_message"
+msgid "Are you sure you want to disconnect from all connected hosts?"
+msgstr "연결된 모든 호스트 에서 연결을 해제 하시겠습니까?"
+
+msgctxt "disconnect_all_pos"
+msgid "Yes, disconnect"
+msgstr "네, 연결 종료"
+
+msgctxt "disconnect_all_neg"
+msgid "Cancel"
+msgstr ""
+
+msgctxt "terminal_no_hosts_connected"
+msgid "No hosts currently connected"
+msgstr "현재 연결된 호스트가 없음"
+
+#. Displayed in terminal when attempting to connect to a host. The first two
+#. variables are host:port and the third is the protocol (e.g., SSH)
+#, c-format
+msgctxt "terminal_connecting"
+msgid "Connecting to %1$s:%2$d via %3$s"
+msgstr "%3$s(으)로 %1$s:%2$d에 연결 중"
+
+#. Displays the host key to the user in the terminal
+#, c-format
+msgctxt "terminal_sucess"
+msgid "Verified host '%1$s' key: %2$s"
+msgstr ""
+
+msgctxt "terminal_failed"
+msgid "Host key verification failed."
+msgstr "호스트 키를 확인할 수 없습니다."
+
+#. Displayed on the terminal describing the cryptographic algorithm names
+#, c-format
+msgctxt "terminal_using_s2c_algorithm"
+msgid "Server-to-client algorithm: %1$s %2$s"
+msgstr "서버-&gt;클라이언트 알고리즘: %1$s %2$s"
+
+#. Displayed on the terminal describing the cryptographic algorithm names
+#, c-format
+msgctxt "terminal_using_c2s_algorithm"
+msgid "Client-to-server algorithm: %1$s %2$s"
+msgstr "클라이언트-&gt;서버 알고리즘: %1$s %2$s"
+
+#. Displayed on the terminal describing the cryptographic algorithm names
+#, c-format
+msgctxt "terminal_using_algorithm"
+msgid "Using algorithm: %1$s %2$s"
+msgstr "사용중인 알고리즘: %1$s %2$s"
+
+#. Displayed on the terminal during a SSH connection describing the
+#. cryptographic key              exchange algorithm used to establish a shared
+#. secret between this program and the              server.
+#, c-format
+msgctxt "terminal_kex_algorithm"
+msgid "Key exchange algorithm: %s"
+msgstr ""
+
+msgctxt "terminal_auth"
+msgid "Trying to authenticate"
+msgstr "인증 시도 중"
+
+msgctxt "terminal_auth_pass"
+msgid "Attempting 'password' authentication"
+msgstr ""
+
+msgctxt "terminal_auth_pass_fail"
+msgid "Authentication method 'password' failed"
+msgstr ""
+
+msgctxt "terminal_auth_pubkey_any"
+msgid "Attempting 'publickey' authentication with any in-memory public keys"
+msgstr ""
+
+msgctxt "terminal_auth_pubkey_invalid"
+msgid "Selected public key is invalid, try reselecting key in host editor"
+msgstr "선택된 공개 키가 잘못되었습니다. 호스트 편집에서 키를 다시 선택해 보세요"
+
+msgctxt "terminal_auth_pubkey_specific"
+msgid "Attempting 'publickey' authentication with a specific public key"
+msgstr ""
+
+#, c-format
+msgctxt "terminal_auth_pubkey_fail"
+msgid "Authentication method 'publickey' with key '%1$s' failed"
+msgstr ""
+
+msgctxt "terminal_auth_ki"
+msgid "Attempting 'keyboard-interactive' authentication"
+msgstr ""
+
+msgctxt "terminal_auth_ki_fail"
+msgid "Authentication method 'keyboard-interactive' failed"
+msgstr ""
+
+msgctxt "terminal_auth_fail"
+msgid ""
+"[Your host doesn't support 'password' or 'keyboard-interactive' "
+"authentication.]"
+msgstr ""
+
+msgctxt "terminal_no_session"
+msgid "Session will not be started due to host preference."
+msgstr "호스트 설정 동안에는 세션이 시작되지 않을 것 입니다."
+
+#, c-format
+msgctxt "terminal_enable_portfoward"
+msgid "Enable port forward: %1$s"
+msgstr "포트 포워딩 사용: %1$s"
+
+msgctxt "local_shell_unavailable"
+msgid "Failure! Local shell is unavailable on this phone."
+msgstr "실패! 이 폰은 로컬 쉘을 사용할 수 없습니다."
+
+#. Text sent to the user to alert them that a Terminal Bell is received in a
+#. background session
+#, c-format
+msgctxt "notification_text"
+msgid "%1$s wants your attention."
+msgstr "%1$s에서 알림이 있습니다."
+
+#. Preference selection for SSH Authentication Agent to never use pubkeys
+msgctxt "no"
+msgid "No"
+msgstr "아니오"
+
+#. Preference selection for SSH Authentication Agent to be able to use pubkeys
+msgctxt "yes"
+msgid "Yes"
+msgstr "예"
+
+#. Menu selection to reset colors to their defaults.
+msgctxt "menu_colors_reset"
+msgid "Reset"
+msgstr "초기화"
+
+#. Displayed in the notification bar that connections are active
+msgctxt "app_is_running"
+msgid "ConnectBot is running"
+msgstr "ConnectBot 실행 중"
+
+msgctxt "color_red"
+msgid "red"
+msgstr "빨간색"
+
+msgctxt "color_green"
+msgid "green"
+msgstr "녹색"
+
+msgctxt "color_blue"
+msgid "blue"
+msgstr "파란색"
+
+msgctxt "color_gray"
+msgid "gray"
+msgstr "회색"
+
+#. Very short label indicating the number next to it is "foreground color"
+#. number.
+#, c-format
+msgctxt "colors_fg_label"
+msgid "FG: %1$d"
+msgstr ""
+
+#. Very short label indicating the number next to it is "background color"
+#. number.
+#, c-format
+msgctxt "color_bg_label"
+msgid "BG: %1$d"
+msgstr ""
+
+#. Accessibility text for connection state in list of hosts when the host is
+#. currently          connected.
+msgctxt "image_description_connected"
+msgid "Connected."
+msgstr ""
+
+#. Accessibility text for connection state in list of hosts when the host is
+#. currently              disconnected after having been previously connected.
+msgctxt "image_description_disconnected"
+msgid "Disconnected."
+msgstr "연결 해제됨."
+
+#. Describes the icon of the "locked pubkey" icon for accessibility purposes.
+msgctxt "image_description_key_is_locked"
+msgid "Key is locked."
+msgstr ""
+
+#. Describes the icon of the "send control character" button in the terminal
+#. view for              accessibility purposes.
+msgctxt "image_description_toggle_control_character"
+msgid "Toggle control character."
+msgstr ""
+
+#. Describes the icon of the "send escape character" button in the terminal
+#. view for              accessibility purposes.
+msgctxt "image_description_send_escape_character"
+msgid "Send escape character."
+msgstr ""
+
+#. Describes the icon of the "send tab character" button in the terminal view
+#. for              accessibility purposes.
+msgctxt "image_description_send_tab_character"
+msgid "Send TAB character."
+msgstr ""
+
+#. Describes the icon of the "hide keyboard" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_hide_keyboard"
+msgid "Hide keyboard."
+msgstr ""
+
+#. Describes the icon of the "show keyboard" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_show_keyboard"
+msgid "Show keyboard."
+msgstr ""
+
+#. Describes the icon of the "Arrow up" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_up"
+msgid "Arrow up"
+msgstr ""
+
+#. Describes the icon of the "Arrow down" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_down"
+msgid "Arrow down"
+msgstr ""
+
+#. Describes the icon of the "Arrow left" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_left"
+msgid "Arrow left"
+msgstr ""
+
+#. Describes the icon of the "Arrow right" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_right"
+msgid "Arrow right"
+msgstr ""
+
+#. Describes the "volume" icon in the bell volume dialog for accessibility
+#. purposes.
+msgctxt "image_description_volume"
+msgid "Volume"
+msgstr "볼륨"
+
+#. Text for the "Esc" button in virtual keyboard.
+msgctxt "button_key_esc"
+msgid "Esc"
+msgstr ""
+
+#. Text for the "Ctrl" button in virtual keyboard.
+msgctxt "button_key_ctrl"
+msgid "Ctrl"
+msgstr ""
+
+#. Text for the "Home" button in virtual keyboard.
+msgctxt "button_key_home"
+msgid "Home"
+msgstr ""
+
+#. Text for the "End" button in virtual keyboard.
+msgctxt "button_key_end"
+msgid "End"
+msgstr ""
+
+#. Text for the "Page Up" button in virtual keyboard.
+msgctxt "button_key_pgup"
+msgid "PgUp"
+msgstr ""
+
+#. Text for the "Page Down" button in virtual keyboard.
+msgctxt "button_key_pgdn"
+msgid "PgDn"
+msgstr ""
+
+#. Text for the "F1" button in virtual keyboard.
+msgctxt "button_key_f1"
+msgid "F1"
+msgstr ""
+
+#. Text for the "F2" button in virtual keyboard.
+msgctxt "button_key_f2"
+msgid "F2"
+msgstr ""
+
+#. Text for the "F3" button in virtual keyboard.
+msgctxt "button_key_f3"
+msgid "F3"
+msgstr ""
+
+#. Text for the "F4" button in virtual keyboard.
+msgctxt "button_key_f4"
+msgid "F4"
+msgstr ""
+
+#. Text for the "F5" button in virtual keyboard.
+msgctxt "button_key_f5"
+msgid "F5"
+msgstr ""
+
+#. Text for the "F6" button in virtual keyboard.
+msgctxt "button_key_f6"
+msgid "F6"
+msgstr ""
+
+#. Text for the "F7" button in virtual keyboard.
+msgctxt "button_key_f7"
+msgid "F7"
+msgstr ""
+
+#. Text for the "F8" button in virtual keyboard.
+msgctxt "button_key_f8"
+msgid "F8"
+msgstr ""
+
+#. Text for the "F9" button in virtual keyboard.
+msgctxt "button_key_f9"
+msgid "F9"
+msgstr ""
+
+#. Text for the "F10" button in virtual keyboard.
+msgctxt "button_key_f10"
+msgid "F10"
+msgstr ""
+
+#. Text for the "F11" button in virtual keyboard.
+msgctxt "button_key_f11"
+msgid "F11"
+msgstr ""
+
+#. Text for the "F12" button in virtual keyboard.
+msgctxt "button_key_f12"
+msgid "F12"
+msgstr ""
+
+#. Label for spinner which allows user to select SSH/Telnet/Local.
+msgctxt "protocol_spinner_label"
+msgid "Protocol"
+msgstr "프로토콜"
+
+#. Label for button which expands/collapses section.
+msgctxt "expand"
+msgid "Expand"
+msgstr ""
+
+#. Label for checkbox which, when check, makes SSL authorization require
+#. confirmation.
+msgctxt "hostpref_authagent_with_confirmation"
+msgid "require confirmation"
+msgstr "확인 필요"
+
+#. Text for button which, when clicked, adds a new host.
+msgctxt "hostpref_add_host"
+msgid "Add host"
+msgstr ""
+
+#. Text for button which, when clicked, saves an existing host.
+msgctxt "hostpref_edit_host"
+msgid "Save host"
+msgstr ""
+
+#. Text for button which, when clicked, brings up an editor for adding a new
+#. pubkey.
+msgctxt "pubkey_add_new"
+msgid "Add new pubkey"
+msgstr ""
+
+#. Text for button which, when clicked, brings up picker to import an existing
+#. pubkey.
+msgctxt "pubkey_import_existing"
+msgid "Import existing pubkey"
+msgstr ""
+
+#. Text for dialog which explains that the host URI is invalid and asks to
+#. discard.
+msgctxt "discard_host_changes_message"
+msgid "Host URI is invalid. Would you like to discard changes?"
+msgstr "호스트 URI가 유효하지 않습니다. 변경 사항을 취소 하시겠습니까?"
+
+#. Text for button which discards changes to the host.
+msgctxt "discard_host_button"
+msgid "Discard"
+msgstr "버리기"
+
+#. Text for button which does not discard changes and keeps editing.
+msgctxt "discard_host_cancel_button"
+msgid "Keep editing"
+msgstr "계속 편집하기"
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Describes a key type of the RSA algorithm with a
+#. certain strength described in              number of bits (e.g., "RSA
+#. 2048-bit").
+#, c-format
+msgctxt "key_type_rsa_bits"
+msgid "RSA %d-bit"
+msgstr ""
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Describes a key type of the DSA algorithm with a
+#. certain strength described in              number of bits (e.g., "DSA
+#. 1024-bit" ).
+#, c-format
+msgctxt "key_type_dsa_bits"
+msgid "DSA %d-bit"
+msgstr ""
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Describes a key type of the Elliptic Curve (EC)
+#. algorithm with a certain strength              described in number of bits
+#. (e.g., "EC 256-bit").
+#, c-format
+msgctxt "key_type_ec_bits"
+msgid "EC %d-bit"
+msgstr ""
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Describes a key type of the Ed25519 algorithm
+#. with a certain strength described in              number of bits (e.g.,
+#. "Ed25519").
+msgctxt "key_type_ed25519"
+msgid "Ed25519"
+msgstr ""
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Describes a key type of an unknown algorithm.
+msgctxt "key_type_unknown"
+msgid "Key type unknown"
+msgstr ""
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Added to the end of a key description to indicate
+#. that the key is encrypted (i.e,              password protected).
+msgctxt "key_attribute_encrypted"
+msgid "(encrypted)"
+msgstr ""

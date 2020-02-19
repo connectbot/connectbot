@@ -359,8 +359,8 @@ public class VDUBuffer {
       if (n > (bottom - top)) n = (bottom - top);
       int size = bottom - l - (n - 1);
       if(size < 0) size = 0;
-      cbuf = new char[size][];
-      abuf = new long[size][];
+      cbuf = new char[size][width];
+      abuf = new long[size][width];
 
       System.arraycopy(charArray, oldBase + l, cbuf, 0, bottom - l - (n - 1));
       System.arraycopy(charAttributes, oldBase + l,
@@ -388,8 +388,8 @@ public class VDUBuffer {
             newBufSize += n;
           }
 
-          cbuf = new char[newBufSize][];
-          abuf = new long[newBufSize][];
+          cbuf = new char[newBufSize][width];
+          abuf = new long[newBufSize][width];
         } else {
           offset = n;
           cbuf = charArray;

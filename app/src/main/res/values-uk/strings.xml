@@ -10,7 +10,8 @@
   <string name="title_settings">Налаштування</string>
   <string name="title_pubkey_generate">Генерувати</string>
   <string name="help_intro">Будь ласка, виберіть тему нижче, щоб отримати більше інформації про певний суб\'єкт.</string>
-  <string name="terms_and_conditions">Загальні положення та умови</string>
+  <string name="terms_and_conditions">Умови користування</string>
+  <string name="hints">Підказки</string>
   <string name="scroll_hints_header">Прокручування назад/ Прокручування вперед</string>
   <string name="scrolling_back">Прокрутити назад</string>
   <string name="scrolling_forward">Прокрутити вперед</string>

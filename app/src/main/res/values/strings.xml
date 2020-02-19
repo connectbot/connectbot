@@ -79,7 +79,7 @@
 	<string name="page_up">"Page up"</string>
 	<string name="page_down">"Page down"</string>
 
-	!-- Header text for instructions about switching to the next and previous host in the terminal. -->
+	<!-- Header text for instructions about switching to the next and previous host in the terminal. -->
 	<string name="switching_hosts_header">"Switching Hosts"</string>
 
 	<!-- Instructions about switching to the next and previous host in the terminal. -->
