@@ -10,10 +10,9 @@ cryptographically secure link.
 
 ## Install
 
-[![Get it on Google Play][2]][1]
-
-  [1]: https://play.google.com/store/apps/details?id=org.connectbot
-  [2]: https://developer.android.com/images/brand/en_generic_rgb_wo_60.png
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+    alt="Get it on Google Play"
+    height="80">](https://play.google.com/store/apps/details?id=org.connectbot)
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
     alt="Get it on F-Droid"
