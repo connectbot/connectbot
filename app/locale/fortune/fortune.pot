@@ -144,6 +144,8 @@ msgctxt "page_down"
 msgid "Page down"
 msgstr ""
 
+#. Header text for instructions about switching to the next and previous host
+#. in the terminal.
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
 msgstr ""

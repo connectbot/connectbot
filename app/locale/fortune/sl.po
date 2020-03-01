@@ -1,0 +1,1531 @@
+# Slovenian translations for PROJECT.
+# Copyright (C) 2015 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2017-02-28 00:29-0800\n"
+"PO-Revision-Date: 2018-02-14 13:00+0000\n"
+"Last-Translator: Matic Gradišer <Unknown>\n"
+"Language-Team: sl <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
+"n%100==4 ? 3 : 0);\n"
+"X-Launchpad-Export-Date: 2019-11-07 05:48+0000\n"
+"X-Generator: Launchpad (build 469f241f4e73cc0bdffa4e30654052a2af068e06)\n"
+"Language: sl\n"
+"Generated-By: Babel 2.3.4\n"
+
+#. Summary of what ConnectBot is; used as a short description in the Android
+#. running apps list
+msgctxt "app_desc"
+msgid "Simple, powerful, open-source SSH client."
+msgstr "Enostaven, močan, odprtokodni SSH odjemalec."
+
+#. Summary of what the ConnectBot service does; displayed in the Android
+#. running apps list
+msgctxt "service_desc"
+msgid "Maintains SSH connections and loaded pubkeys"
+msgstr "Vzdržuje SSH povezave in naložene javne ključe"
+
+#. Window title for the Host List
+msgctxt "title_hosts_list"
+msgid "Hosts"
+msgstr "Gostitelji"
+
+#. Window title for the Pubkeys List
+msgctxt "title_pubkey_list"
+msgid "Pubkeys"
+msgstr "Javni ključi"
+
+#. Window title for the Port Forwards List
+msgctxt "title_port_forwards_list"
+msgid "Port forwards"
+msgstr "Posredovana vrata"
+
+#. Window title when editing host details
+msgctxt "title_host_editor"
+msgid "Edit Host"
+msgstr "Urejanje gostitelja"
+
+#. Window title for Help index
+msgctxt "title_help"
+msgid "Help"
+msgstr "Pomoč"
+
+#. Window title for color list editing screen
+msgctxt "title_colors"
+msgid "Colors"
+msgstr "Barve"
+
+#. Dialog title for color picker dialog
+msgctxt "title_color_picker"
+msgid "Pick a color"
+msgstr "Izberite barvo"
+
+#. Window title for the global applications settings activity.
+msgctxt "title_settings"
+msgid "Settings"
+msgstr "Nastavitve"
+
+#. Window title when generating a new pubkey.
+msgctxt "title_pubkey_generate"
+msgid "Generate"
+msgstr "Generiraj"
+
+msgctxt "help_intro"
+msgid ""
+"Please select a topic below for more information on a particular subject."
+msgstr "Izberite temo spodaj za več informacij o določeni zadevi."
+
+#. Title for the help page with the terms & conditions of the app.
+msgctxt "terms_and_conditions"
+msgid "Terms & Conditions"
+msgstr "Pravila in pogoji"
+
+#. Title for the help page with the hints about the app.
+msgctxt "hints"
+msgid "Hints"
+msgstr "Namigi"
+
+#. Header text for instructions about creating host shortcuts.
+msgctxt "host_shortcuts_header"
+msgid "Host Shortcuts"
+msgstr ""
+
+#. Instructions about creating host shortcuts.
+msgctxt "host_shortcuts_content"
+msgid ""
+"Long-press on your Android desktop to create direct shortcuts to frequently-"
+"used SSH hosts."
+msgstr ""
+
+#. Header text for instructions about scrolling the terminal.
+msgctxt "scroll_hints_header"
+msgid "Scroll back / Scroll forward"
+msgstr ""
+
+#. Instructions about scrolling the terminal.
+msgctxt "scroll_hints_content"
+msgid ""
+"Swiping your finger up on the right side of the screen allows you to scroll "
+"backward and forward in the local terminal buffer history."
+msgstr ""
+
+#. Captions for images showing the scroll back/forward gestures.
+msgctxt "scrolling_back"
+msgid "Scrolling back"
+msgstr ""
+
+msgctxt "scrolling_forward"
+msgid "Scrolling forward"
+msgstr ""
+
+#. Header text for instructions about paging up and down in the terminal.
+msgctxt "page_updn_header"
+msgid "Page Up / Page Down"
+msgstr "Stran gor / Stran dol"
+
+#. Instructions about paging up and down in the terminal.
+msgctxt "page_updn_content"
+msgid ""
+"NOTE: This must be enabled in settings.\n"
+"\n"
+"Swiping your finger up and down on the left third of the screen will send a "
+"page up and page down key to the remote host. Many programs map this to "
+"scrolling back into history such as irssi or tinyfugue."
+msgstr ""
+
+#. Captions for images showing the page up/down gestures.
+msgctxt "page_up"
+msgid "Page up"
+msgstr "Stran gor"
+
+msgctxt "page_down"
+msgid "Page down"
+msgstr "Stran dol"
+
+#. Header text for instructions about switching to the next and previous host
+#. in the terminal.
+msgctxt "switching_hosts_header"
+msgid "Switching Hosts"
+msgstr ""
+
+#. Instructions about switching to the next and previous host in the terminal.
+msgctxt "switching_hosts_content"
+msgid ""
+"Swiping your finger from one side of the screen to the other will switch "
+"between currently connected hosts."
+msgstr ""
+
+#. Captions for images showing the next/previous host gestures.
+msgctxt "next_host"
+msgid "Next host"
+msgstr ""
+
+msgctxt "prev_host"
+msgid "Previous host"
+msgstr ""
+
+#. Title for the help dialog showing keyboard shortcuts.
+msgctxt "keyboard_shortcuts"
+msgid "Keyboard Shortcuts"
+msgstr "Tipke za bližnjice"
+
+#. Text in a keyboard shortcuts list lined up to keys which increase the
+#. terminal font-size.
+msgctxt "increase_font_size"
+msgid "Increase Font Size"
+msgstr "Povečaj pisavo"
+
+#. Keyboard shortcut for increasing the font size.
+msgctxt "increase_font_shortcut"
+msgid "Ctrl and +"
+msgstr "Ctrl in +"
+
+#. Text in a keyboard shortcuts list lined up to keys which decrease the
+#. terminal font-size.
+msgctxt "decrease_font_size"
+msgid "Decrease Font Size"
+msgstr "Zmanjšaj pisavo"
+
+#. Keyboard shortcut for decreasing the font size.
+msgctxt "decrease_font_shortcut"
+msgid "Ctrl and -"
+msgstr "Ctrl in -"
+
+#. Keyboard shortcut for pasting into the terminal.
+msgctxt "paste_shortcut"
+msgid "Ctrl-Shift-V"
+msgstr "Ctrl-Shift-V"
+
+msgctxt "pubkey_generate"
+msgid "Generate"
+msgstr "Ustvari"
+
+msgctxt "pubkey_delete"
+msgid "Delete key"
+msgstr "Izbriši ključ"
+
+#. Dialog title when user must move finger randomly over an area to gather
+#. entropy (collect random bits)
+msgctxt "pubkey_gather_entropy"
+msgid "Gathering Entropy"
+msgstr "Zbiranje entropije"
+
+#, c-format
+msgctxt "pubkey_touch_prompt"
+msgid "Touch this box to gather randomness: %1$d%% done"
+msgstr "Dotaknite to polje za zbiranje naključnih vrednosti: %1$d%% končano"
+
+msgctxt "pubkey_touch_hint"
+msgid ""
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
+msgstr ""
+"Da bi zagotovili naključnost med ustvarjanjem ključa, naključno premikajte "
+"prst po polju spodaj."
+
+msgctxt "pubkey_generating"
+msgid "Generating key pair…"
+msgstr "Ustvarjanje para ključev…"
+
+msgctxt "pubkey_copy_private"
+msgid "Copy private key"
+msgstr "Kopirajte zasebni ključ"
+
+msgctxt "pubkey_copy_public"
+msgid "Copy public key"
+msgstr "Kopirajte javni ključ"
+
+#. Note that the '\n' just splits lines, so it's actually "create or import"
+msgctxt "pubkey_list_empty"
+msgid ""
+"Tap \"Menu\" to create\n"
+"or import key pairs."
+msgstr ""
+"Dotaknite \"Meni\" za ustvarjanje\n"
+"ali uvažanje para ključev"
+
+msgctxt "pubkey_unknown_format"
+msgid "Unknown format"
+msgstr "Neznana vrsta"
+
+msgctxt "pubkey_change_password"
+msgid "Change password"
+msgstr "Spremenite geslo"
+
+#. When attempting to import a pubkey, this is the title for the dialog box
+#. where the user should pick the desired file from the SD card contents.
+msgctxt "pubkey_list_pick"
+msgid "Pick from /sdcard"
+msgstr "Izberite iz /sdcard"
+
+#. Message shown to the user when a selected pubkey to import was not
+#. parseable for some reason.
+msgctxt "pubkey_import_parse_problem"
+msgid "Problem parsing imported private key"
+msgstr "Problem pri razčlenjevanju uvoženega zasebnega ključa"
+
+msgctxt "pubkey_unlock"
+msgid "Unlock key"
+msgstr "Odkleni ključ"
+
+#. Feedback given to the user when the password that they have entered for the
+#. pubkey is incorrect.
+#, c-format
+msgctxt "pubkey_failed_add"
+msgid "Bad password for key '%1$s'. Authentication failed."
+msgstr "Napačno geslo za ključ '%1$s. Overitev spodletela."
+
+#. Context menu entry that allows a user to load a pubkey entry into memory.
+#. This is equivalent to "unlocking" a password-protected pubkey entry.
+msgctxt "pubkey_memory_load"
+msgid "Load into memory"
+msgstr "Naloži v spomin"
+
+#. Context menu entry that allows a user to unload a pubkey entry from memory.
+#. This is equivalent to "locking" a password-protected pubkey entry.
+msgctxt "pubkey_memory_unload"
+msgid "Unload from memory"
+msgstr "Razloži s spomina"
+
+#. Context menu checkbox that indicates that this pubkey entry should attempt
+#. to be loaded upon starting the app.
+msgctxt "pubkey_load_on_start"
+msgid "Load key on start"
+msgstr "Naloži ključ ob začetku"
+
+#. Pubkey preference asking user whether the key use should be confirmed via
+#. prompt before it can be used for authentication
+msgctxt "pubkey_confirm_use"
+msgid "Confirm before use"
+msgstr "Potrdi pred uporabo"
+
+#. When the list of port forwards for a host is empty, this text is is shown
+#. in the space where the list of port forwards are normally present. Note that
+#. the '\n' splits lines, so it's actually "create port forwards"
+msgctxt "portforward_list_empty"
+msgid ""
+"Tap \"Menu\" to create\n"
+"port forwards."
+msgstr ""
+"Dotakni \"Meni\" za ustvarjanje\n"
+"posredovanih vrat."
+
+#. Context menu action where a user can edite the selected port forward for
+#. the host.
+msgctxt "portforward_edit"
+msgid "Edit port forward"
+msgstr "Urejaj posredovana vrata"
+
+#. Context menu action where a user can delete the selected port forward from
+#. the host.
+msgctxt "portforward_delete"
+msgid "Delete port forward"
+msgstr "Izbriši posredovana vrata"
+
+msgctxt "prompt_nickname"
+msgid "Nickname:"
+msgstr "Vzdevek:"
+
+#. An example string that could be used as a nickname for a pubkey.
+msgctxt "prompt_nickname_hint_pubkey"
+msgid "My work key"
+msgstr "Moj delovni ključ"
+
+#. The source TCP port for port forwards.
+msgctxt "prompt_source_port"
+msgid "Source port:"
+msgstr "Izvorna vrata:"
+
+#. The "host:port" combination used for port forward destinations.
+msgctxt "prompt_destination"
+msgid "Destination:"
+msgstr "Cilj:"
+
+#. Prompt presented to the user when the server requests that they change
+#. their password. This is the entry for the old password.
+msgctxt "prompt_old_password"
+msgid "Old password:"
+msgstr "Staro geslo:"
+
+#. Prompt for user to enter their password to log into the host when using
+#. 'password' authentication.
+msgctxt "prompt_password"
+msgid "Password:"
+msgstr "Geslo:"
+
+#. Added after a "Password:" prompt to indicate user needs to confirm entry.
+msgctxt "prompt_again"
+msgid "(again)"
+msgstr "(ponovno)"
+
+#. Label for the user to select port forward type.
+msgctxt "prompt_type"
+msgid "Type:"
+msgstr "Vrsta:"
+
+#. Hint given below the password input box that lets them know that they are
+#. allowed to leave the field blank.
+msgctxt "prompt_password_can_be_blank"
+msgid "Note: password can be blank"
+msgstr "Opomba: geslo je lahko prazno"
+
+#. Prompt for the size of the private key in bits.
+msgctxt "prompt_bits"
+msgid "Bits:"
+msgstr "Biti:"
+
+#. Prompt for the password to unlock a certain pubkey.
+#, c-format
+msgctxt "prompt_pubkey_password"
+msgid "Password for key '%1$s'"
+msgstr "Geslo za ključ '%1$s'"
+
+#. Prompt for whether to allow SSH Authentication Agent to use the specified
+#. key. Note that the '\n' means split the line so it's actually "host to use
+#. key"
+#, c-format
+msgctxt "prompt_allow_agent_to_use_key"
+msgid ""
+"Allow remote host to\n"
+"use key '%1$s'?"
+msgstr ""
+"Dovoli oddaljenemu gostitelju\n"
+"uporabo ključa '%1$s'?"
+
+#. The header of the warning a user gets when the host key has changed. Note
+#. that this can be a very serious attack, so we try to be as "loud" to the
+#. user as possible.
+msgctxt "host_verification_failure_warning_header"
+msgid "WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!"
+msgstr "OPOZORILO: ISTOVETENJE ODDALJENEGA GOSTITELJA SE JE SPREMENILO!"
+
+#. The body of the warning a user gets when the host key has changed. Note
+#. that this can be a very serious attack, so we try to be as "loud" to the
+#. user as possible.
+msgctxt "host_verification_failure_warning"
+msgid ""
+"IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"It is also possible that the host key has just been changed."
+msgstr ""
+"MOŽNO JE, DA NEKDO POČNE NEKAJ ZLOBNEGA!\n"
+"Nekdo vam lahko prisluškuje (napad s posrednikom)!\n"
+"Možno pa je tudi, da se je spremenil ključ gostitelja."
+
+#. Prompt user gets when the remote host has disconnected unexpectedly.
+msgctxt "prompt_host_disconnected"
+msgid ""
+"Host has disconnected.\n"
+"Close session?"
+msgstr ""
+"Gostitelj je prekinil povezavo.\n"
+"Zaprem sejo?"
+
+#. Prompt user must answer yes or no to when the remote host fails
+#. verification of encryption fingerprint
+msgctxt "prompt_continue_connecting"
+msgid ""
+"Are you sure you want\n"
+"to continue connecting?"
+msgstr ""
+"Ali ste prepričani, da želite\n"
+"nadaljevati s povezovanjem?"
+
+#. Sent to user when the remote public encryption key fingerprint doesn't
+#. match the local database
+#, c-format
+msgctxt "host_authenticity_warning"
+msgid "The authenticity of host '%1$s' can't be established."
+msgstr "Istovetnost gostitelja '%1$s' ni mogoče ugotoviti."
+
+#. First field is encryption algorithm. Second is the actual fingerprint in
+#. hex digits
+#, c-format
+msgctxt "host_fingerprint"
+msgid "Host %1$s key fingerprint is %2$s"
+msgstr "Ključ gostitelja %1$s ima zgoščeno vrednost %2$s"
+
+msgctxt "alert_passwords_do_not_match_msg"
+msgid "Passwords do not match!"
+msgstr "Gesla se ne ujemajo!"
+
+msgctxt "alert_wrong_password_msg"
+msgid "Wrong password!"
+msgstr "Napačno geslo!"
+
+msgctxt "alert_key_corrupted_msg"
+msgid "Private key appears corrupt!"
+msgstr "Zasebni ključ izgleda pokvarjen!"
+
+msgctxt "alert_sdcard_absent"
+msgid "SD card is not inserted!"
+msgstr "Kartica SD ni vstavljena!"
+
+#. Change an existing item's (e.g., host or pubkey) details.
+msgctxt "button_change"
+msgid "Change"
+msgstr "Spremeni"
+
+#. Button that resizes the screen to the user-specified dimensions.
+msgctxt "button_resize"
+msgid "Resize"
+msgstr "Spremeni velikost"
+
+msgctxt "alert_disconnect_msg"
+msgid "Connection Lost"
+msgstr "Povezava prekinjena"
+
+msgctxt "msg_copyright"
+msgid ""
+"Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
+"http://jsharkey.org/"
+msgstr ""
+"Avtorske pravice © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
+"http://jsharkey.org/"
+
+#. The category title for terminal emulation preferences.
+msgctxt "pref_emulation_category"
+msgid "Terminal emulation"
+msgstr "Posnemanje terminala"
+
+#. Name for the emulation terminal type preference.
+msgctxt "pref_emulation_title"
+msgid "Emulation mode"
+msgstr "Način posnemanja"
+
+#. Description of the emulation terminal type preference.
+msgctxt "pref_emulation_summary"
+msgid "Terminal emulation mode to use for PTY connections"
+msgstr "Način posnemanja terminala za uporabo za PTY povezave"
+
+#. Name for the scrollback size preference
+msgctxt "pref_scrollback_title"
+msgid "Scrollback size"
+msgstr "Velikost pomnjenja vrstic"
+
+#. Description of the scrollback size preference
+msgctxt "pref_scrollback_summary"
+msgid "Size of scrollback buffer to keep in memory for each console"
+msgstr ""
+"Velikost medpomnilnika pomnjenih vrstic ohraniti v spomnu za vsako konzolo"
+
+#. Title of the preference used to enable or disable the back-up of pubkeys.
+msgctxt "pref_backupkeys_title"
+msgid "Backup pubkeys"
+msgstr ""
+
+#. Summary for the preference used to enable or disable the back-up of
+#. pubkeys.
+msgctxt "pref_backupkeys_summary"
+msgid "Keep back-ups of the private keys using Android's backup mechanism"
+msgstr ""
+
+#. The category title for user interface preferences
+msgctxt "pref_ui_category"
+msgid "User interface"
+msgstr "Uporabniški vmesnik"
+
+#. Name for the rotation mode preference
+msgctxt "pref_rotation_title"
+msgid "Rotation mode"
+msgstr "Način za sukanje"
+
+#. Summary for the rotation mode preference
+msgctxt "pref_rotation_summary"
+msgid "How to change rotation when keyboard popped in/out"
+msgstr "Kako spremeniti sukanje, ko tipkovnica skoči ven/noter"
+
+#. Name for the titlebar hide preference
+msgctxt "pref_titlebarhide_title"
+msgid "Autohide title bar"
+msgstr ""
+
+#. Summary for the titlebar hide preference
+msgctxt "pref_titlebarhide_summary"
+msgid "Tap console to show title bar and access menu"
+msgstr ""
+
+#. Title for special keys always visible preference
+msgctxt "pref_alwaysvisible_title"
+msgid "Special keys always visible"
+msgstr ""
+
+#. Name for the page up/down gesture preference
+msgctxt "pref_pg_updn_gesture_title"
+msgid "Page up/down gesture"
+msgstr ""
+
+#. Summary for the full screen preference
+msgctxt "pref_pg_updn_gesture_summary"
+msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
+msgstr ""
+
+#. Name for the full screen preference
+msgctxt "pref_fullscreen_title"
+msgid "Full screen"
+msgstr "Celozaslonski način"
+
+#. Summary for the full screen preference
+msgctxt "pref_fullscreen_summary"
+msgid "Hide status bar while in console"
+msgstr "Skrij vrstico stanja, ko v konzoli"
+
+#. The category title for keyboard preferences
+msgctxt "pref_keyboard_category"
+msgid "Keyboard"
+msgstr "Tipkovnica"
+
+#. Name for the shifted numbers are f-keys preference
+msgctxt "pref_shiftfkeys_title"
+msgid "Shift+num are F-keys"
+msgstr "Shift+št so F-tipke"
+
+#. Summary for the shifted numbers are f-keys preference
+msgctxt "pref_shiftfkeys_summary"
+msgid "On hardware keyboards, number keys send F1-F10 with shift"
+msgstr ""
+
+#. Name for the ctrl'ed numbers are f-keys preference
+msgctxt "pref_ctrlfkeys_title"
+msgid "Ctrl+num are F-keys"
+msgstr "Ctrl+št so F-tipke"
+
+#. Summary for the ctrl'ed numbers are f-keys preference
+msgctxt "pref_ctrlfkeys_summary"
+msgid "On software keyboards, number keys send F1-F10 with ctrl"
+msgstr ""
+
+#. Name for the volume keys control font size preference
+msgctxt "pref_volumefont_title"
+msgid "Volume keys change font size"
+msgstr ""
+
+#. Summary for the volume keys control font size preference
+msgctxt "pref_volumefont_summary"
+msgid "Font size can also be changed in per-host settings"
+msgstr ""
+
+#. Name for the memorize keys preference
+msgctxt "pref_memkeys_title"
+msgid "Remember keys in memory"
+msgstr "Zapomni ključe v spominu"
+
+#. Summary for the memorize keys preference
+msgctxt "pref_memkeys_summary"
+msgid "Keep unlocked keys in memory until backend service is terminated"
+msgstr ""
+"Hrani odklenjene ključe v spomnu dokler storitev v zaledju ni zaključena"
+
+#. Name for the preference that forces the service to stay running in the
+#. background.
+msgctxt "pref_conn_persist_title"
+msgid "Persist connections"
+msgstr "Obstojne povezave"
+
+#. Summary for the preference that forces the service to stay running in the
+#. background.
+msgctxt "pref_conn_persist_summary"
+msgid "Force connections to stay connected while in background"
+msgstr "Prisili povezave, da ostanejo povezane v ozadju"
+
+#. Name for the keyboard shortcuts preference
+msgctxt "pref_keymode_title"
+msgid "Directory shortcuts"
+msgstr "Bližnjice mape"
+
+#. Summary for the keyboard shortcuts preference
+msgctxt "pref_keymode_summary"
+msgid "Select how to use Alt for '/' and Shift for Tab"
+msgstr "Izberite kako uporabiti Alt za '/' ter Shift za Tab"
+
+#. Name for the sticky modifiers preference
+msgctxt "pref_stickymodifiers_title"
+msgid "Sticky modifiers"
+msgstr ""
+
+#. Summary for the sticky modifiers preference
+msgctxt "pref_stickymodifiers_summary"
+msgid "Modifier keys remain enabled until another key is pressed"
+msgstr ""
+
+#. Sticky modifier preference value description for when only the Alt key
+#. should be a sticky modifier.
+msgctxt "only_alt"
+msgid "Only alt"
+msgstr "Samo alt"
+
+#. Name for the camera shortcut usage preference
+msgctxt "pref_camera_title"
+msgid "Camera shortcut"
+msgstr "Bližnjica kamere"
+
+#. Summary for the camera shortcut usage preference
+msgctxt "pref_camera_summary"
+msgid "Select which shortcut to trigger when the camera button is pushed"
+msgstr "Izberite, katera bližnjica se sproži, ko se pritisne gumb kamere"
+
+#. Name for the keep screen on preference
+msgctxt "pref_keepalive_title"
+msgid "Keep screen awake"
+msgstr "Ohrani zaslon dejaven"
+
+#. Summary for the camera shortcut usage preference
+msgctxt "pref_keepalive_summary"
+msgid "Prevent the screen from turning off when working in a console"
+msgstr "Prepreči ugašanje zaslona med delom v konzoli"
+
+#. Name for the Wi-Fi lock preference
+msgctxt "pref_wifilock_title"
+msgid "Keep Wi-Fi active"
+msgstr "Ohrani Wi-Fi dejaven"
+
+#. Summary for the Wi-Fi lock preference
+msgctxt "pref_wifilock_summary"
+msgid "Prevent Wi-Fi from turning off when a session is active"
+msgstr "Prepreči ugašanje Wi-Fija med dejavno sejo"
+
+#. Name for the haptic feedback (bumpy arrow) preference
+msgctxt "pref_bumpyarrows_title"
+msgid "Bumpy arrows"
+msgstr "Izbočene puščice"
+
+#. Summary for the haptic feedback (bumpy arrow) preference
+msgctxt "pref_bumpyarrows_summary"
+msgid "Vibrate when sending arrow keys; useful for laggy connections"
+msgstr ""
+
+#. Category title for the Terminal Bell preferences
+msgctxt "pref_bell_category"
+msgid "Terminal bell"
+msgstr "Zvonec terminala"
+
+#. Checkbox preference title for the audible terminal bell feature
+msgctxt "pref_bell_title"
+msgid "Audible bell"
+msgstr "Slišen zvonec"
+
+#. Title for the slider preference to set the volume
+msgctxt "pref_bell_volume_title"
+msgid "Bell volume"
+msgstr "Glasnost zvonca"
+
+#. Checkbox preference title for the vibrate on terminal bell feature
+msgctxt "pref_bell_vibrate_title"
+msgid "Vibrate on bell"
+msgstr "Vibriraj ob zvoncu"
+
+#. Checkbox preference title for the receive notifications on terminal bell
+#. feature
+msgctxt "pref_bell_notification_title"
+msgid "Background notifications"
+msgstr "Obvestila ozadja"
+
+#. Brief summary of the feature that is enabled when the checkbox preference
+#. for the receive notifications on terminal bell feature is checked
+msgctxt "pref_bell_notification_summary"
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
+msgstr ""
+
+#. Preference selection to indicate use of right side of keyboard for special
+#. shortcuts.
+msgctxt "list_keymode_right"
+msgid "Use right-side keys"
+msgstr ""
+
+#. Preference selection to indicate use of left side of keyboard for special
+#. shortcuts.
+msgctxt "list_keymode_left"
+msgid "Use left-side keys"
+msgstr "Uporabi ključe z leve strani"
+
+#. Preference selection to indicate never to use special shortcut keys.
+msgctxt "list_keymode_none"
+msgid "Disable"
+msgstr "Onemogoči"
+
+#. Preference to not use pubkeys to authenticate to this host.
+msgctxt "list_pubkeyids_none"
+msgid "Do not use keys"
+msgstr "Ne uporabljaj ključev"
+
+#. Preference to use any pubkey to authenticate to this host.
+msgctxt "list_pubkeyids_any"
+msgid "Use any unlocked key"
+msgstr "Uporabi kateregakoli odklenjenega ključa"
+
+#. Host nickname field preference title
+msgctxt "hostpref_nickname_title"
+msgid "Nickname"
+msgstr "Vzdevek"
+
+#. Host color category preference title
+msgctxt "hostpref_color_title"
+msgid "Color category"
+msgstr "Barvna kategorija"
+
+#. Host's default font size when opening the terminal in points (pt)
+msgctxt "hostpref_fontsize_title"
+msgid "Font size (pt)"
+msgstr "Velikost pisave (pt)"
+
+#. Host pubkey usage preference title
+msgctxt "hostpref_pubkeyid_title"
+msgid "Use pubkey authentication"
+msgstr "Uporabi overitev z javnim ključem"
+
+#. Preference title for the SSH Authentication Agent Forwarding for a host
+#. connection
+msgctxt "hostpref_authagent_title"
+msgid "Use SSH auth agent"
+msgstr "Uporabi SSH overitvenega agenta"
+
+#. Host post-login automation preference title
+msgctxt "hostpref_postlogin_title"
+msgid "Post-login automation"
+msgstr ""
+
+#. Host post-login automation preference summary
+msgctxt "hostpref_postlogin_summary"
+msgid "Commands to run on remote server once authenticated"
+msgstr ""
+
+#. Host compression preference title
+msgctxt "hostpref_compression_title"
+msgid "Compression"
+msgstr "Stiskanje"
+
+#. Summary for compression preference
+msgctxt "hostpref_compression_summary"
+msgid "This may help with slower networks"
+msgstr "To vam lahko pomaga pri počasnejših omrežjih"
+
+#. Setting for whether we want a session to start up when we connect to a host
+msgctxt "hostpref_wantsession_title"
+msgid "Start shell session"
+msgstr "Začni sejo lupine"
+
+#. Summary for field asking whether a shell session should be started up upon
+#. connection or not
+msgctxt "hostpref_wantsession_summary"
+msgid "Disable this preference to only use port forwards"
+msgstr ""
+
+#. Setting for whether the host should be reconnected to automatically upon
+#. disconnect
+msgctxt "hostpref_stayconnected_title"
+msgid "Stay connected"
+msgstr "Ostanite povezani"
+
+#. Summary for preference asking whether the host should be reconnected to
+#. when it disconnects
+msgctxt "hostpref_stayconnected_summary"
+msgid "Try to reconnect to host if disconnected"
+msgstr "Poskusi se ponovno povezati, če se prekine povezava"
+
+#. Setting for whether we should prompt to close after getting disconnected
+msgctxt "hostpref_quickdisconnect_title"
+msgid "Close on disconnect"
+msgstr ""
+
+msgctxt "hostpref_quickdisconnect_summary"
+msgid "Close immediately after remote disconnect without prompting."
+msgstr ""
+
+#. Setting for what key code is sent to the server when DEL key is pressed.
+msgctxt "hostpref_delkey_title"
+msgid "DEL Key"
+msgstr "Tipka DEL"
+
+#. Host character encoding preference title
+msgctxt "hostpref_encoding_title"
+msgid "Encoding"
+msgstr "Kodiranje"
+
+#. Username field title for host editor preference
+msgctxt "hostpref_username_title"
+msgid "Username"
+msgstr "Uporabniško ime"
+
+#. Hostname field title for host editor preference
+msgctxt "hostpref_hostname_title"
+msgid "Host"
+msgstr "Gostitelj"
+
+#. Port field title for host editor preference
+msgctxt "hostpref_port_title"
+msgid "Port"
+msgstr "Vrata"
+
+#. Displayed to indicate a host has never been connected to.
+msgctxt "bind_never"
+msgid "Never connected"
+msgstr "Nikoli povezani"
+
+#. Message given when user copies from the terminal.
+#, c-format
+msgctxt "console_copy_done"
+msgid "Copied %1$d byte to clipboard"
+msgid_plural "Copied %1$d bytes to clipboard"
+msgstr[0] ""
+msgstr[1] ""
+
+#. Instructions for how to copy from the terminal. The '\n' entries are to
+#. split lines to improve readability and prevent wrapping off the screen.
+msgctxt "console_copy_start"
+msgid ""
+"Touch and drag\n"
+"or use directional pad\n"
+"to select area to copy"
+msgstr ""
+
+#. Button to close the disconnected terminal window.
+msgctxt "console_menu_close"
+msgid "Close"
+msgstr "Zapri"
+
+#. Button to begin copying from the terminal to the clipboard.
+msgctxt "console_menu_copy"
+msgid "Copy"
+msgstr "Kopiraj"
+
+#. Button to paste from the clipboard to the terminal.
+msgctxt "console_menu_paste"
+msgid "Paste"
+msgstr "Prilepi"
+
+#. Button that brings user to the Port Forwards List.
+msgctxt "console_menu_portforwards"
+msgid "Port Forwards"
+msgstr "Posredovanje vrat"
+
+#. Button that brings user to the terminal resizing dialog where they can
+#. force a size.
+msgctxt "console_menu_resize"
+msgid "Force Size"
+msgstr ""
+
+#. Button that brings up the list of URLs on the current screen
+msgctxt "console_menu_urlscan"
+msgid "URL Scan"
+msgstr ""
+
+#. Button label to answer "Yes" to a yes/no prompt
+msgctxt "button_yes"
+msgid "Yes"
+msgstr "Da"
+
+#. Button label to answer "No" to a yes/no prompt
+msgctxt "button_no"
+msgid "No"
+msgstr "Ne"
+
+#. Selection for a "local" port forward. E.g., connections to a port listening
+#. locally is forwarded to the remote end's listening port.
+msgctxt "portforward_local"
+msgid "Local"
+msgstr "Krajevno"
+
+#. Selection for a "remote" port forward. E.g., connections to a port
+#. listening remotely is forwarded to the local end's listening port.
+msgctxt "portforward_remote"
+msgid "Remote"
+msgstr "Oddaljeno"
+
+#. Selection for a "dynamic" port forward. E.g., connections to a port
+#. listening locally is forwarded based on the SOCKS protocol to an arbitrary
+#. remote host and port.
+msgctxt "portforward_dynamic"
+msgid "Dynamic (SOCKS)"
+msgstr ""
+
+#. Button that commits the port forward to be made from the Port Forward
+#. Creation dialog.
+msgctxt "portforward_pos"
+msgid "Create port forward"
+msgstr "Ustvari posredovanje vrat"
+
+msgctxt "portforward_problem"
+msgid ""
+"Problem creating port forward, maybe you're using ports under 1024 or port "
+"is already used?"
+msgstr ""
+
+#. Part of the formatting hints that will be used like: username@hostname:port
+msgctxt "format_username"
+msgid "username"
+msgstr "Uporabniško ime"
+
+#. Part of the formatting hints that will be used like: username@hostname:port
+msgctxt "format_hostname"
+msgid "hostname"
+msgstr "ime gostitelja"
+
+#. Part of the formatting hints that will be used like: username@hostname:port
+msgctxt "format_port"
+msgid "port"
+msgstr "vrata"
+
+msgctxt "list_menu_pubkeys"
+msgid "Manage Pubkeys"
+msgstr "Upravljanje z javnimi ključi"
+
+#. Selection choice to sort hosts by color.
+msgctxt "list_menu_sortcolor"
+msgid "Sort by color"
+msgstr "Razvrsti po barvi"
+
+#. Selection choice to sort hosts by nickname.
+msgctxt "list_menu_sortname"
+msgid "Sort by name"
+msgstr "Razvrsti po imenu"
+
+msgctxt "list_menu_disconnect"
+msgid "Disconnect All"
+msgstr "Prekini vse povezave"
+
+msgctxt "list_menu_settings"
+msgid "Settings"
+msgstr "Nastavitve"
+
+msgctxt "list_host_disconnect"
+msgid "Disconnect"
+msgstr "Prekini povezavo"
+
+msgctxt "list_host_edit"
+msgid "Edit host"
+msgstr "Urejaj gostitelja"
+
+msgctxt "list_host_portforwards"
+msgid "Edit port forwards"
+msgstr "Urejaj posredovanja vrat"
+
+msgctxt "list_host_delete"
+msgid "Delete host"
+msgstr "Izbriši gostitelja"
+
+#. Note that the '\n' splits the lines so it's actually "quick-connect box
+#. below to connect"
+msgctxt "list_host_empty"
+msgid "No hosts created yet."
+msgstr ""
+
+#. Default screen rotation preference selection
+msgctxt "list_rotation_default"
+msgid "Default"
+msgstr "Privzeto"
+
+msgctxt "list_rotation_land"
+msgid "Force landscape"
+msgstr "Prisili ležeče"
+
+msgctxt "list_rotation_port"
+msgid "Force portrait"
+msgstr "Prisili pokončno"
+
+#. Selection to indicate the rotation should be selected automatically based
+#. on the tilt sensor.
+msgctxt "list_rotation_auto"
+msgid "Automatic"
+msgstr "Samodejno"
+
+#. Selection to indicate pressing the Camera button should send "Ctrl+A then
+#. Space".
+msgctxt "list_camera_ctrlaspace"
+msgid "Ctrl+A then Space"
+msgstr "Ctrl+A nato Space"
+
+#. Selection to indicate pressing the Camera button should send "Ctrl+A".
+msgctxt "list_camera_ctrla"
+msgid "Ctrl+A"
+msgstr "Ctrl+A"
+
+#. Selection to indicate pressing the Camera button should send the "Esc" key.
+msgctxt "list_camera_esc"
+msgid "Esc"
+msgstr "Esc"
+
+#. Selection to indicate pressing the Camera button should send "Esc+A".
+msgctxt "list_camera_esc_a"
+msgid "Esc+A"
+msgstr "Esc+A"
+
+#. Selection to indicate pressing the Camera button should send nothing at
+#. all.
+msgctxt "list_camera_none"
+msgid "None"
+msgstr "Nič"
+
+#. Name for the backspace character
+msgctxt "list_delkey_backspace"
+msgid "Backspace"
+msgstr "Vračalka"
+
+#. Name for the ASCII DEL character
+msgctxt "list_delkey_del"
+msgid "Delete"
+msgstr "Delete"
+
+#, c-format
+msgctxt "delete_message"
+msgid "Are you sure you want to delete '%1$s'?"
+msgstr "Ali ste prepričani, da želite izbrisati '%1$s'?"
+
+msgctxt "delete_pos"
+msgid "Yes, delete"
+msgstr "Da, izbriši."
+
+msgctxt "delete_neg"
+msgid "Cancel"
+msgstr "Prekliči"
+
+msgctxt "disconnect_all_message"
+msgid "Are you sure you want to disconnect from all connected hosts?"
+msgstr ""
+
+msgctxt "disconnect_all_pos"
+msgid "Yes, disconnect"
+msgstr ""
+
+msgctxt "disconnect_all_neg"
+msgid "Cancel"
+msgstr "Prekliči"
+
+msgctxt "terminal_no_hosts_connected"
+msgid "No hosts currently connected"
+msgstr "Trenutno ni noben gostitelj povezan"
+
+#. Displayed in terminal when attempting to connect to a host. The first two
+#. variables are host:port and the third is the protocol (e.g., SSH)
+#, c-format
+msgctxt "terminal_connecting"
+msgid "Connecting to %1$s:%2$d via %3$s"
+msgstr "Povezujem se na %1$s:%2$d preko %3$s"
+
+#. Displays the host key to the user in the terminal
+#, c-format
+msgctxt "terminal_sucess"
+msgid "Verified host '%1$s' key: %2$s"
+msgstr "Preverjen gostitelj '%1$s' ključ: %2$s"
+
+msgctxt "terminal_failed"
+msgid "Host key verification failed."
+msgstr "Preverjanje ključa gostitelja spodletelo."
+
+#. Displayed on the terminal describing the cryptographic algorithm names
+#, c-format
+msgctxt "terminal_using_s2c_algorithm"
+msgid "Server-to-client algorithm: %1$s %2$s"
+msgstr "Strežnik - odjemalec algoritem: %1$s %2$s"
+
+#. Displayed on the terminal describing the cryptographic algorithm names
+#, c-format
+msgctxt "terminal_using_c2s_algorithm"
+msgid "Client-to-server algorithm: %1$s %2$s"
+msgstr "Odjemalec - strežnik algoritem: %1$s %2$s"
+
+#. Displayed on the terminal describing the cryptographic algorithm names
+#, c-format
+msgctxt "terminal_using_algorithm"
+msgid "Using algorithm: %1$s %2$s"
+msgstr "Uporabljam algoritem: %1$s %2$s"
+
+#. Displayed on the terminal during a SSH connection describing the
+#. cryptographic key              exchange algorithm used to establish a shared
+#. secret between this program and the              server.
+#, c-format
+msgctxt "terminal_kex_algorithm"
+msgid "Key exchange algorithm: %s"
+msgstr ""
+
+msgctxt "terminal_auth"
+msgid "Trying to authenticate"
+msgstr "Poskušam se overit"
+
+msgctxt "terminal_auth_pass"
+msgid "Attempting 'password' authentication"
+msgstr "Poskušam overitev z geslom"
+
+msgctxt "terminal_auth_pass_fail"
+msgid "Authentication method 'password' failed"
+msgstr "Overitev z geslom spodletela"
+
+msgctxt "terminal_auth_pubkey_any"
+msgid "Attempting 'publickey' authentication with any in-memory public keys"
+msgstr ""
+
+msgctxt "terminal_auth_pubkey_invalid"
+msgid "Selected public key is invalid, try reselecting key in host editor"
+msgstr ""
+
+msgctxt "terminal_auth_pubkey_specific"
+msgid "Attempting 'publickey' authentication with a specific public key"
+msgstr ""
+
+#, c-format
+msgctxt "terminal_auth_pubkey_fail"
+msgid "Authentication method 'publickey' with key '%1$s' failed"
+msgstr "Spodletela avtentikacijska metoda 'publickey' z ključem '%1$s'"
+
+msgctxt "terminal_auth_ki"
+msgid "Attempting 'keyboard-interactive' authentication"
+msgstr ""
+
+msgctxt "terminal_auth_ki_fail"
+msgid "Authentication method 'keyboard-interactive' failed"
+msgstr ""
+
+msgctxt "terminal_auth_fail"
+msgid ""
+"[Your host doesn't support 'password' or 'keyboard-interactive' "
+"authentication.]"
+msgstr ""
+"[Vaš gostitelj ne podpira 'password' ali 'keyboard-interactive' "
+"avtentikacije.]"
+
+msgctxt "terminal_no_session"
+msgid "Session will not be started due to host preference."
+msgstr ""
+
+#, c-format
+msgctxt "terminal_enable_portfoward"
+msgid "Enable port forward: %1$s"
+msgstr ""
+
+msgctxt "local_shell_unavailable"
+msgid "Failure! Local shell is unavailable on this phone."
+msgstr ""
+
+#. Text sent to the user to alert them that a Terminal Bell is received in a
+#. background session
+#, c-format
+msgctxt "notification_text"
+msgid "%1$s wants your attention."
+msgstr "%1$s želi vašo pozornost."
+
+#. Preference selection for SSH Authentication Agent to never use pubkeys
+msgctxt "no"
+msgid "No"
+msgstr "Ne"
+
+#. Preference selection for SSH Authentication Agent to be able to use pubkeys
+msgctxt "yes"
+msgid "Yes"
+msgstr "Da"
+
+#. Menu selection to reset colors to their defaults.
+msgctxt "menu_colors_reset"
+msgid "Reset"
+msgstr "Ponastavi"
+
+#. Displayed in the notification bar that connections are active
+msgctxt "app_is_running"
+msgid "ConnectBot is running"
+msgstr "ConnectBot je dejaven"
+
+msgctxt "color_red"
+msgid "red"
+msgstr "rdeča"
+
+msgctxt "color_green"
+msgid "green"
+msgstr "zelena"
+
+msgctxt "color_blue"
+msgid "blue"
+msgstr "modra"
+
+msgctxt "color_gray"
+msgid "gray"
+msgstr "siva"
+
+#. Very short label indicating the number next to it is "foreground color"
+#. number.
+#, c-format
+msgctxt "colors_fg_label"
+msgid "FG: %1$d"
+msgstr ""
+
+#. Very short label indicating the number next to it is "background color"
+#. number.
+#, c-format
+msgctxt "color_bg_label"
+msgid "BG: %1$d"
+msgstr ""
+
+#. Accessibility text for connection state in list of hosts when the host is
+#. currently          connected.
+msgctxt "image_description_connected"
+msgid "Connected."
+msgstr "Povezano."
+
+#. Accessibility text for connection state in list of hosts when the host is
+#. currently              disconnected after having been previously connected.
+msgctxt "image_description_disconnected"
+msgid "Disconnected."
+msgstr "Prekinjeno."
+
+#. Describes the icon of the "locked pubkey" icon for accessibility purposes.
+msgctxt "image_description_key_is_locked"
+msgid "Key is locked."
+msgstr ""
+
+#. Describes the icon of the "send control character" button in the terminal
+#. view for              accessibility purposes.
+msgctxt "image_description_toggle_control_character"
+msgid "Toggle control character."
+msgstr ""
+
+#. Describes the icon of the "send escape character" button in the terminal
+#. view for              accessibility purposes.
+msgctxt "image_description_send_escape_character"
+msgid "Send escape character."
+msgstr ""
+
+#. Describes the icon of the "send tab character" button in the terminal view
+#. for              accessibility purposes.
+msgctxt "image_description_send_tab_character"
+msgid "Send TAB character."
+msgstr ""
+
+#. Describes the icon of the "hide keyboard" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_hide_keyboard"
+msgid "Hide keyboard."
+msgstr ""
+
+#. Describes the icon of the "show keyboard" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_show_keyboard"
+msgid "Show keyboard."
+msgstr ""
+
+#. Describes the icon of the "Arrow up" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_up"
+msgid "Arrow up"
+msgstr ""
+
+#. Describes the icon of the "Arrow down" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_down"
+msgid "Arrow down"
+msgstr ""
+
+#. Describes the icon of the "Arrow left" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_left"
+msgid "Arrow left"
+msgstr ""
+
+#. Describes the icon of the "Arrow right" button in the terminal view for
+#. accessibility              purposes.
+msgctxt "image_description_right"
+msgid "Arrow right"
+msgstr ""
+
+#. Describes the "volume" icon in the bell volume dialog for accessibility
+#. purposes.
+msgctxt "image_description_volume"
+msgid "Volume"
+msgstr "Glasnost"
+
+#. Text for the "Esc" button in virtual keyboard.
+msgctxt "button_key_esc"
+msgid "Esc"
+msgstr "Esc"
+
+#. Text for the "Ctrl" button in virtual keyboard.
+msgctxt "button_key_ctrl"
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#. Text for the "Home" button in virtual keyboard.
+msgctxt "button_key_home"
+msgid "Home"
+msgstr "Domov"
+
+#. Text for the "End" button in virtual keyboard.
+msgctxt "button_key_end"
+msgid "End"
+msgstr "Konec"
+
+#. Text for the "Page Up" button in virtual keyboard.
+msgctxt "button_key_pgup"
+msgid "PgUp"
+msgstr "PgUp"
+
+#. Text for the "Page Down" button in virtual keyboard.
+msgctxt "button_key_pgdn"
+msgid "PgDn"
+msgstr "PgDn"
+
+#. Text for the "F1" button in virtual keyboard.
+msgctxt "button_key_f1"
+msgid "F1"
+msgstr "F1"
+
+#. Text for the "F2" button in virtual keyboard.
+msgctxt "button_key_f2"
+msgid "F2"
+msgstr "F2"
+
+#. Text for the "F3" button in virtual keyboard.
+msgctxt "button_key_f3"
+msgid "F3"
+msgstr "F3"
+
+#. Text for the "F4" button in virtual keyboard.
+msgctxt "button_key_f4"
+msgid "F4"
+msgstr "F4"
+
+#. Text for the "F5" button in virtual keyboard.
+msgctxt "button_key_f5"
+msgid "F5"
+msgstr "F5"
+
+#. Text for the "F6" button in virtual keyboard.
+msgctxt "button_key_f6"
+msgid "F6"
+msgstr "F6"
+
+#. Text for the "F7" button in virtual keyboard.
+msgctxt "button_key_f7"
+msgid "F7"
+msgstr "F7"
+
+#. Text for the "F8" button in virtual keyboard.
+msgctxt "button_key_f8"
+msgid "F8"
+msgstr "F8"
+
+#. Text for the "F9" button in virtual keyboard.
+msgctxt "button_key_f9"
+msgid "F9"
+msgstr "F9"
+
+#. Text for the "F10" button in virtual keyboard.
+msgctxt "button_key_f10"
+msgid "F10"
+msgstr "F10"
+
+#. Text for the "F11" button in virtual keyboard.
+msgctxt "button_key_f11"
+msgid "F11"
+msgstr "F11"
+
+#. Text for the "F12" button in virtual keyboard.
+msgctxt "button_key_f12"
+msgid "F12"
+msgstr "F12"
+
+#. Label for spinner which allows user to select SSH/Telnet/Local.
+msgctxt "protocol_spinner_label"
+msgid "Protocol"
+msgstr "Protokol"
+
+#. Label for button which expands/collapses section.
+msgctxt "expand"
+msgid "Expand"
+msgstr "Razširi"
+
+#. Label for checkbox which, when check, makes SSL authorization require
+#. confirmation.
+msgctxt "hostpref_authagent_with_confirmation"
+msgid "require confirmation"
+msgstr ""
+
+#. Text for button which, when clicked, adds a new host.
+msgctxt "hostpref_add_host"
+msgid "Add host"
+msgstr ""
+
+#. Text for button which, when clicked, saves an existing host.
+msgctxt "hostpref_edit_host"
+msgid "Save host"
+msgstr ""
+
+#. Text for button which, when clicked, brings up an editor for adding a new
+#. pubkey.
+msgctxt "pubkey_add_new"
+msgid "Add new pubkey"
+msgstr ""
+
+#. Text for button which, when clicked, brings up picker to import an existing
+#. pubkey.
+msgctxt "pubkey_import_existing"
+msgid "Import existing pubkey"
+msgstr ""
+
+#. Text for dialog which explains that the host URI is invalid and asks to
+#. discard.
+msgctxt "discard_host_changes_message"
+msgid "Host URI is invalid. Would you like to discard changes?"
+msgstr ""
+
+#. Text for button which discards changes to the host.
+msgctxt "discard_host_button"
+msgid "Discard"
+msgstr "Zavrzi"
+
+#. Text for button which does not discard changes and keeps editing.
+msgctxt "discard_host_cancel_button"
+msgid "Keep editing"
+msgstr ""
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Describes a key type of the RSA algorithm with a
+#. certain strength described in              number of bits (e.g., "RSA
+#. 2048-bit").
+#, c-format
+msgctxt "key_type_rsa_bits"
+msgid "RSA %d-bit"
+msgstr "RSA %d-bit"
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Describes a key type of the DSA algorithm with a
+#. certain strength described in              number of bits (e.g., "DSA
+#. 1024-bit" ).
+#, c-format
+msgctxt "key_type_dsa_bits"
+msgid "DSA %d-bit"
+msgstr ""
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Describes a key type of the Elliptic Curve (EC)
+#. algorithm with a certain strength              described in number of bits
+#. (e.g., "EC 256-bit").
+#, c-format
+msgctxt "key_type_ec_bits"
+msgid "EC %d-bit"
+msgstr "EC %d-bit"
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Describes a key type of the Ed25519 algorithm
+#. with a certain strength described in              number of bits (e.g.,
+#. "Ed25519").
+msgctxt "key_type_ed25519"
+msgid "Ed25519"
+msgstr "Ed25519"
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Describes a key type of an unknown algorithm.
+msgctxt "key_type_unknown"
+msgid "Key type unknown"
+msgstr ""
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Added to the end of a key description to indicate
+#. that the key is encrypted (i.e,              password protected).
+msgctxt "key_attribute_encrypted"
+msgid "(encrypted)"
+msgstr "(šifrirano)"

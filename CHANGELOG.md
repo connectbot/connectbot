@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.9.6][1.9.6]
+### Fixed
+- Fixed crash when using tmux
+
+## [1.9.5][1.9.5]
+### Fixed
+- This fixes an incompatibility with OpenSSH 7.8
+
 ## [1.9.0-alpha1][1.9.0-alpha1]
 ### Changed
 - Major Material Design overhaul of UI.
