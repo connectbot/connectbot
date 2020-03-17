@@ -2713,7 +2713,7 @@ public void setScreenSize(int c, int r, boolean broadcast) {
               debug("ESC [" + DCEvars[0] + " ; " + DCEvars[1] + " r");
             break;
           case 'G':  /* CUP  / cursor absolute column */
-            C = DCEvars[0];
+            C = DCEvars[0] - 1;
             if (C < 0)
               C = 0;
             else if (C >= width)
