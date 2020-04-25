@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-03-23 17:55+0000\n"
-"Last-Translator: Marcos Alano <Unknown>\n"
+"PO-Revision-Date: 2020-04-23 21:36+0000\n"
+"Last-Translator: Bruno Guerreiro <Unknown>\n"
 "Language-Team: pt <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2019-11-07 05:48+0000\n"
-"X-Generator: Launchpad (build 469f241f4e73cc0bdffa4e30654052a2af068e06)\n"
+"X-Launchpad-Export-Date: 2020-04-24 06:13+0000\n"
+"X-Generator: Launchpad (build 486bbbd6cb608f8eb468ed0d08689a349dfabe49)\n"
 "Language: pt\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -24,13 +24,13 @@ msgstr ""
 #. running apps list
 msgctxt "app_desc"
 msgid "Simple, powerful, open-source SSH client."
-msgstr "Cliente SSH open source simples e poderoso"
+msgstr "Cliente SSH simples, avançado e de código aberto."
 
 #. Summary of what the ConnectBot service does; displayed in the Android
 #. running apps list
 msgctxt "service_desc"
 msgid "Maintains SSH connections and loaded pubkeys"
-msgstr "Mantém conexões SSH and chaves públicas carregadas"
+msgstr ""
 
 #. Window title for the Host List
 msgctxt "title_hosts_list"
@@ -70,7 +70,7 @@ msgstr "Selecione uma cor"
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr "Configurações"
+msgstr "Definições"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
@@ -103,11 +103,13 @@ msgid ""
 "Long-press on your Android desktop to create direct shortcuts to frequently-"
 "used SSH hosts."
 msgstr ""
+"Toque longo na sua área de trabalho para criar atalhos diretos para seus "
+"servidores SSH mais usados."
 
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
 msgid "Scroll back / Scroll forward"
-msgstr ""
+msgstr "Role para trás / Role para frente"
 
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
@@ -115,11 +117,13 @@ msgid ""
 "Swiping your finger up on the right side of the screen allows you to scroll "
 "backward and forward in the local terminal buffer history."
 msgstr ""
+"Passando o dedo para cima no lado direito da tela irá possibilitar uma "
+"rolagem para trás e para frente no histórico presente no buffer do terminal."
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
 msgid "Scrolling back"
-msgstr ""
+msgstr "Rolagem para trás"
 
 msgctxt "scrolling_forward"
 msgid "Scrolling forward"
@@ -128,7 +132,7 @@ msgstr "Rolagem para frente"
 #. Header text for instructions about paging up and down in the terminal.
 msgctxt "page_updn_header"
 msgid "Page Up / Page Down"
-msgstr "Página acima"
+msgstr "Página acima / Página abaixo"
 
 #. Instructions about paging up and down in the terminal.
 msgctxt "page_updn_content"
@@ -139,6 +143,12 @@ msgid ""
 "page up and page down key to the remote host. Many programs map this to "
 "scrolling back into history such as irssi or tinyfugue."
 msgstr ""
+"NOTA: Isso deve estar ativado nas definiçõse.\n"
+"\n"
+"Passando o dedo para cima e para baixo na terceira parte da esquerda do ecrã "
+"irá enviar um comandos de pagina acima e pagina abaixo para o servidor "
+"remoto. Muitos programas mapeiam isso como rolagem traseira no histórico, "
+"tais como irssi ou tinyfugue."
 
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
@@ -153,7 +163,7 @@ msgstr "Página abaixo"
 #. in the terminal.
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
-msgstr ""
+msgstr "A alterar servidores"
 
 #. Instructions about switching to the next and previous host in the terminal.
 msgctxt "switching_hosts_content"
@@ -161,20 +171,22 @@ msgid ""
 "Swiping your finger from one side of the screen to the other will switch "
 "between currently connected hosts."
 msgstr ""
+"Passando o dedo de um lado do ecrã para o outro irá trocar os servidores "
+"atualmente conectados."
 
 #. Captions for images showing the next/previous host gestures.
 msgctxt "next_host"
 msgid "Next host"
-msgstr ""
+msgstr "Servidor seguinte"
 
 msgctxt "prev_host"
 msgid "Previous host"
-msgstr ""
+msgstr "Servidor anterior"
 
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "Teclas de atalho"
 
 #. Text in a keyboard shortcuts list lined up to keys which increase the
 #. terminal font-size.
@@ -215,7 +227,7 @@ msgstr "Apagar a chave"
 #. entropy (collect random bits)
 msgctxt "pubkey_gather_entropy"
 msgid "Gathering Entropy"
-msgstr "Recolhendo entropia"
+msgstr "A recolher entropia"
 
 #, c-format
 msgctxt "pubkey_touch_prompt"
@@ -227,8 +239,8 @@ msgid ""
 "In order to assure randomness during the key generation, move your finger "
 "randomly over the box below."
 msgstr ""
-"Para assegurar aleatoriedade durante a geração da chave, mova o dedo "
-"aleatoriamente sobre a caixa a baixo."
+"Para garantir aleatoriedade durante a geração da chave, mova o dedo "
+"aleatoriamente na caixa abaixo."
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
@@ -248,8 +260,8 @@ msgid ""
 "Tap \"Menu\" to create\n"
 "or import key pairs."
 msgstr ""
-"Carregue em Menu para criar\n"
-"ou importar as chaves."
+"Pressione Menu para criar \n"
+"ou importar pares de chaves."
 
 msgctxt "pubkey_unknown_format"
 msgid "Unknown format"
@@ -257,7 +269,7 @@ msgstr "Formato desconhecido"
 
 msgctxt "pubkey_change_password"
 msgid "Change password"
-msgstr "Alterar password"
+msgstr "Alterar palavra-chave"
 
 #. When attempting to import a pubkey, this is the title for the dialog box
 #. where the user should pick the desired file from the SD card contents.
@@ -269,7 +281,7 @@ msgstr "Escolher de /sdcard"
 #. parseable for some reason.
 msgctxt "pubkey_import_parse_problem"
 msgid "Problem parsing imported private key"
-msgstr "Problema de análise com a chave privada importada"
+msgstr "Erro na leitura da chave privada importada"
 
 msgctxt "pubkey_unlock"
 msgid "Unlock key"
@@ -292,13 +304,13 @@ msgstr "Carregar para a memória"
 #. This is equivalent to "locking" a password-protected pubkey entry.
 msgctxt "pubkey_memory_unload"
 msgid "Unload from memory"
-msgstr "retirar da memória"
+msgstr "Retirar da memória"
 
 #. Context menu checkbox that indicates that this pubkey entry should attempt
 #. to be loaded upon starting the app.
 msgctxt "pubkey_load_on_start"
 msgid "Load key on start"
-msgstr "carregar chave no Início"
+msgstr "Carregar chave ao iniciar"
 
 #. Pubkey preference asking user whether the key use should be confirmed via
 #. prompt before it can be used for authentication
@@ -314,29 +326,29 @@ msgid ""
 "Tap \"Menu\" to create\n"
 "port forwards."
 msgstr ""
-"Carregue Menu para criar\n"
-"port forward"
+"Pressione Menu para criar\n"
+"encaminhamentos de porta."
 
 #. Context menu action where a user can edite the selected port forward for
 #. the host.
 msgctxt "portforward_edit"
 msgid "Edit port forward"
-msgstr "Editar port forward"
+msgstr "Editar encaminhamento de porta"
 
 #. Context menu action where a user can delete the selected port forward from
 #. the host.
 msgctxt "portforward_delete"
 msgid "Delete port forward"
-msgstr "Apagar port forward"
+msgstr "Apagar encaminhamento de porta"
 
 msgctxt "prompt_nickname"
 msgid "Nickname:"
-msgstr "Alcunha:"
+msgstr "Apelido:"
 
 #. An example string that could be used as a nickname for a pubkey.
 msgctxt "prompt_nickname_hint_pubkey"
 msgid "My work key"
-msgstr "A minha chave de trabalho"
+msgstr "Minha chave de trabalho"
 
 #. The source TCP port for port forwards.
 msgctxt "prompt_source_port"
@@ -352,13 +364,13 @@ msgstr "Destino:"
 #. their password. This is the entry for the old password.
 msgctxt "prompt_old_password"
 msgid "Old password:"
-msgstr "Palavra-passe Antiga:"
+msgstr "Palavra-chave Antiga:"
 
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
 msgctxt "prompt_password"
 msgid "Password:"
-msgstr "Palavra-passe:"
+msgstr "Palavra-chave:"
 
 #. Added after a "Password:" prompt to indicate user needs to confirm entry.
 msgctxt "prompt_again"
@@ -374,18 +386,18 @@ msgstr "Tipo:"
 #. allowed to leave the field blank.
 msgctxt "prompt_password_can_be_blank"
 msgid "Note: password can be blank"
-msgstr "Nota: password pode ser em branco"
+msgstr "Nota: palavra-chave pode ser em branco"
 
 #. Prompt for the size of the private key in bits.
 msgctxt "prompt_bits"
 msgid "Bits:"
-msgstr "bits:"
+msgstr "Bits:"
 
 #. Prompt for the password to unlock a certain pubkey.
 #, c-format
 msgctxt "prompt_pubkey_password"
 msgid "Password for key '%1$s'"
-msgstr "Password para a chave '%1$s'"
+msgstr "palavra-chave para a chave '%1$s'"
 
 #. Prompt for whether to allow SSH Authentication Agent to use the specified
 #. key. Note that the '\n' means split the line so it's actually "host to use
@@ -396,7 +408,7 @@ msgid ""
 "Allow remote host to\n"
 "use key '%1$s'?"
 msgstr ""
-"Permitir ao anfitrião remoto\n"
+"Permitir ao servidor remoto\n"
 "usar a chave '%1$s'?"
 
 #. The header of the warning a user gets when the host key has changed. Note
@@ -404,7 +416,7 @@ msgstr ""
 #. user as possible.
 msgctxt "host_verification_failure_warning_header"
 msgid "WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!"
-msgstr "AVISO: a identificação do anfitrião remoto mudou!"
+msgstr "AVISO: a identificação do servidor remoto mudou!"
 
 #. The body of the warning a user gets when the host key has changed. Note
 #. that this can be a very serious attack, so we try to be as "loud" to the
@@ -415,9 +427,9 @@ msgid ""
 "Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
-"É POSSÍVEL QUE ALGUÉM ESTEJA A FAZER ALGO ERRADO!\n"
-" Alguém pode estar espiando ( ataque man-in-the-middle)!\n"
-"Também e possível que a chave do hospede tenha sido alterada"
+"É POSSÍVEL QUE ALGUÉM ESTEJA QUERENDO TE ENGANAR!\n"
+"Alguém pode estar a tentar um ataque do tipo man-in-the-middle!\n"
+"Também é possível que a chave do servidor remoto tenha mesmo sido modificada."
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
@@ -425,7 +437,7 @@ msgid ""
 "Host has disconnected.\n"
 "Close session?"
 msgstr ""
-"Hospede desconectou-se.\n"
+"Servidor desconectou-se\n"
 "Fechar sessão?"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -443,22 +455,22 @@ msgstr ""
 #, c-format
 msgctxt "host_authenticity_warning"
 msgid "The authenticity of host '%1$s' can't be established."
-msgstr "A autenticidade do anfitrião '%1$s' não pode ser verificada."
+msgstr "A autenticidade do servidor '%1$s' não pode ser verificada."
 
 #. First field is encryption algorithm. Second is the actual fingerprint in
 #. hex digits
 #, c-format
 msgctxt "host_fingerprint"
 msgid "Host %1$s key fingerprint is %2$s"
-msgstr "Hospede %1$s id da chave é %2$s"
+msgstr "O servidor %1$s tem a impressão digital %2$s"
 
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
-msgstr "As palavras passe não coincidem!"
+msgstr "As palavras-chave não coincidem!"
 
 msgctxt "alert_wrong_password_msg"
 msgid "Wrong password!"
-msgstr "Palavra passe errada!"
+msgstr "Palavra-chave errada!"
 
 msgctxt "alert_key_corrupted_msg"
 msgid "Private key appears corrupt!"
@@ -466,12 +478,12 @@ msgstr "Chave privada parece estar corrupta."
 
 msgctxt "alert_sdcard_absent"
 msgid "SD card is not inserted!"
-msgstr "Cartão SD não parece estar inserido!"
+msgstr "O cartão SD não está inserido!"
 
 #. Change an existing item's (e.g., host or pubkey) details.
 msgctxt "button_change"
 msgid "Change"
-msgstr "Alterar"
+msgstr ""
 
 #. Button that resizes the screen to the user-specified dimensions.
 msgctxt "button_resize"
@@ -493,7 +505,7 @@ msgstr ""
 #. The category title for terminal emulation preferences.
 msgctxt "pref_emulation_category"
 msgid "Terminal emulation"
-msgstr "Terminal de emulação"
+msgstr "Emulação de Terminal"
 
 #. Name for the emulation terminal type preference.
 msgctxt "pref_emulation_title"
@@ -503,28 +515,30 @@ msgstr "Modo de emulação"
 #. Description of the emulation terminal type preference.
 msgctxt "pref_emulation_summary"
 msgid "Terminal emulation mode to use for PTY connections"
-msgstr "Terminal de emulação para usar conecções PTY"
+msgstr "Modo de emulação do terminal para ligações PTY"
 
 #. Name for the scrollback size preference
 msgctxt "pref_scrollback_title"
 msgid "Scrollback size"
-msgstr "Tamanho de Scrollback"
+msgstr "Tamanho do buffer"
 
 #. Description of the scrollback size preference
 msgctxt "pref_scrollback_summary"
 msgid "Size of scrollback buffer to keep in memory for each console"
-msgstr "Tamanho do buffer de scrollback em memória para cada consola"
+msgstr "Tamanho do buffer em memória para cada consola"
 
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr ""
+msgstr "Cópias de segurança das chaves publicas"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
 msgstr ""
+"Mantenha copias de segurança das chaves privadas usando o sistema de copia "
+"de segurança do Android"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -534,7 +548,7 @@ msgstr "Interface de utilizador"
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
 msgid "Rotation mode"
-msgstr "Modo de rotação"
+msgstr ""
 
 #. Summary for the rotation mode preference
 msgctxt "pref_rotation_summary"
@@ -544,12 +558,13 @@ msgstr "Como alterar a rotação quando o teclado é aberto/fechado"
 #. Name for the titlebar hide preference
 msgctxt "pref_titlebarhide_title"
 msgid "Autohide title bar"
-msgstr "Esconder titulo automaticamente"
+msgstr "Esconder automaticamente a barra de título"
 
 #. Summary for the titlebar hide preference
 msgctxt "pref_titlebarhide_summary"
 msgid "Tap console to show title bar and access menu"
 msgstr ""
+"Pressione no terminal para mostrar a barra de título e o menu de acesso"
 
 #. Title for special keys always visible preference
 msgctxt "pref_alwaysvisible_title"
@@ -559,12 +574,14 @@ msgstr "Teclas especiais sempre visiveis"
 #. Name for the page up/down gesture preference
 msgctxt "pref_pg_updn_gesture_title"
 msgid "Page up/down gesture"
-msgstr "Movimento de página para cima/baixo"
+msgstr "Gesto de pagina acima/pagina abaixo"
 
 #. Summary for the full screen preference
 msgctxt "pref_pg_updn_gesture_summary"
 msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
 msgstr ""
+"Passe sobre a terceira parte da tela à esquerda para enviar comandos de "
+"pagina acima/pagina abaixo para o terminal"
 
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
@@ -574,42 +591,42 @@ msgstr "Ecrã completo"
 #. Summary for the full screen preference
 msgctxt "pref_fullscreen_summary"
 msgid "Hide status bar while in console"
-msgstr "Esconder a barra de notificação quando estiver na consola"
+msgstr "Esconder a barra de notificação quando estiver no terminal"
 
 #. The category title for keyboard preferences
 msgctxt "pref_keyboard_category"
 msgid "Keyboard"
-msgstr ""
+msgstr "Teclado"
 
 #. Name for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_title"
 msgid "Shift+num are F-keys"
-msgstr ""
+msgstr "Shift +número são as teclas Fn"
 
 #. Summary for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_summary"
 msgid "On hardware keyboards, number keys send F1-F10 with shift"
-msgstr ""
+msgstr "Em teclados físicos, as teclas numéricas enviam F1 à F10 com shift"
 
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
 msgid "Ctrl+num are F-keys"
-msgstr ""
+msgstr "Ctrl+número são as teclas Fn"
 
 #. Summary for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_summary"
 msgid "On software keyboards, number keys send F1-F10 with ctrl"
-msgstr ""
+msgstr "Em teclados virtuais, as teclas numéricas enviam F1 à F10 com crtl"
 
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
 msgid "Volume keys change font size"
-msgstr ""
+msgstr "Teclas de volume alteram o tamanho da fonte"
 
 #. Summary for the volume keys control font size preference
 msgctxt "pref_volumefont_summary"
 msgid "Font size can also be changed in per-host settings"
-msgstr ""
+msgstr "O tamanho da fonte pode ser alterado nas definições do servidor"
 
 #. Name for the memorize keys preference
 msgctxt "pref_memkeys_title"
@@ -620,13 +637,13 @@ msgstr "Lembrar chaves em memória"
 msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
 msgstr ""
-"Manter chaves desbloqueadas em memória até ao serviço de fundo terminar"
+"Manter chaves desbloqueadas na memória até que o serviço seja terminado"
 
 #. Name for the preference that forces the service to stay running in the
 #. background.
 msgctxt "pref_conn_persist_title"
 msgid "Persist connections"
-msgstr "Persistir ligações"
+msgstr "Ligações persistentes"
 
 #. Summary for the preference that forces the service to stay running in the
 #. background.
@@ -637,7 +654,7 @@ msgstr "Forçar ligações a ficarem ligadas quando em segundo plano"
 #. Name for the keyboard shortcuts preference
 msgctxt "pref_keymode_title"
 msgid "Directory shortcuts"
-msgstr "Atalhos de directoria"
+msgstr "Teclas de atalho"
 
 #. Summary for the keyboard shortcuts preference
 msgctxt "pref_keymode_summary"
@@ -653,33 +670,35 @@ msgstr ""
 msgctxt "pref_stickymodifiers_summary"
 msgid "Modifier keys remain enabled until another key is pressed"
 msgstr ""
+"As teclas de modificação permanecem ativadas até que outra tecla seja "
+"pressionada"
 
 #. Sticky modifier preference value description for when only the Alt key
 #. should be a sticky modifier.
 msgctxt "only_alt"
 msgid "Only alt"
-msgstr ""
+msgstr "Somente alt"
 
 #. Name for the camera shortcut usage preference
 msgctxt "pref_camera_title"
 msgid "Camera shortcut"
-msgstr "Atalho para a câmara"
+msgstr "Atalho da câmara"
 
 #. Summary for the camera shortcut usage preference
 msgctxt "pref_camera_summary"
 msgid "Select which shortcut to trigger when the camera button is pushed"
-msgstr "Escolha o atalho a activar quando o botão da câmara é pressionado"
+msgstr "Selecione o que fazer quando o botão da câmara for pressionado"
 
 #. Name for the keep screen on preference
 msgctxt "pref_keepalive_title"
 msgid "Keep screen awake"
-msgstr "Mantar ecrã activo"
+msgstr "Manter ecrâ ligado"
 
 #. Summary for the camera shortcut usage preference
 msgctxt "pref_keepalive_summary"
 msgid "Prevent the screen from turning off when working in a console"
 msgstr ""
-"Previne que o ecrã seja desligado quando se esta a utilizar a consola"
+"Previne que o ecrã seja desligado quando se esta a utilizar um terminal"
 
 #. Name for the Wi-Fi lock preference
 msgctxt "pref_wifilock_title"
@@ -689,22 +708,22 @@ msgstr "Manter Wi-Fi activo"
 #. Summary for the Wi-Fi lock preference
 msgctxt "pref_wifilock_summary"
 msgid "Prevent Wi-Fi from turning off when a session is active"
-msgstr "Evitar que o Wi-Fi desligue quando uma sessão está activa"
+msgstr "Evitar que o Wi-Fi se desligue quando uma sessão está ativa"
 
 #. Name for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_title"
 msgid "Bumpy arrows"
-msgstr "Cursores com vibração"
+msgstr ""
 
 #. Summary for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_summary"
 msgid "Vibrate when sending arrow keys; useful for laggy connections"
-msgstr ""
+msgstr "Vibrar ao usar as setas; útil para ligações lentas"
 
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
 msgid "Terminal bell"
-msgstr "Aviso sonoro do terminal"
+msgstr "Alerta do terminal"
 
 #. Checkbox preference title for the audible terminal bell feature
 msgctxt "pref_bell_title"
@@ -732,46 +751,44 @@ msgstr "Notificações em segundo plano"
 msgctxt "pref_bell_notification_summary"
 msgid ""
 "Send notification when a terminal running in the background sounds a bell."
-msgstr ""
-"Enviar notificação quando um terminal a correr em segundo plano enviar um "
-"aviso sonoro."
+msgstr "Enviar notificações sonoras quando em segundo plano"
 
 #. Preference selection to indicate use of right side of keyboard for special
 #. shortcuts.
 msgctxt "list_keymode_right"
 msgid "Use right-side keys"
-msgstr "Usar teclas do lado direito"
+msgstr "Usar teclas no lado direito"
 
 #. Preference selection to indicate use of left side of keyboard for special
 #. shortcuts.
 msgctxt "list_keymode_left"
 msgid "Use left-side keys"
-msgstr "Usar teclas do lado esquerdo"
+msgstr "Usar teclas no lado esquerdo"
 
 #. Preference selection to indicate never to use special shortcut keys.
 msgctxt "list_keymode_none"
 msgid "Disable"
-msgstr "Desactivar"
+msgstr "Desativar"
 
 #. Preference to not use pubkeys to authenticate to this host.
 msgctxt "list_pubkeyids_none"
 msgid "Do not use keys"
-msgstr "Não usar teclas"
+msgstr "Não usar chaves"
 
 #. Preference to use any pubkey to authenticate to this host.
 msgctxt "list_pubkeyids_any"
 msgid "Use any unlocked key"
-msgstr "Usar qualquer tecla não bloqueada"
+msgstr "Usar qualquer chave pública"
 
 #. Host nickname field preference title
 msgctxt "hostpref_nickname_title"
 msgid "Nickname"
-msgstr "Alcunha"
+msgstr "Apelido"
 
 #. Host color category preference title
 msgctxt "hostpref_color_title"
 msgid "Color category"
-msgstr "Categoria de cor"
+msgstr "Cor da categoria"
 
 #. Host's default font size when opening the terminal in points (pt)
 msgctxt "hostpref_fontsize_title"
@@ -781,7 +798,7 @@ msgstr "Tamanho da fonte (pt)"
 #. Host pubkey usage preference title
 msgctxt "hostpref_pubkeyid_title"
 msgid "Use pubkey authentication"
-msgstr "Utilizar autenticação de chave publica (pubkey)"
+msgstr "Utilizar autenticação por chave publica (pubkey)"
 
 #. Preference title for the SSH Authentication Agent Forwarding for a host
 #. connection
@@ -797,7 +814,7 @@ msgstr "Automação pós-login"
 #. Host post-login automation preference summary
 msgctxt "hostpref_postlogin_summary"
 msgid "Commands to run on remote server once authenticated"
-msgstr "Comandos a correr no servidor remoto após autenticar"
+msgstr "Comandos a serem executados no servidor remoto após autenticação"
 
 #. Host compression preference title
 msgctxt "hostpref_compression_title"
@@ -831,12 +848,12 @@ msgstr "Permanecer ligado"
 #. when it disconnects
 msgctxt "hostpref_stayconnected_summary"
 msgid "Try to reconnect to host if disconnected"
-msgstr "Tentar ligar de novo ao anfitrião se desligar"
+msgstr "Tentar reconcertar ao servidor caso a ligação seja perdida"
 
 #. Setting for whether we should prompt to close after getting disconnected
 msgctxt "hostpref_quickdisconnect_title"
 msgid "Close on disconnect"
-msgstr ""
+msgstr "Fechar ao desligar"
 
 msgctxt "hostpref_quickdisconnect_summary"
 msgid "Close immediately after remote disconnect without prompting."
