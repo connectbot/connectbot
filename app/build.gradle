@@ -221,6 +221,7 @@ afterEvaluate {
 dependencyUpdates {
     revision = "release"
     checkForGradleUpdate = false
+    //noinspection DuplicatePlatformClasses
     outputFormatter = "json"
 
     // Android apparently marks their "alpha" as "release" so we have to reject them.
