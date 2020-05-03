@@ -2,10 +2,10 @@
 <resources>
   <string name="app_desc">Basit, güçlü, açık-kaynak SSH istemcisi</string>
   <string name="service_desc">SSH bağlantılarını ve yüklenmiş açık-anahtarları muhafaza eder</string>
-  <string name="title_hosts_list">Hostlar</string>
+  <string name="title_hosts_list">Sunucular</string>
   <string name="title_pubkey_list">Açık-anahtarlar</string>
   <string name="title_port_forwards_list">Port yönlendirme</string>
-  <string name="title_host_editor">Host\'u Düzenle</string>
+  <string name="title_host_editor">Sunucuyu Düzenle</string>
   <string name="title_help">Yardım</string>
   <string name="title_colors">Renkler</string>
   <string name="title_color_picker">Bir renk seç</string>
@@ -20,7 +20,10 @@
   <string name="page_down">Bir sayfa aşağı</string>
   <string name="keyboard_shortcuts">Klavye Kısayolları</string>
   <string name="increase_font_size">Yazıtipi Boyutunu Büyüt</string>
+  <string name="increase_font_shortcut">Ctrl ve +</string>
   <string name="decrease_font_size">Yazıtipi Boyutunu Küçült</string>
+  <string name="decrease_font_shortcut">Ctrl ve -</string>
+  <string name="paste_shortcut">Ctrl-Shift-V</string>
   <string name="pubkey_generate">Oluştur</string>
   <string name="pubkey_delete">Anahtarı Sil</string>
   <string name="pubkey_gather_entropy">Entropi Toplanıyor</string>
