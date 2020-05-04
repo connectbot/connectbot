@@ -358,8 +358,15 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				mDeadKey = 0;
 			}
 
+			String capslock = prefs.getString(PreferenceConstants.CAPSLOCK,
+					PreferenceConstants.CAPSLOCK_CAPSLOCK);
+
 			// If we have a defined non-control character
 			if (uchar >= 0x20) {
+				if (!PreferenceConstants.CAPSLOCK_CAPSLOCK.equals(capslock)
+						&& event.isCapsLockOn() && !event.isShiftPressed()
+						&& 'A' <= uchar && uchar <= 'Z')
+					uchar -= 'A' - 'a';
 				if ((derivedMetaState & HC_META_CTRL_ON) != 0)
 					uchar = keyAsControl(uchar);
 				if ((derivedMetaState & KeyEvent.META_ALT_ON) != 0)
@@ -375,6 +382,10 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 
 			// look for special chars
 			switch (keyCode) {
+			case KeyEvent.KEYCODE_CAPS_LOCK:
+				if (PreferenceConstants.CAPSLOCK_ESC.equals(capslock))
+					sendEscape();
+				return true;
 			case KEYCODE_ESCAPE:
 				sendEscape();
 				return true;

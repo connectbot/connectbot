@@ -283,6 +283,11 @@
 	<!-- Summary for the camera shortcut usage preference -->
 	<string name="pref_camera_summary">"Select which shortcut to trigger when the camera button is pushed"</string>
 
+	<!-- Name for the capslock map preference -->
+	<string name="pref_capslock_title">"Caps Lock Map"</string>
+	<!-- Summary for the capslock map preference -->
+	<string name="pref_capslock_summary">"Select which shortcut to trigger when the caps lock button is pushed"</string>
+
 	<!-- Name for the keep screen on preference -->
 	<string name="pref_keepalive_title">"Keep screen awake"</string>
 	<!-- Summary for the camera shortcut usage preference -->
@@ -461,6 +466,11 @@
 	<string name="list_camera_esc_a">"Esc+A"</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">"None"</string>
+
+	<!-- Selection to indicate pressing the Caps Lock button should send Caps Lock at all. -->
+	<string name="list_capslock_capslock">"Caps Lock"</string>
+	<!-- Selection to indicate pressing the Caps Lock button should send the "Esc" key. -->
+	<string name="list_capslock_esc">"Esc"</string>
 
 	<!-- Name for the backspace character -->
 	<string name="list_delkey_backspace">"Backspace"</string>

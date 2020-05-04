@@ -57,6 +57,16 @@
 		<item>None</item>
 	</string-array>
 
+	<string-array name="list_capslock" translatable="false">
+		<item>@string/list_capslock_capslock</item>
+		<item>@string/list_capslock_esc</item>
+	</string-array>
+
+	<string-array name="list_capslock_values" translatable="false">
+		<item>Caps Lock</item>
+		<item>Esc</item>
+	</string-array>
+
 	<string-array name="list_colors" translatable="false">
 		<item>@string/color_red</item>
 		<item>@string/color_green</item>

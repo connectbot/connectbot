@@ -63,6 +63,11 @@ public final class PreferenceConstants {
 	public static final String CAMERA_ESC = "Esc";
 	public static final String CAMERA_ESC_A = "Esc+A";
 
+	public static final String CAPSLOCK = "capslock";
+
+	public static final String CAPSLOCK_CAPSLOCK = "Caps Lock";
+	public static final String CAPSLOCK_ESC = "Esc";
+
 	public static final String KEEP_ALIVE = "keepalive";
 
 	public static final String WIFI_LOCK = "wifilock";

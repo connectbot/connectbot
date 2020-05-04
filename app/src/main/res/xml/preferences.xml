@@ -168,6 +168,15 @@
 			android:defaultValue="Ctrl+A then Space"
 			/>
 
+		<ListPreference
+			android:key="capslock"
+			android:title="@string/pref_capslock_title"
+			android:summary="@string/pref_capslock_summary"
+			android:entries="@array/list_capslock"
+			android:entryValues="@array/list_capslock_values"
+			android:defaultValue="Caps Lock"
+			/>
+
 		<SwitchPreferenceCompat
 			android:key="bumpyarrows"
 			android:title="@string/pref_bumpyarrows_title"
