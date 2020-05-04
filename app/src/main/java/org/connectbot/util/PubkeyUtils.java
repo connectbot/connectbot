@@ -63,15 +63,19 @@ import org.keyczar.jce.EcCore;
 import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.crypto.PEMDecoder;
 import com.trilead.ssh2.crypto.SimpleDERReader;
-import com.trilead.ssh2.crypto.keys.EdDSAPublicKey;
 import com.trilead.ssh2.signature.DSASHA1Verify;
 import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.Ed25519Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
 
 import android.util.Log;
+import net.i2p.crypto.eddsa.EdDSAPublicKey;
 
 public class PubkeyUtils {
+	static {
+		Ed25519Provider.insertIfNeeded();
+	}
+
 	private static final String TAG = "CB.PubkeyUtils";
 
 	public static final String PKCS8_START = "-----BEGIN PRIVATE KEY-----";
