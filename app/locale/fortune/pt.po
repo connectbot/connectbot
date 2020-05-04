@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2020-04-24 14:11+0000\n"
-"Last-Translator: Bruno Guerreiro <Unknown>\n"
+"PO-Revision-Date: 2020-05-03 06:25+0000\n"
+"Last-Translator: Kenny Root <Unknown>\n"
 "Language-Team: pt <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2020-04-25 06:13+0000\n"
-"X-Generator: Launchpad (build 486bbbd6cb608f8eb468ed0d08689a349dfabe49)\n"
+"X-Launchpad-Export-Date: 2020-05-04 04:36+0000\n"
+"X-Generator: Launchpad (build fbdff7602bd10fb883bf7e2ddcc7fd5a16f60398)\n"
 "Language: pt\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -581,7 +581,7 @@ msgctxt "pref_pg_updn_gesture_summary"
 msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
 msgstr ""
 "Passe sobre a terceira parte da tela à esquerda para enviar comandos de "
-"pagina acima/pagina abaixo para o terminal"
+"página acima/página abaixo para o terminal"
 
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
@@ -867,7 +867,7 @@ msgstr "Tecla DEL"
 #. Host character encoding preference title
 msgctxt "hostpref_encoding_title"
 msgid "Encoding"
-msgstr "A codificar..."
+msgstr "A codificar…"
 
 #. Username field title for host editor preference
 msgctxt "hostpref_username_title"
@@ -1384,7 +1384,7 @@ msgstr "Ctrl"
 #. Text for the "Home" button in virtual keyboard.
 msgctxt "button_key_home"
 msgid "Home"
-msgstr "Tecla Inicio"
+msgstr "Tecla Início"
 
 #. Text for the "End" button in virtual keyboard.
 msgctxt "button_key_end"
