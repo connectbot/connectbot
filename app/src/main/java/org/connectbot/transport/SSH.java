@@ -50,6 +50,7 @@ import org.connectbot.bean.PubkeyBean;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.service.TerminalManager.KeyHolder;
+import org.connectbot.util.Ed25519Provider;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
@@ -57,6 +58,8 @@ import org.connectbot.util.PubkeyUtils;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+import net.i2p.crypto.eddsa.EdDSAPrivateKey;
+import net.i2p.crypto.eddsa.EdDSAPublicKey;
 
 import com.trilead.ssh2.AuthAgentCallback;
 import com.trilead.ssh2.ChannelCondition;
@@ -70,8 +73,6 @@ import com.trilead.ssh2.KnownHosts;
 import com.trilead.ssh2.LocalPortForwarder;
 import com.trilead.ssh2.Session;
 import com.trilead.ssh2.crypto.PEMDecoder;
-import com.trilead.ssh2.crypto.keys.EdDSAPrivateKey;
-import com.trilead.ssh2.crypto.keys.EdDSAPublicKey;
 import com.trilead.ssh2.signature.DSASHA1Verify;
 import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.Ed25519Verify;
@@ -82,6 +83,11 @@ import com.trilead.ssh2.signature.RSASHA1Verify;
  *
  */
 public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveCallback, AuthAgentCallback {
+	static {
+		// Since this class deals with EdDSA keys, we need to make sure this is available.
+		Ed25519Provider.insertIfNeeded();
+	}
+
 	public SSH() {
 		super();
 	}

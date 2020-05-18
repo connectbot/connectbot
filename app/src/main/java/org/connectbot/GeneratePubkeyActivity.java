@@ -25,6 +25,7 @@ import java.security.SecureRandom;
 import java.security.Security;
 
 import org.connectbot.bean.PubkeyBean;
+import org.connectbot.util.Ed25519Provider;
 import org.connectbot.util.EntropyDialog;
 import org.connectbot.util.EntropyView;
 import org.connectbot.util.OnEntropyGatheredListener;
@@ -58,6 +59,11 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntropyGatheredListener,
 		OnKeyGeneratedListener {
+	static {
+		// Since this class deals with EdDSA keys, we need to make sure this is available.
+		Ed25519Provider.insertIfNeeded();
+	}
+
 	public final static String TAG = "CB.GeneratePubkeyAct";
 
 	private final static int[] ECDSA_SIZES = ECDSASHA2Verify.getCurveSizes();
