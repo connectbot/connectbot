@@ -5,6 +5,8 @@ sudo: true  # For the 7.5GB limit
 branches:
   except:
   - /^dependabot\/.*/
+  - /^git-v.*$/
+  - /^translations\/import$/
 
 env:
   global:
