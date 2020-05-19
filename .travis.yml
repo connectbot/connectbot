@@ -2,6 +2,9 @@ language: minimal
 os: linux
 dist: bionic
 sudo: true  # For the 7.5GB limit
+branches:
+  except:
+  - /^dependabot\/.*/
 
 env:
   global:
