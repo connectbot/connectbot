@@ -96,7 +96,7 @@
   <string name="pref_titlebarhide_summary">Pressione no terminal para mostrar a barra de título e o menu de acesso</string>
   <string name="pref_alwaysvisible_title">Teclas especiais sempre visiveis</string>
   <string name="pref_pg_updn_gesture_title">Gesto de pag. acima/pag. abaixo</string>
-  <string name="pref_pg_updn_gesture_summary">Passe sobre a terceira parte da tela à esquerda para enviar comandos de pagina acima/pagina abaixo para o terminal</string>
+  <string name="pref_pg_updn_gesture_summary">Passe sobre a terceira parte da tela à esquerda para enviar comandos de página acima/página abaixo para o terminal</string>
   <string name="pref_fullscreen_title">Ecrã completo</string>
   <string name="pref_fullscreen_summary">Esconder a barra de notificação quando estiver no terminal</string>
   <string name="pref_keyboard_category">Teclado</string>
@@ -150,7 +150,7 @@
   <string name="hostpref_quickdisconnect_title">Fechar ao desligar</string>
   <string name="hostpref_quickdisconnect_summary">Fechar imediatamente após servidor remoto desconectar sem aviso</string>
   <string name="hostpref_delkey_title">Tecla DEL</string>
-  <string name="hostpref_encoding_title">A codificar...</string>
+  <string name="hostpref_encoding_title">A codificar…</string>
   <string name="hostpref_username_title">Nome de utilizador</string>
   <string name="hostpref_hostname_title">Servidor</string>
   <string name="hostpref_port_title">Porta</string>
@@ -250,7 +250,7 @@
   <string name="image_description_volume">Volume</string>
   <string name="button_key_esc">Esc</string>
   <string name="button_key_ctrl">Ctrl</string>
-  <string name="button_key_home">Tecla Inicio</string>
+  <string name="button_key_home">Tecla Início</string>
   <string name="button_key_end">Tecla Fim</string>
   <string name="button_key_pgup">Pág. acima</string>
   <string name="button_key_pgdn">Pág. abaixo</string>
