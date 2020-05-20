@@ -21,6 +21,7 @@ build/
 # Android gradle native build
 \.externalNativeBuild/
 .idea/
+**/.cxx
 
 # Jenkinsfile-runner
 \.jenkinsfile-runner/
