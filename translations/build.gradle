@@ -66,7 +66,7 @@ task importToAndroid(type: Exec) {
     dependsOn 'installAndroid2Po'
 
     executable = android2poExec
-    args = ['import'] + android2poArgs
+    args = ['import']+ android2poArgs
 
     logging.captureStandardOutput LogLevel.LIFECYCLE
     logging.captureStandardError  LogLevel.ERROR
