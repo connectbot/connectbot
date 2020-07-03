@@ -74,7 +74,7 @@ before_script:
   - sdkmanager 'extras;android;m2repository' | tr '\r' '\n' | uniq
   - sdkmanager 'extras;google;m2repository' | tr '\r' '\n' | uniq
   - sdkmanager 'extras;google;google_play_services' | tr '\r' '\n' | uniq
-  - sdkmanager 'ndk;21.1.6352462' | tr '\r' '\n' | uniq
+  - sdkmanager 'ndk;21.3.6528147' | tr '\r' '\n' | uniq
   # Download the emulator support stuff
   - mkdir -p $HOME/.cache/ci-support
   - curl -L https://github.com/connectbot/ci-support/archive/master.zip -z $HOME/.cache/ci-support/master.zip -o $HOME/.cache/ci-support/master.zip
