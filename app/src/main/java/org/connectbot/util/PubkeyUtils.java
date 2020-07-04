@@ -17,6 +17,26 @@
 
 package org.connectbot.util;
 
+import android.util.Log;
+import com.trilead.ssh2.crypto.Base64;
+import com.trilead.ssh2.crypto.PEMDecoder;
+import com.trilead.ssh2.crypto.SimpleDERReader;
+import com.trilead.ssh2.crypto.keys.EdDSAProvider;
+import com.trilead.ssh2.crypto.keys.EdDSAPublicKey;
+import com.trilead.ssh2.signature.DSASHA1Verify;
+import com.trilead.ssh2.signature.ECDSASHA2Verify;
+import com.trilead.ssh2.signature.Ed25519Verify;
+import com.trilead.ssh2.signature.RSASHA1Verify;
+import org.connectbot.bean.PubkeyBean;
+import org.keyczar.jce.EcCore;
+
+import javax.crypto.Cipher;
+import javax.crypto.EncryptedPrivateKeyInfo;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.PBEParameterSpec;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.AlgorithmParameters;
@@ -49,31 +69,9 @@ import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 
-import javax.crypto.Cipher;
-import javax.crypto.EncryptedPrivateKeyInfo;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.PBEParameterSpec;
-
-import org.connectbot.bean.PubkeyBean;
-import org.keyczar.jce.EcCore;
-
-import com.trilead.ssh2.crypto.Base64;
-import com.trilead.ssh2.crypto.PEMDecoder;
-import com.trilead.ssh2.crypto.SimpleDERReader;
-import com.trilead.ssh2.signature.DSASHA1Verify;
-import com.trilead.ssh2.signature.ECDSASHA2Verify;
-import com.trilead.ssh2.signature.Ed25519Verify;
-import com.trilead.ssh2.signature.RSASHA1Verify;
-
-import android.util.Log;
-import net.i2p.crypto.eddsa.EdDSAPublicKey;
-
 public class PubkeyUtils {
 	static {
-		Ed25519Provider.insertIfNeeded();
+		EdDSAProvider.insertIfNeeded();
 	}
 
 	private static final String TAG = "CB.PubkeyUtils";
