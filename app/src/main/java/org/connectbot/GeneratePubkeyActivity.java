@@ -25,7 +25,6 @@ import java.security.SecureRandom;
 import java.security.Security;
 
 import org.connectbot.bean.PubkeyBean;
-import org.connectbot.util.Ed25519Provider;
 import org.connectbot.util.EntropyDialog;
 import org.connectbot.util.EntropyView;
 import org.connectbot.util.OnEntropyGatheredListener;
@@ -33,6 +32,7 @@ import org.connectbot.util.OnKeyGeneratedListener;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
+import com.trilead.ssh2.crypto.keys.EdDSAProvider;
 import com.trilead.ssh2.signature.ECDSASHA2Verify;
 
 import android.annotation.SuppressLint;
@@ -61,7 +61,7 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 		OnKeyGeneratedListener {
 	static {
 		// Since this class deals with EdDSA keys, we need to make sure this is available.
-		Ed25519Provider.insertIfNeeded();
+		EdDSAProvider.insertIfNeeded();
 	}
 
 	public final static String TAG = "CB.GeneratePubkeyAct";
