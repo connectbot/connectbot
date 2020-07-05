@@ -21,8 +21,8 @@ import android.util.Log;
 import com.trilead.ssh2.crypto.Base64;
 import com.trilead.ssh2.crypto.PEMDecoder;
 import com.trilead.ssh2.crypto.SimpleDERReader;
-import com.trilead.ssh2.crypto.keys.EdDSAProvider;
-import com.trilead.ssh2.crypto.keys.EdDSAPublicKey;
+import com.trilead.ssh2.crypto.keys.Ed25519Provider;
+import com.trilead.ssh2.crypto.keys.Ed25519PublicKey;
 import com.trilead.ssh2.signature.DSASHA1Verify;
 import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.Ed25519Verify;
@@ -71,7 +71,7 @@ import java.util.Arrays;
 
 public class PubkeyUtils {
 	static {
-		EdDSAProvider.insertIfNeeded();
+		Ed25519Provider.insertIfNeeded();
 	}
 
 	private static final String TAG = "CB.PubkeyUtils";
@@ -317,8 +317,8 @@ public class PubkeyUtils {
 			String keyType = ECDSASHA2Verify.getCurveName(ecPub.getParams().getCurve().getField().getFieldSize());
 			String keyData = String.valueOf(Base64.encode(ECDSASHA2Verify.encodeSSHECDSAPublicKey(ecPub)));
 			return ECDSASHA2Verify.ECDSA_SHA2_PREFIX + keyType + " " + keyData + " " + nickname;
-		} else if (pk instanceof EdDSAPublicKey) {
-			EdDSAPublicKey edPub = (EdDSAPublicKey) pk;
+		} else if (pk instanceof Ed25519PublicKey) {
+			Ed25519PublicKey edPub = (Ed25519PublicKey) pk;
 			return Ed25519Verify.ED25519_ID + " " +
 					String.valueOf(Base64.encode(Ed25519Verify.encodeSSHEd25519PublicKey(edPub))) +
 					" " + nickname;
@@ -344,8 +344,8 @@ public class PubkeyUtils {
 				return DSASHA1Verify.encodeSSHDSAPublicKey((DSAPublicKey) pubKey);
 			} else if (pubKey instanceof ECPublicKey) {
 				return ECDSASHA2Verify.encodeSSHECDSAPublicKey((ECPublicKey) pubKey);
-			} else if (pubKey instanceof EdDSAPublicKey) {
-				return Ed25519Verify.encodeSSHEd25519PublicKey((EdDSAPublicKey) pubKey);
+			} else if (pubKey instanceof Ed25519PublicKey) {
+				return Ed25519Verify.encodeSSHEd25519PublicKey((Ed25519PublicKey) pubKey);
 			} else {
 				return null;
 			}

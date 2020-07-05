@@ -32,7 +32,7 @@ import org.connectbot.util.OnKeyGeneratedListener;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
-import com.trilead.ssh2.crypto.keys.EdDSAProvider;
+import com.trilead.ssh2.crypto.keys.Ed25519Provider;
 import com.trilead.ssh2.signature.ECDSASHA2Verify;
 
 import android.annotation.SuppressLint;
@@ -61,7 +61,7 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 		OnKeyGeneratedListener {
 	static {
 		// Since this class deals with EdDSA keys, we need to make sure this is available.
-		EdDSAProvider.insertIfNeeded();
+		Ed25519Provider.insertIfNeeded();
 	}
 
 	public final static String TAG = "CB.GeneratePubkeyAct";
