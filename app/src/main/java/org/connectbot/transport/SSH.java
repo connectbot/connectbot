@@ -43,9 +43,9 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.trilead.ssh2.crypto.keys.EdDSAPrivateKey;
-import com.trilead.ssh2.crypto.keys.EdDSAPublicKey;
-import com.trilead.ssh2.crypto.keys.EdDSAProvider;
+import com.trilead.ssh2.crypto.keys.Ed25519PrivateKey;
+import com.trilead.ssh2.crypto.keys.Ed25519PublicKey;
+import com.trilead.ssh2.crypto.keys.Ed25519Provider;
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
@@ -84,8 +84,8 @@ import com.trilead.ssh2.signature.RSASHA1Verify;
  */
 public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveCallback, AuthAgentCallback {
 	static {
-		// Since this class deals with EdDSA keys, we need to make sure this is available.
-		EdDSAProvider.insertIfNeeded();
+		// Since this class deals with Ed25519 keys, we need to make sure this is available.
+		Ed25519Provider.insertIfNeeded();
 	}
 
 	public SSH() {
@@ -907,8 +907,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				} else if (privKey instanceof ECPrivateKey) {
 					ECPublicKey pubkey = (ECPublicKey) pair.getPublic();
 					pubKeys.put(entry.getKey(), ECDSASHA2Verify.encodeSSHECDSAPublicKey(pubkey));
-				} else if (privKey instanceof EdDSAPrivateKey) {
-					EdDSAPublicKey pubkey = (EdDSAPublicKey) pair.getPublic();
+				} else if (privKey instanceof Ed25519PrivateKey) {
+					Ed25519PublicKey pubkey = (Ed25519PublicKey) pair.getPublic();
 					pubKeys.put(entry.getKey(), Ed25519Verify.encodeSSHEd25519PublicKey(pubkey));
 				} else
 					continue;
