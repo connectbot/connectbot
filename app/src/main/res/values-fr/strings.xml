@@ -48,7 +48,7 @@
   <string name="pubkey_list_pick">Récupérer depuis /sdcard</string>
   <string name="pubkey_import_parse_problem">Problème lors du parsage de la clé privée importée</string>
   <string name="pubkey_unlock">Déverrouiller la clé</string>
-  <string name="pubkey_failed_add">Mot de passe incorrect pour la clé \'%1$s\'. L\'authentification a échoué.</string>
+  <string name="pubkey_failed_add">Mot de passe incorrect pour la clé « %1$s ». L\'authentification a échoué.</string>
   <string name="pubkey_memory_load">Charger en mémoire</string>
   <string name="pubkey_memory_unload">Décharger de la mémoire</string>
   <string name="pubkey_load_on_start">Charger la clé au démarrage</string>
