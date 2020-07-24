@@ -16,6 +16,7 @@
   <string name="hints">Sugerencias</string>
   <string name="host_shortcuts_header">Atajos a servidores</string>
   <string name="host_shortcuts_content">Mantenga pulsado en su escritorio Android para crear accesos directos a servidores SSH que usa habitualmente.</string>
+  <string name="scroll_hints_header">Desplazar hacia atrás / Desplazar hacia adelanre</string>
   <string name="page_updn_header">Re Pág / Av Pág</string>
   <string name="page_up">Retroceder página</string>
   <string name="page_down">Avanzar página</string>
@@ -28,6 +29,7 @@
   <string name="increase_font_shortcut">Ctrl +</string>
   <string name="decrease_font_size">Disminuir el tamaño de letra</string>
   <string name="decrease_font_shortcut">Ctrl -</string>
+  <string name="paste_shortcut">Ctrl + Shift + V</string>
   <string name="pubkey_generate">Generar</string>
   <string name="pubkey_delete">Eliminar clave</string>
   <string name="pubkey_gather_entropy">Haciendo acopio de entropía</string>
@@ -81,11 +83,13 @@
   <string name="pref_emulation_summary">Modo emulación para usar en conexiones PTY</string>
   <string name="pref_scrollback_title">Tamaño de navegación</string>
   <string name="pref_scrollback_summary">Tamaño de búfer que quedara en memoria para cada consola.</string>
+  <string name="pref_backupkeys_summary">Mantener copias de seguridad de las claves privadas usando el mecanismo de Android</string>
   <string name="pref_ui_category">Interfaz de usuario</string>
   <string name="pref_rotation_title">Modo de rotación</string>
   <string name="pref_rotation_summary">Como cambiar la rotación cuando se abra el teclado.</string>
   <string name="pref_titlebarhide_title">Ocultar automáticamente la barra de título</string>
   <string name="pref_titlebarhide_summary">Tocar la pantalla para que se muestre la barra de título y el menú de acceso</string>
+  <string name="pref_alwaysvisible_title">Teclas especiales siempre visibles</string>
   <string name="pref_fullscreen_title">Pantalla completa</string>
   <string name="pref_fullscreen_summary">Esconder barra de estatus cuando este en consola</string>
   <string name="pref_keyboard_category">Teclado</string>
@@ -227,6 +231,7 @@
   <string name="image_description_toggle_control_character">Activar el envío de la pulsación de tecla Control.</string>
   <string name="image_description_send_escape_character">Enviar una pulsación de la tecla Escape.</string>
   <string name="image_description_send_tab_character">Enviar una pulsación de la tecla TAB (Tabulador).</string>
+  <string name="image_description_hide_keyboard">Esconder teclado</string>
   <string name="image_description_show_keyboard">Mostrar teclado.</string>
   <string name="image_description_up">Tecla cursor arriba</string>
   <string name="image_description_down">Tecla cursor abajo</string>
@@ -250,4 +255,5 @@
   <string name="button_key_f10">F10</string>
   <string name="button_key_f11">F11</string>
   <string name="button_key_f12">F12</string>
+  <string name="hostpref_add_host">Añadir host</string>
 </resources>
