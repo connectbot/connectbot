@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2018-03-30 13:17+0000\n"
-"Last-Translator: cousteau <Unknown>\n"
+"PO-Revision-Date: 2020-07-23 22:45+0000\n"
+"Last-Translator: Javier Montero <Unknown>\n"
 "Language-Team: es <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2019-11-07 05:48+0000\n"
-"X-Generator: Launchpad (build 469f241f4e73cc0bdffa4e30654052a2af068e06)\n"
+"X-Launchpad-Export-Date: 2020-07-24 05:59+0000\n"
+"X-Generator: Launchpad (build f877c5162b568393e2d07ce948459ba0abc456fe)\n"
 "Language: es\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -111,7 +111,7 @@ msgstr ""
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
 msgid "Scroll back / Scroll forward"
-msgstr ""
+msgstr "Desplazar hacia atrás / Desplazar hacia adelanre"
 
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
@@ -207,7 +207,7 @@ msgstr "Ctrl -"
 #. Keyboard shortcut for pasting into the terminal.
 msgctxt "paste_shortcut"
 msgid "Ctrl-Shift-V"
-msgstr ""
+msgstr "Ctrl + Shift + V"
 
 msgctxt "pubkey_generate"
 msgid "Generate"
@@ -532,6 +532,8 @@ msgstr ""
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
 msgstr ""
+"Mantener copias de seguridad de las claves privadas usando el mecanismo de "
+"Android"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -562,7 +564,7 @@ msgstr ""
 #. Title for special keys always visible preference
 msgctxt "pref_alwaysvisible_title"
 msgid "Special keys always visible"
-msgstr ""
+msgstr "Teclas especiales siempre visibles"
 
 #. Name for the page up/down gesture preference
 msgctxt "pref_pg_updn_gesture_title"
@@ -1332,7 +1334,7 @@ msgstr "Enviar una pulsación de la tecla TAB (Tabulador)."
 #. accessibility              purposes.
 msgctxt "image_description_hide_keyboard"
 msgid "Hide keyboard."
-msgstr ""
+msgstr "Esconder teclado"
 
 #. Describes the icon of the "show keyboard" button in the terminal view for
 #. accessibility              purposes.
@@ -1479,7 +1481,7 @@ msgstr ""
 #. Text for button which, when clicked, adds a new host.
 msgctxt "hostpref_add_host"
 msgid "Add host"
-msgstr ""
+msgstr "Añadir host"
 
 #. Text for button which, when clicked, saves an existing host.
 msgctxt "hostpref_edit_host"
