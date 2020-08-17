@@ -256,7 +256,7 @@ dependencies {
 
     implementation "androidx.recyclerview:recyclerview:$supportLibraryVersion"
     implementation "androidx.legacy:legacy-support-v4:$supportLibraryVersion"
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation "androidx.preference:preference:$supportLibraryVersion"
     implementation "com.takisoft.preferencex:preferencex:$supportLibraryVersion"
     implementation "com.google.android.material:material:$supportLibraryVersion"
