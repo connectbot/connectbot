@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-11-01 01:01+0000\n"
-"X-Generator: Launchpad (build 18810)\n"
+"X-Launchpad-Export-Date: 2019-11-06 05:49+0000\n"
+"X-Generator: Launchpad (build 469f241f4e73cc0bdffa4e30654052a2af068e06)\n"
 
 #. Tag line used in the graphics describing the ConnectBot application.
 msgctxt "tag-line"

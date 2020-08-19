@@ -1,6 +1,0 @@
-# This branch should ignore all the things that are present from
-# a build in the other branches.
-
-\.gradle/
-app/
-build/

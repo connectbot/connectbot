@@ -8,17 +8,17 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2017-02-28 23:58+0000\n"
-"Last-Translator: Kenny Root <Unknown>\n"
+"PO-Revision-Date: 2020-01-23 07:35+0000\n"
+"Last-Translator: Irmak Bıçakçıgil <Unknown>\n"
 "Language-Team: tr <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2018-11-01 01:00+0000\n"
-"X-Generator: Launchpad (build 18810)\n"
+"X-Launchpad-Export-Date: 2020-01-24 05:42+0000\n"
+"X-Generator: Launchpad (build b8d1327fd820d6bf500589d6da587d5037c7d88e)\n"
 "Language: tr\n"
-"Generated-By: Babel 2.3.4\n"
+"Generated-By: Babel 2.7.0\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -35,7 +35,7 @@ msgstr "SSH bağlantılarını ve yüklenmiş açık-anahtarları muhafaza eder"
 #. Window title for the Host List
 msgctxt "title_hosts_list"
 msgid "Hosts"
-msgstr "Hostlar"
+msgstr "Sunucular"
 
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
@@ -50,7 +50,7 @@ msgstr "Port yönlendirme"
 #. Window title when editing host details
 msgctxt "title_host_editor"
 msgid "Edit Host"
-msgstr "Host'u Düzenle"
+msgstr "Sunucuyu Düzenle"
 
 #. Window title for Help index
 msgctxt "title_help"
@@ -130,7 +130,7 @@ msgstr ""
 #. Header text for instructions about paging up and down in the terminal.
 msgctxt "page_updn_header"
 msgid "Page Up / Page Down"
-msgstr ""
+msgstr "Bir sayfa aşağı / yukarı"
 
 #. Instructions about paging up and down in the terminal.
 msgctxt "page_updn_content"
@@ -145,12 +145,14 @@ msgstr ""
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
 msgid "Page up"
-msgstr ""
+msgstr "Bir sayfa yukarı"
 
 msgctxt "page_down"
 msgid "Page down"
-msgstr ""
+msgstr "Bir sayfa aşağı"
 
+#. Header text for instructions about switching to the next and previous host
+#. in the terminal.
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
 msgstr ""
@@ -174,34 +176,34 @@ msgstr ""
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "Klavye Kısayolları"
 
 #. Text in a keyboard shortcuts list lined up to keys which increase the
 #. terminal font-size.
 msgctxt "increase_font_size"
 msgid "Increase Font Size"
-msgstr ""
+msgstr "Yazıtipi Boyutunu Büyüt"
 
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
 msgid "Ctrl and +"
-msgstr ""
+msgstr "Ctrl ve +"
 
 #. Text in a keyboard shortcuts list lined up to keys which decrease the
 #. terminal font-size.
 msgctxt "decrease_font_size"
 msgid "Decrease Font Size"
-msgstr ""
+msgstr "Yazıtipi Boyutunu Küçült"
 
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
 msgid "Ctrl and -"
-msgstr ""
+msgstr "Ctrl ve -"
 
 #. Keyboard shortcut for pasting into the terminal.
 msgctxt "paste_shortcut"
 msgid "Ctrl-Shift-V"
-msgstr ""
+msgstr "Ctrl-Shift-V"
 
 msgctxt "pubkey_generate"
 msgid "Generate"
@@ -347,7 +349,7 @@ msgstr "Kaynak kapı:"
 #. The "host:port" combination used for port forward destinations.
 msgctxt "prompt_destination"
 msgid "Destination:"
-msgstr "Hedef (Anasistem:Kapı):"
+msgstr "Hedef (Anasistem:Port):"
 
 #. Prompt presented to the user when the server requests that they change
 #. their password. This is the entry for the old password.
