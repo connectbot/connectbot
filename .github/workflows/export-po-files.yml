@@ -1,0 +1,21 @@
+name: Copy .po files to po-files branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  copy:
+    name: Copy to po-files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Push subdirectory
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: po-files
+          FOLDER: app/locale
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MESSAGE: "Automated export to {target-branch}\n\nFrom branch main commit {long-sha}:\n\n{msg}"
