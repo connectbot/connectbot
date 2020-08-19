@@ -47,7 +47,7 @@ androidGitVersion {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     dexOptions {
         // Skip pre-dexing when running on a CI or when disabled via -Dpre-dex=false
@@ -60,7 +60,6 @@ android {
         versionCode androidGitVersion.code()
 
         minSdkVersion 14
-        compileSdkVersion 29
         buildToolsVersion "29.0.3"
         ndkVersion "21.3.6528147"
 
