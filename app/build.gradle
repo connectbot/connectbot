@@ -47,7 +47,7 @@ androidGitVersion {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     dexOptions {
         // Skip pre-dexing when running on a CI or when disabled via -Dpre-dex=false
@@ -60,7 +60,6 @@ android {
         versionCode androidGitVersion.code()
 
         minSdkVersion 14
-        compileSdkVersion 29
         buildToolsVersion "29.0.3"
         ndkVersion "21.3.6528147"
 
@@ -251,7 +250,7 @@ dependencyUpdates {
 // Dependencies must be below the android block to allow productFlavor specific deps.
 dependencies {
     implementation 'org.connectbot:sshlib:2.2.14'
-    googleImplementation 'com.google.android.gms:play-services-basement:17.3.0'
+    googleImplementation 'com.google.android.gms:play-services-basement:17.4.0'
     ossImplementation 'org.conscrypt:conscrypt-android:2.4.0'
 
     implementation "androidx.recyclerview:recyclerview:$supportLibraryVersion"
@@ -274,7 +273,7 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     testImplementation "androidx.test:core:$supportLibraryVersion"
     testImplementation "androidx.test.ext:junit:$supportLibraryVersion"
-    testImplementation 'org.mockito:mockito-core:3.5.0'
+    testImplementation 'org.mockito:mockito-core:3.5.2'
     testImplementation 'org.assertj:assertj-core:3.16.1'
     testImplementation 'org.robolectric:robolectric:4.3.1'
 
