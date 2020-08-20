@@ -15,23 +15,23 @@
  * limitations under the License.
  */
 
-plugins { id 'com.palantir.python.miniconda' version '0.8.0' }
-
-apply plugin: 'com.palantir.python.miniconda'
-
-miniconda {
-    minicondaVersion = '4.7.12.1'
-    pythonVersion = 3
-    packages = ['python']
+plugins {
+    id "com.jetbrains.python.envs" version "0.0.30"
 }
 
+envs {
+    bootstrapDirectory = new File(buildDir, "bootstrap")
+    conda "miniconda", "Miniconda3-4.7.12.1"
+}
+
+def condaDir = "${buildDir}/bootstrap/miniconda"
 def appDir = '../app/'
 def localeDir = file(appDir + 'locale')
-def launchpadImportBasename = 'launchpad-import'
+def launchpadImportFile = 'launchpad-import.tar.gz'
 def launchpadExportFile = rootProject.file('launchpad-export.tar.gz')
 
 def android2poUrl = 'git+https://github.com/miracle2k/android2po.git#egg=android2po'
-def android2poExec = "${miniconda.buildEnvironmentDirectory}/bin/a2po"
+def android2poExec = "${condaDir}/bin/a2po"
 def android2poArgs = [
     '--groups',
     'strings',
@@ -46,8 +46,8 @@ def android2poArgs = [
 ]
 
 task installAndroid2Po(type: Exec) {
-    dependsOn 'setupPython'
-    executable "${miniconda.buildEnvironmentDirectory}/bin/pip"
+    dependsOn 'build_envs'
+    executable "${condaDir}/bin/pip"
     args 'install', android2poUrl
 }
 
@@ -94,13 +94,14 @@ task translationsExport(type: Tar) {
     description = "Export translations from ConnectBot in a format suitable to import into Launchpad"
 
     dependsOn 'exportFromAndroid'
-    baseName = launchpadImportBasename
+    destinationDir = file("$rootDir")
+    archiveFileName = launchpadImportFile
     from localeDir
     compression = Compression.GZIP
     doLast {
         println()
         println('Import file into Launchpad:')
-        println(getArchivePath())
+        println(archiveFile.get().asFile)
         println()
     }
 }
