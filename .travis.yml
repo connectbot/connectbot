@@ -93,6 +93,7 @@ script:
   - ./gradlew --stacktrace check
   - android-wait-for-emulator
   - ./gradlew --stacktrace connectedCheck
+  - ./gradlew --stacktrace lint
   - ./ci/check-lint-count.bash app/build/reports/lint-results.xml $HOME/.cache/lint/lint-results.xml
 
 after_success: ./gradlew coveralls
