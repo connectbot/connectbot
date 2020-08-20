@@ -1,16 +1,30 @@
-ext.GRADLE_BUILD_CACHE = System.getenv("GRADLE_BUILD_CACHE")?.trim()
-ext.MAVEN_REPO_CACHE = System.getenv("MAVEN_REPO_CACHE")?.trim()
-ext.TRANSLATIONS_ONLY = System.getenv("TRANSLATIONS_ONLY")?.trim()
-
-if (MAVEN_REPO_CACHE) {
-    pluginManagement {
+pluginManagement {
+    def MAVEN_REPO_CACHE = System.getenv("MAVEN_REPO_CACHE")?.trim()
+    if (MAVEN_REPO_CACHE) {
         repositories {
             maven {
                 url MAVEN_REPO_CACHE
             }
         }
+    } else {
+        repositories {
+            gradlePluginPortal()
+            google()
+        }
+    }
+
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "com.android.application") {
+                useModule("com.android.tools.build:gradle:${requested.version}")
+            }
+        }
     }
 }
+
+ext.MAVEN_REPO_CACHE = System.getenv("MAVEN_REPO_CACHE")?.trim()
+ext.GRADLE_BUILD_CACHE = System.getenv("GRADLE_BUILD_CACHE")?.trim()
+ext.TRANSLATIONS_ONLY = System.getenv("TRANSLATIONS_ONLY")?.trim()
 
 buildCache {
     local { enabled = !GRADLE_BUILD_CACHE }
