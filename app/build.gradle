@@ -1,7 +1,6 @@
 buildscript {
     dependencies {
         classpath 'com.github.gfx.ribbonizer:ribbonizer-plugin:2.1.0'
-        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.4'
         if (rootProject.hasProperty('jacocoVersion')) {
             classpath "org.jacoco:org.jacoco.core:${rootProject.jacocoVersion}"
         }
@@ -16,6 +15,7 @@ plugins {
     id 'com.gladed.androidgitversion' version '0.4.13'
     id 'com.github.kt3k.coveralls' version '2.10.2'
     id 'com.github.johnrengelman.processes' version '0.5.0'
+    id 'com.hiya.jacoco-android' version '0.2'
 }
 
 ext {
@@ -25,7 +25,6 @@ ext {
 }
 
 apply plugin: 'com.github.gfx.ribbonizer'
-apply plugin: 'jacoco-android'
 apply plugin: 'com.diffplug.gradle.spotless'
 apply from: '../config/quality.gradle'
 
