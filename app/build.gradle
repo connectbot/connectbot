@@ -272,7 +272,7 @@ dependencies {
     testImplementation "androidx.test:core:$supportLibraryVersion"
     testImplementation "androidx.test.ext:junit:$supportLibraryVersion"
     testImplementation 'org.mockito:mockito-core:3.5.9'
-    testImplementation 'org.assertj:assertj-core:3.16.1'
+    testImplementation 'org.assertj:assertj-core:3.17.1'
     testImplementation 'org.robolectric:robolectric:4.4'
 
     errorprone "com.google.errorprone:error_prone_core:2.4.0"
