@@ -9,7 +9,7 @@ buildscript {
 
 plugins {
     id 'com.android.application' version '4.0.1'
-    id 'com.github.ben-manes.versions' version '0.29.0'
+    id 'com.github.ben-manes.versions' version '0.33.0'
     id 'info.vividcode.android.sdk-manager' version '0.9.0'
     id 'net.ltgt.errorprone' version '1.2.1'
     id 'com.gladed.androidgitversion' version '0.4.13'
@@ -20,12 +20,12 @@ plugins {
 
 ext {
     supportLibraryVersion = '1.0.0'
-    testRunnerVersion = '1.2.0'
-    espressoVersion = '3.2.0'
+    testRunnerVersion = '1.3.0'
+    espressoVersion = '3.3.0'
 }
 
 apply plugin: 'com.github.gfx.ribbonizer'
-apply plugin: 'com.diffplug.gradle.spotless'
+apply plugin: 'com.diffplug.spotless'
 apply from: '../config/quality.gradle'
 
 repositories {
@@ -247,9 +247,9 @@ dependencyUpdates {
 
 // Dependencies must be below the android block to allow productFlavor specific deps.
 dependencies {
-    implementation 'org.connectbot:sshlib:2.2.14'
+    implementation 'org.connectbot:sshlib:2.2.15'
     googleImplementation 'com.google.android.gms:play-services-basement:17.4.0'
-    ossImplementation 'org.conscrypt:conscrypt-android:2.4.0'
+    ossImplementation 'org.conscrypt:conscrypt-android:2.5.1'
 
     implementation "androidx.recyclerview:recyclerview:$supportLibraryVersion"
     implementation "androidx.legacy:legacy-support-v4:$supportLibraryVersion"
@@ -271,9 +271,9 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     testImplementation "androidx.test:core:$supportLibraryVersion"
     testImplementation "androidx.test.ext:junit:$supportLibraryVersion"
-    testImplementation 'org.mockito:mockito-core:3.5.2'
-    testImplementation 'org.assertj:assertj-core:3.16.1'
-    testImplementation 'org.robolectric:robolectric:4.3.1'
+    testImplementation 'org.mockito:mockito-core:3.5.11'
+    testImplementation 'org.assertj:assertj-core:3.17.2'
+    testImplementation 'org.robolectric:robolectric:4.4'
 
     errorprone "com.google.errorprone:error_prone_core:2.4.0"
     errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"

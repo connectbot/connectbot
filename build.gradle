@@ -14,8 +14,8 @@ buildscript {
     }
 }
 
-plugins { id 'com.diffplug.gradle.spotless' version '4.5.1' }
-apply plugin: 'com.diffplug.gradle.spotless'
+plugins { id 'com.diffplug.spotless' version '5.5.1' }
+apply plugin: 'com.diffplug.spotless'
 
 if (MAVEN_REPO_CACHE) {
     allprojects {

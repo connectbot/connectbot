@@ -2,7 +2,6 @@ spotless {
     groovyGradle {
         target '**/*.gradle'
         greclipse()
-        paddedCell()
         indentWithSpaces(4)
     }
 
