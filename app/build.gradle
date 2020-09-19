@@ -249,7 +249,7 @@ dependencyUpdates {
 dependencies {
     implementation 'org.connectbot:sshlib:2.2.15'
     googleImplementation 'com.google.android.gms:play-services-basement:17.4.0'
-    ossImplementation 'org.conscrypt:conscrypt-android:2.5.0'
+    ossImplementation 'org.conscrypt:conscrypt-android:2.5.1'
 
     implementation "androidx.recyclerview:recyclerview:$supportLibraryVersion"
     implementation "androidx.legacy:legacy-support-v4:$supportLibraryVersion"
