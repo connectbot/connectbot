@@ -19,3 +19,4 @@ jobs:
           FOLDER: app/locale
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MESSAGE: "Automated export to {target-branch}\n\nFrom branch main commit {long-sha}:\n\n{msg}"
+          SKIP_EMPTY_COMMITS: true
