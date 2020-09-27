@@ -98,7 +98,13 @@ public class PubkeyListActivityTest {
 
 			registerIdlingResources(keyGenerationIdlingResource);
 
+			Thread.sleep(3000);
 			onView(withId(R.id.list)).check(hasHolderItem(withPubkeyNickname("test1")));
+		} catch (InterruptedException e) {
+			System.err.println("*** Error while scrolling up:");
+			System.err.println("--- BEGIN STACK TRACE ---");
+			e.printStackTrace();
+			System.err.println("--- END STACK TRACE ---");
 		} finally {
 			setMasterPolicyTimeout(masterPolicy.getIdleTimeout(), masterPolicy.getIdleTimeoutUnit());
 			setIdlingResourceTimeout(resourcePolicy.getIdleTimeout(), resourcePolicy.getIdleTimeoutUnit());
