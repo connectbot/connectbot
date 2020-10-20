@@ -51,7 +51,6 @@ import static androidx.test.espresso.IdlingPolicies.getMasterIdlingPolicy;
 import static androidx.test.espresso.IdlingPolicies.setIdlingResourceTimeout;
 import static androidx.test.espresso.IdlingPolicies.setMasterPolicyTimeout;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -86,7 +85,7 @@ public class PubkeyListActivityTest {
 				((GeneratePubkeyActivity) getDisplayedActivityInstance()));
 
 		onView(withId(R.id.nickname)).perform(typeText("test1"));
-		onView(withId(R.id.save)).perform(scrollTo(), click());
+		onView(withId(R.id.save)).perform(ScrollToAction.betterScrollTo(), click());
 		onView(withId(R.id.entropy)).perform(fillEntropy());
 
 		IdlingPolicy masterPolicy = getMasterIdlingPolicy();
@@ -98,7 +97,13 @@ public class PubkeyListActivityTest {
 
 			registerIdlingResources(keyGenerationIdlingResource);
 
+			Thread.sleep(5000);
 			onView(withId(R.id.list)).check(hasHolderItem(withPubkeyNickname("test1")));
+		} catch (InterruptedException e) {
+			System.err.println("*** Error while scrolling up:");
+			System.err.println("--- BEGIN STACK TRACE ---");
+			e.printStackTrace();
+			System.err.println("--- END STACK TRACE ---");
 		} finally {
 			setMasterPolicyTimeout(masterPolicy.getIdleTimeout(), masterPolicy.getIdleTimeoutUnit());
 			setIdlingResourceTimeout(resourcePolicy.getIdleTimeout(), resourcePolicy.getIdleTimeoutUnit());
