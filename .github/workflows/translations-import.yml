@@ -30,7 +30,7 @@ jobs:
         cd ${{ runner.temp }}
         bzr branch lp:~kennyr/connectbot/po-output
         cd po-output
-        echo "::set-env name=REVNO::$(bzr revno)"
+        echo "REVNO=$(bzr revno)" >> $GITHUB_ENV
 
     - name: Copy exported translations to workspace
       run: |
