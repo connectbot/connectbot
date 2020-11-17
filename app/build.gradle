@@ -259,7 +259,7 @@ dependencies {
     implementation "com.google.android.material:material:$supportLibraryVersion"
 
     androidTestUtil "androidx.test:orchestrator:$testRunnerVersion"
-    androidTestUtil "com.linkedin.testbutler:test-butler-app:2.1.0"
+    androidTestUtil "com.linkedin.testbutler:test-butler-app:2.1.1"
     androidTestImplementation "androidx.test:core:$supportLibraryVersion"
     androidTestImplementation "androidx.test:rules:$testRunnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
