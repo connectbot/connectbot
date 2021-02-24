@@ -17,7 +17,11 @@
   <string name="host_shortcuts_header">Atajos a servidores</string>
   <string name="host_shortcuts_content">Mantenga pulsado en su escritorio Android para crear accesos directos a servidores SSH que usa habitualmente.</string>
   <string name="scroll_hints_header">Desplazar hacia atrás / Desplazar hacia adelanre</string>
+  <string name="scroll_hints_content">Deslizando tu dedo hacia arriba en la parte derecha de la pantalla te permite deslizar hacia atrás o adelante en el historial del buffer de la terminal local.</string>
+  <string name="scrolling_back">Deslizando hacia atrás</string>
+  <string name="scrolling_forward">Deslizando hacia adelante</string>
   <string name="page_updn_header">Re Pág / Av Pág</string>
+  <string name="page_updn_content">NOTA: Esto debe ser habilitado en la configuración.\n\nDeslizando tu dedo hacia arriba y abajo en el tercio izquierdo de la pantalla enviará una tecla de página arriba y página abajo al host remoto. Muchos programas mapean esto para deslizar hacia atrás en el historial tales como irssi o tinyfugue.</string>
   <string name="page_up">Retroceder página</string>
   <string name="page_down">Avanzar página</string>
   <string name="switching_hosts_header">Cambiar servidores</string>
@@ -83,6 +87,7 @@
   <string name="pref_emulation_summary">Modo emulación para usar en conexiones PTY</string>
   <string name="pref_scrollback_title">Tamaño de navegación</string>
   <string name="pref_scrollback_summary">Tamaño de búfer que quedara en memoria para cada consola.</string>
+  <string name="pref_backupkeys_title">Copia de seguridad de claves públicas</string>
   <string name="pref_backupkeys_summary">Mantener copias de seguridad de las claves privadas usando el mecanismo de Android</string>
   <string name="pref_ui_category">Interfaz de usuario</string>
   <string name="pref_rotation_title">Modo de rotación</string>
@@ -90,6 +95,8 @@
   <string name="pref_titlebarhide_title">Ocultar automáticamente la barra de título</string>
   <string name="pref_titlebarhide_summary">Tocar la pantalla para que se muestre la barra de título y el menú de acceso</string>
   <string name="pref_alwaysvisible_title">Teclas especiales siempre visibles</string>
+  <string name="pref_pg_updn_gesture_title">gesto de página arriba/abajo</string>
+  <string name="pref_pg_updn_gesture_summary">Desliza en el tercio izquierdo de la pantalla para enviar página arriba/abajo en la terminal</string>
   <string name="pref_fullscreen_title">Pantalla completa</string>
   <string name="pref_fullscreen_summary">Esconder barra de estatus cuando este en consola</string>
   <string name="pref_keyboard_category">Teclado</string>
@@ -115,6 +122,7 @@
   <string name="pref_wifilock_title">Mantener la red inálambrica activa</string>
   <string name="pref_wifilock_summary">Prevenir que la red inálambrica se apague mientras haya una conexión activa</string>
   <string name="pref_bumpyarrows_title">Cursor con vibración</string>
+  <string name="pref_bumpyarrows_summary">Vibrar cuando esté enviando teclas de flecha; útil para conexiones con retraso</string>
   <string name="pref_bell_category">Timbre del terminal</string>
   <string name="pref_bell_title">Timbre audible</string>
   <string name="pref_bell_volume_title">Volúmen del timbre</string>
@@ -171,6 +179,7 @@
   <string name="list_menu_pubkeys">Administrar clave públicas</string>
   <string name="list_menu_sortcolor">Ordenar por color</string>
   <string name="list_menu_sortname">Ordenar por nombre</string>
+  <string name="list_menu_disconnect">Desconectar todo</string>
   <string name="list_menu_settings">Configuración</string>
   <string name="list_host_disconnect">Desconectar</string>
   <string name="list_host_edit">Editar equipo</string>
@@ -227,6 +236,7 @@
   <string name="colors_fg_label">Color de fondo: %1$d</string>
   <string name="color_bg_label">Color de fondo: %1$d</string>
   <string name="image_description_connected">Conectado</string>
+  <string name="image_description_disconnected">Desconectado.</string>
   <string name="image_description_key_is_locked">Clave pública bloqueada.</string>
   <string name="image_description_toggle_control_character">Activar el envío de la pulsación de tecla Control.</string>
   <string name="image_description_send_escape_character">Enviar una pulsación de la tecla Escape.</string>
@@ -237,6 +247,7 @@
   <string name="image_description_down">Tecla cursor abajo</string>
   <string name="image_description_left">Tecla cursor a la izquierda</string>
   <string name="image_description_right">Tecla cursor a la derecha</string>
+  <string name="image_description_volume">Volumen</string>
   <string name="button_key_esc">Escape</string>
   <string name="button_key_ctrl">Ctrl</string>
   <string name="button_key_home">Inicio</string>
@@ -255,5 +266,20 @@
   <string name="button_key_f10">F10</string>
   <string name="button_key_f11">F11</string>
   <string name="button_key_f12">F12</string>
+  <string name="protocol_spinner_label">Protocolo</string>
+  <string name="expand">Expandir</string>
+  <string name="hostpref_authagent_with_confirmation">requerir confirmación</string>
   <string name="hostpref_add_host">Añadir host</string>
+  <string name="hostpref_edit_host">Guardar host</string>
+  <string name="pubkey_add_new">Añadir nueva clave pública</string>
+  <string name="pubkey_import_existing">Importar clave pública existente</string>
+  <string name="discard_host_changes_message">URI del Host es inválida. Te gustaría descartar los cambios?</string>
+  <string name="discard_host_button">Descartar</string>
+  <string name="discard_host_cancel_button">Mantenerse editando</string>
+  <string name="key_type_rsa_bits">RSA %d-bit</string>
+  <string name="key_type_dsa_bits">DSA %d-bit</string>
+  <string name="key_type_ec_bits">EC %d-bit</string>
+  <string name="key_type_ed25519">Ed25519</string>
+  <string name="key_type_unknown">Tipo de clave desconocida</string>
+  <string name="key_attribute_encrypted">(encriptado)</string>
 </resources>

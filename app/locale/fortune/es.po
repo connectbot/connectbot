@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2020-07-23 22:45+0000\n"
-"Last-Translator: Javier Montero <Unknown>\n"
+"PO-Revision-Date: 2021-02-21 14:48+0000\n"
+"Last-Translator: Pablo Hinojosa  <Unknown>\n"
 "Language-Team: es <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2020-07-24 05:59+0000\n"
-"X-Generator: Launchpad (build f877c5162b568393e2d07ce948459ba0abc456fe)\n"
+"X-Launchpad-Export-Date: 2021-02-22 06:34+0000\n"
+"X-Generator: Launchpad (build bbfee60eef9f7fd8d30b24b3f53e75656e4d5fb0)\n"
 "Language: es\n"
 "Generated-By: Babel 2.3.4\n"
 
@@ -119,15 +119,18 @@ msgid ""
 "Swiping your finger up on the right side of the screen allows you to scroll "
 "backward and forward in the local terminal buffer history."
 msgstr ""
+"Deslizando tu dedo hacia arriba en la parte derecha de la pantalla te "
+"permite deslizar hacia atrás o adelante en el historial del buffer de la "
+"terminal local."
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
 msgid "Scrolling back"
-msgstr ""
+msgstr "Deslizando hacia atrás"
 
 msgctxt "scrolling_forward"
 msgid "Scrolling forward"
-msgstr ""
+msgstr "Deslizando hacia adelante"
 
 #. Header text for instructions about paging up and down in the terminal.
 msgctxt "page_updn_header"
@@ -143,6 +146,12 @@ msgid ""
 "page up and page down key to the remote host. Many programs map this to "
 "scrolling back into history such as irssi or tinyfugue."
 msgstr ""
+"NOTA: Esto debe ser habilitado en la configuración.\n"
+"\n"
+"Deslizando tu dedo hacia arriba y abajo en el tercio izquierdo de la "
+"pantalla enviará una tecla de página arriba y página abajo al host remoto. "
+"Muchos programas mapean esto para deslizar hacia atrás en el historial tales "
+"como irssi o tinyfugue."
 
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
@@ -525,7 +534,7 @@ msgstr "Tamaño de búfer que quedara en memoria para cada consola."
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr ""
+msgstr "Copia de seguridad de claves públicas"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
@@ -569,12 +578,14 @@ msgstr "Teclas especiales siempre visibles"
 #. Name for the page up/down gesture preference
 msgctxt "pref_pg_updn_gesture_title"
 msgid "Page up/down gesture"
-msgstr ""
+msgstr "gesto de página arriba/abajo"
 
 #. Summary for the full screen preference
 msgctxt "pref_pg_updn_gesture_summary"
 msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
 msgstr ""
+"Desliza en el tercio izquierdo de la pantalla para enviar página "
+"arriba/abajo en la terminal"
 
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
@@ -720,6 +731,8 @@ msgstr "Cursor con vibración"
 msgctxt "pref_bumpyarrows_summary"
 msgid "Vibrate when sending arrow keys; useful for laggy connections"
 msgstr ""
+"Vibrar cuando esté enviando teclas de flecha; útil para conexiones con "
+"retraso"
 
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
@@ -1016,7 +1029,7 @@ msgstr "Ordenar por nombre"
 
 msgctxt "list_menu_disconnect"
 msgid "Disconnect All"
-msgstr ""
+msgstr "Desconectar todo"
 
 msgctxt "list_menu_settings"
 msgid "Settings"
@@ -1305,7 +1318,7 @@ msgstr "Conectado"
 #. currently              disconnected after having been previously connected.
 msgctxt "image_description_disconnected"
 msgid "Disconnected."
-msgstr ""
+msgstr "Desconectado."
 
 #. Describes the icon of the "locked pubkey" icon for accessibility purposes.
 msgctxt "image_description_key_is_locked"
@@ -1370,7 +1383,7 @@ msgstr "Tecla cursor a la derecha"
 #. purposes.
 msgctxt "image_description_volume"
 msgid "Volume"
-msgstr ""
+msgstr "Volumen"
 
 #. Text for the "Esc" button in virtual keyboard.
 msgctxt "button_key_esc"
@@ -1465,18 +1478,18 @@ msgstr "F12"
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
 msgid "Protocol"
-msgstr ""
+msgstr "Protocolo"
 
 #. Label for button which expands/collapses section.
 msgctxt "expand"
 msgid "Expand"
-msgstr ""
+msgstr "Expandir"
 
 #. Label for checkbox which, when check, makes SSL authorization require
 #. confirmation.
 msgctxt "hostpref_authagent_with_confirmation"
 msgid "require confirmation"
-msgstr ""
+msgstr "requerir confirmación"
 
 #. Text for button which, when clicked, adds a new host.
 msgctxt "hostpref_add_host"
@@ -1486,35 +1499,35 @@ msgstr "Añadir host"
 #. Text for button which, when clicked, saves an existing host.
 msgctxt "hostpref_edit_host"
 msgid "Save host"
-msgstr ""
+msgstr "Guardar host"
 
 #. Text for button which, when clicked, brings up an editor for adding a new
 #. pubkey.
 msgctxt "pubkey_add_new"
 msgid "Add new pubkey"
-msgstr ""
+msgstr "Añadir nueva clave pública"
 
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
 msgid "Import existing pubkey"
-msgstr ""
+msgstr "Importar clave pública existente"
 
 #. Text for dialog which explains that the host URI is invalid and asks to
 #. discard.
 msgctxt "discard_host_changes_message"
 msgid "Host URI is invalid. Would you like to discard changes?"
-msgstr ""
+msgstr "URI del Host es inválida. Te gustaría descartar los cambios?"
 
 #. Text for button which discards changes to the host.
 msgctxt "discard_host_button"
 msgid "Discard"
-msgstr ""
+msgstr "Descartar"
 
 #. Text for button which does not discard changes and keeps editing.
 msgctxt "discard_host_cancel_button"
 msgid "Keep editing"
-msgstr ""
+msgstr "Mantenerse editando"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the RSA algorithm with a
@@ -1523,7 +1536,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_rsa_bits"
 msgid "RSA %d-bit"
-msgstr ""
+msgstr "RSA %d-bit"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the DSA algorithm with a
@@ -1532,7 +1545,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_dsa_bits"
 msgid "DSA %d-bit"
-msgstr ""
+msgstr "DSA %d-bit"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Elliptic Curve (EC)
@@ -1541,7 +1554,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_ec_bits"
 msgid "EC %d-bit"
-msgstr ""
+msgstr "EC %d-bit"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Ed25519 algorithm
@@ -1549,17 +1562,17 @@ msgstr ""
 #. "Ed25519").
 msgctxt "key_type_ed25519"
 msgid "Ed25519"
-msgstr ""
+msgstr "Ed25519"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of an unknown algorithm.
 msgctxt "key_type_unknown"
 msgid "Key type unknown"
-msgstr ""
+msgstr "Tipo de clave desconocida"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Added to the end of a key description to indicate
 #. that the key is encrypted (i.e,              password protected).
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
-msgstr ""
+msgstr "(encriptado)"
