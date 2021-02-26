@@ -33,7 +33,6 @@ import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
 import com.trilead.ssh2.crypto.keys.Ed25519Provider;
-import com.trilead.ssh2.signature.ECDSASHA2Verify;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -66,7 +65,7 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 
 	public final static String TAG = "CB.GeneratePubkeyAct";
 
-	private final static int[] ECDSA_SIZES = ECDSASHA2Verify.getCurveSizes();
+	private final static int[] ECDSA_SIZES = new int[] { 256, 384, 521 };
 
 	private LayoutInflater inflater = null;
 

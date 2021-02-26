@@ -900,16 +900,16 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				PrivateKey privKey = pair.getPrivate();
 				if (privKey instanceof RSAPrivateKey) {
 					RSAPublicKey pubkey = (RSAPublicKey) pair.getPublic();
-					pubKeys.put(entry.getKey(), RSASHA1Verify.encodeSSHRSAPublicKey(pubkey));
+					pubKeys.put(entry.getKey(), RSASHA1Verify.get().encodePublicKey(pubkey));
 				} else if (privKey instanceof DSAPrivateKey) {
 					DSAPublicKey pubkey = (DSAPublicKey) pair.getPublic();
-					pubKeys.put(entry.getKey(), DSASHA1Verify.encodeSSHDSAPublicKey(pubkey));
+					pubKeys.put(entry.getKey(), DSASHA1Verify.get().encodePublicKey(pubkey));
 				} else if (privKey instanceof ECPrivateKey) {
 					ECPublicKey pubkey = (ECPublicKey) pair.getPublic();
-					pubKeys.put(entry.getKey(), ECDSASHA2Verify.encodeSSHECDSAPublicKey(pubkey));
+					pubKeys.put(entry.getKey(), ECDSASHA2Verify.getVerifierForKey(pubkey).encodePublicKey(pubkey));
 				} else if (privKey instanceof Ed25519PrivateKey) {
 					Ed25519PublicKey pubkey = (Ed25519PublicKey) pair.getPublic();
-					pubKeys.put(entry.getKey(), Ed25519Verify.encodeSSHEd25519PublicKey(pubkey));
+					pubKeys.put(entry.getKey(), Ed25519Verify.get().encodePublicKey(pubkey));
 				} else
 					continue;
 			} catch (IOException e) {

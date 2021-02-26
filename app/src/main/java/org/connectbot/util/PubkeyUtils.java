@@ -27,6 +27,7 @@ import com.trilead.ssh2.signature.DSASHA1Verify;
 import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.Ed25519Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
+import com.trilead.ssh2.signature.SSHSignature;
 import org.connectbot.bean.PubkeyBean;
 import org.keyczar.jce.EcCore;
 
@@ -306,21 +307,22 @@ public class PubkeyUtils {
 
 		if (pk instanceof RSAPublicKey) {
 			String data = "ssh-rsa ";
-			data += String.valueOf(Base64.encode(RSASHA1Verify.encodeSSHRSAPublicKey((RSAPublicKey) pk)));
+			data += String.valueOf(Base64.encode(RSASHA1Verify.get().encodePublicKey((RSAPublicKey) pk)));
 			return data + " " + nickname;
 		} else if (pk instanceof DSAPublicKey) {
 			String data = "ssh-dss ";
-			data += String.valueOf(Base64.encode(DSASHA1Verify.encodeSSHDSAPublicKey((DSAPublicKey) pk)));
+			data += String.valueOf(Base64.encode(DSASHA1Verify.get().encodePublicKey((DSAPublicKey) pk)));
 			return data + " " + nickname;
 		} else if (pk instanceof ECPublicKey) {
 			ECPublicKey ecPub = (ECPublicKey) pk;
-			String keyType = ECDSASHA2Verify.getCurveName(ecPub.getParams().getCurve().getField().getFieldSize());
-			String keyData = String.valueOf(Base64.encode(ECDSASHA2Verify.encodeSSHECDSAPublicKey(ecPub)));
-			return ECDSASHA2Verify.ECDSA_SHA2_PREFIX + keyType + " " + keyData + " " + nickname;
+			String keyType = ECDSASHA2Verify.getSshKeyType(ecPub);
+			SSHSignature verifier = ECDSASHA2Verify.getVerifierForKey(ecPub);
+			String keyData = String.valueOf(Base64.encode(verifier.encodePublicKey(ecPub)));
+			return keyType + " " + keyData + " " + nickname;
 		} else if (pk instanceof Ed25519PublicKey) {
 			Ed25519PublicKey edPub = (Ed25519PublicKey) pk;
 			return Ed25519Verify.ED25519_ID + " " +
-					String.valueOf(Base64.encode(Ed25519Verify.encodeSSHEd25519PublicKey(edPub))) +
+					String.valueOf(Base64.encode(Ed25519Verify.get().encodePublicKey(edPub))) +
 					" " + nickname;
 		}
 
@@ -339,13 +341,13 @@ public class PubkeyUtils {
 		try {
 			PublicKey pubKey = pair.getPublic();
 			if (pubKey instanceof RSAPublicKey) {
-				return RSASHA1Verify.encodeSSHRSAPublicKey((RSAPublicKey) pubKey);
+				return RSASHA1Verify.get().encodePublicKey(pubKey);
 			} else if (pubKey instanceof DSAPublicKey) {
-				return DSASHA1Verify.encodeSSHDSAPublicKey((DSAPublicKey) pubKey);
+				return DSASHA1Verify.get().encodePublicKey(pubKey);
 			} else if (pubKey instanceof ECPublicKey) {
-				return ECDSASHA2Verify.encodeSSHECDSAPublicKey((ECPublicKey) pubKey);
+				return ECDSASHA2Verify.getVerifierForKey((ECPublicKey) pubKey).encodePublicKey(pubKey);
 			} else if (pubKey instanceof Ed25519PublicKey) {
-				return Ed25519Verify.encodeSSHEd25519PublicKey((Ed25519PublicKey) pubKey);
+				return Ed25519Verify.get().encodePublicKey(pubKey);
 			} else {
 				return null;
 			}
