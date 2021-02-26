@@ -8,8 +8,7 @@ buildscript {
     } else {
         repositories {
             google()
-            jcenter()
-            google()
+            mavenCentral()
         }
     }
 }
@@ -29,14 +28,12 @@ if (MAVEN_REPO_CACHE) {
         buildscript {
             repositories {
                 google()
-                jcenter()
-                google()
+                mavenCentral()
             }
         }
         repositories {
             google()
-            jcenter()
-            google()
+            mavenCentral()
         }
     }
 }
