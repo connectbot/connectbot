@@ -23,7 +23,6 @@ env:
 
 cache:
   directories:
-    - $HOME/.cache/ci-support
     - $HOME/.cache/lint
     - $HOME/.cache/ndk
     - $HOME/.gradle/caches/
@@ -76,9 +75,6 @@ before_script:
   - sdkmanager 'extras;google;google_play_services' | tr '\r' '\n' | uniq
   - sdkmanager 'ndk;21.3.6528147' | tr '\r' '\n' | uniq
   # Download the emulator support stuff
-  - mkdir -p $HOME/.cache/ci-support
-  - curl -L https://github.com/connectbot/ci-support/archive/master.zip -z $HOME/.cache/ci-support/master.zip -o $HOME/.cache/ci-support/master.zip
-  - unzip -oq $HOME/.cache/ci-support/master.zip -d $HOME
   - mkdir -p $HOME/bin
   - curl -L https://raw.githubusercontent.com/travis-ci/travis-cookbooks/master/community-cookbooks/android-sdk/files/default/android-wait-for-emulator -o $HOME/bin/android-wait-for-emulator
   - chmod +x $HOME/bin/android-wait-for-emulator
