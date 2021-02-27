@@ -270,7 +270,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation "androidx.test:core:$supportLibraryVersion"
     testImplementation "androidx.test.ext:junit:$supportLibraryVersion"
-    testImplementation 'org.mockito:mockito-core:3.6.28'
+    testImplementation 'org.mockito:mockito-core:3.8.0'
     testImplementation 'org.assertj:assertj-core:3.18.1'
     testImplementation 'org.robolectric:robolectric:4.5.1'
 
