@@ -10,7 +10,7 @@ on:
     
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout
@@ -32,4 +32,13 @@ jobs:
           key: ${{ runner.os }}-gradle-home-examples-${{ hashFiles('**/*.gradle') }}
 
       - name: Build ConnectBot
-        run: ./gradlew --no-daemon build
+        run: ./gradlew build
+
+      - name: Run instrument tests
+        uses: Doist/android-emulator-runner@8bb10a5eafb6726dff58df91c0c9b74798cc44ec
+        with:
+          api-level: 28
+          target: default
+          arch: x86_64
+          profile: Nexus 4
+          script: ./gradlew connectedCheck
