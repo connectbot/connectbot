@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">简洁、强大、开源的SSH客户端。</string>
-  <string name="service_desc">维护 SSH 连接和已加载的密钥</string>
+  <string name="service_desc">维护 SSH 连接和已加载的公钥</string>
   <string name="title_hosts_list">主机</string>
   <string name="title_pubkey_list">公钥</string>
   <string name="title_port_forwards_list">端口转发</string>
