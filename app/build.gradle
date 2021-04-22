@@ -275,6 +275,6 @@ dependencies {
     testImplementation 'org.robolectric:robolectric:4.5.1'
 
     errorprone "com.google.errorprone:error_prone_core:2.6.0"
-    errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"
+    errorproneJavac "com.google.errorprone:javac:1+"
 }
 
