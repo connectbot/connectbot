@@ -59,7 +59,6 @@ android {
         versionCode androidGitVersion.code()
 
         minSdkVersion 14
-        buildToolsVersion "29.0.3"
         ndkVersion "21.3.6528147"
 
         vectorDrawables.useSupportLibrary = true
