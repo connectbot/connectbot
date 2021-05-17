@@ -1,3 +1,0 @@
-<component name="DependencyValidationManager">
-  <scope name="ConnectBot" pattern="src[app]:org.connectbot*..*||src[app]:values*..*||src[app]:drawable*..*||src[app]:layout*..*||src[app]:xml*..*||src[app]:raw*..*||src[app]:anim*..*||src[app]:color*..*" />
-</component>
