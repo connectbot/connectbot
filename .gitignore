@@ -20,7 +20,12 @@ build/
 
 # Android gradle native build
 \.externalNativeBuild/
-.idea/
+
+# keep code style
+.idea/*
+!.idea/codeStyles/
+!.idea/copyright/
+
 **/.cxx
 
 # Jenkinsfile-runner
