@@ -504,7 +504,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			while (connected && !connection.isAuthenticationComplete() && tries++ < AUTH_TRIES) {
 				authenticate();
 
-				// sleep to make sure we dont kill system
+				// sleep to make sure we don't kill system
 				Thread.sleep(1000);
 			}
 		} catch (Exception e) {
@@ -551,7 +551,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		}
 
 		if ((newConditions & ChannelCondition.STDERR_DATA) != 0) {
-			byte discard[] = new byte[256];
+			byte[] discard = new byte[256];
 			while (stderr.available() > 0) {
 				stderr.read(discard);
 			}
