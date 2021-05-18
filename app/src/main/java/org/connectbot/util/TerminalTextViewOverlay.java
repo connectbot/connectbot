@@ -21,7 +21,6 @@ import org.connectbot.R;
 import org.connectbot.TerminalView;
 import org.connectbot.service.TerminalBridge;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -46,7 +45,6 @@ import de.mud.terminal.vt320;
  *
  * @author rhansby
  */
-@TargetApi(11)
 public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompatTextView {
 	public TerminalView terminalView; // ryan: this name sucks
 	private String currentSelection = "";
@@ -202,7 +200,6 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 	}
 
 	@Override
-	@TargetApi(12)
 	public boolean onGenericMotionEvent(MotionEvent event) {
 		if ((MotionEventCompat.getSource(event) & InputDevice.SOURCE_CLASS_POINTER) != 0) {
 			switch (event.getAction()) {
@@ -236,7 +233,6 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 	 * @param bridge
 	 * @return True if the event is handled.
 	 */
-	@TargetApi(14)
 	private boolean onMouseEvent(MotionEvent event, TerminalBridge bridge) {
 		int row = (int) Math.floor(event.getY() / bridge.charHeight);
 		int col = (int) Math.floor(event.getX() / bridge.charWidth);
@@ -256,9 +252,7 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 
 				// Begin "selection mode"
 
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-					closeSelectionActionMode();
-				}
+				closeSelectionActionMode();
 			} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 				// In the middle of selection.
 
@@ -311,7 +305,6 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 	 * @return A Java InputEvent modifier int. See
 	 * http://docs.oracle.com/javase/7/docs/api/java/awt/event/InputEvent.html
 	 */
-	@TargetApi(14)
 	private static int mouseEventToJavaModifiers(MotionEvent mouseEvent) {
 		if (MotionEventCompat.getSource(mouseEvent) != InputDevice.SOURCE_MOUSE) return 0;
 
