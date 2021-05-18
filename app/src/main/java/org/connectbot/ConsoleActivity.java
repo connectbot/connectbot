@@ -31,7 +31,6 @@ import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.TerminalViewPager;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -44,7 +43,6 @@ import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.media.AudioManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -88,7 +86,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import de.mud.terminal.vt320;
 
 public class ConsoleActivity extends AppCompatActivity implements BridgeDisconnectedListener {
@@ -470,7 +467,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		hideActionBarIfRequested();
 	}
 
-	@TargetApi(11)
 	private void requestActionBar() {
 		supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 	}
@@ -479,9 +475,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			StrictModeSetup.run();
-		}
+		StrictModeSetup.run();
 
 		hardKeyboard = getResources().getConfiguration().keyboard ==
 				Configuration.KEYBOARD_QWERTY;
@@ -490,7 +484,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		titleBarHide = prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false);
-		if (titleBarHide && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+		if (titleBarHide) {
 			// This is a separate method because Gradle does not uniformly respect the conditional
 			// Build check. See: https://code.google.com/p/android/issues/detail?id=137195
 			requestActionBar();
@@ -848,23 +842,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 		});
 
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-			copy = menu.add(R.string.console_menu_copy);
-			if (hardKeyboard)
-				copy.setAlphabeticShortcut('c');
-			MenuItemCompat.setShowAsAction(copy, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-			copy.setIcon(R.drawable.ic_action_copy);
-			copy.setEnabled(activeTerminal);
-			copy.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-				@Override
-				public boolean onMenuItemClick(MenuItem item) {
-					adapter.getCurrentTerminalView().startPreHoneycombCopyMode();
-					Toast.makeText(ConsoleActivity.this, getString(R.string.console_copy_start), Toast.LENGTH_LONG).show();
-					return true;
-				}
-			});
-		}
-
 		paste = menu.add(R.string.console_menu_paste);
 		if (hardKeyboard)
 			paste.setAlphabeticShortcut('v');
@@ -992,9 +969,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		else
 			disconnect.setTitle(R.string.console_menu_close);
 
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-			copy.setEnabled(activeTerminal);
-		}
 		paste.setEnabled(activeTerminal);
 		portForward.setEnabled(sessionOpen && canForwardPorts);
 		urlscan.setEnabled(activeTerminal);

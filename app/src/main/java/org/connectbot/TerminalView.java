@@ -29,7 +29,6 @@ import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.TerminalTextViewOverlay;
 import org.connectbot.util.TerminalViewPager;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -199,15 +198,13 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 		// connect our view up to the bridge
 		setOnKeyListener(bridge.getKeyHandler());
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			terminalTextViewOverlay = new TerminalTextViewOverlay(context, this);
-			terminalTextViewOverlay.setLayoutParams(
-					new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			addView(terminalTextViewOverlay, 0);
+		terminalTextViewOverlay = new TerminalTextViewOverlay(context, this);
+		terminalTextViewOverlay.setLayoutParams(
+				new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		addView(terminalTextViewOverlay, 0);
 
-			// Once terminalTextViewOverlay is active, allow it to handle key events instead.
-			terminalTextViewOverlay.setOnKeyListener(bridge.getKeyHandler());
-		}
+		// Once terminalTextViewOverlay is active, allow it to handle key events instead.
+		terminalTextViewOverlay.setOnKeyListener(bridge.getKeyHandler());
 
 		clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
 		prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -275,7 +272,6 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 		new AccessibilityStateTester().execute((Void) null);
 	}
 
-	@TargetApi(11)
 	private void setLayerTypeToSoftware() {
 		setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 	}
