@@ -136,7 +136,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 	private boolean forcedOrientation;
 
-	private Handler handler = new Handler();
+	private final Handler handler = new Handler();
 
 	private View contentView;
 
@@ -147,7 +147,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	private boolean titleBarHide;
 	private boolean keyboardAlwaysVisible = false;
 
-	private ServiceConnection connection = new ServiceConnection() {
+	private final ServiceConnection connection = new ServiceConnection() {
 		@Override
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			bound = ((TerminalManager.TerminalBinder) service).getService();
@@ -162,7 +162,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			// If we didn't find the requested connection, try opening it
 			if (requestedNickname != null && requestedBridge == null) {
 				try {
-					Log.d(TAG, String.format("We couldnt find an existing bridge with URI=%s (nickname=%s), so creating one now", requested.toString(), requestedNickname));
+					Log.d(TAG, String.format("We couldn't find an existing bridge with URI=%s (nickname=%s), so creating one now", requested.toString(), requestedNickname));
 					requestedBridge = bound.openConnection(requested);
 				} catch (Exception e) {
 					Log.e(TAG, "Problem while trying to create new requested bridge from URI", e);
@@ -229,8 +229,8 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	 * Handle repeatable virtual keys and touch events
 	 */
 	public class KeyRepeater implements Runnable, OnTouchListener, OnClickListener {
-		private View mView;
-		private Handler mHandler;
+		private final View mView;
+		private final Handler mHandler;
 		private boolean mDown;
 
 		public KeyRepeater(Handler handler, View view) {
@@ -1169,7 +1169,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	}
 
 	private static class URLItemListener implements OnItemClickListener {
-		private WeakReference<Context> contextRef;
+		private final WeakReference<Context> contextRef;
 
 		URLItemListener(Context context) {
 			this.contextRef = new WeakReference<>(context);
@@ -1202,14 +1202,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 		Log.d(TAG, String.format("onConfigurationChanged; requestedOrientation=%d, newConfig.orientation=%d", getRequestedOrientation(), newConfig.orientation));
 		if (bound != null) {
-			if (forcedOrientation &&
-					((newConfig.orientation != Configuration.ORIENTATION_LANDSCAPE &&
-							getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) ||
-					(newConfig.orientation != Configuration.ORIENTATION_PORTRAIT &&
-							getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)))
-				bound.setResizeAllowed(false);
-			else
-				bound.setResizeAllowed(true);
+			bound.setResizeAllowed(!forcedOrientation ||
+					((newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE ||
+							getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) &&
+							(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT ||
+									getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)));
 
 			bound.hardKeyboardHidden = (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES);
 
