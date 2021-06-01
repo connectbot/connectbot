@@ -732,7 +732,7 @@ public class HostEditorFragment extends Fragment {
 				int fontSize = HostBean.DEFAULT_FONT_SIZE;
 				try {
 					fontSize = Integer.parseInt(text);
-				} catch (NumberFormatException e) {
+				} catch (NumberFormatException ignored) {
 				} finally {
 					setFontSize(fontSize);
 				}

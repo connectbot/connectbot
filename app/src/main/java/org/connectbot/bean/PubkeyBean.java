@@ -36,12 +36,6 @@ import android.content.res.Resources;
 public class PubkeyBean extends AbstractBean {
 	public static final String BEAN_NAME = "pubkey";
 
-	private static final String KEY_TYPE_RSA = "RSA";
-
-	private static final String KEY_TYPE_DSA = "DSA";
-
-	private static final String KEY_TYPE_EC = "EC";
-
 	/* Database fields */
 	private long id;
 	private String nickname;

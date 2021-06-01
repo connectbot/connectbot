@@ -138,11 +138,11 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 			+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ", "
 			+ FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "', "
 			+ FIELD_HOST_FONTSIZE + " INTEGER, "
-			+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "', "
-			+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
+			+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + true + "', "
+			+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + false + "', "
 			+ FIELD_HOST_ENCODING + " TEXT DEFAULT '" + ENCODING_DEFAULT + "', "
-			+ FIELD_HOST_STAYCONNECTED + " TEXT DEFAULT '" + Boolean.toString(false) + "', "
-			+ FIELD_HOST_QUICKDISCONNECT + " TEXT DEFAULT '" + Boolean.toString(false) + "'";
+			+ FIELD_HOST_STAYCONNECTED + " TEXT DEFAULT '" + false + "', "
+			+ FIELD_HOST_QUICKDISCONNECT + " TEXT DEFAULT '" + false + "'";
 
 	public static final String CREATE_TABLE_HOSTS = "CREATE TABLE " + TABLE_HOSTS
 			+ " (" + TABLE_HOSTS_COLUMNS + ")";
@@ -299,11 +299,11 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 			// fall through
 		case 12:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
-					+ " ADD COLUMN " + FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + Boolean.toString(true) + "'");
+					+ " ADD COLUMN " + FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + true + "'");
 			// fall through
 		case 13:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
-					+ " ADD COLUMN " + FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + Boolean.toString(false) + "'");
+					+ " ADD COLUMN " + FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + false + "'");
 			// fall through
 		case 14:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
@@ -349,7 +349,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 			// fall through
 		case 22:
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS
-					+ " ADD COLUMN " + FIELD_HOST_QUICKDISCONNECT + " TEXT DEFAULT '" + Boolean.toString(false) + "'");
+					+ " ADD COLUMN " + FIELD_HOST_QUICKDISCONNECT + " TEXT DEFAULT '" + false + "'");
 			// fall through
 		case 23:
 			db.execSQL("UPDATE " + TABLE_HOSTS
@@ -519,17 +519,17 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 			host.setPort(c.getInt(COL_PORT));
 			host.setLastConnect(c.getLong(COL_LASTCONNECT));
 			host.setColor(c.getString(COL_COLOR));
-			host.setUseKeys(Boolean.valueOf(c.getString(COL_USEKEYS)));
+			host.setUseKeys(Boolean.parseBoolean(c.getString(COL_USEKEYS)));
 			host.setUseAuthAgent(c.getString(COL_USEAUTHAGENT));
 			host.setPostLogin(c.getString(COL_POSTLOGIN));
 			host.setPubkeyId(c.getLong(COL_PUBKEYID));
-			host.setWantSession(Boolean.valueOf(c.getString(COL_WANTSESSION)));
+			host.setWantSession(Boolean.parseBoolean(c.getString(COL_WANTSESSION)));
 			host.setDelKey(c.getString(COL_DELKEY));
 			host.setFontSize(c.getInt(COL_FONTSIZE));
-			host.setCompression(Boolean.valueOf(c.getString(COL_COMPRESSION)));
+			host.setCompression(Boolean.parseBoolean(c.getString(COL_COMPRESSION)));
 			host.setEncoding(c.getString(COL_ENCODING));
-			host.setStayConnected(Boolean.valueOf(c.getString(COL_STAYCONNECTED)));
-			host.setQuickDisconnect(Boolean.valueOf(c.getString(COL_QUICKDISCONNECT)));
+			host.setStayConnected(Boolean.parseBoolean(c.getString(COL_STAYCONNECTED)));
+			host.setQuickDisconnect(Boolean.parseBoolean(c.getString(COL_QUICKDISCONNECT)));
 
 			hosts.add(host);
 		}
@@ -580,7 +580,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 			selectionValuesList.add(entry.getValue());
 		}
 
-		String selectionValues[] = new String[selectionValuesList.size()];
+		String[] selectionValues = new String[selectionValuesList.size()];
 		selectionValuesList.toArray(selectionValues);
 
 		Cursor c = mDb.query(TABLE_HOSTS, null,
@@ -588,9 +588,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 				selectionValues,
 				null, null, null);
 
-		HostBean host = getFirstHostBean(c);
-
-		return host;
+		return getFirstHostBean(c);
 	}
 
 	/**
@@ -652,7 +650,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 
 	/**
 	 * Build list of known hosts for Trilead library.
-	 * @return
 	 */
 	@Override
 	public KnownHosts getKnownHosts() {
@@ -852,7 +849,6 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	}
 
 	public void setColorForScheme(int scheme, int number, int value) {
-		final SQLiteDatabase db;
 
 		final String[] whereArgs = new String[] { String.valueOf(scheme), String.valueOf(number) };
 
@@ -917,9 +913,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 
 	@Override
 	public void setDefaultColorsForScheme(int scheme, int fg, int bg) {
-		SQLiteDatabase db;
 
-		String schemeWhere = null;
+		String schemeWhere;
 		String[] whereArgs;
 
 		schemeWhere = FIELD_COLOR_SCHEME + " = ?";

@@ -134,8 +134,8 @@ public class UberColorPickerDialog extends Dialog {
 	 * I highly recommend adding new methods to the end of the list.  If you want to try to reorder the list, you're on your own.
 	 */
 	private static class ColorPickerView extends View {
-		private static int SWATCH_WIDTH_PORTRAIT_DP = 95;
-		private static int SWATCH_WIDTH_LANDSCAPE_DP = 110;
+		private static final int SWATCH_WIDTH_PORTRAIT_DP = 95;
+		private static final int SWATCH_WIDTH_LANDSCAPE_DP = 110;
 		private static final int SWATCH_HEIGHT_DP = 60;
 
 		private static final int PALETTE_DIM_DP = SWATCH_WIDTH_PORTRAIT_DP * 2;
@@ -158,16 +158,15 @@ public class UberColorPickerDialog extends Dialog {
 
 		private static final int BUTTON_TEXT_MARGIN_DP = 16;
 
-		private static int[] TEXT_HSV_POS = new int[2];
-		private static int[] TEXT_RGB_POS = new int[2];
-		private static int[] TEXT_YUV_POS = new int[2];
-		private static int[] TEXT_HEX_POS = new int[2];
+		private static final int[] TEXT_HSV_POS = new int[2];
+		private static final int[] TEXT_RGB_POS = new int[2];
+		private static final int[] TEXT_YUV_POS = new int[2];
+		private static final int[] TEXT_HEX_POS = new int[2];
 
 		private static final float PI = 3.1415927f;
 
 		private final int mSwatchWidthPx;
 		private final int mTextSizePx;
-		private final int mTextSizeLabelPx;
 		private final int mPalettePosX;
 		private final int mPalettePosY;
 		private final int mPaletteDimPx;
@@ -178,50 +177,51 @@ public class UberColorPickerDialog extends Dialog {
 		private final int mPaletteCenterPx;
 		private final int mButtonTextMarginPx;
 
-		private int mMethod = METHOD_HS_V_PALETTE;
+		private final int mMethod = METHOD_HS_V_PALETTE;
 		private int mTracking = TRACKED_NONE;        //What object on screen is currently being tracked for movement
 
 		//Zillions of persistant Paint objecs for drawing the View
 
-		private Paint mSwatchOld, mSwatchNew;
+		private final Paint mSwatchOld;
+		private final Paint mSwatchNew;
 
 		//NEW_METHOD_WORK_NEEDED_HERE
 		//Add Paints to represent the palettes of the new method's UI controllers
-		private Paint mOvalHueSat;
+		private final Paint mOvalHueSat;
 
-		private Bitmap mVerSliderBM;
-		private Canvas mVerSliderCv;
+		private final Bitmap mVerSliderBM;
+		private final Canvas mVerSliderCv;
 
-		private Bitmap[] mHorSlidersBM = new Bitmap[3];
-		private Canvas[] mHorSlidersCv = new Canvas[3];
+		private final Bitmap[] mHorSlidersBM = new Bitmap[3];
+		private final Canvas[] mHorSlidersCv = new Canvas[3];
 
-		private Paint mValDimmer;
+		private final Paint mValDimmer;
 
 		//NEW_METHOD_WORK_NEEDED_HERE
 		//Add Paints to represent the icon for the new method
-		private Paint mOvalHueSatSmall;
+		private final Paint mOvalHueSatSmall;
 
-		private Paint mPosMarker;
-		private Paint mText;
+		private final Paint mPosMarker;
+		private final Paint mText;
 
-		private Rect mOldSwatchRect = new Rect();
-		private Rect mNewSwatchRect = new Rect();
-		private Rect mPaletteRect = new Rect();
-		private Rect mVerSliderRect = new Rect();
+		private final Rect mOldSwatchRect = new Rect();
+		private final Rect mNewSwatchRect = new Rect();
+		private final Rect mPaletteRect = new Rect();
+		private final Rect mVerSliderRect = new Rect();
 
-		private int[] mSpectrumColorsRev;
+		private final int[] mSpectrumColorsRev;
 		private int mOriginalColor = 0;        //The color passed in at the beginning, which can be reverted to at any time by tapping the old swatch.
-		private float[] mHSV = new float[3];
-		private int[] mRGB = new int[3];
-		private float[] mYUV = new float[3];
+		private final float[] mHSV = new float[3];
+		private final int[] mRGB = new int[3];
+		private final float[] mYUV = new float[3];
 		private String mHexStr = "";
-		private boolean mHSVenabled = true;        //Only true if an HSV method is enabled
-		private boolean mRGBenabled = true;        //Only true if an RGB method is enabled
-		private boolean mYUVenabled = true;        //Only true if a YUV method is enabled
-		private boolean mHexenabled = true;        //Only true if an RGB method is enabled
-		private int[] mCoord = new int[3];                //For drawing slider/palette markers
+		private final boolean mHSVenabled = true;        //Only true if an HSV method is enabled
+		private final boolean mRGBenabled = true;        //Only true if an RGB method is enabled
+		private final boolean mYUVenabled = true;        //Only true if a YUV method is enabled
+		private final boolean mHexenabled = true;        //Only true if an RGB method is enabled
+		private final int[] mCoord = new int[3];                //For drawing slider/palette markers
 		private int mFocusedControl = -1;        //Which control receives trackball events.
-		private OnColorChangedListener mListener;
+		private final OnColorChangedListener mListener;
 
 		/**
 		 * Ctor.
@@ -231,14 +231,12 @@ public class UberColorPickerDialog extends Dialog {
 		 * @param width  Used to determine orientation and adjust layout accordingly
 		 * @param height Used to determine orientation and adjust layout accordingly
 		 * @param color  The initial color
-		 * @throws Exception
 		 */
 		ColorPickerView(Context c, OnColorChangedListener l, int width, int height, int color) {
 			super(c);
 
 			DisplayMetrics metrics = c.getResources().getDisplayMetrics();
 			mTextSizePx = (int) (TEXT_SIZE_DP * metrics.density + 0.5f);
-			mTextSizeLabelPx = (int) (TEXT_SIZE_LABEL_DP * metrics.density + 0.5f);
 
 			//We need to make the dialog focusable to retrieve trackball events.
 			setFocusable(true);
@@ -429,9 +427,9 @@ public class UberColorPickerDialog extends Dialog {
 		 */
 		private void writeColorParams(Canvas canvas) {
 			if (mHSVenabled) {
-				canvas.drawText("H: " + Integer.toString((int) (mHSV[0] / 360.0f * 255)), TEXT_HSV_POS[0], TEXT_HSV_POS[1] + mTextSizePx, mText);
-				canvas.drawText("S: " + Integer.toString((int) (mHSV[1] * 255)), TEXT_HSV_POS[0], TEXT_HSV_POS[1] + mTextSizePx * 2, mText);
-				canvas.drawText("V: " + Integer.toString((int) (mHSV[2] * 255)), TEXT_HSV_POS[0], TEXT_HSV_POS[1] + mTextSizePx * 3, mText);
+				canvas.drawText("H: " + (int) (mHSV[0] / 360.0f * 255), TEXT_HSV_POS[0], TEXT_HSV_POS[1] + mTextSizePx, mText);
+				canvas.drawText("S: " + (int) (mHSV[1] * 255), TEXT_HSV_POS[0], TEXT_HSV_POS[1] + mTextSizePx * 2, mText);
+				canvas.drawText("V: " + (int) (mHSV[2] * 255), TEXT_HSV_POS[0], TEXT_HSV_POS[1] + mTextSizePx * 3, mText);
 			}
 
 			if (mRGBenabled) {
@@ -441,9 +439,9 @@ public class UberColorPickerDialog extends Dialog {
 			}
 
 			if (mYUVenabled) {
-				canvas.drawText("Y: " + Integer.toString((int) (mYUV[0] * 255)), TEXT_YUV_POS[0], TEXT_YUV_POS[1] + mTextSizePx, mText);
-				canvas.drawText("U: " + Integer.toString((int) ((mYUV[1] + .5f) * 255)), TEXT_YUV_POS[0], TEXT_YUV_POS[1] + mTextSizePx * 2, mText);
-				canvas.drawText("V: " + Integer.toString((int) ((mYUV[2] + .5f) * 255)), TEXT_YUV_POS[0], TEXT_YUV_POS[1] + mTextSizePx * 3, mText);
+				canvas.drawText("Y: " + (int) (mYUV[0] * 255), TEXT_YUV_POS[0], TEXT_YUV_POS[1] + mTextSizePx, mText);
+				canvas.drawText("U: " + (int) ((mYUV[1] + .5f) * 255), TEXT_YUV_POS[0], TEXT_YUV_POS[1] + mTextSizePx * 2, mText);
+				canvas.drawText("V: " + (int) ((mYUV[2] + .5f) * 255), TEXT_YUV_POS[0], TEXT_YUV_POS[1] + mTextSizePx * 3, mText);
 			}
 
 			if (mHexenabled)
@@ -586,7 +584,7 @@ public class UberColorPickerDialog extends Dialog {
 			hsv[2] = 1;
 			int col = Color.HSVToColor(hsv);
 
-			int colors[] = new int[2];
+			int[] colors = new int[2];
 			colors[0] = col;
 			colors[1] = 0xFF000000;
 			GradientDrawable gradDraw = new GradientDrawable(Orientation.TOP_BOTTOM, colors);
@@ -684,7 +682,7 @@ public class UberColorPickerDialog extends Dialog {
 		 * @param unit
 		 * @return
 		 */
-		private int interpColor(int colors[], float unit) {
+		private int interpColor(int[] colors, float unit) {
 			if (unit <= 0) {
 				return colors[0];
 			}
@@ -884,7 +882,7 @@ public class UberColorPickerDialog extends Dialog {
 		private void updateHexFromHSV() {
 			//For now, assume 100% opacity
 			mHexStr = Integer.toHexString(Color.HSVToColor(mHSV)).toUpperCase();
-			mHexStr = mHexStr.substring(2, mHexStr.length());
+			mHexStr = mHexStr.substring(2);
 		}
 
 		/**

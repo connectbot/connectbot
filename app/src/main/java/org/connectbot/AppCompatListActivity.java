@@ -25,7 +25,6 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 
 public abstract class AppCompatListActivity extends AppCompatActivity {
@@ -97,12 +96,10 @@ public abstract class AppCompatListActivity extends AppCompatActivity {
 
 	@VisibleForTesting
 	protected static abstract class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
-		private final LayoutInflater inflater;
 		protected final Context context;
 
 		public ItemAdapter(Context context/*, List<AbstractBean> items*/) {
 			this.context = context;
-			this.inflater = LayoutInflater.from(context);
 		}
 	}
 }
