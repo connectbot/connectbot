@@ -30,8 +30,6 @@ apply from: '../config/quality.gradle'
 repositories {
     google()
     mavenCentral()
-    // org.jetbrains.trove4j:trove4j:20160824.
-    maven { url 'https://plugins.gradle.org/m2/' }
 }
 
 def preDexEnabled = "true" == System.getProperty("pre-dex", "true")
