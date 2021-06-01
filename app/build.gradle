@@ -34,7 +34,6 @@ repositories {
     maven { url 'https://plugins.gradle.org/m2/' }
 }
 
-def isCi = "true" == System.getenv("CI")
 def preDexEnabled = "true" == System.getProperty("pre-dex", "true")
 
 coveralls.jacocoReportPath = 'build/reports/coverage/google/debug/report.xml'
@@ -49,7 +48,7 @@ android {
 
     dexOptions {
         // Skip pre-dexing when running on a CI or when disabled via -Dpre-dex=false
-        preDexLibraries = preDexEnabled && !isCi
+        preDexLibraries = preDexEnabled
     }
 
     defaultConfig {
