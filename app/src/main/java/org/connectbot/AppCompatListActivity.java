@@ -22,6 +22,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,7 +62,7 @@ public abstract class AppCompatListActivity extends AppCompatActivity {
 		}
 
 		@Override
-		public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+		public void onDraw(Canvas c, RecyclerView parent, @NonNull RecyclerView.State state) {
 			final int left = parent.getPaddingLeft();
 			final int right = parent.getWidth() - parent.getPaddingRight();
 
@@ -78,14 +79,14 @@ public abstract class AppCompatListActivity extends AppCompatActivity {
 		}
 
 		@Override
-		public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
+		public void getItemOffsets(Rect outRect, @NonNull View view, RecyclerView parent,
 				RecyclerView.State state) {
 			int top = parent.getChildAdapterPosition(view) == 0 ? TOP_LIST_OFFSET : 0;
 			outRect.set(0, top, 0, mDivider.getIntrinsicHeight());
 		}
 	}
 
-	protected abstract class ItemViewHolder extends RecyclerView.ViewHolder
+	public abstract static class ItemViewHolder extends RecyclerView.ViewHolder
 			implements View.OnClickListener, View.OnCreateContextMenuListener {
 		public ItemViewHolder(View v) {
 			super(v);

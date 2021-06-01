@@ -14,13 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.connectbot
 
-package org.connectbot.service;
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 
-/**
- * Used to notify interested parties when a {@link TerminalBridge} has changed materially
- * changed status (e.g., connected, disconnected, name changed, etc).
- */
-public interface OnHostStatusChangedListener {
-	void onHostStatusChanged();
+class HintsActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.act_hints)
+    }
 }

@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2007 Kenny Root, Jeffrey Sharkey
+ * Copyright 2015 Kenny Root, Jeffrey Sharkey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.connectbot;
+package org.connectbot
 
-import android.os.StrictMode;
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import org.connectbot.util.Version
 
-public class StrictModeSetup {
-	public static void run() {
-		StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.LAX);
-	}
+class EulaActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.act_eula)
+        Version.setVersionText(applicationContext, findViewById(R.id.version))
+    }
 }
