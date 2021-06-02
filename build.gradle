@@ -1,76 +1,76 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    project.ext.MAVEN_REPO_CACHE = System.getenv("MAVEN_REPO_CACHE")?.trim()
-    project.ext.TRANSLATIONS_ONLY = System.getenv("TRANSLATIONS_ONLY")?.trim()
-    if (MAVEN_REPO_CACHE) {
-        repositories { maven { url MAVEN_REPO_CACHE } }
-    } else {
-        repositories {
-            google()
-            mavenCentral()
-        }
-    }
+	project.ext.MAVEN_REPO_CACHE = System.getenv("MAVEN_REPO_CACHE")?.trim()
+	project.ext.TRANSLATIONS_ONLY = System.getenv("TRANSLATIONS_ONLY")?.trim()
+	if (MAVEN_REPO_CACHE) {
+		repositories { maven { url MAVEN_REPO_CACHE } }
+	} else {
+		repositories {
+			google()
+			mavenCentral()
+		}
+	}
 }
 
 plugins { id 'com.diffplug.spotless' version '5.12.5' }
 apply plugin: 'com.diffplug.spotless'
 
 if (MAVEN_REPO_CACHE) {
-    allprojects {
-        buildscript {
-            repositories { maven { url MAVEN_REPO_CACHE } }
-        }
-        repositories { maven { url MAVEN_REPO_CACHE } }
-    }
+	allprojects {
+		buildscript {
+			repositories { maven { url MAVEN_REPO_CACHE } }
+		}
+		repositories { maven { url MAVEN_REPO_CACHE } }
+	}
 } else {
-    allprojects {
-        buildscript {
-            repositories {
-                google()
-                mavenCentral()
-            }
-        }
-        repositories {
-            google()
-            mavenCentral()
-        }
-    }
+	allprojects {
+		buildscript {
+			repositories {
+				google()
+				mavenCentral()
+			}
+		}
+		repositories {
+			google()
+			mavenCentral()
+		}
+	}
 }
 
 project.ext.preDexLibs = !project.hasProperty('disablePreDex')
 
 subprojects {
-    project.plugins.whenPluginAdded { plugin ->
-        if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name)) {
-            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
-        } else if ("com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
-            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
-        }
-    }
+	project.plugins.whenPluginAdded { plugin ->
+		if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name)) {
+			project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
+		} else if ("com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
+			project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
+		}
+	}
 }
 
 if (!TRANSLATIONS_ONLY) {
-    apply from: 'spotless.gradle'
+	apply from: 'spotless.gradle'
 }
 
 task resolveDependencies {
-    setDescription "Resolves all projects dependencies from the repository."
-    setGroup "Build Server"
+	setDescription "Resolves all projects dependencies from the repository."
+	setGroup "Build Server"
 
-    doLast {
-        rootProject.allprojects { project ->
-            project.buildscript.configurations.forEach { configuration ->
-                if (configuration.canBeResolved) {
-                    configuration.resolve()
-                }
-            }
+	doLast {
+		rootProject.allprojects { project ->
+			project.buildscript.configurations.forEach { configuration ->
+				if (configuration.canBeResolved) {
+					configuration.resolve()
+				}
+			}
 
-            project.configurations.forEach { configuration ->
-                if (configuration.canBeResolved) {
-                    configuration.resolve()
-                }
-            }
-        }
-    }
+			project.configurations.forEach { configuration ->
+				if (configuration.canBeResolved) {
+					configuration.resolve()
+				}
+			}
+		}
+	}
 }

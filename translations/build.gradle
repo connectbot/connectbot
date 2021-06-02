@@ -16,12 +16,12 @@
  */
 
 plugins {
-    id "com.jetbrains.python.envs" version "0.0.30"
+	id "com.jetbrains.python.envs" version "0.0.30"
 }
 
 envs {
-    bootstrapDirectory = new File(buildDir, "bootstrap")
-    conda "miniconda", "Miniconda3-4.7.12.1"
+	bootstrapDirectory = new File(buildDir, "bootstrap")
+	conda "miniconda", "Miniconda3-4.7.12.1"
 }
 
 def condaDir = "${buildDir}/bootstrap/miniconda"
@@ -33,75 +33,75 @@ def launchpadExportFile = rootProject.file('launchpad-export.tar.gz')
 def android2poUrl = 'git+https://github.com/miracle2k/android2po.git#egg=android2po'
 def android2poExec = "${condaDir}/bin/a2po"
 def android2poArgs = [
-    '--groups',
-    'strings',
-    '--android',
-    file(appDir + 'src/main/res'),
-    '--gettext',
-    localeDir,
-    '--template',
-    'fortune/fortune.pot',
-    '--layout',
-    'fortune/%(locale)s.po'
+		'--groups',
+		'strings',
+		'--android',
+		file(appDir + 'src/main/res'),
+		'--gettext',
+		localeDir,
+		'--template',
+		'fortune/fortune.pot',
+		'--layout',
+		'fortune/%(locale)s.po'
 ]
 
 task installAndroid2Po(type: Exec) {
-    dependsOn 'build_envs'
-    executable "${condaDir}/bin/pip"
-    args 'install', android2poUrl
+	dependsOn 'build_envs'
+	executable "${condaDir}/bin/pip"
+	args 'install', android2poUrl
 }
 
 task untarTranslations(type: Copy) {
-    from tarTree(resources.gzip(launchpadExportFile))
-    into localeDir
+	from tarTree(resources.gzip(launchpadExportFile))
+	into localeDir
 
-    // Unsupported Android locales
-    exclude '**/oc.po', '**/ca@valencia.po'
+	// Unsupported Android locales
+	exclude '**/oc.po', '**/ca@valencia.po'
 }
 
 task importToAndroid(type: Exec) {
-    group = "Translations"
-    description = "Import translations into ConnectBot from app/locale directory."
+	group = "Translations"
+	description = "Import translations into ConnectBot from app/locale directory."
 
-    dependsOn 'installAndroid2Po'
+	dependsOn 'installAndroid2Po'
 
-    executable = android2poExec
-    args = ['import']+ android2poArgs
+	executable = android2poExec
+	args = ['import'] + android2poArgs
 
-    logging.captureStandardOutput LogLevel.LIFECYCLE
-    logging.captureStandardError  LogLevel.ERROR
+	logging.captureStandardOutput LogLevel.LIFECYCLE
+	logging.captureStandardError LogLevel.ERROR
 }
 
 task translationsImport {
-    group = "Translations"
-    description = "Import translations from a Launchpad export tarball."
+	group = "Translations"
+	description = "Import translations from a Launchpad export tarball."
 
-    dependsOn 'untarTranslations', 'importToAndroid'
+	dependsOn 'untarTranslations', 'importToAndroid'
 }
 
 task exportFromAndroid(type: Exec) {
-    dependsOn 'installAndroid2Po'
+	dependsOn 'installAndroid2Po'
 
-    executable = android2poExec
-    args = ['export']+ android2poArgs
+	executable = android2poExec
+	args = ['export'] + android2poArgs
 
-    logging.captureStandardOutput LogLevel.LIFECYCLE
-    logging.captureStandardError  LogLevel.ERROR
+	logging.captureStandardOutput LogLevel.LIFECYCLE
+	logging.captureStandardError LogLevel.ERROR
 }
 
 task translationsExport(type: Tar) {
-    group = "Translations"
-    description = "Export translations from ConnectBot in a format suitable to import into Launchpad"
+	group = "Translations"
+	description = "Export translations from ConnectBot in a format suitable to import into Launchpad"
 
-    dependsOn 'exportFromAndroid'
-    destinationDir = file("$rootDir")
-    archiveFileName = launchpadImportFile
-    from localeDir
-    compression = Compression.GZIP
-    doLast {
-        println()
-        println('Import file into Launchpad:')
-        println(archiveFile.get().asFile)
-        println()
-    }
+	dependsOn 'exportFromAndroid'
+	destinationDir = file("$rootDir")
+	archiveFileName = launchpadImportFile
+	from localeDir
+	compression = Compression.GZIP
+	doLast {
+		println()
+		println('Import file into Launchpad:')
+		println(archiveFile.get().asFile)
+		println()
+	}
 }
