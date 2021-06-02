@@ -16,11 +16,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set up JDK 1.8
+      - name: Set up JDK
         uses: actions/setup-java@v2.1.0
         with:
           distribution: 'zulu'
-          java-version: '8'
+          java-version: '11'
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
