@@ -1,14 +1,12 @@
 spotless {
-    groovyGradle {
-        target '**/*.gradle'
-        greclipse()
-        indentWithSpaces(4)
-    }
+	groovyGradle {
+		target '**/*.gradle'
+	}
 
-    format 'misc', {
-        target '**/*.md', '**/.gitignore'
+	format 'misc', {
+		target '**/*.md', '**/.gitignore'
 
-        trimTrailingWhitespace()
-        endWithNewline()
-    }
+		trimTrailingWhitespace()
+		endWithNewline()
+	}
 }
