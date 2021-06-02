@@ -159,6 +159,7 @@ spotless {
 	}
 }
 
+import com.github.jengelman.gradle.plugins.processes.tasks.Fork
 import net.ltgt.gradle.errorprone.CheckSeverity
 
 tasks.withType(JavaCompile) {
@@ -179,6 +180,8 @@ tasks.withType(JavaCompile) {
 
 tasks.withType(Test) {
 	jacoco.includeNoLocationClasses = true
+	jacoco.excludes = ['jdk.internal.*']
+	// needed for Java 11 https://github.com/gradle/gradle/issues/5184#issuecomment-457865951
 }
 
 /*
@@ -187,8 +190,6 @@ tasks.withType(Test) {
  * other than 127.0.0.1 for the host of ADB. This allows us to run tests
  * in a Docker container but forward to a real device.
  */
-import com.github.jengelman.gradle.plugins.processes.tasks.Fork
-
 task startAdbForwarding(type: Fork) {
 	onlyIf { System.getenv("ANDROID_ADB_SERVER_ADDRESS") != null }
 
