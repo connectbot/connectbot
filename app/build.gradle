@@ -255,7 +255,7 @@ dependencies {
 
 	androidTestUtil "androidx.test:orchestrator:$testRunnerVersion"
 	androidTestUtil "com.linkedin.testbutler:test-butler-app:2.2.1"
-	androidTestImplementation "androidx.test:core:1.3.0"
+	androidTestImplementation "androidx.test:core:1.4.0"
 	androidTestImplementation "androidx.test:rules:$testRunnerVersion"
 	androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 	androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
