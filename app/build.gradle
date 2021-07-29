@@ -1,6 +1,5 @@
 buildscript {
 	dependencies {
-		classpath 'com.github.gfx.ribbonizer:ribbonizer-plugin:2.1.0'
 		if (rootProject.hasProperty('jacocoVersion')) {
 			classpath "org.jacoco:org.jacoco.core:${rootProject.jacocoVersion}"
 		}
@@ -15,6 +14,7 @@ plugins {
 	id 'com.github.kt3k.coveralls' version '2.12.0'
 	id 'com.github.johnrengelman.processes' version '0.5.0'
 	id 'com.hiya.jacoco-android' version '0.2'
+	id 'com.starter.easylauncher' version "3.1.0"
 }
 
 ext {
@@ -23,7 +23,6 @@ ext {
 	espressoVersion = '3.3.0'
 }
 
-apply plugin: 'com.github.gfx.ribbonizer'
 apply plugin: 'com.diffplug.spotless'
 apply from: '../config/quality.gradle'
 
