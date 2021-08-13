@@ -44,22 +44,20 @@ jobs:
 
     - name: Create pull request
       uses: peter-evans/create-pull-request@v3.10.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        COMMIT_MESSAGE: |
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: |
           Automated translations import
 
           Translations imported from Launchpad.
-        COMMIT_AUTHOR_EMAIL: no-reply+translations@connectbot.org
-        COMMIT_AUTHOR_NAME: Translations Bot
-        PULL_REQUEST_TITLE: '[Translations] Automatic update'
-        PULL_REQUEST_BODY: |
+        author: Translations Bot <no-reply+translations@connectbot.org>
+        title: '[Translations] Automatic update'
+        body: |
           Automated import of translations from Launchpad.
-        PULL_REQUEST_LABELS: translations, automated pr
-        PULL_REQUEST_ASSIGNEES: kruton
-        PULL_REQUEST_REVIEWERS: kruton
-        PULL_REQUEST_BRANCH: translations/import
-        BRANCH_SUFFIX: none
+        labels: translations, automated pr
+        assignees: kruton
+        reviewers: kruton
+        branch: translations/import
 
     - name: Report pull request creation
       run: echo "Created pull request number ${{ env.PULL_REQUEST_NUMBER }}"
