@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-28 00:29-0800\n"
-"PO-Revision-Date: 2021-04-19 11:38+0000\n"
-"Last-Translator: wwj402 <wwj402@sina.com>\n"
+"PO-Revision-Date: 2021-08-18 03:25+0000\n"
+"Last-Translator: Lu Xu <Unknown>\n"
 "Language-Team: zh_Hans_CN <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2021-04-20 06:31+0000\n"
-"X-Generator: Launchpad (build 8932ab84469600dc3d8b3344fb7135c702d5179e)\n"
+"X-Launchpad-Export-Date: 2021-08-18 04:37+0000\n"
+"X-Generator: Launchpad (build b08a7ac7ee9dae6cca70a44dbdbee2a2b52e9053)\n"
 "Language: zh_Hans_CN\n"
 "Generated-By: Babel 2.7.0\n"
 
@@ -65,7 +65,7 @@ msgstr "颜色"
 #. Dialog title for color picker dialog
 msgctxt "title_color_picker"
 msgid "Pick a color"
-msgstr "选取一种颜色"
+msgstr "选取颜色"
 
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
@@ -114,7 +114,7 @@ msgctxt "scroll_hints_content"
 msgid ""
 "Swiping your finger up on the right side of the screen allows you to scroll "
 "backward and forward in the local terminal buffer history."
-msgstr "在屏幕右侧向上滑动你的手指允许你向后滚动在本地终端缓冲区历史中向前。"
+msgstr "在屏幕右侧向上滑动你的手指允许你在本地终端缓冲区历史中前后滚动。"
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
@@ -139,9 +139,10 @@ msgid ""
 "page up and page down key to the remote host. Many programs map this to "
 "scrolling back into history such as irssi or tinyfugue."
 msgstr ""
-"注意: 这必须在设置中启用。\n"
+"注意: 此功能需在设置中开启。\n"
 "\n"
-"在屏幕左侧的三分之一以内用手指向上和向下滑动将向远程主机发送向上翻页和向下翻页键。许多程序映射为在历史中向后滚动如 irssi 或 tinyfugue。"
+"在屏幕左侧的三分之一以内用手指向上和向下滑动将向远程主机发送向上翻页和向下翻页键。许多程序如 irssi 或 tinyfugue "
+"将这些键映射为在历史中向后滚动。"
 
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
@@ -223,17 +224,17 @@ msgstr "正在收集熵"
 #, c-format
 msgctxt "pubkey_touch_prompt"
 msgid "Touch this box to gather randomness: %1$d%% done"
-msgstr "触摸这个方框来收集随机数：%1$d%% 完成"
+msgstr "触摸这个方框来采集随机性：已完成%1$d%%"
 
 msgctxt "pubkey_touch_hint"
 msgid ""
 "In order to assure randomness during the key generation, move your finger "
 "randomly over the box below."
-msgstr "请在方框内随机移动手指来生成随机密钥"
+msgstr "以保证密钥生成的随机性，请在下方的方框内随机移动手指。"
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
-msgstr "正在生成密钥对……"
+msgstr "正在生成密钥对…"
 
 msgctxt "pubkey_copy_private"
 msgid "Copy private key"
@@ -248,7 +249,9 @@ msgctxt "pubkey_list_empty"
 msgid ""
 "Tap \"Menu\" to create\n"
 "or import key pairs."
-msgstr "点击\"菜单\"来创建或者导入密钥对"
+msgstr ""
+"点击\"菜单\"来创建\n"
+"或者导入密钥对"
 
 msgctxt "pubkey_unknown_format"
 msgid "Unknown format"
@@ -268,7 +271,7 @@ msgstr "从 /sdcard 选取"
 #. parseable for some reason.
 msgctxt "pubkey_import_parse_problem"
 msgid "Problem parsing imported private key"
-msgstr "导入的私钥解析出错"
+msgstr "解析导入的私钥出现问题"
 
 msgctxt "pubkey_unlock"
 msgid "Unlock key"
@@ -279,7 +282,7 @@ msgstr "解锁密钥"
 #, c-format
 msgctxt "pubkey_failed_add"
 msgid "Bad password for key '%1$s'. Authentication failed."
-msgstr "'%1$s' 密钥的密码错误。用户身份验证失败。"
+msgstr "'%1$s' 密钥的密码错误。验证失败。"
 
 #. Context menu entry that allows a user to load a pubkey entry into memory.
 #. This is equivalent to "unlocking" a password-protected pubkey entry.
@@ -312,13 +315,15 @@ msgctxt "portforward_list_empty"
 msgid ""
 "Tap \"Menu\" to create\n"
 "port forwards."
-msgstr "点击「菜单」来创建端口转发"
+msgstr ""
+"点击「菜单」来创建\n"
+"端口转发"
 
 #. Context menu action where a user can edite the selected port forward for
 #. the host.
 msgctxt "portforward_edit"
 msgid "Edit port forward"
-msgstr "编辑转发端口"
+msgstr "编辑端口转发"
 
 #. Context menu action where a user can delete the selected port forward from
 #. the host.
@@ -333,7 +338,7 @@ msgstr "昵称："
 #. An example string that could be used as a nickname for a pubkey.
 msgctxt "prompt_nickname_hint_pubkey"
 msgid "My work key"
-msgstr "我的工作密钥"
+msgstr "我的密钥"
 
 #. The source TCP port for port forwards.
 msgctxt "prompt_source_port"
@@ -360,12 +365,12 @@ msgstr "密码："
 #. Added after a "Password:" prompt to indicate user needs to confirm entry.
 msgctxt "prompt_again"
 msgid "(again)"
-msgstr "确认新密码"
+msgstr "(再次输入)"
 
 #. Label for the user to select port forward type.
 msgctxt "prompt_type"
 msgid "Type:"
-msgstr "转发类型"
+msgstr "类型："
 
 #. Hint given below the password input box that lets them know that they are
 #. allowed to leave the field blank.
@@ -382,7 +387,7 @@ msgstr "位数："
 #, c-format
 msgctxt "prompt_pubkey_password"
 msgid "Password for key '%1$s'"
-msgstr "密钥「%1$s」的密码"
+msgstr "密钥'%1$s'的密码"
 
 #. Prompt for whether to allow SSH Authentication Agent to use the specified
 #. key. Note that the '\n' means split the line so it's actually "host to use
@@ -414,7 +419,7 @@ msgid ""
 msgstr ""
 "可能有人正在做非善意的事情！\n"
 "可能有人正在偷听你的会话(中间人攻击)！\n"
-"但也可能是主机密钥正好已被更改。"
+"但也可能是主机密钥刚刚被更改。"
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
@@ -440,7 +445,7 @@ msgstr ""
 #, c-format
 msgctxt "host_authenticity_warning"
 msgid "The authenticity of host '%1$s' can't be established."
-msgstr "主机「%1$s」的验证无法建立"
+msgstr "无法验证‘%1$s’主机"
 
 #. First field is encryption algorithm. Second is the actual fingerprint in
 #. hex digits
@@ -490,7 +495,7 @@ msgstr ""
 #. The category title for terminal emulation preferences.
 msgctxt "pref_emulation_category"
 msgid "Terminal emulation"
-msgstr "模拟终端"
+msgstr "终端模拟"
 
 #. Name for the emulation terminal type preference.
 msgctxt "pref_emulation_title"
@@ -500,7 +505,7 @@ msgstr "仿真模式"
 #. Description of the emulation terminal type preference.
 msgctxt "pref_emulation_summary"
 msgid "Terminal emulation mode to use for PTY connections"
-msgstr "设置使用PTY连接时的终端模式"
+msgstr "PTY连接所使用的终端仿真模式"
 
 #. Name for the scrollback size preference
 msgctxt "pref_scrollback_title"
@@ -515,13 +520,13 @@ msgstr "在内存中为每个控制台保留的回滚缓存长度"
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr "备分密钥"
+msgstr "备分公钥"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
-msgstr "使用安卓的备份机制，保存私钥的备份"
+msgstr "使用安卓的备份机制保存私钥的备份"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -536,7 +541,7 @@ msgstr "旋转模式"
 #. Summary for the rotation mode preference
 msgctxt "pref_rotation_summary"
 msgid "How to change rotation when keyboard popped in/out"
-msgstr "当键盘打开或关闭时屏幕如何旋转(水平或竖直)"
+msgstr "当键盘打开或关闭时如何改变屏幕旋转"
 
 #. Name for the titlebar hide preference
 msgctxt "pref_titlebarhide_title"
@@ -556,7 +561,7 @@ msgstr "特殊键始终可见"
 #. Name for the page up/down gesture preference
 msgctxt "pref_pg_updn_gesture_title"
 msgid "Page up/down gesture"
-msgstr "向上/向下翻页 手势"
+msgstr "向上/向下翻页手势"
 
 #. Summary for the full screen preference
 msgctxt "pref_pg_updn_gesture_summary"
@@ -616,13 +621,13 @@ msgstr "在内存中记录密钥"
 #. Summary for the memorize keys preference
 msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
-msgstr "保留解锁的密匙于内存中直到后台服务停止"
+msgstr "将解锁的密钥保留于内存中，直到后端服务被终止"
 
 #. Name for the preference that forces the service to stay running in the
 #. background.
 msgctxt "pref_conn_persist_title"
 msgid "Persist connections"
-msgstr "保持联机"
+msgstr "保持连接"
 
 #. Summary for the preference that forces the service to stay running in the
 #. background.
@@ -659,7 +664,7 @@ msgstr "仅 alt"
 #. Name for the camera shortcut usage preference
 msgctxt "pref_camera_title"
 msgid "Camera shortcut"
-msgstr "相机按钮快捷键"
+msgstr "相机快捷键"
 
 #. Summary for the camera shortcut usage preference
 msgctxt "pref_camera_summary"
@@ -679,7 +684,7 @@ msgstr "终端运行时禁止屏幕休眠"
 #. Name for the Wi-Fi lock preference
 msgctxt "pref_wifilock_title"
 msgid "Keep Wi-Fi active"
-msgstr "保持WI-FI激活"
+msgstr "保持Wi-Fi激活"
 
 #. Summary for the Wi-Fi lock preference
 msgctxt "pref_wifilock_summary"
@@ -694,7 +699,7 @@ msgstr "触摸反馈"
 #. Summary for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_summary"
 msgid "Vibrate when sending arrow keys; useful for laggy connections"
-msgstr "发送箭头键时振动；这对有延迟的连接有帮助"
+msgstr "发送方向键时振动；这对有延迟的连接有帮助"
 
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
@@ -733,13 +738,13 @@ msgstr "当终端在后台响铃时发出通知"
 #. shortcuts.
 msgctxt "list_keymode_right"
 msgid "Use right-side keys"
-msgstr "使用右边的键"
+msgstr "使用右侧按键"
 
 #. Preference selection to indicate use of left side of keyboard for special
 #. shortcuts.
 msgctxt "list_keymode_left"
 msgid "Use left-side keys"
-msgstr "使用左边的键"
+msgstr "使用左侧按键"
 
 #. Preference selection to indicate never to use special shortcut keys.
 msgctxt "list_keymode_none"
@@ -749,12 +754,12 @@ msgstr "禁用"
 #. Preference to not use pubkeys to authenticate to this host.
 msgctxt "list_pubkeyids_none"
 msgid "Do not use keys"
-msgstr "不使用密匙"
+msgstr "不使用密钥"
 
 #. Preference to use any pubkey to authenticate to this host.
 msgctxt "list_pubkeyids_any"
 msgid "Use any unlocked key"
-msgstr "使用解锁密匙"
+msgstr "使用任何已解锁密钥"
 
 #. Host nickname field preference title
 msgctxt "hostpref_nickname_title"
@@ -790,7 +795,7 @@ msgstr "登录后自动运行"
 #. Host post-login automation preference summary
 msgctxt "hostpref_postlogin_summary"
 msgid "Commands to run on remote server once authenticated"
-msgstr "登录后在远程服务器上自动运行命令"
+msgstr "登录后在远程服务器上自动运行的命令"
 
 #. Host compression preference title
 msgctxt "hostpref_compression_title"
@@ -811,7 +816,7 @@ msgstr "开始Shell会话"
 #. connection or not
 msgctxt "hostpref_wantsession_summary"
 msgid "Disable this preference to only use port forwards"
-msgstr "仅使用端口转发禁用这个设置"
+msgstr "禁用这个设置以仅使用端口转发"
 
 #. Setting for whether the host should be reconnected to automatically upon
 #. disconnect
@@ -862,7 +867,7 @@ msgstr "端口"
 #. Displayed to indicate a host has never been connected to.
 msgctxt "bind_never"
 msgid "Never connected"
-msgstr "尚未连接"
+msgstr "从未连接"
 
 #. Message given when user copies from the terminal.
 #, c-format
@@ -907,7 +912,7 @@ msgstr "端口转发"
 #. force a size.
 msgctxt "console_menu_resize"
 msgid "Force Size"
-msgstr "指定大小"
+msgstr "指定终端大小"
 
 #. Button that brings up the list of URLs on the current screen
 msgctxt "console_menu_urlscan"
@@ -934,14 +939,14 @@ msgstr "本地"
 #. listening remotely is forwarded to the local end's listening port.
 msgctxt "portforward_remote"
 msgid "Remote"
-msgstr "远端"
+msgstr "远程"
 
 #. Selection for a "dynamic" port forward. E.g., connections to a port
 #. listening locally is forwarded based on the SOCKS protocol to an arbitrary
 #. remote host and port.
 msgctxt "portforward_dynamic"
 msgid "Dynamic (SOCKS)"
-msgstr "动态套接字(SOCKS)"
+msgstr "动态(SOCKS)"
 
 #. Button that commits the port forward to be made from the Port Forward
 #. Creation dialog.
@@ -1112,7 +1117,7 @@ msgstr "正在通过%3$s连接到 %1$s:%2$d"
 #, c-format
 msgctxt "terminal_sucess"
 msgid "Verified host '%1$s' key: %2$s"
-msgstr "验证主机 %1$s 键值： %2$s"
+msgstr "验证主机 %1$s 密钥： %2$s"
 
 msgctxt "terminal_failed"
 msgid "Host key verification failed."
@@ -1154,11 +1159,11 @@ msgstr "尝试 '密码' 身份验证"
 
 msgctxt "terminal_auth_pass_fail"
 msgid "Authentication method 'password' failed"
-msgstr "'密码' 方式身份验证失败"
+msgstr "'密码' 验证方式失败"
 
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
-msgstr "尝试使用保存在内存中的公匙进行用户认证"
+msgstr "尝试'公钥'验证，使用任何内存中的公匙"
 
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
@@ -1166,26 +1171,26 @@ msgstr "所选公钥失效,请在主机中重新选择"
 
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
-msgstr "尝试以指定的公钥进行 '公钥' 方式身份验证"
+msgstr "尝试'公钥'验证，使用指定的公钥"
 
 #, c-format
 msgctxt "terminal_auth_pubkey_fail"
 msgid "Authentication method 'publickey' with key '%1$s' failed"
-msgstr "以密钥 '%1$s' 进行 '公钥' 方式身份认证失败"
+msgstr "'公钥' 验证方式失败，密钥 '%1$s'"
 
 msgctxt "terminal_auth_ki"
 msgid "Attempting 'keyboard-interactive' authentication"
-msgstr "尝试 '键盘交互式' 方式身份认证"
+msgstr "尝试 '键盘交互式' 验证"
 
 msgctxt "terminal_auth_ki_fail"
 msgid "Authentication method 'keyboard-interactive' failed"
-msgstr "'键盘交互式' 方式身份认证失败"
+msgstr "'键盘交互式' 验证方式失败"
 
 msgctxt "terminal_auth_fail"
 msgid ""
 "[Your host doesn't support 'password' or 'keyboard-interactive' "
 "authentication.]"
-msgstr "[该主机不支持用户口令认证或键盘交互式认证]"
+msgstr "[你的主机不支持'密码'或'键盘交互式'认证]"
 
 msgctxt "terminal_no_session"
 msgid "Session will not be started due to host preference."
@@ -1284,13 +1289,13 @@ msgstr "切换控制字符。"
 #. view for              accessibility purposes.
 msgctxt "image_description_send_escape_character"
 msgid "Send escape character."
-msgstr "发送转义字符。"
+msgstr "发送Escape字符。"
 
 #. Describes the icon of the "send tab character" button in the terminal view
 #. for              accessibility purposes.
 msgctxt "image_description_send_tab_character"
 msgid "Send TAB character."
-msgstr "发送TAB键。"
+msgstr "发送TAB字符。"
 
 #. Describes the icon of the "hide keyboard" button in the terminal view for
 #. accessibility              purposes.
@@ -1524,4 +1529,4 @@ msgstr "未知的密钥类型"
 #. that the key is encrypted (i.e,              password protected).
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
-msgstr "（暗号化）"
+msgstr "（已加密）"
