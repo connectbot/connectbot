@@ -402,7 +402,17 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		// If we just closed the last bridge, go back to the previous activity.
 		if (pager.getChildCount() == 0) {
 			finish();
+			unregisterMenuListeners();
 		}
+	}
+
+	private void unregisterMenuListeners() {
+		portForward.setOnMenuItemClickListener(null);
+		disconnect.setOnMenuItemClickListener(null);
+		paste.setOnMenuItemClickListener(null);
+		portForward.setOnMenuItemClickListener(null);
+		resize.setOnMenuItemClickListener(null);
+		urlscan.setOnMenuItemClickListener(null);
 	}
 
 	protected View findCurrentView(int id) {
