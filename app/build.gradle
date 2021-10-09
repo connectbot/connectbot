@@ -26,11 +26,6 @@ ext {
 apply plugin: 'com.diffplug.spotless'
 apply from: '../config/quality.gradle'
 
-repositories {
-	google()
-	mavenCentral()
-}
-
 def preDexEnabled = "true" == System.getProperty("pre-dex", "true")
 
 coveralls.jacocoReportPath = 'build/reports/coverage/google/debug/report.xml'
