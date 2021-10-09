@@ -26,8 +26,6 @@ ext {
 apply plugin: 'com.diffplug.spotless'
 apply from: '../config/quality.gradle'
 
-def preDexEnabled = "true" == System.getProperty("pre-dex", "true")
-
 coveralls.jacocoReportPath = 'build/reports/coverage/google/debug/report.xml'
 
 androidGitVersion {
@@ -37,11 +35,6 @@ androidGitVersion {
 
 android {
 	compileSdkVersion 29
-
-	dexOptions {
-		// Skip pre-dexing when running on a CI or when disabled via -Dpre-dex=false
-		preDexLibraries = preDexEnabled
-	}
 
 	defaultConfig {
 		applicationId "org.connectbot"
