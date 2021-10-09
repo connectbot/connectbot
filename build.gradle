@@ -13,8 +13,9 @@ buildscript {
 	}
 }
 
-plugins { id 'com.diffplug.spotless' version '5.16.0' }
-apply plugin: 'com.diffplug.spotless'
+plugins {
+	id 'com.diffplug.spotless' version '5.16.0'
+}
 
 if (MAVEN_REPO_CACHE) {
 	allprojects {
