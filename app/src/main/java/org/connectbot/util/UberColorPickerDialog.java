@@ -80,9 +80,6 @@ public class UberColorPickerDialog extends Dialog {
 	/**
 	 * Ctor
 	 *
-	 * @param context
-	 * @param listener
-	 * @param initialColor
 	 */
 	public UberColorPickerDialog(Context context,
 				OnColorChangedListener listener,
@@ -154,7 +151,6 @@ public class UberColorPickerDialog extends Dialog {
 		private static final int TRACK_VER_VALUE_SLIDER = 31;
 
 		private static final int TEXT_SIZE_DP = 12;
-		private static final int TEXT_SIZE_LABEL_DP = 12;
 
 		private static final int BUTTON_TEXT_MARGIN_DP = 16;
 
@@ -744,9 +740,9 @@ public class UberColorPickerDialog extends Dialog {
 								}
 								else if (mFocusedControl == 1) {
 									if (y < 0)
-										changeSlider(mFocusedControl, true, jump);
+										changeSlider(true, jump);
 									else if (y > 0)
-										changeSlider(mFocusedControl, false, jump);
+										changeSlider(false, jump);
 								}
 								break;
 						}
@@ -821,11 +817,10 @@ public class UberColorPickerDialog extends Dialog {
 
 		/**
 		 * Effect a trackball change to a 1D slider.
-		 * @param slider id of the slider to be effected
 		 * @param increase true if the change is an increase, false if a decrease
 		 * @param jump the amount by which to change in units of the range [0,255]
 		 */
-		private void changeSlider(int slider, boolean increase, int jump) {
+		private void changeSlider(boolean increase, int jump) {
 			//NEW_METHOD_WORK_NEEDED_HERE
 			//It is only necessary to add an entry here for a new method if the new method uses a 1D slider.
 			//Note, some sliders are horizontal and others are vertical.
