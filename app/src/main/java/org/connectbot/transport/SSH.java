@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -92,11 +93,6 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		super();
 	}
 
-	/**
-	 * @param host
-	 * @param bridge
-	 * @param manager
-	 */
 	public SSH(HostBean host, TerminalBridge bridge, TerminalManager manager) {
 		super(host, bridge, manager);
 	}
@@ -134,7 +130,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		| ChannelCondition.CLOSED
 		| ChannelCondition.EOF;
 
-	private List<PortForwardBean> portForwards = new ArrayList<>();
+	private final List<PortForwardBean> portForwards = new ArrayList<>();
 
 	private int columns;
 	private int rows;
@@ -355,7 +351,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 			if (PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType())) {
 				// load specific key using pem format
-				pair = PEMDecoder.decode(new String(pubkey.getPrivateKey(), "UTF-8").toCharArray(), password);
+				pair = PEMDecoder.decode(new String(pubkey.getPrivateKey(), StandardCharsets.UTF_8).toCharArray(), password);
 			} else {
 				// load using internal generated format
 				PrivateKey privKey;
@@ -551,7 +547,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		}
 
 		if ((newConditions & ChannelCondition.STDERR_DATA) != 0) {
-			byte discard[] = new byte[256];
+			byte[] discard = new byte[256];
 			while (stderr.available() > 0) {
 				stderr.read(discard);
 			}
@@ -731,7 +727,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 			return true;
 		} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(portForward.getType())) {
-			DynamicPortForwarder dpf = null;
+			DynamicPortForwarder dpf;
 			dpf = (DynamicPortForwarder) portForward.getIdentifier();
 
 			if (!portForward.isEnabled() || dpf == null) {
@@ -814,9 +810,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		sb.append("/#")
 			.append(Uri.encode(input));
 
-		Uri uri = Uri.parse(sb.toString());
-
-		return uri;
+		return Uri.parse(sb.toString());
 	}
 
 	/**
@@ -910,10 +904,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				} else if (privKey instanceof Ed25519PrivateKey) {
 					Ed25519PublicKey pubkey = (Ed25519PublicKey) pair.getPublic();
 					pubKeys.put(entry.getKey(), Ed25519Verify.get().encodePublicKey(pubkey));
-				} else
-					continue;
-			} catch (IOException e) {
-				continue;
+				}
+			} catch (IOException ignored) {
 			}
 		}
 
@@ -939,10 +931,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	}
 
 	private boolean promptForPubkeyUse(String nickname) {
-		Boolean result = bridge.promptHelper.requestBooleanPrompt(null,
-				manager.res.getString(R.string.prompt_allow_agent_to_use_key,
-						nickname));
-		return result;
+		return bridge.promptHelper.requestBooleanPrompt(null,
+				manager.res.getString(R.string.prompt_allow_agent_to_use_key, nickname));
 	}
 
 	@Override

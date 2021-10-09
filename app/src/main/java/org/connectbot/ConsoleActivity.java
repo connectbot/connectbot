@@ -132,7 +132,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 	private Animation keyboard_fade_in, keyboard_fade_out;
 
-	private MenuItem disconnect, copy, paste, portForward, resize, urlscan;
+	private MenuItem disconnect;
+	private MenuItem paste;
+	private MenuItem portForward;
+	private MenuItem resize;
+	private MenuItem urlscan;
 
 	private boolean forcedOrientation;
 

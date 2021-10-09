@@ -257,7 +257,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		int scrollback = 140;
 		try {
 			scrollback = Integer.parseInt(prefs.getString(PreferenceConstants.SCROLLBACK, "140"));
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return scrollback;
 	}
