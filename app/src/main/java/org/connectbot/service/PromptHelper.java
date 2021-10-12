@@ -123,7 +123,7 @@ public class PromptHelper {
 		String value = null;
 		try {
 			value = (String) requestPrompt(instructions, hint, String.class);
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return value;
 	}
@@ -138,7 +138,7 @@ public class PromptHelper {
 		Boolean value = null;
 		try {
 			value = (Boolean) requestPrompt(instructions, hint, Boolean.class);
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 		return value;
 	}
