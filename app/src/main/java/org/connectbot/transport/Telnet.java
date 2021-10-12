@@ -133,7 +133,7 @@ public class Telnet extends AbsTransport {
 			try {
 				sock.connect(new InetSocketAddress(addr, port));
 				return;
-			} catch (SocketTimeoutException e) {
+			} catch (SocketTimeoutException ignored) {
 			}
 		}
 		throw new SocketTimeoutException("Could not connect; socket timed out");
