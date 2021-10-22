@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.9.8][1.9.8]
+### Fixed
+- Issue on some MediaTek phones where arithmetic errors show up
+  when connecting using Ed25519.
+
+## [1.9.7][1.9.7]
+### Fixed
+- Added support for rsa-sha2-512 by updating sshlib
+
 ## [1.9.6][1.9.6]
 ### Fixed
 - Fixed crash when using tmux
@@ -78,6 +87,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Color picker color numbers are now localized
 
 
+[1.9.8]: https://github.com/connectbot/connectbot/compare/v1.9.7...v1.9.8
+[1.9.7]: https://github.com/connectbot/connectbot/compare/v1.9.6...v1.9.7
+[1.9.6]: https://github.com/connectbot/connectbot/compare/v1.9.5...v1.9.6
+[1.9.5]: https://github.com/connectbot/connectbot/compare/v1.9.4...v1.9.5
 [1.9.0-alpha1]: https://github.com/connectbot/connectbot/compare/v1.8.6...v1.9.0-alpha1
 [1.8.6]: https://github.com/connectbot/connectbot/compare/v1.8.5...v1.8.6
 [1.8.5]: https://github.com/connectbot/connectbot/compare/v1.8.4...v1.8.5
