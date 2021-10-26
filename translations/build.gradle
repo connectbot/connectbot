@@ -16,7 +16,7 @@
  */
 
 plugins {
-	id "com.jetbrains.python.envs" version "0.0.30"
+	id "com.jetbrains.python.envs" version "0.0.31"
 }
 
 envs {
