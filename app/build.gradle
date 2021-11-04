@@ -258,7 +258,7 @@ dependencies {
 	testImplementation 'org.assertj:assertj-core:3.21.0'
 	testImplementation 'org.robolectric:robolectric:4.6.1'
 
-	errorprone "com.google.errorprone:error_prone_core:2.9.0"
+	errorprone "com.google.errorprone:error_prone_core:2.10.0"
 	errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"
 }
 
