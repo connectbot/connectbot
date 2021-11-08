@@ -43,7 +43,7 @@ jobs:
         TRANSLATIONS_ONLY=1 ./gradlew :translations:importToAndroid
 
     - name: Create pull request
-      uses: peter-evans/create-pull-request@v3.10.1
+      uses: peter-evans/create-pull-request@v3.11.0
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: |
