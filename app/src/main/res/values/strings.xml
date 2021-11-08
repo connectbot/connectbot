@@ -255,6 +255,11 @@
 	<!-- Summary for the volume keys control font size preference -->
 	<string name="pref_volumefont_summary">"Font size can also be changed in per-host settings"</string>
 
+	<!-- Name for the ctrl-+/- keys control font size preference -->
+	<string name="pref_ctrlfont_title">"Ctrl-plus/minus keys change font size"</string>
+	<!-- Summary for the ctrl-+/- keys control font size preference -->
+	<string name="pref_ctrlfont_summary">"Font size can also be changed in per-host settings"</string>
+
 	<!-- Name for the memorize keys preference -->
 	<string name="pref_memkeys_title">"Remember keys in memory"</string>
 	<!-- Summary for the memorize keys preference -->
@@ -274,6 +279,11 @@
 	<string name="pref_stickymodifiers_title">"Sticky modifiers"</string>
 	<!-- Summary for the sticky modifiers preference -->
 	<string name="pref_stickymodifiers_summary">"Modifier keys remain enabled until another key is pressed"</string>
+
+	<!-- Name for the sticky non locking preference -->
+	<string name="pref_stickynonlocking_title">"Sticky modifiers do not lock"</string>
+	<!-- Summary for the sticky non locking preference -->
+	<string name="pref_stickynonlocking_summary">"This setting is a workaround for Hacker's Keyboard"</string>
 
 	<!-- Sticky modifier preference value description for when only the Alt key should be a sticky modifier. -->
 	<string name="only_alt">"Only alt"</string>
