@@ -34,7 +34,7 @@ androidGitVersion {
 }
 
 android {
-	compileSdkVersion 29
+	compileSdkVersion 31
 
 	defaultConfig {
 		applicationId "org.connectbot"
