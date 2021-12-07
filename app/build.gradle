@@ -247,7 +247,9 @@ dependencies {
 	androidTestImplementation "androidx.test:rules:$testRunnerVersion"
 	androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 	androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
-	androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+	androidTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion") {
+		exclude group: "com.google.android.apps.common.testing.accessibility.framework", module: "accessibility-test-framework"
+	}
 	androidTestImplementation "androidx.test.ext:junit:$supportLibraryVersion"
 	androidTestImplementation "com.linkedin.testbutler:test-butler-library:2.2.1"
 
