@@ -240,6 +240,7 @@ dependencies {
 	implementation 'androidx.appcompat:appcompat:1.4.1'
 	implementation "androidx.preference:preference:1.2.0"
 	implementation "com.google.android.material:material:1.5.0"
+	implementation 'com.google.code.gson:gson:2.9.0'
 
 	androidTestUtil "androidx.test:orchestrator:$testRunnerVersion"
 	androidTestUtil "com.linkedin.testbutler:test-butler-app:2.2.1"

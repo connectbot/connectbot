@@ -95,6 +95,20 @@ public class PortForwardBean extends AbstractBean {
 	}
 
 	/**
+	 * @param hostId the hostId to set
+	 */
+	public void setHostId(long hostId) {
+		this.hostId = hostId;
+	}
+
+	/**
+	 * @return the hostId
+	 */
+	public long getHostId() {
+		return hostId;
+	}
+
+	/**
 	 * @param nickname the nickname to set
 	 */
 	public void setNickname(String nickname) {

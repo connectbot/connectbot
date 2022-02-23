@@ -435,11 +435,14 @@
 	<!-- Selection choice to sort hosts by nickname. -->
 	<string name="list_menu_sortname">"Sort by name"</string>
 	<string name="list_menu_disconnect">"Disconnect All"</string>
+	<string name="list_menu_import">"Import Host(s) from Clipboard"</string>
+	<string name="list_menu_export">"Export Host(s) to Clipboard"</string>
 	<string name="list_menu_settings">"Settings"</string>
 
 	<string name="list_host_disconnect">"Disconnect"</string>
 	<string name="list_host_edit">"Edit host"</string>
 	<string name="list_host_portforwards">"Edit port forwards"</string>
+	<string name="list_host_export">"Export to Clipboard"</string>
 	<string name="list_host_delete">"Delete host"</string>
 	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
 	<string name="list_host_empty">"No hosts created yet."</string>

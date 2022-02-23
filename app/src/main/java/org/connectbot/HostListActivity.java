@@ -31,9 +31,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.text.ClipboardManager;
+import android.widget.Toast;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -49,14 +53,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.connectbot.bean.HostBean;
+import org.connectbot.bean.PortForwardBean;
 import org.connectbot.data.HostStorage;
 import org.connectbot.service.OnHostStatusChangedListener;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
+import org.connectbot.util.HostExport;
 import org.connectbot.util.PreferenceConstants;
+import org.connectbot.util.PubkeyUtils;
 
+import java.security.PublicKey;
 import java.util.List;
 
 public class HostListActivity extends AppCompatListActivity implements OnHostStatusChangedListener {
@@ -78,6 +86,9 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 	private MenuItem sortlast;
 
 	private MenuItem disconnectall;
+
+	private MenuItem importHosts;
+	private MenuItem exportHosts;
 
 	private SharedPreferences prefs = null;
 
@@ -292,6 +303,54 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			}
 		});
 
+		importHosts = menu.add(R.string.list_menu_import);
+		importHosts .setIcon(android.R.drawable.ic_menu_set_as);
+		importHosts .setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem menuItem) {
+				Gson gson = new Gson();
+				ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+				String json = clipboard.getText().toString();
+				HostExport export = gson.fromJson(json, HostExport.class);
+				HostDatabase hostdbInstance = HostDatabase.get(getApplicationContext());
+
+				for (HostExport.HostWithForwards hostExport: export.getHosts()) {
+					HostBean host = hostExport.getHost();
+					host.setId(-1);
+					hostdb.saveHost(host);
+					for (PortForwardBean portforward : hostExport.getPortforwards()) {
+						portforward.setId(-1);
+						portforward.setHostId(host.getId());
+						hostdbInstance.savePortForward(portforward);
+					}
+				}
+				updateList();
+
+				return false;
+			}
+		});
+		exportHosts = menu.add(R.string.list_menu_export);
+		exportHosts .setIcon(android.R.drawable.ic_menu_set_as);
+		exportHosts .setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem menuItem) {
+				Gson gson = new Gson();
+				List<HostBean> hosts = hostdb.getHosts(false);
+				HostExport export = new HostExport();
+				for (HostBean host : hosts) {
+					export.addHost(host, hostdb.getPortForwardsForHost(host));
+				}
+				String json = gson.toJson(export);
+
+				ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+				clipboard.setText(json);
+
+				Toast.makeText(getApplicationContext(), "Successfully exported!", Toast.LENGTH_SHORT).show();
+				return false;
+			}
+		});
+
+
 		MenuItem settings = menu.add(R.string.list_menu_settings);
 		settings.setIcon(android.R.drawable.ic_menu_preferences);
 		settings.setIntent(new Intent(HostListActivity.this, SettingsActivity.class));
@@ -474,6 +533,28 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			});
 			if (!TransportFactory.canForwardPorts(host.getProtocol()))
 				portForwards.setEnabled(false);
+
+			MenuItem exportConfig = menu.add(R.string.list_host_export);
+			exportConfig.setEnabled(true);
+			exportConfig.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
+				public boolean onMenuItemClick(MenuItem item) {
+					try {
+						Gson gson = new Gson();
+						HostExport export = new HostExport();
+						export.addHost(host, hostdb.getPortForwardsForHost(host));
+						String json = gson.toJson(export);
+
+						ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+						clipboard.setText(json);
+						Toast.makeText(getApplicationContext(), "Successfully exported!", Toast.LENGTH_SHORT).show();
+					} catch (Exception e) {
+						Log.d(TAG, "Error converting to OpenSSH format", e);
+					}
+					return true;
+				}
+			});
+
 
 			MenuItem delete = menu.add(R.string.list_host_delete);
 			delete.setOnMenuItemClickListener(new OnMenuItemClickListener() {
