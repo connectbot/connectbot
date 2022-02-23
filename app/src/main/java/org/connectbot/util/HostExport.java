@@ -6,8 +6,6 @@ import java.util.List;
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
 
-import kotlin.collections.ArrayDeque;
-
 public class HostExport {
 	private List<HostWithForwards> hosts;
 

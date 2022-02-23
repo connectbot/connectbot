@@ -62,9 +62,7 @@ import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.HostExport;
 import org.connectbot.util.PreferenceConstants;
-import org.connectbot.util.PubkeyUtils;
 
-import java.security.PublicKey;
 import java.util.List;
 
 public class HostListActivity extends AppCompatListActivity implements OnHostStatusChangedListener {
