@@ -317,6 +317,8 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 				for (HostExport.HostWithForwards hostExport: export.getHosts()) {
 					HostBean host = hostExport.getHost();
 					host.setId(-1);
+					host.setPubkeyId(HostDatabase.PUBKEYID_ANY);
+					host.setLastConnect(-1);
 					hostdb.saveHost(host);
 					for (PortForwardBean portforward : hostExport.getPortforwards()) {
 						portforward.setId(-1);
