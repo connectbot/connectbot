@@ -26,7 +26,7 @@ jobs:
         uses: android-actions/setup-android@v2
 
       - name: Cache Gradle Home files
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3
         continue-on-error: true
         with:
           path: ~/.gradle/caches
