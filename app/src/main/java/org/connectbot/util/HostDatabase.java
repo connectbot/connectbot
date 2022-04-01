@@ -645,7 +645,28 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 
 	@Override
 	public void removeKnownHost(String host, int port, String serverHostKeyAlgorithm, byte[] serverHostKey) {
-		throw new UnsupportedOperationException("removeKnownHost is not implemented");
+		//throw new UnsupportedOperationException("removeKnownHost is not implemented");
+		HashMap<String, String> selection = new HashMap<>();
+		selection.put(FIELD_HOST_HOSTNAME, host);
+		selection.put(FIELD_HOST_PORT, String.valueOf(port));
+		HostBean hostBean = findHost(selection);
+		if (hostBean == null) {
+			Log.e(TAG, "Tried to remove known host entry for " + host + ":" + port
+					+ ", algo" + serverHostKeyAlgorithm
+					+ " it doesn't exist in the database");
+			return;
+		}
+		mDb.beginTransaction();
+		try {
+			mDb.delete(TABLE_KNOWNHOSTS, FIELD_KNOWNHOSTS_HOSTID + " = ? AND "
+							+ FIELD_KNOWNHOSTS_HOSTKEYALGO + " = ?",
+					new String[] {String.valueOf(hostBean.getId()), serverHostKeyAlgorithm});
+			mDb.setTransactionSuccessful();
+		} finally {
+			mDb.endTransaction();
+		}
+		Log.d(TAG, String.format("Finished removing hostkey information for '%s:%d' algo %s",
+				host, port, serverHostKeyAlgorithm));
 	}
 
 	/**
