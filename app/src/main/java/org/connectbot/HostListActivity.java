@@ -563,6 +563,36 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 					return true;
 				}
 			});
+			MenuItem deleteFromKnownHosts =menu.add(R.string.list_host_reset_knownhost);
+			deleteFromKnownHosts.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
+				public boolean onMenuItemClick(MenuItem item) {
+					// prompt user to make sure they really want this
+					new androidx.appcompat.app.AlertDialog.Builder(
+							HostListActivity.this, R.style.AlertDialogTheme)
+							.setMessage(getString(R.string.reset_hostkey_message, host.getNickname()))
+							.setPositiveButton(R.string.reset_pos, new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// make sure we disconnect
+									if (bridge != null)
+										bridge.dispatchDisconnect(true);
+									List<String> hostKeyAlgos=
+											hostdb.getHostKeyAlgorithmsForHost(
+											host.getHostname(),host.getPort());
+									for (String algo:hostKeyAlgos) {
+										hostdb.removeKnownHost(host.getHostname(), host.getPort(),
+											algo,(new byte[0]));
+									}
+								}
+							})
+							.setNegativeButton(R.string.delete_neg, null).create().show();
+
+					return true;
+				}
+			});
+			if (!(host.getProtocol().equals("ssh")))
+				deleteFromKnownHosts.setEnabled(false);
 		}
 	}
 

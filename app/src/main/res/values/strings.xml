@@ -441,6 +441,9 @@
 	<string name="list_host_edit">"Edit host"</string>
 	<string name="list_host_portforwards">"Edit port forwards"</string>
 	<string name="list_host_delete">"Delete host"</string>
+	<!-- Reset host key text -->
+	<string name="list_host_reset_knownhost">"Reset known host keys"</string>
+
 	<!-- Note that the '\n' splits the lines so it's actually "quick-connect box below to connect" -->
 	<string name="list_host_empty">"No hosts created yet."</string>
 
@@ -470,6 +473,11 @@
 	<string name="delete_message">"Are you sure you want to delete '%1$s'?"</string>
 	<string name="delete_pos">"Yes, delete"</string>
 	<string name="delete_neg">"Cancel"</string>
+
+	<!-- Reset host key message -->
+	<string name="reset_hostkey_message">
+		"Are you sure you want to reset known host keys for '%1$s'? This is only necessary if keys were changed on the server."</string>
+	<string name="reset_pos">"Yes, reset"</string>
 
 	<string name="disconnect_all_message">"Are you sure you want to disconnect from all connected hosts?"</string>
 	<string name="disconnect_all_pos">"Yes, disconnect"</string>
