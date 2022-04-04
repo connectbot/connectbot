@@ -563,7 +563,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 					return true;
 				}
 			});
-			MenuItem deleteFromKnownHosts =menu.add(R.string.list_host_reset_knownhost);
+			MenuItem deleteFromKnownHosts = menu.add(R.string.list_host_reset_knownhost);
 			deleteFromKnownHosts.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 				@Override
 				public boolean onMenuItemClick(MenuItem item) {
@@ -577,12 +577,12 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 									// make sure we disconnect
 									if (bridge != null)
 										bridge.dispatchDisconnect(true);
-									List<String> hostKeyAlgos=
+									List<String> hostKeyAlgos =
 											hostdb.getHostKeyAlgorithmsForHost(
-											host.getHostname(),host.getPort());
+											host.getHostname(), host.getPort());
 									for (String algo:hostKeyAlgos) {
 										hostdb.removeKnownHost(host.getHostname(), host.getPort(),
-											algo,(new byte[0]));
+											algo, (new byte[0]));
 									}
 								}
 							})
