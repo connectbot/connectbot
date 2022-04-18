@@ -31,7 +31,6 @@
     </JetCodeStyleSettings>
     <XML>
       <option name="XML_WHITE_SPACE_AROUND_CDATA" value="1" />
-      <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
     </XML>
     <codeStyleSettings language="Groovy">
       <indentOptions>
