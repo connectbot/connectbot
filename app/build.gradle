@@ -43,7 +43,6 @@ android {
 
 		minSdkVersion 14
 		targetSdkVersion 29
-		ndkVersion "21.3.6528147"
 
 		vectorDrawables.useSupportLibrary = true
 
@@ -98,9 +97,6 @@ android {
 		oss {
 			dimension "license"
 			versionNameSuffix "-oss"
-			ndk {
-				abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
-			}
 		}
 
 		// This product flavor uses the Google Play Services library for
