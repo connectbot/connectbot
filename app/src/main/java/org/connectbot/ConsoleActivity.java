@@ -47,6 +47,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import androidx.annotation.Nullable;
 import com.google.android.material.tabs.TabLayout;
@@ -396,9 +397,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		}
 	}
 
-	/**
-	 * @param bridge
-	 */
 	private void closeBridge(final TerminalBridge bridge) {
 		updateEmptyVisible();
 		updatePromptVisible();
@@ -489,7 +487,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 
-		StrictModeSetup.run();
+		StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.LAX);
 
 		hardKeyboard = getResources().getConfiguration().keyboard ==
 				Configuration.KEYBOARD_QWERTY;
