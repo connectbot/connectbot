@@ -7,7 +7,7 @@ buildscript {
 }
 
 plugins {
-	id 'com.android.application' version '7.1.2'
+	id 'com.android.application' version '7.1.3'
 	id 'com.github.ben-manes.versions' version '0.42.0'
 	id 'net.ltgt.errorprone' version '2.0.2'
 	id 'com.gladed.androidgitversion' version '0.4.14'
@@ -42,7 +42,7 @@ android {
 		versionCode androidGitVersion.code()
 
 		minSdkVersion 14
-		targetSdkVersion 29
+		targetSdkVersion 31
 
 		vectorDrawables.useSupportLibrary = true
 
