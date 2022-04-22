@@ -157,7 +157,8 @@
   <string name="bind_never">Mai connesso</string>
   <plurals name="console_copy_done">
     <item quantity="one">Copiato %1$d byte negli appunti</item>
-    <item quantity="other">Copiati %1$d byte negli appunti</item>
+    <item quantity="many">Copiati %1$d byte negli appunti</item>
+    <item quantity="other"/>
   </plurals>
   <string name="console_copy_start">Tocca e trascina\noppure usa il pad direzionale\nper selezionare un\'area da copiare</string>
   <string name="console_menu_close">Chiudi</string>
