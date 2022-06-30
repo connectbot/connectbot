@@ -14,7 +14,7 @@ buildscript {
 }
 
 plugins {
-	id 'com.diffplug.spotless' version '6.6.1'
+	id 'com.diffplug.spotless' version '6.8.0'
 }
 
 if (MAVEN_REPO_CACHE) {
