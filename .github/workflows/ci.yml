@@ -36,7 +36,7 @@ jobs:
         run: ./gradlew build
 
       - name: Run instrument tests
-        uses: Doist/android-emulator-runner@8bb10a5eafb6726dff58df91c0c9b74798cc44ec
+        uses: Doist/android-emulator-runner@08b092e904025fada32a01b711af1e7ff7b7a4a3
         with:
           api-level: 28
           target: default
