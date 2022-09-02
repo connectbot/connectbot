@@ -38,8 +38,8 @@ android {
 
 	defaultConfig {
 		applicationId "org.connectbot"
-		versionName androidGitVersion.name()
-		versionCode androidGitVersion.code()
+		versionName "main"
+		versionCode 10
 
 		minSdkVersion 14
 		targetSdkVersion 31
