@@ -215,6 +215,35 @@ public abstract class AbsTransport {
 	public abstract boolean isSessionOpen();
 
 	/**
+	 * Whether or not this transport type can transfer files.
+	 * @return true on ability to transfer files
+	 */
+	public boolean canTransferFiles() {
+		return false;
+	}
+
+	/**
+	 * Downloads the specified remote file to a local folder.
+	 * @param remoteFile The path to the remote file to be downloaded. Must be non-null.
+	 * @param localFolder The path to local folder. Null = default external storage folder.
+	 * @return true on success, false on failure
+	 */
+	public boolean downloadFile(String remoteFile, String localFolder) {
+		return false;
+	}
+
+	/**
+	 * Uploads the specified local file to the remote host.
+	 * @param localFile The path to the local file to be uploaded. Must be non-null.
+	 * @param remoteFolder The path to the remote directory. Null == default remote directory.
+	 * @return true on success, false on failure
+	 */
+	public boolean uploadFile(String localFile, String remoteFile,
+			String remoteFolder, String mode) {
+		return false;
+	}
+
+	/**
 	 * @return int default port for protocol
 	 */
 	public abstract int getDefaultPort();
