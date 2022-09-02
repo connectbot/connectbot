@@ -134,8 +134,10 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			TerminalBridge t = bound.getBridges().get(0);
 			TransferThread transfer = new TransferThread(this, handler);
 			if (!prefs.getBoolean("background", true)) transfer.setProgressDialogMessage("Downloading");
-			final String downloadFolder = getFilesDir().getAbsolutePath();
-			transfer.download(t, "~/file.txt", null, downloadFolder);
+			final String localDir = getFilesDir().getAbsolutePath();
+			final String remoteDir = "~";
+			transfer.upload(t, localDir + "/file.zip", null, remoteDir);
+			//transfer.download(t, "~/file.txt", null, localDir);
 		}
 	}
 
