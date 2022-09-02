@@ -78,7 +78,7 @@ public class TransferThread extends Thread {
 		if (this.activity == null || this.handler == null || this.bridge == null)
 			return;
 
-		Log.d(TAG, "Requested " + (upload ? "upload" : "download") + " of [" + files + "]" );
+		Log.d(TAG, "Requested " + (upload ? "upload" : "download") + " of [" + files + "]");
 		Resources res = activity.getResources();
 		String fail = "";
 		try {
@@ -88,7 +88,7 @@ public class TransferThread extends Thread {
 				final String newMessage = upload ? "Uploading file" : "Downloading file";
 				handler.post(new Runnable() {
 					public void run() {
-						if (prefs.getBoolean("background",true)) {
+						if (prefs.getBoolean("background", true)) {
 							if (progressToast == null)
 								progressToast = Toast.makeText(activity, newMessage, Toast.LENGTH_LONG);
 							else
@@ -100,7 +100,7 @@ public class TransferThread extends Thread {
 					}
 				});
 				boolean success = (upload ? bridge.uploadFile(file, destName, destFolder, null) : bridge.downloadFile(file, destFolder));
-				if (! success)
+				if (!success)
 					fail += " " + file;
 			}
 		} finally {
@@ -111,7 +111,7 @@ public class TransferThread extends Thread {
 					if (progress != null)
 						progress.dismiss();
 
-					if (prefs.getBoolean("background",true)) {
+					if (prefs.getBoolean("background", true)) {
 							Toast.makeText(activity,
 								failMessage != null ? failMessage : sucMessage,
 								Toast.LENGTH_LONG)
