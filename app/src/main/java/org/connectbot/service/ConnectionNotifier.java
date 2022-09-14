@@ -38,13 +38,14 @@ import androidx.core.app.NotificationCompat;
 
 /**
  * @author Kenny Root
- *
+ * <p>
  * Based on the concept from jasta's blog post.
  */
 public class ConnectionNotifier {
 	private static final int ONLINE_NOTIFICATION = 1;
 	private static final int ACTIVITY_NOTIFICATION = 2;
 	private static final int ONLINE_DISCONNECT_NOTIFICATION = 3;
+	int pendingIntentFlags;
 
 	private static final String NOTIFICATION_CHANNEL = "my_connectbot_channel";
 
@@ -53,6 +54,11 @@ public class ConnectionNotifier {
 	}
 
 	private ConnectionNotifier() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			pendingIntentFlags = PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT;
+		} else {
+			pendingIntentFlags = PendingIntent.FLAG_UPDATE_CURRENT;
+		}
 	}
 
 	public static ConnectionNotifier getInstance() {
@@ -66,8 +72,8 @@ public class ConnectionNotifier {
 	private NotificationCompat.Builder newNotificationBuilder(Context context, String id) {
 		NotificationCompat.Builder builder =
 				new NotificationCompat.Builder(context, id)
-				.setSmallIcon(R.drawable.notification_icon)
-				.setWhen(System.currentTimeMillis());
+						.setSmallIcon(R.drawable.notification_icon)
+						.setWhen(System.currentTimeMillis());
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 			createNotificationChannel(context, id);
@@ -95,8 +101,7 @@ public class ConnectionNotifier {
 		notificationIntent.setAction("android.intent.action.VIEW");
 		notificationIntent.setData(host.getUri());
 
-		PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
-				notificationIntent, 0);
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, pendingIntentFlags);
 
 		builder.setContentTitle(res.getString(R.string.app_name))
 				.setContentText(contentText)
@@ -125,9 +130,7 @@ public class ConnectionNotifier {
 		builder.setOngoing(true);
 		builder.setWhen(0);
 
-		builder.setContentIntent(PendingIntent.getActivity(context,
-				ONLINE_NOTIFICATION,
-				new Intent(context, ConsoleActivity.class), 0));
+		builder.setContentIntent(PendingIntent.getActivity(context, ONLINE_NOTIFICATION, new Intent(context, ConsoleActivity.class), pendingIntentFlags));
 
 		Resources res = context.getResources();
 		builder.setContentTitle(res.getString(R.string.app_name));
@@ -138,11 +141,7 @@ public class ConnectionNotifier {
 		builder.addAction(
 				android.R.drawable.ic_menu_close_clear_cancel,
 				res.getString(R.string.list_host_disconnect),
-				PendingIntent.getActivity(
-						context,
-						ONLINE_DISCONNECT_NOTIFICATION,
-						disconnectIntent,
-						0));
+				PendingIntent.getActivity(context, ONLINE_DISCONNECT_NOTIFICATION, disconnectIntent, pendingIntentFlags));
 
 		return builder.build();
 	}

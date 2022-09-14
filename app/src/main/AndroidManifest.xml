@@ -55,9 +55,9 @@
 
 		<activity
 			android:name=".HostListActivity"
-			android:label="@string/app_name"
 			android:launchMode="singleTop"
-			android:resizeableActivity="true">
+			android:resizeableActivity="true"
+			android:exported="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				<category android:name="android.intent.category.LAUNCHER"/>
@@ -174,7 +174,8 @@
 			android:configChanges="keyboardHidden|orientation"
 			android:launchMode="singleTop"
 			android:theme="@style/Theme.AppCompat"
-			android:windowSoftInputMode="stateAlwaysVisible|adjustResize">
+			android:windowSoftInputMode="stateAlwaysVisible|adjustResize"
+			android:exported="true">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW"/>
 
