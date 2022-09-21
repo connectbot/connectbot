@@ -129,7 +129,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 		hostdb = HostDatabase.get(this);
 
 		// SCP test
-		if (hosts != null && hosts.size() > 0 && bound.getBridges().size() > 0) {
+		/*if (hosts != null && hosts.size() > 0 && bound.getBridges().size() > 0) {
 			Log.d("SCP", "SCP");
 			TerminalBridge t = bound.getBridges().get(0);
 			TransferThread transfer = new TransferThread(this, handler);
@@ -138,7 +138,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			final String remoteDir = "~";
 			transfer.upload(t, localDir + "/file.zip", null, remoteDir);
 			//transfer.download(t, "~/file.txt", null, localDir);
-		}
+		}*/
 	}
 
 	@Override
