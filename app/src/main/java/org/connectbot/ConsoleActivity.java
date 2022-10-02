@@ -264,12 +264,12 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				mDown = false;
 				mHandler.postDelayed(this, KEYBOARD_REPEAT_INITIAL);
 				mView.setPressed(true);
-				return (true);
+				return true;
 
 			case MotionEvent.ACTION_CANCEL:
 				mHandler.removeCallbacks(this);
 				mView.setPressed(false);
-				return (true);
+				return true;
 
 			case MotionEvent.ACTION_UP:
 				mHandler.removeCallbacks(this);
@@ -278,7 +278,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				if (!mDown) {
 					mView.performClick();
 				}
-				return (true);
+				return true;
 			}
 			return false;
 		}
@@ -717,9 +717,9 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 							break;
 						case MotionEvent.ACTION_UP:
 							v.performClick();
-							return (true);
+							return true;
 						}
-						return (false);
+						return false;
 					}
 				});
 
