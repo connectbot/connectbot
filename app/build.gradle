@@ -20,7 +20,7 @@ plugins {
 ext {
 	supportLibraryVersion = '1.1.0'
 	testRunnerVersion = '1.4.0'
-	espressoVersion = '3.4.0'
+	espressoVersion = '3.5.0'
 }
 
 apply plugin: 'com.diffplug.spotless'
