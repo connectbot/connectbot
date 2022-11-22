@@ -70,6 +70,7 @@
 				<action android:name="android.intent.action.PICK"/>
 				<category android:name="android.intent.category.DEFAULT"/>
 
+				<data android:scheme="mosh" />
 				<data android:scheme="ssh"/>
 				<data android:scheme="telnet"/>
 				<data android:scheme="local"/>
