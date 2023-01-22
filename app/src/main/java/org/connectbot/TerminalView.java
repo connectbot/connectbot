@@ -48,6 +48,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -212,7 +213,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 		bridge.addFontSizeChangedListener(this);
 		bridge.parentChanged(this);
 
-		onFontSizeChanged(bridge.getFontSize());
+		onFontSizeChanged(0); // the argument is unused
 
 		gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
 			// Only used for pre-Honeycomb devices.
@@ -372,14 +373,15 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 	}
 
 	@Override
-	public void onFontSizeChanged(final float size) {
+	public void onFontSizeChanged(final float unusedSizeDp) {
 		scaleCursors();
 
 		((Activity) context).runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				if (terminalTextViewOverlay != null) {
-					terminalTextViewOverlay.setTextSize(size);
+					// Use the bridge text size in pixels to have exactly the same text size.
+					terminalTextViewOverlay.setTextSize(TypedValue.COMPLEX_UNIT_PX, bridge.getTextSizePx());
 
 					// For the TextView to line up with the bitmap text, lineHeight must be equal to
 					// the bridge's charHeight. See TextView.getLineHeight(), which has been reversed to
