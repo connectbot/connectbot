@@ -36,7 +36,7 @@ jobs:
         run: ./gradlew build
 
       - name: Run instrument tests
-        uses: reactivecircus/android-emulator-runner@v2.25.0
+        uses: reactivecircus/android-emulator-runner@v2.27.0
         with:
           api-level: 28
           target: default
