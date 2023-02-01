@@ -18,8 +18,7 @@ plugins {
 }
 
 ext {
-	supportLibraryVersion = '1.1.0'
-	testRunnerVersion = '1.4.0'
+	testRunnerVersion = '1.4.1'
 	espressoVersion = '3.5.1'
 }
 
@@ -232,7 +231,7 @@ dependencies {
 	googleImplementation 'com.google.android.gms:play-services-basement:18.1.0'
 	ossImplementation 'org.conscrypt:conscrypt-android:2.5.2'
 
-	implementation "androidx.recyclerview:recyclerview:$supportLibraryVersion"
+	implementation "androidx.recyclerview:recyclerview:1.2.1"
 	implementation 'androidx.appcompat:appcompat:1.4.2'
 	implementation "androidx.preference:preference:1.2.0"
 	implementation "com.google.android.material:material:1.6.1"
@@ -246,7 +245,7 @@ dependencies {
 	androidTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion") {
 		exclude group: "com.google.android.apps.common.testing.accessibility.framework", module: "accessibility-test-framework"
 	}
-	androidTestImplementation "androidx.test.ext:junit:$supportLibraryVersion"
+	androidTestImplementation "androidx.test.ext:junit:1.1.5"
 	androidTestImplementation "com.linkedin.testbutler:test-butler-library:2.2.1"
 
 	testImplementation 'junit:junit:4.13.2'
