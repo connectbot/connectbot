@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.connectbot.annotation.KeepForTesting;
 import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
 import org.connectbot.data.ColorStorage;
@@ -36,7 +37,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import androidx.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.trilead.ssh2.KnownHosts;
@@ -248,7 +248,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	}
 
 	@Override
-	@VisibleForTesting
+	@KeepForTesting
 	public void resetDatabase() {
 		try {
 			mDb.beginTransaction();
@@ -267,7 +267,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		}
 	}
 
-	@VisibleForTesting
+	@KeepForTesting
 	public static void resetInMemoryInstance(Context context) {
 		get(context).resetDatabase();
 	}

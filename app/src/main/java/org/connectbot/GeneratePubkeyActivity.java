@@ -24,6 +24,7 @@ import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Security;
 
+import org.connectbot.annotation.KeepForTesting;
 import org.connectbot.bean.PubkeyBean;
 import org.connectbot.util.EntropyDialog;
 import org.connectbot.util.EntropyView;
@@ -39,7 +40,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -275,7 +275,7 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 		entropyDialog.show();
 	}
 
-	@VisibleForTesting
+	@KeepForTesting
 	void setListener(OnKeyGeneratedListener listener) {
 		this.listener = listener;
 	}
