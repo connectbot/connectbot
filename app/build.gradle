@@ -33,7 +33,7 @@ androidGitVersion {
 }
 
 android {
-	compileSdkVersion 31
+	compileSdkVersion 33
 
 	defaultConfig {
 		applicationId "org.connectbot"
@@ -236,9 +236,9 @@ dependencies {
 	ossImplementation 'org.conscrypt:conscrypt-android:2.5.2'
 
 	implementation "androidx.recyclerview:recyclerview:1.2.1"
-	implementation 'androidx.appcompat:appcompat:1.4.2'
+	implementation 'androidx.appcompat:appcompat:1.6.1'
 	implementation "androidx.preference:preference:1.2.0"
-	implementation "com.google.android.material:material:1.6.1"
+	implementation "com.google.android.material:material:1.8.0"
 
 	androidTestUtil "androidx.test:orchestrator:$testRunnerVersion"
 	androidTestUtil "com.linkedin.testbutler:test-butler-app:2.2.1"
