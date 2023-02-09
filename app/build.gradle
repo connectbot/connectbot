@@ -83,6 +83,10 @@ android {
 		}
 
 		debug {
+			// This is necessary to avoid using multiDex
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg', 'proguard-debug.cfg'
+			minifyEnabled true
+
 			applicationIdSuffix ".debug"
 			testCoverageEnabled true
 		}
