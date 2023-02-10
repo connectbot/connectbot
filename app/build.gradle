@@ -7,20 +7,19 @@ buildscript {
 }
 
 plugins {
-	id 'com.android.application' version '7.1.3'
-	id 'com.github.ben-manes.versions' version '0.42.0'
-	id 'net.ltgt.errorprone' version '2.0.2'
+	id 'com.android.application' version '7.2.2'
+	id 'com.github.ben-manes.versions' version '0.45.0'
+	id 'net.ltgt.errorprone' version '3.0.1'
 	id 'com.gladed.androidgitversion' version '0.4.14'
 	id 'com.github.kt3k.coveralls' version '2.12.0'
 	id 'com.github.johnrengelman.processes' version '0.5.0'
 	id 'com.hiya.jacoco-android' version '0.2'
-	id 'com.starter.easylauncher' version "5.1.2"
+	id 'com.starter.easylauncher' version "6.1.0"
 }
 
 ext {
-	supportLibraryVersion = '1.1.0'
-	testRunnerVersion = '1.4.0'
-	espressoVersion = '3.4.0'
+	testRunnerVersion = '1.4.1'
+	espressoVersion = '3.5.1'
 }
 
 apply plugin: 'com.diffplug.spotless'
@@ -34,7 +33,7 @@ androidGitVersion {
 }
 
 android {
-	compileSdkVersion 31
+	compileSdkVersion 33
 
 	defaultConfig {
 		applicationId "org.connectbot"
@@ -84,6 +83,10 @@ android {
 		}
 
 		debug {
+			// This is necessary to avoid using multiDex
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg', 'proguard-debug.cfg'
+			minifyEnabled true
+
 			applicationIdSuffix ".debug"
 			testCoverageEnabled true
 		}
@@ -232,31 +235,29 @@ dependencies {
 	googleImplementation 'com.google.android.gms:play-services-basement:18.1.0'
 	ossImplementation 'org.conscrypt:conscrypt-android:2.5.2'
 
-	implementation "androidx.recyclerview:recyclerview:$supportLibraryVersion"
-	implementation 'androidx.appcompat:appcompat:1.4.2'
+	implementation "androidx.recyclerview:recyclerview:1.2.1"
+	implementation 'androidx.appcompat:appcompat:1.6.1'
 	implementation "androidx.preference:preference:1.2.0"
-	implementation "com.google.android.material:material:1.6.1"
+	implementation "com.google.android.material:material:1.8.0"
 
 	androidTestUtil "androidx.test:orchestrator:$testRunnerVersion"
-	androidTestUtil "com.linkedin.testbutler:test-butler-app:2.2.1"
-	androidTestImplementation "androidx.test:core:1.4.0"
+	androidTestImplementation "androidx.test:core:1.5.0"
 	androidTestImplementation "androidx.test:rules:$testRunnerVersion"
 	androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 	androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
 	androidTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion") {
 		exclude group: "com.google.android.apps.common.testing.accessibility.framework", module: "accessibility-test-framework"
 	}
-	androidTestImplementation "androidx.test.ext:junit:$supportLibraryVersion"
+	androidTestImplementation "androidx.test.ext:junit:1.1.5"
 	androidTestImplementation "com.linkedin.testbutler:test-butler-library:2.2.1"
 
 	testImplementation 'junit:junit:4.13.2'
-	testImplementation "androidx.test:core:1.3.0"
+	testImplementation "androidx.test:core:1.5.0"
 	testImplementation "androidx.test.ext:junit:1.1.2"
-	testImplementation 'org.mockito:mockito-core:4.7.0'
-	testImplementation 'org.assertj:assertj-core:3.23.1'
+	testImplementation 'org.mockito:mockito-core:5.1.1'
+	testImplementation 'org.assertj:assertj-core:3.24.2'
 	testImplementation 'org.robolectric:robolectric:4.8.2'
 
-	errorprone "com.google.errorprone:error_prone_core:2.15.0"
-	errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"
+	errorprone "com.google.errorprone:error_prone_core:2.18.0"
 }
 

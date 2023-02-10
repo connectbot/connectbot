@@ -69,13 +69,13 @@ import android.util.Log;
 public class TerminalManager extends Service implements BridgeDisconnectedListener, OnSharedPreferenceChangeListener, ProviderLoaderListener {
 	public final static String TAG = "CB.TerminalManager";
 
-	private ArrayList<TerminalBridge> bridges = new ArrayList<>();
+	private final ArrayList<TerminalBridge> bridges = new ArrayList<>();
 	public Map<HostBean, WeakReference<TerminalBridge>> mHostBridgeMap = new HashMap<>();
 	public Map<String, WeakReference<TerminalBridge>> mNicknameBridgeMap = new HashMap<>();
 
 	public TerminalBridge defaultBridge = null;
 
-	public List<HostBean> disconnected = new ArrayList<>();
+	public final List<HostBean> disconnected = new ArrayList<>();
 
 	public BridgeDisconnectedListener disconnectListener = null;
 
@@ -112,7 +112,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 	private boolean savingKeys;
 
-	protected List<WeakReference<TerminalBridge>> mPendingReconnect = new ArrayList<>();
+	protected final List<WeakReference<TerminalBridge>> mPendingReconnect = new ArrayList<>();
 
 	public boolean hardKeyboardHidden;
 
@@ -201,10 +201,10 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		if (tmpBridges != null) {
 			// disconnect and dispose of any existing bridges
-			for (int i = 0; i < tmpBridges.length; i++) {
-				if (excludeLocal && !tmpBridges[i].isUsingNetwork())
+			for (TerminalBridge tmpBridge : tmpBridges) {
+				if (excludeLocal && !tmpBridge.isUsingNetwork())
 					continue;
-				tmpBridges[i].dispatchDisconnect(immediate);
+				tmpBridge.dispatchDisconnect(immediate);
 			}
 		}
 	}
@@ -212,7 +212,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	/**
 	 * Open a new SSH session using the given parameters.
 	 */
-	private TerminalBridge openConnection(HostBean host) throws IllegalArgumentException, IOException {
+	private TerminalBridge openConnection(HostBean host) throws IllegalArgumentException {
 		// throw exception if terminal already open
 		if (getConnectedBridge(host) != null) {
 			throw new IllegalArgumentException("Connection already open for that nickname");
@@ -266,7 +266,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	 * Open a new connection by reading parameters from the given URI. Follows
 	 * format specified by an individual transport.
 	 */
-	public TerminalBridge openConnection(Uri uri) throws Exception {
+	public TerminalBridge openConnection(Uri uri) {
 		HostBean host = TransportFactory.findHost(hostdb, uri);
 
 		if (host == null)
@@ -386,7 +386,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 					Log.d(TAG, "Unloading from memory key: " + nickname);
 					removeKey(nickname);
 				}
-			}, pubkey.getLifetime() * 1000);
+			}, pubkey.getLifetime() * 1000L);
 		}
 
 		Log.d(TAG, String.format("Added key '%s' to in-memory cache", pubkey.getNickname()));
@@ -419,14 +419,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 			return keyHolder.pair;
 		} else
 			return null;
-	}
-
-	public KeyPair getKey(byte[] publicKey) {
-		for (KeyHolder keyHolder : loadedKeypairs.values()) {
-			if (Arrays.equals(keyHolder.openSSHPubkey, publicKey))
-				return keyHolder.pair;
-		}
-		return null;
 	}
 
 	public String getKeyNickname(byte[] publicKey) {

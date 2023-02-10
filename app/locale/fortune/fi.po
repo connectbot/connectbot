@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-04-21 23:51-0700\n"
-"PO-Revision-Date: 2017-02-28 23:01+0000\n"
+"PO-Revision-Date: 2023-01-30 06:12+0000\n"
 "Last-Translator: Kenny Root <Unknown>\n"
 "Language-Team: fi <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2022-04-23 06:25+0000\n"
-"X-Generator: Launchpad (build b25768b7107be17b0a785d9ebf80daa842cd03fb)\n"
+"X-Launchpad-Export-Date: 2023-01-31 06:26+0000\n"
+"X-Generator: Launchpad (build 37f563e5839786fe8704ac9cf25657dfd53c73fd)\n"
 "Generated-By: Babel 2.10.1\n"
 "Language: fi\n"
 
@@ -70,12 +70,12 @@ msgstr ""
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr ""
+msgstr "Asetukset"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
 msgid "Generate"
-msgstr ""
+msgstr "Luo"
 
 msgctxt "help_intro"
 msgid ""
@@ -85,12 +85,12 @@ msgstr "Valitse alta aihe, josta haluat lisätietoja."
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
 msgid "Terms & Conditions"
-msgstr ""
+msgstr "Ehdot ja määräykset"
 
 #. Title for the help page with the hints about the app.
 msgctxt "hints"
 msgid "Hints"
-msgstr ""
+msgstr "Vihjeet"
 
 #. Header text for instructions about creating host shortcuts.
 msgctxt "host_shortcuts_header"
@@ -521,7 +521,7 @@ msgstr ""
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr ""
+msgstr "Varmuuskopioi julkiset avaimet"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
@@ -1283,7 +1283,7 @@ msgstr "Yhdistetty."
 #. currently              disconnected after having been previously connected.
 msgctxt "image_description_disconnected"
 msgid "Disconnected."
-msgstr ""
+msgstr "Yhteys katkaistu"
 
 #. Describes the icon of the "locked pubkey" icon for accessibility purposes.
 msgctxt "image_description_key_is_locked"
@@ -1312,7 +1312,7 @@ msgstr ""
 #. accessibility              purposes.
 msgctxt "image_description_hide_keyboard"
 msgid "Hide keyboard."
-msgstr ""
+msgstr "Piilota näppäimistö"
 
 #. Describes the icon of the "show keyboard" button in the terminal view for
 #. accessibility              purposes.
@@ -1348,151 +1348,151 @@ msgstr ""
 #. purposes.
 msgctxt "image_description_volume"
 msgid "Volume"
-msgstr ""
+msgstr "Äänenvoimakkuus"
 
 #. Text for the "Esc" button in virtual keyboard.
 msgctxt "button_key_esc"
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #. Text for the "Ctrl" button in virtual keyboard.
 msgctxt "button_key_ctrl"
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. Text for the "Home" button in virtual keyboard.
 msgctxt "button_key_home"
 msgid "Home"
-msgstr ""
+msgstr "Home"
 
 #. Text for the "End" button in virtual keyboard.
 msgctxt "button_key_end"
 msgid "End"
-msgstr ""
+msgstr "End"
 
 #. Text for the "Page Up" button in virtual keyboard.
 msgctxt "button_key_pgup"
 msgid "PgUp"
-msgstr ""
+msgstr "PgUp"
 
 #. Text for the "Page Down" button in virtual keyboard.
 msgctxt "button_key_pgdn"
 msgid "PgDn"
-msgstr ""
+msgstr "PgDn"
 
 #. Text for the "F1" button in virtual keyboard.
 msgctxt "button_key_f1"
 msgid "F1"
-msgstr ""
+msgstr "F1"
 
 #. Text for the "F2" button in virtual keyboard.
 msgctxt "button_key_f2"
 msgid "F2"
-msgstr ""
+msgstr "F2"
 
 #. Text for the "F3" button in virtual keyboard.
 msgctxt "button_key_f3"
 msgid "F3"
-msgstr ""
+msgstr "F3"
 
 #. Text for the "F4" button in virtual keyboard.
 msgctxt "button_key_f4"
 msgid "F4"
-msgstr ""
+msgstr "F4"
 
 #. Text for the "F5" button in virtual keyboard.
 msgctxt "button_key_f5"
 msgid "F5"
-msgstr ""
+msgstr "F5"
 
 #. Text for the "F6" button in virtual keyboard.
 msgctxt "button_key_f6"
 msgid "F6"
-msgstr ""
+msgstr "F6"
 
 #. Text for the "F7" button in virtual keyboard.
 msgctxt "button_key_f7"
 msgid "F7"
-msgstr ""
+msgstr "F7"
 
 #. Text for the "F8" button in virtual keyboard.
 msgctxt "button_key_f8"
 msgid "F8"
-msgstr ""
+msgstr "F8"
 
 #. Text for the "F9" button in virtual keyboard.
 msgctxt "button_key_f9"
 msgid "F9"
-msgstr ""
+msgstr "F9"
 
 #. Text for the "F10" button in virtual keyboard.
 msgctxt "button_key_f10"
 msgid "F10"
-msgstr ""
+msgstr "F10"
 
 #. Text for the "F11" button in virtual keyboard.
 msgctxt "button_key_f11"
 msgid "F11"
-msgstr ""
+msgstr "F11"
 
 #. Text for the "F12" button in virtual keyboard.
 msgctxt "button_key_f12"
 msgid "F12"
-msgstr ""
+msgstr "F12"
 
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
 msgid "Protocol"
-msgstr ""
+msgstr "Protokolla"
 
 #. Label for button which expands/collapses section.
 msgctxt "expand"
 msgid "Expand"
-msgstr ""
+msgstr "Laajenna"
 
 #. Label for checkbox which, when check, makes SSL authorization require
 #. confirmation.
 msgctxt "hostpref_authagent_with_confirmation"
 msgid "require confirmation"
-msgstr ""
+msgstr "edellytä vahvistusta"
 
 #. Text for button which, when clicked, adds a new host.
 msgctxt "hostpref_add_host"
 msgid "Add host"
-msgstr ""
+msgstr "Lisää isäntä"
 
 #. Text for button which, when clicked, saves an existing host.
 msgctxt "hostpref_edit_host"
 msgid "Save host"
-msgstr ""
+msgstr "Tallenna isäntä"
 
 #. Text for button which, when clicked, brings up an editor for adding a new
 #. pubkey.
 msgctxt "pubkey_add_new"
 msgid "Add new pubkey"
-msgstr ""
+msgstr "Lisää uusi julkinen avain"
 
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
 msgid "Import existing pubkey"
-msgstr ""
+msgstr "Tuo nykyinen julkinen avain"
 
 #. Text for dialog which explains that the host URI is invalid and asks to
 #. discard.
 msgctxt "discard_host_changes_message"
 msgid "Host URI is invalid. Would you like to discard changes?"
-msgstr ""
+msgstr "Isännän URI-osoite on virheellinen. Haluatko hylätä muutokset?"
 
 #. Text for button which discards changes to the host.
 msgctxt "discard_host_button"
 msgid "Discard"
-msgstr ""
+msgstr "Hylkää"
 
 #. Text for button which does not discard changes and keeps editing.
 msgctxt "discard_host_cancel_button"
 msgid "Keep editing"
-msgstr ""
+msgstr "Jatka muokkaamista"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the RSA algorithm with a
@@ -1501,7 +1501,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_rsa_bits"
 msgid "RSA %d-bit"
-msgstr ""
+msgstr "RSA %d bittiä"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the DSA algorithm with a
@@ -1510,7 +1510,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_dsa_bits"
 msgid "DSA %d-bit"
-msgstr ""
+msgstr "DSA %d bittiä"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Elliptic Curve (EC)
@@ -1519,7 +1519,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_ec_bits"
 msgid "EC %d-bit"
-msgstr ""
+msgstr "EC %d bittiä"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Ed25519 algorithm
@@ -1527,17 +1527,17 @@ msgstr ""
 #. "Ed25519").
 msgctxt "key_type_ed25519"
 msgid "Ed25519"
-msgstr ""
+msgstr "Ed25519"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of an unknown algorithm.
 msgctxt "key_type_unknown"
 msgid "Key type unknown"
-msgstr ""
+msgstr "Tuntematon avaintyyppi"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Added to the end of a key description to indicate
 #. that the key is encrypted (i.e,              password protected).
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
-msgstr ""
+msgstr "(salattu)"

@@ -557,8 +557,11 @@ public class TerminalBridge implements VDUDisplay {
 		forcedSize = false;
 	}
 
-	public float getFontSize() {
-		return fontSizeDp;
+	/**
+	 * @return current text size in pixels
+	 */
+	public float getTextSizePx() {
+		return defaultPaint.getTextSize();
 	}
 
 	/**

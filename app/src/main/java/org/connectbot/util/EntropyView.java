@@ -20,6 +20,7 @@ package org.connectbot.util;
 import java.util.ArrayList;
 
 import org.connectbot.R;
+import org.connectbot.annotation.KeepForTesting;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -27,7 +28,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.Paint.FontMetrics;
-import androidx.annotation.VisibleForTesting;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -170,7 +170,7 @@ public class EntropyView extends View {
 		return true;
 	}
 
-	@VisibleForTesting
+	@KeepForTesting
 	public void notifyListeners() {
 		for (OnEntropyGatheredListener listener : listeners) {
 			listener.onEntropyGathered(mEntropy);
