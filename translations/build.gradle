@@ -19,11 +19,6 @@ plugins {
 	id "com.jetbrains.python.envs" version "0.0.31"
 }
 
-envs {
-	bootstrapDirectory = new File(buildDir, "bootstrap")
-	conda "miniconda", "Miniconda3-4.7.12.1"
-}
-
 def condaDir = "${buildDir}/bootstrap/miniconda"
 def appDir = '../app/'
 def localeDir = file(appDir + 'locale')
@@ -45,10 +40,9 @@ def android2poArgs = [
 		'fortune/%(locale)s.po'
 ]
 
-task installAndroid2Po(type: Exec) {
-	dependsOn 'build_envs'
-	executable "${condaDir}/bin/pip"
-	args 'install', android2poUrl
+envs {
+	bootstrapDirectory = new File(buildDir, "bootstrap")
+	conda "miniconda", "Miniconda3-py39_23.1.0-1", [android2poUrl, "babel==2.11.0"]
 }
 
 task untarTranslations(type: Copy) {
@@ -63,7 +57,7 @@ task importToAndroid(type: Exec) {
 	group = "Translations"
 	description = "Import translations into ConnectBot from app/locale directory."
 
-	dependsOn 'installAndroid2Po'
+	dependsOn 'build_envs'
 
 	executable = android2poExec
 	args = ['import'] + android2poArgs
