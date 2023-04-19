@@ -34,7 +34,8 @@
 		android:layout_height="match_parent"
 		android:layout_weight="1"
 		android:padding="0dp"
-		android:scrollbars="none">
+		android:scrollbars="none"
+		android:overScrollMode="never">
 
 		<LinearLayout
 			android:layout_width="0dp"
