@@ -29,6 +29,7 @@ import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import androidx.annotation.StyleRes;
@@ -56,6 +57,7 @@ import org.connectbot.service.TerminalManager;
 import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
 import org.connectbot.util.PreferenceConstants;
+import org.connectbot.util.TransferThread;
 
 import java.util.List;
 
@@ -84,6 +86,8 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 	protected boolean makingShortcut = false;
 
 	private boolean waitingForDisconnectAll = false;
+
+	private Handler handler = new Handler();
 
 	/**
 	 * Whether to close the activity when disconnectAll is called. True if this activity was
@@ -123,6 +127,18 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 		this.bindService(new Intent(this, TerminalManager.class), connection, Context.BIND_AUTO_CREATE);
 
 		hostdb = HostDatabase.get(this);
+
+		// SCP test
+		/*if (hosts != null && hosts.size() > 0 && bound.getBridges().size() > 0) {
+			Log.d("SCP", "SCP");
+			TerminalBridge t = bound.getBridges().get(0);
+			TransferThread transfer = new TransferThread(this, handler);
+			if (!prefs.getBoolean("background", true)) transfer.setProgressDialogMessage("Downloading");
+			final String localDir = getFilesDir().getAbsolutePath();
+			final String remoteDir = "~";
+			transfer.upload(t, localDir + "/file.zip", null, remoteDir);
+			//transfer.download(t, "~/file.txt", null, localDir);
+		}*/
 	}
 
 	@Override
