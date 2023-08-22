@@ -36,7 +36,7 @@ public class VolumePreference extends DialogPreference {
 	}
 
 	public VolumePreference(Context context, AttributeSet attrs) {
-		this(context, attrs, R.attr.dialogPreferenceStyle);
+		this(context, attrs, androidx.preference.R.attr.dialogPreferenceStyle);
 	}
 
 	public VolumePreference(Context context, AttributeSet attrs, int defStyleAttr) {

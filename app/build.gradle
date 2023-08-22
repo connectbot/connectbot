@@ -7,14 +7,14 @@ buildscript {
 }
 
 plugins {
-	id 'com.android.application' version '7.2.2'
+	id 'com.android.application' version '8.1.1'
 	id 'com.github.ben-manes.versions' version '0.46.0'
 	id 'net.ltgt.errorprone' version '3.1.0'
 	id 'com.gladed.androidgitversion' version '0.4.14'
 	id 'com.github.kt3k.coveralls' version '2.12.2'
 	id 'com.github.johnrengelman.processes' version '0.5.0'
-	id 'com.hiya.jacoco-android' version '0.2'
-	id 'com.starter.easylauncher' version "6.1.0"
+	id 'com.mxalbert.gradle.jacoco-android' version '0.2.1'
+	id 'com.starter.easylauncher' version '6.1.0'
 }
 
 ext {
@@ -33,7 +33,8 @@ androidGitVersion {
 }
 
 android {
-	compileSdkVersion 33
+	namespace "org.connectbot"
+	compileSdk 33
 
 	defaultConfig {
 		applicationId "org.connectbot"
@@ -41,7 +42,7 @@ android {
 		versionCode androidGitVersion.code()
 
 		minSdkVersion 14
-		targetSdkVersion 31
+		targetSdkVersion 33
 
 		vectorDrawables.useSupportLibrary = true
 
@@ -56,6 +57,10 @@ android {
 		// "pm clear" command after each test invocation. This command ensures
 		// that the app's state is completely cleared between tests.
 		testInstrumentationRunnerArguments clearPackageData: 'true'
+	}
+
+	buildFeatures {
+		buildConfig = true
 	}
 
 	signingConfigs {
@@ -256,7 +261,12 @@ dependencies {
 	testImplementation "androidx.test.ext:junit:1.1.5"
 	testImplementation 'org.mockito:mockito-core:5.3.1'
 	testImplementation 'org.assertj:assertj-core:3.24.2'
-	testImplementation 'org.robolectric:robolectric:4.8.2'
+	testImplementation 'org.robolectric:robolectric:4.10.3'
+
+	// Needed for robolectric tests
+	compileOnly 'org.conscrypt:conscrypt-openjdk-uber:2.5.2'
+	runtimeOnly 'org.conscrypt:conscrypt-android:2.5.2'
+	testImplementation 'org.conscrypt:conscrypt-openjdk-uber:2.5.2'
 
 	errorprone "com.google.errorprone:error_prone_core:2.18.0"
 }
