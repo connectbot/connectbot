@@ -147,14 +147,12 @@ public class EditHostActivity extends AppCompatActivity implements HostEditorFra
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.save:
-			case android.R.id.home:
-				attemptSaveAndExit();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
+		int itemId = item.getItemId();
+		if (itemId == R.id.save || itemId == android.R.id.home) {
+			attemptSaveAndExit();
+			return true;
 		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

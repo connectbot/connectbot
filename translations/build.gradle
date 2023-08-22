@@ -88,7 +88,7 @@ task translationsExport(type: Tar) {
 	description = "Export translations from ConnectBot in a format suitable to import into Launchpad"
 
 	dependsOn 'exportFromAndroid'
-	destinationDir = file("$rootDir")
+	destinationDirectory = file("$rootDir")
 	archiveFileName = launchpadImportFile
 	from localeDir
 	compression = Compression.GZIP

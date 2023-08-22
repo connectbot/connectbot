@@ -8,8 +8,8 @@ pluginManagement {
 		}
 	} else {
 		repositories {
-			gradlePluginPortal()
 			google()
+			gradlePluginPortal()
 		}
 	}
 

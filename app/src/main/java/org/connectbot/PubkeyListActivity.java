@@ -151,16 +151,15 @@ public class PubkeyListActivity extends AppCompatListActivity implements EventLi
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.add_new_key_icon:
+		int itemId = item.getItemId();
+		if (itemId == R.id.add_new_key_icon) {
 			startActivity(new Intent(this, GeneratePubkeyActivity.class));
 			return true;
-		case R.id.import_existing_key_icon:
+		} else if (itemId == R.id.import_existing_key_icon) {
 			importExistingKey();
 			return true;
-		default:
-			return super.onOptionsItemSelected(item);
 		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private boolean importExistingKey() {
