@@ -13,7 +13,7 @@ plugins {
 	id 'com.gladed.androidgitversion' version '0.4.14'
 	id 'com.github.kt3k.coveralls' version '2.12.2'
 	id 'com.mxalbert.gradle.jacoco-android' version '0.2.1'
-	id 'com.starter.easylauncher' version '6.1.0'
+	id 'com.starter.easylauncher' version '6.2.0'
 }
 
 ext {
