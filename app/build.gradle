@@ -215,7 +215,7 @@ dependencies {
 
 	implementation "androidx.recyclerview:recyclerview:1.3.1"
 	implementation 'androidx.appcompat:appcompat:1.6.1'
-	implementation "androidx.preference:preference:1.2.0"
+	implementation "androidx.preference:preference:1.2.1"
 	implementation "com.google.android.material:material:1.8.0"
 
 	androidTestUtil "androidx.test:orchestrator:$testRunnerVersion"
@@ -232,7 +232,7 @@ dependencies {
 	testImplementation 'junit:junit:4.13.2'
 	testImplementation "androidx.test:core:1.5.0"
 	testImplementation "androidx.test.ext:junit:1.1.5"
-	testImplementation 'org.mockito:mockito-core:5.3.1'
+	testImplementation 'org.mockito:mockito-core:5.5.0'
 	testImplementation 'org.assertj:assertj-core:3.24.2'
 	testImplementation 'org.robolectric:robolectric:4.10.3'
 
@@ -241,6 +241,6 @@ dependencies {
 	runtimeOnly 'org.conscrypt:conscrypt-android:2.5.2'
 	testImplementation 'org.conscrypt:conscrypt-openjdk-uber:2.5.2'
 
-	errorprone "com.google.errorprone:error_prone_core:2.18.0"
+	errorprone "com.google.errorprone:error_prone_core:2.21.1"
 }
 
