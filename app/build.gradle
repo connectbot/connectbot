@@ -76,7 +76,9 @@ android {
 		release {
 			shrinkResources true
 			minifyEnabled true
+
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg'
+			testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg', 'proguard-tests.cfg'
 
 			if (project.hasProperty('keystorePassword')) {
 				//noinspection GroovyAssignabilityCheck
@@ -88,8 +90,10 @@ android {
 
 		debug {
 			// This is necessary to avoid using multiDex
-			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg', 'proguard-debug.cfg'
 			minifyEnabled true
+
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg', 'proguard-debug.cfg'
+			testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg', 'proguard-tests.cfg'
 
 			applicationIdSuffix ".debug"
 			testCoverageEnabled true
