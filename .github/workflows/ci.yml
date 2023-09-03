@@ -3,15 +3,18 @@ name: Continuous Integration
 on:
   push:
     branches: [ main ]
+    tags:
+      - "v*.*.*"
   pull_request:
     branches: [ main ]
   schedule:
     - cron: "0 7 */3 * *"
   merge_group:
     types: [ checks_requested ]
-    
+
 jobs:
   build:
+    name: Build and test
     runs-on: macos-latest
 
     steps:
@@ -35,7 +38,7 @@ jobs:
           key: ${{ runner.os }}-gradle-home-examples-${{ hashFiles('**/*.gradle') }}
 
       - name: Build ConnectBot
-        run: ./gradlew build
+        run: ./gradlew build bundleGoogleRelease
 
       - name: Run instrument tests
         uses: reactivecircus/android-emulator-runner@v2.28.0
@@ -45,3 +48,45 @@ jobs:
           arch: x86_64
           profile: Nexus 4
           script: ./gradlew connectedCheck --continue
+
+      - name: Prepare release
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          GITHUB_TAG="git-$(git describe)"
+          cp ./app/build/outputs/apk/oss/release/app-oss-release-unsigned.apk ConnectBot-git-${GITHUB_TAG}-oss-unsigned.apk
+          cp ./app/build/outputs/apk/google/release/app-google-release-unsigned.apk ConnectBot-git-${GITHUB_TAG}-google-unsigned.apk
+          cp ./app/build/outputs/bundle/googleRelease/app-google-release.aab ConnectBot-git-${GITHUB_TAG}-google-unsigned.aab
+
+      - name: Store artifacts for upload
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: apk
+          path: |
+            ConnectBot-git-*-unsigned.apk
+            ConnectBot-git-*-unsigned.aab
+
+  upload:
+    name: Upload to GitHub releases
+    needs: build
+    if: ${{ (github.event_name == 'push') && (github.repository == 'connectbot/connectbot') }}
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download artifacts from previous job
+        uses: actions/download-artifact@v3
+        with:
+          name: apk
+
+      - name: Upload release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: "Untested build"
+          draft: true
+          generate_release_notes: true
+          files: |
+            ConnectBot-git-*-unsigned.apk
+            ConnectBot-git-*-unsigned.aab
