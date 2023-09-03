@@ -62,6 +62,7 @@ jobs:
         run: |
           GITHUB_TAG="git-$(git describe)"
           GITHUB_TITLE="$(git log -1 --pretty=%B | head -1)"
+          echo "${GITHUB_TAG}" > tag.txt
           echo "${GITHUB_TAG}: ${GITHUB_TITLE}" > release-title.txt
           cp ./app/build/outputs/apk/oss/release/app-oss-release-unsigned.apk ConnectBot-${GITHUB_TAG}-oss-unsigned.apk
           cp ./app/build/outputs/apk/google/release/app-google-release-unsigned.apk ConnectBot-${GITHUB_TAG}-google-unsigned.apk
@@ -74,6 +75,7 @@ jobs:
           name: apk
           path: |
             release-title.txt
+            tag.txt
             ConnectBot-git-*-unsigned.apk
             ConnectBot-git-*-unsigned.aab
 
@@ -94,13 +96,16 @@ jobs:
 
       - name: Set release name
         id: name
-        run: echo "RELEASE_TITLE=$(cat release-title.txt)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "RELEASE_TITLE=$(cat release-title.txt)" >> "$GITHUB_OUTPUT"
+          echo "GITHUB_TAG=$(cat tag.txt)" >> "$GITHUB_OUTPUT"
 
       - name: Upload release
         uses: softprops/action-gh-release@v1
         with:
           body: "Untested build"
           draft: true
+          tag_name: ${{ steps.name.outputs.GITHUB_TAG }}
           name: ${{ steps.name.outputs.RELEASE_TITLE }}
           generate_release_notes: true
           files: |
