@@ -237,8 +237,8 @@ dependencies {
 	testImplementation 'org.robolectric:robolectric:4.10.3'
 
 	// Needed for robolectric tests
-	compileOnly 'org.conscrypt:conscrypt-openjdk-uber:2.5.2'
-	runtimeOnly 'org.conscrypt:conscrypt-android:2.5.2'
+	testCompileOnly 'org.conscrypt:conscrypt-openjdk-uber:2.5.2'
+	testRuntimeOnly 'org.conscrypt:conscrypt-android:2.5.2'
 	testImplementation 'org.conscrypt:conscrypt-openjdk-uber:2.5.2'
 
 	errorprone "com.google.errorprone:error_prone_core:2.21.1"
