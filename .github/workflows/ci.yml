@@ -20,14 +20,14 @@ jobs:
     steps:
       - name: Checkout (with history)
         if: ${{ github.event_name == 'push' }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           fetch-tags: true
 
       - name: Checkout (without history)
         if: ${{ github.event_name != 'push' }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up JDK
         uses: actions/setup-java@v3
