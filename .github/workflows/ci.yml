@@ -119,6 +119,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Download artifacts from previous job
+        uses: actions/download-artifact@v3
+        with:
+          name: apk
+
+      - name: Set release name
+        id: name
+        run: |
+          echo "GITHUB_TAG=$(cat tag.txt)" >> "$GITHUB_OUTPUT"
+
       - name: Call remote signer
         uses: joelwmale/webhook-action@ee20d8c79e728c2d339b114fd27772ee0226aa41
         with:
