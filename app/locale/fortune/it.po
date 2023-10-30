@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-04-21 23:51-0700\n"
-"PO-Revision-Date: 2018-10-09 04:38+0000\n"
-"Last-Translator: Roberto <Unknown>\n"
+"PO-Revision-Date: 2023-10-29 11:32+0000\n"
+"Last-Translator: Tommaso Fonda <fondatommaso2@gmail.com>\n"
 "Language-Team: it <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -17,16 +17,16 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(((((((e == 0)) && (!((n == 0)))) && (((n % "
 "1000000) == 0))) && ((0 == 0))) || (!((e >= 0 && e <= 5)))) ? 1 : (((n == "
 "1)) && ((0 == 0))) ? 0 : 2);\n"
-"X-Launchpad-Export-Date: 2022-04-23 06:26+0000\n"
-"X-Generator: Launchpad (build b25768b7107be17b0a785d9ebf80daa842cd03fb)\n"
-"Generated-By: Babel 2.10.1\n"
+"X-Launchpad-Export-Date: 2023-10-30 04:33+0000\n"
+"X-Generator: Launchpad (build 792da5ac485e849df1cf87044293bc2ee7a576ae)\n"
 "Language: it\n"
+"Generated-By: Babel 2.10.1\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
 msgctxt "app_desc"
 msgid "Simple, powerful, open-source SSH client."
-msgstr "Un client SSH semplice, potente ed open-source."
+msgstr "Un client SSH semplice, potente ed open source."
 
 #. Summary of what the ConnectBot service does; displayed in the Android
 #. running apps list
@@ -289,7 +289,7 @@ msgstr "Problemi durante l'importazione della chiave privata"
 
 msgctxt "pubkey_unlock"
 msgid "Unlock key"
-msgstr "Chiave di sblocco"
+msgstr "Sblocca la chiave"
 
 #. Feedback given to the user when the password that they have entered for the
 #. pubkey is incorrect.
