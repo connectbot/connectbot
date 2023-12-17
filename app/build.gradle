@@ -7,8 +7,8 @@ buildscript {
 }
 
 plugins {
-	id 'com.android.application' version '8.1.2'
-	id 'com.github.ben-manes.versions' version '0.49.0'
+	id 'com.android.application' version '8.1.4'
+	id 'com.github.ben-manes.versions' version '0.50.0'
 	id 'net.ltgt.errorprone' version '3.1.0'
 	id 'com.gladed.androidgitversion' version '0.4.14'
 	id 'com.github.kt3k.coveralls' version '2.12.2'
@@ -232,9 +232,9 @@ dependencies {
 	testImplementation 'junit:junit:4.13.2'
 	testImplementation "androidx.test:core:1.5.0"
 	testImplementation "androidx.test.ext:junit:1.1.5"
-	testImplementation 'org.mockito:mockito-core:5.6.0'
+	testImplementation 'org.mockito:mockito-core:5.8.0'
 	testImplementation 'org.assertj:assertj-core:3.24.2'
-	testImplementation 'org.robolectric:robolectric:4.11'
+	testImplementation 'org.robolectric:robolectric:4.11.1'
 
 	// Needed for robolectric tests
 	testCompileOnly 'org.conscrypt:conscrypt-openjdk-uber:2.5.2'
