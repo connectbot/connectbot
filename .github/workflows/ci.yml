@@ -130,7 +130,7 @@ jobs:
           echo "GITHUB_TAG=$(cat tag.txt)" >> "$GITHUB_OUTPUT"
 
       - name: Call remote signer
-        uses: joelwmale/webhook-action@814998dae0915eaf4faec992291eb956ad37d902
+        uses: distributhor/workflow-webhook@v3.0.7
         with:
-          url: ${{ secrets.SIGNER_WEBHOOK_URL }}
-          body: '{"TAG_ID": "${{ steps.name.outputs.GITHUB_TAG }}"}'
+          webhook_url: ${{ secrets.SIGNER_WEBHOOK_URL }}
+          data: '{"tag_id": "${{ steps.name.outputs.GITHUB_TAG }}"}'
