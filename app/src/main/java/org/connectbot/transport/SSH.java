@@ -108,7 +108,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	private final static int AUTH_TRIES = 20;
 
 	private static final Pattern hostmask = Pattern.compile(
-			"^(.+)@(([0-9a-z.-]+)|(\\[[a-f:0-9]+\\]))(:(\\d+))?$", Pattern.CASE_INSENSITIVE);
+			"^(.+)@(([0-9a-z._-]+)|(\\[[a-f:0-9]+\\]))(:(\\d+))?$", Pattern.CASE_INSENSITIVE);
 
 	private boolean compression = false;
 	private volatile boolean authenticated = false;
