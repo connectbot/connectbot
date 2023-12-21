@@ -60,10 +60,20 @@ jobs:
       - name: Prepare release
         if: ${{ github.event_name == 'push' }}
         run: |
-          GITHUB_TAG="git-$(git describe)"
-          GITHUB_TITLE="$(git log -1 --pretty=%B | head -1)"
-          echo "${GITHUB_TAG}" > tag.txt
-          echo "${GITHUB_TAG}: ${GITHUB_TITLE}" > release-title.txt
+          if git describe --exact-match; then \
+            TAGGED=yes
+          fi
+
+          if [[ -n $TAGGED ]]; then
+            GITHUB_TAG="$(git describe)"
+            echo "${GITHUB_TAG}" > tag.txt
+            echo "Release ${GITHUB_TAG}" > release-title.txt
+          else \
+            GITHUB_TAG="git-$(git describe)"
+            GITHUB_TITLE="$(git log -1 --pretty=%B | head -1)"
+            echo "${GITHUB_TAG}" > tag.txt
+            echo "${GITHUB_TAG}: ${GITHUB_TITLE}" > release-title.txt
+          fi
           cp ./app/build/outputs/apk/oss/release/app-oss-release-unsigned.apk ConnectBot-${GITHUB_TAG}-oss-unsigned.apk
           cp ./app/build/outputs/apk/google/release/app-google-release-unsigned.apk ConnectBot-${GITHUB_TAG}-google-unsigned.apk
           cp ./app/build/outputs/bundle/googleRelease/app-google-release.aab ConnectBot-${GITHUB_TAG}-google-unsigned.aab
