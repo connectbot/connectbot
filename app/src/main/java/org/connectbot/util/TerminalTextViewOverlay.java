@@ -357,10 +357,11 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 
 			menu.clear();
 
-			menu.add(0, COPY, 0, R.string.console_menu_copy)
+			// Passing a resource (R.string.xxx) to a menu.add call crashes in MIUI due to a bug
+			menu.add(0, COPY, 0, getResources().getString(R.string.console_menu_copy))
 					.setIcon(R.drawable.ic_action_copy)
 					.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_IF_ROOM);
-			menu.add(0, PASTE, 1, R.string.console_menu_paste)
+			menu.add(0, PASTE, 1, getResources().getString(R.string.console_menu_paste))
 					.setIcon(R.drawable.ic_action_paste)
 					.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
