@@ -77,7 +77,9 @@ jobs:
           cp ./app/build/outputs/apk/oss/release/app-oss-release-unsigned.apk ConnectBot-${GITHUB_TAG}-oss-unsigned.apk
           cp ./app/build/outputs/apk/google/release/app-google-release-unsigned.apk ConnectBot-${GITHUB_TAG}-google-unsigned.apk
           cp ./app/build/outputs/bundle/googleRelease/app-google-release.aab ConnectBot-${GITHUB_TAG}-google-unsigned.aab
-
+          cp ./app/build/outputs/native-debug-symbols/googleRelease/native-debug-symbols.zip ConnectBot-${GITHUB_TAG}-google.native-debug-symbols.zip
+          cp ./app/build/outputs/native-debug-symbols/ossRelease/native-debug-symbols.zip ConnectBot-${GITHUB_TAG}-oss.native-debug-symbols.zip
+  
       - name: Store artifacts for upload
         if: ${{ github.event_name == 'push' }}
         uses: actions/upload-artifact@v4
@@ -86,8 +88,9 @@ jobs:
           path: |
             release-title.txt
             tag.txt
-            ConnectBot-git-*-unsigned.apk
-            ConnectBot-git-*-unsigned.aab
+            ConnectBot-*-unsigned.apk
+            ConnectBot-*-unsigned.aab
+            ConnectBot-*.native-debug-symbols.zip
 
   upload:
     name: Upload to GitHub releases
@@ -119,8 +122,9 @@ jobs:
           name: ${{ steps.name.outputs.RELEASE_TITLE }}
           generate_release_notes: true
           files: |
-            ConnectBot-git-*-unsigned.apk
-            ConnectBot-git-*-unsigned.aab
+            ConnectBot-*-unsigned.apk
+            ConnectBot-*-unsigned.aab
+            ConnectBot-*.native-debug-symbols.zip
 
   signing:
     name: Trigger remote signing
