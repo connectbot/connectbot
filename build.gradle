@@ -29,7 +29,7 @@ if (!TRANSLATIONS_ONLY) {
 	apply from: "spotless.gradle"
 }
 
-task resolveDependencies {
+tasks.register("resolveDependencies") {
 	setDescription("Resolves all projects dependencies from the repository.")
 	setGroup("Build Server")
 
