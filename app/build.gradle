@@ -10,7 +10,7 @@ plugins {
 	id 'com.android.application' version '8.2.0'
 	id 'com.github.ben-manes.versions' version '0.51.0'
 	id 'net.ltgt.errorprone' version '4.2.0'
-	id 'com.gladed.androidgitversion' version '0.4.14'
+	id 'io.github.reactivecircus.app-versioning' version '1.3.1'
 	id 'com.github.kt3k.coveralls' version '2.12.2'
 	id 'com.mxalbert.gradle.jacoco-android' version '0.2.1'
 	id 'com.starter.easylauncher' version '6.4.0'
@@ -26,9 +26,19 @@ apply from: '../config/quality.gradle'
 
 coveralls.jacocoReportPath = 'build/reports/coverage/google/debug/report.xml'
 
-androidGitVersion {
-	prefix = "v"
-	codeFormat = 'MMNNPPBBB'
+appVersioning {
+	overrideVersionCode { gitTag, providers, variantInfo ->
+		def semVer = SemVer.fromGitTag(gitTag)
+		semVer.major * 10000000 + semVer.minor * 100000 + semVer.patch * 1000 + gitTag.commitsSinceLatestTag
+	}
+
+	overrideVersionName { gitTag, providers, variantInfo ->
+		if (gitTag.commitsSinceLatestTag == 0) {
+			"${gitTag.rawTagName}"
+		} else {
+			"${gitTag.rawTagName}-${gitTag.commitsSinceLatestTag}-${gitTag.commitHash.subString(7)}"
+		}
+	}
 }
 
 android {
@@ -37,8 +47,6 @@ android {
 
 	defaultConfig {
 		applicationId "org.connectbot"
-		versionName androidGitVersion.name()
-		versionCode androidGitVersion.code()
 
 		minSdkVersion 14
 		targetSdkVersion 34
