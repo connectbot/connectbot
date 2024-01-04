@@ -1,51 +1,37 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-	project.ext.MAVEN_REPO_CACHE = System.getenv("MAVEN_REPO_CACHE")?.trim()
 	project.ext.TRANSLATIONS_ONLY = System.getenv("TRANSLATIONS_ONLY")?.trim()
-	if (MAVEN_REPO_CACHE) {
-		repositories { maven { url MAVEN_REPO_CACHE } }
-	} else {
-		repositories {
-			google()
-			mavenCentral()
-		}
+	repositories {
+		google()
+		mavenCentral()
 	}
 }
 
 plugins {
-	id "com.diffplug.spotless" version "7.0.3"
+	id("com.diffplug.spotless") version "7.0.3"
 }
 
-if (MAVEN_REPO_CACHE) {
-	allprojects {
-		buildscript {
-			repositories { maven { url MAVEN_REPO_CACHE } }
-		}
-		repositories { maven { url MAVEN_REPO_CACHE } }
-	}
-} else {
-	allprojects {
-		buildscript {
-			repositories {
-				google()
-				mavenCentral()
-			}
-		}
+allprojects {
+	buildscript {
 		repositories {
 			google()
 			mavenCentral()
 		}
 	}
+	repositories {
+		google()
+		mavenCentral()
+	}
 }
 
 if (!TRANSLATIONS_ONLY) {
-	apply from: 'spotless.gradle'
+	apply from: "spotless.gradle"
 }
 
 task resolveDependencies {
-	setDescription "Resolves all projects dependencies from the repository."
-	setGroup "Build Server"
+	setDescription("Resolves all projects dependencies from the repository.")
+	setGroup("Build Server")
 
 	doLast {
 		rootProject.allprojects { project ->
