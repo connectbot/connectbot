@@ -163,7 +163,27 @@ public class PortForwardBean extends AbstractBean {
 	 * @return the sourceAddr
 	 */
 	public String getSourceAddr() {
-		return sourceAddr;
+		if (sourceAddr != null) {
+			return sourceAddr;
+		}
+		else {
+			return "127.0.0.1";
+		}
+	}
+
+	/**
+	 * @return source address and port or just port if now address specified
+	 */
+	@SuppressLint("DefaultLocale")
+	public String getSourceAddrAndPort() {
+		if (sourceAddr == null)
+		{
+			return String.format("%d", sourcePort);
+		}
+		else
+		{
+			return String.format("%s:%d", sourceAddr, sourcePort);
+		}
 	}
 
 	/**
@@ -173,7 +193,7 @@ public class PortForwardBean extends AbstractBean {
 		String[] sourceSplit = source.split(":", -1);
 		if (sourceSplit.length == 1)
 		{
-			this.sourceAddr = "127.0.0.1";
+			this.sourceAddr = null;
 			this.sourcePort = Integer.parseInt(sourceSplit[0]);
 		}
 		else
@@ -257,7 +277,7 @@ public class PortForwardBean extends AbstractBean {
 		String description = "Unknown type";
 
 		if (HostDatabase.PORTFORWARD_LOCAL.equals(type)) {
-			description = String.format("Local port %s:%d to %s:%d", sourceAddr, sourcePort, destAddr, destPort);
+			description = String.format("Local port %s to %s:%d", getSourceAddrAndPort(), destAddr, destPort);
 		} else if (HostDatabase.PORTFORWARD_REMOTE.equals(type)) {
 			description = String.format("Remote port %d to %s:%d", sourcePort, destAddr, destPort);
 		} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(type)) {

@@ -296,7 +296,7 @@ public class PortForwardListActivity extends AppCompatListActivity {
 					nicknameEdit.setText(portForward.getNickname());
 
 					final EditText sourcePortEdit = editTunnelView.findViewById(R.id.portforward_source);
-					sourcePortEdit.setText(String.format("%s:%d", portForward.getSourceAddr(), portForward.getSourcePort()));
+					sourcePortEdit.setText(portForward.getSourceAddrAndPort());
 
 					final EditText destEdit = editTunnelView.findViewById(R.id.portforward_destination);
 					if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(portForward.getType())) {
