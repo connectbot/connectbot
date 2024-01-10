@@ -35,7 +35,6 @@ public class PortForwardBean extends AbstractBean {
 	private long hostId = -1;
 	private String nickname = null;
 	private String type = null;
-
 	private String sourceAddr = null;
 	private int sourcePort = -1;
 	private String destAddr = null;
