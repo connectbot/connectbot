@@ -108,7 +108,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	private final static int AUTH_TRIES = 20;
 
 	private static final Pattern hostmask = Pattern.compile(
-			"^(.+)@(([0-9a-z._-]+)|(\\[[a-f:0-9]+\\]))(:(\\d+))?$", Pattern.CASE_INSENSITIVE);
+			"^(.+)@((?:[0-9a-z._-]+)|(?:\\[[a-f:0-9]+(?:%[-_.a-z0-9]+)?\\]))(?::(\\d+))?$", Pattern.CASE_INSENSITIVE);
 
 	private boolean compression = false;
 	private volatile boolean authenticated = false;
@@ -789,7 +789,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			.append('@')
 			.append(Uri.encode(matcher.group(2)));
 
-		String portString = matcher.group(6);
+		String portString = matcher.group(3);
 		int port = DEFAULT_PORT;
 		if (portString != null) {
 			try {
