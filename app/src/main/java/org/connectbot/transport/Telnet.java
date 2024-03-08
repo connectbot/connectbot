@@ -68,7 +68,7 @@ public class Telnet extends AbsTransport {
 
 	static final Pattern hostmask;
 	static {
-		hostmask = Pattern.compile("^([0-9a-z._-]+)(:(\\d+))?$", Pattern.CASE_INSENSITIVE);
+		hostmask = Pattern.compile("^((?:[0-9a-z._-]+)|(?:\\[[a-f:0-9]+(?:%[-_.a-z0-9]+)?\\]))(?::(\\d+))?$", Pattern.CASE_INSENSITIVE);
 	}
 
 	public Telnet() {
@@ -271,7 +271,7 @@ public class Telnet extends AbsTransport {
 			.append("://")
 			.append(matcher.group(1));
 
-		String portString = matcher.group(3);
+		String portString = matcher.group(2);
 		int port = DEFAULT_PORT;
 		if (portString != null) {
 			try {
