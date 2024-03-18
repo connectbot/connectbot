@@ -35,6 +35,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
+import android.view.ScaleGestureDetector;
 import android.widget.TextView;
 import de.mud.terminal.VDUBuffer;
 import de.mud.terminal.vt320;
@@ -50,6 +51,7 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 	private String currentSelection = "";
 	private ActionMode selectionActionMode;
 	private ClipboardManager clipboard;
+	private ScaleGestureDetector scaleDetector;
 
 	private int oldBufferHeight = 0;
 	private int oldScrollY = -1;
@@ -64,6 +66,9 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 		setTypeface(Typeface.MONOSPACE);
 		setTextIsSelectable(true);
 		setCustomSelectionActionModeCallback(new TextSelectionActionModeCallback());
+
+		// Enable pinch to zoom
+		scaleDetector = new ScaleGestureDetector(context, new ScaleListener());
 	}
 
 	public void refreshTextFromBuffer() {
@@ -176,6 +181,8 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		scaleDetector.onTouchEvent(event);
+
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			// Selection may be beginning. Sync the TextView with the buffer.
 			refreshTextFromBuffer();
@@ -384,6 +391,24 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
+		}
+	}
+
+	@Override
+	public boolean bringPointIntoView(int offset) {
+		return true;
+	}
+
+	private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+		@Override
+		public boolean onScale(ScaleGestureDetector detector) {
+			terminalView.bridge.setFontSize(terminalView.bridge.getTextSizeDp() * detector.getScaleFactor());
+			return true;
+		}
+
+		@Override
+		public void onScaleEnd(ScaleGestureDetector detector) {
+			refreshTextFromBuffer();
 		}
 	}
 }
