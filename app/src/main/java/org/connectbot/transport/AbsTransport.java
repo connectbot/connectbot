@@ -101,6 +101,13 @@ public abstract class AbsTransport {
 	public abstract void write(int c) throws IOException;
 
 	/**
+	 * Send a command to the transport for noninteractive execution.
+	 * @param command The command to send
+	 * @throws IOException when there is a problem sending the command after connection
+	 */
+	public abstract void sendCommand(final String command) throws IOException;
+
+	/**
 	 * Flushes the write commands to the transport.
 	 * @throws IOException when there is a problem writing after connection
 	 */

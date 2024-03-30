@@ -174,6 +174,11 @@ public class Local extends AbsTransport {
 			os.write(c);
 	}
 
+	@Override
+	public void sendCommand(String command) throws IOException {
+		this.write(command.getBytes(host.getEncoding()));
+	}
+
 	public static Uri getUri(String input) {
 		Uri uri = Uri.parse(DEFAULT_URI);
 

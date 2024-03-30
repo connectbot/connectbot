@@ -128,6 +128,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	private static final int conditions = ChannelCondition.STDOUT_DATA
 		| ChannelCondition.STDERR_DATA
 		| ChannelCondition.CLOSED
+		| ChannelCondition.EXIT_STATUS
 		| ChannelCondition.EOF;
 
 	private final List<PortForwardBean> portForwards = new ArrayList<>();
@@ -553,7 +554,18 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			}
 		}
 
-		if ((newConditions & ChannelCondition.EOF) != 0) {
+		if ((newConditions & ChannelCondition.EXIT_STATUS) != 0) {
+			Integer exitStatus = session.getExitStatus();
+			close();
+			onDisconnect();
+			if (exitStatus != null && exitStatus != 0) {
+				throw new IOException("Remote end exited with non-zero exit code " + exitStatus);
+			}
+			// Bypass raising "connection closed" exception from CLOSED condition for exit code 0
+			return bytesRead;
+		}
+
+		if ((newConditions & ChannelCondition.CLOSED) != 0) {
 			close();
 			onDisconnect();
 			throw new IOException("Remote end closed connection");
@@ -572,6 +584,21 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	public void write(int c) throws IOException {
 		if (stdin != null)
 			stdin.write(c);
+	}
+
+	@Override
+	public void sendCommand(final String command) throws IOException {
+		if (command == null || command.isEmpty())
+			return;
+		if (session == null)
+			session = connection.openSession();
+		session.execCommand(command);
+
+		stdin = session.getStdin();
+		stdout = session.getStdout();
+		stderr = session.getStderr();
+
+		bridge.onNoninteractiveSessionEstablished();
 	}
 
 	@Override
