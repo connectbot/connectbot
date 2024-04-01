@@ -234,7 +234,7 @@ dependencies {
 	testImplementation "androidx.test.ext:junit:1.1.5"
 	testImplementation 'org.mockito:mockito-core:5.11.0'
 	testImplementation 'org.assertj:assertj-core:3.25.3'
-	testImplementation 'org.robolectric:robolectric:4.11.1'
+	testImplementation 'org.robolectric:robolectric:4.12'
 
 	// Needed for robolectric tests
 	testCompileOnly 'org.conscrypt:conscrypt-openjdk-uber:2.5.2'
