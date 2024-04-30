@@ -8,12 +8,12 @@ buildscript {
 
 plugins {
 	id 'com.android.application' version '8.1.4'
-	id 'com.github.ben-manes.versions' version '0.50.0'
+	id 'com.github.ben-manes.versions' version '0.51.0'
 	id 'net.ltgt.errorprone' version '3.1.0'
 	id 'com.gladed.androidgitversion' version '0.4.14'
 	id 'com.github.kt3k.coveralls' version '2.12.2'
 	id 'com.mxalbert.gradle.jacoco-android' version '0.2.1'
-	id 'com.starter.easylauncher' version '6.2.0'
+	id 'com.starter.easylauncher' version '6.3.0'
 }
 
 ext {
@@ -210,7 +210,7 @@ dependencyUpdates {
 // Dependencies must be below the android block to allow productFlavor specific deps.
 dependencies {
 	implementation 'org.connectbot:sshlib:2.2.23'
-	googleImplementation 'com.google.android.gms:play-services-basement:18.2.0'
+	googleImplementation 'com.google.android.gms:play-services-basement:18.3.0'
 	ossImplementation 'org.conscrypt:conscrypt-android:2.5.2'
 
 	implementation "androidx.recyclerview:recyclerview:1.3.2"
@@ -232,15 +232,15 @@ dependencies {
 	testImplementation 'junit:junit:4.13.2'
 	testImplementation "androidx.test:core:1.5.0"
 	testImplementation "androidx.test.ext:junit:1.1.5"
-	testImplementation 'org.mockito:mockito-core:5.8.0'
-	testImplementation 'org.assertj:assertj-core:3.25.1'
-	testImplementation 'org.robolectric:robolectric:4.11.1'
+	testImplementation 'org.mockito:mockito-core:5.11.0'
+	testImplementation 'org.assertj:assertj-core:3.25.3'
+	testImplementation 'org.robolectric:robolectric:4.12.1'
 
 	// Needed for robolectric tests
 	testCompileOnly 'org.conscrypt:conscrypt-openjdk-uber:2.5.2'
 	testRuntimeOnly 'org.conscrypt:conscrypt-android:2.5.2'
 	testImplementation 'org.conscrypt:conscrypt-openjdk-uber:2.5.2'
 
-	errorprone "com.google.errorprone:error_prone_core:2.24.0"
+	errorprone "com.google.errorprone:error_prone_core:2.26.1"
 }
 

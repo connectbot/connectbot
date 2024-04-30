@@ -39,7 +39,7 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Cache Gradle Home files
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         continue-on-error: true
         with:
           path: ~/.gradle/caches
@@ -49,7 +49,7 @@ jobs:
         run: ./gradlew build bundleGoogleRelease
 
       - name: Run instrument tests
-        uses: reactivecircus/android-emulator-runner@v2.29.0
+        uses: reactivecircus/android-emulator-runner@v2.30.1
         with:
           api-level: 28
           target: default
@@ -114,7 +114,7 @@ jobs:
           echo "GITHUB_TAG=$(cat tag.txt)" >> "$GITHUB_OUTPUT"
 
       - name: Upload release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           body: "Untested build"
           draft: true
