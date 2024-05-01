@@ -26,14 +26,20 @@ import android.content.Intent.ShortcutIconResource;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -164,6 +170,58 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			this.updateList();
 		}
 	}
+
+	//region Notifications permission
+	private Runnable startConsoleRunnable;
+
+	private void startConsole() {
+		if (startConsoleRunnable != null) {
+			startConsoleRunnable.run();
+		}
+	}
+
+	private final ActivityResultLauncher<String> requestNotificationPermissionLauncher =
+			registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+				if (!isGranted) {
+					Log.d("TEST", "back from permission request, permission denied");
+					requestNotificationsPermissionRationale();
+				} else {
+					startConsole();
+				}
+			});
+
+	private void launchRequestNotificationsPermission() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+			requestNotificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS);
+		} else {
+			startConsole();
+		}
+	}
+
+	private void requestNotificationsPermissionRationale() {
+		new androidx.appcompat.app.AlertDialog.Builder(
+				HostListActivity.this, R.style.AlertDialogTheme)
+				.setMessage(R.string.notification_requirement_explanation)
+				.setPositiveButton(R.string.allow, (dialog, which) -> {
+					launchRequestNotificationsPermission();
+				})
+				.setNegativeButton(R.string.continue_anyway, (dialog, which) -> {
+					startConsole();
+				})
+				.create()
+				.show();
+	}
+
+	public void requestPermissionAndStartConsole() {
+		if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+			startConsole();
+		} else if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.POST_NOTIFICATIONS)) {
+			requestNotificationsPermissionRationale();
+		} else {
+			launchRequestNotificationsPermission();
+		}
+	}
+	//endregion
 
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -430,8 +488,14 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 
 			} else {
 				// otherwise just launch activity to show this host
-				contents.setClass(HostListActivity.this, ConsoleActivity.class);
-				HostListActivity.this.startActivity(contents);
+
+				// runnable to run after notification permission is asked
+				startConsoleRunnable = () -> {
+					contents.setClass(HostListActivity.this, ConsoleActivity.class);
+					HostListActivity.this.startActivity(contents);
+					startConsoleRunnable = null;
+				};
+				requestPermissionAndStartConsole();
 			}
 		}
 
