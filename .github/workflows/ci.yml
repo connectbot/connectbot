@@ -15,7 +15,7 @@ on:
 jobs:
   build:
     name: Build and test
-    runs-on: macos-latest
+    runs-on: macos-13 # emulator never starts on macOS 14 https://github.com/ReactiveCircus/android-emulator-runner/issues/392#issuecomment-2106167725
 
     steps:
       - name: Checkout (with history)
