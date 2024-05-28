@@ -34,7 +34,8 @@ jobs:
 
     - name: Copy exported translations to workspace
       run: |
-        rsync -av --exclude .bzr --exclude '**/oc.po' --exclude '**/ca@valencia.po' \
+        rsync -av --exclude .bzr \
+            --exclude '**/oc.po' --exclude '**/ca@valencia.po' --exclude '**/tk.po' \
             "${{ runner.temp }}/${BAZAAR_URI##*/}/" "${GITHUB_WORKSPACE}/${PO_SUBDIR}/"
         echo $REVNO > "${GITHUB_WORKSPACE}/${PO_SUBDIR}/.revno"
 
