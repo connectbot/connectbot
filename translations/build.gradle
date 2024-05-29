@@ -74,7 +74,7 @@ task translationsImport {
 }
 
 task exportFromAndroid(type: Exec) {
-	dependsOn 'installAndroid2Po'
+	dependsOn 'build_envs'
 
 	executable = android2poExec
 	args = ['export'] + android2poArgs

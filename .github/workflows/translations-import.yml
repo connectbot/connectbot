@@ -5,6 +5,11 @@ on:
   schedule:
   # Runs at 10PM PST
   - cron: '0 6 * * *'
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/translations-import.yml"
+      - "translations/**"
 
 jobs:
   import:
@@ -34,7 +39,8 @@ jobs:
 
     - name: Copy exported translations to workspace
       run: |
-        rsync -av --exclude .bzr --exclude '**/oc.po' --exclude '**/ca@valencia.po' \
+        rsync -av --exclude .bzr \
+            --exclude '**/oc.po' --exclude '**/ca@valencia.po' --exclude '**/tk.po' \
             "${{ runner.temp }}/${BAZAAR_URI##*/}/" "${GITHUB_WORKSPACE}/${PO_SUBDIR}/"
         echo $REVNO > "${GITHUB_WORKSPACE}/${PO_SUBDIR}/.revno"
 
@@ -43,6 +49,7 @@ jobs:
         TRANSLATIONS_ONLY=1 ./gradlew :translations:importToAndroid
 
     - name: Create pull request
+      if: github.event_name != 'pull_request'
       uses: peter-evans/create-pull-request@v6
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
@@ -60,4 +67,5 @@ jobs:
         branch: translations/import
 
     - name: Report pull request creation
+      if: github.event_name != 'pull_request'
       run: echo "Created pull request number ${{ env.PULL_REQUEST_NUMBER }}"
