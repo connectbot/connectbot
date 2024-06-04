@@ -46,6 +46,9 @@ jobs:
             "${{ runner.temp }}/${BAZAAR_URI##*/}/" "${GITHUB_WORKSPACE}/${PO_SUBDIR}/"
         echo $REVNO > "${GITHUB_WORKSPACE}/${PO_SUBDIR}/.revno"
 
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+
     - name: Try importing the translations
       run: |
         TRANSLATIONS_ONLY=1 ./gradlew :translations:importToAndroid
