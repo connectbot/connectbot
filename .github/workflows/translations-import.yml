@@ -13,7 +13,9 @@ on:
 
 jobs:
   import:
+    name: Import translations from Launchpad
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'connectbot'
 
     env:
       BAZAAR_URI: lp:~kennyr/connectbot/po-output
