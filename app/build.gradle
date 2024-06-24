@@ -226,12 +226,12 @@ dependencies {
 	androidTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion") {
 		exclude group: "com.google.android.apps.common.testing.accessibility.framework", module: "accessibility-test-framework"
 	}
-	androidTestImplementation "androidx.test.ext:junit:1.1.5"
+	androidTestImplementation "androidx.test.ext:junit:1.2.0"
 	androidTestImplementation "com.linkedin.testbutler:test-butler-library:2.2.1"
 
 	testImplementation 'junit:junit:4.13.2'
 	testImplementation "androidx.test:core:1.5.0"
-	testImplementation "androidx.test.ext:junit:1.1.5"
+	testImplementation "androidx.test.ext:junit:1.2.0"
 	testImplementation 'org.mockito:mockito-core:5.12.0'
 	testImplementation 'org.assertj:assertj-core:3.26.0'
 	testImplementation 'org.robolectric:robolectric:4.12.2'
