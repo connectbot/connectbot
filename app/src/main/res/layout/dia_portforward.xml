@@ -78,16 +78,15 @@
 				android:paddingEnd="10dip"
 				android:paddingRight="10dip"
 				android:text="@string/prompt_source_port"
-				android:textAppearance="?android:attr/textAppearanceMedium"/>
+				android:textAppearance="?android:attr/textAppearanceMedium" />
 
 			<EditText
 				android:id="@+id/portforward_source"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				android:hint="8080"
-				android:inputType="number"
-				/>
+				android:hint="[127.0.0.1:]8080"
+				android:inputType="textEmailAddress" />
 		</TableRow>
 
 		<TableRow>
