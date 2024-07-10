@@ -300,85 +300,58 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		TerminalKeyListener handler = terminal.bridge.getKeyHandler();
 		boolean hideKeys = false;
 
-		switch (v.getId()) {
-		case R.id.button_ctrl:
+		int id = v.getId();
+		if (id == R.id.button_ctrl) {
 			handler.metaPress(TerminalKeyListener.OUR_CTRL_ON, true);
 			hideKeys = true;
-			break;
-		case R.id.button_esc:
+		} else if (id == R.id.button_esc) {
 			handler.sendEscape();
 			hideKeys = true;
-			break;
-		case R.id.button_tab:
+		} else if (id == R.id.button_tab) {
 			handler.sendTab();
 			hideKeys = true;
-			break;
-
-		case R.id.button_up:
+		} else if (id == R.id.button_up) {
 			handler.sendPressedKey(vt320.KEY_UP);
-			break;
-		case R.id.button_down:
+		} else if (id == R.id.button_down) {
 			handler.sendPressedKey(vt320.KEY_DOWN);
-			break;
-		case R.id.button_left:
+		} else if (id == R.id.button_left) {
 			handler.sendPressedKey(vt320.KEY_LEFT);
-			break;
-		case R.id.button_right:
+		} else if (id == R.id.button_right) {
 			handler.sendPressedKey(vt320.KEY_RIGHT);
-			break;
-
-		case R.id.button_home:
+		} else if (id == R.id.button_home) {
 			handler.sendPressedKey(vt320.KEY_HOME);
-			break;
-		case R.id.button_end:
+		} else if (id == R.id.button_end) {
 			handler.sendPressedKey(vt320.KEY_END);
-			break;
-		case R.id.button_pgup:
+		} else if (id == R.id.button_pgup) {
 			handler.sendPressedKey(vt320.KEY_PAGE_UP);
-			break;
-		case R.id.button_pgdn:
+		} else if (id == R.id.button_pgdn) {
 			handler.sendPressedKey(vt320.KEY_PAGE_DOWN);
-			break;
-
-		case R.id.button_f1:
+		} else if (id == R.id.button_f1) {
 			handler.sendPressedKey(vt320.KEY_F1);
-			break;
-		case R.id.button_f2:
+		} else if (id == R.id.button_f2) {
 			handler.sendPressedKey(vt320.KEY_F2);
-			break;
-		case R.id.button_f3:
+		} else if (id == R.id.button_f3) {
 			handler.sendPressedKey(vt320.KEY_F3);
-			break;
-		case R.id.button_f4:
+		} else if (id == R.id.button_f4) {
 			handler.sendPressedKey(vt320.KEY_F4);
-			break;
-		case R.id.button_f5:
+		} else if (id == R.id.button_f5) {
 			handler.sendPressedKey(vt320.KEY_F5);
-			break;
-		case R.id.button_f6:
+		} else if (id == R.id.button_f6) {
 			handler.sendPressedKey(vt320.KEY_F6);
-			break;
-		case R.id.button_f7:
+		} else if (id == R.id.button_f7) {
 			handler.sendPressedKey(vt320.KEY_F7);
-			break;
-		case R.id.button_f8:
+		} else if (id == R.id.button_f8) {
 			handler.sendPressedKey(vt320.KEY_F8);
-			break;
-		case R.id.button_f9:
+		} else if (id == R.id.button_f9) {
 			handler.sendPressedKey(vt320.KEY_F9);
-			break;
-		case R.id.button_f10:
+		} else if (id == R.id.button_f10) {
 			handler.sendPressedKey(vt320.KEY_F10);
-			break;
-		case R.id.button_f11:
+		} else if (id == R.id.button_f11) {
 			handler.sendPressedKey(vt320.KEY_F11);
-			break;
-		case R.id.button_f12:
+		} else if (id == R.id.button_f12) {
 			handler.sendPressedKey(vt320.KEY_F12);
-			break;
-		default:
+		} else {
 			Log.e(TAG, "Unknown emulated key clicked: " + v.getId());
-			break;
 		}
 
 		if (hideKeys) {
@@ -991,15 +964,13 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
+		if (item.getItemId() == android.R.id.home) {
 			Intent intent = new Intent(this, HostListActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			return true;
-		default:
-			return super.onOptionsItemSelected(item);
 		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

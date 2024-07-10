@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="app_desc">Un client SSH semplice, potente ed open-source.</string>
+  <string name="app_desc">Un client SSH semplice, potente ed open source.</string>
   <string name="service_desc">Mantieni le connessioni SSH e le chiavi pubbliche caricate</string>
   <string name="title_hosts_list">Connessione</string>
   <string name="title_pubkey_list">Chiavi pubbliche</string>
@@ -47,7 +47,7 @@
   <string name="pubkey_change_password">Cambia password</string>
   <string name="pubkey_list_pick">Leggi da /sdcard</string>
   <string name="pubkey_import_parse_problem">Problemi durante l\'importazione della chiave privata</string>
-  <string name="pubkey_unlock">Chiave di sblocco</string>
+  <string name="pubkey_unlock">Sblocca la chiave</string>
   <string name="pubkey_failed_add">Password errata per la chiave \'%1$s\'. Errore di autenticazione.</string>
   <string name="pubkey_memory_load">Carica in memoria</string>
   <string name="pubkey_memory_unload">Elimina dalla memoria</string>

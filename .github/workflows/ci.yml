@@ -3,45 +3,151 @@ name: Continuous Integration
 on:
   push:
     branches: [ main ]
+    tags:
+      - "v*.*.*"
   pull_request:
     branches: [ main ]
   schedule:
     - cron: "0 7 */3 * *"
   merge_group:
     types: [ checks_requested ]
-    
+
 jobs:
   build:
-    runs-on: macos-latest
+    name: Build and test
+    runs-on: macos-13 # emulator never starts on macOS 14 https://github.com/ReactiveCircus/android-emulator-runner/issues/392#issuecomment-2106167725
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout (with history)
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Checkout (without history)
+        if: ${{ github.event_name != 'push' }}
+        uses: actions/checkout@v4
 
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
+        uses: android-actions/setup-android@v3
 
       - name: Cache Gradle Home files
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         continue-on-error: true
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-home-examples-${{ hashFiles('**/*.gradle') }}
 
       - name: Build ConnectBot
-        run: ./gradlew build
+        run: ./gradlew build bundleGoogleRelease
 
       - name: Run instrument tests
-        uses: reactivecircus/android-emulator-runner@v2.28.0
+        uses: reactivecircus/android-emulator-runner@v2.31.0
         with:
           api-level: 28
           target: default
           arch: x86_64
           profile: Nexus 4
           script: ./gradlew connectedCheck --continue
+
+      - name: Prepare release
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          if git describe --exact-match; then \
+            TAGGED=yes
+          fi
+
+          if [[ -n $TAGGED ]]; then
+            GITHUB_TAG="$(git describe)"
+            echo "${GITHUB_TAG}" > tag.txt
+            echo "Release ${GITHUB_TAG}" > release-title.txt
+          else \
+            GITHUB_TAG="git-$(git describe)"
+            GITHUB_TITLE="$(git log -1 --pretty=%B | head -1)"
+            echo "${GITHUB_TAG}" > tag.txt
+            echo "${GITHUB_TAG}: ${GITHUB_TITLE}" > release-title.txt
+          fi
+          cp ./app/build/outputs/apk/oss/release/app-oss-release-unsigned.apk ConnectBot-${GITHUB_TAG}-oss-unsigned.apk
+          cp ./app/build/outputs/apk/google/release/app-google-release-unsigned.apk ConnectBot-${GITHUB_TAG}-google-unsigned.apk
+          cp ./app/build/outputs/bundle/googleRelease/app-google-release.aab ConnectBot-${GITHUB_TAG}-google-unsigned.aab
+          cp ./app/build/outputs/native-debug-symbols/googleRelease/native-debug-symbols.zip ConnectBot-${GITHUB_TAG}-google.native-debug-symbols.zip
+          cp ./app/build/outputs/native-debug-symbols/ossRelease/native-debug-symbols.zip ConnectBot-${GITHUB_TAG}-oss.native-debug-symbols.zip
+  
+      - name: Store artifacts for upload
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk
+          path: |
+            release-title.txt
+            tag.txt
+            ConnectBot-*-unsigned.apk
+            ConnectBot-*-unsigned.aab
+            ConnectBot-*.native-debug-symbols.zip
+
+  upload:
+    name: Upload to GitHub releases
+    needs: build
+    if: ${{ (github.event_name == 'push') && (github.repository == 'connectbot/connectbot') && ((github.ref == 'refs/heads/main') || startsWith(github.ref, 'refs/tags/v')) }}
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download artifacts from previous job
+        uses: actions/download-artifact@v4
+        with:
+          name: apk
+
+      - name: Set release name
+        id: name
+        run: |
+          echo "RELEASE_TITLE=$(cat release-title.txt)" >> "$GITHUB_OUTPUT"
+          echo "GITHUB_TAG=$(cat tag.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Upload release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: "Untested build"
+          draft: true
+          tag_name: ${{ steps.name.outputs.GITHUB_TAG }}
+          name: ${{ steps.name.outputs.RELEASE_TITLE }}
+          generate_release_notes: true
+          files: |
+            ConnectBot-*-unsigned.apk
+            ConnectBot-*-unsigned.aab
+            ConnectBot-*.native-debug-symbols.zip
+
+  signing:
+    name: Trigger remote signing
+    needs: upload
+    if: ${{ (github.event_name == 'push') && (github.repository == 'connectbot/connectbot') && ((github.ref == 'refs/heads/main') || startsWith(github.ref, 'refs/tags/v')) }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts from previous job
+        uses: actions/download-artifact@v4
+        with:
+          name: apk
+
+      - name: Set release name
+        id: name
+        run: |
+          echo "GITHUB_TAG=$(cat tag.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Call remote signer
+        uses: distributhor/workflow-webhook@v3.0.7
+        with:
+          webhook_url: ${{ secrets.SIGNER_WEBHOOK_URL }}
+          data: '{"tag_id": "${{ steps.name.outputs.GITHUB_TAG }}"}'
