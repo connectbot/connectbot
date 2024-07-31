@@ -88,7 +88,9 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	private boolean shiftedNumbersAreFKeysOnHardKeyboard;
 	private boolean controlNumbersAreFKeysOnSoftKeyboard;
 	private boolean volumeKeysChangeFontSize;
+	private boolean ctrlPlusMinusChangeFontSize;
 	private int stickyMetas;
+	private boolean stickyNonLocking;
 
 	private int ourMetaState = 0;
 
@@ -315,18 +317,20 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				return true;
 			}
 
-			if ((keyCode == KeyEvent.KEYCODE_EQUALS
-					&& (derivedMetaState & HC_META_CTRL_ON) != 0
-					&& (derivedMetaState & KeyEvent.META_SHIFT_ON) != 0)
-					|| (keyCode == KeyEvent.KEYCODE_PLUS
-					&& (derivedMetaState & HC_META_CTRL_ON) != 0)) {
-				bridge.increaseFontSize();
-				return true;
-			}
+			if (ctrlPlusMinusChangeFontSize) {
+				if ((keyCode == KeyEvent.KEYCODE_EQUALS
+						&& (derivedMetaState & HC_META_CTRL_ON) != 0
+						&& (derivedMetaState & KeyEvent.META_SHIFT_ON) != 0)
+						|| (keyCode == KeyEvent.KEYCODE_PLUS
+						&& (derivedMetaState & HC_META_CTRL_ON) != 0)) {
+					bridge.increaseFontSize();
+					return true;
+				}
 
-			if (keyCode == KeyEvent.KEYCODE_MINUS && (derivedMetaState & HC_META_CTRL_ON) != 0) {
-				bridge.decreaseFontSize();
-				return true;
+				if (keyCode == KeyEvent.KEYCODE_MINUS && (derivedMetaState & HC_META_CTRL_ON) != 0) {
+					bridge.decreaseFontSize();
+					return true;
+				}
 			}
 
 			// Ask the system to use the keymap to give us the unicode character for this key,
@@ -586,7 +590,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			ourMetaState &= ~(code << 1);
 		} else if ((ourMetaState & code) != 0) {
 			ourMetaState &= ~code;
-			ourMetaState |= code << 1;
+			if (forceSticky || !stickyNonLocking)
+				ourMetaState |= code << 1;
 		} else if (forceSticky || (stickyMetas & code) != 0) {
 			ourMetaState |= code;
 		} else {
@@ -636,6 +641,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				PreferenceConstants.SHIFT_FKEYS.equals(key) ||
 				PreferenceConstants.CTRL_FKEYS.equals(key) ||
 				PreferenceConstants.VOLUME_FONT.equals(key) ||
+				PreferenceConstants.CTRL_FONT.equals(key) ||
 				PreferenceConstants.STICKY_MODIFIERS.equals(key)) {
 			updatePrefs();
 		}
@@ -648,6 +654,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		controlNumbersAreFKeysOnSoftKeyboard =
 				prefs.getBoolean(PreferenceConstants.CTRL_FKEYS, false);
 		volumeKeysChangeFontSize = prefs.getBoolean(PreferenceConstants.VOLUME_FONT, true);
+		ctrlPlusMinusChangeFontSize = prefs.getBoolean(PreferenceConstants.CTRL_FONT, true);
 		String stickyModifiers = prefs.getString(PreferenceConstants.STICKY_MODIFIERS,
 				PreferenceConstants.NO);
 		if (PreferenceConstants.ALT.equals(stickyModifiers)) {
@@ -657,6 +664,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		} else {
 			stickyMetas = 0;
 		}
+		stickyNonLocking = prefs.getBoolean(PreferenceConstants.STICKY_NON_LOCKING, false);
 	}
 
 	public void setCharset(String encoding) {
