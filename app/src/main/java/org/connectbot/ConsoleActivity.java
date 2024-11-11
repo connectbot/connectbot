@@ -32,6 +32,7 @@ import org.connectbot.util.TerminalViewPager;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -49,6 +50,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 import androidx.annotation.Nullable;
 import com.google.android.material.tabs.TabLayout;
 import androidx.core.app.ActivityCompat;
@@ -877,6 +879,19 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				ListView urlListView = new ListView(ConsoleActivity.this);
 				URLItemListener urlListener = new URLItemListener(ConsoleActivity.this);
 				urlListView.setOnItemClickListener(urlListener);
+				urlListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+					@Override
+					public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+						String selectedUrl = urls.get(position);
+
+						android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+						ClipData text = ClipData.newPlainText("", selectedUrl);
+						clipboard.setPrimaryClip(text);
+
+						Toast.makeText(ConsoleActivity.this, android.R.string.copy, Toast.LENGTH_SHORT).show();
+						return true;
+					}
+				});
 
 				urlListView.setAdapter(new ArrayAdapter<>(ConsoleActivity.this, android.R.layout.simple_list_item_1, urls));
 				urlDialog.setContentView(urlListView);
