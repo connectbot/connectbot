@@ -47,7 +47,7 @@ jobs:
         echo $REVNO > "${GITHUB_WORKSPACE}/${PO_SUBDIR}/.revno"
 
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
+      uses: gradle/actions/setup-gradle@v4
 
     - name: Try importing the translations
       run: |
@@ -55,7 +55,7 @@ jobs:
 
     - name: Create pull request
       if: github.event_name != 'pull_request'
-      uses: peter-evans/create-pull-request@v6
+      uses: peter-evans/create-pull-request@v7
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: |
