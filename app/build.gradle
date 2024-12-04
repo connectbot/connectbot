@@ -9,7 +9,7 @@ buildscript {
 plugins {
 	id 'com.android.application' version '8.1.4'
 	id 'com.github.ben-manes.versions' version '0.51.0'
-	id 'net.ltgt.errorprone' version '4.0.1'
+	id 'net.ltgt.errorprone' version '4.1.0'
 	id 'com.gladed.androidgitversion' version '0.4.14'
 	id 'com.github.kt3k.coveralls' version '2.12.2'
 	id 'com.mxalbert.gradle.jacoco-android' version '0.2.1'
