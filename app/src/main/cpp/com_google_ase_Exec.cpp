@@ -25,6 +25,7 @@
 #include <sys/wait.h>
 #include <termios.h>
 #include <unistd.h>
+#include <signal.h>
 
 #include "android/log.h"
 
@@ -128,6 +129,19 @@ static int create_subprocess(
     *pProcessId = (int) pid;
     return ptm;
   }
+}
+
+JNIEXPORT jint JNICALL Java_com_google_ase_Exec_setenv(
+    JNIEnv* env, jclass clazz, jstring name, jstring value) {
+  char *name_8 = JNU_GetStringNativeChars(env, name);
+  char *value_8 = JNU_GetStringNativeChars(env, value);
+
+  return setenv(name_8, value_8, 1);
+}
+
+JNIEXPORT jint JNICALL Java_com_google_ase_Exec_kill(
+    JNIEnv * env, jclass clazz, jint pid, jint signal) {
+  return kill(pid, signal);
 }
 
 JNIEXPORT jobject JNICALL Java_com_google_ase_Exec_createSubprocess(

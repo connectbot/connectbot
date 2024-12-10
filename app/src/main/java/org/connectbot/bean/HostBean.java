@@ -19,6 +19,7 @@ package org.connectbot.bean;
 
 import org.connectbot.transport.Local;
 import org.connectbot.transport.SSH;
+import org.connectbot.transport.Mosh;
 import org.connectbot.transport.Telnet;
 import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
@@ -43,6 +44,8 @@ public class HostBean extends AbstractBean {
 	private String hostname = null;
 	private int port = 22;
 	private String protocol = "ssh";
+	private String hostKeyAlgo = null;
+	private byte[] hostKey = null;
 	private long lastConnect = -1;
 	private String color;
 	private boolean useKeys = true;
@@ -56,6 +59,9 @@ public class HostBean extends AbstractBean {
 	private String encoding = HostDatabase.ENCODING_DEFAULT;
 	private boolean stayConnected = false;
 	private boolean quickDisconnect = false;
+	private int moshPort = -1;
+	private String moshServer = null;
+	private String locale = HostDatabase.LOCALE_DEFAULT;
 
 	public HostBean() {
 
@@ -113,6 +119,24 @@ public class HostBean extends AbstractBean {
 		return protocol;
 	}
 
+	public void setHostKeyAlgo(String hostKeyAlgo) {
+		this.hostKeyAlgo = hostKeyAlgo;
+	}
+	public String getHostKeyAlgo() {
+		return hostKeyAlgo;
+	}
+	public void setHostKey(byte[] hostKey) {
+		if (hostKey == null)
+			this.hostKey = null;
+		else
+			this.hostKey = hostKey.clone();
+	}
+	public byte[] getHostKey() {
+		if (hostKey == null)
+			return null;
+		else
+			return hostKey.clone();
+	}
 	public void setLastConnect(long lastConnect) {
 		this.lastConnect = lastConnect;
 	}
@@ -190,6 +214,30 @@ public class HostBean extends AbstractBean {
 		return stayConnected;
 	}
 
+	public void setMoshPort(int moshPort) {
+		this.moshPort = moshPort;
+	}
+
+	public int getMoshPort() {
+		return moshPort;
+	}
+
+	public void setMoshServer(String moshServer) {
+		this.moshServer = moshServer;
+	}
+
+	public String getMoshServer() {
+		return moshServer;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
+
+	public String getLocale() {
+		return locale;
+	}
+
 	public void setQuickDisconnect(boolean quickDisconnect) {
 		this.quickDisconnect = quickDisconnect;
 	}
@@ -230,6 +278,9 @@ public class HostBean extends AbstractBean {
 		values.put(HostDatabase.FIELD_HOST_ENCODING, encoding);
 		values.put(HostDatabase.FIELD_HOST_STAYCONNECTED, Boolean.toString(stayConnected));
 		values.put(HostDatabase.FIELD_HOST_QUICKDISCONNECT, Boolean.toString(quickDisconnect));
+                values.put(HostDatabase.FIELD_HOST_MOSHPORT, moshPort);
+                values.put(HostDatabase.FIELD_HOST_MOSH_SERVER, moshServer);
+                values.put(HostDatabase.FIELD_HOST_LOCALE, locale);
 
 		return values;
 	}
@@ -254,6 +305,9 @@ public class HostBean extends AbstractBean {
 		host.setEncoding(values.getAsString(HostDatabase.FIELD_HOST_ENCODING));
 		host.setStayConnected(values.getAsBoolean(HostDatabase.FIELD_HOST_STAYCONNECTED));
 		host.setQuickDisconnect(values.getAsBoolean(HostDatabase.FIELD_HOST_QUICKDISCONNECT));
+		host.setMoshPort(values.getAsInteger(HostDatabase.FIELD_HOST_MOSHPORT));
+		host.setMoshServer(values.getAsString(HostDatabase.FIELD_HOST_MOSH_SERVER));
+		host.setLocale(values.getAsString(HostDatabase.FIELD_HOST_LOCALE));
 		return host;
 	}
 
@@ -291,7 +345,19 @@ public class HostBean extends AbstractBean {
 		} else if (!hostname.equals(host.getHostname()))
 			return false;
 
-		return port == host.getPort();
+		if (port != host.getPort())
+			return false;
+
+                if (moshPort != host.getMoshPort())
+                    return false;
+
+                if (moshServer != host.getMoshServer())
+                    return false;
+
+                if (locale != host.getLocale())
+                    return false;
+
+		return true;
 	}
 
 	@Override
@@ -341,6 +407,15 @@ public class HostBean extends AbstractBean {
 		int defaultPort = TransportFactory.getTransport(protocol).getDefaultPort();
 
 		if (SSH.getProtocolName().equals(protocol)) {
+			if (username == null || hostname == null ||
+					username.equals("") || hostname.equals(""))
+				return "";
+
+			if (port == defaultPort)
+				return username + "@" + hostname;
+			else
+				return username + "@" + hostname + ":" + port;
+		} else if (Mosh.getProtocolName().equals(protocol)) {
 			if (username == null || hostname == null ||
 					username.equals("") || hostname.equals(""))
 				return "";
