@@ -45,14 +45,13 @@ import com.trilead.ssh2.ConnectionMonitor;
 import com.trilead.ssh2.InteractiveCallback;
 import com.trilead.ssh2.ServerHostKeyVerifier;
 
-import com.google.ase.Exec;
+import org.mosh.MoshClient;
 
 public class Mosh extends SSH implements ConnectionMonitor, InteractiveCallback, AuthAgentCallback {
 	private String moshPort, moshKey, moshIP;
 	private boolean sshDone = false;
-	private Integer moshPid;
 
-	private FileDescriptor shellFd;
+	private MoshClient moshClient;
 
 	private FileInputStream is;
 	private FileOutputStream os;
@@ -75,6 +74,10 @@ public class Mosh extends SSH implements ConnectionMonitor, InteractiveCallback,
 		super(host, bridge, manager);
 	}
 
+	private static final int SIGTERM = 15;
+	private static final int SIGCONT = 18;
+	private static final int SIGSTOP = 19;
+
 	@Override
 	public void close() {
 		try {
@@ -93,11 +96,11 @@ public class Mosh extends SSH implements ConnectionMonitor, InteractiveCallback,
 		if (connected)
 			super.close();
 
-		if (moshPid != null) {
-			synchronized (moshPid) {
-				if (moshPid > 0) {
-					Exec.kill(moshPid, 18); // SIGCONT in case it's stopped
-					Exec.kill(moshPid, 15); // SIGTERM
+		if (moshClient != null && moshClient.processId != null) {
+			synchronized (moshClient) {
+				if (moshClient.processId > 0) {
+					moshClient.kill(SIGCONT); // in case it's stopped
+					moshClient.kill(SIGTERM);
 				}
 			}
 		}
@@ -105,9 +108,9 @@ public class Mosh extends SSH implements ConnectionMonitor, InteractiveCallback,
 
 	public void onBackground() {
 		if (sshDone) {
-			synchronized (moshPid) {
-				if (moshPid > 0)
-					Exec.kill(moshPid, 19); // SIGSTOP
+			synchronized (moshClient) {
+				if (moshClient.processId > 0)
+					moshClient.kill(SIGSTOP);
 				stoppedForBackground = true;
 			}
 		}
@@ -115,9 +118,9 @@ public class Mosh extends SSH implements ConnectionMonitor, InteractiveCallback,
 
 	public void onForeground() {
 		if (sshDone) {
-			synchronized (moshPid) {
-				if (moshPid > 0)
-					Exec.kill(moshPid, 18); // SIGCONT
+			synchronized (moshClient) {
+				if (moshClient.processId > 0)
+					moshClient.kill(SIGCONT);
 				stoppedForBackground = false;
 			}
 		}
@@ -125,18 +128,18 @@ public class Mosh extends SSH implements ConnectionMonitor, InteractiveCallback,
 
 	public void onScreenOff() {
 		if (sshDone) {
-			synchronized (moshPid) {
-				if (moshPid > 0 && !stoppedForBackground)
-					Exec.kill(moshPid, 19); // SIGSTOP
+			synchronized (moshClient) {
+				if (moshClient.processId > 0 && !stoppedForBackground)
+					moshClient.kill(SIGSTOP);
 			}
 		}
 	}
 
 	public void onScreenOn() {
 		if (sshDone) {
-			synchronized (moshPid) {
-				if (moshPid > 0 && !stoppedForBackground)
-					Exec.kill(moshPid, 18); // SIGCONT
+			synchronized (moshClient) {
+				if (moshClient.processId > 0 && !stoppedForBackground)
+					moshClient.kill(SIGCONT);
 			}
 		}
 	}
@@ -153,7 +156,7 @@ public class Mosh extends SSH implements ConnectionMonitor, InteractiveCallback,
 			bridge.outputLine("trying to run mosh-server on the remote server");
 			session = connection.openSession();
 
-			session.requestPTY("screen", 80, 25, 800, 600, null);
+			session.requestPTY(getEmulation(), columns, rows, width, height, null);
 				/* TODO: try {
 					session.sendEnvironment("LANG",host.getLocale());
 				} catch(IOException e) {
@@ -162,12 +165,16 @@ public class Mosh extends SSH implements ConnectionMonitor, InteractiveCallback,
 
 			String serverCommand = host.getMoshServer();
 			if (serverCommand == null) {
-				serverCommand = "mosh-server";
+				serverCommand = "env TERM="+getEmulation();
+				serverCommand += " mosh-server";
 			}
-			serverCommand += " new -s -l LANG=" + host.getLocale();
+			serverCommand += " new -s -c 256 -l LANG=" + host.getLocale();
+			serverCommand += " -l TERM="+getEmulation();
+			serverCommand += " -- sh -c 'TERM="+getEmulation()+" exec $SHELL'";
 			if (host.getMoshPort() > 0) {
 				serverCommand += " -p " + host.getMoshPort();
 			}
+			bridge.outputLine("ssh$ " + serverCommand);
 			session.execCommand(serverCommand);
 
 			stdin = session.getStdin();
@@ -201,17 +208,17 @@ public class Mosh extends SSH implements ConnectionMonitor, InteractiveCallback,
 	public void connect() {
 		if (!InstallMosh.isInstallStarted()) {
 			// check that InstallMosh was called by the Activity
-			bridge.outputLine("mosh-client binary install not started");
+			bridge.outputLine("curses not found");
 			onDisconnect();
 			return;
 		}
 		if (!InstallMosh.isInstallDone()) {
-			bridge.outputLine("waiting for mosh binaries to install");
+			bridge.outputLine("waiting for curses to be applied");
 			InstallMosh.waitForInstall();
 		}
 
-		if (!InstallMosh.getMoshInstallStatus()) {
-			bridge.outputLine("mosh-client binary not found; install process failed");
+		if (!InstallMosh.getTerminfoInstallStatus()) {
+			bridge.outputLine("curses expression failed");
 			bridge.outputLine(InstallMosh.getInstallMessages());
 			onDisconnect();
 			return;
@@ -408,32 +415,31 @@ public class Mosh extends SSH implements ConnectionMonitor, InteractiveCallback,
 	}
 
 	private void launchMosh() {
-		int[] pids = new int[1];
-
-		Exec.setenv("MOSH_KEY", moshKey);
-		Exec.setenv("TERM", getEmulation());
-		Exec.setenv("TERMINFO", InstallMosh.getTerminfoPath());
+		MoshClient.setenv("MOSH_KEY", moshKey);
+		bridge.outputLine("MOSH_KEY := " + moshKey);
+		MoshClient.setenv("TERM", getEmulation());
+		bridge.outputLine("TERM := " + getEmulation());
+		MoshClient.setenv("TERMINFO", InstallMosh.getTerminfoPath());
+		bridge.outputLine("TERMINFO := " + InstallMosh.getTerminfoPath());
 		try {
-			shellFd = Exec.createSubprocess(InstallMosh.getMoshPath(), moshIP, moshPort, pids);
-			bridge.outputLine("[" + pids[0] + "]: " + InstallMosh.getMoshPath() + " " + moshIP + " " + moshPort);
-			Exec.setPtyWindowSize(shellFd, rows, columns, width, height);
+			moshClient = new MoshClient(moshIP, Integer.valueOf(moshPort));
+			bridge.outputLine("[" + moshClient.processId + "]: mosh-client " + moshIP + " " + moshPort);
+			moshClient.setPtyWindowSize(rows, columns, width, height);
 		} catch (Exception e) {
 			bridge.outputLine("failed to start mosh-client: " + e.toString());
 			Log.e(TAG, "Cannot start mosh-client", e);
 			onDisconnect();
 			return;
 		} finally {
-			Exec.setenv("MOSH_KEY", "");
+			MoshClient.setenv("MOSH_KEY", "");
 		}
 
-		moshPid = pids[0];
 		Runnable exitWatcher = new Runnable() {
 			public void run() {
-				Exec.waitFor(moshPid);
-				synchronized (moshPid) {
-					moshPid = 0;
+				moshClient.waitFor();
+				synchronized (moshClient) {
+					moshClient = null;
 				}
-				;
 
 				bridge.dispatchDisconnect(false);
 			}
@@ -444,8 +450,8 @@ public class Mosh extends SSH implements ConnectionMonitor, InteractiveCallback,
 		exitWatcherThread.setDaemon(true);
 		exitWatcherThread.start();
 
-		is = new FileInputStream(shellFd);
-		os = new FileOutputStream(shellFd);
+		is = new FileInputStream(moshClient.clientFd);
+		os = new FileOutputStream(moshClient.clientFd);
 
 		bridge.postLogin();
 	}
@@ -517,7 +523,7 @@ public class Mosh extends SSH implements ConnectionMonitor, InteractiveCallback,
 	public void setDimensions(int columns, int rows, int width, int height) {
 		if (sshDone) {
 			try {
-				Exec.setPtyWindowSize(shellFd, rows, columns, width, height);
+				moshClient.setPtyWindowSize(rows, columns, width, height);
 			} catch (Exception e) {
 				Log.e(TAG, "Couldn't resize pty", e);
 			}

@@ -87,8 +87,6 @@ public final class PreferenceConstants {
 	public static final String NO = "no";
 	public static final String ALT = "alt";
 
-	public static final String INSTALLED_MOSH_VERSION = "moshVersion";
-
 	/* Backup identifiers */
 	public static final String BACKUP_PREF_KEY = "prefs";
 }

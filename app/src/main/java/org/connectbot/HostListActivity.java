@@ -239,7 +239,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-		// install Mosh binaries
+		// install Mosh files
 		new InstallMosh(this);
 
 		// detect HTC Dream and apply special preferences
