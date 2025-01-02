@@ -18,6 +18,9 @@
 package org.connectbot;
 
 import android.annotation.TargetApi;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -466,38 +469,35 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 		}
 
 		@Override
-		public void onClick(View v) {
-			// launch off to console details
-			Uri uri = host.getUri();
+public void onClick(View v) {
+    // launch off to console details
+    Uri uri = host.getUri();
 
-			Intent contents = new Intent(Intent.ACTION_VIEW, uri);
-			contents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    Intent contents = new Intent(Intent.ACTION_VIEW, uri);
+    contents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-			if (makingShortcut) {
-				// create shortcut if requested
-				ShortcutIconResource icon = Intent.ShortcutIconResource.fromContext(
-						HostListActivity.this, R.mipmap.icon);
+    if (makingShortcut) {
+        // create shortcut if requested
+        ShortcutInfoCompat shortcut = new ShortcutInfoCompat.Builder(HostListActivity.this, host.getNickname())
+            .setIntent(contents)
+            .setIcon(IconCompat.createWithResource(HostListActivity.this, R.mipmap.icon))
+            .setShortLabel(host.getNickname())
+            .build();
 
-				Intent intent = new Intent();
-				intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, contents);
-				intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, host.getNickname());
-				intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
+        ShortcutManagerCompat.requestPinShortcut(HostListActivity.this, shortcut, null);
+        finish();
+    } else {
+        // otherwise just launch activity to show this host
 
-				setResult(RESULT_OK, intent);
-				finish();
-
-			} else {
-				// otherwise just launch activity to show this host
-
-				// runnable to run after notification permission is asked
-				startConsoleRunnable = () -> {
-					contents.setClass(HostListActivity.this, ConsoleActivity.class);
-					HostListActivity.this.startActivity(contents);
-					startConsoleRunnable = null;
-				};
-				requestPermissionAndStartConsole();
-			}
-		}
+        // runnable to run after notification permission is asked
+        startConsoleRunnable = () -> {
+            contents.setClass(HostListActivity.this, ConsoleActivity.class);
+            HostListActivity.this.startActivity(contents);
+            startConsoleRunnable = null;
+        };
+        requestPermissionAndStartConsole();
+    }
+}
 
 		@Override
 		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {

@@ -16,184 +16,185 @@
  limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	android:installLocation="auto">
+    android:installLocation="auto">
 
-	<uses-sdk />
+    <uses-sdk />
 
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.VIBRATE" />
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 
-	<uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
 
-	<supports-screens
-		android:anyDensity="true"
-		android:largeScreens="true"
-		android:normalScreens="true"
-		android:resizeable="true"
-		android:smallScreens="true"
-		android:xlargeScreens="true" />
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
 
-	<application
-		android:allowBackup="true"
-		android:backupAgent=".service.BackupAgent"
-		android:description="@string/app_desc"
-		android:icon="@mipmap/icon"
-		android:killAfterRestore="true"
-		android:label="@string/app_name"
-		android:roundIcon="@mipmap/icon_round"
-		android:supportsRtl="true"
-		android:theme="@style/AppTheme">
+    <application
+        android:allowBackup="true"
+        android:backupAgent=".service.BackupAgent"
+        android:description="@string/app_desc"
+        android:icon="@mipmap/icon"
+        android:killAfterRestore="true"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/icon_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
 
-		<meta-data
-			android:name="android.max_aspect"
-			android:value="2.1" />
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
 
-		<activity
-			android:name=".HostListActivity"
-			android:launchMode="singleTop"
-			android:resizeableActivity="true"
-			android:exported="true">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN"/>
-				<category android:name="android.intent.category.LAUNCHER"/>
-			</intent-filter>
-			<intent-filter>
-				<action android:name="android.intent.action.CREATE_SHORTCUT"/>
-				<category android:name="android.intent.category.DEFAULT"/>
-			</intent-filter>
-			<intent-filter>
-				<action android:name="android.intent.action.PICK"/>
-				<category android:name="android.intent.category.DEFAULT"/>
+        <activity
+            android:name=".HostListActivity"
+            android:launchMode="singleTop"
+            android:resizeableActivity="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PICK"/>
+                <category android:name="android.intent.category.DEFAULT"/>
 
-				<data android:scheme="ssh"/>
-				<data android:scheme="telnet"/>
-				<data android:scheme="local"/>
-			</intent-filter>
-		</activity>
+                <data android:scheme="ssh"/>
+                <data android:scheme="telnet"/>
+                <data android:scheme="local"/>
+            </intent-filter>
+        </activity>
 
-		<activity
-			android:name=".PubkeyListActivity"
-			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/title_pubkey_list">
+        <activity
+            android:name=".PubkeyListActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_pubkey_list">
 
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.connectbot.HostListActivity"/>
-		</activity>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.connectbot.HostListActivity"/>
+        </activity>
 
-		<activity
-			android:name=".GeneratePubkeyActivity"
-			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/title_pubkey_generate">
+        <activity
+            android:name=".GeneratePubkeyActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_pubkey_generate">
 
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.connectbot.PubkeyListActivity"/>
-		</activity>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.connectbot.PubkeyListActivity"/>
+        </activity>
 
-		<activity
-				android:name=".EditHostActivity"
-				android:label="@string/title_host_editor">
+        <activity
+            android:name=".EditHostActivity"
+            android:label="@string/title_host_editor">
 
-			<meta-data
-					android:name="android.support.PARENT_ACTIVITY"
-					android:value="org.connectbot.HostListActivity"/>
-		</activity>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.connectbot.HostListActivity"/>
+        </activity>
 
-		<activity
-			android:name=".PortForwardListActivity"
-			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/title_port_forwards_list">
+        <activity
+            android:name=".PortForwardListActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_port_forwards_list">
 
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.connectbot.HostListActivity"/>
-		</activity>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.connectbot.HostListActivity"/>
+        </activity>
 
-		<activity
-			android:name=".SettingsActivity"
-			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/title_settings">
+        <activity
+            android:name=".SettingsActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_settings">
 
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.connectbot.HostListActivity"/>
-		</activity>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.connectbot.HostListActivity"/>
+        </activity>
 
-		<activity
-			android:name=".HelpActivity"
-			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/title_help">
+        <activity
+            android:name=".HelpActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_help">
 
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.connectbot.HostListActivity"/>
-		</activity>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.connectbot.HostListActivity"/>
+        </activity>
 
-		<activity
-			android:name=".ColorsActivity"
-			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/title_colors">
+        <activity
+            android:name=".ColorsActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_colors">
 
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.connectbot.HostListActivity"/>
-		</activity>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.connectbot.HostListActivity"/>
+        </activity>
 
-		<activity
-			android:name=".EulaActivity"
-			android:configChanges="keyboardHidden|orientation"
-			android:label="@string/terms_and_conditions">
+        <activity
+            android:name=".EulaActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/terms_and_conditions">
 
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.connectbot.HelpActivity"/>
-		</activity>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.connectbot.HelpActivity"/>
+        </activity>
 
-		<activity
-			android:name=".HintsActivity"
-			android:label="@string/hints">
+        <activity
+            android:name=".HintsActivity"
+            android:label="@string/hints">
 
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="org.connectbot.HelpActivity"/>
-		</activity>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.connectbot.HelpActivity"/>
+        </activity>
 
-		<service
-			android:name="org.connectbot.service.TerminalManager"
-			android:configChanges="keyboardHidden|orientation"
-			android:description="@string/service_desc"/>
+        <service
+            android:name="org.connectbot.service.TerminalManager"
+            android:configChanges="keyboardHidden|orientation"
+            android:description="@string/service_desc"/>
 
-		<activity
-			android:name=".ConsoleActivity"
-			android:configChanges="keyboardHidden|orientation"
-			android:launchMode="singleTop"
-			android:theme="@style/Theme.AppCompat"
-			android:windowSoftInputMode="stateAlwaysVisible|adjustResize"
-			android:exported="true">
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW"/>
+        <activity
+            android:name=".ConsoleActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustResize"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
 
-				<category android:name="android.intent.category.DEFAULT"/>
-				<category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
-				<data android:scheme="ssh"/>
-				<data android:scheme="telnet"/>
-				<data android:scheme="local"/>
-				<!-- format:  ssh://user@host:port/#nickname  -->
-				<!-- format:  telnet://host:port/#nickname  -->
-				<!-- format:  local://  -->
-			</intent-filter>
-		</activity>
+                <data android:scheme="ssh"/>
+                <data android:scheme="telnet"/>
+                <data android:scheme="local"/>
+                <!-- format:  ssh://user@host:port/#nickname  -->
+                <!-- format:  telnet://host:port/#nickname  -->
+                <!-- format:  local://  -->
+            </intent-filter>
+        </activity>
 
-		<meta-data
-			android:name="com.google.android.backup.api_key"
-			android:value="AEdPqrEAAAAIDlFz9nSUr2g0gSytW0t2cNnYAGHDkptlVohsBA"/>
+        <meta-data
+            android:name="com.google.android.backup.api_key"
+            android:value="AEdPqrEAAAAIDlFz9nSUr2g0gSytW0t2cNnYAGHDkptlVohsBA"/>
 
-	</application>
+    </application>
 </manifest>

@@ -1,24 +1,24 @@
 buildscript {
-	dependencies {
-		if (rootProject.hasProperty('jacocoVersion')) {
-			classpath "org.jacoco:org.jacoco.core:${rootProject.jacocoVersion}"
-		}
-	}
+    dependencies {
+        if (rootProject.hasProperty('jacocoVersion')) {
+            classpath "org.jacoco:org.jacoco.core:${rootProject.jacocoVersion}"
+        }
+    }
 }
 
 plugins {
-	id 'com.android.application' version '8.1.4'
-	id 'com.github.ben-manes.versions' version '0.51.0'
-	id 'net.ltgt.errorprone' version '4.1.0'
-	id 'com.gladed.androidgitversion' version '0.4.14'
-	id 'com.github.kt3k.coveralls' version '2.12.2'
-	id 'com.mxalbert.gradle.jacoco-android' version '0.2.1'
-	id 'com.starter.easylauncher' version '6.4.0'
+    id 'com.android.application' version '8.1.4'
+    id 'com.github.ben-manes.versions' version '0.51.0'
+    id 'net.ltgt.errorprone' version '4.1.0'
+    id 'com.gladed.androidgitversion' version '0.4.14'
+    id 'com.github.kt3k.coveralls' version '2.12.2'
+    id 'com.mxalbert.gradle.jacoco-android' version '0.2.1'
+    id 'com.starter.easylauncher' version '6.4.0'
 }
 
 ext {
-	testRunnerVersion = '1.5.0'
-	espressoVersion = '3.5.1'
+    testRunnerVersion = '1.5.0'
+    espressoVersion = '3.5.1'
 }
 
 apply plugin: 'com.diffplug.spotless'
@@ -27,220 +27,227 @@ apply from: '../config/quality.gradle'
 coveralls.jacocoReportPath = 'build/reports/coverage/google/debug/report.xml'
 
 androidGitVersion {
-	prefix = "v"
-	codeFormat = 'MMNNPPBBB'
+    prefix = "v"
+    codeFormat = 'MMNNPPBBB'
 }
 
 android {
-	namespace "org.connectbot"
-	compileSdk 33
+    namespace "org.connectbot"
+    compileSdk 33
 
-	defaultConfig {
-		applicationId "org.connectbot"
-		versionName androidGitVersion.name()
-		versionCode androidGitVersion.code()
+    defaultConfig {
+        applicationId "org.connectbot"
+        versionName androidGitVersion.name()
+        versionCode androidGitVersion.code()
 
-		minSdkVersion 14
-		targetSdkVersion 33
+        minSdkVersion 14
+        targetSdkVersion 33
 
-		vectorDrawables.useSupportLibrary = true
+        vectorDrawables.useSupportLibrary = true
 
-		ndk {
-			abiFilters "x86", "x86_64", "armeabi-v7a", "arm64-v8a"
-		}
+        ndk {
+            abiFilters "x86", "x86_64", "armeabi-v7a", "arm64-v8a"
+        }
 
-		testApplicationId "org.connectbot.tests"
-		testInstrumentationRunner "org.connectbot.ConnectbotJUnitRunner"
+        testApplicationId "org.connectbot.tests"
+        testInstrumentationRunner "org.connectbot.ConnectbotJUnitRunner"
 
-		// The following argument makes the Android Test Orchestrator run its
-		// "pm clear" command after each test invocation. This command ensures
-		// that the app's state is completely cleared between tests.
-		testInstrumentationRunnerArguments clearPackageData: 'true'
-	}
+        // The following argument makes the Android Test Orchestrator run its
+        // "pm clear" command after each test invocation. This command ensures
+        // that the app's state is completely cleared between tests.
+        testInstrumentationRunnerArguments clearPackageData: 'true'
+    }
 
-	buildFeatures {
-		buildConfig = true
-	}
+    buildFeatures {
+        buildConfig = true
+    }
 
-	signingConfigs {
-		if (project.hasProperty('keystorePassword')) {
-			release {
-				storeFile file(property('keystoreFile'))
-				storePassword property('keystorePassword')
-				keyAlias property('keystoreAlias')
-				keyPassword property('keystorePassword')
-			}
-		}
-	}
-	buildTypes {
-		release {
-			shrinkResources true
-			minifyEnabled true
+    signingConfigs {
+        if (project.hasProperty('keystorePassword')) {
+            release {
+                storeFile file(property('keystoreFile'))
+                storePassword property('keystorePassword')
+                keyAlias property('keystoreAlias')
+                keyPassword property('keystorePassword')
+            }
+        }
+    }
+    buildTypes {
+        release {
+            shrinkResources true
+            minifyEnabled true
 
-			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg'
-			testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg', 'proguard-tests.cfg'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg'
+            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg', 'proguard-tests.cfg'
 
-			if (project.hasProperty('keystorePassword')) {
-				//noinspection GroovyAssignabilityCheck
-				signingConfig signingConfigs.release
-			}
+            if (project.hasProperty('keystorePassword')) {
+                //noinspection GroovyAssignabilityCheck
+                signingConfig signingConfigs.release
+            }
 
-			return true // this silences Android Studio's groovy inspector
-		}
+            return true // this silences Android Studio's groovy inspector
+        }
 
-		debug {
-			// This is necessary to avoid using multiDex
-			minifyEnabled true
+        debug {
+            // This is necessary to avoid using multiDex
+            minifyEnabled true
 
-			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg', 'proguard-debug.cfg'
-			testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg', 'proguard-tests.cfg'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg', 'proguard-debug.cfg'
+            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg', 'proguard-tests.cfg'
 
-			applicationIdSuffix ".debug"
-			testCoverageEnabled true
-		}
-	}
+            applicationIdSuffix ".debug"
+            testCoverageEnabled true
+        }
+    }
 
-	flavorDimensions "license"
+    flavorDimensions "license"
 
-	productFlavors {
-		// This product flavor uses the Conscrypt library which is open
-		// source and licensed under Apache 2.
-		oss {
-			dimension "license"
-			versionNameSuffix "-oss"
-		}
+    productFlavors {
+        // This product flavor uses the Conscrypt library which is open
+        // source and licensed under Apache 2.
+        oss {
+            dimension "license"
+            versionNameSuffix "-oss"
+        }
 
-		// This product flavor uses the Google Play Services library for
-		// ProviderInstaller. It uses Conscrypt under-the-hood, but the
-		// Google Play Services SDK itself is not open source.
-		google {
-			dimension "license"
-			versionNameSuffix ""
-		}
-	}
+        // This product flavor uses the Google Play Services library for
+        // ProviderInstaller. It uses Conscrypt under-the-hood, but the
+        // Google Play Services SDK itself is not open source.
+        google {
+            dimension "license"
+            versionNameSuffix ""
+        }
+    }
 
-	testOptions {
-		// temporarily disable the orchestrator as this breaks coverage: https://issuetracker.google.com/issues/72758547
-		//execution 'ANDROID_TEST_ORCHESTRATOR'
-		animationsDisabled true
+    testOptions {
+        // temporarily disable the orchestrator as this breaks coverage: https://issuetracker.google.com/issues/72758547
+        //execution 'ANDROID_TEST_ORCHESTRATOR'
+        animationsDisabled true
 
-		unitTests { includeAndroidResources = true }
-	}
+        unitTests { includeAndroidResources = true }
+    }
 
-	lintOptions {
-		abortOnError false
-		lintConfig file('lint.xml')
-	}
+    lintOptions {
+        abortOnError false
+        lintConfig file('lint.xml')
+    }
 
-	packagingOptions {
-		exclude 'META-INF/LICENSE.txt'
-		exclude 'LICENSE.txt'
-		exclude '**/*.gwt.xml'
-	}
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'LICENSE.txt'
+        exclude '**/*.gwt.xml'
+    }
 
-	externalNativeBuild { cmake { path 'CMakeLists.txt' } }
+    externalNativeBuild { cmake { path 'CMakeLists.txt' } }
 
-	jacoco {
-		if (rootProject.hasProperty('jacocoVersion')) {
-			version "${rootProject.jacocoVersion}"
-		}
-	}
+    jacoco {
+        if (rootProject.hasProperty('jacocoVersion')) {
+            version "${rootProject.jacocoVersion}"
+        }
+    }
 }
 
 spotless {
-	java {
-		target '**/*.java'
-		removeUnusedImports()
-	}
+    java {
+        target '**/*.java'
+        removeUnusedImports()
+    }
 }
 
 import net.ltgt.gradle.errorprone.CheckSeverity
 
 tasks.withType(JavaCompile) {
-	options.errorprone {
-		check("InvalidInlineTag", CheckSeverity.OFF)
-		check("AlmostJavadoc", CheckSeverity.OFF)
-		check("EmptyBlockTag", CheckSeverity.OFF)
-		check("MissingSummary", CheckSeverity.OFF)
-		check("ClassCanBeStatic", CheckSeverity.OFF)
-		check("ClassNewInstance", CheckSeverity.OFF)
-		check("DefaultCharset", CheckSeverity.OFF)
-		check("SynchronizeOnNonFinalField", CheckSeverity.OFF)
-		excludedPaths = '.*/app/src/main/java/de/mud/.*|' +
-				'.*/app/src/main/java/org/apache/.*|' +
-				'.*/app/src/main/java/org/keyczar/.*'
-	}
+    options.errorprone {
+        check("InvalidInlineTag", CheckSeverity.OFF)
+        check("AlmostJavadoc", CheckSeverity.OFF)
+        check("EmptyBlockTag", CheckSeverity.OFF)
+        check("MissingSummary", CheckSeverity.OFF)
+        check("ClassCanBeStatic", CheckSeverity.OFF)
+        check("ClassNewInstance", CheckSeverity.OFF)
+        check("DefaultCharset", CheckSeverity.OFF)
+        check("SynchronizeOnNonFinalField", CheckSeverity.OFF)
+        excludedPaths = '.*/app/src/main/java/de/mud/.*|' +
+                '.*/app/src/main/java/org/apache/.*|' +
+                '.*/app/src/main/java/org/keyczar/.*'
+    }
 }
 
 tasks.withType(Test) {
-	jacoco.includeNoLocationClasses = true
-	jacoco.excludes = ['jdk.internal.*']
-	// needed for Java 11 https://github.com/gradle/gradle/issues/5184#issuecomment-457865951
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
+    // needed for Java 11 https://github.com/gradle/gradle/issues/5184#issuecomment-457865951
 }
 
 // Do not want any release candidates for updates.
 dependencyUpdates {
-	revision = "release"
-	checkForGradleUpdate = false
-	//noinspection DuplicatePlatformClasses
-	outputFormatter = "json"
+    revision = "release"
+    checkForGradleUpdate = false
+    //noinspection DuplicatePlatformClasses
+    outputFormatter = "json"
 
-	// Android apparently marks their "alpha" as "release" so we have to reject them.
-	resolutionStrategy {
-		componentSelection { rules ->
-			rules.all { ComponentSelection selection ->
-				boolean rejected = [
-						'alpha',
-						'beta',
-						'rc',
-						'cr',
-						'm',
-						'preview'
-				].any { qualifier ->
-					selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
-				}
-				if (rejected) {
-					selection.reject('Release candidate')
-				}
-			}
-		}
-	}
+    // Android apparently marks their "alpha" as "release" so we have to reject them.
+    resolutionStrategy {
+        componentSelection { rules ->
+            rules.all { ComponentSelection selection ->
+                boolean rejected = [
+                        'alpha',
+                        'beta',
+                        'rc',
+                        'cr',
+                        'm',
+                        'preview'
+                ].any { qualifier ->
+                    selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+                }
+                if (rejected) {
+                    selection.reject('Release candidate')
+                }
+            }
+        }
+    }
 }
 
 // Dependencies must be below the android block to allow productFlavor specific deps.
 dependencies {
-	implementation 'org.connectbot:sshlib:2.2.23'
-	googleImplementation 'com.google.android.gms:play-services-basement:18.3.0'
-	ossImplementation 'org.conscrypt:conscrypt-android:2.5.3'
+    implementation 'org.connectbot:sshlib:2.2.23'
+    googleImplementation 'com.google.android.gms:play-services-basement:18.3.0'
+    ossImplementation 'org.conscrypt:conscrypt-android:2.5.3'
 
-	implementation "androidx.recyclerview:recyclerview:1.3.2"
-	implementation 'androidx.appcompat:appcompat:1.6.1'
-	implementation "androidx.preference:preference:1.2.1"
-	implementation "com.google.android.material:material:1.9.0"
+    implementation "androidx.recyclerview:recyclerview:1.3.2"
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation "androidx.preference:preference:1.2.1"
+    implementation "com.google.android.material:material:1.9.0"
 
-	androidTestUtil "androidx.test:orchestrator:$testRunnerVersion"
-	androidTestImplementation "androidx.test:core:1.5.0"
-	androidTestImplementation "androidx.test:rules:$testRunnerVersion"
-	androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-	androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
-	androidTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion") {
-		exclude group: "com.google.android.apps.common.testing.accessibility.framework", module: "accessibility-test-framework"
-	}
-	androidTestImplementation "androidx.test.ext:junit:1.1.5"
-	androidTestImplementation "com.linkedin.testbutler:test-butler-library:2.2.1"
+    androidTestUtil "androidx.test:orchestrator:$testRunnerVersion"
+    androidTestImplementation "androidx.test:core:1.5.0"
+    androidTestImplementation "androidx.test:rules:$testRunnerVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion") {
+        exclude group: "com.google.android.apps.common.testing.accessibility.framework", module: "accessibility-test-framework"
+    }
+    androidTestImplementation "androidx.test.ext:junit:1.1.5"
+    androidTestImplementation "com.linkedin.testbutler:test-butler-library:2.2.1"
 
-	testImplementation 'junit:junit:4.13.2'
-	testImplementation "androidx.test:core:1.5.0"
-	testImplementation "androidx.test.ext:junit:1.1.5"
-	testImplementation 'org.mockito:mockito-core:5.14.2'
-	testImplementation 'org.assertj:assertj-core:3.26.3'
-	testImplementation 'org.robolectric:robolectric:4.14.1'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation "androidx.test:core:1.5.0"
+    testImplementation "androidx.test.ext:junit:1.1.5"
+    testImplementation 'org.mockito:mockito-core:5.14.2'
+    testImplementation 'org.assertj:assertj-core:3.26.3'
+    testImplementation 'org.robolectric:robolectric:4.14.1'
 
-	// Needed for robolectric tests
-	testCompileOnly 'org.conscrypt:conscrypt-openjdk-uber:2.5.2'
-	testRuntimeOnly 'org.conscrypt:conscrypt-android:2.5.3'
-	testImplementation 'org.conscrypt:conscrypt-openjdk-uber:2.5.2'
+    // Needed for robolectric tests
+    testCompileOnly 'org.conscrypt:conscrypt-openjdk-uber:2.5.2'
+    testRuntimeOnly 'org.conscrypt:conscrypt-android:2.5.3'
+    testImplementation 'org.conscrypt:conscrypt-openjdk-uber:2.5.2'
 
-	errorprone "com.google.errorprone:error_prone_core:2.36.0"
+    errorprone "com.google.errorprone:error_prone_core:2.36.0"
+
+    // Add these lines for ShortcutManagerCompat
+    implementation 'androidx.core:core:1.10.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+
+    // Ensure consistent Kotlin stdlib versions
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10"
 }
-
