@@ -673,4 +673,7 @@
 	     Added to the end of a key description to indicate that the key is encrypted (i.e,
 	     password protected). -->
 	<string name="key_attribute_encrypted">(encrypted)</string>
+	<string name="notification_requirement_explanation">Notification permission is required to display running sessions in the background</string>
+	<string name="continue_anyway">Continue without</string>
+	<string name="allow">Allow</string>
 </resources>

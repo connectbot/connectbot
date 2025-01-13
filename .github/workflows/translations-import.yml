@@ -5,10 +5,17 @@ on:
   schedule:
   # Runs at 10PM PST
   - cron: '0 6 * * *'
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/translations-import.yml"
+      - "translations/**"
 
 jobs:
   import:
+    name: Import translations from Launchpad
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'connectbot'
 
     env:
       BAZAAR_URI: lp:~kennyr/connectbot/po-output
@@ -34,16 +41,21 @@ jobs:
 
     - name: Copy exported translations to workspace
       run: |
-        rsync -av --exclude .bzr --exclude '**/oc.po' --exclude '**/ca@valencia.po' \
+        rsync -av --exclude .bzr \
+            --exclude '**/oc.po' --exclude '**/ca@valencia.po' --exclude '**/tk.po' \
             "${{ runner.temp }}/${BAZAAR_URI##*/}/" "${GITHUB_WORKSPACE}/${PO_SUBDIR}/"
         echo $REVNO > "${GITHUB_WORKSPACE}/${PO_SUBDIR}/.revno"
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
 
     - name: Try importing the translations
       run: |
         TRANSLATIONS_ONLY=1 ./gradlew :translations:importToAndroid
 
     - name: Create pull request
-      uses: peter-evans/create-pull-request@v6
+      if: github.event_name != 'pull_request'
+      uses: peter-evans/create-pull-request@v7
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: |
@@ -60,4 +72,5 @@ jobs:
         branch: translations/import
 
     - name: Report pull request creation
+      if: github.event_name != 'pull_request'
       run: echo "Created pull request number ${{ env.PULL_REQUEST_NUMBER }}"

@@ -15,7 +15,7 @@ on:
 jobs:
   build:
     name: Build and test
-    runs-on: macos-latest
+    runs-on: macos-13 # emulator never starts on macOS 14 https://github.com/ReactiveCircus/android-emulator-runner/issues/392#issuecomment-2106167725
 
     steps:
       - name: Checkout (with history)
@@ -35,6 +35,9 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
@@ -49,7 +52,7 @@ jobs:
         run: ./gradlew build bundleGoogleRelease
 
       - name: Run instrument tests
-        uses: reactivecircus/android-emulator-runner@v2.30.1
+        uses: reactivecircus/android-emulator-runner@v2.33.0
         with:
           api-level: 28
           target: default
