@@ -1,9 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="app_desc">Vienkāršs, funkcionāls, atvērtā koda SSH klients.</string>
-  <string name="title_help">Pagalba</string>
-  <string name="title_colors">Spalvos</string>
-  <string name="title_color_picker">Izvēlieties krāsu</string>
+  <string name="app_desc">Vienkāršs, funkcionāls atvērtā pirmkoda SSH klients.</string>
+  <string name="service_desc">Pārvalda SSH savienojumus un ielādētās publiskās atslēgas</string>
+  <string name="title_hosts_list">Serveri</string>
+  <string name="title_pubkey_list">Publiskās atslēgas</string>
+  <string name="title_host_editor">Rediģēt serveri</string>
+  <string name="title_help">Palīdzība</string>
+  <string name="title_colors">Krāsas</string>
+  <string name="title_color_picker">Atlasiet krāsu</string>
   <string name="title_settings">Iestatījumi</string>
   <string name="increase_font_size">Palielināt fonta izmēru</string>
   <string name="increase_font_shortcut">Ctrl un +</string>

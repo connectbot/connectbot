@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-04-21 23:51-0700\n"
-"PO-Revision-Date: 2024-11-05 19:23+0000\n"
+"PO-Revision-Date: 2025-04-03 09:20+0000\n"
 "Last-Translator: ℂ𝕠𝕠𝕠𝕝 <Unknown>\n"
 "Language-Team: ru <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,8 +19,8 @@ msgstr ""
 "0)) && (((n % 10) == 0))) || (((0 == 0)) && (((n % 10) >= 5 && (n % 10) <= "
 "9)))) || (((0 == 0)) && (((n % 100) >= 11 && (n % 100) <= 14)))) ? 2 : ((((0 "
 "== 0)) && (((n % 10) == 1))) && (!(((n % 100) == 11)))) ? 0 : 3);\n"
-"X-Launchpad-Export-Date: 2024-11-06 04:33+0000\n"
-"X-Generator: Launchpad (build 22ade00ab50b929fac63b8ee7252243aceda294a)\n"
+"X-Launchpad-Export-Date: 2025-04-04 04:56+0000\n"
+"X-Generator: Launchpad (build e76edd883483c71c468bb038e98836435de44530)\n"
 "Generated-By: Babel 2.10.1\n"
 "Language: ru\n"
 
@@ -896,6 +896,8 @@ msgctxt "console_copy_done"
 msgid "Copied %1$d byte to clipboard"
 msgid_plural "Copied %1$d bytes to clipboard"
 msgstr[0] "Скопировано %1$d байт в буфер обмена"
+msgstr[1] "Скопировано %1$d байт в буфер обмена"
+msgstr[2] "Скопировано %1$d байт в буфер обмена"
 
 #. Instructions for how to copy from the terminal. The '\n' entries are to
 #. split lines to improve readability and prevent wrapping off the screen.
@@ -1375,7 +1377,7 @@ msgstr "Ctrl"
 #. Text for the "Home" button in virtual keyboard.
 msgctxt "button_key_home"
 msgid "Home"
-msgstr ""
+msgstr "Начало"
 
 #. Text for the "End" button in virtual keyboard.
 msgctxt "button_key_end"

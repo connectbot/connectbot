@@ -157,8 +157,8 @@
   <string name="bind_never">Никогда не подключался</string>
   <plurals name="console_copy_done">
     <item quantity="one">Скопировано %1$d байт в буфер обмена</item>
-    <item quantity="few"/>
-    <item quantity="many"/>
+    <item quantity="few">Скопировано %1$d байт в буфер обмена</item>
+    <item quantity="many">Скопировано %1$d байт в буфер обмена</item>
     <item quantity="other"/>
   </plurals>
   <string name="console_copy_start">Коснитесь и перетащите\nили используйте геймпад, чтобы\nвыбрать область для копирования</string>
@@ -252,6 +252,7 @@
   <string name="image_description_volume">Громкость</string>
   <string name="button_key_esc">Esc</string>
   <string name="button_key_ctrl">Ctrl</string>
+  <string name="button_key_home">Начало</string>
   <string name="button_key_end">Конец</string>
   <string name="button_key_pgup">PgUp</string>
   <string name="button_key_pgdn">PgDn</string>
