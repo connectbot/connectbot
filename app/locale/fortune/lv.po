@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-04-21 23:51-0700\n"
-"PO-Revision-Date: 2024-11-05 19:45+0000\n"
+"PO-Revision-Date: 2025-04-03 09:33+0000\n"
 "Last-Translator: ℂ𝕠𝕠𝕠𝕝 <Unknown>\n"
 "Language-Team: lv <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2024-11-06 04:33+0000\n"
-"X-Generator: Launchpad (build 22ade00ab50b929fac63b8ee7252243aceda294a)\n"
+"X-Launchpad-Export-Date: 2025-04-04 04:56+0000\n"
+"X-Generator: Launchpad (build e76edd883483c71c468bb038e98836435de44530)\n"
 "Generated-By: Babel 2.10.1\n"
 "Language: lv\n"
 
@@ -24,23 +24,23 @@ msgstr ""
 #. running apps list
 msgctxt "app_desc"
 msgid "Simple, powerful, open-source SSH client."
-msgstr "Vienkāršs, funkcionāls, atvērtā koda SSH klients."
+msgstr "Vienkāršs, funkcionāls atvērtā pirmkoda SSH klients."
 
 #. Summary of what the ConnectBot service does; displayed in the Android
 #. running apps list
 msgctxt "service_desc"
 msgid "Maintains SSH connections and loaded pubkeys"
-msgstr ""
+msgstr "Pārvalda SSH savienojumus un ielādētās publiskās atslēgas"
 
 #. Window title for the Host List
 msgctxt "title_hosts_list"
 msgid "Hosts"
-msgstr ""
+msgstr "Serveri"
 
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
 msgid "Pubkeys"
-msgstr ""
+msgstr "Publiskās atslēgas"
 
 #. Window title for the Port Forwards List
 msgctxt "title_port_forwards_list"
@@ -50,22 +50,22 @@ msgstr ""
 #. Window title when editing host details
 msgctxt "title_host_editor"
 msgid "Edit Host"
-msgstr ""
+msgstr "Rediģēt serveri"
 
 #. Window title for Help index
 msgctxt "title_help"
 msgid "Help"
-msgstr "Pagalba"
+msgstr "Palīdzība"
 
 #. Window title for color list editing screen
 msgctxt "title_colors"
 msgid "Colors"
-msgstr "Spalvos"
+msgstr "Krāsas"
 
 #. Dialog title for color picker dialog
 msgctxt "title_color_picker"
 msgid "Pick a color"
-msgstr "Izvēlieties krāsu"
+msgstr "Atlasiet krāsu"
 
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
