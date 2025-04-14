@@ -41,6 +41,7 @@ public class HostBean extends AbstractBean {
 	private String nickname = null;
 	private String username = null;
 	private String hostname = null;
+	private String password = null;
 	private int port = 22;
 	private String protocol = "ssh";
 	private long lastConnect = -1;
@@ -103,6 +104,12 @@ public class HostBean extends AbstractBean {
 	}
 	public int getPort() {
 		return port;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getPassword() {
+		return this.password;
 	}
 
 	public void setProtocol(String protocol) {
@@ -217,6 +224,7 @@ public class HostBean extends AbstractBean {
 		values.put(HostDatabase.FIELD_HOST_USERNAME, username);
 		values.put(HostDatabase.FIELD_HOST_HOSTNAME, hostname);
 		values.put(HostDatabase.FIELD_HOST_PORT, port);
+		values.put(HostDatabase.FIELD_HOST_PASSWORD, password);
 		values.put(HostDatabase.FIELD_HOST_LASTCONNECT, lastConnect);
 		values.put(HostDatabase.FIELD_HOST_COLOR, color);
 		values.put(HostDatabase.FIELD_HOST_USEKEYS, Boolean.toString(useKeys));
@@ -241,6 +249,7 @@ public class HostBean extends AbstractBean {
 		host.setUsername(values.getAsString(HostDatabase.FIELD_HOST_USERNAME));
 		host.setHostname(values.getAsString(HostDatabase.FIELD_HOST_HOSTNAME));
 		host.setPort(values.getAsInteger(HostDatabase.FIELD_HOST_PORT));
+		host.setPassword(values.getAsString(HostDatabase.FIELD_HOST_PASSWORD));
 		host.setLastConnect(values.getAsLong(HostDatabase.FIELD_HOST_LASTCONNECT));
 		host.setColor(values.getAsString(HostDatabase.FIELD_HOST_COLOR));
 		host.setUseKeys(Boolean.valueOf(values.getAsString(HostDatabase.FIELD_HOST_USEKEYS)));

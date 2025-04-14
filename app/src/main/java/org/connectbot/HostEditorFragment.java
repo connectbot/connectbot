@@ -107,6 +107,8 @@ public class HostEditorFragment extends Fragment {
 	private EditText mHostnameField;
 	private View mPortContainer;
 	private EditText mPortField;
+	private View mPasswordContainer;
+	private EditText mPasswordField;
 	private View mNicknameItem;
 	private EditText mNicknameField;
 	private View mColorItem;
@@ -246,6 +248,12 @@ public class HostEditorFragment extends Fragment {
 		mPortField = view.findViewById(R.id.port_edit_text);
 		mPortField.setText(Integer.toString(mHost.getPort()));
 		mPortField.addTextChangedListener(new HostTextFieldWatcher(HostDatabase.FIELD_HOST_PORT));
+
+		mPasswordContainer = view.findViewById(R.id.password_field_container);
+		mPasswordField = view.findViewById(R.id.password_edit_text);
+		mPasswordField.setText(mHost.getPassword());
+		mPasswordField.addTextChangedListener(new HostTextFieldWatcher(HostDatabase.FIELD_HOST_PASSWORD));
+
 
 		mNicknameItem = view.findViewById(R.id.nickname_item);
 
@@ -736,6 +744,8 @@ public class HostEditorFragment extends Fragment {
 				} finally {
 					setFontSize(fontSize);
 				}
+			} else if (HostDatabase.FIELD_HOST_PASSWORD.equals(mFieldType)) {
+				mHost.setPassword(text);
 			} else {
 				throw new RuntimeException("Invalid field type.");
 			}

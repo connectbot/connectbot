@@ -179,6 +179,25 @@
 
 			</com.google.android.material.textfield.TextInputLayout>
 
+			<com.google.android.material.textfield.TextInputLayout
+				android:id="@+id/password_field_container"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:accessibilityLiveRegion="polite"
+				android:labelFor="@+id/password_edit_text"
+				>
+
+				<com.google.android.material.textfield.TextInputEditText
+					android:id="@id/password_edit_text"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:inputType="textPassword"
+					android:hint="@string/hostpref_password_title"
+					android:maxLines="1"
+					/>
+
+			</com.google.android.material.textfield.TextInputLayout>
+
 		</LinearLayout>
 
 		<RelativeLayout

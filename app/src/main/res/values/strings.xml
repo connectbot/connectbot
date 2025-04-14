@@ -381,6 +381,9 @@
 	<!-- Port field title for host editor preference -->
 	<string name="hostpref_port_title">"Port"</string>
 
+	<!-- Port field title for host editor preference -->
+	<string name="hostpref_password_title">"Password"</string>
+
 	<!-- Displayed to indicate a host has never been connected to. -->
 	<string name="bind_never">"Never connected"</string>
 
