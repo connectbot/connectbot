@@ -503,6 +503,7 @@
 	<string name="terminal_auth">"Trying to authenticate"</string>
 
 	<string name="terminal_auth_pass">"Attempting 'password' authentication"</string>
+	<string name="terminal_auth_database_pass_fail">"Authentication method 'password' failed with saved password, try with input"</string>
 	<string name="terminal_auth_pass_fail">"Authentication method 'password' failed"</string>
 
 	<string name="terminal_auth_pubkey_any">"Attempting 'publickey' authentication with any in-memory public keys"</string>
