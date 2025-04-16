@@ -90,7 +90,7 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 		DSA(PubkeyDatabase.KEY_TYPE_DSA, 1024, 1024, 1024),
 		EC(PubkeyDatabase.KEY_TYPE_EC, ECDSA_SIZES[0], ECDSA_SIZES[ECDSA_SIZES.length - 1],
 				ECDSA_SIZES[0]),
-		ED25519(PubkeyDatabase.KEY_TYPE_ED25519, 256, 256, 256);
+		ED25519(PubkeyDatabase.KEY_TYPE_ED25519, 255, 255, 255);
 
 		public final String name;
 		public final int minimumBits;
@@ -238,6 +238,8 @@ public class GeneratePubkeyActivity extends AppCompatActivity implements OnEntro
 
 		if (keyType == KeyType.EC) {
 			bits = getClosestFieldSize(newBits);
+		} else if (keyType == KeyType.ED25519) {
+			bits = newBits;
 		} else {
 			// Stay evenly divisible by 8 because it looks nicer to have
 			// 2048 than 2043 bits.
