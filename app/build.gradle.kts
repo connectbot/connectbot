@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.packaging.defaultExcludes
 import io.github.reactivecircus.appversioning.toSemVer
 import net.ltgt.gradle.errorprone.CheckSeverity
 import net.ltgt.gradle.errorprone.errorprone
