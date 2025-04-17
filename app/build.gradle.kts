@@ -3,13 +3,13 @@ import net.ltgt.gradle.errorprone.CheckSeverity
 import net.ltgt.gradle.errorprone.errorprone
 
 plugins {
-	id("com.android.application") version "8.2.2"
-	id("com.github.ben-manes.versions") version "0.51.0"
-	id("net.ltgt.errorprone") version "4.2.0"
-	id("io.github.reactivecircus.app-versioning") version "1.4.0"
-	id("com.github.kt3k.coveralls") version "2.12.2"
-	id("com.mxalbert.gradle.jacoco-android") version "0.2.1"
-	id("com.starter.easylauncher") version "6.4.0"
+	alias(libs.plugins.android.application)
+	alias(libs.plugins.ben.manes.versions)
+	alias(libs.plugins.ltgt.errorprone)
+	alias(libs.plugins.reactivecircus.appversioning)
+	alias(libs.plugins.kt3k.coveralls)
+	alias(libs.plugins.mxalbert.jacocoandroid)
+	alias(libs.plugins.starter.easylauncher)
 }
 
 val testRunnerVersion = "1.5.0"
@@ -181,37 +181,37 @@ tasks.withType<Test>().configureEach {
 
 // Dependencies must be below the android block to allow productFlavor specific deps.
 dependencies {
-	implementation("org.connectbot:sshlib:2.2.25")
-	"googleImplementation"("com.google.android.gms:play-services-basement:18.3.0")
-	"ossImplementation"("org.conscrypt:conscrypt-android:2.5.3")
+    implementation(libs.sshlib)
+    "googleImplementation"(libs.play.services.basement)
+    "ossImplementation"(libs.conscrypt.android)
 
-    implementation("androidx.recyclerview:recyclerview:1.3.2")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.preference:preference:1.2.1")
-    implementation("com.google.android.material:material:1.9.0")
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.preference)
+    implementation(libs.material)
 
-	androidTestUtil("androidx.test:orchestrator:$testRunnerVersion")
-	androidTestImplementation("androidx.test:core:1.5.0")
-	androidTestImplementation("androidx.test:rules:$testRunnerVersion")
-	androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
-	androidTestImplementation("androidx.test.espresso:espresso-intents:$espressoVersion")
-	androidTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion") {
-		exclude(group = "com.google.android.apps.common.testing.accessibility.framework", module = "accessibility-test-framework")
-	}
-	androidTestImplementation("androidx.test.ext:junit:1.1.5")
-	androidTestImplementation("com.linkedin.testbutler:test-butler-library:2.2.1")
+    androidTestUtil(libs.androidx.test.orchestrator)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.test.espresso.intents)
+    androidTestImplementation(libs.androidx.test.espresso.contrib) {
+        exclude(group = "com.google.android.apps.common.testing.accessibility.framework", module = "accessibility-test-framework")
+    }
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.testbutler.library)
 
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("androidx.test:core:1.5.0")
-    testImplementation("androidx.test.ext:junit:1.1.5")
-    testImplementation("org.mockito:mockito-core:5.17.0")
-    testImplementation("org.assertj:assertj-core:3.27.3")
-    testImplementation("org.robolectric:robolectric:4.14.1")
+    testImplementation(libs.junit)
+    testImplementation(libs.androidx.test.core)
+    testImplementation(libs.androidx.test.ext.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.assertj.core)
+    testImplementation(libs.robolectric)
 
-	// Needed for robolectric tests
-	compileOnly("org.conscrypt:conscrypt-openjdk-uber:2.5.2")
-	testRuntimeOnly("org.conscrypt:conscrypt-android:2.5.3")
-	testImplementation("org.conscrypt:conscrypt-openjdk-uber:2.5.2")
+    // Needed for robolectric tests
+    testCompileOnly(libs.conscrypt.openjdk.uber)
+    testRuntimeOnly(libs.conscrypt.android)
+    testImplementation(libs.conscrypt.openjdk.uber)
 
-	errorprone("com.google.errorprone:error_prone_core:2.36.0")
+    errorprone(libs.errorprone.core)
 }
