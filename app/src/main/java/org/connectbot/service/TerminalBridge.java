@@ -397,6 +397,10 @@ public class TerminalBridge implements VDUDisplay {
 	 * authentication. If called before authenticated, it will just fail.
 	 */
 	public void onConnected() {
+		onConnected(true);
+	}
+
+	public void onConnected(boolean doPostLogin) {
 		disconnected = false;
 
 		((vt320) buffer).reset();
@@ -428,6 +432,11 @@ public class TerminalBridge implements VDUDisplay {
 		// finally send any post-login string, if requested
 		injectString(host.getPostLogin());
 	}
+
+        public void postLogin() {
+            // send any post-login string, if requested
+            injectString(host.getPostLogin());
+        }
 
 	/**
 	 * @return whether a session is open or not
