@@ -17,7 +17,7 @@ val espressoVersion = "3.5.1"
 
 apply(plugin = "com.diffplug.spotless")
 
-//apply from: "../config/quality.gradle"
+apply(from = "../config/quality.gradle.kts")
 
 coveralls.jacocoReportPath = "build/reports/coverage/google/debug/report.xml"
 
