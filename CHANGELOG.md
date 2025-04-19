@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [main][main]
+### Changed
+- Updated to API 34
+- Set foreground service type to "remote messaging"
+
 ## [1.9.11][1.9.11]
 ### Fixed
 - Fix Persistent notification no longer working (#1352) (by rcheze)
@@ -158,6 +163,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Color picker color numbers are now localized
 
 
+[main]: http://github.com/connectbot/connectbot/compare/v1.9.11...main
 [1.9.11]: https://github.com/connectbot/connectbot/compare/v1.9.10...v1.9.11
 [1.9.10]: https://github.com/connectbot/connectbot/compare/v1.9.9...v1.9.10
 [1.9.9]: https://github.com/connectbot/connectbot/compare/v1.9.8...v1.9.9
