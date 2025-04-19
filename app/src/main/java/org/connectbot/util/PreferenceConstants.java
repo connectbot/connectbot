@@ -17,8 +17,6 @@
 
 package org.connectbot.util;
 
-import android.os.Build;
-
 /**
  * @author Kenny Root
  *
