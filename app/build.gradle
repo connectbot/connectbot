@@ -33,7 +33,7 @@ androidGitVersion {
 
 android {
 	namespace "org.connectbot"
-	compileSdk 33
+	compileSdk 34
 
 	defaultConfig {
 		applicationId "org.connectbot"
@@ -41,7 +41,7 @@ android {
 		versionCode androidGitVersion.code()
 
 		minSdkVersion 14
-		targetSdkVersion 33
+		targetSdkVersion 34
 
 		vectorDrawables.useSupportLibrary = true
 
