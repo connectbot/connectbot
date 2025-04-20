@@ -9,7 +9,7 @@ buildscript {
 plugins {
 	id 'com.android.application' version '8.1.4'
 	id 'com.github.ben-manes.versions' version '0.51.0'
-	id 'net.ltgt.errorprone' version '4.1.0'
+	id 'net.ltgt.errorprone' version '4.2.0'
 	id 'com.gladed.androidgitversion' version '0.4.14'
 	id 'com.github.kt3k.coveralls' version '2.12.2'
 	id 'com.mxalbert.gradle.jacoco-android' version '0.2.1'
@@ -33,7 +33,7 @@ androidGitVersion {
 
 android {
 	namespace "org.connectbot"
-	compileSdk 33
+	compileSdk 34
 
 	defaultConfig {
 		applicationId "org.connectbot"
@@ -41,7 +41,7 @@ android {
 		versionCode androidGitVersion.code()
 
 		minSdkVersion 14
-		targetSdkVersion 33
+		targetSdkVersion 34
 
 		vectorDrawables.useSupportLibrary = true
 
@@ -232,7 +232,7 @@ dependencies {
 	testImplementation 'junit:junit:4.13.2'
 	testImplementation "androidx.test:core:1.5.0"
 	testImplementation "androidx.test.ext:junit:1.1.5"
-	testImplementation 'org.mockito:mockito-core:5.16.0'
+	testImplementation 'org.mockito:mockito-core:5.17.0'
 	testImplementation 'org.assertj:assertj-core:3.27.3'
 	testImplementation 'org.robolectric:robolectric:4.14.1'
 
