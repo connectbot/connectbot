@@ -23,7 +23,6 @@ import org.connectbot.R;
 import org.connectbot.bean.HostBean;
 import org.connectbot.util.HostDatabase;
 
-import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -31,9 +30,11 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 /**
@@ -82,7 +83,7 @@ public class ConnectionNotifier {
 		return builder;
 	}
 
-	@TargetApi(Build.VERSION_CODES.O)
+	@RequiresApi(Build.VERSION_CODES.O)
 	private void createNotificationChannel(Context context, String id) {
 		NotificationChannel nc = new NotificationChannel(id, context.getString(R.string.app_name),
 				NotificationManager.IMPORTANCE_DEFAULT);
@@ -127,21 +128,30 @@ public class ConnectionNotifier {
 	private Notification newRunningNotification(Context context) {
 		NotificationCompat.Builder builder = newNotificationBuilder(context, NOTIFICATION_CHANNEL);
 
-		builder.setOngoing(true);
-		builder.setWhen(0);
-
-		builder.setContentIntent(PendingIntent.getActivity(context, ONLINE_NOTIFICATION, new Intent(context, ConsoleActivity.class), pendingIntentFlags));
-
 		Resources res = context.getResources();
-		builder.setContentTitle(res.getString(R.string.app_name));
-		builder.setContentText(res.getString(R.string.app_is_running));
+		PendingIntent pendingIntent = PendingIntent.getActivity(context,
+				ONLINE_NOTIFICATION,
+				new Intent(context, ConsoleActivity.class),
+				pendingIntentFlags);
 
 		Intent disconnectIntent = new Intent(context, HostListActivity.class);
 		disconnectIntent.setAction(HostListActivity.DISCONNECT_ACTION);
-		builder.addAction(
-				android.R.drawable.ic_menu_close_clear_cancel,
-				res.getString(R.string.list_host_disconnect),
-				PendingIntent.getActivity(context, ONLINE_DISCONNECT_NOTIFICATION, disconnectIntent, pendingIntentFlags));
+
+		PendingIntent disconnectPendingIntent = PendingIntent.getActivity(context,
+				ONLINE_DISCONNECT_NOTIFICATION,
+				disconnectIntent,
+				pendingIntentFlags);
+
+		builder.setOngoing(true)
+				.setWhen(0)
+				.setSilent(true)
+				.setContentIntent(pendingIntent)
+				.setContentTitle(res.getString(R.string.app_name))
+				.setContentText(res.getString(R.string.app_is_running))
+				.addAction(
+						android.R.drawable.ic_menu_close_clear_cancel,
+						res.getString(R.string.list_host_disconnect),
+						disconnectPendingIntent);
 
 		return builder.build();
 	}
@@ -151,7 +161,18 @@ public class ConnectionNotifier {
 	}
 
 	void showRunningNotification(Service context) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+			showRunningNotificationWithType(context);
+			return;
+		}
+
 		context.startForeground(ONLINE_NOTIFICATION, newRunningNotification(context));
+	}
+
+	@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+	void showRunningNotificationWithType(Service context) {
+		context.startForeground(ConnectionNotifier.ONLINE_NOTIFICATION, newRunningNotification(context),
+				ServiceInfo.FOREGROUND_SERVICE_TYPE_REMOTE_MESSAGING);
 	}
 
 	void hideRunningNotification(Service context) {

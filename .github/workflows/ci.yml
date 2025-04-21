@@ -20,29 +20,29 @@ jobs:
     steps:
       - name: Checkout (with history)
         if: ${{ github.event_name == 'push' }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
           fetch-tags: true
 
       - name: Checkout (without history)
         if: ${{ github.event_name != 'push' }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
         with:
           distribution: 'zulu'
           java-version: '17'
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@06832c7b30a0129d7fb559bcc6e43d26f6374244 # v4.3.1
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3.2.2
 
       - name: Cache Gradle Home files
-        uses: actions/cache@v4
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         continue-on-error: true
         with:
           path: ~/.gradle/caches
@@ -52,7 +52,7 @@ jobs:
         run: ./gradlew build bundleGoogleRelease
 
       - name: Run instrument tests
-        uses: reactivecircus/android-emulator-runner@v2.32.0
+        uses: reactivecircus/android-emulator-runner@62dbb605bba737720e10b196cb4220d374026a6d # v2.33.0
         with:
           api-level: 28
           target: default
@@ -85,7 +85,7 @@ jobs:
   
       - name: Store artifacts for upload
         if: ${{ github.event_name == 'push' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: apk
           path: |
@@ -106,7 +106,7 @@ jobs:
 
     steps:
       - name: Download artifacts from previous job
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
         with:
           name: apk
 
@@ -117,7 +117,7 @@ jobs:
           echo "GITHUB_TAG=$(cat tag.txt)" >> "$GITHUB_OUTPUT"
 
       - name: Upload release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@c95fe1489396fe8a9eb87c0abf8aa5b2ef267fda # v2.2.1
         with:
           body: "Untested build"
           draft: true
@@ -137,7 +137,7 @@ jobs:
 
     steps:
       - name: Download artifacts from previous job
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
         with:
           name: apk
 
@@ -147,7 +147,7 @@ jobs:
           echo "GITHUB_TAG=$(cat tag.txt)" >> "$GITHUB_OUTPUT"
 
       - name: Call remote signer
-        uses: distributhor/workflow-webhook@v3.0.7
+        uses: distributhor/workflow-webhook@2381f0e9c7b6bf061fb1405bd0804b8706116369 # v3.0.8
         with:
           webhook_url: ${{ secrets.SIGNER_WEBHOOK_URL }}
           data: '{"tag_id": "${{ steps.name.outputs.GITHUB_TAG }}"}'

@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2022-04-21 23:51-0700\n"
-"PO-Revision-Date: 2015-07-30 18:24+0000\n"
-"Last-Translator: Kenny Root <Unknown>\n"
+"PO-Revision-Date: 2025-04-03 09:33+0000\n"
+"Last-Translator: ℂ𝕠𝕠𝕠𝕝 <Unknown>\n"
 "Language-Team: lv <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2022-04-23 06:26+0000\n"
-"X-Generator: Launchpad (build b25768b7107be17b0a785d9ebf80daa842cd03fb)\n"
+"X-Launchpad-Export-Date: 2025-04-04 04:56+0000\n"
+"X-Generator: Launchpad (build e76edd883483c71c468bb038e98836435de44530)\n"
 "Generated-By: Babel 2.10.1\n"
 "Language: lv\n"
 
@@ -24,23 +24,23 @@ msgstr ""
 #. running apps list
 msgctxt "app_desc"
 msgid "Simple, powerful, open-source SSH client."
-msgstr ""
+msgstr "Vienkāršs, funkcionāls atvērtā pirmkoda SSH klients."
 
 #. Summary of what the ConnectBot service does; displayed in the Android
 #. running apps list
 msgctxt "service_desc"
 msgid "Maintains SSH connections and loaded pubkeys"
-msgstr ""
+msgstr "Pārvalda SSH savienojumus un ielādētās publiskās atslēgas"
 
 #. Window title for the Host List
 msgctxt "title_hosts_list"
 msgid "Hosts"
-msgstr ""
+msgstr "Serveri"
 
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
 msgid "Pubkeys"
-msgstr ""
+msgstr "Publiskās atslēgas"
 
 #. Window title for the Port Forwards List
 msgctxt "title_port_forwards_list"
@@ -50,27 +50,27 @@ msgstr ""
 #. Window title when editing host details
 msgctxt "title_host_editor"
 msgid "Edit Host"
-msgstr ""
+msgstr "Rediģēt serveri"
 
 #. Window title for Help index
 msgctxt "title_help"
 msgid "Help"
-msgstr "Pagalba"
+msgstr "Palīdzība"
 
 #. Window title for color list editing screen
 msgctxt "title_colors"
 msgid "Colors"
-msgstr "Spalvos"
+msgstr "Krāsas"
 
 #. Dialog title for color picker dialog
 msgctxt "title_color_picker"
 msgid "Pick a color"
-msgstr ""
+msgstr "Atlasiet krāsu"
 
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr ""
+msgstr "Iestatījumi"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
@@ -180,28 +180,28 @@ msgstr ""
 #. terminal font-size.
 msgctxt "increase_font_size"
 msgid "Increase Font Size"
-msgstr ""
+msgstr "Palielināt fonta izmēru"
 
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
 msgid "Ctrl and +"
-msgstr ""
+msgstr "Ctrl un +"
 
 #. Text in a keyboard shortcuts list lined up to keys which decrease the
 #. terminal font-size.
 msgctxt "decrease_font_size"
 msgid "Decrease Font Size"
-msgstr ""
+msgstr "Samazināt fonta izmēru"
 
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
 msgid "Ctrl and -"
-msgstr ""
+msgstr "Ctrl un -"
 
 #. Keyboard shortcut for pasting into the terminal.
 msgctxt "paste_shortcut"
 msgid "Ctrl-Shift-V"
-msgstr ""
+msgstr "Ctrl-Shift-V"
 
 msgctxt "pubkey_generate"
 msgid "Generate"
@@ -253,7 +253,7 @@ msgstr ""
 
 msgctxt "pubkey_change_password"
 msgid "Change password"
-msgstr ""
+msgstr "Mainīt paroli"
 
 #. When attempting to import a pubkey, this is the title for the dialog box
 #. where the user should pick the desired file from the SD card contents.
@@ -352,7 +352,7 @@ msgstr ""
 #. 'password' authentication.
 msgctxt "prompt_password"
 msgid "Password:"
-msgstr ""
+msgstr "Parole:"
 
 #. Added after a "Password:" prompt to indicate user needs to confirm entry.
 msgctxt "prompt_again"
@@ -439,7 +439,7 @@ msgstr ""
 
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
-msgstr ""
+msgstr "Paroles nesakrīt!"
 
 msgctxt "alert_wrong_password_msg"
 msgid "Wrong password!"
@@ -461,7 +461,7 @@ msgstr ""
 #. Button that resizes the screen to the user-specified dimensions.
 msgctxt "button_resize"
 msgid "Resize"
-msgstr ""
+msgstr "Mainīt izmēru"
 
 msgctxt "alert_disconnect_msg"
 msgid "Connection Lost"
@@ -562,7 +562,7 @@ msgstr ""
 #. The category title for keyboard preferences
 msgctxt "pref_keyboard_category"
 msgid "Keyboard"
-msgstr ""
+msgstr "Tastatūra"
 
 #. Name for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_title"
@@ -730,7 +730,7 @@ msgstr ""
 #. Preference selection to indicate never to use special shortcut keys.
 msgctxt "list_keymode_none"
 msgid "Disable"
-msgstr ""
+msgstr "Atspējot"
 
 #. Preference to not use pubkeys to authenticate to this host.
 msgctxt "list_pubkeyids_none"
@@ -833,17 +833,17 @@ msgstr ""
 #. Username field title for host editor preference
 msgctxt "hostpref_username_title"
 msgid "Username"
-msgstr ""
+msgstr "Lietotājvārds"
 
 #. Hostname field title for host editor preference
 msgctxt "hostpref_hostname_title"
 msgid "Host"
-msgstr ""
+msgstr "Resursdators"
 
 #. Port field title for host editor preference
 msgctxt "hostpref_port_title"
 msgid "Port"
-msgstr ""
+msgstr "Ports"
 
 #. Displayed to indicate a host has never been connected to.
 msgctxt "bind_never"
@@ -870,17 +870,17 @@ msgstr ""
 #. Button to close the disconnected terminal window.
 msgctxt "console_menu_close"
 msgid "Close"
-msgstr ""
+msgstr "Aizvērt"
 
 #. Button to begin copying from the terminal to the clipboard.
 msgctxt "console_menu_copy"
 msgid "Copy"
-msgstr ""
+msgstr "Kopēt"
 
 #. Button to paste from the clipboard to the terminal.
 msgctxt "console_menu_paste"
 msgid "Paste"
-msgstr ""
+msgstr "Ielīmēt"
 
 #. Button that brings user to the Port Forwards List.
 msgctxt "console_menu_portforwards"
@@ -942,7 +942,7 @@ msgstr ""
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
 msgid "username"
-msgstr ""
+msgstr "lietotājvārds"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_hostname"
@@ -952,7 +952,7 @@ msgstr ""
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_port"
 msgid "port"
-msgstr ""
+msgstr "ports"
 
 msgctxt "list_menu_pubkeys"
 msgid "Manage Pubkeys"
@@ -974,7 +974,7 @@ msgstr ""
 
 msgctxt "list_menu_settings"
 msgid "Settings"
-msgstr ""
+msgstr "Iestatījumi"
 
 msgctxt "list_host_disconnect"
 msgid "Disconnect"
@@ -1211,19 +1211,19 @@ msgstr ""
 
 msgctxt "color_red"
 msgid "red"
-msgstr ""
+msgstr "sarkans"
 
 msgctxt "color_green"
 msgid "green"
-msgstr ""
+msgstr "zaļš"
 
 msgctxt "color_blue"
 msgid "blue"
-msgstr ""
+msgstr "zils"
 
 msgctxt "color_gray"
 msgid "gray"
-msgstr ""
+msgstr "pelēks"
 
 #. Very short label indicating the number next to it is "foreground color"
 #. number.
@@ -1314,7 +1314,7 @@ msgstr ""
 #. purposes.
 msgctxt "image_description_volume"
 msgid "Volume"
-msgstr ""
+msgstr "Skaļums"
 
 #. Text for the "Esc" button in virtual keyboard.
 msgctxt "button_key_esc"
@@ -1349,62 +1349,62 @@ msgstr ""
 #. Text for the "F1" button in virtual keyboard.
 msgctxt "button_key_f1"
 msgid "F1"
-msgstr ""
+msgstr "F1"
 
 #. Text for the "F2" button in virtual keyboard.
 msgctxt "button_key_f2"
 msgid "F2"
-msgstr ""
+msgstr "F2"
 
 #. Text for the "F3" button in virtual keyboard.
 msgctxt "button_key_f3"
 msgid "F3"
-msgstr ""
+msgstr "F3"
 
 #. Text for the "F4" button in virtual keyboard.
 msgctxt "button_key_f4"
 msgid "F4"
-msgstr ""
+msgstr "F4"
 
 #. Text for the "F5" button in virtual keyboard.
 msgctxt "button_key_f5"
 msgid "F5"
-msgstr ""
+msgstr "F5"
 
 #. Text for the "F6" button in virtual keyboard.
 msgctxt "button_key_f6"
 msgid "F6"
-msgstr ""
+msgstr "F6"
 
 #. Text for the "F7" button in virtual keyboard.
 msgctxt "button_key_f7"
 msgid "F7"
-msgstr ""
+msgstr "F7"
 
 #. Text for the "F8" button in virtual keyboard.
 msgctxt "button_key_f8"
 msgid "F8"
-msgstr ""
+msgstr "F8"
 
 #. Text for the "F9" button in virtual keyboard.
 msgctxt "button_key_f9"
 msgid "F9"
-msgstr ""
+msgstr "F9"
 
 #. Text for the "F10" button in virtual keyboard.
 msgctxt "button_key_f10"
 msgid "F10"
-msgstr ""
+msgstr "F10"
 
 #. Text for the "F11" button in virtual keyboard.
 msgctxt "button_key_f11"
 msgid "F11"
-msgstr ""
+msgstr "F11"
 
 #. Text for the "F12" button in virtual keyboard.
 msgctxt "button_key_f12"
 msgid "F12"
-msgstr ""
+msgstr "F12"
 
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
@@ -1414,7 +1414,7 @@ msgstr ""
 #. Label for button which expands/collapses section.
 msgctxt "expand"
 msgid "Expand"
-msgstr ""
+msgstr "Izvērst"
 
 #. Label for checkbox which, when check, makes SSL authorization require
 #. confirmation.

@@ -17,8 +17,6 @@
 
 package org.connectbot.util;
 
-import android.os.Build;
-
 /**
  * @author Kenny Root
  *
@@ -26,9 +24,6 @@ import android.os.Build;
 public final class PreferenceConstants {
 	private PreferenceConstants() {
 	}
-
-	public static final boolean PRE_ECLAIR = Build.VERSION.SDK_INT < 5;
-	public static final boolean PRE_FROYO = Build.VERSION.SDK_INT < 8;
 
 	public static final String MEMKEYS = "memkeys";
 
