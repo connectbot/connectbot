@@ -52,7 +52,7 @@ jobs:
         run: ./gradlew build bundleGoogleRelease
 
       - name: Run instrument tests
-        uses: reactivecircus/android-emulator-runner@62dbb605bba737720e10b196cb4220d374026a6d # v2.33.0
+        uses: reactivecircus/android-emulator-runner@1dcd0090116d15e7c562f8db72807de5e036a4ed # v2.34.0
         with:
           api-level: 28
           target: default
