@@ -114,7 +114,6 @@
   <plurals name="console_copy_done">
     <item quantity="one"/>
     <item quantity="two">הועתקו %1$d בתים ללוח הגזירים</item>
-    <item quantity="many"/>
     <item quantity="other"/>
   </plurals>
   <string name="console_copy_start">יש לגעת ולגרור\nאו להשתמש בלוח כיוונים\nכדי לבחור אזור להעתקה</string>
