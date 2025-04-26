@@ -42,7 +42,7 @@ def android2poArgs = [
 
 envs {
 	bootstrapDirectory = new File(buildDir, "bootstrap")
-	conda "miniconda", "Miniconda3-py39_23.1.0-1", [android2poUrl, "babel==2.11.0"]
+	conda "miniconda", "Miniconda3-py39_23.1.0-1", [android2poUrl, "babel==2.17.0"]
 }
 
 task untarTranslations(type: Copy) {
