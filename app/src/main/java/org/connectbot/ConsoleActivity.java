@@ -138,6 +138,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	private MenuItem portForward;
 	private MenuItem resize;
 	private MenuItem urlscan;
+	private MenuItem textEntry;
 
 	private boolean forcedOrientation;
 
@@ -388,6 +389,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		portForward.setOnMenuItemClickListener(null);
 		resize.setOnMenuItemClickListener(null);
 		urlscan.setOnMenuItemClickListener(null);
+		textEntry.setOnMenuItemClickListener(null);
 	}
 
 	protected View findCurrentView(int id) {
@@ -407,6 +409,44 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	protected void hideAllPrompts() {
 		stringPromptGroup.setVisibility(View.GONE);
 		booleanPromptGroup.setVisibility(View.GONE);
+	}
+
+	/**
+	 * Shows a dialog for text entry that will be sent to the terminal when submitted
+	 */
+	private void showTextEntryDialog() {
+		final TerminalView terminalView = adapter.getCurrentTerminalView();
+		if (terminalView == null) return;
+
+		@SuppressLint("InflateParams") // Dialogs do not have a parent view
+		final View textEntryView = inflater.inflate(R.layout.dia_text_entry, null, false);
+		final EditText textEntryField = textEntryView.findViewById(R.id.text_entry_field);
+
+		new androidx.appcompat.app.AlertDialog.Builder(
+				ConsoleActivity.this, R.style.AlertDialogTheme)
+				.setView(textEntryView)
+				.setPositiveButton(R.string.button_send, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						String textToSend = textEntryField.getText().toString();
+						if (textToSend.length() > 0) {
+							terminalView.bridge.injectString(textToSend);
+						}
+					}
+				})
+				.setNegativeButton(android.R.string.cancel, null)
+				.create()
+				.show();
+
+		// Show keyboard automatically when the dialog appears
+		textEntryField.post(new Runnable() {
+			@Override
+			public void run() {
+				textEntryField.requestFocus();
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.showSoftInput(textEntryField, InputMethodManager.SHOW_IMPLICIT);
+			}
+		});
 	}
 
 	private void showEmulatedKeys(boolean showActionBar) {
@@ -886,6 +926,19 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 		});
 
+		textEntry = menu.add(R.string.console_menu_text_entry);
+		if (hardKeyboard)
+			textEntry.setAlphabeticShortcut('t');
+		textEntry.setIcon(android.R.drawable.ic_menu_edit);
+		textEntry.setEnabled(activeTerminal);
+		textEntry.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				showTextEntryDialog();
+				return true;
+			}
+		});
+
 		resize = menu.add(R.string.console_menu_resize);
 		if (hardKeyboard)
 			resize.setAlphabeticShortcut('s');
@@ -958,6 +1011,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		portForward.setEnabled(sessionOpen && canForwardPorts);
 		urlscan.setEnabled(activeTerminal);
 		resize.setEnabled(sessionOpen);
+		textEntry.setEnabled(activeTerminal);
 
 		return true;
 	}
