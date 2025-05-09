@@ -676,4 +676,10 @@
 	<string name="notification_requirement_explanation">Notification permission is required to display running sessions in the background</string>
 	<string name="continue_anyway">Continue without</string>
 	<string name="allow">Allow</string>
+
+	<!-- Text entry feature strings -->
+	<string name="text_entry_instructions">Enter text to send to the terminal</string>
+	<string name="text_entry_hint">Type text here</string>
+	<string name="console_menu_text_entry">Text Entry</string>
+	<string name="button_send">Send</string>
 </resources>
