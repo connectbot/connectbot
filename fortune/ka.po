@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-04-22 11:59-0700\n"
-"PO-Revision-Date: 2013-10-30 18:36+0000\n"
-"Last-Translator: Jaba Macharashvili <jaba0x@gmail.com>\n"
+"PO-Revision-Date: 2025-05-07 04:45+0000\n"
+"Last-Translator: NorwayFun <temuri.doghonadze@gmail.com>\n"
 "Language-Team: ka <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1);\n"
-"X-Launchpad-Export-Date: 2025-04-25 12:06+0000\n"
-"X-Generator: Launchpad (build e76edd883483c71c468bb038e98836435de44530)\n"
+"X-Launchpad-Export-Date: 2025-05-08 08:23+0000\n"
+"X-Generator: Launchpad (build 0c26a2e7f9db0d0716027609f2b41fdcff7084f9)\n"
 "Language: ka\n"
 "Generated-By: Babel 2.12.0\n"
 
@@ -24,7 +24,7 @@ msgstr ""
 #. running apps list
 msgctxt "app_desc"
 msgid "Simple, powerful, open-source SSH client."
-msgstr ""
+msgstr "მარტივი, ძლიერი, ღია კოდის მქონე SSH კლიენტი."
 
 #. Summary of what the ConnectBot service does; displayed in the Android
 #. running apps list
@@ -35,22 +35,22 @@ msgstr ""
 #. Window title for the Host List
 msgctxt "title_hosts_list"
 msgid "Hosts"
-msgstr ""
+msgstr "ჰოსტები"
 
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
 msgid "Pubkeys"
-msgstr ""
+msgstr "საჯგასაღებები"
 
 #. Window title for the Port Forwards List
 msgctxt "title_port_forwards_list"
 msgid "Port forwards"
-msgstr ""
+msgstr "პორტის გადამისამართებები"
 
 #. Window title when editing host details
 msgctxt "title_host_editor"
 msgid "Edit Host"
-msgstr "ჰოსტის შეცვლა"
+msgstr "ჰოსტის ჩასწორება"
 
 #. Window title for Help index
 msgctxt "title_help"
@@ -60,22 +60,22 @@ msgstr "დახმარება"
 #. Window title for color list editing screen
 msgctxt "title_colors"
 msgid "Colors"
-msgstr "ფერი"
+msgstr "ფერები"
 
 #. Dialog title for color picker dialog
 msgctxt "title_color_picker"
 msgid "Pick a color"
-msgstr ""
+msgstr "აირჩიეთ ფერი"
 
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr ""
+msgstr "მორგება"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
 msgid "Generate"
-msgstr ""
+msgstr "გენერაცია"
 
 msgctxt "help_intro"
 msgid ""
@@ -85,17 +85,17 @@ msgstr ""
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
 msgid "Terms & Conditions"
-msgstr ""
+msgstr "წესები და პირობები"
 
 #. Title for the help page with the hints about the app.
 msgctxt "hints"
 msgid "Hints"
-msgstr ""
+msgstr "მინიშნებები"
 
 #. Header text for instructions about creating host shortcuts.
 msgctxt "host_shortcuts_header"
 msgid "Host Shortcuts"
-msgstr ""
+msgstr "ჰოსტის მალსახმობები"
 
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
@@ -143,11 +143,11 @@ msgstr ""
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
 msgid "Page up"
-msgstr ""
+msgstr "ზედა გვერდი"
 
 msgctxt "page_down"
 msgid "Page down"
-msgstr ""
+msgstr "ქვედა გვერდი"
 
 #. Header text for instructions about switching to the next and previous host
 #. in the terminal.
@@ -165,47 +165,47 @@ msgstr ""
 #. Captions for images showing the next/previous host gestures.
 msgctxt "next_host"
 msgid "Next host"
-msgstr ""
+msgstr "შემდეგი ჰოსტი"
 
 msgctxt "prev_host"
 msgid "Previous host"
-msgstr ""
+msgstr "წინა ჰოსტი"
 
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "კლავიატურის მალსახმობები"
 
 #. Text in a keyboard shortcuts list lined up to keys which increase the
 #. terminal font-size.
 msgctxt "increase_font_size"
 msgid "Increase Font Size"
-msgstr ""
+msgstr "ფონტის ზომის გაზრდა"
 
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
 msgid "Ctrl and +"
-msgstr ""
+msgstr "Ctrl და +"
 
 #. Text in a keyboard shortcuts list lined up to keys which decrease the
 #. terminal font-size.
 msgctxt "decrease_font_size"
 msgid "Decrease Font Size"
-msgstr ""
+msgstr "ფონტის ზომის შემცირება"
 
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
 msgid "Ctrl and -"
-msgstr ""
+msgstr "Ctrl და -"
 
 #. Keyboard shortcut for pasting into the terminal.
 msgctxt "paste_shortcut"
 msgid "Ctrl-Shift-V"
-msgstr ""
+msgstr "Ctrl-Shift-V"
 
 msgctxt "pubkey_generate"
 msgid "Generate"
-msgstr "გენერირება"
+msgstr "გენერაცია"
 
 msgctxt "pubkey_delete"
 msgid "Delete key"
@@ -249,11 +249,11 @@ msgstr ""
 
 msgctxt "pubkey_unknown_format"
 msgid "Unknown format"
-msgstr ""
+msgstr "უცნობი ფორმატი"
 
 msgctxt "pubkey_change_password"
 msgid "Change password"
-msgstr ""
+msgstr "პაროლის შეცვლა"
 
 #. When attempting to import a pubkey, this is the title for the dialog box
 #. where the user should pick the desired file from the SD card contents.
@@ -325,7 +325,7 @@ msgstr ""
 
 msgctxt "prompt_nickname"
 msgid "Nickname:"
-msgstr ""
+msgstr "მეტსახელი:"
 
 #. An example string that could be used as a nickname for a pubkey.
 msgctxt "prompt_nickname_hint_pubkey"
@@ -335,34 +335,34 @@ msgstr ""
 #. The source TCP port for port forwards.
 msgctxt "prompt_source_port"
 msgid "Source port:"
-msgstr ""
+msgstr "წყარო პორტი:"
 
 #. The "host:port" combination used for port forward destinations.
 msgctxt "prompt_destination"
 msgid "Destination:"
-msgstr ""
+msgstr "სამიზნე:"
 
 #. Prompt presented to the user when the server requests that they change
 #. their password. This is the entry for the old password.
 msgctxt "prompt_old_password"
 msgid "Old password:"
-msgstr ""
+msgstr "ძველი პაროლი:"
 
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
 msgctxt "prompt_password"
 msgid "Password:"
-msgstr ""
+msgstr "პაროლი:"
 
 #. Added after a "Password:" prompt to indicate user needs to confirm entry.
 msgctxt "prompt_again"
 msgid "(again)"
-msgstr ""
+msgstr "(ისევ)"
 
 #. Label for the user to select port forward type.
 msgctxt "prompt_type"
 msgid "Type:"
-msgstr ""
+msgstr "ტიპი:"
 
 #. Hint given below the password input box that lets them know that they are
 #. allowed to leave the field blank.
@@ -373,7 +373,7 @@ msgstr ""
 #. Prompt for the size of the private key in bits.
 msgctxt "prompt_bits"
 msgid "Bits:"
-msgstr ""
+msgstr "ბიტი:"
 
 #. Prompt for the password to unlock a certain pubkey.
 #, c-format
@@ -439,7 +439,7 @@ msgstr ""
 
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
-msgstr ""
+msgstr "პაროლები არ ემთხვევა!"
 
 msgctxt "alert_wrong_password_msg"
 msgid "Wrong password!"
@@ -456,16 +456,16 @@ msgstr ""
 #. Change an existing item's (e.g., host or pubkey) details.
 msgctxt "button_change"
 msgid "Change"
-msgstr ""
+msgstr "ცვლილება"
 
 #. Button that resizes the screen to the user-specified dimensions.
 msgctxt "button_resize"
 msgid "Resize"
-msgstr ""
+msgstr "ზომის შეცვლა"
 
 msgctxt "alert_disconnect_msg"
 msgid "Connection Lost"
-msgstr ""
+msgstr "კავშირი დაკარგულია"
 
 msgctxt "msg_copyright"
 msgid ""
@@ -476,12 +476,12 @@ msgstr ""
 #. The category title for terminal emulation preferences.
 msgctxt "pref_emulation_category"
 msgid "Terminal emulation"
-msgstr ""
+msgstr "ტერმინალის ემულაცია"
 
 #. Name for the emulation terminal type preference.
 msgctxt "pref_emulation_title"
 msgid "Emulation mode"
-msgstr ""
+msgstr "ემულაციის რეჟიმი"
 
 #. Description of the emulation terminal type preference.
 msgctxt "pref_emulation_summary"
@@ -512,7 +512,7 @@ msgstr ""
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
 msgid "User interface"
-msgstr ""
+msgstr "მომხმარებლის ინტერფეისი"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
@@ -552,7 +552,7 @@ msgstr ""
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
 msgid "Full screen"
-msgstr ""
+msgstr "სრულ ეკრანზე"
 
 #. Summary for the full screen preference
 msgctxt "pref_fullscreen_summary"
@@ -562,12 +562,12 @@ msgstr ""
 #. The category title for keyboard preferences
 msgctxt "pref_keyboard_category"
 msgid "Keyboard"
-msgstr ""
+msgstr "კლავიატურა"
 
 #. Name for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_title"
 msgid "Shift+num are F-keys"
-msgstr ""
+msgstr "Shift+რიცხვის აღქმა F-ღილაკებად"
 
 #. Summary for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_summary"
@@ -577,7 +577,7 @@ msgstr ""
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
 msgid "Ctrl+num are F-keys"
-msgstr ""
+msgstr "Ctrl+რიცხვის აღქმა F-ღილაკებად"
 
 #. Summary for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_summary"
@@ -645,7 +645,7 @@ msgstr ""
 #. Name for the camera shortcut usage preference
 msgctxt "pref_camera_title"
 msgid "Camera shortcut"
-msgstr ""
+msgstr "კამერის მალსახმობი"
 
 #. Summary for the camera shortcut usage preference
 msgctxt "pref_camera_summary"
@@ -685,17 +685,17 @@ msgstr ""
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
 msgid "Terminal bell"
-msgstr ""
+msgstr "ტერმინალის ზარი"
 
 #. Checkbox preference title for the audible terminal bell feature
 msgctxt "pref_bell_title"
 msgid "Audible bell"
-msgstr ""
+msgstr "გასაგონი ზარი"
 
 #. Title for the slider preference to set the volume
 msgctxt "pref_bell_volume_title"
 msgid "Bell volume"
-msgstr ""
+msgstr "ზარის ხმა"
 
 #. Checkbox preference title for the vibrate on terminal bell feature
 msgctxt "pref_bell_vibrate_title"
@@ -730,7 +730,7 @@ msgstr ""
 #. Preference selection to indicate never to use special shortcut keys.
 msgctxt "list_keymode_none"
 msgid "Disable"
-msgstr ""
+msgstr "გამორთვა"
 
 #. Preference to not use pubkeys to authenticate to this host.
 msgctxt "list_pubkeyids_none"
@@ -745,17 +745,17 @@ msgstr ""
 #. Host nickname field preference title
 msgctxt "hostpref_nickname_title"
 msgid "Nickname"
-msgstr ""
+msgstr "მეტსახელი"
 
 #. Host color category preference title
 msgctxt "hostpref_color_title"
 msgid "Color category"
-msgstr ""
+msgstr "ფერის კატეგორია"
 
 #. Host's default font size when opening the terminal in points (pt)
 msgctxt "hostpref_fontsize_title"
 msgid "Font size (pt)"
-msgstr ""
+msgstr "ფონტის ზომა (pt)"
 
 #. Host pubkey usage preference title
 msgctxt "hostpref_pubkeyid_title"
@@ -781,7 +781,7 @@ msgstr ""
 #. Host compression preference title
 msgctxt "hostpref_compression_title"
 msgid "Compression"
-msgstr ""
+msgstr "შეკუმშვა"
 
 #. Summary for compression preference
 msgctxt "hostpref_compression_summary"
@@ -803,7 +803,7 @@ msgstr ""
 #. disconnect
 msgctxt "hostpref_stayconnected_title"
 msgid "Stay connected"
-msgstr ""
+msgstr "დარჩით ხაზზე"
 
 #. Summary for preference asking whether the host should be reconnected to
 #. when it disconnects
@@ -828,22 +828,22 @@ msgstr ""
 #. Host character encoding preference title
 msgctxt "hostpref_encoding_title"
 msgid "Encoding"
-msgstr ""
+msgstr "კოდირება"
 
 #. Username field title for host editor preference
 msgctxt "hostpref_username_title"
 msgid "Username"
-msgstr ""
+msgstr "მომხმარებლის სახელი"
 
 #. Hostname field title for host editor preference
 msgctxt "hostpref_hostname_title"
 msgid "Host"
-msgstr ""
+msgstr "ჰოსტი"
 
 #. Port field title for host editor preference
 msgctxt "hostpref_port_title"
 msgid "Port"
-msgstr ""
+msgstr "პორტი"
 
 #. Displayed to indicate a host has never been connected to.
 msgctxt "bind_never"
@@ -870,17 +870,17 @@ msgstr ""
 #. Button to close the disconnected terminal window.
 msgctxt "console_menu_close"
 msgid "Close"
-msgstr ""
+msgstr "დახურვა"
 
 #. Button to begin copying from the terminal to the clipboard.
 msgctxt "console_menu_copy"
 msgid "Copy"
-msgstr ""
+msgstr "კოპირება"
 
 #. Button to paste from the clipboard to the terminal.
 msgctxt "console_menu_paste"
 msgid "Paste"
-msgstr ""
+msgstr "ჩასმა"
 
 #. Button that brings user to the Port Forwards List.
 msgctxt "console_menu_portforwards"
@@ -891,34 +891,34 @@ msgstr ""
 #. force a size.
 msgctxt "console_menu_resize"
 msgid "Force Size"
-msgstr ""
+msgstr "ნაძალადევი ზომა"
 
 #. Button that brings up the list of URLs on the current screen
 msgctxt "console_menu_urlscan"
 msgid "URL Scan"
-msgstr ""
+msgstr "URL-ის სკანირება"
 
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"
 msgid "Yes"
-msgstr ""
+msgstr "დიახ"
 
 #. Button label to answer "No" to a yes/no prompt
 msgctxt "button_no"
 msgid "No"
-msgstr ""
+msgstr "არა"
 
 #. Selection for a "local" port forward. E.g., connections to a port listening
 #. locally is forwarded to the remote end's listening port.
 msgctxt "portforward_local"
 msgid "Local"
-msgstr ""
+msgstr "ლოკალური"
 
 #. Selection for a "remote" port forward. E.g., connections to a port
 #. listening remotely is forwarded to the local end's listening port.
 msgctxt "portforward_remote"
 msgid "Remote"
-msgstr ""
+msgstr "დაშორებული"
 
 #. Selection for a "dynamic" port forward. E.g., connections to a port
 #. listening locally is forwarded based on the SOCKS protocol to an arbitrary
@@ -942,17 +942,17 @@ msgstr ""
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
 msgid "username"
-msgstr ""
+msgstr "მომხმარებლის სახელი"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_hostname"
 msgid "hostname"
-msgstr ""
+msgstr "ჰოსტის სახელი"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_port"
 msgid "port"
-msgstr ""
+msgstr "პორტი"
 
 msgctxt "list_menu_pubkeys"
 msgid "Manage Pubkeys"
@@ -961,12 +961,12 @@ msgstr ""
 #. Selection choice to sort hosts by color.
 msgctxt "list_menu_sortcolor"
 msgid "Sort by color"
-msgstr ""
+msgstr "დალაგება ფერით"
 
 #. Selection choice to sort hosts by nickname.
 msgctxt "list_menu_sortname"
 msgid "Sort by name"
-msgstr ""
+msgstr "დალაგება სახელით"
 
 msgctxt "list_menu_disconnect"
 msgid "Disconnect All"
@@ -974,15 +974,15 @@ msgstr ""
 
 msgctxt "list_menu_settings"
 msgid "Settings"
-msgstr ""
+msgstr "მორგება"
 
 msgctxt "list_host_disconnect"
 msgid "Disconnect"
-msgstr ""
+msgstr "გათიშვა"
 
 msgctxt "list_host_edit"
 msgid "Edit host"
-msgstr ""
+msgstr "ჰოსტის ჩასწორება"
 
 msgctxt "list_host_portforwards"
 msgid "Edit port forwards"
@@ -990,7 +990,7 @@ msgstr ""
 
 msgctxt "list_host_delete"
 msgid "Delete host"
-msgstr ""
+msgstr "ჰოსტის წაშლა"
 
 #. Note that the '\n' splits the lines so it's actually "quick-connect box
 #. below to connect"
@@ -1001,7 +1001,7 @@ msgstr ""
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
 msgid "Default"
-msgstr ""
+msgstr "ნაგულისხმევი"
 
 msgctxt "list_rotation_land"
 msgid "Force landscape"
@@ -1015,44 +1015,44 @@ msgstr ""
 #. on the tilt sensor.
 msgctxt "list_rotation_auto"
 msgid "Automatic"
-msgstr ""
+msgstr "ავტომატური"
 
 #. Selection to indicate pressing the Camera button should send "Ctrl+A then
 #. Space".
 msgctxt "list_camera_ctrlaspace"
 msgid "Ctrl+A then Space"
-msgstr ""
+msgstr "Ctrl+A შემდეგ ჰარე"
 
 #. Selection to indicate pressing the Camera button should send "Ctrl+A".
 msgctxt "list_camera_ctrla"
 msgid "Ctrl+A"
-msgstr ""
+msgstr "Ctrl+A"
 
 #. Selection to indicate pressing the Camera button should send the "Esc" key.
 msgctxt "list_camera_esc"
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #. Selection to indicate pressing the Camera button should send "Esc+A".
 msgctxt "list_camera_esc_a"
 msgid "Esc+A"
-msgstr ""
+msgstr "Esc+A"
 
 #. Selection to indicate pressing the Camera button should send nothing at
 #. all.
 msgctxt "list_camera_none"
 msgid "None"
-msgstr ""
+msgstr "არცერთი"
 
 #. Name for the backspace character
 msgctxt "list_delkey_backspace"
 msgid "Backspace"
-msgstr ""
+msgstr "Backspace"
 
 #. Name for the ASCII DEL character
 msgctxt "list_delkey_del"
 msgid "Delete"
-msgstr ""
+msgstr "წაშლა"
 
 #, c-format
 msgctxt "delete_message"
@@ -1061,11 +1061,11 @@ msgstr ""
 
 msgctxt "delete_pos"
 msgid "Yes, delete"
-msgstr ""
+msgstr "დიახ, წაშალე"
 
 msgctxt "delete_neg"
 msgid "Cancel"
-msgstr ""
+msgstr "გაუქმება"
 
 msgctxt "disconnect_all_message"
 msgid "Are you sure you want to disconnect from all connected hosts?"
@@ -1073,15 +1073,15 @@ msgstr ""
 
 msgctxt "disconnect_all_pos"
 msgid "Yes, disconnect"
-msgstr ""
+msgstr "დიახ, გათიშე"
 
 msgctxt "disconnect_all_neg"
 msgid "Cancel"
-msgstr ""
+msgstr "გაუქმება"
 
 msgctxt "terminal_no_hosts_connected"
 msgid "No hosts currently connected"
-msgstr ""
+msgstr "ამჟამად ჰოსტები დაკავშირებული არაა"
 
 #. Displayed in terminal when attempting to connect to a host. The first two
 #. variables are host:port and the third is the protocol (e.g., SSH)
@@ -1128,7 +1128,7 @@ msgstr ""
 
 msgctxt "terminal_auth"
 msgid "Trying to authenticate"
-msgstr ""
+msgstr "ავთენტიკაციის მცდელობა"
 
 msgctxt "terminal_auth_pass"
 msgid "Attempting 'password' authentication"
@@ -1192,17 +1192,17 @@ msgstr ""
 #. Preference selection for SSH Authentication Agent to never use pubkeys
 msgctxt "no"
 msgid "No"
-msgstr ""
+msgstr "არა"
 
 #. Preference selection for SSH Authentication Agent to be able to use pubkeys
 msgctxt "yes"
 msgid "Yes"
-msgstr ""
+msgstr "დიახ"
 
 #. Menu selection to reset colors to their defaults.
 msgctxt "menu_colors_reset"
 msgid "Reset"
-msgstr ""
+msgstr "ჩამოყრა"
 
 #. Displayed in the notification bar that connections are active
 msgctxt "app_is_running"
@@ -1211,19 +1211,19 @@ msgstr ""
 
 msgctxt "color_red"
 msgid "red"
-msgstr ""
+msgstr "წითელი"
 
 msgctxt "color_green"
 msgid "green"
-msgstr ""
+msgstr "მწვანე"
 
 msgctxt "color_blue"
 msgid "blue"
-msgstr ""
+msgstr "ლურჯი"
 
 msgctxt "color_gray"
 msgid "gray"
-msgstr ""
+msgstr "ნაცრისფერი"
 
 #. Very short label indicating the number next to it is "foreground color"
 #. number.
@@ -1243,13 +1243,13 @@ msgstr ""
 #. currently          connected.
 msgctxt "image_description_connected"
 msgid "Connected."
-msgstr ""
+msgstr "დაკავშირებულია."
 
 #. Accessibility text for connection state in list of hosts when the host is
 #. currently              disconnected after having been previously connected.
 msgctxt "image_description_disconnected"
 msgid "Disconnected."
-msgstr ""
+msgstr "კავშირი გაწყვეტილია."
 
 #. Describes the icon of the "locked pubkey" icon for accessibility purposes.
 msgctxt "image_description_key_is_locked"
@@ -1278,171 +1278,171 @@ msgstr ""
 #. accessibility              purposes.
 msgctxt "image_description_hide_keyboard"
 msgid "Hide keyboard."
-msgstr ""
+msgstr "კლავიატურის დამალვა."
 
 #. Describes the icon of the "show keyboard" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_show_keyboard"
 msgid "Show keyboard."
-msgstr ""
+msgstr "კლავიატურის ჩვენება."
 
 #. Describes the icon of the "Arrow up" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_up"
 msgid "Arrow up"
-msgstr ""
+msgstr "ისარი მაღლა"
 
 #. Describes the icon of the "Arrow down" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_down"
 msgid "Arrow down"
-msgstr ""
+msgstr "ისარი დაბლა"
 
 #. Describes the icon of the "Arrow left" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_left"
 msgid "Arrow left"
-msgstr ""
+msgstr "ისარი მარცხნივ"
 
 #. Describes the icon of the "Arrow right" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_right"
 msgid "Arrow right"
-msgstr ""
+msgstr "ისარი მარჯვნივ"
 
 #. Describes the "volume" icon in the bell volume dialog for accessibility
 #. purposes.
 msgctxt "image_description_volume"
 msgid "Volume"
-msgstr ""
+msgstr "ხმა"
 
 #. Text for the "Esc" button in virtual keyboard.
 msgctxt "button_key_esc"
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #. Text for the "Ctrl" button in virtual keyboard.
 msgctxt "button_key_ctrl"
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. Text for the "Home" button in virtual keyboard.
 msgctxt "button_key_home"
 msgid "Home"
-msgstr ""
+msgstr "Home"
 
 #. Text for the "End" button in virtual keyboard.
 msgctxt "button_key_end"
 msgid "End"
-msgstr ""
+msgstr "End"
 
 #. Text for the "Page Up" button in virtual keyboard.
 msgctxt "button_key_pgup"
 msgid "PgUp"
-msgstr ""
+msgstr "PgUp"
 
 #. Text for the "Page Down" button in virtual keyboard.
 msgctxt "button_key_pgdn"
 msgid "PgDn"
-msgstr ""
+msgstr "PgDn"
 
 #. Text for the "F1" button in virtual keyboard.
 msgctxt "button_key_f1"
 msgid "F1"
-msgstr ""
+msgstr "F1"
 
 #. Text for the "F2" button in virtual keyboard.
 msgctxt "button_key_f2"
 msgid "F2"
-msgstr ""
+msgstr "F2"
 
 #. Text for the "F3" button in virtual keyboard.
 msgctxt "button_key_f3"
 msgid "F3"
-msgstr ""
+msgstr "F3"
 
 #. Text for the "F4" button in virtual keyboard.
 msgctxt "button_key_f4"
 msgid "F4"
-msgstr ""
+msgstr "F4"
 
 #. Text for the "F5" button in virtual keyboard.
 msgctxt "button_key_f5"
 msgid "F5"
-msgstr ""
+msgstr "F5"
 
 #. Text for the "F6" button in virtual keyboard.
 msgctxt "button_key_f6"
 msgid "F6"
-msgstr ""
+msgstr "F6"
 
 #. Text for the "F7" button in virtual keyboard.
 msgctxt "button_key_f7"
 msgid "F7"
-msgstr ""
+msgstr "F7"
 
 #. Text for the "F8" button in virtual keyboard.
 msgctxt "button_key_f8"
 msgid "F8"
-msgstr ""
+msgstr "F8"
 
 #. Text for the "F9" button in virtual keyboard.
 msgctxt "button_key_f9"
 msgid "F9"
-msgstr ""
+msgstr "F9"
 
 #. Text for the "F10" button in virtual keyboard.
 msgctxt "button_key_f10"
 msgid "F10"
-msgstr ""
+msgstr "F10"
 
 #. Text for the "F11" button in virtual keyboard.
 msgctxt "button_key_f11"
 msgid "F11"
-msgstr ""
+msgstr "F11"
 
 #. Text for the "F12" button in virtual keyboard.
 msgctxt "button_key_f12"
 msgid "F12"
-msgstr ""
+msgstr "F12"
 
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
 msgid "Protocol"
-msgstr ""
+msgstr "პროტოკოლი"
 
 #. Label for button which expands/collapses section.
 msgctxt "expand"
 msgid "Expand"
-msgstr ""
+msgstr "ამოკეცვა"
 
 #. Label for checkbox which, when check, makes SSL authorization require
 #. confirmation.
 msgctxt "hostpref_authagent_with_confirmation"
 msgid "require confirmation"
-msgstr ""
+msgstr "დადასტურების მოთხოვნა"
 
 #. Text for button which, when clicked, adds a new host.
 msgctxt "hostpref_add_host"
 msgid "Add host"
-msgstr ""
+msgstr "ჰოსტის დამატება"
 
 #. Text for button which, when clicked, saves an existing host.
 msgctxt "hostpref_edit_host"
 msgid "Save host"
-msgstr ""
+msgstr "ჰოსტის შენახვა"
 
 #. Text for button which, when clicked, brings up an editor for adding a new
 #. pubkey.
 msgctxt "pubkey_add_new"
 msgid "Add new pubkey"
-msgstr ""
+msgstr "ახალი საჯგასაღების დამატება"
 
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
 msgid "Import existing pubkey"
-msgstr ""
+msgstr "არსებული საჯგასაღების შემოტანა"
 
 #. Text for dialog which explains that the host URI is invalid and asks to
 #. discard.
@@ -1453,12 +1453,12 @@ msgstr ""
 #. Text for button which discards changes to the host.
 msgctxt "discard_host_button"
 msgid "Discard"
-msgstr ""
+msgstr "მოცილება"
 
 #. Text for button which does not discard changes and keeps editing.
 msgctxt "discard_host_cancel_button"
 msgid "Keep editing"
-msgstr ""
+msgstr "ჩასწორების გაგრძელება"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the RSA algorithm with a
@@ -1467,7 +1467,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_rsa_bits"
 msgid "RSA %d-bit"
-msgstr ""
+msgstr "RSA %d-ბიტიანი"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the DSA algorithm with a
@@ -1476,7 +1476,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_dsa_bits"
 msgid "DSA %d-bit"
-msgstr ""
+msgstr "DSA %d-ბიტიანი"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Elliptic Curve (EC)
@@ -1485,7 +1485,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_ec_bits"
 msgid "EC %d-bit"
-msgstr ""
+msgstr "EC %d-ბიტიანი"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Ed25519 algorithm
@@ -1493,20 +1493,20 @@ msgstr ""
 #. "Ed25519").
 msgctxt "key_type_ed25519"
 msgid "Ed25519"
-msgstr ""
+msgstr "Ed25519"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of an unknown algorithm.
 msgctxt "key_type_unknown"
 msgid "Key type unknown"
-msgstr ""
+msgstr "გასაღების ტიპი უცნობია"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Added to the end of a key description to indicate
 #. that the key is encrypted (i.e,              password protected).
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
-msgstr ""
+msgstr "(დაშიფრულია)"
 
 msgctxt "notification_requirement_explanation"
 msgid ""
@@ -1516,8 +1516,8 @@ msgstr ""
 
 msgctxt "continue_anyway"
 msgid "Continue without"
-msgstr ""
+msgstr "გარეშე გაგრძელება"
 
 msgctxt "allow"
 msgid "Allow"
-msgstr ""
+msgstr "დაშვება"
