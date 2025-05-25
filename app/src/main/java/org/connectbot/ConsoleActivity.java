@@ -27,6 +27,7 @@ import org.connectbot.service.PromptHelper;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalKeyListener;
 import org.connectbot.service.TerminalManager;
+import org.connectbot.util.FloatingInputDialog;
 import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.TerminalViewPager;
 
@@ -135,9 +136,12 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 	private MenuItem disconnect;
 	private MenuItem paste;
+	private MenuItem floatingInput;
 	private MenuItem portForward;
 	private MenuItem resize;
 	private MenuItem urlscan;
+
+	private FloatingInputDialog floatingInputDialog;
 
 	private boolean forcedOrientation;
 
@@ -727,6 +731,9 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 					}
 				}
 			});
+
+		// Initialize floating input window
+		floatingInputDialog = new FloatingInputDialog(this);
 	}
 
 	private void addKeyRepeater(View view) {
@@ -837,6 +844,20 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				pasteIntoTerminal();
+				return true;
+			}
+		});
+
+		floatingInput = menu.add(R.string.menu_floating_input);
+		if (hardKeyboard)
+			floatingInput.setAlphabeticShortcut('i');
+		MenuItemCompat.setShowAsAction(floatingInput, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+		floatingInput.setIcon(R.drawable.ic_text_input);
+		floatingInput.setEnabled(activeTerminal);
+		floatingInput.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				toggleFloatingInput();
 				return true;
 			}
 		});
@@ -955,6 +976,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			disconnect.setTitle(R.string.console_menu_close);
 
 		paste.setEnabled(activeTerminal);
+		floatingInput.setEnabled(activeTerminal);
 		portForward.setEnabled(sessionOpen && canForwardPorts);
 		urlscan.setEnabled(activeTerminal);
 		resize.setEnabled(sessionOpen);
@@ -1207,6 +1229,11 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		updateDefault();
 		updatePromptVisible();
 		ActivityCompat.invalidateOptionsMenu(ConsoleActivity.this);
+		
+		// Update floating input dialog bridge if showing
+		if (floatingInputDialog != null && floatingInputDialog.isShowing()) {
+			// Dialog maintains its own bridge reference, no need to update
+		}
 	}
 
 	/**
@@ -1232,6 +1259,28 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			clip = clipboard.getText().toString();
 		}
 		bridge.injectString(clip);
+	}
+
+	private void toggleFloatingInput() {
+		if (floatingInputDialog != null && floatingInputDialog.isShowing()) {
+			floatingInputDialog.dismiss();
+		} else {
+			TerminalView terminalView = adapter.getCurrentTerminalView();
+			if (terminalView != null) {
+				String selectedText = terminalView.getCurrentSelection();
+				floatingInputDialog.show(terminalView.bridge, selectedText);
+			}
+		}
+	}
+
+	public void openFloatingInput() {
+		if (floatingInputDialog != null && !floatingInputDialog.isShowing()) {
+			TerminalView terminalView = adapter.getCurrentTerminalView();
+			if (terminalView != null) {
+				String selectedText = terminalView.getCurrentSelection();
+				floatingInputDialog.show(terminalView.bridge, selectedText);
+			}
+		}
 	}
 
 	public class TerminalPagerAdapter extends PagerAdapter {

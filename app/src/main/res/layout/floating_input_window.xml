@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/floating_window_background"
+    android:elevation="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="0dp">
+
+        <!-- Header (draggable area) -->
+        <RelativeLayout
+            android:id="@+id/floating_input_header"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:background="@drawable/floating_window_header_background"
+            android:paddingLeft="16dp"
+            android:paddingRight="8dp">
+
+            <TextView
+                android:id="@+id/floating_input_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/floating_input_title"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/floating_input_close"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/button_close"
+                android:padding="6dp"
+                android:src="@drawable/ic_close" />
+
+        </RelativeLayout>
+
+        <!-- Content area -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <EditText
+                android:id="@+id/floating_input_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/floating_input_text_background"
+                android:gravity="top|left"
+                android:hint="@string/floating_input_hint"
+                android:inputType="textMultiLine"
+                android:maxHeight="120dp"
+                android:minHeight="56dp"
+                android:padding="8dp"
+                android:scrollbars="vertical"
+                android:textColor="@android:color/white"
+                android:textColorHint="#AAFFFFFF"
+                android:textSize="14sp" />
+
+            <ImageButton
+                android:id="@+id/floating_input_submit"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="4dp"
+                android:background="@drawable/floating_window_submit_background"
+                android:contentDescription="@string/floating_input_submit"
+                android:padding="12dp"
+                android:src="@drawable/ic_send"
+                android:tint="@android:color/white" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

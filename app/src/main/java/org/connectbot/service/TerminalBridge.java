@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.connectbot.ConsoleActivity;
 import org.connectbot.R;
 import org.connectbot.TerminalView;
 import org.connectbot.bean.HostBean;
@@ -1095,5 +1096,24 @@ public class TerminalBridge implements VDUDisplay {
 	 */
 	public void decreaseFontSize() {
 		setFontSize(fontSizeDp - FONT_SIZE_STEP);
+	}
+
+	/**
+	 * Request to open the floating text input window.
+	 * This is called when the camera button is pressed with the text input option.
+	 */
+	public void requestOpenTextInput() {
+		// Send a message to the parent activity to open the floating input
+		if (parent != null) {
+			parent.post(new Runnable() {
+				@Override
+				public void run() {
+					Context context = parent.getContext();
+					if (context instanceof ConsoleActivity) {
+						((ConsoleActivity) context).openFloatingInput();
+					}
+				}
+			});
+		}
 	}
 }

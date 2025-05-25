@@ -148,6 +148,10 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 		closeSelectionActionMode();
 	}
 
+	public String getCurrentSelection() {
+		return currentSelection;
+	}
+
 	private void pasteClipboard() {
 		String clip = "";
 		if (clipboard.hasText()) {

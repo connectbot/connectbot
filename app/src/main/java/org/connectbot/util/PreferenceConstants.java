@@ -57,6 +57,7 @@ public final class PreferenceConstants {
 	public static final String CAMERA_CTRLA = "Ctrl+A";
 	public static final String CAMERA_ESC = "Esc";
 	public static final String CAMERA_ESC_A = "Esc+A";
+	public static final String CAMERA_TEXT_INPUT = "Text Input";
 
 	public static final String KEEP_ALIVE = "keepalive";
 

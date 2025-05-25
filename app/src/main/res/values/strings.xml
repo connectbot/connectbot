@@ -459,6 +459,8 @@
 	<string name="list_camera_esc">"Esc"</string>
 	<!-- Selection to indicate pressing the Camera button should send "Esc+A". -->
 	<string name="list_camera_esc_a">"Esc+A"</string>
+	<!-- Selection to indicate pressing the Camera button should open text input window. -->
+	<string name="list_camera_text_input">"Text Input"</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">"None"</string>
 
@@ -676,4 +678,11 @@
 	<string name="notification_requirement_explanation">Notification permission is required to display running sessions in the background</string>
 	<string name="continue_anyway">Continue without</string>
 	<string name="allow">Allow</string>
+	
+	<!-- Floating Input Window -->
+	<string name="floating_input_title">Text Input</string>
+	<string name="floating_input_hint">Enter text here...</string>
+	<string name="floating_input_submit">Send</string>
+	<string name="menu_floating_input">Text Input</string>
+	<string name="button_close">Close</string>
 </resources>

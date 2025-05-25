@@ -395,6 +395,10 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				} else if (PreferenceConstants.CAMERA_ESC_A.equals(camera)) {
 					((vt320) buffer).keyTyped(vt320.KEY_ESCAPE, ' ', 0);
 					bridge.transport.write('a');
+				} else if (PreferenceConstants.CAMERA_TEXT_INPUT.equals(camera)) {
+					// Trigger the floating text input window
+					bridge.requestOpenTextInput();
+					return true;
 				}
 
 				break;

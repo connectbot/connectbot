@@ -46,6 +46,7 @@
 		<item>@string/list_camera_ctrla</item>
 		<item>@string/list_camera_esc</item>
 		<item>@string/list_camera_esc_a</item>
+		<item>@string/list_camera_text_input</item>
 		<item>@string/list_camera_none</item>
 	</string-array>
 
@@ -54,6 +55,7 @@
 		<item>Ctrl+A</item>
 		<item>Esc</item>
 		<item>Esc+A</item>
+		<item>Text Input</item>
 		<item>None</item>
 	</string-array>
 
