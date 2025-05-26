@@ -145,6 +145,8 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					interpretAsHardKeyboard;
 			final boolean controlNumbersAreFKeys = controlNumbersAreFKeysOnSoftKeyboard &&
 					!interpretAsHardKeyboard;
+			// Mask and isFunctionPressed are wrong at this point, so compute
+			final boolean isFunctionKeyPressed = keyCode >= KeyEvent.KEYCODE_F1 && keyCode <= KeyEvent.KEYCODE_F12;
 
 			// Ignore all key-up events except for the special keys
 			if (event.getAction() == KeyEvent.ACTION_UP) {
@@ -295,6 +297,12 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			}
 			if (controlNumbersAreFKeys && (derivedMetaState & HC_META_CTRL_ON) != 0) {
 				if (sendFunctionKey(keyCode))
+					return true;
+			}
+
+			// Test function key code
+			if (isFunctionKeyPressed) {
+				if (translateAndSendFunctionKey(keyCode))
 					return true;
 			}
 
@@ -571,6 +579,55 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 			return false;
 		}
 	}
+
+	/**
+	 * Translate android function key code into vt320 function code
+	 * @param keyCode
+	 * @return
+	 */
+	private boolean translateAndSendFunctionKey(int keyCode) {
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_F1:
+			((vt320) buffer).keyPressed(vt320.KEY_F1, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_F2:
+			((vt320) buffer).keyPressed(vt320.KEY_F2, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_F3:
+			((vt320) buffer).keyPressed(vt320.KEY_F3, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_F4:
+			((vt320) buffer).keyPressed(vt320.KEY_F4, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_F5:
+			((vt320) buffer).keyPressed(vt320.KEY_F5, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_F6:
+			((vt320) buffer).keyPressed(vt320.KEY_F6, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_F7:
+			((vt320) buffer).keyPressed(vt320.KEY_F7, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_F8:
+			((vt320) buffer).keyPressed(vt320.KEY_F8, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_F9:
+			((vt320) buffer).keyPressed(vt320.KEY_F9, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_F10:
+			((vt320) buffer).keyPressed(vt320.KEY_F10, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_F11:
+			((vt320) buffer).keyPressed(vt320.KEY_F11, ' ', 0);
+			return true;
+		case KeyEvent.KEYCODE_F12:
+			((vt320) buffer).keyPressed(vt320.KEY_F12, ' ', 0);
+			return true;
+		default:
+			return false;
+		}
+	}
+
 
 	/**
 	 * Handle meta key presses where the key can be locked on.
