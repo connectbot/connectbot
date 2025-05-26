@@ -62,6 +62,7 @@ import android.view.inputmethod.InputConnection;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import android.widget.Scroller;
 import de.mud.terminal.VDUBuffer;
 import de.mud.terminal.vt320;
 
@@ -121,6 +122,19 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 	private static final int ACCESSIBILITY_EVENT_THRESHOLD = 1000;
 	private static final String SCREENREADER_INTENT_ACTION = "android.accessibilityservice.AccessibilityService";
 	private static final String SCREENREADER_INTENT_CATEGORY = "android.accessibilityservice.category.FEEDBACK_SPOKEN";
+
+	private final Scroller scroller;
+	private final Runnable scrollRunnable = new Runnable() {
+		@Override
+		public void run() {
+			if (scroller.computeScrollOffset()) {
+				int currentY = scroller.getCurrY();
+				bridge.buffer.setWindowBase(currentY);
+				bridge.redraw();
+				postOnAnimation(this);
+			}
+		}
+	};
 
 	public TerminalView(Context context, TerminalBridge bridge, TerminalViewPager pager) {
 		super(context);
@@ -210,6 +224,8 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 		clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
 		prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
+		scroller = new Scroller(context);
+
 		bridge.addFontSizeChangedListener(this);
 		bridge.parentChanged(this);
 
@@ -255,7 +271,8 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 						int base = bridge.buffer.getWindowBase();
 						bridge.buffer.setWindowBase(base + moved);
 						totalY = 0;
-						return false;
+						bridge.redraw();
+						return true;
 					}
 				}
 
@@ -266,6 +283,34 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 			public boolean onSingleTapConfirmed(MotionEvent e) {
 				viewPager.performClick();
 				return super.onSingleTapConfirmed(e);
+			}
+
+			@Override
+			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+				// Only handle vertical flings for momentum scrolling
+				if (Math.abs(velocityY) > Math.abs(velocityX)) {
+					// Don't handle fling in page up/down gesture zone if enabled
+					boolean pgUpDnGestureEnabled = prefs.getBoolean(PreferenceConstants.PG_UPDN_GESTURE, false);
+					if (pgUpDnGestureEnabled && e2.getX() <= getWidth() / 3) {
+						return false;
+					}
+					
+					int currentBase = bridge.buffer.getWindowBase();
+					int maxBase = bridge.buffer.bufSize - bridge.buffer.getRows();
+					if (maxBase < 0) maxBase = 0;
+					
+					// Calculate fling distance based on velocity
+					// Negative velocityY means finger moved up (scroll down)
+					scroller.fling(0, currentBase, 0, (int) -velocityY,
+							0, 0, 0, maxBase);
+					
+					// Start the scrolling animation
+					removeCallbacks(scrollRunnable);
+					post(scrollRunnable);
+					
+					return true;
+				}
+				return false;
 			}
 		});
 
@@ -285,6 +330,13 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		// Stop any ongoing fling when user touches the screen
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			if (!scroller.isFinished()) {
+				scroller.abortAnimation();
+			}
+		}
+		
 		if (gestureDetector != null && gestureDetector.onTouchEvent(event)) {
 			return true;
 		}
