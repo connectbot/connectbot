@@ -28,7 +28,7 @@ coveralls.jacocoReportPath = 'build/reports/coverage/google/debug/report.xml'
 
 androidGitVersion {
 	prefix = "v"
-	codeFormat = 'MMNNPPBBB'
+	codeFormat = 'MMNNPPBBBB'
 }
 
 android {
