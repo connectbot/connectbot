@@ -229,8 +229,13 @@
 
 	<!-- Name for the page up/down gesture preference -->
 	<string name="pref_pg_updn_gesture_title">"Page up/down gesture"</string>
-	<!-- Summary for the full screen preference -->
+	<!-- Summary for the page up/down gesture preference -->
 	<string name="pref_pg_updn_gesture_summary">"Swipe the left third of the screen to send pg up/dn to the terminal"</string>
+
+	<!-- Name for the arrow key gesture preference -->
+	<string name="pref_arrow_key_gesture_title">"Arrow key gesture"</string>
+	<!-- Summary for the arrow key gesture preference -->
+	<string name="pref_arrow_key_gesture_summary">"Swipe in the left two-thirds of screen to send arrow keys"</string>
 
 	<!-- Name for the full screen preference -->
 	<string name="pref_fullscreen_title">"Full screen"</string>
@@ -405,6 +410,8 @@
 	<string name="console_menu_resize">"Force Size"</string>
 	<!-- Button that brings up the list of URLs on the current screen -->
 	<string name="console_menu_urlscan">"URL Scan"</string>
+	<!-- Button that exports debug logs to share -->
+	<string name="console_menu_export_logs">"Export logs"</string>
 
 	<!-- Button label to answer "Yes" to a yes/no prompt -->
 	<string name="button_yes">"Yes"</string>

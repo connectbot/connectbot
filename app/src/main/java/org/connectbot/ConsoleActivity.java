@@ -87,7 +87,18 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import de.mud.terminal.vt320;
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import android.os.Build;
+import androidx.core.content.FileProvider;
 
 public class ConsoleActivity extends AppCompatActivity implements BridgeDisconnectedListener {
 	public final static String TAG = "CB.ConsoleActivity";
@@ -137,6 +148,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 	private MenuItem paste;
 	private MenuItem portForward;
 	private MenuItem resize;
+	private MenuItem exportLogs;
 	private MenuItem urlscan;
 
 	private boolean forcedOrientation;
@@ -926,6 +938,15 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			}
 		});
 
+		exportLogs = menu.add(R.string.console_menu_export_logs);
+		exportLogs.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				exportDebugLogs();
+				return true;
+			}
+		});
+
 		return true;
 	}
 
@@ -958,6 +979,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		portForward.setEnabled(sessionOpen && canForwardPorts);
 		urlscan.setEnabled(activeTerminal);
 		resize.setEnabled(sessionOpen);
+		exportLogs.setEnabled(true);  // Always enabled
 
 		return true;
 	}
@@ -971,6 +993,64 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	private void exportDebugLogs() {
+		try {
+			// Use app's cache directory for temporary file
+			File cacheDir = getCacheDir();
+			String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
+			File logFile = new File(cacheDir, "connectbot_log_" + timestamp + ".txt");
+			
+			// Run logcat and save to file
+			Process process = Runtime.getRuntime().exec("logcat -d -t 2000");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(logFile));
+			
+			// Add header with timestamp and app info
+			writer.write("ConnectBot Debug Log");
+			writer.newLine();
+			writer.write("Exported: " + new Date().toString());
+			writer.newLine();
+			writer.write("========================================");
+			writer.newLine();
+			writer.newLine();
+			
+			// Copy logcat output
+			String line;
+			while ((line = reader.readLine()) != null) {
+				writer.write(line);
+				writer.newLine();
+			}
+			
+			reader.close();
+			writer.close();
+			process.waitFor();
+			
+			// Share the log file
+			Intent shareIntent = new Intent(Intent.ACTION_SEND);
+			shareIntent.setType("text/plain");
+			
+			// For Android N and above, use FileProvider
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+				Uri contentUri = FileProvider.getUriForFile(this, 
+					getApplicationContext().getPackageName() + ".fileprovider", logFile);
+				shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+				shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+			} else {
+				shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(logFile));
+			}
+			
+			shareIntent.putExtra(Intent.EXTRA_SUBJECT, "ConnectBot Debug Log " + timestamp);
+			shareIntent.putExtra(Intent.EXTRA_TEXT, "ConnectBot debug log attached");
+			
+			// Show chooser
+			startActivity(Intent.createChooser(shareIntent, "Share Debug Log"));
+			
+		} catch (Exception e) {
+			Log.e(TAG, "Failed to export logs", e);
+			Toast.makeText(this, "Failed to export logs: " + e.getMessage(), Toast.LENGTH_LONG).show();
+		}
 	}
 
 	@Override
