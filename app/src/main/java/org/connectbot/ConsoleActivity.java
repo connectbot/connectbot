@@ -89,6 +89,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.mud.terminal.vt320;
+import android.view.GestureDetector;
+import android.view.View;
+import android.view.ViewGroup;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -519,6 +522,8 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 					public void onPageSelected(int position) {
 						setTitle(adapter.getPageTitle(position));
 						onTerminalChanged();
+						// Re-setup gestures when title changes
+						updateTitleBarGestures();
 					}
 				});
 		adapter = new TerminalPagerAdapter();
@@ -662,6 +667,15 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 					}
 				}
 			});
+			
+			// Set up title bar swipe gestures after action bar is configured
+			// Post with delay to ensure the view hierarchy is fully built and rendered
+			findViewById(android.R.id.content).postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					setupTitleBarGestures();
+				}
+			}, 100);
 		}
 
 		final HorizontalScrollView keyboardScroll = findViewById(R.id.keyboard_hscroll);
@@ -1099,6 +1113,339 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		}
 	}
 
+	private GestureDetector titleBarGestureDetector;
+	private TextView titleView;
+	
+	private void setupTitleBarGestures() {
+		// Find the action bar title view
+		titleView = findActionBarTitleView();
+		
+		// Set up gesture detector for title swipes
+		titleBarGestureDetector = new GestureDetector(this, 
+				new GestureDetector.SimpleOnGestureListener() {
+			@Override
+			public boolean onDown(MotionEvent e) {
+				// Must return true for the gesture detector to receive further events
+				Log.d(TAG, "Title onDown at X=" + e.getX() + ", Y=" + e.getY());
+				return true;
+			}
+			
+			@Override
+			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+				try {
+					if (e1 == null || e2 == null) {
+						return false;
+					}
+					
+					Log.d(TAG, "Title fling: velocityX=" + velocityX + ", velocityY=" + velocityY);
+					
+					// Only handle horizontal swipes
+					if (Math.abs(velocityX) > Math.abs(velocityY)) {
+						float deltaX = e2.getX() - e1.getX();
+						Log.d(TAG, "Title swipe deltaX=" + deltaX);
+						
+						// Check if swipe is large enough
+						if (Math.abs(deltaX) > 100) {
+							if (deltaX > 0) {
+								// Swipe right - go to previous connection
+								int current = pager.getCurrentItem();
+								if (current > 0) {
+									setDisplayedTerminal(current - 1);
+									return true;
+								}
+							} else {
+								// Swipe left - go to next connection
+								int current = pager.getCurrentItem();
+								if (adapter != null && current < adapter.getCount() - 1) {
+									setDisplayedTerminal(current + 1);
+									return true;
+								}
+							}
+						}
+					}
+				} catch (Exception e) {
+					Log.e(TAG, "Error in title fling", e);
+				}
+				return false;
+			}
+		});
+		
+		if (titleView != null) {
+			// Attach the gesture detector to the title view
+			titleView.setOnTouchListener(new View.OnTouchListener() {
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					return titleBarGestureDetector.onTouchEvent(event);
+				}
+			});
+			Log.d(TAG, "Title bar gestures attached to title view");
+		} else {
+			// Fallback: use a more targeted dispatchTouchEvent approach
+			Log.w(TAG, "Could not find action bar title view, using fallback gesture detection");
+			setupFallbackTitleGestures();
+		}
+	}
+	
+	private boolean useFallbackGestures = false;
+	
+	private void setupFallbackTitleGestures() {
+		// Override dispatchTouchEvent but with much more precise bounds
+		// This is our fallback when we can't find the exact title view
+		useFallbackGestures = true;
+		Log.d(TAG, "Fallback title gestures enabled");
+	}
+	
+	private void updateTitleBarGestures() {
+		// Called when title changes - try to find the title view again
+		if (titleBarGestureDetector == null) {
+			return; // Not initialized yet
+		}
+		
+		findViewById(android.R.id.content).postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				TextView newTitleView = findActionBarTitleView();
+				if (newTitleView != null && newTitleView != titleView) {
+					// Found a new title view
+					if (titleView != null) {
+						titleView.setOnTouchListener(null); // Remove old listener
+					}
+					titleView = newTitleView;
+					titleView.setOnTouchListener(new View.OnTouchListener() {
+						@Override
+						public boolean onTouch(View v, MotionEvent event) {
+							return titleBarGestureDetector.onTouchEvent(event);
+						}
+					});
+					useFallbackGestures = false;
+					Log.d(TAG, "Title bar gestures re-attached to new title view");
+				} else if (newTitleView == null && !useFallbackGestures) {
+					// Couldn't find title view, enable fallback
+					Log.w(TAG, "Could not find title view on update, enabling fallback");
+					setupFallbackTitleGestures();
+				}
+			}
+		}, 50);
+	}
+	
+	private boolean titleBarGestureActive = false;
+	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		if (titleBarGestureDetector != null) {
+			// Check if we should start tracking title bar gestures
+			if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+				titleBarGestureActive = false;
+				
+				// Try to find title TextView at touch location
+				View foundView = findViewAtLocation(getWindow().getDecorView(), (int)ev.getX(), (int)ev.getY());
+				if (foundView instanceof TextView) {
+					TextView textView = (TextView) foundView;
+					CharSequence text = textView.getText();
+					
+					// Check if this is the title bar TextView
+					if (text != null && text.length() > 0) {
+						String textStr = text.toString();
+						float density = getResources().getDisplayMetrics().density;
+						int maxTitleBarHeight = (int)(300 * density);
+						
+						if (textStr.contains("@") && !textStr.contains("\n") && textStr.length() < 100 && ev.getY() < maxTitleBarHeight) {
+							titleBarGestureActive = true;
+							Log.d(TAG, "Title bar gesture started on: '" + textStr + "'");
+						}
+					}
+				}
+				
+				// Fallback: check if touch is in action bar area
+				if (!titleBarGestureActive) {
+					View contentView = findViewById(android.R.id.content);
+					int[] contentLocation = new int[2];
+					contentView.getLocationInWindow(contentLocation);
+					int totalTopHeight = contentLocation[1];
+					
+					if (ev.getY() <= totalTopHeight) {
+						float density = getResources().getDisplayMetrics().density;
+						int navigationIconWidth = (int)(56 * density);
+						int menuItemWidth = (int)(48 * density);
+						int screenWidth = getResources().getDisplayMetrics().widthPixels;
+						
+						int leftBound = navigationIconWidth;
+						int rightBound = screenWidth - (menuItemWidth * 2);
+						
+						if (ev.getX() >= leftBound && ev.getX() <= rightBound) {
+							titleBarGestureActive = true;
+							Log.d(TAG, "Title bar gesture started (fallback bounds)");
+						}
+					}
+				}
+			}
+			
+			// If we're tracking a title bar gesture, forward all events to the gesture detector
+			if (titleBarGestureActive) {
+				boolean handled = titleBarGestureDetector.onTouchEvent(ev);
+				
+				// Reset on UP or CANCEL
+				if (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_CANCEL) {
+					titleBarGestureActive = false;
+				}
+				
+				if (handled) {
+					return true;
+				}
+			}
+		}
+		
+		return super.dispatchTouchEvent(ev);
+	}
+	
+	
+	private View findViewAtLocation(View parent, int x, int y) {
+		if (!parent.isShown()) {
+			return null;
+		}
+		
+		int[] location = new int[2];
+		parent.getLocationOnScreen(location);
+		int viewX = location[0];
+		int viewY = location[1];
+		int viewWidth = parent.getWidth();
+		int viewHeight = parent.getHeight();
+		
+		// Check if the touch is within this view's bounds
+		boolean isInBounds = x >= viewX && x < viewX + viewWidth && 
+							y >= viewY && y < viewY + viewHeight;
+		
+		if (!isInBounds) {
+			return null;
+		}
+		
+		// If this is a ViewGroup, check children first (they are drawn on top)
+		if (parent instanceof ViewGroup) {
+			ViewGroup group = (ViewGroup) parent;
+			// Iterate in reverse order since later children are drawn on top
+			for (int i = group.getChildCount() - 1; i >= 0; i--) {
+				View child = group.getChildAt(i);
+				View foundInChild = findViewAtLocation(child, x, y);
+				if (foundInChild != null) {
+					return foundInChild;
+				}
+			}
+		}
+		
+		// If no child contains the point, and this view does, return this view
+		return parent;
+	}
+	
+	private TextView findActionBarTitleView() {
+		// Try to find the action bar title view
+		try {
+			Log.d(TAG, "Searching for action bar title view...");
+			
+			// Method 1: Look specifically in the action bar/toolbar areas first
+			View decorView = getWindow().getDecorView();
+			
+			// Try to find the action bar container
+			View actionBarContainer = decorView.findViewById(
+				getResources().getIdentifier("action_bar_container", "id", "android"));
+			if (actionBarContainer != null) {
+				Log.d(TAG, "Found action bar container, searching for title...");
+				// Log all TextViews in the action bar container
+				logAllTextViews(actionBarContainer, "ActionBarContainer");
+				
+				// Look for the toolbar inside
+				View toolbar = findViewByClassName(actionBarContainer, "Toolbar");
+				if (toolbar != null) {
+					Log.d(TAG, "Found Toolbar, searching for title TextView...");
+					TextView titleView = findTitleInToolbar(toolbar);
+					if (titleView != null) {
+						return titleView;
+					}
+				}
+			}
+			
+			// Method 2: Try to find by android.R.id values commonly used for action bar titles
+			int[] titleIds = {
+				android.R.id.text1,
+				getResources().getIdentifier("action_bar_title", "id", "android"),
+				getResources().getIdentifier("title", "id", "android")
+			};
+			
+			for (int id : titleIds) {
+				if (id != 0) {
+					View titleView = findViewById(id);
+					if (titleView instanceof TextView) {
+						Log.d(TAG, "Found title view by ID: " + id);
+						return (TextView) titleView;
+					}
+				}
+			}
+			
+			// Method 3: Use the fallback
+			Log.w(TAG, "Could not find action bar title view using any method");
+			return null;
+			
+		} catch (Exception e) {
+			Log.e(TAG, "Error finding action bar title view", e);
+			return null;
+		}
+	}
+	
+	private View findViewByClassName(View parent, String className) {
+		if (parent.getClass().getSimpleName().contains(className)) {
+			return parent;
+		}
+		
+		if (parent instanceof ViewGroup) {
+			ViewGroup group = (ViewGroup) parent;
+			for (int i = 0; i < group.getChildCount(); i++) {
+				View result = findViewByClassName(group.getChildAt(i), className);
+				if (result != null) {
+					return result;
+				}
+			}
+		}
+		return null;
+	}
+	
+	private TextView findTitleInToolbar(View toolbar) {
+		// In a toolbar, the title TextView is usually a direct child
+		if (toolbar instanceof ViewGroup) {
+			ViewGroup group = (ViewGroup) toolbar;
+			for (int i = 0; i < group.getChildCount(); i++) {
+				View child = group.getChildAt(i);
+				if (child instanceof TextView) {
+					TextView textView = (TextView) child;
+					// Check if this looks like a title (large text, single line)
+					if (textView.getMaxLines() == 1 || textView.getMaxLines() == -1) {
+						CharSequence text = textView.getText();
+						if (text != null && text.length() > 0) {
+							Log.d(TAG, "Found potential title TextView in Toolbar: '" + text + "'");
+							return textView;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	private void logAllTextViews(View parent, String context) {
+		if (parent instanceof TextView) {
+			TextView tv = (TextView) parent;
+			Log.d(TAG, "  [" + context + "] TextView found: '" + tv.getText() + "' class=" + tv.getClass().getName());
+		}
+		
+		if (parent instanceof ViewGroup) {
+			ViewGroup group = (ViewGroup) parent;
+			for (int i = 0; i < group.getChildCount(); i++) {
+				View child = group.getChildAt(i);
+				logAllTextViews(child, context + "/" + child.getClass().getSimpleName());
+			}
+		}
+	}
+	
+	
+
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onNewIntent(android.content.Intent)
 	 */
@@ -1299,6 +1646,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		// set activity title
 		setTitle(adapter.getPageTitle(requestedIndex));
 		onTerminalChanged();
+		updateTitleBarGestures();
 	}
 
 	private void pasteIntoTerminal() {

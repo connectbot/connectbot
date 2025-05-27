@@ -30,3 +30,4 @@ build/
 
 # Jenkinsfile-runner
 \.jenkinsfile-runner/
+.android/
