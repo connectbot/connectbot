@@ -82,6 +82,10 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 	private final GestureDetector gestureDetector;
 	private ArrowGestureListener gestureListener;
 	private final SharedPreferences prefs;
+	private long touchDownTime = 0;
+	private static final long TEXT_SELECTION_DELAY = 500; // ms to wait before allowing text selection
+	private Handler longPressEnableHandler = new Handler();
+	private Runnable enableTextSelectionRunnable;
 
 	// These are only used for pre-Honeycomb copying.
 	private int lastTouchedRow, lastTouchedCol;
@@ -234,6 +238,72 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 		}
 	}
 
+	private boolean allowTextSelection = false;
+	private boolean textSelectionStarted = false;
+	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent event) {
+		// Intercept touch events before they reach child views (including overlay)
+		boolean arrowKeyGestureEnabled = prefs.getBoolean(PreferenceConstants.ARROW_KEY_GESTURE, false);
+		float xPos = event.getX();
+		float screenWidth = getWidth();
+		boolean inArrowGestureZone = arrowKeyGestureEnabled && xPos <= screenWidth * 2 / 3;
+		
+		// Track touch timing for text selection delay
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			touchDownTime = System.currentTimeMillis();
+			allowTextSelection = false;
+			textSelectionStarted = false;
+			// Cancel any pending enable
+			if (enableTextSelectionRunnable != null) {
+				longPressEnableHandler.removeCallbacks(enableTextSelectionRunnable);
+			}
+			
+			// In gesture zone, schedule text selection enable after delay
+			if (inArrowGestureZone) {
+				enableTextSelectionRunnable = new Runnable() {
+					@Override
+					public void run() {
+						allowTextSelection = true;
+						textSelectionStarted = true;
+						// Force the overlay to handle text selection by simulating a long click
+						terminalTextViewOverlay.performLongClick();
+					}
+				};
+				longPressEnableHandler.postDelayed(enableTextSelectionRunnable, TEXT_SELECTION_DELAY);
+			}
+		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+			// If we've started text selection, let the overlay handle moves
+			if (textSelectionStarted && allowTextSelection) {
+				return super.dispatchTouchEvent(event);
+			}
+		} else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+			// Cancel any pending text selection enable
+			if (enableTextSelectionRunnable != null) {
+				longPressEnableHandler.removeCallbacks(enableTextSelectionRunnable);
+			}
+			// If text selection was started, let the overlay handle the up event
+			if (textSelectionStarted) {
+				textSelectionStarted = false;
+				allowTextSelection = false;
+				return super.dispatchTouchEvent(event);
+			}
+			allowTextSelection = false;
+		}
+		
+		// In gesture zone, handle the event ourselves first
+		if (inArrowGestureZone && !allowTextSelection) {
+			// Handle gesture ourselves
+			boolean handled = onTouchEvent(event);
+			if (handled) {
+				return true;
+			}
+		}
+		
+		// Otherwise, normal dispatch to children
+		return super.dispatchTouchEvent(event);
+	}
+	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// Check if we should disable ViewPager for arrow gestures
@@ -253,7 +323,25 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 			}
 		}
 		
-		if (gestureDetector != null && gestureDetector.onTouchEvent(event)) {
+		// Let the gesture detector process the event first
+		boolean gestureHandled = false;
+		if (gestureDetector != null) {
+			gestureHandled = gestureDetector.onTouchEvent(event);
+		}
+		
+		// For modern Android, check if the overlay is handling text selection
+		if (terminalTextViewOverlay != null && terminalTextViewOverlay.hasSelection()) {
+			// Let text selection continue normally
+			return super.onTouchEvent(event);
+		}
+		
+		// In the arrow gesture zone, we handle all events
+		if (inArrowGestureZone && !bridge.isSelectingForCopy()) {
+			return true;
+		}
+		
+		// If gesture was handled, consume the event
+		if (gestureHandled) {
 			return true;
 		}
 
@@ -736,12 +824,19 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 			
 			// Handle arrow key gestures in left 2/3 of screen
 			if (inArrowGestureZone) {
+				// Cancel any pending text selection on movement
+				if (TerminalView.this.enableTextSelectionRunnable != null) {
+					TerminalView.this.longPressEnableHandler.removeCallbacks(TerminalView.this.enableTextSelectionRunnable);
+				}
+				
 				// Accumulate total movement
 				totalX += distanceX;
 				totalY += distanceY;
 				
+				
 				// Check if we've moved enough to trigger a gesture
 				float threshold = touchSlop * 3;
+				
 				
 				// Determine dominant direction
 				if (Math.abs(totalX) > threshold || Math.abs(totalY) > threshold) {
@@ -826,6 +921,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 			gestureHandled = false;
 			currentKey = 0;
 			keyRepeatHandler.removeCallbacks(keyRepeatRunnable);
+			// Long press is controlled by the main onTouchEvent now
 			return false;
 		}
 
@@ -835,9 +931,19 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 			return super.onSingleTapConfirmed(e);
 		}
 		
+		@Override
+		public void onLongPress(MotionEvent e) {
+			// Long press is now only enabled after 500ms of no movement
+			// so if we get here, it's a legitimate long press for text selection
+		}
+		
 		public void stopKeyRepeat() {
 			currentKey = 0;
 			keyRepeatHandler.removeCallbacks(keyRepeatRunnable);
+		}
+		
+		public boolean isRepeatingKey() {
+			return currentKey != 0;
 		}
 	}
 }
