@@ -283,6 +283,18 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 		}
 	}
 
+	public String getCurrentSelection() {
+		if (terminalTextViewOverlay != null) {
+			return terminalTextViewOverlay.getCurrentSelection();
+		}
+		// For pre-Honeycomb devices, use the selection area
+		if (bridge != null && bridge.isSelectingForCopy()) {
+			SelectionArea area = bridge.getSelectionArea();
+			return area.copyFrom(bridge.buffer);
+		}
+		return "";
+	}
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (gestureDetector != null && gestureDetector.onTouchEvent(event)) {
