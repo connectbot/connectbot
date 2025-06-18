@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-04-22 11:59-0700\n"
-"PO-Revision-Date: 2018-05-17 13:52+0000\n"
-"Last-Translator: Hami <Unknown>\n"
+"PO-Revision-Date: 2025-06-16 17:06+0000\n"
+"Last-Translator: Thang Nguyen <Unknown>\n"
 "Language-Team: vi <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2025-04-25 12:08+0000\n"
-"X-Generator: Launchpad (build e76edd883483c71c468bb038e98836435de44530)\n"
+"X-Launchpad-Export-Date: 2025-06-18 04:31+0000\n"
+"X-Generator: Launchpad (build 102302b48d804bc4284f26b4edb16220a44bef79)\n"
 "Generated-By: Babel 2.10.1\n"
 "Language: vi\n"
 
@@ -24,80 +24,79 @@ msgstr ""
 #. running apps list
 msgctxt "app_desc"
 msgid "Simple, powerful, open-source SSH client."
-msgstr "Một client SSH mã nguồn mở đơn giản và mạnh mẽ"
+msgstr "Client SSH mã nguồn mở, đơn giản và mạnh mẽ."
 
 #. Summary of what the ConnectBot service does; displayed in the Android
 #. running apps list
 msgctxt "service_desc"
 msgid "Maintains SSH connections and loaded pubkeys"
-msgstr "Duy trì các kết nối SSH và các mã pubkeys đã nạp"
+msgstr "Duy trì kết nối SSH và các khoá đã nạp"
 
 #. Window title for the Host List
 msgctxt "title_hosts_list"
 msgid "Hosts"
-msgstr "Các máy chủ"
+msgstr "Máy chủ"
 
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
 msgid "Pubkeys"
-msgstr "Pubkeys"
+msgstr "Khoá"
 
 #. Window title for the Port Forwards List
 msgctxt "title_port_forwards_list"
 msgid "Port forwards"
-msgstr "Cổng chuyển tiếp (port forwards)"
+msgstr "Chuyển tiếp cổng"
 
 #. Window title when editing host details
 msgctxt "title_host_editor"
 msgid "Edit Host"
-msgstr "Chỉnh sửa máy chủ (Host)"
+msgstr "Chỉnh Sửa Máy Chủ"
 
 #. Window title for Help index
 msgctxt "title_help"
 msgid "Help"
-msgstr "Help (trợ giúp)"
+msgstr "Trợ Giúp"
 
 #. Window title for color list editing screen
 msgctxt "title_colors"
 msgid "Colors"
-msgstr "Màu sắc"
+msgstr "Màu Sắc"
 
 #. Dialog title for color picker dialog
 msgctxt "title_color_picker"
 msgid "Pick a color"
-msgstr "Chọn một màu"
+msgstr "Chọn màu"
 
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr "Thiết lập cấu hình"
+msgstr "Cài Đặt"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
 msgid "Generate"
-msgstr "Tạo khoá"
+msgstr "Tạo Khoá"
 
 msgctxt "help_intro"
 msgid ""
 "Please select a topic below for more information on a particular subject."
 msgstr ""
-"Hãy chọn một trong các topic bên dưới để biết thêm thông tin của từng "
-"subject cụ thể."
+"Vui lòng chọn một chủ đề bên dưới để biết thêm thông tin về từng phần cụ thể."
 
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
 msgid "Terms & Conditions"
-msgstr "Các điều khoản & điều kiện sử dụng"
+msgstr "Điều khoản & Điều kiện sử dụng"
 
 #. Title for the help page with the hints about the app.
 msgctxt "hints"
 msgid "Hints"
-msgstr "Gợi ý"
+msgstr "Gợi Ý"
 
 #. Header text for instructions about creating host shortcuts.
 msgctxt "host_shortcuts_header"
 msgid "Host Shortcuts"
-msgstr "Phím tắt cho Host"
+msgstr "Phím tắt máy chủ"
 
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
@@ -105,13 +104,13 @@ msgid ""
 "Long-press on your Android desktop to create direct shortcuts to frequently-"
 "used SSH hosts."
 msgstr ""
-"Nhấn giữ lâu lên desktop trên app Android của bạn để tạo ra các shortcuts "
-"đến những host SSH thường dùng."
+"Nhấn và giữ trên màn hình Android để tạo lối tắt trực tiếp đến các máy chủ "
+"SSH thường dùng."
 
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
 msgid "Scroll back / Scroll forward"
-msgstr "Cuộn trang lên / Cuộn trang xuống"
+msgstr "Cuộn lên / Cuộn xuống"
 
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
@@ -119,22 +118,22 @@ msgid ""
 "Swiping your finger up on the right side of the screen allows you to scroll "
 "backward and forward in the local terminal buffer history."
 msgstr ""
-"Khi ở local termial buffer history, vuốt lên ở phía bên phải màn hình để có "
-"thể cuộn lên và xuống màn hình đó."
+"Vuốt ngón tay lên phía bên phải màn hình cho phép bạn cuộn lên và cuộn xuống "
+"trong Terminal."
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
 msgid "Scrolling back"
-msgstr "Đang cuộn trang về trước (cuộn lên)"
+msgstr "Cuộn lên"
 
 msgctxt "scrolling_forward"
 msgid "Scrolling forward"
-msgstr "Đang cuộn trang về sau (cuộn xuống)"
+msgstr "Cuộn xuống"
 
 #. Header text for instructions about paging up and down in the terminal.
 msgctxt "page_updn_header"
 msgid "Page Up / Page Down"
-msgstr "Về trang trước / Về trang sau"
+msgstr "Page Up / Page Down"
 
 #. Instructions about paging up and down in the terminal.
 msgctxt "page_updn_content"
@@ -144,65 +143,72 @@ msgid ""
 "Swiping your finger up and down on the left third of the screen will send a "
 "page up and page down key to the remote host. Many programs map this to "
 "scrolling back into history such as irssi or tinyfugue."
-msgstr "Chú ý: tính năng này phải được kích hoạt trong settings"
+msgstr ""
+"LƯU Ý: Phải bật tính năng này trong phần Cài Đặt.\n"
+"\n"
+"Vuốt ngón tay lên xuống ở một phần ba bên trái của màn hình sẽ gửi phím page "
+"up và page down đến máy chủ từ xa. Nhiều chương trình ánh xạ tính năng này "
+"để quay về lịch sử như irssi hoặc tinyfugue."
 
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
 msgid "Page up"
-msgstr "Trang trên"
+msgstr "Page up"
 
 msgctxt "page_down"
 msgid "Page down"
-msgstr "Trang dưới"
+msgstr "Page down"
 
 #. Header text for instructions about switching to the next and previous host
 #. in the terminal.
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
-msgstr "Đổi Hosts"
+msgstr "Chuyển Đổi Máy Chủ"
 
 #. Instructions about switching to the next and previous host in the terminal.
 msgctxt "switching_hosts_content"
 msgid ""
 "Swiping your finger from one side of the screen to the other will switch "
 "between currently connected hosts."
-msgstr "Vuốt ngang màn hình để chuyển đổi giữa các Host hiện đang kết nối."
+msgstr ""
+"Vuốt từ bên này màn hình sang bên kia sẽ chuyển đổi giữa các máy chủ đang "
+"được kết nối."
 
 #. Captions for images showing the next/previous host gestures.
 msgctxt "next_host"
 msgid "Next host"
-msgstr "Host tiếp theo"
+msgstr "Máy chủ sau"
 
 msgctxt "prev_host"
 msgid "Previous host"
-msgstr "Host trước"
+msgstr "Máy chủ trước"
 
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
 msgid "Keyboard Shortcuts"
-msgstr "Phím tắt bấm nhanh"
+msgstr "Phím Tắt Bàn Phím"
 
 #. Text in a keyboard shortcuts list lined up to keys which increase the
 #. terminal font-size.
 msgctxt "increase_font_size"
 msgid "Increase Font Size"
-msgstr "Tăng kích cỡ phông chữ"
+msgstr "Tăng Kích Thước Phông Chữ"
 
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
 msgid "Ctrl and +"
-msgstr "Ctrl và phím +"
+msgstr "Ctrl và +"
 
 #. Text in a keyboard shortcuts list lined up to keys which decrease the
 #. terminal font-size.
 msgctxt "decrease_font_size"
 msgid "Decrease Font Size"
-msgstr "Giảm kích cỡ phông chữ"
+msgstr "Giảm Kích Thước Phông Chữ"
 
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
 msgid "Ctrl and -"
-msgstr "Ctrl và phím -"
+msgstr "Ctrl và -"
 
 #. Keyboard shortcut for pasting into the terminal.
 msgctxt "paste_shortcut"
@@ -211,11 +217,11 @@ msgstr "Ctrl-Shift-V"
 
 msgctxt "pubkey_generate"
 msgid "Generate"
-msgstr "Tạo"
+msgstr "Tạo Khoá"
 
 msgctxt "pubkey_delete"
 msgid "Delete key"
-msgstr "Xoá key"
+msgstr "Xoá khoá"
 
 #. Dialog title when user must move finger randomly over an area to gather
 #. entropy (collect random bits)
@@ -234,20 +240,20 @@ msgid ""
 "In order to assure randomness during the key generation, move your finger "
 "randomly over the box below."
 msgstr ""
-"Để đảm bảo tính ngẫu nhiên khi tạo key, hãy di chuyển ngón tay bạn một cách "
-"ngẫu nhiên trên khắp box bên dưới."
+"Để đảm bảo tính ngẫu nhiên trong quá trình tạo khóa, hãy di chuyển ngón tay "
+"của bạn một cách ngẫu nhiên trên hộp bên dưới."
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
-msgstr "Đang tạo cặp khoá (key pair) ..."
+msgstr "Đang tạo cặp khoá..."
 
 msgctxt "pubkey_copy_private"
 msgid "Copy private key"
-msgstr "Copy khoá bí mật (private key)"
+msgstr "Sao chép khóa riêng tư"
 
 msgctxt "pubkey_copy_public"
 msgid "Copy public key"
-msgstr "Copy khoá công khai (public key)"
+msgstr "Sao chép khóa công khai"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
@@ -255,57 +261,57 @@ msgid ""
 "Tap \"Menu\" to create\n"
 "or import key pairs."
 msgstr ""
-"Chọn \"Menu\" để tạo mới \\n\n"
-"hoặc import bộ khoá bí mật & công khai (key pairs)"
+"Nhấn \"Menu\" để tạo\n"
+"hoặc nhập cặp khóa."
 
 msgctxt "pubkey_unknown_format"
 msgid "Unknown format"
-msgstr "Không hiểu định dạng"
+msgstr "Định dạng không xác định"
 
 msgctxt "pubkey_change_password"
 msgid "Change password"
-msgstr "Thay đổi mật khẩu"
+msgstr "Đổi mật khẩu"
 
 #. When attempting to import a pubkey, this is the title for the dialog box
 #. where the user should pick the desired file from the SD card contents.
 msgctxt "pubkey_list_pick"
 msgid "Pick from /sdcard"
-msgstr "Chọn từ thẻ nhớ SD card"
+msgstr "Chọn từ /sdcard"
 
 #. Message shown to the user when a selected pubkey to import was not
 #. parseable for some reason.
 msgctxt "pubkey_import_parse_problem"
 msgid "Problem parsing imported private key"
-msgstr "Sự cố khi phân tích khoá cá nhân được nhập"
+msgstr "Sự cố khi phân tích khóa riêng tư đã nhập"
 
 msgctxt "pubkey_unlock"
 msgid "Unlock key"
-msgstr "Mở khoá"
+msgstr "Mở khóa khóa"
 
 #. Feedback given to the user when the password that they have entered for the
 #. pubkey is incorrect.
 #, c-format
 msgctxt "pubkey_failed_add"
 msgid "Bad password for key '%1$s'. Authentication failed."
-msgstr "Sai mật khẩu cho key '%1$s'. Quá trình xác thực thất bại."
+msgstr "Mật khẩu không hợp lệ cho khóa '%1$s'. Xác thực không thành công."
 
 #. Context menu entry that allows a user to load a pubkey entry into memory.
 #. This is equivalent to "unlocking" a password-protected pubkey entry.
 msgctxt "pubkey_memory_load"
 msgid "Load into memory"
-msgstr "Load vào bộ nhớ"
+msgstr "Tải vào bộ nhớ"
 
 #. Context menu entry that allows a user to unload a pubkey entry from memory.
 #. This is equivalent to "locking" a password-protected pubkey entry.
 msgctxt "pubkey_memory_unload"
 msgid "Unload from memory"
-msgstr "Unload từ bộ nhớ"
+msgstr "Dỡ bỏ khỏi bộ nhớ"
 
 #. Context menu checkbox that indicates that this pubkey entry should attempt
 #. to be loaded upon starting the app.
 msgctxt "pubkey_load_on_start"
 msgid "Load key on start"
-msgstr "Tải khóa (key) khi khởi động"
+msgstr "Tải khóa khi khởi động"
 
 #. Pubkey preference asking user whether the key use should be confirmed via
 #. prompt before it can be used for authentication
@@ -321,34 +327,34 @@ msgid ""
 "Tap \"Menu\" to create\n"
 "port forwards."
 msgstr ""
-"Chạm vào \"Menu\" để tạo mới\\n\n"
-"cổng chuyển tiếp (port forward)"
+"Nhấn \"Menu\" để tạo\n"
+"cổng chuyển tiếp."
 
 #. Context menu action where a user can edite the selected port forward for
 #. the host.
 msgctxt "portforward_edit"
 msgid "Edit port forward"
-msgstr "Chỉnh sửa cổng chuyển tiếp (port forward)"
+msgstr "Chỉnh sửa cổng chuyển tiếp"
 
 #. Context menu action where a user can delete the selected port forward from
 #. the host.
 msgctxt "portforward_delete"
 msgid "Delete port forward"
-msgstr "Xoá cổng chuyển tiếp (port forward)"
+msgstr "Xoá cổng chuyển tiếp"
 
 msgctxt "prompt_nickname"
 msgid "Nickname:"
-msgstr "Nickname"
+msgstr "Biệt danh"
 
 #. An example string that could be used as a nickname for a pubkey.
 msgctxt "prompt_nickname_hint_pubkey"
 msgid "My work key"
-msgstr "Nickname để gợi nhắc pubkey"
+msgstr "Khóa công việc của tôi"
 
 #. The source TCP port for port forwards.
 msgctxt "prompt_source_port"
 msgid "Source port:"
-msgstr "Cổng nguồn"
+msgstr "Cổng nguồn:"
 
 #. The "host:port" combination used for port forward destinations.
 msgctxt "prompt_destination"
@@ -365,23 +371,23 @@ msgstr "Mật khẩu cũ:"
 #. 'password' authentication.
 msgctxt "prompt_password"
 msgid "Password:"
-msgstr "Mật khẩu"
+msgstr "Mật khẩu:"
 
 #. Added after a "Password:" prompt to indicate user needs to confirm entry.
 msgctxt "prompt_again"
 msgid "(again)"
-msgstr "(nhập lại 1 lần nữa)"
+msgstr "(nhập lại)"
 
 #. Label for the user to select port forward type.
 msgctxt "prompt_type"
 msgid "Type:"
-msgstr "Kiểu:"
+msgstr "Loại:"
 
 #. Hint given below the password input box that lets them know that they are
 #. allowed to leave the field blank.
 msgctxt "prompt_password_can_be_blank"
 msgid "Note: password can be blank"
-msgstr "Chú ý: mật khẩu có thể rỗng"
+msgstr "Lưu ý: mật khẩu có thể để trống"
 
 #. Prompt for the size of the private key in bits.
 msgctxt "prompt_bits"
@@ -392,7 +398,7 @@ msgstr "Bits:"
 #, c-format
 msgctxt "prompt_pubkey_password"
 msgid "Password for key '%1$s'"
-msgstr "Mật khẩu của key '%1$s'"
+msgstr "Mật khẩu của khóa '%1$s'"
 
 #. Prompt for whether to allow SSH Authentication Agent to use the specified
 #. key. Note that the '\n' means split the line so it's actually "host to use
@@ -402,14 +408,16 @@ msgctxt "prompt_allow_agent_to_use_key"
 msgid ""
 "Allow remote host to\n"
 "use key '%1$s'?"
-msgstr "Có cho phép Host từ xa sử dụng khóa  '%1$s'?"
+msgstr ""
+"Cho phép máy chủ từ xa\n"
+"sử dụng khóa '%1$s'?"
 
 #. The header of the warning a user gets when the host key has changed. Note
 #. that this can be a very serious attack, so we try to be as "loud" to the
 #. user as possible.
 msgctxt "host_verification_failure_warning_header"
 msgid "WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!"
-msgstr "CẢNH BÁO: ĐỊNH DANH CỦA HOST TRUY CẬP TỪ XA ĐÃ BỊ THAY ĐỔI!"
+msgstr "CẢNH BÁO: NHẬN DẠNG MÁY CHỦ TỪ XA ĐÃ THAY ĐỔI!"
 
 #. The body of the warning a user gets when the host key has changed. Note
 #. that this can be a very serious attack, so we try to be as "loud" to the
@@ -420,9 +428,9 @@ msgid ""
 "Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
-"CÓ DẤU HIỆU CÓ NGƯỜI ĐANG THỰC HIỆN ĐIỀU BẤT THƯỜNG!\n"
-"Hiện có ai đó đang truy xuất kết nối của bạn (man-in-the-middle attack)!\n"
-"Cũng có thể khoá (key) của Host đã bị thay đổi."
+"CÓ THỂ AI ĐÓ ĐANG LÀM ĐIỀU GÌ ĐÓ BẤT THƯỜNG!\n"
+"Có thể ai đó đang nghe lén bạn ngay lúc này (tấn công man-in-the-middle)!\n"
+"Cũng có thể là khóa máy chủ vừa mới bị thay đổi."
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
@@ -430,8 +438,8 @@ msgid ""
 "Host has disconnected.\n"
 "Close session?"
 msgstr ""
-"Host đã mất kết nối.\n"
-"Đóng phiên làm việc?"
+"Máy chủ đã ngắt kết nối.\n"
+"Đóng phiên?"
 
 #. Prompt user must answer yes or no to when the remote host fails
 #. verification of encryption fingerprint
@@ -440,26 +448,26 @@ msgid ""
 "Are you sure you want\n"
 "to continue connecting?"
 msgstr ""
-"Bạn có muốn\n"
-"tiếp tục kết nối?"
+"Bạn có chắc chắn muốn\n"
+"tiếp tục kết nối không?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
 #. match the local database
 #, c-format
 msgctxt "host_authenticity_warning"
 msgid "The authenticity of host '%1$s' can't be established."
-msgstr "Xác thực của host '%1$s' không thể thực hiện được."
+msgstr "Không thể xác định tính xác thực của máy chủ '%1$s'."
 
 #. First field is encryption algorithm. Second is the actual fingerprint in
 #. hex digits
 #, c-format
 msgctxt "host_fingerprint"
 msgid "Host %1$s key fingerprint is %2$s"
-msgstr "Máy chủ %1$s key fingerprint là %2$s"
+msgstr "Dấu vân tay khóa của máy chủ %1$s là %2$s"
 
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
-msgstr "Các mật khẩu không khớp nhau"
+msgstr "Mật khẩu không khớp!"
 
 msgctxt "alert_wrong_password_msg"
 msgid "Wrong password!"
@@ -467,11 +475,11 @@ msgstr "Sai mật khẩu!"
 
 msgctxt "alert_key_corrupted_msg"
 msgid "Private key appears corrupt!"
-msgstr "Có thể khoá bí mật đã bị hỏng!"
+msgstr "Khóa riêng tư có vẻ bị hỏng!"
 
 msgctxt "alert_sdcard_absent"
 msgid "SD card is not inserted!"
-msgstr "Hãy kiểm tra lại, không tìm thấy thẻ nhớ ngoài SD card!"
+msgstr "Thẻ SD chưa được lắp vào!"
 
 #. Change an existing item's (e.g., host or pubkey) details.
 msgctxt "button_change"
@@ -485,14 +493,14 @@ msgstr "Đổi kích thước"
 
 msgctxt "alert_disconnect_msg"
 msgid "Connection Lost"
-msgstr "Mất kết nối"
+msgstr "Mất Kết Nối"
 
 msgctxt "msg_copyright"
 msgid ""
 "Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
 "http://jsharkey.org/"
 msgstr ""
-"Bản quyền thuộc về © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
+"Bản Quyền © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
 "http://jsharkey.org/"
 
 #. The category title for terminal emulation preferences.
@@ -508,70 +516,68 @@ msgstr "Chế độ mô phỏng"
 #. Description of the emulation terminal type preference.
 msgctxt "pref_emulation_summary"
 msgid "Terminal emulation mode to use for PTY connections"
-msgstr "Chế độ Terminal mô phỏng dùng cho các kết nối PTY"
+msgstr "Chế độ mô phỏng Terminal để sử dụng cho kết nối PTY"
 
 #. Name for the scrollback size preference
 msgctxt "pref_scrollback_title"
 msgid "Scrollback size"
-msgstr "Kích cỡ của Scrollback"
+msgstr "Kích thước Scrollback"
 
 #. Description of the scrollback size preference
 msgctxt "pref_scrollback_summary"
 msgid "Size of scrollback buffer to keep in memory for each console"
-msgstr ""
-"Kích cỡ của bộ nhớ đệm dành cho Scrollback để lưu bộ nhớ cho từng console"
+msgstr "Kích thước của bộ đệm scrollback để giữ trong bộ nhớ cho mỗi console"
 
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr "Backup pubkeys (sao lưu)"
+msgstr "Sao lưu khóa"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
-msgstr ""
-"Giữ bản lưu của các khoá bí mật sử dùng cơ chế sao lưu backup của Android"
+msgstr "Giữ sao lưu của khóa riêng tư bằng cơ chế sao lưu của Android"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
 msgid "User interface"
-msgstr "UI - Giao diện người dùng"
+msgstr "Giao diện người dùng"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
 msgid "Rotation mode"
-msgstr "Chế độ xoay màn hình"
+msgstr "Chế độ xoay"
 
 #. Summary for the rotation mode preference
 msgctxt "pref_rotation_summary"
 msgid "How to change rotation when keyboard popped in/out"
-msgstr "Cách màn hình xoay khi bàn phím ẩn/hiện"
+msgstr "Cách thay đổi chế độ xoay khi bàn phím hiện/ẩn"
 
 #. Name for the titlebar hide preference
 msgctxt "pref_titlebarhide_title"
 msgid "Autohide title bar"
-msgstr "Tự động giấu Title bar"
+msgstr "Tự động ẩn thanh tiêu đề"
 
 #. Summary for the titlebar hide preference
 msgctxt "pref_titlebarhide_summary"
 msgid "Tap console to show title bar and access menu"
-msgstr "Chạm vào màn hình để hiện thị Title bar và Menu"
+msgstr "Nhấn vào console để hiển thị thanh tiêu đề và truy cập menu"
 
 #. Title for special keys always visible preference
 msgctxt "pref_alwaysvisible_title"
 msgid "Special keys always visible"
-msgstr "Các phím đặc biệt luôn luôn hiện thị"
+msgstr "Các phím đặc biệt luôn hiển thị"
 
 #. Name for the page up/down gesture preference
 msgctxt "pref_pg_updn_gesture_title"
 msgid "Page up/down gesture"
-msgstr ""
+msgstr "Cử chỉ page up/down"
 
 #. Summary for the full screen preference
 msgctxt "pref_pg_updn_gesture_summary"
 msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
-msgstr "Vuốt 1/3 màn hình bên trái để gửi mệnh pg up/dn tới terminal"
+msgstr "Vuốt một phần ba bên trái của màn hình để gửi pg up/dn đến console"
 
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
@@ -591,56 +597,55 @@ msgstr "Bàn phím"
 #. Name for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_title"
 msgid "Shift+num are F-keys"
-msgstr "Phím Shift & F1-F10"
+msgstr "Shift+số là phím F1-F10"
 
 #. Summary for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_summary"
 msgid "On hardware keyboards, number keys send F1-F10 with shift"
-msgstr ""
-"Với bàn phím cứng, phím Shift kết hợp với các phím số  để thay cho F1-F10"
+msgstr "Trên bàn phím vật lý, các phím số gửi F1-F10 với shift"
 
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
 msgid "Ctrl+num are F-keys"
-msgstr "Phím Ctrl & F1-F10"
+msgstr "Ctrl+số là phím F1-F10"
 
 #. Summary for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_summary"
 msgid "On software keyboards, number keys send F1-F10 with ctrl"
-msgstr ""
-"Với bàn phím cứng, phím Ctrl kết hợp với các phím số  để thay cho F1-F10"
+msgstr "Trên bàn phím ảo, các phím số gửi F1-F10 với ctrl"
 
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
 msgid "Volume keys change font size"
-msgstr "Dùng nút âm thanh -/+ để đổi kích thước font chữ"
+msgstr "Phím âm lượng thay đổi kích thước phông chữ"
 
 #. Summary for the volume keys control font size preference
 msgctxt "pref_volumefont_summary"
 msgid "Font size can also be changed in per-host settings"
-msgstr "Cỡ chữ có thể bị thay đổi tuỳ theo thiết lập của từng máy chủ"
+msgstr ""
+"Kích thước phông chữ cũng có thể được thay đổi trong cài đặt của từng máy chủ"
 
 #. Name for the memorize keys preference
 msgctxt "pref_memkeys_title"
 msgid "Remember keys in memory"
-msgstr "Ghi nhớ các khoá trong bộ nhớ"
+msgstr "Ghi nhớ khoá trong bộ nhớ"
 
 #. Summary for the memorize keys preference
 msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
-msgstr "Giữ unlocked keys trong bộ nhớ cho đến khi service chạy ngầm bị huỷ."
+msgstr "Giữ các khóa đã mở khóa trong bộ nhớ cho đến khi dịch vụ nền bị huỷ"
 
 #. Name for the preference that forces the service to stay running in the
 #. background.
 msgctxt "pref_conn_persist_title"
 msgid "Persist connections"
-msgstr "Giữ kết nối ở background"
+msgstr "Duy trì kết nối"
 
 #. Summary for the preference that forces the service to stay running in the
 #. background.
 msgctxt "pref_conn_persist_summary"
 msgid "Force connections to stay connected while in background"
-msgstr "Force các connection giữ kết nối khi đang ở chế độ background"
+msgstr "Buộc các kết nối phải duy trì kết nối khi ở chế độ nền"
 
 #. Name for the keyboard shortcuts preference
 msgctxt "pref_keymode_title"
