@@ -104,6 +104,13 @@
 			/>
 
 		<SwitchPreferenceCompat
+			android:key="arrowkeygesture"
+			android:title="@string/pref_arrow_key_gesture_title"
+			android:summary="@string/pref_arrow_key_gesture_summary"
+			android:defaultValue="false"
+			/>
+
+		<SwitchPreferenceCompat
 			android:key="volumefont"
 			android:title="@string/pref_volumefont_title"
 			android:summary="@string/pref_volumefont_summary"
