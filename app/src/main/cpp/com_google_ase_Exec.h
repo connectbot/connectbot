@@ -25,6 +25,22 @@ JNIEXPORT void JNICALL Java_com_google_ase_Exec_setPtyWindowSize
 
 /*
  * Class:     com_google_ase_Exec
+ * Method:    setenv
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_google_ase_Exec_setenv
+  (JNIEnv *, jclass, jstring, jstring);
+
+/*
+ * Class:     com_google_ase_Exec
+ * Method:    kill
+ * Signature: (II)I
+ */
+JNIEXPORT jint JNICALL Java_com_google_ase_Exec_kill
+  (JNIEnv *, jclass, jint, jint);
+
+/*
+ * Class:     com_google_ase_Exec
  * Method:    waitFor
  * Signature: (I)I
  */

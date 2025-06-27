@@ -36,9 +36,10 @@ public class TransportFactory {
 	private static final String TAG = "CB.TransportFactory";
 
 	private static String[] transportNames = {
-		SSH.getProtocolName(),
-		Telnet.getProtocolName(),
-		Local.getProtocolName(),
+			SSH.getProtocolName(),
+			Mosh.getProtocolName(),
+			Telnet.getProtocolName(),
+			Local.getProtocolName(),
 	};
 
 	/**
@@ -48,6 +49,8 @@ public class TransportFactory {
 	public static AbsTransport getTransport(String protocol) {
 		if (SSH.getProtocolName().equals(protocol)) {
 			return new SSH();
+		} else if (Mosh.getProtocolName().equals(protocol)) {
+			return new Mosh();
 		} else if (Telnet.getProtocolName().equals(protocol)) {
 			return new Telnet();
 		} else if (Local.getProtocolName().equals(protocol)) {
@@ -63,6 +66,8 @@ public class TransportFactory {
 				input));
 		if (SSH.getProtocolName().equals(scheme))
 			return SSH.getUri(input);
+		else if (Mosh.getProtocolName().equals(scheme))
+			return Mosh.getUri(input);
 		else if (Telnet.getProtocolName().equals(scheme))
 			return Telnet.getUri(input);
 		else if (Local.getProtocolName().equals(scheme)) {
@@ -96,6 +101,8 @@ public class TransportFactory {
 	public static String getFormatHint(String protocol, Context context) {
 		if (SSH.getProtocolName().equals(protocol)) {
 			return SSH.getFormatHint(context);
+		} else if (Mosh.getProtocolName().equals(protocol)) {
+			return Mosh.getFormatHint(context);
 		} else if (Telnet.getProtocolName().equals(protocol)) {
 			return Telnet.getFormatHint(context);
 		} else if (Local.getProtocolName().equals(protocol)) {

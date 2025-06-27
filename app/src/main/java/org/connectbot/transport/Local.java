@@ -219,6 +219,11 @@ public class Local extends AbsTransport {
 		return false;
 	}
 
+	@Override
+	public boolean resetOnConnectionChange() {
+		return false;
+	}
+
 	private interface Killer {
 		void killProcess(int pid);
 	}
