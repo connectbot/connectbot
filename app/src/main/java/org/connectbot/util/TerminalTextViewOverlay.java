@@ -357,10 +357,10 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 
 			menu.clear();
 
-			menu.add(0, COPY, 0, R.string.console_menu_copy)
+			menu.add(0, COPY, 0, getContext().getString(R.string.console_menu_copy))
 					.setIcon(R.drawable.ic_action_copy)
 					.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_IF_ROOM);
-			menu.add(0, PASTE, 1, R.string.console_menu_paste)
+			menu.add(0, PASTE, 1, getContext().getString(R.string.console_menu_paste))
 					.setIcon(R.drawable.ic_action_paste)
 					.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT | MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
