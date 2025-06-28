@@ -111,6 +111,13 @@
 			/>
 
 		<SwitchPreferenceCompat
+			android:key="ctrlfont"
+			android:title="@string/pref_ctrlfont_title"
+			android:summary="@string/pref_ctrlfont_summary"
+			android:defaultValue="true"
+			/>
+
+		<SwitchPreferenceCompat
 			android:key="keepalive"
 			android:title="@string/pref_keepalive_title"
 			android:summary="@string/pref_keepalive_summary"
@@ -148,6 +155,13 @@
 			android:entries="@array/list_stickymodifiers"
 			android:entryValues="@array/list_stickymodifiers_values"
 			android:defaultValue="no"
+			/>
+
+		<SwitchPreferenceCompat
+			android:key="stickynonlocking"
+			android:title="@string/pref_stickynonlocking_title"
+			android:summary="@string/pref_stickynonlocking_summary"
+			android:defaultValue="false"
 			/>
 
 		<ListPreference
