@@ -284,4 +284,7 @@
   <string name="key_type_ed25519">Ed25519</string>
   <string name="key_type_unknown">Неизвестный тип ключа</string>
   <string name="key_attribute_encrypted">(зашифровано)</string>
+  <string name="notification_requirement_explanation">Требуется разрешение присылать оповещения чтобы отображать запущенные в фоне сессии</string>
+  <string name="continue_anyway">Продолжить без</string>
+  <string name="allow">Разрешить</string>
 </resources>

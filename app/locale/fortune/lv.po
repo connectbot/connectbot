@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-04-22 11:59-0700\n"
-"PO-Revision-Date: 2025-04-03 09:33+0000\n"
+"PO-Revision-Date: 2025-05-27 19:14+0000\n"
 "Last-Translator: ℂ𝕠𝕠𝕠𝕝 <Unknown>\n"
 "Language-Team: lv <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2025-04-23 04:44+0000\n"
-"X-Generator: Launchpad (build e76edd883483c71c468bb038e98836435de44530)\n"
+"X-Launchpad-Export-Date: 2025-05-28 08:25+0000\n"
+"X-Generator: Launchpad (build 30048e740966359d3041f59a477700a1cd51464e)\n"
 "Language: lv\n"
 "Generated-By: Babel 2.12.0\n"
 
@@ -174,7 +174,7 @@ msgstr ""
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "Īsinājumtaustiņi"
 
 #. Text in a keyboard shortcuts list lined up to keys which increase the
 #. terminal font-size.
@@ -209,7 +209,7 @@ msgstr ""
 
 msgctxt "pubkey_delete"
 msgid "Delete key"
-msgstr ""
+msgstr "Dzēst atslēgu"
 
 #. Dialog title when user must move finger randomly over an area to gather
 #. entropy (collect random bits)
@@ -234,11 +234,11 @@ msgstr ""
 
 msgctxt "pubkey_copy_private"
 msgid "Copy private key"
-msgstr ""
+msgstr "Kopēt privāto atslēgu"
 
 msgctxt "pubkey_copy_public"
 msgid "Copy public key"
-msgstr ""
+msgstr "Kopēt publisko atslēgu"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
@@ -249,7 +249,7 @@ msgstr ""
 
 msgctxt "pubkey_unknown_format"
 msgid "Unknown format"
-msgstr ""
+msgstr "Nezināms formāts"
 
 msgctxt "pubkey_change_password"
 msgid "Change password"
@@ -325,12 +325,12 @@ msgstr ""
 
 msgctxt "prompt_nickname"
 msgid "Nickname:"
-msgstr ""
+msgstr "Iesauka:"
 
 #. An example string that could be used as a nickname for a pubkey.
 msgctxt "prompt_nickname_hint_pubkey"
 msgid "My work key"
-msgstr ""
+msgstr "Mana darba atslēga"
 
 #. The source TCP port for port forwards.
 msgctxt "prompt_source_port"
@@ -368,18 +368,18 @@ msgstr ""
 #. allowed to leave the field blank.
 msgctxt "prompt_password_can_be_blank"
 msgid "Note: password can be blank"
-msgstr ""
+msgstr "Piezīme: paroli var arī neievadīt"
 
 #. Prompt for the size of the private key in bits.
 msgctxt "prompt_bits"
 msgid "Bits:"
-msgstr ""
+msgstr "Biti:"
 
 #. Prompt for the password to unlock a certain pubkey.
 #, c-format
 msgctxt "prompt_pubkey_password"
 msgid "Password for key '%1$s'"
-msgstr ""
+msgstr "Atslēgas '%1$s' parole"
 
 #. Prompt for whether to allow SSH Authentication Agent to use the specified
 #. key. Note that the '\n' means split the line so it's actually "host to use
@@ -443,7 +443,7 @@ msgstr "Paroles nesakrīt!"
 
 msgctxt "alert_wrong_password_msg"
 msgid "Wrong password!"
-msgstr ""
+msgstr "Nepareiza parole!"
 
 msgctxt "alert_key_corrupted_msg"
 msgid "Private key appears corrupt!"
@@ -451,7 +451,7 @@ msgstr ""
 
 msgctxt "alert_sdcard_absent"
 msgid "SD card is not inserted!"
-msgstr ""
+msgstr "SD karte nav ievietota!"
 
 #. Change an existing item's (e.g., host or pubkey) details.
 msgctxt "button_change"
@@ -501,7 +501,7 @@ msgstr ""
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr ""
+msgstr "Dublēt publiskās atslēgas"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
@@ -512,17 +512,17 @@ msgstr ""
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
 msgid "User interface"
-msgstr ""
+msgstr "Saskarne"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
 msgid "Rotation mode"
-msgstr ""
+msgstr "Orientācija"
 
 #. Summary for the rotation mode preference
 msgctxt "pref_rotation_summary"
 msgid "How to change rotation when keyboard popped in/out"
-msgstr ""
+msgstr "Kā mainīt orientāciju, kad tastatūru ir/nav uz ekrāna"
 
 #. Name for the titlebar hide preference
 msgctxt "pref_titlebarhide_title"
@@ -557,7 +557,7 @@ msgstr ""
 #. Summary for the full screen preference
 msgctxt "pref_fullscreen_summary"
 msgid "Hide status bar while in console"
-msgstr ""
+msgstr "Paslēpt statusa joslu, kamēr atrodas konsolē"
 
 #. The category title for keyboard preferences
 msgctxt "pref_keyboard_category"
@@ -587,7 +587,7 @@ msgstr ""
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
 msgid "Volume keys change font size"
-msgstr ""
+msgstr "Skaļuma taustiņi izmaina fonta izmēru"
 
 #. Summary for the volume keys control font size preference
 msgctxt "pref_volumefont_summary"
@@ -755,7 +755,7 @@ msgstr ""
 #. Host's default font size when opening the terminal in points (pt)
 msgctxt "hostpref_fontsize_title"
 msgid "Font size (pt)"
-msgstr ""
+msgstr "Fonta izmērs (pt)"
 
 #. Host pubkey usage preference title
 msgctxt "hostpref_pubkeyid_title"
@@ -766,7 +766,7 @@ msgstr ""
 #. connection
 msgctxt "hostpref_authagent_title"
 msgid "Use SSH auth agent"
-msgstr ""
+msgstr "Izmantot SSH autorizācijas aģentu"
 
 #. Host post-login automation preference title
 msgctxt "hostpref_postlogin_title"
@@ -838,7 +838,7 @@ msgstr "Lietotājvārds"
 #. Hostname field title for host editor preference
 msgctxt "hostpref_hostname_title"
 msgid "Host"
-msgstr "Resursdators"
+msgstr "Serveris"
 
 #. Port field title for host editor preference
 msgctxt "hostpref_port_title"
@@ -901,12 +901,12 @@ msgstr ""
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"
 msgid "Yes"
-msgstr ""
+msgstr "Jā"
 
 #. Button label to answer "No" to a yes/no prompt
 msgctxt "button_no"
 msgid "No"
-msgstr ""
+msgstr "Nē"
 
 #. Selection for a "local" port forward. E.g., connections to a port listening
 #. locally is forwarded to the remote end's listening port.
@@ -947,7 +947,7 @@ msgstr "lietotājvārds"
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_hostname"
 msgid "hostname"
-msgstr ""
+msgstr "serveris"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_port"
@@ -956,17 +956,17 @@ msgstr "ports"
 
 msgctxt "list_menu_pubkeys"
 msgid "Manage Pubkeys"
-msgstr ""
+msgstr "Pārvaldīt publiskās atslēgas"
 
 #. Selection choice to sort hosts by color.
 msgctxt "list_menu_sortcolor"
 msgid "Sort by color"
-msgstr ""
+msgstr "Kārtot pēc krāsas"
 
 #. Selection choice to sort hosts by nickname.
 msgctxt "list_menu_sortname"
 msgid "Sort by name"
-msgstr ""
+msgstr "Kārtot pēc nosaukuma"
 
 msgctxt "list_menu_disconnect"
 msgid "Disconnect All"
@@ -982,7 +982,7 @@ msgstr ""
 
 msgctxt "list_host_edit"
 msgid "Edit host"
-msgstr ""
+msgstr "Rediģēt serveri"
 
 msgctxt "list_host_portforwards"
 msgid "Edit port forwards"
@@ -990,32 +990,32 @@ msgstr ""
 
 msgctxt "list_host_delete"
 msgid "Delete host"
-msgstr ""
+msgstr "Dzēst serveri"
 
 #. Note that the '\n' splits the lines so it's actually "quick-connect box
 #. below to connect"
 msgctxt "list_host_empty"
 msgid "No hosts created yet."
-msgstr ""
+msgstr "Vēl nav pievienots neviens serveris."
 
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
 msgid "Default"
-msgstr ""
+msgstr "Noklusējuma"
 
 msgctxt "list_rotation_land"
 msgid "Force landscape"
-msgstr ""
+msgstr "Horizontāla"
 
 msgctxt "list_rotation_port"
 msgid "Force portrait"
-msgstr ""
+msgstr "Vertikāla"
 
 #. Selection to indicate the rotation should be selected automatically based
 #. on the tilt sensor.
 msgctxt "list_rotation_auto"
 msgid "Automatic"
-msgstr ""
+msgstr "Noteikt automātiski"
 
 #. Selection to indicate pressing the Camera button should send "Ctrl+A then
 #. Space".
@@ -1057,27 +1057,29 @@ msgstr ""
 #, c-format
 msgctxt "delete_message"
 msgid "Are you sure you want to delete '%1$s'?"
-msgstr ""
+msgstr "Vai tiešām vēlaties dzēst '%1$s'?"
 
 msgctxt "delete_pos"
 msgid "Yes, delete"
-msgstr ""
+msgstr "Jā, dzēst"
 
 msgctxt "delete_neg"
 msgid "Cancel"
-msgstr ""
+msgstr "Atcelt"
 
 msgctxt "disconnect_all_message"
 msgid "Are you sure you want to disconnect from all connected hosts?"
 msgstr ""
+"Vai tiešām vēlaties pārtraukt savienojumu ar visiem serveriem, kam esiet "
+"pieslēgušies?"
 
 msgctxt "disconnect_all_pos"
 msgid "Yes, disconnect"
-msgstr ""
+msgstr "Jā, pārtraukt"
 
 msgctxt "disconnect_all_neg"
 msgid "Cancel"
-msgstr ""
+msgstr "Atcelt"
 
 msgctxt "terminal_no_hosts_connected"
 msgid "No hosts currently connected"
@@ -1202,7 +1204,7 @@ msgstr ""
 #. Menu selection to reset colors to their defaults.
 msgctxt "menu_colors_reset"
 msgid "Reset"
-msgstr ""
+msgstr "Atiestatīt"
 
 #. Displayed in the notification bar that connections are active
 msgctxt "app_is_running"
@@ -1409,7 +1411,7 @@ msgstr "F12"
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
 msgid "Protocol"
-msgstr ""
+msgstr "Protokols"
 
 #. Label for button which expands/collapses section.
 msgctxt "expand"
@@ -1425,24 +1427,24 @@ msgstr ""
 #. Text for button which, when clicked, adds a new host.
 msgctxt "hostpref_add_host"
 msgid "Add host"
-msgstr ""
+msgstr "Pievienot serveri"
 
 #. Text for button which, when clicked, saves an existing host.
 msgctxt "hostpref_edit_host"
 msgid "Save host"
-msgstr ""
+msgstr "Saglabāt serveri"
 
 #. Text for button which, when clicked, brings up an editor for adding a new
 #. pubkey.
 msgctxt "pubkey_add_new"
 msgid "Add new pubkey"
-msgstr ""
+msgstr "Pievienot jaunu publisko atslēgu"
 
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
 msgid "Import existing pubkey"
-msgstr ""
+msgstr "Ievietot esošu publisko atslēgu"
 
 #. Text for dialog which explains that the host URI is invalid and asks to
 #. discard.
@@ -1467,7 +1469,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_rsa_bits"
 msgid "RSA %d-bit"
-msgstr ""
+msgstr "RSA %d-bitu"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the DSA algorithm with a
@@ -1476,7 +1478,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_dsa_bits"
 msgid "DSA %d-bit"
-msgstr ""
+msgstr "DSA %d-bitu"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Elliptic Curve (EC)
@@ -1485,7 +1487,7 @@ msgstr ""
 #, c-format
 msgctxt "key_type_ec_bits"
 msgid "EC %d-bit"
-msgstr ""
+msgstr "EC %d-bitu"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Ed25519 algorithm
@@ -1493,7 +1495,7 @@ msgstr ""
 #. "Ed25519").
 msgctxt "key_type_ed25519"
 msgid "Ed25519"
-msgstr ""
+msgstr "Ed25519"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of an unknown algorithm.
@@ -1506,7 +1508,7 @@ msgstr ""
 #. that the key is encrypted (i.e,              password protected).
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
-msgstr ""
+msgstr "(šifrēts)"
 
 msgctxt "notification_requirement_explanation"
 msgid ""
@@ -1516,8 +1518,8 @@ msgstr ""
 
 msgctxt "continue_anyway"
 msgid "Continue without"
-msgstr ""
+msgstr "Turpināt bez"
 
 msgctxt "allow"
 msgid "Allow"
-msgstr ""
+msgstr "Atļaut"
