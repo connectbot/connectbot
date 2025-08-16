@@ -31,11 +31,13 @@ import java.util.TimerTask;
 
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
+import org.connectbot.bean.PortForwardBean;
 import org.connectbot.bean.PubkeyBean;
 import org.connectbot.data.ColorStorage;
 import org.connectbot.data.HostStorage;
 import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
+import org.connectbot.util.NetworkUtils;
 import org.connectbot.util.PreferenceConstants;
 import org.connectbot.util.ProviderLoader;
 import org.connectbot.util.ProviderLoaderListener;
@@ -94,17 +96,22 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	final private IBinder binder = new TerminalBinder();
 
 	private ConnectivityReceiver connectivityManager;
+	private AccessPointReceiver accessPointReceiver;
 
 	private MediaPlayer mediaPlayer;
 
 	private Timer pubkeyTimer;
 
 	private Timer idleTimer;
+	
+	private Timer apStateTimer;
+	private boolean apMonitoringActive = false;
 	private final long IDLE_TIMEOUT = 300000; // 5 minutes
 
 	private Vibrator vibrator;
 	private volatile boolean wantKeyVibration;
 	public static final long VIBRATE_DURATION = 30;
+
 
 	private boolean wantBellVibration;
 
@@ -126,6 +133,7 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		res = getResources();
 
 		pubkeyTimer = new Timer("pubkeyTimer", true);
+		apStateTimer = new Timer("apStateTimer", true);
 
 		hostdb = HostDatabase.get(this);
 		colordb = HostDatabase.get(this);
@@ -150,12 +158,15 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		wantBellVibration = prefs.getBoolean(PreferenceConstants.BELL_VIBRATE, true);
 		enableMediaPlayer();
 
+		updateAccessPointMonitoring();
+
 		hardKeyboardHidden = (res.getConfiguration().hardKeyboardHidden ==
 			Configuration.HARDKEYBOARDHIDDEN_YES);
 
 		final boolean lockingWifi = prefs.getBoolean(PreferenceConstants.WIFI_LOCK, true);
 
 		connectivityManager = new ConnectivityReceiver(this, lockingWifi);
+		accessPointReceiver = new AccessPointReceiver(this);
 
 		ProviderLoader.load(this, this);
 	}
@@ -178,9 +189,14 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 				idleTimer.cancel();
 			if (pubkeyTimer != null)
 				pubkeyTimer.cancel();
+			if (apStateTimer != null) {
+				apStateTimer.cancel();
+				apMonitoringActive = false;
+			}
 		}
 
 		connectivityManager.cleanup();
+		accessPointReceiver.cleanup();
 
 		ConnectionNotifier.getInstance().hideRunningNotification(this);
 
@@ -238,8 +254,10 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		}
 
 		if (prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)) {
-			ConnectionNotifier.getInstance().showRunningNotification(this);
+			updateRunningNotificationWithApInfo();
 		}
+		
+		updateAccessPointMonitoring();
 
 		// also update database with new connected time
 		touchHost(host);
@@ -352,7 +370,12 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		if (shouldHideRunningNotification) {
 			ConnectionNotifier.getInstance().hideRunningNotification(this);
+		} else {
+			// Update notification in case this bridge had AP forwards
+			updateRunningNotificationWithApInfo();
 		}
+		
+		updateAccessPointMonitoring();
 	}
 
 	public boolean isKeyLoaded(String nickname) {
@@ -733,9 +756,144 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 		hostStatusChangedListeners.remove(listener);
 	}
 
-	private void notifyHostStatusChanged() {
+	public void notifyHostStatusChanged() {
 		for (OnHostStatusChangedListener listener : hostStatusChangedListeners) {
 			listener.onHostStatusChanged();
+		}
+	}
+	
+	/**
+	 * Update access point notification state based on current port forwards
+	 * Called when port forwards are enabled/disabled
+	 */
+	public void updateAccessPointNotification() {
+		updateRunningNotificationWithApInfo();
+		updateAccessPointMonitoring();
+	}
+	
+	/**
+	 * Check for AP state changes and update notification if needed
+	 * Should be called periodically to keep notification in sync with AP state
+	 */
+	public void checkAccessPointStateChange() {
+		if (NetworkUtils.hasAccessPointStateChanged(this)) {
+			Log.d(TAG, "AP state changed, updating notification");
+			
+			// Check if AP became available - if so, retry failed AP port forwards
+			String currentApIP = NetworkUtils.getAccessPointIP(this);
+			if (currentApIP != null) {
+				Log.d(TAG, "AP is now available, retrying failed AP port forwards");
+				retryFailedAccessPointForwards();
+			}
+			
+			updateRunningNotificationWithApInfo();
+			
+			// Notify host status listeners so UI can update (like port forwarding display in host list)
+			notifyHostStatusChanged();
+		}
+	}
+	
+	/**
+	 * Update access point monitoring state based on current needs
+	 * Starts monitoring if there are active connections with AP port forwards
+	 * Stops monitoring if there are no connections or no AP forwards configured
+	 * 
+	 * Note: Android does not provide reliable broadcast intents for WiFi hotspot state changes.
+	 * The WIFI_AP_STATE_CHANGED intent is not documented in the public API and may not work
+	 * consistently across all devices and Android versions. Therefore, we use periodic polling
+	 * to detect AP state changes for reliable cross-device compatibility.
+	 */
+	private void updateAccessPointMonitoring() {
+		boolean shouldMonitor = !bridges.isEmpty() && hasActiveAccessPointForwards();
+		
+		if (shouldMonitor && !apMonitoringActive) {
+			// Start monitoring - hybrid approach: broadcast receiver for fast response + timer for reliability
+			Log.d(TAG, "Starting AP state monitoring (hybrid: broadcast + 10s polling)");
+			apStateTimer.schedule(new ApStateMonitorTask(), 0, 10000);  // 10s polling
+			apMonitoringActive = true;
+		} else if (!shouldMonitor && apMonitoringActive) {
+			// Stop monitoring
+			Log.d(TAG, "Stopping AP state monitoring");
+			apStateTimer.cancel();
+			apStateTimer = new Timer("apStateTimer", true);
+			apMonitoringActive = false;
+		}
+	}
+	
+	/**
+	 * Timer task to monitor access point state changes every 10 seconds.
+	 * This provides a reliable fallback for AP state monitoring that works on all devices.
+	 * Combined with AccessPointReceiver for immediate response on devices that support broadcasts.
+	 * Only runs when monitoring is active (connections exist with AP port forwards).
+	 */
+	private class ApStateMonitorTask extends TimerTask {
+		@Override
+		public void run() {
+			Log.d(TAG, "ApStateMonitorTask running - checking for AP state changes");
+			checkAccessPointStateChange();
+		}
+	}
+	
+	/**
+	 * Update the running notification to include AP information when relevant
+	 */
+	private void updateRunningNotificationWithApInfo() {
+		// Only update if we have active connections (running notification is showing)
+		if (bridges.isEmpty()) {
+			return;
+		}
+		
+		boolean hasActiveForwards = hasActiveAccessPointForwards();
+		String apIP = null;
+		
+		if (hasActiveForwards) {
+			apIP = NetworkUtils.getAccessPointIP(this);
+		}
+		
+		Log.d(TAG, "Updating running notification: hasApForwards=" + hasActiveForwards + ", apIP=" + apIP);
+		ConnectionNotifier.getInstance().showRunningNotification(this, apIP, hasActiveForwards);
+	}
+	
+	/**
+	 * Check if there are any configured access point port forwards
+	 * @return true if any access point forwards are configured (enabled or failed to enable)
+	 */
+	private boolean hasActiveAccessPointForwards() {
+		int accessPointForwards = 0;
+		
+		// Check all active terminal bridges for access point forwards
+		for (TerminalBridge bridge : bridges) {
+			if (bridge != null) {
+				List<PortForwardBean> forwards = bridge.getPortForwards();
+				for (PortForwardBean forward : forwards) {
+					// Count both enabled forwards and those configured for AP (even if failed to bind)
+					if (NetworkUtils.BIND_ACCESS_POINT.equals(forward.getBindAddress())) {
+						accessPointForwards++;
+					}
+				}
+			}
+		}
+		
+		return accessPointForwards > 0;
+	}
+	
+	/**
+	 * Retry failed access point port forwards when AP becomes available
+	 */
+	private void retryFailedAccessPointForwards() {
+		// Check all active terminal bridges for failed AP forwards
+		for (TerminalBridge bridge : bridges) {
+			if (bridge != null) {
+				List<PortForwardBean> forwards = bridge.getPortForwards();
+				for (PortForwardBean forward : forwards) {
+					// Look for AP forwards that are not enabled (likely failed due to no AP)
+					if (NetworkUtils.BIND_ACCESS_POINT.equals(forward.getBindAddress()) && !forward.isEnabled()) {
+						Log.d(TAG, "Retrying failed AP port forward: " + forward.getNickname());
+						// Ask the bridge to retry enabling this forward
+						bridge.enablePortForward(forward);
+					}
+				}
+			}
 		}
 	}
 }

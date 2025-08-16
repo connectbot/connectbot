@@ -153,6 +153,25 @@
 	<string name="prompt_again">"(again)"</string>
 	<!-- Label for the user to select port forward type. -->
 	<string name="prompt_type">"Type:"</string>
+	<!-- Label for the user to select port forward bind address. -->
+	<string name="prompt_bind_address">"Bind to:"</string>
+	<!-- Option to bind port forward to localhost only -->
+	<string name="bind_localhost">"Localhost only"</string>
+	<!-- Option to bind port forward to all network interfaces -->
+	<string name="bind_all_interfaces">"All interfaces (0.0.0.0)"</string>
+	<!-- Option to bind port forward to WiFi hotspot only -->
+	<string name="bind_access_point">"WiFi hotspot only"</string>
+	<!-- General label for WiFi hotspot interface -->
+	<string name="wifi_hotspot">"WiFi hotspot"</string>
+	<!-- Security warning shown when user selects network-exposed binding -->
+	<string name="security_warning_network_exposure">"⚠️ This will expose the forwarded port to other devices on the network"</string>
+	<!-- Notification title when hotspot port forwarding is active -->
+	<string name="notification_access_point_title">"Port forwarding active"</string>
+	<!-- Notification text showing current hotspot IP -->
+	<string name="notification_access_point_text">"Hotspot IP: %s"</string>
+	<!-- Warning notification when AP forwards are configured but AP is disabled -->
+	<string name="notification_ap_disabled_title">"Hotspot required"</string>
+	<string name="notification_ap_disabled_text">"Port forwards configured for WiFi hotspot, but hotspot is disabled"</string>
 	<!-- Hint given below the password input box that lets them know that they are allowed to leave the field blank. -->
 	<string name="prompt_password_can_be_blank">"Note: password can be blank"</string>
 	<!-- Prompt for the size of the private key in bits. -->
