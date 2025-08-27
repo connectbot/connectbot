@@ -51,6 +51,7 @@ public class HostBean extends AbstractBean {
 	private long pubkeyId = HostDatabase.PUBKEYID_ANY;
 	private boolean wantSession = true;
 	private String delKey = HostDatabase.DELKEY_DEL;
+	private String ipVersion = HostDatabase.IPVERSION_IPV4IPV6;
 	private int fontSize = DEFAULT_FONT_SIZE;
 	private boolean compression = false;
 	private String encoding = HostDatabase.ENCODING_DEFAULT;
@@ -161,6 +162,8 @@ public class HostBean extends AbstractBean {
 	public String getDelKey() {
 		return delKey;
 	}
+	public void setIpVersion(String ipVersion) { this.ipVersion = ipVersion; }
+	public String getIpVersion() { return ipVersion; }
 	public void setFontSize(int fontSize) {
 		this.fontSize = fontSize;
 	}
@@ -225,6 +228,7 @@ public class HostBean extends AbstractBean {
 		values.put(HostDatabase.FIELD_HOST_PUBKEYID, pubkeyId);
 		values.put(HostDatabase.FIELD_HOST_WANTSESSION, Boolean.toString(wantSession));
 		values.put(HostDatabase.FIELD_HOST_DELKEY, delKey);
+		values.put(HostDatabase.FIELD_HOST_IPVERSION, ipVersion);
 		values.put(HostDatabase.FIELD_HOST_FONTSIZE, fontSize);
 		values.put(HostDatabase.FIELD_HOST_COMPRESSION, Boolean.toString(compression));
 		values.put(HostDatabase.FIELD_HOST_ENCODING, encoding);
@@ -249,6 +253,7 @@ public class HostBean extends AbstractBean {
 		host.setPubkeyId(values.getAsLong(HostDatabase.FIELD_HOST_PUBKEYID));
 		host.setWantSession(Boolean.valueOf(values.getAsString(HostDatabase.FIELD_HOST_WANTSESSION)));
 		host.setDelKey(values.getAsString(HostDatabase.FIELD_HOST_DELKEY));
+		host.setIpVersion(values.getAsString(HostDatabase.FIELD_HOST_IPVERSION));
 		host.setFontSize(values.getAsInteger(HostDatabase.FIELD_HOST_FONTSIZE));
 		host.setCompression(Boolean.valueOf(values.getAsString(HostDatabase.FIELD_HOST_COMPRESSION)));
 		host.setEncoding(values.getAsString(HostDatabase.FIELD_HOST_ENCODING));
