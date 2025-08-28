@@ -456,7 +456,17 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			Logger.enabled = true;
 			Logger.logger = logger;
 			*/
-			ConnectionInfo connectionInfo = connection.connect(new HostKeyVerifier());
+			Connection.IpVersion ipVersion;
+			String hostIpVersion = host.getIpVersion();
+			if (hostIpVersion.equals(HostDatabase.IPVERSION_IPV4ONLY)) {
+				ipVersion = Connection.IpVersion.IPV4_ONLY;
+			}
+			else if (hostIpVersion.equals(HostDatabase.IPVERSION_IPV6ONLY)) {
+				ipVersion = Connection.IpVersion.IPV6_ONLY;
+			} else { // Assumes (hostIpVersion.equals(HostDatabase.IPVERSION_IPV4IPV6))
+				ipVersion = Connection.IpVersion.IPV4_AND_IPV6;
+			}
+			ConnectionInfo connectionInfo = connection.connect(new HostKeyVerifier(), ipVersion);
 			connected = true;
 
 			bridge.outputLine(manager.res.getString(R.string.terminal_kex_algorithm,

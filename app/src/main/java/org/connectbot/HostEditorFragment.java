@@ -92,6 +92,10 @@ public class HostEditorFragment extends Fragment {
 	private TypedArray mDelKeyNames;
 	private TypedArray mDelKeyValues;
 
+	// Likewise, but for IP version.
+	private TypedArray mIpVersionNames;
+	private TypedArray mIpVersionValues;
+
 	// A map from Charset display name to Charset value (i.e., unique ID for the Charset).
 	private Map<String, String> mCharsetData;
 
@@ -117,6 +121,8 @@ public class HostEditorFragment extends Fragment {
 	private TextView mPubkeyText;
 	private View mDelKeyItem;
 	private TextView mDelKeyText;
+	private View mIpVersionItem;
+	private TextView mIpVersionText;
 	private View mEncodingItem;
 	private TextView mEncodingText;
 	private CheckableMenuItem mUseSshAuthSwitch;
@@ -384,6 +390,39 @@ public class HostEditorFragment extends Fragment {
 			}
 		}
 
+		mIpVersionItem = view.findViewById(R.id.ipversion_item);
+		mIpVersionItem.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				PopupMenu menu = new PopupMenu(getActivity(), v);
+				for (int i = 0; i < mIpVersionNames.length(); i++) {
+					menu.getMenu().add(mIpVersionNames.getText(i));
+				}
+				menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+						for (int i = 0; i < mIpVersionNames.length(); i++) {
+							if (mIpVersionNames.getText(i).toString().equals(item.getTitle().toString())) {
+								mHost.setIpVersion(mIpVersionValues.getText(i).toString());
+								mIpVersionText.setText(mIpVersionNames.getText(i));
+								return true;
+							}
+						}
+						return false;
+					}
+				});
+				menu.show();
+			}
+		});
+
+		mIpVersionText = view.findViewById(R.id.ipversion_text);
+		for (int i = 0; i < mIpVersionValues.length(); i++) {
+			if (mIpVersionValues.getText(i).toString().equals(mHost.getIpVersion())) {
+				mIpVersionText.setText(mIpVersionNames.getText(i));
+				break;
+			}
+		}
+
 		mEncodingItem = view.findViewById(R.id.encoding_item);
 		mEncodingItem.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -581,6 +620,8 @@ public class HostEditorFragment extends Fragment {
 		mColorValues = getResources().obtainTypedArray(R.array.list_color_values);
 		mDelKeyNames = getResources().obtainTypedArray(R.array.list_delkey);
 		mDelKeyValues = getResources().obtainTypedArray(R.array.list_delkey_values);
+		mIpVersionNames = getResources().obtainTypedArray(R.array.list_ipversion);
+		mIpVersionValues = getResources().obtainTypedArray(R.array.list_ipversion_values);
 	}
 
 	@Override
@@ -591,6 +632,8 @@ public class HostEditorFragment extends Fragment {
 		mColorValues.recycle();
 		mDelKeyNames.recycle();
 		mDelKeyValues.recycle();
+		mIpVersionNames.recycle();
+		mIpVersionValues.recycle();
 	}
 
 	@Override
@@ -669,7 +712,7 @@ public class HostEditorFragment extends Fragment {
 	/**
 	 * Handles a change in the host caused by the user adjusting the values of one of the widgets
 	 * in this fragment. If the change has resulted in a valid host, the new value is sent back
-	 * to the listener; however, if the change ha resulted in an invalid host, the listener is
+	 * to the listener; however, if the change has resulted in an invalid host, the listener is
 	 * notified.
 	 */
 	private void handleHostChange() {

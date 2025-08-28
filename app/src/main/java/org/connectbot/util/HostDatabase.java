@@ -52,7 +52,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	public final static String TAG = "CB.HostDatabase";
 
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 25;
+	public final static int DB_VERSION = 26;
 
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -68,6 +68,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	public final static String FIELD_HOST_PUBKEYID = "pubkeyid";
 	public final static String FIELD_HOST_WANTSESSION = "wantsession";
 	public final static String FIELD_HOST_DELKEY = "delkey";
+	public final static String FIELD_HOST_IPVERSION = "ipversion";
 	public final static String FIELD_HOST_FONTSIZE = "fontsize";
 	public final static String FIELD_HOST_COMPRESSION = "compression";
 	public final static String FIELD_HOST_ENCODING = "encoding";
@@ -112,6 +113,10 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	public final static String DELKEY_DEL = "del";
 	public final static String DELKEY_BACKSPACE = "backspace";
 
+	public final static String IPVERSION_IPV4IPV6 = "ipv4ipv6";
+	public final static String IPVERSION_IPV4ONLY = "ipv4only";
+	public final static String IPVERSION_IPV6ONLY = "ipv6only";
+
 	public final static String AUTHAGENT_NO = "no";
 	public final static String AUTHAGENT_CONFIRM = "confirm";
 	public final static String AUTHAGENT_YES = "yes";
@@ -137,6 +142,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 			+ FIELD_HOST_POSTLOGIN + " TEXT, "
 			+ FIELD_HOST_PUBKEYID + " INTEGER DEFAULT " + PUBKEYID_ANY + ", "
 			+ FIELD_HOST_DELKEY + " TEXT DEFAULT '" + DELKEY_DEL + "', "
+			+ FIELD_HOST_IPVERSION + " TEXT DEFAULT '" + IPVERSION_IPV4IPV6 + "', "
 			+ FIELD_HOST_FONTSIZE + " INTEGER, "
 			+ FIELD_HOST_WANTSESSION + " TEXT DEFAULT '" + true + "', "
 			+ FIELD_HOST_COMPRESSION + " TEXT DEFAULT '" + false + "', "
@@ -387,6 +393,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 					+ FIELD_HOST_POSTLOGIN + ", "
 					+ FIELD_HOST_PUBKEYID + ", "
 					+ FIELD_HOST_DELKEY + ", "
+					+ FIELD_HOST_IPVERSION + ", "
 					+ FIELD_HOST_FONTSIZE + ", "
 					+ FIELD_HOST_WANTSESSION + ", "
 					+ FIELD_HOST_COMPRESSION + ", "
@@ -396,6 +403,12 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 					+ " FROM " + TABLE_HOSTS);
 			db.execSQL("DROP TABLE " + TABLE_HOSTS);
 			db.execSQL("ALTER TABLE " + TABLE_HOSTS + "_upgrade RENAME TO " + TABLE_HOSTS);
+			// fall through
+		case 25:
+			// This DB version added support for IP version, with a default of trying both IPv4 and IPv6
+			// to connect to the host while now allowing to force IPV4 or IPv6 only.
+			db.execSQL("ALTER TABLE " + TABLE_HOSTS
+					+ " ADD COLUMN " + FIELD_HOST_IPVERSION + " TEXT DEFAULT '" + IPVERSION_IPV4IPV6 + "'");
 		}
 	}
 
@@ -488,25 +501,26 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	private List<HostBean> createHostBeans(Cursor c) {
 		List<HostBean> hosts = new ArrayList<>();
 
-		final int COL_ID = c.getColumnIndexOrThrow("_id"),
-			COL_NICKNAME = c.getColumnIndexOrThrow(FIELD_HOST_NICKNAME),
-			COL_PROTOCOL = c.getColumnIndexOrThrow(FIELD_HOST_PROTOCOL),
-			COL_USERNAME = c.getColumnIndexOrThrow(FIELD_HOST_USERNAME),
-			COL_HOSTNAME = c.getColumnIndexOrThrow(FIELD_HOST_HOSTNAME),
-			COL_PORT = c.getColumnIndexOrThrow(FIELD_HOST_PORT),
-			COL_LASTCONNECT = c.getColumnIndexOrThrow(FIELD_HOST_LASTCONNECT),
-			COL_COLOR = c.getColumnIndexOrThrow(FIELD_HOST_COLOR),
-			COL_USEKEYS = c.getColumnIndexOrThrow(FIELD_HOST_USEKEYS),
-			COL_USEAUTHAGENT = c.getColumnIndexOrThrow(FIELD_HOST_USEAUTHAGENT),
-			COL_POSTLOGIN = c.getColumnIndexOrThrow(FIELD_HOST_POSTLOGIN),
-			COL_PUBKEYID = c.getColumnIndexOrThrow(FIELD_HOST_PUBKEYID),
-			COL_WANTSESSION = c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION),
-			COL_DELKEY = c.getColumnIndexOrThrow(FIELD_HOST_DELKEY),
-			COL_FONTSIZE = c.getColumnIndexOrThrow(FIELD_HOST_FONTSIZE),
-			COL_COMPRESSION = c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION),
-			COL_ENCODING = c.getColumnIndexOrThrow(FIELD_HOST_ENCODING),
-			COL_STAYCONNECTED = c.getColumnIndexOrThrow(FIELD_HOST_STAYCONNECTED),
-			COL_QUICKDISCONNECT = c.getColumnIndexOrThrow(FIELD_HOST_QUICKDISCONNECT);
+		final int COL_ID = c.getColumnIndexOrThrow("_id");
+		final int COL_NICKNAME = c.getColumnIndexOrThrow(FIELD_HOST_NICKNAME);
+		final int COL_PROTOCOL = c.getColumnIndexOrThrow(FIELD_HOST_PROTOCOL);
+		final int COL_USERNAME = c.getColumnIndexOrThrow(FIELD_HOST_USERNAME);
+		final int COL_HOSTNAME = c.getColumnIndexOrThrow(FIELD_HOST_HOSTNAME);
+		final int COL_PORT = c.getColumnIndexOrThrow(FIELD_HOST_PORT);
+		final int COL_LASTCONNECT = c.getColumnIndexOrThrow(FIELD_HOST_LASTCONNECT);
+		final int COL_COLOR = c.getColumnIndexOrThrow(FIELD_HOST_COLOR);
+		final int COL_USEKEYS = c.getColumnIndexOrThrow(FIELD_HOST_USEKEYS);
+		final int COL_USEAUTHAGENT = c.getColumnIndexOrThrow(FIELD_HOST_USEAUTHAGENT);
+		final int COL_POSTLOGIN = c.getColumnIndexOrThrow(FIELD_HOST_POSTLOGIN);
+		final int COL_PUBKEYID = c.getColumnIndexOrThrow(FIELD_HOST_PUBKEYID);
+		final int COL_WANTSESSION = c.getColumnIndexOrThrow(FIELD_HOST_WANTSESSION);
+		final int COL_DELKEY = c.getColumnIndexOrThrow(FIELD_HOST_DELKEY);
+		final int COL_IPVERSION = c.getColumnIndexOrThrow(FIELD_HOST_IPVERSION);
+		final int COL_FONTSIZE = c.getColumnIndexOrThrow(FIELD_HOST_FONTSIZE);
+		final int COL_COMPRESSION = c.getColumnIndexOrThrow(FIELD_HOST_COMPRESSION);
+		final int COL_ENCODING = c.getColumnIndexOrThrow(FIELD_HOST_ENCODING);
+		final int COL_STAYCONNECTED = c.getColumnIndexOrThrow(FIELD_HOST_STAYCONNECTED);
+		final int COL_QUICKDISCONNECT = c.getColumnIndexOrThrow(FIELD_HOST_QUICKDISCONNECT);
 
 		while (c.moveToNext()) {
 			HostBean host = new HostBean();
@@ -525,6 +539,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 			host.setPubkeyId(c.getLong(COL_PUBKEYID));
 			host.setWantSession(Boolean.parseBoolean(c.getString(COL_WANTSESSION)));
 			host.setDelKey(c.getString(COL_DELKEY));
+			host.setIpVersion(c.getString(COL_IPVERSION));
 			host.setFontSize(c.getInt(COL_FONTSIZE));
 			host.setCompression(Boolean.parseBoolean(c.getString(COL_COMPRESSION)));
 			host.setEncoding(c.getString(COL_ENCODING));
