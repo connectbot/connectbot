@@ -1,0 +1,52 @@
+# TODO: upstream this
+
+diff --git a/src/util/locale_utils.cc b/src/util/locale_utils.cc
+index 45b408a..1e5f031 100644
+--- a/src/util/locale_utils.cc
++++ b/src/util/locale_utils.cc
+@@ -68,16 +68,7 @@ const LocaleVar get_ctype( void )
+ 
+ const char* locale_charset( void )
+ {
+-  static const char ASCII_name[] = "US-ASCII";
+-
+-  /* Produce more pleasant name of US-ASCII */
+-  const char* ret = nl_langinfo( CODESET );
+-
+-  if ( strcmp( ret, "ANSI_X3.4-1968" ) == 0 ) {
+-    ret = ASCII_name;
+-  }
+-
+-  return ret;
++  return "UTF-8";
+ }
+ 
+ bool is_utf8_locale( void )
+diff --git a/src/util/pty_compat.cc b/src/util/pty_compat.cc
+index 4c2ddbf..bb10946 100644
+--- a/src/util/pty_compat.cc
++++ b/src/util/pty_compat.cc
+@@ -39,7 +39,6 @@
+ 
+ #include <fcntl.h>
+ #include <sys/ioctl.h>
+-#include <sys/stropts.h>
+ #include <termios.h>
+ #include <unistd.h>
+ 
+@@ -91,15 +90,6 @@ pid_t my_forkpty( int* amaster, char* name, const struct termios* termp, const s
+     return -1;
+   }
+ 
+-#ifndef _AIX
+-  if ( ioctl( slave, I_PUSH, "ptem" ) < 0 || ioctl( slave, I_PUSH, "ldterm" ) < 0 ) {
+-    perror( "ioctl(I_PUSH)" );
+-    close( slave );
+-    close( master );
+-    return -1;
+-  }
+-#endif
+-
+   if ( amaster != NULL )
+     *amaster = master;
+ 
