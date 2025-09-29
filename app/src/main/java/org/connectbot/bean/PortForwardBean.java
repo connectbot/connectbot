@@ -35,6 +35,7 @@ public class PortForwardBean extends AbstractBean {
 	private long hostId = -1;
 	private String nickname = null;
 	private String type = null;
+	private String sourceAddr = null;
 	private int sourcePort = -1;
 	private String destAddr = null;
 	private int destPort = -1;
@@ -56,6 +57,26 @@ public class PortForwardBean extends AbstractBean {
 		this.hostId = hostId;
 		this.nickname = nickname;
 		this.type = type;
+		this.sourceAddr = "127.0.0.1";
+		this.sourcePort = sourcePort;
+		this.destAddr = destAddr;
+		this.destPort = destPort;
+	}
+	/**
+	 * @param id database ID of port forward
+	 * @param nickname Nickname to use to identify port forward
+	 * @param type One of the port forward types from {@link HostDatabase}
+	 * @param sourceAddr Source hostname or IP address
+	 * @param sourcePort Source port number
+	 * @param destAddr Destination hostname or IP address
+	 * @param destPort Destination port number
+	 */
+	public PortForwardBean(long id, long hostId, String nickname, String type, String sourceAddr, int sourcePort, String destAddr, int destPort) {
+		this.id = id;
+		this.hostId = hostId;
+		this.nickname = nickname;
+		this.type = type;
+		this.sourceAddr = sourceAddr;
 		this.sourcePort = sourcePort;
 		this.destAddr = destAddr;
 		this.destPort = destPort;
@@ -70,7 +91,8 @@ public class PortForwardBean extends AbstractBean {
 		this.hostId = hostId;
 		this.nickname = nickname;
 		this.type = type;
-		this.sourcePort = Integer.parseInt(source);
+		//this.sourcePort = Integer.parseInt(source);
+		setSource(source);
 
 		setDest(dest);
 	}
@@ -136,6 +158,49 @@ public class PortForwardBean extends AbstractBean {
 		return sourcePort;
 	}
 
+	/**
+	 * @return the sourceAddr
+	 */
+	public String getSourceAddr() {
+		if (sourceAddr != null) {
+			return sourceAddr;
+		}
+		else {
+			return "127.0.0.1";
+		}
+	}
+
+	/**
+	 * @return source address and port or just port if now address specified
+	 */
+	@SuppressLint("DefaultLocale")
+	public String getSourceAddrAndPort() {
+		if (sourceAddr == null)
+		{
+			return String.format("%d", sourcePort);
+		}
+		else
+		{
+			return String.format("%s:%d", sourceAddr, sourcePort);
+		}
+	}
+
+	/**
+	 * @param source The source in "host:port" format
+	 */
+	public final void setSource(String source) {
+		String[] sourceSplit = source.split(":", -1);
+		if (sourceSplit.length == 1)
+		{
+			this.sourceAddr = null;
+			this.sourcePort = Integer.parseInt(sourceSplit[0]);
+		}
+		else
+		{
+			this.sourceAddr = sourceSplit[0];
+			this.sourcePort = Integer.parseInt(sourceSplit[sourceSplit.length - 1]);
+		}
+	}
 	/**
 	 * @param dest The destination in "host:port" format
 	 */
@@ -211,7 +276,7 @@ public class PortForwardBean extends AbstractBean {
 		String description = "Unknown type";
 
 		if (HostDatabase.PORTFORWARD_LOCAL.equals(type)) {
-			description = String.format("Local port %d to %s:%d", sourcePort, destAddr, destPort);
+			description = String.format("Local port %s to %s:%d", getSourceAddrAndPort(), destAddr, destPort);
 		} else if (HostDatabase.PORTFORWARD_REMOTE.equals(type)) {
 			description = String.format("Remote port %d to %s:%d", sourcePort, destAddr, destPort);
 		} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(type)) {
@@ -231,6 +296,7 @@ public class PortForwardBean extends AbstractBean {
 		values.put(HostDatabase.FIELD_PORTFORWARD_HOSTID, hostId);
 		values.put(HostDatabase.FIELD_PORTFORWARD_NICKNAME, nickname);
 		values.put(HostDatabase.FIELD_PORTFORWARD_TYPE, type);
+		values.put(HostDatabase.FIELD_PORTFORWARD_SOURCEADDR, sourceAddr);
 		values.put(HostDatabase.FIELD_PORTFORWARD_SOURCEPORT, sourcePort);
 		values.put(HostDatabase.FIELD_PORTFORWARD_DESTADDR, destAddr);
 		values.put(HostDatabase.FIELD_PORTFORWARD_DESTPORT, destPort);

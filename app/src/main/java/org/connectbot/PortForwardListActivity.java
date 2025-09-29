@@ -296,7 +296,7 @@ public class PortForwardListActivity extends AppCompatListActivity {
 					nicknameEdit.setText(portForward.getNickname());
 
 					final EditText sourcePortEdit = editTunnelView.findViewById(R.id.portforward_source);
-					sourcePortEdit.setText(String.valueOf(portForward.getSourcePort()));
+					sourcePortEdit.setText(portForward.getSourceAddrAndPort());
 
 					final EditText destEdit = editTunnelView.findViewById(R.id.portforward_destination);
 					if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(portForward.getType())) {
@@ -341,7 +341,7 @@ public class PortForwardListActivity extends AppCompatListActivity {
 											break;
 										}
 
-										portForward.setSourcePort(Integer.parseInt(sourcePortEdit.getText().toString()));
+										portForward.setSource(sourcePortEdit.getText().toString());
 										portForward.setDest(destEdit.getText().toString());
 
 										// Use the new settings for the existing connection.
