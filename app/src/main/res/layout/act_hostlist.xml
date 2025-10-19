@@ -26,6 +26,7 @@
 	android:orientation="vertical"
 	>
 
+
 	<!-- paddingBottom is calculated with FloatingActionButton's height (56dp) and
 	     margins (16dp): 56dp + (2 x 16dp) = 88dp. -->
 	<androidx.recyclerview.widget.RecyclerView

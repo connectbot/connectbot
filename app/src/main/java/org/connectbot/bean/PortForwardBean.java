@@ -18,9 +18,11 @@
 package org.connectbot.bean;
 
 import org.connectbot.util.HostDatabase;
+import org.connectbot.util.NetworkUtils;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.Context;
 
 
 /**
@@ -38,6 +40,7 @@ public class PortForwardBean extends AbstractBean {
 	private int sourcePort = -1;
 	private String destAddr = null;
 	private int destPort = -1;
+	private String bindAddress = "localhost";
 
 	/* Transient values */
 	private boolean enabled = false;
@@ -59,6 +62,27 @@ public class PortForwardBean extends AbstractBean {
 		this.sourcePort = sourcePort;
 		this.destAddr = destAddr;
 		this.destPort = destPort;
+		this.bindAddress = "localhost";
+	}
+
+	/**
+	 * @param id database ID of port forward
+	 * @param nickname Nickname to use to identify port forward
+	 * @param type One of the port forward types from {@link HostDatabase}
+	 * @param sourcePort Source port number
+	 * @param destAddr Destination hostname or IP address
+	 * @param destPort Destination port number
+	 * @param bindAddress Bind address for port forward
+	 */
+	public PortForwardBean(long id, long hostId, String nickname, String type, int sourcePort, String destAddr, int destPort, String bindAddress) {
+		this.id = id;
+		this.hostId = hostId;
+		this.nickname = nickname;
+		this.type = type;
+		this.sourcePort = sourcePort;
+		this.destAddr = destAddr;
+		this.destPort = destPort;
+		this.bindAddress = bindAddress != null ? bindAddress : "localhost";
 	}
 
 	/**
@@ -71,6 +95,23 @@ public class PortForwardBean extends AbstractBean {
 		this.nickname = nickname;
 		this.type = type;
 		this.sourcePort = Integer.parseInt(source);
+		this.bindAddress = "localhost";
+
+		setDest(dest);
+	}
+
+	/**
+	 * @param type One of the port forward types from {@link HostDatabase}
+	 * @param source Source port number
+	 * @param dest Destination is "host:port" format
+	 * @param bindAddress Bind address for port forward
+	 */
+	public PortForwardBean(long hostId, String nickname, String type, String source, String dest, String bindAddress) {
+		this.hostId = hostId;
+		this.nickname = nickname;
+		this.type = type;
+		this.sourcePort = Integer.parseInt(source);
+		this.bindAddress = bindAddress != null ? bindAddress : "localhost";
 
 		setDest(dest);
 	}
@@ -176,6 +217,20 @@ public class PortForwardBean extends AbstractBean {
 	}
 
 	/**
+	 * @param bindAddress the bindAddress to set
+	 */
+	public void setBindAddress(String bindAddress) {
+		this.bindAddress = bindAddress != null ? bindAddress : "localhost";
+	}
+
+	/**
+	 * @return the bindAddress
+	 */
+	public String getBindAddress() {
+		return bindAddress;
+	}
+
+	/**
 	 * @param enabled the enabled to set
 	 */
 	public void setEnabled(boolean enabled) {
@@ -208,17 +263,43 @@ public class PortForwardBean extends AbstractBean {
 	 */
 	@SuppressLint("DefaultLocale")
 	public CharSequence getDescription() {
+		return getDescription(null);
+	}
+
+	/**
+	 * @param context Android context for hotspot IP resolution (can be null)
+	 * @return human readable description of the port forward
+	 */
+	@SuppressLint("DefaultLocale")
+	public CharSequence getDescription(Context context) {
 		String description = "Unknown type";
+		String bindInfo = context != null ? 
+			NetworkUtils.getBindAddressDisplayName(bindAddress, context) :
+			getSimpleBindAddressDisplayName();
 
 		if (HostDatabase.PORTFORWARD_LOCAL.equals(type)) {
-			description = String.format("Local port %d to %s:%d", sourcePort, destAddr, destPort);
+			description = String.format("Local port %s:%d to %s:%d", bindInfo, sourcePort, destAddr, destPort);
 		} else if (HostDatabase.PORTFORWARD_REMOTE.equals(type)) {
 			description = String.format("Remote port %d to %s:%d", sourcePort, destAddr, destPort);
 		} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(type)) {
-			description = String.format("Dynamic port %d (SOCKS)", sourcePort);
+			description = String.format("Dynamic port %s:%d (SOCKS)", bindInfo, sourcePort);
 		}
 
 		return description;
+	}
+
+	/**
+	 * Simple bind address display name without context (fallback)
+	 * @return human readable bind address name
+	 */
+	private String getSimpleBindAddressDisplayName() {
+		if (NetworkUtils.BIND_ALL_INTERFACES.equals(bindAddress)) {
+			return "all interfaces";
+		} else if (NetworkUtils.BIND_ACCESS_POINT.equals(bindAddress)) {
+			return "WiFi hotspot";
+		} else {
+			return "localhost";
+		}
 	}
 
 	/**
@@ -234,6 +315,7 @@ public class PortForwardBean extends AbstractBean {
 		values.put(HostDatabase.FIELD_PORTFORWARD_SOURCEPORT, sourcePort);
 		values.put(HostDatabase.FIELD_PORTFORWARD_DESTADDR, destAddr);
 		values.put(HostDatabase.FIELD_PORTFORWARD_DESTPORT, destPort);
+		values.put(HostDatabase.FIELD_PORTFORWARD_BINDADDR, bindAddress);
 
 		return values;
 	}
