@@ -1,134 +1,136 @@
-# Chinese (Simplified, China) translations for PROJECT.
-# Copyright (C) 2015 ORGANIZATION
-# This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+# Lao translation for connectbot
+# Copyright (c) 2025 Rosetta Contributors and Canonical Ltd 2025
+# This file is distributed under the same license as the connectbot package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Project-Id-Version: connectbot\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2025-04-22 11:59-0700\n"
-"PO-Revision-Date: 2025-08-27 04:44+0000\n"
-"Last-Translator: onecountry <Unknown>\n"
-"Language-Team: zh_Hans_CN <LL@li.org>\n"
+"PO-Revision-Date: 2025-10-26 17:01+0000\n"
+"Last-Translator: boneni <Unknown>\n"
+"Language-Team: Lao <lo@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2025-08-28 08:38+0000\n"
-"X-Generator: Launchpad (build 919009172d854f2b8e4e8262db447f12f11d25eb)\n"
-"Generated-By: Babel 2.10.1\n"
-"Language: zh_Hans_CN\n"
+"X-Launchpad-Export-Date: 2025-10-27 07:52+0000\n"
+"X-Generator: Launchpad (build 85440ec533b5f0f56d72cb53bf7a09726604f8f5)\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
 msgctxt "app_desc"
 msgid "Simple, powerful, open-source SSH client."
-msgstr "简洁、强大、开源的SSH客户端。"
+msgstr "ໂປຣແກຣມລູກຂ່າຍ SSH ແບບ open-source ທີ່ງ່າຍດາຍ ແລະ ມີປະສິດທິພາບ."
 
 #. Summary of what the ConnectBot service does; displayed in the Android
 #. running apps list
 msgctxt "service_desc"
 msgid "Maintains SSH connections and loaded pubkeys"
-msgstr "维护 SSH 连接和已加载的公钥"
+msgstr "ຮັກສາການເຊື່ອມຕໍ່ SSH ແລະ pubkeys ທີ່ໂຫຼດໄວ້"
 
 #. Window title for the Host List
 msgctxt "title_hosts_list"
 msgid "Hosts"
-msgstr "主机列表"
+msgstr "ໂຮສ"
 
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
 msgid "Pubkeys"
-msgstr "公钥"
+msgstr "ຄີສາທາລະນະ"
 
 #. Window title for the Port Forwards List
 msgctxt "title_port_forwards_list"
 msgid "Port forwards"
-msgstr "端口转发"
+msgstr "ການສົ່ງຕໍ່ພອດ"
 
 #. Window title when editing host details
 msgctxt "title_host_editor"
 msgid "Edit Host"
-msgstr "编辑主机信息"
+msgstr "ແກ້ໄຂໂຮສ"
 
 #. Window title for Help index
 msgctxt "title_help"
 msgid "Help"
-msgstr "帮助"
+msgstr "ຊ່ວຍເຫຼືອ"
 
 #. Window title for color list editing screen
 msgctxt "title_colors"
 msgid "Colors"
-msgstr "颜色"
+msgstr "ສີ"
 
 #. Dialog title for color picker dialog
 msgctxt "title_color_picker"
 msgid "Pick a color"
-msgstr "选取颜色"
+msgstr "ເລືອກສີ"
 
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr "设置"
+msgstr "ການຕັ້ງຄ່າ"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
 msgid "Generate"
-msgstr "生成"
+msgstr "ສ້າງ"
 
 msgctxt "help_intro"
 msgid ""
 "Please select a topic below for more information on a particular subject."
-msgstr "请在下面主题中选择一个以查看更多内容"
+msgstr "ກະລຸນາເລືອກຫົວຂໍ້ຂ້າງລຸ່ມນີ້ສໍາລັບຂໍ້ມູນເພີ່ມເຕີມ."
 
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
 msgid "Terms & Conditions"
-msgstr "条款与条件"
+msgstr "ຂໍ້ກຳນົດ ແລະ ເງື່ອນໄຂ"
 
 #. Title for the help page with the hints about the app.
 msgctxt "hints"
 msgid "Hints"
-msgstr "提示"
+msgstr "ຄຳແນະນຳ"
 
 #. Header text for instructions about creating host shortcuts.
 msgctxt "host_shortcuts_header"
 msgid "Host Shortcuts"
-msgstr "主机的快捷方式"
+msgstr "ທາງລັດໂຮສ"
 
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
 msgid ""
 "Long-press on your Android desktop to create direct shortcuts to frequently-"
 "used SSH hosts."
-msgstr "长按 Android 桌面创建直接指向常用 SSH 主机的快捷方式。"
+msgstr ""
+"ກົດຄ້າງໄວ້ເທິງໜ້າຈໍຫຼັກ Android ຂອງທ່ານເພື່ອສ້າງທາງລັດໂດຍກົງໄປຫາໂຮສ SSH "
+"ທີ່ໃຊ້ເລື້ອຍໆ."
 
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
 msgid "Scroll back / Scroll forward"
-msgstr "向后滚动/向前滚动"
+msgstr "ເລື່ອນຂຶ້ນ / ເລື່ອນລົງ"
 
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
 msgid ""
 "Swiping your finger up on the right side of the screen allows you to scroll "
 "backward and forward in the local terminal buffer history."
-msgstr "在屏幕右侧向上滑动手指可在本地终端缓冲区历史中前后滚动。"
+msgstr ""
+"ການປັດນິ້ວຂອງທ່ານຂຶ້ນເທິງເບື້ອງຂວາຂອງໜ້າຈໍຈະຊ່ວຍໃຫ້ທ່ານສາມາດເລື່ອນກັບຄືນ ແລະ "
+"ໄປໜ້າໃນປະຫວັດຂອງ terminal buffer."
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
 msgid "Scrolling back"
-msgstr "向后滚动"
+msgstr "ກຳລັງເລື່ອນກັບ"
 
 msgctxt "scrolling_forward"
 msgid "Scrolling forward"
-msgstr "向前滚动"
+msgstr "ກຳລັງເລື່ອນໄປໜ້າ"
 
 #. Header text for instructions about paging up and down in the terminal.
 msgctxt "page_updn_header"
 msgid "Page Up / Page Down"
-msgstr "向上翻页/向下翻页"
+msgstr "ເລື່ອນໜ້າຂຶ້ນ / ເລື່ອນໜ້າລົງ"
 
 #. Instructions about paging up and down in the terminal.
 msgctxt "page_updn_content"
@@ -139,67 +141,71 @@ msgid ""
 "page up and page down key to the remote host. Many programs map this to "
 "scrolling back into history such as irssi or tinyfugue."
 msgstr ""
-"注意: 此功能需在设置中开启。\n"
+"ໝາຍເຫດ: ຕ້ອງເປີດໃຊ້ງານໃນການຕັ້ງຄ່າ.\n"
 "\n"
-"在屏幕左侧的三分之一以内上下滑动将向远程主机发送向上翻页和向下翻页键。许多程序如 irssi 或 tinyfugue 将这些键映射为在历史中向后滚动。"
+"ການປັດນິ້ວຂອງທ່ານຂຶ້ນ ແລະ ລົງເທິງໜຶ່ງສ່ວນສາມດ້ານຊ້າຍຂອງໜ້າຈໍຈະສົ່ງປຸ່ມ page "
+"up ແລະ page down ໄປຫາໂຮສທາງໄກ. ຫຼາຍໂປຣແກຣມໃຊ້ຄຳສັ່ງນີ້ເພື່ອເລື່ອນເບິ່ງປະຫວັດ "
+"ເຊັ່ນ irssi ຫຼື tinyfugue."
 
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
 msgid "Page up"
-msgstr "向上翻页"
+msgstr "ເລື່ອນໜ້າຂຶ້ນ"
 
 msgctxt "page_down"
 msgid "Page down"
-msgstr "向下翻页"
+msgstr "ເລື່ອນໜ້າລົງ"
 
 #. Header text for instructions about switching to the next and previous host
 #. in the terminal.
 msgctxt "switching_hosts_header"
 msgid "Switching Hosts"
-msgstr "切换主机"
+msgstr "ການສະຫຼັບໂຮສ"
 
 #. Instructions about switching to the next and previous host in the terminal.
 msgctxt "switching_hosts_content"
 msgid ""
 "Swiping your finger from one side of the screen to the other will switch "
 "between currently connected hosts."
-msgstr "左右滑动将在当前连接主机之间进行切换。"
+msgstr ""
+"ການປັດນິ້ວຂອງທ່ານຈາກດ້ານໜຶ່ງຂອງໜ້າຈໍໄປຫາອີກດ້ານໜຶ່ງຈະເປັນການສະຫຼັບລະຫວ່າງໂຮສທ"
+"ີ່ກຳລັງເຊື່ອມຕໍ່ຢູ່."
 
 #. Captions for images showing the next/previous host gestures.
 msgctxt "next_host"
 msgid "Next host"
-msgstr "下一主机"
+msgstr "ໂຮສຕໍ່ໄປ"
 
 msgctxt "prev_host"
 msgid "Previous host"
-msgstr "上一个主机"
+msgstr "ໂຮສກ່ອນໜ້າ"
 
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
 msgid "Keyboard Shortcuts"
-msgstr "键盘快捷键"
+msgstr "ທາງລັດແປ້ນພິມ"
 
 #. Text in a keyboard shortcuts list lined up to keys which increase the
 #. terminal font-size.
 msgctxt "increase_font_size"
 msgid "Increase Font Size"
-msgstr "放大字体"
+msgstr "ເພີ່ມຂະໜາດຕົວອັກສອນ"
 
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
 msgid "Ctrl and +"
-msgstr "Ctrl 加 +"
+msgstr "Ctrl ແລະ +"
 
 #. Text in a keyboard shortcuts list lined up to keys which decrease the
 #. terminal font-size.
 msgctxt "decrease_font_size"
 msgid "Decrease Font Size"
-msgstr "缩小字体"
+msgstr "ຫຼຸດຂະໜາດຕົວອັກສອນ"
 
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
 msgid "Ctrl and -"
-msgstr "Ctrl 加 -"
+msgstr "Ctrl ແລະ -"
 
 #. Keyboard shortcut for pasting into the terminal.
 msgctxt "paste_shortcut"
@@ -208,40 +214,42 @@ msgstr "Ctrl-Shift-V"
 
 msgctxt "pubkey_generate"
 msgid "Generate"
-msgstr "生成"
+msgstr "ສ້າງ"
 
 msgctxt "pubkey_delete"
 msgid "Delete key"
-msgstr "删除密钥"
+msgstr "ລຶບຄີ"
 
 #. Dialog title when user must move finger randomly over an area to gather
 #. entropy (collect random bits)
 msgctxt "pubkey_gather_entropy"
 msgid "Gathering Entropy"
-msgstr "正在收集熵"
+msgstr "ກຳລັງລວບລວມ Entropy"
 
 #, c-format
 msgctxt "pubkey_touch_prompt"
 msgid "Touch this box to gather randomness: %1$d%% done"
-msgstr "触摸这个方框来获取随机性：已完成%1$d%%"
+msgstr "ແຕະທີ່ກ່ອງນີ້ເພື່ອເກັບກຳຄວາມສຸ່ມ: ສຳເລັດ %1$d%%"
 
 msgctxt "pubkey_touch_hint"
 msgid ""
 "In order to assure randomness during the key generation, move your finger "
 "randomly over the box below."
-msgstr "请在下方的方框内随机移动手指以保证密钥生成的随机性。"
+msgstr ""
+"ເພື່ອຮັບປະກັນຄວາມສຸ່ມໃນລະຫວ່າງການສ້າງຄີ, "
+"ກະລຸນາເລື່ອນນິ້ວຂອງທ່ານແບບສຸ່ມໄປທົ່ວໃນກ່ອງຂ້າງລຸ່ມນີ້."
 
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
-msgstr "正在生成密钥对…"
+msgstr "ກຳລັງສ້າງຄູ່ຄີ…"
 
 msgctxt "pubkey_copy_private"
 msgid "Copy private key"
-msgstr "复制私钥"
+msgstr "ສຳເນົາຄີສ່ວນຕົວ"
 
 msgctxt "pubkey_copy_public"
 msgid "Copy public key"
-msgstr "复制公钥"
+msgstr "ສຳເນົາຄີສາທາລະນະ"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
@@ -249,63 +257,63 @@ msgid ""
 "Tap \"Menu\" to create\n"
 "or import key pairs."
 msgstr ""
-"点击“菜单”创建\n"
-"或导入密钥对"
+"ແຕະ \"ເມນູ\" ເພື່ອສ້າງ\n"
+"ຫຼື ນຳເຂົ້າຄູ່ຄີ."
 
 msgctxt "pubkey_unknown_format"
 msgid "Unknown format"
-msgstr "未知格式"
+msgstr "ຮູບແບບບໍ່ຮູ້ຈັກ"
 
 msgctxt "pubkey_change_password"
 msgid "Change password"
-msgstr "更改密码"
+msgstr "ປ່ຽນລະຫັດຜ່ານ"
 
 #. When attempting to import a pubkey, this is the title for the dialog box
 #. where the user should pick the desired file from the SD card contents.
 msgctxt "pubkey_list_pick"
 msgid "Pick from /sdcard"
-msgstr "从 /sdcard 选取"
+msgstr "ເລືອກຈາກ /sdcard"
 
 #. Message shown to the user when a selected pubkey to import was not
 #. parseable for some reason.
 msgctxt "pubkey_import_parse_problem"
 msgid "Problem parsing imported private key"
-msgstr "解析导入的私钥出错"
+msgstr "ມີບັນຫາໃນການວິເຄາະຄີສ່ວນຕົວທີ່ນຳເຂົ້າ"
 
 msgctxt "pubkey_unlock"
 msgid "Unlock key"
-msgstr "解锁密钥"
+msgstr "ປົດລັອກຄີ"
 
 #. Feedback given to the user when the password that they have entered for the
 #. pubkey is incorrect.
 #, c-format
 msgctxt "pubkey_failed_add"
 msgid "Bad password for key '%1$s'. Authentication failed."
-msgstr "'%1$s' 密钥的密码错误。验证失败。"
+msgstr "ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງສຳລັບຄີ '%1$s'. ການກວດສອບສິດລົ້ມເຫຼວ."
 
 #. Context menu entry that allows a user to load a pubkey entry into memory.
 #. This is equivalent to "unlocking" a password-protected pubkey entry.
 msgctxt "pubkey_memory_load"
 msgid "Load into memory"
-msgstr "载入到内存"
+msgstr "ໂຫຼດເຂົ້າໜ່ວຍຄວາມຈຳ"
 
 #. Context menu entry that allows a user to unload a pubkey entry from memory.
 #. This is equivalent to "locking" a password-protected pubkey entry.
 msgctxt "pubkey_memory_unload"
 msgid "Unload from memory"
-msgstr "从内存中移除"
+msgstr "ເອົາອອກຈາກໜ່ວຍຄວາມຈຳ"
 
 #. Context menu checkbox that indicates that this pubkey entry should attempt
 #. to be loaded upon starting the app.
 msgctxt "pubkey_load_on_start"
 msgid "Load key on start"
-msgstr "启动时载入密钥"
+msgstr "ໂຫຼດຄີເມື່ອເລີ່ມຕົ້ນ"
 
 #. Pubkey preference asking user whether the key use should be confirmed via
 #. prompt before it can be used for authentication
 msgctxt "pubkey_confirm_use"
 msgid "Confirm before use"
-msgstr "使用前确认"
+msgstr "ຢືນຢັນກ່ອນໃຊ້"
 
 #. When the list of port forwards for a host is empty, this text is is shown
 #. in the space where the list of port forwards are normally present. Note that
@@ -315,78 +323,78 @@ msgid ""
 "Tap \"Menu\" to create\n"
 "port forwards."
 msgstr ""
-"点击“菜单”创建\n"
-"端口转发"
+"ແຕະ \"ເມນູ\" ເພື່ອສ້າງ\n"
+"ການສົ່ງຕໍ່ພອດ."
 
 #. Context menu action where a user can edite the selected port forward for
 #. the host.
 msgctxt "portforward_edit"
 msgid "Edit port forward"
-msgstr "编辑端口转发"
+msgstr "ແກ້ໄຂການສົ່ງຕໍ່ພອດ"
 
 #. Context menu action where a user can delete the selected port forward from
 #. the host.
 msgctxt "portforward_delete"
 msgid "Delete port forward"
-msgstr "删除端口转发"
+msgstr "ລຶບການສົ່ງຕໍ່ພອດ"
 
 msgctxt "prompt_nickname"
 msgid "Nickname:"
-msgstr "昵称："
+msgstr "ຊື່ຫຼິ້ນ:"
 
 #. An example string that could be used as a nickname for a pubkey.
 msgctxt "prompt_nickname_hint_pubkey"
 msgid "My work key"
-msgstr "我的密钥"
+msgstr "ຄີບ່ອນເຮັດວຽກຂອງຂ້ອຍ"
 
 #. The source TCP port for port forwards.
 msgctxt "prompt_source_port"
 msgid "Source port:"
-msgstr "源端口："
+msgstr "ພອດຕົ້ນທາງ:"
 
 #. The "host:port" combination used for port forward destinations.
 msgctxt "prompt_destination"
 msgid "Destination:"
-msgstr "目标端口："
+msgstr "ປາຍທາງ:"
 
 #. Prompt presented to the user when the server requests that they change
 #. their password. This is the entry for the old password.
 msgctxt "prompt_old_password"
 msgid "Old password:"
-msgstr "旧密码："
+msgstr "ລະຫັດຜ່ານເກົ່າ:"
 
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
 msgctxt "prompt_password"
 msgid "Password:"
-msgstr "密码："
+msgstr "ລະຫັດຜ່ານ:"
 
 #. Added after a "Password:" prompt to indicate user needs to confirm entry.
 msgctxt "prompt_again"
 msgid "(again)"
-msgstr "(再次输入)"
+msgstr "(ອີກຄັ້ງ)"
 
 #. Label for the user to select port forward type.
 msgctxt "prompt_type"
 msgid "Type:"
-msgstr "类型："
+msgstr "ປະເພດ:"
 
 #. Hint given below the password input box that lets them know that they are
 #. allowed to leave the field blank.
 msgctxt "prompt_password_can_be_blank"
 msgid "Note: password can be blank"
-msgstr "注意：密码可以为空"
+msgstr "ໝາຍເຫດ: ລະຫັດຜ່ານສາມາດປະຫວ່າງໄດ້"
 
 #. Prompt for the size of the private key in bits.
 msgctxt "prompt_bits"
 msgid "Bits:"
-msgstr "位数："
+msgstr "ບິດ:"
 
 #. Prompt for the password to unlock a certain pubkey.
 #, c-format
 msgctxt "prompt_pubkey_password"
 msgid "Password for key '%1$s'"
-msgstr "密钥'%1$s'的密码"
+msgstr "ລະຫັດຜ່ານສຳລັບຄີ '%1$s'"
 
 #. Prompt for whether to allow SSH Authentication Agent to use the specified
 #. key. Note that the '\n' means split the line so it's actually "host to use
@@ -397,15 +405,15 @@ msgid ""
 "Allow remote host to\n"
 "use key '%1$s'?"
 msgstr ""
-"允许远程主机\n"
-"使用密钥 '%1$s'？"
+"ອະນຸຍາດໃຫ້ໂຮສທາງໄກ\n"
+"ໃຊ້ຄີ '%1$s' ບໍ?"
 
 #. The header of the warning a user gets when the host key has changed. Note
 #. that this can be a very serious attack, so we try to be as "loud" to the
 #. user as possible.
 msgctxt "host_verification_failure_warning_header"
 msgid "WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!"
-msgstr "警告：远程主机身份标识已改变！"
+msgstr "ຄຳເຕືອນ: ການລະບຸຕົວຕົນຂອງໂຮສທາງໄກມີການປ່ຽນແປງ!"
 
 #. The body of the warning a user gets when the host key has changed. Note
 #. that this can be a very serious attack, so we try to be as "loud" to the
@@ -416,9 +424,9 @@ msgid ""
 "Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
-"可能有人正在做非善意的事情！\n"
-"可能有人正在偷听你的会话(中间人攻击)！\n"
-"但也可能是主机密钥刚刚被更改。"
+"ອາດຈະມີບາງຄົນກຳລັງເຮັດສິ່ງທີ່ບໍ່ດີ!\n"
+"ອາດມີຄົນກຳລັງລັກຟັງທ່ານຢູ່ຕອນນີ້ (ການໂຈມຕີແບບ man-in-the-middle)!\n"
+"ກໍເປັນໄປໄດ້ວ່າຄີຂອງໂຮສຫາກໍຖືກປ່ຽນ."
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
@@ -426,8 +434,8 @@ msgid ""
 "Host has disconnected.\n"
 "Close session?"
 msgstr ""
-"主机已经断开。\n"
-"关闭本次会话？"
+"ໂຮສໄດ້ຕັດການເຊື່ອມຕໍ່ແລ້ວ.\n"
+"ປິດເຊດຊັນບໍ່?"
 
 #. Prompt user must answer yes or no to when the remote host fails
 #. verification of encryption fingerprint
@@ -436,444 +444,448 @@ msgid ""
 "Are you sure you want\n"
 "to continue connecting?"
 msgstr ""
-"你确定要\n"
-"继续连接？"
+"ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການ\n"
+"ເຊື່ອມຕໍ່ຕໍ່ໄປ?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
 #. match the local database
 #, c-format
 msgctxt "host_authenticity_warning"
 msgid "The authenticity of host '%1$s' can't be established."
-msgstr "无法验证‘%1$s’主机"
+msgstr "ບໍ່ສາມາດຢືນຢັນຄວາມຖືກຕ້ອງຂອງໂຮສ '%1$s' ໄດ້."
 
 #. First field is encryption algorithm. Second is the actual fingerprint in
 #. hex digits
 #, c-format
 msgctxt "host_fingerprint"
 msgid "Host %1$s key fingerprint is %2$s"
-msgstr "主机 %1$s 密钥指纹是 %2$s"
+msgstr "ລາຍນິ້ວມືຄີຂອງໂຮສ %1$s ແມ່ນ %2$s"
 
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
-msgstr "密码不匹配！"
+msgstr "ລະຫັດຜ່ານບໍ່ກົງກັນ!"
 
 msgctxt "alert_wrong_password_msg"
 msgid "Wrong password!"
-msgstr "密码错误！"
+msgstr "ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ!"
 
 msgctxt "alert_key_corrupted_msg"
 msgid "Private key appears corrupt!"
-msgstr "私钥似乎已损坏！"
+msgstr "ຄີສ່ວນຕົວເບິ່ງຄືວ່າເສຍຫາຍ!"
 
 msgctxt "alert_sdcard_absent"
 msgid "SD card is not inserted!"
-msgstr "没有插入SD卡！"
+msgstr "ບໍ່ໄດ້ໃສ່ SD card!"
 
 #. Change an existing item's (e.g., host or pubkey) details.
 msgctxt "button_change"
 msgid "Change"
-msgstr "修改"
+msgstr "ປ່ຽນແປງ"
 
 #. Button that resizes the screen to the user-specified dimensions.
 msgctxt "button_resize"
 msgid "Resize"
-msgstr "改变窗口大小"
+msgstr "ປັບຂະໜາດ"
 
 msgctxt "alert_disconnect_msg"
 msgid "Connection Lost"
-msgstr "连接中断"
+msgstr "ການເຊື່ອມຕໍ່ຂາດ"
 
 msgctxt "msg_copyright"
 msgid ""
 "Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
 "http://jsharkey.org/"
 msgstr ""
-"版权所有 ©2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
+"ສະຫງວນລິຂະສິດ © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
 "http://jsharkey.org/"
 
 #. The category title for terminal emulation preferences.
 msgctxt "pref_emulation_category"
 msgid "Terminal emulation"
-msgstr "终端模拟"
+msgstr "ການຈຳລອງ Terminal"
 
 #. Name for the emulation terminal type preference.
 msgctxt "pref_emulation_title"
 msgid "Emulation mode"
-msgstr "仿真模式"
+msgstr "ໂໝດການຈຳລອງ"
 
 #. Description of the emulation terminal type preference.
 msgctxt "pref_emulation_summary"
 msgid "Terminal emulation mode to use for PTY connections"
-msgstr "PTY连接所使用的终端仿真模式"
+msgstr "ໂໝດການຈຳລອງ Terminal ທີ່ຈະໃຊ້ສຳລັບການເຊື່ອມຕໍ່ PTY"
 
 #. Name for the scrollback size preference
 msgctxt "pref_scrollback_title"
 msgid "Scrollback size"
-msgstr "回滚长度"
+msgstr "ຂະໜາດ Scrollback"
 
 #. Description of the scrollback size preference
 msgctxt "pref_scrollback_summary"
 msgid "Size of scrollback buffer to keep in memory for each console"
-msgstr "在内存中为每个控制台保留的回滚缓存长度"
+msgstr ""
+"ຂະໜາດຂອງ buffer ການເລື່ອນກັບເພື່ອເກັບໄວ້ໃນໜ່ວຍຄວາມຈຳສຳລັບແຕ່ລະ console"
 
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
 msgid "Backup pubkeys"
-msgstr "备份公钥"
+msgstr "ສຳຮອງຂໍ້ມູນ pubkeys"
 
 #. Summary for the preference used to enable or disable the back-up of
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
-msgstr "使用Android的备份机制保存私钥的备份"
+msgstr ""
+"ເກັບຮັກສາການສຳຮອງຂໍ້ມູນຂອງຄີສ່ວນຕົວໂດຍໃຊ້ກົນໄກການສຳຮອງຂໍ້ມູນຂອງ Android"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
 msgid "User interface"
-msgstr "用户界面"
+msgstr "ສ່ວນຕິດຕໍ່ຜູ້ໃຊ້"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
 msgid "Rotation mode"
-msgstr "旋转模式"
+msgstr "ໂໝດການໝຸນ"
 
 #. Summary for the rotation mode preference
 msgctxt "pref_rotation_summary"
 msgid "How to change rotation when keyboard popped in/out"
-msgstr "当键盘打开或关闭时如何改变屏幕方向"
+msgstr "ວິທີປ່ຽນການໝຸນເມື່ອແປ້ນພິມສະແດງຂຶ້ນ/ເຊື່ອງໄວ້"
 
 #. Name for the titlebar hide preference
 msgctxt "pref_titlebarhide_title"
 msgid "Autohide title bar"
-msgstr "自动隐藏标题栏"
+msgstr "ເຊື່ອງແຖບຫົວຂໍ້ອັດຕະໂນມັດ"
 
 #. Summary for the titlebar hide preference
 msgctxt "pref_titlebarhide_summary"
 msgid "Tap console to show title bar and access menu"
-msgstr "点击控制台以显示标题栏和访问菜单"
+msgstr "ແຕະ console ເພື່ອສະແດງແຖບຫົວຂໍ້ ແລະ ເຂົ້າເຖິງເມນູ"
 
 #. Title for special keys always visible preference
 msgctxt "pref_alwaysvisible_title"
 msgid "Special keys always visible"
-msgstr "特殊键始终可见"
+msgstr "ສະແດງປຸ່ມພິເສດຕະຫຼອດເວລາ"
 
 #. Name for the page up/down gesture preference
 msgctxt "pref_pg_updn_gesture_title"
 msgid "Page up/down gesture"
-msgstr "向上/向下翻页手势"
+msgstr "ທ່າທາງເລື່ອນໜ້າຂຶ້ນ/ລົງ"
 
 #. Summary for the full screen preference
 msgctxt "pref_pg_updn_gesture_summary"
 msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
-msgstr "在屏幕左侧的三分之一以内滑动向终端发送向上/向下翻页"
+msgstr "ປັດໜຶ່ງສ່ວນສາມດ້ານຊ້າຍຂອງໜ້າຈໍເພື່ອສົ່ງ pg up/dn ໄປທີ່ terminal"
 
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
 msgid "Full screen"
-msgstr "全屏"
+msgstr "ເຕັມຈໍ"
 
 #. Summary for the full screen preference
 msgctxt "pref_fullscreen_summary"
 msgid "Hide status bar while in console"
-msgstr "处于控制台状态时隐藏状态栏"
+msgstr "ເຊື່ອງແຖບສະຖານະໃນຂະນະທີ່ຢູ່ໃນ console"
 
 #. The category title for keyboard preferences
 msgctxt "pref_keyboard_category"
 msgid "Keyboard"
-msgstr "键盘"
+msgstr "ແປ້ນພິມ"
 
 #. Name for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_title"
 msgid "Shift+num are F-keys"
-msgstr "使用 Shift + 数字键作为功能键（F键）"
+msgstr "Shift+ຕົວເລກ ເປັນປຸ່ມ F"
 
 #. Summary for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_summary"
 msgid "On hardware keyboards, number keys send F1-F10 with shift"
-msgstr "在硬件键盘上，使用 Shift 键和数字键组合发送 F1-F10"
+msgstr "ໃນແປ້ນພິມແທ້, ປຸ່ມຕົວເລກຈະສົ່ງ F1-F10 ເມື່ອກົດ Shift"
 
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
 msgid "Ctrl+num are F-keys"
-msgstr "使用 Ctrl + 数字键作为功能键（F键）"
+msgstr "Ctrl+ຕົວເລກ ເປັນປຸ່ມ F"
 
 #. Summary for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_summary"
 msgid "On software keyboards, number keys send F1-F10 with ctrl"
-msgstr "在软件键盘上，使用 Ctrl 键和数字键组合发送 F1 - F10"
+msgstr "ໃນແປ້ນພິມເທິງຈໍ, ປຸ່ມຕົວເລກຈະສົ່ງ F1-F10 ເມື່ອກົດ Ctrl"
 
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
 msgid "Volume keys change font size"
-msgstr "使用音量键改变字体大小"
+msgstr "ປຸ່ມລະດັບສຽງປ່ຽນຂະໜາດຕົວອັກສອນ"
 
 #. Summary for the volume keys control font size preference
 msgctxt "pref_volumefont_summary"
 msgid "Font size can also be changed in per-host settings"
-msgstr "也可在单个主机设置中改变字体大小"
+msgstr "ຂະໜາດຕົວອັກສອນຍັງສາມາດປ່ຽນໄດ້ໃນການຕັ້ງຄ່າຂອງແຕ່ລະໂຮສ"
 
 #. Name for the memorize keys preference
 msgctxt "pref_memkeys_title"
 msgid "Remember keys in memory"
-msgstr "在内存中记录密钥"
+msgstr "ຈື່ຈຳຄີໃນໜ່ວຍຄວາມຈຳ"
 
 #. Summary for the memorize keys preference
 msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
-msgstr "将解锁的密钥保留于内存中，直到后端服务被终止"
+msgstr ""
+"ເກັບຮັກສາຄີທີ່ປົດລັອກແລ້ວໄວ້ໃນໜ່ວຍຄວາມຈຳຈົນກວ່າບໍລິການເບື້ອງຫຼັງຈະຖືກຢຸດ"
 
 #. Name for the preference that forces the service to stay running in the
 #. background.
 msgctxt "pref_conn_persist_title"
 msgid "Persist connections"
-msgstr "保持连接"
+msgstr "ຮັກສາການເຊື່ອມຕໍ່"
 
 #. Summary for the preference that forces the service to stay running in the
 #. background.
 msgctxt "pref_conn_persist_summary"
 msgid "Force connections to stay connected while in background"
-msgstr "后台运行时强制保持连接"
+msgstr "ບັງຄັບໃຫ້ການເຊື່ອມຕໍ່ຍັງຄົງຢູ່ ໃນຂະນະທີ່ແອັບເຮັດວຽກເບື້ອງຫຼັງ"
 
 #. Name for the keyboard shortcuts preference
 msgctxt "pref_keymode_title"
 msgid "Directory shortcuts"
-msgstr "目录快捷方式"
+msgstr "ທາງລັດ Directory"
 
 #. Summary for the keyboard shortcuts preference
 msgctxt "pref_keymode_summary"
 msgid "Select how to use Alt for '/' and Shift for Tab"
-msgstr "选择如何使用 Alt 代表 /，Shift 代表 Tab"
+msgstr "ເລືອກວິທີໃຊ້ Alt ສໍາລັບ '/' ແລະ Shift ສໍາລັບ Tab"
 
 #. Name for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_title"
 msgid "Sticky modifiers"
-msgstr "粘滞键"
+msgstr "Modifier ແບບຕິດໜຽວ"
 
 #. Summary for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_summary"
 msgid "Modifier keys remain enabled until another key is pressed"
-msgstr "粘滞键一直保持有效，直到按下另一个键"
+msgstr "ປຸ່ມ Modifier ຈະຍັງຄົງເປີດໃຊ້ງານຢູ່ຈົນກວ່າຈະມີການກົດປຸ່ມອື່ນ"
 
 #. Sticky modifier preference value description for when only the Alt key
 #. should be a sticky modifier.
 msgctxt "only_alt"
 msgid "Only alt"
-msgstr "仅 alt"
+msgstr "ສະເພາະ Alt"
 
 #. Name for the camera shortcut usage preference
 msgctxt "pref_camera_title"
 msgid "Camera shortcut"
-msgstr "相机快捷键"
+msgstr "ທາງລັດກ້ອງ"
 
 #. Summary for the camera shortcut usage preference
 msgctxt "pref_camera_summary"
 msgid "Select which shortcut to trigger when the camera button is pushed"
-msgstr "选择相机按钮按下时触发哪个快捷键"
+msgstr "ເລືອກທາງລັດທີ່ຈະເປີດໃຊ້ງານເມື່ອກົດປຸ່ມກ້ອງ"
 
 #. Name for the keep screen on preference
 msgctxt "pref_keepalive_title"
 msgid "Keep screen awake"
-msgstr "保持屏幕唤醒"
+msgstr "ເປີດໜ້າຈໍໄວ້"
 
 #. Summary for the camera shortcut usage preference
 msgctxt "pref_keepalive_summary"
 msgid "Prevent the screen from turning off when working in a console"
-msgstr "终端运行时禁止屏幕休眠"
+msgstr "ປ້ອງກັນບໍ່ໃຫ້ໜ້າຈໍປິດເມື່ອເຮັດວຽກໃນ console"
 
 #. Name for the Wi-Fi lock preference
 msgctxt "pref_wifilock_title"
 msgid "Keep Wi-Fi active"
-msgstr "保持Wi-Fi活动"
+msgstr "ເປີດ Wi-Fi ໄວ້"
 
 #. Summary for the Wi-Fi lock preference
 msgctxt "pref_wifilock_summary"
 msgid "Prevent Wi-Fi from turning off when a session is active"
-msgstr "会话运行时禁止Wi-Fi关闭"
+msgstr "ປ້ອງກັນບໍ່ໃຫ້ Wi-Fi ປິດເມື່ອມີເຊດຊັນທີ່ກຳລັງເຮັດວຽກຢູ່"
 
 #. Name for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_title"
 msgid "Bumpy arrows"
-msgstr "触摸反馈"
+msgstr "ລູກສອນສັ່ນ"
 
 #. Summary for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_summary"
 msgid "Vibrate when sending arrow keys; useful for laggy connections"
-msgstr "发送方向键时振动，连接延迟时有帮助"
+msgstr "ສັ່ນເມື່ອສົ່ງປຸ່ມລູກສອນ; ເປັນປະໂຫຍດສຳລັບການເຊື່ອມຕໍ່ທີ່ຊ້າ"
 
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
 msgid "Terminal bell"
-msgstr "终端响铃"
+msgstr "ສຽງກະດິ່ງ Terminal"
 
 #. Checkbox preference title for the audible terminal bell feature
 msgctxt "pref_bell_title"
 msgid "Audible bell"
-msgstr "响铃"
+msgstr "ສຽງກະດິ່ງ"
 
 #. Title for the slider preference to set the volume
 msgctxt "pref_bell_volume_title"
 msgid "Bell volume"
-msgstr "铃声音量"
+msgstr "ລະດັບສຽງກະດິ່ງ"
 
 #. Checkbox preference title for the vibrate on terminal bell feature
 msgctxt "pref_bell_vibrate_title"
 msgid "Vibrate on bell"
-msgstr "响铃时振动"
+msgstr "ສັ່ນເມື່ອມີສຽງກະດິ່ງ"
 
 #. Checkbox preference title for the receive notifications on terminal bell
 #. feature
 msgctxt "pref_bell_notification_title"
 msgid "Background notifications"
-msgstr "后台通知"
+msgstr "ການແຈ້ງເຕືອນເບື້ອງຫຼັງ"
 
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
 msgid ""
 "Send notification when a terminal running in the background sounds a bell."
-msgstr "当终端在后台响铃时发出通知"
+msgstr ""
+"ສົ່ງການແຈ້ງເຕືອນເມື່ອ terminal ທີ່ເຮັດວຽກເບື້ອງຫຼັງມີສຽງກະດິ່ງດັງຂຶ້ນ."
 
 #. Preference selection to indicate use of right side of keyboard for special
 #. shortcuts.
 msgctxt "list_keymode_right"
 msgid "Use right-side keys"
-msgstr "使用右侧按键"
+msgstr "ໃຊ້ປຸ່ມດ້ານຂວາ"
 
 #. Preference selection to indicate use of left side of keyboard for special
 #. shortcuts.
 msgctxt "list_keymode_left"
 msgid "Use left-side keys"
-msgstr "使用左侧按键"
+msgstr "ໃຊ້ປຸ່ມດ້ານຊ້າຍ"
 
 #. Preference selection to indicate never to use special shortcut keys.
 msgctxt "list_keymode_none"
 msgid "Disable"
-msgstr "禁用"
+msgstr "ປິດໃຊ້ງານ"
 
 #. Preference to not use pubkeys to authenticate to this host.
 msgctxt "list_pubkeyids_none"
 msgid "Do not use keys"
-msgstr "不使用密钥"
+msgstr "ບໍ່ໃຊ້ຄີ"
 
 #. Preference to use any pubkey to authenticate to this host.
 msgctxt "list_pubkeyids_any"
 msgid "Use any unlocked key"
-msgstr "使用任何已解锁密钥"
+msgstr "ໃຊ້ຄີທີ່ປົດລັອກແລ້ວທັງໝົດ"
 
 #. Host nickname field preference title
 msgctxt "hostpref_nickname_title"
 msgid "Nickname"
-msgstr "昵称"
+msgstr "ຊື່ຫຼິ້ນ"
 
 #. Host color category preference title
 msgctxt "hostpref_color_title"
 msgid "Color category"
-msgstr "颜色类型"
+msgstr "ໝວດໝູ່ສີ"
 
 #. Host's default font size when opening the terminal in points (pt)
 msgctxt "hostpref_fontsize_title"
 msgid "Font size (pt)"
-msgstr "字型大小 (pt)"
+msgstr "ຂະໜາດຕົວອັກສອນ (pt)"
 
 #. Host pubkey usage preference title
 msgctxt "hostpref_pubkeyid_title"
 msgid "Use pubkey authentication"
-msgstr "使用密钥验证"
+msgstr "ໃຊ້ການກວດສອບສິດ pubkey"
 
 #. Preference title for the SSH Authentication Agent Forwarding for a host
 #. connection
 msgctxt "hostpref_authagent_title"
 msgid "Use SSH auth agent"
-msgstr "使用 SSH 认证代理"
+msgstr "ໃຊ້ຕົວແທນກວດສອບສິດ SSH"
 
 #. Host post-login automation preference title
 msgctxt "hostpref_postlogin_title"
 msgid "Post-login automation"
-msgstr "登录后自动运行"
+msgstr "ການເຮັດວຽກອັດຕະໂນມັດຫຼັງເຂົ້າສູ່ລະບົບ"
 
 #. Host post-login automation preference summary
 msgctxt "hostpref_postlogin_summary"
 msgid "Commands to run on remote server once authenticated"
-msgstr "登录后在远程服务器上自动运行的命令"
+msgstr "ຄຳສັ່ງທີ່ຈະໃຫ້ເຮັດວຽກເທິງເຊີບເວີທາງໄກ ຫຼັງຈາກກວດສອບສິດແລ້ວ"
 
 #. Host compression preference title
 msgctxt "hostpref_compression_title"
 msgid "Compression"
-msgstr "压缩"
+msgstr "ການບີບອັດ"
 
 #. Summary for compression preference
 msgctxt "hostpref_compression_summary"
 msgid "This may help with slower networks"
-msgstr "此选项对低速网络会有帮助"
+msgstr "ອັນນີ້ອາດຈະຊ່ວຍໃນເຄືອຂ່າຍທີ່ຊ້າ"
 
 #. Setting for whether we want a session to start up when we connect to a host
 msgctxt "hostpref_wantsession_title"
 msgid "Start shell session"
-msgstr "启动Shell会话"
+msgstr "ເລີ່ມເຊດຊັນ shell"
 
 #. Summary for field asking whether a shell session should be started up upon
 #. connection or not
 msgctxt "hostpref_wantsession_summary"
 msgid "Disable this preference to only use port forwards"
-msgstr "禁用此设置以仅使用端口转发"
+msgstr "ປິດການຕັ້ງຄ່ານີ້ເພື່ອໃຊ້ສະເພາະການສົ່ງຕໍ່ພອດ"
 
 #. Setting for whether the host should be reconnected to automatically upon
 #. disconnect
 msgctxt "hostpref_stayconnected_title"
 msgid "Stay connected"
-msgstr "保持连接"
+msgstr "ເຊື່ອມຕໍ່ຕະຫຼອດເວລາ"
 
 #. Summary for preference asking whether the host should be reconnected to
 #. when it disconnects
 msgctxt "hostpref_stayconnected_summary"
 msgid "Try to reconnect to host if disconnected"
-msgstr "断线重连"
+msgstr "ພະຍາຍາມເຊື່ອມຕໍ່ກັບໂຮສຄືນໃໝ່ຖ້າຖືກຕັດການເຊື່ອມຕໍ່"
 
 #. Setting for whether we should prompt to close after getting disconnected
 msgctxt "hostpref_quickdisconnect_title"
 msgid "Close on disconnect"
-msgstr "连接断开时关闭"
+msgstr "ປິດເມື່ອຕັດການເຊື່ອມຕໍ່"
 
 msgctxt "hostpref_quickdisconnect_summary"
 msgid "Close immediately after remote disconnect without prompting."
-msgstr "远程连接断开后，立即关闭不提示。"
+msgstr "ປິດທັນທີຫຼັງຈາກຕັດການເຊື່ອມຕໍ່ທາງໄກໂດຍບໍ່ຕ້ອງຖາມ."
 
 #. Setting for what key code is sent to the server when DEL key is pressed.
 msgctxt "hostpref_delkey_title"
 msgid "DEL Key"
-msgstr "DEL键"
+msgstr "ປຸ່ມ DEL"
 
 #. Host character encoding preference title
 msgctxt "hostpref_encoding_title"
 msgid "Encoding"
-msgstr "编码"
+msgstr "ການເຂົ້າລະຫັດ"
 
 #. Username field title for host editor preference
 msgctxt "hostpref_username_title"
 msgid "Username"
-msgstr "用户名"
+msgstr "ຊື່ຜູ້ໃຊ້"
 
 #. Hostname field title for host editor preference
 msgctxt "hostpref_hostname_title"
 msgid "Host"
-msgstr "主机"
+msgstr "ໂຮສ"
 
 #. Port field title for host editor preference
 msgctxt "hostpref_port_title"
 msgid "Port"
-msgstr "端口"
+msgstr "ພອດ"
 
 #. Displayed to indicate a host has never been connected to.
 msgctxt "bind_never"
 msgid "Never connected"
-msgstr "从未连接"
+msgstr "ບໍ່ເຄີຍເຊື່ອມຕໍ່"
 
 #. Message given when user copies from the terminal.
 #, c-format
 msgctxt "console_copy_done"
 msgid "Copied %1$d byte to clipboard"
 msgid_plural "Copied %1$d bytes to clipboard"
-msgstr[0] "复制了 %1$d 字节到剪贴板"
+msgstr[0] "ສຳເນົາ %1$d ໄບຕ໌ ໄປຍັງຄລິບບອດແລ້ວ"
 
 #. Instructions for how to copy from the terminal. The '\n' entries are to
 #. split lines to improve readability and prevent wrapping off the screen.
@@ -883,167 +895,167 @@ msgid ""
 "or use directional pad\n"
 "to select area to copy"
 msgstr ""
-"点击拖动\n"
-"或使用触摸板\n"
-"来选择要复制的区域"
+"ແຕະ ແລະ ລາກ\n"
+"ຫຼື ໃຊ້ປຸ່ມທິດທາງ\n"
+"ເພື່ອເລືອກພື້ນທີ່ທີ່ຈະສຳເນົາ"
 
 #. Button to close the disconnected terminal window.
 msgctxt "console_menu_close"
 msgid "Close"
-msgstr "关闭"
+msgstr "ປິດ"
 
 #. Button to begin copying from the terminal to the clipboard.
 msgctxt "console_menu_copy"
 msgid "Copy"
-msgstr "复制"
+msgstr "ສຳເນົາ"
 
 #. Button to paste from the clipboard to the terminal.
 msgctxt "console_menu_paste"
 msgid "Paste"
-msgstr "粘贴"
+msgstr "ວາງ"
 
 #. Button that brings user to the Port Forwards List.
 msgctxt "console_menu_portforwards"
 msgid "Port Forwards"
-msgstr "端口转发"
+msgstr "ການສົ່ງຕໍ່ພອດ"
 
 #. Button that brings user to the terminal resizing dialog where they can
 #. force a size.
 msgctxt "console_menu_resize"
 msgid "Force Size"
-msgstr "指定终端大小"
+msgstr "ບັງຄັບຂະໜາດ"
 
 #. Button that brings up the list of URLs on the current screen
 msgctxt "console_menu_urlscan"
 msgid "URL Scan"
-msgstr "URL 扫描"
+msgstr "ສະແກນ URL"
 
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"
 msgid "Yes"
-msgstr "确认"
+msgstr "ແມ່ນ"
 
 #. Button label to answer "No" to a yes/no prompt
 msgctxt "button_no"
 msgid "No"
-msgstr "否"
+msgstr "ບໍ່"
 
 #. Selection for a "local" port forward. E.g., connections to a port listening
 #. locally is forwarded to the remote end's listening port.
 msgctxt "portforward_local"
 msgid "Local"
-msgstr "本地"
+msgstr "ໂລຄໍ"
 
 #. Selection for a "remote" port forward. E.g., connections to a port
 #. listening remotely is forwarded to the local end's listening port.
 msgctxt "portforward_remote"
 msgid "Remote"
-msgstr "远程"
+msgstr "ທາງໄກ"
 
 #. Selection for a "dynamic" port forward. E.g., connections to a port
 #. listening locally is forwarded based on the SOCKS protocol to an arbitrary
 #. remote host and port.
 msgctxt "portforward_dynamic"
 msgid "Dynamic (SOCKS)"
-msgstr "动态(SOCKS)"
+msgstr "ໄດນາມິກ (SOCKS)"
 
 #. Button that commits the port forward to be made from the Port Forward
 #. Creation dialog.
 msgctxt "portforward_pos"
 msgid "Create port forward"
-msgstr "创建端口转发"
+msgstr "ສ້າງການສົ່ງຕໍ່ພອດ"
 
 msgctxt "portforward_problem"
 msgid ""
 "Problem creating port forward, maybe you're using ports under 1024 or port "
 "is already used?"
-msgstr "创建端口转发失败，可能你选择的端口小于1024或该端口已被占用？"
+msgstr ""
+"ມີບັນຫາໃນການສ້າງການສົ່ງຕໍ່ພອດ, ບາງທີທ່ານອາດກຳລັງໃຊ້ພອດທີ່ຕໍ່າກວ່າ 1024 ຫຼື "
+"ພອດນັ້ນຖືກໃຊ້ແລ້ວ?"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
 msgid "username"
-msgstr "用户名"
+msgstr "ຊື່ຜູ້ໃຊ້"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_hostname"
 msgid "hostname"
-msgstr "主机名"
+msgstr "ຊື່ໂຮສ"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_port"
 msgid "port"
-msgstr "端口"
+msgstr "ພອດ"
 
 msgctxt "list_menu_pubkeys"
 msgid "Manage Pubkeys"
-msgstr "管理密钥"
+msgstr "ຈັດການ Pubkeys"
 
 #. Selection choice to sort hosts by color.
 msgctxt "list_menu_sortcolor"
 msgid "Sort by color"
-msgstr "按颜色排序"
+msgstr "ຈັດຮຽງຕາມສີ"
 
 #. Selection choice to sort hosts by nickname.
 msgctxt "list_menu_sortname"
 msgid "Sort by name"
-msgstr "按名称排序"
+msgstr "ຈັດຮຽງຕາມຊື່"
 
 msgctxt "list_menu_disconnect"
 msgid "Disconnect All"
-msgstr "断开所有连接"
+msgstr "ຕັດການເຊື່ອມຕໍ່ທັງໝົດ"
 
 msgctxt "list_menu_settings"
 msgid "Settings"
-msgstr "设置"
+msgstr "ການຕັ້ງຄ່າ"
 
 msgctxt "list_host_disconnect"
 msgid "Disconnect"
-msgstr "断开连接"
+msgstr "ຕັດການເຊື່ອມຕໍ່"
 
 msgctxt "list_host_edit"
 msgid "Edit host"
-msgstr "编辑主机"
+msgstr "ແກ້ໄຂໂຮສ"
 
 msgctxt "list_host_portforwards"
 msgid "Edit port forwards"
-msgstr "编辑端口转发"
+msgstr "ແກ້ໄຂການສົ່ງຕໍ່ພອດ"
 
 msgctxt "list_host_delete"
 msgid "Delete host"
-msgstr "删除主机"
+msgstr "ລຶບໂຮສ"
 
 #. Note that the '\n' splits the lines so it's actually "quick-connect box
 #. below to connect"
 msgctxt "list_host_empty"
 msgid "No hosts created yet."
-msgstr ""
-"使用下面的快速连接框\n"
-"连接主机。"
+msgstr "ຍັງບໍ່ມີໂຮສທີ່ສ້າງຂຶ້ນ."
 
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
 msgid "Default"
-msgstr "默认"
+msgstr "ຄ່າເລີ່ມຕົ້ນ"
 
 msgctxt "list_rotation_land"
 msgid "Force landscape"
-msgstr "强制横屏显示"
+msgstr "ບັງຄັບແນວນອນ"
 
 msgctxt "list_rotation_port"
 msgid "Force portrait"
-msgstr "强制竖屏显示"
+msgstr "ບັງຄັບແນວຕັ້ງ"
 
 #. Selection to indicate the rotation should be selected automatically based
 #. on the tilt sensor.
 msgctxt "list_rotation_auto"
 msgid "Automatic"
-msgstr "自动"
+msgstr "ອັດຕະໂນມັດ"
 
 #. Selection to indicate pressing the Camera button should send "Ctrl+A then
 #. Space".
 msgctxt "list_camera_ctrlaspace"
 msgid "Ctrl+A then Space"
-msgstr "Ctrl+A 然后 Space"
+msgstr "Ctrl+A ແລ້ວ Space"
 
 #. Selection to indicate pressing the Camera button should send "Ctrl+A".
 msgctxt "list_camera_ctrla"
@@ -1064,81 +1076,81 @@ msgstr "Esc+A"
 #. all.
 msgctxt "list_camera_none"
 msgid "None"
-msgstr "无"
+msgstr "ບໍ່ມີ"
 
 #. Name for the backspace character
 msgctxt "list_delkey_backspace"
 msgid "Backspace"
-msgstr "退格键"
+msgstr "Backspace"
 
 #. Name for the ASCII DEL character
 msgctxt "list_delkey_del"
 msgid "Delete"
-msgstr "删除键"
+msgstr "Delete"
 
 #, c-format
 msgctxt "delete_message"
 msgid "Are you sure you want to delete '%1$s'?"
-msgstr "确定要删除'%1$s'吗？"
+msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບ '%1$s'?"
 
 msgctxt "delete_pos"
 msgid "Yes, delete"
-msgstr "是，删除"
+msgstr "ແມ່ນ, ລຶບ"
 
 msgctxt "delete_neg"
 msgid "Cancel"
-msgstr "取消"
+msgstr "ຍົກເລີກ"
 
 msgctxt "disconnect_all_message"
 msgid "Are you sure you want to disconnect from all connected hosts?"
-msgstr "你确定你要断开所有连接的主机？"
+msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການຕັດການເຊື່ອມຕໍ່ຈາກໂຮສທີ່ເຊື່ອມຕໍ່ຢູ່ທັງໝົດ?"
 
 msgctxt "disconnect_all_pos"
 msgid "Yes, disconnect"
-msgstr "是，断开"
+msgstr "ແມ່ນ, ຕັດການເຊື່ອມຕໍ່"
 
 msgctxt "disconnect_all_neg"
 msgid "Cancel"
-msgstr "取消"
+msgstr "ຍົກເລີກ"
 
 msgctxt "terminal_no_hosts_connected"
 msgid "No hosts currently connected"
-msgstr "当前没有连接主机"
+msgstr "ປະຈຸບັນບໍ່ມີໂຮສທີ່ເຊື່ອມຕໍ່ຢູ່"
 
 #. Displayed in terminal when attempting to connect to a host. The first two
 #. variables are host:port and the third is the protocol (e.g., SSH)
 #, c-format
 msgctxt "terminal_connecting"
 msgid "Connecting to %1$s:%2$d via %3$s"
-msgstr "正在通过 %3$s 端口连接到 %1$s:%2$d"
+msgstr "ກຳລັງເຊື່ອມຕໍ່ໄປທີ່ %1$s:%2$d ຜ່ານ %3$s"
 
 #. Displays the host key to the user in the terminal
 #, c-format
 msgctxt "terminal_sucess"
 msgid "Verified host '%1$s' key: %2$s"
-msgstr "验证主机 %1$s 密钥： %2$s"
+msgstr "ຢືນຢັນຄີຂອງໂຮສ '%1$s' ແລ້ວ: %2$s"
 
 msgctxt "terminal_failed"
 msgid "Host key verification failed."
-msgstr "主机密钥验证失败。"
+msgstr "ການຢືນຢັນຄີຂອງໂຮສລົ້ມເຫຼວ."
 
 #. Displayed on the terminal describing the cryptographic algorithm names
 #, c-format
 msgctxt "terminal_using_s2c_algorithm"
 msgid "Server-to-client algorithm: %1$s %2$s"
-msgstr "服务器到客户端算法：%1$s %2$s"
+msgstr "ອັນກໍຣິທຶມຈາກເຊີບເວີຫາລູກຂ່າຍ: %1$s %2$s"
 
 #. Displayed on the terminal describing the cryptographic algorithm names
 #, c-format
 msgctxt "terminal_using_c2s_algorithm"
 msgid "Client-to-server algorithm: %1$s %2$s"
-msgstr "客户端到服务器算法：%1$s %2$s"
+msgstr "ອັນກໍຣິທຶມຈາກລູກຂ່າຍຫາເຊີບເວີ: %1$s %2$s"
 
 #. Displayed on the terminal describing the cryptographic algorithm names
 #, c-format
 msgctxt "terminal_using_algorithm"
 msgid "Using algorithm: %1$s %2$s"
-msgstr "使用算法：%1$s %2$s"
+msgstr "ກຳລັງໃຊ້ອັນກໍຣິທຶມ: %1$s %2$s"
 
 #. Displayed on the terminal during a SSH connection describing the
 #. cryptographic key              exchange algorithm used to establish a shared
@@ -1146,197 +1158,199 @@ msgstr "使用算法：%1$s %2$s"
 #, c-format
 msgctxt "terminal_kex_algorithm"
 msgid "Key exchange algorithm: %s"
-msgstr "密钥交换算法: %s"
+msgstr "ອັນກໍຣິທຶມການແລກປ່ຽນຄີ: %s"
 
 msgctxt "terminal_auth"
 msgid "Trying to authenticate"
-msgstr "尝试身份验证"
+msgstr "ກຳລັງພະຍາຍາມກວດສອບສິດ"
 
 msgctxt "terminal_auth_pass"
 msgid "Attempting 'password' authentication"
-msgstr "尝试使用“密码” 进行身份验证"
+msgstr "ກຳລັງພະຍາຍາມກວດສອບສິດແບບ 'password'"
 
 msgctxt "terminal_auth_pass_fail"
 msgid "Authentication method 'password' failed"
-msgstr "“密码”验证失败"
+msgstr "ວິທີການກວດສອບສິດແບບ 'password' ລົ້ມເຫຼວ"
 
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
-msgstr "尝试“公钥”验证，使用内存中的任何公钥"
+msgstr ""
+"ກຳລັງພະຍາຍາມກວດສອບສິດແບບ 'publickey' ດ້ວຍຄີສາທາລະນະທີ່ມີຢູ່ໃນໜ່ວຍຄວາມຈຳ"
 
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
-msgstr "所选公钥失效,请在主机中重新选择"
+msgstr "ຄີສາທາລະນະທີ່ເລືອກບໍ່ຖືກຕ້ອງ, ລອງເລືອກຄີໃໝ່ໃນຕົວແກ້ໄຂໂຮສ"
 
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
-msgstr "尝试'公钥'验证，使用指定的公钥"
+msgstr "ກຳລັງພະຍາຍາມກວດສອບສິດແບບ 'publickey' ດ້ວຍຄີສາທາລະນະທີ່ລະບຸ"
 
 #, c-format
 msgctxt "terminal_auth_pubkey_fail"
 msgid "Authentication method 'publickey' with key '%1$s' failed"
-msgstr "使用密钥“%1$s”进行“公钥”验证失败"
+msgstr "ວິທີການກວດສອບສິດແບບ 'publickey' ດ້ວຍຄີ '%1$s' ລົ້ມເຫຼວ"
 
 msgctxt "terminal_auth_ki"
 msgid "Attempting 'keyboard-interactive' authentication"
-msgstr "尝试“键盘交互式”验证"
+msgstr "ກຳລັງພະຍາຍາມກວດສອບສິດແບບ 'keyboard-interactive'"
 
 msgctxt "terminal_auth_ki_fail"
 msgid "Authentication method 'keyboard-interactive' failed"
-msgstr "“键盘交互式”验证失败"
+msgstr "ວິທີການກວດສອບສິດແບບ 'keyboard-interactive' ລົ້ມເຫຼວ"
 
 msgctxt "terminal_auth_fail"
 msgid ""
 "[Your host doesn't support 'password' or 'keyboard-interactive' "
 "authentication.]"
-msgstr "主机不支持“密码”或“键盘交互式”验证。"
+msgstr ""
+"[ໂຮສຂອງທ່ານບໍ່ຮອງຮັບການກວດສອບສິດແບບ 'password' ຫຼື 'keyboard-interactive'.]"
 
 msgctxt "terminal_no_session"
 msgid "Session will not be started due to host preference."
-msgstr "由于主机设置不能启动该会话。"
+msgstr "ເຊດຊັນຈະບໍ່ຖືກເລີ່ມຕົ້ນເນື່ອງຈາກການຕັ້ງຄ່າຂອງໂຮສ."
 
 #, c-format
 msgctxt "terminal_enable_portfoward"
 msgid "Enable port forward: %1$s"
-msgstr "启用端口转发：%1$s"
+msgstr "ເປີດໃຊ້ການສົ່ງຕໍ່ພອດ: %1$s"
 
 msgctxt "local_shell_unavailable"
 msgid "Failure! Local shell is unavailable on this phone."
-msgstr "失败! 本地Shell在该手机上不可用"
+msgstr "ລົ້ມເຫຼວ! ບໍ່ມີ Local shell ໃນໂທລະສັບໜ່ວຍນີ້."
 
 #. Text sent to the user to alert them that a Terminal Bell is received in a
 #. background session
 #, c-format
 msgctxt "notification_text"
 msgid "%1$s wants your attention."
-msgstr "%1$s 需要你关注。"
+msgstr "%1$s ຕ້ອງການຄວາມສົນໃຈຈາກທ່ານ."
 
 #. Preference selection for SSH Authentication Agent to never use pubkeys
 msgctxt "no"
 msgid "No"
-msgstr "不使用"
+msgstr "ບໍ່"
 
 #. Preference selection for SSH Authentication Agent to be able to use pubkeys
 msgctxt "yes"
 msgid "Yes"
-msgstr "使用"
+msgstr "ແມ່ນ"
 
 #. Menu selection to reset colors to their defaults.
 msgctxt "menu_colors_reset"
 msgid "Reset"
-msgstr "重置"
+msgstr "ຣີເຊັດ"
 
 #. Displayed in the notification bar that connections are active
 msgctxt "app_is_running"
 msgid "ConnectBot is running"
-msgstr "ConnectBot 正在运行"
+msgstr "ConnectBot ກຳລັງເຮັດວຽກຢູ່"
 
 msgctxt "color_red"
 msgid "red"
-msgstr "红色"
+msgstr "ສີແດງ"
 
 msgctxt "color_green"
 msgid "green"
-msgstr "绿色"
+msgstr "ສີຂຽວ"
 
 msgctxt "color_blue"
 msgid "blue"
-msgstr "蓝色"
+msgstr "ສີຟ້າ"
 
 msgctxt "color_gray"
 msgid "gray"
-msgstr "灰色"
+msgstr "ສີເທົາ"
 
 #. Very short label indicating the number next to it is "foreground color"
 #. number.
 #, c-format
 msgctxt "colors_fg_label"
 msgid "FG: %1$d"
-msgstr "前景色：%1$d"
+msgstr "FG: %1$d"
 
 #. Very short label indicating the number next to it is "background color"
 #. number.
 #, c-format
 msgctxt "color_bg_label"
 msgid "BG: %1$d"
-msgstr "背景色：%1$d"
+msgstr "BG: %1$d"
 
 #. Accessibility text for connection state in list of hosts when the host is
 #. currently          connected.
 msgctxt "image_description_connected"
 msgid "Connected."
-msgstr "已连接。"
+msgstr "ເຊື່ອມຕໍ່ແລ້ວ."
 
 #. Accessibility text for connection state in list of hosts when the host is
 #. currently              disconnected after having been previously connected.
 msgctxt "image_description_disconnected"
 msgid "Disconnected."
-msgstr "已断开连接。"
+msgstr "ຕັດການເຊື່ອມຕໍ່ແລ້ວ."
 
 #. Describes the icon of the "locked pubkey" icon for accessibility purposes.
 msgctxt "image_description_key_is_locked"
 msgid "Key is locked."
-msgstr "密钥已锁定。"
+msgstr "ຄີຖືກລັອກ."
 
 #. Describes the icon of the "send control character" button in the terminal
 #. view for              accessibility purposes.
 msgctxt "image_description_toggle_control_character"
 msgid "Toggle control character."
-msgstr "切换控制字符。"
+msgstr "ສະຫຼັບຕົວອັກສອນຄວບຄຸມ."
 
 #. Describes the icon of the "send escape character" button in the terminal
 #. view for              accessibility purposes.
 msgctxt "image_description_send_escape_character"
 msgid "Send escape character."
-msgstr "发送Escape字符。"
+msgstr "ສົ່ງຕົວອັກສອນ escape."
 
 #. Describes the icon of the "send tab character" button in the terminal view
 #. for              accessibility purposes.
 msgctxt "image_description_send_tab_character"
 msgid "Send TAB character."
-msgstr "发送TAB字符。"
+msgstr "ສົ່ງຕົວອັກສອນ TAB."
 
 #. Describes the icon of the "hide keyboard" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_hide_keyboard"
 msgid "Hide keyboard."
-msgstr "隐藏键盘"
+msgstr "ເຊື່ອງແປ້ນພິມ."
 
 #. Describes the icon of the "show keyboard" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_show_keyboard"
 msgid "Show keyboard."
-msgstr "显示键盘。"
+msgstr "ສະແດງແປ້ນພິມ."
 
 #. Describes the icon of the "Arrow up" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_up"
 msgid "Arrow up"
-msgstr "向上的箭头"
+msgstr "ລູກສອນຂຶ້ນ"
 
 #. Describes the icon of the "Arrow down" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_down"
 msgid "Arrow down"
-msgstr "向下的箭头"
+msgstr "ລູກສອນລົງ"
 
 #. Describes the icon of the "Arrow left" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_left"
 msgid "Arrow left"
-msgstr "向左的箭头"
+msgstr "ລູກສອນຊ້າຍ"
 
 #. Describes the icon of the "Arrow right" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_right"
 msgid "Arrow right"
-msgstr "向右的箭头"
+msgstr "ລູກສອນຂວາ"
 
 #. Describes the "volume" icon in the bell volume dialog for accessibility
 #. purposes.
 msgctxt "image_description_volume"
 msgid "Volume"
-msgstr "音量"
+msgstr "ລະດັບສຽງ"
 
 #. Text for the "Esc" button in virtual keyboard.
 msgctxt "button_key_esc"
@@ -1431,56 +1445,56 @@ msgstr "F12"
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
 msgid "Protocol"
-msgstr "协议"
+msgstr "ໂປຣໂຕຄໍ"
 
 #. Label for button which expands/collapses section.
 msgctxt "expand"
 msgid "Expand"
-msgstr "展开"
+msgstr "ຂະຫຍາຍ"
 
 #. Label for checkbox which, when check, makes SSL authorization require
 #. confirmation.
 msgctxt "hostpref_authagent_with_confirmation"
 msgid "require confirmation"
-msgstr "需要确认"
+msgstr "ຕ້ອງການການຢືນຢັນ"
 
 #. Text for button which, when clicked, adds a new host.
 msgctxt "hostpref_add_host"
 msgid "Add host"
-msgstr "添加主机"
+msgstr "ເພີ່ມໂຮສ"
 
 #. Text for button which, when clicked, saves an existing host.
 msgctxt "hostpref_edit_host"
 msgid "Save host"
-msgstr "保存主机"
+msgstr "ບັນທຶກໂຮສ"
 
 #. Text for button which, when clicked, brings up an editor for adding a new
 #. pubkey.
 msgctxt "pubkey_add_new"
 msgid "Add new pubkey"
-msgstr "添加新的公钥"
+msgstr "ເພີ່ມ pubkey ໃໝ່"
 
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
 msgid "Import existing pubkey"
-msgstr "导入已有的公钥"
+msgstr "ນຳເຂົ້າ pubkey ທີ່ມີຢູ່"
 
 #. Text for dialog which explains that the host URI is invalid and asks to
 #. discard.
 msgctxt "discard_host_changes_message"
 msgid "Host URI is invalid. Would you like to discard changes?"
-msgstr "主机 URI 无效。你要放弃更改吗？"
+msgstr "URI ຂອງໂຮສບໍ່ຖືກຕ້ອງ. ທ່ານຕ້ອງການຍົກເລີກການປ່ຽນແປງບໍ?"
 
 #. Text for button which discards changes to the host.
 msgctxt "discard_host_button"
 msgid "Discard"
-msgstr "放弃"
+msgstr "ຍົກເລີກ"
 
 #. Text for button which does not discard changes and keeps editing.
 msgctxt "discard_host_cancel_button"
 msgid "Keep editing"
-msgstr "继续编辑"
+msgstr "ແກ້ໄຂຕໍ່"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the RSA algorithm with a
@@ -1489,7 +1503,7 @@ msgstr "继续编辑"
 #, c-format
 msgctxt "key_type_rsa_bits"
 msgid "RSA %d-bit"
-msgstr "RSA%d位"
+msgstr "RSA %d-ບິດ"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the DSA algorithm with a
@@ -1498,7 +1512,7 @@ msgstr "RSA%d位"
 #, c-format
 msgctxt "key_type_dsa_bits"
 msgid "DSA %d-bit"
-msgstr "DSA%d位"
+msgstr "DSA %d-ບິດ"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Elliptic Curve (EC)
@@ -1507,7 +1521,7 @@ msgstr "DSA%d位"
 #, c-format
 msgctxt "key_type_ec_bits"
 msgid "EC %d-bit"
-msgstr "EC%d位"
+msgstr "EC %d-ບິດ"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Describes a key type of the Ed25519 algorithm
@@ -1521,25 +1535,26 @@ msgstr "Ed25519"
 #. their device.              Describes a key type of an unknown algorithm.
 msgctxt "key_type_unknown"
 msgid "Key type unknown"
-msgstr "未知的密钥类型"
+msgstr "ປະເພດຄີບໍ່ຮູ້ຈັກ"
 
 #. In a list of all the key pairs the user has generated or imported into
 #. their device.              Added to the end of a key description to indicate
 #. that the key is encrypted (i.e,              password protected).
 msgctxt "key_attribute_encrypted"
 msgid "(encrypted)"
-msgstr "（已加密）"
+msgstr "(ເຂົ້າລະຫັດ)"
 
 msgctxt "notification_requirement_explanation"
 msgid ""
 "Notification permission is required to display running sessions in the "
 "background"
-msgstr "需要允许通知权限以显示后台运行的会话"
+msgstr ""
+"ຕ້ອງການການອະນຸຍາດການແຈ້ງເຕືອນເພື່ອສະແດງເຊດຊັນທີ່ກຳລັງເຮັດວຽກຢູ່ເບື້ອງຫຼັງ"
 
 msgctxt "continue_anyway"
 msgid "Continue without"
-msgstr "继续，不使用"
+msgstr "ດຳເນີນການຕໍ່ໂດຍບໍ່ມີ"
 
 msgctxt "allow"
 msgid "Allow"
-msgstr "允许"
+msgstr "ອະນຸຍາດ"
