@@ -1,5 +1,5 @@
 [versions]
-agp = "8.1.4"
+androidGradlePlugin = "8.9.3"
 kotlin = "1.9.0"
 spotless = "7.2.1"
 versions = "0.51.0"
@@ -10,8 +10,9 @@ easylauncher = "6.4.1"
 pythonUv = "0.2.0"
 
 compileSdk = "34"
-minSdk = "14"
+minSdk = "16"
 targetSdk = "35"
+ndk = "20.1.5948944"
 
 sshlib = "2.2.29"
 playServicesBasement = "18.3.0"
@@ -64,7 +65,7 @@ conscrypt-openjdk-uber = { module = "org.conscrypt:conscrypt-openjdk-uber", vers
 errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "errorproneCore" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "agp" }
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 versions = { id = "com.github.ben-manes.versions", version.ref = "versions" }
