@@ -7,16 +7,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-29 16:39-0700\n"
+"POT-Creation-Date: 2025-04-22 11:59-0700\n"
 "PO-Revision-Date: 2021-08-03 15:15+0000\n"
 "Last-Translator: konenas <Unknown>\n"
-"Language: el\n"
 "Language-Team: el <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Launchpad-Export-Date: 2025-04-25 12:06+0000\n"
+"X-Generator: Launchpad (build e76edd883483c71c468bb038e98836435de44530)\n"
+"Language: el\n"
+"Generated-By: Babel 2.12.0\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -76,10 +78,11 @@ msgid "Generate"
 msgstr "Δημιουργία δημοσίων κλειδιών"
 
 msgctxt "help_intro"
-msgid "Please select a topic below for more information on a particular subject."
+msgid ""
+"Please select a topic below for more information on a particular subject."
 msgstr ""
-"Παρακαλούμε επιλέξτε ένα θέμα παρακάτω για περισσότερες πληροφορίες "
-"σχετικά με ένα συγκεκριμένο θέμα."
+"Παρακαλούμε επιλέξτε ένα θέμα παρακάτω για περισσότερες πληροφορίες σχετικά "
+"με ένα συγκεκριμένο θέμα."
 
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
@@ -99,8 +102,8 @@ msgstr "Συντομεύσεις κεντρικού υπολογιστή"
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
 msgid ""
-"Long-press on your Android desktop to create direct shortcuts to "
-"frequently-used SSH hosts."
+"Long-press on your Android desktop to create direct shortcuts to frequently-"
+"used SSH hosts."
 msgstr ""
 "Πατήστε παρατεταμένα στην επιφάνεια εργασίας του Android για να "
 "δημιουργήσετε άμεσες συντομεύσεις σε συχνά χρησιμοποιούμενους κεντρικούς "
@@ -114,12 +117,12 @@ msgstr "Κύλιση προς τα πίσω / Κύλιση προς τα εμπ�
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
 msgid ""
-"Swiping your finger up on the right side of the screen allows you to "
-"scroll backward and forward in the local terminal buffer history."
+"Swiping your finger up on the right side of the screen allows you to scroll "
+"backward and forward in the local terminal buffer history."
 msgstr ""
-"Αν σύρετε το δάχτυλό σας προς τα πάνω στη δεξιά πλευρά της οθόνης, "
-"μπορείτε να μετακινηθείτε προς τα πίσω και προς τα εμπρός στο ιστορικό "
-"του ρυθμιστικού διαστήματος του τοπικού τερματικού."
+"Αν σύρετε το δάχτυλό σας προς τα πάνω στη δεξιά πλευρά της οθόνης, μπορείτε "
+"να μετακινηθείτε προς τα πίσω και προς τα εμπρός στο ιστορικό του "
+"ρυθμιστικού διαστήματος του τοπικού τερματικού."
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
@@ -140,9 +143,9 @@ msgctxt "page_updn_content"
 msgid ""
 "NOTE: This must be enabled in settings.\n"
 "\n"
-"Swiping your finger up and down on the left third of the screen will send"
-" a page up and page down key to the remote host. Many programs map this "
-"to scrolling back into history such as irssi or tinyfugue."
+"Swiping your finger up and down on the left third of the screen will send a "
+"page up and page down key to the remote host. Many programs map this to "
+"scrolling back into history such as irssi or tinyfugue."
 msgstr "ΣΗΜΕΙΩΣΗ: Αυτό πρέπει να ενεργοποιηθεί στις ρυθμίσεις"
 
 #. Captions for images showing the page up/down gestures.
@@ -231,8 +234,8 @@ msgstr "Αγγίξτε αυτό το κουτί για να συγκεντρώσ
 
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger"
-" randomly over the box below."
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
 msgstr ""
 "Για να διασφαλίσετε την τυχαιότητα κατά τη δημιουργία του κλειδιού, "
 "μετακινήστε το δάχτυλό σας τυχαία πάνω από το παρακάτω πλαίσιο."
@@ -287,7 +290,8 @@ msgstr "Κλειδί ξεκλειδώματος"
 #, c-format
 msgctxt "pubkey_failed_add"
 msgid "Bad password for key '%1$s'. Authentication failed."
-msgstr "Λάθος κωδικός πρόσβασης για το κλειδί '%1$s'. Αποτυχία ελέγχου ταυτότητας."
+msgstr ""
+"Λάθος κωδικός πρόσβασης για το κλειδί '%1$s'. Αποτυχία ελέγχου ταυτότητας."
 
 #. Context menu entry that allows a user to load a pubkey entry into memory.
 #. This is equivalent to "unlocking" a password-protected pubkey entry.
@@ -421,15 +425,13 @@ msgstr ""
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle "
-"attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "ΕΊΝΑΙ ΠΙΘΑΝΌ ΚΆΠΟΙΟΣ ΝΑ ΚΆΝΕΙ ΚΆΤΙ ΚΑΚΌ!\n"
 "Κάποιος μπορεί να σας κατασκοπεύει αυτή τη στιγμή (επίθεση man-in-the-"
 "middle)!\n"
-"Είναι επίσης πιθανό το κλειδί του κεντρικού υπολογιστή να έχει μόλις "
-"αλλάξει."
+"Είναι επίσης πιθανό το κλειδί του κεντρικού υπολογιστή να έχει μόλις αλλάξει."
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
@@ -455,14 +457,16 @@ msgstr ""
 #, c-format
 msgctxt "host_authenticity_warning"
 msgid "The authenticity of host '%1$s' can't be established."
-msgstr "Η αυθεντικότητα του κεντρικού υπολογιστή '%1$s' δεν μπορεί να διαπιστωθεί."
+msgstr ""
+"Η αυθεντικότητα του κεντρικού υπολογιστή '%1$s' δεν μπορεί να διαπιστωθεί."
 
 #. First field is encryption algorithm. Second is the actual fingerprint in
 #. hex digits
 #, c-format
 msgctxt "host_fingerprint"
 msgid "Host %1$s key fingerprint is %2$s"
-msgstr "Το αποτύπωμα δημοσίου κλειδιού του κεντρικού υπολογιστή %1$s είναι %2$s"
+msgstr ""
+"Το αποτύπωμα δημοσίου κλειδιού του κεντρικού υπολογιστή %1$s είναι %2$s"
 
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
@@ -583,8 +587,8 @@ msgstr "Χειρονομία ανόδου/καθόδου σελίδας"
 msgctxt "pref_pg_updn_gesture_summary"
 msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
 msgstr ""
-"Σαρώστε το αριστερό τρίτο της οθόνης για να στείλετε Σελίδα πάνω/κάτω στο"
-" τερματικό"
+"Σαρώστε το αριστερό τρίτο της οθόνης για να στείλετε Σελίδα πάνω/κάτω στο "
+"τερματικό"
 
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
@@ -610,8 +614,7 @@ msgstr "Τα Shift+num είναι F-keys"
 msgctxt "pref_shiftfkeys_summary"
 msgid "On hardware keyboards, number keys send F1-F10 with shift"
 msgstr ""
-"Στα πληκτρολόγια, τα αριθμητικά πλήκτρα στέλνουν τα πλήκτρα F1-F10 με "
-"shift"
+"Στα πληκτρολόγια, τα αριθμητικά πλήκτρα στέλνουν τα πλήκτρα F1-F10 με shift"
 
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
@@ -621,7 +624,8 @@ msgstr "Τα Ctrl+num είναι F-keys"
 #. Summary for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_summary"
 msgid "On software keyboards, number keys send F1-F10 with ctrl"
-msgstr "Στα πληκτρολόγια λογισμικού, τα αριθμητικά πλήκτρα στέλνουν F1-F10 με ctrl"
+msgstr ""
+"Στα πληκτρολόγια λογισμικού, τα αριθμητικά πλήκτρα στέλνουν F1-F10 με ctrl"
 
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
@@ -632,8 +636,8 @@ msgstr "Τα πλήκτρα έντασης ήχου αλλάζουν το μέγ
 msgctxt "pref_volumefont_summary"
 msgid "Font size can also be changed in per-host settings"
 msgstr ""
-"Το μέγεθος της γραμματοσειράς μπορεί επίσης να αλλάξει στις ρυθμίσεις ανά"
-" κεντρικό υπολογιστή"
+"Το μέγεθος της γραμματοσειράς μπορεί επίσης να αλλάξει στις ρυθμίσεις ανά "
+"κεντρικό υπολογιστή"
 
 #. Name for the memorize keys preference
 msgctxt "pref_memkeys_title"
@@ -644,8 +648,8 @@ msgstr "Να θυμάμαι τα κλειδιά στη μνήμη μου"
 msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
 msgstr ""
-"Διατήρηση ξεκλειδωμένων κλειδιών στη μνήμη μέχρι να τερματιστεί η "
-"υπηρεσία backend"
+"Διατήρηση ξεκλειδωμένων κλειδιών στη μνήμη μέχρι να τερματιστεί η υπηρεσία "
+"backend"
 
 #. Name for the preference that forces the service to stay running in the
 #. background.
@@ -669,7 +673,8 @@ msgstr "Συντομεύσεις καταλόγου"
 #. Summary for the keyboard shortcuts preference
 msgctxt "pref_keymode_summary"
 msgid "Select how to use Alt for '/' and Shift for Tab"
-msgstr "Επιλέξτε πώς να χρησιμοποιείτε το Alt για το '/' και το Shift για το Tab"
+msgstr ""
+"Επιλέξτε πώς να χρησιμοποιείτε το Alt για το '/' και το Shift για το Tab"
 
 #. Name for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_title"
@@ -680,8 +685,8 @@ msgstr "Τα πλήκτρα τροποποίησης να παραμείνουν
 msgctxt "pref_stickymodifiers_summary"
 msgid "Modifier keys remain enabled until another key is pressed"
 msgstr ""
-"Τα πλήκτρα τροποποίησης να παραμείνουν ενεργοποιημένα μέχρι να πατηθεί "
-"άλλο πλήκτρο"
+"Τα πλήκτρα τροποποίησης να παραμείνουν ενεργοποιημένα μέχρι να πατηθεί άλλο "
+"πλήκτρο"
 
 #. Sticky modifier preference value description for when only the Alt key
 #. should be a sticky modifier.
@@ -698,8 +703,7 @@ msgstr "Συντόμευση κάμερας"
 msgctxt "pref_camera_summary"
 msgid "Select which shortcut to trigger when the camera button is pushed"
 msgstr ""
-"Επιλέξτε ποια συντόμευση θα ενεργοποιείται όταν πατηθεί το κουμπί της "
-"κάμερας"
+"Επιλέξτε ποια συντόμευση θα ενεργοποιείται όταν πατηθεί το κουμπί της κάμερας"
 
 #. Name for the keep screen on preference
 msgctxt "pref_keepalive_title"
@@ -709,7 +713,8 @@ msgstr "Διατήρηση ενεργής οθόνης"
 #. Summary for the camera shortcut usage preference
 msgctxt "pref_keepalive_summary"
 msgid "Prevent the screen from turning off when working in a console"
-msgstr "Αποτρέψτε την απενεργοποίηση της οθόνης όταν εργάζεστε σε μια κονσόλα"
+msgstr ""
+"Αποτρέψτε την απενεργοποίηση της οθόνης όταν εργάζεστε σε μια κονσόλα"
 
 #. Name for the Wi-Fi lock preference
 msgctxt "pref_wifilock_title"
@@ -719,7 +724,8 @@ msgstr "Το Wi-Fi να παραμείνει ενεργό"
 #. Summary for the Wi-Fi lock preference
 msgctxt "pref_wifilock_summary"
 msgid "Prevent Wi-Fi from turning off when a session is active"
-msgstr "Αποτροπή της απενεργοποίησης του Wi-Fi όταν είναι ενεργή μια συνεδρία"
+msgstr ""
+"Αποτροπή της απενεργοποίησης του Wi-Fi όταν είναι ενεργή μια συνεδρία"
 
 #. Name for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_title"
@@ -762,7 +768,8 @@ msgstr "Ειδοποιήσεις στο παρασκήνιο"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid "Send notification when a terminal running in the background sounds a bell."
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
 msgstr ""
 "Αποστολή ειδοποίησης όταν ένα τερματικό, που εκτελείται στο παρασκήνιο, "
 "κουδουνίζει."
@@ -828,7 +835,8 @@ msgstr "Αυτοματοποίηση μετά τη σύνδεση"
 #. Host post-login automation preference summary
 msgctxt "hostpref_postlogin_summary"
 msgid "Commands to run on remote server once authenticated"
-msgstr "Εντολές που εκτελούνται στον απομακρυσμένο διακομιστή μετά την ταυτοποίηση"
+msgstr ""
+"Εντολές που εκτελούνται στον απομακρυσμένο διακομιστή μετά την ταυτοποίηση"
 
 #. Host compression preference title
 msgctxt "hostpref_compression_title"
@@ -863,7 +871,8 @@ msgstr "Μείνετε συνδεδεμένοι"
 #. when it disconnects
 msgctxt "hostpref_stayconnected_summary"
 msgid "Try to reconnect to host if disconnected"
-msgstr "Προσπαθήστε να επανασυνδεθείτε με τον κεντρικό υπολογιστή αν αποσυνδεθείτε"
+msgstr ""
+"Προσπαθήστε να επανασυνδεθείτε με τον κεντρικό υπολογιστή αν αποσυνδεθείτε"
 
 #. Setting for whether we should prompt to close after getting disconnected
 msgctxt "hostpref_quickdisconnect_title"
@@ -992,8 +1001,8 @@ msgstr "Δημιουργία προώθησης θύρας"
 
 msgctxt "portforward_problem"
 msgid ""
-"Problem creating port forward, maybe you're using ports under 1024 or "
-"port is already used?"
+"Problem creating port forward, maybe you're using ports under 1024 or port "
+"is already used?"
 msgstr ""
 "Πρόβλημα δημιουργίας προώθησης θύρας, ίσως χρησιμοποιείτε θύρες κάτω από "
 "1024 ή η θύρα χρησιμοποιείται ήδη;"
@@ -1199,13 +1208,14 @@ msgstr "Απέτυχε η ταυτοποίηση με 'password'"
 
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
-msgstr "Προσπάθεια ταυτοποίησης 'publickey' με όλα τα δημόσια κλειδιά στη μνήμη"
+msgstr ""
+"Προσπάθεια ταυτοποίησης 'publickey' με όλα τα δημόσια κλειδιά στη μνήμη"
 
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
 msgstr ""
-"Το επιλεγμένο δημόσιο κλειδί είναι άκυρο, προσπαθήστε να επιλέξετε ξανά "
-"το κλειδί του κεντρικού υπολογιστή"
+"Το επιλεγμένο δημόσιο κλειδί είναι άκυρο, προσπαθήστε να επιλέξετε ξανά το "
+"κλειδί του κεντρικού υπολογιστή"
 
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
@@ -1229,8 +1239,8 @@ msgid ""
 "[Your host doesn't support 'password' or 'keyboard-interactive' "
 "authentication.]"
 msgstr ""
-"[Ο κεντρικός υπολογιστής σας δεν υποστηρίζει ταυτοποίηση με 'κωδικό' ή με"
-" 'keyboard-interactive'.]"
+"[Ο κεντρικός υπολογιστής σας δεν υποστηρίζει ταυτοποίηση με 'κωδικό' ή με "
+"'keyboard-interactive'.]"
 
 msgctxt "terminal_no_session"
 msgid "Session will not be started due to host preference."
@@ -1512,8 +1522,8 @@ msgstr "Εισαγωγή υπάρχοντος δημόσιου κλειδιού"
 msgctxt "discard_host_changes_message"
 msgid "Host URI is invalid. Would you like to discard changes?"
 msgstr ""
-"Η διεύθυνση του κεντρικού υπολογιστή είναι άκυρη. Θέλετε να απορρίψετε "
-"τις αλλαγές;"
+"Η διεύθυνση του κεντρικού υπολογιστή είναι άκυρη. Θέλετε να απορρίψετε τις "
+"αλλαγές;"
 
 #. Text for button which discards changes to the host.
 msgctxt "discard_host_button"
@@ -1586,4 +1596,3 @@ msgstr ""
 msgctxt "allow"
 msgid "Allow"
 msgstr ""
-
