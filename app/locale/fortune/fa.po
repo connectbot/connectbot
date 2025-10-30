@@ -7,16 +7,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-29 16:39-0700\n"
+"POT-Creation-Date: 2025-04-22 11:59-0700\n"
 "PO-Revision-Date: 2018-11-22 20:35+0000\n"
 "Last-Translator: Mostafa Ahangarha <ahangarha@riseup.net>\n"
-"Language: fa\n"
 "Language-Team: fa <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=((((n == 0)) || ((n == 1))) ? 0 : 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Launchpad-Export-Date: 2025-04-25 12:07+0000\n"
+"X-Generator: Launchpad (build e76edd883483c71c468bb038e98836435de44530)\n"
+"Language: fa\n"
+"Generated-By: Babel 2.12.0\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -76,8 +78,10 @@ msgid "Generate"
 msgstr "تولید"
 
 msgctxt "help_intro"
-msgid "Please select a topic below for more information on a particular subject."
-msgstr "برای اطلاعات بیشتر درباره یک موضوع خاص، لطفاً روی یک تاپیک زیر کلیک کنید."
+msgid ""
+"Please select a topic below for more information on a particular subject."
+msgstr ""
+"برای اطلاعات بیشتر درباره یک موضوع خاص، لطفاً روی یک تاپیک زیر کلیک کنید."
 
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
@@ -97,11 +101,11 @@ msgstr "میانبرهای میزبان"
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
 msgid ""
-"Long-press on your Android desktop to create direct shortcuts to "
-"frequently-used SSH hosts."
+"Long-press on your Android desktop to create direct shortcuts to frequently-"
+"used SSH hosts."
 msgstr ""
-"برای ایجاد میانبر به میزبان‌های پرکاربرد، دستکتاپ اندروید را بفشارید و "
-"کمی نگهدارید."
+"برای ایجاد میانبر به میزبان‌های پرکاربرد، دستکتاپ اندروید را بفشارید و کمی "
+"نگهدارید."
 
 #. Header text for instructions about scrolling the terminal.
 msgctxt "scroll_hints_header"
@@ -111,11 +115,11 @@ msgstr "اسکرول به جلو / اسکرول به عقب"
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
 msgid ""
-"Swiping your finger up on the right side of the screen allows you to "
-"scroll backward and forward in the local terminal buffer history."
+"Swiping your finger up on the right side of the screen allows you to scroll "
+"backward and forward in the local terminal buffer history."
 msgstr ""
-"انگشت خود را در سمت راست گذاشته و به بالا و پایین بکشید تا بتوانید "
-"تاریخچه ترمینال را مرور کنید"
+"انگشت خود را در سمت راست گذاشته و به بالا و پایین بکشید تا بتوانید تاریخچه "
+"ترمینال را مرور کنید"
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
@@ -136,9 +140,9 @@ msgctxt "page_updn_content"
 msgid ""
 "NOTE: This must be enabled in settings.\n"
 "\n"
-"Swiping your finger up and down on the left third of the screen will send"
-" a page up and page down key to the remote host. Many programs map this "
-"to scrolling back into history such as irssi or tinyfugue."
+"Swiping your finger up and down on the left third of the screen will send a "
+"page up and page down key to the remote host. Many programs map this to "
+"scrolling back into history such as irssi or tinyfugue."
 msgstr "توجه: این می بایست در تنظیمات فعال شده باشد"
 
 #. Captions for images showing the page up/down gestures.
@@ -227,8 +231,8 @@ msgstr "برای جمع آوری اتفاقی این جعبه را لمس کنی
 
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger"
-" randomly over the box below."
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
 msgstr ""
 "به منظور اطمینان از تصادفی بودن در زمان تولید کلید، انگشت خود را به طور "
 "تصادفی در طول کادر زیر  حرکت دهید."
@@ -411,8 +415,7 @@ msgstr "هشدار: تعیین هویت میزبان راه دور تغییر ک
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle "
-"attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 
@@ -727,8 +730,10 @@ msgstr "اعلان‌های پس‌زمینه"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid "Send notification when a terminal running in the background sounds a bell."
-msgstr "فرستادن اعلان زمانی که یک پایانه در حال اجرا، زنگی را به صدا در می‌آورد."
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
+msgstr ""
+"فرستادن اعلان زمانی که یک پایانه در حال اجرا، زنگی را به صدا در می‌آورد."
 
 #. Preference selection to indicate use of right side of keyboard for special
 #. shortcuts.
@@ -950,8 +955,8 @@ msgstr ""
 
 msgctxt "portforward_problem"
 msgid ""
-"Problem creating port forward, maybe you're using ports under 1024 or "
-"port is already used?"
+"Problem creating port forward, maybe you're using ports under 1024 or port "
+"is already used?"
 msgstr ""
 
 #. Part of the formatting hints that will be used like: username@hostname:port
@@ -1536,4 +1541,3 @@ msgstr ""
 msgctxt "allow"
 msgid "Allow"
 msgstr ""
-
