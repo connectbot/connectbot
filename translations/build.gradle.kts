@@ -2,7 +2,7 @@ import com.pswidersk.gradle.python.uv.UvxTask
 import org.gradle.api.tasks.bundling.Tar
 
 plugins {
-    id("com.pswidersk.python-uv-plugin") version "0.2.0"
+    alias(libs.plugins.python.uv)
 }
 
 /*

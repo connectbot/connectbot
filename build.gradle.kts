@@ -18,7 +18,7 @@ buildscript {
 }
 
 plugins {
-    id("com.diffplug.spotless") version "7.2.1"
+    alias(libs.plugins.spotless)
 }
 
 if (extra.has("MAVEN_REPO_CACHE") && extra.get("MAVEN_REPO_CACHE") != null) {
