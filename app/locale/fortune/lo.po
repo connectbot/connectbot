@@ -5,18 +5,18 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version:  connectbot\n"
+"Project-Id-Version: connectbot\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2025-10-29 16:39-0700\n"
+"POT-Creation-Date: 2025-04-22 11:59-0700\n"
 "PO-Revision-Date: 2025-10-26 17:01+0000\n"
 "Last-Translator: boneni <Unknown>\n"
-"Language: lo\n"
 "Language-Team: Lao <lo@li.org>\n"
-"Plural-Forms: nplurals=1; plural=(0);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Launchpad-Export-Date: 2025-10-27 07:52+0000\n"
+"X-Generator: Launchpad (build 85440ec533b5f0f56d72cb53bf7a09726604f8f5)\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -76,7 +76,8 @@ msgid "Generate"
 msgstr "ສ້າງ"
 
 msgctxt "help_intro"
-msgid "Please select a topic below for more information on a particular subject."
+msgid ""
+"Please select a topic below for more information on a particular subject."
 msgstr "ກະລຸນາເລືອກຫົວຂໍ້ຂ້າງລຸ່ມນີ້ສໍາລັບຂໍ້ມູນເພີ່ມເຕີມ."
 
 #. Title for the help page with the terms & conditions of the app.
@@ -97,8 +98,8 @@ msgstr "ທາງລັດໂຮສ"
 #. Instructions about creating host shortcuts.
 msgctxt "host_shortcuts_content"
 msgid ""
-"Long-press on your Android desktop to create direct shortcuts to "
-"frequently-used SSH hosts."
+"Long-press on your Android desktop to create direct shortcuts to frequently-"
+"used SSH hosts."
 msgstr ""
 "ກົດຄ້າງໄວ້ເທິງໜ້າຈໍຫຼັກ Android ຂອງທ່ານເພື່ອສ້າງທາງລັດໂດຍກົງໄປຫາໂຮສ SSH "
 "ທີ່ໃຊ້ເລື້ອຍໆ."
@@ -111,11 +112,11 @@ msgstr "ເລື່ອນຂຶ້ນ / ເລື່ອນລົງ"
 #. Instructions about scrolling the terminal.
 msgctxt "scroll_hints_content"
 msgid ""
-"Swiping your finger up on the right side of the screen allows you to "
-"scroll backward and forward in the local terminal buffer history."
+"Swiping your finger up on the right side of the screen allows you to scroll "
+"backward and forward in the local terminal buffer history."
 msgstr ""
-"ການປັດນິ້ວຂອງທ່ານຂຶ້ນເທິງເບື້ອງຂວາຂອງໜ້າຈໍຈະຊ່ວຍໃຫ້ທ່ານສາມາດເລື່ອນກັບຄືນ "
-"ແລະ ໄປໜ້າໃນປະຫວັດຂອງ terminal buffer."
+"ການປັດນິ້ວຂອງທ່ານຂຶ້ນເທິງເບື້ອງຂວາຂອງໜ້າຈໍຈະຊ່ວຍໃຫ້ທ່ານສາມາດເລື່ອນກັບຄືນ ແລະ "
+"ໄປໜ້າໃນປະຫວັດຂອງ terminal buffer."
 
 #. Captions for images showing the scroll back/forward gestures.
 msgctxt "scrolling_back"
@@ -136,15 +137,15 @@ msgctxt "page_updn_content"
 msgid ""
 "NOTE: This must be enabled in settings.\n"
 "\n"
-"Swiping your finger up and down on the left third of the screen will send"
-" a page up and page down key to the remote host. Many programs map this "
-"to scrolling back into history such as irssi or tinyfugue."
+"Swiping your finger up and down on the left third of the screen will send a "
+"page up and page down key to the remote host. Many programs map this to "
+"scrolling back into history such as irssi or tinyfugue."
 msgstr ""
 "ໝາຍເຫດ: ຕ້ອງເປີດໃຊ້ງານໃນການຕັ້ງຄ່າ.\n"
 "\n"
-"ການປັດນິ້ວຂອງທ່ານຂຶ້ນ ແລະ ລົງເທິງໜຶ່ງສ່ວນສາມດ້ານຊ້າຍຂອງໜ້າຈໍຈະສົ່ງປຸ່ມ "
-"page up ແລະ page down ໄປຫາໂຮສທາງໄກ. "
-"ຫຼາຍໂປຣແກຣມໃຊ້ຄຳສັ່ງນີ້ເພື່ອເລື່ອນເບິ່ງປະຫວັດ ເຊັ່ນ irssi ຫຼື tinyfugue."
+"ການປັດນິ້ວຂອງທ່ານຂຶ້ນ ແລະ ລົງເທິງໜຶ່ງສ່ວນສາມດ້ານຊ້າຍຂອງໜ້າຈໍຈະສົ່ງປຸ່ມ page "
+"up ແລະ page down ໄປຫາໂຮສທາງໄກ. ຫຼາຍໂປຣແກຣມໃຊ້ຄຳສັ່ງນີ້ເພື່ອເລື່ອນເບິ່ງປະຫວັດ "
+"ເຊັ່ນ irssi ຫຼື tinyfugue."
 
 #. Captions for images showing the page up/down gestures.
 msgctxt "page_up"
@@ -166,7 +167,9 @@ msgctxt "switching_hosts_content"
 msgid ""
 "Swiping your finger from one side of the screen to the other will switch "
 "between currently connected hosts."
-msgstr "ການປັດນິ້ວຂອງທ່ານຈາກດ້ານໜຶ່ງຂອງໜ້າຈໍໄປຫາອີກດ້ານໜຶ່ງຈະເປັນການສະຫຼັບລະຫວ່າງໂຮສທີ່ກຳລັງເຊື່ອມຕໍ່ຢູ່."
+msgstr ""
+"ການປັດນິ້ວຂອງທ່ານຈາກດ້ານໜຶ່ງຂອງໜ້າຈໍໄປຫາອີກດ້ານໜຶ່ງຈະເປັນການສະຫຼັບລະຫວ່າງໂຮສທ"
+"ີ່ກຳລັງເຊື່ອມຕໍ່ຢູ່."
 
 #. Captions for images showing the next/previous host gestures.
 msgctxt "next_host"
@@ -230,8 +233,8 @@ msgstr "ແຕະທີ່ກ່ອງນີ້ເພື່ອເກັບກຳ
 
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger"
-" randomly over the box below."
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
 msgstr ""
 "ເພື່ອຮັບປະກັນຄວາມສຸ່ມໃນລະຫວ່າງການສ້າງຄີ, "
 "ກະລຸນາເລື່ອນນິ້ວຂອງທ່ານແບບສຸ່ມໄປທົ່ວໃນກ່ອງຂ້າງລຸ່ມນີ້."
@@ -418,8 +421,7 @@ msgstr "ຄຳເຕືອນ: ການລະບຸຕົວຕົນຂອງ�
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle "
-"attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "ອາດຈະມີບາງຄົນກຳລັງເຮັດສິ່ງທີ່ບໍ່ດີ!\n"
@@ -520,7 +522,8 @@ msgstr "ຂະໜາດ Scrollback"
 #. Description of the scrollback size preference
 msgctxt "pref_scrollback_summary"
 msgid "Size of scrollback buffer to keep in memory for each console"
-msgstr "ຂະໜາດຂອງ buffer ການເລື່ອນກັບເພື່ອເກັບໄວ້ໃນໜ່ວຍຄວາມຈຳສຳລັບແຕ່ລະ console"
+msgstr ""
+"ຂະໜາດຂອງ buffer ການເລື່ອນກັບເພື່ອເກັບໄວ້ໃນໜ່ວຍຄວາມຈຳສຳລັບແຕ່ລະ console"
 
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
@@ -531,7 +534,8 @@ msgstr "ສຳຮອງຂໍ້ມູນ pubkeys"
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
-msgstr "ເກັບຮັກສາການສຳຮອງຂໍ້ມູນຂອງຄີສ່ວນຕົວໂດຍໃຊ້ກົນໄກການສຳຮອງຂໍ້ມູນຂອງ Android"
+msgstr ""
+"ເກັບຮັກສາການສຳຮອງຂໍ້ມູນຂອງຄີສ່ວນຕົວໂດຍໃຊ້ກົນໄກການສຳຮອງຂໍ້ມູນຂອງ Android"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -626,7 +630,8 @@ msgstr "ຈື່ຈຳຄີໃນໜ່ວຍຄວາມຈຳ"
 #. Summary for the memorize keys preference
 msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
-msgstr "ເກັບຮັກສາຄີທີ່ປົດລັອກແລ້ວໄວ້ໃນໜ່ວຍຄວາມຈຳຈົນກວ່າບໍລິການເບື້ອງຫຼັງຈະຖືກຢຸດ"
+msgstr ""
+"ເກັບຮັກສາຄີທີ່ປົດລັອກແລ້ວໄວ້ໃນໜ່ວຍຄວາມຈຳຈົນກວ່າບໍລິການເບື້ອງຫຼັງຈະຖືກຢຸດ"
 
 #. Name for the preference that forces the service to stay running in the
 #. background.
@@ -735,8 +740,10 @@ msgstr "ການແຈ້ງເຕືອນເບື້ອງຫຼັງ"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid "Send notification when a terminal running in the background sounds a bell."
-msgstr "ສົ່ງການແຈ້ງເຕືອນເມື່ອ terminal ທີ່ເຮັດວຽກເບື້ອງຫຼັງມີສຽງກະດິ່ງດັງຂຶ້ນ."
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
+msgstr ""
+"ສົ່ງການແຈ້ງເຕືອນເມື່ອ terminal ທີ່ເຮັດວຽກເບື້ອງຫຼັງມີສຽງກະດິ່ງດັງຂຶ້ນ."
 
 #. Preference selection to indicate use of right side of keyboard for special
 #. shortcuts.
@@ -960,11 +967,11 @@ msgstr "ສ້າງການສົ່ງຕໍ່ພອດ"
 
 msgctxt "portforward_problem"
 msgid ""
-"Problem creating port forward, maybe you're using ports under 1024 or "
-"port is already used?"
+"Problem creating port forward, maybe you're using ports under 1024 or port "
+"is already used?"
 msgstr ""
-"ມີບັນຫາໃນການສ້າງການສົ່ງຕໍ່ພອດ, ບາງທີທ່ານອາດກຳລັງໃຊ້ພອດທີ່ຕໍ່າກວ່າ 1024 "
-"ຫຼື ພອດນັ້ນຖືກໃຊ້ແລ້ວ?"
+"ມີບັນຫາໃນການສ້າງການສົ່ງຕໍ່ພອດ, ບາງທີທ່ານອາດກຳລັງໃຊ້ພອດທີ່ຕໍ່າກວ່າ 1024 ຫຼື "
+"ພອດນັ້ນຖືກໃຊ້ແລ້ວ?"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
@@ -1167,7 +1174,8 @@ msgstr "ວິທີການກວດສອບສິດແບບ 'password' ລ
 
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
-msgstr "ກຳລັງພະຍາຍາມກວດສອບສິດແບບ 'publickey' ດ້ວຍຄີສາທາລະນະທີ່ມີຢູ່ໃນໜ່ວຍຄວາມຈຳ"
+msgstr ""
+"ກຳລັງພະຍາຍາມກວດສອບສິດແບບ 'publickey' ດ້ວຍຄີສາທາລະນະທີ່ມີຢູ່ໃນໜ່ວຍຄວາມຈຳ"
 
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
@@ -1195,8 +1203,7 @@ msgid ""
 "[Your host doesn't support 'password' or 'keyboard-interactive' "
 "authentication.]"
 msgstr ""
-"[ໂຮສຂອງທ່ານບໍ່ຮອງຮັບການກວດສອບສິດແບບ 'password' ຫຼື 'keyboard-"
-"interactive'.]"
+"[ໂຮສຂອງທ່ານບໍ່ຮອງຮັບການກວດສອບສິດແບບ 'password' ຫຼື 'keyboard-interactive'.]"
 
 msgctxt "terminal_no_session"
 msgid "Session will not be started due to host preference."
@@ -1541,7 +1548,8 @@ msgctxt "notification_requirement_explanation"
 msgid ""
 "Notification permission is required to display running sessions in the "
 "background"
-msgstr "ຕ້ອງການການອະນຸຍາດການແຈ້ງເຕືອນເພື່ອສະແດງເຊດຊັນທີ່ກຳລັງເຮັດວຽກຢູ່ເບື້ອງຫຼັງ"
+msgstr ""
+"ຕ້ອງການການອະນຸຍາດການແຈ້ງເຕືອນເພື່ອສະແດງເຊດຊັນທີ່ກຳລັງເຮັດວຽກຢູ່ເບື້ອງຫຼັງ"
 
 msgctxt "continue_anyway"
 msgid "Continue without"
@@ -1550,4 +1558,3 @@ msgstr "ດຳເນີນການຕໍ່ໂດຍບໍ່ມີ"
 msgctxt "allow"
 msgid "Allow"
 msgstr "ອະນຸຍາດ"
-
