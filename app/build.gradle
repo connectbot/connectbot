@@ -13,7 +13,7 @@ plugins {
 	id 'com.gladed.androidgitversion' version '0.4.14'
 	id 'com.github.kt3k.coveralls' version '2.12.2'
 	id 'com.mxalbert.gradle.jacoco-android' version '0.2.1'
-	id 'com.starter.easylauncher' version '6.4.0'
+	id 'com.starter.easylauncher' version '6.4.1'
 }
 
 ext {
@@ -41,7 +41,7 @@ android {
 		versionCode 999
 
 		minSdkVersion 14
-		targetSdkVersion 34
+		targetSdkVersion 35
 
 		vectorDrawables.useSupportLibrary = true
 
@@ -209,7 +209,7 @@ dependencyUpdates {
 
 // Dependencies must be below the android block to allow productFlavor specific deps.
 dependencies {
-	implementation 'org.connectbot:sshlib:2.2.25'
+	implementation 'org.connectbot:sshlib:2.2.29'
 	googleImplementation 'com.google.android.gms:play-services-basement:18.3.0'
 	ossImplementation 'org.conscrypt:conscrypt-android:2.5.3'
 
