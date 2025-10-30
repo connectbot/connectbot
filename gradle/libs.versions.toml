@@ -8,6 +8,7 @@ coveralls = "2.12.2"
 jacocoAndroid = "0.2.1"
 easylauncher = "6.4.1"
 pythonUv = "0.2.0"
+appVersioning = "1.4.0"
 
 compileSdk = "34"
 minSdk = "16"
@@ -74,3 +75,4 @@ coveralls = { id = "com.github.kt3k.coveralls", version.ref = "coveralls" }
 jacoco-android = { id = "com.mxalbert.gradle.jacoco-android", version.ref = "jacocoAndroid" }
 easylauncher = { id = "com.starter.easylauncher", version.ref = "easylauncher" }
 python-uv = { id = "com.pswidersk.python-uv-plugin", version.ref = "pythonUv" }
+app-versioning = { id = "io.github.reactivecircus.app-versioning", version.ref = "appVersioning"}

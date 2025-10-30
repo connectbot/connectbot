@@ -1,5 +1,6 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import io.github.reactivecircus.appversioning.toSemVer
 import net.ltgt.gradle.errorprone.CheckSeverity
 import net.ltgt.gradle.errorprone.errorprone
 
@@ -8,7 +9,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.versions)
     alias(libs.plugins.errorprone)
-    // id("com.gladed.androidgitversion") version "0.4.14"
+    alias(libs.plugins.app.versioning)
     alias(libs.plugins.coveralls)
     alias(libs.plugins.jacoco.android)
     alias(libs.plugins.easylauncher)
@@ -22,10 +23,13 @@ coveralls {
     jacocoReportPath = "build/reports/coverage/google/debug/report.xml"
 }
 
-// androidGitVersion {
-//     prefix.set("v")
-//     codeFormat.set("MMNNPPBBB")
-// }
+appVersioning {
+    tagFilter.set("v[0-9].*")
+    overrideVersionCode { gitTag, _, _ ->
+        val semVer = gitTag.toSemVer()
+        semVer.major * 10000000 + semVer.minor * 100000 + semVer.patch * 1000
+    }
+}
 
 configure<ApplicationExtension> {
     namespace = "org.connectbot"
