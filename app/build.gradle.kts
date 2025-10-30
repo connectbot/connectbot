@@ -27,19 +27,24 @@ appVersioning {
     tagFilter.set("v[0-9].*")
     overrideVersionCode { gitTag, _, _ ->
         val semVer = gitTag.toSemVer()
-        semVer.major * 10000000 + semVer.minor * 100000 + semVer.patch * 1000
+        semVer.major * 10000000 + semVer.minor * 100000 + semVer.patch * 1000 + gitTag.commitsSinceLatestTag
+    }
+    overrideVersionName { gitTag, _, _ ->
+        if (gitTag.commitsSinceLatestTag != 0) {
+            "git-${gitTag.rawTagName}-${gitTag.commitsSinceLatestTag}-g${gitTag.commitHash}"
+        } else {
+            gitTag.rawTagName
+        }
     }
 }
 
-configure<ApplicationExtension> {
+android {
     namespace = "org.connectbot"
     compileSdk = libs.versions.compileSdk.get().toInt()
     ndkVersion = libs.versions.ndk.get()
 
     defaultConfig {
         applicationId = "org.connectbot"
-        // versionName = androidGitVersion.name()
-        // versionCode = androidGitVersion.code()
 
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
