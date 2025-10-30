@@ -30,6 +30,7 @@ coveralls {
 configure<ApplicationExtension> {
     namespace = "org.connectbot"
     compileSdk = libs.versions.compileSdk.get().toInt()
+    ndkVersion = libs.versions.ndk.get()
 
     defaultConfig {
         applicationId = "org.connectbot"
