@@ -175,7 +175,6 @@
 			android:name=".ConsoleActivity"
 			android:configChanges="keyboardHidden|orientation"
 			android:launchMode="singleTop"
-			android:theme="@style/Theme.AppCompat"
 			android:windowSoftInputMode="stateAlwaysVisible|adjustResize"
 			android:exported="true">
 			<intent-filter>

@@ -10,7 +10,7 @@ easylauncher = "6.4.1"
 pythonUv = "0.2.0"
 appVersioning = "1.4.0"
 
-compileSdk = "34"
+compileSdk = "35"
 minSdk = "16"
 targetSdk = "35"
 ndk = "20.1.5948944"
