@@ -1,5 +1,5 @@
-import com.android.build.api.dsl.ApplicationExtension
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import com.github.benmanes.gradle.versions.updates.resolutionstrategy.ComponentSelectionWithCurrent
 import io.github.reactivecircus.appversioning.toSemVer
 import net.ltgt.gradle.errorprone.CheckSeverity
 import net.ltgt.gradle.errorprone.errorprone
@@ -147,6 +147,10 @@ android {
             path = file("CMakeLists.txt")
         }
     }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_11.toString()
+    }
 }
 
 spotless {
@@ -172,7 +176,7 @@ tasks.withType<JavaCompile>().configureEach {
 
 tasks.withType<Test>().configureEach {
     jvmArgs("--add-opens", "java.base/java.lang=ALL-UNNAMED")
-    configure<org.gradle.testing.jacoco.plugins.JacocoTaskExtension> {
+    configure<JacocoTaskExtension> {
         isIncludeNoLocationClasses = true
         excludes = listOf("jdk.internal.*")
     }
@@ -187,7 +191,7 @@ tasks.withType<DependencyUpdatesTask>().configureEach {
     // Android apparently marks their "alpha" as "release" so we have to reject them.
     resolutionStrategy {
         componentSelection {
-            all {
+            all(Action<ComponentSelectionWithCurrent> {
                 val rejected = listOf(
                     "alpha",
                     "beta",
@@ -201,12 +205,11 @@ tasks.withType<DependencyUpdatesTask>().configureEach {
                 if (rejected) {
                     reject("Release candidate")
                 }
-            }
+            })
         }
     }
 }
 
-// Dependencies must be below the android block to allow productFlavor specific deps.
 dependencies {
     implementation(libs.sshlib)
     "googleImplementation"(libs.play.services.basement)
