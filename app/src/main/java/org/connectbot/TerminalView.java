@@ -54,6 +54,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.inputmethod.BaseInputConnection;
@@ -77,7 +78,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 	public final TerminalBridge bridge;
 
 	private final TerminalTextViewOverlay terminalTextViewOverlay;
-	public final TerminalViewPager viewPager;
+	public final ViewGroup parentContainer;
 	private final GestureDetector gestureDetector;
 	private final SharedPreferences prefs;
 
@@ -122,14 +123,14 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 	private static final String SCREENREADER_INTENT_ACTION = "android.accessibilityservice.AccessibilityService";
 	private static final String SCREENREADER_INTENT_CATEGORY = "android.accessibilityservice.category.FEEDBACK_SPOKEN";
 
-	public TerminalView(Context context, TerminalBridge bridge, TerminalViewPager pager) {
+	public TerminalView(Context context, TerminalBridge bridge, ViewGroup parent) {
 		super(context);
 
 		setWillNotDraw(false);
 
 		this.context = context;
 		this.bridge = bridge;
-		this.viewPager = pager;
+		this.parentContainer = parent;
 		mAccessibilityBuffer = new StringBuffer();
 
 		setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
@@ -264,7 +265,9 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 
 			@Override
 			public boolean onSingleTapConfirmed(MotionEvent e) {
-				viewPager.performClick();
+				if (parentContainer != null) {
+					parentContainer.performClick();
+				}
 				return super.onSingleTapConfirmed(e);
 			}
 		});
@@ -281,6 +284,13 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 		if (terminalTextViewOverlay != null) {
 			terminalTextViewOverlay.copyCurrentSelectionToClipboard();
 		}
+	}
+
+	public boolean hasSelection() {
+		if (terminalTextViewOverlay != null) {
+			return terminalTextViewOverlay.hasSelection();
+		}
+		return false;
 	}
 
 	@Override
@@ -300,7 +310,9 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					// recording starting area
-					viewPager.setPagingEnabled(false);
+					if (parentContainer instanceof TerminalViewPager) {
+						((TerminalViewPager) parentContainer).setPagingEnabled(false);
+					}
 					if (area.isSelectingOrigin()) {
 						area.setRow(row);
 						area.setColumn(col);
@@ -352,7 +364,9 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 					area.reset();
 					bridge.setSelectingForCopy(false);
 					bridge.redraw();
-					viewPager.setPagingEnabled(true);
+					if (parentContainer instanceof TerminalViewPager) {
+						((TerminalViewPager) parentContainer).setPagingEnabled(true);
+					}
 					return true;
 				}
 			}

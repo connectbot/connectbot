@@ -121,9 +121,9 @@ public class TerminalBridge implements VDUDisplay {
 	 */
 	private boolean fullRedraw = false;
 
-	public final PromptHelper promptHelper = new PromptHelper();
+	public final PromptManager promptManager =  new PromptManager();
 
-	private BridgeDisconnectedListener disconnectListener = null;
+	private final List<BridgeDisconnectedListener> disconnectListeners = new ArrayList<>();
 
 	/**
 	 * Create a new terminal bridge suitable for unit testing.
@@ -250,10 +250,6 @@ public class TerminalBridge implements VDUDisplay {
 		selectionArea = new SelectionArea();
 
 		keyListener = new TerminalKeyListener(manager, this, buffer, host.getEncoding());
-	}
-
-	public PromptHelper getPromptHelper() {
-		return promptHelper;
 	}
 
 	/**
@@ -436,7 +432,26 @@ public class TerminalBridge implements VDUDisplay {
 	}
 
 	public void setOnDisconnectedListener(BridgeDisconnectedListener disconnectListener) {
-		this.disconnectListener = disconnectListener;
+		synchronized (disconnectListeners) {
+			disconnectListeners.clear();
+			if (disconnectListener != null) {
+				disconnectListeners.add(disconnectListener);
+			}
+		}
+	}
+
+	public void addOnDisconnectedListener(BridgeDisconnectedListener listener) {
+		synchronized (disconnectListeners) {
+			if (listener != null && !disconnectListeners.contains(listener)) {
+				disconnectListeners.add(listener);
+			}
+		}
+	}
+
+	public void removeOnDisconnectedListener(BridgeDisconnectedListener listener) {
+		synchronized (disconnectListeners) {
+			disconnectListeners.remove(listener);
+		}
 	}
 
 	/**
@@ -451,8 +466,8 @@ public class TerminalBridge implements VDUDisplay {
 			disconnected = true;
 		}
 
-		// Cancel any pending prompts.
-		promptHelper.cancelPrompt();
+		// Cancel any pending prompts
+		promptManager.cancelPrompt();
 
 		// disconnection request hangs if we havent really connected to a host yet
 		// temporary fix is to just spawn disconnection into a thread
@@ -481,7 +496,7 @@ public class TerminalBridge implements VDUDisplay {
 			Thread disconnectPromptThread = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					Boolean result = promptHelper.requestBooleanPrompt(null,
+					Boolean result = TerminalBridgePromptsKt.requestBooleanPrompt(TerminalBridge.this, null,
 							manager.res.getString(R.string.prompt_host_disconnected));
 					if (result == null || result) {
 						awaitingClose = true;
@@ -499,15 +514,23 @@ public class TerminalBridge implements VDUDisplay {
 	 * Tells the TerminalManager that we can be destroyed now.
 	 */
 	private void triggerDisconnectListener() {
-		if (disconnectListener != null) {
-			// The disconnect listener should be run on the main thread if possible.
-			new Handler(Looper.getMainLooper()).post(new Runnable() {
-				@Override
-				public void run() {
-					disconnectListener.onDisconnected(TerminalBridge.this);
-				}
-			});
+		final List<BridgeDisconnectedListener> listenersCopy;
+		synchronized (disconnectListeners) {
+			if (disconnectListeners.isEmpty()) {
+				return;
+			}
+			listenersCopy = new ArrayList<>(disconnectListeners);
 		}
+
+		// The disconnect listener should be run on the main thread if possible.
+		new Handler(Looper.getMainLooper()).post(new Runnable() {
+			@Override
+			public void run() {
+				for (BridgeDisconnectedListener listener : listenersCopy) {
+					listener.onDisconnected(TerminalBridge.this);
+				}
+			}
+		});
 	}
 
 	public synchronized void tryKeyVibrate() {

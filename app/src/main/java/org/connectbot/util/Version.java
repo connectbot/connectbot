@@ -24,7 +24,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 public class Version {
-	public static final String TAG = "CB/EulaActivity";
+	public static final String TAG = "CB/Version";
 
 	private Version() {
 	}
