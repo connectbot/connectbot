@@ -49,11 +49,11 @@
 		<item name="android:layout_alignParentStart" tools:ignore="NewApi">true</item>
 	</style>
 
-	<style name="ListItemFirstLineText">
+	<style name="ListItemFirstLineText" parent="TextAppearance.AppCompat">
 		<item name="android:layout_alignParentTop">true</item>
 		<item name="android:textColor">?android:textColorPrimary</item>
-		<item name="android:textSize">@dimen/list_item_first_line_text_size</item>
-		<item name="android:paddingTop">@dimen/list_item_top_bottom_padding</item>
+		<item name="android:textSize">16sp</item>
+		<item name="android:paddingTop">20dp</item>
 		<item name="android:layout_alignParentLeft">true</item>
 		<item name="android:layout_alignParentStart" tools:ignore="NewApi">true</item>
 	</style>
@@ -63,11 +63,11 @@
 		<item name="android:layout_marginStart" tools:ignore="NewApi">@dimen/list_item_text_margin_left</item>
 	</style>
 
-	<style name="ListItemSecondLineText">
+	<style name="ListItemSecondLineText" parent="TextAppearance.AppCompat">
 		<item name="android:layout_alignParentBottom">true</item>
 		<item name="android:textColor">?android:textColorSecondary</item>
-		<item name="android:textSize">@dimen/list_item_second_line_text_size</item>
-		<item name="android:paddingBottom">@dimen/list_item_top_bottom_padding</item>
+		<item name="android:textSize">14sp</item>
+		<item name="android:paddingBottom">20dp</item>
 		<item name="android:layout_alignParentLeft">true</item>
 		<item name="android:layout_alignParentStart" tools:ignore="NewApi">true</item>
 	</style>
@@ -101,8 +101,9 @@
 		<item name="android:textColor">@color/blue</item>
 	</style>
 
-	<!-- This value is overridden for v11 and higher, but left empty here. -->
-	<style name="SelectableItem"></style>
+	<style name="SelectableItem">
+		<item name="android:background">?android:attr/selectableItemBackground</item>
+	</style>
 
 	<style name="SwitchCompatTheme" parent="Theme.AppCompat">
 		<item name="colorAccent">@color/accent</item>
