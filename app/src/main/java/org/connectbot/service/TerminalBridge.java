@@ -393,6 +393,27 @@ public class TerminalBridge implements VDUDisplay {
 	}
 
 	/**
+	 * Send a noninteractive command to the transport. Used for post-login strings
+	 * when no PTY is requested.
+	 */
+	public void sendCommandNonInteractive(final String command) {
+		if (command == null || command.isEmpty())
+			return;
+		Thread injectCommandThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					transport.sendCommand(command);
+				} catch (Exception e) {
+					Log.e(TAG, "Couldn't send command to remote host: ", e);
+				}
+			}
+		});
+		injectCommandThread.setName("InjectCommand");
+		injectCommandThread.start();
+	}
+
+	/**
 	 * Internal method to request actual PTY terminal once we've finished
 	 * authentication. If called before authenticated, it will just fail.
 	 */
@@ -426,7 +447,21 @@ public class TerminalBridge implements VDUDisplay {
 		setFontSize(fontSizeDp);
 
 		// finally send any post-login string, if requested
-		injectString(host.getPostLogin());
+		if (isSessionOpen()) {
+			// if a shell session was established, send the string as shell input ...
+			injectString(host.getPostLogin());
+		} else {
+			// ... otherwise inject it as a noninteractive command
+			sendCommandNonInteractive(host.getPostLogin());
+		}
+	}
+
+	public void onNoninteractiveSessionEstablished() {
+		relay = new Relay(this, transport, (vt320) buffer, host.getEncoding());
+		Thread relayThread = new Thread(relay);
+		relayThread.setDaemon(true);
+		relayThread.setName("Relay");
+		relayThread.start();
 	}
 
 	/**

@@ -241,6 +241,11 @@ public class Telnet extends AbsTransport {
 	}
 
 	@Override
+	public void sendCommand(String command) throws IOException {
+		this.write(command.getBytes(host.getEncoding()));
+	}
+
+	@Override
 	public void setDimensions(int columns, int rows, int width, int height) {
 		try {
 			handler.setWindowSize(columns, rows);
