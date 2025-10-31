@@ -269,8 +269,10 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 	public TerminalBridge openConnection(Uri uri) {
 		HostBean host = TransportFactory.findHost(hostdb, uri);
 
-		if (host == null)
+		if (host == null) {
+			Log.d(TAG, "Cannot find host for URI: " + uri.toString() + ". Creating new host.");
 			host = TransportFactory.getTransport(uri.getScheme()).createHost(uri);
+		}
 
 		return openConnection(host);
 	}
@@ -520,11 +522,6 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		if (bridges.isEmpty()) {
 			stopWithDelay();
-		} else {
-			// tell each bridge to forget about their previous prompt handler
-			for (TerminalBridge bridge : bridges) {
-				bridge.promptHelper.setListener(null);
-			}
 		}
 
 		return true;

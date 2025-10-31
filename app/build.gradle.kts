@@ -3,10 +3,12 @@ import com.github.benmanes.gradle.versions.updates.resolutionstrategy.ComponentS
 import io.github.reactivecircus.appversioning.toSemVer
 import net.ltgt.gradle.errorprone.CheckSeverity
 import net.ltgt.gradle.errorprone.errorprone
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.versions)
     alias(libs.plugins.errorprone)
     alias(libs.plugins.app.versioning)
@@ -67,6 +69,7 @@ android {
 
     buildFeatures {
         buildConfig = true
+        compose = true
     }
 
     signingConfigs {
@@ -85,8 +88,8 @@ android {
             isShrinkResources = true
             isMinifyEnabled = true
 
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard.cfg")
-            testProguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard.cfg", "proguard-tests.cfg")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg")
+            testProguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg", "proguard-tests.cfg")
 
             if (project.hasProperty("keystorePassword")) {
                 signingConfig = signingConfigs.getByName("release")
@@ -94,8 +97,8 @@ android {
         }
 
         getByName("debug") {
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard.cfg", "proguard-debug.cfg")
-            testProguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard.cfg", "proguard-tests.cfg")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg", "proguard-debug.cfg")
+            testProguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg", "proguard-tests.cfg")
 
             applicationIdSuffix = ".debug"
             enableUnitTestCoverage = true
@@ -146,8 +149,15 @@ android {
         }
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 
@@ -217,9 +227,23 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.preference)
     implementation(libs.material)
-    implementation(libs.androidx.multidex)
+
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.activity.compose)
+
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     add("androidTestUtil", libs.androidx.test.orchestrator)
+    androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -229,6 +253,7 @@ dependencies {
     }
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.test.butler)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
     testImplementation(libs.junit)
     testImplementation(libs.androidx.test.core)
@@ -236,6 +261,7 @@ dependencies {
     testImplementation(libs.mockito.core)
     testImplementation(libs.assertj.core)
     testImplementation(libs.robolectric)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     testCompileOnly(libs.conscrypt.openjdk.uber)
     testRuntimeOnly(libs.conscrypt.android)

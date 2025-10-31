@@ -52,7 +52,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	public final static String TAG = "CB.HostDatabase";
 
 	public final static String DB_NAME = "hosts";
-	public final static int DB_VERSION = 26;
+	public final static int DB_VERSION = 27;
 
 	public final static String TABLE_HOSTS = "hosts";
 	public final static String FIELD_HOST_NICKNAME = "nickname";
@@ -95,6 +95,12 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 	public final static String TABLE_COLOR_DEFAULTS = "colorDefaults";
 	public final static String FIELD_COLOR_FG = "fg";
 	public final static String FIELD_COLOR_BG = "bg";
+
+	public final static String TABLE_COLOR_SCHEMES = "colorSchemes";
+	public final static String FIELD_SCHEME_ID = "_id";
+	public final static String FIELD_SCHEME_NAME = "name";
+	public final static String FIELD_SCHEME_DESCRIPTION = "description";
+	public final static String FIELD_SCHEME_IS_BUILTIN = "isBuiltIn";
 
 	public final static int DEFAULT_FG_COLOR = 7;
 	public final static int DEFAULT_BG_COLOR = 0;
@@ -157,6 +163,13 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		"CREATE INDEX " + TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index ON "
 		+ TABLE_COLOR_DEFAULTS + " (" + FIELD_COLOR_SCHEME + ");";
 
+	public static final String CREATE_TABLE_COLOR_SCHEMES =
+		"CREATE TABLE " + TABLE_COLOR_SCHEMES
+		+ " (" + FIELD_SCHEME_ID + " INTEGER PRIMARY KEY, "
+		+ FIELD_SCHEME_NAME + " TEXT NOT NULL, "
+		+ FIELD_SCHEME_DESCRIPTION + " TEXT, "
+		+ FIELD_SCHEME_IS_BUILTIN + " INTEGER NOT NULL DEFAULT 0)";
+
 	private static final String WHERE_SCHEME_AND_COLOR = FIELD_COLOR_SCHEME + " = ? AND "
 			+ FIELD_COLOR_NUMBER + " = ?";
 
@@ -170,6 +183,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		addIndexName(TABLE_COLORS + FIELD_COLOR_SCHEME + "index");
 		addTableName(TABLE_COLOR_DEFAULTS);
 		addIndexName(TABLE_COLOR_DEFAULTS + FIELD_COLOR_SCHEME + "index");
+		addTableName(TABLE_COLOR_SCHEMES);
 	}
 
 	/** Used during upgrades from DB version 23 to 24. */
@@ -260,6 +274,8 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 
 		db.execSQL(CREATE_TABLE_COLOR_DEFAULTS);
 		db.execSQL(CREATE_TABLE_COLOR_DEFAULTS_INDEX);
+
+		db.execSQL(CREATE_TABLE_COLOR_SCHEMES);
 	}
 
 	@Override
@@ -273,6 +289,7 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 			mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_PORTFORWARDS);
 			mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_COLORS);
 			mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_COLOR_DEFAULTS);
+			mDb.execSQL("DROP TABLE IF EXISTS " + TABLE_COLOR_SCHEMES);
 
 			createTables(mDb);
 
@@ -471,6 +488,10 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 				// Re-enable foreign keys (will be automatically enabled on next connection via onConfigure)
 				db.execSQL("PRAGMA foreign_keys = ON");
 			}
+			// fall through
+		case 26:
+			// Add color schemes metadata table
+			db.execSQL(CREATE_TABLE_COLOR_SCHEMES);
 		}
 	}
 
@@ -1013,5 +1034,153 @@ public class HostDatabase extends RobustSQLiteOpenHelper implements HostStorage,
 		} finally {
 			mDb.endTransaction();
 		}
+	}
+
+	/**
+	 * Clear all custom color overrides for a color scheme.
+	 * After this, the scheme will use the default Colors.defaults palette.
+	 *
+	 * @param scheme The color scheme ID to clear
+	 */
+	public void clearAllColorsForScheme(int scheme) {
+		mDb.beginTransaction();
+		try {
+			mDb.delete(TABLE_COLORS,
+					FIELD_COLOR_SCHEME + " = ?",
+					new String[] { String.valueOf(scheme) });
+			mDb.setTransactionSuccessful();
+		} finally {
+			mDb.endTransaction();
+		}
+	}
+
+	// ===== Color Scheme Metadata Methods =====
+
+	/**
+	 * Create a new color scheme with metadata.
+	 *
+	 * @param id The scheme ID (must be > 0 for custom schemes)
+	 * @param name The scheme name
+	 * @param description Optional description
+	 * @param isBuiltIn Whether this is a built-in scheme
+	 * @return The ID of the created scheme, or -1 if failed
+	 */
+	public long createColorScheme(int id, String name, String description, boolean isBuiltIn) {
+		ContentValues values = new ContentValues();
+		if (id > 0) {
+			values.put(FIELD_SCHEME_ID, id);
+		}
+		values.put(FIELD_SCHEME_NAME, name);
+		values.put(FIELD_SCHEME_DESCRIPTION, description != null ? description : "");
+		values.put(FIELD_SCHEME_IS_BUILTIN, isBuiltIn ? 1 : 0);
+
+		mDb.beginTransaction();
+		try {
+			long result = mDb.insert(TABLE_COLOR_SCHEMES, null, values);
+			mDb.setTransactionSuccessful();
+			return result;
+		} finally {
+			mDb.endTransaction();
+		}
+	}
+
+	/**
+	 * Get metadata for a specific color scheme.
+	 *
+	 * @param schemeId The scheme ID
+	 * @return Cursor with scheme metadata, or null if not found
+	 */
+	public Cursor getColorSchemeMetadata(int schemeId) {
+		return mDb.query(TABLE_COLOR_SCHEMES,
+				new String[] { FIELD_SCHEME_ID, FIELD_SCHEME_NAME, FIELD_SCHEME_DESCRIPTION, FIELD_SCHEME_IS_BUILTIN },
+				FIELD_SCHEME_ID + " = ?",
+				new String[] { String.valueOf(schemeId) },
+				null, null, null);
+	}
+
+	/**
+	 * Get metadata for all color schemes.
+	 *
+	 * @return Cursor with all scheme metadata
+	 */
+	public Cursor getAllColorSchemeMetadata() {
+		return mDb.query(TABLE_COLOR_SCHEMES,
+				new String[] { FIELD_SCHEME_ID, FIELD_SCHEME_NAME, FIELD_SCHEME_DESCRIPTION, FIELD_SCHEME_IS_BUILTIN },
+				null, null, null, null,
+				FIELD_SCHEME_NAME + " ASC");
+	}
+
+	/**
+	 * Update a color scheme's metadata.
+	 *
+	 * @param schemeId The scheme ID to update
+	 * @param name The new name
+	 * @param description The new description
+	 * @return Number of rows affected
+	 */
+	public int updateColorSchemeMetadata(int schemeId, String name, String description) {
+		ContentValues values = new ContentValues();
+		values.put(FIELD_SCHEME_NAME, name);
+		values.put(FIELD_SCHEME_DESCRIPTION, description != null ? description : "");
+
+		mDb.beginTransaction();
+		try {
+			int rowsAffected = mDb.update(TABLE_COLOR_SCHEMES, values,
+					FIELD_SCHEME_ID + " = ?",
+					new String[] { String.valueOf(schemeId) });
+			mDb.setTransactionSuccessful();
+			return rowsAffected;
+		} finally {
+			mDb.endTransaction();
+		}
+	}
+
+	/**
+	 * Delete a color scheme's metadata.
+	 *
+	 * @param schemeId The scheme ID to delete
+	 * @return Number of rows affected
+	 */
+	public int deleteColorSchemeMetadata(int schemeId) {
+		mDb.beginTransaction();
+		try {
+			int rowsAffected = mDb.delete(TABLE_COLOR_SCHEMES,
+					FIELD_SCHEME_ID + " = ?",
+					new String[] { String.valueOf(schemeId) });
+			mDb.setTransactionSuccessful();
+			return rowsAffected;
+		} finally {
+			mDb.endTransaction();
+		}
+	}
+
+	/**
+	 * Check if a scheme name already exists.
+	 *
+	 * @param name The name to check (case-insensitive)
+	 * @param excludeSchemeId Optional scheme ID to exclude from the check
+	 * @return true if the name exists, false otherwise
+	 */
+	public boolean colorSchemeNameExists(String name, Integer excludeSchemeId) {
+		// Use COLLATE NOCASE for case-insensitive comparison
+		String selection = FIELD_SCHEME_NAME + " = ? COLLATE NOCASE";
+		String[] selectionArgs;
+
+		if (excludeSchemeId != null) {
+			selection += " AND " + FIELD_SCHEME_ID + " != ?";
+			selectionArgs = new String[] { name, String.valueOf(excludeSchemeId) };
+		} else {
+			selectionArgs = new String[] { name };
+		}
+
+		Cursor cursor = mDb.query(TABLE_COLOR_SCHEMES,
+				new String[] { FIELD_SCHEME_ID },
+				selection,
+				selectionArgs,
+				null, null, null);
+
+		boolean exists = cursor.getCount() > 0;
+		cursor.close();
+		return exists;
 	}
 }

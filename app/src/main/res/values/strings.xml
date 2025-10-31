@@ -303,12 +303,16 @@
 
 	<!-- Checkbox preference title for the audible terminal bell feature -->
 	<string name="pref_bell_title">"Audible bell"</string>
+	<!-- Brief summary of the user preference that causes a bell sound to play when the terminal alert is triggered. -->
+	<string name="pref_bell_summary">"Play sound on terminal alert"</string>
 
 	<!-- Title for the slider preference to set the volume -->
 	<string name="pref_bell_volume_title">"Bell volume"</string>
 
 	<!-- Checkbox preference title for the vibrate on terminal bell feature -->
 	<string name="pref_bell_vibrate_title">"Vibrate on bell"</string>
+	<!-- Brief summary of the feature that causes the phone to vibrate when a terminal alert would cause the "bell" sound to play normally. -->
+	<string name="pref_bell_vibrate_summary">"Vibrate on terminal alert</string>
 
 	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
 	<string name="pref_bell_notification_title">"Background notifications"</string>
@@ -420,6 +424,9 @@
 	<!-- Button that commits the port forward to be made from the Port Forward Creation dialog. -->
 	<string name="portforward_pos">"Create port forward"</string>
 
+	<!-- Button that saves changes to an existing port forward in the Port Forward Edit dialog. -->
+	<string name="portforward_save">"Save"</string>
+
 	<string name="portforward_problem">"Problem creating port forward, maybe you're using ports under 1024 or port is already used?"</string>
 
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
@@ -528,8 +535,138 @@
 	<!-- Menu selection to reset colors to their defaults. -->
 	<string name="menu_colors_reset">"Reset"</string>
 
+	<!-- Button text to open color scheme manager -->
+	<string name="button_manage_schemes">"Manage Schemes"</string>
+
+	<!-- Window title for color scheme manager screen -->
+	<string name="title_scheme_manager">"Manage Color Schemes"</string>
+
+	<!-- Button text to create a new color scheme -->
+	<string name="button_new_scheme">"New Scheme"</string>
+
+	<!-- Button text to duplicate a color scheme -->
+	<string name="button_duplicate_scheme">"Duplicate"</string>
+
+	<!-- Button text to rename a color scheme -->
+	<string name="button_rename_scheme">"Rename"</string>
+
+	<!-- Button text to delete a color scheme -->
+	<string name="button_delete_scheme">"Delete"</string>
+
+	<!-- Dialog title when creating a new color scheme -->
+	<string name="dialog_title_new_scheme">"New Color Scheme"</string>
+
+	<!-- Dialog title when renaming a color scheme -->
+	<string name="dialog_title_rename_scheme">"Rename Color Scheme"</string>
+
+	<!-- Label for scheme name input field -->
+	<string name="label_scheme_name">"Scheme Name"</string>
+
+	<!-- Label for scheme description input field (optional) -->
+	<string name="label_scheme_description">"Description (optional)"</string>
+
+	<!-- Confirmation dialog title when deleting a scheme -->
+	<string name="dialog_title_delete_scheme">"Delete Scheme?"</string>
+
+	<!-- Confirmation dialog message when deleting a scheme -->
+	<string name="dialog_message_delete_scheme">"Are you sure you want to delete \"%1$s\"? This action cannot be undone."</string>
+
+	<!-- Error message when scheme name is empty -->
+	<string name="error_scheme_name_empty">"Scheme name cannot be empty"</string>
+
+	<!-- Error message when scheme name already exists -->
+	<string name="error_scheme_name_exists">"A scheme with this name already exists"</string>
+
+	<!-- Button text for confirm action in dialogs -->
+	<string name="button_confirm">"Confirm"</string>
+
+	<!-- Button text for cancel action in dialogs -->
+	<string name="button_cancel">"Cancel"</string>
+
+	<!-- Label indicating a scheme is built-in and cannot be deleted -->
+	<string name="label_built_in_scheme">"Built-in"</string>
+
+	<!-- Label indicating a scheme is custom/user-created -->
+	<string name="label_custom_scheme">"Custom"</string>
+
+	<!-- Empty state message when no custom schemes exist -->
+	<string name="empty_custom_schemes">"No custom schemes. Tap \"New Scheme\" to create one."</string>
+
+	<!-- Button text to edit full color palette -->
+	<string name="button_edit_palette">"Edit Palette"</string>
+
+	<!-- Button text to export a color scheme to JSON file -->
+	<string name="button_export_scheme">"Export Scheme"</string>
+
+	<!-- Button text to import a color scheme from JSON file -->
+	<string name="button_import_scheme">"Import Scheme"</string>
+
+	<!-- Success message after exporting a scheme -->
+	<string name="message_export_success">"Exported %1$s"</string>
+
+	<!-- Success message after importing a scheme -->
+	<string name="message_import_success">"Imported %1$s"</string>
+
+	<!-- Error message when export fails -->
+	<string name="error_export_failed">"Failed to export scheme: %1$s"</string>
+
+	<!-- Error message when import fails -->
+	<string name="error_import_failed">"Failed to import scheme: %1$s"</string>
+
+	<!-- Error message when JSON parsing fails -->
+	<string name="error_invalid_json">"Invalid JSON file"</string>
+
+	<!-- Error message when scheme file format is invalid -->
+	<string name="error_invalid_scheme_format">"Invalid color scheme format"</string>
+
+	<!-- Window title for palette editor screen -->
+	<string name="title_palette_editor">"Edit Color Palette"</string>
+
+	<!-- Label for color index in palette editor -->
+	<string name="label_color_index">"Color %1$d"</string>
+
+	<!-- Button text to reset a single color to default -->
+	<string name="button_reset_color">"Reset"</string>
+
+	<!-- Button text to reset entire palette to defaults -->
+	<string name="button_reset_all_colors">"Reset All"</string>
+
+	<!-- Section header for ANSI colors (0-15) -->
+	<string name="section_ansi_colors">"ANSI Colors (0-15)"</string>
+
+	<!-- Section header for 216-color RGB cube (16-231) -->
+	<string name="section_rgb_cube">"RGB Cube (16-231)"</string>
+
+	<!-- Section header for grayscale ramp (232-255) -->
+	<string name="section_grayscale">"Grayscale (232-255)"</string>
+
+	<!-- Dialog title when editing a specific color -->
+	<string name="dialog_title_edit_color">"Edit Color %1$d"</string>
+
+	<!-- Confirmation dialog for resetting all colors -->
+	<string name="dialog_title_reset_all">"Reset All Colors?"</string>
+
+	<!-- Message for reset all colors confirmation -->
+	<string name="dialog_message_reset_all">"This will reset all 256 colors to their default values. This action cannot be undone."</string>
+
 	<!-- Displayed in the notification bar that connections are active -->
 	<string name="app_is_running">"ConnectBot is running"</string>
+
+	<!-- RGB color picker labels -->
+	<!-- Label for the red color component slider (0-255) in the RGB color picker -->
+	<string name="label_red">"Red"</string>
+
+	<!-- Label for the green color component slider (0-255) in the RGB color picker -->
+	<string name="label_green">"Green"</string>
+
+	<!-- Label for the blue color component slider (0-255) in the RGB color picker -->
+	<string name="label_blue">"Blue"</string>
+
+	<!-- Label showing the hexadecimal representation of the current color. %1$s is the hex code like #FF5733 -->
+	<string name="label_hex_value">"Hex: %1$s"</string>
+
+	<!-- Label for the hex color input field where users can type a hex color code -->
+	<string name="label_hex_color">"Hex Color"</string>
 
 	<string name="color_red">"red"</string>
 	<string name="color_green">"green"</string>
@@ -629,6 +766,95 @@
 	<string name="button_key_f11">F11</string>
 	<!-- Text for the "F12" button in virtual keyboard. -->
 	<string name="button_key_f12">F12</string>
+
+	<!-- Common UI button labels -->
+	<!-- Button label for confirming an action -->
+	<string name="button_ok">OK</string>
+	<!-- Button label for closing a dialog -->
+	<string name="button_close">Close</string>
+	<!-- Accessibility label for back navigation button; used for screen readers -->
+	<string name="button_back">Back</string>
+	<!-- Accessibility label for navigate up button in app bar; used for screen readers -->
+	<string name="button_navigate_up">Navigate up</string>
+	<!-- Accessibility label for more options menu button; used for screen readers -->
+	<string name="button_more_options">More options</string>
+	<!-- Accessibility label for collapse button; used for screen readers -->
+	<string name="button_collapse">Collapse</string>
+
+	<!-- Error messages -->
+	<!-- Generic error message template with placeholder for specific error details -->
+	<string name="error_message">Error: %s</string>
+
+	<!-- Empty state messages -->
+	<!-- Message shown when no hosts have been configured yet -->
+	<string name="empty_hosts_message">No hosts configured</string>
+	<!-- Message shown when no public keys have been generated or imported yet -->
+	<string name="empty_pubkeys_message">No keys found.</string>
+	<!-- Message shown when no port forwards have been configured for a host -->
+	<string name="empty_port_forwards_message">No port forwards configured.</string>
+	<!-- Message shown when no URLs are found in the terminal buffer during URL scan -->
+	<string name="empty_urls_message">No URLs found in terminal buffer</string>
+
+	<!-- Console screen messages -->
+	<!-- Message shown when trying to access console before terminal connection is ready -->
+	<string name="console_not_ready_message">The terminal connection may not be ready yet.\nReturn to the host list to connect.</string>
+	<!-- Default title for console screen when no specific host is connected -->
+	<string name="console_default_title">Console</string>
+
+	<!-- Host editor screen labels -->
+	<!-- Label for quick connect input field -->
+	<string name="host_editor_quick_connect_label">Quick connect</string>
+	<!-- Placeholder text showing format for quick connect field -->
+	<string name="host_editor_quick_connect_placeholder">user@hostname:port</string>
+	<!-- Supporting text showing example for quick connect field -->
+	<string name="host_editor_quick_connect_example">Example: root@192.168.1.1:22</string>
+	<!-- Text for button to show advanced host options -->
+	<string name="host_editor_show_advanced">Show advanced options</string>
+	<!-- Text for button to hide advanced host options -->
+	<string name="host_editor_hide_advanced">Hide advanced options</string>
+
+	<!-- Terminal resize dialog -->
+	<!-- Label for width input field in terminal resize dialog -->
+	<string name="resize_width_label">Width (columns)</string>
+	<!-- Label for height input field in terminal resize dialog -->
+	<string name="resize_height_label">Height (rows)</string>
+
+	<!-- Public key editor labels -->
+	<!-- Label for key type field in the SSH pubkey editor -->
+	<string name="pubkey_editor_key_type_label">Key type</string>
+	<!-- Label for the options section on SSH pubkey editor -->
+	<string name="pubkey_editor_options_label">Options</string>
+	<!-- Warning message shown when encrypted SSH pubkeys are set to load on startup -->
+	<string name="pubkey_editor_encrypted_startup_warning">Encrypted keys cannot be unlocked at startup</string>
+
+	<!-- Public key list labels -->
+	<!-- Default name shown for a public key that has no nickname. This only shows up in error cases. -->
+	<string name="pubkey_unnamed">Unnamed key</string>
+	<!-- Label prefix for displaying key type in list -->
+	<string name="pubkey_type_label">Type: %s</string>
+	<!-- Text shown when key type is unknown -->
+	<string name="pubkey_type_unknown_text">Unknown</string>
+	<!-- Accessibility description for encrypted key icon -->
+	<string name="pubkey_encrypted_description">Encrypted</string>
+	<!-- Accessibility description for unencrypted key icon -->
+	<string name="pubkey_not_encrypted_description">Not encrypted</string>
+
+	<!-- Port forward editor labels -->
+	<!-- Placeholder for port forward nickname field. Should show an example nickname for a port forward. -->
+	<string name="portforward_nickname_placeholder">Internal Webserver</string>
+	<!-- Error message when port is out of valid range -->
+	<string name="portforward_port_range_error">Port must be between 1 and 65535</string>
+	<!-- Placeholder for destination field -->
+	<string name="portforward_destination_placeholder">localhost:80</string>
+	<!-- Error message for invalid destination format -->
+	<string name="portforward_destination_format_error">Format should be host:port (e.g., localhost:80)</string>
+
+	<!-- Port forward list labels -->
+	<!-- Default name shown for a port forward that has no nickname -->
+	<string name="portforward_unnamed">Port Forward</string>
+	<!-- Label prefix for displaying port forward type in list -->
+	<string name="portforward_type_label">Type: %s</string>
+
 	<!-- Label for spinner which allows user to select SSH/Telnet/Local. -->
 	<string name="protocol_spinner_label">Protocol</string>
 	<!-- Label for button which expands/collapses section. -->
@@ -676,4 +902,5 @@
 	<string name="notification_requirement_explanation">Notification permission is required to display running sessions in the background</string>
 	<string name="continue_anyway">Continue without</string>
 	<string name="allow">Allow</string>
+	<string name="terminal_no_route">Are you trying to access a local host? Grant local network permissions.</string>
 </resources>
