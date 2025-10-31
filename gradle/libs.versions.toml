@@ -13,7 +13,6 @@ appVersioning = "1.4.0"
 compileSdk = "35"
 minSdk = "16"
 targetSdk = "35"
-ndk = "20.1.5948944"
 
 sshlib = "2.2.29"
 playServicesBasement = "18.3.0"
