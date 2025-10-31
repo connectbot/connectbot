@@ -46,6 +46,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.util.TypedValue;
@@ -79,7 +80,12 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 	private final TerminalTextViewOverlay terminalTextViewOverlay;
 	public final TerminalViewPager viewPager;
 	private final GestureDetector gestureDetector;
+	private ArrowGestureListener gestureListener;
 	private final SharedPreferences prefs;
+	private long touchDownTime = 0;
+	private static final long TEXT_SELECTION_DELAY = 500; // ms to wait before allowing text selection
+	private Handler longPressEnableHandler = new Handler();
+	private Runnable enableTextSelectionRunnable;
 
 	// These are only used for pre-Honeycomb copying.
 	private int lastTouchedRow, lastTouchedCol;
@@ -215,59 +221,8 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 
 		onFontSizeChanged(0); // the argument is unused
 
-		gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-			// Only used for pre-Honeycomb devices.
-			private final TerminalBridge bridge = TerminalView.this.bridge;
-			private float totalY = 0;
-
-			/**
-			 * This should only handle scrolling when terminalTextViewOverlay is {@code null}, but
-			 * we need to handle the page up/down gesture if it's enabled.
-			 */
-			@Override
-			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-				// activate consider if within x tolerance
-				int touchSlop =
-						ViewConfiguration.get(TerminalView.this.context).getScaledTouchSlop();
-				if (Math.abs(e1.getX() - e2.getX()) < touchSlop * 4) {
-					// estimate how many rows we have scrolled through
-					// accumulate distance that doesn't trigger immediate scroll
-					totalY += distanceY;
-					final int moved = (int) (totalY / bridge.charHeight);
-
-					// Consume as pg up/dn only if towards left third of screen with the gesture
-					// enabled.
-					boolean pgUpDnGestureEnabled =
-							prefs.getBoolean(PreferenceConstants.PG_UPDN_GESTURE, false);
-					if (pgUpDnGestureEnabled && e2.getX() <= getWidth() / 3) {
-						// otherwise consume as pgup/pgdown for every 5 lines
-						if (moved > 5) {
-							((vt320) bridge.buffer).keyPressed(vt320.KEY_PAGE_DOWN, ' ', 0);
-							bridge.tryKeyVibrate();
-							totalY = 0;
-						} else if (moved < -5) {
-							((vt320) bridge.buffer).keyPressed(vt320.KEY_PAGE_UP, ' ', 0);
-							bridge.tryKeyVibrate();
-							totalY = 0;
-						}
-						return true;
-					} else if (moved != 0) {
-						int base = bridge.buffer.getWindowBase();
-						bridge.buffer.setWindowBase(base + moved);
-						totalY = 0;
-						return false;
-					}
-				}
-
-				return false;
-			}
-
-			@Override
-			public boolean onSingleTapConfirmed(MotionEvent e) {
-				viewPager.performClick();
-				return super.onSingleTapConfirmed(e);
-			}
-		});
+		gestureListener = new ArrowGestureListener();
+		gestureDetector = new GestureDetector(context, gestureListener);
 
 		// Enable accessibility features if a screen reader is active.
 		new AccessibilityStateTester().execute((Void) null);
@@ -283,9 +238,110 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 		}
 	}
 
+	private boolean allowTextSelection = false;
+	private boolean textSelectionStarted = false;
+	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent event) {
+		// Intercept touch events before they reach child views (including overlay)
+		boolean arrowKeyGestureEnabled = prefs.getBoolean(PreferenceConstants.ARROW_KEY_GESTURE, false);
+		float xPos = event.getX();
+		float screenWidth = getWidth();
+		boolean inArrowGestureZone = arrowKeyGestureEnabled && xPos <= screenWidth * 2 / 3;
+		
+		// Track touch timing for text selection delay
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			touchDownTime = System.currentTimeMillis();
+			allowTextSelection = false;
+			textSelectionStarted = false;
+			// Cancel any pending enable
+			if (enableTextSelectionRunnable != null) {
+				longPressEnableHandler.removeCallbacks(enableTextSelectionRunnable);
+			}
+			
+			// In gesture zone, schedule text selection enable after delay
+			if (inArrowGestureZone) {
+				enableTextSelectionRunnable = new Runnable() {
+					@Override
+					public void run() {
+						allowTextSelection = true;
+						textSelectionStarted = true;
+						// Force the overlay to handle text selection by simulating a long click
+						terminalTextViewOverlay.performLongClick();
+					}
+				};
+				longPressEnableHandler.postDelayed(enableTextSelectionRunnable, TEXT_SELECTION_DELAY);
+			}
+		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+			// If we've started text selection, let the overlay handle moves
+			if (textSelectionStarted && allowTextSelection) {
+				return super.dispatchTouchEvent(event);
+			}
+		} else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+			// Cancel any pending text selection enable
+			if (enableTextSelectionRunnable != null) {
+				longPressEnableHandler.removeCallbacks(enableTextSelectionRunnable);
+			}
+			// If text selection was started, let the overlay handle the up event
+			if (textSelectionStarted) {
+				textSelectionStarted = false;
+				allowTextSelection = false;
+				return super.dispatchTouchEvent(event);
+			}
+			allowTextSelection = false;
+		}
+		
+		// In gesture zone, handle the event ourselves first
+		if (inArrowGestureZone && !allowTextSelection) {
+			// Handle gesture ourselves
+			boolean handled = onTouchEvent(event);
+			if (handled) {
+				return true;
+			}
+		}
+		
+		// Otherwise, normal dispatch to children
+		return super.dispatchTouchEvent(event);
+	}
+	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if (gestureDetector != null && gestureDetector.onTouchEvent(event)) {
+		// Check if we should disable ViewPager for arrow gestures
+		boolean arrowKeyGestureEnabled = prefs.getBoolean(PreferenceConstants.ARROW_KEY_GESTURE, false);
+		float xPos = event.getX();
+		float screenWidth = getWidth();
+		boolean inArrowGestureZone = arrowKeyGestureEnabled && xPos <= screenWidth * 2 / 3;
+		
+		// Disable ViewPager paging when in arrow gesture zone
+		if (event.getAction() == MotionEvent.ACTION_DOWN && inArrowGestureZone) {
+			viewPager.setPagingEnabled(false);
+		} else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+			viewPager.setPagingEnabled(true);
+			// Stop key repeat when touch ends
+			if (gestureListener != null) {
+				gestureListener.stopKeyRepeat();
+			}
+		}
+		
+		// Let the gesture detector process the event first
+		boolean gestureHandled = false;
+		if (gestureDetector != null) {
+			gestureHandled = gestureDetector.onTouchEvent(event);
+		}
+		
+		// For modern Android, check if the overlay is handling text selection
+		if (terminalTextViewOverlay != null && terminalTextViewOverlay.hasSelection()) {
+			// Let text selection continue normally
+			return super.onTouchEvent(event);
+		}
+		
+		// In the arrow gesture zone, we handle all events
+		if (inArrowGestureZone && !bridge.isSelectingForCopy()) {
+			return true;
+		}
+		
+		// If gesture was handled, consume the event
+		if (gestureHandled) {
 			return true;
 		}
 
@@ -439,9 +495,13 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 						bridge.charHeight);
 
 				int metaState = bridge.getKeyHandler().getMetaState();
-				if (y + bridge.charHeight < bridge.bitmap.getHeight()) {
+				// Check bitmap bounds before creating sub-bitmap
+				int cursorWidth = bridge.charWidth * (onWideCharacter ? 2 : 1);
+				if (y + bridge.charHeight <= bridge.bitmap.getHeight() && 
+				    x + cursorWidth <= bridge.bitmap.getWidth() &&
+				    x >= 0 && y >= 0) {
 					Bitmap underCursor = Bitmap.createBitmap(bridge.bitmap, x, y,
-							bridge.charWidth * (onWideCharacter ? 2 : 1), bridge.charHeight);
+							cursorWidth, bridge.charHeight);
 					if (metaState == 0)
 						canvas.drawBitmap(underCursor, 0, 0, cursorInversionPaint);
 					else
@@ -591,6 +651,11 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 		@Override
 		public void run() {
 			synchronized (mAccessibilityLock) {
+				// Initialize mControlCodes if it's null
+				if (mControlCodes == null) {
+					mControlCodes = Pattern.compile(CONTROL_CODE_PATTERN);
+				}
+				
 				if (mCodeMatcher == null) {
 					mCodeMatcher = mControlCodes.matcher(mAccessibilityBuffer.toString());
 				} else {
@@ -706,6 +771,179 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 					mAccessibilityBuffer.trimToSize();
 				}
 			}
+		}
+	}
+	
+	private class ArrowGestureListener extends GestureDetector.SimpleOnGestureListener {
+		// Only used for pre-Honeycomb devices.
+		private final TerminalBridge bridge = TerminalView.this.bridge;
+		private float totalY = 0;
+		private float totalX = 0;
+		private boolean gestureHandled = false;
+		private int currentKey = 0;
+		private Handler keyRepeatHandler = new Handler();
+		private static final int KEY_REPEAT_INITIAL_DELAY = 400; // ms before first repeat
+		private static final int KEY_REPEAT_INTERVAL_VERTICAL = 150; // ms between repeats for up/down (slower)
+		private static final int KEY_REPEAT_INTERVAL_HORIZONTAL = 75; // ms between repeats for left/right (faster)
+		
+		private Runnable keyRepeatRunnable = new Runnable() {
+			@Override
+			public void run() {
+				if (currentKey != 0) {
+					((vt320) bridge.buffer).keyPressed(currentKey, ' ', 0);
+					bridge.tryKeyVibrate();
+					
+					// Use different repeat intervals for vertical vs horizontal movement
+					int interval = (currentKey == vt320.KEY_UP || currentKey == vt320.KEY_DOWN) 
+							? KEY_REPEAT_INTERVAL_VERTICAL 
+							: KEY_REPEAT_INTERVAL_HORIZONTAL;
+					
+					keyRepeatHandler.postDelayed(this, interval);
+				}
+			}
+		};
+
+		/**
+		 * This should only handle scrolling when terminalTextViewOverlay is {@code null}, but
+		 * we need to handle the page up/down gesture if it's enabled.
+		 */
+		@Override
+		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+			// Check if arrow key gesture is enabled
+			boolean arrowKeyGestureEnabled = 
+					prefs.getBoolean(PreferenceConstants.ARROW_KEY_GESTURE, false);
+			boolean pgUpDnGestureEnabled =
+					prefs.getBoolean(PreferenceConstants.PG_UPDN_GESTURE, false);
+			
+			int touchSlop = ViewConfiguration.get(TerminalView.this.context).getScaledTouchSlop();
+			float screenWidth = getWidth();
+			float xPos = e2.getX();
+			
+			// Check if we're in arrow gesture zone
+			boolean inArrowGestureZone = arrowKeyGestureEnabled && xPos <= screenWidth * 2 / 3;
+			
+			// Handle arrow key gestures in left 2/3 of screen
+			if (inArrowGestureZone) {
+				// Cancel any pending text selection on movement
+				if (TerminalView.this.enableTextSelectionRunnable != null) {
+					TerminalView.this.longPressEnableHandler.removeCallbacks(TerminalView.this.enableTextSelectionRunnable);
+				}
+				
+				// Accumulate total movement
+				totalX += distanceX;
+				totalY += distanceY;
+				
+				
+				// Check if we've moved enough to trigger a gesture
+				float threshold = touchSlop * 3;
+				
+				
+				// Determine dominant direction
+				if (Math.abs(totalX) > threshold || Math.abs(totalY) > threshold) {
+					if (!gestureHandled) {
+						int keyToSend = 0;
+						if (Math.abs(totalX) > Math.abs(totalY)) {
+							// Horizontal swipe
+							if (totalX > threshold) {
+								// Swipe left (finger moves left, content moves right)
+								keyToSend = vt320.KEY_LEFT;
+							} else if (totalX < -threshold) {
+								// Swipe right (finger moves right, content moves left)
+								keyToSend = vt320.KEY_RIGHT;
+							}
+						} else {
+							// Vertical swipe
+							if (totalY > threshold) {
+								// Swipe up (finger moves up, content moves down)
+								keyToSend = vt320.KEY_UP;
+							} else if (totalY < -threshold) {
+								// Swipe down (finger moves down, content moves up)
+								keyToSend = vt320.KEY_DOWN;
+							}
+						}
+						
+						if (keyToSend != 0) {
+							// Send the arrow key
+							((vt320) bridge.buffer).keyPressed(keyToSend, ' ', 0);
+							bridge.tryKeyVibrate();
+							gestureHandled = true;
+							currentKey = keyToSend;
+							
+							// Start key repeat after delay
+							keyRepeatHandler.postDelayed(keyRepeatRunnable, KEY_REPEAT_INITIAL_DELAY);
+						}
+					}
+				}
+				// ALWAYS return true in gesture zone to prevent any scrolling
+				return true;
+			}
+			// Handle page up/down in left 1/3 (only if arrow gestures not enabled or not in that area)
+			else if (pgUpDnGestureEnabled && xPos <= screenWidth / 3 && !arrowKeyGestureEnabled) {
+				if (Math.abs(e1.getX() - e2.getX()) < touchSlop * 4) {
+					totalY += distanceY;
+					final int moved = (int) (totalY / bridge.charHeight);
+					
+					if (moved > 5) {
+						((vt320) bridge.buffer).keyPressed(vt320.KEY_PAGE_DOWN, ' ', 0);
+						bridge.tryKeyVibrate();
+						totalY = 0;
+					} else if (moved < -5) {
+						((vt320) bridge.buffer).keyPressed(vt320.KEY_PAGE_UP, ' ', 0);
+						bridge.tryKeyVibrate();
+						totalY = 0;
+					}
+					return true;
+				}
+			}
+			// Handle normal scrolling in right portion or when gestures disabled
+			else if (!gestureHandled) {  // Don't scroll if we handled a gesture
+				if (Math.abs(e1.getX() - e2.getX()) < touchSlop * 4) {
+					totalY += distanceY;
+					final int moved = (int) (totalY / bridge.charHeight);
+					
+					if (moved != 0) {
+						int base = bridge.buffer.getWindowBase();
+						bridge.buffer.setWindowBase(base + moved);
+						totalY = 0;
+						return false;
+					}
+				}
+			}
+
+			return gestureHandled;  // Return true if we handled a gesture to prevent further processing
+		}
+
+		@Override
+		public boolean onDown(MotionEvent e) {
+			// Reset gesture tracking
+			totalX = 0;
+			totalY = 0;
+			gestureHandled = false;
+			currentKey = 0;
+			keyRepeatHandler.removeCallbacks(keyRepeatRunnable);
+			// Long press is controlled by the main onTouchEvent now
+			return false;
+		}
+
+		@Override
+		public boolean onSingleTapConfirmed(MotionEvent e) {
+			viewPager.performClick();
+			return super.onSingleTapConfirmed(e);
+		}
+		
+		@Override
+		public void onLongPress(MotionEvent e) {
+			// Long press is now only enabled after 500ms of no movement
+			// so if we get here, it's a legitimate long press for text selection
+		}
+		
+		public void stopKeyRepeat() {
+			currentKey = 0;
+			keyRepeatHandler.removeCallbacks(keyRepeatRunnable);
+		}
+		
+		public boolean isRepeatingKey() {
+			return currentKey != 0;
 		}
 	}
 }
