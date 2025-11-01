@@ -181,14 +181,19 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			if (requestedBridge != null)
 				requestedBridge.promptHelper.setHandler(promptHandler);
 
-
-			if (requestedIndex != -1) {
+			// Check if this is a background connection (don't switch to console view)
+			boolean backgroundConnection = getIntent().getBooleanExtra("org.connectbot.BACKGROUND_CONNECTION", false);
+			
+			if (requestedIndex != -1 && !backgroundConnection) {
 				pager.post(new Runnable() {
 					@Override
 					public void run() {
 						setDisplayedTerminal(requestedIndex);
 					}
 				});
+			} else if (backgroundConnection) {
+				// For background connections, finish the activity after connection is established
+				finish();
 			}
 		}
 

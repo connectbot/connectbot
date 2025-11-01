@@ -55,6 +55,7 @@ import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.service.TerminalManager.KeyHolder;
 import org.connectbot.util.HostDatabase;
+import org.connectbot.util.NetworkUtils;
 import org.connectbot.util.PubkeyDatabase;
 import org.connectbot.util.PubkeyUtils;
 
@@ -631,6 +632,33 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		return portForwards.remove(portForward);
 	}
 
+	/**
+	 * Resolve bind address string to actual InetAddress
+	 * @param bindAddress the bind address type
+	 * @return InetAddress object, or null if access_point is requested but unavailable
+	 */
+	private InetAddress resolveBindAddress(String bindAddress) {
+		try {
+			if (NetworkUtils.BIND_ALL_INTERFACES.equals(bindAddress)) {
+				return InetAddress.getByName(NetworkUtils.BIND_ALL_INTERFACES);
+			} else if (NetworkUtils.BIND_ACCESS_POINT.equals(bindAddress)) {
+				String apIP = NetworkUtils.getAccessPointIP(manager);
+				if (apIP != null) {
+					Log.d(TAG, "Binding to access point IP: " + apIP);
+					return InetAddress.getByName(apIP);
+				} else {
+					Log.w(TAG, "Access point IP not available, cannot bind port forward");
+					return null; // Do not fall back to localhost for security
+				}
+			} else {
+				return InetAddress.getLoopbackAddress();
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "Error resolving bind address: " + bindAddress, e);
+			return NetworkUtils.BIND_ACCESS_POINT.equals(bindAddress) ? null : InetAddress.getLoopbackAddress();
+		}
+	}
+
 	@Override
 	public boolean enablePortForward(PortForwardBean portForward) {
 		if (!portForwards.contains(portForward)) {
@@ -644,8 +672,13 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		if (HostDatabase.PORTFORWARD_LOCAL.equals(portForward.getType())) {
 			LocalPortForwarder lpf = null;
 			try {
+				InetAddress bindAddr = resolveBindAddress(portForward.getBindAddress());
+				if (bindAddr == null) {
+					Log.e(TAG, "Cannot bind port forward - bind address unavailable: " + portForward.getBindAddress());
+					return false;
+				}
 				lpf = connection.createLocalPortForwarder(
-						new InetSocketAddress(InetAddress.getLocalHost(), portForward.getSourcePort()),
+						new InetSocketAddress(bindAddr, portForward.getSourcePort()),
 						portForward.getDestAddr(), portForward.getDestPort());
 			} catch (Exception e) {
 				Log.e(TAG, "Could not create local port forward", e);
@@ -659,6 +692,15 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 			portForward.setIdentifier(lpf);
 			portForward.setEnabled(true);
+			
+			// Update notification if access point binding is being used
+			if (NetworkUtils.BIND_ACCESS_POINT.equals(portForward.getBindAddress())) {
+				manager.updateAccessPointNotification();
+			}
+			
+			// Notify host status listeners so UI can update port forward states
+			manager.notifyHostStatusChanged();
+			
 			return true;
 		} else if (HostDatabase.PORTFORWARD_REMOTE.equals(portForward.getType())) {
 			try {
@@ -669,13 +711,25 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			}
 
 			portForward.setEnabled(true);
+			
+			// Notify host status listeners so UI can update port forward states
+			manager.notifyHostStatusChanged();
+			
+			// Update notification for any access point forwards (remote forwards don't use bind address)
+			manager.updateAccessPointNotification();
+			
 			return true;
 		} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(portForward.getType())) {
 			DynamicPortForwarder dpf = null;
 
 			try {
+				InetAddress bindAddr = resolveBindAddress(portForward.getBindAddress());
+				if (bindAddr == null) {
+					Log.e(TAG, "Cannot bind port forward - bind address unavailable: " + portForward.getBindAddress());
+					return false;
+				}
 				dpf = connection.createDynamicPortForwarder(
-						new InetSocketAddress(InetAddress.getLocalHost(), portForward.getSourcePort()));
+						new InetSocketAddress(bindAddr, portForward.getSourcePort()));
 			} catch (Exception e) {
 				Log.e(TAG, "Could not create dynamic port forward", e);
 				return false;
@@ -683,6 +737,15 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 			portForward.setIdentifier(dpf);
 			portForward.setEnabled(true);
+			
+			// Update notification if access point binding is being used
+			if (NetworkUtils.BIND_ACCESS_POINT.equals(portForward.getBindAddress())) {
+				manager.updateAccessPointNotification();
+			}
+			
+			// Notify host status listeners so UI can update port forward states
+			manager.notifyHostStatusChanged();
+			
 			return true;
 		} else {
 			// Unsupported type
@@ -713,6 +776,11 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			portForward.setEnabled(false);
 
 			lpf.close();
+			
+			// Update notification if access point binding was being used
+			if (NetworkUtils.BIND_ACCESS_POINT.equals(portForward.getBindAddress())) {
+				manager.updateAccessPointNotification();
+			}
 
 			return true;
 		} else if (HostDatabase.PORTFORWARD_REMOTE.equals(portForward.getType())) {
@@ -724,6 +792,9 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				Log.e(TAG, "Could not stop remote port forwarding, setting enabled to false", e);
 				return false;
 			}
+			
+			// Update notification for any access point forwards (remote forwards don't use bind address)
+			manager.updateAccessPointNotification();
 
 			return true;
 		} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(portForward.getType())) {
@@ -738,6 +809,11 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			portForward.setEnabled(false);
 
 			dpf.close();
+			
+			// Update notification if access point binding was being used
+			if (NetworkUtils.BIND_ACCESS_POINT.equals(portForward.getBindAddress())) {
+				manager.updateAccessPointNotification();
+			}
 
 			return true;
 		} else {
