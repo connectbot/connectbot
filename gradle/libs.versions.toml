@@ -14,7 +14,7 @@ compileSdk = "35"
 minSdk = "16"
 targetSdk = "35"
 
-sshlib = "2.2.29"
+sshlib = "2.2.31"
 playServicesBasement = "18.3.0"
 conscrypt = "2.5.3"
 conscryptOpenJdk = "2.5.2"
