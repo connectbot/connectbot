@@ -121,7 +121,7 @@ public class TerminalBridge implements VDUDisplay {
 	 */
 	private boolean fullRedraw = false;
 
-	public PromptHelper promptHelper;
+	public final PromptHelper promptHelper = new PromptHelper();
 
 	private BridgeDisconnectedListener disconnectListener = null;
 
@@ -172,9 +172,6 @@ public class TerminalBridge implements VDUDisplay {
 
 		emulation = manager.getEmulation();
 		scrollback = manager.getScrollback();
-
-		// create prompt helper to relay password and hostkey requests up to gui
-		promptHelper = new PromptHelper(this);
 
 		// create our default paint
 		defaultPaint = new Paint();

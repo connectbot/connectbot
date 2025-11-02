@@ -18,9 +18,9 @@
 package org.connectbot.service;
 
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicReference;
 
-import android.os.Handler;
-import android.os.Message;
+import android.os.Looper;
 
 /**
  * Helps provide a relay for prompts and responses between a possible user
@@ -29,9 +29,13 @@ import android.os.Message;
  * @author jsharkey
  */
 public class PromptHelper {
-	private final Object tag;
+	private static final String TAG = "CB.PromptHelper";
 
-	private Handler handler = null;
+	public interface PromptListener {
+		void onPromptRequested();
+	}
+
+	private final AtomicReference<PromptListener> listenerRef = new AtomicReference<>();
 
 	private Semaphore promptToken;
 	private Semaphore promptResponse;
@@ -42,9 +46,7 @@ public class PromptHelper {
 
 	private Object response = null;
 
-	public PromptHelper(Object tag) {
-		this.tag = tag;
-
+	public PromptHelper() {
 		// Threads must acquire this before they can send a prompt.
 		promptToken = new Semaphore(1);
 
@@ -54,10 +56,22 @@ public class PromptHelper {
 
 
 	/**
-	 * Register a user interface handler, if available.
+	 * Register a user interface listener, if available.
+	 * If a prompt is already pending when the listener is set, it will be immediately notified.
 	 */
-	public void setHandler(Handler handler) {
-		this.handler = handler;
+	public void setListener(PromptListener listener) {
+		listenerRef.set(listener);
+		// If there's already a pending prompt, notify the new listener immediately
+		if (listener != null && promptRequested != null) {
+			listener.onPromptRequested();
+		}
+	}
+
+	/**
+	 * Remove the current listener.
+	 */
+	public void clearListener() {
+		listenerRef.set(null);
 	}
 
 	/**
@@ -99,8 +113,21 @@ public class PromptHelper {
 			promptRequested = type;
 
 			// notify any parent watching for live events
-			if (handler != null)
-				Message.obtain(handler, -1, tag).sendToTarget();
+			final PromptListener listener = listenerRef.get();
+			if (listener != null) {
+				// If we're already on the main thread, call directly
+				if (Looper.myLooper() == Looper.getMainLooper()) {
+					listener.onPromptRequested();
+				} else {
+					// Otherwise, post to main thread
+					new android.os.Handler(Looper.getMainLooper()).post(new Runnable() {
+						@Override
+						public void run() {
+							listener.onPromptRequested();
+						}
+					});
+				}
+			}
 
 			// acquire lock until user passes back value
 			promptResponse.acquire();

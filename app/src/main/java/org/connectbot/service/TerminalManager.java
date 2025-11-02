@@ -518,12 +518,12 @@ public class TerminalManager extends Service implements BridgeDisconnectedListen
 
 		setResizeAllowed(true);
 
-		if (bridges.size() == 0) {
+		if (bridges.isEmpty()) {
 			stopWithDelay();
 		} else {
 			// tell each bridge to forget about their previous prompt handler
 			for (TerminalBridge bridge : bridges) {
-				bridge.promptHelper.setHandler(null);
+				bridge.promptHelper.setListener(null);
 			}
 		}
 

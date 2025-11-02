@@ -46,7 +46,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import androidx.annotation.Nullable;
@@ -179,8 +178,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			final int requestedIndex = bound.getBridges().indexOf(requestedBridge);
 
 			if (requestedBridge != null)
-				requestedBridge.promptHelper.setHandler(promptHandler);
-
+				requestedBridge.promptHelper.setListener(promptListener);
 
 			if (requestedIndex != -1) {
 				pager.post(new Runnable() {
@@ -200,13 +198,8 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		}
 	};
 
-	protected Handler promptHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			// someone below us requested to display a prompt
-			updatePromptVisible();
-		}
-	};
+	// someone below us requested to display a prompt
+	protected PromptHelper.PromptListener promptListener = this::updatePromptVisible;
 
 	@Override
 	public void onDisconnected(TerminalBridge bridge) {
@@ -997,6 +990,13 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		if (forcedOrientation && bound != null) {
 			bound.setResizeAllowed(false);
 		}
+
+		// Clear prompt listeners when activity is not visible to prevent stale references
+		if (bound != null) {
+			for (TerminalBridge bridge : bound.getBridges()) {
+				bridge.promptHelper.clearListener();
+			}
+		}
 	}
 
 	@Override
@@ -1013,6 +1013,13 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		}
 
 		configureOrientation();
+
+		// Restore prompt listeners when activity becomes visible
+		if (bound != null) {
+			for (TerminalBridge bridge : bound.getBridges()) {
+				bridge.promptHelper.setListener(promptListener);
+			}
+		}
 
 		if (forcedOrientation && bound != null) {
 			bound.setResizeAllowed(true);
@@ -1250,7 +1257,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				Log.w(TAG, "Activity not bound when creating TerminalView.");
 			}
 			TerminalBridge bridge = bound.getBridges().get(position);
-			bridge.promptHelper.setHandler(promptHandler);
 
 			// inflate each terminal view
 			RelativeLayout view = (RelativeLayout) inflater.inflate(
@@ -1270,6 +1276,9 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 			container.addView(view);
 			terminalNameOverlay.startAnimation(fade_out_delayed);
+
+			bridge.promptHelper.setListener(promptListener);
+
 			return view;
 		}
 
@@ -1342,7 +1351,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			if (currentView == null) {
 				return null;
 			}
-			return (TerminalView) currentView.findViewById(R.id.terminal_view);
+			return currentView.findViewById(R.id.terminal_view);
 		}
 	}
 }
