@@ -1,6 +1,7 @@
 [versions]
 androidGradlePlugin = "8.9.3"
 kotlin = "1.9.0"
+multidex = "2.0.1"
 spotless = "7.2.1"
 versions = "0.51.0"
 errorprone = "4.2.0"
@@ -38,6 +39,7 @@ robolectric = "4.14.1"
 errorproneCore = "2.38.0"
 
 [libraries]
+androidx-multidex = { module = "androidx.multidex:multidex", version.ref = "multidex" }
 sshlib = { module = "org.connectbot:sshlib", version.ref = "sshlib" }
 play-services-basement = { module = "com.google.android.gms:play-services-basement", version.ref = "playServicesBasement" }
 conscrypt-android = { module = "org.conscrypt:conscrypt-android", version.ref = "conscrypt" }

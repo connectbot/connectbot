@@ -61,6 +61,8 @@ android {
         // "pm clear" command after each test invocation. This command ensures
         // that the app's state is completely cleared between tests.
         testInstrumentationRunnerArguments["clearPackageData"] = "true"
+
+        multiDexEnabled = true
     }
 
     buildFeatures {
@@ -92,9 +94,6 @@ android {
         }
 
         getByName("debug") {
-            // This is necessary to avoid using multiDex
-            isMinifyEnabled = true
-
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard.cfg", "proguard-debug.cfg")
             testProguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard.cfg", "proguard-tests.cfg")
 
@@ -218,6 +217,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.preference)
     implementation(libs.material)
+    implementation(libs.androidx.multidex)
 
     add("androidTestUtil", libs.androidx.test.orchestrator)
     androidTestImplementation(libs.androidx.test.core)

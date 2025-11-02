@@ -40,6 +40,7 @@
 		android:xlargeScreens="true" />
 
 	<application
+		android:name="androidx.multidex.MultiDexApplication"
 		android:allowBackup="true"
 		android:backupAgent=".service.BackupAgent"
 		android:description="@string/app_desc"
