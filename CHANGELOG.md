@@ -2,6 +2,25 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.9.13][1.9.13]
+### Added
+- Add database foreign key constraints with cascade deletes (by Steffen Heil | secforge)
+- Add support for ChaCha20 cipher
+
+### Changed
+- Update targetSdkVersion to 35
+- Convert the build system to Kotlin
+- Opt out of edge-to-edge display for now
+
+### Fixed
+- Make PromptHelper more reliable
+
+### Translations
+- Update translations
+
+### Dependencies
+- Update dependencies
+
 ## [1.9.12][1.9.12]
 ### Changed
 - Updated to API 34
@@ -163,6 +182,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Color picker color numbers are now localized
 
 
+[1.9.13]: https://github.com/connectbot/connectbot/compare/v1.9.12...v1.9.13
 [1.9.12]: https://github.com/connectbot/connectbot/compare/v1.9.11...v1.9.12
 [1.9.11]: https://github.com/connectbot/connectbot/compare/v1.9.10...v1.9.11
 [1.9.10]: https://github.com/connectbot/connectbot/compare/v1.9.9...v1.9.10
