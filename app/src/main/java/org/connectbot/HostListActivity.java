@@ -41,7 +41,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.format.DateUtils;
+import android.text.style.StrikethroughSpan;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -55,12 +59,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.connectbot.bean.HostBean;
+import org.connectbot.bean.PortForwardBean;
 import org.connectbot.data.HostStorage;
 import org.connectbot.service.OnHostStatusChangedListener;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.transport.TransportFactory;
 import org.connectbot.util.HostDatabase;
+import org.connectbot.util.NetworkUtils;
 import org.connectbot.util.PreferenceConstants;
 
 import java.util.List;
@@ -446,7 +452,13 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 
 	@Override
 	public void onHostStatusChanged() {
-		updateList();
+		// Ensure UI updates happen on the main thread
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				updateList();
+			}
+		});
 	}
 
 	@VisibleForTesting
@@ -463,6 +475,46 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 			icon = v.findViewById(android.R.id.icon);
 			nickname = v.findViewById(android.R.id.text1);
 			caption = v.findViewById(android.R.id.text2);
+			
+			// Add click listener for the icon to connect/disconnect
+			icon.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					handleIconClick();
+				}
+			});
+		}
+
+		/**
+		 * Handle icon click to connect/disconnect host
+		 */
+		private void handleIconClick() {
+			if (host == null) {
+				return;
+			}
+			
+			// Get the adapter from the parent activity to access the manager
+			HostAdapter adapter = (HostAdapter) mListView.getAdapter();
+			if (adapter == null || adapter.manager == null) {
+				return;
+			}
+			
+			int state = adapter.getConnectedState(host);
+			if (state == HostAdapter.STATE_CONNECTED) {
+				// Disconnect if connected
+				TerminalBridge bridge = adapter.manager.getConnectedBridge(host);
+				if (bridge != null) {
+					bridge.dispatchDisconnect(true);
+				}
+			} else {
+				// Connect directly using the bound service
+				try {
+					Uri uri = host.getUri();
+					adapter.manager.openConnection(uri);
+				} catch (Exception e) {
+					Log.e(TAG, "Failed to open connection for host: " + host.getNickname(), e);
+				}
+			}
 		}
 
 		@Override
@@ -566,7 +618,7 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 		}
 	}
 
-	@VisibleForTesting
+
 	private class HostAdapter extends ItemAdapter {
 		private final List<HostBean> hosts;
 		private final TerminalManager manager;
@@ -678,8 +730,79 @@ public class HostListActivity extends AppCompatListActivity implements OnHostSta
 				nice = DateUtils.getRelativeTimeSpanString(host.getLastConnect() * 1000);
 			}
 
+			// For connected hosts, show port forwarding information
+			if (this.getConnectedState(host) == STATE_CONNECTED && this.manager != null) {
+				TerminalBridge bridge = this.manager.getConnectedBridge(host);
+				if (bridge != null) {
+					List<PortForwardBean> portForwards = bridge.getPortForwards();
+					if (portForwards != null && !portForwards.isEmpty()) {
+						SpannableStringBuilder portInfo = new SpannableStringBuilder();
+						for (int i = 0; i < portForwards.size(); i++) {
+							PortForwardBean forward = portForwards.get(i);
+							if (i > 0) {
+								portInfo.append("\n");
+							}
+							portInfo.append(getSimplePortForwardDescription(forward));
+						}
+						nice = portInfo;
+					}
+				}
+			}
+
 			hostHolder.caption.setText(nice);
 		}
+
+		/**
+		 * Check if a port forward is dysfunctional (should be struck through)
+		 * Uses the same logic as PortForwardListActivity: hostBridge != null && !forward.isEnabled()
+		 * But adds special case for AP forwards when AP is unavailable
+		 */
+		private boolean isPortForwardDysfunctional(PortForwardBean forward) {
+			// Special case: AP forwards are dysfunctional when AP is not available
+			// regardless of their enabled state
+			if (NetworkUtils.BIND_ACCESS_POINT.equals(forward.getBindAddress())) {
+				String apIP = NetworkUtils.getAccessPointIP(context);
+				if (apIP == null) {
+					return true; // AP forward but no AP available = dysfunctional
+				}
+			}
+			
+			// For all forwards (including AP when AP is available):
+			// Use the same logic as PortForwardListActivity
+			// Strike through if not enabled (connected but forward failed)
+			return !forward.isEnabled();
+		}
+
+		/**
+		 * Generate a simplified port forward description with strike-through for dysfunctional forwards
+		 */
+		private CharSequence getSimplePortForwardDescription(PortForwardBean forward) {
+			String bindInfo = NetworkUtils.getSimpleBindAddressDisplay(forward.getBindAddress(), context);
+			String description;
+			
+			if (HostDatabase.PORTFORWARD_LOCAL.equals(forward.getType())) {
+				description = String.format("Local %s:%d → %s:%d", bindInfo, forward.getSourcePort(), 
+					forward.getDestAddr(), forward.getDestPort());
+			} else if (HostDatabase.PORTFORWARD_REMOTE.equals(forward.getType())) {
+				description = String.format("Remote %d → %s:%d", forward.getSourcePort(), 
+					forward.getDestAddr(), forward.getDestPort());
+			} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(forward.getType())) {
+				description = String.format("Dynamic %s:%d (SOCKS)", bindInfo, forward.getSourcePort());
+			} else {
+				description = "Unknown type";
+			}
+			
+			// Apply strike-through only for dysfunctional port forwards
+			if (isPortForwardDysfunctional(forward)) {
+				SpannableString spannableDescription = new SpannableString(description);
+				spannableDescription.setSpan(new StrikethroughSpan(), 0, description.length(), 
+					Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				return spannableDescription;
+			}
+			
+			return description;
+		}
+
 
 		@Override
 		public long getItemId(int position) {

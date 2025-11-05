@@ -25,6 +25,7 @@ import org.connectbot.bean.PortForwardBean;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.util.HostDatabase;
+import org.connectbot.util.NetworkUtils;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
@@ -51,6 +52,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -155,15 +157,43 @@ public class PortForwardListActivity extends AppCompatListActivity {
 				final View portForwardView = View.inflate(PortForwardListActivity.this, R.layout.dia_portforward, null);
 				final EditText destEdit = portForwardView.findViewById(R.id.portforward_destination);
 				final Spinner typeSpinner = portForwardView.findViewById(R.id.portforward_type);
+				final RadioGroup bindAddressGroup = portForwardView.findViewById(R.id.bind_address_group);
+				final View bindAddressLabel = portForwardView.findViewById(R.id.bind_address_label);
+				final View securityWarningRow = portForwardView.findViewById(R.id.security_warning_row);
 
 				typeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 					@Override
 					public void onItemSelected(AdapterView<?> value, View view,
 							int position, long id) {
 						destEdit.setEnabled(position != 2);
+						// Update bind address options visibility for different forward types
+						if (position == 1) { // Remote forward
+							// Remote forwards don't need bind address selection
+							bindAddressGroup.setVisibility(View.GONE);
+							bindAddressLabel.setVisibility(View.GONE);
+							securityWarningRow.setVisibility(View.GONE);
+						} else {
+							bindAddressGroup.setVisibility(View.VISIBLE);
+							bindAddressLabel.setVisibility(View.VISIBLE);
+							updateSecurityWarning();
+						}
 					}
 					@Override
 					public void onNothingSelected(AdapterView<?> arg0) {
+					}
+
+					private void updateSecurityWarning() {
+						int checkedId = bindAddressGroup.getCheckedRadioButtonId();
+						boolean showWarning = (checkedId == R.id.bind_all_interfaces || checkedId == R.id.bind_access_point);
+						securityWarningRow.setVisibility(showWarning ? View.VISIBLE : View.GONE);
+					}
+				});
+
+				bindAddressGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+					@Override
+					public void onCheckedChanged(RadioGroup group, int checkedId) {
+						boolean showWarning = (checkedId == R.id.bind_all_interfaces || checkedId == R.id.bind_access_point);
+						securityWarningRow.setVisibility(showWarning ? View.VISIBLE : View.GONE);
 					}
 				});
 
@@ -201,12 +231,22 @@ public class PortForwardListActivity extends AppCompatListActivity {
 										destination = destEdit.getHint().toString();
 									}
 
+									// Get bind address selection
+									String bindAddress = NetworkUtils.BIND_LOCALHOST; // default
+									int checkedId = bindAddressGroup.getCheckedRadioButtonId();
+									if (checkedId == R.id.bind_all_interfaces) {
+										bindAddress = NetworkUtils.BIND_ALL_INTERFACES;
+									} else if (checkedId == R.id.bind_access_point) {
+										bindAddress = NetworkUtils.BIND_ACCESS_POINT;
+									}
+
 									PortForwardBean portForward = new PortForwardBean(
 											host != null ? host.getId() : -1,
 											nicknameEdit.getText().toString(),
 											type,
 											sourcePort,
-											destination);
+											destination,
+											bindAddress);
 
 									if (hostBridge != null) {
 										hostBridge.addPortForward(portForward);
@@ -305,15 +345,68 @@ public class PortForwardListActivity extends AppCompatListActivity {
 						destEdit.setText(String.format("%s:%d", portForward.getDestAddr(), portForward.getDestPort()));
 					}
 
+					final RadioGroup bindAddressGroup = editTunnelView.findViewById(R.id.bind_address_group);
+					final View bindAddressLabel = editTunnelView.findViewById(R.id.bind_address_label);
+					final View securityWarningRow = editTunnelView.findViewById(R.id.security_warning_row);
+					
+					// Set bind address selection based on current value
+					String currentBindAddress = portForward.getBindAddress();
+					if (NetworkUtils.BIND_ALL_INTERFACES.equals(currentBindAddress)) {
+						bindAddressGroup.check(R.id.bind_all_interfaces);
+					} else if (NetworkUtils.BIND_ACCESS_POINT.equals(currentBindAddress)) {
+						bindAddressGroup.check(R.id.bind_access_point);
+					} else {
+						bindAddressGroup.check(R.id.bind_localhost);
+					}
+
+					// Show/hide bind address options based on forward type
+					if (HostDatabase.PORTFORWARD_REMOTE.equals(portForward.getType())) {
+						bindAddressGroup.setVisibility(View.GONE);
+						bindAddressLabel.setVisibility(View.GONE);
+						securityWarningRow.setVisibility(View.GONE);
+					} else {
+						bindAddressGroup.setVisibility(View.VISIBLE);
+						bindAddressLabel.setVisibility(View.VISIBLE);
+						// Show security warning if needed
+						int checkedId = bindAddressGroup.getCheckedRadioButtonId();
+						boolean showWarning = (checkedId == R.id.bind_all_interfaces || checkedId == R.id.bind_access_point);
+						securityWarningRow.setVisibility(showWarning ? View.VISIBLE : View.GONE);
+					}
+
 					typeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 						@Override
 						public void onItemSelected(AdapterView<?> value, View view,
 								int position, long id) {
 							destEdit.setEnabled(position != 2);
+							// Update bind address options visibility for different forward types
+							if (position == 1) { // Remote forward
+								// Remote forwards don't need bind address selection
+								bindAddressGroup.setVisibility(View.GONE);
+								bindAddressLabel.setVisibility(View.GONE);
+								securityWarningRow.setVisibility(View.GONE);
+							} else {
+								bindAddressGroup.setVisibility(View.VISIBLE);
+								bindAddressLabel.setVisibility(View.VISIBLE);
+								updateSecurityWarning();
+							}
 						}
 
 						@Override
 						public void onNothingSelected(AdapterView<?> arg0) {
+						}
+
+						private void updateSecurityWarning() {
+							int checkedId = bindAddressGroup.getCheckedRadioButtonId();
+							boolean showWarning = (checkedId == R.id.bind_all_interfaces || checkedId == R.id.bind_access_point);
+							securityWarningRow.setVisibility(showWarning ? View.VISIBLE : View.GONE);
+						}
+					});
+
+					bindAddressGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+						@Override
+						public void onCheckedChanged(RadioGroup group, int checkedId) {
+							boolean showWarning = (checkedId == R.id.bind_all_interfaces || checkedId == R.id.bind_access_point);
+							securityWarningRow.setVisibility(showWarning ? View.VISIBLE : View.GONE);
 						}
 					});
 
@@ -343,6 +436,16 @@ public class PortForwardListActivity extends AppCompatListActivity {
 
 										portForward.setSourcePort(Integer.parseInt(sourcePortEdit.getText().toString()));
 										portForward.setDest(destEdit.getText().toString());
+
+										// Get bind address selection
+										String bindAddress = NetworkUtils.BIND_LOCALHOST; // default
+										int checkedId = bindAddressGroup.getCheckedRadioButtonId();
+										if (checkedId == R.id.bind_all_interfaces) {
+											bindAddress = NetworkUtils.BIND_ALL_INTERFACES;
+										} else if (checkedId == R.id.bind_access_point) {
+											bindAddress = NetworkUtils.BIND_ACCESS_POINT;
+										}
+										portForward.setBindAddress(bindAddress);
 
 										// Use the new settings for the existing connection.
 										if (hostBridge != null)

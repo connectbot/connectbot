@@ -126,6 +126,10 @@ public class ConnectionNotifier {
 	}
 
 	private Notification newRunningNotification(Context context) {
+		return newRunningNotification(context, null, false);
+	}
+	
+	private Notification newRunningNotification(Context context, String apIP, boolean hasApForwards) {
 		NotificationCompat.Builder builder = newNotificationBuilder(context, NOTIFICATION_CHANNEL);
 
 		Resources res = context.getResources();
@@ -142,12 +146,26 @@ public class ConnectionNotifier {
 				disconnectIntent,
 				pendingIntentFlags);
 
+		String contentText = res.getString(R.string.app_is_running);
+		
+		// Add AP forwarding information if relevant
+		if (hasApForwards) {
+			if (apIP != null) {
+				contentText = res.getString(R.string.app_is_running) + "\n" + 
+					res.getString(R.string.notification_access_point_text, apIP);
+			} else {
+				contentText = res.getString(R.string.app_is_running) + "\n" + 
+					res.getString(R.string.notification_ap_disabled_text);
+			}
+		}
+
 		builder.setOngoing(true)
 				.setWhen(0)
 				.setSilent(true)
 				.setContentIntent(pendingIntent)
 				.setContentTitle(res.getString(R.string.app_name))
-				.setContentText(res.getString(R.string.app_is_running))
+				.setContentText(contentText)
+				.setStyle(new NotificationCompat.BigTextStyle().bigText(contentText))
 				.addAction(
 						android.R.drawable.ic_menu_close_clear_cancel,
 						res.getString(R.string.list_host_disconnect),
@@ -161,17 +179,26 @@ public class ConnectionNotifier {
 	}
 
 	void showRunningNotification(Service context) {
+		showRunningNotification(context, null, false);
+	}
+	
+	void showRunningNotification(Service context, String apIP, boolean hasApForwards) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-			showRunningNotificationWithType(context);
+			showRunningNotificationWithType(context, apIP, hasApForwards);
 			return;
 		}
 
-		context.startForeground(ONLINE_NOTIFICATION, newRunningNotification(context));
+		context.startForeground(ONLINE_NOTIFICATION, newRunningNotification(context, apIP, hasApForwards));
 	}
 
 	@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 	void showRunningNotificationWithType(Service context) {
-		context.startForeground(ConnectionNotifier.ONLINE_NOTIFICATION, newRunningNotification(context),
+		showRunningNotificationWithType(context, null, false);
+	}
+	
+	@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+	void showRunningNotificationWithType(Service context, String apIP, boolean hasApForwards) {
+		context.startForeground(ConnectionNotifier.ONLINE_NOTIFICATION, newRunningNotification(context, apIP, hasApForwards),
 				ServiceInfo.FOREGROUND_SERVICE_TYPE_REMOTE_MESSAGING);
 	}
 
