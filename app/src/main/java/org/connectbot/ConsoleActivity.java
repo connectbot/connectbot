@@ -180,13 +180,19 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			if (requestedBridge != null)
 				requestedBridge.promptHelper.setListener(promptListener);
 
-			if (requestedIndex != -1) {
+			// Check if this is a background connection (don't switch to console view)
+			boolean backgroundConnection = getIntent().getBooleanExtra("org.connectbot.BACKGROUND_CONNECTION", false);
+			
+			if (requestedIndex != -1 && !backgroundConnection) {
 				pager.post(new Runnable() {
 					@Override
 					public void run() {
 						setDisplayedTerminal(requestedIndex);
 					}
 				});
+			} else if (backgroundConnection) {
+				// For background connections, finish the activity after connection is established
+				finish();
 			}
 		}
 
@@ -990,13 +996,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		if (forcedOrientation && bound != null) {
 			bound.setResizeAllowed(false);
 		}
-
-		// Clear prompt listeners when activity is not visible to prevent stale references
-		if (bound != null) {
-			for (TerminalBridge bridge : bound.getBridges()) {
-				bridge.promptHelper.clearListener();
-			}
-		}
 	}
 
 	@Override
@@ -1013,13 +1012,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 		}
 
 		configureOrientation();
-
-		// Restore prompt listeners when activity becomes visible
-		if (bound != null) {
-			for (TerminalBridge bridge : bound.getBridges()) {
-				bridge.promptHelper.setListener(promptListener);
-			}
-		}
 
 		if (forcedOrientation && bound != null) {
 			bound.setResizeAllowed(true);
@@ -1257,6 +1249,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 				Log.w(TAG, "Activity not bound when creating TerminalView.");
 			}
 			TerminalBridge bridge = bound.getBridges().get(position);
+			bridge.promptHelper.setListener(promptListener);
 
 			// inflate each terminal view
 			RelativeLayout view = (RelativeLayout) inflater.inflate(
@@ -1276,9 +1269,6 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 
 			container.addView(view);
 			terminalNameOverlay.startAnimation(fade_out_delayed);
-
-			bridge.promptHelper.setListener(promptListener);
-
 			return view;
 		}
 
@@ -1351,7 +1341,7 @@ public class ConsoleActivity extends AppCompatActivity implements BridgeDisconne
 			if (currentView == null) {
 				return null;
 			}
-			return currentView.findViewById(R.id.terminal_view);
+			return (TerminalView) currentView.findViewById(R.id.terminal_view);
 		}
 	}
 }

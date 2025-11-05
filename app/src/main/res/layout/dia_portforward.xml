@@ -108,5 +108,57 @@
 				android:inputType="textEmailAddress"
 				/>
 		</TableRow>
+
+		<TableRow>
+
+			<TextView
+				android:id="@+id/bind_address_label"
+				android:gravity="end|center_vertical"
+				android:paddingEnd="10dip"
+				android:paddingRight="10dip"
+				android:text="@string/prompt_bind_address"
+				android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+			<RadioGroup
+				android:id="@+id/bind_address_group"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:orientation="vertical">
+
+				<RadioButton
+					android:id="@+id/bind_localhost"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/bind_localhost"
+					android:checked="true" />
+
+				<RadioButton
+					android:id="@+id/bind_all_interfaces"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/bind_all_interfaces" />
+
+				<RadioButton
+					android:id="@+id/bind_access_point"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/bind_access_point" />
+
+			</RadioGroup>
+		</TableRow>
+
+		<TableRow android:id="@+id/security_warning_row" android:visibility="gone">
+			<TextView />
+			<TextView
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/security_warning_network_exposure"
+				android:textAppearance="?android:attr/textAppearanceSmall"
+				android:textColor="#ffcc00"
+				android:padding="5dip" />
+		</TableRow>
+
 	</TableLayout>
 </ScrollView>

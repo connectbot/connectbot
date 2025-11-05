@@ -954,7 +954,15 @@ public class TerminalBridge implements VDUDisplay {
 			return false;
 		}
 
-		return transport.enablePortForward(portForward);
+		boolean result = transport.enablePortForward(portForward);
+		
+		// Notify listeners when port forward state changes so UI can update
+		// Only notify if the state actually changed
+		if (manager != null && result) {
+			manager.notifyHostStatusChanged();
+		}
+		
+		return result;
 	}
 
 	/**
@@ -969,7 +977,15 @@ public class TerminalBridge implements VDUDisplay {
 			return false;
 		}
 
-		return transport.disablePortForward(portForward);
+		boolean result = transport.disablePortForward(portForward);
+		
+		// Notify listeners when port forward state changes so UI can update
+		// Only notify if the state actually changed
+		if (manager != null && result) {
+			manager.notifyHostStatusChanged();
+		}
+		
+		return result;
 	}
 
 	/**
