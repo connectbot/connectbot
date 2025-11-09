@@ -102,6 +102,7 @@ android {
 
             applicationIdSuffix = ".debug"
             enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
         }
     }
 
