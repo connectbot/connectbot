@@ -55,7 +55,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import org.connectbot.R
-import org.connectbot.bean.PortForwardBean
+import org.connectbot.data.entity.PortForward
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,7 +69,7 @@ fun PortForwardListScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     var showAddDialog by remember { mutableStateOf(false) }
-    var editingPortForward by remember { mutableStateOf<PortForwardBean?>(null) }
+    var editingPortForward by remember { mutableStateOf<PortForward?>(null) }
 
     Scaffold(
         topBar = {
@@ -167,7 +167,7 @@ fun PortForwardListScreen(
 
 @Composable
 private fun PortForwardListItem(
-    portForward: PortForwardBean,
+    portForward: PortForward,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier

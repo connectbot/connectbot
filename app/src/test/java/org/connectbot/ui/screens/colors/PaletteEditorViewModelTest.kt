@@ -29,16 +29,17 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.assertj.core.api.Assertions.assertThat
-import org.connectbot.data.ColorScheme
 import org.connectbot.data.ColorSchemeRepository
+import org.connectbot.data.entity.ColorScheme
 import org.connectbot.util.Colors
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -49,25 +50,23 @@ class PaletteEditorViewModelTest {
     private lateinit var repository: ColorSchemeRepository
     private lateinit var viewModel: PaletteEditorViewModel
     private val testDispatcher = StandardTestDispatcher()
-    private val testSchemeId = ColorScheme.DEFAULT_SCHEME_ID
+    private val testSchemeId = -1
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         context = ApplicationProvider.getApplicationContext()
 
-        // Mock ColorSchemeRepository
-        repository = mock(ColorSchemeRepository::class.java)
+        repository = mock()
 
-        // Setup default mock behavior
         val defaultScheme = ColorScheme(
             id = testSchemeId,
             name = "Default",
             isBuiltIn = true
         )
         runBlocking {
-            `when`(repository.getAllSchemes()).thenReturn(listOf(defaultScheme))
-            `when`(repository.getSchemeColors(testSchemeId)).thenReturn(Colors.defaults)
+            whenever(repository.getAllSchemes()).thenReturn(listOf(defaultScheme))
+            whenever(repository.getSchemeColors(testSchemeId)).thenReturn(Colors.defaults)
         }
     }
 
@@ -157,12 +156,10 @@ class PaletteEditorViewModelTest {
         val newColor = Color.rgb(100, 200, 50)
         assertThat(newColor).isNotEqualTo(originalColor)
 
-        // ACTION
         viewModel.updateColor(colorIndex, newColor)
-        advanceUntilIdle() // Wait for persistence
+        advanceUntilIdle()
 
-        // VERIFICATION (Create a new view model to verify persistence)
-        Mockito.verify(repository, Mockito.times(1)).setColorForScheme(
+        verify(repository, times(1)).setColorForScheme(
             testSchemeId,
             colorIndex,
             newColor

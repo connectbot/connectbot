@@ -62,6 +62,8 @@ import org.connectbot.R
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalKeyListener
 
+private const val UI_OPACITY = 0.5f
+
 /**
  * Virtual keyboard with terminal special keys (Ctrl, Esc, arrows, function keys, etc.)
  * Positioned at bottom of console screen, horizontally scrollable
@@ -122,7 +124,7 @@ fun TerminalKeyboard(
                     }
                 )
             },
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
         tonalElevation = 8.dp
     ) {
         Row(
@@ -362,7 +364,7 @@ fun TerminalKeyboard(
                 modifier = Modifier.size(width = 45.dp, height = 30.dp),
                 shape = androidx.compose.ui.graphics.RectangleShape,
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-                color = MaterialTheme.colorScheme.surface
+                color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY)
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
@@ -396,7 +398,7 @@ private fun KeyButton(
             .size(width = 45.dp, height = 30.dp),
         shape = androidx.compose.ui.graphics.RectangleShape,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-        color = MaterialTheme.colorScheme.surface
+        color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -461,8 +463,8 @@ private fun RepeatableKeyButton(
                 )
             },
         shape = androidx.compose.ui.graphics.RectangleShape,
-        color = if (isPressed) MaterialTheme.colorScheme.primaryContainer
-        else MaterialTheme.colorScheme.surface,
+        color = if (isPressed) MaterialTheme.colorScheme.primaryContainer.copy(alpha = UI_OPACITY)
+        else MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
     ) {
         Box(

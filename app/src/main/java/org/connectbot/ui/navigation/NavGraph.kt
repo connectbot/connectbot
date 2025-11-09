@@ -52,7 +52,6 @@ import org.connectbot.ui.screens.colors.ColorSchemeManagerScreen
 import org.connectbot.ui.screens.colors.ColorSchemeManagerViewModel
 import org.connectbot.ui.screens.colors.PaletteEditorScreen
 import org.connectbot.ui.screens.colors.PaletteEditorViewModel
-import org.connectbot.util.HostDatabase
 
 @Composable
 fun ConnectBotNavHost(

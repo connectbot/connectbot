@@ -27,10 +27,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.connectbot.bean.HostBean
-import org.connectbot.bean.PubkeyBean
-import org.connectbot.util.HostDatabase
-import org.connectbot.util.PubkeyDatabase
+import org.connectbot.data.HostRepository
+import org.connectbot.data.PubkeyRepository
+import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.Pubkey
 
 data class HostEditorUiState(
     val hostId: Long = -1L,
@@ -43,7 +43,7 @@ data class HostEditorUiState(
     val color: String = "gray",
     val fontSize: Int = 10,
     val pubkeyId: Long = -1L,
-    val availablePubkeys: List<PubkeyBean> = emptyList(),
+    val availablePubkeys: List<Pubkey> = emptyList(),
     val delKey: String = "del",
     val encoding: String = "UTF-8",
     val useAuthAgent: String = "no",
@@ -58,10 +58,10 @@ data class HostEditorUiState(
 
 class HostEditorViewModel(
     private val context: Context,
-    private val hostId: Long
+    private val hostId: Long,
+    private val repository: HostRepository = HostRepository.get(context),
+    private val pubkeyRepository: PubkeyRepository = PubkeyRepository.get(context)
 ) : ViewModel() {
-    private val database: HostDatabase = HostDatabase.get(context)
-    private val pubkeyDatabase: PubkeyDatabase = PubkeyDatabase.get(context)
 
     private val _uiState = MutableStateFlow(HostEditorUiState(hostId = hostId))
     val uiState: StateFlow<HostEditorUiState> = _uiState.asStateFlow()
@@ -76,9 +76,7 @@ class HostEditorViewModel(
     private fun loadPubkeys() {
         viewModelScope.launch {
             try {
-                val pubkeys = withContext(Dispatchers.IO) {
-                    pubkeyDatabase.allPubkeys()
-                }
+                val pubkeys = pubkeyRepository.getAll()
                 _uiState.update { it.copy(availablePubkeys = pubkeys) }
             } catch (e: Exception) {
                 // Don't fail the whole screen if pubkeys can't be loaded
@@ -91,22 +89,20 @@ class HostEditorViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             try {
-                val host = withContext(Dispatchers.IO) {
-                    database.findHostById(hostId)
-                }
+                val host = repository.findHostById(hostId)
                 if (host != null) {
                     _uiState.update {
                         it.copy(
-                            nickname = host.nickname ?: "",
-                            protocol = host.protocol ?: "ssh",
-                            username = host.username ?: "",
-                            hostname = host.hostname ?: "",
+                            nickname = host.nickname,
+                            protocol = host.protocol,
+                            username = host.username,
+                            hostname = host.hostname,
                             port = host.port.toString(),
                             color = host.color ?: "gray",
                             fontSize = host.fontSize,
                             pubkeyId = host.pubkeyId,
-                            delKey = host.delKey ?: "del",
-                            encoding = host.encoding ?: "UTF-8",
+                            delKey = host.delKey,
+                            encoding = host.encoding,
                             useAuthAgent = host.useAuthAgent ?: "no",
                             compression = host.compression,
                             wantSession = host.wantSession,
@@ -218,39 +214,47 @@ class HostEditorViewModel(
     fun saveHost(useExpandedMode: Boolean) {
         viewModelScope.launch {
             try {
-                withContext(Dispatchers.IO) {
-                    val state = _uiState.value
-                    val host = if (hostId != -1L) {
-                        database.findHostById(hostId) ?: HostBean()
-                    } else {
-                        HostBean()
-                    }
-
-                    // In quick connect mode, use the quickConnect string as the nickname
-                    if (!useExpandedMode && state.quickConnect.isNotBlank()) {
-                        host.nickname = state.quickConnect
-                    } else {
-                        host.nickname = state.nickname.ifBlank { null }
-                    }
-
-                    host.protocol = state.protocol
-                    host.username = state.username
-                    host.hostname = state.hostname
-                    host.port = state.port.toIntOrNull() ?: 22
-                    host.color = state.color
-                    host.fontSize = state.fontSize
-                    host.pubkeyId = state.pubkeyId
-                    host.delKey = state.delKey
-                    host.encoding = state.encoding
-                    host.useAuthAgent = state.useAuthAgent
-                    host.compression = state.compression
-                    host.wantSession = state.wantSession
-                    host.stayConnected = state.stayConnected
-                    host.quickDisconnect = state.quickDisconnect
-                    host.postLogin = state.postLogin.ifBlank { null }
-
-                    database.saveHost(host)
+                val state = _uiState.value
+                val existingHost = if (hostId != -1L) {
+                    repository.findHostById(hostId)
+                } else {
+                    null
                 }
+
+                // In quick connect mode, use the quickConnect string as the nickname
+                val nickname = if (!useExpandedMode && state.quickConnect.isNotBlank()) {
+                    state.quickConnect
+                } else {
+                    state.nickname
+                }
+
+                val host = Host(
+                    id = existingHost?.id ?: 0L,
+                    nickname = nickname,
+                    protocol = state.protocol,
+                    username = state.username,
+                    hostname = state.hostname,
+                    port = state.port.toIntOrNull() ?: 22,
+                    color = state.color.takeIf { it != "gray" },
+                    fontSize = state.fontSize,
+                    pubkeyId = state.pubkeyId,
+                    delKey = state.delKey,
+                    encoding = state.encoding,
+                    useAuthAgent = state.useAuthAgent.takeIf { it != "no" },
+                    compression = state.compression,
+                    wantSession = state.wantSession,
+                    stayConnected = state.stayConnected,
+                    quickDisconnect = state.quickDisconnect,
+                    postLogin = state.postLogin.ifBlank { null },
+                    lastConnect = existingHost?.lastConnect ?: System.currentTimeMillis(),
+                    hostKeyAlgo = existingHost?.hostKeyAlgo,
+                    useKeys = existingHost?.useKeys ?: true,
+                    colorSchemeId = existingHost?.colorSchemeId ?: 1L,
+                    scrollbackLines = existingHost?.scrollbackLines ?: 140,
+                    useCtrlAltAsMetaKey = existingHost?.useCtrlAltAsMetaKey ?: false
+                )
+
+                repository.saveHost(host)
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(error = e.message ?: "Failed to save host")

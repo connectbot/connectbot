@@ -49,15 +49,15 @@ import com.trilead.ssh2.crypto.keys.Ed25519PrivateKey;
 import com.trilead.ssh2.crypto.keys.Ed25519PublicKey;
 import com.trilead.ssh2.crypto.keys.Ed25519Provider;
 import org.connectbot.R;
-import org.connectbot.bean.HostBean;
-import org.connectbot.bean.PortForwardBean;
-import org.connectbot.bean.PubkeyBean;
+import org.connectbot.data.entity.Host;
+import org.connectbot.data.entity.KeyStorageType;
+import org.connectbot.data.entity.PortForward;
+import org.connectbot.data.entity.Pubkey;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalBridgePromptsKt;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.service.TerminalManager.KeyHolder;
-import org.connectbot.util.HostDatabase;
-import org.connectbot.util.PubkeyDatabase;
+import org.connectbot.util.HostConstants;
 import org.connectbot.util.PubkeyUtils;
 
 import android.content.Context;
@@ -95,7 +95,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		super();
 	}
 
-	public SSH(HostBean host, TerminalBridge bridge, TerminalManager manager) {
+	public SSH(Host host, TerminalBridge bridge, TerminalManager manager) {
 		super(host, bridge, manager);
 	}
 
@@ -132,7 +132,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		| ChannelCondition.CLOSED
 		| ChannelCondition.EOF;
 
-	private final List<PortForwardBean> portForwards = new ArrayList<>();
+	private final List<PortForward> portForwards = new ArrayList<>();
 
 	private int columns;
 	private int rows;
@@ -140,7 +140,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	private int width;
 	private int height;
 
-	private String useAuthAgent = HostDatabase.AUTHAGENT_NO;
+	private String useAuthAgent = HostConstants.AUTHAGENT_NO;
 	private String agentLockPassphrase;
 
 	public class HostKeyVerifier extends ExtendedServerHostKeyVerifier {
@@ -149,7 +149,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				String serverHostKeyAlgorithm, byte[] serverHostKey) throws IOException {
 
 			// read in all known hosts from hostdb
-			KnownHosts hosts = manager.hostdb.getKnownHosts();
+			KnownHosts hosts = manager.hostRepository.getKnownHostsBlocking();
 			Boolean result;
 
 			String matchName = String.format(Locale.US, "%s:%d", hostname, port);
@@ -184,7 +184,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				}
 				if (result) {
 					// save this key in known database
-					manager.hostdb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
+					manager.hostRepository.saveKnownHostBlocking(host, hostname, port, serverHostKeyAlgorithm, serverHostKey);
 				}
 				return result;
 
@@ -209,7 +209,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				result = TerminalBridgePromptsKt.requestBooleanPrompt(bridge, null, manager.res.getString(R.string.prompt_continue_connecting));
 				if (result != null && result) {
 					// save this key in known database
-					manager.hostdb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
+					manager.hostRepository.saveKnownHostBlocking(host, hostname, port, serverHostKeyAlgorithm, serverHostKey);
 					return true;
 				} else {
 					return false;
@@ -223,17 +223,17 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 		@Override
 		public List<String> getKnownKeyAlgorithmsForHost(String host, int port) {
-			return manager.hostdb.getHostKeyAlgorithmsForHost(host, port);
+			return manager.hostRepository.getHostKeyAlgorithmsForHostBlocking(host, port);
 		}
 
 		@Override
 		public void removeServerHostKey(String host, int port, String algorithm, byte[] hostKey) {
-			manager.hostdb.removeKnownHost(host, port, algorithm, hostKey);
+			manager.hostRepository.removeKnownHostBlocking(host, port, algorithm, hostKey);
 		}
 
 		@Override
-		public void addServerHostKey(String host, int port, String algorithm, byte[] hostKey) {
-			manager.hostdb.saveKnownHost(host, port, algorithm, hostKey);
+		public void addServerHostKey(String hostname, int port, String algorithm, byte[] hostKey) {
+			manager.hostRepository.saveKnownHostBlocking(host, hostname, port, algorithm, hostKey);
 		}
 	}
 
@@ -253,18 +253,18 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			long pubkeyId = host.getPubkeyId();
 
 			if (!pubkeysExhausted &&
-					pubkeyId != HostDatabase.PUBKEYID_NEVER &&
+					pubkeyId != HostConstants.PUBKEYID_NEVER &&
 					connection.isAuthMethodAvailable(host.getUsername(), AUTH_PUBLICKEY)) {
 
 				// if explicit pubkey defined for this host, then prompt for password as needed
 				// otherwise just try all in-memory keys held in terminalmanager
 
-				if (pubkeyId == HostDatabase.PUBKEYID_ANY) {
+				if (pubkeyId == HostConstants.PUBKEYID_ANY) {
 					// try each of the in-memory keys
 					bridge.outputLine(manager.res
 							.getString(R.string.terminal_auth_pubkey_any));
 					for (Entry<String, KeyHolder> entry : manager.loadedKeypairs.entrySet()) {
-						if (entry.getValue().bean.isConfirmUse()
+						if (entry.getValue().pubkey.getConfirmation()
 								&& !promptForPubkeyUse(entry.getKey()))
 							continue;
 
@@ -277,7 +277,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				} else {
 					bridge.outputLine(manager.res.getString(R.string.terminal_auth_pubkey_specific));
 					// use a specific key for this host, as requested
-					PubkeyBean pubkey = manager.pubkeydb.findPubkeyById(pubkeyId);
+					Pubkey pubkey = manager.pubkeyRepository.getByIdBlocking(pubkeyId);
 
 					if (pubkey == null)
 						bridge.outputLine(manager.res.getString(R.string.terminal_auth_pubkey_invalid));
@@ -313,7 +313,6 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			}
 		} catch (IllegalStateException e) {
 			Log.e(TAG, "Connection went away while we were trying to authenticate", e);
-			return;
 		} catch (Exception e) {
 			Log.e(TAG, "Problem during handleAuthentication()", e);
 		}
@@ -326,14 +325,14 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	 * @throws InvalidKeySpecException
 	 * @throws IOException
 	 */
-	private boolean tryPublicKey(PubkeyBean pubkey) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+	private boolean tryPublicKey(Pubkey pubkey) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
 		KeyPair pair = null;
 
 		if (manager.isKeyLoaded(pubkey.getNickname())) {
 			// load this key from memory if its already there
 			Log.d(TAG, String.format("Found unlocked key '%s' already in-memory", pubkey.getNickname()));
 
-			if (pubkey.isConfirmUse()) {
+			if (pubkey.getConfirmation()) {
 				if (!promptForPubkeyUse(pubkey.getNickname()))
 					return false;
 			}
@@ -342,7 +341,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		} else {
 			// otherwise load key from database and prompt for password as needed
 			String password = null;
-			if (pubkey.isEncrypted()) {
+			if (pubkey.getEncrypted()) {
 				password = TerminalBridgePromptsKt.requestStringPrompt(bridge, null,
 						manager.res.getString(R.string.prompt_pubkey_password, pubkey.getNickname()), true);
 
@@ -351,7 +350,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 					return false;
 			}
 
-			if (PubkeyDatabase.KEY_TYPE_IMPORTED.equals(pubkey.getType())) {
+			if ("IMPORTED".equals(pubkey.getType())) {
 				// load specific key using pem format
 				pair = PEMDecoder.decode(new String(pubkey.getPrivateKey(), StandardCharsets.UTF_8).toCharArray(), password);
 			} else {
@@ -398,7 +397,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	private void finishConnection() {
 		authenticated = true;
 
-		for (PortForwardBean portForward : portForwards) {
+		for (PortForward portForward : portForwards) {
 			try {
 				enablePortForward(portForward);
 				bridge.outputLine(manager.res.getString(R.string.terminal_enable_portfoward, portForward.getDescription()));
@@ -416,7 +415,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		try {
 			session = connection.openSession();
 
-			if (!useAuthAgent.equals(HostDatabase.AUTHAGENT_NO))
+			if (useAuthAgent != null && !useAuthAgent.equals(HostConstants.AUTHAGENT_NO))
 				session.requestAuthAgentForwarding(this);
 
 			session.requestPTY(getEmulation(), columns, rows, width, height, null);
@@ -621,17 +620,17 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	}
 
 	@Override
-	public List<PortForwardBean> getPortForwards() {
+	public List<PortForward> getPortForwards() {
 		return portForwards;
 	}
 
 	@Override
-	public boolean addPortForward(PortForwardBean portForward) {
+	public boolean addPortForward(PortForward portForward) {
 		return portForwards.add(portForward);
 	}
 
 	@Override
-	public boolean removePortForward(PortForwardBean portForward) {
+	public boolean removePortForward(PortForward portForward) {
 		// Make sure we don't have a phantom forwarder.
 		disablePortForward(portForward);
 
@@ -639,7 +638,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	}
 
 	@Override
-	public boolean enablePortForward(PortForwardBean portForward) {
+	public boolean enablePortForward(PortForward portForward) {
 		if (!portForwards.contains(portForward)) {
 			Log.e(TAG, "Attempt to enable port forward not in list");
 			return false;
@@ -648,7 +647,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		if (!authenticated)
 			return false;
 
-		if (HostDatabase.PORTFORWARD_LOCAL.equals(portForward.getType())) {
+		if (HostConstants.PORTFORWARD_LOCAL.equals(portForward.getType())) {
 			LocalPortForwarder lpf = null;
 			try {
 				lpf = connection.createLocalPortForwarder(
@@ -667,7 +666,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			portForward.setIdentifier(lpf);
 			portForward.setEnabled(true);
 			return true;
-		} else if (HostDatabase.PORTFORWARD_REMOTE.equals(portForward.getType())) {
+		} else if (HostConstants.PORTFORWARD_REMOTE.equals(portForward.getType())) {
 			try {
 				connection.requestRemotePortForwarding("", portForward.getSourcePort(), portForward.getDestAddr(), portForward.getDestPort());
 			} catch (Exception e) {
@@ -677,7 +676,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 			portForward.setEnabled(true);
 			return true;
-		} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(portForward.getType())) {
+		} else if (HostConstants.PORTFORWARD_DYNAMIC5.equals(portForward.getType())) {
 			DynamicPortForwarder dpf = null;
 
 			try {
@@ -699,7 +698,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	}
 
 	@Override
-	public boolean disablePortForward(PortForwardBean portForward) {
+	public boolean disablePortForward(PortForward portForward) {
 		if (!portForwards.contains(portForward)) {
 			Log.e(TAG, "Attempt to disable port forward not in list");
 			return false;
@@ -708,7 +707,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		if (!authenticated)
 			return false;
 
-		if (HostDatabase.PORTFORWARD_LOCAL.equals(portForward.getType())) {
+		if (HostConstants.PORTFORWARD_LOCAL.equals(portForward.getType())) {
 			LocalPortForwarder lpf = null;
 			lpf = (LocalPortForwarder) portForward.getIdentifier();
 
@@ -722,7 +721,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			lpf.close();
 
 			return true;
-		} else if (HostDatabase.PORTFORWARD_REMOTE.equals(portForward.getType())) {
+		} else if (HostConstants.PORTFORWARD_REMOTE.equals(portForward.getType())) {
 			portForward.setEnabled(false);
 
 			try {
@@ -733,7 +732,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			}
 
 			return true;
-		} else if (HostDatabase.PORTFORWARD_DYNAMIC5.equals(portForward.getType())) {
+		} else if (HostConstants.PORTFORWARD_DYNAMIC5.equals(portForward.getType())) {
 			DynamicPortForwarder dpf;
 			dpf = (DynamicPortForwarder) portForward.getIdentifier();
 
@@ -829,49 +828,39 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		String[] responses = new String[numPrompts];
 		for (int i = 0; i < numPrompts; i++) {
 			// request response from user for each prompt
-			boolean isPassword = (echo != null && i < echo.length) ? !echo[i] : false;
+			boolean isPassword = echo != null && i < echo.length && !echo[i];
 			responses[i] = TerminalBridgePromptsKt.requestStringPrompt(bridge, instruction, prompt[i], isPassword);
 		}
 		return responses;
 	}
 
 	@Override
-	public HostBean createHost(Uri uri) {
-		HostBean host = new HostBean();
-
-		host.setProtocol(PROTOCOL);
-
-		host.setHostname(uri.getHost());
-
+	public Host createHost(Uri uri) {
+		String hostname = uri.getHost();
+		String username = uri.getUserInfo();
 		int port = uri.getPort();
 		if (port < 0)
 			port = DEFAULT_PORT;
-		host.setPort(port);
+		String nickname = getDefaultNickname(username, hostname, port);
 
-		host.setUsername(uri.getUserInfo());
-
-		String nickname = uri.getFragment();
-		if (nickname == null || nickname.length() == 0) {
-			host.setNickname(getDefaultNickname(host.getUsername(),
-					host.getHostname(), host.getPort()));
-		} else {
-			host.setNickname(uri.getFragment());
-		}
-
-		return host;
+		return Host.createSshHost(
+				nickname,
+				hostname != null ? hostname : "",
+				port,
+				username != null ? username : "");
 	}
 
 	@Override
 	public void getSelectionArgs(Uri uri, Map<String, String> selection) {
-		selection.put(HostDatabase.FIELD_HOST_PROTOCOL, PROTOCOL);
-		selection.put(HostDatabase.FIELD_HOST_NICKNAME, uri.getFragment());
-		selection.put(HostDatabase.FIELD_HOST_HOSTNAME, uri.getHost());
+		selection.put(HostConstants.FIELD_HOST_PROTOCOL, PROTOCOL);
+		selection.put(HostConstants.FIELD_HOST_NICKNAME, uri.getFragment());
+		selection.put(HostConstants.FIELD_HOST_HOSTNAME, uri.getHost());
 
 		int port = uri.getPort();
 		if (port < 0)
 			port = DEFAULT_PORT;
-		selection.put(HostDatabase.FIELD_HOST_PORT, Integer.toString(port));
-		selection.put(HostDatabase.FIELD_HOST_USERNAME, uri.getUserInfo());
+		selection.put(HostConstants.FIELD_HOST_PORT, Integer.toString(port));
+		selection.put(HostConstants.FIELD_HOST_USERNAME, uri.getUserInfo());
 	}
 
 	@Override
@@ -927,12 +916,13 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		if (nickname == null)
 			return null;
 
-		if (useAuthAgent.equals(HostDatabase.AUTHAGENT_NO)) {
+		if (useAuthAgent == null || useAuthAgent.equals(HostConstants.AUTHAGENT_NO)) {
 			Log.e(TAG, "");
 			return null;
-		} else if (useAuthAgent.equals(HostDatabase.AUTHAGENT_CONFIRM) ||
-				manager.loadedKeypairs.get(nickname).bean.isConfirmUse()) {
-			if (!promptForPubkeyUse(nickname))
+		}
+		if (useAuthAgent.equals(HostConstants.AUTHAGENT_CONFIRM)) {
+			KeyHolder holder = manager.loadedKeypairs.get(nickname);
+			if (holder != null && holder.pubkey.getConfirmation() && !promptForPubkeyUse(nickname))
 				return null;
 		}
 		return manager.getKey(nickname);
@@ -946,11 +936,22 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 
 	@Override
 	public boolean addIdentity(KeyPair pair, String comment, boolean confirmUse, int lifetime) {
-		PubkeyBean pubkey = new PubkeyBean();
-//		pubkey.setType(PubkeyDatabase.KEY_TYPE_IMPORTED);
-		pubkey.setNickname(comment);
-		pubkey.setConfirmUse(confirmUse);
-		pubkey.setLifetime(lifetime);
+		// Create a temporary pubkey for in-memory storage (not persisted to database)
+		// Note: lifetime functionality is not yet implemented in Pubkey entity
+		Pubkey pubkey = new Pubkey(
+			0L, // temporary, not saved to database
+			comment, // nickname
+			"IMPORTED", // type
+			null, // privateKey - not needed for agent forwarding
+			pair.getPublic().getEncoded(), // publicKey
+			false, // encrypted
+			false, // startup
+			confirmUse, // confirmation
+			System.currentTimeMillis(), // createdDate
+			KeyStorageType.EXPORTABLE, // storageType
+			true, // allowBackup
+			null // keystoreAlias
+		);
 		manager.addKey(pubkey, pair);
 		return true;
 	}

@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.versions)
     alias(libs.plugins.errorprone)
     alias(libs.plugins.app.versioning)
@@ -57,7 +58,7 @@ android {
         }
 
         testApplicationId = "org.connectbot.tests"
-        testInstrumentationRunner = "org.connectbot.ConnectbotJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // The following argument makes the Android Test Orchestrator run its
         // "pm clear" command after each test invocation. This command ensures
@@ -126,10 +127,8 @@ android {
     }
 
     testOptions {
-        // temporarily disable the orchestrator as this breaks coverage: https://issuetracker.google.com/issues/72758547
-        //execution = "ANDROID_TEST_ORCHESTRATOR"
+        execution = "ANDROID_TEST_ORCHESTRATOR"
         animationsDisabled = true
-
         unitTests.isIncludeAndroidResources = true
     }
 
@@ -240,29 +239,37 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.activity.compose)
 
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    add("androidTestUtil", libs.androidx.test.orchestrator)
     androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.espresso.intents)
     androidTestImplementation(libs.androidx.espresso.contrib) {
         exclude(group = "com.google.android.apps.common.testing.accessibility.framework", module = "accessibility-test-framework")
     }
     androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.test.butler)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.assertj.core)
+
+    androidTestUtil(libs.androidx.test.orchestrator)
 
     testImplementation(libs.junit)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
     testImplementation(libs.assertj.core)
     testImplementation(libs.robolectric)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.room.testing)
 
     testCompileOnly(libs.conscrypt.openjdk.uber)
     testRuntimeOnly(libs.conscrypt.android)

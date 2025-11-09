@@ -778,6 +778,8 @@
 	<string name="button_navigate_up">Navigate up</string>
 	<!-- Accessibility label for more options menu button; used for screen readers -->
 	<string name="button_more_options">More options</string>
+	<!-- Accessibility label for host options menu button; used for screen readers -->
+	<string name="button_host_options">Host options</string>
 	<!-- Accessibility label for collapse button; used for screen readers -->
 	<string name="button_collapse">Collapse</string>
 
@@ -903,4 +905,28 @@
 	<string name="continue_anyway">Continue without</string>
 	<string name="allow">Allow</string>
 	<string name="terminal_no_route">Are you trying to access a local host? Grant local network permissions.</string>
+
+	<!-- Database migration screen messages. Displayed during one-time migration from legacy database format to Room database. -->
+	<!-- Title shown while checking if database migration is needed -->
+	<string name="migration_checking">Checking database…</string>
+	<!-- Title shown during database migration process -->
+	<string name="migration_title">Migrating Database</string>
+	<!-- Warning message shown during migration to inform user not to close the app -->
+	<string name="migration_warning">Please do not close the app during migration</string>
+	<!-- Statistics label showing number of hosts migrated -->
+	<string name="migration_stats_hosts">Hosts migrated: %d</string>
+	<!-- Statistics label showing number of SSH keys migrated -->
+	<string name="migration_stats_pubkeys">SSH keys migrated: %d</string>
+	<!-- Statistics label showing number of port forwards migrated -->
+	<string name="migration_stats_port_forwards">Port forwards migrated: %d</string>
+	<!-- Statistics label showing number of known hosts migrated -->
+	<string name="migration_stats_known_hosts">Known hosts migrated: %d</string>
+	<!-- Title shown when migration fails -->
+	<string name="migration_failed_title">Migration Failed</string>
+	<!-- Error message shown when migration fails, includes error details -->
+	<string name="migration_failed_message">An error occurred during database migration: %s</string>
+	<!-- Button label to retry failed migration -->
+	<string name="migration_retry">Retry</string>
+	<!-- Help text shown after migration failure -->
+	<string name="migration_failed_help">If the problem persists, please contact support or check the application logs</string>
 </resources>

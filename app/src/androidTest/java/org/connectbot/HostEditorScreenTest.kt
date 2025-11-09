@@ -29,9 +29,10 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import org.connectbot.data.ConnectBotDatabase
 import org.connectbot.ui.screens.hosteditor.HostEditorScreen
 import org.connectbot.ui.theme.ConnectBotTheme
-import org.connectbot.util.HostDatabase
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -44,8 +45,15 @@ class HostEditorScreenTest {
 
     @Before
     fun setUp() {
+        ConnectBotDatabase.clearInstance()
+
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        HostDatabase.resetInMemoryInstance(context)
+        ConnectBotDatabase.getTestInstance(context)
+    }
+
+    @After
+    fun tearDown() {
+        ConnectBotDatabase.clearInstance()
     }
 
     @Test

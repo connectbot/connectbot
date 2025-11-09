@@ -90,8 +90,8 @@ class ConsoleViewModel(
 
                 // If no bridge exists, create one
                 if (existingBridge == null) {
-                    // Get the host from database
-                    val host = terminalManager?.hostdb?.findHostById(hostId)
+                    // Get the host from repository
+                    val host = terminalManager?.hostRepository?.findHostByIdBlocking(hostId)
 
                     if (host != null) {
                         // Build URI and open connection

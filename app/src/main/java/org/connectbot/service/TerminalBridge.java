@@ -26,12 +26,12 @@ import java.util.regex.Pattern;
 
 import org.connectbot.R;
 import org.connectbot.TerminalView;
-import org.connectbot.bean.HostBean;
-import org.connectbot.bean.PortForwardBean;
+import org.connectbot.data.entity.Host;
+import org.connectbot.data.entity.PortForward;
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.transport.AbsTransport;
 import org.connectbot.transport.TransportFactory;
-import org.connectbot.util.HostDatabase;
+import org.connectbot.util.HostConstants;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -71,12 +71,12 @@ public class TerminalBridge implements VDUDisplay {
 
 	public int[] color;
 
-	public int defaultFg = HostDatabase.DEFAULT_FG_COLOR;
-	public int defaultBg = HostDatabase.DEFAULT_BG_COLOR;
+	public int defaultFg = HostConstants.DEFAULT_FG_COLOR;
+	public int defaultBg = HostConstants.DEFAULT_BG_COLOR;
 
 	protected final TerminalManager manager;
 
-	public HostBean host;
+	public Host host;
 
 	/* package */ AbsTransport transport;
 
@@ -166,7 +166,7 @@ public class TerminalBridge implements VDUDisplay {
 	 * launch thread to start SSH connection and handle any hostkey verification
 	 * and password authentication.
 	 */
-	public TerminalBridge(final TerminalManager manager, final HostBean host) {
+	public TerminalBridge(final TerminalManager manager, final Host host) {
 		this.manager = manager;
 		this.host = host;
 
@@ -272,7 +272,7 @@ public class TerminalBridge implements VDUDisplay {
 		transport.setEmulation(emulation);
 
 		if (transport.canForwardPorts()) {
-			for (PortForwardBean portForward : manager.hostdb.getPortForwardsForHost(host))
+			for (PortForward portForward : manager.hostRepository.getPortForwardsForHostBlocking(host.getId()))
 				transport.addPortForward(portForward);
 		}
 
@@ -401,7 +401,7 @@ public class TerminalBridge implements VDUDisplay {
 		// "screen" works the best for color and escape codes
 		((vt320) buffer).setAnswerBack(emulation);
 
-		if (HostDatabase.DELKEY_BACKSPACE.equals(host.getDelKey()))
+		if (HostConstants.DELKEY_BACKSPACE.equals(host.getDelKey()))
 			((vt320) buffer).setBackspace(vt320.DELETE_IS_BACKSPACE);
 		else
 			((vt320) buffer).setBackspace(vt320.DELETE_IS_DEL);
@@ -571,8 +571,9 @@ public class TerminalBridge implements VDUDisplay {
 			ofscl.onFontSizeChanged(sizeDp);
 		}
 
-		host.setFontSize((int) sizeDp);
-		manager.hostdb.saveHost(host);
+		// Create updated host with new fontSize
+		host = host.withFontSize((int) sizeDp);
+		manager.hostRepository.saveHostBlocking(host);
 
 		forcedSize = false;
 	}
@@ -941,27 +942,27 @@ public class TerminalBridge implements VDUDisplay {
 	}
 
 	/**
-	 * Adds the {@link PortForwardBean} to the list.
+	 * Adds the {@link PortForward} to the list.
 	 * @param portForward the port forward bean to add
 	 * @return true on successful addition
 	 */
-	public boolean addPortForward(PortForwardBean portForward) {
+	public boolean addPortForward(PortForward portForward) {
 		return transport.addPortForward(portForward);
 	}
 
 	/**
-	 * Removes the {@link PortForwardBean} from the list.
+	 * Removes the {@link PortForward} from the list.
 	 * @param portForward the port forward bean to remove
 	 * @return true on successful removal
 	 */
-	public boolean removePortForward(PortForwardBean portForward) {
+	public boolean removePortForward(PortForward portForward) {
 		return transport.removePortForward(portForward);
 	}
 
 	/**
 	 * @return the list of port forwards
 	 */
-	public List<PortForwardBean> getPortForwards() {
+	public List<PortForward> getPortForwards() {
 		return transport.getPortForwards();
 	}
 
@@ -971,7 +972,7 @@ public class TerminalBridge implements VDUDisplay {
 	 * @param portForward member of our current port forwards list to enable
 	 * @return true on successful port forward setup
 	 */
-	public boolean enablePortForward(PortForwardBean portForward) {
+	public boolean enablePortForward(PortForward portForward) {
 		if (!transport.isConnected()) {
 			Log.i(TAG, "Attempt to enable port forward while not connected");
 			return false;
@@ -986,7 +987,7 @@ public class TerminalBridge implements VDUDisplay {
 	 * @param portForward member of our current port forwards list to enable
 	 * @return true on successful port forward tear-down
 	 */
-	public boolean disablePortForward(PortForwardBean portForward) {
+	public boolean disablePortForward(PortForward portForward) {
 		if (!transport.isConnected()) {
 			Log.i(TAG, "Attempt to disable port forward while not connected");
 			return false;
@@ -1021,11 +1022,11 @@ public class TerminalBridge implements VDUDisplay {
 
 	@Override
 	public final void resetColors() {
-		int[] defaults = manager.colordb.getDefaultColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
+		int[] defaults = manager.colorRepository.getDefaultColorsForSchemeBlocking(-1);
 		defaultFg = defaults[0];
 		defaultBg = defaults[1];
 
-		color = manager.colordb.getColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
+		color = manager.colorRepository.getColorsForSchemeBlocking(-1);
 	}
 
 	private static class PatternHolder {

@@ -25,8 +25,9 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import org.connectbot.data.ConnectBotDatabase
 import org.connectbot.ui.MainActivity
-import org.connectbot.util.HostDatabase
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -40,7 +41,13 @@ class MainActivityTest {
     @Before
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        HostDatabase.resetInMemoryInstance(context)
+        ConnectBotDatabase.clearInstance()
+        ConnectBotDatabase.getTestInstance(context)
+    }
+
+    @After
+    fun tearDown() {
+        ConnectBotDatabase.clearInstance()
     }
 
     @Test

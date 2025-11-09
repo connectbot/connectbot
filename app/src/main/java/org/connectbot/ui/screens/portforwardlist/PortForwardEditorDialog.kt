@@ -43,7 +43,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
-import org.connectbot.util.HostDatabase
+import org.connectbot.util.HostConstants
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,7 +51,7 @@ fun PortForwardEditorDialog(
     onDismiss: () -> Unit,
     onSave: (nickname: String, type: String, sourcePort: String, destination: String) -> Unit,
     initialNickname: String = "",
-    initialType: String = HostDatabase.PORTFORWARD_LOCAL,
+    initialType: String = HostConstants.PORTFORWARD_LOCAL,
     initialSourcePort: String = "",
     initialDestination: String = "",
     isEditing: Boolean = false
@@ -64,9 +64,9 @@ fun PortForwardEditorDialog(
 
     // Map initial type string to index
     val initialTypeIndex = when (initialType) {
-        HostDatabase.PORTFORWARD_LOCAL -> 0
-        HostDatabase.PORTFORWARD_REMOTE -> 1
-        HostDatabase.PORTFORWARD_DYNAMIC5 -> 2
+        HostConstants.PORTFORWARD_LOCAL -> 0
+        HostConstants.PORTFORWARD_REMOTE -> 1
+        HostConstants.PORTFORWARD_DYNAMIC5 -> 2
         else -> 0
     }
     var typeIndex by remember { mutableIntStateOf(initialTypeIndex) }
@@ -76,10 +76,10 @@ fun PortForwardEditorDialog(
 
     // Map type index to database type string
     val typeString = when (typeIndex) {
-        0 -> HostDatabase.PORTFORWARD_LOCAL
-        1 -> HostDatabase.PORTFORWARD_REMOTE
-        2 -> HostDatabase.PORTFORWARD_DYNAMIC5
-        else -> HostDatabase.PORTFORWARD_LOCAL
+        0 -> HostConstants.PORTFORWARD_LOCAL
+        1 -> HostConstants.PORTFORWARD_REMOTE
+        2 -> HostConstants.PORTFORWARD_DYNAMIC5
+        else -> HostConstants.PORTFORWARD_LOCAL
     }
 
     // Dynamic SOCKS proxy doesn't need destination

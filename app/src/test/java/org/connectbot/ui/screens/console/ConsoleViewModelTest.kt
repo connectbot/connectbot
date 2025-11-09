@@ -25,15 +25,15 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.connectbot.bean.HostBean
+import org.connectbot.data.entity.Host
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
-import org.connectbot.util.HostDatabase
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.*
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 /**
  * Tests for ConsoleViewModel.
@@ -48,8 +48,7 @@ class ConsoleViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
 
-        // Create mock TerminalManager
-        terminalManager = mock(TerminalManager::class.java)
+        terminalManager = mock()
     }
 
     @After
@@ -70,7 +69,7 @@ class ConsoleViewModelTest {
 
     @Test
     fun loadBridges_WithNoBridges_StopsLoading() = runTest {
-        `when`(terminalManager.bridges).thenReturn(ArrayList())
+        whenever(terminalManager.bridges).thenReturn(ArrayList())
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
@@ -86,7 +85,7 @@ class ConsoleViewModelTest {
     @Test
     fun loadBridges_WithExistingBridges_LoadsSuccessfully() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
-        `when`(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
+        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
@@ -105,7 +104,7 @@ class ConsoleViewModelTest {
         val mockBridge1 = createMockBridge(1L, "host1")
         val mockBridge2 = createMockBridge(2L, "host2")
         val mockBridge3 = createMockBridge(3L, "host3")
-        `when`(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge2, mockBridge3))
+        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge2, mockBridge3))
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
@@ -123,7 +122,7 @@ class ConsoleViewModelTest {
     fun selectBridge_ValidIndex_UpdatesCurrentBridge() = runTest {
         val mockBridge1 = createMockBridge(1L, "host1")
         val mockBridge2 = createMockBridge(2L, "host2")
-        `when`(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge2))
+        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge2))
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
@@ -140,7 +139,7 @@ class ConsoleViewModelTest {
     @Test
     fun selectBridge_InvalidIndex_DoesNotUpdate() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
-        `when`(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
+        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
@@ -159,7 +158,7 @@ class ConsoleViewModelTest {
     @Test
     fun selectBridge_NegativeIndex_DoesNotUpdate() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
-        `when`(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
+        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
@@ -178,7 +177,7 @@ class ConsoleViewModelTest {
     @Test
     fun refreshMenuState_IncrementsRevision() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
-        `when`(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
+        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
@@ -196,7 +195,7 @@ class ConsoleViewModelTest {
     @Test
     fun refreshMenuState_MultipleRefreshes_IncrementsEachTime() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
-        `when`(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
+        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
@@ -219,8 +218,7 @@ class ConsoleViewModelTest {
         val mockBridge2 = createMockBridge(2L, "host2")
         val mockBridge3 = createMockBridge(3L, "host3")
 
-        // Initially return all 3 bridges
-        `when`(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge2, mockBridge3))
+        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge2, mockBridge3))
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
@@ -229,8 +227,7 @@ class ConsoleViewModelTest {
 
         assertEquals("Should start with 3 bridges", 3, viewModel.uiState.value.bridges.size)
 
-        // Simulate bridge2 disconnecting - now only 2 bridges remain
-        `when`(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge3))
+        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge3))
 
         viewModel.onDisconnected(mockBridge2)
         advanceUntilIdle()
@@ -246,19 +243,17 @@ class ConsoleViewModelTest {
         val mockBridge2 = createMockBridge(2L, "host2")
         val mockBridge3 = createMockBridge(3L, "host3")
 
-        `when`(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge2, mockBridge3))
+        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge2, mockBridge3))
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
         advanceTimeBy(1000)
         advanceUntilIdle()
 
-        // Select the last bridge (index 2)
         viewModel.selectBridge(2)
         assertEquals("Current index should be 2", 2, viewModel.uiState.value.currentBridgeIndex)
 
-        // Disconnect the last bridge
-        `when`(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge2))
+        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge2))
 
         viewModel.onDisconnected(mockBridge3)
         advanceUntilIdle()
@@ -272,7 +267,7 @@ class ConsoleViewModelTest {
     fun onDisconnected_LastBridge_KeepsIndexAtZero() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
 
-        `when`(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
+        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
@@ -281,8 +276,7 @@ class ConsoleViewModelTest {
 
         assertEquals("Should have 1 bridge", 1, viewModel.uiState.value.bridges.size)
 
-        // Disconnect the only bridge
-        `when`(terminalManager.bridges).thenReturn(ArrayList())
+        whenever(terminalManager.bridges).thenReturn(ArrayList())
 
         viewModel.onDisconnected(mockBridge)
         advanceUntilIdle()
@@ -292,22 +286,19 @@ class ConsoleViewModelTest {
         assertEquals("Index should remain 0", 0, state.currentBridgeIndex)
     }
 
-    // Helper function to create mock bridges
     private fun createMockBridge(id: Long, hostname: String): TerminalBridge {
-        val bridge = mock(TerminalBridge::class.java)
-        val host = HostBean().apply {
-            this.id = id
-            this.hostname = hostname
-            this.nickname = hostname
-            this.protocol = "ssh"
-            this.port = 22
-            this.username = "test"
-        }
-        // Set the public field directly
+        val bridge = mock<TerminalBridge>()
+        val host = Host(
+            id = id,
+            hostname = hostname,
+            nickname = hostname,
+            protocol = "ssh",
+            port = 22,
+            username = "test"
+        )
         bridge.host = host
-        // Mock the methods
-        `when`(bridge.isSessionOpen).thenReturn(true)
-        `when`(bridge.isDisconnected).thenReturn(false)
+        whenever(bridge.isSessionOpen).thenReturn(true)
+        whenever(bridge.isDisconnected).thenReturn(false)
         return bridge
     }
 }

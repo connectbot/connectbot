@@ -27,20 +27,20 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.connectbot.bean.PortForwardBean
-import org.connectbot.util.HostDatabase
+import org.connectbot.data.HostRepository
+import org.connectbot.data.entity.PortForward
 
 data class PortForwardListUiState(
-    val portForwards: List<PortForwardBean> = emptyList(),
+    val portForwards: List<PortForward> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null
 )
 
 class PortForwardListViewModel(
     private val context: Context,
-    private val hostId: Long
+    private val hostId: Long,
+    private val repository: HostRepository = HostRepository.get(context)
 ) : ViewModel() {
-    private val database: HostDatabase = HostDatabase.get(context)
 
     private val _uiState = MutableStateFlow(PortForwardListUiState(isLoading = true))
     val uiState: StateFlow<PortForwardListUiState> = _uiState.asStateFlow()
@@ -53,14 +53,7 @@ class PortForwardListViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
-                val portForwards = withContext(Dispatchers.IO) {
-                    val host = database.findHostById(hostId)
-                    if (host != null) {
-                        database.getPortForwardsForHost(host)
-                    } else {
-                        emptyList()
-                    }
-                }
+                val portForwards = repository.getPortForwardsForHost(hostId)
                 _uiState.update {
                     it.copy(portForwards = portForwards, isLoading = false, error = null)
                 }
@@ -76,14 +69,24 @@ class PortForwardListViewModel(
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
-                    val portForward = PortForwardBean(
-                        hostId,
-                        nickname,
-                        type,
-                        sourcePort,
-                        destination
+                    // Parse destination in "host:port" format
+                    val destSplit = destination.split(":", limit = -1)
+                    val destAddr = destSplit.firstOrNull()
+                    val destPort = if (destSplit.size > 1) {
+                        destSplit.last().toIntOrNull() ?: 0
+                    } else {
+                        0
+                    }
+
+                    val portForward = PortForward(
+                        hostId = hostId,
+                        nickname = nickname,
+                        type = type,
+                        sourcePort = sourcePort.toIntOrNull() ?: 0,
+                        destAddr = destAddr,
+                        destPort = destPort
                     )
-                    database.savePortForward(portForward)
+                    repository.savePortForward(portForward)
                 }
                 loadPortForwards()
             } catch (e: Exception) {
@@ -95,7 +98,7 @@ class PortForwardListViewModel(
     }
 
     fun updatePortForward(
-        portForward: PortForwardBean,
+        portForward: PortForward,
         nickname: String,
         type: String,
         sourcePort: String,
@@ -104,11 +107,24 @@ class PortForwardListViewModel(
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
-                    portForward.nickname = nickname
-                    portForward.type = type
-                    portForward.setSourcePort(sourcePort.toInt())
-                    portForward.setDest(destination)
-                    database.savePortForward(portForward)
+                    // Parse destination in "host:port" format
+                    val destSplit = destination.split(":", limit = -1)
+                    val destAddr = destSplit.firstOrNull()
+                    val destPort = if (destSplit.size > 1) {
+                        destSplit.last().toIntOrNull() ?: 0
+                    } else {
+                        0
+                    }
+
+                    // Create updated port forward with new values
+                    val updated = portForward.copy(
+                        nickname = nickname,
+                        type = type,
+                        sourcePort = sourcePort.toIntOrNull() ?: 0,
+                        destAddr = destAddr,
+                        destPort = destPort
+                    )
+                    repository.savePortForward(updated)
                 }
                 loadPortForwards()
             } catch (e: Exception) {
@@ -119,11 +135,11 @@ class PortForwardListViewModel(
         }
     }
 
-    fun deletePortForward(portForward: PortForwardBean) {
+    fun deletePortForward(portForward: PortForward) {
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
-                    database.deletePortForward(portForward)
+                    repository.deletePortForward(portForward)
                 }
                 loadPortForwards()
             } catch (e: Exception) {

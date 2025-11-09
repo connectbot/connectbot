@@ -458,7 +458,7 @@ private fun FontSizeSelector(
 @Composable
 private fun PubkeySelector(
     pubkeyId: Long,
-    availablePubkeys: List<org.connectbot.bean.PubkeyBean>,
+    availablePubkeys: List<org.connectbot.data.entity.Pubkey>,
     onPubkeySelected: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
