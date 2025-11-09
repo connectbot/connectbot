@@ -106,8 +106,8 @@ fun ConsoleScreen(
     // Read preferences
     val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
     val keyboardAlwaysVisible = remember { prefs.getBoolean("alwaysvisible", false) }
-    val fullscreen = remember { prefs.getBoolean("fullscreen", false) }
-    val titleBarHide = remember { prefs.getBoolean("titlebarhide", false) }
+    var fullscreen by remember { mutableStateOf(prefs.getBoolean("fullscreen", false)) }
+    var titleBarHide by remember { mutableStateOf(prefs.getBoolean("titlebarhide", false)) }
 
     var showMenu by remember { mutableStateOf(false) }
     var showUrlScanDialog by remember { mutableStateOf(false) }
@@ -556,6 +556,43 @@ fun ConsoleScreen(
                                     enabled = sessionOpen
                                 )
                             }
+
+                            // Fullscreen toggle
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.pref_fullscreen_title)) },
+                                onClick = {
+                                    fullscreen = !fullscreen
+                                    prefs.edit().putBoolean("fullscreen", fullscreen).apply()
+                                },
+                                trailingIcon = {
+                                    androidx.compose.material3.Checkbox(
+                                        checked = fullscreen,
+                                        onCheckedChange = null
+                                    )
+                                }
+                            )
+
+                            // Title bar auto-hide toggle
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.pref_titlebarhide_title)) },
+                                onClick = {
+                                    titleBarHide = !titleBarHide
+                                    prefs.edit().putBoolean("titlebarhide", titleBarHide).apply()
+                                    // If enabling auto-hide, hide the title bar immediately
+                                    if (titleBarHide) {
+                                        showTitleBar = false
+                                    } else {
+                                        // If disabling auto-hide, show the title bar
+                                        showTitleBar = true
+                                    }
+                                },
+                                trailingIcon = {
+                                    androidx.compose.material3.Checkbox(
+                                        checked = titleBarHide,
+                                        onCheckedChange = null
+                                    )
+                                }
+                            )
                         }
                     }
                 },
