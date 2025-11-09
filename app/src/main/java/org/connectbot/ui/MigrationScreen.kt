@@ -1,0 +1,192 @@
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2025 Kenny Root
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.connectbot.ui
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import org.connectbot.R
+import org.connectbot.data.migration.MigrationState
+import org.connectbot.data.migration.MigrationStatus
+
+/**
+ * Full-screen UI shown during database migration.
+ */
+@Composable
+fun MigrationScreen(
+    uiState: MigrationUiState,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        when (uiState) {
+            is MigrationUiState.Checking -> {
+                CheckingMigrationContent()
+            }
+            is MigrationUiState.InProgress -> {
+                MigrationInProgressContent(state = uiState.state)
+            }
+            is MigrationUiState.Failed -> {
+                MigrationFailedContent(
+                    error = uiState.error,
+                    onRetry = onRetry
+                )
+            }
+            is MigrationUiState.Completed -> {
+                // This state is handled by MainActivity - screen is hidden
+            }
+        }
+    }
+}
+
+@Composable
+private fun CheckingMigrationContent() {
+    CircularProgressIndicator(
+        modifier = Modifier.size(48.dp)
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+    Text(
+        text = stringResource(R.string.migration_checking),
+        style = MaterialTheme.typography.bodyLarge,
+        textAlign = TextAlign.Center
+    )
+}
+
+@Composable
+private fun MigrationInProgressContent(state: MigrationState) {
+    Text(
+        text = stringResource(R.string.migration_title),
+        style = MaterialTheme.typography.headlineMedium,
+        textAlign = TextAlign.Center
+    )
+
+    Spacer(modifier = Modifier.height(24.dp))
+
+    LinearProgressIndicator(
+        progress = { state.progress },
+        modifier = Modifier.padding(horizontal = 16.dp)
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Text(
+        text = state.currentStep,
+        style = MaterialTheme.typography.bodyMedium,
+        textAlign = TextAlign.Center,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+
+    if (state.status == MigrationStatus.IN_PROGRESS) {
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Show migration statistics
+        if (state.hostsMigrated > 0 || state.pubkeysMigrated > 0) {
+            Column(
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.migration_stats_hosts, state.hostsMigrated),
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Text(
+                    text = stringResource(R.string.migration_stats_pubkeys, state.pubkeysMigrated),
+                    style = MaterialTheme.typography.bodySmall
+                )
+                if (state.portForwardsMigrated > 0) {
+                    Text(
+                        text = stringResource(R.string.migration_stats_port_forwards, state.portForwardsMigrated),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+                if (state.knownHostsMigrated > 0) {
+                    Text(
+                        text = stringResource(R.string.migration_stats_known_hosts, state.knownHostsMigrated),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
+        }
+    }
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Text(
+        text = stringResource(R.string.migration_warning),
+        style = MaterialTheme.typography.bodySmall,
+        textAlign = TextAlign.Center,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+}
+
+@Composable
+private fun MigrationFailedContent(
+    error: String,
+    onRetry: () -> Unit
+) {
+    Text(
+        text = stringResource(R.string.migration_failed_title),
+        style = MaterialTheme.typography.headlineMedium,
+        textAlign = TextAlign.Center,
+        color = MaterialTheme.colorScheme.error
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Text(
+        text = stringResource(R.string.migration_failed_message, error),
+        style = MaterialTheme.typography.bodyMedium,
+        textAlign = TextAlign.Center
+    )
+
+    Spacer(modifier = Modifier.height(24.dp))
+
+    Button(onClick = onRetry) {
+        Text(stringResource(R.string.migration_retry))
+    }
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Text(
+        text = stringResource(R.string.migration_failed_help),
+        style = MaterialTheme.typography.bodySmall,
+        textAlign = TextAlign.Center,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+}

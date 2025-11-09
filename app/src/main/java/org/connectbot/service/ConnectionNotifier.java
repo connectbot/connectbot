@@ -18,9 +18,9 @@
 package org.connectbot.service;
 
 import org.connectbot.R;
-import org.connectbot.bean.HostBean;
+import org.connectbot.data.entity.Host;
 import org.connectbot.ui.MainActivity;
-import org.connectbot.util.HostDatabase;
+import org.connectbot.util.HostConstants;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -89,7 +89,7 @@ public class ConnectionNotifier {
 		getNotificationManager(context).createNotificationChannel(nc);
 	}
 
-	private Notification newActivityNotification(Context context, HostBean host) {
+	private Notification newActivityNotification(Context context, Host host) {
 		NotificationCompat.Builder builder = newNotificationBuilder(context, NOTIFICATION_CHANNEL);
 
 		Resources res = context.getResources();
@@ -112,11 +112,11 @@ public class ConnectionNotifier {
 		int ledOnMS = 300;
 		int ledOffMS = 1000;
 		builder.setDefaults(Notification.DEFAULT_LIGHTS);
-		if (HostDatabase.COLOR_RED.equals(host.getColor()))
+		if (HostConstants.COLOR_RED.equals(host.getColor()))
 			builder.setLights(Color.RED, ledOnMS, ledOffMS);
-		else if (HostDatabase.COLOR_GREEN.equals(host.getColor()))
+		else if (HostConstants.COLOR_GREEN.equals(host.getColor()))
 			builder.setLights(Color.GREEN, ledOnMS, ledOffMS);
-		else if (HostDatabase.COLOR_BLUE.equals(host.getColor()))
+		else if (HostConstants.COLOR_BLUE.equals(host.getColor()))
 			builder.setLights(Color.BLUE, ledOnMS, ledOffMS);
 		else
 			builder.setLights(Color.WHITE, ledOnMS, ledOffMS);
@@ -155,7 +155,7 @@ public class ConnectionNotifier {
 		return builder.build();
 	}
 
-	void showActivityNotification(Service context, HostBean host) {
+	void showActivityNotification(Service context, Host host) {
 		getNotificationManager(context).notify(ACTIVITY_NOTIFICATION, newActivityNotification(context, host));
 	}
 

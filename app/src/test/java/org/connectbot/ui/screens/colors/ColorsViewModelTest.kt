@@ -18,6 +18,7 @@
 package org.connectbot.ui.screens.colors
 
 import android.content.Context
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,15 +29,15 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.assertj.core.api.Assertions.assertThat
-import org.connectbot.data.ColorScheme
 import org.connectbot.data.ColorSchemeRepository
+import org.connectbot.data.entity.ColorScheme
 import org.connectbot.util.Colors
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -53,20 +54,18 @@ class ColorsViewModelTest {
         Dispatchers.setMain(testDispatcher)
         context = ApplicationProvider.getApplicationContext()
 
-        // Mock ColorSchemeRepository
-        repository = mock(ColorSchemeRepository::class.java)
+        repository = mock()
 
-        // Setup default mock behavior
         val defaultScheme = ColorScheme(
-            id = ColorScheme.DEFAULT_SCHEME_ID,
+            id = -1,
             name = "Default",
             isBuiltIn = true
         )
         runBlocking {
-            `when`(repository.getAllSchemes()).thenReturn(listOf(defaultScheme))
-            `when`(repository.getSchemeDefaults(ColorScheme.DEFAULT_SCHEME_ID))
-                .thenReturn(Pair(7, 0)) // Default FG=7 (white), BG=0 (black)
-            `when`(repository.getSchemeColors(ColorScheme.DEFAULT_SCHEME_ID))
+            whenever(repository.getAllSchemes()).thenReturn(listOf(defaultScheme))
+            whenever(repository.getSchemeDefaults(-1))
+                .thenReturn(Pair(7, 0))
+            whenever(repository.getSchemeColors(-1))
                 .thenReturn(Colors.defaults)
         }
     }
@@ -82,7 +81,7 @@ class ColorsViewModelTest {
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
-        assertThat(state.currentSchemeId).isEqualTo(ColorScheme.DEFAULT_SCHEME_ID)
+        assertThat(state.currentSchemeId).isEqualTo(-1)
         assertThat(state.availableSchemes).isNotEmpty()
         assertThat(state.currentPalette).isNotEmpty()
         assertThat(state.isLoading).isFalse()
@@ -117,6 +116,10 @@ class ColorsViewModelTest {
     @Test
     fun `updateForegroundColor updates state`() = runTest {
         viewModel = ColorsViewModel(context, repository)
+        advanceUntilIdle()
+
+        val schemeIndex = 1
+        viewModel.switchToScheme(schemeIndex)
         advanceUntilIdle()
 
         val newColorIndex = 5
@@ -156,6 +159,9 @@ class ColorsViewModelTest {
     @Test
     fun `updateBackgroundColor updates state`() = runTest {
         viewModel = ColorsViewModel(context, repository)
+        advanceUntilIdle()
+
+        viewModel.switchToScheme(1)
         advanceUntilIdle()
 
         val newColorIndex = 3
@@ -208,7 +214,13 @@ class ColorsViewModelTest {
 
     @Test
     fun `resetToDefaults reloads default colors`() = runTest {
+        whenever(repository.getSchemeDefaults(1)).thenReturn(Pair(7, 0))
+        whenever(repository.getSchemeColors(1)).thenReturn(IntArray(255, { it }))
+
         viewModel = ColorsViewModel(context, repository)
+        advanceUntilIdle()
+
+        viewModel.switchToScheme(1)
         advanceUntilIdle()
 
         // Change some colors first
@@ -229,6 +241,7 @@ class ColorsViewModelTest {
     @Test
     fun `foreground and background colors can be set independently`() = runTest {
         viewModel = ColorsViewModel(context, repository)
+        viewModel.switchToScheme(1)
         advanceUntilIdle()
 
         val fgColor = 7

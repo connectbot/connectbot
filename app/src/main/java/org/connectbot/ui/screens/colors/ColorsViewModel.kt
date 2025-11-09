@@ -25,17 +25,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.connectbot.data.ColorScheme
 import org.connectbot.data.ColorSchemeRepository
+import org.connectbot.data.entity.ColorScheme
 import org.connectbot.util.Colors
-import org.connectbot.util.HostDatabase
+import org.connectbot.util.HostConstants
 
 data class ColorsUiState(
-    val currentSchemeId: Int = ColorScheme.DEFAULT_SCHEME_ID,
+    val currentSchemeId: Int = -1,
     val currentSchemeName: String = "Default",
     val availableSchemes: List<ColorScheme> = emptyList(),
-    val foregroundColorIndex: Int = HostDatabase.DEFAULT_FG_COLOR,
-    val backgroundColorIndex: Int = HostDatabase.DEFAULT_BG_COLOR,
+    val foregroundColorIndex: Int = HostConstants.DEFAULT_FG_COLOR,
+    val backgroundColorIndex: Int = HostConstants.DEFAULT_BG_COLOR,
     val currentPalette: IntArray = Colors.defaults,
     val isLoading: Boolean = false,
     val error: String? = null
@@ -129,16 +129,15 @@ class ColorsViewModel(
     }
 
     /**
-     * Switch to a different color scheme.
+     * Switch to a different color scheme for viewing/previewing.
+     * Note: Built-in schemes (negative IDs) are immutable and cannot be edited.
+     * To customize a built-in scheme, create a custom scheme based on it.
      */
     fun switchToScheme(schemeId: Int) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             try {
-                // Load the scheme into the global default (scheme 0)
-                repository.loadScheme(schemeId, ColorScheme.DEFAULT_SCHEME_ID)
-
-                // Update UI state
+                // Update UI state to display the selected scheme
                 _uiState.update { it.copy(currentSchemeId = schemeId) }
                 loadColors()
             } catch (e: Exception) {
@@ -155,12 +154,30 @@ class ColorsViewModel(
     fun updateForegroundColor(colorIndex: Int) {
         if (colorIndex < 0 || colorIndex >= Colors.defaults.size) return
 
+        val currentSchemeId = _uiState.value.currentSchemeId
+        if (currentSchemeId < 0) {
+            // Cannot modify built-in schemes
+            _uiState.update {
+                it.copy(error = "Cannot modify built-in schemes. Please create a custom scheme first.")
+            }
+            return
+        }
+
         _uiState.update { it.copy(foregroundColorIndex = colorIndex) }
         saveColors()
     }
 
     fun updateBackgroundColor(colorIndex: Int) {
         if (colorIndex < 0 || colorIndex >= Colors.defaults.size) return
+
+        val currentSchemeId = _uiState.value.currentSchemeId
+        if (currentSchemeId < 0) {
+            // Cannot modify built-in schemes
+            _uiState.update {
+                it.copy(error = "Cannot modify built-in schemes. Please create a custom scheme first.")
+            }
+            return
+        }
 
         _uiState.update { it.copy(backgroundColorIndex = colorIndex) }
         saveColors()
@@ -169,8 +186,15 @@ class ColorsViewModel(
     private fun saveColors() {
         viewModelScope.launch {
             try {
+                val currentSchemeId = _uiState.value.currentSchemeId
+                if (currentSchemeId < 0) {
+                    // Should not happen due to checks above, but be defensive
+                    _uiState.update { it.copy(error = "Cannot save built-in schemes") }
+                    return@launch
+                }
+
                 repository.setDefaultColorsForScheme(
-                    HostDatabase.DEFAULT_COLOR_SCHEME,
+                    currentSchemeId,
                     _uiState.value.foregroundColorIndex,
                     _uiState.value.backgroundColorIndex
                 )
@@ -185,7 +209,16 @@ class ColorsViewModel(
     fun resetToDefaults() {
         viewModelScope.launch {
             try {
-                repository.resetSchemeToDefaults(ColorScheme.DEFAULT_SCHEME_ID)
+                val currentSchemeId = _uiState.value.currentSchemeId
+                if (currentSchemeId < 0) {
+                    // Cannot reset built-in schemes - they're already defaults
+                    _uiState.update {
+                        it.copy(error = "Built-in schemes cannot be reset. They are already defaults.")
+                    }
+                    return@launch
+                }
+
+                repository.resetSchemeToDefaults(currentSchemeId)
                 loadColors()
             } catch (e: Exception) {
                 _uiState.update {

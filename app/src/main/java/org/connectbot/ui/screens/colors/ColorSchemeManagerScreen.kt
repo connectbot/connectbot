@@ -64,7 +64,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
-import org.connectbot.data.ColorScheme
+import org.connectbot.data.entity.ColorScheme
 
 /**
  * Screen for managing color schemes (create, duplicate, delete).
@@ -314,20 +314,22 @@ private fun SchemeItem(
                         expanded = showMenu,
                         onDismissRequest = { showMenu = false }
                     ) {
-                        // Edit Palette
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.button_edit_palette)) },
-                            onClick = {
-                                showMenu = false
-                                onEditPalette()
-                            },
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Default.Palette,
-                                    contentDescription = null
-                                )
-                            }
-                        )
+                        // Edit Palette (only for custom schemes)
+                        if (!scheme.isBuiltIn) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.button_edit_palette)) },
+                                onClick = {
+                                    showMenu = false
+                                    onEditPalette()
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Default.Palette,
+                                        contentDescription = null
+                                    )
+                                }
+                            )
+                        }
 
                         // Export
                         DropdownMenuItem(
@@ -398,7 +400,7 @@ private fun NewSchemeDialog(
     var name by remember { mutableStateOf(suggestedName ?: "") }
     var description by remember { mutableStateOf("") }
     var selectedBaseSchemeId by remember {
-        mutableStateOf(preselectedSchemeId ?: ColorScheme.DEFAULT_SCHEME_ID)
+        mutableStateOf(preselectedSchemeId ?: -1)
     }
 
     AlertDialog(

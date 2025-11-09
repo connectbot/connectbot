@@ -24,8 +24,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.connectbot.R;
-import org.connectbot.bean.HostBean;
-import org.connectbot.util.HostDatabase;
+import org.connectbot.data.entity.Host;
 
 import com.google.ase.Exec;
 
@@ -185,26 +184,19 @@ public class Local extends AbsTransport {
 	}
 
 	@Override
-	public HostBean createHost(Uri uri) {
-		HostBean host = new HostBean();
-
-		host.setProtocol(PROTOCOL);
-
+	public Host createHost(Uri uri) {
 		String nickname = uri.getFragment();
 		if (nickname == null || nickname.length() == 0) {
-			host.setNickname(getDefaultNickname(host.getUsername(),
-					host.getHostname(), host.getPort()));
-		} else {
-			host.setNickname(uri.getFragment());
+			nickname = getDefaultNickname("", "", 0);
 		}
 
-		return host;
+		return Host.createLocalHost(nickname);
 	}
 
 	@Override
 	public void getSelectionArgs(Uri uri, Map<String, String> selection) {
-		selection.put(HostDatabase.FIELD_HOST_PROTOCOL, PROTOCOL);
-		selection.put(HostDatabase.FIELD_HOST_NICKNAME, uri.getFragment());
+		selection.put("protocol", PROTOCOL);
+		selection.put("nickname", uri.getFragment());
 	}
 
 	public static String getFormatHint(Context context) {

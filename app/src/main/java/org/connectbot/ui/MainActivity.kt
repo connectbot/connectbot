@@ -32,20 +32,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
+import org.connectbot.data.HostRepository
 import org.connectbot.service.TerminalManager
 import org.connectbot.transport.TransportFactory
 import org.connectbot.ui.navigation.ConnectBotNavHost
 import org.connectbot.ui.navigation.NavDestinations
 import org.connectbot.ui.theme.ConnectBotTheme
-import org.connectbot.util.HostDatabase
 
 class MainActivity : ComponentActivity() {
     companion object {
@@ -93,19 +95,34 @@ class MainActivity : ComponentActivity() {
         bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
 
         setContent {
+            val migrationViewModel: MigrationViewModel = viewModel()
+            val migrationUiState by migrationViewModel.uiState.collectAsState()
+
             ConnectBotTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val controller = rememberNavController()
-                    navController = controller
+                    when (migrationUiState) {
+                        is MigrationUiState.Completed -> {
+                            // Migration complete or not needed, show normal UI
+                            val controller = rememberNavController()
+                            navController = controller
 
-                    CompositionLocalProvider(LocalTerminalManager provides terminalManager) {
-                        ConnectBotNavHost(
-                            navController = controller,
-                            startDestination = NavDestinations.HOST_LIST
-                        )
+                            CompositionLocalProvider(LocalTerminalManager provides terminalManager) {
+                                ConnectBotNavHost(
+                                    navController = controller,
+                                    startDestination = NavDestinations.HOST_LIST
+                                )
+                            }
+                        }
+                        else -> {
+                            // Show migration screen
+                            MigrationScreen(
+                                uiState = migrationUiState,
+                                onRetry = { migrationViewModel.retryMigration() }
+                            )
+                        }
                     }
                 }
             }
@@ -164,8 +181,8 @@ class MainActivity : ComponentActivity() {
                 }
 
                 if (bridge != null) {
-                    val hostDb = HostDatabase.get(this@MainActivity)
-                    val host = TransportFactory.findHost(hostDb, uri)
+                    val hostRepository = HostRepository.get(this@MainActivity)
+                    val host = TransportFactory.findHost(hostRepository, uri)
                     if (host != null) {
                         controller.navigate("${NavDestinations.CONSOLE}/${host.id}") {
                             launchSingleTop = true

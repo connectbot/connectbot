@@ -27,10 +27,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.connectbot.bean.HostBean
+import org.connectbot.data.HostRepository
+import org.connectbot.data.entity.Host
 import org.connectbot.service.OnHostStatusChangedListener
 import org.connectbot.service.TerminalManager
-import org.connectbot.util.HostDatabase
 
 enum class ConnectionState {
     UNKNOWN,
@@ -39,7 +39,7 @@ enum class ConnectionState {
 }
 
 data class HostListUiState(
-    val hosts: List<HostBean> = emptyList(),
+    val hosts: List<Host> = emptyList(),
     val connectionStates: Map<Long, ConnectionState> = emptyMap(),
     val isLoading: Boolean = false,
     val error: String? = null,
@@ -48,9 +48,9 @@ data class HostListUiState(
 
 class HostListViewModel(
     private val context: Context,
-    private val terminalManager: TerminalManager?
+    private val terminalManager: TerminalManager?,
+    private val repository: HostRepository = HostRepository.get(context)
 ) : ViewModel(), OnHostStatusChangedListener {
-    private val database: HostDatabase = HostDatabase.get(context)
 
     private val _uiState = MutableStateFlow(HostListUiState(isLoading = true))
     val uiState: StateFlow<HostListUiState> = _uiState.asStateFlow()
@@ -76,9 +76,7 @@ class HostListViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
-                val hosts = withContext(Dispatchers.IO) {
-                    database.getHosts(_uiState.value.sortedByColor)
-                }
+                val hosts = repository.getHosts(_uiState.value.sortedByColor)
                 updateConnectionStates(hosts)
                 _uiState.update {
                     it.copy(hosts = hosts, isLoading = false, error = null)
@@ -91,23 +89,25 @@ class HostListViewModel(
         }
     }
 
-    private fun updateConnectionStates(hosts: List<HostBean>) {
+    private fun updateConnectionStates(hosts: List<Host>) {
         val states = hosts.associate { host ->
             host.id to getConnectionState(host)
         }
         _uiState.update { it.copy(connectionStates = states) }
     }
 
-    private fun getConnectionState(host: HostBean): ConnectionState {
+    private fun getConnectionState(host: Host): ConnectionState {
         if (terminalManager == null) {
             return ConnectionState.UNKNOWN
         }
 
-        if (terminalManager.getConnectedBridge(host) != null) {
+        // Check if connected by nickname
+        if (terminalManager.getConnectedBridge(host.nickname) != null) {
             return ConnectionState.CONNECTED
         }
 
-        if (terminalManager.disconnected.contains(host)) {
+        // Check if in disconnected list by comparing nickname
+        if (terminalManager.disconnected.any { it.nickname == host.nickname }) {
             return ConnectionState.DISCONNECTED
         }
 
@@ -119,7 +119,7 @@ class HostListViewModel(
         loadHosts()
     }
 
-    fun connectToHost(host: HostBean) {
+    fun connectToHost(host: Host) {
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
@@ -138,12 +138,10 @@ class HostListViewModel(
         }
     }
 
-    fun deleteHost(host: HostBean) {
+    fun deleteHost(host: Host) {
         viewModelScope.launch {
             try {
-                withContext(Dispatchers.IO) {
-                    database.deleteHost(host)
-                }
+                repository.deleteHost(host)
                 loadHosts()
             } catch (e: Exception) {
                 _uiState.update {
@@ -160,18 +158,19 @@ class HostListViewModel(
     fun quickConnect(uri: String) {
         viewModelScope.launch {
             try {
-                val hostBean = withContext(Dispatchers.IO) {
-                    HostBean().apply {
-                        // Parse URI and populate host
-                        val parsedUri = android.net.Uri.parse(uri)
-                        protocol = parsedUri.scheme ?: "ssh"
-                        hostname = parsedUri.host
-                        port = if (parsedUri.port > 0) parsedUri.port else 22
-                        username = parsedUri.userInfo
-                        nickname = "$username@$hostname:$port"
-                    }
+                val host = withContext(Dispatchers.IO) {
+                    // Parse URI and create a temporary host with defaults from Host entity
+                    val parsedUri = android.net.Uri.parse(uri)
+                    Host(
+                        protocol = parsedUri.scheme ?: "ssh",
+                        hostname = parsedUri.host ?: "",
+                        port = if (parsedUri.port > 0) parsedUri.port else 22,
+                        username = parsedUri.userInfo ?: "",
+                        nickname = "${parsedUri.userInfo}@${parsedUri.host}:${if (parsedUri.port > 0) parsedUri.port else 22}",
+                        lastConnect = System.currentTimeMillis()
+                    )
                 }
-                connectToHost(hostBean)
+                connectToHost(host)
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(error = e.message ?: "Invalid URI")

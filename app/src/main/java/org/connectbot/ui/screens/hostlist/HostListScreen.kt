@@ -69,17 +69,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
-import org.connectbot.bean.HostBean
+import org.connectbot.data.entity.Host
 import org.connectbot.ui.LocalTerminalManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HostListScreen(
-    onNavigateToConsole: (HostBean) -> Unit,
-    onNavigateToEditHost: (HostBean?) -> Unit,
+    onNavigateToConsole: (Host) -> Unit,
+    onNavigateToEditHost: (Host?) -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToPubkeys: () -> Unit,
-    onNavigateToPortForwards: (HostBean) -> Unit,
+    onNavigateToPortForwards: (Host) -> Unit,
     onNavigateToColors: () -> Unit,
     onNavigateToHelp: () -> Unit,
     modifier: Modifier = Modifier
@@ -248,7 +248,7 @@ fun HostListScreen(
 
 @Composable
 private fun HostListItem(
-    host: HostBean,
+    host: Host,
     connectionState: ConnectionState,
     onClick: () -> Unit,
     onEdit: () -> Unit,
@@ -342,7 +342,7 @@ private fun HostListItem(
         trailingContent = {
             Box {
                 IconButton(onClick = { showMenu = true }) {
-                    Icon(Icons.Default.MoreVert, stringResource(R.string.button_more_options))
+                    Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.button_host_options))
                 }
                 DropdownMenu(
                     expanded = showMenu,

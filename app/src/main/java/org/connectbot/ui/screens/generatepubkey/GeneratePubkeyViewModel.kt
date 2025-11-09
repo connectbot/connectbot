@@ -29,8 +29,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.connectbot.bean.PubkeyBean
-import org.connectbot.util.PubkeyDatabase
+import org.connectbot.data.PubkeyRepository
+import org.connectbot.data.entity.Pubkey
 import org.connectbot.util.PubkeyUtils
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -43,10 +43,10 @@ enum class KeyType(
     val maxBits: Int,
     val defaultBits: Int
 ) {
-    RSA(PubkeyDatabase.KEY_TYPE_RSA, 1024, 16384, 2048),
-    DSA(PubkeyDatabase.KEY_TYPE_DSA, 1024, 1024, 1024),
-    EC(PubkeyDatabase.KEY_TYPE_EC, 256, 521, 256),
-    ED25519(PubkeyDatabase.KEY_TYPE_ED25519, 255, 255, 255)
+    RSA("RSA", 1024, 16384, 2048),
+    DSA("DSA", 1024, 1024, 1024),
+    EC("EC", 256, 521, 256),
+    ED25519("Ed25519", 255, 255, 255)
 }
 
 data class GeneratePubkeyUiState(
@@ -84,7 +84,7 @@ class GeneratePubkeyViewModel(
         Ed25519Provider.insertIfNeeded()
     }
 
-    private val database: PubkeyDatabase = PubkeyDatabase.get(context)
+    private val repository: PubkeyRepository = PubkeyRepository.get(context)
 
     private val _uiState = MutableStateFlow(GeneratePubkeyUiState(
         ecdsaAvailable = Security.getProviders("KeyPairGenerator.EC") != null
@@ -219,17 +219,19 @@ class GeneratePubkeyViewModel(
             try {
                 val encrypted = state.password1.isNotEmpty()
 
-                val pubkey = PubkeyBean().apply {
-                    nickname = state.nickname
-                    type = state.keyType.dbName
-                    privateKey = PubkeyUtils.getEncodedPrivate(keyPair.private, state.password1)
-                    publicKey = keyPair.public.encoded
-                    isEncrypted = encrypted
-                    isStartup = state.unlockAtStartup && !encrypted
-                    isConfirmUse = state.confirmUse
-                }
+                val pubkey = Pubkey(
+                    id = 0, // Let Room auto-generate the ID
+                    nickname = state.nickname,
+                    type = state.keyType.dbName,
+                    privateKey = PubkeyUtils.getEncodedPrivate(keyPair.private, state.password1),
+                    publicKey = keyPair.public.encoded,
+                    encrypted = encrypted,
+                    startup = state.unlockAtStartup && !encrypted,
+                    confirmation = state.confirmUse,
+                    createdDate = System.currentTimeMillis()
+                )
 
-                database.savePubkey(pubkey)
+                repository.save(pubkey)
 
                 Log.d(TAG, "Key pair saved successfully")
 

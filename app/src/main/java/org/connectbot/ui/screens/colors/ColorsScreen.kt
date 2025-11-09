@@ -286,8 +286,8 @@ private fun ColorSelectorRow(
 @Composable
 private fun ColorSchemeSelector(
     currentSchemeName: String,
-    availableSchemes: List<org.connectbot.data.ColorScheme>,
-    onSchemeSelected: (org.connectbot.data.ColorScheme) -> Unit,
+    availableSchemes: List<org.connectbot.data.entity.ColorScheme>,
+    onSchemeSelected: (org.connectbot.data.entity.ColorScheme) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }

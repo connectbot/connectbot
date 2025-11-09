@@ -88,6 +88,7 @@ import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
 import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
+import androidx.core.content.edit
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -562,7 +563,7 @@ fun ConsoleScreen(
                                 text = { Text(stringResource(R.string.pref_fullscreen_title)) },
                                 onClick = {
                                     fullscreen = !fullscreen
-                                    prefs.edit().putBoolean("fullscreen", fullscreen).apply()
+                                    prefs.edit { putBoolean("fullscreen", fullscreen) }
                                 },
                                 trailingIcon = {
                                     androidx.compose.material3.Checkbox(
@@ -577,14 +578,7 @@ fun ConsoleScreen(
                                 text = { Text(stringResource(R.string.pref_titlebarhide_title)) },
                                 onClick = {
                                     titleBarHide = !titleBarHide
-                                    prefs.edit().putBoolean("titlebarhide", titleBarHide).apply()
-                                    // If enabling auto-hide, hide the title bar immediately
-                                    if (titleBarHide) {
-                                        showTitleBar = false
-                                    } else {
-                                        // If disabling auto-hide, show the title bar
-                                        showTitleBar = true
-                                    }
+                                    prefs.edit { putBoolean("titlebarhide", titleBarHide) }
                                 },
                                 trailingIcon = {
                                     androidx.compose.material3.Checkbox(

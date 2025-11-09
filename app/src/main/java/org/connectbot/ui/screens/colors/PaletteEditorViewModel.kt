@@ -25,12 +25,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.connectbot.data.ColorScheme
 import org.connectbot.data.ColorSchemeRepository
+import org.connectbot.data.entity.ColorScheme
 import org.connectbot.util.Colors
 
 data class PaletteEditorUiState(
-    val schemeId: Int = ColorScheme.DEFAULT_SCHEME_ID,
+    val schemeId: Int = -1,
     val schemeName: String = "",
     val palette: IntArray = Colors.defaults,
     val editingColorIndex: Int? = null,

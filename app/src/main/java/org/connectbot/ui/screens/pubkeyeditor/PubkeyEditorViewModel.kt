@@ -28,8 +28,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.connectbot.bean.PubkeyBean
-import org.connectbot.util.PubkeyDatabase
+import org.connectbot.data.PubkeyRepository
+import org.connectbot.data.entity.Pubkey
 import org.connectbot.util.PubkeyUtils
 
 data class PubkeyEditorUiState(
@@ -65,12 +65,12 @@ class PubkeyEditorViewModel(
         private const val TAG = "PubkeyEditorViewModel"
     }
 
-    private val database: PubkeyDatabase = PubkeyDatabase.get(context)
+    private val repository: PubkeyRepository = PubkeyRepository.get(context)
 
     private val _uiState = MutableStateFlow(PubkeyEditorUiState())
     val uiState: StateFlow<PubkeyEditorUiState> = _uiState.asStateFlow()
 
-    private var originalPubkey: PubkeyBean? = null
+    private var originalPubkey: Pubkey? = null
 
     init {
         loadPubkey()
@@ -80,18 +80,18 @@ class PubkeyEditorViewModel(
         viewModelScope.launch {
             try {
                 val pubkey = withContext(Dispatchers.IO) {
-                    database.findPubkeyById(pubkeyId)
+                    repository.getById(pubkeyId)
                 }
 
                 if (pubkey != null) {
                     originalPubkey = pubkey
                     _uiState.update {
                         it.copy(
-                            nickname = pubkey.nickname ?: "",
-                            keyType = pubkey.type ?: "",
-                            isEncrypted = pubkey.isEncrypted,
-                            unlockAtStartup = pubkey.isStartup,
-                            confirmUse = pubkey.isConfirmUse,
+                            nickname = pubkey.nickname,
+                            keyType = pubkey.type,
+                            isEncrypted = pubkey.encrypted,
+                            unlockAtStartup = pubkey.startup,
+                            confirmUse = pubkey.confirmation,
                             isLoading = false
                         )
                     }
@@ -140,15 +140,12 @@ class PubkeyEditorViewModel(
     }
 
     fun save() {
-        val pubkey = originalPubkey ?: return
+        var pubkey = originalPubkey ?: return
         val state = _uiState.value
 
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
-                    // Update nickname
-                    pubkey.nickname = state.nickname
-
                     // Handle password change if needed
                     // Password needs to be changed if:
                     // 1. Key is encrypted and user provided old password (removing or changing password)
@@ -156,12 +153,25 @@ class PubkeyEditorViewModel(
                     val needsPasswordChange = (state.isEncrypted && state.oldPassword.isNotEmpty()) ||
                                              (!state.isEncrypted && state.newPassword1.isNotEmpty())
 
+                    var newPrivateKey = pubkey.privateKey
+                    var newEncrypted = pubkey.encrypted
+
                     if (needsPasswordChange) {
                         val oldPassword = if (state.isEncrypted) state.oldPassword else ""
                         val newPassword = state.newPassword1
 
-                        val success = pubkey.changePassword(oldPassword, newPassword)
-                        if (!success) {
+                        try {
+                            // Decode with old password
+                            val privateKeyObj = PubkeyUtils.decodePrivate(
+                                pubkey.privateKey,
+                                pubkey.type,
+                                oldPassword
+                            )
+
+                            // Re-encode with new password
+                            newPrivateKey = PubkeyUtils.getEncodedPrivate(privateKeyObj, newPassword)
+                            newEncrypted = newPassword.isNotEmpty()
+                        } catch (e: Exception) {
                             withContext(Dispatchers.Main) {
                                 _uiState.update { it.copy(wrongPassword = true) }
                             }
@@ -169,12 +179,17 @@ class PubkeyEditorViewModel(
                         }
                     }
 
-                    // Update flags (encryption flag is updated by changePassword)
-                    pubkey.isStartup = state.unlockAtStartup && !pubkey.isEncrypted
-                    pubkey.isConfirmUse = state.confirmUse
+                    // Create updated pubkey with immutable copy
+                    val updatedPubkey = pubkey.copy(
+                        nickname = state.nickname,
+                        privateKey = newPrivateKey,
+                        encrypted = newEncrypted,
+                        startup = state.unlockAtStartup && !newEncrypted,
+                        confirmation = state.confirmUse
+                    )
 
                     // Save to database
-                    database.savePubkey(pubkey)
+                    repository.save(updatedPubkey)
 
                     Log.d(TAG, "Public key saved successfully")
                 }

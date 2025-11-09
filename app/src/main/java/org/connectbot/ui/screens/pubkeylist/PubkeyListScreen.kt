@@ -55,14 +55,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import org.connectbot.R
-import org.connectbot.bean.PubkeyBean
+import org.connectbot.data.entity.Pubkey
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PubkeyListScreen(
     onNavigateBack: () -> Unit,
     onNavigateToGenerate: () -> Unit,
-    onNavigateToEdit: (PubkeyBean) -> Unit,
+    onNavigateToEdit: (Pubkey) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -134,7 +134,7 @@ fun PubkeyListScreen(
 
 @Composable
 private fun PubkeyListItem(
-    pubkey: PubkeyBean,
+    pubkey: Pubkey,
     onDelete: () -> Unit,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -153,9 +153,9 @@ private fun PubkeyListItem(
         },
         leadingContent = {
             Icon(
-                imageVector = if (pubkey.isEncrypted) Icons.Default.Lock else Icons.Default.LockOpen,
-                contentDescription = if (pubkey.isEncrypted) stringResource(R.string.pubkey_encrypted_description) else stringResource(R.string.pubkey_not_encrypted_description),
-                tint = if (pubkey.isEncrypted) {
+                imageVector = if (pubkey.encrypted) Icons.Default.Lock else Icons.Default.LockOpen,
+                contentDescription = if (pubkey.encrypted) stringResource(R.string.pubkey_encrypted_description) else stringResource(R.string.pubkey_not_encrypted_description),
+                tint = if (pubkey.encrypted) {
                     MaterialTheme.colorScheme.primary
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant

@@ -27,19 +27,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.connectbot.bean.PubkeyBean
-import org.connectbot.util.PubkeyDatabase
+import org.connectbot.data.PubkeyRepository
+import org.connectbot.data.entity.Pubkey
 
 data class PubkeyListUiState(
-    val pubkeys: List<PubkeyBean> = emptyList(),
+    val pubkeys: List<Pubkey> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null
 )
 
 class PubkeyListViewModel(
-    private val context: Context
+    private val context: Context,
+    private val repository: PubkeyRepository = PubkeyRepository.get(context)
 ) : ViewModel() {
-    private val database: PubkeyDatabase = PubkeyDatabase.get(context)
 
     private val _uiState = MutableStateFlow(PubkeyListUiState(isLoading = true))
     val uiState: StateFlow<PubkeyListUiState> = _uiState.asStateFlow()
@@ -52,9 +52,7 @@ class PubkeyListViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
-                val pubkeys = withContext(Dispatchers.IO) {
-                    database.allPubkeys()
-                }
+                val pubkeys = repository.getAll()
                 _uiState.update {
                     it.copy(pubkeys = pubkeys, isLoading = false, error = null)
                 }
@@ -66,12 +64,10 @@ class PubkeyListViewModel(
         }
     }
 
-    fun deletePubkey(pubkey: PubkeyBean) {
+    fun deletePubkey(pubkey: Pubkey) {
         viewModelScope.launch {
             try {
-                withContext(Dispatchers.IO) {
-                    database.deletePubkey(pubkey)
-                }
+                repository.delete(pubkey)
                 loadPubkeys()
             } catch (e: Exception) {
                 _uiState.update {
