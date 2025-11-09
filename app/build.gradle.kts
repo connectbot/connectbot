@@ -19,7 +19,7 @@ plugins {
 }
 
 
-apply(from = "../config/quality.gradle")
+apply(from = "../config/quality.gradle.kts")
 
 coveralls {
     jacocoReportPath = "build/reports/coverage/google/debug/report.xml"
