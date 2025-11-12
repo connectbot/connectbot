@@ -544,6 +544,17 @@ public class TerminalBridge implements VDUDisplay {
 	 * @param sizeDp Size of font in dp
 	 */
 	private void setFontSize(float sizeDp) {
+		setFontSize(sizeDp, false);
+	}
+
+	/**
+	 * Request a different font size. Will make call to parentChanged() to make
+	 * sure we resize PTY if needed.
+	 *
+	 * @param sizeDp Size of font in dp
+	 * @param isForced whether the font size was forced
+	 */
+	private void setFontSize(float sizeDp, boolean isForced) {
 		if (sizeDp <= 0.0) {
 			return;
 		}
@@ -562,6 +573,8 @@ public class TerminalBridge implements VDUDisplay {
 		charWidth = (int) Math.ceil(widths[0]);
 		charHeight = (int) Math.ceil(fm.descent - fm.top);
 
+		forcedSize = isForced;
+
 		// refresh any bitmap with new font size
 		if (parent != null) {
 			parentChanged(parent);
@@ -574,8 +587,6 @@ public class TerminalBridge implements VDUDisplay {
 		// Create updated host with new fontSize
 		host = host.withFontSize((int) sizeDp);
 		manager.hostRepository.saveHostBlocking(host);
-
-		forcedSize = false;
 	}
 
 	/**
@@ -896,8 +907,7 @@ public class TerminalBridge implements VDUDisplay {
 
 		this.columns = cols;
 		this.rows = rows;
-		setFontSize(sizeDp);
-		forcedSize = true;
+		setFontSize(sizeDp, true);
 	}
 
 	private int fontSizeCompare(float sizeDp, int cols, int rows, int width, int height) {
