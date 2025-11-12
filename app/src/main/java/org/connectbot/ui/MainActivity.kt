@@ -28,14 +28,18 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -105,15 +109,23 @@ class MainActivity : ComponentActivity() {
                 ) {
                     when (migrationUiState) {
                         is MigrationUiState.Completed -> {
-                            // Migration complete or not needed, show normal UI
-                            val controller = rememberNavController()
-                            navController = controller
+                            if (terminalManager == null) {
+                                // Show a loading indicator or waiting screen
+                                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                    CircularProgressIndicator()
+                                    Text("Connecting to terminal manager…")
+                                }
+                            } else {
+                                // Migration complete or not needed, show normal UI
+                                val controller = rememberNavController()
+                                navController = controller
 
-                            CompositionLocalProvider(LocalTerminalManager provides terminalManager) {
-                                ConnectBotNavHost(
-                                    navController = controller,
-                                    startDestination = NavDestinations.HOST_LIST
-                                )
+                                CompositionLocalProvider(LocalTerminalManager provides terminalManager) {
+                                    ConnectBotNavHost(
+                                        navController = controller,
+                                        startDestination = NavDestinations.HOST_LIST
+                                    )
+                                }
                             }
                         }
                         else -> {
