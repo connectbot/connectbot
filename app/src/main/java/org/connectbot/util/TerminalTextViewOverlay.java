@@ -148,6 +148,10 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 		closeSelectionActionMode();
 	}
 
+	public boolean hasSelection() {
+		return currentSelection != null && currentSelection.length() > 0;
+	}
+
 	private void pasteClipboard() {
 		String clip = "";
 		if (clipboard.hasText()) {
@@ -189,7 +193,9 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 			if (onMouseEvent(event, terminalView.bridge)) {
 				return true;
 			}
-			terminalView.viewPager.setPagingEnabled(true);
+			if (terminalView.parentContainer instanceof TerminalViewPager) {
+				((TerminalViewPager) terminalView.parentContainer).setPagingEnabled(true);
+			}
 		} else {
 			if (terminalView.onTouchEvent(event)) {
 				return true;
@@ -272,12 +278,16 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 				currentSelection = getText().toString().substring(selectionStart, selectionEnd);
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			terminalView.viewPager.setPagingEnabled(false);
+			if (terminalView.parentContainer instanceof TerminalViewPager) {
+				((TerminalViewPager) terminalView.parentContainer).setPagingEnabled(false);
+			}
 			vtBuffer.mousePressed(
 					col, row, mouseEventToJavaModifiers(event));
 			return true;
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
-			terminalView.viewPager.setPagingEnabled(true);
+			if (terminalView.parentContainer instanceof TerminalViewPager) {
+				((TerminalViewPager) terminalView.parentContainer).setPagingEnabled(true);
+			}
 			vtBuffer.mouseReleased(col, row);
 			return true;
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {

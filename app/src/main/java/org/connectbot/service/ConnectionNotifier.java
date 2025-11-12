@@ -17,10 +17,9 @@
 
 package org.connectbot.service;
 
-import org.connectbot.ConsoleActivity;
-import org.connectbot.HostListActivity;
 import org.connectbot.R;
 import org.connectbot.bean.HostBean;
+import org.connectbot.ui.MainActivity;
 import org.connectbot.util.HostDatabase;
 
 import android.app.Notification;
@@ -98,7 +97,7 @@ public class ConnectionNotifier {
 		String contentText = res.getString(
 				R.string.notification_text, host.getNickname());
 
-		Intent notificationIntent = new Intent(context, ConsoleActivity.class);
+		Intent notificationIntent = new Intent(context, MainActivity.class);
 		notificationIntent.setAction("android.intent.action.VIEW");
 		notificationIntent.setData(host.getUri());
 
@@ -131,11 +130,11 @@ public class ConnectionNotifier {
 		Resources res = context.getResources();
 		PendingIntent pendingIntent = PendingIntent.getActivity(context,
 				ONLINE_NOTIFICATION,
-				new Intent(context, ConsoleActivity.class),
+				new Intent(context, MainActivity.class),
 				pendingIntentFlags);
 
-		Intent disconnectIntent = new Intent(context, HostListActivity.class);
-		disconnectIntent.setAction(HostListActivity.DISCONNECT_ACTION);
+		Intent disconnectIntent = new Intent(context, MainActivity.class);
+		disconnectIntent.setAction(MainActivity.DISCONNECT_ACTION);
 
 		PendingIntent disconnectPendingIntent = PendingIntent.getActivity(context,
 				ONLINE_DISCONNECT_NOTIFICATION,

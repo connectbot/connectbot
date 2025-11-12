@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.NoRouteToHostException;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -52,6 +53,7 @@ import org.connectbot.bean.HostBean;
 import org.connectbot.bean.PortForwardBean;
 import org.connectbot.bean.PubkeyBean;
 import org.connectbot.service.TerminalBridge;
+import org.connectbot.service.TerminalBridgePromptsKt;
 import org.connectbot.service.TerminalManager;
 import org.connectbot.service.TerminalManager.KeyHolder;
 import org.connectbot.util.HostDatabase;
@@ -176,7 +178,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				bridge.outputLine(manager.res.getString(R.string.host_authenticity_warning, hostname));
 				bridge.outputLine(manager.res.getString(R.string.host_fingerprint, algorithmName, fingerprint));
 
-				result = bridge.promptHelper.requestBooleanPrompt(null, manager.res.getString(R.string.prompt_continue_connecting));
+				result = TerminalBridgePromptsKt.requestBooleanPrompt(bridge, null, manager.res.getString(R.string.prompt_continue_connecting));
 				if (result == null) {
 					return false;
 				}
@@ -204,7 +206,7 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 						algorithmName, fingerprint));
 
 				// Users have no way to delete keys, so we'll prompt them for now.
-				result = bridge.promptHelper.requestBooleanPrompt(null, manager.res.getString(R.string.prompt_continue_connecting));
+				result = TerminalBridgePromptsKt.requestBooleanPrompt(bridge, null, manager.res.getString(R.string.prompt_continue_connecting));
 				if (result != null && result) {
 					// save this key in known database
 					manager.hostdb.saveKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey);
@@ -298,8 +300,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 				}
 			} else if (connection.isAuthMethodAvailable(host.getUsername(), AUTH_PASSWORD)) {
 				bridge.outputLine(manager.res.getString(R.string.terminal_auth_pass));
-				String password = bridge.getPromptHelper().requestStringPrompt(null,
-						manager.res.getString(R.string.prompt_password));
+				String password = TerminalBridgePromptsKt.requestStringPrompt(bridge, null,
+						manager.res.getString(R.string.prompt_password), true);
 				if (password != null
 						&& connection.authenticateWithPassword(host.getUsername(), password)) {
 					finishConnection();
@@ -341,8 +343,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			// otherwise load key from database and prompt for password as needed
 			String password = null;
 			if (pubkey.isEncrypted()) {
-				password = bridge.getPromptHelper().requestStringPrompt(null,
-						manager.res.getString(R.string.prompt_pubkey_password, pubkey.getNickname()));
+				password = TerminalBridgePromptsKt.requestStringPrompt(bridge, null,
+						manager.res.getString(R.string.prompt_pubkey_password, pubkey.getNickname()), true);
 
 				// Something must have interrupted the prompt.
 				if (password == null)
@@ -483,11 +485,16 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			Log.e(TAG, "Problem in SSH connection thread during authentication", e);
 
 			// Display the reason in the text.
-			Throwable t = e.getCause();
-			do {
-				bridge.outputLine(t.getMessage());
+			Throwable t = e;
+			while (t != null) {
+				String message = t.getMessage();
+				if (message != null) {
+					bridge.outputLine(message);
+					if (t instanceof NoRouteToHostException)
+						bridge.outputLine(manager.res.getString(R.string.terminal_no_route));
+				}
 				t = t.getCause();
-			} while (t != null);
+			}
 
 			close();
 			onDisconnect();
@@ -822,7 +829,8 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 		String[] responses = new String[numPrompts];
 		for (int i = 0; i < numPrompts; i++) {
 			// request response from user for each prompt
-			responses[i] = bridge.promptHelper.requestStringPrompt(instruction, prompt[i]);
+			boolean isPassword = (echo != null && i < echo.length) ? !echo[i] : false;
+			responses[i] = TerminalBridgePromptsKt.requestStringPrompt(bridge, instruction, prompt[i], isPassword);
 		}
 		return responses;
 	}
@@ -931,8 +939,9 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 	}
 
 	private boolean promptForPubkeyUse(String nickname) {
-		return bridge.promptHelper.requestBooleanPrompt(null,
+		Boolean result = TerminalBridgePromptsKt.requestBooleanPrompt(bridge, null,
 				manager.res.getString(R.string.prompt_allow_agent_to_use_key, nickname));
+		return result != null && result;
 	}
 
 	@Override
