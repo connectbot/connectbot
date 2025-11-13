@@ -18,7 +18,6 @@
 package org.connectbot.ui.screens.hosteditor
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,10 +29,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
@@ -74,7 +71,7 @@ fun HostEditorScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     var showProtocolMenu by remember { mutableStateOf(false) }
-    var expandedMode by remember { mutableStateOf(hostId != -1L) } // Expand if editing existing host
+    var expandedMode by remember { mutableStateOf(hostId != -1L) }
     val protocols = listOf("ssh", "telnet", "local")
 
     Scaffold(
@@ -88,7 +85,10 @@ fun HostEditorScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.button_navigate_up))
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.button_navigate_up)
+                        )
                     }
                 },
                 actions = {
@@ -185,78 +185,78 @@ fun HostEditorScreen(
             // Only show individual fields in expanded mode
             if (expandedMode) {
                 // Protocol selector
-            ExposedDropdownMenuBox(
-                expanded = showProtocolMenu,
-                onExpandedChange = { showProtocolMenu = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
-            ) {
-                OutlinedTextField(
-                    value = uiState.protocol,
-                    onValueChange = {},
-                    label = { Text(stringResource(R.string.protocol_spinner_label)) },
-                    readOnly = true,
-                    singleLine = true,
-                    trailingIcon = {
-                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = showProtocolMenu)
-                    },
-                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-                    modifier = Modifier
-                        .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                        .fillMaxWidth()
-                )
-
-                ExposedDropdownMenu(
+                ExposedDropdownMenuBox(
                     expanded = showProtocolMenu,
-                    onDismissRequest = { showProtocolMenu = false }
+                    onExpandedChange = { showProtocolMenu = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
                 ) {
-                    protocols.forEach { protocol ->
-                        DropdownMenuItem(
-                            text = { Text(protocol) },
-                            onClick = {
-                                viewModel.updateProtocol(protocol)
-                                showProtocolMenu = false
-                            },
-                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                        )
+                    OutlinedTextField(
+                        value = uiState.protocol,
+                        onValueChange = {},
+                        label = { Text(stringResource(R.string.protocol_spinner_label)) },
+                        readOnly = true,
+                        singleLine = true,
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = showProtocolMenu)
+                        },
+                        colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                        modifier = Modifier
+                            .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                            .fillMaxWidth()
+                    )
+
+                    ExposedDropdownMenu(
+                        expanded = showProtocolMenu,
+                        onDismissRequest = { showProtocolMenu = false }
+                    ) {
+                        protocols.forEach { protocol ->
+                            DropdownMenuItem(
+                                text = { Text(protocol) },
+                                onClick = {
+                                    viewModel.updateProtocol(protocol)
+                                    showProtocolMenu = false
+                                },
+                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                            )
+                        }
                     }
                 }
-            }
 
-            // Only show username, hostname, and port for non-local protocols
-            if (uiState.protocol != "local") {
-                OutlinedTextField(
-                    value = uiState.username,
-                    onValueChange = viewModel::updateUsername,
-                    label = { Text(stringResource(R.string.hostpref_username_title)) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    singleLine = true
-                )
+                // Only show username, hostname, and port for non-local protocols
+                if (uiState.protocol != "local") {
+                    OutlinedTextField(
+                        value = uiState.username,
+                        onValueChange = viewModel::updateUsername,
+                        label = { Text(stringResource(R.string.hostpref_username_title)) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        singleLine = true
+                    )
 
-                OutlinedTextField(
-                    value = uiState.hostname,
-                    onValueChange = viewModel::updateHostname,
-                    label = { Text(stringResource(R.string.hostpref_hostname_title)) },
-                    isError = uiState.hostname.isBlank(),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    singleLine = true
-                )
+                    OutlinedTextField(
+                        value = uiState.hostname,
+                        onValueChange = viewModel::updateHostname,
+                        label = { Text(stringResource(R.string.hostpref_hostname_title)) },
+                        isError = uiState.hostname.isBlank(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        singleLine = true
+                    )
 
-                OutlinedTextField(
-                    value = uiState.port,
-                    onValueChange = viewModel::updatePort,
-                    label = { Text(stringResource(R.string.hostpref_port_title)) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    singleLine = true
-                )
-            }
+                    OutlinedTextField(
+                        value = uiState.port,
+                        onValueChange = viewModel::updatePort,
+                        label = { Text(stringResource(R.string.hostpref_port_title)) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        singleLine = true
+                    )
+                }
             }
 
             // Color selector
@@ -471,7 +471,7 @@ private fun PubkeySelector(
     )
 
     val pubkeyOptions = availablePubkeys.map { pubkey ->
-        (pubkey.nickname ?: "Unnamed Key") to pubkey.id
+        pubkey.nickname to pubkey.id
     }
 
     val allOptions = defaultOptions + pubkeyOptions
