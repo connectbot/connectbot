@@ -104,7 +104,10 @@ fun ColorSchemeManagerScreen(
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { viewModel.showNewSchemeDialog() }) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.button_new_scheme))
+                Icon(
+                    Icons.Default.Add,
+                    contentDescription = stringResource(R.string.button_new_scheme)
+                )
             }
         }
     ) { padding ->
@@ -119,6 +122,7 @@ fun ColorSchemeManagerScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 uiState.error != null -> {
                     Column(
                         modifier = Modifier
@@ -136,6 +140,7 @@ fun ColorSchemeManagerScreen(
                         }
                     }
                 }
+
                 uiState.schemes.isEmpty() -> {
                     Text(
                         text = stringResource(R.string.empty_custom_schemes),
@@ -146,6 +151,7 @@ fun ColorSchemeManagerScreen(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+
                 else -> {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),

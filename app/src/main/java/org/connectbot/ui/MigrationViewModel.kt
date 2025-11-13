@@ -80,9 +80,11 @@ class MigrationViewModel(application: Application) : AndroidViewModel(applicatio
                         Log.i(TAG, "Migration completed successfully: $result")
                         _uiState.value = MigrationUiState.Completed
                     }
+
                     is MigrationResult.Failure -> {
                         Log.e(TAG, "Migration failed", result.error)
-                        _uiState.value = MigrationUiState.Failed(result.error.message ?: "Unknown error")
+                        _uiState.value =
+                            MigrationUiState.Failed(result.error.message ?: "Unknown error")
                     }
                 }
             } catch (e: Exception) {

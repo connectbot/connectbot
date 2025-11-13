@@ -92,6 +92,7 @@ fun InlinePrompt(
                     onNo = { onResponse(PromptResponse.BooleanResponse(false)) }
                 )
             }
+
             is PromptRequest.StringPrompt -> {
                 StringPromptContent(
                     instructions = promptRequest.instructions,
@@ -101,7 +102,9 @@ fun InlinePrompt(
                     onCancel = onCancel
                 )
             }
-            null -> { /* No prompt */ }
+
+            null -> { /* No prompt */
+            }
         }
     }
 }

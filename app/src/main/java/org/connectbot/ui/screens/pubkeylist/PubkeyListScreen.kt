@@ -82,7 +82,10 @@ fun PubkeyListScreen(
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onNavigateToGenerate) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.pubkey_generate))
+                Icon(
+                    Icons.Default.Add,
+                    contentDescription = stringResource(R.string.pubkey_generate)
+                )
             }
         },
         modifier = modifier
@@ -98,6 +101,7 @@ fun PubkeyListScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 uiState.error != null -> {
                     Text(
                         text = stringResource(R.string.error_message, uiState.error ?: ""),
@@ -105,6 +109,7 @@ fun PubkeyListScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 uiState.pubkeys.isEmpty() -> {
                     Text(
                         text = stringResource(R.string.empty_pubkeys_message),
@@ -113,6 +118,7 @@ fun PubkeyListScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 else -> {
                     LazyColumn {
                         items(
@@ -149,12 +155,19 @@ private fun PubkeyListItem(
             )
         },
         supportingContent = {
-            Text(stringResource(R.string.pubkey_type_label, pubkey.type ?: stringResource(R.string.pubkey_type_unknown_text)))
+            Text(
+                stringResource(
+                    R.string.pubkey_type_label,
+                    pubkey.type ?: stringResource(R.string.pubkey_type_unknown_text)
+                )
+            )
         },
         leadingContent = {
             Icon(
                 imageVector = if (pubkey.encrypted) Icons.Default.Lock else Icons.Default.LockOpen,
-                contentDescription = if (pubkey.encrypted) stringResource(R.string.pubkey_encrypted_description) else stringResource(R.string.pubkey_not_encrypted_description),
+                contentDescription = if (pubkey.encrypted) stringResource(R.string.pubkey_encrypted_description) else stringResource(
+                    R.string.pubkey_not_encrypted_description
+                ),
                 tint = if (pubkey.encrypted) {
                     MaterialTheme.colorScheme.primary
                 } else {

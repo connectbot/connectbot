@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.connectbot.data.ColorSchemeRepository
-import org.connectbot.data.entity.ColorScheme
 import org.connectbot.util.Colors
 
 data class PaletteEditorUiState(

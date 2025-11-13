@@ -59,7 +59,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.connectbot.R
 import org.connectbot.ui.components.ColorPickerDialog
-import org.connectbot.util.Colors
 
 /**
  * Screen for editing terminal color scheme.
@@ -110,6 +109,7 @@ fun ColorsScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 uiState.error != null -> {
                     Text(
                         text = stringResource(R.string.error_message, uiState.error ?: ""),
@@ -119,6 +119,7 @@ fun ColorsScreen(
                             .padding(16.dp)
                     )
                 }
+
                 else -> {
                     Column(
                         modifier = Modifier

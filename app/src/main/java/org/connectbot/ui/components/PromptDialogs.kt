@@ -124,6 +124,7 @@ fun PromptDialog(
                 onDismiss = onDismiss
             )
         }
+
         is PromptRequest.StringPrompt -> {
             StringPromptDialog(
                 prompt = promptRequest,
@@ -131,6 +132,7 @@ fun PromptDialog(
                 onDismiss = onDismiss
             )
         }
+
         null -> {
             // No prompt to show
         }

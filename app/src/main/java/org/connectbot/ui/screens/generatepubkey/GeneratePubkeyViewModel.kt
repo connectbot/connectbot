@@ -34,8 +34,8 @@ import org.connectbot.data.entity.Pubkey
 import org.connectbot.util.PubkeyUtils
 import java.security.KeyPair
 import java.security.KeyPairGenerator
-import java.security.Security
 import java.security.SecureRandom
+import java.security.Security
 
 enum class KeyType(
     val dbName: String,
@@ -86,9 +86,11 @@ class GeneratePubkeyViewModel(
 
     private val repository: PubkeyRepository = PubkeyRepository.get(context)
 
-    private val _uiState = MutableStateFlow(GeneratePubkeyUiState(
-        ecdsaAvailable = Security.getProviders("KeyPairGenerator.EC") != null
-    ))
+    private val _uiState = MutableStateFlow(
+        GeneratePubkeyUiState(
+            ecdsaAvailable = Security.getProviders("KeyPairGenerator.EC") != null
+        )
+    )
     val uiState: StateFlow<GeneratePubkeyUiState> = _uiState.asStateFlow()
 
     private var pendingEntropy: ByteArray? = null
@@ -214,7 +216,11 @@ class GeneratePubkeyViewModel(
         return keyPairGen.generateKeyPair()
     }
 
-    private suspend fun saveKeyPair(keyPair: KeyPair, state: GeneratePubkeyUiState, onSuccess: (() -> Unit)?) {
+    private suspend fun saveKeyPair(
+        keyPair: KeyPair,
+        state: GeneratePubkeyUiState,
+        onSuccess: (() -> Unit)?
+    ) {
         withContext(Dispatchers.IO) {
             try {
                 val encrypted = state.password1.isNotEmpty()
