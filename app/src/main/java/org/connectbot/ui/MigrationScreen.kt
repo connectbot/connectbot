@@ -59,15 +59,18 @@ fun MigrationScreen(
             is MigrationUiState.Checking -> {
                 CheckingMigrationContent()
             }
+
             is MigrationUiState.InProgress -> {
                 MigrationInProgressContent(state = uiState.state)
             }
+
             is MigrationUiState.Failed -> {
                 MigrationFailedContent(
                     error = uiState.error,
                     onRetry = onRetry
                 )
             }
+
             is MigrationUiState.Completed -> {
                 // This state is handled by MainActivity - screen is hidden
             }
@@ -131,13 +134,19 @@ private fun MigrationInProgressContent(state: MigrationState) {
                 )
                 if (state.portForwardsMigrated > 0) {
                     Text(
-                        text = stringResource(R.string.migration_stats_port_forwards, state.portForwardsMigrated),
+                        text = stringResource(
+                            R.string.migration_stats_port_forwards,
+                            state.portForwardsMigrated
+                        ),
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
                 if (state.knownHostsMigrated > 0) {
                     Text(
-                        text = stringResource(R.string.migration_stats_known_hosts, state.knownHostsMigrated),
+                        text = stringResource(
+                            R.string.migration_stats_known_hosts,
+                            state.knownHostsMigrated
+                        ),
                         style = MaterialTheme.typography.bodySmall
                     )
                 }

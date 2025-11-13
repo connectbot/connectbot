@@ -84,7 +84,10 @@ fun PortForwardListScreen(
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { showAddDialog = true }) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.portforward_pos))
+                Icon(
+                    Icons.Default.Add,
+                    contentDescription = stringResource(R.string.portforward_pos)
+                )
             }
         },
         modifier = modifier
@@ -100,6 +103,7 @@ fun PortForwardListScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 uiState.error != null -> {
                     Text(
                         text = stringResource(R.string.error_message, uiState.error ?: ""),
@@ -107,6 +111,7 @@ fun PortForwardListScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 uiState.portForwards.isEmpty() -> {
                     Text(
                         text = stringResource(R.string.empty_port_forwards_message),
@@ -115,6 +120,7 @@ fun PortForwardListScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 else -> {
                     LazyColumn {
                         items(
@@ -156,8 +162,8 @@ fun PortForwardListScreen(
                 editingPortForward = null
                 viewModel.updatePortForward(portForward, nickname, type, sourcePort, destination)
             },
-            initialNickname = portForward.nickname ?: "",
-            initialType = portForward.type ?: "",
+            initialNickname = portForward.nickname,
+            initialType = portForward.type,
             initialSourcePort = portForward.sourcePort.toString(),
             initialDestination = initialDest,
             isEditing = true
@@ -177,13 +183,18 @@ private fun PortForwardListItem(
     ListItem(
         headlineContent = {
             Text(
-                text = portForward.nickname ?: stringResource(R.string.portforward_unnamed),
+                text = portForward.nickname,
                 fontWeight = FontWeight.Bold
             )
         },
         supportingContent = {
             Column {
-                Text(stringResource(R.string.portforward_type_label, portForward.type ?: stringResource(R.string.pubkey_type_unknown_text)))
+                Text(
+                    stringResource(
+                        R.string.portforward_type_label,
+                        portForward.type
+                    )
+                )
                 Text("${portForward.sourcePort} → ${portForward.destAddr}:${portForward.destPort}")
             }
         },

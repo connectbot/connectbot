@@ -75,6 +75,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.edit
 import androidx.core.net.toUri
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -88,7 +89,6 @@ import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
 import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
-import androidx.core.content.edit
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -141,7 +141,11 @@ fun ConsoleScreen(
             WindowCompat.setDecorFitsSystemWindows(window, false)
         } catch (e: IllegalArgumentException) {
             // Handle foldable device state issues
-            android.util.Log.e("ConsoleScreen", "Error setting edge-to-edge mode (foldable device?)", e)
+            android.util.Log.e(
+                "ConsoleScreen",
+                "Error setting edge-to-edge mode (foldable device?)",
+                e
+            )
         }
     }
 
@@ -164,7 +168,11 @@ fun ConsoleScreen(
             }
         } catch (e: IllegalArgumentException) {
             // Handle foldable device state issues
-            android.util.Log.e("ConsoleScreen", "Error setting fullscreen mode (foldable device?)", e)
+            android.util.Log.e(
+                "ConsoleScreen",
+                "Error setting fullscreen mode (foldable device?)",
+                e
+            )
         }
     }
 
@@ -420,12 +428,16 @@ fun ConsoleScreen(
             TopAppBar(
                 title = {
                     Text(
-                        currentBridge?.host?.nickname ?: stringResource(R.string.console_default_title)
+                        currentBridge?.host?.nickname
+                            ?: stringResource(R.string.console_default_title)
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.button_back))
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            stringResource(R.string.button_back)
+                        )
                     }
                 },
                 colors = if (titleBarHide) {
@@ -464,7 +476,10 @@ fun ConsoleScreen(
                             viewModel.refreshMenuState()
                             showMenu = true
                         }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.button_more_options))
+                            Icon(
+                                Icons.Default.MoreVert,
+                                contentDescription = stringResource(R.string.button_more_options)
+                            )
                         }
                         DropdownMenu(
                             expanded = showMenu,

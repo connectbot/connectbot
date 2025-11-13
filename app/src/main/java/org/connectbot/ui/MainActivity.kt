@@ -128,6 +128,7 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         }
+
                         else -> {
                             // Show migration screen
                             MigrationScreen(
@@ -188,7 +189,10 @@ class MainActivity : ComponentActivity() {
                 var bridge = manager.getConnectedBridge(requestedNickname)
 
                 if (requestedNickname != null && bridge == null) {
-                    Log.d(TAG, "Creating new connection for URI: $uri with nickname: $requestedNickname")
+                    Log.d(
+                        TAG,
+                        "Creating new connection for URI: $uri with nickname: $requestedNickname"
+                    )
                     bridge = manager.openConnection(uri)
                 }
 

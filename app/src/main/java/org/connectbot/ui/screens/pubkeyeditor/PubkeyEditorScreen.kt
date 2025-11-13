@@ -93,6 +93,7 @@ fun PubkeyEditorScreen(
                     modifier = Modifier.padding(padding)
                 )
             }
+
             uiState.error != null -> {
                 Column(
                     modifier = Modifier
@@ -106,6 +107,7 @@ fun PubkeyEditorScreen(
                     )
                 }
             }
+
             else -> {
                 Column(
                     modifier = Modifier
@@ -174,7 +176,15 @@ fun PubkeyEditorScreen(
                     OutlinedTextField(
                         value = uiState.newPassword2,
                         onValueChange = { viewModel.updateNewPassword2(it) },
-                        label = { Text("${stringResource(R.string.prompt_password)} ${stringResource(R.string.prompt_again)}") },
+                        label = {
+                            Text(
+                                "${stringResource(R.string.prompt_password)} ${
+                                    stringResource(
+                                        R.string.prompt_again
+                                    )
+                                }"
+                            )
+                        },
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         modifier = Modifier.fillMaxWidth(),

@@ -35,6 +35,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import kotlinx.coroutines.launch
 import org.connectbot.data.ColorSchemeRepository
+import org.connectbot.ui.screens.colors.ColorSchemeManagerScreen
+import org.connectbot.ui.screens.colors.ColorSchemeManagerViewModel
+import org.connectbot.ui.screens.colors.ColorsScreen
+import org.connectbot.ui.screens.colors.ColorsViewModel
+import org.connectbot.ui.screens.colors.PaletteEditorScreen
+import org.connectbot.ui.screens.colors.PaletteEditorViewModel
 import org.connectbot.ui.screens.console.ConsoleScreen
 import org.connectbot.ui.screens.eula.EulaScreen
 import org.connectbot.ui.screens.generatepubkey.GeneratePubkeyScreen
@@ -46,12 +52,6 @@ import org.connectbot.ui.screens.portforwardlist.PortForwardListScreen
 import org.connectbot.ui.screens.pubkeyeditor.PubkeyEditorScreen
 import org.connectbot.ui.screens.pubkeylist.PubkeyListScreen
 import org.connectbot.ui.screens.settings.SettingsScreen
-import org.connectbot.ui.screens.colors.ColorsScreen
-import org.connectbot.ui.screens.colors.ColorsViewModel
-import org.connectbot.ui.screens.colors.ColorSchemeManagerScreen
-import org.connectbot.ui.screens.colors.ColorSchemeManagerViewModel
-import org.connectbot.ui.screens.colors.PaletteEditorScreen
-import org.connectbot.ui.screens.colors.PaletteEditorViewModel
 
 @Composable
 fun ConnectBotNavHost(
@@ -206,13 +206,19 @@ fun ConnectBotNavHost(
                             }
                             Toast.makeText(
                                 context,
-                                context.getString(org.connectbot.R.string.message_export_success, schemeJson.name),
+                                context.getString(
+                                    org.connectbot.R.string.message_export_success,
+                                    schemeJson.name
+                                ),
                                 Toast.LENGTH_SHORT
                             ).show()
                         } catch (e: Exception) {
                             Toast.makeText(
                                 context,
-                                context.getString(org.connectbot.R.string.error_export_failed, e.message),
+                                context.getString(
+                                    org.connectbot.R.string.error_export_failed,
+                                    e.message
+                                ),
                                 Toast.LENGTH_LONG
                             ).show()
                         }
@@ -227,11 +233,13 @@ fun ConnectBotNavHost(
                 uri?.let { fileUri ->
                     scope.launch {
                         try {
-                            val jsonString = context.contentResolver.openInputStream(fileUri)?.use { input ->
-                                input.bufferedReader().readText()
-                            } ?: return@launch
+                            val jsonString =
+                                context.contentResolver.openInputStream(fileUri)?.use { input ->
+                                    input.bufferedReader().readText()
+                                } ?: return@launch
 
-                            val schemeId = repository.importScheme(jsonString, allowOverwrite = false)
+                            val schemeId =
+                                repository.importScheme(jsonString, allowOverwrite = false)
                             val schemes = repository.getAllSchemes()
                             val importedScheme = schemes.find { it.id == schemeId }
 
@@ -255,7 +263,10 @@ fun ConnectBotNavHost(
                         } catch (e: Exception) {
                             Toast.makeText(
                                 context,
-                                context.getString(org.connectbot.R.string.error_import_failed, e.message),
+                                context.getString(
+                                    org.connectbot.R.string.error_import_failed,
+                                    e.message
+                                ),
                                 Toast.LENGTH_LONG
                             ).show()
                         }
@@ -280,7 +291,10 @@ fun ConnectBotNavHost(
                         } catch (e: Exception) {
                             Toast.makeText(
                                 context,
-                                context.getString(org.connectbot.R.string.error_export_failed, e.message),
+                                context.getString(
+                                    org.connectbot.R.string.error_export_failed,
+                                    e.message
+                                ),
                                 Toast.LENGTH_LONG
                             ).show()
                         }
