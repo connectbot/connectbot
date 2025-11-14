@@ -17,11 +17,10 @@
 
 package org.connectbot.service;
 
-import org.connectbot.ConsoleActivity;
-import org.connectbot.HostListActivity;
 import org.connectbot.R;
-import org.connectbot.bean.HostBean;
-import org.connectbot.util.HostDatabase;
+import org.connectbot.data.entity.Host;
+import org.connectbot.ui.MainActivity;
+import org.connectbot.util.HostConstants;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -90,7 +89,7 @@ public class ConnectionNotifier {
 		getNotificationManager(context).createNotificationChannel(nc);
 	}
 
-	private Notification newActivityNotification(Context context, HostBean host) {
+	private Notification newActivityNotification(Context context, Host host) {
 		NotificationCompat.Builder builder = newNotificationBuilder(context, NOTIFICATION_CHANNEL);
 
 		Resources res = context.getResources();
@@ -98,7 +97,7 @@ public class ConnectionNotifier {
 		String contentText = res.getString(
 				R.string.notification_text, host.getNickname());
 
-		Intent notificationIntent = new Intent(context, ConsoleActivity.class);
+		Intent notificationIntent = new Intent(context, MainActivity.class);
 		notificationIntent.setAction("android.intent.action.VIEW");
 		notificationIntent.setData(host.getUri());
 
@@ -113,11 +112,11 @@ public class ConnectionNotifier {
 		int ledOnMS = 300;
 		int ledOffMS = 1000;
 		builder.setDefaults(Notification.DEFAULT_LIGHTS);
-		if (HostDatabase.COLOR_RED.equals(host.getColor()))
+		if (HostConstants.COLOR_RED.equals(host.getColor()))
 			builder.setLights(Color.RED, ledOnMS, ledOffMS);
-		else if (HostDatabase.COLOR_GREEN.equals(host.getColor()))
+		else if (HostConstants.COLOR_GREEN.equals(host.getColor()))
 			builder.setLights(Color.GREEN, ledOnMS, ledOffMS);
-		else if (HostDatabase.COLOR_BLUE.equals(host.getColor()))
+		else if (HostConstants.COLOR_BLUE.equals(host.getColor()))
 			builder.setLights(Color.BLUE, ledOnMS, ledOffMS);
 		else
 			builder.setLights(Color.WHITE, ledOnMS, ledOffMS);
@@ -131,11 +130,11 @@ public class ConnectionNotifier {
 		Resources res = context.getResources();
 		PendingIntent pendingIntent = PendingIntent.getActivity(context,
 				ONLINE_NOTIFICATION,
-				new Intent(context, ConsoleActivity.class),
+				new Intent(context, MainActivity.class),
 				pendingIntentFlags);
 
-		Intent disconnectIntent = new Intent(context, HostListActivity.class);
-		disconnectIntent.setAction(HostListActivity.DISCONNECT_ACTION);
+		Intent disconnectIntent = new Intent(context, MainActivity.class);
+		disconnectIntent.setAction(MainActivity.DISCONNECT_ACTION);
 
 		PendingIntent disconnectPendingIntent = PendingIntent.getActivity(context,
 				ONLINE_DISCONNECT_NOTIFICATION,
@@ -156,7 +155,7 @@ public class ConnectionNotifier {
 		return builder.build();
 	}
 
-	void showActivityNotification(Service context, HostBean host) {
+	void showActivityNotification(Service context, Host host) {
 		getNotificationManager(context).notify(ACTIVITY_NOTIFICATION, newActivityNotification(context, host));
 	}
 

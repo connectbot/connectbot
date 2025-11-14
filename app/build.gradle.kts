@@ -3,10 +3,13 @@ import com.github.benmanes.gradle.versions.updates.resolutionstrategy.ComponentS
 import io.github.reactivecircus.appversioning.toSemVer
 import net.ltgt.gradle.errorprone.CheckSeverity
 import net.ltgt.gradle.errorprone.errorprone
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.versions)
     alias(libs.plugins.errorprone)
     alias(libs.plugins.app.versioning)
@@ -17,7 +20,7 @@ plugins {
 }
 
 
-apply(from = "../config/quality.gradle")
+apply(from = "../config/quality.gradle.kts")
 
 coveralls {
     jacocoReportPath = "build/reports/coverage/google/debug/report.xml"
@@ -55,7 +58,7 @@ android {
         }
 
         testApplicationId = "org.connectbot.tests"
-        testInstrumentationRunner = "org.connectbot.ConnectbotJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // The following argument makes the Android Test Orchestrator run its
         // "pm clear" command after each test invocation. This command ensures
@@ -67,6 +70,7 @@ android {
 
     buildFeatures {
         buildConfig = true
+        compose = true
     }
 
     signingConfigs {
@@ -85,8 +89,8 @@ android {
             isShrinkResources = true
             isMinifyEnabled = true
 
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard.cfg")
-            testProguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard.cfg", "proguard-tests.cfg")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg")
+            testProguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg", "proguard-tests.cfg")
 
             if (project.hasProperty("keystorePassword")) {
                 signingConfig = signingConfigs.getByName("release")
@@ -94,11 +98,12 @@ android {
         }
 
         getByName("debug") {
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard.cfg", "proguard-debug.cfg")
-            testProguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard.cfg", "proguard-tests.cfg")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg", "proguard-debug.cfg")
+            testProguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg", "proguard-tests.cfg")
 
             applicationIdSuffix = ".debug"
             enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
         }
     }
 
@@ -122,10 +127,8 @@ android {
     }
 
     testOptions {
-        // temporarily disable the orchestrator as this breaks coverage: https://issuetracker.google.com/issues/72758547
-        //execution = "ANDROID_TEST_ORCHESTRATOR"
+        execution = "ANDROID_TEST_ORCHESTRATOR"
         animationsDisabled = true
-
         unitTests.isIncludeAndroidResources = true
     }
 
@@ -146,8 +149,19 @@ android {
         }
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 
@@ -217,25 +231,49 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.preference)
     implementation(libs.material)
-    implementation(libs.androidx.multidex)
 
-    add("androidTestUtil", libs.androidx.test.orchestrator)
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.activity.compose)
+
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.espresso.intents)
     androidTestImplementation(libs.androidx.espresso.contrib) {
         exclude(group = "com.google.android.apps.common.testing.accessibility.framework", module = "accessibility-test-framework")
     }
     androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.test.butler)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.assertj.core)
+
+    androidTestUtil(libs.androidx.test.orchestrator)
 
     testImplementation(libs.junit)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
     testImplementation(libs.assertj.core)
     testImplementation(libs.robolectric)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.room.testing)
 
     testCompileOnly(libs.conscrypt.openjdk.uber)
     testRuntimeOnly(libs.conscrypt.android)

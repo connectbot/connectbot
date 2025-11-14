@@ -32,10 +32,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.connectbot.R;
-import org.connectbot.bean.HostBean;
+import org.connectbot.data.entity.Host;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
-import org.connectbot.util.HostDatabase;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -119,7 +118,7 @@ public class Telnet extends AbsTransport {
 	 * @param bridge
 	 * @param manager
 	 */
-	public Telnet(HostBean host, TerminalBridge bridge, TerminalManager manager) {
+	public Telnet(Host host, TerminalBridge bridge, TerminalManager manager) {
 		super(host, bridge, manager);
 	}
 
@@ -298,39 +297,31 @@ public class Telnet extends AbsTransport {
 	}
 
 	@Override
-	public HostBean createHost(Uri uri) {
-		HostBean host = new HostBean();
-
-		host.setProtocol(PROTOCOL);
-
-		host.setHostname(uri.getHost());
-
+	public Host createHost(Uri uri) {
 		int port = uri.getPort();
 		if (port < 0 || port > 65535)
 			port = DEFAULT_PORT;
-		host.setPort(port);
+
+		String hostname = uri.getHost() != null ? uri.getHost() : "";
 
 		String nickname = uri.getFragment();
 		if (nickname == null || nickname.length() == 0) {
-			host.setNickname(getDefaultNickname(host.getUsername(),
-					host.getHostname(), host.getPort()));
-		} else {
-			host.setNickname(uri.getFragment());
+			nickname = getDefaultNickname("", hostname, port);
 		}
 
-		return host;
+		return Host.createTelnetHost(nickname, hostname, port);
 	}
 
 	@Override
 	public void getSelectionArgs(Uri uri, Map<String, String> selection) {
-		selection.put(HostDatabase.FIELD_HOST_PROTOCOL, PROTOCOL);
-		selection.put(HostDatabase.FIELD_HOST_NICKNAME, uri.getFragment());
-		selection.put(HostDatabase.FIELD_HOST_HOSTNAME, uri.getHost());
+		selection.put("protocol", PROTOCOL);
+		selection.put("nickname", uri.getFragment());
+		selection.put("hostname", uri.getHost());
 
 		int port = uri.getPort();
 		if (port < 0 || port > 65535)
 			port = DEFAULT_PORT;
-		selection.put(HostDatabase.FIELD_HOST_PORT, Integer.toString(port));
+		selection.put("port", Integer.toString(port));
 	}
 
 	public static String getFormatHint(Context context) {

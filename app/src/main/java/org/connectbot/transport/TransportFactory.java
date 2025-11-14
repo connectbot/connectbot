@@ -20,8 +20,8 @@ package org.connectbot.transport;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.connectbot.bean.HostBean;
-import org.connectbot.data.HostStorage;
+import org.connectbot.data.entity.Host;
+import org.connectbot.data.HostRepository;
 
 import android.content.Context;
 import android.net.Uri;
@@ -106,11 +106,11 @@ public class TransportFactory {
 	}
 
 	/**
-	 * @param hostdb Handle to HostDatabase
+	 * @param hostRepository Handle to HostRepository
 	 * @param uri URI to target server
 	 * @return true when host was found
 	 */
-	public static HostBean findHost(HostStorage hostdb, Uri uri) {
+	public static Host findHost(HostRepository hostRepository, Uri uri) {
 		AbsTransport transport = getTransport(uri.getScheme());
 
 		Map<String, String> selection = new HashMap<>();
@@ -122,6 +122,6 @@ public class TransportFactory {
 			throw new IllegalStateException("Failed to get needed selection arguments");
 		}
 
-		return hostdb.findHost(selection);
+		return hostRepository.findHostBlocking(selection);
 	}
 }

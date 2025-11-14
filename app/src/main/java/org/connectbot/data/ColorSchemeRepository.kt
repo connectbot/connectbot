@@ -1,0 +1,496 @@
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2025 Kenny Root
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.connectbot.data
+
+import android.content.Context
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import org.connectbot.data.dao.ColorSchemeDao
+import org.connectbot.data.entity.ColorPalette
+import org.connectbot.data.entity.ColorScheme
+import org.connectbot.util.Colors
+import org.connectbot.util.HostConstants
+
+/**
+ * Repository for managing terminal color schemes.
+ * Handles both built-in preset schemes and user-created custom schemes.
+ *
+ * @param colorSchemeDao The DAO for accessing color scheme data
+ */
+class ColorSchemeRepository(
+    private val colorSchemeDao: ColorSchemeDao
+) {
+
+    /**
+     * Get all available color schemes (built-in + custom).
+     */
+    suspend fun getAllSchemes(): List<ColorScheme> = withContext(Dispatchers.IO) {
+        val schemes = mutableListOf<ColorScheme>()
+
+        // Add all built-in preset schemes (including Default)
+        // Note: These are virtual - they exist only in code, not in the database
+        schemes.add(
+            ColorScheme(
+                id = -1,
+                name = "Default",
+                isBuiltIn = true,
+                description = "Standard terminal colors"
+            )
+        )
+
+        ColorSchemePresets.builtInSchemes.forEachIndexed { index, preset ->
+            schemes.add(
+                ColorScheme(
+                    id = -(index + 2), // Start from -2 since Default is -1
+                    name = preset.name,
+                    isBuiltIn = true,
+                    description = preset.description
+                )
+            )
+        }
+
+        // Add custom schemes from database
+        val userSchemes = colorSchemeDao.getAll()
+        for (userScheme in userSchemes) {
+            schemes.add(userScheme)
+        }
+
+        schemes
+    }
+
+    /**
+     * Load a color scheme's palette into a target scheme.
+     * This is no longer needed since built-in schemes are immutable.
+     * Kept for backward compatibility but effectively deprecated.
+     *
+     * @param schemeId The scheme ID (negative for built-in presets)
+     * @param targetSchemeId The database scheme ID to save to (must be positive)
+     */
+    @Deprecated("Built-in schemes are now immutable. Create a custom scheme instead.")
+    suspend fun loadScheme(schemeId: Int, targetSchemeId: Int) =
+        withContext(Dispatchers.IO) {
+            if (schemeId < 0) {
+                // Built-in preset
+                if (schemeId == -1) {
+                    // Default scheme - reset target to standard colors
+                    resetSchemeToDefaults(targetSchemeId)
+                } else {
+                    // Other preset - load from ColorSchemePresets
+                    val presetIndex = -(schemeId + 2)
+                    if (presetIndex >= 0 && presetIndex < ColorSchemePresets.builtInSchemes.size) {
+                        val preset = ColorSchemePresets.builtInSchemes[presetIndex]
+                        applyPresetToScheme(preset, targetSchemeId)
+                    }
+                }
+            }
+            // For positive IDs, colors are already in database - no action needed
+        }
+
+    /**
+     * Apply a preset scheme's colors to a database scheme.
+     */
+    private suspend fun applyPresetToScheme(
+        preset: ColorSchemePresets.PresetScheme,
+        targetSchemeId: Int
+    ) {
+        // Set default FG/BG
+        val scheme = colorSchemeDao.getById(targetSchemeId)
+        if (scheme != null) {
+            colorSchemeDao.update(
+                scheme.copy(
+                    foreground = preset.defaultFg,
+                    background = preset.defaultBg
+                )
+            )
+        }
+
+        // Set custom colors (only those different from Colors.defaults)
+        preset.colors.forEach { (index, value) ->
+            val colorEntry = ColorPalette(
+                schemeId = targetSchemeId.toLong(),
+                colorIndex = index,
+                color = value
+            )
+            colorSchemeDao.insertOrUpdateColor(colorEntry)
+        }
+    }
+
+    /**
+     * Get the color palette for a specific scheme.
+     *
+     * @param schemeId The scheme ID (negative for built-in, positive for custom)
+     * @return Array of 256 ARGB color values
+     */
+    suspend fun getSchemeColors(schemeId: Int): IntArray = withContext(Dispatchers.IO) {
+        if (schemeId < 0) {
+            // Built-in preset
+            if (schemeId == -1) {
+                // Default scheme - return standard colors
+                Colors.defaults.clone()
+            } else {
+                // Other preset
+                val presetIndex = -(schemeId + 2)
+                if (presetIndex >= 0 && presetIndex < ColorSchemePresets.builtInSchemes.size) {
+                    ColorSchemePresets.builtInSchemes[presetIndex].getFullPalette()
+                } else {
+                    Colors.defaults.clone()
+                }
+            }
+        } else {
+            // Database scheme
+            val colors = Colors.defaults.clone()
+            colorSchemeDao.getColors(schemeId.toLong()).map { colors[it.colorIndex] = it.color }
+            colors
+        }
+    }
+
+    /**
+     * Get the default FG/BG indices for a scheme.
+     *
+     * @return Pair of (foreground index, background index)
+     */
+    suspend fun getSchemeDefaults(schemeId: Int): Pair<Int, Int> = withContext(Dispatchers.IO) {
+        if (schemeId < 0) {
+            // Built-in preset
+            if (schemeId == -1) {
+                // Default scheme
+                Pair(HostConstants.DEFAULT_FG_COLOR, HostConstants.DEFAULT_BG_COLOR)
+            } else {
+                // Other preset
+                val presetIndex = -(schemeId + 2)
+                if (presetIndex >= 0 && presetIndex < ColorSchemePresets.builtInSchemes.size) {
+                    val preset = ColorSchemePresets.builtInSchemes[presetIndex]
+                    Pair(preset.defaultFg, preset.defaultBg)
+                } else {
+                    Pair(HostConstants.DEFAULT_FG_COLOR, HostConstants.DEFAULT_BG_COLOR)
+                }
+            }
+        } else {
+            // Database scheme
+            val scheme = colorSchemeDao.getById(schemeId)
+            Pair(scheme?.foreground ?: HostConstants.DEFAULT_FG_COLOR, scheme?.background ?: HostConstants.DEFAULT_BG_COLOR)
+        }
+    }
+
+    /**
+     * Set a specific color in a scheme's palette.
+     *
+     * @param schemeId The scheme ID (must be >= 0)
+     * @param colorIndex The index in the color palette (0-255)
+     * @param colorValue The RGB color value
+     */
+    suspend fun setColorForScheme(schemeId: Int, colorIndex: Int, colorValue: Int) =
+        withContext(Dispatchers.IO) {
+            val colorEntry = ColorPalette(
+                schemeId = schemeId.toLong(),
+                colorIndex = colorIndex,
+                color = colorValue
+            )
+            colorSchemeDao.insertOrUpdateColor(colorEntry)
+        }
+
+    /**
+     * Set the default foreground and background color indices for a scheme.
+     *
+     * @param schemeId The scheme ID (must be >= 0)
+     * @param foregroundColorIndex The index for the foreground color (0-255)
+     * @param backgroundColorIndex The index for the background color (0-255)
+     */
+    suspend fun setDefaultColorsForScheme(
+        schemeId: Int,
+        foregroundColorIndex: Int,
+        backgroundColorIndex: Int
+    ) = withContext(Dispatchers.IO) {
+        val scheme = colorSchemeDao.getById(schemeId)
+        if (scheme != null) {
+            colorSchemeDao.update(
+                scheme.copy(
+                    foreground = foregroundColorIndex,
+                    background = backgroundColorIndex
+                )
+            )
+        }
+    }
+
+    /**
+     * Reset a scheme to standard defaults.
+     *
+     * @param schemeId The scheme ID to reset (must be >= 0)
+     */
+    suspend fun resetSchemeToDefaults(schemeId: Int) = withContext(Dispatchers.IO) {
+        if (schemeId >= 0) {
+            // Clear all custom colors for this scheme
+            // This will make it fall back to Colors.defaults
+            colorSchemeDao.clearColorsForScheme(schemeId.toLong())
+
+            // Reset to default FG/BG
+            val scheme = colorSchemeDao.getById(schemeId)
+            if (scheme != null) {
+                colorSchemeDao.update(
+                    scheme.copy(
+                        foreground = HostConstants.DEFAULT_FG_COLOR,
+                        background = HostConstants.DEFAULT_BG_COLOR
+                    )
+                )
+            }
+        }
+    }
+
+    /**
+     * Create a new custom color scheme.
+     *
+     * @param name The name for the new scheme
+     * @param description Optional description
+     * @param basedOnSchemeId The scheme ID to copy colors from (default -1 for Default)
+     * @return The ID of the newly created scheme
+     */
+    suspend fun createCustomScheme(
+        name: String,
+        description: String = "",
+        basedOnSchemeId: Int = -1
+    ): Int = withContext(Dispatchers.IO) {
+        // Copy colors from the base scheme
+        val sourcePalette = getSchemeColors(basedOnSchemeId)
+        val sourceDefaults = getSchemeDefaults(basedOnSchemeId)
+
+        // Create new color scheme in database (ID will be auto-generated)
+        val newScheme = ColorScheme(
+            id = 0, // Auto-generate (will be assigned by Room)
+            name = name,
+            description = description,
+            isBuiltIn = false,
+            foreground = sourceDefaults.first,
+            background = sourceDefaults.second
+        )
+        val newSchemeId = colorSchemeDao.insert(newScheme).toInt()
+
+        // Copy all custom colors
+        sourcePalette.forEachIndexed { index, color ->
+            val colorEntry = ColorPalette(
+                schemeId = newSchemeId.toLong(),
+                colorIndex = index,
+                color = color
+            )
+            colorSchemeDao.insertOrUpdateColor(colorEntry)
+        }
+
+        newSchemeId
+    }
+
+    /**
+     * Duplicate an existing scheme.
+     *
+     * @param sourceSchemeId The scheme to duplicate
+     * @param newName The name for the duplicated scheme
+     * @return The ID of the newly created scheme
+     */
+    suspend fun duplicateScheme(sourceSchemeId: Int, newName: String): Int =
+        withContext(Dispatchers.IO) {
+            createCustomScheme(
+                name = newName,
+                description = "",
+                basedOnSchemeId = sourceSchemeId
+            )
+        }
+
+    /**
+     * Rename a custom color scheme.
+     * Built-in schemes (ID <= 0) cannot be renamed.
+     *
+     * @param schemeId The scheme ID to rename (must be > 0)
+     * @param newName The new name
+     * @param newDescription Optional new description
+     * @return true if successful, false otherwise
+     */
+    suspend fun renameScheme(
+        schemeId: Int,
+        newName: String,
+        newDescription: String = ""
+    ): Boolean = withContext(Dispatchers.IO) {
+        if (schemeId <= 0) return@withContext false
+
+        val scheme = colorSchemeDao.getById(schemeId) ?: return@withContext false
+        colorSchemeDao.update(
+            scheme.copy(
+                name = newName,
+                description = newDescription
+            )
+        )
+        true
+    }
+
+    /**
+     * Delete a custom color scheme.
+     * Built-in schemes (ID <= 0) cannot be deleted.
+     *
+     * @param schemeId The scheme ID to delete (must be > 0)
+     */
+    suspend fun deleteCustomScheme(schemeId: Int) = withContext(Dispatchers.IO) {
+        if (schemeId > 0) {
+            // Delete all color data (CASCADE will handle this, but we'll do it explicitly)
+            colorSchemeDao.clearColorsForScheme(schemeId.toLong())
+
+            // Delete the scheme metadata
+            val scheme = colorSchemeDao.getById(schemeId)
+            if (scheme != null) {
+                colorSchemeDao.delete(scheme)
+            }
+        }
+    }
+
+    /**
+     * Check if a scheme name already exists.
+     *
+     * @param name The name to check
+     * @param excludeSchemeId Optional scheme ID to exclude from the check (for renames)
+     * @return true if the name exists, false otherwise
+     */
+    suspend fun schemeNameExists(name: String, excludeSchemeId: Int? = null): Boolean =
+        withContext(Dispatchers.IO) {
+            // Check against built-in schemes
+            val builtInSchemes = listOf("Default") + ColorSchemePresets.builtInSchemes.map { it.name }
+            if (builtInSchemes.any { it.equals(name, ignoreCase = true) }) {
+                // If checking for a rename and the name matches a built-in scheme,
+                // only allow if we're renaming from a negative ID (which shouldn't happen)
+                if (excludeSchemeId != null && excludeSchemeId < 0) {
+                    return@withContext false
+                }
+                return@withContext true
+            }
+
+            // Check against custom schemes in database
+            colorSchemeDao.nameExists(name, excludeSchemeId)
+        }
+
+    /**
+     * Export a color scheme to JSON.
+     *
+     * @param schemeId The scheme ID to export
+     * @return ColorSchemeJson object ready for serialization
+     */
+    suspend fun exportScheme(schemeId: Int): ColorSchemeJson = withContext(Dispatchers.IO) {
+        val schemes = getAllSchemes()
+        val scheme = schemes.find { it.id == schemeId }
+            ?: throw IllegalArgumentException("Scheme not found: $schemeId")
+
+        val palette = getSchemeColors(schemeId)
+
+        ColorSchemeJson.fromPalette(
+            name = scheme.name,
+            description = scheme.description,
+            palette = palette
+        )
+    }
+
+    /**
+     * Import a color scheme from JSON.
+     *
+     * @param jsonString The JSON string to import
+     * @param allowOverwrite If false and name exists, will auto-rename
+     * @return The ID of the imported scheme
+     * @throws org.json.JSONException if JSON is invalid
+     * @throws IllegalArgumentException if schema is invalid
+     */
+    suspend fun importScheme(jsonString: String, allowOverwrite: Boolean = false): Int =
+        withContext(Dispatchers.IO) {
+            // Parse JSON
+            val schemeJson = ColorSchemeJson.fromJson(jsonString)
+
+            // Check for name conflicts
+            var finalName = schemeJson.name
+            if (schemeNameExists(finalName)) {
+                if (!allowOverwrite) {
+                    // Auto-rename by appending number
+                    var counter = 1
+                    while (schemeNameExists("$finalName ($counter)")) {
+                        counter++
+                    }
+                    finalName = "$finalName ($counter)"
+                }
+            }
+
+            // Create new scheme (based on Default -1)
+            val newSchemeId = createCustomScheme(
+                name = finalName,
+                description = schemeJson.description,
+                basedOnSchemeId = -1
+            )
+
+            // Import colors (note: createCustomScheme already copies from base scheme,
+            // so we need to override with the imported colors)
+            val palette = schemeJson.toPalette()
+            palette.forEachIndexed { index, color ->
+                val colorEntry = ColorPalette(
+                    schemeId = newSchemeId.toLong(),
+                    colorIndex = index,
+                    color = color
+                )
+                colorSchemeDao.insertOrUpdateColor(colorEntry)
+            }
+
+            newSchemeId
+        }
+
+    /**
+     * Blocking wrapper for getSchemeColors - for use from non-coroutine code.
+     * Returns the color palette for a scheme as an IntArray.
+     */
+    fun getColorsForSchemeBlocking(schemeId: Int): IntArray =
+        runBlocking { getSchemeColors(schemeId) }
+
+    /**
+     * Blocking wrapper for getSchemeDefaults - for use from non-coroutine code.
+     * Returns [foregroundIndex, backgroundIndex] as an int array.
+     */
+    fun getDefaultColorsForSchemeBlocking(schemeId: Int): IntArray {
+        val (fg, bg) = runBlocking { getSchemeDefaults(schemeId) }
+        return intArrayOf(fg, bg)
+    }
+
+    companion object {
+        @Volatile
+        private var instance: ColorSchemeRepository? = null
+
+        /**
+         * Get the singleton repository instance.
+         * Uses the production database.
+         *
+         * @param context Application context
+         * @return ColorSchemeRepository instance
+         */
+        fun get(context: Context): ColorSchemeRepository {
+            return instance ?: synchronized(this) {
+                instance ?: ColorSchemeRepository(
+                    ConnectBotDatabase.getInstance(context.applicationContext).colorSchemeDao()
+                ).also {
+                    instance = it
+                }
+            }
+        }
+
+        /**
+         * Clear the singleton instance.
+         * Used for testing purposes.
+         */
+        @androidx.annotation.VisibleForTesting
+        fun clearInstance() {
+            instance = null
+        }
+    }
+}

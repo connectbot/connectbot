@@ -26,12 +26,12 @@ import java.util.regex.Pattern;
 
 import org.connectbot.R;
 import org.connectbot.TerminalView;
-import org.connectbot.bean.HostBean;
-import org.connectbot.bean.PortForwardBean;
+import org.connectbot.data.entity.Host;
+import org.connectbot.data.entity.PortForward;
 import org.connectbot.bean.SelectionArea;
 import org.connectbot.transport.AbsTransport;
 import org.connectbot.transport.TransportFactory;
-import org.connectbot.util.HostDatabase;
+import org.connectbot.util.HostConstants;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -71,12 +71,12 @@ public class TerminalBridge implements VDUDisplay {
 
 	public int[] color;
 
-	public int defaultFg = HostDatabase.DEFAULT_FG_COLOR;
-	public int defaultBg = HostDatabase.DEFAULT_BG_COLOR;
+	public int defaultFg = HostConstants.DEFAULT_FG_COLOR;
+	public int defaultBg = HostConstants.DEFAULT_BG_COLOR;
 
 	protected final TerminalManager manager;
 
-	public HostBean host;
+	public Host host;
 
 	/* package */ AbsTransport transport;
 
@@ -121,9 +121,9 @@ public class TerminalBridge implements VDUDisplay {
 	 */
 	private boolean fullRedraw = false;
 
-	public final PromptHelper promptHelper = new PromptHelper();
+	public final PromptManager promptManager =  new PromptManager();
 
-	private BridgeDisconnectedListener disconnectListener = null;
+	private final List<BridgeDisconnectedListener> disconnectListeners = new ArrayList<>();
 
 	/**
 	 * Create a new terminal bridge suitable for unit testing.
@@ -166,7 +166,7 @@ public class TerminalBridge implements VDUDisplay {
 	 * launch thread to start SSH connection and handle any hostkey verification
 	 * and password authentication.
 	 */
-	public TerminalBridge(final TerminalManager manager, final HostBean host) {
+	public TerminalBridge(final TerminalManager manager, final Host host) {
 		this.manager = manager;
 		this.host = host;
 
@@ -252,10 +252,6 @@ public class TerminalBridge implements VDUDisplay {
 		keyListener = new TerminalKeyListener(manager, this, buffer, host.getEncoding());
 	}
 
-	public PromptHelper getPromptHelper() {
-		return promptHelper;
-	}
-
 	/**
 	 * Spawn thread to open connection and start login process.
 	 */
@@ -276,7 +272,7 @@ public class TerminalBridge implements VDUDisplay {
 		transport.setEmulation(emulation);
 
 		if (transport.canForwardPorts()) {
-			for (PortForwardBean portForward : manager.hostdb.getPortForwardsForHost(host))
+			for (PortForward portForward : manager.hostRepository.getPortForwardsForHostBlocking(host.getId()))
 				transport.addPortForward(portForward);
 		}
 
@@ -405,7 +401,7 @@ public class TerminalBridge implements VDUDisplay {
 		// "screen" works the best for color and escape codes
 		((vt320) buffer).setAnswerBack(emulation);
 
-		if (HostDatabase.DELKEY_BACKSPACE.equals(host.getDelKey()))
+		if (HostConstants.DELKEY_BACKSPACE.equals(host.getDelKey()))
 			((vt320) buffer).setBackspace(vt320.DELETE_IS_BACKSPACE);
 		else
 			((vt320) buffer).setBackspace(vt320.DELETE_IS_DEL);
@@ -436,7 +432,26 @@ public class TerminalBridge implements VDUDisplay {
 	}
 
 	public void setOnDisconnectedListener(BridgeDisconnectedListener disconnectListener) {
-		this.disconnectListener = disconnectListener;
+		synchronized (disconnectListeners) {
+			disconnectListeners.clear();
+			if (disconnectListener != null) {
+				disconnectListeners.add(disconnectListener);
+			}
+		}
+	}
+
+	public void addOnDisconnectedListener(BridgeDisconnectedListener listener) {
+		synchronized (disconnectListeners) {
+			if (listener != null && !disconnectListeners.contains(listener)) {
+				disconnectListeners.add(listener);
+			}
+		}
+	}
+
+	public void removeOnDisconnectedListener(BridgeDisconnectedListener listener) {
+		synchronized (disconnectListeners) {
+			disconnectListeners.remove(listener);
+		}
 	}
 
 	/**
@@ -451,8 +466,8 @@ public class TerminalBridge implements VDUDisplay {
 			disconnected = true;
 		}
 
-		// Cancel any pending prompts.
-		promptHelper.cancelPrompt();
+		// Cancel any pending prompts
+		promptManager.cancelPrompt();
 
 		// disconnection request hangs if we havent really connected to a host yet
 		// temporary fix is to just spawn disconnection into a thread
@@ -481,7 +496,7 @@ public class TerminalBridge implements VDUDisplay {
 			Thread disconnectPromptThread = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					Boolean result = promptHelper.requestBooleanPrompt(null,
+					Boolean result = TerminalBridgePromptsKt.requestBooleanPrompt(TerminalBridge.this, null,
 							manager.res.getString(R.string.prompt_host_disconnected));
 					if (result == null || result) {
 						awaitingClose = true;
@@ -499,15 +514,23 @@ public class TerminalBridge implements VDUDisplay {
 	 * Tells the TerminalManager that we can be destroyed now.
 	 */
 	private void triggerDisconnectListener() {
-		if (disconnectListener != null) {
-			// The disconnect listener should be run on the main thread if possible.
-			new Handler(Looper.getMainLooper()).post(new Runnable() {
-				@Override
-				public void run() {
-					disconnectListener.onDisconnected(TerminalBridge.this);
-				}
-			});
+		final List<BridgeDisconnectedListener> listenersCopy;
+		synchronized (disconnectListeners) {
+			if (disconnectListeners.isEmpty()) {
+				return;
+			}
+			listenersCopy = new ArrayList<>(disconnectListeners);
 		}
+
+		// The disconnect listener should be run on the main thread if possible.
+		new Handler(Looper.getMainLooper()).post(new Runnable() {
+			@Override
+			public void run() {
+				for (BridgeDisconnectedListener listener : listenersCopy) {
+					listener.onDisconnected(TerminalBridge.this);
+				}
+			}
+		});
 	}
 
 	public synchronized void tryKeyVibrate() {
@@ -521,6 +544,17 @@ public class TerminalBridge implements VDUDisplay {
 	 * @param sizeDp Size of font in dp
 	 */
 	private void setFontSize(float sizeDp) {
+		setFontSize(sizeDp, false);
+	}
+
+	/**
+	 * Request a different font size. Will make call to parentChanged() to make
+	 * sure we resize PTY if needed.
+	 *
+	 * @param sizeDp Size of font in dp
+	 * @param isForced whether the font size was forced
+	 */
+	private void setFontSize(float sizeDp, boolean isForced) {
 		if (sizeDp <= 0.0) {
 			return;
 		}
@@ -539,6 +573,8 @@ public class TerminalBridge implements VDUDisplay {
 		charWidth = (int) Math.ceil(widths[0]);
 		charHeight = (int) Math.ceil(fm.descent - fm.top);
 
+		forcedSize = isForced;
+
 		// refresh any bitmap with new font size
 		if (parent != null) {
 			parentChanged(parent);
@@ -548,10 +584,9 @@ public class TerminalBridge implements VDUDisplay {
 			ofscl.onFontSizeChanged(sizeDp);
 		}
 
-		host.setFontSize((int) sizeDp);
-		manager.hostdb.saveHost(host);
-
-		forcedSize = false;
+		// Create updated host with new fontSize
+		host = host.withFontSize((int) sizeDp);
+		manager.hostRepository.saveHostBlocking(host);
 	}
 
 	/**
@@ -872,8 +907,7 @@ public class TerminalBridge implements VDUDisplay {
 
 		this.columns = cols;
 		this.rows = rows;
-		setFontSize(sizeDp);
-		forcedSize = true;
+		setFontSize(sizeDp, true);
 	}
 
 	private int fontSizeCompare(float sizeDp, int cols, int rows, int width, int height) {
@@ -918,27 +952,27 @@ public class TerminalBridge implements VDUDisplay {
 	}
 
 	/**
-	 * Adds the {@link PortForwardBean} to the list.
+	 * Adds the {@link PortForward} to the list.
 	 * @param portForward the port forward bean to add
 	 * @return true on successful addition
 	 */
-	public boolean addPortForward(PortForwardBean portForward) {
+	public boolean addPortForward(PortForward portForward) {
 		return transport.addPortForward(portForward);
 	}
 
 	/**
-	 * Removes the {@link PortForwardBean} from the list.
+	 * Removes the {@link PortForward} from the list.
 	 * @param portForward the port forward bean to remove
 	 * @return true on successful removal
 	 */
-	public boolean removePortForward(PortForwardBean portForward) {
+	public boolean removePortForward(PortForward portForward) {
 		return transport.removePortForward(portForward);
 	}
 
 	/**
 	 * @return the list of port forwards
 	 */
-	public List<PortForwardBean> getPortForwards() {
+	public List<PortForward> getPortForwards() {
 		return transport.getPortForwards();
 	}
 
@@ -948,7 +982,7 @@ public class TerminalBridge implements VDUDisplay {
 	 * @param portForward member of our current port forwards list to enable
 	 * @return true on successful port forward setup
 	 */
-	public boolean enablePortForward(PortForwardBean portForward) {
+	public boolean enablePortForward(PortForward portForward) {
 		if (!transport.isConnected()) {
 			Log.i(TAG, "Attempt to enable port forward while not connected");
 			return false;
@@ -963,7 +997,7 @@ public class TerminalBridge implements VDUDisplay {
 	 * @param portForward member of our current port forwards list to enable
 	 * @return true on successful port forward tear-down
 	 */
-	public boolean disablePortForward(PortForwardBean portForward) {
+	public boolean disablePortForward(PortForward portForward) {
 		if (!transport.isConnected()) {
 			Log.i(TAG, "Attempt to disable port forward while not connected");
 			return false;
@@ -998,11 +1032,11 @@ public class TerminalBridge implements VDUDisplay {
 
 	@Override
 	public final void resetColors() {
-		int[] defaults = manager.colordb.getDefaultColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
+		int[] defaults = manager.colorRepository.getDefaultColorsForSchemeBlocking(-1);
 		defaultFg = defaults[0];
 		defaultBg = defaults[1];
 
-		color = manager.colordb.getColorsForScheme(HostDatabase.DEFAULT_COLOR_SCHEME);
+		color = manager.colorRepository.getColorsForSchemeBlocking(-1);
 	}
 
 	private static class PatternHolder {

@@ -28,7 +28,7 @@ import com.trilead.ssh2.signature.ECDSASHA2Verify;
 import com.trilead.ssh2.signature.Ed25519Verify;
 import com.trilead.ssh2.signature.RSASHA1Verify;
 import com.trilead.ssh2.signature.SSHSignature;
-import org.connectbot.bean.PubkeyBean;
+import org.connectbot.data.entity.Pubkey;
 import org.keyczar.jce.EcCore;
 
 import javax.crypto.Cipher;
@@ -148,14 +148,14 @@ public class PubkeyUtils {
 	public static int getBitStrength(byte[] encoded, String keyType) throws InvalidKeySpecException,
 			NoSuchAlgorithmException {
 		final PublicKey pubKey = PubkeyUtils.decodePublic(encoded, keyType);
-		if (PubkeyDatabase.KEY_TYPE_RSA.equals(keyType)) {
+		if ("RSA".equals(keyType)) {
 			return ((RSAPublicKey) pubKey).getModulus().bitLength();
-		} else if (PubkeyDatabase.KEY_TYPE_DSA.equals(keyType)) {
+		} else if ("DSA".equals(keyType)) {
 			return 1024;
-		} else if (PubkeyDatabase.KEY_TYPE_EC.equals(keyType)) {
+		} else if ("EC".equals(keyType)) {
 			return ((ECPublicKey) pubKey).getParams().getCurve().getField()
 					.getFieldSize();
-		} else if (PubkeyDatabase.KEY_TYPE_ED25519.equals(keyType)) {
+		} else if ("Ed25519".equals(keyType)) {
 			return 256;
 		} else {
 			return 0;
@@ -225,11 +225,11 @@ public class PubkeyUtils {
 		}
 	}
 
-	public static KeyPair convertToKeyPair(PubkeyBean keybean, String password) throws BadPasswordException {
-		if (PubkeyDatabase.KEY_TYPE_IMPORTED.equals(keybean.getType())) {
+	public static KeyPair convertToKeyPair(Pubkey pubkey, String password) throws BadPasswordException {
+		if ("IMPORTED".equals(pubkey.getType())) {
 			// load specific key using pem format
 			try {
-				return PEMDecoder.decode(new String(keybean.getPrivateKey(), "UTF-8").toCharArray(), password);
+				return PEMDecoder.decode(new String(pubkey.getPrivateKey(), "UTF-8").toCharArray(), password);
 			} catch (Exception e) {
 				Log.e(TAG, "Cannot decode imported key", e);
 				throw new BadPasswordException();
@@ -237,8 +237,8 @@ public class PubkeyUtils {
 		} else {
 			// load using internal generated format
 			try {
-				PrivateKey privKey = PubkeyUtils.decodePrivate(keybean.getPrivateKey(), keybean.getType(), password);
-				PublicKey pubKey = PubkeyUtils.decodePublic(keybean.getPublicKey(), keybean.getType());
+				PrivateKey privKey = PubkeyUtils.decodePrivate(pubkey.getPrivateKey(), pubkey.getType(), password);
+				PublicKey pubKey = PubkeyUtils.decodePublic(pubkey.getPublicKey(), pubkey.getType());
 				Log.d(TAG, "Unlocked key " + PubkeyUtils.formatKey(pubKey));
 
 				return new KeyPair(pubKey, privKey);

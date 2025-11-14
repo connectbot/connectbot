@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.connectbot.bean.HostBean;
-import org.connectbot.bean.PortForwardBean;
+import org.connectbot.data.entity.Host;
+import org.connectbot.data.entity.PortForward;
 import org.connectbot.service.TerminalBridge;
 import org.connectbot.service.TerminalManager;
 
@@ -34,7 +34,7 @@ import android.net.Uri;
  *
  */
 public abstract class AbsTransport {
-	HostBean host;
+	Host host;
 	TerminalBridge bridge;
 	TerminalManager manager;
 
@@ -43,7 +43,7 @@ public abstract class AbsTransport {
 	public AbsTransport() {
 	}
 
-	public AbsTransport(HostBean host, TerminalBridge bridge, TerminalManager manager) {
+	public AbsTransport(Host host, TerminalBridge bridge, TerminalManager manager) {
 		this.host = host;
 		this.bridge = bridge;
 		this.manager = manager;
@@ -145,7 +145,7 @@ public abstract class AbsTransport {
 		return emulation;
 	}
 
-	public void setHost(HostBean host) {
+	public void setHost(Host host) {
 		this.host = host;
 	}
 
@@ -166,11 +166,11 @@ public abstract class AbsTransport {
 	}
 
 	/**
-	 * Adds the {@link PortForwardBean} to the list.
+	 * Adds the {@link PortForward} to the list.
 	 * @param portForward the port forward bean to add
 	 * @return true on successful addition
 	 */
-	public boolean addPortForward(PortForwardBean portForward) {
+	public boolean addPortForward(PortForward portForward) {
 		return false;
 	}
 
@@ -180,7 +180,7 @@ public abstract class AbsTransport {
 	 * @param portForward member of our current port forwards list to enable
 	 * @return true on successful port forward setup
 	 */
-	public boolean enablePortForward(PortForwardBean portForward) {
+	public boolean enablePortForward(PortForward portForward) {
 		return false;
 	}
 
@@ -190,24 +190,24 @@ public abstract class AbsTransport {
 	 * @param portForward member of our current port forwards list to enable
 	 * @return true on successful port forward tear-down
 	 */
-	public boolean disablePortForward(PortForwardBean portForward) {
+	public boolean disablePortForward(PortForward portForward) {
 		return false;
 	}
 
 	/**
-	 * Removes the {@link PortForwardBean} from the available port forwards.
+	 * Removes the {@link PortForward} from the available port forwards.
 	 * @param portForward the port forward bean to remove
 	 * @return true on successful removal
 	 */
-	public boolean removePortForward(PortForwardBean portForward) {
+	public boolean removePortForward(PortForward portForward) {
 		return false;
 	}
 
 	/**
-	 * Gets a list of the {@link PortForwardBean} currently used by this transport.
+	 * Gets a list of the {@link PortForward} currently used by this transport.
 	 * @return the list of port forwards
 	 */
-	public List<PortForwardBean> getPortForwards() {
+	public List<PortForward> getPortForwards() {
 		return null;
 	}
 
@@ -237,7 +237,7 @@ public abstract class AbsTransport {
 	 * @param uri
 	 * @return
 	 */
-	public abstract HostBean createHost(Uri uri);
+	public abstract Host createHost(Uri uri);
 
 	/**
 	 * @param context context containing the correct resources
