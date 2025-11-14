@@ -37,6 +37,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
+import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.theme.ConnectBotTheme
 
 data class Hint(
     val title: String,
@@ -134,5 +136,15 @@ fun HintsScreen(
                 HorizontalDivider()
             }
         }
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun HintsScreenPreview() {
+    ConnectBotTheme {
+        HintsScreen(
+            onNavigateBack = {}
+        )
     }
 }

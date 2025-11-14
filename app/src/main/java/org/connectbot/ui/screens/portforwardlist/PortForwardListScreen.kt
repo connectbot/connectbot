@@ -56,6 +56,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import org.connectbot.R
 import org.connectbot.data.entity.PortForward
+import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.theme.ConnectBotTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,6 +70,26 @@ fun PortForwardListScreen(
     val viewModel = remember(hostId) { PortForwardListViewModel(context, hostId) }
     val uiState by viewModel.uiState.collectAsState()
 
+    PortForwardListScreenContent(
+        uiState = uiState,
+        onNavigateBack = onNavigateBack,
+        onDeletePortForward = viewModel::deletePortForward,
+        onAddPortForward = viewModel::addPortForward,
+        onUpdatePortForward = viewModel::updatePortForward,
+        modifier = modifier
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PortForwardListScreenContent(
+    uiState: PortForwardListUiState,
+    onNavigateBack: () -> Unit,
+    onDeletePortForward: (PortForward) -> Unit,
+    onAddPortForward: (String, String, String, String) -> Unit,
+    onUpdatePortForward: (PortForward, String, String, String, String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     var showAddDialog by remember { mutableStateOf(false) }
     var editingPortForward by remember { mutableStateOf<PortForward?>(null) }
 
@@ -106,7 +128,7 @@ fun PortForwardListScreen(
 
                 uiState.error != null -> {
                     Text(
-                        text = stringResource(R.string.error_message, uiState.error ?: ""),
+                        text = stringResource(R.string.error_message, uiState.error),
                         color = MaterialTheme.colorScheme.error,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -130,7 +152,7 @@ fun PortForwardListScreen(
                             PortForwardListItem(
                                 portForward = portForward,
                                 onEdit = { editingPortForward = portForward },
-                                onDelete = { viewModel.deletePortForward(portForward) }
+                                onDelete = { onDeletePortForward(portForward) }
                             )
                         }
                     }
@@ -144,7 +166,7 @@ fun PortForwardListScreen(
             onDismiss = { showAddDialog = false },
             onSave = { nickname, type, sourcePort, destination ->
                 showAddDialog = false
-                viewModel.addPortForward(nickname, type, sourcePort, destination)
+                onAddPortForward(nickname, type, sourcePort, destination)
             }
         )
     }
@@ -160,13 +182,110 @@ fun PortForwardListScreen(
             onDismiss = { editingPortForward = null },
             onSave = { nickname, type, sourcePort, destination ->
                 editingPortForward = null
-                viewModel.updatePortForward(portForward, nickname, type, sourcePort, destination)
+                onUpdatePortForward(portForward, nickname, type, sourcePort, destination)
             },
             initialNickname = portForward.nickname,
             initialType = portForward.type,
             initialSourcePort = portForward.sourcePort.toString(),
             initialDestination = initialDest,
             isEditing = true
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun PortForwardListScreenEmptyPreview() {
+    ConnectBotTheme {
+        PortForwardListScreenContent(
+            uiState = PortForwardListUiState(
+                portForwards = emptyList(),
+                isLoading = false
+            ),
+            onNavigateBack = {},
+            onDeletePortForward = {},
+            onAddPortForward = { _, _, _, _ -> },
+            onUpdatePortForward = { _, _, _, _, _ -> }
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun PortForwardListScreenLoadingPreview() {
+    ConnectBotTheme {
+        PortForwardListScreenContent(
+            uiState = PortForwardListUiState(
+                portForwards = emptyList(),
+                isLoading = true
+            ),
+            onNavigateBack = {},
+            onDeletePortForward = {},
+            onAddPortForward = { _, _, _, _ -> },
+            onUpdatePortForward = { _, _, _, _, _ -> }
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun PortForwardListScreenErrorPreview() {
+    ConnectBotTheme {
+        PortForwardListScreenContent(
+            uiState = PortForwardListUiState(
+                portForwards = emptyList(),
+                isLoading = false,
+                error = "Failed to load port forwards"
+            ),
+            onNavigateBack = {},
+            onDeletePortForward = {},
+            onAddPortForward = { _, _, _, _ -> },
+            onUpdatePortForward = { _, _, _, _, _ -> }
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun PortForwardListScreenPopulatedPreview() {
+    ConnectBotTheme {
+        PortForwardListScreenContent(
+            uiState = PortForwardListUiState(
+                portForwards = listOf(
+                    PortForward(
+                        id = 1,
+                        nickname = "MySQL Tunnel",
+                        type = "Local",
+                        sourcePort = 3306,
+                        destAddr = "db.internal",
+                        destPort = 3306,
+                        hostId = 1
+                    ),
+                    PortForward(
+                        id = 2,
+                        nickname = "Web Server",
+                        type = "Remote",
+                        sourcePort = 8080,
+                        destAddr = "localhost",
+                        destPort = 80,
+                        hostId = 1
+                    ),
+                    PortForward(
+                        id = 3,
+                        nickname = "SOCKS Proxy",
+                        type = "Dynamic",
+                        sourcePort = 1080,
+                        destAddr = "",
+                        destPort = 0,
+                        hostId = 1
+                    )
+                ),
+                isLoading = false
+            ),
+            onNavigateBack = {},
+            onDeletePortForward = {},
+            onAddPortForward = { _, _, _, _ -> },
+            onUpdatePortForward = { _, _, _, _, _ -> }
         )
     }
 }

@@ -28,6 +28,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import org.connectbot.R
 import org.connectbot.data.migration.MigrationState
 import org.connectbot.data.migration.MigrationStatus
+import org.connectbot.ui.theme.ConnectBotTheme
 
 /**
  * Full-screen UI shown during database migration.
@@ -48,31 +50,36 @@ fun MigrationScreen(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+    Surface(
+        modifier = modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background // Surface uses this by default
     ) {
-        when (uiState) {
-            is MigrationUiState.Checking -> {
-                CheckingMigrationContent()
-            }
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            when (uiState) {
+                is MigrationUiState.Checking -> {
+                    CheckingMigrationContent()
+                }
 
-            is MigrationUiState.InProgress -> {
-                MigrationInProgressContent(state = uiState.state)
-            }
+                is MigrationUiState.InProgress -> {
+                    MigrationInProgressContent(state = uiState.state)
+                }
 
-            is MigrationUiState.Failed -> {
-                MigrationFailedContent(
-                    error = uiState.error,
-                    onRetry = onRetry
-                )
-            }
+                is MigrationUiState.Failed -> {
+                    MigrationFailedContent(
+                        error = uiState.error,
+                        onRetry = onRetry
+                    )
+                }
 
-            is MigrationUiState.Completed -> {
-                // This state is handled by MainActivity - screen is hidden
+                is MigrationUiState.Completed -> {
+                    // This state is handled by MainActivity - screen is hidden
+                }
             }
         }
     }
@@ -198,4 +205,70 @@ private fun MigrationFailedContent(
         textAlign = TextAlign.Center,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
+}
+
+@ScreenPreviews
+@Composable
+private fun MigrationScreenCheckingPreview() {
+    ConnectBotTheme {
+        MigrationScreen(
+            uiState = MigrationUiState.Checking,
+            onRetry = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun MigrationScreenInProgressPreview() {
+    ConnectBotTheme {
+        MigrationScreen(
+            uiState = MigrationUiState.InProgress(
+                state = MigrationState(
+                    status = MigrationStatus.IN_PROGRESS,
+                    progress = 0.65f,
+                    currentStep = "Migrating hosts...",
+                    hostsMigrated = 12,
+                    pubkeysMigrated = 5,
+                    portForwardsMigrated = 8,
+                    knownHostsMigrated = 25
+                )
+            ),
+            onRetry = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun MigrationScreenInProgressEmptyPreview() {
+    ConnectBotTheme {
+        MigrationScreen(
+            uiState = MigrationUiState.InProgress(
+                state = MigrationState(
+                    status = MigrationStatus.IN_PROGRESS,
+                    progress = 0.15f,
+                    currentStep = "Starting migration...",
+                    hostsMigrated = 0,
+                    pubkeysMigrated = 0,
+                    portForwardsMigrated = 0,
+                    knownHostsMigrated = 0
+                )
+            ),
+            onRetry = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun MigrationScreenFailedPreview() {
+    ConnectBotTheme {
+        MigrationScreen(
+            uiState = MigrationUiState.Failed(
+                error = "Database corruption detected"
+            ),
+            onRetry = {}
+        )
+    }
 }

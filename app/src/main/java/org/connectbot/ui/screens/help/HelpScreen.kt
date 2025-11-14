@@ -45,9 +45,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.connectbot.BuildConfig
 import org.connectbot.R
+import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.theme.ConnectBotTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -207,6 +210,28 @@ private fun ShortcutRow(
         Text(
             text = description,
             style = MaterialTheme.typography.bodyMedium
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun HelpScreenPreview() {
+    ConnectBotTheme {
+        HelpScreen(
+            onNavigateBack = {},
+            onNavigateToHints = {},
+            onNavigateToEula = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun KeyboardShortcutsDialogPreview() {
+    ConnectBotTheme {
+        KeyboardShortcutsDialog(
+            onDismiss = {}
         )
     }
 }

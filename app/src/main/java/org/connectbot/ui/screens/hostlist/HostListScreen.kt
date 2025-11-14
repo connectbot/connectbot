@@ -62,6 +62,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
@@ -69,6 +70,9 @@ import androidx.compose.ui.unit.dp
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.ui.LocalTerminalManager
+import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.theme.ConnectBotTheme
+import androidx.core.graphics.toColorInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,6 +91,38 @@ fun HostListScreen(
     val viewModel = remember { HostListViewModel(context, terminalManager) }
     val uiState by viewModel.uiState.collectAsState()
 
+    HostListScreenContent(
+        uiState = uiState,
+        onNavigateToConsole = onNavigateToConsole,
+        onNavigateToEditHost = onNavigateToEditHost,
+        onNavigateToSettings = onNavigateToSettings,
+        onNavigateToPubkeys = onNavigateToPubkeys,
+        onNavigateToPortForwards = onNavigateToPortForwards,
+        onNavigateToColors = onNavigateToColors,
+        onNavigateToHelp = onNavigateToHelp,
+        onToggleSortOrder = viewModel::toggleSortOrder,
+        onDeleteHost = viewModel::deleteHost,
+        onDisconnectAll = viewModel::disconnectAll,
+        modifier = modifier
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HostListScreenContent(
+    uiState: HostListUiState,
+    onNavigateToConsole: (Host) -> Unit,
+    onNavigateToEditHost: (Host?) -> Unit,
+    onNavigateToSettings: () -> Unit,
+    onNavigateToPubkeys: () -> Unit,
+    onNavigateToPortForwards: (Host) -> Unit,
+    onNavigateToColors: () -> Unit,
+    onNavigateToHelp: () -> Unit,
+    onToggleSortOrder: () -> Unit,
+    onDeleteHost: (Host) -> Unit,
+    onDisconnectAll: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     var showMenu by remember { mutableStateOf(false) }
     var showDisconnectAllDialog by remember { mutableStateOf(false) }
 
@@ -111,7 +147,7 @@ fun HostListScreen(
                             },
                             onClick = {
                                 showMenu = false
-                                viewModel.toggleSortOrder()
+                                onToggleSortOrder()
                             }
                         )
                         DropdownMenuItem(
@@ -208,7 +244,7 @@ fun HostListScreen(
                                 },
                                 onEdit = { onNavigateToEditHost(host) },
                                 onPortForwards = { onNavigateToPortForwards(host) },
-                                onDelete = { viewModel.deleteHost(host) }
+                                onDelete = { onDeleteHost(host) }
                             )
                         }
                     }
@@ -227,7 +263,7 @@ fun HostListScreen(
                 TextButton(
                     onClick = {
                         showDisconnectAllDialog = false
-                        viewModel.disconnectAll()
+                        onDisconnectAll()
                     }
                 ) {
                     Text(stringResource(R.string.disconnect_all_pos))
@@ -258,15 +294,15 @@ private fun HostListItem(
 
     // Determine border color based on connection state
     val borderColor = when (connectionState) {
-        ConnectionState.CONNECTED -> Color(0xFF4CAF50) // Green
-        ConnectionState.DISCONNECTED -> Color(0xFFF44336) // Red
+        ConnectionState.CONNECTED -> colorResource(R.color.host_green) // Green
+        ConnectionState.DISCONNECTED -> colorResource(R.color.host_red) // Red
         ConnectionState.UNKNOWN -> Color.Transparent
     }
 
     ListItem(
         headlineContent = {
             Text(
-                text = host.nickname ?: "${host.username}@${host.hostname}",
+                text = host.nickname,
                 fontWeight = FontWeight.Bold
             )
         },
@@ -323,13 +359,13 @@ private fun HostListItem(
                             imageVector = when (connectionState) {
                                 ConnectionState.CONNECTED -> Icons.Default.CheckCircle
                                 ConnectionState.DISCONNECTED -> Icons.Default.Error
-                                ConnectionState.UNKNOWN -> Icons.Default.Computer // Won't be shown
+                                ConnectionState.UNKNOWN -> Icons.Default.Computer // Unreachable
                             },
                             contentDescription = null,
                             tint = when (connectionState) {
-                                ConnectionState.CONNECTED -> Color(0xFF4CAF50) // Green
-                                ConnectionState.DISCONNECTED -> Color(0xFFF44336) // Red
-                                ConnectionState.UNKNOWN -> Color.Gray
+                                ConnectionState.CONNECTED -> colorResource(R.color.host_green)
+                                ConnectionState.DISCONNECTED -> colorResource(R.color.host_red)
+                                ConnectionState.UNKNOWN -> Color.Gray // Unreachable
                             },
                             modifier = Modifier.size(16.dp)
                         )
@@ -384,28 +420,138 @@ private fun HostListItem(
     HorizontalDivider()
 }
 
+@Composable
 private fun parseColor(colorString: String?): Color {
-    return try {
-        if (colorString.isNullOrBlank()) {
-            Color(0xFF03A9F4) // Default blue
-        } else {
-            val colorInt = android.graphics.Color.parseColor(colorString)
-            Color(colorInt)
-        }
-    } catch (e: Exception) {
-        Color(0xFF03A9F4) // Default blue on error
+    if (colorString.isNullOrBlank()) {
+        return colorResource(R.color.host_blue)
+    } else {
+        val colorInt = colorString.toColorInt()
+        return Color(colorInt)
     }
 }
 
-@PreviewScreenSizes
+@ScreenPreviews
 @Composable
-fun HostListItemPreview() {
-    HostListItem(
-        host = Host.createLocalHost("local"),
-        connectionState = ConnectionState.CONNECTED,
-        onClick = { },
-        onEdit = { },
-        onPortForwards = { },
-        onDelete = { }
-    )
+private fun HostListScreenEmptyPreview() {
+    ConnectBotTheme {
+        HostListScreenContent(
+            uiState = HostListUiState(
+                hosts = emptyList(),
+                isLoading = false
+            ),
+            onNavigateToConsole = {},
+            onNavigateToEditHost = {},
+            onNavigateToSettings = {},
+            onNavigateToPubkeys = {},
+            onNavigateToPortForwards = {},
+            onNavigateToColors = {},
+            onNavigateToHelp = {},
+            onToggleSortOrder = {},
+            onDeleteHost = {},
+            onDisconnectAll = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun HostListScreenLoadingPreview() {
+    ConnectBotTheme {
+        HostListScreenContent(
+            uiState = HostListUiState(
+                hosts = emptyList(),
+                isLoading = true
+            ),
+            onNavigateToConsole = {},
+            onNavigateToEditHost = {},
+            onNavigateToSettings = {},
+            onNavigateToPubkeys = {},
+            onNavigateToPortForwards = {},
+            onNavigateToColors = {},
+            onNavigateToHelp = {},
+            onToggleSortOrder = {},
+            onDeleteHost = {},
+            onDisconnectAll = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun HostListScreenErrorPreview() {
+    ConnectBotTheme {
+        HostListScreenContent(
+            uiState = HostListUiState(
+                hosts = emptyList(),
+                isLoading = false,
+                error = "Failed to load hosts from database"
+            ),
+            onNavigateToConsole = {},
+            onNavigateToEditHost = {},
+            onNavigateToSettings = {},
+            onNavigateToPubkeys = {},
+            onNavigateToPortForwards = {},
+            onNavigateToColors = {},
+            onNavigateToHelp = {},
+            onToggleSortOrder = {},
+            onDeleteHost = {},
+            onDisconnectAll = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun HostListScreenPopulatedPreview() {
+    ConnectBotTheme {
+        HostListScreenContent(
+            uiState = HostListUiState(
+                hosts = listOf(
+                    Host(
+                        id = 1,
+                        nickname = "Production Server",
+                        protocol = "ssh",
+                        username = "root",
+                        hostname = "prod.example.com",
+                        port = 22,
+                        color = "#4CAF50"
+                    ),
+                    Host(
+                        id = 2,
+                        nickname = "Development",
+                        protocol = "ssh",
+                        username = "developer",
+                        hostname = "dev.example.com",
+                        port = 2222,
+                        color = "#2196F3"
+                    ),
+                    Host(
+                        id = 3,
+                        nickname = "Local VM",
+                        protocol = "ssh",
+                        username = "admin",
+                        hostname = "192.168.1.100",
+                        port = 22,
+                        color = "#FF9800"
+                    )
+                ),
+                connectionStates = mapOf(
+                    1L to ConnectionState.CONNECTED,
+                    2L to ConnectionState.DISCONNECTED,
+                    3L to ConnectionState.UNKNOWN
+                ),
+                isLoading = false
+            ),
+            onNavigateToConsole = {},
+            onNavigateToEditHost = {},
+            onNavigateToSettings = {},
+            onNavigateToPubkeys = {},
+            onNavigateToPortForwards = {},
+            onNavigateToColors = {},
+            onNavigateToHelp = {},
+            onToggleSortOrder = {},
+            onDeleteHost = {},
+            onDisconnectAll = {}
+        )
+    }
 }
