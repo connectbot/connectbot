@@ -17,6 +17,9 @@
 
 package org.connectbot.ui.screens.colors
 
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -56,15 +59,22 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import org.connectbot.R
+import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.entity.ColorScheme
+import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.theme.ConnectBotTheme
 
 /**
  * Screen for managing color schemes (create, duplicate, delete).
@@ -72,14 +82,162 @@ import org.connectbot.data.entity.ColorScheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ColorSchemeManagerScreen(
-    viewModel: ColorSchemeManagerViewModel,
     onNavigateBack: () -> Unit,
     onNavigateToPaletteEditor: (Int) -> Unit = {},
-    onExportScheme: (Int) -> Unit = {},
-    onImportScheme: () -> Unit = {}
+    modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val viewModel = remember { ColorSchemeManagerViewModel(context) }
     val uiState by viewModel.uiState.collectAsState()
+    val repository = remember { ColorSchemeRepository.get(context) }
+    val scope = rememberCoroutineScope()
 
+    // Track which scheme is being exported
+    var exportingSchemeId by remember { mutableIntStateOf(-1) }
+
+    // Export launcher - creates a new JSON file
+    val exportLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("application/json")
+    ) { uri ->
+        uri?.let { fileUri ->
+            scope.launch {
+                try {
+                    val schemeJson = repository.exportScheme(exportingSchemeId)
+                    context.contentResolver.openOutputStream(fileUri)?.use { output ->
+                        output.write(schemeJson.toJson().toByteArray())
+                    }
+                    Toast.makeText(
+                        context,
+                        context.getString(
+                            R.string.message_export_success,
+                            schemeJson.name
+                        ),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        context,
+                        context.getString(
+                            R.string.error_export_failed,
+                            e.message
+                        ),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
+
+    // Import launcher - selects an existing JSON file
+    val importLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        uri?.let { fileUri ->
+            scope.launch {
+                try {
+                    val jsonString =
+                        context.contentResolver.openInputStream(fileUri)?.use { input ->
+                            input.bufferedReader().readText()
+                        } ?: return@launch
+
+                    val schemeId =
+                        repository.importScheme(jsonString, allowOverwrite = false)
+                    val schemes = repository.getAllSchemes()
+                    val importedScheme = schemes.find { it.id == schemeId }
+
+                    // Refresh the list to show the imported scheme
+                    viewModel.refresh()
+
+                    Toast.makeText(
+                        context,
+                        context.getString(
+                            R.string.message_import_success,
+                            importedScheme?.name ?: "scheme"
+                        ),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } catch (e: org.json.JSONException) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.error_invalid_json),
+                        Toast.LENGTH_LONG
+                    ).show()
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        context,
+                        context.getString(
+                            R.string.error_import_failed,
+                            e.message
+                        ),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
+
+    ColorSchemeManagerScreenContent(
+        uiState = uiState,
+        onNavigateBack = onNavigateBack,
+        onNavigateToPaletteEditor = onNavigateToPaletteEditor,
+        onExportScheme = { schemeId ->
+            exportingSchemeId = schemeId
+            scope.launch {
+                try {
+                    val schemes = repository.getAllSchemes()
+                    val scheme = schemes.find { it.id == schemeId }
+                    val fileName = "${scheme?.name?.replace(" ", "_") ?: "scheme"}.json"
+                    exportLauncher.launch(fileName)
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        context,
+                        context.getString(
+                            R.string.error_export_failed,
+                            e.message
+                        ),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        },
+        onImportScheme = {
+            importLauncher.launch(arrayOf("application/json", "text/plain"))
+        },
+        onShowNewSchemeDialog = viewModel::showNewSchemeDialog,
+        onClearError = viewModel::clearError,
+        onSelectScheme = viewModel::selectScheme,
+        onShowRenameDialog = viewModel::showRenameDialog,
+        onShowDeleteDialog = viewModel::showDeleteDialog,
+        onCreateNewScheme = viewModel::createNewScheme,
+        onHideNewSchemeDialog = viewModel::hideNewSchemeDialog,
+        onRenameScheme = viewModel::renameScheme,
+        onHideRenameDialog = viewModel::hideRenameDialog,
+        onDeleteScheme = viewModel::deleteScheme,
+        onHideDeleteDialog = viewModel::hideDeleteDialog
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ColorSchemeManagerScreenContent(
+    uiState: SchemeManagerUiState,
+    onNavigateBack: () -> Unit,
+    onNavigateToPaletteEditor: (Int) -> Unit,
+    onExportScheme: (Int) -> Unit,
+    onImportScheme: () -> Unit,
+    onShowNewSchemeDialog: () -> Unit,
+    onClearError: () -> Unit,
+    onSelectScheme: (Int) -> Unit,
+    onShowRenameDialog: () -> Unit,
+    onShowDeleteDialog: () -> Unit,
+    onCreateNewScheme: (String, String, Int) -> Unit,
+    onHideNewSchemeDialog: () -> Unit,
+    onRenameScheme: (Int, String, String) -> Unit,
+    onHideRenameDialog: () -> Unit,
+    onDeleteScheme: (Int) -> Unit,
+    onHideDeleteDialog: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -103,13 +261,14 @@ fun ColorSchemeManagerScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { viewModel.showNewSchemeDialog() }) {
+            FloatingActionButton(onClick = onShowNewSchemeDialog) {
                 Icon(
                     Icons.Default.Add,
                     contentDescription = stringResource(R.string.button_new_scheme)
                 )
             }
-        }
+        },
+        modifier = modifier
     ) { padding ->
         Box(
             modifier = Modifier
@@ -131,11 +290,11 @@ fun ColorSchemeManagerScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = uiState.error ?: "",
+                            text = uiState.error,
                             color = MaterialTheme.colorScheme.error,
                             style = MaterialTheme.typography.bodyMedium
                         )
-                        TextButton(onClick = { viewModel.clearError() }) {
+                        TextButton(onClick = onClearError) {
                             Text(stringResource(R.string.button_close))
                         }
                     }
@@ -170,19 +329,19 @@ fun ColorSchemeManagerScreen(
                                 onExport = { onExportScheme(scheme.id) },
                                 onRename = {
                                     if (!scheme.isBuiltIn) {
-                                        viewModel.selectScheme(scheme.id)
-                                        viewModel.showRenameDialog()
+                                        onSelectScheme(scheme.id)
+                                        onShowRenameDialog()
                                     }
                                 },
                                 onDelete = {
                                     if (!scheme.isBuiltIn) {
-                                        viewModel.selectScheme(scheme.id)
-                                        viewModel.showDeleteDialog()
+                                        onSelectScheme(scheme.id)
+                                        onShowDeleteDialog()
                                     }
                                 },
                                 onDuplicate = {
-                                    viewModel.selectScheme(scheme.id)
-                                    viewModel.showNewSchemeDialog()
+                                    onSelectScheme(scheme.id)
+                                    onShowNewSchemeDialog()
                                 }
                             )
                         }
@@ -203,9 +362,9 @@ fun ColorSchemeManagerScreen(
             suggestedName = selectedScheme?.let { "Copy of ${it.name}" },
             error = uiState.dialogError,
             onConfirm = { name, description, baseSchemeId ->
-                viewModel.createNewScheme(name, description, baseSchemeId)
+                onCreateNewScheme(name, description, baseSchemeId)
             },
-            onDismiss = { viewModel.hideNewSchemeDialog() }
+            onDismiss = onHideNewSchemeDialog
         )
     }
 
@@ -218,9 +377,9 @@ fun ColorSchemeManagerScreen(
                 currentDescription = scheme.description,
                 error = uiState.dialogError,
                 onConfirm = { newName, newDescription ->
-                    viewModel.renameScheme(scheme.id, newName, newDescription)
+                    onRenameScheme(scheme.id, newName, newDescription)
                 },
-                onDismiss = { viewModel.hideRenameDialog() }
+                onDismiss = onHideRenameDialog
             )
         }
     }
@@ -231,10 +390,142 @@ fun ColorSchemeManagerScreen(
         if (scheme != null) {
             DeleteSchemeDialog(
                 schemeName = scheme.name,
-                onConfirm = { viewModel.deleteScheme(scheme.id) },
-                onDismiss = { viewModel.hideDeleteDialog() }
+                onConfirm = { onDeleteScheme(scheme.id) },
+                onDismiss = onHideDeleteDialog
             )
         }
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun ColorSchemeManagerScreenEmptyPreview() {
+    ConnectBotTheme {
+        ColorSchemeManagerScreenContent(
+            uiState = SchemeManagerUiState(
+                schemes = emptyList(),
+                isLoading = false
+            ),
+            onNavigateBack = {},
+            onNavigateToPaletteEditor = {},
+            onExportScheme = {},
+            onImportScheme = {},
+            onShowNewSchemeDialog = {},
+            onClearError = {},
+            onSelectScheme = {},
+            onShowRenameDialog = {},
+            onShowDeleteDialog = {},
+            onCreateNewScheme = { _, _, _ -> },
+            onHideNewSchemeDialog = {},
+            onRenameScheme = { _, _, _ -> },
+            onHideRenameDialog = {},
+            onDeleteScheme = {},
+            onHideDeleteDialog = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun ColorSchemeManagerScreenLoadingPreview() {
+    ConnectBotTheme {
+        ColorSchemeManagerScreenContent(
+            uiState = SchemeManagerUiState(
+                schemes = emptyList(),
+                isLoading = true
+            ),
+            onNavigateBack = {},
+            onNavigateToPaletteEditor = {},
+            onExportScheme = {},
+            onImportScheme = {},
+            onShowNewSchemeDialog = {},
+            onClearError = {},
+            onSelectScheme = {},
+            onShowRenameDialog = {},
+            onShowDeleteDialog = {},
+            onCreateNewScheme = { _, _, _ -> },
+            onHideNewSchemeDialog = {},
+            onRenameScheme = { _, _, _ -> },
+            onHideRenameDialog = {},
+            onDeleteScheme = {},
+            onHideDeleteDialog = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun ColorSchemeManagerScreenErrorPreview() {
+    ConnectBotTheme {
+        ColorSchemeManagerScreenContent(
+            uiState = SchemeManagerUiState(
+                schemes = emptyList(),
+                isLoading = false,
+                error = "Failed to load color schemes"
+            ),
+            onNavigateBack = {},
+            onNavigateToPaletteEditor = {},
+            onExportScheme = {},
+            onImportScheme = {},
+            onShowNewSchemeDialog = {},
+            onClearError = {},
+            onSelectScheme = {},
+            onShowRenameDialog = {},
+            onShowDeleteDialog = {},
+            onCreateNewScheme = { _, _, _ -> },
+            onHideNewSchemeDialog = {},
+            onRenameScheme = { _, _, _ -> },
+            onHideRenameDialog = {},
+            onDeleteScheme = {},
+            onHideDeleteDialog = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun ColorSchemeManagerScreenPopulatedPreview() {
+    ConnectBotTheme {
+        ColorSchemeManagerScreenContent(
+            uiState = SchemeManagerUiState(
+                schemes = listOf(
+                    ColorScheme(
+                        id = 1,
+                        name = "Solarized Dark",
+                        description = "Popular dark theme",
+                        isBuiltIn = true
+                    ),
+                    ColorScheme(
+                        id = 2,
+                        name = "Monokai",
+                        description = "Vibrant color scheme",
+                        isBuiltIn = true
+                    ),
+                    ColorScheme(
+                        id = 3,
+                        name = "My Custom Theme",
+                        description = "Personal customization",
+                        isBuiltIn = false
+                    )
+                ),
+                isLoading = false
+            ),
+            onNavigateBack = {},
+            onNavigateToPaletteEditor = {},
+            onExportScheme = {},
+            onImportScheme = {},
+            onShowNewSchemeDialog = {},
+            onClearError = {},
+            onSelectScheme = {},
+            onShowRenameDialog = {},
+            onShowDeleteDialog = {},
+            onCreateNewScheme = { _, _, _ -> },
+            onHideNewSchemeDialog = {},
+            onRenameScheme = { _, _, _ -> },
+            onHideRenameDialog = {},
+            onDeleteScheme = {},
+            onHideDeleteDialog = {}
+        )
     }
 }
 

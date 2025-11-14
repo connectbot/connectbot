@@ -45,14 +45,18 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
+import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.components.RgbColorPickerDialog
+import org.connectbot.ui.theme.ConnectBotTheme
 
 /**
  * Screen for editing the full 256-color palette of a color scheme.
@@ -60,9 +64,13 @@ import org.connectbot.ui.components.RgbColorPickerDialog
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaletteEditorScreen(
-    viewModel: PaletteEditorViewModel,
+    schemeId: Int,
     onNavigateBack: () -> Unit
 ) {
+    val context = LocalContext.current
+    val viewModel = remember {
+        PaletteEditorViewModel(context, schemeId)
+    }
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
@@ -296,6 +304,82 @@ private fun ColorCell(
                     Color.Black
                 }
             )
+        }
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun PaletteEditorScreenPreview() {
+    ConnectBotTheme {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "256-Color Palette Editor",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                text = "ANSI Colors (0-15)",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+            )
+
+            // Preview of ANSI colors grid
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                for (i in 0..7) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .aspectRatio(1f)
+                            .background(
+                                color = Color(i * 36, i * 36, i * 36),
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                            .border(
+                                width = 1.dp,
+                                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                    )
+                }
+            }
+
+            Text(
+                text = "System Colors (16-255)",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+            )
+
+            // Preview of system colors grid (sample)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                for (i in 0..7) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .aspectRatio(1f)
+                            .background(
+                                color = Color(i * 32, 128, i * 32),
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                            .border(
+                                width = 1.dp,
+                                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                    )
+                }
+            }
         }
     }
 }

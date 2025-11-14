@@ -56,6 +56,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import org.connectbot.R
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.theme.ConnectBotTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,10 +71,30 @@ fun PubkeyListScreen(
     val viewModel = remember { PubkeyListViewModel(context) }
     val uiState by viewModel.uiState.collectAsState()
 
+    PubkeyListScreenContent(
+        uiState = uiState,
+        onNavigateBack = onNavigateBack,
+        onNavigateToGenerate = onNavigateToGenerate,
+        onNavigateToEdit = onNavigateToEdit,
+        onDeletePubkey = viewModel::deletePubkey,
+        modifier = modifier
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PubkeyListScreenContent(
+    uiState: PubkeyListUiState,
+    onNavigateBack: () -> Unit,
+    onNavigateToGenerate: () -> Unit,
+    onNavigateToEdit: (Pubkey) -> Unit,
+    onDeletePubkey: (Pubkey) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.list_menu_pubkeys)) },
+                title = { Text(stringResource(R.string.title_pubkey_list)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
@@ -127,7 +149,7 @@ fun PubkeyListScreen(
                         ) { pubkey ->
                             PubkeyListItem(
                                 pubkey = pubkey,
-                                onDelete = { viewModel.deletePubkey(pubkey) },
+                                onDelete = { onDeletePubkey(pubkey) },
                                 onClick = { onNavigateToEdit(pubkey) }
                             )
                         }
@@ -150,7 +172,7 @@ private fun PubkeyListItem(
     ListItem(
         headlineContent = {
             Text(
-                text = pubkey.nickname ?: stringResource(R.string.pubkey_unnamed),
+                text = pubkey.nickname,
                 fontWeight = FontWeight.Bold
             )
         },
@@ -158,7 +180,7 @@ private fun PubkeyListItem(
             Text(
                 stringResource(
                     R.string.pubkey_type_label,
-                    pubkey.type ?: stringResource(R.string.pubkey_type_unknown_text)
+                    pubkey.type
                 )
             )
         },
@@ -200,4 +222,107 @@ private fun PubkeyListItem(
         modifier = modifier.clickable { onClick() }
     )
     HorizontalDivider()
+}
+
+@ScreenPreviews
+@Composable
+private fun PubkeyListScreenEmptyPreview() {
+    ConnectBotTheme {
+        PubkeyListScreenContent(
+            uiState = PubkeyListUiState(
+                pubkeys = emptyList(),
+                isLoading = false
+            ),
+            onNavigateBack = {},
+            onNavigateToGenerate = {},
+            onNavigateToEdit = {},
+            onDeletePubkey = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun PubkeyListScreenLoadingPreview() {
+    ConnectBotTheme {
+        PubkeyListScreenContent(
+            uiState = PubkeyListUiState(
+                pubkeys = emptyList(),
+                isLoading = true
+            ),
+            onNavigateBack = {},
+            onNavigateToGenerate = {},
+            onNavigateToEdit = {},
+            onDeletePubkey = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun PubkeyListScreenErrorPreview() {
+    ConnectBotTheme {
+        PubkeyListScreenContent(
+            uiState = PubkeyListUiState(
+                pubkeys = emptyList(),
+                isLoading = false,
+                error = "Failed to load SSH keys from database"
+            ),
+            onNavigateBack = {},
+            onNavigateToGenerate = {},
+            onNavigateToEdit = {},
+            onDeletePubkey = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun PubkeyListScreenPopulatedPreview() {
+    ConnectBotTheme {
+        PubkeyListScreenContent(
+            uiState = PubkeyListUiState(
+                pubkeys = listOf(
+                    Pubkey(
+                        id = 1,
+                        nickname = "work-laptop",
+                        type = "RSA",
+                        encrypted = true,
+                        startup = true,
+                        confirmation = false,
+                        createdDate = System.currentTimeMillis(),
+                        privateKey = ByteArray(0),
+                        publicKey = ByteArray(0),
+                    ),
+                    Pubkey(
+                        id = 2,
+                        nickname = "home-server",
+                        type = "Ed25519",
+                        encrypted = false,
+                        startup = false,
+                        confirmation = true,
+                        createdDate = System.currentTimeMillis(),
+                        privateKey = ByteArray(0),
+                        publicKey = ByteArray(0),
+                    ),
+                    Pubkey(
+                        id = 3,
+                        nickname = "github-key",
+                        type = "ECDSA",
+                        encrypted = true,
+                        startup = false,
+                        confirmation = false,
+                        createdDate = System.currentTimeMillis(),
+                        privateKey = ByteArray(0),
+                        publicKey = ByteArray(0),
+                    )
+                ),
+                isLoading = false
+            ),
+            onNavigateBack = {},
+            onNavigateToGenerate = {},
+            onNavigateToEdit = {},
+            onDeletePubkey = {}
+        )
+    }
 }

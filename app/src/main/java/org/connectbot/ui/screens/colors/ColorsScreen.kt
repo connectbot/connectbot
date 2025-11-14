@@ -54,11 +54,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.connectbot.R
+import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.components.ColorPickerDialog
+import org.connectbot.ui.theme.ConnectBotTheme
 
 /**
  * Screen for editing terminal color scheme.
@@ -67,10 +70,12 @@ import org.connectbot.ui.components.ColorPickerDialog
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ColorsScreen(
-    viewModel: ColorsViewModel,
     onNavigateBack: () -> Unit,
-    onNavigateToSchemeManager: () -> Unit = {}
+    onNavigateToSchemeManager: () -> Unit = {},
+    modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val viewModel = remember { ColorsViewModel(context) }
     val uiState by viewModel.uiState.collectAsState()
     var showForegroundPicker by remember { mutableStateOf(false) }
     var showBackgroundPicker by remember { mutableStateOf(false) }
@@ -352,6 +357,78 @@ private fun ColorSchemeSelector(
                         expanded = false
                     }
                 )
+            }
+        }
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun ColorsScreenPreview() {
+    ConnectBotTheme {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp)
+        ) {
+            // Color scheme selector preview
+            Text("Color Scheme: Solarized Dark", style = MaterialTheme.typography.titleMedium)
+
+            // Foreground color selector preview
+            ColorSelectorRow(
+                label = "Foreground Color: 7",
+                colorIndex = 7,
+                palette = IntArray(256) { it * 0x010101 },
+                onClick = {}
+            )
+
+            // Background color selector preview
+            ColorSelectorRow(
+                label = "Background Color: 0",
+                colorIndex = 0,
+                palette = IntArray(256) { it * 0x010101 },
+                onClick = {}
+            )
+
+            // Preview box
+            Text(
+                text = "Terminal Preview",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .background(
+                        color = Color.Black,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.outline,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(16.dp)
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "user@hostname:~$ ls -la",
+                        color = Color.LightGray,
+                        fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                        fontSize = 14.sp
+                    )
+                    Text(
+                        text = "total 24",
+                        color = Color.LightGray,
+                        fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                        fontSize = 14.sp
+                    )
+                }
             }
         }
     }

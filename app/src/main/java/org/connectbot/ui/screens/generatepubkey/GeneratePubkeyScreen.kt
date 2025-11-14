@@ -55,6 +55,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
+import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.theme.ConnectBotTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,6 +68,43 @@ fun GeneratePubkeyScreen(
     val viewModel = remember { GeneratePubkeyViewModel(context) }
     val uiState by viewModel.uiState.collectAsState()
 
+    GeneratePubkeyScreenContent(
+        uiState = uiState,
+        onNavigateBack = onNavigateBack,
+        onNicknameChange = viewModel::updateNickname,
+        onKeyTypeChange = viewModel::updateKeyType,
+        onBitsChange = viewModel::updateBits,
+        onPassword1Change = viewModel::updatePassword1,
+        onPassword2Change = viewModel::updatePassword2,
+        onUnlockAtStartupChange = viewModel::updateUnlockAtStartup,
+        onConfirmUseChange = viewModel::updateConfirmUse,
+        onGenerateKey = { viewModel.generateKey(onSuccess = onNavigateBack) },
+        onEntropyGathered = viewModel::onEntropyGathered,
+        onCancelGeneration = {
+            viewModel.cancelGeneration()
+            onNavigateBack()
+        },
+        modifier = modifier
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun GeneratePubkeyScreenContent(
+    uiState: GeneratePubkeyUiState,
+    onNavigateBack: () -> Unit,
+    onNicknameChange: (String) -> Unit,
+    onKeyTypeChange: (KeyType) -> Unit,
+    onBitsChange: (Int) -> Unit,
+    onPassword1Change: (String) -> Unit,
+    onPassword2Change: (String) -> Unit,
+    onUnlockAtStartupChange: (Boolean) -> Unit,
+    onConfirmUseChange: (Boolean) -> Unit,
+    onGenerateKey: () -> Unit,
+    onEntropyGathered: (ByteArray?) -> Unit,
+    onCancelGeneration: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -89,7 +128,7 @@ fun GeneratePubkeyScreen(
             // Nickname
             OutlinedTextField(
                 value = uiState.nickname,
-                onValueChange = { viewModel.updateNickname(it) },
+                onValueChange = onNicknameChange,
                 label = { Text(stringResource(R.string.prompt_nickname)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
@@ -107,23 +146,23 @@ fun GeneratePubkeyScreen(
             KeyTypeOption(
                 label = stringResource(R.string.pubkey_type_rsa),
                 selected = uiState.keyType == KeyType.RSA,
-                onClick = { viewModel.updateKeyType(KeyType.RSA) }
+                onClick = { onKeyTypeChange(KeyType.RSA) }
             )
             KeyTypeOption(
                 label = stringResource(R.string.pubkey_type_dsa),
                 selected = uiState.keyType == KeyType.DSA,
-                onClick = { viewModel.updateKeyType(KeyType.DSA) }
+                onClick = { onKeyTypeChange(KeyType.DSA) }
             )
             KeyTypeOption(
                 label = stringResource(R.string.pubkey_type_ecdsa),
                 selected = uiState.keyType == KeyType.EC,
-                onClick = { viewModel.updateKeyType(KeyType.EC) },
+                onClick = { onKeyTypeChange(KeyType.EC) },
                 enabled = uiState.ecdsaAvailable
             )
             KeyTypeOption(
                 label = stringResource(R.string.pubkey_type_ed25519),
                 selected = uiState.keyType == KeyType.ED25519,
-                onClick = { viewModel.updateKeyType(KeyType.ED25519) }
+                onClick = { onKeyTypeChange(KeyType.ED25519) }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -137,7 +176,7 @@ fun GeneratePubkeyScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Slider(
                     value = uiState.bits.toFloat(),
-                    onValueChange = { viewModel.updateBits(it.toInt()) },
+                    onValueChange = { onBitsChange(it.toInt()) },
                     valueRange = uiState.minBits.toFloat()..uiState.maxBits.toFloat(),
                     steps = ((uiState.maxBits - uiState.minBits) / 8) - 1,
                     modifier = Modifier.fillMaxWidth()
@@ -148,7 +187,7 @@ fun GeneratePubkeyScreen(
             // Password
             OutlinedTextField(
                 value = uiState.password1,
-                onValueChange = { viewModel.updatePassword1(it) },
+                onValueChange = onPassword1Change,
                 label = { Text(stringResource(R.string.prompt_password)) },
                 supportingText = { Text(stringResource(R.string.prompt_password_can_be_blank)) },
                 visualTransformation = PasswordVisualTransformation(),
@@ -161,7 +200,7 @@ fun GeneratePubkeyScreen(
 
             OutlinedTextField(
                 value = uiState.password2,
-                onValueChange = { viewModel.updatePassword2(it) },
+                onValueChange = onPassword2Change,
                 label = { Text("${stringResource(R.string.prompt_password)} ${stringResource(R.string.prompt_again)}") },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -186,12 +225,12 @@ fun GeneratePubkeyScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        viewModel.updateUnlockAtStartup(!uiState.unlockAtStartup)
+                        onUnlockAtStartupChange(!uiState.unlockAtStartup)
                     }
             ) {
                 Checkbox(
                     checked = uiState.unlockAtStartup,
-                    onCheckedChange = { viewModel.updateUnlockAtStartup(it) }
+                    onCheckedChange = onUnlockAtStartupChange
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(stringResource(R.string.pubkey_load_on_start))
@@ -202,12 +241,12 @@ fun GeneratePubkeyScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        viewModel.updateConfirmUse(!uiState.confirmUse)
+                        onConfirmUseChange(!uiState.confirmUse)
                     }
             ) {
                 Checkbox(
                     checked = uiState.confirmUse,
-                    onCheckedChange = { viewModel.updateConfirmUse(it) }
+                    onCheckedChange = onConfirmUseChange
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(stringResource(R.string.pubkey_confirm_use))
@@ -217,9 +256,7 @@ fun GeneratePubkeyScreen(
 
             // Generate Button
             Button(
-                onClick = {
-                    viewModel.generateKey(onSuccess = onNavigateBack)
-                },
+                onClick = onGenerateKey,
                 enabled = uiState.canGenerate,
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -231,13 +268,8 @@ fun GeneratePubkeyScreen(
     // Show entropy dialog when needed
     if (uiState.showEntropyDialog) {
         EntropyGatherDialog(
-            onEntropyGathered = { entropy ->
-                viewModel.onEntropyGathered(entropy)
-            },
-            onDismiss = {
-                viewModel.cancelGeneration()
-                onNavigateBack()
-            }
+            onEntropyGathered = onEntropyGathered,
+            onDismiss = onCancelGeneration
         )
     }
 
@@ -274,6 +306,84 @@ private fun KeyTypeOption(
             } else {
                 MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             }
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun GeneratePubkeyScreenEmptyPreview() {
+    ConnectBotTheme {
+        GeneratePubkeyScreenContent(
+            uiState = GeneratePubkeyUiState(),
+            onNavigateBack = {},
+            onNicknameChange = {},
+            onKeyTypeChange = {},
+            onBitsChange = {},
+            onPassword1Change = {},
+            onPassword2Change = {},
+            onUnlockAtStartupChange = {},
+            onConfirmUseChange = {},
+            onGenerateKey = {},
+            onEntropyGathered = {},
+            onCancelGeneration = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun GeneratePubkeyScreenFilledPreview() {
+    ConnectBotTheme {
+        GeneratePubkeyScreenContent(
+            uiState = GeneratePubkeyUiState(
+                nickname = "work-laptop",
+                keyType = KeyType.RSA,
+                bits = 4096,
+                password1 = "password123",
+                password2 = "password123",
+                unlockAtStartup = true,
+                confirmUse = false
+            ),
+            onNavigateBack = {},
+            onNicknameChange = {},
+            onKeyTypeChange = {},
+            onBitsChange = {},
+            onPassword1Change = {},
+            onPassword2Change = {},
+            onUnlockAtStartupChange = {},
+            onConfirmUseChange = {},
+            onGenerateKey = {},
+            onEntropyGathered = {},
+            onCancelGeneration = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun GeneratePubkeyScreenPasswordMismatchPreview() {
+    ConnectBotTheme {
+        GeneratePubkeyScreenContent(
+            uiState = GeneratePubkeyUiState(
+                nickname = "home-server",
+                keyType = KeyType.ED25519,
+                password1 = "password123",
+                password2 = "password456",
+                unlockAtStartup = false,
+                confirmUse = true
+            ),
+            onNavigateBack = {},
+            onNicknameChange = {},
+            onKeyTypeChange = {},
+            onBitsChange = {},
+            onPassword1Change = {},
+            onPassword2Change = {},
+            onUnlockAtStartupChange = {},
+            onConfirmUseChange = {},
+            onGenerateKey = {},
+            onEntropyGathered = {},
+            onCancelGeneration = {}
         )
     }
 }

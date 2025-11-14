@@ -58,6 +58,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
+import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.theme.ConnectBotTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,6 +72,58 @@ fun HostEditorScreen(
     val viewModel = remember(hostId) { HostEditorViewModel(context, hostId) }
     val uiState by viewModel.uiState.collectAsState()
 
+    HostEditorScreenContent(
+        hostId = hostId,
+        uiState = uiState,
+        onNavigateBack = onNavigateBack,
+        onQuickConnectChange = viewModel::updateQuickConnect,
+        onNicknameChange = viewModel::updateNickname,
+        onProtocolChange = viewModel::updateProtocol,
+        onUsernameChange = viewModel::updateUsername,
+        onHostnameChange = viewModel::updateHostname,
+        onPortChange = viewModel::updatePort,
+        onColorChange = viewModel::updateColor,
+        onFontSizeChange = viewModel::updateFontSize,
+        onPubkeyChange = viewModel::updatePubkeyId,
+        onDelKeyChange = viewModel::updateDelKey,
+        onEncodingChange = viewModel::updateEncoding,
+        onUseAuthAgentChange = viewModel::updateUseAuthAgent,
+        onCompressionChange = viewModel::updateCompression,
+        onWantSessionChange = viewModel::updateWantSession,
+        onStayConnectedChange = viewModel::updateStayConnected,
+        onQuickDisconnectChange = viewModel::updateQuickDisconnect,
+        onPostLoginChange = viewModel::updatePostLogin,
+        onSaveHost = { expandedMode -> viewModel.saveHost(expandedMode) },
+        modifier = modifier
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HostEditorScreenContent(
+    hostId: Long,
+    uiState: HostEditorUiState,
+    onNavigateBack: () -> Unit,
+    onQuickConnectChange: (String) -> Unit,
+    onNicknameChange: (String) -> Unit,
+    onProtocolChange: (String) -> Unit,
+    onUsernameChange: (String) -> Unit,
+    onHostnameChange: (String) -> Unit,
+    onPortChange: (String) -> Unit,
+    onColorChange: (String) -> Unit,
+    onFontSizeChange: (Int) -> Unit,
+    onPubkeyChange: (Long) -> Unit,
+    onDelKeyChange: (String) -> Unit,
+    onEncodingChange: (String) -> Unit,
+    onUseAuthAgentChange: (String) -> Unit,
+    onCompressionChange: (Boolean) -> Unit,
+    onWantSessionChange: (Boolean) -> Unit,
+    onStayConnectedChange: (Boolean) -> Unit,
+    onQuickDisconnectChange: (Boolean) -> Unit,
+    onPostLoginChange: (String) -> Unit,
+    onSaveHost: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
     var showProtocolMenu by remember { mutableStateOf(false) }
     var expandedMode by remember { mutableStateOf(hostId != -1L) }
     val protocols = listOf("ssh", "telnet", "local")
@@ -94,7 +148,7 @@ fun HostEditorScreen(
                 actions = {
                     TextButton(
                         onClick = {
-                            viewModel.saveHost(expandedMode)
+                            onSaveHost(expandedMode)
                             onNavigateBack()
                         },
                         modifier = Modifier.testTag("add_host_button"),
@@ -123,7 +177,7 @@ fun HostEditorScreen(
                 // Quick connect mode
                 OutlinedTextField(
                     value = uiState.quickConnect,
-                    onValueChange = viewModel::updateQuickConnect,
+                    onValueChange = onQuickConnectChange,
                     label = { Text(stringResource(R.string.host_editor_quick_connect_label)) },
                     placeholder = { Text(stringResource(R.string.host_editor_quick_connect_placeholder)) },
                     supportingText = { Text(stringResource(R.string.host_editor_quick_connect_example)) },
@@ -153,7 +207,7 @@ fun HostEditorScreen(
                 // Expanded mode
                 OutlinedTextField(
                     value = uiState.nickname,
-                    onValueChange = viewModel::updateNickname,
+                    onValueChange = onNicknameChange,
                     label = { Text(stringResource(R.string.hostpref_nickname_title)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
@@ -215,7 +269,7 @@ fun HostEditorScreen(
                             DropdownMenuItem(
                                 text = { Text(protocol) },
                                 onClick = {
-                                    viewModel.updateProtocol(protocol)
+                                    onProtocolChange(protocol)
                                     showProtocolMenu = false
                                 },
                                 contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -228,7 +282,7 @@ fun HostEditorScreen(
                 if (uiState.protocol != "local") {
                     OutlinedTextField(
                         value = uiState.username,
-                        onValueChange = viewModel::updateUsername,
+                        onValueChange = onUsernameChange,
                         label = { Text(stringResource(R.string.hostpref_username_title)) },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -238,7 +292,7 @@ fun HostEditorScreen(
 
                     OutlinedTextField(
                         value = uiState.hostname,
-                        onValueChange = viewModel::updateHostname,
+                        onValueChange = onHostnameChange,
                         label = { Text(stringResource(R.string.hostpref_hostname_title)) },
                         isError = uiState.hostname.isBlank(),
                         modifier = Modifier
@@ -249,7 +303,7 @@ fun HostEditorScreen(
 
                     OutlinedTextField(
                         value = uiState.port,
-                        onValueChange = viewModel::updatePort,
+                        onValueChange = onPortChange,
                         label = { Text(stringResource(R.string.hostpref_port_title)) },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -263,14 +317,14 @@ fun HostEditorScreen(
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
             ColorSelector(
                 selectedColor = uiState.color,
-                onColorSelected = viewModel::updateColor
+                onColorSelected = onColorChange
             )
 
             // Font size slider
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
             FontSizeSelector(
                 fontSize = uiState.fontSize,
-                onFontSizeChange = viewModel::updateFontSize
+                onFontSizeChange = onFontSizeChange
             )
 
             // Pubkey selector
@@ -278,21 +332,21 @@ fun HostEditorScreen(
             PubkeySelector(
                 pubkeyId = uiState.pubkeyId,
                 availablePubkeys = uiState.availablePubkeys,
-                onPubkeySelected = viewModel::updatePubkeyId
+                onPubkeySelected = onPubkeyChange
             )
 
             // DEL key selector
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
             DelKeySelector(
                 delKey = uiState.delKey,
-                onDelKeySelected = viewModel::updateDelKey
+                onDelKeySelected = onDelKeyChange
             )
 
             // Encoding selector
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
             EncodingSelector(
                 encoding = uiState.encoding,
-                onEncodingSelected = viewModel::updateEncoding
+                onEncodingSelected = onEncodingChange
             )
 
             // SSH Auth agent
@@ -301,7 +355,7 @@ fun HostEditorScreen(
                 title = stringResource(R.string.hostpref_authagent_title),
                 checked = uiState.useAuthAgent != "no",
                 onCheckedChange = { checked ->
-                    viewModel.updateUseAuthAgent(if (checked) "yes" else "no")
+                    onUseAuthAgentChange(if (checked) "yes" else "no")
                 }
             )
 
@@ -310,7 +364,7 @@ fun HostEditorScreen(
                     title = stringResource(R.string.hostpref_authagent_with_confirmation),
                     checked = uiState.useAuthAgent == "confirm",
                     onCheckedChange = { checked ->
-                        viewModel.updateUseAuthAgent(if (checked) "confirm" else "yes")
+                        onUseAuthAgentChange(if (checked) "confirm" else "yes")
                     }
                 )
             }
@@ -321,7 +375,7 @@ fun HostEditorScreen(
                 title = stringResource(R.string.hostpref_compression_title),
                 summary = stringResource(R.string.hostpref_compression_summary),
                 checked = uiState.compression,
-                onCheckedChange = viewModel::updateCompression
+                onCheckedChange = onCompressionChange
             )
 
             // Want session
@@ -330,7 +384,7 @@ fun HostEditorScreen(
                 title = stringResource(R.string.hostpref_wantsession_title),
                 summary = stringResource(R.string.hostpref_wantsession_summary),
                 checked = uiState.wantSession,
-                onCheckedChange = viewModel::updateWantSession
+                onCheckedChange = onWantSessionChange
             )
 
             // Stay connected
@@ -339,7 +393,7 @@ fun HostEditorScreen(
                 title = stringResource(R.string.hostpref_stayconnected_title),
                 summary = stringResource(R.string.hostpref_stayconnected_summary),
                 checked = uiState.stayConnected,
-                onCheckedChange = viewModel::updateStayConnected
+                onCheckedChange = onStayConnectedChange
             )
 
             // Quick disconnect
@@ -348,14 +402,14 @@ fun HostEditorScreen(
                 title = stringResource(R.string.hostpref_quickdisconnect_title),
                 summary = stringResource(R.string.hostpref_quickdisconnect_summary),
                 checked = uiState.quickDisconnect,
-                onCheckedChange = viewModel::updateQuickDisconnect
+                onCheckedChange = onQuickDisconnectChange
             )
 
             // Post-login automation
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
             OutlinedTextField(
                 value = uiState.postLogin,
-                onValueChange = viewModel::updatePostLogin,
+                onValueChange = onPostLoginChange,
                 label = { Text(stringResource(R.string.hostpref_postlogin_title)) },
                 supportingText = { Text(stringResource(R.string.hostpref_postlogin_summary)) },
                 minLines = 3,
@@ -666,6 +720,67 @@ private fun SwitchPreference(
         Switch(
             checked = checked,
             onCheckedChange = onCheckedChange
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun HostEditorScreenPreview() {
+    ConnectBotTheme {
+        HostEditorScreenContent(
+            hostId = 1L,
+            uiState = HostEditorUiState(
+                hostId = 1L,
+                nickname = "Production Server",
+                protocol = "ssh",
+                username = "admin",
+                hostname = "prod.example.com",
+                port = "22",
+                color = "blue",
+                fontSize = 12,
+                pubkeyId = -1L,
+                availablePubkeys = listOf(
+                    org.connectbot.data.entity.Pubkey(
+                        id = 1,
+                        nickname = "My SSH Key",
+                        type = "rsa",
+                        privateKey = byteArrayOf(),
+                        publicKey = byteArrayOf(),
+                        encrypted = false,
+                        startup = false,
+                        confirmation = false,
+                        createdDate = System.currentTimeMillis()
+                    )
+                ),
+                delKey = "backspace",
+                encoding = "UTF-8",
+                useAuthAgent = "yes",
+                compression = true,
+                wantSession = true,
+                stayConnected = false,
+                quickDisconnect = false,
+                postLogin = "cd /var/www"
+            ),
+            onNavigateBack = {},
+            onQuickConnectChange = {},
+            onNicknameChange = {},
+            onProtocolChange = {},
+            onUsernameChange = {},
+            onHostnameChange = {},
+            onPortChange = {},
+            onColorChange = {},
+            onFontSizeChange = {},
+            onPubkeyChange = {},
+            onDelKeyChange = {},
+            onEncodingChange = {},
+            onUseAuthAgentChange = {},
+            onCompressionChange = {},
+            onWantSessionChange = {},
+            onStayConnectedChange = {},
+            onQuickDisconnectChange = {},
+            onPostLoginChange = {},
+            onSaveHost = {}
         )
     }
 }

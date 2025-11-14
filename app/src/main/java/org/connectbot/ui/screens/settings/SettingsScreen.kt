@@ -50,6 +50,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.preference.PreferenceManager
 import org.connectbot.R
+import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.theme.ConnectBotTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,6 +64,66 @@ fun SettingsScreen(
     val viewModel = remember { SettingsViewModel(prefs) }
     val uiState by viewModel.uiState.collectAsState()
 
+    SettingsScreenContent(
+        uiState = uiState,
+        onNavigateBack = onNavigateBack,
+        onMemkeysChange = viewModel::updateMemkeys,
+        onConnPersistChange = viewModel::updateConnPersist,
+        onWifilockChange = viewModel::updateWifilock,
+        onBackupkeysChange = viewModel::updateBackupkeys,
+        onEmulationChange = viewModel::updateEmulation,
+        onScrollbackChange = viewModel::updateScrollback,
+        onRotationChange = viewModel::updateRotation,
+        onFullscreenChange = viewModel::updateFullscreen,
+        onTitleBarHideChange = viewModel::updateTitleBarHide,
+        onPgUpDnGestureChange = viewModel::updatePgUpDnGesture,
+        onVolumeFontChange = viewModel::updateVolumeFont,
+        onKeepAliveChange = viewModel::updateKeepAlive,
+        onAlwaysVisibleChange = viewModel::updateAlwaysVisible,
+        onShiftFkeysChange = viewModel::updateShiftFkeys,
+        onCtrlFkeysChange = viewModel::updateCtrlFkeys,
+        onStickyModifiersChange = viewModel::updateStickyModifiers,
+        onKeyModeChange = viewModel::updateKeyMode,
+        onCameraChange = viewModel::updateCamera,
+        onBumpyArrowsChange = viewModel::updateBumpyArrows,
+        onBellChange = viewModel::updateBell,
+        onBellVolumeChange = viewModel::updateBellVolume,
+        onBellVibrateChange = viewModel::updateBellVibrate,
+        onBellNotificationChange = viewModel::updateBellNotification,
+        modifier = modifier
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SettingsScreenContent(
+    uiState: SettingsUiState,
+    onNavigateBack: () -> Unit,
+    onMemkeysChange: (Boolean) -> Unit,
+    onConnPersistChange: (Boolean) -> Unit,
+    onWifilockChange: (Boolean) -> Unit,
+    onBackupkeysChange: (Boolean) -> Unit,
+    onEmulationChange: (String) -> Unit,
+    onScrollbackChange: (String) -> Unit,
+    onRotationChange: (String) -> Unit,
+    onFullscreenChange: (Boolean) -> Unit,
+    onTitleBarHideChange: (Boolean) -> Unit,
+    onPgUpDnGestureChange: (Boolean) -> Unit,
+    onVolumeFontChange: (Boolean) -> Unit,
+    onKeepAliveChange: (Boolean) -> Unit,
+    onAlwaysVisibleChange: (Boolean) -> Unit,
+    onShiftFkeysChange: (Boolean) -> Unit,
+    onCtrlFkeysChange: (Boolean) -> Unit,
+    onStickyModifiersChange: (String) -> Unit,
+    onKeyModeChange: (String) -> Unit,
+    onCameraChange: (String) -> Unit,
+    onBumpyArrowsChange: (Boolean) -> Unit,
+    onBellChange: (Boolean) -> Unit,
+    onBellVolumeChange: (Float) -> Unit,
+    onBellVibrateChange: (Boolean) -> Unit,
+    onBellNotificationChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -81,7 +143,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_memkeys_title),
                     summary = stringResource(R.string.pref_memkeys_summary),
                     checked = uiState.memkeys,
-                    onCheckedChange = viewModel::updateMemkeys
+                    onCheckedChange = onMemkeysChange
                 )
             }
 
@@ -90,7 +152,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_conn_persist_title),
                     summary = stringResource(R.string.pref_conn_persist_summary),
                     checked = uiState.connPersist,
-                    onCheckedChange = viewModel::updateConnPersist
+                    onCheckedChange = onConnPersistChange
                 )
             }
 
@@ -99,7 +161,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_wifilock_title),
                     summary = stringResource(R.string.pref_wifilock_summary),
                     checked = uiState.wifilock,
-                    onCheckedChange = viewModel::updateWifilock
+                    onCheckedChange = onWifilockChange
                 )
             }
 
@@ -108,7 +170,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_backupkeys_title),
                     summary = stringResource(R.string.pref_backupkeys_summary),
                     checked = uiState.backupkeys,
-                    onCheckedChange = viewModel::updateBackupkeys
+                    onCheckedChange = onBackupkeysChange
                 )
             }
 
@@ -121,7 +183,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_emulation_title),
                     summary = uiState.emulation,
                     value = uiState.emulation,
-                    onValueChange = viewModel::updateEmulation
+                    onValueChange = onEmulationChange
                 )
             }
 
@@ -130,7 +192,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_scrollback_title),
                     summary = stringResource(R.string.pref_scrollback_summary),
                     value = uiState.scrollback,
-                    onValueChange = viewModel::updateScrollback
+                    onValueChange = onScrollbackChange
                 )
             }
 
@@ -155,7 +217,7 @@ fun SettingsScreen(
                         stringResource(R.string.list_rotation_port) to "Force portrait",
                         stringResource(R.string.list_rotation_auto) to "Automatic"
                     ),
-                    onValueChange = viewModel::updateRotation
+                    onValueChange = onRotationChange
                 )
             }
 
@@ -164,7 +226,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_fullscreen_title),
                     summary = stringResource(R.string.pref_fullscreen_summary),
                     checked = uiState.fullscreen,
-                    onCheckedChange = viewModel::updateFullscreen
+                    onCheckedChange = onFullscreenChange
                 )
             }
 
@@ -173,7 +235,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_titlebarhide_title),
                     summary = stringResource(R.string.pref_titlebarhide_summary),
                     checked = uiState.titlebarhide,
-                    onCheckedChange = viewModel::updateTitleBarHide
+                    onCheckedChange = onTitleBarHideChange
                 )
             }
 
@@ -182,7 +244,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_pg_updn_gesture_title),
                     summary = stringResource(R.string.pref_pg_updn_gesture_summary),
                     checked = uiState.pgupdngesture,
-                    onCheckedChange = viewModel::updatePgUpDnGesture
+                    onCheckedChange = onPgUpDnGestureChange
                 )
             }
 
@@ -191,7 +253,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_volumefont_title),
                     summary = stringResource(R.string.pref_volumefont_summary),
                     checked = uiState.volumefont,
-                    onCheckedChange = viewModel::updateVolumeFont
+                    onCheckedChange = onVolumeFontChange
                 )
             }
 
@@ -200,7 +262,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_keepalive_title),
                     summary = stringResource(R.string.pref_keepalive_summary),
                     checked = uiState.keepalive,
-                    onCheckedChange = viewModel::updateKeepAlive
+                    onCheckedChange = onKeepAliveChange
                 )
             }
 
@@ -213,7 +275,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_alwaysvisible_title),
                     summary = "Keep special keys always visible",
                     checked = uiState.alwaysvisible,
-                    onCheckedChange = viewModel::updateAlwaysVisible
+                    onCheckedChange = onAlwaysVisibleChange
                 )
             }
 
@@ -222,7 +284,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_shiftfkeys_title),
                     summary = stringResource(R.string.pref_shiftfkeys_summary),
                     checked = uiState.shiftfkeys,
-                    onCheckedChange = viewModel::updateShiftFkeys
+                    onCheckedChange = onShiftFkeysChange
                 )
             }
 
@@ -231,7 +293,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_ctrlfkeys_title),
                     summary = stringResource(R.string.pref_ctrlfkeys_summary),
                     checked = uiState.ctrlfkeys,
-                    onCheckedChange = viewModel::updateCtrlFkeys
+                    onCheckedChange = onCtrlFkeysChange
                 )
             }
 
@@ -250,7 +312,7 @@ fun SettingsScreen(
                         stringResource(R.string.only_alt) to "alt",
                         stringResource(R.string.yes) to "yes"
                     ),
-                    onValueChange = viewModel::updateStickyModifiers
+                    onValueChange = onStickyModifiersChange
                 )
             }
 
@@ -269,7 +331,7 @@ fun SettingsScreen(
                         stringResource(R.string.list_keymode_left) to "Use left-side keys",
                         stringResource(R.string.list_keymode_none) to "none"
                     ),
-                    onValueChange = viewModel::updateKeyMode
+                    onValueChange = onKeyModeChange
                 )
             }
 
@@ -285,7 +347,7 @@ fun SettingsScreen(
                         stringResource(R.string.list_camera_esc_a) to "Esc+A",
                         stringResource(R.string.list_camera_none) to "None"
                     ),
-                    onValueChange = viewModel::updateCamera
+                    onValueChange = onCameraChange
                 )
             }
 
@@ -294,7 +356,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_bumpyarrows_title),
                     summary = stringResource(R.string.pref_bumpyarrows_summary),
                     checked = uiState.bumpyarrows,
-                    onCheckedChange = viewModel::updateBumpyArrows
+                    onCheckedChange = onBumpyArrowsChange
                 )
             }
 
@@ -307,7 +369,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_bell_title),
                     summary = stringResource(R.string.pref_bell_summary),
                     checked = uiState.bell,
-                    onCheckedChange = viewModel::updateBell
+                    onCheckedChange = onBellChange
                 )
             }
 
@@ -315,7 +377,7 @@ fun SettingsScreen(
                 SliderPreference(
                     title = stringResource(R.string.pref_bell_volume_title),
                     value = uiState.bellVolume,
-                    onValueChange = viewModel::updateBellVolume
+                    onValueChange = onBellVolumeChange
                 )
             }
 
@@ -324,7 +386,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_bell_vibrate_title),
                     summary = stringResource(R.string.pref_bell_vibrate_summary),
                     checked = uiState.bellVibrate,
-                    onCheckedChange = viewModel::updateBellVibrate
+                    onCheckedChange = onBellVibrateChange
                 )
             }
 
@@ -333,7 +395,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.pref_bell_notification_title),
                     summary = stringResource(R.string.pref_bell_notification_summary),
                     checked = uiState.bellNotification,
-                    onCheckedChange = viewModel::updateBellNotification
+                    onCheckedChange = onBellNotificationChange
                 )
             }
         }
@@ -530,4 +592,62 @@ private fun SliderPreference(
         )
     }
     HorizontalDivider()
+}
+
+@ScreenPreviews
+@Composable
+private fun SettingsScreenPreview() {
+    ConnectBotTheme {
+        SettingsScreenContent(
+            uiState = SettingsUiState(
+                memkeys = true,
+                connPersist = true,
+                wifilock = false,
+                backupkeys = true,
+                emulation = "xterm-256color",
+                scrollback = "500",
+                rotation = "Default",
+                titlebarhide = false,
+                fullscreen = true,
+                pgupdngesture = true,
+                volumefont = true,
+                keepalive = true,
+                alwaysvisible = true,
+                shiftfkeys = false,
+                ctrlfkeys = false,
+                stickymodifiers = "yes",
+                keymode = "Use right-side keys",
+                camera = "Ctrl+A then Space",
+                bumpyarrows = true,
+                bell = true,
+                bellVolume = 0.75f,
+                bellVibrate = true,
+                bellNotification = false
+            ),
+            onNavigateBack = {},
+            onMemkeysChange = {},
+            onConnPersistChange = {},
+            onWifilockChange = {},
+            onBackupkeysChange = {},
+            onEmulationChange = {},
+            onScrollbackChange = {},
+            onRotationChange = {},
+            onFullscreenChange = {},
+            onTitleBarHideChange = {},
+            onPgUpDnGestureChange = {},
+            onVolumeFontChange = {},
+            onKeepAliveChange = {},
+            onAlwaysVisibleChange = {},
+            onShiftFkeysChange = {},
+            onCtrlFkeysChange = {},
+            onStickyModifiersChange = {},
+            onKeyModeChange = {},
+            onCameraChange = {},
+            onBumpyArrowsChange = {},
+            onBellChange = {},
+            onBellVolumeChange = {},
+            onBellVibrateChange = {},
+            onBellNotificationChange = {}
+        )
+    }
 }

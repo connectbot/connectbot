@@ -55,6 +55,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
+import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.theme.ConnectBotTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,6 +76,34 @@ fun PubkeyEditorScreen(
         }
     }
 
+    PubkeyEditorScreenContent(
+        uiState = uiState,
+        onNavigateBack = onNavigateBack,
+        onNicknameChange = viewModel::updateNickname,
+        onOldPasswordChange = viewModel::updateOldPassword,
+        onNewPassword1Change = viewModel::updateNewPassword1,
+        onNewPassword2Change = viewModel::updateNewPassword2,
+        onUnlockAtStartupChange = viewModel::updateUnlockAtStartup,
+        onConfirmUseChange = viewModel::updateConfirmUse,
+        onSave = viewModel::save,
+        modifier = modifier
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PubkeyEditorScreenContent(
+    uiState: PubkeyEditorUiState,
+    onNavigateBack: () -> Unit,
+    onNicknameChange: (String) -> Unit,
+    onOldPasswordChange: (String) -> Unit,
+    onNewPassword1Change: (String) -> Unit,
+    onNewPassword2Change: (String) -> Unit,
+    onUnlockAtStartupChange: (Boolean) -> Unit,
+    onConfirmUseChange: (Boolean) -> Unit,
+    onSave: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -102,7 +132,7 @@ fun PubkeyEditorScreen(
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.error_message, uiState.error ?: ""),
+                        text = stringResource(R.string.error_message, uiState.error),
                         color = MaterialTheme.colorScheme.error
                     )
                 }
@@ -119,7 +149,7 @@ fun PubkeyEditorScreen(
                     // Nickname
                     OutlinedTextField(
                         value = uiState.nickname,
-                        onValueChange = { viewModel.updateNickname(it) },
+                        onValueChange = onNicknameChange,
                         label = { Text(stringResource(R.string.prompt_nickname)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
@@ -150,7 +180,7 @@ fun PubkeyEditorScreen(
                     if (uiState.isEncrypted) {
                         OutlinedTextField(
                             value = uiState.oldPassword,
-                            onValueChange = { viewModel.updateOldPassword(it) },
+                            onValueChange = onOldPasswordChange,
                             label = { Text(stringResource(R.string.prompt_old_password)) },
                             visualTransformation = PasswordVisualTransformation(),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -162,7 +192,7 @@ fun PubkeyEditorScreen(
 
                     OutlinedTextField(
                         value = uiState.newPassword1,
-                        onValueChange = { viewModel.updateNewPassword1(it) },
+                        onValueChange = onNewPassword1Change,
                         label = { Text(stringResource(R.string.prompt_password)) },
                         supportingText = { Text(stringResource(R.string.prompt_password_can_be_blank)) },
                         visualTransformation = PasswordVisualTransformation(),
@@ -175,7 +205,7 @@ fun PubkeyEditorScreen(
 
                     OutlinedTextField(
                         value = uiState.newPassword2,
-                        onValueChange = { viewModel.updateNewPassword2(it) },
+                        onValueChange = onNewPassword2Change,
                         label = {
                             Text(
                                 "${stringResource(R.string.prompt_password)} ${
@@ -225,12 +255,12 @@ fun PubkeyEditorScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable(enabled = !uiState.willBeEncrypted) {
-                                viewModel.updateUnlockAtStartup(!uiState.unlockAtStartup)
+                                onUnlockAtStartupChange(!uiState.unlockAtStartup)
                             }
                     ) {
                         Checkbox(
                             checked = uiState.unlockAtStartup,
-                            onCheckedChange = { viewModel.updateUnlockAtStartup(it) },
+                            onCheckedChange = onUnlockAtStartupChange,
                             enabled = !uiState.willBeEncrypted
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -258,12 +288,12 @@ fun PubkeyEditorScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                viewModel.updateConfirmUse(!uiState.confirmUse)
+                                onConfirmUseChange(!uiState.confirmUse)
                             }
                     ) {
                         Checkbox(
                             checked = uiState.confirmUse,
-                            onCheckedChange = { viewModel.updateConfirmUse(it) }
+                            onCheckedChange = onConfirmUseChange
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(stringResource(R.string.pubkey_confirm_use))
@@ -273,7 +303,7 @@ fun PubkeyEditorScreen(
 
                     // Save Button
                     Button(
-                        onClick = { viewModel.save() },
+                        onClick = onSave,
                         enabled = uiState.canSave,
                         modifier = Modifier.fillMaxWidth()
                     ) {
@@ -282,5 +312,154 @@ fun PubkeyEditorScreen(
                 }
             }
         }
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun PubkeyEditorScreenLoadingPreview() {
+    ConnectBotTheme {
+        PubkeyEditorScreenContent(
+            uiState = PubkeyEditorUiState(
+                isLoading = true
+            ),
+            onNavigateBack = {},
+            onNicknameChange = {},
+            onOldPasswordChange = {},
+            onNewPassword1Change = {},
+            onNewPassword2Change = {},
+            onUnlockAtStartupChange = {},
+            onConfirmUseChange = {},
+            onSave = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun PubkeyEditorScreenErrorPreview() {
+    ConnectBotTheme {
+        PubkeyEditorScreenContent(
+            uiState = PubkeyEditorUiState(
+                isLoading = false,
+                error = "Failed to load public key"
+            ),
+            onNavigateBack = {},
+            onNicknameChange = {},
+            onOldPasswordChange = {},
+            onNewPassword1Change = {},
+            onNewPassword2Change = {},
+            onUnlockAtStartupChange = {},
+            onConfirmUseChange = {},
+            onSave = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun PubkeyEditorScreenUnencryptedPreview() {
+    ConnectBotTheme {
+        PubkeyEditorScreenContent(
+            uiState = PubkeyEditorUiState(
+                nickname = "work-laptop",
+                keyType = "RSA",
+                isEncrypted = false,
+                unlockAtStartup = true,
+                confirmUse = false,
+                isLoading = false
+            ),
+            onNavigateBack = {},
+            onNicknameChange = {},
+            onOldPasswordChange = {},
+            onNewPassword1Change = {},
+            onNewPassword2Change = {},
+            onUnlockAtStartupChange = {},
+            onConfirmUseChange = {},
+            onSave = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun PubkeyEditorScreenEncryptedPreview() {
+    ConnectBotTheme {
+        PubkeyEditorScreenContent(
+            uiState = PubkeyEditorUiState(
+                nickname = "home-server",
+                keyType = "Ed25519",
+                isEncrypted = true,
+                oldPassword = "",
+                unlockAtStartup = false,
+                confirmUse = true,
+                isLoading = false
+            ),
+            onNavigateBack = {},
+            onNicknameChange = {},
+            onOldPasswordChange = {},
+            onNewPassword1Change = {},
+            onNewPassword2Change = {},
+            onUnlockAtStartupChange = {},
+            onConfirmUseChange = {},
+            onSave = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun PubkeyEditorScreenPasswordMismatchPreview() {
+    ConnectBotTheme {
+        PubkeyEditorScreenContent(
+            uiState = PubkeyEditorUiState(
+                nickname = "github-key",
+                keyType = "ECDSA",
+                isEncrypted = true,
+                oldPassword = "oldpass123",
+                newPassword1 = "newpass123",
+                newPassword2 = "newpass456",
+                unlockAtStartup = false,
+                confirmUse = false,
+                isLoading = false
+            ),
+            onNavigateBack = {},
+            onNicknameChange = {},
+            onOldPasswordChange = {},
+            onNewPassword1Change = {},
+            onNewPassword2Change = {},
+            onUnlockAtStartupChange = {},
+            onConfirmUseChange = {},
+            onSave = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun PubkeyEditorScreenWrongPasswordPreview() {
+    ConnectBotTheme {
+        PubkeyEditorScreenContent(
+            uiState = PubkeyEditorUiState(
+                nickname = "production",
+                keyType = "RSA",
+                isEncrypted = true,
+                oldPassword = "wrongpass",
+                newPassword1 = "newpass123",
+                newPassword2 = "newpass123",
+                unlockAtStartup = false,
+                confirmUse = true,
+                isLoading = false,
+                wrongPassword = true
+            ),
+            onNavigateBack = {},
+            onNicknameChange = {},
+            onOldPasswordChange = {},
+            onNewPassword1Change = {},
+            onNewPassword2Change = {},
+            onUnlockAtStartupChange = {},
+            onConfirmUseChange = {},
+            onSave = {}
+        )
     }
 }
