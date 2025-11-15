@@ -69,12 +69,24 @@ class MainActivityTest {
             assert(activity != null)
         }
     }
+}
+
+@RunWith(AndroidJUnit4::class)
+class MainActivityIntentTest {
+    @Before
+    fun setUp() {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        ConnectBotDatabase.clearInstance()
+        ConnectBotDatabase.getTestInstance(context)
+    }
+
+    @After
+    fun tearDown() {
+        ConnectBotDatabase.clearInstance()
+    }
 
     @Test
     fun mainActivity_handlesDisconnectAction() {
-        // Close the default activity started by the rule
-        composeTestRule.activityRule.scenario.close()
-
         val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
         intent.action = MainActivity.DISCONNECT_ACTION
 
@@ -90,9 +102,6 @@ class MainActivityTest {
 
     @Test
     fun mainActivity_handlesSshUri() {
-        // Close the default activity started by the rule
-        composeTestRule.activityRule.scenario.close()
-
         val uri = Uri.parse("ssh://user@example.com:22/#test")
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.setClass(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
@@ -109,9 +118,6 @@ class MainActivityTest {
 
     @Test
     fun mainActivity_handlesTelnetUri() {
-        // Close the default activity started by the rule
-        composeTestRule.activityRule.scenario.close()
-
         val uri = Uri.parse("telnet://example.com:23/#test")
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.setClass(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
@@ -128,9 +134,6 @@ class MainActivityTest {
 
     @Test
     fun mainActivity_handlesLocalUri() {
-        // Close the default activity started by the rule
-        composeTestRule.activityRule.scenario.close()
-
         val uri = Uri.parse("local://#test")
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.setClass(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
