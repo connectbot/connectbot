@@ -53,7 +53,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
                 null, // no group by
                 null, // no having
                 "nickname ASC" // order by
-            )?.use { cursor ->
+            ).use { cursor ->
                 while (cursor.moveToNext()) {
                     try {
                         val host = cursorToHost(cursor)
@@ -84,7 +84,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
                 null,
                 null,
                 "_id ASC"
-            )?.use { cursor ->
+            ).use { cursor ->
                 while (cursor.moveToNext()) {
                     try {
                         val portForward = cursorToPortForward(cursor)
@@ -117,7 +117,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
                 ORDER BY kh._id ASC
                 """.trimIndent(),
                 null
-            )?.use { cursor ->
+            ).use { cursor ->
                 while (cursor.moveToNext()) {
                     try {
                         val knownHost = cursorToKnownHost(cursor)
@@ -140,23 +140,27 @@ class LegacyHostDatabaseReader(private val context: Context) {
         val schemes = mutableListOf<ColorScheme>()
 
         withReadableDatabase { db ->
-            db.query(
-                "colorSchemes",
-                null,
-                null,
-                null,
-                null,
-                null,
-                "_id ASC"
-            )?.use { cursor ->
-                while (cursor.moveToNext()) {
-                    try {
-                        val scheme = cursorToColorScheme(cursor)
-                        schemes.add(scheme)
-                    } catch (e: Exception) {
-                        Log.e(TAG, "Error reading color scheme from cursor", e)
+            try {
+                db.query(
+                    "colorSchemes",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    "_id ASC"
+                ).use { cursor ->
+                    while (cursor.moveToNext()) {
+                        try {
+                            val scheme = cursorToColorScheme(cursor)
+                            schemes.add(scheme)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error reading color scheme from cursor", e)
+                        }
                     }
                 }
+            } catch (e: Exception) {
+                Log.w(TAG, "Error reading color schemes from legacy database; skipping", e)
             }
         }
 
@@ -179,7 +183,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
                 null,
                 null,
                 "scheme ASC, number ASC"
-            )?.use { cursor ->
+            ).use { cursor ->
                 while (cursor.moveToNext()) {
                     try {
                         val palette = cursorToColorPalette(cursor)
