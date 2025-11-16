@@ -53,7 +53,7 @@ class LegacyDatabaseMigrationIntegrationTest {
         // Clean up any existing databases
         context.deleteDatabase("hosts")
         context.deleteDatabase("pubkeys")
-        context.deleteDatabase("connectbot.db")
+        context.deleteDatabase("connectbot_test.db")
 
         hostsDbFile = context.getDatabasePath("hosts")
         pubkeysDbFile = context.getDatabasePath("pubkeys")
@@ -71,7 +71,7 @@ class LegacyDatabaseMigrationIntegrationTest {
         ConnectBotDatabase.clearInstance()
         context.deleteDatabase("hosts")
         context.deleteDatabase("pubkeys")
-        context.deleteDatabase("connectbot.db")
+        context.deleteDatabase("connectbot_test.db")
         context.deleteDatabase("hosts.migrated")
         context.deleteDatabase("pubkeys.migrated")
     }
@@ -137,7 +137,7 @@ class LegacyDatabaseMigrationIntegrationTest {
             assertThat(result).isInstanceOf(MigrationResult.Success::class.java)
 
             // Query migrated data
-            val database = ConnectBotDatabase.getInstance(context)
+            val database = ConnectBotDatabase.getTestInstance(context)
             val hosts = database.hostDao().getAll()
 
             // Verify host data
@@ -182,7 +182,7 @@ class LegacyDatabaseMigrationIntegrationTest {
             assertThat(result).isInstanceOf(MigrationResult.Success::class.java)
 
             // Query migrated data
-            val database = ConnectBotDatabase.getInstance(context)
+            val database = ConnectBotDatabase.getTestInstance(context)
             val pubkeys = database.pubkeyDao().getAll()
 
             // Verify pubkey data
@@ -222,7 +222,7 @@ class LegacyDatabaseMigrationIntegrationTest {
             assertThat(result).isInstanceOf(MigrationResult.Success::class.java)
 
             // Query migrated data
-            val database = ConnectBotDatabase.getInstance(context)
+            val database = ConnectBotDatabase.getTestInstance(context)
             val hosts = database.hostDao().getAll()
             val prodHost = hosts.find { it.nickname == "production-server" }
             assertThat(prodHost).isNotNull()
@@ -253,7 +253,7 @@ class LegacyDatabaseMigrationIntegrationTest {
             assertThat(result).isInstanceOf(MigrationResult.Success::class.java)
 
             // Query migrated data
-            val database = ConnectBotDatabase.getInstance(context)
+            val database = ConnectBotDatabase.getTestInstance(context)
             val hosts = database.hostDao().getAll()
             val prodHost = hosts.find { it.nickname == "production-server" }
             assertThat(prodHost).isNotNull()
