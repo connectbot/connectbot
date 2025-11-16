@@ -81,6 +81,10 @@ abstract class ConnectBotDatabase : RoomDatabase() {
     companion object {
         private const val DATABASE_NAME = "connectbot.db"
 
+        // Used for instrumentation tests
+        @VisibleForTesting
+        private const val TEST_DATABASE_NAME = "connectbot_test.db"
+
         @Volatile
         private var INSTANCE: ConnectBotDatabase? = null
 
@@ -98,9 +102,6 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                     DATABASE_NAME
                 )
                     .addMigrations(MIGRATION_LEGACY_TO_1)
-                    // TODO: Remove fallbackToDestructiveMigration after production release
-                    // This is only for development to allow schema changes without migration
-                    .fallbackToDestructiveMigration()
                     .build()
 
                 INSTANCE = instance
@@ -120,7 +121,7 @@ abstract class ConnectBotDatabase : RoomDatabase() {
          * just creates the new schema structure.
          */
         private val MIGRATION_LEGACY_TO_1 = object : Migration(0, 1) {
-            override fun migrate(database: SupportSQLiteDatabase) {
+            override fun migrate(db: SupportSQLiteDatabase) {
                 // Schema is automatically created by Room
                 // Data migration handled by DatabaseMigrator service
             }
@@ -137,8 +138,8 @@ abstract class ConnectBotDatabase : RoomDatabase() {
         }
 
         /**
-         * Create a database instance for testing with main thread queries allowed.
-         * This should only be used in instrumented tests.
+         * Create a test database instance for testing with main thread queries
+         * allowed. This should only be used in instrumented tests.
          */
         @VisibleForTesting
         fun getTestInstance(context: Context): ConnectBotDatabase {
@@ -146,11 +147,11 @@ abstract class ConnectBotDatabase : RoomDatabase() {
             val instance = Room.databaseBuilder(
                 context.applicationContext,
                 ConnectBotDatabase::class.java,
-                DATABASE_NAME
+                TEST_DATABASE_NAME
             )
                 .addMigrations(MIGRATION_LEGACY_TO_1)
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries() // Allow for testing
+                .fallbackToDestructiveMigration(true)
+                .allowMainThreadQueries()
                 .build()
 
             INSTANCE = instance
