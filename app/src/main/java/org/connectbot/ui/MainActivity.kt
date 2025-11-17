@@ -35,6 +35,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -62,7 +63,7 @@ class MainActivity : ComponentActivity() {
 
     private var terminalManager: TerminalManager? by mutableStateOf(null)
     private var bound = false
-    private var requestedUri: Uri? = null
+    private var requestedUri: Uri? by mutableStateOf(null)
     private var navController: NavController? = null
 
     private val connection = object : ServiceConnection {
@@ -70,10 +71,6 @@ class MainActivity : ComponentActivity() {
             val binder = service as? TerminalManager.TerminalBinder
             terminalManager = binder?.service
             bound = true
-
-            requestedUri?.let { uri ->
-                handleConnectionUri(uri)
-            }
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -120,6 +117,14 @@ class MainActivity : ComponentActivity() {
                                 val controller = rememberNavController()
                                 navController = controller
 
+                                // Handle pending URI when both terminalManager and navController are ready
+                                LaunchedEffect(requestedUri, terminalManager) {
+                                    requestedUri?.let { uri ->
+                                        handleConnectionUri(uri)
+                                        requestedUri = null
+                                    }
+                                }
+
                                 CompositionLocalProvider(LocalTerminalManager provides terminalManager) {
                                     ConnectBotNavHost(
                                         navController = controller,
@@ -150,9 +155,6 @@ class MainActivity : ComponentActivity() {
 
         intent.data?.let { uri ->
             requestedUri = uri
-            if (bound) {
-                handleConnectionUri(uri)
-            }
         }
     }
 
