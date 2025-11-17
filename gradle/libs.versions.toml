@@ -25,7 +25,7 @@ sshlib = "2.2.31"
 playServicesBasement = "18.9.0"
 conscrypt = "2.5.3"
 conscryptOpenJdk = "2.5.2"
-coroutines = "1.8.1"
+coroutines = "1.10.2"
 
 recyclerview = "1.4.0"
 appcompat = "1.7.1"
