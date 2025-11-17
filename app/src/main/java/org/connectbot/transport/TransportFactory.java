@@ -101,7 +101,7 @@ public class TransportFactory {
 		} else if (Local.getProtocolName().equals(protocol)) {
 			return Local.getFormatHint(context);
 		} else {
-			return AbsTransport.getFormatHint(context);
+			return "???";
 		}
 	}
 
