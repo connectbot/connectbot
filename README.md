@@ -33,20 +33,23 @@ you can invoke the Gradle wrapper to build:
 ./gradlew build
 ```
 
-### Reproducing Continuous Integration (CI) builds locally
+### Continuous Integration
 
-To run the Jenkins CI pipeline locally, you can use
-`jenkinsfile-runner` via a Docker installation which can be invoked like
-this:
+ConnectBot uses [GitHub Actions](https://github.com/connectbot/connectbot/actions)
+for continuous integration. The workflow is defined in
+`.github/workflows/ci.yml`.
+
+#### Running Workflows Locally with act
+
+In general, simply running `./gradlew build` should cover all the
+checks run in the GitHub Actions continuous integration workflow, but you can
+run GitHub Actions workflows locally using [`nektos/act`](https://github.com/nektos/act).
+This requires Docker to be installed and running.
+
+To run the main CI workflow (`ci.yml`):
 
 ```sh
-docker run -it -v $(pwd):/workspace \
-    -v jenkinsfile-runner-cache:/var/jenkinsfile-runner-cache \
-    -v jenkinsfile-runner:/var/jenkinsfile-runner \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    -v $(which docker):$(which docker) \
-    -e ANDROID_ADB_SERVER_ADDRESS=host.docker.internal \
-    jenkins/jenkinsfile-runner
+act -W .github/workflows/ci.yml
 ```
 
 
