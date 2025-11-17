@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.com/connectbot/connectbot.svg?branch=master)](
-https://travis-ci.com/connectbot/connectbot)
+[![Build Status](https://github.com/connectbot/connectbot/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/connectbot/connectbot/actions/workflows/ci.yml)
 
 # ConnectBot
 
