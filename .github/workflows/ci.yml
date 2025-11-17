@@ -52,7 +52,6 @@ jobs:
           cmdline-tools-version: '13114758'
           packages: 'cmdline-tools;latest tools platform-tools'
 
-
       - name: Build ConnectBot
         run: ./gradlew build bundleGoogleRelease
 
@@ -123,8 +122,11 @@ jobs:
           cp ./app/build/outputs/apk/oss/release/app-oss-release-unsigned.apk ConnectBot-${GITHUB_TAG}-oss-unsigned.apk
           cp ./app/build/outputs/apk/google/release/app-google-release-unsigned.apk ConnectBot-${GITHUB_TAG}-google-unsigned.apk
           cp ./app/build/outputs/bundle/googleRelease/app-google-release.aab ConnectBot-${GITHUB_TAG}-google-unsigned.aab
+          cp ./app/build/outputs/bundle/ossRelease/app-oss-release.aab ConnectBot-${GITHUB_TAG}-oss-unsigned.aab
           cp ./app/build/outputs/native-debug-symbols/googleRelease/native-debug-symbols.zip ConnectBot-${GITHUB_TAG}-google.native-debug-symbols.zip
           cp ./app/build/outputs/native-debug-symbols/ossRelease/native-debug-symbols.zip ConnectBot-${GITHUB_TAG}-oss.native-debug-symbols.zip
+          cp ./app/build/outputs/mapping/googleRelease/mapping.txt ConnectBot-${GITHUB_TAG}-google.mapping.txt
+          cp ./app/build/outputs/mapping/ossRelease/mapping.txt ConnectBot-${GITHUB_TAG}-oss.mapping.txt
   
       - name: Store artifacts for upload
         if: ${{ github.event_name == 'push' }}
@@ -137,6 +139,7 @@ jobs:
             ConnectBot-*-unsigned.apk
             ConnectBot-*-unsigned.aab
             ConnectBot-*.native-debug-symbols.zip
+            ConnectBot-*.mapping.txt
 
   upload:
     name: Upload to GitHub releases
