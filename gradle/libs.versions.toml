@@ -10,7 +10,7 @@ easylauncher = "6.4.1"
 pythonUv = "0.2.0"
 appVersioning = "1.5.0"
 room = "2.8.3"
-ksp = "2.2.21-2.0.4"
+ksp = "2.3.2"
 
 compileSdk = "36"
 minSdk = "23"
