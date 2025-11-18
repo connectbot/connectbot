@@ -110,8 +110,8 @@ class HostRepository(
      * @return The saved host with updated ID
      */
     suspend fun saveHost(host: Host): Host {
-        return if (host.id == 0L) {
-            // New host - insert
+        return if (host.id <= 0L) {
+            // New or temporary host - insert (assigns new positive ID)
             val newId = hostDao.insert(host)
             host.copy(id = newId)
         } else {
@@ -136,7 +136,8 @@ class HostRepository(
      * @param host The host to update
      */
     suspend fun touchHost(host: Host) {
-        if (host.id == 0L) {
+        if (host.id <= 0L) {
+            // Skip for temporary hosts (negative IDs)
             return
         }
         val updatedHost = host.copy(lastConnect = System.currentTimeMillis())
