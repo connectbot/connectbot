@@ -19,13 +19,13 @@ package org.connectbot.service
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.res.Configuration
-import android.preference.PreferenceManager
 import android.text.ClipboardManager
 import android.util.Log
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
 import android.view.View
 import android.view.View.OnKeyListener
+import androidx.preference.PreferenceManager
 import de.mud.terminal.VDUBuffer
 import de.mud.terminal.vt320
 import org.connectbot.bean.SelectionArea
@@ -49,17 +49,17 @@ class TerminalKeyListener(
 
     private var ourMetaState: Int = 0
 
-    private var mDeadKey: Int = 0
+    private var ourDeadKey: Int = 0
 
     private var clipboard: ClipboardManager? = null
 
     private var selectingForCopy: Boolean = false
     private val selectionArea: SelectionArea = SelectionArea()
 
-    private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(manager)
+    private val prefs: SharedPreferences? = manager?.let { PreferenceManager.getDefaultSharedPreferences(it) }
 
     init {
-        prefs.registerOnSharedPreferenceChangeListener(this)
+        prefs?.registerOnSharedPreferenceChangeListener(this)
 
         deviceHasHardKeyboard = (manager?.res?.configuration?.keyboard
                 == Configuration.KEYBOARD_QWERTY)
@@ -286,13 +286,13 @@ class TerminalKeyListener(
             derivedMetaState = derivedMetaState and KeyEvent.META_SHIFT_ON.inv()
 
             if ((uchar and KeyCharacterMap.COMBINING_ACCENT) != 0) {
-                mDeadKey = uchar and KeyCharacterMap.COMBINING_ACCENT_MASK
+                ourDeadKey = uchar and KeyCharacterMap.COMBINING_ACCENT_MASK
                 return true
             }
 
-            if (mDeadKey != 0) {
-                uchar = KeyCharacterMap.getDeadChar(mDeadKey, keyCode)
-                mDeadKey = 0
+            if (ourDeadKey != 0) {
+                uchar = KeyCharacterMap.getDeadChar(ourDeadKey, keyCode)
+                ourDeadKey = 0
             }
 
             if (uchar >= 0x20) {
@@ -430,11 +430,11 @@ class TerminalKeyListener(
             Log.e(TAG, "Problem while trying to handle an onKey() event", e)
             try {
                 transport?.flush()
-            } catch (ioe: IOException) {
+            } catch (_: IOException) {
                 Log.d(TAG, "Our transport was closed, dispatching disconnect event")
                 bridge.dispatchDisconnect(false)
             }
-        } catch (npe: NullPointerException) {
+        } catch (_: NullPointerException) {
             Log.d(TAG, "Input before connection established ignored.")
             return true
         }
@@ -465,7 +465,7 @@ class TerminalKeyListener(
             Log.e(TAG, "Problem while trying to send TAB press.", e)
             try {
                 transport?.flush()
-            } catch (ioe: IOException) {
+            } catch (_: IOException) {
                 Log.d(TAG, "Our transport was closed, dispatching disconnect event")
                 bridge.dispatchDisconnect(false)
             }
@@ -537,10 +537,6 @@ class TerminalKeyListener(
         bridge.redraw()
     }
 
-    fun setTerminalKeyMode(keymode: String) {
-        this.keymode = keymode
-    }
-
     private val stateForBuffer: Int
         get() {
             var bufferState = 0
@@ -559,7 +555,7 @@ class TerminalKeyListener(
         get() = ourMetaState
 
     val deadKey: Int
-        get() = mDeadKey
+        get() = ourDeadKey
 
     fun setClipboardManager(clipboard: ClipboardManager) {
         this.clipboard = clipboard
@@ -576,13 +572,13 @@ class TerminalKeyListener(
     }
 
     private fun updatePrefs() {
-        keymode = prefs.getString(PreferenceConstants.KEYMODE, PreferenceConstants.KEYMODE_NONE)
+        keymode = prefs?.getString(PreferenceConstants.KEYMODE, PreferenceConstants.KEYMODE_NONE)
         shiftedNumbersAreFKeysOnHardKeyboard =
-                prefs.getBoolean(PreferenceConstants.SHIFT_FKEYS, false)
+            prefs?.getBoolean(PreferenceConstants.SHIFT_FKEYS, false) == true
         controlNumbersAreFKeysOnSoftKeyboard =
-                prefs.getBoolean(PreferenceConstants.CTRL_FKEYS, false)
-        volumeKeysChangeFontSize = prefs.getBoolean(PreferenceConstants.VOLUME_FONT, true)
-        val stickyModifiers = prefs.getString(PreferenceConstants.STICKY_MODIFIERS,
+            prefs?.getBoolean(PreferenceConstants.CTRL_FKEYS, false) == true
+        volumeKeysChangeFontSize = prefs?.getBoolean(PreferenceConstants.VOLUME_FONT, true) == true
+        val stickyModifiers = prefs?.getString(PreferenceConstants.STICKY_MODIFIERS,
                 PreferenceConstants.NO)
         stickyMetas = when (stickyModifiers) {
             PreferenceConstants.ALT -> OUR_ALT_ON
