@@ -40,6 +40,7 @@ import java.io.IOException
 import java.lang.ref.WeakReference
 import java.security.KeyPair
 import java.util.Arrays
+import java.util.concurrent.atomic.AtomicLong
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -137,6 +138,8 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	private var savingKeys = false
 
 	private val pendingReconnect: MutableList<WeakReference<TerminalBridge>> = ArrayList()
+
+	private val nextTemporaryHostId = AtomicLong(-1L)
 
 	internal var hardKeyboardHidden = false
 
@@ -239,6 +242,14 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	}
 
 	/**
+	 * Generate a unique negative ID for a temporary host.
+	 * Temporary hosts use negative IDs to distinguish them from database hosts.
+	 */
+	private fun generateTemporaryHostId(): Long {
+		return nextTemporaryHostId.getAndDecrement()
+	}
+
+	/**
 	 * Disconnect all currently connected bridges.
 	 */
 	fun disconnectAll(immediate: Boolean, excludeLocal: Boolean) {
@@ -319,7 +330,15 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 */
 	fun openConnection(uri: Uri): TerminalBridge {
         val host: Host = (TransportFactory.findHost(hostRepository, uri) ?: TransportFactory.getTransport(uri.scheme!!)?.createHost(uri))!!
-		return openConnection(host)
+
+		// Assign unique negative ID to temporary hosts (id == 0)
+		val finalHost = if (host.id == 0L) {
+			host.copy(id = generateTemporaryHostId())
+		} else {
+			host
+		}
+
+		return openConnection(finalHost)
 	}
 
 	/**

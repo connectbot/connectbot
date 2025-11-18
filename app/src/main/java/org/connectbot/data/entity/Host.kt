@@ -96,6 +96,13 @@ data class Host(
     val useCtrlAltAsMetaKey: Boolean = false
 ) {
     /**
+     * Check if this host is temporary (not saved to database).
+     * Temporary hosts have negative IDs.
+     */
+    val isTemporary: Boolean
+        get() = id < 0L
+
+    /**
      * Create a copy of this Host with a different font size.
      * Helper method for Java interop.
      */

@@ -90,7 +90,26 @@ class ConsoleViewModel(
 
                 // If no bridge exists, create one using the service method
                 if (existingBridge == null) {
-                    terminalManager?.openConnectionForHostId(hostId)
+                    if (hostId < 0L) {
+                        // Temporary host - should already exist from MainActivity/URI handling
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                error = "Temporary connection not found"
+                            )
+                        }
+                    } else {
+                        // Permanent host - create from database
+                        val bridge = terminalManager?.openConnectionForHostId(hostId)
+                        if (bridge == null) {
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    error = "Failed to open connection: host not found"
+                                )
+                            }
+                        }
+                    }
                 }
             } catch (e: Exception) {
                 _uiState.update {

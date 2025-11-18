@@ -47,9 +47,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
-import org.connectbot.data.HostRepository
 import org.connectbot.service.TerminalManager
-import org.connectbot.transport.TransportFactory
 import org.connectbot.ui.navigation.ConnectBotNavHost
 import org.connectbot.ui.navigation.NavDestinations
 import org.connectbot.ui.theme.ConnectBotTheme
@@ -197,14 +195,9 @@ class MainActivity : ComponentActivity() {
                 }
 
                 if (bridge != null) {
-                    val hostRepository = HostRepository.get(this@MainActivity)
-                    val host = TransportFactory.findHost(hostRepository, uri)
-                    if (host != null) {
-                        controller.navigate("${NavDestinations.CONSOLE}/${host.id}") {
-                            launchSingleTop = true
-                        }
-                    } else {
-                        Log.w(TAG, "Could not find host for URI: $uri")
+                    // Use bridge.host.id directly (works for both temporary and permanent hosts)
+                    controller.navigate("${NavDestinations.CONSOLE}/${bridge.host.id}") {
+                        launchSingleTop = true
                     }
                 } else {
                     Log.w(TAG, "Could not create bridge for URI: $uri")
