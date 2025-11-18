@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2015 Kenny Root, Jeffrey Sharkey
+ * Copyright 2025 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,18 @@
  * limitations under the License.
  */
 
-package org.connectbot.service;
+package org.connectbot.service
 
 /**
- * Used to notify interested parties when a {@link TerminalBridge} has changed materially
- * changed status (e.g., connected, disconnected, name changed, etc).
+ * Listener for font size changes in the terminal.
+ *
+ * @author Kenny Root
  */
-public interface OnHostStatusChangedListener {
-	void onHostStatusChanged();
+fun interface FontSizeChangedListener {
+    /**
+     * Called when the font size changes.
+     *
+     * @param sizeDp new font size in dp
+     */
+    fun onFontSizeChanged(sizeDp: Float)
 }
