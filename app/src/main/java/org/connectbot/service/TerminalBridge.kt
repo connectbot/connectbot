@@ -23,11 +23,14 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
-import android.os.Handler
-import android.os.Looper
 import android.provider.Settings
 import android.text.ClipboardManager
 import android.util.Log
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 import java.io.IOException
 import java.nio.charset.Charset
@@ -58,6 +61,8 @@ import org.connectbot.util.HostConstants
  */
 @Suppress("DEPRECATION") // for ClipboardManager
 class TerminalBridge : VDUDisplay {
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
     private var displayDensity: Float = 0f
     private var systemFontScale: Float = 0f
 
@@ -263,12 +268,9 @@ class TerminalBridge : VDUDisplay {
 
         outputLine(manager!!.res.getString(R.string.terminal_connecting, host.hostname, host.port, host.protocol))
 
-        val connectionThread = Thread {
+        scope.launch(Dispatchers.IO) {
             transport!!.connect()
         }
-        connectionThread.name = "Connection"
-        connectionThread.isDaemon = true
-        connectionThread.start()
     }
 
     /**
@@ -301,7 +303,7 @@ class TerminalBridge : VDUDisplay {
         }
 
         synchronized(localOutput) {
-            for (line in output.split("\n".toRegex(), -1)) {
+            for (line in output.split("\n".toRegex())) {
                 var processedLine = line
                 if (processedLine.isNotEmpty() && processedLine[processedLine.length - 1] == '\r') {
                     processedLine = processedLine.substring(0, processedLine.length - 1)
@@ -355,15 +357,13 @@ class TerminalBridge : VDUDisplay {
         if (string == null || string.isEmpty())
             return
 
-        val injectStringThread = Thread {
+        scope.launch(Dispatchers.IO) {
             try {
                 transport!!.write(string.toByteArray(charset(host.encoding)))
             } catch (e: Exception) {
                 Log.e(TAG, "Couldn't inject string to remote host: ", e)
             }
         }
-        injectStringThread.name = "InjectString"
-        injectStringThread.start()
     }
 
     /**
@@ -390,10 +390,9 @@ class TerminalBridge : VDUDisplay {
         if (isSessionOpen) {
             // create thread to relay incoming connection data to buffer
             relay = Relay(this, transport!!, buffer as vt320, host.encoding)
-            val relayThread = Thread(relay)
-            relayThread.isDaemon = true
-            relayThread.name = "Relay"
-            relayThread.start()
+            scope.launch {
+                relay?.start()
+            }
         }
 
         // force font-size to make sure we resizePTY as needed
@@ -453,12 +452,10 @@ class TerminalBridge : VDUDisplay {
 
         // disconnection request hangs if we havent really connected to a host yet
         // temporary fix is to just spawn disconnection into a thread
-        val disconnectThread = Thread {
+        scope.launch(Dispatchers.IO) {
             if (transport != null && transport!!.isConnected())
                 transport!!.close()
         }
-        disconnectThread.name = "Disconnect"
-        disconnectThread.start()
 
         if (immediate || (host.quickDisconnect && !host.stayConnected)) {
             awaitingClose = true
@@ -472,7 +469,7 @@ class TerminalBridge : VDUDisplay {
                 manager?.requestReconnect(this)
                 return
             }
-            val disconnectPromptThread = Thread {
+            scope.launch(Dispatchers.IO) {
                 val result = requestBooleanPrompt(
                     message = manager!!.res.getString(R.string.prompt_host_disconnected),
                     instructions = null
@@ -482,9 +479,6 @@ class TerminalBridge : VDUDisplay {
                     triggerDisconnectListener()
                 }
             }
-            disconnectPromptThread.name = "DisconnectPrompt"
-            disconnectPromptThread.isDaemon = true
-            disconnectPromptThread.start()
         }
     }
 
@@ -501,7 +495,7 @@ class TerminalBridge : VDUDisplay {
         }
 
         // The disconnect listener should be run on the main thread if possible.
-        Handler(Looper.getMainLooper()).post {
+        scope.launch(Dispatchers.Main) {
             for (listener in listenersCopy) {
                 listener.onDisconnected(this@TerminalBridge)
             }
@@ -1105,6 +1099,13 @@ class TerminalBridge : VDUDisplay {
      */
     fun decreaseFontSize() {
         setFontSize(fontSizeDp - FONT_SIZE_STEP)
+    }
+
+    /**
+     * Cancel the coroutine scope and clean up any running coroutines.
+     */
+    fun cancelScope() {
+        scope.cancel()
     }
 
     companion object {

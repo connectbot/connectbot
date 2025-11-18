@@ -20,6 +20,9 @@ package org.connectbot.service
 import android.text.AndroidCharacter
 import android.util.Log
 import de.mud.terminal.vt320
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.withContext
 import org.apache.harmony.niochar.charset.additional.IBM437
 import org.connectbot.transport.AbsTransport
 import java.io.IOException
@@ -30,7 +33,7 @@ import java.nio.charset.CharsetDecoder
 import java.nio.charset.CodingErrorAction
 
 /**
- * Runnable thread that relays incoming data from the transport to the terminal buffer.
+ * Coroutine-based relay that handles incoming data from the transport to the terminal buffer.
  * Handles charset decoding and East Asian character width calculations.
  *
  * @author Kenny Root
@@ -40,7 +43,7 @@ class Relay(
     private val transport: AbsTransport,
     private val buffer: vt320,
     encoding: String
-) : Runnable {
+) {
 
     private var currentCharset: Charset? = null
     private var decoder: CharsetDecoder? = null
@@ -90,7 +93,11 @@ class Relay(
      */
     fun getCharset(): Charset? = currentCharset
 
-    override fun run() {
+    /**
+     * Start relaying data from transport to terminal buffer.
+     * This is a suspend function that runs on IO dispatcher.
+     */
+    suspend fun start() = withContext(Dispatchers.IO) {
         byteBuffer = ByteBuffer.allocate(BUFFER_SIZE)
         charBuffer = CharBuffer.allocate(BUFFER_SIZE)
 
@@ -104,7 +111,7 @@ class Relay(
         byteBuffer.limit(0)
 
         try {
-            while (true) {
+            while (isActive) {
                 val bytesToRead = byteBuffer.capacity() - byteBuffer.limit()
                 val offset = byteBuffer.arrayOffset() + byteBuffer.limit()
                 bytesRead = transport.read(byteArray, offset, bytesToRead)
@@ -112,7 +119,7 @@ class Relay(
                 if (bytesRead > 0) {
                     byteBuffer.limit(byteBuffer.limit() + bytesRead)
 
-                    val result = synchronized(this) {
+                    val result = synchronized(this@Relay) {
                         decoder?.decode(byteBuffer, charBuffer, false)
                     }
 
@@ -134,7 +141,7 @@ class Relay(
                 }
             }
         } catch (e: IOException) {
-            Log.e(TAG, "Problem while handling incoming data in relay thread", e)
+            Log.e(TAG, "Problem while handling incoming data in relay", e)
         }
     }
 

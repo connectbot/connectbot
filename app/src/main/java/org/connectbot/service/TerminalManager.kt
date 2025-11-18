@@ -40,8 +40,14 @@ import java.io.IOException
 import java.lang.ref.WeakReference
 import java.security.KeyPair
 import java.util.Arrays
-import java.util.Timer
-import java.util.TimerTask
+
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 import org.connectbot.R
 import org.connectbot.data.ColorSchemeRepository
@@ -90,9 +96,9 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	private var mediaPlayer: MediaPlayer? = null
 
-	private lateinit var pubkeyTimer: Timer
+	private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
-	private var idleTimer: Timer? = null
+	private var idleJob: Job? = null
 	private val IDLE_TIMEOUT: Long = 300000 // 5 minutes
 
 	private var vibrator: Vibrator? = null
@@ -116,8 +122,6 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		prefs.registerOnSharedPreferenceChangeListener(this)
 
 		res = resources
-
-		pubkeyTimer = Timer("pubkeyTimer", true)
 
 		hostRepository = HostRepository.get(this)
 		colorRepository = ColorSchemeRepository.get(this)
@@ -172,11 +176,8 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 		pubkeyRepository = null
 
-		synchronized(this) {
-			if (idleTimer != null)
-				idleTimer!!.cancel()
-            pubkeyTimer.cancel()
-		}
+		stopIdleTimer()
+		scope.cancel()
 
 		connectivityManager.cleanup()
 
@@ -412,10 +413,12 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 		if (loadedKeypairs.size > 0) {
 			synchronized(this) {
-				if (idleTimer == null)
-					idleTimer = Timer("idleTimer", true)
-
-				idleTimer!!.schedule(IdleTask(), IDLE_TIMEOUT)
+				idleJob?.cancel()
+				idleJob = scope.launch {
+					delay(IDLE_TIMEOUT)
+					Log.d(TAG, String.format("Stopping service after timeout of ~%d seconds", IDLE_TIMEOUT / 1000))
+					stopNow()
+				}
 			}
 		} else {
 			Log.d(TAG, "Stopping service immediately")
@@ -431,10 +434,8 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	@Synchronized
 	private fun stopIdleTimer() {
-		if (idleTimer != null) {
-			idleTimer!!.cancel()
-			idleTimer = null
-		}
+		idleJob?.cancel()
+		idleJob = null
 	}
 //
 //	fun getBridges(): ArrayList<TerminalBridge> {
@@ -495,13 +496,6 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		}
 
 		return true
-	}
-
-	private inner class IdleTask : TimerTask() {
-		override fun run() {
-			Log.d(TAG, String.format("Stopping service after timeout of ~%d seconds", IDLE_TIMEOUT / 1000))
-			this@TerminalManager.stopNow()
-		}
 	}
 
 	fun tryKeyVibrate() {
@@ -627,26 +621,18 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 * we'll be getting a different connection any time soon.
 	 */
 	fun onConnectivityLost() {
-		val t = object : Thread() {
-			override fun run() {
-				disconnectAll(false, true)
-			}
+		scope.launch(Dispatchers.IO) {
+			disconnectAll(false, true)
 		}
-		t.name = "Disconnector"
-		t.start()
 	}
 
 	/**
 	 * Called when connectivity to the network is restored.
 	 */
 	fun onConnectivityRestored() {
-		val t = object : Thread() {
-			override fun run() {
-				reconnectPending()
-			}
+		scope.launch(Dispatchers.IO) {
+			reconnectPending()
 		}
-		t.name = "Reconnector"
-		t.start()
 	}
 
 	/**
