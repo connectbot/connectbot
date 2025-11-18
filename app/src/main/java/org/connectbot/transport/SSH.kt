@@ -248,10 +248,12 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                     // try each of the in-memory keys
                     bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_any))
                     manager?.loadedKeypairs?.entries?.forEach { entry ->
-                        if (entry.value.pubkey.confirmation && !promptForPubkeyUse(entry.key))
+                        if (entry.value.pubkey?.confirmation == true && !promptForPubkeyUse(entry.key))
                             return@forEach
 
-                        if (tryPublicKey(currentHost.username, entry.key, entry.value.pair)) {
+                        val keyPair = entry.value.pair ?: return@forEach
+
+                        if (tryPublicKey(currentHost.username, entry.key, keyPair)) {
                             finishConnection()
                             return
                         }
@@ -798,8 +800,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         val pubKeys = HashMap<String, ByteArray>(manager?.loadedKeypairs?.size ?: 0)
 
         manager?.loadedKeypairs?.entries?.forEach { entry ->
-            val pair = entry.value.pair
-
+            val pair = entry.value.pair ?: return@forEach
             try {
                 val privKey = pair.private
                 when (privKey) {
@@ -836,7 +837,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         }
         if (useAuthAgent == HostConstants.AUTHAGENT_CONFIRM) {
             val holder = manager?.loadedKeypairs?.get(nickname)
-            if (holder != null && holder.pubkey.confirmation && !promptForPubkeyUse(nickname))
+            if (holder != null && holder.pubkey?.confirmation == true && !promptForPubkeyUse(nickname))
                 return null
         }
         return manager?.getKey(nickname)

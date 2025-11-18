@@ -79,7 +79,7 @@ class Telnet : AbsTransport {
             }
 
             override fun getCharsetName(): String {
-                val charset = bridge?.getCharset()
+                val charset = bridge?.charset
                 return charset?.name() ?: ""
             }
         }
@@ -101,7 +101,7 @@ class Telnet : AbsTransport {
             }
             override fun notifyEndOfRecord() {}
             override fun getCharsetName(): String {
-                val charset = this@Telnet.bridge?.getCharset()
+                val charset = this@Telnet.bridge?.charset
                 return charset?.name() ?: ""
             }
         }

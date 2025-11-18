@@ -207,7 +207,7 @@ abstract class AbsTransport {
      * @param uri
      * @return
      */
-    abstract fun createHost(uri: Uri): Host?
+    abstract fun createHost(uri: Uri): Host
 
     /**
      * @return

@@ -173,7 +173,7 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 		int lineMultiple = (y * 2 + 1) / (getLineHeight() * 2);
 
 		TerminalBridge bridge = terminalView.bridge;
-		bridge.buffer.setWindowBase(lineMultiple);
+		bridge.getBuffer().setWindowBase(lineMultiple);
 
 		super.scrollTo(0, y);
 	}
@@ -184,7 +184,7 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 			// Selection may be beginning. Sync the TextView with the buffer.
 			refreshTextFromBuffer();
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
-			super.scrollTo(0, terminalView.bridge.buffer.getWindowBase() * getLineHeight());
+			super.scrollTo(0, terminalView.bridge.getBuffer().getWindowBase() * getLineHeight());
 		}
 
 		// Mouse input is treated differently:
@@ -213,11 +213,11 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 				// Process scroll wheel movement:
 				float yDistance = MotionEventCompat.getAxisValue(event, MotionEvent.AXIS_VSCROLL);
 
-				vt320 vtBuffer = (vt320) terminalView.bridge.buffer;
+				vt320 vtBuffer = (vt320) terminalView.bridge.getBuffer();
 				boolean mouseReport = vtBuffer.isMouseReportEnabled();
 				if (mouseReport) {
-					int row = (int) Math.floor(event.getY() / terminalView.bridge.charHeight);
-					int col = (int) Math.floor(event.getX() / terminalView.bridge.charWidth);
+					int row = (int) Math.floor(event.getY() / terminalView.bridge.getCharHeight());
+					int col = (int) Math.floor(event.getX() / terminalView.bridge.getCharWidth());
 
 					vtBuffer.mouseWheel(
 							yDistance > 0,
@@ -240,11 +240,11 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 	 * @return True if the event is handled.
 	 */
 	private boolean onMouseEvent(MotionEvent event, TerminalBridge bridge) {
-		int row = (int) Math.floor(event.getY() / bridge.charHeight);
-		int col = (int) Math.floor(event.getX() / bridge.charWidth);
+		int row = (int) Math.floor(event.getY() / bridge.getCharHeight());
+		int col = (int) Math.floor(event.getX() / bridge.getCharWidth());
 		int meta = event.getMetaState();
 		boolean shiftOn = (meta & KeyEvent.META_SHIFT_ON) != 0;
-		vt320 vtBuffer = (vt320) bridge.buffer;
+		vt320 vtBuffer = (vt320) bridge.getBuffer();
 		boolean mouseReport = vtBuffer.isMouseReportEnabled();
 
 		// MouseReport can be "defeated" using the shift key.

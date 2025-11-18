@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as? TerminalManager.TerminalBinder
-            terminalManager = binder?.service
+            terminalManager = binder?.getService()
             bound = true
         }
 
@@ -160,9 +160,7 @@ class MainActivity : ComponentActivity() {
 
     private fun handleIntent(intent: Intent?) {
         if (intent?.action == DISCONNECT_ACTION) {
-            terminalManager?.let { manager ->
-                manager.disconnectAll(false, false)
-            }
+            terminalManager?.disconnectAll(false, false)
         }
     }
 
