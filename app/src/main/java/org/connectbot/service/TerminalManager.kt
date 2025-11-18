@@ -517,8 +517,17 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	private fun vibrate() {
         vibrator?.let {
-            val vibrationEffect = VibrationEffect.createOneShot(VIBRATE_DURATION, VibrationEffect.DEFAULT_AMPLITUDE)
-            it.vibrate(vibrationEffect)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // O = API 26
+                val vibrationEffect = VibrationEffect.createOneShot(
+                    VIBRATE_DURATION,
+                    VibrationEffect.DEFAULT_AMPLITUDE
+                )
+                it.vibrate(vibrationEffect)
+            } else {
+                // Deprecated path for compatibility with older APIs (pre-API 26)
+                @Suppress("DEPRECATION")
+                it.vibrate(VIBRATE_DURATION)
+            }
         }
 	}
 
