@@ -48,6 +48,9 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 
 import org.connectbot.R
 import org.connectbot.data.ColorSchemeRepository
@@ -85,7 +88,22 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		disconnectListener = listener
 	}
 
+	/**
+	 * Report an error from the service layer to be propagated to the UI.
+	 * This method is thread-safe and can be called from any context.
+	 *
+	 * @param error The ServiceError to report
+	 */
+	fun reportError(error: ServiceError) {
+		scope.launch {
+			_serviceErrors.emit(error)
+		}
+	}
+
 	private val hostStatusChangedListeners = ArrayList<OnHostStatusChangedListener>()
+
+	private val _serviceErrors = MutableSharedFlow<ServiceError>(replay = 0, extraBufferCapacity = 10)
+	val serviceErrors: SharedFlow<ServiceError> = _serviceErrors.asSharedFlow()
 
 	internal val loadedKeypairs: MutableMap<String, KeyHolder> = HashMap()
 
@@ -144,11 +162,23 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 						val pair = PubkeyUtils.convertToKeyPair(pubkey, null)
 						addKey(pubkey, pair)
 					} catch (e: Exception) {
-						Log.d(TAG, String.format("Problem adding key '%s' to in-memory cache", pubkey.nickname), e)
+						Log.w(TAG, String.format("Problem adding key '%s' to in-memory cache", pubkey.nickname), e)
+						_serviceErrors.emit(
+							ServiceError.KeyLoadFailed(
+								keyName = pubkey.nickname,
+								reason = e.message ?: "Unknown error loading key"
+							)
+						)
 					}
 				}
 			} catch (e: Exception) {
 				Log.e(TAG, "Failed to load startup keys", e)
+				_serviceErrors.emit(
+					ServiceError.KeyLoadFailed(
+						keyName = "startup keys",
+						reason = e.message ?: "Failed to retrieve keys from database"
+					)
+				)
 			}
 		}
 

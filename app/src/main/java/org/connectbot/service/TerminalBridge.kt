@@ -264,11 +264,32 @@ class TerminalBridge : VDUDisplay {
         outputLine(manager!!.res.getString(R.string.terminal_connecting, host.hostname, host.port, host.protocol))
 
         scope.launch(Dispatchers.IO) {
-            if (transport!!.canForwardPorts()) {
-                for (portForward in manager!!.hostRepository.getPortForwardsForHost(host.id))
-                    transport!!.addPortForward(portForward)
+            try {
+                if (transport!!.canForwardPorts()) {
+                    try {
+                        for (portForward in manager!!.hostRepository.getPortForwardsForHost(host.id))
+                            transport!!.addPortForward(portForward)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Failed to load port forwards for ${host.nickname}", e)
+                        manager?.reportError(
+                            ServiceError.PortForwardLoadFailed(
+                                hostNickname = host.nickname,
+                                reason = e.message ?: "Failed to load port forwards"
+                            )
+                        )
+                    }
+                }
+                transport!!.connect()
+            } catch (e: Exception) {
+                Log.e(TAG, "Connection failed for ${host.nickname}", e)
+                manager?.reportError(
+                    ServiceError.ConnectionFailed(
+                        hostNickname = host.nickname,
+                        hostname = host.hostname,
+                        reason = e.message ?: "Connection failed"
+                    )
+                )
             }
-            transport!!.connect()
         }
     }
 
@@ -558,7 +579,17 @@ class TerminalBridge : VDUDisplay {
 
         if (host.id != 0L) {
             scope.launch(Dispatchers.IO) {
-                manager!!.hostRepository.saveHost(host)
+                try {
+                    manager!!.hostRepository.saveHost(host)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to save font size for ${host.nickname}", e)
+                    manager?.reportError(
+                        ServiceError.HostSaveFailed(
+                            hostNickname = host.nickname,
+                            reason = "Failed to save font size: ${e.message}"
+                        )
+                    )
+                }
             }
         }
     }
@@ -1007,11 +1038,20 @@ class TerminalBridge : VDUDisplay {
 
     override fun resetColors() {
         scope.launch(Dispatchers.IO) {
-            val defaults = manager!!.colorRepository.getSchemeDefaults(-1)
-            defaultFg = defaults.first
-            defaultBg = defaults.second
+            try {
+                val defaults = manager!!.colorRepository.getSchemeDefaults(-1)
+                defaultFg = defaults.first
+                defaultBg = defaults.second
 
-            color = manager.colorRepository.getSchemeColors(-1)
+                color = manager.colorRepository.getSchemeColors(-1)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to reset colors", e)
+                manager?.reportError(
+                    ServiceError.ColorSchemeLoadFailed(
+                        reason = e.message ?: "Failed to load color scheme"
+                    )
+                )
+            }
         }
     }
 
