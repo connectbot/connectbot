@@ -85,7 +85,7 @@ class ConsoleViewModel(
 
                 // Check if we already have a bridge for this host
                 val existingBridge = allBridges.find { bridge ->
-                    bridge.host?.id == hostId
+                    bridge.host.id == hostId
                 }
 
                 // If no bridge exists, create one
@@ -101,7 +101,7 @@ class ConsoleViewModel(
                             .fragment(host.nickname)
                             .build()
 
-                        terminalManager?.openConnection(uri)
+                        terminalManager.openConnection(uri)
                     }
                 }
             } catch (e: Exception) {
@@ -146,7 +146,7 @@ class ConsoleViewModel(
                 // If hostId is provided, try to find the bridge for this specific host
                 val filteredBridges = if (hostId != -1L) {
                     allBridges.filter { bridge ->
-                        bridge.host?.id == hostId
+                        bridge.host.id == hostId
                     }
                 } else {
                     allBridges

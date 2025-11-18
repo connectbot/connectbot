@@ -146,7 +146,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 		paint = new Paint();
 
 		cursorPaint = new Paint();
-		cursorPaint.setColor(bridge.color[bridge.defaultFg]);
+		cursorPaint.setColor(bridge.getColor()[bridge.getDefaultFg()]);
 		cursorPaint.setAntiAlias(true);
 
 		cursorInversionPaint = new Paint();
@@ -234,7 +234,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 					// estimate how many rows we have scrolled through
 					// accumulate distance that doesn't trigger immediate scroll
 					totalY += distanceY;
-					final int moved = (int) (totalY / bridge.charHeight);
+					final int moved = (int) (totalY / bridge.getCharHeight());
 
 					// Consume as pg up/dn only if towards left third of screen with the gesture
 					// enabled.
@@ -243,18 +243,18 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 					if (pgUpDnGestureEnabled && e2.getX() <= getWidth() / 3) {
 						// otherwise consume as pgup/pgdown for every 5 lines
 						if (moved > 5) {
-							((vt320) bridge.buffer).keyPressed(vt320.KEY_PAGE_DOWN, ' ', 0);
+							((vt320) bridge.getBuffer()).keyPressed(vt320.KEY_PAGE_DOWN, ' ', 0);
 							bridge.tryKeyVibrate();
 							totalY = 0;
 						} else if (moved < -5) {
-							((vt320) bridge.buffer).keyPressed(vt320.KEY_PAGE_UP, ' ', 0);
+							((vt320) bridge.getBuffer()).keyPressed(vt320.KEY_PAGE_UP, ' ', 0);
 							bridge.tryKeyVibrate();
 							totalY = 0;
 						}
 						return true;
 					} else if (moved != 0) {
-						int base = bridge.buffer.getWindowBase();
-						bridge.buffer.setWindowBase(base + moved);
+						int base = bridge.getBuffer().getWindowBase();
+						bridge.getBuffer().setWindowBase(base + moved);
 						totalY = 0;
 						return false;
 					}
@@ -304,8 +304,8 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 			// when copying, highlight the area
 			if (bridge.isSelectingForCopy()) {
 				SelectionArea area = bridge.getSelectionArea();
-				int row = (int) Math.floor(event.getY() / bridge.charHeight);
-				int col = (int) Math.floor(event.getX() / bridge.charWidth);
+				int row = (int) Math.floor(event.getY() / bridge.getCharHeight());
+				int col = (int) Math.floor(event.getX() / bridge.getCharWidth());
 
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
@@ -348,7 +348,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 					}
 
 					// copy selected area to clipboard
-					String copiedText = area.copyFrom(bridge.buffer);
+					String copiedText = area.copyFrom(bridge.getBuffer());
 
 					clipboard.setText(copiedText);
 					Toast.makeText(
@@ -400,7 +400,7 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 					// For the TextView to line up with the bitmap text, lineHeight must be equal to
 					// the bridge's charHeight. See TextView.getLineHeight(), which has been reversed to
 					// derive lineSpacingMultiplier.
-					float lineSpacingMultiplier = (float) bridge.charHeight / terminalTextViewOverlay.getPaint().getFontMetricsInt(null);
+					float lineSpacingMultiplier = (float) bridge.getCharHeight() / terminalTextViewOverlay.getPaint().getFontMetricsInt(null);
 					terminalTextViewOverlay.setLineSpacing(0.0f, lineSpacingMultiplier);
 				}
 			}
@@ -409,25 +409,25 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 
 	private void scaleCursors() {
 		// Create a scale matrix to scale our 1x1 representation of the cursor
-		tempDst.set(0.0f, 0.0f, bridge.charWidth, bridge.charHeight);
+		tempDst.set(0.0f, 0.0f, bridge.getCharWidth(), bridge.getCharHeight());
 		scaleMatrix.setRectToRect(tempSrc, tempDst, scaleType);
 	}
 
 	@Override
 	public void onDraw(Canvas canvas) {
-		if (bridge.bitmap != null) {
+		if (bridge.getBitmap() != null) {
 			// draw the bitmap
 			bridge.onDraw();
 
 			// draw the bridge bitmap if it exists
-			canvas.drawBitmap(bridge.bitmap, 0, 0, paint);
+			canvas.drawBitmap(bridge.getBitmap(), 0, 0, paint);
 
 			// also draw cursor if visible
-			if (bridge.buffer.isCursorVisible()) {
-				int cursorColumn = bridge.buffer.getCursorColumn();
-				final int cursorRow = bridge.buffer.getCursorRow();
+			if (bridge.getBuffer().isCursorVisible()) {
+				int cursorColumn = bridge.getBuffer().getCursorColumn();
+				final int cursorRow = bridge.getBuffer().getCursorRow();
 
-				final int columns = bridge.buffer.getColumns();
+				final int columns = bridge.getBuffer().getColumns();
 
 				if (cursorColumn == columns)
 					cursorColumn = columns - 1;
@@ -435,27 +435,27 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 				if (cursorColumn < 0 || cursorRow < 0)
 					return;
 
-				long currentAttribute = bridge.buffer.getAttributes(
+				long currentAttribute = bridge.getBuffer().getAttributes(
 						cursorColumn, cursorRow);
 				boolean onWideCharacter = (currentAttribute & VDUBuffer.FULLWIDTH) != 0;
 
-				int x = cursorColumn * bridge.charWidth;
-				int y = (bridge.buffer.getCursorRow()
-						+ bridge.buffer.screenBase - bridge.buffer.windowBase)
-						* bridge.charHeight;
+				int x = cursorColumn * bridge.getCharWidth();
+				int y = (bridge.getBuffer().getCursorRow()
+						+ bridge.getBuffer().screenBase - bridge.getBuffer().windowBase)
+						* bridge.getCharHeight();
 
 				// Save the current clip and translation
 				canvas.save();
 
 				canvas.translate(x, y);
 				canvas.clipRect(0, 0,
-						bridge.charWidth * (onWideCharacter ? 2 : 1),
-						bridge.charHeight);
+						bridge.getCharWidth() * (onWideCharacter ? 2 : 1),
+						bridge.getCharHeight());
 
 				int metaState = bridge.getKeyHandler().getMetaState();
-				if (y + bridge.charHeight < bridge.bitmap.getHeight()) {
-					Bitmap underCursor = Bitmap.createBitmap(bridge.bitmap, x, y,
-							bridge.charWidth * (onWideCharacter ? 2 : 1), bridge.charHeight);
+				if (y + bridge.getCharHeight() < bridge.getBitmap().getHeight()) {
+					Bitmap underCursor = Bitmap.createBitmap(bridge.getBitmap(), x, y,
+							bridge.getCharWidth() * (onWideCharacter ? 2 : 1), bridge.getCharHeight());
 					if (metaState == 0)
 						canvas.drawBitmap(underCursor, 0, 0, cursorInversionPaint);
 					else
@@ -496,10 +496,10 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 				SelectionArea area = bridge.getSelectionArea();
 				canvas.save();
 				canvas.clipRect(
-					area.getLeft() * bridge.charWidth,
-					area.getTop() * bridge.charHeight,
-					(area.getRight() + 1) * bridge.charWidth,
-					(area.getBottom() + 1) * bridge.charHeight
+					area.getLeft() * bridge.getCharWidth(),
+					area.getTop() * bridge.getCharHeight(),
+					(area.getRight() + 1) * bridge.getCharWidth(),
+					(area.getBottom() + 1) * bridge.getCharHeight()
 				);
 				canvas.drawPaint(cursorPaint);
 				canvas.restore();
