@@ -225,6 +225,7 @@ tasks.withType<DependencyUpdatesTask>().configureEach {
 
 dependencies {
     implementation(libs.sshlib)
+    implementation(libs.androidx.media3.common.ktx)
     "googleImplementation"(libs.play.services.basement)
     "ossImplementation"(libs.conscrypt.android)
 
