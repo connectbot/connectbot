@@ -20,6 +20,7 @@ package org.connectbot.ui.screens.console
 import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context
+import android.os.Build
 import android.widget.Toast
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -647,7 +648,9 @@ private fun TerminalViewWrapper(
                 // Create TerminalView with the container as parent
                 terminalView = TerminalView(context, bridge, container).apply {
                     // Disable default focus highlight (green outline)
-                    defaultFocusHighlightEnabled = false
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        defaultFocusHighlightEnabled = false
+                    }
                     onViewCreated(this)
                 }
 
