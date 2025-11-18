@@ -107,8 +107,7 @@ object TransportFactory {
      * @param uri URI to match
      * @return Matching host or null
      */
-    @JvmStatic
-    fun findHost(hostRepository: HostRepository, uri: Uri): Host? {
+    suspend fun findHost(hostRepository: HostRepository, uri: Uri): Host? {
         val transport = getTransport(uri.scheme) ?: run {
             Log.e(TAG, "Unknown transport scheme: ${uri.scheme}")
             throw IllegalStateException("Unknown transport scheme: ${uri.scheme}")
@@ -122,6 +121,6 @@ object TransportFactory {
             throw IllegalStateException("Failed to get needed selection arguments")
         }
 
-        return hostRepository.findHostBlocking(selection)
+        return hostRepository.findHost(selection)
     }
 }
