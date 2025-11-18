@@ -160,7 +160,17 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 				for (pubkey in pubkeys) {
 					try {
 						val pair = PubkeyUtils.convertToKeyPair(pubkey, null)
-						addKey(pubkey, pair)
+						if (pair != null) {
+							addKey(pubkey, pair)
+						} else {
+							Log.w(TAG, String.format("Failed to convert key '%s' to KeyPair", pubkey.nickname))
+							_serviceErrors.emit(
+								ServiceError.KeyLoadFailed(
+									keyName = pubkey.nickname,
+									reason = "Failed to convert key to KeyPair"
+								)
+							)
+						}
 					} catch (e: Exception) {
 						Log.w(TAG, String.format("Problem adding key '%s' to in-memory cache", pubkey.nickname), e)
 						_serviceErrors.emit(
