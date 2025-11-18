@@ -45,6 +45,7 @@ assertj = "3.27.6"
 robolectric = "4.16"
 
 errorproneCore = "2.44.0"
+media3CommonKtx = "1.8.0"
 
 [libraries]
 sshlib = { module = "org.connectbot:sshlib", version.ref = "sshlib" }
@@ -92,6 +93,7 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
+androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

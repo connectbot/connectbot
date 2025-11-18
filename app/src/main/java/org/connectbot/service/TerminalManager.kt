@@ -22,16 +22,18 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
-import android.content.res.AssetFileDescriptor
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.media.AudioManager
+import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
+import android.os.VibrationEffect
 import android.os.Vibrator
-import android.preference.PreferenceManager
+import android.os.VibratorManager
+import androidx.preference.PreferenceManager
 import android.util.Log
 
 import java.io.IOException
@@ -65,8 +67,6 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		get() = _bridges
 	var mHostBridgeMap: MutableMap<Host, WeakReference<TerminalBridge>> = HashMap()
 	var mNicknameBridgeMap: MutableMap<String, WeakReference<TerminalBridge>> = HashMap()
-
-	var defaultBridge: TerminalBridge? = null
 
 	val disconnected: MutableList<Host> = ArrayList()
 
@@ -136,8 +136,17 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 			}
 		}
 
-		vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-		wantKeyVibration = prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, true)
+        vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            // API 31+ uses VibratorManager
+            val manager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager
+            manager?.defaultVibrator
+        } else {
+            // Pre-API 31 uses direct Vibrator service
+            @Suppress("Deprecation")
+            getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+        }
+
+        wantKeyVibration = prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, true)
 
 		wantBellVibration = prefs.getBoolean(PreferenceConstants.BELL_VIBRATE, true)
 		enableMediaPlayer()
@@ -190,7 +199,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 		if (tmpBridges != null) {
 			// disconnect and dispose of any existing bridges
-			for (tmpBridge in tmpBridges!!) {
+			for (tmpBridge in tmpBridges) {
 				if (excludeLocal && !tmpBridge.isUsingNetwork())
 					continue
 				tmpBridge.dispatchDisconnect(immediate)
@@ -246,7 +255,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		var scrollback = 140
 		try {
 			scrollback = Integer.parseInt(prefs.getString(PreferenceConstants.SCROLLBACK, "140")!!)
-		} catch (ignored: Exception) {
+		} catch (_: Exception) {
 		}
 		return scrollback
 	}
@@ -501,8 +510,10 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	}
 
 	private fun vibrate() {
-		if (vibrator != null)
-			vibrator!!.vibrate(VIBRATE_DURATION)
+        vibrator?.let {
+            val vibrationEffect = VibrationEffect.createOneShot(VIBRATE_DURATION, VibrationEffect.DEFAULT_AMPLITUDE)
+            it.vibrate(vibrationEffect)
+        }
 	}
 
 	private fun enableMediaPlayer() {
@@ -511,7 +522,13 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		val volume = prefs.getFloat(PreferenceConstants.BELL_VOLUME,
 				PreferenceConstants.DEFAULT_BELL_VOLUME)
 
-		mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_NOTIFICATION)
+        val audioAttributes = AudioAttributes.Builder()
+            // Use USAGE_NOTIFICATION for sounds that signal an event
+            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+            // Use CONTENT_TYPE_SONIFICATION for non-music/non-speech sounds (like notifications or alarms)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .build()
+        mediaPlayer?.setAudioAttributes(audioAttributes)
 
 		val file = res.openRawResourceFd(R.raw.bell)
 		try {
