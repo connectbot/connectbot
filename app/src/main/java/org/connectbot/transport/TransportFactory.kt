@@ -36,7 +36,6 @@ object TransportFactory {
      * @param protocol The protocol name (e.g., "ssh", "telnet", "local")
      * @return Transport instance or null if protocol is not recognized
      */
-    @JvmStatic
     fun getTransport(protocol: String?): AbsTransport? {
         return Transport.fromProtocol(protocol)?.createInstance()
     }
@@ -47,7 +46,6 @@ object TransportFactory {
      * @param input The input string to parse
      * @return Parsed URI or null if parsing fails
      */
-    @JvmStatic
     fun getUri(scheme: String, input: String): Uri? {
         Log.d(TAG, "Attempting to discover URI for scheme=$scheme on input=$input")
         val transport = Transport.fromProtocol(scheme)
@@ -61,7 +59,6 @@ object TransportFactory {
      * Get all available transport protocol names.
      * @return Array of protocol names
      */
-    @JvmStatic
     fun getTransportNames(): Array<String> {
         return Transport.allTransports().map { it.protocolName }.toTypedArray()
     }
@@ -72,7 +69,6 @@ object TransportFactory {
      * @param b Second transport
      * @return true if both transports are of the same class
      */
-    @JvmStatic
     fun isSameTransportType(a: AbsTransport?, b: AbsTransport?): Boolean {
         if (a == null || b == null) return false
         return a::class == b::class
@@ -83,7 +79,6 @@ object TransportFactory {
      * @param protocol The protocol name
      * @return true if the protocol supports port forwarding
      */
-    @JvmStatic
     fun canForwardPorts(protocol: String): Boolean {
         val transport = Transport.fromProtocol(protocol)
         // Only SSH supports port forwarding
@@ -96,7 +91,6 @@ object TransportFactory {
      * @param context Android context for accessing resources
      * @return Format hint string
      */
-    @JvmStatic
     fun getFormatHint(protocol: String, context: Context): String {
         return Transport.fromProtocol(protocol)?.getFormatHint(context) ?: "???"
     }

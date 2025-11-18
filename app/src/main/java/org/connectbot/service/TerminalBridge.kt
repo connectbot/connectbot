@@ -71,7 +71,7 @@ class TerminalBridge : VDUDisplay {
     var defaultFg = HostConstants.DEFAULT_FG_COLOR
     var defaultBg = HostConstants.DEFAULT_BG_COLOR
 
-    protected val manager: TerminalManager?
+    val manager: TerminalManager
 
     var host: Host
 
@@ -121,39 +121,6 @@ class TerminalBridge : VDUDisplay {
     val promptManager = PromptManager()
 
     private val disconnectListeners = mutableListOf<BridgeDisconnectedListener>()
-
-    /**
-     * Create a new terminal bridge suitable for unit testing.
-     */
-    constructor() {
-        buffer = object : vt320() {
-            override fun write(b: ByteArray) {}
-            override fun write(b: Int) {}
-            override fun sendTelnetCommand(cmd: Byte) {}
-            override fun setWindowSize(c: Int, r: Int) {}
-            override fun debug(s: String) {}
-        }
-
-        emulation = null
-        manager = null
-
-        displayDensity = 1f
-
-        defaultPaint = Paint()
-
-        selectionArea = SelectionArea()
-        scrollback = 1
-
-        localOutput = mutableListOf()
-
-        fontSizeChangedListeners = mutableListOf()
-
-        transport = null
-
-        host = Host()
-
-        keyListener = TerminalKeyListener(null, this, buffer!!, null)
-    }
 
     /**
      * Create new terminal bridge with following parameters. We will immediately
@@ -261,17 +228,17 @@ class TerminalBridge : VDUDisplay {
         }
         transport!!.setEmulation(emulation)
 
-        outputLine(manager!!.res.getString(R.string.terminal_connecting, host.hostname, host.port, host.protocol))
+        outputLine(manager.res.getString(R.string.terminal_connecting, host.hostname, host.port, host.protocol))
 
         scope.launch(Dispatchers.IO) {
             try {
                 if (transport!!.canForwardPorts()) {
                     try {
-                        for (portForward in manager!!.hostRepository.getPortForwardsForHost(host.id))
+                        for (portForward in manager.hostRepository.getPortForwardsForHost(host.id))
                             transport!!.addPortForward(portForward)
                     } catch (e: Exception) {
                         Log.e(TAG, "Failed to load port forwards for ${host.nickname}", e)
-                        manager?.reportError(
+                        manager.reportError(
                             ServiceError.PortForwardLoadFailed(
                                 hostNickname = host.nickname,
                                 reason = e.message ?: "Failed to load port forwards"
@@ -282,7 +249,7 @@ class TerminalBridge : VDUDisplay {
                 transport!!.connect()
             } catch (e: Exception) {
                 Log.e(TAG, "Connection failed for ${host.nickname}", e)
-                manager?.reportError(
+                manager.reportError(
                     ServiceError.ConnectionFailed(
                         hostNickname = host.nickname,
                         hostname = host.hostname,
@@ -305,8 +272,7 @@ class TerminalBridge : VDUDisplay {
      * @param encoding the canonical name of the character encoding
      */
     fun setCharset(encoding: String) {
-        if (relay != null)
-            relay!!.setCharset(encoding)
+        relay?.setCharset(encoding)
         keyListener.setCharset(encoding)
     }
 
@@ -482,16 +448,16 @@ class TerminalBridge : VDUDisplay {
             triggerDisconnectListener()
         } else {
             run {
-                val line = manager!!.res.getString(R.string.alert_disconnect_msg)
+                val line = manager.res.getString(R.string.alert_disconnect_msg)
                 (buffer as vt320).putString("\r\n$line\r\n")
             }
             if (host.stayConnected) {
-                manager?.requestReconnect(this)
+                manager.requestReconnect(this)
                 return
             }
             scope.launch(Dispatchers.IO) {
                 val result = requestBooleanPrompt(
-                    message = manager!!.res.getString(R.string.prompt_host_disconnected),
+                    message = manager.res.getString(R.string.prompt_host_disconnected),
                     instructions = null
                 )
                 if (result == null || result) {
@@ -524,7 +490,7 @@ class TerminalBridge : VDUDisplay {
 
     @Synchronized
     fun tryKeyVibrate() {
-        manager!!.tryKeyVibrate()
+        manager.tryKeyVibrate()
     }
 
     /**
@@ -580,10 +546,10 @@ class TerminalBridge : VDUDisplay {
         if (host.id != 0L) {
             scope.launch(Dispatchers.IO) {
                 try {
-                    manager!!.hostRepository.saveHost(host)
+                    manager.hostRepository.saveHost(host)
                 } catch (e: Exception) {
                     Log.e(TAG, "Failed to save font size for ${host.nickname}", e)
-                    manager?.reportError(
+                    manager.reportError(
                         ServiceError.HostSaveFailed(
                             hostNickname = host.nickname,
                             reason = "Failed to save font size: ${e.message}"
@@ -612,23 +578,13 @@ class TerminalBridge : VDUDisplay {
     }
 
     /**
-     * Remove an [FontSizeChangedListener] from the list of listeners for
-     * this bridge.
-     *
-     * @param listener
-     */
-    fun removeFontSizeChangedListener(listener: FontSizeChangedListener) {
-        fontSizeChangedListeners.remove(listener)
-    }
-
-    /**
      * Something changed in our parent [TerminalView], maybe it's a new
      * parent, or maybe it's an updated font size. We should recalculate
      * terminal size information and request a PTY resize.
      */
     @Synchronized
     fun parentChanged(parent: TerminalView) {
-        if (manager != null && !manager.isResizeAllowed()) {
+        if (!manager.isResizeAllowed()) {
             Log.d(TAG, "Resize is not allowed now")
             return
         }
@@ -721,16 +677,6 @@ class TerminalBridge : VDUDisplay {
         Log.i(TAG, String.format("parentChanged() now width=%d, height=%d", columns, rows))
     }
 
-    /**
-     * Somehow our parent [TerminalView] was destroyed. Now we don't need
-     * to redraw anywhere, and we can recycle our internal bitmap.
-     */
-    @Synchronized
-    fun parentDestroyed() {
-        parent = null
-        discardBitmap()
-    }
-
     private fun discardBitmap() {
         if (bitmap != null)
             bitmap!!.recycle()
@@ -756,7 +702,7 @@ class TerminalBridge : VDUDisplay {
         var bg: Int
         synchronized(buffer!!) {
             val entireDirty = buffer!!.update[0] || fullRedraw
-            var isWideCharacter = false
+            var isWideCharacter: Boolean
 
             // walk through all lines in the buffer
             for (l in 0 until buffer!!.height) {
@@ -942,7 +888,7 @@ class TerminalBridge : VDUDisplay {
     }
 
     internal fun refreshOverlayFontSize() {
-        val newDensity = manager!!.resources.displayMetrics.density
+        val newDensity = manager.resources.displayMetrics.density
         val newFontScale = Settings.System.getFloat(manager.contentResolver,
                 Settings.System.FONT_SCALE, 1.0f)
         if (newDensity != displayDensity || newFontScale != systemFontScale) {
@@ -1039,14 +985,14 @@ class TerminalBridge : VDUDisplay {
     override fun resetColors() {
         scope.launch(Dispatchers.IO) {
             try {
-                val defaults = manager!!.colorRepository.getSchemeDefaults(-1)
+                val defaults = manager.colorRepository.getSchemeDefaults(-1)
                 defaultFg = defaults.first
                 defaultBg = defaults.second
 
                 color = manager.colorRepository.getSchemeColors(-1)
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to reset colors", e)
-                manager?.reportError(
+                manager.reportError(
                     ServiceError.ColorSchemeLoadFailed(
                         reason = e.message ?: "Failed to load color scheme"
                     )
