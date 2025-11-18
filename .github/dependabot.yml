@@ -5,26 +5,7 @@ updates:
   schedule:
     interval: daily
   open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: com.diffplug.spotless
-    versions:
-    - 5.10.0
-    - 5.10.1
-    - 5.12.0
-    - 5.12.1
-    - 5.9.0
-  - dependency-name: net.ltgt.errorprone
-    versions:
-    - 2.0.0
-  - dependency-name: com.google.android.gms:play-services-basement
-    versions:
-    - 17.6.0
-  - dependency-name: org.robolectric:robolectric
-    versions:
-    - "4.5"
-  - dependency-name: org.mockito:mockito-core
-    versions:
-    - 3.7.7
+
 - package-ecosystem: gradle
   directory: "/translations"
   schedule:
