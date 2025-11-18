@@ -69,18 +69,21 @@ import org.connectbot.util.PubkeyUtils
 class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenceChangeListener, ProviderLoaderListener {
 
 	private val _bridges = ArrayList<TerminalBridge>()
-	val bridges: ArrayList<TerminalBridge>
-		get() = _bridges
-	var mHostBridgeMap: MutableMap<Host, WeakReference<TerminalBridge>> = HashMap()
-	var mNicknameBridgeMap: MutableMap<String, WeakReference<TerminalBridge>> = HashMap()
+	val bridges: List<TerminalBridge>
+		get() = _bridges.toList()
 
-	val disconnected: MutableList<Host> = ArrayList()
+	private val mHostBridgeMap: MutableMap<Host, WeakReference<TerminalBridge>> = HashMap()
+	private val mNicknameBridgeMap: MutableMap<String, WeakReference<TerminalBridge>> = HashMap()
+
+	private val _disconnected = ArrayList<Host>()
+	val disconnected: List<Host>
+		get() = _disconnected.toList()
 
 	var disconnectListener: BridgeDisconnectedListener? = null
 
 	private val hostStatusChangedListeners = ArrayList<OnHostStatusChangedListener>()
 
-	var loadedKeypairs: MutableMap<String, KeyHolder> = HashMap()
+	internal val loadedKeypairs: MutableMap<String, KeyHolder> = HashMap()
 
 	lateinit var res: Resources
 
@@ -111,7 +114,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	private var savingKeys = false
 
-	val mPendingReconnect: MutableList<WeakReference<TerminalBridge>> = ArrayList()
+	private val mPendingReconnect: MutableList<WeakReference<TerminalBridge>> = ArrayList()
 
 	var hardKeyboardHidden = false
 
@@ -129,14 +132,19 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 		// load all marked pubkeys into memory
 		updateSavingKeys()
-		val pubkeys = pubkeyRepository!!.getStartupKeysBlocking()
-
-		for (pubkey in pubkeys) {
+		scope.launch(Dispatchers.IO) {
 			try {
-				val pair = PubkeyUtils.convertToKeyPair(pubkey, null)
-				addKey(pubkey, pair)
+				val pubkeys = pubkeyRepository!!.getStartupKeys()
+				for (pubkey in pubkeys) {
+					try {
+						val pair = PubkeyUtils.convertToKeyPair(pubkey, null)
+						addKey(pubkey, pair)
+					} catch (e: Exception) {
+						Log.d(TAG, String.format("Problem adding key '%s' to in-memory cache", pubkey.nickname), e)
+					}
+				}
 			} catch (e: Exception) {
-				Log.d(TAG, String.format("Problem adding key '%s' to in-memory cache", pubkey.nickname), e)
+				Log.e(TAG, "Failed to load startup keys", e)
 			}
 		}
 
@@ -228,8 +236,8 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 			mNicknameBridgeMap[bridge.host.nickname] = wr
 		}
 
-		synchronized(disconnected) {
-			disconnected.remove(bridge.host)
+		synchronized(_disconnected) {
+			_disconnected.remove(bridge.host)
 		}
 
 		if (bridge.isUsingNetwork()) {
@@ -277,8 +285,8 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 * @param hostId the database ID of the host to connect to
 	 * @return TerminalBridge for the connection, or null if host not found
 	 */
-	fun openConnectionForHostId(hostId: Long): TerminalBridge? {
-		val host = hostRepository.findHostByIdBlocking(hostId) ?: return null
+	suspend fun openConnectionForHostId(hostId: Long): TerminalBridge? {
+		val host = hostRepository.findHostById(hostId) ?: return null
 		return openConnection(host)
 	}
 
@@ -287,7 +295,9 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 * to [HostRepository].
 	 */
 	private fun touchHost(host: Host) {
-		hostRepository.touchHostBlocking(host)
+		scope.launch(Dispatchers.IO) {
+			hostRepository.touchHost(host)
+		}
 	}
 
 	/**
@@ -342,8 +352,8 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 				disconnectListener!!.onDisconnected(bridge)
 		}
 
-		synchronized(disconnected) {
-			disconnected.add(bridge.host)
+		synchronized(_disconnected) {
+			_disconnected.add(bridge.host)
 		}
 
 		notifyHostStatusChanged()
