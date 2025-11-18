@@ -21,6 +21,7 @@ import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Build
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -70,7 +71,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -213,7 +213,7 @@ fun ConsoleScreen(
                                 onClick = { viewModel.selectBridge(index) },
                                 text = {
                                     Text(
-                                        bridge.host.nickname ?: bridge.host.hostname,
+                                        bridge.host.nickname,
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis
                                     )
@@ -286,8 +286,6 @@ fun ConsoleScreen(
                                 WindowInsets.safeDrawing.add(WindowInsets(top = 64.dp))
                                     .only(WindowInsetsSides.Vertical)
                             }
-
-                            val layoutDirection = LocalLayoutDirection.current
 
                             HorizontalPager(
                                 state = pagerState,
@@ -564,7 +562,7 @@ fun ConsoleScreen(
                                     text = { Text(stringResource(R.string.console_menu_portforwards)) },
                                     onClick = {
                                         showMenu = false
-                                        currentBridge?.host?.id?.let {
+                                        currentBridge.host?.id?.let {
                                             onNavigateToPortForwards(
                                                 it
                                             )
@@ -635,10 +633,10 @@ private fun TerminalViewWrapper(
                         terminalView?.let { view ->
                             view.requestFocus()
                             val imm =
-                                context.getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+                                context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                             imm.showSoftInput(
                                 view,
-                                android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT
+                                InputMethodManager.SHOW_IMPLICIT
                             )
                         }
                         return super.performClick()
