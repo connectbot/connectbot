@@ -75,8 +75,8 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	val bridges: List<TerminalBridge>
 		get() = _bridges.toList()
 
-	private val mHostBridgeMap: MutableMap<Host, WeakReference<TerminalBridge>> = HashMap()
-	private val mNicknameBridgeMap: MutableMap<String, WeakReference<TerminalBridge>> = HashMap()
+	private val hostBridgeMap: MutableMap<Host, WeakReference<TerminalBridge>> = HashMap()
+	private val nicknameBridgeMap: MutableMap<String, WeakReference<TerminalBridge>> = HashMap()
 
 	private val _disconnected = ArrayList<Host>()
 	val disconnected: List<Host>
@@ -136,7 +136,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	private var savingKeys = false
 
-	private val mPendingReconnect: MutableList<WeakReference<TerminalBridge>> = ArrayList()
+	private val pendingReconnect: MutableList<WeakReference<TerminalBridge>> = ArrayList()
 
 	internal var hardKeyboardHidden = false
 
@@ -276,8 +276,8 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		synchronized(_bridges) {
 			_bridges.add(bridge)
 			val wr = WeakReference(bridge)
-			mHostBridgeMap[bridge.host] = wr
-			mNicknameBridgeMap[bridge.host.nickname] = wr
+			hostBridgeMap[bridge.host] = wr
+			nicknameBridgeMap[bridge.host.nickname] = wr
 		}
 
 		synchronized(_disconnected) {
@@ -351,7 +351,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 * @return TerminalBridge that uses the Host
 	 */
 	fun getConnectedBridge(host: Host): TerminalBridge? {
-		val wr = mHostBridgeMap[host]
+		val wr = hostBridgeMap[host]
 		return wr?.get()
 	}
 
@@ -365,7 +365,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		if (nickname == null) {
 			return null
 		}
-		val wr = mNicknameBridgeMap[nickname]
+		val wr = nicknameBridgeMap[nickname]
 		return wr?.get()
 	}
 
@@ -380,14 +380,14 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 			// remove this bridge from our list
 			_bridges.remove(bridge)
 
-			mHostBridgeMap.remove(bridge.host)
-			mNicknameBridgeMap.remove(bridge.host.nickname)
+			hostBridgeMap.remove(bridge.host)
+			nicknameBridgeMap.remove(bridge.host.nickname)
 
 			if (bridge.isUsingNetwork()) {
 				connectivityManager.decRef()
 			}
 
-			if (bridges.isEmpty() && mPendingReconnect.isEmpty()) {
+			if (bridges.isEmpty() && pendingReconnect.isEmpty()) {
 				shouldHideRunningNotification = true
 			}
 
@@ -718,8 +718,8 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 * @param bridge the TerminalBridge to reconnect when possible
 	 */
 	fun requestReconnect(bridge: TerminalBridge) {
-		synchronized(mPendingReconnect) {
-			mPendingReconnect.add(WeakReference(bridge))
+		synchronized(pendingReconnect) {
+			pendingReconnect.add(WeakReference(bridge))
 			if (!bridge.isUsingNetwork() ||
 					connectivityManager.isConnected()) {
 				reconnectPending()
@@ -732,12 +732,12 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 * was lost.
 	 */
 	private fun reconnectPending() {
-		synchronized(mPendingReconnect) {
-			for (ref in mPendingReconnect) {
+		synchronized(pendingReconnect) {
+			for (ref in pendingReconnect) {
                 val bridge = ref.get() ?: continue
                 bridge.startConnection()
 			}
-			mPendingReconnect.clear()
+			pendingReconnect.clear()
 		}
 	}
 
