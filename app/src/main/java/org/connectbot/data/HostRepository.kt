@@ -374,12 +374,12 @@ class HostRepository(
      * @param selection Map of field names to values (e.g., "nickname", "protocol", "hostname", etc.)
      * @return The matching host, or null if not found
      */
-    fun findHostBlocking(selection: Map<String, String>): Host? = runBlocking {
+    suspend fun findHost(selection: Map<String, String>): Host? {
         // Try to find by nickname first (most specific)
         val nickname = selection["nickname"]
         if (nickname != null) {
             val allHosts = hostDao.getAll()
-            allHosts.find { it.nickname == nickname }?.let { return@runBlocking it }
+            allHosts.find { it.nickname == nickname }?.let { return it }
         }
 
         // Fall back to finding by protocol, username, hostname, port
@@ -396,10 +396,10 @@ class HostRepository(
                 host.hostname == hostname &&
                 (username == null || host.username == username) &&
                 (port == null || host.port == port)
-            }
-        } else {
-            null
+            }?.let { return it }
         }
+
+        return null
     }
 
     companion object {

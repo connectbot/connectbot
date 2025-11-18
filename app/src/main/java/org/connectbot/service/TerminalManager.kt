@@ -324,12 +324,17 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		return scrollback
 	}
 
-	/**
+    /**
 	 * Open a new connection by reading parameters from the given URI. Follows
 	 * format specified by an individual transport.
 	 */
-	fun openConnection(uri: Uri): TerminalBridge {
-        val host: Host = (TransportFactory.findHost(hostRepository, uri) ?: TransportFactory.getTransport(uri.scheme!!)?.createHost(uri))!!
+    suspend fun openConnection(uri: Uri): TerminalBridge {
+        val scheme = uri.scheme
+            ?: throw IllegalArgumentException("URI must contain a scheme (e.g., 'ssh://', 'telnet://'). URI: $uri")
+
+        val host: Host = TransportFactory.findHost(hostRepository, uri)
+            ?: TransportFactory.getTransport(scheme)?.createHost(uri)
+            ?: throw IllegalArgumentException("No transport found for scheme '$scheme' in URI: $uri")
 
 		// Assign unique negative ID to temporary hosts (id == 0)
 		val finalHost = if (host.id == 0L) {
@@ -381,11 +386,8 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 * @return TerminalBridge that matches nickname
 	 */
 	fun getConnectedBridge(nickname: String?): TerminalBridge? {
-		if (nickname == null) {
-			return null
-		}
-		val wr = nicknameBridgeMap[nickname]
-		return wr?.get()
+        val wr = nicknameBridgeMap[nickname ?: return null]
+        return wr?.get()
 	}
 
 	/**
