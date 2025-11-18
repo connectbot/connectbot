@@ -136,6 +136,9 @@ class HostRepository(
      * @param host The host to update
      */
     suspend fun touchHost(host: Host) {
+        if (host.id == 0L) {
+            return
+        }
         val updatedHost = host.copy(lastConnect = System.currentTimeMillis())
         hostDao.update(updatedHost)
     }

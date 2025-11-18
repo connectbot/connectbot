@@ -586,7 +586,10 @@ public class TerminalBridge implements VDUDisplay {
 
 		// Create updated host with new fontSize
 		host = host.withFontSize((int) sizeDp);
-		manager.hostRepository.saveHostBlocking(host);
+
+		if (host.getId() != 0) {
+			manager.hostRepository.saveHostBlocking(host);
+		}
 	}
 
 	/**
