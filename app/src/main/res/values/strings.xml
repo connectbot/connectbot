@@ -790,6 +790,16 @@
 	<!-- Error messages -->
 	<!-- Generic error message template with placeholder for specific error details -->
 	<string name="error_message">Error: %s</string>
+	<!-- Error message shown when a public key fails to load at startup -->
+	<string name="error_key_load_failed">Failed to load key \'%1$s\': %2$s</string>
+	<!-- Error message shown when a connection to a host fails -->
+	<string name="error_connection_failed">Failed to connect to %1$s (%2$s): %3$s</string>
+	<!-- Error message shown when port forwards fail to load for a host -->
+	<string name="error_port_forward_load_failed">Failed to load port forwards for %1$s: %2$s</string>
+	<!-- Error message shown when saving host configuration fails -->
+	<string name="error_host_save_failed">Failed to save host %1$s: %2$s</string>
+	<!-- Error message shown when loading a color scheme fails -->
+	<string name="error_color_scheme_load_failed">Failed to load color scheme: %s</string>
 
 	<!-- Empty state messages -->
 	<!-- Message shown when no hosts have been configured yet -->

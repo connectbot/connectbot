@@ -122,8 +122,10 @@ class Telnet : AbsTransport {
             bridge?.onConnected()
         } catch (e: UnknownHostException) {
             Log.d(TAG, "IO Exception connecting to host", e)
+            throw e
         } catch (e: IOException) {
             Log.d(TAG, "IO Exception connecting to host", e)
+            throw e
         }
     }
 

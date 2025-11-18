@@ -62,7 +62,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
         } catch (e: Exception) {
             bridge?.outputLine(manager?.res?.getString(R.string.local_shell_unavailable))
             Log.e(TAG, "Cannot start local shell", e)
-            return
+            throw e
         }
 
         shellPid = pids[0]
