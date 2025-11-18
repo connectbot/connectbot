@@ -53,7 +53,7 @@ jobs:
           packages: 'cmdline-tools;latest tools platform-tools'
 
       - name: Build ConnectBot
-        run: ./gradlew build bundleGoogleRelease
+        run: ./gradlew build bundle
 
       - name: Enable KVM for emulator and clear up space
         run: |
