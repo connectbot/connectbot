@@ -88,21 +88,9 @@ class ConsoleViewModel(
                     bridge.host.id == hostId
                 }
 
-                // If no bridge exists, create one
+                // If no bridge exists, create one using the service method
                 if (existingBridge == null) {
-                    // Get the host from repository
-                    val host = terminalManager?.hostRepository?.findHostByIdBlocking(hostId)
-
-                    if (host != null) {
-                        // Build URI and open connection
-                        val uri = android.net.Uri.Builder()
-                            .scheme(host.protocol)
-                            .encodedAuthority("${host.username}@${host.hostname}:${host.port}")
-                            .fragment(host.nickname)
-                            .build()
-
-                        terminalManager.openConnection(uri)
-                    }
+                    terminalManager?.openConnectionForHostId(hostId)
                 }
             } catch (e: Exception) {
                 _uiState.update {

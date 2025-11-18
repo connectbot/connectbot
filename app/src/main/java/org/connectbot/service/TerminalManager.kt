@@ -84,9 +84,9 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	lateinit var res: Resources
 
-	lateinit var hostRepository: HostRepository
-	lateinit var colorRepository: ColorSchemeRepository
-	var pubkeyRepository: PubkeyRepository? = null
+	internal lateinit var hostRepository: HostRepository
+	internal lateinit var colorRepository: ColorSchemeRepository
+	internal var pubkeyRepository: PubkeyRepository? = null
 
 	lateinit var prefs: SharedPreferences
 
@@ -267,6 +267,18 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 */
 	fun openConnection(uri: Uri): TerminalBridge {
         val host: Host = (TransportFactory.findHost(hostRepository, uri) ?: TransportFactory.getTransport(uri.scheme!!)?.createHost(uri))!!
+		return openConnection(host)
+	}
+
+	/**
+	 * Open a new connection for a host by its database ID.
+	 * Looks up the host from the repository and creates a connection.
+	 *
+	 * @param hostId the database ID of the host to connect to
+	 * @return TerminalBridge for the connection, or null if host not found
+	 */
+	fun openConnectionForHostId(hostId: Long): TerminalBridge? {
+		val host = hostRepository.findHostByIdBlocking(hostId) ?: return null
 		return openConnection(host)
 	}
 
