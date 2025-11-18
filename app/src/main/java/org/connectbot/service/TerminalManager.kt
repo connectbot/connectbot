@@ -79,19 +79,23 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	val disconnected: List<Host>
 		get() = _disconnected.toList()
 
-	var disconnectListener: BridgeDisconnectedListener? = null
+	private var disconnectListener: BridgeDisconnectedListener? = null
+
+	fun setDisconnectListener(listener: BridgeDisconnectedListener?) {
+		disconnectListener = listener
+	}
 
 	private val hostStatusChangedListeners = ArrayList<OnHostStatusChangedListener>()
 
 	internal val loadedKeypairs: MutableMap<String, KeyHolder> = HashMap()
 
-	lateinit var res: Resources
+	internal lateinit var res: Resources
 
 	internal lateinit var hostRepository: HostRepository
 	internal lateinit var colorRepository: ColorSchemeRepository
 	internal var pubkeyRepository: PubkeyRepository? = null
 
-	lateinit var prefs: SharedPreferences
+	internal lateinit var prefs: SharedPreferences
 
 	private val binder: IBinder = TerminalBinder()
 
@@ -116,7 +120,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	private val mPendingReconnect: MutableList<WeakReference<TerminalBridge>> = ArrayList()
 
-	var hardKeyboardHidden = false
+	internal var hardKeyboardHidden = false
 
 	override fun onCreate() {
 		Log.i(TAG, "Starting service")
