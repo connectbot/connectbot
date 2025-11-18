@@ -14,14 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.connectbot.util;
+package org.connectbot.util
 
 /**
  * Created by kenny on 3/2/17.
  */
-
-public interface ProviderLoaderListener {
-	void onProviderLoaderSuccess();
-	void onProviderLoaderError();
+interface ProviderLoaderListener {
+    fun onProviderLoaderSuccess()
+    fun onProviderLoaderError()
 }

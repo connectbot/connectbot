@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2007 Kenny Root, Jeffrey Sharkey
+ * Copyright 2007 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -347,11 +347,18 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             } else {
                 // load using internal generated format
                 val privateKey = pubkey.privateKey ?: return false
-                val privKey: PrivateKey = try {
+                val privKey = try {
                     PubkeyUtils.decodePrivate(privateKey, pubkey.type, password)
                 } catch (e: Exception) {
                     val message = String.format("Bad password for key '%s'. Authentication failed.", pubkey.nickname)
                     Log.e(TAG, message, e)
+                    bridge?.outputLine(message)
+                    return false
+                }
+
+                if (privKey == null) {
+                    val message = String.format("Failed to decode private key '%s'. Authentication failed.", pubkey.nickname)
+                    Log.e(TAG, message)
                     bridge?.outputLine(message)
                     return false
                 }

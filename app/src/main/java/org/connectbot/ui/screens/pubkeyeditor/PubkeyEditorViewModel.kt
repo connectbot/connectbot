@@ -183,13 +183,28 @@ class PubkeyEditorViewModel(
                         val oldPassword = if (state.isEncrypted) state.oldPassword else ""
                         val newPassword = state.newPassword1
 
+                        val privateKeyData = pubkey.privateKey
+                        if (privateKeyData == null) {
+                            withContext(Dispatchers.Main) {
+                                _uiState.update { it.copy(wrongPassword = true) }
+                            }
+                            return@withContext
+                        }
+
                         try {
                             // Decode with old password
                             val privateKeyObj = PubkeyUtils.decodePrivate(
-                                pubkey.privateKey,
+                                privateKeyData,
                                 pubkey.type,
                                 oldPassword
                             )
+
+                            if (privateKeyObj == null) {
+                                withContext(Dispatchers.Main) {
+                                    _uiState.update { it.copy(wrongPassword = true) }
+                                }
+                                return@withContext
+                            }
 
                             // Re-encode with new password
                             newPrivateKey = PubkeyUtils.getEncodedPrivate(privateKeyObj, newPassword)

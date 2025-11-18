@@ -27,9 +27,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.connectbot.R
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.service.OnHostStatusChangedListener
+import org.connectbot.service.ServiceError
 import org.connectbot.service.TerminalManager
 
 enum class ConnectionState {
@@ -59,6 +61,48 @@ class HostListViewModel(
         loadHosts()
         // Register listener to get notified when host status changes
         terminalManager?.registerOnHostStatusChangedListener(this)
+        // Collect service errors from TerminalManager
+        collectServiceErrors()
+    }
+
+    private fun collectServiceErrors() {
+        terminalManager?.let { manager ->
+            viewModelScope.launch {
+                manager.serviceErrors.collect { error ->
+                    val errorMessage = formatServiceError(error)
+                    _uiState.update { it.copy(error = errorMessage) }
+                }
+            }
+        }
+    }
+
+    private fun formatServiceError(error: ServiceError): String {
+        return when (error) {
+            is ServiceError.KeyLoadFailed -> {
+                context.getString(R.string.error_key_load_failed, error.keyName, error.reason)
+            }
+            is ServiceError.ConnectionFailed -> {
+                context.getString(
+                    R.string.error_connection_failed,
+                    error.hostNickname,
+                    error.hostname,
+                    error.reason
+                )
+            }
+            is ServiceError.PortForwardLoadFailed -> {
+                context.getString(
+                    R.string.error_port_forward_load_failed,
+                    error.hostNickname,
+                    error.reason
+                )
+            }
+            is ServiceError.HostSaveFailed -> {
+                context.getString(R.string.error_host_save_failed, error.hostNickname, error.reason)
+            }
+            is ServiceError.ColorSchemeLoadFailed -> {
+                context.getString(R.string.error_color_scheme_load_failed, error.reason)
+            }
+        }
     }
 
     override fun onCleared() {
@@ -177,5 +221,9 @@ class HostListViewModel(
                 }
             }
         }
+    }
+
+    fun clearError() {
+        _uiState.update { it.copy(error = null) }
     }
 }

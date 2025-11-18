@@ -17,6 +17,7 @@
 
 package org.connectbot.ui.screens.hostlist
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -94,6 +95,14 @@ fun HostListScreen(
     val terminalManager = LocalTerminalManager.current
     val viewModel = remember { HostListViewModel(context, terminalManager) }
     val uiState by viewModel.uiState.collectAsState()
+
+    // Show errors as Toast notifications
+    LaunchedEffect(uiState.error) {
+        uiState.error?.let { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+            viewModel.clearError()
+        }
+    }
 
     HostListScreenContent(
         uiState = uiState,

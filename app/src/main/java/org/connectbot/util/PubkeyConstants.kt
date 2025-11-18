@@ -14,26 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.connectbot.util;
+package org.connectbot.util
 
 /**
  * Constants for SSH public/private key management.
  */
-public class PubkeyConstants {
-	/**
-	 * Legacy database names for backup purposes.
-	 * Note: The actual database is now managed by Room as ConnectBot.db,
-	 * but this constant is kept for backward compatibility with backups.
-	 */
-	public static final String LEGACY_PUBKEYS_DB_NAME = "pubkeys";
+object PubkeyConstants {
+    /**
+     * Legacy database names for backup purposes.
+     * Note: The actual database is now managed by Room as ConnectBot.db,
+     * but this constant is kept for backward compatibility with backups.
+     */
+    const val LEGACY_PUBKEYS_DB_NAME: String = "pubkeys"
 
-	/**
-	 * Key types supported by ConnectBot.
-	 */
-	public static final String KEY_TYPE_RSA = "RSA";
-	public static final String KEY_TYPE_DSA = "DSA";
-	public static final String KEY_TYPE_EC = "EC";
-	public static final String KEY_TYPE_ED25519 = "Ed25519";
-	public static final String KEY_TYPE_IMPORTED = "IMPORTED";
+    /**
+     * Key types supported by ConnectBot.
+     */
+    const val KEY_TYPE_RSA: String = "RSA"
+    const val KEY_TYPE_DSA: String = "DSA"
+    const val KEY_TYPE_EC: String = "EC"
+    const val KEY_TYPE_ED25519: String = "Ed25519"
+    const val KEY_TYPE_IMPORTED: String = "IMPORTED"
 }
