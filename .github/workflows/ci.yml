@@ -172,7 +172,7 @@ jobs:
             ConnectBot-*-unsigned.apk
             ConnectBot-*-unsigned.aab
             ConnectBot-*.native-debug-symbols.zip
-            ConnectBot-*.mapping.txt
+            ConnectBot-*.mapping.txt.zst
 
   signing:
     name: Trigger remote signing
