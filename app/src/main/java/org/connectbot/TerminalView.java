@@ -387,6 +387,13 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 	}
 
 	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		// Clean up bitmap and parent reference to prevent memory leaks during configuration changes
+		bridge.onViewDetached();
+	}
+
+	@Override
 	public void onFontSizeChanged(final float unusedSizeDp) {
 		scaleCursors();
 
@@ -456,10 +463,14 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 				if (y + bridge.getCharHeight() < bridge.getBitmap().getHeight()) {
 					Bitmap underCursor = Bitmap.createBitmap(bridge.getBitmap(), x, y,
 							bridge.getCharWidth() * (onWideCharacter ? 2 : 1), bridge.getCharHeight());
-					if (metaState == 0)
-						canvas.drawBitmap(underCursor, 0, 0, cursorInversionPaint);
-					else
-						canvas.drawBitmap(underCursor, 0, 0, cursorMetaInversionPaint);
+					try {
+						if (metaState == 0)
+							canvas.drawBitmap(underCursor, 0, 0, cursorInversionPaint);
+						else
+							canvas.drawBitmap(underCursor, 0, 0, cursorMetaInversionPaint);
+					} finally {
+						underCursor.recycle();
+					}
 				} else {
 					canvas.drawPaint(cursorPaint);
 				}
