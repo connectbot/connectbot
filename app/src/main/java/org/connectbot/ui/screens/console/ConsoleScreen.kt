@@ -48,6 +48,7 @@ import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -59,6 +60,7 @@ import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -84,6 +86,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.preference.PreferenceManager
 import org.connectbot.R
 import org.connectbot.TerminalView
+import org.connectbot.data.entity.Host
 import org.connectbot.service.TerminalBridge
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.components.InlinePrompt
@@ -114,6 +117,7 @@ fun ConsoleScreen(
     var showMenu by remember { mutableStateOf(false) }
     var showUrlScanDialog by remember { mutableStateOf(false) }
     var showResizeDialog by remember { mutableStateOf(false) }
+    var showDisconnectDialog by remember { mutableStateOf(false) }
     var showKeyboard by remember { mutableStateOf(true) } // Start visible to show animation
     var hasPlayedKeyboardAnimation by remember { mutableStateOf(false) }
     var showTitleBar by remember { mutableStateOf(!titleBarHide) }
@@ -421,6 +425,16 @@ fun ConsoleScreen(
             )
         }
 
+        if (showDisconnectDialog && currentBridge != null) {
+            HostDisconnectDialog(
+                host = currentBridge.host,
+                onDismiss = { showDisconnectDialog = false },
+                onConfirm = {
+                    currentBridge.dispatchDisconnect(true)
+                }
+            )
+        }
+
         // Overlay TopAppBar - always visible when titleBarHide is false,
         // or temporarily visible when titleBarHide is true and showTitleBar is true
         if (!titleBarHide || showTitleBar) {
@@ -525,7 +539,7 @@ fun ConsoleScreen(
                                 },
                                 onClick = {
                                     showMenu = false
-                                    currentBridge?.dispatchDisconnect(true)
+                                    showDisconnectDialog = true
                                 },
                                 enabled = currentBridge != null
                             )
@@ -607,7 +621,33 @@ fun ConsoleScreen(
                 modifier = Modifier.align(Alignment.TopCenter)
             )
         }
-    } // Close outer Box
+    }
+}
+
+@Composable
+private fun HostDisconnectDialog(
+    host: Host,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        text = {
+            Text(stringResource(R.string.disconnect_host_alert, host.nickname))
+        },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm
+            ) {
+                Text(stringResource(R.string.button_yes))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.button_no))
+            }
+        }
+    )
 }
 
 @Composable

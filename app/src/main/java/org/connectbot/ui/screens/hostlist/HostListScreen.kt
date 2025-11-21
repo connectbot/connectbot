@@ -67,7 +67,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
 import org.connectbot.data.entity.Host
@@ -303,6 +302,7 @@ private fun HostListItem(
     modifier: Modifier = Modifier
 ) {
     var showMenu by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
     // Determine border color based on connection state
     val borderColor = when (connectionState) {
@@ -418,7 +418,7 @@ private fun HostListItem(
                         text = { Text(stringResource(R.string.list_host_delete)) },
                         onClick = {
                             showMenu = false
-                            onDelete()
+                            showDeleteDialog = true
                         },
                         leadingIcon = {
                             Icon(Icons.Default.Delete, null)
@@ -430,6 +430,44 @@ private fun HostListItem(
         modifier = modifier.clickable(onClick = onClick)
     )
     HorizontalDivider()
+
+    if (showDeleteDialog) {
+        HostDeleteDialog(
+            host = host,
+            onDismiss = { showDeleteDialog = false },
+            onConfirm = {
+                showDeleteDialog = false
+                onDelete()
+            }
+        )
+    }
+}
+
+@Composable
+private fun HostDeleteDialog(
+    host: Host,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.list_host_delete)) },
+        text = {
+            Text(stringResource(R.string.delete_host_confirm, host.nickname))
+        },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm
+            ) {
+                Text(stringResource(R.string.button_yes))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.button_no))
+            }
+        }
+    )
 }
 
 @Composable
