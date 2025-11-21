@@ -933,4 +933,8 @@
 	<string name="migration_retry">Retry</string>
 	<!-- Help text shown after migration failure -->
 	<string name="migration_failed_help">If the problem persists, please contact support or check the application logs</string>
+	<!-- Shown in the alert dialog when a user chooses the 'disconnect' item to disconnect from a SSH or Telnet host. -->
+	<string name="disconnect_host_alert">Are you sure you want to disconnect from \'%1$s\'?</string>
+	<!-- Shown in the alert dialog when a user chooses the 'delete host' item to delete a host. -->
+	<string name="delete_host_confirm">Are you sure you want to delete host \'%1$s\'?</string>
 </resources>
