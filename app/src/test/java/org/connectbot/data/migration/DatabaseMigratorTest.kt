@@ -152,4 +152,99 @@ class DatabaseMigratorTest {
         assertThat(exception.message).isEqualTo("Test error")
         assertThat(exception).isInstanceOf(Exception::class.java)
     }
+
+    @Test
+    fun duplicateHostNicknamesAreHandledCorrectly() = runTest {
+        val host1 = createTestHost(id = 1, nickname = "server")
+        val host2 = createTestHost(id = 2, nickname = "server")
+        val host3 = createTestHost(id = 3, nickname = "server")
+        val host4 = createTestHost(id = 4, nickname = "other")
+
+        val legacyData = LegacyData(
+            hosts = listOf(host1, host2, host3, host4),
+            portForwards = emptyList(),
+            knownHosts = emptyList(),
+            colorSchemes = emptyList(),
+            colorPalettes = emptyList(),
+            pubkeys = emptyList()
+        )
+
+        val transformed = migrator.transformToRoomEntitiesForTesting(legacyData)
+
+        assertThat(transformed.hosts).hasSize(4)
+        assertThat(transformed.hosts[0].nickname).isEqualTo("server")
+        assertThat(transformed.hosts[1].nickname).isEqualTo("server (1)")
+        assertThat(transformed.hosts[2].nickname).isEqualTo("server (2)")
+        assertThat(transformed.hosts[3].nickname).isEqualTo("other")
+    }
+
+    @Test
+    fun duplicatePubkeyNicknamesAreHandledCorrectly() = runTest {
+        val pubkey1 = createTestPubkey(id = 1, nickname = "mykey")
+        val pubkey2 = createTestPubkey(id = 2, nickname = "mykey")
+        val pubkey3 = createTestPubkey(id = 3, nickname = "different")
+
+        val legacyData = LegacyData(
+            hosts = emptyList(),
+            portForwards = emptyList(),
+            knownHosts = emptyList(),
+            colorSchemes = emptyList(),
+            colorPalettes = emptyList(),
+            pubkeys = listOf(pubkey1, pubkey2, pubkey3)
+        )
+
+        val transformed = migrator.transformToRoomEntitiesForTesting(legacyData)
+
+        assertThat(transformed.pubkeys).hasSize(3)
+        assertThat(transformed.pubkeys[0].nickname).isEqualTo("mykey")
+        assertThat(transformed.pubkeys[1].nickname).isEqualTo("mykey (1)")
+        assertThat(transformed.pubkeys[2].nickname).isEqualTo("different")
+    }
+
+    private fun createTestHost(
+        id: Long,
+        nickname: String
+    ) = org.connectbot.data.entity.Host(
+        id = id,
+        nickname = nickname,
+        protocol = "ssh",
+        username = "user",
+        hostname = "example.com",
+        port = 22,
+        hostKeyAlgo = null,
+        lastConnect = 0L,
+        color = null,
+        useKeys = true,
+        useAuthAgent = null,
+        postLogin = null,
+        pubkeyId = 0L,
+        wantSession = true,
+        compression = false,
+        encoding = "UTF-8",
+        stayConnected = false,
+        quickDisconnect = false,
+        fontSize = 12,
+        colorSchemeId = 1L,
+        delKey = "BACKSPACE",
+        scrollbackLines = 140,
+        useCtrlAltAsMetaKey = false
+    )
+
+    private fun createTestPubkey(
+        id: Long,
+        nickname: String
+    ) = org.connectbot.data.entity.Pubkey(
+        id = id,
+        nickname = nickname,
+        type = "RSA",
+        privateKey = byteArrayOf(1, 2, 3),
+        publicKey = byteArrayOf(4, 5, 6),
+        encrypted = false,
+        startup = false,
+        confirmation = false,
+        createdDate = System.currentTimeMillis(),
+        storageType = org.connectbot.data.entity.KeyStorageType.EXPORTABLE,
+        allowBackup = true,
+        keystoreAlias = null
+    )
 }
