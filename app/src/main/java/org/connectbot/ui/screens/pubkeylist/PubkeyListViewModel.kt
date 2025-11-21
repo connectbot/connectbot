@@ -135,7 +135,7 @@ class PubkeyListViewModel(
                 val keyPair = withContext(Dispatchers.Default) {
                     PubkeyUtils.convertToKeyPair(pubkey, password)
                 }
-                terminalManager?.addKey(pubkey, keyPair, true)
+                keyPair?.let { terminalManager?.addKey(pubkey, it, true) }
                 updateLoadedKeys()
             } catch (e: PubkeyUtils.BadPasswordException) {
                 _uiState.update {
@@ -196,7 +196,7 @@ class PubkeyListViewModel(
                     } else {
                         // For non-imported keys, export as PEM
                         val pk = PubkeyUtils.decodePrivate(pubkey.privateKey, pubkey.type)
-                        PubkeyUtils.exportPEM(pk, null)
+                        pk?.let { PubkeyUtils.exportPEM(it, null) }
                     }
                 }
 
