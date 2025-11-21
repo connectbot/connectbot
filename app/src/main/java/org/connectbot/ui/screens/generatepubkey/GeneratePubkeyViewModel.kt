@@ -62,13 +62,14 @@ data class GeneratePubkeyUiState(
     val confirmUse: Boolean = false,
     val showEntropyDialog: Boolean = false,
     val isGenerating: Boolean = false,
-    val ecdsaAvailable: Boolean = true
+    val ecdsaAvailable: Boolean = true,
+    val nicknameExists: Boolean = false
 ) {
     val passwordMismatch: Boolean
         get() = password1 != password2 && password2.isNotEmpty()
 
     val canGenerate: Boolean
-        get() = nickname.isNotEmpty() && !passwordMismatch
+        get() = nickname.isNotEmpty() && !passwordMismatch && !nicknameExists
 }
 
 class GeneratePubkeyViewModel(
@@ -97,6 +98,25 @@ class GeneratePubkeyViewModel(
 
     fun updateNickname(nickname: String) {
         _uiState.update { it.copy(nickname = nickname) }
+        checkNicknameExists(nickname)
+    }
+
+    private fun checkNicknameExists(nickname: String) {
+        if (nickname.isEmpty()) {
+            _uiState.update { it.copy(nicknameExists = false) }
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                val exists = withContext(Dispatchers.IO) {
+                    repository.getByNickname(nickname) != null
+                }
+                _uiState.update { it.copy(nicknameExists = exists) }
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to check if nickname exists", e)
+            }
+        }
     }
 
     fun updateKeyType(keyType: KeyType) {

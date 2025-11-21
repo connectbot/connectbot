@@ -152,7 +152,11 @@ fun PubkeyEditorScreenContent(
                         onValueChange = onNicknameChange,
                         label = { Text(stringResource(R.string.prompt_nickname)) },
                         modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
+                        singleLine = true,
+                        isError = uiState.nicknameExists,
+                        supportingText = if (uiState.nicknameExists) {
+                            { Text(stringResource(R.string.pubkey_nickname_exists)) }
+                        } else null
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))

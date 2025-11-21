@@ -120,6 +120,10 @@
 	<!-- Message shown to the user when a selected pubkey to import was not parseable for some reason. -->
 	<string name="pubkey_import_parse_problem">"Problem parsing imported private key"</string>
 	<string name="pubkey_unlock">"Unlock key"</string>
+	<!-- Dialog message prompting the user to enter password to unlock an encrypted key. -->
+	<string name="pubkey_unlock_message">"Enter password to unlock key '%1$s'"</string>
+	<!-- Error message shown when user tries to use a nickname that already exists for another key. -->
+	<string name="pubkey_nickname_exists">"A key with this nickname already exists"</string>
 	<!-- Feedback given to the user when the password that they have entered for the pubkey is incorrect. -->
 	<string name="pubkey_failed_add">"Bad password for key '%1$s'. Authentication failed."</string>
 	<!-- Context menu entry that allows a user to load a pubkey entry into memory. This is equivalent to "unlocking" a password-protected pubkey entry. -->
