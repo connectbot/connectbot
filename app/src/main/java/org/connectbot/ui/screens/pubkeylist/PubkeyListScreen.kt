@@ -18,7 +18,9 @@
 package org.connectbot.ui.screens.pubkeylist
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -54,6 +56,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import org.connectbot.R
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.ui.ScreenPreviews
@@ -142,7 +145,16 @@ fun PubkeyListScreenContent(
                 }
 
                 else -> {
-                    LazyColumn {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(
+                            start = 16.dp,
+                            end = 16.dp,
+                            top = 16.dp,
+                            bottom = 88.dp // Extra padding to avoid FAB overlap
+                        ),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
                         items(
                             items = uiState.pubkeys,
                             key = { it.id }
