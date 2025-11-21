@@ -20,8 +20,10 @@ package org.connectbot.ui.screens.hostlist
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -230,8 +232,18 @@ fun HostListScreenContent(
                         }
                     }
                 }
+
                 else -> {
-                    LazyColumn {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(
+                            start = 16.dp,
+                            end = 16.dp,
+                            top = 16.dp,
+                            bottom = 88.dp // Extra padding to avoid FAB overlap
+                        ),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
                         items(
                             items = uiState.hosts,
                             key = { it.id }
