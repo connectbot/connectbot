@@ -19,21 +19,32 @@ package org.connectbot.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
@@ -100,75 +111,141 @@ private fun CheckingMigrationContent() {
 
 @Composable
 private fun MigrationInProgressContent(state: MigrationState) {
-    Text(
-        text = stringResource(R.string.migration_title),
-        style = MaterialTheme.typography.headlineMedium,
-        textAlign = TextAlign.Center
-    )
+    val clipboardManager = LocalClipboardManager.current
 
-    Spacer(modifier = Modifier.height(24.dp))
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(R.string.migration_title),
+            style = MaterialTheme.typography.headlineMedium,
+            textAlign = TextAlign.Center
+        )
 
-    LinearProgressIndicator(
-        progress = { state.progress },
-        modifier = Modifier.padding(horizontal = 16.dp)
-    )
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    Text(
-        text = state.currentStep,
-        style = MaterialTheme.typography.bodyMedium,
-        textAlign = TextAlign.Center,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
-    )
-
-    if (state.status == MigrationStatus.IN_PROGRESS) {
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Show migration statistics
-        if (state.hostsMigrated > 0 || state.pubkeysMigrated > 0) {
-            Column(
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.migration_stats_hosts, state.hostsMigrated),
-                    style = MaterialTheme.typography.bodySmall
-                )
-                Text(
-                    text = stringResource(R.string.migration_stats_pubkeys, state.pubkeysMigrated),
-                    style = MaterialTheme.typography.bodySmall
-                )
-                if (state.portForwardsMigrated > 0) {
+        LinearProgressIndicator(
+            progress = { state.progress },
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = state.currentStep,
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+
+        if (state.status == MigrationStatus.IN_PROGRESS) {
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Show migration statistics
+            if (state.hostsMigrated > 0 || state.pubkeysMigrated > 0) {
+                Column(
+                    horizontalAlignment = Alignment.Start,
+                    modifier = Modifier.padding(16.dp)
+                ) {
                     Text(
-                        text = stringResource(
-                            R.string.migration_stats_port_forwards,
-                            state.portForwardsMigrated
-                        ),
+                        text = stringResource(R.string.migration_stats_hosts, state.hostsMigrated),
                         style = MaterialTheme.typography.bodySmall
                     )
+                    Text(
+                        text = stringResource(R.string.migration_stats_pubkeys, state.pubkeysMigrated),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    if (state.portForwardsMigrated > 0) {
+                        Text(
+                            text = stringResource(
+                                R.string.migration_stats_port_forwards,
+                                state.portForwardsMigrated
+                            ),
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                    if (state.knownHostsMigrated > 0) {
+                        Text(
+                            text = stringResource(
+                                R.string.migration_stats_known_hosts,
+                                state.knownHostsMigrated
+                            ),
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
                 }
-                if (state.knownHostsMigrated > 0) {
-                    Text(
-                        text = stringResource(
-                            R.string.migration_stats_known_hosts,
-                            state.knownHostsMigrated
-                        ),
-                        style = MaterialTheme.typography.bodySmall
+            }
+
+            // Show warnings if any
+            if (state.warnings.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer
                     )
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Warning,
+                                contentDescription = stringResource(R.string.migration_warnings_title),
+                                tint = MaterialTheme.colorScheme.error,
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.size(8.dp))
+                            Text(
+                                text = stringResource(R.string.migration_warnings_title),
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.onErrorContainer
+                            )
+                        }
+
+                        state.warnings.forEach { warning ->
+                            Text(
+                                text = "• $warning",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onErrorContainer,
+                                modifier = Modifier.padding(vertical = 4.dp)
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Button(
+                            onClick = {
+                                val warningsText = state.warnings.joinToString("\n") { "• $it" }
+                                clipboardManager.setText(AnnotatedString(warningsText))
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(stringResource(R.string.migration_copy_warnings))
+                        }
+                    }
                 }
             }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = stringResource(R.string.migration_warning),
+            style = MaterialTheme.typography.bodySmall,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    Text(
-        text = stringResource(R.string.migration_warning),
-        style = MaterialTheme.typography.bodySmall,
-        textAlign = TextAlign.Center,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
-    )
 }
 
 @Composable
@@ -231,7 +308,11 @@ private fun MigrationScreenInProgressPreview() {
                     hostsMigrated = 12,
                     pubkeysMigrated = 5,
                     portForwardsMigrated = 8,
-                    knownHostsMigrated = 25
+                    knownHostsMigrated = 25,
+                    warnings = listOf(
+                        "Found 2 duplicate host nickname(s): server, backup. Appending suffixes to make them unique.",
+                        "Found 1 duplicate SSH key nickname(s): mykey. Appending suffixes to make them unique."
+                    )
                 )
             ),
             onRetry = {}

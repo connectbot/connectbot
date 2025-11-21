@@ -151,7 +151,8 @@ class DatabaseMigrator(
 
             // Step 2: Validate legacy data
             _migrationState.update { it.copy(currentStep = "Validating data", progress = 0.2f) }
-            validateLegacyData(legacyData)
+            val warnings = validateLegacyData(legacyData)
+            _migrationState.update { it.copy(warnings = warnings) }
 
             // Step 3: Transform to Room entities
             _migrationState.update { it.copy(currentStep = "Transforming data", progress = 0.3f) }
@@ -255,36 +256,84 @@ class DatabaseMigrator(
         )
     }
 
-    private fun validateLegacyData(data: LegacyData) {
-        // Validate host nicknames are unique
+    private fun validateLegacyData(data: LegacyData): List<String> {
+        val warnings = mutableListOf<String>()
+
+        // Check for duplicate host nicknames (will be fixed in transformToRoomEntities)
         val hostNicknames = data.hosts.map { it.nickname }
-        if (hostNicknames.size != hostNicknames.toSet().size) {
-            throw MigrationException("Duplicate host nicknames found")
+        val duplicateHosts = hostNicknames.groupingBy { it }.eachCount().filter { it.value > 1 }
+        if (duplicateHosts.isNotEmpty()) {
+            val warning = "Found ${duplicateHosts.size} duplicate host nickname(s): ${duplicateHosts.keys.joinToString(", ")}. Appending suffixes to make them unique."
+            Log.w(TAG, warning)
+            warnings.add(warning)
         }
 
-        // Validate pubkey nicknames are unique
+        // Check for duplicate pubkey nicknames (will be fixed in transformToRoomEntities)
         val pubkeyNicknames = data.pubkeys.map { it.nickname }
-        if (pubkeyNicknames.size != pubkeyNicknames.toSet().size) {
-            throw MigrationException("Duplicate pubkey nicknames found")
+        val duplicatePubkeys = pubkeyNicknames.groupingBy { it }.eachCount().filter { it.value > 1 }
+        if (duplicatePubkeys.isNotEmpty()) {
+            val warning = "Found ${duplicatePubkeys.size} duplicate SSH key nickname(s): ${duplicatePubkeys.keys.joinToString(", ")}. Appending suffixes to make them unique."
+            Log.w(TAG, warning)
+            warnings.add(warning)
         }
 
         // Validate port forwards reference valid hosts
         val hostIds = data.hosts.map { it.id }.toSet()
         val invalidPortForwards = data.portForwards.filter { it.hostId !in hostIds }
         if (invalidPortForwards.isNotEmpty()) {
-            Log.w(TAG, "Found ${invalidPortForwards.size} port forwards referencing non-existent hosts, will be skipped")
+            val warning = "Found ${invalidPortForwards.size} port forward(s) referencing non-existent hosts. These will be skipped."
+            Log.w(TAG, warning)
+            warnings.add(warning)
         }
+
+        return warnings
     }
 
     private fun transformToRoomEntities(legacy: LegacyData): TransformedData {
+        // Fix duplicate host nicknames by appending " (1)", " (2)", etc.
+        val fixedHosts = makeNicknamesUnique(legacy.hosts) { it.nickname }
+            .map { (host, uniqueNickname) -> host.copy(nickname = uniqueNickname) }
+
+        // Fix duplicate pubkey nicknames by appending " (1)", " (2)", etc.
+        val fixedPubkeys = makeNicknamesUnique(legacy.pubkeys) { it.nickname }
+            .map { (pubkey, uniqueNickname) -> pubkey.copy(nickname = uniqueNickname) }
+
         return TransformedData(
-            hosts = legacy.hosts,
+            hosts = fixedHosts,
             portForwards = legacy.portForwards,
             knownHosts = legacy.knownHosts,
             colorSchemes = legacy.colorSchemes,
             colorPalettes = legacy.colorPalettes,
-            pubkeys = legacy.pubkeys
+            pubkeys = fixedPubkeys
         )
+    }
+
+    /**
+     * Makes nicknames unique by appending " (1)", " (2)", etc. to duplicates.
+     * Returns a list of (item, uniqueNickname) pairs.
+     */
+    private fun <T> makeNicknamesUnique(
+        items: List<T>,
+        getNickname: (T) -> String
+    ): List<Pair<T, String>> {
+        val nicknameCount = mutableMapOf<String, Int>()
+        val result = mutableListOf<Pair<T, String>>()
+
+        for (item in items) {
+            val originalNickname = getNickname(item)
+            val count = nicknameCount.getOrDefault(originalNickname, 0)
+            nicknameCount[originalNickname] = count + 1
+
+            val uniqueNickname = if (count == 0) {
+                originalNickname
+            } else {
+                "$originalNickname ($count)"
+            }
+
+            result.add(item to uniqueNickname)
+        }
+
+        return result
     }
 
     private suspend fun writeToRoomDatabase(data: TransformedData) {
@@ -384,6 +433,15 @@ class DatabaseMigrator(
     fun resetMigrationState() {
         _migrationState.update { MigrationState() }
     }
+
+    /**
+     * Exposes transformToRoomEntities for testing purposes.
+     * This allows unit tests to verify duplicate nickname handling.
+     */
+    @Suppress("unused")
+    internal fun transformToRoomEntitiesForTesting(legacy: LegacyData): TransformedData {
+        return transformToRoomEntities(legacy)
+    }
 }
 
 /**
@@ -422,7 +480,8 @@ data class MigrationState(
     val portForwardsMigrated: Int = 0,
     val knownHostsMigrated: Int = 0,
     val colorSchemesMigrated: Int = 0,
-    val error: String? = null
+    val error: String? = null,
+    val warnings: List<String> = emptyList()
 )
 
 enum class MigrationStatus {
