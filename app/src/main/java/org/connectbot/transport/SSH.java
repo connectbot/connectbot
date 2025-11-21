@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -458,27 +459,30 @@ public class SSH extends AbsTransport implements ConnectionMonitor, InteractiveC
 			Logger.logger = logger;
 			*/
 			ConnectionInfo connectionInfo = connection.connect(new HostKeyVerifier());
+			String c2sMac = Objects.requireNonNullElse(connectionInfo.clientToServerMACAlgorithm, "");
+			String s2cMac = Objects.requireNonNullElse(connectionInfo.serverToClientMACAlgorithm, "");
+
 			connected = true;
 
 			bridge.outputLine(manager.res.getString(R.string.terminal_kex_algorithm,
 					connectionInfo.keyExchangeAlgorithm));
+
 			if (connectionInfo.clientToServerCryptoAlgorithm
 					.equals(connectionInfo.serverToClientCryptoAlgorithm)
-					&& connectionInfo.clientToServerMACAlgorithm
-							.equals(connectionInfo.serverToClientMACAlgorithm)) {
+					&& c2sMac.equals(s2cMac)) {
 				bridge.outputLine(manager.res.getString(R.string.terminal_using_algorithm,
 						connectionInfo.clientToServerCryptoAlgorithm,
-						connectionInfo.clientToServerMACAlgorithm));
+						c2sMac));
 			} else {
 				bridge.outputLine(manager.res.getString(
 						R.string.terminal_using_c2s_algorithm,
 						connectionInfo.clientToServerCryptoAlgorithm,
-						connectionInfo.clientToServerMACAlgorithm));
+						c2sMac));
 
 				bridge.outputLine(manager.res.getString(
 						R.string.terminal_using_s2c_algorithm,
 						connectionInfo.serverToClientCryptoAlgorithm,
-						connectionInfo.serverToClientMACAlgorithm));
+						s2cMac));
 			}
 		} catch (IOException e) {
 			Log.e(TAG, "Problem in SSH connection thread during authentication", e);
