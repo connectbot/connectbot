@@ -40,6 +40,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -104,7 +106,20 @@ fun PubkeyEditorScreenContent(
     onSave: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    // Show snackbar when there's an error
+    LaunchedEffect(uiState.error) {
+        uiState.error?.let { error ->
+            snackbarHostState.showSnackbar(
+                message = error,
+                withDismissAction = true
+            )
+        }
+    }
+
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.title_pubkey_list)) },
@@ -122,20 +137,6 @@ fun PubkeyEditorScreenContent(
                 CircularProgressIndicator(
                     modifier = Modifier.padding(padding)
                 )
-            }
-
-            uiState.error != null -> {
-                Column(
-                    modifier = Modifier
-                        .padding(padding)
-                        .fillMaxSize()
-                        .padding(16.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.error_message, uiState.error),
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
             }
 
             else -> {

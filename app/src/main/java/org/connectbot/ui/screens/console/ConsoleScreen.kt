@@ -58,6 +58,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -201,9 +203,22 @@ fun ConsoleScreen(
     val sessionOpen = currentBridge?.isSessionOpen == true
     val disconnected = currentBridge?.isDisconnected == true
     val canForwardPorts = currentBridge?.canFowardPorts() == true
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    // Show snackbar when there's an error
+    LaunchedEffect(uiState.error) {
+        uiState.error?.let { error ->
+            snackbarHostState.showSnackbar(
+                message = error,
+                withDismissAction = true
+            )
+        }
+    }
 
     Box(modifier = modifier.fillMaxSize()) {
-        Scaffold { padding ->
+        Scaffold(
+            snackbarHost = { SnackbarHost(snackbarHostState) }
+        ) { padding ->
             Column {
                 // Show tabs if multiple terminals
                 if (uiState.bridges.size > 1) {
@@ -238,27 +253,6 @@ fun ConsoleScreen(
                             CircularProgressIndicator(
                                 modifier = Modifier.align(Alignment.Center)
                             )
-                        }
-
-                        uiState.error != null -> {
-                            Column(
-                                modifier = Modifier
-                                    .align(Alignment.Center)
-                                    .padding(16.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    text = uiState.error ?: "Unknown error",
-                                    color = MaterialTheme.colorScheme.error,
-                                    style = MaterialTheme.typography.bodyLarge
-                                )
-                                Text(
-                                    text = stringResource(R.string.console_not_ready_message),
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(top = 8.dp)
-                                )
-                            }
                         }
 
                         uiState.bridges.isNotEmpty() -> {
