@@ -44,7 +44,8 @@ data class PubkeyEditorUiState(
     val isLoading: Boolean = true,
     val error: String? = null,
     val saveSuccess: Boolean = false,
-    val wrongPassword: Boolean = false
+    val wrongPassword: Boolean = false,
+    val nicknameExists: Boolean = false
 ) {
     val passwordMismatch: Boolean
         get() = newPassword1 != newPassword2 && newPassword2.isNotEmpty()
@@ -54,7 +55,7 @@ data class PubkeyEditorUiState(
 
     val canSave: Boolean
         get() = nickname.isNotEmpty() && !passwordMismatch && !wrongPassword &&
-                !(willBeEncrypted && unlockAtStartup)
+                !(willBeEncrypted && unlockAtStartup) && !nicknameExists
 }
 
 class PubkeyEditorViewModel(
@@ -117,6 +118,28 @@ class PubkeyEditorViewModel(
 
     fun updateNickname(nickname: String) {
         _uiState.update { it.copy(nickname = nickname) }
+        checkNicknameExists(nickname)
+    }
+
+    private fun checkNicknameExists(nickname: String) {
+        val originalNickname = originalPubkey?.nickname ?: ""
+
+        // Don't check if it's the same as the original nickname
+        if (nickname.isEmpty() || nickname == originalNickname) {
+            _uiState.update { it.copy(nicknameExists = false) }
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                val exists = withContext(Dispatchers.IO) {
+                    repository.getByNickname(nickname) != null
+                }
+                _uiState.update { it.copy(nicknameExists = exists) }
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to check if nickname exists", e)
+            }
+        }
     }
 
     fun updateOldPassword(password: String) {

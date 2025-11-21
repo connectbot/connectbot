@@ -17,21 +17,30 @@
 
 package org.connectbot.ui.screens.pubkeylist
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.LockOpen
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -42,10 +51,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,12 +67,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
 
@@ -71,15 +90,34 @@ fun PubkeyListScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val terminalManager = LocalTerminalManager.current
     val viewModel = remember { PubkeyListViewModel(context) }
     val uiState by viewModel.uiState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    // Set TerminalManager in ViewModel
+    LaunchedEffect(terminalManager) {
+        viewModel.terminalManager = terminalManager
+    }
+
+    // Show snackbar for errors
+    LaunchedEffect(uiState.error) {
+        uiState.error?.let { error ->
+            snackbarHostState.showSnackbar(error)
+            viewModel.clearError()
+        }
+    }
 
     PubkeyListScreenContent(
         uiState = uiState,
+        snackbarHostState = snackbarHostState,
         onNavigateBack = onNavigateBack,
         onNavigateToGenerate = onNavigateToGenerate,
         onNavigateToEdit = onNavigateToEdit,
         onDeletePubkey = viewModel::deletePubkey,
+        onToggleKeyLoaded = viewModel::toggleKeyLoaded,
+        onCopyPublicKey = viewModel::copyPublicKey,
+        onCopyPrivateKey = viewModel::copyPrivateKey,
         modifier = modifier
     )
 }
@@ -88,10 +126,14 @@ fun PubkeyListScreen(
 @Composable
 fun PubkeyListScreenContent(
     uiState: PubkeyListUiState,
+    snackbarHostState: SnackbarHostState,
     onNavigateBack: () -> Unit,
     onNavigateToGenerate: () -> Unit,
     onNavigateToEdit: (Pubkey) -> Unit,
     onDeletePubkey: (Pubkey) -> Unit,
+    onToggleKeyLoaded: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onCopyPublicKey: (Pubkey) -> Unit,
+    onCopyPrivateKey: (Pubkey) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -113,6 +155,9 @@ fun PubkeyListScreenContent(
                 )
             }
         },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         modifier = modifier
     ) { padding ->
         Box(
@@ -123,14 +168,6 @@ fun PubkeyListScreenContent(
             when {
                 uiState.isLoading -> {
                     CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-
-                uiState.error != null -> {
-                    Text(
-                        text = stringResource(R.string.error_message, uiState.error ?: ""),
-                        color = MaterialTheme.colorScheme.error,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
@@ -161,8 +198,13 @@ fun PubkeyListScreenContent(
                         ) { pubkey ->
                             PubkeyListItem(
                                 pubkey = pubkey,
+                                isLoaded = uiState.loadedKeyNicknames.contains(pubkey.nickname),
                                 onDelete = { onDeletePubkey(pubkey) },
-                                onClick = { onNavigateToEdit(pubkey) }
+                                onToggleLoaded = { onToggleKeyLoaded(pubkey, it) },
+                                onCopyPublicKey = { onCopyPublicKey(pubkey) },
+                                onCopyPrivateKey = { onCopyPrivateKey(pubkey) },
+                                onEdit = { onNavigateToEdit(pubkey) },
+                                onClick = { onToggleKeyLoaded(pubkey, it) }
                             )
                         }
                     }
@@ -175,11 +217,19 @@ fun PubkeyListScreenContent(
 @Composable
 private fun PubkeyListItem(
     pubkey: Pubkey,
+    isLoaded: Boolean,
     onDelete: () -> Unit,
-    onClick: () -> Unit,
+    onToggleLoaded: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onCopyPublicKey: () -> Unit,
+    onCopyPrivateKey: () -> Unit,
+    onEdit: () -> Unit,
+    onClick: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var showMenu by remember { mutableStateOf(false) }
+    var showPasswordDialog by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    var passwordCallback by remember { mutableStateOf<((String) -> Unit)?>(null) }
 
     ListItem(
         headlineContent = {
@@ -197,17 +247,36 @@ private fun PubkeyListItem(
             )
         },
         leadingContent = {
-            Icon(
-                imageVector = if (pubkey.encrypted) Icons.Default.Lock else Icons.Default.LockOpen,
-                contentDescription = if (pubkey.encrypted) stringResource(R.string.pubkey_encrypted_description) else stringResource(
-                    R.string.pubkey_not_encrypted_description
-                ),
-                tint = if (pubkey.encrypted) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                }
-            )
+            val icon = when {
+                pubkey.encrypted -> Icons.Outlined.Lock
+                else -> Icons.Outlined.LockOpen
+            }
+
+            val modifier = when {
+                isLoaded -> Modifier
+                    .padding(2.dp)
+                    .border(
+                        width = 2.dp, // Border thickness
+                        color = Color.Green, // Border color
+                        shape = CircleShape // Makes the border a circle
+                    )
+                    .clip(CircleShape)
+                    .padding(4.dp)
+                else -> Modifier.padding(2.dp).clip(CircleShape).padding(4.dp)
+            }
+
+            Box(
+                modifier = modifier
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = if (pubkey.encrypted) {
+                        stringResource(R.string.pubkey_encrypted_description)
+                    } else {
+                        stringResource(R.string.pubkey_not_encrypted_description)
+                    },
+                )
+            }
         },
         trailingContent = {
             Box {
@@ -218,11 +287,53 @@ private fun PubkeyListItem(
                     expanded = showMenu,
                     onDismissRequest = { showMenu = false }
                 ) {
+                    // Edit key
+                    DropdownMenuItem(
+                        text = {
+                            Text(stringResource(R.string.list_host_edit))
+                        },
+                        onClick = {
+                            showMenu = false
+                            onEdit()
+                        },
+                        leadingIcon = {
+                            Icon(Icons.Default.Edit, null)
+                        }
+                    )
+
+                    // Copy public key
+                    val isImported = pubkey.type == "IMPORTED"
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.pubkey_copy_public)) },
+                        onClick = {
+                            showMenu = false
+                            onCopyPublicKey()
+                        },
+                        leadingIcon = {
+                            Icon(Icons.Default.ContentCopy, null)
+                        },
+                        enabled = !isImported
+                    )
+
+                    // Copy private key
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.pubkey_copy_private)) },
+                        onClick = {
+                            showMenu = false
+                            onCopyPrivateKey()
+                        },
+                        leadingIcon = {
+                            Icon(Icons.Default.ContentCopy, null)
+                        },
+                        enabled = !pubkey.encrypted || isImported
+                    )
+
+                    // Delete
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.pubkey_delete)) },
                         onClick = {
                             showMenu = false
-                            onDelete()
+                            showDeleteDialog = true
                         },
                         leadingIcon = {
                             Icon(Icons.Default.Delete, null)
@@ -231,9 +342,117 @@ private fun PubkeyListItem(
                 }
             }
         },
-        modifier = modifier.clickable { onClick() }
+        modifier = modifier.clickable {
+            onClick { targetPubkey, callback ->
+                // Show password dialog if needed
+                passwordCallback = callback
+                showPasswordDialog = true
+            }
+        }
     )
     HorizontalDivider()
+
+    // Password dialog for unlocking key
+    if (showPasswordDialog && passwordCallback != null) {
+        PubkeyPasswordDialog(
+            pubkey = pubkey,
+            onDismiss = {
+                showPasswordDialog = false
+                passwordCallback = null
+            },
+            onPasswordProvided = { password ->
+                passwordCallback?.invoke(password)
+                showPasswordDialog = false
+                passwordCallback = null
+            }
+        )
+    }
+
+    // Delete confirmation dialog
+    if (showDeleteDialog) {
+        PubkeyDeleteDialog(
+            pubkey = pubkey,
+            onDismiss = {
+                showDeleteDialog = false
+            },
+            onConfirm = {
+                showDeleteDialog = false
+                onDelete()
+            }
+        )
+    }
+}
+
+@Composable
+private fun PubkeyPasswordDialog(
+    pubkey: Pubkey,
+    onDismiss: () -> Unit,
+    onPasswordProvided: (String) -> Unit
+) {
+    var password by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = { Icon(Icons.Default.Lock, contentDescription = null) },
+        title = { Text(stringResource(R.string.pubkey_unlock)) },
+        text = {
+            Column {
+                Text(
+                    text = stringResource(R.string.pubkey_unlock_message, pubkey.nickname),
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text(stringResource(R.string.prompt_password)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { onPasswordProvided(password) }
+            ) {
+                Text(stringResource(R.string.pubkey_unlock))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        }
+    )
+}
+
+@Composable
+private fun PubkeyDeleteDialog(
+    pubkey: Pubkey,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = { Icon(Icons.Default.Delete, contentDescription = null) },
+        title = { Text(stringResource(R.string.pubkey_delete)) },
+        text = {
+            Text(stringResource(R.string.delete_message, pubkey.nickname))
+        },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm
+            ) {
+                Text(stringResource(R.string.delete_pos))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.delete_neg))
+            }
+        }
+    )
 }
 
 @ScreenPreviews
@@ -245,10 +464,14 @@ private fun PubkeyListScreenEmptyPreview() {
                 pubkeys = emptyList(),
                 isLoading = false
             ),
+            snackbarHostState = remember { SnackbarHostState() },
             onNavigateBack = {},
             onNavigateToGenerate = {},
             onNavigateToEdit = {},
-            onDeletePubkey = {}
+            onDeletePubkey = {},
+            onToggleKeyLoaded = { _, _ -> },
+            onCopyPublicKey = {},
+            onCopyPrivateKey = {}
         )
     }
 }
@@ -262,28 +485,14 @@ private fun PubkeyListScreenLoadingPreview() {
                 pubkeys = emptyList(),
                 isLoading = true
             ),
+            snackbarHostState = remember { SnackbarHostState() },
             onNavigateBack = {},
             onNavigateToGenerate = {},
             onNavigateToEdit = {},
-            onDeletePubkey = {}
-        )
-    }
-}
-
-@ScreenPreviews
-@Composable
-private fun PubkeyListScreenErrorPreview() {
-    ConnectBotTheme {
-        PubkeyListScreenContent(
-            uiState = PubkeyListUiState(
-                pubkeys = emptyList(),
-                isLoading = false,
-                error = "Failed to load SSH keys from database"
-            ),
-            onNavigateBack = {},
-            onNavigateToGenerate = {},
-            onNavigateToEdit = {},
-            onDeletePubkey = {}
+            onDeletePubkey = {},
+            onToggleKeyLoaded = { _, _ -> },
+            onCopyPublicKey = {},
+            onCopyPrivateKey = {}
         )
     }
 }
@@ -329,12 +538,17 @@ private fun PubkeyListScreenPopulatedPreview() {
                         publicKey = ByteArray(0),
                     )
                 ),
-                isLoading = false
+                isLoading = false,
+                loadedKeyNicknames = setOf("home-server")
             ),
+            snackbarHostState = remember { SnackbarHostState() },
             onNavigateBack = {},
             onNavigateToGenerate = {},
             onNavigateToEdit = {},
-            onDeletePubkey = {}
+            onDeletePubkey = {},
+            onToggleKeyLoaded = { _, _ -> },
+            onCopyPublicKey = {},
+            onCopyPrivateKey = {}
         )
     }
 }
