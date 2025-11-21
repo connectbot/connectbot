@@ -70,7 +70,7 @@ class PortForwardListViewModel(
             try {
                 withContext(Dispatchers.IO) {
                     // Parse destination in "host:port" format
-                    val destSplit = destination.split(":", limit = -1)
+                    val destSplit = destination.split(":")
                     val destAddr = destSplit.firstOrNull()
                     val destPort = if (destSplit.size > 1) {
                         destSplit.last().toIntOrNull() ?: 0
@@ -108,7 +108,7 @@ class PortForwardListViewModel(
             try {
                 withContext(Dispatchers.IO) {
                     // Parse destination in "host:port" format
-                    val destSplit = destination.split(":", limit = -1)
+                    val destSplit = destination.split(":")
                     val destAddr = destSplit.firstOrNull()
                     val destPort = if (destSplit.size > 1) {
                         destSplit.last().toIntOrNull() ?: 0
