@@ -19,28 +19,28 @@ package org.connectbot.ui.screens.generatepubkey
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import org.connectbot.R
-import org.connectbot.util.EntropyView
-import org.connectbot.util.OnEntropyGatheredListener
+import org.connectbot.ui.components.EntropyGatherer
 
 @Composable
 fun EntropyGatherDialog(
     onEntropyGathered: (ByteArray?) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val view = LocalView.current
+    var progress by remember { mutableIntStateOf(0) }
 
     AlertDialog(
         onDismissRequest = {
@@ -55,22 +55,19 @@ fun EntropyGatherDialog(
             ) {
                 Text(stringResource(R.string.pubkey_touch_hint))
 
-                AndroidView(
-                    factory = { context ->
-                        EntropyView(context).apply {
-                            addOnEntropyGatheredListener(object : OnEntropyGatheredListener {
-                                override fun onEntropyGathered(entropy: ByteArray?) {
-                                    view.post {
-                                        onEntropyGathered(entropy)
-                                    }
-                                }
-                            })
-                        }
+                Text(
+                    text = stringResource(R.string.pubkey_touch_prompt, progress),
+                    modifier = Modifier.padding(vertical = 16.dp)
+                )
+
+                EntropyGatherer(
+                    onEntropyGathered = { entropy ->
+                        onEntropyGathered(entropy)
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .padding(vertical = 16.dp)
+                    onProgressUpdated = { newProgress ->
+                        progress = newProgress
+                    },
+                    modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
         },
