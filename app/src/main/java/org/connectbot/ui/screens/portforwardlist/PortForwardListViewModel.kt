@@ -61,7 +61,7 @@ class PortForwardListViewModel(
 
     private fun checkLiveConnection() {
         val bridge = findBridgeForHost()
-        _uiState.update { it.copy(hasLiveConnection = bridge != null && bridge.isConnected) }
+        _uiState.update { it.copy(hasLiveConnection = bridge != null && bridge.transport?.isConnected() == true) }
     }
 
     private fun findBridgeForHost(): TerminalBridge? {
@@ -76,7 +76,7 @@ class PortForwardListViewModel(
 
                 // Sync enabled state from active bridge if available
                 val bridge = findBridgeForHost()
-                if (bridge != null && bridge.isConnected) {
+                if (bridge != null && bridge.transport?.isConnected() == true) {
                     val activePfs = bridge.portForwards
                     // Match port forwards by ID and sync enabled state
                     portForwards.forEach { pf ->
