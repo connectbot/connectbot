@@ -290,7 +290,7 @@ private fun PubkeyListItem(
                     // Edit key
                     DropdownMenuItem(
                         text = {
-                            Text(stringResource(R.string.list_host_edit))
+                            Text(stringResource(R.string.list_pubkey_edit))
                         },
                         onClick = {
                             showMenu = false
