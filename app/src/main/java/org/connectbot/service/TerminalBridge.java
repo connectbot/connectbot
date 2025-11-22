@@ -1023,6 +1023,13 @@ public class TerminalBridge implements VDUDisplay {
 		return disconnected;
 	}
 
+	/**
+	 * @return whether the underlying transport is connected
+	 */
+	public boolean isConnected() {
+		return transport != null && transport.isConnected();
+	}
+
 	/* (non-Javadoc)
 	 * @see de.mud.terminal.VDUDisplay#setColor(byte, byte, byte, byte)
 	 */

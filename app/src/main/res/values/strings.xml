@@ -860,6 +860,14 @@
 	<string name="portforward_unnamed">Port Forward</string>
 	<!-- Label prefix for displaying port forward type in list -->
 	<string name="portforward_type_label">Type: %s</string>
+	<!-- Menu item to enable port forward on live connection -->
+	<string name="portforward_enable">Enable</string>
+	<!-- Menu item to disable port forward on live connection -->
+	<string name="portforward_disable">Disable</string>
+	<!-- Content description for enabled port forward visual indicator -->
+	<string name="portforward_enabled">Port forward enabled</string>
+	<!-- Content description for disabled port forward visual indicator -->
+	<string name="portforward_disabled">Port forward disabled</string>
 
 	<!-- Label for spinner which allows user to select SSH/Telnet/Local. -->
 	<string name="protocol_spinner_label">Protocol</string>
