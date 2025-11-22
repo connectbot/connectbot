@@ -14,25 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.connectbot.util
 
-package org.connectbot.util;
+import java.security.Security
+import org.conscrypt.OpenSSLProvider
 
-import java.security.Security;
-
-import org.conscrypt.OpenSSLProvider;
-
-import android.content.Context;
+import android.content.Context
 
 /**
- * Created by kenny on 3/2/17.
+ * Loads the Conscrypt provider for the oss (Open Source Software) version of ConnectBot that
+ * uses OpenSSL. This provider doesn't rely on Google Play Services.
  */
-public final class ProviderLoader {
-	public static void load(Context context, ProviderLoaderListener listener) {
+object ProviderLoader {
+	@JvmStatic
+	fun load(context: Context, listener: ProviderLoaderListener) {
 		try {
-			Security.insertProviderAt(new OpenSSLProvider(), 1);
-			listener.onProviderLoaderSuccess();
-		} catch (Exception e) {
-			listener.onProviderLoaderError();
+			Security.insertProviderAt(OpenSSLProvider(), 1)
+			listener.onProviderLoaderSuccess()
+		} catch (e: Exception) {
+			listener.onProviderLoaderError()
 		}
 	}
 }
