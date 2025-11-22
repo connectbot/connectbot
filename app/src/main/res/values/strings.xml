@@ -949,4 +949,6 @@
 	<string name="disconnect_host_alert">Are you sure you want to disconnect from \'%1$s\'?</string>
 	<!-- Shown in the alert dialog when a user chooses the 'delete host' item to delete a host. -->
 	<string name="delete_host_confirm">Are you sure you want to delete host \'%1$s\'?</string>
+	<!-- Menu selection to edit a pubkey details (e.g., nickname) -->
+	<string name="list_pubkey_edit">Edit pubkey</string>
 </resources>
