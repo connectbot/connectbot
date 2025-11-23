@@ -18,12 +18,15 @@
 package org.connectbot.ui.screens.pubkeyeditor
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -131,21 +134,30 @@ fun PubkeyEditorScreenContent(
             )
         },
         modifier = modifier
-    ) { padding ->
+    ) { innerPadding ->
         when {
             uiState.isLoading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier.padding(padding)
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .consumeWindowInsets(innerPadding)
+                        .fillMaxSize()
+                ) {
+                    CircularProgressIndicator()
+                }
             }
 
             else -> {
+                val scrollState = rememberScrollState()
+
                 Column(
                     modifier = Modifier
-                        .padding(padding)
+                        .padding(innerPadding)
                         .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
+                        .verticalScroll(scrollState)
                         .padding(16.dp)
+                        .imePadding()
                 ) {
                     // Nickname
                     OutlinedTextField(
