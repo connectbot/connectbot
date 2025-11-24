@@ -29,16 +29,18 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.add
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.imeAnimationTarget
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -58,12 +60,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -102,7 +106,6 @@ fun ConsoleScreen(
     hostId: Long,
     onNavigateBack: () -> Unit,
     onNavigateToPortForwards: (Long) -> Unit,
-    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val terminalManager = LocalTerminalManager.current
@@ -137,23 +140,6 @@ fun ConsoleScreen(
         // Terminal key input triggers immediate network writes which need to happen on main thread
         // for responsiveness. This is intentional behavior carried over from the original implementation.
         android.os.StrictMode.setThreadPolicy(android.os.StrictMode.ThreadPolicy.LAX)
-
-        // Set edge-to-edge mode once on first composition
-        val activity = context as? Activity ?: return@LaunchedEffect
-        val window = activity.window
-
-        try {
-            // Always use edge-to-edge mode and let Compose handle insets
-            // This is the modern way to handle IME instead of deprecated SOFT_INPUT_ADJUST_RESIZE
-            WindowCompat.setDecorFitsSystemWindows(window, false)
-        } catch (e: IllegalArgumentException) {
-            // Handle foldable device state issues
-            android.util.Log.e(
-                "ConsoleScreen",
-                "Error setting edge-to-edge mode (foldable device?)",
-                e
-            )
-        }
     }
 
     // Apply fullscreen mode and display cutout settings
@@ -215,176 +201,176 @@ fun ConsoleScreen(
         }
     }
 
-    Box(modifier = modifier.fillMaxSize()) {
-        Scaffold(
-            snackbarHost = { SnackbarHost(snackbarHostState) }
-        ) { padding ->
-            Column {
-                // Show tabs if multiple terminals
-                if (uiState.bridges.size > 1) {
-                    PrimaryTabRow(
-                        selectedTabIndex = uiState.currentBridgeIndex,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        uiState.bridges.forEachIndexed { index, bridge ->
-                            Tab(
-                                selected = index == uiState.currentBridgeIndex,
-                                onClick = { viewModel.selectBridge(index) },
-                                text = {
-                                    Text(
-                                        bridge.host.nickname,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
-                                }
-                            )
-                        }
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        modifier = Modifier
+            .fillMaxSize(),
+        contentWindowInsets = ScaffoldDefaults.contentWindowInsets
+            .union(WindowInsets.imeAnimationTarget),
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .consumeWindowInsets(innerPadding)
+                .padding(innerPadding)
+                .windowInsetsPadding(WindowInsets.imeAnimationTarget)
+        ) {
+            // Show tabs if multiple terminals
+            if (uiState.bridges.size > 1) {
+                PrimaryTabRow(
+                    selectedTabIndex = uiState.currentBridgeIndex,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    uiState.bridges.forEachIndexed { index, bridge ->
+                        Tab(
+                            selected = index == uiState.currentBridgeIndex,
+                            onClick = { viewModel.selectBridge(index) },
+                            text = {
+                                Text(
+                                    bridge.host.nickname,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                        )
                     }
                 }
+            }
 
-                // Terminal content with keyboard overlay
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f)
-                ) {
-                    when {
-                        uiState.isLoading -> {
-                            CircularProgressIndicator(
-                                modifier = Modifier.align(Alignment.Center)
-                            )
+            // Terminal content with keyboard overlay
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+            ) {
+                when {
+                    uiState.isLoading -> {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+
+                    uiState.bridges.isNotEmpty() -> {
+                        // Use HorizontalPager for swiping between terminals
+                        val pagerState = rememberPagerState(
+                            initialPage = uiState.currentBridgeIndex,
+                            pageCount = { uiState.bridges.size }
+                        )
+
+                        // Sync pager state with ViewModel
+                        LaunchedEffect(pagerState.currentPage) {
+                            if (pagerState.currentPage != uiState.currentBridgeIndex) {
+                                viewModel.selectBridge(pagerState.currentPage)
+                            }
                         }
 
-                        uiState.bridges.isNotEmpty() -> {
-                            // Use HorizontalPager for swiping between terminals
-                            val pagerState = rememberPagerState(
-                                initialPage = uiState.currentBridgeIndex,
-                                pageCount = { uiState.bridges.size }
-                            )
-
-                            // Sync pager state with ViewModel
-                            LaunchedEffect(pagerState.currentPage) {
-                                if (pagerState.currentPage != uiState.currentBridgeIndex) {
-                                    viewModel.selectBridge(pagerState.currentPage)
-                                }
+                        // Sync ViewModel state with pager (for tab clicks)
+                        LaunchedEffect(uiState.currentBridgeIndex) {
+                            if (pagerState.currentPage != uiState.currentBridgeIndex) {
+                                pagerState.scrollToPage(uiState.currentBridgeIndex)
                             }
+                        }
 
-                            // Sync ViewModel state with pager (for tab clicks)
-                            LaunchedEffect(uiState.currentBridgeIndex) {
-                                if (pagerState.currentPage != uiState.currentBridgeIndex) {
-                                    pagerState.scrollToPage(uiState.currentBridgeIndex)
-                                }
-                            }
+                        // Calculate the padding for our special views
+                        val titleBarPaddingDp = if (!titleBarHide) 64.dp else 0.dp
+                        val keyboardPaddingDp = if (keyboardAlwaysVisible) 30.dp else 0.dp
+                        val terminalPadding = PaddingValues(top = titleBarPaddingDp, bottom = keyboardPaddingDp)
 
-                            val contentPadding = if (titleBarHide) {
-                                // When title bar is hidden, content can go to the edge, respecting safe areas.
-                                WindowInsets.safeDrawing.only(WindowInsetsSides.Vertical)
-                            } else {
-                                // When title bar is visible, add its height to the top padding.
-                                WindowInsets.safeDrawing.add(WindowInsets(top = 64.dp))
-                                    .only(WindowInsetsSides.Vertical)
-                            }
+                        HorizontalPager(
+                            state = pagerState,
+                            modifier = Modifier.fillMaxSize(),
+                            key = { uiState.bridges[it].hashCode() }
+                        ) { page ->
+                            val bridge = uiState.bridges[page]
 
-                            HorizontalPager(
-                                state = pagerState,
-                                modifier = Modifier.fillMaxSize(),
-                                key = { uiState.bridges[it].hashCode() }
-                            ) { page ->
-                                val bridge = uiState.bridges[page]
-
-                                Box(modifier = Modifier.fillMaxSize()) {
-                                    // Terminal view fills entire space with insets padding
-                                    // to avoid content being cut off by screen curves/notches
-                                    TerminalViewWrapper(
-                                        bridge = bridge,
-                                        onViewCreated = { view ->
-                                            // Only update currentTerminalView if this is the active page
-                                            if (page == uiState.currentBridgeIndex) {
-                                                currentTerminalView = view
-                                            }
-                                        },
-                                        onTerminalTap = {
-                                            // Show emulated keyboard when terminal is tapped (unless always visible)
-                                            if (!keyboardAlwaysVisible) {
-                                                showKeyboard = true
-                                            }
-                                            // Show title bar temporarily when terminal is tapped (if auto-hide enabled)
-                                            if (titleBarHide) {
-                                                showTitleBar = true
-                                            }
-                                        },
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .windowInsetsPadding(contentPadding)
-                                    )
-
-                                    // Request focus on terminal when it's the active page
-                                    LaunchedEffect(
-                                        page == uiState.currentBridgeIndex,
-                                        currentTerminalView
-                                    ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                            ) {
+                                // Terminal view fills entire space with insets padding
+                                // to avoid content being cut off by screen curves/notches
+                                TerminalViewWrapper(
+                                    bridge = bridge,
+                                    onViewCreated = { view ->
+                                        // Only update currentTerminalView if this is the active page
                                         if (page == uiState.currentBridgeIndex) {
-                                            currentTerminalView?.post {
-                                                currentTerminalView?.requestFocus()
-                                            }
+                                            currentTerminalView = view
+                                        }
+                                    },
+                                    onTerminalTap = {
+                                        // Show emulated keyboard when terminal is tapped (unless always visible)
+                                        if (!keyboardAlwaysVisible) {
+                                            showKeyboard = true
+                                        }
+                                        // Show title bar temporarily when terminal is tapped (if auto-hide enabled)
+                                        if (titleBarHide) {
+                                            showTitleBar = true
+                                        }
+                                    },
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(terminalPadding)
+                                )
+
+                                // Request focus on terminal when it's the active page
+                                LaunchedEffect(
+                                    page == uiState.currentBridgeIndex,
+                                    currentTerminalView
+                                ) {
+                                    if (page == uiState.currentBridgeIndex) {
+                                        currentTerminalView?.post {
+                                            currentTerminalView?.requestFocus()
                                         }
                                     }
+                                }
 
-                                    // Only show keyboard and prompts for the current page
-                                    if (page == uiState.currentBridgeIndex) {
-                                        // Terminal keyboard overlay (doesn't resize terminal)
-                                        // Must be BEFORE prompts so prompts appear on top
-                                        // Fade in/out animation matches ConsoleActivity (100ms duration)
-                                        androidx.compose.animation.AnimatedVisibility(
-                                            visible = showKeyboard,
-                                            enter = fadeIn(animationSpec = tween(durationMillis = 100)),
-                                            exit = fadeOut(animationSpec = tween(durationMillis = 100)),
-                                            modifier = Modifier
-                                                .align(Alignment.BottomCenter)
-                                                .windowInsetsPadding(WindowInsets.navigationBars)
-                                                .windowInsetsPadding(WindowInsets.ime)
-                                        ) {
-                                            TerminalKeyboard(
-                                                bridge = bridge,
-                                                onHideKeyboard = {
-                                                    // Auto-hide timer hides the TerminalKeyboard
-                                                    if (!keyboardAlwaysVisible) {
-                                                        showKeyboard = false
-                                                    }
-                                                    // Mark animation as played after first hide
-                                                    hasPlayedKeyboardAnimation = true
-                                                },
-                                                onHideIme = {
-                                                    // Special keys and hide button hide the IME
-                                                    keyboardController?.hide()
-                                                },
-                                                playAnimation = !hasPlayedKeyboardAnimation
-                                            )
-                                        }
-
-                                        // Show inline prompts from the current bridge (non-modal at bottom)
-                                        // Must be AFTER keyboard so prompts appear on top (z-order)
-                                        val promptState by bridge.promptManager.promptState.collectAsState()
-
-                                        InlinePrompt(
-                                            promptRequest = promptState,
-                                            onResponse = { response ->
-                                                bridge.promptManager.respond(response)
-                                            },
-                                            onCancel = {
-                                                bridge.promptManager.cancelPrompt()
-                                            },
-                                            onDismissed = {
-                                                // Return focus to terminal after prompt animation completes
-                                                // This matches ConsoleActivity.updatePromptVisible() behavior
-                                                currentTerminalView?.post {
-                                                    currentTerminalView?.requestFocus()
+                                // Only show keyboard and prompts for the current page
+                                if (page == uiState.currentBridgeIndex) {
+                                    // Terminal keyboard overlay (doesn't resize terminal)
+                                    // Must be BEFORE prompts so prompts appear on top
+                                    // Fade in/out animation matches ConsoleActivity (100ms duration)
+                                    androidx.compose.animation.AnimatedVisibility(
+                                        visible = showKeyboard,
+                                        enter = fadeIn(animationSpec = tween(durationMillis = 100)),
+                                        exit = fadeOut(animationSpec = tween(durationMillis = 100)),
+                                        modifier = Modifier
+                                            .align(Alignment.BottomCenter)
+                                    ) {
+                                        TerminalKeyboard(
+                                            bridge = bridge,
+                                            onHideKeyboard = {
+                                                // Auto-hide timer hides the TerminalKeyboard
+                                                if (!keyboardAlwaysVisible) {
+                                                    showKeyboard = false
                                                 }
+                                                // Mark animation as played after first hide
+                                                hasPlayedKeyboardAnimation = true
                                             },
-                                            modifier = Modifier
-                                                .align(Alignment.BottomCenter)
+                                            onHideIme = {
+                                                // Special keys and hide button hide the IME
+                                                keyboardController?.hide()
+                                            },
+                                            playAnimation = !hasPlayedKeyboardAnimation
                                         )
                                     }
+
+                                    // Show inline prompts from the current bridge (non-modal at bottom)
+                                    // Must be AFTER keyboard so prompts appear on top (z-order)
+                                    val promptState by bridge.promptManager.promptState.collectAsState()
+
+                                    InlinePrompt(
+                                        promptRequest = promptState,
+                                        onResponse = { response ->
+                                            bridge.promptManager.respond(response)
+                                        },
+                                        onCancel = {
+                                            bridge.promptManager.cancelPrompt()
+                                        },
+                                        onDismissed = {
+                                            currentTerminalView?.requestFocus()
+                                        },
+                                        modifier = Modifier
+                                            .align(Alignment.BottomCenter)
+                                    )
                                 }
                             }
                         }
@@ -449,12 +435,12 @@ fun ConsoleScreen(
                 },
                 colors = if (titleBarHide) {
                     // Translucent overlay when auto-hide is enabled
-                    androidx.compose.material3.TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)
+                    TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
                     )
                 } else {
                     // Solid color when permanently visible
-                    androidx.compose.material3.TopAppBarDefaults.topAppBarColors()
+                    TopAppBarDefaults.topAppBarColors()
                 },
                 actions = {
                     // Paste button - always visible
@@ -496,6 +482,7 @@ fun ConsoleScreen(
                                 if (titleBarHide) {
                                     showTitleBar = false
                                 }
+                                currentTerminalView?.requestFocus()
                             }
                         ) {
                             // Copy
@@ -611,8 +598,7 @@ fun ConsoleScreen(
                             )
                         }
                     }
-                },
-                modifier = Modifier.align(Alignment.TopCenter)
+                }
             )
         }
     }
