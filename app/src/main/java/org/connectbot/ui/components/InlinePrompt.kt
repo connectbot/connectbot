@@ -45,6 +45,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -70,8 +71,6 @@ fun InlinePrompt(
     // Track when prompt becomes invisible to call onDismissed
     LaunchedEffect(promptRequest) {
         if (wasVisible && promptRequest == null) {
-            // Prompt was just dismissed - wait for animation to complete
-            kotlinx.coroutines.delay(300) // Match animation duration
             onDismissed()
         }
         wasVisible = promptRequest != null
@@ -194,7 +193,8 @@ private fun StringPromptContent(
             label = hint?.let { { Text(it, color = terminalColors.overlayTextSecondary) } },
             visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done
+                imeAction = ImeAction.Done,
+                keyboardType = if (isPassword) KeyboardType.Password else KeyboardType.Unspecified,
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
