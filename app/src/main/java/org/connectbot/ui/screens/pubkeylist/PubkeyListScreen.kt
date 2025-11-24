@@ -17,6 +17,9 @@
 
 package org.connectbot.ui.screens.pubkeylist
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +39,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.FileOpen
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Lock
@@ -108,6 +112,13 @@ fun PubkeyListScreen(
         }
     }
 
+    // File picker for importing keys
+    val filePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri: Uri? ->
+        uri?.let { viewModel.importKeyFromUri(it) }
+    }
+
     PubkeyListScreenContent(
         uiState = uiState,
         snackbarHostState = snackbarHostState,
@@ -118,6 +129,9 @@ fun PubkeyListScreen(
         onToggleKeyLoaded = viewModel::toggleKeyLoaded,
         onCopyPublicKey = viewModel::copyPublicKey,
         onCopyPrivateKey = viewModel::copyPrivateKey,
+        onImportKey = {
+            filePickerLauncher.launch(arrayOf("*/*"))
+        },
         modifier = modifier
     )
 }
@@ -134,8 +148,11 @@ fun PubkeyListScreenContent(
     onToggleKeyLoaded: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPublicKey: (Pubkey) -> Unit,
     onCopyPrivateKey: (Pubkey) -> Unit,
+    onImportKey: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var showMenu by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -143,6 +160,26 @@ fun PubkeyListScreenContent(
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { showMenu = true }) {
+                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.button_more_options))
+                    }
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.pubkey_import_existing)) },
+                            onClick = {
+                                showMenu = false
+                                onImportKey()
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.FileOpen, contentDescription = null)
+                            }
+                        )
                     }
                 }
             )
@@ -471,7 +508,8 @@ private fun PubkeyListScreenEmptyPreview() {
             onDeletePubkey = {},
             onToggleKeyLoaded = { _, _ -> },
             onCopyPublicKey = {},
-            onCopyPrivateKey = {}
+            onCopyPrivateKey = {},
+            onImportKey = {}
         )
     }
 }
@@ -492,7 +530,8 @@ private fun PubkeyListScreenLoadingPreview() {
             onDeletePubkey = {},
             onToggleKeyLoaded = { _, _ -> },
             onCopyPublicKey = {},
-            onCopyPrivateKey = {}
+            onCopyPrivateKey = {},
+            onImportKey = {}
         )
     }
 }
@@ -548,7 +587,8 @@ private fun PubkeyListScreenPopulatedPreview() {
             onDeletePubkey = {},
             onToggleKeyLoaded = { _, _ -> },
             onCopyPublicKey = {},
-            onCopyPrivateKey = {}
+            onCopyPrivateKey = {},
+            onImportKey = {}
         )
     }
 }
