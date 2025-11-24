@@ -34,12 +34,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imeAnimationTarget
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -86,10 +82,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.edit
 import androidx.core.net.toUri
-import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.preference.PreferenceManager
+import kotlinx.coroutines.delay
 import org.connectbot.R
 import org.connectbot.TerminalView
 import org.connectbot.data.entity.Host
@@ -126,6 +122,7 @@ fun ConsoleScreen(
     var showKeyboard by remember { mutableStateOf(true) } // Start visible to show animation
     var hasPlayedKeyboardAnimation by remember { mutableStateOf(false) }
     var showTitleBar by remember { mutableStateOf(!titleBarHide) }
+    var lastInteractionTime by remember { mutableStateOf(System.currentTimeMillis()) }
     var scannedUrls by remember { mutableStateOf<List<String>>(emptyList()) }
     // Key the terminal view by currentBridgeIndex so it gets reset when switching tabs
     var currentTerminalView by remember(uiState.currentBridgeIndex) {
@@ -176,11 +173,19 @@ fun ConsoleScreen(
         }
     }
 
-    // Sync title bar visibility with keyboard visibility when titleBarHide is enabled
-    LaunchedEffect(showKeyboard, titleBarHide) {
-        if (titleBarHide && !showMenu) {
-            // When keyboard hides, also hide the title bar (unless menu is open)
-            showTitleBar = showKeyboard
+    // Unified auto-hide timer for both keyboard and title bar
+    LaunchedEffect(lastInteractionTime, keyboardAlwaysVisible, titleBarHide) {
+        // Only run the timer if there's something to auto-hide
+        if (!keyboardAlwaysVisible || titleBarHide) {
+            delay(3000)
+            // Hide keyboard if not always visible
+            if (!keyboardAlwaysVisible) {
+                showKeyboard = false
+            }
+            // Hide title bar if auto-hide is enabled
+            if (titleBarHide) {
+                showTitleBar = false
+            }
         }
     }
 
@@ -305,6 +310,8 @@ fun ConsoleScreen(
                                         if (titleBarHide) {
                                             showTitleBar = true
                                         }
+                                        // Reset the unified timer
+                                        lastInteractionTime = System.currentTimeMillis()
                                     },
                                     modifier = Modifier
                                         .fillMaxSize()
@@ -337,13 +344,9 @@ fun ConsoleScreen(
                                     ) {
                                         TerminalKeyboard(
                                             bridge = bridge,
-                                            onHideKeyboard = {
-                                                // Auto-hide timer hides the TerminalKeyboard
-                                                if (!keyboardAlwaysVisible) {
-                                                    showKeyboard = false
-                                                }
-                                                // Mark animation as played after first hide
-                                                hasPlayedKeyboardAnimation = true
+                                            onInteraction = {
+                                                // Reset the unified timer on any keyboard interaction
+                                                lastInteractionTime = System.currentTimeMillis()
                                             },
                                             onHideIme = {
                                                 // Special keys and hide button hide the IME

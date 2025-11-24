@@ -67,25 +67,18 @@ private const val UI_OPACITY = 0.5f
 /**
  * Virtual keyboard with terminal special keys (Ctrl, Esc, arrows, function keys, etc.)
  * Positioned at bottom of console screen, horizontally scrollable
- * Auto-hides after 3 seconds of inactivity with fade animation
+ * Auto-hide timer is managed by parent ConsoleScreen
  */
 @Composable
 fun TerminalKeyboard(
     bridge: TerminalBridge,
-    onHideKeyboard: () -> Unit,
+    onInteraction: () -> Unit,
     onHideIme: () -> Unit = {},
     playAnimation: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val keyHandler = bridge.keyHandler
-    var lastInteractionTime by remember { mutableStateOf(System.currentTimeMillis()) }
     val scrollState = rememberScrollState()
-
-    // Auto-hide after 3 seconds (matching ConsoleActivity.KEYBOARD_DISPLAY_TIME)
-    LaunchedEffect(lastInteractionTime) {
-        delay(3000)
-        onHideKeyboard()
-    }
 
     // Auto-scroll animation on first appearance (only if playAnimation is true)
     LaunchedEffect(playAnimation) {
@@ -108,18 +101,13 @@ fun TerminalKeyboard(
         }
     }
 
-    // Function to reset the auto-hide timer
-    val resetTimer = {
-        lastInteractionTime = System.currentTimeMillis()
-    }
-
     Surface(
         modifier = modifier
             .pointerInput(Unit) {
                 // Reset timer on any touch interaction
                 detectTapGestures(
                     onPress = {
-                        resetTimer()
+                        onInteraction()
                         tryAwaitRelease()
                     }
                 )
@@ -146,7 +134,7 @@ fun TerminalKeyboard(
                     contentDescription = stringResource(R.string.image_description_toggle_control_character),
                     onClick = {
                         keyHandler.metaPress(TerminalKeyListener.OUR_CTRL_ON, true)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -156,7 +144,7 @@ fun TerminalKeyboard(
                     contentDescription = stringResource(R.string.image_description_send_escape_character),
                     onClick = {
                         keyHandler.sendEscape()
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -166,7 +154,7 @@ fun TerminalKeyboard(
                     contentDescription = stringResource(R.string.image_description_send_tab_character),
                     onClick = {
                         keyHandler.sendTab()
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -176,7 +164,7 @@ fun TerminalKeyboard(
                     contentDescription = stringResource(R.string.image_description_up),
                     onPress = {
                         keyHandler.sendPressedKey(vt320.KEY_UP)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -185,7 +173,7 @@ fun TerminalKeyboard(
                     contentDescription = stringResource(R.string.image_description_down),
                     onPress = {
                         keyHandler.sendPressedKey(vt320.KEY_DOWN)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -194,7 +182,7 @@ fun TerminalKeyboard(
                     contentDescription = stringResource(R.string.image_description_left),
                     onPress = {
                         keyHandler.sendPressedKey(vt320.KEY_LEFT)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -203,7 +191,7 @@ fun TerminalKeyboard(
                     contentDescription = stringResource(R.string.image_description_right),
                     onPress = {
                         keyHandler.sendPressedKey(vt320.KEY_RIGHT)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -213,7 +201,7 @@ fun TerminalKeyboard(
                     contentDescription = null,
                     onClick = {
                         keyHandler.sendPressedKey(vt320.KEY_HOME)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -222,7 +210,7 @@ fun TerminalKeyboard(
                     contentDescription = null,
                     onClick = {
                         keyHandler.sendPressedKey(vt320.KEY_END)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -232,7 +220,7 @@ fun TerminalKeyboard(
                     contentDescription = null,
                     onClick = {
                         keyHandler.sendPressedKey(vt320.KEY_PAGE_UP)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -241,7 +229,7 @@ fun TerminalKeyboard(
                     contentDescription = null,
                     onClick = {
                         keyHandler.sendPressedKey(vt320.KEY_PAGE_DOWN)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -251,7 +239,7 @@ fun TerminalKeyboard(
                     contentDescription = null,
                     onClick = {
                         keyHandler.sendPressedKey(vt320.KEY_F1)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -260,7 +248,7 @@ fun TerminalKeyboard(
                     contentDescription = null,
                     onClick = {
                         keyHandler.sendPressedKey(vt320.KEY_F2)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -269,7 +257,7 @@ fun TerminalKeyboard(
                     contentDescription = null,
                     onClick = {
                         keyHandler.sendPressedKey(vt320.KEY_F3)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -278,7 +266,7 @@ fun TerminalKeyboard(
                     contentDescription = null,
                     onClick = {
                         keyHandler.sendPressedKey(vt320.KEY_F4)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -287,7 +275,7 @@ fun TerminalKeyboard(
                     contentDescription = null,
                     onClick = {
                         keyHandler.sendPressedKey(vt320.KEY_F5)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -296,7 +284,7 @@ fun TerminalKeyboard(
                     contentDescription = null,
                     onClick = {
                         keyHandler.sendPressedKey(vt320.KEY_F6)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -305,7 +293,7 @@ fun TerminalKeyboard(
                     contentDescription = null,
                     onClick = {
                         keyHandler.sendPressedKey(vt320.KEY_F7)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -314,7 +302,7 @@ fun TerminalKeyboard(
                     contentDescription = null,
                     onClick = {
                         keyHandler.sendPressedKey(vt320.KEY_F8)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -323,7 +311,7 @@ fun TerminalKeyboard(
                     contentDescription = null,
                     onClick = {
                         keyHandler.sendPressedKey(vt320.KEY_F9)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -332,7 +320,7 @@ fun TerminalKeyboard(
                     contentDescription = null,
                     onClick = {
                         keyHandler.sendPressedKey(vt320.KEY_F10)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -341,7 +329,7 @@ fun TerminalKeyboard(
                     contentDescription = null,
                     onClick = {
                         keyHandler.sendPressedKey(vt320.KEY_F11)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
 
@@ -350,7 +338,7 @@ fun TerminalKeyboard(
                     contentDescription = null,
                     onClick = {
                         keyHandler.sendPressedKey(vt320.KEY_F12)
-                        resetTimer()
+                        onInteraction()
                     }
                 )
             }
@@ -359,7 +347,7 @@ fun TerminalKeyboard(
             Surface(
                 onClick = {
                     onHideIme()
-                    resetTimer()
+                    onInteraction()
                 },
                 modifier = Modifier.size(width = 45.dp, height = 30.dp),
                 shape = androidx.compose.ui.graphics.RectangleShape,
