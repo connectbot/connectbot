@@ -186,6 +186,8 @@ fun ConsoleScreen(
             if (titleBarHide) {
                 showTitleBar = false
             }
+            // Mark animation as played after first timeout
+            hasPlayedKeyboardAnimation = true
         }
     }
 
