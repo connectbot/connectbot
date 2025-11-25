@@ -19,6 +19,7 @@ package org.connectbot.ui.screens.console
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -43,12 +44,15 @@ class ConsoleViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
     private lateinit var terminalManager: TerminalManager
+    private lateinit var bridgesFlow: MutableStateFlow<List<TerminalBridge>>
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
 
         terminalManager = mock()
+        bridgesFlow = MutableStateFlow(emptyList())
+        whenever(terminalManager.bridgesFlow).thenReturn(bridgesFlow)
     }
 
     @After
@@ -69,12 +73,10 @@ class ConsoleViewModelTest {
 
     @Test
     fun loadBridges_WithNoBridges_StopsLoading() = runTest {
-        whenever(terminalManager.bridges).thenReturn(ArrayList())
+        bridgesFlow.value = emptyList()
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
-        // Advance time past the polling timeout (5 seconds)
-        advanceTimeBy(5500)
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
@@ -85,12 +87,10 @@ class ConsoleViewModelTest {
     @Test
     fun loadBridges_WithExistingBridges_LoadsSuccessfully() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
-        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
+        bridgesFlow.value = listOf(mockBridge)
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
-        // Advance time to allow polling to complete
-        advanceTimeBy(1000)
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
@@ -104,11 +104,10 @@ class ConsoleViewModelTest {
         val mockBridge1 = createMockBridge(1L, "host1")
         val mockBridge2 = createMockBridge(2L, "host2")
         val mockBridge3 = createMockBridge(3L, "host3")
-        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge2, mockBridge3))
+        bridgesFlow.value = listOf(mockBridge1, mockBridge2, mockBridge3)
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
-        advanceTimeBy(1000)
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
@@ -122,11 +121,10 @@ class ConsoleViewModelTest {
     fun selectBridge_ValidIndex_UpdatesCurrentBridge() = runTest {
         val mockBridge1 = createMockBridge(1L, "host1")
         val mockBridge2 = createMockBridge(2L, "host2")
-        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge2))
+        bridgesFlow.value = listOf(mockBridge1, mockBridge2)
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
-        advanceTimeBy(1000)
         advanceUntilIdle()
 
         // Select the second bridge
@@ -139,11 +137,10 @@ class ConsoleViewModelTest {
     @Test
     fun selectBridge_InvalidIndex_DoesNotUpdate() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
-        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
+        bridgesFlow.value = listOf(mockBridge)
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
-        advanceTimeBy(1000)
         advanceUntilIdle()
 
         val initialState = viewModel.uiState.value
@@ -158,11 +155,10 @@ class ConsoleViewModelTest {
     @Test
     fun selectBridge_NegativeIndex_DoesNotUpdate() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
-        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
+        bridgesFlow.value = listOf(mockBridge)
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
-        advanceTimeBy(1000)
         advanceUntilIdle()
 
         val initialState = viewModel.uiState.value
@@ -177,11 +173,10 @@ class ConsoleViewModelTest {
     @Test
     fun refreshMenuState_IncrementsRevision() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
-        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
+        bridgesFlow.value = listOf(mockBridge)
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
-        advanceTimeBy(1000)
         advanceUntilIdle()
 
         val initialRevision = viewModel.uiState.value.revision
@@ -195,11 +190,10 @@ class ConsoleViewModelTest {
     @Test
     fun refreshMenuState_MultipleRefreshes_IncrementsEachTime() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
-        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
+        bridgesFlow.value = listOf(mockBridge)
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
-        advanceTimeBy(1000)
         advanceUntilIdle()
 
         val initialRevision = viewModel.uiState.value.revision
@@ -218,18 +212,16 @@ class ConsoleViewModelTest {
         val mockBridge2 = createMockBridge(2L, "host2")
         val mockBridge3 = createMockBridge(3L, "host3")
 
-        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge2, mockBridge3))
+        bridgesFlow.value = listOf(mockBridge1, mockBridge2, mockBridge3)
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
-        advanceTimeBy(1000)
         advanceUntilIdle()
 
         assertEquals("Should start with 3 bridges", 3, viewModel.uiState.value.bridges.size)
 
-        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge3))
-
-        viewModel.onDisconnected(mockBridge2)
+        // Simulate bridge removal via Flow
+        bridgesFlow.value = listOf(mockBridge1, mockBridge3)
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
@@ -243,19 +235,17 @@ class ConsoleViewModelTest {
         val mockBridge2 = createMockBridge(2L, "host2")
         val mockBridge3 = createMockBridge(3L, "host3")
 
-        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge2, mockBridge3))
+        bridgesFlow.value = listOf(mockBridge1, mockBridge2, mockBridge3)
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
-        advanceTimeBy(1000)
         advanceUntilIdle()
 
         viewModel.selectBridge(2)
         assertEquals("Current index should be 2", 2, viewModel.uiState.value.currentBridgeIndex)
 
-        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge1, mockBridge2))
-
-        viewModel.onDisconnected(mockBridge3)
+        // Simulate bridge removal via Flow
+        bridgesFlow.value = listOf(mockBridge1, mockBridge2)
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
@@ -267,18 +257,16 @@ class ConsoleViewModelTest {
     fun onDisconnected_LastBridge_KeepsIndexAtZero() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
 
-        whenever(terminalManager.bridges).thenReturn(arrayListOf(mockBridge))
+        bridgesFlow.value = listOf(mockBridge)
 
         val viewModel = ConsoleViewModel(terminalManager, -1L)
 
-        advanceTimeBy(1000)
         advanceUntilIdle()
 
         assertEquals("Should have 1 bridge", 1, viewModel.uiState.value.bridges.size)
 
-        whenever(terminalManager.bridges).thenReturn(ArrayList())
-
-        viewModel.onDisconnected(mockBridge)
+        // Simulate bridge removal via Flow
+        bridgesFlow.value = emptyList()
         advanceUntilIdle()
 
         val state = viewModel.uiState.value

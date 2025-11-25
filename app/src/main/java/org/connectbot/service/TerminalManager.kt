@@ -112,8 +112,6 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		}
 	}
 
-	@Deprecated("Use hostStatusChangedFlow instead")
-	private val hostStatusChangedListeners = ArrayList<OnHostStatusChangedListener>()
 
 	private val _hostStatusChanged = MutableSharedFlow<Unit>(replay = 0, extraBufferCapacity = 10)
 	val hostStatusChangedFlow: SharedFlow<Unit> = _hostStatusChanged.asSharedFlow()
@@ -776,31 +774,9 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		}
 	}
 
-	/**
-	 * Register a `listener` that wants to know when a host's status materially changes.
-	 * @see .hostStatusChangedListeners
-	 */
-	fun registerOnHostStatusChangedListener(listener: OnHostStatusChangedListener) {
-		if (!hostStatusChangedListeners.contains(listener)) {
-			hostStatusChangedListeners.add(listener)
-		}
-	}
-
-	/**
-	 * Unregister a `listener` that wants to know when a host's status materially changes.
-	 * @see .hostStatusChangedListeners
-	 */
-	fun unregisterOnHostStatusChangedListener(listener: OnHostStatusChangedListener) {
-		hostStatusChangedListeners.remove(listener)
-	}
-
 	private fun notifyHostStatusChanged() {
 		scope.launch {
 			_hostStatusChanged.emit(Unit)
-		}
-		// Keep old listener support for backwards compatibility
-		for (listener in hostStatusChangedListeners) {
-			listener.onHostStatusChanged()
 		}
 	}
 

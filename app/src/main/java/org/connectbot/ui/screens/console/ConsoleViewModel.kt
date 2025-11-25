@@ -130,10 +130,19 @@ class ConsoleViewModel(
             } else {
                 it.currentBridgeIndex
             }
+
+            // Stop loading when we have bridges, or when we're showing all bridges (hostId == -1)
+            // If waiting for a specific host, keep loading until that bridge appears
+            val shouldStopLoading = if (hostId != -1L) {
+                filteredBridges.isNotEmpty()
+            } else {
+                true // Always stop loading when showing all bridges
+            }
+
             it.copy(
                 bridges = newBridges,
                 currentBridgeIndex = newIndex,
-                isLoading = if (filteredBridges.isNotEmpty() || allBridges.isNotEmpty()) false else it.isLoading,
+                isLoading = if (shouldStopLoading) false else it.isLoading,
                 error = null
             )
         }
