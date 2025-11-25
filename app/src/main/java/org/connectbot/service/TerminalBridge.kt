@@ -94,6 +94,11 @@ class TerminalBridge : VDUDisplay {
     private var parent: TerminalView? = null
     private val canvas = Canvas()
 
+    /**
+     * Callback invoked when text input dialog is requested (e.g., from camera button)
+     */
+    var onTextInputRequested: (() -> Unit)? = null
+
     private var disconnected = false
     private var awaitingClose = false
 
@@ -356,6 +361,14 @@ class TerminalBridge : VDUDisplay {
                 Log.e(TAG, "Couldn't inject string to remote host: ", e)
             }
         }
+    }
+
+    /**
+     * Request the parent ConsoleScreen to open the floating text input dialog.
+     * Called from hardware camera button or other triggers.
+     */
+    fun requestOpenTextInput() {
+        onTextInputRequested?.invoke()
     }
 
     /**

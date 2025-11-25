@@ -34,6 +34,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imeAnimationTarget
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.union
@@ -44,6 +45,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.ContentPaste
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
@@ -65,6 +67,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -74,7 +77,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -91,10 +96,27 @@ import org.connectbot.TerminalView
 import org.connectbot.data.entity.Host
 import org.connectbot.service.TerminalBridge
 import org.connectbot.ui.LocalTerminalManager
+import org.connectbot.ui.components.FloatingTextInputDialog
 import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
 import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
+
+/**
+ * Check if a hardware keyboard is currently attached to the device.
+ * Detects QWERTY and 12-key hardware keyboards, including Bluetooth keyboards.
+ */
+@Composable
+private fun rememberHasHardwareKeyboard(): Boolean {
+	val context = LocalContext.current
+	val configuration = LocalConfiguration.current
+
+	return remember(configuration) {
+		val keyboardType = configuration.keyboard
+		keyboardType == android.content.res.Configuration.KEYBOARD_QWERTY ||
+				keyboardType == android.content.res.Configuration.KEYBOARD_12KEY
+	}
+}
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -115,15 +137,21 @@ fun ConsoleScreen(
     var fullscreen by remember { mutableStateOf(prefs.getBoolean("fullscreen", false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean("titlebarhide", false)) }
 
+    // Hardware keyboard detection
+    val hasHardwareKeyboard = rememberHasHardwareKeyboard()
+
     var showMenu by remember { mutableStateOf(false) }
     var showUrlScanDialog by remember { mutableStateOf(false) }
     var showResizeDialog by remember { mutableStateOf(false) }
     var showDisconnectDialog by remember { mutableStateOf(false) }
+    var showTextInputDialog by remember { mutableStateOf(false) }
     var showKeyboard by remember { mutableStateOf(true) } // Start visible to show animation
     var hasPlayedKeyboardAnimation by remember { mutableStateOf(false) }
     var showTitleBar by remember { mutableStateOf(!titleBarHide) }
     var lastInteractionTime by remember { mutableStateOf(System.currentTimeMillis()) }
     var scannedUrls by remember { mutableStateOf<List<String>>(emptyList()) }
+    var imeVisible by remember { mutableStateOf(false) }
+    var isFirstLoad by remember(uiState.currentBridgeIndex) { mutableStateOf(true) }
     // Key the terminal view by currentBridgeIndex so it gets reset when switching tabs
     var currentTerminalView by remember(uiState.currentBridgeIndex) {
         mutableStateOf<TerminalView?>(
@@ -171,6 +199,15 @@ fun ConsoleScreen(
         if (uiState.bridges.isEmpty() && !uiState.isLoading) {
             onNavigateBack()
         }
+    }
+
+    // Track IME visibility using WindowInsets
+    val imeInsets = WindowInsets.ime
+    val density = LocalDensity.current
+    val imeHeight = with(density) { imeInsets.getBottom(density).toDp() }
+
+    LaunchedEffect(imeHeight) {
+        imeVisible = imeHeight > 0.dp
     }
 
     // Unified auto-hide timer for both keyboard and title bar
@@ -332,6 +369,31 @@ fun ConsoleScreen(
                                     }
                                 }
 
+                                // Show IME by default if no hardware keyboard
+                                LaunchedEffect(page == uiState.currentBridgeIndex, hasHardwareKeyboard, isFirstLoad) {
+                                    if (page == uiState.currentBridgeIndex && !hasHardwareKeyboard && isFirstLoad) {
+                                        currentTerminalView?.let { view ->
+                                            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+                                        }
+                                        isFirstLoad = false
+                                    }
+                                }
+
+                                // Set up text input request callback from bridge (for camera button)
+                                LaunchedEffect(bridge) {
+                                    bridge.onTextInputRequested = {
+                                        showTextInputDialog = true
+                                    }
+                                }
+
+                                // Clean up callback on dispose
+                                DisposableEffect(bridge) {
+                                    onDispose {
+                                        bridge.onTextInputRequested = null
+                                    }
+                                }
+
                                 // Only show keyboard and prompts for the current page
                                 if (page == uiState.currentBridgeIndex) {
                                     // Terminal keyboard overlay (doesn't resize terminal)
@@ -351,9 +413,21 @@ fun ConsoleScreen(
                                                 lastInteractionTime = System.currentTimeMillis()
                                             },
                                             onHideIme = {
-                                                // Special keys and hide button hide the IME
+                                                // Hide the IME
                                                 keyboardController?.hide()
                                             },
+                                            onShowIme = {
+                                                // Show the IME
+                                                currentTerminalView?.let { view ->
+                                                    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                                    imm.showSoftInput(view, InputMethodManager.SHOW_FORCED)
+                                                }
+                                            },
+                                            onOpenTextInput = {
+                                                // Open floating text input dialog
+                                                showTextInputDialog = true
+                                            },
+                                            imeVisible = imeVisible,
                                             playAnimation = !hasPlayedKeyboardAnimation
                                         )
                                     }
@@ -420,6 +494,20 @@ fun ConsoleScreen(
             )
         }
 
+        if (showTextInputDialog && currentBridge != null) {
+            // Get selected text from terminal if any
+            val selectedText = remember { currentTerminalView?.selectedText ?: "" }
+
+            FloatingTextInputDialog(
+                bridge = currentBridge,
+                initialText = selectedText,
+                onDismiss = {
+                    showTextInputDialog = false
+                    currentTerminalView?.requestFocus()
+                }
+            )
+        }
+
         // Overlay TopAppBar - always visible when titleBarHide is false,
         // or temporarily visible when titleBarHide is true and showTitleBar is true
         if (!titleBarHide || showTitleBar) {
@@ -448,6 +536,17 @@ fun ConsoleScreen(
                     TopAppBarDefaults.topAppBarColors()
                 },
                 actions = {
+                    // Text Input button
+                    IconButton(
+                        onClick = { showTextInputDialog = true },
+                        enabled = currentBridge != null
+                    ) {
+                        Icon(
+                            Icons.Default.Edit,
+                            contentDescription = stringResource(R.string.console_menu_text_input)
+                        )
+                    }
+
                     // Paste button - always visible
                     IconButton(
                         onClick = {
@@ -487,7 +586,18 @@ fun ConsoleScreen(
                                 if (titleBarHide) {
                                     showTitleBar = false
                                 }
-                                currentTerminalView?.requestFocus()
+                                // Restore IME if it was visible before opening menu
+                                if (imeVisible) {
+                                    currentTerminalView?.let { view ->
+                                        view.post {
+                                            view.requestFocus()
+                                            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+                                        }
+                                    }
+                                } else {
+                                    currentTerminalView?.requestFocus()
+                                }
                             }
                         ) {
                             // Copy
