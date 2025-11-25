@@ -162,8 +162,7 @@ class TerminalBridge : VDUDisplay {
 
             override fun write(b: ByteArray) {
                 try {
-                    if (transport != null)
-                        transport!!.write(b)
+                    transport?.write(b)
                 } catch (e: IOException) {
                     Log.e(TAG, "Problem writing outgoing data in vt320() thread", e)
                 }
@@ -171,8 +170,7 @@ class TerminalBridge : VDUDisplay {
 
             override fun write(b: Int) {
                 try {
-                    if (transport != null)
-                        transport!!.write(b)
+                    transport?.write(b)
                 } catch (e: IOException) {
                     Log.e(TAG, "Problem writing outgoing data in vt320() thread", e)
                 }
@@ -195,48 +193,51 @@ class TerminalBridge : VDUDisplay {
         }
 
         // Don't keep any scrollback if a session is not being opened.
+        // buffer is initialized above and should never be null here
+        val terminalBuffer = requireNotNull(buffer) { "Buffer should be initialized" }
         if (host.wantSession)
-            buffer!!.setBufferSize(scrollback)
+            terminalBuffer.setBufferSize(scrollback)
         else
-            buffer!!.setBufferSize(0)
+            terminalBuffer.setBufferSize(0)
 
         resetColors()
-        buffer!!.setDisplay(this)
+        terminalBuffer.setDisplay(this)
 
         selectionArea = SelectionArea()
 
-        keyListener = TerminalKeyListener(manager, this, buffer!!, host.encoding)
+        keyListener = TerminalKeyListener(manager, this, terminalBuffer, host.encoding)
     }
 
     /**
      * Spawn thread to open connection and start login process.
      */
     fun startConnection() {
-        transport = TransportFactory.getTransport(host.protocol)
-        if (transport == null) {
+        val newTransport = TransportFactory.getTransport(host.protocol)
+        if (newTransport == null) {
             Log.i(TAG, "No transport found for ${host.protocol}")
             return
         }
 
-        transport!!.bridge = this
-        transport!!.manager = manager
-        transport!!.host = host
+        transport = newTransport
+        newTransport.bridge = this
+        newTransport.manager = manager
+        newTransport.host = host
 
         // TODO make this more abstract so we don't litter on AbsTransport
-        if (transport is SSH) {
-            (transport as SSH).setCompression(host.compression)
-            host.useAuthAgent?.let { (transport as SSH).setUseAuthAgent(it) }
+        if (newTransport is SSH) {
+            newTransport.setCompression(host.compression)
+            host.useAuthAgent?.let { newTransport.setUseAuthAgent(it) }
         }
-        transport!!.setEmulation(emulation)
+        newTransport.setEmulation(emulation)
 
         outputLine(manager.res.getString(R.string.terminal_connecting, host.hostname, host.port, host.protocol))
 
         scope.launch(Dispatchers.IO) {
             try {
-                if (transport!!.canForwardPorts()) {
+                if (newTransport.canForwardPorts()) {
                     try {
                         for (portForward in manager.hostRepository.getPortForwardsForHost(host.id))
-                            transport!!.addPortForward(portForward)
+                            newTransport.addPortForward(portForward)
                     } catch (e: Exception) {
                         Log.e(TAG, "Failed to load port forwards for ${host.nickname}", e)
                         manager.reportError(
@@ -247,7 +248,7 @@ class TerminalBridge : VDUDisplay {
                         )
                     }
                 }
-                transport!!.connect()
+                newTransport.connect()
             } catch (e: Exception) {
                 Log.e(TAG, "Connection failed for ${host.nickname}", e)
                 manager.reportError(
@@ -265,7 +266,7 @@ class TerminalBridge : VDUDisplay {
      * @return charset in use by bridge
      */
     val charset: Charset
-        get() = relay!!.getCharset()!!
+        get() = relay?.getCharset() ?: Charsets.UTF_8
 
     /**
      * Sets the encoding used by the terminal. If the connection is live,
@@ -283,8 +284,8 @@ class TerminalBridge : VDUDisplay {
      */
     fun outputLine(output: String?) {
         if (output == null) return
-        
-        if (transport != null && transport!!.isSessionOpen()) {
+
+        if (transport?.isSessionOpen() == true) {
             Log.e(TAG, "Session established, cannot use outputLine!",
                     IOException("outputLine call traceback"))
         }
@@ -331,9 +332,7 @@ class TerminalBridge : VDUDisplay {
     }
 
     fun copyCurrentSelection() {
-        if (parent != null) {
-            parent!!.copyCurrentSelectionToClipboard()
-        }
+        parent?.copyCurrentSelectionToClipboard()
     }
 
     /**
@@ -346,7 +345,7 @@ class TerminalBridge : VDUDisplay {
 
         scope.launch(Dispatchers.IO) {
             try {
-                transport!!.write(string.toByteArray(charset(host.encoding)))
+                transport?.write(string.toByteArray(charset(host.encoding)))
             } catch (e: Exception) {
                 Log.e(TAG, "Couldn't inject string to remote host: ", e)
             }
@@ -376,9 +375,11 @@ class TerminalBridge : VDUDisplay {
 
         if (isSessionOpen) {
             // create thread to relay incoming connection data to buffer
-            relay = Relay(this, transport!!, buffer as vt320, host.encoding)
-            scope.launch {
-                relay?.start()
+            transport?.let { t ->
+                relay = Relay(this, t, buffer as vt320, host.encoding)
+                scope.launch {
+                    relay?.start()
+                }
             }
         }
 
@@ -434,8 +435,11 @@ class TerminalBridge : VDUDisplay {
         // disconnection request hangs if we havent really connected to a host yet
         // temporary fix is to just spawn disconnection into a thread
         scope.launch(Dispatchers.IO) {
-            if (transport != null && transport!!.isConnected())
-                transport!!.close()
+            transport?.let {
+                if (it.isConnected()) {
+                    it.close()
+                }
+            }
         }
 
         if (immediate || (host.quickDisconnect && !host.stayConnected)) {
@@ -528,9 +532,7 @@ class TerminalBridge : VDUDisplay {
         forcedSize = isForced
 
         // refresh any bitmap with new font size
-        if (parent != null) {
-            parentChanged(parent!!)
-        }
+        parent?.let { parentChanged(it) }
 
         for (ofscl in fontSizeChangedListeners) {
             ofscl.onFontSizeChanged(sizeDp)
@@ -618,9 +620,9 @@ class TerminalBridge : VDUDisplay {
         }
 
         // reallocate new bitmap if needed
-        var newBitmap = (bitmap == null)
-        if (bitmap != null)
-            newBitmap = (bitmap!!.width != width || bitmap!!.height != height)
+        val newBitmap = bitmap?.let {
+            it.width != width || it.height != height
+        } ?: true
 
         if (newBitmap) {
             discardBitmap()
@@ -646,13 +648,13 @@ class TerminalBridge : VDUDisplay {
         }
 
         try {
+            // buffer!! is intentional - buffer is initialized in constructor and must be non-null
             // request a terminal pty resize
             synchronized(buffer!!) {
                 buffer!!.setScreenSize(columns, rows, true)
             }
 
-            if (transport != null)
-                transport!!.setDimensions(columns, rows, width, height)
+            transport?.setDimensions(columns, rows, width, height)
         } catch (e: Exception) {
             Log.e(TAG, "Problem while trying to resize screen or PTY", e)
         }
@@ -712,12 +714,12 @@ class TerminalBridge : VDUDisplay {
     }
 
     fun propagateConsoleText(rawText: CharArray, length: Int) {
-        if (parent != null) {
-            parent!!.propagateConsoleText(rawText, length)
-        }
+        parent?.propagateConsoleText(rawText, length)
     }
 
     fun onDraw() {
+        // buffer!! is intentional here - buffer is initialized in constructor and should never be null
+        // during normal operation. If null, it indicates a serious bug that should crash.
         var fg: Int
         var bg: Int
         synchronized(buffer!!) {
@@ -832,8 +834,7 @@ class TerminalBridge : VDUDisplay {
     }
 
     override fun redraw() {
-        if (parent != null)
-            parent!!.postInvalidate()
+        parent?.postInvalidate()
     }
 
     // We don't have a scroll bar.
@@ -923,7 +924,7 @@ class TerminalBridge : VDUDisplay {
      * @return whether underlying transport can forward ports
      */
     fun canFowardPorts(): Boolean {
-        return transport!!.canForwardPorts()
+        return transport?.canForwardPorts() ?: false
     }
 
     /**
@@ -932,7 +933,7 @@ class TerminalBridge : VDUDisplay {
      * @return true on successful addition
      */
     fun addPortForward(portForward: PortForward): Boolean {
-        return transport!!.addPortForward(portForward)
+        return transport?.addPortForward(portForward) ?: false
     }
 
     /**
@@ -941,14 +942,14 @@ class TerminalBridge : VDUDisplay {
      * @return true on successful removal
      */
     fun removePortForward(portForward: PortForward): Boolean {
-        return transport!!.removePortForward(portForward)
+        return transport?.removePortForward(portForward) ?: false
     }
 
     /**
      * @return the list of port forwards
      */
     val portForwards: List<PortForward>
-        get() = transport!!.getPortForwards().orEmpty()
+        get() = transport?.getPortForwards().orEmpty()
 
     /**
      * Enables a port forward member. After calling this method, the port forward should
@@ -957,12 +958,13 @@ class TerminalBridge : VDUDisplay {
      * @return true on successful port forward setup
      */
     fun enablePortForward(portForward: PortForward): Boolean {
-        if (!transport!!.isConnected()) {
-            Log.i(TAG, "Attempt to enable port forward while not connected")
-            return false
-        }
-
-        return transport!!.enablePortForward(portForward)
+        return transport?.let {
+            if (!it.isConnected()) {
+                Log.i(TAG, "Attempt to enable port forward while not connected")
+                return false
+            }
+            it.enablePortForward(portForward)
+        } ?: false
     }
 
     /**
@@ -972,12 +974,13 @@ class TerminalBridge : VDUDisplay {
      * @return true on successful port forward tear-down
      */
     fun disablePortForward(portForward: PortForward): Boolean {
-        if (!transport!!.isConnected()) {
-            Log.i(TAG, "Attempt to disable port forward while not connected")
-            return false
-        }
-
-        return transport!!.disablePortForward(portForward)
+        return transport?.let {
+            if (!it.isConnected()) {
+                Log.i(TAG, "Attempt to disable port forward while not connected")
+                return false
+            }
+            it.disablePortForward(portForward)
+        } ?: false
     }
 
     /**
@@ -1060,6 +1063,7 @@ class TerminalBridge : VDUDisplay {
      * @return
      */
     fun scanForURLs(): List<String> {
+        // buffer!! is intentional - buffer is initialized in constructor and must be non-null
         val urls = mutableListOf<String>()
 
         val visibleBuffer = CharArray(buffer!!.height * buffer!!.width)
@@ -1078,7 +1082,7 @@ class TerminalBridge : VDUDisplay {
      * @return
      */
     fun isUsingNetwork(): Boolean {
-        return transport!!.usesNetwork()
+        return transport?.usesNetwork() ?: false
     }
 
     /**
@@ -1091,6 +1095,7 @@ class TerminalBridge : VDUDisplay {
      *
      */
     fun resetScrollPosition() {
+        // buffer!! is intentional - buffer is initialized in constructor and must be non-null
         // if we're in scrollback, scroll to bottom of window on input
         if (buffer!!.windowBase != buffer!!.screenBase)
             buffer!!.setWindowBase(buffer!!.screenBase)
