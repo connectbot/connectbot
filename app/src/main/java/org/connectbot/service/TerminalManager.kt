@@ -413,8 +413,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 			}
 
 			// pass notification back up to gui
-			if (disconnectListener != null)
-				disconnectListener!!.onDisconnected(bridge)
+			disconnectListener?.onDisconnected(bridge)
 		}
 
 		synchronized(_disconnected) {
@@ -479,11 +478,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	}
 
 	fun getKey(nickname: String): KeyPair? {
-		return if (loadedKeypairs.containsKey(nickname)) {
-			val keyHolder = loadedKeypairs[nickname]
-			keyHolder!!.pair
-		} else
-			null
+		return loadedKeypairs[nickname]?.pair
 	}
 
 	fun getKeyNickname(publicKey: ByteArray): String? {
