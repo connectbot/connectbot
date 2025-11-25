@@ -48,32 +48,17 @@ class ConsoleViewModel(
     val uiState: StateFlow<ConsoleUiState> = _uiState.asStateFlow()
 
     init {
-        // Start polling for bridges to appear (handles async connection)
-        startBridgePolling()
-        // Register as a listener for all current bridges
-        registerDisconnectListeners()
-    }
-
-    private fun startBridgePolling() {
+        // Observe bridges flow from TerminalManager
         viewModelScope.launch {
-            // First, try to find or create the bridge for this host
-            if (hostId != -1L) {
-                ensureBridgeExists()
+            terminalManager?.bridgesFlow?.collect { bridges ->
+                updateBridges(bridges)
             }
+        }
 
-            // Poll for bridges to appear for up to 5 seconds
-            var attempts = 0
-            while (attempts < 10) {
-                loadBridges()
-                if (_uiState.value.bridges.isNotEmpty()) {
-                    break
-                }
-                delay(500)
-                attempts++
-            }
-            // After polling, set loading to false if no bridges found
-            if (_uiState.value.bridges.isEmpty()) {
-                _uiState.update { it.copy(isLoading = false) }
+        // First, try to find or create the bridge for this host
+        if (hostId != -1L) {
+            viewModelScope.launch {
+                ensureBridgeExists()
             }
         }
     }
@@ -81,7 +66,7 @@ class ConsoleViewModel(
     private suspend fun ensureBridgeExists() {
         withContext(Dispatchers.IO) {
             try {
-                val allBridges = terminalManager?.bridges?.toList() ?: emptyList()
+                val allBridges = terminalManager?.bridgesFlow?.value ?: emptyList()
 
                 // Check if we already have a bridge for this host
                 val existingBridge = allBridges.find { bridge ->
@@ -122,71 +107,48 @@ class ConsoleViewModel(
         }
     }
 
-    private fun registerDisconnectListeners() {
-        terminalManager?.bridges?.forEach { bridge ->
-            bridge.addOnDisconnectedListener(this)
+    private fun updateBridges(allBridges: List<TerminalBridge>) {
+        // If hostId is provided, try to find the bridge for this specific host
+        val filteredBridges = if (hostId != -1L) {
+            allBridges.filter { bridge ->
+                bridge.host.id == hostId
+            }
+        } else {
+            allBridges
+        }
+
+        // Register listeners for any new bridges
+        filteredBridges.forEach { bridge ->
+            bridge.addOnDisconnectedListener(this@ConsoleViewModel)
+        }
+
+        _uiState.update {
+            val newBridges = filteredBridges.ifEmpty { allBridges }
+            val newIndex = if (it.currentBridgeIndex >= newBridges.size) {
+                // Adjust index if it's now out of range
+                (newBridges.size - 1).coerceAtLeast(0)
+            } else {
+                it.currentBridgeIndex
+            }
+            it.copy(
+                bridges = newBridges,
+                currentBridgeIndex = newIndex,
+                isLoading = if (filteredBridges.isNotEmpty() || allBridges.isNotEmpty()) false else it.isLoading,
+                error = null
+            )
         }
     }
 
     override fun onDisconnected(bridge: TerminalBridge) {
-        // Refresh the bridge list when a bridge disconnects
-        viewModelScope.launch {
-            delay(100) // Small delay to allow TerminalManager cleanup
-            loadBridges()
-        }
+        // Bridge disconnection is handled automatically via bridgesFlow
+        // This callback is kept for backwards compatibility
     }
 
     override fun onCleared() {
         super.onCleared()
         // Unregister from all bridges when ViewModel is cleared
-        terminalManager?.bridges?.forEach { bridge ->
+        _uiState.value.bridges.forEach { bridge ->
             bridge.removeOnDisconnectedListener(this)
-        }
-    }
-
-    private fun loadBridges() {
-        viewModelScope.launch {
-            try {
-                // Get all bridges from TerminalManager
-                val allBridges = terminalManager?.bridges?.toList() ?: emptyList()
-
-                // If hostId is provided, try to find the bridge for this specific host
-                val filteredBridges = if (hostId != -1L) {
-                    allBridges.filter { bridge ->
-                        bridge.host.id == hostId
-                    }
-                } else {
-                    allBridges
-                }
-
-                // Register listeners for any new bridges
-                filteredBridges.forEach { bridge ->
-                    bridge.addOnDisconnectedListener(this@ConsoleViewModel)
-                }
-
-                _uiState.update {
-                    val newBridges = filteredBridges.ifEmpty { allBridges }
-                    val newIndex = if (it.currentBridgeIndex >= newBridges.size) {
-                        // Adjust index if it's now out of range
-                        (newBridges.size - 1).coerceAtLeast(0)
-                    } else {
-                        it.currentBridgeIndex
-                    }
-                    it.copy(
-                        bridges = newBridges,
-                        currentBridgeIndex = newIndex,
-                        isLoading = if (filteredBridges.isNotEmpty() || allBridges.isNotEmpty()) false else it.isLoading,
-                        error = null
-                    )
-                }
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        error = e.message ?: "Failed to load terminal"
-                    )
-                }
-            }
         }
     }
 
@@ -194,10 +156,6 @@ class ConsoleViewModel(
         if (index in _uiState.value.bridges.indices) {
             _uiState.update { it.copy(currentBridgeIndex = index) }
         }
-    }
-
-    fun refreshBridges() {
-        loadBridges()
     }
 
     /**

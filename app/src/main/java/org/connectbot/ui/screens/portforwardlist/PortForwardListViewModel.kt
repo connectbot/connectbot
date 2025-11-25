@@ -65,7 +65,7 @@ class PortForwardListViewModel(
     }
 
     private fun findBridgeForHost(): TerminalBridge? {
-        return terminalManager?.bridges?.find { it.host.id == hostId }
+        return terminalManager?.bridgesFlow?.value?.find { it.host.id == hostId }
     }
 
     fun loadPortForwards() {
