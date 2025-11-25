@@ -30,7 +30,6 @@ import kotlinx.coroutines.withContext
 import org.connectbot.R
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
-import org.connectbot.service.OnHostStatusChangedListener
 import org.connectbot.service.ServiceError
 import org.connectbot.service.TerminalManager
 
@@ -52,17 +51,28 @@ class HostListViewModel(
     private val context: Context,
     private val terminalManager: TerminalManager?,
     private val repository: HostRepository = HostRepository.get(context)
-) : ViewModel(), OnHostStatusChangedListener {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HostListUiState(isLoading = true))
     val uiState: StateFlow<HostListUiState> = _uiState.asStateFlow()
 
     init {
         loadHosts()
-        // Register listener to get notified when host status changes
-        terminalManager?.registerOnHostStatusChangedListener(this)
+        // Observe host status changes from Flow
+        observeHostStatusChanges()
         // Collect service errors from TerminalManager
         collectServiceErrors()
+    }
+
+    private fun observeHostStatusChanges() {
+        terminalManager?.let { manager ->
+            viewModelScope.launch {
+                manager.hostStatusChangedFlow.collect {
+                    // Update connection states when terminal manager notifies us of changes
+                    updateConnectionStates(_uiState.value.hosts)
+                }
+            }
+        }
     }
 
     private fun collectServiceErrors() {
@@ -105,16 +115,6 @@ class HostListViewModel(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        // Unregister listener when ViewModel is cleared
-        terminalManager?.unregisterOnHostStatusChangedListener(this)
-    }
-
-    override fun onHostStatusChanged() {
-        // Update connection states when terminal manager notifies us of changes
-        updateConnectionStates(_uiState.value.hosts)
-    }
 
     fun loadHosts() {
         viewModelScope.launch {
