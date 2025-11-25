@@ -345,7 +345,8 @@ fun SettingsScreenContent(
                         stringResource(R.string.list_camera_ctrla) to "Ctrl+A",
                         stringResource(R.string.list_camera_esc) to "Esc",
                         stringResource(R.string.list_camera_esc_a) to "Esc+A",
-                        stringResource(R.string.list_camera_none) to "None"
+                        stringResource(R.string.list_camera_none) to "None",
+                        stringResource(R.string.list_camera_text_input) to "text_input"
                     ),
                     onValueChange = onCameraChange
                 )

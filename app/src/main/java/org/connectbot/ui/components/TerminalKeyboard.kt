@@ -30,6 +30,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
@@ -74,6 +76,9 @@ fun TerminalKeyboard(
     bridge: TerminalBridge,
     onInteraction: () -> Unit,
     onHideIme: () -> Unit = {},
+    onShowIme: () -> Unit = {},
+    onOpenTextInput: () -> Unit = {},
+    imeVisible: Boolean = false,
     playAnimation: Boolean = false,
     modifier: Modifier = Modifier
 ) {
@@ -343,10 +348,10 @@ fun TerminalKeyboard(
                 )
             }
 
-            // Keyboard hide button (always visible on right)
+            // Text input button (always visible on right)
             Surface(
                 onClick = {
-                    onHideIme()
+                    onOpenTextInput()
                     onInteraction()
                 },
                 modifier = Modifier.size(width = 45.dp, height = 30.dp),
@@ -359,8 +364,40 @@ fun TerminalKeyboard(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Icon(
-                        Icons.Default.KeyboardHide,
-                        contentDescription = stringResource(R.string.image_description_hide_keyboard),
+                        Icons.Default.Edit,
+                        contentDescription = stringResource(R.string.terminal_keyboard_text_input_button),
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+
+            // Keyboard toggle button (always visible on right)
+            Surface(
+                onClick = {
+                    if (imeVisible) {
+                        onHideIme()
+                    } else {
+                        onShowIme()
+                    }
+                    onInteraction()
+                },
+                modifier = Modifier.size(width = 45.dp, height = 30.dp),
+                shape = androidx.compose.ui.graphics.RectangleShape,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY)
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Icon(
+                        if (imeVisible) Icons.Default.KeyboardHide else Icons.Default.Keyboard,
+                        contentDescription = stringResource(
+                            if (imeVisible)
+                                R.string.image_description_hide_keyboard
+                            else
+                                R.string.image_description_show_keyboard
+                        ),
                         modifier = Modifier.size(20.dp)
                     )
                 }

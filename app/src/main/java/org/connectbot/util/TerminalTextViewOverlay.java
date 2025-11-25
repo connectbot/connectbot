@@ -152,6 +152,17 @@ public class TerminalTextViewOverlay extends androidx.appcompat.widget.AppCompat
 		return currentSelection != null && currentSelection.length() > 0;
 	}
 
+	/**
+	 * Get the currently selected text.
+	 * @return Selected text string, or empty string if no selection
+	 */
+	public String getSelectedText() {
+		if (currentSelection != null) {
+			return currentSelection;
+		}
+		return "";
+	}
+
 	private void pasteClipboard() {
 		String clip = "";
 		if (clipboard.hasText()) {

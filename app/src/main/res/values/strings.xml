@@ -472,6 +472,8 @@
 	<string name="list_camera_esc_a">"Esc+A"</string>
 	<!-- Selection to indicate pressing the Camera button should send nothing at all. -->
 	<string name="list_camera_none">"None"</string>
+	<!-- Selection to indicate pressing the Camera button should open the text input dialog. -->
+	<string name="list_camera_text_input">"Text Input"</string>
 
 	<!-- Name for the backspace character -->
 	<string name="list_delkey_backspace">"Backspace"</string>
@@ -770,6 +772,21 @@
 	<string name="button_key_f11">F11</string>
 	<!-- Text for the "F12" button in virtual keyboard. -->
 	<string name="button_key_f12">F12</string>
+
+	<!-- Button in virtual keyboard that opens text input dialog for composing longer text with full IME support -->
+	<string name="terminal_keyboard_text_input_button">Text input</string>
+
+	<!-- Title for the floating text input dialog where users can type longer text with full keyboard/IME support -->
+	<string name="terminal_text_input_dialog_title">Text Input</string>
+
+	<!-- Label for the text field in the floating text input dialog where users compose their text -->
+	<string name="terminal_text_input_dialog_label">Enter text to send to terminal</string>
+
+	<!-- Menu item in console toolbar to open floating text input dialog -->
+	<string name="console_menu_text_input">Text input</string>
+
+	<!-- Send button in floating text input dialog -->
+	<string name="button_send">Send</string>
 
 	<!-- Common UI button labels -->
 	<!-- Button label for confirming an action -->

@@ -339,6 +339,11 @@ class TerminalKeyListener(
                             (buffer as vt320).keyTyped(vt320.KEY_ESCAPE, ' ', 0)
                             transport.write('a'.code)
                         }
+                        "text_input" -> {
+                            // Request floating text input dialog
+                            bridge.requestOpenTextInput()
+                            return true
+                        }
                     }
                 }
                 KeyEvent.KEYCODE_DEL -> {

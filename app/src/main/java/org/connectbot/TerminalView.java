@@ -293,6 +293,17 @@ public class TerminalView extends FrameLayout implements FontSizeChangedListener
 		return false;
 	}
 
+	/**
+	 * Get the currently selected text from the terminal text overlay.
+	 * @return Selected text string, or empty string if no selection
+	 */
+	public String getSelectedText() {
+		if (terminalTextViewOverlay != null) {
+			return terminalTextViewOverlay.getSelectedText();
+		}
+		return "";
+	}
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (gestureDetector != null && gestureDetector.onTouchEvent(event)) {
