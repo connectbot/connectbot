@@ -94,6 +94,20 @@ class HostRepository(
     suspend fun findHostById(hostId: Long): Host? = hostDao.getById(hostId)
 
     /**
+     * Get all SSH hosts that can be used as jump hosts.
+     *
+     * @return List of SSH hosts
+     */
+    suspend fun getSshHosts(): List<Host> = hostDao.getSshHosts()
+
+    /**
+     * Observe all SSH hosts (for jump host selection UI).
+     *
+     * @return Flow of SSH hosts
+     */
+    fun observeSshHosts(): Flow<List<Host>> = hostDao.observeSshHosts()
+
+    /**
      * Find a host by its unique ID (blocking version for Java interop).
      *
      * @param hostId The host ID
@@ -101,6 +115,15 @@ class HostRepository(
      */
     fun findHostByIdBlocking(hostId: Long): Host? = runBlocking {
         findHostById(hostId)
+    }
+
+    /**
+     * Get SSH hosts (blocking version for Java interop).
+     *
+     * @return List of SSH hosts
+     */
+    fun getSshHostsBlocking(): List<Host> = runBlocking {
+        getSshHosts()
     }
 
     /**

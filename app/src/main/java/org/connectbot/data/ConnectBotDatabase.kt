@@ -66,7 +66,7 @@ import org.connectbot.data.entity.Pubkey
         ColorScheme::class,
         ColorPalette::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 @TypeConverters(Converters::class)
@@ -101,7 +101,7 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                     ConnectBotDatabase::class.java,
                     DATABASE_NAME
                 )
-                    .addMigrations(MIGRATION_LEGACY_TO_1)
+                    .addMigrations(MIGRATION_LEGACY_TO_1, MIGRATION_1_TO_2)
                     .build()
 
                 INSTANCE = instance
@@ -128,6 +128,17 @@ abstract class ConnectBotDatabase : RoomDatabase() {
         }
 
         /**
+         * Migration from version 1 to 2: Add ProxyJump support.
+         *
+         * Adds jump_host_id column to hosts table for SSH jump host / ProxyJump functionality.
+         */
+        private val MIGRATION_1_TO_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE hosts ADD COLUMN jump_host_id INTEGER DEFAULT NULL")
+            }
+        }
+
+        /**
          * Close the database and clear the singleton instance.
          * Used for testing purposes.
          */
@@ -149,7 +160,7 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                 ConnectBotDatabase::class.java,
                 TEST_DATABASE_NAME
             )
-                .addMigrations(MIGRATION_LEGACY_TO_1)
+                .addMigrations(MIGRATION_LEGACY_TO_1, MIGRATION_1_TO_2)
                 .fallbackToDestructiveMigration(true)
                 .allowMainThreadQueries()
                 .build()
