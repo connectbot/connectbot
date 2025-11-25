@@ -94,6 +94,7 @@ fun HostEditorScreen(
         onStayConnectedChange = viewModel::updateStayConnected,
         onQuickDisconnectChange = viewModel::updateQuickDisconnect,
         onPostLoginChange = viewModel::updatePostLogin,
+        onJumpHostChange = viewModel::updateJumpHostId,
         onSaveHost = { expandedMode -> viewModel.saveHost(expandedMode) },
         modifier = modifier
     )
@@ -122,6 +123,7 @@ fun HostEditorScreenContent(
     onStayConnectedChange: (Boolean) -> Unit,
     onQuickDisconnectChange: (Boolean) -> Unit,
     onPostLoginChange: (String) -> Unit,
+    onJumpHostChange: (Long?) -> Unit,
     onSaveHost: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -336,6 +338,16 @@ fun HostEditorScreenContent(
                 availablePubkeys = uiState.availablePubkeys,
                 onPubkeySelected = onPubkeyChange
             )
+
+            // Jump host selector (only for SSH protocol)
+            if (uiState.protocol == "ssh") {
+                HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+                JumpHostSelector(
+                    jumpHostId = uiState.jumpHostId,
+                    availableJumpHosts = uiState.availableJumpHosts,
+                    onJumpHostSelected = onJumpHostChange
+                )
+            }
 
             // DEL key selector
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
@@ -585,6 +597,83 @@ private fun PubkeySelector(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+private fun JumpHostSelector(
+    jumpHostId: Long?,
+    availableJumpHosts: List<org.connectbot.data.entity.Host>,
+    onJumpHostSelected: (Long?) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column(modifier = modifier) {
+        Text(
+            text = stringResource(R.string.hostpref_jumphost_title),
+            style = androidx.compose.material3.MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+        Text(
+            text = stringResource(R.string.hostpref_jumphost_summary),
+            style = androidx.compose.material3.MaterialTheme.typography.bodySmall,
+            color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = it }
+        ) {
+            OutlinedTextField(
+                value = when {
+                    jumpHostId == null || jumpHostId <= 0 -> stringResource(R.string.list_jumphost_none)
+                    else -> {
+                        val selectedHost = availableJumpHosts.find { it.id == jumpHostId }
+                        selectedHost?.nickname ?: stringResource(R.string.list_jumphost_none)
+                    }
+                },
+                onValueChange = {},
+                readOnly = true,
+                singleLine = true,
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                modifier = Modifier
+                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                    .fillMaxWidth()
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                // "None" option for direct connection
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.list_jumphost_none)) },
+                    onClick = {
+                        onJumpHostSelected(null)
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
+
+                // Available jump hosts
+                availableJumpHosts.forEach { host ->
+                    DropdownMenuItem(
+                        text = { Text(host.nickname) },
+                        onClick = {
+                            onJumpHostSelected(host.id)
+                            expanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 private fun DelKeySelector(
     delKey: String,
     onDelKeySelected: (String) -> Unit,
@@ -782,6 +871,7 @@ private fun HostEditorScreenPreview() {
             onStayConnectedChange = {},
             onQuickDisconnectChange = {},
             onPostLoginChange = {},
+            onJumpHostChange = {},
             onSaveHost = {}
         )
     }
