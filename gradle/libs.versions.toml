@@ -2,7 +2,7 @@
 androidGradlePlugin = "8.13.1"
 kotlin = "2.2.21"
 spotless = "8.0.0"
-versions = "0.51.0"
+versions = "0.53.0"
 errorprone = "4.3.0"
 coveralls = "2.12.2"
 jacocoAndroid = "0.2.1"
