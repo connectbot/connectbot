@@ -50,8 +50,11 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 import org.connectbot.R
 import org.connectbot.data.ColorSchemeRepository
@@ -73,6 +76,10 @@ import org.connectbot.util.PubkeyUtils
 class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenceChangeListener, ProviderLoaderListener {
 
 	private val _bridges = ArrayList<TerminalBridge>()
+	private val _bridgesFlow = MutableStateFlow<List<TerminalBridge>>(emptyList())
+	val bridgesFlow: StateFlow<List<TerminalBridge>> = _bridgesFlow.asStateFlow()
+
+	@Deprecated("Use bridgesFlow instead", ReplaceWith("bridgesFlow.value"))
 	val bridges: List<TerminalBridge>
 		get() = _bridges.toList()
 
@@ -80,6 +87,10 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	private val nicknameBridgeMap: MutableMap<String, WeakReference<TerminalBridge>> = HashMap()
 
 	private val _disconnected = ArrayList<Host>()
+	private val _disconnectedFlow = MutableStateFlow<List<Host>>(emptyList())
+	val disconnectedFlow: StateFlow<List<Host>> = _disconnectedFlow.asStateFlow()
+
+	@Deprecated("Use disconnectedFlow instead", ReplaceWith("disconnectedFlow.value"))
 	val disconnected: List<Host>
 		get() = _disconnected.toList()
 
@@ -101,7 +112,11 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		}
 	}
 
+	@Deprecated("Use hostStatusChangedFlow instead")
 	private val hostStatusChangedListeners = ArrayList<OnHostStatusChangedListener>()
+
+	private val _hostStatusChanged = MutableSharedFlow<Unit>(replay = 0, extraBufferCapacity = 10)
+	val hostStatusChangedFlow: SharedFlow<Unit> = _hostStatusChanged.asSharedFlow()
 
 	private val _serviceErrors = MutableSharedFlow<ServiceError>(replay = 0, extraBufferCapacity = 10)
 	val serviceErrors: SharedFlow<ServiceError> = _serviceErrors.asSharedFlow()
@@ -289,10 +304,12 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 			val wr = WeakReference(bridge)
 			hostBridgeMap[bridge.host] = wr
 			nicknameBridgeMap[bridge.host.nickname] = wr
+			_bridgesFlow.value = _bridges.toList()
 		}
 
 		synchronized(_disconnected) {
 			_disconnected.remove(bridge.host)
+			_disconnectedFlow.value = _disconnected.toList()
 		}
 
 		if (bridge.isUsingNetwork()) {
@@ -414,10 +431,12 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 			// pass notification back up to gui
 			disconnectListener?.onDisconnected(bridge)
+			_bridgesFlow.value = _bridges.toList()
 		}
 
 		synchronized(_disconnected) {
 			_disconnected.add(bridge.host)
+			_disconnectedFlow.value = _disconnected.toList()
 		}
 
 		notifyHostStatusChanged()
@@ -776,6 +795,10 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	}
 
 	private fun notifyHostStatusChanged() {
+		scope.launch {
+			_hostStatusChanged.emit(Unit)
+		}
+		// Keep old listener support for backwards compatibility
 		for (listener in hostStatusChangedListeners) {
 			listener.onHostStatusChanged()
 		}

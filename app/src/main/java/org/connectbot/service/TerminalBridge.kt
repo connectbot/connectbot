@@ -30,6 +30,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 import java.io.IOException
@@ -108,7 +111,10 @@ class TerminalBridge : VDUDisplay {
     private var charTop = -1
 
     private var fontSizeDp = -1f
+    private val _fontSizeFlow = MutableStateFlow(-1f)
+    val fontSizeFlow: StateFlow<Float> = _fontSizeFlow.asStateFlow()
 
+    @Deprecated("Use fontSizeFlow instead")
     private val fontSizeChangedListeners: MutableList<FontSizeChangedListener>
 
     private val localOutput: MutableList<String>
@@ -519,6 +525,7 @@ class TerminalBridge : VDUDisplay {
 
         defaultPaint.textSize = fontSizePx.toFloat()
         fontSizeDp = sizeDp
+        _fontSizeFlow.value = sizeDp
 
         // read new metrics to get exact pixel dimensions
         val fm = defaultPaint.fontMetrics
