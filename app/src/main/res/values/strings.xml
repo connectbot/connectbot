@@ -978,4 +978,28 @@
 	<string name="delete_host_confirm">Are you sure you want to delete host \'%1$s\'?</string>
 	<!-- Menu selection to edit a pubkey details (e.g., nickname) -->
 	<string name="list_pubkey_edit">Edit pubkey</string>
+
+	<!-- ProxyJump / Jump Host support -->
+	<!-- Title for jump host selector in host editor -->
+	<string name="hostpref_jumphost_title">Jump host (ProxyJump)</string>
+	<!-- Summary text explaining jump host functionality -->
+	<string name="hostpref_jumphost_summary">Connect through another SSH host</string>
+	<!-- Option for no jump host (direct connection) -->
+	<string name="list_jumphost_none">None (direct connection)</string>
+	<!-- Terminal message when connecting via jump host -->
+	<string name="terminal_connecting_via_jump">Connecting via jump host: %s</string>
+	<!-- Terminal message when connected to jump host -->
+	<string name="terminal_jump_connected">Connected to jump host: %s</string>
+	<!-- Terminal message when authenticated to jump host -->
+	<string name="terminal_jump_authenticated">Authenticated to jump host: %s</string>
+	<!-- Terminal message when jump host connection fails -->
+	<string name="terminal_jump_failed">Failed to connect to jump host %1$s: %2$s</string>
+	<!-- Terminal message when jump host authentication fails -->
+	<string name="terminal_jump_auth_failed">Authentication failed for jump host: %s</string>
+	<!-- Terminal message when jump host is not found in database -->
+	<string name="terminal_jump_not_found">Jump host not found in saved hosts</string>
+	<!-- Password prompt prefix for jump host -->
+	<string name="terminal_jump_password">Password for jump host %s:</string>
+	<!-- Keyboard-interactive prompt prefix for jump host -->
+	<string name="terminal_jump_prompt">[%s]</string>
 </resources>

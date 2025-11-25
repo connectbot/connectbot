@@ -102,4 +102,17 @@ interface HostDao {
         WHERE kh.hostname = :hostname AND kh.port = :port
     """)
     suspend fun findByKnownHost(hostname: String, port: Int): Host?
+
+    /**
+     * Get all SSH hosts that can be used as jump hosts.
+     * Only SSH protocol hosts can serve as jump hosts.
+     */
+    @Query("SELECT * FROM hosts WHERE protocol = 'ssh' ORDER BY nickname ASC")
+    suspend fun getSshHosts(): List<Host>
+
+    /**
+     * Observe all SSH hosts (for jump host selection UI).
+     */
+    @Query("SELECT * FROM hosts WHERE protocol = 'ssh' ORDER BY nickname ASC")
+    fun observeSshHosts(): Flow<List<Host>>
 }

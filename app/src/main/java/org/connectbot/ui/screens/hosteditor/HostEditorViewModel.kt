@@ -50,6 +50,8 @@ data class HostEditorUiState(
     val stayConnected: Boolean = false,
     val quickDisconnect: Boolean = false,
     val postLogin: String = "",
+    val jumpHostId: Long? = null,
+    val availableJumpHosts: List<Host> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null
 )
@@ -66,6 +68,7 @@ class HostEditorViewModel(
 
     init {
         loadPubkeys()
+        loadJumpHosts()
         if (hostId != -1L) {
             loadHost()
         }
@@ -79,6 +82,21 @@ class HostEditorViewModel(
             } catch (e: Exception) {
                 // Don't fail the whole screen if pubkeys can't be loaded
                 _uiState.update { it.copy(availablePubkeys = emptyList()) }
+            }
+        }
+    }
+
+    private fun loadJumpHosts() {
+        viewModelScope.launch {
+            try {
+                // Get all SSH hosts that can be used as jump hosts
+                // Exclude the current host being edited to prevent circular references
+                val sshHosts = repository.getSshHosts()
+                    .filter { it.id != hostId }
+                _uiState.update { it.copy(availableJumpHosts = sshHosts) }
+            } catch (e: Exception) {
+                // Don't fail the whole screen if jump hosts can't be loaded
+                _uiState.update { it.copy(availableJumpHosts = emptyList()) }
             }
         }
     }
@@ -107,6 +125,7 @@ class HostEditorViewModel(
                             stayConnected = host.stayConnected,
                             quickDisconnect = host.quickDisconnect,
                             postLogin = host.postLogin ?: "",
+                            jumpHostId = host.jumpHostId,
                             isLoading = false
                         )
                     }
@@ -209,6 +228,10 @@ class HostEditorViewModel(
         _uiState.update { it.copy(postLogin = value) }
     }
 
+    fun updateJumpHostId(value: Long?) {
+        _uiState.update { it.copy(jumpHostId = value) }
+    }
+
     fun saveHost(useExpandedMode: Boolean) {
         viewModelScope.launch {
             try {
@@ -225,6 +248,9 @@ class HostEditorViewModel(
                 } else {
                     state.nickname
                 }
+
+                // Only SSH hosts can have a jump host
+                val jumpHostId = if (state.protocol == "ssh") state.jumpHostId else null
 
                 val host = Host(
                     id = existingHost?.id ?: 0L,
@@ -249,7 +275,8 @@ class HostEditorViewModel(
                     useKeys = existingHost?.useKeys ?: true,
                     colorSchemeId = existingHost?.colorSchemeId ?: 1L,
                     scrollbackLines = existingHost?.scrollbackLines ?: 140,
-                    useCtrlAltAsMetaKey = existingHost?.useCtrlAltAsMetaKey ?: false
+                    useCtrlAltAsMetaKey = existingHost?.useCtrlAltAsMetaKey ?: false,
+                    jumpHostId = jumpHostId
                 )
 
                 repository.saveHost(host)
