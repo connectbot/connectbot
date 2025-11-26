@@ -1,3 +1,0 @@
-java:
-  lint: true
-  config: config/quality/checkstyle/checkstyle.xml
