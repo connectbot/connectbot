@@ -20,10 +20,6 @@ plugins {
     alias(libs.plugins.hilt.android)
 }
 
-// Workaround this issue: https://issuetracker.google.com/issues/463283604
-val hack = "gradle.kts"
-apply(from = "../config/quality.${hack}")
-
 coveralls {
     jacocoReportPath = "build/reports/coverage/google/debug/report.xml"
 }
@@ -45,13 +41,22 @@ appVersioning {
 
 android {
     namespace = "org.connectbot"
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdk =
+        libs.versions.compileSdk
+            .get()
+            .toInt()
 
     defaultConfig {
         applicationId = "org.connectbot"
 
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
+        minSdk =
+            libs.versions.minSdk
+                .get()
+                .toInt()
+        targetSdk =
+            libs.versions.targetSdk
+                .get()
+                .toInt()
 
         vectorDrawables.useSupportLibrary = true
 
@@ -190,13 +195,6 @@ kotlin {
     }
 }
 
-spotless {
-    java {
-        target("**/*.java")
-        removeUnusedImports()
-    }
-}
-
 tasks.withType<JavaCompile>().configureEach {
     options.errorprone {
         checks.put("InvalidInlineTag", CheckSeverity.OFF)
@@ -207,7 +205,7 @@ tasks.withType<JavaCompile>().configureEach {
         checks.put("ClassNewInstance", CheckSeverity.OFF)
         checks.put("DefaultCharset", CheckSeverity.OFF)
         checks.put("SynchronizeOnNonFinalField", CheckSeverity.OFF)
-        excludedPaths.set(".*/app/src/main/java/de/mud/.*|.*/app/src/main/java/org/apache/.*|.*/app/src/main/java/org/keyczar/.*")
+        excludedPaths.set(".*/src/main/java/de/mud/.*|.*/src/main/java/org/apache/.*|.*/src/main/java/org/keyczar/.*")
     }
 }
 
@@ -239,30 +237,35 @@ val generateExportSchema by tasks.registering {
         val entities = database["entities"] as List<*>
 
         // Filter entities to only include export tables
-        val filteredEntities = entities.filter { entity ->
-            val entityMap = entity as Map<*, *>
-            entityMap["tableName"] in exportTables
-        }.map { entity ->
-            val entityMap = (entity as Map<*, *>).toMutableMap()
-            // Mark excluded fields instead of removing them (needed for NOT NULL defaults)
-            val fields = entityMap["fields"] as List<*>
-            entityMap["fields"] = fields.map { field ->
-                val fieldMap = (field as Map<*, *>).toMutableMap()
-                if (fieldMap["columnName"] in excludedFields) {
-                    fieldMap["excluded"] = true
+        val filteredEntities =
+            entities
+                .filter { entity ->
+                    val entityMap = entity as Map<*, *>
+                    entityMap["tableName"] in exportTables
+                }.map { entity ->
+                    val entityMap = (entity as Map<*, *>).toMutableMap()
+                    // Mark excluded fields instead of removing them (needed for NOT NULL defaults)
+                    val fields = entityMap["fields"] as List<*>
+                    entityMap["fields"] =
+                        fields.map { field ->
+                            val fieldMap = (field as Map<*, *>).toMutableMap()
+                            if (fieldMap["columnName"] in excludedFields) {
+                                fieldMap["excluded"] = true
+                            }
+                            fieldMap
+                        }
+                    entityMap
                 }
-                fieldMap
-            }
-            entityMap
-        }
 
-        val filteredSchema = mapOf(
-            "formatVersion" to inputJson["formatVersion"],
-            "database" to mapOf(
-                "version" to database["version"],
-                "entities" to filteredEntities
+        val filteredSchema =
+            mapOf(
+                "formatVersion" to inputJson["formatVersion"],
+                "database" to
+                    mapOf(
+                        "version" to database["version"],
+                        "entities" to filteredEntities,
+                    ),
             )
-        )
 
         outputDir.mkdirs()
         outputFile.writeText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(filteredSchema)))
@@ -270,12 +273,13 @@ val generateExportSchema by tasks.registering {
 }
 
 // Ensure export schema is generated before tasks that read from the assets directory
-tasks.matching {
-    (it.name.contains("merge") && it.name.contains("Assets")) ||
-    it.name.contains("Lint", ignoreCase = true)
-}.configureEach {
-    dependsOn(generateExportSchema)
-}
+tasks
+    .matching {
+        (it.name.contains("merge") && it.name.contains("Assets")) ||
+            it.name.contains("Lint", ignoreCase = true)
+    }.configureEach {
+        dependsOn(generateExportSchema)
+    }
 
 // Do not want any release candidates for updates.
 tasks.withType<DependencyUpdatesTask>().configureEach {
@@ -286,21 +290,24 @@ tasks.withType<DependencyUpdatesTask>().configureEach {
     // Android apparently marks their "alpha" as "release" so we have to reject them.
     resolutionStrategy {
         componentSelection {
-            all(Action<ComponentSelectionWithCurrent> {
-                val rejected = listOf(
-                    "alpha",
-                    "beta",
-                    "rc",
-                    "cr",
-                    "m",
-                    "preview"
-                ).any { qualifier ->
-                    candidate.version.matches(Regex("(?i).*[.-]${qualifier}[.\\d-]*"))
-                }
-                if (rejected) {
-                    reject("Release candidate")
-                }
-            })
+            all(
+                Action<ComponentSelectionWithCurrent> {
+                    val rejected =
+                        listOf(
+                            "alpha",
+                            "beta",
+                            "rc",
+                            "cr",
+                            "m",
+                            "preview",
+                        ).any { qualifier ->
+                            candidate.version.matches(Regex("(?i).*[.-]$qualifier[.\\d-]*"))
+                        }
+                    if (rejected) {
+                        reject("Release candidate")
+                    }
+                },
+            )
         }
     }
 }
