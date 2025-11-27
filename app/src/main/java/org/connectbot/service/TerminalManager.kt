@@ -73,6 +73,10 @@ import org.connectbot.util.PubkeyUtils
  * of currently connected SSH bridges that are ready for connection up to a GUI
  * if needed.
  */
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+
+@AndroidEntryPoint
 class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenceChangeListener, ProviderLoaderListener {
 
 	private val _bridges = ArrayList<TerminalBridge>()
@@ -127,10 +131,14 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	internal lateinit var res: Resources
 
+	@Inject
 	internal lateinit var hostRepository: HostRepository
+	@Inject
 	internal lateinit var colorRepository: ColorSchemeRepository
-	internal var pubkeyRepository: PubkeyRepository? = null
+	@Inject
+	internal lateinit var pubkeyRepository: PubkeyRepository
 
+	@Inject
 	internal lateinit var prefs: SharedPreferences
 
 	private val binder: IBinder = TerminalBinder()
@@ -164,22 +172,18 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	internal var hardKeyboardHidden = false
 
 	override fun onCreate() {
+		super.onCreate()
 		Log.i(TAG, "Starting service")
 
-		prefs = PreferenceManager.getDefaultSharedPreferences(this)
 		prefs.registerOnSharedPreferenceChangeListener(this)
 
 		res = resources
-
-		hostRepository = HostRepository.get(this)
-		colorRepository = ColorSchemeRepository.get(this)
-		pubkeyRepository = PubkeyRepository.get(this)
 
 		// load all marked pubkeys into memory
 		updateSavingKeys()
 		scope.launch(Dispatchers.IO) {
 			try {
-				val pubkeys = pubkeyRepository!!.getStartupKeys()
+				val pubkeys = pubkeyRepository.getStartupKeys()
 				for (pubkey in pubkeys) {
 					try {
 						val pair = PubkeyUtils.convertToKeyPair(pubkey, null)
@@ -247,18 +251,19 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	override fun onDestroy() {
 		Log.i(TAG, "Destroying service")
 
-		disconnectAll(true, false)
-
-		pubkeyRepository = null
-
-		stopIdleTimer()
 		scope.cancel()
 
-		connectivityManager.cleanup()
+		stopIdleTimer()
+
+		disconnectAll(true, false)
 
 		ConnectionNotifier.instance.hideRunningNotification(this)
 
 		disableMediaPlayer()
+
+		connectivityManager.cleanup()
+
+		super.onDestroy()
 	}
 
 	/**

@@ -18,6 +18,7 @@
 package org.connectbot.data.migration
 
 import android.content.Context
+import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.flow.first
@@ -39,17 +40,22 @@ class DatabaseMigratorTest {
 
     private lateinit var context: Context
     private lateinit var migrator: DatabaseMigrator
+    private lateinit var database: ConnectBotDatabase
 
     @Before
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
-        migrator = DatabaseMigrator.get(context)
+        database = Room.inMemoryDatabaseBuilder(context, ConnectBotDatabase::class.java)
+            .allowMainThreadQueries()
+            .build()
+        val legacyHostReader = LegacyHostDatabaseReader(context)
+        val legacyPubkeyReader = LegacyPubkeyDatabaseReader(context)
+        migrator = DatabaseMigrator(context, database, legacyHostReader, legacyPubkeyReader)
     }
 
     @After
     fun tearDown() {
-        // Clean up database
-        ConnectBotDatabase.clearInstance()
+        database.close()
         migrator.resetMigrationState()
     }
 

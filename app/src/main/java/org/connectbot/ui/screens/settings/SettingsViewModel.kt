@@ -20,6 +20,8 @@ package org.connectbot.ui.screens.settings
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -52,7 +54,8 @@ data class SettingsUiState(
     val bellNotification: Boolean = false,
 )
 
-class SettingsViewModel(
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
     private val prefs: SharedPreferences
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(loadSettings())

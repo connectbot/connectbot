@@ -36,6 +36,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.connectbot.service.TerminalManager
 import org.connectbot.ui.navigation.NavDestinations
@@ -43,6 +45,7 @@ import androidx.core.net.toUri
 
 // TODO: Move back to ComponentActivity when https://issuetracker.google.com/issues/178855209 is fixed.
 //       FragmentActivity is required for BiometricPrompt to find the FragmentManager from Compose context.
+@AndroidEntryPoint
 class MainActivity : FragmentActivity() {
     companion object {
         private const val TAG = "CB.MainActivity"

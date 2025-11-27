@@ -24,6 +24,11 @@ import android.app.backup.SharedPreferencesBackupHelper
 import android.os.ParcelFileDescriptor
 import android.util.Log
 import androidx.preference.PreferenceManager
+import androidx.room.Room
+import org.connectbot.data.ColorSchemeRepository
+import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.HostRepository
+import org.connectbot.data.PubkeyRepository
 import org.connectbot.util.PreferenceConstants
 import java.io.File
 import java.io.FileInputStream
@@ -47,7 +52,7 @@ import java.io.FileInputStream
  * temporary database. Upon restore, the original db name is used
  * automatically.
  */
-open class BackupAgent : BackupAgentHelper() {
+class BackupAgent : BackupAgentHelper() {
     companion object {
         private const val TAG = "CB.BackupAgent"
         private const val DATABASE_NAME = "connectbot.db"
@@ -99,11 +104,23 @@ open class BackupAgent : BackupAgentHelper() {
 
         val tempDbFile = getDatabasePath(TEMP_DATABASE_NAME)
 
-        val filter = BackupFilter(applicationContext)
+        // Manually create database and repositories for BackupFilter
+        val database = Room.databaseBuilder(
+            applicationContext,
+            ConnectBotDatabase::class.java,
+            DATABASE_NAME
+        ).build()
+        val hostRepository = HostRepository(database.hostDao(), database.portForwardDao(), database.knownHostDao())
+        val colorSchemeRepository = ColorSchemeRepository(database.colorSchemeDao())
+        val pubkeyRepository = PubkeyRepository(database.pubkeyDao())
+
+        val filter = BackupFilter(applicationContext, hostRepository, colorSchemeRepository, pubkeyRepository)
         try {
             // Step 1: Build a temporary database with filtered data
             Log.d(TAG, "Building temporary database with backupable data")
-            filter.buildFilteredDatabase(tempDbFile, backupKeys)
+            kotlinx.coroutines.runBlocking {
+                filter.buildFilteredDatabase(tempDbFile, backupKeys)
+            }
 
             // Step 2: Back up the filtered database
             Log.d(TAG, "Backing up filtered database")
@@ -115,6 +132,7 @@ open class BackupAgent : BackupAgentHelper() {
         } finally {
             // Step 3: Clean up the temporary database
             filter.cleanupTempDatabase(tempDbFile)
+            database.close() // Close the manually created database
         }
     }
 

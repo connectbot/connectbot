@@ -28,6 +28,8 @@ import org.connectbot.data.dao.PortForwardDao
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KnownHost
 import org.connectbot.data.entity.PortForward
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Repository for managing SSH host configurations and connections.
@@ -37,7 +39,8 @@ import org.connectbot.data.entity.PortForward
  * @param portForwardDao The DAO for accessing port forward data
  * @param knownHostDao The DAO for accessing known host data
  */
-class HostRepository(
+@Singleton
+class HostRepository @Inject constructor(
     private val hostDao: HostDao,
     private val portForwardDao: PortForwardDao,
     private val knownHostDao: KnownHostDao
@@ -238,6 +241,10 @@ class HostRepository(
         return knownHosts
     }
 
+    suspend fun getKnownHostsForHost(hostId: Long): List<KnownHost> {
+        return knownHostDao.getByHostId(hostId)
+    }
+
     /**
      * Get the list of host key algorithms known for a specific host.
      *
@@ -414,39 +421,5 @@ class HostRepository(
         }
 
         return null
-    }
-
-    companion object {
-        @Volatile
-        private var instance: HostRepository? = null
-
-        /**
-         * Get the singleton repository instance.
-         * Uses the production database.
-         *
-         * @param context Application context
-         * @return HostRepository instance
-         */
-        fun get(context: Context): HostRepository {
-            return instance ?: synchronized(this) {
-                val database = ConnectBotDatabase.getInstance(context.applicationContext)
-                instance ?: HostRepository(
-                    database.hostDao(),
-                    database.portForwardDao(),
-                    database.knownHostDao()
-                ).also {
-                    instance = it
-                }
-            }
-        }
-
-        /**
-         * Clear the singleton instance.
-         * Used for testing purposes.
-         */
-        @androidx.annotation.VisibleForTesting
-        fun clearInstance() {
-            instance = null
-        }
     }
 }

@@ -23,6 +23,8 @@ import kotlinx.coroutines.runBlocking
 import org.connectbot.data.dao.PubkeyDao
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Repository for managing SSH public/private key pairs.
@@ -30,7 +32,8 @@ import org.connectbot.data.entity.Pubkey
  *
  * @param pubkeyDao The DAO for accessing pubkey data
  */
-class PubkeyRepository(
+@Singleton
+class PubkeyRepository @Inject constructor(
     private val pubkeyDao: PubkeyDao
 ) {
 
@@ -163,36 +166,5 @@ class PubkeyRepository(
      */
     suspend fun updateBackupPermission(pubkeyId: Long, allowBackup: Boolean) {
         pubkeyDao.updateBackupPermission(pubkeyId, allowBackup)
-    }
-
-    companion object {
-        @Volatile
-        private var instance: PubkeyRepository? = null
-
-        /**
-         * Get the singleton repository instance.
-         * Uses the production database.
-         *
-         * @param context Application context
-         * @return PubkeyRepository instance
-         */
-        fun get(context: Context): PubkeyRepository {
-            return instance ?: synchronized(this) {
-                instance ?: PubkeyRepository(
-                    ConnectBotDatabase.getInstance(context.applicationContext).pubkeyDao()
-                ).also {
-                    instance = it
-                }
-            }
-        }
-
-        /**
-         * Clear the singleton instance.
-         * Used for testing purposes.
-         */
-        @androidx.annotation.VisibleForTesting
-        fun clearInstance() {
-            instance = null
-        }
     }
 }

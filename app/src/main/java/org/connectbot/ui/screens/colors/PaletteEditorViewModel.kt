@@ -20,6 +20,8 @@ package org.connectbot.ui.screens.colors
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -66,12 +68,13 @@ data class PaletteEditorUiState(
     }
 }
 
-class PaletteEditorViewModel(
-    private val context: Context,
-    private val schemeId: Long,
-    private val repository: ColorSchemeRepository = ColorSchemeRepository.get(context)
+@HiltViewModel
+class PaletteEditorViewModel @Inject constructor(
+    private val savedStateHandle: androidx.lifecycle.SavedStateHandle,
+    private val repository: ColorSchemeRepository
 ) : ViewModel() {
 
+    private val schemeId = savedStateHandle.get<Long>("schemeId") ?: 0
     private val _uiState = MutableStateFlow(PaletteEditorUiState(schemeId = schemeId))
     val uiState: StateFlow<PaletteEditorUiState> = _uiState.asStateFlow()
 

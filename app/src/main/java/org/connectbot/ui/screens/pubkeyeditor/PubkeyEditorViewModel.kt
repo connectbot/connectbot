@@ -21,6 +21,8 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -58,15 +60,16 @@ data class PubkeyEditorUiState(
                 !(willBeEncrypted && unlockAtStartup) && !nicknameExists
 }
 
-class PubkeyEditorViewModel(
-    private val context: Context,
-    private val pubkeyId: Long
+@HiltViewModel
+class PubkeyEditorViewModel @Inject constructor(
+    private val savedStateHandle: androidx.lifecycle.SavedStateHandle,
+    private val repository: PubkeyRepository
 ) : ViewModel() {
     companion object {
         private const val TAG = "PubkeyEditorViewModel"
     }
 
-    private val repository: PubkeyRepository = PubkeyRepository.get(context)
+    private val pubkeyId: Long = savedStateHandle.get<Long>("pubkeyId") ?: -1L
 
     private val _uiState = MutableStateFlow(PubkeyEditorUiState())
     val uiState: StateFlow<PubkeyEditorUiState> = _uiState.asStateFlow()

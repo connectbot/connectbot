@@ -20,6 +20,8 @@ package org.connectbot.ui.screens.colors
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -39,9 +41,9 @@ data class SchemeManagerUiState(
     val dialogError: String? = null
 )
 
-class ColorSchemeManagerViewModel(
-    private val context: Context,
-    private val repository: ColorSchemeRepository = ColorSchemeRepository.get(context)
+@HiltViewModel
+class ColorSchemeManagerViewModel @Inject constructor(
+    val repository: ColorSchemeRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SchemeManagerUiState())

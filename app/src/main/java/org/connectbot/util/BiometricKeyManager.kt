@@ -24,6 +24,7 @@ import android.security.keystore.KeyProperties
 import android.util.Log
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
+import dagger.hilt.android.qualifiers.ApplicationContext
 import org.connectbot.ui.screens.generatepubkey.KeyType
 import java.security.KeyPairGenerator
 import java.security.KeyStore
@@ -32,6 +33,8 @@ import java.security.PublicKey
 import java.security.Signature
 import java.security.spec.ECGenParameterSpec
 import java.util.UUID
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Manages SSH keys stored in Android Keystore with biometric authentication.
@@ -42,7 +45,10 @@ import java.util.UUID
  * - Cannot be exported or backed up
  * - Are invalidated if new biometrics are enrolled
  */
-class BiometricKeyManager(private val context: Context) {
+@Singleton
+class BiometricKeyManager @Inject constructor(
+	@ApplicationContext private val context: Context,
+) {
     companion object {
         private const val TAG = "BiometricKeyManager"
         private const val KEYSTORE_PROVIDER = "AndroidKeyStore"

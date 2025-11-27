@@ -63,15 +63,15 @@ import org.connectbot.R
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
 
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PubkeyEditorScreen(
-    pubkeyId: Long,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
-    val viewModel = remember { PubkeyEditorViewModel(context, pubkeyId) }
+    val viewModel: PubkeyEditorViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
 
     // Navigate back on successful save

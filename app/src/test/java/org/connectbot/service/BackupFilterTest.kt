@@ -22,15 +22,23 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.runBlocking
+import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.HostRepository
+import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
-import org.junit.Assert.*
+import org.junit.Assert.assertArrayEquals
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.mock
+import org.mockito.kotlin.whenever
 import java.io.File
 
 /**
@@ -45,10 +53,26 @@ class BackupFilterTest {
     private lateinit var context: Context
     private lateinit var backupFilter: BackupFilter
 
+    // Mock repositories for dependency injection
+    private lateinit var mockHostRepository: HostRepository
+    private lateinit var mockColorSchemeRepository: ColorSchemeRepository
+    private lateinit var mockPubkeyRepository: PubkeyRepository
+
     @Before
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
-        backupFilter = BackupFilter(context)
+
+        // Initialize mock repositories
+        mockHostRepository = mock(HostRepository::class.java)
+        mockColorSchemeRepository = mock(ColorSchemeRepository::class.java)
+        mockPubkeyRepository = mock(PubkeyRepository::class.java)
+
+        backupFilter = BackupFilter(
+            context,
+            mockHostRepository,
+            mockColorSchemeRepository,
+            mockPubkeyRepository
+        )
     }
 
     @Test
@@ -87,8 +111,16 @@ class BackupFilterTest {
     fun filterBackupablePubkeys_KeystoreKeys_AlwaysFiltered() {
         val pubkeys = listOf(
             createPubkey("exportable", allowBackup = true, storageType = KeyStorageType.EXPORTABLE),
-            createPubkey("keystore-yes", allowBackup = true, storageType = KeyStorageType.ANDROID_KEYSTORE),
-            createPubkey("keystore-no", allowBackup = false, storageType = KeyStorageType.ANDROID_KEYSTORE)
+            createPubkey(
+                "keystore-yes",
+                allowBackup = true,
+                storageType = KeyStorageType.ANDROID_KEYSTORE
+            ),
+            createPubkey(
+                "keystore-no",
+                allowBackup = false,
+                storageType = KeyStorageType.ANDROID_KEYSTORE
+            )
         )
 
         val result = backupFilter.filterBackupablePubkeys(pubkeys)
@@ -101,9 +133,21 @@ class BackupFilterTest {
     @Test
     fun filterBackupablePubkeys_AllNonBackupable_ReturnsEmpty() {
         val pubkeys = listOf(
-            createPubkey("no-backup-1", allowBackup = false, storageType = KeyStorageType.EXPORTABLE),
-            createPubkey("no-backup-2", allowBackup = false, storageType = KeyStorageType.EXPORTABLE),
-            createPubkey("keystore", allowBackup = true, storageType = KeyStorageType.ANDROID_KEYSTORE)
+            createPubkey(
+                "no-backup-1",
+                allowBackup = false,
+                storageType = KeyStorageType.EXPORTABLE
+            ),
+            createPubkey(
+                "no-backup-2",
+                allowBackup = false,
+                storageType = KeyStorageType.EXPORTABLE
+            ),
+            createPubkey(
+                "keystore",
+                allowBackup = true,
+                storageType = KeyStorageType.ANDROID_KEYSTORE
+            )
         )
 
         val result = backupFilter.filterBackupablePubkeys(pubkeys)
@@ -126,17 +170,35 @@ class BackupFilterTest {
 
         // Add 50 backupable keys
         for (i in 1..50) {
-            pubkeys.add(createPubkey("backupable-$i", allowBackup = true, storageType = KeyStorageType.EXPORTABLE))
+            pubkeys.add(
+                createPubkey(
+                    "backupable-$i",
+                    allowBackup = true,
+                    storageType = KeyStorageType.EXPORTABLE
+                )
+            )
         }
 
         // Add 25 non-backupable keys
         for (i in 1..25) {
-            pubkeys.add(createPubkey("no-backup-$i", allowBackup = false, storageType = KeyStorageType.EXPORTABLE))
+            pubkeys.add(
+                createPubkey(
+                    "no-backup-$i",
+                    allowBackup = false,
+                    storageType = KeyStorageType.EXPORTABLE
+                )
+            )
         }
 
         // Add 10 keystore keys
         for (i in 1..10) {
-            pubkeys.add(createPubkey("keystore-$i", allowBackup = true, storageType = KeyStorageType.ANDROID_KEYSTORE))
+            pubkeys.add(
+                createPubkey(
+                    "keystore-$i",
+                    allowBackup = true,
+                    storageType = KeyStorageType.ANDROID_KEYSTORE
+                )
+            )
         }
 
         val result = backupFilter.filterBackupablePubkeys(pubkeys)
@@ -184,124 +246,138 @@ class BackupFilterTest {
 
     @Test
     fun buildFilteredDatabase_WithBackupKeys_FiltersCorrectly() = runBlocking {
-        val testDb = ConnectBotDatabase.getTestInstance(context)
+        // Prepare data for mocked repositories
+        val host1 = Host(nickname = "test-host-1", protocol = "ssh", hostname = "example.com")
+        val host2 = Host(nickname = "test-host-2", protocol = "ssh", hostname = "test.com")
+        val backupableKey = createPubkey(
+            "backupable-key",
+            allowBackup = true,
+            storageType = KeyStorageType.EXPORTABLE
+        )
+        val nonBackupableKey = createPubkey(
+            "non-backupable-key",
+            allowBackup = false,
+            storageType = KeyStorageType.EXPORTABLE
+        )
+        val keystoreKey = createPubkey(
+            "keystore-key",
+            allowBackup = true,
+            storageType = KeyStorageType.ANDROID_KEYSTORE
+        )
+        val colorScheme = ColorScheme(name = "test-scheme", isBuiltIn = false)
+
+        // Mock repository behavior
+        whenever(mockHostRepository.getHosts()).thenReturn(listOf(host1, host2))
+        whenever(mockHostRepository.getPortForwardsForHost(host1.id)).thenReturn(emptyList())
+        whenever(mockHostRepository.getKnownHostsForHost(host1.id)).thenReturn(emptyList())
+        whenever(mockHostRepository.getPortForwardsForHost(host2.id)).thenReturn(emptyList())
+        whenever(mockHostRepository.getKnownHostsForHost(host2.id)).thenReturn(emptyList())
+
+        whenever(mockPubkeyRepository.getAll()).thenReturn(
+            listOf(
+                backupableKey,
+                nonBackupableKey,
+                keystoreKey
+            )
+        )
+        whenever(mockColorSchemeRepository.getAllSchemes()).thenReturn(listOf(colorScheme))
+        whenever(mockColorSchemeRepository.getSchemeColors(colorScheme.id)).thenReturn(intArrayOf())
+
+        // Create temporary database file for backup
+        val tempDbFile = File(context.cacheDir, "test_backup_temp.db")
 
         try {
-            // Add test hosts
-            val host1 = Host(nickname = "test-host-1", protocol = "ssh", hostname = "example.com")
-            val host2 = Host(nickname = "test-host-2", protocol = "ssh", hostname = "test.com")
-            testDb.hostDao().insert(host1)
-            testDb.hostDao().insert(host2)
+            // Build filtered database with backupKeys=true
+            backupFilter.buildFilteredDatabase(tempDbFile, backupKeys = true)
 
-            // Add test pubkeys with different backup settings
-            val backupableKey = createPubkey("backupable-key", allowBackup = true, storageType = KeyStorageType.EXPORTABLE)
-            val nonBackupableKey = createPubkey("non-backupable-key", allowBackup = false, storageType = KeyStorageType.EXPORTABLE)
-            val keystoreKey = createPubkey("keystore-key", allowBackup = true, storageType = KeyStorageType.ANDROID_KEYSTORE)
-            testDb.pubkeyDao().insert(backupableKey)
-            testDb.pubkeyDao().insert(nonBackupableKey)
-            testDb.pubkeyDao().insert(keystoreKey)
-
-            // Add a test color scheme
-            val colorScheme = ColorScheme(
-                name = "test-scheme",
-                isBuiltIn = false
-            )
-            testDb.colorSchemeDao().insert(colorScheme)
-
-            // Create temporary database file for backup
-            val tempDbFile = File(context.cacheDir, "test_backup_temp.db")
-
-            try {
-                // Build filtered database with backupKeys=true
-                backupFilter.buildFilteredDatabase(tempDbFile, backupKeys = true)
-
-                // Open the temp database and verify contents
-                val tempDb = Room.databaseBuilder(context, ConnectBotDatabase::class.java, tempDbFile.name)
+            // Open the temp database and verify contents
+            val tempDb =
+                Room.databaseBuilder(context, ConnectBotDatabase::class.java, tempDbFile.name)
                     .allowMainThreadQueries()
                     .build()
 
-                try {
-                    // Verify hosts were all copied
-                    val hosts = tempDb.hostDao().getAll()
-                    assertEquals(2, hosts.size)
-                    assertTrue(hosts.any { it.nickname == "test-host-1" })
-                    assertTrue(hosts.any { it.nickname == "test-host-2" })
+            try {
+                // Verify hosts were all copied
+                val hosts = tempDb.hostDao().getAll()
+                assertEquals(2, hosts.size)
+                assertTrue(hosts.any { it.nickname == "test-host-1" })
+                assertTrue(hosts.any { it.nickname == "test-host-2" })
 
-                    // Verify only backupable key was copied
-                    val pubkeys = tempDb.pubkeyDao().getAll()
-                    assertEquals(1, pubkeys.size)
-                    assertEquals("backupable-key", pubkeys[0].nickname)
-                    assertEquals(KeyStorageType.EXPORTABLE, pubkeys[0].storageType)
-                    assertTrue(pubkeys[0].allowBackup)
+                // Verify only backupable key was copied
+                val pubkeys = tempDb.pubkeyDao().getAll()
+                assertEquals(1, pubkeys.size)
+                assertEquals("backupable-key", pubkeys[0].nickname)
+                assertEquals(KeyStorageType.EXPORTABLE, pubkeys[0].storageType)
+                assertTrue(pubkeys[0].allowBackup)
 
-                    // Verify non-backupable keys were NOT copied
-                    assertFalse(pubkeys.any { it.nickname == "non-backupable-key" })
-                    assertFalse(pubkeys.any { it.nickname == "keystore-key" })
+                // Verify non-backupable keys were NOT copied
+                assertFalse(pubkeys.any { it.nickname == "non-backupable-key" })
+                assertFalse(pubkeys.any { it.nickname == "keystore-key" })
 
-                    // Verify color scheme was copied
-                    val colorSchemes = tempDb.colorSchemeDao().getAll()
-                    assertEquals(1, colorSchemes.size)
-                    assertEquals("test-scheme", colorSchemes[0].name)
-                } finally {
-                    tempDb.close()
-                }
+                // Verify color scheme was copied
+                val colorSchemes = tempDb.colorSchemeDao().getAll()
+                assertEquals(1, colorSchemes.size)
+                assertEquals("test-scheme", colorSchemes[0].name)
             } finally {
-                // Clean up temp database
-                backupFilter.cleanupTempDatabase(tempDbFile)
-                assertFalse(tempDbFile.exists())
+                tempDb.close()
             }
         } finally {
-            testDb.close()
-            ConnectBotDatabase.clearInstance()
+            // Clean up temp database
+            backupFilter.cleanupTempDatabase(tempDbFile)
+            assertFalse(tempDbFile.exists())
         }
     }
 
     @Test
     fun buildFilteredDatabase_WithoutBackupKeys_ExcludesAllKeys() = runBlocking {
-        val testDb = ConnectBotDatabase.getTestInstance(context)
+        // Add test host
+        val host = Host(nickname = "test-host", protocol = "ssh", hostname = "example.com")
+
+        // Add test pubkeys
+        val key1 =
+            createPubkey("key-1", allowBackup = true, storageType = KeyStorageType.EXPORTABLE)
+        val key2 =
+            createPubkey("key-2", allowBackup = true, storageType = KeyStorageType.EXPORTABLE)
+
+        whenever(mockHostRepository.getHosts()).thenReturn(listOf(host))
+        whenever(mockHostRepository.getPortForwardsForHost(host.id)).thenReturn(emptyList())
+        whenever(mockHostRepository.getKnownHostsForHost(host.id)).thenReturn(emptyList())
+        whenever(mockPubkeyRepository.getAll()).thenReturn(
+            listOf(
+                key1,
+                key2
+            )
+        )
+        whenever(mockColorSchemeRepository.getAllSchemes()).thenReturn(emptyList()) // No color schemes to backup
+
+        // Create temporary database file for backup
+        val tempDbFile = File(context.cacheDir, "test_backup_no_keys.db")
 
         try {
-            // Add test host
-            val host = Host(nickname = "test-host", protocol = "ssh", hostname = "example.com")
-            testDb.hostDao().insert(host)
+            // Build filtered database with backupKeys=false
+            backupFilter.buildFilteredDatabase(tempDbFile, backupKeys = false)
 
-            // Add test pubkeys
-            val key1 = createPubkey("key-1", allowBackup = true, storageType = KeyStorageType.EXPORTABLE)
-            val key2 = createPubkey("key-2", allowBackup = true, storageType = KeyStorageType.EXPORTABLE)
-            testDb.pubkeyDao().insert(key1)
-            testDb.pubkeyDao().insert(key2)
-
-            // Create temporary database file for backup
-            val tempDbFile = File(context.cacheDir, "test_backup_no_keys.db")
-
-            try {
-                // Build filtered database with backupKeys=false
-                backupFilter.buildFilteredDatabase(tempDbFile, backupKeys = false)
-
-                // Open the temp database and verify contents
-                val tempDb = Room.databaseBuilder(context, ConnectBotDatabase::class.java, tempDbFile.name)
+            // Open the temp database and verify contents
+            val tempDb =
+                Room.databaseBuilder(context, ConnectBotDatabase::class.java, tempDbFile.name)
                     .allowMainThreadQueries()
                     .build()
 
-                try {
-                    // Verify host was copied
-                    val hosts = tempDb.hostDao().getAll()
-                    assertEquals(1, hosts.size)
+            try {
+                // Verify host was copied
+                val hosts = tempDb.hostDao().getAll()
+                assertEquals(1, hosts.size)
 
-                    // Verify NO pubkeys were copied
-                    val pubkeys = tempDb.pubkeyDao().getAll()
-                    assertEquals(0, pubkeys.size)
-                } finally {
-                    tempDb.close()
-                }
+                // Verify NO pubkeys were copied
+                val pubkeys = tempDb.pubkeyDao().getAll()
+                assertEquals(0, pubkeys.size)
             } finally {
-                // Clean up temp database
-                backupFilter.cleanupTempDatabase(tempDbFile)
-                assertFalse(tempDbFile.exists())
+                tempDb.close()
             }
         } finally {
-            testDb.close()
-            ConnectBotDatabase.clearInstance()
+            // Clean up temp database
+            backupFilter.cleanupTempDatabase(tempDbFile)
+            assertFalse(tempDbFile.exists())
         }
     }
 

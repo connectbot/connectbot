@@ -48,34 +48,26 @@ import java.io.File
  *
  * @param context Application context
  */
-class DatabaseMigrator(
-    private val context: Context,
-) {
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
+class DatabaseMigrator @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val roomDatabase: ConnectBotDatabase,
+    private val legacyHostReader: LegacyHostDatabaseReader,
+    private val legacyPubkeyReader: LegacyPubkeyDatabaseReader
+) {
     companion object {
         private const val TAG = "DatabaseMigrator"
         private const val LEGACY_HOSTS_DB = "hosts"
         private const val LEGACY_PUBKEYS_DB = "pubkeys"
         private const val MIGRATED_SUFFIX = ".migrated"
-
-        @Volatile
-        private var instance: DatabaseMigrator? = null
-
-        fun get(context: Context): DatabaseMigrator {
-            return instance ?: synchronized(this) {
-                instance ?: DatabaseMigrator(context.applicationContext).also {
-                    instance = it
-                }
-            }
-        }
     }
 
     private val _migrationState = MutableStateFlow(MigrationState())
     val migrationState: Flow<MigrationState> = _migrationState.asStateFlow()
-
-    private val legacyHostReader = LegacyHostDatabaseReader(context)
-    private val legacyPubkeyReader = LegacyPubkeyDatabaseReader(context)
-    private val roomDatabase = ConnectBotDatabase.getInstance(context)
 
     private fun logDebug(message: String) {
         Log.d(TAG, message)

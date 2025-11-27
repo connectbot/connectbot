@@ -61,19 +61,17 @@ import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.components.RgbColorPickerDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+
 /**
  * Screen for editing the full 256-color palette of a color scheme.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaletteEditorScreen(
-    schemeId: Long,
     onNavigateBack: () -> Unit
 ) {
-    val context = LocalContext.current
-    val viewModel = remember {
-        PaletteEditorViewModel(context, schemeId)
-    }
+    val viewModel: PaletteEditorViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 

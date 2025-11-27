@@ -21,6 +21,8 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -40,23 +42,33 @@ data class PortForwardListUiState(
     val hasLiveConnection: Boolean = false
 )
 
-class PortForwardListViewModel(
-    private val context: Context,
-    private val hostId: Long,
-    private val terminalManager: TerminalManager?,
-    private val repository: HostRepository = HostRepository.get(context)
+@HiltViewModel
+class PortForwardListViewModel @Inject constructor(
+    private val savedStateHandle: androidx.lifecycle.SavedStateHandle,
+    private val repository: HostRepository
 ) : ViewModel() {
 
     companion object {
         private const val TAG = "CB.PortForwardListVM"
     }
 
+    private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
+    private var terminalManager: TerminalManager? = null
+
     private val _uiState = MutableStateFlow(PortForwardListUiState(isLoading = true))
     val uiState: StateFlow<PortForwardListUiState> = _uiState.asStateFlow()
 
     init {
         loadPortForwards()
-        checkLiveConnection()
+    }
+
+    fun setTerminalManager(manager: TerminalManager) {
+        if (terminalManager != manager) {
+            terminalManager = manager
+            checkLiveConnection()
+            // Reload to sync enabled state from active bridge
+            loadPortForwards()
+        }
     }
 
     private fun checkLiveConnection() {

@@ -96,6 +96,8 @@ import org.connectbot.ui.components.TERMINAL_KEYBOARD_HEIGHT_DP
 import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
 
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+
 /**
  * Check if a hardware keyboard is currently attached to the device.
  * Detects QWERTY and 12-key hardware keyboards, including Bluetooth keyboards.
@@ -115,14 +117,17 @@ private fun rememberHasHardwareKeyboard(): Boolean {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ConsoleScreen(
-    hostId: Long,
     onNavigateBack: () -> Unit,
     onNavigateToPortForwards: (Long) -> Unit,
 ) {
     val context = LocalContext.current
     val terminalManager = LocalTerminalManager.current
-    val viewModel = remember(hostId) { ConsoleViewModel(terminalManager, hostId) }
+    val viewModel: ConsoleViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(terminalManager) {
+        terminalManager?.let { viewModel.setTerminalManager(it) }
+    }
 
     // Read preferences
     val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }

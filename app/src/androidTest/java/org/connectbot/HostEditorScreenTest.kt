@@ -17,55 +17,81 @@
 
 package org.connectbot
 
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.navigation.NavType
+import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import androidx.navigation.testing.TestNavHostController
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
-import org.connectbot.data.ConnectBotDatabase
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.connectbot.ui.screens.hosteditor.HostEditorScreen
 import org.connectbot.ui.theme.ConnectBotTheme
-import org.junit.After
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class HostEditorScreenTest {
-    @get:Rule
-    val composeTestRule = createComposeRule()
+    @get:Rule(order = 0)
+    val hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
+    val composeTestRule = createAndroidComposeRule<HiltComponentActivity>()
+
+    private lateinit var navController: TestNavHostController
 
     @Before
     fun setUp() {
-        ConnectBotDatabase.clearInstance()
-
-        val context = InstrumentationRegistry.getInstrumentation().targetContext
-        ConnectBotDatabase.getTestInstance(context)
+        hiltRule.inject()
+        composeTestRule.setContent {
+            val context = LocalContext.current
+            navController = TestNavHostController(context)
+            navController.navigatorProvider.addNavigator(ComposeNavigator())
+            ConnectBotTheme {
+                // Define a test route for HostEditorScreen
+                NavHost(navController = navController, startDestination = "start") {
+                    composable("start") {
+                        // Empty start destination - tests will navigate to hostEditor
+                    }
+                    composable(
+                        route = "hostEditor/{hostId}",
+                        arguments = listOf(navArgument("hostId") { type = NavType.LongType })
+                    ) {
+                        HostEditorScreen(
+                            onNavigateBack = { navController.popBackStack() }
+                        )
+                    }
+                }
+            }
+        }
     }
 
-    @After
-    fun tearDown() {
-        ConnectBotDatabase.clearInstance()
+    // Helper function to navigate to HostEditorScreen with a specific hostId
+    private fun navigateToHostEditorScreen(hostId: Long) {
+        composeTestRule.runOnUiThread {
+            navController.navigate("hostEditor/$hostId")
+        }
     }
 
     @Test
     fun hostEditorScreen_newHost_displaysAddTitle() {
-        composeTestRule.setContent {
-            ConnectBotTheme {
-                HostEditorScreen(
-                    hostId = -1L,
-                    onNavigateBack = {}
-                )
-            }
-        }
+        navigateToHostEditorScreen(-1L)
 
         composeTestRule
             .onNodeWithTag("add_host_button")
@@ -74,14 +100,7 @@ class HostEditorScreenTest {
 
     @Test
     fun hostEditorScreen_newHost_saveButtonDisabledByDefault() {
-        composeTestRule.setContent {
-            ConnectBotTheme {
-                HostEditorScreen(
-                    hostId = -1L,
-                    onNavigateBack = {}
-                )
-            }
-        }
+        navigateToHostEditorScreen(-1L)
 
         // The save button should be disabled when quick connect is empty
         // There are two "Add Host" texts - one in title, one in button
@@ -93,14 +112,7 @@ class HostEditorScreenTest {
 
     @Test
     fun hostEditorScreen_newHost_saveButtonEnabledAfterInput() {
-        composeTestRule.setContent {
-            ConnectBotTheme {
-                HostEditorScreen(
-                    hostId = -1L,
-                    onNavigateBack = {}
-                )
-            }
-        }
+        navigateToHostEditorScreen(-1L)
 
         // Enter text in quick connect field
         composeTestRule
@@ -119,16 +131,7 @@ class HostEditorScreenTest {
 
     @Test
     fun hostEditorScreen_newHost_callsNavigateBackOnSave() {
-        var navigateBackCalled = false
-
-        composeTestRule.setContent {
-            ConnectBotTheme {
-                HostEditorScreen(
-                    hostId = -1L,
-                    onNavigateBack = { navigateBackCalled = true }
-                )
-            }
-        }
+        navigateToHostEditorScreen(-1L)
 
         // Enter text in quick connect field
         composeTestRule
@@ -143,40 +146,30 @@ class HostEditorScreenTest {
             .onNodeWithTag("add_host_button")
             .performClick()
 
-        assert(navigateBackCalled)
+        // Verify navigateBack was called (by checking if the navController popped back to start)
+        composeTestRule.runOnIdle {
+            assertTrue(navController.currentBackStackEntry?.destination?.route == "start")
+        }
     }
 
     @Test
     fun hostEditorScreen_hasBackButton() {
-        var navigateBackCalled = false
-
-        composeTestRule.setContent {
-            ConnectBotTheme {
-                HostEditorScreen(
-                    hostId = -1L,
-                    onNavigateBack = { navigateBackCalled = true }
-                )
-            }
-        }
+        navigateToHostEditorScreen(-1L)
 
         // Click back button
         composeTestRule
             .onNodeWithContentDescription("Navigate up")
             .performClick()
 
-        assert(navigateBackCalled)
+        // Verify navigateBack was called (by checking if the navController popped back to start)
+        composeTestRule.runOnIdle {
+            assertTrue(navController.currentBackStackEntry?.destination?.route == "start")
+        }
     }
 
     @Test
     fun hostEditorScreen_localProtocol_hidesUserHostPortFields() {
-        composeTestRule.setContent {
-            ConnectBotTheme {
-                HostEditorScreen(
-                    hostId = -1L,
-                    onNavigateBack = {}
-                )
-            }
-        }
+        navigateToHostEditorScreen(-1L)
 
         // Click "Show advanced options" to enter expanded mode
         composeTestRule
@@ -224,14 +217,7 @@ class HostEditorScreenTest {
 
     @Test
     fun hostEditorScreen_localProtocol_saveButtonEnabled() {
-        composeTestRule.setContent {
-            ConnectBotTheme {
-                HostEditorScreen(
-                    hostId = -1L,
-                    onNavigateBack = {}
-                )
-            }
-        }
+        navigateToHostEditorScreen(-1L)
 
         // Click "Show advanced options" to enter expanded mode
         composeTestRule

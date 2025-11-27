@@ -21,6 +21,8 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,13 +37,15 @@ import org.connectbot.data.migration.MigrationState
  * Checks if migration is needed and performs it automatically,
  * exposing the migration state to the UI.
  */
-class MigrationViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class MigrationViewModel @Inject constructor(
+    application: Application,
+    private val migrator: DatabaseMigrator
+) : AndroidViewModel(application) {
 
     companion object {
         private const val TAG = "MigrationViewModel"
     }
-
-    private val migrator = DatabaseMigrator.get(application)
 
     private val _uiState = MutableStateFlow<MigrationUiState>(MigrationUiState.Checking)
     val uiState: StateFlow<MigrationUiState> = _uiState.asStateFlow()

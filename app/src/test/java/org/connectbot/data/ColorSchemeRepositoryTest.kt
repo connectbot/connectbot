@@ -55,7 +55,6 @@ class ColorSchemeRepositoryTest {
     @After
     fun tearDown() {
         database.close()
-        ColorSchemeRepository.clearInstance()
     }
 
     @Test

@@ -20,6 +20,8 @@ package org.connectbot.ui.screens.hosteditor
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -56,13 +58,14 @@ data class HostEditorUiState(
     val error: String? = null
 )
 
-class HostEditorViewModel(
-    private val context: Context,
-    private val hostId: Long,
-    private val repository: HostRepository = HostRepository.get(context),
-    private val pubkeyRepository: PubkeyRepository = PubkeyRepository.get(context)
+@HiltViewModel
+class HostEditorViewModel @Inject constructor(
+    private val savedStateHandle: androidx.lifecycle.SavedStateHandle,
+    private val repository: HostRepository,
+    private val pubkeyRepository: PubkeyRepository
 ) : ViewModel() {
 
+    private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
     private val _uiState = MutableStateFlow(HostEditorUiState(hostId = hostId))
     val uiState: StateFlow<HostEditorUiState> = _uiState.asStateFlow()
 

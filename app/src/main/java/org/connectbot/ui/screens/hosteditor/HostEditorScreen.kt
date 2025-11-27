@@ -65,19 +65,19 @@ import org.connectbot.data.entity.Pubkey
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
 
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HostEditorScreen(
-    hostId: Long,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
-    val viewModel = remember(hostId) { HostEditorViewModel(context, hostId) }
+    val viewModel: HostEditorViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
 
     HostEditorScreenContent(
-        hostId = hostId,
+        hostId = uiState.hostId,
         uiState = uiState,
         onNavigateBack = onNavigateBack,
         onQuickConnectChange = viewModel::updateQuickConnect,

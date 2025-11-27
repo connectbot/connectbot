@@ -21,6 +21,8 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import com.trilead.ssh2.crypto.keys.Ed25519Provider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -85,8 +87,10 @@ data class GeneratePubkeyUiState(
         get() = BiometricKeyManager.supportsBiometric(keyType)
 }
 
-class GeneratePubkeyViewModel(
-    private val context: Context
+@HiltViewModel
+class GeneratePubkeyViewModel @Inject constructor(
+    private val repository: PubkeyRepository,
+    private val biometricKeyManager: BiometricKeyManager
 ) : ViewModel() {
     companion object {
         private const val TAG = "GeneratePubkeyViewModel"
@@ -97,9 +101,6 @@ class GeneratePubkeyViewModel(
         // Ensure Ed25519 provider is available
         Ed25519Provider.insertIfNeeded()
     }
-
-    private val repository: PubkeyRepository = PubkeyRepository.get(context)
-    private val biometricKeyManager: BiometricKeyManager = BiometricKeyManager(context)
 
     private val _uiState = MutableStateFlow(
         GeneratePubkeyUiState(

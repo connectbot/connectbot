@@ -31,7 +31,16 @@ import java.io.File
  * This class is separated from BackupAgent to allow for unit testing
  * of the filtering logic without requiring system-level backup permissions.
  */
-class BackupFilter(private val context: Context) {
+import org.connectbot.data.ColorSchemeRepository
+import org.connectbot.data.HostRepository
+import org.connectbot.data.PubkeyRepository
+
+class BackupFilter(
+    private val context: Context,
+    private val hostRepository: HostRepository,
+    private val colorSchemeRepository: ColorSchemeRepository,
+    private val pubkeyRepository: PubkeyRepository
+) {
 
     companion object {
         private const val TAG = "CB.BackupFilter"
@@ -45,10 +54,7 @@ class BackupFilter(private val context: Context) {
      *
      * @param tempDbFile The temporary database file to create
      */
-    fun buildFilteredDatabase(tempDbFile: File, backupKeys: Boolean): Unit = runBlocking {
-        // Open the main database (singleton)
-        val mainDb = ConnectBotDatabase.getInstance(context)
-
+    suspend fun buildFilteredDatabase(tempDbFile: File, backupKeys: Boolean) {
         // Create a new temporary database
         val tempDb = Room.databaseBuilder(
             context,
@@ -60,12 +66,12 @@ class BackupFilter(private val context: Context) {
 
         try {
             // Get all data from main database
-            val allHosts = mainDb.hostDao().getAll()
-            val allColorSchemes = mainDb.colorSchemeDao().getAll()
+            val allHosts = hostRepository.getHosts()
+            val allColorSchemes = colorSchemeRepository.getAllSchemes()
 
             val backupablePubkeys = if (backupKeys) {
                 // Filter pubkeys - only keep backupable ones
-                val allPubkeys = mainDb.pubkeyDao().getAll()
+                val allPubkeys = pubkeyRepository.getAll()
                 filterBackupablePubkeys(allPubkeys)
             } else {
                 emptyList()
@@ -77,10 +83,10 @@ class BackupFilter(private val context: Context) {
             allHosts.forEach { host ->
                 tempDb.hostDao().insert(host)
                 // Also backup port forwards and known hosts for this host
-                val portForwards = mainDb.portForwardDao().getByHost(host.id)
+                val portForwards = hostRepository.getPortForwardsForHost(host.id)
                 portForwards.forEach { tempDb.portForwardDao().insert(it) }
 
-                val knownHosts = mainDb.knownHostDao().getByHostId(host.id)
+                val knownHosts = hostRepository.getKnownHostsForHost(host.id)
                 knownHosts.forEach { tempDb.knownHostDao().insert(it) }
             }
 
@@ -89,10 +95,20 @@ class BackupFilter(private val context: Context) {
             }
 
             allColorSchemes.forEach { scheme ->
-                tempDb.colorSchemeDao().insert(scheme)
-                // Also backup color palette for this scheme
-                val colors = mainDb.colorSchemeDao().getColors(scheme.id.toLong())
-                colors.forEach { tempDb.colorSchemeDao().insertColor(it) }
+                if (!scheme.isBuiltIn) {
+                    tempDb.colorSchemeDao().insert(scheme)
+                    // Also backup color palette for this scheme
+                    val colors = colorSchemeRepository.getSchemeColors(scheme.id)
+                    colors.forEachIndexed { index, color ->
+                        tempDb.colorSchemeDao().insertColor(
+                            org.connectbot.data.entity.ColorPalette(
+                                schemeId = scheme.id.toLong(),
+                                colorIndex = index,
+                                color = color
+                            )
+                        )
+                    }
+                }
             }
         } finally {
             tempDb.close()

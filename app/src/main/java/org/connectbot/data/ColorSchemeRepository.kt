@@ -26,6 +26,8 @@ import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.util.Colors
 import org.connectbot.util.HostConstants
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Repository for managing terminal color schemes.
@@ -33,7 +35,8 @@ import org.connectbot.util.HostConstants
  *
  * @param colorSchemeDao The DAO for accessing color scheme data
  */
-class ColorSchemeRepository(
+@Singleton
+class ColorSchemeRepository @Inject constructor(
     private val colorSchemeDao: ColorSchemeDao
 ) {
 
@@ -461,36 +464,5 @@ class ColorSchemeRepository(
     fun getDefaultColorsForSchemeBlocking(schemeId: Long): IntArray {
         val (fg, bg) = runBlocking { getSchemeDefaults(schemeId) }
         return intArrayOf(fg, bg)
-    }
-
-    companion object {
-        @Volatile
-        private var instance: ColorSchemeRepository? = null
-
-        /**
-         * Get the singleton repository instance.
-         * Uses the production database.
-         *
-         * @param context Application context
-         * @return ColorSchemeRepository instance
-         */
-        fun get(context: Context): ColorSchemeRepository {
-            return instance ?: synchronized(this) {
-                instance ?: ColorSchemeRepository(
-                    ConnectBotDatabase.getInstance(context.applicationContext).colorSchemeDao()
-                ).also {
-                    instance = it
-                }
-            }
-        }
-
-        /**
-         * Clear the singleton instance.
-         * Used for testing purposes.
-         */
-        @androidx.annotation.VisibleForTesting
-        fun clearInstance() {
-            instance = null
-        }
     }
 }
