@@ -66,17 +66,22 @@ import org.connectbot.R
 import org.connectbot.data.entity.PortForward
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PortForwardListScreen(
-    hostId: Long,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val terminalManager = org.connectbot.ui.LocalTerminalManager.current
-    val viewModel = remember(hostId) { PortForwardListViewModel(context, hostId, terminalManager) }
+    val viewModel: PortForwardListViewModel = hiltViewModel()
+
+    LaunchedEffect(terminalManager) {
+        terminalManager?.let { viewModel.setTerminalManager(it) }
+    }
+
     val uiState by viewModel.uiState.collectAsState()
 
     PortForwardListScreenContent(

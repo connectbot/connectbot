@@ -66,6 +66,8 @@ import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.components.ColorPickerDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+
 /**
  * Screen for editing terminal color scheme.
  * Allows setting foreground and background colors from the 256-color terminal palette.
@@ -77,8 +79,7 @@ fun ColorsScreen(
     onNavigateToSchemeManager: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
-    val viewModel = remember { ColorsViewModel(context) }
+    val viewModel: ColorsViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     var showForegroundPicker by remember { mutableStateOf(false) }
     var showBackgroundPicker by remember { mutableStateOf(false) }

@@ -18,60 +18,56 @@
 package org.connectbot.data.migration
 
 import android.content.Context
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
 import org.junit.After
 import org.junit.Before
-import org.junit.Ignore
+import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
+import javax.inject.Inject
 import java.io.File
 import java.io.FileOutputStream
 
-/**
- * Integration tests for database migration using real legacy database files
- * from the test resources directory (app/src/androidTest/resources/test_databases/).
- *
- * Note: These tests are ignored by default and should only be run manually or on CI.
- * To run manually: ./gradlew connectedGoogleDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.notAnnotation=org.junit.Ignore
- */
-@Ignore("Only run on CI or when explicitly enabled")
-@RunWith(AndroidJUnit4::class)
+@HiltAndroidTest
 class LegacyDatabaseMigrationIntegrationTest {
 
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    lateinit var database: ConnectBotDatabase
+
+    @Inject
+    lateinit var migrator: DatabaseMigrator
+
     private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
-    private lateinit var migrator: DatabaseMigrator
     private lateinit var hostsDbFile: File
     private lateinit var pubkeysDbFile: File
 
     @Before
     fun setUp() {
+        hiltRule.inject()
+
         // Clean up any existing databases
         context.deleteDatabase("hosts")
         context.deleteDatabase("pubkeys")
-        context.deleteDatabase("connectbot_test.db")
+        database.clearAllTables()
 
         hostsDbFile = context.getDatabasePath("hosts")
         pubkeysDbFile = context.getDatabasePath("pubkeys")
-
-        // Initialize test database instance (allows main thread queries)
-        ConnectBotDatabase.getTestInstance(context)
-
-        // Use default Dispatchers.IO
-        migrator = DatabaseMigrator(context)
     }
 
     @After
     fun tearDown() {
         // Clean up
-        ConnectBotDatabase.clearInstance()
+        database.clearAllTables()
         context.deleteDatabase("hosts")
         context.deleteDatabase("pubkeys")
-        context.deleteDatabase("connectbot_test.db")
         context.deleteDatabase("hosts.migrated")
         context.deleteDatabase("pubkeys.migrated")
     }
@@ -94,7 +90,6 @@ class LegacyDatabaseMigrationIntegrationTest {
                 android.util.Log.d("MigrationTest", "Migration is needed")
 
                 // Perform migration
-                android.util.Log.d("MigrationTest", "Starting migration")
                 val result = migrator.migrate()
 
                 android.util.Log.d("MigrationTest", "Migration completed: $result")
@@ -137,7 +132,6 @@ class LegacyDatabaseMigrationIntegrationTest {
             assertThat(result).isInstanceOf(MigrationResult.Success::class.java)
 
             // Query migrated data
-            val database = ConnectBotDatabase.getTestInstance(context)
             val hosts = database.hostDao().getAll()
 
             // Verify host data
@@ -182,7 +176,6 @@ class LegacyDatabaseMigrationIntegrationTest {
             assertThat(result).isInstanceOf(MigrationResult.Success::class.java)
 
             // Query migrated data
-            val database = ConnectBotDatabase.getTestInstance(context)
             val pubkeys = database.pubkeyDao().getAll()
 
             // Verify pubkey data
@@ -222,7 +215,6 @@ class LegacyDatabaseMigrationIntegrationTest {
             assertThat(result).isInstanceOf(MigrationResult.Success::class.java)
 
             // Query migrated data
-            val database = ConnectBotDatabase.getTestInstance(context)
             val hosts = database.hostDao().getAll()
             val prodHost = hosts.find { it.nickname == "production-server" }
             assertThat(prodHost).isNotNull()
@@ -253,7 +245,6 @@ class LegacyDatabaseMigrationIntegrationTest {
             assertThat(result).isInstanceOf(MigrationResult.Success::class.java)
 
             // Query migrated data
-            val database = ConnectBotDatabase.getTestInstance(context)
             val hosts = database.hostDao().getAll()
             val prodHost = hosts.find { it.nickname == "production-server" }
             assertThat(prodHost).isNotNull()

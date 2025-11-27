@@ -53,15 +53,15 @@ import org.connectbot.R
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
 
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
-    val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-    val viewModel = remember { SettingsViewModel(prefs) }
+    val viewModel: SettingsViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
 
     SettingsScreenContent(

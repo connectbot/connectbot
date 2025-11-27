@@ -85,10 +85,8 @@ fun ConnectBotNavHost(
             arguments = listOf(
                 navArgument(NavArgs.HOST_ID) { type = NavType.LongType }
             )
-        ) { backStackEntry ->
-            val hostId = backStackEntry.arguments?.getLong(NavArgs.HOST_ID) ?: -1L
+        ) {
             ConsoleScreen(
-                hostId = hostId,
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToPortForwards = { hostIdForPortForwards ->
                     navController.navigate("${NavDestinations.PORT_FORWARD_LIST}/$hostIdForPortForwards")
@@ -104,10 +102,8 @@ fun ConnectBotNavHost(
                     defaultValue = -1L
                 }
             )
-        ) { backStackEntry ->
-            val hostId = backStackEntry.arguments?.getLong(NavArgs.HOST_ID) ?: -1L
+        ) {
             HostEditorScreen(
-                hostId = hostId,
                 onNavigateBack = { navController.popBackStack() }
             )
         }
@@ -133,10 +129,8 @@ fun ConnectBotNavHost(
             arguments = listOf(
                 navArgument(NavArgs.PUBKEY_ID) { type = NavType.LongType }
             )
-        ) { backStackEntry ->
-            val pubkeyId = backStackEntry.arguments?.getLong(NavArgs.PUBKEY_ID) ?: -1L
+        ) {
             PubkeyEditorScreen(
-                pubkeyId = pubkeyId,
                 onNavigateBack = { navController.popBackStack() }
             )
         }
@@ -146,10 +140,8 @@ fun ConnectBotNavHost(
             arguments = listOf(
                 navArgument(NavArgs.HOST_ID) { type = NavType.LongType }
             )
-        ) { backStackEntry ->
-            val hostId = backStackEntry.arguments?.getLong(NavArgs.HOST_ID) ?: -1L
+        ) {
             PortForwardListScreen(
-                hostId = hostId,
                 onNavigateBack = { navController.popBackStack() }
             )
         }
@@ -181,10 +173,8 @@ fun ConnectBotNavHost(
             arguments = listOf(
                 navArgument(NavArgs.SCHEME_ID) { type = NavType.LongType }
             )
-        ) { backStackEntry ->
-            val schemeId = backStackEntry.arguments?.getLong(NavArgs.SCHEME_ID) ?: 0L
+        ) {
             PaletteEditorScreen(
-                schemeId = schemeId,
                 onNavigateBack = { navController.popBackStack() }
             )
         }

@@ -19,6 +19,7 @@ package org.connectbot.data.migration
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.test.runTest
@@ -58,7 +59,15 @@ class LegacyDatabasePreservationTest {
     @After
     fun tearDown() {
         cleanupDatabaseFiles()
-        ConnectBotDatabase.clearInstance()
+    }
+
+    private fun createDatabaseMigrator(): DatabaseMigrator {
+        val database = Room.inMemoryDatabaseBuilder(context, ConnectBotDatabase::class.java)
+            .allowMainThreadQueries()
+            .build()
+        val legacyHostReader = LegacyHostDatabaseReader(context)
+        val legacyPubkeyReader = LegacyPubkeyDatabaseReader(context)
+        return DatabaseMigrator(context, database, legacyHostReader, legacyPubkeyReader)
     }
 
     @Test
@@ -67,7 +76,7 @@ class LegacyDatabasePreservationTest {
         createEmptyLegacyDatabase(hostsDbFile)
         createEmptyLegacyDatabase(pubkeysDbFile)
 
-        val migrator = DatabaseMigrator.get(context)
+        val migrator = createDatabaseMigrator()
 
         // Check if migration is needed (doesn't run migration, just checks)
         migrator.isMigrationNeeded()
@@ -86,7 +95,7 @@ class LegacyDatabasePreservationTest {
         createLegacyDatabaseWithTestData(hostsDbFile)
         createEmptyLegacyDatabase(pubkeysDbFile)
 
-        val migrator = DatabaseMigrator.get(context)
+        val migrator = createDatabaseMigrator()
 
         // First migration attempt (will fail for some reason)
         val result1 = migrator.migrate()
@@ -114,7 +123,7 @@ class LegacyDatabasePreservationTest {
         val originalHostsSize = hostsDbFile.length()
         val originalPubkeysSize = pubkeysDbFile.length()
 
-        val migrator = DatabaseMigrator.get(context)
+        val migrator = createDatabaseMigrator()
 
         // Attempt migration (will fail)
         migrator.migrate()

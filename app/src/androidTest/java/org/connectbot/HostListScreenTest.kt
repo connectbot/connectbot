@@ -18,21 +18,33 @@
 package org.connectbot
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.connectbot.ui.screens.hostlist.HostListScreen
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class HostListScreenTest {
-    @get:Rule
-    val composeTestRule = createComposeRule()
+    @get:Rule(order = 0)
+    val hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
+    val composeTestRule = createAndroidComposeRule<HiltComponentActivity>()
+
+    @Before
+    fun setUp() {
+        hiltRule.inject()
+    }
 
     @Test
     fun hostListScreen_displaysTitle() {

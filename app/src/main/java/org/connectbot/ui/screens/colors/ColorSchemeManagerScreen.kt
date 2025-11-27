@@ -81,6 +81,8 @@ import org.connectbot.data.entity.ColorScheme
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
 
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+
 /**
  * Screen for managing color schemes (create, duplicate, delete).
  */
@@ -92,9 +94,9 @@ fun ColorSchemeManagerScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val viewModel = remember { ColorSchemeManagerViewModel(context) }
+    val viewModel: ColorSchemeManagerViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
-    val repository = remember { ColorSchemeRepository.get(context) }
+    val repository = viewModel.repository
     val scope = rememberCoroutineScope()
 
     // Track which scheme is being exported

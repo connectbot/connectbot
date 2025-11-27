@@ -17,9 +17,9 @@
 
 package org.connectbot.ui
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.connectbot.data.migration.MigrationState
 import org.connectbot.service.TerminalManager
+import javax.inject.Inject
 
 /**
  * Unified app state that coordinates migration and service binding.
@@ -43,9 +44,11 @@ sealed class AppUiState {
  * into a unified app state machine. This eliminates intermediate states and
  * ensures smooth, flicker-free UI transitions.
  */
-class AppViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class AppViewModel @Inject constructor(
+    private val migrationViewModel: MigrationViewModel
+) : ViewModel() {
 
-    private val migrationViewModel = MigrationViewModel(application)
     private val _terminalManager = MutableStateFlow<TerminalManager?>(null)
 
     private val _uiState = MutableStateFlow<AppUiState>(AppUiState.Loading)

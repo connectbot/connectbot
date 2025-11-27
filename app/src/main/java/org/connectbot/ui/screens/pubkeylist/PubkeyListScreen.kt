@@ -88,6 +88,8 @@ import org.connectbot.ui.components.rememberBiometricPromptState
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
 
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PubkeyListScreen(
@@ -98,7 +100,7 @@ fun PubkeyListScreen(
 ) {
     val context = LocalContext.current
     val terminalManager = LocalTerminalManager.current
-    val viewModel = remember { PubkeyListViewModel(context) }
+    val viewModel: PubkeyListViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 

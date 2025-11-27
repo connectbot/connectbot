@@ -17,6 +17,7 @@ plugins {
     alias(libs.plugins.jacoco.android)
     alias(libs.plugins.easylauncher)
     alias(libs.plugins.spotless)
+    alias(libs.plugins.hilt.android)
 }
 
 
@@ -58,7 +59,7 @@ android {
         }
 
         testApplicationId = "org.connectbot.tests"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "org.connectbot.HiltTestRunner"
 
         // The following argument makes the Android Test Orchestrator run its
         // "pm clear" command after each test invocation. This command ensures
@@ -227,6 +228,7 @@ dependencies {
     implementation(libs.sshlib)
     implementation(libs.termlib)
     implementation(libs.androidx.media3.common.ktx)
+    implementation(libs.androidx.navigation.testing)
     implementation(libs.androidx.ui)
     "googleImplementation"(libs.play.services.basement)
     "ossImplementation"(libs.conscrypt.android)
@@ -250,6 +252,13 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
+
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.android.compiler)
+
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.android.compiler)
 
     implementation(libs.androidx.biometric)
 

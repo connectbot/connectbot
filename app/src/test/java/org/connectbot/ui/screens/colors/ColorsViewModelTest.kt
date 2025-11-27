@@ -17,8 +17,7 @@
 
 package org.connectbot.ui.screens.colors
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -43,7 +42,6 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class ColorsViewModelTest {
 
-    private lateinit var context: Context
     private lateinit var repository: ColorSchemeRepository
     private lateinit var viewModel: ColorsViewModel
     private val testDispatcher = StandardTestDispatcher()
@@ -51,7 +49,6 @@ class ColorsViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        context = ApplicationProvider.getApplicationContext()
 
         repository = mock()
 
@@ -76,7 +73,7 @@ class ColorsViewModelTest {
 
     @Test
     fun `initial state loads default scheme and colors`() = runTest {
-        viewModel = ColorsViewModel(context, repository)
+        viewModel = ColorsViewModel(repository)
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
@@ -89,7 +86,7 @@ class ColorsViewModelTest {
 
     @Test
     fun `loading state is set during initialization`() = runTest {
-        viewModel = ColorsViewModel(context, repository)
+        viewModel = ColorsViewModel(repository)
 
         // Check that loading is true during initialization
         val initialState = viewModel.uiState.value
@@ -104,7 +101,7 @@ class ColorsViewModelTest {
 
     @Test
     fun `available schemes list is initialized`() = runTest {
-        viewModel = ColorsViewModel(context, repository)
+        viewModel = ColorsViewModel(repository)
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
@@ -114,7 +111,7 @@ class ColorsViewModelTest {
 
     @Test
     fun `updateForegroundColor updates state`() = runTest {
-        viewModel = ColorsViewModel(context, repository)
+        viewModel = ColorsViewModel(repository)
         advanceUntilIdle()
 
         val schemeIndex = 1L
@@ -131,7 +128,7 @@ class ColorsViewModelTest {
 
     @Test
     fun `updateForegroundColor ignores invalid index - negative`() = runTest {
-        viewModel = ColorsViewModel(context, repository)
+        viewModel = ColorsViewModel(repository)
         advanceUntilIdle()
 
         val originalColorIndex = viewModel.uiState.value.foregroundColorIndex
@@ -144,7 +141,7 @@ class ColorsViewModelTest {
 
     @Test
     fun `updateForegroundColor ignores invalid index - too large`() = runTest {
-        viewModel = ColorsViewModel(context, repository)
+        viewModel = ColorsViewModel(repository)
         advanceUntilIdle()
 
         val originalColorIndex = viewModel.uiState.value.foregroundColorIndex
@@ -157,7 +154,7 @@ class ColorsViewModelTest {
 
     @Test
     fun `updateBackgroundColor updates state`() = runTest {
-        viewModel = ColorsViewModel(context, repository)
+        viewModel = ColorsViewModel(repository)
         advanceUntilIdle()
 
         viewModel.switchToScheme(1)
@@ -173,7 +170,7 @@ class ColorsViewModelTest {
 
     @Test
     fun `updateBackgroundColor ignores invalid index - negative`() = runTest {
-        viewModel = ColorsViewModel(context, repository)
+        viewModel = ColorsViewModel(repository)
         advanceUntilIdle()
 
         val originalColorIndex = viewModel.uiState.value.backgroundColorIndex
@@ -186,7 +183,7 @@ class ColorsViewModelTest {
 
     @Test
     fun `updateBackgroundColor ignores invalid index - too large`() = runTest {
-        viewModel = ColorsViewModel(context, repository)
+        viewModel = ColorsViewModel(repository)
         advanceUntilIdle()
 
         val originalColorIndex = viewModel.uiState.value.backgroundColorIndex
@@ -199,7 +196,7 @@ class ColorsViewModelTest {
 
     @Test
     fun `switchToScheme updates current scheme`() = runTest {
-        viewModel = ColorsViewModel(context, repository)
+        viewModel = ColorsViewModel(repository)
         advanceUntilIdle()
 
         // Switch to a scheme ID (even if it doesn't exist, it should update the state)
@@ -216,7 +213,7 @@ class ColorsViewModelTest {
         whenever(repository.getSchemeDefaults(1)).thenReturn(Pair(7, 0))
         whenever(repository.getSchemeColors(1)).thenReturn(IntArray(255, { it }))
 
-        viewModel = ColorsViewModel(context, repository)
+        viewModel = ColorsViewModel(repository)
         advanceUntilIdle()
 
         viewModel.switchToScheme(1)
@@ -239,7 +236,7 @@ class ColorsViewModelTest {
 
     @Test
     fun `foreground and background colors can be set independently`() = runTest {
-        viewModel = ColorsViewModel(context, repository)
+        viewModel = ColorsViewModel(repository)
         viewModel.switchToScheme(1)
         advanceUntilIdle()
 

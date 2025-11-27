@@ -24,6 +24,9 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 import com.trilead.ssh2.crypto.Base64
 import com.trilead.ssh2.crypto.PEMDecoder
 import kotlinx.coroutines.Dispatchers
@@ -52,9 +55,10 @@ data class PubkeyListUiState(
     val biometricKeyToUnlock: Pubkey? = null
 )
 
-class PubkeyListViewModel(
-    private val context: Context,
-    private val repository: PubkeyRepository = PubkeyRepository.get(context)
+@HiltViewModel
+class PubkeyListViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val repository: PubkeyRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PubkeyListUiState(isLoading = true))

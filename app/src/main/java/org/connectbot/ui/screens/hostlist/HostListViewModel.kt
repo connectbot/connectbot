@@ -20,6 +20,9 @@ package org.connectbot.ui.screens.hostlist
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -47,41 +50,48 @@ data class HostListUiState(
     val sortedByColor: Boolean = false
 )
 
-class HostListViewModel(
-    private val context: Context,
-    private val terminalManager: TerminalManager?,
-    private val repository: HostRepository = HostRepository.get(context)
+@HiltViewModel
+class HostListViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val repository: HostRepository
 ) : ViewModel() {
 
+    private var terminalManager: TerminalManager? = null
     private val _uiState = MutableStateFlow(HostListUiState(isLoading = true))
     val uiState: StateFlow<HostListUiState> = _uiState.asStateFlow()
 
     init {
         loadHosts()
-        // Observe host status changes from Flow
-        observeHostStatusChanges()
-        // Collect service errors from TerminalManager
-        collectServiceErrors()
+    }
+
+    fun setTerminalManager(manager: TerminalManager) {
+        if (terminalManager != manager) {
+            terminalManager = manager
+            // Observe host status changes from Flow
+            observeHostStatusChanges()
+            // Collect service errors from TerminalManager
+            collectServiceErrors()
+            // Update initial connection states
+            updateConnectionStates(_uiState.value.hosts)
+        }
     }
 
     private fun observeHostStatusChanges() {
-        terminalManager?.let { manager ->
-            viewModelScope.launch {
-                manager.hostStatusChangedFlow.collect {
-                    // Update connection states when terminal manager notifies us of changes
-                    updateConnectionStates(_uiState.value.hosts)
-                }
+        val manager = terminalManager ?: return
+        viewModelScope.launch {
+            manager.hostStatusChangedFlow.collect {
+                // Update connection states when terminal manager notifies us of changes
+                updateConnectionStates(_uiState.value.hosts)
             }
         }
     }
 
     private fun collectServiceErrors() {
-        terminalManager?.let { manager ->
-            viewModelScope.launch {
-                manager.serviceErrors.collect { error ->
-                    val errorMessage = formatServiceError(error)
-                    _uiState.update { it.copy(error = errorMessage) }
-                }
+        val manager = terminalManager ?: return
+        viewModelScope.launch {
+            manager.serviceErrors.collect { error ->
+                val errorMessage = formatServiceError(error)
+                _uiState.update { it.copy(error = errorMessage) }
             }
         }
     }
@@ -141,17 +151,15 @@ class HostListViewModel(
     }
 
     private fun getConnectionState(host: Host): ConnectionState {
-        if (terminalManager == null) {
-            return ConnectionState.UNKNOWN
-        }
+        val manager = terminalManager ?: return ConnectionState.UNKNOWN
 
         // Check if connected by ID
-        if (terminalManager.bridgesFlow.value.any { it.host.id == host.id }) {
+        if (manager.bridgesFlow.value.any { it.host.id == host.id }) {
             return ConnectionState.CONNECTED
         }
 
         // Check if in disconnected list by comparing ID
-        if (terminalManager.disconnectedFlow.value.any { it.id == host.id }) {
+        if (manager.disconnectedFlow.value.any { it.id == host.id }) {
             return ConnectionState.DISCONNECTED
         }
 

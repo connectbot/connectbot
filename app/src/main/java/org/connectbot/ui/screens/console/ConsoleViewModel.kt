@@ -19,6 +19,8 @@ package org.connectbot.ui.screens.console
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,26 +40,32 @@ data class ConsoleUiState(
     val revision: Int = 0
 )
 
-class ConsoleViewModel(
-    private val terminalManager: TerminalManager?,
-    private val hostId: Long
+@HiltViewModel
+class ConsoleViewModel @Inject constructor(
+    private val savedStateHandle: androidx.lifecycle.SavedStateHandle
 ) : ViewModel() {
+    private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
+    private var terminalManager: TerminalManager? = null
+
     private val _uiState = MutableStateFlow(ConsoleUiState())
     val uiState: StateFlow<ConsoleUiState> = _uiState.asStateFlow()
 
-    init {
-        // Observe bridges flow from TerminalManager
-        viewModelScope.launch {
-            terminalManager?.bridgesFlow?.collect { bridges ->
-                updateBridges(bridges)
-                subscribeToActiveBridgeBells(bridges)
-            }
-        }
-
-        // First, try to find or create the bridge for this host
-        if (hostId != -1L) {
+    fun setTerminalManager(manager: TerminalManager) {
+        if (terminalManager != manager) {
+            terminalManager = manager
+            // Observe bridges flow from TerminalManager
             viewModelScope.launch {
-                ensureBridgeExists()
+                manager.bridgesFlow.collect { bridges ->
+                    updateBridges(bridges)
+                    subscribeToActiveBridgeBells(bridges)
+                }
+            }
+
+            // First, try to find or create the bridge for this host
+            if (hostId != -1L) {
+                viewModelScope.launch {
+                    ensureBridgeExists()
+                }
             }
         }
     }

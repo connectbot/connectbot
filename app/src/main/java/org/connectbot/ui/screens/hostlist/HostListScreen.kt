@@ -80,6 +80,8 @@ import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
 import androidx.core.graphics.toColorInt
 
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HostListScreen(
@@ -94,7 +96,12 @@ fun HostListScreen(
 ) {
     val context = LocalContext.current
     val terminalManager = LocalTerminalManager.current
-    val viewModel = remember { HostListViewModel(context, terminalManager) }
+    val viewModel: HostListViewModel = hiltViewModel()
+
+    LaunchedEffect(terminalManager) {
+        terminalManager?.let { viewModel.setTerminalManager(it) }
+    }
+
     val uiState by viewModel.uiState.collectAsState()
 
     // Show errors as Toast notifications

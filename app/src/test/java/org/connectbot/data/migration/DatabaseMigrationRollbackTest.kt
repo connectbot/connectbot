@@ -55,7 +55,6 @@ class DatabaseMigrationRollbackTest {
     @After
     fun tearDown() {
         database.close()
-        ConnectBotDatabase.clearInstance()
     }
 
     @Test
