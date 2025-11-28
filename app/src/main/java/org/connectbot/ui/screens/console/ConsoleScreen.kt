@@ -20,9 +20,10 @@ package org.connectbot.ui.screens.console
 import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context
+import android.graphics.Typeface
+import android.graphics.fonts.Font
+import android.graphics.fonts.FontFamily
 import android.os.Build
-import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -43,7 +44,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Link
@@ -71,12 +71,13 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -84,7 +85,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
 import androidx.core.net.toUri
 import androidx.core.view.WindowInsetsCompat
@@ -92,9 +93,8 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.delay
 import org.connectbot.R
-import org.connectbot.TerminalView
 import org.connectbot.data.entity.Host
-import org.connectbot.service.TerminalBridge
+import org.connectbot.terminal.Terminal
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.components.FloatingTextInputDialog
 import org.connectbot.ui.components.InlinePrompt
@@ -139,6 +139,9 @@ fun ConsoleScreen(
 
     // Hardware keyboard detection
     val hasHardwareKeyboard = rememberHasHardwareKeyboard()
+    val termFocusRequester = remember { FocusRequester() }
+
+    var forceSize: Pair<Int, Int>? by remember { mutableStateOf(null) }
 
     var showMenu by remember { mutableStateOf(false) }
     var showUrlScanDialog by remember { mutableStateOf(false) }
@@ -152,12 +155,6 @@ fun ConsoleScreen(
     var scannedUrls by remember { mutableStateOf<List<String>>(emptyList()) }
     var imeVisible by remember { mutableStateOf(false) }
     var isFirstLoad by remember(uiState.currentBridgeIndex) { mutableStateOf(true) }
-    // Key the terminal view by currentBridgeIndex so it gets reset when switching tabs
-    var currentTerminalView by remember(uiState.currentBridgeIndex) {
-        mutableStateOf<TerminalView?>(
-            null
-        )
-    }
 
     // One-time initialization
     LaunchedEffect(Unit) {
@@ -326,20 +323,32 @@ fun ConsoleScreen(
                         ) { page ->
                             val bridge = uiState.bridges[page]
 
+                            // Terminal view fills entire space with insets padding
+                            // to avoid content being cut off by screen curves/notches
                             Box(
                                 modifier = Modifier
                                     .fillMaxSize()
+                                    .padding(terminalPadding)
                             ) {
-                                // Terminal view fills entire space with insets padding
-                                // to avoid content being cut off by screen curves/notches
-                                TerminalViewWrapper(
-                                    bridge = bridge,
-                                    onViewCreated = { view ->
-                                        // Only update currentTerminalView if this is the active page
-                                        if (page == uiState.currentBridgeIndex) {
-                                            currentTerminalView = view
-                                        }
-                                    },
+                                val typeface = Typeface.MONOSPACE
+                                // TODO: Make this configurable via downloading fonts!
+//                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                                    Typeface.CustomFallbackBuilder(
+//                                        FontFamily.Builder(
+//                                            Font.Builder(context.assets, "fonts/PowerlineExtraSymbols.ttf").build()
+//                                        ).build()
+//                                    ).setSystemFallback("monospace").build()
+//                                } else {
+//                                    Typeface.MONOSPACE
+//                                }
+
+                                Terminal(
+                                    terminalEmulator = bridge.terminalEmulator,
+                                    typeface = typeface,
+                                    initialFontSize = bridge.fontSizeFlow.value.sp,
+                                    keyboardEnabled = true,
+                                    focusRequester = termFocusRequester,
+                                    forcedSize = forceSize,
                                     onTerminalTap = {
                                         // Show emulated keyboard when terminal is tapped (unless always visible)
                                         if (!keyboardAlwaysVisible) {
@@ -352,33 +361,7 @@ fun ConsoleScreen(
                                         // Reset the unified timer
                                         lastInteractionTime = System.currentTimeMillis()
                                     },
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .padding(terminalPadding)
                                 )
-
-                                // Request focus on terminal when it's the active page
-                                LaunchedEffect(
-                                    page == uiState.currentBridgeIndex,
-                                    currentTerminalView
-                                ) {
-                                    if (page == uiState.currentBridgeIndex) {
-                                        currentTerminalView?.post {
-                                            currentTerminalView?.requestFocus()
-                                        }
-                                    }
-                                }
-
-                                // Show IME by default if no hardware keyboard
-                                LaunchedEffect(page == uiState.currentBridgeIndex, hasHardwareKeyboard, isFirstLoad) {
-                                    if (page == uiState.currentBridgeIndex && !hasHardwareKeyboard && isFirstLoad) {
-                                        currentTerminalView?.let { view ->
-                                            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                                            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-                                        }
-                                        isFirstLoad = false
-                                    }
-                                }
 
                                 // Set up text input request callback from bridge (for camera button)
                                 LaunchedEffect(bridge) {
@@ -417,11 +400,7 @@ fun ConsoleScreen(
                                                 keyboardController?.hide()
                                             },
                                             onShowIme = {
-                                                // Show the IME
-                                                currentTerminalView?.let { view ->
-                                                    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                                                    imm.showSoftInput(view, InputMethodManager.SHOW_FORCED)
-                                                }
+                                                keyboardController?.show()
                                             },
                                             onOpenTextInput = {
                                                 // Open floating text input dialog
@@ -445,7 +424,7 @@ fun ConsoleScreen(
                                             bridge.promptManager.cancelPrompt()
                                         },
                                         onDismissed = {
-                                            currentTerminalView?.requestFocus()
+                                            termFocusRequester.requestFocus()
                                         },
                                         modifier = Modifier
                                             .align(Alignment.BottomCenter)
@@ -479,7 +458,8 @@ fun ConsoleScreen(
                 currentBridge = currentBridge,
                 onDismiss = { showResizeDialog = false },
                 onResize = { width, height ->
-                    currentTerminalView?.forceSize(width, height)
+                    // Resize the terminal emulator
+                    forceSize = Pair(height, width)
                 }
             )
         }
@@ -495,15 +475,15 @@ fun ConsoleScreen(
         }
 
         if (showTextInputDialog && currentBridge != null) {
-            // Get selected text from terminal if any
-            val selectedText = remember { currentTerminalView?.selectedText ?: "" }
+            // TODO: Get selected text from TerminalEmulator when selection is implemented
+            val selectedText = ""
 
             FloatingTextInputDialog(
                 bridge = currentBridge,
                 initialText = selectedText,
                 onDismiss = {
                     showTextInputDialog = false
-                    currentTerminalView?.requestFocus()
+                    termFocusRequester.requestFocus()
                 }
             )
         }
@@ -586,43 +566,9 @@ fun ConsoleScreen(
                                 if (titleBarHide) {
                                     showTitleBar = false
                                 }
-                                // Restore IME if it was visible before opening menu
-                                if (imeVisible) {
-                                    currentTerminalView?.let { view ->
-                                        view.post {
-                                            view.requestFocus()
-                                            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                                            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-                                        }
-                                    }
-                                } else {
-                                    currentTerminalView?.requestFocus()
-                                }
+                                termFocusRequester.requestFocus()
                             }
                         ) {
-                            // Copy
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.console_menu_copy)) },
-                                onClick = {
-                                    showMenu = false
-                                    currentTerminalView?.let { view ->
-                                        if (view.hasSelection()) {
-                                            view.copyCurrentSelectionToClipboard()
-                                        } else {
-                                            Toast.makeText(
-                                                context,
-                                                context.getString(R.string.console_copy_start),
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                        }
-                                    }
-                                },
-                                leadingIcon = {
-                                    Icon(Icons.Default.ContentCopy, contentDescription = null)
-                                },
-                                enabled = currentBridge != null
-                            )
-
                             // Disconnect/Close
                             DropdownMenuItem(
                                 text = {
@@ -743,69 +689,4 @@ private fun HostDisconnectDialog(
             }
         }
     )
-}
-
-@Composable
-private fun TerminalViewWrapper(
-    bridge: TerminalBridge,
-    onViewCreated: (TerminalView) -> Unit = {},
-    onTerminalTap: () -> Unit = {},
-    modifier: Modifier = Modifier
-) {
-    // Key the AndroidView by bridge hash to force recreation when bridge changes
-    key(bridge.hashCode()) {
-        AndroidView(
-            factory = { context ->
-                // Create TerminalView first so we can reference it in container
-                var terminalView: TerminalView? = null
-
-                // Create a simple FrameLayout that handles clicks for tap-to-show keyboard
-                // TerminalView's GestureDetector will call performClick() on this parent
-                val container = object : android.widget.FrameLayout(context) {
-                    override fun performClick(): Boolean {
-                        onTerminalTap()
-                        // Request focus and show IME
-                        terminalView?.let { view ->
-                            view.requestFocus()
-                            val imm =
-                                context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                            imm.showSoftInput(
-                                view,
-                                InputMethodManager.SHOW_IMPLICIT
-                            )
-                        }
-                        return super.performClick()
-                    }
-                }
-
-                // Create TerminalView with the container as parent
-                terminalView = TerminalView(context, bridge, container).apply {
-                    // Disable default focus highlight (green outline)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        defaultFocusHighlightEnabled = false
-                    }
-                    onViewCreated(this)
-                }
-
-                // Add TerminalView to container
-                container.addView(
-                    terminalView, android.view.ViewGroup.LayoutParams(
-                        android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-                        android.view.ViewGroup.LayoutParams.MATCH_PARENT
-                    )
-                )
-
-                container
-            },
-            update = { container ->
-                // Get the TerminalView from the container
-                val view = container.getChildAt(0) as? TerminalView
-                view?.let {
-                    onViewCreated(it)
-                    it.requestFocus()
-                }
-            },
-            modifier = modifier
-        )
-    }
 }

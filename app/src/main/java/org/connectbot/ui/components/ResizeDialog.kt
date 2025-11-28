@@ -44,8 +44,10 @@ fun ResizeDialog(
     onDismiss: () -> Unit,
     onResize: (Int, Int) -> Unit
 ) {
-    var widthText by remember { mutableStateOf(currentBridge.buffer?.columns?.toString() ?: "") }
-    var heightText by remember { mutableStateOf(currentBridge.buffer?.rows?.toString() ?: "") }
+    val dimensions = currentBridge.terminalEmulator.dimensions
+
+    var widthText by remember { mutableStateOf(dimensions.columns.toString()) }
+    var heightText by remember { mutableStateOf(dimensions.rows.toString()) }
     var widthError by remember { mutableStateOf(false) }
     var heightError by remember { mutableStateOf(false) }
 

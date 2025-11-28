@@ -17,9 +17,7 @@
 
 package org.connectbot.service
 
-import android.text.AndroidCharacter
 import android.util.Log
-import de.mud.terminal.vt320
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
@@ -30,7 +28,9 @@ import java.nio.ByteBuffer
 import java.nio.CharBuffer
 import java.nio.charset.Charset
 import java.nio.charset.CharsetDecoder
+import java.nio.charset.CharsetEncoder
 import java.nio.charset.CodingErrorAction
+import java.nio.charset.StandardCharsets
 
 /**
  * Coroutine-based relay that handles incoming data from the transport to the terminal buffer.
@@ -41,17 +41,20 @@ import java.nio.charset.CodingErrorAction
 class Relay(
     private val bridge: TerminalBridge,
     private val transport: AbsTransport,
-    private val buffer: vt320,
     encoding: String
 ) {
 
     private var currentCharset: Charset? = null
     private var decoder: CharsetDecoder? = null
 
-    private lateinit var byteBuffer: ByteBuffer
-    private lateinit var charBuffer: CharBuffer
-    private lateinit var byteArray: ByteArray
-    private lateinit var charArray: CharArray
+    private val encoder: CharsetEncoder = StandardCharsets.UTF_8.newEncoder().apply {
+        onMalformedInput(CodingErrorAction.REPLACE)
+        onUnmappableCharacter(CodingErrorAction.REPLACE)
+    }
+
+    private val sourceBuffer = ByteBuffer.allocate(BUFFER_SIZE)
+    private val charBuffer = CharBuffer.allocate(BUFFER_SIZE)
+    private val destBuffer = ByteBuffer.allocate(BUFFER_SIZE)
 
     init {
         setCharset(encoding)
@@ -81,9 +84,7 @@ class Relay(
         }
 
         currentCharset = charset
-        synchronized(this) {
-            decoder = newCd
-        }
+        decoder = newCd
     }
 
     /**
@@ -98,47 +99,79 @@ class Relay(
      * This is a suspend function that runs on IO dispatcher.
      */
     suspend fun start() = withContext(Dispatchers.IO) {
-        byteBuffer = ByteBuffer.allocate(BUFFER_SIZE)
-        charBuffer = CharBuffer.allocate(BUFFER_SIZE)
+        decoder?.reset()
+        encoder.reset()
+        sourceBuffer.clear()
+        charBuffer.clear()
+        destBuffer.clear()
 
-        // for East Asian character widths
-        val wideAttribute = ByteArray(BUFFER_SIZE)
-
-        byteArray = byteBuffer.array()
-        charArray = charBuffer.array()
-
-        var bytesRead: Int
-        byteBuffer.limit(0)
+        var endOfInput = false
 
         try {
-            while (isActive) {
-                val bytesToRead = byteBuffer.capacity() - byteBuffer.limit()
-                val offset = byteBuffer.arrayOffset() + byteBuffer.limit()
-                bytesRead = transport.read(byteArray, offset, bytesToRead)
+            while (isActive && !endOfInput) {
+                val currentDecoder = decoder ?: continue
 
-                if (bytesRead > 0) {
-                    byteBuffer.limit(byteBuffer.limit() + bytesRead)
+                val offset = sourceBuffer.position()
+                val length = sourceBuffer.remaining()
 
-                    val result = synchronized(this@Relay) {
-                        decoder?.decode(byteBuffer, charBuffer, false)
-                    }
-
-                    if (result?.isUnderflow == true &&
-                        byteBuffer.limit() == byteBuffer.capacity()
-                    ) {
-                        byteBuffer.compact()
-                        byteBuffer.limit(byteBuffer.position())
-                        byteBuffer.position(0)
-                    }
-
-                    val charOffset = charBuffer.position()
-
-                    AndroidCharacter.getEastAsianWidths(charArray, 0, charOffset, wideAttribute)
-                    buffer.putString(charArray, wideAttribute, 0, charBuffer.position())
-                    bridge.propagateConsoleText(charArray, charBuffer.position())
-                    charBuffer.clear()
-                    bridge.redraw()
+                val bytesRead = if (length > 0) {
+                    transport.read(sourceBuffer.array(), offset, length)
+                } else {
+                    0
                 }
+
+                if (bytesRead == -1) {
+                    endOfInput = true
+                } else {
+                    // Advance position to reflect new data
+                    sourceBuffer.position(offset + bytesRead)
+                }
+
+                sourceBuffer.flip()
+
+                while (sourceBuffer.hasRemaining() || endOfInput) {
+                    val decodeResult = currentDecoder.decode(sourceBuffer, charBuffer, endOfInput)
+
+                    charBuffer.flip()
+
+                    encoder.encode(charBuffer, destBuffer, endOfInput)
+                    destBuffer.flip()
+
+                    if (destBuffer.hasRemaining()) {
+                        bridge.terminalEmulator.writeInput(destBuffer.array(), 0, destBuffer.limit())
+                    }
+                    destBuffer.clear()
+                    charBuffer.compact()
+
+                    if (decodeResult.isUnderflow) {
+                        if (endOfInput) {
+                            while (true) {
+                                val flushResult = encoder.flush(destBuffer)
+                                destBuffer.flip()
+                                if (destBuffer.hasRemaining()) {
+                                    bridge.terminalEmulator.writeInput(
+                                        destBuffer.array(), 0, destBuffer.limit()
+                                    )
+                                }
+                                destBuffer.clear()
+
+                                if (flushResult.isUnderflow) break
+                            }
+                            return@withContext
+                        }
+
+                        // Need more data to continue decoding
+                        break
+                    }
+
+                    if (decodeResult.isOverflow) {
+                        // Our buffer is full; let the inner loop run again to clear it
+                        continue
+                    }
+                }
+
+                // Move any remaining un-decoded bytes to the start of the buffer.
+                sourceBuffer.compact()
             }
         } catch (e: IOException) {
             Log.e(TAG, "Problem while handling incoming data in relay", e)

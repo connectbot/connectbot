@@ -13,7 +13,7 @@ room = "2.8.4"
 ksp = "2.3.2"
 
 compileSdk = "36"
-minSdk = "23"
+minSdk = "24"
 targetSdk = "35"
 
 composeBom = "2025.11.01"
@@ -22,6 +22,7 @@ navigationCompose = "2.9.6"
 activityCompose = "1.12.0"
 
 sshlib = "2.2.32"
+termlib = "0.0.2"
 playServicesBasement = "18.9.0"
 conscrypt = "2.5.3"
 conscryptOpenJdk = "2.5.2"
@@ -46,9 +47,11 @@ robolectric = "4.16"
 
 errorproneCore = "2.44.0"
 media3CommonKtx = "1.8.0"
+ui = "1.9.5"
 
 [libraries]
 sshlib = { module = "org.connectbot:sshlib", version.ref = "sshlib" }
+termlib = { module = "org.connectbot:termlib", version.ref = "termlib" }
 play-services-basement = { module = "com.google.android.gms:play-services-basement", version.ref = "playServicesBasement" }
 conscrypt-android = { module = "org.conscrypt:conscrypt-android", version.ref = "conscrypt" }
 
@@ -94,6 +97,7 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
