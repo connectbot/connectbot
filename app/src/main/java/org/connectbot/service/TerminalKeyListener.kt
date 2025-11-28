@@ -26,9 +26,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.View.OnKeyListener
 import androidx.preference.PreferenceManager
-import de.mud.terminal.VDUBuffer
-import de.mud.terminal.vt320
-import org.connectbot.bean.SelectionArea
+import org.connectbot.terminal.VTermKey
 import org.connectbot.util.PreferenceConstants
 import java.io.IOException
 
@@ -36,7 +34,6 @@ import java.io.IOException
 class TerminalKeyListener(
     private val manager: TerminalManager?,
     private val bridge: TerminalBridge,
-    private val buffer: VDUBuffer,
     private var encoding: String?
 ) : OnKeyListener, OnSharedPreferenceChangeListener {
 
@@ -54,7 +51,6 @@ class TerminalKeyListener(
     private var clipboard: ClipboardManager? = null
 
     private var selectingForCopy: Boolean = false
-    private val selectionArea: SelectionArea = SelectionArea()
 
     private val prefs: SharedPreferences? = manager?.let { PreferenceManager.getDefaultSharedPreferences(it) }
 
@@ -128,7 +124,8 @@ class TerminalKeyListener(
                 }
             }
 
-            bridge.resetScrollPosition()
+            // TODO(Terminal): Do we need to reset scroll position?
+//            bridge.resetScrollPosition()
 
             if (keyCode == KeyEvent.KEYCODE_UNKNOWN &&
                     event.action == KeyEvent.ACTION_MULTIPLE) {
@@ -198,20 +195,18 @@ class TerminalKeyListener(
 
             if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
                 if (selectingForCopy) {
-                    if (selectionArea.isSelectingOrigin)
-                        selectionArea.finishSelectingOrigin()
-                    else {
-                        clipboard?.let {
-                            val copiedText = selectionArea.copyFrom(buffer)
-                            it.text = copiedText
-                            // XXX STOPSHIP
-//                            manager.notifyUser(manager.getString(
-//                                    R.string.console_copy_done,
-//                                    copiedText.length))
-                            selectingForCopy = false
-                            selectionArea.reset()
-                        }
-                    }
+                    // TODO(Terminal): implement selection area change
+//                    if (selectionArea.isSelectingOrigin)
+//                        selectionArea.finishSelectingOrigin()
+//                    else {
+//                        clipboard?.let {
+//                            // TODO: Implement copyFrom using TerminalEmulator snapshot
+//                            val copiedText = "" // selectionArea.copyFrom(emulator)
+//                            it.text = copiedText
+//                            selectingForCopy = false
+//                            selectionArea.reset()
+//                        }
+//                    }
                 } else {
                     if ((ourMetaState and OUR_CTRL_ON) != 0) {
                         sendEscape()
@@ -219,7 +214,6 @@ class TerminalKeyListener(
                     } else
                         metaPress(OUR_CTRL_ON, true)
                 }
-                bridge.redraw()
                 return true
             }
 
@@ -233,7 +227,6 @@ class TerminalKeyListener(
 
             if ((ourMetaState and OUR_TRANSIENT) != 0) {
                 ourMetaState = ourMetaState and OUR_TRANSIENT.inv()
-                bridge.redraw()
             }
 
             if (shiftedNumbersAreFKeys && (derivedMetaState and KeyEvent.META_SHIFT_ON) != 0) {
@@ -248,7 +241,8 @@ class TerminalKeyListener(
             if (keyCode == KeyEvent.KEYCODE_C &&
                     (derivedMetaState and HC_META_CTRL_ON) != 0 &&
                     (derivedMetaState and KeyEvent.META_SHIFT_ON) != 0) {
-                bridge.copyCurrentSelection()
+                // TODO(Terminal): copy current selection
+//                bridge.copyCurrentSelection()
                 return true
             }
 
@@ -333,10 +327,10 @@ class TerminalKeyListener(
                             transport.write(0x01)
                         }
                         PreferenceConstants.CAMERA_ESC -> {
-                            (buffer as vt320).keyTyped(vt320.KEY_ESCAPE, ' ', 0)
+                            bridge.terminalEmulator.dispatchKey(0, VTermKey.ESCAPE)
                         }
                         PreferenceConstants.CAMERA_ESC_A -> {
-                            (buffer as vt320).keyTyped(vt320.KEY_ESCAPE, ' ', 0)
+                            bridge.terminalEmulator.dispatchKey(0, VTermKey.ESCAPE)
                             transport.write('a'.code)
                         }
                         "text_input" -> {
@@ -347,86 +341,75 @@ class TerminalKeyListener(
                     }
                 }
                 KeyEvent.KEYCODE_DEL -> {
-                    (buffer as vt320).keyPressed(vt320.KEY_BACK_SPACE, ' ',
-                            stateForBuffer)
+                    bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.BACKSPACE)
                     return true
                 }
                 KeyEvent.KEYCODE_ENTER -> {
-                    (buffer as vt320).keyTyped(vt320.KEY_ENTER, ' ', 0)
+                    bridge.terminalEmulator.dispatchKey(0, VTermKey.ENTER)
                     return true
                 }
                 KeyEvent.KEYCODE_DPAD_LEFT -> {
                     if (selectingForCopy) {
-                        selectionArea.decrementColumn()
-                        bridge.redraw()
+                        // TODO(Terminal): implement selection area change
+//                        selectionArea.decrementColumn()
                     } else {
-                        (buffer as vt320).keyPressed(vt320.KEY_LEFT, ' ',
-                                stateForBuffer)
+                        bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.LEFT)
                         bridge.tryKeyVibrate()
                     }
                     return true
                 }
                 KeyEvent.KEYCODE_DPAD_UP -> {
                     if (selectingForCopy) {
-                        selectionArea.decrementRow()
-                        bridge.redraw()
+                        // TODO(Terminal): implement selection area change
+//                        selectionArea.decrementRow()
                     } else {
-                        (buffer as vt320).keyPressed(vt320.KEY_UP, ' ',
-                                stateForBuffer)
+                        bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.UP)
                         bridge.tryKeyVibrate()
                     }
                     return true
                 }
                 KeyEvent.KEYCODE_DPAD_DOWN -> {
                     if (selectingForCopy) {
-                        selectionArea.incrementRow()
-                        bridge.redraw()
+                        // TODO(Terminal): implement selection area change
+//                        selectionArea.incrementRow()
                     } else {
-                        (buffer as vt320).keyPressed(vt320.KEY_DOWN, ' ',
-                                stateForBuffer)
+                        bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.DOWN)
                         bridge.tryKeyVibrate()
                     }
                     return true
                 }
                 KeyEvent.KEYCODE_DPAD_RIGHT -> {
                     if (selectingForCopy) {
-                        selectionArea.incrementColumn()
-                        bridge.redraw()
+                        // TODO(Terminal): implement selection area change
+//                        selectionArea.incrementColumn()
                     } else {
-                        (buffer as vt320).keyPressed(vt320.KEY_RIGHT, ' ',
-                                stateForBuffer)
+                        bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.RIGHT)
                         bridge.tryKeyVibrate()
                     }
                     return true
                 }
                 KEYCODE_INSERT -> {
-                    (buffer as vt320).keyPressed(vt320.KEY_INSERT, ' ',
-                            stateForBuffer)
+                    bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.INS)
                     return true
                 }
                 KEYCODE_FORWARD_DEL -> {
-                    (buffer as vt320).keyPressed(vt320.KEY_DELETE, ' ',
-                            stateForBuffer)
+                    bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.DEL)
                     return true
                 }
                 KEYCODE_MOVE_HOME -> {
-                    (buffer as vt320).keyPressed(vt320.KEY_HOME, ' ',
-                            stateForBuffer)
+                    bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.HOME)
                     return true
                 }
                 KEYCODE_MOVE_END -> {
-                    (buffer as vt320).keyPressed(vt320.KEY_END, ' ',
-                            stateForBuffer)
+                    bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.END)
                     return true
                 }
                 KEYCODE_PAGE_UP -> {
-                    (buffer as vt320).keyPressed(vt320.KEY_PAGE_UP, ' ',
-                            stateForBuffer)
+                    bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.PAGEUP)
                     return true
                 }
                 KEYCODE_PAGE_DOWN -> {
-                    (buffer as vt320).keyPressed(vt320.KEY_PAGE_DOWN, ' ',
-                            stateForBuffer)
+                    bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.PAGEDOWN)
                     return true
                 }
             }
@@ -459,68 +442,57 @@ class TerminalKeyListener(
     }
 
     fun sendEscape() {
-        (buffer as vt320).keyTyped(vt320.KEY_ESCAPE, ' ', 0)
+        bridge.terminalEmulator.dispatchKey(0, VTermKey.ESCAPE)
     }
 
     fun sendTab() {
-        val transport = bridge.transport
-        try {
-            transport?.write(0x09)
-        } catch (e: IOException) {
-            Log.e(TAG, "Problem while trying to send TAB press.", e)
-            try {
-                transport?.flush()
-            } catch (_: IOException) {
-                Log.d(TAG, "Our transport was closed, dispatching disconnect event")
-                bridge.dispatchDisconnect(false)
-            }
-        }
+        bridge.terminalEmulator.dispatchKey(0, VTermKey.TAB)
     }
 
     fun sendPressedKey(key: Int) {
-        (buffer as vt320).keyPressed(key, ' ', stateForBuffer)
+        bridge.terminalEmulator.dispatchKey(modifiersForTerminal, key)
     }
 
     private fun sendFunctionKey(keyCode: Int): Boolean {
         when (keyCode) {
             KeyEvent.KEYCODE_1 -> {
-                (buffer as vt320).keyPressed(vt320.KEY_F1, ' ', 0)
+                bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_1)
                 return true
             }
             KeyEvent.KEYCODE_2 -> {
-                (buffer as vt320).keyPressed(vt320.KEY_F2, ' ', 0)
+                bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_2)
                 return true
             }
             KeyEvent.KEYCODE_3 -> {
-                (buffer as vt320).keyPressed(vt320.KEY_F3, ' ', 0)
+                bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_3)
                 return true
             }
             KeyEvent.KEYCODE_4 -> {
-                (buffer as vt320).keyPressed(vt320.KEY_F4, ' ', 0)
+                bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_4)
                 return true
             }
             KeyEvent.KEYCODE_5 -> {
-                (buffer as vt320).keyPressed(vt320.KEY_F5, ' ', 0)
+                bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_5)
                 return true
             }
             KeyEvent.KEYCODE_6 -> {
-                (buffer as vt320).keyPressed(vt320.KEY_F6, ' ', 0)
+                bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_6)
                 return true
             }
             KeyEvent.KEYCODE_7 -> {
-                (buffer as vt320).keyPressed(vt320.KEY_F7, ' ', 0)
+                bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_7)
                 return true
             }
             KeyEvent.KEYCODE_8 -> {
-                (buffer as vt320).keyPressed(vt320.KEY_F8, ' ', 0)
+                bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_8)
                 return true
             }
             KeyEvent.KEYCODE_9 -> {
-                (buffer as vt320).keyPressed(vt320.KEY_F9, ' ', 0)
+                bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_9)
                 return true
             }
             KeyEvent.KEYCODE_0 -> {
-                (buffer as vt320).keyPressed(vt320.KEY_F10, ' ', 0)
+                bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_10)
                 return true
             }
             else -> return false
@@ -539,28 +511,22 @@ class TerminalKeyListener(
         } else {
             return
         }
-        bridge.redraw()
     }
 
-    private val stateForBuffer: Int
+    /**
+     * Build VTerm modifier mask from our meta state.
+     * Bit 0: Shift
+     * Bit 1: Alt
+     * Bit 2: Ctrl
+     */
+    private val modifiersForTerminal: Int
         get() {
-            var bufferState = 0
-
-            if ((ourMetaState and OUR_CTRL_MASK) != 0)
-                bufferState = bufferState or vt320.KEY_CONTROL
-            if ((ourMetaState and OUR_SHIFT_MASK) != 0)
-                bufferState = bufferState or vt320.KEY_SHIFT
-            if ((ourMetaState and OUR_ALT_MASK) != 0)
-                bufferState = bufferState or vt320.KEY_ALT
-
-            return bufferState
+            var mask = 0
+            if ((ourMetaState and OUR_SHIFT_MASK) != 0) mask = mask or 1
+            if ((ourMetaState and OUR_ALT_MASK) != 0) mask = mask or 2
+            if ((ourMetaState and OUR_CTRL_MASK) != 0) mask = mask or 4
+            return mask
         }
-
-    val metaState: Int
-        get() = ourMetaState
-
-    val deadKey: Int
-        get() = ourDeadKey
 
     fun setClipboardManager(clipboard: ClipboardManager) {
         this.clipboard = clipboard

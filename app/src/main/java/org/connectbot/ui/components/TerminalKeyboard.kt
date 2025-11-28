@@ -56,13 +56,13 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import de.mud.terminal.vt320
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalKeyListener
+import org.connectbot.terminal.VTermKey
 
 private const val UI_OPACITY = 0.5f
 
@@ -168,7 +168,7 @@ fun TerminalKeyboard(
                     icon = Icons.Default.KeyboardArrowUp,
                     contentDescription = stringResource(R.string.image_description_up),
                     onPress = {
-                        keyHandler.sendPressedKey(vt320.KEY_UP)
+                        keyHandler.sendPressedKey(VTermKey.UP)
                         onInteraction()
                     }
                 )
@@ -177,7 +177,7 @@ fun TerminalKeyboard(
                     icon = Icons.Default.KeyboardArrowDown,
                     contentDescription = stringResource(R.string.image_description_down),
                     onPress = {
-                        keyHandler.sendPressedKey(vt320.KEY_DOWN)
+                        keyHandler.sendPressedKey(VTermKey.DOWN)
                         onInteraction()
                     }
                 )
@@ -186,7 +186,7 @@ fun TerminalKeyboard(
                     icon = Icons.Default.KeyboardArrowLeft,
                     contentDescription = stringResource(R.string.image_description_left),
                     onPress = {
-                        keyHandler.sendPressedKey(vt320.KEY_LEFT)
+                        keyHandler.sendPressedKey(VTermKey.LEFT)
                         onInteraction()
                     }
                 )
@@ -195,7 +195,7 @@ fun TerminalKeyboard(
                     icon = Icons.Default.KeyboardArrowRight,
                     contentDescription = stringResource(R.string.image_description_right),
                     onPress = {
-                        keyHandler.sendPressedKey(vt320.KEY_RIGHT)
+                        keyHandler.sendPressedKey(VTermKey.RIGHT)
                         onInteraction()
                     }
                 )
@@ -205,7 +205,7 @@ fun TerminalKeyboard(
                     text = stringResource(R.string.button_key_home),
                     contentDescription = null,
                     onClick = {
-                        keyHandler.sendPressedKey(vt320.KEY_HOME)
+                        keyHandler.sendPressedKey(VTermKey.HOME)
                         onInteraction()
                     }
                 )
@@ -214,7 +214,7 @@ fun TerminalKeyboard(
                     text = stringResource(R.string.button_key_end),
                     contentDescription = null,
                     onClick = {
-                        keyHandler.sendPressedKey(vt320.KEY_END)
+                        keyHandler.sendPressedKey(VTermKey.END)
                         onInteraction()
                     }
                 )
@@ -224,7 +224,7 @@ fun TerminalKeyboard(
                     text = stringResource(R.string.button_key_pgup),
                     contentDescription = null,
                     onClick = {
-                        keyHandler.sendPressedKey(vt320.KEY_PAGE_UP)
+                        keyHandler.sendPressedKey(VTermKey.PAGEUP)
                         onInteraction()
                     }
                 )
@@ -233,7 +233,7 @@ fun TerminalKeyboard(
                     text = stringResource(R.string.button_key_pgdn),
                     contentDescription = null,
                     onClick = {
-                        keyHandler.sendPressedKey(vt320.KEY_PAGE_DOWN)
+                        keyHandler.sendPressedKey(VTermKey.PAGEDOWN)
                         onInteraction()
                     }
                 )
@@ -243,7 +243,7 @@ fun TerminalKeyboard(
                     text = stringResource(R.string.button_key_f1),
                     contentDescription = null,
                     onClick = {
-                        keyHandler.sendPressedKey(vt320.KEY_F1)
+                        keyHandler.sendPressedKey(VTermKey.FUNCTION_1)
                         onInteraction()
                     }
                 )
@@ -252,7 +252,7 @@ fun TerminalKeyboard(
                     text = stringResource(R.string.button_key_f2),
                     contentDescription = null,
                     onClick = {
-                        keyHandler.sendPressedKey(vt320.KEY_F2)
+                        keyHandler.sendPressedKey(VTermKey.FUNCTION_2)
                         onInteraction()
                     }
                 )
@@ -261,7 +261,7 @@ fun TerminalKeyboard(
                     text = stringResource(R.string.button_key_f3),
                     contentDescription = null,
                     onClick = {
-                        keyHandler.sendPressedKey(vt320.KEY_F3)
+                        keyHandler.sendPressedKey(VTermKey.FUNCTION_3)
                         onInteraction()
                     }
                 )
@@ -270,7 +270,7 @@ fun TerminalKeyboard(
                     text = stringResource(R.string.button_key_f4),
                     contentDescription = null,
                     onClick = {
-                        keyHandler.sendPressedKey(vt320.KEY_F4)
+                        keyHandler.sendPressedKey(VTermKey.FUNCTION_4)
                         onInteraction()
                     }
                 )
@@ -279,7 +279,7 @@ fun TerminalKeyboard(
                     text = stringResource(R.string.button_key_f5),
                     contentDescription = null,
                     onClick = {
-                        keyHandler.sendPressedKey(vt320.KEY_F5)
+                        keyHandler.sendPressedKey(VTermKey.FUNCTION_5)
                         onInteraction()
                     }
                 )
@@ -288,7 +288,7 @@ fun TerminalKeyboard(
                     text = stringResource(R.string.button_key_f6),
                     contentDescription = null,
                     onClick = {
-                        keyHandler.sendPressedKey(vt320.KEY_F6)
+                        keyHandler.sendPressedKey(VTermKey.FUNCTION_6)
                         onInteraction()
                     }
                 )
@@ -297,7 +297,7 @@ fun TerminalKeyboard(
                     text = stringResource(R.string.button_key_f7),
                     contentDescription = null,
                     onClick = {
-                        keyHandler.sendPressedKey(vt320.KEY_F7)
+                        keyHandler.sendPressedKey(VTermKey.FUNCTION_7)
                         onInteraction()
                     }
                 )
@@ -306,7 +306,7 @@ fun TerminalKeyboard(
                     text = stringResource(R.string.button_key_f8),
                     contentDescription = null,
                     onClick = {
-                        keyHandler.sendPressedKey(vt320.KEY_F8)
+                        keyHandler.sendPressedKey(VTermKey.FUNCTION_8)
                         onInteraction()
                     }
                 )
@@ -315,7 +315,7 @@ fun TerminalKeyboard(
                     text = stringResource(R.string.button_key_f9),
                     contentDescription = null,
                     onClick = {
-                        keyHandler.sendPressedKey(vt320.KEY_F9)
+                        keyHandler.sendPressedKey(VTermKey.FUNCTION_9)
                         onInteraction()
                     }
                 )
@@ -324,7 +324,7 @@ fun TerminalKeyboard(
                     text = stringResource(R.string.button_key_f10),
                     contentDescription = null,
                     onClick = {
-                        keyHandler.sendPressedKey(vt320.KEY_F10)
+                        keyHandler.sendPressedKey(VTermKey.FUNCTION_10)
                         onInteraction()
                     }
                 )
@@ -333,7 +333,7 @@ fun TerminalKeyboard(
                     text = stringResource(R.string.button_key_f11),
                     contentDescription = null,
                     onClick = {
-                        keyHandler.sendPressedKey(vt320.KEY_F11)
+                        keyHandler.sendPressedKey(VTermKey.FUNCTION_11)
                         onInteraction()
                     }
                 )
@@ -342,7 +342,7 @@ fun TerminalKeyboard(
                     text = stringResource(R.string.button_key_f12),
                     contentDescription = null,
                     onClick = {
-                        keyHandler.sendPressedKey(vt320.KEY_F12)
+                        keyHandler.sendPressedKey(VTermKey.FUNCTION_12)
                         onInteraction()
                     }
                 )
