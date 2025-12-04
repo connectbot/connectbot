@@ -21,9 +21,6 @@ import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Typeface
-import android.graphics.fonts.Font
-import android.graphics.fonts.FontFamily
-import android.os.Build
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -77,7 +74,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -137,8 +133,10 @@ fun ConsoleScreen(
     var fullscreen by remember { mutableStateOf(prefs.getBoolean("fullscreen", false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean("titlebarhide", false)) }
 
-    // Hardware keyboard detection
+    // Keyboard state
     val hasHardwareKeyboard = rememberHasHardwareKeyboard()
+    var showSoftwareKeyboard by remember { mutableStateOf(!hasHardwareKeyboard) }
+
     val termFocusRequester = remember { FocusRequester() }
 
     var forceSize: Pair<Int, Int>? by remember { mutableStateOf(null) }
@@ -148,7 +146,7 @@ fun ConsoleScreen(
     var showResizeDialog by remember { mutableStateOf(false) }
     var showDisconnectDialog by remember { mutableStateOf(false) }
     var showTextInputDialog by remember { mutableStateOf(false) }
-    var showKeyboard by remember { mutableStateOf(true) } // Start visible to show animation
+    var showExtraKeyboard by remember { mutableStateOf(true) } // Start visible to show animation
     var hasPlayedKeyboardAnimation by remember { mutableStateOf(false) }
     var showTitleBar by remember { mutableStateOf(!titleBarHide) }
     var lastInteractionTime by remember { mutableStateOf(System.currentTimeMillis()) }
@@ -214,7 +212,7 @@ fun ConsoleScreen(
             delay(3000)
             // Hide keyboard if not always visible
             if (!keyboardAlwaysVisible) {
-                showKeyboard = false
+                showExtraKeyboard = false
             }
             // Hide title bar if auto-hide is enabled
             if (titleBarHide) {
@@ -347,12 +345,13 @@ fun ConsoleScreen(
                                     typeface = typeface,
                                     initialFontSize = bridge.fontSizeFlow.value.sp,
                                     keyboardEnabled = true,
+                                    showSoftKeyboard = showSoftwareKeyboard,
                                     focusRequester = termFocusRequester,
                                     forcedSize = forceSize,
                                     onTerminalTap = {
                                         // Show emulated keyboard when terminal is tapped (unless always visible)
                                         if (!keyboardAlwaysVisible) {
-                                            showKeyboard = true
+                                            showExtraKeyboard = true
                                         }
                                         // Show title bar temporarily when terminal is tapped (if auto-hide enabled)
                                         if (titleBarHide) {
@@ -383,7 +382,7 @@ fun ConsoleScreen(
                                     // Must be BEFORE prompts so prompts appear on top
                                     // Fade in/out animation matches ConsoleActivity (100ms duration)
                                     androidx.compose.animation.AnimatedVisibility(
-                                        visible = showKeyboard,
+                                        visible = showExtraKeyboard,
                                         enter = fadeIn(animationSpec = tween(durationMillis = 100)),
                                         exit = fadeOut(animationSpec = tween(durationMillis = 100)),
                                         modifier = Modifier
@@ -396,11 +395,10 @@ fun ConsoleScreen(
                                                 lastInteractionTime = System.currentTimeMillis()
                                             },
                                             onHideIme = {
-                                                // Hide the IME
-                                                keyboardController?.hide()
+                                                showSoftwareKeyboard = false
                                             },
                                             onShowIme = {
-                                                keyboardController?.show()
+                                                showSoftwareKeyboard = true
                                             },
                                             onOpenTextInput = {
                                                 // Open floating text input dialog
