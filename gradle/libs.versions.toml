@@ -47,7 +47,7 @@ robolectric = "4.16"
 
 errorproneCore = "2.45.0"
 media3CommonKtx = "1.8.0"
-ui = "1.9.5"
+ui = "1.10.0"
 
 [libraries]
 sshlib = { module = "org.connectbot:sshlib", version.ref = "sshlib" }
