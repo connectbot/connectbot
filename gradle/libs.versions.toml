@@ -45,7 +45,7 @@ mockitoKotlin = "6.1.0"
 assertj = "3.27.6"
 robolectric = "4.16"
 
-errorproneCore = "2.44.0"
+errorproneCore = "2.45.0"
 media3CommonKtx = "1.8.0"
 ui = "1.9.5"
 
