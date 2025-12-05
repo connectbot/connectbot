@@ -26,6 +26,10 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.View.OnKeyListener
 import androidx.preference.PreferenceManager
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import org.connectbot.terminal.ModifierManager
 import org.connectbot.terminal.VTermKey
 import org.connectbot.util.PreferenceConstants
 import java.io.IOException
@@ -35,7 +39,7 @@ class TerminalKeyListener(
     private val manager: TerminalManager?,
     private val bridge: TerminalBridge,
     private var encoding: String?
-) : OnKeyListener, OnSharedPreferenceChangeListener {
+) : OnKeyListener, OnSharedPreferenceChangeListener, ModifierManager {
 
     private var keymode: String? = null
     private val deviceHasHardKeyboard: Boolean
@@ -53,6 +57,9 @@ class TerminalKeyListener(
     private var selectingForCopy: Boolean = false
 
     private val prefs: SharedPreferences? = manager?.let { PreferenceManager.getDefaultSharedPreferences(it) }
+
+    private val _modifierState = MutableStateFlow(getModifierState())
+    val modifierState: StateFlow<ModifierState> = _modifierState.asStateFlow()
 
     init {
         prefs?.registerOnSharedPreferenceChangeListener(this)
@@ -86,11 +93,13 @@ class TerminalKeyListener(
                     if (keyCode == KeyEvent.KEYCODE_ALT_RIGHT &&
                             (ourMetaState and OUR_SLASH) != 0) {
                         ourMetaState = ourMetaState and OUR_TRANSIENT.inv()
+                        _modifierState.value = getModifierState()
                         transport.write('/'.code)
                         return true
                     } else if (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT &&
                             (ourMetaState and OUR_TAB) != 0) {
                         ourMetaState = ourMetaState and OUR_TRANSIENT.inv()
+                        _modifierState.value = getModifierState()
                         transport.write(0x09)
                         return true
                     }
@@ -98,11 +107,13 @@ class TerminalKeyListener(
                     if (keyCode == KeyEvent.KEYCODE_ALT_LEFT &&
                             (ourMetaState and OUR_SLASH) != 0) {
                         ourMetaState = ourMetaState and OUR_TRANSIENT.inv()
+                        _modifierState.value = getModifierState()
                         transport.write('/'.code)
                         return true
                     } else if (keyCode == KeyEvent.KEYCODE_SHIFT_LEFT &&
                             (ourMetaState and OUR_TAB) != 0) {
                         ourMetaState = ourMetaState and OUR_TRANSIENT.inv()
+                        _modifierState.value = getModifierState()
                         transport.write(0x09)
                         return true
                     }
@@ -226,7 +237,11 @@ class TerminalKeyListener(
                 derivedMetaState = derivedMetaState or HC_META_CTRL_ON
 
             if ((ourMetaState and OUR_TRANSIENT) != 0) {
+                val oldState = ourMetaState
                 ourMetaState = ourMetaState and OUR_TRANSIENT.inv()
+                if (oldState != ourMetaState) {
+                    _modifierState.value = getModifierState()
+                }
             }
 
             if (shiftedNumbersAreFKeys && (derivedMetaState and KeyEvent.META_SHIFT_ON) != 0) {
@@ -511,6 +526,7 @@ class TerminalKeyListener(
         } else {
             return
         }
+        _modifierState.value = getModifierState()
     }
 
     /**
@@ -562,6 +578,40 @@ class TerminalKeyListener(
         this.encoding = encoding
     }
 
+    override fun isCtrlActive(): Boolean = (ourMetaState and OUR_CTRL_MASK) != 0
+
+    override fun isAltActive(): Boolean = (ourMetaState and OUR_ALT_MASK) != 0
+
+    override fun isShiftActive(): Boolean = (ourMetaState and OUR_SHIFT_MASK) != 0
+
+    override fun clearTransients() {
+        val oldState = ourMetaState
+        ourMetaState = ourMetaState and OUR_TRANSIENT.inv()
+        if (oldState != ourMetaState) {
+            _modifierState.value = getModifierState()
+        }
+    }
+
+    fun getModifierState(): ModifierState {
+        return ModifierState(
+            ctrlState = when {
+                (ourMetaState and OUR_CTRL_LOCK) != 0 -> ModifierLevel.LOCKED
+                (ourMetaState and OUR_CTRL_ON) != 0 -> ModifierLevel.TRANSIENT
+                else -> ModifierLevel.OFF
+            },
+            altState = when {
+                (ourMetaState and OUR_ALT_LOCK) != 0 -> ModifierLevel.LOCKED
+                (ourMetaState and OUR_ALT_ON) != 0 -> ModifierLevel.TRANSIENT
+                else -> ModifierLevel.OFF
+            },
+            shiftState = when {
+                (ourMetaState and OUR_SHIFT_LOCK) != 0 -> ModifierLevel.LOCKED
+                (ourMetaState and OUR_SHIFT_ON) != 0 -> ModifierLevel.TRANSIENT
+                else -> ModifierLevel.OFF
+            }
+        )
+    }
+
     companion object {
         private const val TAG = "CB.OnKeyListener"
 
@@ -598,4 +648,16 @@ class TerminalKeyListener(
         private const val HC_META_ALT_MASK = KeyEvent.META_ALT_ON or KeyEvent.META_ALT_LEFT_ON or
                 KeyEvent.META_ALT_RIGHT_ON
     }
+}
+
+data class ModifierState(
+    val ctrlState: ModifierLevel,
+    val altState: ModifierLevel,
+    val shiftState: ModifierLevel
+)
+
+enum class ModifierLevel {
+    OFF,
+    TRANSIENT,
+    LOCKED
 }
