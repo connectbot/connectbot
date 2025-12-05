@@ -352,6 +352,7 @@ fun ConsoleScreen(
                                     showSoftKeyboard = showSoftwareKeyboard,
                                     focusRequester = termFocusRequester,
                                     forcedSize = forceSize,
+                                    modifierManager = bridge.keyHandler,
                                     onTerminalTap = {
                                         // Show emulated keyboard when terminal is tapped (unless always visible)
                                         if (!keyboardAlwaysVisible) {

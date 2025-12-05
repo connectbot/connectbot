@@ -44,6 +44,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -60,6 +61,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.connectbot.R
+import org.connectbot.service.ModifierLevel
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalKeyListener
 import org.connectbot.terminal.VTermKey
@@ -84,6 +86,7 @@ fun TerminalKeyboard(
 ) {
     val keyHandler = bridge.keyHandler
     val scrollState = rememberScrollState()
+    val modifierState by keyHandler.modifierState.collectAsState()
 
     // Auto-scroll animation on first appearance (only if playAnimation is true)
     LaunchedEffect(playAnimation) {
@@ -134,9 +137,10 @@ fun TerminalKeyboard(
                 horizontalArrangement = Arrangement.Start // No spacing between keys
             ) {
                 // Ctrl key (sticky modifier)
-                KeyButton(
+                ModifierKeyButton(
                     text = stringResource(R.string.button_key_ctrl),
                     contentDescription = stringResource(R.string.image_description_toggle_control_character),
+                    modifierLevel = modifierState.ctrlState,
                     onClick = {
                         keyHandler.metaPress(TerminalKeyListener.OUR_CTRL_ON, true)
                         onInteraction()
@@ -501,6 +505,48 @@ private fun RepeatableKeyButton(
                 contentDescription = contentDescription,
                 modifier = Modifier.size(20.dp),
                 tint = MaterialTheme.colorScheme.onSurface
+            )
+        }
+    }
+}
+
+@Composable
+private fun ModifierKeyButton(
+    text: String,
+    contentDescription: String?,
+    modifierLevel: ModifierLevel,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val backgroundColor = when (modifierLevel) {
+        ModifierLevel.OFF -> MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY)
+        ModifierLevel.TRANSIENT -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.7f)
+        ModifierLevel.LOCKED -> MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+    }
+
+    val textColor = when (modifierLevel) {
+        ModifierLevel.OFF -> MaterialTheme.colorScheme.onSurface
+        ModifierLevel.TRANSIENT -> MaterialTheme.colorScheme.onPrimaryContainer
+        ModifierLevel.LOCKED -> MaterialTheme.colorScheme.onPrimary
+    }
+
+    Surface(
+        onClick = onClick,
+        modifier = modifier
+            .size(width = 45.dp, height = 30.dp),
+        shape = androidx.compose.ui.graphics.RectangleShape,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+        color = backgroundColor,
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Text(
+                text = text,
+                fontSize = 10.sp,
+                style = MaterialTheme.typography.labelSmall,
+                color = textColor
             )
         }
     }
