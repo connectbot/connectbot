@@ -77,7 +77,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -123,7 +122,6 @@ fun ConsoleScreen(
 ) {
     val context = LocalContext.current
     val terminalManager = LocalTerminalManager.current
-    val keyboardController = LocalSoftwareKeyboardController.current
     val viewModel = remember(hostId) { ConsoleViewModel(terminalManager, hostId) }
     val uiState by viewModel.uiState.collectAsState()
 
@@ -196,13 +194,19 @@ fun ConsoleScreen(
         }
     }
 
-    // Track IME visibility using WindowInsets
+    // Track actual IME visibility using WindowInsets to detect user dismissing with back button
     val imeInsets = WindowInsets.ime
     val density = LocalDensity.current
     val imeHeight = with(density) { imeInsets.getBottom(density).toDp() }
+    val systemImeVisible = imeHeight > 0.dp
 
-    LaunchedEffect(imeHeight) {
-        imeVisible = imeHeight > 0.dp
+    // Sync our state when user dismisses IME externally (back button)
+    LaunchedEffect(systemImeVisible) {
+        // If system says IME is hidden but we think we should show it, update our state
+        if (!systemImeVisible && showSoftwareKeyboard) {
+            showSoftwareKeyboard = false
+        }
+        imeVisible = systemImeVisible
     }
 
     // Unified auto-hide timer for both keyboard and title bar
@@ -359,6 +363,9 @@ fun ConsoleScreen(
                                         }
                                         // Reset the unified timer
                                         lastInteractionTime = System.currentTimeMillis()
+                                    },
+                                    onImeVisibilityChanged = { visible ->
+                                        imeVisible = visible
                                     },
                                 )
 
