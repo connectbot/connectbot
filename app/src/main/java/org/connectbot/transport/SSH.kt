@@ -314,72 +314,81 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
      */
     @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class, IOException::class)
     private fun tryPublicKey(pubkey: Pubkey): Boolean {
-        var pair: KeyPair? = null
-
-        if (manager?.isKeyLoaded(pubkey.nickname) == true) {
-            // load this key from memory if its already there
-            Log.d(TAG, String.format("Found unlocked key '%s' already in-memory", pubkey.nickname))
-
-            if (pubkey.confirmation) {
-                if (!promptForPubkeyUse(pubkey.nickname))
-                    return false
-            }
-
-            pair = manager?.getKey(pubkey.nickname)
-        } else {
-            // otherwise load key from database and prompt for password as needed
-            var password: String? = null
-            if (pubkey.encrypted) {
-                password = bridge?.requestStringPrompt(
-                    null,
-                    manager?.res?.getString(R.string.prompt_pubkey_password, pubkey.nickname),
-                    true
-                )
-
-                // Something must have interrupted the prompt.
-                if (password == null)
-                    return false
-            }
-
-            pair = if (pubkey.type == "IMPORTED") {
-                // load specific key using pem format
-                val privateKey = pubkey.privateKey ?: return false
-                PEMDecoder.decode(String(privateKey, StandardCharsets.UTF_8).toCharArray(), password)
-            } else {
-                // load using internal generated format
-                val privateKey = pubkey.privateKey ?: return false
-                val privKey = try {
-                    PubkeyUtils.decodePrivate(privateKey, pubkey.type, password)
-                } catch (e: Exception) {
-                    val message = String.format("Bad password for key '%s'. Authentication failed.", pubkey.nickname)
-                    Log.e(TAG, message, e)
-                    bridge?.outputLine(message)
-                    return false
-                }
-
-                if (privKey == null) {
-                    val message = String.format("Failed to decode private key '%s'. Authentication failed.", pubkey.nickname)
-                    Log.e(TAG, message)
-                    bridge?.outputLine(message)
-                    return false
-                }
-
-                val pubKey = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
-
-                // convert key to trilead format
-                KeyPair(pubKey, privKey).also {
-                    Log.d(TAG, "Unlocked key " + PubkeyUtils.formatKey(pubKey))
-                }
-            }
-
-            Log.d(TAG, String.format("Unlocked key '%s'", pubkey.nickname))
-
-            // save this key in memory
-            manager?.addKey(pubkey, pair)
+        if (pubkey.confirmation && manager?.isKeyLoaded(pubkey.nickname) == true) {
+            if (!promptForPubkeyUse(pubkey.nickname))
+                return false
         }
 
+        val pair = getOrUnlockKey(pubkey) ?: return false
+
         val currentHost = host ?: return false
-        return tryPublicKey(currentHost.username, pubkey.nickname, pair!!)
+        return tryPublicKey(currentHost.username, pubkey.nickname, pair)
+    }
+
+    /**
+     * Gets a key pair from memory cache, or unlocks it by prompting for password if needed.
+     *
+     * @param pubkey the public key record to get or unlock
+     * @return the KeyPair if successful, null if the key couldn't be loaded/unlocked
+     */
+    private fun getOrUnlockKey(pubkey: Pubkey): KeyPair? {
+        if (manager?.isKeyLoaded(pubkey.nickname) == true) {
+            // load this key from memory if it's already there
+            Log.d(TAG, String.format("Found unlocked key '%s' already in-memory", pubkey.nickname))
+            return manager?.getKey(pubkey.nickname)
+        }
+
+        // otherwise load key from database and prompt for password as needed
+        var password: String? = null
+        if (pubkey.encrypted) {
+            password = bridge?.requestStringPrompt(
+                null,
+                manager?.res?.getString(R.string.prompt_pubkey_password, pubkey.nickname),
+                true
+            )
+
+            // Something must have interrupted the prompt.
+            if (password == null)
+                return null
+        }
+
+        val pair = if (pubkey.type == "IMPORTED") {
+            // load specific key using pem format
+            val privateKey = pubkey.privateKey ?: return null
+            PEMDecoder.decode(String(privateKey, StandardCharsets.UTF_8).toCharArray(), password)
+        } else {
+            // load using internal generated format
+            val privateKey = pubkey.privateKey ?: return null
+            val privKey = try {
+                PubkeyUtils.decodePrivate(privateKey, pubkey.type, password)
+            } catch (e: Exception) {
+                val message = String.format("Bad password for key '%s'. Authentication failed.", pubkey.nickname)
+                Log.e(TAG, message, e)
+                bridge?.outputLine(message)
+                return null
+            }
+
+            if (privKey == null) {
+                val message = String.format("Failed to decode private key '%s'. Authentication failed.", pubkey.nickname)
+                Log.e(TAG, message)
+                bridge?.outputLine(message)
+                return null
+            }
+
+            val pubKey = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
+
+            // convert key to trilead format
+            KeyPair(pubKey, privKey).also {
+                Log.d(TAG, "Unlocked key " + PubkeyUtils.formatKey(pubKey))
+            }
+        }
+
+        Log.d(TAG, String.format("Unlocked key '%s'", pubkey.nickname))
+
+        // save this key in memory
+        manager?.addKey(pubkey, pair)
+
+        return pair
     }
 
     @Throws(IOException::class)
@@ -508,10 +517,10 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                         }
                     }
                 } else {
-                    // Try specific key
+                    // Try specific key (with unlock prompt if needed)
                     val pubkey = manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)
-                    if (pubkey != null && manager?.isKeyLoaded(pubkey.nickname) == true) {
-                        val pair = manager?.getKey(pubkey.nickname)
+                    if (pubkey != null) {
+                        val pair = getOrUnlockKey(pubkey)
                         if (pair != null) {
                             try {
                                 if (jc.authenticateWithPublicKey(jumpHost.username, pair)) {
