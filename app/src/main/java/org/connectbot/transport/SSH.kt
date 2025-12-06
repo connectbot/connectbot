@@ -88,7 +88,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
     private var interactiveCanContinue = true
 
     private var connection: Connection? = null
-    private var jumpConnection: Connection? = null
+    private val jumpConnections: MutableList<Connection> = mutableListOf()
     private var session: Session? = null
 
     private var stdin: OutputStream? = null
@@ -446,6 +446,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
     /**
      * Establish and authenticate a connection to the jump host.
      * This is called before connecting to the target host when ProxyJump is configured.
+     * Supports chained jump hosts (jump host that requires another jump host).
      *
      * @param jumpHost The jump host configuration
      * @return The authenticated Connection, or null if connection/authentication failed
@@ -456,6 +457,23 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         val jc = Connection(jumpHost.hostname, jumpHost.port)
 
         try {
+            // Check if this jump host itself requires a jump host (chained ProxyJump)
+            val nestedJumpHostId = jumpHost.jumpHostId
+            if (nestedJumpHostId != null && nestedJumpHostId > 0) {
+                val nestedJumpHost = manager?.hostRepository?.findHostByIdBlocking(nestedJumpHostId)
+                if (nestedJumpHost != null) {
+                    val nestedConnection = connectToJumpHost(nestedJumpHost)
+                    if (nestedConnection == null) {
+                        return null
+                    }
+                    // Use the nested jump host connection as proxy for this jump host
+                    jc.setProxyData(JumpHostProxyData(nestedConnection))
+                } else {
+                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_not_found))
+                    return null
+                }
+            }
+
             if (jumpHost.compression) {
                 jc.setCompression(true)
             }
@@ -463,12 +481,16 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             // Connect to jump host
             jc.connect(HostKeyVerifier())
 
+            // Track this connection for cleanup
+            jumpConnections.add(jc)
+
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_connected, jumpHost.nickname))
 
             // Authenticate to jump host
             if (!authenticateJumpHost(jc, jumpHost)) {
                 bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_auth_failed, jumpHost.nickname))
                 jc.close()
+                jumpConnections.remove(jc)
                 return null
             }
 
@@ -479,6 +501,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_failed, jumpHost.nickname, e.message))
             try {
                 jc.close()
+                jumpConnections.remove(jc)
             } catch (ignored: Exception) {
             }
             return null
@@ -586,11 +609,12 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
 
         // Check if we need to connect through a jump host
         val jumpHostId = currentHost.jumpHostId
+        var directJumpConnection: Connection? = null
         if (jumpHostId != null && jumpHostId > 0) {
             val jumpHost = manager?.hostRepository?.findHostByIdBlocking(jumpHostId)
             if (jumpHost != null) {
-                jumpConnection = connectToJumpHost(jumpHost)
-                if (jumpConnection == null) {
+                directJumpConnection = connectToJumpHost(jumpHost)
+                if (directJumpConnection == null) {
                     onDisconnect()
                     return
                 }
@@ -605,7 +629,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         connection?.addConnectionMonitor(this)
 
         // If we have a jump host connection, set up the proxy
-        jumpConnection?.let {
+        directJumpConnection?.let {
             connection?.setProxyData(JumpHostProxyData(it))
         }
 
@@ -694,9 +718,14 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         connection?.close()
         connection = null
 
-        // Close jump host connection if one was used
-        jumpConnection?.close()
-        jumpConnection = null
+        // Close all jump host connections (in reverse order)
+        jumpConnections.asReversed().forEach { jc ->
+            try {
+                jc.close()
+            } catch (ignored: Exception) {
+            }
+        }
+        jumpConnections.clear()
     }
 
     private fun onDisconnect() {
