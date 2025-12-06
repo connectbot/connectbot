@@ -199,6 +199,10 @@ class HostListViewModel(
         terminalManager?.disconnectAll(true, false)
     }
 
+    fun disconnectHost(host: Host) {
+        terminalManager?.getConnectedBridge(host.nickname)?.dispatchDisconnect(true)
+    }
+
     fun quickConnect(uri: String) {
         viewModelScope.launch {
             try {
