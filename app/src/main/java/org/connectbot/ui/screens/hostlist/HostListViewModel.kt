@@ -51,6 +51,7 @@ enum class ConnectionState {
 data class HostListUiState(
     val hosts: List<Host> = emptyList(),
     val connectionStates: Map<Long, ConnectionState> = emptyMap(),
+    val sessionCounts: Map<Long, Int> = emptyMap(),
     val isLoading: Boolean = false,
     val error: String? = null,
     val sortedByColor: Boolean = false,
@@ -181,14 +182,17 @@ class HostListViewModel @Inject constructor(
         val states = hosts.associate { host ->
             host.id to getConnectionState(host)
         }
-        _uiState.update { it.copy(connectionStates = states) }
+        val counts = hosts.associate { host ->
+            host.id to (terminalManager?.getSessionCount(host.id) ?: 0)
+        }
+        _uiState.update { it.copy(connectionStates = states, sessionCounts = counts) }
     }
 
     private fun getConnectionState(host: Host): ConnectionState {
         val manager = terminalManager ?: return ConnectionState.UNKNOWN
 
-        // Check if connected by ID
-        if (manager.bridgesFlow.value.any { it.host.id == host.id }) {
+        // Check if any sessions are connected for this host
+        if (manager.isHostConnected(host.id)) {
             return ConnectionState.CONNECTED
         }
 
@@ -204,6 +208,51 @@ class HostListViewModel @Inject constructor(
         val newSortedByColor = !_uiState.value.sortedByColor
         sharedPreferences.edit { putBoolean(PreferenceConstants.SORT_BY_COLOR, newSortedByColor) }
         _uiState.update { it.copy(sortedByColor = newSortedByColor) }
+    }
+
+    /**
+     * Open a new session to a host.
+     * This always creates a new session, even if sessions already exist.
+     */
+    fun connectToHost(host: Host) {
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    // Build URI from host
+                    val uri = android.net.Uri.Builder()
+                        .scheme(host.protocol)
+                        .encodedAuthority("${host.username}@${host.hostname}:${host.port}")
+                        .build()
+                    terminalManager?.openConnection(uri)
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(error = e.message ?: "Failed to connect")
+                }
+            }
+        }
+    }
+
+    /**
+     * Get the session ID of the last-used session for a host.
+     * Returns null if no sessions exist.
+     */
+    fun getLastUsedSessionId(hostId: Long): Long? {
+        return terminalManager?.getLastUsedBridge(hostId)?.sessionId
+    }
+
+    /**
+     * Check if a host has any connected sessions.
+     */
+    fun isHostConnected(hostId: Long): Boolean {
+        return terminalManager?.isHostConnected(hostId) ?: false
+    }
+
+    /**
+     * Get the number of sessions for a host.
+     */
+    fun getSessionCount(hostId: Long): Int {
+        return terminalManager?.getSessionCount(hostId) ?: 0
     }
 
     fun deleteHost(host: Host) {

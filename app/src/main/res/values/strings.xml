@@ -575,6 +575,10 @@
 	<string name="console_menu_resize">"Force size"</string>
 	<!-- Button that brings up the list of URLs on the current screen -->
 	<string name="console_menu_urlscan">"URL scan"</string>
+	<!-- Button to switch between sessions for the same host -->
+	<string name="console_menu_switch_session">"Switch session"</string>
+	<!-- Format string for session number in switch session menu -->
+	<string name="console_menu_session_number">"Session #%1$d"</string>
 
 	<!-- Button label to answer "Yes" to a yes/no prompt -->
 	<string name="button_yes">"Yes"</string>
@@ -623,6 +627,10 @@
 	<string name="list_host_duplicate">"Duplicate host"</string>
 	<!-- Context menu action to forget stored host keys for the selected host -->
 	<string name="list_host_forget_keys">"Forget host keys"</string>
+	<!-- Context menu action to open a new session to the selected host -->
+	<string name="list_host_new_session">"Open new session"</string>
+	<!-- Empty state message when no hosts have been created yet -->
+	<string name="list_host_empty">"No hosts created yet."</string>
 
 	<!-- Default screen rotation preference selection -->
 	<string name="list_rotation_default">"Default"</string>
