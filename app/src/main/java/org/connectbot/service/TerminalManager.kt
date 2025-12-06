@@ -86,7 +86,24 @@ class TerminalManager :
     private val _bridgesFlow = MutableStateFlow<List<TerminalBridge>>(emptyList())
     val bridgesFlow: StateFlow<List<TerminalBridge>> = _bridgesFlow.asStateFlow()
 
+    @Deprecated("Use bridgesFlow instead", ReplaceWith("bridgesFlow.value"))
+    val bridges: List<TerminalBridge>
+        get() = _bridges.toList()
+
+    // Maps for multi-session support: hostId -> list of bridges
+    private val hostBridgesMap: MutableMap<Long, MutableList<WeakReference<TerminalBridge>>> = HashMap()
+    // Quick lookup by session ID
+    private val bridgesBySessionId: MutableMap<Long, WeakReference<TerminalBridge>> = HashMap()
+    // Track last-used session per host for navigation
+    private val lastUsedSessionByHost: MutableMap<Long, Long> = HashMap()
+
+    // Session ID counter (starts at 1)
+    private val nextSessionId = AtomicLong(1L)
+
+    // Legacy maps for backwards compatibility (deprecated)
+    @Deprecated("Use hostBridgesMap instead")
     private val hostBridgeMap: MutableMap<Host, WeakReference<TerminalBridge>> = HashMap()
+    @Deprecated("Use getConnectedBridges instead")
     private val nicknameBridgeMap: MutableMap<String, WeakReference<TerminalBridge>> = HashMap()
 
     private val _disconnected = ArrayList<Host>()
@@ -310,23 +327,38 @@ class TerminalManager :
     }
 
     /**
+     * Generate a unique session ID for a new bridge.
+     */
+    private fun generateSessionId(): Long = nextSessionId.getAndIncrement()
+
+    /**
      * Open a new SSH session using the given parameters.
+     * Multiple sessions to the same host are now allowed.
      */
     private fun openConnection(host: Host): TerminalBridge {
-        // throw exception if terminal already open
-        if (getConnectedBridge(host) != null) {
-            throw IllegalArgumentException("Connection already open for that nickname")
-        }
-
-        val bridge = TerminalBridge(this, host, dispatchers)
+        val sessionId = generateSessionId()
+        val bridge = TerminalBridge(this, host, sessionId, dispatchers)
         bridge.setOnDisconnectedListener(this)
         bridge.startConnection()
 
         synchronized(_bridges) {
             _bridges.add(bridge)
             val wr = WeakReference(bridge)
+
+            // Add to multi-session maps
+            val hostBridges = hostBridgesMap.getOrPut(host.id) { mutableListOf() }
+            hostBridges.add(wr)
+            bridgesBySessionId[sessionId] = wr
+
+            // Mark as last-used session for this host
+            lastUsedSessionByHost[host.id] = sessionId
+
+            // Legacy maps (for backwards compatibility)
+            @Suppress("DEPRECATION")
             hostBridgeMap[bridge.host] = wr
+            @Suppress("DEPRECATION")
             nicknameBridgeMap[bridge.host.nickname] = wr
+
             _bridgesFlow.value = _bridges.toList()
         }
 
@@ -422,9 +454,90 @@ class TerminalManager :
      * @param nickname
      * @return TerminalBridge that matches nickname
      */
+    @Deprecated("Use getConnectedBridges(hostId) for multi-session support")
     fun getConnectedBridge(nickname: String?): TerminalBridge? {
+        @Suppress("DEPRECATION")
         val wr = nicknameBridgeMap[nickname ?: return null]
         return wr?.get()
+    }
+
+    /**
+     * Get all connected bridges for a given host ID.
+     * Supports multiple sessions per host.
+     *
+     * @param hostId the database ID of the host
+     * @return List of connected TerminalBridge objects for this host
+     */
+    fun getConnectedBridges(hostId: Long): List<TerminalBridge> {
+        synchronized(_bridges) {
+            return hostBridgesMap[hostId]?.mapNotNull { it.get() } ?: emptyList()
+        }
+    }
+
+    /**
+     * Get a bridge by its session ID.
+     *
+     * @param sessionId the unique session identifier
+     * @return TerminalBridge with that session ID, or null if not found
+     */
+    fun getBridgeBySessionId(sessionId: Long): TerminalBridge? {
+        synchronized(_bridges) {
+            return bridgesBySessionId[sessionId]?.get()
+        }
+    }
+
+    /**
+     * Get the number of active sessions for a host.
+     *
+     * @param hostId the database ID of the host
+     * @return number of active sessions
+     */
+    fun getSessionCount(hostId: Long): Int {
+        synchronized(_bridges) {
+            return hostBridgesMap[hostId]?.count { it.get() != null } ?: 0
+        }
+    }
+
+    /**
+     * Get the last-used bridge for a host.
+     * Returns the most recently opened or interacted-with session.
+     *
+     * @param hostId the database ID of the host
+     * @return the last-used TerminalBridge, or the first available if none tracked
+     */
+    fun getLastUsedBridge(hostId: Long): TerminalBridge? {
+        synchronized(_bridges) {
+            val lastSessionId = lastUsedSessionByHost[hostId]
+            if (lastSessionId != null) {
+                val bridge = bridgesBySessionId[lastSessionId]?.get()
+                if (bridge != null) return bridge
+            }
+            // Fallback to first available session
+            return hostBridgesMap[hostId]?.firstNotNullOfOrNull { it.get() }
+        }
+    }
+
+    /**
+     * Mark a session as recently used.
+     * Called when user interacts with a session.
+     *
+     * @param sessionId the session to mark as used
+     */
+    fun markSessionUsed(sessionId: Long) {
+        synchronized(_bridges) {
+            val bridge = bridgesBySessionId[sessionId]?.get() ?: return
+            lastUsedSessionByHost[bridge.host.id] = sessionId
+        }
+    }
+
+    /**
+     * Check if any sessions are connected for a host.
+     *
+     * @param hostId the database ID of the host
+     * @return true if at least one session is connected
+     */
+    fun isHostConnected(hostId: Long): Boolean {
+        return getSessionCount(hostId) > 0
     }
 
     /**
@@ -432,13 +545,35 @@ class TerminalManager :
      */
     override fun onDisconnected(bridge: TerminalBridge) {
         var shouldHideRunningNotification = false
-        Timber.d("Bridge Disconnected. Removing it.")
+        Timber.d("Bridge Disconnected. Removing it. SessionId=${bridge.sessionId}")
 
         synchronized(_bridges) {
             // remove this bridge from our list
             _bridges.remove(bridge)
 
+            // Remove from multi-session maps
+            bridgesBySessionId.remove(bridge.sessionId)
+            hostBridgesMap[bridge.host.id]?.removeIf { it.get() == bridge || it.get() == null }
+            // Clean up empty lists
+            if (hostBridgesMap[bridge.host.id]?.isEmpty() == true) {
+                hostBridgesMap.remove(bridge.host.id)
+            }
+
+            // Update last-used if this was the last-used session
+            if (lastUsedSessionByHost[bridge.host.id] == bridge.sessionId) {
+                // Set to another session if one exists, or remove
+                val remaining = hostBridgesMap[bridge.host.id]?.mapNotNull { it.get() }
+                if (remaining.isNullOrEmpty()) {
+                    lastUsedSessionByHost.remove(bridge.host.id)
+                } else {
+                    lastUsedSessionByHost[bridge.host.id] = remaining.last().sessionId
+                }
+            }
+
+            // Legacy maps cleanup
+            @Suppress("DEPRECATION")
             hostBridgeMap.remove(bridge.host)
+            @Suppress("DEPRECATION")
             nicknameBridgeMap.remove(bridge.host.nickname)
 
             if (bridge.isUsingNetwork()) {

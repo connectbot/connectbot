@@ -97,8 +97,13 @@ class TerminalBridge {
 
     private val dispatchers: CoroutineDispatchers
 
-    /* package */
-    var transport: AbsTransport? = null
+    /**
+     * Unique session identifier for this bridge.
+     * Used to distinguish multiple sessions to the same host.
+     */
+    val sessionId: Long
+
+    /* package */ var transport: AbsTransport? = null
 
     val defaultPaint: Paint
 
@@ -179,10 +184,15 @@ class TerminalBridge {
      * Create new terminal bridge with following parameters. We will immediately
      * launch thread to start SSH connection and handle any hostkey verification
      * and password authentication.
+     *
+     * @param manager The TerminalManager service
+     * @param host The host configuration for this connection
+     * @param sessionId Unique session identifier (for multi-session support)
      */
-    constructor(manager: TerminalManager, host: Host, dispatchers: CoroutineDispatchers) {
+    constructor(manager: TerminalManager, host: Host, sessionId: Long, dispatchers: CoroutineDispatchers) {
         this.manager = manager
         this.host = host
+        this.sessionId = sessionId
         this.dispatchers = dispatchers
 
         // Load profile for this host (always returns a profile, defaulting to Default profile)
