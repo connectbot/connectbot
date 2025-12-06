@@ -93,7 +93,15 @@ data class Host(
     val scrollbackLines: Int = 140,
 
     @ColumnInfo(name = "use_ctrl_alt_as_meta_key")
-    val useCtrlAltAsMetaKey: Boolean = false
+    val useCtrlAltAsMetaKey: Boolean = false,
+
+    /**
+     * Optional jump host ID for ProxyJump support.
+     * When set, connections to this host will be tunneled through the jump host.
+     * A value of null means no jump host (direct connection).
+     */
+    @ColumnInfo(name = "jump_host_id")
+    val jumpHostId: Long? = null
 ) {
     /**
      * Check if this host is temporary (not saved to database).

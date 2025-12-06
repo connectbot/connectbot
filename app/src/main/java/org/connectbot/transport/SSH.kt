@@ -88,6 +88,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
     private var interactiveCanContinue = true
 
     private var connection: Connection? = null
+    private val jumpConnections: MutableList<Connection> = mutableListOf()
     private var session: Session? = null
 
     private var stdin: OutputStream? = null
@@ -313,72 +314,81 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
      */
     @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class, IOException::class)
     private fun tryPublicKey(pubkey: Pubkey): Boolean {
-        var pair: KeyPair? = null
-
-        if (manager?.isKeyLoaded(pubkey.nickname) == true) {
-            // load this key from memory if its already there
-            Log.d(TAG, String.format("Found unlocked key '%s' already in-memory", pubkey.nickname))
-
-            if (pubkey.confirmation) {
-                if (!promptForPubkeyUse(pubkey.nickname))
-                    return false
-            }
-
-            pair = manager?.getKey(pubkey.nickname)
-        } else {
-            // otherwise load key from database and prompt for password as needed
-            var password: String? = null
-            if (pubkey.encrypted) {
-                password = bridge?.requestStringPrompt(
-                    null,
-                    manager?.res?.getString(R.string.prompt_pubkey_password, pubkey.nickname),
-                    true
-                )
-
-                // Something must have interrupted the prompt.
-                if (password == null)
-                    return false
-            }
-
-            pair = if (pubkey.type == "IMPORTED") {
-                // load specific key using pem format
-                val privateKey = pubkey.privateKey ?: return false
-                PEMDecoder.decode(String(privateKey, StandardCharsets.UTF_8).toCharArray(), password)
-            } else {
-                // load using internal generated format
-                val privateKey = pubkey.privateKey ?: return false
-                val privKey = try {
-                    PubkeyUtils.decodePrivate(privateKey, pubkey.type, password)
-                } catch (e: Exception) {
-                    val message = String.format("Bad password for key '%s'. Authentication failed.", pubkey.nickname)
-                    Log.e(TAG, message, e)
-                    bridge?.outputLine(message)
-                    return false
-                }
-
-                if (privKey == null) {
-                    val message = String.format("Failed to decode private key '%s'. Authentication failed.", pubkey.nickname)
-                    Log.e(TAG, message)
-                    bridge?.outputLine(message)
-                    return false
-                }
-
-                val pubKey = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
-
-                // convert key to trilead format
-                KeyPair(pubKey, privKey).also {
-                    Log.d(TAG, "Unlocked key " + PubkeyUtils.formatKey(pubKey))
-                }
-            }
-
-            Log.d(TAG, String.format("Unlocked key '%s'", pubkey.nickname))
-
-            // save this key in memory
-            manager?.addKey(pubkey, pair)
+        if (pubkey.confirmation && manager?.isKeyLoaded(pubkey.nickname) == true) {
+            if (!promptForPubkeyUse(pubkey.nickname))
+                return false
         }
 
+        val pair = getOrUnlockKey(pubkey) ?: return false
+
         val currentHost = host ?: return false
-        return tryPublicKey(currentHost.username, pubkey.nickname, pair!!)
+        return tryPublicKey(currentHost.username, pubkey.nickname, pair)
+    }
+
+    /**
+     * Gets a key pair from memory cache, or unlocks it by prompting for password if needed.
+     *
+     * @param pubkey the public key record to get or unlock
+     * @return the KeyPair if successful, null if the key couldn't be loaded/unlocked
+     */
+    private fun getOrUnlockKey(pubkey: Pubkey): KeyPair? {
+        if (manager?.isKeyLoaded(pubkey.nickname) == true) {
+            // load this key from memory if it's already there
+            Log.d(TAG, String.format("Found unlocked key '%s' already in-memory", pubkey.nickname))
+            return manager?.getKey(pubkey.nickname)
+        }
+
+        // otherwise load key from database and prompt for password as needed
+        var password: String? = null
+        if (pubkey.encrypted) {
+            password = bridge?.requestStringPrompt(
+                null,
+                manager?.res?.getString(R.string.prompt_pubkey_password, pubkey.nickname),
+                true
+            )
+
+            // Something must have interrupted the prompt.
+            if (password == null)
+                return null
+        }
+
+        val pair = if (pubkey.type == "IMPORTED") {
+            // load specific key using pem format
+            val privateKey = pubkey.privateKey ?: return null
+            PEMDecoder.decode(String(privateKey, StandardCharsets.UTF_8).toCharArray(), password)
+        } else {
+            // load using internal generated format
+            val privateKey = pubkey.privateKey ?: return null
+            val privKey = try {
+                PubkeyUtils.decodePrivate(privateKey, pubkey.type, password)
+            } catch (e: Exception) {
+                val message = String.format("Bad password for key '%s'. Authentication failed.", pubkey.nickname)
+                Log.e(TAG, message, e)
+                bridge?.outputLine(message)
+                return null
+            }
+
+            if (privKey == null) {
+                val message = String.format("Failed to decode private key '%s'. Authentication failed.", pubkey.nickname)
+                Log.e(TAG, message)
+                bridge?.outputLine(message)
+                return null
+            }
+
+            val pubKey = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
+
+            // convert key to trilead format
+            KeyPair(pubKey, privKey).also {
+                Log.d(TAG, "Unlocked key " + PubkeyUtils.formatKey(pubKey))
+            }
+        }
+
+        Log.d(TAG, String.format("Unlocked key '%s'", pubkey.nickname))
+
+        // save this key in memory
+        manager?.addKey(pubkey, pair)
+
+        return pair
     }
 
     @Throws(IOException::class)
@@ -433,10 +443,195 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         }
     }
 
+    /**
+     * Establish and authenticate a connection to the jump host.
+     * This is called before connecting to the target host when ProxyJump is configured.
+     * Supports chained jump hosts (jump host that requires another jump host).
+     *
+     * @param jumpHost The jump host configuration
+     * @return The authenticated Connection, or null if connection/authentication failed
+     */
+    private fun connectToJumpHost(jumpHost: Host): Connection? {
+        bridge?.outputLine(manager?.res?.getString(R.string.terminal_connecting_via_jump, jumpHost.nickname))
+
+        val jc = Connection(jumpHost.hostname, jumpHost.port)
+
+        try {
+            // Check if this jump host itself requires a jump host (chained ProxyJump)
+            val nestedJumpHostId = jumpHost.jumpHostId
+            if (nestedJumpHostId != null && nestedJumpHostId > 0) {
+                val nestedJumpHost = manager?.hostRepository?.findHostByIdBlocking(nestedJumpHostId)
+                if (nestedJumpHost != null) {
+                    val nestedConnection = connectToJumpHost(nestedJumpHost)
+                    if (nestedConnection == null) {
+                        return null
+                    }
+                    // Use the nested jump host connection as proxy for this jump host
+                    jc.setProxyData(JumpHostProxyData(nestedConnection))
+                } else {
+                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_not_found))
+                    return null
+                }
+            }
+
+            if (jumpHost.compression) {
+                jc.setCompression(true)
+            }
+
+            // Connect to jump host
+            jc.connect(HostKeyVerifier())
+
+            // Track this connection for cleanup
+            jumpConnections.add(jc)
+
+            bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_connected, jumpHost.nickname))
+
+            // Authenticate to jump host
+            if (!authenticateJumpHost(jc, jumpHost)) {
+                bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_auth_failed, jumpHost.nickname))
+                jc.close()
+                jumpConnections.remove(jc)
+                return null
+            }
+
+            bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_authenticated, jumpHost.nickname))
+            return jc
+        } catch (e: IOException) {
+            Log.e(TAG, "Failed to connect to jump host: ${jumpHost.nickname}", e)
+            bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_failed, jumpHost.nickname, e.message))
+            try {
+                jc.close()
+                jumpConnections.remove(jc)
+            } catch (ignored: Exception) {
+            }
+            return null
+        }
+    }
+
+    /**
+     * Authenticate to a jump host connection.
+     *
+     * @param jc The jump host connection
+     * @param jumpHost The jump host configuration
+     * @return true if authentication succeeded
+     */
+    private fun authenticateJumpHost(jc: Connection, jumpHost: Host): Boolean {
+        try {
+            // Try 'none' authentication first
+            if (jc.authenticateWithNone(jumpHost.username)) {
+                return true
+            }
+
+            val pubkeyId = jumpHost.pubkeyId
+
+            // Try public key authentication
+            if (pubkeyId != HostConstants.PUBKEYID_NEVER &&
+                jc.isAuthMethodAvailable(jumpHost.username, AUTH_PUBLICKEY)
+            ) {
+                if (pubkeyId == HostConstants.PUBKEYID_ANY) {
+                    // Try all in-memory keys
+                    manager?.loadedKeypairs?.entries?.forEach { entry ->
+                        try {
+                            if (jc.authenticateWithPublicKey(jumpHost.username, entry.value.pair)) {
+                                return true
+                            }
+                        } catch (e: Exception) {
+                            Log.d(TAG, "Jump host pubkey auth failed with key: ${entry.key}")
+                        }
+                    }
+                } else {
+                    // Try specific key (with unlock prompt if needed)
+                    val pubkey = manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)
+                    if (pubkey != null) {
+                        val pair = getOrUnlockKey(pubkey)
+                        if (pair != null) {
+                            try {
+                                if (jc.authenticateWithPublicKey(jumpHost.username, pair)) {
+                                    return true
+                                }
+                            } catch (e: Exception) {
+                                Log.d(TAG, "Jump host specific pubkey auth failed")
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Try keyboard-interactive authentication
+            if (jc.isAuthMethodAvailable(jumpHost.username, AUTH_KEYBOARDINTERACTIVE)) {
+                try {
+                    if (jc.authenticateWithKeyboardInteractive(
+                            jumpHost.username
+                        ) { name, instruction, numPrompts, prompt, echo ->
+                            val responses = Array(numPrompts) { i ->
+                                val isPassword = echo != null && i < echo.size && !echo[i]
+                                val promptPrefix = manager?.res?.getString(R.string.terminal_jump_prompt, jumpHost.nickname) ?: ""
+                                bridge?.requestStringPrompt(
+                                    instruction,
+                                    "$promptPrefix ${prompt[i]}",
+                                    isPassword
+                                ) ?: ""
+                            }
+                            responses
+                        }
+                    ) {
+                        return true
+                    }
+                } catch (e: Exception) {
+                    Log.d(TAG, "Jump host keyboard-interactive auth failed", e)
+                }
+            }
+
+            // Try password authentication
+            if (jc.isAuthMethodAvailable(jumpHost.username, AUTH_PASSWORD)) {
+                val passwordPrompt = manager?.res?.getString(R.string.terminal_jump_password, jumpHost.nickname)
+                val password = bridge?.requestStringPrompt(null, passwordPrompt, true)
+                if (password != null) {
+                    try {
+                        if (jc.authenticateWithPassword(jumpHost.username, password)) {
+                            return true
+                        }
+                    } catch (e: Exception) {
+                        Log.d(TAG, "Jump host password auth failed", e)
+                    }
+                }
+            }
+
+            return jc.isAuthenticationComplete
+        } catch (e: Exception) {
+            Log.e(TAG, "Error during jump host authentication", e)
+            return false
+        }
+    }
+
     override fun connect() {
         val currentHost = host ?: return
+
+        // Check if we need to connect through a jump host
+        val jumpHostId = currentHost.jumpHostId
+        var directJumpConnection: Connection? = null
+        if (jumpHostId != null && jumpHostId > 0) {
+            val jumpHost = manager?.hostRepository?.findHostByIdBlocking(jumpHostId)
+            if (jumpHost != null) {
+                directJumpConnection = connectToJumpHost(jumpHost)
+                if (directJumpConnection == null) {
+                    onDisconnect()
+                    return
+                }
+            } else {
+                bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_not_found))
+                onDisconnect()
+                return
+            }
+        }
+
         connection = Connection(currentHost.hostname, currentHost.port)
         connection?.addConnectionMonitor(this)
+
+        // If we have a jump host connection, set up the proxy
+        directJumpConnection?.let {
+            connection?.setProxyData(JumpHostProxyData(it))
+        }
 
         try {
             connection?.setCompression(compression)
@@ -522,6 +717,15 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
 
         connection?.close()
         connection = null
+
+        // Close all jump host connections (in reverse order)
+        jumpConnections.asReversed().forEach { jc ->
+            try {
+                jc.close()
+            } catch (ignored: Exception) {
+            }
+        }
+        jumpConnections.clear()
     }
 
     private fun onDisconnect() {
