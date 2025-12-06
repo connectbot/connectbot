@@ -64,6 +64,7 @@ import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.SwapHoriz
@@ -77,6 +78,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarDuration
@@ -84,6 +86,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -133,6 +136,7 @@ import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
@@ -1176,6 +1180,42 @@ fun ConsoleScreen(
                     }
                 }
             }
+            
+            if (hasMultipleSessions) {
+                PrimaryTabRow(
+                    selectedTabIndex = uiState.currentBridgeIndex,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    uiState.bridges.forEachIndexed { index, bridge ->
+                        val hostId = bridge.host.id
+                        val sessionCount = uiState.sessionCounts[hostId] ?: 1
+                        val sessionNumber = if (sessionCount > 1) {
+                            val bridgesForHost = uiState.bridges.filter { it.host.id == hostId }
+                            bridgesForHost.indexOfFirst { it.sessionId == bridge.sessionId } + 1
+                        } else {
+                            0
+                        }
+                        val tabTitle = if (sessionNumber > 0) {
+                            "${bridge.host.nickname} #$sessionNumber"
+                        } else {
+                            bridge.host.nickname
+                        }
+
+                        Tab(
+                            selected = index == uiState.currentBridgeIndex,
+                            onClick = { selectBridgePreservingKeyboard(index) },
+                            text = {
+                                Text(
+                                    tabTitle,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            },
+                        )
+                    }
+                }
+            }
+
             when {
                 uiState.isLoading -> {
                     LoadingScreen(modifier = Modifier.fillMaxSize())
@@ -1200,7 +1240,7 @@ fun ConsoleScreen(
                             Modifier
                         }
 
-                        key(bridge.host.id) {
+                        key(bridge.sessionId) {
                             ConsoleTerminalPage(
                                 bridge = bridge,
                                 disconnected = disconnected,
@@ -1458,10 +1498,18 @@ fun ConsoleScreen(
                                 contentDescription = stringResource(R.string.button_more_options),
                             )
                         }
+                        // Get sessions for the current host (for switch session menu)
+                        val sessionsForCurrentHost = currentBridge?.let { bridge ->
+                            uiState.bridges.filter { it.host.id == bridge.host.id }
+                        } ?: emptyList()
+                        val hasMultipleSessionsForCurrentHost = sessionsForCurrentHost.size > 1
+                        var showSwitchSessionMenu by remember { mutableStateOf(false) }
+
                         DropdownMenu(
                             expanded = showMenu,
                             onDismissRequest = {
                                 showMenu = false
+                                showSwitchSessionMenu = false
                                 termFocusRequester.requestFocus()
                             },
                         ) {
@@ -1497,6 +1545,64 @@ fun ConsoleScreen(
                                     },
                                     enabled = uiState.currentBridgeIndex < uiState.bridges.lastIndex,
                                 )
+                            }
+
+                            // Open new session
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.list_host_new_session)) },
+                                onClick = {
+                                    showMenu = false
+                                    viewModel.openNewSession()
+                                },
+                                leadingIcon = {
+                                    Icon(Icons.Default.OpenInNew, contentDescription = null)
+                                },
+                                enabled = currentBridge != null,
+                            )
+
+                            // Switch session (if multiple sessions exist for current host)
+                            if (hasMultipleSessionsForCurrentHost) {
+                                Box {
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.console_menu_switch_session)) },
+                                        onClick = {
+                                            showSwitchSessionMenu = !showSwitchSessionMenu
+                                        },
+                                        leadingIcon = {
+                                            Icon(Icons.Default.SwapHoriz, contentDescription = null)
+                                        },
+                                    )
+
+                                    // Switch session submenu
+                                    DropdownMenu(
+                                        expanded = showSwitchSessionMenu,
+                                        onDismissRequest = { showSwitchSessionMenu = false },
+                                    ) {
+                                        sessionsForCurrentHost.forEachIndexed { index, bridge ->
+                                            val isCurrentSession = bridge.sessionId == currentBridge?.sessionId
+                                            DropdownMenuItem(
+                                                text = {
+                                                    Text(
+                                                        stringResource(R.string.console_menu_session_number, index + 1),
+                                                        fontWeight = if (isCurrentSession) FontWeight.Bold else null,
+                                                    )
+                                                },
+                                                onClick = {
+                                                    showSwitchSessionMenu = false
+                                                    showMenu = false
+                                                    val bridgeIndex = uiState.bridges.indexOfFirst {
+                                                        it.sessionId == bridge.sessionId
+                                                    }
+                                                    if (bridgeIndex >= 0) {
+                                                        selectBridgePreservingKeyboard(bridgeIndex)
+                                                    }
+                                                    termFocusRequester.requestFocus()
+                                                },
+                                                enabled = !isCurrentSession,
+                                            )
+                                        }
+                                    }
+                                }
                             }
 
                             // Disconnect/Close
