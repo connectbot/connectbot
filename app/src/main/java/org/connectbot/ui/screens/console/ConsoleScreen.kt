@@ -44,6 +44,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Link
+import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
@@ -589,7 +590,10 @@ fun ConsoleScreen(
                                     showMenu = false
                                     showDisconnectDialog = true
                                 },
-                                enabled = currentBridge != null
+                                enabled = currentBridge != null,
+                                leadingIcon = {
+                                    Icon(Icons.Default.LinkOff, null)
+                                }
                             )
 
                             // URL Scan
