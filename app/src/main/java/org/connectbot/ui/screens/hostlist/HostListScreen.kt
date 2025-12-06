@@ -39,6 +39,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Link
+import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
@@ -115,6 +116,7 @@ fun HostListScreen(
         onNavigateToHelp = onNavigateToHelp,
         onToggleSortOrder = viewModel::toggleSortOrder,
         onDeleteHost = viewModel::deleteHost,
+        onDisconnectHost = viewModel::disconnectHost,
         onDisconnectAll = viewModel::disconnectAll,
         modifier = modifier
     )
@@ -133,6 +135,7 @@ fun HostListScreenContent(
     onNavigateToHelp: () -> Unit,
     onToggleSortOrder: () -> Unit,
     onDeleteHost: (Host) -> Unit,
+    onDisconnectHost: (Host) -> Unit,
     onDisconnectAll: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -272,6 +275,7 @@ fun HostListScreenContent(
                                 },
                                 onEdit = { onNavigateToEditHost(host) },
                                 onPortForwards = { onNavigateToPortForwards(host) },
+                                onDisconnect = { onDisconnectHost(host) },
                                 onDelete = { onDeleteHost(host) }
                             )
                         }
@@ -315,11 +319,13 @@ private fun HostListItem(
     onClick: () -> Unit,
     onEdit: () -> Unit,
     onPortForwards: () -> Unit,
+    onDisconnect: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var showDisconnectDialog by remember { mutableStateOf(false) }
 
     // Determine border color based on connection state
     val borderColor = when (connectionState) {
@@ -432,6 +438,17 @@ private fun HostListItem(
                         }
                     )
                     DropdownMenuItem(
+                        text = { Text(stringResource(R.string.list_host_disconnect)) },
+                        onClick = {
+                            showMenu = false
+                            showDisconnectDialog = true
+                        },
+                        enabled = connectionState == ConnectionState.CONNECTED,
+                        leadingIcon = {
+                            Icon(Icons.Default.LinkOff, null)
+                        }
+                    )
+                    DropdownMenuItem(
                         text = { Text(stringResource(R.string.list_host_delete)) },
                         onClick = {
                             showMenu = false
@@ -458,6 +475,17 @@ private fun HostListItem(
             }
         )
     }
+
+    if (showDisconnectDialog) {
+        HostDisconnectDialog(
+            host = host,
+            onDismiss = { showDisconnectDialog = false },
+            onConfirm = {
+                showDisconnectDialog = false
+                onDisconnect()
+            }
+        )
+    }
 }
 
 @Composable
@@ -471,6 +499,33 @@ private fun HostDeleteDialog(
         title = { Text(stringResource(R.string.list_host_delete)) },
         text = {
             Text(stringResource(R.string.delete_host_confirm, host.nickname))
+        },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm
+            ) {
+                Text(stringResource(R.string.button_yes))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.button_no))
+            }
+        }
+    )
+}
+
+@Composable
+private fun HostDisconnectDialog(
+    host: Host,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.list_host_disconnect)) },
+        text = {
+            Text(stringResource(R.string.disconnect_host_alert, host.nickname))
         },
         confirmButton = {
             TextButton(
@@ -515,6 +570,7 @@ private fun HostListScreenEmptyPreview() {
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
+            onDisconnectHost = {},
             onDisconnectAll = {}
         )
     }
@@ -538,6 +594,7 @@ private fun HostListScreenLoadingPreview() {
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
+            onDisconnectHost = {},
             onDisconnectAll = {}
         )
     }
@@ -562,6 +619,7 @@ private fun HostListScreenErrorPreview() {
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
+            onDisconnectHost = {},
             onDisconnectAll = {}
         )
     }
@@ -618,6 +676,7 @@ private fun HostListScreenPopulatedPreview() {
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
+            onDisconnectHost = {},
             onDisconnectAll = {}
         )
     }
