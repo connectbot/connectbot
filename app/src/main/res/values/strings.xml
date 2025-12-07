@@ -945,6 +945,9 @@
 	<string name="allow">Allow</string>
 	<string name="terminal_no_route">Are you trying to access a local host? Grant local network permissions.</string>
 
+	<!-- Loading message shown during app initialization -->
+	<string name="loading_message">Loading…</string>
+
 	<!-- Database migration screen messages. Displayed during one-time migration from legacy database format to Room database. -->
 	<!-- Title shown while checking if database migration is needed -->
 	<string name="migration_checking">Checking database…</string>

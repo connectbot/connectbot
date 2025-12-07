@@ -19,8 +19,10 @@ package org.connectbot.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import org.connectbot.service.TerminalManager
 import org.connectbot.ui.navigation.ConnectBotNavHost
@@ -33,18 +35,48 @@ val LocalTerminalManager = compositionLocalOf<TerminalManager?> {
 
 @Composable
 fun ConnectBotApp(
+    appUiState: AppUiState,
+    onRetryMigration: () -> Unit,
+    onNavigationReady: (NavController) -> Unit,
     modifier: Modifier = Modifier,
-    terminalManager: TerminalManager?,
-    startDestination: String = NavDestinations.HOST_LIST,
 ) {
     ConnectBotTheme {
-        CompositionLocalProvider(LocalTerminalManager provides terminalManager) {
-            val navController = rememberNavController()
-            ConnectBotNavHost(
-                navController = navController,
-                startDestination = startDestination,
-                modifier = modifier
-            )
+        when (appUiState) {
+            is AppUiState.Loading -> {
+                LoadingScreen(modifier = modifier)
+            }
+
+            is AppUiState.MigrationInProgress -> {
+                MigrationScreen(
+                    uiState = MigrationUiState.InProgress(appUiState.state),
+                    onRetry = onRetryMigration,
+                    modifier = modifier
+                )
+            }
+
+            is AppUiState.MigrationFailed -> {
+                MigrationScreen(
+                    uiState = MigrationUiState.Failed(appUiState.error),
+                    onRetry = onRetryMigration,
+                    modifier = modifier
+                )
+            }
+
+            is AppUiState.Ready -> {
+                val navController = rememberNavController()
+
+                LaunchedEffect(navController) {
+                    onNavigationReady(navController)
+                }
+
+                CompositionLocalProvider(LocalTerminalManager provides appUiState.terminalManager) {
+                    ConnectBotNavHost(
+                        navController = navController,
+                        startDestination = NavDestinations.HOST_LIST,
+                        modifier = modifier
+                    )
+                }
+            }
         }
     }
 }
