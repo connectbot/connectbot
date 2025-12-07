@@ -17,6 +17,8 @@
 
 package org.connectbot.ui.components
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.util.Log
 import androidx.biometric.BiometricPrompt
 import androidx.compose.runtime.Composable
@@ -132,7 +134,7 @@ fun rememberBiometricPromptState(
     onFailed: () -> Unit = {}
 ): BiometricPromptState? {
     val context = LocalContext.current
-    val activity = context as? FragmentActivity
+    val activity = context.findFragmentActivity()
 
     if (activity == null) {
         Log.w(TAG, "BiometricPromptState requires a FragmentActivity context, biometric auth unavailable")
@@ -155,6 +157,22 @@ fun rememberBiometricPromptState(
     }
 
     return state
+}
+
+/**
+ * Find the FragmentActivity from a Context by unwrapping ContextWrappers.
+ * In Compose, LocalContext.current often returns a ContextThemeWrapper or similar,
+ * not the actual Activity, so we need to unwrap it.
+ */
+private fun Context.findFragmentActivity(): FragmentActivity? {
+    var currentContext = this
+    while (currentContext is ContextWrapper) {
+        if (currentContext is FragmentActivity) {
+            return currentContext
+        }
+        currentContext = currentContext.baseContext
+    }
+    return null
 }
 
 /**
