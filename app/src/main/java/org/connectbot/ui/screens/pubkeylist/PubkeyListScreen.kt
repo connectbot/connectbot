@@ -124,6 +124,7 @@ fun PubkeyListScreen(
     }
 
     // Biometric prompt for unlocking biometric keys
+    // Returns null if FragmentActivity context is not available
     val biometricPromptState = rememberBiometricPromptState(
         onSuccess = { _ ->
             // Load the biometric key after successful authentication
@@ -146,13 +147,18 @@ fun PubkeyListScreen(
     )
 
     // Trigger biometric prompt when needed
-    LaunchedEffect(uiState.biometricKeyToUnlock) {
+    LaunchedEffect(uiState.biometricKeyToUnlock, biometricPromptState) {
         uiState.biometricKeyToUnlock?.let { pubkey ->
-            biometricPromptState.authenticate(
-                title = context.getString(R.string.pubkey_biometric_prompt_title),
-                subtitle = context.getString(R.string.pubkey_biometric_prompt_subtitle, pubkey.nickname),
-                negativeButtonText = context.getString(android.R.string.cancel)
-            )
+            if (biometricPromptState != null) {
+                biometricPromptState.authenticate(
+                    title = context.getString(R.string.pubkey_biometric_prompt_title),
+                    subtitle = context.getString(R.string.pubkey_biometric_prompt_subtitle, pubkey.nickname),
+                    negativeButtonText = context.getString(android.R.string.cancel)
+                )
+            } else {
+                // Biometric not available in this context, show error
+                viewModel.onBiometricError(context.getString(R.string.pubkey_biometric_not_available))
+            }
         }
     }
 
