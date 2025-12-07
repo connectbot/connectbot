@@ -872,6 +872,26 @@
 	<!-- Accessibility description for unencrypted key icon -->
 	<string name="pubkey_not_encrypted_description">Not encrypted</string>
 
+	<!-- Biometric authentication strings -->
+	<!-- Label for biometric protection toggle in key generation -->
+	<string name="pubkey_biometric_protection">Fingerprint protection</string>
+	<!-- Description for biometric protection option -->
+	<string name="pubkey_biometric_description">Protect this key with your fingerprint</string>
+	<!-- Warning shown when biometrics are not enrolled -->
+	<string name="pubkey_biometric_not_enrolled">No fingerprint enrolled. Set up fingerprint in device settings to use this feature.</string>
+	<!-- Warning shown when key type doesn\'t support biometric protection -->
+	<string name="pubkey_biometric_key_type_warning">Fingerprint protection is only available for RSA and EC keys</string>
+	<!-- Title for biometric prompt when unlocking a key -->
+	<string name="pubkey_biometric_prompt_title">Authenticate to use key</string>
+	<!-- Subtitle for biometric prompt -->
+	<string name="pubkey_biometric_prompt_subtitle">Touch the fingerprint sensor to unlock \'%1$s\'</string>
+	<!-- Accessibility description for biometric-protected key icon -->
+	<string name="pubkey_biometric_description_icon">Protected by fingerprint</string>
+	<!-- Error message when biometric authentication fails -->
+	<string name="pubkey_biometric_auth_failed">Fingerprint authentication failed</string>
+	<!-- Error message when biometric key is invalidated -->
+	<string name="pubkey_biometric_key_invalidated">Key has been invalidated. This can happen when new fingerprints are enrolled. Please generate a new key.</string>
+
 	<!-- Port forward editor labels -->
 	<!-- Placeholder for port forward nickname field. Should show an example nickname for a port forward. -->
 	<string name="portforward_nickname_placeholder">Internal Webserver</string>

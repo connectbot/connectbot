@@ -476,6 +476,51 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		Log.d(TAG, String.format("Added key '%s' to in-memory cache", pubkey.nickname))
 	}
 
+	/**
+	 * Add a biometric key from Android Keystore to in-memory cache.
+	 * Biometric keys don't have a KeyPair - signing is done directly through the Keystore.
+	 */
+	fun addBiometricKey(pubkey: Pubkey, keystoreAlias: String, publicKey: java.security.PublicKey) {
+		removeKey(pubkey.nickname)
+
+		// Extract OpenSSH format public key for SSH authentication
+		val sshPubKey = extractOpenSSHPublicKey(publicKey)
+
+		val keyHolder = KeyHolder()
+		keyHolder.pubkey = pubkey
+		keyHolder.pair = null // No KeyPair for biometric keys
+		keyHolder.openSSHPubkey = sshPubKey
+		keyHolder.keystoreAlias = keystoreAlias
+		keyHolder.isBiometricKey = true
+
+		loadedKeypairs[pubkey.nickname] = keyHolder
+
+		Log.d(TAG, String.format("Added biometric key '%s' to in-memory cache", pubkey.nickname))
+	}
+
+	/**
+	 * Extract OpenSSH format public key from a PublicKey.
+	 */
+	private fun extractOpenSSHPublicKey(publicKey: java.security.PublicKey): ByteArray? {
+		return try {
+			when (publicKey) {
+				is java.security.interfaces.RSAPublicKey -> {
+					com.trilead.ssh2.signature.RSASHA1Verify.get().encodePublicKey(publicKey)
+				}
+				is java.security.interfaces.ECPublicKey -> {
+					com.trilead.ssh2.signature.ECDSASHA2Verify.getVerifierForKey(publicKey).encodePublicKey(publicKey)
+				}
+				else -> {
+					Log.w(TAG, "Unsupported public key type: ${publicKey.algorithm}")
+					null
+				}
+			}
+		} catch (e: Exception) {
+			Log.e(TAG, "Failed to extract OpenSSH public key", e)
+			null
+		}
+	}
+
 	fun removeKey(nickname: String): Boolean {
 		Log.d(TAG, String.format("Removed key '%s' to in-memory cache", nickname))
 		return loadedKeypairs.remove(nickname) != null
@@ -727,6 +772,9 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		var pubkey: Pubkey? = null
 		var pair: KeyPair? = null
 		var openSSHPubkey: ByteArray? = null
+		// For biometric keys stored in Android Keystore
+		var keystoreAlias: String? = null
+		var isBiometricKey: Boolean = false
 	}
 
 	/**

@@ -30,7 +30,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.data.PubkeyRepository
+import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.util.BiometricAvailability
+import org.connectbot.util.BiometricKeyManager
 import org.connectbot.util.PubkeyUtils
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -63,13 +66,27 @@ data class GeneratePubkeyUiState(
     val showEntropyDialog: Boolean = false,
     val isGenerating: Boolean = false,
     val ecdsaAvailable: Boolean = true,
-    val nicknameExists: Boolean = false
+    val nicknameExists: Boolean = false,
+    // Biometric authentication options
+    val useBiometric: Boolean = false,
+    val biometricAvailable: Boolean = false,
+    val biometricNotEnrolled: Boolean = false
 ) {
     val passwordMismatch: Boolean
         get() = password1 != password2 && password2.isNotEmpty()
 
     val canGenerate: Boolean
-        get() = nickname.isNotEmpty() && !passwordMismatch && !nicknameExists
+        get() = nickname.isNotEmpty() &&
+                !nicknameExists &&
+                (useBiometric || !passwordMismatch)
+
+    /** Key types that support biometric protection (RSA and EC only) */
+    val biometricSupportedKeyTypes: List<KeyType>
+        get() = listOf(KeyType.RSA, KeyType.EC)
+
+    /** Whether the current key type supports biometric protection */
+    val keyTypeSupportsBiometric: Boolean
+        get() = keyType in biometricSupportedKeyTypes
 }
 
 class GeneratePubkeyViewModel(
@@ -86,10 +103,13 @@ class GeneratePubkeyViewModel(
     }
 
     private val repository: PubkeyRepository = PubkeyRepository.get(context)
+    private val biometricKeyManager: BiometricKeyManager = BiometricKeyManager(context)
 
     private val _uiState = MutableStateFlow(
         GeneratePubkeyUiState(
-            ecdsaAvailable = Security.getProviders("KeyPairGenerator.EC") != null
+            ecdsaAvailable = Security.getProviders("KeyPairGenerator.EC") != null,
+            biometricAvailable = biometricKeyManager.isBiometricAvailable() == BiometricAvailability.AVAILABLE,
+            biometricNotEnrolled = biometricKeyManager.isBiometricAvailable() == BiometricAvailability.NOT_ENROLLED
         )
     )
     val uiState: StateFlow<GeneratePubkeyUiState> = _uiState.asStateFlow()
@@ -125,13 +145,36 @@ class GeneratePubkeyViewModel(
             KeyType.DSA, KeyType.ED25519 -> false
         }
 
+        // Disable biometric if key type doesn't support it
+        val supportsBiometric = keyType == KeyType.RSA || keyType == KeyType.EC
+        val currentState = _uiState.value
+
         _uiState.update {
             it.copy(
                 keyType = keyType,
                 bits = keyType.defaultBits,
                 minBits = keyType.minBits,
                 maxBits = keyType.maxBits,
-                allowBitStrengthChange = allowBitStrengthChange
+                allowBitStrengthChange = allowBitStrengthChange,
+                useBiometric = if (supportsBiometric) currentState.useBiometric else false
+            )
+        }
+    }
+
+    fun updateUseBiometric(useBiometric: Boolean) {
+        val currentState = _uiState.value
+        // Only allow biometric for RSA and EC keys
+        if (useBiometric && !currentState.keyTypeSupportsBiometric) {
+            return
+        }
+        _uiState.update {
+            it.copy(
+                useBiometric = useBiometric,
+                // Clear passwords when switching to biometric
+                password1 = if (useBiometric) "" else it.password1,
+                password2 = if (useBiometric) "" else it.password2,
+                // Biometric keys can't be auto-loaded at startup
+                unlockAtStartup = if (useBiometric) false else it.unlockAtStartup
             )
         }
     }
@@ -173,7 +216,15 @@ class GeneratePubkeyViewModel(
 
     fun generateKey(onSuccess: () -> Unit) {
         onSuccessCallback = onSuccess
-        _uiState.update { it.copy(showEntropyDialog = true) }
+        val currentState = _uiState.value
+
+        if (currentState.useBiometric) {
+            // Biometric keys don't need entropy gathering - go straight to generation
+            startBiometricKeyGeneration()
+        } else {
+            // Traditional key generation needs entropy
+            _uiState.update { it.copy(showEntropyDialog = true) }
+        }
     }
 
     fun onEntropyGathered(entropy: ByteArray?) {
@@ -223,6 +274,32 @@ class GeneratePubkeyViewModel(
         }
     }
 
+    private fun startBiometricKeyGeneration() {
+        val currentState = _uiState.value
+        val callback = onSuccessCallback
+
+        _uiState.update { it.copy(isGenerating = true) }
+
+        viewModelScope.launch {
+            try {
+                val (publicKey, alias) = withContext(Dispatchers.IO) {
+                    val alias = biometricKeyManager.generateKeyAlias()
+                    val publicKey = biometricKeyManager.generateKey(
+                        alias = alias,
+                        keyType = currentState.keyType.dbName,
+                        keySize = currentState.bits
+                    )
+                    Pair(publicKey, alias)
+                }
+
+                saveBiometricKey(publicKey, alias, currentState, callback)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to generate biometric key", e)
+                _uiState.update { it.copy(isGenerating = false) }
+            }
+        }
+    }
+
     private fun generateKeyPair(keyType: KeyType, bits: Int, entropy: ByteArray): KeyPair {
         val random = SecureRandom()
         // Work around JVM bug
@@ -267,6 +344,52 @@ class GeneratePubkeyViewModel(
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to save key pair", e)
+                withContext(Dispatchers.Main) {
+                    _uiState.update { it.copy(isGenerating = false) }
+                }
+            }
+        }
+    }
+
+    private suspend fun saveBiometricKey(
+        publicKey: java.security.PublicKey,
+        keystoreAlias: String,
+        state: GeneratePubkeyUiState,
+        onSuccess: (() -> Unit)?
+    ) {
+        withContext(Dispatchers.IO) {
+            try {
+                val pubkey = Pubkey(
+                    id = 0, // Let Room auto-generate the ID
+                    nickname = state.nickname,
+                    type = state.keyType.dbName,
+                    privateKey = null, // Private key stays in Android Keystore
+                    publicKey = publicKey.encoded,
+                    encrypted = false, // Not applicable for biometric keys
+                    startup = false, // Biometric keys can't auto-load
+                    confirmation = state.confirmUse,
+                    createdDate = System.currentTimeMillis(),
+                    storageType = KeyStorageType.ANDROID_KEYSTORE,
+                    allowBackup = false, // Keystore keys can't be backed up
+                    keystoreAlias = keystoreAlias
+                )
+
+                repository.save(pubkey)
+
+                Log.d(TAG, "Biometric key saved successfully with alias: $keystoreAlias")
+
+                withContext(Dispatchers.Main) {
+                    _uiState.update { it.copy(isGenerating = false) }
+                    onSuccess?.invoke()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to save biometric key", e)
+                // Clean up the Keystore key if database save failed
+                try {
+                    biometricKeyManager.deleteKey(keystoreAlias)
+                } catch (deleteError: Exception) {
+                    Log.e(TAG, "Failed to clean up Keystore key after save failure", deleteError)
+                }
                 withContext(Dispatchers.Main) {
                     _uiState.update { it.copy(isGenerating = false) }
                 }

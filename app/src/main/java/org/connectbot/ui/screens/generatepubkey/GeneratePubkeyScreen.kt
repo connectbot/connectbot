@@ -32,6 +32,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,6 +43,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -79,6 +81,7 @@ fun GeneratePubkeyScreen(
         onPassword2Change = viewModel::updatePassword2,
         onUnlockAtStartupChange = viewModel::updateUnlockAtStartup,
         onConfirmUseChange = viewModel::updateConfirmUse,
+        onUseBiometricChange = viewModel::updateUseBiometric,
         onGenerateKey = { viewModel.generateKey(onSuccess = onNavigateBack) },
         onEntropyGathered = viewModel::onEntropyGathered,
         onCancelGeneration = {
@@ -101,6 +104,7 @@ fun GeneratePubkeyScreenContent(
     onPassword2Change: (String) -> Unit,
     onUnlockAtStartupChange: (Boolean) -> Unit,
     onConfirmUseChange: (Boolean) -> Unit,
+    onUseBiometricChange: (Boolean) -> Unit,
     onGenerateKey: () -> Unit,
     onEntropyGathered: (ByteArray?) -> Unit,
     onCancelGeneration: () -> Unit,
@@ -190,56 +194,125 @@ fun GeneratePubkeyScreenContent(
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
-            // Password
-            OutlinedTextField(
-                value = uiState.password1,
-                onValueChange = onPassword1Change,
-                label = { Text(stringResource(R.string.prompt_password)) },
-                supportingText = { Text(stringResource(R.string.prompt_password_can_be_blank)) },
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true
-            )
+            // Biometric Protection Option
+            if (uiState.biometricAvailable && uiState.keyTypeSupportsBiometric) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onUseBiometricChange(!uiState.useBiometric) }
+                        .padding(vertical = 8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Fingerprint,
+                        contentDescription = null,
+                        tint = if (uiState.useBiometric) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        }
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = stringResource(R.string.pubkey_biometric_protection),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        Text(
+                            text = stringResource(R.string.pubkey_biometric_description),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Switch(
+                        checked = uiState.useBiometric,
+                        onCheckedChange = onUseBiometricChange
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+            }
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = uiState.password2,
-                onValueChange = onPassword2Change,
-                label = { Text("${stringResource(R.string.prompt_password)} ${stringResource(R.string.prompt_again)}") },
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                isError = uiState.passwordMismatch
-            )
-            if (uiState.passwordMismatch) {
+            // Show biometric not enrolled warning
+            if (uiState.biometricNotEnrolled && uiState.keyTypeSupportsBiometric) {
                 Text(
-                    text = stringResource(R.string.alert_passwords_do_not_match_msg),
-                    color = MaterialTheme.colorScheme.error,
+                    text = stringResource(R.string.pubkey_biometric_not_enrolled),
                     style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(bottom = 16.dp)
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            // Show key type warning for biometric
+            if (!uiState.keyTypeSupportsBiometric && uiState.biometricAvailable) {
+                Text(
+                    text = stringResource(R.string.pubkey_biometric_key_type_warning),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+            }
+
+            // Password (only shown when not using biometric)
+            if (!uiState.useBiometric) {
+                OutlinedTextField(
+                    value = uiState.password1,
+                    onValueChange = onPassword1Change,
+                    label = { Text(stringResource(R.string.prompt_password)) },
+                    supportingText = { Text(stringResource(R.string.prompt_password_can_be_blank)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                OutlinedTextField(
+                    value = uiState.password2,
+                    onValueChange = onPassword2Change,
+                    label = { Text("${stringResource(R.string.prompt_password)} ${stringResource(R.string.prompt_again)}") },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    isError = uiState.passwordMismatch
+                )
+                if (uiState.passwordMismatch) {
+                    Text(
+                        text = stringResource(R.string.alert_passwords_do_not_match_msg),
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+            }
 
             // Options
+            // Load on start is disabled for biometric keys
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable {
+                    .clickable(enabled = !uiState.useBiometric) {
                         onUnlockAtStartupChange(!uiState.unlockAtStartup)
                     }
             ) {
                 Checkbox(
                     checked = uiState.unlockAtStartup,
-                    onCheckedChange = onUnlockAtStartupChange
+                    onCheckedChange = onUnlockAtStartupChange,
+                    enabled = !uiState.useBiometric
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(R.string.pubkey_load_on_start))
+                Text(
+                    text = stringResource(R.string.pubkey_load_on_start),
+                    color = if (uiState.useBiometric) {
+                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                    } else {
+                        MaterialTheme.colorScheme.onSurface
+                    }
+                )
             }
 
             Row(
@@ -330,6 +403,7 @@ private fun GeneratePubkeyScreenEmptyPreview() {
             onPassword2Change = {},
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
+            onUseBiometricChange = {},
             onGenerateKey = {},
             onEntropyGathered = {},
             onCancelGeneration = {}
@@ -359,6 +433,7 @@ private fun GeneratePubkeyScreenFilledPreview() {
             onPassword2Change = {},
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
+            onUseBiometricChange = {},
             onGenerateKey = {},
             onEntropyGathered = {},
             onCancelGeneration = {}
@@ -387,6 +462,36 @@ private fun GeneratePubkeyScreenPasswordMismatchPreview() {
             onPassword2Change = {},
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
+            onUseBiometricChange = {},
+            onGenerateKey = {},
+            onEntropyGathered = {},
+            onCancelGeneration = {}
+        )
+    }
+}
+
+@ScreenPreviews
+@Composable
+private fun GeneratePubkeyScreenBiometricPreview() {
+    ConnectBotTheme {
+        GeneratePubkeyScreenContent(
+            uiState = GeneratePubkeyUiState(
+                nickname = "biometric-key",
+                keyType = KeyType.RSA,
+                bits = 4096,
+                useBiometric = true,
+                biometricAvailable = true,
+                confirmUse = true
+            ),
+            onNavigateBack = {},
+            onNicknameChange = {},
+            onKeyTypeChange = {},
+            onBitsChange = {},
+            onPassword1Change = {},
+            onPassword2Change = {},
+            onUnlockAtStartupChange = {},
+            onConfirmUseChange = {},
+            onUseBiometricChange = {},
             onGenerateKey = {},
             onEntropyGathered = {},
             onCancelGeneration = {}

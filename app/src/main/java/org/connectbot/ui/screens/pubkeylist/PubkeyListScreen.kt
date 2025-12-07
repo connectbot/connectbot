@@ -40,8 +40,10 @@ import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FileOpen
+import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.Fingerprint
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.LockOpen
 import androidx.compose.material3.AlertDialog
@@ -80,8 +82,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
+import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.ui.LocalTerminalManager
+import org.connectbot.ui.components.rememberBiometricPromptState
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
 
@@ -117,6 +121,39 @@ fun PubkeyListScreen(
         contract = ActivityResultContracts.OpenDocument()
     ) { uri: Uri? ->
         uri?.let { viewModel.importKeyFromUri(it) }
+    }
+
+    // Biometric prompt for unlocking biometric keys
+    val biometricPromptState = rememberBiometricPromptState(
+        onSuccess = { _ ->
+            // Load the biometric key after successful authentication
+            uiState.biometricKeyToUnlock?.let { pubkey ->
+                viewModel.loadBiometricKey(pubkey)
+            }
+        },
+        onError = { errorCode, errString ->
+            // Show error in snackbar (unless user cancelled)
+            if (errorCode != androidx.biometric.BiometricPrompt.ERROR_USER_CANCELED &&
+                errorCode != androidx.biometric.BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
+                viewModel.onBiometricError(errString.toString())
+            } else {
+                viewModel.cancelBiometricAuth()
+            }
+        },
+        onFailed = {
+            // Don't do anything on failed attempt - user can retry
+        }
+    )
+
+    // Trigger biometric prompt when needed
+    LaunchedEffect(uiState.biometricKeyToUnlock) {
+        uiState.biometricKeyToUnlock?.let { pubkey ->
+            biometricPromptState.authenticate(
+                title = context.getString(R.string.pubkey_biometric_prompt_title),
+                subtitle = context.getString(R.string.pubkey_biometric_prompt_subtitle, pubkey.nickname),
+                negativeButtonText = context.getString(android.R.string.cancel)
+            )
+        }
     }
 
     PubkeyListScreenContent(
@@ -284,7 +321,9 @@ private fun PubkeyListItem(
             )
         },
         leadingContent = {
+            val isBiometric = pubkey.storageType == KeyStorageType.ANDROID_KEYSTORE
             val icon = when {
+                isBiometric -> Icons.Outlined.Fingerprint
                 pubkey.encrypted -> Icons.Outlined.Lock
                 else -> Icons.Outlined.LockOpen
             }
@@ -307,10 +346,10 @@ private fun PubkeyListItem(
             ) {
                 Icon(
                     imageVector = icon,
-                    contentDescription = if (pubkey.encrypted) {
-                        stringResource(R.string.pubkey_encrypted_description)
-                    } else {
-                        stringResource(R.string.pubkey_not_encrypted_description)
+                    contentDescription = when {
+                        isBiometric -> stringResource(R.string.pubkey_biometric_description_icon)
+                        pubkey.encrypted -> stringResource(R.string.pubkey_encrypted_description)
+                        else -> stringResource(R.string.pubkey_not_encrypted_description)
                     },
                 )
             }
