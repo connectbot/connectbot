@@ -891,6 +891,8 @@
 	<string name="pubkey_biometric_auth_failed">Fingerprint authentication failed</string>
 	<!-- Error message when biometric key is invalidated -->
 	<string name="pubkey_biometric_key_invalidated">Key has been invalidated. This can happen when new fingerprints are enrolled. Please generate a new key.</string>
+	<!-- Error message when biometric authentication is not available in current context -->
+	<string name="pubkey_biometric_not_available">Fingerprint authentication is not available</string>
 
 	<!-- Port forward editor labels -->
 	<!-- Placeholder for port forward nickname field. Should show an example nickname for a port forward. -->

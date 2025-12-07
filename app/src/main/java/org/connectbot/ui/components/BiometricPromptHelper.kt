@@ -123,16 +123,21 @@ class BiometricPromptState(
  *                The error code can be one of BiometricPrompt.ERROR_* constants.
  * @param onFailed Called when a biometric is recognized but not valid (wrong finger).
  *                 The prompt remains visible for retry.
+ * @return BiometricPromptState, or null if FragmentActivity context is not available
  */
 @Composable
 fun rememberBiometricPromptState(
     onSuccess: (BiometricPrompt.AuthenticationResult) -> Unit,
     onError: (Int, CharSequence) -> Unit,
     onFailed: () -> Unit = {}
-): BiometricPromptState {
+): BiometricPromptState? {
     val context = LocalContext.current
     val activity = context as? FragmentActivity
-        ?: throw IllegalStateException("BiometricPromptState requires a FragmentActivity context")
+
+    if (activity == null) {
+        Log.w(TAG, "BiometricPromptState requires a FragmentActivity context, biometric auth unavailable")
+        return null
+    }
 
     val state = remember(activity) {
         BiometricPromptState(
