@@ -25,9 +25,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,8 +35,6 @@ import androidx.compose.foundation.layout.imeAnimationTarget
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentPaste
@@ -47,7 +43,6 @@ import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -65,8 +60,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -91,6 +86,7 @@ import kotlinx.coroutines.delay
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.terminal.Terminal
+import org.connectbot.ui.LoadingScreen
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.components.FloatingTextInputDialog
 import org.connectbot.ui.components.InlinePrompt
@@ -245,200 +241,160 @@ fun ConsoleScreen(
         }
     }
 
+    fun handleTerminalInteraction() {
+        // Show emulated keyboard when terminal is tapped (unless always visible)
+        if (!keyboardAlwaysVisible) {
+            showExtraKeyboard = true
+        }
+        // Show title bar temporarily when terminal is tapped (if auto-hide enabled)
+        if (titleBarHide) {
+            showTitleBar = true
+        }
+        // Reset the unified timer
+        lastInteractionTime = System.currentTimeMillis()
+    }
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets
             .union(WindowInsets.imeAnimationTarget),
     ) { innerPadding ->
-        Column(
+        // Show tabs if multiple terminals
+        if (uiState.bridges.size > 1) {
+            PrimaryTabRow(
+                selectedTabIndex = uiState.currentBridgeIndex,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                uiState.bridges.forEachIndexed { index, bridge ->
+                    Tab(
+                        selected = index == uiState.currentBridgeIndex,
+                        onClick = { viewModel.selectBridge(index) },
+                        text = {
+                            Text(
+                                bridge.host.nickname,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    )
+                }
+            }
+        }
+
+        // Terminal content with keyboard overlay
+        // This Box is transparent to accessibility - it's just for layout
+        Box(
             modifier = Modifier
+                .fillMaxSize()
                 .consumeWindowInsets(innerPadding)
                 .padding(innerPadding)
                 .windowInsetsPadding(WindowInsets.imeAnimationTarget)
         ) {
-            // Show tabs if multiple terminals
-            if (uiState.bridges.size > 1) {
-                PrimaryTabRow(
-                    selectedTabIndex = uiState.currentBridgeIndex,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    uiState.bridges.forEachIndexed { index, bridge ->
-                        Tab(
-                            selected = index == uiState.currentBridgeIndex,
-                            onClick = { viewModel.selectBridge(index) },
-                            text = {
-                                Text(
-                                    bridge.host.nickname,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            }
-                        )
-                    }
+            when {
+                uiState.isLoading -> {
+                    LoadingScreen(modifier = Modifier.fillMaxSize())
                 }
-            }
 
-            // Terminal content with keyboard overlay
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f)
-            ) {
-                when {
-                    uiState.isLoading -> {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
+                uiState.bridges.isNotEmpty() -> {
+                    // TODO(Terminal): Re-implement support for switching between terminals
+                    // For now, just show the current bridge directly without HorizontalPager
+                    // to avoid accessibility issues. Maybe a tab strip across the top for
+                    // small screen devices and a list of hosts on the left for large screen.
 
-                    uiState.bridges.isNotEmpty() -> {
-                        // Use HorizontalPager for swiping between terminals
-                        val pagerState = rememberPagerState(
-                            initialPage = uiState.currentBridgeIndex,
-                            pageCount = { uiState.bridges.size }
-                        )
+                    val bridge = uiState.bridges[uiState.currentBridgeIndex]
 
-                        // Sync pager state with ViewModel
-                        LaunchedEffect(pagerState.currentPage) {
-                            if (pagerState.currentPage != uiState.currentBridgeIndex) {
-                                viewModel.selectBridge(pagerState.currentPage)
-                            }
-                        }
+                    // Terminal view fills entire space with insets padding
+                    // to avoid content being cut off by screen curves/notches
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(
+                                top = if (!titleBarHide) 64.dp else 0.dp,
+                                bottom = if (keyboardAlwaysVisible) 30.dp else 0.dp
+                            )
+                    ) {
+                        val typeface = Typeface.MONOSPACE
+                        // TODO: Make this configurable via downloading fonts!
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                            Typeface.CustomFallbackBuilder(
+//                                FontFamily.Builder(
+//                                    Font.Builder(context.assets, "fonts/PowerlineExtraSymbols.ttf").build()
+//                                ).build()
+//                            ).setSystemFallback("monospace").build()
+//                        } else {
+//                            Typeface.MONOSPACE
+//                        }
 
-                        // Sync ViewModel state with pager (for tab clicks)
-                        LaunchedEffect(uiState.currentBridgeIndex) {
-                            if (pagerState.currentPage != uiState.currentBridgeIndex) {
-                                pagerState.scrollToPage(uiState.currentBridgeIndex)
-                            }
-                        }
-
-                        // Calculate the padding for our special views
-                        val titleBarPaddingDp = if (!titleBarHide) 64.dp else 0.dp
-                        val keyboardPaddingDp = if (keyboardAlwaysVisible) 30.dp else 0.dp
-                        val terminalPadding = PaddingValues(top = titleBarPaddingDp, bottom = keyboardPaddingDp)
-
-                        HorizontalPager(
-                            state = pagerState,
+                        Terminal(
+                            terminalEmulator = bridge.terminalEmulator,
                             modifier = Modifier.fillMaxSize(),
-                            key = { uiState.bridges[it].hashCode() }
-                        ) { page ->
-                            val bridge = uiState.bridges[page]
+                            typeface = typeface,
+                            initialFontSize = bridge.fontSizeFlow.value.sp,
+                            keyboardEnabled = true,
+                            showSoftKeyboard = showSoftwareKeyboard,
+                            focusRequester = termFocusRequester,
+                            forcedSize = forceSize,
+                            modifierManager = bridge.keyHandler,
+                            onTerminalTap = { handleTerminalInteraction() },
+                            onImeVisibilityChanged = { visible ->
+                                imeVisible = visible
+                            },
+                        )
 
-                            // Terminal view fills entire space with insets padding
-                            // to avoid content being cut off by screen curves/notches
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(terminalPadding)
-                            ) {
-                                val typeface = Typeface.MONOSPACE
-                                // TODO: Make this configurable via downloading fonts!
-//                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//                                    Typeface.CustomFallbackBuilder(
-//                                        FontFamily.Builder(
-//                                            Font.Builder(context.assets, "fonts/PowerlineExtraSymbols.ttf").build()
-//                                        ).build()
-//                                    ).setSystemFallback("monospace").build()
-//                                } else {
-//                                    Typeface.MONOSPACE
-//                                }
-
-                                Terminal(
-                                    terminalEmulator = bridge.terminalEmulator,
-                                    typeface = typeface,
-                                    initialFontSize = bridge.fontSizeFlow.value.sp,
-                                    keyboardEnabled = true,
-                                    showSoftKeyboard = showSoftwareKeyboard,
-                                    focusRequester = termFocusRequester,
-                                    forcedSize = forceSize,
-                                    modifierManager = bridge.keyHandler,
-                                    onTerminalTap = {
-                                        // Show emulated keyboard when terminal is tapped (unless always visible)
-                                        if (!keyboardAlwaysVisible) {
-                                            showExtraKeyboard = true
-                                        }
-                                        // Show title bar temporarily when terminal is tapped (if auto-hide enabled)
-                                        if (titleBarHide) {
-                                            showTitleBar = true
-                                        }
-                                        // Reset the unified timer
-                                        lastInteractionTime = System.currentTimeMillis()
-                                    },
-                                    onImeVisibilityChanged = { visible ->
-                                        imeVisible = visible
-                                    },
-                                )
-
-                                // Set up text input request callback from bridge (for camera button)
-                                LaunchedEffect(bridge) {
-                                    bridge.onTextInputRequested = {
-                                        showTextInputDialog = true
-                                    }
-                                }
-
-                                // Clean up callback on dispose
-                                DisposableEffect(bridge) {
-                                    onDispose {
-                                        bridge.onTextInputRequested = null
-                                    }
-                                }
-
-                                // Only show keyboard and prompts for the current page
-                                if (page == uiState.currentBridgeIndex) {
-                                    // Terminal keyboard overlay (doesn't resize terminal)
-                                    // Must be BEFORE prompts so prompts appear on top
-                                    // Fade in/out animation matches ConsoleActivity (100ms duration)
-                                    androidx.compose.animation.AnimatedVisibility(
-                                        visible = showExtraKeyboard,
-                                        enter = fadeIn(animationSpec = tween(durationMillis = 100)),
-                                        exit = fadeOut(animationSpec = tween(durationMillis = 100)),
-                                        modifier = Modifier
-                                            .align(Alignment.BottomCenter)
-                                    ) {
-                                        TerminalKeyboard(
-                                            bridge = bridge,
-                                            onInteraction = {
-                                                // Reset the unified timer on any keyboard interaction
-                                                lastInteractionTime = System.currentTimeMillis()
-                                            },
-                                            onHideIme = {
-                                                showSoftwareKeyboard = false
-                                            },
-                                            onShowIme = {
-                                                showSoftwareKeyboard = true
-                                            },
-                                            onOpenTextInput = {
-                                                // Open floating text input dialog
-                                                showTextInputDialog = true
-                                            },
-                                            imeVisible = imeVisible,
-                                            playAnimation = !hasPlayedKeyboardAnimation
-                                        )
-                                    }
-
-                                    // Show inline prompts from the current bridge (non-modal at bottom)
-                                    // Must be AFTER keyboard so prompts appear on top (z-order)
-                                    val promptState by bridge.promptManager.promptState.collectAsState()
-
-                                    InlinePrompt(
-                                        promptRequest = promptState,
-                                        onResponse = { response ->
-                                            bridge.promptManager.respond(response)
-                                        },
-                                        onCancel = {
-                                            bridge.promptManager.cancelPrompt()
-                                        },
-                                        onDismissed = {
-                                            termFocusRequester.requestFocus()
-                                        },
-                                        modifier = Modifier
-                                            .align(Alignment.BottomCenter)
-                                    )
-                                }
+                        // Set up text input request callback from bridge (for camera button)
+                        SideEffect {
+                            bridge.onTextInputRequested = {
+                                showTextInputDialog = true
                             }
                         }
+
+                        // Terminal keyboard overlay (doesn't resize terminal)
+                        // Must be BEFORE prompts so prompts appear on top
+                        // Fade in/out animation matches ConsoleActivity (100ms duration)
+                        androidx.compose.animation.AnimatedVisibility(
+                            visible = showExtraKeyboard,
+                            enter = fadeIn(animationSpec = tween(durationMillis = 100)),
+                            exit = fadeOut(animationSpec = tween(durationMillis = 100)),
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                        ) {
+                            TerminalKeyboard(
+                                bridge = bridge,
+                                onInteraction = { handleTerminalInteraction() },
+                                onHideIme = {
+                                    showSoftwareKeyboard = false
+                                },
+                                onShowIme = {
+                                    showSoftwareKeyboard = true
+                                },
+                                onOpenTextInput = {
+                                    // Open floating text input dialog
+                                    showTextInputDialog = true
+                                },
+                                imeVisible = imeVisible,
+                                playAnimation = !hasPlayedKeyboardAnimation
+                            )
+                        }
+
+                        // Show inline prompts from the current bridge (non-modal at bottom)
+                        // Must be AFTER keyboard so prompts appear on top (z-order)
+                        val promptState by bridge.promptManager.promptState.collectAsState()
+
+                        InlinePrompt(
+                            promptRequest = promptState,
+                            onResponse = { response ->
+                                bridge.promptManager.respond(response)
+                            },
+                            onCancel = {
+                                bridge.promptManager.cancelPrompt()
+                            },
+                            onDismissed = {
+                                termFocusRequester.requestFocus()
+                            },
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                        )
                     }
                 }
             }
