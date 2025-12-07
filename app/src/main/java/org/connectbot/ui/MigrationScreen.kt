@@ -44,6 +44,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -99,7 +101,11 @@ fun MigrationScreen(
 @Composable
 private fun CheckingMigrationContent() {
     CircularProgressIndicator(
-        modifier = Modifier.size(48.dp)
+        modifier = Modifier
+            .size(48.dp)
+            .semantics {
+                contentDescription = "Checking database migration status"
+            }
     )
     Spacer(modifier = Modifier.height(16.dp))
     Text(

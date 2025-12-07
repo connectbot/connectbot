@@ -28,29 +28,18 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import org.connectbot.service.TerminalManager
-import org.connectbot.ui.navigation.ConnectBotNavHost
 import org.connectbot.ui.navigation.NavDestinations
-import org.connectbot.ui.theme.ConnectBotTheme
+import androidx.core.net.toUri
 
 class MainActivity : ComponentActivity() {
     companion object {
@@ -59,7 +48,7 @@ class MainActivity : ComponentActivity() {
         const val DISCONNECT_ACTION = "org.connectbot.action.DISCONNECT"
     }
 
-    private var terminalManager: TerminalManager? by mutableStateOf(null)
+    private lateinit var appViewModel: AppViewModel
     private var bound = false
     private var requestedUri: Uri? by mutableStateOf(null)
     private var navController: NavController? = null
@@ -67,12 +56,13 @@ class MainActivity : ComponentActivity() {
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as? TerminalManager.TerminalBinder
-            terminalManager = binder?.getService()
+            val manager = binder?.getService()
+            appViewModel.setTerminalManager(manager)
             bound = true
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
-            terminalManager = null
+            appViewModel.setTerminalManager(null)
             bound = false
         }
     }
@@ -81,12 +71,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
+        appViewModel = ViewModelProvider(this)[AppViewModel::class.java]
+
         if (savedInstanceState == null) {
             requestedUri = intent?.data
             handleIntent(intent)
         } else {
             savedInstanceState.getString(STATE_SELECTED_URI)?.let {
-                requestedUri = Uri.parse(it)
+                requestedUri = it.toUri()
             }
         }
 
@@ -94,54 +86,24 @@ class MainActivity : ComponentActivity() {
         bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
 
         setContent {
-            val migrationViewModel: MigrationViewModel = viewModel()
-            val migrationUiState by migrationViewModel.uiState.collectAsState()
+            val appUiState by appViewModel.uiState.collectAsState()
 
-            ConnectBotTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    when (migrationUiState) {
-                        is MigrationUiState.Completed -> {
-                            if (terminalManager == null) {
-                                // Show a loading indicator or waiting screen
-                                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                    CircularProgressIndicator()
-                                    Text("Connecting to terminal manager…")
-                                }
-                            } else {
-                                // Migration complete or not needed, show normal UI
-                                val controller = rememberNavController()
-                                navController = controller
-
-                                // Handle pending URI when both terminalManager and navController are ready
-                                LaunchedEffect(requestedUri, terminalManager) {
-                                    requestedUri?.let { uri ->
-                                        handleConnectionUri(uri)
-                                        requestedUri = null
-                                    }
-                                }
-
-                                CompositionLocalProvider(LocalTerminalManager provides terminalManager) {
-                                    ConnectBotNavHost(
-                                        navController = controller,
-                                        startDestination = NavDestinations.HOST_LIST
-                                    )
-                                }
-                            }
-                        }
-
-                        else -> {
-                            // Show migration screen
-                            MigrationScreen(
-                                uiState = migrationUiState,
-                                onRetry = { migrationViewModel.retryMigration() }
-                            )
-                        }
+            LaunchedEffect(requestedUri, navController) {
+                requestedUri?.let { uri ->
+                    navController?.let { controller ->
+                        handleConnectionUri(uri, controller)
+                        requestedUri = null
                     }
                 }
             }
+
+            ConnectBotApp(
+                appUiState = appUiState,
+                onRetryMigration = { appViewModel.retryMigration() },
+                onNavigationReady = { controller ->
+                    navController = controller
+                }
+            )
         }
     }
 
@@ -158,7 +120,10 @@ class MainActivity : ComponentActivity() {
 
     private fun handleIntent(intent: Intent?) {
         if (intent?.action == DISCONNECT_ACTION) {
-            terminalManager?.disconnectAll(false, false)
+            val state = appViewModel.uiState.value
+            if (state is AppUiState.Ready) {
+                state.terminalManager.disconnectAll(false, false)
+            }
         }
     }
 
@@ -177,9 +142,11 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun handleConnectionUri(uri: Uri) {
-        val manager = terminalManager ?: return
-        val controller = navController ?: return
+    private fun handleConnectionUri(uri: Uri, controller: NavController) {
+        val state = appViewModel.uiState.value
+        if (state !is AppUiState.Ready) return
+
+        val manager = state.terminalManager
 
         lifecycleScope.launch {
             try {
@@ -195,7 +162,6 @@ class MainActivity : ComponentActivity() {
                 }
 
                 if (bridge != null) {
-                    // Use bridge.host.id directly (works for both temporary and permanent hosts)
                     controller.navigate("${NavDestinations.CONSOLE}/${bridge.host.id}") {
                         launchSingleTop = true
                     }
