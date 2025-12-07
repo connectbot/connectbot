@@ -34,8 +34,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.data.PubkeyRepository
+import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.service.TerminalManager
+import org.connectbot.util.BiometricKeyManager
 import org.connectbot.util.PubkeyUtils
 import java.io.BufferedReader
 import java.io.ByteArrayInputStream
@@ -46,7 +48,9 @@ data class PubkeyListUiState(
     val pubkeys: List<Pubkey> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
-    val loadedKeyNicknames: Set<String> = emptySet()
+    val loadedKeyNicknames: Set<String> = emptySet(),
+    // Biometric key that needs to be unlocked (triggers BiometricPrompt in UI)
+    val biometricKeyToUnlock: Pubkey? = null
 )
 
 class PubkeyListViewModel(
@@ -119,12 +123,67 @@ class PubkeyListViewModel(
             terminalManager?.removeKey(pubkey.nickname)
             updateLoadedKeys()
         } else {
-            if (pubkey.encrypted) {
+            // Check if this is a biometric key
+            if (pubkey.storageType == KeyStorageType.ANDROID_KEYSTORE) {
+                // Set the key to unlock - UI will show BiometricPrompt
+                _uiState.update { it.copy(biometricKeyToUnlock = pubkey) }
+            } else if (pubkey.encrypted) {
                 onPasswordRequired(pubkey) { password ->
                     loadKeyWithPassword(pubkey, password)
                 }
             } else {
                 loadKeyWithPassword(pubkey, null)
+            }
+        }
+    }
+
+    /**
+     * Called when biometric authentication is cancelled or fails.
+     */
+    fun cancelBiometricAuth() {
+        _uiState.update { it.copy(biometricKeyToUnlock = null) }
+    }
+
+    /**
+     * Called when biometric authentication fails with an error.
+     */
+    fun onBiometricError(errorMessage: String) {
+        _uiState.update {
+            it.copy(
+                biometricKeyToUnlock = null,
+                error = errorMessage
+            )
+        }
+    }
+
+    /**
+     * Load a biometric key after successful biometric authentication.
+     * This creates a KeyHolder that references the Keystore alias.
+     */
+    fun loadBiometricKey(pubkey: Pubkey) {
+        viewModelScope.launch {
+            try {
+                val alias = pubkey.keystoreAlias
+                    ?: throw IllegalStateException("Biometric key missing keystore alias")
+
+                val biometricKeyManager = BiometricKeyManager(context)
+                val publicKey = biometricKeyManager.getPublicKey(alias)
+                    ?: throw IllegalStateException("Could not retrieve public key from keystore")
+
+                // Add the biometric key to TerminalManager
+                terminalManager?.addBiometricKey(pubkey, alias, publicKey)
+                updateLoadedKeys()
+
+                // Clear the biometric key to unlock
+                _uiState.update { it.copy(biometricKeyToUnlock = null) }
+            } catch (e: Exception) {
+                Log.e("PubkeyListViewModel", "Failed to load biometric key", e)
+                _uiState.update {
+                    it.copy(
+                        error = "Failed to load biometric key: ${e.message}",
+                        biometricKeyToUnlock = null
+                    )
+                }
             }
         }
     }
