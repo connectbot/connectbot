@@ -518,6 +518,7 @@
 	<string name="terminal_auth_pubkey_any">"Attempting 'publickey' authentication with any in-memory public keys"</string>
 	<string name="terminal_auth_pubkey_invalid">"Selected public key is invalid, try reselecting key in host editor"</string>
 	<string name="terminal_auth_pubkey_specific">"Attempting 'publickey' authentication with a specific public key"</string>
+	<string name="terminal_auth_biometric">"Requesting biometric authentication for key '%1$s'"</string>
 	<string name="terminal_auth_pubkey_fail">"Authentication method 'publickey' with key '%1$s' failed"</string>
 
 	<string name="terminal_auth_ki">"Attempting 'keyboard-interactive' authentication"</string>

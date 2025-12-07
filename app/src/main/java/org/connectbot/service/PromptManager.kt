@@ -82,6 +82,29 @@ class PromptManager {
     }
 
     /**
+     * Request biometric authentication for a key stored in Android Keystore
+     */
+    suspend fun requestBiometricAuth(
+        keyNickname: String,
+        keystoreAlias: String
+    ): Boolean {
+        val deferred = CompletableDeferred<PromptResponse>()
+        currentDeferred = deferred
+
+        _promptState.update {
+            PromptRequest.BiometricPrompt(
+                keyNickname = keyNickname,
+                keystoreAlias = keystoreAlias
+            )
+        }
+
+        val response = deferred.await()
+        _promptState.update { null }
+
+        return (response as? PromptResponse.BiometricResponse)?.success ?: false
+    }
+
+    /**
      * Respond to the current prompt
      */
     fun respond(response: PromptResponse) {
@@ -113,6 +136,11 @@ sealed class PromptRequest {
         val hint: String?,
         val isPassword: Boolean
     ) : PromptRequest()
+
+    data class BiometricPrompt(
+        val keyNickname: String,
+        val keystoreAlias: String
+    ) : PromptRequest()
 }
 
 /**
@@ -121,4 +149,5 @@ sealed class PromptRequest {
 sealed class PromptResponse {
     data class BooleanResponse(val value: Boolean) : PromptResponse()
     data class StringResponse(val value: String?) : PromptResponse()
+    data class BiometricResponse(val success: Boolean) : PromptResponse()
 }

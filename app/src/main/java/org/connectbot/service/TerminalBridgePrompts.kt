@@ -71,3 +71,25 @@ fun TerminalBridge.requestStringPrompt(
         throw IOException("Connection lost while waiting for prompt response", e)
     }
 }
+
+/**
+ * Request biometric authentication for an Android Keystore key.
+ *
+ * @param keyNickname The nickname of the key for display
+ * @param keystoreAlias The alias of the key in Android Keystore
+ * @return true if biometric authentication succeeded, false otherwise
+ * @throws IOException if the prompt is cancelled due to connection loss
+ */
+fun TerminalBridge.requestBiometricAuth(
+    keyNickname: String,
+    keystoreAlias: String
+): Boolean {
+    return try {
+        runBlocking {
+            promptManager.requestBiometricAuth(keyNickname, keystoreAlias)
+        }
+    } catch (e: CancellationException) {
+        // Prompt was cancelled due to connection loss - throw IOException to propagate error
+        throw IOException("Connection lost while waiting for biometric authentication", e)
+    }
+}

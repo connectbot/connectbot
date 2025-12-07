@@ -46,6 +46,7 @@ import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
+import org.connectbot.service.requestBiometricAuth
 import org.connectbot.service.requestBooleanPrompt
 import org.connectbot.service.requestStringPrompt
 import org.connectbot.util.HostConstants
@@ -326,7 +327,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
     }
 
     /**
-     * Gets a key pair from memory cache, or unlocks it by prompting for password if needed.
+     * Gets a key pair from memory cache, or unlocks it by prompting for password/biometric as needed.
      *
      * @param pubkey the public key record to get or unlock
      * @return the KeyPair if successful, null if the key couldn't be loaded/unlocked
@@ -336,6 +337,53 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             // load this key from memory if it's already there
             Log.d(TAG, String.format("Found unlocked key '%s' already in-memory", pubkey.nickname))
             return manager?.getKey(pubkey.nickname)
+        }
+
+        // Handle Android Keystore (biometric) keys
+        if (pubkey.storageType == KeyStorageType.ANDROID_KEYSTORE) {
+            val keystoreAlias = pubkey.keystoreAlias
+            if (keystoreAlias == null) {
+                val message = String.format("Keystore alias missing for key '%s'. Authentication failed.", pubkey.nickname)
+                Log.e(TAG, message)
+                bridge?.outputLine(message)
+                return null
+            }
+
+            bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_biometric, pubkey.nickname))
+
+            // Request biometric authentication
+            val biometricSuccess = bridge?.requestBiometricAuth(pubkey.nickname, keystoreAlias) ?: false
+            if (!biometricSuccess) {
+                val message = String.format("Biometric authentication failed for key '%s'.", pubkey.nickname)
+                Log.e(TAG, message)
+                bridge?.outputLine(message)
+                return null
+            }
+
+            // Load the key from Keystore after successful biometric auth
+            return try {
+                val keyStore = java.security.KeyStore.getInstance("AndroidKeyStore")
+                keyStore.load(null)
+                val publicKey = keyStore.getCertificate(keystoreAlias)?.publicKey
+                val privateKey = keyStore.getKey(keystoreAlias, null) as? java.security.PrivateKey
+
+                if (publicKey == null || privateKey == null) {
+                    val message = String.format("Failed to load key '%s' from Keystore.", pubkey.nickname)
+                    Log.e(TAG, message)
+                    bridge?.outputLine(message)
+                    return null
+                }
+
+                val pair = KeyPair(publicKey, privateKey)
+                manager?.addBiometricKey(pubkey, keystoreAlias, publicKey)
+                Log.d(TAG, String.format("Unlocked biometric key '%s'", pubkey.nickname))
+                pair
+            } catch (e: Exception) {
+                val message = String.format("Failed to load biometric key '%s': %s", pubkey.nickname, e.message)
+                Log.e(TAG, message, e)
+                bridge?.outputLine(message)
+                null
+            }
         }
 
         // otherwise load key from database and prompt for password as needed
