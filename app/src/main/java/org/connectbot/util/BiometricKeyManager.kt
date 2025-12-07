@@ -90,12 +90,27 @@ class BiometricKeyManager(private val context: Context) {
     fun generateRsaKey(alias: String, keySize: Int = 4096): PublicKey {
         Log.d(TAG, "Generating RSA key with alias: $alias, size: $keySize")
 
+        // Try with StrongBox first, fall back to TEE if not available
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                return generateRsaKeyInternal(alias, keySize, useStrongBox = true)
+            } catch (e: Exception) {
+                Log.w(TAG, "StrongBox key generation failed, falling back to TEE", e)
+                // Delete any partial key that might have been created
+                try { deleteKey(alias) } catch (_: Exception) {}
+            }
+        }
+
+        return generateRsaKeyInternal(alias, keySize, useStrongBox = false)
+    }
+
+    private fun generateRsaKeyInternal(alias: String, keySize: Int, useStrongBox: Boolean): PublicKey {
         val keyPairGenerator = KeyPairGenerator.getInstance(
             KeyProperties.KEY_ALGORITHM_RSA,
             KEYSTORE_PROVIDER
         )
 
-        val parameterSpec = KeyGenParameterSpec.Builder(
+        val builder = KeyGenParameterSpec.Builder(
             alias,
             KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY
         ).apply {
@@ -124,20 +139,16 @@ class BiometricKeyManager(private val context: Context) {
             // Invalidate key if new biometrics are enrolled
             setInvalidatedByBiometricEnrollment(true)
 
-            // Use StrongBox if available (more secure hardware)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                try {
-                    setIsStrongBoxBacked(true)
-                } catch (e: Exception) {
-                    Log.w(TAG, "StrongBox not available, using TEE", e)
-                }
+            // Use StrongBox if requested
+            if (useStrongBox && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                setIsStrongBoxBacked(true)
             }
-        }.build()
+        }
 
-        keyPairGenerator.initialize(parameterSpec)
+        keyPairGenerator.initialize(builder.build())
         val keyPair = keyPairGenerator.generateKeyPair()
 
-        Log.d(TAG, "RSA key generated successfully")
+        Log.d(TAG, "RSA key generated successfully (StrongBox: $useStrongBox)")
         return keyPair.public
     }
 
@@ -151,6 +162,21 @@ class BiometricKeyManager(private val context: Context) {
     fun generateEcKey(alias: String, keySize: Int = 256): PublicKey {
         Log.d(TAG, "Generating EC key with alias: $alias, size: $keySize")
 
+        // Try with StrongBox first, fall back to TEE if not available
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                return generateEcKeyInternal(alias, keySize, useStrongBox = true)
+            } catch (e: Exception) {
+                Log.w(TAG, "StrongBox key generation failed, falling back to TEE", e)
+                // Delete any partial key that might have been created
+                try { deleteKey(alias) } catch (_: Exception) {}
+            }
+        }
+
+        return generateEcKeyInternal(alias, keySize, useStrongBox = false)
+    }
+
+    private fun generateEcKeyInternal(alias: String, keySize: Int, useStrongBox: Boolean): PublicKey {
         val curveName = when (keySize) {
             256 -> "secp256r1"
             384 -> "secp384r1"
@@ -163,7 +189,7 @@ class BiometricKeyManager(private val context: Context) {
             KEYSTORE_PROVIDER
         )
 
-        val parameterSpec = KeyGenParameterSpec.Builder(
+        val builder = KeyGenParameterSpec.Builder(
             alias,
             KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY
         ).apply {
@@ -191,20 +217,16 @@ class BiometricKeyManager(private val context: Context) {
             // Invalidate key if new biometrics are enrolled
             setInvalidatedByBiometricEnrollment(true)
 
-            // Use StrongBox if available (more secure hardware)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                try {
-                    setIsStrongBoxBacked(true)
-                } catch (e: Exception) {
-                    Log.w(TAG, "StrongBox not available, using TEE", e)
-                }
+            // Use StrongBox if requested
+            if (useStrongBox && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                setIsStrongBoxBacked(true)
             }
-        }.build()
+        }
 
-        keyPairGenerator.initialize(parameterSpec)
+        keyPairGenerator.initialize(builder.build())
         val keyPair = keyPairGenerator.generateKeyPair()
 
-        Log.d(TAG, "EC key generated successfully")
+        Log.d(TAG, "EC key generated successfully (StrongBox: $useStrongBox)")
         return keyPair.public
     }
 
