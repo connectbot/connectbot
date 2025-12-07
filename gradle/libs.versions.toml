@@ -48,7 +48,7 @@ robolectric = "4.16"
 errorproneCore = "2.45.0"
 media3CommonKtx = "1.8.0"
 ui = "1.10.0"
-biometric = "1.2.0-alpha05"
+biometric = "1.4.0-alpha02"
 
 [libraries]
 sshlib = { module = "org.connectbot:sshlib", version.ref = "sshlib" }
@@ -99,7 +99,7 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
-androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "biometric" }
+androidx-biometric = { module = "androidx.biometric:biometric-ktx", version.ref = "biometric" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
