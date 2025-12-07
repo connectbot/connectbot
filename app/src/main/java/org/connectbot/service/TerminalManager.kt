@@ -478,17 +478,32 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	/**
 	 * Add a biometric key from Android Keystore to in-memory cache.
-	 * Biometric keys don't have a KeyPair - signing is done directly through the Keystore.
+	 * The PrivateKey from Keystore is a proxy that delegates signing to secure hardware.
+	 * Since biometric auth was just completed, the 30-second signing window is active.
 	 */
 	fun addBiometricKey(pubkey: Pubkey, keystoreAlias: String, publicKey: java.security.PublicKey) {
 		removeKey(pubkey.nickname)
+
+		// Get the private key reference from Keystore
+		// This is a proxy object - actual signing is done in secure hardware
+		val keyStore = java.security.KeyStore.getInstance("AndroidKeyStore")
+		keyStore.load(null)
+		val privateKey = keyStore.getKey(keystoreAlias, null) as? java.security.PrivateKey
+
+		if (privateKey == null) {
+			Log.e(TAG, "Failed to get private key from Keystore for alias: $keystoreAlias")
+			return
+		}
+
+		// Create a KeyPair that the SSH library can use
+		val keyPair = KeyPair(publicKey, privateKey)
 
 		// Extract OpenSSH format public key for SSH authentication
 		val sshPubKey = extractOpenSSHPublicKey(publicKey)
 
 		val keyHolder = KeyHolder()
 		keyHolder.pubkey = pubkey
-		keyHolder.pair = null // No KeyPair for biometric keys
+		keyHolder.pair = keyPair // KeyPair with Keystore-backed private key
 		keyHolder.openSSHPubkey = sshPubKey
 		keyHolder.keystoreAlias = keystoreAlias
 		keyHolder.isBiometricKey = true
