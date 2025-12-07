@@ -25,9 +25,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.fragment.app.FragmentActivity
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -41,7 +41,7 @@ import org.connectbot.service.TerminalManager
 import org.connectbot.ui.navigation.NavDestinations
 import androidx.core.net.toUri
 
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
     companion object {
         private const val TAG = "CB.MainActivity"
         private const val STATE_SELECTED_URI = "selectedUri"
