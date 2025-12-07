@@ -91,6 +91,7 @@ import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.components.FloatingTextInputDialog
 import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
+import org.connectbot.ui.components.TERMINAL_KEYBOARD_HEIGHT_DP
 import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
 
@@ -109,6 +110,11 @@ private fun rememberHasHardwareKeyboard(): Boolean {
 				keyboardType == android.content.res.Configuration.KEYBOARD_12KEY
 	}
 }
+
+/**
+ * Height of the title bar in dp.
+ */
+private const val TITLE_BAR_HEIGHT_DP = 64
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -310,8 +316,8 @@ fun ConsoleScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(
-                                top = if (!titleBarHide) 64.dp else 0.dp,
-                                bottom = if (keyboardAlwaysVisible) 30.dp else 0.dp
+                                top = if (!titleBarHide) TITLE_BAR_HEIGHT_DP.dp else 0.dp,
+                                bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp
                             )
                     ) {
                         val typeface = Typeface.MONOSPACE
