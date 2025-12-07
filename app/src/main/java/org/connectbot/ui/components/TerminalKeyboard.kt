@@ -52,6 +52,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
@@ -67,6 +69,21 @@ import org.connectbot.service.TerminalKeyListener
 import org.connectbot.terminal.VTermKey
 
 private const val UI_OPACITY = 0.5f
+
+/**
+ * Height of the virtual keyboard keys in dp.
+ */
+const val TERMINAL_KEYBOARD_HEIGHT_DP = 30
+
+/**
+ * Width of the virtual keyboard keys in dp.
+ */
+private const val TERMINAL_KEYBOARD_WIDTH_DP = 45
+
+/**
+ * Size of the font for the virtual keyboard keys in sp.
+ */
+private const val TERMINAL_KEYBOARD_LABEL_SP = 10
 
 /**
  * Virtual keyboard with terminal special keys (Ctrl, Esc, arrows, function keys, etc.)
@@ -126,7 +143,7 @@ fun TerminalKeyboard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(30.dp), // Match key height for compact layout
+                .height(TERMINAL_KEYBOARD_HEIGHT_DP.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Scrollable key buttons
@@ -358,8 +375,8 @@ fun TerminalKeyboard(
                     onOpenTextInput()
                     onInteraction()
                 },
-                modifier = Modifier.size(width = 45.dp, height = 30.dp),
-                shape = androidx.compose.ui.graphics.RectangleShape,
+                modifier = Modifier.size(width = TERMINAL_KEYBOARD_WIDTH_DP.dp, height = TERMINAL_KEYBOARD_HEIGHT_DP.dp),
+                shape = RectangleShape,
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
                 color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY)
             ) {
@@ -385,8 +402,8 @@ fun TerminalKeyboard(
                     }
                     onInteraction()
                 },
-                modifier = Modifier.size(width = 45.dp, height = 30.dp),
-                shape = androidx.compose.ui.graphics.RectangleShape,
+                modifier = Modifier.size(width = TERMINAL_KEYBOARD_WIDTH_DP.dp, height = TERMINAL_KEYBOARD_HEIGHT_DP.dp),
+                shape = RectangleShape,
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
                 color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY)
             ) {
@@ -424,8 +441,8 @@ private fun KeyButton(
     Surface(
         onClick = onClick,
         modifier = modifier
-            .size(width = 45.dp, height = 30.dp),
-        shape = androidx.compose.ui.graphics.RectangleShape,
+            .size(width = TERMINAL_KEYBOARD_WIDTH_DP.dp, height = TERMINAL_KEYBOARD_HEIGHT_DP.dp),
+        shape = RectangleShape,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
     ) {
@@ -435,7 +452,7 @@ private fun KeyButton(
         ) {
             Text(
                 text = text,
-                fontSize = 10.sp,
+                fontSize = TERMINAL_KEYBOARD_LABEL_SP.sp,
                 style = MaterialTheme.typography.labelSmall
             )
         }
@@ -467,7 +484,7 @@ private fun RepeatableKeyButton(
 
     Surface(
         modifier = modifier
-            .size(width = 45.dp, height = 30.dp)
+            .size(width = TERMINAL_KEYBOARD_WIDTH_DP.dp, height = TERMINAL_KEYBOARD_HEIGHT_DP.dp)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onPress = {
@@ -491,7 +508,7 @@ private fun RepeatableKeyButton(
                     }
                 )
             },
-        shape = androidx.compose.ui.graphics.RectangleShape,
+        shape = RectangleShape,
         color = if (isPressed) MaterialTheme.colorScheme.primaryContainer.copy(alpha = UI_OPACITY)
         else MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
@@ -533,8 +550,8 @@ private fun ModifierKeyButton(
     Surface(
         onClick = onClick,
         modifier = modifier
-            .size(width = 45.dp, height = 30.dp),
-        shape = androidx.compose.ui.graphics.RectangleShape,
+            .size(width = TERMINAL_KEYBOARD_WIDTH_DP.dp, height = TERMINAL_KEYBOARD_HEIGHT_DP.dp),
+        shape = RectangleShape,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         color = backgroundColor,
     ) {
@@ -544,7 +561,7 @@ private fun ModifierKeyButton(
         ) {
             Text(
                 text = text,
-                fontSize = 10.sp,
+                fontSize = TERMINAL_KEYBOARD_LABEL_SP.sp,
                 style = MaterialTheme.typography.labelSmall,
                 color = textColor
             )
