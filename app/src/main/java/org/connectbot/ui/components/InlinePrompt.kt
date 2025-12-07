@@ -102,6 +102,15 @@ fun InlinePrompt(
                 )
             }
 
+            is PromptRequest.BiometricPrompt -> {
+                // Biometric prompts are handled by BiometricPromptHandler in PromptDialogs.kt
+                // which uses the system BiometricPrompt dialog
+                BiometricPromptHandler(
+                    prompt = promptRequest,
+                    onResponse = onResponse
+                )
+            }
+
             null -> { /* No prompt */
             }
         }

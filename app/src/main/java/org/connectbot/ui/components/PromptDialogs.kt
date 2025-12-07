@@ -17,6 +17,10 @@
 
 package org.connectbot.ui.components
 
+import android.content.Context
+import android.content.ContextWrapper
+import android.util.Log
+import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,15 +29,19 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import org.connectbot.R
 import org.connectbot.service.PromptRequest
 import org.connectbot.service.PromptResponse
@@ -108,6 +116,70 @@ fun StringPromptDialog(
 }
 
 /**
+ * Handler for biometric authentication prompts.
+ * Triggers BiometricPrompt when the prompt request is active.
+ */
+@Composable
+fun BiometricPromptHandler(
+    prompt: PromptRequest.BiometricPrompt,
+    onResponse: (PromptResponse.BiometricResponse) -> Unit
+) {
+    val context = LocalContext.current
+    val activity = remember(context) { context.findFragmentActivity() }
+
+    LaunchedEffect(prompt) {
+        if (activity == null) {
+            Log.e("PromptDialogs", "Cannot show BiometricPrompt: FragmentActivity not found")
+            onResponse(PromptResponse.BiometricResponse(false))
+            return@LaunchedEffect
+        }
+
+        val executor = ContextCompat.getMainExecutor(context)
+
+        val callback = object : BiometricPrompt.AuthenticationCallback() {
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                Log.d("PromptDialogs", "Biometric authentication succeeded")
+                onResponse(PromptResponse.BiometricResponse(true))
+            }
+
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                Log.e("PromptDialogs", "Biometric authentication error: $errorCode - $errString")
+                onResponse(PromptResponse.BiometricResponse(false))
+            }
+
+            override fun onAuthenticationFailed() {
+                Log.w("PromptDialogs", "Biometric authentication failed (not recognized)")
+                // Don't respond yet - let the user retry or cancel
+            }
+        }
+
+        val biometricPrompt = BiometricPrompt(activity, executor, callback)
+
+        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle(context.getString(R.string.pubkey_biometric_prompt_title))
+            .setSubtitle(context.getString(R.string.pubkey_biometric_prompt_subtitle, prompt.keyNickname))
+            .setNegativeButtonText(context.getString(R.string.delete_neg))
+            .build()
+
+        biometricPrompt.authenticate(promptInfo)
+    }
+}
+
+/**
+ * Find the FragmentActivity from the context hierarchy.
+ */
+private fun Context.findFragmentActivity(): FragmentActivity? {
+    var currentContext = this
+    while (currentContext is ContextWrapper) {
+        if (currentContext is FragmentActivity) {
+            return currentContext
+        }
+        currentContext = currentContext.baseContext
+    }
+    return null
+}
+
+/**
  * Main composable that handles all prompt types
  */
 @Composable
@@ -130,6 +202,13 @@ fun PromptDialog(
                 prompt = promptRequest,
                 onResponse = onResponse,
                 onDismiss = onDismiss
+            )
+        }
+
+        is PromptRequest.BiometricPrompt -> {
+            BiometricPromptHandler(
+                prompt = promptRequest,
+                onResponse = onResponse
             )
         }
 

@@ -397,7 +397,8 @@ private fun PubkeyListItem(
                         enabled = !isImported
                     )
 
-                    // Copy private key
+                    // Copy private key (not available for Keystore keys)
+                    val isKeystoreKey = pubkey.storageType == KeyStorageType.ANDROID_KEYSTORE
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.pubkey_copy_private)) },
                         onClick = {
@@ -407,7 +408,7 @@ private fun PubkeyListItem(
                         leadingIcon = {
                             Icon(Icons.Default.ContentCopy, null)
                         },
-                        enabled = !pubkey.encrypted || isImported
+                        enabled = !isKeystoreKey && (!pubkey.encrypted || isImported)
                     )
 
                     // Delete
