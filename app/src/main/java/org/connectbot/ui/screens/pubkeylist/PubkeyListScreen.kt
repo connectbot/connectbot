@@ -191,10 +191,18 @@ fun PubkeyListScreen(
         onDeletePubkey = viewModel::deletePubkey,
         onToggleKeyLoaded = viewModel::toggleKeyLoaded,
         onCopyPublicKey = viewModel::copyPublicKey,
-        onCopyPrivateKeyOpenSSH = viewModel::copyPrivateKeyOpenSSH,
-        onCopyPrivateKeyPem = viewModel::copyPrivateKeyPem,
-        onExportPrivateKeyOpenSSH = viewModel::requestExportPrivateKeyOpenSSH,
-        onExportPrivateKeyPem = viewModel::requestExportPrivateKeyPem,
+        onCopyPrivateKeyOpenSSH = { pubkey, onPasswordRequired ->
+            viewModel.copyPrivateKeyOpenSSH(pubkey, onPasswordRequired)
+        },
+        onCopyPrivateKeyPem = { pubkey, onPasswordRequired ->
+            viewModel.copyPrivateKeyPem(pubkey, onPasswordRequired)
+        },
+        onExportPrivateKeyOpenSSH = { pubkey, onPasswordRequired ->
+            viewModel.requestExportPrivateKeyOpenSSH(pubkey, onPasswordRequired)
+        },
+        onExportPrivateKeyPem = { pubkey, onPasswordRequired ->
+            viewModel.requestExportPrivateKeyPem(pubkey, onPasswordRequired)
+        },
         onImportKey = {
             filePickerLauncher.launch(arrayOf("*/*"))
         },
@@ -213,10 +221,10 @@ fun PubkeyListScreenContent(
     onDeletePubkey: (Pubkey) -> Unit,
     onToggleKeyLoaded: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPublicKey: (Pubkey) -> Unit,
-    onCopyPrivateKeyOpenSSH: (Pubkey) -> Unit,
-    onCopyPrivateKeyPem: (Pubkey) -> Unit,
-    onExportPrivateKeyOpenSSH: (Pubkey) -> Unit,
-    onExportPrivateKeyPem: (Pubkey) -> Unit,
+    onCopyPrivateKeyOpenSSH: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onCopyPrivateKeyPem: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onExportPrivateKeyOpenSSH: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onExportPrivateKeyPem: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onImportKey: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -308,10 +316,18 @@ fun PubkeyListScreenContent(
                                 onDelete = { onDeletePubkey(pubkey) },
                                 onToggleLoaded = { onToggleKeyLoaded(pubkey, it) },
                                 onCopyPublicKey = { onCopyPublicKey(pubkey) },
-                                onCopyPrivateKeyOpenSSH = { onCopyPrivateKeyOpenSSH(pubkey) },
-                                onCopyPrivateKeyPem = { onCopyPrivateKeyPem(pubkey) },
-                                onExportPrivateKeyOpenSSH = { onExportPrivateKeyOpenSSH(pubkey) },
-                                onExportPrivateKeyPem = { onExportPrivateKeyPem(pubkey) },
+                                onCopyPrivateKeyOpenSSH = { onPasswordRequired ->
+                                    onCopyPrivateKeyOpenSSH(pubkey, onPasswordRequired)
+                                },
+                                onCopyPrivateKeyPem = { onPasswordRequired ->
+                                    onCopyPrivateKeyPem(pubkey, onPasswordRequired)
+                                },
+                                onExportPrivateKeyOpenSSH = { onPasswordRequired ->
+                                    onExportPrivateKeyOpenSSH(pubkey, onPasswordRequired)
+                                },
+                                onExportPrivateKeyPem = { onPasswordRequired ->
+                                    onExportPrivateKeyPem(pubkey, onPasswordRequired)
+                                },
                                 onEdit = { onNavigateToEdit(pubkey) },
                                 onClick = { onToggleKeyLoaded(pubkey, it) }
                             )
@@ -330,10 +346,10 @@ private fun PubkeyListItem(
     onDelete: () -> Unit,
     onToggleLoaded: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPublicKey: () -> Unit,
-    onCopyPrivateKeyOpenSSH: () -> Unit,
-    onCopyPrivateKeyPem: () -> Unit,
-    onExportPrivateKeyOpenSSH: () -> Unit,
-    onExportPrivateKeyPem: () -> Unit,
+    onCopyPrivateKeyOpenSSH: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onCopyPrivateKeyPem: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onExportPrivateKeyOpenSSH: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onExportPrivateKeyPem: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onEdit: () -> Unit,
     onClick: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     modifier: Modifier = Modifier
@@ -440,12 +456,15 @@ private fun PubkeyListItem(
                         },
                         onClick = {
                             showMenu = false
-                            onCopyPrivateKeyOpenSSH()
+                            onCopyPrivateKeyOpenSSH { _, callback ->
+                                passwordCallback = callback
+                                showPasswordDialog = true
+                            }
                         },
                         leadingIcon = {
                             Icon(Icons.Default.ContentCopy, null)
                         },
-                        enabled = !pubkey.isBiometric && (!pubkey.encrypted || isImported)
+                        enabled = !pubkey.isBiometric
                     )
 
                     // Copy private key in PEM format (for non-imported keys)
@@ -454,12 +473,15 @@ private fun PubkeyListItem(
                             text = { Text(stringResource(R.string.pubkey_copy_private_pem)) },
                             onClick = {
                                 showMenu = false
-                                onCopyPrivateKeyPem()
+                                onCopyPrivateKeyPem { _, callback ->
+                                    passwordCallback = callback
+                                    showPasswordDialog = true
+                                }
                             },
                             leadingIcon = {
                                 Icon(Icons.Default.ContentCopy, null)
                             },
-                            enabled = !pubkey.isBiometric && !pubkey.encrypted
+                            enabled = !pubkey.isBiometric
                         )
                     }
 
@@ -475,12 +497,15 @@ private fun PubkeyListItem(
                         },
                         onClick = {
                             showMenu = false
-                            onExportPrivateKeyOpenSSH()
+                            onExportPrivateKeyOpenSSH { _, callback ->
+                                passwordCallback = callback
+                                showPasswordDialog = true
+                            }
                         },
                         leadingIcon = {
                             Icon(Icons.Default.FileDownload, null)
                         },
-                        enabled = !pubkey.isBiometric && (!pubkey.encrypted || isImported)
+                        enabled = !pubkey.isBiometric
                     )
 
                     // Export private key to file in PEM format (for non-imported keys)
@@ -489,12 +514,15 @@ private fun PubkeyListItem(
                             text = { Text(stringResource(R.string.pubkey_export_private_pem)) },
                             onClick = {
                                 showMenu = false
-                                onExportPrivateKeyPem()
+                                onExportPrivateKeyPem { _, callback ->
+                                    passwordCallback = callback
+                                    showPasswordDialog = true
+                                }
                             },
                             leadingIcon = {
                                 Icon(Icons.Default.FileDownload, null)
                             },
-                            enabled = !pubkey.isBiometric && !pubkey.encrypted
+                            enabled = !pubkey.isBiometric
                         )
                     }
 
@@ -641,10 +669,10 @@ private fun PubkeyListScreenEmptyPreview() {
             onDeletePubkey = {},
             onToggleKeyLoaded = { _, _ -> },
             onCopyPublicKey = {},
-            onCopyPrivateKeyOpenSSH = {},
-            onCopyPrivateKeyPem = {},
-            onExportPrivateKeyOpenSSH = {},
-            onExportPrivateKeyPem = {},
+            onCopyPrivateKeyOpenSSH = { _, _ -> },
+            onCopyPrivateKeyPem = { _, _ -> },
+            onExportPrivateKeyOpenSSH = { _, _ -> },
+            onExportPrivateKeyPem = { _, _ -> },
             onImportKey = {}
         )
     }
@@ -666,10 +694,10 @@ private fun PubkeyListScreenLoadingPreview() {
             onDeletePubkey = {},
             onToggleKeyLoaded = { _, _ -> },
             onCopyPublicKey = {},
-            onCopyPrivateKeyOpenSSH = {},
-            onCopyPrivateKeyPem = {},
-            onExportPrivateKeyOpenSSH = {},
-            onExportPrivateKeyPem = {},
+            onCopyPrivateKeyOpenSSH = { _, _ -> },
+            onCopyPrivateKeyPem = { _, _ -> },
+            onExportPrivateKeyOpenSSH = { _, _ -> },
+            onExportPrivateKeyPem = { _, _ -> },
             onImportKey = {}
         )
     }
@@ -726,10 +754,10 @@ private fun PubkeyListScreenPopulatedPreview() {
             onDeletePubkey = {},
             onToggleKeyLoaded = { _, _ -> },
             onCopyPublicKey = {},
-            onCopyPrivateKeyOpenSSH = {},
-            onCopyPrivateKeyPem = {},
-            onExportPrivateKeyOpenSSH = {},
-            onExportPrivateKeyPem = {},
+            onCopyPrivateKeyOpenSSH = { _, _ -> },
+            onCopyPrivateKeyPem = { _, _ -> },
+            onExportPrivateKeyOpenSSH = { _, _ -> },
+            onExportPrivateKeyPem = { _, _ -> },
             onImportKey = {}
         )
     }
