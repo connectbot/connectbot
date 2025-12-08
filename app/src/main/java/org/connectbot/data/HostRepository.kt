@@ -118,15 +118,6 @@ class HostRepository(
     }
 
     /**
-     * Get SSH hosts (blocking version for Java interop).
-     *
-     * @return List of SSH hosts
-     */
-    fun getSshHostsBlocking(): List<Host> = runBlocking {
-        getSshHosts()
-    }
-
-    /**
      * Save a host (insert or update).
      *
      * @param host The host to save

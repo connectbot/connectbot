@@ -34,4 +34,7 @@
 	<string name="pubkey_type_ecdsa">ECDSA</string>
 	<!-- Label for selecting Ed25519 key type -->
 	<string name="pubkey_type_ed25519">Ed25519</string>
+
+	<!-- Keyboard-interactive prompt prefix for jump host (format pattern, not translatable) -->
+	<string name="terminal_jump_prompt">[%s]</string>
 </resources>

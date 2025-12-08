@@ -39,6 +39,7 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -59,6 +60,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
+import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.Pubkey
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
 
@@ -197,14 +200,14 @@ fun HostEditorScreenContent(
                 ) {
                     Text(
                         text = stringResource(R.string.host_editor_show_advanced),
-                        style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
-                        color = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Spacer(Modifier.width(4.dp))
                     Icon(
                         Icons.Default.ExpandMore,
                         contentDescription = stringResource(R.string.expand),
-                        tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
             } else {
@@ -227,14 +230,14 @@ fun HostEditorScreenContent(
                     ) {
                         Text(
                             text = stringResource(R.string.host_editor_hide_advanced),
-                            style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
-                            color = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.primary
                         )
                         Spacer(Modifier.width(4.dp))
                         Icon(
                             Icons.Default.ExpandLess,
                             contentDescription = stringResource(R.string.button_collapse),
-                            tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
@@ -449,7 +452,7 @@ private fun ColorSelector(
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.hostpref_color_title),
-            style = androidx.compose.material3.MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
@@ -499,7 +502,7 @@ private fun FontSizeSelector(
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.hostpref_fontsize_title),
-            style = androidx.compose.material3.MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
@@ -516,7 +519,7 @@ private fun FontSizeSelector(
             Text(
                 text = fontSize.toString(),
                 modifier = Modifier.padding(start = 16.dp),
-                style = androidx.compose.material3.MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge
             )
         }
     }
@@ -526,7 +529,7 @@ private fun FontSizeSelector(
 @Composable
 private fun PubkeySelector(
     pubkeyId: Long,
-    availablePubkeys: List<org.connectbot.data.entity.Pubkey>,
+    availablePubkeys: List<Pubkey>,
     onPubkeySelected: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -547,7 +550,7 @@ private fun PubkeySelector(
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.hostpref_pubkeyid_title),
-            style = androidx.compose.material3.MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
@@ -599,7 +602,7 @@ private fun PubkeySelector(
 @Composable
 private fun JumpHostSelector(
     jumpHostId: Long?,
-    availableJumpHosts: List<org.connectbot.data.entity.Host>,
+    availableJumpHosts: List<Host>,
     onJumpHostSelected: (Long?) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -608,13 +611,13 @@ private fun JumpHostSelector(
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.hostpref_jumphost_title),
-            style = androidx.compose.material3.MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 4.dp)
         )
         Text(
             text = stringResource(R.string.hostpref_jumphost_summary),
-            style = androidx.compose.material3.MaterialTheme.typography.bodySmall,
-            color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
@@ -685,7 +688,7 @@ private fun DelKeySelector(
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.hostpref_delkey_title),
-            style = androidx.compose.material3.MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
@@ -739,7 +742,7 @@ private fun EncodingSelector(
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.hostpref_encoding_title),
-            style = androidx.compose.material3.MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
@@ -798,13 +801,13 @@ private fun SwitchPreference(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                style = androidx.compose.material3.MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge
             )
             if (summary != null) {
                 Text(
                     text = summary,
-                    style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
-                    color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -832,7 +835,7 @@ private fun HostEditorScreenPreview() {
                 fontSize = 12,
                 pubkeyId = -1L,
                 availablePubkeys = listOf(
-                    org.connectbot.data.entity.Pubkey(
+                    Pubkey(
                         id = 1,
                         nickname = "My SSH Key",
                         type = "rsa",
