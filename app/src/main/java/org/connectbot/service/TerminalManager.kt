@@ -146,6 +146,9 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	private var wantBellVibration = false
 
+	@Volatile
+	private var isUiBound = false
+
 	private var resizeAllowed = true
 
 	private var savingKeys = false
@@ -557,6 +560,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	override fun onBind(intent: Intent): IBinder {
 		Log.i(TAG, "Someone bound to TerminalManager with " + bridges.size + " bridges active")
+		isUiBound = true
 		keepServiceAlive()
 		setResizeAllowed(true)
 		return binder
@@ -581,6 +585,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	override fun onRebind(intent: Intent) {
 		super.onRebind(intent)
 		Log.i(TAG, "Someone rebound to TerminalManager with " + bridges.size + " bridges active")
+		isUiBound = true
 		keepServiceAlive()
 		setResizeAllowed(true)
 	}
@@ -588,6 +593,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	override fun onUnbind(intent: Intent): Boolean {
 		Log.i(TAG, "Someone unbound from TerminalManager with " + bridges.size + " bridges active")
 
+		isUiBound = false
 		setResizeAllowed(true)
 
 		if (bridges.isEmpty()) {
@@ -670,10 +676,9 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 * @param host
 	 */
 	fun sendActivityNotification(host: Host) {
-		if (!prefs.getBoolean(PreferenceConstants.BELL_NOTIFICATION, false))
-			return
-
-		ConnectionNotifier.instance.showActivityNotification(this, host)
+		if (!isUiBound && prefs.getBoolean(PreferenceConstants.BELL_NOTIFICATION, false)) {
+			ConnectionNotifier.instance.showActivityNotification(this, host)
+		}
 	}
 
 	override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences,

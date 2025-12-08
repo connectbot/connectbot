@@ -19,6 +19,7 @@ package org.connectbot.ui.screens.console
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceTimeBy
@@ -287,6 +288,7 @@ class ConsoleViewModelTest {
         bridge.host = host
         whenever(bridge.isSessionOpen).thenReturn(true)
         whenever(bridge.isDisconnected).thenReturn(false)
+        whenever(bridge.bellEvents).thenReturn(MutableSharedFlow())
         return bridge
     }
 }
