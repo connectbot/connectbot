@@ -39,6 +39,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.FileOpen
 import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material.icons.filled.Lock
@@ -124,6 +125,24 @@ fun PubkeyListScreen(
         uri?.let { viewModel.importKeyFromUri(it) }
     }
 
+    // File saver for exporting keys
+    val fileSaverLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("application/octet-stream")
+    ) { uri: Uri? ->
+        if (uri != null) {
+            viewModel.exportKeyToUri(uri)
+        } else {
+            viewModel.cancelExport()
+        }
+    }
+
+    // Trigger file saver when export is requested
+    LaunchedEffect(uiState.pendingExport) {
+        uiState.pendingExport?.let {
+            fileSaverLauncher.launch(viewModel.getExportFilename())
+        }
+    }
+
     // Biometric prompt for unlocking biometric keys
     // Returns null if FragmentActivity context is not available
     val biometricPromptState = rememberBiometricPromptState(
@@ -174,6 +193,8 @@ fun PubkeyListScreen(
         onCopyPublicKey = viewModel::copyPublicKey,
         onCopyPrivateKeyOpenSSH = viewModel::copyPrivateKeyOpenSSH,
         onCopyPrivateKeyPem = viewModel::copyPrivateKeyPem,
+        onExportPrivateKeyOpenSSH = viewModel::requestExportPrivateKeyOpenSSH,
+        onExportPrivateKeyPem = viewModel::requestExportPrivateKeyPem,
         onImportKey = {
             filePickerLauncher.launch(arrayOf("*/*"))
         },
@@ -194,6 +215,8 @@ fun PubkeyListScreenContent(
     onCopyPublicKey: (Pubkey) -> Unit,
     onCopyPrivateKeyOpenSSH: (Pubkey) -> Unit,
     onCopyPrivateKeyPem: (Pubkey) -> Unit,
+    onExportPrivateKeyOpenSSH: (Pubkey) -> Unit,
+    onExportPrivateKeyPem: (Pubkey) -> Unit,
     onImportKey: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -287,6 +310,8 @@ fun PubkeyListScreenContent(
                                 onCopyPublicKey = { onCopyPublicKey(pubkey) },
                                 onCopyPrivateKeyOpenSSH = { onCopyPrivateKeyOpenSSH(pubkey) },
                                 onCopyPrivateKeyPem = { onCopyPrivateKeyPem(pubkey) },
+                                onExportPrivateKeyOpenSSH = { onExportPrivateKeyOpenSSH(pubkey) },
+                                onExportPrivateKeyPem = { onExportPrivateKeyPem(pubkey) },
                                 onEdit = { onNavigateToEdit(pubkey) },
                                 onClick = { onToggleKeyLoaded(pubkey, it) }
                             )
@@ -307,6 +332,8 @@ private fun PubkeyListItem(
     onCopyPublicKey: () -> Unit,
     onCopyPrivateKeyOpenSSH: () -> Unit,
     onCopyPrivateKeyPem: () -> Unit,
+    onExportPrivateKeyOpenSSH: () -> Unit,
+    onExportPrivateKeyPem: () -> Unit,
     onEdit: () -> Unit,
     onClick: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     modifier: Modifier = Modifier
@@ -431,6 +458,41 @@ private fun PubkeyListItem(
                             },
                             leadingIcon = {
                                 Icon(Icons.Default.ContentCopy, null)
+                            },
+                            enabled = !pubkey.isBiometric && !pubkey.encrypted
+                        )
+                    }
+
+                    // Export private key to file in OpenSSH format
+                    DropdownMenuItem(
+                        text = {
+                            Text(stringResource(
+                                if (isImported)
+                                    R.string.pubkey_export_private
+                                else
+                                    R.string.pubkey_export_private_openssh
+                            ))
+                        },
+                        onClick = {
+                            showMenu = false
+                            onExportPrivateKeyOpenSSH()
+                        },
+                        leadingIcon = {
+                            Icon(Icons.Default.FileDownload, null)
+                        },
+                        enabled = !pubkey.isBiometric && (!pubkey.encrypted || isImported)
+                    )
+
+                    // Export private key to file in PEM format (for non-imported keys)
+                    if (!isImported) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.pubkey_export_private_pem)) },
+                            onClick = {
+                                showMenu = false
+                                onExportPrivateKeyPem()
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.FileDownload, null)
                             },
                             enabled = !pubkey.isBiometric && !pubkey.encrypted
                         )
@@ -581,6 +643,8 @@ private fun PubkeyListScreenEmptyPreview() {
             onCopyPublicKey = {},
             onCopyPrivateKeyOpenSSH = {},
             onCopyPrivateKeyPem = {},
+            onExportPrivateKeyOpenSSH = {},
+            onExportPrivateKeyPem = {},
             onImportKey = {}
         )
     }
@@ -604,6 +668,8 @@ private fun PubkeyListScreenLoadingPreview() {
             onCopyPublicKey = {},
             onCopyPrivateKeyOpenSSH = {},
             onCopyPrivateKeyPem = {},
+            onExportPrivateKeyOpenSSH = {},
+            onExportPrivateKeyPem = {},
             onImportKey = {}
         )
     }
@@ -662,6 +728,8 @@ private fun PubkeyListScreenPopulatedPreview() {
             onCopyPublicKey = {},
             onCopyPrivateKeyOpenSSH = {},
             onCopyPrivateKeyPem = {},
+            onExportPrivateKeyOpenSSH = {},
+            onExportPrivateKeyPem = {},
             onImportKey = {}
         )
     }
