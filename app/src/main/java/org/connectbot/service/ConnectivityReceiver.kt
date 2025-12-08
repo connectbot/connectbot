@@ -30,6 +30,12 @@ import android.util.Log
 /**
  * Broadcast receiver that monitors network connectivity changes and manages WiFi locks.
  *
+ * NOTE: Using deprecated BroadcastReceiver/NetworkInfo APIs is intentional.
+ * Migration to NetworkCallback requires thorough testing to ensure connectivity
+ * state changes are handled correctly across all network scenarios. This class
+ * currently lacks comprehensive tests, so the deprecated approach is retained
+ * until proper test coverage can be added.
+ *
  * @author kroot
  */
 class ConnectivityReceiver(

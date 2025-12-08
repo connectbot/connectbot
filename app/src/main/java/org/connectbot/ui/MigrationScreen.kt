@@ -40,10 +40,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import kotlinx.coroutines.launch
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalClipboard
+import androidx.compose.ui.platform.toClipEntry
 import androidx.compose.ui.res.stringResource
+import android.content.ClipData
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
@@ -121,7 +125,8 @@ private fun CheckingMigrationContent() {
 
 @Composable
 private fun MigrationInProgressContent(state: MigrationState) {
-    val clipboardManager = LocalClipboardManager.current
+    val clipboard = LocalClipboard.current
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -236,7 +241,11 @@ private fun MigrationInProgressContent(state: MigrationState) {
                         Button(
                             onClick = {
                                 val warningsText = state.warnings.joinToString("\n") { "• $it" }
-                                clipboardManager.setText(AnnotatedString(warningsText))
+                                scope.launch {
+                                    clipboard.setClipEntry(
+                                        ClipData.newPlainText("warnings", warningsText).toClipEntry()
+                                    )
+                                }
                             },
                             modifier = Modifier.fillMaxWidth()
                         ) {
@@ -264,7 +273,8 @@ private fun MigrationFailedContent(
     debugLog: List<String>,
     onRetry: () -> Unit
 ) {
-    val clipboardManager = LocalClipboardManager.current
+    val clipboard = LocalClipboard.current
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -323,7 +333,11 @@ private fun MigrationFailedContent(
                     Button(
                         onClick = {
                             val logText = debugLog.joinToString("\n")
-                            clipboardManager.setText(AnnotatedString(logText))
+                            scope.launch {
+                                clipboard.setClipEntry(
+                                    ClipData.newPlainText("debug_log", logText).toClipEntry()
+                                )
+                            }
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {

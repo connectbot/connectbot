@@ -19,6 +19,9 @@ package org.connectbot.service
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.res.Configuration
+// NOTE: Using deprecated android.text.ClipboardManager is intentional.
+// Migration to android.content.ClipboardManager requires careful testing
+// as there were issues with clipboard access in certain scenarios.
 import android.text.ClipboardManager
 import android.util.Log
 import android.view.KeyCharacterMap

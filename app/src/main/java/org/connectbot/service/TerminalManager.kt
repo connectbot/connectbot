@@ -79,6 +79,10 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	private val _bridgesFlow = MutableStateFlow<List<TerminalBridge>>(emptyList())
 	val bridgesFlow: StateFlow<List<TerminalBridge>> = _bridgesFlow.asStateFlow()
 
+	// NOTE: The bridges property is intentionally kept despite deprecation.
+	// Migrating to bridgesFlow.value caused subtle synchronization issues.
+	// This property is marked deprecated to track remaining usages, not to
+	// indicate it should be replaced without careful testing.
 	@Deprecated("Use bridgesFlow instead", ReplaceWith("bridgesFlow.value"))
 	val bridges: List<TerminalBridge>
 		get() = _bridges.toList()
