@@ -357,6 +357,59 @@ class PubkeyListViewModel @Inject constructor(
     }
 
     /**
+     * Copy private key in encrypted OpenSSH format.
+     * This first prompts for decryption password if needed, then for the export passphrase.
+     */
+    fun copyPrivateKeyEncrypted(
+        pubkey: Pubkey,
+        onPasswordRequired: (Pubkey, (String) -> Unit) -> Unit,
+        onExportPassphraseRequired: (Pubkey, (String) -> Unit) -> Unit
+    ) {
+        val isImported = pubkey.type == "IMPORTED"
+
+        if (pubkey.encrypted && !isImported) {
+            // Encrypted key - request password first, then export passphrase
+            onPasswordRequired(pubkey) { password ->
+                onExportPassphraseRequired(pubkey) { exportPassphrase ->
+                    copyPrivateKeyEncryptedWithPasswords(pubkey, password, exportPassphrase)
+                }
+            }
+            return
+        }
+
+        // Not encrypted - just need export passphrase
+        onExportPassphraseRequired(pubkey) { exportPassphrase ->
+            copyPrivateKeyEncryptedWithPasswords(pubkey, null, exportPassphrase)
+        }
+    }
+
+    private fun copyPrivateKeyEncryptedWithPasswords(pubkey: Pubkey, password: String?, exportPassphrase: String) {
+        viewModelScope.launch {
+            try {
+                val privateKeyString = withContext(Dispatchers.Default) {
+                    val privateKeyBytes = pubkey.privateKey ?: throw Exception("No private key data")
+                    val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
+                    val pub = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
+                    pk?.let { PubkeyUtils.exportOpenSSH(it, pub, pubkey.nickname, exportPassphrase) }
+                }
+
+                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("Private Key", privateKeyString)
+                clipboard.setPrimaryClip(clip)
+            } catch (e: PubkeyUtils.BadPasswordException) {
+                _uiState.update {
+                    it.copy(error = "Failed to decrypt key: Bad password")
+                }
+            } catch (e: Exception) {
+                Log.e("PubkeyListViewModel", "Failed to copy encrypted private key", e)
+                _uiState.update {
+                    it.copy(error = "Failed to copy private key: ${e.message}")
+                }
+            }
+        }
+    }
+
+    /**
      * Request export of private key in OpenSSH format.
      * This sets the pending export state, which triggers the file picker in the UI.
      */
