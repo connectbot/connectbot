@@ -20,6 +20,7 @@ import android.util.Log
 import com.trilead.ssh2.crypto.Base64
 import com.trilead.ssh2.crypto.PEMDecoder
 import com.trilead.ssh2.crypto.SimpleDERReader
+import com.google.crypto.tink.subtle.Ed25519Sign
 import com.trilead.ssh2.crypto.keys.Ed25519PrivateKey
 import com.trilead.ssh2.crypto.keys.Ed25519Provider
 import com.trilead.ssh2.crypto.keys.Ed25519PublicKey
@@ -181,6 +182,8 @@ object PubkeyUtils {
             return "RSA"
         } else if ("1.2.840.10040.4.1" == oid) {
             return "DSA"
+        } else if ("1.3.101.112" == oid) {
+            return "Ed25519"
         } else {
             throw NoSuchAlgorithmException("Unknown algorithm OID " + oid)
         }
@@ -264,6 +267,14 @@ object PubkeyUtils {
 
         val kf = KeyFactory.getInstance(algo)
         val priv = kf.generatePrivate(privKeySpec)
+
+        // Ed25519 requires special handling to derive the public key
+        if (priv is Ed25519PrivateKey) {
+            val seed = priv.getSeed()
+            val tinkKeyPair = Ed25519Sign.KeyPair.newKeyPairFromSeed(seed)
+            val publicKey = Ed25519PublicKey(tinkKeyPair.publicKey)
+            return KeyPair(publicKey, priv)
+        }
 
         return KeyPair(recoverPublicKey(kf, priv), priv)
     }
