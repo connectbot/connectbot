@@ -20,14 +20,12 @@ package org.connectbot.ui.screens.console
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.connectbot.service.BridgeDisconnectedListener
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 
@@ -43,7 +41,7 @@ data class ConsoleUiState(
 class ConsoleViewModel(
     private val terminalManager: TerminalManager?,
     private val hostId: Long
-) : ViewModel(), BridgeDisconnectedListener {
+) : ViewModel() {
     private val _uiState = MutableStateFlow(ConsoleUiState())
     val uiState: StateFlow<ConsoleUiState> = _uiState.asStateFlow()
 
@@ -141,11 +139,6 @@ class ConsoleViewModel(
             allBridges
         }
 
-        // Register listeners for any new bridges
-        filteredBridges.forEach { bridge ->
-            bridge.addOnDisconnectedListener(this@ConsoleViewModel)
-        }
-
         _uiState.update {
             val newBridges = filteredBridges.ifEmpty { allBridges }
             val newIndex = if (it.currentBridgeIndex >= newBridges.size) {
@@ -169,19 +162,6 @@ class ConsoleViewModel(
                 isLoading = if (shouldStopLoading) false else it.isLoading,
                 error = null
             )
-        }
-    }
-
-    override fun onDisconnected(bridge: TerminalBridge) {
-        // Bridge disconnection is handled automatically via bridgesFlow
-        // This callback is kept for backwards compatibility
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        // Unregister from all bridges when ViewModel is cleared
-        _uiState.value.bridges.forEach { bridge ->
-            bridge.removeOnDisconnectedListener(this)
         }
     }
 
