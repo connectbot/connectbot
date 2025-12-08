@@ -172,7 +172,8 @@ fun PubkeyListScreen(
         onDeletePubkey = viewModel::deletePubkey,
         onToggleKeyLoaded = viewModel::toggleKeyLoaded,
         onCopyPublicKey = viewModel::copyPublicKey,
-        onCopyPrivateKey = viewModel::copyPrivateKey,
+        onCopyPrivateKeyOpenSSH = viewModel::copyPrivateKeyOpenSSH,
+        onCopyPrivateKeyPem = viewModel::copyPrivateKeyPem,
         onImportKey = {
             filePickerLauncher.launch(arrayOf("*/*"))
         },
@@ -191,7 +192,8 @@ fun PubkeyListScreenContent(
     onDeletePubkey: (Pubkey) -> Unit,
     onToggleKeyLoaded: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPublicKey: (Pubkey) -> Unit,
-    onCopyPrivateKey: (Pubkey) -> Unit,
+    onCopyPrivateKeyOpenSSH: (Pubkey) -> Unit,
+    onCopyPrivateKeyPem: (Pubkey) -> Unit,
     onImportKey: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -283,7 +285,8 @@ fun PubkeyListScreenContent(
                                 onDelete = { onDeletePubkey(pubkey) },
                                 onToggleLoaded = { onToggleKeyLoaded(pubkey, it) },
                                 onCopyPublicKey = { onCopyPublicKey(pubkey) },
-                                onCopyPrivateKey = { onCopyPrivateKey(pubkey) },
+                                onCopyPrivateKeyOpenSSH = { onCopyPrivateKeyOpenSSH(pubkey) },
+                                onCopyPrivateKeyPem = { onCopyPrivateKeyPem(pubkey) },
                                 onEdit = { onNavigateToEdit(pubkey) },
                                 onClick = { onToggleKeyLoaded(pubkey, it) }
                             )
@@ -302,7 +305,8 @@ private fun PubkeyListItem(
     onDelete: () -> Unit,
     onToggleLoaded: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPublicKey: () -> Unit,
-    onCopyPrivateKey: () -> Unit,
+    onCopyPrivateKeyOpenSSH: () -> Unit,
+    onCopyPrivateKeyPem: () -> Unit,
     onEdit: () -> Unit,
     onClick: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     modifier: Modifier = Modifier
@@ -397,18 +401,40 @@ private fun PubkeyListItem(
                         enabled = !isImported
                     )
 
-                    // Copy private key (not available for Keystore keys)
+                    // Copy private key in OpenSSH format (not available for Keystore keys)
                     DropdownMenuItem(
-                        text = { Text(stringResource(R.string.pubkey_copy_private)) },
+                        text = {
+                            Text(stringResource(
+                                if (isImported)
+                                    R.string.pubkey_copy_private
+                                else
+                                    R.string.pubkey_copy_private_openssh
+                            ))
+                        },
                         onClick = {
                             showMenu = false
-                            onCopyPrivateKey()
+                            onCopyPrivateKeyOpenSSH()
                         },
                         leadingIcon = {
                             Icon(Icons.Default.ContentCopy, null)
                         },
                         enabled = !pubkey.isBiometric && (!pubkey.encrypted || isImported)
                     )
+
+                    // Copy private key in PEM format (for non-imported keys)
+                    if (!isImported) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.pubkey_copy_private_pem)) },
+                            onClick = {
+                                showMenu = false
+                                onCopyPrivateKeyPem()
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.ContentCopy, null)
+                            },
+                            enabled = !pubkey.isBiometric && !pubkey.encrypted
+                        )
+                    }
 
                     // Delete
                     DropdownMenuItem(
@@ -553,7 +579,8 @@ private fun PubkeyListScreenEmptyPreview() {
             onDeletePubkey = {},
             onToggleKeyLoaded = { _, _ -> },
             onCopyPublicKey = {},
-            onCopyPrivateKey = {},
+            onCopyPrivateKeyOpenSSH = {},
+            onCopyPrivateKeyPem = {},
             onImportKey = {}
         )
     }
@@ -575,7 +602,8 @@ private fun PubkeyListScreenLoadingPreview() {
             onDeletePubkey = {},
             onToggleKeyLoaded = { _, _ -> },
             onCopyPublicKey = {},
-            onCopyPrivateKey = {},
+            onCopyPrivateKeyOpenSSH = {},
+            onCopyPrivateKeyPem = {},
             onImportKey = {}
         )
     }
@@ -632,7 +660,8 @@ private fun PubkeyListScreenPopulatedPreview() {
             onDeletePubkey = {},
             onToggleKeyLoaded = { _, _ -> },
             onCopyPublicKey = {},
-            onCopyPrivateKey = {},
+            onCopyPrivateKeyOpenSSH = {},
+            onCopyPrivateKeyPem = {},
             onImportKey = {}
         )
     }

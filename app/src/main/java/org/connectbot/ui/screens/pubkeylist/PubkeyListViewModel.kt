@@ -229,7 +229,7 @@ class PubkeyListViewModel @Inject constructor(
         }
     }
 
-    fun copyPrivateKey(pubkey: Pubkey) {
+    fun copyPrivateKeyOpenSSH(pubkey: Pubkey) {
         viewModelScope.launch {
             try {
                 val isImported = pubkey.type == "IMPORTED"
@@ -247,7 +247,46 @@ class PubkeyListViewModel @Inject constructor(
                         // For imported keys, just return the raw data
                         String(pubkey.privateKey ?: ByteArray(0))
                     } else {
-                        // For non-imported keys, export as PEM
+                        // For all non-imported keys, export in OpenSSH format for compatibility
+                        val pk = PubkeyUtils.decodePrivate(pubkey.privateKey, pubkey.type)
+                        val pub = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
+                        pk?.let { PubkeyUtils.exportOpenSSH(it, pub, pubkey.nickname) }
+                    }
+                }
+
+                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("Private Key", privateKeyString)
+                clipboard.setPrimaryClip(clip)
+            } catch (e: Exception) {
+                Log.e("PubkeyListViewModel", "Failed to copy private key", e)
+                _uiState.update {
+                    it.copy(error = "Failed to copy private key: ${e.message}")
+                }
+            }
+        }
+    }
+
+    /**
+     * Copy private key in PKCS#8 PEM format.
+     */
+    fun copyPrivateKeyPem(pubkey: Pubkey) {
+        viewModelScope.launch {
+            try {
+                val isImported = pubkey.type == "IMPORTED"
+
+                if (pubkey.encrypted && !isImported) {
+                    _uiState.update {
+                        it.copy(error = "Cannot copy encrypted private key. Remove password first.")
+                    }
+                    return@launch
+                }
+
+                val privateKeyString = withContext(Dispatchers.Default) {
+                    if (isImported) {
+                        // For imported keys, just return the raw data
+                        String(pubkey.privateKey ?: ByteArray(0))
+                    } else {
+                        // For all non-imported keys, export as PKCS#8 PEM
                         val pk = PubkeyUtils.decodePrivate(pubkey.privateKey, pubkey.type)
                         pk?.let { PubkeyUtils.exportPEM(it, null) }
                     }
@@ -257,7 +296,7 @@ class PubkeyListViewModel @Inject constructor(
                 val clip = ClipData.newPlainText("Private Key", privateKeyString)
                 clipboard.setPrimaryClip(clip)
             } catch (e: Exception) {
-                Log.e("PubkeyListViewModel", "Failed to copy private key", e)
+                Log.e("PubkeyListViewModel", "Failed to copy private key (PEM)", e)
                 _uiState.update {
                     it.copy(error = "Failed to copy private key: ${e.message}")
                 }
