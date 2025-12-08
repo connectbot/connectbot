@@ -969,12 +969,16 @@
 	<string name="migration_failed_message">An error occurred during database migration: %s</string>
 	<!-- Button label to retry failed migration -->
 	<string name="migration_retry">Retry</string>
-	<!-- Help text shown after migration failure -->
-	<string name="migration_failed_help">If the problem persists, please contact support or check the application logs</string>
+	<!-- Help text shown after migration failure with link to GitHub issues -->
+	<string name="migration_failed_help">If the problem persists, please report this issue at %1$s with the debug log copied above</string>
 	<!-- Title for warnings section shown during database migration -->
 	<string name="migration_warnings_title">Migration Warnings</string>
 	<!-- Button text to copy migration warnings to clipboard for reporting issues -->
 	<string name="migration_copy_warnings">Copy Warnings</string>
+	<!-- Title for debug log section shown when migration fails -->
+	<string name="migration_debug_log_title">Debug Log</string>
+	<!-- Button text to copy debug log to clipboard for reporting issues -->
+	<string name="migration_copy_debug_log">Copy Debug Log</string>
 	<!-- Shown in the alert dialog when a user chooses the 'disconnect' item to disconnect from a SSH or Telnet host. -->
 	<string name="disconnect_host_alert">Are you sure you want to disconnect from \'%1$s\'?</string>
 	<!-- Shown in the alert dialog when a user chooses the 'delete host' item to delete a host. -->

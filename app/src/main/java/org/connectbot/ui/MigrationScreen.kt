@@ -47,7 +47,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
 import org.connectbot.data.migration.MigrationState
@@ -86,6 +89,7 @@ fun MigrationScreen(
                 is MigrationUiState.Failed -> {
                     MigrationFailedContent(
                         error = uiState.error,
+                        debugLog = uiState.debugLog,
                         onRetry = onRetry
                     )
                 }
@@ -257,37 +261,105 @@ private fun MigrationInProgressContent(state: MigrationState) {
 @Composable
 private fun MigrationFailedContent(
     error: String,
+    debugLog: List<String>,
     onRetry: () -> Unit
 ) {
-    Text(
-        text = stringResource(R.string.migration_failed_title),
-        style = MaterialTheme.typography.headlineMedium,
-        textAlign = TextAlign.Center,
-        color = MaterialTheme.colorScheme.error
-    )
+    val clipboardManager = LocalClipboardManager.current
 
-    Spacer(modifier = Modifier.height(16.dp))
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(R.string.migration_failed_title),
+            style = MaterialTheme.typography.headlineMedium,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.error
+        )
 
-    Text(
-        text = stringResource(R.string.migration_failed_message, error),
-        style = MaterialTheme.typography.bodyMedium,
-        textAlign = TextAlign.Center
-    )
+        Spacer(modifier = Modifier.height(16.dp))
 
-    Spacer(modifier = Modifier.height(24.dp))
+        Text(
+            text = stringResource(R.string.migration_failed_message, error),
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center
+        )
 
-    Button(onClick = onRetry) {
-        Text(stringResource(R.string.migration_retry))
+        if (debugLog.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                )
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.migration_debug_log_title),
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    debugLog.forEach { logEntry ->
+                        Text(
+                            text = logEntry,
+                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(vertical = 2.dp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Button(
+                        onClick = {
+                            val logText = debugLog.joinToString("\n")
+                            clipboardManager.setText(AnnotatedString(logText))
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(stringResource(R.string.migration_copy_debug_log))
+                    }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Button(onClick = onRetry) {
+            Text(stringResource(R.string.migration_retry))
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        val annotatedString = buildAnnotatedString {
+            val url = "https://github.com/connectbot/connectbot/issues"
+			val fullText = stringResource(id = R.string.migration_failed_help)
+			val startIndex = fullText.indexOf($$"%1$s")
+			if (startIndex != -1) {
+				append(fullText.take(startIndex))
+                withLink(LinkAnnotation.Url(url)) { append(url) }
+				append(fullText.substring(startIndex + $$"%1$s".length))
+			} else {
+				append(fullText)
+			}
+		}
+        Text(
+            text = annotatedString,
+            style = MaterialTheme.typography.bodySmall,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    Text(
-        text = stringResource(R.string.migration_failed_help),
-        style = MaterialTheme.typography.bodySmall,
-        textAlign = TextAlign.Center,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
-    )
 }
 
 @ScreenPreviews
@@ -317,7 +389,7 @@ private fun MigrationScreenInProgressPreview() {
                     knownHostsMigrated = 25,
                     warnings = listOf(
                         "Found 2 duplicate host nickname(s): server, backup. Appending suffixes to make them unique.",
-                        "Found 1 duplicate SSH key nickname(s): mykey. Appending suffixes to make them unique."
+                        "Found 1 duplicate SSH key nickname(s): myKey. Appending suffixes to make them unique."
                     )
                 )
             ),
@@ -353,7 +425,17 @@ private fun MigrationScreenFailedPreview() {
     ConnectBotTheme {
         MigrationScreen(
             uiState = MigrationUiState.Failed(
-                error = "Database corruption detected"
+                error = "Database corruption detected",
+                debugLog = listOf(
+                    "Starting database migration",
+                    "Step 1: Reading legacy databases",
+                    "Legacy data read: 10 hosts, 5 pubkeys, 3 port forwards, 15 known hosts, 2 color schemes",
+                    "Step 2: Validating data",
+                    "WARNING: Found 1 duplicate host nickname(s): server. Appending suffixes to make them unique.",
+                    "Step 3: Transforming data to Room entities",
+                    "Step 4: Writing to new database",
+                    "ERROR: Migration failed: Database corruption detected"
+                )
             ),
             onRetry = {}
         )

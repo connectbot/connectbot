@@ -56,7 +56,10 @@ fun ConnectBotApp(
 
             is AppUiState.MigrationFailed -> {
                 MigrationScreen(
-                    uiState = MigrationUiState.Failed(appUiState.error),
+                    uiState = MigrationUiState.Failed(
+                        appUiState.error,
+                        appUiState.debugLog
+                    ),
                     onRetry = onRetryMigration,
                     modifier = modifier
                 )
