@@ -67,7 +67,7 @@ import org.connectbot.ui.theme.ConnectBotTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaletteEditorScreen(
-    schemeId: Int,
+    schemeId: Long,
     onNavigateBack: () -> Unit
 ) {
     val context = LocalContext.current

@@ -50,7 +50,7 @@ class PaletteEditorViewModelTest {
     private lateinit var repository: ColorSchemeRepository
     private lateinit var viewModel: PaletteEditorViewModel
     private val testDispatcher = StandardTestDispatcher()
-    private val testSchemeId = -1
+    private val testSchemeId = -1L
 
     @Before
     fun setUp() {

@@ -30,7 +30,7 @@ import org.connectbot.data.entity.ColorScheme
 
 data class SchemeManagerUiState(
     val schemes: List<ColorScheme> = emptyList(),
-    val selectedSchemeId: Int? = null,
+    val selectedSchemeId: Long? = null,
     val isLoading: Boolean = false,
     val error: String? = null,
     val showNewSchemeDialog: Boolean = false,
@@ -74,7 +74,7 @@ class ColorSchemeManagerViewModel(
         }
     }
 
-    fun selectScheme(schemeId: Int) {
+    fun selectScheme(schemeId: Long) {
         _uiState.update {
             it.copy(
                 selectedSchemeId = if (it.selectedSchemeId == schemeId) null else schemeId
@@ -136,7 +136,7 @@ class ColorSchemeManagerViewModel(
         }
     }
 
-    fun createNewScheme(name: String, description: String, basedOnSchemeId: Int) {
+    fun createNewScheme(name: String, description: String, basedOnSchemeId: Long) {
         viewModelScope.launch {
             try {
                 // Validate name
@@ -165,35 +165,7 @@ class ColorSchemeManagerViewModel(
         }
     }
 
-    fun duplicateScheme(sourceSchemeId: Int, newName: String) {
-        viewModelScope.launch {
-            try {
-                // Validate name
-                if (newName.isBlank()) {
-                    _uiState.update { it.copy(error = "Scheme name cannot be empty") }
-                    return@launch
-                }
-
-                // Check for duplicate name
-                if (repository.schemeNameExists(newName)) {
-                    _uiState.update { it.copy(error = "A scheme with this name already exists") }
-                    return@launch
-                }
-
-                // Duplicate the scheme
-                repository.duplicateScheme(sourceSchemeId, newName)
-
-                // Reload schemes
-                loadSchemes()
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(error = e.message ?: "Failed to duplicate scheme")
-                }
-            }
-        }
-    }
-
-    fun renameScheme(schemeId: Int, newName: String, newDescription: String = "") {
+    fun renameScheme(schemeId: Long, newName: String, newDescription: String = "") {
         viewModelScope.launch {
             try {
                 // Validate name
@@ -227,7 +199,7 @@ class ColorSchemeManagerViewModel(
         }
     }
 
-    fun deleteScheme(schemeId: Int) {
+    fun deleteScheme(schemeId: Long) {
         viewModelScope.launch {
             try {
                 // Don't allow deleting built-in schemes
@@ -256,10 +228,6 @@ class ColorSchemeManagerViewModel(
 
     fun clearError() {
         _uiState.update { it.copy(error = null) }
-    }
-
-    fun clearDialogError() {
-        _uiState.update { it.copy(dialogError = null) }
     }
 
     /**

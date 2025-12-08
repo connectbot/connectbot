@@ -149,7 +149,7 @@ class TerminalBridge {
         setFontSize(hostFontSizeSp.toFloat())
 
         // Load color scheme from host configuration
-        val schemeId = host.colorSchemeId.toInt()
+        val schemeId = host.colorSchemeId
         val fullPalette = manager.colorRepository.getColorsForSchemeBlocking(schemeId)
         val defaults = manager.colorRepository.getDefaultColorsForSchemeBlocking(schemeId)
         defaultFg = defaults[0]

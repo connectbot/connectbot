@@ -36,7 +36,7 @@ import androidx.room.PrimaryKey
 )
 data class ColorScheme(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: Long = 0,
     val name: String,
     @ColumnInfo(name = "is_built_in")
     val isBuiltIn: Boolean,

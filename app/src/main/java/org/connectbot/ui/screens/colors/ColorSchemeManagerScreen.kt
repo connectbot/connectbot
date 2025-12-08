@@ -64,6 +64,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -87,7 +88,7 @@ import org.connectbot.ui.theme.ConnectBotTheme
 @Composable
 fun ColorSchemeManagerScreen(
     onNavigateBack: () -> Unit,
-    onNavigateToPaletteEditor: (Int) -> Unit = {},
+    onNavigateToPaletteEditor: (Long) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -97,7 +98,7 @@ fun ColorSchemeManagerScreen(
     val scope = rememberCoroutineScope()
 
     // Track which scheme is being exported
-    var exportingSchemeId by remember { mutableIntStateOf(-1) }
+    var exportingSchemeId by remember { mutableLongStateOf(-1L) }
 
     // Export launcher - creates a new JSON file
     val exportLauncher = rememberLauncherForActivityResult(
@@ -226,19 +227,19 @@ fun ColorSchemeManagerScreen(
 fun ColorSchemeManagerScreenContent(
     uiState: SchemeManagerUiState,
     onNavigateBack: () -> Unit,
-    onNavigateToPaletteEditor: (Int) -> Unit,
-    onExportScheme: (Int) -> Unit,
+    onNavigateToPaletteEditor: (Long) -> Unit,
+    onExportScheme: (Long) -> Unit,
     onImportScheme: () -> Unit,
     onShowNewSchemeDialog: () -> Unit,
     onClearError: () -> Unit,
-    onSelectScheme: (Int) -> Unit,
+    onSelectScheme: (Long) -> Unit,
     onShowRenameDialog: () -> Unit,
     onShowDeleteDialog: () -> Unit,
-    onCreateNewScheme: (String, String, Int) -> Unit,
+    onCreateNewScheme: (String, String, Long) -> Unit,
     onHideNewSchemeDialog: () -> Unit,
-    onRenameScheme: (Int, String, String) -> Unit,
+    onRenameScheme: (Long, String, String) -> Unit,
     onHideRenameDialog: () -> Unit,
-    onDeleteScheme: (Int) -> Unit,
+    onDeleteScheme: (Long) -> Unit,
     onHideDeleteDialog: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -688,16 +689,16 @@ private fun SchemeItem(
 @Composable
 private fun NewSchemeDialog(
     availableSchemes: List<ColorScheme>,
-    preselectedSchemeId: Int? = null,
+    preselectedSchemeId: Long? = null,
     suggestedName: String? = null,
     error: String?,
-    onConfirm: (name: String, description: String, baseSchemeId: Int) -> Unit,
+    onConfirm: (name: String, description: String, baseSchemeId: Long) -> Unit,
     onDismiss: () -> Unit
 ) {
     var name by remember { mutableStateOf(suggestedName ?: "") }
     var description by remember { mutableStateOf("") }
     var selectedBaseSchemeId by remember {
-        mutableStateOf(preselectedSchemeId ?: -1)
+        mutableLongStateOf(preselectedSchemeId ?: -1L)
     }
 
     AlertDialog(

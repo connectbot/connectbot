@@ -95,7 +95,7 @@ class DatabaseMigratorTest {
 
     @Test
     fun migrationStatusEnumValues() {
-        val statuses = MigrationStatus.values()
+        val statuses = MigrationStatus.entries.toTypedArray()
         assertThat(statuses).contains(
             MigrationStatus.NOT_STARTED,
             MigrationStatus.IN_PROGRESS,
@@ -185,8 +185,8 @@ class DatabaseMigratorTest {
 
     @Test
     fun duplicatePubkeyNicknamesAreHandledCorrectly() = runTest {
-        val pubkey1 = createTestPubkey(id = 1, nickname = "mykey")
-        val pubkey2 = createTestPubkey(id = 2, nickname = "mykey")
+        val pubkey1 = createTestPubkey(id = 1, nickname = "my key")
+        val pubkey2 = createTestPubkey(id = 2, nickname = "my key")
         val pubkey3 = createTestPubkey(id = 3, nickname = "different")
 
         val legacyData = LegacyData(
@@ -201,8 +201,8 @@ class DatabaseMigratorTest {
         val transformed = migrator.transformToRoomEntitiesForTesting(legacyData)
 
         assertThat(transformed.pubkeys).hasSize(3)
-        assertThat(transformed.pubkeys[0].nickname).isEqualTo("mykey")
-        assertThat(transformed.pubkeys[1].nickname).isEqualTo("mykey (1)")
+        assertThat(transformed.pubkeys[0].nickname).isEqualTo("my key")
+        assertThat(transformed.pubkeys[1].nickname).isEqualTo("my key (1)")
         assertThat(transformed.pubkeys[2].nickname).isEqualTo("different")
     }
 
@@ -231,13 +231,13 @@ class DatabaseMigratorTest {
         assertThat(transformed.colorSchemes).hasSize(4)
         assertThat(transformed.colorSchemes.map { it.id }).containsExactlyInAnyOrder(1, 2, 5, 7)
 
-        val synthesizedScheme5 = transformed.colorSchemes.find { it.id == 5 }
+        val synthesizedScheme5 = transformed.colorSchemes.find { it.id == 5L }
         assertThat(synthesizedScheme5).isNotNull
         assertThat(synthesizedScheme5?.name).isEqualTo("Recovered Scheme 5")
         assertThat(synthesizedScheme5?.isBuiltIn).isFalse()
         assertThat(synthesizedScheme5?.description).contains("Auto-generated during migration")
 
-        val synthesizedScheme7 = transformed.colorSchemes.find { it.id == 7 }
+        val synthesizedScheme7 = transformed.colorSchemes.find { it.id == 7L }
         assertThat(synthesizedScheme7).isNotNull
         assertThat(synthesizedScheme7?.name).isEqualTo("Recovered Scheme 7")
         assertThat(synthesizedScheme7?.isBuiltIn).isFalse()
@@ -293,7 +293,7 @@ class DatabaseMigratorTest {
     )
 
     private fun createTestColorScheme(
-        id: Int,
+        id: Long,
         name: String
     ) = ColorScheme(
         id = id,

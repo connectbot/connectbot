@@ -18,7 +18,6 @@
 package org.connectbot.ui.screens.colors
 
 import android.content.Context
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -118,7 +117,7 @@ class ColorsViewModelTest {
         viewModel = ColorsViewModel(context, repository)
         advanceUntilIdle()
 
-        val schemeIndex = 1
+        val schemeIndex = 1L
         viewModel.switchToScheme(schemeIndex)
         advanceUntilIdle()
 
