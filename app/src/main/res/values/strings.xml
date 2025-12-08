@@ -1208,8 +1208,4 @@
 	<string name="import_hosts_failed">Failed to import hosts: %s</string>
 	<!-- Title for the export hosts file picker dialog -->
 	<string name="export_hosts_title">Export Hosts</string>
-	<!-- Title for the import hosts file picker dialog -->
-	<string name="import_hosts_title">Import Hosts</string>
-	<!-- Default filename for exported hosts JSON file -->
-	<string name="export_hosts_filename">connectbot_hosts.json</string>
 </resources>
