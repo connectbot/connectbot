@@ -20,6 +20,7 @@ import android.util.Log
 import com.trilead.ssh2.crypto.Base64
 import com.trilead.ssh2.crypto.PEMDecoder
 import com.trilead.ssh2.crypto.SimpleDERReader
+import com.trilead.ssh2.crypto.keys.Ed25519PrivateKey
 import com.trilead.ssh2.crypto.keys.Ed25519Provider
 import com.trilead.ssh2.crypto.keys.Ed25519PublicKey
 import com.trilead.ssh2.signature.DSASHA1Verify
@@ -27,6 +28,9 @@ import com.trilead.ssh2.signature.ECDSASHA2Verify
 import com.trilead.ssh2.signature.Ed25519Verify
 import com.trilead.ssh2.signature.RSASHA1Verify
 import com.trilead.ssh2.signature.SSHSignature
+import java.io.ByteArrayOutputStream
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import org.connectbot.data.entity.Pubkey
 import org.keyczar.jce.EcCore
 import java.io.IOException
@@ -432,6 +436,404 @@ object PubkeyUtils {
         sb.append('\n')
 
         return sb.toString()
+    }
+
+    private const val OPENSSH_PRIVATE_KEY_START = "-----BEGIN OPENSSH PRIVATE KEY-----"
+    private const val OPENSSH_PRIVATE_KEY_END = "-----END OPENSSH PRIVATE KEY-----"
+    private const val OPENSSH_KEY_V1_MAGIC = "openssh-key-v1\u0000"
+    private const val ED25519_KEY_TYPE = "ssh-ed25519"
+
+    /**
+     * Exports an Ed25519 key pair in OpenSSH format.
+     * This is the standard format used by ssh-keygen and compatible with other SSH tools.
+     *
+     * @param privateKey The Ed25519 private key
+     * @param publicKey The Ed25519 public key
+     * @param comment Optional comment (typically the key nickname)
+     * @return The key in OpenSSH PEM format
+     */
+    fun exportOpenSSHEd25519(
+        privateKey: Ed25519PrivateKey,
+        publicKey: Ed25519PublicKey,
+        comment: String?
+    ): String {
+        val baos = ByteArrayOutputStream()
+
+        // Magic header: "openssh-key-v1\0"
+        baos.write(OPENSSH_KEY_V1_MAGIC.toByteArray(Charsets.US_ASCII))
+
+        // Cipher name: "none" for unencrypted
+        writeString(baos, "none")
+
+        // KDF name: "none" for unencrypted
+        writeString(baos, "none")
+
+        // KDF options: empty for unencrypted
+        writeString(baos, "")
+
+        // Number of keys: 1
+        writeUint32(baos, 1)
+
+        // Public key blob
+        val publicKeyBytes = publicKey.getAbyte()
+        val pubKeyBlob = ByteArrayOutputStream()
+        writeString(pubKeyBlob, ED25519_KEY_TYPE)
+        writeBytes(pubKeyBlob, publicKeyBytes)
+        writeBytes(baos, pubKeyBlob.toByteArray())
+
+        // Private key section
+        val privateSection = ByteArrayOutputStream()
+
+        // Check integers (random, must match for verification)
+        val checkInt = SecureRandom().nextInt()
+        writeUint32(privateSection, checkInt)
+        writeUint32(privateSection, checkInt)
+
+        // Key type
+        writeString(privateSection, ED25519_KEY_TYPE)
+
+        // Public key
+        writeBytes(privateSection, publicKeyBytes)
+
+        // Private key: 64 bytes (32-byte seed + 32-byte public key)
+        val seed = privateKey.getSeed()
+        val privateKeyData = ByteArray(64)
+        System.arraycopy(seed, 0, privateKeyData, 0, 32)
+        System.arraycopy(publicKeyBytes, 0, privateKeyData, 32, 32)
+        writeBytes(privateSection, privateKeyData)
+
+        // Comment
+        writeString(privateSection, comment ?: "")
+
+        // Padding to block size (8 bytes for unencrypted)
+        val blockSize = 8
+        var paddingNeeded = blockSize - (privateSection.size() % blockSize)
+        if (paddingNeeded == blockSize) paddingNeeded = 0
+        for (i in 1..paddingNeeded) {
+            privateSection.write(i)
+        }
+
+        // Write the private section
+        writeBytes(baos, privateSection.toByteArray())
+
+        // Base64 encode and format
+        val sb = StringBuilder()
+        sb.append(OPENSSH_PRIVATE_KEY_START)
+        sb.append('\n')
+
+        var i = sb.length
+        sb.append(Base64.encode(baos.toByteArray()))
+        i += 70
+        while (i < sb.length) {
+            sb.insert(i, "\n")
+            i += 71
+        }
+
+        sb.append('\n')
+        sb.append(OPENSSH_PRIVATE_KEY_END)
+        sb.append('\n')
+
+        return sb.toString()
+    }
+
+    private fun writeUint32(baos: ByteArrayOutputStream, value: Int) {
+        val buffer = ByteBuffer.allocate(4)
+        buffer.order(ByteOrder.BIG_ENDIAN)
+        buffer.putInt(value)
+        baos.write(buffer.array())
+    }
+
+    private fun writeString(baos: ByteArrayOutputStream, value: String) {
+        writeBytes(baos, value.toByteArray(Charsets.UTF_8))
+    }
+
+    private fun writeBytes(baos: ByteArrayOutputStream, data: ByteArray) {
+        writeUint32(baos, data.size)
+        baos.write(data)
+    }
+
+    /**
+     * Writes a BigInteger as an SSH mpint (multi-precision integer).
+     * SSH mpints are stored as a 4-byte length followed by the value in big-endian format.
+     * If the high bit is set, a leading zero byte is prepended.
+     */
+    private fun writeMpint(baos: ByteArrayOutputStream, value: BigInteger) {
+        var bytes = value.toByteArray()
+        // BigInteger.toByteArray() already handles sign extension correctly,
+        // but may include an extra leading zero if the high bit is set.
+        // This is actually what we want for SSH mpints.
+        writeBytes(baos, bytes)
+    }
+
+    /**
+     * Exports an RSA key pair in OpenSSH format.
+     */
+    fun exportOpenSSHRSA(
+        privateKey: RSAPrivateCrtKey,
+        publicKey: RSAPublicKey,
+        comment: String?
+    ): String {
+        val baos = ByteArrayOutputStream()
+
+        // Magic header
+        baos.write(OPENSSH_KEY_V1_MAGIC.toByteArray(Charsets.US_ASCII))
+
+        // Cipher and KDF: none for unencrypted
+        writeString(baos, "none")
+        writeString(baos, "none")
+        writeString(baos, "")
+
+        // Number of keys
+        writeUint32(baos, 1)
+
+        // Public key blob: ssh-rsa, e, n
+        val pubKeyBlob = ByteArrayOutputStream()
+        writeString(pubKeyBlob, "ssh-rsa")
+        writeMpint(pubKeyBlob, publicKey.publicExponent)
+        writeMpint(pubKeyBlob, publicKey.modulus)
+        writeBytes(baos, pubKeyBlob.toByteArray())
+
+        // Private key section
+        val privateSection = ByteArrayOutputStream()
+        val checkInt = SecureRandom().nextInt()
+        writeUint32(privateSection, checkInt)
+        writeUint32(privateSection, checkInt)
+
+        writeString(privateSection, "ssh-rsa")
+        writeMpint(privateSection, publicKey.modulus)          // n
+        writeMpint(privateSection, publicKey.publicExponent)   // e
+        writeMpint(privateSection, privateKey.privateExponent) // d
+        writeMpint(privateSection, privateKey.crtCoefficient)  // iqmp (q^-1 mod p)
+        writeMpint(privateSection, privateKey.primeP)          // p
+        writeMpint(privateSection, privateKey.primeQ)          // q
+
+        writeString(privateSection, comment ?: "")
+
+        // Padding
+        val blockSize = 8
+        var paddingNeeded = blockSize - (privateSection.size() % blockSize)
+        if (paddingNeeded == blockSize) paddingNeeded = 0
+        for (i in 1..paddingNeeded) {
+            privateSection.write(i)
+        }
+
+        writeBytes(baos, privateSection.toByteArray())
+
+        return formatOpenSSHKey(baos.toByteArray())
+    }
+
+    /**
+     * Exports a DSA key pair in OpenSSH format.
+     */
+    fun exportOpenSSHDSA(
+        privateKey: DSAPrivateKey,
+        publicKey: DSAPublicKey,
+        comment: String?
+    ): String {
+        val baos = ByteArrayOutputStream()
+
+        // Magic header
+        baos.write(OPENSSH_KEY_V1_MAGIC.toByteArray(Charsets.US_ASCII))
+
+        // Cipher and KDF: none for unencrypted
+        writeString(baos, "none")
+        writeString(baos, "none")
+        writeString(baos, "")
+
+        // Number of keys
+        writeUint32(baos, 1)
+
+        val params = publicKey.params
+
+        // Public key blob: ssh-dss, p, q, g, y
+        val pubKeyBlob = ByteArrayOutputStream()
+        writeString(pubKeyBlob, "ssh-dss")
+        writeMpint(pubKeyBlob, params.p)
+        writeMpint(pubKeyBlob, params.q)
+        writeMpint(pubKeyBlob, params.g)
+        writeMpint(pubKeyBlob, publicKey.y)
+        writeBytes(baos, pubKeyBlob.toByteArray())
+
+        // Private key section
+        val privateSection = ByteArrayOutputStream()
+        val checkInt = SecureRandom().nextInt()
+        writeUint32(privateSection, checkInt)
+        writeUint32(privateSection, checkInt)
+
+        writeString(privateSection, "ssh-dss")
+        writeMpint(privateSection, params.p)
+        writeMpint(privateSection, params.q)
+        writeMpint(privateSection, params.g)
+        writeMpint(privateSection, publicKey.y)
+        writeMpint(privateSection, privateKey.x)
+
+        writeString(privateSection, comment ?: "")
+
+        // Padding
+        val blockSize = 8
+        var paddingNeeded = blockSize - (privateSection.size() % blockSize)
+        if (paddingNeeded == blockSize) paddingNeeded = 0
+        for (i in 1..paddingNeeded) {
+            privateSection.write(i)
+        }
+
+        writeBytes(baos, privateSection.toByteArray())
+
+        return formatOpenSSHKey(baos.toByteArray())
+    }
+
+    /**
+     * Exports an EC key pair in OpenSSH format.
+     */
+    fun exportOpenSSHEC(
+        privateKey: ECPrivateKey,
+        publicKey: ECPublicKey,
+        comment: String?
+    ): String {
+        val baos = ByteArrayOutputStream()
+
+        // Determine curve name and key type
+        val fieldSize = publicKey.params.curve.field.fieldSize
+        val (curveName, keyType) = when (fieldSize) {
+            256 -> "nistp256" to "ecdsa-sha2-nistp256"
+            384 -> "nistp384" to "ecdsa-sha2-nistp384"
+            521 -> "nistp521" to "ecdsa-sha2-nistp521"
+            else -> throw InvalidKeyException("Unsupported EC curve size: $fieldSize")
+        }
+
+        // Magic header
+        baos.write(OPENSSH_KEY_V1_MAGIC.toByteArray(Charsets.US_ASCII))
+
+        // Cipher and KDF: none for unencrypted
+        writeString(baos, "none")
+        writeString(baos, "none")
+        writeString(baos, "")
+
+        // Number of keys
+        writeUint32(baos, 1)
+
+        // Encode public key point in uncompressed format (0x04 || x || y)
+        val publicPoint = encodeECPublicKeyPoint(publicKey)
+
+        // Public key blob: key_type, curve_name, Q
+        val pubKeyBlob = ByteArrayOutputStream()
+        writeString(pubKeyBlob, keyType)
+        writeString(pubKeyBlob, curveName)
+        writeBytes(pubKeyBlob, publicPoint)
+        writeBytes(baos, pubKeyBlob.toByteArray())
+
+        // Private key section
+        val privateSection = ByteArrayOutputStream()
+        val checkInt = SecureRandom().nextInt()
+        writeUint32(privateSection, checkInt)
+        writeUint32(privateSection, checkInt)
+
+        writeString(privateSection, keyType)
+        writeString(privateSection, curveName)
+        writeBytes(privateSection, publicPoint)
+        writeMpint(privateSection, privateKey.s)
+
+        writeString(privateSection, comment ?: "")
+
+        // Padding
+        val blockSize = 8
+        var paddingNeeded = blockSize - (privateSection.size() % blockSize)
+        if (paddingNeeded == blockSize) paddingNeeded = 0
+        for (i in 1..paddingNeeded) {
+            privateSection.write(i)
+        }
+
+        writeBytes(baos, privateSection.toByteArray())
+
+        return formatOpenSSHKey(baos.toByteArray())
+    }
+
+    /**
+     * Encodes an EC public key point in uncompressed format (0x04 || x || y).
+     */
+    private fun encodeECPublicKeyPoint(publicKey: ECPublicKey): ByteArray {
+        val params = publicKey.params
+        val fieldSize = (params.curve.field.fieldSize + 7) / 8  // bytes needed
+        val w = publicKey.w
+
+        val x = w.affineX.toByteArray()
+        val y = w.affineY.toByteArray()
+
+        // Pad or trim to exact field size
+        val xPadded = padOrTrimToLength(x, fieldSize)
+        val yPadded = padOrTrimToLength(y, fieldSize)
+
+        // Uncompressed point format: 0x04 || x || y
+        val result = ByteArray(1 + fieldSize * 2)
+        result[0] = 0x04
+        System.arraycopy(xPadded, 0, result, 1, fieldSize)
+        System.arraycopy(yPadded, 0, result, 1 + fieldSize, fieldSize)
+
+        return result
+    }
+
+    /**
+     * Pads (with leading zeros) or trims (removes leading zeros) a byte array to exact length.
+     */
+    private fun padOrTrimToLength(bytes: ByteArray, length: Int): ByteArray {
+        return when {
+            bytes.size == length -> bytes
+            bytes.size > length -> {
+                // Trim leading zeros (BigInteger may add a sign byte)
+                val offset = bytes.size - length
+                bytes.copyOfRange(offset, bytes.size)
+            }
+            else -> {
+                // Pad with leading zeros
+                val result = ByteArray(length)
+                System.arraycopy(bytes, 0, result, length - bytes.size, bytes.size)
+                result
+            }
+        }
+    }
+
+    /**
+     * Formats raw key data into OpenSSH PEM format with proper line wrapping.
+     */
+    private fun formatOpenSSHKey(data: ByteArray): String {
+        val sb = StringBuilder()
+        sb.append(OPENSSH_PRIVATE_KEY_START)
+        sb.append('\n')
+
+        var i = sb.length
+        sb.append(Base64.encode(data))
+        i += 70
+        while (i < sb.length) {
+            sb.insert(i, "\n")
+            i += 71
+        }
+
+        sb.append('\n')
+        sb.append(OPENSSH_PRIVATE_KEY_END)
+        sb.append('\n')
+
+        return sb.toString()
+    }
+
+    /**
+     * Exports any supported key pair in OpenSSH format.
+     * @param privateKey The private key (RSA, DSA, EC, or Ed25519)
+     * @param publicKey The public key
+     * @param comment Optional comment
+     * @return The key in OpenSSH format, or null if the key type is not supported
+     */
+    fun exportOpenSSH(privateKey: PrivateKey, publicKey: PublicKey, comment: String?): String? {
+        return when {
+            privateKey is RSAPrivateCrtKey && publicKey is RSAPublicKey ->
+                exportOpenSSHRSA(privateKey, publicKey, comment)
+            privateKey is DSAPrivateKey && publicKey is DSAPublicKey ->
+                exportOpenSSHDSA(privateKey, publicKey, comment)
+            privateKey is ECPrivateKey && publicKey is ECPublicKey ->
+                exportOpenSSHEC(privateKey, publicKey, comment)
+            privateKey is Ed25519PrivateKey && publicKey is Ed25519PublicKey ->
+                exportOpenSSHEd25519(privateKey, publicKey, comment)
+            else -> null
+        }
     }
 
     private val HEX_DIGITS = charArrayOf(
