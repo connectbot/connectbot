@@ -345,12 +345,40 @@ class DatabaseMigrator(
             val warning = "Found ${hostsWithInvalidColorSchemes.size} host(s) referencing non-existent color schemes. Will use default color scheme."
             logWarning(warning)
         }
+
+        // Validate color palettes reference valid color schemes (will be fixed in transformToRoomEntities)
+        val palettesWithInvalidSchemes = data.colorPalettes.filter { it.schemeId.toInt() !in colorSchemeIds }
+        if (palettesWithInvalidSchemes.isNotEmpty()) {
+            val orphanedSchemeIds = palettesWithInvalidSchemes.map { it.schemeId.toInt() }.toSet()
+            val warning = "Found ${palettesWithInvalidSchemes.size} color palette(s) referencing ${orphanedSchemeIds.size} non-existent color scheme(s): ${orphanedSchemeIds.joinToString(", ")}. Will synthesize missing schemes."
+            logWarning(warning)
+        }
     }
 
     private fun transformToRoomEntities(legacy: LegacyData): TransformedData {
         val hostIds = legacy.hosts.map { it.id }.toSet()
         val pubkeyIds = legacy.pubkeys.map { it.id }.toSet()
-        val colorSchemeIds = legacy.colorSchemes.map { it.id }.toSet()
+        var colorSchemeIds = legacy.colorSchemes.map { it.id }.toSet()
+
+        // Synthesize missing ColorScheme entries for orphaned ColorPalette entries
+        val orphanedSchemeIds = legacy.colorPalettes
+            .map { it.schemeId.toInt() }
+            .filter { it !in colorSchemeIds }
+            .toSet()
+
+        val synthesizedSchemes = orphanedSchemeIds.map { schemeId ->
+            logDebug("Synthesizing missing ColorScheme with ID $schemeId for orphaned palette entries")
+            ColorScheme(
+                id = schemeId,
+                name = "Recovered Scheme $schemeId",
+                isBuiltIn = false,
+                description = "Auto-generated during migration to recover orphaned color palette entries"
+            )
+        }
+
+        // Combine original and synthesized schemes
+        val allColorSchemes = legacy.colorSchemes + synthesizedSchemes
+        colorSchemeIds = allColorSchemes.map { it.id }.toSet()
 
         // Fix duplicate host nicknames by appending " (1)", " (2)", etc.
         val hostsWithUniqueNicknames = makeNicknamesUnique(legacy.hosts) { it.nickname }
@@ -426,11 +454,15 @@ class DatabaseMigrator(
             logDebug("Recovery: Reset invalid color scheme references for $hostsWithResetColorSchemes host(s)")
         }
 
+        if (synthesizedSchemes.isNotEmpty()) {
+            logDebug("Recovery: Synthesized ${synthesizedSchemes.size} missing color scheme(s) for orphaned palette entries")
+        }
+
         return TransformedData(
             hosts = fixedHosts,
             portForwards = validPortForwards,
             knownHosts = cleanedKnownHosts,
-            colorSchemes = legacy.colorSchemes,
+            colorSchemes = allColorSchemes,
             colorPalettes = legacy.colorPalettes,
             pubkeys = fixedPubkeys
         )

@@ -24,6 +24,11 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.entity.ColorPalette
+import org.connectbot.data.entity.ColorScheme
+import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.KeyStorageType
+import org.connectbot.data.entity.Pubkey
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -201,10 +206,49 @@ class DatabaseMigratorTest {
         assertThat(transformed.pubkeys[2].nickname).isEqualTo("different")
     }
 
+    @Test
+    fun orphanedColorPaletteSynthesizesColorScheme() = runTest {
+        val scheme1 = createTestColorScheme(id = 1, name = "Default")
+        val scheme2 = createTestColorScheme(id = 2, name = "Dark")
+
+        val palette1 = createTestColorPalette(schemeId = 1, colorIndex = 0, color = 0x000000)
+        val palette2 = createTestColorPalette(schemeId = 2, colorIndex = 0, color = 0xFFFFFF)
+        val orphanedPalette1 = createTestColorPalette(schemeId = 5, colorIndex = 0, color = 0xFF0000)
+        val orphanedPalette2 = createTestColorPalette(schemeId = 5, colorIndex = 1, color = 0x00FF00)
+        val orphanedPalette3 = createTestColorPalette(schemeId = 7, colorIndex = 0, color = 0x0000FF)
+
+        val legacyData = LegacyData(
+            hosts = emptyList(),
+            portForwards = emptyList(),
+            knownHosts = emptyList(),
+            colorSchemes = listOf(scheme1, scheme2),
+            colorPalettes = listOf(palette1, palette2, orphanedPalette1, orphanedPalette2, orphanedPalette3),
+            pubkeys = emptyList()
+        )
+
+        val transformed = migrator.transformToRoomEntitiesForTesting(legacyData)
+
+        assertThat(transformed.colorSchemes).hasSize(4)
+        assertThat(transformed.colorSchemes.map { it.id }).containsExactlyInAnyOrder(1, 2, 5, 7)
+
+        val synthesizedScheme5 = transformed.colorSchemes.find { it.id == 5 }
+        assertThat(synthesizedScheme5).isNotNull
+        assertThat(synthesizedScheme5?.name).isEqualTo("Recovered Scheme 5")
+        assertThat(synthesizedScheme5?.isBuiltIn).isFalse()
+        assertThat(synthesizedScheme5?.description).contains("Auto-generated during migration")
+
+        val synthesizedScheme7 = transformed.colorSchemes.find { it.id == 7 }
+        assertThat(synthesizedScheme7).isNotNull
+        assertThat(synthesizedScheme7?.name).isEqualTo("Recovered Scheme 7")
+        assertThat(synthesizedScheme7?.isBuiltIn).isFalse()
+
+        assertThat(transformed.colorPalettes).hasSize(5)
+    }
+
     private fun createTestHost(
         id: Long,
         nickname: String
-    ) = org.connectbot.data.entity.Host(
+    ) = Host(
         id = id,
         nickname = nickname,
         protocol = "ssh",
@@ -233,7 +277,7 @@ class DatabaseMigratorTest {
     private fun createTestPubkey(
         id: Long,
         nickname: String
-    ) = org.connectbot.data.entity.Pubkey(
+    ) = Pubkey(
         id = id,
         nickname = nickname,
         type = "RSA",
@@ -243,8 +287,28 @@ class DatabaseMigratorTest {
         startup = false,
         confirmation = false,
         createdDate = System.currentTimeMillis(),
-        storageType = org.connectbot.data.entity.KeyStorageType.EXPORTABLE,
+        storageType = KeyStorageType.EXPORTABLE,
         allowBackup = true,
         keystoreAlias = null
+    )
+
+    private fun createTestColorScheme(
+        id: Int,
+        name: String
+    ) = ColorScheme(
+        id = id,
+        name = name,
+        isBuiltIn = true,
+        description = "Test color scheme"
+    )
+
+    private fun createTestColorPalette(
+        schemeId: Int,
+        colorIndex: Int,
+        color: Int
+    ) = ColorPalette(
+        schemeId = schemeId.toLong(),
+        colorIndex = colorIndex,
+        color = color
     )
 }
