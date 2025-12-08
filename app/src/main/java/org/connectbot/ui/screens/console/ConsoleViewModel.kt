@@ -52,6 +52,7 @@ class ConsoleViewModel(
         viewModelScope.launch {
             terminalManager?.bridgesFlow?.collect { bridges ->
                 updateBridges(bridges)
+                subscribeToActiveBridgeBells(bridges)
             }
         }
 
@@ -59,6 +60,29 @@ class ConsoleViewModel(
         if (hostId != -1L) {
             viewModelScope.launch {
                 ensureBridgeExists()
+            }
+        }
+    }
+
+    private fun subscribeToActiveBridgeBells(bridges: List<TerminalBridge>) {
+        viewModelScope.launch {
+            bridges.forEach { bridge ->
+                launch {
+                    bridge.bellEvents.collect {
+                        val currentIndex = _uiState.value.currentBridgeIndex
+                        val currentBridge = _uiState.value.bridges.getOrNull(currentIndex)
+
+                        if (currentBridge == bridge) {
+                            // The bridge is visible, play the beep
+                            terminalManager?.playBeep()
+                        } else {
+                            // The bridge is not visible, send a notification
+                            currentBridge?.host?.let {
+                                terminalManager?.sendActivityNotification(it)
+                            }
+                        }
+                    }
+                }
             }
         }
     }

@@ -25,8 +25,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
@@ -83,6 +86,9 @@ class TerminalBridge {
      * Callback invoked when text input dialog is requested (e.g., from camera button)
      */
     var onTextInputRequested: (() -> Unit)? = null
+
+    private val _bellEvents = MutableSharedFlow<Unit>(replay = 0, extraBufferCapacity = 10)
+    val bellEvents: SharedFlow<Unit> = _bellEvents.asSharedFlow()
 
     private var disconnected = false
     private var awaitingClose = false
@@ -164,8 +170,10 @@ class TerminalBridge {
                 }
             },
             onBell = {
-                manager.playBeep()
-                // Note: We always play beep now since parent view is deprecated
+                scope.launch {
+                    _bellEvents.emit(Unit)
+                }
+                manager.sendActivityNotification(host)
             },
             onResize = {
                 transport?.setDimensions(it.columns, it.rows, 0, 0)
