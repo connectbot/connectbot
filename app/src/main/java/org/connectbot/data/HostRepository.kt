@@ -282,6 +282,68 @@ class HostRepository @Inject constructor(
     }
 
     // ============================================================================
+    // Export/Import Operations
+    // ============================================================================
+
+    /**
+     * Export all hosts and their port forwards to JSON string.
+     *
+     * @param pretty If true, format JSON with indentation
+     * @return JSON string containing all host configurations
+     */
+    suspend fun exportHostsToJson(pretty: Boolean = true): String {
+        val hosts = hostDao.getAll()
+        val portForwardsMap = mutableMapOf<Long, List<PortForward>>()
+
+        hosts.forEach { host ->
+            val portForwards = portForwardDao.getByHost(host.id)
+            if (portForwards.isNotEmpty()) {
+                portForwardsMap[host.id] = portForwards
+            }
+        }
+
+        val config = HostConfigJson.fromHosts(hosts, portForwardsMap)
+        return config.toJson(pretty)
+    }
+
+    /**
+     * Import hosts from JSON string.
+     * Hosts with duplicate nicknames will be skipped.
+     *
+     * @param jsonString The JSON string containing host configurations
+     * @return Pair of (imported count, skipped count)
+     * @throws org.json.JSONException if JSON is invalid
+     * @throws IllegalArgumentException if schema is invalid
+     */
+    suspend fun importHostsFromJson(jsonString: String): Pair<Int, Int> {
+        val config = HostConfigJson.fromJson(jsonString)
+        val (hosts, portForwardsMap) = config.toHosts()
+
+        var importedCount = 0
+        var skippedCount = 0
+
+        val existingHosts = hostDao.getAll()
+        val existingNicknames = existingHosts.map { it.nickname }.toSet()
+
+        hosts.forEachIndexed { index, host ->
+            if (host.nickname in existingNicknames) {
+                skippedCount++
+            } else {
+                val savedHost = saveHost(host)
+                importedCount++
+
+                // Save port forwards for this host
+                portForwardsMap[index]?.forEach { pf ->
+                    val pfWithHostId = pf.copy(hostId = savedHost.id)
+                    portForwardDao.insert(pfWithHostId)
+                }
+            }
+        }
+
+        return Pair(importedCount, skippedCount)
+    }
+
+    // ============================================================================
     // Blocking Methods for Java Interop
     // ============================================================================
 

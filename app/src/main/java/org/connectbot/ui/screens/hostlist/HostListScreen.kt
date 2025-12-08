@@ -18,6 +18,8 @@
 package org.connectbot.ui.screens.hostlist
 
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -64,6 +66,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -73,13 +76,14 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
+import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.theme.ConnectBotTheme
-import androidx.core.graphics.toColorInt
 
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
@@ -107,12 +111,84 @@ fun HostListScreen(
     }
 
     val uiState by viewModel.uiState.collectAsState()
+    val scope = rememberCoroutineScope()
+
+    // File picker for export
+    val exportLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("application/json")
+    ) { uri ->
+        if (uri != null && uiState.exportedJson != null) {
+            scope.launch {
+                try {
+                    context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+                        outputStream.write(uiState.exportedJson!!.toByteArray())
+                    }
+                    val hostCount = uiState.hosts.size
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.export_hosts_success, hostCount),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.export_hosts_failed, e.message),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                viewModel.clearExportedJson()
+            }
+        }
+    }
+
+    // File picker for import
+    val importLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        if (uri != null) {
+            scope.launch {
+                try {
+                    val jsonString = context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                        inputStream.bufferedReader().readText()
+                    }
+                    if (jsonString != null) {
+                        viewModel.importHosts(jsonString)
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.import_hosts_failed, e.message),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
 
     // Show errors as Toast notifications
     LaunchedEffect(uiState.error) {
         uiState.error?.let { errorMessage ->
             Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
             viewModel.clearError()
+        }
+    }
+
+    // Handle export result - launch file picker when JSON is ready
+    LaunchedEffect(uiState.exportedJson) {
+        if (uiState.exportedJson != null) {
+            exportLauncher.launch(context.getString(R.string.export_hosts_filename))
+        }
+    }
+
+    // Handle import result
+    LaunchedEffect(uiState.importResult) {
+        uiState.importResult?.let { result ->
+            Toast.makeText(
+                context,
+                context.getString(R.string.import_hosts_success, result.imported, result.skipped),
+                Toast.LENGTH_SHORT
+            ).show()
+            viewModel.clearImportResult()
         }
     }
 
@@ -132,6 +208,8 @@ fun HostListScreen(
         onDeleteHost = viewModel::deleteHost,
         onDisconnectHost = viewModel::disconnectHost,
         onDisconnectAll = viewModel::disconnectAll,
+        onExportHosts = viewModel::exportHosts,
+        onImportHosts = { importLauncher.launch(arrayOf("application/json")) },
         modifier = modifier
     )
 }
@@ -154,6 +232,8 @@ fun HostListScreenContent(
     onDeleteHost: (Host) -> Unit,
     onDisconnectHost: (Host) -> Unit,
     onDisconnectAll: () -> Unit,
+    onExportHosts: () -> Unit = {},
+    onImportHosts: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var showMenu by remember { mutableStateOf(false) }
@@ -222,6 +302,20 @@ fun HostListScreenContent(
                                 onClick = {
                                     showMenu = false
                                     onNavigateToPubkeys()
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.list_menu_export_hosts)) },
+                                onClick = {
+                                    showMenu = false
+                                    onExportHosts()
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.list_menu_import_hosts)) },
+                                onClick = {
+                                    showMenu = false
+                                    onImportHosts()
                                 }
                             )
                             DropdownMenuItem(

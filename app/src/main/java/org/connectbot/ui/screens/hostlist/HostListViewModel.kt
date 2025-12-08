@@ -50,7 +50,14 @@ data class HostListUiState(
     val connectionStates: Map<Long, ConnectionState> = emptyMap(),
     val isLoading: Boolean = false,
     val error: String? = null,
-    val sortedByColor: Boolean = false
+    val sortedByColor: Boolean = false,
+    val exportedJson: String? = null,
+    val importResult: ImportResult? = null
+)
+
+data class ImportResult(
+    val imported: Int,
+    val skipped: Int
 )
 
 @HiltViewModel
@@ -219,5 +226,44 @@ class HostListViewModel @Inject constructor(
 
     fun clearError() {
         _uiState.update { it.copy(error = null) }
+    }
+
+    fun exportHosts() {
+        viewModelScope.launch {
+            try {
+                val json = withContext(Dispatchers.IO) {
+                    repository.exportHostsToJson()
+                }
+                _uiState.update { it.copy(exportedJson = json) }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(error = e.message ?: "Failed to export hosts")
+                }
+            }
+        }
+    }
+
+    fun clearExportedJson() {
+        _uiState.update { it.copy(exportedJson = null) }
+    }
+
+    fun importHosts(jsonString: String) {
+        viewModelScope.launch {
+            try {
+                val (imported, skipped) = withContext(Dispatchers.IO) {
+                    repository.importHostsFromJson(jsonString)
+                }
+                _uiState.update { it.copy(importResult = ImportResult(imported, skipped)) }
+                loadHosts()
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(error = e.message ?: "Failed to import hosts")
+                }
+            }
+        }
+    }
+
+    fun clearImportResult() {
+        _uiState.update { it.copy(importResult = null) }
     }
 }
