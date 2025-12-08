@@ -298,6 +298,10 @@ class DatabaseMigrator(
     }
 
     private fun validateLegacyData(data: LegacyData) {
+        val hostIds = data.hosts.map { it.id }.toSet()
+        val pubkeyIds = data.pubkeys.map { it.id }.toSet()
+        val colorSchemeIds = data.colorSchemes.map { it.id }.toSet()
+
         // Check for duplicate host nicknames (will be fixed in transformToRoomEntities)
         val hostNicknames = data.hosts.map { it.nickname }
         val duplicateHosts = hostNicknames.groupingBy { it }.eachCount().filter { it.value > 1 }
@@ -315,27 +319,117 @@ class DatabaseMigrator(
         }
 
         // Validate port forwards reference valid hosts
-        val hostIds = data.hosts.map { it.id }.toSet()
         val invalidPortForwards = data.portForwards.filter { it.hostId !in hostIds }
         if (invalidPortForwards.isNotEmpty()) {
             val warning = "Found ${invalidPortForwards.size} port forward(s) referencing non-existent hosts. These will be skipped."
             logWarning(warning)
         }
+
+        // Validate known hosts with hostId reference valid hosts (will be cleaned in transformToRoomEntities)
+        val invalidKnownHosts = data.knownHosts.filter { it.hostId != null && it.hostId !in hostIds }
+        if (invalidKnownHosts.isNotEmpty()) {
+            val warning = "Found ${invalidKnownHosts.size} known host(s) referencing non-existent hosts. These will have their host reference removed."
+            logWarning(warning)
+        }
+
+        // Validate hosts reference valid pubkeys (will be fixed in transformToRoomEntities)
+        val hostsWithInvalidPubkeys = data.hosts.filter { it.pubkeyId > 0 && it.pubkeyId !in pubkeyIds }
+        if (hostsWithInvalidPubkeys.isNotEmpty()) {
+            val warning = "Found ${hostsWithInvalidPubkeys.size} host(s) referencing non-existent SSH keys. References will be cleared."
+            logWarning(warning)
+        }
+
+        // Validate hosts reference valid color schemes (will be fixed in transformToRoomEntities)
+        val hostsWithInvalidColorSchemes = data.hosts.filter { it.colorSchemeId > 0 && it.colorSchemeId.toInt() !in colorSchemeIds }
+        if (hostsWithInvalidColorSchemes.isNotEmpty()) {
+            val warning = "Found ${hostsWithInvalidColorSchemes.size} host(s) referencing non-existent color schemes. Will use default color scheme."
+            logWarning(warning)
+        }
     }
 
     private fun transformToRoomEntities(legacy: LegacyData): TransformedData {
+        val hostIds = legacy.hosts.map { it.id }.toSet()
+        val pubkeyIds = legacy.pubkeys.map { it.id }.toSet()
+        val colorSchemeIds = legacy.colorSchemes.map { it.id }.toSet()
+
         // Fix duplicate host nicknames by appending " (1)", " (2)", etc.
-        val fixedHosts = makeNicknamesUnique(legacy.hosts) { it.nickname }
+        val hostsWithUniqueNicknames = makeNicknamesUnique(legacy.hosts) { it.nickname }
             .map { (host, uniqueNickname) -> host.copy(nickname = uniqueNickname) }
+
+        // Fix hosts with invalid foreign key references
+        val fixedHosts = hostsWithUniqueNicknames.map { host ->
+            var fixedHost = host
+
+            // Clear invalid pubkey references
+            if (fixedHost.pubkeyId > 0 && fixedHost.pubkeyId !in pubkeyIds) {
+                logDebug("Clearing invalid pubkey reference (ID ${fixedHost.pubkeyId}) for host '${fixedHost.nickname}'")
+                fixedHost = fixedHost.copy(pubkeyId = -1L)
+            }
+
+            // Reset invalid color scheme references to default
+            if (fixedHost.colorSchemeId > 0 && fixedHost.colorSchemeId.toInt() !in colorSchemeIds) {
+                logDebug("Resetting invalid color scheme reference (ID ${fixedHost.colorSchemeId}) to default for host '${fixedHost.nickname}'")
+                fixedHost = fixedHost.copy(colorSchemeId = 1L)
+            }
+
+            fixedHost
+        }
 
         // Fix duplicate pubkey nicknames by appending " (1)", " (2)", etc.
         val fixedPubkeys = makeNicknamesUnique(legacy.pubkeys) { it.nickname }
             .map { (pubkey, uniqueNickname) -> pubkey.copy(nickname = uniqueNickname) }
 
+        // Filter out invalid port forwards
+        val validPortForwards = legacy.portForwards.filter { portForward ->
+            if (portForward.hostId !in hostIds) {
+                logDebug("Skipping invalid port forward (host ID ${portForward.hostId})")
+                false
+            } else {
+                true
+            }
+        }
+
+        // Clean up known hosts with invalid host references
+        val cleanedKnownHosts = legacy.knownHosts.map { knownHost ->
+            if (knownHost.hostId != null && knownHost.hostId !in hostIds) {
+                logDebug("Removing invalid host reference (ID ${knownHost.hostId}) from known host for ${knownHost.hostname}:${knownHost.port}")
+                knownHost.copy(hostId = null)
+            } else {
+                knownHost
+            }
+        }
+
+        // Log summary of recovery actions
+        val skippedPortForwards = legacy.portForwards.size - validPortForwards.size
+        if (skippedPortForwards > 0) {
+            logDebug("Recovery: Skipped $skippedPortForwards invalid port forward(s)")
+        }
+
+        val cleanedKnownHostsCount = cleanedKnownHosts.count { it.hostId == null && legacy.knownHosts.find { kh -> kh.id == it.id }?.hostId != null }
+        if (cleanedKnownHostsCount > 0) {
+            logDebug("Recovery: Cleaned $cleanedKnownHostsCount known host(s) with invalid references")
+        }
+
+        val hostsWithClearedPubkeys = fixedHosts.count { host ->
+            val original = legacy.hosts.find { h -> h.id == host.id }
+            original != null && original.pubkeyId != host.pubkeyId
+        }
+        if (hostsWithClearedPubkeys > 0) {
+            logDebug("Recovery: Cleared invalid pubkey references from $hostsWithClearedPubkeys host(s)")
+        }
+
+        val hostsWithResetColorSchemes = fixedHosts.count { host ->
+            val original = legacy.hosts.find { h -> h.id == host.id }
+            original != null && original.colorSchemeId != host.colorSchemeId
+        }
+        if (hostsWithResetColorSchemes > 0) {
+            logDebug("Recovery: Reset invalid color scheme references for $hostsWithResetColorSchemes host(s)")
+        }
+
         return TransformedData(
             hosts = fixedHosts,
-            portForwards = legacy.portForwards,
-            knownHosts = legacy.knownHosts,
+            portForwards = validPortForwards,
+            knownHosts = cleanedKnownHosts,
             colorSchemes = legacy.colorSchemes,
             colorPalettes = legacy.colorPalettes,
             pubkeys = fixedPubkeys
@@ -422,20 +516,25 @@ class DatabaseMigrator(
 
         // Verify counts match
         val hostCount = roomDatabase.hostDao().getAll().size
-        if (hostCount != legacy.hosts.size) {
-            errors.add("Host count mismatch: expected ${legacy.hosts.size}, got $hostCount")
+        if (hostCount != transformed.hosts.size) {
+            errors.add("Host count mismatch: expected ${transformed.hosts.size}, got $hostCount")
         }
 
         val pubkeyCount = roomDatabase.pubkeyDao().getAll().size
-        if (pubkeyCount != legacy.pubkeys.size) {
-            errors.add("Pubkey count mismatch: expected ${legacy.pubkeys.size}, got $pubkeyCount")
+        if (pubkeyCount != transformed.pubkeys.size) {
+            errors.add("Pubkey count mismatch: expected ${transformed.pubkeys.size}, got $pubkeyCount")
         }
 
         val portForwardCount = roomDatabase.hostDao().getAll().sumOf { host ->
             roomDatabase.portForwardDao().getByHost(host.id).size
         }
-        if (portForwardCount != legacy.portForwards.size) {
-            errors.add("Port forward count mismatch: expected ${legacy.portForwards.size}, got $portForwardCount")
+        if (portForwardCount != transformed.portForwards.size) {
+            errors.add("Port forward count mismatch: expected ${transformed.portForwards.size}, got $portForwardCount")
+        }
+
+        val knownHostCount = roomDatabase.knownHostDao().getAll().size
+        if (knownHostCount != transformed.knownHosts.size) {
+            errors.add("Known host count mismatch: expected ${transformed.knownHosts.size}, got $knownHostCount")
         }
 
         return VerificationResult(
