@@ -54,7 +54,8 @@ enum class ExportFormat {
 
 data class PendingExport(
     val pubkey: Pubkey,
-    val format: ExportFormat
+    val format: ExportFormat,
+    val password: String? = null
 )
 
 data class PubkeyListUiState(
@@ -242,18 +243,24 @@ class PubkeyListViewModel @Inject constructor(
         }
     }
 
-    fun copyPrivateKeyOpenSSH(pubkey: Pubkey) {
+    fun copyPrivateKeyOpenSSH(pubkey: Pubkey, onPasswordRequired: (Pubkey, (String) -> Unit) -> Unit) {
+        val isImported = pubkey.type == "IMPORTED"
+
+        if (pubkey.encrypted && !isImported) {
+            // Encrypted key - request password
+            onPasswordRequired(pubkey) { password ->
+                copyPrivateKeyOpenSSHWithPassword(pubkey, password)
+            }
+            return
+        }
+
+        copyPrivateKeyOpenSSHWithPassword(pubkey, null)
+    }
+
+    private fun copyPrivateKeyOpenSSHWithPassword(pubkey: Pubkey, password: String?) {
         viewModelScope.launch {
             try {
                 val isImported = pubkey.type == "IMPORTED"
-
-                if (pubkey.encrypted && !isImported) {
-                    // Encrypted non-imported keys cannot be exported
-                    _uiState.update {
-                        it.copy(error = "Cannot copy encrypted private key. Remove password first.")
-                    }
-                    return@launch
-                }
 
                 val privateKeyString = withContext(Dispatchers.Default) {
                     if (isImported) {
@@ -261,7 +268,8 @@ class PubkeyListViewModel @Inject constructor(
                         String(pubkey.privateKey ?: ByteArray(0))
                     } else {
                         // For all non-imported keys, export in OpenSSH format for compatibility
-                        val pk = PubkeyUtils.decodePrivate(pubkey.privateKey, pubkey.type)
+                        val privateKeyBytes = pubkey.privateKey ?: throw Exception("No private key data")
+                        val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
                         val pub = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
                         pk?.let { PubkeyUtils.exportOpenSSH(it, pub, pubkey.nickname) }
                     }
@@ -270,6 +278,10 @@ class PubkeyListViewModel @Inject constructor(
                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText("Private Key", privateKeyString)
                 clipboard.setPrimaryClip(clip)
+            } catch (e: PubkeyUtils.BadPasswordException) {
+                _uiState.update {
+                    it.copy(error = "Failed to decrypt key: Bad password")
+                }
             } catch (e: Exception) {
                 Log.e("PubkeyListViewModel", "Failed to copy private key", e)
                 _uiState.update {
@@ -282,17 +294,24 @@ class PubkeyListViewModel @Inject constructor(
     /**
      * Copy private key in PKCS#8 PEM format.
      */
-    fun copyPrivateKeyPem(pubkey: Pubkey) {
+    fun copyPrivateKeyPem(pubkey: Pubkey, onPasswordRequired: (Pubkey, (String) -> Unit) -> Unit) {
+        val isImported = pubkey.type == "IMPORTED"
+
+        if (pubkey.encrypted && !isImported) {
+            // Encrypted key - request password
+            onPasswordRequired(pubkey) { password ->
+                copyPrivateKeyPemWithPassword(pubkey, password)
+            }
+            return
+        }
+
+        copyPrivateKeyPemWithPassword(pubkey, null)
+    }
+
+    private fun copyPrivateKeyPemWithPassword(pubkey: Pubkey, password: String?) {
         viewModelScope.launch {
             try {
                 val isImported = pubkey.type == "IMPORTED"
-
-                if (pubkey.encrypted && !isImported) {
-                    _uiState.update {
-                        it.copy(error = "Cannot copy encrypted private key. Remove password first.")
-                    }
-                    return@launch
-                }
 
                 val privateKeyString = withContext(Dispatchers.Default) {
                     if (isImported) {
@@ -300,7 +319,8 @@ class PubkeyListViewModel @Inject constructor(
                         String(pubkey.privateKey ?: ByteArray(0))
                     } else {
                         // For all non-imported keys, export as PKCS#8 PEM
-                        val pk = PubkeyUtils.decodePrivate(pubkey.privateKey, pubkey.type)
+                        val privateKeyBytes = pubkey.privateKey ?: throw Exception("No private key data")
+                        val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
                         pk?.let { PubkeyUtils.exportPEM(it, null) }
                     }
                 }
@@ -308,6 +328,10 @@ class PubkeyListViewModel @Inject constructor(
                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText("Private Key", privateKeyString)
                 clipboard.setPrimaryClip(clip)
+            } catch (e: PubkeyUtils.BadPasswordException) {
+                _uiState.update {
+                    it.copy(error = "Failed to decrypt key: Bad password")
+                }
             } catch (e: Exception) {
                 Log.e("PubkeyListViewModel", "Failed to copy private key (PEM)", e)
                 _uiState.update {
@@ -321,12 +345,15 @@ class PubkeyListViewModel @Inject constructor(
      * Request export of private key in OpenSSH format.
      * This sets the pending export state, which triggers the file picker in the UI.
      */
-    fun requestExportPrivateKeyOpenSSH(pubkey: Pubkey) {
+    fun requestExportPrivateKeyOpenSSH(pubkey: Pubkey, onPasswordRequired: (Pubkey, (String) -> Unit) -> Unit) {
         val isImported = pubkey.type == "IMPORTED"
 
         if (pubkey.encrypted && !isImported) {
-            _uiState.update {
-                it.copy(error = "Cannot export encrypted private key. Remove password first.")
+            // Encrypted key - request password
+            onPasswordRequired(pubkey) { password ->
+                _uiState.update {
+                    it.copy(pendingExport = PendingExport(pubkey, ExportFormat.OPENSSH, password))
+                }
             }
             return
         }
@@ -340,12 +367,15 @@ class PubkeyListViewModel @Inject constructor(
      * Request export of private key in PEM format.
      * This sets the pending export state, which triggers the file picker in the UI.
      */
-    fun requestExportPrivateKeyPem(pubkey: Pubkey) {
+    fun requestExportPrivateKeyPem(pubkey: Pubkey, onPasswordRequired: (Pubkey, (String) -> Unit) -> Unit) {
         val isImported = pubkey.type == "IMPORTED"
 
         if (pubkey.encrypted && !isImported) {
-            _uiState.update {
-                it.copy(error = "Cannot export encrypted private key. Remove password first.")
+            // Encrypted key - request password
+            onPasswordRequired(pubkey) { password ->
+                _uiState.update {
+                    it.copy(pendingExport = PendingExport(pubkey, ExportFormat.PEM, password))
+                }
             }
             return
         }
@@ -385,19 +415,21 @@ class PubkeyListViewModel @Inject constructor(
             try {
                 val pubkey = pending.pubkey
                 val isImported = pubkey.type == "IMPORTED"
+                val password = pending.password
 
                 val privateKeyString = withContext(Dispatchers.Default) {
                     if (isImported) {
                         String(pubkey.privateKey ?: ByteArray(0))
                     } else {
+                        val privateKeyBytes = pubkey.privateKey ?: throw Exception("No private key data")
                         when (pending.format) {
                             ExportFormat.OPENSSH -> {
-                                val pk = PubkeyUtils.decodePrivate(pubkey.privateKey, pubkey.type)
+                                val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
                                 val pub = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
                                 pk?.let { PubkeyUtils.exportOpenSSH(it, pub, pubkey.nickname) }
                             }
                             ExportFormat.PEM -> {
-                                val pk = PubkeyUtils.decodePrivate(pubkey.privateKey, pubkey.type)
+                                val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
                                 pk?.let { PubkeyUtils.exportPEM(it, null) }
                             }
                         }
@@ -421,6 +453,13 @@ class PubkeyListViewModel @Inject constructor(
                 }
 
                 _uiState.update { it.copy(pendingExport = null) }
+            } catch (e: PubkeyUtils.BadPasswordException) {
+                _uiState.update {
+                    it.copy(
+                        error = "Failed to decrypt key: Bad password",
+                        pendingExport = null
+                    )
+                }
             } catch (e: Exception) {
                 Log.e("PubkeyListViewModel", "Failed to export private key", e)
                 _uiState.update {
