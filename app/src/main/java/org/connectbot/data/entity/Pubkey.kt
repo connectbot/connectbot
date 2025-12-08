@@ -73,6 +73,10 @@ data class Pubkey(
     @ColumnInfo(name = "keystore_alias")
     val keystoreAlias: String? = null
 ) {
+    /** Whether this key is stored in Android Keystore with biometric protection */
+    val isBiometric: Boolean
+        get() = storageType == KeyStorageType.ANDROID_KEYSTORE
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

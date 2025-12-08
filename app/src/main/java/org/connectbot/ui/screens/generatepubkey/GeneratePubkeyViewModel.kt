@@ -80,13 +80,9 @@ data class GeneratePubkeyUiState(
                 !nicknameExists &&
                 (useBiometric || !passwordMismatch)
 
-    /** Key types that support biometric protection (RSA and EC only) */
-    val biometricSupportedKeyTypes: List<KeyType>
-        get() = listOf(KeyType.RSA, KeyType.EC)
-
     /** Whether the current key type supports biometric protection */
     val keyTypeSupportsBiometric: Boolean
-        get() = keyType in biometricSupportedKeyTypes
+        get() = BiometricKeyManager.supportsBiometric(keyType)
 }
 
 class GeneratePubkeyViewModel(
@@ -146,7 +142,6 @@ class GeneratePubkeyViewModel(
         }
 
         // Disable biometric if key type doesn't support it
-        val supportsBiometric = keyType == KeyType.RSA || keyType == KeyType.EC
         val currentState = _uiState.value
 
         _uiState.update {
@@ -156,7 +151,7 @@ class GeneratePubkeyViewModel(
                 minBits = keyType.minBits,
                 maxBits = keyType.maxBits,
                 allowBitStrengthChange = allowBitStrengthChange,
-                useBiometric = if (supportsBiometric) currentState.useBiometric else false
+                useBiometric = if (BiometricKeyManager.supportsBiometric(keyType)) currentState.useBiometric else false
             )
         }
     }

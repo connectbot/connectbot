@@ -41,6 +41,8 @@ import org.connectbot.service.TerminalManager
 import org.connectbot.ui.navigation.NavDestinations
 import androidx.core.net.toUri
 
+// TODO: Move back to ComponentActivity when https://issuetracker.google.com/issues/178855209 is fixed.
+//       FragmentActivity is required for BiometricPrompt to find the FragmentManager from Compose context.
 class MainActivity : FragmentActivity() {
     companion object {
         private const val TAG = "CB.MainActivity"

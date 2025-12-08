@@ -499,7 +499,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		val keyPair = KeyPair(publicKey, privateKey)
 
 		// Extract OpenSSH format public key for SSH authentication
-		val sshPubKey = extractOpenSSHPublicKey(publicKey)
+		val sshPubKey = PubkeyUtils.extractOpenSSHPublic(keyPair)
 
 		val keyHolder = KeyHolder()
 		keyHolder.pubkey = pubkey
@@ -511,29 +511,6 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		loadedKeypairs[pubkey.nickname] = keyHolder
 
 		Log.d(TAG, String.format("Added biometric key '%s' to in-memory cache", pubkey.nickname))
-	}
-
-	/**
-	 * Extract OpenSSH format public key from a PublicKey.
-	 */
-	private fun extractOpenSSHPublicKey(publicKey: java.security.PublicKey): ByteArray? {
-		return try {
-			when (publicKey) {
-				is java.security.interfaces.RSAPublicKey -> {
-					com.trilead.ssh2.signature.RSASHA1Verify.get().encodePublicKey(publicKey)
-				}
-				is java.security.interfaces.ECPublicKey -> {
-					com.trilead.ssh2.signature.ECDSASHA2Verify.getVerifierForKey(publicKey).encodePublicKey(publicKey)
-				}
-				else -> {
-					Log.w(TAG, "Unsupported public key type: ${publicKey.algorithm}")
-					null
-				}
-			}
-		} catch (e: Exception) {
-			Log.e(TAG, "Failed to extract OpenSSH public key", e)
-			null
-		}
 	}
 
 	fun removeKey(nickname: String): Boolean {
