@@ -21,6 +21,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.net.Uri
+import android.provider.OpenableColumns
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -46,13 +47,25 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStreamReader
 
+enum class ExportFormat {
+    OPENSSH,
+    PEM
+}
+
+data class PendingExport(
+    val pubkey: Pubkey,
+    val format: ExportFormat
+)
+
 data class PubkeyListUiState(
     val pubkeys: List<Pubkey> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
     val loadedKeyNicknames: Set<String> = emptySet(),
     // Biometric key that needs to be unlocked (triggers BiometricPrompt in UI)
-    val biometricKeyToUnlock: Pubkey? = null
+    val biometricKeyToUnlock: Pubkey? = null,
+    // Key pending export to file (triggers file picker in UI)
+    val pendingExport: PendingExport? = null
 )
 
 @HiltViewModel
@@ -304,6 +317,122 @@ class PubkeyListViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Request export of private key in OpenSSH format.
+     * This sets the pending export state, which triggers the file picker in the UI.
+     */
+    fun requestExportPrivateKeyOpenSSH(pubkey: Pubkey) {
+        val isImported = pubkey.type == "IMPORTED"
+
+        if (pubkey.encrypted && !isImported) {
+            _uiState.update {
+                it.copy(error = "Cannot export encrypted private key. Remove password first.")
+            }
+            return
+        }
+
+        _uiState.update {
+            it.copy(pendingExport = PendingExport(pubkey, ExportFormat.OPENSSH))
+        }
+    }
+
+    /**
+     * Request export of private key in PEM format.
+     * This sets the pending export state, which triggers the file picker in the UI.
+     */
+    fun requestExportPrivateKeyPem(pubkey: Pubkey) {
+        val isImported = pubkey.type == "IMPORTED"
+
+        if (pubkey.encrypted && !isImported) {
+            _uiState.update {
+                it.copy(error = "Cannot export encrypted private key. Remove password first.")
+            }
+            return
+        }
+
+        _uiState.update {
+            it.copy(pendingExport = PendingExport(pubkey, ExportFormat.PEM))
+        }
+    }
+
+    /**
+     * Clear the pending export state (called when file picker is cancelled).
+     */
+    fun cancelExport() {
+        _uiState.update { it.copy(pendingExport = null) }
+    }
+
+    /**
+     * Get the suggested filename for the current pending export.
+     */
+    fun getExportFilename(): String {
+        val pending = _uiState.value.pendingExport ?: return "id_key"
+        val nickname = pending.pubkey.nickname.replace(Regex("[^a-zA-Z0-9_-]"), "_")
+        return nickname
+    }
+
+    /**
+     * Export the pending key to the given URI.
+     */
+    fun exportKeyToUri(uri: Uri) {
+        val pending = _uiState.value.pendingExport
+        if (pending == null) {
+            _uiState.update { it.copy(error = "No key pending export") }
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                val pubkey = pending.pubkey
+                val isImported = pubkey.type == "IMPORTED"
+
+                val privateKeyString = withContext(Dispatchers.Default) {
+                    if (isImported) {
+                        String(pubkey.privateKey ?: ByteArray(0))
+                    } else {
+                        when (pending.format) {
+                            ExportFormat.OPENSSH -> {
+                                val pk = PubkeyUtils.decodePrivate(pubkey.privateKey, pubkey.type)
+                                val pub = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
+                                pk?.let { PubkeyUtils.exportOpenSSH(it, pub, pubkey.nickname) }
+                            }
+                            ExportFormat.PEM -> {
+                                val pk = PubkeyUtils.decodePrivate(pubkey.privateKey, pubkey.type)
+                                pk?.let { PubkeyUtils.exportPEM(it, null) }
+                            }
+                        }
+                    }
+                }
+
+                if (privateKeyString == null) {
+                    _uiState.update {
+                        it.copy(
+                            error = "Failed to export private key",
+                            pendingExport = null
+                        )
+                    }
+                    return@launch
+                }
+
+                withContext(Dispatchers.IO) {
+                    context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+                        outputStream.write(privateKeyString.toByteArray(Charsets.UTF_8))
+                    } ?: throw Exception("Could not open file for writing")
+                }
+
+                _uiState.update { it.copy(pendingExport = null) }
+            } catch (e: Exception) {
+                Log.e("PubkeyListViewModel", "Failed to export private key", e)
+                _uiState.update {
+                    it.copy(
+                        error = "Failed to export private key: ${e.message}",
+                        pendingExport = null
+                    )
+                }
+            }
+        }
+    }
+
     fun importKeyFromUri(uri: Uri) {
         viewModelScope.launch {
             try {
@@ -328,7 +457,7 @@ class PubkeyListViewModel @Inject constructor(
     }
 
     private fun readKeyFromUri(uri: Uri): Pubkey? {
-        val nickname = uri.lastPathSegment ?: "imported-key"
+        val nickname = getFilenameFromUri(uri) ?: "imported-key"
 
         // Read key data from URI
         val keyData = try {
@@ -358,26 +487,11 @@ class PubkeyListViewModel @Inject constructor(
             return null
         }
 
-        // Try to parse as PKCS#8 first (using PubkeyUtils)
-        val keyPair = parsePKCS8Key(keyData)
-        if (keyPair != null) {
-            val algorithm = convertAlgorithmName(keyPair.private.algorithm)
-            return Pubkey(
-                id = 0,
-                nickname = nickname,
-                type = algorithm,
-                encrypted = false,
-                startup = false,
-                confirmation = false,
-                createdDate = System.currentTimeMillis(),
-                privateKey = keyPair.private.encoded,
-                publicKey = keyPair.public.encoded
-            )
-        }
+        val keyString = String(keyData)
 
-        // Try to parse as PEM (using PEMDecoder from trilead)
+        // Try to parse using PEMDecoder first (handles OpenSSH, traditional PEM formats)
         try {
-            val struct = PEMDecoder.parsePEM(String(keyData).toCharArray())
+            val struct = PEMDecoder.parsePEM(keyString.toCharArray())
             val encrypted = PEMDecoder.isPEMEncrypted(struct)
 
             if (!encrypted) {
@@ -410,18 +524,38 @@ class PubkeyListViewModel @Inject constructor(
                 )
             }
         } catch (e: Exception) {
-            Log.e("PubkeyListViewModel", "Failed to parse PEM key", e)
-            return null
+            Log.d("PubkeyListViewModel", "PEMDecoder failed, trying PKCS#8", e)
         }
+
+        // Fallback: Try to parse as PKCS#8 format (-----BEGIN PRIVATE KEY-----)
+        // Note: This only supports RSA, DSA, and EC keys, not Ed25519
+        val keyPair = parsePKCS8Key(keyData)
+        if (keyPair != null) {
+            val algorithm = convertAlgorithmName(keyPair.private.algorithm)
+            return Pubkey(
+                id = 0,
+                nickname = nickname,
+                type = algorithm,
+                encrypted = false,
+                startup = false,
+                confirmation = false,
+                createdDate = System.currentTimeMillis(),
+                privateKey = keyPair.private.encoded,
+                publicKey = keyPair.public.encoded
+            )
+        }
+
+        Log.e("PubkeyListViewModel", "Failed to parse key in any supported format")
+        return null
     }
 
     /**
-     * Parse a PKCS#8 format key using PubkeyUtils.
+     * Parse a PKCS#8 format key (-----BEGIN PRIVATE KEY-----) using PubkeyUtils.
      * This handles the PEM armor stripping and Base64 decoding.
      *
      * Note: PubkeyUtils.recoverKeyPair() only supports RSA, DSA, and EC keys.
-     * Ed25519 keys are not supported via PKCS#8 format and must use the PEM path instead.
-     * This is acceptable since Ed25519 keys are typically distributed in OpenSSH/PEM format.
+     * Ed25519 keys are not supported via PKCS#8 format.
+     * This is used as a fallback after PEMDecoder fails.
      */
     private fun parsePKCS8Key(keyData: ByteArray): java.security.KeyPair? {
         val reader = BufferedReader(InputStreamReader(ByteArrayInputStream(keyData)))
@@ -450,6 +584,24 @@ class PubkeyListViewModel @Inject constructor(
         }
 
         return null
+    }
+
+    /**
+     * Get the display filename from a content URI.
+     */
+    private fun getFilenameFromUri(uri: Uri): String? {
+        var filename: String? = null
+
+        context.contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                if (nameIndex >= 0) {
+                    filename = cursor.getString(nameIndex)
+                }
+            }
+        }
+
+        return filename
     }
 
     /**
