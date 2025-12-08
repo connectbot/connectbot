@@ -82,7 +82,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
-import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.components.rememberBiometricPromptState
@@ -327,9 +326,8 @@ private fun PubkeyListItem(
             )
         },
         leadingContent = {
-            val isBiometric = pubkey.storageType == KeyStorageType.ANDROID_KEYSTORE
             val icon = when {
-                isBiometric -> Icons.Outlined.Fingerprint
+                pubkey.isBiometric -> Icons.Outlined.Fingerprint
                 pubkey.encrypted -> Icons.Outlined.Lock
                 else -> Icons.Outlined.LockOpen
             }
@@ -353,7 +351,7 @@ private fun PubkeyListItem(
                 Icon(
                     imageVector = icon,
                     contentDescription = when {
-                        isBiometric -> stringResource(R.string.pubkey_biometric_description_icon)
+                        pubkey.isBiometric -> stringResource(R.string.pubkey_biometric_description_icon)
                         pubkey.encrypted -> stringResource(R.string.pubkey_encrypted_description)
                         else -> stringResource(R.string.pubkey_not_encrypted_description)
                     },
@@ -398,7 +396,6 @@ private fun PubkeyListItem(
                     )
 
                     // Copy private key (not available for Keystore keys)
-                    val isKeystoreKey = pubkey.storageType == KeyStorageType.ANDROID_KEYSTORE
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.pubkey_copy_private)) },
                         onClick = {
@@ -408,7 +405,7 @@ private fun PubkeyListItem(
                         leadingIcon = {
                             Icon(Icons.Default.ContentCopy, null)
                         },
-                        enabled = !isKeystoreKey && (!pubkey.encrypted || isImported)
+                        enabled = !pubkey.isBiometric && (!pubkey.encrypted || isImported)
                     )
 
                     // Delete

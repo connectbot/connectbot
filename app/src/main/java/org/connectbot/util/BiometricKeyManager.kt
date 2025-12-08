@@ -24,6 +24,7 @@ import android.security.keystore.KeyProperties
 import android.util.Log
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
+import org.connectbot.ui.screens.generatepubkey.KeyType
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.PrivateKey
@@ -52,6 +53,14 @@ class BiometricKeyManager(private val context: Context) {
 
         // Supported key types for biometric protection
         val SUPPORTED_KEY_TYPES = listOf("RSA", "EC")
+
+        /**
+         * Check if a KeyType supports biometric protection.
+         * Only RSA and EC keys can be stored in Android Keystore with biometric auth.
+         */
+        fun supportsBiometric(keyType: KeyType): Boolean {
+            return keyType == KeyType.RSA || keyType == KeyType.EC
+        }
     }
 
     private val keyStore: KeyStore = KeyStore.getInstance(KEYSTORE_PROVIDER).apply {
@@ -263,11 +272,19 @@ class BiometricKeyManager(private val context: Context) {
 
     /**
      * Get the signature algorithm for a key type.
+     *
+     * @param keyType The key type ("RSA" or "EC")
+     * @param keySize The key size in bits (used to determine hash algorithm for EC keys)
+     * @return The signature algorithm string
      */
-    fun getSignatureAlgorithm(keyType: String): String {
+    fun getSignatureAlgorithm(keyType: String, keySize: Int = 256): String {
         return when (keyType) {
             "RSA" -> "SHA256withRSA"
-            "EC" -> "SHA256withECDSA"
+            "EC" -> when (keySize) {
+                521 -> "SHA512withECDSA"
+                384 -> "SHA384withECDSA"
+                else -> "SHA256withECDSA" // P-256 and any other size
+            }
             else -> throw IllegalArgumentException("Unsupported key type: $keyType")
         }
     }

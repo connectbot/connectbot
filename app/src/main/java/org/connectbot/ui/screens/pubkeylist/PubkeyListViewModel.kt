@@ -34,7 +34,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.data.PubkeyRepository
-import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.service.TerminalManager
 import org.connectbot.util.BiometricKeyManager
@@ -124,7 +123,7 @@ class PubkeyListViewModel(
             updateLoadedKeys()
         } else {
             // Check if this is a biometric key
-            if (pubkey.storageType == KeyStorageType.ANDROID_KEYSTORE) {
+            if (pubkey.isBiometric) {
                 // Set the key to unlock - UI will show BiometricPrompt
                 _uiState.update { it.copy(biometricKeyToUnlock = pubkey) }
             } else if (pubkey.encrypted) {
