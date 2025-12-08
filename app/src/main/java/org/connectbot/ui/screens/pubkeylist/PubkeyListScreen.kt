@@ -182,6 +182,19 @@ fun PubkeyListScreen(
         }
     }
 
+    // Password dialog for importing encrypted keys
+    val pendingImport = uiState.pendingImport
+    if (pendingImport != null) {
+        ImportPasswordDialog(
+            keyType = pendingImport.keyType,
+            nickname = pendingImport.nickname,
+            onDismiss = { viewModel.cancelImport() },
+            onPasswordProvided = { password ->
+                viewModel.completeImportWithPassword(password)
+            }
+        )
+    }
+
     PubkeyListScreenContent(
         uiState = uiState,
         snackbarHostState = snackbarHostState,
@@ -202,6 +215,9 @@ fun PubkeyListScreen(
         },
         onExportPrivateKeyPem = { pubkey, onPasswordRequired ->
             viewModel.requestExportPrivateKeyPem(pubkey, onPasswordRequired)
+        },
+        onExportPrivateKeyEncrypted = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
+            viewModel.requestExportPrivateKeyEncrypted(pubkey, onPasswordRequired, onExportPassphraseRequired)
         },
         onImportKey = {
             filePickerLauncher.launch(arrayOf("*/*"))
@@ -225,6 +241,7 @@ fun PubkeyListScreenContent(
     onCopyPrivateKeyPem: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyOpenSSH: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyPem: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onExportPrivateKeyEncrypted: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onImportKey: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -328,6 +345,9 @@ fun PubkeyListScreenContent(
                                 onExportPrivateKeyPem = { onPasswordRequired ->
                                     onExportPrivateKeyPem(pubkey, onPasswordRequired)
                                 },
+                                onExportPrivateKeyEncrypted = { onPasswordRequired, onExportPassphraseRequired ->
+                                    onExportPrivateKeyEncrypted(pubkey, onPasswordRequired, onExportPassphraseRequired)
+                                },
                                 onEdit = { onNavigateToEdit(pubkey) },
                                 onClick = { onToggleKeyLoaded(pubkey, it) }
                             )
@@ -350,14 +370,17 @@ private fun PubkeyListItem(
     onCopyPrivateKeyPem: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyOpenSSH: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyPem: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onExportPrivateKeyEncrypted: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onEdit: () -> Unit,
     onClick: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showPasswordDialog by remember { mutableStateOf(false) }
+    var showExportPassphraseDialog by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
     var passwordCallback by remember { mutableStateOf<((String) -> Unit)?>(null) }
+    var exportPassphraseCallback by remember { mutableStateOf<((String) -> Unit)?>(null) }
 
     ListItem(
         headlineContent = {
@@ -526,6 +549,30 @@ private fun PubkeyListItem(
                         )
                     }
 
+                    // Export private key to file with encryption (for non-imported keys)
+                    if (!isImported) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.pubkey_export_private_encrypted)) },
+                            onClick = {
+                                showMenu = false
+                                onExportPrivateKeyEncrypted(
+                                    { _, callback ->
+                                        passwordCallback = callback
+                                        showPasswordDialog = true
+                                    },
+                                    { _, callback ->
+                                        exportPassphraseCallback = callback
+                                        showExportPassphraseDialog = true
+                                    }
+                                )
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.Lock, null)
+                            },
+                            enabled = !pubkey.isBiometric
+                        )
+                    }
+
                     // Delete
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.pubkey_delete)) },
@@ -576,6 +623,21 @@ private fun PubkeyListItem(
             onConfirm = {
                 showDeleteDialog = false
                 onDelete()
+            }
+        )
+    }
+
+    // Export passphrase dialog
+    if (showExportPassphraseDialog && exportPassphraseCallback != null) {
+        ExportPassphraseDialog(
+            onDismiss = {
+                showExportPassphraseDialog = false
+                exportPassphraseCallback = null
+            },
+            onPassphraseProvided = { passphrase ->
+                exportPassphraseCallback?.invoke(passphrase)
+                showExportPassphraseDialog = false
+                exportPassphraseCallback = null
             }
         )
     }
@@ -653,6 +715,129 @@ private fun PubkeyDeleteDialog(
     )
 }
 
+@Composable
+private fun ImportPasswordDialog(
+    keyType: String,
+    nickname: String,
+    onDismiss: () -> Unit,
+    onPasswordProvided: (String) -> Unit
+) {
+    var password by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = { Icon(Icons.Default.Lock, contentDescription = null) },
+        title = { Text(stringResource(R.string.pubkey_import_encrypted_title)) },
+        text = {
+            Column {
+                Text(
+                    text = stringResource(R.string.pubkey_import_encrypted_message, nickname, keyType),
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text(stringResource(R.string.prompt_password)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { onPasswordProvided(password) },
+                enabled = password.isNotEmpty()
+            ) {
+                Text(stringResource(R.string.pubkey_import_button))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        }
+    )
+}
+
+@Composable
+private fun ExportPassphraseDialog(
+    onDismiss: () -> Unit,
+    onPassphraseProvided: (String) -> Unit
+) {
+    var passphrase by remember { mutableStateOf("") }
+    var confirmPassphrase by remember { mutableStateOf("") }
+    var showError by remember { mutableStateOf(false) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = { Icon(Icons.Default.Lock, contentDescription = null) },
+        title = { Text(stringResource(R.string.pubkey_export_set_passphrase)) },
+        text = {
+            Column {
+                Text(
+                    text = stringResource(R.string.pubkey_export_passphrase_message),
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                OutlinedTextField(
+                    value = passphrase,
+                    onValueChange = {
+                        passphrase = it
+                        showError = false
+                    },
+                    label = { Text(stringResource(R.string.prompt_password)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = confirmPassphrase,
+                    onValueChange = {
+                        confirmPassphrase = it
+                        showError = false
+                    },
+                    label = { Text(stringResource(R.string.pubkey_export_confirm_passphrase)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    singleLine = true,
+                    isError = showError
+                )
+                if (showError) {
+                    Text(
+                        text = stringResource(R.string.pubkey_export_passphrase_mismatch),
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    if (passphrase == confirmPassphrase && passphrase.isNotEmpty()) {
+                        onPassphraseProvided(passphrase)
+                    } else {
+                        showError = true
+                    }
+                }
+            ) {
+                Text(stringResource(android.R.string.ok))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        }
+    )
+}
+
 @ScreenPreviews
 @Composable
 private fun PubkeyListScreenEmptyPreview() {
@@ -673,6 +858,7 @@ private fun PubkeyListScreenEmptyPreview() {
             onCopyPrivateKeyPem = { _, _ -> },
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
+            onExportPrivateKeyEncrypted = { _, _, _ -> },
             onImportKey = {}
         )
     }
@@ -698,6 +884,7 @@ private fun PubkeyListScreenLoadingPreview() {
             onCopyPrivateKeyPem = { _, _ -> },
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
+            onExportPrivateKeyEncrypted = { _, _, _ -> },
             onImportKey = {}
         )
     }
@@ -758,6 +945,7 @@ private fun PubkeyListScreenPopulatedPreview() {
             onCopyPrivateKeyPem = { _, _ -> },
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
+            onExportPrivateKeyEncrypted = { _, _, _ -> },
             onImportKey = {}
         )
     }
