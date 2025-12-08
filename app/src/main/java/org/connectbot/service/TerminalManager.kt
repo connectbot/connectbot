@@ -480,6 +480,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 * Add a biometric key from Android Keystore to in-memory cache.
 	 * The PrivateKey from Keystore is a proxy that delegates signing to secure hardware.
 	 * Since biometric auth was just completed, the 30-second signing window is active.
+	 * The key will be automatically removed when the auth window expires.
 	 */
 	fun addBiometricKey(pubkey: Pubkey, keystoreAlias: String, publicKey: java.security.PublicKey) {
 		removeKey(pubkey.nickname)
@@ -508,14 +509,27 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		keyHolder.keystoreAlias = keystoreAlias
 		keyHolder.isBiometricKey = true
 
+		// Schedule auto-expiry when biometric auth window closes (30 seconds)
+		keyHolder.expiryJob = scope.launch {
+			delay(BIOMETRIC_AUTH_VALIDITY_SECONDS * 1000L)
+			Log.d(TAG, "Biometric auth window expired for key '${pubkey.nickname}', removing from cache")
+			removeKey(pubkey.nickname)
+		}
+
 		loadedKeypairs[pubkey.nickname] = keyHolder
 
-		Log.d(TAG, String.format("Added biometric key '%s' to in-memory cache", pubkey.nickname))
+		Log.d(TAG, String.format("Added biometric key '%s' to in-memory cache (expires in %d seconds)", pubkey.nickname, BIOMETRIC_AUTH_VALIDITY_SECONDS))
 	}
 
 	fun removeKey(nickname: String): Boolean {
-		Log.d(TAG, String.format("Removed key '%s' to in-memory cache", nickname))
-		return loadedKeypairs.remove(nickname) != null
+		val keyHolder = loadedKeypairs.remove(nickname)
+		if (keyHolder != null) {
+			// Cancel any pending expiry job for biometric keys
+			keyHolder.expiryJob?.cancel()
+			Log.d(TAG, String.format("Removed key '%s' from in-memory cache", nickname))
+			return true
+		}
+		return false
 	}
 
 	fun removeKey(publicKey: ByteArray): Boolean {
@@ -528,10 +542,10 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		}
 
 		return if (nickname != null) {
-			Log.d(TAG, String.format("Removed key '%s' to in-memory cache", nickname))
 			removeKey(nickname)
-		} else
+		} else {
 			false
+		}
 	}
 
 	fun getKey(nickname: String): KeyPair? {
@@ -767,6 +781,8 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		// For biometric keys stored in Android Keystore
 		var keystoreAlias: String? = null
 		var isBiometricKey: Boolean = false
+		// Job to auto-expire biometric keys after auth window closes
+		var expiryJob: Job? = null
 	}
 
 	/**
@@ -829,5 +845,8 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		const val TAG = "CB.TerminalManager"
 
 		const val VIBRATE_DURATION: Long = 30
+
+		// Must match AUTH_VALIDITY_DURATION_SECONDS in BiometricKeyManager
+		const val BIOMETRIC_AUTH_VALIDITY_SECONDS = 30
 	}
 }
