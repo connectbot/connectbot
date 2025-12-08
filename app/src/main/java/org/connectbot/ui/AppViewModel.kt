@@ -34,7 +34,7 @@ import org.connectbot.service.TerminalManager
 sealed class AppUiState {
     data object Loading : AppUiState()
     data class MigrationInProgress(val state: MigrationState) : AppUiState()
-    data class MigrationFailed(val error: String) : AppUiState()
+    data class MigrationFailed(val error: String, val debugLog: List<String>) : AppUiState()
     data class Ready(val terminalManager: TerminalManager) : AppUiState()
 }
 
@@ -60,7 +60,10 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                 when (migrationState) {
                     is MigrationUiState.Checking -> AppUiState.Loading
                     is MigrationUiState.InProgress -> AppUiState.MigrationInProgress(migrationState.state)
-                    is MigrationUiState.Failed -> AppUiState.MigrationFailed(migrationState.error)
+                    is MigrationUiState.Failed -> AppUiState.MigrationFailed(
+                        migrationState.error,
+                        migrationState.debugLog
+                    )
                     is MigrationUiState.Completed -> {
                         if (terminalMgr != null) {
                             AppUiState.Ready(terminalMgr)

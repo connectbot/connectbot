@@ -78,6 +78,39 @@ class DatabaseMigrator(
     private val legacyPubkeyReader = LegacyPubkeyDatabaseReader(context)
     private val roomDatabase = ConnectBotDatabase.getInstance(context)
 
+    private fun logDebug(message: String) {
+        Log.d(TAG, message)
+        _migrationState.update { state ->
+            state.copy(debugLog = state.debugLog + message)
+        }
+    }
+
+    private fun logWarning(message: String) {
+        Log.w(TAG, message)
+        _migrationState.update { state ->
+            state.copy(
+                warnings = state.warnings + message,
+                debugLog = state.debugLog + "WARNING: $message"
+            )
+        }
+    }
+
+    private fun logError(message: String, throwable: Throwable? = null) {
+        if (throwable != null) {
+            Log.e(TAG, message, throwable)
+        } else {
+            Log.e(TAG, message)
+        }
+        val logMessage = if (throwable != null) {
+            "$message: ${throwable.message}\n${throwable.stackTraceToString()}"
+        } else {
+            message
+        }
+        _migrationState.update { state ->
+            state.copy(debugLog = state.debugLog + "ERROR: $logMessage")
+        }
+    }
+
     /**
      * Checks if migration is needed.
      * Migration is needed if:
@@ -93,12 +126,12 @@ class DatabaseMigrator(
 
         // If legacy DBs don't exist or already migrated, no migration needed
         if (!legacyHostsExists && !legacyPubkeysExists) {
-            Log.d(TAG, "No legacy databases found")
+            logDebug("No legacy databases found")
             return@withContext false
         }
 
         if (alreadyMigrated) {
-            Log.d(TAG, "Legacy databases already migrated")
+            logDebug("Legacy databases already migrated")
             return@withContext false
         }
 
@@ -107,11 +140,11 @@ class DatabaseMigrator(
                          roomDatabase.pubkeyDao().getAll().isNotEmpty()
 
         if (roomHasData) {
-            Log.d(TAG, "Room database already has data, skipping migration")
+            logDebug("Room database already has data, skipping migration")
             return@withContext false
         }
 
-        Log.d(TAG, "Migration needed: legacy databases exist and Room is empty")
+        logDebug("Migration needed: legacy databases exist and Room is empty")
         return@withContext true
     }
 
@@ -122,7 +155,7 @@ class DatabaseMigrator(
     suspend fun migrate(): MigrationResult = withContext(Dispatchers.IO) {
         // Check if migration is needed
         if (!isMigrationNeeded()) {
-            Log.i(TAG, "Migration not needed - already migrated or no legacy databases found")
+            logDebug("Migration not needed - already migrated or no legacy databases found")
             _migrationState.update {
                 it.copy(
                     status = MigrationStatus.COMPLETED,
@@ -139,42 +172,50 @@ class DatabaseMigrator(
             )
         }
 
-        Log.i(TAG, "Starting database migration")
+        logDebug("Starting database migration")
         _migrationState.update { it.copy(status = MigrationStatus.IN_PROGRESS, currentStep = "Starting migration") }
 
         try {
             // Step 1: Read legacy data
+            logDebug("Step 1: Reading legacy databases")
             _migrationState.update { it.copy(currentStep = "Reading legacy databases", progress = 0.1f) }
             val legacyData = readLegacyData()
 
-            Log.d(TAG, "Legacy data read: ${legacyData.hosts.size} hosts, ${legacyData.pubkeys.size} pubkeys")
+            logDebug("Legacy data read: ${legacyData.hosts.size} hosts, ${legacyData.pubkeys.size} pubkeys, ${legacyData.portForwards.size} port forwards, ${legacyData.knownHosts.size} known hosts, ${legacyData.colorSchemes.size} color schemes")
 
             // Step 2: Validate legacy data
+            logDebug("Step 2: Validating data")
             _migrationState.update { it.copy(currentStep = "Validating data", progress = 0.2f) }
-            val warnings = validateLegacyData(legacyData)
-            _migrationState.update { it.copy(warnings = warnings) }
+            validateLegacyData(legacyData)
 
             // Step 3: Transform to Room entities
+            logDebug("Step 3: Transforming data to Room entities")
             _migrationState.update { it.copy(currentStep = "Transforming data", progress = 0.3f) }
             val transformedData = transformToRoomEntities(legacyData)
 
             // Step 4: Write to Room database
+            logDebug("Step 4: Writing to new database")
             _migrationState.update { it.copy(currentStep = "Writing to new database", progress = 0.5f) }
             writeToRoomDatabase(transformedData)
 
             // Step 5: Verify migration
+            logDebug("Step 5: Verifying migration")
             _migrationState.update { it.copy(currentStep = "Verifying migration", progress = 0.8f) }
             val verification = verifyMigration(legacyData, transformedData)
 
             if (!verification.success) {
-                throw MigrationException("Migration verification failed: ${verification.errors.joinToString()}")
+                val errorMsg = "Migration verification failed: ${verification.errors.joinToString()}"
+                logError(errorMsg)
+                throw MigrationException(errorMsg)
             }
+            logDebug("Verification successful")
 
             // Step 6: Mark legacy databases as migrated
+            logDebug("Step 6: Finalizing migration")
             _migrationState.update { it.copy(currentStep = "Finalizing migration", progress = 0.9f) }
             markLegacyDatabasesAsMigrated()
 
-            Log.i(TAG, "Migration completed successfully")
+            logDebug("Migration completed successfully")
             _migrationState.update {
                 it.copy(
                     status = MigrationStatus.COMPLETED,
@@ -197,7 +238,7 @@ class DatabaseMigrator(
             )
 
         } catch (e: Exception) {
-            Log.e(TAG, "Migration failed", e)
+            logError("Migration failed", e)
             _migrationState.update {
                 it.copy(
                     status = MigrationStatus.FAILED,
@@ -256,16 +297,13 @@ class DatabaseMigrator(
         )
     }
 
-    private fun validateLegacyData(data: LegacyData): List<String> {
-        val warnings = mutableListOf<String>()
-
+    private fun validateLegacyData(data: LegacyData) {
         // Check for duplicate host nicknames (will be fixed in transformToRoomEntities)
         val hostNicknames = data.hosts.map { it.nickname }
         val duplicateHosts = hostNicknames.groupingBy { it }.eachCount().filter { it.value > 1 }
         if (duplicateHosts.isNotEmpty()) {
             val warning = "Found ${duplicateHosts.size} duplicate host nickname(s): ${duplicateHosts.keys.joinToString(", ")}. Appending suffixes to make them unique."
-            Log.w(TAG, warning)
-            warnings.add(warning)
+            logWarning(warning)
         }
 
         // Check for duplicate pubkey nicknames (will be fixed in transformToRoomEntities)
@@ -273,8 +311,7 @@ class DatabaseMigrator(
         val duplicatePubkeys = pubkeyNicknames.groupingBy { it }.eachCount().filter { it.value > 1 }
         if (duplicatePubkeys.isNotEmpty()) {
             val warning = "Found ${duplicatePubkeys.size} duplicate SSH key nickname(s): ${duplicatePubkeys.keys.joinToString(", ")}. Appending suffixes to make them unique."
-            Log.w(TAG, warning)
-            warnings.add(warning)
+            logWarning(warning)
         }
 
         // Validate port forwards reference valid hosts
@@ -282,11 +319,8 @@ class DatabaseMigrator(
         val invalidPortForwards = data.portForwards.filter { it.hostId !in hostIds }
         if (invalidPortForwards.isNotEmpty()) {
             val warning = "Found ${invalidPortForwards.size} port forward(s) referencing non-existent hosts. These will be skipped."
-            Log.w(TAG, warning)
-            warnings.add(warning)
+            logWarning(warning)
         }
-
-        return warnings
     }
 
     private fun transformToRoomEntities(legacy: LegacyData): TransformedData {
@@ -481,7 +515,8 @@ data class MigrationState(
     val knownHostsMigrated: Int = 0,
     val colorSchemesMigrated: Int = 0,
     val error: String? = null,
-    val warnings: List<String> = emptyList()
+    val warnings: List<String> = emptyList(),
+    val debugLog: List<String> = emptyList()
 )
 
 enum class MigrationStatus {

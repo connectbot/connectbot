@@ -46,6 +46,8 @@ class MigrationViewModel(application: Application) : AndroidViewModel(applicatio
     private val _uiState = MutableStateFlow<MigrationUiState>(MigrationUiState.Checking)
     val uiState: StateFlow<MigrationUiState> = _uiState.asStateFlow()
 
+    private var latestMigrationState: MigrationState? = null
+
     init {
         checkAndMigrate()
     }
@@ -68,6 +70,7 @@ class MigrationViewModel(application: Application) : AndroidViewModel(applicatio
                 // Collect migration state updates
                 launch {
                     migrator.migrationState.collect { state ->
+                        latestMigrationState = state
                         _uiState.value = MigrationUiState.InProgress(state)
                     }
                 }
@@ -83,13 +86,18 @@ class MigrationViewModel(application: Application) : AndroidViewModel(applicatio
 
                     is MigrationResult.Failure -> {
                         Log.e(TAG, "Migration failed", result.error)
-                        _uiState.value =
-                            MigrationUiState.Failed(result.error.message ?: "Unknown error")
+                        _uiState.value = MigrationUiState.Failed(
+                            error = result.error.message ?: "Unknown error",
+                            debugLog = latestMigrationState?.debugLog ?: emptyList()
+                        )
                     }
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Error during migration check/execution", e)
-                _uiState.value = MigrationUiState.Failed(e.message ?: "Unknown error")
+                _uiState.value = MigrationUiState.Failed(
+                    error = e.message ?: "Unknown error",
+                    debugLog = latestMigrationState?.debugLog ?: emptyList()
+                )
             }
         }
     }
@@ -118,5 +126,5 @@ sealed class MigrationUiState {
     data object Completed : MigrationUiState()
 
     /** Migration failed */
-    data class Failed(val error: String) : MigrationUiState()
+    data class Failed(val error: String, val debugLog: List<String>) : MigrationUiState()
 }
