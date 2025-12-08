@@ -179,10 +179,10 @@ fun ConnectBotNavHost(
         composable(
             route = "${NavDestinations.PALETTE_EDITOR}/{${NavArgs.SCHEME_ID}}",
             arguments = listOf(
-                navArgument(NavArgs.SCHEME_ID) { type = NavType.IntType }
+                navArgument(NavArgs.SCHEME_ID) { type = NavType.LongType }
             )
         ) { backStackEntry ->
-            val schemeId = backStackEntry.arguments?.getInt(NavArgs.SCHEME_ID) ?: 0
+            val schemeId = backStackEntry.arguments?.getLong(NavArgs.SCHEME_ID) ?: 0L
             PaletteEditorScreen(
                 schemeId = schemeId,
                 onNavigateBack = { navController.popBackStack() }

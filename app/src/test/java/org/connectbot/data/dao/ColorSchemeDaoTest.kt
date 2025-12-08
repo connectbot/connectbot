@@ -59,7 +59,7 @@ class ColorSchemeDaoTest {
         val id = colorSchemeDao.insert(scheme)
         assertThat(id).isGreaterThan(0)
 
-        val retrieved = colorSchemeDao.getById(id.toInt())
+        val retrieved = colorSchemeDao.getById(id)
         assertThat(retrieved).isNotNull()
         assertThat(retrieved?.name).isEqualTo("Monokai")
         assertThat(retrieved?.isBuiltIn).isFalse()
@@ -86,7 +86,7 @@ class ColorSchemeDaoTest {
         val scheme = createTestScheme(name = "Test Scheme")
         val id = colorSchemeDao.insert(scheme)
 
-        val observed = colorSchemeDao.observeById(id.toInt()).first()
+        val observed = colorSchemeDao.observeById(id).first()
         assertThat(observed).isNotNull()
         assertThat(observed?.name).isEqualTo("Test Scheme")
     }
@@ -109,11 +109,11 @@ class ColorSchemeDaoTest {
         val scheme = createTestScheme(name = "Original Name")
         val id = colorSchemeDao.insert(scheme)
 
-        val retrieved = colorSchemeDao.getById(id.toInt())!!
+        val retrieved = colorSchemeDao.getById(id)!!
         val updated = retrieved.copy(name = "Updated Name", description = "New description")
         colorSchemeDao.update(updated)
 
-        val afterUpdate = colorSchemeDao.getById(id.toInt())
+        val afterUpdate = colorSchemeDao.getById(id)
         assertThat(afterUpdate?.name).isEqualTo("Updated Name")
         assertThat(afterUpdate?.description).isEqualTo("New description")
     }
@@ -123,12 +123,12 @@ class ColorSchemeDaoTest {
         val scheme = createTestScheme(name = "Test Scheme")
         val id = colorSchemeDao.insert(scheme)
 
-        val retrieved = colorSchemeDao.getById(id.toInt())!!
+        val retrieved = colorSchemeDao.getById(id)!!
         val updated = retrieved.copy(name = "Updated Scheme")
         val updateId = colorSchemeDao.insertOrUpdate(updated)
 
         assertThat(updateId).isEqualTo(id)
-        val afterUpdate = colorSchemeDao.getById(id.toInt())
+        val afterUpdate = colorSchemeDao.getById(id)
         assertThat(afterUpdate?.name).isEqualTo("Updated Scheme")
     }
 
@@ -137,12 +137,12 @@ class ColorSchemeDaoTest {
         val scheme = createTestScheme(name = "To Delete")
         val id = colorSchemeDao.insert(scheme)
 
-        val beforeDelete = colorSchemeDao.getById(id.toInt())
+        val beforeDelete = colorSchemeDao.getById(id)
         assertThat(beforeDelete).isNotNull()
 
         colorSchemeDao.delete(beforeDelete!!)
 
-        val afterDelete = colorSchemeDao.getById(id.toInt())
+        val afterDelete = colorSchemeDao.getById(id)
         assertThat(afterDelete).isNull()
     }
 
@@ -160,7 +160,7 @@ class ColorSchemeDaoTest {
         val colorId = colorSchemeDao.insertColor(color)
         assertThat(colorId).isGreaterThan(0)
 
-        val retrieved = colorSchemeDao.getColor(schemeId.toInt(), 0)
+        val retrieved = colorSchemeDao.getColor(schemeId, 0)
         assertThat(retrieved).isNotNull()
         assertThat(retrieved?.color).isEqualTo(0x000000)
     }
@@ -210,11 +210,11 @@ class ColorSchemeDaoTest {
         val color = ColorPalette(schemeId = schemeId, colorIndex = 0, color = 0xFF0000)
         colorSchemeDao.insertColor(color)
 
-        val retrieved = colorSchemeDao.getColor(schemeId.toInt(), 0)!!
+        val retrieved = colorSchemeDao.getColor(schemeId, 0)!!
         val updated = retrieved.copy(color = 0x00FF00)
         colorSchemeDao.updateColor(updated)
 
-        val afterUpdate = colorSchemeDao.getColor(schemeId.toInt(), 0)
+        val afterUpdate = colorSchemeDao.getColor(schemeId, 0)
         assertThat(afterUpdate?.color).isEqualTo(0x00FF00)
     }
 
@@ -226,12 +226,12 @@ class ColorSchemeDaoTest {
         val color = ColorPalette(schemeId = schemeId, colorIndex = 0, color = 0xFF0000)
         val colorId = colorSchemeDao.insertColor(color)
 
-        val retrieved = colorSchemeDao.getColor(schemeId.toInt(), 0)!!
+        val retrieved = colorSchemeDao.getColor(schemeId, 0)!!
         val updated = retrieved.copy(color = 0x00FF00)
         val updateId = colorSchemeDao.insertOrUpdateColor(updated)
 
         assertThat(updateId).isEqualTo(colorId)
-        val afterUpdate = colorSchemeDao.getColor(schemeId.toInt(), 0)
+        val afterUpdate = colorSchemeDao.getColor(schemeId, 0)
         assertThat(afterUpdate?.color).isEqualTo(0x00FF00)
     }
 
@@ -243,12 +243,12 @@ class ColorSchemeDaoTest {
         val color = ColorPalette(schemeId = schemeId, colorIndex = 0, color = 0xFF0000)
         colorSchemeDao.insertColor(color)
 
-        val beforeDelete = colorSchemeDao.getColor(schemeId.toInt(), 0)
+        val beforeDelete = colorSchemeDao.getColor(schemeId, 0)
         assertThat(beforeDelete).isNotNull()
 
         colorSchemeDao.deleteColor(schemeId, 0)
 
-        val afterDelete = colorSchemeDao.getColor(schemeId.toInt(), 0)
+        val afterDelete = colorSchemeDao.getColor(schemeId, 0)
         assertThat(afterDelete).isNull()
     }
 
@@ -323,7 +323,7 @@ class ColorSchemeDaoTest {
         val id = colorSchemeDao.insert(scheme)
 
         // Should return false when excluding the only scheme with that name
-        val exists = colorSchemeDao.nameExists("Monokai", excludeSchemeId = id.toInt())
+        val exists = colorSchemeDao.nameExists("Monokai", excludeSchemeId = id)
         assertThat(exists).isFalse()
     }
 
@@ -335,11 +335,11 @@ class ColorSchemeDaoTest {
         val id2 = colorSchemeDao.insert(scheme2)
 
         // Should return false because we're checking a different name
-        val existsForMonokai = colorSchemeDao.nameExists("Monokai", excludeSchemeId = id1.toInt())
+        val existsForMonokai = colorSchemeDao.nameExists("Monokai", excludeSchemeId = id1)
         assertThat(existsForMonokai).isFalse()
 
         // Should return true because Monokai-Copy exists and we're excluding a different scheme
-        val existsForCopy = colorSchemeDao.nameExists("Monokai-Copy", excludeSchemeId = id1.toInt())
+        val existsForCopy = colorSchemeDao.nameExists("Monokai-Copy", excludeSchemeId = id1)
         assertThat(existsForCopy).isTrue()
     }
 
@@ -358,7 +358,7 @@ class ColorSchemeDaoTest {
         assertThat(colorsBeforeDelete).hasSize(4)
 
         // Delete the scheme
-        val schemeToDelete = colorSchemeDao.getById(schemeId.toInt())!!
+        val schemeToDelete = colorSchemeDao.getById(schemeId)!!
         colorSchemeDao.delete(schemeToDelete)
 
         // Colors should also be deleted due to CASCADE

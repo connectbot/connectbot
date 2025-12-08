@@ -295,7 +295,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
         val descriptionIndex = cursor.getColumnIndex("description")
 
         return ColorScheme(
-            id = cursor.getInt(idIndex),
+            id = cursor.getLong(idIndex),
             name = cursor.getString(nameIndex),
             isBuiltIn = true, // Legacy schemes are treated as built-in
             description = if (descriptionIndex >= 0) cursor.getString(descriptionIndex) ?: "" else ""

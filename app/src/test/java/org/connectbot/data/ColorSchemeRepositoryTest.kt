@@ -22,7 +22,6 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.runBlocking
-import org.connectbot.data.entity.ColorScheme
 import org.connectbot.util.HostConstants
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -67,7 +66,7 @@ class ColorSchemeRepositoryTest {
         assertTrue("Should have at least 8 schemes", schemes.size >= 8)
 
         // Check Default scheme exists
-        val defaultScheme = schemes.find { it.id == -1 }
+        val defaultScheme = schemes.find { it.id == -1L }
         assertNotNull("Should have Default scheme", defaultScheme)
         assertEquals("Default", defaultScheme?.name)
         assertTrue("Default should be built-in", defaultScheme?.isBuiltIn == true)

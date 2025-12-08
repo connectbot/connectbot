@@ -20,7 +20,6 @@ package org.connectbot.data.migration
 import android.content.Context
 import android.util.Log
 import androidx.room.withTransaction
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -340,16 +339,16 @@ class DatabaseMigrator(
         }
 
         // Validate hosts reference valid color schemes (will be fixed in transformToRoomEntities)
-        val hostsWithInvalidColorSchemes = data.hosts.filter { it.colorSchemeId > 0 && it.colorSchemeId.toInt() !in colorSchemeIds }
+        val hostsWithInvalidColorSchemes = data.hosts.filter { it.colorSchemeId > 0 && it.colorSchemeId !in colorSchemeIds }
         if (hostsWithInvalidColorSchemes.isNotEmpty()) {
             val warning = "Found ${hostsWithInvalidColorSchemes.size} host(s) referencing non-existent color schemes. Will use default color scheme."
             logWarning(warning)
         }
 
         // Validate color palettes reference valid color schemes (will be fixed in transformToRoomEntities)
-        val palettesWithInvalidSchemes = data.colorPalettes.filter { it.schemeId.toInt() !in colorSchemeIds }
+        val palettesWithInvalidSchemes = data.colorPalettes.filter { it.schemeId !in colorSchemeIds }
         if (palettesWithInvalidSchemes.isNotEmpty()) {
-            val orphanedSchemeIds = palettesWithInvalidSchemes.map { it.schemeId.toInt() }.toSet()
+            val orphanedSchemeIds = palettesWithInvalidSchemes.map { it.schemeId }.toSet()
             val warning = "Found ${palettesWithInvalidSchemes.size} color palette(s) referencing ${orphanedSchemeIds.size} non-existent color scheme(s): ${orphanedSchemeIds.joinToString(", ")}. Will synthesize missing schemes."
             logWarning(warning)
         }
@@ -362,7 +361,7 @@ class DatabaseMigrator(
 
         // Synthesize missing ColorScheme entries for orphaned ColorPalette entries
         val orphanedSchemeIds = legacy.colorPalettes
-            .map { it.schemeId.toInt() }
+            .map { it.schemeId }
             .filter { it !in colorSchemeIds }
             .toSet()
 
@@ -395,7 +394,7 @@ class DatabaseMigrator(
             }
 
             // Reset invalid color scheme references to default
-            if (fixedHost.colorSchemeId > 0 && fixedHost.colorSchemeId.toInt() !in colorSchemeIds) {
+            if (fixedHost.colorSchemeId > 0 && fixedHost.colorSchemeId !in colorSchemeIds) {
                 logDebug("Resetting invalid color scheme reference (ID ${fixedHost.colorSchemeId}) to default for host '${fixedHost.nickname}'")
                 fixedHost = fixedHost.copy(colorSchemeId = 1L)
             }

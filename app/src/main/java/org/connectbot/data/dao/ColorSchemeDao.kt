@@ -42,13 +42,13 @@ interface ColorSchemeDao {
      * Observe a single color scheme by ID.
      */
     @Query("SELECT * FROM color_schemes WHERE id = :schemeId")
-    fun observeById(schemeId: Int): Flow<ColorScheme?>
+    fun observeById(schemeId: Long): Flow<ColorScheme?>
 
     /**
      * Get a single color scheme by ID (one-time query).
      */
     @Query("SELECT * FROM color_schemes WHERE id = :schemeId")
-    suspend fun getById(schemeId: Int): ColorScheme?
+    suspend fun getById(schemeId: Long): ColorScheme?
 
     /**
      * Get all color schemes (one-time query).
@@ -101,7 +101,7 @@ interface ColorSchemeDao {
      * Get a specific color from the palette.
      */
     @Query("SELECT * FROM color_palette WHERE scheme_id = :schemeId AND color_index = :colorIndex")
-    suspend fun getColor(schemeId: Int, colorIndex: Int): ColorPalette?
+    suspend fun getColor(schemeId: Long, colorIndex: Int): ColorPalette?
 
     /**
      * Insert a color palette entry.
@@ -148,5 +148,5 @@ interface ColorSchemeDao {
      * @return true if the name exists, false otherwise
      */
     @Query("SELECT EXISTS(SELECT 1 FROM color_schemes WHERE LOWER(name) = LOWER(:name) AND (:excludeSchemeId IS NULL OR id != :excludeSchemeId))")
-    suspend fun nameExists(name: String, excludeSchemeId: Int? = null): Boolean
+    suspend fun nameExists(name: String, excludeSchemeId: Long? = null): Boolean
 }

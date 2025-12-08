@@ -29,7 +29,7 @@ import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.util.Colors
 
 data class PaletteEditorUiState(
-    val schemeId: Int = -1,
+    val schemeId: Long = -1,
     val schemeName: String = "",
     val palette: IntArray = Colors.defaults,
     val editingColorIndex: Int? = null,
@@ -55,7 +55,7 @@ data class PaletteEditorUiState(
     }
 
     override fun hashCode(): Int {
-        var result = schemeId
+        var result = schemeId.toInt()
         result = 31 * result + schemeName.hashCode()
         result = 31 * result + palette.contentHashCode()
         result = 31 * result + (editingColorIndex ?: 0)
@@ -68,7 +68,7 @@ data class PaletteEditorUiState(
 
 class PaletteEditorViewModel(
     private val context: Context,
-    private val schemeId: Int,
+    private val schemeId: Long,
     private val repository: ColorSchemeRepository = ColorSchemeRepository.get(context)
 ) : ViewModel() {
 

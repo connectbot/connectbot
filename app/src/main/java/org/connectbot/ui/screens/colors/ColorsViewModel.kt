@@ -31,7 +31,7 @@ import org.connectbot.util.Colors
 import org.connectbot.util.HostConstants
 
 data class ColorsUiState(
-    val currentSchemeId: Int = -1,
+    val currentSchemeId: Long = -1,
     val currentSchemeName: String = "Default",
     val availableSchemes: List<ColorScheme> = emptyList(),
     val foregroundColorIndex: Int = HostConstants.DEFAULT_FG_COLOR,
@@ -59,7 +59,7 @@ data class ColorsUiState(
     }
 
     override fun hashCode(): Int {
-        var result = currentSchemeId
+        var result = currentSchemeId.toInt()
         result = 31 * result + currentSchemeName.hashCode()
         result = 31 * result + availableSchemes.hashCode()
         result = 31 * result + foregroundColorIndex
@@ -133,7 +133,7 @@ class ColorsViewModel(
      * Note: Built-in schemes (negative IDs) are immutable and cannot be edited.
      * To customize a built-in scheme, create a custom scheme based on it.
      */
-    fun switchToScheme(schemeId: Int) {
+    fun switchToScheme(schemeId: Long) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             try {
