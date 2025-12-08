@@ -55,8 +55,21 @@ enum class ExportFormat {
 data class PendingExport(
     val pubkey: Pubkey,
     val format: ExportFormat,
-    val password: String? = null
+    val password: String? = null,  // Password to decrypt the key (if encrypted)
+    val exportPassphrase: String? = null  // Passphrase to encrypt the exported file
 )
+
+data class PendingImport(
+    val keyData: ByteArray,
+    val nickname: String,
+    val keyType: String  // Extracted key type (RSA, Ed25519, etc.)
+)
+
+sealed class ImportResult {
+    data class Success(val pubkey: Pubkey) : ImportResult()
+    data class NeedsPassword(val keyData: ByteArray, val nickname: String, val keyType: String) : ImportResult()
+    object Failed : ImportResult()
+}
 
 data class PubkeyListUiState(
     val pubkeys: List<Pubkey> = emptyList(),
@@ -66,7 +79,9 @@ data class PubkeyListUiState(
     // Biometric key that needs to be unlocked (triggers BiometricPrompt in UI)
     val biometricKeyToUnlock: Pubkey? = null,
     // Key pending export to file (triggers file picker in UI)
-    val pendingExport: PendingExport? = null
+    val pendingExport: PendingExport? = null,
+    // Key pending import that needs password (triggers password dialog in UI)
+    val pendingImport: PendingImport? = null
 )
 
 @HiltViewModel
@@ -386,6 +401,51 @@ class PubkeyListViewModel @Inject constructor(
     }
 
     /**
+     * Request export of private key in encrypted OpenSSH format.
+     * This first prompts for decryption password if needed, then for the export passphrase.
+     *
+     * @param pubkey The key to export
+     * @param onPasswordRequired Callback to request the key's decryption password
+     * @param onExportPassphraseRequired Callback to request the export passphrase
+     */
+    fun requestExportPrivateKeyEncrypted(
+        pubkey: Pubkey,
+        onPasswordRequired: (Pubkey, (String) -> Unit) -> Unit,
+        onExportPassphraseRequired: (Pubkey, (String) -> Unit) -> Unit
+    ) {
+        val isImported = pubkey.type == "IMPORTED"
+
+        if (pubkey.encrypted && !isImported) {
+            // Encrypted key - request password first, then export passphrase
+            onPasswordRequired(pubkey) { password ->
+                onExportPassphraseRequired(pubkey) { exportPassphrase ->
+                    _uiState.update {
+                        it.copy(pendingExport = PendingExport(
+                            pubkey = pubkey,
+                            format = ExportFormat.OPENSSH,
+                            password = password,
+                            exportPassphrase = exportPassphrase
+                        ))
+                    }
+                }
+            }
+            return
+        }
+
+        // Not encrypted - just need export passphrase
+        onExportPassphraseRequired(pubkey) { exportPassphrase ->
+            _uiState.update {
+                it.copy(pendingExport = PendingExport(
+                    pubkey = pubkey,
+                    format = ExportFormat.OPENSSH,
+                    password = null,
+                    exportPassphrase = exportPassphrase
+                ))
+            }
+        }
+    }
+
+    /**
      * Clear the pending export state (called when file picker is cancelled).
      */
     fun cancelExport() {
@@ -416,6 +476,7 @@ class PubkeyListViewModel @Inject constructor(
                 val pubkey = pending.pubkey
                 val isImported = pubkey.type == "IMPORTED"
                 val password = pending.password
+                val exportPassphrase = pending.exportPassphrase
 
                 val privateKeyString = withContext(Dispatchers.Default) {
                     if (isImported) {
@@ -426,7 +487,7 @@ class PubkeyListViewModel @Inject constructor(
                             ExportFormat.OPENSSH -> {
                                 val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
                                 val pub = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
-                                pk?.let { PubkeyUtils.exportOpenSSH(it, pub, pubkey.nickname) }
+                                pk?.let { PubkeyUtils.exportOpenSSH(it, pub, pubkey.nickname, exportPassphrase) }
                             }
                             ExportFormat.PEM -> {
                                 val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
@@ -475,15 +536,29 @@ class PubkeyListViewModel @Inject constructor(
     fun importKeyFromUri(uri: Uri) {
         viewModelScope.launch {
             try {
-                val pubkey = withContext(Dispatchers.IO) {
+                val result = withContext(Dispatchers.IO) {
                     readKeyFromUri(uri)
                 }
 
-                if (pubkey != null) {
-                    repository.save(pubkey)
-                } else {
-                    _uiState.update {
-                        it.copy(error = "Failed to parse key file")
+                when (result) {
+                    is ImportResult.Success -> {
+                        repository.save(result.pubkey)
+                        loadPubkeys()
+                    }
+                    is ImportResult.NeedsPassword -> {
+                        // Set pending import - UI will show password dialog
+                        _uiState.update {
+                            it.copy(pendingImport = PendingImport(
+                                keyData = result.keyData,
+                                nickname = result.nickname,
+                                keyType = result.keyType
+                            ))
+                        }
+                    }
+                    is ImportResult.Failed -> {
+                        _uiState.update {
+                            it.copy(error = "Failed to parse key file")
+                        }
                     }
                 }
             } catch (e: Exception) {
@@ -495,7 +570,67 @@ class PubkeyListViewModel @Inject constructor(
         }
     }
 
-    private fun readKeyFromUri(uri: Uri): Pubkey? {
+    /**
+     * Complete the import of an encrypted key with the provided password.
+     */
+    fun completeImportWithPassword(password: String) {
+        val pending = _uiState.value.pendingImport ?: return
+
+        viewModelScope.launch {
+            try {
+                val pubkey = withContext(Dispatchers.IO) {
+                    decryptAndImportKey(pending.keyData, pending.nickname, password)
+                }
+
+                if (pubkey != null) {
+                    repository.save(pubkey)
+                } else {
+                    _uiState.update {
+                        it.copy(error = "Failed to decrypt key: Bad password")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("PubkeyListViewModel", "Failed to import encrypted key", e)
+                _uiState.update {
+                    it.copy(error = "Failed to decrypt key: ${e.message}")
+                }
+            }
+        }
+    }
+
+    /**
+     * Cancel the pending import.
+     */
+    fun cancelImport() {
+        _uiState.update { it.copy(pendingImport = null) }
+    }
+
+    private fun decryptAndImportKey(keyData: ByteArray, nickname: String, password: String): Pubkey? {
+        val keyString = String(keyData)
+
+        try {
+            // Use PEMDecoder to decrypt the key
+            val kp = PEMDecoder.decode(keyString.toCharArray(), password)
+            val algorithm = convertAlgorithmName(kp.private.algorithm)
+
+            return Pubkey(
+                id = 0,
+                nickname = nickname,
+                type = algorithm,
+                encrypted = false,  // Store decrypted in internal format
+                startup = false,
+                confirmation = false,
+                createdDate = System.currentTimeMillis(),
+                privateKey = kp.private.encoded,
+                publicKey = kp.public.encoded
+            )
+        } catch (e: Exception) {
+            Log.e("PubkeyListViewModel", "Failed to decrypt key", e)
+            return null
+        }
+    }
+
+    private fun readKeyFromUri(uri: Uri): ImportResult {
         val nickname = getFilenameFromUri(uri) ?: "imported-key"
 
         // Read key data from URI
@@ -519,11 +654,11 @@ class PubkeyListViewModel @Inject constructor(
             }
         } catch (e: Exception) {
             Log.e("PubkeyListViewModel", "Failed to read key file", e)
-            return null
+            return ImportResult.Failed
         }
 
         if (keyData == null || keyData.isEmpty()) {
-            return null
+            return ImportResult.Failed
         }
 
         val keyString = String(keyData)
@@ -537,7 +672,7 @@ class PubkeyListViewModel @Inject constructor(
                 // Unencrypted PEM - decode and convert to internal format
                 val kp = PEMDecoder.decode(struct, null)
                 val algorithm = convertAlgorithmName(kp.private.algorithm)
-                return Pubkey(
+                return ImportResult.Success(Pubkey(
                     id = 0,
                     nickname = nickname,
                     type = algorithm,
@@ -547,20 +682,11 @@ class PubkeyListViewModel @Inject constructor(
                     createdDate = System.currentTimeMillis(),
                     privateKey = kp.private.encoded,
                     publicKey = kp.public.encoded
-                )
+                ))
             } else {
-                // Encrypted PEM - store as IMPORTED type (keeps original PEM format)
-                return Pubkey(
-                    id = 0,
-                    nickname = nickname,
-                    type = "IMPORTED",
-                    encrypted = true,
-                    startup = false,
-                    confirmation = false,
-                    createdDate = System.currentTimeMillis(),
-                    privateKey = keyData,
-                    publicKey = ByteArray(0) // No public key available for encrypted imports
-                )
+                // Encrypted key - need password to decrypt
+                val keyType = extractKeyTypeFromOpenSSH(keyString) ?: "IMPORTED"
+                return ImportResult.NeedsPassword(keyData, nickname, keyType)
             }
         } catch (e: Exception) {
             Log.d("PubkeyListViewModel", "PEMDecoder failed, trying PKCS#8", e)
@@ -571,7 +697,7 @@ class PubkeyListViewModel @Inject constructor(
         val keyPair = parsePKCS8Key(keyData)
         if (keyPair != null) {
             val algorithm = convertAlgorithmName(keyPair.private.algorithm)
-            return Pubkey(
+            return ImportResult.Success(Pubkey(
                 id = 0,
                 nickname = nickname,
                 type = algorithm,
@@ -581,11 +707,11 @@ class PubkeyListViewModel @Inject constructor(
                 createdDate = System.currentTimeMillis(),
                 privateKey = keyPair.private.encoded,
                 publicKey = keyPair.public.encoded
-            )
+            ))
         }
 
         Log.e("PubkeyListViewModel", "Failed to parse key in any supported format")
-        return null
+        return ImportResult.Failed
     }
 
     /**
@@ -641,6 +767,80 @@ class PubkeyListViewModel @Inject constructor(
         }
 
         return filename
+    }
+
+    /**
+     * Extract key type from OpenSSH format by reading the public key blob.
+     * The public key section is not encrypted, so we can read it without the password.
+     *
+     * @param keyString The full OpenSSH key file content
+     * @return The key type (RSA, DSA, EC, Ed25519) or null if not parseable
+     */
+    private fun extractKeyTypeFromOpenSSH(keyString: String): String? {
+        try {
+            // Check for OpenSSH format
+            if (!keyString.contains("-----BEGIN OPENSSH PRIVATE KEY-----")) {
+                return null
+            }
+
+            // Extract base64 content
+            val startMarker = "-----BEGIN OPENSSH PRIVATE KEY-----"
+            val endMarker = "-----END OPENSSH PRIVATE KEY-----"
+            val startIdx = keyString.indexOf(startMarker) + startMarker.length
+            val endIdx = keyString.indexOf(endMarker)
+            if (startIdx < 0 || endIdx < 0 || startIdx >= endIdx) return null
+
+            val base64Content = keyString.substring(startIdx, endIdx)
+                .replace("\n", "")
+                .replace("\r", "")
+                .trim()
+
+            val decoded = Base64.decode(base64Content.toCharArray())
+            val buffer = java.nio.ByteBuffer.wrap(decoded)
+
+            // Skip magic header "openssh-key-v1\0" (15 bytes)
+            val magic = ByteArray(15)
+            buffer.get(magic)
+            if (String(magic, Charsets.US_ASCII) != "openssh-key-v1\u0000") {
+                return null
+            }
+
+            // Skip cipher name (string)
+            val cipherLen = buffer.int
+            buffer.position(buffer.position() + cipherLen)
+
+            // Skip kdf name (string)
+            val kdfLen = buffer.int
+            buffer.position(buffer.position() + kdfLen)
+
+            // Skip kdf options (string)
+            val kdfOptionsLen = buffer.int
+            buffer.position(buffer.position() + kdfOptionsLen)
+
+            // Skip number of keys (uint32)
+            buffer.int
+
+            // Read public key blob length
+            val pubKeyBlobLen = buffer.int
+
+            // Read key type from public key blob (first string in the blob)
+            val keyTypeLen = buffer.int
+            val keyTypeBytes = ByteArray(keyTypeLen)
+            buffer.get(keyTypeBytes)
+            val sshKeyType = String(keyTypeBytes, Charsets.UTF_8)
+
+            // Convert SSH key type to ConnectBot internal type
+            return when {
+                sshKeyType == "ssh-rsa" -> "RSA"
+                sshKeyType == "ssh-dss" -> "DSA"
+                sshKeyType == "ssh-ed25519" -> "Ed25519"
+                sshKeyType.startsWith("ecdsa-sha2-") -> "EC"
+                else -> null
+            }
+        } catch (e: Exception) {
+            Log.d("PubkeyListViewModel", "Could not extract key type from OpenSSH format", e)
+            return null
+        }
     }
 
     /**

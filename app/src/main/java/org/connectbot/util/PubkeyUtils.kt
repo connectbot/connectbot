@@ -63,13 +63,16 @@ import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.RSAPublicKeySpec
 import java.security.spec.X509EncodedKeySpec
 import java.util.Arrays
+import org.mindrot.jbcrypt.BCrypt
 import javax.crypto.Cipher
 import javax.crypto.EncryptedPrivateKeyInfo
 import javax.crypto.IllegalBlockSizeException
 import javax.crypto.NoSuchPaddingException
 import javax.crypto.SecretKeyFactory
+import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.PBEKeySpec
 import javax.crypto.spec.PBEParameterSpec
+import javax.crypto.spec.SecretKeySpec
 
 object PubkeyUtils {
     init {
@@ -80,6 +83,15 @@ object PubkeyUtils {
 
     const val PKCS8_START: String = "-----BEGIN PRIVATE KEY-----"
     const val PKCS8_END: String = "-----END PRIVATE KEY-----"
+
+    // OpenSSH encrypted key constants
+    private const val OPENSSH_CIPHER_AES256_CTR = "aes256-ctr"
+    private const val OPENSSH_KDF_BCRYPT = "bcrypt"
+    private const val OPENSSH_BCRYPT_SALT_SIZE = 16
+    private const val OPENSSH_BCRYPT_ROUNDS = 16
+    private const val OPENSSH_AES_KEY_SIZE = 32  // 256 bits
+    private const val OPENSSH_AES_IV_SIZE = 16   // 128 bits
+    private const val OPENSSH_AES_BLOCK_SIZE = 16
 
     // Size in bytes of salt to use.
     private const val SALT_SIZE = 8
@@ -122,6 +134,50 @@ object PubkeyUtils {
         System.arraycopy(saltAndCiphertext, salt.size, ciphertext, 0, ciphertext.size)
 
         return Encryptor.decrypt(salt, ITERATIONS, secret, ciphertext)
+    }
+
+    /**
+     * Derives a key and IV from a passphrase using bcrypt_pbkdf for OpenSSH encrypted keys.
+     * @param passphrase The passphrase to derive from
+     * @param salt The salt (typically 16 bytes)
+     * @param rounds Number of bcrypt rounds (typically 16)
+     * @return A byte array containing the key (32 bytes) followed by IV (16 bytes)
+     */
+    private fun deriveOpenSSHKey(passphrase: String, salt: ByteArray, rounds: Int): ByteArray {
+        val keyLength = OPENSSH_AES_KEY_SIZE + OPENSSH_AES_IV_SIZE  // 48 bytes
+        val output = ByteArray(keyLength)
+        BCrypt().pbkdf(passphrase.toByteArray(Charsets.UTF_8), salt, rounds, output)
+        return output
+    }
+
+    /**
+     * Encrypts data using AES-256-CTR for OpenSSH encrypted key format.
+     * @param data The plaintext data to encrypt
+     * @param key The 32-byte AES key
+     * @param iv The 16-byte IV
+     * @return The encrypted data
+     */
+    private fun encryptAesCtr(data: ByteArray, key: ByteArray, iv: ByteArray): ByteArray {
+        val cipher = Cipher.getInstance("AES/CTR/NoPadding")
+        val keySpec = SecretKeySpec(key, "AES")
+        val ivSpec = IvParameterSpec(iv)
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec)
+        return cipher.doFinal(data)
+    }
+
+    /**
+     * Decrypts data using AES-256-CTR for OpenSSH encrypted key format.
+     * @param data The encrypted data
+     * @param key The 32-byte AES key
+     * @param iv The 16-byte IV
+     * @return The decrypted data
+     */
+    private fun decryptAesCtr(data: ByteArray, key: ByteArray, iv: ByteArray): ByteArray {
+        val cipher = Cipher.getInstance("AES/CTR/NoPadding")
+        val keySpec = SecretKeySpec(key, "AES")
+        val ivSpec = IvParameterSpec(iv)
+        cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
+        return cipher.doFinal(data)
     }
 
     @Throws(Exception::class)
@@ -455,32 +511,58 @@ object PubkeyUtils {
     private const val ED25519_KEY_TYPE = "ssh-ed25519"
 
     /**
-     * Exports an Ed25519 key pair in OpenSSH format.
-     * This is the standard format used by ssh-keygen and compatible with other SSH tools.
-     *
-     * @param privateKey The Ed25519 private key
-     * @param publicKey The Ed25519 public key
-     * @param comment Optional comment (typically the key nickname)
-     * @return The key in OpenSSH PEM format
+     * Exports an Ed25519 key pair in OpenSSH format (unencrypted).
      */
     fun exportOpenSSHEd25519(
         privateKey: Ed25519PrivateKey,
         publicKey: Ed25519PublicKey,
         comment: String?
     ): String {
+        return exportOpenSSHEd25519(privateKey, publicKey, comment, null)
+    }
+
+    /**
+     * Exports an Ed25519 key pair in OpenSSH format.
+     * This is the standard format used by ssh-keygen and compatible with other SSH tools.
+     *
+     * @param privateKey The Ed25519 private key
+     * @param publicKey The Ed25519 public key
+     * @param comment Optional comment (typically the key nickname)
+     * @param passphrase Optional passphrase for encryption. If null or empty, key is unencrypted.
+     * @return The key in OpenSSH PEM format
+     */
+    fun exportOpenSSHEd25519(
+        privateKey: Ed25519PrivateKey,
+        publicKey: Ed25519PublicKey,
+        comment: String?,
+        passphrase: String?
+    ): String {
+        val encrypted = !passphrase.isNullOrEmpty()
         val baos = ByteArrayOutputStream()
 
         // Magic header: "openssh-key-v1\0"
         baos.write(OPENSSH_KEY_V1_MAGIC.toByteArray(Charsets.US_ASCII))
 
-        // Cipher name: "none" for unencrypted
-        writeString(baos, "none")
+        // Generate salt for encryption if needed
+        val salt = if (encrypted) {
+            ByteArray(OPENSSH_BCRYPT_SALT_SIZE).also { SecureRandom().nextBytes(it) }
+        } else null
 
-        // KDF name: "none" for unencrypted
-        writeString(baos, "none")
+        // Cipher name
+        writeString(baos, if (encrypted) OPENSSH_CIPHER_AES256_CTR else "none")
 
-        // KDF options: empty for unencrypted
-        writeString(baos, "")
+        // KDF name
+        writeString(baos, if (encrypted) OPENSSH_KDF_BCRYPT else "none")
+
+        // KDF options
+        if (encrypted && salt != null) {
+            val kdfOptions = ByteArrayOutputStream()
+            writeBytes(kdfOptions, salt)
+            writeUint32(kdfOptions, OPENSSH_BCRYPT_ROUNDS)
+            writeBytes(baos, kdfOptions.toByteArray())
+        } else {
+            writeString(baos, "")
+        }
 
         // Number of keys: 1
         writeUint32(baos, 1)
@@ -516,16 +598,26 @@ object PubkeyUtils {
         // Comment
         writeString(privateSection, comment ?: "")
 
-        // Padding to block size (8 bytes for unencrypted)
-        val blockSize = 8
+        // Padding to block size (16 for encrypted, 8 for unencrypted)
+        val blockSize = if (encrypted) OPENSSH_AES_BLOCK_SIZE else 8
         var paddingNeeded = blockSize - (privateSection.size() % blockSize)
         if (paddingNeeded == blockSize) paddingNeeded = 0
         for (i in 1..paddingNeeded) {
             privateSection.write(i)
         }
 
+        // Encrypt if passphrase provided
+        val privateSectionBytes = if (encrypted && salt != null && passphrase != null) {
+            val derivedKey = deriveOpenSSHKey(passphrase, salt, OPENSSH_BCRYPT_ROUNDS)
+            val key = derivedKey.copyOfRange(0, OPENSSH_AES_KEY_SIZE)
+            val iv = derivedKey.copyOfRange(OPENSSH_AES_KEY_SIZE, OPENSSH_AES_KEY_SIZE + OPENSSH_AES_IV_SIZE)
+            encryptAesCtr(privateSection.toByteArray(), key, iv)
+        } else {
+            privateSection.toByteArray()
+        }
+
         // Write the private section
-        writeBytes(baos, privateSection.toByteArray())
+        writeBytes(baos, privateSectionBytes)
 
         // Base64 encode and format
         val sb = StringBuilder()
@@ -577,22 +669,52 @@ object PubkeyUtils {
     }
 
     /**
-     * Exports an RSA key pair in OpenSSH format.
+     * Exports an RSA key pair in OpenSSH format (unencrypted).
      */
     fun exportOpenSSHRSA(
         privateKey: RSAPrivateCrtKey,
         publicKey: RSAPublicKey,
         comment: String?
     ): String {
+        return exportOpenSSHRSA(privateKey, publicKey, comment, null)
+    }
+
+    /**
+     * Exports an RSA key pair in OpenSSH format.
+     * @param passphrase Optional passphrase for encryption. If null or empty, key is unencrypted.
+     */
+    fun exportOpenSSHRSA(
+        privateKey: RSAPrivateCrtKey,
+        publicKey: RSAPublicKey,
+        comment: String?,
+        passphrase: String?
+    ): String {
+        val encrypted = !passphrase.isNullOrEmpty()
         val baos = ByteArrayOutputStream()
 
         // Magic header
         baos.write(OPENSSH_KEY_V1_MAGIC.toByteArray(Charsets.US_ASCII))
 
-        // Cipher and KDF: none for unencrypted
-        writeString(baos, "none")
-        writeString(baos, "none")
-        writeString(baos, "")
+        // Generate salt for encryption if needed
+        val salt = if (encrypted) {
+            ByteArray(OPENSSH_BCRYPT_SALT_SIZE).also { SecureRandom().nextBytes(it) }
+        } else null
+
+        // Cipher name
+        writeString(baos, if (encrypted) OPENSSH_CIPHER_AES256_CTR else "none")
+
+        // KDF name
+        writeString(baos, if (encrypted) OPENSSH_KDF_BCRYPT else "none")
+
+        // KDF options
+        if (encrypted && salt != null) {
+            val kdfOptions = ByteArrayOutputStream()
+            writeBytes(kdfOptions, salt)
+            writeUint32(kdfOptions, OPENSSH_BCRYPT_ROUNDS)
+            writeBytes(baos, kdfOptions.toByteArray())
+        } else {
+            writeString(baos, "")
+        }
 
         // Number of keys
         writeUint32(baos, 1)
@@ -620,36 +742,76 @@ object PubkeyUtils {
 
         writeString(privateSection, comment ?: "")
 
-        // Padding
-        val blockSize = 8
+        // Padding to block size (16 for encrypted, 8 for unencrypted)
+        val blockSize = if (encrypted) OPENSSH_AES_BLOCK_SIZE else 8
         var paddingNeeded = blockSize - (privateSection.size() % blockSize)
         if (paddingNeeded == blockSize) paddingNeeded = 0
         for (i in 1..paddingNeeded) {
             privateSection.write(i)
         }
 
-        writeBytes(baos, privateSection.toByteArray())
+        // Encrypt if passphrase provided
+        val privateSectionBytes = if (encrypted && salt != null && passphrase != null) {
+            val derivedKey = deriveOpenSSHKey(passphrase, salt, OPENSSH_BCRYPT_ROUNDS)
+            val key = derivedKey.copyOfRange(0, OPENSSH_AES_KEY_SIZE)
+            val iv = derivedKey.copyOfRange(OPENSSH_AES_KEY_SIZE, OPENSSH_AES_KEY_SIZE + OPENSSH_AES_IV_SIZE)
+            encryptAesCtr(privateSection.toByteArray(), key, iv)
+        } else {
+            privateSection.toByteArray()
+        }
+
+        writeBytes(baos, privateSectionBytes)
 
         return formatOpenSSHKey(baos.toByteArray())
     }
 
     /**
-     * Exports a DSA key pair in OpenSSH format.
+     * Exports a DSA key pair in OpenSSH format (unencrypted).
      */
     fun exportOpenSSHDSA(
         privateKey: DSAPrivateKey,
         publicKey: DSAPublicKey,
         comment: String?
     ): String {
+        return exportOpenSSHDSA(privateKey, publicKey, comment, null)
+    }
+
+    /**
+     * Exports a DSA key pair in OpenSSH format.
+     * @param passphrase Optional passphrase for encryption. If null or empty, key is unencrypted.
+     */
+    fun exportOpenSSHDSA(
+        privateKey: DSAPrivateKey,
+        publicKey: DSAPublicKey,
+        comment: String?,
+        passphrase: String?
+    ): String {
+        val encrypted = !passphrase.isNullOrEmpty()
         val baos = ByteArrayOutputStream()
 
         // Magic header
         baos.write(OPENSSH_KEY_V1_MAGIC.toByteArray(Charsets.US_ASCII))
 
-        // Cipher and KDF: none for unencrypted
-        writeString(baos, "none")
-        writeString(baos, "none")
-        writeString(baos, "")
+        // Generate salt for encryption if needed
+        val salt = if (encrypted) {
+            ByteArray(OPENSSH_BCRYPT_SALT_SIZE).also { SecureRandom().nextBytes(it) }
+        } else null
+
+        // Cipher name
+        writeString(baos, if (encrypted) OPENSSH_CIPHER_AES256_CTR else "none")
+
+        // KDF name
+        writeString(baos, if (encrypted) OPENSSH_KDF_BCRYPT else "none")
+
+        // KDF options
+        if (encrypted && salt != null) {
+            val kdfOptions = ByteArrayOutputStream()
+            writeBytes(kdfOptions, salt)
+            writeUint32(kdfOptions, OPENSSH_BCRYPT_ROUNDS)
+            writeBytes(baos, kdfOptions.toByteArray())
+        } else {
+            writeString(baos, "")
+        }
 
         // Number of keys
         writeUint32(baos, 1)
@@ -680,27 +842,51 @@ object PubkeyUtils {
 
         writeString(privateSection, comment ?: "")
 
-        // Padding
-        val blockSize = 8
+        // Padding to block size (16 for encrypted, 8 for unencrypted)
+        val blockSize = if (encrypted) OPENSSH_AES_BLOCK_SIZE else 8
         var paddingNeeded = blockSize - (privateSection.size() % blockSize)
         if (paddingNeeded == blockSize) paddingNeeded = 0
         for (i in 1..paddingNeeded) {
             privateSection.write(i)
         }
 
-        writeBytes(baos, privateSection.toByteArray())
+        // Encrypt if passphrase provided
+        val privateSectionBytes = if (encrypted && salt != null && passphrase != null) {
+            val derivedKey = deriveOpenSSHKey(passphrase, salt, OPENSSH_BCRYPT_ROUNDS)
+            val key = derivedKey.copyOfRange(0, OPENSSH_AES_KEY_SIZE)
+            val iv = derivedKey.copyOfRange(OPENSSH_AES_KEY_SIZE, OPENSSH_AES_KEY_SIZE + OPENSSH_AES_IV_SIZE)
+            encryptAesCtr(privateSection.toByteArray(), key, iv)
+        } else {
+            privateSection.toByteArray()
+        }
+
+        writeBytes(baos, privateSectionBytes)
 
         return formatOpenSSHKey(baos.toByteArray())
     }
 
     /**
-     * Exports an EC key pair in OpenSSH format.
+     * Exports an EC key pair in OpenSSH format (unencrypted).
      */
     fun exportOpenSSHEC(
         privateKey: ECPrivateKey,
         publicKey: ECPublicKey,
         comment: String?
     ): String {
+        return exportOpenSSHEC(privateKey, publicKey, comment, null)
+    }
+
+    /**
+     * Exports an EC key pair in OpenSSH format.
+     * @param passphrase Optional passphrase for encryption. If null or empty, key is unencrypted.
+     */
+    fun exportOpenSSHEC(
+        privateKey: ECPrivateKey,
+        publicKey: ECPublicKey,
+        comment: String?,
+        passphrase: String?
+    ): String {
+        val encrypted = !passphrase.isNullOrEmpty()
         val baos = ByteArrayOutputStream()
 
         // Determine curve name and key type
@@ -715,10 +901,26 @@ object PubkeyUtils {
         // Magic header
         baos.write(OPENSSH_KEY_V1_MAGIC.toByteArray(Charsets.US_ASCII))
 
-        // Cipher and KDF: none for unencrypted
-        writeString(baos, "none")
-        writeString(baos, "none")
-        writeString(baos, "")
+        // Generate salt for encryption if needed
+        val salt = if (encrypted) {
+            ByteArray(OPENSSH_BCRYPT_SALT_SIZE).also { SecureRandom().nextBytes(it) }
+        } else null
+
+        // Cipher name
+        writeString(baos, if (encrypted) OPENSSH_CIPHER_AES256_CTR else "none")
+
+        // KDF name
+        writeString(baos, if (encrypted) OPENSSH_KDF_BCRYPT else "none")
+
+        // KDF options
+        if (encrypted && salt != null) {
+            val kdfOptions = ByteArrayOutputStream()
+            writeBytes(kdfOptions, salt)
+            writeUint32(kdfOptions, OPENSSH_BCRYPT_ROUNDS)
+            writeBytes(baos, kdfOptions.toByteArray())
+        } else {
+            writeString(baos, "")
+        }
 
         // Number of keys
         writeUint32(baos, 1)
@@ -746,15 +948,25 @@ object PubkeyUtils {
 
         writeString(privateSection, comment ?: "")
 
-        // Padding
-        val blockSize = 8
+        // Padding to block size (16 for encrypted, 8 for unencrypted)
+        val blockSize = if (encrypted) OPENSSH_AES_BLOCK_SIZE else 8
         var paddingNeeded = blockSize - (privateSection.size() % blockSize)
         if (paddingNeeded == blockSize) paddingNeeded = 0
         for (i in 1..paddingNeeded) {
             privateSection.write(i)
         }
 
-        writeBytes(baos, privateSection.toByteArray())
+        // Encrypt if passphrase provided
+        val privateSectionBytes = if (encrypted && salt != null && passphrase != null) {
+            val derivedKey = deriveOpenSSHKey(passphrase, salt, OPENSSH_BCRYPT_ROUNDS)
+            val key = derivedKey.copyOfRange(0, OPENSSH_AES_KEY_SIZE)
+            val iv = derivedKey.copyOfRange(OPENSSH_AES_KEY_SIZE, OPENSSH_AES_KEY_SIZE + OPENSSH_AES_IV_SIZE)
+            encryptAesCtr(privateSection.toByteArray(), key, iv)
+        } else {
+            privateSection.toByteArray()
+        }
+
+        writeBytes(baos, privateSectionBytes)
 
         return formatOpenSSHKey(baos.toByteArray())
     }
@@ -827,22 +1039,34 @@ object PubkeyUtils {
     }
 
     /**
-     * Exports any supported key pair in OpenSSH format.
+     * Exports any supported key pair in OpenSSH format (unencrypted).
      * @param privateKey The private key (RSA, DSA, EC, or Ed25519)
      * @param publicKey The public key
      * @param comment Optional comment
      * @return The key in OpenSSH format, or null if the key type is not supported
      */
     fun exportOpenSSH(privateKey: PrivateKey, publicKey: PublicKey, comment: String?): String? {
+        return exportOpenSSH(privateKey, publicKey, comment, null)
+    }
+
+    /**
+     * Exports any supported key pair in OpenSSH format.
+     * @param privateKey The private key (RSA, DSA, EC, or Ed25519)
+     * @param publicKey The public key
+     * @param comment Optional comment
+     * @param passphrase Optional passphrase for encryption. If null or empty, key is unencrypted.
+     * @return The key in OpenSSH format, or null if the key type is not supported
+     */
+    fun exportOpenSSH(privateKey: PrivateKey, publicKey: PublicKey, comment: String?, passphrase: String?): String? {
         return when {
             privateKey is RSAPrivateCrtKey && publicKey is RSAPublicKey ->
-                exportOpenSSHRSA(privateKey, publicKey, comment)
+                exportOpenSSHRSA(privateKey, publicKey, comment, passphrase)
             privateKey is DSAPrivateKey && publicKey is DSAPublicKey ->
-                exportOpenSSHDSA(privateKey, publicKey, comment)
+                exportOpenSSHDSA(privateKey, publicKey, comment, passphrase)
             privateKey is ECPrivateKey && publicKey is ECPublicKey ->
-                exportOpenSSHEC(privateKey, publicKey, comment)
+                exportOpenSSHEC(privateKey, publicKey, comment, passphrase)
             privateKey is Ed25519PrivateKey && publicKey is Ed25519PublicKey ->
-                exportOpenSSHEd25519(privateKey, publicKey, comment)
+                exportOpenSSHEd25519(privateKey, publicKey, comment, passphrase)
             else -> null
         }
     }
