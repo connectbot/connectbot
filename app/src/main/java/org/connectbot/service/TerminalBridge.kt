@@ -369,16 +369,6 @@ class TerminalBridge {
         }
     }
 
-    fun addOnDisconnectedListener(listener: BridgeDisconnectedListener?) {
-        if (listener != null && !disconnectListeners.contains(listener)) {
-            disconnectListeners.add(listener)
-        }
-    }
-
-    fun removeOnDisconnectedListener(listener: BridgeDisconnectedListener?) {
-        disconnectListeners.remove(listener)
-    }
-
     /**
      * Force disconnection of this terminal bridge.
      */
