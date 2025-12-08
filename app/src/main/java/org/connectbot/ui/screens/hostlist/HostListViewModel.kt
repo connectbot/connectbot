@@ -151,7 +151,7 @@ class HostListViewModel(
         }
 
         // Check if in disconnected list by comparing nickname
-        if (terminalManager.disconnected.any { it.nickname == host.nickname }) {
+        if (terminalManager.disconnectedFlow.value.any { it.nickname == host.nickname }) {
             return ConnectionState.DISCONNECTED
         }
 

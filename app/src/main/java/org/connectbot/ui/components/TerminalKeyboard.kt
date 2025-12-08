@@ -33,6 +33,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+// NOTE: Using Icons.Default (non-mirrored) for arrow keys is intentional.
+// AutoMirrored variants would flip the arrows in RTL languages, but terminal
+// cursor movement should always be absolute (left = left, right = right).
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowUp
