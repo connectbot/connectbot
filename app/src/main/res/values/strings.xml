@@ -1007,6 +1007,4 @@
 	<string name="terminal_jump_not_found">Jump host not found in saved hosts</string>
 	<!-- Password prompt prefix for jump host -->
 	<string name="terminal_jump_password">Password for jump host %s:</string>
-	<!-- Keyboard-interactive prompt prefix for jump host -->
-	<string name="terminal_jump_prompt">[%s]</string>
 </resources>

@@ -19,6 +19,7 @@ package org.connectbot.data
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -50,7 +51,8 @@ import org.connectbot.data.entity.Pubkey
  *
  * Migration Strategy:
  * - Version 1: Initial Room schema (migrated from HostDatabase v27 + PubkeyDatabase v2)
- * - Future versions: Schema changes handled by Room migrations
+ * - Version 2: Added jump_host_id column for ProxyJump support (AutoMigration)
+ * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
  * - Pubkeys table supports per-key backup control via allowBackup field
@@ -67,7 +69,10 @@ import org.connectbot.data.entity.Pubkey
         ColorPalette::class
     ],
     version = 2,
-    exportSchema = true
+    exportSchema = true,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2)
+    ]
 )
 @TypeConverters(Converters::class)
 abstract class ConnectBotDatabase : RoomDatabase() {
@@ -101,7 +106,7 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                     ConnectBotDatabase::class.java,
                     DATABASE_NAME
                 )
-                    .addMigrations(MIGRATION_LEGACY_TO_1, MIGRATION_1_TO_2)
+                    .addMigrations(MIGRATION_LEGACY_TO_1)
                     .build()
 
                 INSTANCE = instance
@@ -128,17 +133,6 @@ abstract class ConnectBotDatabase : RoomDatabase() {
         }
 
         /**
-         * Migration from version 1 to 2: Add ProxyJump support.
-         *
-         * Adds jump_host_id column to hosts table for SSH jump host / ProxyJump functionality.
-         */
-        private val MIGRATION_1_TO_2 = object : Migration(1, 2) {
-            override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL("ALTER TABLE hosts ADD COLUMN jump_host_id INTEGER DEFAULT NULL")
-            }
-        }
-
-        /**
          * Close the database and clear the singleton instance.
          * Used for testing purposes.
          */
@@ -160,7 +154,7 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                 ConnectBotDatabase::class.java,
                 TEST_DATABASE_NAME
             )
-                .addMigrations(MIGRATION_LEGACY_TO_1, MIGRATION_1_TO_2)
+                .addMigrations(MIGRATION_LEGACY_TO_1)
                 .fallbackToDestructiveMigration(true)
                 .allowMainThreadQueries()
                 .build()
