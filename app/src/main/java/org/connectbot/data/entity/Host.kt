@@ -101,7 +101,15 @@ data class Host(
      * A value of null means no jump host (direct connection).
      */
     @ColumnInfo(name = "jump_host_id")
-    val jumpHostId: Long? = null
+    val jumpHostId: Long? = null,
+
+    /**
+     * Optional font family for terminal display.
+     * When null, uses the global default font setting.
+     * Value should be a TerminalFont enum name (e.g., "JETBRAINS_MONO").
+     */
+    @ColumnInfo(name = "font_family")
+    val fontFamily: String? = null
 ) {
     /**
      * Check if this host is temporary (not saved to database).

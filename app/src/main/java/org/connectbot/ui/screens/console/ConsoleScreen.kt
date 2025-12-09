@@ -22,6 +22,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Typeface
 import androidx.compose.animation.AnimatedVisibility
+import org.connectbot.util.rememberTerminalTypefaceFromStoredValue
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -337,17 +338,11 @@ fun ConsoleScreen(
                                 top = if (!titleBarHide) titleBarHeight else 0.dp
                             )
                     ) {
-                        val typeface = Typeface.MONOSPACE
-                        // TODO: Make this configurable via downloading fonts!
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//                            Typeface.CustomFallbackBuilder(
-//                                FontFamily.Builder(
-//                                    Font.Builder(context.assets, "fonts/PowerlineExtraSymbols.ttf").build()
-//                                ).build()
-//                            ).setSystemFallback("monospace").build()
-//                        } else {
-//                            Typeface.MONOSPACE
-//                        }
+                        // Get font: per-host override takes precedence over global default
+                        val globalFontFamily = remember { prefs.getString("fontFamily", "SYSTEM_DEFAULT") ?: "SYSTEM_DEFAULT" }
+                        val hostFontFamily = bridge.host.fontFamily
+                        val effectiveFontFamily = hostFontFamily ?: globalFontFamily
+                        val typeface = rememberTerminalTypefaceFromStoredValue(effectiveFontFamily)
 
                         Terminal(
                             terminalEmulator = bridge.terminalEmulator,

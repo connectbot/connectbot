@@ -65,6 +65,7 @@ import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.TerminalFont
 
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
@@ -89,6 +90,7 @@ fun HostEditorScreen(
         onPortChange = viewModel::updatePort,
         onColorChange = viewModel::updateColor,
         onFontSizeChange = viewModel::updateFontSize,
+        onFontFamilyChange = viewModel::updateFontFamily,
         onPubkeyChange = viewModel::updatePubkeyId,
         onDelKeyChange = viewModel::updateDelKey,
         onEncodingChange = viewModel::updateEncoding,
@@ -118,6 +120,7 @@ fun HostEditorScreenContent(
     onPortChange: (String) -> Unit,
     onColorChange: (String) -> Unit,
     onFontSizeChange: (Int) -> Unit,
+    onFontFamilyChange: (String?) -> Unit,
     onPubkeyChange: (Long) -> Unit,
     onDelKeyChange: (String) -> Unit,
     onEncodingChange: (String) -> Unit,
@@ -335,6 +338,14 @@ fun HostEditorScreenContent(
                 onFontSizeChange = onFontSizeChange
             )
 
+            // Font family selector
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+            FontFamilySelector(
+                fontFamily = uiState.fontFamily,
+                customFonts = uiState.customFonts,
+                onFontFamilySelected = onFontFamilyChange
+            )
+
             // Pubkey selector
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
             PubkeySelector(
@@ -522,6 +533,69 @@ private fun FontSizeSelector(
                 modifier = Modifier.padding(start = 16.dp),
                 style = MaterialTheme.typography.bodyLarge
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun FontFamilySelector(
+    fontFamily: String?,
+    customFonts: List<String>,
+    onFontFamilySelected: (String?) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    // Build options: "Use Default" + preset fonts + custom fonts
+    val presetOptions = TerminalFont.entries.map { it.displayName to it.name }
+    val customOptions = customFonts.map { it to TerminalFont.createCustomFontValue(it) }
+    val allOptions = listOf("Use Default" to null) + presetOptions + customOptions
+
+    Column(modifier = modifier) {
+        Text(
+            text = stringResource(R.string.hostpref_fontfamily_title),
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = it }
+        ) {
+            OutlinedTextField(
+                value = if (fontFamily == null) {
+                    "Use Default"
+                } else {
+                    TerminalFont.getDisplayName(fontFamily)
+                },
+                onValueChange = {},
+                readOnly = true,
+                singleLine = true,
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                modifier = Modifier
+                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                    .fillMaxWidth()
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                allOptions.forEach { (label, value) ->
+                    DropdownMenuItem(
+                        text = { Text(label) },
+                        onClick = {
+                            onFontFamilySelected(value)
+                            expanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
+                }
+            }
         }
     }
 }
@@ -866,6 +940,7 @@ private fun HostEditorScreenPreview() {
             onPortChange = {},
             onColorChange = {},
             onFontSizeChange = {},
+            onFontFamilyChange = {},
             onPubkeyChange = {},
             onDelKeyChange = {},
             onEncodingChange = {},
