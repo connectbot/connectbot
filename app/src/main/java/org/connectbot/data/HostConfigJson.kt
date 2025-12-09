@@ -28,29 +28,24 @@ import org.json.JSONObject
  * This class uses reflection-based serialization to automatically adapt to
  * Room entity schema changes without requiring manual updates to the JSON format.
  *
- * Excluded fields:
- * - Host: id (auto-generated), lastConnect (runtime state), hostKeyAlgo (negotiated at connection)
- * - PortForward: id (auto-generated), hostId (relationship, set during import)
+ * Only true runtime state fields are excluded:
+ * - Host: lastConnect (runtime state), hostKeyAlgo (negotiated at connection)
+ *
+ * All IDs are preserved in the export and remapped during import to handle conflicts.
  */
 object HostConfigJson {
     const val CURRENT_VERSION = 1
 
-    // Fields to exclude from Host serialization
-    private val HOST_EXCLUDED_FIELDS = setOf("id", "lastConnect", "hostKeyAlgo")
+    // Only exclude true runtime state - IDs are kept for relationship mapping
+    private val HOST_EXCLUDED_FIELDS = setOf("lastConnect", "hostKeyAlgo")
 
-    // Fields to exclude from PortForward serialization
-    private val PORT_FORWARD_EXCLUDED_FIELDS = setOf("id", "hostId")
+    // No fields excluded for PortForward - all are needed including id and hostId
+    private val PORT_FORWARD_EXCLUDED_FIELDS = emptySet<String>()
 
-    // Default values for excluded required fields during deserialization
+    // Default values for excluded fields during deserialization
     private val HOST_DEFAULTS = mapOf<String, Any?>(
-        "id" to 0L,
         "lastConnect" to 0L,
         "hostKeyAlgo" to null
-    )
-
-    private val PORT_FORWARD_DEFAULTS = mapOf<String, Any?>(
-        "id" to 0L,
-        "hostId" to 0L
     )
 
     private val hostSerializer = EntityJsonSerializer.forEntity<Host>(
@@ -60,18 +55,29 @@ object HostConfigJson {
 
     private val portForwardSerializer = EntityJsonSerializer.forEntity<PortForward>(
         excludedProperties = PORT_FORWARD_EXCLUDED_FIELDS,
-        propertyDefaults = PORT_FORWARD_DEFAULTS
+        propertyDefaults = emptyMap()
+    )
+
+    /**
+     * Result of parsing host configurations from JSON.
+     *
+     * @property hosts List of Host entities with original IDs from export
+     * @property portForwards List of PortForward entities with original IDs from export
+     */
+    data class ParseResult(
+        val hosts: List<Host>,
+        val portForwards: List<PortForward>
     )
 
     /**
      * Parse host configurations from JSON string.
      *
      * @param jsonString The JSON string to parse
-     * @return Pair of hosts list and map of host index to port forwards
+     * @return ParseResult containing hosts and port forwards with their original IDs
      * @throws org.json.JSONException if JSON is invalid
      * @throws IllegalArgumentException if schema is invalid
      */
-    fun fromJson(jsonString: String): Pair<List<Host>, Map<Int, List<PortForward>>> {
+    fun fromJson(jsonString: String): ParseResult {
         val json = JSONObject(jsonString)
 
         val version = json.optInt("version", 1)
@@ -81,28 +87,26 @@ object HostConfigJson {
 
         val hostsJson = json.getJSONArray("hosts")
         val hosts = mutableListOf<Host>()
-        val portForwardsMap = mutableMapOf<Int, List<PortForward>>()
+        val portForwards = mutableListOf<PortForward>()
 
         for (i in 0 until hostsJson.length()) {
             val hostJson = hostsJson.getJSONObject(i)
 
-            // Deserialize host
+            // Deserialize host with original ID
             val host = hostSerializer.fromJson(hostJson)
             hosts.add(host)
 
             // Deserialize port forwards if present
             val portForwardsJson = hostJson.optJSONArray("portForwards")
-            if (portForwardsJson != null && portForwardsJson.length() > 0) {
-                val portForwards = mutableListOf<PortForward>()
+            if (portForwardsJson != null) {
                 for (j in 0 until portForwardsJson.length()) {
                     val pf = portForwardSerializer.fromJson(portForwardsJson.getJSONObject(j))
                     portForwards.add(pf)
                 }
-                portForwardsMap[i] = portForwards
             }
         }
 
-        return Pair(hosts, portForwardsMap)
+        return ParseResult(hosts, portForwards)
     }
 
     /**
