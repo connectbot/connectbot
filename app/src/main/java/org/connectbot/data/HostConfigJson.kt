@@ -32,9 +32,16 @@ import org.json.JSONObject
  * - Host: lastConnect (runtime state), hostKeyAlgo (negotiated at connection)
  *
  * All IDs are preserved in the export and remapped during import to handle conflicts.
+ *
+ * The JSON schema version matches the Room database schema version to ensure
+ * compatibility tracking when the database schema changes.
  */
 object HostConfigJson {
-    const val CURRENT_VERSION = 1
+    /**
+     * Current schema version, matching the Room database version.
+     */
+    val CURRENT_VERSION: Int
+        get() = ConnectBotDatabase.SCHEMA_VERSION
 
     // Only exclude true runtime state - IDs are kept for relationship mapping
     private val HOST_EXCLUDED_FIELDS = setOf("lastConnect", "hostKeyAlgo")
