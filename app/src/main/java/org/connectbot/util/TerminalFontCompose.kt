@@ -25,6 +25,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 /**
  * State representing font loading progress.
@@ -59,14 +61,19 @@ fun rememberTerminalFontState(
             return@LaunchedEffect
         }
 
-        // Load font
+        // Load font using suspendCancellableCoroutine for proper coroutine integration
         state = FontLoadingState.Loading
-        fontProvider.loadFont(font) { typeface ->
-            state = if (typeface == Typeface.MONOSPACE && font != TerminalFont.SYSTEM_DEFAULT) {
-                FontLoadingState.Error(fallback, "Failed to load font")
-            } else {
-                FontLoadingState.Loaded(typeface)
+        val loadedTypeface = suspendCancellableCoroutine { continuation ->
+            fontProvider.loadFont(font) { result ->
+                if (continuation.isActive) {
+                    continuation.resume(result)
+                }
             }
+        }
+        state = if (loadedTypeface == Typeface.MONOSPACE && font != TerminalFont.SYSTEM_DEFAULT) {
+            FontLoadingState.Error(fallback, "Failed to load font")
+        } else {
+            FontLoadingState.Loaded(loadedTypeface)
         }
     }
 
@@ -138,10 +145,15 @@ fun rememberTerminalTypefaceFromStoredValue(
             return@LaunchedEffect
         }
 
-        // Load font
-        fontProvider.loadFontByName(googleFontName) { loadedTypeface ->
-            typeface = loadedTypeface
+        // Load font using suspendCancellableCoroutine for proper coroutine integration
+        val loadedTypeface = suspendCancellableCoroutine { continuation ->
+            fontProvider.loadFontByName(googleFontName) { result ->
+                if (continuation.isActive) {
+                    continuation.resume(result)
+                }
+            }
         }
+        typeface = loadedTypeface
     }
 
     return typeface
