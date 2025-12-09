@@ -491,26 +491,59 @@ class DatabaseMigrator @Inject constructor(
         // Wrap all writes in a single transaction for atomicity
         // If any write fails, all writes are rolled back
         roomDatabase.withTransaction {
-            // Insert color schemes first (referenced by hosts)
+            // Insert color schemes first (referenced by hosts and palettes)
+            // Create ID mapping since Room auto-generates IDs
+            val colorSchemeIdMap = mutableMapOf<Long, Long>()
             data.colorSchemes.forEach { scheme ->
-                roomDatabase.colorSchemeDao().insert(scheme)
+                val oldId = scheme.id
+                val newId = roomDatabase.colorSchemeDao().insert(scheme)
+                colorSchemeIdMap[oldId] = newId
             }
 
-            // Insert color palettes
+            // Insert color palettes with remapped scheme IDs
             data.colorPalettes.forEach { palette ->
-                roomDatabase.colorSchemeDao().insertColor(palette)
+                val newSchemeId = colorSchemeIdMap[palette.schemeId]
+                    ?: throw MigrationException("Color palette references unknown color scheme ID: ${palette.schemeId}")
+                val remappedPalette = palette.copy(schemeId = newSchemeId)
+                roomDatabase.colorSchemeDao().insertColor(remappedPalette)
             }
 
             // Insert pubkeys (referenced by hosts)
+            // Create ID mapping since Room auto-generates IDs
+            val pubkeyIdMap = mutableMapOf<Long, Long>()
             data.pubkeys.forEach { pubkey ->
-                roomDatabase.pubkeyDao().insert(pubkey)
+                val oldId = pubkey.id
+                val newId = roomDatabase.pubkeyDao().insert(pubkey)
+                pubkeyIdMap[oldId] = newId
             }
 
-            // Insert hosts and create ID mapping (old ID -> new ID)
+            // Insert hosts with remapped foreign key references and create ID mapping
             val hostIdMap = mutableMapOf<Long, Long>()
             data.hosts.forEach { host ->
                 val oldId = host.id
-                val newId = roomDatabase.hostDao().insert(host)
+
+                // Remap pubkeyId if it references a valid pubkey
+                val newPubkeyId = if (host.pubkeyId > 0) {
+                    pubkeyIdMap[host.pubkeyId]
+                        ?: throw MigrationException("Host references unknown pubkey ID: ${host.pubkeyId}")
+                } else {
+                    host.pubkeyId // Keep special values like -1 (any key), -2 (same as last), etc.
+                }
+
+                // Remap colorSchemeId if it's not the default scheme (ID 1)
+                // colorSchemeId = 1 is a virtual "Default" scheme that doesn't exist in the database
+                val newColorSchemeId = if (host.colorSchemeId == 1L) {
+                    1L // Keep default scheme ID as-is
+                } else {
+                    colorSchemeIdMap[host.colorSchemeId]
+                        ?: throw MigrationException("Host references unknown color scheme ID: ${host.colorSchemeId}")
+                }
+
+                val remappedHost = host.copy(
+                    pubkeyId = newPubkeyId,
+                    colorSchemeId = newColorSchemeId
+                )
+                val newId = roomDatabase.hostDao().insert(remappedHost)
                 hostIdMap[oldId] = newId
             }
 
