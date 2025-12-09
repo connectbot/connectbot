@@ -29,9 +29,8 @@ import com.trilead.ssh2.signature.ECDSASHA2Verify
 import com.trilead.ssh2.signature.Ed25519Verify
 import com.trilead.ssh2.signature.RSASHA1Verify
 import com.trilead.ssh2.signature.SSHSignature
-import java.io.ByteArrayOutputStream
+import com.trilead.ssh2.packets.TypesWriter
 import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import org.connectbot.data.entity.Pubkey
 import org.keyczar.jce.EcCore
 import java.io.IOException
@@ -538,10 +537,10 @@ object PubkeyUtils {
         passphrase: String?
     ): String {
         val encrypted = !passphrase.isNullOrEmpty()
-        val baos = ByteArrayOutputStream()
+        val tw = TypesWriter()
 
         // Magic header: "openssh-key-v1\0"
-        baos.write(OPENSSH_KEY_V1_MAGIC.toByteArray(Charsets.US_ASCII))
+        tw.writeBytes(OPENSSH_KEY_V1_MAGIC.toByteArray(Charsets.US_ASCII))
 
         // Generate salt for encryption if needed
         val salt = if (encrypted) {
@@ -549,61 +548,61 @@ object PubkeyUtils {
         } else null
 
         // Cipher name
-        writeString(baos, if (encrypted) OPENSSH_CIPHER_AES256_CTR else "none")
+        tw.writeString(if (encrypted) OPENSSH_CIPHER_AES256_CTR else "none")
 
         // KDF name
-        writeString(baos, if (encrypted) OPENSSH_KDF_BCRYPT else "none")
+        tw.writeString(if (encrypted) OPENSSH_KDF_BCRYPT else "none")
 
         // KDF options
         if (encrypted && salt != null) {
-            val kdfOptions = ByteArrayOutputStream()
-            writeBytes(kdfOptions, salt)
-            writeUint32(kdfOptions, OPENSSH_BCRYPT_ROUNDS)
-            writeBytes(baos, kdfOptions.toByteArray())
+            val kdfOptions = TypesWriter()
+            kdfOptions.writeString(salt, 0, salt.size)
+            kdfOptions.writeUINT32(OPENSSH_BCRYPT_ROUNDS)
+            tw.writeString(kdfOptions.getBytes(), 0, kdfOptions.length())
         } else {
-            writeString(baos, "")
+            tw.writeString("")
         }
 
         // Number of keys: 1
-        writeUint32(baos, 1)
+        tw.writeUINT32(1)
 
         // Public key blob
         val publicKeyBytes = publicKey.getAbyte()
-        val pubKeyBlob = ByteArrayOutputStream()
-        writeString(pubKeyBlob, ED25519_KEY_TYPE)
-        writeBytes(pubKeyBlob, publicKeyBytes)
-        writeBytes(baos, pubKeyBlob.toByteArray())
+        val pubKeyBlob = TypesWriter()
+        pubKeyBlob.writeString(ED25519_KEY_TYPE)
+        pubKeyBlob.writeString(publicKeyBytes, 0, publicKeyBytes.size)
+        tw.writeString(pubKeyBlob.getBytes(), 0, pubKeyBlob.length())
 
         // Private key section
-        val privateSection = ByteArrayOutputStream()
+        val privateSection = TypesWriter()
 
         // Check integers (random, must match for verification)
         val checkInt = SecureRandom().nextInt()
-        writeUint32(privateSection, checkInt)
-        writeUint32(privateSection, checkInt)
+        privateSection.writeUINT32(checkInt)
+        privateSection.writeUINT32(checkInt)
 
         // Key type
-        writeString(privateSection, ED25519_KEY_TYPE)
+        privateSection.writeString(ED25519_KEY_TYPE)
 
         // Public key
-        writeBytes(privateSection, publicKeyBytes)
+        privateSection.writeString(publicKeyBytes, 0, publicKeyBytes.size)
 
         // Private key: 64 bytes (32-byte seed + 32-byte public key)
         val seed = privateKey.getSeed()
         val privateKeyData = ByteArray(64)
         System.arraycopy(seed, 0, privateKeyData, 0, 32)
         System.arraycopy(publicKeyBytes, 0, privateKeyData, 32, 32)
-        writeBytes(privateSection, privateKeyData)
+        privateSection.writeString(privateKeyData, 0, privateKeyData.size)
 
         // Comment
-        writeString(privateSection, comment ?: "")
+        privateSection.writeString(comment ?: "")
 
         // Padding to block size (16 for encrypted, 8 for unencrypted)
         val blockSize = if (encrypted) OPENSSH_AES_BLOCK_SIZE else 8
-        var paddingNeeded = blockSize - (privateSection.size() % blockSize)
+        var paddingNeeded = blockSize - (privateSection.length() % blockSize)
         if (paddingNeeded == blockSize) paddingNeeded = 0
         for (i in 1..paddingNeeded) {
-            privateSection.write(i)
+            privateSection.writeByte(i)
         }
 
         // Encrypt if passphrase provided
@@ -611,61 +610,15 @@ object PubkeyUtils {
             val derivedKey = deriveOpenSSHKey(passphrase, salt, OPENSSH_BCRYPT_ROUNDS)
             val key = derivedKey.copyOfRange(0, OPENSSH_AES_KEY_SIZE)
             val iv = derivedKey.copyOfRange(OPENSSH_AES_KEY_SIZE, OPENSSH_AES_KEY_SIZE + OPENSSH_AES_IV_SIZE)
-            encryptAesCtr(privateSection.toByteArray(), key, iv)
+            encryptAesCtr(privateSection.getBytes(), key, iv)
         } else {
-            privateSection.toByteArray()
+            privateSection.getBytes()
         }
 
         // Write the private section
-        writeBytes(baos, privateSectionBytes)
+        tw.writeString(privateSectionBytes, 0, privateSectionBytes.size)
 
-        // Base64 encode and format
-        val sb = StringBuilder()
-        sb.append(OPENSSH_PRIVATE_KEY_START)
-        sb.append('\n')
-
-        var i = sb.length
-        sb.append(Base64.encode(baos.toByteArray()))
-        i += 70
-        while (i < sb.length) {
-            sb.insert(i, "\n")
-            i += 71
-        }
-
-        sb.append('\n')
-        sb.append(OPENSSH_PRIVATE_KEY_END)
-        sb.append('\n')
-
-        return sb.toString()
-    }
-
-    private fun writeUint32(baos: ByteArrayOutputStream, value: Int) {
-        val buffer = ByteBuffer.allocate(4)
-        buffer.order(ByteOrder.BIG_ENDIAN)
-        buffer.putInt(value)
-        baos.write(buffer.array())
-    }
-
-    private fun writeString(baos: ByteArrayOutputStream, value: String) {
-        writeBytes(baos, value.toByteArray(Charsets.UTF_8))
-    }
-
-    private fun writeBytes(baos: ByteArrayOutputStream, data: ByteArray) {
-        writeUint32(baos, data.size)
-        baos.write(data)
-    }
-
-    /**
-     * Writes a BigInteger as an SSH mpint (multi-precision integer).
-     * SSH mpints are stored as a 4-byte length followed by the value in big-endian format.
-     * If the high bit is set, a leading zero byte is prepended.
-     */
-    private fun writeMpint(baos: ByteArrayOutputStream, value: BigInteger) {
-        var bytes = value.toByteArray()
-        // BigInteger.toByteArray() already handles sign extension correctly,
-        // but may include an extra leading zero if the high bit is set.
-        // This is actually what we want for SSH mpints.
-        writeBytes(baos, bytes)
+        return formatOpenSSHKey(tw.getBytes())
     }
 
     /**
@@ -690,10 +643,10 @@ object PubkeyUtils {
         passphrase: String?
     ): String {
         val encrypted = !passphrase.isNullOrEmpty()
-        val baos = ByteArrayOutputStream()
+        val tw = TypesWriter()
 
         // Magic header
-        baos.write(OPENSSH_KEY_V1_MAGIC.toByteArray(Charsets.US_ASCII))
+        tw.writeBytes(OPENSSH_KEY_V1_MAGIC.toByteArray(Charsets.US_ASCII))
 
         // Generate salt for encryption if needed
         val salt = if (encrypted) {
@@ -701,53 +654,53 @@ object PubkeyUtils {
         } else null
 
         // Cipher name
-        writeString(baos, if (encrypted) OPENSSH_CIPHER_AES256_CTR else "none")
+        tw.writeString(if (encrypted) OPENSSH_CIPHER_AES256_CTR else "none")
 
         // KDF name
-        writeString(baos, if (encrypted) OPENSSH_KDF_BCRYPT else "none")
+        tw.writeString(if (encrypted) OPENSSH_KDF_BCRYPT else "none")
 
         // KDF options
         if (encrypted && salt != null) {
-            val kdfOptions = ByteArrayOutputStream()
-            writeBytes(kdfOptions, salt)
-            writeUint32(kdfOptions, OPENSSH_BCRYPT_ROUNDS)
-            writeBytes(baos, kdfOptions.toByteArray())
+            val kdfOptions = TypesWriter()
+            kdfOptions.writeString(salt, 0, salt.size)
+            kdfOptions.writeUINT32(OPENSSH_BCRYPT_ROUNDS)
+            tw.writeString(kdfOptions.getBytes(), 0, kdfOptions.length())
         } else {
-            writeString(baos, "")
+            tw.writeString("")
         }
 
         // Number of keys
-        writeUint32(baos, 1)
+        tw.writeUINT32(1)
 
         // Public key blob: ssh-rsa, e, n
-        val pubKeyBlob = ByteArrayOutputStream()
-        writeString(pubKeyBlob, "ssh-rsa")
-        writeMpint(pubKeyBlob, publicKey.publicExponent)
-        writeMpint(pubKeyBlob, publicKey.modulus)
-        writeBytes(baos, pubKeyBlob.toByteArray())
+        val pubKeyBlob = TypesWriter()
+        pubKeyBlob.writeString("ssh-rsa")
+        pubKeyBlob.writeMPInt(publicKey.publicExponent)
+        pubKeyBlob.writeMPInt(publicKey.modulus)
+        tw.writeString(pubKeyBlob.getBytes(), 0, pubKeyBlob.length())
 
         // Private key section
-        val privateSection = ByteArrayOutputStream()
+        val privateSection = TypesWriter()
         val checkInt = SecureRandom().nextInt()
-        writeUint32(privateSection, checkInt)
-        writeUint32(privateSection, checkInt)
+        privateSection.writeUINT32(checkInt)
+        privateSection.writeUINT32(checkInt)
 
-        writeString(privateSection, "ssh-rsa")
-        writeMpint(privateSection, publicKey.modulus)          // n
-        writeMpint(privateSection, publicKey.publicExponent)   // e
-        writeMpint(privateSection, privateKey.privateExponent) // d
-        writeMpint(privateSection, privateKey.crtCoefficient)  // iqmp (q^-1 mod p)
-        writeMpint(privateSection, privateKey.primeP)          // p
-        writeMpint(privateSection, privateKey.primeQ)          // q
+        privateSection.writeString("ssh-rsa")
+        privateSection.writeMPInt(publicKey.modulus)          // n
+        privateSection.writeMPInt(publicKey.publicExponent)   // e
+        privateSection.writeMPInt(privateKey.privateExponent) // d
+        privateSection.writeMPInt(privateKey.crtCoefficient)  // iqmp (q^-1 mod p)
+        privateSection.writeMPInt(privateKey.primeP)          // p
+        privateSection.writeMPInt(privateKey.primeQ)          // q
 
-        writeString(privateSection, comment ?: "")
+        privateSection.writeString(comment ?: "")
 
         // Padding to block size (16 for encrypted, 8 for unencrypted)
         val blockSize = if (encrypted) OPENSSH_AES_BLOCK_SIZE else 8
-        var paddingNeeded = blockSize - (privateSection.size() % blockSize)
+        var paddingNeeded = blockSize - (privateSection.length() % blockSize)
         if (paddingNeeded == blockSize) paddingNeeded = 0
         for (i in 1..paddingNeeded) {
-            privateSection.write(i)
+            privateSection.writeByte(i)
         }
 
         // Encrypt if passphrase provided
@@ -755,14 +708,14 @@ object PubkeyUtils {
             val derivedKey = deriveOpenSSHKey(passphrase, salt, OPENSSH_BCRYPT_ROUNDS)
             val key = derivedKey.copyOfRange(0, OPENSSH_AES_KEY_SIZE)
             val iv = derivedKey.copyOfRange(OPENSSH_AES_KEY_SIZE, OPENSSH_AES_KEY_SIZE + OPENSSH_AES_IV_SIZE)
-            encryptAesCtr(privateSection.toByteArray(), key, iv)
+            encryptAesCtr(privateSection.getBytes(), key, iv)
         } else {
-            privateSection.toByteArray()
+            privateSection.getBytes()
         }
 
-        writeBytes(baos, privateSectionBytes)
+        tw.writeString(privateSectionBytes, 0, privateSectionBytes.size)
 
-        return formatOpenSSHKey(baos.toByteArray())
+        return formatOpenSSHKey(tw.getBytes())
     }
 
     /**
@@ -787,10 +740,10 @@ object PubkeyUtils {
         passphrase: String?
     ): String {
         val encrypted = !passphrase.isNullOrEmpty()
-        val baos = ByteArrayOutputStream()
+        val tw = TypesWriter()
 
         // Magic header
-        baos.write(OPENSSH_KEY_V1_MAGIC.toByteArray(Charsets.US_ASCII))
+        tw.writeBytes(OPENSSH_KEY_V1_MAGIC.toByteArray(Charsets.US_ASCII))
 
         // Generate salt for encryption if needed
         val salt = if (encrypted) {
@@ -798,56 +751,56 @@ object PubkeyUtils {
         } else null
 
         // Cipher name
-        writeString(baos, if (encrypted) OPENSSH_CIPHER_AES256_CTR else "none")
+        tw.writeString(if (encrypted) OPENSSH_CIPHER_AES256_CTR else "none")
 
         // KDF name
-        writeString(baos, if (encrypted) OPENSSH_KDF_BCRYPT else "none")
+        tw.writeString(if (encrypted) OPENSSH_KDF_BCRYPT else "none")
 
         // KDF options
         if (encrypted && salt != null) {
-            val kdfOptions = ByteArrayOutputStream()
-            writeBytes(kdfOptions, salt)
-            writeUint32(kdfOptions, OPENSSH_BCRYPT_ROUNDS)
-            writeBytes(baos, kdfOptions.toByteArray())
+            val kdfOptions = TypesWriter()
+            kdfOptions.writeString(salt, 0, salt.size)
+            kdfOptions.writeUINT32(OPENSSH_BCRYPT_ROUNDS)
+            tw.writeString(kdfOptions.getBytes(), 0, kdfOptions.length())
         } else {
-            writeString(baos, "")
+            tw.writeString("")
         }
 
         // Number of keys
-        writeUint32(baos, 1)
+        tw.writeUINT32(1)
 
         val params = publicKey.params
 
         // Public key blob: ssh-dss, p, q, g, y
-        val pubKeyBlob = ByteArrayOutputStream()
-        writeString(pubKeyBlob, "ssh-dss")
-        writeMpint(pubKeyBlob, params.p)
-        writeMpint(pubKeyBlob, params.q)
-        writeMpint(pubKeyBlob, params.g)
-        writeMpint(pubKeyBlob, publicKey.y)
-        writeBytes(baos, pubKeyBlob.toByteArray())
+        val pubKeyBlob = TypesWriter()
+        pubKeyBlob.writeString("ssh-dss")
+        pubKeyBlob.writeMPInt(params.p)
+        pubKeyBlob.writeMPInt(params.q)
+        pubKeyBlob.writeMPInt(params.g)
+        pubKeyBlob.writeMPInt(publicKey.y)
+        tw.writeString(pubKeyBlob.getBytes(), 0, pubKeyBlob.length())
 
         // Private key section
-        val privateSection = ByteArrayOutputStream()
+        val privateSection = TypesWriter()
         val checkInt = SecureRandom().nextInt()
-        writeUint32(privateSection, checkInt)
-        writeUint32(privateSection, checkInt)
+        privateSection.writeUINT32(checkInt)
+        privateSection.writeUINT32(checkInt)
 
-        writeString(privateSection, "ssh-dss")
-        writeMpint(privateSection, params.p)
-        writeMpint(privateSection, params.q)
-        writeMpint(privateSection, params.g)
-        writeMpint(privateSection, publicKey.y)
-        writeMpint(privateSection, privateKey.x)
+        privateSection.writeString("ssh-dss")
+        privateSection.writeMPInt(params.p)
+        privateSection.writeMPInt(params.q)
+        privateSection.writeMPInt(params.g)
+        privateSection.writeMPInt(publicKey.y)
+        privateSection.writeMPInt(privateKey.x)
 
-        writeString(privateSection, comment ?: "")
+        privateSection.writeString(comment ?: "")
 
         // Padding to block size (16 for encrypted, 8 for unencrypted)
         val blockSize = if (encrypted) OPENSSH_AES_BLOCK_SIZE else 8
-        var paddingNeeded = blockSize - (privateSection.size() % blockSize)
+        var paddingNeeded = blockSize - (privateSection.length() % blockSize)
         if (paddingNeeded == blockSize) paddingNeeded = 0
         for (i in 1..paddingNeeded) {
-            privateSection.write(i)
+            privateSection.writeByte(i)
         }
 
         // Encrypt if passphrase provided
@@ -855,14 +808,14 @@ object PubkeyUtils {
             val derivedKey = deriveOpenSSHKey(passphrase, salt, OPENSSH_BCRYPT_ROUNDS)
             val key = derivedKey.copyOfRange(0, OPENSSH_AES_KEY_SIZE)
             val iv = derivedKey.copyOfRange(OPENSSH_AES_KEY_SIZE, OPENSSH_AES_KEY_SIZE + OPENSSH_AES_IV_SIZE)
-            encryptAesCtr(privateSection.toByteArray(), key, iv)
+            encryptAesCtr(privateSection.getBytes(), key, iv)
         } else {
-            privateSection.toByteArray()
+            privateSection.getBytes()
         }
 
-        writeBytes(baos, privateSectionBytes)
+        tw.writeString(privateSectionBytes, 0, privateSectionBytes.size)
 
-        return formatOpenSSHKey(baos.toByteArray())
+        return formatOpenSSHKey(tw.getBytes())
     }
 
     /**
@@ -887,7 +840,7 @@ object PubkeyUtils {
         passphrase: String?
     ): String {
         val encrypted = !passphrase.isNullOrEmpty()
-        val baos = ByteArrayOutputStream()
+        val tw = TypesWriter()
 
         // Determine curve name and key type
         val fieldSize = publicKey.params.curve.field.fieldSize
@@ -899,7 +852,7 @@ object PubkeyUtils {
         }
 
         // Magic header
-        baos.write(OPENSSH_KEY_V1_MAGIC.toByteArray(Charsets.US_ASCII))
+        tw.writeBytes(OPENSSH_KEY_V1_MAGIC.toByteArray(Charsets.US_ASCII))
 
         // Generate salt for encryption if needed
         val salt = if (encrypted) {
@@ -907,53 +860,53 @@ object PubkeyUtils {
         } else null
 
         // Cipher name
-        writeString(baos, if (encrypted) OPENSSH_CIPHER_AES256_CTR else "none")
+        tw.writeString(if (encrypted) OPENSSH_CIPHER_AES256_CTR else "none")
 
         // KDF name
-        writeString(baos, if (encrypted) OPENSSH_KDF_BCRYPT else "none")
+        tw.writeString(if (encrypted) OPENSSH_KDF_BCRYPT else "none")
 
         // KDF options
         if (encrypted && salt != null) {
-            val kdfOptions = ByteArrayOutputStream()
-            writeBytes(kdfOptions, salt)
-            writeUint32(kdfOptions, OPENSSH_BCRYPT_ROUNDS)
-            writeBytes(baos, kdfOptions.toByteArray())
+            val kdfOptions = TypesWriter()
+            kdfOptions.writeString(salt, 0, salt.size)
+            kdfOptions.writeUINT32(OPENSSH_BCRYPT_ROUNDS)
+            tw.writeString(kdfOptions.getBytes(), 0, kdfOptions.length())
         } else {
-            writeString(baos, "")
+            tw.writeString("")
         }
 
         // Number of keys
-        writeUint32(baos, 1)
+        tw.writeUINT32(1)
 
         // Encode public key point in uncompressed format (0x04 || x || y)
-        val publicPoint = encodeECPublicKeyPoint(publicKey)
+        val publicPoint = ECDSASHA2Verify.encodeECPoint(publicKey.w, publicKey.params.curve)
 
         // Public key blob: key_type, curve_name, Q
-        val pubKeyBlob = ByteArrayOutputStream()
-        writeString(pubKeyBlob, keyType)
-        writeString(pubKeyBlob, curveName)
-        writeBytes(pubKeyBlob, publicPoint)
-        writeBytes(baos, pubKeyBlob.toByteArray())
+        val pubKeyBlob = TypesWriter()
+        pubKeyBlob.writeString(keyType)
+        pubKeyBlob.writeString(curveName)
+        pubKeyBlob.writeString(publicPoint, 0, publicPoint.size)
+        tw.writeString(pubKeyBlob.getBytes(), 0, pubKeyBlob.length())
 
         // Private key section
-        val privateSection = ByteArrayOutputStream()
+        val privateSection = TypesWriter()
         val checkInt = SecureRandom().nextInt()
-        writeUint32(privateSection, checkInt)
-        writeUint32(privateSection, checkInt)
+        privateSection.writeUINT32(checkInt)
+        privateSection.writeUINT32(checkInt)
 
-        writeString(privateSection, keyType)
-        writeString(privateSection, curveName)
-        writeBytes(privateSection, publicPoint)
-        writeMpint(privateSection, privateKey.s)
+        privateSection.writeString(keyType)
+        privateSection.writeString(curveName)
+        privateSection.writeString(publicPoint, 0, publicPoint.size)
+        privateSection.writeMPInt(privateKey.s)
 
-        writeString(privateSection, comment ?: "")
+        privateSection.writeString(comment ?: "")
 
         // Padding to block size (16 for encrypted, 8 for unencrypted)
         val blockSize = if (encrypted) OPENSSH_AES_BLOCK_SIZE else 8
-        var paddingNeeded = blockSize - (privateSection.size() % blockSize)
+        var paddingNeeded = blockSize - (privateSection.length() % blockSize)
         if (paddingNeeded == blockSize) paddingNeeded = 0
         for (i in 1..paddingNeeded) {
-            privateSection.write(i)
+            privateSection.writeByte(i)
         }
 
         // Encrypt if passphrase provided
@@ -961,58 +914,14 @@ object PubkeyUtils {
             val derivedKey = deriveOpenSSHKey(passphrase, salt, OPENSSH_BCRYPT_ROUNDS)
             val key = derivedKey.copyOfRange(0, OPENSSH_AES_KEY_SIZE)
             val iv = derivedKey.copyOfRange(OPENSSH_AES_KEY_SIZE, OPENSSH_AES_KEY_SIZE + OPENSSH_AES_IV_SIZE)
-            encryptAesCtr(privateSection.toByteArray(), key, iv)
+            encryptAesCtr(privateSection.getBytes(), key, iv)
         } else {
-            privateSection.toByteArray()
+            privateSection.getBytes()
         }
 
-        writeBytes(baos, privateSectionBytes)
+        tw.writeString(privateSectionBytes, 0, privateSectionBytes.size)
 
-        return formatOpenSSHKey(baos.toByteArray())
-    }
-
-    /**
-     * Encodes an EC public key point in uncompressed format (0x04 || x || y).
-     */
-    private fun encodeECPublicKeyPoint(publicKey: ECPublicKey): ByteArray {
-        val params = publicKey.params
-        val fieldSize = (params.curve.field.fieldSize + 7) / 8  // bytes needed
-        val w = publicKey.w
-
-        val x = w.affineX.toByteArray()
-        val y = w.affineY.toByteArray()
-
-        // Pad or trim to exact field size
-        val xPadded = padOrTrimToLength(x, fieldSize)
-        val yPadded = padOrTrimToLength(y, fieldSize)
-
-        // Uncompressed point format: 0x04 || x || y
-        val result = ByteArray(1 + fieldSize * 2)
-        result[0] = 0x04
-        System.arraycopy(xPadded, 0, result, 1, fieldSize)
-        System.arraycopy(yPadded, 0, result, 1 + fieldSize, fieldSize)
-
-        return result
-    }
-
-    /**
-     * Pads (with leading zeros) or trims (removes leading zeros) a byte array to exact length.
-     */
-    private fun padOrTrimToLength(bytes: ByteArray, length: Int): ByteArray {
-        return when {
-            bytes.size == length -> bytes
-            bytes.size > length -> {
-                // Trim leading zeros (BigInteger may add a sign byte)
-                val offset = bytes.size - length
-                bytes.copyOfRange(offset, bytes.size)
-            }
-            else -> {
-                // Pad with leading zeros
-                val result = ByteArray(length)
-                System.arraycopy(bytes, 0, result, length - bytes.size, bytes.size)
-                result
-            }
-        }
+        return formatOpenSSHKey(tw.getBytes())
     }
 
     /**
@@ -1087,6 +996,78 @@ object PubkeyUtils {
         }
 
         return String(hex)
+    }
+
+    /**
+     * Extract key type from OpenSSH format by reading the public key blob.
+     * The public key section is not encrypted, so we can read it without the password.
+     *
+     * @param keyString The full OpenSSH key file content
+     * @return The key type (RSA, DSA, EC, Ed25519) or null if not parseable
+     */
+    fun extractKeyTypeFromOpenSSH(keyString: String): String? {
+        try {
+            // Check for OpenSSH format
+            if (!keyString.contains(OPENSSH_PRIVATE_KEY_START)) {
+                return null
+            }
+
+            // Extract base64 content
+            val startIdx = keyString.indexOf(OPENSSH_PRIVATE_KEY_START) + OPENSSH_PRIVATE_KEY_START.length
+            val endIdx = keyString.indexOf(OPENSSH_PRIVATE_KEY_END)
+            if (startIdx < 0 || endIdx < 0 || startIdx >= endIdx) return null
+
+            val base64Content = keyString.substring(startIdx, endIdx)
+                .replace("\n", "")
+                .replace("\r", "")
+                .trim()
+
+            val decoded = Base64.decode(base64Content.toCharArray())
+            val buffer = ByteBuffer.wrap(decoded)
+
+            // Skip magic header "openssh-key-v1\0" (15 bytes)
+            val magic = ByteArray(15)
+            buffer.get(magic)
+            if (String(magic, Charsets.US_ASCII) != OPENSSH_KEY_V1_MAGIC) {
+                return null
+            }
+
+            // Skip cipher name (string)
+            val cipherLen = buffer.int
+            buffer.position(buffer.position() + cipherLen)
+
+            // Skip kdf name (string)
+            val kdfLen = buffer.int
+            buffer.position(buffer.position() + kdfLen)
+
+            // Skip kdf options (string)
+            val kdfOptionsLen = buffer.int
+            buffer.position(buffer.position() + kdfOptionsLen)
+
+            // Skip number of keys (uint32)
+            buffer.int
+
+            // Read public key blob length
+            val pubKeyBlobLen = buffer.int
+
+            // Read key type from public key blob (first string in the blob)
+            val keyTypeLen = buffer.int
+            val keyTypeBytes = ByteArray(keyTypeLen)
+            buffer.get(keyTypeBytes)
+            val sshKeyType = String(keyTypeBytes, Charsets.UTF_8)
+
+            // Convert SSH key type to ConnectBot internal type
+            return when {
+                sshKeyType == "ssh-rsa" -> "RSA"
+                sshKeyType == "ssh-dss" -> "DSA"
+                sshKeyType == "ssh-ed25519" -> "Ed25519"
+                sshKeyType.startsWith("ecdsa-sha2-") -> "EC"
+                else -> null
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Could not extract key type from OpenSSH format", e)
+            return null
+        }
     }
 
     class BadPasswordException : Exception()
