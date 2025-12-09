@@ -135,6 +135,12 @@ android {
         unitTests.isIncludeAndroidResources = true
     }
 
+    sourceSets {
+        getByName("main") {
+            assets.srcDirs("schemas")
+        }
+    }
+
     lint {
         abortOnError = false
         lintConfig = file("lint.xml")
