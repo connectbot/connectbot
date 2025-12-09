@@ -339,7 +339,7 @@ fun ConsoleScreen(
                             )
                     ) {
                         // Get font: per-host override takes precedence over global default
-                        val globalFontFamily = remember { prefs.getString("fontFamily", "SYSTEM_DEFAULT") ?: "SYSTEM_DEFAULT" }
+                        val globalFontFamily = prefs.getString("fontFamily", "SYSTEM_DEFAULT") ?: "SYSTEM_DEFAULT"
                         val hostFontFamily = bridge.host.fontFamily
                         val effectiveFontFamily = hostFontFamily ?: globalFontFamily
                         val typeface = rememberTerminalTypefaceFromStoredValue(effectiveFontFamily)
