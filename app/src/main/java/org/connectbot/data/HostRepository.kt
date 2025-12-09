@@ -302,8 +302,7 @@ class HostRepository @Inject constructor(
             }
         }
 
-        val config = HostConfigJson.fromHosts(hosts, portForwardsMap)
-        return config.toJson(pretty)
+        return HostConfigJson.toJson(hosts, portForwardsMap, pretty)
     }
 
     /**
@@ -316,8 +315,7 @@ class HostRepository @Inject constructor(
      * @throws IllegalArgumentException if schema is invalid
      */
     suspend fun importHostsFromJson(jsonString: String): Pair<Int, Int> {
-        val config = HostConfigJson.fromJson(jsonString)
-        val (hosts, portForwardsMap) = config.toHosts()
+        val (hosts, portForwardsMap) = HostConfigJson.fromJson(jsonString)
 
         var importedCount = 0
         var skippedCount = 0

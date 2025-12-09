@@ -244,6 +244,7 @@ tasks.withType<DependencyUpdatesTask>().configureEach {
 dependencies {
     implementation(libs.sshlib)
     implementation(libs.termlib)
+    implementation(libs.kotlin.reflect)
     implementation(libs.androidx.media3.common.ktx)
     implementation(libs.androidx.navigation.testing)
     implementation(libs.androidx.ui)
