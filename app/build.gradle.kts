@@ -272,7 +272,7 @@ val generateExportSchema by tasks.registering {
 // Ensure export schema is generated before tasks that read from the assets directory
 tasks.matching {
     (it.name.contains("merge") && it.name.contains("Assets")) ||
-    it.name.startsWith("lint")
+    it.name.contains("Lint", ignoreCase = true)
 }.configureEach {
     dependsOn(generateExportSchema)
 }
