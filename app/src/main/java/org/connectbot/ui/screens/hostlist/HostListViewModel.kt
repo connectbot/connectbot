@@ -61,7 +61,7 @@ class HostListViewModel @Inject constructor(
     val uiState: StateFlow<HostListUiState> = _uiState.asStateFlow()
 
     init {
-        loadHosts()
+        observeHosts()
     }
 
     fun setTerminalManager(manager: TerminalManager) {
@@ -73,6 +73,25 @@ class HostListViewModel @Inject constructor(
             collectServiceErrors()
             // Update initial connection states
             updateConnectionStates(_uiState.value.hosts)
+        }
+    }
+
+    private fun observeHosts() {
+        viewModelScope.launch {
+            _uiState.collect { state ->
+                val flow = if (state.sortedByColor) {
+                    repository.observeHostsSortedByColor()
+                } else {
+                    repository.observeHosts()
+                }
+
+                flow.collect { hosts ->
+                    updateConnectionStates(hosts)
+                    _uiState.update {
+                        it.copy(hosts = hosts, isLoading = false, error = null)
+                    }
+                }
+            }
         }
     }
 
@@ -125,24 +144,6 @@ class HostListViewModel @Inject constructor(
         }
     }
 
-
-    fun loadHosts() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, error = null) }
-            try {
-                val hosts = repository.getHosts(_uiState.value.sortedByColor)
-                updateConnectionStates(hosts)
-                _uiState.update {
-                    it.copy(hosts = hosts, isLoading = false, error = null)
-                }
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(isLoading = false, error = e.message ?: "Failed to load hosts")
-                }
-            }
-        }
-    }
-
     private fun updateConnectionStates(hosts: List<Host>) {
         val states = hosts.associate { host ->
             host.id to getConnectionState(host)
@@ -168,7 +169,6 @@ class HostListViewModel @Inject constructor(
 
     fun toggleSortOrder() {
         _uiState.update { it.copy(sortedByColor = !it.sortedByColor) }
-        loadHosts()
     }
 
     fun connectToHost(host: Host) {
@@ -194,7 +194,6 @@ class HostListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 repository.deleteHost(host)
-                loadHosts()
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(error = e.message ?: "Failed to delete host")
@@ -210,30 +209,6 @@ class HostListViewModel @Inject constructor(
     fun disconnectHost(host: Host) {
         val bridge = terminalManager?.bridgesFlow?.value?.find { it.host.id == host.id }
         bridge?.dispatchDisconnect(true)
-    }
-
-    fun quickConnect(uri: String) {
-        viewModelScope.launch {
-            try {
-                val host = withContext(Dispatchers.IO) {
-                    // Parse URI and create a temporary host with defaults from Host entity
-                    val parsedUri = android.net.Uri.parse(uri)
-                    Host(
-                        protocol = parsedUri.scheme ?: "ssh",
-                        hostname = parsedUri.host ?: "",
-                        port = if (parsedUri.port > 0) parsedUri.port else 22,
-                        username = parsedUri.userInfo ?: "",
-                        nickname = "${parsedUri.userInfo}@${parsedUri.host}:${if (parsedUri.port > 0) parsedUri.port else 22}",
-                        lastConnect = System.currentTimeMillis()
-                    )
-                }
-                connectToHost(host)
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(error = e.message ?: "Invalid URI")
-                }
-            }
-        }
     }
 
     fun clearError() {
