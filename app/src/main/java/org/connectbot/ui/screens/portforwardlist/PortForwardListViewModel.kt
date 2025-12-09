@@ -19,6 +19,7 @@ package org.connectbot.ui.screens.portforwardlist
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,7 +45,7 @@ data class PortForwardListUiState(
 
 @HiltViewModel
 class PortForwardListViewModel @Inject constructor(
-    private val savedStateHandle: androidx.lifecycle.SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val repository: HostRepository
 ) : ViewModel() {
 
