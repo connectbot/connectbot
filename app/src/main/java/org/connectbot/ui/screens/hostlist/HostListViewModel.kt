@@ -145,13 +145,13 @@ class HostListViewModel(
             return ConnectionState.UNKNOWN
         }
 
-        // Check if connected by nickname
-        if (terminalManager.getConnectedBridge(host.nickname) != null) {
+        // Check if connected by ID
+        if (terminalManager.bridgesFlow.value.any { it.host.id == host.id }) {
             return ConnectionState.CONNECTED
         }
 
-        // Check if in disconnected list by comparing nickname
-        if (terminalManager.disconnectedFlow.value.any { it.nickname == host.nickname }) {
+        // Check if in disconnected list by comparing ID
+        if (terminalManager.disconnectedFlow.value.any { it.id == host.id }) {
             return ConnectionState.DISCONNECTED
         }
 
@@ -200,7 +200,8 @@ class HostListViewModel(
     }
 
     fun disconnectHost(host: Host) {
-        terminalManager?.getConnectedBridge(host.nickname)?.dispatchDisconnect(true)
+        val bridge = terminalManager?.bridgesFlow?.value?.find { it.host.id == host.id }
+        bridge?.dispatchDisconnect(true)
     }
 
     fun quickConnect(uri: String) {
