@@ -245,6 +245,30 @@
 	<!-- Description of the scrollback size preference -->
 	<string name="pref_scrollback_summary">"Size of scrollback buffer to keep in memory for each console"</string>
 
+	<!-- Name for the font family preference -->
+	<string name="pref_fontfamily_title">"Font"</string>
+	<!-- Description of the font family preference -->
+	<string name="pref_fontfamily_summary">"Terminal font family (downloaded from Google Fonts)"</string>
+
+	<!-- Title for adding custom font -->
+	<string name="pref_customfont_title">"Add custom font"</string>
+	<!-- Summary for adding custom font -->
+	<string name="pref_customfont_summary">"Add a font from Google Fonts by name"</string>
+	<!-- Dialog title for adding custom font -->
+	<string name="dialog_customfont_title">"Add Custom Font"</string>
+	<!-- Hint for custom font name input -->
+	<string name="dialog_customfont_hint">"Google Fonts name (e.g., Cascadia Code)"</string>
+	<!-- Button to add font -->
+	<string name="button_add">"Add"</string>
+	<!-- Button to remove font -->
+	<string name="button_remove">"Remove"</string>
+	<!-- Message shown when validating font -->
+	<string name="font_validating">"Validating font..."</string>
+	<!-- Error when font not found -->
+	<string name="font_not_found">"Font not found in Google Fonts"</string>
+	<!-- Error when font already added -->
+	<string name="font_already_added">"Font already added"</string>
+
 	<!-- Title of the preference used to enable or disable the back-up of pubkeys. -->
 	<string name="pref_backupkeys_title">Backup pubkeys</string>
 	<!-- Summary for the preference used to enable or disable the back-up of pubkeys. -->
@@ -378,6 +402,11 @@
 
 	<!-- Host's default font size when opening the terminal in points (pt) -->
 	<string name="hostpref_fontsize_title">"Font size (pt)"</string>
+
+	<!-- Host's font family preference title -->
+	<string name="hostpref_fontfamily_title">"Font"</string>
+	<!-- Host's font family preference summary -->
+	<string name="hostpref_fontfamily_summary">"Override default font (leave as default to use global setting)"</string>
 
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">"Use pubkey authentication"</string>

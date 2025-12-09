@@ -43,6 +43,8 @@ data class HostEditorUiState(
     val port: String = "22",
     val color: String = "gray",
     val fontSize: Int = 10,
+    val fontFamily: String? = null,
+    val customFonts: List<String> = emptyList(),
     val pubkeyId: Long = -1L,
     val availablePubkeys: List<Pubkey> = emptyList(),
     val delKey: String = "del",
@@ -63,7 +65,8 @@ data class HostEditorUiState(
 class HostEditorViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val repository: HostRepository,
-    private val pubkeyRepository: PubkeyRepository
+    private val pubkeyRepository: PubkeyRepository,
+    private val prefs: android.content.SharedPreferences
 ) : ViewModel() {
 
     private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
@@ -73,9 +76,20 @@ class HostEditorViewModel @Inject constructor(
     init {
         loadPubkeys()
         loadJumpHosts()
+        loadCustomFonts()
         if (hostId != -1L) {
             loadHost()
         }
+    }
+
+    private fun loadCustomFonts() {
+        val customFontsString = prefs.getString("customFonts", "") ?: ""
+        val customFonts = if (customFontsString.isBlank()) {
+            emptyList()
+        } else {
+            customFontsString.split(",").filter { it.isNotBlank() }
+        }
+        _uiState.update { it.copy(customFonts = customFonts) }
     }
 
     private fun loadPubkeys() {
@@ -120,6 +134,7 @@ class HostEditorViewModel @Inject constructor(
                             port = host.port.toString(),
                             color = host.color ?: "gray",
                             fontSize = host.fontSize,
+                            fontFamily = host.fontFamily,
                             pubkeyId = host.pubkeyId,
                             delKey = host.delKey,
                             encoding = host.encoding,
@@ -196,6 +211,10 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(fontSize = value) }
     }
 
+    fun updateFontFamily(value: String?) {
+        _uiState.update { it.copy(fontFamily = value) }
+    }
+
     fun updatePubkeyId(value: Long) {
         _uiState.update { it.copy(pubkeyId = value) }
     }
@@ -265,6 +284,7 @@ class HostEditorViewModel @Inject constructor(
                     port = state.port.toIntOrNull() ?: 22,
                     color = state.color.takeIf { it != "gray" },
                     fontSize = state.fontSize,
+                    fontFamily = state.fontFamily,
                     pubkeyId = state.pubkeyId,
                     delKey = state.delKey,
                     encoding = state.encoding,
