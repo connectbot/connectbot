@@ -248,7 +248,6 @@ class HostListViewModel @Inject constructor(
                     repository.importHostsFromJson(jsonString)
                 }
                 _uiState.update { it.copy(importResult = ImportResult(imported, skipped)) }
-                loadHosts()
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(error = e.message ?: "Failed to import hosts")
