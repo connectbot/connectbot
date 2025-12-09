@@ -97,6 +97,7 @@ import org.connectbot.ui.components.ResizeDialog
 import org.connectbot.ui.components.TERMINAL_KEYBOARD_HEIGHT_DP
 import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
+import org.connectbot.service.PromptRequest
 
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
@@ -213,6 +214,21 @@ fun ConsoleScreen(
             showSoftwareKeyboard = false
         }
         imeVisible = systemImeVisible
+    }
+
+    // Get current prompt state to check if biometric prompt is active
+    val currentBridgeForPrompt = uiState.bridges.getOrNull(uiState.currentBridgeIndex)
+    val promptState by currentBridgeForPrompt?.promptManager?.promptState?.collectAsState()
+        ?: remember { mutableStateOf<PromptRequest?>(null) }
+    var wasBiometricPromptActive by remember { mutableStateOf(false) }
+    val isBiometricPromptActive = promptState is PromptRequest.BiometricPrompt
+
+    // Show software keyboard after biometric prompt completes (unless hardware keyboard is connected)
+    LaunchedEffect(isBiometricPromptActive) {
+        if (wasBiometricPromptActive && !isBiometricPromptActive && !hasHardwareKeyboard) {
+            showSoftwareKeyboard = true
+        }
+        wasBiometricPromptActive = isBiometricPromptActive
     }
 
     // Unified auto-hide timer for both keyboard and title bar
