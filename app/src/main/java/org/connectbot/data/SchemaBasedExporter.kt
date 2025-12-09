@@ -30,13 +30,16 @@ import org.json.JSONObject
  * Uses the Room schema JSON to generically export and import database tables
  * without any hardcoded entity knowledge. All table names, field names, types,
  * and relationships are read from the schema.
+ *
+ * @param database The Room database instance
+ * @param schema The parsed database schema
+ * @param excludedFields Column names to exclude from export (e.g., runtime state fields)
  */
 class SchemaBasedExporter(
     private val database: RoomDatabase,
-    private val schema: DatabaseSchema
+    private val schema: DatabaseSchema,
+    private val excludedFields: Set<String> = emptySet()
 ) {
-    // Fields to exclude from export (runtime state, not user configuration)
-    private val excludedFields = setOf("last_connect", "host_key_algo")
 
     /**
      * Export specified tables to JSON.

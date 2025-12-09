@@ -39,6 +39,12 @@ object HostConfigJson {
     val EXPORT_TABLES = listOf("hosts", "port_forwards")
 
     /**
+     * Fields to exclude from export (runtime state, not user configuration).
+     * These are column names from the database schema.
+     */
+    val EXCLUDED_FIELDS = setOf("last_connect", "host_key_algo")
+
+    /**
      * Export host configurations to JSON.
      *
      * @param context Android context
@@ -48,7 +54,7 @@ object HostConfigJson {
     fun exportToJson(context: Context, pretty: Boolean = true): String {
         val database = ConnectBotDatabase.getInstance(context)
         val schema = DatabaseSchema.load(context)
-        val exporter = SchemaBasedExporter(database, schema)
+        val exporter = SchemaBasedExporter(database, schema, EXCLUDED_FIELDS)
         return exporter.exportToJson(EXPORT_TABLES, pretty)
     }
 
@@ -62,7 +68,7 @@ object HostConfigJson {
     fun importFromJson(context: Context, jsonString: String): Pair<Int, Int> {
         val database = ConnectBotDatabase.getInstance(context)
         val schema = DatabaseSchema.load(context)
-        val exporter = SchemaBasedExporter(database, schema)
+        val exporter = SchemaBasedExporter(database, schema, EXCLUDED_FIELDS)
         return exporter.importFromJson(jsonString, EXPORT_TABLES)
     }
 }
