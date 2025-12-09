@@ -33,7 +33,6 @@ import android.os.IBinder
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
-import androidx.preference.PreferenceManager
 import android.util.Log
 
 import java.io.IOException
@@ -83,14 +82,6 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	private val _bridgesFlow = MutableStateFlow<List<TerminalBridge>>(emptyList())
 	val bridgesFlow: StateFlow<List<TerminalBridge>> = _bridgesFlow.asStateFlow()
 
-	// NOTE: The bridges property is intentionally kept despite deprecation.
-	// Migrating to bridgesFlow.value caused subtle synchronization issues.
-	// This property is marked deprecated to track remaining usages, not to
-	// indicate it should be replaced without careful testing.
-	@Deprecated("Use bridgesFlow instead", ReplaceWith("bridgesFlow.value"))
-	val bridges: List<TerminalBridge>
-		get() = _bridges.toList()
-
 	private val hostBridgeMap: MutableMap<Host, WeakReference<TerminalBridge>> = HashMap()
 	private val nicknameBridgeMap: MutableMap<String, WeakReference<TerminalBridge>> = HashMap()
 
@@ -98,15 +89,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	private val _disconnectedFlow = MutableStateFlow<List<Host>>(emptyList())
 	val disconnectedFlow: StateFlow<List<Host>> = _disconnectedFlow.asStateFlow()
 
-	@Deprecated("Use disconnectedFlow instead", ReplaceWith("disconnectedFlow.value"))
-	val disconnected: List<Host>
-		get() = _disconnected.toList()
-
 	private var disconnectListener: BridgeDisconnectedListener? = null
-
-	fun setDisconnectListener(listener: BridgeDisconnectedListener?) {
-		disconnectListener = listener
-	}
 
 	/**
 	 * Report an error from the service layer to be propagated to the UI.
@@ -281,8 +264,8 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		var tmpBridges: Array<TerminalBridge>? = null
 
 		synchronized(_bridges) {
-			if (bridges.size > 0) {
-				tmpBridges = bridges.toTypedArray()
+			if (_bridges.isNotEmpty()) {
+				tmpBridges = _bridges.toTypedArray().clone()
 			}
 		}
 
@@ -435,7 +418,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 				connectivityManager.decRef()
 			}
 
-			if (bridges.isEmpty() && pendingReconnect.isEmpty()) {
+			if (_bridges.isEmpty() && pendingReconnect.isEmpty()) {
 				shouldHideRunningNotification = true
 			}
 
@@ -589,9 +572,14 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	}
 
 	protected fun stopNow() {
-		if (bridges.size == 0) {
-			stopSelf()
-		}
+        val shouldStop =
+            synchronized(_bridges) {
+                _bridges.isEmpty()
+            }
+
+        if (shouldStop) {
+            stopSelf()
+        }
 	}
 
 	@Synchronized
@@ -599,10 +587,6 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		idleJob?.cancel()
 		idleJob = null
 	}
-//
-//	fun getBridges(): ArrayList<TerminalBridge> {
-//		return bridges
-//	}
 
 	override fun onProviderLoaderSuccess() {
 		Log.d(TAG, "Installed crypto provider successfully")
@@ -619,7 +603,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	}
 
 	override fun onBind(intent: Intent): IBinder {
-		Log.i(TAG, "Someone bound to TerminalManager with " + bridges.size + " bridges active")
+		Log.i(TAG, "Someone bound to TerminalManager with " + bridgesFlow.value.size + " bridges active")
 		isUiBound = true
 		keepServiceAlive()
 		setResizeAllowed(true)
@@ -644,19 +628,19 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	override fun onRebind(intent: Intent) {
 		super.onRebind(intent)
-		Log.i(TAG, "Someone rebound to TerminalManager with " + bridges.size + " bridges active")
+		Log.i(TAG, "Someone rebound to TerminalManager with " + bridgesFlow.value.size + " bridges active")
 		isUiBound = true
 		keepServiceAlive()
 		setResizeAllowed(true)
 	}
 
 	override fun onUnbind(intent: Intent): Boolean {
-		Log.i(TAG, "Someone unbound from TerminalManager with " + bridges.size + " bridges active")
+		Log.i(TAG, "Someone unbound from TerminalManager with " + bridgesFlow.value.size + " bridges active")
 
 		isUiBound = false
 		setResizeAllowed(true)
 
-		if (bridges.isEmpty()) {
+		if (bridgesFlow.value.isEmpty()) {
 			stopWithDelay()
 		}
 
