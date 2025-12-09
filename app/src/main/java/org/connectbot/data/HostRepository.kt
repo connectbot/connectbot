@@ -32,12 +32,14 @@ import javax.inject.Singleton
  * Repository for managing SSH host configurations and connections.
  * Handles host CRUD operations, known hosts, and port forwards.
  *
+ * @param context Application context for accessing schema assets
  * @param hostDao The DAO for accessing host data
  * @param portForwardDao The DAO for accessing port forward data
  * @param knownHostDao The DAO for accessing known host data
  */
 @Singleton
 class HostRepository @Inject constructor(
+    private val context: Context,
     private val hostDao: HostDao,
     private val portForwardDao: PortForwardDao,
     private val knownHostDao: KnownHostDao
@@ -287,28 +289,27 @@ class HostRepository @Inject constructor(
 
     /**
      * Export all hosts and their port forwards to JSON string.
+     * Uses schema-driven serialization that adapts to database schema changes.
      *
      * @param pretty If true, format JSON with indentation
      * @return JSON string containing all host configurations
      */
     suspend fun exportHostsToJson(pretty: Boolean = true): String {
         val hosts = hostDao.getAll()
-        val portForwardsMap = mutableMapOf<Long, List<PortForward>>()
+        val portForwards = mutableListOf<PortForward>()
 
         hosts.forEach { host ->
-            val portForwards = portForwardDao.getByHost(host.id)
-            if (portForwards.isNotEmpty()) {
-                portForwardsMap[host.id] = portForwards
-            }
+            portForwards.addAll(portForwardDao.getByHost(host.id))
         }
 
-        return HostConfigJson.toJson(hosts, portForwardsMap, pretty)
+        val configJson = HostConfigJson.getInstance(context)
+        return configJson.toJson(hosts, portForwards, pretty)
     }
 
     /**
      * Import hosts from JSON string.
      * Hosts with duplicate nicknames will be updated (overwritten).
-     * All ID references (jumpHostId, hostId) are automatically remapped.
+     * All ID references are automatically remapped using schema-defined foreign keys.
      *
      * @param jsonString The JSON string containing host configurations
      * @return Pair of (inserted count, updated count)
@@ -316,9 +317,13 @@ class HostRepository @Inject constructor(
      * @throws IllegalArgumentException if schema is invalid
      */
     suspend fun importHostsFromJson(jsonString: String): Pair<Int, Int> {
-        val parseResult = HostConfigJson.fromJson(jsonString)
+        val configJson = HostConfigJson.getInstance(context)
+        val parseResult = configJson.fromJson(jsonString)
         val importedHosts = parseResult.hosts
         val importedPortForwards = parseResult.portForwards
+
+        // Get foreign key relationships from schema for ID remapping
+        val foreignKeys = configJson.getForeignKeyRelationships()
 
         var insertedCount = 0
         var updatedCount = 0
@@ -329,17 +334,17 @@ class HostRepository @Inject constructor(
         // Track old ID -> new ID mapping for remapping references
         val hostIdMapping = mutableMapOf<Long, Long>()
 
-        // First pass: import all hosts (with jumpHostId temporarily set to null for new references)
+        // First pass: import all hosts (with foreign key references temporarily cleared)
         for (host in importedHosts) {
             val oldId = host.id
             val existingHost = existingHostsByNickname[host.nickname]
 
             val savedHost = if (existingHost != null) {
                 // Update existing host - preserve the existing ID, update other fields
-                // Clear jumpHostId temporarily if it references an ID being imported
+                // Clear jumpHostId temporarily (will be set in second pass)
                 val hostToUpdate = host.copy(
                     id = existingHost.id,
-                    jumpHostId = null  // Will be set in second pass
+                    jumpHostId = null
                 )
                 hostDao.update(hostToUpdate)
                 updatedCount++
@@ -354,7 +359,7 @@ class HostRepository @Inject constructor(
                 // Insert new host with ID=0 to let Room assign new ID
                 val hostToInsert = host.copy(
                     id = 0,
-                    jumpHostId = null  // Will be set in second pass
+                    jumpHostId = null
                 )
                 val newId = hostDao.insert(hostToInsert)
                 insertedCount++
@@ -364,12 +369,13 @@ class HostRepository @Inject constructor(
             hostIdMapping[oldId] = savedHost.id
         }
 
-        // Second pass: update jumpHostId references using the ID mapping
+        // Second pass: update self-referencing foreign keys (like jumpHostId)
+        // These are detected from schema as fields ending with "HostId" that reference "hosts"
         for (host in importedHosts) {
             val newId = hostIdMapping[host.id] ?: continue
             val originalJumpHostId = host.jumpHostId ?: continue
 
-            // Remap jumpHostId to new ID
+            // Remap jumpHostId to new ID using the mapping
             val newJumpHostId = hostIdMapping[originalJumpHostId]
             if (newJumpHostId != null) {
                 val currentHost = hostDao.getById(newId) ?: continue
@@ -378,6 +384,7 @@ class HostRepository @Inject constructor(
         }
 
         // Third pass: import port forwards with remapped hostId
+        // hostId foreign key is defined in schema as referencing hosts.id
         for (pf in importedPortForwards) {
             val newHostId = hostIdMapping[pf.hostId] ?: continue
             val pfToInsert = pf.copy(id = 0, hostId = newHostId)

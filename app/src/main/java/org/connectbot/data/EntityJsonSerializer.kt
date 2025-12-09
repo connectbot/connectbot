@@ -23,6 +23,7 @@ import kotlin.reflect.KParameter
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
+import kotlin.reflect.jvm.isAccessible
 
 /**
  * Reflection-based JSON serializer for Room entity data classes.
@@ -45,6 +46,7 @@ class EntityJsonSerializer<T : Any>(
 
     private val properties: List<KProperty1<T, *>> = entityClass.memberProperties
         .filter { it.name !in excludedProperties }
+        .onEach { it.isAccessible = true }
         .toList()
 
     private val constructorParams: Map<String, KParameter> = constructor.parameters
@@ -126,10 +128,8 @@ class EntityJsonSerializer<T : Any>(
 
         val classifier = param.type.classifier as? KClass<*>
         return when (classifier) {
-            String::class -> {
-                val value = json.optString(key, "")
-                if (value.isEmpty() && param.type.isMarkedNullable) null else value
-            }
+            // Preserve empty strings as-is; only JSON null becomes Kotlin null
+            String::class -> json.getString(key)
             Int::class -> json.optInt(key, 0)
             Long::class -> json.optLong(key, 0L)
             Boolean::class -> json.optBoolean(key, false)
