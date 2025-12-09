@@ -20,6 +20,7 @@ package org.connectbot.ui.screens.settings
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Typeface
+import android.net.Uri
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,12 +28,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.TerminalFontProvider
 import timber.log.Timber
@@ -63,8 +67,11 @@ data class SettingsUiState(
     val bellNotification: Boolean = false,
     val fontFamily: String = "SYSTEM_DEFAULT",
     val customFonts: List<String> = emptyList(),
+    val localFonts: List<Pair<String, String>> = emptyList(),
     val fontValidationInProgress: Boolean = false,
     val fontValidationError: String? = null,
+    val fontImportInProgress: Boolean = false,
+    val fontImportError: String? = null,
 )
 
 @HiltViewModel
@@ -73,6 +80,7 @@ class SettingsViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ViewModel() {
     private val fontProvider = TerminalFontProvider(context)
+    private val localFontProvider = LocalFontProvider(context)
     private val _uiState = MutableStateFlow(loadSettings())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
@@ -96,6 +104,7 @@ class SettingsViewModel @Inject constructor(
         } else {
             customFontsString.split(",").filter { it.isNotBlank() }
         }
+        val localFonts = localFontProvider.getImportedFonts()
 
         return SettingsUiState(
             memkeys = prefs.getBoolean("memkeys", true),
@@ -123,6 +132,7 @@ class SettingsViewModel @Inject constructor(
             bellNotification = prefs.getBoolean("bellNotification", false),
             fontFamily = prefs.getString("fontFamily", "SYSTEM_DEFAULT") ?: "SYSTEM_DEFAULT",
             customFonts = customFonts,
+            localFonts = localFonts,
         )
     }
 
@@ -315,6 +325,58 @@ class SettingsViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun importLocalFont(uri: Uri, displayName: String) {
+        if (displayName.isBlank()) return
+
+        _uiState.update { it.copy(fontImportInProgress = true, fontImportError = null) }
+
+        viewModelScope.launch {
+            val fileName = withContext(Dispatchers.IO) {
+                localFontProvider.importFont(uri, displayName)
+            }
+
+            if (fileName != null) {
+                val updatedLocalFonts = localFontProvider.getImportedFonts()
+                _uiState.update {
+                    it.copy(
+                        localFonts = updatedLocalFonts,
+                        fontImportInProgress = false,
+                        fontImportError = null
+                    )
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        fontImportInProgress = false,
+                        fontImportError = "Failed to import font"
+                    )
+                }
+            }
+        }
+    }
+
+    fun deleteLocalFont(fileName: String) {
+        viewModelScope.launch {
+            val deleted = withContext(Dispatchers.IO) {
+                localFontProvider.deleteFont(fileName)
+            }
+
+            if (deleted) {
+                val updatedLocalFonts = localFontProvider.getImportedFonts()
+                _uiState.update { it.copy(localFonts = updatedLocalFonts) }
+
+                // If the removed font was the selected font, reset to system default
+                if (_uiState.value.fontFamily == "${LocalFontProvider.LOCAL_PREFIX}$fileName") {
+                    updateFontFamily("SYSTEM_DEFAULT")
+                }
+            }
+        }
+    }
+
+    fun clearFontImportError() {
+        _uiState.update { it.copy(fontImportError = null) }
     }
 
     private fun updateBooleanPref(key: String, value: Boolean, updateState: SettingsUiState.() -> SettingsUiState) {

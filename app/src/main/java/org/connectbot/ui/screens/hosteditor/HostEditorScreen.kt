@@ -60,11 +60,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import org.connectbot.BuildConfig
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
 
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -343,6 +345,7 @@ fun HostEditorScreenContent(
             FontFamilySelector(
                 fontFamily = uiState.fontFamily,
                 customFonts = uiState.customFonts,
+                localFonts = uiState.localFonts,
                 onFontFamilySelected = onFontFamilyChange
             )
 
@@ -542,15 +545,23 @@ private fun FontSizeSelector(
 private fun FontFamilySelector(
     fontFamily: String?,
     customFonts: List<String>,
+    localFonts: List<Pair<String, String>>,
     onFontFamilySelected: (String?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    // Build options: "Use Default" + preset fonts + custom fonts
+    // Build options: "Use Default" + preset fonts + custom fonts (if available) + local fonts
     val presetOptions = TerminalFont.entries.map { it.displayName to it.name }
-    val customOptions = customFonts.map { it to TerminalFont.createCustomFontValue(it) }
-    val allOptions = listOf("Use Default" to null) + presetOptions + customOptions
+    val customOptions = if (BuildConfig.HAS_DOWNLOADABLE_FONTS) {
+        customFonts.map { it to TerminalFont.createCustomFontValue(it) }
+    } else {
+        emptyList()
+    }
+    val localOptions = localFonts.map { (displayName, fileName) ->
+        displayName to LocalFontProvider.createLocalFontValue(fileName)
+    }
+    val allOptions = listOf("Use Default" to null) + presetOptions + customOptions + localOptions
 
     Column(modifier = modifier) {
         Text(

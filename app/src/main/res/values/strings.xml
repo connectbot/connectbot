@@ -269,6 +269,19 @@
 	<!-- Error when font already added -->
 	<string name="font_already_added">"Font already added"</string>
 
+	<!-- Title for importing local font -->
+	<string name="pref_localfont_title">"Import local font"</string>
+	<!-- Summary for importing local font -->
+	<string name="pref_localfont_summary">"Import a font file from storage (TTF, OTF)"</string>
+	<!-- Dialog title for importing local font -->
+	<string name="dialog_localfont_title">"Import Font"</string>
+	<!-- Hint for local font name input -->
+	<string name="dialog_localfont_hint">"Display name for the font"</string>
+	<!-- Button to import font -->
+	<string name="button_import">"Import"</string>
+	<!-- Message shown when importing font -->
+	<string name="font_importing">"Importing font..."</string>
+
 	<!-- Title of the preference used to enable or disable the back-up of pubkeys. -->
 	<string name="pref_backupkeys_title">Backup pubkeys</string>
 	<!-- Summary for the preference used to enable or disable the back-up of pubkeys. -->
