@@ -110,6 +110,9 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	private val _serviceErrors = MutableSharedFlow<ServiceError>(replay = 0, extraBufferCapacity = 10)
 	val serviceErrors: SharedFlow<ServiceError> = _serviceErrors.asSharedFlow()
 
+	private val _loadedKeysChanged = MutableSharedFlow<Set<String>>(replay = 1, extraBufferCapacity = 1)
+	val loadedKeysChangedFlow: SharedFlow<Set<String>> = _loadedKeysChanged.asSharedFlow()
+
 	internal val loadedKeypairs: MutableMap<String, KeyHolder> = HashMap()
 
 	internal lateinit var res: Resources
@@ -443,6 +446,12 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		return loadedKeypairs.containsKey(nickname)
 	}
 
+	private fun emitLoadedKeysChanged() {
+		scope.launch {
+			_loadedKeysChanged.emit(loadedKeypairs.keys.toSet())
+		}
+	}
+
 	fun addKey(pubkey: Pubkey, pair: KeyPair) {
 		addKey(pubkey, pair, false)
 	}
@@ -466,6 +475,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		// This functionality may need to be re-added if needed
 
 		Log.d(TAG, String.format("Added key '%s' to in-memory cache", pubkey.nickname))
+		emitLoadedKeysChanged()
 	}
 
 	/**
@@ -511,6 +521,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		loadedKeypairs[pubkey.nickname] = keyHolder
 
 		Log.d(TAG, String.format("Added biometric key '%s' to in-memory cache (expires in %d seconds)", pubkey.nickname, BIOMETRIC_AUTH_VALIDITY_SECONDS))
+		emitLoadedKeysChanged()
 	}
 
 	fun removeKey(nickname: String): Boolean {
@@ -519,6 +530,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 			// Cancel any pending expiry job for biometric keys
 			keyHolder.expiryJob?.cancel()
 			Log.d(TAG, String.format("Removed key '%s' from in-memory cache", nickname))
+			emitLoadedKeysChanged()
 			return true
 		}
 		return false
