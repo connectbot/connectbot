@@ -95,26 +95,39 @@ enum class TerminalFont(
 
         /**
          * Get a display name for a stored font value.
-         * Works for both preset fonts and custom fonts.
+         * Works for preset fonts, custom fonts, and local fonts.
          */
         fun getDisplayName(storedValue: String?): String {
             if (storedValue.isNullOrBlank()) return SYSTEM_DEFAULT.displayName
             if (storedValue.startsWith(CUSTOM_PREFIX)) {
                 return storedValue.removePrefix(CUSTOM_PREFIX)
             }
+            if (storedValue.startsWith(LocalFontProvider.LOCAL_PREFIX)) {
+                val fileName = storedValue.removePrefix(LocalFontProvider.LOCAL_PREFIX)
+                // Convert filename to display name (remove extension, replace underscores)
+                return fileName.substringBeforeLast(".").replace("_", " ")
+            }
             return fromName(storedValue)?.displayName ?: SYSTEM_DEFAULT.displayName
         }
 
         /**
-         * Check if a stored value is a preset font (not custom).
+         * Check if a stored value is a preset font (not custom or local).
          */
         fun isPresetFont(storedValue: String?): Boolean {
             if (storedValue.isNullOrBlank()) return true
             if (storedValue.startsWith(CUSTOM_PREFIX)) return false
+            if (storedValue.startsWith(LocalFontProvider.LOCAL_PREFIX)) return false
             return entries.any {
                 it.name.equals(storedValue, ignoreCase = true) ||
                 it.displayName.equals(storedValue, ignoreCase = true)
             }
+        }
+
+        /**
+         * Check if a stored value is a local font.
+         */
+        fun isLocalFont(storedValue: String?): Boolean {
+            return LocalFontProvider.isLocalFont(storedValue)
         }
     }
 }

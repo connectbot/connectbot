@@ -22,6 +22,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,6 +33,7 @@ import org.connectbot.data.HostRepository
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.util.LocalFontProvider
 
 data class HostEditorUiState(
     val hostId: Long = -1L,
@@ -45,6 +47,7 @@ data class HostEditorUiState(
     val fontSize: Int = 10,
     val fontFamily: String? = null,
     val customFonts: List<String> = emptyList(),
+    val localFonts: List<Pair<String, String>> = emptyList(),
     val pubkeyId: Long = -1L,
     val availablePubkeys: List<Pubkey> = emptyList(),
     val delKey: String = "del",
@@ -66,10 +69,12 @@ class HostEditorViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val repository: HostRepository,
     private val pubkeyRepository: PubkeyRepository,
-    private val prefs: android.content.SharedPreferences
+    private val prefs: android.content.SharedPreferences,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
+    private val localFontProvider = LocalFontProvider(context)
     private val _uiState = MutableStateFlow(HostEditorUiState(hostId = hostId))
     val uiState: StateFlow<HostEditorUiState> = _uiState.asStateFlow()
 
@@ -77,6 +82,7 @@ class HostEditorViewModel @Inject constructor(
         loadPubkeys()
         loadJumpHosts()
         loadCustomFonts()
+        loadLocalFonts()
         if (hostId != -1L) {
             loadHost()
         }
@@ -90,6 +96,11 @@ class HostEditorViewModel @Inject constructor(
             customFontsString.split(",").filter { it.isNotBlank() }
         }
         _uiState.update { it.copy(customFonts = customFonts) }
+    }
+
+    private fun loadLocalFonts() {
+        val localFonts = localFontProvider.getImportedFonts()
+        _uiState.update { it.copy(localFonts = localFonts) }
     }
 
     private fun loadPubkeys() {
