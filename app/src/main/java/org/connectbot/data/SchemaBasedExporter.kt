@@ -155,6 +155,10 @@ class SchemaBasedExporter(
             results[tableName] = Pair(insertedCount, updatedCount)
         }
 
+        // Notify Room's InvalidationTracker that tables have changed
+        // This triggers Flow updates for any observers
+        database.invalidationTracker.refreshVersionsAsync()
+
         return results
     }
 
