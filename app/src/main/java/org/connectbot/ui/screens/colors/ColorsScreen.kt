@@ -59,6 +59,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.connectbot.R
@@ -195,31 +196,31 @@ fun ColorsScreen(
                                 Text(
                                     text = "user@hostname:~$ ls -la",
                                     color = Color(uiState.currentPalette[uiState.foregroundColorIndex]),
-                                    fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                                    fontFamily = FontFamily.Monospace,
                                     fontSize = 14.sp
                                 )
                                 Text(
                                     text = "total 24",
                                     color = Color(uiState.currentPalette[uiState.foregroundColorIndex]),
-                                    fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                                    fontFamily = FontFamily.Monospace,
                                     fontSize = 14.sp
                                 )
                                 Text(
                                     text = "drwxr-xr-x  5 user  staff  160 Jan 15 10:30 .",
                                     color = Color(uiState.currentPalette[uiState.foregroundColorIndex]),
-                                    fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                                    fontFamily = FontFamily.Monospace,
                                     fontSize = 14.sp
                                 )
                                 Text(
                                     text = "drwxr-xr-x  3 user  staff   96 Jan 14 09:15 ..",
                                     color = Color(uiState.currentPalette[uiState.foregroundColorIndex]),
-                                    fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                                    fontFamily = FontFamily.Monospace,
                                     fontSize = 14.sp
                                 )
                                 Text(
                                     text = "-rw-r--r--  1 user  staff 1024 Jan 15 10:29 file.txt",
                                     color = Color(uiState.currentPalette[uiState.foregroundColorIndex]),
-                                    fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                                    fontFamily = FontFamily.Monospace,
                                     fontSize = 14.sp
                                 )
                             }
@@ -425,13 +426,13 @@ private fun ColorsScreenPreview() {
                     Text(
                         text = "user@hostname:~$ ls -la",
                         color = Color.LightGray,
-                        fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                        fontFamily = FontFamily.Monospace,
                         fontSize = 14.sp
                     )
                     Text(
                         text = "total 24",
                         color = Color.LightGray,
-                        fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                        fontFamily = FontFamily.Monospace,
                         fontSize = 14.sp
                     )
                 }

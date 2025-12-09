@@ -21,6 +21,7 @@ import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Typeface
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -43,6 +44,7 @@ import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -361,7 +363,7 @@ fun ConsoleScreen(
                         // Terminal keyboard overlay (doesn't resize terminal)
                         // Must be BEFORE prompts so prompts appear on top
                         // Fade in/out animation matches ConsoleActivity (100ms duration)
-                        androidx.compose.animation.AnimatedVisibility(
+                        AnimatedVisibility(
                             visible = showExtraKeyboard,
                             enter = fadeIn(animationSpec = tween(durationMillis = 100)),
                             exit = fadeOut(animationSpec = tween(durationMillis = 100)),
@@ -616,7 +618,7 @@ fun ConsoleScreen(
                                     prefs.edit { putBoolean("fullscreen", fullscreen) }
                                 },
                                 trailingIcon = {
-                                    androidx.compose.material3.Checkbox(
+                                    Checkbox(
                                         checked = fullscreen,
                                         onCheckedChange = null
                                     )
@@ -631,7 +633,7 @@ fun ConsoleScreen(
                                     prefs.edit { putBoolean("titlebarhide", titleBarHide) }
                                 },
                                 trailingIcon = {
-                                    androidx.compose.material3.Checkbox(
+                                    Checkbox(
                                         checked = titleBarHide,
                                         onCheckedChange = null
                                     )
