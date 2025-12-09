@@ -32,6 +32,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.FontDownload
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -55,14 +56,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.connectbot.BuildConfig
 import org.connectbot.R
 import org.connectbot.ui.ObservePermissionOnResume
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.NotificationPermissionHelper
 import org.connectbot.util.TerminalFont
 
@@ -150,6 +152,9 @@ fun SettingsScreen(
         onAddCustomFont = viewModel::addCustomFont,
         onRemoveCustomFont = viewModel::removeCustomFont,
         onClearFontError = viewModel::clearFontValidationError,
+        onImportLocalFont = viewModel::importLocalFont,
+        onDeleteLocalFont = viewModel::deleteLocalFont,
+        onClearImportError = viewModel::clearFontImportError,
         onRotationChange = viewModel::updateRotation,
         onFullscreenChange = viewModel::updateFullscreen,
         onTitleBarHideChange = viewModel::updateTitleBarHide,
@@ -186,6 +191,9 @@ fun SettingsScreenContent(
     onAddCustomFont: (String) -> Unit,
     onRemoveCustomFont: (String) -> Unit,
     onClearFontError: () -> Unit,
+    onImportLocalFont: (Uri, String) -> Unit,
+    onDeleteLocalFont: (String) -> Unit,
+    onClearImportError: () -> Unit,
     onRotationChange: (String) -> Unit,
     onFullscreenChange: (Boolean) -> Unit,
     onTitleBarHideChange: (Boolean) -> Unit,
@@ -278,10 +286,17 @@ fun SettingsScreenContent(
             }
 
             item {
-                // Build combined font list: presets + custom fonts
+                // Build combined font list: presets + custom fonts + local fonts
                 val presetEntries = TerminalFont.entries.map { it.displayName to it.name }
-                val customEntries = uiState.customFonts.map { it to TerminalFont.createCustomFontValue(it) }
-                val allEntries = presetEntries + customEntries
+                val customEntries = if (BuildConfig.HAS_DOWNLOADABLE_FONTS) {
+                    uiState.customFonts.map { it to TerminalFont.createCustomFontValue(it) }
+                } else {
+                    emptyList()
+                }
+                val localEntries = uiState.localFonts.map { (displayName, fileName) ->
+                    displayName to LocalFontProvider.createLocalFontValue(fileName)
+                }
+                val allEntries = presetEntries + customEntries + localEntries
 
                 ListPreference(
                     title = stringResource(R.string.pref_fontfamily_title),
@@ -292,14 +307,28 @@ fun SettingsScreenContent(
                 )
             }
 
+            // Only show downloadable fonts UI if Google Play Services is available
+            if (BuildConfig.HAS_DOWNLOADABLE_FONTS) {
+                item {
+                    AddCustomFontPreference(
+                        customFonts = uiState.customFonts,
+                        validationInProgress = uiState.fontValidationInProgress,
+                        validationError = uiState.fontValidationError,
+                        onAddFont = onAddCustomFont,
+                        onRemoveFont = onRemoveCustomFont,
+                        onClearError = onClearFontError
+                    )
+                }
+            }
+
             item {
-                AddCustomFontPreference(
-                    customFonts = uiState.customFonts,
-                    validationInProgress = uiState.fontValidationInProgress,
-                    validationError = uiState.fontValidationError,
-                    onAddFont = onAddCustomFont,
-                    onRemoveFont = onRemoveCustomFont,
-                    onClearError = onClearFontError
+                LocalFontPreference(
+                    localFonts = uiState.localFonts,
+                    importInProgress = uiState.fontImportInProgress,
+                    importError = uiState.fontImportError,
+                    onImportFont = onImportLocalFont,
+                    onDeleteFont = onDeleteLocalFont,
+                    onClearError = onClearImportError
                 )
             }
 
@@ -824,6 +853,144 @@ private fun AddCustomFontPreference(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun LocalFontPreference(
+    localFonts: List<Pair<String, String>>,
+    importInProgress: Boolean,
+    importError: String?,
+    onImportFont: (Uri, String) -> Unit,
+    onDeleteFont: (String) -> Unit,
+    onClearError: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var pendingUri by remember { mutableStateOf<Uri?>(null) }
+    var showNameDialog by remember { mutableStateOf(false) }
+    var fontDisplayName by remember { mutableStateOf("") }
+
+    val fontPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        if (uri != null) {
+            pendingUri = uri
+            fontDisplayName = ""
+            showNameDialog = true
+        }
+    }
+
+    Column(modifier = modifier) {
+        ListItem(
+            headlineContent = { Text(stringResource(R.string.pref_localfont_title)) },
+            supportingContent = {
+                Text(
+                    if (importInProgress) stringResource(R.string.font_importing)
+                    else stringResource(R.string.pref_localfont_summary)
+                )
+            },
+            modifier = Modifier.clickable(enabled = !importInProgress) {
+                fontPickerLauncher.launch(arrayOf("font/*", "application/x-font-ttf", "application/x-font-otf"))
+            }
+        )
+
+        // Show existing local fonts with delete option
+        localFonts.forEach { (displayName, fileName) ->
+            ListItem(
+                headlineContent = { Text(displayName) },
+                leadingContent = {
+                    Icon(
+                        imageVector = Icons.Default.FolderOpen,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                },
+                trailingContent = {
+                    IconButton(onClick = { onDeleteFont(fileName) }) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = stringResource(R.string.button_remove)
+                        )
+                    }
+                },
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
+
+        HorizontalDivider()
+    }
+
+    // Dialog to get display name for imported font
+    if (showNameDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                if (!importInProgress) {
+                    showNameDialog = false
+                    pendingUri = null
+                    fontDisplayName = ""
+                    onClearError()
+                }
+            },
+            title = { Text(stringResource(R.string.dialog_localfont_title)) },
+            text = {
+                Column {
+                    OutlinedTextField(
+                        value = fontDisplayName,
+                        onValueChange = {
+                            fontDisplayName = it
+                            onClearError()
+                        },
+                        label = { Text(stringResource(R.string.dialog_localfont_hint)) },
+                        singleLine = true,
+                        enabled = !importInProgress,
+                        isError = importError != null,
+                        supportingText = if (importError != null) {
+                            { Text(importError, color = MaterialTheme.colorScheme.error) }
+                        } else if (importInProgress) {
+                            { Text(stringResource(R.string.font_importing)) }
+                        } else null,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        pendingUri?.let { uri ->
+                            if (fontDisplayName.isNotBlank()) {
+                                onImportFont(uri, fontDisplayName.trim())
+                            }
+                        }
+                    },
+                    enabled = fontDisplayName.isNotBlank() && !importInProgress
+                ) {
+                    Text(stringResource(R.string.button_import))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showNameDialog = false
+                        pendingUri = null
+                        fontDisplayName = ""
+                        onClearError()
+                    },
+                    enabled = !importInProgress
+                ) {
+                    Text(stringResource(android.R.string.cancel))
+                }
+            }
+        )
+    }
+
+    // Close dialog when font is successfully imported
+    LaunchedEffect(localFonts.size) {
+        if (showNameDialog && !importInProgress && importError == null && fontDisplayName.isNotBlank()) {
+            showNameDialog = false
+            pendingUri = null
+            fontDisplayName = ""
+        }
+    }
+}
+
 @ScreenPreviews
 @Composable
 private fun SettingsScreenPreview() {
@@ -855,8 +1022,11 @@ private fun SettingsScreenPreview() {
                 bellNotification = false,
                 fontFamily = "JETBRAINS_MONO",
                 customFonts = listOf("Cascadia Code", "Hack"),
+                localFonts = listOf("My Custom Font" to "my_custom_font.ttf"),
                 fontValidationInProgress = false,
-                fontValidationError = null
+                fontValidationError = null,
+                fontImportInProgress = false,
+                fontImportError = null
             ),
             onNavigateBack = {},
             onMemkeysChange = {},
@@ -869,6 +1039,9 @@ private fun SettingsScreenPreview() {
             onAddCustomFont = {},
             onRemoveCustomFont = {},
             onClearFontError = {},
+            onImportLocalFont = { _, _ -> },
+            onDeleteLocalFont = {},
+            onClearImportError = {},
             onRotationChange = {},
             onFullscreenChange = {},
             onTitleBarHideChange = {},

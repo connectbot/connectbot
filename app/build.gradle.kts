@@ -119,6 +119,8 @@ android {
         create("oss") {
             dimension = "license"
             versionNameSuffix = "-oss"
+            // No Google Play Services available for downloadable fonts
+            buildConfigField("Boolean", "HAS_DOWNLOADABLE_FONTS", "false")
         }
 
         // This product flavor uses the Google Play Services library for
@@ -127,6 +129,8 @@ android {
         create("google") {
             dimension = "license"
             versionNameSuffix = ""
+            // Google Play Services available for downloadable fonts
+            buildConfigField("Boolean", "HAS_DOWNLOADABLE_FONTS", "true")
         }
     }
 

@@ -95,10 +95,10 @@ fun rememberTerminalTypeface(
 }
 
 /**
- * Remember a terminal typeface from a stored value (preset enum name or custom:FontName).
+ * Remember a terminal typeface from a stored value (preset enum name, custom:FontName, or local:filename).
  * Returns the fallback immediately while loading.
  *
- * @param storedValue The stored font value (e.g., "JETBRAINS_MONO" or "custom:Cascadia Code")
+ * @param storedValue The stored font value (e.g., "JETBRAINS_MONO", "custom:Cascadia Code", or "local:font.ttf")
  * @param fallback Fallback typeface while loading or on error
  * @return The loaded typeface or fallback
  */
@@ -109,9 +109,22 @@ fun rememberTerminalTypefaceFromStoredValue(
 ): Typeface {
     val context = LocalContext.current
     val fontProvider = remember { TerminalFontProvider(context) }
+    val localFontProvider = remember { LocalFontProvider(context) }
     var typeface by remember(storedValue) { mutableStateOf(fallback) }
 
     LaunchedEffect(storedValue) {
+        // Check if it's a local font
+        if (LocalFontProvider.isLocalFont(storedValue)) {
+            val fileName = LocalFontProvider.getLocalFontFileName(storedValue)
+            if (fileName != null) {
+                typeface = localFontProvider.getTypeface(fileName, fallback)
+            } else {
+                typeface = fallback
+            }
+            return@LaunchedEffect
+        }
+
+        // Handle Google Fonts (preset or custom)
         val googleFontName = TerminalFont.getGoogleFontName(storedValue)
         if (googleFontName.isBlank()) {
             typeface = fallback
