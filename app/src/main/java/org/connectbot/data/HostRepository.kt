@@ -307,38 +307,84 @@ class HostRepository @Inject constructor(
 
     /**
      * Import hosts from JSON string.
-     * Hosts with duplicate nicknames will be skipped.
+     * Hosts with duplicate nicknames will be updated (overwritten).
+     * All ID references (jumpHostId, hostId) are automatically remapped.
      *
      * @param jsonString The JSON string containing host configurations
-     * @return Pair of (imported count, skipped count)
+     * @return Pair of (inserted count, updated count)
      * @throws org.json.JSONException if JSON is invalid
      * @throws IllegalArgumentException if schema is invalid
      */
     suspend fun importHostsFromJson(jsonString: String): Pair<Int, Int> {
-        val (hosts, portForwardsMap) = HostConfigJson.fromJson(jsonString)
+        val parseResult = HostConfigJson.fromJson(jsonString)
+        val importedHosts = parseResult.hosts
+        val importedPortForwards = parseResult.portForwards
 
-        var importedCount = 0
-        var skippedCount = 0
+        var insertedCount = 0
+        var updatedCount = 0
 
-        val existingHosts = hostDao.getAll()
-        val existingNicknames = existingHosts.map { it.nickname }.toSet()
+        // Build map of existing hosts by nickname for conflict detection
+        val existingHostsByNickname = hostDao.getAll().associateBy { it.nickname }
 
-        hosts.forEachIndexed { index, host ->
-            if (host.nickname in existingNicknames) {
-                skippedCount++
-            } else {
-                val savedHost = saveHost(host)
-                importedCount++
+        // Track old ID -> new ID mapping for remapping references
+        val hostIdMapping = mutableMapOf<Long, Long>()
 
-                // Save port forwards for this host
-                portForwardsMap[index]?.forEach { pf ->
-                    val pfWithHostId = pf.copy(hostId = savedHost.id)
-                    portForwardDao.insert(pfWithHostId)
+        // First pass: import all hosts (with jumpHostId temporarily set to null for new references)
+        for (host in importedHosts) {
+            val oldId = host.id
+            val existingHost = existingHostsByNickname[host.nickname]
+
+            val savedHost = if (existingHost != null) {
+                // Update existing host - preserve the existing ID, update other fields
+                // Clear jumpHostId temporarily if it references an ID being imported
+                val hostToUpdate = host.copy(
+                    id = existingHost.id,
+                    jumpHostId = null  // Will be set in second pass
+                )
+                hostDao.update(hostToUpdate)
+                updatedCount++
+
+                // Delete existing port forwards for this host (will be replaced)
+                portForwardDao.getByHost(existingHost.id).forEach { pf ->
+                    portForwardDao.delete(pf)
                 }
+
+                hostToUpdate
+            } else {
+                // Insert new host with ID=0 to let Room assign new ID
+                val hostToInsert = host.copy(
+                    id = 0,
+                    jumpHostId = null  // Will be set in second pass
+                )
+                val newId = hostDao.insert(hostToInsert)
+                insertedCount++
+                hostToInsert.copy(id = newId)
+            }
+
+            hostIdMapping[oldId] = savedHost.id
+        }
+
+        // Second pass: update jumpHostId references using the ID mapping
+        for (host in importedHosts) {
+            val newId = hostIdMapping[host.id] ?: continue
+            val originalJumpHostId = host.jumpHostId ?: continue
+
+            // Remap jumpHostId to new ID
+            val newJumpHostId = hostIdMapping[originalJumpHostId]
+            if (newJumpHostId != null) {
+                val currentHost = hostDao.getById(newId) ?: continue
+                hostDao.update(currentHost.copy(jumpHostId = newJumpHostId))
             }
         }
 
-        return Pair(importedCount, skippedCount)
+        // Third pass: import port forwards with remapped hostId
+        for (pf in importedPortForwards) {
+            val newHostId = hostIdMapping[pf.hostId] ?: continue
+            val pfToInsert = pf.copy(id = 0, hostId = newHostId)
+            portForwardDao.insert(pfToInsert)
+        }
+
+        return Pair(insertedCount, updatedCount)
     }
 
     // ============================================================================
