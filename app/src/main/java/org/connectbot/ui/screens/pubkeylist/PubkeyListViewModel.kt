@@ -738,7 +738,7 @@ class PubkeyListViewModel @Inject constructor(
                 ))
             } else {
                 // Encrypted key - need password to decrypt
-                val keyType = extractKeyTypeFromOpenSSH(keyString) ?: "IMPORTED"
+                val keyType = PubkeyUtils.extractKeyTypeFromOpenSSH(keyString) ?: "IMPORTED"
                 return ImportResult.NeedsPassword(keyData, nickname, keyType)
             }
         } catch (e: Exception) {
@@ -820,80 +820,6 @@ class PubkeyListViewModel @Inject constructor(
         }
 
         return filename
-    }
-
-    /**
-     * Extract key type from OpenSSH format by reading the public key blob.
-     * The public key section is not encrypted, so we can read it without the password.
-     *
-     * @param keyString The full OpenSSH key file content
-     * @return The key type (RSA, DSA, EC, Ed25519) or null if not parseable
-     */
-    private fun extractKeyTypeFromOpenSSH(keyString: String): String? {
-        try {
-            // Check for OpenSSH format
-            if (!keyString.contains("-----BEGIN OPENSSH PRIVATE KEY-----")) {
-                return null
-            }
-
-            // Extract base64 content
-            val startMarker = "-----BEGIN OPENSSH PRIVATE KEY-----"
-            val endMarker = "-----END OPENSSH PRIVATE KEY-----"
-            val startIdx = keyString.indexOf(startMarker) + startMarker.length
-            val endIdx = keyString.indexOf(endMarker)
-            if (startIdx < 0 || endIdx < 0 || startIdx >= endIdx) return null
-
-            val base64Content = keyString.substring(startIdx, endIdx)
-                .replace("\n", "")
-                .replace("\r", "")
-                .trim()
-
-            val decoded = Base64.decode(base64Content.toCharArray())
-            val buffer = java.nio.ByteBuffer.wrap(decoded)
-
-            // Skip magic header "openssh-key-v1\0" (15 bytes)
-            val magic = ByteArray(15)
-            buffer.get(magic)
-            if (String(magic, Charsets.US_ASCII) != "openssh-key-v1\u0000") {
-                return null
-            }
-
-            // Skip cipher name (string)
-            val cipherLen = buffer.int
-            buffer.position(buffer.position() + cipherLen)
-
-            // Skip kdf name (string)
-            val kdfLen = buffer.int
-            buffer.position(buffer.position() + kdfLen)
-
-            // Skip kdf options (string)
-            val kdfOptionsLen = buffer.int
-            buffer.position(buffer.position() + kdfOptionsLen)
-
-            // Skip number of keys (uint32)
-            buffer.int
-
-            // Read public key blob length
-            val pubKeyBlobLen = buffer.int
-
-            // Read key type from public key blob (first string in the blob)
-            val keyTypeLen = buffer.int
-            val keyTypeBytes = ByteArray(keyTypeLen)
-            buffer.get(keyTypeBytes)
-            val sshKeyType = String(keyTypeBytes, Charsets.UTF_8)
-
-            // Convert SSH key type to ConnectBot internal type
-            return when {
-                sshKeyType == "ssh-rsa" -> "RSA"
-                sshKeyType == "ssh-dss" -> "DSA"
-                sshKeyType == "ssh-ed25519" -> "Ed25519"
-                sshKeyType.startsWith("ecdsa-sha2-") -> "EC"
-                else -> null
-            }
-        } catch (e: Exception) {
-            Log.d("PubkeyListViewModel", "Could not extract key type from OpenSSH format", e)
-            return null
-        }
     }
 
     /**
