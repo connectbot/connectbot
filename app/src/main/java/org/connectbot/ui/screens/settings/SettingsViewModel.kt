@@ -17,16 +17,20 @@
 
 package org.connectbot.ui.screens.settings
 
+import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Typeface
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.connectbot.util.TerminalFontProvider
 
 data class SettingsUiState(
     val memkeys: Boolean = true,
@@ -52,16 +56,29 @@ data class SettingsUiState(
     val bellVolume: Float = 0.5f,
     val bellVibrate: Boolean = true,
     val bellNotification: Boolean = false,
+    val fontFamily: String = "SYSTEM_DEFAULT",
+    val customFonts: List<String> = emptyList(),
+    val fontValidationInProgress: Boolean = false,
+    val fontValidationError: String? = null,
 )
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val prefs: SharedPreferences
+    private val prefs: SharedPreferences,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
+    private val fontProvider = TerminalFontProvider(context)
     private val _uiState = MutableStateFlow(loadSettings())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
     private fun loadSettings(): SettingsUiState {
+        val customFontsString = prefs.getString("customFonts", "") ?: ""
+        val customFonts = if (customFontsString.isBlank()) {
+            emptyList()
+        } else {
+            customFontsString.split(",").filter { it.isNotBlank() }
+        }
+
         return SettingsUiState(
             memkeys = prefs.getBoolean("memkeys", true),
             connPersist = prefs.getBoolean("connPersist", true),
@@ -86,6 +103,8 @@ class SettingsViewModel @Inject constructor(
             bellVolume = prefs.getFloat("bellVolume", 0.5f),
             bellVibrate = prefs.getBoolean("bellVibrate", true),
             bellNotification = prefs.getBoolean("bellNotification", false),
+            fontFamily = prefs.getString("fontFamily", "SYSTEM_DEFAULT") ?: "SYSTEM_DEFAULT",
+            customFonts = customFonts,
         )
     }
 
@@ -179,6 +198,68 @@ class SettingsViewModel @Inject constructor(
 
     fun updateBellVolume(value: Float) {
         updateFloatPref("bellVolume", value) { copy(bellVolume = value) }
+    }
+
+    fun updateFontFamily(value: String) {
+        updateStringPref("fontFamily", value) { copy(fontFamily = value) }
+    }
+
+    fun addCustomFont(fontName: String) {
+        if (fontName.isBlank()) return
+        val currentFonts = _uiState.value.customFonts
+        if (currentFonts.contains(fontName)) {
+            _uiState.update { it.copy(fontValidationError = "Font already added") }
+            return
+        }
+
+        // Validate font by attempting to load it
+        _uiState.update { it.copy(fontValidationInProgress = true, fontValidationError = null) }
+
+        fontProvider.loadFontByName(fontName) { typeface ->
+            viewModelScope.launch {
+                if (typeface != Typeface.MONOSPACE) {
+                    // Font loaded successfully, add it to the list
+                    val updatedFonts = currentFonts + fontName
+                    val fontsString = updatedFonts.joinToString(",")
+                    prefs.edit().putString("customFonts", fontsString).apply()
+                    _uiState.update {
+                        it.copy(
+                            customFonts = updatedFonts,
+                            fontValidationInProgress = false,
+                            fontValidationError = null
+                        )
+                    }
+                } else {
+                    // Font failed to load
+                    _uiState.update {
+                        it.copy(
+                            fontValidationInProgress = false,
+                            fontValidationError = "Font not found in Google Fonts"
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun clearFontValidationError() {
+        _uiState.update { it.copy(fontValidationError = null) }
+    }
+
+    fun removeCustomFont(fontName: String) {
+        viewModelScope.launch {
+            val currentFonts = _uiState.value.customFonts.toMutableList()
+            if (currentFonts.remove(fontName)) {
+                val fontsString = currentFonts.joinToString(",")
+                prefs.edit().putString("customFonts", fontsString).apply()
+                _uiState.update { it.copy(customFonts = currentFonts) }
+
+                // If the removed font was the selected font, reset to system default
+                if (_uiState.value.fontFamily == "custom:$fontName") {
+                    updateFontFamily("SYSTEM_DEFAULT")
+                }
+            }
+        }
     }
 
     private fun updateBooleanPref(key: String, value: Boolean, updateState: SettingsUiState.() -> SettingsUiState) {

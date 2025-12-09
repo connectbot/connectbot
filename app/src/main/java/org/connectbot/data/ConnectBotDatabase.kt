@@ -52,6 +52,7 @@ import org.connectbot.data.entity.Pubkey
  * Migration Strategy:
  * - Version 1: Initial Room schema (migrated from HostDatabase v27 + PubkeyDatabase v2)
  * - Version 2: Added jump_host_id column for ProxyJump support (AutoMigration)
+ * - Version 3: Added font_family column for downloadable fonts support (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -68,10 +69,11 @@ import org.connectbot.data.entity.Pubkey
         ColorScheme::class,
         ColorPalette::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(from = 1, to = 2)
+        AutoMigration(from = 1, to = 2),
+        AutoMigration(from = 2, to = 3)
     ]
 )
 @TypeConverters(Converters::class)

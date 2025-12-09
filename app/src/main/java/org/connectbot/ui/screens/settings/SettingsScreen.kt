@@ -24,6 +24,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.FontDownload
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -39,6 +41,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,6 +55,7 @@ import androidx.preference.PreferenceManager
 import org.connectbot.R
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.TerminalFont
 
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
@@ -73,6 +77,10 @@ fun SettingsScreen(
         onBackupkeysChange = viewModel::updateBackupkeys,
         onEmulationChange = viewModel::updateEmulation,
         onScrollbackChange = viewModel::updateScrollback,
+        onFontFamilyChange = viewModel::updateFontFamily,
+        onAddCustomFont = viewModel::addCustomFont,
+        onRemoveCustomFont = viewModel::removeCustomFont,
+        onClearFontError = viewModel::clearFontValidationError,
         onRotationChange = viewModel::updateRotation,
         onFullscreenChange = viewModel::updateFullscreen,
         onTitleBarHideChange = viewModel::updateTitleBarHide,
@@ -105,6 +113,10 @@ fun SettingsScreenContent(
     onBackupkeysChange: (Boolean) -> Unit,
     onEmulationChange: (String) -> Unit,
     onScrollbackChange: (String) -> Unit,
+    onFontFamilyChange: (String) -> Unit,
+    onAddCustomFont: (String) -> Unit,
+    onRemoveCustomFont: (String) -> Unit,
+    onClearFontError: () -> Unit,
     onRotationChange: (String) -> Unit,
     onFullscreenChange: (Boolean) -> Unit,
     onTitleBarHideChange: (Boolean) -> Unit,
@@ -193,6 +205,32 @@ fun SettingsScreenContent(
                     summary = stringResource(R.string.pref_scrollback_summary),
                     value = uiState.scrollback,
                     onValueChange = onScrollbackChange
+                )
+            }
+
+            item {
+                // Build combined font list: presets + custom fonts
+                val presetEntries = TerminalFont.entries.map { it.displayName to it.name }
+                val customEntries = uiState.customFonts.map { it to TerminalFont.createCustomFontValue(it) }
+                val allEntries = presetEntries + customEntries
+
+                ListPreference(
+                    title = stringResource(R.string.pref_fontfamily_title),
+                    summary = TerminalFont.getDisplayName(uiState.fontFamily),
+                    value = uiState.fontFamily,
+                    entries = allEntries,
+                    onValueChange = onFontFamilyChange
+                )
+            }
+
+            item {
+                AddCustomFontPreference(
+                    customFonts = uiState.customFonts,
+                    validationInProgress = uiState.fontValidationInProgress,
+                    validationError = uiState.fontValidationError,
+                    onAddFont = onAddCustomFont,
+                    onRemoveFont = onRemoveCustomFont,
+                    onClearError = onClearFontError
                 )
             }
 
@@ -595,6 +633,128 @@ private fun SliderPreference(
     HorizontalDivider()
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AddCustomFontPreference(
+    customFonts: List<String>,
+    validationInProgress: Boolean,
+    validationError: String?,
+    onAddFont: (String) -> Unit,
+    onRemoveFont: (String) -> Unit,
+    onClearError: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var showAddDialog by remember { mutableStateOf(false) }
+    var newFontName by remember { mutableStateOf("") }
+
+    // Show error snackbar if there's an error
+    LaunchedEffect(validationError) {
+        if (validationError != null) {
+            // Error is shown in dialog, will be cleared when dialog closes
+        }
+    }
+
+    Column(modifier = modifier) {
+        ListItem(
+            headlineContent = { Text(stringResource(R.string.pref_customfont_title)) },
+            supportingContent = { Text(stringResource(R.string.pref_customfont_summary)) },
+            modifier = Modifier.clickable { showAddDialog = true }
+        )
+
+        // Show existing custom fonts with remove option
+        customFonts.forEach { fontName ->
+            ListItem(
+                headlineContent = { Text(fontName) },
+                leadingContent = {
+                    Icon(
+                        imageVector = Icons.Default.FontDownload,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                },
+                trailingContent = {
+                    IconButton(onClick = { onRemoveFont(fontName) }) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = stringResource(R.string.button_remove)
+                        )
+                    }
+                },
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
+
+        HorizontalDivider()
+    }
+
+    if (showAddDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                if (!validationInProgress) {
+                    showAddDialog = false
+                    newFontName = ""
+                    onClearError()
+                }
+            },
+            title = { Text(stringResource(R.string.dialog_customfont_title)) },
+            text = {
+                Column {
+                    OutlinedTextField(
+                        value = newFontName,
+                        onValueChange = {
+                            newFontName = it
+                            onClearError()
+                        },
+                        label = { Text(stringResource(R.string.dialog_customfont_hint)) },
+                        singleLine = true,
+                        enabled = !validationInProgress,
+                        isError = validationError != null,
+                        supportingText = if (validationError != null) {
+                            { Text(validationError, color = MaterialTheme.colorScheme.error) }
+                        } else if (validationInProgress) {
+                            { Text(stringResource(R.string.font_validating)) }
+                        } else null,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        if (newFontName.isNotBlank()) {
+                            onAddFont(newFontName.trim())
+                        }
+                    },
+                    enabled = newFontName.isNotBlank() && !validationInProgress
+                ) {
+                    Text(stringResource(R.string.button_add))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showAddDialog = false
+                        newFontName = ""
+                        onClearError()
+                    },
+                    enabled = !validationInProgress
+                ) {
+                    Text(stringResource(android.R.string.cancel))
+                }
+            }
+        )
+    }
+
+    // Close dialog when font is successfully added
+    LaunchedEffect(customFonts.size) {
+        if (showAddDialog && !validationInProgress && validationError == null && newFontName.isNotBlank()) {
+            // Font was added successfully
+            showAddDialog = false
+            newFontName = ""
+        }
+    }
+}
+
 @ScreenPreviews
 @Composable
 private fun SettingsScreenPreview() {
@@ -623,7 +783,11 @@ private fun SettingsScreenPreview() {
                 bell = true,
                 bellVolume = 0.75f,
                 bellVibrate = true,
-                bellNotification = false
+                bellNotification = false,
+                fontFamily = "JETBRAINS_MONO",
+                customFonts = listOf("Cascadia Code", "Hack"),
+                fontValidationInProgress = false,
+                fontValidationError = null
             ),
             onNavigateBack = {},
             onMemkeysChange = {},
@@ -632,6 +796,10 @@ private fun SettingsScreenPreview() {
             onBackupkeysChange = {},
             onEmulationChange = {},
             onScrollbackChange = {},
+            onFontFamilyChange = {},
+            onAddCustomFont = {},
+            onRemoveCustomFont = {},
+            onClearFontError = {},
             onRotationChange = {},
             onFullscreenChange = {},
             onTitleBarHideChange = {},
