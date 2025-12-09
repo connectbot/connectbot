@@ -67,37 +67,32 @@ class PubkeyListViewModel @Inject constructor(
     var terminalManager: TerminalManager? = null
         set(value) {
             field = value
-            updateLoadedKeys()
+            observeLoadedKeys()
         }
 
     init {
-        loadPubkeys()
+        observePubkeys()
     }
 
-    fun loadPubkeys() {
+    private fun observePubkeys() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, error = null) }
-            try {
-                val pubkeys = repository.getAll()
+            repository.observeAll().collect { pubkeys ->
                 _uiState.update {
                     it.copy(pubkeys = pubkeys, isLoading = false, error = null)
-                }
-                updateLoadedKeys()
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(isLoading = false, error = e.message ?: "Failed to load keys")
                 }
             }
         }
     }
 
-    private fun updateLoadedKeys() {
-        terminalManager?.let { manager ->
-            val loadedKeys = _uiState.value.pubkeys
-                .map { it.nickname }
-                .filter { manager.isKeyLoaded(it) }
-                .toSet()
-            _uiState.update { it.copy(loadedKeyNicknames = loadedKeys) }
+    private fun observeLoadedKeys() {
+        val manager = terminalManager ?: return
+
+        viewModelScope.launch {
+            manager.loadedKeysChangedFlow.collect { loadedKeyNicknames ->
+                _uiState.update {
+                    it.copy(loadedKeyNicknames = loadedKeyNicknames)
+                }
+            }
         }
     }
 
@@ -110,7 +105,6 @@ class PubkeyListViewModel @Inject constructor(
             try {
                 terminalManager?.removeKey(pubkey.nickname)
                 repository.delete(pubkey)
-                loadPubkeys()
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(error = e.message ?: "Failed to delete key")
@@ -124,7 +118,6 @@ class PubkeyListViewModel @Inject constructor(
 
         if (isLoaded) {
             terminalManager?.removeKey(pubkey.nickname)
-            updateLoadedKeys()
         } else {
             // Check if this is a biometric key
             if (pubkey.isBiometric) {
@@ -175,7 +168,6 @@ class PubkeyListViewModel @Inject constructor(
 
                 // Add the biometric key to TerminalManager
                 terminalManager?.addBiometricKey(pubkey, alias, publicKey)
-                updateLoadedKeys()
 
                 // Clear the biometric key to unlock
                 _uiState.update { it.copy(biometricKeyToUnlock = null) }
@@ -198,7 +190,6 @@ class PubkeyListViewModel @Inject constructor(
                     PubkeyUtils.convertToKeyPair(pubkey, password)
                 }
                 keyPair?.let { terminalManager?.addKey(pubkey, it, true) }
-                updateLoadedKeys()
             } catch (e: PubkeyUtils.BadPasswordException) {
                 _uiState.update {
                     it.copy(error = "Failed to unlock key: Bad password")
@@ -283,7 +274,6 @@ class PubkeyListViewModel @Inject constructor(
 
                 if (pubkey != null) {
                     repository.save(pubkey)
-                    loadPubkeys()
                 } else {
                     _uiState.update {
                         it.copy(error = "Failed to parse key file")
