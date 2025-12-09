@@ -35,14 +35,11 @@ object HostConfigJson {
     /**
      * Tables to export for host configuration, in order.
      * Parent tables must come before child tables for foreign key resolution.
+     *
+     * Note: Excluded fields (runtime state like last_connect, host_key_algo) are
+     * configured in the generateExportSchema Gradle task and marked in the schema.
      */
     val EXPORT_TABLES = listOf("hosts", "port_forwards")
-
-    /**
-     * Fields to exclude from export (runtime state, not user configuration).
-     * These are column names from the database schema.
-     */
-    val EXCLUDED_FIELDS = setOf("last_connect", "host_key_algo")
 
     /**
      * Export host configurations to JSON.
@@ -54,7 +51,7 @@ object HostConfigJson {
     fun exportToJson(context: Context, pretty: Boolean = true): String {
         val database = ConnectBotDatabase.getInstance(context)
         val schema = DatabaseSchema.load(context)
-        val exporter = SchemaBasedExporter(database, schema, EXCLUDED_FIELDS)
+        val exporter = SchemaBasedExporter(database, schema)
         return exporter.exportToJson(EXPORT_TABLES, pretty)
     }
 
@@ -63,12 +60,14 @@ object HostConfigJson {
      *
      * @param context Android context
      * @param jsonString JSON string containing host configurations
-     * @return Pair of (inserted count, updated count)
+     * @return Pair of (inserted count, updated count) for hosts only
      */
     fun importFromJson(context: Context, jsonString: String): Pair<Int, Int> {
         val database = ConnectBotDatabase.getInstance(context)
         val schema = DatabaseSchema.load(context)
-        val exporter = SchemaBasedExporter(database, schema, EXCLUDED_FIELDS)
-        return exporter.importFromJson(jsonString, EXPORT_TABLES)
+        val exporter = SchemaBasedExporter(database, schema)
+        val results = exporter.importFromJson(jsonString, EXPORT_TABLES)
+        // Return only hosts counts (not port_forwards or other child tables)
+        return results["hosts"] ?: Pair(0, 0)
     }
 }

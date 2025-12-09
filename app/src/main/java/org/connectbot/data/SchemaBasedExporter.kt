@@ -29,16 +29,18 @@ import org.json.JSONObject
  *
  * Uses the Room schema JSON to generically export and import database tables
  * without any hardcoded entity knowledge. All table names, field names, types,
- * and relationships are read from the schema.
+ * relationships, and excluded fields are read from the schema.
+ *
+ * Fields marked as "excluded" in the schema are:
+ * - Omitted from JSON export
+ * - Given default values during import (for NOT NULL fields)
  *
  * @param database The Room database instance
- * @param schema The parsed database schema
- * @param excludedFields Column names to exclude from export (e.g., runtime state fields)
+ * @param schema The parsed database schema (filtered export schema with excluded field markers)
  */
 class SchemaBasedExporter(
     private val database: RoomDatabase,
-    private val schema: DatabaseSchema,
-    private val excludedFields: Set<String> = emptySet()
+    private val schema: DatabaseSchema
 ) {
 
     /**
@@ -58,9 +60,9 @@ class SchemaBasedExporter(
             val entitySchema = schema.getEntity(tableName) ?: continue
             val rows = JSONArray()
 
-            // Build column list excluding runtime state fields
+            // Build column list excluding fields marked as excluded in schema
             val columns = entitySchema.fields
-                .filter { it.columnName !in excludedFields }
+                .filter { !it.excluded }
                 .map { it.columnName }
 
             val cursor = db.query(
@@ -85,9 +87,9 @@ class SchemaBasedExporter(
      *
      * @param jsonString JSON string containing table data
      * @param tableNames List of table names to import (in order - parent tables first)
-     * @return Pair of (inserted count, updated count)
+     * @return Map of table name to Pair of (inserted count, updated count)
      */
-    fun importFromJson(jsonString: String, tableNames: List<String>): Pair<Int, Int> {
+    fun importFromJson(jsonString: String, tableNames: List<String>): Map<String, Pair<Int, Int>> {
         val json = JSONObject(jsonString)
         val version = json.optInt("version", 1)
 
@@ -98,8 +100,7 @@ class SchemaBasedExporter(
         }
 
         val db = database.openHelper.writableDatabase
-        var insertedCount = 0
-        var updatedCount = 0
+        val results = mutableMapOf<String, Pair<Int, Int>>()
 
         // Track ID mappings for foreign key remapping: tableName -> (oldId -> newId)
         val idMappings = mutableMapOf<String, MutableMap<Long, Long>>()
@@ -110,6 +111,9 @@ class SchemaBasedExporter(
             val rows = json.optJSONArray(tableName) ?: continue
             val idMapping = mutableMapOf<Long, Long>()
             idMappings[tableName] = idMapping
+
+            var insertedCount = 0
+            var updatedCount = 0
 
             // Find unique constraint for conflict detection
             val uniqueFields = entitySchema.uniqueIndices
@@ -147,9 +151,11 @@ class SchemaBasedExporter(
 
             // Second pass: update self-referencing foreign keys
             updateSelfReferences(db, tableName, entitySchema, idMapping, rows)
+
+            results[tableName] = Pair(insertedCount, updatedCount)
         }
 
-        return Pair(insertedCount, updatedCount)
+        return results
     }
 
     /**
@@ -159,7 +165,7 @@ class SchemaBasedExporter(
         val json = JSONObject()
 
         for (field in entitySchema.fields) {
-            if (field.columnName in excludedFields) continue
+            if (field.excluded) continue
 
             val columnIndex = cursor.getColumnIndex(field.columnName)
             if (columnIndex < 0 || cursor.isNull(columnIndex)) continue
@@ -338,7 +344,7 @@ class SchemaBasedExporter(
             if (excludeId && field.columnName == "id") continue
 
             // For excluded fields, provide default values if NOT NULL
-            if (field.columnName in excludedFields) {
+            if (field.excluded) {
                 if (field.notNull) {
                     when (field.affinity) {
                         "INTEGER" -> values.put(field.columnName, 0L)

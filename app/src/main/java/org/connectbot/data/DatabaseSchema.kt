@@ -51,17 +51,20 @@ class DatabaseSchema private constructor(private val schemaJson: JSONObject) {
     fun getEntity(tableName: String): EntitySchema? = entities[tableName]
 
     companion object {
-        private const val SCHEMA_PATH_FORMAT = "org.connectbot.data.ConnectBotDatabase/%d.json"
+        private const val EXPORT_SCHEMA_PATH = "export_schema.json"
 
         /**
-         * Load the schema for the current database version.
+         * Load the export schema from assets.
+         *
+         * The export schema is a filtered version of the Room schema containing
+         * only the tables and fields needed for export/import. It is generated
+         * at build time by the generateExportSchema Gradle task.
          *
          * @param context Android context for accessing assets
          * @return DatabaseSchema instance
          */
         fun load(context: Context): DatabaseSchema {
-            val schemaPath = SCHEMA_PATH_FORMAT.format(ConnectBotDatabase.SCHEMA_VERSION)
-            val jsonString = context.assets.open(schemaPath).bufferedReader().use { it.readText() }
+            val jsonString = context.assets.open(EXPORT_SCHEMA_PATH).bufferedReader().use { it.readText() }
             return DatabaseSchema(JSONObject(jsonString))
         }
     }
@@ -142,7 +145,8 @@ data class FieldSchema(
     val fieldPath: String,      // Kotlin property name (e.g., "jumpHostId")
     val columnName: String,     // Database column name (e.g., "jump_host_id")
     val affinity: String,       // SQLite type affinity (INTEGER, TEXT, BLOB, REAL)
-    val notNull: Boolean
+    val notNull: Boolean,
+    val excluded: Boolean       // True if field should be excluded from export (e.g., runtime state)
 ) {
     companion object {
         fun fromJson(json: JSONObject): FieldSchema {
@@ -150,7 +154,8 @@ data class FieldSchema(
                 fieldPath = json.getString("fieldPath"),
                 columnName = json.getString("columnName"),
                 affinity = json.getString("affinity"),
-                notNull = json.optBoolean("notNull", false)
+                notNull = json.optBoolean("notNull", false),
+                excluded = json.optBoolean("excluded", false)
             )
         }
     }
