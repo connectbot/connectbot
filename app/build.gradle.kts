@@ -20,8 +20,9 @@ plugins {
     alias(libs.plugins.hilt.android)
 }
 
-
-apply(from = "../config/quality.gradle.kts")
+// Workaround this issue: https://issuetracker.google.com/issues/463283604
+val hack = "gradle.kts"
+apply(from = "../config/quality.${hack}")
 
 coveralls {
     jacocoReportPath = "build/reports/coverage/google/debug/report.xml"
