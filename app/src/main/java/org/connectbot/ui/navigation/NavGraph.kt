@@ -24,6 +24,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import org.connectbot.data.entity.Host
 import org.connectbot.ui.screens.colors.ColorSchemeManagerScreen
 import org.connectbot.ui.screens.colors.ColorsScreen
 import org.connectbot.ui.screens.colors.PaletteEditorScreen
@@ -43,6 +44,8 @@ import org.connectbot.ui.screens.settings.SettingsScreen
 fun ConnectBotNavHost(
     navController: NavHostController,
     startDestination: String = NavDestinations.HOST_LIST,
+    makingShortcut: Boolean = false,
+    onShortcutSelected: (Host) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -52,9 +55,11 @@ fun ConnectBotNavHost(
     ) {
         composable(NavDestinations.HOST_LIST) {
             HostListScreen(
+                makingShortcut = makingShortcut,
                 onNavigateToConsole = { host ->
                     navController.navigate("${NavDestinations.CONSOLE}/${host.id}")
                 },
+                onShortcutSelected = onShortcutSelected,
                 onNavigateToEditHost = { host ->
                     if (host != null) {
                         navController.navigate("${NavDestinations.HOST_EDITOR}?${NavArgs.HOST_ID}=${host.id}")

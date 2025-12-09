@@ -85,7 +85,9 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HostListScreen(
+    makingShortcut: Boolean = false,
     onNavigateToConsole: (Host) -> Unit,
+    onShortcutSelected: (Host) -> Unit = {},
     onNavigateToEditHost: (Host?) -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToPubkeys: () -> Unit,
@@ -114,7 +116,9 @@ fun HostListScreen(
 
     HostListScreenContent(
         uiState = uiState,
+        makingShortcut = makingShortcut,
         onNavigateToConsole = onNavigateToConsole,
+        onShortcutSelected = onShortcutSelected,
         onNavigateToEditHost = onNavigateToEditHost,
         onNavigateToSettings = onNavigateToSettings,
         onNavigateToPubkeys = onNavigateToPubkeys,
@@ -133,7 +137,9 @@ fun HostListScreen(
 @Composable
 fun HostListScreenContent(
     uiState: HostListUiState,
+    makingShortcut: Boolean = false,
     onNavigateToConsole: (Host) -> Unit,
+    onShortcutSelected: (Host) -> Unit = {},
     onNavigateToEditHost: (Host?) -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToPubkeys: () -> Unit,
@@ -166,67 +172,71 @@ fun HostListScreenContent(
             TopAppBar(
                 title = { Text(stringResource(R.string.app_name)) },
                 actions = {
-                    IconButton(onClick = { showMenu = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.button_more_options))
-                    }
-                    DropdownMenu(
-                        expanded = showMenu,
-                        onDismissRequest = { showMenu = false }
-                    ) {
-                        DropdownMenuItem(
-                            text = {
-                                Text(stringResource(
-                                    if (uiState.sortedByColor) R.string.list_menu_sortname
-                                    else R.string.list_menu_sortcolor
-                                ))
-                            },
-                            onClick = {
-                                showMenu = false
-                                onToggleSortOrder()
-                            }
-                        )
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.list_menu_settings)) },
-                            onClick = {
-                                showMenu = false
-                                onNavigateToSettings()
-                            }
-                        )
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.title_colors)) },
-                            onClick = {
-                                showMenu = false
-                                onNavigateToColors()
-                            }
-                        )
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.list_menu_pubkeys)) },
-                            onClick = {
-                                showMenu = false
-                                onNavigateToPubkeys()
-                            }
-                        )
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.list_menu_disconnect)) },
-                            onClick = {
-                                showMenu = false
-                                showDisconnectAllDialog = true
-                            }
-                        )
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.title_help)) },
-                            onClick = {
-                                showMenu = false
-                                onNavigateToHelp()
-                            }
-                        )
+                    if (!makingShortcut) {
+                        IconButton(onClick = { showMenu = true }) {
+                            Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.button_more_options))
+                        }
+                        DropdownMenu(
+                            expanded = showMenu,
+                            onDismissRequest = { showMenu = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = {
+                                    Text(stringResource(
+                                        if (uiState.sortedByColor) R.string.list_menu_sortname
+                                        else R.string.list_menu_sortcolor
+                                    ))
+                                },
+                                onClick = {
+                                    showMenu = false
+                                    onToggleSortOrder()
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.list_menu_settings)) },
+                                onClick = {
+                                    showMenu = false
+                                    onNavigateToSettings()
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.title_colors)) },
+                                onClick = {
+                                    showMenu = false
+                                    onNavigateToColors()
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.list_menu_pubkeys)) },
+                                onClick = {
+                                    showMenu = false
+                                    onNavigateToPubkeys()
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.list_menu_disconnect)) },
+                                onClick = {
+                                    showMenu = false
+                                    showDisconnectAllDialog = true
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.title_help)) },
+                                onClick = {
+                                    showMenu = false
+                                    onNavigateToHelp()
+                                }
+                            )
+                        }
                     }
                 }
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { onNavigateToEditHost(null) }) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.hostpref_add_host))
+            if (!makingShortcut) {
+                FloatingActionButton(onClick = { onNavigateToEditHost(null) }) {
+                    Icon(Icons.Default.Add, contentDescription = stringResource(R.string.hostpref_add_host))
+                }
             }
         },
         modifier = modifier
@@ -277,8 +287,13 @@ fun HostListScreenContent(
                             HostListItem(
                                 host = host,
                                 connectionState = uiState.connectionStates[host.id] ?: ConnectionState.UNKNOWN,
+                                makingShortcut = makingShortcut,
                                 onClick = {
-                                    onNavigateToConsole(host)
+                                    if (makingShortcut) {
+                                        onShortcutSelected(host)
+                                    } else {
+                                        onNavigateToConsole(host)
+                                    }
                                 },
                                 onEdit = { onNavigateToEditHost(host) },
                                 onPortForwards = { onNavigateToPortForwards(host) },
@@ -323,6 +338,7 @@ fun HostListScreenContent(
 private fun HostListItem(
     host: Host,
     connectionState: ConnectionState,
+    makingShortcut: Boolean = false,
     onClick: () -> Unit,
     onEdit: () -> Unit,
     onPortForwards: () -> Unit,
@@ -416,55 +432,57 @@ private fun HostListItem(
             }
         },
         trailingContent = {
-            Box {
-                IconButton(onClick = { showMenu = true }) {
-                    Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.button_host_options))
-                }
-                DropdownMenu(
-                    expanded = showMenu,
-                    onDismissRequest = { showMenu = false }
-                ) {
-                    DropdownMenuItem(
-                        text = { Text(stringResource(R.string.list_host_edit)) },
-                        onClick = {
-                            showMenu = false
-                            onEdit()
-                        },
-                        leadingIcon = {
-                            Icon(Icons.Default.Edit, null)
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text(stringResource(R.string.list_host_portforwards)) },
-                        onClick = {
-                            showMenu = false
-                            onPortForwards()
-                        },
-                        leadingIcon = {
-                            Icon(Icons.Default.Link, null)
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text(stringResource(R.string.list_host_disconnect)) },
-                        onClick = {
-                            showMenu = false
-                            showDisconnectDialog = true
-                        },
-                        enabled = connectionState == ConnectionState.CONNECTED,
-                        leadingIcon = {
-                            Icon(Icons.Default.LinkOff, null)
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text(stringResource(R.string.list_host_delete)) },
-                        onClick = {
-                            showMenu = false
-                            showDeleteDialog = true
-                        },
-                        leadingIcon = {
-                            Icon(Icons.Default.Delete, null)
-                        }
-                    )
+            if (!makingShortcut) {
+                Box {
+                    IconButton(onClick = { showMenu = true }) {
+                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.button_host_options))
+                    }
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.list_host_edit)) },
+                            onClick = {
+                                showMenu = false
+                                onEdit()
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.Edit, null)
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.list_host_portforwards)) },
+                            onClick = {
+                                showMenu = false
+                                onPortForwards()
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.Link, null)
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.list_host_disconnect)) },
+                            onClick = {
+                                showMenu = false
+                                showDisconnectDialog = true
+                            },
+                            enabled = connectionState == ConnectionState.CONNECTED,
+                            leadingIcon = {
+                                Icon(Icons.Default.LinkOff, null)
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.list_host_delete)) },
+                            onClick = {
+                                showMenu = false
+                                showDeleteDialog = true
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.Delete, null)
+                            }
+                        )
+                    }
                 }
             }
         },

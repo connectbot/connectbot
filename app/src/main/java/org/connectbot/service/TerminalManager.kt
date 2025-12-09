@@ -342,6 +342,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 * format specified by an individual transport.
 	 */
     suspend fun openConnection(uri: Uri): TerminalBridge {
+        Log.d(TAG, "openConnection: uri=$uri, scheme=${uri.scheme}, fragment=${uri.fragment}")
         val scheme = uri.scheme
             ?: throw IllegalArgumentException("URI must contain a scheme (e.g., 'ssh://', 'telnet://'). URI: $uri")
 

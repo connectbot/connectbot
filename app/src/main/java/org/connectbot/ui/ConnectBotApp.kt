@@ -19,11 +19,10 @@ package org.connectbot.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavHostController
+import org.connectbot.data.entity.Host
 import org.connectbot.service.TerminalManager
 import org.connectbot.ui.navigation.ConnectBotNavHost
 import org.connectbot.ui.navigation.NavDestinations
@@ -36,8 +35,10 @@ val LocalTerminalManager = compositionLocalOf<TerminalManager?> {
 @Composable
 fun ConnectBotApp(
     appUiState: AppUiState,
+    navController: NavHostController,
+    makingShortcut: Boolean,
     onRetryMigration: () -> Unit,
-    onNavigationReady: (NavController) -> Unit,
+    onShortcutSelected: (Host) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ConnectBotTheme {
@@ -66,16 +67,12 @@ fun ConnectBotApp(
             }
 
             is AppUiState.Ready -> {
-                val navController = rememberNavController()
-
-                LaunchedEffect(navController) {
-                    onNavigationReady(navController)
-                }
-
                 CompositionLocalProvider(LocalTerminalManager provides appUiState.terminalManager) {
                     ConnectBotNavHost(
                         navController = navController,
                         startDestination = NavDestinations.HOST_LIST,
+                        makingShortcut = makingShortcut,
+                        onShortcutSelected = onShortcutSelected,
                         modifier = modifier
                     )
                 }

@@ -262,6 +262,7 @@ dependencies {
     kspAndroidTest(libs.hilt.android.compiler)
 
     implementation(libs.androidx.biometric)
+    implementation(libs.androidx.core)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
