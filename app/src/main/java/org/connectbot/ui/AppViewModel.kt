@@ -53,7 +53,7 @@ class AppViewModel @Inject constructor(
 ) : ViewModel() {
 
     companion object {
-        private const val TAG = "AppViewModel"
+        private const val TAG = "CB.AppViewModel"
     }
 
     private val _terminalManager = MutableStateFlow<TerminalManager?>(null)

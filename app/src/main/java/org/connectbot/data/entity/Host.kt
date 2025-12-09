@@ -130,15 +130,20 @@ data class Host(
             }
             "ssh", "telnet" -> {
                 // Build authority with hostname and port
-                var authority = hostname
-                if (username.isNotEmpty() && protocol == "ssh") {
-                    authority = "$username@$hostname"
-                }
-                if (port > 0) {
-                    authority = "$authority:$port"
+                val authority = buildString {
+                    if (username.isNotEmpty() && protocol == "ssh") {
+                        append(username)
+                        append('@')
+                    }
+                    append(hostname)
+                    if (port > 0) {
+                        append(':')
+                        append(port)
+                    }
                 }
                 builder.authority(authority)
                 builder.fragment(nickname)
+
             }
         }
 

@@ -18,7 +18,6 @@
 package org.connectbot.ui
 
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.net.Uri
@@ -33,14 +32,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.content.pm.ShortcutInfoCompat
+import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.graphics.drawable.IconCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.connectbot.R
+import org.connectbot.data.entity.Host
 import org.connectbot.service.TerminalManager
 import org.connectbot.ui.navigation.NavDestinations
-import androidx.core.net.toUri
 
 // TODO: Move back to ComponentActivity when https://issuetracker.google.com/issues/178855209 is fixed.
 //       FragmentActivity is required for BiometricPrompt to find the FragmentManager from Compose context.
@@ -52,20 +57,22 @@ class MainActivity : FragmentActivity() {
         const val DISCONNECT_ACTION = "org.connectbot.action.DISCONNECT"
     }
 
-    private lateinit var appViewModel: AppViewModel
+    internal lateinit var appViewModel: AppViewModel
     private var bound = false
     private var requestedUri: Uri? by mutableStateOf(null)
-    private var navController: NavController? = null
+    internal var makingShortcut by mutableStateOf(false)
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as? TerminalManager.TerminalBinder
             val manager = binder?.getService()
+            Log.d(TAG, "onServiceConnected: manager=$manager")
             appViewModel.setTerminalManager(manager)
             bound = true
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
+            Log.d(TAG, "onServiceDisconnected")
             appViewModel.setTerminalManager(null)
             bound = false
         }
@@ -79,6 +86,9 @@ class MainActivity : FragmentActivity() {
 
         if (savedInstanceState == null) {
             requestedUri = intent?.data
+            makingShortcut = Intent.ACTION_CREATE_SHORTCUT == intent?.action ||
+                             Intent.ACTION_PICK == intent?.action
+            Log.d(TAG, "onCreate: requestedUri=$requestedUri, makingShortcut=$makingShortcut")
             handleIntent(intent)
         } else {
             savedInstanceState.getString(STATE_SELECTED_URI)?.let {
@@ -87,25 +97,30 @@ class MainActivity : FragmentActivity() {
         }
 
         val serviceIntent = Intent(this, TerminalManager::class.java)
-        bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
+        bindService(serviceIntent, connection, BIND_AUTO_CREATE)
 
         setContent {
             val appUiState by appViewModel.uiState.collectAsState()
+            val navController = rememberNavController()
 
-            LaunchedEffect(requestedUri, navController) {
-                requestedUri?.let { uri ->
-                    navController?.let { controller ->
-                        handleConnectionUri(uri, controller)
-                        requestedUri = null
+            LaunchedEffect(requestedUri, navController, appUiState) {
+                if (appUiState is AppUiState.Ready) {
+                    requestedUri?.let { uri ->
+                        navController.let { controller ->
+                            handleConnectionUri(uri, controller)
+                            requestedUri = null
+                        }
                     }
                 }
             }
 
             ConnectBotApp(
                 appUiState = appUiState,
+                navController = navController,
+                makingShortcut = makingShortcut,
                 onRetryMigration = { appViewModel.retryMigration() },
-                onNavigationReady = { controller ->
-                    navController = controller
+                onShortcutSelected = { host ->
+                    createShortcutAndFinish(host)
                 }
             )
         }
@@ -126,7 +141,7 @@ class MainActivity : FragmentActivity() {
         if (intent?.action == DISCONNECT_ACTION) {
             val state = appViewModel.uiState.value
             if (state is AppUiState.Ready) {
-                state.terminalManager.disconnectAll(false, false)
+                state.terminalManager.disconnectAll(immediate = false, excludeLocal = false)
             }
         }
     }
@@ -139,42 +154,59 @@ class MainActivity : FragmentActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        Log.d(TAG, "onDestroy")
         if (bound) {
             unbindService(connection)
             bound = false
         }
+        super.onDestroy()
     }
 
     private fun handleConnectionUri(uri: Uri, controller: NavController) {
+        Log.d(TAG, "handleConnectionUri: uri=$uri, fragment=${uri.fragment}")
         val state = appViewModel.uiState.value
-        if (state !is AppUiState.Ready) return
+        if (state !is AppUiState.Ready) {
+            Log.d(TAG, "handleConnectionUri: state not ready, current state=$state")
+            return
+        }
 
         val manager = state.terminalManager
 
         lifecycleScope.launch {
             try {
-                val requestedNickname = uri.fragment
-                var bridge = manager.getConnectedBridge(requestedNickname)
+                val nickname = uri.fragment ?: uri.authority
+                Log.d(TAG, "handleConnectionUri: nickname=$nickname")
+                var bridge = manager.getConnectedBridge(nickname)
 
-                if (requestedNickname != null && bridge == null) {
-                    Log.d(
-                        TAG,
-                        "Creating new connection for URI: $uri with nickname: $requestedNickname"
-                    )
+                if (bridge == null) {
+                    Log.d(TAG, "Creating new connection for URI: $uri with nickname: $nickname")
                     bridge = manager.openConnection(uri)
                 }
 
-                if (bridge != null) {
-                    controller.navigate("${NavDestinations.CONSOLE}/${bridge.host.id}") {
-                        launchSingleTop = true
-                    }
-                } else {
-                    Log.w(TAG, "Could not create bridge for URI: $uri")
+                controller.navigate("${NavDestinations.CONSOLE}/${bridge.host.id}") {
+                    launchSingleTop = true
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Error handling connection URI: $uri", e)
             }
         }
+    }
+
+    private fun createShortcutAndFinish(host: Host) {
+        val uri = host.getUri()
+        val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+
+        val shortcut = ShortcutInfoCompat.Builder(this, "host-${host.id}")
+            .setShortLabel(host.nickname)
+            .setLongLabel(host.nickname)
+            .setIcon(IconCompat.createWithResource(this, R.mipmap.icon))
+            .setIntent(intent)
+            .build()
+
+        val result = ShortcutManagerCompat.createShortcutResultIntent(this, shortcut)
+        setResult(RESULT_OK, result)
+        finish()
     }
 }

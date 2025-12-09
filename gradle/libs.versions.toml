@@ -52,6 +52,7 @@ media3CommonKtx = "1.8.0"
 navigationTesting = "2.9.6"
 ui = "1.10.0"
 biometric = "1.4.0-alpha02"
+core = "1.15.0"
 
 [libraries]
 sshlib = { module = "org.connectbot:sshlib", version.ref = "sshlib" }
@@ -103,6 +104,7 @@ androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "
 androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 androidx-biometric = { module = "androidx.biometric:biometric-ktx", version.ref = "biometric" }
+androidx-core = { module = "androidx.core:core-ktx", version.ref = "core" }
 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
