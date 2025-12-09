@@ -20,6 +20,7 @@ package org.connectbot.data
 import android.content.Context
 import android.util.Log
 import com.trilead.ssh2.KnownHosts
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
 import org.connectbot.data.dao.HostDao
@@ -42,7 +43,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class HostRepository @Inject constructor(
-    private val context: Context,
+    @ApplicationContext private val context: Context,
     private val hostDao: HostDao,
     private val portForwardDao: PortForwardDao,
     private val knownHostDao: KnownHostDao
