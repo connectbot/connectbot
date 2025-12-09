@@ -70,6 +70,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -110,11 +111,6 @@ private fun rememberHasHardwareKeyboard(): Boolean {
 				keyboardType == android.content.res.Configuration.KEYBOARD_12KEY
 	}
 }
-
-/**
- * Height of the title bar in dp.
- */
-private const val TITLE_BAR_HEIGHT_DP = 64
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -260,6 +256,8 @@ fun ConsoleScreen(
         lastInteractionTime = System.currentTimeMillis()
     }
 
+    var titleBarHeight by remember { mutableStateOf(0.dp) }
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = Modifier.fillMaxSize(),
@@ -316,7 +314,7 @@ fun ConsoleScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(
-                                top = if (!titleBarHide) TITLE_BAR_HEIGHT_DP.dp else 0.dp,
+                                top = if (!titleBarHide) titleBarHeight else 0.dp,
                                 bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp
                             )
                     ) {
@@ -466,7 +464,10 @@ fun ConsoleScreen(
                         currentBridge?.host?.nickname
                             ?: stringResource(R.string.console_default_title),
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.onSizeChanged {
+                            titleBarHeight = it.height.dp
+                        }
                     )
                 },
                 navigationIcon = {
