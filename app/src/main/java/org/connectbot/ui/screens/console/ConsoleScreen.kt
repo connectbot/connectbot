@@ -464,7 +464,9 @@ fun ConsoleScreen(
                 title = {
                     Text(
                         currentBridge?.host?.nickname
-                            ?: stringResource(R.string.console_default_title)
+                            ?: stringResource(R.string.console_default_title),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 },
                 navigationIcon = {
