@@ -18,7 +18,6 @@
 package org.connectbot.di
 
 import android.content.Context
-import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,16 +29,10 @@ import org.connectbot.data.ConnectBotDatabase
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
-    private const val DATABASE_NAME = "connectbot.db"
-
     @Provides
     @Singleton
     fun provideConnectBotDatabase(@ApplicationContext context: Context): ConnectBotDatabase {
-        return Room.databaseBuilder(
-            context,
-            ConnectBotDatabase::class.java,
-            DATABASE_NAME
-        ).build()
+        return ConnectBotDatabase.getInstance(context)
     }
 
     @Provides
