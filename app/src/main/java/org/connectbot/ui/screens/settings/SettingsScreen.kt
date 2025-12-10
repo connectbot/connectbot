@@ -56,6 +56,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.connectbot.BuildConfig
 import org.connectbot.R
+import org.connectbot.data.entity.Profile
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.LocalFontProvider
@@ -88,6 +89,7 @@ fun SettingsScreen(
         onImportLocalFont = viewModel::importLocalFont,
         onDeleteLocalFont = viewModel::deleteLocalFont,
         onClearImportError = viewModel::clearFontImportError,
+        onDefaultProfileChange = viewModel::updateDefaultProfile,
         onRotationChange = viewModel::updateRotation,
         onFullscreenChange = viewModel::updateFullscreen,
         onTitleBarHideChange = viewModel::updateTitleBarHide,
@@ -127,6 +129,7 @@ fun SettingsScreenContent(
     onImportLocalFont: (Uri, String) -> Unit,
     onDeleteLocalFont: (String) -> Unit,
     onClearImportError: () -> Unit,
+    onDefaultProfileChange: (Long) -> Unit,
     onRotationChange: (String) -> Unit,
     onFullscreenChange: (Boolean) -> Unit,
     onTitleBarHideChange: (Boolean) -> Unit,
@@ -268,6 +271,21 @@ fun SettingsScreenContent(
                     onImportFont = onImportLocalFont,
                     onDeleteFont = onDeleteLocalFont,
                     onClearError = onClearImportError
+                )
+            }
+
+            item {
+                PreferenceCategory(title = "Profiles")
+            }
+
+            item {
+                val selectedProfile = uiState.availableProfiles.find { it.id == uiState.defaultProfileId }
+                ListPreference(
+                    title = "Default Profile",
+                    summary = selectedProfile?.name ?: "Default",
+                    value = uiState.defaultProfileId.toString(),
+                    entries = uiState.availableProfiles.map { it.name to it.id.toString() },
+                    onValueChange = { onDefaultProfileChange(it.toLong()) }
                 )
             }
 
@@ -981,6 +999,7 @@ private fun SettingsScreenPreview() {
             onImportLocalFont = { _, _ -> },
             onDeleteLocalFont = {},
             onClearImportError = {},
+            onDefaultProfileChange = {},
             onRotationChange = {},
             onFullscreenChange = {},
             onTitleBarHideChange = {},

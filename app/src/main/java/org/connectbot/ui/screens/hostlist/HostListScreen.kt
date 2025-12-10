@@ -94,6 +94,7 @@ fun HostListScreen(
     onNavigateToPubkeys: () -> Unit,
     onNavigateToPortForwards: (Host) -> Unit,
     onNavigateToColors: () -> Unit,
+    onNavigateToProfiles: () -> Unit,
     onNavigateToHelp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -125,6 +126,7 @@ fun HostListScreen(
         onNavigateToPubkeys = onNavigateToPubkeys,
         onNavigateToPortForwards = onNavigateToPortForwards,
         onNavigateToColors = onNavigateToColors,
+        onNavigateToProfiles = onNavigateToProfiles,
         onNavigateToHelp = onNavigateToHelp,
         onToggleSortOrder = viewModel::toggleSortOrder,
         onDeleteHost = viewModel::deleteHost,
@@ -146,6 +148,7 @@ fun HostListScreenContent(
     onNavigateToPubkeys: () -> Unit,
     onNavigateToPortForwards: (Host) -> Unit,
     onNavigateToColors: () -> Unit,
+    onNavigateToProfiles: () -> Unit,
     onNavigateToHelp: () -> Unit,
     onToggleSortOrder: () -> Unit,
     onDeleteHost: (Host) -> Unit,
@@ -205,6 +208,13 @@ fun HostListScreenContent(
                                 onClick = {
                                     showMenu = false
                                     onNavigateToColors()
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Profiles") },
+                                onClick = {
+                                    showMenu = false
+                                    onNavigateToProfiles()
                                 }
                             )
                             DropdownMenuItem(
@@ -577,6 +587,7 @@ private fun HostListScreenEmptyPreview() {
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
             onNavigateToColors = {},
+            onNavigateToProfiles = {},
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
@@ -601,6 +612,7 @@ private fun HostListScreenLoadingPreview() {
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
             onNavigateToColors = {},
+            onNavigateToProfiles = {},
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
@@ -626,6 +638,7 @@ private fun HostListScreenErrorPreview() {
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
             onNavigateToColors = {},
+            onNavigateToProfiles = {},
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
@@ -683,6 +696,7 @@ private fun HostListScreenPopulatedPreview() {
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
             onNavigateToColors = {},
+            onNavigateToProfiles = {},
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},

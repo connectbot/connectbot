@@ -109,7 +109,14 @@ data class Host(
      * Value should be a TerminalFont enum name (e.g., "JETBRAINS_MONO").
      */
     @ColumnInfo(name = "font_family")
-    val fontFamily: String? = null
+    val fontFamily: String? = null,
+
+    /**
+     * Optional profile ID for terminal-specific settings.
+     * When null, uses the default profile or global settings.
+     */
+    @ColumnInfo(name = "profile_id")
+    val profileId: Long? = null
 ) {
     /**
      * Check if this host is temporary (not saved to database).

@@ -29,6 +29,8 @@ object NavDestinations {
     const val COLORS = "colors"
     const val SCHEME_MANAGER = "scheme_manager"
     const val PALETTE_EDITOR = "palette_editor"
+    const val PROFILES = "profiles"
+    const val PROFILE_EDITOR = "profile_editor"
     const val HELP = "help"
     const val EULA = "eula"
     const val HINTS = "hints"
@@ -39,4 +41,5 @@ object NavArgs {
     const val BRIDGE_NAME = "bridgeName"
     const val PUBKEY_ID = "pubkeyId"
     const val SCHEME_ID = "schemeId"
+    const val PROFILE_ID = "profileId"
 }

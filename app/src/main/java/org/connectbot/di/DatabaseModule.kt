@@ -39,7 +39,9 @@ object DatabaseModule {
             context,
             ConnectBotDatabase::class.java,
             DATABASE_NAME
-        ).build()
+        )
+            .addMigrations(ConnectBotDatabase.MIGRATION_3_4)
+            .build()
     }
 
     @Provides
@@ -56,4 +58,7 @@ object DatabaseModule {
 
     @Provides
     fun provideColorSchemeDao(database: ConnectBotDatabase) = database.colorSchemeDao()
+
+    @Provides
+    fun provideProfileDao(database: ConnectBotDatabase) = database.profileDao()
 }

@@ -33,6 +33,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.connectbot.data.ProfileRepository
+import org.connectbot.data.entity.Profile
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFontProvider
 
@@ -67,17 +69,31 @@ data class SettingsUiState(
     val fontValidationError: String? = null,
     val fontImportInProgress: Boolean = false,
     val fontImportError: String? = null,
+    val defaultProfileId: Long = 1L,
+    val availableProfiles: List<Profile> = emptyList(),
 )
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val prefs: SharedPreferences,
+    private val profileRepository: ProfileRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
     private val fontProvider = TerminalFontProvider(context)
     private val localFontProvider = LocalFontProvider(context)
     private val _uiState = MutableStateFlow(loadSettings())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
+
+    init {
+        loadProfiles()
+    }
+
+    private fun loadProfiles() {
+        viewModelScope.launch {
+            val profiles = profileRepository.getAll()
+            _uiState.update { it.copy(availableProfiles = profiles) }
+        }
+    }
 
     private fun loadSettings(): SettingsUiState {
         val customFontsString = prefs.getString("customFonts", "") ?: ""
@@ -115,6 +131,7 @@ class SettingsViewModel @Inject constructor(
             fontFamily = prefs.getString("fontFamily", "SYSTEM_DEFAULT") ?: "SYSTEM_DEFAULT",
             customFonts = customFonts,
             localFonts = localFonts,
+            defaultProfileId = prefs.getLong("defaultProfileId", 1L),
         )
     }
 
@@ -214,6 +231,13 @@ class SettingsViewModel @Inject constructor(
         updateStringPref("fontFamily", value) { copy(fontFamily = value) }
         // Preload the font so it's cached when the Terminal opens
         preloadFont(value)
+    }
+
+    fun updateDefaultProfile(profileId: Long) {
+        viewModelScope.launch {
+            prefs.edit().putLong("defaultProfileId", profileId).apply()
+            _uiState.update { it.copy(defaultProfileId = profileId) }
+        }
     }
 
     private fun preloadFont(storedValue: String) {
