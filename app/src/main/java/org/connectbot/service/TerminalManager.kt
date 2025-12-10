@@ -124,6 +124,9 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	@Inject
 	internal lateinit var prefs: SharedPreferences
 
+	@Inject
+	internal lateinit var connectionNotifier: ConnectionNotifier
+
 	private val binder: IBinder = TerminalBinder()
 
 	private lateinit var connectivityManager: ConnectivityReceiver
@@ -240,7 +243,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 		disconnectAll(true, false)
 
-		ConnectionNotifier.instance.hideRunningNotification(this)
+		connectionNotifier.hideRunningNotification(this)
 
 		disableMediaPlayer()
 
@@ -310,7 +313,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		}
 
 		if (prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)) {
-			ConnectionNotifier.instance.showRunningNotification(this)
+			connectionNotifier.showRunningNotification(this)
 		}
 
 		// also update database with new connected time
@@ -436,7 +439,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		notifyHostStatusChanged()
 
 		if (shouldHideRunningNotification) {
-			ConnectionNotifier.instance.hideRunningNotification(this)
+			connectionNotifier.hideRunningNotification(this)
 		}
 	}
 
@@ -731,7 +734,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 */
 	fun sendActivityNotification(host: Host) {
 		if (!isUiBound && prefs.getBoolean(PreferenceConstants.BELL_NOTIFICATION, false)) {
-			ConnectionNotifier.instance.showActivityNotification(this, host)
+			connectionNotifier.showActivityNotification(this, host)
 		}
 	}
 

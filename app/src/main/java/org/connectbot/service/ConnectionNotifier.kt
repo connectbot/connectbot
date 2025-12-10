@@ -34,6 +34,9 @@ import org.connectbot.data.entity.Host
 import org.connectbot.ui.MainActivity
 import org.connectbot.util.HostConstants
 
+import javax.inject.Inject
+import javax.inject.Singleton
+
 /**
  * Manages notifications for ConnectBot connections.
  *
@@ -41,7 +44,8 @@ import org.connectbot.util.HostConstants
  *
  * Based on the concept from jasta's blog post.
  */
-class ConnectionNotifier private constructor() {
+@Singleton
+class ConnectionNotifier @Inject constructor() {
     private val pendingIntentFlags: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     } else {
@@ -179,8 +183,5 @@ class ConnectionNotifier private constructor() {
         private const val ACTIVITY_NOTIFICATION = 2
         private const val ONLINE_DISCONNECT_NOTIFICATION = 3
         private const val NOTIFICATION_CHANNEL = "my_connectbot_channel"
-
-        @JvmStatic
-        val instance = ConnectionNotifier()
     }
 }
