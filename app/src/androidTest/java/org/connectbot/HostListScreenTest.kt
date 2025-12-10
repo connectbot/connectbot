@@ -57,6 +57,7 @@ class HostListScreenTest {
                     onNavigateToColors = {},
                     onNavigateToPubkeys = {},
                     onNavigateToPortForwards = {},
+                    onNavigateToProfiles = {},
                     onNavigateToHelp = {}
                 )
             }
@@ -78,6 +79,7 @@ class HostListScreenTest {
                     onNavigateToColors = {},
                     onNavigateToPubkeys = {},
                     onNavigateToPortForwards = {},
+                    onNavigateToProfiles = {},
                     onNavigateToHelp = {}
                 )
             }
@@ -99,6 +101,7 @@ class HostListScreenTest {
                     onNavigateToColors = {},
                     onNavigateToPubkeys = {},
                     onNavigateToPortForwards = {},
+                    onNavigateToProfiles = {},
                     onNavigateToHelp = {}
                 )
             }
@@ -128,6 +131,7 @@ class HostListScreenTest {
                     onNavigateToColors = {},
                     onNavigateToPubkeys = {},
                     onNavigateToPortForwards = {},
+                    onNavigateToProfiles = {},
                     onNavigateToHelp = {}
                 )
             }
