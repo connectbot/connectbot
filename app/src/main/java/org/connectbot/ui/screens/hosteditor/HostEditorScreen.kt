@@ -63,6 +63,7 @@ import androidx.compose.ui.unit.dp
 import org.connectbot.BuildConfig
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
@@ -94,6 +95,7 @@ fun HostEditorScreen(
         onFontSizeChange = viewModel::updateFontSize,
         onFontFamilyChange = viewModel::updateFontFamily,
         onPubkeyChange = viewModel::updatePubkeyId,
+        onProfileChange = viewModel::updateProfileId,
         onDelKeyChange = viewModel::updateDelKey,
         onEncodingChange = viewModel::updateEncoding,
         onUseAuthAgentChange = viewModel::updateUseAuthAgent,
@@ -124,6 +126,7 @@ fun HostEditorScreenContent(
     onFontSizeChange: (Int) -> Unit,
     onFontFamilyChange: (String?) -> Unit,
     onPubkeyChange: (Long) -> Unit,
+    onProfileChange: (Long?) -> Unit,
     onDelKeyChange: (String) -> Unit,
     onEncodingChange: (String) -> Unit,
     onUseAuthAgentChange: (String) -> Unit,
@@ -355,6 +358,14 @@ fun HostEditorScreenContent(
                 pubkeyId = uiState.pubkeyId,
                 availablePubkeys = uiState.availablePubkeys,
                 onPubkeySelected = onPubkeyChange
+            )
+
+            // Profile selector
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+            ProfileSelector(
+                profileId = uiState.profileId,
+                availableProfiles = uiState.availableProfiles,
+                onProfileSelected = onProfileChange
             )
 
             // Jump host selector (only for SSH protocol)
@@ -692,6 +703,83 @@ private fun PubkeySelector(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+private fun ProfileSelector(
+    profileId: Long?,
+    availableProfiles: List<Profile>,
+    onProfileSelected: (Long?) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column(modifier = modifier) {
+        Text(
+            text = "Profile",
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+        Text(
+            text = "Select a profile to use its terminal settings",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = it }
+        ) {
+            OutlinedTextField(
+                value = when {
+                    profileId == null -> "None (use host settings)"
+                    else -> {
+                        val selectedProfile = availableProfiles.find { it.id == profileId }
+                        selectedProfile?.name ?: "None (use host settings)"
+                    }
+                },
+                onValueChange = {},
+                readOnly = true,
+                singleLine = true,
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                modifier = Modifier
+                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                    .fillMaxWidth()
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                // "None" option
+                DropdownMenuItem(
+                    text = { Text("None (use host settings)") },
+                    onClick = {
+                        onProfileSelected(null)
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
+
+                // Available profiles
+                availableProfiles.forEach { profile ->
+                    DropdownMenuItem(
+                        text = { Text(profile.name) },
+                        onClick = {
+                            onProfileSelected(profile.id)
+                            expanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 private fun JumpHostSelector(
     jumpHostId: Long?,
     availableJumpHosts: List<Host>,
@@ -959,6 +1047,7 @@ private fun HostEditorScreenPreview() {
             onFontSizeChange = {},
             onFontFamilyChange = {},
             onPubkeyChange = {},
+            onProfileChange = {},
             onDelKeyChange = {},
             onEncodingChange = {},
             onUseAuthAgentChange = {},
