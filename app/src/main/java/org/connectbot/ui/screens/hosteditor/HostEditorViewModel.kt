@@ -30,8 +30,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.connectbot.data.HostRepository
+import org.connectbot.data.ProfileRepository
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
@@ -52,6 +54,8 @@ data class HostEditorUiState(
     val localFonts: List<Pair<String, String>> = emptyList(),
     val pubkeyId: Long = -1L,
     val availablePubkeys: List<Pubkey> = emptyList(),
+    val profileId: Long? = null,
+    val availableProfiles: List<Profile> = emptyList(),
     val delKey: String = "del",
     val encoding: String = "UTF-8",
     val useAuthAgent: String = "no",
@@ -71,6 +75,7 @@ class HostEditorViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val repository: HostRepository,
     private val pubkeyRepository: PubkeyRepository,
+    private val profileRepository: ProfileRepository,
     private val prefs: android.content.SharedPreferences,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
@@ -84,6 +89,7 @@ class HostEditorViewModel @Inject constructor(
     init {
         loadPubkeys()
         loadJumpHosts()
+        loadProfiles()
         loadCustomFonts()
         loadLocalFonts()
         if (hostId != -1L) {
@@ -133,6 +139,18 @@ class HostEditorViewModel @Inject constructor(
         }
     }
 
+    private fun loadProfiles() {
+        viewModelScope.launch {
+            try {
+                val profiles = profileRepository.getAll()
+                _uiState.update { it.copy(availableProfiles = profiles) }
+            } catch (e: Exception) {
+                // Don't fail the whole screen if profiles can't be loaded
+                _uiState.update { it.copy(availableProfiles = emptyList()) }
+            }
+        }
+    }
+
     private fun loadHost() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
@@ -150,6 +168,7 @@ class HostEditorViewModel @Inject constructor(
                             fontSize = host.fontSize,
                             fontFamily = host.fontFamily,
                             pubkeyId = host.pubkeyId,
+                            profileId = host.profileId,
                             delKey = host.delKey,
                             encoding = host.encoding,
                             useAuthAgent = host.useAuthAgent ?: "no",
@@ -247,6 +266,10 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(pubkeyId = value) }
     }
 
+    fun updateProfileId(value: Long?) {
+        _uiState.update { it.copy(profileId = value) }
+    }
+
     fun updateDelKey(value: String) {
         _uiState.update { it.copy(delKey = value) }
     }
@@ -314,6 +337,7 @@ class HostEditorViewModel @Inject constructor(
                     fontSize = state.fontSize,
                     fontFamily = state.fontFamily,
                     pubkeyId = state.pubkeyId,
+                    profileId = state.profileId,
                     delKey = state.delKey,
                     encoding = state.encoding,
                     useAuthAgent = state.useAuthAgent.takeIf { it != "no" },

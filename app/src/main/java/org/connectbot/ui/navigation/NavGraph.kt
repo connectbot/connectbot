@@ -36,6 +36,8 @@ import org.connectbot.ui.screens.hints.HintsScreen
 import org.connectbot.ui.screens.hosteditor.HostEditorScreen
 import org.connectbot.ui.screens.hostlist.HostListScreen
 import org.connectbot.ui.screens.portforwardlist.PortForwardListScreen
+import org.connectbot.ui.screens.profiles.ProfileEditorScreen
+import org.connectbot.ui.screens.profiles.ProfileListScreen
 import org.connectbot.ui.screens.pubkeyeditor.PubkeyEditorScreen
 import org.connectbot.ui.screens.pubkeylist.PubkeyListScreen
 import org.connectbot.ui.screens.settings.SettingsScreen
@@ -77,6 +79,9 @@ fun ConnectBotNavHost(
                 },
                 onNavigateToColors = {
                     navController.navigate(NavDestinations.COLORS)
+                },
+                onNavigateToProfiles = {
+                    navController.navigate(NavDestinations.PROFILES)
                 },
                 onNavigateToHelp = {
                     navController.navigate(NavDestinations.HELP)
@@ -179,6 +184,26 @@ fun ConnectBotNavHost(
             )
         ) {
             PaletteEditorScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(NavDestinations.PROFILES) {
+            ProfileListScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToEdit = { profile ->
+                    navController.navigate("${NavDestinations.PROFILE_EDITOR}/${profile.id}")
+                }
+            )
+        }
+
+        composable(
+            route = "${NavDestinations.PROFILE_EDITOR}/{${NavArgs.PROFILE_ID}}",
+            arguments = listOf(
+                navArgument(NavArgs.PROFILE_ID) { type = NavType.LongType }
+            )
+        ) {
+            ProfileEditorScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }

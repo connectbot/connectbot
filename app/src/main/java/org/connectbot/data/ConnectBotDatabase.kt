@@ -30,12 +30,14 @@ import org.connectbot.data.dao.ColorSchemeDao
 import org.connectbot.data.dao.HostDao
 import org.connectbot.data.dao.KnownHostDao
 import org.connectbot.data.dao.PortForwardDao
+import org.connectbot.data.dao.ProfileDao
 import org.connectbot.data.dao.PubkeyDao
 import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KnownHost
 import org.connectbot.data.entity.PortForward
+import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
 
 /**
@@ -55,6 +57,7 @@ import org.connectbot.data.entity.Pubkey
  * - Version 3: Added unique index on known_hosts (hostname, port) (AutoMigration)
  * - Version 4: Changed known_hosts index to (host_id, host_key) (AutoMigration)
  * - Version 5: Added font_family column for downloadable fonts support (AutoMigration)
+ * - Version 6: Added profiles table and profile_id column to hosts (manual migration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -68,9 +71,10 @@ import org.connectbot.data.entity.Pubkey
         PortForward::class,
         KnownHost::class,
         ColorScheme::class,
-        ColorPalette::class
+        ColorPalette::class,
+        Profile::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -86,4 +90,43 @@ abstract class ConnectBotDatabase : RoomDatabase() {
     abstract fun portForwardDao(): PortForwardDao
     abstract fun knownHostDao(): KnownHostDao
     abstract fun colorSchemeDao(): ColorSchemeDao
+    abstract fun profileDao(): ProfileDao
+
+    companion object {
+        /**
+         * Migration from version 5 to 6: Add profiles table and profile_id to hosts.
+         */
+        val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // Create profiles table
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS `profiles` (
+                        `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        `name` TEXT NOT NULL,
+                        `is_built_in` INTEGER NOT NULL DEFAULT 0,
+                        `color_scheme_id` INTEGER NOT NULL DEFAULT 1,
+                        `font_family` TEXT,
+                        `font_size` INTEGER NOT NULL DEFAULT 10,
+                        `del_key` TEXT NOT NULL DEFAULT 'del',
+                        `encoding` TEXT NOT NULL DEFAULT 'UTF-8',
+                        `emulation` TEXT NOT NULL DEFAULT 'xterm-256color',
+                        FOREIGN KEY(`color_scheme_id`) REFERENCES `color_schemes`(`id`) ON UPDATE NO ACTION ON DELETE SET DEFAULT
+                    )
+                """.trimIndent())
+
+                // Create indices on profile
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_profiles_name` ON `profiles` (`name`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_profiles_color_scheme_id` ON `profiles` (`color_scheme_id`)")
+
+                // Insert default profile
+                db.execSQL("""
+                    INSERT INTO `profiles` (`id`, `name`, `is_built_in`, `color_scheme_id`, `font_family`, `font_size`, `del_key`, `encoding`, `emulation`)
+                    VALUES (1, 'Default', 1, 1, NULL, 10, 'del', 'UTF-8', 'xterm-256color')
+                """.trimIndent())
+
+                // Add profile_id column to hosts table
+                db.execSQL("ALTER TABLE `hosts` ADD COLUMN `profile_id` INTEGER DEFAULT NULL")
+            }
+        }
+    }
 }
