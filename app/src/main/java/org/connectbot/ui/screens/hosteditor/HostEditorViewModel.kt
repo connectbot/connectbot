@@ -29,9 +29,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.HostRepository
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.PubkeyRepository
+import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
@@ -48,6 +50,8 @@ data class HostEditorUiState(
     val hostname: String = "",
     val port: String = "22",
     val color: String = "gray",
+    val colorSchemeId: Long = 1L,
+    val availableColorSchemes: List<ColorScheme> = emptyList(),
     val fontSize: Int = 10,
     val fontFamily: String? = null,
     val customFonts: List<String> = emptyList(),
@@ -76,6 +80,7 @@ class HostEditorViewModel @Inject constructor(
     private val repository: HostRepository,
     private val pubkeyRepository: PubkeyRepository,
     private val profileRepository: ProfileRepository,
+    private val colorSchemeRepository: ColorSchemeRepository,
     private val prefs: android.content.SharedPreferences,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
@@ -90,6 +95,7 @@ class HostEditorViewModel @Inject constructor(
         loadPubkeys()
         loadJumpHosts()
         loadProfiles()
+        loadColorSchemes()
         loadCustomFonts()
         loadLocalFonts()
         if (hostId != -1L) {
@@ -157,6 +163,18 @@ class HostEditorViewModel @Inject constructor(
         }
     }
 
+    private fun loadColorSchemes() {
+        viewModelScope.launch {
+            try {
+                val schemes = colorSchemeRepository.getAllSchemes()
+                _uiState.update { it.copy(availableColorSchemes = schemes) }
+            } catch (e: Exception) {
+                // Don't fail the whole screen if color schemes can't be loaded
+                _uiState.update { it.copy(availableColorSchemes = emptyList()) }
+            }
+        }
+    }
+
     private fun loadHost() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
@@ -171,6 +189,7 @@ class HostEditorViewModel @Inject constructor(
                             hostname = host.hostname,
                             port = host.port.toString(),
                             color = host.color ?: "gray",
+                            colorSchemeId = host.colorSchemeId,
                             fontSize = host.fontSize,
                             fontFamily = host.fontFamily,
                             pubkeyId = host.pubkeyId,
@@ -244,6 +263,10 @@ class HostEditorViewModel @Inject constructor(
 
     fun updateColor(value: String) {
         _uiState.update { it.copy(color = value) }
+    }
+
+    fun updateColorSchemeId(value: Long) {
+        _uiState.update { it.copy(colorSchemeId = value) }
     }
 
     fun updateFontSize(value: Int) {
@@ -355,7 +378,7 @@ class HostEditorViewModel @Inject constructor(
                     lastConnect = existingHost?.lastConnect ?: System.currentTimeMillis(),
                     hostKeyAlgo = existingHost?.hostKeyAlgo,
                     useKeys = existingHost?.useKeys ?: true,
-                    colorSchemeId = existingHost?.colorSchemeId ?: 1L,
+                    colorSchemeId = state.colorSchemeId,
                     scrollbackLines = existingHost?.scrollbackLines ?: 140,
                     useCtrlAltAsMetaKey = existingHost?.useCtrlAltAsMetaKey ?: false,
                     jumpHostId = jumpHostId

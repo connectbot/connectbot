@@ -19,6 +19,7 @@ package org.connectbot.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.connectbot.data.dao.ProfileDao
 import org.connectbot.data.entity.Profile
@@ -140,6 +141,13 @@ class ProfileRepository @Inject constructor(
      */
     suspend fun getHostsUsingProfile(profileId: Long): Int = withContext(Dispatchers.IO) {
         profileDao.getHostsUsingProfile(profileId)
+    }
+
+    /**
+     * Blocking wrapper for getById - for use from non-coroutine code.
+     */
+    fun getByIdBlocking(profileId: Long): Profile? = runBlocking {
+        getById(profileId)
     }
 
     /**

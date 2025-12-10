@@ -147,6 +147,21 @@ fun ProfileEditorScreen(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
+                // Icon Color Section
+                Text(
+                    text = "Icon Color",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                IconColorSelector(
+                    selectedColor = uiState.iconColor,
+                    onColorSelected = { viewModel.updateIconColor(it) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
                 // Color Scheme Section
                 Text(
                     text = "Color Scheme",
@@ -565,6 +580,95 @@ private fun ColorSchemeSelector(
                         },
                         onClick = {
                             onColorSchemeSelected(scheme.id)
+                            expanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 16 icon colors for visual identification of profiles.
+ * Each pair contains (color name, hex value).
+ */
+private val iconColors = listOf(
+    "Red" to "#F44336",
+    "Pink" to "#E91E63",
+    "Purple" to "#9C27B0",
+    "Deep Purple" to "#673AB7",
+    "Indigo" to "#3F51B5",
+    "Blue" to "#2196F3",
+    "Light Blue" to "#03A9F4",
+    "Cyan" to "#00BCD4",
+    "Teal" to "#009688",
+    "Green" to "#4CAF50",
+    "Light Green" to "#8BC34A",
+    "Lime" to "#CDDC39",
+    "Yellow" to "#FFEB3B",
+    "Amber" to "#FFC107",
+    "Orange" to "#FF9800",
+    "Gray" to "#9E9E9E"
+)
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun IconColorSelector(
+    selectedColor: String?,
+    onColorSelected: (String?) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    // Find the display name for the selected color
+    val selectedDisplayName = if (selectedColor == null) {
+        "None (use host color)"
+    } else {
+        iconColors.find { it.second.equals(selectedColor, ignoreCase = true) }?.first
+            ?: iconColors.find { it.first.equals(selectedColor, ignoreCase = true) }?.first
+            ?: selectedColor
+    }
+
+    Column(modifier = modifier) {
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = it }
+        ) {
+            OutlinedTextField(
+                value = selectedDisplayName,
+                onValueChange = {},
+                readOnly = true,
+                singleLine = true,
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                modifier = Modifier
+                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                    .fillMaxWidth()
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                // None option
+                DropdownMenuItem(
+                    text = { Text("None (use host color)") },
+                    onClick = {
+                        onColorSelected(null)
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
+                // Color options
+                iconColors.forEach { (name, hex) ->
+                    DropdownMenuItem(
+                        text = { Text(name) },
+                        onClick = {
+                            onColorSelected(hex)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding

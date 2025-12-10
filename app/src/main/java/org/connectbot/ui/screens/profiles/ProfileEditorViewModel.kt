@@ -42,6 +42,7 @@ data class ProfileEditorUiState(
     val profileId: Long = -1L,
     val name: String = "",
     val isBuiltIn: Boolean = false,
+    val iconColor: String? = null,
     val colorSchemeId: Long = -1L,
     val availableColorSchemes: List<ColorScheme> = emptyList(),
     val fontFamily: String? = null,
@@ -129,6 +130,7 @@ class ProfileEditorViewModel @Inject constructor(
                     it.copy(
                         name = profile.name,
                         isBuiltIn = profile.isBuiltIn,
+                        iconColor = profile.iconColor,
                         colorSchemeId = profile.colorSchemeId,
                         fontFamily = profile.fontFamily,
                         fontSize = profile.fontSize,
@@ -146,6 +148,10 @@ class ProfileEditorViewModel @Inject constructor(
 
     fun updateName(value: String) {
         _uiState.update { it.copy(name = value, saveError = null) }
+    }
+
+    fun updateIconColor(value: String?) {
+        _uiState.update { it.copy(iconColor = value) }
     }
 
     fun updateColorSchemeId(value: Long) {
@@ -205,6 +211,7 @@ class ProfileEditorViewModel @Inject constructor(
                 id = if (profileId != -1L) profileId else 0,
                 name = state.name,
                 isBuiltIn = state.isBuiltIn,
+                iconColor = state.iconColor,
                 colorSchemeId = state.colorSchemeId,
                 fontFamily = state.fontFamily,
                 fontSize = state.fontSize,

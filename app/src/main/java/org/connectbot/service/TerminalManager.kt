@@ -52,6 +52,7 @@ import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.HostRepository
+import org.connectbot.data.ProfileRepository
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
@@ -118,6 +119,8 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	internal lateinit var hostRepository: HostRepository
 	@Inject
 	internal lateinit var colorRepository: ColorSchemeRepository
+	@Inject
+	internal lateinit var profileRepository: ProfileRepository
 	@Inject
 	internal lateinit var pubkeyRepository: PubkeyRepository
 
