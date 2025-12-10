@@ -58,6 +58,7 @@ import org.connectbot.data.entity.Pubkey
  * - Version 4: Changed known_hosts index to (host_id, host_key) (AutoMigration)
  * - Version 5: Added font_family column for downloadable fonts support (AutoMigration)
  * - Version 6: Added profiles table and profile_id column to hosts (manual migration)
+ * - Version 7: Added icon_color column to profiles table (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -74,13 +75,14 @@ import org.connectbot.data.entity.Pubkey
         ColorPalette::class,
         Profile::class
     ],
-    version = 6,
+    version = 7,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 2, to = 4),
         AutoMigration(from = 3, to = 4),
-        AutoMigration(from = 4, to = 5)
+        AutoMigration(from = 4, to = 5),
+        AutoMigration(from = 6, to = 7)
     ]
 )
 @TypeConverters(Converters::class)

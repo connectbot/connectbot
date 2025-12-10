@@ -62,6 +62,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.connectbot.BuildConfig
 import org.connectbot.R
+import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
@@ -92,6 +93,7 @@ fun HostEditorScreen(
         onHostnameChange = viewModel::updateHostname,
         onPortChange = viewModel::updatePort,
         onColorChange = viewModel::updateColor,
+        onColorSchemeChange = viewModel::updateColorSchemeId,
         onFontSizeChange = viewModel::updateFontSize,
         onFontFamilyChange = viewModel::updateFontFamily,
         onPubkeyChange = viewModel::updatePubkeyId,
@@ -123,6 +125,7 @@ fun HostEditorScreenContent(
     onHostnameChange: (String) -> Unit,
     onPortChange: (String) -> Unit,
     onColorChange: (String) -> Unit,
+    onColorSchemeChange: (Long) -> Unit,
     onFontSizeChange: (Int) -> Unit,
     onFontFamilyChange: (String?) -> Unit,
     onPubkeyChange: (Long) -> Unit,
@@ -354,6 +357,15 @@ fun HostEditorScreenContent(
                 enabled = uiState.profileId == null
             )
 
+            // Color scheme selector (disabled when profile is selected)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+            ColorSchemeSelector(
+                colorSchemeId = uiState.colorSchemeId,
+                availableSchemes = uiState.availableColorSchemes,
+                onColorSchemeSelected = onColorSchemeChange,
+                enabled = uiState.profileId == null
+            )
+
             // Pubkey selector
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
             PubkeySelector(
@@ -469,6 +481,29 @@ fun HostEditorScreenContent(
     }
 }
 
+/**
+ * 16 icon colors for visual identification of hosts/profiles.
+ * Each pair contains (color name, hex value).
+ */
+private val iconColors = listOf(
+    "Red" to "#F44336",
+    "Pink" to "#E91E63",
+    "Purple" to "#9C27B0",
+    "Deep Purple" to "#673AB7",
+    "Indigo" to "#3F51B5",
+    "Blue" to "#2196F3",
+    "Light Blue" to "#03A9F4",
+    "Cyan" to "#00BCD4",
+    "Teal" to "#009688",
+    "Green" to "#4CAF50",
+    "Light Green" to "#8BC34A",
+    "Lime" to "#CDDC39",
+    "Yellow" to "#FFEB3B",
+    "Amber" to "#FFC107",
+    "Orange" to "#FF9800",
+    "Gray" to "#9E9E9E"
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ColorSelector(
@@ -477,7 +512,11 @@ private fun ColorSelector(
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val colors = listOf("red", "green", "blue", "gray")
+
+    // Find the display name for the selected color
+    val selectedDisplayName = iconColors.find { it.second.equals(selectedColor, ignoreCase = true) }?.first
+        ?: iconColors.find { it.first.equals(selectedColor, ignoreCase = true) }?.first
+        ?: selectedColor
 
     Column(modifier = modifier) {
         Text(
@@ -491,7 +530,7 @@ private fun ColorSelector(
             onExpandedChange = { expanded = it }
         ) {
             OutlinedTextField(
-                value = selectedColor,
+                value = selectedDisplayName,
                 onValueChange = {},
                 readOnly = true,
                 singleLine = true,
@@ -508,11 +547,11 @@ private fun ColorSelector(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                colors.forEach { color ->
+                iconColors.forEach { (name, hex) ->
                     DropdownMenuItem(
-                        text = { Text(color) },
+                        text = { Text(name) },
                         onClick = {
-                            onColorSelected(color)
+                            onColorSelected(hex)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -645,6 +684,82 @@ private fun FontFamilySelector(
                         text = { Text(label) },
                         onClick = {
                             onFontFamilySelected(value)
+                            expanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ColorSchemeSelector(
+    colorSchemeId: Long,
+    availableSchemes: List<ColorScheme>,
+    onColorSchemeSelected: (Long) -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column(modifier = modifier) {
+        Text(
+            text = stringResource(R.string.hostpref_colorscheme_title),
+            style = MaterialTheme.typography.titleMedium,
+            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        if (!enabled) {
+            Text(
+                text = "Controlled by profile",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
+
+        ExposedDropdownMenuBox(
+            expanded = expanded && enabled,
+            onExpandedChange = { if (enabled) expanded = it }
+        ) {
+            OutlinedTextField(
+                value = availableSchemes.find { it.id == colorSchemeId }?.name ?: "Default",
+                onValueChange = {},
+                readOnly = true,
+                singleLine = true,
+                enabled = enabled,
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                modifier = Modifier
+                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                    .fillMaxWidth()
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                availableSchemes.forEach { scheme ->
+                    DropdownMenuItem(
+                        text = {
+                            Column {
+                                Text(scheme.name)
+                                if (scheme.description.isNotBlank()) {
+                                    Text(
+                                        text = scheme.description,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            }
+                        },
+                        onClick = {
+                            onColorSchemeSelected(scheme.id)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -1093,6 +1208,7 @@ private fun HostEditorScreenPreview() {
             onHostnameChange = {},
             onPortChange = {},
             onColorChange = {},
+            onColorSchemeChange = {},
             onFontSizeChange = {},
             onFontFamilyChange = {},
             onPubkeyChange = {},

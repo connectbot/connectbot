@@ -32,6 +32,7 @@ import androidx.room.PrimaryKey
  * @property id Database ID of the profile
  * @property name Display name of the profile
  * @property isBuiltIn Whether this is a built-in preset profile (cannot be deleted)
+ * @property iconColor Icon color for visual identification (e.g., "blue", "#4CAF50")
  * @property colorSchemeId Reference to the color scheme
  * @property fontFamily Font family name (null uses system default)
  * @property fontSize Terminal font size
@@ -55,6 +56,9 @@ data class Profile(
 
     @ColumnInfo(name = "is_built_in")
     val isBuiltIn: Boolean = false,
+
+    @ColumnInfo(name = "icon_color")
+    val iconColor: String? = null,
 
     @ColumnInfo(name = "color_scheme_id", defaultValue = "-1")
     val colorSchemeId: Long = -1L,

@@ -79,6 +79,10 @@ class TerminalBridge {
     var defaultFg = HostConstants.DEFAULT_FG_COLOR
     var defaultBg = HostConstants.DEFAULT_BG_COLOR
 
+    // Store color scheme info for reapplication
+    private var currentColorSchemeId: Long = -1L
+    private var fullColorPalette: IntArray = IntArray(0)
+
     val manager: TerminalManager
 
     var host: Host
@@ -165,25 +169,52 @@ class TerminalBridge {
 
         fontSizeChangedListeners = mutableListOf()
 
-        var hostFontSizeSp = host.fontSize
-        if (hostFontSizeSp <= 0) {
-            hostFontSizeSp = DEFAULT_FONT_SIZE_SP
+        // Load profile if assigned to this host
+        val profile = host.profileId?.let { profileId ->
+            manager.profileRepository.getByIdBlocking(profileId)
         }
-        setFontSize(hostFontSizeSp.toFloat())
 
-        // Load color scheme from host configuration
-        val schemeId = host.colorSchemeId
-        val fullPalette = manager.colorRepository.getColorsForSchemeBlocking(schemeId)
-        val defaults = manager.colorRepository.getDefaultColorsForSchemeBlocking(schemeId)
+        // Resolve settings: profile takes precedence over host
+        val effectiveFontSize = if (profile != null) {
+            profile.fontSize
+        } else {
+            host.fontSize
+        }
+        val effectiveColorSchemeId = if (profile != null) {
+            profile.colorSchemeId
+        } else {
+            host.colorSchemeId
+        }
+        val effectiveEncoding = if (profile != null) {
+            profile.encoding
+        } else {
+            host.encoding
+        }
+
+        var fontSizeSp = effectiveFontSize
+        if (fontSizeSp <= 0) {
+            fontSizeSp = DEFAULT_FONT_SIZE_SP
+        }
+        setFontSize(fontSizeSp.toFloat())
+
+        // Load color scheme from resolved configuration
+        currentColorSchemeId = effectiveColorSchemeId
+        fullColorPalette = manager.colorRepository.getColorsForSchemeBlocking(effectiveColorSchemeId)
+        val defaults = manager.colorRepository.getDefaultColorsForSchemeBlocking(effectiveColorSchemeId)
         defaultFg = defaults[0]
         defaultBg = defaults[1]
 
-        // Initialize TerminalEmulator
+        // Get actual RGB colors for the default foreground/background indices
+        val defaultFgColor = fullColorPalette[defaultFg]
+        val defaultBgColor = fullColorPalette[defaultBg]
+
+        // Initialize TerminalEmulator with colors from scheme
+        // Note: We pass the actual RGB colors (not indices) wrapped in Color objects
         terminalEmulator = TerminalEmulatorFactory.create(
             initialRows = 24,  // Will be resized when view is attached
             initialCols = 80,
-            defaultForeground = Color(defaultFg),
-            defaultBackground = Color(defaultBg),
+            defaultForeground = Color(defaultFgColor),
+            defaultBackground = Color(defaultBgColor),
             onKeyboardInput = { data ->
                 transportOperations.trySend(TransportOperation.WriteData(data))
             },
@@ -207,12 +238,10 @@ class TerminalBridge {
         )
 
         // Apply color scheme to terminal emulator
-        val ansiColors = fullPalette.sliceArray(0 until 16)
-        val defaultFgColor = fullPalette[defaultFg]
-        val defaultBgColor = fullPalette[defaultBg]
+        val ansiColors = fullColorPalette.sliceArray(0 until 16)
         terminalEmulator.applyColorScheme(ansiColors, defaultFgColor, defaultBgColor)
 
-        keyListener = TerminalKeyListener(manager, this, host.encoding)
+        keyListener = TerminalKeyListener(manager, this, effectiveEncoding)
 
         // Start the transport operation processor to serialize all writes
         startTransportOperationProcessor()
