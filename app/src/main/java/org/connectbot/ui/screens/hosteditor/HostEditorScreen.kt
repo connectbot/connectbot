@@ -552,7 +552,13 @@ private fun FontFamilySelector(
     var expanded by remember { mutableStateOf(false) }
 
     // Build options: "Use Default" + preset fonts + custom fonts (if available) + local fonts
-    val presetOptions = TerminalFont.entries.map { it.displayName to it.name }
+    // Only show downloadable preset fonts if Google Play Services is available
+    val presetOptions = if (BuildConfig.HAS_DOWNLOADABLE_FONTS) {
+        TerminalFont.entries.map { it.displayName to it.name }
+    } else {
+        // In OSS builds, only show System Default (which doesn't require download)
+        listOf(TerminalFont.SYSTEM_DEFAULT.displayName to TerminalFont.SYSTEM_DEFAULT.name)
+    }
     val customOptions = if (BuildConfig.HAS_DOWNLOADABLE_FONTS) {
         customFonts.map { it to TerminalFont.createCustomFontValue(it) }
     } else {

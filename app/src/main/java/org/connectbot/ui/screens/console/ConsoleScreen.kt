@@ -22,7 +22,8 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Typeface
 import androidx.compose.animation.AnimatedVisibility
-import org.connectbot.util.rememberTerminalTypefaceFromStoredValue
+import kotlinx.coroutines.launch
+import org.connectbot.util.rememberTerminalTypefaceResultFromStoredValue
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -69,6 +70,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -337,7 +339,19 @@ fun ConsoleScreen(
                         val globalFontFamily = prefs.getString("fontFamily", "SYSTEM_DEFAULT") ?: "SYSTEM_DEFAULT"
                         val hostFontFamily = bridge.host.fontFamily
                         val effectiveFontFamily = hostFontFamily ?: globalFontFamily
-                        val typeface = rememberTerminalTypefaceFromStoredValue(effectiveFontFamily)
+                        val fontResult = rememberTerminalTypefaceResultFromStoredValue(effectiveFontFamily)
+                        val coroutineScope = rememberCoroutineScope()
+
+                        // Show snackbar if font loading failed
+                        LaunchedEffect(fontResult.loadFailed, fontResult.isLoading) {
+                            if (fontResult.loadFailed && !fontResult.isLoading) {
+                                coroutineScope.launch {
+                                    snackbarHostState.showSnackbar(
+                                        message = "Failed to load font '${fontResult.requestedFontName}'. Using system default."
+                                    )
+                                }
+                            }
+                        }
 
                         Terminal(
                             terminalEmulator = bridge.terminalEmulator,
@@ -346,7 +360,7 @@ fun ConsoleScreen(
                                 .padding(
                                     bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp
                                 ),
-                            typeface = typeface,
+                            typeface = fontResult.typeface,
                             initialFontSize = bridge.fontSizeFlow.value.sp,
                             keyboardEnabled = true,
                             showSoftKeyboard = showSoftwareKeyboard,
