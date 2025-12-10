@@ -421,6 +421,9 @@
 	<!-- Host's font family preference summary -->
 	<string name="hostpref_fontfamily_summary">"Override default font (leave as default to use global setting)"</string>
 
+	<!-- Host's color scheme preference title -->
+	<string name="hostpref_colorscheme_title">"Terminal color scheme"</string>
+
 	<!-- Host pubkey usage preference title -->
 	<string name="hostpref_pubkeyid_title">"Use pubkey authentication"</string>
 
