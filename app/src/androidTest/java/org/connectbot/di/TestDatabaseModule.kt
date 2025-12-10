@@ -61,4 +61,7 @@ object TestDatabaseModule {
 
     @Provides
     fun provideColorSchemeDao(database: ConnectBotDatabase) = database.colorSchemeDao()
+
+    @Provides
+    fun provideProfileDao(database: ConnectBotDatabase) = database.profileDao()
 }
