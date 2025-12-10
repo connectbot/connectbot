@@ -336,20 +336,22 @@ fun HostEditorScreenContent(
                 onColorSelected = onColorChange
             )
 
-            // Font size slider
+            // Font size slider (disabled when profile is selected)
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
             FontSizeSelector(
                 fontSize = uiState.fontSize,
-                onFontSizeChange = onFontSizeChange
+                onFontSizeChange = onFontSizeChange,
+                enabled = uiState.profileId == null
             )
 
-            // Font family selector
+            // Font family selector (disabled when profile is selected)
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
             FontFamilySelector(
                 fontFamily = uiState.fontFamily,
                 customFonts = uiState.customFonts,
                 localFonts = uiState.localFonts,
-                onFontFamilySelected = onFontFamilyChange
+                onFontFamilySelected = onFontFamilyChange,
+                enabled = uiState.profileId == null
             )
 
             // Pubkey selector
@@ -378,18 +380,20 @@ fun HostEditorScreenContent(
                 )
             }
 
-            // DEL key selector
+            // DEL key selector (disabled when profile is selected)
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
             DelKeySelector(
                 delKey = uiState.delKey,
-                onDelKeySelected = onDelKeyChange
+                onDelKeySelected = onDelKeyChange,
+                enabled = uiState.profileId == null
             )
 
-            // Encoding selector
+            // Encoding selector (disabled when profile is selected)
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
             EncodingSelector(
                 encoding = uiState.encoding,
-                onEncodingSelected = onEncodingChange
+                onEncodingSelected = onEncodingChange,
+                enabled = uiState.profileId == null
             )
 
             // SSH Auth agent
@@ -523,14 +527,24 @@ private fun ColorSelector(
 private fun FontSizeSelector(
     fontSize: Int,
     onFontSizeChange: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.hostpref_fontsize_title),
             style = MaterialTheme.typography.titleMedium,
+            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
             modifier = Modifier.padding(bottom = 8.dp)
         )
+        if (!enabled) {
+            Text(
+                text = "Controlled by profile",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -540,12 +554,14 @@ private fun FontSizeSelector(
                 value = fontSize.toFloat(),
                 onValueChange = { onFontSizeChange(it.toInt()) },
                 valueRange = 8f..32f,
+                enabled = enabled,
                 modifier = Modifier.weight(1f)
             )
             Text(
                 text = fontSize.toString(),
                 modifier = Modifier.padding(start = 16.dp),
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
+                color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             )
         }
     }
@@ -558,7 +574,8 @@ private fun FontFamilySelector(
     customFonts: List<String>,
     localFonts: List<Pair<String, String>>,
     onFontFamilySelected: (String?) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -584,12 +601,21 @@ private fun FontFamilySelector(
         Text(
             text = stringResource(R.string.hostpref_fontfamily_title),
             style = MaterialTheme.typography.titleMedium,
+            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
             modifier = Modifier.padding(bottom = 8.dp)
         )
+        if (!enabled) {
+            Text(
+                text = "Controlled by profile",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
 
         ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = it }
+            expanded = expanded && enabled,
+            onExpandedChange = { if (enabled) expanded = it }
         ) {
             OutlinedTextField(
                 value = if (fontFamily == null) {
@@ -600,8 +626,9 @@ private fun FontFamilySelector(
                 onValueChange = {},
                 readOnly = true,
                 singleLine = true,
+                enabled = enabled,
                 trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded && enabled)
                 },
                 colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                 modifier = Modifier
@@ -610,7 +637,7 @@ private fun FontFamilySelector(
             )
 
             ExposedDropdownMenu(
-                expanded = expanded,
+                expanded = expanded && enabled,
                 onDismissRequest = { expanded = false }
             ) {
                 allOptions.forEach { (label, value) ->
@@ -860,7 +887,8 @@ private fun JumpHostSelector(
 private fun DelKeySelector(
     delKey: String,
     onDelKeySelected: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     var expanded by remember { mutableStateOf(false) }
     val options = listOf("del", "backspace")
@@ -869,20 +897,30 @@ private fun DelKeySelector(
         Text(
             text = stringResource(R.string.hostpref_delkey_title),
             style = MaterialTheme.typography.titleMedium,
+            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
             modifier = Modifier.padding(bottom = 8.dp)
         )
+        if (!enabled) {
+            Text(
+                text = "Controlled by profile",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
 
         ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = it }
+            expanded = expanded && enabled,
+            onExpandedChange = { if (enabled) expanded = it }
         ) {
             OutlinedTextField(
                 value = delKey,
                 onValueChange = {},
                 readOnly = true,
                 singleLine = true,
+                enabled = enabled,
                 trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded && enabled)
                 },
                 colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                 modifier = Modifier
@@ -891,7 +929,7 @@ private fun DelKeySelector(
             )
 
             ExposedDropdownMenu(
-                expanded = expanded,
+                expanded = expanded && enabled,
                 onDismissRequest = { expanded = false }
             ) {
                 options.forEach { option ->
@@ -914,7 +952,8 @@ private fun DelKeySelector(
 private fun EncodingSelector(
     encoding: String,
     onEncodingSelected: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     var expanded by remember { mutableStateOf(false) }
     val encodings = listOf("UTF-8", "ISO-8859-1", "US-ASCII", "Windows-1252")
@@ -923,20 +962,30 @@ private fun EncodingSelector(
         Text(
             text = stringResource(R.string.hostpref_encoding_title),
             style = MaterialTheme.typography.titleMedium,
+            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
             modifier = Modifier.padding(bottom = 8.dp)
         )
+        if (!enabled) {
+            Text(
+                text = "Controlled by profile",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
 
         ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = it }
+            expanded = expanded && enabled,
+            onExpandedChange = { if (enabled) expanded = it }
         ) {
             OutlinedTextField(
                 value = encoding,
                 onValueChange = {},
                 readOnly = true,
                 singleLine = true,
+                enabled = enabled,
                 trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded && enabled)
                 },
                 colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                 modifier = Modifier
@@ -945,7 +994,7 @@ private fun EncodingSelector(
             )
 
             ExposedDropdownMenu(
-                expanded = expanded,
+                expanded = expanded && enabled,
                 onDismissRequest = { expanded = false }
             ) {
                 encodings.forEach { enc ->

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "461d6613f83d2cf03d14ab008bbe30bd",
+    "identityHash": "70e7441281da26cc7c0cfbc2f7cbdf82",
     "entities": [
       {
         "tableName": "hosts",
@@ -588,7 +588,7 @@
       },
       {
         "tableName": "profiles",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `is_built_in` INTEGER NOT NULL, `color_scheme_id` INTEGER NOT NULL DEFAULT 1, `font_family` TEXT, `font_size` INTEGER NOT NULL DEFAULT 10, `del_key` TEXT NOT NULL DEFAULT 'del', `encoding` TEXT NOT NULL DEFAULT 'UTF-8', `emulation` TEXT NOT NULL DEFAULT 'xterm-256color', FOREIGN KEY(`color_scheme_id`) REFERENCES `color_schemes`(`id`) ON UPDATE NO ACTION ON DELETE SET DEFAULT )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `is_built_in` INTEGER NOT NULL, `color_scheme_id` INTEGER NOT NULL DEFAULT -1, `font_family` TEXT, `font_size` INTEGER NOT NULL DEFAULT 10, `del_key` TEXT NOT NULL DEFAULT 'del', `encoding` TEXT NOT NULL DEFAULT 'UTF-8', `emulation` TEXT NOT NULL DEFAULT 'xterm-256color')",
         "fields": [
           {
             "fieldPath": "id",
@@ -613,7 +613,7 @@
             "columnName": "color_scheme_id",
             "affinity": "INTEGER",
             "notNull": true,
-            "defaultValue": "1"
+            "defaultValue": "-1"
           },
           {
             "fieldPath": "fontFamily",
@@ -664,35 +664,13 @@
             ],
             "orders": [],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_profiles_name` ON `${TABLE_NAME}` (`name`)"
-          },
-          {
-            "name": "index_profiles_color_scheme_id",
-            "unique": false,
-            "columnNames": [
-              "color_scheme_id"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_profiles_color_scheme_id` ON `${TABLE_NAME}` (`color_scheme_id`)"
-          }
-        ],
-        "foreignKeys": [
-          {
-            "table": "color_schemes",
-            "onDelete": "SET DEFAULT",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "color_scheme_id"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
           }
         ]
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '461d6613f83d2cf03d14ab008bbe30bd')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '70e7441281da26cc7c0cfbc2f7cbdf82')"
     ]
   }
 }

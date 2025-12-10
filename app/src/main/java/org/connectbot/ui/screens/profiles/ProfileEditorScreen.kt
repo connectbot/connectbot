@@ -31,6 +31,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -60,6 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.BuildConfig
 import org.connectbot.R
+import org.connectbot.data.entity.ColorScheme
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
 
@@ -145,6 +147,22 @@ fun ProfileEditorScreen(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
+                // Color Scheme Section
+                Text(
+                    text = "Color Scheme",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                ColorSchemeSelector(
+                    colorSchemeId = uiState.colorSchemeId,
+                    availableSchemes = uiState.availableColorSchemes,
+                    onColorSchemeSelected = { viewModel.updateColorSchemeId(it) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
                 // Font Section
                 Text(
                     text = "Font",
@@ -179,6 +197,7 @@ fun ProfileEditorScreen(
 
                 EmulationSelector(
                     emulation = uiState.emulation,
+                    customTerminalTypes = uiState.customTerminalTypes,
                     onEmulationSelected = { viewModel.updateEmulation(it) },
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -307,18 +326,25 @@ private fun FontSizeSelector(
 @Composable
 private fun EmulationSelector(
     emulation: String,
+    customTerminalTypes: List<String>,
     onEmulationSelected: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val options = listOf(
+    val presetOptions = listOf(
         "xterm-256color",
         "xterm",
         "vt100",
+        "vt102",
+        "vt220",
         "ansi",
         "screen",
-        "screen-256color"
+        "screen-256color",
+        "linux",
+        "dumb"
     )
+    // Combine preset options with custom terminal types
+    val allOptions = presetOptions + customTerminalTypes
 
     Column(modifier = modifier) {
         Text(
@@ -349,7 +375,7 @@ private fun EmulationSelector(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                options.forEach { option ->
+                presetOptions.forEach { option ->
                     DropdownMenuItem(
                         text = { Text(option) },
                         onClick = {
@@ -358,6 +384,24 @@ private fun EmulationSelector(
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
                     )
+                }
+                if (customTerminalTypes.isNotEmpty()) {
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                    customTerminalTypes.forEach { option ->
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = option,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            },
+                            onClick = {
+                                onEmulationSelected(option)
+                                expanded = false
+                            },
+                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                        )
+                    }
                 }
             }
         }
@@ -462,6 +506,65 @@ private fun EncodingSelector(
                         text = { Text(enc) },
                         onClick = {
                             onEncodingSelected(enc)
+                            expanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ColorSchemeSelector(
+    colorSchemeId: Long,
+    availableSchemes: List<ColorScheme>,
+    onColorSchemeSelected: (Long) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column(modifier = modifier) {
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = it }
+        ) {
+            OutlinedTextField(
+                value = availableSchemes.find { it.id == colorSchemeId }?.name ?: "Default",
+                onValueChange = {},
+                readOnly = true,
+                singleLine = true,
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                modifier = Modifier
+                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                    .fillMaxWidth()
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                availableSchemes.forEach { scheme ->
+                    DropdownMenuItem(
+                        text = {
+                            Column {
+                                Text(scheme.name)
+                                if (scheme.description.isNotBlank()) {
+                                    Text(
+                                        text = scheme.description,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            }
+                        },
+                        onClick = {
+                            onColorSchemeSelected(scheme.id)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
