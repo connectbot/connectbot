@@ -77,6 +77,7 @@ import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import androidx.core.graphics.toColorInt
 
@@ -307,28 +308,12 @@ fun HostListScreenContent(
         }
     }
 
-    // Disconnect All confirmation dialog
     if (showDisconnectAllDialog) {
-        AlertDialog(
-            onDismissRequest = { showDisconnectAllDialog = false },
-            title = { Text(stringResource(R.string.list_menu_disconnect)) },
-            text = { Text(stringResource(R.string.disconnect_all_message)) },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        showDisconnectAllDialog = false
-                        onDisconnectAll()
-                    }
-                ) {
-                    Text(stringResource(R.string.disconnect_all_pos))
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = { showDisconnectAllDialog = false }
-                ) {
-                    Text(stringResource(R.string.disconnect_all_neg))
-                }
+        DisconnectAllDialog(
+            onDismiss = { showDisconnectAllDialog = false },
+            onConfirm = {
+                showDisconnectAllDialog = false
+                onDisconnectAll()
             }
         )
     }
