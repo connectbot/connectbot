@@ -17,25 +17,35 @@
 
 package org.connectbot.ui
 
+import android.Manifest
+import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.fragment.app.FragmentActivity
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.net.toUri
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -45,7 +55,9 @@ import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.service.TerminalManager
+import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.navigation.NavDestinations
+import org.connectbot.ui.theme.ConnectBotTheme
 
 // TODO: Move back to ComponentActivity when https://issuetracker.google.com/issues/178855209 is fixed.
 //       FragmentActivity is required for BiometricPrompt to find the FragmentManager from Compose context.
@@ -61,6 +73,15 @@ class MainActivity : FragmentActivity() {
     private var bound = false
     private var requestedUri: Uri? by mutableStateOf(null)
     internal var makingShortcut by mutableStateOf(false)
+    private var showDisconnectAllDialog by mutableStateOf(false)
+
+    private val requestNotificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        appViewModel.onNotificationPermissionResult(isGranted)?.let { uri ->
+            requestedUri = uri
+        }
+    }
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -101,16 +122,115 @@ class MainActivity : FragmentActivity() {
 
         setContent {
             val appUiState by appViewModel.uiState.collectAsState()
+            val pendingDisconnectAll by appViewModel.pendingDisconnectAll.collectAsState()
             val navController = rememberNavController()
+            val context = LocalContext.current
+            var showPermissionRationale by mutableStateOf(false)
+
+            LaunchedEffect(Unit) {
+                appViewModel.showPermissionRationale.collect {
+                    showPermissionRationale = true
+                }
+            }
+
+            LaunchedEffect(Unit) {
+                appViewModel.requestPermission.collect {
+                    Log.d(TAG, "Received requestPermission event, SDK_INT=${Build.VERSION.SDK_INT}")
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        Log.d(TAG, "Launching permission request")
+                        requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    } else {
+                        Log.d(TAG, "Skipping permission request, SDK < TIRAMISU")
+                    }
+                }
+            }
+
+            // Request notification permission on app startup
+            LaunchedEffect(appUiState) {
+                if (appUiState is AppUiState.Ready) {
+                    Log.d(TAG, "App is ready, requesting initial notification permission")
+                    val shouldShowRationale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        this@MainActivity.shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)
+                    } else {
+                        false
+                    }
+                    appViewModel.requestInitialNotificationPermissionIfNeeded(context, shouldShowRationale)
+                }
+            }
 
             LaunchedEffect(requestedUri, navController, appUiState) {
+                Log.d(TAG, "LaunchedEffect: requestedUri=$requestedUri, appUiState=$appUiState")
                 if (appUiState is AppUiState.Ready) {
                     requestedUri?.let { uri ->
+                        Log.d(TAG, "Processing URI: $uri")
                         navController.let { controller ->
-                            handleConnectionUri(uri, controller)
-                            requestedUri = null
+                            val shouldShowRationale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                this@MainActivity.shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)
+                            } else {
+                                false
+                            }
+
+                            Log.d(TAG, "shouldShowRationale=$shouldShowRationale")
+                            if (appViewModel.checkAndRequestNotificationPermission(context, uri, shouldShowRationale)) {
+                                Log.d(TAG, "Permission check passed, handling connection")
+                                handleConnectionUri(uri, controller)
+                                requestedUri = null
+                            } else {
+                                Log.d(TAG, "Permission check blocked, waiting for permission")
+                            }
                         }
                     }
+                }
+            }
+
+            LaunchedEffect(pendingDisconnectAll, appUiState) {
+                appViewModel.executePendingDisconnectAllIfReady()
+            }
+
+            LaunchedEffect(Unit) {
+                appViewModel.finishActivity.collect {
+                    if (context is Activity) {
+                        context.finish()
+                    }
+                }
+            }
+
+            if (showDisconnectAllDialog) {
+                ConnectBotTheme {
+                    DisconnectAllDialog(
+                        onDismiss = {
+                            Log.d(TAG, "User cancelled disconnectAll")
+                            showDisconnectAllDialog = false
+                        },
+                        onConfirm = {
+                            Log.d(TAG, "User confirmed disconnectAll")
+                            showDisconnectAllDialog = false
+                            appViewModel.setPendingDisconnectAll(true)
+                        }
+                    )
+                }
+            }
+
+            if (showPermissionRationale) {
+                ConnectBotTheme {
+                    NotificationPermissionRationaleDialog(
+                        onDismiss = {
+                            Log.d(TAG, "User dismissed permission rationale, proceeding anyway")
+                            showPermissionRationale = false
+                            // User chose "Continue anyway" - proceed without permission
+                            appViewModel.pendingConnectionUri.value?.let { uri ->
+                                requestedUri = uri
+                                appViewModel.clearPendingConnectionUri()
+                            }
+                        },
+                        onAllow = {
+                            Log.d(TAG, "User chose to allow permission from rationale")
+                            showPermissionRationale = false
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            }
+                        }
+                    )
                 }
             }
 
@@ -139,10 +259,8 @@ class MainActivity : FragmentActivity() {
 
     private fun handleIntent(intent: Intent?) {
         if (intent?.action == DISCONNECT_ACTION) {
-            val state = appViewModel.uiState.value
-            if (state is AppUiState.Ready) {
-                state.terminalManager.disconnectAll(immediate = false, excludeLocal = false)
-            }
+            Log.d(TAG, "handleIntent: DISCONNECT_ACTION, showing disconnect dialog")
+            showDisconnectAllDialog = true
         }
     }
 
@@ -209,4 +327,26 @@ class MainActivity : FragmentActivity() {
         setResult(RESULT_OK, result)
         finish()
     }
+}
+
+@Composable
+private fun NotificationPermissionRationaleDialog(
+    onDismiss: () -> Unit,
+    onAllow: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.allow)) },
+        text = { Text(stringResource(R.string.notification_requirement_explanation)) },
+        confirmButton = {
+            TextButton(onClick = onAllow) {
+                Text(stringResource(R.string.allow))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.continue_anyway))
+            }
+        }
+    )
 }

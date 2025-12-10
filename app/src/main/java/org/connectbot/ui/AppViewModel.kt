@@ -17,14 +17,21 @@
 
 package org.connectbot.ui
 
+import android.content.Context
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.connectbot.data.migration.DatabaseMigrator
 import org.connectbot.data.migration.MigrationResult
@@ -63,6 +70,23 @@ class AppViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow<AppUiState>(AppUiState.Loading)
     val uiState: StateFlow<AppUiState> = _uiState.asStateFlow()
+
+    private val _showPermissionRationale = Channel<Unit>(Channel.CONFLATED)
+    val showPermissionRationale = _showPermissionRationale.receiveAsFlow()
+
+    private val _requestPermission = Channel<Unit>(Channel.CONFLATED)
+    val requestPermission = _requestPermission.receiveAsFlow()
+
+    private val _pendingConnectionUri = MutableStateFlow<Uri?>(null)
+    val pendingConnectionUri: StateFlow<Uri?> = _pendingConnectionUri.asStateFlow()
+
+    private val _pendingDisconnectAll = MutableStateFlow(false)
+    val pendingDisconnectAll: StateFlow<Boolean> = _pendingDisconnectAll.asStateFlow()
+
+    private val _finishActivity = Channel<Unit>(Channel.CONFLATED)
+    val finishActivity = _finishActivity.receiveAsFlow()
+
+    private var hasRequestedInitialPermission = false
 
     init {
         checkAndMigrate()
@@ -155,6 +179,150 @@ class AppViewModel @Inject constructor(
         migrator.resetMigrationState()
         _migrationUiState.value = MigrationUiState.Checking
         checkAndMigrate()
+    }
+
+    /**
+     * Set the pending connection URI that should be opened after permission dialog is dismissed.
+     */
+    fun setPendingConnectionUri(uri: Uri?) {
+        _pendingConnectionUri.value = uri
+    }
+
+    /**
+     * Clear the pending connection URI.
+     */
+    fun clearPendingConnectionUri() {
+        _pendingConnectionUri.value = null
+    }
+
+    /**
+     * Set whether a disconnect all operation is pending.
+     */
+    fun setPendingDisconnectAll(pending: Boolean) {
+        _pendingDisconnectAll.value = pending
+    }
+
+    /**
+     * Execute pending disconnect all operation if ready.
+     * Returns true if disconnect was executed and activity should finish.
+     */
+    fun executePendingDisconnectAllIfReady(): Boolean {
+        val state = _uiState.value
+        if (state is AppUiState.Ready && _pendingDisconnectAll.value) {
+            Log.d(TAG, "Executing pending disconnectAll")
+            state.terminalManager.disconnectAll(immediate = true, excludeLocal = false)
+            _pendingDisconnectAll.value = false
+            viewModelScope.launch {
+                _finishActivity.send(Unit)
+            }
+            return true
+        }
+        return false
+    }
+
+    /**
+     * Check if notification permission is needed and handle accordingly.
+     * Returns true if the connection can proceed, false if permission needs to be requested.
+     */
+    fun checkAndRequestNotificationPermission(
+        context: Context,
+        uri: Uri,
+        shouldShowRationale: Boolean
+    ): Boolean {
+        Log.d(TAG, "checkAndRequestNotificationPermission: uri=$uri, SDK=${Build.VERSION.SDK_INT}")
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            Log.d(TAG, "SDK < TIRAMISU, allowing without permission")
+            return true
+        }
+
+        val hasPermission = ContextCompat.checkSelfPermission(
+            context,
+            android.Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED
+
+        Log.d(TAG, "Permission check: hasPermission=$hasPermission, shouldShowRationale=$shouldShowRationale")
+
+        return when {
+            hasPermission -> {
+                Log.d(TAG, "Permission already granted, proceeding")
+                true
+            }
+            shouldShowRationale -> {
+                Log.d(TAG, "Showing rationale dialog")
+                _pendingConnectionUri.value = uri
+                viewModelScope.launch {
+                    _showPermissionRationale.send(Unit)
+                }
+                false
+            }
+            else -> {
+                Log.d(TAG, "Requesting permission")
+                _pendingConnectionUri.value = uri
+                viewModelScope.launch {
+                    _requestPermission.send(Unit)
+                }
+                false
+            }
+        }
+    }
+
+    /**
+     * Request notification permission on app startup if needed.
+     * Should be called when the app becomes ready.
+     */
+    fun requestInitialNotificationPermissionIfNeeded(
+        context: Context,
+        shouldShowRationale: Boolean
+    ) {
+        if (hasRequestedInitialPermission) {
+            Log.d(TAG, "Already requested initial permission, skipping")
+            return
+        }
+
+        hasRequestedInitialPermission = true
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            Log.d(TAG, "SDK < TIRAMISU, no notification permission needed")
+            return
+        }
+
+        val hasPermission = ContextCompat.checkSelfPermission(
+            context,
+            android.Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED
+
+        Log.d(TAG, "Initial permission check: hasPermission=$hasPermission, shouldShowRationale=$shouldShowRationale")
+
+        if (!hasPermission) {
+            viewModelScope.launch {
+                if (shouldShowRationale) {
+                    Log.d(TAG, "Showing permission rationale on startup")
+                    _showPermissionRationale.send(Unit)
+                } else {
+                    Log.d(TAG, "Requesting permission on startup")
+                    _requestPermission.send(Unit)
+                }
+            }
+        }
+    }
+
+    /**
+     * Handle the result of a notification permission request.
+     * Returns the pending URI regardless of permission result, so navigation can proceed.
+     * The app works fine without notification permission - connections just won't show notifications.
+     */
+    fun onNotificationPermissionResult(isGranted: Boolean): Uri? {
+        if (isGranted) {
+            Log.d(TAG, "Notification permission granted")
+        } else {
+            Log.d(TAG, "Notification permission denied - connections will work but without notifications")
+        }
+
+        // Return and clear pending URI so navigation can proceed
+        val uri = _pendingConnectionUri.value
+        _pendingConnectionUri.value = null
+        return uri
     }
 }
 
