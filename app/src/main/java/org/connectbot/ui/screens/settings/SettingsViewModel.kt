@@ -49,6 +49,7 @@ data class SettingsUiState(
     val wifilock: Boolean = true,
     val backupkeys: Boolean = false,
     val emulation: String = "xterm-256color",
+    val customTerminalTypes: List<String> = emptyList(),
     val scrollback: String = "140",
     val rotation: String = "Default",
     val titlebarhide: Boolean = false,
@@ -74,7 +75,7 @@ data class SettingsUiState(
     val fontValidationError: String? = null,
     val fontImportInProgress: Boolean = false,
     val fontImportError: String? = null,
-    val defaultProfileId: Long = 1L,
+    val defaultProfileId: Long = 0L,
     val availableProfiles: List<Profile> = emptyList(),
 )
 
@@ -120,6 +121,12 @@ class SettingsViewModel @Inject constructor(
         } else {
             customFontsString.split(",").filter { it.isNotBlank() }
         }
+        val customTerminalTypesString = prefs.getString("customTerminalTypes", "") ?: ""
+        val customTerminalTypes = if (customTerminalTypesString.isBlank()) {
+            emptyList()
+        } else {
+            customTerminalTypesString.split(",").filter { it.isNotBlank() }
+        }
         val localFonts = localFontProvider.getImportedFonts()
 
         return SettingsUiState(
@@ -128,6 +135,7 @@ class SettingsViewModel @Inject constructor(
             wifilock = prefs.getBoolean("wifilock", true),
             backupkeys = prefs.getBoolean("backupkeys", false),
             emulation = prefs.getString("emulation", "xterm-256color") ?: "xterm-256color",
+            customTerminalTypes = customTerminalTypes,
             scrollback = prefs.getString("scrollback", "140") ?: "140",
             rotation = prefs.getString("rotation", "Default") ?: "Default",
             titlebarhide = prefs.getBoolean("titlebarhide", false),
@@ -149,7 +157,7 @@ class SettingsViewModel @Inject constructor(
             fontFamily = prefs.getString("fontFamily", "SYSTEM_DEFAULT") ?: "SYSTEM_DEFAULT",
             customFonts = customFonts,
             localFonts = localFonts,
-            defaultProfileId = prefs.getLong("defaultProfileId", 1L),
+            defaultProfileId = prefs.getLong("defaultProfileId", 0L),
         )
     }
 
@@ -292,6 +300,35 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             prefs.edit().putLong("defaultProfileId", profileId).apply()
             _uiState.update { it.copy(defaultProfileId = profileId) }
+        }
+    }
+
+    fun addCustomTerminalType(terminalType: String) {
+        if (terminalType.isBlank()) return
+        val currentTypes = _uiState.value.customTerminalTypes
+        if (currentTypes.contains(terminalType)) return
+
+        viewModelScope.launch {
+            val updatedTypes = currentTypes + terminalType
+            val typesString = updatedTypes.joinToString(",")
+            prefs.edit().putString("customTerminalTypes", typesString).apply()
+            _uiState.update { it.copy(customTerminalTypes = updatedTypes) }
+        }
+    }
+
+    fun removeCustomTerminalType(terminalType: String) {
+        viewModelScope.launch {
+            val currentTypes = _uiState.value.customTerminalTypes.toMutableList()
+            if (currentTypes.remove(terminalType)) {
+                val typesString = currentTypes.joinToString(",")
+                prefs.edit().putString("customTerminalTypes", typesString).apply()
+                _uiState.update { it.copy(customTerminalTypes = currentTypes) }
+
+                // If the removed type was the selected emulation, reset to default
+                if (_uiState.value.emulation == terminalType) {
+                    updateEmulation("xterm-256color")
+                }
+            }
         }
     }
 

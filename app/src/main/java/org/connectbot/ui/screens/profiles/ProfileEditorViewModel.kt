@@ -30,7 +30,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.ProfileRepository
+import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Profile
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
@@ -40,12 +42,14 @@ data class ProfileEditorUiState(
     val profileId: Long = -1L,
     val name: String = "",
     val isBuiltIn: Boolean = false,
-    val colorSchemeId: Long = 1L,
+    val colorSchemeId: Long = -1L,
+    val availableColorSchemes: List<ColorScheme> = emptyList(),
     val fontFamily: String? = null,
     val fontSize: Int = 10,
     val delKey: String = "del",
     val encoding: String = "UTF-8",
     val emulation: String = "xterm-256color",
+    val customTerminalTypes: List<String> = emptyList(),
     val customFonts: List<String> = emptyList(),
     val localFonts: List<Pair<String, String>> = emptyList(),
     val isLoading: Boolean = true,
@@ -57,6 +61,7 @@ data class ProfileEditorUiState(
 class ProfileEditorViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val profileRepository: ProfileRepository,
+    private val colorSchemeRepository: ColorSchemeRepository,
     private val prefs: SharedPreferences,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
@@ -71,6 +76,8 @@ class ProfileEditorViewModel @Inject constructor(
     init {
         loadCustomFonts()
         loadLocalFonts()
+        loadCustomTerminalTypes()
+        loadColorSchemes()
         if (profileId != -1L) {
             loadProfile()
         } else {
@@ -88,9 +95,30 @@ class ProfileEditorViewModel @Inject constructor(
         _uiState.update { it.copy(customFonts = customFonts) }
     }
 
+    private fun loadCustomTerminalTypes() {
+        val customTerminalTypesString = prefs.getString("customTerminalTypes", "") ?: ""
+        val customTerminalTypes = if (customTerminalTypesString.isBlank()) {
+            emptyList()
+        } else {
+            customTerminalTypesString.split(",").filter { it.isNotBlank() }
+        }
+        _uiState.update { it.copy(customTerminalTypes = customTerminalTypes) }
+    }
+
     private fun loadLocalFonts() {
         val localFonts = localFontProvider.getImportedFonts()
         _uiState.update { it.copy(localFonts = localFonts) }
+    }
+
+    private fun loadColorSchemes() {
+        viewModelScope.launch {
+            try {
+                val schemes = colorSchemeRepository.getAllSchemes()
+                _uiState.update { it.copy(availableColorSchemes = schemes) }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(availableColorSchemes = emptyList()) }
+            }
+        }
     }
 
     private fun loadProfile() {
