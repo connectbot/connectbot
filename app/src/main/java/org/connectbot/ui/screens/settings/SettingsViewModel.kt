@@ -267,6 +267,18 @@ class SettingsViewModel @Inject constructor(
 
     fun updateFontFamily(value: String) {
         updateStringPref("fontFamily", value) { copy(fontFamily = value) }
+        // Preload the font so it's cached when the Terminal opens
+        preloadFont(value)
+    }
+
+    private fun preloadFont(storedValue: String) {
+        // Skip if it's a local font (already on device) or system default
+        if (LocalFontProvider.isLocalFont(storedValue)) return
+        val googleFontName = org.connectbot.util.TerminalFont.getGoogleFontName(storedValue)
+        if (googleFontName.isBlank()) return
+
+        // Trigger font download/caching in background
+        fontProvider.loadFontByName(googleFontName) { /* just cache it */ }
     }
 
     fun addCustomFont(fontName: String) {

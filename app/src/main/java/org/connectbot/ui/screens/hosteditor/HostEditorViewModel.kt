@@ -34,6 +34,8 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.util.LocalFontProvider
+import org.connectbot.util.TerminalFont
+import org.connectbot.util.TerminalFontProvider
 
 data class HostEditorUiState(
     val hostId: Long = -1L,
@@ -75,6 +77,7 @@ class HostEditorViewModel @Inject constructor(
 
     private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
     private val localFontProvider = LocalFontProvider(context)
+    private val fontProvider = TerminalFontProvider(context)
     private val _uiState = MutableStateFlow(HostEditorUiState(hostId = hostId))
     val uiState: StateFlow<HostEditorUiState> = _uiState.asStateFlow()
 
@@ -224,6 +227,20 @@ class HostEditorViewModel @Inject constructor(
 
     fun updateFontFamily(value: String?) {
         _uiState.update { it.copy(fontFamily = value) }
+        // Preload the font so it's cached when the Terminal opens
+        if (value != null) {
+            preloadFont(value)
+        }
+    }
+
+    private fun preloadFont(storedValue: String) {
+        // Skip if it's a local font (already on device) or system default
+        if (LocalFontProvider.isLocalFont(storedValue)) return
+        val googleFontName = TerminalFont.getGoogleFontName(storedValue)
+        if (googleFontName.isBlank()) return
+
+        // Trigger font download/caching in background
+        fontProvider.loadFontByName(googleFontName) { /* just cache it */ }
     }
 
     fun updatePubkeyId(value: Long) {
