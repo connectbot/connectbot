@@ -287,7 +287,13 @@ fun SettingsScreenContent(
 
             item {
                 // Build combined font list: presets + custom fonts + local fonts
-                val presetEntries = TerminalFont.entries.map { it.displayName to it.name }
+                // Only show downloadable preset fonts if Google Play Services is available
+                val presetEntries = if (BuildConfig.HAS_DOWNLOADABLE_FONTS) {
+                    TerminalFont.entries.map { it.displayName to it.name }
+                } else {
+                    // In OSS builds, only show System Default (which doesn't require download)
+                    listOf(TerminalFont.SYSTEM_DEFAULT.displayName to TerminalFont.SYSTEM_DEFAULT.name)
+                }
                 val customEntries = if (BuildConfig.HAS_DOWNLOADABLE_FONTS) {
                     uiState.customFonts.map { it to TerminalFont.createCustomFontValue(it) }
                 } else {
