@@ -34,6 +34,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.FontDownload
+import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -148,6 +149,8 @@ fun SettingsScreen(
         onWifilockChange = viewModel::updateWifilock,
         onBackupkeysChange = viewModel::updateBackupkeys,
         onEmulationChange = viewModel::updateEmulation,
+        onAddCustomTerminalType = viewModel::addCustomTerminalType,
+        onRemoveCustomTerminalType = viewModel::removeCustomTerminalType,
         onScrollbackChange = viewModel::updateScrollback,
         onFontFamilyChange = viewModel::updateFontFamily,
         onAddCustomFont = viewModel::addCustomFont,
@@ -188,6 +191,8 @@ fun SettingsScreenContent(
     onWifilockChange: (Boolean) -> Unit,
     onBackupkeysChange: (Boolean) -> Unit,
     onEmulationChange: (String) -> Unit,
+    onAddCustomTerminalType: (String) -> Unit,
+    onRemoveCustomTerminalType: (String) -> Unit,
     onScrollbackChange: (String) -> Unit,
     onFontFamilyChange: (String) -> Unit,
     onAddCustomFont: (String) -> Unit,
@@ -271,11 +276,36 @@ fun SettingsScreenContent(
             }
 
             item {
-                TextPreference(
+                // Build combined list: preset types + custom types
+                val presetTypes = listOf(
+                    "xterm-256color" to "xterm-256color",
+                    "xterm" to "xterm",
+                    "vt100" to "vt100",
+                    "vt102" to "vt102",
+                    "vt220" to "vt220",
+                    "ansi" to "ansi",
+                    "screen" to "screen",
+                    "screen-256color" to "screen-256color",
+                    "linux" to "linux",
+                    "dumb" to "dumb"
+                )
+                val customTypeEntries = uiState.customTerminalTypes.map { it to it }
+                val allEntries = presetTypes + customTypeEntries
+
+                ListPreference(
                     title = stringResource(R.string.pref_emulation_title),
                     summary = uiState.emulation,
                     value = uiState.emulation,
+                    entries = allEntries,
                     onValueChange = onEmulationChange
+                )
+            }
+
+            item {
+                AddCustomTerminalTypePreference(
+                    customTerminalTypes = uiState.customTerminalTypes,
+                    onAddTerminalType = onAddCustomTerminalType,
+                    onRemoveTerminalType = onRemoveCustomTerminalType
                 )
             }
 
@@ -346,12 +376,18 @@ fun SettingsScreenContent(
             }
 
             item {
-                val selectedProfile = uiState.availableProfiles.find { it.id == uiState.defaultProfileId }
+                val selectedProfile = if (uiState.defaultProfileId == 0L) {
+                    null
+                } else {
+                    uiState.availableProfiles.find { it.id == uiState.defaultProfileId }
+                }
+                val profileEntries = listOf("None (use host settings)" to "0") +
+                    uiState.availableProfiles.map { it.name to it.id.toString() }
                 ListPreference(
                     title = "Default Profile",
-                    summary = selectedProfile?.name ?: "Default",
+                    summary = selectedProfile?.name ?: "None (use host settings)",
                     value = uiState.defaultProfileId.toString(),
-                    entries = uiState.availableProfiles.map { it.name to it.id.toString() },
+                    entries = profileEntries,
                     onValueChange = { onDefaultProfileChange(it.toLong()) }
                 )
             }
@@ -725,6 +761,125 @@ private fun ListPreferenceDialog(
 }
 
 @Composable
+private fun ListPreferenceWithCustom(
+    title: String,
+    summary: String,
+    value: String,
+    entries: List<Pair<String, String>>,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    customLabel: String = "Custom..."
+) {
+    var showDialog by remember { mutableStateOf(false) }
+
+    ListItem(
+        headlineContent = { Text(title) },
+        supportingContent = { Text(summary) },
+        modifier = modifier.clickable { showDialog = true }
+    )
+    HorizontalDivider()
+
+    if (showDialog) {
+        ListPreferenceWithCustomDialog(
+            title = title,
+            value = value,
+            entries = entries,
+            customLabel = customLabel,
+            onDismiss = { showDialog = false },
+            onConfirm = { newValue ->
+                onValueChange(newValue)
+                showDialog = false
+            }
+        )
+    }
+}
+
+@Composable
+private fun ListPreferenceWithCustomDialog(
+    title: String,
+    value: String,
+    entries: List<Pair<String, String>>,
+    customLabel: String,
+    onDismiss: () -> Unit,
+    onConfirm: (String) -> Unit
+) {
+    var showCustomInput by remember { mutableStateOf(false) }
+    var customValue by remember { mutableStateOf(value) }
+
+    if (showCustomInput) {
+        AlertDialog(
+            onDismissRequest = {
+                showCustomInput = false
+                onDismiss()
+            },
+            title = { Text(title) },
+            text = {
+                OutlinedTextField(
+                    value = customValue,
+                    onValueChange = { customValue = it },
+                    label = { Text("Enter custom value") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        if (customValue.isNotBlank()) {
+                            onConfirm(customValue)
+                        }
+                    },
+                    enabled = customValue.isNotBlank()
+                ) {
+                    Text(stringResource(android.R.string.ok))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showCustomInput = false
+                    onDismiss()
+                }) {
+                    Text(stringResource(android.R.string.cancel))
+                }
+            }
+        )
+    } else {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text(title) },
+            text = {
+                Column {
+                    entries.forEach { (label, entryValue) ->
+                        ListItem(
+                            headlineContent = { Text(label) },
+                            modifier = Modifier.clickable { onConfirm(entryValue) }
+                        )
+                    }
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    ListItem(
+                        headlineContent = {
+                            Text(
+                                text = customLabel,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        },
+                        modifier = Modifier.clickable {
+                            customValue = value
+                            showCustomInput = true
+                        }
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = onDismiss) {
+                    Text(stringResource(R.string.delete_neg))
+                }
+            }
+        )
+    }
+}
+
+@Composable
 private fun SliderPreference(
     title: String,
     value: Float,
@@ -753,6 +908,91 @@ private fun SliderPreference(
         )
     }
     HorizontalDivider()
+}
+
+@Composable
+private fun AddCustomTerminalTypePreference(
+    customTerminalTypes: List<String>,
+    onAddTerminalType: (String) -> Unit,
+    onRemoveTerminalType: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var showAddDialog by remember { mutableStateOf(false) }
+    var newTerminalType by remember { mutableStateOf("") }
+
+    Column(modifier = modifier) {
+        ListItem(
+            headlineContent = { Text("Custom Terminal Types") },
+            supportingContent = { Text("Add custom TERM values for remote servers") },
+            modifier = Modifier.clickable { showAddDialog = true }
+        )
+
+        // Show existing custom terminal types with remove option
+        customTerminalTypes.forEach { terminalType ->
+            ListItem(
+                headlineContent = { Text(terminalType) },
+                leadingContent = {
+                    Icon(
+                        imageVector = Icons.Default.Terminal,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                },
+                trailingContent = {
+                    IconButton(onClick = { onRemoveTerminalType(terminalType) }) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = stringResource(R.string.button_remove)
+                        )
+                    }
+                },
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
+
+        HorizontalDivider()
+    }
+
+    if (showAddDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                showAddDialog = false
+                newTerminalType = ""
+            },
+            title = { Text("Add Custom Terminal Type") },
+            text = {
+                OutlinedTextField(
+                    value = newTerminalType,
+                    onValueChange = { newTerminalType = it },
+                    label = { Text("Terminal type (e.g., rxvt-unicode)") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        if (newTerminalType.isNotBlank()) {
+                            onAddTerminalType(newTerminalType.trim())
+                            showAddDialog = false
+                            newTerminalType = ""
+                        }
+                    },
+                    enabled = newTerminalType.isNotBlank()
+                ) {
+                    Text(stringResource(R.string.button_add))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showAddDialog = false
+                    newTerminalType = ""
+                }) {
+                    Text(stringResource(android.R.string.cancel))
+                }
+            }
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -1026,6 +1266,7 @@ private fun SettingsScreenPreview() {
                 wifilock = false,
                 backupkeys = true,
                 emulation = "xterm-256color",
+                customTerminalTypes = listOf("rxvt-unicode", "tmux-256color"),
                 scrollback = "500",
                 rotation = "Default",
                 titlebarhide = false,
@@ -1058,6 +1299,8 @@ private fun SettingsScreenPreview() {
             onWifilockChange = {},
             onBackupkeysChange = {},
             onEmulationChange = {},
+            onAddCustomTerminalType = {},
+            onRemoveCustomTerminalType = {},
             onScrollbackChange = {},
             onFontFamilyChange = {},
             onAddCustomFont = {},

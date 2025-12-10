@@ -99,29 +99,29 @@ abstract class ConnectBotDatabase : RoomDatabase() {
         val MIGRATION_5_6 = object : Migration(5, 6) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 // Create profiles table
+                // Note: No foreign key to color_schemes because built-in color schemes use negative IDs
+                // and are virtual (not stored in the database). Only custom schemes have positive IDs.
                 db.execSQL("""
                     CREATE TABLE IF NOT EXISTS `profiles` (
                         `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                         `name` TEXT NOT NULL,
                         `is_built_in` INTEGER NOT NULL DEFAULT 0,
-                        `color_scheme_id` INTEGER NOT NULL DEFAULT 1,
+                        `color_scheme_id` INTEGER NOT NULL DEFAULT -1,
                         `font_family` TEXT,
                         `font_size` INTEGER NOT NULL DEFAULT 10,
                         `del_key` TEXT NOT NULL DEFAULT 'del',
                         `encoding` TEXT NOT NULL DEFAULT 'UTF-8',
-                        `emulation` TEXT NOT NULL DEFAULT 'xterm-256color',
-                        FOREIGN KEY(`color_scheme_id`) REFERENCES `color_schemes`(`id`) ON UPDATE NO ACTION ON DELETE SET DEFAULT
+                        `emulation` TEXT NOT NULL DEFAULT 'xterm-256color'
                     )
                 """.trimIndent())
 
-                // Create indices on profile
+                // Create index on profile name
                 db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_profiles_name` ON `profiles` (`name`)")
-                db.execSQL("CREATE INDEX IF NOT EXISTS `index_profiles_color_scheme_id` ON `profiles` (`color_scheme_id`)")
 
-                // Insert default profile
+                // Insert default profile with color_scheme_id = -1 (Default built-in scheme)
                 db.execSQL("""
                     INSERT INTO `profiles` (`id`, `name`, `is_built_in`, `color_scheme_id`, `font_family`, `font_size`, `del_key`, `encoding`, `emulation`)
-                    VALUES (1, 'Default', 1, 1, NULL, 10, 'del', 'UTF-8', 'xterm-256color')
+                    VALUES (1, 'Default', 1, -1, NULL, 10, 'del', 'UTF-8', 'xterm-256color')
                 """.trimIndent())
 
                 // Add profile_id column to hosts table

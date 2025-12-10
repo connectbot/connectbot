@@ -94,6 +94,12 @@ class HostEditorViewModel @Inject constructor(
         loadLocalFonts()
         if (hostId != -1L) {
             loadHost()
+        } else {
+            // For new hosts, apply the default profile from settings
+            val defaultProfileId = prefs.getLong("defaultProfileId", 0L)
+            if (defaultProfileId > 0) {
+                _uiState.update { it.copy(profileId = defaultProfileId) }
+            }
         }
     }
 

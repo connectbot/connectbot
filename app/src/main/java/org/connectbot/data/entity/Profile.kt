@@ -42,17 +42,10 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "profiles",
     indices = [
-        Index(value = ["name"], unique = true),
-        Index(value = ["color_scheme_id"])
-    ],
-    foreignKeys = [
-        ForeignKey(
-            entity = ColorScheme::class,
-            parentColumns = ["id"],
-            childColumns = ["color_scheme_id"],
-            onDelete = ForeignKey.SET_DEFAULT
-        )
+        Index(value = ["name"], unique = true)
     ]
+    // Note: No foreign key to color_schemes because built-in color schemes use negative IDs
+    // and are virtual (not stored in the database). Only custom schemes have positive IDs.
 )
 data class Profile(
     @PrimaryKey(autoGenerate = true)
@@ -63,8 +56,8 @@ data class Profile(
     @ColumnInfo(name = "is_built_in")
     val isBuiltIn: Boolean = false,
 
-    @ColumnInfo(name = "color_scheme_id", defaultValue = "1")
-    val colorSchemeId: Long = 1L,
+    @ColumnInfo(name = "color_scheme_id", defaultValue = "-1")
+    val colorSchemeId: Long = -1L,
 
     @ColumnInfo(name = "font_family")
     val fontFamily: String? = null,
