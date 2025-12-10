@@ -19,6 +19,7 @@ package org.connectbot.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -41,6 +42,20 @@ import org.connectbot.ui.screens.profiles.ProfileListScreen
 import org.connectbot.ui.screens.pubkeyeditor.PubkeyEditorScreen
 import org.connectbot.ui.screens.pubkeylist.PubkeyListScreen
 import org.connectbot.ui.screens.settings.SettingsScreen
+
+/**
+ * Safely pops the back stack, preventing double navigation when the user rapidly taps
+ * the back button. This checks if the current destination's lifecycle state is RESUMED
+ * before allowing the navigation to proceed.
+ */
+fun NavHostController.safePopBackStack(): Boolean {
+    val currentEntry = currentBackStackEntry
+    return if (currentEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
+        popBackStack()
+    } else {
+        false
+    }
+}
 
 @Composable
 fun ConnectBotNavHost(
@@ -96,7 +111,7 @@ fun ConnectBotNavHost(
             )
         ) {
             ConsoleScreen(
-                onNavigateBack = { navController.popBackStack() },
+                onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToPortForwards = { hostIdForPortForwards ->
                     navController.navigate("${NavDestinations.PORT_FORWARD_LIST}/$hostIdForPortForwards")
                 }
@@ -113,13 +128,13 @@ fun ConnectBotNavHost(
             )
         ) {
             HostEditorScreen(
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.safePopBackStack() }
             )
         }
 
         composable(NavDestinations.PUBKEY_LIST) {
             PubkeyListScreen(
-                onNavigateBack = { navController.popBackStack() },
+                onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToGenerate = { navController.navigate(NavDestinations.GENERATE_PUBKEY) },
                 onNavigateToEdit = { pubkey ->
                     navController.navigate("${NavDestinations.PUBKEY_EDITOR}/${pubkey.id}")
@@ -129,7 +144,7 @@ fun ConnectBotNavHost(
 
         composable(NavDestinations.GENERATE_PUBKEY) {
             GeneratePubkeyScreen(
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.safePopBackStack() }
             )
         }
 
@@ -140,7 +155,7 @@ fun ConnectBotNavHost(
             )
         ) {
             PubkeyEditorScreen(
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.safePopBackStack() }
             )
         }
 
@@ -151,26 +166,26 @@ fun ConnectBotNavHost(
             )
         ) {
             PortForwardListScreen(
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.safePopBackStack() }
             )
         }
 
         composable(NavDestinations.SETTINGS) {
             SettingsScreen(
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.safePopBackStack() }
             )
         }
 
         composable(NavDestinations.COLORS) {
             ColorsScreen(
-                onNavigateBack = { navController.popBackStack() },
+                onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToSchemeManager = { navController.navigate(NavDestinations.SCHEME_MANAGER) }
             )
         }
 
         composable(NavDestinations.SCHEME_MANAGER) {
             ColorSchemeManagerScreen(
-                onNavigateBack = { navController.popBackStack() },
+                onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToPaletteEditor = { schemeId ->
                     navController.navigate("${NavDestinations.PALETTE_EDITOR}/$schemeId")
                 }
@@ -184,13 +199,13 @@ fun ConnectBotNavHost(
             )
         ) {
             PaletteEditorScreen(
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.safePopBackStack() }
             )
         }
 
         composable(NavDestinations.PROFILES) {
             ProfileListScreen(
-                onNavigateBack = { navController.popBackStack() },
+                onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToEdit = { profile ->
                     navController.navigate("${NavDestinations.PROFILE_EDITOR}/${profile.id}")
                 }
@@ -204,13 +219,13 @@ fun ConnectBotNavHost(
             )
         ) {
             ProfileEditorScreen(
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.safePopBackStack() }
             )
         }
 
         composable(NavDestinations.HELP) {
             HelpScreen(
-                onNavigateBack = { navController.popBackStack() },
+                onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToHints = { navController.navigate(NavDestinations.HINTS) },
                 onNavigateToEula = { navController.navigate(NavDestinations.EULA) }
             )
@@ -218,13 +233,13 @@ fun ConnectBotNavHost(
 
         composable(NavDestinations.EULA) {
             EulaScreen(
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.safePopBackStack() }
             )
         }
 
         composable(NavDestinations.HINTS) {
             HintsScreen(
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.safePopBackStack() }
             )
         }
     }
