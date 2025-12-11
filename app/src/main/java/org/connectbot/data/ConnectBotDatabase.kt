@@ -144,28 +144,72 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                     )
                 """.trimIndent())
 
-                // Add profile_id column to hosts table
-                db.execSQL("ALTER TABLE `hosts` ADD COLUMN `profile_id` INTEGER DEFAULT 1")
+                // Recreate hosts table without the old columns (encoding, font_size, color_scheme_id, del_key, font_family)
+                // and add profile_id column. SQLite doesn't support DROP COLUMN before 3.35.0,
+                // so we need to recreate the table.
 
-                // Update hosts to point to their matching profile
+                // Create new hosts table with correct schema
                 db.execSQL("""
-                    UPDATE hosts
-                    SET profile_id = (
-                        SELECT p.id FROM profiles p
-                        WHERE p.color_scheme_id = hosts.color_scheme_id
-                          AND p.font_size = hosts.font_size
-                          AND p.del_key = hosts.del_key
-                          AND p.encoding = hosts.encoding
-                        LIMIT 1
-                    )
-                    WHERE EXISTS (
-                        SELECT 1 FROM profiles p
-                        WHERE p.color_scheme_id = hosts.color_scheme_id
-                          AND p.font_size = hosts.font_size
-                          AND p.del_key = hosts.del_key
-                          AND p.encoding = hosts.encoding
+                    CREATE TABLE IF NOT EXISTS `hosts_new` (
+                        `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        `nickname` TEXT NOT NULL,
+                        `protocol` TEXT NOT NULL,
+                        `username` TEXT NOT NULL,
+                        `hostname` TEXT NOT NULL,
+                        `port` INTEGER NOT NULL,
+                        `host_key_algo` TEXT,
+                        `last_connect` INTEGER NOT NULL,
+                        `color` TEXT,
+                        `use_keys` INTEGER NOT NULL,
+                        `use_auth_agent` TEXT,
+                        `post_login` TEXT,
+                        `pubkey_id` INTEGER NOT NULL,
+                        `want_session` INTEGER NOT NULL,
+                        `compression` INTEGER NOT NULL,
+                        `stay_connected` INTEGER NOT NULL,
+                        `quick_disconnect` INTEGER NOT NULL,
+                        `scrollback_lines` INTEGER NOT NULL,
+                        `use_ctrl_alt_as_meta_key` INTEGER NOT NULL,
+                        `jump_host_id` INTEGER,
+                        `profile_id` INTEGER
                     )
                 """.trimIndent())
+
+                // Copy data from old table to new table, mapping old columns to profile_id
+                db.execSQL("""
+                    INSERT INTO `hosts_new` (
+                        `id`, `nickname`, `protocol`, `username`, `hostname`, `port`,
+                        `host_key_algo`, `last_connect`, `color`, `use_keys`, `use_auth_agent`,
+                        `post_login`, `pubkey_id`, `want_session`, `compression`, `stay_connected`,
+                        `quick_disconnect`, `scrollback_lines`, `use_ctrl_alt_as_meta_key`,
+                        `jump_host_id`, `profile_id`
+                    )
+                    SELECT
+                        h.id, h.nickname, h.protocol, h.username, h.hostname, h.port,
+                        h.host_key_algo, h.last_connect, h.color, h.use_keys, h.use_auth_agent,
+                        h.post_login, h.pubkey_id, h.want_session, h.compression, h.stay_connected,
+                        h.quick_disconnect, h.scrollback_lines, h.use_ctrl_alt_as_meta_key,
+                        h.jump_host_id,
+                        COALESCE((
+                            SELECT p.id FROM profiles p
+                            WHERE p.color_scheme_id = h.color_scheme_id
+                              AND p.font_size = h.font_size
+                              AND p.del_key = h.del_key
+                              AND p.encoding = h.encoding
+                            LIMIT 1
+                        ), 1) as profile_id
+                    FROM hosts h
+                """.trimIndent())
+
+                // Drop old table
+                db.execSQL("DROP TABLE `hosts`")
+
+                // Rename new table to hosts
+                db.execSQL("ALTER TABLE `hosts_new` RENAME TO `hosts`")
+
+                // Recreate indices
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_hosts_nickname` ON `hosts` (`nickname`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_hosts_protocol_username_hostname_port` ON `hosts` (`protocol`, `username`, `hostname`, `port`)")
             }
         }
     }
