@@ -32,31 +32,6 @@ import kotlin.coroutines.resume
 private const val TAG = "TerminalFontCompose"
 
 /**
- * Build a typeface with a fallback chain using setSystemFallback on Android Q+.
- * Falls back to just returning the primary typeface on older versions.
- *
- * The fallback chain ensures that if a glyph is missing from the primary font,
- * the system will try monospace as the fallback.
- *
- * Note: The CustomFallbackBuilder.setSystemFallback() sets the fallback font family
- * that will be used when glyphs are not found in the custom font. However, building
- * a Font from an existing Typeface is not straightforward, so we use this approach
- * where the custom font is loaded separately and the fallback is configured.
- *
- * @param primaryTypeface The main font to use
- * @return A typeface with proper fallback configuration, or the original typeface on older Android versions
- */
-private fun buildTypefaceWithFallback(primaryTypeface: Typeface?): Typeface {
-    if (primaryTypeface == null) {
-        return Typeface.MONOSPACE
-    }
-
-    // On versions prior to Q, we can't easily set system fallback, so return the primary
-    // The system will still fall back to system fonts for missing glyphs in most cases
-    return primaryTypeface
-}
-
-/**
  * State representing font loading progress.
  */
 sealed class FontLoadingState {
@@ -174,7 +149,7 @@ fun rememberTerminalTypefaceResultFromStoredValue(
             Log.d(TAG, "Local font detected, fileName: $fileName")
             if (fileName != null) {
                 val loadedTypeface = localFontProvider.getTypeface(fileName, fallback)
-                typeface = buildTypefaceWithFallback(loadedTypeface)
+                typeface = loadedTypeface ?: fallback
                 loadFailed = loadedTypeface == fallback
             } else {
                 typeface = fallback
@@ -202,7 +177,7 @@ fun rememberTerminalTypefaceResultFromStoredValue(
         val cached = fontProvider.getCachedTypefaceByName(googleFontName)
         if (cached != null) {
             Log.d(TAG, "Font found in cache: $googleFontName")
-            typeface = buildTypefaceWithFallback(cached)
+            typeface = cached
             isLoading = false
             loadFailed = false
             return@LaunchedEffect
@@ -212,8 +187,7 @@ fun rememberTerminalTypefaceResultFromStoredValue(
         Log.d(TAG, "Loading font from provider: $googleFontName")
         val loadedTypeface = fontProvider.loadFontByNameSuspend(googleFontName)
         Log.d(TAG, "Font loaded: $googleFontName, typeface: $loadedTypeface")
-        // Build typeface with fallback chain (custom font → monospace → system default)
-        typeface = buildTypefaceWithFallback(loadedTypeface)
+        typeface = loadedTypeface ?: fallback
         // If we got MONOSPACE back but didn't request it, the load failed
         loadFailed = loadedTypeface == Typeface.MONOSPACE
         isLoading = false
