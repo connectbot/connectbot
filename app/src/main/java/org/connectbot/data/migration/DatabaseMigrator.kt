@@ -32,6 +32,7 @@ import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KnownHost
 import org.connectbot.data.entity.PortForward
+import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
 import java.io.File
 
@@ -346,6 +347,16 @@ class DatabaseMigrator @Inject constructor(
         }
     }
 
+    /**
+     * Key for grouping hosts by terminal settings for profile creation.
+     */
+    private data class ProfileSettingsKey(
+        val colorSchemeId: Long,
+        val fontSize: Int,
+        val delKey: String,
+        val encoding: String
+    )
+
     private fun transformToRoomEntities(legacy: LegacyData): TransformedData {
         val hostIds = legacy.hosts.map { it.id }.toSet()
         val pubkeyIds = legacy.pubkeys.map { it.id }.toSet()
@@ -376,7 +387,7 @@ class DatabaseMigrator @Inject constructor(
             .map { (host, uniqueNickname) -> host.copy(nickname = uniqueNickname) }
 
         // Fix hosts with invalid foreign key references
-        val fixedHosts = hostsWithUniqueNicknames.map { host ->
+        val fixedLegacyHosts = hostsWithUniqueNicknames.map { host ->
             var fixedHost = host
 
             // Clear invalid pubkey references
@@ -392,6 +403,93 @@ class DatabaseMigrator @Inject constructor(
             }
 
             fixedHost
+        }
+
+        // Create profiles from unique terminal settings combinations
+        val defaultSettingsKey = ProfileSettingsKey(
+            colorSchemeId = -1L,
+            fontSize = 10,
+            delKey = "del",
+            encoding = "UTF-8"
+        )
+
+        // Group hosts by terminal settings
+        val settingsToHosts = fixedLegacyHosts.groupBy { host ->
+            ProfileSettingsKey(
+                colorSchemeId = host.colorSchemeId,
+                fontSize = host.fontSize,
+                delKey = host.delKey,
+                encoding = host.encoding
+            )
+        }
+
+        // Create default profile (ID 1)
+        val profiles = mutableListOf(
+            Profile(
+                id = 1,
+                name = "Default",
+                colorSchemeId = -1L,
+                fontSize = 10,
+                delKey = "del",
+                encoding = "UTF-8"
+            )
+        )
+
+        // Create additional profiles for non-default settings
+        var nextProfileId = 2L
+        val settingsToProfileId = mutableMapOf<ProfileSettingsKey, Long>()
+        settingsToProfileId[defaultSettingsKey] = 1L
+
+        settingsToHosts.keys.forEach { key ->
+            if (key != defaultSettingsKey && key !in settingsToProfileId) {
+                val profileId = nextProfileId++
+                settingsToProfileId[key] = profileId
+                profiles.add(
+                    Profile(
+                        id = profileId,
+                        name = "Migrated Profile $profileId",
+                        colorSchemeId = key.colorSchemeId,
+                        fontSize = key.fontSize,
+                        delKey = key.delKey,
+                        encoding = key.encoding
+                    )
+                )
+                logDebug("Created profile '$profileId' for settings: $key")
+            }
+        }
+
+        // Convert LegacyHost to Host with profile_id
+        val fixedHosts = fixedLegacyHosts.map { legacyHost ->
+            val settingsKey = ProfileSettingsKey(
+                colorSchemeId = legacyHost.colorSchemeId,
+                fontSize = legacyHost.fontSize,
+                delKey = legacyHost.delKey,
+                encoding = legacyHost.encoding
+            )
+            val profileId = settingsToProfileId[settingsKey] ?: 1L
+
+            Host(
+                id = legacyHost.id,
+                nickname = legacyHost.nickname,
+                protocol = legacyHost.protocol,
+                username = legacyHost.username,
+                hostname = legacyHost.hostname,
+                port = legacyHost.port,
+                hostKeyAlgo = legacyHost.hostKeyAlgo,
+                lastConnect = legacyHost.lastConnect,
+                color = legacyHost.color,
+                useKeys = legacyHost.useKeys,
+                useAuthAgent = legacyHost.useAuthAgent,
+                postLogin = legacyHost.postLogin,
+                pubkeyId = legacyHost.pubkeyId,
+                wantSession = legacyHost.wantSession,
+                compression = legacyHost.compression,
+                stayConnected = legacyHost.stayConnected,
+                quickDisconnect = legacyHost.quickDisconnect,
+                scrollbackLines = legacyHost.scrollbackLines,
+                useCtrlAltAsMetaKey = legacyHost.useCtrlAltAsMetaKey,
+                profileId = profileId
+            )
         }
 
         // Fix duplicate pubkey nicknames by appending " (1)", " (2)", etc.
@@ -437,17 +535,11 @@ class DatabaseMigrator @Inject constructor(
             logDebug("Recovery: Cleared invalid pubkey references from $hostsWithClearedPubkeys host(s)")
         }
 
-        val hostsWithResetColorSchemes = fixedHosts.count { host ->
-            val original = legacy.hosts.find { h -> h.id == host.id }
-            original != null && original.colorSchemeId != host.colorSchemeId
-        }
-        if (hostsWithResetColorSchemes > 0) {
-            logDebug("Recovery: Reset invalid color scheme references for $hostsWithResetColorSchemes host(s)")
-        }
-
         if (synthesizedSchemes.isNotEmpty()) {
             logDebug("Recovery: Synthesized ${synthesizedSchemes.size} missing color scheme(s) for orphaned palette entries")
         }
+
+        logDebug("Migration: Created ${profiles.size} profile(s) for ${fixedHosts.size} host(s)")
 
         return TransformedData(
             hosts = fixedHosts,
@@ -455,7 +547,8 @@ class DatabaseMigrator @Inject constructor(
             knownHosts = cleanedKnownHosts,
             colorSchemes = allColorSchemes,
             colorPalettes = legacy.colorPalettes,
-            pubkeys = fixedPubkeys
+            pubkeys = fixedPubkeys,
+            profiles = profiles
         )
     }
 
@@ -491,7 +584,7 @@ class DatabaseMigrator @Inject constructor(
         // Wrap all writes in a single transaction for atomicity
         // If any write fails, all writes are rolled back
         roomDatabase.withTransaction {
-            // Insert color schemes first (referenced by hosts and palettes)
+            // Insert color schemes first (referenced by profiles)
             // Create ID mapping since Room auto-generates IDs
             val colorSchemeIdMap = mutableMapOf<Long, Long>()
             data.colorSchemes.forEach { scheme ->
@@ -506,6 +599,11 @@ class DatabaseMigrator @Inject constructor(
                     ?: throw MigrationException("Color palette references unknown color scheme ID: ${palette.schemeId}")
                 val remappedPalette = palette.copy(schemeId = newSchemeId)
                 roomDatabase.colorSchemeDao().insertColor(remappedPalette)
+            }
+
+            // Insert profiles (referenced by hosts)
+            data.profiles.forEach { profile ->
+                roomDatabase.profileDao().insert(profile)
             }
 
             // Insert pubkeys (referenced by hosts)
@@ -637,7 +735,7 @@ class DatabaseMigrator @Inject constructor(
  * Legacy data read from old databases.
  */
 data class LegacyData(
-    val hosts: List<Host>,
+    val hosts: List<LegacyHost>,
     val portForwards: List<PortForward>,
     val knownHosts: List<KnownHost>,
     val colorSchemes: List<ColorScheme>,
@@ -654,7 +752,8 @@ data class TransformedData(
     val knownHosts: List<KnownHost>,
     val colorSchemes: List<ColorScheme>,
     val colorPalettes: List<ColorPalette>,
-    val pubkeys: List<Pubkey>
+    val pubkeys: List<Pubkey>,
+    val profiles: List<Profile>
 )
 
 /**

@@ -210,7 +210,6 @@ class ProfileEditorViewModel @Inject constructor(
             val profile = Profile(
                 id = if (profileId != -1L) profileId else 0,
                 name = state.name,
-                isBuiltIn = state.isBuiltIn,
                 iconColor = state.iconColor,
                 colorSchemeId = state.colorSchemeId,
                 fontFamily = state.fontFamily,

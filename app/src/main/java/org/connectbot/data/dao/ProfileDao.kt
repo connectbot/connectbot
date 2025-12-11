@@ -90,9 +90,9 @@ interface ProfileDao {
 
     /**
      * Delete a profile by ID.
-     * Note: Built-in profiles should not be deleted.
+     * Note: Built-in profiles (id = 1) should not be deleted.
      */
-    @Query("DELETE FROM profiles WHERE id = :profileId AND is_built_in = 0")
+    @Query("DELETE FROM profiles WHERE id = :profileId AND id != 1")
     suspend fun deleteById(profileId: Long): Int
 
     /**

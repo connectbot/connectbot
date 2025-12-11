@@ -19,7 +19,7 @@ package org.connectbot.data.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
@@ -31,7 +31,6 @@ import androidx.room.PrimaryKey
  *
  * @property id Database ID of the profile
  * @property name Display name of the profile
- * @property isBuiltIn Whether this is a built-in preset profile (cannot be deleted)
  * @property iconColor Icon color for visual identification (e.g., "blue", "#4CAF50")
  * @property colorSchemeId Reference to the color scheme
  * @property fontFamily Font family name (null uses system default)
@@ -54,9 +53,6 @@ data class Profile(
 
     val name: String,
 
-    @ColumnInfo(name = "is_built_in")
-    val isBuiltIn: Boolean = false,
-
     @ColumnInfo(name = "icon_color")
     val iconColor: String? = null,
 
@@ -78,6 +74,13 @@ data class Profile(
     @ColumnInfo(defaultValue = "'xterm-256color'")
     val emulation: String = "xterm-256color"
 ) {
+    /**
+     * Whether this is a built-in preset profile (cannot be deleted).
+     * This is a transient field - built-in profiles are identified by their ID.
+     */
+    @Ignore
+    val isBuiltIn: Boolean = (id == DEFAULT_PROFILE_ID)
+
     companion object {
         /**
          * ID of the default built-in profile.
@@ -89,8 +92,7 @@ data class Profile(
          */
         fun createDefault(): Profile = Profile(
             id = DEFAULT_PROFILE_ID,
-            name = "Default",
-            isBuiltIn = true
+            name = "Default"
         )
     }
 }
