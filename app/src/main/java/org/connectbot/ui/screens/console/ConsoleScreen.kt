@@ -45,6 +45,7 @@ import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -89,7 +90,6 @@ import kotlinx.coroutines.delay
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.terminal.Terminal
-import org.connectbot.ui.LoadingScreen
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.components.FloatingTextInputDialog
 import org.connectbot.ui.components.InlinePrompt
@@ -320,7 +320,12 @@ fun ConsoleScreen(
         ) {
             when {
                 uiState.isLoading -> {
-                    LoadingScreen(modifier = Modifier.fillMaxSize())
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 }
 
                 uiState.bridges.isNotEmpty() -> {

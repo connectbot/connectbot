@@ -44,7 +44,7 @@ fun ConnectBotApp(
     ConnectBotTheme {
         when (appUiState) {
             is AppUiState.Loading -> {
-                LoadingScreen(modifier = modifier)
+                // This should be showing the SplashScreen
             }
 
             is AppUiState.MigrationInProgress -> {

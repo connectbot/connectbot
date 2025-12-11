@@ -29,4 +29,11 @@
 		<item name="colorAccent">@color/accent</item>
 	</style>
 
+	<style name="AppTheme.Splash" parent="Theme.SplashScreen">
+		<item name="windowSplashScreenBackground">@color/primary</item>
+		<item name="windowSplashScreenAnimatedIcon">@mipmap/icon</item>
+		<item name="windowSplashScreenAnimationDuration">100</item>
+		<item name="postSplashScreenTheme">@style/AppTheme</item>
+	</style>
+
 </resources>

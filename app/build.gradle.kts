@@ -263,6 +263,7 @@ dependencies {
 
     implementation(libs.androidx.biometric)
     implementation(libs.androidx.core)
+    implementation(libs.androidx.core.splashscreen)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
