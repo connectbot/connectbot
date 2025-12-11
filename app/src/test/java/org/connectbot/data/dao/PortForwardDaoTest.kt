@@ -238,13 +238,11 @@ class PortForwardDaoTest {
             postLogin = null,
             pubkeyId = 0,
             wantSession = true,
-            fontSize = 10,
-            encoding = "UTF-8",
             compression = false,
-            colorSchemeId = 1,
-            delKey = "BACKSPACE",
             scrollbackLines = 140,
-            useCtrlAltAsMetaKey = false
+            useCtrlAltAsMetaKey = false,
+            jumpHostId = null,
+            profileId = 1L
         )
         return hostDao.insert(host)
     }
