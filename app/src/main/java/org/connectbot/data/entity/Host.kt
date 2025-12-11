@@ -72,22 +72,11 @@ data class Host(
 
     val compression: Boolean = false,
 
-    val encoding: String = "UTF-8",
-
     @ColumnInfo(name = "stay_connected")
     val stayConnected: Boolean = false,
 
     @ColumnInfo(name = "quick_disconnect")
     val quickDisconnect: Boolean = false,
-
-    @ColumnInfo(name = "font_size")
-    val fontSize: Int = 10,
-
-    @ColumnInfo(name = "color_scheme_id")
-    val colorSchemeId: Long = -1L,
-
-    @ColumnInfo(name = "del_key")
-    val delKey: String = "DEL",
 
     @ColumnInfo(name = "scrollback_lines")
     val scrollbackLines: Int = 140,
@@ -104,19 +93,11 @@ data class Host(
     val jumpHostId: Long? = null,
 
     /**
-     * Optional font family for terminal display.
-     * When null, uses the global default font setting.
-     * Value should be a TerminalFont enum name (e.g., "JETBRAINS_MONO").
-     */
-    @ColumnInfo(name = "font_family")
-    val fontFamily: String? = null,
-
-    /**
-     * Optional profile ID for terminal-specific settings.
-     * When null, uses the default profile or global settings.
+     * Profile ID for terminal-specific settings (font, colors, encoding, etc.).
+     * Defaults to 1 (the Default profile).
      */
     @ColumnInfo(name = "profile_id")
-    val profileId: Long? = null
+    val profileId: Long? = 1L
 ) {
     /**
      * Check if this host is temporary (not saved to database).
@@ -124,12 +105,6 @@ data class Host(
      */
     val isTemporary: Boolean
         get() = id < 0L
-
-    /**
-     * Create a copy of this Host with a different font size.
-     * Helper method for Java interop.
-     */
-    fun withFontSize(newFontSize: Int): Host = copy(fontSize = newFontSize)
 
     /**
      * Get the URI representation of this host (Java interop helper).

@@ -340,11 +340,8 @@ fun ConsoleScreen(
                                 top = if (!titleBarHide) titleBarHeight else 0.dp
                             )
                     ) {
-                        // Get font: per-host override takes precedence over global default
-                        val globalFontFamily = prefs.getString("fontFamily", "SYSTEM_DEFAULT") ?: "SYSTEM_DEFAULT"
-                        val hostFontFamily = bridge.host.fontFamily
-                        val effectiveFontFamily = hostFontFamily ?: globalFontFamily
-                        val fontResult = rememberTerminalTypefaceResultFromStoredValue(effectiveFontFamily)
+                        // Get font from profile (stored in bridge)
+                        val fontResult = rememberTerminalTypefaceResultFromStoredValue(bridge.fontFamily)
                         val coroutineScope = rememberCoroutineScope()
 
                         // Show snackbar if font loading failed

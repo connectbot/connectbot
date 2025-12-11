@@ -95,6 +95,10 @@ class TerminalBridge {
 
     private val emulation: String?
     private val scrollback: Int
+    private val encoding: String
+
+    /** Font family from profile for terminal display */
+    val fontFamily: String?
 
     // Terminal emulator from ConnectBot Terminal library
     val terminalEmulator: TerminalEmulator
@@ -169,38 +173,24 @@ class TerminalBridge {
 
         fontSizeChangedListeners = mutableListOf()
 
-        // Load profile if assigned to this host
-        val profile = host.profileId?.let { profileId ->
-            manager.profileRepository.getByIdBlocking(profileId)
-        }
+        // Load profile for this host (always returns a profile, defaulting to Default profile)
+        val profile = manager.profileRepository.getByIdOrDefaultBlocking(host.profileId)
 
-        // Resolve settings: profile takes precedence over host
-        val effectiveFontSize = if (profile != null) {
-            profile.fontSize
-        } else {
-            host.fontSize
-        }
-        val effectiveColorSchemeId = if (profile != null) {
-            profile.colorSchemeId
-        } else {
-            host.colorSchemeId
-        }
-        val effectiveEncoding = if (profile != null) {
-            profile.encoding
-        } else {
-            host.encoding
-        }
+        // Store encoding and font family from profile for later use
+        encoding = profile.encoding
+        fontFamily = profile.fontFamily
 
-        var fontSizeSp = effectiveFontSize
+        // Use settings from profile
+        var fontSizeSp = profile.fontSize
         if (fontSizeSp <= 0) {
             fontSizeSp = DEFAULT_FONT_SIZE_SP
         }
         setFontSize(fontSizeSp.toFloat())
 
-        // Load color scheme from resolved configuration
-        currentColorSchemeId = effectiveColorSchemeId
-        fullColorPalette = manager.colorRepository.getColorsForSchemeBlocking(effectiveColorSchemeId)
-        val defaults = manager.colorRepository.getDefaultColorsForSchemeBlocking(effectiveColorSchemeId)
+        // Load color scheme from profile
+        currentColorSchemeId = profile.colorSchemeId
+        fullColorPalette = manager.colorRepository.getColorsForSchemeBlocking(profile.colorSchemeId)
+        val defaults = manager.colorRepository.getDefaultColorsForSchemeBlocking(profile.colorSchemeId)
         defaultFg = defaults[0]
         defaultBg = defaults[1]
 
@@ -241,7 +231,7 @@ class TerminalBridge {
         val ansiColors = fullColorPalette.sliceArray(0 until 16)
         terminalEmulator.applyColorScheme(ansiColors, defaultFgColor, defaultBgColor)
 
-        keyListener = TerminalKeyListener(manager, this, effectiveEncoding)
+        keyListener = TerminalKeyListener(manager, this, encoding)
 
         // Start the transport operation processor to serialize all writes
         startTransportOperationProcessor()
@@ -385,7 +375,7 @@ class TerminalBridge {
             return
 
         transportOperations.trySend(
-            TransportOperation.WriteData(string.toByteArray(charset(host.encoding)))
+            TransportOperation.WriteData(string.toByteArray(charset(encoding)))
         )
     }
 
@@ -421,7 +411,7 @@ class TerminalBridge {
         if (isSessionOpen) {
             // create thread to relay incoming connection data to buffer
             transport?.let { t ->
-                relay = Relay(this, t, host.encoding)
+                relay = Relay(this, t, encoding)
                 scope.launch {
                     relay?.start()
                 }
@@ -575,25 +565,8 @@ class TerminalBridge {
         for (ofscl in fontSizeChangedListeners) {
             ofscl.onFontSizeChanged(sizeSp)
         }
-
-        // Create updated host with new fontSize
-        host = host.withFontSize(sizeSp.toInt())
-
-        if (host.id != 0L) {
-            scope.launch(Dispatchers.IO) {
-                try {
-                    manager.hostRepository.saveHost(host)
-                } catch (e: Exception) {
-                    Timber.e(e, "Failed to save font size for ${host.nickname}")
-                    manager.reportError(
-                        ServiceError.HostSaveFailed(
-                            hostNickname = host.nickname,
-                            reason = "Failed to save font size: ${e.message}"
-                        )
-                    )
-                }
-            }
-        }
+        // Note: Font size is now stored in profiles, not hosts.
+        // Runtime font size changes are session-only and not persisted.
     }
 
 //    /**

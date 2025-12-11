@@ -23,9 +23,38 @@ import android.database.sqlite.SQLiteDatabase
 import timber.log.Timber
 import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.ColorScheme
-import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KnownHost
 import org.connectbot.data.entity.PortForward
+
+/**
+ * Data class for hosts from the legacy database that includes
+ * terminal-specific fields that are now in profiles.
+ */
+data class LegacyHost(
+    val id: Long,
+    val nickname: String,
+    val protocol: String,
+    val username: String,
+    val hostname: String,
+    val port: Int,
+    val hostKeyAlgo: String?,
+    val lastConnect: Long,
+    val color: String?,
+    val useKeys: Boolean,
+    val useAuthAgent: String?,
+    val postLogin: String?,
+    val pubkeyId: Long,
+    val wantSession: Boolean,
+    val compression: Boolean,
+    val encoding: String,
+    val stayConnected: Boolean,
+    val quickDisconnect: Boolean,
+    val fontSize: Int,
+    val colorSchemeId: Long,
+    val delKey: String,
+    val scrollbackLines: Int,
+    val useCtrlAltAsMetaKey: Boolean
+)
 
 /**
  * Reads data from the legacy HostDatabase (version 27).
@@ -41,8 +70,8 @@ class LegacyHostDatabaseReader(private val context: Context) {
     /**
      * Reads all hosts from the legacy database.
      */
-    fun readHosts(): List<Host> {
-        val hosts = mutableListOf<Host>()
+    fun readHosts(): List<LegacyHost> {
+        val hosts = mutableListOf<LegacyHost>()
 
         withReadableDatabase { db ->
             db.query(
@@ -199,7 +228,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
         return palettes
     }
 
-    private fun cursorToHost(cursor: Cursor): Host {
+    private fun cursorToHost(cursor: Cursor): LegacyHost {
         val idIndex = cursor.getColumnIndexOrThrow("_id")
         val nicknameIndex = cursor.getColumnIndexOrThrow("nickname")
         val protocolIndex = cursor.getColumnIndexOrThrow("protocol")
@@ -224,7 +253,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
         val scrollbackLinesIndex = cursor.getColumnIndex("scrollbacklines")
         val useCtrlAltAsMetaIndex = cursor.getColumnIndex("usectrlaltasmeta")
 
-        return Host(
+        return LegacyHost(
             id = cursor.getLong(idIndex),
             nickname = cursor.getString(nicknameIndex),
             protocol = cursor.getString(protocolIndex),

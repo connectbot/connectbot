@@ -93,13 +93,8 @@ fun HostEditorScreen(
         onHostnameChange = viewModel::updateHostname,
         onPortChange = viewModel::updatePort,
         onColorChange = viewModel::updateColor,
-        onColorSchemeChange = viewModel::updateColorSchemeId,
-        onFontSizeChange = viewModel::updateFontSize,
-        onFontFamilyChange = viewModel::updateFontFamily,
         onPubkeyChange = viewModel::updatePubkeyId,
         onProfileChange = viewModel::updateProfileId,
-        onDelKeyChange = viewModel::updateDelKey,
-        onEncodingChange = viewModel::updateEncoding,
         onUseAuthAgentChange = viewModel::updateUseAuthAgent,
         onCompressionChange = viewModel::updateCompression,
         onWantSessionChange = viewModel::updateWantSession,
@@ -125,13 +120,8 @@ fun HostEditorScreenContent(
     onHostnameChange: (String) -> Unit,
     onPortChange: (String) -> Unit,
     onColorChange: (String) -> Unit,
-    onColorSchemeChange: (Long) -> Unit,
-    onFontSizeChange: (Int) -> Unit,
-    onFontFamilyChange: (String?) -> Unit,
     onPubkeyChange: (Long) -> Unit,
     onProfileChange: (Long?) -> Unit,
-    onDelKeyChange: (String) -> Unit,
-    onEncodingChange: (String) -> Unit,
     onUseAuthAgentChange: (String) -> Unit,
     onCompressionChange: (Boolean) -> Unit,
     onWantSessionChange: (Boolean) -> Unit,
@@ -339,33 +329,6 @@ fun HostEditorScreenContent(
                 onColorSelected = onColorChange
             )
 
-            // Font size slider (disabled when profile is selected)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-            FontSizeSelector(
-                fontSize = uiState.fontSize,
-                onFontSizeChange = onFontSizeChange,
-                enabled = uiState.profileId == null
-            )
-
-            // Font family selector (disabled when profile is selected)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-            FontFamilySelector(
-                fontFamily = uiState.fontFamily,
-                customFonts = uiState.customFonts,
-                localFonts = uiState.localFonts,
-                onFontFamilySelected = onFontFamilyChange,
-                enabled = uiState.profileId == null
-            )
-
-            // Color scheme selector (disabled when profile is selected)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-            ColorSchemeSelector(
-                colorSchemeId = uiState.colorSchemeId,
-                availableSchemes = uiState.availableColorSchemes,
-                onColorSchemeSelected = onColorSchemeChange,
-                enabled = uiState.profileId == null
-            )
-
             // Pubkey selector
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
             PubkeySelector(
@@ -391,22 +354,6 @@ fun HostEditorScreenContent(
                     onJumpHostSelected = onJumpHostChange
                 )
             }
-
-            // DEL key selector (disabled when profile is selected)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-            DelKeySelector(
-                delKey = uiState.delKey,
-                onDelKeySelected = onDelKeyChange,
-                enabled = uiState.profileId == null
-            )
-
-            // Encoding selector (disabled when profile is selected)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-            EncodingSelector(
-                encoding = uiState.encoding,
-                onEncodingSelected = onEncodingChange,
-                enabled = uiState.profileId == null
-            )
 
             // SSH Auth agent
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
@@ -1176,7 +1123,6 @@ private fun HostEditorScreenPreview() {
                 hostname = "prod.example.com",
                 port = "22",
                 color = "blue",
-                fontSize = 12,
                 pubkeyId = -1L,
                 availablePubkeys = listOf(
                     Pubkey(
@@ -1191,8 +1137,6 @@ private fun HostEditorScreenPreview() {
                         createdDate = System.currentTimeMillis()
                     )
                 ),
-                delKey = "backspace",
-                encoding = "UTF-8",
                 useAuthAgent = "yes",
                 compression = true,
                 wantSession = true,
@@ -1208,13 +1152,8 @@ private fun HostEditorScreenPreview() {
             onHostnameChange = {},
             onPortChange = {},
             onColorChange = {},
-            onColorSchemeChange = {},
-            onFontSizeChange = {},
-            onFontFamilyChange = {},
             onPubkeyChange = {},
             onProfileChange = {},
-            onDelKeyChange = {},
-            onEncodingChange = {},
             onUseAuthAgentChange = {},
             onCompressionChange = {},
             onWantSessionChange = {},

@@ -40,7 +40,7 @@ object DatabaseModule {
             ConnectBotDatabase::class.java,
             DATABASE_NAME
         )
-            .addMigrations(ConnectBotDatabase.MIGRATION_3_4)
+            .addMigrations(ConnectBotDatabase.MIGRATION_2_3)
             .build()
     }
 

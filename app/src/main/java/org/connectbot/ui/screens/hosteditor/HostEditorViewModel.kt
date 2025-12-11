@@ -17,29 +17,22 @@
 
 package org.connectbot.ui.screens.hosteditor
 
-import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.HostRepository
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.PubkeyRepository
-import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
-import org.connectbot.util.LocalFontProvider
-import org.connectbot.util.TerminalFont
-import org.connectbot.util.TerminalFontProvider
 
 data class HostEditorUiState(
     val hostId: Long = -1L,
@@ -50,18 +43,10 @@ data class HostEditorUiState(
     val hostname: String = "",
     val port: String = "22",
     val color: String = "gray",
-    val colorSchemeId: Long = 1L,
-    val availableColorSchemes: List<ColorScheme> = emptyList(),
-    val fontSize: Int = 10,
-    val fontFamily: String? = null,
-    val customFonts: List<String> = emptyList(),
-    val localFonts: List<Pair<String, String>> = emptyList(),
     val pubkeyId: Long = -1L,
     val availablePubkeys: List<Pubkey> = emptyList(),
-    val profileId: Long? = null,
+    val profileId: Long? = 1L,
     val availableProfiles: List<Profile> = emptyList(),
-    val delKey: String = "del",
-    val encoding: String = "UTF-8",
     val useAuthAgent: String = "no",
     val compression: Boolean = false,
     val wantSession: Boolean = true,
@@ -80,14 +65,10 @@ class HostEditorViewModel @Inject constructor(
     private val repository: HostRepository,
     private val pubkeyRepository: PubkeyRepository,
     private val profileRepository: ProfileRepository,
-    private val colorSchemeRepository: ColorSchemeRepository,
-    private val prefs: android.content.SharedPreferences,
-    @ApplicationContext private val context: Context
+    private val prefs: android.content.SharedPreferences
 ) : ViewModel() {
 
     private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
-    private val localFontProvider = LocalFontProvider(context)
-    private val fontProvider = TerminalFontProvider(context)
     private val _uiState = MutableStateFlow(HostEditorUiState(hostId = hostId))
     val uiState: StateFlow<HostEditorUiState> = _uiState.asStateFlow()
 
@@ -95,9 +76,6 @@ class HostEditorViewModel @Inject constructor(
         loadPubkeys()
         loadJumpHosts()
         loadProfiles()
-        loadColorSchemes()
-        loadCustomFonts()
-        loadLocalFonts()
         if (hostId != -1L) {
             loadHost()
         } else {
@@ -107,21 +85,6 @@ class HostEditorViewModel @Inject constructor(
                 _uiState.update { it.copy(profileId = defaultProfileId) }
             }
         }
-    }
-
-    private fun loadCustomFonts() {
-        val customFontsString = prefs.getString("customFonts", "") ?: ""
-        val customFonts = if (customFontsString.isBlank()) {
-            emptyList()
-        } else {
-            customFontsString.split(",").filter { it.isNotBlank() }
-        }
-        _uiState.update { it.copy(customFonts = customFonts) }
-    }
-
-    private fun loadLocalFonts() {
-        val localFonts = localFontProvider.getImportedFonts()
-        _uiState.update { it.copy(localFonts = localFonts) }
     }
 
     private fun loadPubkeys() {
@@ -163,18 +126,6 @@ class HostEditorViewModel @Inject constructor(
         }
     }
 
-    private fun loadColorSchemes() {
-        viewModelScope.launch {
-            try {
-                val schemes = colorSchemeRepository.getAllSchemes()
-                _uiState.update { it.copy(availableColorSchemes = schemes) }
-            } catch (e: Exception) {
-                // Don't fail the whole screen if color schemes can't be loaded
-                _uiState.update { it.copy(availableColorSchemes = emptyList()) }
-            }
-        }
-    }
-
     private fun loadHost() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
@@ -189,13 +140,8 @@ class HostEditorViewModel @Inject constructor(
                             hostname = host.hostname,
                             port = host.port.toString(),
                             color = host.color ?: "gray",
-                            colorSchemeId = host.colorSchemeId,
-                            fontSize = host.fontSize,
-                            fontFamily = host.fontFamily,
                             pubkeyId = host.pubkeyId,
                             profileId = host.profileId,
-                            delKey = host.delKey,
-                            encoding = host.encoding,
                             useAuthAgent = host.useAuthAgent ?: "no",
                             compression = host.compression,
                             wantSession = host.wantSession,
@@ -265,46 +211,12 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(color = value) }
     }
 
-    fun updateColorSchemeId(value: Long) {
-        _uiState.update { it.copy(colorSchemeId = value) }
-    }
-
-    fun updateFontSize(value: Int) {
-        _uiState.update { it.copy(fontSize = value) }
-    }
-
-    fun updateFontFamily(value: String?) {
-        _uiState.update { it.copy(fontFamily = value) }
-        // Preload the font so it's cached when the Terminal opens
-        if (value != null) {
-            preloadFont(value)
-        }
-    }
-
-    private fun preloadFont(storedValue: String) {
-        // Skip if it's a local font (already on device) or system default
-        if (LocalFontProvider.isLocalFont(storedValue)) return
-        val googleFontName = TerminalFont.getGoogleFontName(storedValue)
-        if (googleFontName.isBlank()) return
-
-        // Trigger font download/caching in background
-        fontProvider.loadFontByName(googleFontName) { /* just cache it */ }
-    }
-
     fun updatePubkeyId(value: Long) {
         _uiState.update { it.copy(pubkeyId = value) }
     }
 
     fun updateProfileId(value: Long?) {
         _uiState.update { it.copy(profileId = value) }
-    }
-
-    fun updateDelKey(value: String) {
-        _uiState.update { it.copy(delKey = value) }
-    }
-
-    fun updateEncoding(value: String) {
-        _uiState.update { it.copy(encoding = value) }
     }
 
     fun updateUseAuthAgent(value: String) {
@@ -363,12 +275,8 @@ class HostEditorViewModel @Inject constructor(
                     hostname = state.hostname,
                     port = state.port.toIntOrNull() ?: 22,
                     color = state.color.takeIf { it != "gray" },
-                    fontSize = state.fontSize,
-                    fontFamily = state.fontFamily,
                     pubkeyId = state.pubkeyId,
                     profileId = state.profileId,
-                    delKey = state.delKey,
-                    encoding = state.encoding,
                     useAuthAgent = state.useAuthAgent.takeIf { it != "no" },
                     compression = state.compression,
                     wantSession = state.wantSession,
@@ -378,7 +286,6 @@ class HostEditorViewModel @Inject constructor(
                     lastConnect = existingHost?.lastConnect ?: System.currentTimeMillis(),
                     hostKeyAlgo = existingHost?.hostKeyAlgo,
                     useKeys = existingHost?.useKeys ?: true,
-                    colorSchemeId = state.colorSchemeId,
                     scrollbackLines = existingHost?.scrollbackLines ?: 140,
                     useCtrlAltAsMetaKey = existingHost?.useCtrlAltAsMetaKey ?: false,
                     jumpHostId = jumpHostId
