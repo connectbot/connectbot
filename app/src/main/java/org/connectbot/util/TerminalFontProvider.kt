@@ -20,23 +20,101 @@ package org.connectbot.util
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Handler
-import android.os.HandlerThread
+import android.os.Looper
 import android.util.Log
 import androidx.core.provider.FontRequest
 import androidx.core.provider.FontsContractCompat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import org.connectbot.R
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.coroutines.resume
 
 /**
  * Provider for loading terminal fonts via Google Fonts API.
  * Fonts are cached after loading for performance.
  * Supports both preset fonts (TerminalFont enum) and custom font names.
+ *
+ * All font loading operations run on Dispatchers.IO to avoid blocking the main thread.
  */
 class TerminalFontProvider(private val context: Context) {
     private val fontCache = ConcurrentHashMap<String, Typeface>()
     private val loadingFonts = ConcurrentHashMap<String, Boolean>()
-    private val handlerThread = HandlerThread("FontLoader").apply { start() }
-    private val handler = Handler(handlerThread.looper)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val mainHandler = Handler(Looper.getMainLooper())
+
+    /**
+     * Load a font by its Google Fonts name using coroutines.
+     * Returns the loaded typeface or Typeface.MONOSPACE on failure.
+     *
+     * @param googleFontName The exact name as it appears on Google Fonts (e.g., "JetBrains Mono")
+     * @return The loaded Typeface, or Typeface.MONOSPACE on failure
+     */
+    suspend fun loadFontByNameSuspend(googleFontName: String): Typeface = withContext(Dispatchers.IO) {
+        // Empty name returns monospace immediately
+        if (googleFontName.isBlank()) {
+            return@withContext Typeface.MONOSPACE
+        }
+
+        val cacheKey = googleFontName.lowercase()
+
+        // Return cached font if available
+        fontCache[cacheKey]?.let {
+            return@withContext it
+        }
+
+        // Wait if another coroutine is already loading this font
+        while (loadingFonts.putIfAbsent(cacheKey, true) != null) {
+            // Check if it got cached while we waited
+            fontCache[cacheKey]?.let {
+                return@withContext it
+            }
+            // Small delay before checking again
+            kotlinx.coroutines.delay(POLL_INTERVAL_MS)
+        }
+
+        try {
+            val typeface = suspendCancellableCoroutine<Typeface> { continuation ->
+                val request = FontRequest(
+                    "com.google.android.gms.fonts",
+                    "com.google.android.gms",
+                    googleFontName,
+                    R.array.com_google_android_gms_fonts_certs
+                )
+
+                val fontCallback = object : FontsContractCompat.FontRequestCallback() {
+                    override fun onTypefaceRetrieved(typeface: Typeface) {
+                        Log.d(TAG, "Font loaded: $googleFontName")
+                        if (continuation.isActive) {
+                            continuation.resume(typeface)
+                        }
+                    }
+
+                    override fun onTypefaceRequestFailed(reason: Int) {
+                        Log.w(TAG, "Font request failed for $googleFontName: $reason")
+                        if (continuation.isActive) {
+                            continuation.resume(Typeface.MONOSPACE)
+                        }
+                    }
+                }
+
+                // FontsContractCompat requires a Handler for callbacks
+                FontsContractCompat.requestFont(context, request, fontCallback, mainHandler)
+            }
+
+            // Cache the loaded font
+            if (typeface != Typeface.MONOSPACE) {
+                fontCache[cacheKey] = typeface
+            }
+            typeface
+        } finally {
+            loadingFonts.remove(cacheKey)
+        }
+    }
 
     /**
      * Load a font asynchronously by its Google Fonts name and invoke the callback when ready.
@@ -60,37 +138,24 @@ class TerminalFontProvider(private val context: Context) {
             return
         }
 
-        // Prevent duplicate loading
-        if (loadingFonts.putIfAbsent(cacheKey, true) != null) {
-            // Already loading, poll until ready
-            pollForFontByName(cacheKey, callback)
-            return
-        }
-
-        val request = FontRequest(
-            "com.google.android.gms.fonts",
-            "com.google.android.gms",
-            googleFontName,
-            R.array.com_google_android_gms_fonts_certs
-        )
-
-        val fontCallback = object : FontsContractCompat.FontRequestCallback() {
-            override fun onTypefaceRetrieved(typeface: Typeface) {
-                Log.d(TAG, "Font loaded: $googleFontName")
-                fontCache[cacheKey] = typeface
-                loadingFonts.remove(cacheKey)
+        // Launch coroutine to load font on IO dispatcher
+        scope.launch {
+            val typeface = loadFontByNameSuspend(googleFontName)
+            withContext(Dispatchers.Main) {
                 callback(typeface)
             }
-
-            override fun onTypefaceRequestFailed(reason: Int) {
-                Log.w(TAG, "Font request failed for $googleFontName: $reason")
-                loadingFonts.remove(cacheKey)
-                // Fall back to monospace on failure
-                callback(Typeface.MONOSPACE)
-            }
         }
+    }
 
-        FontsContractCompat.requestFont(context, request, fontCallback, handler)
+    /**
+     * Load a preset font using coroutines.
+     * Returns the loaded typeface or Typeface.MONOSPACE on failure.
+     */
+    suspend fun loadFontSuspend(font: TerminalFont): Typeface {
+        if (font == TerminalFont.SYSTEM_DEFAULT) {
+            return Typeface.MONOSPACE
+        }
+        return loadFontByNameSuspend(font.googleFontName)
     }
 
     /**
@@ -105,6 +170,17 @@ class TerminalFontProvider(private val context: Context) {
         }
 
         loadFontByName(font.googleFontName, callback)
+    }
+
+    /**
+     * Load a font from a stored value using coroutines.
+     */
+    suspend fun loadFontFromStoredValueSuspend(storedValue: String?): Typeface {
+        val googleFontName = TerminalFont.getGoogleFontName(storedValue)
+        if (googleFontName.isBlank()) {
+            return Typeface.MONOSPACE
+        }
+        return loadFontByNameSuspend(googleFontName)
     }
 
     /**
@@ -131,8 +207,10 @@ class TerminalFontProvider(private val context: Context) {
         val cacheKey = googleFontName.lowercase()
         fontCache[cacheKey]?.let { return it }
 
-        // Trigger loading in background
-        loadFontByName(googleFontName) { /* just cache it */ }
+        // Trigger loading in background using coroutine
+        scope.launch {
+            loadFontByNameSuspend(googleFontName)
+        }
 
         return fallback
     }
@@ -172,14 +250,23 @@ class TerminalFontProvider(private val context: Context) {
     /**
      * Check if the font provider is available on this device.
      */
-    fun isProviderAvailable(): Boolean {
-        return try {
+    suspend fun isProviderAvailable(): Boolean = withContext(Dispatchers.IO) {
+        try {
             val pm = context.packageManager
             pm.getPackageInfo("com.google.android.gms", 0)
             true
         } catch (e: Exception) {
             Log.w(TAG, "Google Play Services not available for fonts")
             false
+        }
+    }
+
+    /**
+     * Preload a list of fonts in the background using coroutines.
+     */
+    suspend fun preloadFontsSuspend(fonts: List<TerminalFont>) = withContext(Dispatchers.IO) {
+        fonts.forEach { font ->
+            loadFontSuspend(font)
         }
     }
 
@@ -192,16 +279,11 @@ class TerminalFontProvider(private val context: Context) {
             return
         }
 
-        var remaining = fonts.size
-        val lock = Any()
-
-        fonts.forEach { font ->
-            loadFont(font) {
-                synchronized(lock) {
-                    remaining--
-                    if (remaining == 0) {
-                        onComplete?.invoke()
-                    }
+        scope.launch {
+            preloadFontsSuspend(fonts)
+            onComplete?.let {
+                withContext(Dispatchers.Main) {
+                    it()
                 }
             }
         }
@@ -214,23 +296,8 @@ class TerminalFontProvider(private val context: Context) {
         fontCache.clear()
     }
 
-    private fun pollForFontByName(cacheKey: String, callback: (Typeface) -> Unit) {
-        handler.postDelayed({
-            val cached = fontCache[cacheKey]
-            if (cached != null) {
-                callback(cached)
-            } else if (loadingFonts.containsKey(cacheKey)) {
-                // Still loading, poll again
-                pollForFontByName(cacheKey, callback)
-            } else {
-                // Loading finished but no font - use fallback
-                callback(Typeface.MONOSPACE)
-            }
-        }, POLL_INTERVAL_MS)
-    }
-
     companion object {
         private const val TAG = "TerminalFontProvider"
-        private const val POLL_INTERVAL_MS = 100L
+        private const val POLL_INTERVAL_MS = 50L
     }
 }
