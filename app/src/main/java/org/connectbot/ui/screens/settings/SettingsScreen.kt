@@ -80,6 +80,7 @@ fun SettingsScreen(
         onVolumeFontChange = viewModel::updateVolumeFont,
         onKeepAliveChange = viewModel::updateKeepAlive,
         onAlwaysVisibleChange = viewModel::updateAlwaysVisible,
+        onKeyPreventOverlapChange = viewModel::updateKeyPreventOverlap,
         onShiftFkeysChange = viewModel::updateShiftFkeys,
         onCtrlFkeysChange = viewModel::updateCtrlFkeys,
         onStickyModifiersChange = viewModel::updateStickyModifiers,
@@ -112,6 +113,7 @@ fun SettingsScreenContent(
     onVolumeFontChange: (Boolean) -> Unit,
     onKeepAliveChange: (Boolean) -> Unit,
     onAlwaysVisibleChange: (Boolean) -> Unit,
+    onKeyPreventOverlapChange: (Boolean) -> Unit,
     onShiftFkeysChange: (Boolean) -> Unit,
     onCtrlFkeysChange: (Boolean) -> Unit,
     onStickyModifiersChange: (String) -> Unit,
@@ -277,6 +279,17 @@ fun SettingsScreenContent(
                     checked = uiState.alwaysvisible,
                     onCheckedChange = onAlwaysVisibleChange
                 )
+            }
+
+            if (!uiState.alwaysvisible) {
+                item {
+                    SwitchPreference(
+                        title = stringResource(R.string.pref_keypreventoverlap_title),
+                        summary = stringResource(R.string.pref_keypreventoverlap_summary),
+                        checked = uiState.keypreventoverlap,
+                        onCheckedChange = onKeyPreventOverlapChange
+                    )
+                }
             }
 
             item {
@@ -614,6 +627,7 @@ private fun SettingsScreenPreview() {
                 volumefont = true,
                 keepalive = true,
                 alwaysvisible = true,
+                keypreventoverlap = true,
                 shiftfkeys = false,
                 ctrlfkeys = false,
                 stickymodifiers = "yes",
@@ -639,6 +653,7 @@ private fun SettingsScreenPreview() {
             onVolumeFontChange = {},
             onKeepAliveChange = {},
             onAlwaysVisibleChange = {},
+            onKeyPreventOverlapChange = {},
             onShiftFkeysChange = {},
             onCtrlFkeysChange = {},
             onStickyModifiersChange = {},

@@ -135,6 +135,7 @@ fun ConsoleScreen(
     // Read preferences
     val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
     val keyboardAlwaysVisible = remember { prefs.getBoolean("alwaysvisible", false) }
+    val keyPreventOverlap = remember { prefs.getBoolean("keypreventoverlap", true) }
     var fullscreen by remember { mutableStateOf(prefs.getBoolean("fullscreen", false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean("titlebarhide", false)) }
 
@@ -349,7 +350,7 @@ fun ConsoleScreen(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(
-                                    bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp
+                                    bottom = if (keyboardAlwaysVisible || (keyPreventOverlap && showExtraKeyboard)) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp
                                 ),
                             typeface = typeface,
                             initialFontSize = bridge.fontSizeFlow.value.sp,

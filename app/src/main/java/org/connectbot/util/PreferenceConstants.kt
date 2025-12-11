@@ -41,6 +41,7 @@ object PreferenceConstants {
 
     const val KEYMODE: String = "keymode"
     const val KEY_ALWAYS_VISIBLE: String = "alwaysvisible"
+    const val KEY_PREVENT_OVERLAP: String = "keypreventoverlap"
 
     const val KEYMODE_RIGHT: String = "Use right-side keys"
     const val KEYMODE_LEFT: String = "Use left-side keys"

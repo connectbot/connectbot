@@ -42,6 +42,7 @@ data class SettingsUiState(
     val volumefont: Boolean = true,
     val keepalive: Boolean = true,
     val alwaysvisible: Boolean = false,
+    val keypreventoverlap: Boolean = true,
     val shiftfkeys: Boolean = false,
     val ctrlfkeys: Boolean = false,
     val stickymodifiers: String = "no",
@@ -76,6 +77,7 @@ class SettingsViewModel @Inject constructor(
             volumefont = prefs.getBoolean("volumefont", true),
             keepalive = prefs.getBoolean("keepalive", true),
             alwaysvisible = prefs.getBoolean("alwaysvisible", false),
+            keypreventoverlap = prefs.getBoolean("keypreventoverlap", true),
             shiftfkeys = prefs.getBoolean("shiftfkeys", false),
             ctrlfkeys = prefs.getBoolean("ctrlfkeys", false),
             stickymodifiers = prefs.getString("stickymodifiers", "no") ?: "no",
@@ -139,6 +141,10 @@ class SettingsViewModel @Inject constructor(
 
     fun updateAlwaysVisible(value: Boolean) {
         updateBooleanPref("alwaysvisible", value) { copy(alwaysvisible = value) }
+    }
+
+    fun updateKeyPreventOverlap(value: Boolean) {
+        updateBooleanPref("keypreventoverlap", value) { copy(keypreventoverlap = value) }
     }
 
     fun updateShiftFkeys(value: Boolean) {

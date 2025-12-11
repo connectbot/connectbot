@@ -231,6 +231,11 @@
 	<!-- Title for special keys always visible preference -->
 	<string name="pref_alwaysvisible_title">Special keys always visible</string>
 
+	<!-- Title for prevent special keys overlap preference -->
+	<string name="pref_keypreventoverlap_title">Prevent special keys overlap</string>
+	<!-- Summary for prevent special keys overlap preference -->
+	<string name="pref_keypreventoverlap_summary">Add padding to terminal when special keys are visible to avoid overlap</string>
+
 	<!-- Name for the page up/down gesture preference -->
 	<string name="pref_pg_updn_gesture_title">"Page up/down gesture"</string>
 	<!-- Summary for the full screen preference -->
