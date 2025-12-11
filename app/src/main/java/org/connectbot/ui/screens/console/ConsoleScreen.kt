@@ -135,7 +135,7 @@ fun ConsoleScreen(
     // Read preferences
     val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
     val keyboardAlwaysVisible = remember { prefs.getBoolean("alwaysvisible", false) }
-    val keyPreventOverlap = remember { prefs.getBoolean("keypreventoverlap", true) }
+    val keyPreventOverlap = remember { prefs.getBoolean("keypreventoverlap", false) }
     var fullscreen by remember { mutableStateOf(prefs.getBoolean("fullscreen", false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean("titlebarhide", false)) }
 
