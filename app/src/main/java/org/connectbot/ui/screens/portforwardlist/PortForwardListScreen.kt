@@ -62,11 +62,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
 import org.connectbot.data.entity.PortForward
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,7 +74,6 @@ fun PortForwardListScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
     val terminalManager = org.connectbot.ui.LocalTerminalManager.current
     val viewModel: PortForwardListViewModel = hiltViewModel()
 
@@ -186,6 +185,7 @@ fun PortForwardListScreenContent(
                         ) { portForward ->
                             PortForwardListItem(
                                 portForward = portForward,
+                                isEnabled = portForward.isEnabled(),
                                 onEdit = { editingPortForward = portForward },
                                 onDelete = { onDeletePortForward(portForward) },
                                 onEnable = { onEnablePortForward(portForward) },
@@ -340,6 +340,7 @@ private fun PortForwardListScreenPopulatedPreview() {
 @Composable
 private fun PortForwardListItem(
     portForward: PortForward,
+    isEnabled: Boolean,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
     onEnable: () -> Unit,
@@ -348,7 +349,6 @@ private fun PortForwardListItem(
     modifier: Modifier = Modifier
 ) {
     var showMenu by remember { mutableStateOf(false) }
-    val isEnabled = portForward.isEnabled()
 
     ListItem(
         headlineContent = {
