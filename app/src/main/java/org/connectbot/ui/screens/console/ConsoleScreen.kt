@@ -159,14 +159,6 @@ fun ConsoleScreen(
     var imeVisible by remember { mutableStateOf(false) }
     var isFirstLoad by remember(uiState.currentBridgeIndex) { mutableStateOf(true) }
 
-    // One-time initialization
-    LaunchedEffect(Unit) {
-        // Disable StrictMode for terminal I/O (matches old ConsoleActivity behavior)
-        // Terminal key input triggers immediate network writes which need to happen on main thread
-        // for responsiveness. This is intentional behavior carried over from the original implementation.
-        android.os.StrictMode.setThreadPolicy(android.os.StrictMode.ThreadPolicy.LAX)
-    }
-
     // Apply fullscreen mode and display cutout settings
     LaunchedEffect(fullscreen) {
         val activity = context as? Activity ?: return@LaunchedEffect
