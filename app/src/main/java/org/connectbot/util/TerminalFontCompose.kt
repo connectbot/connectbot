@@ -208,16 +208,10 @@ fun rememberTerminalTypefaceResultFromStoredValue(
             return@LaunchedEffect
         }
 
-        // Load font using suspendCancellableCoroutine for proper coroutine integration
+        // Load font using suspend function (runs on Dispatchers.IO)
         Log.d(TAG, "Loading font from provider: $googleFontName")
-        val loadedTypeface = suspendCancellableCoroutine { continuation ->
-            fontProvider.loadFontByName(googleFontName) { result ->
-                if (continuation.isActive) {
-                    Log.d(TAG, "Font loaded: $googleFontName, typeface: $result")
-                    continuation.resume(result)
-                }
-            }
-        }
+        val loadedTypeface = fontProvider.loadFontByNameSuspend(googleFontName)
+        Log.d(TAG, "Font loaded: $googleFontName, typeface: $loadedTypeface")
         // Build typeface with fallback chain (custom font → monospace → system default)
         typeface = buildTypefaceWithFallback(loadedTypeface)
         // If we got MONOSPACE back but didn't request it, the load failed
