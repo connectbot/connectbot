@@ -96,4 +96,36 @@ data class PortForward(
     fun setIdentifier(value: Any?) {
         identifier = value
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as PortForward
+
+        if (id != other.id) return false
+        if (hostId != other.hostId) return false
+        if (nickname != other.nickname) return false
+        if (type != other.type) return false
+        if (sourcePort != other.sourcePort) return false
+        if (destAddr != other.destAddr) return false
+        if (destPort != other.destPort) return false
+        if (enabled != other.enabled) return false
+        if (identifier != other.identifier) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + hostId.hashCode()
+        result = 31 * result + nickname.hashCode()
+        result = 31 * result + type.hashCode()
+        result = 31 * result + sourcePort
+        result = 31 * result + (destAddr?.hashCode() ?: 0)
+        result = 31 * result + destPort
+        result = 31 * result + enabled.hashCode()
+        result = 31 * result + (identifier?.hashCode() ?: 0)
+        return result
+    }
 }
