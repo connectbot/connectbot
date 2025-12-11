@@ -111,7 +111,7 @@ class HostListScreenTest {
 
         // Verify menu items are displayed
         composeTestRule
-            .onNodeWithText("Manage Pubkeys")
+            .onNodeWithText("Manage pubkeys")
             .assertIsDisplayed()
     }
 
