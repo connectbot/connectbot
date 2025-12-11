@@ -29,6 +29,7 @@ import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
+import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
 import org.junit.After
 import org.junit.Before
@@ -133,7 +134,8 @@ class DatabaseMigratorTest {
             knownHosts = emptyList(),
             colorSchemes = emptyList(),
             colorPalettes = emptyList(),
-            pubkeys = emptyList()
+            pubkeys = emptyList(),
+            profiles = emptyList()
         )
 
         assertThat(transformedData.hosts).isEmpty()
@@ -254,7 +256,7 @@ class DatabaseMigratorTest {
     private fun createTestHost(
         id: Long,
         nickname: String
-    ) = Host(
+    ) = LegacyHost(
         id = id,
         nickname = nickname,
         protocol = "ssh",
