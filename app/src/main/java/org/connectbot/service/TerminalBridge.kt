@@ -162,11 +162,12 @@ class TerminalBridge {
             defaultForeground = Color(defaultFg),
             defaultBackground = Color(defaultBg),
             onKeyboardInput = { data ->
-                // Handle keyboard input from Terminal composable
-                try {
-                    transport?.write(data)
-                } catch (e: IOException) {
-                    Log.e(TAG, "Problem writing keyboard data", e)
+                scope.launch(Dispatchers.IO) {
+                    try {
+                        transport?.write(data)
+                    } catch (e: IOException) {
+                        Log.e(TAG, "Problem writing keyboard data", e)
+                    }
                 }
             },
             onBell = {
@@ -176,7 +177,9 @@ class TerminalBridge {
                 manager.sendActivityNotification(host)
             },
             onResize = {
-                transport?.setDimensions(it.columns, it.rows, 0, 0)
+                scope.launch(Dispatchers.IO) {
+                    transport?.setDimensions(it.columns, it.rows, 0, 0)
+                }
             }
         )
 
