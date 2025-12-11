@@ -337,8 +337,7 @@ fun ConsoleScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(
-                                top = if (!titleBarHide) titleBarHeight else 0.dp,
-                                bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp
+                                top = if (!titleBarHide) titleBarHeight else 0.dp
                             )
                     ) {
                         val typeface = Typeface.MONOSPACE
@@ -355,7 +354,11 @@ fun ConsoleScreen(
 
                         Terminal(
                             terminalEmulator = bridge.terminalEmulator,
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(
+                                    bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp
+                                ),
                             typeface = typeface,
                             initialFontSize = bridge.fontSizeFlow.value.sp,
                             keyboardEnabled = true,
