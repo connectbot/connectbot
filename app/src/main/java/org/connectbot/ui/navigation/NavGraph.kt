@@ -20,6 +20,7 @@ package org.connectbot.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -44,18 +45,20 @@ import org.connectbot.ui.screens.pubkeylist.PubkeyListScreen
 import org.connectbot.ui.screens.settings.SettingsScreen
 
 /**
+ * If the lifecycle is not resumed it means this NavBackStackEntry already processed a nav event.
+ *
+ * This is used to de-duplicate navigation events.
+ */
+private fun NavBackStackEntry?.lifecycleIsResumed() =
+    this?.lifecycle?.currentState == Lifecycle.State.RESUMED
+
+/**
  * Safely pops the back stack, preventing double navigation when the user rapidly taps
  * the back button. This checks if the current destination's lifecycle state is RESUMED
  * before allowing the navigation to proceed.
  */
-fun NavHostController.safePopBackStack(): Boolean {
-    val currentEntry = currentBackStackEntry
-    return if (currentEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
-        popBackStack()
-    } else {
-        false
-    }
-}
+private fun NavHostController.safePopBackStack() =
+    if (currentBackStackEntry.lifecycleIsResumed()) popBackStack() else false
 
 @Composable
 fun ConnectBotNavHost(

@@ -86,8 +86,7 @@ class ProfileRepository @Inject constructor(
 
         val newProfile = baseProfile.copy(
             id = 0, // Auto-generate
-            name = name,
-            isBuiltIn = false
+            name = name
         )
         profileDao.insert(newProfile)
     }
@@ -151,6 +150,18 @@ class ProfileRepository @Inject constructor(
     }
 
     /**
+     * Blocking wrapper that returns the profile or the default if not found.
+     * This ensures a profile is always returned.
+     */
+    fun getByIdOrDefaultBlocking(profileId: Long?): Profile = runBlocking {
+        if (profileId == null) {
+            getDefault()
+        } else {
+            getById(profileId) ?: getDefault()
+        }
+    }
+
+    /**
      * Duplicate an existing profile.
      *
      * @param sourceProfileId The profile to duplicate
@@ -162,8 +173,7 @@ class ProfileRepository @Inject constructor(
             val source = profileDao.getById(sourceProfileId) ?: Profile.createDefault()
             val newProfile = source.copy(
                 id = 0,
-                name = newName,
-                isBuiltIn = false
+                name = newName
             )
             profileDao.insert(newProfile)
         }

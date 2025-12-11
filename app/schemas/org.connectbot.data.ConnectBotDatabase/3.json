@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "821ced7ff42d963da09596cbe94d1f51",
+    "identityHash": "01c805041b6f7c7f32469a0475ac6685",
     "entities": [
       {
         "tableName": "hosts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nickname` TEXT NOT NULL, `protocol` TEXT NOT NULL, `username` TEXT NOT NULL, `hostname` TEXT NOT NULL, `port` INTEGER NOT NULL, `host_key_algo` TEXT, `last_connect` INTEGER NOT NULL, `color` TEXT, `use_keys` INTEGER NOT NULL, `use_auth_agent` TEXT, `post_login` TEXT, `pubkey_id` INTEGER NOT NULL, `want_session` INTEGER NOT NULL, `compression` INTEGER NOT NULL, `encoding` TEXT NOT NULL, `stay_connected` INTEGER NOT NULL, `quick_disconnect` INTEGER NOT NULL, `font_size` INTEGER NOT NULL, `color_scheme_id` INTEGER NOT NULL, `del_key` TEXT NOT NULL, `scrollback_lines` INTEGER NOT NULL, `use_ctrl_alt_as_meta_key` INTEGER NOT NULL, `jump_host_id` INTEGER, `font_family` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nickname` TEXT NOT NULL, `protocol` TEXT NOT NULL, `username` TEXT NOT NULL, `hostname` TEXT NOT NULL, `port` INTEGER NOT NULL, `host_key_algo` TEXT, `last_connect` INTEGER NOT NULL, `color` TEXT, `use_keys` INTEGER NOT NULL, `use_auth_agent` TEXT, `post_login` TEXT, `pubkey_id` INTEGER NOT NULL, `want_session` INTEGER NOT NULL, `compression` INTEGER NOT NULL, `stay_connected` INTEGER NOT NULL, `quick_disconnect` INTEGER NOT NULL, `scrollback_lines` INTEGER NOT NULL, `use_ctrl_alt_as_meta_key` INTEGER NOT NULL, `jump_host_id` INTEGER, `profile_id` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -95,12 +95,6 @@
             "notNull": true
           },
           {
-            "fieldPath": "encoding",
-            "columnName": "encoding",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
             "fieldPath": "stayConnected",
             "columnName": "stay_connected",
             "affinity": "INTEGER",
@@ -110,24 +104,6 @@
             "fieldPath": "quickDisconnect",
             "columnName": "quick_disconnect",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "fontSize",
-            "columnName": "font_size",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "colorSchemeId",
-            "columnName": "color_scheme_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "delKey",
-            "columnName": "del_key",
-            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -148,9 +124,9 @@
             "affinity": "INTEGER"
           },
           {
-            "fieldPath": "fontFamily",
-            "columnName": "font_family",
-            "affinity": "TEXT"
+            "fieldPath": "profileId",
+            "columnName": "profile_id",
+            "affinity": "INTEGER"
           }
         ],
         "primaryKey": {
@@ -580,11 +556,91 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "profiles",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `icon_color` TEXT, `color_scheme_id` INTEGER NOT NULL DEFAULT -1, `font_family` TEXT, `font_size` INTEGER NOT NULL DEFAULT 10, `del_key` TEXT NOT NULL DEFAULT 'del', `encoding` TEXT NOT NULL DEFAULT 'UTF-8', `emulation` TEXT NOT NULL DEFAULT 'xterm-256color')",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "iconColor",
+            "columnName": "icon_color",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "colorSchemeId",
+            "columnName": "color_scheme_id",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "-1"
+          },
+          {
+            "fieldPath": "fontFamily",
+            "columnName": "font_family",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "fontSize",
+            "columnName": "font_size",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "10"
+          },
+          {
+            "fieldPath": "delKey",
+            "columnName": "del_key",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "'del'"
+          },
+          {
+            "fieldPath": "encoding",
+            "columnName": "encoding",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "'UTF-8'"
+          },
+          {
+            "fieldPath": "emulation",
+            "columnName": "emulation",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "'xterm-256color'"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_profiles_name",
+            "unique": true,
+            "columnNames": [
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_profiles_name` ON `${TABLE_NAME}` (`name`)"
+          }
+        ]
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '821ced7ff42d963da09596cbe94d1f51')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '01c805041b6f7c7f32469a0475ac6685')"
     ]
   }
 }

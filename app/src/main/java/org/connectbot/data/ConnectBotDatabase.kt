@@ -50,13 +50,12 @@ import org.connectbot.data.entity.Pubkey
  * - known_hosts: SSH host key verification data
  * - color_schemes: Terminal color scheme metadata
  * - color_palette: Terminal color overrides
+ * - profiles: Terminal profile configurations
  *
  * Migration Strategy:
  * - Version 1: Initial Room schema (migrated from HostDatabase v27 + PubkeyDatabase v2)
  * - Version 2: Added jump_host_id column for ProxyJump support (AutoMigration)
- * - Version 3: Added font_family column for downloadable fonts support (AutoMigration)
- * - Version 4: Added profiles table and profile_id column to hosts (manual migration)
- * - Version 5: Added icon_color column to profiles table (AutoMigration)
+ * - Version 3: Added profiles table and profile_id column to hosts (manual migration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -74,12 +73,10 @@ import org.connectbot.data.entity.Pubkey
         ColorPalette::class,
         Profile::class
     ],
-    version = 5,
+    version = 3,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(from = 1, to = 2),
-        AutoMigration(from = 2, to = 3),
-        AutoMigration(from = 4, to = 5)
+        AutoMigration(from = 1, to = 2)
     ]
 )
 @TypeConverters(Converters::class)
@@ -94,9 +91,10 @@ abstract class ConnectBotDatabase : RoomDatabase() {
 
     companion object {
         /**
-         * Migration from version 3 to 4: Add profiles table and profile_id to hosts.
+         * Migration from version 2 to 3: Add profiles table and profile_id to hosts.
+         * Also creates profiles from existing host settings and migrates hosts to use them.
          */
-        val MIGRATION_3_4 = object : Migration(3, 4) {
+        val MIGRATION_2_3 = object : Migration(2, 3) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 // Create profiles table
                 // Note: No foreign key to color_schemes because built-in color schemes use negative IDs
@@ -105,7 +103,7 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                     CREATE TABLE IF NOT EXISTS `profiles` (
                         `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                         `name` TEXT NOT NULL,
-                        `is_built_in` INTEGER NOT NULL DEFAULT 0,
+                        `icon_color` TEXT,
                         `color_scheme_id` INTEGER NOT NULL DEFAULT -1,
                         `font_family` TEXT,
                         `font_size` INTEGER NOT NULL DEFAULT 10,
@@ -120,12 +118,50 @@ abstract class ConnectBotDatabase : RoomDatabase() {
 
                 // Insert default profile with color_scheme_id = -1 (Default built-in scheme)
                 db.execSQL("""
-                    INSERT INTO `profiles` (`id`, `name`, `is_built_in`, `color_scheme_id`, `font_family`, `font_size`, `del_key`, `encoding`, `emulation`)
-                    VALUES (1, 'Default', 1, -1, NULL, 10, 'del', 'UTF-8', 'xterm-256color')
+                    INSERT INTO `profiles` (`id`, `name`, `color_scheme_id`, `font_family`, `font_size`, `del_key`, `encoding`, `emulation`)
+                    VALUES (1, 'Default', -1, NULL, 10, 'del', 'UTF-8', 'xterm-256color')
+                """.trimIndent())
+
+                // Create profiles from unique host settings combinations
+                // Use a data class key: (color_scheme_id, font_size, del_key, encoding)
+                // This groups hosts with identical terminal settings into shared profiles
+                db.execSQL("""
+                    INSERT INTO `profiles` (`name`, `color_scheme_id`, `font_size`, `del_key`, `encoding`)
+                    SELECT
+                        'Migrated Profile ' || ROW_NUMBER() OVER (ORDER BY color_scheme_id, font_size, del_key, encoding),
+                        color_scheme_id,
+                        font_size,
+                        del_key,
+                        encoding
+                    FROM (
+                        SELECT DISTINCT color_scheme_id, font_size, del_key, encoding
+                        FROM hosts
+                        WHERE NOT (color_scheme_id = 1 AND font_size = 10 AND del_key = 'DEL' AND encoding = 'UTF-8')
+                    )
                 """.trimIndent())
 
                 // Add profile_id column to hosts table
-                db.execSQL("ALTER TABLE `hosts` ADD COLUMN `profile_id` INTEGER DEFAULT NULL")
+                db.execSQL("ALTER TABLE `hosts` ADD COLUMN `profile_id` INTEGER DEFAULT 1")
+
+                // Update hosts to point to their matching profile
+                db.execSQL("""
+                    UPDATE hosts
+                    SET profile_id = (
+                        SELECT p.id FROM profiles p
+                        WHERE p.color_scheme_id = hosts.color_scheme_id
+                          AND p.font_size = hosts.font_size
+                          AND p.del_key = hosts.del_key
+                          AND p.encoding = hosts.encoding
+                        LIMIT 1
+                    )
+                    WHERE EXISTS (
+                        SELECT 1 FROM profiles p
+                        WHERE p.color_scheme_id = hosts.color_scheme_id
+                          AND p.font_size = hosts.font_size
+                          AND p.del_key = hosts.del_key
+                          AND p.encoding = hosts.encoding
+                    )
+                """.trimIndent())
             }
         }
     }

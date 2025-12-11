@@ -43,6 +43,7 @@ object TestDatabaseModule {
             ConnectBotDatabase::class.java,
             TEST_DATABASE_NAME
         )
+            .addMigrations(ConnectBotDatabase.MIGRATION_2_3)
             .allowMainThreadQueries()
             .build()
     }
