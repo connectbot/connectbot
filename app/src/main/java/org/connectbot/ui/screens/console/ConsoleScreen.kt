@@ -514,7 +514,7 @@ fun ConsoleScreen(
                 onDismiss = { showDisconnectDialog = false },
                 onConfirm = {
                     showDisconnectDialog = false
-                    currentBridge.dispatchDisconnect(true)
+                    viewModel.disconnectAllSessionsForCurrentHost()
                 }
             )
         }
