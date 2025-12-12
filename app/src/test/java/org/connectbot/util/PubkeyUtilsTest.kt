@@ -18,16 +18,11 @@ package org.connectbot.util
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.connectbot.util.PubkeyUtils.encodeHex
-import org.connectbot.util.PubkeyUtils.getAlgorithmForOid
-import org.connectbot.util.PubkeyUtils.getOidFromPkcs8Encoded
-import org.connectbot.util.PubkeyUtils.getRSAPublicExponentFromPkcs8Encoded
 import org.connectbot.util.PubkeyUtils.recoverKeyPair
 import org.junit.Assert
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.math.BigInteger
-import java.security.NoSuchAlgorithmException
 import java.security.PrivateKey
 import java.security.interfaces.DSAPublicKey
 import java.security.interfaces.ECPublicKey
@@ -48,73 +43,6 @@ class PubkeyUtilsTest {
             "Encoded hex should match expected",
             encodeHex(input), expected
         )
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun getOidFromPkcs8Encoded_Ec_NistP256() {
-        Assert.assertEquals("1.2.840.10045.2.1", getOidFromPkcs8Encoded(EC_KEY_PKCS8))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun getOidFromPkcs8Encoded_Rsa() {
-        Assert.assertEquals("1.2.840.113549.1.1.1", getOidFromPkcs8Encoded(RSA_KEY_PKCS8))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun getOidFromPkcs8Encoded_Dsa() {
-        Assert.assertEquals("1.2.840.10040.4.1", getOidFromPkcs8Encoded(DSA_KEY_PKCS8))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun getOidFromPkcs8Encoded_NotCorrectDer_Failure() {
-        try {
-            getOidFromPkcs8Encoded(byteArrayOf(0x30, 0x01, 0x00))
-            Assert.fail("Should throw NoSuchAlgorithmException")
-        } catch (expected: NoSuchAlgorithmException) {
-        }
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun getAlgorithmForOid_Ecdsa() {
-        Assert.assertEquals("EC", getAlgorithmForOid("1.2.840.10045.2.1"))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun getAlgorithmForOid_Rsa() {
-        Assert.assertEquals("RSA", getAlgorithmForOid("1.2.840.113549.1.1.1"))
-    }
-
-    @Test
-    @Ignore
-    @Throws(Exception::class)
-    fun getAlgorithmForOid_Dsa() {
-        Assert.assertEquals("DSA", getAlgorithmForOid("1.2.840.10040.4.1"))
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun getAlgorithmForOid_NullInput_Failure() {
-        try {
-            getAlgorithmForOid(null)
-            Assert.fail("Should throw NoSuchAlgorithmException")
-        } catch (expected: NoSuchAlgorithmException) {
-        }
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun getAlgorithmForOid_UnknownOid_Failure() {
-        try {
-            getAlgorithmForOid("1.3.66666.2000.4000.1")
-            Assert.fail("Should throw NoSuchAlgorithmException")
-        } catch (expected: NoSuchAlgorithmException) {
-        }
     }
 
     @Test
@@ -166,12 +94,6 @@ class PubkeyUtilsTest {
         override fun getFormat(): String? {
             throw UnsupportedOperationException()
         }
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun getRSAPublicExponentFromPkcs8Encoded_Success() {
-        Assert.assertEquals(RSA_KEY_E, getRSAPublicExponentFromPkcs8Encoded(RSA_KEY_PKCS8))
     }
 
     companion object {
