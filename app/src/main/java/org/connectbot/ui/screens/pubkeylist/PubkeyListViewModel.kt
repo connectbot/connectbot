@@ -29,6 +29,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import com.trilead.ssh2.crypto.Base64
+import com.trilead.ssh2.crypto.OpenSSHKeyEncoder
 import com.trilead.ssh2.crypto.PEMDecoder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -219,7 +220,7 @@ class PubkeyListViewModel @Inject constructor(
                     PubkeyUtils.convertToKeyPair(pubkey, password)
                 }
                 keyPair?.let { terminalManager?.addKey(pubkey, it, true) }
-            } catch (e: PubkeyUtils.BadPasswordException) {
+            } catch (_: PubkeyUtils.BadPasswordException) {
                 _uiState.update {
                     it.copy(error = "Failed to unlock key: Bad password")
                 }
@@ -286,14 +287,14 @@ class PubkeyListViewModel @Inject constructor(
                         val privateKeyBytes = pubkey.privateKey ?: throw Exception("No private key data")
                         val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
                         val pub = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
-                        pk?.let { PubkeyUtils.exportOpenSSH(it, pub, pubkey.nickname) }
+                        pk?.let { OpenSSHKeyEncoder.exportOpenSSH(it, pub, pubkey.nickname) }
                     }
                 }
 
                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText("Private Key", privateKeyString)
                 clipboard.setPrimaryClip(clip)
-            } catch (e: PubkeyUtils.BadPasswordException) {
+            } catch (_: PubkeyUtils.BadPasswordException) {
                 _uiState.update {
                     it.copy(error = "Failed to decrypt key: Bad password")
                 }
@@ -343,7 +344,7 @@ class PubkeyListViewModel @Inject constructor(
                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText("Private Key", privateKeyString)
                 clipboard.setPrimaryClip(clip)
-            } catch (e: PubkeyUtils.BadPasswordException) {
+            } catch (_: PubkeyUtils.BadPasswordException) {
                 _uiState.update {
                     it.copy(error = "Failed to decrypt key: Bad password")
                 }
@@ -390,13 +391,13 @@ class PubkeyListViewModel @Inject constructor(
                     val privateKeyBytes = pubkey.privateKey ?: throw Exception("No private key data")
                     val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
                     val pub = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
-                    pk?.let { PubkeyUtils.exportOpenSSH(it, pub, pubkey.nickname, exportPassphrase) }
+                    pk?.let { OpenSSHKeyEncoder.exportOpenSSH(it, pub, pubkey.nickname, exportPassphrase) }
                 }
 
                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText("Private Key", privateKeyString)
                 clipboard.setPrimaryClip(clip)
-            } catch (e: PubkeyUtils.BadPasswordException) {
+            } catch (_: PubkeyUtils.BadPasswordException) {
                 _uiState.update {
                     it.copy(error = "Failed to decrypt key: Bad password")
                 }
@@ -540,7 +541,7 @@ class PubkeyListViewModel @Inject constructor(
                             ExportFormat.OPENSSH -> {
                                 val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
                                 val pub = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
-                                pk?.let { PubkeyUtils.exportOpenSSH(it, pub, pubkey.nickname, exportPassphrase) }
+                                pk?.let { OpenSSHKeyEncoder.exportOpenSSH(it, pub, pubkey.nickname, exportPassphrase) }
                             }
                             ExportFormat.PEM -> {
                                 val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
@@ -567,7 +568,7 @@ class PubkeyListViewModel @Inject constructor(
                 }
 
                 _uiState.update { it.copy(pendingExport = null) }
-            } catch (e: PubkeyUtils.BadPasswordException) {
+            } catch (_: PubkeyUtils.BadPasswordException) {
                 _uiState.update {
                     it.copy(
                         error = "Failed to decrypt key: Bad password",
@@ -596,7 +597,6 @@ class PubkeyListViewModel @Inject constructor(
                 when (result) {
                     is ImportResult.Success -> {
                         repository.save(result.pubkey)
-                        loadPubkeys()
                     }
                     is ImportResult.NeedsPassword -> {
                         // Set pending import - UI will show password dialog
@@ -795,7 +795,7 @@ class PubkeyListViewModel @Inject constructor(
             if (keyBytes.size() > 0) {
                 // Decode Base64 and use PubkeyUtils to recover the KeyPair
                 val decoded = Base64.decode(keyBytes.toString().toCharArray())
-                return PubkeyUtils.recoverKeyPair(decoded)
+                return OpenSSHKeyEncoder.recoverKeyPair(decoded)
             }
         } catch (e: Exception) {
             Log.e("PubkeyListViewModel", "Failed to parse PKCS#8 key", e)
