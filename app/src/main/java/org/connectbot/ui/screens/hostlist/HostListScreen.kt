@@ -793,7 +793,7 @@ private fun HostDisconnectDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.list_host_disconnect)) },
         text = {
-            Text(stringResource(R.string.disconnect_host_alert, host.nickname))
+            Text(stringResource(R.string.disconnect_all_sessions_alert, host.nickname))
         },
         confirmButton = {
             TextButton(

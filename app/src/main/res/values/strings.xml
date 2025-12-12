@@ -1155,8 +1155,10 @@
 	<string name="migration_debug_log_title">Debug Log</string>
 	<!-- Button text to copy debug log to clipboard for reporting issues -->
 	<string name="migration_copy_debug_log">Copy Debug Log</string>
-	<!-- Shown in the alert dialog when a user chooses the 'disconnect' item to disconnect from a SSH or Telnet host. -->
-	<string name="disconnect_host_alert">Are you sure you want to disconnect from \'%1$s\'?</string>
+	<!-- Shown in the alert dialog when a user chooses to close/disconnect a single session from the terminal. -->
+	<string name="disconnect_session_alert">Are you sure you want to close this session?</string>
+	<!-- Shown in the alert dialog when a user chooses to disconnect all sessions for a host from the host list. -->
+	<string name="disconnect_all_sessions_alert">Are you sure you want to disconnect all sessions from \'%1$s\'?</string>
 	<!-- Shown in the alert dialog when a user chooses the 'delete host' item to delete a host. -->
 	<string name="delete_host_confirm">Are you sure you want to delete host \'%1$s\'?</string>
 	<!-- Shown in the alert dialog when a user chooses the 'forget host keys' item. -->
