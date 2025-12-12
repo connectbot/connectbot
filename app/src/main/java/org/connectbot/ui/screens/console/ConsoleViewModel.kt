@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.service.DisconnectReason
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.terminal.ProgressState
@@ -305,18 +306,22 @@ class ConsoleViewModel @Inject constructor(
     }
 
     /**
-     * Open a new session to the current host.
+     * Open a new session to the current host and navigate to it.
      */
     fun openNewSession() {
         val currentBridge = getCurrentBridge() ?: return
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
+            try {
+                val newBridge = withContext(Dispatchers.IO) {
                     terminalManager?.openConnectionForHostId(currentBridge.host.id)
-                } catch (e: Exception) {
-                    _uiState.update {
-                        it.copy(error = e.message ?: "Failed to open new session")
-                    }
+                }
+                // Navigate to the new session
+                newBridge?.let { bridge ->
+                    selectBridgeBySessionId(bridge.sessionId)
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(error = e.message ?: "Failed to open new session")
                 }
             }
         }
@@ -328,6 +333,16 @@ class ConsoleViewModel @Inject constructor(
     fun getSessionsForCurrentHost(): List<TerminalBridge> {
         val currentBridge = getCurrentBridge() ?: return emptyList()
         return _uiState.value.bridges.filter { it.host.id == currentBridge.host.id }
+    }
+
+    /**
+     * Disconnect all sessions for the current host.
+     */
+    fun disconnectAllSessionsForCurrentHost() {
+        val sessions = getSessionsForCurrentHost()
+        sessions.forEach { bridge ->
+            bridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
+        }
     }
 
     /**
