@@ -268,11 +268,15 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         }
 
         override fun getKnownKeyAlgorithmsForHost(host: String, port: Int): List<String>? {
-            return manager?.hostRepository?.getHostKeyAlgorithmsForHostBlocking(host, port)
+            return this@SSH.host?.id?.let { hostId ->
+                manager?.hostRepository?.getHostKeyAlgorithmsForHostBlocking(hostId)
+            }
         }
 
         override fun removeServerHostKey(host: String, port: Int, algorithm: String, hostKey: ByteArray) {
-            manager?.hostRepository?.removeKnownHostBlocking(host, port, algorithm, hostKey)
+            this@SSH.host?.id?.let { hostId ->
+                manager?.hostRepository?.removeKnownHostBlocking(hostId, algorithm, hostKey)
+            }
         }
 
         override fun addServerHostKey(hostname: String, port: Int, algorithm: String, hostKey: ByteArray) {

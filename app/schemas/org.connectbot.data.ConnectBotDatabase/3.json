@@ -1,0 +1,585 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "6858e3f11038b824c18e2d77e3b53545",
+    "entities": [
+      {
+        "tableName": "hosts",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nickname` TEXT NOT NULL, `protocol` TEXT NOT NULL, `username` TEXT NOT NULL, `hostname` TEXT NOT NULL, `port` INTEGER NOT NULL, `host_key_algo` TEXT, `last_connect` INTEGER NOT NULL, `color` TEXT, `use_keys` INTEGER NOT NULL, `use_auth_agent` TEXT, `post_login` TEXT, `pubkey_id` INTEGER NOT NULL, `want_session` INTEGER NOT NULL, `compression` INTEGER NOT NULL, `encoding` TEXT NOT NULL, `stay_connected` INTEGER NOT NULL, `quick_disconnect` INTEGER NOT NULL, `font_size` INTEGER NOT NULL, `color_scheme_id` INTEGER NOT NULL, `del_key` TEXT NOT NULL, `scrollback_lines` INTEGER NOT NULL, `use_ctrl_alt_as_meta_key` INTEGER NOT NULL, `jump_host_id` INTEGER)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nickname",
+            "columnName": "nickname",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "protocol",
+            "columnName": "protocol",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "username",
+            "columnName": "username",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hostname",
+            "columnName": "hostname",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "port",
+            "columnName": "port",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hostKeyAlgo",
+            "columnName": "host_key_algo",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "lastConnect",
+            "columnName": "last_connect",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "color",
+            "columnName": "color",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "useKeys",
+            "columnName": "use_keys",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "useAuthAgent",
+            "columnName": "use_auth_agent",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "postLogin",
+            "columnName": "post_login",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "pubkeyId",
+            "columnName": "pubkey_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wantSession",
+            "columnName": "want_session",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "compression",
+            "columnName": "compression",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "encoding",
+            "columnName": "encoding",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stayConnected",
+            "columnName": "stay_connected",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "quickDisconnect",
+            "columnName": "quick_disconnect",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fontSize",
+            "columnName": "font_size",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "colorSchemeId",
+            "columnName": "color_scheme_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "delKey",
+            "columnName": "del_key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scrollbackLines",
+            "columnName": "scrollback_lines",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "useCtrlAltAsMetaKey",
+            "columnName": "use_ctrl_alt_as_meta_key",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "jumpHostId",
+            "columnName": "jump_host_id",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_hosts_nickname",
+            "unique": true,
+            "columnNames": [
+              "nickname"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_hosts_nickname` ON `${TABLE_NAME}` (`nickname`)"
+          },
+          {
+            "name": "index_hosts_protocol_username_hostname_port",
+            "unique": false,
+            "columnNames": [
+              "protocol",
+              "username",
+              "hostname",
+              "port"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_hosts_protocol_username_hostname_port` ON `${TABLE_NAME}` (`protocol`, `username`, `hostname`, `port`)"
+          }
+        ]
+      },
+      {
+        "tableName": "pubkeys",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nickname` TEXT NOT NULL, `type` TEXT NOT NULL, `private_key` BLOB, `public_key` BLOB NOT NULL, `encrypted` INTEGER NOT NULL, `startup` INTEGER NOT NULL, `confirmation` INTEGER NOT NULL, `created_date` INTEGER NOT NULL, `storage_type` TEXT NOT NULL, `allow_backup` INTEGER NOT NULL, `keystore_alias` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nickname",
+            "columnName": "nickname",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "privateKey",
+            "columnName": "private_key",
+            "affinity": "BLOB"
+          },
+          {
+            "fieldPath": "publicKey",
+            "columnName": "public_key",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "encrypted",
+            "columnName": "encrypted",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startup",
+            "columnName": "startup",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "confirmation",
+            "columnName": "confirmation",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdDate",
+            "columnName": "created_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "storageType",
+            "columnName": "storage_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "allowBackup",
+            "columnName": "allow_backup",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "keystoreAlias",
+            "columnName": "keystore_alias",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_pubkeys_nickname",
+            "unique": true,
+            "columnNames": [
+              "nickname"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_pubkeys_nickname` ON `${TABLE_NAME}` (`nickname`)"
+          },
+          {
+            "name": "index_pubkeys_storage_type",
+            "unique": false,
+            "columnNames": [
+              "storage_type"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_pubkeys_storage_type` ON `${TABLE_NAME}` (`storage_type`)"
+          },
+          {
+            "name": "index_pubkeys_allow_backup",
+            "unique": false,
+            "columnNames": [
+              "allow_backup"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_pubkeys_allow_backup` ON `${TABLE_NAME}` (`allow_backup`)"
+          }
+        ]
+      },
+      {
+        "tableName": "port_forwards",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `host_id` INTEGER NOT NULL, `nickname` TEXT NOT NULL, `type` TEXT NOT NULL, `source_port` INTEGER NOT NULL, `dest_addr` TEXT, `dest_port` INTEGER NOT NULL, FOREIGN KEY(`host_id`) REFERENCES `hosts`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hostId",
+            "columnName": "host_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nickname",
+            "columnName": "nickname",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourcePort",
+            "columnName": "source_port",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "destAddr",
+            "columnName": "dest_addr",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "destPort",
+            "columnName": "dest_port",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_port_forwards_host_id",
+            "unique": false,
+            "columnNames": [
+              "host_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_port_forwards_host_id` ON `${TABLE_NAME}` (`host_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "hosts",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "host_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "known_hosts",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `host_id` INTEGER, `hostname` TEXT NOT NULL, `port` INTEGER NOT NULL, `host_key_algo` TEXT NOT NULL, `host_key` BLOB NOT NULL, FOREIGN KEY(`host_id`) REFERENCES `hosts`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hostId",
+            "columnName": "host_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "hostname",
+            "columnName": "hostname",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "port",
+            "columnName": "port",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hostKeyAlgo",
+            "columnName": "host_key_algo",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hostKey",
+            "columnName": "host_key",
+            "affinity": "BLOB",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_known_hosts_host_id",
+            "unique": false,
+            "columnNames": [
+              "host_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_known_hosts_host_id` ON `${TABLE_NAME}` (`host_id`)"
+          },
+          {
+            "name": "index_known_hosts_host_id_host_key",
+            "unique": true,
+            "columnNames": [
+              "host_id",
+              "host_key"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_known_hosts_host_id_host_key` ON `${TABLE_NAME}` (`host_id`, `host_key`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "hosts",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "host_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "color_schemes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `is_built_in` INTEGER NOT NULL, `description` TEXT NOT NULL, `foreground` INTEGER NOT NULL, `background` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isBuiltIn",
+            "columnName": "is_built_in",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "foreground",
+            "columnName": "foreground",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "background",
+            "columnName": "background",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_color_schemes_name",
+            "unique": true,
+            "columnNames": [
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_color_schemes_name` ON `${TABLE_NAME}` (`name`)"
+          }
+        ]
+      },
+      {
+        "tableName": "color_palette",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `scheme_id` INTEGER NOT NULL, `color_index` INTEGER NOT NULL, `color` INTEGER NOT NULL, FOREIGN KEY(`scheme_id`) REFERENCES `color_schemes`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "schemeId",
+            "columnName": "scheme_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "colorIndex",
+            "columnName": "color_index",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "color",
+            "columnName": "color",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_color_palette_scheme_id",
+            "unique": false,
+            "columnNames": [
+              "scheme_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_color_palette_scheme_id` ON `${TABLE_NAME}` (`scheme_id`)"
+          },
+          {
+            "name": "index_color_palette_scheme_id_color_index",
+            "unique": true,
+            "columnNames": [
+              "scheme_id",
+              "color_index"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_color_palette_scheme_id_color_index` ON `${TABLE_NAME}` (`scheme_id`, `color_index`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "color_schemes",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "scheme_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6858e3f11038b824c18e2d77e3b53545')"
+    ]
+  }
+}

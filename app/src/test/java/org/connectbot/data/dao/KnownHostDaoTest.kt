@@ -67,44 +67,44 @@ class KnownHostDaoTest {
         val id = knownHostDao.insert(knownHost)
         assertThat(id).isGreaterThan(0)
 
-        val retrieved = knownHostDao.getByHostnameAndPort("example.com", 22)
-        assertThat(retrieved).isNotNull()
-        assertThat(retrieved?.hostname).isEqualTo("example.com")
-        assertThat(retrieved?.port).isEqualTo(22)
-        assertThat(retrieved?.hostId).isEqualTo(hostId)
-        assertThat(retrieved?.hostKeyAlgo).isEqualTo("ssh-rsa")
+        val retrievedList = knownHostDao.getByHostId(hostId)
+        assertThat(retrievedList).isNotEmpty
+        val retrieved = retrievedList[0]
+        assertThat(retrieved.hostname).isEqualTo("example.com")
+        assertThat(retrieved.port).isEqualTo(22)
+        assertThat(retrieved.hostId).isEqualTo(hostId)
+        assertThat(retrieved.hostKeyAlgo).isEqualTo("ssh-rsa")
     }
 
     @Test
-    fun getByHostnameAndPort_ReturnsCorrectHost() = runTest {
-        val host = createTestHost()
-        val hostId = hostDao.insert(host)
+    fun getByHostId_ReturnsAllKeysForHost() = runTest {
+        val host1 = createTestHost(nickname = "host1")
+        val hostId1 = hostDao.insert(host1)
 
-        val knownHost1 = createTestKnownHost(hostId, "example.com", 22)
-        val knownHost2 = createTestKnownHost(hostId, "example.com", 2222)
-        val knownHost3 = createTestKnownHost(hostId, "test.com", 22)
+        val host2 = createTestHost(nickname = "host2")
+        val hostId2 = hostDao.insert(host2)
+
+        val knownHost1 = createTestKnownHost(hostId1, "example.com", 22, hostKey = "rsa-key".toByteArray())
+        val knownHost2 = createTestKnownHost(hostId1, "example.com", 22, hostKeyAlgo = "ssh-ed25519", hostKey = "ed25519-key".toByteArray())
+        val knownHost3 = createTestKnownHost(hostId2, "test.com", 22, hostKey = "test-key".toByteArray())
 
         knownHostDao.insert(knownHost1)
         knownHostDao.insert(knownHost2)
         knownHostDao.insert(knownHost3)
 
-        val retrieved1 = knownHostDao.getByHostnameAndPort("example.com", 22)
-        assertThat(retrieved1?.hostname).isEqualTo("example.com")
-        assertThat(retrieved1?.port).isEqualTo(22)
+        val retrieved1 = knownHostDao.getByHostId(hostId1)
+        assertThat(retrieved1).hasSize(2)
+        assertThat(retrieved1.map { it.hostKeyAlgo }).containsExactlyInAnyOrder("ssh-rsa", "ssh-ed25519")
 
-        val retrieved2 = knownHostDao.getByHostnameAndPort("example.com", 2222)
-        assertThat(retrieved2?.hostname).isEqualTo("example.com")
-        assertThat(retrieved2?.port).isEqualTo(2222)
-
-        val retrieved3 = knownHostDao.getByHostnameAndPort("test.com", 22)
-        assertThat(retrieved3?.hostname).isEqualTo("test.com")
-        assertThat(retrieved3?.port).isEqualTo(22)
+        val retrieved2 = knownHostDao.getByHostId(hostId2)
+        assertThat(retrieved2).hasSize(1)
+        assertThat(retrieved2[0].hostname).isEqualTo("test.com")
     }
 
     @Test
-    fun getByHostnameAndPort_ReturnsNullWhenNotFound() = runTest {
-        val retrieved = knownHostDao.getByHostnameAndPort("nonexistent.com", 22)
-        assertThat(retrieved).isNull()
+    fun getByHostId_ReturnsEmptyWhenNotFound() = runTest {
+        val retrieved = knownHostDao.getByHostId(99999L)
+        assertThat(retrieved).isEmpty()
     }
 
     @Test
@@ -114,10 +114,10 @@ class KnownHostDaoTest {
         val hostId1 = hostDao.insert(host1)
         val hostId2 = hostDao.insert(host2)
 
-        // Note: each (hostname, port) combination must be unique
-        val knownHost1 = createTestKnownHost(hostId1, "server1.example.com", 22)
-        val knownHost2 = createTestKnownHost(hostId1, "server2.example.com", 22)
-        val knownHost3 = createTestKnownHost(hostId2, "test.com", 22)
+        // Note: each (host_id, host_key) combination must be unique
+        val knownHost1 = createTestKnownHost(hostId1, "server1.example.com", 22, hostKey = "key1".toByteArray())
+        val knownHost2 = createTestKnownHost(hostId1, "server2.example.com", 22, hostKey = "key2".toByteArray())
+        val knownHost3 = createTestKnownHost(hostId2, "test.com", 22, hostKey = "key3".toByteArray())
 
         knownHostDao.insert(knownHost1)
         knownHostDao.insert(knownHost2)
@@ -147,9 +147,9 @@ class KnownHostDaoTest {
         val host = createTestHost()
         val hostId = hostDao.insert(host)
 
-        val knownHost1 = createTestKnownHost(hostId, "alpha.com", 22)
-        val knownHost2 = createTestKnownHost(hostId, "beta.com", 22)
-        val knownHost3 = createTestKnownHost(hostId, "alpha.com", 2222)
+        val knownHost1 = createTestKnownHost(hostId, "alpha.com", 22, hostKey = "key1".toByteArray())
+        val knownHost2 = createTestKnownHost(hostId, "beta.com", 22, hostKey = "key2".toByteArray())
+        val knownHost3 = createTestKnownHost(hostId, "alpha.com", 2222, hostKey = "key3".toByteArray())
 
         knownHostDao.insert(knownHost1)
         knownHostDao.insert(knownHost2)
@@ -182,13 +182,17 @@ class KnownHostDaoTest {
         val knownHost = createTestKnownHost(hostId, "example.com", 22, hostKey = oldKeyBytes)
         val id = knownHostDao.insert(knownHost)
 
-        val retrieved = knownHostDao.getByHostnameAndPort("example.com", 22)!!
+        val retrievedList = knownHostDao.getByHostId(hostId)
+        assertThat(retrievedList).isNotEmpty
+        val retrieved = retrievedList[0]
+
         val newKeyBytes = "new-key".toByteArray()
         val updated = retrieved.copy(hostKey = newKeyBytes)
         knownHostDao.update(updated)
 
-        val afterUpdate = knownHostDao.getByHostnameAndPort("example.com", 22)
-        assertThat(afterUpdate?.hostKey).isEqualTo(newKeyBytes)
+        val afterUpdateList = knownHostDao.getByHostId(hostId)
+        assertThat(afterUpdateList).isNotEmpty
+        assertThat(afterUpdateList[0].hostKey).isEqualTo(newKeyBytes)
     }
 
     @Test
@@ -199,13 +203,13 @@ class KnownHostDaoTest {
         val knownHost = createTestKnownHost(hostId, "example.com", 22)
         knownHostDao.insert(knownHost)
 
-        val beforeDelete = knownHostDao.getByHostnameAndPort("example.com", 22)
-        assertThat(beforeDelete).isNotNull()
+        val beforeDeleteList = knownHostDao.getByHostId(hostId)
+        assertThat(beforeDeleteList).isNotEmpty
 
-        knownHostDao.delete(beforeDelete!!)
+        knownHostDao.delete(beforeDeleteList[0])
 
-        val afterDelete = knownHostDao.getByHostnameAndPort("example.com", 22)
-        assertThat(afterDelete).isNull()
+        val afterDeleteList = knownHostDao.getByHostId(hostId)
+        assertThat(afterDeleteList).isEmpty()
     }
 
     @Test
@@ -216,13 +220,13 @@ class KnownHostDaoTest {
         val knownHost = createTestKnownHost(hostId, "example.com", 22)
         knownHostDao.insert(knownHost)
 
-        val beforeDelete = knownHostDao.getByHostnameAndPort("example.com", 22)
-        assertThat(beforeDelete).isNotNull()
+        val beforeDeleteList = knownHostDao.getByHostId(hostId)
+        assertThat(beforeDeleteList).isNotEmpty
 
         knownHostDao.deleteByHostnameAndPort("example.com", 22)
 
-        val afterDelete = knownHostDao.getByHostnameAndPort("example.com", 22)
-        assertThat(afterDelete).isNull()
+        val afterDeleteList = knownHostDao.getByHostId(hostId)
+        assertThat(afterDeleteList).isEmpty()
     }
 
     @Test
@@ -230,9 +234,9 @@ class KnownHostDaoTest {
         val host = createTestHost()
         val hostId = hostDao.insert(host)
 
-        val knownHost1 = createTestKnownHost(hostId, "example.com", 22)
-        val knownHost2 = createTestKnownHost(hostId, "example.com", 2222)
-        val knownHost3 = createTestKnownHost(hostId, "test.com", 22)
+        val knownHost1 = createTestKnownHost(hostId, "example.com", 22, hostKey = "key1".toByteArray())
+        val knownHost2 = createTestKnownHost(hostId, "example.com", 2222, hostKey = "key2".toByteArray())
+        val knownHost3 = createTestKnownHost(hostId, "test.com", 22, hostKey = "key3".toByteArray())
 
         knownHostDao.insert(knownHost1)
         knownHostDao.insert(knownHost2)
@@ -240,14 +244,10 @@ class KnownHostDaoTest {
 
         knownHostDao.deleteByHostnameAndPort("example.com", 22)
 
-        val deleted = knownHostDao.getByHostnameAndPort("example.com", 22)
-        assertThat(deleted).isNull()
-
-        val stillExists1 = knownHostDao.getByHostnameAndPort("example.com", 2222)
-        assertThat(stillExists1).isNotNull()
-
-        val stillExists2 = knownHostDao.getByHostnameAndPort("test.com", 22)
-        assertThat(stillExists2).isNotNull()
+        val remaining = knownHostDao.getByHostId(hostId)
+        assertThat(remaining).hasSize(2)
+        assertThat(remaining.map { "${it.hostname}:${it.port}" })
+            .containsExactlyInAnyOrder("example.com:2222", "test.com:22")
     }
 
     @Test
@@ -255,8 +255,8 @@ class KnownHostDaoTest {
         val host = createTestHost()
         val hostId = hostDao.insert(host)
 
-        val knownHost1 = createTestKnownHost(hostId, "example.com", 22)
-        val knownHost2 = createTestKnownHost(hostId, "example.com", 2222)
+        val knownHost1 = createTestKnownHost(hostId, "example.com", 22, hostKey = "key1".toByteArray())
+        val knownHost2 = createTestKnownHost(hostId, "example.com", 2222, hostKey = "key2".toByteArray())
 
         knownHostDao.insert(knownHost1)
         knownHostDao.insert(knownHost2)
@@ -280,8 +280,8 @@ class KnownHostDaoTest {
         val hostId = hostDao.insert(host)
 
         // First connection - no known host
-        val firstConnection = knownHostDao.getByHostnameAndPort("example.com", 22)
-        assertThat(firstConnection).isNull()
+        val firstConnection = knownHostDao.getByHostId(hostId)
+        assertThat(firstConnection).isEmpty()
 
         // Accept and store the host key
         val initialKeyBytes = "ssh-rsa AAAAB3...".toByteArray()
@@ -289,18 +289,95 @@ class KnownHostDaoTest {
         knownHostDao.insert(newKnownHost)
 
         // Second connection - verify against stored key
-        val secondConnection = knownHostDao.getByHostnameAndPort("example.com", 22)
-        assertThat(secondConnection).isNotNull()
-        assertThat(secondConnection?.hostKey).isEqualTo(initialKeyBytes)
+        val secondConnection = knownHostDao.getByHostId(hostId)
+        assertThat(secondConnection).hasSize(1)
+        assertThat(secondConnection[0].hostKey).isEqualTo(initialKeyBytes)
 
-        // Host key changed - update it
+        // Host key changed - add new key (allows both old and new during rotation)
         val newKeyBytes = "ssh-rsa AAAAB4...".toByteArray()
-        val updated = secondConnection!!.copy(hostKey = newKeyBytes)
-        knownHostDao.update(updated)
+        val newKnownHost2 = createTestKnownHost(hostId, "example.com", 22, hostKey = newKeyBytes)
+        knownHostDao.insert(newKnownHost2)
 
-        // Third connection - verify against new key
-        val thirdConnection = knownHostDao.getByHostnameAndPort("example.com", 22)
-        assertThat(thirdConnection?.hostKey).isEqualTo(newKeyBytes)
+        // Third connection - verify both keys exist
+        val thirdConnection = knownHostDao.getByHostId(hostId)
+        assertThat(thirdConnection).hasSize(2)
+        assertThat(thirdConnection.map { it.hostKey }).containsExactlyInAnyOrder(initialKeyBytes, newKeyBytes)
+    }
+
+    @Test
+    fun insertMultipleKeysForSameHost() = runTest {
+        val host = createTestHost()
+        val hostId = hostDao.insert(host)
+
+        val knownHostRSA = createTestKnownHost(
+            hostId = hostId,
+            hostname = "example.com",
+            port = 22,
+            hostKeyAlgo = "ssh-rsa",
+            hostKey = "rsa-key".toByteArray()
+        )
+
+        val knownHostECDSA = createTestKnownHost(
+            hostId = hostId,
+            hostname = "example.com",
+            port = 22,
+            hostKeyAlgo = "ecdsa-sha2-nistp256",
+            hostKey = "ecdsa-key".toByteArray()
+        )
+
+        knownHostDao.insert(knownHostRSA)
+        knownHostDao.insert(knownHostECDSA)
+
+        val retrieved = knownHostDao.getByHostId(hostId)
+        assertThat(retrieved).hasSize(2)
+        assertThat(retrieved.map { it.hostKeyAlgo }).containsExactlyInAnyOrder("ssh-rsa", "ecdsa-sha2-nistp256")
+
+        val rsaKeys = knownHostDao.getByHostIdAndAlgo(hostId, "ssh-rsa")
+        assertThat(rsaKeys).hasSize(1)
+        assertThat(rsaKeys[0].hostKey).isEqualTo("rsa-key".toByteArray())
+    }
+
+    @Test
+    fun keyRotation_MultipleKeysOfSameAlgorithm() = runTest {
+        val host = createTestHost()
+        val hostId = hostDao.insert(host)
+
+        val oldKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOldKey...".toByteArray()
+        val newKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINewKey...".toByteArray()
+
+        val knownHost1 = createTestKnownHost(
+            hostId = hostId,
+            hostname = "example.com",
+            port = 22,
+            hostKeyAlgo = "ssh-ed25519",
+            hostKey = oldKey
+        )
+
+        val knownHost2 = createTestKnownHost(
+            hostId = hostId,
+            hostname = "example.com",
+            port = 22,
+            hostKeyAlgo = "ssh-ed25519",
+            hostKey = newKey
+        )
+
+        knownHostDao.insert(knownHost1)
+        knownHostDao.insert(knownHost2)
+
+        val allKeys = knownHostDao.getByHostId(hostId)
+        assertThat(allKeys).hasSize(2)
+
+        val ed25519Keys = knownHostDao.getByHostIdAndAlgo(hostId, "ssh-ed25519")
+        assertThat(ed25519Keys).hasSize(2)
+        assertThat(ed25519Keys.map { it.hostKey }).containsExactlyInAnyOrder(oldKey, newKey)
+
+        val exactOldKey = knownHostDao.getByHostIdAlgoAndKey(hostId, "ssh-ed25519", oldKey)
+        assertThat(exactOldKey).isNotNull()
+        assertThat(exactOldKey?.hostKey).isEqualTo(oldKey)
+
+        val exactNewKey = knownHostDao.getByHostIdAlgoAndKey(hostId, "ssh-ed25519", newKey)
+        assertThat(exactNewKey).isNotNull()
+        assertThat(exactNewKey?.hostKey).isEqualTo(newKey)
     }
 
     private fun createTestHost(
