@@ -1051,8 +1051,7 @@ fun ConsoleScreen(
         }
 
         if (showDisconnectDialog && currentBridge != null) {
-            HostDisconnectDialog(
-                host = currentBridge.host,
+            SessionDisconnectDialog(
                 onDismiss = { showDisconnectDialog = false },
                 onConfirm = {
                     showDisconnectDialog = false
@@ -1420,15 +1419,14 @@ fun ConsoleScreen(
 }
 
 @Composable
-private fun HostDisconnectDialog(
-    host: Host,
+private fun SessionDisconnectDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
         text = {
-            Text(stringResource(R.string.disconnect_host_alert, host.nickname))
+            Text(stringResource(R.string.disconnect_session_alert))
         },
         confirmButton = {
             TextButton(
