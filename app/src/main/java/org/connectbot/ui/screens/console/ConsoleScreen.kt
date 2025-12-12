@@ -1380,8 +1380,8 @@ fun ConsoleScreen(
                 onDismiss = { showDisconnectDialog = false },
                 onConfirm = {
                     showDisconnectDialog = false
-                    currentBridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
-                },
+                    viewModel.disconnectAllSessionsForCurrentHost()
+                }
             )
         }
 
