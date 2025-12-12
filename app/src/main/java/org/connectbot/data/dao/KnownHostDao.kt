@@ -30,17 +30,22 @@ import org.connectbot.data.entity.KnownHost
 @Dao
 interface KnownHostDao {
     /**
-     * Get a known host by hostname and port.
-     * Used for SSH host key verification.
-     */
-    @Query("SELECT * FROM known_hosts WHERE hostname = :hostname AND port = :port")
-    suspend fun getByHostnameAndPort(hostname: String, port: Int): KnownHost?
-
-    /**
      * Get all known hosts for a specific host configuration.
      */
     @Query("SELECT * FROM known_hosts WHERE host_id = :hostId")
     suspend fun getByHostId(hostId: Long): List<KnownHost>
+
+    /**
+     * Get all known hosts for a specific host configuration and algorithm.
+     */
+    @Query("SELECT * FROM known_hosts WHERE host_id = :hostId AND host_key_algo = :algo")
+    suspend fun getByHostIdAndAlgo(hostId: Long, algo: String): List<KnownHost>
+
+    /**
+     * Get a specific known host by exact match of hostId, algorithm, and key.
+     */
+    @Query("SELECT * FROM known_hosts WHERE host_id = :hostId AND host_key_algo = :algo AND host_key = :key")
+    suspend fun getByHostIdAlgoAndKey(hostId: Long, algo: String, key: ByteArray): KnownHost?
 
     /**
      * Get all known hosts.

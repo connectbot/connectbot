@@ -248,17 +248,12 @@ class HostRepository @Inject constructor(
     /**
      * Get the list of host key algorithms known for a specific host.
      *
-     * @param hostname The hostname
-     * @param port The port
+     * @param hostId The host ID
      * @return List of algorithm names
      */
-    suspend fun getHostKeyAlgorithmsForHost(hostname: String, port: Int): List<String> {
-        val knownHost = knownHostDao.getByHostnameAndPort(hostname, port)
-        return if (knownHost != null) {
-            listOf(knownHost.hostKeyAlgo)
-        } else {
-            emptyList()
-        }
+    suspend fun getHostKeyAlgorithmsForHost(hostId: Long): List<String> {
+        val knownHosts = knownHostDao.getByHostId(hostId)
+        return knownHosts.map { it.hostKeyAlgo }.distinct()
     }
 
     /**
@@ -277,17 +272,12 @@ class HostRepository @Inject constructor(
         serverHostKeyAlgorithm: String,
         serverHostKey: ByteArray
     ) {
-        // Check if already exists
-        val existing = knownHostDao.getByHostnameAndPort(hostname, port)
-        if (existing != null) {
-            // Update existing - keep the same hostId
-            val updated = existing.copy(
-                hostKeyAlgo = serverHostKeyAlgorithm,
-                hostKey = serverHostKey
-            )
-            knownHostDao.update(updated)
-        } else {
-            // Insert new - associate with the Host entity
+        // Check if this exact key already exists for this host
+        val existing = knownHostDao.getByHostIdAlgoAndKey(
+            host.id, serverHostKeyAlgorithm, serverHostKey
+        )
+        if (existing == null) {
+            // Insert new key - this allows multiple keys per algorithm for key rotation
             val knownHost = KnownHost(
                 hostId = host.id,
                 hostname = hostname,
@@ -302,21 +292,20 @@ class HostRepository @Inject constructor(
     /**
      * Remove a known host key from the database.
      *
-     * @param hostname The hostname
-     * @param port The port
+     * @param hostId The host ID
      * @param serverHostKeyAlgorithm The key algorithm
      * @param serverHostKey The public key bytes
      */
     suspend fun removeKnownHost(
-        hostname: String,
-        port: Int,
+        hostId: Long,
         serverHostKeyAlgorithm: String,
         serverHostKey: ByteArray
     ) {
-        val knownHost = knownHostDao.getByHostnameAndPort(hostname, port)
-        if (knownHost != null &&
-            knownHost.hostKeyAlgo == serverHostKeyAlgorithm &&
-            knownHost.hostKey.contentEquals(serverHostKey)) {
+        // Find the exact key to remove
+        val knownHost = knownHostDao.getByHostIdAlgoAndKey(
+            hostId, serverHostKeyAlgorithm, serverHostKey
+        )
+        if (knownHost != null) {
             knownHostDao.delete(knownHost)
         }
     }
@@ -348,20 +337,19 @@ class HostRepository @Inject constructor(
     /**
      * Get host key algorithms for a host (blocking version for Java interop).
      */
-    fun getHostKeyAlgorithmsForHostBlocking(hostname: String, port: Int): List<String> = runBlocking {
-        getHostKeyAlgorithmsForHost(hostname, port)
+    fun getHostKeyAlgorithmsForHostBlocking(hostId: Long): List<String> = runBlocking {
+        getHostKeyAlgorithmsForHost(hostId)
     }
 
     /**
      * Remove a known host key (blocking version for Java interop).
      */
     fun removeKnownHostBlocking(
-        hostname: String,
-        port: Int,
+        hostId: Long,
         serverHostKeyAlgorithm: String,
         serverHostKey: ByteArray
     ) = runBlocking {
-        removeKnownHost(hostname, port, serverHostKeyAlgorithm, serverHostKey)
+        removeKnownHost(hostId, serverHostKeyAlgorithm, serverHostKey)
     }
 
     /**
