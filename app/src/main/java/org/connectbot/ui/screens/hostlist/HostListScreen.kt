@@ -278,7 +278,10 @@ fun HostListScreen(
         onExportHosts = viewModel::exportHosts,
         // Some document providers label JSON exports as text/plain or application/octet-stream.
         onImportHosts = { importLauncher.launch(arrayOf("*/*")) },
-        onOpenNewSession = viewModel::connectToHost,
+        onOpenNewSession = { host ->
+            viewModel.connectToHost(host)
+            onNavigateToConsole(host)
+        },
         modifier = modifier,
     )
 }
