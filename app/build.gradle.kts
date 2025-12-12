@@ -228,7 +228,7 @@ tasks.withType<DependencyUpdatesTask>().configureEach {
 dependencies {
     implementation(libs.sshlib)
     implementation(libs.termlib)
-    implementation("com.google.crypto.tink:tink:1.19.0") // For Ed25519 key derivation (required by sshlib)
+    implementation("com.google.crypto.tink:tink:1.20.0") // For Ed25519 key derivation (required by sshlib)
     implementation(libs.androidx.media3.common.ktx)
     implementation(libs.androidx.navigation.testing)
     implementation(libs.androidx.ui)
