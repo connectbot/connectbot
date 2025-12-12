@@ -669,7 +669,7 @@ fun ConsoleScreen(
                 onDismiss = { showDisconnectDialog = false },
                 onConfirm = {
                     showDisconnectDialog = false
-                    viewModel.disconnectAllSessionsForCurrentHost()
+                    viewModel.disconnectCurrentSession()
                 }
             )
         }
