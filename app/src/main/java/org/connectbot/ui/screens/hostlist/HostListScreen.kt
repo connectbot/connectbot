@@ -280,7 +280,10 @@ fun HostListScreen(
         onImportHosts = { importLauncher.launch(arrayOf("*/*")) },
         shouldShowNotificationWarning = shouldShowNotificationWarning,
         onNotificationSnackbarFinish = onNotificationSnackbarFinish,
-        onOpenNewSession = viewModel::connectToHost,
+        onOpenNewSession = { host ->
+            viewModel.connectToHost(host)
+            onNavigateToConsole(host)
+        },
         modifier = modifier,
     )
 }
