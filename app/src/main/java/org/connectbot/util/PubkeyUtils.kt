@@ -19,9 +19,7 @@ package org.connectbot.util
 import android.util.Log
 import com.trilead.ssh2.crypto.Base64
 import com.trilead.ssh2.crypto.PEMDecoder
-import com.google.crypto.tink.subtle.Ed25519Sign
 import com.trilead.ssh2.crypto.OpenSSHKeyEncoder
-import com.trilead.ssh2.crypto.keys.Ed25519PrivateKey
 import com.trilead.ssh2.crypto.keys.Ed25519Provider
 import com.trilead.ssh2.crypto.keys.Ed25519PublicKey
 import com.trilead.ssh2.signature.DSASHA1Verify
@@ -47,7 +45,6 @@ import java.security.interfaces.ECPublicKey
 import java.security.interfaces.RSAPublicKey
 import java.security.spec.InvalidKeySpecException
 import java.security.spec.InvalidParameterSpecException
-import java.security.spec.KeySpec
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import java.util.Arrays
@@ -170,27 +167,6 @@ object PubkeyUtils {
                 throw BadPasswordException()
             }
         }
-    }
-
-    @JvmStatic
-    @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class)
-    fun recoverKeyPair(encoded: ByteArray): KeyPair {
-        val algo = OpenSSHKeyEncoder.getAlgorithmForOid(OpenSSHKeyEncoder.getOidFromPkcs8Encoded(encoded))
-
-        val privKeySpec: KeySpec = PKCS8EncodedKeySpec(encoded)
-
-        val kf = KeyFactory.getInstance(algo)
-        val priv = kf.generatePrivate(privKeySpec)
-
-        // Ed25519 requires special handling to derive the public key
-        if (priv is Ed25519PrivateKey) {
-            val seed = priv.seed
-            val tinkKeyPair = Ed25519Sign.KeyPair.newKeyPairFromSeed(seed)
-            val publicKey = Ed25519PublicKey(tinkKeyPair.publicKey)
-            return KeyPair(publicKey, priv)
-        }
-
-        return KeyPair(OpenSSHKeyEncoder.recoverPublicKey(kf, priv), priv)
     }
 
     /*
