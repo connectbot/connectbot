@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.service.DisconnectReason
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.terminal.ProgressState
@@ -332,6 +333,8 @@ class ConsoleViewModel @Inject constructor(
         val index = _uiState.value.bridges.indexOfFirst { it.sessionId == sessionId }
         if (index >= 0) {
             selectBridge(index)
+        } else {
+            selectedSessionId = sessionId
         }
     }
 
@@ -343,7 +346,7 @@ class ConsoleViewModel @Inject constructor(
     }
 
     /**
-     * Open a new session to the current host.
+     * Open a new session to the current host and navigate to it.
      */
     fun openNewSession() {
         val currentBridge = getCurrentBridge() ?: return
@@ -352,6 +355,7 @@ class ConsoleViewModel @Inject constructor(
                 val newBridge = withContext(dispatchers.io) {
                     terminalManager?.openConnectionForHostId(currentBridge.host.id)
                 }
+                // Navigate to the new session
                 newBridge?.let { bridge ->
                     selectBridgeBySessionId(bridge.sessionId)
                 }
@@ -369,6 +373,16 @@ class ConsoleViewModel @Inject constructor(
     fun getSessionsForCurrentHost(): List<TerminalBridge> {
         val currentBridge = getCurrentBridge() ?: return emptyList()
         return _uiState.value.bridges.filter { it.host.id == currentBridge.host.id }
+    }
+
+    /**
+     * Disconnect all sessions for the current host.
+     */
+    fun disconnectAllSessionsForCurrentHost() {
+        val sessions = getSessionsForCurrentHost()
+        sessions.forEach { bridge ->
+            bridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
+        }
     }
 
     /**
