@@ -17,8 +17,8 @@
 package org.connectbot.util
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.trilead.ssh2.crypto.OpenSSHKeyEncoder.recoverKeyPair
 import org.connectbot.util.PubkeyUtils.encodeHex
-import org.connectbot.util.PubkeyUtils.recoverKeyPair
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
