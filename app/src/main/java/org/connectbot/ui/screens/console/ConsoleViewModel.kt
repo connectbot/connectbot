@@ -295,13 +295,10 @@ class ConsoleViewModel @Inject constructor(
     }
 
     /**
-     * Disconnect all sessions for the current host.
+     * Disconnect only the current session.
      */
-    fun disconnectAllSessionsForCurrentHost() {
-        val sessions = getSessionsForCurrentHost()
-        sessions.forEach { bridge ->
-            bridge.dispatchDisconnect(true)
-        }
+    fun disconnectCurrentSession() {
+        getCurrentBridge()?.dispatchDisconnect(true)
     }
 
     /**
