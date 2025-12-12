@@ -590,9 +590,19 @@ fun ConsoleScreen(
             val density = LocalDensity.current
             TopAppBar(
                 title = {
-                    Text(
+                    val sessionNumber = currentBridge?.let { bridge ->
+                        val bridgesForHost = uiState.bridges.filter { it.host.id == bridge.host.id }
+                        bridgesForHost.indexOfFirst { it.sessionId == bridge.sessionId } + 1
+                    } ?: 0
+
+                    val titleText = if (currentBridge != null && sessionNumber > 0) {
+                        "${currentBridge.host.nickname} #$sessionNumber"
+                    } else {
                         currentBridge?.host?.nickname
-                            ?: stringResource(R.string.console_default_title),
+                            ?: stringResource(R.string.console_default_title)
+                    }
+                    Text(
+                        titleText,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
