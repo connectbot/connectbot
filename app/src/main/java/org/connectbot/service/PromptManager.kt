@@ -105,6 +105,41 @@ class PromptManager {
     }
 
     /**
+     * Request host key fingerprint verification prompt
+     */
+    suspend fun requestHostKeyFingerprintPrompt(
+        hostname: String,
+        keyType: String,
+        keySize: Int,
+        serverHostKey: ByteArray,
+        randomArt: String,
+        bubblebabble: String,
+        sha256: String,
+        md5: String
+    ): Boolean {
+        val deferred = CompletableDeferred<PromptResponse>()
+        currentDeferred = deferred
+
+        _promptState.update {
+            PromptRequest.HostKeyFingerprintPrompt(
+                hostname = hostname,
+                keyType = keyType,
+                keySize = keySize,
+                serverHostKey = serverHostKey,
+                randomArt = randomArt,
+                bubblebabble = bubblebabble,
+                sha256 = sha256,
+                md5 = md5
+            )
+        }
+
+        val response = deferred.await()
+        _promptState.update { null }
+
+        return (response as? PromptResponse.BooleanResponse)?.value ?: false
+    }
+
+    /**
      * Respond to the current prompt
      */
     fun respond(response: PromptResponse) {
@@ -141,6 +176,42 @@ sealed class PromptRequest {
         val keyNickname: String,
         val keystoreAlias: String
     ) : PromptRequest()
+
+    data class HostKeyFingerprintPrompt(
+        val hostname: String,
+        val keyType: String,
+        val keySize: Int,
+        val serverHostKey: ByteArray,
+        val randomArt: String,
+        val bubblebabble: String,
+        val sha256: String,
+        val md5: String
+    ) : PromptRequest() {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is HostKeyFingerprintPrompt) return false
+            return hostname == other.hostname &&
+                keyType == other.keyType &&
+                keySize == other.keySize &&
+                serverHostKey.contentEquals(other.serverHostKey) &&
+                randomArt == other.randomArt &&
+                bubblebabble == other.bubblebabble &&
+                sha256 == other.sha256 &&
+                md5 == other.md5
+        }
+
+        override fun hashCode(): Int {
+            var result = hostname.hashCode()
+            result = 31 * result + keyType.hashCode()
+            result = 31 * result + keySize
+            result = 31 * result + serverHostKey.contentHashCode()
+            result = 31 * result + randomArt.hashCode()
+            result = 31 * result + bubblebabble.hashCode()
+            result = 31 * result + sha256.hashCode()
+            result = 31 * result + md5.hashCode()
+            return result
+        }
+    }
 }
 
 /**

@@ -190,12 +190,21 @@
 	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
 	<string name="prompt_host_disconnected">"Host has disconnected."\n"Close session?"</string>
 	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
-	<string name="prompt_continue_connecting">"Are you sure you want"\n"to continue connecting?"</string>
+	<string name="prompt_continue_connecting">"Are you sure you want to continue connecting?"</string>
 
 	<!-- Sent to user when the remote public encryption key fingerprint doesn't match the local database -->
 	<string name="host_authenticity_warning">"The authenticity of host '%1$s' can't be established."</string>
 	<!-- First field is encryption algorithm. Second is the actual fingerprint in hex digits -->
 	<string name="host_fingerprint">"Host %1$s key fingerprint is %2$s"</string>
+
+	<!-- Title for the host key fingerprint verification prompt shown when connecting to a new host -->
+	<string name="host_key_verification_title">Host key verification</string>
+	<!-- Section header for the fingerprint formats display area -->
+	<string name="fingerprint_format_header">Fingerprint format</string>
+	<!-- Format string showing key type and size, e.g., "RSA 2048 bits". First field is key type, second is key size in bits. -->
+	<string name="host_key_type_and_size">%1$s %2$d bits</string>
+	<!-- Content description for the copy fingerprint to clipboard button, used by screen readers for accessibility -->
+	<string name="fingerprint_copy_description">Copy fingerprint to clipboard</string>
 
 	<string name="alert_passwords_do_not_match_msg">"Passwords do not match!"</string>
 	<string name="alert_wrong_password_msg">"Wrong password!"</string>

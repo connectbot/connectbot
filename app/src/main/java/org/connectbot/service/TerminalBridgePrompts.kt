@@ -93,3 +93,40 @@ fun TerminalBridge.requestBiometricAuth(
         throw IOException("Connection lost while waiting for biometric authentication", e)
     }
 }
+
+/**
+ * Request host key fingerprint verification prompt.
+ *
+ * @param hostname The hostname being connected to
+ * @param keyType The type of the key (e.g., "RSA", "ED25519")
+ * @param keySize The size of the key in bits
+ * @param serverHostKey The raw public key blob
+ * @param randomArt The OpenSSH RandomArt ASCII visualization
+ * @param bubblebabble The Bubble-Babble phonetic encoding
+ * @param sha256 The SHA-256 fingerprint
+ * @param md5 The MD5 fingerprint
+ * @return Boolean response from user, or null if cancelled by user
+ * @throws IOException if the prompt is cancelled due to connection loss
+ */
+fun TerminalBridge.requestHostKeyFingerprintPrompt(
+    hostname: String,
+    keyType: String,
+    keySize: Int,
+    serverHostKey: ByteArray,
+    randomArt: String,
+    bubblebabble: String,
+    sha256: String,
+    md5: String
+): Boolean? {
+    return try {
+        runBlocking {
+            promptManager.requestHostKeyFingerprintPrompt(
+                hostname, keyType, keySize, serverHostKey,
+                randomArt, bubblebabble, sha256, md5
+            )
+        }
+    } catch (e: CancellationException) {
+        // Prompt was cancelled due to connection loss - throw IOException to propagate error
+        throw IOException("Connection lost while waiting for host key verification", e)
+    }
+}
