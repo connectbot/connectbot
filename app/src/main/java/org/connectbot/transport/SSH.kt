@@ -23,7 +23,6 @@ import android.util.Log
 import com.trilead.ssh2.AuthAgentCallback
 import com.trilead.ssh2.ChannelCondition
 import com.trilead.ssh2.Connection
-import com.trilead.ssh2.ConnectionInfo
 import com.trilead.ssh2.ConnectionMonitor
 import com.trilead.ssh2.DynamicPortForwarder
 import com.trilead.ssh2.ExtendedServerHostKeyVerifier
@@ -50,6 +49,7 @@ import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.service.requestBiometricAuth
 import org.connectbot.service.requestBooleanPrompt
+import org.connectbot.service.requestHostKeyFingerprintPrompt
 import org.connectbot.service.requestStringPrompt
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PubkeyUtils
@@ -62,7 +62,6 @@ import java.net.NoRouteToHostException
 import java.nio.charset.StandardCharsets
 import java.security.KeyPair
 import java.security.NoSuchAlgorithmException
-import java.security.PrivateKey
 import java.security.PublicKey
 import java.security.interfaces.DSAPrivateKey
 import java.security.interfaces.DSAPublicKey
@@ -113,6 +112,47 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
 
     constructor(host: Host?, bridge: TerminalBridge?, manager: TerminalManager?) : super(host, bridge, manager)
 
+    private fun decodePublicKey(algorithm: String, keyBlob: ByteArray): PublicKey? {
+        return try {
+            when (algorithm) {
+                "ssh-rsa" -> RSASHA1Verify.get().decodePublicKey(keyBlob)
+                "ssh-dss" -> DSASHA1Verify.get().decodePublicKey(keyBlob)
+                "ssh-ed25519" -> Ed25519Verify.get().decodePublicKey(keyBlob)
+                "ecdsa-sha2-nistp256" -> ECDSASHA2Verify.ECDSASHA2NISTP256Verify.get().decodePublicKey(keyBlob)
+                "ecdsa-sha2-nistp384" -> ECDSASHA2Verify.ECDSASHA2NISTP384Verify.get().decodePublicKey(keyBlob)
+                "ecdsa-sha2-nistp521" -> ECDSASHA2Verify.ECDSASHA2NISTP521Verify.get().decodePublicKey(keyBlob)
+                else -> null
+            }
+        } catch (e: IOException) {
+            Log.e(TAG, "Failed to decode public key", e)
+            null
+        }
+    }
+
+    private fun getKeySize(publicKey: PublicKey?): Int {
+        return when (publicKey) {
+            is RSAPublicKey -> publicKey.modulus.bitLength()
+            is DSAPublicKey -> publicKey.params.p.bitLength()
+            is ECPublicKey -> publicKey.params.curve.field.fieldSize
+            is Ed25519PublicKey -> 256
+            else -> 0
+        }
+    }
+
+    private fun getKeyType(openSshKeyType: String): String? {
+        return if (openSshKeyType == "ssh-rsa") {
+            "RSA"
+        } else if (openSshKeyType == "ssh-dss") {
+            "DSA"
+        } else if (openSshKeyType == "ssh-ed25519") {
+            "Ed25519"
+        } else if (openSshKeyType.startsWith("ecdsa-sha2-")) {
+            "EC"
+        } else {
+            null
+        }
+    }
+
     inner class HostKeyVerifier : ExtendedServerHostKeyVerifier() {
         @Throws(IOException::class)
         override fun verifyServerHostKey(
@@ -125,12 +165,14 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             val hosts = manager?.hostRepository?.getKnownHostsBlocking() ?: return false
 
             val matchName = String.format(Locale.US, "%s:%d", hostname, port)
-            val algorithmName = PublicKeyUtils.detectKeyType(serverHostKey)
+            val algorithmName = getKeyType(serverHostKeyAlgorithm)
+            val sha256 = KeyFingerprint.createSHA256Fingerprint(serverHostKey)
+            val md5 = KeyFingerprint.createMD5Fingerprint(serverHostKey)
             val fingerprint = buildString {
-                append("MD5:")
-                append(KeyFingerprint.createMD5Fingerprint(serverHostKey))
-                append(" SHA256:")
-                append(KeyFingerprint.createSHA256Fingerprint(serverHostKey))
+                append("\nMD5:")
+                append(md5)
+                append("\nSHA256:")
+                append(sha256)
             }
 
             return when (hosts.verifyHostkey(matchName, serverHostKeyAlgorithm, serverHostKey)) {
@@ -140,14 +182,33 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                 }
 
                 KnownHosts.HOSTKEY_IS_NEW -> {
-                    // prompt user
+                    // Keep terminal output for backward compatibility
                     bridge?.outputLine(manager?.res?.getString(R.string.host_authenticity_warning, hostname))
                     bridge?.outputLine(manager?.res?.getString(R.string.host_fingerprint, algorithmName, fingerprint))
 
-                    val result = bridge?.requestBooleanPrompt(
-                        null,
-                        manager?.res?.getString(R.string.prompt_continue_connecting) ?: ""
+                    // Prepare data for inline prompt
+                    val publicKey = decodePublicKey(serverHostKeyAlgorithm, serverHostKey)
+                    val keySize = getKeySize(publicKey)
+
+                    val randomArt = KeyFingerprint.createRandomArt(
+                        serverHostKey,
+                        algorithmName ?: "UNKNOWN",
+                        keySize
                     )
+                    val bubblebabble = KeyFingerprint.createBubblebabbleFingerprint(serverHostKey)
+
+                    // Show inline prompt with all fingerprint formats
+                    val result = bridge?.requestHostKeyFingerprintPrompt(
+                        hostname = hostname,
+                        keyType = algorithmName ?: "UNKNOWN",
+                        keySize = keySize,
+                        serverHostKey = serverHostKey,
+                        randomArt = randomArt,
+                        bubblebabble = bubblebabble,
+                        sha256 = sha256,
+                        md5 = md5
+                    )
+
                     if (result == null) {
                         return false
                     }

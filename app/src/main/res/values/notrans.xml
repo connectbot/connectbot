@@ -35,6 +35,15 @@
 	<!-- Label for selecting Ed25519 key type -->
 	<string name="pubkey_type_ed25519">Ed25519</string>
 
+	<!-- Label for the OpenSSH RandomArt fingerprint format (ASCII art visualization of the host key) -->
+	<string name="fingerprint_format_randomart">OpenSSH RandomArt</string>
+	<!-- Label for the Bubble-Babble fingerprint format (phonetic encoding for easier verbal communication of the host key) -->
+	<string name="fingerprint_format_bubblebabble">Bubble-Babble</string>
+	<!-- Label for the SHA-256 fingerprint format (modern default format used by OpenSSH for host key verification) -->
+	<string name="fingerprint_format_sha256">SHA-256</string>
+	<!-- Label for the MD5 fingerprint format -->
+	<string name="fingerprint_format_md5">MD5</string>
+
 	<!-- Keyboard-interactive prompt prefix for jump host (format pattern, not translatable) -->
 	<string name="terminal_jump_prompt">[%s]</string>
 </resources>
