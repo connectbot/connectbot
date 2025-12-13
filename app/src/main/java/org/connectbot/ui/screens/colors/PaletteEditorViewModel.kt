@@ -27,13 +27,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.connectbot.data.ColorSchemePresets
 import org.connectbot.data.ColorSchemeRepository
-import org.connectbot.util.Colors
 
 data class PaletteEditorUiState(
     val schemeId: Long = -1,
     val schemeName: String = "",
-    val palette: IntArray = Colors.defaults,
+    val palette: IntArray = ColorSchemePresets.default.colors,
     val editingColorIndex: Int? = null,
     val isLoading: Boolean = false,
     val error: String? = null,
@@ -145,7 +145,7 @@ class PaletteEditorViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 // Get the default color
-                val defaultColor = Colors.defaults[colorIndex]
+                val defaultColor = ColorSchemePresets.default.colors[colorIndex]
 
                 // Update in database
                 repository.setColorForScheme(schemeId, colorIndex, defaultColor)

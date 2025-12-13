@@ -27,9 +27,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.connectbot.data.ColorSchemePresets
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.entity.ColorScheme
-import org.connectbot.util.Colors
 import org.connectbot.util.HostConstants
 
 data class ColorsUiState(
@@ -38,7 +38,7 @@ data class ColorsUiState(
     val availableSchemes: List<ColorScheme> = emptyList(),
     val foregroundColorIndex: Int = HostConstants.DEFAULT_FG_COLOR,
     val backgroundColorIndex: Int = HostConstants.DEFAULT_BG_COLOR,
-    val currentPalette: IntArray = Colors.defaults,
+    val currentPalette: IntArray = ColorSchemePresets.default.colors,
     val isLoading: Boolean = false,
     val error: String? = null
 ) {
@@ -154,7 +154,7 @@ class ColorsViewModel @Inject constructor(
     }
 
     fun updateForegroundColor(colorIndex: Int) {
-        if (colorIndex < 0 || colorIndex >= Colors.defaults.size) return
+        if (colorIndex !in 0..15) return
 
         val currentSchemeId = _uiState.value.currentSchemeId
         if (currentSchemeId < 0) {
@@ -170,7 +170,7 @@ class ColorsViewModel @Inject constructor(
     }
 
     fun updateBackgroundColor(colorIndex: Int) {
-        if (colorIndex < 0 || colorIndex >= Colors.defaults.size) return
+        if (colorIndex !in 0..15) return
 
         val currentSchemeId = _uiState.value.currentSchemeId
         if (currentSchemeId < 0) {

@@ -403,8 +403,7 @@ class TerminalBridge {
         } else {
             run {
                 val line = manager.res.getString(R.string.alert_disconnect_msg)
-                // TODO(Terminal): write directly to display of TerminalEmulator
-//                (buffer as vt320).putString("\r\n$line\r\n")
+                outputLine("\r\n$line\r\n")
             }
             if (host.stayConnected) {
                 manager.requestReconnect(this)
@@ -671,34 +670,6 @@ class TerminalBridge {
      */
     val isDisconnected: Boolean
         get() = disconnected
-
-//    /* (non-Javadoc)
-//     * @see de.mud.terminal.VDUDisplay#setColor(byte, byte, byte, byte)
-//     */
-//    override fun setColor(index: Int, red: Int, green: Int, blue: Int) {
-//        // Don't allow the system colors to be overwritten for now. May violate specs.
-//        if (index < color.size && index >= 16)
-//            color[index] = 0xff000000.toInt() or (red shl 16) or (green shl 8) or blue
-//    }
-//
-//    override fun resetColors() {
-//        scope.launch(Dispatchers.IO) {
-//            try {
-//                val defaults = manager.colorRepository.getSchemeDefaults(-1)
-//                defaultFg = defaults.first
-//                defaultBg = defaults.second
-//
-//                color = manager.colorRepository.getSchemeColors(-1)
-//            } catch (e: Exception) {
-//                Log.e(TAG, "Failed to reset colors", e)
-//                manager.reportError(
-//                    ServiceError.ColorSchemeLoadFailed(
-//                        reason = e.message ?: "Failed to load color scheme"
-//                    )
-//                )
-//            }
-//        }
-//    }
 
     private object PatternHolder {
         val urlPattern: Pattern

@@ -27,9 +27,9 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.assertj.core.api.Assertions.assertThat
+import org.connectbot.data.ColorSchemePresets
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.entity.ColorScheme
-import org.connectbot.util.Colors
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -62,7 +62,7 @@ class ColorsViewModelTest {
             whenever(repository.getSchemeDefaults(-1))
                 .thenReturn(Pair(7, 0))
             whenever(repository.getSchemeColors(-1))
-                .thenReturn(Colors.defaults)
+                .thenReturn(ColorSchemePresets.default.colors)
         }
     }
 
@@ -211,7 +211,7 @@ class ColorsViewModelTest {
     @Test
     fun `resetToDefaults reloads default colors`() = runTest {
         whenever(repository.getSchemeDefaults(1)).thenReturn(Pair(7, 0))
-        whenever(repository.getSchemeColors(1)).thenReturn(IntArray(255, { it }))
+        whenever(repository.getSchemeColors(1)).thenReturn(IntArray(16, { it }))
 
         viewModel = ColorsViewModel(repository)
         advanceUntilIdle()

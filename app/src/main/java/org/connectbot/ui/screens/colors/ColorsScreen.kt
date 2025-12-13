@@ -71,7 +71,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 /**
  * Screen for editing terminal color scheme.
- * Allows setting foreground and background colors from the 256-color terminal palette.
+ * Allows setting foreground and background colors from the 16-color terminal palette.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -307,7 +307,7 @@ private fun ColorSchemeSelector(
 
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = "Color Scheme",
+            text = stringResource(R.string.list_color_schemes),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -386,7 +386,7 @@ private fun ColorsScreenPreview() {
             ColorSelectorRow(
                 label = "Foreground Color: 7",
                 colorIndex = 7,
-                palette = IntArray(256) { it * 0x010101 },
+                palette = IntArray(16) { it * 0x010101 },
                 onClick = {}
             )
 
@@ -394,7 +394,7 @@ private fun ColorsScreenPreview() {
             ColorSelectorRow(
                 label = "Background Color: 0",
                 colorIndex = 0,
-                palette = IntArray(256) { it * 0x010101 },
+                palette = IntArray(16) { it * 0x010101 },
                 onClick = {}
             )
 

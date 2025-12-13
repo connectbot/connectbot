@@ -326,27 +326,6 @@ class HostRepository @Inject constructor(
     // ============================================================================
 
     /**
-     * Get port forwards for a host (blocking version for Java interop).
-     */
-    fun getPortForwardsForHostBlocking(hostId: Long): List<PortForward> = runBlocking {
-        getPortForwardsForHost(hostId)
-    }
-
-    /**
-     * Save a host (blocking version for Java interop).
-     */
-    fun saveHostBlocking(host: Host): Host = runBlocking {
-        saveHost(host)
-    }
-
-    /**
-     * Update the last connected time for a host (blocking version for Java interop).
-     */
-    fun touchHostBlocking(host: Host) = runBlocking {
-        touchHost(host)
-    }
-
-    /**
      * Get the known hosts (blocking version for Java interop).
      */
     fun getKnownHostsBlocking(): KnownHosts = runBlocking {

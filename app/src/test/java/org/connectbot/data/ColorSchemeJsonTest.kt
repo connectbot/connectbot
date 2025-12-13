@@ -17,7 +17,6 @@
 
 package org.connectbot.data
 
-import org.connectbot.util.Colors
 import org.json.JSONException
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
@@ -36,18 +35,18 @@ class ColorSchemeJsonTest {
 
     @Test
     fun fromPalette_CreatesValidJson() {
-        val palette = Colors.defaults
+        val palette = ColorSchemePresets.default.colors
         val json = ColorSchemeJson.fromPalette("Test Scheme", "A test", palette)
 
         assertEquals("Test Scheme", json.name)
         assertEquals("A test", json.description)
         assertEquals(1, json.version)
-        assertEquals(256, json.colors.size)
+        assertEquals(16, json.colors.size)
     }
 
     @Test
     fun toJson_ProducesValidJsonString() {
-        val palette = IntArray(256) { 0xFF000000.toInt() or (it shl 16) }
+        val palette = IntArray(16) { 0xFF000000.toInt() or (it shl 16) }
         val json = ColorSchemeJson.fromPalette("Test", "Desc", palette)
 
         val jsonString = json.toJson()
@@ -60,7 +59,7 @@ class ColorSchemeJsonTest {
 
     @Test
     fun toJson_PrettyFormat_HasIndentation() {
-        val palette = Colors.defaults
+        val palette = ColorSchemePresets.default.colors
         val json = ColorSchemeJson.fromPalette("Test", "", palette)
 
         val pretty = json.toJson(pretty = true)
@@ -80,7 +79,7 @@ class ColorSchemeJsonTest {
                 "colors": {
                     "0": "#000000",
                     "1": "#FF0000",
-                    "255": "#FFFFFF"
+                    "15": "#FFFFFF"
                 }
             }
         """.trimIndent()
@@ -93,7 +92,7 @@ class ColorSchemeJsonTest {
         assertEquals(3, json.colors.size)
         assertEquals("#000000", json.colors[0])
         assertEquals("#FF0000", json.colors[1])
-        assertEquals("#FFFFFF", json.colors[255])
+        assertEquals("#FFFFFF", json.colors[15])
     }
 
     @Test
@@ -219,7 +218,7 @@ class ColorSchemeJsonTest {
             {
                 "name": "Out of range",
                 "colors": {
-                    "256": "#000000"
+                    "16": "#000000"
                 }
             }
         """.trimIndent()
@@ -306,7 +305,7 @@ class ColorSchemeJsonTest {
         val json = ColorSchemeJson.fromJson(jsonString)
         val palette = json.toPalette()
 
-        assertEquals(256, palette.size)
+        assertEquals(16, palette.size)
         assertEquals(0xFF000000.toInt(), palette[0])
         assertEquals(0xFFFF0000.toInt(), palette[1])
         assertEquals(0xFF00FF00.toInt(), palette[2])
@@ -334,7 +333,7 @@ class ColorSchemeJsonTest {
 
     @Test
     fun roundTrip_PreservesColors() {
-        val originalPalette = Colors.defaults
+        val originalPalette = ColorSchemePresets.default.colors
         val json = ColorSchemeJson.fromPalette("Round Trip", "Test", originalPalette)
 
         val jsonString = json.toJson()
@@ -346,7 +345,7 @@ class ColorSchemeJsonTest {
 
     @Test
     fun roundTrip_PreservesMetadata() {
-        val palette = Colors.defaults
+        val palette = ColorSchemePresets.default.colors
         val json = ColorSchemeJson.fromPalette("My Custom Scheme", "A beautiful scheme", palette)
 
         val jsonString = json.toJson()
@@ -360,7 +359,7 @@ class ColorSchemeJsonTest {
     @Test
     fun roundTrip_SolarizedDark() {
         // Test with Solarized Dark colors
-        val palette = IntArray(256)
+        val palette = IntArray(16)
         palette[0] = 0xFF073642.toInt() // base02
         palette[1] = 0xFFDC322F.toInt() // red
         palette[8] = 0xFF002B36.toInt() // base03
@@ -379,14 +378,14 @@ class ColorSchemeJsonTest {
 
     @Test
     fun export_AllColors_CreatesCompleteMap() {
-        val palette = IntArray(256) { index ->
+        val palette = IntArray(16) { index ->
             0xFF000000.toInt() or (index shl 16) or (index shl 8) or index
         }
 
         val json = ColorSchemeJson.fromPalette("Full", "", palette)
 
-        assertEquals(256, json.colors.size)
-        for (i in 0..255) {
+        assertEquals(16, json.colors.size)
+        for (i in 0..15) {
             assertNotNull("Color $i should exist", json.colors[i])
         }
     }
@@ -398,8 +397,8 @@ class ColorSchemeJsonTest {
                 "name": "Partial",
                 "colors": {
                     "0": "#FF0000",
-                    "15": "#00FF00",
-                    "255": "#0000FF"
+                    "5": "#00FF00",
+                    "15": "#0000FF"
                 }
             }
         """.trimIndent()
@@ -409,12 +408,12 @@ class ColorSchemeJsonTest {
 
         // Only specified colors should be set
         assertEquals(0xFFFF0000.toInt(), palette[0])
-        assertEquals(0xFF00FF00.toInt(), palette[15])
-        assertEquals(0xFF0000FF.toInt(), palette[255])
+        assertEquals(0xFF00FF00.toInt(), palette[5])
+        assertEquals(0xFF0000FF.toInt(), palette[15])
 
         // Unspecified colors should be 0 (default IntArray value)
         assertEquals(0, palette[1])
-        assertEquals(0, palette[100])
-        assertEquals(0, palette[254])
+        assertEquals(0, palette[6])
+        assertEquals(0, palette[10])
     }
 }
