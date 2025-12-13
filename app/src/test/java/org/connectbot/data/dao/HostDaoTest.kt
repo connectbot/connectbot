@@ -235,12 +235,12 @@ class HostDaoTest {
     }
 
     @Test
-    fun colorSchemeIdStored() = runTest {
-        val host = createTestHost(nickname = "colored", colorSchemeId = 5)
+    fun profileIdStored() = runTest {
+        val host = createTestHost(nickname = "profiled", profileId = 5)
         val id = hostDao.insert(host)
 
         val retrieved = hostDao.getById(id)
-        assertThat(retrieved?.colorSchemeId).isEqualTo(5)
+        assertThat(retrieved?.profileId).isEqualTo(5)
     }
 
     @Test
@@ -251,33 +251,6 @@ class HostDaoTest {
 
         val retrieved = hostDao.getById(id)
         assertThat(retrieved?.lastConnect).isEqualTo(now)
-    }
-
-    @Test
-    fun fontSizeStored() = runTest {
-        val host = createTestHost(nickname = "font-test", fontSize = 14)
-        val id = hostDao.insert(host)
-
-        val retrieved = hostDao.getById(id)
-        assertThat(retrieved?.fontSize).isEqualTo(14)
-    }
-
-    @Test
-    fun encodingStored() = runTest {
-        val host = createTestHost(nickname = "encoding-test", encoding = "ISO-8859-1")
-        val id = hostDao.insert(host)
-
-        val retrieved = hostDao.getById(id)
-        assertThat(retrieved?.encoding).isEqualTo("ISO-8859-1")
-    }
-
-    @Test
-    fun delKeyStored() = runTest {
-        val host = createTestHost(nickname = "del-test", delKey = "BACKSPACE")
-        val id = hostDao.insert(host)
-
-        val retrieved = hostDao.getById(id)
-        assertThat(retrieved?.delKey).isEqualTo("BACKSPACE")
     }
 
     @Test
@@ -320,13 +293,11 @@ class HostDaoTest {
         postLogin: String? = null,
         pubkeyId: Long = 0,
         wantSession: Boolean = true,
-        fontSize: Int = 10,
-        encoding: String = "UTF-8",
         compression: Boolean = false,
-        colorSchemeId: Long = 1,
-        delKey: String = "BACKSPACE",
         scrollbackLines: Int = 140,
-        useCtrlAltAsMetaKey: Boolean = false
+        useCtrlAltAsMetaKey: Boolean = false,
+        jumpHostId: Long? = null,
+        profileId: Long? = 1L
     ): Host {
         return Host(
             nickname = nickname,
@@ -343,13 +314,11 @@ class HostDaoTest {
             postLogin = postLogin,
             pubkeyId = pubkeyId,
             wantSession = wantSession,
-            fontSize = fontSize,
-            encoding = encoding,
             compression = compression,
-            colorSchemeId = colorSchemeId,
-            delKey = delKey,
             scrollbackLines = scrollbackLines,
-            useCtrlAltAsMetaKey = useCtrlAltAsMetaKey
+            useCtrlAltAsMetaKey = useCtrlAltAsMetaKey,
+            jumpHostId = jumpHostId,
+            profileId = profileId
         )
     }
 }

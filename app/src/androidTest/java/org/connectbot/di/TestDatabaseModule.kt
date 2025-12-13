@@ -43,6 +43,7 @@ object TestDatabaseModule {
             ConnectBotDatabase::class.java,
             TEST_DATABASE_NAME
         )
+            .addMigrations(ConnectBotDatabase.MIGRATION_2_3)
             .allowMainThreadQueries()
             .build()
     }
@@ -61,4 +62,7 @@ object TestDatabaseModule {
 
     @Provides
     fun provideColorSchemeDao(database: ConnectBotDatabase) = database.colorSchemeDao()
+
+    @Provides
+    fun provideProfileDao(database: ConnectBotDatabase) = database.profileDao()
 }

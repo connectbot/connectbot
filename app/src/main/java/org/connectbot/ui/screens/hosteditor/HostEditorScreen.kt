@@ -60,11 +60,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import org.connectbot.BuildConfig
 import org.connectbot.R
+import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.LocalFontProvider
+import org.connectbot.util.TerminalFont
 
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
@@ -88,10 +93,8 @@ fun HostEditorScreen(
         onHostnameChange = viewModel::updateHostname,
         onPortChange = viewModel::updatePort,
         onColorChange = viewModel::updateColor,
-        onFontSizeChange = viewModel::updateFontSize,
         onPubkeyChange = viewModel::updatePubkeyId,
-        onDelKeyChange = viewModel::updateDelKey,
-        onEncodingChange = viewModel::updateEncoding,
+        onProfileChange = viewModel::updateProfileId,
         onUseAuthAgentChange = viewModel::updateUseAuthAgent,
         onCompressionChange = viewModel::updateCompression,
         onWantSessionChange = viewModel::updateWantSession,
@@ -117,10 +120,8 @@ fun HostEditorScreenContent(
     onHostnameChange: (String) -> Unit,
     onPortChange: (String) -> Unit,
     onColorChange: (String) -> Unit,
-    onFontSizeChange: (Int) -> Unit,
     onPubkeyChange: (Long) -> Unit,
-    onDelKeyChange: (String) -> Unit,
-    onEncodingChange: (String) -> Unit,
+    onProfileChange: (Long?) -> Unit,
     onUseAuthAgentChange: (String) -> Unit,
     onCompressionChange: (Boolean) -> Unit,
     onWantSessionChange: (Boolean) -> Unit,
@@ -328,19 +329,20 @@ fun HostEditorScreenContent(
                 onColorSelected = onColorChange
             )
 
-            // Font size slider
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-            FontSizeSelector(
-                fontSize = uiState.fontSize,
-                onFontSizeChange = onFontSizeChange
-            )
-
             // Pubkey selector
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
             PubkeySelector(
                 pubkeyId = uiState.pubkeyId,
                 availablePubkeys = uiState.availablePubkeys,
                 onPubkeySelected = onPubkeyChange
+            )
+
+            // Profile selector
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+            ProfileSelector(
+                profileId = uiState.profileId,
+                availableProfiles = uiState.availableProfiles,
+                onProfileSelected = onProfileChange
             )
 
             // Jump host selector (only for SSH protocol)
@@ -352,20 +354,6 @@ fun HostEditorScreenContent(
                     onJumpHostSelected = onJumpHostChange
                 )
             }
-
-            // DEL key selector
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-            DelKeySelector(
-                delKey = uiState.delKey,
-                onDelKeySelected = onDelKeyChange
-            )
-
-            // Encoding selector
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-            EncodingSelector(
-                encoding = uiState.encoding,
-                onEncodingSelected = onEncodingChange
-            )
 
             // SSH Auth agent
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
@@ -440,6 +428,29 @@ fun HostEditorScreenContent(
     }
 }
 
+/**
+ * 16 icon colors for visual identification of hosts/profiles.
+ * Each pair contains (color name, hex value).
+ */
+private val iconColors = listOf(
+    "Red" to "#F44336",
+    "Pink" to "#E91E63",
+    "Purple" to "#9C27B0",
+    "Deep Purple" to "#673AB7",
+    "Indigo" to "#3F51B5",
+    "Blue" to "#2196F3",
+    "Light Blue" to "#03A9F4",
+    "Cyan" to "#00BCD4",
+    "Teal" to "#009688",
+    "Green" to "#4CAF50",
+    "Light Green" to "#8BC34A",
+    "Lime" to "#CDDC39",
+    "Yellow" to "#FFEB3B",
+    "Amber" to "#FFC107",
+    "Orange" to "#FF9800",
+    "Gray" to "#9E9E9E"
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ColorSelector(
@@ -448,7 +459,11 @@ private fun ColorSelector(
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val colors = listOf("red", "green", "blue", "gray")
+
+    // Find the display name for the selected color
+    val selectedDisplayName = iconColors.find { it.second.equals(selectedColor, ignoreCase = true) }?.first
+        ?: iconColors.find { it.first.equals(selectedColor, ignoreCase = true) }?.first
+        ?: selectedColor
 
     Column(modifier = modifier) {
         Text(
@@ -462,7 +477,7 @@ private fun ColorSelector(
             onExpandedChange = { expanded = it }
         ) {
             OutlinedTextField(
-                value = selectedColor,
+                value = selectedDisplayName,
                 onValueChange = {},
                 readOnly = true,
                 singleLine = true,
@@ -479,11 +494,11 @@ private fun ColorSelector(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                colors.forEach { color ->
+                iconColors.forEach { (name, hex) ->
                     DropdownMenuItem(
-                        text = { Text(color) },
+                        text = { Text(name) },
                         onClick = {
-                            onColorSelected(color)
+                            onColorSelected(hex)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -498,14 +513,24 @@ private fun ColorSelector(
 private fun FontSizeSelector(
     fontSize: Int,
     onFontSizeChange: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.hostpref_fontsize_title),
             style = MaterialTheme.typography.titleMedium,
+            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
             modifier = Modifier.padding(bottom = 8.dp)
         )
+        if (!enabled) {
+            Text(
+                text = "Controlled by profile",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -515,13 +540,179 @@ private fun FontSizeSelector(
                 value = fontSize.toFloat(),
                 onValueChange = { onFontSizeChange(it.toInt()) },
                 valueRange = 8f..32f,
+                enabled = enabled,
                 modifier = Modifier.weight(1f)
             )
             Text(
                 text = fontSize.toString(),
                 modifier = Modifier.padding(start = 16.dp),
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
+                color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun FontFamilySelector(
+    fontFamily: String?,
+    customFonts: List<String>,
+    localFonts: List<Pair<String, String>>,
+    onFontFamilySelected: (String?) -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    // Build options: "Use Default" + preset fonts + custom fonts (if available) + local fonts
+    // Only show downloadable preset fonts if Google Play Services is available
+    val presetOptions = if (BuildConfig.HAS_DOWNLOADABLE_FONTS) {
+        TerminalFont.entries.map { it.displayName to it.name }
+    } else {
+        // In OSS builds, only show System Default (which doesn't require download)
+        listOf(TerminalFont.SYSTEM_DEFAULT.displayName to TerminalFont.SYSTEM_DEFAULT.name)
+    }
+    val customOptions = if (BuildConfig.HAS_DOWNLOADABLE_FONTS) {
+        customFonts.map { it to TerminalFont.createCustomFontValue(it) }
+    } else {
+        emptyList()
+    }
+    val localOptions = localFonts.map { (displayName, fileName) ->
+        displayName to LocalFontProvider.createLocalFontValue(fileName)
+    }
+    val allOptions = listOf("Use Default" to null) + presetOptions + customOptions + localOptions
+
+    Column(modifier = modifier) {
+        Text(
+            text = stringResource(R.string.hostpref_fontfamily_title),
+            style = MaterialTheme.typography.titleMedium,
+            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        if (!enabled) {
+            Text(
+                text = "Controlled by profile",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
+
+        ExposedDropdownMenuBox(
+            expanded = expanded && enabled,
+            onExpandedChange = { if (enabled) expanded = it }
+        ) {
+            OutlinedTextField(
+                value = if (fontFamily == null) {
+                    "Use Default"
+                } else {
+                    TerminalFont.getDisplayName(fontFamily)
+                },
+                onValueChange = {},
+                readOnly = true,
+                singleLine = true,
+                enabled = enabled,
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded && enabled)
+                },
+                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                modifier = Modifier
+                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                    .fillMaxWidth()
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded && enabled,
+                onDismissRequest = { expanded = false }
+            ) {
+                allOptions.forEach { (label, value) ->
+                    DropdownMenuItem(
+                        text = { Text(label) },
+                        onClick = {
+                            onFontFamilySelected(value)
+                            expanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ColorSchemeSelector(
+    colorSchemeId: Long,
+    availableSchemes: List<ColorScheme>,
+    onColorSchemeSelected: (Long) -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column(modifier = modifier) {
+        Text(
+            text = stringResource(R.string.hostpref_colorscheme_title),
+            style = MaterialTheme.typography.titleMedium,
+            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        if (!enabled) {
+            Text(
+                text = "Controlled by profile",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
+
+        ExposedDropdownMenuBox(
+            expanded = expanded && enabled,
+            onExpandedChange = { if (enabled) expanded = it }
+        ) {
+            OutlinedTextField(
+                value = availableSchemes.find { it.id == colorSchemeId }?.name ?: "Default",
+                onValueChange = {},
+                readOnly = true,
+                singleLine = true,
+                enabled = enabled,
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                modifier = Modifier
+                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                    .fillMaxWidth()
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                availableSchemes.forEach { scheme ->
+                    DropdownMenuItem(
+                        text = {
+                            Column {
+                                Text(scheme.name)
+                                if (scheme.description.isNotBlank()) {
+                                    Text(
+                                        text = scheme.description,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            }
+                        },
+                        onClick = {
+                            onColorSchemeSelected(scheme.id)
+                            expanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
+                }
+            }
         }
     }
 }
@@ -589,6 +780,83 @@ private fun PubkeySelector(
                         text = { Text(label) },
                         onClick = {
                             onPubkeySelected(id)
+                            expanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ProfileSelector(
+    profileId: Long?,
+    availableProfiles: List<Profile>,
+    onProfileSelected: (Long?) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column(modifier = modifier) {
+        Text(
+            text = "Profile",
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+        Text(
+            text = "Select a profile to use its terminal settings",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = it }
+        ) {
+            OutlinedTextField(
+                value = when {
+                    profileId == null -> "None (use host settings)"
+                    else -> {
+                        val selectedProfile = availableProfiles.find { it.id == profileId }
+                        selectedProfile?.name ?: "None (use host settings)"
+                    }
+                },
+                onValueChange = {},
+                readOnly = true,
+                singleLine = true,
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                modifier = Modifier
+                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                    .fillMaxWidth()
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                // "None" option
+                DropdownMenuItem(
+                    text = { Text("None (use host settings)") },
+                    onClick = {
+                        onProfileSelected(null)
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
+
+                // Available profiles
+                availableProfiles.forEach { profile ->
+                    DropdownMenuItem(
+                        text = { Text(profile.name) },
+                        onClick = {
+                            onProfileSelected(profile.id)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -681,7 +949,8 @@ private fun JumpHostSelector(
 private fun DelKeySelector(
     delKey: String,
     onDelKeySelected: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     var expanded by remember { mutableStateOf(false) }
     val options = listOf("del", "backspace")
@@ -690,20 +959,30 @@ private fun DelKeySelector(
         Text(
             text = stringResource(R.string.hostpref_delkey_title),
             style = MaterialTheme.typography.titleMedium,
+            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
             modifier = Modifier.padding(bottom = 8.dp)
         )
+        if (!enabled) {
+            Text(
+                text = "Controlled by profile",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
 
         ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = it }
+            expanded = expanded && enabled,
+            onExpandedChange = { if (enabled) expanded = it }
         ) {
             OutlinedTextField(
                 value = delKey,
                 onValueChange = {},
                 readOnly = true,
                 singleLine = true,
+                enabled = enabled,
                 trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded && enabled)
                 },
                 colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                 modifier = Modifier
@@ -712,7 +991,7 @@ private fun DelKeySelector(
             )
 
             ExposedDropdownMenu(
-                expanded = expanded,
+                expanded = expanded && enabled,
                 onDismissRequest = { expanded = false }
             ) {
                 options.forEach { option ->
@@ -735,7 +1014,8 @@ private fun DelKeySelector(
 private fun EncodingSelector(
     encoding: String,
     onEncodingSelected: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     var expanded by remember { mutableStateOf(false) }
     val encodings = listOf("UTF-8", "ISO-8859-1", "US-ASCII", "Windows-1252")
@@ -744,20 +1024,30 @@ private fun EncodingSelector(
         Text(
             text = stringResource(R.string.hostpref_encoding_title),
             style = MaterialTheme.typography.titleMedium,
+            color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
             modifier = Modifier.padding(bottom = 8.dp)
         )
+        if (!enabled) {
+            Text(
+                text = "Controlled by profile",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
 
         ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = it }
+            expanded = expanded && enabled,
+            onExpandedChange = { if (enabled) expanded = it }
         ) {
             OutlinedTextField(
                 value = encoding,
                 onValueChange = {},
                 readOnly = true,
                 singleLine = true,
+                enabled = enabled,
                 trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded && enabled)
                 },
                 colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                 modifier = Modifier
@@ -766,7 +1056,7 @@ private fun EncodingSelector(
             )
 
             ExposedDropdownMenu(
-                expanded = expanded,
+                expanded = expanded && enabled,
                 onDismissRequest = { expanded = false }
             ) {
                 encodings.forEach { enc ->
@@ -833,7 +1123,6 @@ private fun HostEditorScreenPreview() {
                 hostname = "prod.example.com",
                 port = "22",
                 color = "blue",
-                fontSize = 12,
                 pubkeyId = -1L,
                 availablePubkeys = listOf(
                     Pubkey(
@@ -848,8 +1137,6 @@ private fun HostEditorScreenPreview() {
                         createdDate = System.currentTimeMillis()
                     )
                 ),
-                delKey = "backspace",
-                encoding = "UTF-8",
                 useAuthAgent = "yes",
                 compression = true,
                 wantSession = true,
@@ -865,10 +1152,8 @@ private fun HostEditorScreenPreview() {
             onHostnameChange = {},
             onPortChange = {},
             onColorChange = {},
-            onFontSizeChange = {},
             onPubkeyChange = {},
-            onDelKeyChange = {},
-            onEncodingChange = {},
+            onProfileChange = {},
             onUseAuthAgentChange = {},
             onCompressionChange = {},
             onWantSessionChange = {},

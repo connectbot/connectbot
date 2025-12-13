@@ -17,16 +17,26 @@
 
 package org.connectbot.ui.screens.settings
 
+import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Typeface
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.connectbot.data.ProfileRepository
+import org.connectbot.data.entity.Profile
+import org.connectbot.util.LocalFontProvider
+import org.connectbot.util.TerminalFontProvider
 
 data class SettingsUiState(
     val memkeys: Boolean = true,
@@ -34,6 +44,7 @@ data class SettingsUiState(
     val wifilock: Boolean = true,
     val backupkeys: Boolean = false,
     val emulation: String = "xterm-256color",
+    val customTerminalTypes: List<String> = emptyList(),
     val scrollback: String = "140",
     val rotation: String = "Default",
     val titlebarhide: Boolean = false,
@@ -52,22 +63,61 @@ data class SettingsUiState(
     val bellVolume: Float = 0.5f,
     val bellVibrate: Boolean = true,
     val bellNotification: Boolean = false,
+    val fontFamily: String = "SYSTEM_DEFAULT",
+    val customFonts: List<String> = emptyList(),
+    val localFonts: List<Pair<String, String>> = emptyList(),
+    val fontValidationInProgress: Boolean = false,
+    val fontValidationError: String? = null,
+    val fontImportInProgress: Boolean = false,
+    val fontImportError: String? = null,
+    val defaultProfileId: Long = 0L,
+    val availableProfiles: List<Profile> = emptyList(),
 )
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val prefs: SharedPreferences
+    private val prefs: SharedPreferences,
+    private val profileRepository: ProfileRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
+    private val fontProvider = TerminalFontProvider(context)
+    private val localFontProvider = LocalFontProvider(context)
     private val _uiState = MutableStateFlow(loadSettings())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
+    init {
+        loadProfiles()
+    }
+
+    private fun loadProfiles() {
+        viewModelScope.launch {
+            val profiles = profileRepository.getAll()
+            _uiState.update { it.copy(availableProfiles = profiles) }
+        }
+    }
+
     private fun loadSettings(): SettingsUiState {
+        val customFontsString = prefs.getString("customFonts", "") ?: ""
+        val customFonts = if (customFontsString.isBlank()) {
+            emptyList()
+        } else {
+            customFontsString.split(",").filter { it.isNotBlank() }
+        }
+        val customTerminalTypesString = prefs.getString("customTerminalTypes", "") ?: ""
+        val customTerminalTypes = if (customTerminalTypesString.isBlank()) {
+            emptyList()
+        } else {
+            customTerminalTypesString.split(",").filter { it.isNotBlank() }
+        }
+        val localFonts = localFontProvider.getImportedFonts()
+
         return SettingsUiState(
             memkeys = prefs.getBoolean("memkeys", true),
             connPersist = prefs.getBoolean("connPersist", true),
             wifilock = prefs.getBoolean("wifilock", true),
             backupkeys = prefs.getBoolean("backupkeys", false),
             emulation = prefs.getString("emulation", "xterm-256color") ?: "xterm-256color",
+            customTerminalTypes = customTerminalTypes,
             scrollback = prefs.getString("scrollback", "140") ?: "140",
             rotation = prefs.getString("rotation", "Default") ?: "Default",
             titlebarhide = prefs.getBoolean("titlebarhide", false),
@@ -86,6 +136,10 @@ class SettingsViewModel @Inject constructor(
             bellVolume = prefs.getFloat("bellVolume", 0.5f),
             bellVibrate = prefs.getBoolean("bellVibrate", true),
             bellNotification = prefs.getBoolean("bellNotification", false),
+            fontFamily = prefs.getString("fontFamily", "SYSTEM_DEFAULT") ?: "SYSTEM_DEFAULT",
+            customFonts = customFonts,
+            localFonts = localFonts,
+            defaultProfileId = prefs.getLong("defaultProfileId", 0L),
         )
     }
 
@@ -179,6 +233,168 @@ class SettingsViewModel @Inject constructor(
 
     fun updateBellVolume(value: Float) {
         updateFloatPref("bellVolume", value) { copy(bellVolume = value) }
+    }
+
+    fun updateFontFamily(value: String) {
+        updateStringPref("fontFamily", value) { copy(fontFamily = value) }
+        // Preload the font so it's cached when the Terminal opens
+        preloadFont(value)
+    }
+
+    fun updateDefaultProfile(profileId: Long) {
+        viewModelScope.launch {
+            prefs.edit().putLong("defaultProfileId", profileId).apply()
+            _uiState.update { it.copy(defaultProfileId = profileId) }
+        }
+    }
+
+    fun addCustomTerminalType(terminalType: String) {
+        if (terminalType.isBlank()) return
+        val currentTypes = _uiState.value.customTerminalTypes
+        if (currentTypes.contains(terminalType)) return
+
+        viewModelScope.launch {
+            val updatedTypes = currentTypes + terminalType
+            val typesString = updatedTypes.joinToString(",")
+            prefs.edit().putString("customTerminalTypes", typesString).apply()
+            _uiState.update { it.copy(customTerminalTypes = updatedTypes) }
+        }
+    }
+
+    fun removeCustomTerminalType(terminalType: String) {
+        viewModelScope.launch {
+            val currentTypes = _uiState.value.customTerminalTypes.toMutableList()
+            if (currentTypes.remove(terminalType)) {
+                val typesString = currentTypes.joinToString(",")
+                prefs.edit().putString("customTerminalTypes", typesString).apply()
+                _uiState.update { it.copy(customTerminalTypes = currentTypes) }
+
+                // If the removed type was the selected emulation, reset to default
+                if (_uiState.value.emulation == terminalType) {
+                    updateEmulation("xterm-256color")
+                }
+            }
+        }
+    }
+
+    private fun preloadFont(storedValue: String) {
+        // Skip if it's a local font (already on device) or system default
+        if (LocalFontProvider.isLocalFont(storedValue)) return
+        val googleFontName = org.connectbot.util.TerminalFont.getGoogleFontName(storedValue)
+        if (googleFontName.isBlank()) return
+
+        // Trigger font download/caching in background
+        fontProvider.loadFontByName(googleFontName) { /* just cache it */ }
+    }
+
+    fun addCustomFont(fontName: String) {
+        if (fontName.isBlank()) return
+        val currentFonts = _uiState.value.customFonts
+        if (currentFonts.contains(fontName)) {
+            _uiState.update { it.copy(fontValidationError = "Font already added") }
+            return
+        }
+
+        // Validate font by attempting to load it
+        _uiState.update { it.copy(fontValidationInProgress = true, fontValidationError = null) }
+
+        fontProvider.loadFontByName(fontName) { typeface ->
+            viewModelScope.launch {
+                if (typeface != Typeface.MONOSPACE) {
+                    // Font loaded successfully, add it to the list
+                    val updatedFonts = currentFonts + fontName
+                    val fontsString = updatedFonts.joinToString(",")
+                    prefs.edit().putString("customFonts", fontsString).apply()
+                    _uiState.update {
+                        it.copy(
+                            customFonts = updatedFonts,
+                            fontValidationInProgress = false,
+                            fontValidationError = null
+                        )
+                    }
+                } else {
+                    // Font failed to load
+                    _uiState.update {
+                        it.copy(
+                            fontValidationInProgress = false,
+                            fontValidationError = "Font not found in Google Fonts"
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun clearFontValidationError() {
+        _uiState.update { it.copy(fontValidationError = null) }
+    }
+
+    fun removeCustomFont(fontName: String) {
+        viewModelScope.launch {
+            val currentFonts = _uiState.value.customFonts.toMutableList()
+            if (currentFonts.remove(fontName)) {
+                val fontsString = currentFonts.joinToString(",")
+                prefs.edit().putString("customFonts", fontsString).apply()
+                _uiState.update { it.copy(customFonts = currentFonts) }
+
+                // If the removed font was the selected font, reset to system default
+                if (_uiState.value.fontFamily == "custom:$fontName") {
+                    updateFontFamily("SYSTEM_DEFAULT")
+                }
+            }
+        }
+    }
+
+    fun importLocalFont(uri: Uri, displayName: String) {
+        if (displayName.isBlank()) return
+
+        _uiState.update { it.copy(fontImportInProgress = true, fontImportError = null) }
+
+        viewModelScope.launch {
+            val fileName = withContext(Dispatchers.IO) {
+                localFontProvider.importFont(uri, displayName)
+            }
+
+            if (fileName != null) {
+                val updatedLocalFonts = localFontProvider.getImportedFonts()
+                _uiState.update {
+                    it.copy(
+                        localFonts = updatedLocalFonts,
+                        fontImportInProgress = false,
+                        fontImportError = null
+                    )
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        fontImportInProgress = false,
+                        fontImportError = "Failed to import font"
+                    )
+                }
+            }
+        }
+    }
+
+    fun deleteLocalFont(fileName: String) {
+        viewModelScope.launch {
+            val deleted = withContext(Dispatchers.IO) {
+                localFontProvider.deleteFont(fileName)
+            }
+
+            if (deleted) {
+                val updatedLocalFonts = localFontProvider.getImportedFonts()
+                _uiState.update { it.copy(localFonts = updatedLocalFonts) }
+
+                // If the removed font was the selected font, reset to system default
+                if (_uiState.value.fontFamily == "${LocalFontProvider.LOCAL_PREFIX}$fileName") {
+                    updateFontFamily("SYSTEM_DEFAULT")
+                }
+            }
+        }
+    }
+
+    fun clearFontImportError() {
+        _uiState.update { it.copy(fontImportError = null) }
     }
 
     private fun updateBooleanPref(key: String, value: Boolean, updateState: SettingsUiState.() -> SettingsUiState) {

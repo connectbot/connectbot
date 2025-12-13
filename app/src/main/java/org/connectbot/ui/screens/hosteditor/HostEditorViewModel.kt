@@ -17,7 +17,6 @@
 
 package org.connectbot.ui.screens.hosteditor
 
-import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -29,8 +28,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.connectbot.data.HostRepository
+import org.connectbot.data.ProfileRepository
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
 
 data class HostEditorUiState(
@@ -42,11 +43,10 @@ data class HostEditorUiState(
     val hostname: String = "",
     val port: String = "22",
     val color: String = "gray",
-    val fontSize: Int = 10,
     val pubkeyId: Long = -1L,
     val availablePubkeys: List<Pubkey> = emptyList(),
-    val delKey: String = "del",
-    val encoding: String = "UTF-8",
+    val profileId: Long? = 1L,
+    val availableProfiles: List<Profile> = emptyList(),
     val useAuthAgent: String = "no",
     val compression: Boolean = false,
     val wantSession: Boolean = true,
@@ -63,7 +63,9 @@ data class HostEditorUiState(
 class HostEditorViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val repository: HostRepository,
-    private val pubkeyRepository: PubkeyRepository
+    private val pubkeyRepository: PubkeyRepository,
+    private val profileRepository: ProfileRepository,
+    private val prefs: android.content.SharedPreferences
 ) : ViewModel() {
 
     private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
@@ -73,8 +75,15 @@ class HostEditorViewModel @Inject constructor(
     init {
         loadPubkeys()
         loadJumpHosts()
+        loadProfiles()
         if (hostId != -1L) {
             loadHost()
+        } else {
+            // For new hosts, apply the default profile from settings
+            val defaultProfileId = prefs.getLong("defaultProfileId", 0L)
+            if (defaultProfileId > 0) {
+                _uiState.update { it.copy(profileId = defaultProfileId) }
+            }
         }
     }
 
@@ -105,6 +114,18 @@ class HostEditorViewModel @Inject constructor(
         }
     }
 
+    private fun loadProfiles() {
+        viewModelScope.launch {
+            try {
+                val profiles = profileRepository.getAll()
+                _uiState.update { it.copy(availableProfiles = profiles) }
+            } catch (e: Exception) {
+                // Don't fail the whole screen if profiles can't be loaded
+                _uiState.update { it.copy(availableProfiles = emptyList()) }
+            }
+        }
+    }
+
     private fun loadHost() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
@@ -119,10 +140,8 @@ class HostEditorViewModel @Inject constructor(
                             hostname = host.hostname,
                             port = host.port.toString(),
                             color = host.color ?: "gray",
-                            fontSize = host.fontSize,
                             pubkeyId = host.pubkeyId,
-                            delKey = host.delKey,
-                            encoding = host.encoding,
+                            profileId = host.profileId,
                             useAuthAgent = host.useAuthAgent ?: "no",
                             compression = host.compression,
                             wantSession = host.wantSession,
@@ -192,20 +211,12 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(color = value) }
     }
 
-    fun updateFontSize(value: Int) {
-        _uiState.update { it.copy(fontSize = value) }
-    }
-
     fun updatePubkeyId(value: Long) {
         _uiState.update { it.copy(pubkeyId = value) }
     }
 
-    fun updateDelKey(value: String) {
-        _uiState.update { it.copy(delKey = value) }
-    }
-
-    fun updateEncoding(value: String) {
-        _uiState.update { it.copy(encoding = value) }
+    fun updateProfileId(value: Long?) {
+        _uiState.update { it.copy(profileId = value) }
     }
 
     fun updateUseAuthAgent(value: String) {
@@ -264,10 +275,8 @@ class HostEditorViewModel @Inject constructor(
                     hostname = state.hostname,
                     port = state.port.toIntOrNull() ?: 22,
                     color = state.color.takeIf { it != "gray" },
-                    fontSize = state.fontSize,
                     pubkeyId = state.pubkeyId,
-                    delKey = state.delKey,
-                    encoding = state.encoding,
+                    profileId = state.profileId,
                     useAuthAgent = state.useAuthAgent.takeIf { it != "no" },
                     compression = state.compression,
                     wantSession = state.wantSession,
@@ -277,7 +286,6 @@ class HostEditorViewModel @Inject constructor(
                     lastConnect = existingHost?.lastConnect ?: System.currentTimeMillis(),
                     hostKeyAlgo = existingHost?.hostKeyAlgo,
                     useKeys = existingHost?.useKeys ?: true,
-                    colorSchemeId = existingHost?.colorSchemeId ?: 1L,
                     scrollbackLines = existingHost?.scrollbackLines ?: 140,
                     useCtrlAltAsMetaKey = existingHost?.useCtrlAltAsMetaKey ?: false,
                     jumpHostId = jumpHostId

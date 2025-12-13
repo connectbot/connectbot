@@ -66,6 +66,10 @@ class TerminalBridge {
     var defaultFg = HostConstants.DEFAULT_FG_COLOR
     var defaultBg = HostConstants.DEFAULT_BG_COLOR
 
+    // Store color scheme info for reapplication
+    private var currentColorSchemeId: Long = -1L
+    private var fullColorPalette: IntArray = IntArray(0)
+
     val manager: TerminalManager
 
     var host: Host
@@ -78,6 +82,10 @@ class TerminalBridge {
 
     private val emulation: String?
     private val scrollback: Int
+    private val encoding: String
+
+    /** Font family from profile for terminal display */
+    val fontFamily: String?
 
     // Terminal emulator from ConnectBot Terminal library
     val terminalEmulator: TerminalEmulator
@@ -142,25 +150,38 @@ class TerminalBridge {
 
         fontSizeChangedListeners = mutableListOf()
 
-        var hostFontSizeSp = host.fontSize
-        if (hostFontSizeSp <= 0) {
-            hostFontSizeSp = DEFAULT_FONT_SIZE_SP
-        }
-        setFontSize(hostFontSizeSp.toFloat())
+        // Load profile for this host (always returns a profile, defaulting to Default profile)
+        val profile = manager.profileRepository.getByIdOrDefaultBlocking(host.profileId)
 
-        // Load color scheme from host configuration
-        val schemeId = host.colorSchemeId
-        val fullPalette = manager.colorRepository.getColorsForSchemeBlocking(schemeId)
-        val defaults = manager.colorRepository.getDefaultColorsForSchemeBlocking(schemeId)
+        // Store encoding and font family from profile for later use
+        encoding = profile.encoding
+        fontFamily = profile.fontFamily
+
+        // Use settings from profile
+        var fontSizeSp = profile.fontSize
+        if (fontSizeSp <= 0) {
+            fontSizeSp = DEFAULT_FONT_SIZE_SP
+        }
+        setFontSize(fontSizeSp.toFloat())
+
+        // Load color scheme from profile
+        currentColorSchemeId = profile.colorSchemeId
+        fullColorPalette = manager.colorRepository.getColorsForSchemeBlocking(profile.colorSchemeId)
+        val defaults = manager.colorRepository.getDefaultColorsForSchemeBlocking(profile.colorSchemeId)
         defaultFg = defaults[0]
         defaultBg = defaults[1]
 
-        // Initialize TerminalEmulator
+        // Get actual RGB colors for the default foreground/background indices
+        val defaultFgColor = fullColorPalette[defaultFg]
+        val defaultBgColor = fullColorPalette[defaultBg]
+
+        // Initialize TerminalEmulator with colors from scheme
+        // Note: We pass the actual RGB colors (not indices) wrapped in Color objects
         terminalEmulator = TerminalEmulatorFactory.create(
             initialRows = 24,  // Will be resized when view is attached
             initialCols = 80,
-            defaultForeground = Color(defaultFg),
-            defaultBackground = Color(defaultBg),
+            defaultForeground = Color(defaultFgColor),
+            defaultBackground = Color(defaultBgColor),
             onKeyboardInput = { data ->
                 scope.launch(Dispatchers.IO) {
                     try {
@@ -184,12 +205,10 @@ class TerminalBridge {
         )
 
         // Apply color scheme to terminal emulator
-        val ansiColors = fullPalette.sliceArray(0 until 16)
-        val defaultFgColor = fullPalette[defaultFg]
-        val defaultBgColor = fullPalette[defaultBg]
+        val ansiColors = fullColorPalette.sliceArray(0 until 16)
         terminalEmulator.applyColorScheme(ansiColors, defaultFgColor, defaultBgColor)
 
-        keyListener = TerminalKeyListener(manager, this, host.encoding)
+        keyListener = TerminalKeyListener(manager, this, profile.encoding)
     }
 
     /**
@@ -300,7 +319,7 @@ class TerminalBridge {
 
         scope.launch(Dispatchers.IO) {
             try {
-                transport?.write(string.toByteArray(charset(host.encoding)))
+                transport?.write(string.toByteArray(charset(encoding)))
             } catch (e: Exception) {
                 Log.e(TAG, "Couldn't inject string to remote host: ", e)
             }
@@ -341,7 +360,7 @@ class TerminalBridge {
         if (isSessionOpen) {
             // create thread to relay incoming connection data to buffer
             transport?.let { t ->
-                relay = Relay(this, t, host.encoding)
+                relay = Relay(this, t, encoding)
                 scope.launch {
                     relay?.start()
                 }
@@ -492,25 +511,8 @@ class TerminalBridge {
         for (ofscl in fontSizeChangedListeners) {
             ofscl.onFontSizeChanged(sizeSp)
         }
-
-        // Create updated host with new fontSize
-        host = host.withFontSize(sizeSp.toInt())
-
-        if (host.id != 0L) {
-            scope.launch(Dispatchers.IO) {
-                try {
-                    manager.hostRepository.saveHost(host)
-                } catch (e: Exception) {
-                    Log.e(TAG, "Failed to save font size for ${host.nickname}", e)
-                    manager.reportError(
-                        ServiceError.HostSaveFailed(
-                            hostNickname = host.nickname,
-                            reason = "Failed to save font size: ${e.message}"
-                        )
-                    )
-                }
-            }
-        }
+        // Note: Font size is now stored in profiles, not hosts.
+        // Runtime font size changes are session-only and not persisted.
     }
 
 //    /**
