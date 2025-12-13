@@ -57,7 +57,6 @@ import org.connectbot.data.entity.Pubkey
  * Security Considerations:
  * - Pubkeys table supports per-key backup control via allowBackup field
  * - Custom BackupAgent filters pubkeys during backup/restore operations
- * - Schema ready for future Android Keystore integration (Phase 2)
  */
 @Database(
     entities = [
@@ -76,7 +75,6 @@ import org.connectbot.data.entity.Pubkey
 )
 @TypeConverters(Converters::class)
 abstract class ConnectBotDatabase : RoomDatabase() {
-
     abstract fun hostDao(): HostDao
     abstract fun pubkeyDao(): PubkeyDao
     abstract fun portForwardDao(): PortForwardDao

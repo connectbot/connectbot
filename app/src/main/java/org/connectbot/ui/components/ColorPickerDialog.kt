@@ -40,14 +40,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
-import org.connectbot.util.Colors
+import org.connectbot.data.ColorSchemePresets
 
 /**
  * Dialog for selecting a color from the 256-color terminal palette.
  *
  * @param title The title of the dialog
- * @param selectedColorIndex The currently selected color index (0-255)
- * @param palette The current color palette (256 ARGB values)
+ * @param selectedColorIndex The currently selected color index (0-15)
+ * @param palette The current color palette (16 ARGB values)
  * @param onColorSelected Callback when a color is selected
  * @param onDismiss Callback when dialog is dismissed
  */
@@ -55,7 +55,7 @@ import org.connectbot.util.Colors
 fun ColorPickerDialog(
     title: String,
     selectedColorIndex: Int,
-    palette: IntArray = Colors.defaults,
+    palette: IntArray = ColorSchemePresets.default.colors,
     onColorSelected: (Int) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -70,9 +70,9 @@ fun ColorPickerDialog(
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                // Grid of 256 colors (16 columns)
+                // Grid of 16 colors (8 columns)
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(16),
+                    columns = GridCells.Fixed(8),
                     contentPadding = PaddingValues(4.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {

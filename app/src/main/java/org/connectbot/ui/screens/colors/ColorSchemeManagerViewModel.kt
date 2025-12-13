@@ -17,7 +17,6 @@
 
 package org.connectbot.ui.screens.colors
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

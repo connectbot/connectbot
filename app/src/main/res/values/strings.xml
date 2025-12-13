@@ -563,6 +563,9 @@
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
 	<string name="yes">"Yes"</string>
 
+	<!-- Selector title for the list of color schemes. -->
+	<string name="list_color_schemes">"Color schemes"</string>
+
 	<!-- Menu selection to reset colors to their defaults. -->
 	<string name="menu_colors_reset">"Reset"</string>
 
@@ -663,13 +666,7 @@
 	<string name="button_reset_all_colors">"Reset All"</string>
 
 	<!-- Section header for ANSI colors (0-15) -->
-	<string name="section_ansi_colors">"ANSI Colors (0-15)"</string>
-
-	<!-- Section header for 216-color RGB cube (16-231) -->
-	<string name="section_rgb_cube">"RGB Cube (16-231)"</string>
-
-	<!-- Section header for grayscale ramp (232-255) -->
-	<string name="section_grayscale">"Grayscale (232-255)"</string>
+	<string name="section_ansi_colors">"ANSI Colors (0–15)"</string>
 
 	<!-- Dialog title when editing a specific color -->
 	<string name="dialog_title_edit_color">"Edit Color %1$d"</string>

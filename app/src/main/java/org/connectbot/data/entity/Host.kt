@@ -84,7 +84,7 @@ data class Host(
     val fontSize: Int = 10,
 
     @ColumnInfo(name = "color_scheme_id")
-    val colorSchemeId: Long = 1L,
+    val colorSchemeId: Long = -1L,
 
     @ColumnInfo(name = "del_key")
     val delKey: String = "DEL",
