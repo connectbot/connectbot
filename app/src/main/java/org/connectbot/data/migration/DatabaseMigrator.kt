@@ -603,14 +603,11 @@ class DatabaseMigrator @Inject constructor(
 
             // Insert profiles (referenced by hosts) with remapped colorSchemeId
             data.profiles.forEach { profile ->
-                // Remap colorSchemeId if it's a positive ID (custom scheme)
-                // Negative IDs are built-in schemes that don't exist in the database
-                val newColorSchemeId = if (profile.colorSchemeId > 0) {
-                    colorSchemeIdMap[profile.colorSchemeId]
-                        ?: throw MigrationException("Profile references unknown color scheme ID: ${profile.colorSchemeId}")
-                } else {
-                    profile.colorSchemeId // Keep built-in scheme IDs as-is
-                }
+                // Remap colorSchemeId if it exists in colorSchemeIdMap (custom scheme)
+                // Built-in schemes (negative IDs) and the default scheme (ID 1) are not in
+                // the database and should be kept as-is
+                val newColorSchemeId = colorSchemeIdMap[profile.colorSchemeId]
+                    ?: profile.colorSchemeId
                 val remappedProfile = profile.copy(colorSchemeId = newColorSchemeId)
                 roomDatabase.profileDao().insert(remappedProfile)
             }
