@@ -32,6 +32,8 @@ import com.trilead.ssh2.KnownHosts
 import com.trilead.ssh2.LocalPortForwarder
 import com.trilead.ssh2.Session
 import com.trilead.ssh2.crypto.PEMDecoder
+import com.trilead.ssh2.crypto.PublicKeyUtils
+import com.trilead.ssh2.crypto.fingerprint.KeyFingerprint
 import com.trilead.ssh2.crypto.keys.Ed25519PrivateKey
 import com.trilead.ssh2.crypto.keys.Ed25519Provider
 import com.trilead.ssh2.crypto.keys.Ed25519PublicKey
@@ -123,14 +125,12 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             val hosts = manager?.hostRepository?.getKnownHostsBlocking() ?: return false
 
             val matchName = String.format(Locale.US, "%s:%d", hostname, port)
-            val fingerprint = KnownHosts.createHexFingerprint(serverHostKeyAlgorithm, serverHostKey)
-
-            val algorithmName = when {
-                serverHostKeyAlgorithm == "ssh-rsa" -> "RSA"
-                serverHostKeyAlgorithm == "ssh-dss" -> "DSA"
-                serverHostKeyAlgorithm.startsWith("ecdsa-") -> "EC"
-                serverHostKeyAlgorithm == "ssh-ed25519" -> "Ed25519"
-                else -> serverHostKeyAlgorithm
+            val algorithmName = PublicKeyUtils.detectKeyType(serverHostKey)
+            val fingerprint = buildString {
+                append("MD5:")
+                append(KeyFingerprint.createMD5Fingerprint(serverHostKey))
+                append(" SHA256:")
+                append(KeyFingerprint.createSHA256Fingerprint(serverHostKey))
             }
 
             return when (hosts.verifyHostkey(matchName, serverHostKeyAlgorithm, serverHostKey)) {

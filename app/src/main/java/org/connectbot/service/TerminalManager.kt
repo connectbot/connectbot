@@ -34,27 +34,21 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.util.Log
-
-import java.io.IOException
-import java.lang.ref.WeakReference
-import java.security.KeyPair
-import java.util.Arrays
-import java.util.concurrent.atomic.AtomicLong
-
+import com.trilead.ssh2.crypto.PublicKeyUtils
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-
+import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.HostRepository
@@ -66,15 +60,18 @@ import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.ProviderLoader
 import org.connectbot.util.ProviderLoaderListener
 import org.connectbot.util.PubkeyUtils
+import java.io.IOException
+import java.lang.ref.WeakReference
+import java.security.KeyPair
+import java.util.Arrays
+import java.util.concurrent.atomic.AtomicLong
+import javax.inject.Inject
 
 /**
  * Manager for SSH connections that runs as a service. This service holds a list
  * of currently connected SSH bridges that are ready for connection up to a GUI
  * if needed.
  */
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
-
 @AndroidEntryPoint
 class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenceChangeListener, ProviderLoaderListener {
 
@@ -463,7 +460,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 		removeKey(pubkey.nickname)
 
-		val sshPubKey = PubkeyUtils.extractOpenSSHPublic(pair)
+		val sshPubKey = PublicKeyUtils.extractPublicKeyBlob(pair.public)
 
 		val keyHolder = KeyHolder()
 		keyHolder.pubkey = pubkey
@@ -503,7 +500,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		val keyPair = KeyPair(publicKey, privateKey)
 
 		// Extract OpenSSH format public key for SSH authentication
-		val sshPubKey = PubkeyUtils.extractOpenSSHPublic(keyPair)
+		val sshPubKey = PublicKeyUtils.extractPublicKeyBlob(keyPair.public)
 
 		val keyHolder = KeyHolder()
 		keyHolder.pubkey = pubkey

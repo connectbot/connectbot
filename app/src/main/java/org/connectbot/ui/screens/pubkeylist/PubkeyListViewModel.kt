@@ -31,6 +31,8 @@ import javax.inject.Inject
 import com.trilead.ssh2.crypto.Base64
 import com.trilead.ssh2.crypto.OpenSSHKeyEncoder
 import com.trilead.ssh2.crypto.PEMDecoder
+import com.trilead.ssh2.crypto.PEMEncoder
+import com.trilead.ssh2.crypto.PublicKeyUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -244,7 +246,7 @@ class PubkeyListViewModel @Inject constructor(
                     }
 
                     val pk = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
-                    PubkeyUtils.convertToOpenSSHFormat(pk, pubkey.nickname)
+                    PublicKeyUtils.toAuthorizedKeysFormat(pk, pubkey.nickname)
                 }
 
                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -337,7 +339,7 @@ class PubkeyListViewModel @Inject constructor(
                         // For all non-imported keys, export as PKCS#8 PEM
                         val privateKeyBytes = pubkey.privateKey ?: throw Exception("No private key data")
                         val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
-                        pk?.let { PubkeyUtils.exportPEM(it, null) }
+                        pk?.let { PEMEncoder.encodePrivateKey(it, null) }
                     }
                 }
 
@@ -545,7 +547,7 @@ class PubkeyListViewModel @Inject constructor(
                             }
                             ExportFormat.PEM -> {
                                 val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
-                                pk?.let { PubkeyUtils.exportPEM(it, null) }
+                                pk?.let { PEMEncoder.encodePrivateKey(it, null) }
                             }
                         }
                     }
@@ -738,7 +740,7 @@ class PubkeyListViewModel @Inject constructor(
                 ))
             } else {
                 // Encrypted key - need password to decrypt
-                val keyType = PubkeyUtils.extractKeyTypeFromOpenSSH(keyString) ?: "IMPORTED"
+                val keyType = PublicKeyUtils.detectKeyType(keyString) ?: "IMPORTED"
                 return ImportResult.NeedsPassword(keyData, nickname, keyType)
             }
         } catch (e: Exception) {
