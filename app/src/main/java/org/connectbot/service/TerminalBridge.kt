@@ -70,6 +70,12 @@ class TerminalBridge {
 
     var host: Host
 
+    /**
+     * Unique session identifier for this bridge.
+     * Used to distinguish multiple sessions to the same host.
+     */
+    val sessionId: Long
+
     /* package */ var transport: AbsTransport? = null
 
     val defaultPaint: Paint
@@ -124,10 +130,15 @@ class TerminalBridge {
      * Create new terminal bridge with following parameters. We will immediately
      * launch thread to start SSH connection and handle any hostkey verification
      * and password authentication.
+     *
+     * @param manager The TerminalManager service
+     * @param host The host configuration for this connection
+     * @param sessionId Unique session identifier (for multi-session support)
      */
-    constructor(manager: TerminalManager, host: Host) {
+    constructor(manager: TerminalManager, host: Host, sessionId: Long) {
         this.manager = manager
         this.host = host
+        this.sessionId = sessionId
 
         emulation = manager.getEmulation()
         scrollback = manager.getScrollback()
