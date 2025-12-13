@@ -75,6 +75,42 @@ fun PaletteEditorScreen(
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
+    PaletteEditorScreenContent(
+        onNavigateBack = onNavigateBack,
+        onClearError = viewModel::clearError,
+        onShowResetAllDialog = viewModel::showResetAllDialog,
+        onHideResetAllDialog = viewModel::hideResetAllDialog,
+        onEditColor = { color ->
+            viewModel.editColor(color)
+        },
+        onUpdateColor = { colorIndex, newColor ->
+            viewModel.updateColor(colorIndex, newColor)
+        },
+        onResetColor = { color ->
+            viewModel.resetColor(color)
+        },
+        onResetAllColors = viewModel::resetAllColors,
+        onCloseColorEditor = viewModel::closeColorEditor,
+        uiState = uiState,
+        snackbarHostState = snackbarHostState,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PaletteEditorScreenContent(
+    onNavigateBack: () -> Unit,
+    onClearError: () -> Unit,
+    onShowResetAllDialog: () -> Unit,
+    onHideResetAllDialog: () -> Unit,
+    onEditColor: (Int) -> Unit,
+    onUpdateColor: (Int, Int) -> Unit,
+    onResetColor: (Int) -> Unit,
+    onResetAllColors: () -> Unit,
+    onCloseColorEditor: () -> Unit,
+    uiState: PaletteEditorUiState,
+    snackbarHostState: SnackbarHostState,
+) {
     // Show snackbar when there's an error
     LaunchedEffect(uiState.error) {
         uiState.error?.let { error ->
@@ -82,7 +118,7 @@ fun PaletteEditorScreen(
                 message = error,
                 withDismissAction = true
             )
-            viewModel.clearError()
+            onClearError()
         }
     }
 
@@ -109,7 +145,7 @@ fun PaletteEditorScreen(
                     }
                 },
                 actions = {
-                    TextButton(onClick = { viewModel.showResetAllDialog() }) {
+                    TextButton(onClick = { onShowResetAllDialog() }) {
                         Text(stringResource(R.string.button_reset_all_colors))
                     }
                 }
@@ -140,32 +176,8 @@ fun PaletteEditorScreen(
                                 title = stringResource(R.string.section_ansi_colors),
                                 colorIndices = 0..15,
                                 palette = uiState.palette,
-                                onColorClick = { viewModel.editColor(it) },
-                                onColorReset = { viewModel.resetColor(it) }
-                            )
-                        }
-
-                        // RGB Cube (16-231)
-                        item {
-                            ColorSection(
-                                title = stringResource(R.string.section_rgb_cube),
-                                colorIndices = 16..231,
-                                palette = uiState.palette,
-                                onColorClick = { viewModel.editColor(it) },
-                                onColorReset = { viewModel.resetColor(it) },
-                                columns = 18 // 6x6x6 cube displayed as 18 columns
-                            )
-                        }
-
-                        // Grayscale (232-255)
-                        item {
-                            ColorSection(
-                                title = stringResource(R.string.section_grayscale),
-                                colorIndices = 232..255,
-                                palette = uiState.palette,
-                                onColorClick = { viewModel.editColor(it) },
-                                onColorReset = { viewModel.resetColor(it) },
-                                columns = 12
+                                onColorClick = { onEditColor(it) },
+                                onColorReset = { onResetColor(it) }
                             )
                         }
                     }
@@ -176,25 +188,25 @@ fun PaletteEditorScreen(
 
     // Color editor dialog
     if (uiState.editingColorIndex != null) {
-        val colorIndex = uiState.editingColorIndex!!
+        val colorIndex = uiState.editingColorIndex
         RgbColorPickerDialog(
             title = stringResource(R.string.dialog_title_edit_color, colorIndex),
             initialColor = uiState.palette[colorIndex],
             onColorSelected = { newColor ->
-                viewModel.updateColor(colorIndex, newColor)
+                onUpdateColor(colorIndex, newColor)
             },
-            onDismiss = { viewModel.closeColorEditor() }
+            onDismiss = { onCloseColorEditor() }
         )
     }
 
     // Reset all confirmation dialog
     if (uiState.showResetAllDialog) {
         AlertDialog(
-            onDismissRequest = { viewModel.hideResetAllDialog() },
+            onDismissRequest = { onHideResetAllDialog() },
             title = { Text(stringResource(R.string.dialog_title_reset_all)) },
             text = { Text(stringResource(R.string.dialog_message_reset_all)) },
             confirmButton = {
-                TextButton(onClick = { viewModel.resetAllColors() }) {
+                TextButton(onClick = { onResetAllColors() }) {
                     Text(
                         stringResource(R.string.button_reset_all_colors),
                         color = MaterialTheme.colorScheme.error
@@ -202,7 +214,7 @@ fun PaletteEditorScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { viewModel.hideResetAllDialog() }) {
+                TextButton(onClick = { onHideResetAllDialog() }) {
                     Text(stringResource(R.string.button_cancel))
                 }
             }
@@ -220,7 +232,7 @@ private fun ColorSection(
     palette: IntArray,
     onColorClick: (Int) -> Unit,
     onColorReset: (Int) -> Unit,
-    columns: Int = 16,
+    columns: Int = 8,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -307,75 +319,17 @@ private fun ColorCell(
 @ScreenPreviews
 @Composable
 private fun PaletteEditorScreenPreview() {
-    ConnectBotTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            Text(
-                text = "256-Color Palette Editor",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                text = "ANSI Colors (0-15)",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
-            )
-
-            // Preview of ANSI colors grid
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                for (i in 0..7) {
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .aspectRatio(1f)
-                            .background(
-                                color = Color(i * 36, i * 36, i * 36),
-                                shape = RoundedCornerShape(4.dp)
-                            )
-                            .border(
-                                width = 1.dp,
-                                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
-                                shape = RoundedCornerShape(4.dp)
-                            )
-                    )
-                }
-            }
-
-            Text(
-                text = "System Colors (16-255)",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
-            )
-
-            // Preview of system colors grid (sample)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                for (i in 0..7) {
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .aspectRatio(1f)
-                            .background(
-                                color = Color(i * 32, 128, i * 32),
-                                shape = RoundedCornerShape(4.dp)
-                            )
-                            .border(
-                                width = 1.dp,
-                                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
-                                shape = RoundedCornerShape(4.dp)
-                            )
-                    )
-                }
-            }
-        }
-    }
+   PaletteEditorScreenContent(
+       onNavigateBack = {},
+       uiState = PaletteEditorUiState(),
+       snackbarHostState = SnackbarHostState(),
+       onClearError = {},
+       onShowResetAllDialog = {},
+       onHideResetAllDialog = {},
+       onEditColor = {},
+       onUpdateColor = { _, _ -> },
+       onResetColor = {},
+       onResetAllColors = {},
+       onCloseColorEditor = {},
+   )
 }

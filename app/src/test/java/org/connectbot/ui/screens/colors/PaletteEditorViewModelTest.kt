@@ -29,9 +29,9 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.assertj.core.api.Assertions.assertThat
+import org.connectbot.data.ColorSchemePresets
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.entity.ColorScheme
-import org.connectbot.util.Colors
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -67,7 +67,7 @@ class PaletteEditorViewModelTest {
         )
         runBlocking {
             whenever(repository.getAllSchemes()).thenReturn(listOf(defaultScheme))
-            whenever(repository.getSchemeColors(testSchemeId)).thenReturn(Colors.defaults)
+            whenever(repository.getSchemeColors(testSchemeId)).thenReturn(ColorSchemePresets.default.colors)
         }
     }
 
@@ -84,7 +84,7 @@ class PaletteEditorViewModelTest {
         val state = viewModel.uiState.value
         assertThat(state.schemeId).isEqualTo(testSchemeId)
         assertThat(state.palette).isNotEmpty()
-        assertThat(state.palette.size).isEqualTo(Colors.defaults.size)
+        assertThat(state.palette.size).isEqualTo(16)
         assertThat(state.isLoading).isFalse()
         assertThat(state.error).isNull()
         assertThat(state.editingColorIndex).isNull()
@@ -188,7 +188,7 @@ class PaletteEditorViewModelTest {
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
-        assertThat(state.palette[colorIndex]).isEqualTo(Colors.defaults[colorIndex])
+        assertThat(state.palette[colorIndex]).isEqualTo(ColorSchemePresets.default.colors[colorIndex])
     }
 
     @Test
@@ -232,7 +232,7 @@ class PaletteEditorViewModelTest {
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
-        assertThat(state.palette).isEqualTo(Colors.defaults)
+        assertThat(state.palette).isEqualTo(ColorSchemePresets.default.colors)
         assertThat(state.showResetAllDialog).isFalse()
     }
 
@@ -356,6 +356,6 @@ class PaletteEditorViewModelTest {
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
-        assertThat(state.palette.size).isEqualTo(Colors.defaults.size)
+        assertThat(state.palette.size).isEqualTo(16)
     }
 }

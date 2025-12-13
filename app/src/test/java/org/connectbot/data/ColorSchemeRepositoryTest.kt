@@ -134,7 +134,7 @@ class ColorSchemeRepositoryTest {
 
         // Verify colors were copied
         val palette = repository.getSchemeColors(newId)
-        assertEquals("Should have 256 colors", 256, palette.size)
+        assertEquals("Should have 16 colors", 16, palette.size)
     }
 
     @Test
@@ -233,17 +233,17 @@ class ColorSchemeRepositoryTest {
     }
 
     @Test
-    fun getSchemeColors_Default_Returns256Colors() = runBlocking {
+    fun getSchemeColors_Default_Returns16Colors() = runBlocking {
         val palette = repository.getSchemeColors(-1)
 
-        assertEquals("Should have 256 colors", 256, palette.size)
+        assertEquals("Should have 16 colors", 16, palette.size)
     }
 
     @Test
-    fun getSchemeColors_Preset_Returns256Colors() = runBlocking {
+    fun getSchemeColors_Preset_Returns16Colors() = runBlocking {
         val palette = repository.getSchemeColors(-2) // Solarized Dark (ID -2)
 
-        assertEquals("Should have 256 colors", 256, palette.size)
+        assertEquals("Should have 16 colors", 16, palette.size)
     }
 
     @Test
@@ -256,7 +256,7 @@ class ColorSchemeRepositoryTest {
 
     @Test
     fun getSchemeDefaults_SolarizedDark_ReturnsCorrectValues() = runBlocking {
-        val (fg, bg) = repository.getSchemeDefaults(-2) // Solarized Dark (ID -2 since Default is -1)
+        val (fg, bg) = repository.getSchemeDefaults(-2) // Solarized Dark (ID -2)
 
         assertEquals("Solarized Dark FG should be 12", 12, fg)
         assertEquals("Solarized Dark BG should be 8", 8, bg)

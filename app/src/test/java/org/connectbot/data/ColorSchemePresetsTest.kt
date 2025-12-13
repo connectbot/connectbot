@@ -17,7 +17,6 @@
 
 package org.connectbot.data
 
-import org.connectbot.util.Colors
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -108,8 +107,8 @@ class ColorSchemePresetsTest {
     }
 
     @Test
-    fun builtInSchemes_Contains7Schemes() {
-        assertEquals("Should have 7 built-in schemes", 7, ColorSchemePresets.builtInSchemes.size)
+    fun builtInSchemes_Contains8Schemes() {
+        assertEquals("Should have 8 built-in schemes", 8, ColorSchemePresets.builtInSchemes.size)
     }
 
     @Test
@@ -126,79 +125,24 @@ class ColorSchemePresetsTest {
     }
 
     @Test
-    fun getFullPalette_Returns256Colors() {
+    fun colors_Returns16Colors() {
         val scheme = ColorSchemePresets.solarizedDark
-        val palette = scheme.getFullPalette()
+        val palette = scheme.colors
 
-        assertEquals("Should have 256 colors", 256, palette.size)
-    }
-
-    @Test
-    fun getFullPalette_UsesDefaultsForUnspecified() {
-        val scheme = ColorSchemePresets.solarizedDark
-        val palette = scheme.getFullPalette()
-
-        // Solarized only defines first 16 colors
-        // Colors 16-255 should come from Colors.defaults
-        for (i in 16 until 256) {
-            assertEquals(
-                "Color $i should match Colors.defaults",
-                Colors.defaults[i],
-                palette[i]
-            )
-        }
-    }
-
-    @Test
-    fun getFullPalette_OverridesSpecifiedColors() {
-        val scheme = ColorSchemePresets.solarizedDark
-        val palette = scheme.getFullPalette()
-
-        // First 16 colors should be from Solarized, not defaults
-        for (i in 0..15) {
-            val expectedColor = scheme.colors[i]
-            assertNotNull("Color $i should be defined in scheme", expectedColor)
-            assertEquals("Color $i should match scheme definition", expectedColor, palette[i])
-        }
-    }
-
-    @Test
-    fun getFullPalette_DoesNotModifyOriginal() {
-        val scheme = ColorSchemePresets.solarizedDark
-        val palette1 = scheme.getFullPalette()
-        val palette2 = scheme.getFullPalette()
-
-        // Modify palette1
-        palette1[0] = 0xFFFFFFFF.toInt()
-
-        // palette2 should not be affected
-        assertNotEquals("Palettes should be independent", palette1[0], palette2[0])
-    }
-
-    @Test
-    fun presetScheme_ValidColorIndices() {
-        // Ensure all color indices are valid (0-255)
-        ColorSchemePresets.builtInSchemes.forEach { scheme ->
-            scheme.colors.keys.forEach { index ->
-                assertTrue(
-                    "Color index $index in ${scheme.name} should be 0-255",
-                    index in 0..255
-                )
-            }
-        }
+        assertEquals("Should have 16 colors", 16, palette.size)
     }
 
     @Test
     fun presetScheme_ValidDefaultIndices() {
-        // Ensure default FG/BG indices are valid (0-255)
+        // Ensure default FG/BG indices are valid (0-15)
         ColorSchemePresets.builtInSchemes.forEach { scheme ->
             assertTrue(
-                "${scheme.name} defaultFg should be 0-255",
-                scheme.defaultFg in 0..255
+                "${scheme.name} defaultFg should be 0-15",
+                scheme.defaultFg in 0..15
             )
             assertTrue(
-                "${scheme.name} defaultBg should be 0-255",
-                scheme.defaultBg in 0..255
+                "${scheme.name} defaultBg should be 0-15",
+                scheme.defaultBg in 0..15
             )
         }
     }
@@ -207,7 +151,7 @@ class ColorSchemePresetsTest {
     fun presetScheme_ColorsAreArgb() {
         // Ensure all colors have alpha channel set (0xFF)
         ColorSchemePresets.builtInSchemes.forEach { scheme ->
-            scheme.colors.values.forEach { color ->
+            scheme.colors.forEach { color ->
                 val alpha = (color ushr 24) and 0xFF
                 assertEquals(
                     "Color in ${scheme.name} should have full alpha (0xFF)",
@@ -227,7 +171,7 @@ class ColorSchemePresetsTest {
         val light = ColorSchemePresets.solarizedLight
 
         // All color values should be the same
-        dark.colors.keys.forEach { index ->
+        dark.colors.forEachIndexed { index, _ ->
             assertEquals(
                 "Color $index should be same in both variants",
                 dark.colors[index],

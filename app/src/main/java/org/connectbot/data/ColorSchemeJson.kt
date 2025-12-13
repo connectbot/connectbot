@@ -25,7 +25,7 @@ import org.json.JSONObject
  * @property name The name of the color scheme
  * @property description Optional description of the color scheme
  * @property version Schema version for future compatibility (currently 1)
- * @property colors Map of color index (0-255) to hex color string
+ * @property colors Map of color index (0-15) to hex color string
  */
 data class ColorSchemeJson(
     val name: String,
@@ -60,7 +60,7 @@ data class ColorSchemeJson(
                 val index = key.toIntOrNull()
                     ?: throw IllegalArgumentException("Invalid color index: $key")
 
-                if (index !in 0..255) {
+                if (index !in 0..15) {
                     throw IllegalArgumentException("Color index out of range: $index")
                 }
 
@@ -80,11 +80,11 @@ data class ColorSchemeJson(
          *
          * @param name Scheme name
          * @param description Scheme description
-         * @param palette Array of 256 ARGB color integers
+         * @param palette Array of 16 ARGB color integers
          * @return ColorSchemeJson object
          */
         fun fromPalette(name: String, description: String, palette: IntArray): ColorSchemeJson {
-            require(palette.size == 256) { "Palette must contain exactly 256 colors" }
+            require(palette.size == 16) { "Palette must contain exactly 16 colors" }
 
             val colors = palette.mapIndexed { index, color ->
                 index to String.format("#%06X", color and 0xFFFFFF)
@@ -131,10 +131,10 @@ data class ColorSchemeJson(
     /**
      * Convert JSON colors map to IntArray palette.
      *
-     * @return IntArray of 256 ARGB colors
+     * @return IntArray of 16 ARGB colors
      */
     fun toPalette(): IntArray {
-        val palette = IntArray(256)
+        val palette = IntArray(16)
 
         colors.forEach { (index, hex) ->
             palette[index] = parseHexColor(hex)
