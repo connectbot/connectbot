@@ -601,9 +601,18 @@ class DatabaseMigrator @Inject constructor(
                 roomDatabase.colorSchemeDao().insertColor(remappedPalette)
             }
 
-            // Insert profiles (referenced by hosts)
+            // Insert profiles (referenced by hosts) with remapped colorSchemeId
             data.profiles.forEach { profile ->
-                roomDatabase.profileDao().insert(profile)
+                // Remap colorSchemeId if it's a positive ID (custom scheme)
+                // Negative IDs are built-in schemes that don't exist in the database
+                val newColorSchemeId = if (profile.colorSchemeId > 0) {
+                    colorSchemeIdMap[profile.colorSchemeId]
+                        ?: throw MigrationException("Profile references unknown color scheme ID: ${profile.colorSchemeId}")
+                } else {
+                    profile.colorSchemeId // Keep built-in scheme IDs as-is
+                }
+                val remappedProfile = profile.copy(colorSchemeId = newColorSchemeId)
+                roomDatabase.profileDao().insert(remappedProfile)
             }
 
             // Insert pubkeys (referenced by hosts)
@@ -628,18 +637,8 @@ class DatabaseMigrator @Inject constructor(
                     host.pubkeyId // Keep special values like -1 (any key), -2 (same as last), etc.
                 }
 
-                // Remap colorSchemeId if it's not the default scheme (ID 1)
-                // colorSchemeId = 1 is a virtual "Default" scheme that doesn't exist in the database
-                val newColorSchemeId = if (host.colorSchemeId == 1L) {
-                    1L // Keep default scheme ID as-is
-                } else {
-                    colorSchemeIdMap[host.colorSchemeId]
-                        ?: throw MigrationException("Host references unknown color scheme ID: ${host.colorSchemeId}")
-                }
-
                 val remappedHost = host.copy(
-                    pubkeyId = newPubkeyId,
-                    colorSchemeId = newColorSchemeId
+                    pubkeyId = newPubkeyId
                 )
                 val newId = roomDatabase.hostDao().insert(remappedHost)
                 hostIdMap[oldId] = newId
