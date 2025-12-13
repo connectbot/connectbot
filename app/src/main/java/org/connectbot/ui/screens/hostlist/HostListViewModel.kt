@@ -27,6 +27,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -76,22 +79,25 @@ class HostListViewModel @Inject constructor(
         }
     }
 
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
     private fun observeHosts() {
         viewModelScope.launch {
-            _uiState.collect { state ->
-                val flow = if (state.sortedByColor) {
-                    repository.observeHostsSortedByColor()
-                } else {
-                    repository.observeHosts()
+            _uiState
+                .map { it.sortedByColor }
+                .distinctUntilChanged()
+                .flatMapLatest { sortedByColor ->
+                    if (sortedByColor) {
+                        repository.observeHostsSortedByColor()
+                    } else {
+                        repository.observeHosts()
+                    }
                 }
-
-                flow.collect { hosts ->
+                .collect { hosts ->
                     updateConnectionStates(hosts)
                     _uiState.update {
                         it.copy(hosts = hosts, isLoading = false, error = null)
                     }
                 }
-            }
         }
     }
 
