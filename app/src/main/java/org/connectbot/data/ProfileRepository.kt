@@ -114,10 +114,9 @@ class ProfileRepository @Inject constructor(
 
     /**
      * Delete a profile by ID.
-     * Built-in profiles cannot be deleted.
      *
      * @param profileId The profile ID to delete
-     * @return true if deleted, false if not found or is built-in
+     * @return true if deleted, false if not found
      */
     suspend fun delete(profileId: Long): Boolean = withContext(Dispatchers.IO) {
         profileDao.deleteById(profileId) > 0

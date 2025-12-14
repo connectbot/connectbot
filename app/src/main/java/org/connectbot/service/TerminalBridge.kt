@@ -37,6 +37,10 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 import java.io.IOException
@@ -82,6 +86,10 @@ class TerminalBridge {
     // Store color scheme info for reapplication
     private var currentColorSchemeId: Long = -1L
     private var fullColorPalette: IntArray = IntArray(0)
+
+    // Profile observation
+    private var currentProfileId: Long? = null
+    private var profileObservationJob: Job? = null
 
     val manager: TerminalManager
 
@@ -175,6 +183,7 @@ class TerminalBridge {
 
         // Load profile for this host (always returns a profile, defaulting to Default profile)
         val profile = manager.profileRepository.getByIdOrDefaultBlocking(host.profileId)
+        currentProfileId = host.profileId
 
         // Store encoding and font family from profile for later use
         encoding = profile.encoding
@@ -235,6 +244,9 @@ class TerminalBridge {
 
         // Start the transport operation processor to serialize all writes
         startTransportOperationProcessor()
+
+        // Start observing profile changes for live updates
+        startProfileObservation()
     }
 
     /**
@@ -265,6 +277,91 @@ class TerminalBridge {
                 }
             }
         }
+    }
+
+    /**
+     * Start observing profile changes to apply live updates.
+     * Observes both profile attribute changes and host profile_id changes.
+     */
+    private fun startProfileObservation() {
+        profileObservationJob = scope.launch {
+            // For temporary hosts (negative IDs), only observe the current profile
+            if (host.id <= 0) {
+                currentProfileId?.let { profileId ->
+                    manager.profileRepository.observeById(profileId)
+                        .filterNotNull()
+                        .collectLatest { profile ->
+                            Log.d(TAG, "Profile ${profile.id} changed, applying updates")
+                            applyProfileSettings(profile)
+                        }
+                }
+                return@launch
+            }
+
+            // For saved hosts, observe the host to detect profile_id changes
+            // and switch profile observation when it changes
+            manager.hostRepository.observeHost(host.id)
+                .filterNotNull()
+                .map { it.profileId }
+                .distinctUntilChanged()
+                .collectLatest { newProfileId ->
+                    if (newProfileId != currentProfileId) {
+                        Log.d(TAG, "Host profile changed from $currentProfileId to $newProfileId")
+                        currentProfileId = newProfileId
+                    }
+
+                    // Observe the current profile for attribute changes
+                    val profileToObserve = newProfileId ?: 1L // Default to profile 1 if null
+                    manager.profileRepository.observeById(profileToObserve)
+                        .filterNotNull()
+                        .collectLatest { profile ->
+                            Log.d(TAG, "Profile ${profile.id} changed, applying updates")
+                            applyProfileSettings(profile)
+                        }
+                }
+        }
+    }
+
+    /**
+     * Apply changes when the host's profile_id changes.
+     */
+    private suspend fun applyProfileChanges(newProfileId: Long?) {
+        val profile = if (newProfileId != null) {
+            manager.profileRepository.getById(newProfileId)
+        } else {
+            null
+        } ?: manager.profileRepository.getDefault()
+
+        applyProfileSettings(profile)
+    }
+
+    /**
+     * Apply profile settings to the terminal.
+     */
+    private fun applyProfileSettings(profile: org.connectbot.data.entity.Profile) {
+        // Apply font size
+        val newFontSize = if (profile.fontSize > 0) profile.fontSize else DEFAULT_FONT_SIZE_SP
+        if (newFontSize.toFloat() != fontSizeSp) {
+            setFontSize(newFontSize.toFloat())
+        }
+
+        // Apply color scheme if changed
+        if (profile.colorSchemeId != currentColorSchemeId) {
+            currentColorSchemeId = profile.colorSchemeId
+            fullColorPalette = manager.colorRepository.getColorsForSchemeBlocking(profile.colorSchemeId)
+            val defaults = manager.colorRepository.getDefaultColorsForSchemeBlocking(profile.colorSchemeId)
+            defaultFg = defaults[0]
+            defaultBg = defaults[1]
+
+            // Apply to terminal emulator
+            val defaultFgColor = fullColorPalette[defaultFg]
+            val defaultBgColor = fullColorPalette[defaultBg]
+            val ansiColors = fullColorPalette.sliceArray(0 until 16)
+            terminalEmulator.applyColorScheme(ansiColors, defaultFgColor, defaultBgColor)
+        }
+
+        // Note: encoding and fontFamily changes require reconnection to take effect
+        // as they are deeply integrated into the terminal initialization
     }
 
     /**
@@ -653,6 +750,7 @@ class TerminalBridge {
         networkGracePeriodJob?.cancel()
         inGracePeriod = false
 
+        profileObservationJob?.cancel()
         transportOperations.close()
         scope.cancel()
     }

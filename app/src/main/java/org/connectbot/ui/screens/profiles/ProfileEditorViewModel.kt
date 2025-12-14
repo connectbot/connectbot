@@ -41,7 +41,6 @@ import org.connectbot.util.TerminalFontProvider
 data class ProfileEditorUiState(
     val profileId: Long = -1L,
     val name: String = "",
-    val isBuiltIn: Boolean = false,
     val iconColor: String? = null,
     val colorSchemeId: Long = -1L,
     val availableColorSchemes: List<ColorScheme> = emptyList(),
@@ -129,7 +128,6 @@ class ProfileEditorViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         name = profile.name,
-                        isBuiltIn = profile.isBuiltIn,
                         iconColor = profile.iconColor,
                         colorSchemeId = profile.colorSchemeId,
                         fontFamily = profile.fontFamily,

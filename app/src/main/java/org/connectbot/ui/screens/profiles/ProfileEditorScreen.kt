@@ -97,21 +97,19 @@ fun ProfileEditorScreen(
             )
         },
         floatingActionButton = {
-            if (!uiState.isBuiltIn) {
-                FloatingActionButton(
-                    onClick = { viewModel.save(onNavigateBack) }
-                ) {
-                    if (uiState.isSaving) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.padding(12.dp),
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    } else {
-                        Icon(
-                            imageVector = Icons.Default.Check,
-                            contentDescription = "Save"
-                        )
-                    }
+            FloatingActionButton(
+                onClick = { viewModel.save(onNavigateBack) }
+            ) {
+                if (uiState.isSaving) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.padding(12.dp),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = "Save"
+                    )
                 }
             }
         },
@@ -140,7 +138,6 @@ fun ProfileEditorScreen(
                     onValueChange = { viewModel.updateName(it) },
                     label = { Text("Profile Name") },
                     singleLine = true,
-                    enabled = !uiState.isBuiltIn,
                     isError = uiState.saveError != null,
                     modifier = Modifier.fillMaxWidth()
                 )

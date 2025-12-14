@@ -19,7 +19,6 @@ package org.connectbot.data.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
@@ -74,24 +73,12 @@ data class Profile(
     @ColumnInfo(defaultValue = "'xterm-256color'")
     val emulation: String = "xterm-256color"
 ) {
-    /**
-     * Whether this is a built-in preset profile (cannot be deleted).
-     * This is a transient field - built-in profiles are identified by their ID.
-     */
-    @Ignore
-    val isBuiltIn: Boolean = (id == DEFAULT_PROFILE_ID)
-
     companion object {
         /**
-         * ID of the default built-in profile.
-         */
-        const val DEFAULT_PROFILE_ID = 1L
-
-        /**
-         * Create a default profile.
+         * Create a default profile with auto-generated ID.
          */
         fun createDefault(): Profile = Profile(
-            id = DEFAULT_PROFILE_ID,
+            id = 0,
             name = "Default"
         )
     }
