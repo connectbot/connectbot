@@ -639,15 +639,24 @@ class PubkeyListViewModel @Inject constructor(
 
                 if (pubkey != null) {
                     repository.save(pubkey)
+                    _uiState.update {
+                        it.copy(pendingImport = null)
+                    }
                 } else {
                     _uiState.update {
-                        it.copy(error = "Failed to decrypt key: Bad password")
+                        it.copy(
+                            error = "Failed to decrypt key: Bad password",
+                            pendingImport = null
+                        )
                     }
                 }
             } catch (e: Exception) {
                 Log.e("PubkeyListViewModel", "Failed to import encrypted key", e)
                 _uiState.update {
-                    it.copy(error = "Failed to decrypt key: ${e.message}")
+                    it.copy(
+                        error = "Failed to decrypt key: ${e.message}",
+                        pendingImport = null
+                    )
                 }
             }
         }
