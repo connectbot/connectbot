@@ -19,6 +19,8 @@ package org.connectbot.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -44,6 +46,16 @@ object TestDatabaseModule {
             TEST_DATABASE_NAME
         )
             .addMigrations(ConnectBotDatabase.MIGRATION_2_3)
+            .addCallback(object : RoomDatabase.Callback() {
+                override fun onCreate(db: SupportSQLiteDatabase) {
+                    super.onCreate(db)
+                    // Create default profile on fresh database creation
+                    db.execSQL("""
+                        INSERT INTO profiles (name, color_scheme_id, font_size, del_key, encoding, emulation)
+                        VALUES ('Default', -1, 10, 'del', 'UTF-8', 'xterm-256color')
+                    """.trimIndent())
+                }
+            })
             .allowMainThreadQueries()
             .build()
     }

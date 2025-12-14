@@ -188,16 +188,17 @@ class ProfileDaoTest {
     }
 
     @Test
-    fun deleteByIdDoesNotDeleteDefaultProfile() = runTest {
-        // Insert the default profile with id = 1
-        val defaultProfile = Profile(id = 1, name = "Default")
-        profileDao.insert(defaultProfile)
+    fun deleteByIdDeletesAnyProfile() = runTest {
+        // Insert a profile with id = 1
+        val profile = Profile(id = 1, name = "Default")
+        profileDao.insert(profile)
 
+        // All profiles can now be deleted (no more built-in protection)
         val deletedCount = profileDao.deleteById(1)
-        assertThat(deletedCount).isEqualTo(0)
+        assertThat(deletedCount).isEqualTo(1)
 
         val retrieved = profileDao.getById(1)
-        assertThat(retrieved).isNotNull()
+        assertThat(retrieved).isNull()
     }
 
     @Test

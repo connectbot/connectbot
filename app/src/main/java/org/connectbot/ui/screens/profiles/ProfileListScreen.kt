@@ -121,11 +121,7 @@ fun ProfileListScreen(
                             profile = profile,
                             onClick = { onNavigateToEdit(profile) },
                             onDuplicate = { viewModel.duplicateProfile(profile) },
-                            onDelete = {
-                                if (!profile.isBuiltIn) {
-                                    viewModel.showDeleteDialog(profile)
-                                }
-                            }
+                            onDelete = { viewModel.showDeleteDialog(profile) }
                         )
                     }
                 }
@@ -186,20 +182,10 @@ private fun ProfileListItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = profile.name,
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    if (profile.isBuiltIn) {
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "(Built-in)",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
+                Text(
+                    text = profile.name,
+                    style = MaterialTheme.typography.titleMedium
+                )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = buildProfileSummary(profile),
@@ -229,18 +215,16 @@ private fun ProfileListItem(
                             Icon(Icons.Default.ContentCopy, contentDescription = null)
                         }
                     )
-                    if (!profile.isBuiltIn) {
-                        DropdownMenuItem(
-                            text = { Text("Delete") },
-                            onClick = {
-                                showMenu = false
-                                onDelete()
-                            },
-                            leadingIcon = {
-                                Icon(Icons.Default.Delete, contentDescription = null)
-                            }
-                        )
-                    }
+                    DropdownMenuItem(
+                        text = { Text("Delete") },
+                        onClick = {
+                            showMenu = false
+                            onDelete()
+                        },
+                        leadingIcon = {
+                            Icon(Icons.Default.Delete, contentDescription = null)
+                        }
+                    )
                 }
             }
         }
