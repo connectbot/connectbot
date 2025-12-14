@@ -276,7 +276,7 @@ private fun FontFamilySelector(
         ) {
             OutlinedTextField(
                 value = if (fontFamily == null) {
-                    "System Default"
+                    TerminalFont.SYSTEM_DEFAULT.displayName
                 } else {
                     TerminalFont.getDisplayName(fontFamily)
                 },
