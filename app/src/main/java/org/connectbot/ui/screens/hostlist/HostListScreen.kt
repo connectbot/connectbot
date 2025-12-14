@@ -235,7 +235,11 @@ fun HostListScreenContent(
         },
         floatingActionButton = {
             if (!makingShortcut) {
-                FloatingActionButton(onClick = { onNavigateToEditHost(null) }) {
+                FloatingActionButton(
+                    onClick = { onNavigateToEditHost(null) },
+                    // This matches the FloatingActionButtonMenu padding
+                    modifier = Modifier.padding(end = 16.dp, bottom = 16.dp),
+                ) {
                     Icon(Icons.Default.Add, contentDescription = stringResource(R.string.hostpref_add_host))
                 }
             }
@@ -277,7 +281,7 @@ fun HostListScreenContent(
                             start = 16.dp,
                             end = 16.dp,
                             top = 16.dp,
-                            bottom = 88.dp // Extra padding to avoid FAB overlap
+                            bottom = 104.dp, // Extra padding to avoid FAB menu overlap (88dp + 16dp for menu padding)
                         ),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
