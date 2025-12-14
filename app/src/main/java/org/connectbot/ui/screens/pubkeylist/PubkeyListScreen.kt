@@ -18,6 +18,7 @@
 package org.connectbot.ui.screens.pubkeylist
 
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
@@ -36,12 +37,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.FileOpen
-import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Fingerprint
@@ -52,7 +53,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FloatingActionButtonMenu
+import androidx.compose.material3.FloatingActionButtonMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -64,6 +67,8 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.ToggleFloatingActionButton
+import androidx.compose.material3.ToggleFloatingActionButtonDefaults.animateIcon
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -71,11 +76,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -229,7 +236,7 @@ fun PubkeyListScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun PubkeyListScreenContent(
     uiState: PubkeyListUiState,
@@ -249,7 +256,9 @@ fun PubkeyListScreenContent(
     onImportKey: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var showMenu by remember { mutableStateOf(false) }
+    var fabMenuExpanded by rememberSaveable { mutableStateOf(false) }
+
+    BackHandler(fabMenuExpanded) { fabMenuExpanded = false }
 
     Scaffold(
         topBar = {
@@ -259,34 +268,46 @@ fun PubkeyListScreenContent(
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
                     }
-                },
-                actions = {
-                    IconButton(onClick = { showMenu = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.button_more_options))
-                    }
-                    DropdownMenu(
-                        expanded = showMenu,
-                        onDismissRequest = { showMenu = false }
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.pubkey_import_existing)) },
-                            onClick = {
-                                showMenu = false
-                                onImportKey()
-                            },
-                            leadingIcon = {
-                                Icon(Icons.Default.FileOpen, contentDescription = null)
-                            }
-                        )
-                    }
                 }
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = onNavigateToGenerate) {
-                Icon(
-                    Icons.Default.Add,
-                    contentDescription = stringResource(R.string.pubkey_generate)
+            FloatingActionButtonMenu(
+                expanded = fabMenuExpanded,
+                button = {
+                    ToggleFloatingActionButton(
+                        checked = fabMenuExpanded,
+                        onCheckedChange = { fabMenuExpanded = !fabMenuExpanded }
+                    ) {
+                        Icon(
+                            painter = rememberVectorPainter(
+                                if (checkedProgress > 0.5f) Icons.Filled.Close else Icons.Filled.Add
+                            ),
+                            contentDescription = if (fabMenuExpanded) {
+                                stringResource(android.R.string.cancel)
+                            } else {
+                                stringResource(R.string.pubkey_generate)
+                            },
+                            modifier = Modifier.animateIcon({ checkedProgress }),
+                        )
+                    }
+                }
+            ) {
+                FloatingActionButtonMenuItem(
+                    onClick = {
+                        fabMenuExpanded = false
+                        onNavigateToGenerate()
+                    },
+                    icon = { Icon(Icons.Default.Add, contentDescription = null) },
+                    text = { Text(stringResource(R.string.pubkey_generate)) }
+                )
+                FloatingActionButtonMenuItem(
+                    onClick = {
+                        fabMenuExpanded = false
+                        onImportKey()
+                    },
+                    icon = { Icon(Icons.Default.FileOpen, contentDescription = null) },
+                    text = { Text(stringResource(R.string.pubkey_import_existing)) }
                 )
             }
         },
@@ -323,7 +344,7 @@ fun PubkeyListScreenContent(
                             start = 16.dp,
                             end = 16.dp,
                             top = 16.dp,
-                            bottom = 88.dp // Extra padding to avoid FAB overlap
+                            bottom = 104.dp, // Extra padding to avoid FAB menu overlap (88dp + 16dp for menu padding)
                         ),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {

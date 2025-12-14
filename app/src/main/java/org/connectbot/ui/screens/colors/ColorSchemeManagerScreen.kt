@@ -64,7 +64,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -283,7 +282,11 @@ fun ColorSchemeManagerScreenContent(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = onShowNewSchemeDialog) {
+            FloatingActionButton(
+                onClick = onShowNewSchemeDialog,
+                // This matches the FloatingActionButtonMenu padding
+                modifier = Modifier.padding(end = 16.dp, bottom = 16.dp),
+            ) {
                 Icon(
                     Icons.Default.Add,
                     contentDescription = stringResource(R.string.button_new_scheme)
@@ -322,7 +325,7 @@ fun ColorSchemeManagerScreenContent(
                             start = 16.dp,
                             end = 16.dp,
                             top = 16.dp,
-                            bottom = 88.dp // Extra padding to avoid FAB overlap
+                            bottom = 104.dp // Extra padding to avoid FAB overlap
                         ),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
