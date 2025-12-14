@@ -25,7 +25,7 @@ enum class TerminalFont(
     val displayName: String,
     val googleFontName: String
 ) {
-    SYSTEM_DEFAULT("System Default", ""),
+    SYSTEM_DEFAULT("Default (Monospace)", ""),
     JETBRAINS_MONO("JetBrains Mono", "JetBrains Mono"),
     FIRA_CODE("Fira Code", "Fira Code"),
     FIRA_MONO("Fira Mono", "Fira Mono"),

@@ -285,7 +285,7 @@ private fun buildProfileSummary(profile: Profile): String {
     val fontName = if (profile.fontFamily != null) {
         TerminalFont.getDisplayName(profile.fontFamily)
     } else {
-        "System Default"
+        TerminalFont.SYSTEM_DEFAULT.displayName
     }
     parts.add("Font: $fontName ${profile.fontSize}pt")
 
