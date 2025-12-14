@@ -114,6 +114,7 @@
 	<string name="pubkey_copy_private_pem">"Copy private key (PEM)"</string>
 	<string name="pubkey_copy_private_encrypted">"Copy private key (encrypted)"</string>
 	<string name="pubkey_copy_public">"Copy public key"</string>
+	<string name="pubkey_export_public">"Export public key"</string>
 	<string name="pubkey_export_private">"Export private key"</string>
 	<string name="pubkey_export_private_openssh">"Export private key (OpenSSH)"</string>
 	<string name="pubkey_export_private_pem">"Export private key (PEM)"</string>

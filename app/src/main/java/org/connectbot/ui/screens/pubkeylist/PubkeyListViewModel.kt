@@ -68,6 +68,10 @@ data class PendingImport(
     val keyType: String  // Extracted key type (RSA, Ed25519, etc.)
 )
 
+data class PendingPublicKeyExport(
+    val pubkey: Pubkey
+)
+
 sealed class ImportResult {
     data class Success(val pubkey: Pubkey) : ImportResult()
     data class NeedsPassword(val keyData: ByteArray, val nickname: String, val keyType: String) : ImportResult()
@@ -83,6 +87,8 @@ data class PubkeyListUiState(
     val biometricKeyToUnlock: Pubkey? = null,
     // Key pending export to file (triggers file picker in UI)
     val pendingExport: PendingExport? = null,
+    // Public key pending export to file (triggers file picker in UI)
+    val pendingPublicKeyExport: PendingPublicKeyExport? = null,
     // Key pending import that needs password (triggers password dialog in UI)
     val pendingImport: PendingImport? = null
 )
@@ -506,6 +512,81 @@ class PubkeyListViewModel @Inject constructor(
      */
     fun cancelExport() {
         _uiState.update { it.copy(pendingExport = null) }
+    }
+
+    /**
+     * Request export of public key.
+     * This sets the pending public key export state, which triggers the file picker in the UI.
+     */
+    fun requestExportPublicKey(pubkey: Pubkey) {
+        _uiState.update {
+            it.copy(pendingPublicKeyExport = PendingPublicKeyExport(pubkey))
+        }
+    }
+
+    /**
+     * Clear the pending public key export state (called when file picker is cancelled).
+     */
+    fun cancelPublicKeyExport() {
+        _uiState.update { it.copy(pendingPublicKeyExport = null) }
+    }
+
+    /**
+     * Get the suggested filename for the current pending public key export.
+     */
+    fun getPublicKeyExportFilename(): String {
+        val pending = _uiState.value.pendingPublicKeyExport ?: return "id_key.pub"
+        val nickname = pending.pubkey.nickname.replace(Regex("[^a-zA-Z0-9_-]"), "_")
+        return "${nickname}.pub"
+    }
+
+    /**
+     * Export the pending public key to the given URI.
+     */
+    fun exportPublicKeyToUri(uri: Uri) {
+        val pending = _uiState.value.pendingPublicKeyExport
+        if (pending == null) {
+            _uiState.update { it.copy(error = "No public key pending export") }
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                val pubkey = pending.pubkey
+                val isImported = pubkey.type == "IMPORTED"
+
+                if (isImported) {
+                    _uiState.update {
+                        it.copy(
+                            error = "Cannot export public key from imported key",
+                            pendingPublicKeyExport = null
+                        )
+                    }
+                    return@launch
+                }
+
+                val publicKeyString = withContext(Dispatchers.Default) {
+                    val pk = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
+                    PublicKeyUtils.toAuthorizedKeysFormat(pk, pubkey.nickname)
+                }
+
+                withContext(Dispatchers.IO) {
+                    context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+                        outputStream.write(publicKeyString.toByteArray(Charsets.UTF_8))
+                    } ?: throw Exception("Could not open file for writing")
+                }
+
+                _uiState.update { it.copy(pendingPublicKeyExport = null) }
+            } catch (e: Exception) {
+                Log.e("PubkeyListViewModel", "Failed to export public key", e)
+                _uiState.update {
+                    it.copy(
+                        error = "Failed to export public key: ${e.message}",
+                        pendingPublicKeyExport = null
+                    )
+                }
+            }
+        }
     }
 
     /**
