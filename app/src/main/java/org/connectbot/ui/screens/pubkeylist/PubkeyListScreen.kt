@@ -125,7 +125,7 @@ fun PubkeyListScreen(
         uri?.let { viewModel.importKeyFromUri(it) }
     }
 
-    // File saver for exporting keys
+    // File saver for exporting private keys
     val fileSaverLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("application/octet-stream")
     ) { uri: Uri? ->
@@ -136,10 +136,28 @@ fun PubkeyListScreen(
         }
     }
 
-    // Trigger file saver when export is requested
+    // File saver for exporting public keys
+    val publicKeyFileSaverLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("text/plain")
+    ) { uri: Uri? ->
+        if (uri != null) {
+            viewModel.exportPublicKeyToUri(uri)
+        } else {
+            viewModel.cancelPublicKeyExport()
+        }
+    }
+
+    // Trigger file saver when private key export is requested
     LaunchedEffect(uiState.pendingExport) {
         uiState.pendingExport?.let {
             fileSaverLauncher.launch(viewModel.getExportFilename())
+        }
+    }
+
+    // Trigger file saver when public key export is requested
+    LaunchedEffect(uiState.pendingPublicKeyExport) {
+        uiState.pendingPublicKeyExport?.let {
+            publicKeyFileSaverLauncher.launch(viewModel.getPublicKeyExportFilename())
         }
     }
 
@@ -213,6 +231,7 @@ fun PubkeyListScreen(
         onCopyPrivateKeyEncrypted = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
             viewModel.copyPrivateKeyEncrypted(pubkey, onPasswordRequired, onExportPassphraseRequired)
         },
+        onExportPublicKey = viewModel::requestExportPublicKey,
         onExportPrivateKeyOpenSSH = { pubkey, onPasswordRequired ->
             viewModel.requestExportPrivateKeyOpenSSH(pubkey, onPasswordRequired)
         },
@@ -243,6 +262,7 @@ fun PubkeyListScreenContent(
     onCopyPrivateKeyOpenSSH: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPrivateKeyPem: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPrivateKeyEncrypted: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onExportPublicKey: (Pubkey) -> Unit,
     onExportPrivateKeyOpenSSH: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyPem: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyEncrypted: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
@@ -346,6 +366,7 @@ fun PubkeyListScreenContent(
                                 onCopyPrivateKeyEncrypted = { onPasswordRequired, onExportPassphraseRequired ->
                                     onCopyPrivateKeyEncrypted(pubkey, onPasswordRequired, onExportPassphraseRequired)
                                 },
+                                onExportPublicKey = { onExportPublicKey(pubkey) },
                                 onExportPrivateKeyOpenSSH = { onPasswordRequired ->
                                     onExportPrivateKeyOpenSSH(pubkey, onPasswordRequired)
                                 },
@@ -376,6 +397,7 @@ private fun PubkeyListItem(
     onCopyPrivateKeyOpenSSH: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPrivateKeyPem: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPrivateKeyEncrypted: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onExportPublicKey: () -> Unit,
     onExportPrivateKeyOpenSSH: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyPem: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyEncrypted: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
@@ -471,6 +493,19 @@ private fun PubkeyListItem(
                         },
                         leadingIcon = {
                             Icon(Icons.Default.ContentCopy, null)
+                        },
+                        enabled = !isImported
+                    )
+
+                    // Export public key to file
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.pubkey_export_public)) },
+                        onClick = {
+                            showMenu = false
+                            onExportPublicKey()
+                        },
+                        leadingIcon = {
+                            Icon(Icons.Default.FileDownload, null)
                         },
                         enabled = !isImported
                     )
@@ -889,6 +924,7 @@ private fun PubkeyListScreenEmptyPreview() {
             onCopyPrivateKeyOpenSSH = { _, _ -> },
             onCopyPrivateKeyPem = { _, _ -> },
             onCopyPrivateKeyEncrypted = { _, _, _ -> },
+            onExportPublicKey = {},
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
             onExportPrivateKeyEncrypted = { _, _, _ -> },
@@ -916,6 +952,7 @@ private fun PubkeyListScreenLoadingPreview() {
             onCopyPrivateKeyOpenSSH = { _, _ -> },
             onCopyPrivateKeyPem = { _, _ -> },
             onCopyPrivateKeyEncrypted = { _, _, _ -> },
+            onExportPublicKey = {},
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
             onExportPrivateKeyEncrypted = { _, _, _ -> },
@@ -978,6 +1015,7 @@ private fun PubkeyListScreenPopulatedPreview() {
             onCopyPrivateKeyOpenSSH = { _, _ -> },
             onCopyPrivateKeyPem = { _, _ -> },
             onCopyPrivateKeyEncrypted = { _, _, _ -> },
+            onExportPublicKey = {},
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
             onExportPrivateKeyEncrypted = { _, _, _ -> },
