@@ -1170,7 +1170,7 @@
 	<!-- Password prompt prefix for jump host -->
 	<string name="terminal_jump_password">Password for jump host %s:</string>
 
-	<!-- Button text to view application logs for debugging -->
+<!-- Button text to view application logs for debugging -->
 	<string name="view_logs">View Logs</string>
 	<!-- Title for the log viewer dialog -->
 	<string name="logs_title">Application Logs</string>
@@ -1270,7 +1270,7 @@
 	<!-- Summary description for text input camera button action -->
 	<string name="list_camera_text_input_description">Text input</string>
 
-	<!-- Host export/import menu items -->
+<!-- Host export/import menu items -->
 	<!-- Menu item to export all hosts to a JSON file -->
 	<string name="list_menu_export_hosts">Export Hosts</string>
 	<!-- Menu item to import hosts from a JSON file -->
@@ -1307,4 +1307,68 @@
 	<string name="icon_style_cloud">Cloud</string>
 	<!-- Icon style option: key/security icon -->
 	<string name="icon_style_key">Key</string>
+
+	<!-- SFTP Browser -->
+	<!-- Menu item in host list to browse files via SFTP -->
+	<string name="list_host_sftp">Browse files (SFTP)</string>
+	<!-- Title for SFTP browser screen, with host nickname placeholder -->
+	<string name="sftp_title">Files on %s</string>
+	<!-- Message shown while connecting to SFTP server -->
+	<string name="sftp_connecting">Connecting to %s…</string>
+	<!-- Message shown when SFTP connection fails -->
+	<string name="sftp_connection_failed">Connection failed: %s</string>
+	<!-- Message shown when current directory is empty -->
+	<string name="sftp_empty_directory">This directory is empty</string>
+	<!-- Button/menu item to create a new folder -->
+	<string name="sftp_create_folder">Create folder</string>
+	<!-- Label for folder name input field -->
+	<string name="sftp_folder_name">Folder name</string>
+	<!-- Button/menu item to upload a file -->
+	<string name="sftp_upload_file">Upload file</string>
+	<!-- Button/menu item to download a file -->
+	<string name="sftp_download_file">Download file</string>
+	<!-- Button/menu item to delete a file or folder -->
+	<string name="sftp_delete">Delete</string>
+	<!-- Confirmation dialog text when deleting a file or folder -->
+	<string name="sftp_delete_confirm">Delete "%s"?</string>
+	<!-- Warning shown when deleting a folder that it will be deleted -->
+	<string name="sftp_delete_folder_warning">This folder must be empty to delete.</string>
+	<!-- Message shown while downloading a file -->
+	<string name="sftp_transfer_downloading">Downloading %s…</string>
+	<!-- Message shown while uploading a file -->
+	<string name="sftp_transfer_uploading">Uploading %s…</string>
+	<!-- Message shown when transfer completes successfully -->
+	<string name="sftp_transfer_complete">Transfer complete</string>
+	<!-- Message shown when transfer fails -->
+	<string name="sftp_transfer_failed">Transfer failed: %s</string>
+	<!-- Button to retry connection after failure -->
+	<string name="sftp_retry">Retry</string>
+	<!-- Button to refresh the current directory -->
+	<string name="sftp_refresh">Refresh</string>
+	<!-- Accessibility description for FAB actions menu -->
+	<string name="sftp_actions">File actions</string>
+	<!-- Accessibility description for directory item -->
+	<string name="sftp_directory">Directory</string>
+	<!-- Accessibility description for file item -->
+	<string name="sftp_file">File</string>
+	<!-- Accessibility description for symbolic link item -->
+	<string name="sftp_symlink">Symbolic link</string>
+	<!-- Dialog title when host key is new -->
+	<string name="sftp_host_key_new">New host key</string>
+	<!-- Dialog title when host key has changed -->
+	<string name="sftp_host_key_changed">Host key changed</string>
+	<!-- Message explaining host key verification -->
+	<string name="sftp_host_key_message">The authenticity of host \'%s\' cannot be verified.</string>
+	<!-- Warning shown when host key has changed -->
+	<string name="sftp_host_key_warning">Warning: The host key has changed. This could indicate a security risk!</string>
+	<!-- Button to accept the host key -->
+	<string name="sftp_host_key_accept">Accept</string>
+	<!-- Button to reject the host key -->
+	<string name="sftp_host_key_reject">Reject</string>
+	<!-- Dialog title for authentication -->
+	<string name="sftp_authentication">Authentication</string>
+	<!-- Dialog title for key passphrase -->
+	<string name="sftp_key_passphrase">Key passphrase</string>
+	<!-- Button to create something (folder, etc.) -->
+	<string name="button_create">Create</string>
 </resources>
