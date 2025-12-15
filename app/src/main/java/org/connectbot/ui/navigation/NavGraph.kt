@@ -29,6 +29,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import org.connectbot.data.entity.Host
+import org.connectbot.ui.screens.colors.ColorSchemeManagerScreen
 import org.connectbot.ui.screens.colors.ColorsScreen
 import org.connectbot.ui.screens.colors.PaletteEditorScreen
 import org.connectbot.ui.screens.console.ConsoleScreen
@@ -45,6 +46,7 @@ import org.connectbot.ui.screens.profiles.ProfileListScreen
 import org.connectbot.ui.screens.pubkeyeditor.PubkeyEditorScreen
 import org.connectbot.ui.screens.pubkeylist.PubkeyListScreen
 import org.connectbot.ui.screens.settings.SettingsScreen
+import org.connectbot.ui.screens.sftpbrowser.SftpBrowserScreen
 import org.connectbot.util.IconStyle
 import timber.log.Timber
 
@@ -82,6 +84,12 @@ fun ConnectBotNavHost(
                 },
                 onNavigateToPortForwards = { host ->
                     navController.navigateSafely("${NavDestinations.PORT_FORWARD_LIST}/${host.id}")
+                },
+                onNavigateToSftp = { host ->
+                    navController.navigate("${NavDestinations.SFTP_BROWSER}/${host.id}")
+                },
+                onNavigateToColors = {
+                    navController.navigateSafely(NavDestinations.COLORS)
                 },
                 onNavigateToProfiles = {
                     navController.navigateSafely(NavDestinations.PROFILES)
@@ -158,6 +166,17 @@ fun ConnectBotNavHost(
             )
         }
 
+        composable(
+            route = "${NavDestinations.SFTP_BROWSER}/{${NavArgs.HOST_ID}}",
+            arguments = listOf(
+                navArgument(NavArgs.HOST_ID) { type = NavType.LongType }
+            )
+        ) {
+            SftpBrowserScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
         composable(NavDestinations.SETTINGS) {
             SettingsScreen(
                 onNavigateBack = { navController.safePopBackStack() }
@@ -166,6 +185,13 @@ fun ConnectBotNavHost(
 
         composable(NavDestinations.COLORS) {
             ColorsScreen(
+                onNavigateBack = { navController.safePopBackStack() },
+                onNavigateToSchemeManager = { navController.navigateSafely(NavDestinations.SCHEME_MANAGER) }
+            )
+        }
+
+        composable(NavDestinations.SCHEME_MANAGER) {
+            ColorSchemeManagerScreen(
                 onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToPaletteEditor = { schemeId ->
                     navController.navigateSafely("${NavDestinations.PALETTE_EDITOR}/$schemeId")
@@ -180,18 +206,7 @@ fun ConnectBotNavHost(
             )
         ) {
             PaletteEditorScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-                onNavigateToDuplicate = { newSchemeId ->
-                    navController.navigate(
-                        route = "${NavDestinations.PALETTE_EDITOR}/$newSchemeId",
-                        navOptions = NavOptions.Builder()
-                            .setPopUpTo(
-                                route = "${NavDestinations.PALETTE_EDITOR}/{${NavArgs.SCHEME_ID}}",
-                                inclusive = true
-                            )
-                            .build()
-                    )
-                }
+                onNavigateBack = { navController.safePopBackStack() }
             )
         }
 
@@ -200,9 +215,6 @@ fun ConnectBotNavHost(
                 onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToEdit = { profile ->
                     navController.navigateSafely("${NavDestinations.PROFILE_EDITOR}/${profile.id}")
-                },
-                onNavigateToColors = {
-                    navController.navigateSafely(NavDestinations.COLORS)
                 }
             )
         }
@@ -214,10 +226,7 @@ fun ConnectBotNavHost(
             )
         ) {
             ProfileEditorScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-                onNavigateToColors = {
-                    navController.navigateSafely(NavDestinations.COLORS)
-                }
+                onNavigateBack = { navController.safePopBackStack() }
             )
         }
 
