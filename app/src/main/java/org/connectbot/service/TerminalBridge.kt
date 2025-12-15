@@ -322,8 +322,6 @@ class TerminalBridge {
     fun onConnected() {
         disconnected = false
 
-        terminalEmulator.clearScreen()
-
         // We no longer need our local output.
         localOutput.clear()
 
