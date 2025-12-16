@@ -57,8 +57,7 @@ import org.connectbot.data.entity.Pubkey
  * - Version 2: Added jump_host_id column for ProxyJump support (AutoMigration)
  * - Version 3: Added unique index on known_hosts (hostname, port) (AutoMigration)
  * - Version 4: Changed known_hosts index to (host_id, host_key) (AutoMigration)
- * - Version 5: Added font_family column for downloadable fonts support (AutoMigration)
- * - Version 6: Added profiles table and profile_id column to hosts (manual migration)
+ * - Version 5: Added profiles table and profile_id column to hosts (manual migration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -75,13 +74,12 @@ import org.connectbot.data.entity.Pubkey
         ColorPalette::class,
         Profile::class
     ],
-    version = 6,
+    version = 5,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 2, to = 4),
-        AutoMigration(from = 3, to = 4),
-        AutoMigration(from = 4, to = 5)
+        AutoMigration(from = 3, to = 4)
     ]
 )
 @TypeConverters(Converters::class)
@@ -95,10 +93,10 @@ abstract class ConnectBotDatabase : RoomDatabase() {
 
     companion object {
         /**
-         * Migration from version 5 to 6: Add profiles table and profile_id to hosts.
+         * Migration from version 4 to 5: Add profiles table and profile_id to hosts.
          * Also creates profiles from existing host settings and migrates hosts to use them.
          */
-        val MIGRATION_5_6 = object : Migration(5, 6) {
+        val MIGRATION_4_5 = object : Migration(4, 5) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 // Create profiles table
                 // Note: No foreign key to color_schemes because built-in color schemes use negative IDs

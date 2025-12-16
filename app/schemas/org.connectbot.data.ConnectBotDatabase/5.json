@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 5,
-    "identityHash": "d58d041f38d317f7d4da68de74348b96",
+    "identityHash": "f6b58e066bfe15936f8f8531dde3e43a",
     "entities": [
       {
         "tableName": "hosts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nickname` TEXT NOT NULL, `protocol` TEXT NOT NULL, `username` TEXT NOT NULL, `hostname` TEXT NOT NULL, `port` INTEGER NOT NULL, `host_key_algo` TEXT, `last_connect` INTEGER NOT NULL, `color` TEXT, `use_keys` INTEGER NOT NULL, `use_auth_agent` TEXT, `post_login` TEXT, `pubkey_id` INTEGER NOT NULL, `want_session` INTEGER NOT NULL, `compression` INTEGER NOT NULL, `encoding` TEXT NOT NULL, `stay_connected` INTEGER NOT NULL, `quick_disconnect` INTEGER NOT NULL, `font_size` INTEGER NOT NULL, `color_scheme_id` INTEGER NOT NULL, `del_key` TEXT NOT NULL, `scrollback_lines` INTEGER NOT NULL, `use_ctrl_alt_as_meta_key` INTEGER NOT NULL, `jump_host_id` INTEGER, `font_family` TEXT, `profile_id` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nickname` TEXT NOT NULL, `protocol` TEXT NOT NULL, `username` TEXT NOT NULL, `hostname` TEXT NOT NULL, `port` INTEGER NOT NULL, `host_key_algo` TEXT, `last_connect` INTEGER NOT NULL, `color` TEXT, `use_keys` INTEGER NOT NULL, `use_auth_agent` TEXT, `post_login` TEXT, `pubkey_id` INTEGER NOT NULL, `want_session` INTEGER NOT NULL, `compression` INTEGER NOT NULL, `stay_connected` INTEGER NOT NULL, `quick_disconnect` INTEGER NOT NULL, `scrollback_lines` INTEGER NOT NULL, `use_ctrl_alt_as_meta_key` INTEGER NOT NULL, `jump_host_id` INTEGER, `profile_id` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -95,12 +95,6 @@
             "notNull": true
           },
           {
-            "fieldPath": "encoding",
-            "columnName": "encoding",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
             "fieldPath": "stayConnected",
             "columnName": "stay_connected",
             "affinity": "INTEGER",
@@ -110,24 +104,6 @@
             "fieldPath": "quickDisconnect",
             "columnName": "quick_disconnect",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "fontSize",
-            "columnName": "font_size",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "colorSchemeId",
-            "columnName": "color_scheme_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "delKey",
-            "columnName": "del_key",
-            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -146,11 +122,6 @@
             "fieldPath": "jumpHostId",
             "columnName": "jump_host_id",
             "affinity": "INTEGER"
-          },
-          {
-            "fieldPath": "fontFamily",
-            "columnName": "font_family",
-            "affinity": "TEXT"
           },
           {
             "fieldPath": "profileId",
@@ -433,14 +404,14 @@
             "createSql": "CREATE INDEX IF NOT EXISTS `index_known_hosts_host_id` ON `${TABLE_NAME}` (`host_id`)"
           },
           {
-            "name": "index_known_hosts_hostname_port",
-            "unique": true,
+            "name": "index_known_hosts_host_id_host_key",
+            "unique": false,
             "columnNames": [
-              "hostname",
-              "port"
+              "host_id",
+              "host_key"
             ],
             "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_known_hosts_hostname_port` ON `${TABLE_NAME}` (`hostname`, `port`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_known_hosts_host_id_host_key` ON `${TABLE_NAME}` (`host_id`, `host_key`)"
           }
         ],
         "foreignKeys": [
@@ -588,7 +559,7 @@
       },
       {
         "tableName": "profiles",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `is_built_in` INTEGER NOT NULL, `icon_color` TEXT, `color_scheme_id` INTEGER NOT NULL DEFAULT -1, `font_family` TEXT, `font_size` INTEGER NOT NULL DEFAULT 10, `del_key` TEXT NOT NULL DEFAULT 'del', `encoding` TEXT NOT NULL DEFAULT 'UTF-8', `emulation` TEXT NOT NULL DEFAULT 'xterm-256color')",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `icon_color` TEXT, `color_scheme_id` INTEGER NOT NULL DEFAULT -1, `font_family` TEXT, `font_size` INTEGER NOT NULL DEFAULT 10, `del_key` TEXT NOT NULL DEFAULT 'del', `encoding` TEXT NOT NULL DEFAULT 'UTF-8', `emulation` TEXT NOT NULL DEFAULT 'xterm-256color')",
         "fields": [
           {
             "fieldPath": "id",
@@ -600,12 +571,6 @@
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "isBuiltIn",
-            "columnName": "is_built_in",
-            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -675,7 +640,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd58d041f38d317f7d4da68de74348b96')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f6b58e066bfe15936f8f8531dde3e43a')"
     ]
   }
 }

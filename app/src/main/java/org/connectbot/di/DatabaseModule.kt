@@ -42,7 +42,7 @@ object DatabaseModule {
             ConnectBotDatabase::class.java,
             DATABASE_NAME
         )
-            .addMigrations(ConnectBotDatabase.MIGRATION_2_3)
+            .addMigrations(ConnectBotDatabase.MIGRATION_4_5)
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
