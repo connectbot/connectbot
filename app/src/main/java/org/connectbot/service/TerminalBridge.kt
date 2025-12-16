@@ -17,6 +17,9 @@
 
 package org.connectbot.service
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.util.Log
@@ -180,6 +183,11 @@ class TerminalBridge {
                 scope.launch(Dispatchers.IO) {
                     transport?.setDimensions(it.columns, it.rows, 0, 0)
                 }
+            },
+            onClipboardCopy = { text ->
+                // OSC 52 clipboard support - copy remote text to local clipboard
+                val clipboard = manager.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+                clipboard?.setPrimaryClip(ClipData.newPlainText("terminal", text))
             }
         )
 
