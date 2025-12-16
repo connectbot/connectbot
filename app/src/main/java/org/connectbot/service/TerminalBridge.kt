@@ -186,6 +186,7 @@ class TerminalBridge {
             },
             onClipboardCopy = { text ->
                 // OSC 52 clipboard support - copy remote text to local clipboard
+                Log.i(TAG, "OSC 52 clipboard copy: ${text.length} chars")
                 val clipboard = manager.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
                 clipboard?.setPrimaryClip(ClipData.newPlainText("terminal", text))
             }
