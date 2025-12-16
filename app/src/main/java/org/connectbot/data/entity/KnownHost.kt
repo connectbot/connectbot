@@ -38,7 +38,7 @@ import androidx.room.PrimaryKey
     ],
     indices = [
         Index("host_id"),
-        Index(value = ["host_id", "host_key"], unique = true)
+        Index(value = ["host_id", "host_key"])
     ]
 )
 data class KnownHost(
