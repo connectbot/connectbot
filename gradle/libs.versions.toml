@@ -10,7 +10,7 @@ easylauncher = "6.4.1"
 pythonUv = "0.3.7"
 appVersioning = "1.5.0"
 room = "2.8.4"
-ksp = "2.3.3"
+ksp = "2.3.4"
 hilt = "2.57.2"
 hiltNavigationCompose = "1.3.0"
 
