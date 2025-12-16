@@ -380,6 +380,51 @@ class KnownHostDaoTest {
         assertThat(exactNewKey?.hostKey).isEqualTo(newKey)
     }
 
+    @Test
+    fun getByHostIdAlgoAndKey_WithDuplicateKeys_ReturnsOnlyOne() = runTest {
+        val host = createTestHost(nickname = "server", hostname = "server.example.com")
+        val hostId = hostDao.insert(host)
+
+        val sharedKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC...".toByteArray()
+        val algo = "ssh-rsa"
+
+        val knownHost1 = createTestKnownHost(
+            hostId = hostId,
+            hostname = "server.example.com",
+            port = 22,
+            hostKeyAlgo = algo,
+            hostKey = sharedKey
+        )
+
+        val knownHost2 = createTestKnownHost(
+            hostId = hostId,
+            hostname = "renamed-server.example.com",
+            port = 22,
+            hostKeyAlgo = algo,
+            hostKey = sharedKey
+        )
+
+        val knownHost3 = createTestKnownHost(
+            hostId = hostId,
+            hostname = "server.example.com",
+            port = 2222,
+            hostKeyAlgo = algo,
+            hostKey = sharedKey
+        )
+
+        knownHostDao.insert(knownHost1)
+        knownHostDao.insert(knownHost2)
+        knownHostDao.insert(knownHost3)
+
+        val result = knownHostDao.getByHostIdAlgoAndKey(hostId, algo, sharedKey)
+        assertThat(result).isNotNull()
+        assertThat(result?.hostId).isEqualTo(hostId)
+        assertThat(result?.hostKey).isEqualTo(sharedKey)
+
+        val allKeysForHost = knownHostDao.getByHostId(hostId)
+        assertThat(allKeysForHost).hasSize(3)
+    }
+
     private fun createTestHost(
         nickname: String = "test-host",
         protocol: String = "ssh",

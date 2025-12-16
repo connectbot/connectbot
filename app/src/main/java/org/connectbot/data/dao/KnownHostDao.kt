@@ -44,7 +44,7 @@ interface KnownHostDao {
     /**
      * Get a specific known host by exact match of hostId, algorithm, and key.
      */
-    @Query("SELECT * FROM known_hosts WHERE host_id = :hostId AND host_key_algo = :algo AND host_key = :key")
+    @Query("SELECT * FROM known_hosts WHERE host_id = :hostId AND host_key_algo = :algo AND host_key = :key LIMIT 1")
     suspend fun getByHostIdAlgoAndKey(hostId: Long, algo: String, key: ByteArray): KnownHost?
 
     /**
