@@ -24,7 +24,7 @@ lifecycleViewModel = "2.10.0"
 navigationCompose = "2.9.6"
 activityCompose = "1.12.1"
 
-sshlib = "2.2.34"
+sshlib = "2.2.35"
 termlib = "0.0.12"
 playServicesBasement = "18.9.0"
 conscrypt = "2.5.3"
