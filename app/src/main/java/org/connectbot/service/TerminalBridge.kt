@@ -28,6 +28,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -63,6 +64,13 @@ import org.connectbot.util.HostConstants
 @Suppress("DEPRECATION") // for ClipboardManager
 class TerminalBridge {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
+    private sealed class TransportOperation {
+        data class WriteData(val data: ByteArray) : TransportOperation()
+        data class SetDimensions(val columns: Int, val rows: Int, val width: Int, val height: Int) : TransportOperation()
+    }
+
+    private val transportOperations = Channel<TransportOperation>(Channel.UNLIMITED)
 
     var color: IntArray = IntArray(0)
 
@@ -165,13 +173,7 @@ class TerminalBridge {
             defaultForeground = Color(defaultFg),
             defaultBackground = Color(defaultBg),
             onKeyboardInput = { data ->
-                scope.launch(Dispatchers.IO) {
-                    try {
-                        transport?.write(data)
-                    } catch (e: IOException) {
-                        Log.e(TAG, "Problem writing keyboard data", e)
-                    }
-                }
+                transportOperations.trySend(TransportOperation.WriteData(data))
             },
             onBell = {
                 scope.launch {
@@ -180,9 +182,9 @@ class TerminalBridge {
                 manager.sendActivityNotification(host)
             },
             onResize = {
-                scope.launch(Dispatchers.IO) {
-                    transport?.setDimensions(it.columns, it.rows, 0, 0)
-                }
+                transportOperations.trySend(
+                    TransportOperation.SetDimensions(it.columns, it.rows, 0, 0)
+                )
             },
             onClipboardCopy = { text ->
                 // OSC 52 clipboard support - copy remote text to local clipboard
@@ -199,6 +201,39 @@ class TerminalBridge {
         terminalEmulator.applyColorScheme(ansiColors, defaultFgColor, defaultBgColor)
 
         keyListener = TerminalKeyListener(manager, this, host.encoding)
+
+        // Start the transport operation processor to serialize all writes
+        startTransportOperationProcessor()
+    }
+
+    /**
+     * Processes transport operations serially to maintain strict ordering.
+     * This ensures keyboard input and other writes happen in the correct order.
+     */
+    private fun startTransportOperationProcessor() {
+        scope.launch(Dispatchers.IO) {
+            for (operation in transportOperations) {
+                try {
+                    when (operation) {
+                        is TransportOperation.WriteData -> {
+                            transport?.write(operation.data)
+                        }
+                        is TransportOperation.SetDimensions -> {
+                            transport?.setDimensions(
+                                operation.columns,
+                                operation.rows,
+                                operation.width,
+                                operation.height
+                            )
+                        }
+                    }
+                } catch (e: IOException) {
+                    Log.e(TAG, "Error processing transport operation", e)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Unexpected error processing transport operation", e)
+                }
+            }
+        }
     }
 
     /**
@@ -307,13 +342,9 @@ class TerminalBridge {
         if (string == null || string.isEmpty())
             return
 
-        scope.launch(Dispatchers.IO) {
-            try {
-                transport?.write(string.toByteArray(charset(host.encoding)))
-            } catch (e: Exception) {
-                Log.e(TAG, "Couldn't inject string to remote host: ", e)
-            }
-        }
+        transportOperations.trySend(
+            TransportOperation.WriteData(string.toByteArray(charset(host.encoding)))
+        )
     }
 
     /**
@@ -599,6 +630,7 @@ class TerminalBridge {
      * Releases bitmap and clears parent reference to prevent memory leaks.
      */
     fun cleanup() {
+        transportOperations.close()
         scope.cancel()
     }
 
