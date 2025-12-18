@@ -129,7 +129,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	private val binder: IBinder = TerminalBinder()
 
-	private lateinit var connectivityManager: ConnectivityReceiver
+	internal lateinit var connectivityMonitor: ConnectivityMonitor
 
 	private var mediaPlayer: MediaPlayer? = null
 
@@ -225,7 +225,8 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 		val lockingWifi = prefs.getBoolean(PreferenceConstants.WIFI_LOCK, true)
 
-		connectivityManager = ConnectivityReceiver(this, lockingWifi)
+		connectivityMonitor = ConnectivityMonitor(this, lockingWifi)
+		connectivityMonitor.init()
 
 		ProviderLoader.load(this, this)
 	}
@@ -247,7 +248,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 		disableMediaPlayer()
 
-		connectivityManager.cleanup()
+		connectivityMonitor.cleanup()
 
 		super.onDestroy()
 	}
@@ -309,7 +310,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		}
 
 		if (bridge.isUsingNetwork()) {
-			connectivityManager.incRef()
+			connectivityMonitor.incRef()
 		}
 
 		if (prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)) {
@@ -419,7 +420,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 			nicknameBridgeMap.remove(bridge.host.nickname)
 
 			if (bridge.isUsingNetwork()) {
-				connectivityManager.decRef()
+				connectivityMonitor.decRef()
 			}
 
 			if (_bridges.isEmpty() && pendingReconnect.isEmpty()) {
@@ -762,7 +763,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 					PreferenceConstants.BUMPY_ARROWS, true)
 		} else if (PreferenceConstants.WIFI_LOCK == key) {
 			val lockingWifi = prefs.getBoolean(PreferenceConstants.WIFI_LOCK, true)
-			connectivityManager.setWantWifiLock(lockingWifi)
+			connectivityMonitor.setWantWifiLock(lockingWifi)
 		} else if (PreferenceConstants.MEMKEYS == key) {
 			updateSavingKeys()
 		}
@@ -792,20 +793,46 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	}
 
 	/**
-	 * Called when connectivity to the network is lost and it doesn't appear
-	 * we'll be getting a different connection any time soon.
+	 * Called when connectivity to the network is lost.
+	 * Instead of immediate disconnect, starts grace period for all bridges.
 	 */
 	fun onConnectivityLost() {
+		Log.d(TAG, "Network lost - starting grace period for all network bridges")
 		scope.launch(Dispatchers.IO) {
-			disconnectAll(false, true)
+			synchronized(_bridges) {
+				for (bridge in _bridges) {
+					if (bridge.isUsingNetwork()) {
+						bridge.onNetworkLost()
+					}
+				}
+			}
 		}
 	}
 
 	/**
 	 * Called when connectivity to the network is restored.
+	 * Checks IP addresses and either resumes or reconnects bridges.
 	 */
 	fun onConnectivityRestored() {
+		Log.d(TAG, "Network restored - checking IP addresses for grace period bridges")
 		scope.launch(Dispatchers.IO) {
+			val newNetworkInfo = connectivityMonitor.getCurrentNetworkInfo()
+
+			if (newNetworkInfo == null) {
+				Log.w(TAG, "Network restored but no network info available")
+				return@launch
+			}
+
+			// Notify bridges in grace period
+			synchronized(_bridges) {
+				for (bridge in _bridges) {
+					if (bridge.isInGracePeriod()) {
+						bridge.onNetworkRestored(newNetworkInfo)
+					}
+				}
+			}
+
+			// Also handle normal pending reconnects (for already-disconnected bridges)
 			reconnectPending()
 		}
 	}
@@ -821,7 +848,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		synchronized(pendingReconnect) {
 			pendingReconnect.add(WeakReference(bridge))
 			if (!bridge.isUsingNetwork() ||
-					connectivityManager.isConnected()) {
+					connectivityMonitor.getCurrentNetworkInfo()?.isConnected == true) {
 				reconnectPending()
 			}
 		}
