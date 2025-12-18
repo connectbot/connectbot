@@ -823,6 +823,12 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
     }
 
     override fun close() {
+        // Don't close during grace period - wait for network restore
+        if (bridge?.isInGracePeriod() == true) {
+            Log.d(TAG, "Deferring SSH close - bridge in network grace period")
+            return
+        }
+
         connected = false
 
         session?.close()
@@ -902,6 +908,15 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
     override fun isConnected(): Boolean = connected
 
     override fun connectionLost(reason: Throwable) {
+        // During grace period, SSH disconnect is EXPECTED (network loss)
+        // Don't trigger disconnect - let grace period handle it
+        if (bridge?.isInGracePeriod() == true) {
+            Log.d(TAG, "SSH connection lost during grace period (expected due to network loss)")
+            return
+        }
+
+        // Unexpected disconnect - normal flow
+        Log.d(TAG, "SSH connection lost outside grace period - disconnecting")
         onDisconnect()
     }
 

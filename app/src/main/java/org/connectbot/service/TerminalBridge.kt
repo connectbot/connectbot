@@ -26,9 +26,11 @@ import android.util.Log
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -105,6 +107,16 @@ class TerminalBridge {
     private var awaitingClose = false
 
     private var forcedSize = false
+
+    // Network state tracking for grace period
+    private data class NetworkState(
+        val ipAddresses: Set<String>,
+        val networkId: String
+    )
+
+    private var lastKnownNetworkState: NetworkState? = null
+    private var networkGracePeriodJob: Job? = null
+    private var inGracePeriod: Boolean = false
 
     private val keyListener: TerminalKeyListener
 
@@ -391,6 +403,9 @@ class TerminalBridge {
 
         // finally send any post-login string, if requested
         injectString(host.postLogin)
+
+        // Capture network state after successful connection
+        captureNetworkState()
     }
 
     /**
@@ -630,6 +645,10 @@ class TerminalBridge {
      * Releases bitmap and clears parent reference to prevent memory leaks.
      */
     fun cleanup() {
+        // Cancel grace period if active
+        networkGracePeriodJob?.cancel()
+        inGracePeriod = false
+
         transportOperations.close()
         scope.cancel()
     }
@@ -771,6 +790,100 @@ class TerminalBridge {
     fun isUsingNetwork(): Boolean {
         return transport?.usesNetwork() ?: false
     }
+
+    /**
+     * Capture current network state when connection established.
+     * Called after successful SSH connection.
+     */
+    fun captureNetworkState() {
+        if (!isUsingNetwork()) return
+
+        val networkInfo = manager.connectivityMonitor.getCurrentNetworkInfo()
+        if (networkInfo != null) {
+            lastKnownNetworkState = NetworkState(
+                ipAddresses = networkInfo.ipAddresses,
+                networkId = networkInfo.networkId
+            )
+            Log.d(TAG, "Captured network state: ${networkInfo.ipAddresses.size} IPs")
+        }
+    }
+
+    /**
+     * Called by TerminalManager when network is lost.
+     * Starts 60-second grace period instead of immediate disconnect.
+     */
+    fun onNetworkLost() {
+        if (!isUsingNetwork() || disconnected) return
+
+        // Cancel any existing grace period (rapid network changes)
+        networkGracePeriodJob?.cancel()
+
+        inGracePeriod = true
+
+        // Show status message to user
+        outputLine(manager.res.getString(R.string.network_lost_grace_period))
+
+        // Start 60-second timer
+        networkGracePeriodJob = scope.launch {
+            delay(60_000) // 60 seconds
+
+            // Grace period expired without network restoration
+            inGracePeriod = false
+            lastKnownNetworkState = null
+            outputLine(manager.res.getString(R.string.network_grace_period_expired))
+
+            // Trigger normal disconnect flow
+            dispatchDisconnect(immediate = false)
+        }
+    }
+
+    /**
+     * Called by TerminalManager when network is restored.
+     * Checks if IP address changed to decide reconnect vs resume.
+     */
+    fun onNetworkRestored(newNetworkInfo: ConnectivityMonitor.NetworkInfo) {
+        if (!inGracePeriod) return
+
+        // Cancel grace period timer
+        networkGracePeriodJob?.cancel()
+        inGracePeriod = false
+
+        val oldState = lastKnownNetworkState
+
+        if (oldState == null) {
+            // No previous state - treat as new connection
+            outputLine(manager.res.getString(R.string.network_restored_no_previous_state))
+            lastKnownNetworkState = NetworkState(
+                ipAddresses = newNetworkInfo.ipAddresses,
+                networkId = newNetworkInfo.networkId
+            )
+            // Allow connection to continue
+            return
+        }
+
+        // Check if ANY IP address matches (lenient - handles IPv4/v6 changes)
+        val ipMatches = oldState.ipAddresses.intersect(newNetworkInfo.ipAddresses).isNotEmpty()
+
+        if (ipMatches) {
+            // Same IP - SSH session should still be alive, resume normally
+            outputLine(manager.res.getString(R.string.network_restored_same_ip))
+            lastKnownNetworkState = NetworkState(
+                ipAddresses = newNetworkInfo.ipAddresses,
+                networkId = newNetworkInfo.networkId
+            )
+            // No action needed - connection continues
+        } else {
+            // IP changed - TCP connection is broken, must reconnect
+            outputLine(manager.res.getString(R.string.network_restored_ip_changed))
+            lastKnownNetworkState = null
+            dispatchDisconnect(immediate = false)
+        }
+    }
+
+    /**
+     * @return whether bridge is in network grace period
+     */
+    fun isInGracePeriod(): Boolean = inGracePeriod
 
     /**
      * @return

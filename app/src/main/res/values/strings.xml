@@ -219,6 +219,17 @@
 
 	<string name="alert_disconnect_msg">"Connection Lost"</string>
 
+	<!-- Message shown when network connection is lost and app is waiting to reconnect -->
+	<string name="network_lost_grace_period">"Network lost, waiting to reconnect…"</string>
+	<!-- Message shown when the 60-second grace period expires without network restoration -->
+	<string name="network_grace_period_expired">"Network not restored, disconnecting…"</string>
+	<!-- Message shown when network is restored and connection can continue (same IP address) -->
+	<string name="network_restored_same_ip">"Network restored, connection maintained"</string>
+	<!-- Message shown when network is restored but IP address changed, requiring reconnection -->
+	<string name="network_restored_ip_changed">"Network restored but IP changed, reconnecting…"</string>
+	<!-- Message shown when network is restored but previous network state is unknown -->
+	<string name="network_restored_no_previous_state">"Network restored, verifying connection…"</string>
+
 	<string name="msg_copyright">"Copyright &#169; 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey http://jsharkey.org/"</string>
 
 	<!-- The category title for terminal emulation preferences. -->
