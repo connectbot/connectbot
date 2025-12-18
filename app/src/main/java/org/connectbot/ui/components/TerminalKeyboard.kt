@@ -429,18 +429,14 @@ private fun KeyButton(
     text: String? = null,
     icon: ImageVector? = null,
     contentDescription: String?,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)? = null,
     backgroundColor: Color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
     tint: Color = MaterialTheme.colorScheme.onSurface
 ) {
-    Surface(
-        onClick = onClick,
-        modifier = modifier
-            .size(width = TERMINAL_KEYBOARD_WIDTH_DP.dp, height = TERMINAL_KEYBOARD_HEIGHT_DP.dp),
-        shape = RectangleShape,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-        color = backgroundColor,
-    ) {
+    val surfaceModifier = modifier
+        .size(width = TERMINAL_KEYBOARD_WIDTH_DP.dp, height = TERMINAL_KEYBOARD_HEIGHT_DP.dp)
+
+    val content: @Composable () -> Unit = {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
@@ -460,6 +456,25 @@ private fun KeyButton(
                 )
             }
         }
+    }
+
+    if (onClick != null) {
+        Surface(
+            onClick = onClick,
+            modifier = surfaceModifier,
+            shape = RectangleShape,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+            color = backgroundColor,
+            content = content
+        )
+    } else {
+        Surface(
+            modifier = surfaceModifier,
+            shape = RectangleShape,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+            color = backgroundColor,
+            content = content
+        )
     }
 }
 
@@ -493,7 +508,7 @@ private fun RepeatableKeyButton(
     KeyButton(
         icon = icon,
         contentDescription = contentDescription,
-        onClick = {},
+        onClick = null,
         modifier = modifier.pointerInput(Unit) {
             detectTapGestures(
                 onPress = {
