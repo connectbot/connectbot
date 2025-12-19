@@ -17,6 +17,7 @@
 
 package org.connectbot.service
 
+import android.util.Log
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
@@ -33,17 +34,20 @@ import java.io.IOException
  *
  * @param instructions Optional instructions to display
  * @param message The prompt message
- * @return Boolean response from user, or null if cancelled by user
- * @throws IOException if the prompt is cancelled due to connection loss
+ * @return Boolean response from user, null if cancelled by user or no answer
  */
-fun TerminalBridge.requestBooleanPrompt(instructions: String?, message: String): Boolean? {
+fun TerminalBridge.requestBooleanPrompt(
+    instructions: String?,
+    message: String,
+): Boolean? {
     return try {
         runBlocking {
             promptManager.requestBooleanPrompt(instructions, message)
         }
     } catch (e: CancellationException) {
-        // Prompt was cancelled due to connection loss - throw IOException to propagate error
-        throw IOException("Connection lost while waiting for prompt response", e)
+        // Prompt was cancelled due to connection loss
+        Log.w("TerminalBridge", "Attempted prompt on a closed stream.")
+        return null
     }
 }
 
@@ -54,13 +58,12 @@ fun TerminalBridge.requestBooleanPrompt(instructions: String?, message: String):
  * @param instructions Optional instructions to display
  * @param hint Hint text for the input field
  * @param isPassword Whether to mask the input
- * @return String response from user, or null if cancelled by user
- * @throws IOException if the prompt is cancelled due to connection loss
+ * @return String response from user, or null if cancelled by user or no response
  */
 fun TerminalBridge.requestStringPrompt(
     instructions: String?,
     hint: String?,
-    isPassword: Boolean = false
+    isPassword: Boolean = false,
 ): String? {
     return try {
         runBlocking {
@@ -68,7 +71,8 @@ fun TerminalBridge.requestStringPrompt(
         }
     } catch (e: CancellationException) {
         // Prompt was cancelled due to connection loss - throw IOException to propagate error
-        throw IOException("Connection lost while waiting for prompt response", e)
+        Log.w("TerminalBridge", "Attempted prompt on a closed stream.")
+        return null
     }
 }
 
@@ -78,7 +82,6 @@ fun TerminalBridge.requestStringPrompt(
  * @param keyNickname The nickname of the key for display
  * @param keystoreAlias The alias of the key in Android Keystore
  * @return true if biometric authentication succeeded, false otherwise
- * @throws IOException if the prompt is cancelled due to connection loss
  */
 fun TerminalBridge.requestBiometricAuth(
     keyNickname: String,
@@ -90,7 +93,8 @@ fun TerminalBridge.requestBiometricAuth(
         }
     } catch (e: CancellationException) {
         // Prompt was cancelled due to connection loss - throw IOException to propagate error
-        throw IOException("Connection lost while waiting for biometric authentication", e)
+        Log.w("TerminalBridge", "Attempted prompt on a closed stream.")
+        return false
     }
 }
 
@@ -105,8 +109,7 @@ fun TerminalBridge.requestBiometricAuth(
  * @param bubblebabble The Bubble-Babble phonetic encoding
  * @param sha256 The SHA-256 fingerprint
  * @param md5 The MD5 fingerprint
- * @return Boolean response from user, or null if cancelled by user
- * @throws IOException if the prompt is cancelled due to connection loss
+ * @return Boolean response from user, or null if cancelled by user or no answer
  */
 fun TerminalBridge.requestHostKeyFingerprintPrompt(
     hostname: String,
@@ -127,6 +130,7 @@ fun TerminalBridge.requestHostKeyFingerprintPrompt(
         }
     } catch (e: CancellationException) {
         // Prompt was cancelled due to connection loss - throw IOException to propagate error
-        throw IOException("Connection lost while waiting for host key verification", e)
+        Log.w("TerminalBridge", "Attempted prompt on a closed stream.")
+        return null
     }
 }
