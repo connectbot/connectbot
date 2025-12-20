@@ -20,7 +20,7 @@ package org.connectbot.data.migration
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
+import timber.log.Timber
 import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
@@ -59,13 +59,13 @@ class LegacyHostDatabaseReader(private val context: Context) {
                         val host = cursorToHost(cursor)
                         hosts.add(host)
                     } catch (e: Exception) {
-                        Log.e(TAG, "Error reading host from cursor", e)
+                        Timber.e(e, "Error reading host from cursor")
                     }
                 }
             }
         }
 
-        Log.d(TAG, "Read ${hosts.size} hosts from legacy database")
+        Timber.d("Read ${hosts.size} hosts from legacy database")
         return hosts
     }
 
@@ -90,13 +90,13 @@ class LegacyHostDatabaseReader(private val context: Context) {
                         val portForward = cursorToPortForward(cursor)
                         portForwards.add(portForward)
                     } catch (e: Exception) {
-                        Log.e(TAG, "Error reading port forward from cursor", e)
+                        Timber.e(e, "Error reading port forward from cursor")
                     }
                 }
             }
         }
 
-        Log.d(TAG, "Read ${portForwards.size} port forwards from legacy database")
+        Timber.d("Read ${portForwards.size} port forwards from legacy database")
         return portForwards
     }
 
@@ -123,13 +123,13 @@ class LegacyHostDatabaseReader(private val context: Context) {
                         val knownHost = cursorToKnownHost(cursor)
                         knownHosts.add(knownHost)
                     } catch (e: Exception) {
-                        Log.e(TAG, "Error reading known host from cursor", e)
+                        Timber.e(e, "Error reading known host from cursor")
                     }
                 }
             }
         }
 
-        Log.d(TAG, "Read ${knownHosts.size} known hosts from legacy database")
+        Timber.d("Read ${knownHosts.size} known hosts from legacy database")
         return knownHosts
     }
 
@@ -155,16 +155,16 @@ class LegacyHostDatabaseReader(private val context: Context) {
                             val scheme = cursorToColorScheme(cursor)
                             schemes.add(scheme)
                         } catch (e: Exception) {
-                            Log.e(TAG, "Error reading color scheme from cursor", e)
+                            Timber.e(e, "Error reading color scheme from cursor")
                         }
                     }
                 }
             } catch (e: Exception) {
-                Log.w(TAG, "Error reading color schemes from legacy database; skipping", e)
+                Timber.w(e, "Error reading color schemes from legacy database; skipping")
             }
         }
 
-        Log.d(TAG, "Read ${schemes.size} color schemes from legacy database")
+        Timber.d("Read ${schemes.size} color schemes from legacy database")
         return schemes
     }
 
@@ -189,13 +189,13 @@ class LegacyHostDatabaseReader(private val context: Context) {
                         val palette = cursorToColorPalette(cursor)
                         palettes.add(palette)
                     } catch (e: Exception) {
-                        Log.e(TAG, "Error reading color palette from cursor", e)
+                        Timber.e(e, "Error reading color palette from cursor")
                     }
                 }
             }
         }
 
-        Log.d(TAG, "Read ${palettes.size} color palette entries from legacy database")
+        Timber.d("Read ${palettes.size} color palette entries from legacy database")
         return palettes
     }
 
@@ -317,7 +317,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
     private inline fun withReadableDatabase(block: (SQLiteDatabase) -> Unit) {
         val dbFile = context.getDatabasePath(DB_NAME)
         if (!dbFile.exists()) {
-            Log.w(TAG, "Legacy database file does not exist: ${dbFile.absolutePath}")
+            Timber.w("Legacy database file does not exist: ${dbFile.absolutePath}")
             return
         }
 
@@ -333,7 +333,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
                 db.close()
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Error opening legacy database", e)
+            Timber.e(e, "Error opening legacy database")
             throw MigrationException("Failed to open legacy hosts database: ${e.message}")
         }
     }

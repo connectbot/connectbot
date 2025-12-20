@@ -29,6 +29,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import timber.log.Timber
 import javax.inject.Inject
 import java.io.File
 import java.io.FileOutputStream
@@ -76,23 +77,23 @@ class LegacyDatabaseMigrationIntegrationTest {
     fun migrateSampleLegacyDatabases() {
         runBlocking {
             try {
-                android.util.Log.d("MigrationTest", "Starting test: migrateSampleLegacyDatabases")
+                Timber.d("Starting test: migrateSampleLegacyDatabases")
 
                 // Copy sample databases from assets to database directory
-                android.util.Log.d("MigrationTest", "Copying sample databases")
+                Timber.d("Copying sample databases")
                 copyAssetToDatabase("sample_hosts.db", "hosts")
                 copyAssetToDatabase("sample_pubkeys.db", "pubkeys")
-                android.util.Log.d("MigrationTest", "Databases copied successfully")
+                Timber.d("Databases copied successfully")
 
                 // Verify migration is needed
-                android.util.Log.d("MigrationTest", "Checking if migration is needed")
+                Timber.d("Checking if migration is needed")
                 assertThat(migrator.isMigrationNeeded()).isTrue()
-                android.util.Log.d("MigrationTest", "Migration is needed")
+                Timber.d("Migration is needed")
 
                 // Perform migration
                 val result = migrator.migrate()
 
-                android.util.Log.d("MigrationTest", "Migration completed: $result")
+                Timber.d("Migration completed: $result")
 
                 // Verify migration succeeded
                 assertThat(result).isInstanceOf(MigrationResult.Success::class.java)
@@ -110,9 +111,9 @@ class LegacyDatabaseMigrationIntegrationTest {
                 assertThat(context.getDatabasePath("hosts.migrated").exists()).isTrue()
                 assertThat(context.getDatabasePath("pubkeys.migrated").exists()).isTrue()
 
-                android.util.Log.d("MigrationTest", "Test completed successfully")
+                Timber.d("Test completed successfully")
             } catch (e: Exception) {
-                android.util.Log.e("MigrationTest", "Test failed with exception", e)
+                Timber.e(e, "Test failed with exception")
                 e.printStackTrace()
                 throw e
             }

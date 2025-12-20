@@ -18,7 +18,7 @@
 package org.connectbot.data
 
 import android.content.Context
-import android.util.Log
+import timber.log.Timber
 import com.trilead.ssh2.KnownHosts
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
@@ -227,7 +227,7 @@ class HostRepository @Inject constructor(
             try {
                 // Format hostname with port for trilead KnownHosts (e.g., "example.com:22")
                 val hostnameWithPort = "${knownHost.hostname}:${knownHost.port}"
-                Log.d("HostRepository", "Adding known host $hostnameWithPort with key algorithm ${knownHost.hostKeyAlgo} and key ${knownHost.hostKey.contentToString()}")
+                Timber.d("Adding known host $hostnameWithPort with key algorithm ${knownHost.hostKeyAlgo} and key ${knownHost.hostKey.contentToString()}")
                 knownHosts.addHostkey(
                     arrayOf(hostnameWithPort),
                     knownHost.hostKeyAlgo,

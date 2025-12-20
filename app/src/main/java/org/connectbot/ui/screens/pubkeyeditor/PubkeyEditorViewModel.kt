@@ -18,7 +18,7 @@
 package org.connectbot.ui.screens.pubkeyeditor
 
 import android.content.Context
-import android.util.Log
+import timber.log.Timber
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -109,7 +109,7 @@ class PubkeyEditorViewModel @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Failed to load pubkey", e)
+                Timber.e(e, "Failed to load pubkey")
                 _uiState.update {
                     it.copy(
                         isLoading = false,
@@ -141,7 +141,7 @@ class PubkeyEditorViewModel @Inject constructor(
                 }
                 _uiState.update { it.copy(nicknameExists = exists) }
             } catch (e: Exception) {
-                Log.e(TAG, "Failed to check if nickname exists", e)
+                Timber.e(e, "Failed to check if nickname exists")
             }
         }
     }
@@ -233,12 +233,12 @@ class PubkeyEditorViewModel @Inject constructor(
                     // Save to database
                     repository.save(updatedPubkey)
 
-                    Log.d(TAG, "Public key saved successfully")
+                    Timber.d("Public key saved successfully")
                 }
 
                 _uiState.update { it.copy(saveSuccess = true) }
             } catch (e: Exception) {
-                Log.e(TAG, "Failed to save pubkey", e)
+                Timber.e(e, "Failed to save pubkey")
                 _uiState.update {
                     it.copy(error = "Failed to save: ${e.message}")
                 }

@@ -17,7 +17,7 @@
 
 package org.connectbot.service
 
-import android.util.Log
+import timber.log.Timber
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
@@ -46,7 +46,7 @@ fun TerminalBridge.requestBooleanPrompt(
         }
     } catch (e: CancellationException) {
         // Prompt was cancelled due to connection loss
-        Log.w("TerminalBridge", "Attempted prompt on a closed stream.")
+        Timber.w("Attempted prompt on a closed stream.")
         return null
     }
 }
@@ -71,7 +71,7 @@ fun TerminalBridge.requestStringPrompt(
         }
     } catch (e: CancellationException) {
         // Prompt was cancelled due to connection loss - throw IOException to propagate error
-        Log.w("TerminalBridge", "Attempted prompt on a closed stream.")
+        Timber.w("Attempted prompt on a closed stream.")
         return null
     }
 }
@@ -93,7 +93,7 @@ fun TerminalBridge.requestBiometricAuth(
         }
     } catch (e: CancellationException) {
         // Prompt was cancelled due to connection loss - throw IOException to propagate error
-        Log.w("TerminalBridge", "Attempted prompt on a closed stream.")
+        Timber.w("Attempted prompt on a closed stream.")
         return false
     }
 }
@@ -130,7 +130,7 @@ fun TerminalBridge.requestHostKeyFingerprintPrompt(
         }
     } catch (e: CancellationException) {
         // Prompt was cancelled due to connection loss - throw IOException to propagate error
-        Log.w("TerminalBridge", "Attempted prompt on a closed stream.")
+        Timber.w("Attempted prompt on a closed stream.")
         return null
     }
 }

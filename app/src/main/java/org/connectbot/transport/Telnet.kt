@@ -20,7 +20,7 @@ package org.connectbot.transport
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
-import android.util.Log
+import timber.log.Timber
 import de.mud.telnet.TelnetProtocolHandler
 import org.connectbot.R
 import org.connectbot.data.entity.Host
@@ -121,10 +121,10 @@ class Telnet : AbsTransport {
 
             bridge?.onConnected()
         } catch (e: UnknownHostException) {
-            Log.d(TAG, "IO Exception connecting to host", e)
+            Timber.d(e, "IO Exception connecting to host")
             throw e
         } catch (e: IOException) {
-            Log.d(TAG, "IO Exception connecting to host", e)
+            Timber.d(e, "IO Exception connecting to host")
             throw e
         }
     }
@@ -136,7 +136,7 @@ class Telnet : AbsTransport {
                 it.close()
                 socket = null
             } catch (e: IOException) {
-                Log.d(TAG, "Error closing telnet socket.", e)
+                Timber.d(e, "Error closing telnet socket.")
             }
         }
     }
@@ -203,7 +203,7 @@ class Telnet : AbsTransport {
         try {
             handler.setWindowSize(columns, rows)
         } catch (e: IOException) {
-            Log.e(TAG, "Couldn't resize remote terminal", e)
+            Timber.e(e, "Couldn't resize remote terminal")
         }
     }
 

@@ -19,7 +19,7 @@ package org.connectbot.transport
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
+import timber.log.Timber
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
 
@@ -47,10 +47,10 @@ object TransportFactory {
      * @return Parsed URI or null if parsing fails
      */
     fun getUri(scheme: String, input: String): Uri? {
-        Log.d(TAG, "Attempting to discover URI for scheme=$scheme on input=$input")
+        Timber.d("Attempting to discover URI for scheme=$scheme on input=$input")
         val transport = Transport.fromProtocol(scheme)
         if (transport is Transport.Local) {
-            Log.d(TAG, "Got to the local parsing area")
+            Timber.d("Got to the local parsing area")
         }
         return transport?.parseUri(input)
     }
@@ -103,7 +103,7 @@ object TransportFactory {
      */
     suspend fun findHost(hostRepository: HostRepository, uri: Uri): Host? {
         val transport = getTransport(uri.scheme) ?: run {
-            Log.e(TAG, "Unknown transport scheme: ${uri.scheme}")
+            Timber.e("Unknown transport scheme: ${uri.scheme}")
             throw IllegalStateException("Unknown transport scheme: ${uri.scheme}")
         }
 
@@ -111,7 +111,7 @@ object TransportFactory {
         transport.getSelectionArgs(uri, selection)
 
         if (selection.isEmpty()) {
-            Log.e(TAG, "Transport ${uri.scheme} failed to do something useful with URI=$uri")
+            Timber.e("Transport ${uri.scheme} failed to do something useful with URI=$uri")
             throw IllegalStateException("Failed to get needed selection arguments")
         }
 

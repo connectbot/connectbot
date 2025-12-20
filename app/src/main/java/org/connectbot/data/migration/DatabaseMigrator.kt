@@ -18,7 +18,7 @@
 package org.connectbot.data.migration
 
 import android.content.Context
-import android.util.Log
+import timber.log.Timber
 import androidx.room.withTransaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -70,14 +70,14 @@ class DatabaseMigrator @Inject constructor(
     val migrationState: Flow<MigrationState> = _migrationState.asStateFlow()
 
     private fun logDebug(message: String) {
-        Log.d(TAG, message)
+        Timber.d(message)
         _migrationState.update { state ->
             state.copy(debugLog = state.debugLog + message)
         }
     }
 
     private fun logWarning(message: String) {
-        Log.w(TAG, message)
+        Timber.w(message)
         _migrationState.update { state ->
             state.copy(
                 warnings = state.warnings + message,
@@ -88,9 +88,9 @@ class DatabaseMigrator @Inject constructor(
 
     private fun logError(message: String, throwable: Throwable? = null) {
         if (throwable != null) {
-            Log.e(TAG, message, throwable)
+            Timber.e(message, throwable)
         } else {
-            Log.e(TAG, message)
+            Timber.e(message)
         }
         val logMessage = if (throwable != null) {
             "$message: ${throwable.message}\n${throwable.stackTraceToString()}"

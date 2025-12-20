@@ -33,7 +33,6 @@ import android.os.IBinder
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
-import android.util.Log
 import com.trilead.ssh2.crypto.PublicKeyUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -60,6 +59,7 @@ import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.ProviderLoader
 import org.connectbot.util.ProviderLoaderListener
 import org.connectbot.util.PubkeyUtils
+import timber.log.Timber
 import java.io.IOException
 import java.lang.ref.WeakReference
 import java.security.KeyPair
@@ -159,7 +159,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	override fun onCreate() {
 		super.onCreate()
-		Log.i(TAG, "Starting service")
+		Timber.i("Starting service")
 
 		prefs.registerOnSharedPreferenceChangeListener(this)
 
@@ -176,7 +176,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 						if (pair != null) {
 							addKey(pubkey, pair)
 						} else {
-							Log.w(TAG, String.format("Failed to convert key '%s' to KeyPair", pubkey.nickname))
+							Timber.w(String.format("Failed to convert key '%s' to KeyPair", pubkey.nickname))
 							_serviceErrors.emit(
 								ServiceError.KeyLoadFailed(
 									keyName = pubkey.nickname,
@@ -185,7 +185,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 							)
 						}
 					} catch (e: Exception) {
-						Log.w(TAG, String.format("Problem adding key '%s' to in-memory cache", pubkey.nickname), e)
+						Timber.w(e, "Problem adding key '%s' to in-memory cache", pubkey.nickname)
 						_serviceErrors.emit(
 							ServiceError.KeyLoadFailed(
 								keyName = pubkey.nickname,
@@ -195,7 +195,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 					}
 				}
 			} catch (e: Exception) {
-				Log.e(TAG, "Failed to load startup keys", e)
+				Timber.e(e, "Failed to load startup keys")
 				_serviceErrors.emit(
 					ServiceError.KeyLoadFailed(
 						keyName = "startup keys",
@@ -236,7 +236,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	}
 
 	override fun onDestroy() {
-		Log.i(TAG, "Destroying service")
+		Timber.i("Destroying service")
 
 		scope.cancel()
 
@@ -343,7 +343,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 * format specified by an individual transport.
 	 */
     suspend fun openConnection(uri: Uri): TerminalBridge {
-        Log.d(TAG, "openConnection: uri=$uri, scheme=${uri.scheme}, fragment=${uri.fragment}")
+        Timber.d("openConnection: uri=$uri, scheme=${uri.scheme}, fragment=${uri.fragment}")
         val scheme = uri.scheme
             ?: throw IllegalArgumentException("URI must contain a scheme (e.g., 'ssh://', 'telnet://'). URI: $uri")
 
@@ -410,7 +410,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 */
 	override fun onDisconnected(bridge: TerminalBridge) {
 		var shouldHideRunningNotification = false
-		Log.d(TAG, "Bridge Disconnected. Removing it.")
+		Timber.d("Bridge Disconnected. Removing it.")
 
 		synchronized(_bridges) {
 			// remove this bridge from our list
@@ -476,7 +476,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		// Note: Pubkey entity doesn't have lifetime field yet
 		// This functionality may need to be re-added if needed
 
-		Log.d(TAG, String.format("Added key '%s' to in-memory cache", pubkey.nickname))
+		Timber.d(String.format("Added key '%s' to in-memory cache", pubkey.nickname))
 		emitLoadedKeysChanged()
 	}
 
@@ -496,7 +496,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		val privateKey = keyStore.getKey(keystoreAlias, null) as? java.security.PrivateKey
 
 		if (privateKey == null) {
-			Log.e(TAG, "Failed to get private key from Keystore for alias: $keystoreAlias")
+			Timber.e("Failed to get private key from Keystore for alias: $keystoreAlias")
 			return
 		}
 
@@ -516,13 +516,13 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		// Schedule auto-expiry when biometric auth window closes (30 seconds)
 		keyHolder.expiryJob = scope.launch {
 			delay(BIOMETRIC_AUTH_VALIDITY_SECONDS * 1000L)
-			Log.d(TAG, "Biometric auth window expired for key '${pubkey.nickname}', removing from cache")
+			Timber.d("Biometric auth window expired for key '${pubkey.nickname}', removing from cache")
 			removeKey(pubkey.nickname)
 		}
 
 		loadedKeypairs[pubkey.nickname] = keyHolder
 
-		Log.d(TAG, String.format("Added biometric key '%s' to in-memory cache (expires in %d seconds)", pubkey.nickname, BIOMETRIC_AUTH_VALIDITY_SECONDS))
+		Timber.d("Added biometric key '%s' to in-memory cache (expires in %d seconds)", pubkey.nickname, BIOMETRIC_AUTH_VALIDITY_SECONDS)
 		emitLoadedKeysChanged()
 	}
 
@@ -531,7 +531,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		if (keyHolder != null) {
 			// Cancel any pending expiry job for biometric keys
 			keyHolder.expiryJob?.cancel()
-			Log.d(TAG, String.format("Removed key '%s' from in-memory cache", nickname))
+			Timber.d(String.format("Removed key '%s' from in-memory cache", nickname))
 			emitLoadedKeysChanged()
 			return true
 		}
@@ -575,12 +575,12 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 				idleJob?.cancel()
 				idleJob = scope.launch {
 					delay(IDLE_TIMEOUT)
-					Log.d(TAG, String.format("Stopping service after timeout of ~%d seconds", IDLE_TIMEOUT / 1000))
+					Timber.d("Stopping service after timeout of ~%d seconds", IDLE_TIMEOUT / 1000)
 					stopNow()
 				}
 			}
 		} else {
-			Log.d(TAG, "Stopping service immediately")
+			Timber.d("Stopping service immediately")
 			stopSelf()
 		}
 	}
@@ -603,11 +603,11 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	}
 
 	override fun onProviderLoaderSuccess() {
-		Log.d(TAG, "Installed crypto provider successfully")
+		Timber.d("Installed crypto provider successfully")
 	}
 
 	override fun onProviderLoaderError() {
-		Log.e(TAG, "Failure while installing crypto provider")
+		Timber.e("Failure while installing crypto provider")
 	}
 
 	inner class TerminalBinder : Binder() {
@@ -617,7 +617,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	}
 
 	override fun onBind(intent: Intent): IBinder {
-		Log.i(TAG, "Someone bound to TerminalManager with " + bridgesFlow.value.size + " bridges active")
+		Timber.i("Someone bound to TerminalManager with %s bridges active", bridgesFlow.value.size)
 		isUiBound = true
 		keepServiceAlive()
 		setResizeAllowed(true)
@@ -642,14 +642,14 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	override fun onRebind(intent: Intent) {
 		super.onRebind(intent)
-		Log.i(TAG, "Someone rebound to TerminalManager with " + bridgesFlow.value.size + " bridges active")
+		Timber.i("Someone rebound to TerminalManager with %d bridges active", bridgesFlow.value.size)
 		isUiBound = true
 		keepServiceAlive()
 		setResizeAllowed(true)
 	}
 
 	override fun onUnbind(intent: Intent): Boolean {
-		Log.i(TAG, "Someone unbound from TerminalManager with " + bridgesFlow.value.size + " bridges active")
+		Timber.i("Someone unbound from TerminalManager with %d bridges active", bridgesFlow.value.size)
 
 		isUiBound = false
 		setResizeAllowed(true)
@@ -705,7 +705,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 			mediaPlayer!!.setVolume(volume, volume)
 			mediaPlayer!!.prepare()
 		} catch (e: IOException) {
-			Log.e(TAG, "Error setting up bell media player", e)
+			Timber.e(e, "Error setting up bell media player")
 		}
 	}
 
@@ -797,7 +797,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 * Instead of immediate disconnect, starts grace period for all bridges.
 	 */
 	fun onConnectivityLost() {
-		Log.d(TAG, "Network lost - starting grace period for all network bridges")
+		Timber.d("Network lost - starting grace period for all network bridges")
 		scope.launch(Dispatchers.IO) {
 			synchronized(_bridges) {
 				for (bridge in _bridges) {
@@ -814,12 +814,12 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 * Checks IP addresses and either resumes or reconnects bridges.
 	 */
 	fun onConnectivityRestored() {
-		Log.d(TAG, "Network restored - checking IP addresses for grace period bridges")
+		Timber.d("Network restored - checking IP addresses for grace period bridges")
 		scope.launch(Dispatchers.IO) {
 			val newNetworkInfo = connectivityMonitor.getCurrentNetworkInfo()
 
 			if (newNetworkInfo == null) {
-				Log.w(TAG, "Network restored but no network info available")
+				Timber.w("Network restored but no network info available")
 				return@launch
 			}
 

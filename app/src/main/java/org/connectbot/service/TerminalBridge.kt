@@ -22,7 +22,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.Typeface
-import android.util.Log
+import timber.log.Timber
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -200,7 +200,7 @@ class TerminalBridge {
             },
             onClipboardCopy = { text ->
                 // OSC 52 clipboard support - copy remote text to local clipboard
-                Log.i(TAG, "OSC 52 clipboard copy: ${text.length} chars")
+                Timber.i("OSC 52 clipboard copy: ${text.length} chars")
                 val clipboard = manager.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
                 clipboard?.setPrimaryClip(ClipData.newPlainText("terminal", text))
             }
@@ -240,9 +240,9 @@ class TerminalBridge {
                         }
                     }
                 } catch (e: IOException) {
-                    Log.e(TAG, "Error processing transport operation", e)
+                    Timber.e(e, "Error processing transport operation")
                 } catch (e: Exception) {
-                    Log.e(TAG, "Unexpected error processing transport operation", e)
+                    Timber.e(e, "Unexpected error processing transport operation")
                 }
             }
         }
@@ -254,7 +254,7 @@ class TerminalBridge {
     fun startConnection() {
         val newTransport = TransportFactory.getTransport(host.protocol)
         if (newTransport == null) {
-            Log.i(TAG, "No transport found for ${host.protocol}")
+            Timber.i("No transport found for ${host.protocol}")
             return
         }
 
@@ -279,7 +279,7 @@ class TerminalBridge {
                         for (portForward in manager.hostRepository.getPortForwardsForHost(host.id))
                             newTransport.addPortForward(portForward)
                     } catch (e: Exception) {
-                        Log.e(TAG, "Failed to load port forwards for ${host.nickname}", e)
+                        Timber.e(e, "Failed to load port forwards for ${host.nickname}")
                         manager.reportError(
                             ServiceError.PortForwardLoadFailed(
                                 hostNickname = host.nickname,
@@ -290,7 +290,7 @@ class TerminalBridge {
                 }
                 newTransport.connect()
             } catch (e: Exception) {
-                Log.e(TAG, "Connection failed for ${host.nickname}", e)
+                Timber.e(e, "Connection failed for ${host.nickname}")
                 manager.reportError(
                     ServiceError.ConnectionFailed(
                         hostNickname = host.nickname,
@@ -326,7 +326,7 @@ class TerminalBridge {
         if (output == null) return
 
         if (transport?.isSessionOpen() == true) {
-            Log.e(TAG, "Session established, cannot use outputLine!",
+            Timber.e("Session established, cannot use outputLine!",
                     IOException("outputLine call traceback"))
         }
 
@@ -553,7 +553,7 @@ class TerminalBridge {
                 try {
                     manager.hostRepository.saveHost(host)
                 } catch (e: Exception) {
-                    Log.e(TAG, "Failed to save font size for ${host.nickname}", e)
+                    Timber.e(e, "Failed to save font size for ${host.nickname}")
                     manager.reportError(
                         ServiceError.HostSaveFailed(
                             hostNickname = host.nickname,
@@ -573,7 +573,7 @@ class TerminalBridge {
 //    @Synchronized
 //    fun parentChanged(parent: TerminalView) {
 //        if (!manager.isResizeAllowed()) {
-//            Log.d(TAG, "Resize is not allowed now")
+//            Timber.d("Resize is not allowed now")
 //            return
 //        }
 //
@@ -621,7 +621,7 @@ class TerminalBridge {
 //        try {
 //            transport?.setDimensions(columns, rows, width, height)
 //        } catch (e: Exception) {
-//            Log.e(TAG, "Problem while trying to resize screen or PTY", e)
+//            Timber.e(e, "Problem while trying to resize screen or PTY")
 //        }
 //
 //        // redraw local output if we don't have a session to receive our resize request
@@ -637,7 +637,7 @@ class TerminalBridge {
 //
 //        parent.notifyUser(String.format("%d x %d", columns, rows))
 //
-//        Log.i(TAG, String.format("parentChanged() now width=%d, height=%d", columns, rows))
+//        Timber.i(String.format("parentChanged() now width=%d, height=%d", columns, rows))
 //    }
 
     /**
@@ -693,7 +693,7 @@ class TerminalBridge {
     fun enablePortForward(portForward: PortForward): Boolean {
         return transport?.let {
             if (!it.isConnected()) {
-                Log.i(TAG, "Attempt to enable port forward while not connected")
+                Timber.i("Attempt to enable port forward while not connected")
                 return false
             }
             it.enablePortForward(portForward)
@@ -709,7 +709,7 @@ class TerminalBridge {
     fun disablePortForward(portForward: PortForward): Boolean {
         return transport?.let {
             if (!it.isConnected()) {
-                Log.i(TAG, "Attempt to disable port forward while not connected")
+                Timber.i("Attempt to disable port forward while not connected")
                 return false
             }
             it.disablePortForward(portForward)
@@ -804,7 +804,7 @@ class TerminalBridge {
                 ipAddresses = networkInfo.ipAddresses,
                 networkId = networkInfo.networkId
             )
-            Log.d(TAG, "Captured network state: ${networkInfo.ipAddresses.size} IPs")
+            Timber.d("Captured network state: ${networkInfo.ipAddresses.size} IPs")
         }
     }
 

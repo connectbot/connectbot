@@ -26,7 +26,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
+import timber.log.Timber
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -87,13 +87,13 @@ class MainActivity : FragmentActivity() {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as? TerminalManager.TerminalBinder
             val manager = binder?.getService()
-            Log.d(TAG, "onServiceConnected: manager=$manager")
+            Timber.d("onServiceConnected: manager=$manager")
             appViewModel.setTerminalManager(manager)
             bound = true
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
-            Log.d(TAG, "onServiceDisconnected")
+            Timber.d("onServiceDisconnected")
             appViewModel.setTerminalManager(null)
             bound = false
         }
@@ -109,7 +109,7 @@ class MainActivity : FragmentActivity() {
             requestedUri = intent?.data
             makingShortcut = Intent.ACTION_CREATE_SHORTCUT == intent?.action ||
                              Intent.ACTION_PICK == intent?.action
-            Log.d(TAG, "onCreate: requestedUri=$requestedUri, makingShortcut=$makingShortcut")
+            Timber.d("onCreate: requestedUri=$requestedUri, makingShortcut=$makingShortcut")
             handleIntent(intent)
         } else {
             savedInstanceState.getString(STATE_SELECTED_URI)?.let {
@@ -135,12 +135,12 @@ class MainActivity : FragmentActivity() {
 
             LaunchedEffect(Unit) {
                 appViewModel.requestPermission.collect {
-                    Log.d(TAG, "Received requestPermission event, SDK_INT=${Build.VERSION.SDK_INT}")
+                    Timber.d("Received requestPermission event, SDK_INT=${Build.VERSION.SDK_INT}")
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        Log.d(TAG, "Launching permission request")
+                        Timber.d("Launching permission request")
                         requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                     } else {
-                        Log.d(TAG, "Skipping permission request, SDK < TIRAMISU")
+                        Timber.d("Skipping permission request, SDK < TIRAMISU")
                     }
                 }
             }
@@ -148,7 +148,7 @@ class MainActivity : FragmentActivity() {
             // Request notification permission on app startup
             LaunchedEffect(appUiState) {
                 if (appUiState is AppUiState.Ready) {
-                    Log.d(TAG, "App is ready, requesting initial notification permission")
+                    Timber.d("App is ready, requesting initial notification permission")
                     val shouldShowRationale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         this@MainActivity.shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)
                     } else {
@@ -159,10 +159,10 @@ class MainActivity : FragmentActivity() {
             }
 
             LaunchedEffect(requestedUri, navController, appUiState) {
-                Log.d(TAG, "LaunchedEffect: requestedUri=$requestedUri, appUiState=$appUiState")
+                Timber.d("LaunchedEffect: requestedUri=$requestedUri, appUiState=$appUiState")
                 if (appUiState is AppUiState.Ready) {
                     requestedUri?.let { uri ->
-                        Log.d(TAG, "Processing URI: $uri")
+                        Timber.d("Processing URI: $uri")
                         navController.let { controller ->
                             val shouldShowRationale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 this@MainActivity.shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)
@@ -170,13 +170,13 @@ class MainActivity : FragmentActivity() {
                                 false
                             }
 
-                            Log.d(TAG, "shouldShowRationale=$shouldShowRationale")
+                            Timber.d("shouldShowRationale=$shouldShowRationale")
                             if (appViewModel.checkAndRequestNotificationPermission(context, uri, shouldShowRationale)) {
-                                Log.d(TAG, "Permission check passed, handling connection")
+                                Timber.d("Permission check passed, handling connection")
                                 handleConnectionUri(uri, controller)
                                 requestedUri = null
                             } else {
-                                Log.d(TAG, "Permission check blocked, waiting for permission")
+                                Timber.d("Permission check blocked, waiting for permission")
                             }
                         }
                     }
@@ -199,11 +199,11 @@ class MainActivity : FragmentActivity() {
                 ConnectBotTheme {
                     DisconnectAllDialog(
                         onDismiss = {
-                            Log.d(TAG, "User cancelled disconnectAll")
+                            Timber.d("User cancelled disconnectAll")
                             showDisconnectAllDialog = false
                         },
                         onConfirm = {
-                            Log.d(TAG, "User confirmed disconnectAll")
+                            Timber.d("User confirmed disconnectAll")
                             showDisconnectAllDialog = false
                             appViewModel.setPendingDisconnectAll(true)
                         }
@@ -215,7 +215,7 @@ class MainActivity : FragmentActivity() {
                 ConnectBotTheme {
                     NotificationPermissionRationaleDialog(
                         onDismiss = {
-                            Log.d(TAG, "User dismissed permission rationale, proceeding anyway")
+                            Timber.d("User dismissed permission rationale, proceeding anyway")
                             showPermissionRationale = false
                             // User chose "Continue anyway" - proceed without permission
                             appViewModel.pendingConnectionUri.value?.let { uri ->
@@ -224,7 +224,7 @@ class MainActivity : FragmentActivity() {
                             }
                         },
                         onAllow = {
-                            Log.d(TAG, "User chose to allow permission from rationale")
+                            Timber.d("User chose to allow permission from rationale")
                             showPermissionRationale = false
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
@@ -259,7 +259,7 @@ class MainActivity : FragmentActivity() {
 
     private fun handleIntent(intent: Intent?) {
         if (intent?.action == DISCONNECT_ACTION) {
-            Log.d(TAG, "handleIntent: DISCONNECT_ACTION, showing disconnect dialog")
+            Timber.d("handleIntent: DISCONNECT_ACTION, showing disconnect dialog")
             showDisconnectAllDialog = true
         }
     }
@@ -272,7 +272,7 @@ class MainActivity : FragmentActivity() {
     }
 
     override fun onDestroy() {
-        Log.d(TAG, "onDestroy")
+        Timber.d("onDestroy")
         if (bound) {
             unbindService(connection)
             bound = false
@@ -281,10 +281,10 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun handleConnectionUri(uri: Uri, controller: NavController) {
-        Log.d(TAG, "handleConnectionUri: uri=$uri, fragment=${uri.fragment}")
+        Timber.d("handleConnectionUri: uri=$uri, fragment=${uri.fragment}")
         val state = appViewModel.uiState.value
         if (state !is AppUiState.Ready) {
-            Log.d(TAG, "handleConnectionUri: state not ready, current state=$state")
+            Timber.d("handleConnectionUri: state not ready, current state=$state")
             return
         }
 
@@ -293,11 +293,11 @@ class MainActivity : FragmentActivity() {
         lifecycleScope.launch {
             try {
                 val nickname = uri.fragment ?: uri.authority
-                Log.d(TAG, "handleConnectionUri: nickname=$nickname")
+                Timber.d("handleConnectionUri: nickname=$nickname")
                 var bridge = manager.getConnectedBridge(nickname)
 
                 if (bridge == null) {
-                    Log.d(TAG, "Creating new connection for URI: $uri with nickname: $nickname")
+                    Timber.d("Creating new connection for URI: $uri with nickname: $nickname")
                     bridge = manager.openConnection(uri)
                 }
 
@@ -305,7 +305,7 @@ class MainActivity : FragmentActivity() {
                     launchSingleTop = true
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Error handling connection URI: $uri", e)
+                Timber.e(e, "Error handling connection URI: $uri")
             }
         }
     }

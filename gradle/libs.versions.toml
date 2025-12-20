@@ -30,6 +30,7 @@ playServicesBasement = "18.9.0"
 conscrypt = "2.5.3"
 conscryptOpenJdk = "2.5.2"
 coroutines = "1.10.2"
+timber = "5.0.1"
 
 recyclerview = "1.4.0"
 appcompat = "1.7.1"
@@ -65,6 +66,7 @@ androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-preference = { module = "androidx.preference:preference", version.ref = "preference" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 androidx-test-core = { module = "androidx.test:core", version.ref = "testCore" }
 androidx-test-orchestrator = { module = "androidx.test:orchestrator", version.ref = "testOrchestrator" }

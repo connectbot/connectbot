@@ -19,7 +19,7 @@ package org.connectbot.ui.components
 
 import android.content.Context
 import android.content.ContextWrapper
-import android.util.Log
+import timber.log.Timber
 import androidx.biometric.BiometricPrompt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,7 +45,7 @@ fun BiometricPromptHandler(
 
     LaunchedEffect(prompt) {
         if (activity == null) {
-            Log.e("PromptDialogs", "Cannot show BiometricPrompt: FragmentActivity not found")
+            Timber.e("Cannot show BiometricPrompt: FragmentActivity not found")
             onResponse(PromptResponse.BiometricResponse(false))
             return@LaunchedEffect
         }
@@ -54,17 +54,17 @@ fun BiometricPromptHandler(
 
         val callback = object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                Log.d("PromptDialogs", "Biometric authentication succeeded")
+                Timber.d("Biometric authentication succeeded")
                 onResponse(PromptResponse.BiometricResponse(true))
             }
 
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                Log.e("PromptDialogs", "Biometric authentication error: $errorCode - $errString")
+                Timber.e("Biometric authentication error: $errorCode - $errString")
                 onResponse(PromptResponse.BiometricResponse(false))
             }
 
             override fun onAuthenticationFailed() {
-                Log.w("PromptDialogs", "Biometric authentication failed (not recognized)")
+                Timber.w("Biometric authentication failed (not recognized)")
                 // Don't respond yet - let the user retry or cancel
             }
         }

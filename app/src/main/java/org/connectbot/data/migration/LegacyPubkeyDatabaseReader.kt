@@ -20,7 +20,7 @@ package org.connectbot.data.migration
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
+import timber.log.Timber
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
 
@@ -57,13 +57,13 @@ class LegacyPubkeyDatabaseReader(private val context: Context) {
                         val pubkey = cursorToPubkey(cursor)
                         pubkeys.add(pubkey)
                     } catch (e: Exception) {
-                        Log.e(TAG, "Error reading pubkey from cursor", e)
+                        Timber.e(e, "Error reading pubkey from cursor")
                     }
                 }
             }
         }
 
-        Log.d(TAG, "Read ${pubkeys.size} pubkeys from legacy database")
+        Timber.d("Read ${pubkeys.size} pubkeys from legacy database")
         return pubkeys
     }
 
@@ -99,7 +99,7 @@ class LegacyPubkeyDatabaseReader(private val context: Context) {
     private inline fun withReadableDatabase(block: (SQLiteDatabase) -> Unit) {
         val dbFile = context.getDatabasePath(DB_NAME)
         if (!dbFile.exists()) {
-            Log.w(TAG, "Legacy database file does not exist: ${dbFile.absolutePath}")
+            Timber.w("Legacy database file does not exist: ${dbFile.absolutePath}")
             return
         }
 
@@ -115,7 +115,7 @@ class LegacyPubkeyDatabaseReader(private val context: Context) {
                 db.close()
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Error opening legacy database", e)
+            Timber.e(e, "Error opening legacy database")
             throw MigrationException("Failed to open legacy pubkeys database: ${e.message}")
         }
     }
