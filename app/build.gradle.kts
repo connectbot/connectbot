@@ -57,6 +57,7 @@ android {
 
         ndk {
             abiFilters.addAll(listOf("x86", "x86_64", "armeabi-v7a", "arm64-v8a"))
+            debugSymbolLevel = "full"
         }
 
         testApplicationId = "org.connectbot.tests"
@@ -88,7 +89,7 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        release {
             isShrinkResources = true
             isMinifyEnabled = true
 
@@ -100,7 +101,7 @@ android {
             }
         }
 
-        getByName("debug") {
+        debug {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg", "proguard-debug.cfg")
             testProguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg", "proguard-tests.cfg")
 
@@ -228,7 +229,6 @@ tasks.withType<DependencyUpdatesTask>().configureEach {
 dependencies {
     implementation(libs.sshlib)
     implementation(libs.termlib)
-    implementation("com.google.crypto.tink:tink:1.20.0") // For Ed25519 key derivation (required by sshlib)
     implementation(libs.androidx.media3.common.ktx)
     implementation(libs.androidx.navigation.testing)
     implementation(libs.androidx.ui)
