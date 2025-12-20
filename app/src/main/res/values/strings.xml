@@ -1063,4 +1063,17 @@
 	<string name="terminal_jump_not_found">Jump host not found in saved hosts</string>
 	<!-- Password prompt prefix for jump host -->
 	<string name="terminal_jump_password">Password for jump host %s:</string>
+
+	<!-- Button text to view application logs for debugging -->
+	<string name="view_logs">View Logs</string>
+	<!-- Title for the log viewer dialog -->
+	<string name="logs_title">Application Logs</string>
+	<!-- Button text to copy logs to clipboard for bug reporting -->
+	<string name="copy_logs">Copy Logs</string>
+	<!-- Confirmation message shown when logs are copied to clipboard -->
+	<string name="logs_copied">Logs copied to clipboard</string>
+	<!-- Instruction text for reporting bugs with logs -->
+	<string name="logs_bug_report_info">To report a bug, copy these logs and open a new issue at https://connectbot.org/bug</string>
+	<!-- Message shown when no logs are available -->
+	<string name="no_logs_available">No logs available</string>
 </resources>

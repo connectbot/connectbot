@@ -19,7 +19,7 @@ package org.connectbot.transport
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
+import timber.log.Timber
 import com.trilead.ssh2.AuthAgentCallback
 import com.trilead.ssh2.ChannelCondition
 import com.trilead.ssh2.Connection
@@ -124,7 +124,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                 else -> null
             }
         } catch (e: IOException) {
-            Log.e(TAG, "Failed to decode public key", e)
+            Timber.e(e, "Failed to decode public key")
             null
         }
     }
@@ -294,7 +294,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                 return
             }
         } catch (e: Exception) {
-            Log.d(TAG, "Host does not support 'none' authentication.")
+            Timber.d("Host does not support 'none' authentication.")
         }
 
         bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth))
@@ -365,9 +365,9 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                 bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_fail))
             }
         } catch (e: IllegalStateException) {
-            Log.e(TAG, "Connection went away while we were trying to authenticate", e)
+            Timber.e(e, "Connection went away while we were trying to authenticate")
         } catch (e: Exception) {
-            Log.e(TAG, "Problem during handleAuthentication()", e)
+            Timber.e(e, "Problem during handleAuthentication()")
         }
     }
 
@@ -400,7 +400,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
     private fun getOrUnlockKey(pubkey: Pubkey): KeyPair? {
         if (manager?.isKeyLoaded(pubkey.nickname) == true) {
             // load this key from memory if it's already there
-            Log.d(TAG, String.format("Found unlocked key '%s' already in-memory", pubkey.nickname))
+            Timber.d(String.format("Found unlocked key '%s' already in-memory", pubkey.nickname))
             return manager?.getKey(pubkey.nickname)
         }
 
@@ -409,7 +409,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             val keystoreAlias = pubkey.keystoreAlias
             if (keystoreAlias == null) {
                 val message = String.format("Keystore alias missing for key '%s'. Authentication failed.", pubkey.nickname)
-                Log.e(TAG, message)
+                Timber.e(message)
                 bridge?.outputLine(message)
                 return null
             }
@@ -420,7 +420,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             val biometricSuccess = bridge?.requestBiometricAuth(pubkey.nickname, keystoreAlias) ?: false
             if (!biometricSuccess) {
                 val message = String.format("Biometric authentication failed for key '%s'.", pubkey.nickname)
-                Log.e(TAG, message)
+                Timber.e(message)
                 bridge?.outputLine(message)
                 return null
             }
@@ -434,18 +434,18 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
 
                 if (publicKey == null || privateKey == null) {
                     val message = String.format("Failed to load key '%s' from Keystore.", pubkey.nickname)
-                    Log.e(TAG, message)
+                    Timber.e(message)
                     bridge?.outputLine(message)
                     return null
                 }
 
                 val pair = KeyPair(publicKey, privateKey)
                 manager?.addBiometricKey(pubkey, keystoreAlias, publicKey)
-                Log.d(TAG, String.format("Unlocked biometric key '%s'", pubkey.nickname))
+                Timber.d(String.format("Unlocked biometric key '%s'", pubkey.nickname))
                 pair
             } catch (e: Exception) {
                 val message = String.format("Failed to load biometric key '%s': %s", pubkey.nickname, e.message)
-                Log.e(TAG, message, e)
+                Timber.e(e, message)
                 bridge?.outputLine(message)
                 null
             }
@@ -476,14 +476,14 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                 PubkeyUtils.decodePrivate(privateKey, pubkey.type, password)
             } catch (e: Exception) {
                 val message = String.format("Bad password for key '%s'. Authentication failed.", pubkey.nickname)
-                Log.e(TAG, message, e)
+                Timber.e(e, message)
                 bridge?.outputLine(message)
                 return null
             }
 
             if (privKey == null) {
                 val message = String.format("Failed to decode private key '%s'. Authentication failed.", pubkey.nickname)
-                Log.e(TAG, message)
+                Timber.e(message)
                 bridge?.outputLine(message)
                 return null
             }
@@ -492,11 +492,11 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
 
             // convert key to trilead format
             KeyPair(pubKey, privKey).also {
-                Log.d(TAG, "Unlocked key " + PubkeyUtils.formatKey(pubKey))
+                Timber.d("Unlocked key %s", PubkeyUtils.formatKey(pubKey))
             }
         }
 
-        Log.d(TAG, String.format("Unlocked key '%s'", pubkey.nickname))
+        Timber.d(String.format("Unlocked key '%s'", pubkey.nickname))
 
         // save this key in memory
         manager?.addKey(pubkey, pair)
@@ -524,7 +524,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                 enablePortForward(portForward)
                 bridge?.outputLine(manager?.res?.getString(R.string.terminal_enable_portfoward, portForward.getDescription()))
             } catch (e: Exception) {
-                Log.e(TAG, "Error setting up port forward during connect", e)
+                Timber.e(e, "Error setting up port forward during connect")
             }
         }
 
@@ -552,7 +552,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
 
             bridge?.onConnected()
         } catch (e1: IOException) {
-            Log.e(TAG, "Problem while trying to create PTY in finishConnection()", e1)
+            Timber.e(e1, "Problem while trying to create PTY in finishConnection()")
         }
     }
 
@@ -610,7 +610,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_authenticated, jumpHost.nickname))
             return jc
         } catch (e: IOException) {
-            Log.e(TAG, "Failed to connect to jump host: ${jumpHost.nickname}", e)
+            Timber.e(e, "Failed to connect to jump host: ${jumpHost.nickname}")
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_failed, jumpHost.nickname, e.message))
             try {
                 jc.close()
@@ -649,7 +649,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                                 return true
                             }
                         } catch (e: Exception) {
-                            Log.d(TAG, "Jump host pubkey auth failed with key: ${entry.key}")
+                            Timber.d("Jump host pubkey auth failed with key: ${entry.key}")
                         }
                     }
                 } else {
@@ -663,7 +663,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                                     return true
                                 }
                             } catch (e: Exception) {
-                                Log.d(TAG, "Jump host specific pubkey auth failed")
+                                Timber.d("Jump host specific pubkey auth failed")
                             }
                         }
                     }
@@ -691,7 +691,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                         return true
                     }
                 } catch (e: Exception) {
-                    Log.d(TAG, "Jump host keyboard-interactive auth failed", e)
+                    Timber.d(e, "Jump host keyboard-interactive auth failed")
                 }
             }
 
@@ -705,14 +705,14 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                             return true
                         }
                     } catch (e: Exception) {
-                        Log.d(TAG, "Jump host password auth failed", e)
+                        Timber.d(e, "Jump host password auth failed")
                     }
                 }
             }
 
             return jc.isAuthenticationComplete
         } catch (e: Exception) {
-            Log.e(TAG, "Error during jump host authentication", e)
+            Timber.e(e, "Error during jump host authentication")
             return false
         }
     }
@@ -749,7 +749,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         try {
             connection?.setCompression(compression)
         } catch (e: IOException) {
-            Log.e(TAG, "Could not enable compression!", e)
+            Timber.e(e, "Could not enable compression!")
         }
 
         try {
@@ -789,7 +789,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                 }
             }
         } catch (e: IOException) {
-            Log.e(TAG, "Problem in SSH connection thread during authentication", e)
+            Timber.e(e, "Problem in SSH connection thread during authentication")
 
             // Display the reason in the text.
             var t: Throwable? = e
@@ -818,14 +818,14 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                 Thread.sleep(1000)
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Problem in SSH connection thread during authentication", e)
+            Timber.e(e, "Problem in SSH connection thread during authentication")
         }
     }
 
     override fun close() {
         // Don't close during grace period - wait for network restore
         if (bridge?.isInGracePeriod() == true) {
-            Log.d(TAG, "Deferring SSH close - bridge in network grace period")
+            Timber.d("Deferring SSH close - bridge in network grace period")
             return
         }
 
@@ -911,12 +911,12 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         // During grace period, SSH disconnect is EXPECTED (network loss)
         // Don't trigger disconnect - let grace period handle it
         if (bridge?.isInGracePeriod() == true) {
-            Log.d(TAG, "SSH connection lost during grace period (expected due to network loss)")
+            Timber.d("SSH connection lost during grace period (expected due to network loss)")
             return
         }
 
         // Unexpected disconnect - normal flow
-        Log.d(TAG, "SSH connection lost outside grace period - disconnecting")
+        Timber.d("SSH connection lost outside grace period - disconnecting")
         onDisconnect()
     }
 
@@ -936,7 +936,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
 
     override fun enablePortForward(portForward: PortForward): Boolean {
         if (!portForwards.contains(portForward)) {
-            Log.e(TAG, "Attempt to enable port forward not in list")
+            Timber.e("Attempt to enable port forward not in list")
             return false
         }
 
@@ -952,12 +952,12 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                         portForward.destPort
                     )
                 } catch (e: Exception) {
-                    Log.e(TAG, "Could not create local port forward", e)
+                    Timber.e(e, "Could not create local port forward")
                     return false
                 }
 
                 if (lpf == null) {
-                    Log.e(TAG, "returned LocalPortForwarder object is null")
+                    Timber.e("returned LocalPortForwarder object is null")
                     return false
                 }
 
@@ -970,7 +970,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                 try {
                     connection?.requestRemotePortForwarding("", portForward.sourcePort, portForward.destAddr, portForward.destPort)
                 } catch (e: Exception) {
-                    Log.e(TAG, "Could not create remote port forward", e)
+                    Timber.e(e, "Could not create remote port forward")
                     return false
                 }
 
@@ -984,7 +984,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                         InetSocketAddress(InetAddress.getLocalHost(), portForward.sourcePort)
                     )
                 } catch (e: Exception) {
-                    Log.e(TAG, "Could not create dynamic port forward", e)
+                    Timber.e(e, "Could not create dynamic port forward")
                     return false
                 }
 
@@ -995,7 +995,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
 
             else -> {
                 // Unsupported type
-                Log.e(TAG, String.format("attempt to forward unknown type %s", portForward.type))
+                Timber.e(String.format("attempt to forward unknown type %s", portForward.type))
                 false
             }
         }
@@ -1003,7 +1003,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
 
     override fun disablePortForward(portForward: PortForward): Boolean {
         if (!portForwards.contains(portForward)) {
-            Log.e(TAG, "Attempt to disable port forward not in list")
+            Timber.e("Attempt to disable port forward not in list")
             return false
         }
 
@@ -1015,7 +1015,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                 val lpf = portForward.getIdentifier() as? LocalPortForwarder
 
                 if (!portForward.isEnabled() || lpf == null) {
-                    Log.d(TAG, String.format("Could not disable %s; it appears to be not enabled or have no handler", portForward.nickname))
+                    Timber.d(String.format("Could not disable %s; it appears to be not enabled or have no handler", portForward.nickname))
                     return false
                 }
 
@@ -1030,7 +1030,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                 try {
                     connection?.cancelRemotePortForwarding(portForward.sourcePort)
                 } catch (e: IOException) {
-                    Log.e(TAG, "Could not stop remote port forwarding, setting enabled to false", e)
+                    Timber.e(e, "Could not stop remote port forwarding, setting enabled to false")
                     return false
                 }
                 true
@@ -1040,7 +1040,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                 val dpf = portForward.getIdentifier() as? DynamicPortForwarder
 
                 if (!portForward.isEnabled() || dpf == null) {
-                    Log.d(TAG, String.format("Could not disable %s; it appears to be not enabled or have no handler", portForward.nickname))
+                    Timber.d(String.format("Could not disable %s; it appears to be not enabled or have no handler", portForward.nickname))
                     return false
                 }
 
@@ -1051,7 +1051,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
 
             else -> {
                 // Unsupported type
-                Log.e(TAG, String.format("attempt to forward unknown type %s", portForward.type))
+                Timber.e(String.format("attempt to forward unknown type %s", portForward.type))
                 false
             }
         }
@@ -1065,7 +1065,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             try {
                 session?.resizePTY(columns, rows, width, height)
             } catch (e: IOException) {
-                Log.e(TAG, "Couldn't send resize PTY packet", e)
+                Timber.e(e, "Couldn't send resize PTY packet")
             }
         }
     }
@@ -1171,7 +1171,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         val nickname = manager?.getKeyNickname(publicKey) ?: return null
 
         if (useAuthAgent == HostConstants.AUTHAGENT_NO) {
-            Log.e(TAG, "")
+            Timber.e("")
             return null
         }
         if (useAuthAgent == HostConstants.AUTHAGENT_CONFIRM) {

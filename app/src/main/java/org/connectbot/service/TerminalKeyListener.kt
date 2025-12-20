@@ -23,7 +23,7 @@ import android.content.res.Configuration
 // Migration to android.content.ClipboardManager requires careful testing
 // as there were issues with clipboard access in certain scenarios.
 import android.text.ClipboardManager
-import android.util.Log
+import timber.log.Timber
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
 import android.view.View
@@ -433,15 +433,15 @@ class TerminalKeyListener(
             }
 
         } catch (e: IOException) {
-            Log.e(TAG, "Problem while trying to handle an onKey() event", e)
+            Timber.e(e, "Problem while trying to handle an onKey() event")
             try {
                 transport?.flush()
             } catch (_: IOException) {
-                Log.d(TAG, "Our transport was closed, dispatching disconnect event")
+                Timber.d("Our transport was closed, dispatching disconnect event")
                 bridge.dispatchDisconnect(false)
             }
         } catch (_: NullPointerException) {
-            Log.d(TAG, "Input before connection established ignored.")
+            Timber.d("Input before connection established ignored.")
             return true
         }
 

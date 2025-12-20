@@ -104,6 +104,7 @@ import org.connectbot.ui.components.UrlScanDialog
 import org.connectbot.service.PromptRequest
 
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import timber.log.Timber
 
 /**
  * Check if a hardware keyboard is currently attached to the device.
@@ -182,11 +183,7 @@ fun ConsoleScreen(
             }
         } catch (e: IllegalArgumentException) {
             // Handle foldable device state issues
-            android.util.Log.e(
-                "ConsoleScreen",
-                "Error setting fullscreen mode (foldable device?)",
-                e
-            )
+            Timber.e(e, "Error setting fullscreen mode (foldable device?)")
         }
     }
 

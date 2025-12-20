@@ -19,7 +19,7 @@ package org.connectbot.ui.components
 
 import android.content.Context
 import android.content.ContextWrapper
-import android.util.Log
+import timber.log.Timber
 import androidx.biometric.BiometricPrompt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -50,19 +50,19 @@ class BiometricPromptState(
 
     private val callback = object : BiometricPrompt.AuthenticationCallback() {
         override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-            Log.d(TAG, "Authentication succeeded")
+            Timber.d("Authentication succeeded")
             isAuthenticating = false
             onSuccess(result)
         }
 
         override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-            Log.e(TAG, "Authentication error: $errorCode - $errString")
+            Timber.e("Authentication error: $errorCode - $errString")
             isAuthenticating = false
             onError(errorCode, errString)
         }
 
         override fun onAuthenticationFailed() {
-            Log.w(TAG, "Authentication failed")
+            Timber.w("Authentication failed")
             // Don't set isAuthenticating to false here - user can retry
             onFailed()
         }
@@ -137,7 +137,7 @@ fun rememberBiometricPromptState(
     val activity = context.findFragmentActivity()
 
     if (activity == null) {
-        Log.w(TAG, "BiometricPromptState requires a FragmentActivity context, biometric auth unavailable")
+        Timber.w("BiometricPromptState requires a FragmentActivity context, biometric auth unavailable")
         return null
     }
 

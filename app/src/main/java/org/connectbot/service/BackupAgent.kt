@@ -22,7 +22,7 @@ import android.app.backup.BackupDataInput
 import android.app.backup.BackupDataOutput
 import android.app.backup.SharedPreferencesBackupHelper
 import android.os.ParcelFileDescriptor
-import android.util.Log
+import timber.log.Timber
 import androidx.preference.PreferenceManager
 import androidx.room.Room
 import org.connectbot.data.ColorSchemeRepository
@@ -60,7 +60,7 @@ class BackupAgent : BackupAgentHelper() {
     }
 
     override fun onCreate() {
-        Log.d(TAG, "onCreate called")
+        Timber.d("onCreate called")
 
         // Backup shared preferences
         val prefsHelper = SharedPreferencesBackupHelper(
@@ -88,7 +88,7 @@ class BackupAgent : BackupAgentHelper() {
         try {
             backupDatabaseWithFiltering(data, backupKeys)
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to backup database", e)
+            Timber.e(e, "Failed to backup database")
         }
     }
 
@@ -98,7 +98,7 @@ class BackupAgent : BackupAgentHelper() {
     private fun backupDatabaseWithFiltering(data: BackupDataOutput, backupKeys: Boolean) {
         val dbFile = getDatabasePath(DATABASE_NAME)
         if (!dbFile.exists()) {
-            Log.w(TAG, "Database does not exist yet, skipping backup")
+            Timber.w("Database does not exist yet, skipping backup")
             return
         }
 
@@ -117,17 +117,17 @@ class BackupAgent : BackupAgentHelper() {
         val filter = BackupFilter(applicationContext, hostRepository, colorSchemeRepository, pubkeyRepository)
         try {
             // Step 1: Build a temporary database with filtered data
-            Log.d(TAG, "Building temporary database with backupable data")
+            Timber.d("Building temporary database with backupable data")
             kotlinx.coroutines.runBlocking {
                 filter.buildFilteredDatabase(tempDbFile, backupKeys)
             }
 
             // Step 2: Back up the filtered database
-            Log.d(TAG, "Backing up filtered database")
+            Timber.d("Backing up filtered database")
             backupFile(tempDbFile, DATABASE_NAME, data)
 
         } catch (e: Exception) {
-            Log.e(TAG, "Error during database backup with filtering", e)
+            Timber.e(e, "Error during database backup with filtering")
             throw e
         } finally {
             // Step 3: Clean up the temporary database
@@ -141,7 +141,7 @@ class BackupAgent : BackupAgentHelper() {
      */
     private fun backupFile(file: File, key: String, data: BackupDataOutput) {
         if (!file.exists()) {
-            Log.w(TAG, "File does not exist: ${file.path}")
+            Timber.w("File does not exist: ${file.path}")
             return
         }
 
@@ -153,7 +153,7 @@ class BackupAgent : BackupAgentHelper() {
             if (bytesRead > 0) {
                 data.writeEntityHeader(key, bytesRead)
                 data.writeEntityData(buffer, bytesRead)
-                Log.d(TAG, "Backed up $key ($bytesRead bytes)")
+                Timber.d("Backed up $key ($bytesRead bytes)")
             }
         }
     }
@@ -163,7 +163,7 @@ class BackupAgent : BackupAgentHelper() {
         appVersionCode: Int,
         newState: ParcelFileDescriptor
     ) {
-        Log.d(TAG, "onRestore called (app version: $appVersionCode)")
+        Timber.d("onRestore called (app version: $appVersionCode)")
 
         // Restore shared preferences and other helpers
         super.onRestore(data, appVersionCode, newState)

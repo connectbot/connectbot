@@ -17,7 +17,7 @@
 
 package org.connectbot.service
 
-import android.util.Log
+import timber.log.Timber
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
@@ -66,7 +66,7 @@ class Relay(
      * @param encoding the character set name (e.g., "UTF-8", "CP437")
      */
     fun setCharset(encoding: String) {
-        Log.d("ConnectBot.Relay", "changing charset to $encoding")
+        Timber.d("changing charset to $encoding")
 
         val charset = if (encoding == "CP437") {
             IBM437("IBM437", arrayOf("IBM437", "CP437"))
@@ -174,7 +174,7 @@ class Relay(
                 sourceBuffer.compact()
             }
         } catch (e: IOException) {
-            Log.e(TAG, "Problem while handling incoming data in relay", e)
+            Timber.e(e, "Problem while handling incoming data in relay")
         }
     }
 

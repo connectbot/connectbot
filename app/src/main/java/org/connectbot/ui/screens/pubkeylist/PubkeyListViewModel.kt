@@ -22,7 +22,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
-import android.util.Log
+import timber.log.Timber
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -210,7 +210,7 @@ class PubkeyListViewModel @Inject constructor(
                 // Clear the biometric key to unlock
                 _uiState.update { it.copy(biometricKeyToUnlock = null) }
             } catch (e: Exception) {
-                Log.e("PubkeyListViewModel", "Failed to load biometric key", e)
+                Timber.e(e, "Failed to load biometric key")
                 _uiState.update {
                     it.copy(
                         error = "Failed to load biometric key: ${e.message}",
@@ -233,7 +233,7 @@ class PubkeyListViewModel @Inject constructor(
                     it.copy(error = "Failed to unlock key: Bad password")
                 }
             } catch (e: Exception) {
-                Log.e("PubkeyListViewModel", "Failed to load key", e)
+                Timber.e(e, "Failed to load key")
                 _uiState.update {
                     it.copy(error = "Failed to load key: ${e.message}")
                 }
@@ -259,7 +259,7 @@ class PubkeyListViewModel @Inject constructor(
                 val clip = ClipData.newPlainText("Public Key", publicKeyString)
                 clipboard.setPrimaryClip(clip)
             } catch (e: Exception) {
-                Log.e("PubkeyListViewModel", "Failed to copy public key", e)
+                Timber.e(e, "Failed to copy public key")
                 _uiState.update {
                     it.copy(error = "Failed to copy public key: ${e.message}")
                 }
@@ -307,7 +307,7 @@ class PubkeyListViewModel @Inject constructor(
                     it.copy(error = "Failed to decrypt key: Bad password")
                 }
             } catch (e: Exception) {
-                Log.e("PubkeyListViewModel", "Failed to copy private key", e)
+                Timber.e(e, "Failed to copy private key")
                 _uiState.update {
                     it.copy(error = "Failed to copy private key: ${e.message}")
                 }
@@ -357,7 +357,7 @@ class PubkeyListViewModel @Inject constructor(
                     it.copy(error = "Failed to decrypt key: Bad password")
                 }
             } catch (e: Exception) {
-                Log.e("PubkeyListViewModel", "Failed to copy private key (PEM)", e)
+                Timber.e(e, "Failed to copy private key (PEM)")
                 _uiState.update {
                     it.copy(error = "Failed to copy private key: ${e.message}")
                 }
@@ -410,7 +410,7 @@ class PubkeyListViewModel @Inject constructor(
                     it.copy(error = "Failed to decrypt key: Bad password")
                 }
             } catch (e: Exception) {
-                Log.e("PubkeyListViewModel", "Failed to copy encrypted private key", e)
+                Timber.e(e, "Failed to copy encrypted private key")
                 _uiState.update {
                     it.copy(error = "Failed to copy private key: ${e.message}")
                 }
@@ -578,7 +578,7 @@ class PubkeyListViewModel @Inject constructor(
 
                 _uiState.update { it.copy(pendingPublicKeyExport = null) }
             } catch (e: Exception) {
-                Log.e("PubkeyListViewModel", "Failed to export public key", e)
+                Timber.e(e, "Failed to export public key")
                 _uiState.update {
                     it.copy(
                         error = "Failed to export public key: ${e.message}",
@@ -659,7 +659,7 @@ class PubkeyListViewModel @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
-                Log.e("PubkeyListViewModel", "Failed to export private key", e)
+                Timber.e(e, "Failed to export private key")
                 _uiState.update {
                     it.copy(
                         error = "Failed to export private key: ${e.message}",
@@ -698,7 +698,7 @@ class PubkeyListViewModel @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                Log.e("PubkeyListViewModel", "Failed to import key", e)
+                Timber.e(e, "Failed to import key")
                 _uiState.update {
                     it.copy(error = "Failed to import key: ${e.message}")
                 }
@@ -732,7 +732,7 @@ class PubkeyListViewModel @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                Log.e("PubkeyListViewModel", "Failed to import encrypted key", e)
+                Timber.e(e, "Failed to import encrypted key")
                 _uiState.update {
                     it.copy(
                         error = "Failed to decrypt key: ${e.message}",
@@ -770,7 +770,7 @@ class PubkeyListViewModel @Inject constructor(
                 publicKey = kp.public.encoded
             )
         } catch (e: Exception) {
-            Log.e("PubkeyListViewModel", "Failed to decrypt key", e)
+            Timber.e(e, "Failed to decrypt key")
             return null
         }
     }
@@ -798,7 +798,7 @@ class PubkeyListViewModel @Inject constructor(
                 outputStream.toByteArray()
             }
         } catch (e: Exception) {
-            Log.e("PubkeyListViewModel", "Failed to read key file", e)
+            Timber.e(e, "Failed to read key file")
             return ImportResult.Failed
         }
 
@@ -834,7 +834,7 @@ class PubkeyListViewModel @Inject constructor(
                 return ImportResult.NeedsPassword(keyData, nickname, keyType)
             }
         } catch (e: Exception) {
-            Log.d("PubkeyListViewModel", "PEMDecoder failed, trying PKCS#8", e)
+            Timber.d("PEMDecoder failed, trying PKCS#8", e)
         }
 
         // Fallback: Try to parse as PKCS#8 format (-----BEGIN PRIVATE KEY-----)
@@ -855,7 +855,7 @@ class PubkeyListViewModel @Inject constructor(
             ))
         }
 
-        Log.e("PubkeyListViewModel", "Failed to parse key in any supported format")
+        Timber.e("Failed to parse key in any supported format")
         return ImportResult.Failed
     }
 
@@ -890,7 +890,7 @@ class PubkeyListViewModel @Inject constructor(
                 return OpenSSHKeyEncoder.recoverKeyPair(decoded)
             }
         } catch (e: Exception) {
-            Log.e("PubkeyListViewModel", "Failed to parse PKCS#8 key", e)
+            Timber.e(e, "Failed to parse PKCS#8 key")
         }
 
         return null

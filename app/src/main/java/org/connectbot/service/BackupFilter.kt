@@ -18,7 +18,7 @@
 package org.connectbot.service
 
 import android.content.Context
-import android.util.Log
+import timber.log.Timber
 import androidx.room.Room
 import kotlinx.coroutines.runBlocking
 import org.connectbot.data.ConnectBotDatabase
@@ -77,7 +77,7 @@ class BackupFilter(
                 emptyList()
             }
 
-            Log.d(TAG, "Backing up ${allHosts.size} hosts, ${backupablePubkeys.size} pubkeys, ${allColorSchemes.size} color schemes")
+            Timber.d("Backing up ${allHosts.size} hosts, ${backupablePubkeys.size} pubkeys, ${allColorSchemes.size} color schemes")
 
             // Insert all backupable data into temp database
             allHosts.forEach { host ->
@@ -133,7 +133,7 @@ class BackupFilter(
             val isBackupable = pubkey.allowBackup && pubkey.storageType != KeyStorageType.ANDROID_KEYSTORE
 
             if (!isBackupable) {
-                Log.d(TAG, "Filtering out pubkey: ${pubkey.nickname} " +
+                Timber.d("Filtering out pubkey: ${pubkey.nickname} " +
                         "(allowBackup=${pubkey.allowBackup}, storageType=${pubkey.storageType})")
             }
 
@@ -153,6 +153,6 @@ class BackupFilter(
         // Also delete temp database files (WAL, SHM)
         File(tempDbFile.path + "-wal").delete()
         File(tempDbFile.path + "-shm").delete()
-        Log.d(TAG, "Deleted temporary database files")
+        Timber.d("Deleted temporary database files")
     }
 }

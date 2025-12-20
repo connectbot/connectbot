@@ -21,7 +21,7 @@ import android.content.Context
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
-import android.util.Log
+import timber.log.Timber
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -103,14 +103,14 @@ class BiometricKeyManager @Inject constructor(
      * @return The public key (private key remains in Keystore)
      */
     fun generateRsaKey(alias: String, keySize: Int = 4096): PublicKey {
-        Log.d(TAG, "Generating RSA key with alias: $alias, size: $keySize")
+        Timber.d("Generating RSA key with alias: $alias, size: $keySize")
 
         // Try with StrongBox first, fall back to TEE if not available
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
                 return generateRsaKeyInternal(alias, keySize, useStrongBox = true)
             } catch (e: Exception) {
-                Log.w(TAG, "StrongBox key generation failed, falling back to TEE", e)
+                Timber.w("StrongBox key generation failed, falling back to TEE", e)
                 // Delete any partial key that might have been created
                 try { deleteKey(alias) } catch (_: Exception) {}
             }
@@ -163,7 +163,7 @@ class BiometricKeyManager @Inject constructor(
         keyPairGenerator.initialize(builder.build())
         val keyPair = keyPairGenerator.generateKeyPair()
 
-        Log.d(TAG, "RSA key generated successfully (StrongBox: $useStrongBox)")
+        Timber.d("RSA key generated successfully (StrongBox: $useStrongBox)")
         return keyPair.public
     }
 
@@ -175,14 +175,14 @@ class BiometricKeyManager @Inject constructor(
      * @return The public key (private key remains in Keystore)
      */
     fun generateEcKey(alias: String, keySize: Int = 256): PublicKey {
-        Log.d(TAG, "Generating EC key with alias: $alias, size: $keySize")
+        Timber.d("Generating EC key with alias: $alias, size: $keySize")
 
         // Try with StrongBox first, fall back to TEE if not available
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
                 return generateEcKeyInternal(alias, keySize, useStrongBox = true)
             } catch (e: Exception) {
-                Log.w(TAG, "StrongBox key generation failed, falling back to TEE", e)
+                Timber.w("StrongBox key generation failed, falling back to TEE", e)
                 // Delete any partial key that might have been created
                 try { deleteKey(alias) } catch (_: Exception) {}
             }
@@ -241,7 +241,7 @@ class BiometricKeyManager @Inject constructor(
         keyPairGenerator.initialize(builder.build())
         val keyPair = keyPairGenerator.generateKeyPair()
 
-        Log.d(TAG, "EC key generated successfully (StrongBox: $useStrongBox)")
+        Timber.d("EC key generated successfully (StrongBox: $useStrongBox)")
         return keyPair.public
     }
 
@@ -334,7 +334,7 @@ class BiometricKeyManager @Inject constructor(
     fun deleteKey(alias: String) {
         if (keyStore.containsAlias(alias)) {
             keyStore.deleteEntry(alias)
-            Log.d(TAG, "Key deleted: $alias")
+            Timber.d("Key deleted: $alias")
         }
     }
 

@@ -21,7 +21,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import android.util.Log
+import timber.log.Timber
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -120,16 +120,16 @@ class AppViewModel @Inject constructor(
     private fun checkAndMigrate() {
         viewModelScope.launch {
             try {
-                Log.d(TAG, "Checking if migration is needed")
+                Timber.d("Checking if migration is needed")
                 val needsMigration = migrator.isMigrationNeeded()
 
                 if (!needsMigration) {
-                    Log.d(TAG, "No migration needed")
+                    Timber.d("No migration needed")
                     _migrationUiState.value = MigrationUiState.Completed
                     return@launch
                 }
 
-                Log.i(TAG, "Migration needed, starting migration")
+                Timber.i("Migration needed, starting migration")
                 _migrationUiState.value = MigrationUiState.InProgress(MigrationState())
 
                 launch {
@@ -143,12 +143,12 @@ class AppViewModel @Inject constructor(
 
                 when (result) {
                     is MigrationResult.Success -> {
-                        Log.i(TAG, "Migration completed successfully: $result")
+                        Timber.i("Migration completed successfully: $result")
                         _migrationUiState.value = MigrationUiState.Completed
                     }
 
                     is MigrationResult.Failure -> {
-                        Log.e(TAG, "Migration failed", result.error)
+                        Timber.e("Migration failed", result.error)
                         _migrationUiState.value = MigrationUiState.Failed(
                             error = result.error.message ?: "Unknown error",
                             debugLog = latestMigrationState?.debugLog ?: emptyList()
@@ -156,7 +156,7 @@ class AppViewModel @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Error during migration check/execution", e)
+                Timber.e(e, "Error during migration check/execution")
                 _migrationUiState.value = MigrationUiState.Failed(
                     error = e.message ?: "Unknown error",
                     debugLog = latestMigrationState?.debugLog ?: emptyList()
@@ -209,7 +209,7 @@ class AppViewModel @Inject constructor(
     fun executePendingDisconnectAllIfReady(): Boolean {
         val state = _uiState.value
         if (state is AppUiState.Ready && _pendingDisconnectAll.value) {
-            Log.d(TAG, "Executing pending disconnectAll")
+            Timber.d("Executing pending disconnectAll")
             state.terminalManager.disconnectAll(immediate = true, excludeLocal = false)
             _pendingDisconnectAll.value = false
             viewModelScope.launch {
@@ -229,10 +229,10 @@ class AppViewModel @Inject constructor(
         uri: Uri,
         shouldShowRationale: Boolean
     ): Boolean {
-        Log.d(TAG, "checkAndRequestNotificationPermission: uri=$uri, SDK=${Build.VERSION.SDK_INT}")
+        Timber.d("checkAndRequestNotificationPermission: uri=$uri, SDK=${Build.VERSION.SDK_INT}")
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            Log.d(TAG, "SDK < TIRAMISU, allowing without permission")
+            Timber.d("SDK < TIRAMISU, allowing without permission")
             return true
         }
 
@@ -241,15 +241,15 @@ class AppViewModel @Inject constructor(
             android.Manifest.permission.POST_NOTIFICATIONS
         ) == PackageManager.PERMISSION_GRANTED
 
-        Log.d(TAG, "Permission check: hasPermission=$hasPermission, shouldShowRationale=$shouldShowRationale")
+        Timber.d("Permission check: hasPermission=$hasPermission, shouldShowRationale=$shouldShowRationale")
 
         return when {
             hasPermission -> {
-                Log.d(TAG, "Permission already granted, proceeding")
+                Timber.d("Permission already granted, proceeding")
                 true
             }
             shouldShowRationale -> {
-                Log.d(TAG, "Showing rationale dialog")
+                Timber.d("Showing rationale dialog")
                 _pendingConnectionUri.value = uri
                 viewModelScope.launch {
                     _showPermissionRationale.send(Unit)
@@ -257,7 +257,7 @@ class AppViewModel @Inject constructor(
                 false
             }
             else -> {
-                Log.d(TAG, "Requesting permission")
+                Timber.d("Requesting permission")
                 _pendingConnectionUri.value = uri
                 viewModelScope.launch {
                     _requestPermission.send(Unit)
@@ -276,14 +276,14 @@ class AppViewModel @Inject constructor(
         shouldShowRationale: Boolean
     ) {
         if (hasRequestedInitialPermission) {
-            Log.d(TAG, "Already requested initial permission, skipping")
+            Timber.d("Already requested initial permission, skipping")
             return
         }
 
         hasRequestedInitialPermission = true
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            Log.d(TAG, "SDK < TIRAMISU, no notification permission needed")
+            Timber.d("SDK < TIRAMISU, no notification permission needed")
             return
         }
 
@@ -292,15 +292,15 @@ class AppViewModel @Inject constructor(
             android.Manifest.permission.POST_NOTIFICATIONS
         ) == PackageManager.PERMISSION_GRANTED
 
-        Log.d(TAG, "Initial permission check: hasPermission=$hasPermission, shouldShowRationale=$shouldShowRationale")
+        Timber.d("Initial permission check: hasPermission=$hasPermission, shouldShowRationale=$shouldShowRationale")
 
         if (!hasPermission) {
             viewModelScope.launch {
                 if (shouldShowRationale) {
-                    Log.d(TAG, "Showing permission rationale on startup")
+                    Timber.d("Showing permission rationale on startup")
                     _showPermissionRationale.send(Unit)
                 } else {
-                    Log.d(TAG, "Requesting permission on startup")
+                    Timber.d("Requesting permission on startup")
                     _requestPermission.send(Unit)
                 }
             }
@@ -314,9 +314,9 @@ class AppViewModel @Inject constructor(
      */
     fun onNotificationPermissionResult(isGranted: Boolean): Uri? {
         if (isGranted) {
-            Log.d(TAG, "Notification permission granted")
+            Timber.d("Notification permission granted")
         } else {
-            Log.d(TAG, "Notification permission denied - connections will work but without notifications")
+            Timber.d("Notification permission denied - connections will work but without notifications")
         }
 
         // Return and clear pending URI so navigation can proceed

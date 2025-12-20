@@ -19,7 +19,7 @@ package org.connectbot.transport
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
+import timber.log.Timber
 import androidx.annotation.VisibleForTesting
 import com.google.ase.Exec
 import org.connectbot.R
@@ -50,7 +50,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
             `is` = null
             killer.killProcess(shellPid)
         } catch (e: IOException) {
-            Log.e(TAG, "Couldn't close shell", e)
+            Timber.e(e, "Couldn't close shell")
         }
     }
 
@@ -61,7 +61,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
             shellFd = Exec.createSubprocess("/system/bin/sh", "-", null, pids)
         } catch (e: Exception) {
             bridge?.outputLine(manager?.res?.getString(R.string.local_shell_unavailable))
-            Log.e(TAG, "Cannot start local shell", e)
+            Timber.e(e, "Cannot start local shell")
             throw e
         }
 
@@ -112,7 +112,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
         try {
             Exec.setPtyWindowSize(fd, rows, columns, width, height)
         } catch (e: Exception) {
-            Log.e(TAG, "Couldn't resize pty", e)
+            Timber.e(e, "Couldn't resize pty")
         }
     }
 

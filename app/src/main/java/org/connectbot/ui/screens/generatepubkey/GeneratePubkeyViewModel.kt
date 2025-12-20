@@ -18,7 +18,7 @@
 package org.connectbot.ui.screens.generatepubkey
 
 import android.content.Context
-import android.util.Log
+import timber.log.Timber
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -131,7 +131,7 @@ class GeneratePubkeyViewModel @Inject constructor(
                 }
                 _uiState.update { it.copy(nicknameExists = exists) }
             } catch (e: Exception) {
-                Log.e(TAG, "Failed to check if nickname exists", e)
+                Timber.e(e, "Failed to check if nickname exists")
             }
         }
     }
@@ -264,7 +264,7 @@ class GeneratePubkeyViewModel @Inject constructor(
 
                 saveKeyPair(keyPair, currentState, callback)
             } catch (e: Exception) {
-                Log.e(TAG, "Failed to generate key pair", e)
+                Timber.e(e, "Failed to generate key pair")
                 _uiState.update { it.copy(isGenerating = false) }
             }
         }
@@ -290,7 +290,7 @@ class GeneratePubkeyViewModel @Inject constructor(
 
                 saveBiometricKey(publicKey, alias, currentState, callback)
             } catch (e: Exception) {
-                Log.e(TAG, "Failed to generate biometric key", e)
+                Timber.e(e, "Failed to generate biometric key")
                 _uiState.update { it.copy(isGenerating = false) }
             }
         }
@@ -302,7 +302,7 @@ class GeneratePubkeyViewModel @Inject constructor(
         random.nextInt()
         random.setSeed(entropy)
 
-        Log.d(TAG, "Starting generation of $keyType of strength $bits")
+        Timber.d("Starting generation of $keyType of strength $bits")
 
         val keyPairGen = KeyPairGenerator.getInstance(keyType.dbName)
         keyPairGen.initialize(bits, random)
@@ -332,14 +332,14 @@ class GeneratePubkeyViewModel @Inject constructor(
 
                 repository.save(pubkey)
 
-                Log.d(TAG, "Key pair saved successfully")
+                Timber.d("Key pair saved successfully")
 
                 withContext(Dispatchers.Main) {
                     _uiState.update { it.copy(isGenerating = false) }
                     onSuccess?.invoke()
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Failed to save key pair", e)
+                Timber.e(e, "Failed to save key pair")
                 withContext(Dispatchers.Main) {
                     _uiState.update { it.copy(isGenerating = false) }
                 }
@@ -372,19 +372,19 @@ class GeneratePubkeyViewModel @Inject constructor(
 
                 repository.save(pubkey)
 
-                Log.d(TAG, "Biometric key saved successfully with alias: $keystoreAlias")
+                Timber.d("Biometric key saved successfully with alias: $keystoreAlias")
 
                 withContext(Dispatchers.Main) {
                     _uiState.update { it.copy(isGenerating = false) }
                     onSuccess?.invoke()
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Failed to save biometric key", e)
+                Timber.e(e, "Failed to save biometric key")
                 // Clean up the Keystore key if database save failed
                 try {
                     biometricKeyManager.deleteKey(keystoreAlias)
                 } catch (deleteError: Exception) {
-                    Log.e(TAG, "Failed to clean up Keystore key after save failure", deleteError)
+                    Timber.e("Failed to clean up Keystore key after save failure", deleteError)
                 }
                 withContext(Dispatchers.Main) {
                     _uiState.update { it.copy(isGenerating = false) }

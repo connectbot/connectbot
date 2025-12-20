@@ -16,7 +16,7 @@
  */
 package org.connectbot.util
 
-import android.util.Log
+import timber.log.Timber
 import com.trilead.ssh2.crypto.PEMDecoder
 import com.trilead.ssh2.crypto.keys.Ed25519Provider
 import org.connectbot.data.entity.Pubkey
@@ -126,7 +126,7 @@ object PubkeyUtils {
                     password
                 )
             } catch (e: Exception) {
-                Log.e(TAG, "Cannot decode imported key", e)
+                Timber.e(e, "Cannot decode imported key")
                 throw BadPasswordException()
             }
         } else {
@@ -134,11 +134,11 @@ object PubkeyUtils {
             try {
                 val privKey = decodePrivate(pubkey.privateKey!!, pubkey.type, password)
                 val pubKey = decodePublic(pubkey.publicKey, pubkey.type)
-                Log.d(TAG, "Unlocked key " + formatKey(pubKey))
+                Timber.d("Unlocked key " + formatKey(pubKey))
 
                 return KeyPair(pubKey, privKey)
             } catch (e: Exception) {
-                Log.e(TAG, "Cannot decode pubkey from database", e)
+                Timber.e(e, "Cannot decode pubkey from database")
                 throw BadPasswordException()
             }
         }

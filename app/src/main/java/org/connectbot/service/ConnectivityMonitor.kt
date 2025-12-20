@@ -25,7 +25,7 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.net.wifi.WifiManager
 import android.net.wifi.WifiManager.WifiLock
-import android.util.Log
+import timber.log.Timber
 
 /**
  * Tracks network availability and IP addresses for connection resilience.
@@ -64,23 +64,23 @@ class ConnectivityMonitor(
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
-            Log.d(TAG, "Network available: $network")
+            Timber.d("Network available: $network")
             updateNetworkInfo(network)
         }
 
         override fun onLost(network: Network) {
-            Log.d(TAG, "Network lost: $network")
+            Timber.d("Network lost: $network")
             currentNetworkInfo = null
             terminalManager.onConnectivityLost()
         }
 
         override fun onLinkPropertiesChanged(network: Network, linkProperties: LinkProperties) {
-            Log.d(TAG, "Link properties changed for network: $network")
+            Timber.d("Link properties changed for network: $network")
             updateNetworkInfo(network, linkProperties)
         }
 
         override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
-            Log.d(TAG, "Network capabilities changed: $network")
+            Timber.d("Network capabilities changed: $network")
             // Update network info to reflect capability changes
             updateNetworkInfo(network)
         }
@@ -113,7 +113,7 @@ class ConnectivityMonitor(
             connectivityManager.unregisterNetworkCallback(networkCallback)
         } catch (e: IllegalArgumentException) {
             // Callback was not registered, ignore
-            Log.w(TAG, "Failed to unregister network callback", e)
+            Timber.w("Failed to unregister network callback", e)
         }
 
         if (wifiLock.isHeld) {
@@ -136,7 +136,7 @@ class ConnectivityMonitor(
         val capabilities = connectivityManager.getNetworkCapabilities(network)
 
         if (props == null || capabilities == null) {
-            Log.w(TAG, "Could not get link properties or capabilities for network: $network")
+            Timber.w("Could not get link properties or capabilities for network: $network")
             return
         }
 
@@ -154,7 +154,7 @@ class ConnectivityMonitor(
 
         currentNetworkInfo = newNetworkInfo
 
-        Log.d(TAG, "Network info updated: ${ipAddresses.size} IPs, type=$networkType, id=$networkId")
+        Timber.d("Network info updated: ${ipAddresses.size} IPs, type=$networkType, id=$networkId")
 
         // Notify terminal manager if we just became connected
         if (!wasConnected && newNetworkInfo.isConnected) {
@@ -230,14 +230,14 @@ class ConnectivityMonitor(
     private fun acquireWifiLockIfNecessaryLocked() {
         if (lockingWifi && networkRef > 0 && !wifiLock.isHeld) {
             wifiLock.acquire()
-            Log.d(TAG, "WiFi lock acquired (ref count: $networkRef)")
+            Timber.d("WiFi lock acquired (ref count: $networkRef)")
         }
     }
 
     private fun releaseWifiLockIfNecessaryLocked() {
         if (networkRef == 0 && wifiLock.isHeld) {
             wifiLock.release()
-            Log.d(TAG, "WiFi lock released")
+            Timber.d("WiFi lock released")
         }
     }
 

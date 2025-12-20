@@ -18,7 +18,7 @@
 package org.connectbot.ui.screens.portforwardlist
 
 import android.content.Context
-import android.util.Log
+import timber.log.Timber
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -213,7 +213,7 @@ class PortForwardListViewModel @Inject constructor(
                 }
 
                 if (success == true) {
-                    Log.d(TAG, "Port forward ${portForward.nickname} enabled successfully")
+                    Timber.d("Port forward ${portForward.nickname} enabled successfully")
                     loadPortForwards() // Reload to update UI
                 } else {
                     _uiState.update {
@@ -221,7 +221,7 @@ class PortForwardListViewModel @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Error enabling port forward", e)
+                Timber.e(e, "Error enabling port forward")
                 _uiState.update {
                     it.copy(error = e.message ?: "Failed to enable port forward")
                 }
@@ -245,7 +245,7 @@ class PortForwardListViewModel @Inject constructor(
                 }
 
                 if (success == true) {
-                    Log.d(TAG, "Port forward ${portForward.nickname} disabled successfully")
+                    Timber.d("Port forward ${portForward.nickname} disabled successfully")
                     loadPortForwards() // Reload to update UI
                 } else {
                     _uiState.update {
@@ -253,7 +253,7 @@ class PortForwardListViewModel @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Error disabling port forward", e)
+                Timber.e(e, "Error disabling port forward")
                 _uiState.update {
                     it.copy(error = e.message ?: "Failed to disable port forward")
                 }

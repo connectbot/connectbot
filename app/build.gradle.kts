@@ -239,6 +239,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.preference)
     implementation(libs.material)
+    implementation(libs.timber)
 
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
