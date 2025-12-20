@@ -18,7 +18,6 @@
 package org.connectbot.service
 
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
@@ -63,7 +62,6 @@ import timber.log.Timber
 import java.io.IOException
 import java.lang.ref.WeakReference
 import java.security.KeyPair
-import java.util.Arrays
 import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
@@ -136,7 +134,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
 	private var idleJob: Job? = null
-	private val IDLE_TIMEOUT: Long = 300000 // 5 minutes
+	private val idleTimeout: Long = 300000 // 5 minutes
 
 	private var vibrator: Vibrator? = null
 	@Volatile
@@ -207,12 +205,12 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
         vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             // API 31+ uses VibratorManager
-            val manager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager
+            val manager = getSystemService(VIBRATOR_MANAGER_SERVICE) as? VibratorManager
             manager?.defaultVibrator
         } else {
             // Pre-API 31 uses direct Vibrator service
             @Suppress("Deprecation")
-            getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+            getSystemService(VIBRATOR_SERVICE) as? Vibrator
         }
 
         wantKeyVibration = prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, true)
@@ -242,7 +240,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 		stopIdleTimer()
 
-		disconnectAll(true, false)
+		disconnectAll(immediate = true, excludeLocal = false)
 
 		connectionNotifier.hideRunningNotification(this)
 
@@ -541,7 +539,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	fun removeKey(publicKey: ByteArray): Boolean {
 		var nickname: String? = null
 		for ((key, value) in loadedKeypairs) {
-			if (Arrays.equals(value.openSSHPubkey, publicKey)) {
+			if (value.openSSHPubkey.contentEquals(publicKey)) {
 				nickname = key
 				break
 			}
@@ -560,7 +558,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	fun getKeyNickname(publicKey: ByteArray): String? {
 		for ((key, value) in loadedKeypairs) {
-			if (Arrays.equals(value.openSSHPubkey, publicKey))
+			if (value.openSSHPubkey.contentEquals(publicKey))
 				return key
 		}
 		return null
@@ -570,12 +568,12 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		// TODO add in a way to check whether keys loaded are encrypted and only
 		// set timer when we have an encrypted key loaded
 
-		if (loadedKeypairs.size > 0) {
+		if (loadedKeypairs.isNotEmpty()) {
 			synchronized(this) {
 				idleJob?.cancel()
 				idleJob = scope.launch {
-					delay(IDLE_TIMEOUT)
-					Timber.d("Stopping service after timeout of ~%d seconds", IDLE_TIMEOUT / 1000)
+					delay(idleTimeout)
+					Timber.d("Stopping service after timeout of ~%d seconds", idleTimeout / 1000)
 					stopNow()
 				}
 			}
@@ -585,7 +583,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		}
 	}
 
-	protected fun stopNow() {
+    fun stopNow() {
         val shouldStop =
             synchronized(_bridges) {
                 _bridges.isEmpty()
@@ -698,7 +696,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 		val file = res.openRawResourceFd(R.raw.bell)
 		try {
-			mediaPlayer!!.setLooping(false)
+            mediaPlayer!!.isLooping = false
 			mediaPlayer!!.setDataSource(file.fileDescriptor, file
 					.startOffset, file.length)
 			file.close()

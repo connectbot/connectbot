@@ -20,7 +20,6 @@ package org.connectbot.service
 import android.content.Context
 import timber.log.Timber
 import androidx.room.Room
-import kotlinx.coroutines.runBlocking
 import org.connectbot.data.ConnectBotDatabase
 import org.connectbot.data.entity.KeyStorageType
 import java.io.File
@@ -41,11 +40,6 @@ class BackupFilter(
     private val colorSchemeRepository: ColorSchemeRepository,
     private val pubkeyRepository: PubkeyRepository
 ) {
-
-    companion object {
-        private const val TAG = "CB.BackupFilter"
-    }
-
     /**
      * Build a filtered database containing only backupable data.
      *
@@ -102,7 +96,7 @@ class BackupFilter(
                     colors.forEachIndexed { index, color ->
                         tempDb.colorSchemeDao().insertColor(
                             org.connectbot.data.entity.ColorPalette(
-                                schemeId = scheme.id.toLong(),
+                                schemeId = scheme.id,
                                 colorIndex = index,
                                 color = color
                             )

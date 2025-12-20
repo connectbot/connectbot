@@ -31,7 +31,6 @@ import org.connectbot.data.entity.Pubkey
 class LegacyPubkeyDatabaseReader(private val context: Context) {
 
     companion object {
-        private const val TAG = "LegacyPubkeyDBReader"
         private const val DB_NAME = "pubkeys"
     }
 
@@ -51,7 +50,7 @@ class LegacyPubkeyDatabaseReader(private val context: Context) {
                 null, // no group by
                 null, // no having
                 "nickname ASC" // order by
-            )?.use { cursor ->
+            ).use { cursor ->
                 while (cursor.moveToNext()) {
                     try {
                         val pubkey = cursorToPubkey(cursor)

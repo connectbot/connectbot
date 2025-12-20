@@ -31,7 +31,6 @@ import com.trilead.ssh2.KnownHosts
 import com.trilead.ssh2.LocalPortForwarder
 import com.trilead.ssh2.Session
 import com.trilead.ssh2.crypto.PEMDecoder
-import com.trilead.ssh2.crypto.PublicKeyUtils
 import com.trilead.ssh2.crypto.fingerprint.KeyFingerprint
 import com.trilead.ssh2.crypto.keys.Ed25519PrivateKey
 import com.trilead.ssh2.crypto.keys.Ed25519Provider
@@ -72,6 +71,7 @@ import java.security.interfaces.RSAPublicKey
 import java.security.spec.InvalidKeySpecException
 import java.util.Locale
 import java.util.regex.Pattern
+import androidx.core.net.toUri
 
 /**
  * @author Kenny Root
@@ -575,10 +575,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             if (nestedJumpHostId != null && nestedJumpHostId > 0) {
                 val nestedJumpHost = manager?.hostRepository?.findHostByIdBlocking(nestedJumpHostId)
                 if (nestedJumpHost != null) {
-                    val nestedConnection = connectToJumpHost(nestedJumpHost)
-                    if (nestedConnection == null) {
-                        return null
-                    }
+                    val nestedConnection = connectToJumpHost(nestedJumpHost) ?: return null
                     // Use the nested jump host connection as proxy for this jump host
                     jc.setProxyData(JumpHostProxyData(nestedConnection))
                 } else {
@@ -648,7 +645,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                             if (jc.authenticateWithPublicKey(jumpHost.username, entry.value.pair)) {
                                 return true
                             }
-                        } catch (e: Exception) {
+                        } catch (_: Exception) {
                             Timber.d("Jump host pubkey auth failed with key: ${entry.key}")
                         }
                     }
@@ -662,7 +659,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                                 if (jc.authenticateWithPublicKey(jumpHost.username, pair)) {
                                     return true
                                 }
-                            } catch (e: Exception) {
+                            } catch (_: Exception) {
                                 Timber.d("Jump host specific pubkey auth failed")
                             }
                         }
@@ -1249,7 +1246,6 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         }
 
         private const val PROTOCOL = "ssh"
-        private const val TAG = "CB.SSH"
         private const val DEFAULT_PORT = 22
 
         private const val AUTH_PUBLICKEY = "publickey"
@@ -1291,10 +1287,10 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             if (portString != null) {
                 try {
                     port = portString.toInt()
-                    if (port < 1 || port > 65535) {
+                    if (port !in 1..65535) {
                         port = DEFAULT_PORT
                     }
-                } catch (nfe: NumberFormatException) {
+                } catch (_: NumberFormatException) {
                     // Keep the default port
                 }
             }
@@ -1307,7 +1303,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             sb.append("/#")
                 .append(Uri.encode(input))
 
-            return Uri.parse(sb.toString())
+            return sb.toString().toUri()
         }
 
         @JvmStatic
