@@ -36,6 +36,7 @@ import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.regex.Pattern
+import androidx.core.net.toUri
 
 /**
  * Telnet transport implementation.
@@ -185,7 +186,7 @@ class Telnet : AbsTransport {
     override fun write(buffer: ByteArray) {
         try {
             os?.write(buffer)
-        } catch (e: SocketException) {
+        } catch (_: SocketException) {
             bridge?.dispatchDisconnect(false)
         }
     }
@@ -194,7 +195,7 @@ class Telnet : AbsTransport {
     override fun write(c: Int) {
         try {
             os?.write(c)
-        } catch (e: SocketException) {
+        } catch (_: SocketException) {
             bridge?.dispatchDisconnect(false)
         }
     }
@@ -245,7 +246,6 @@ class Telnet : AbsTransport {
     override fun usesNetwork(): Boolean = true
 
     companion object {
-        private const val TAG = "CB.Telnet"
         private const val PROTOCOL = "telnet"
         private const val DEFAULT_PORT = 23
 
@@ -304,7 +304,7 @@ class Telnet : AbsTransport {
             sb.append("/#")
                 .append(Uri.encode(input))
 
-            return Uri.parse(sb.toString())
+            return sb.toString().toUri()
         }
 
         @JvmStatic

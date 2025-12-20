@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import androidx.core.content.edit
 
 data class SettingsUiState(
     val memkeys: Boolean = true,
@@ -183,21 +184,21 @@ class SettingsViewModel @Inject constructor(
 
     private fun updateBooleanPref(key: String, value: Boolean, updateState: SettingsUiState.() -> SettingsUiState) {
         viewModelScope.launch {
-            prefs.edit().putBoolean(key, value).apply()
+            prefs.edit { putBoolean(key, value) }
             _uiState.update { it.updateState() }
         }
     }
 
     private fun updateStringPref(key: String, value: String, updateState: SettingsUiState.() -> SettingsUiState) {
         viewModelScope.launch {
-            prefs.edit().putString(key, value).apply()
+            prefs.edit { putString(key, value) }
             _uiState.update { it.updateState() }
         }
     }
 
     private fun updateFloatPref(key: String, value: Float, updateState: SettingsUiState.() -> SettingsUiState) {
         viewModelScope.launch {
-            prefs.edit().putFloat(key, value).apply()
+            prefs.edit { putFloat(key, value) }
             _uiState.update { it.updateState() }
         }
     }

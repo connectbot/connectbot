@@ -38,6 +38,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -125,7 +126,7 @@ class MainActivity : FragmentActivity() {
             val pendingDisconnectAll by appViewModel.pendingDisconnectAll.collectAsState()
             val navController = rememberNavController()
             val context = LocalContext.current
-            var showPermissionRationale by mutableStateOf(false)
+            var showPermissionRationale by remember { mutableStateOf(false) }
 
             LaunchedEffect(Unit) {
                 appViewModel.showPermissionRationale.collect {

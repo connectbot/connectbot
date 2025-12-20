@@ -36,7 +36,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imeAnimationTarget
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
@@ -69,6 +68,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -112,7 +112,6 @@ import timber.log.Timber
  */
 @Composable
 private fun rememberHasHardwareKeyboard(): Boolean {
-	val context = LocalContext.current
 	val configuration = LocalConfiguration.current
 
 	return remember(configuration) {
@@ -159,10 +158,9 @@ fun ConsoleScreen(
     var showExtraKeyboard by remember { mutableStateOf(true) } // Start visible to show animation
     var hasPlayedKeyboardAnimation by remember { mutableStateOf(false) }
     var showTitleBar by remember { mutableStateOf(!titleBarHide) }
-    var lastInteractionTime by remember { mutableStateOf(System.currentTimeMillis()) }
+    var lastInteractionTime by remember { mutableLongStateOf(System.currentTimeMillis()) }
     var scannedUrls by remember { mutableStateOf<List<String>>(emptyList()) }
     var imeVisible by remember { mutableStateOf(false) }
-    var isFirstLoad by remember(uiState.currentBridgeIndex) { mutableStateOf(true) }
 
     // Apply fullscreen mode and display cutout settings
     LaunchedEffect(fullscreen) {
@@ -212,7 +210,7 @@ fun ConsoleScreen(
     // Get current prompt state to check if biometric prompt is active
     val currentBridgeForPrompt = uiState.bridges.getOrNull(uiState.currentBridgeIndex)
     val promptState by currentBridgeForPrompt?.promptManager?.promptState?.collectAsState()
-        ?: remember { mutableStateOf<PromptRequest?>(null) }
+        ?: remember { mutableStateOf(null) }
     var wasBiometricPromptActive by remember { mutableStateOf(false) }
     val isBiometricPromptActive = promptState is PromptRequest.BiometricPrompt
 
@@ -619,7 +617,7 @@ fun ConsoleScreen(
                                     text = { Text(stringResource(R.string.console_menu_portforwards)) },
                                     onClick = {
                                         showMenu = false
-                                        currentBridge.host?.id?.let {
+                                        currentBridge.host.id.let {
                                             onNavigateToPortForwards(
                                                 it
                                             )

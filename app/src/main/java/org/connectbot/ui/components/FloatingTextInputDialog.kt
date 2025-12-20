@@ -36,7 +36,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -48,6 +47,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -110,8 +110,8 @@ fun FloatingTextInputDialog(
 	val savedY = prefs.getFloat(PREF_FLOATING_INPUT_Y, DEFAULT_Y_RATIO)
 
 	// Current position in pixels
-	var offsetX by remember { mutableStateOf(screenWidthPx * savedX) }
-	var offsetY by remember { mutableStateOf(screenHeightPx * savedY) }
+	var offsetX by remember { mutableFloatStateOf(screenWidthPx * savedX) }
+	var offsetY by remember { mutableFloatStateOf(screenHeightPx * savedY) }
 
 	// Text state and focus
 	var text by remember { mutableStateOf(initialText) }

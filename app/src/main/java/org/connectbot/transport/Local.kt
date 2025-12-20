@@ -28,6 +28,7 @@ import java.io.FileDescriptor
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
+import androidx.core.net.toUri
 
 /**
  * @author Kenny Root
@@ -153,7 +154,6 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
     }
 
     companion object {
-        private const val TAG = "CB.Local"
         private const val PROTOCOL = "local"
         private const val DEFAULT_URI = "local:#Local"
 
@@ -162,7 +162,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
 
         @JvmStatic
         fun getUri(input: String?): Uri {
-            var uri = Uri.parse(DEFAULT_URI)
+            var uri = DEFAULT_URI.toUri()
 
             if (!input.isNullOrEmpty()) {
                 uri = uri.buildUpon().fragment(input).build()
