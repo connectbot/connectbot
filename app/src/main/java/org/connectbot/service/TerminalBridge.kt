@@ -254,7 +254,7 @@ class TerminalBridge {
     fun startConnection() {
         val newTransport = TransportFactory.getTransport(host.protocol)
         if (newTransport == null) {
-            Timber.i("No transport found for ${host.protocol}")
+            Timber.w("No transport found for ${host.protocol}")
             return
         }
 
@@ -288,6 +288,7 @@ class TerminalBridge {
                         )
                     }
                 }
+                Timber.i("Starting connection to ${host.nickname}")
                 newTransport.connect()
             } catch (e: Exception) {
                 Timber.e(e, "Connection failed for ${host.nickname}")
@@ -479,6 +480,7 @@ class TerminalBridge {
      * Tells the TerminalManager that we can be destroyed now.
      */
     private fun triggerDisconnectListener() {
+        Timber.i("Triggering disconnect for ${host.nickname}")
         if (disconnectListeners.isEmpty()) {
             // Clean up even if no listeners
             cleanup()
@@ -830,6 +832,7 @@ class TerminalBridge {
             // Grace period expired without network restoration
             inGracePeriod = false
             lastKnownNetworkState = null
+            Timber.i("Network grace period expired")
             outputLine(manager.res.getString(R.string.network_grace_period_expired))
 
             // Trigger normal disconnect flow
