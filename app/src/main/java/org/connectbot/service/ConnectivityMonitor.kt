@@ -64,23 +64,23 @@ class ConnectivityMonitor(
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
-            Timber.d("Network available: $network")
+            Timber.i("Network available: $network")
             updateNetworkInfo(network)
         }
 
         override fun onLost(network: Network) {
-            Timber.d("Network lost: $network")
+            Timber.i("Network lost: $network")
             currentNetworkInfo = null
             terminalManager.onConnectivityLost()
         }
 
         override fun onLinkPropertiesChanged(network: Network, linkProperties: LinkProperties) {
-            Timber.d("Link properties changed for network: $network")
+            Timber.i("Link properties changed for network: $network")
             updateNetworkInfo(network, linkProperties)
         }
 
         override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
-            Timber.d("Network capabilities changed: $network")
+            Timber.i("Network capabilities changed: $network")
             // Update network info to reflect capability changes
             updateNetworkInfo(network)
         }
@@ -113,7 +113,7 @@ class ConnectivityMonitor(
             connectivityManager.unregisterNetworkCallback(networkCallback)
         } catch (e: IllegalArgumentException) {
             // Callback was not registered, ignore
-            Timber.w("Failed to unregister network callback", e)
+            Timber.w(e, "Failed to unregister network callback")
         }
 
         if (wifiLock.isHeld) {
@@ -154,7 +154,7 @@ class ConnectivityMonitor(
 
         currentNetworkInfo = newNetworkInfo
 
-        Timber.d("Network info updated: ${ipAddresses.size} IPs, type=$networkType, id=$networkId")
+        Timber.i("Network info updated: ${ipAddresses.size} IPs, type=$networkType, id=$networkId")
 
         // Notify terminal manager if we just became connected
         if (!wasConnected && newNetworkInfo.isConnected) {
