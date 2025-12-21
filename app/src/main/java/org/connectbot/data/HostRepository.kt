@@ -17,9 +17,6 @@
 
 package org.connectbot.data
 
-import android.content.Context
-import timber.log.Timber
-import com.trilead.ssh2.KnownHosts
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
 import org.connectbot.data.dao.HostDao
@@ -214,33 +211,6 @@ class HostRepository @Inject constructor(
     // Known Host Operations
     // ============================================================================
 
-    /**
-     * Get the known hosts (SSH host keys).
-     *
-     * @return KnownHosts instance containing all known host keys
-     */
-    suspend fun getKnownHosts(): KnownHosts {
-        val knownHostsList = knownHostDao.getAll()
-        val knownHosts = KnownHosts()
-
-        for (knownHost in knownHostsList) {
-            try {
-                // Format hostname with port for trilead KnownHosts (e.g., "example.com:22")
-                val hostnameWithPort = "${knownHost.hostname}:${knownHost.port}"
-                Timber.d("Adding known host $hostnameWithPort with key algorithm ${knownHost.hostKeyAlgo} and key ${knownHost.hostKey.contentToString()}")
-                knownHosts.addHostkey(
-                    arrayOf(hostnameWithPort),
-                    knownHost.hostKeyAlgo,
-                    knownHost.hostKey
-                )
-            } catch (e: Exception) {
-                // Ignore invalid host keys
-            }
-        }
-
-        return knownHosts
-    }
-
     suspend fun getKnownHostsForHost(hostId: Long): List<KnownHost> {
         return knownHostDao.getByHostId(hostId)
     }
@@ -276,7 +246,8 @@ class HostRepository @Inject constructor(
         val existing = knownHostDao.getByHostIdAlgoAndKey(
             host.id, serverHostKeyAlgorithm, serverHostKey
         )
-        if (existing == null) {
+        // If it does not exist or exists but has a different hostname and port, add it.
+        if (existing == null || existing.hostname != hostname || existing.port != port) {
             // Insert new key - this allows multiple keys per algorithm for key rotation
             val knownHost = KnownHost(
                 hostId = host.id,
@@ -315,13 +286,6 @@ class HostRepository @Inject constructor(
     // ============================================================================
 
     /**
-     * Get the known hosts (blocking version for Java interop).
-     */
-    fun getKnownHostsBlocking(): KnownHosts = runBlocking {
-        getKnownHosts()
-    }
-
-    /**
      * Save a known host key (blocking version for Java interop).
      */
     fun saveKnownHostBlocking(
@@ -332,6 +296,13 @@ class HostRepository @Inject constructor(
         serverHostKey: ByteArray
     ) = runBlocking {
         saveKnownHost(host, hostname, port, serverHostKeyAlgorithm, serverHostKey)
+    }
+
+    /**
+     * Get known hosts for a specific host (blocking version for Java interop).
+     */
+    fun getKnownHostsForHostBlocking(hostId: Long): List<KnownHost> = runBlocking {
+        getKnownHostsForHost(hostId)
     }
 
     /**
