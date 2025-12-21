@@ -121,13 +121,15 @@ class PortForwardListViewModel @Inject constructor(
     fun addPortForward(nickname: String, type: String, sourcePort: String, destination: String) {
         viewModelScope.launch {
             try {
+                val srcPort = validatePort(sourcePort, "source")
                 val parsed = parseDestination(destination)
+
                 val newPortForward = withContext(ioDispatcher) {
                     val portForward = PortForward(
                         hostId = hostId,
                         nickname = nickname,
                         type = type,
-                        sourcePort = sourcePort.toIntOrNull() ?: 0,
+                        sourcePort = srcPort,
                         destAddr = parsed.address,
                         destPort = parsed.port
                     )
@@ -155,12 +157,14 @@ class PortForwardListViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             try {
+                val srcPort = validatePort(sourcePort, "source")
                 val parsed = parseDestination(destination)
+
                 val updated = withContext(ioDispatcher) {
                     val updatedPf = portForward.copy(
                         nickname = nickname,
                         type = type,
-                        sourcePort = sourcePort.toIntOrNull() ?: 0,
+                        sourcePort = srcPort,
                         destAddr = parsed.address,
                         destPort = parsed.port
                     )
@@ -265,16 +269,29 @@ class PortForwardListViewModel @Inject constructor(
         return _terminalManager.value?.bridgesFlow?.value?.find { it.host.id == hostId }
     }
 
+    private fun validatePort(portString: String, portType: String): Int {
+        val port = portString.toIntOrNull()
+            ?: throw IllegalArgumentException("Invalid $portType port: '$portString' is not a valid number")
+
+        if (port !in 1..65535) {
+            throw IllegalArgumentException("Invalid $portType port: $port must be between 1 and 65535")
+        }
+
+        return port
+    }
+
     private data class ParsedDestination(val address: String?, val port: Int)
 
     private fun parseDestination(destination: String): ParsedDestination {
         val destSplit = destination.split(":")
         val destAddr = destSplit.firstOrNull()
+
         val destPort = if (destSplit.size > 1) {
-            destSplit.last().toIntOrNull() ?: 0
+            validatePort(destSplit.last(), "destination")
         } else {
-            0
+            throw IllegalArgumentException("Destination must include a port (format: host:port)")
         }
+
         return ParsedDestination(destAddr, destPort)
     }
 
