@@ -422,7 +422,7 @@ class PortForwardListViewModelTest {
     }
 
     @Test
-    fun parseDestination_WithOnlyHost() = runTest {
+    fun parseDestination_WithOnlyHost_SetsError() = runTest {
         viewModel = createViewModel()
         advanceUntilIdle()
 
@@ -434,15 +434,12 @@ class PortForwardListViewModelTest {
         )
         advanceUntilIdle()
 
-        val captor = argumentCaptor<PortForward>()
-        verify(repository).savePortForward(captor.capture())
-
-        assertEquals("example.com", captor.firstValue.destAddr)
-        assertEquals(0, captor.firstValue.destPort)
+        val state = viewModel.uiState.value
+        assertTrue("Should have error", state.error?.contains("must include a port") == true)
     }
 
     @Test
-    fun parseDestination_WithInvalidPort() = runTest {
+    fun parseDestination_WithInvalidPort_SetsError() = runTest {
         viewModel = createViewModel()
         advanceUntilIdle()
 
@@ -454,10 +451,41 @@ class PortForwardListViewModelTest {
         )
         advanceUntilIdle()
 
-        val captor = argumentCaptor<PortForward>()
-        verify(repository).savePortForward(captor.capture())
+        val state = viewModel.uiState.value
+        assertTrue("Should have error for invalid port", state.error?.contains("not a valid number") == true)
+    }
 
-        assertEquals("example.com", captor.firstValue.destAddr)
-        assertEquals(0, captor.firstValue.destPort)
+    @Test
+    fun validatePort_WithInvalidSourcePort_SetsError() = runTest {
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.addPortForward(
+            nickname = "test",
+            type = "local",
+            sourcePort = "invalid",
+            destination = "example.com:443"
+        )
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertTrue("Should have error for invalid source port", state.error?.contains("Invalid source port") == true)
+    }
+
+    @Test
+    fun validatePort_WithOutOfRangePort_SetsError() = runTest {
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.addPortForward(
+            nickname = "test",
+            type = "local",
+            sourcePort = "70000",
+            destination = "example.com:443"
+        )
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertTrue("Should have error for out of range port", state.error?.contains("must be between 1 and 65535") == true)
     }
 }
