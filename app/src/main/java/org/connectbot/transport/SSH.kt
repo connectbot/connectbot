@@ -161,8 +161,34 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             serverHostKeyAlgorithm: String,
             serverHostKey: ByteArray
         ): Boolean {
-            // read in all known hosts from hostdb
-            val hosts = manager?.hostRepository?.getKnownHostsBlocking() ?: return false
+            // Get known hosts for this specific host entry
+            val hostId = host?.id ?: return false
+            val knownHostsList = manager?.hostRepository?.getKnownHostsForHostBlocking(hostId) ?: emptyList()
+
+            // Convert to KnownHosts format, grouping by (algo, key) to handle renamed hosts
+            val hosts = KnownHosts()
+            data class HostKeyGroup(val algo: String, val key: ByteArray) {
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) return true
+                    if (other !is HostKeyGroup) return false
+                    return algo == other.algo && key.contentEquals(other.key)
+                }
+                override fun hashCode(): Int {
+                    var result = algo.hashCode()
+                    result = 31 * result + key.contentHashCode()
+                    return result
+                }
+            }
+
+            knownHostsList.groupBy { HostKeyGroup(it.hostKeyAlgo, it.hostKey) }.forEach { (group, entries) ->
+                try {
+                    // Collect all hostname:port combinations for this key
+                    val hostnames = entries.map { "${it.hostname}:${it.port}" }.toTypedArray()
+                    hosts.addHostkey(hostnames, group.algo, group.key)
+                } catch (e: Exception) {
+                    Timber.e(e, "Failed to add known host key")
+                }
+            }
 
             val matchName = String.format(Locale.US, "%s:%d", hostname, port)
             val algorithmName = getKeyType(serverHostKeyAlgorithm)
