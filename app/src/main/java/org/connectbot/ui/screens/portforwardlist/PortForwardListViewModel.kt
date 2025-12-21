@@ -132,7 +132,6 @@ class PortForwardListViewModel @Inject constructor(
                         destPort = parsed.port
                     )
                     repository.savePortForward(portForward)
-                    portForward
                 }
 
                 withActiveBridge { bridge ->
