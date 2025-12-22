@@ -56,12 +56,8 @@ sealed class AppUiState {
  */
 @HiltViewModel
 class AppViewModel @Inject constructor(
-    private val migrator: DatabaseMigrator
+    private val migrator: DatabaseMigrator,
 ) : ViewModel() {
-
-    companion object {
-        private const val TAG = "CB.AppViewModel"
-    }
 
     private val _terminalManager = MutableStateFlow<TerminalManager?>(null)
 
@@ -139,16 +135,14 @@ class AppViewModel @Inject constructor(
                     }
                 }
 
-                val result = migrator.migrate()
-
-                when (result) {
+                when (val result = migrator.migrate()) {
                     is MigrationResult.Success -> {
                         Timber.i("Migration completed successfully: $result")
                         _migrationUiState.value = MigrationUiState.Completed
                     }
 
                     is MigrationResult.Failure -> {
-                        Timber.e("Migration failed", result.error)
+                        Timber.e(result.error, "Migration failed")
                         _migrationUiState.value = MigrationUiState.Failed(
                             error = result.error.message ?: "Unknown error",
                             debugLog = latestMigrationState?.debugLog ?: emptyList()
