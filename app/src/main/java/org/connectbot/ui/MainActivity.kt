@@ -51,6 +51,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import androidx.preference.PreferenceManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.connectbot.R
@@ -59,13 +60,14 @@ import org.connectbot.service.TerminalManager
 import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.navigation.NavDestinations
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.NotificationPermissionHelper
+import org.connectbot.util.PreferenceConstants
 
 // TODO: Move back to ComponentActivity when https://issuetracker.google.com/issues/178855209 is fixed.
 //       FragmentActivity is required for BiometricPrompt to find the FragmentManager from Compose context.
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
     companion object {
-        private const val TAG = "CB.MainActivity"
         private const val STATE_SELECTED_URI = "selectedUri"
         const val DISCONNECT_ACTION = "org.connectbot.action.DISCONNECT"
     }
@@ -73,14 +75,27 @@ class MainActivity : FragmentActivity() {
     internal lateinit var appViewModel: AppViewModel
     private var bound = false
     private var requestedUri: Uri? by mutableStateOf(null)
+    private var pendingHostConnection: Host? by mutableStateOf(null)
     internal var makingShortcut by mutableStateOf(false)
     private var showDisconnectAllDialog by mutableStateOf(false)
 
     private val requestNotificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        appViewModel.onNotificationPermissionResult(isGranted)?.let { uri ->
+    ) { _ ->
+        // Check the actual permission status instead of relying on the launcher result.
+        // If user went to settings and granted permission, the result will be false but
+        // the actual permission may be granted.
+        val actuallyGranted = NotificationPermissionHelper.isNotificationPermissionGranted(this)
+
+        appViewModel.onNotificationPermissionResult(actuallyGranted)?.let { uri ->
             requestedUri = uri
+        }
+        // Connections do not require notification permission, so a denied permission
+        // does not block any pending host connection. Navigation to, and clearing of,
+        // any pendingHostConnection are handled unconditionally by the LaunchedEffect
+        // in the composable UI that observes this state.
+        if (!actuallyGranted && pendingHostConnection != null) {
+            Timber.d("Permission denied; proceeding with any pending host connection")
         }
     }
 
@@ -146,19 +161,6 @@ class MainActivity : FragmentActivity() {
                 }
             }
 
-            // Request notification permission on app startup
-            LaunchedEffect(appUiState) {
-                if (appUiState is AppUiState.Ready) {
-                    Timber.d("App is ready, requesting initial notification permission")
-                    val shouldShowRationale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        this@MainActivity.shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)
-                    } else {
-                        false
-                    }
-                    appViewModel.requestInitialNotificationPermissionIfNeeded(context, shouldShowRationale)
-                }
-            }
-
             LaunchedEffect(requestedUri, navController, appUiState) {
                 Timber.d("LaunchedEffect: requestedUri=$requestedUri, appUiState=$appUiState")
                 if (appUiState is AppUiState.Ready) {
@@ -196,6 +198,14 @@ class MainActivity : FragmentActivity() {
                 }
             }
 
+            // Re-check permission status when activity resumes (e.g., user grants/revokes in Settings)
+            ObservePermissionOnResume { isGranted ->
+                if (pendingHostConnection != null) {
+                    // Permission state changed and we have a pending connection
+                    appViewModel.onNotificationPermissionResult(isGranted)
+                }
+            }
+
             if (showDisconnectAllDialog) {
                 ConnectBotTheme {
                     DisconnectAllDialog(
@@ -212,6 +222,17 @@ class MainActivity : FragmentActivity() {
                 }
             }
 
+            // Navigate to console when pending host connection is set
+            LaunchedEffect(pendingHostConnection, appUiState) {
+                if (appUiState is AppUiState.Ready) {
+                    pendingHostConnection?.let { host ->
+                        Timber.d("Navigating to console for pending host: ${host.nickname}")
+                        pendingHostConnection = null
+                        navController.navigate("${NavDestinations.CONSOLE}/${host.id}")
+                    }
+                }
+            }
+
             if (showPermissionRationale) {
                 ConnectBotTheme {
                     NotificationPermissionRationaleDialog(
@@ -222,6 +243,11 @@ class MainActivity : FragmentActivity() {
                             appViewModel.pendingConnectionUri.value?.let { uri ->
                                 requestedUri = uri
                                 appViewModel.clearPendingConnectionUri()
+                            }
+                            // Also handle pending host connection
+                            pendingHostConnection?.let { host ->
+                                navController.navigate("${NavDestinations.CONSOLE}/${host.id}")
+                                pendingHostConnection = null
                             }
                         },
                         onAllow = {
@@ -235,6 +261,30 @@ class MainActivity : FragmentActivity() {
                 }
             }
 
+            // Callback to check permission before navigating to console
+            val onNavigateToConsole: (Host) -> Unit = { host ->
+                Timber.d("onNavigateToConsole called for host: ${host.nickname}")
+
+                // Check if connection persistence is enabled
+                val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+                val persistConnections = prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)
+
+                if (!persistConnections || NotificationPermissionHelper.isNotificationPermissionGranted(context)) {
+                    // Either persistence is disabled (no permission needed) or permission granted, navigate immediately
+                    navController.navigate("${NavDestinations.CONSOLE}/${host.id}")
+                } else {
+                    // Persistence is enabled but no permission - need to request permission
+                    Timber.d("Requesting notification permission before connection")
+                    pendingHostConnection = host
+                    val shouldShowRationale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        this@MainActivity.shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)
+                    } else {
+                        false
+                    }
+                    appViewModel.requestNotificationPermission(shouldShowRationale)
+                }
+            }
+
             ConnectBotApp(
                 appUiState = appUiState,
                 navController = navController,
@@ -242,7 +292,8 @@ class MainActivity : FragmentActivity() {
                 onRetryMigration = { appViewModel.retryMigration() },
                 onShortcutSelected = { host ->
                     createShortcutAndFinish(host)
-                }
+                },
+                onNavigateToConsole = onNavigateToConsole
             )
         }
     }
@@ -337,16 +388,16 @@ private fun NotificationPermissionRationaleDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.allow)) },
-        text = { Text(stringResource(R.string.notification_requirement_explanation)) },
+        title = { Text(stringResource(R.string.notification_permission_title)) },
+        text = { Text(stringResource(R.string.notification_permission_message)) },
         confirmButton = {
             TextButton(onClick = onAllow) {
-                Text(stringResource(R.string.allow))
+                Text(stringResource(R.string.grant_permission))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.continue_anyway))
+                Text(stringResource(R.string.connect_anyway))
             }
         }
     )

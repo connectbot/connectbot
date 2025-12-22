@@ -17,6 +17,13 @@
 
 package org.connectbot.ui.screens.settings
 
+import android.Manifest
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,6 +46,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,12 +56,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.preference.PreferenceManager
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
+import org.connectbot.ui.ObservePermissionOnResume
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
-
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.connectbot.util.NotificationPermissionHelper
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,6 +71,68 @@ fun SettingsScreen(
 ) {
     val viewModel: SettingsViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
+
+    // Permission launcher for notification permission
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { _ ->
+        // Check the actual permission status instead of relying on the launcher result.
+        // If user went to settings and granted permission, the result will be false but
+        // the actual permission may be granted.
+        val actuallyGranted = NotificationPermissionHelper.isNotificationPermissionGranted(context)
+        viewModel.onNotificationPermissionResult(actuallyGranted)
+    }
+
+    // Listen for permission request events
+    LaunchedEffect(Unit) {
+        viewModel.requestNotificationPermission.collect {
+            if (NotificationPermissionHelper.isNotificationPermissionGranted(context)) {
+                // Permission already granted
+                viewModel.onNotificationPermissionResult(true)
+            } else {
+                // Request permission
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                } else {
+                    // No permission needed on older versions
+                    viewModel.onNotificationPermissionResult(true)
+                }
+            }
+        }
+    }
+
+    // State for showing permission denied dialog
+    var showPermissionDeniedDialog by remember { mutableStateOf(false) }
+
+    // Listen for permission denied dialog events
+    LaunchedEffect(Unit) {
+        viewModel.showPermissionDeniedDialog.collect {
+            showPermissionDeniedDialog = true
+        }
+    }
+
+    // Re-check permission status when screen resumes (e.g., user grants/revokes in Settings)
+    ObservePermissionOnResume { isGranted ->
+        viewModel.onNotificationPermissionResult(isGranted)
+    }
+
+    // Show permission denied dialog if needed
+    if (showPermissionDeniedDialog) {
+        NotificationPermissionDeniedDialog(
+            onDismiss = {
+                showPermissionDeniedDialog = false
+            },
+            onOpenSettings = {
+                showPermissionDeniedDialog = false
+                // Open app settings so user can grant notification permission
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.fromParts("package", context.packageName, null)
+                }
+                context.startActivity(intent)
+            }
+        )
+    }
 
     SettingsScreenContent(
         uiState = uiState,
@@ -651,4 +721,26 @@ private fun SettingsScreenPreview() {
             onBellNotificationChange = {}
         )
     }
+}
+
+@Composable
+private fun NotificationPermissionDeniedDialog(
+    onDismiss: () -> Unit,
+    onOpenSettings: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.notification_permission_denied_title)) },
+        text = { Text(stringResource(R.string.notification_permission_denied_message)) },
+        confirmButton = {
+            TextButton(onClick = onOpenSettings) {
+                Text(stringResource(R.string.open_settings))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        }
+    )
 }

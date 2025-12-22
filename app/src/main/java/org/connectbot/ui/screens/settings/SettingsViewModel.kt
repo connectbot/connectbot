@@ -18,16 +18,20 @@
 package org.connectbot.ui.screens.settings
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import androidx.core.content.edit
+import org.connectbot.util.PreferenceConstants
+import timber.log.Timber
+import javax.inject.Inject
 
 data class SettingsUiState(
     val memkeys: Boolean = true,
@@ -62,10 +66,23 @@ class SettingsViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(loadSettings())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
+    private val _requestNotificationPermission = Channel<Unit>(Channel.CONFLATED)
+    val requestNotificationPermission = _requestNotificationPermission.receiveAsFlow()
+
+    private val _showPermissionDeniedDialog = Channel<Unit>(Channel.CONFLATED)
+    val showPermissionDeniedDialog = _showPermissionDeniedDialog.receiveAsFlow()
+
+    // Persist permission denial state in SharedPreferences
+    private var wasPermissionDenied: Boolean
+        get() = prefs.getBoolean(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED, false)
+        set(value) {
+            prefs.edit { putBoolean(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED, value) }
+        }
+
     private fun loadSettings(): SettingsUiState {
         return SettingsUiState(
             memkeys = prefs.getBoolean("memkeys", true),
-            connPersist = prefs.getBoolean("connPersist", true),
+            connPersist = prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true),
             wifilock = prefs.getBoolean("wifilock", true),
             backupkeys = prefs.getBoolean("backupkeys", false),
             emulation = prefs.getString("emulation", "xterm-256color") ?: "xterm-256color",
@@ -95,7 +112,44 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun updateConnPersist(value: Boolean) {
-        updateBooleanPref("connPersist", value) { copy(connPersist = value) }
+        // If turning ON (from OFF), request notification permission
+        val currentValue = _uiState.value.connPersist
+        if (!currentValue && value) {
+            // Turning ON - check if permission was previously denied
+            if (wasPermissionDenied) {
+                // Permission was denied before, show dialog to go to settings
+                viewModelScope.launch {
+                    _showPermissionDeniedDialog.send(Unit)
+                }
+            } else {
+                // First time or permission not denied yet - optimistically update to ON
+                // and request permission. If denied, onNotificationPermissionResult will revert to OFF.
+                updateBooleanPref(PreferenceConstants.CONNECTION_PERSIST, true) { copy(connPersist = true) }
+                viewModelScope.launch {
+                    _requestNotificationPermission.send(Unit)
+                }
+            }
+        } else {
+            // Turning OFF or already ON - just update the preference
+            updateBooleanPref(PreferenceConstants.CONNECTION_PERSIST, value) { copy(connPersist = value) }
+        }
+    }
+
+    /**
+     * Called with the result of the notification permission request.
+     * If permission is granted, enable connPersist. If denied, keep it OFF.
+     */
+    fun onNotificationPermissionResult(isGranted: Boolean) {
+        if (isGranted) {
+            Timber.d("Notification permission granted, enabling connPersist")
+            wasPermissionDenied = false
+            updateBooleanPref(PreferenceConstants.CONNECTION_PERSIST, true) { copy(connPersist = true) }
+        } else {
+            // Permission denied - keep it OFF and mark as denied
+            Timber.d("Notification permission denied, keeping connPersist OFF")
+            wasPermissionDenied = true
+            updateBooleanPref(PreferenceConstants.CONNECTION_PERSIST, false) { copy(connPersist = false) }
+        }
     }
 
     fun updateWifilock(value: Boolean) {
