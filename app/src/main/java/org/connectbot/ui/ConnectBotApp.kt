@@ -39,6 +39,7 @@ fun ConnectBotApp(
     makingShortcut: Boolean,
     onRetryMigration: () -> Unit,
     onShortcutSelected: (Host) -> Unit,
+    onNavigateToConsole: (Host) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ConnectBotTheme {
@@ -73,6 +74,7 @@ fun ConnectBotApp(
                         startDestination = NavDestinations.HOST_LIST,
                         makingShortcut = makingShortcut,
                         onShortcutSelected = onShortcutSelected,
+                        onNavigateToConsole = onNavigateToConsole,
                         modifier = modifier
                     )
                 }

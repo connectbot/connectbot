@@ -46,6 +46,7 @@ fun ConnectBotNavHost(
     startDestination: String = NavDestinations.HOST_LIST,
     makingShortcut: Boolean = false,
     onShortcutSelected: (Host) -> Unit = {},
+    onNavigateToConsole: (Host) -> Unit,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -56,9 +57,7 @@ fun ConnectBotNavHost(
         composable(NavDestinations.HOST_LIST) {
             HostListScreen(
                 makingShortcut = makingShortcut,
-                onNavigateToConsole = { host ->
-                    navController.navigate("${NavDestinations.CONSOLE}/${host.id}")
-                },
+                onNavigateToConsole = onNavigateToConsole,
                 onShortcutSelected = onShortcutSelected,
                 onNavigateToEditHost = { host ->
                     if (host != null) {

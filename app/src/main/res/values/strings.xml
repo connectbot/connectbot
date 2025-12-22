@@ -996,6 +996,34 @@
 	     Added to the end of a key description to indicate that the key is encrypted (i.e,
 	     password protected). -->
 	<string name="key_attribute_encrypted">(encrypted)</string>
+
+	<!-- Title for notification permission dialog shown when user first tries to connect to a host.
+	     Explains that notifications keep SSH connections alive. -->
+	<string name="notification_permission_title">Keep connections alive</string>
+
+	<!-- Explanation message shown in permission dialog when user tries to connect to a host.
+	     Explains why notification permission is needed and what happens without it. -->
+	<string name="notification_permission_message">Displaying a notification is required keep connections alive in the background. Without permission, connections may close when you switch apps.</string>
+
+	<!-- Button text to grant notification permission in the permission explanation dialog. -->
+	<string name="grant_permission">Grant permission</string>
+
+	<!-- Button text to proceed with connecting without granting notification permission. -->
+	<string name="connect_anyway">Connect anyway</string>
+
+	<!-- Title for dialog directing users to app settings when notification permission was denied.
+	     Shown when user tries to enable persist connections after denying permission. -->
+	<string name="notification_permission_denied_title">Permission required</string>
+
+	<!-- Message explaining that user must enable notification permission in app settings.
+	     Shown when notification permission was previously denied and user tries to enable persist connections. -->
+	<string name="notification_permission_denied_message">To keep connections alive in the background, you must enable notification permission in app settings.</string>
+
+	<!-- Button text to open ConnectBot app settings page where user can grant notification permission. -->
+	<string name="open_settings">Open settings</string>
+
+	<!-- Message shown to user when they're trying to connect to a host on a local network but
+	     have not granted the permission yet. -->
 	<string name="notification_requirement_explanation">Notification permission is required to display running sessions in the background</string>
 	<string name="continue_anyway">Continue without</string>
 	<string name="allow">Allow</string>

@@ -18,11 +18,13 @@
 package org.connectbot.ui
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import timber.log.Timber
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,6 +39,7 @@ import org.connectbot.data.migration.DatabaseMigrator
 import org.connectbot.data.migration.MigrationResult
 import org.connectbot.data.migration.MigrationState
 import org.connectbot.service.TerminalManager
+import org.connectbot.util.PreferenceConstants
 import javax.inject.Inject
 
 /**
@@ -57,6 +60,7 @@ sealed class AppUiState {
 @HiltViewModel
 class AppViewModel @Inject constructor(
     private val migrator: DatabaseMigrator,
+    private val prefs: SharedPreferences
 ) : ViewModel() {
 
     private val _terminalManager = MutableStateFlow<TerminalManager?>(null)
@@ -81,8 +85,6 @@ class AppViewModel @Inject constructor(
 
     private val _finishActivity = Channel<Unit>(Channel.CONFLATED)
     val finishActivity = _finishActivity.receiveAsFlow()
-
-    private var hasRequestedInitialPermission = false
 
     init {
         checkAndMigrate()
@@ -262,41 +264,16 @@ class AppViewModel @Inject constructor(
     }
 
     /**
-     * Request notification permission on app startup if needed.
-     * Should be called when the app becomes ready.
+     * Request notification permission, showing rationale if needed.
      */
-    fun requestInitialNotificationPermissionIfNeeded(
-        context: Context,
-        shouldShowRationale: Boolean
-    ) {
-        if (hasRequestedInitialPermission) {
-            Timber.d("Already requested initial permission, skipping")
-            return
-        }
-
-        hasRequestedInitialPermission = true
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            Timber.d("SDK < TIRAMISU, no notification permission needed")
-            return
-        }
-
-        val hasPermission = ContextCompat.checkSelfPermission(
-            context,
-            android.Manifest.permission.POST_NOTIFICATIONS
-        ) == PackageManager.PERMISSION_GRANTED
-
-        Timber.d("Initial permission check: hasPermission=$hasPermission, shouldShowRationale=$shouldShowRationale")
-
-        if (!hasPermission) {
-            viewModelScope.launch {
-                if (shouldShowRationale) {
-                    Timber.d("Showing permission rationale on startup")
-                    _showPermissionRationale.send(Unit)
-                } else {
-                    Timber.d("Requesting permission on startup")
-                    _requestPermission.send(Unit)
-                }
+    fun requestNotificationPermission(shouldShowRationale: Boolean) {
+        viewModelScope.launch {
+            if (shouldShowRationale) {
+                Timber.d("Showing permission rationale")
+                _showPermissionRationale.send(Unit)
+            } else {
+                Timber.d("Requesting permission")
+                _requestPermission.send(Unit)
             }
         }
     }
@@ -305,12 +282,18 @@ class AppViewModel @Inject constructor(
      * Handle the result of a notification permission request.
      * Returns the pending URI regardless of permission result, so navigation can proceed.
      * The app works fine without notification permission - connections just won't show notifications.
+     * If permission is denied, also disables the persist connections setting.
      */
     fun onNotificationPermissionResult(isGranted: Boolean): Uri? {
         if (isGranted) {
             Timber.d("Notification permission granted")
         } else {
             Timber.d("Notification permission denied - connections will work but without notifications")
+            // Disable persist connections setting since notification permission is required for it
+            prefs.edit {
+                putBoolean(PreferenceConstants.CONNECTION_PERSIST, false)
+            }
+            Timber.d("Disabled persist connections setting due to permission denial")
         }
 
         // Return and clear pending URI so navigation can proceed

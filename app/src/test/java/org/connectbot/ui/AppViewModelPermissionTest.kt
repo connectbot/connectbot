@@ -19,6 +19,7 @@ package org.connectbot.ui
 
 import android.Manifest.permission.POST_NOTIFICATIONS
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -34,6 +35,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.connectbot.data.migration.DatabaseMigrator
 import org.connectbot.service.TerminalManager
+import org.connectbot.util.PreferenceConstants
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -61,6 +63,8 @@ class AppViewModelPermissionTest {
 
     private val testDispatcher = StandardTestDispatcher()
     private lateinit var migrator: DatabaseMigrator
+    private lateinit var prefs: SharedPreferences
+    private lateinit var prefsEditor: SharedPreferences.Editor
     private lateinit var viewModel: AppViewModel
     private lateinit var context: Context
 
@@ -68,11 +72,15 @@ class AppViewModelPermissionTest {
     fun setUp() = runTest {
         Dispatchers.setMain(testDispatcher)
         migrator = mock()
+        prefs = mock()
+        prefsEditor = mock()
         context = mock()
 
         whenever(migrator.isMigrationNeeded()).thenReturn(false)
+        whenever(prefs.edit()).thenReturn(prefsEditor)
+        whenever(prefsEditor.putBoolean(any(), any())).thenReturn(prefsEditor)
 
-        viewModel = AppViewModel(migrator)
+        viewModel = AppViewModel(migrator, prefs)
         advanceUntilIdle()
     }
 
@@ -110,6 +118,8 @@ class AppViewModelPermissionTest {
 
         assertEquals("Should return pending URI even when denied", uri, result)
         assertNull("Should clear pending URI", viewModel.pendingConnectionUri.value)
+        verify(prefsEditor).putBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), eq(false))
+        verify(prefsEditor).apply()
     }
 
     @Test
@@ -117,6 +127,8 @@ class AppViewModelPermissionTest {
         val result = viewModel.onNotificationPermissionResult(isGranted = false)
 
         assertNull("Should return null when no pending URI", result)
+        verify(prefsEditor).putBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), eq(false))
+        verify(prefsEditor).apply()
     }
 
     // endregion
@@ -201,114 +213,6 @@ class AppViewModelPermissionTest {
 
         viewModel.setPendingDisconnectAll(false)
         assertFalse("Should clear pending disconnect all", viewModel.pendingDisconnectAll.value)
-    }
-
-    // endregion
-
-    // region requestInitialNotificationPermissionIfNeeded tests
-
-    @Test
-    @Config(sdk = [Build.VERSION_CODES.S])
-    fun requestInitialPermission_BelowAndroid13_DoesNothing() = runTest {
-        val requestEvents = mutableListOf<Unit>()
-        val job = launch {
-            viewModel.requestPermission.collect {
-                requestEvents.add(it)
-            }
-        }
-
-        viewModel.requestInitialNotificationPermissionIfNeeded(context, false)
-        advanceUntilIdle()
-
-        assertEquals("Should not emit request event on old SDK", 0, requestEvents.size)
-
-        job.cancel()
-    }
-
-    @Test
-    @Config(sdk = [Build.VERSION_CODES.TIRAMISU])
-    fun requestInitialPermission_PermissionGranted_DoesNothing() = runTest {
-        whenever(context.checkPermission(eq(POST_NOTIFICATIONS), any(), any()))
-            .thenReturn(PackageManager.PERMISSION_GRANTED)
-
-        val requestEvents = mutableListOf<Unit>()
-        val job = launch {
-            viewModel.requestPermission.collect {
-                requestEvents.add(it)
-            }
-        }
-
-        viewModel.requestInitialNotificationPermissionIfNeeded(context, false)
-        advanceUntilIdle()
-
-        assertEquals("Should not request when already granted", 0, requestEvents.size)
-
-        job.cancel()
-    }
-
-    @Test
-    @Config(sdk = [Build.VERSION_CODES.TIRAMISU])
-    fun requestInitialPermission_NoPermissionFirstRequest_EmitsRequestEvent() = runTest {
-        whenever(context.checkPermission(eq(POST_NOTIFICATIONS), any(), any()))
-            .thenReturn(PackageManager.PERMISSION_DENIED)
-
-        val requestEvents = mutableListOf<Unit>()
-        val job = launch {
-            viewModel.requestPermission.collect {
-                requestEvents.add(it)
-            }
-        }
-
-        viewModel.requestInitialNotificationPermissionIfNeeded(context, shouldShowRationale = false)
-        advanceUntilIdle()
-
-        assertEquals("Should emit request event", 1, requestEvents.size)
-
-        job.cancel()
-    }
-
-    @Test
-    @Config(sdk = [Build.VERSION_CODES.TIRAMISU])
-    fun requestInitialPermission_ShouldShowRationale_EmitsRationaleEvent() = runTest {
-        whenever(context.checkPermission(eq(POST_NOTIFICATIONS), any(), any()))
-            .thenReturn(PackageManager.PERMISSION_DENIED)
-
-        val rationaleEvents = mutableListOf<Unit>()
-        val job = launch {
-            viewModel.showPermissionRationale.collect {
-                rationaleEvents.add(it)
-            }
-        }
-
-        viewModel.requestInitialNotificationPermissionIfNeeded(context, shouldShowRationale = true)
-        advanceUntilIdle()
-
-        assertEquals("Should emit rationale event", 1, rationaleEvents.size)
-
-        job.cancel()
-    }
-
-    @Test
-    @Config(sdk = [Build.VERSION_CODES.TIRAMISU])
-    fun requestInitialPermission_CalledTwice_OnlyRequestsOnce() = runTest {
-        whenever(context.checkPermission(eq(POST_NOTIFICATIONS), any(), any()))
-            .thenReturn(PackageManager.PERMISSION_DENIED)
-
-        val requestEvents = mutableListOf<Unit>()
-        val job = launch {
-            viewModel.requestPermission.collect {
-                requestEvents.add(it)
-            }
-        }
-
-        viewModel.requestInitialNotificationPermissionIfNeeded(context, false)
-        advanceUntilIdle()
-        viewModel.requestInitialNotificationPermissionIfNeeded(context, false)
-        advanceUntilIdle()
-
-        assertEquals("Should only request once even when called twice", 1, requestEvents.size)
-
-        job.cancel()
     }
 
     // endregion
