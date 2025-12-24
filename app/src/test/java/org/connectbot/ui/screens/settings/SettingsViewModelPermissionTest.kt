@@ -17,19 +17,21 @@
 
 package org.connectbot.ui.screens.settings
 
+import android.content.Context
 import android.content.SharedPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.connectbot.data.ProfileRepository
+import org.connectbot.data.entity.Profile
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -41,6 +43,7 @@ import org.connectbot.util.PreferenceConstants
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 
 /**
  * Unit tests for SettingsViewModel notification permission logic.
@@ -52,6 +55,8 @@ class SettingsViewModelPermissionTest {
     private val testDispatcher = StandardTestDispatcher()
     private lateinit var prefs: SharedPreferences
     private lateinit var prefsEditor: SharedPreferences.Editor
+    private lateinit var profileRepository: ProfileRepository
+    private lateinit var context: Context
     private lateinit var viewModel: SettingsViewModel
 
     @Before
@@ -59,6 +64,13 @@ class SettingsViewModelPermissionTest {
         Dispatchers.setMain(testDispatcher)
         prefs = mock()
         prefsEditor = mock()
+        profileRepository = mock()
+        context = RuntimeEnvironment.getApplication()
+
+        // Setup mock ProfileRepository
+        val defaultProfile = Profile(id = 1L, name = "Default")
+        whenever(profileRepository.getAll()).thenReturn(listOf(defaultProfile))
+        whenever(profileRepository.observeAll()).thenReturn(flowOf(listOf(defaultProfile)))
 
         // Setup mock SharedPreferences
         whenever(prefs.edit()).thenReturn(prefsEditor)
@@ -92,7 +104,7 @@ class SettingsViewModelPermissionTest {
         whenever(prefs.getBoolean(eq("bellnotification"), any())).thenReturn(false)
         whenever(prefs.getBoolean(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED), any())).thenReturn(false)
 
-        viewModel = SettingsViewModel(prefs)
+        viewModel = SettingsViewModel(prefs, profileRepository, context)
         advanceUntilIdle()
     }
 
@@ -153,7 +165,7 @@ class SettingsViewModelPermissionTest {
     fun updateConnPersist_TurningOff_UpdatesPreference() = runTest {
         // Setup connPersist as ON
         whenever(prefs.getBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), any())).thenReturn(true)
-        viewModel = SettingsViewModel(prefs)
+        viewModel = SettingsViewModel(prefs, profileRepository, context)
         advanceUntilIdle()
 
         viewModel.updateConnPersist(false)
@@ -167,7 +179,7 @@ class SettingsViewModelPermissionTest {
     fun updateConnPersist_AlreadyOn_UpdatesPreference() = runTest {
         // Setup connPersist as ON
         whenever(prefs.getBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), any())).thenReturn(true)
-        viewModel = SettingsViewModel(prefs)
+        viewModel = SettingsViewModel(prefs, profileRepository, context)
         advanceUntilIdle()
 
         viewModel.updateConnPersist(true)
@@ -198,7 +210,7 @@ class SettingsViewModelPermissionTest {
         // Verify denial state is persisted by recreating ViewModel
         whenever(prefs.getBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), any())).thenReturn(false)
         // The NOTIFICATION_PERMISSION_DENIED flag is still false in SharedPreferences
-        viewModel = SettingsViewModel(prefs)
+        viewModel = SettingsViewModel(prefs, profileRepository, context)
         advanceUntilIdle()
 
         val permissionRequests = mutableListOf<Unit>()
@@ -255,7 +267,7 @@ class SettingsViewModelPermissionTest {
         whenever(prefs.getBoolean(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED), any())).thenReturn(true)
 
         // Recreate ViewModel (simulating process death/configuration change)
-        viewModel = SettingsViewModel(prefs)
+        viewModel = SettingsViewModel(prefs, profileRepository, context)
         advanceUntilIdle()
 
         // Try to turn on connPersist
