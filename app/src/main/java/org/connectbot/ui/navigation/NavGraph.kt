@@ -20,8 +20,10 @@ package org.connectbot.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -43,31 +45,16 @@ import org.connectbot.ui.screens.profiles.ProfileListScreen
 import org.connectbot.ui.screens.pubkeyeditor.PubkeyEditorScreen
 import org.connectbot.ui.screens.pubkeylist.PubkeyListScreen
 import org.connectbot.ui.screens.settings.SettingsScreen
-
-/**
- * If the lifecycle is not resumed it means this NavBackStackEntry already processed a nav event.
- *
- * This is used to de-duplicate navigation events.
- */
-private fun NavBackStackEntry?.lifecycleIsResumed() =
-    this?.lifecycle?.currentState == Lifecycle.State.RESUMED
-
-/**
- * Safely pops the back stack, preventing double navigation when the user rapidly taps
- * the back button. This checks if the current destination's lifecycle state is RESUMED
- * before allowing the navigation to proceed.
- */
-private fun NavHostController.safePopBackStack() =
-    if (currentBackStackEntry.lifecycleIsResumed()) popBackStack() else false
+import timber.log.Timber
 
 @Composable
 fun ConnectBotNavHost(
     navController: NavHostController,
+    onNavigateToConsole: (Host) -> Unit,
+    modifier: Modifier = Modifier,
     startDestination: String = NavDestinations.HOST_LIST,
     makingShortcut: Boolean = false,
     onShortcutSelected: (Host) -> Unit = {},
-    onNavigateToConsole: (Host) -> Unit,
-    modifier: Modifier = Modifier
 ) {
     NavHost(
         navController = navController,
@@ -81,28 +68,28 @@ fun ConnectBotNavHost(
                 onShortcutSelected = onShortcutSelected,
                 onNavigateToEditHost = { host ->
                     if (host != null) {
-                        navController.navigate("${NavDestinations.HOST_EDITOR}?${NavArgs.HOST_ID}=${host.id}")
+                        navController.navigateSafely("${NavDestinations.HOST_EDITOR}?${NavArgs.HOST_ID}=${host.id}")
                     } else {
-                        navController.navigate(NavDestinations.HOST_EDITOR)
+                        navController.navigateSafely(NavDestinations.HOST_EDITOR)
                     }
                 },
                 onNavigateToSettings = {
-                    navController.navigate(NavDestinations.SETTINGS)
+                    navController.navigateSafely(NavDestinations.SETTINGS)
                 },
                 onNavigateToPubkeys = {
-                    navController.navigate(NavDestinations.PUBKEY_LIST)
+                    navController.navigateSafely(NavDestinations.PUBKEY_LIST)
                 },
                 onNavigateToPortForwards = { host ->
-                    navController.navigate("${NavDestinations.PORT_FORWARD_LIST}/${host.id}")
+                    navController.navigateSafely("${NavDestinations.PORT_FORWARD_LIST}/${host.id}")
                 },
                 onNavigateToColors = {
-                    navController.navigate(NavDestinations.COLORS)
+                    navController.navigateSafely(NavDestinations.COLORS)
                 },
                 onNavigateToProfiles = {
-                    navController.navigate(NavDestinations.PROFILES)
+                    navController.navigateSafely(NavDestinations.PROFILES)
                 },
                 onNavigateToHelp = {
-                    navController.navigate(NavDestinations.HELP)
+                    navController.navigateSafely(NavDestinations.HELP)
                 }
             )
         }
@@ -116,7 +103,7 @@ fun ConnectBotNavHost(
             ConsoleScreen(
                 onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToPortForwards = { hostIdForPortForwards ->
-                    navController.navigate("${NavDestinations.PORT_FORWARD_LIST}/$hostIdForPortForwards")
+                    navController.navigateSafely("${NavDestinations.PORT_FORWARD_LIST}/$hostIdForPortForwards")
                 }
             )
         }
@@ -138,9 +125,9 @@ fun ConnectBotNavHost(
         composable(NavDestinations.PUBKEY_LIST) {
             PubkeyListScreen(
                 onNavigateBack = { navController.safePopBackStack() },
-                onNavigateToGenerate = { navController.navigate(NavDestinations.GENERATE_PUBKEY) },
+                onNavigateToGenerate = { navController.navigateSafely(NavDestinations.GENERATE_PUBKEY) },
                 onNavigateToEdit = { pubkey ->
-                    navController.navigate("${NavDestinations.PUBKEY_EDITOR}/${pubkey.id}")
+                    navController.navigateSafely("${NavDestinations.PUBKEY_EDITOR}/${pubkey.id}")
                 }
             )
         }
@@ -182,7 +169,7 @@ fun ConnectBotNavHost(
         composable(NavDestinations.COLORS) {
             ColorsScreen(
                 onNavigateBack = { navController.safePopBackStack() },
-                onNavigateToSchemeManager = { navController.navigate(NavDestinations.SCHEME_MANAGER) }
+                onNavigateToSchemeManager = { navController.navigateSafely(NavDestinations.SCHEME_MANAGER) }
             )
         }
 
@@ -190,7 +177,7 @@ fun ConnectBotNavHost(
             ColorSchemeManagerScreen(
                 onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToPaletteEditor = { schemeId ->
-                    navController.navigate("${NavDestinations.PALETTE_EDITOR}/$schemeId")
+                    navController.navigateSafely("${NavDestinations.PALETTE_EDITOR}/$schemeId")
                 }
             )
         }
@@ -210,7 +197,7 @@ fun ConnectBotNavHost(
             ProfileListScreen(
                 onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToEdit = { profile ->
-                    navController.navigate("${NavDestinations.PROFILE_EDITOR}/${profile.id}")
+                    navController.navigateSafely("${NavDestinations.PROFILE_EDITOR}/${profile.id}")
                 }
             )
         }
@@ -229,8 +216,8 @@ fun ConnectBotNavHost(
         composable(NavDestinations.HELP) {
             HelpScreen(
                 onNavigateBack = { navController.safePopBackStack() },
-                onNavigateToHints = { navController.navigate(NavDestinations.HINTS) },
-                onNavigateToEula = { navController.navigate(NavDestinations.EULA) }
+                onNavigateToHints = { navController.navigateSafely(NavDestinations.HINTS) },
+                onNavigateToEula = { navController.navigateSafely(NavDestinations.EULA) }
             )
         }
 
@@ -245,5 +232,49 @@ fun ConnectBotNavHost(
                 onNavigateBack = { navController.safePopBackStack() }
             )
         }
+    }
+}
+
+/**
+ * If the lifecycle is not resumed it means this NavBackStackEntry already processed a nav event.
+ *
+ * This is used to de-duplicate navigation events.
+ */
+private fun NavBackStackEntry?.lifecycleIsResumed() =
+    this?.lifecycle?.currentState == Lifecycle.State.RESUMED
+
+/**
+ * Safely pops the back stack, preventing double navigation when the user rapidly taps
+ * the back button. This checks if the current destination's lifecycle state is RESUMED
+ * before allowing the navigation to proceed.
+ */
+private fun NavHostController.safePopBackStack() =
+    if (currentBackStackEntry.lifecycleIsResumed()) popBackStack() else false
+
+/**
+ * A more robust navigate function that avoids navigating to the
+ * same destination currently on screen.
+ *
+ * This checks the destination of the navigation action against the current
+ * destination.
+ *
+ * @param route The destination route to navigate to.
+ * @param navOptions Optional NavOptions to apply to this navigation.
+ */
+fun NavController.navigateSafely(
+    route: String,
+    navOptions: NavOptions? = null
+) {
+    // Find the destination for the given route.
+    val destination = graph.findNode(route)
+
+    if (destination != null) {
+        // Check if the target destination is the same as the current one.
+        if (destination.id != currentDestination?.id) {
+            navigate(route, navOptions)
+        }
+    } else {
+        Timber.w("Navigating to unknown NavGraph destination $route")
+        navigate(route, navOptions)
     }
 }
