@@ -291,7 +291,7 @@ class TerminalBridge {
                     manager.profileRepository.observeById(profileId)
                         .filterNotNull()
                         .collectLatest { profile ->
-                            Log.d(TAG, "Profile ${profile.id} changed, applying updates")
+                            Timber.d("Profile ${profile.id} changed, applying updates")
                             applyProfileSettings(profile)
                         }
                 }
@@ -306,7 +306,7 @@ class TerminalBridge {
                 .distinctUntilChanged()
                 .collectLatest { newProfileId ->
                     if (newProfileId != currentProfileId) {
-                        Log.d(TAG, "Host profile changed from $currentProfileId to $newProfileId")
+                        Timber.d("Host profile changed from $currentProfileId to $newProfileId")
                         currentProfileId = newProfileId
                     }
 
@@ -315,7 +315,7 @@ class TerminalBridge {
                     manager.profileRepository.observeById(profileToObserve)
                         .filterNotNull()
                         .collectLatest { profile ->
-                            Log.d(TAG, "Profile ${profile.id} changed, applying updates")
+                            Timber.d("Profile ${profile.id} changed, applying updates")
                             applyProfileSettings(profile)
                         }
                 }
