@@ -110,7 +110,7 @@ class BackupAgent : BackupAgentHelper() {
             ConnectBotDatabase::class.java,
             DATABASE_NAME
         ).build()
-        val hostRepository = HostRepository(applicationContext, database.hostDao(), database.portForwardDao(), database.knownHostDao())
+        val hostRepository = HostRepository(applicationContext, database, database.hostDao(), database.portForwardDao(), database.knownHostDao())
         val colorSchemeRepository = ColorSchemeRepository(database.colorSchemeDao())
         val pubkeyRepository = PubkeyRepository(database.pubkeyDao())
 

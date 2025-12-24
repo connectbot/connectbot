@@ -18,6 +18,7 @@
 package org.connectbot.data
 
 import android.content.Context
+import androidx.room.RoomDatabase
 
 /**
  * Configuration for host configuration export/import.
@@ -28,8 +29,9 @@ import android.content.Context
  * Room database schema.
  *
  * Tables exported (in order for foreign key resolution):
- * 1. hosts - Main host configurations
- * 2. port_forwards - Port forwarding rules (references hosts)
+ * 1. profiles - Terminal profile configurations
+ * 2. hosts - Main host configurations (references profiles)
+ * 3. port_forwards - Port forwarding rules (references hosts)
  */
 object HostConfigJson {
     /**
@@ -39,17 +41,17 @@ object HostConfigJson {
      * Note: Excluded fields (runtime state like last_connect, host_key_algo) are
      * configured in the generateExportSchema Gradle task and marked in the schema.
      */
-    val EXPORT_TABLES = listOf("hosts", "port_forwards")
+    val EXPORT_TABLES = listOf("profiles", "hosts", "port_forwards")
 
     /**
      * Export host configurations to JSON.
      *
-     * @param context Android context
+     * @param context Android context for loading schema
+     * @param database The Room database instance
      * @param pretty Whether to format JSON with indentation
      * @return JSON string containing host configurations
      */
-    fun exportToJson(context: Context, pretty: Boolean = true): String {
-        val database = ConnectBotDatabase.getInstance(context)
+    fun exportToJson(context: Context, database: RoomDatabase, pretty: Boolean = true): String {
         val schema = DatabaseSchema.load(context)
         val exporter = SchemaBasedExporter(database, schema)
         return exporter.exportToJson(EXPORT_TABLES, pretty)
@@ -58,12 +60,12 @@ object HostConfigJson {
     /**
      * Import host configurations from JSON.
      *
-     * @param context Android context
+     * @param context Android context for loading schema
+     * @param database The Room database instance
      * @param jsonString JSON string containing host configurations
      * @return Pair of (inserted count, updated count) for hosts only
      */
-    fun importFromJson(context: Context, jsonString: String): Pair<Int, Int> {
-        val database = ConnectBotDatabase.getInstance(context)
+    fun importFromJson(context: Context, database: RoomDatabase, jsonString: String): Pair<Int, Int> {
         val schema = DatabaseSchema.load(context)
         val exporter = SchemaBasedExporter(database, schema)
         val results = exporter.importFromJson(jsonString, EXPORT_TABLES)

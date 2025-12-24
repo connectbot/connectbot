@@ -220,10 +220,10 @@ tasks.withType<Test>().configureEach {
 }
 
 // Generate filtered export schema from Room schema
-// Only includes tables needed for export/import (hosts, port_forwards)
+// Only includes tables needed for export/import (profiles, hosts, port_forwards)
 val generateExportSchema by tasks.registering {
-    val schemaVersion = 2 // Must match ConnectBotDatabase.SCHEMA_VERSION
-    val exportTables = setOf("hosts", "port_forwards")
+    val schemaVersion = 5 // Must match ConnectBotDatabase.SCHEMA_VERSION
+    val exportTables = setOf("profiles", "hosts", "port_forwards")
     val excludedFields = setOf("last_connect", "host_key_algo")
 
     val inputFile = file("schemas/org.connectbot.data.ConnectBotDatabase/$schemaVersion.json")
@@ -308,7 +308,6 @@ tasks.withType<DependencyUpdatesTask>().configureEach {
 dependencies {
     implementation(libs.sshlib)
     implementation(libs.termlib)
-    implementation(libs.kotlin.reflect)
     implementation(libs.androidx.media3.common.ktx)
     implementation(libs.androidx.navigation.testing)
     implementation(libs.androidx.ui)

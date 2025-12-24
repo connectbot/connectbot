@@ -35,6 +35,7 @@ import javax.inject.Singleton
  * Handles host CRUD operations, known hosts, and port forwards.
  *
  * @param context Application context for accessing schema assets
+ * @param database The Room database instance for export/import operations
  * @param hostDao The DAO for accessing host data
  * @param portForwardDao The DAO for accessing port forward data
  * @param knownHostDao The DAO for accessing known host data
@@ -42,6 +43,7 @@ import javax.inject.Singleton
 @Singleton
 class HostRepository @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val database: ConnectBotDatabase,
     private val hostDao: HostDao,
     private val portForwardDao: PortForwardDao,
     private val knownHostDao: KnownHostDao
@@ -297,7 +299,7 @@ class HostRepository @Inject constructor(
      * @return JSON string containing all host configurations
      */
     suspend fun exportHostsToJson(pretty: Boolean = true): String {
-        return HostConfigJson.exportToJson(context, pretty)
+        return HostConfigJson.exportToJson(context, database, pretty)
     }
 
     /**
@@ -313,7 +315,7 @@ class HostRepository @Inject constructor(
      * @throws IllegalArgumentException if schema version is incompatible
      */
     suspend fun importHostsFromJson(jsonString: String): Pair<Int, Int> {
-        return HostConfigJson.importFromJson(context, jsonString)
+        return HostConfigJson.importFromJson(context, database, jsonString)
     }
 
     // ============================================================================
