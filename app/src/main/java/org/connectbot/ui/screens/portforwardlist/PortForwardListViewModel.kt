@@ -137,7 +137,11 @@ class PortForwardListViewModel @Inject constructor(
                 }
 
                 withActiveBridge { bridge ->
-                    bridge.transport?.addPortForward(newPortForward)
+                    bridge.transport?.let {
+                        it.addPortForward(newPortForward)
+                        it.enablePortForward(newPortForward)
+                    }
+
                     Timber.d("Added port forward ${newPortForward.nickname} to active connection")
                 }
             } catch (e: Exception) {
@@ -175,9 +179,16 @@ class PortForwardListViewModel @Inject constructor(
                 withActiveBridge { bridge ->
                     val oldPf = bridge.portForwards.find { it.id == portForward.id }
                     if (oldPf != null) {
-                        bridge.transport?.removePortForward(oldPf)
-                        bridge.transport?.addPortForward(updated)
-                        Timber.d("Updated port forward ${updated.nickname} in active connection")
+                        val shouldEnable = oldPf.isEnabled()
+                        bridge.transport?.let {
+                            it.removePortForward(oldPf)
+                            it.addPortForward(updated)
+                            if (shouldEnable) {
+                                it.enablePortForward(updated)
+                            }
+                            Timber.d("Updated port forward ${updated.nickname} in active connection")
+                        }
+                        _refreshTrigger.value += 1
                     }
                 }
             } catch (e: Exception) {
