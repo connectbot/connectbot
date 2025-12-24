@@ -41,6 +41,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.capture
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -280,11 +281,13 @@ class PortForwardListViewModelTest {
     fun updatePortForward_WithActiveConnection_UpdatesTransport() = runTest {
         val existingPortForward = createTestPortForward()
         val bridgePortForward = createTestPortForward()
+        bridgePortForward.setEnabled(true)
 
         val transport = mock<AbsTransport>()
         whenever(transport.isConnected()).thenReturn(true)
         whenever(transport.removePortForward(any())).thenReturn(true)
         whenever(transport.addPortForward(any())).thenReturn(true)
+        whenever(transport.enablePortForward(any())).thenReturn(true)
 
         val bridge = createMockBridge(testHostId, connected = true)
         whenever(bridge.transport).thenReturn(transport)
@@ -302,10 +305,11 @@ class PortForwardListViewModelTest {
             destination = "newhost.com:22"
         )
         advanceUntilIdle()
-
         verify(repository).savePortForward(any())
         verify(transport).removePortForward(eq(bridgePortForward))
-        verify(transport).addPortForward(any())
+        val captor = argumentCaptor<PortForward>()
+        verify(transport).addPortForward(captor.capture())
+        verify(transport).enablePortForward(eq(captor.firstValue))
     }
 
     @Test
