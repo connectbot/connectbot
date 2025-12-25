@@ -50,6 +50,48 @@ you can invoke the Gradle wrapper to build:
 ./gradlew build
 ```
 
+### E2E Testing
+
+ConnectBot includes end-to-end tests that verify SSH connection functionality
+against a real SSH server. These tests run on an Android emulator and connect
+to an SSH server running in Docker.
+
+#### Requirements
+
+- **Docker**: Required to run the SSH test server container
+- **KVM**: Required for Android emulator hardware acceleration (Linux only)
+
+On Linux, ensure your user has access to KVM:
+
+```sh
+# Add your user to the kvm group
+sudo gpasswd -a $USER kvm
+
+# Log out and log back in, then verify
+ls -la /dev/kvm
+```
+
+#### Running E2E Tests
+
+```sh
+# Run full E2E test suite (manages emulator and Docker automatically)
+./gradlew e2eTest
+
+# Run with existing emulator/device (only manages Docker)
+./gradlew e2eTestNoEmulator
+
+# Clean up E2E artifacts (emulator, containers, AVD)
+./gradlew e2eClean
+```
+
+The `e2eTest` task will:
+1. Create an Android Virtual Device (AVD) if needed
+2. Start the Android emulator with KVM acceleration
+3. Build and start the Docker SSH server container
+4. Build and install the app and test APKs
+5. Run the instrumented E2E tests
+6. Stop the emulator and Docker containers
+
 ### Continuous Integration
 
 ConnectBot uses [GitHub Actions](https://github.com/connectbot/connectbot/actions)
