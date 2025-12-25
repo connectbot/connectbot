@@ -1,0 +1,18 @@
+services:
+  ssh-server:
+    build:
+      context: ./ssh-server
+      dockerfile: Dockerfile
+    container_name: connectbot-e2e-ssh
+    hostname: ssh-test-server
+    ports:
+      - "2222:22"
+    environment:
+      - SSH_USER=testuser
+      - SSH_PASSWORD=testpass123
+    healthcheck:
+      test: ["CMD", "bash", "-c", "cat < /dev/null > /dev/tcp/127.0.0.1/22"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s

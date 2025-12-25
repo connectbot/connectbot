@@ -102,6 +102,45 @@ jobs:
           disk-size: 2G
           script: ./gradlew connectedCheck --continue
 
+      - name: Build E2E SSH server container
+        run: docker compose -f docker/e2e/docker-compose.yml build
+
+      - name: Start E2E SSH server
+        run: |
+          docker compose -f docker/e2e/docker-compose.yml up -d
+          # Wait for SSH server to be ready
+          timeout 30 bash -c 'until nc -z localhost 2222; do sleep 1; done'
+          echo "SSH server is ready"
+
+      - name: Run E2E tests
+        uses: reactivecircus/android-emulator-runner@b530d96654c385303d652368551fb075bc2f0b6b # v2.35.0
+        with:
+          api-level: 29
+          target: default
+          arch: x86_64
+          disk-size: 2G
+          script: |
+            # Get host IP for emulator to connect to SSH server
+            HOST_IP=$(hostname -I | awk '{print $1}')
+            echo "Host IP: $HOST_IP"
+
+            # Install APKs
+            adb install -r -t app/build/outputs/apk/oss/debug/app-oss-debug.apk
+            adb install -r -t app/build/outputs/apk/androidTest/oss/debug/app-oss-debug-androidTest.apk
+
+            # Run E2E tests
+            adb shell am instrument -w \
+              -e class org.connectbot.e2e.SshConnectionE2ETest,org.connectbot.e2e.PasswordAuthE2ETest,org.connectbot.e2e.PubkeyAuthE2ETest \
+              -e sshHost "$HOST_IP" \
+              -e sshPort 2222 \
+              -e sshUser testuser \
+              -e sshPassword testpass123 \
+              org.connectbot.tests/org.connectbot.HiltTestRunner
+
+      - name: Stop E2E SSH server
+        if: always()
+        run: docker compose -f docker/e2e/docker-compose.yml down -v
+
       - name: Prepare release
         if: ${{ github.event_name == 'push' }}
         run: |

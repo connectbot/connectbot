@@ -305,3 +305,6 @@ dependencies {
 
     errorprone(libs.errorprone.core)
 }
+
+// E2E Test tasks
+apply(from = "../gradle/e2e-test.gradle.kts")
