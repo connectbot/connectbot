@@ -758,15 +758,18 @@ class PubkeyListViewModel @Inject constructor(
             val kp = PEMDecoder.decode(keyString.toCharArray(), password)
             val algorithm = convertAlgorithmName(kp.private.algorithm)
 
+            // Re-encrypt the private key with the user's password for secure storage
+            val encryptedPrivateKey = PubkeyUtils.getEncodedPrivate(kp.private, password)
+
             return Pubkey(
                 id = 0,
                 nickname = nickname,
                 type = algorithm,
-                encrypted = false,  // Store decrypted in internal format
+                encrypted = true,  // Key is now encrypted with user's password
                 startup = false,
                 confirmation = false,
                 createdDate = System.currentTimeMillis(),
-                privateKey = kp.private.encoded,
+                privateKey = encryptedPrivateKey,
                 publicKey = kp.public.encoded
             )
         } catch (e: Exception) {
