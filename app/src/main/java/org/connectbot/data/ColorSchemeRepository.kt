@@ -17,12 +17,12 @@
 
 package org.connectbot.data
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.connectbot.data.dao.ColorSchemeDao
 import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.ColorScheme
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.HostConstants
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -35,13 +35,14 @@ import javax.inject.Singleton
  */
 @Singleton
 class ColorSchemeRepository @Inject constructor(
-    private val colorSchemeDao: ColorSchemeDao
+    private val colorSchemeDao: ColorSchemeDao,
+    private val dispatchers: CoroutineDispatchers
 ) {
 
     /**
      * Get all available color schemes (built-in + custom).
      */
-    suspend fun getAllSchemes(): List<ColorScheme> = withContext(Dispatchers.IO) {
+    suspend fun getAllSchemes(): List<ColorScheme> = withContext(dispatchers.io) {
         val schemes = mutableListOf<ColorScheme>()
 
         // Add all built-in preset schemes (including Default)
@@ -72,7 +73,7 @@ class ColorSchemeRepository @Inject constructor(
      * @param schemeId The scheme ID (negative for built-in, positive for custom)
      * @return Array of 16 ARGB color values
      */
-    suspend fun getSchemeColors(schemeId: Long): IntArray = withContext(Dispatchers.IO) {
+    suspend fun getSchemeColors(schemeId: Long): IntArray = withContext(dispatchers.io) {
         return@withContext when {
 
             // A negative ID signifies a built-in, preset color scheme
@@ -96,7 +97,7 @@ class ColorSchemeRepository @Inject constructor(
      *
      * @return Pair of (foreground index, background index)
      */
-    suspend fun getSchemeDefaults(schemeId: Long): Pair<Int, Int> = withContext(Dispatchers.IO) {
+    suspend fun getSchemeDefaults(schemeId: Long): Pair<Int, Int> = withContext(dispatchers.io) {
         return@withContext when {
 
             // A negative ID signifies a built-in, preset color scheme
@@ -126,7 +127,7 @@ class ColorSchemeRepository @Inject constructor(
      * @param colorValue The RGB color value
      */
     suspend fun setColorForScheme(schemeId: Long, colorIndex: Int, colorValue: Int) =
-        withContext(Dispatchers.IO) {
+        withContext(dispatchers.io) {
             val colorEntry = ColorPalette(
                 schemeId = schemeId,
                 colorIndex = colorIndex,
@@ -146,7 +147,7 @@ class ColorSchemeRepository @Inject constructor(
         schemeId: Long,
         foregroundColorIndex: Int,
         backgroundColorIndex: Int
-    ) = withContext(Dispatchers.IO) {
+    ) = withContext(dispatchers.io) {
         val scheme = colorSchemeDao.getById(schemeId)
         if (scheme != null) {
             colorSchemeDao.update(
@@ -163,7 +164,7 @@ class ColorSchemeRepository @Inject constructor(
      *
      * @param schemeId The scheme ID to reset (must be >= 0)
      */
-    suspend fun resetSchemeToDefaults(schemeId: Long) = withContext(Dispatchers.IO) {
+    suspend fun resetSchemeToDefaults(schemeId: Long) = withContext(dispatchers.io) {
         if (schemeId >= 0) {
             // Clear all custom colors for this scheme
             // This will make it fall back to default color scheme
@@ -194,7 +195,7 @@ class ColorSchemeRepository @Inject constructor(
         name: String,
         description: String = "",
         basedOnSchemeId: Long = -1L
-    ): Long = withContext(Dispatchers.IO) {
+    ): Long = withContext(dispatchers.io) {
         // Copy colors from the base scheme
         val sourcePalette = getSchemeColors(basedOnSchemeId)
         val sourceDefaults = getSchemeDefaults(basedOnSchemeId)
@@ -231,7 +232,7 @@ class ColorSchemeRepository @Inject constructor(
      * @return The ID of the newly created scheme
      */
     suspend fun duplicateScheme(sourceSchemeId: Long, newName: String): Long =
-        withContext(Dispatchers.IO) {
+        withContext(dispatchers.io) {
             createCustomScheme(
                 name = newName,
                 description = "",
@@ -252,7 +253,7 @@ class ColorSchemeRepository @Inject constructor(
         schemeId: Long,
         newName: String,
         newDescription: String = ""
-    ): Boolean = withContext(Dispatchers.IO) {
+    ): Boolean = withContext(dispatchers.io) {
         if (schemeId <= 0) return@withContext false
 
         val scheme = colorSchemeDao.getById(schemeId) ?: return@withContext false
@@ -271,7 +272,7 @@ class ColorSchemeRepository @Inject constructor(
      *
      * @param schemeId The scheme ID to delete (must be > 0)
      */
-    suspend fun deleteCustomScheme(schemeId: Long) = withContext(Dispatchers.IO) {
+    suspend fun deleteCustomScheme(schemeId: Long) = withContext(dispatchers.io) {
         if (schemeId > 0) {
             // Delete all color data (CASCADE will handle this, but we'll do it explicitly)
             colorSchemeDao.clearColorsForScheme(schemeId)
@@ -292,7 +293,7 @@ class ColorSchemeRepository @Inject constructor(
      * @return true if the name exists, false otherwise
      */
     suspend fun schemeNameExists(name: String, excludeSchemeId: Long? = null): Boolean =
-        withContext(Dispatchers.IO) {
+        withContext(dispatchers.io) {
             // Check against built-in schemes
             val builtInSchemes = ColorSchemePresets.builtInSchemes.map { it.name }
             if (builtInSchemes.any { it.equals(name, ignoreCase = true) }) {
@@ -311,7 +312,7 @@ class ColorSchemeRepository @Inject constructor(
      * @param schemeId The scheme ID to export
      * @return ColorSchemeJson object ready for serialization
      */
-    suspend fun exportScheme(schemeId: Long): ColorSchemeJson = withContext(Dispatchers.IO) {
+    suspend fun exportScheme(schemeId: Long): ColorSchemeJson = withContext(dispatchers.io) {
         val schemes = getAllSchemes()
         val scheme = schemes.find { it.id == schemeId }
             ?: throw IllegalArgumentException("Scheme not found: $schemeId")
@@ -335,7 +336,7 @@ class ColorSchemeRepository @Inject constructor(
      * @throws IllegalArgumentException if schema is invalid
      */
     suspend fun importScheme(jsonString: String, allowOverwrite: Boolean = false): Long =
-        withContext(Dispatchers.IO) {
+        withContext(dispatchers.io) {
             // Parse JSON
             val schemeJson = ColorSchemeJson.fromJson(jsonString)
 

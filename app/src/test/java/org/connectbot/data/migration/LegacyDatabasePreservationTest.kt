@@ -22,9 +22,12 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.di.CoroutineDispatchers
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -35,6 +38,7 @@ import java.io.File
  * Tests to verify that legacy database files (hosts.db and pubkeys.db)
  * remain intact when migration fails, allowing future versions to retry.
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 class LegacyDatabasePreservationTest {
 
@@ -43,6 +47,12 @@ class LegacyDatabasePreservationTest {
     private lateinit var pubkeysDbFile: File
     private lateinit var hostsMigratedFile: File
     private lateinit var pubkeysMigratedFile: File
+    private val testDispatcher = UnconfinedTestDispatcher()
+    private val dispatchers = CoroutineDispatchers(
+        default = testDispatcher,
+        io = testDispatcher,
+        main = testDispatcher
+    )
 
     @Before
     fun setUp() {
@@ -67,7 +77,7 @@ class LegacyDatabasePreservationTest {
             .build()
         val legacyHostReader = LegacyHostDatabaseReader(context)
         val legacyPubkeyReader = LegacyPubkeyDatabaseReader(context)
-        return DatabaseMigrator(context, database, legacyHostReader, legacyPubkeyReader)
+        return DatabaseMigrator(context, database, legacyHostReader, legacyPubkeyReader, dispatchers)
     }
 
     @Test

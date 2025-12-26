@@ -29,6 +29,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.di.CoroutineDispatchers
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -53,6 +54,11 @@ import java.security.KeyPairGenerator
 class PubkeyListViewModelTest {
 
     private val testDispatcher = UnconfinedTestDispatcher()
+    private val dispatchers = CoroutineDispatchers(
+        default = testDispatcher,
+        io = testDispatcher,
+        main = testDispatcher
+    )
     private lateinit var context: Context
     private lateinit var repository: PubkeyRepository
     private lateinit var pubkeysFlow: MutableStateFlow<List<Pubkey>>
@@ -79,7 +85,6 @@ class PubkeyListViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
 
-        // Plant a no-op tree for Timber
         Timber.plant(object : Timber.Tree() {
             override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
                 // No-op for tests
@@ -100,7 +105,7 @@ class PubkeyListViewModelTest {
     }
 
     private fun createViewModel(): PubkeyListViewModel {
-        return PubkeyListViewModel(context, repository, testDispatcher)
+        return PubkeyListViewModel(context, repository, dispatchers)
     }
 
     // ========== Tests for encrypted key import with re-encryption ==========

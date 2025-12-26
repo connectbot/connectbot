@@ -44,6 +44,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalManager
 import org.connectbot.util.BiometricKeyManager
 import org.connectbot.util.PubkeyUtils
@@ -99,7 +100,7 @@ data class PubkeyListUiState(
 class PubkeyListViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val repository: PubkeyRepository,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PubkeyListUiState(isLoading = true))
@@ -227,7 +228,7 @@ class PubkeyListViewModel @Inject constructor(
     private fun loadKeyWithPassword(pubkey: Pubkey, password: String?) {
         viewModelScope.launch {
             try {
-                val keyPair = withContext(Dispatchers.Default) {
+                val keyPair = withContext(dispatchers.default) {
                     PubkeyUtils.convertToKeyPair(pubkey, password)
                 }
                 keyPair?.let { terminalManager?.addKey(pubkey, it, true) }
@@ -247,7 +248,7 @@ class PubkeyListViewModel @Inject constructor(
     fun copyPublicKey(pubkey: Pubkey) {
         viewModelScope.launch {
             try {
-                val publicKeyString = withContext(Dispatchers.Default) {
+                val publicKeyString = withContext(dispatchers.default) {
                     // Check if this is an imported key
                     val isImported = pubkey.type == "IMPORTED"
                     if (isImported) {
@@ -289,7 +290,7 @@ class PubkeyListViewModel @Inject constructor(
             try {
                 val isImported = pubkey.type == "IMPORTED"
 
-                val privateKeyString = withContext(Dispatchers.Default) {
+                val privateKeyString = withContext(dispatchers.default) {
                     if (isImported) {
                         // For imported keys, just return the raw data
                         String(pubkey.privateKey ?: ByteArray(0))
@@ -340,7 +341,7 @@ class PubkeyListViewModel @Inject constructor(
             try {
                 val isImported = pubkey.type == "IMPORTED"
 
-                val privateKeyString = withContext(Dispatchers.Default) {
+                val privateKeyString = withContext(dispatchers.default) {
                     if (isImported) {
                         // For imported keys, just return the raw data
                         String(pubkey.privateKey ?: ByteArray(0))
@@ -398,7 +399,7 @@ class PubkeyListViewModel @Inject constructor(
     private fun copyPrivateKeyEncryptedWithPasswords(pubkey: Pubkey, password: String?, exportPassphrase: String) {
         viewModelScope.launch {
             try {
-                val privateKeyString = withContext(Dispatchers.Default) {
+                val privateKeyString = withContext(dispatchers.default) {
                     val privateKeyBytes = pubkey.privateKey ?: throw Exception("No private key data")
                     val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
                     val pub = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
@@ -568,12 +569,12 @@ class PubkeyListViewModel @Inject constructor(
                     return@launch
                 }
 
-                val publicKeyString = withContext(Dispatchers.Default) {
+                val publicKeyString = withContext(dispatchers.default) {
                     val pk = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
                     PublicKeyUtils.toAuthorizedKeysFormat(pk, pubkey.nickname)
                 }
 
-                withContext(ioDispatcher) {
+                withContext(dispatchers.io) {
                     context.contentResolver.openOutputStream(uri)?.use { outputStream ->
                         outputStream.write(publicKeyString.toByteArray(Charsets.UTF_8))
                     } ?: throw Exception("Could not open file for writing")
@@ -618,7 +619,7 @@ class PubkeyListViewModel @Inject constructor(
                 val password = pending.password
                 val exportPassphrase = pending.exportPassphrase
 
-                val privateKeyString = withContext(Dispatchers.Default) {
+                val privateKeyString = withContext(dispatchers.default) {
                     if (isImported) {
                         String(pubkey.privateKey ?: ByteArray(0))
                     } else {
@@ -647,7 +648,7 @@ class PubkeyListViewModel @Inject constructor(
                     return@launch
                 }
 
-                withContext(ioDispatcher) {
+                withContext(dispatchers.io) {
                     context.contentResolver.openOutputStream(uri)?.use { outputStream ->
                         outputStream.write(privateKeyString.toByteArray(Charsets.UTF_8))
                     } ?: throw Exception("Could not open file for writing")
@@ -676,7 +677,7 @@ class PubkeyListViewModel @Inject constructor(
     fun importKeyFromUri(uri: Uri) {
         viewModelScope.launch {
             try {
-                val result = withContext(ioDispatcher) {
+                val result = withContext(dispatchers.io) {
                     readKeyFromUri(uri)
                 }
 
@@ -720,7 +721,7 @@ class PubkeyListViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val pubkey = withContext(ioDispatcher) {
+                val pubkey = withContext(dispatchers.io) {
                     decryptAndImportKey(pending.keyData, pending.nickname, decryptPassword, encrypt, encryptPassword)
                 }
 
@@ -853,7 +854,7 @@ class PubkeyListViewModel @Inject constructor(
                 return ImportResult.NeedsPassword(keyData, nickname, keyType)
             }
         } catch (e: Exception) {
-            Timber.d("PEMDecoder failed, trying PKCS#8", e)
+            Timber.d(e, "PEMDecoder failed, trying PKCS#8")
         }
 
         // Fallback: Try to parse as PKCS#8 format (-----BEGIN PRIVATE KEY-----)

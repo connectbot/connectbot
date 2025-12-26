@@ -17,7 +17,6 @@
 
 package org.connectbot.ui.screens.pubkeyeditor
 
-import android.content.Context
 import timber.log.Timber
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -33,6 +32,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.PubkeyUtils
 
 data class PubkeyEditorUiState(
@@ -63,12 +63,10 @@ data class PubkeyEditorUiState(
 
 @HiltViewModel
 class PubkeyEditorViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
-    private val repository: PubkeyRepository
+    savedStateHandle: SavedStateHandle,
+    private val repository: PubkeyRepository,
+    private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
-    companion object {
-        private const val TAG = "PubkeyEditorViewModel"
-    }
 
     private val pubkeyId: Long = savedStateHandle.get<Long>("pubkeyId") ?: -1L
 
@@ -84,7 +82,7 @@ class PubkeyEditorViewModel @Inject constructor(
     private fun loadPubkey() {
         viewModelScope.launch {
             try {
-                val pubkey = withContext(Dispatchers.IO) {
+                val pubkey = withContext(dispatchers.io) {
                     repository.getById(pubkeyId)
                 }
 
@@ -136,7 +134,7 @@ class PubkeyEditorViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val exists = withContext(Dispatchers.IO) {
+                val exists = withContext(dispatchers.io) {
                     repository.getByNickname(nickname) != null
                 }
                 _uiState.update { it.copy(nicknameExists = exists) }
@@ -167,12 +165,12 @@ class PubkeyEditorViewModel @Inject constructor(
     }
 
     fun save() {
-        var pubkey = originalPubkey ?: return
+        val pubkey = originalPubkey ?: return
         val state = _uiState.value
 
         viewModelScope.launch {
             try {
-                withContext(Dispatchers.IO) {
+                withContext(dispatchers.io) {
                     // Handle password change if needed
                     // Password needs to be changed if:
                     // 1. Key is encrypted and user provided old password (removing or changing password)
@@ -189,7 +187,7 @@ class PubkeyEditorViewModel @Inject constructor(
 
                         val privateKeyData = pubkey.privateKey
                         if (privateKeyData == null) {
-                            withContext(Dispatchers.Main) {
+                            withContext(dispatchers.main) {
                                 _uiState.update { it.copy(wrongPassword = true) }
                             }
                             return@withContext
@@ -204,7 +202,7 @@ class PubkeyEditorViewModel @Inject constructor(
                             )
 
                             if (privateKeyObj == null) {
-                                withContext(Dispatchers.Main) {
+                                withContext(dispatchers.main) {
                                     _uiState.update { it.copy(wrongPassword = true) }
                                 }
                                 return@withContext
@@ -213,8 +211,8 @@ class PubkeyEditorViewModel @Inject constructor(
                             // Re-encode with new password
                             newPrivateKey = PubkeyUtils.getEncodedPrivate(privateKeyObj, newPassword)
                             newEncrypted = newPassword.isNotEmpty()
-                        } catch (e: Exception) {
-                            withContext(Dispatchers.Main) {
+                        } catch (_: Exception) {
+                            withContext(dispatchers.main) {
                                 _uiState.update { it.copy(wrongPassword = true) }
                             }
                             return@withContext

@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 import org.connectbot.data.ColorSchemePresets
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.entity.ColorScheme
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.HostConstants
 
 data class ColorsUiState(
@@ -75,7 +76,8 @@ data class ColorsUiState(
 
 @HiltViewModel
 class ColorsViewModel @Inject constructor(
-    private val repository: ColorSchemeRepository
+    private val repository: ColorSchemeRepository,
+    private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ColorsUiState())

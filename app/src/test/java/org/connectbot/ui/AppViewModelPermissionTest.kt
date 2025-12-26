@@ -34,6 +34,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.connectbot.data.migration.DatabaseMigrator
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalManager
 import org.connectbot.util.PreferenceConstants
 import org.junit.After
@@ -62,6 +63,11 @@ import org.robolectric.annotation.Config
 class AppViewModelPermissionTest {
 
     private val testDispatcher = StandardTestDispatcher()
+    private val dispatchers = CoroutineDispatchers(
+        default = testDispatcher,
+        io = testDispatcher,
+        main = testDispatcher
+    )
     private lateinit var migrator: DatabaseMigrator
     private lateinit var prefs: SharedPreferences
     private lateinit var prefsEditor: SharedPreferences.Editor
@@ -71,6 +77,7 @@ class AppViewModelPermissionTest {
     @Before
     fun setUp() = runTest {
         Dispatchers.setMain(testDispatcher)
+
         migrator = mock()
         prefs = mock()
         prefsEditor = mock()
@@ -80,7 +87,7 @@ class AppViewModelPermissionTest {
         whenever(prefs.edit()).thenReturn(prefsEditor)
         whenever(prefsEditor.putBoolean(any(), any())).thenReturn(prefsEditor)
 
-        viewModel = AppViewModel(migrator, prefs)
+        viewModel = AppViewModel(migrator, prefs, dispatchers)
         advanceUntilIdle()
     }
 

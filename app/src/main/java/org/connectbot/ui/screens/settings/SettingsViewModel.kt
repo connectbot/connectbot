@@ -27,8 +27,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
-import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,10 +36,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.entity.Profile
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.TerminalFontProvider
 import timber.log.Timber
+import javax.inject.Inject
 
 data class SettingsUiState(
     val memkeys: Boolean = true,
@@ -82,7 +82,8 @@ data class SettingsUiState(
 class SettingsViewModel @Inject constructor(
     private val prefs: SharedPreferences,
     private val profileRepository: ProfileRepository,
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
     private val fontProvider = TerminalFontProvider(context)
     private val localFontProvider = LocalFontProvider(context)
@@ -292,7 +293,7 @@ class SettingsViewModel @Inject constructor(
 
     fun updateDefaultProfile(profileId: Long) {
         viewModelScope.launch {
-            prefs.edit().putLong("defaultProfileId", profileId).apply()
+            prefs.edit { putLong("defaultProfileId", profileId) }
             _uiState.update { it.copy(defaultProfileId = profileId) }
         }
     }
@@ -305,7 +306,7 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             val updatedTypes = currentTypes + terminalType
             val typesString = updatedTypes.joinToString(",")
-            prefs.edit().putString("customTerminalTypes", typesString).apply()
+            prefs.edit { putString("customTerminalTypes", typesString) }
             _uiState.update { it.copy(customTerminalTypes = updatedTypes) }
         }
     }
@@ -315,7 +316,7 @@ class SettingsViewModel @Inject constructor(
             val currentTypes = _uiState.value.customTerminalTypes.toMutableList()
             if (currentTypes.remove(terminalType)) {
                 val typesString = currentTypes.joinToString(",")
-                prefs.edit().putString("customTerminalTypes", typesString).apply()
+                prefs.edit { putString("customTerminalTypes", typesString) }
                 _uiState.update { it.copy(customTerminalTypes = currentTypes) }
             }
         }
@@ -348,7 +349,7 @@ class SettingsViewModel @Inject constructor(
                     // Font loaded successfully, add it to the list
                     val updatedFonts = currentFonts + fontName
                     val fontsString = updatedFonts.joinToString(",")
-                    prefs.edit().putString("customFonts", fontsString).apply()
+                    prefs.edit { putString("customFonts", fontsString) }
                     _uiState.update {
                         it.copy(
                             customFonts = updatedFonts,
@@ -378,7 +379,7 @@ class SettingsViewModel @Inject constructor(
             val currentFonts = _uiState.value.customFonts.toMutableList()
             if (currentFonts.remove(fontName)) {
                 val fontsString = currentFonts.joinToString(",")
-                prefs.edit().putString("customFonts", fontsString).apply()
+                prefs.edit { putString("customFonts", fontsString) }
                 _uiState.update { it.copy(customFonts = currentFonts) }
 
                 // If the removed font was the selected font, reset to system default
@@ -395,7 +396,7 @@ class SettingsViewModel @Inject constructor(
         _uiState.update { it.copy(fontImportInProgress = true, fontImportError = null) }
 
         viewModelScope.launch {
-            val fileName = withContext(Dispatchers.IO) {
+            val fileName = withContext(dispatchers.io) {
                 localFontProvider.importFont(uri, displayName)
             }
 
@@ -421,7 +422,7 @@ class SettingsViewModel @Inject constructor(
 
     fun deleteLocalFont(fileName: String) {
         viewModelScope.launch {
-            val deleted = withContext(Dispatchers.IO) {
+            val deleted = withContext(dispatchers.io) {
                 localFontProvider.deleteFont(fileName)
             }
 

@@ -29,6 +29,7 @@ import kotlinx.coroutines.test.setMain
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.transport.AbsTransport
@@ -52,6 +53,11 @@ import timber.log.Timber
 class PortForwardListViewModelTest {
 
     private val testDispatcher = UnconfinedTestDispatcher()
+    private val dispatchers = CoroutineDispatchers(
+        default = testDispatcher,
+        io = testDispatcher,
+        main = testDispatcher
+    )
     private lateinit var repository: HostRepository
     private lateinit var savedStateHandle: SavedStateHandle
     private lateinit var terminalManager: TerminalManager
@@ -65,7 +71,6 @@ class PortForwardListViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
 
-        // Plant a no-op tree for Timber
         Timber.plant(object : Timber.Tree() {
             override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
                 // No-op for tests
@@ -90,7 +95,7 @@ class PortForwardListViewModelTest {
     }
 
     private fun createViewModel(): PortForwardListViewModel {
-        val vm = PortForwardListViewModel(savedStateHandle, repository, testDispatcher)
+        val vm = PortForwardListViewModel(savedStateHandle, repository, dispatchers)
         vm.setTerminalManager(terminalManager)
         return vm
     }
