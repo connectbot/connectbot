@@ -63,6 +63,7 @@ import org.connectbot.BuildConfig
 import org.connectbot.R
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.ui.common.getIconColors
+import org.connectbot.ui.common.getLocalizedFontDisplayName
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
 
@@ -255,9 +256,12 @@ private fun FontFamilySelector(
 
     // Build options: System Default + preset fonts (if available) + custom fonts + local fonts
     val presetOptions = if (BuildConfig.HAS_DOWNLOADABLE_FONTS) {
-        TerminalFont.entries.map { it.displayName to it.name }
+        TerminalFont.entries.map { font ->
+            val displayName = getLocalizedFontDisplayName(font.name)
+            displayName to font.name
+        }
     } else {
-        listOf(TerminalFont.SYSTEM_DEFAULT.displayName to TerminalFont.SYSTEM_DEFAULT.name)
+        listOf(getLocalizedFontDisplayName(TerminalFont.SYSTEM_DEFAULT.name) to TerminalFont.SYSTEM_DEFAULT.name)
     }
     val customOptions = if (BuildConfig.HAS_DOWNLOADABLE_FONTS) {
         customFonts.map { it to TerminalFont.createCustomFontValue(it) }
@@ -281,11 +285,7 @@ private fun FontFamilySelector(
             onExpandedChange = { expanded = it }
         ) {
             OutlinedTextField(
-                value = if (fontFamily == null) {
-                    TerminalFont.SYSTEM_DEFAULT.displayName
-                } else {
-                    TerminalFont.getDisplayName(fontFamily)
-                },
+                value = getLocalizedFontDisplayName(fontFamily),
                 onValueChange = {},
                 readOnly = true,
                 singleLine = true,

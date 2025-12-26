@@ -63,7 +63,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
 import org.connectbot.data.entity.Profile
-import org.connectbot.util.TerminalFont
+import org.connectbot.ui.common.getLocalizedFontDisplayName
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -279,11 +279,7 @@ private fun ProfileSummaryText(profile: Profile) {
     val parts = mutableListOf<String>()
 
     // Font
-    val fontName = if (profile.fontFamily != null) {
-        TerminalFont.getDisplayName(profile.fontFamily)
-    } else {
-        TerminalFont.SYSTEM_DEFAULT.displayName
-    }
+    val fontName = getLocalizedFontDisplayName(profile.fontFamily)
     parts.add(stringResource(R.string.profile_summary_font, fontName, profile.fontSize))
 
     // Emulation

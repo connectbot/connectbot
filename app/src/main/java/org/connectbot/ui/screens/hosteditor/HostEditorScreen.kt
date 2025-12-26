@@ -68,6 +68,7 @@ import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.common.getIconColors
+import org.connectbot.ui.common.getLocalizedFontDisplayName
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
@@ -588,7 +589,7 @@ private fun FontFamilySelector(
                 value = if (fontFamily == null) {
                     stringResource(R.string.font_use_default)
                 } else {
-                    TerminalFont.getDisplayName(fontFamily)
+                    getLocalizedFontDisplayName(fontFamily)
                 },
                 onValueChange = {},
                 readOnly = true,
