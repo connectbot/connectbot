@@ -56,12 +56,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.components.RgbColorPickerDialog
-import org.connectbot.ui.theme.ConnectBotTheme
-
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 /**
  * Screen for editing the full 256-color palette of a color scheme.

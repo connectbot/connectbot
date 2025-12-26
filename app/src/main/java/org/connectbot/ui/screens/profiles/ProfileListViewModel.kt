@@ -20,7 +20,6 @@ package org.connectbot.ui.screens.profiles
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,6 +27,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.entity.Profile
+import javax.inject.Inject
 
 data class ProfileListUiState(
     val profiles: List<Profile> = emptyList(),

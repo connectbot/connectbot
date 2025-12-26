@@ -21,7 +21,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dagger.multibindings.IntoSet
 import org.connectbot.BuildConfig
 import org.connectbot.logging.LocalTree
 import timber.log.Timber

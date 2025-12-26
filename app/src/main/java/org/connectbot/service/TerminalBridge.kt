@@ -22,7 +22,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.Typeface
-import timber.log.Timber
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,23 +41,21 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.connectbot.di.CoroutineDispatchers
-
-import java.io.IOException
-import java.nio.charset.Charset
-import java.util.concurrent.CopyOnWriteArrayList
-import java.util.regex.Pattern
-
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.TerminalEmulatorFactory
 import org.connectbot.transport.AbsTransport
 import org.connectbot.transport.SSH
 import org.connectbot.transport.TransportFactory
 import org.connectbot.util.HostConstants
+import timber.log.Timber
+import java.io.IOException
+import java.nio.charset.Charset
+import java.util.concurrent.CopyOnWriteArrayList
+import java.util.regex.Pattern
 
 /**
  * Provides a bridge between a MUD terminal buffer and a possible TerminalView.

@@ -19,7 +19,6 @@ package org.connectbot.ui.components
 
 import android.content.Context
 import android.content.ContextWrapper
-import timber.log.Timber
 import androidx.biometric.BiometricPrompt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,6 +29,7 @@ import androidx.fragment.app.FragmentActivity
 import org.connectbot.R
 import org.connectbot.service.PromptRequest
 import org.connectbot.service.PromptResponse
+import timber.log.Timber
 
 /**
  * Handler for biometric authentication prompts.

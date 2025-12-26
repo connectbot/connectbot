@@ -17,10 +17,9 @@
 
 package org.connectbot.service
 
-import timber.log.Timber
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.runBlocking
-import java.io.IOException
+import timber.log.Timber
 
 /**
  * Extension methods for TerminalBridge to handle prompts.

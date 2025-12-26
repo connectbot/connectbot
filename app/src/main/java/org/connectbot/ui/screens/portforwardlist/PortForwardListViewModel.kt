@@ -17,7 +17,6 @@
 
 package org.connectbot.ui.screens.portforwardlist
 
-import timber.log.Timber
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,6 +33,7 @@ import org.connectbot.data.entity.PortForward
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
+import timber.log.Timber
 import javax.inject.Inject
 
 data class PortForwardListUiState(

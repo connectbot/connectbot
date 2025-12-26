@@ -20,10 +20,7 @@ package org.connectbot.ui.screens.console
 import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context
-import android.graphics.Typeface
 import androidx.compose.animation.AnimatedVisibility
-import kotlinx.coroutines.launch
-import org.connectbot.util.rememberTerminalTypefaceResultFromStoredValue
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -96,10 +93,13 @@ import androidx.core.content.edit
 import androidx.core.net.toUri
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.service.PromptRequest
 import org.connectbot.terminal.Terminal
 import org.connectbot.ui.LoadingScreen
 import org.connectbot.ui.LocalTerminalManager
@@ -109,10 +109,8 @@ import org.connectbot.ui.components.ResizeDialog
 import org.connectbot.ui.components.TERMINAL_KEYBOARD_HEIGHT_DP
 import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
-import org.connectbot.service.PromptRequest
 import org.connectbot.util.PreferenceConstants
-
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import org.connectbot.util.rememberTerminalTypefaceResultFromStoredValue
 import timber.log.Timber
 
 /**

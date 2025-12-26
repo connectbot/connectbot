@@ -74,15 +74,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import org.connectbot.R
-import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.theme.ConnectBotTheme
-
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 /**
  * Screen for managing color schemes (create, duplicate, delete).

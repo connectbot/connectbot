@@ -17,11 +17,9 @@
 
 package org.connectbot.ui.screens.colors
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,6 +30,7 @@ import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.HostConstants
+import javax.inject.Inject
 
 data class ColorsUiState(
     val currentSchemeId: Long = -1,

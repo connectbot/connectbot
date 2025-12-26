@@ -91,14 +91,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.ui.LocalTerminalManager
-import org.connectbot.ui.components.rememberBiometricPromptState
 import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.components.rememberBiometricPromptState
 import org.connectbot.ui.theme.ConnectBotTheme
-
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

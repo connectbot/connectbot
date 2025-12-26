@@ -17,12 +17,10 @@
 
 package org.connectbot.ui.screens.pubkeyeditor
 
-import timber.log.Timber
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,6 +32,8 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.PubkeyUtils
+import timber.log.Timber
+import javax.inject.Inject
 
 data class PubkeyEditorUiState(
     val nickname: String = "",

@@ -18,10 +18,13 @@
 package org.connectbot.service
 
 import android.content.Context
-import timber.log.Timber
 import androidx.room.Room
+import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.HostRepository
+import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.KeyStorageType
+import timber.log.Timber
 import java.io.File
 
 /**
@@ -30,10 +33,6 @@ import java.io.File
  * This class is separated from BackupAgent to allow for unit testing
  * of the filtering logic without requiring system-level backup permissions.
  */
-import org.connectbot.data.ColorSchemeRepository
-import org.connectbot.data.HostRepository
-import org.connectbot.data.PubkeyRepository
-
 class BackupFilter(
     private val context: Context,
     private val hostRepository: HostRepository,

@@ -24,7 +24,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,6 +36,7 @@ import org.connectbot.data.entity.Profile
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
 import org.connectbot.util.TerminalFontProvider
+import javax.inject.Inject
 
 data class ProfileEditorUiState(
     val profileId: Long = -1L,
