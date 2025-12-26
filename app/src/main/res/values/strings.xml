@@ -2,7 +2,7 @@
 <!--
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2007 Kenny Root, Jeffrey Sharkey
+ * Copyright 2007-2025 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,9 @@
 
 	<!-- Summary of what the ConnectBot service does; displayed in the Android running apps list -->
 	<string name="service_desc">"Maintains SSH connections and loaded pubkeys"</string>
+
+	<!-- Displayed in the "Help" screen to denote the copyright of this app. -->
+	<string name="app_copyright">Copyright &#xA9; Kenny Root</string>
 
 	<!-- Window title for the Pubkeys List -->
 	<string name="title_pubkey_list">"Pubkeys"</string>
@@ -416,6 +419,23 @@
 
 	<!-- Port field title for host editor preference -->
 	<string name="hostpref_port_title">"Port"</string>
+
+	<!-- When editing a host entry, this is displayed for the section about changing the
+	     configuration profile of a host. The profile controls terminal colors, terminal
+	     font, etc. -->
+	<string name="hostpref_profile_title">Profile</string>
+	<!-- Description text shown below the profile selector explaining what selecting a profile does -->
+	<string name="hostpref_profile_summary">Select a profile to use its terminal settings</string>
+	<!-- Dropdown option shown when no profile is selected, indicating host-specific settings will be used instead -->
+	<string name="hostpref_profile_none">None (use host settings)</string>
+	<!-- Message displayed when a setting is disabled because it's controlled by a profile instead of host settings -->
+	<string name="profile_controlled_setting">Controlled by profile</string>
+	<!-- Dropdown option to use the default font when configuring font family -->
+	<string name="font_use_default">Use Default</string>
+	<!-- Fallback text shown when referencing a pubkey that no longer exists in the database -->
+	<string name="pubkey_unknown">Unknown key</string>
+	<!-- Default name shown for the default color scheme when no specific scheme is selected -->
+	<string name="colorscheme_default">Default</string>
 
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">"Close"</string>
@@ -1023,4 +1043,7 @@
 	<string name="logs_bug_report_info">To report a bug, copy these logs and open a new issue at https://connectbot.org/bug</string>
 	<!-- Message shown when no logs are available -->
 	<string name="no_logs_available">No logs available</string>
+
+	<!-- Section title for the "Help" screen showing information about the program itself. -->
+	<string name="help_section_about">About</string>
 </resources>

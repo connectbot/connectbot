@@ -158,17 +158,17 @@ fun HelpScreen(
 
             item {
                 Text(
-                    text = "\nAbout",
+                    text = stringResource(R.string.help_section_about),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
                 )
                 Text(
-                    text = "ConnectBot is a powerful open-source Secure Shell (SSH) client for Android.",
+                    text = stringResource(R.string.app_desc),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
                 Text(
-                    text = "Copyright © Kenny Root",
+                    text = stringResource(R.string.app_copyright),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
