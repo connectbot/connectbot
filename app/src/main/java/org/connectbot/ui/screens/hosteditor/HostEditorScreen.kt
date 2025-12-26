@@ -525,7 +525,7 @@ private fun FontSizeSelector(
         )
         if (!enabled) {
             Text(
-                text = "Controlled by profile",
+                text = stringResource(R.string.profile_controlled_setting),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -581,7 +581,7 @@ private fun FontFamilySelector(
     val localOptions = localFonts.map { (displayName, fileName) ->
         displayName to LocalFontProvider.createLocalFontValue(fileName)
     }
-    val allOptions = listOf("Use Default" to null) + presetOptions + customOptions + localOptions
+    val allOptions = listOf(stringResource(R.string.font_use_default) to null) + presetOptions + customOptions + localOptions
 
     Column(modifier = modifier) {
         Text(
@@ -592,7 +592,7 @@ private fun FontFamilySelector(
         )
         if (!enabled) {
             Text(
-                text = "Controlled by profile",
+                text = stringResource(R.string.profile_controlled_setting),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -605,7 +605,7 @@ private fun FontFamilySelector(
         ) {
             OutlinedTextField(
                 value = if (fontFamily == null) {
-                    "Use Default"
+                    stringResource(R.string.font_use_default)
                 } else {
                     TerminalFont.getDisplayName(fontFamily)
                 },
@@ -661,7 +661,7 @@ private fun ColorSchemeSelector(
         )
         if (!enabled) {
             Text(
-                text = "Controlled by profile",
+                text = stringResource(R.string.profile_controlled_setting),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -673,7 +673,7 @@ private fun ColorSchemeSelector(
             onExpandedChange = { if (enabled) expanded = it }
         ) {
             OutlinedTextField(
-                value = availableSchemes.find { it.id == colorSchemeId }?.name ?: "Default",
+                value = availableSchemes.find { it.id == colorSchemeId }?.name ?: stringResource(R.string.colorscheme_default),
                 onValueChange = {},
                 readOnly = true,
                 singleLine = true,
@@ -756,7 +756,7 @@ private fun PubkeySelector(
                     -2L -> stringResource(R.string.list_pubkeyids_none)
                     else -> {
                         val selectedPubkey = availablePubkeys.find { it.id == pubkeyId }
-                        selectedPubkey?.nickname ?: "Unknown key"
+                        selectedPubkey?.nickname ?: stringResource(R.string.pubkey_unknown)
                     }
                 },
                 onValueChange = {},
@@ -802,12 +802,12 @@ private fun ProfileSelector(
 
     Column(modifier = modifier) {
         Text(
-            text = "Profile",
+            text = stringResource(R.string.hostpref_profile_title),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 4.dp)
         )
         Text(
-            text = "Select a profile to use its terminal settings",
+            text = stringResource(R.string.hostpref_profile_summary),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(bottom = 8.dp)
@@ -819,10 +819,10 @@ private fun ProfileSelector(
         ) {
             OutlinedTextField(
                 value = when {
-                    profileId == null -> "None (use host settings)"
+                    profileId == null -> stringResource(R.string.hostpref_profile_none)
                     else -> {
                         val selectedProfile = availableProfiles.find { it.id == profileId }
-                        selectedProfile?.name ?: "None (use host settings)"
+                        selectedProfile?.name ?: stringResource(R.string.hostpref_profile_none)
                     }
                 },
                 onValueChange = {},
@@ -843,7 +843,7 @@ private fun ProfileSelector(
             ) {
                 // "None" option
                 DropdownMenuItem(
-                    text = { Text("None (use host settings)") },
+                    text = { Text(stringResource(R.string.hostpref_profile_none)) },
                     onClick = {
                         onProfileSelected(null)
                         expanded = false
@@ -964,7 +964,7 @@ private fun DelKeySelector(
         )
         if (!enabled) {
             Text(
-                text = "Controlled by profile",
+                text = stringResource(R.string.profile_controlled_setting),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -1029,7 +1029,7 @@ private fun EncodingSelector(
         )
         if (!enabled) {
             Text(
-                text = "Controlled by profile",
+                text = stringResource(R.string.profile_controlled_setting),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 8.dp)
