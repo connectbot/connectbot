@@ -109,9 +109,13 @@
 	<string name="pubkey_import_encrypted_message">"Enter password to decrypt key '%1$s' (%2$s)"</string>
 	<!-- Button text to confirm importing a key -->
 	<string name="pubkey_import_button">"Import"</string>
+	<!-- Checkbox label in the import encrypted key dialog. When checked, the imported key will be encrypted for storage on the device. -->
 	<string name="pubkey_import_encrypt_key">"Encrypt key for storage"</string>
+	<!-- Checkbox label that appears when 'Encrypt key for storage' is checked. When checked, the same password used to decrypt the imported key will be used to encrypt it for storage. -->
 	<string name="pubkey_import_reuse_password">"Use same password for encryption"</string>
+	<!-- Label for the password field when entering a new password to encrypt the imported key for storage. -->
 	<string name="pubkey_import_new_password">"New password"</string>
+	<!-- Label for the password confirmation field when setting a new password to encrypt the imported key. -->
 	<string name="pubkey_import_confirm_password">"Confirm password"</string>
 	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
 	<string name="pubkey_list_empty">"Tap \"Menu\" to create"\n"or import key pairs."</string>

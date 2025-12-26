@@ -28,6 +28,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
+import org.connectbot.di.IoDispatcher
 import com.trilead.ssh2.crypto.Base64
 import com.trilead.ssh2.crypto.OpenSSHKeyEncoder
 import com.trilead.ssh2.crypto.PEMDecoder
@@ -96,7 +98,8 @@ data class PubkeyListUiState(
 @HiltViewModel
 class PubkeyListViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val repository: PubkeyRepository
+    private val repository: PubkeyRepository,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PubkeyListUiState(isLoading = true))
@@ -570,7 +573,7 @@ class PubkeyListViewModel @Inject constructor(
                     PublicKeyUtils.toAuthorizedKeysFormat(pk, pubkey.nickname)
                 }
 
-                withContext(Dispatchers.IO) {
+                withContext(ioDispatcher) {
                     context.contentResolver.openOutputStream(uri)?.use { outputStream ->
                         outputStream.write(publicKeyString.toByteArray(Charsets.UTF_8))
                     } ?: throw Exception("Could not open file for writing")
@@ -644,7 +647,7 @@ class PubkeyListViewModel @Inject constructor(
                     return@launch
                 }
 
-                withContext(Dispatchers.IO) {
+                withContext(ioDispatcher) {
                     context.contentResolver.openOutputStream(uri)?.use { outputStream ->
                         outputStream.write(privateKeyString.toByteArray(Charsets.UTF_8))
                     } ?: throw Exception("Could not open file for writing")
@@ -673,7 +676,7 @@ class PubkeyListViewModel @Inject constructor(
     fun importKeyFromUri(uri: Uri) {
         viewModelScope.launch {
             try {
-                val result = withContext(Dispatchers.IO) {
+                val result = withContext(ioDispatcher) {
                     readKeyFromUri(uri)
                 }
 
@@ -717,7 +720,7 @@ class PubkeyListViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val pubkey = withContext(Dispatchers.IO) {
+                val pubkey = withContext(ioDispatcher) {
                     decryptAndImportKey(pending.keyData, pending.nickname, decryptPassword, encrypt, encryptPassword)
                 }
 
