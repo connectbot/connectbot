@@ -466,6 +466,8 @@
 	<string name="profile_controlled_setting">Controlled by profile</string>
 	<!-- Dropdown option to use the default font when configuring font family -->
 	<string name="font_use_default">Use Default</string>
+	<!-- Display name for the system default monospace font option -->
+	<string name="font_system_default">Default (Monospace)</string>
 	<!-- Fallback text shown when referencing a pubkey that no longer exists in the database -->
 	<string name="pubkey_unknown">Unknown key</string>
 	<!-- Default name shown for the default color scheme when no specific scheme is selected -->
