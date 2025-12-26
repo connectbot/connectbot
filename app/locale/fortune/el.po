@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-26 09:45-0800\n"
+"POT-Creation-Date: 2025-12-26 10:13-0800\n"
 "PO-Revision-Date: 2021-08-03 15:15+0000\n"
 "Last-Translator: konenas <Unknown>\n"
 "Language: el\n"
@@ -2579,5 +2579,81 @@ msgstr ""
 #. Description of the Tomorrow Night color scheme
 msgctxt "colorscheme_tomorrow_night_description"
 msgid "A clean and comfortable dark theme"
+msgstr ""
+
+#. Settings screen strings
+#. Category title for profile settings section
+msgctxt "pref_profiles_category"
+msgid "Profiles"
+msgstr ""
+
+#. Setting title for default profile selection
+msgctxt "pref_default_profile_title"
+msgid "Default Profile"
+msgstr ""
+
+#. Summary text when no default profile is selected
+msgctxt "pref_default_profile_none"
+msgid "None (use host settings)"
+msgstr ""
+
+#. Summary text for special keys always visible setting
+msgctxt "pref_alwaysvisible_summary"
+msgid "Keep special keys always visible"
+msgstr ""
+
+#. Title for custom terminal types preference
+msgctxt "pref_customterminal_title"
+msgid "Custom Terminal Types"
+msgstr ""
+
+#. Summary for custom terminal types preference
+msgctxt "pref_customterminal_summary"
+msgid "Add custom TERM values for remote servers"
+msgstr ""
+
+#. Dialog title for adding a custom terminal type
+msgctxt "dialog_customterminal_title"
+msgid "Add Custom Terminal Type"
+msgstr ""
+
+#. Label/hint for terminal type input field
+msgctxt "dialog_customterminal_hint"
+msgid "Terminal type (e.g., rxvt-unicode)"
+msgstr ""
+
+#. Label for custom value input in list preference dialogs
+msgctxt "dialog_custom_value_label"
+msgid "Enter custom value"
+msgstr ""
+
+#. Summary description for Ctrl+A then Space camera button action
+msgctxt "list_camera_ctrlaspace_description"
+msgid "Ctrl+A then Space"
+msgstr ""
+
+#. Summary description for Ctrl+A camera button action
+msgctxt "list_camera_ctrla_description"
+msgid "Ctrl+A"
+msgstr ""
+
+#. Summary description for Esc camera button action
+msgctxt "list_camera_esc_description"
+msgid "Esc"
+msgstr ""
+
+#. Summary description for Esc+A camera button action
+msgctxt "list_camera_esc_a_description"
+msgid "Esc+A"
+msgstr ""
+
+#. Summary description for None camera button action
+msgctxt "list_camera_none_description"
+msgid "None"
+msgstr ""
+
+#. Summary description for text input camera button action
+msgctxt "list_camera_text_input_description"
+msgid "Text input"
 msgstr ""
 
