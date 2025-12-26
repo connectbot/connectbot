@@ -2,17 +2,13 @@
 <resources>
   <string name="app_desc">ใช้ง่าย, มีประสิทธิภาพ, โอเพนซอร์ส SSH ไคลเอนท์</string>
   <string name="service_desc">จัดการการเชื่อมต่อ SSH และใส่กุญแจสาธารณะ</string>
-  <string name="title_hosts_list">เครื่องปลายทางต่าง ๆ</string>
-  <string name="title_pubkey_list">กุญแจสาธารณะ</string>
+	<string name="title_pubkey_list">กุญแจสาธารณะ</string>
   <string name="title_port_forwards_list">ฟอร์เวิร์ดพอร์ต</string>
-  <string name="title_host_editor">แก้ไขโฮสต์</string>
-  <string name="title_help">ช่วยเหลือ</string>
+	<string name="title_help">ช่วยเหลือ</string>
   <string name="title_colors">สี</string>
   <string name="title_color_picker">เลือกสี</string>
   <string name="title_settings">ค่าตั้ง</string>
   <string name="title_pubkey_generate">สร้าง</string>
-  <string name="help_intro">กรุณาเลือกหัวข้อเฉพาะที่ต้องการข้อมูลเพิ่มเติม</string>
-  <string name="terms_and_conditions">เงื่อนไขและข้อตกลงต่างๆ</string>
+	<string name="terms_and_conditions">เงื่อนไขและข้อตกลงต่างๆ</string>
   <string name="hints">ข้อแนะนำ</string>
-  <string name="host_shortcuts_header">ทางลัดเครื่องปลายทาง</string>
 </resources>

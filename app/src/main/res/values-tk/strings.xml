@@ -2,20 +2,13 @@
 <resources>
   <string name="app_desc">Ýönekeý, güýçli, açyk çeşme SSH müşderisi</string>
   <string name="service_desc">SSH birikmelerini we ýüklenen pubkeýleri saklaýar</string>
-  <string name="title_hosts_list">Ýer eýeleri(Hosts)</string>
-  <string name="title_pubkey_list">Pubkeys</string>
+	<string name="title_pubkey_list">Pubkeys</string>
   <string name="title_port_forwards_list">Port maglumaty</string>
-  <string name="title_host_editor">Host redaktirläň</string>
-  <string name="title_help">Kömek</string>
+	<string name="title_help">Kömek</string>
   <string name="title_colors">Reñkler</string>
   <string name="title_color_picker">Renk saýlañ</string>
   <string name="title_settings">Sazlamalar</string>
   <string name="title_pubkey_generate">Dörediň</string>
-  <string name="help_intro">Belli bir mowzuk hakda has giňişleýin maglumat üçin aşakdaky mowzugy saýlaň</string>
-  <string name="terms_and_conditions">Şertler</string>
+	<string name="terms_and_conditions">Şertler</string>
   <string name="hints">Maslahat</string>
-  <string name="host_shortcuts_header">Host Salgylanmalary</string>
-  <string name="host_shortcuts_content">Ýygy-ýygydan ulanylýan SSH Hostlar üçin göni gysga ýollary döretmek üçin Android iş stoluňyzda uzak basyp duruñ</string>
-  <string name="scroll_hints_header">Yzyna aýlaň / Öňe aýlaň</string>
-  <string name="scroll_hints_content">Barmagyňyzy ekranyň sag tarapynda ýokary süýşürseñiz, ýerli terminal bufer taryhynda yza we öňe aýlanmaga mümkinçilik berýär</string>
 </resources>
