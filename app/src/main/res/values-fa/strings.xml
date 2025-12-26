@@ -2,16 +2,16 @@
 <resources>
   <string name="app_desc">کلاینت SSH ساده، قدرتمند، کد باز</string>
   <string name="service_desc">کانکشن‌های SSH و کلیدهای همگانی بارگذاری شده را نگه می‌دارد</string>
-	<string name="title_pubkey_list">کلیدهای همگانی</string>
+  <string name="title_pubkey_list">کلیدهای همگانی</string>
   <string name="title_port_forwards_list">پورت فوروارد</string>
-	<string name="title_help">راهنما</string>
+  <string name="title_help">راهنما</string>
   <string name="title_colors">رنگ‌ها</string>
   <string name="title_color_picker">رنگی برگزینید</string>
   <string name="title_settings">تنظیمات</string>
   <string name="title_pubkey_generate">تولید</string>
-	<string name="terms_and_conditions">بندها و پیمان</string>
+  <string name="terms_and_conditions">بندها و پیمان</string>
   <string name="hints">راهنمایی‌ها</string>
-	<string name="keyboard_shortcuts">میانبُرهای صفحه‌کلید</string>
+  <string name="keyboard_shortcuts">میانبُرهای صفحه‌کلید</string>
   <string name="increase_font_size">افزایش اندازۀ قلم</string>
   <string name="increase_font_shortcut">کلید \" Ctrl \" و کلید \" + \"</string>
   <string name="decrease_font_size">کاهش اندازۀ قلم</string>
@@ -25,9 +25,9 @@
   <string name="pubkey_generating">تولید کلید جفت شونده …</string>
   <string name="pubkey_copy_private">کپی کردن کلید خصوصی</string>
   <string name="pubkey_copy_public">کپی کردن کلید عمومی</string>
-	<string name="pubkey_change_password">تغییر گذرواژه</string>
-	<string name="pubkey_unlock">بازکردن کلید</string>
-	<string name="pubkey_load_on_start">بارگذاری کلید در زمان آغاز</string>
+  <string name="pubkey_change_password">تغییر گذرواژه</string>
+  <string name="pubkey_unlock">بازکردن کلید</string>
+  <string name="pubkey_load_on_start">بارگذاری کلید در زمان آغاز</string>
   <string name="pubkey_confirm_use">قبل از استفاده تایید کنید</string>
   <string name="prompt_nickname">نام مستعار:</string>
   <string name="prompt_source_port">پورت منبع:</string>
@@ -47,17 +47,17 @@
   <string name="host_fingerprint">"%2$s کلید اثرانگشت میزبان  %1$s  می باشد"</string>
   <string name="alert_passwords_do_not_match_msg">گذرواژه همسان نیست!</string>
   <string name="alert_wrong_password_msg">گذرواژه اشتباه است!</string>
-	<string name="button_resize">تغییر اندازه</string>
+  <string name="button_resize">تغییر اندازه</string>
   <string name="alert_disconnect_msg">اتصال قطع شد</string>
-	<string name="pref_emulation_category">شبیه ساز ترمینال</string>
+  <string name="pref_emulation_category">شبیه ساز ترمینال</string>
   <string name="pref_emulation_title">حالت شبیه سازی</string>
-	<string name="pref_scrollback_title">اندازه اسکرول به عقب</string>
+  <string name="pref_scrollback_title">اندازه اسکرول به عقب</string>
   <string name="pref_scrollback_summary">اندازه حائل اسکرول به عقب برای هر کنسول تا در حافظه نگهداری شود</string>
   <string name="pref_backupkeys_title">پشتیبان گیری از کلیدهای عمومی</string>
   <string name="pref_backupkeys_summary">نگهداشتن پشتیبان گیری های کلیدهای خصوصی با استفاده از ماشین پشتیبان گیر اندروید</string>
   <string name="pref_ui_category">رابط کاربری</string>
   <string name="pref_rotation_title">حالت چرخش</string>
-	<string name="pref_titlebarhide_title">"مخفی شدن خودکار  نوار عنوان"</string>
+  <string name="pref_titlebarhide_title">"مخفی شدن خودکار  نوار عنوان"</string>
   <string name="pref_alwaysvisible_title">کلیدهای ویژه همواره دیده شوند</string>
   <string name="pref_fullscreen_title">تمام صفحه</string>
   <string name="pref_fullscreen_summary">پنهان‌سازی نوار وضعیت حین کار در کنسول</string>
@@ -67,7 +67,7 @@
   <string name="pref_conn_persist_summary">اتصال‌ها حتی زمانی که برنامه در پس‌زمینه است برقرار باقی بنمانند</string>
   <string name="pref_keymode_title">میان‌برهای پوشه</string>
   <string name="pref_camera_title">میان‌بر دوربین</string>
-	<string name="pref_keepalive_title">صفحه روشن نگه‌داشته شود</string>
+  <string name="pref_keepalive_title">صفحه روشن نگه‌داشته شود</string>
   <string name="pref_keepalive_summary">در حین کار در کنسول، مانع از خاموش شدن صفحه نمایش می‌شود</string>
   <string name="pref_wifilock_title">وای‌فای فعال نگه داشته شود</string>
   <string name="pref_wifilock_summary">تا زمانی که جلسه فعال است، مانع از خاموش شدن وای‌فای می‌شود</string>
@@ -94,7 +94,7 @@
   <string name="hostpref_username_title">نام کاربری</string>
   <string name="hostpref_hostname_title">میزبان</string>
   <string name="hostpref_port_title">درگاه</string>
-	<string name="console_menu_close">بستن</string>
+  <string name="console_menu_close">بستن</string>
   <string name="button_yes">بله</string>
   <string name="button_no">خیر</string>
   <string name="portforward_local">محلی</string>
@@ -110,7 +110,7 @@
   <string name="list_host_disconnect">قطع اتصال</string>
   <string name="list_host_edit">ویرایش میزبان</string>
   <string name="list_host_delete">پاک کردن میزبان</string>
-	<string name="list_rotation_default">پیش‌گزیده</string>
+  <string name="list_rotation_default">پیش‌گزیده</string>
   <string name="list_rotation_land">الزام بر حالت افقی</string>
   <string name="list_rotation_port">الزام بر حالت عمودی</string>
   <string name="list_rotation_auto">خوکار</string>
@@ -118,13 +118,13 @@
   <string name="list_camera_esc">Esc</string>
   <string name="list_camera_esc_a">Esc+A</string>
   <string name="list_camera_none">هیچ</string>
-	<string name="delete_message">مطمئنید که می‌خواهید «%1$s» را پاک کنید؟</string>
+  <string name="delete_message">مطمئنید که می‌خواهید «%1$s» را پاک کنید؟</string>
   <string name="delete_pos">بله، پاک کن</string>
   <string name="delete_neg">لغو</string>
   <string name="disconnect_all_message">آیا مطمئنید که می‌خواهید تمام اتصال‌ها را قطع کنید؟</string>
   <string name="disconnect_all_pos">بله، قطع کن</string>
   <string name="disconnect_all_neg">لغو</string>
-	<string name="terminal_sucess">میزبان «%1$s» با کلید: %2$s معتبر است</string>
+  <string name="terminal_sucess">میزبان «%1$s» با کلید: %2$s معتبر است</string>
   <string name="terminal_failed">اعتبارسنجی کلید میزبان ناموفق بود.</string>
   <string name="terminal_using_s2c_algorithm">الگوریتم کارساز-به-کارخواه: %1$s %2$s</string>
   <string name="terminal_using_c2s_algorithm">الگوریتم کارخواه-به-کارساز: %1$s %2$s</string>
@@ -134,7 +134,7 @@
   <string name="yes">بله</string>
   <string name="menu_colors_reset">تنظیم دوباره</string>
   <string name="app_is_running">برنامه کانکت‌بات در حال اجراست</string>
-	<string name="colors_fg_label">متن: %1$d</string>
+  <string name="colors_fg_label">متن: %1$d</string>
   <string name="color_bg_label">پشت: %1$d</string>
   <string name="image_description_connected">وصل.</string>
   <string name="image_description_disconnected">قطع.</string>
@@ -144,7 +144,7 @@
   <string name="image_description_down">فلش پایین</string>
   <string name="image_description_left">فلش چپ</string>
   <string name="image_description_right">فلش راست</string>
-	<string name="button_key_esc">Esc</string>
+  <string name="button_key_esc">Esc</string>
   <string name="button_key_ctrl">Ctrl</string>
   <string name="button_key_f3">F3</string>
   <string name="button_key_f4">F4</string>
@@ -158,5 +158,5 @@
   <string name="button_key_f12">F12</string>
   <string name="hostpref_add_host">افزودن میزبان</string>
   <string name="hostpref_edit_host">ذخیره میزبان</string>
-	<string name="pubkey_import_existing">وارد کردن کلید عمومی موجود</string>
+  <string name="pubkey_import_existing">وارد کردن کلید عمومی موجود</string>
 </resources>

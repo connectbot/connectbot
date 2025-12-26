@@ -1,15 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">Простий та потужний SSH клієнт з відкритим кодом</string>
-	<string name="title_pubkey_list">Відкриті ключі</string>
+  <string name="title_pubkey_list">Відкриті ключі</string>
   <string name="title_port_forwards_list">Переадресація портів</string>
-	<string name="title_help">Допомога</string>
+  <string name="title_help">Допомога</string>
   <string name="title_colors">Кольори</string>
   <string name="title_settings">Налаштування</string>
   <string name="title_pubkey_generate">Генерувати</string>
-	<string name="terms_and_conditions">Умови користування</string>
+  <string name="terms_and_conditions">Умови користування</string>
   <string name="hints">Підказки</string>
-	<string name="keyboard_shortcuts">Комбінації клавіш</string>
+  <string name="keyboard_shortcuts">Комбінації клавіш</string>
   <string name="increase_font_size">Збільшити розмір шрифту</string>
   <string name="increase_font_shortcut">Ctrl +</string>
   <string name="decrease_font_size">Зменшити розмір шрифту</string>
@@ -21,11 +21,11 @@
   <string name="pubkey_generating">Створення пари ключів ...</string>
   <string name="pubkey_copy_private">Скопіювати приватний ключ</string>
   <string name="pubkey_copy_public">Скопіювати відкритий ключ</string>
-	<string name="pubkey_change_password">Змінити пароль</string>
-	<string name="pubkey_unlock">Розблокувати ключ</string>
-	<string name="pubkey_load_on_start">Завантажувати ключ при старті</string>
-	<string name="prompt_nickname">Нік:</string>
-	<string name="prompt_destination">Призначення:</string>
+  <string name="pubkey_change_password">Змінити пароль</string>
+  <string name="pubkey_unlock">Розблокувати ключ</string>
+  <string name="pubkey_load_on_start">Завантажувати ключ при старті</string>
+  <string name="prompt_nickname">Нік:</string>
+  <string name="prompt_destination">Призначення:</string>
   <string name="prompt_old_password">Старий пароль:</string>
   <string name="prompt_password">Пароль</string>
   <string name="prompt_again">(знову)</string>
@@ -39,15 +39,15 @@
   <string name="host_authenticity_warning">Аутентичність хоста \'%1$s\' неможливо встановити</string>
   <string name="alert_passwords_do_not_match_msg">Паролі не співпадають!</string>
   <string name="alert_wrong_password_msg">Неправильний пароль!</string>
-	<string name="button_resize">Зміна розміру</string>
+  <string name="button_resize">Зміна розміру</string>
   <string name="alert_disconnect_msg">З\'єднання втрачено</string>
-	<string name="pref_emulation_category">Емуляція терміналу</string>
+  <string name="pref_emulation_category">Емуляція терміналу</string>
   <string name="pref_emulation_title">Режим емуляції</string>
-	<string name="pref_backupkeys_title">Резервна копія відкритих ключів</string>
+  <string name="pref_backupkeys_title">Резервна копія відкритих ключів</string>
   <string name="pref_backupkeys_summary">Зберігайте резервні копії приватних ключів за допомогою резервного механізму Android</string>
   <string name="pref_ui_category">Користувацький інтерфейс</string>
   <string name="pref_rotation_title">Режим обертання</string>
-	<string name="pref_titlebarhide_title">"Автоматичне приховуваня головної  панелі"</string>
+  <string name="pref_titlebarhide_title">"Автоматичне приховуваня головної  панелі"</string>
   <string name="pref_titlebarhide_summary">"Натисніть на консоль, щоб відобразити панель заголовку та  меню доступу"</string>
   <string name="pref_alwaysvisible_title">Особливі клавіші завжди показувати</string>
   <string name="pref_pg_updn_gesture_title">Жест, сторінка вверх/вниз</string>

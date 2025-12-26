@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-	<string name="title_pubkey_list">Publieke Sleutels</string>
+  <string name="title_pubkey_list">Publieke Sleutels</string>
   <string name="title_port_forwards_list">Poort aansturings</string>
-	<string name="title_help">Hulp</string>
+  <string name="title_help">Hulp</string>
   <string name="title_colors">Kleure</string>
   <string name="pubkey_generate">Genereer</string>
   <string name="pubkey_delete">Verwyder sleutel</string>
@@ -11,10 +11,10 @@
   <string name="pubkey_touch_hint">Om ewekansigheid te verseker gedurende die sleutel generering, beweeg u vinger ewekansig oor die boks hieronder.</string>
   <string name="pubkey_copy_private">Dupliseer privaat sleutel</string>
   <string name="pubkey_copy_public">Dupliseer publieke sleutel</string>
-	<string name="pubkey_change_password">Verander wagwoord</string>
-	<string name="pubkey_unlock">Ontsluit sleutel</string>
-	<string name="pubkey_confirm_use">Bevestig voor gebruik</string>
-	<string name="portforward_edit">Redigeer poort aansturing</string>
+  <string name="pubkey_change_password">Verander wagwoord</string>
+  <string name="pubkey_unlock">Ontsluit sleutel</string>
+  <string name="pubkey_confirm_use">Bevestig voor gebruik</string>
+  <string name="portforward_edit">Redigeer poort aansturing</string>
   <string name="portforward_delete">Verwyder poort aanstuur</string>
   <string name="prompt_nickname">Bynaam:</string>
   <string name="prompt_source_port">Oorsprong poort:</string>

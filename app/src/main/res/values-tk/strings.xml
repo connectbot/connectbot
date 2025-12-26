@@ -2,13 +2,13 @@
 <resources>
   <string name="app_desc">Ýönekeý, güýçli, açyk çeşme SSH müşderisi</string>
   <string name="service_desc">SSH birikmelerini we ýüklenen pubkeýleri saklaýar</string>
-	<string name="title_pubkey_list">Pubkeys</string>
+  <string name="title_pubkey_list">Pubkeys</string>
   <string name="title_port_forwards_list">Port maglumaty</string>
-	<string name="title_help">Kömek</string>
+  <string name="title_help">Kömek</string>
   <string name="title_colors">Reñkler</string>
   <string name="title_color_picker">Renk saýlañ</string>
   <string name="title_settings">Sazlamalar</string>
   <string name="title_pubkey_generate">Dörediň</string>
-	<string name="terms_and_conditions">Şertler</string>
+  <string name="terms_and_conditions">Şertler</string>
   <string name="hints">Maslahat</string>
 </resources>
