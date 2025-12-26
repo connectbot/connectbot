@@ -211,7 +211,7 @@ fun HostListScreenContent(
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text("Profiles") },
+                                text = { Text(stringResource(R.string.profile_list_title)) },
                                 onClick = {
                                     showMenu = false
                                     onNavigateToProfiles()

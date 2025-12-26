@@ -495,6 +495,40 @@
 	<!-- Dropdown option to not override host color with profile color -->
 	<string name="profile_icon_color_none">None (use host color)</string>
 
+	<!-- Profile list screen strings -->
+	<!-- Window title for the profiles list screen -->
+	<string name="profile_list_title">Profiles</string>
+	<!-- Content description for the FAB button that creates a new profile -->
+	<string name="profile_list_create_profile">Create profile</string>
+	<!-- Message shown when there are no profiles, encouraging user to create one -->
+	<string name="profile_list_empty_message">No profiles yet. Tap + to create one.</string>
+	<!-- Content description for the menu button on each profile item -->
+	<string name="profile_list_more_options">More options</string>
+	<!-- Menu item to duplicate/copy a profile -->
+	<string name="profile_list_duplicate">Duplicate</string>
+	<!-- Menu item to delete a profile -->
+	<string name="profile_list_delete">Delete</string>
+	<!-- Dialog title when creating a new profile -->
+	<string name="profile_create_dialog_title">Create Profile</string>
+	<!-- Label for the profile name text field in create dialog -->
+	<string name="profile_create_name_label">Profile Name</string>
+	<!-- Button text to confirm creating a new profile -->
+	<string name="profile_create_button">Create</string>
+	<!-- Button text to cancel creating a new profile -->
+	<string name="profile_create_cancel">Cancel</string>
+	<!-- Dialog title when deleting a profile -->
+	<string name="profile_delete_dialog_title">Delete Profile</string>
+	<!-- Confirmation message asking if user wants to delete a profile. Parameter is the profile name. -->
+	<string name="profile_delete_dialog_message">Are you sure you want to delete \'%s\'?</string>
+	<!-- Button text to confirm deleting a profile -->
+	<string name="profile_delete_button">Delete</string>
+	<!-- Button text to cancel deleting a profile -->
+	<string name="profile_delete_cancel">Cancel</string>
+	<!-- Summary text showing font settings. First parameter is font name, second is font size in points. -->
+	<string name="profile_summary_font">Font: %1$s %2$dpt</string>
+	<!-- Summary text showing emulation setting. Parameter is the terminal emulation type. -->
+	<string name="profile_summary_emulation">Emulation: %s</string>
+
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">"Close"</string>
 	<!-- Button to paste from the clipboard to the terminal. -->

@@ -77,7 +77,7 @@ fun ProfileListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Profiles") },
+                title = { Text(stringResource(R.string.profile_list_title)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
@@ -92,7 +92,7 @@ fun ProfileListScreen(
             FloatingActionButton(onClick = { viewModel.showCreateDialog() }) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Create profile"
+                    contentDescription = stringResource(R.string.profile_list_create_profile)
                 )
             }
         }
@@ -108,7 +108,7 @@ fun ProfileListScreen(
                 )
             } else if (uiState.profiles.isEmpty()) {
                 Text(
-                    text = "No profiles yet. Tap + to create one.",
+                    text = stringResource(R.string.profile_list_empty_message),
                     modifier = Modifier.align(Alignment.Center),
                     style = MaterialTheme.typography.bodyLarge
                 )
@@ -142,18 +142,18 @@ fun ProfileListScreen(
     uiState.showDeleteDialog?.let { profile ->
         AlertDialog(
             onDismissRequest = { viewModel.hideDeleteDialog() },
-            title = { Text("Delete Profile") },
-            text = { Text("Are you sure you want to delete '${profile.name}'?") },
+            title = { Text(stringResource(R.string.profile_delete_dialog_title)) },
+            text = { Text(stringResource(R.string.profile_delete_dialog_message, profile.name)) },
             confirmButton = {
                 TextButton(
                     onClick = { viewModel.deleteProfile(profile) }
                 ) {
-                    Text("Delete")
+                    Text(stringResource(R.string.profile_delete_button))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { viewModel.hideDeleteDialog() }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.profile_delete_cancel))
                 }
             }
         )
@@ -187,18 +187,14 @@ private fun ProfileListItem(
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = buildProfileSummary(profile),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                ProfileSummaryText(profile = profile)
             }
 
             Box {
                 IconButton(onClick = { showMenu = true }) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
-                        contentDescription = "More options"
+                        contentDescription = stringResource(R.string.profile_list_more_options)
                     )
                 }
                 DropdownMenu(
@@ -206,7 +202,7 @@ private fun ProfileListItem(
                     onDismissRequest = { showMenu = false }
                 ) {
                     DropdownMenuItem(
-                        text = { Text("Duplicate") },
+                        text = { Text(stringResource(R.string.profile_list_duplicate)) },
                         onClick = {
                             showMenu = false
                             onDuplicate()
@@ -216,7 +212,7 @@ private fun ProfileListItem(
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text("Delete") },
+                        text = { Text(stringResource(R.string.profile_list_delete)) },
                         onClick = {
                             showMenu = false
                             onDelete()
@@ -241,13 +237,13 @@ private fun CreateProfileDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Create Profile") },
+        title = { Text(stringResource(R.string.profile_create_dialog_title)) },
         text = {
             Column {
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Profile Name") },
+                    label = { Text(stringResource(R.string.profile_create_name_label)) },
                     singleLine = true,
                     isError = error != null,
                     modifier = Modifier.fillMaxWidth()
@@ -267,18 +263,19 @@ private fun CreateProfileDialog(
                 onClick = { onConfirm(name) },
                 enabled = name.isNotBlank()
             ) {
-                Text("Create")
+                Text(stringResource(R.string.profile_create_button))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.profile_create_cancel))
             }
         }
     )
 }
 
-private fun buildProfileSummary(profile: Profile): String {
+@Composable
+private fun ProfileSummaryText(profile: Profile) {
     val parts = mutableListOf<String>()
 
     // Font
@@ -287,10 +284,14 @@ private fun buildProfileSummary(profile: Profile): String {
     } else {
         TerminalFont.SYSTEM_DEFAULT.displayName
     }
-    parts.add("Font: $fontName ${profile.fontSize}pt")
+    parts.add(stringResource(R.string.profile_summary_font, fontName, profile.fontSize))
 
     // Emulation
-    parts.add("Emulation: ${profile.emulation}")
+    parts.add(stringResource(R.string.profile_summary_emulation, profile.emulation))
 
-    return parts.joinToString(" | ")
+    Text(
+        text = parts.joinToString(" | "),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
 }
