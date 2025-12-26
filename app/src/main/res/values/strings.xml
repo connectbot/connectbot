@@ -60,31 +60,55 @@
 	<!-- Keyboard shortcut for pasting into the terminal. -->
 	<string name="paste_shortcut">Ctrl-Shift-V</string>
 
+	<!-- Button text to generate a new SSH public/private key pair -->
 	<string name="pubkey_generate">"Generate"</string>
+	<!-- Context menu action to delete a saved public key -->
 	<string name="pubkey_delete">"Delete key"</string>
 	<!-- Dialog title when user must move finger randomly over an area to gather entropy (collect random bits) -->
 	<string name="pubkey_gather_entropy">"Gathering Entropy"</string>
+	<!-- Progress message showing percentage of random data collected for key generation -->
 	<string name="pubkey_touch_prompt">"Touch this box to gather randomness: %1$d%% done"</string>
+	<!-- Instructions to user on how to provide randomness by moving their finger over the screen -->
 	<string name="pubkey_touch_hint">"In order to assure randomness during the key generation, move your finger randomly over the box below."</string>
+	<!-- Progress message shown while generating a new SSH key pair -->
 	<string name="pubkey_generating">"Generating key pair…"</string>
+	<!-- Context menu action to copy the private key to clipboard in the default format -->
 	<string name="pubkey_copy_private">"Copy private key"</string>
+	<!-- Context menu action to copy the private key to clipboard in OpenSSH format -->
 	<string name="pubkey_copy_private_openssh">"Copy private key (OpenSSH)"</string>
+	<!-- Context menu action to copy the private key to clipboard in PEM format -->
 	<string name="pubkey_copy_private_pem">"Copy private key (PEM)"</string>
+	<!-- Context menu action to copy the encrypted private key to clipboard -->
 	<string name="pubkey_copy_private_encrypted">"Copy private key (encrypted)"</string>
+	<!-- Context menu action to copy the public key to clipboard -->
 	<string name="pubkey_copy_public">"Copy public key"</string>
+	<!-- Context menu action to export the public key to a file -->
 	<string name="pubkey_export_public">"Export public key"</string>
+	<!-- Context menu action to export the private key to a file in the default format -->
 	<string name="pubkey_export_private">"Export private key"</string>
+	<!-- Context menu action to export the private key to a file in OpenSSH format -->
 	<string name="pubkey_export_private_openssh">"Export private key (OpenSSH)"</string>
+	<!-- Context menu action to export the private key to a file in PEM format -->
 	<string name="pubkey_export_private_pem">"Export private key (PEM)"</string>
+	<!-- Context menu action to export the encrypted private key to a file -->
 	<string name="pubkey_export_private_encrypted">"Export private key (encrypted)"</string>
+	<!-- Dialog title for setting a passphrase when exporting a key -->
 	<string name="pubkey_export_set_passphrase">"Set export passphrase"</string>
+	<!-- Instructions to enter a passphrase to encrypt the key being exported -->
 	<string name="pubkey_export_passphrase_message">"Enter a passphrase to encrypt the exported key"</string>
+	<!-- Label for the field where user confirms the passphrase by entering it again -->
 	<string name="pubkey_export_confirm_passphrase">"Confirm passphrase"</string>
+	<!-- Error message shown when the passphrase and confirmation passphrase don't match -->
 	<string name="pubkey_export_passphrase_mismatch">"Passphrases do not match"</string>
+	<!-- Dialog title when importing an encrypted SSH key file -->
 	<string name="pubkey_import_encrypted_title">"Import encrypted key"</string>
+	<!-- Prompt asking user to enter the password to decrypt an imported key file. First parameter is key nickname, second is key type. -->
 	<string name="pubkey_import_encrypted_message">"Enter password to decrypt key '%1$s' (%2$s)"</string>
+	<!-- Button text to confirm importing a key -->
 	<string name="pubkey_import_button">"Import"</string>
+	<!-- Context menu action to change the password protecting a private key -->
 	<string name="pubkey_change_password">"Change password"</string>
+	<!-- Context menu action to unlock an encrypted key for use in authentication -->
 	<string name="pubkey_unlock">"Unlock key"</string>
 	<!-- Dialog message prompting the user to enter password to unlock an encrypted key. -->
 	<string name="pubkey_unlock_message">"Enter password to unlock key '%1$s'"</string>
@@ -100,6 +124,7 @@
 	<!-- Context menu action where a user can delete the selected port forward from the host. -->
 	<string name="portforward_delete">"Delete port forward"</string>
 
+	<!-- Label for the input field where user enters a nickname for a host or key -->
 	<string name="prompt_nickname">"Nickname:"</string>
 	<!-- The source TCP port for port forwards. -->
 	<string name="prompt_source_port">"Source port:"</string>
@@ -148,12 +173,15 @@
 	<!-- Content description for the copy fingerprint to clipboard button, used by screen readers for accessibility -->
 	<string name="fingerprint_copy_description">Copy fingerprint to clipboard</string>
 
+	<!-- Error message shown when entered password and confirmation password don't match -->
 	<string name="alert_passwords_do_not_match_msg">"Passwords do not match!"</string>
+	<!-- Error message shown when user enters an incorrect password -->
 	<string name="alert_wrong_password_msg">"Wrong password!"</string>
 
 	<!-- Button that resizes the screen to the user-specified dimensions. -->
 	<string name="button_resize">"Resize"</string>
 
+	<!-- Alert dialog title shown when connection to the remote host is lost -->
 	<string name="alert_disconnect_msg">"Connection Lost"</string>
 
 	<!-- Message shown when network connection is lost and app is waiting to reconnect -->
@@ -371,6 +399,7 @@
 
 	<!-- Setting for whether we should prompt to close after getting disconnected -->
 	<string name="hostpref_quickdisconnect_title">"Close on disconnect"</string>
+	<!-- Summary explaining that the console will close automatically without prompting when connection ends -->
 	<string name="hostpref_quickdisconnect_summary">"Close immediately after remote disconnect without prompting."</string>
 
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
@@ -423,6 +452,7 @@
 	<!-- Part of the formatting hints that will be used like: username@hostname:port -->
 	<string name="format_port">"port"</string>
 
+	<!-- Menu item to open the pubkey management screen -->
 	<string name="list_menu_pubkeys">"Manage pubkeys"</string>
 	<!-- Selection choice to sort hosts by color. -->
 	<string name="list_menu_sortcolor">"Sort by color"</string>
@@ -430,16 +460,23 @@
 	<string name="list_menu_sortname">"Sort by name"</string>
 	<!-- Menu item to disconnect all the hosts. -->
 	<string name="list_menu_disconnect">"Disconnect all"</string>
+	<!-- Menu item to open the app settings screen -->
 	<string name="list_menu_settings">"Settings"</string>
 
+	<!-- Context menu action to disconnect from the selected host -->
 	<string name="list_host_disconnect">"Disconnect"</string>
+	<!-- Context menu action to edit the selected host configuration -->
 	<string name="list_host_edit">"Edit host"</string>
+	<!-- Context menu action to edit port forwards for the selected host -->
 	<string name="list_host_portforwards">"Edit port forwards"</string>
+	<!-- Context menu action to delete the selected host -->
 	<string name="list_host_delete">"Delete host"</string>
 
 	<!-- Default screen rotation preference selection -->
 	<string name="list_rotation_default">"Default"</string>
+	<!-- Preference selection to force landscape orientation -->
 	<string name="list_rotation_land">"Force landscape"</string>
+	<!-- Preference selection to force portrait orientation -->
 	<string name="list_rotation_port">"Force portrait"</string>
 	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
 	<string name="list_rotation_auto">"Automatic"</string>
@@ -457,12 +494,18 @@
 	<!-- Selection to indicate pressing the Camera button should open the text input dialog. -->
 	<string name="list_camera_text_input">"Text Input"</string>
 
+	<!-- Confirmation dialog message asking user to confirm deletion. Parameter is the item name. -->
 	<string name="delete_message">"Are you sure you want to delete '%1$s'?"</string>
+	<!-- Positive button text confirming deletion -->
 	<string name="delete_pos">"Yes, delete"</string>
+	<!-- Negative button text canceling deletion -->
 	<string name="delete_neg">"Cancel"</string>
 
+	<!-- Confirmation dialog message asking user to confirm disconnecting from all hosts -->
 	<string name="disconnect_all_message">"Are you sure you want to disconnect from all connected hosts?"</string>
+	<!-- Positive button text confirming disconnection from all hosts -->
 	<string name="disconnect_all_pos">"Yes, disconnect"</string>
+	<!-- Negative button text canceling the disconnect all action -->
 	<string name="disconnect_all_neg">"Cancel"</string>
 
 	<!-- Displayed in terminal when attempting to connect to a host. The first two
@@ -471,6 +514,7 @@
 
 	<!-- Displays the host key to the user in the terminal -->
 	<string name="terminal_sucess">"Verified host '%1$s' key: %2$s"</string>
+	<!-- Error message shown in terminal when host key verification fails -->
 	<string name="terminal_failed">"Host key verification failed."</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
@@ -485,25 +529,39 @@
 	     server. -->
 	<string name="terminal_kex_algorithm">Key exchange algorithm: %s</string>
 
+	<!-- Message shown in terminal when starting authentication process -->
 	<string name="terminal_auth">"Trying to authenticate"</string>
 
+	<!-- Message shown in terminal when attempting password authentication method -->
 	<string name="terminal_auth_pass">"Attempting 'password' authentication"</string>
+	<!-- Message shown in terminal when password authentication fails -->
 	<string name="terminal_auth_pass_fail">"Authentication method 'password' failed"</string>
 
+	<!-- Message shown in terminal when trying public key authentication with any available key -->
 	<string name="terminal_auth_pubkey_any">"Attempting 'publickey' authentication with any in-memory public keys"</string>
+	<!-- Error message shown when the selected public key is corrupted or invalid -->
 	<string name="terminal_auth_pubkey_invalid">"Selected public key is invalid, try reselecting key in host editor"</string>
+	<!-- Message shown in terminal when attempting public key authentication with a specific key -->
 	<string name="terminal_auth_pubkey_specific">"Attempting 'publickey' authentication with a specific public key"</string>
+	<!-- Message shown in terminal when requesting biometric authentication to unlock a key. Parameter is the key nickname. -->
 	<string name="terminal_auth_biometric">"Requesting biometric authentication for key '%1$s'"</string>
+	<!-- Message shown in terminal when public key authentication fails. Parameter is the key nickname. -->
 	<string name="terminal_auth_pubkey_fail">"Authentication method 'publickey' with key '%1$s' failed"</string>
 
+	<!-- Message shown in terminal when attempting keyboard-interactive authentication method -->
 	<string name="terminal_auth_ki">"Attempting 'keyboard-interactive' authentication"</string>
+	<!-- Message shown in terminal when keyboard-interactive authentication fails -->
 	<string name="terminal_auth_ki_fail">"Authentication method 'keyboard-interactive' failed"</string>
 
+	<!-- Error message shown when server doesn't support any of the authentication methods we can use -->
 	<string name="terminal_auth_fail">"[Your host doesn't support 'password' or 'keyboard-interactive' authentication.]"</string>
 
+	<!-- Message shown in terminal when shell session is not started because user disabled it in host settings -->
 	<string name="terminal_no_session">"Session will not be started due to host preference."</string>
+	<!-- Message shown in terminal when a port forward is enabled. Parameter is the port forward description. -->
 	<string name="terminal_enable_portfoward">"Enable port forward: %1$s"</string>
 
+	<!-- Error message shown when trying to open a local shell but it's not available on the device -->
 	<string name="local_shell_unavailable">"Failure! Local shell is unavailable on this phone."</string>
 
 	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
