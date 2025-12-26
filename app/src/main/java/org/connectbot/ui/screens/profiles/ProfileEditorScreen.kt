@@ -62,6 +62,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.BuildConfig
 import org.connectbot.R
 import org.connectbot.data.entity.ColorScheme
+import org.connectbot.ui.common.getIconColors
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
 
@@ -84,7 +85,12 @@ fun ProfileEditorScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(if (uiState.profileId == -1L) "New Profile" else "Edit Profile")
+                    Text(
+                        if (uiState.profileId == -1L)
+                            stringResource(R.string.profile_editor_title_new)
+                        else
+                            stringResource(R.string.profile_editor_title_edit)
+                    )
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
@@ -108,7 +114,7 @@ fun ProfileEditorScreen(
                 } else {
                     Icon(
                         imageVector = Icons.Default.Check,
-                        contentDescription = "Save"
+                        contentDescription = stringResource(R.string.profile_editor_save)
                     )
                 }
             }
@@ -136,7 +142,7 @@ fun ProfileEditorScreen(
                 OutlinedTextField(
                     value = uiState.name,
                     onValueChange = { viewModel.updateName(it) },
-                    label = { Text("Profile Name") },
+                    label = { Text(stringResource(R.string.profile_editor_name_label)) },
                     singleLine = true,
                     isError = uiState.saveError != null,
                     modifier = Modifier.fillMaxWidth()
@@ -146,7 +152,7 @@ fun ProfileEditorScreen(
 
                 // Icon Color Section
                 Text(
-                    text = "Icon Color",
+                    text = stringResource(R.string.profile_editor_section_icon_color),
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
@@ -161,7 +167,7 @@ fun ProfileEditorScreen(
 
                 // Color Scheme Section
                 Text(
-                    text = "Color Scheme",
+                    text = stringResource(R.string.profile_editor_section_color_scheme),
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
@@ -177,7 +183,7 @@ fun ProfileEditorScreen(
 
                 // Font Section
                 Text(
-                    text = "Font",
+                    text = stringResource(R.string.profile_editor_section_font),
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
@@ -202,7 +208,7 @@ fun ProfileEditorScreen(
 
                 // Terminal Section
                 Text(
-                    text = "Terminal",
+                    text = stringResource(R.string.profile_editor_section_terminal),
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
@@ -265,7 +271,7 @@ private fun FontFamilySelector(
 
     Column(modifier = modifier) {
         Text(
-            text = "Font Family",
+            text = stringResource(R.string.profile_editor_font_family_title),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -319,7 +325,7 @@ private fun FontSizeSelector(
 ) {
     Column(modifier = modifier) {
         Text(
-            text = "Font Size: $fontSize",
+            text = stringResource(R.string.profile_editor_font_size_title, fontSize),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -544,7 +550,7 @@ private fun ColorSchemeSelector(
             onExpandedChange = { expanded = it }
         ) {
             OutlinedTextField(
-                value = availableSchemes.find { it.id == colorSchemeId }?.name ?: "Default",
+                value = availableSchemes.find { it.id == colorSchemeId }?.name ?: stringResource(R.string.colorscheme_default),
                 onValueChange = {},
                 readOnly = true,
                 singleLine = true,
@@ -587,29 +593,6 @@ private fun ColorSchemeSelector(
     }
 }
 
-/**
- * 16 icon colors for visual identification of profiles.
- * Each pair contains (color name, hex value).
- */
-private val iconColors = listOf(
-    "Red" to "#F44336",
-    "Pink" to "#E91E63",
-    "Purple" to "#9C27B0",
-    "Deep Purple" to "#673AB7",
-    "Indigo" to "#3F51B5",
-    "Blue" to "#2196F3",
-    "Light Blue" to "#03A9F4",
-    "Cyan" to "#00BCD4",
-    "Teal" to "#009688",
-    "Green" to "#4CAF50",
-    "Light Green" to "#8BC34A",
-    "Lime" to "#CDDC39",
-    "Yellow" to "#FFEB3B",
-    "Amber" to "#FFC107",
-    "Orange" to "#FF9800",
-    "Gray" to "#9E9E9E"
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun IconColorSelector(
@@ -618,13 +601,15 @@ private fun IconColorSelector(
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val iconColors = getIconColors()
 
     // Find the display name for the selected color
+    // Check by hex value first (current format), then by English name (legacy format)
     val selectedDisplayName = if (selectedColor == null) {
-        "None (use host color)"
+        stringResource(R.string.profile_icon_color_none)
     } else {
-        iconColors.find { it.second.equals(selectedColor, ignoreCase = true) }?.first
-            ?: iconColors.find { it.first.equals(selectedColor, ignoreCase = true) }?.first
+        iconColors.find { it.hexValue.equals(selectedColor, ignoreCase = true) }?.localizedName
+            ?: iconColors.find { it.englishName.equals(selectedColor, ignoreCase = true) }?.localizedName
             ?: selectedColor
     }
 
@@ -653,7 +638,7 @@ private fun IconColorSelector(
             ) {
                 // None option
                 DropdownMenuItem(
-                    text = { Text("None (use host color)") },
+                    text = { Text(stringResource(R.string.profile_icon_color_none)) },
                     onClick = {
                         onColorSelected(null)
                         expanded = false
@@ -661,11 +646,12 @@ private fun IconColorSelector(
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
                 )
                 // Color options
-                iconColors.forEach { (name, hex) ->
+                iconColors.forEach { color ->
                     DropdownMenuItem(
-                        text = { Text(name) },
+                        text = { Text(color.localizedName) },
                         onClick = {
-                            onColorSelected(hex)
+                            // Always store hex value in database (language-independent)
+                            onColorSelected(color.hexValue)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
