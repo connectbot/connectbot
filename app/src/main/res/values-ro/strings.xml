@@ -2,10 +2,13 @@
 <resources>
   <string name="app_desc">Un client SSH simplu, flexibil, open-source</string>
   <string name="service_desc">Managementul conexiunilor si al cheilor publice</string>
+  <string name="title_hosts_list">Gazde</string>
   <string name="title_pubkey_list">Chei publice</string>
   <string name="title_port_forwards_list">Redirectări trafic</string>
+  <string name="title_host_editor">Editare gazdă</string>
   <string name="title_help">Ajutor</string>
   <string name="title_colors">Culori</string>
+  <string name="help_intro">Selecteaza un subiect pentru a accesa mai multe informatii</string>
   <string name="pubkey_generate">Generează</string>
   <string name="pubkey_delete">Șterge cheia</string>
   <string name="pubkey_gather_entropy">Genereaza sursa entropie</string>
@@ -14,13 +17,22 @@
   <string name="pubkey_generating">Generare cheie …</string>
   <string name="pubkey_copy_private">Copiaza cheia privata</string>
   <string name="pubkey_copy_public">Copiaza cheia publica</string>
+  <string name="pubkey_list_empty">Apasa \"Menu\" pentru a crea sau pentru a importa chei.</string>
+  <string name="pubkey_unknown_format">Format necunoscut</string>
   <string name="pubkey_change_password">Schimbă parola</string>
+  <string name="pubkey_list_pick">Selecteaza de pe /card SD</string>
+  <string name="pubkey_import_parse_problem">A aparut o eroare in timpul citirii cheii private</string>
   <string name="pubkey_unlock">Decripteaza cheia</string>
+  <string name="pubkey_failed_add">Parola gresita pentru cheia \'%1$s\'. Autenticitatea cererii nu poate fi verificata.</string>
+  <string name="pubkey_memory_load">Incarca in memorie</string>
+  <string name="pubkey_memory_unload">Sterge din memorie</string>
   <string name="pubkey_load_on_start">Incarca cheia la start</string>
   <string name="pubkey_confirm_use">Confirma alegerea inainte de folosirea cheii</string>
+  <string name="portforward_list_empty">Apasa \"Menu\" pentru a crea redirectari de trafic</string>
   <string name="portforward_edit">Editeaza redirectari trafic</string>
   <string name="portforward_delete">Sterge redirectari trafic</string>
   <string name="prompt_nickname">Poreclă:</string>
+  <string name="prompt_nickname_hint_pubkey">Cheia mea</string>
   <string name="prompt_source_port">Port sursă</string>
   <string name="prompt_destination">Destinație</string>
   <string name="prompt_old_password">Parola veche:</string>

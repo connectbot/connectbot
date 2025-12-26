@@ -1,8 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">მარტივი, ძლიერი, ღია კოდის მქონე SSH კლიენტი.</string>
+  <string name="title_hosts_list">ჰოსტები</string>
   <string name="title_pubkey_list">საჯგასაღებები</string>
   <string name="title_port_forwards_list">პორტის გადამისამართებები</string>
+  <string name="title_host_editor">ჰოსტის ჩასწორება</string>
   <string name="title_help">დახმარება</string>
   <string name="title_colors">ფერები</string>
   <string name="title_color_picker">აირჩიეთ ფერი</string>
@@ -10,6 +12,11 @@
   <string name="title_pubkey_generate">გენერაცია</string>
   <string name="terms_and_conditions">წესები და პირობები</string>
   <string name="hints">მინიშნებები</string>
+  <string name="host_shortcuts_header">ჰოსტის მალსახმობები</string>
+  <string name="page_up">ზედა გვერდი</string>
+  <string name="page_down">ქვედა გვერდი</string>
+  <string name="next_host">შემდეგი ჰოსტი</string>
+  <string name="prev_host">წინა ჰოსტი</string>
   <string name="keyboard_shortcuts">კლავიატურის მალსახმობები</string>
   <string name="increase_font_size">ფონტის ზომის გაზრდა</string>
   <string name="increase_font_shortcut">Ctrl და +</string>
@@ -18,6 +25,7 @@
   <string name="paste_shortcut">Ctrl-Shift-V</string>
   <string name="pubkey_generate">გენერაცია</string>
   <string name="pubkey_delete">გასაღების წაშლა</string>
+  <string name="pubkey_unknown_format">უცნობი ფორმატი</string>
   <string name="pubkey_change_password">პაროლის შეცვლა</string>
   <string name="prompt_nickname">მეტსახელი:</string>
   <string name="prompt_source_port">წყარო პორტი:</string>
@@ -28,6 +36,7 @@
   <string name="prompt_type">ტიპი:</string>
   <string name="prompt_bits">ბიტი:</string>
   <string name="alert_passwords_do_not_match_msg">პაროლები არ ემთხვევა!</string>
+  <string name="button_change">ცვლილება</string>
   <string name="button_resize">ზომის შეცვლა</string>
   <string name="alert_disconnect_msg">კავშირი დაკარგულია</string>
   <string name="pref_emulation_category">ტერმინალის ემულაცია</string>
@@ -52,6 +61,7 @@
   <string name="hostpref_hostname_title">ჰოსტი</string>
   <string name="hostpref_port_title">პორტი</string>
   <string name="console_menu_close">დახურვა</string>
+  <string name="console_menu_copy">კოპირება</string>
   <string name="console_menu_paste">ჩასმა</string>
   <string name="console_menu_resize">ნაძალადევი ზომა</string>
   <string name="console_menu_urlscan">URL-ის სკანირება</string>
@@ -75,14 +85,21 @@
   <string name="list_camera_esc">Esc</string>
   <string name="list_camera_esc_a">Esc+A</string>
   <string name="list_camera_none">არცერთი</string>
+  <string name="list_delkey_backspace">Backspace</string>
+  <string name="list_delkey_del">წაშლა</string>
   <string name="delete_pos">დიახ, წაშალე</string>
   <string name="delete_neg">გაუქმება</string>
   <string name="disconnect_all_pos">დიახ, გათიშე</string>
   <string name="disconnect_all_neg">გაუქმება</string>
+  <string name="terminal_no_hosts_connected">ამჟამად ჰოსტები დაკავშირებული არაა</string>
   <string name="terminal_auth">ავთენტიკაციის მცდელობა</string>
   <string name="no">არა</string>
   <string name="yes">დიახ</string>
   <string name="menu_colors_reset">ჩამოყრა</string>
+  <string name="color_red">წითელი</string>
+  <string name="color_green">მწვანე</string>
+  <string name="color_blue">ლურჯი</string>
+  <string name="color_gray">ნაცრისფერი</string>
   <string name="image_description_connected">დაკავშირებულია.</string>
   <string name="image_description_disconnected">კავშირი გაწყვეტილია.</string>
   <string name="image_description_hide_keyboard">კლავიატურის დამალვა.</string>
@@ -91,6 +108,7 @@
   <string name="image_description_down">ისარი დაბლა</string>
   <string name="image_description_left">ისარი მარცხნივ</string>
   <string name="image_description_right">ისარი მარჯვნივ</string>
+  <string name="image_description_volume">ხმა</string>
   <string name="button_key_esc">Esc</string>
   <string name="button_key_ctrl">Ctrl</string>
   <string name="button_key_home">Home</string>
@@ -114,5 +132,16 @@
   <string name="hostpref_authagent_with_confirmation">დადასტურების მოთხოვნა</string>
   <string name="hostpref_add_host">ჰოსტის დამატება</string>
   <string name="hostpref_edit_host">ჰოსტის შენახვა</string>
+  <string name="pubkey_add_new">ახალი საჯგასაღების დამატება</string>
   <string name="pubkey_import_existing">არსებული საჯგასაღების შემოტანა</string>
+  <string name="discard_host_button">მოცილება</string>
+  <string name="discard_host_cancel_button">ჩასწორების გაგრძელება</string>
+  <string name="key_type_rsa_bits">RSA %d-ბიტიანი</string>
+  <string name="key_type_dsa_bits">DSA %d-ბიტიანი</string>
+  <string name="key_type_ec_bits">EC %d-ბიტიანი</string>
+  <string name="key_type_ed25519">Ed25519</string>
+  <string name="key_type_unknown">გასაღების ტიპი უცნობია</string>
+  <string name="key_attribute_encrypted">(დაშიფრულია)</string>
+  <string name="continue_anyway">გარეშე გაგრძელება</string>
+  <string name="allow">დაშვება</string>
 </resources>

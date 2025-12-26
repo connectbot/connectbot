@@ -2,22 +2,23 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-25 20:15-0800\n"
-"PO-Revision-Date: 2025-12-25 21:03-0800\n"
+"POT-Creation-Date: 2025-10-29 16:39-0700\n"
+"PO-Revision-Date: 2017-04-03 09:40+0000\n"
 "Last-Translator: Naofumi Fukue <naofum@gmail.com>\n"
-"Language: ja\n"
 "Language-Team: ja <LL@li.org>\n"
-"Plural-Forms: nplurals=1; plural=(0);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
-"X-Generator: Autopo v1.0.5\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Launchpad-Export-Date: 2025-10-31 07:42+0000\n"
+"X-Generator: Launchpad (build 1d08ffb47b836b8a4c9a0f11318dfdea7420ab6d)\n"
+"Language: ja\n"
+"Generated-By: Babel 2.12.0\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -31,6 +32,11 @@ msgctxt "service_desc"
 msgid "Maintains SSH connections and loaded pubkeys"
 msgstr "SSH接続とロードされた公開鍵の管理"
 
+#. Window title for the Host List
+msgctxt "title_hosts_list"
+msgid "Hosts"
+msgstr "ホスト"
+
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
 msgid "Pubkeys"
@@ -40,6 +46,11 @@ msgstr "公開鍵"
 msgctxt "title_port_forwards_list"
 msgid "Port forwards"
 msgstr "ポート転送"
+
+#. Window title when editing host details
+msgctxt "title_host_editor"
+msgid "Edit Host"
+msgstr "ホストを編集"
 
 #. Window title for Help index
 msgctxt "title_help"
@@ -66,6 +77,11 @@ msgctxt "title_pubkey_generate"
 msgid "Generate"
 msgstr "生成"
 
+msgctxt "help_intro"
+msgid ""
+"Please select a topic below for more information on a particular subject."
+msgstr "特定の情報について知りたいときは、以下のトピックを選択してください。"
+
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
 msgid "Terms & Conditions"
@@ -75,6 +91,89 @@ msgstr "利用規約"
 msgctxt "hints"
 msgid "Hints"
 msgstr "ヒント"
+
+#. Header text for instructions about creating host shortcuts.
+msgctxt "host_shortcuts_header"
+msgid "Host Shortcuts"
+msgstr "ホスト ショートカット"
+
+#. Instructions about creating host shortcuts.
+msgctxt "host_shortcuts_content"
+msgid ""
+"Long-press on your Android desktop to create direct shortcuts to frequently-"
+"used SSH hosts."
+msgstr "Androidのデスクトップ上で長押しすると、頻繁に使用するSSHホストへ直接ショートカットを作成します。"
+
+#. Header text for instructions about scrolling the terminal.
+msgctxt "scroll_hints_header"
+msgid "Scroll back / Scroll forward"
+msgstr "後方にスクロール/前方にスクロール"
+
+#. Instructions about scrolling the terminal.
+msgctxt "scroll_hints_content"
+msgid ""
+"Swiping your finger up on the right side of the screen allows you to scroll "
+"backward and forward in the local terminal buffer history."
+msgstr "画面の右側を指でスワイプすることで、ローカル端末のバッファの履歴を後方および前方にスクロールすることができます。"
+
+#. Captions for images showing the scroll back/forward gestures.
+msgctxt "scrolling_back"
+msgid "Scrolling back"
+msgstr "後方にスクロール中"
+
+msgctxt "scrolling_forward"
+msgid "Scrolling forward"
+msgstr "前方にスクロール中"
+
+#. Header text for instructions about paging up and down in the terminal.
+msgctxt "page_updn_header"
+msgid "Page Up / Page Down"
+msgstr "ページアップ/ページダウン"
+
+#. Instructions about paging up and down in the terminal.
+msgctxt "page_updn_content"
+msgid ""
+"NOTE: This must be enabled in settings.\n"
+"\n"
+"Swiping your finger up and down on the left third of the screen will send a "
+"page up and page down key to the remote host. Many programs map this to "
+"scrolling back into history such as irssi or tinyfugue."
+msgstr ""
+"注: これは、設定で有効にする必要があります。\n"
+"\n"
+"画面の左側の三分の一で上下に指をスワイプすると、リモートホストへページアップ、ページダウンキーを送信します。irssiやtinyfugueなど、多くのプロ"
+"グラムは、これを履歴のスクロールバックにマップします。"
+
+#. Captions for images showing the page up/down gestures.
+msgctxt "page_up"
+msgid "Page up"
+msgstr "ページアップ"
+
+msgctxt "page_down"
+msgid "Page down"
+msgstr "ページダウン"
+
+#. Header text for instructions about switching to the next and previous host
+#. in the terminal.
+msgctxt "switching_hosts_header"
+msgid "Switching Hosts"
+msgstr "ホストの切り替え中"
+
+#. Instructions about switching to the next and previous host in the terminal.
+msgctxt "switching_hosts_content"
+msgid ""
+"Swiping your finger from one side of the screen to the other will switch "
+"between currently connected hosts."
+msgstr "画面の片側から反対側に指をスワイプすると、現在接続されたホストの間で切り替わります。"
+
+#. Captions for images showing the next/previous host gestures.
+msgctxt "next_host"
+msgid "Next host"
+msgstr "次のホスト"
+
+msgctxt "prev_host"
+msgid "Previous host"
+msgstr "前のホスト"
 
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
@@ -141,91 +240,59 @@ msgctxt "pubkey_copy_private"
 msgid "Copy private key"
 msgstr "秘密鍵をコピー"
 
-msgctxt "pubkey_copy_private_openssh"
-msgid "Copy private key (OpenSSH)"
-msgstr "オープンSSH形式の秘密鍵をコピー"
-
-msgctxt "pubkey_copy_private_pem"
-msgid "Copy private key (PEM)"
-msgstr "PEMプライベートキーをコピー"
-
-msgctxt "pubkey_copy_private_encrypted"
-msgid "Copy private key (encrypted)"
-msgstr "暗号化された秘密鍵のコピー"
-
 msgctxt "pubkey_copy_public"
 msgid "Copy public key"
 msgstr "公開鍵をコピー"
 
-msgctxt "pubkey_export_public"
-msgid "Export public key"
-msgstr "公開鍵をエクスポートする"
+#. Note that the '\n' just splits lines, so it's actually "create or import"
+msgctxt "pubkey_list_empty"
+msgid ""
+"Tap \"Menu\" to create\n"
+"or import key pairs."
+msgstr "Menuボタンを押して鍵の作成またはインポートを行ってください。"
 
-msgctxt "pubkey_export_private"
-msgid "Export private key"
-msgstr "プライベートキーをエクスポートする"
-
-msgctxt "pubkey_export_private_openssh"
-msgid "Export private key (OpenSSH)"
-msgstr "オープンSSH形式の秘密鍵をエクスポートする"
-
-msgctxt "pubkey_export_private_pem"
-msgid "Export private key (PEM)"
-msgstr "PEMプライベートキーをエクスポートする"
-
-msgctxt "pubkey_export_private_encrypted"
-msgid "Export private key (encrypted)"
-msgstr "エクスポートプライベートキー（暗号化）"
-
-msgctxt "pubkey_export_set_passphrase"
-msgid "Set export passphrase"
-msgstr "パスフレーズのエクスポートを設定する"
-
-msgctxt "pubkey_export_passphrase_message"
-msgid "Enter a passphrase to encrypt the exported key"
-msgstr "出力されたキーを暗号化するためのパスフレーズを入力してください"
-
-msgctxt "pubkey_export_confirm_passphrase"
-msgid "Confirm passphrase"
-msgstr "パスフレーズの確認"
-
-msgctxt "pubkey_export_passphrase_mismatch"
-msgid "Passphrases do not match"
-msgstr "パスフレーズが一致しません"
-
-msgctxt "pubkey_import_encrypted_title"
-msgid "Import encrypted key"
-msgstr "暗号化された鍵をインポートする"
-
-#, c-format
-msgctxt "pubkey_import_encrypted_message"
-msgid "Enter password to decrypt key '%1$s' (%2$s)"
-msgstr "パスワードを入力してキー'%1$s'（%2$s）を復号化する"
-
-msgctxt "pubkey_import_button"
-msgid "Import"
-msgstr "インポート"
+msgctxt "pubkey_unknown_format"
+msgid "Unknown format"
+msgstr "不明なフォーマット"
 
 msgctxt "pubkey_change_password"
 msgid "Change password"
 msgstr "パスワードを変更"
 
+#. When attempting to import a pubkey, this is the title for the dialog box
+#. where the user should pick the desired file from the SD card contents.
+msgctxt "pubkey_list_pick"
+msgid "Pick from /sdcard"
+msgstr "SDカードから選ぶ"
+
+#. Message shown to the user when a selected pubkey to import was not
+#. parseable for some reason.
+msgctxt "pubkey_import_parse_problem"
+msgid "Problem parsing imported private key"
+msgstr "インポートした秘密鍵を解析時に問題発生"
+
 msgctxt "pubkey_unlock"
 msgid "Unlock key"
 msgstr "鍵をアンロック"
 
-#. Dialog message prompting the user to enter password to unlock an encrypted
-#. key.
+#. Feedback given to the user when the password that they have entered for the
+#. pubkey is incorrect.
 #, c-format
-msgctxt "pubkey_unlock_message"
-msgid "Enter password to unlock key '%1$s'"
-msgstr "パスワードを入力してキー'%1$s'を解除する"
+msgctxt "pubkey_failed_add"
+msgid "Bad password for key '%1$s'. Authentication failed."
+msgstr "鍵 '%1$s' のパスワードが正しくありません。認証に失敗しました。"
 
-#. Error message shown when user tries to use a nickname that already exists
-#. for another key.
-msgctxt "pubkey_nickname_exists"
-msgid "A key with this nickname already exists"
-msgstr "このニックネームのキーはすでに存在します"
+#. Context menu entry that allows a user to load a pubkey entry into memory.
+#. This is equivalent to "unlocking" a password-protected pubkey entry.
+msgctxt "pubkey_memory_load"
+msgid "Load into memory"
+msgstr "メモリにロード"
+
+#. Context menu entry that allows a user to unload a pubkey entry from memory.
+#. This is equivalent to "locking" a password-protected pubkey entry.
+msgctxt "pubkey_memory_unload"
+msgid "Unload from memory"
+msgstr "メモリからアンロード"
 
 #. Context menu checkbox that indicates that this pubkey entry should attempt
 #. to be loaded upon starting the app.
@@ -238,6 +305,17 @@ msgstr "起動時に鍵をロード"
 msgctxt "pubkey_confirm_use"
 msgid "Confirm before use"
 msgstr "使用時に確認する"
+
+#. When the list of port forwards for a host is empty, this text is is shown
+#. in the space where the list of port forwards are normally present. Note that
+#. the '\n' splits lines, so it's actually "create port forwards"
+msgctxt "portforward_list_empty"
+msgid ""
+"Tap \"Menu\" to create\n"
+"port forwards."
+msgstr ""
+"MENUをタップして\n"
+"ポート転送を作成します．"
 
 #. Context menu action where a user can edite the selected port forward for
 #. the host.
@@ -254,6 +332,11 @@ msgstr "ポート転送を削除"
 msgctxt "prompt_nickname"
 msgid "Nickname:"
 msgstr "鍵の名前"
+
+#. An example string that could be used as a nickname for a pubkey.
+msgctxt "prompt_nickname_hint_pubkey"
+msgid "My work key"
+msgstr "私の作業用の鍵"
 
 #. The source TCP port for port forwards.
 msgctxt "prompt_source_port"
@@ -309,7 +392,8 @@ msgstr "鍵 '%1$s' のパスワード"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid "Allow remote host to\n"
+msgid ""
+"Allow remote host to\n"
 "use key '%1$s'?"
 msgstr "リモートホストが鍵 '%1$s' を使用することを許可しますか?"
 
@@ -335,16 +419,19 @@ msgstr ""
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid "Host has disconnected.\n"
+msgid ""
+"Host has disconnected.\n"
 "Close session?"
-msgstr "ホスト切断されました．\n"
+msgstr ""
+"ホスト切断されました．\n"
 "セッションを閉じますか？"
 
 #. Prompt user must answer yes or no to when the remote host fails
 #. verification of encryption fingerprint
-#, fuzzy
 msgctxt "prompt_continue_connecting"
-msgid "Are you sure you want to continue connecting?"
+msgid ""
+"Are you sure you want\n"
+"to continue connecting?"
 msgstr "このまま接続しますか?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
@@ -361,30 +448,6 @@ msgctxt "host_fingerprint"
 msgid "Host %1$s key fingerprint is %2$s"
 msgstr "ホストの%1$sキーフィンガープリントは%2$s"
 
-#. Title for the host key fingerprint verification prompt shown when
-#. connecting to a new host
-msgctxt "host_key_verification_title"
-msgid "Host key verification"
-msgstr "ホストキー検証"
-
-#. Section header for the fingerprint formats display area
-msgctxt "fingerprint_format_header"
-msgid "Fingerprint format"
-msgstr "フィンガープリント形式"
-
-#. Format string showing key type and size, e.g., "RSA 2048 bits". First field
-#. is key type, second is key size in bits.
-#, c-format
-msgctxt "host_key_type_and_size"
-msgid "%1$s %2$d bits"
-msgstr "%1$s %2$d ビット"
-
-#. Content description for the copy fingerprint to clipboard button, used by
-#. screen readers for accessibility
-msgctxt "fingerprint_copy_description"
-msgid "Copy fingerprint to clipboard"
-msgstr "クリップボードにフィンガープリントをコピーする"
-
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
 msgstr "パスワードが一致しません！"
@@ -392,6 +455,19 @@ msgstr "パスワードが一致しません！"
 msgctxt "alert_wrong_password_msg"
 msgid "Wrong password!"
 msgstr "間違ったパスワードです．"
+
+msgctxt "alert_key_corrupted_msg"
+msgid "Private key appears corrupt!"
+msgstr "秘密鍵が壊れています!"
+
+msgctxt "alert_sdcard_absent"
+msgid "SD card is not inserted!"
+msgstr "SD カードが挿入されていません．"
+
+#. Change an existing item's (e.g., host or pubkey) details.
+msgctxt "button_change"
+msgid "Change"
+msgstr "変更"
 
 #. Button that resizes the screen to the user-specified dimensions.
 msgctxt "button_resize"
@@ -402,35 +478,13 @@ msgctxt "alert_disconnect_msg"
 msgid "Connection Lost"
 msgstr "接続が失われました．"
 
-#. Message shown when network connection is lost and app is waiting to
-#. reconnect
-msgctxt "network_lost_grace_period"
-msgid "Network lost, waiting to reconnect…"
-msgstr "ネットワークが切断されたため再接続待ち…"
-
-#. Message shown when the 60-second grace period expires without network
-#. restoration
-msgctxt "network_grace_period_expired"
-msgid "Network not restored, disconnecting…"
-msgstr "ネットワークが復元されなかったため切断します…"
-
-#. Message shown when network is restored and connection can continue (same IP
-#. address)
-msgctxt "network_restored_same_ip"
-msgid "Network restored, connection maintained"
-msgstr "ネットワークが回復しました 接続は維持されています"
-
-#. Message shown when network is restored but IP address changed, requiring
-#. reconnection
-msgctxt "network_restored_ip_changed"
-msgid "Network restored but IP changed, reconnecting…"
-msgstr "ネットワークが復元されましたがIPが変更されたため再接続中…"
-
-#. Message shown when network is restored but previous network state is
-#. unknown
-msgctxt "network_restored_no_previous_state"
-msgid "Network restored, verifying connection…"
-msgstr "ネットワークが復元されました 接続を確認しています…"
+msgctxt "msg_copyright"
+msgid ""
+"Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
+"http://jsharkey.org/"
+msgstr ""
+"Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
+"http://jsharkey.org/"
 
 #. The category title for terminal emulation preferences.
 msgctxt "pref_emulation_category"
@@ -443,6 +497,10 @@ msgid "Emulation mode"
 msgstr "エミュレートモード"
 
 #. Description of the emulation terminal type preference.
+msgctxt "pref_emulation_summary"
+msgid "Terminal emulation mode to use for PTY connections"
+msgstr "PTYで使う端末エミュレーションモード"
+
 #. Name for the scrollback size preference
 msgctxt "pref_scrollback_title"
 msgid "Scrollback size"
@@ -452,77 +510,6 @@ msgstr "スクロールサイズ"
 msgctxt "pref_scrollback_summary"
 msgid "Size of scrollback buffer to keep in memory for each console"
 msgstr "メモリに保持するスクロールバッファのサイズ"
-
-#. Name for the font family preference
-msgctxt "pref_fontfamily_title"
-msgid "Font"
-msgstr "フォント"
-
-#. Description of the font family preference
-#. Title for adding custom font
-msgctxt "pref_customfont_title"
-msgid "Add custom font"
-msgstr "カスタムフォントを追加する"
-
-#. Summary for adding custom font
-msgctxt "pref_customfont_summary"
-msgid "Add a font from Google Fonts by name"
-msgstr "Googleフォントから名前でフォントを追加する"
-
-#. Dialog title for adding custom font
-msgctxt "dialog_customfont_title"
-msgid "Add Custom Font"
-msgstr "カスタムフォントを追加する"
-
-#. Hint for custom font name input
-msgctxt "dialog_customfont_hint"
-msgid "Google Fonts name (e.g., Cascadia Code)"
-msgstr "Googleフォント名（例：Cascadia Code）"
-
-#. Button to add font
-msgctxt "button_add"
-msgid "Add"
-msgstr "追加する"
-
-#. Button to remove font
-msgctxt "button_remove"
-msgid "Remove"
-msgstr "削除"
-
-#. Message shown when validating font
-msgctxt "font_validating"
-msgid "Validating font…"
-msgstr "フォントを検証しています…"
-
-#. Title for importing local font
-msgctxt "pref_localfont_title"
-msgid "Import local font"
-msgstr "ローカルフォントをインポートする"
-
-#. Summary for importing local font
-msgctxt "pref_localfont_summary"
-msgid "Import a font file from storage (TTF, OTF)"
-msgstr "ストレージからフォントファイルをインポートする TTF OTF"
-
-#. Dialog title for importing local font
-msgctxt "dialog_localfont_title"
-msgid "Import Font"
-msgstr "フォントをインポート"
-
-#. Hint for local font name input
-msgctxt "dialog_localfont_hint"
-msgid "Display name for the font"
-msgstr "フォントの表示名"
-
-#. Button to import font
-msgctxt "button_import"
-msgid "Import"
-msgstr "インポート"
-
-#. Message shown when importing font
-msgctxt "font_importing"
-msgid "Importing font…"
-msgstr "フォントをインポート中…"
 
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
@@ -544,6 +531,11 @@ msgstr "ユーザーインターフェース"
 msgctxt "pref_rotation_title"
 msgid "Rotation mode"
 msgstr "画面の向き"
+
+#. Summary for the rotation mode preference
+msgctxt "pref_rotation_summary"
+msgid "How to change rotation when keyboard popped in/out"
+msgstr "キーボードのポップイン/アウト時の向きの変更"
 
 #. Name for the titlebar hide preference
 msgctxt "pref_titlebarhide_title"
@@ -642,10 +634,20 @@ msgctxt "pref_keymode_title"
 msgid "Directory shortcuts"
 msgstr "ディレクトリのショートカット"
 
+#. Summary for the keyboard shortcuts preference
+msgctxt "pref_keymode_summary"
+msgid "Select how to use Alt for '/' and Shift for Tab"
+msgstr "Altを'/'、ShiftをTabに割り当てます"
+
 #. Name for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_title"
 msgid "Sticky modifiers"
 msgstr "スティッキー修飾キー"
+
+#. Summary for the sticky modifiers preference
+msgctxt "pref_stickymodifiers_summary"
+msgid "Modifier keys remain enabled until another key is pressed"
+msgstr "別のキーが押されるまで、修飾キーは有効のままになります"
 
 #. Sticky modifier preference value description for when only the Alt key
 #. should be a sticky modifier.
@@ -657,6 +659,11 @@ msgstr "alt のみ"
 msgctxt "pref_camera_title"
 msgid "Camera shortcut"
 msgstr "カメラボタンショートカット"
+
+#. Summary for the camera shortcut usage preference
+msgctxt "pref_camera_summary"
+msgid "Select which shortcut to trigger when the camera button is pushed"
+msgstr "カメラボタンが押されたときのショートカットを選びます"
 
 #. Name for the keep screen on preference
 msgctxt "pref_keepalive_title"
@@ -698,12 +705,6 @@ msgctxt "pref_bell_title"
 msgid "Audible bell"
 msgstr "ベル音"
 
-#. Brief summary of the user preference that causes a bell sound to play when
-#. the terminal alert is triggered.
-msgctxt "pref_bell_summary"
-msgid "Play sound on terminal alert"
-msgstr "ターミナルアラートでサウンドを鳴らす"
-
 #. Title for the slider preference to set the volume
 msgctxt "pref_bell_volume_title"
 msgid "Bell volume"
@@ -713,12 +714,6 @@ msgstr "ボリューム設定"
 msgctxt "pref_bell_vibrate_title"
 msgid "Vibrate on bell"
 msgstr "バイブレーション"
-
-#. Brief summary of the feature that causes the phone to vibrate when a
-#. terminal alert would cause the "bell" sound to play normally.
-msgctxt "pref_bell_vibrate_summary"
-msgid "Vibrate on terminal alert"
-msgstr "ターミナルアラート時にバイブレーションする"
 
 #. Checkbox preference title for the receive notifications on terminal bell
 #. feature
@@ -774,16 +769,6 @@ msgstr "色の系統"
 msgctxt "hostpref_fontsize_title"
 msgid "Font size (pt)"
 msgstr "フォントのサイズ (pt)"
-
-#. Host's font family preference title
-msgctxt "hostpref_fontfamily_title"
-msgid "Font"
-msgstr "フォント"
-
-#. Host's color scheme preference title
-msgctxt "hostpref_colorscheme_title"
-msgid "Terminal color scheme"
-msgstr "ターミナルカラースキーム"
 
 #. Host pubkey usage preference title
 msgctxt "hostpref_pubkeyid_title"
@@ -873,10 +858,39 @@ msgctxt "hostpref_port_title"
 msgid "Port"
 msgstr "ポート"
 
+#. Displayed to indicate a host has never been connected to.
+msgctxt "bind_never"
+msgid "Never connected"
+msgstr "未接続"
+
+#. Message given when user copies from the terminal.
+#, c-format
+msgctxt "console_copy_done"
+msgid "Copied %1$d byte to clipboard"
+msgid_plural "Copied %1$d bytes to clipboard"
+msgstr[0] "クリップボードに %1$d バイトコピーしました．"
+
+#. Instructions for how to copy from the terminal. The '\n' entries are to
+#. split lines to improve readability and prevent wrapping off the screen.
+msgctxt "console_copy_start"
+msgid ""
+"Touch and drag\n"
+"or use directional pad\n"
+"to select area to copy"
+msgstr ""
+"タッチしてドラッグ\n"
+"または方向パッドで\n"
+"コピー領域を選択"
+
 #. Button to close the disconnected terminal window.
 msgctxt "console_menu_close"
 msgid "Close"
 msgstr "切断"
+
+#. Button to begin copying from the terminal to the clipboard.
+msgctxt "console_menu_copy"
+msgid "Copy"
+msgstr "コピー"
 
 #. Button to paste from the clipboard to the terminal.
 msgctxt "console_menu_paste"
@@ -884,22 +898,19 @@ msgid "Paste"
 msgstr "貼り付け"
 
 #. Button that brings user to the Port Forwards List.
-#, fuzzy
 msgctxt "console_menu_portforwards"
-msgid "Port forwards"
+msgid "Port Forwards"
 msgstr "ポート転送"
 
 #. Button that brings user to the terminal resizing dialog where they can
 #. force a size.
-#, fuzzy
 msgctxt "console_menu_resize"
-msgid "Force size"
+msgid "Force Size"
 msgstr "サイズ強制"
 
 #. Button that brings up the list of URLs on the current screen
-#, fuzzy
 msgctxt "console_menu_urlscan"
-msgid "URL scan"
+msgid "URL Scan"
 msgstr "URL スキャン"
 
 #. Button label to answer "Yes" to a yes/no prompt
@@ -937,11 +948,11 @@ msgctxt "portforward_pos"
 msgid "Create port forward"
 msgstr "ポート転送の作成"
 
-#. Button that saves changes to an existing port forward in the Port Forward
-#. Edit dialog.
-msgctxt "portforward_save"
-msgid "Save"
-msgstr "セーブ"
+msgctxt "portforward_problem"
+msgid ""
+"Problem creating port forward, maybe you're using ports under 1024 or port "
+"is already used?"
+msgstr "ポート転送の作成ができません．おそらく1024ポート以下か既に利用されているポートを指定されています．"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
@@ -958,9 +969,8 @@ msgctxt "format_port"
 msgid "port"
 msgstr "ポート"
 
-#, fuzzy
 msgctxt "list_menu_pubkeys"
-msgid "Manage pubkeys"
+msgid "Manage Pubkeys"
 msgstr "公開鍵管理"
 
 #. Selection choice to sort hosts by color.
@@ -973,10 +983,8 @@ msgctxt "list_menu_sortname"
 msgid "Sort by name"
 msgstr "名前順でソート"
 
-#. Menu item to disconnect all the hosts.
-#, fuzzy
 msgctxt "list_menu_disconnect"
-msgid "Disconnect all"
+msgid "Disconnect All"
 msgstr "すべて切断"
 
 msgctxt "list_menu_settings"
@@ -998,6 +1006,14 @@ msgstr "ポート転送の編集"
 msgctxt "list_host_delete"
 msgid "Delete host"
 msgstr "接続ホストの削除"
+
+#. Note that the '\n' splits the lines so it's actually "quick-connect box
+#. below to connect"
+msgctxt "list_host_empty"
+msgid "No hosts created yet."
+msgstr ""
+"下のquick-connect box\n"
+"を使ってホストに接続できます."
 
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
@@ -1045,11 +1061,15 @@ msgctxt "list_camera_none"
 msgid "None"
 msgstr "なし"
 
-#. Selection to indicate pressing the Camera button should open the text input
-#. dialog.
-msgctxt "list_camera_text_input"
-msgid "Text Input"
-msgstr "テキスト入力"
+#. Name for the backspace character
+msgctxt "list_delkey_backspace"
+msgid "Backspace"
+msgstr "Backspace"
+
+#. Name for the ASCII DEL character
+msgctxt "list_delkey_del"
+msgid "Delete"
+msgstr "Delete"
 
 #, c-format
 msgctxt "delete_message"
@@ -1075,6 +1095,10 @@ msgstr "はい、切断します"
 msgctxt "disconnect_all_neg"
 msgid "Cancel"
 msgstr "キャンセル"
+
+msgctxt "terminal_no_hosts_connected"
+msgid "No hosts currently connected"
+msgstr "接続済みのホストはありません．"
 
 #. Displayed in terminal when attempting to connect to a host. The first two
 #. variables are host:port and the third is the protocol (e.g., SSH)
@@ -1144,11 +1168,6 @@ msgid "Attempting 'publickey' authentication with a specific public key"
 msgstr "指定された公開鍵による 'publickey' 認証を試行"
 
 #, c-format
-msgctxt "terminal_auth_biometric"
-msgid "Requesting biometric authentication for key '%1$s'"
-msgstr "バイオメトリック認証をキー'%1$s'に要求しています"
-
-#, c-format
 msgctxt "terminal_auth_pubkey_fail"
 msgid "Authentication method 'publickey' with key '%1$s' failed"
 msgstr "鍵 '%1$s' での 'publickey' 認証に失敗"
@@ -1185,7 +1204,7 @@ msgstr "エラー! この電話機にはローカルシェルがありません.
 #, c-format
 msgctxt "notification_text"
 msgid "%1$s wants your attention."
-msgstr "%1$s でベルが鳴りました。"
+msgstr "%1$s でベルが鳴りました"
 
 #. Preference selection for SSH Authentication Agent to never use pubkeys
 msgctxt "no"
@@ -1197,204 +1216,31 @@ msgctxt "yes"
 msgid "Yes"
 msgstr "はい"
 
-#. Selector title for the list of color schemes.
-msgctxt "list_color_schemes"
-msgid "Color schemes"
-msgstr "カラースキーム"
-
 #. Menu selection to reset colors to their defaults.
 msgctxt "menu_colors_reset"
 msgid "Reset"
 msgstr "リセット"
-
-#. Button text to open color scheme manager
-msgctxt "button_manage_schemes"
-msgid "Manage Schemes"
-msgstr "スキームの管理"
-
-#. Window title for color scheme manager screen
-msgctxt "title_scheme_manager"
-msgid "Manage Color Schemes"
-msgstr "カラースキームの管理"
-
-#. Button text to create a new color scheme
-msgctxt "button_new_scheme"
-msgid "New Scheme"
-msgstr "ニュー スキーム"
-
-#. Button text to duplicate a color scheme
-msgctxt "button_duplicate_scheme"
-msgid "Duplicate"
-msgstr "複製"
-
-#. Button text to rename a color scheme
-msgctxt "button_rename_scheme"
-msgid "Rename"
-msgstr "名前を変更する"
-
-#. Button text to delete a color scheme
-msgctxt "button_delete_scheme"
-msgid "Delete"
-msgstr "削除"
-
-#. Dialog title when creating a new color scheme
-msgctxt "dialog_title_new_scheme"
-msgid "New Color Scheme"
-msgstr "ニューカラースキーム"
-
-#. Dialog title when renaming a color scheme
-msgctxt "dialog_title_rename_scheme"
-msgid "Rename Color Scheme"
-msgstr "カラースキームの名前を変更する"
-
-#. Label for scheme name input field
-msgctxt "label_scheme_name"
-msgid "Scheme Name"
-msgstr "スキーム名"
-
-#. Label for scheme description input field (optional)
-msgctxt "label_scheme_description"
-msgid "Description (optional)"
-msgstr "説明（オプション）"
-
-#. Confirmation dialog title when deleting a scheme
-msgctxt "dialog_title_delete_scheme"
-msgid "Delete Scheme?"
-msgstr "スキームを削除しますか?"
-
-#. Confirmation dialog message when deleting a scheme
-#, c-format
-msgctxt "dialog_message_delete_scheme"
-msgid "Are you sure you want to delete \"%1$s\"? This action cannot be undone."
-msgstr "「%1$s」を削除してよいですか？この操作は取り消すことができません。"
-
-#. Button text for confirm action in dialogs
-msgctxt "button_confirm"
-msgid "Confirm"
-msgstr "確認する"
-
-#. Button text for cancel action in dialogs
-msgctxt "button_cancel"
-msgid "Cancel"
-msgstr "キャンセル"
-
-#. Label indicating a scheme is built-in and cannot be deleted
-msgctxt "label_built_in_scheme"
-msgid "Built-in"
-msgstr "内蔵の"
-
-#. Label indicating a scheme is custom/user-created
-msgctxt "label_custom_scheme"
-msgid "Custom"
-msgstr "カスタム"
-
-#. Empty state message when no custom schemes exist
-msgctxt "empty_custom_schemes"
-msgid "No custom schemes. Tap \"New Scheme\" to create one."
-msgstr "カスタムスキームがありません。「新しいスキーム」をタップして作成してください。"
-
-#. Button text to edit full color palette
-msgctxt "button_edit_palette"
-msgid "Edit Palette"
-msgstr "パレットを編集する"
-
-#. Button text to export a color scheme to JSON file
-msgctxt "button_export_scheme"
-msgid "Export Scheme"
-msgstr "エクスポートスキーム"
-
-#. Button text to import a color scheme from JSON file
-msgctxt "button_import_scheme"
-msgid "Import Scheme"
-msgstr "インポートスキーム"
-
-#. Success message after exporting a scheme
-#, c-format
-msgctxt "message_export_success"
-msgid "Exported %1$s"
-msgstr "エクスポートしました %1$s"
-
-#. Success message after importing a scheme
-#, c-format
-msgctxt "message_import_success"
-msgid "Imported %1$s"
-msgstr "インポートしました %1$s"
-
-#. Error message when export fails
-#, c-format
-msgctxt "error_export_failed"
-msgid "Failed to export scheme: %1$s"
-msgstr "スキームのエクスポートに失敗しました：%1$s"
-
-#. Error message when import fails
-#, c-format
-msgctxt "error_import_failed"
-msgid "Failed to import scheme: %1$s"
-msgstr "スキームのインポートに失敗しました：%1$s"
-
-#. Error message when JSON parsing fails
-msgctxt "error_invalid_json"
-msgid "Invalid JSON file"
-msgstr "無効なJSONファイル"
-
-#. Window title for palette editor screen
-msgctxt "title_palette_editor"
-msgid "Edit Color Palette"
-msgstr "カラーパレットを編集する"
-
-#. Button text to reset entire palette to defaults
-msgctxt "button_reset_all_colors"
-msgid "Reset All"
-msgstr "リセット全て"
-
-#. Section header for ANSI colors (0-15)
-msgctxt "section_ansi_colors"
-msgid "ANSI Colors (0–15)"
-msgstr "ANSIカラー（０～１５）"
-
-#. Dialog title when editing a specific color
-#, c-format
-msgctxt "dialog_title_edit_color"
-msgid "Edit Color %1$d"
-msgstr "カラーエディット %1$d"
-
-#. Confirmation dialog for resetting all colors
-msgctxt "dialog_title_reset_all"
-msgid "Reset All Colors?"
-msgstr "すべての色をリセットしますか?"
-
-#. Message for reset all colors confirmation
-msgctxt "dialog_message_reset_all"
-msgid ""
-"This will reset all 256 colors to their default values. This action cannot "
-"be undone."
-msgstr "これにより、256色すべてがデフォルト値にリセットされます。この操作は取り消すことができません。"
 
 #. Displayed in the notification bar that connections are active
 msgctxt "app_is_running"
 msgid "ConnectBot is running"
 msgstr "ConnectBot起動中"
 
-#. RGB color picker labels
-#. Label for the red color component slider (0-255) in the RGB color picker
-msgctxt "label_red"
-msgid "Red"
-msgstr "レッド"
+msgctxt "color_red"
+msgid "red"
+msgstr "赤"
 
-#. Label for the green color component slider (0-255) in the RGB color picker
-msgctxt "label_green"
-msgid "Green"
-msgstr "グリーン"
+msgctxt "color_green"
+msgid "green"
+msgstr "緑"
 
-#. Label for the blue color component slider (0-255) in the RGB color picker
-msgctxt "label_blue"
-msgid "Blue"
-msgstr "ブルー"
+msgctxt "color_blue"
+msgid "blue"
+msgstr "青"
 
-#. Label for the hex color input field where users can type a hex color code
-msgctxt "label_hex_color"
-msgid "Hex Color"
-msgstr "16進カラーコード"
+msgctxt "color_gray"
+msgid "gray"
+msgstr "グレー"
 
 #. Very short label indicating the number next to it is "foreground color"
 #. number.
@@ -1421,6 +1267,11 @@ msgstr "接続しました。"
 msgctxt "image_description_disconnected"
 msgid "Disconnected."
 msgstr "切断しました"
+
+#. Describes the icon of the "locked pubkey" icon for accessibility purposes.
+msgctxt "image_description_key_is_locked"
+msgid "Key is locked."
+msgstr "キーがロックされました。"
 
 #. Describes the icon of the "send control character" button in the terminal
 #. view for              accessibility purposes.
@@ -1475,6 +1326,12 @@ msgstr "左矢印"
 msgctxt "image_description_right"
 msgid "Arrow right"
 msgstr "右矢印"
+
+#. Describes the "volume" icon in the bell volume dialog for accessibility
+#. purposes.
+msgctxt "image_description_volume"
+msgid "Volume"
+msgstr "音量"
 
 #. Text for the "Esc" button in virtual keyboard.
 msgctxt "button_key_esc"
@@ -1566,293 +1423,6 @@ msgctxt "button_key_f12"
 msgid "F12"
 msgstr "F12"
 
-#. Button in virtual keyboard that opens text input dialog for composing
-#. longer text with full IME support
-msgctxt "terminal_keyboard_text_input_button"
-msgid "Text input"
-msgstr "テキスト入力"
-
-#. Title for the floating text input dialog where users can type longer text
-#. with full keyboard/IME support
-msgctxt "terminal_text_input_dialog_title"
-msgid "Text Input"
-msgstr "テキスト入力"
-
-#. Label for the text field in the floating text input dialog where users
-#. compose their text
-msgctxt "terminal_text_input_dialog_label"
-msgid "Enter text to send to terminal"
-msgstr "ターミナルに送信するテキストを入力してください"
-
-#. Menu item in console toolbar to open floating text input dialog
-msgctxt "console_menu_text_input"
-msgid "Text input"
-msgstr "テキスト入力"
-
-#. Send button in floating text input dialog
-msgctxt "button_send"
-msgid "Send"
-msgstr "送信"
-
-#. Common UI button labels
-#. Button label for confirming an action
-msgctxt "button_ok"
-msgid "OK"
-msgstr "OK"
-
-#. Button label for closing a dialog
-msgctxt "button_close"
-msgid "Close"
-msgstr "クローズ"
-
-#. Accessibility label for back navigation button; used for screen readers
-msgctxt "button_back"
-msgid "Back"
-msgstr "バック"
-
-#. Accessibility label for navigate up button in app bar; used for screen
-#. readers
-msgctxt "button_navigate_up"
-msgid "Navigate up"
-msgstr "上に移動する"
-
-#. Accessibility label for more options menu button; used for screen readers
-msgctxt "button_more_options"
-msgid "More options"
-msgstr "さらにオプション"
-
-#. Accessibility label for host options menu button; used for screen readers
-msgctxt "button_host_options"
-msgid "Host options"
-msgstr "ホストオプション"
-
-#. Accessibility label for collapse button; used for screen readers
-msgctxt "button_collapse"
-msgid "Collapse"
-msgstr "折り畳み"
-
-#. Error messages
-#. Error message shown when a public key fails to load at startup
-#, c-format
-msgctxt "error_key_load_failed"
-msgid "Failed to load key '%1$s': %2$s"
-msgstr "キー'%1$s'の読み込みに失敗しました：%2$s"
-
-#. Error message shown when a connection to a host fails
-#, c-format
-msgctxt "error_connection_failed"
-msgid "Failed to connect to %1$s (%2$s): %3$s"
-msgstr "接続に失敗しました %1$s (%2$s) %3$s"
-
-#. Error message shown when port forwards fail to load for a host
-#, c-format
-msgctxt "error_port_forward_load_failed"
-msgid "Failed to load port forwards for %1$s: %2$s"
-msgstr "Failed to load port forwards for %1$s %2$s"
-
-#. Error message shown when saving host configuration fails
-#, c-format
-msgctxt "error_host_save_failed"
-msgid "Failed to save host %1$s: %2$s"
-msgstr "ホスト%1$sの保存に失敗しました：%2$s"
-
-#. Error message shown when loading a color scheme fails
-#, c-format
-msgctxt "error_color_scheme_load_failed"
-msgid "Failed to load color scheme: %s"
-msgstr "カラースキームの読み込みに失敗：%s"
-
-#. Empty state messages
-#. Message shown when no hosts have been configured yet
-msgctxt "empty_hosts_message"
-msgid "No hosts configured"
-msgstr "ホストが設定されていません"
-
-#. Message shown when no public keys have been generated or imported yet
-msgctxt "empty_pubkeys_message"
-msgid "No keys found."
-msgstr "キーやキーが見つかりませんでした。"
-
-#. Message shown when no port forwards have been configured for a host
-msgctxt "empty_port_forwards_message"
-msgid "No port forwards configured."
-msgstr "ポートフォワードが設定されていません。"
-
-#. Message shown when no URLs are found in the terminal buffer during URL scan
-msgctxt "empty_urls_message"
-msgid "No URLs found in terminal buffer"
-msgstr "ターミナルバッファ内にURLは見つかりませんでした"
-
-#. Console screen messages
-#. Default title for console screen when no specific host is connected
-msgctxt "console_default_title"
-msgid "Console"
-msgstr "コンソール"
-
-#. Host editor screen labels
-#. Label for quick connect input field
-msgctxt "host_editor_quick_connect_label"
-msgid "Quick connect"
-msgstr "クイック接続"
-
-#. Placeholder text showing format for quick connect field
-msgctxt "host_editor_quick_connect_placeholder"
-msgid "user@hostname:port"
-msgstr "ユーザー名@ホスト名:ポート番号"
-
-#. Supporting text showing example for quick connect field
-msgctxt "host_editor_quick_connect_example"
-msgid "Example: root@192.168.1.1:22"
-msgstr "例: root@192.168.1.1:22"
-
-#. Text for button to show advanced host options
-msgctxt "host_editor_show_advanced"
-msgid "Show advanced options"
-msgstr "高度なオプションを表示する"
-
-#. Text for button to hide advanced host options
-msgctxt "host_editor_hide_advanced"
-msgid "Hide advanced options"
-msgstr "高度なオプションを隠す"
-
-#. Terminal resize dialog
-#. Label for width input field in terminal resize dialog
-msgctxt "resize_width_label"
-msgid "Width (columns)"
-msgstr "カラム数"
-
-#. Label for height input field in terminal resize dialog
-msgctxt "resize_height_label"
-msgid "Height (rows)"
-msgstr "行数"
-
-#. Public key editor labels
-#. Label for key type field in the SSH pubkey editor
-msgctxt "pubkey_editor_key_type_label"
-msgid "Key type"
-msgstr "キー種別"
-
-#. Label for the options section on SSH pubkey editor
-msgctxt "pubkey_editor_options_label"
-msgid "Options"
-msgstr "オプション"
-
-#. Warning message shown when encrypted SSH pubkeys are set to load on startup
-msgctxt "pubkey_editor_encrypted_startup_warning"
-msgid "Encrypted keys cannot be unlocked at startup"
-msgstr "暗号化されたキーは起動時に解除できない"
-
-#. Public key list labels
-#. Label prefix for displaying key type in list
-#, c-format
-msgctxt "pubkey_type_label"
-msgid "Type: %s"
-msgstr "タイプ：%s"
-
-#. Accessibility description for encrypted key icon
-msgctxt "pubkey_encrypted_description"
-msgid "Encrypted"
-msgstr "暗号化された"
-
-#. Accessibility description for unencrypted key icon
-msgctxt "pubkey_not_encrypted_description"
-msgid "Not encrypted"
-msgstr "暗号化されていない"
-
-#. Biometric authentication strings
-#. Label for biometric protection toggle in key generation
-msgctxt "pubkey_biometric_protection"
-msgid "Fingerprint protection"
-msgstr "フィンガープリント保護"
-
-#. Description for biometric protection option
-msgctxt "pubkey_biometric_description"
-msgid "Protect this key with your fingerprint"
-msgstr "この鍵を指紋で保護する"
-
-#. Warning shown when biometrics are not enrolled
-msgctxt "pubkey_biometric_not_enrolled"
-msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use this "
-"feature."
-msgstr "フィンガープリントが登録されていません。 この機能を使用するには、デバイスの設定でフィンガープリントを設定してください"
-
-#. Warning shown when key type doesn\'t support biometric protection
-msgctxt "pubkey_biometric_key_type_warning"
-msgid "Fingerprint protection is only available for RSA and EC keys"
-msgstr "フィンガープリント保護はRSAとECキーのみで利用可能です"
-
-#. Title for biometric prompt when unlocking a key
-msgctxt "pubkey_biometric_prompt_title"
-msgid "Authenticate to use key"
-msgstr "キーを使用するために認証する"
-
-#. Subtitle for biometric prompt
-#, c-format
-msgctxt "pubkey_biometric_prompt_subtitle"
-msgid "Touch the fingerprint sensor to unlock '%1$s'"
-msgstr "指紋センサーに触れて'%1$s'を解除する"
-
-#. Accessibility description for biometric-protected key icon
-msgctxt "pubkey_biometric_description_icon"
-msgid "Protected by fingerprint"
-msgstr "指紋によって保護される"
-
-#. Error message when biometric authentication is not available in current
-#. context
-msgctxt "pubkey_biometric_not_available"
-msgid "Fingerprint authentication is not available"
-msgstr "フィンガープリント認証は利用できない"
-
-#. Port forward editor labels
-#. Placeholder for port forward nickname field. Should show an example
-#. nickname for a port forward.
-msgctxt "portforward_nickname_placeholder"
-msgid "Internal Webserver"
-msgstr "内部ウェブサーバー"
-
-#. Error message when port is out of valid range
-msgctxt "portforward_port_range_error"
-msgid "Port must be between 1 and 65535"
-msgstr "ポートは1から65535の間でなければなりません"
-
-#. Placeholder for destination field
-msgctxt "portforward_destination_placeholder"
-msgid "localhost:80"
-msgstr "localhost:80"
-
-#. Error message for invalid destination format
-msgctxt "portforward_destination_format_error"
-msgid "Format should be host:port (e.g., localhost:80)"
-msgstr "フォーマットはホスト:ポート（例：localhost:80）です"
-
-#. Port forward list labels
-#. Label prefix for displaying port forward type in list
-#, c-format
-msgctxt "portforward_type_label"
-msgid "Type: %s"
-msgstr "タイプ：%s"
-
-#. Menu item to enable port forward on live connection
-msgctxt "portforward_enable"
-msgid "Enable"
-msgstr "有効化する"
-
-#. Menu item to disable port forward on live connection
-msgctxt "portforward_disable"
-msgid "Disable"
-msgstr "無効にする"
-
-#. Content description for enabled port forward visual indicator
-msgctxt "portforward_enabled"
-msgid "Port forward enabled"
-msgstr "ポートフォワードが有効です"
-
-#. Content description for disabled port forward visual indicator
-msgctxt "portforward_disabled"
-msgid "Port forward disabled"
-msgstr "ポートフォワード無効"
-
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
 msgid "Protocol"
@@ -1879,263 +1449,92 @@ msgctxt "hostpref_edit_host"
 msgid "Save host"
 msgstr "ホストを保存"
 
+#. Text for button which, when clicked, brings up an editor for adding a new
+#. pubkey.
+msgctxt "pubkey_add_new"
+msgid "Add new pubkey"
+msgstr "新しい公開鍵を追加"
+
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
 msgid "Import existing pubkey"
 msgstr "既存の公開鍵をインポート"
 
-#. Title for notification permission dialog shown when user first tries to
-#. connect to a host.              Explains that notifications keep SSH
-#. connections alive.
-msgctxt "notification_permission_title"
-msgid "Keep connections alive"
-msgstr "接続を維持する"
+#. Text for dialog which explains that the host URI is invalid and asks to
+#. discard.
+msgctxt "discard_host_changes_message"
+msgid "Host URI is invalid. Would you like to discard changes?"
+msgstr "ホストURIが正しくありません。変更を破棄しますか?"
 
-#. Explanation message shown in permission dialog when user tries to connect
-#. to a host.              Explains why notification permission is needed and
-#. what happens without it.
-msgctxt "notification_permission_message"
+#. Text for button which discards changes to the host.
+msgctxt "discard_host_button"
+msgid "Discard"
+msgstr "破棄"
+
+#. Text for button which does not discard changes and keeps editing.
+msgctxt "discard_host_cancel_button"
+msgid "Keep editing"
+msgstr "編集を続ける"
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Describes a key type of the RSA algorithm with a
+#. certain strength described in              number of bits (e.g., "RSA
+#. 2048-bit").
+#, c-format
+msgctxt "key_type_rsa_bits"
+msgid "RSA %d-bit"
+msgstr "RSA %d-ビット"
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Describes a key type of the DSA algorithm with a
+#. certain strength described in              number of bits (e.g., "DSA
+#. 1024-bit" ).
+#, c-format
+msgctxt "key_type_dsa_bits"
+msgid "DSA %d-bit"
+msgstr "DSA %d-ビット"
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Describes a key type of the Elliptic Curve (EC)
+#. algorithm with a certain strength              described in number of bits
+#. (e.g., "EC 256-bit").
+#, c-format
+msgctxt "key_type_ec_bits"
+msgid "EC %d-bit"
+msgstr "EC %d-ビット"
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Describes a key type of the Ed25519 algorithm
+#. with a certain strength described in              number of bits (e.g.,
+#. "Ed25519").
+msgctxt "key_type_ed25519"
+msgid "Ed25519"
+msgstr "Ed25519"
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Describes a key type of an unknown algorithm.
+msgctxt "key_type_unknown"
+msgid "Key type unknown"
+msgstr "不明なキータイプ"
+
+#. In a list of all the key pairs the user has generated or imported into
+#. their device.              Added to the end of a key description to indicate
+#. that the key is encrypted (i.e,              password protected).
+msgctxt "key_attribute_encrypted"
+msgid "(encrypted)"
+msgstr "（暗号化）"
+
+msgctxt "notification_requirement_explanation"
 msgid ""
-"Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch apps."
-msgstr "通知を表示することはバックグラウンドで接続を維持するために必要です。許可なくして、接続はアプリを切り替えたときに閉じることがあります。"
+"Notification permission is required to display running sessions in the "
+"background"
+msgstr ""
 
-#. Button text to grant notification permission in the permission explanation
-#. dialog.
-msgctxt "grant_permission"
-msgid "Grant permission"
-msgstr "許可を与える"
+msgctxt "continue_anyway"
+msgid "Continue without"
+msgstr ""
 
-#. Button text to proceed with connecting without granting notification
-#. permission.
-msgctxt "connect_anyway"
-msgid "Connect anyway"
-msgstr "つながる"
-
-#. Title for dialog directing users to app settings when notification
-#. permission was denied.              Shown when user tries to enable persist
-#. connections after denying permission.
-msgctxt "notification_permission_denied_title"
-msgid "Permission required"
-msgstr "パーミッションが必要です"
-
-#. Message explaining that user must enable notification permission in app
-#. settings.              Shown when notification permission was previously
-#. denied and user tries to enable persist connections.
-msgctxt "notification_permission_denied_message"
-msgid ""
-"To keep connections alive in the background, you must enable notification "
-"permission in app settings."
-msgstr "バックグラウンドで接続を維持するにはアプリの設定で通知の許可を有効にする必要があります"
-
-#. Button text to open ConnectBot app settings page where user can grant
-#. notification permission.
-msgctxt "open_settings"
-msgid "Open settings"
-msgstr "設定を開く"
-
-#. Message shown to user when they're trying to connect to a host on a local
-#. network but              have not granted the permission yet.
-msgctxt "terminal_no_route"
-msgid ""
-"Are you trying to access a local host? Grant local network permissions."
-msgstr "ローカルホストにアクセスしようとしていますか ローカルネットワークのパーミッションを付与してください"
-
-#. Loading message shown during app initialization
-msgctxt "loading_message"
-msgid "Loading…"
-msgstr "ロード中…"
-
-#. Database migration screen messages. Displayed during one-time migration
-#. from legacy database format to Room database.
-#. Title shown while checking if database migration is needed
-msgctxt "migration_checking"
-msgid "Checking database…"
-msgstr "データベースを確認中…"
-
-#. Title shown during database migration process
-msgctxt "migration_title"
-msgid "Migrating Database"
-msgstr "データベースの移行"
-
-#. Warning message shown during migration to inform user not to close the app
-msgctxt "migration_warning"
-msgid "Please do not close the app during migration"
-msgstr "移行中はアプリを閉じないでください"
-
-#. Statistics label showing number of hosts migrated
-#, c-format
-msgctxt "migration_stats_hosts"
-msgid "Hosts migrated: %d"
-msgstr "ホストの移行が完了しました：%d"
-
-#. Statistics label showing number of SSH keys migrated
-#, c-format
-msgctxt "migration_stats_pubkeys"
-msgid "SSH keys migrated: %d"
-msgstr "SSHキーが移行された：%d"
-
-#. Statistics label showing number of port forwards migrated
-#, c-format
-msgctxt "migration_stats_port_forwards"
-msgid "Port forwards migrated: %d"
-msgstr "ポートフォワードが移行されました：%d"
-
-#. Statistics label showing number of known hosts migrated
-#, c-format
-msgctxt "migration_stats_known_hosts"
-msgid "Known hosts migrated: %d"
-msgstr "既知のホストが移行されました：%d"
-
-#. Title shown when migration fails
-msgctxt "migration_failed_title"
-msgid "Migration Failed"
-msgstr "マイグレーションに失敗しました"
-
-#. Error message shown when migration fails, includes error details
-#, c-format
-msgctxt "migration_failed_message"
-msgid "An error occurred during database migration: %s"
-msgstr "データベース移行中にエラーが発生しました：%s"
-
-#. Button label to retry failed migration
-msgctxt "migration_retry"
-msgid "Retry"
-msgstr "リトライ"
-
-#. Help text shown after migration failure with link to GitHub issues
-#, c-format
-msgctxt "migration_failed_help"
-msgid ""
-"If the problem persists, please report this issue at %1$s with the debug log "
-"copied above"
-msgstr "問題が解決しない場合はデバッグログを上でコピーして%1$sに報告してください"
-
-#. Title for warnings section shown during database migration
-msgctxt "migration_warnings_title"
-msgid "Migration Warnings"
-msgstr "移行警告"
-
-#. Button text to copy migration warnings to clipboard for reporting issues
-msgctxt "migration_copy_warnings"
-msgid "Copy Warnings"
-msgstr "コピー警告"
-
-#. Title for debug log section shown when migration fails
-msgctxt "migration_debug_log_title"
-msgid "Debug Log"
-msgstr "デバッグログ"
-
-#. Button text to copy debug log to clipboard for reporting issues
-msgctxt "migration_copy_debug_log"
-msgid "Copy Debug Log"
-msgstr "デバッグログのコピー"
-
-#. Shown in the alert dialog when a user chooses the 'disconnect' item to
-#. disconnect from a SSH or Telnet host.
-#, c-format
-msgctxt "disconnect_host_alert"
-msgid "Are you sure you want to disconnect from '%1$s'?"
-msgstr "'%1$s' から切断しますか?"
-
-#. Shown in the alert dialog when a user chooses the 'delete host' item to
-#. delete a host.
-#, c-format
-msgctxt "delete_host_confirm"
-msgid "Are you sure you want to delete host '%1$s'?"
-msgstr "ホスト'%1$s'を削除してよいですか?"
-
-#. Menu selection to edit a pubkey details (e.g., nickname)
-msgctxt "list_pubkey_edit"
-msgid "Edit pubkey"
-msgstr "公開鍵を編集"
-
-#. ProxyJump / Jump Host support
-#. Title for jump host selector in host editor
-msgctxt "hostpref_jumphost_title"
-msgid "Jump host (ProxyJump)"
-msgstr "ジャンプホスト（ProxyJump）"
-
-#. Summary text explaining jump host functionality
-msgctxt "hostpref_jumphost_summary"
-msgid "Connect through another SSH host"
-msgstr "別のSSHホスト経由で接続する"
-
-#. Option for no jump host (direct connection)
-msgctxt "list_jumphost_none"
-msgid "None (direct connection)"
-msgstr "ダイレクト接続"
-
-#. Terminal message when connecting via jump host
-#, c-format
-msgctxt "terminal_connecting_via_jump"
-msgid "Connecting via jump host: %s"
-msgstr "ジャンプホスト経由で接続する：%s"
-
-#. Terminal message when connected to jump host
-#, c-format
-msgctxt "terminal_jump_connected"
-msgid "Connected to jump host: %s"
-msgstr "ジャンプホストに接続しました: %s"
-
-#. Terminal message when authenticated to jump host
-#, c-format
-msgctxt "terminal_jump_authenticated"
-msgid "Authenticated to jump host: %s"
-msgstr "認証されたジャンプホスト：%s"
-
-#. Terminal message when jump host connection fails
-#, c-format
-msgctxt "terminal_jump_failed"
-msgid "Failed to connect to jump host %1$s: %2$s"
-msgstr "ジャンプホスト%1$sへの接続に失敗しました：%2$s"
-
-#. Terminal message when jump host authentication fails
-#, c-format
-msgctxt "terminal_jump_auth_failed"
-msgid "Authentication failed for jump host: %s"
-msgstr "認証に失敗しました ジャンプホスト %s に対して"
-
-#. Terminal message when jump host is not found in database
-msgctxt "terminal_jump_not_found"
-msgid "Jump host not found in saved hosts"
-msgstr "セーブされたホストにジャンプホストが見つかりません"
-
-#. Password prompt prefix for jump host
-#, c-format
-msgctxt "terminal_jump_password"
-msgid "Password for jump host %s:"
-msgstr "パスワードを入力してください ジャンプホスト %s:"
-
-#. Button text to view application logs for debugging
-msgctxt "view_logs"
-msgid "View Logs"
-msgstr "ログの表示"
-
-#. Title for the log viewer dialog
-msgctxt "logs_title"
-msgid "Application Logs"
-msgstr "アプリケーションログ"
-
-#. Button text to copy logs to clipboard for bug reporting
-msgctxt "copy_logs"
-msgid "Copy Logs"
-msgstr "ログのコピー"
-
-#. Confirmation message shown when logs are copied to clipboard
-msgctxt "logs_copied"
-msgid "Logs copied to clipboard"
-msgstr "クリップボードにログをコピーしました"
-
-#. Instruction text for reporting bugs with logs
-msgctxt "logs_bug_report_info"
-msgid ""
-"To report a bug, copy these logs and open a new issue at https://connectbot."
-"org/bug"
-msgstr "バグを報告するにはこれらのログをコピーしてhttps://connectbot.org/bugで新しい課題を開いてください"
-
-#. Message shown when no logs are available
-msgctxt "no_logs_available"
-msgid "No logs available"
-msgstr "ログは利用できない"
+msgctxt "allow"
+msgid "Allow"
+msgstr ""
