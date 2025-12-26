@@ -7,18 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-29 16:39-0700\n"
+"POT-Creation-Date: 2025-12-25 20:15-0800\n"
 "PO-Revision-Date: 2021-08-03 15:15+0000\n"
 "Last-Translator: konenas <Unknown>\n"
+"Language: el\n"
 "Language-Team: el <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(((n == 1)) ? 0 : 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2025-10-31 07:42+0000\n"
-"X-Generator: Launchpad (build 1d08ffb47b836b8a4c9a0f11318dfdea7420ab6d)\n"
-"Language: el\n"
-"Generated-By: Babel 2.12.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -32,11 +30,6 @@ msgctxt "service_desc"
 msgid "Maintains SSH connections and loaded pubkeys"
 msgstr "Διατηρεί τις συνδέσεις SSH και τα δημόσια κλειδιά"
 
-#. Window title for the Host List
-msgctxt "title_hosts_list"
-msgid "Hosts"
-msgstr "Υπολογιστές"
-
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
 msgid "Pubkeys"
@@ -46,11 +39,6 @@ msgstr "Δημόσια κλειδιά"
 msgctxt "title_port_forwards_list"
 msgid "Port forwards"
 msgstr "Προώθηση θύρας"
-
-#. Window title when editing host details
-msgctxt "title_host_editor"
-msgid "Edit Host"
-msgstr "Επεξεργασία υπολογιστή"
 
 #. Window title for Help index
 msgctxt "title_help"
@@ -77,13 +65,6 @@ msgctxt "title_pubkey_generate"
 msgid "Generate"
 msgstr "Δημιουργία δημοσίων κλειδιών"
 
-msgctxt "help_intro"
-msgid ""
-"Please select a topic below for more information on a particular subject."
-msgstr ""
-"Παρακαλούμε επιλέξτε ένα θέμα παρακάτω για περισσότερες πληροφορίες σχετικά "
-"με ένα συγκεκριμένο θέμα."
-
 #. Title for the help page with the terms & conditions of the app.
 msgctxt "terms_and_conditions"
 msgid "Terms & Conditions"
@@ -93,93 +74,6 @@ msgstr "Όροι και προϋποθέσεις"
 msgctxt "hints"
 msgid "Hints"
 msgstr "Υποδείξεις"
-
-#. Header text for instructions about creating host shortcuts.
-msgctxt "host_shortcuts_header"
-msgid "Host Shortcuts"
-msgstr "Συντομεύσεις κεντρικού υπολογιστή"
-
-#. Instructions about creating host shortcuts.
-msgctxt "host_shortcuts_content"
-msgid ""
-"Long-press on your Android desktop to create direct shortcuts to frequently-"
-"used SSH hosts."
-msgstr ""
-"Πατήστε παρατεταμένα στην επιφάνεια εργασίας του Android για να "
-"δημιουργήσετε άμεσες συντομεύσεις σε συχνά χρησιμοποιούμενους κεντρικούς "
-"υπολογιστές SSH."
-
-#. Header text for instructions about scrolling the terminal.
-msgctxt "scroll_hints_header"
-msgid "Scroll back / Scroll forward"
-msgstr "Κύλιση προς τα πίσω / Κύλιση προς τα εμπρός"
-
-#. Instructions about scrolling the terminal.
-msgctxt "scroll_hints_content"
-msgid ""
-"Swiping your finger up on the right side of the screen allows you to scroll "
-"backward and forward in the local terminal buffer history."
-msgstr ""
-"Αν σύρετε το δάχτυλό σας προς τα πάνω στη δεξιά πλευρά της οθόνης, μπορείτε "
-"να μετακινηθείτε προς τα πίσω και προς τα εμπρός στο ιστορικό του "
-"ρυθμιστικού διαστήματος του τοπικού τερματικού."
-
-#. Captions for images showing the scroll back/forward gestures.
-msgctxt "scrolling_back"
-msgid "Scrolling back"
-msgstr "Κύλιση προς τα πίσω"
-
-msgctxt "scrolling_forward"
-msgid "Scrolling forward"
-msgstr "Κύλιση προς τα εμπρός"
-
-#. Header text for instructions about paging up and down in the terminal.
-msgctxt "page_updn_header"
-msgid "Page Up / Page Down"
-msgstr "Σελίδα πάνω / σελίδα κάτω"
-
-#. Instructions about paging up and down in the terminal.
-msgctxt "page_updn_content"
-msgid ""
-"NOTE: This must be enabled in settings.\n"
-"\n"
-"Swiping your finger up and down on the left third of the screen will send a "
-"page up and page down key to the remote host. Many programs map this to "
-"scrolling back into history such as irssi or tinyfugue."
-msgstr "ΣΗΜΕΙΩΣΗ: Αυτό πρέπει να ενεργοποιηθεί στις ρυθμίσεις"
-
-#. Captions for images showing the page up/down gestures.
-msgctxt "page_up"
-msgid "Page up"
-msgstr "Σελίδα πάνω"
-
-msgctxt "page_down"
-msgid "Page down"
-msgstr "Σελίδα κάτω"
-
-#. Header text for instructions about switching to the next and previous host
-#. in the terminal.
-msgctxt "switching_hosts_header"
-msgid "Switching Hosts"
-msgstr "Αλλαγή κεντρικών υπολογιστών"
-
-#. Instructions about switching to the next and previous host in the terminal.
-msgctxt "switching_hosts_content"
-msgid ""
-"Swiping your finger from one side of the screen to the other will switch "
-"between currently connected hosts."
-msgstr ""
-"Αν κουνήσετε το δάχτυλό σας από τη μία πλευρά της οθόνης στην άλλη, θα "
-"κάνετε εναλλαγή μεταξύ των συνδεδεμένων κεντρικών υπολογιστών."
-
-#. Captions for images showing the next/previous host gestures.
-msgctxt "next_host"
-msgid "Next host"
-msgstr "Επόμενος κεντρικός υπολογιστής"
-
-msgctxt "prev_host"
-msgid "Previous host"
-msgstr "Προηγούμενος κεντρικός υπολογιστής"
 
 #. Title for the help dialog showing keyboard shortcuts.
 msgctxt "keyboard_shortcuts"
@@ -234,8 +128,8 @@ msgstr "Αγγίξτε αυτό το κουτί για να συγκεντρώσ
 
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr ""
 "Για να διασφαλίσετε την τυχαιότητα κατά τη δημιουργία του κλειδιού, "
 "μετακινήστε το δάχτυλό σας τυχαία πάνω από το παρακάτω πλαίσιο."
@@ -248,62 +142,91 @@ msgctxt "pubkey_copy_private"
 msgid "Copy private key"
 msgstr "Αντιγραφή προσωπικού κλειδιού"
 
+msgctxt "pubkey_copy_private_openssh"
+msgid "Copy private key (OpenSSH)"
+msgstr ""
+
+msgctxt "pubkey_copy_private_pem"
+msgid "Copy private key (PEM)"
+msgstr ""
+
+msgctxt "pubkey_copy_private_encrypted"
+msgid "Copy private key (encrypted)"
+msgstr ""
+
 msgctxt "pubkey_copy_public"
 msgid "Copy public key"
 msgstr "Αντιγραφή δημόσιου κλειδιού"
 
-#. Note that the '\n' just splits lines, so it's actually "create or import"
-msgctxt "pubkey_list_empty"
-msgid ""
-"Tap \"Menu\" to create\n"
-"or import key pairs."
+msgctxt "pubkey_export_public"
+msgid "Export public key"
 msgstr ""
-"Πατήστε \"Μενού\" για δημιουργία\n"
-"ή εισάγετε ζεύγος κλειδιών."
 
-msgctxt "pubkey_unknown_format"
-msgid "Unknown format"
-msgstr "Άγνωστο format"
+msgctxt "pubkey_export_private"
+msgid "Export private key"
+msgstr ""
+
+msgctxt "pubkey_export_private_openssh"
+msgid "Export private key (OpenSSH)"
+msgstr ""
+
+msgctxt "pubkey_export_private_pem"
+msgid "Export private key (PEM)"
+msgstr ""
+
+msgctxt "pubkey_export_private_encrypted"
+msgid "Export private key (encrypted)"
+msgstr ""
+
+msgctxt "pubkey_export_set_passphrase"
+msgid "Set export passphrase"
+msgstr ""
+
+msgctxt "pubkey_export_passphrase_message"
+msgid "Enter a passphrase to encrypt the exported key"
+msgstr ""
+
+msgctxt "pubkey_export_confirm_passphrase"
+msgid "Confirm passphrase"
+msgstr ""
+
+msgctxt "pubkey_export_passphrase_mismatch"
+msgid "Passphrases do not match"
+msgstr ""
+
+msgctxt "pubkey_import_encrypted_title"
+msgid "Import encrypted key"
+msgstr ""
+
+#, c-format
+msgctxt "pubkey_import_encrypted_message"
+msgid "Enter password to decrypt key '%1$s' (%2$s)"
+msgstr ""
+
+msgctxt "pubkey_import_button"
+msgid "Import"
+msgstr ""
 
 msgctxt "pubkey_change_password"
 msgid "Change password"
 msgstr "Αλλαγή κωδικού πρόσβασης"
 
-#. When attempting to import a pubkey, this is the title for the dialog box
-#. where the user should pick the desired file from the SD card contents.
-msgctxt "pubkey_list_pick"
-msgid "Pick from /sdcard"
-msgstr "Διαλέξτε από το /sdcard"
-
-#. Message shown to the user when a selected pubkey to import was not
-#. parseable for some reason.
-msgctxt "pubkey_import_parse_problem"
-msgid "Problem parsing imported private key"
-msgstr "Πρόβλημα ανάλυσης εισαγόμενου ιδιωτικού κλειδιού"
-
 msgctxt "pubkey_unlock"
 msgid "Unlock key"
 msgstr "Κλειδί ξεκλειδώματος"
 
-#. Feedback given to the user when the password that they have entered for the
-#. pubkey is incorrect.
+#. Dialog message prompting the user to enter password to unlock an encrypted
+#. key.
 #, c-format
-msgctxt "pubkey_failed_add"
-msgid "Bad password for key '%1$s'. Authentication failed."
+msgctxt "pubkey_unlock_message"
+msgid "Enter password to unlock key '%1$s'"
 msgstr ""
-"Λάθος κωδικός πρόσβασης για το κλειδί '%1$s'. Αποτυχία ελέγχου ταυτότητας."
 
-#. Context menu entry that allows a user to load a pubkey entry into memory.
-#. This is equivalent to "unlocking" a password-protected pubkey entry.
-msgctxt "pubkey_memory_load"
-msgid "Load into memory"
-msgstr "Φόρτωση στη μνήμη"
-
-#. Context menu entry that allows a user to unload a pubkey entry from memory.
-#. This is equivalent to "locking" a password-protected pubkey entry.
-msgctxt "pubkey_memory_unload"
-msgid "Unload from memory"
-msgstr "Εκφόρτωση δημοσίου κλειδιού από τη μνήμη"
+#. Error message shown when user tries to use a nickname that already exists
+#. for another key.
+msgctxt "pubkey_nickname_exists"
+msgid "A key with this nickname already exists"
+msgstr ""
 
 #. Context menu checkbox that indicates that this pubkey entry should attempt
 #. to be loaded upon starting the app.
@@ -316,17 +239,6 @@ msgstr "Φόρτηση δημόσιου κλειδιού κατά την εκκ�
 msgctxt "pubkey_confirm_use"
 msgid "Confirm before use"
 msgstr "Επιβεβαιώστε το δημόσιο κλειδί πριν το χρησιμοποιήσετε"
-
-#. When the list of port forwards for a host is empty, this text is is shown
-#. in the space where the list of port forwards are normally present. Note that
-#. the '\n' splits lines, so it's actually "create port forwards"
-msgctxt "portforward_list_empty"
-msgid ""
-"Tap \"Menu\" to create\n"
-"port forwards."
-msgstr ""
-"Πατήστε \"Menu\" για να δημιουργήσετε\n"
-"την προώθηση την θύρας."
 
 #. Context menu action where a user can edite the selected port forward for
 #. the host.
@@ -343,11 +255,6 @@ msgstr "Διαγραφή προώθησης θύρας."
 msgctxt "prompt_nickname"
 msgid "Nickname:"
 msgstr "Ψευδώνυμο:"
-
-#. An example string that could be used as a nickname for a pubkey.
-msgctxt "prompt_nickname_hint_pubkey"
-msgid "My work key"
-msgstr "Το στοιχείο-κλειδί εργασίας μου"
 
 #. The source TCP port for port forwards.
 msgctxt "prompt_source_port"
@@ -425,13 +332,15 @@ msgstr ""
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "ΕΊΝΑΙ ΠΙΘΑΝΌ ΚΆΠΟΙΟΣ ΝΑ ΚΆΝΕΙ ΚΆΤΙ ΚΑΚΌ!\n"
 "Κάποιος μπορεί να σας κατασκοπεύει αυτή τη στιγμή (επίθεση man-in-the-"
 "middle)!\n"
-"Είναι επίσης πιθανό το κλειδί του κεντρικού υπολογιστή να έχει μόλις αλλάξει."
+"Είναι επίσης πιθανό το κλειδί του κεντρικού υπολογιστή να έχει μόλις "
+"αλλάξει."
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
@@ -444,10 +353,9 @@ msgstr ""
 
 #. Prompt user must answer yes or no to when the remote host fails
 #. verification of encryption fingerprint
+#, fuzzy
 msgctxt "prompt_continue_connecting"
-msgid ""
-"Are you sure you want\n"
-"to continue connecting?"
+msgid "Are you sure you want to continue connecting?"
 msgstr ""
 "Είσαστε σίγουρος ότι θέλετε\n"
 "να συνεχίσετε τη σύνδεση;"
@@ -457,16 +365,38 @@ msgstr ""
 #, c-format
 msgctxt "host_authenticity_warning"
 msgid "The authenticity of host '%1$s' can't be established."
-msgstr ""
-"Η αυθεντικότητα του κεντρικού υπολογιστή '%1$s' δεν μπορεί να διαπιστωθεί."
+msgstr "Η αυθεντικότητα του κεντρικού υπολογιστή '%1$s' δεν μπορεί να διαπιστωθεί."
 
 #. First field is encryption algorithm. Second is the actual fingerprint in
 #. hex digits
 #, c-format
 msgctxt "host_fingerprint"
 msgid "Host %1$s key fingerprint is %2$s"
+msgstr "Το αποτύπωμα δημοσίου κλειδιού του κεντρικού υπολογιστή %1$s είναι %2$s"
+
+#. Title for the host key fingerprint verification prompt shown when
+#. connecting to a new host
+msgctxt "host_key_verification_title"
+msgid "Host key verification"
 msgstr ""
-"Το αποτύπωμα δημοσίου κλειδιού του κεντρικού υπολογιστή %1$s είναι %2$s"
+
+#. Section header for the fingerprint formats display area
+msgctxt "fingerprint_format_header"
+msgid "Fingerprint format"
+msgstr ""
+
+#. Format string showing key type and size, e.g., "RSA 2048 bits". First field
+#. is key type, second is key size in bits.
+#, c-format
+msgctxt "host_key_type_and_size"
+msgid "%1$s %2$d bits"
+msgstr ""
+
+#. Content description for the copy fingerprint to clipboard button, used by
+#. screen readers for accessibility
+msgctxt "fingerprint_copy_description"
+msgid "Copy fingerprint to clipboard"
+msgstr ""
 
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
@@ -475,19 +405,6 @@ msgstr "Οι κωδικοί δεν είναι ίδιοι"
 msgctxt "alert_wrong_password_msg"
 msgid "Wrong password!"
 msgstr "Λάθος κωδικός πρόσβασης!"
-
-msgctxt "alert_key_corrupted_msg"
-msgid "Private key appears corrupt!"
-msgstr "Το ιδιωτικό κλειδί εμφανίζεται κατεστραμμένο!"
-
-msgctxt "alert_sdcard_absent"
-msgid "SD card is not inserted!"
-msgstr "Δεν έχει μπει η κάρτα SD"
-
-#. Change an existing item's (e.g., host or pubkey) details.
-msgctxt "button_change"
-msgid "Change"
-msgstr "Αλλαγή"
 
 #. Button that resizes the screen to the user-specified dimensions.
 msgctxt "button_resize"
@@ -498,13 +415,35 @@ msgctxt "alert_disconnect_msg"
 msgid "Connection Lost"
 msgstr "Η σύνδεση χάθηκε"
 
-msgctxt "msg_copyright"
-msgid ""
-"Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
-"http://jsharkey.org/"
+#. Message shown when network connection is lost and app is waiting to
+#. reconnect
+msgctxt "network_lost_grace_period"
+msgid "Network lost, waiting to reconnect…"
 msgstr ""
-"Copyright © 2007-2008 Kenny Root http://the-b.org/, Jeffrey Sharkey "
-"http://jsharkey.org/"
+
+#. Message shown when the 60-second grace period expires without network
+#. restoration
+msgctxt "network_grace_period_expired"
+msgid "Network not restored, disconnecting…"
+msgstr ""
+
+#. Message shown when network is restored and connection can continue (same IP
+#. address)
+msgctxt "network_restored_same_ip"
+msgid "Network restored, connection maintained"
+msgstr ""
+
+#. Message shown when network is restored but IP address changed, requiring
+#. reconnection
+msgctxt "network_restored_ip_changed"
+msgid "Network restored but IP changed, reconnecting…"
+msgstr ""
+
+#. Message shown when network is restored but previous network state is
+#. unknown
+msgctxt "network_restored_no_previous_state"
+msgid "Network restored, verifying connection…"
+msgstr ""
 
 #. The category title for terminal emulation preferences.
 msgctxt "pref_emulation_category"
@@ -517,10 +456,6 @@ msgid "Emulation mode"
 msgstr "Τύπος εξομοίωσης"
 
 #. Description of the emulation terminal type preference.
-msgctxt "pref_emulation_summary"
-msgid "Terminal emulation mode to use for PTY connections"
-msgstr "Λειτουργία εξομοίωσης τερματικού για χρήση για συνδέσεις PTY"
-
 #. Name for the scrollback size preference
 msgctxt "pref_scrollback_title"
 msgid "Scrollback size"
@@ -532,6 +467,77 @@ msgid "Size of scrollback buffer to keep in memory for each console"
 msgstr ""
 "Μέγεθος του buffer κύλισης που πρέπει να διατηρείται στη μνήμη για κάθε "
 "κονσόλα"
+
+#. Name for the font family preference
+msgctxt "pref_fontfamily_title"
+msgid "Font"
+msgstr ""
+
+#. Description of the font family preference
+#. Title for adding custom font
+msgctxt "pref_customfont_title"
+msgid "Add custom font"
+msgstr ""
+
+#. Summary for adding custom font
+msgctxt "pref_customfont_summary"
+msgid "Add a font from Google Fonts by name"
+msgstr ""
+
+#. Dialog title for adding custom font
+msgctxt "dialog_customfont_title"
+msgid "Add Custom Font"
+msgstr ""
+
+#. Hint for custom font name input
+msgctxt "dialog_customfont_hint"
+msgid "Google Fonts name (e.g., Cascadia Code)"
+msgstr ""
+
+#. Button to add font
+msgctxt "button_add"
+msgid "Add"
+msgstr ""
+
+#. Button to remove font
+msgctxt "button_remove"
+msgid "Remove"
+msgstr ""
+
+#. Message shown when validating font
+msgctxt "font_validating"
+msgid "Validating font…"
+msgstr ""
+
+#. Title for importing local font
+msgctxt "pref_localfont_title"
+msgid "Import local font"
+msgstr ""
+
+#. Summary for importing local font
+msgctxt "pref_localfont_summary"
+msgid "Import a font file from storage (TTF, OTF)"
+msgstr ""
+
+#. Dialog title for importing local font
+msgctxt "dialog_localfont_title"
+msgid "Import Font"
+msgstr ""
+
+#. Hint for local font name input
+msgctxt "dialog_localfont_hint"
+msgid "Display name for the font"
+msgstr ""
+
+#. Button to import font
+msgctxt "button_import"
+msgid "Import"
+msgstr ""
+
+#. Message shown when importing font
+msgctxt "font_importing"
+msgid "Importing font…"
+msgstr ""
 
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
@@ -555,11 +561,6 @@ msgstr "Διεπαφή χρήστη"
 msgctxt "pref_rotation_title"
 msgid "Rotation mode"
 msgstr "Λειτουργία περιστροφής"
-
-#. Summary for the rotation mode preference
-msgctxt "pref_rotation_summary"
-msgid "How to change rotation when keyboard popped in/out"
-msgstr "Πώς να αλλάξετε την περιστροφή όταν το πληκτρολόγιο μπαίνει/βγαίνει"
 
 #. Name for the titlebar hide preference
 msgctxt "pref_titlebarhide_title"
@@ -587,8 +588,8 @@ msgstr "Χειρονομία ανόδου/καθόδου σελίδας"
 msgctxt "pref_pg_updn_gesture_summary"
 msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
 msgstr ""
-"Σαρώστε το αριστερό τρίτο της οθόνης για να στείλετε Σελίδα πάνω/κάτω στο "
-"τερματικό"
+"Σαρώστε το αριστερό τρίτο της οθόνης για να στείλετε Σελίδα πάνω/κάτω στο"
+" τερματικό"
 
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
@@ -614,7 +615,8 @@ msgstr "Τα Shift+num είναι F-keys"
 msgctxt "pref_shiftfkeys_summary"
 msgid "On hardware keyboards, number keys send F1-F10 with shift"
 msgstr ""
-"Στα πληκτρολόγια, τα αριθμητικά πλήκτρα στέλνουν τα πλήκτρα F1-F10 με shift"
+"Στα πληκτρολόγια, τα αριθμητικά πλήκτρα στέλνουν τα πλήκτρα F1-F10 με "
+"shift"
 
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
@@ -624,8 +626,7 @@ msgstr "Τα Ctrl+num είναι F-keys"
 #. Summary for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_summary"
 msgid "On software keyboards, number keys send F1-F10 with ctrl"
-msgstr ""
-"Στα πληκτρολόγια λογισμικού, τα αριθμητικά πλήκτρα στέλνουν F1-F10 με ctrl"
+msgstr "Στα πληκτρολόγια λογισμικού, τα αριθμητικά πλήκτρα στέλνουν F1-F10 με ctrl"
 
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
@@ -636,8 +637,8 @@ msgstr "Τα πλήκτρα έντασης ήχου αλλάζουν το μέγ
 msgctxt "pref_volumefont_summary"
 msgid "Font size can also be changed in per-host settings"
 msgstr ""
-"Το μέγεθος της γραμματοσειράς μπορεί επίσης να αλλάξει στις ρυθμίσεις ανά "
-"κεντρικό υπολογιστή"
+"Το μέγεθος της γραμματοσειράς μπορεί επίσης να αλλάξει στις ρυθμίσεις ανά"
+" κεντρικό υπολογιστή"
 
 #. Name for the memorize keys preference
 msgctxt "pref_memkeys_title"
@@ -648,8 +649,8 @@ msgstr "Να θυμάμαι τα κλειδιά στη μνήμη μου"
 msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
 msgstr ""
-"Διατήρηση ξεκλειδωμένων κλειδιών στη μνήμη μέχρι να τερματιστεί η υπηρεσία "
-"backend"
+"Διατήρηση ξεκλειδωμένων κλειδιών στη μνήμη μέχρι να τερματιστεί η "
+"υπηρεσία backend"
 
 #. Name for the preference that forces the service to stay running in the
 #. background.
@@ -670,23 +671,10 @@ msgctxt "pref_keymode_title"
 msgid "Directory shortcuts"
 msgstr "Συντομεύσεις καταλόγου"
 
-#. Summary for the keyboard shortcuts preference
-msgctxt "pref_keymode_summary"
-msgid "Select how to use Alt for '/' and Shift for Tab"
-msgstr ""
-"Επιλέξτε πώς να χρησιμοποιείτε το Alt για το '/' και το Shift για το Tab"
-
 #. Name for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_title"
 msgid "Sticky modifiers"
 msgstr "Τα πλήκτρα τροποποίησης να παραμείνουν ενεργά"
-
-#. Summary for the sticky modifiers preference
-msgctxt "pref_stickymodifiers_summary"
-msgid "Modifier keys remain enabled until another key is pressed"
-msgstr ""
-"Τα πλήκτρα τροποποίησης να παραμείνουν ενεργοποιημένα μέχρι να πατηθεί άλλο "
-"πλήκτρο"
 
 #. Sticky modifier preference value description for when only the Alt key
 #. should be a sticky modifier.
@@ -699,12 +687,6 @@ msgctxt "pref_camera_title"
 msgid "Camera shortcut"
 msgstr "Συντόμευση κάμερας"
 
-#. Summary for the camera shortcut usage preference
-msgctxt "pref_camera_summary"
-msgid "Select which shortcut to trigger when the camera button is pushed"
-msgstr ""
-"Επιλέξτε ποια συντόμευση θα ενεργοποιείται όταν πατηθεί το κουμπί της κάμερας"
-
 #. Name for the keep screen on preference
 msgctxt "pref_keepalive_title"
 msgid "Keep screen awake"
@@ -713,8 +695,7 @@ msgstr "Διατήρηση ενεργής οθόνης"
 #. Summary for the camera shortcut usage preference
 msgctxt "pref_keepalive_summary"
 msgid "Prevent the screen from turning off when working in a console"
-msgstr ""
-"Αποτρέψτε την απενεργοποίηση της οθόνης όταν εργάζεστε σε μια κονσόλα"
+msgstr "Αποτρέψτε την απενεργοποίηση της οθόνης όταν εργάζεστε σε μια κονσόλα"
 
 #. Name for the Wi-Fi lock preference
 msgctxt "pref_wifilock_title"
@@ -724,8 +705,7 @@ msgstr "Το Wi-Fi να παραμείνει ενεργό"
 #. Summary for the Wi-Fi lock preference
 msgctxt "pref_wifilock_summary"
 msgid "Prevent Wi-Fi from turning off when a session is active"
-msgstr ""
-"Αποτροπή της απενεργοποίησης του Wi-Fi όταν είναι ενεργή μια συνεδρία"
+msgstr "Αποτροπή της απενεργοποίησης του Wi-Fi όταν είναι ενεργή μια συνεδρία"
 
 #. Name for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_title"
@@ -749,6 +729,12 @@ msgctxt "pref_bell_title"
 msgid "Audible bell"
 msgstr "Ηχητικό κουδούνισμα"
 
+#. Brief summary of the user preference that causes a bell sound to play when
+#. the terminal alert is triggered.
+msgctxt "pref_bell_summary"
+msgid "Play sound on terminal alert"
+msgstr ""
+
 #. Title for the slider preference to set the volume
 msgctxt "pref_bell_volume_title"
 msgid "Bell volume"
@@ -759,6 +745,12 @@ msgctxt "pref_bell_vibrate_title"
 msgid "Vibrate on bell"
 msgstr "Δόνηση όταν κουδουνίζει"
 
+#. Brief summary of the feature that causes the phone to vibrate when a
+#. terminal alert would cause the "bell" sound to play normally.
+msgctxt "pref_bell_vibrate_summary"
+msgid "Vibrate on terminal alert"
+msgstr ""
+
 #. Checkbox preference title for the receive notifications on terminal bell
 #. feature
 msgctxt "pref_bell_notification_title"
@@ -768,8 +760,7 @@ msgstr "Ειδοποιήσεις στο παρασκήνιο"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
+msgid "Send notification when a terminal running in the background sounds a bell."
 msgstr ""
 "Αποστολή ειδοποίησης όταν ένα τερματικό, που εκτελείται στο παρασκήνιο, "
 "κουδουνίζει."
@@ -816,6 +807,16 @@ msgctxt "hostpref_fontsize_title"
 msgid "Font size (pt)"
 msgstr "Μέγεθος γραμματοσειράς (pt)"
 
+#. Host's font family preference title
+msgctxt "hostpref_fontfamily_title"
+msgid "Font"
+msgstr ""
+
+#. Host's color scheme preference title
+msgctxt "hostpref_colorscheme_title"
+msgid "Terminal color scheme"
+msgstr ""
+
 #. Host pubkey usage preference title
 msgctxt "hostpref_pubkeyid_title"
 msgid "Use pubkey authentication"
@@ -835,8 +836,7 @@ msgstr "Αυτοματοποίηση μετά τη σύνδεση"
 #. Host post-login automation preference summary
 msgctxt "hostpref_postlogin_summary"
 msgid "Commands to run on remote server once authenticated"
-msgstr ""
-"Εντολές που εκτελούνται στον απομακρυσμένο διακομιστή μετά την ταυτοποίηση"
+msgstr "Εντολές που εκτελούνται στον απομακρυσμένο διακομιστή μετά την ταυτοποίηση"
 
 #. Host compression preference title
 msgctxt "hostpref_compression_title"
@@ -871,8 +871,7 @@ msgstr "Μείνετε συνδεδεμένοι"
 #. when it disconnects
 msgctxt "hostpref_stayconnected_summary"
 msgid "Try to reconnect to host if disconnected"
-msgstr ""
-"Προσπαθήστε να επανασυνδεθείτε με τον κεντρικό υπολογιστή αν αποσυνδεθείτε"
+msgstr "Προσπαθήστε να επανασυνδεθείτε με τον κεντρικό υπολογιστή αν αποσυνδεθείτε"
 
 #. Setting for whether we should prompt to close after getting disconnected
 msgctxt "hostpref_quickdisconnect_title"
@@ -908,40 +907,10 @@ msgctxt "hostpref_port_title"
 msgid "Port"
 msgstr "Θύρα"
 
-#. Displayed to indicate a host has never been connected to.
-msgctxt "bind_never"
-msgid "Never connected"
-msgstr "Δεν συνδέθηκε ποτέ"
-
-#. Message given when user copies from the terminal.
-#, c-format
-msgctxt "console_copy_done"
-msgid "Copied %1$d byte to clipboard"
-msgid_plural "Copied %1$d bytes to clipboard"
-msgstr[0] "Αντιγραφή %1$d byte στο πρόχειρο"
-msgstr[1] "Αντιγραφή %1$d bytes στο πρόχειρο"
-
-#. Instructions for how to copy from the terminal. The '\n' entries are to
-#. split lines to improve readability and prevent wrapping off the screen.
-msgctxt "console_copy_start"
-msgid ""
-"Touch and drag\n"
-"or use directional pad\n"
-"to select area to copy"
-msgstr ""
-"Άγγιγμα και σύρσιμο\n"
-"ή χρησιμοποιήστε το πλήκτρο κατεύθυνσης\n"
-"για να επιλέξετε περιοχή προς αντιγραφή"
-
 #. Button to close the disconnected terminal window.
 msgctxt "console_menu_close"
 msgid "Close"
 msgstr "Κλείσιμο"
-
-#. Button to begin copying from the terminal to the clipboard.
-msgctxt "console_menu_copy"
-msgid "Copy"
-msgstr "Αντιγραφή"
 
 #. Button to paste from the clipboard to the terminal.
 msgctxt "console_menu_paste"
@@ -949,19 +918,22 @@ msgid "Paste"
 msgstr "Επικόλληση"
 
 #. Button that brings user to the Port Forwards List.
+#, fuzzy
 msgctxt "console_menu_portforwards"
-msgid "Port Forwards"
+msgid "Port forwards"
 msgstr "Προωθήσεις θυρών"
 
 #. Button that brings user to the terminal resizing dialog where they can
 #. force a size.
+#, fuzzy
 msgctxt "console_menu_resize"
-msgid "Force Size"
+msgid "Force size"
 msgstr "Επιβολή μεγέθους"
 
 #. Button that brings up the list of URLs on the current screen
+#, fuzzy
 msgctxt "console_menu_urlscan"
-msgid "URL Scan"
+msgid "URL scan"
 msgstr "Εύρεση διεύθυνσης URL"
 
 #. Button label to answer "Yes" to a yes/no prompt
@@ -999,13 +971,11 @@ msgctxt "portforward_pos"
 msgid "Create port forward"
 msgstr "Δημιουργία προώθησης θύρας"
 
-msgctxt "portforward_problem"
-msgid ""
-"Problem creating port forward, maybe you're using ports under 1024 or port "
-"is already used?"
+#. Button that saves changes to an existing port forward in the Port Forward
+#. Edit dialog.
+msgctxt "portforward_save"
+msgid "Save"
 msgstr ""
-"Πρόβλημα δημιουργίας προώθησης θύρας, ίσως χρησιμοποιείτε θύρες κάτω από "
-"1024 ή η θύρα χρησιμοποιείται ήδη;"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
@@ -1022,8 +992,9 @@ msgctxt "format_port"
 msgid "port"
 msgstr "θύρα"
 
+#, fuzzy
 msgctxt "list_menu_pubkeys"
-msgid "Manage Pubkeys"
+msgid "Manage pubkeys"
 msgstr "Διαχείριση ημοσίων κλειδιών"
 
 #. Selection choice to sort hosts by color.
@@ -1036,8 +1007,10 @@ msgctxt "list_menu_sortname"
 msgid "Sort by name"
 msgstr "Ταξινόμηση κατά όνομα"
 
+#. Menu item to disconnect all the hosts.
+#, fuzzy
 msgctxt "list_menu_disconnect"
-msgid "Disconnect All"
+msgid "Disconnect all"
 msgstr "Αποσύνδεση όλων των συνδέσεων"
 
 msgctxt "list_menu_settings"
@@ -1059,12 +1032,6 @@ msgstr "Επεξεργασία προώθησης θύρας"
 msgctxt "list_host_delete"
 msgid "Delete host"
 msgstr "Διαγραφή κεντρικού υπολογιστή"
-
-#. Note that the '\n' splits the lines so it's actually "quick-connect box
-#. below to connect"
-msgctxt "list_host_empty"
-msgid "No hosts created yet."
-msgstr "Δεν δημιουργήθηκαν κεντρικοί υπολογιστές"
 
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
@@ -1112,15 +1079,11 @@ msgctxt "list_camera_none"
 msgid "None"
 msgstr "Καμία"
 
-#. Name for the backspace character
-msgctxt "list_delkey_backspace"
-msgid "Backspace"
-msgstr "Πλήκτρο Backspace"
-
-#. Name for the ASCII DEL character
-msgctxt "list_delkey_del"
-msgid "Delete"
-msgstr "Πλήκτρο διαγραφής"
+#. Selection to indicate pressing the Camera button should open the text input
+#. dialog.
+msgctxt "list_camera_text_input"
+msgid "Text Input"
+msgstr ""
 
 #, c-format
 msgctxt "delete_message"
@@ -1146,10 +1109,6 @@ msgstr "Ναι, αποσύνδεσε"
 msgctxt "disconnect_all_neg"
 msgid "Cancel"
 msgstr "Άκυρο"
-
-msgctxt "terminal_no_hosts_connected"
-msgid "No hosts currently connected"
-msgstr "Δεν έχετε συνδεθεί"
 
 #. Displayed in terminal when attempting to connect to a host. The first two
 #. variables are host:port and the third is the protocol (e.g., SSH)
@@ -1208,18 +1167,22 @@ msgstr "Απέτυχε η ταυτοποίηση με 'password'"
 
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
-msgstr ""
-"Προσπάθεια ταυτοποίησης 'publickey' με όλα τα δημόσια κλειδιά στη μνήμη"
+msgstr "Προσπάθεια ταυτοποίησης 'publickey' με όλα τα δημόσια κλειδιά στη μνήμη"
 
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
 msgstr ""
-"Το επιλεγμένο δημόσιο κλειδί είναι άκυρο, προσπαθήστε να επιλέξετε ξανά το "
-"κλειδί του κεντρικού υπολογιστή"
+"Το επιλεγμένο δημόσιο κλειδί είναι άκυρο, προσπαθήστε να επιλέξετε ξανά "
+"το κλειδί του κεντρικού υπολογιστή"
 
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
 msgstr "Προσπάθεια ταυτοποίησης 'publickey' με συγκεκριμένο δημόσιο κλειδί"
+
+#, c-format
+msgctxt "terminal_auth_biometric"
+msgid "Requesting biometric authentication for key '%1$s'"
+msgstr ""
 
 #, c-format
 msgctxt "terminal_auth_pubkey_fail"
@@ -1239,8 +1202,8 @@ msgid ""
 "[Your host doesn't support 'password' or 'keyboard-interactive' "
 "authentication.]"
 msgstr ""
-"[Ο κεντρικός υπολογιστής σας δεν υποστηρίζει ταυτοποίηση με 'κωδικό' ή με "
-"'keyboard-interactive'.]"
+"[Ο κεντρικός υπολογιστής σας δεν υποστηρίζει ταυτοποίηση με 'κωδικό' ή με"
+" 'keyboard-interactive'.]"
 
 msgctxt "terminal_no_session"
 msgid "Session will not be started due to host preference."
@@ -1272,31 +1235,204 @@ msgctxt "yes"
 msgid "Yes"
 msgstr "Ναι"
 
+#. Selector title for the list of color schemes.
+msgctxt "list_color_schemes"
+msgid "Color schemes"
+msgstr ""
+
 #. Menu selection to reset colors to their defaults.
 msgctxt "menu_colors_reset"
 msgid "Reset"
 msgstr "Επαναφορά"
+
+#. Button text to open color scheme manager
+msgctxt "button_manage_schemes"
+msgid "Manage Schemes"
+msgstr ""
+
+#. Window title for color scheme manager screen
+msgctxt "title_scheme_manager"
+msgid "Manage Color Schemes"
+msgstr ""
+
+#. Button text to create a new color scheme
+msgctxt "button_new_scheme"
+msgid "New Scheme"
+msgstr ""
+
+#. Button text to duplicate a color scheme
+msgctxt "button_duplicate_scheme"
+msgid "Duplicate"
+msgstr ""
+
+#. Button text to rename a color scheme
+msgctxt "button_rename_scheme"
+msgid "Rename"
+msgstr ""
+
+#. Button text to delete a color scheme
+msgctxt "button_delete_scheme"
+msgid "Delete"
+msgstr ""
+
+#. Dialog title when creating a new color scheme
+msgctxt "dialog_title_new_scheme"
+msgid "New Color Scheme"
+msgstr ""
+
+#. Dialog title when renaming a color scheme
+msgctxt "dialog_title_rename_scheme"
+msgid "Rename Color Scheme"
+msgstr ""
+
+#. Label for scheme name input field
+msgctxt "label_scheme_name"
+msgid "Scheme Name"
+msgstr ""
+
+#. Label for scheme description input field (optional)
+msgctxt "label_scheme_description"
+msgid "Description (optional)"
+msgstr ""
+
+#. Confirmation dialog title when deleting a scheme
+msgctxt "dialog_title_delete_scheme"
+msgid "Delete Scheme?"
+msgstr ""
+
+#. Confirmation dialog message when deleting a scheme
+#, c-format
+msgctxt "dialog_message_delete_scheme"
+msgid "Are you sure you want to delete \"%1$s\"? This action cannot be undone."
+msgstr ""
+
+#. Button text for confirm action in dialogs
+msgctxt "button_confirm"
+msgid "Confirm"
+msgstr ""
+
+#. Button text for cancel action in dialogs
+msgctxt "button_cancel"
+msgid "Cancel"
+msgstr ""
+
+#. Label indicating a scheme is built-in and cannot be deleted
+msgctxt "label_built_in_scheme"
+msgid "Built-in"
+msgstr ""
+
+#. Label indicating a scheme is custom/user-created
+msgctxt "label_custom_scheme"
+msgid "Custom"
+msgstr ""
+
+#. Empty state message when no custom schemes exist
+msgctxt "empty_custom_schemes"
+msgid "No custom schemes. Tap \"New Scheme\" to create one."
+msgstr ""
+
+#. Button text to edit full color palette
+msgctxt "button_edit_palette"
+msgid "Edit Palette"
+msgstr ""
+
+#. Button text to export a color scheme to JSON file
+msgctxt "button_export_scheme"
+msgid "Export Scheme"
+msgstr ""
+
+#. Button text to import a color scheme from JSON file
+msgctxt "button_import_scheme"
+msgid "Import Scheme"
+msgstr ""
+
+#. Success message after exporting a scheme
+#, c-format
+msgctxt "message_export_success"
+msgid "Exported %1$s"
+msgstr ""
+
+#. Success message after importing a scheme
+#, c-format
+msgctxt "message_import_success"
+msgid "Imported %1$s"
+msgstr ""
+
+#. Error message when export fails
+#, c-format
+msgctxt "error_export_failed"
+msgid "Failed to export scheme: %1$s"
+msgstr ""
+
+#. Error message when import fails
+#, c-format
+msgctxt "error_import_failed"
+msgid "Failed to import scheme: %1$s"
+msgstr ""
+
+#. Error message when JSON parsing fails
+msgctxt "error_invalid_json"
+msgid "Invalid JSON file"
+msgstr ""
+
+#. Window title for palette editor screen
+msgctxt "title_palette_editor"
+msgid "Edit Color Palette"
+msgstr ""
+
+#. Button text to reset entire palette to defaults
+msgctxt "button_reset_all_colors"
+msgid "Reset All"
+msgstr ""
+
+#. Section header for ANSI colors (0-15)
+msgctxt "section_ansi_colors"
+msgid "ANSI Colors (0–15)"
+msgstr ""
+
+#. Dialog title when editing a specific color
+#, c-format
+msgctxt "dialog_title_edit_color"
+msgid "Edit Color %1$d"
+msgstr ""
+
+#. Confirmation dialog for resetting all colors
+msgctxt "dialog_title_reset_all"
+msgid "Reset All Colors?"
+msgstr ""
+
+#. Message for reset all colors confirmation
+msgctxt "dialog_message_reset_all"
+msgid ""
+"This will reset all 256 colors to their default values. This action "
+"cannot be undone."
+msgstr ""
 
 #. Displayed in the notification bar that connections are active
 msgctxt "app_is_running"
 msgid "ConnectBot is running"
 msgstr "Εκτελείται το ConnectBot"
 
-msgctxt "color_red"
-msgid "red"
-msgstr "κόκκινο"
+#. RGB color picker labels
+#. Label for the red color component slider (0-255) in the RGB color picker
+msgctxt "label_red"
+msgid "Red"
+msgstr ""
 
-msgctxt "color_green"
-msgid "green"
-msgstr "πράσινο"
+#. Label for the green color component slider (0-255) in the RGB color picker
+msgctxt "label_green"
+msgid "Green"
+msgstr ""
 
-msgctxt "color_blue"
-msgid "blue"
-msgstr "μπλε"
+#. Label for the blue color component slider (0-255) in the RGB color picker
+msgctxt "label_blue"
+msgid "Blue"
+msgstr ""
 
-msgctxt "color_gray"
-msgid "gray"
-msgstr "γκρι"
+#. Label for the hex color input field where users can type a hex color code
+msgctxt "label_hex_color"
+msgid "Hex Color"
+msgstr ""
 
 #. Very short label indicating the number next to it is "foreground color"
 #. number.
@@ -1323,11 +1459,6 @@ msgstr "Έγινε σύνδεση."
 msgctxt "image_description_disconnected"
 msgid "Disconnected."
 msgstr "Αποσυνδέθηκε."
-
-#. Describes the icon of the "locked pubkey" icon for accessibility purposes.
-msgctxt "image_description_key_is_locked"
-msgid "Key is locked."
-msgstr "Κλείδωσε"
 
 #. Describes the icon of the "send control character" button in the terminal
 #. view for              accessibility purposes.
@@ -1382,12 +1513,6 @@ msgstr "Βέλος αριστερά"
 msgctxt "image_description_right"
 msgid "Arrow right"
 msgstr "Βέλος δεξιά"
-
-#. Describes the "volume" icon in the bell volume dialog for accessibility
-#. purposes.
-msgctxt "image_description_volume"
-msgid "Volume"
-msgstr "Ένταση ήχου"
 
 #. Text for the "Esc" button in virtual keyboard.
 msgctxt "button_key_esc"
@@ -1479,6 +1604,293 @@ msgctxt "button_key_f12"
 msgid "F12"
 msgstr "F12"
 
+#. Button in virtual keyboard that opens text input dialog for composing
+#. longer text with full IME support
+msgctxt "terminal_keyboard_text_input_button"
+msgid "Text input"
+msgstr ""
+
+#. Title for the floating text input dialog where users can type longer text
+#. with full keyboard/IME support
+msgctxt "terminal_text_input_dialog_title"
+msgid "Text Input"
+msgstr ""
+
+#. Label for the text field in the floating text input dialog where users
+#. compose their text
+msgctxt "terminal_text_input_dialog_label"
+msgid "Enter text to send to terminal"
+msgstr ""
+
+#. Menu item in console toolbar to open floating text input dialog
+msgctxt "console_menu_text_input"
+msgid "Text input"
+msgstr ""
+
+#. Send button in floating text input dialog
+msgctxt "button_send"
+msgid "Send"
+msgstr ""
+
+#. Common UI button labels
+#. Button label for confirming an action
+msgctxt "button_ok"
+msgid "OK"
+msgstr ""
+
+#. Button label for closing a dialog
+msgctxt "button_close"
+msgid "Close"
+msgstr ""
+
+#. Accessibility label for back navigation button; used for screen readers
+msgctxt "button_back"
+msgid "Back"
+msgstr ""
+
+#. Accessibility label for navigate up button in app bar; used for screen
+#. readers
+msgctxt "button_navigate_up"
+msgid "Navigate up"
+msgstr ""
+
+#. Accessibility label for more options menu button; used for screen readers
+msgctxt "button_more_options"
+msgid "More options"
+msgstr ""
+
+#. Accessibility label for host options menu button; used for screen readers
+msgctxt "button_host_options"
+msgid "Host options"
+msgstr ""
+
+#. Accessibility label for collapse button; used for screen readers
+msgctxt "button_collapse"
+msgid "Collapse"
+msgstr ""
+
+#. Error messages
+#. Error message shown when a public key fails to load at startup
+#, c-format
+msgctxt "error_key_load_failed"
+msgid "Failed to load key '%1$s': %2$s"
+msgstr ""
+
+#. Error message shown when a connection to a host fails
+#, c-format
+msgctxt "error_connection_failed"
+msgid "Failed to connect to %1$s (%2$s): %3$s"
+msgstr ""
+
+#. Error message shown when port forwards fail to load for a host
+#, c-format
+msgctxt "error_port_forward_load_failed"
+msgid "Failed to load port forwards for %1$s: %2$s"
+msgstr ""
+
+#. Error message shown when saving host configuration fails
+#, c-format
+msgctxt "error_host_save_failed"
+msgid "Failed to save host %1$s: %2$s"
+msgstr ""
+
+#. Error message shown when loading a color scheme fails
+#, c-format
+msgctxt "error_color_scheme_load_failed"
+msgid "Failed to load color scheme: %s"
+msgstr ""
+
+#. Empty state messages
+#. Message shown when no hosts have been configured yet
+msgctxt "empty_hosts_message"
+msgid "No hosts configured"
+msgstr ""
+
+#. Message shown when no public keys have been generated or imported yet
+msgctxt "empty_pubkeys_message"
+msgid "No keys found."
+msgstr ""
+
+#. Message shown when no port forwards have been configured for a host
+msgctxt "empty_port_forwards_message"
+msgid "No port forwards configured."
+msgstr ""
+
+#. Message shown when no URLs are found in the terminal buffer during URL scan
+msgctxt "empty_urls_message"
+msgid "No URLs found in terminal buffer"
+msgstr ""
+
+#. Console screen messages
+#. Default title for console screen when no specific host is connected
+msgctxt "console_default_title"
+msgid "Console"
+msgstr ""
+
+#. Host editor screen labels
+#. Label for quick connect input field
+msgctxt "host_editor_quick_connect_label"
+msgid "Quick connect"
+msgstr ""
+
+#. Placeholder text showing format for quick connect field
+msgctxt "host_editor_quick_connect_placeholder"
+msgid "user@hostname:port"
+msgstr ""
+
+#. Supporting text showing example for quick connect field
+msgctxt "host_editor_quick_connect_example"
+msgid "Example: root@192.168.1.1:22"
+msgstr ""
+
+#. Text for button to show advanced host options
+msgctxt "host_editor_show_advanced"
+msgid "Show advanced options"
+msgstr ""
+
+#. Text for button to hide advanced host options
+msgctxt "host_editor_hide_advanced"
+msgid "Hide advanced options"
+msgstr ""
+
+#. Terminal resize dialog
+#. Label for width input field in terminal resize dialog
+msgctxt "resize_width_label"
+msgid "Width (columns)"
+msgstr ""
+
+#. Label for height input field in terminal resize dialog
+msgctxt "resize_height_label"
+msgid "Height (rows)"
+msgstr ""
+
+#. Public key editor labels
+#. Label for key type field in the SSH pubkey editor
+msgctxt "pubkey_editor_key_type_label"
+msgid "Key type"
+msgstr ""
+
+#. Label for the options section on SSH pubkey editor
+msgctxt "pubkey_editor_options_label"
+msgid "Options"
+msgstr ""
+
+#. Warning message shown when encrypted SSH pubkeys are set to load on startup
+msgctxt "pubkey_editor_encrypted_startup_warning"
+msgid "Encrypted keys cannot be unlocked at startup"
+msgstr ""
+
+#. Public key list labels
+#. Label prefix for displaying key type in list
+#, c-format
+msgctxt "pubkey_type_label"
+msgid "Type: %s"
+msgstr ""
+
+#. Accessibility description for encrypted key icon
+msgctxt "pubkey_encrypted_description"
+msgid "Encrypted"
+msgstr ""
+
+#. Accessibility description for unencrypted key icon
+msgctxt "pubkey_not_encrypted_description"
+msgid "Not encrypted"
+msgstr ""
+
+#. Biometric authentication strings
+#. Label for biometric protection toggle in key generation
+msgctxt "pubkey_biometric_protection"
+msgid "Fingerprint protection"
+msgstr ""
+
+#. Description for biometric protection option
+msgctxt "pubkey_biometric_description"
+msgid "Protect this key with your fingerprint"
+msgstr ""
+
+#. Warning shown when biometrics are not enrolled
+msgctxt "pubkey_biometric_not_enrolled"
+msgid ""
+"No fingerprint enrolled. Set up fingerprint in device settings to use "
+"this feature."
+msgstr ""
+
+#. Warning shown when key type doesn\'t support biometric protection
+msgctxt "pubkey_biometric_key_type_warning"
+msgid "Fingerprint protection is only available for RSA and EC keys"
+msgstr ""
+
+#. Title for biometric prompt when unlocking a key
+msgctxt "pubkey_biometric_prompt_title"
+msgid "Authenticate to use key"
+msgstr ""
+
+#. Subtitle for biometric prompt
+#, c-format
+msgctxt "pubkey_biometric_prompt_subtitle"
+msgid "Touch the fingerprint sensor to unlock '%1$s'"
+msgstr ""
+
+#. Accessibility description for biometric-protected key icon
+msgctxt "pubkey_biometric_description_icon"
+msgid "Protected by fingerprint"
+msgstr ""
+
+#. Error message when biometric authentication is not available in current
+#. context
+msgctxt "pubkey_biometric_not_available"
+msgid "Fingerprint authentication is not available"
+msgstr ""
+
+#. Port forward editor labels
+#. Placeholder for port forward nickname field. Should show an example
+#. nickname for a port forward.
+msgctxt "portforward_nickname_placeholder"
+msgid "Internal Webserver"
+msgstr ""
+
+#. Error message when port is out of valid range
+msgctxt "portforward_port_range_error"
+msgid "Port must be between 1 and 65535"
+msgstr ""
+
+#. Placeholder for destination field
+msgctxt "portforward_destination_placeholder"
+msgid "localhost:80"
+msgstr ""
+
+#. Error message for invalid destination format
+msgctxt "portforward_destination_format_error"
+msgid "Format should be host:port (e.g., localhost:80)"
+msgstr ""
+
+#. Port forward list labels
+#. Label prefix for displaying port forward type in list
+#, c-format
+msgctxt "portforward_type_label"
+msgid "Type: %s"
+msgstr ""
+
+#. Menu item to enable port forward on live connection
+msgctxt "portforward_enable"
+msgid "Enable"
+msgstr ""
+
+#. Menu item to disable port forward on live connection
+msgctxt "portforward_disable"
+msgid "Disable"
+msgstr ""
+
+#. Content description for enabled port forward visual indicator
+msgctxt "portforward_enabled"
+msgid "Port forward enabled"
+msgstr ""
+
+#. Content description for disabled port forward visual indicator
+msgctxt "portforward_disabled"
+msgid "Port forward disabled"
+msgstr ""
+
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
 msgid "Protocol"
@@ -1505,94 +1917,264 @@ msgctxt "hostpref_edit_host"
 msgid "Save host"
 msgstr "Αποθήκευση κεντρικού υπολογιστή"
 
-#. Text for button which, when clicked, brings up an editor for adding a new
-#. pubkey.
-msgctxt "pubkey_add_new"
-msgid "Add new pubkey"
-msgstr "Προσθήκη νέου δημόσιου κλειδιού"
-
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
 msgid "Import existing pubkey"
 msgstr "Εισαγωγή υπάρχοντος δημόσιου κλειδιού"
 
-#. Text for dialog which explains that the host URI is invalid and asks to
-#. discard.
-msgctxt "discard_host_changes_message"
-msgid "Host URI is invalid. Would you like to discard changes?"
+#. Title for notification permission dialog shown when user first tries to
+#. connect to a host.              Explains that notifications keep SSH
+#. connections alive.
+msgctxt "notification_permission_title"
+msgid "Keep connections alive"
 msgstr ""
-"Η διεύθυνση του κεντρικού υπολογιστή είναι άκυρη. Θέλετε να απορρίψετε τις "
-"αλλαγές;"
 
-#. Text for button which discards changes to the host.
-msgctxt "discard_host_button"
-msgid "Discard"
-msgstr "Απόρριψη"
-
-#. Text for button which does not discard changes and keeps editing.
-msgctxt "discard_host_cancel_button"
-msgid "Keep editing"
-msgstr "Συνεχίστε την ενημέρωση"
-
-#. In a list of all the key pairs the user has generated or imported into
-#. their device.              Describes a key type of the RSA algorithm with a
-#. certain strength described in              number of bits (e.g., "RSA
-#. 2048-bit").
-#, c-format
-msgctxt "key_type_rsa_bits"
-msgid "RSA %d-bit"
-msgstr "RSA %d-bit"
-
-#. In a list of all the key pairs the user has generated or imported into
-#. their device.              Describes a key type of the DSA algorithm with a
-#. certain strength described in              number of bits (e.g., "DSA
-#. 1024-bit" ).
-#, c-format
-msgctxt "key_type_dsa_bits"
-msgid "DSA %d-bit"
-msgstr "DSA %d-bit"
-
-#. In a list of all the key pairs the user has generated or imported into
-#. their device.              Describes a key type of the Elliptic Curve (EC)
-#. algorithm with a certain strength              described in number of bits
-#. (e.g., "EC 256-bit").
-#, c-format
-msgctxt "key_type_ec_bits"
-msgid "EC %d-bit"
-msgstr "EC %d-bit"
-
-#. In a list of all the key pairs the user has generated or imported into
-#. their device.              Describes a key type of the Ed25519 algorithm
-#. with a certain strength described in              number of bits (e.g.,
-#. "Ed25519").
-msgctxt "key_type_ed25519"
-msgid "Ed25519"
-msgstr "Ed25519"
-
-#. In a list of all the key pairs the user has generated or imported into
-#. their device.              Describes a key type of an unknown algorithm.
-msgctxt "key_type_unknown"
-msgid "Key type unknown"
-msgstr "Άγνωστος τύπος κλειδιού"
-
-#. In a list of all the key pairs the user has generated or imported into
-#. their device.              Added to the end of a key description to indicate
-#. that the key is encrypted (i.e,              password protected).
-msgctxt "key_attribute_encrypted"
-msgid "(encrypted)"
-msgstr "(κρυπτογραφημένο)"
-
-msgctxt "notification_requirement_explanation"
+#. Explanation message shown in permission dialog when user tries to connect
+#. to a host.              Explains why notification permission is needed and
+#. what happens without it.
+msgctxt "notification_permission_message"
 msgid ""
-"Notification permission is required to display running sessions in the "
-"background"
+"Displaying a notification is required keep connections alive in the "
+"background. Without permission, connections may close when you switch "
+"apps."
 msgstr ""
 
-msgctxt "continue_anyway"
-msgid "Continue without"
+#. Button text to grant notification permission in the permission explanation
+#. dialog.
+msgctxt "grant_permission"
+msgid "Grant permission"
 msgstr ""
 
-msgctxt "allow"
-msgid "Allow"
+#. Button text to proceed with connecting without granting notification
+#. permission.
+msgctxt "connect_anyway"
+msgid "Connect anyway"
 msgstr ""
+
+#. Title for dialog directing users to app settings when notification
+#. permission was denied.              Shown when user tries to enable persist
+#. connections after denying permission.
+msgctxt "notification_permission_denied_title"
+msgid "Permission required"
+msgstr ""
+
+#. Message explaining that user must enable notification permission in app
+#. settings.              Shown when notification permission was previously
+#. denied and user tries to enable persist connections.
+msgctxt "notification_permission_denied_message"
+msgid ""
+"To keep connections alive in the background, you must enable notification"
+" permission in app settings."
+msgstr ""
+
+#. Button text to open ConnectBot app settings page where user can grant
+#. notification permission.
+msgctxt "open_settings"
+msgid "Open settings"
+msgstr ""
+
+#. Message shown to user when they're trying to connect to a host on a local
+#. network but              have not granted the permission yet.
+msgctxt "terminal_no_route"
+msgid "Are you trying to access a local host? Grant local network permissions."
+msgstr ""
+
+#. Loading message shown during app initialization
+msgctxt "loading_message"
+msgid "Loading…"
+msgstr ""
+
+#. Database migration screen messages. Displayed during one-time migration
+#. from legacy database format to Room database.
+#. Title shown while checking if database migration is needed
+msgctxt "migration_checking"
+msgid "Checking database…"
+msgstr ""
+
+#. Title shown during database migration process
+msgctxt "migration_title"
+msgid "Migrating Database"
+msgstr ""
+
+#. Warning message shown during migration to inform user not to close the app
+msgctxt "migration_warning"
+msgid "Please do not close the app during migration"
+msgstr ""
+
+#. Statistics label showing number of hosts migrated
+#, c-format
+msgctxt "migration_stats_hosts"
+msgid "Hosts migrated: %d"
+msgstr ""
+
+#. Statistics label showing number of SSH keys migrated
+#, c-format
+msgctxt "migration_stats_pubkeys"
+msgid "SSH keys migrated: %d"
+msgstr ""
+
+#. Statistics label showing number of port forwards migrated
+#, c-format
+msgctxt "migration_stats_port_forwards"
+msgid "Port forwards migrated: %d"
+msgstr ""
+
+#. Statistics label showing number of known hosts migrated
+#, c-format
+msgctxt "migration_stats_known_hosts"
+msgid "Known hosts migrated: %d"
+msgstr ""
+
+#. Title shown when migration fails
+msgctxt "migration_failed_title"
+msgid "Migration Failed"
+msgstr ""
+
+#. Error message shown when migration fails, includes error details
+#, c-format
+msgctxt "migration_failed_message"
+msgid "An error occurred during database migration: %s"
+msgstr ""
+
+#. Button label to retry failed migration
+msgctxt "migration_retry"
+msgid "Retry"
+msgstr ""
+
+#. Help text shown after migration failure with link to GitHub issues
+#, c-format
+msgctxt "migration_failed_help"
+msgid ""
+"If the problem persists, please report this issue at %1$s with the debug "
+"log copied above"
+msgstr ""
+
+#. Title for warnings section shown during database migration
+msgctxt "migration_warnings_title"
+msgid "Migration Warnings"
+msgstr ""
+
+#. Button text to copy migration warnings to clipboard for reporting issues
+msgctxt "migration_copy_warnings"
+msgid "Copy Warnings"
+msgstr ""
+
+#. Title for debug log section shown when migration fails
+msgctxt "migration_debug_log_title"
+msgid "Debug Log"
+msgstr ""
+
+#. Button text to copy debug log to clipboard for reporting issues
+msgctxt "migration_copy_debug_log"
+msgid "Copy Debug Log"
+msgstr ""
+
+#. Shown in the alert dialog when a user chooses the 'disconnect' item to
+#. disconnect from a SSH or Telnet host.
+#, c-format
+msgctxt "disconnect_host_alert"
+msgid "Are you sure you want to disconnect from '%1$s'?"
+msgstr ""
+
+#. Shown in the alert dialog when a user chooses the 'delete host' item to
+#. delete a host.
+#, c-format
+msgctxt "delete_host_confirm"
+msgid "Are you sure you want to delete host '%1$s'?"
+msgstr ""
+
+#. Menu selection to edit a pubkey details (e.g., nickname)
+msgctxt "list_pubkey_edit"
+msgid "Edit pubkey"
+msgstr ""
+
+#. ProxyJump / Jump Host support
+#. Title for jump host selector in host editor
+msgctxt "hostpref_jumphost_title"
+msgid "Jump host (ProxyJump)"
+msgstr ""
+
+#. Summary text explaining jump host functionality
+msgctxt "hostpref_jumphost_summary"
+msgid "Connect through another SSH host"
+msgstr ""
+
+#. Option for no jump host (direct connection)
+msgctxt "list_jumphost_none"
+msgid "None (direct connection)"
+msgstr ""
+
+#. Terminal message when connecting via jump host
+#, c-format
+msgctxt "terminal_connecting_via_jump"
+msgid "Connecting via jump host: %s"
+msgstr ""
+
+#. Terminal message when connected to jump host
+#, c-format
+msgctxt "terminal_jump_connected"
+msgid "Connected to jump host: %s"
+msgstr ""
+
+#. Terminal message when authenticated to jump host
+#, c-format
+msgctxt "terminal_jump_authenticated"
+msgid "Authenticated to jump host: %s"
+msgstr ""
+
+#. Terminal message when jump host connection fails
+#, c-format
+msgctxt "terminal_jump_failed"
+msgid "Failed to connect to jump host %1$s: %2$s"
+msgstr ""
+
+#. Terminal message when jump host authentication fails
+#, c-format
+msgctxt "terminal_jump_auth_failed"
+msgid "Authentication failed for jump host: %s"
+msgstr ""
+
+#. Terminal message when jump host is not found in database
+msgctxt "terminal_jump_not_found"
+msgid "Jump host not found in saved hosts"
+msgstr ""
+
+#. Password prompt prefix for jump host
+#, c-format
+msgctxt "terminal_jump_password"
+msgid "Password for jump host %s:"
+msgstr ""
+
+#. Button text to view application logs for debugging
+msgctxt "view_logs"
+msgid "View Logs"
+msgstr ""
+
+#. Title for the log viewer dialog
+msgctxt "logs_title"
+msgid "Application Logs"
+msgstr ""
+
+#. Button text to copy logs to clipboard for bug reporting
+msgctxt "copy_logs"
+msgid "Copy Logs"
+msgstr ""
+
+#. Confirmation message shown when logs are copied to clipboard
+msgctxt "logs_copied"
+msgid "Logs copied to clipboard"
+msgstr ""
+
+#. Instruction text for reporting bugs with logs
+msgctxt "logs_bug_report_info"
+msgid ""
+"To report a bug, copy these logs and open a new issue at "
+"https://connectbot.org/bug"
+msgstr ""
+
+#. Message shown when no logs are available
+msgctxt "no_logs_available"
+msgid "No logs available"
+msgstr ""
+
