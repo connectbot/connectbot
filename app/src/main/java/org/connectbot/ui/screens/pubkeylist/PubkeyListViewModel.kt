@@ -22,19 +22,15 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
-import timber.log.Timber
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import kotlinx.coroutines.CoroutineDispatcher
-import org.connectbot.di.IoDispatcher
 import com.trilead.ssh2.crypto.Base64
 import com.trilead.ssh2.crypto.OpenSSHKeyEncoder
 import com.trilead.ssh2.crypto.PEMDecoder
 import com.trilead.ssh2.crypto.PEMEncoder
 import com.trilead.ssh2.crypto.PublicKeyUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -48,10 +44,12 @@ import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalManager
 import org.connectbot.util.BiometricKeyManager
 import org.connectbot.util.PubkeyUtils
+import timber.log.Timber
 import java.io.BufferedReader
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStreamReader
+import javax.inject.Inject
 
 enum class ExportFormat {
     OPENSSH,

@@ -19,7 +19,6 @@ package org.connectbot.ui.components
 
 import android.content.Context
 import android.content.ContextWrapper
-import timber.log.Timber
 import androidx.biometric.BiometricPrompt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -31,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import timber.log.Timber
 
 private const val TAG = "BiometricPromptHelper"
 

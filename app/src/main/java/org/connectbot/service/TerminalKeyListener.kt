@@ -23,7 +23,6 @@ import android.content.res.Configuration
 // Migration to android.content.ClipboardManager requires careful testing
 // as there were issues with clipboard access in certain scenarios.
 import android.text.ClipboardManager
-import timber.log.Timber
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
 import android.view.View
@@ -35,6 +34,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import org.connectbot.terminal.ModifierManager
 import org.connectbot.terminal.VTermKey
 import org.connectbot.util.PreferenceConstants
+import timber.log.Timber
 import java.io.IOException
 
 @Suppress("DEPRECATION")

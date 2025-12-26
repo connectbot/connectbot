@@ -22,7 +22,6 @@ import android.app.backup.BackupDataInput
 import android.app.backup.BackupDataOutput
 import android.app.backup.SharedPreferencesBackupHelper
 import android.os.ParcelFileDescriptor
-import timber.log.Timber
 import androidx.preference.PreferenceManager
 import androidx.room.Room
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +31,7 @@ import org.connectbot.data.HostRepository
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.PreferenceConstants
+import timber.log.Timber
 import java.io.File
 import java.io.FileInputStream
 

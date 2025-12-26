@@ -22,7 +22,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import timber.log.Timber
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
@@ -41,6 +40,7 @@ import org.connectbot.data.migration.MigrationState
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalManager
 import org.connectbot.util.PreferenceConstants
+import timber.log.Timber
 import javax.inject.Inject
 
 /**

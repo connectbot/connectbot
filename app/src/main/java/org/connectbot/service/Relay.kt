@@ -17,12 +17,12 @@
 
 package org.connectbot.service
 
-import timber.log.Timber
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import org.apache.harmony.niochar.charset.additional.IBM437
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.transport.AbsTransport
+import timber.log.Timber
 import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.CharBuffer

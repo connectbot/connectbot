@@ -57,18 +57,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.components.ColorPickerDialog
 import org.connectbot.ui.theme.ConnectBotTheme
-
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 /**
  * Screen for editing terminal color scheme.

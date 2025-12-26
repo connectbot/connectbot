@@ -77,6 +77,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
@@ -84,8 +85,6 @@ import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.theme.ConnectBotTheme
-
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
