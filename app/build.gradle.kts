@@ -307,4 +307,5 @@ dependencies {
 }
 
 // E2E Test tasks
-apply(from = "../gradle/e2e-test.gradle.kts")
+// Workaround for https://issuetracker.google.com/issues/463283604
+apply(from = "../gradle/e2e-test.${hack}")
