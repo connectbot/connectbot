@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-25 22:08-0800\n"
-"PO-Revision-Date: 2025-12-25 20:52-0800\n"
+"POT-Creation-Date: 2025-12-26 09:45-0800\n"
+"PO-Revision-Date: 2025-12-26 08:41-0800\n"
 "Last-Translator: Pablo Hinojosa  <Unknown>\n"
 "Language: es\n"
 "Language-Team: es <LL@li.org>\n"
@@ -31,6 +31,11 @@ msgstr "Cliente de SSH sencillo, potente y de código abierto."
 msgctxt "service_desc"
 msgid "Maintains SSH connections and loaded pubkeys"
 msgstr "Mantiene las conexiones SSH y las claves públicas cargadas"
+
+#. Displayed in the "Help" screen to denote the copyright of this app.
+msgctxt "app_copyright"
+msgid "Copyright © Kenny Root"
+msgstr "Derechos de autor © Kenny Root"
 
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
@@ -836,6 +841,88 @@ msgctxt "hostpref_color_title"
 msgid "Color category"
 msgstr "Categoria de colores"
 
+#. Color category names used for visual identification of hosts. These appear
+#. in the color selector dropdown.
+#. Color name for red (#F44336)
+msgctxt "color_red"
+msgid "Red"
+msgstr "Rojo"
+
+#. Color name for pink (#E91E63)
+msgctxt "color_pink"
+msgid "Pink"
+msgstr "Rosa"
+
+#. Color name for purple (#9C27B0)
+msgctxt "color_purple"
+msgid "Purple"
+msgstr "Púrpura"
+
+#. Color name for deep purple (#673AB7)
+msgctxt "color_deep_purple"
+msgid "Deep Purple"
+msgstr "Púrpura profunda"
+
+#. Color name for indigo (#3F51B5)
+msgctxt "color_indigo"
+msgid "Indigo"
+msgstr "Índigo"
+
+#. Color name for blue (#2196F3)
+msgctxt "color_blue"
+msgid "Blue"
+msgstr "Azul"
+
+#. Color name for light blue (#03A9F4)
+msgctxt "color_light_blue"
+msgid "Light Blue"
+msgstr "Azul Claro"
+
+#. Color name for cyan (#00BCD4)
+msgctxt "color_cyan"
+msgid "Cyan"
+msgstr "Cian"
+
+#. Color name for teal (#009688)
+msgctxt "color_teal"
+msgid "Teal"
+msgstr "Verde azulado"
+
+#. Color name for green (#4CAF50)
+msgctxt "color_green"
+msgid "Green"
+msgstr "Verde"
+
+#. Color name for light green (#8BC34A)
+msgctxt "color_light_green"
+msgid "Light Green"
+msgstr "Verde Claro"
+
+#. Color name for lime (#CDDC39)
+msgctxt "color_lime"
+msgid "Lime"
+msgstr "Cal"
+
+#. Color name for yellow (#FFEB3B)
+msgctxt "color_yellow"
+msgid "Yellow"
+msgstr "Amarillo"
+
+#. Color name for amber (#FFC107)
+msgctxt "color_amber"
+msgid "Amber"
+msgstr "Ámbar"
+
+#. Color name for orange (#FF9800)
+msgctxt "color_orange"
+msgid "Orange"
+msgstr "Naranja"
+
+#. Color name for gray (#9E9E9E)
+msgctxt "color_gray"
+msgid "Gray"
+msgstr "Gris"
+
 #. Host's default font size when opening the terminal in points (pt)
 msgctxt "hostpref_fontsize_title"
 msgid "Font size (pt)"
@@ -940,6 +1027,198 @@ msgstr "Host (equipo anfitrión)"
 msgctxt "hostpref_port_title"
 msgid "Port"
 msgstr "Puerto"
+
+#. When editing a host entry, this is displayed for the section about changing
+#. the              configuration profile of a host. The profile controls
+#. terminal colors, terminal              font, etc.
+msgctxt "hostpref_profile_title"
+msgid "Profile"
+msgstr "Perfil"
+
+#. Description text shown below the profile selector explaining what selecting
+#. a profile does
+msgctxt "hostpref_profile_summary"
+msgid "Select a profile to use its terminal settings"
+msgstr "Selecciona un perfil para usar sus configuraciones de terminal"
+
+#. Dropdown option shown when no profile is selected, indicating host-specific
+#. settings will be used instead
+msgctxt "hostpref_profile_none"
+msgid "None (use host settings)"
+msgstr "Ninguno (usar configuración del host)"
+
+#. Message displayed when a setting is disabled because it's controlled by a
+#. profile instead of host settings
+msgctxt "profile_controlled_setting"
+msgid "Controlled by profile"
+msgstr "Controlado por perfil"
+
+#. Dropdown option to use the default font when configuring font family
+msgctxt "font_use_default"
+msgid "Use Default"
+msgstr "Usar predeterminado"
+
+#. Display name for the system default monospace font option
+msgctxt "font_system_default"
+msgid "Default (Monospace)"
+msgstr "Predeterminado (Monospacio)"
+
+#. Fallback text shown when referencing a pubkey that no longer exists in the
+#. database
+msgctxt "pubkey_unknown"
+msgid "Unknown key"
+msgstr "Clave desconocida"
+
+#. Default name shown for the default color scheme when no specific scheme is
+#. selected
+msgctxt "colorscheme_default"
+msgid "Default"
+msgstr "Predeterminado"
+
+#. Profile editor screen strings
+#. Window title shown when creating a new profile
+msgctxt "profile_editor_title_new"
+msgid "New Profile"
+msgstr "Nuevo Perfil"
+
+#. Window title shown when editing an existing profile
+msgctxt "profile_editor_title_edit"
+msgid "Edit Profile"
+msgstr "Editar Perfil"
+
+#. Content description for the save button that saves profile changes
+msgctxt "profile_editor_save"
+msgid "Save"
+msgstr "Guardar"
+
+#. Label for the text field where user enters the profile name
+msgctxt "profile_editor_name_label"
+msgid "Profile Name"
+msgstr "Nombre de perfil"
+
+#. Section header for icon color selection area
+msgctxt "profile_editor_section_icon_color"
+msgid "Icon Color"
+msgstr "Color del icono"
+
+#. Section header for color scheme selection area
+msgctxt "profile_editor_section_color_scheme"
+msgid "Color Scheme"
+msgstr "Esquema de colores"
+
+#. Section header for font configuration area
+msgctxt "profile_editor_section_font"
+msgid "Font"
+msgstr "Fuente"
+
+#. Section header for terminal emulation settings area
+msgctxt "profile_editor_section_terminal"
+msgid "Terminal"
+msgstr "Terminal"
+
+#. Subsection title for font family selector
+msgctxt "profile_editor_font_family_title"
+msgid "Font Family"
+msgstr "Familia de fuentes"
+
+#. Subsection title showing current font size. Parameter is the font size in
+#. points.
+#, c-format
+msgctxt "profile_editor_font_size_title"
+msgid "Font Size: %d"
+msgstr "Tamaño de fuente %d"
+
+#. Dropdown option to not override host color with profile color
+msgctxt "profile_icon_color_none"
+msgid "None (use host color)"
+msgstr "Ninguno (usar el color del host)"
+
+#. Profile list screen strings
+#. Window title for the profiles list screen
+msgctxt "profile_list_title"
+msgid "Profiles"
+msgstr "Perfiles"
+
+#. Content description for the FAB button that creates a new profile
+msgctxt "profile_list_create_profile"
+msgid "Create profile"
+msgstr "Crear perfil"
+
+#. Message shown when there are no profiles, encouraging user to create one
+msgctxt "profile_list_empty_message"
+msgid "No profiles yet. Tap + to create one."
+msgstr "Todavía no hay perfiles. Pulsa + para crear uno."
+
+#. Content description for the menu button on each profile item
+msgctxt "profile_list_more_options"
+msgid "More options"
+msgstr "Más opciones"
+
+#. Menu item to duplicate/copy a profile
+msgctxt "profile_list_duplicate"
+msgid "Duplicate"
+msgstr "Duplicar"
+
+#. Menu item to delete a profile
+msgctxt "profile_list_delete"
+msgid "Delete"
+msgstr "Eliminar"
+
+#. Dialog title when creating a new profile
+msgctxt "profile_create_dialog_title"
+msgid "Create Profile"
+msgstr "Crear Perfil"
+
+#. Label for the profile name text field in create dialog
+msgctxt "profile_create_name_label"
+msgid "Profile Name"
+msgstr "Nombre de perfil"
+
+#. Button text to confirm creating a new profile
+msgctxt "profile_create_button"
+msgid "Create"
+msgstr "Crear"
+
+#. Button text to cancel creating a new profile
+msgctxt "profile_create_cancel"
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. Dialog title when deleting a profile
+msgctxt "profile_delete_dialog_title"
+msgid "Delete Profile"
+msgstr "Eliminar Perfil"
+
+#. Confirmation message asking if user wants to delete a profile. Parameter is
+#. the profile name.
+#, c-format
+msgctxt "profile_delete_dialog_message"
+msgid "Are you sure you want to delete '%s'?"
+msgstr "¿Estás seguro de que deseas eliminar '%s'?"
+
+#. Button text to confirm deleting a profile
+msgctxt "profile_delete_button"
+msgid "Delete"
+msgstr "Eliminar"
+
+#. Button text to cancel deleting a profile
+msgctxt "profile_delete_cancel"
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. Summary text showing font settings. First parameter is font name, second is
+#. font size in points.
+#, c-format
+msgctxt "profile_summary_font"
+msgid "Font: %1$s %2$dpt"
+msgstr "Fuente %1$s %2$dpt"
+
+#. Summary text showing emulation setting. Parameter is the terminal emulation
+#. type.
+#, c-format
+msgctxt "profile_summary_emulation"
+msgid "Emulation: %s"
+msgstr "Emulación: %s"
 
 #. Button to close the disconnected terminal window.
 msgctxt "console_menu_close"
@@ -2272,4 +2551,51 @@ msgstr ""
 msgctxt "no_logs_available"
 msgid "No logs available"
 msgstr "No registros disponibles"
+
+#. Section title for the "Help" screen showing information about the program
+#. itself.
+msgctxt "help_section_about"
+msgid "About"
+msgstr "Acerca de"
+
+#. Built-in color scheme descriptions for terminal display
+#. Description of the default terminal color scheme
+msgctxt "colorscheme_default_description"
+msgid "Default terminal colors"
+msgstr "Colores de terminal predeterminados"
+
+#. Description of the Solarized Dark color scheme
+msgctxt "colorscheme_solarized_dark_description"
+msgid "Precision colors for machines and people"
+msgstr "Colores precisos para máquinas y personas"
+
+#. Description of the Solarized Light color scheme
+msgctxt "colorscheme_solarized_light_description"
+msgid "Solarized with light background"
+msgstr "Solarizado con fondo claro"
+
+#. Description of the Dracula color scheme
+msgctxt "colorscheme_dracula_description"
+msgid "A dark theme for the terminal"
+msgstr "Un tema oscuro para la terminal"
+
+#. Description of the Nord color scheme
+msgctxt "colorscheme_nord_description"
+msgid "An arctic, north-bluish color palette"
+msgstr "Una paleta de colores ártica norte azulada"
+
+#. Description of the Gruvbox Dark color scheme
+msgctxt "colorscheme_gruvbox_dark_description"
+msgid "Retro groove color scheme"
+msgstr "Esquema de colores con estilo retro"
+
+#. Description of the Monokai color scheme
+msgctxt "colorscheme_monokai_description"
+msgid "Sublime Text inspired theme"
+msgstr "Tema inspirado en Sublime Text"
+
+#. Description of the Tomorrow Night color scheme
+msgctxt "colorscheme_tomorrow_night_description"
+msgid "A clean and comfortable dark theme"
+msgstr "Un tema oscuro limpio y cómodo"
 
