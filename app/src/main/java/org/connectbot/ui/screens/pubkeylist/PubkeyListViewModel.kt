@@ -708,14 +708,17 @@ class PubkeyListViewModel @Inject constructor(
 
     /**
      * Complete the import of an encrypted key with the provided password.
+     * @param decryptPassword Password to decrypt the imported key
+     * @param encrypt Whether to encrypt the key for storage
+     * @param encryptPassword Password to use for encryption (null if not encrypting)
      */
-    fun completeImportWithPassword(password: String) {
+    fun completeImportWithPassword(decryptPassword: String, encrypt: Boolean, encryptPassword: String?) {
         val pending = _uiState.value.pendingImport ?: return
 
         viewModelScope.launch {
             try {
                 val pubkey = withContext(Dispatchers.IO) {
-                    decryptAndImportKey(pending.keyData, pending.nickname, password)
+                    decryptAndImportKey(pending.keyData, pending.nickname, decryptPassword, encrypt, encryptPassword)
                 }
 
                 if (pubkey != null) {
@@ -750,26 +753,36 @@ class PubkeyListViewModel @Inject constructor(
         _uiState.update { it.copy(pendingImport = null) }
     }
 
-    private fun decryptAndImportKey(keyData: ByteArray, nickname: String, password: String): Pubkey? {
+    private fun decryptAndImportKey(
+        keyData: ByteArray,
+        nickname: String,
+        decryptPassword: String,
+        encrypt: Boolean,
+        encryptPassword: String?
+    ): Pubkey? {
         val keyString = String(keyData)
 
         try {
             // Use PEMDecoder to decrypt the key
-            val kp = PEMDecoder.decode(keyString.toCharArray(), password)
+            val kp = PEMDecoder.decode(keyString.toCharArray(), decryptPassword)
             val algorithm = convertAlgorithmName(kp.private.algorithm)
 
-            // Re-encrypt the private key with the user's password for secure storage
-            val encryptedPrivateKey = PubkeyUtils.getEncodedPrivate(kp.private, password)
+            // Optionally re-encrypt the private key with the specified password
+            val privateKeyBytes = if (encrypt && encryptPassword != null) {
+                PubkeyUtils.getEncodedPrivate(kp.private, encryptPassword)
+            } else {
+                kp.private.encoded
+            }
 
             return Pubkey(
                 id = 0,
                 nickname = nickname,
                 type = algorithm,
-                encrypted = true,  // Key is now encrypted with user's password
+                encrypted = encrypt,
                 startup = false,
                 confirmation = false,
                 createdDate = System.currentTimeMillis(),
-                privateKey = encryptedPrivateKey,
+                privateKey = privateKeyBytes,
                 publicKey = kp.public.encoded
             )
         } catch (e: Exception) {

@@ -109,6 +109,13 @@
 	<string name="pubkey_import_encrypted_message">"Enter password to decrypt key '%1$s' (%2$s)"</string>
 	<!-- Button text to confirm importing a key -->
 	<string name="pubkey_import_button">"Import"</string>
+	<string name="pubkey_import_encrypt_key">"Encrypt key for storage"</string>
+	<string name="pubkey_import_reuse_password">"Use same password for encryption"</string>
+	<string name="pubkey_import_new_password">"New password"</string>
+	<string name="pubkey_import_confirm_password">"Confirm password"</string>
+	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
+	<string name="pubkey_list_empty">"Tap \"Menu\" to create"\n"or import key pairs."</string>
+	<string name="pubkey_unknown_format">"Unknown format"</string>
 	<!-- Context menu action to change the password protecting a private key -->
 	<string name="pubkey_change_password">"Change password"</string>
 	<!-- Context menu action to unlock an encrypted key for use in authentication -->

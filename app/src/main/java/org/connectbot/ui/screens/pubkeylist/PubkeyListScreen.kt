@@ -23,6 +23,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -49,6 +50,7 @@ import androidx.compose.material.icons.outlined.Fingerprint
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.LockOpen
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -214,8 +216,8 @@ fun PubkeyListScreen(
             keyType = pendingImport.keyType,
             nickname = pendingImport.nickname,
             onDismiss = { viewModel.cancelImport() },
-            onPasswordProvided = { password ->
-                viewModel.completeImportWithPassword(password)
+            onImport = { decryptPassword, encrypt, encryptPassword ->
+                viewModel.completeImportWithPassword(decryptPassword, encrypt, encryptPassword)
             }
         )
     }
@@ -808,9 +810,19 @@ private fun ImportPasswordDialog(
     keyType: String,
     nickname: String,
     onDismiss: () -> Unit,
-    onPasswordProvided: (String) -> Unit
+    onImport: (decryptPassword: String, encrypt: Boolean, encryptPassword: String?) -> Unit
 ) {
     var password by remember { mutableStateOf("") }
+    var encryptKey by remember { mutableStateOf(true) }
+    var reusePassword by remember { mutableStateOf(true) }
+    var newPassword by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+
+    val canImport = password.isNotEmpty() && (
+        !encryptKey ||
+        reusePassword ||
+        (newPassword.isNotEmpty() && newPassword == confirmPassword)
+    )
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -831,12 +843,74 @@ private fun ImportPasswordDialog(
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
+                        .clickable { encryptKey = !encryptKey }
+                ) {
+                    Checkbox(
+                        checked = encryptKey,
+                        onCheckedChange = { encryptKey = it }
+                    )
+                    Text(stringResource(R.string.pubkey_import_encrypt_key))
+                }
+
+                if (encryptKey) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { reusePassword = !reusePassword }
+                    ) {
+                        Checkbox(
+                            checked = reusePassword,
+                            onCheckedChange = { reusePassword = it }
+                        )
+                        Text(stringResource(R.string.pubkey_import_reuse_password))
+                    }
+
+                    if (!reusePassword) {
+                        OutlinedTextField(
+                            value = newPassword,
+                            onValueChange = { newPassword = it },
+                            label = { Text(stringResource(R.string.pubkey_import_new_password)) },
+                            visualTransformation = PasswordVisualTransformation(),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp),
+                            singleLine = true
+                        )
+                        OutlinedTextField(
+                            value = confirmPassword,
+                            onValueChange = { confirmPassword = it },
+                            label = { Text(stringResource(R.string.pubkey_import_confirm_password)) },
+                            visualTransformation = PasswordVisualTransformation(),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp),
+                            singleLine = true,
+                            isError = confirmPassword.isNotEmpty() && newPassword != confirmPassword
+                        )
+                    }
+                }
             }
         },
         confirmButton = {
             TextButton(
-                onClick = { onPasswordProvided(password) },
-                enabled = password.isNotEmpty()
+                onClick = {
+                    val encryptPassword = when {
+                        !encryptKey -> null
+                        reusePassword -> password
+                        else -> newPassword
+                    }
+                    onImport(password, encryptKey, encryptPassword)
+                },
+                enabled = canImport
             ) {
                 Text(stringResource(R.string.pubkey_import_button))
             }
