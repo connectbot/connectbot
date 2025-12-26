@@ -471,6 +471,30 @@
 	<!-- Default name shown for the default color scheme when no specific scheme is selected -->
 	<string name="colorscheme_default">Default</string>
 
+	<!-- Profile editor screen strings -->
+	<!-- Window title shown when creating a new profile -->
+	<string name="profile_editor_title_new">New Profile</string>
+	<!-- Window title shown when editing an existing profile -->
+	<string name="profile_editor_title_edit">Edit Profile</string>
+	<!-- Content description for the save button that saves profile changes -->
+	<string name="profile_editor_save">Save</string>
+	<!-- Label for the text field where user enters the profile name -->
+	<string name="profile_editor_name_label">Profile Name</string>
+	<!-- Section header for icon color selection area -->
+	<string name="profile_editor_section_icon_color">Icon Color</string>
+	<!-- Section header for color scheme selection area -->
+	<string name="profile_editor_section_color_scheme">Color Scheme</string>
+	<!-- Section header for font configuration area -->
+	<string name="profile_editor_section_font">Font</string>
+	<!-- Section header for terminal emulation settings area -->
+	<string name="profile_editor_section_terminal">Terminal</string>
+	<!-- Subsection title for font family selector -->
+	<string name="profile_editor_font_family_title">Font Family</string>
+	<!-- Subsection title showing current font size. Parameter is the font size in points. -->
+	<string name="profile_editor_font_size_title">Font Size: %d</string>
+	<!-- Dropdown option to not override host color with profile color -->
+	<string name="profile_icon_color_none">None (use host color)</string>
+
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">"Close"</string>
 	<!-- Button to paste from the clipboard to the terminal. -->
