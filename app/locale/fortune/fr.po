@@ -2,24 +2,23 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-25 20:15-0800\n"
+"POT-Creation-Date: 2025-12-25 22:08-0800\n"
 "PO-Revision-Date: 2025-12-25 20:31-0800\n"
 "Last-Translator: Jean-Marc <Unknown>\n"
 "Language: fr\n"
 "Language-Team: fr <LL@li.org>\n"
-"Plural-Forms: nplurals=3; plural=(((((((e == 0)) && (!((n == 0)))) && (((n % "
-"1000000) == 0))) && ((0 == 0))) || (!((e >= 0 && e <= 5)))) ? 1 : ((n == 0) "
-"|| (n == 1)) ? 0 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(((((((e == 0)) && (!((n == 0)))) && "
+"(((n % 1000000) == 0))) && ((0 == 0))) || (!((e >= 0 && e <= 5)))) ? 1 : "
+"((n == 0) || (n == 1)) ? 0 : 2);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
-"X-Generator: Autopo v1.0.5\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -110,10 +109,12 @@ msgctxt "paste_shortcut"
 msgid "Ctrl-Shift-V"
 msgstr "Ctrl+Shift+V"
 
+#. Button text to generate a new SSH public/private key pair
 msgctxt "pubkey_generate"
 msgid "Generate"
 msgstr "Générer"
 
+#. Context menu action to delete a saved public key
 msgctxt "pubkey_delete"
 msgid "Delete key"
 msgstr "Supprimer la clé"
@@ -124,97 +125,125 @@ msgctxt "pubkey_gather_entropy"
 msgid "Gathering Entropy"
 msgstr "Génération d'entropie"
 
+#. Progress message showing percentage of random data collected for key
+#. generation
 #, c-format
 msgctxt "pubkey_touch_prompt"
 msgid "Touch this box to gather randomness: %1$d%% done"
 msgstr "Touchez cette boîte pour générer de l'entropie : %1$d%% effectué"
 
+#. Instructions to user on how to provide randomness by moving their finger
+#. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr ""
 "Afin d'assurer la qualité des nombres aléatoires utilisés pendant la "
-"génération de la clé, merci de bouger votre doigt de façon aléatoire sur la "
-"boîte ci-dessous."
+"génération de la clé, merci de bouger votre doigt de façon aléatoire sur "
+"la boîte ci-dessous."
 
+#. Progress message shown while generating a new SSH key pair
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
 msgstr "Génération de la paire de clés en cours…"
 
+#. Context menu action to copy the private key to clipboard in the default
+#. format
 msgctxt "pubkey_copy_private"
 msgid "Copy private key"
 msgstr "Copier la clé privée"
 
+#. Context menu action to copy the private key to clipboard in OpenSSH format
 msgctxt "pubkey_copy_private_openssh"
 msgid "Copy private key (OpenSSH)"
 msgstr "Copier la clé privée OpenSSH"
 
+#. Context menu action to copy the private key to clipboard in PEM format
 msgctxt "pubkey_copy_private_pem"
 msgid "Copy private key (PEM)"
 msgstr "Copier la clé privée PEM"
 
+#. Context menu action to copy the encrypted private key to clipboard
 msgctxt "pubkey_copy_private_encrypted"
 msgid "Copy private key (encrypted)"
 msgstr "Copier la clé privée cryptée"
 
+#. Context menu action to copy the public key to clipboard
 msgctxt "pubkey_copy_public"
 msgid "Copy public key"
 msgstr "Copier la clé publique"
 
+#. Context menu action to export the public key to a file
 msgctxt "pubkey_export_public"
 msgid "Export public key"
 msgstr "Exporter la clé publique"
 
+#. Context menu action to export the private key to a file in the default
+#. format
 msgctxt "pubkey_export_private"
 msgid "Export private key"
 msgstr "Exporter la clé privée"
 
+#. Context menu action to export the private key to a file in OpenSSH format
 msgctxt "pubkey_export_private_openssh"
 msgid "Export private key (OpenSSH)"
 msgstr "Exporter la clé privée OpenSSH"
 
+#. Context menu action to export the private key to a file in PEM format
 msgctxt "pubkey_export_private_pem"
 msgid "Export private key (PEM)"
 msgstr "Exporter la clé privée PEM"
 
+#. Context menu action to export the encrypted private key to a file
 msgctxt "pubkey_export_private_encrypted"
 msgid "Export private key (encrypted)"
 msgstr "Exporter la clé privée (chiffrée)"
 
+#. Dialog title for setting a passphrase when exporting a key
 msgctxt "pubkey_export_set_passphrase"
 msgid "Set export passphrase"
 msgstr "Définir le mot de passe d exportation"
 
+#. Instructions to enter a passphrase to encrypt the key being exported
 msgctxt "pubkey_export_passphrase_message"
 msgid "Enter a passphrase to encrypt the exported key"
 msgstr "Entrez une phrase secrète pour chiffrer la clé exportée"
 
+#. Label for the field where user confirms the passphrase by entering it again
 msgctxt "pubkey_export_confirm_passphrase"
 msgid "Confirm passphrase"
 msgstr "Confirmer le mot de passe"
 
+#. Error message shown when the passphrase and confirmation passphrase don't
+#. match
 msgctxt "pubkey_export_passphrase_mismatch"
 msgid "Passphrases do not match"
 msgstr "Les phrases de passe ne correspondent pas"
 
+#. Dialog title when importing an encrypted SSH key file
 msgctxt "pubkey_import_encrypted_title"
 msgid "Import encrypted key"
 msgstr "Importer une clé chiffrée"
 
+#. Prompt asking user to enter the password to decrypt an imported key file.
+#. First parameter is key nickname, second is key type.
 #, c-format
 msgctxt "pubkey_import_encrypted_message"
 msgid "Enter password to decrypt key '%1$s' (%2$s)"
 msgstr "Entrez le mot de passe pour décrypter la clé '%1$s' (%2$s)"
 
+#. Button text to confirm importing a key
 msgctxt "pubkey_import_button"
 msgid "Import"
 msgstr "Importer"
 
+#. Context menu action to change the password protecting a private key
 msgctxt "pubkey_change_password"
 msgid "Change password"
 msgstr "Changer le mot de passe"
 
+#. Context menu action to unlock an encrypted key for use in authentication
 msgctxt "pubkey_unlock"
 msgid "Unlock key"
 msgstr "Déverrouiller la clé"
@@ -256,6 +285,7 @@ msgctxt "portforward_delete"
 msgid "Delete port forward"
 msgstr "Effacer la redirection de port"
 
+#. Label for the input field where user enters a nickname for a host or key
 msgctxt "prompt_nickname"
 msgid "Nickname:"
 msgstr "Nom :"
@@ -314,9 +344,11 @@ msgstr "Mot de passe pour la clé '%1$s'"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid "Allow remote host to\n"
+msgid ""
+"Allow remote host to\n"
 "use key '%1$s'?"
-msgstr "Autoriser l'hôte distant à\n"
+msgstr ""
+"Autoriser l'hôte distant à\n"
 "utiliser la clé '%1$s' ?"
 
 #. The header of the warning a user gets when the host key has changed. Note
@@ -332,19 +364,22 @@ msgstr "ATTENTION : L'IDENTIFICATION DE L'HÔTE DISTANT A CHANGÉ !"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "IL EST POSSIBLE QUE QUELQU'UN FASSE QUELQUE CHOSE DE NUISIBLE !\n"
-"Quelqu'un pourrait vous écouter en ce moment (attaque de l'homme du milieu) "
-"!\n"
+"Quelqu'un pourrait vous écouter en ce moment (attaque de l'homme du "
+"milieu) !\n"
 "Il est aussi possible que la clé du serveur ait juste changée."
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid "Host has disconnected.\n"
+msgid ""
+"Host has disconnected.\n"
 "Close session?"
-msgstr "L'hôte s'est déconnecté.\n"
+msgstr ""
+"L'hôte s'est déconnecté.\n"
 "Fermer la session ?"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -352,7 +387,8 @@ msgstr "L'hôte s'est déconnecté.\n"
 #, fuzzy
 msgctxt "prompt_continue_connecting"
 msgid "Are you sure you want to continue connecting?"
-msgstr "Êtes-vous sûr de vouloir\n"
+msgstr ""
+"Êtes-vous sûr de vouloir\n"
 "continuer à vous connecter ?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
@@ -393,10 +429,13 @@ msgctxt "fingerprint_copy_description"
 msgid "Copy fingerprint to clipboard"
 msgstr "Copier lempreinte dans le presse-papiers"
 
+#. Error message shown when entered password and confirmation password don't
+#. match
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
 msgstr "Les mots de passe sont différents !"
 
+#. Error message shown when user enters an incorrect password
 msgctxt "alert_wrong_password_msg"
 msgid "Wrong password!"
 msgstr "Mauvais mot de passe !"
@@ -406,6 +445,7 @@ msgctxt "button_resize"
 msgid "Resize"
 msgstr "Retailler"
 
+#. Alert dialog title shown when connection to the remote host is lost
 msgctxt "alert_disconnect_msg"
 msgid "Connection Lost"
 msgstr "Connexion perdue"
@@ -542,8 +582,8 @@ msgstr "Sauvegarde clé privée"
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
 msgstr ""
-"Conserver une copie de la clé privée en utilisant le système de sauvegarde "
-"d'Android."
+"Conserver une copie de la clé privée en utilisant le système de "
+"sauvegarde d'Android."
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -606,8 +646,8 @@ msgstr "\"Shift+Numéro\" sont les touches de \"F1-F10\""
 msgctxt "pref_shiftfkeys_summary"
 msgid "On hardware keyboards, number keys send F1-F10 with shift"
 msgstr ""
-"Sur les claviers matériels, les touches des chiffres envoient F1-F10 avec la "
-"touche Shift"
+"Sur les claviers matériels, les touches des chiffres envoient F1-F10 avec"
+" la touche Shift"
 
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
@@ -618,8 +658,8 @@ msgstr "Ctrl+Numéro sont les touches de \"F1-F10\""
 msgctxt "pref_ctrlfkeys_summary"
 msgid "On software keyboards, number keys send F1-F10 with ctrl"
 msgstr ""
-"Sur les claviers logiciels, les touches des chiffres envoient F1-F10 avec la "
-"touche Ctrl"
+"Sur les claviers logiciels, les touches des chiffres envoient F1-F10 avec"
+" la touche Ctrl"
 
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
@@ -640,8 +680,8 @@ msgstr "Garder les clés en mémoire"
 msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
 msgstr ""
-"Garder les clés débloquées en mémoire tant que le service tourne en arrière-"
-"plan"
+"Garder les clés débloquées en mémoire tant que le service tourne en "
+"arrière-plan"
 
 #. Name for the preference that forces the service to stay running in the
 #. background.
@@ -705,8 +745,8 @@ msgstr "Flêches vibrantes"
 msgctxt "pref_bumpyarrows_summary"
 msgid "Vibrate when sending arrow keys; useful for laggy connections"
 msgstr ""
-"Vibrer lors de l'envoi d'une touche \"flèche\"; utile lorsque la connexion "
-"lag"
+"Vibrer lors de l'envoi d'une touche \"flèche\"; utile lorsque la "
+"connexion lag"
 
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
@@ -749,8 +789,7 @@ msgstr "Notifications en arrière-plan"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
+msgid "Send notification when a terminal running in the background sounds a bell."
 msgstr ""
 "Envoyer une notification lorsqu'un terminal en arrière-plan génère une "
 "alerte"
@@ -866,6 +905,8 @@ msgctxt "hostpref_quickdisconnect_title"
 msgid "Close on disconnect"
 msgstr "Fermer à la déconnexion"
 
+#. Summary explaining that the console will close automatically without
+#. prompting when connection ends
 msgctxt "hostpref_quickdisconnect_summary"
 msgid "Close immediately after remote disconnect without prompting."
 msgstr ""
@@ -982,6 +1023,7 @@ msgctxt "format_port"
 msgid "port"
 msgstr "port"
 
+#. Menu item to open the pubkey management screen
 #, fuzzy
 msgctxt "list_menu_pubkeys"
 msgid "Manage pubkeys"
@@ -1003,22 +1045,27 @@ msgctxt "list_menu_disconnect"
 msgid "Disconnect all"
 msgstr "Tout déconnecter"
 
+#. Menu item to open the app settings screen
 msgctxt "list_menu_settings"
 msgid "Settings"
 msgstr "Réglages"
 
+#. Context menu action to disconnect from the selected host
 msgctxt "list_host_disconnect"
 msgid "Disconnect"
 msgstr "Déconnexion"
 
+#. Context menu action to edit the selected host configuration
 msgctxt "list_host_edit"
 msgid "Edit host"
 msgstr "Éditer le serveur"
 
+#. Context menu action to edit port forwards for the selected host
 msgctxt "list_host_portforwards"
 msgid "Edit port forwards"
 msgstr "Éditer les redirections de port"
 
+#. Context menu action to delete the selected host
 msgctxt "list_host_delete"
 msgid "Delete host"
 msgstr "Effacer le serveur"
@@ -1028,10 +1075,12 @@ msgctxt "list_rotation_default"
 msgid "Default"
 msgstr "Par défaut"
 
+#. Preference selection to force landscape orientation
 msgctxt "list_rotation_land"
 msgid "Force landscape"
 msgstr "Forcer le mode paysage"
 
+#. Preference selection to force portrait orientation
 msgctxt "list_rotation_port"
 msgid "Force portrait"
 msgstr "Forcer le mode portrait"
@@ -1075,27 +1124,35 @@ msgctxt "list_camera_text_input"
 msgid "Text Input"
 msgstr "Saisie de texte"
 
+#. Confirmation dialog message asking user to confirm deletion. Parameter is
+#. the item name.
 #, c-format
 msgctxt "delete_message"
 msgid "Are you sure you want to delete '%1$s'?"
 msgstr "Êtes-vous sûr de vouloir supprimer '%1$s' ?"
 
+#. Positive button text confirming deletion
 msgctxt "delete_pos"
 msgid "Yes, delete"
 msgstr "Oui, supprimer"
 
+#. Negative button text canceling deletion
 msgctxt "delete_neg"
 msgid "Cancel"
 msgstr "Annuler"
 
+#. Confirmation dialog message asking user to confirm disconnecting from all
+#. hosts
 msgctxt "disconnect_all_message"
 msgid "Are you sure you want to disconnect from all connected hosts?"
 msgstr "Êtes-vous certain de vouloir vous déconnecter de tous les serveurs ?"
 
+#. Positive button text confirming disconnection from all hosts
 msgctxt "disconnect_all_pos"
 msgid "Yes, disconnect"
 msgstr "Oui déconnecter"
 
+#. Negative button text canceling the disconnect all action
 msgctxt "disconnect_all_neg"
 msgid "Cancel"
 msgstr "Annuler"
@@ -1113,6 +1170,7 @@ msgctxt "terminal_sucess"
 msgid "Verified host '%1$s' key: %2$s"
 msgstr "Clé de vérification de l'hôte '%1$s' : %2$s"
 
+#. Error message shown in terminal when host key verification fails
 msgctxt "terminal_failed"
 msgid "Host key verification failed."
 msgstr "Authentification par clé échouée"
@@ -1143,69 +1201,94 @@ msgctxt "terminal_kex_algorithm"
 msgid "Key exchange algorithm: %s"
 msgstr "Algorithme d'échange de clés : %s"
 
+#. Message shown in terminal when starting authentication process
 msgctxt "terminal_auth"
 msgid "Trying to authenticate"
 msgstr "Tentative d'authentification"
 
+#. Message shown in terminal when attempting password authentication method
 msgctxt "terminal_auth_pass"
 msgid "Attempting 'password' authentication"
 msgstr "Tentative d'authentification par mot de passe"
 
+#. Message shown in terminal when password authentication fails
 msgctxt "terminal_auth_pass_fail"
 msgid "Authentication method 'password' failed"
 msgstr "L'authentification par mot de passe a échoué"
 
+#. Message shown in terminal when trying public key authentication with any
+#. available key
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
 msgstr "Tentative d'authentification avec une clé publique en mémoire"
 
+#. Error message shown when the selected public key is corrupted or invalid
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
 msgstr ""
-"La clé publique sélectionnée est invalide, essayez de sélectionner une clé "
-"dans les préférences de l'hôte"
+"La clé publique sélectionnée est invalide, essayez de sélectionner une "
+"clé dans les préférences de l'hôte"
 
+#. Message shown in terminal when attempting public key authentication with a
+#. specific key
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
 msgstr ""
 "Tentative d'authentification par clé publique avec une clé publique "
 "spécifique"
 
+#. Message shown in terminal when requesting biometric authentication to
+#. unlock a key. Parameter is the key nickname.
 #, c-format
 msgctxt "terminal_auth_biometric"
 msgid "Requesting biometric authentication for key '%1$s'"
 msgstr "Demande d'authentification biométrique pour la clé '%1$s'"
 
+#. Message shown in terminal when public key authentication fails. Parameter
+#. is the key nickname.
 #, c-format
 msgctxt "terminal_auth_pubkey_fail"
 msgid "Authentication method 'publickey' with key '%1$s' failed"
 msgstr ""
-"La méthode d'authentification par clé publique avec la clé '%1$s' a échoué."
+"La méthode d'authentification par clé publique avec la clé '%1$s' a "
+"échoué."
 
+#. Message shown in terminal when attempting keyboard-interactive
+#. authentication method
 msgctxt "terminal_auth_ki"
 msgid "Attempting 'keyboard-interactive' authentication"
 msgstr "Tentative d'authentification par clavier"
 
+#. Message shown in terminal when keyboard-interactive authentication fails
 msgctxt "terminal_auth_ki_fail"
 msgid "Authentication method 'keyboard-interactive' failed"
 msgstr "La méthode d'authentification par clavier a échoué"
 
+#. Error message shown when server doesn't support any of the authentication
+#. methods we can use
 msgctxt "terminal_auth_fail"
 msgid ""
 "[Your host doesn't support 'password' or 'keyboard-interactive' "
 "authentication.]"
 msgstr ""
-"[L'hôte ne supporte pas l'authentification par mot de passe ou par clavier.]"
+"[L'hôte ne supporte pas l'authentification par mot de passe ou par "
+"clavier.]"
 
+#. Message shown in terminal when shell session is not started because user
+#. disabled it in host settings
 msgctxt "terminal_no_session"
 msgid "Session will not be started due to host preference."
 msgstr "La session ne sera pas démarrée à cause des préférences de l'hôte."
 
+#. Message shown in terminal when a port forward is enabled. Parameter is the
+#. port forward description.
 #, c-format
 msgctxt "terminal_enable_portfoward"
 msgid "Enable port forward: %1$s"
 msgstr "Activer la redirection de port : %1$s"
 
+#. Error message shown when trying to open a local shell but it's not
+#. available on the device
 msgctxt "local_shell_unavailable"
 msgid "Failure! Local shell is unavailable on this phone."
 msgstr "Échec ! Le shell local est indisponible pour ce téléphone."
@@ -1398,11 +1481,11 @@ msgstr "Réinitialiser toutes les couleurs"
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action cannot "
-"be undone."
+"This will reset all 256 colors to their default values. This action "
+"cannot be undone."
 msgstr ""
-"Ceci réinitialisera les 256 couleurs à leurs valeurs par défaut Cette action "
-"ne peut pas être annulée"
+"Ceci réinitialisera les 256 couleurs à leurs valeurs par défaut Cette "
+"action ne peut pas être annulée"
 
 #. Displayed in the notification bar that connections are active
 msgctxt "app_is_running"
@@ -1770,12 +1853,13 @@ msgstr "Type de clé"
 msgctxt "pubkey_editor_options_label"
 msgid "Options"
 msgstr ""
-"Options est traduit par Options mais dans le contexte de la phrase il faut "
-"utiliser le mot  Options est remplacé par Paramètres ou préférences mais le "
-"terme exact pour cette application serait paramètres ou préférences mais le "
-"terme qui correspond à options est bien Options mais dans ce cas précis "
-"c'est plutôt les paramètres ou préférences mais si on doit traduire le mot "
-"options il faut utiliser le mot options donc la réponse est \n"
+"Options est traduit par Options mais dans le contexte de la phrase il "
+"faut utiliser le mot  Options est remplacé par Paramètres ou préférences "
+"mais le terme exact pour cette application serait paramètres ou "
+"préférences mais le terme qui correspond à options est bien Options mais "
+"dans ce cas précis c'est plutôt les paramètres ou préférences mais si on "
+"doit traduire le mot options il faut utiliser le mot options donc la "
+"réponse est \n"
 "Paramètres"
 
 #. Warning message shown when encrypted SSH pubkeys are set to load on startup
@@ -1814,8 +1898,8 @@ msgstr "Protégez cette clé avec votre empreinte digitale"
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use this "
-"feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use "
+"this feature."
 msgstr ""
 "Aucune empreinte digitale n est enregistrée configurez les empreintes "
 "digitales dans les paramètres du périphérique pour utiliser cette "
@@ -1825,8 +1909,8 @@ msgstr ""
 msgctxt "pubkey_biometric_key_type_warning"
 msgid "Fingerprint protection is only available for RSA and EC keys"
 msgstr ""
-"La protection par empreinte est uniquement disponible pour les clés RSA et "
-"EC"
+"La protection par empreinte est uniquement disponible pour les clés RSA "
+"et EC"
 
 #. Title for biometric prompt when unlocking a key
 msgctxt "pubkey_biometric_prompt_title"
@@ -1944,11 +2028,12 @@ msgstr "Garder les connexions actives"
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch apps."
+"background. Without permission, connections may close when you switch "
+"apps."
 msgstr ""
 "L affichage d une notification est requis pour maintenir les connexions "
-"actives en arriere plan Sans autorisation les connexions peuvent se fermer "
-"lorsque vous basculez entre les applications"
+"actives en arriere plan Sans autorisation les connexions peuvent se "
+"fermer lorsque vous basculez entre les applications"
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
@@ -1974,8 +2059,8 @@ msgstr "Autorisation requise"
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification "
-"permission in app settings."
+"To keep connections alive in the background, you must enable notification"
+" permission in app settings."
 msgstr ""
 "Pour garder les connexions actives en arrière-plan vous devez activer l "
 "autorisation de notification dans les paramètres de l application"
@@ -1989,11 +2074,10 @@ msgstr "Ouvrir les paramètres"
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid ""
-"Are you trying to access a local host? Grant local network permissions."
+msgid "Are you trying to access a local host? Grant local network permissions."
 msgstr ""
-"Essayez-vous d accéder à un hôte local Accordez les autorisations de réseau "
-"local"
+"Essayez-vous d accéder à un hôte local Accordez les autorisations de "
+"réseau local"
 
 #. Loading message shown during app initialization
 msgctxt "loading_message"
@@ -2050,8 +2134,7 @@ msgstr "Échec de la migration"
 #, c-format
 msgctxt "migration_failed_message"
 msgid "An error occurred during database migration: %s"
-msgstr ""
-"Une erreur s est produite lors de la migration de la base de données %s"
+msgstr "Une erreur s est produite lors de la migration de la base de données %s"
 
 #. Button label to retry failed migration
 msgctxt "migration_retry"
@@ -2062,11 +2145,11 @@ msgstr "Réessayer"
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug log "
-"copied above"
+"If the problem persists, please report this issue at %1$s with the debug "
+"log copied above"
 msgstr ""
-"Si le problème persiste veuillez signaler ce problème à %1$s avec le journal "
-"de débogage copié ci-dessus"
+"Si le problème persiste veuillez signaler ce problème à %1$s avec le "
+"journal de débogage copié ci-dessus"
 
 #. Title for warnings section shown during database migration
 msgctxt "migration_warnings_title"
@@ -2187,13 +2270,14 @@ msgstr "Journaux copiés dans le presse-papiers"
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at https://connectbot."
-"org/bug"
-msgstr ""
-"Pour signaler un bogue copiez ces journaux et ouvrez une nouvelle question à "
+"To report a bug, copy these logs and open a new issue at "
 "https://connectbot.org/bug"
+msgstr ""
+"Pour signaler un bogue copiez ces journaux et ouvrez une nouvelle "
+"question à https://connectbot.org/bug"
 
 #. Message shown when no logs are available
 msgctxt "no_logs_available"
 msgid "No logs available"
 msgstr "Aucuns journaux disponibles"
+

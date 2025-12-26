@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  connectbot\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2025-12-25 20:15-0800\n"
+"POT-Creation-Date: 2025-12-25 22:08-0800\n"
 "PO-Revision-Date: 2016-08-23 05:25+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ne\n"
@@ -107,10 +107,12 @@ msgctxt "paste_shortcut"
 msgid "Ctrl-Shift-V"
 msgstr ""
 
+#. Button text to generate a new SSH public/private key pair
 msgctxt "pubkey_generate"
 msgid "Generate"
 msgstr ""
 
+#. Context menu action to delete a saved public key
 msgctxt "pubkey_delete"
 msgid "Delete key"
 msgstr ""
@@ -121,94 +123,122 @@ msgctxt "pubkey_gather_entropy"
 msgid "Gathering Entropy"
 msgstr ""
 
+#. Progress message showing percentage of random data collected for key
+#. generation
 #, c-format
 msgctxt "pubkey_touch_prompt"
 msgid "Touch this box to gather randomness: %1$d%% done"
 msgstr ""
 
+#. Instructions to user on how to provide randomness by moving their finger
+#. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
 "In order to assure randomness during the key generation, move your finger"
 " randomly over the box below."
 msgstr ""
 
+#. Progress message shown while generating a new SSH key pair
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
 msgstr ""
 
+#. Context menu action to copy the private key to clipboard in the default
+#. format
 msgctxt "pubkey_copy_private"
 msgid "Copy private key"
 msgstr ""
 
+#. Context menu action to copy the private key to clipboard in OpenSSH format
 msgctxt "pubkey_copy_private_openssh"
 msgid "Copy private key (OpenSSH)"
 msgstr ""
 
+#. Context menu action to copy the private key to clipboard in PEM format
 msgctxt "pubkey_copy_private_pem"
 msgid "Copy private key (PEM)"
 msgstr ""
 
+#. Context menu action to copy the encrypted private key to clipboard
 msgctxt "pubkey_copy_private_encrypted"
 msgid "Copy private key (encrypted)"
 msgstr ""
 
+#. Context menu action to copy the public key to clipboard
 msgctxt "pubkey_copy_public"
 msgid "Copy public key"
 msgstr ""
 
+#. Context menu action to export the public key to a file
 msgctxt "pubkey_export_public"
 msgid "Export public key"
 msgstr ""
 
+#. Context menu action to export the private key to a file in the default
+#. format
 msgctxt "pubkey_export_private"
 msgid "Export private key"
 msgstr ""
 
+#. Context menu action to export the private key to a file in OpenSSH format
 msgctxt "pubkey_export_private_openssh"
 msgid "Export private key (OpenSSH)"
 msgstr ""
 
+#. Context menu action to export the private key to a file in PEM format
 msgctxt "pubkey_export_private_pem"
 msgid "Export private key (PEM)"
 msgstr ""
 
+#. Context menu action to export the encrypted private key to a file
 msgctxt "pubkey_export_private_encrypted"
 msgid "Export private key (encrypted)"
 msgstr ""
 
+#. Dialog title for setting a passphrase when exporting a key
 msgctxt "pubkey_export_set_passphrase"
 msgid "Set export passphrase"
 msgstr ""
 
+#. Instructions to enter a passphrase to encrypt the key being exported
 msgctxt "pubkey_export_passphrase_message"
 msgid "Enter a passphrase to encrypt the exported key"
 msgstr ""
 
+#. Label for the field where user confirms the passphrase by entering it again
 msgctxt "pubkey_export_confirm_passphrase"
 msgid "Confirm passphrase"
 msgstr ""
 
+#. Error message shown when the passphrase and confirmation passphrase don't
+#. match
 msgctxt "pubkey_export_passphrase_mismatch"
 msgid "Passphrases do not match"
 msgstr ""
 
+#. Dialog title when importing an encrypted SSH key file
 msgctxt "pubkey_import_encrypted_title"
 msgid "Import encrypted key"
 msgstr ""
 
+#. Prompt asking user to enter the password to decrypt an imported key file.
+#. First parameter is key nickname, second is key type.
 #, c-format
 msgctxt "pubkey_import_encrypted_message"
 msgid "Enter password to decrypt key '%1$s' (%2$s)"
 msgstr ""
 
+#. Button text to confirm importing a key
 msgctxt "pubkey_import_button"
 msgid "Import"
 msgstr ""
 
+#. Context menu action to change the password protecting a private key
 msgctxt "pubkey_change_password"
 msgid "Change password"
 msgstr ""
 
+#. Context menu action to unlock an encrypted key for use in authentication
 msgctxt "pubkey_unlock"
 msgid "Unlock key"
 msgstr ""
@@ -250,6 +280,7 @@ msgctxt "portforward_delete"
 msgid "Delete port forward"
 msgstr ""
 
+#. Label for the input field where user enters a nickname for a host or key
 msgctxt "prompt_nickname"
 msgid "Nickname:"
 msgstr ""
@@ -383,10 +414,13 @@ msgctxt "fingerprint_copy_description"
 msgid "Copy fingerprint to clipboard"
 msgstr ""
 
+#. Error message shown when entered password and confirmation password don't
+#. match
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
 msgstr ""
 
+#. Error message shown when user enters an incorrect password
 msgctxt "alert_wrong_password_msg"
 msgid "Wrong password!"
 msgstr ""
@@ -396,6 +430,7 @@ msgctxt "button_resize"
 msgid "Resize"
 msgstr ""
 
+#. Alert dialog title shown when connection to the remote host is lost
 msgctxt "alert_disconnect_msg"
 msgid "Connection Lost"
 msgstr ""
@@ -841,6 +876,8 @@ msgctxt "hostpref_quickdisconnect_title"
 msgid "Close on disconnect"
 msgstr ""
 
+#. Summary explaining that the console will close automatically without
+#. prompting when connection ends
 msgctxt "hostpref_quickdisconnect_summary"
 msgid "Close immediately after remote disconnect without prompting."
 msgstr ""
@@ -955,6 +992,7 @@ msgctxt "format_port"
 msgid "port"
 msgstr ""
 
+#. Menu item to open the pubkey management screen
 #, fuzzy
 msgctxt "list_menu_pubkeys"
 msgid "Manage pubkeys"
@@ -976,22 +1014,27 @@ msgctxt "list_menu_disconnect"
 msgid "Disconnect all"
 msgstr ""
 
+#. Menu item to open the app settings screen
 msgctxt "list_menu_settings"
 msgid "Settings"
 msgstr ""
 
+#. Context menu action to disconnect from the selected host
 msgctxt "list_host_disconnect"
 msgid "Disconnect"
 msgstr ""
 
+#. Context menu action to edit the selected host configuration
 msgctxt "list_host_edit"
 msgid "Edit host"
 msgstr ""
 
+#. Context menu action to edit port forwards for the selected host
 msgctxt "list_host_portforwards"
 msgid "Edit port forwards"
 msgstr ""
 
+#. Context menu action to delete the selected host
 msgctxt "list_host_delete"
 msgid "Delete host"
 msgstr ""
@@ -1001,10 +1044,12 @@ msgctxt "list_rotation_default"
 msgid "Default"
 msgstr ""
 
+#. Preference selection to force landscape orientation
 msgctxt "list_rotation_land"
 msgid "Force landscape"
 msgstr ""
 
+#. Preference selection to force portrait orientation
 msgctxt "list_rotation_port"
 msgid "Force portrait"
 msgstr ""
@@ -1048,27 +1093,35 @@ msgctxt "list_camera_text_input"
 msgid "Text Input"
 msgstr ""
 
+#. Confirmation dialog message asking user to confirm deletion. Parameter is
+#. the item name.
 #, c-format
 msgctxt "delete_message"
 msgid "Are you sure you want to delete '%1$s'?"
 msgstr ""
 
+#. Positive button text confirming deletion
 msgctxt "delete_pos"
 msgid "Yes, delete"
 msgstr ""
 
+#. Negative button text canceling deletion
 msgctxt "delete_neg"
 msgid "Cancel"
 msgstr ""
 
+#. Confirmation dialog message asking user to confirm disconnecting from all
+#. hosts
 msgctxt "disconnect_all_message"
 msgid "Are you sure you want to disconnect from all connected hosts?"
 msgstr ""
 
+#. Positive button text confirming disconnection from all hosts
 msgctxt "disconnect_all_pos"
 msgid "Yes, disconnect"
 msgstr ""
 
+#. Negative button text canceling the disconnect all action
 msgctxt "disconnect_all_neg"
 msgid "Cancel"
 msgstr ""
@@ -1086,6 +1139,7 @@ msgctxt "terminal_sucess"
 msgid "Verified host '%1$s' key: %2$s"
 msgstr ""
 
+#. Error message shown in terminal when host key verification fails
 msgctxt "terminal_failed"
 msgid "Host key verification failed."
 msgstr ""
@@ -1116,63 +1170,86 @@ msgctxt "terminal_kex_algorithm"
 msgid "Key exchange algorithm: %s"
 msgstr ""
 
+#. Message shown in terminal when starting authentication process
 msgctxt "terminal_auth"
 msgid "Trying to authenticate"
 msgstr ""
 
+#. Message shown in terminal when attempting password authentication method
 msgctxt "terminal_auth_pass"
 msgid "Attempting 'password' authentication"
 msgstr ""
 
+#. Message shown in terminal when password authentication fails
 msgctxt "terminal_auth_pass_fail"
 msgid "Authentication method 'password' failed"
 msgstr ""
 
+#. Message shown in terminal when trying public key authentication with any
+#. available key
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
 msgstr ""
 
+#. Error message shown when the selected public key is corrupted or invalid
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
 msgstr ""
 
+#. Message shown in terminal when attempting public key authentication with a
+#. specific key
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
 msgstr ""
 
+#. Message shown in terminal when requesting biometric authentication to
+#. unlock a key. Parameter is the key nickname.
 #, c-format
 msgctxt "terminal_auth_biometric"
 msgid "Requesting biometric authentication for key '%1$s'"
 msgstr ""
 
+#. Message shown in terminal when public key authentication fails. Parameter
+#. is the key nickname.
 #, c-format
 msgctxt "terminal_auth_pubkey_fail"
 msgid "Authentication method 'publickey' with key '%1$s' failed"
 msgstr ""
 
+#. Message shown in terminal when attempting keyboard-interactive
+#. authentication method
 msgctxt "terminal_auth_ki"
 msgid "Attempting 'keyboard-interactive' authentication"
 msgstr ""
 
+#. Message shown in terminal when keyboard-interactive authentication fails
 msgctxt "terminal_auth_ki_fail"
 msgid "Authentication method 'keyboard-interactive' failed"
 msgstr ""
 
+#. Error message shown when server doesn't support any of the authentication
+#. methods we can use
 msgctxt "terminal_auth_fail"
 msgid ""
 "[Your host doesn't support 'password' or 'keyboard-interactive' "
 "authentication.]"
 msgstr ""
 
+#. Message shown in terminal when shell session is not started because user
+#. disabled it in host settings
 msgctxt "terminal_no_session"
 msgid "Session will not be started due to host preference."
 msgstr ""
 
+#. Message shown in terminal when a port forward is enabled. Parameter is the
+#. port forward description.
 #, c-format
 msgctxt "terminal_enable_portfoward"
 msgid "Enable port forward: %1$s"
 msgstr ""
 
+#. Error message shown when trying to open a local shell but it's not
+#. available on the device
 msgctxt "local_shell_unavailable"
 msgid "Failure! Local shell is unavailable on this phone."
 msgstr ""
