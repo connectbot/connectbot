@@ -72,6 +72,16 @@ android {
         multiDexEnabled = true
     }
 
+    androidResources {
+        generateLocaleConfig = true
+    }
+
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
+
     buildFeatures {
         buildConfig = true
         compose = true
@@ -242,6 +252,7 @@ dependencies {
 
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.appcompat.resources)
     implementation(libs.androidx.preference)
     implementation(libs.material)
     implementation(libs.timber)
