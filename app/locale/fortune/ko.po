@@ -2,22 +2,21 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-25 20:15-0800\n"
+"POT-Creation-Date: 2025-12-25 22:08-0800\n"
 "PO-Revision-Date: 2025-12-25 21:15-0800\n"
 "Last-Translator: Steven CVAL <stevencval@gmail.com>\n"
 "Language: ko\n"
 "Language-Team: ko <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=(0);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
-"X-Generator: Autopo v1.0.5\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -108,10 +107,12 @@ msgctxt "paste_shortcut"
 msgid "Ctrl-Shift-V"
 msgstr "Ctrl-Shift-V"
 
+#. Button text to generate a new SSH public/private key pair
 msgctxt "pubkey_generate"
 msgid "Generate"
 msgstr "생성"
 
+#. Context menu action to delete a saved public key
 msgctxt "pubkey_delete"
 msgid "Delete key"
 msgstr "키 삭제"
@@ -122,94 +123,122 @@ msgctxt "pubkey_gather_entropy"
 msgid "Gathering Entropy"
 msgstr "엔트로피 수집 중"
 
+#. Progress message showing percentage of random data collected for key
+#. generation
 #, c-format
 msgctxt "pubkey_touch_prompt"
 msgid "Touch this box to gather randomness: %1$d%% done"
 msgstr "이 사각형의 랜덤으로 터치하세요: %1$d%% 완료"
 
+#. Instructions to user on how to provide randomness by moving their finger
+#. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr "키 생성시 랜덤을 보장하기 위해 아래의 사각형 안에서 손가락을 랜덤으로 이동하십시오."
 
+#. Progress message shown while generating a new SSH key pair
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
 msgstr "키 쌍 생성 중…"
 
+#. Context menu action to copy the private key to clipboard in the default
+#. format
 msgctxt "pubkey_copy_private"
 msgid "Copy private key"
 msgstr "개인 키 복사"
 
+#. Context menu action to copy the private key to clipboard in OpenSSH format
 msgctxt "pubkey_copy_private_openssh"
 msgid "Copy private key (OpenSSH)"
 msgstr "개인 키 복사 OpenSSH"
 
+#. Context menu action to copy the private key to clipboard in PEM format
 msgctxt "pubkey_copy_private_pem"
 msgid "Copy private key (PEM)"
 msgstr "개인 키 복사 PEM"
 
+#. Context menu action to copy the encrypted private key to clipboard
 msgctxt "pubkey_copy_private_encrypted"
 msgid "Copy private key (encrypted)"
 msgstr "암호화된 개인 키 복사"
 
+#. Context menu action to copy the public key to clipboard
 msgctxt "pubkey_copy_public"
 msgid "Copy public key"
 msgstr "공개 키 복사"
 
+#. Context menu action to export the public key to a file
 msgctxt "pubkey_export_public"
 msgid "Export public key"
 msgstr "공개 키 내보내기"
 
+#. Context menu action to export the private key to a file in the default
+#. format
 msgctxt "pubkey_export_private"
 msgid "Export private key"
 msgstr "개인 키 내보내기"
 
+#. Context menu action to export the private key to a file in OpenSSH format
 msgctxt "pubkey_export_private_openssh"
 msgid "Export private key (OpenSSH)"
 msgstr "개인 키 내보내기 OpenSSH"
 
+#. Context menu action to export the private key to a file in PEM format
 msgctxt "pubkey_export_private_pem"
 msgid "Export private key (PEM)"
 msgstr "개인 키 내보내기 PEM"
 
+#. Context menu action to export the encrypted private key to a file
 msgctxt "pubkey_export_private_encrypted"
 msgid "Export private key (encrypted)"
 msgstr "암호화된 개인 키 내보내기"
 
+#. Dialog title for setting a passphrase when exporting a key
 msgctxt "pubkey_export_set_passphrase"
 msgid "Set export passphrase"
 msgstr "암호구문 설정하기"
 
+#. Instructions to enter a passphrase to encrypt the key being exported
 msgctxt "pubkey_export_passphrase_message"
 msgid "Enter a passphrase to encrypt the exported key"
 msgstr "수출된 키를 암호화하기 위해 패스프레이스를 입력하십시오"
 
+#. Label for the field where user confirms the passphrase by entering it again
 msgctxt "pubkey_export_confirm_passphrase"
 msgid "Confirm passphrase"
 msgstr "확인 비밀번호"
 
+#. Error message shown when the passphrase and confirmation passphrase don't
+#. match
 msgctxt "pubkey_export_passphrase_mismatch"
 msgid "Passphrases do not match"
 msgstr "비밀번호구절이 일치하지 않습니다"
 
+#. Dialog title when importing an encrypted SSH key file
 msgctxt "pubkey_import_encrypted_title"
 msgid "Import encrypted key"
 msgstr "암호화된 키 가져오기"
 
+#. Prompt asking user to enter the password to decrypt an imported key file.
+#. First parameter is key nickname, second is key type.
 #, c-format
 msgctxt "pubkey_import_encrypted_message"
 msgid "Enter password to decrypt key '%1$s' (%2$s)"
 msgstr "암호를 입력하여 키 '%1$s'(%2$s) 를 해독하세요"
 
+#. Button text to confirm importing a key
 msgctxt "pubkey_import_button"
 msgid "Import"
 msgstr "수입"
 
+#. Context menu action to change the password protecting a private key
 msgctxt "pubkey_change_password"
 msgid "Change password"
 msgstr "암호 바꾸기"
 
+#. Context menu action to unlock an encrypted key for use in authentication
 msgctxt "pubkey_unlock"
 msgid "Unlock key"
 msgstr "키 잠금 해제"
@@ -251,6 +280,7 @@ msgctxt "portforward_delete"
 msgid "Delete port forward"
 msgstr "포트 포워딩을 삭제"
 
+#. Label for the input field where user enters a nickname for a host or key
 msgctxt "prompt_nickname"
 msgid "Nickname:"
 msgstr "대화명:"
@@ -309,7 +339,8 @@ msgstr "키 '%1$s'에 대한 비밀번호"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid "Allow remote host to\n"
+msgid ""
+"Allow remote host to\n"
 "use key '%1$s'?"
 msgstr "원격 호스트가 키 '%1$s'를 사용하도록 허용합니까?"
 
@@ -326,7 +357,8 @@ msgstr "경고: 원격 호스트의 식별이 바뀌었습니다!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "누군가가 나쁜 짓을 하고 있는 것일 수 있습니다!\n"
@@ -335,9 +367,11 @@ msgstr ""
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid "Host has disconnected.\n"
+msgid ""
+"Host has disconnected.\n"
 "Close session?"
-msgstr "호스트 연결이 끊겼습니다.\n"
+msgstr ""
+"호스트 연결이 끊겼습니다.\n"
 "세션을 닫을까요?"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -345,7 +379,8 @@ msgstr "호스트 연결이 끊겼습니다.\n"
 #, fuzzy
 msgctxt "prompt_continue_connecting"
 msgid "Are you sure you want to continue connecting?"
-msgstr "정말로 연결을 진행하기\n"
+msgstr ""
+"정말로 연결을 진행하기\n"
 "바랍니까?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
@@ -386,10 +421,13 @@ msgctxt "fingerprint_copy_description"
 msgid "Copy fingerprint to clipboard"
 msgstr "클립보드에 지문 복사"
 
+#. Error message shown when entered password and confirmation password don't
+#. match
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
 msgstr "암호가 맞지 않습니다!"
 
+#. Error message shown when user enters an incorrect password
 msgctxt "alert_wrong_password_msg"
 msgid "Wrong password!"
 msgstr "잘못된 암호입니다!"
@@ -399,6 +437,7 @@ msgctxt "button_resize"
 msgid "Resize"
 msgstr "크기 조정"
 
+#. Alert dialog title shown when connection to the remote host is lost
 msgctxt "alert_disconnect_msg"
 msgid "Connection Lost"
 msgstr "연결이 끊어짐"
@@ -730,8 +769,7 @@ msgstr "백그라운드 알림"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
+msgid "Send notification when a terminal running in the background sounds a bell."
 msgstr "백그라운드에서 실행중인 터미널 벨을 울리 때 알립니다."
 
 #. Preference selection to indicate use of right side of keyboard for special
@@ -845,6 +883,8 @@ msgctxt "hostpref_quickdisconnect_title"
 msgid "Close on disconnect"
 msgstr "닫을 때 연결 해제"
 
+#. Summary explaining that the console will close automatically without
+#. prompting when connection ends
 msgctxt "hostpref_quickdisconnect_summary"
 msgid "Close immediately after remote disconnect without prompting."
 msgstr "원격 연결 해제 후 메시지 없이 즉시 닫습니다."
@@ -959,6 +999,7 @@ msgctxt "format_port"
 msgid "port"
 msgstr "포트"
 
+#. Menu item to open the pubkey management screen
 #, fuzzy
 msgctxt "list_menu_pubkeys"
 msgid "Manage pubkeys"
@@ -980,22 +1021,27 @@ msgctxt "list_menu_disconnect"
 msgid "Disconnect all"
 msgstr "연결 모두 끊기"
 
+#. Menu item to open the app settings screen
 msgctxt "list_menu_settings"
 msgid "Settings"
 msgstr "설정"
 
+#. Context menu action to disconnect from the selected host
 msgctxt "list_host_disconnect"
 msgid "Disconnect"
 msgstr "연결끊기"
 
+#. Context menu action to edit the selected host configuration
 msgctxt "list_host_edit"
 msgid "Edit host"
 msgstr "호스트 편집"
 
+#. Context menu action to edit port forwards for the selected host
 msgctxt "list_host_portforwards"
 msgid "Edit port forwards"
 msgstr "포트 포워딩 편집"
 
+#. Context menu action to delete the selected host
 msgctxt "list_host_delete"
 msgid "Delete host"
 msgstr "호스트 삭제"
@@ -1005,10 +1051,12 @@ msgctxt "list_rotation_default"
 msgid "Default"
 msgstr "기본"
 
+#. Preference selection to force landscape orientation
 msgctxt "list_rotation_land"
 msgid "Force landscape"
 msgstr "가로 고정"
 
+#. Preference selection to force portrait orientation
 msgctxt "list_rotation_port"
 msgid "Force portrait"
 msgstr "세로 고정"
@@ -1052,27 +1100,35 @@ msgctxt "list_camera_text_input"
 msgid "Text Input"
 msgstr "텍스트 입력"
 
+#. Confirmation dialog message asking user to confirm deletion. Parameter is
+#. the item name.
 #, c-format
 msgctxt "delete_message"
 msgid "Are you sure you want to delete '%1$s'?"
 msgstr "삭제하려는 항목이 맞습니까 '%1$s'?"
 
+#. Positive button text confirming deletion
 msgctxt "delete_pos"
 msgid "Yes, delete"
 msgstr "예, 삭제"
 
+#. Negative button text canceling deletion
 msgctxt "delete_neg"
 msgid "Cancel"
 msgstr "취소"
 
+#. Confirmation dialog message asking user to confirm disconnecting from all
+#. hosts
 msgctxt "disconnect_all_message"
 msgid "Are you sure you want to disconnect from all connected hosts?"
 msgstr "연결된 모든 호스트 에서 연결을 해제 하시겠습니까?"
 
+#. Positive button text confirming disconnection from all hosts
 msgctxt "disconnect_all_pos"
 msgid "Yes, disconnect"
 msgstr "네, 연결 종료"
 
+#. Negative button text canceling the disconnect all action
 msgctxt "disconnect_all_neg"
 msgid "Cancel"
 msgstr "취소"
@@ -1090,6 +1146,7 @@ msgctxt "terminal_sucess"
 msgid "Verified host '%1$s' key: %2$s"
 msgstr "확인된 호스트 '%1$s' 키: %2$s"
 
+#. Error message shown in terminal when host key verification fails
 msgctxt "terminal_failed"
 msgid "Host key verification failed."
 msgstr "호스트 키를 확인할 수 없습니다."
@@ -1120,63 +1177,86 @@ msgctxt "terminal_kex_algorithm"
 msgid "Key exchange algorithm: %s"
 msgstr "키 교환 알고리즘 %s"
 
+#. Message shown in terminal when starting authentication process
 msgctxt "terminal_auth"
 msgid "Trying to authenticate"
 msgstr "인증 시도 중"
 
+#. Message shown in terminal when attempting password authentication method
 msgctxt "terminal_auth_pass"
 msgid "Attempting 'password' authentication"
 msgstr "암호 인증 시도 중"
 
+#. Message shown in terminal when password authentication fails
 msgctxt "terminal_auth_pass_fail"
 msgid "Authentication method 'password' failed"
 msgstr "인증 방법 비밀번호 실패"
 
+#. Message shown in terminal when trying public key authentication with any
+#. available key
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
 msgstr "Attempting publickey 인증을 메모리 내의 공개 키와 함께 시도합니다"
 
+#. Error message shown when the selected public key is corrupted or invalid
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
 msgstr "선택된 공개 키가 잘못되었습니다. 호스트 편집에서 키를 다시 선택해 보세요"
 
+#. Message shown in terminal when attempting public key authentication with a
+#. specific key
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
 msgstr "공개 키 인증을 특정 공개 키로 시도합니다"
 
+#. Message shown in terminal when requesting biometric authentication to
+#. unlock a key. Parameter is the key nickname.
 #, c-format
 msgctxt "terminal_auth_biometric"
 msgid "Requesting biometric authentication for key '%1$s'"
 msgstr "키 '%1$s'에 대한 생체 인증 요청"
 
+#. Message shown in terminal when public key authentication fails. Parameter
+#. is the key nickname.
 #, c-format
 msgctxt "terminal_auth_pubkey_fail"
 msgid "Authentication method 'publickey' with key '%1$s' failed"
 msgstr "인증 방법 publickey 키 %1$s 로 실패했습니다"
 
+#. Message shown in terminal when attempting keyboard-interactive
+#. authentication method
 msgctxt "terminal_auth_ki"
 msgid "Attempting 'keyboard-interactive' authentication"
 msgstr "키보드 상호 인증 시도 중"
 
+#. Message shown in terminal when keyboard-interactive authentication fails
 msgctxt "terminal_auth_ki_fail"
 msgid "Authentication method 'keyboard-interactive' failed"
 msgstr "인증 방법 keyboard-interactive 실패"
 
+#. Error message shown when server doesn't support any of the authentication
+#. methods we can use
 msgctxt "terminal_auth_fail"
 msgid ""
 "[Your host doesn't support 'password' or 'keyboard-interactive' "
 "authentication.]"
 msgstr "您的 호스트는 패스워드 또는 키보드 상호 작용 인증을 지원하지 않습니다"
 
+#. Message shown in terminal when shell session is not started because user
+#. disabled it in host settings
 msgctxt "terminal_no_session"
 msgid "Session will not be started due to host preference."
 msgstr "호스트 설정 동안에는 세션이 시작되지 않을 것 입니다."
 
+#. Message shown in terminal when a port forward is enabled. Parameter is the
+#. port forward description.
 #, c-format
 msgctxt "terminal_enable_portfoward"
 msgid "Enable port forward: %1$s"
 msgstr "포트 포워딩 사용: %1$s"
 
+#. Error message shown when trying to open a local shell but it's not
+#. available on the device
 msgctxt "local_shell_unavailable"
 msgid "Failure! Local shell is unavailable on this phone."
 msgstr "실패! 이 폰은 로컬 쉘을 사용할 수 없습니다."
@@ -1367,8 +1447,8 @@ msgstr "모든 색상을 초기화합니까?"
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action cannot "
-"be undone."
+"This will reset all 256 colors to their default values. This action "
+"cannot be undone."
 msgstr "이 작업은 모든 256色的 색상을 기본값으로 재설정합니다. 이 동작은 실행 취소할 수 없습니다."
 
 #. Displayed in the notification bar that connections are active
@@ -1774,8 +1854,8 @@ msgstr "지문으로 이 키를 보호하세요"
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use this "
-"feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use "
+"this feature."
 msgstr "지문이 등록되지 않았습니다. 이 기능을 사용하려면 기기 설정에서 지문을 등록하세요."
 
 #. Warning shown when key type doesn\'t support biometric protection
@@ -1899,7 +1979,8 @@ msgstr "연결 유지하기"
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch apps."
+"background. Without permission, connections may close when you switch "
+"apps."
 msgstr "백그라운드에서 연결을 유지하기 위해 알림 표시가 필요합니다. 권한 없이 앱을 전환할 때 연결이 종료될 수 있습니다."
 
 #. Button text to grant notification permission in the permission explanation
@@ -1926,8 +2007,8 @@ msgstr "권한이 필요합니다"
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification "
-"permission in app settings."
+"To keep connections alive in the background, you must enable notification"
+" permission in app settings."
 msgstr "백그라운드에서 연결을 유지하려면 앱 설정에서 알림 권한을 활성화해야 합니다"
 
 #. Button text to open ConnectBot app settings page where user can grant
@@ -1939,8 +2020,7 @@ msgstr "설정 열기"
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid ""
-"Are you trying to access a local host? Grant local network permissions."
+msgid "Are you trying to access a local host? Grant local network permissions."
 msgstr "로컬 호스트에 액세스하려고 하십니까? 로컬 네트워크 권한을 부여하십시오."
 
 #. Loading message shown during app initialization
@@ -2009,8 +2089,8 @@ msgstr "재시도"
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug log "
-"copied above"
+"If the problem persists, please report this issue at %1$s with the debug "
+"log copied above"
 msgstr "문제가 지속되면 위에 복사한 디버그 로그와 함께 %1$s에서 이 문제를 보고해 주십시오"
 
 #. Title for warnings section shown during database migration
@@ -2132,11 +2212,12 @@ msgstr "클립보드로 로그 복사됨"
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at https://connectbot."
-"org/bug"
+"To report a bug, copy these logs and open a new issue at "
+"https://connectbot.org/bug"
 msgstr "버그를報告하려면 이러한 로그를 복사하고 https://connectbot.org/bug에서 새로운 문제를 열어주세요"
 
 #. Message shown when no logs are available
 msgctxt "no_logs_available"
 msgid "No logs available"
 msgstr "로그가 사용할 수 없음"
+
