@@ -30,6 +30,7 @@ import timber.log.Timber
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -46,7 +47,6 @@ import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.net.toUri
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -64,9 +64,10 @@ import org.connectbot.util.NotificationPermissionHelper
 import org.connectbot.util.PreferenceConstants
 
 // TODO: Move back to ComponentActivity when https://issuetracker.google.com/issues/178855209 is fixed.
-//       FragmentActivity is required for BiometricPrompt to find the FragmentManager from Compose context.
+//       FragmentActivity subclass is required for BiometricPrompt to find the FragmentManager
+//       from Compose context.
 @AndroidEntryPoint
-class MainActivity : FragmentActivity() {
+class MainActivity : AppCompatActivity() {
     companion object {
         private const val STATE_SELECTED_URI = "selectedUri"
         const val DISCONNECT_ACTION = "org.connectbot.action.DISCONNECT"
