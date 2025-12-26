@@ -2,22 +2,21 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-25 20:15-0800\n"
+"POT-Creation-Date: 2025-12-25 22:08-0800\n"
 "PO-Revision-Date: 2025-12-25 21:25-0800\n"
 "Last-Translator: Kenny Root <Unknown>\n"
 "Language: zh_Hant_TW\n"
 "Language-Team: zh_Hant_TW <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=(0);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
-"X-Generator: Autopo v1.0.5\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -108,10 +107,12 @@ msgctxt "paste_shortcut"
 msgid "Ctrl-Shift-V"
 msgstr "Ctrl-Shift-V"
 
+#. Button text to generate a new SSH public/private key pair
 msgctxt "pubkey_generate"
 msgid "Generate"
 msgstr "產生"
 
+#. Context menu action to delete a saved public key
 msgctxt "pubkey_delete"
 msgid "Delete key"
 msgstr "刪除金鑰"
@@ -122,94 +123,122 @@ msgctxt "pubkey_gather_entropy"
 msgid "Gathering Entropy"
 msgstr "正在收集用戶熵"
 
+#. Progress message showing percentage of random data collected for key
+#. generation
 #, c-format
 msgctxt "pubkey_touch_prompt"
 msgid "Touch this box to gather randomness: %1$d%% done"
 msgstr "觸摸此方框來收集隨機數：%1$d％完成"
 
+#. Instructions to user on how to provide randomness by moving their finger
+#. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr "由於金鑰產生的時候需要隨機資訊，請在下面的方框中隨意移動您的手指。"
 
+#. Progress message shown while generating a new SSH key pair
 msgctxt "pubkey_generating"
 msgid "Generating key pair…"
 msgstr "正在產生金鑰對…"
 
+#. Context menu action to copy the private key to clipboard in the default
+#. format
 msgctxt "pubkey_copy_private"
 msgid "Copy private key"
 msgstr "複製私鑰"
 
+#. Context menu action to copy the private key to clipboard in OpenSSH format
 msgctxt "pubkey_copy_private_openssh"
 msgid "Copy private key (OpenSSH)"
 msgstr "复制私钥（OpenSSH）"
 
+#. Context menu action to copy the private key to clipboard in PEM format
 msgctxt "pubkey_copy_private_pem"
 msgid "Copy private key (PEM)"
 msgstr "复制私钥（PEM）"
 
+#. Context menu action to copy the encrypted private key to clipboard
 msgctxt "pubkey_copy_private_encrypted"
 msgid "Copy private key (encrypted)"
 msgstr "复制私钥（加密）"
 
+#. Context menu action to copy the public key to clipboard
 msgctxt "pubkey_copy_public"
 msgid "Copy public key"
 msgstr "複製公鑰"
 
+#. Context menu action to export the public key to a file
 msgctxt "pubkey_export_public"
 msgid "Export public key"
 msgstr "导出公钥"
 
+#. Context menu action to export the private key to a file in the default
+#. format
 msgctxt "pubkey_export_private"
 msgid "Export private key"
 msgstr "导出私钥"
 
+#. Context menu action to export the private key to a file in OpenSSH format
 msgctxt "pubkey_export_private_openssh"
 msgid "Export private key (OpenSSH)"
 msgstr "导出私钥（OpenSSH）"
 
+#. Context menu action to export the private key to a file in PEM format
 msgctxt "pubkey_export_private_pem"
 msgid "Export private key (PEM)"
 msgstr "导出私钥（PEM）"
 
+#. Context menu action to export the encrypted private key to a file
 msgctxt "pubkey_export_private_encrypted"
 msgid "Export private key (encrypted)"
 msgstr "导出私钥（加密）"
 
+#. Dialog title for setting a passphrase when exporting a key
 msgctxt "pubkey_export_set_passphrase"
 msgid "Set export passphrase"
 msgstr "设置导出密码短语"
 
+#. Instructions to enter a passphrase to encrypt the key being exported
 msgctxt "pubkey_export_passphrase_message"
 msgid "Enter a passphrase to encrypt the exported key"
 msgstr "輸入密碼短語以加密已匯出的金鑰"
 
+#. Label for the field where user confirms the passphrase by entering it again
 msgctxt "pubkey_export_confirm_passphrase"
 msgid "Confirm passphrase"
 msgstr "确认密语"
 
+#. Error message shown when the passphrase and confirmation passphrase don't
+#. match
 msgctxt "pubkey_export_passphrase_mismatch"
 msgid "Passphrases do not match"
 msgstr "密碼短語不匹配"
 
+#. Dialog title when importing an encrypted SSH key file
 msgctxt "pubkey_import_encrypted_title"
 msgid "Import encrypted key"
 msgstr "导入加密密钥"
 
+#. Prompt asking user to enter the password to decrypt an imported key file.
+#. First parameter is key nickname, second is key type.
 #, c-format
 msgctxt "pubkey_import_encrypted_message"
 msgid "Enter password to decrypt key '%1$s' (%2$s)"
 msgstr "输入密码以解密密钥'%1$s'（%2$s）"
 
+#. Button text to confirm importing a key
 msgctxt "pubkey_import_button"
 msgid "Import"
 msgstr "导入"
 
+#. Context menu action to change the password protecting a private key
 msgctxt "pubkey_change_password"
 msgid "Change password"
 msgstr "變更密碼"
 
+#. Context menu action to unlock an encrypted key for use in authentication
 msgctxt "pubkey_unlock"
 msgid "Unlock key"
 msgstr "解鎖金鑰"
@@ -251,6 +280,7 @@ msgctxt "portforward_delete"
 msgid "Delete port forward"
 msgstr "刪除連接埠轉址"
 
+#. Label for the input field where user enters a nickname for a host or key
 msgctxt "prompt_nickname"
 msgid "Nickname:"
 msgstr "暱稱："
@@ -309,9 +339,11 @@ msgstr "公鑰\"%1$s\"的密碼"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid "Allow remote host to\n"
+msgid ""
+"Allow remote host to\n"
 "use key '%1$s'?"
-msgstr "允許遠端主機\n"
+msgstr ""
+"允許遠端主機\n"
 "使用金鑰 '%1$s'?"
 
 #. The header of the warning a user gets when the host key has changed. Note
@@ -327,17 +359,21 @@ msgstr "警告：遠端主機的識別已變更！"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
-msgstr "可能某人正在做非善意的事情！\n"
+msgstr ""
+"可能某人正在做非善意的事情！\n"
 "可能有人正在側錄您的連線(中間攻擊法)！\n"
 "但也許僅僅是主機金鑰已變更。"
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid "Host has disconnected.\n"
+msgid ""
+"Host has disconnected.\n"
 "Close session?"
-msgstr "已經中斷連線。\n"
+msgstr ""
+"已經中斷連線。\n"
 "是否關閉本次階段？"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -385,10 +421,13 @@ msgctxt "fingerprint_copy_description"
 msgid "Copy fingerprint to clipboard"
 msgstr "复制指纹到剪贴板"
 
+#. Error message shown when entered password and confirmation password don't
+#. match
 msgctxt "alert_passwords_do_not_match_msg"
 msgid "Passwords do not match!"
 msgstr "密碼不符！"
 
+#. Error message shown when user enters an incorrect password
 msgctxt "alert_wrong_password_msg"
 msgid "Wrong password!"
 msgstr "錯誤的密碼！"
@@ -398,6 +437,7 @@ msgctxt "button_resize"
 msgid "Resize"
 msgstr "調整大小"
 
+#. Alert dialog title shown when connection to the remote host is lost
 msgctxt "alert_disconnect_msg"
 msgid "Connection Lost"
 msgstr "連線中斷"
@@ -729,8 +769,7 @@ msgstr "背景通知"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
+msgid "Send notification when a terminal running in the background sounds a bell."
 msgstr "當背景終端響鈴時發出通知。"
 
 #. Preference selection to indicate use of right side of keyboard for special
@@ -844,6 +883,8 @@ msgctxt "hostpref_quickdisconnect_title"
 msgid "Close on disconnect"
 msgstr "連接斷開時關閉"
 
+#. Summary explaining that the console will close automatically without
+#. prompting when connection ends
 msgctxt "hostpref_quickdisconnect_summary"
 msgid "Close immediately after remote disconnect without prompting."
 msgstr "遠程連接斷開後，立即關閉不提示。"
@@ -958,6 +999,7 @@ msgctxt "format_port"
 msgid "port"
 msgstr "連接埠"
 
+#. Menu item to open the pubkey management screen
 #, fuzzy
 msgctxt "list_menu_pubkeys"
 msgid "Manage pubkeys"
@@ -979,22 +1021,27 @@ msgctxt "list_menu_disconnect"
 msgid "Disconnect all"
 msgstr "斷開所有連線"
 
+#. Menu item to open the app settings screen
 msgctxt "list_menu_settings"
 msgid "Settings"
 msgstr "設定"
 
+#. Context menu action to disconnect from the selected host
 msgctxt "list_host_disconnect"
 msgid "Disconnect"
 msgstr "中斷連線"
 
+#. Context menu action to edit the selected host configuration
 msgctxt "list_host_edit"
 msgid "Edit host"
 msgstr "編輯主機"
 
+#. Context menu action to edit port forwards for the selected host
 msgctxt "list_host_portforwards"
 msgid "Edit port forwards"
 msgstr "編輯連接埠轉址"
 
+#. Context menu action to delete the selected host
 msgctxt "list_host_delete"
 msgid "Delete host"
 msgstr "刪除主機"
@@ -1004,10 +1051,12 @@ msgctxt "list_rotation_default"
 msgid "Default"
 msgstr "預設值"
 
+#. Preference selection to force landscape orientation
 msgctxt "list_rotation_land"
 msgid "Force landscape"
 msgstr "強制橫屏顯示"
 
+#. Preference selection to force portrait orientation
 msgctxt "list_rotation_port"
 msgid "Force portrait"
 msgstr "強制竪屏顯示"
@@ -1051,27 +1100,35 @@ msgctxt "list_camera_text_input"
 msgid "Text Input"
 msgstr "文本输入"
 
+#. Confirmation dialog message asking user to confirm deletion. Parameter is
+#. the item name.
 #, c-format
 msgctxt "delete_message"
 msgid "Are you sure you want to delete '%1$s'?"
 msgstr "您確定要刪除 '%1$s'"
 
+#. Positive button text confirming deletion
 msgctxt "delete_pos"
 msgid "Yes, delete"
 msgstr "是，刪除"
 
+#. Negative button text canceling deletion
 msgctxt "delete_neg"
 msgid "Cancel"
 msgstr "取消"
 
+#. Confirmation dialog message asking user to confirm disconnecting from all
+#. hosts
 msgctxt "disconnect_all_message"
 msgid "Are you sure you want to disconnect from all connected hosts?"
 msgstr "您確定要斷開所有主機連線？"
 
+#. Positive button text confirming disconnection from all hosts
 msgctxt "disconnect_all_pos"
 msgid "Yes, disconnect"
 msgstr "是，斷開連線"
 
+#. Negative button text canceling the disconnect all action
 msgctxt "disconnect_all_neg"
 msgid "Cancel"
 msgstr "取消"
@@ -1089,6 +1146,7 @@ msgctxt "terminal_sucess"
 msgid "Verified host '%1$s' key: %2$s"
 msgstr "驗證主機 '%1$s' 金鑰：%2$s"
 
+#. Error message shown in terminal when host key verification fails
 msgctxt "terminal_failed"
 msgid "Host key verification failed."
 msgstr "主機驗證失敗"
@@ -1119,63 +1177,86 @@ msgctxt "terminal_kex_algorithm"
 msgid "Key exchange algorithm: %s"
 msgstr "密鑰交換算法: %s"
 
+#. Message shown in terminal when starting authentication process
 msgctxt "terminal_auth"
 msgid "Trying to authenticate"
 msgstr "嘗試驗證"
 
+#. Message shown in terminal when attempting password authentication method
 msgctxt "terminal_auth_pass"
 msgid "Attempting 'password' authentication"
 msgstr "正在嘗試 '密碼' 認證"
 
+#. Message shown in terminal when password authentication fails
 msgctxt "terminal_auth_pass_fail"
 msgid "Authentication method 'password' failed"
 msgstr "認證方法 '密碼' 失敗"
 
+#. Message shown in terminal when trying public key authentication with any
+#. available key
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
 msgstr "正在嘗試 '公鑰' 認證暨記憶體中任何公鑰"
 
+#. Error message shown when the selected public key is corrupted or invalid
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
 msgstr "所選擇的公鑰無法使用，請在主機編輯中嘗試重新選擇"
 
+#. Message shown in terminal when attempting public key authentication with a
+#. specific key
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
 msgstr "正在嘗試 '公鑰' 認證暨指定公鑰"
 
+#. Message shown in terminal when requesting biometric authentication to
+#. unlock a key. Parameter is the key nickname.
 #, c-format
 msgctxt "terminal_auth_biometric"
 msgid "Requesting biometric authentication for key '%1$s'"
 msgstr "请求对密钥 %1$s 进行生物识别身份验证"
 
+#. Message shown in terminal when public key authentication fails. Parameter
+#. is the key nickname.
 #, c-format
 msgctxt "terminal_auth_pubkey_fail"
 msgid "Authentication method 'publickey' with key '%1$s' failed"
 msgstr "認證方法 '公鑰' 暨金鑰 '%1$s' 失敗"
 
+#. Message shown in terminal when attempting keyboard-interactive
+#. authentication method
 msgctxt "terminal_auth_ki"
 msgid "Attempting 'keyboard-interactive' authentication"
 msgstr "正在嘗試 'keyboard-interactive' 認證"
 
+#. Message shown in terminal when keyboard-interactive authentication fails
 msgctxt "terminal_auth_ki_fail"
 msgid "Authentication method 'keyboard-interactive' failed"
 msgstr "認證方法 'keyboard-interactive' 失敗"
 
+#. Error message shown when server doesn't support any of the authentication
+#. methods we can use
 msgctxt "terminal_auth_fail"
 msgid ""
 "[Your host doesn't support 'password' or 'keyboard-interactive' "
 "authentication.]"
 msgstr "[您的主機不支援 '密碼' 或 'keyboard-interactive' 驗證機制。]"
 
+#. Message shown in terminal when shell session is not started because user
+#. disabled it in host settings
 msgctxt "terminal_no_session"
 msgid "Session will not be started due to host preference."
 msgstr "因為主機的相關設置，不會啓動會話階段。"
 
+#. Message shown in terminal when a port forward is enabled. Parameter is the
+#. port forward description.
 #, c-format
 msgctxt "terminal_enable_portfoward"
 msgid "Enable port forward: %1$s"
 msgstr "啓用連接埠轉址：%1$s"
 
+#. Error message shown when trying to open a local shell but it's not
+#. available on the device
 msgctxt "local_shell_unavailable"
 msgid "Failure! Local shell is unavailable on this phone."
 msgstr "失敗！此手機 Shell 不可用。"
@@ -1366,8 +1447,8 @@ msgstr "重置所有颜色？"
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action cannot "
-"be undone."
+"This will reset all 256 colors to their default values. This action "
+"cannot be undone."
 msgstr "这将重置所有256种颜色为默认值 此操作无法撤消"
 
 #. Displayed in the notification bar that connections are active
@@ -1773,8 +1854,8 @@ msgstr "使用指纹保护此密钥"
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use this "
-"feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use "
+"this feature."
 msgstr "没有录入指纹，请在设备设置中设置指纹以使用此功能"
 
 #. Warning shown when key type doesn\'t support biometric protection
@@ -1898,7 +1979,8 @@ msgstr "保持连接活跃"
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch apps."
+"background. Without permission, connections may close when you switch "
+"apps."
 msgstr "显示通知是为了保持后台连接的活跃状态而必要的，没有权限，切换应用程序时连接可能会关闭"
 
 #. Button text to grant notification permission in the permission explanation
@@ -1925,8 +2007,8 @@ msgstr "需要权限"
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification "
-"permission in app settings."
+"To keep connections alive in the background, you must enable notification"
+" permission in app settings."
 msgstr "为了保持后台连接的活跃，你必须在应用程序设置中启用通知权限"
 
 #. Button text to open ConnectBot app settings page where user can grant
@@ -1938,8 +2020,7 @@ msgstr "打开设置"
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid ""
-"Are you trying to access a local host? Grant local network permissions."
+msgid "Are you trying to access a local host? Grant local network permissions."
 msgstr "您是否尝试访问本地主机 授权本地网络权限"
 
 #. Loading message shown during app initialization
@@ -2008,8 +2089,8 @@ msgstr "重试"
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug log "
-"copied above"
+"If the problem persists, please report this issue at %1$s with the debug "
+"log copied above"
 msgstr "如果问题仍然存在，请在%1$s报告此问题并附上上面复制的调试日志"
 
 #. Title for warnings section shown during database migration
@@ -2131,11 +2212,12 @@ msgstr "日志已复制到剪贴板"
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at https://connectbot."
-"org/bug"
+"To report a bug, copy these logs and open a new issue at "
+"https://connectbot.org/bug"
 msgstr "要报告一个错误，请复制这些日志并在https://connectbot.org/bug打开一个新问题"
 
 #. Message shown when no logs are available
 msgctxt "no_logs_available"
 msgid "No logs available"
 msgstr "没有可用日志"
+
