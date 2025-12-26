@@ -429,26 +429,35 @@ fun HostEditorScreenContent(
 }
 
 /**
- * 16 icon colors for visual identification of hosts/profiles.
- * Each pair contains (color name, hex value).
+ * Color data for visual identification of hosts/profiles.
+ * English names are kept for backward compatibility with old database entries.
+ * New entries always store hex values.
  */
-private val iconColors = listOf(
-    "Red" to "#F44336",
-    "Pink" to "#E91E63",
-    "Purple" to "#9C27B0",
-    "Deep Purple" to "#673AB7",
-    "Indigo" to "#3F51B5",
-    "Blue" to "#2196F3",
-    "Light Blue" to "#03A9F4",
-    "Cyan" to "#00BCD4",
-    "Teal" to "#009688",
-    "Green" to "#4CAF50",
-    "Light Green" to "#8BC34A",
-    "Lime" to "#CDDC39",
-    "Yellow" to "#FFEB3B",
-    "Amber" to "#FFC107",
-    "Orange" to "#FF9800",
-    "Gray" to "#9E9E9E"
+data class ColorOption(val englishName: String, val hexValue: String, val localizedName: String)
+
+/**
+ * 16 icon colors for visual identification of hosts/profiles.
+ * Returns list with English names (for backward compatibility), hex values (for DB storage),
+ * and localized names (for UI display).
+ */
+@Composable
+private fun getIconColors(): List<ColorOption> = listOf(
+    ColorOption("Red", "#F44336", stringResource(R.string.color_red)),
+    ColorOption("Pink", "#E91E63", stringResource(R.string.color_pink)),
+    ColorOption("Purple", "#9C27B0", stringResource(R.string.color_purple)),
+    ColorOption("Deep Purple", "#673AB7", stringResource(R.string.color_deep_purple)),
+    ColorOption("Indigo", "#3F51B5", stringResource(R.string.color_indigo)),
+    ColorOption("Blue", "#2196F3", stringResource(R.string.color_blue)),
+    ColorOption("Light Blue", "#03A9F4", stringResource(R.string.color_light_blue)),
+    ColorOption("Cyan", "#00BCD4", stringResource(R.string.color_cyan)),
+    ColorOption("Teal", "#009688", stringResource(R.string.color_teal)),
+    ColorOption("Green", "#4CAF50", stringResource(R.string.color_green)),
+    ColorOption("Light Green", "#8BC34A", stringResource(R.string.color_light_green)),
+    ColorOption("Lime", "#CDDC39", stringResource(R.string.color_lime)),
+    ColorOption("Yellow", "#FFEB3B", stringResource(R.string.color_yellow)),
+    ColorOption("Amber", "#FFC107", stringResource(R.string.color_amber)),
+    ColorOption("Orange", "#FF9800", stringResource(R.string.color_orange)),
+    ColorOption("Gray", "#9E9E9E", stringResource(R.string.color_gray))
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -459,10 +468,12 @@ private fun ColorSelector(
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val iconColors = getIconColors()
 
     // Find the display name for the selected color
-    val selectedDisplayName = iconColors.find { it.second.equals(selectedColor, ignoreCase = true) }?.first
-        ?: iconColors.find { it.first.equals(selectedColor, ignoreCase = true) }?.first
+    // Check by hex value first (current format), then by English name (legacy format)
+    val selectedDisplayName = iconColors.find { it.hexValue.equals(selectedColor, ignoreCase = true) }?.localizedName
+        ?: iconColors.find { it.englishName.equals(selectedColor, ignoreCase = true) }?.localizedName
         ?: selectedColor
 
     Column(modifier = modifier) {
@@ -494,11 +505,12 @@ private fun ColorSelector(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                iconColors.forEach { (name, hex) ->
+                iconColors.forEach { color ->
                     DropdownMenuItem(
-                        text = { Text(name) },
+                        text = { Text(color.localizedName) },
                         onClick = {
-                            onColorSelected(hex)
+                            // Always store hex value in database (language-independent)
+                            onColorSelected(color.hexValue)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
