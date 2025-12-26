@@ -129,13 +129,7 @@ jobs:
             adb install -r -t app/build/outputs/apk/androidTest/oss/debug/app-oss-debug-androidTest.apk
 
             # Run E2E tests
-            adb shell am instrument -w \
-              -e class org.connectbot.e2e.SshConnectionE2ETest,org.connectbot.e2e.PasswordAuthE2ETest,org.connectbot.e2e.PubkeyAuthE2ETest \
-              -e sshHost "$HOST_IP" \
-              -e sshPort 2222 \
-              -e sshUser testuser \
-              -e sshPassword testpass123 \
-              org.connectbot.tests/org.connectbot.HiltTestRunner
+            adb shell am instrument -w -e class org.connectbot.e2e.SshConnectionE2ETest,org.connectbot.e2e.PasswordAuthE2ETest,org.connectbot.e2e.PubkeyAuthE2ETest -e sshHost "$HOST_IP" -e sshPort 2222 -e sshUser testuser -e sshPassword testpass123 org.connectbot.tests/org.connectbot.HiltTestRunner
 
       - name: Stop E2E SSH server
         if: always()
