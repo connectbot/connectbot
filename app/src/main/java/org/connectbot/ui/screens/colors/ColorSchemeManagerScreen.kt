@@ -79,6 +79,7 @@ import org.connectbot.R
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.theme.ConnectBotTheme
 
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -569,9 +570,10 @@ private fun SchemeItem(
                     text = scheme.name,
                     style = MaterialTheme.typography.titleMedium
                 )
-                if (scheme.description.isNotEmpty()) {
+                val localizedDescription = getLocalizedColorSchemeDescription(scheme)
+                if (localizedDescription.isNotEmpty()) {
                     Text(
-                        text = scheme.description,
+                        text = localizedDescription,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

@@ -1140,4 +1140,22 @@
 
 	<!-- Section title for the "Help" screen showing information about the program itself. -->
 	<string name="help_section_about">About</string>
+
+	<!-- Built-in color scheme descriptions for terminal display -->
+	<!-- Description of the default terminal color scheme -->
+	<string name="colorscheme_default_description">Default terminal colors</string>
+	<!-- Description of the Solarized Dark color scheme -->
+	<string name="colorscheme_solarized_dark_description">Precision colors for machines and people</string>
+	<!-- Description of the Solarized Light color scheme -->
+	<string name="colorscheme_solarized_light_description">Solarized with light background</string>
+	<!-- Description of the Dracula color scheme -->
+	<string name="colorscheme_dracula_description">A dark theme for the terminal</string>
+	<!-- Description of the Nord color scheme -->
+	<string name="colorscheme_nord_description">An arctic, north-bluish color palette</string>
+	<!-- Description of the Gruvbox Dark color scheme -->
+	<string name="colorscheme_gruvbox_dark_description">Retro groove color scheme</string>
+	<!-- Description of the Monokai color scheme -->
+	<string name="colorscheme_monokai_description">Sublime Text inspired theme</string>
+	<!-- Description of the Tomorrow Night color scheme -->
+	<string name="colorscheme_tomorrow_night_description">A clean and comfortable dark theme</string>
 </resources>
