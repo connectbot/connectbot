@@ -17,13 +17,10 @@
 
 package org.connectbot.ui.screens.generatepubkey
 
-import android.content.Context
-import timber.log.Timber
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import com.trilead.ssh2.crypto.keys.Ed25519Provider
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,13 +31,16 @@ import kotlinx.coroutines.withContext
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.BiometricAvailability
 import org.connectbot.util.BiometricKeyManager
 import org.connectbot.util.PubkeyUtils
+import timber.log.Timber
 import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.SecureRandom
 import java.security.Security
+import javax.inject.Inject
 
 enum class KeyType(
     val dbName: String,
@@ -90,10 +90,10 @@ data class GeneratePubkeyUiState(
 @HiltViewModel
 class GeneratePubkeyViewModel @Inject constructor(
     private val repository: PubkeyRepository,
-    private val biometricKeyManager: BiometricKeyManager
+    private val biometricKeyManager: BiometricKeyManager,
+    private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
     companion object {
-        private const val TAG = "GeneratePubkeyViewModel"
         private val ECDSA_SIZES = intArrayOf(256, 384, 521)
     }
 
@@ -126,7 +126,7 @@ class GeneratePubkeyViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val exists = withContext(Dispatchers.IO) {
+                val exists = withContext(dispatchers.io) {
                     repository.getByNickname(nickname) != null
                 }
                 _uiState.update { it.copy(nicknameExists = exists) }
@@ -254,7 +254,7 @@ class GeneratePubkeyViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val keyPair = withContext(Dispatchers.IO) {
+                val keyPair = withContext(dispatchers.io) {
                     generateKeyPair(
                         currentState.keyType,
                         currentState.bits,
@@ -278,7 +278,7 @@ class GeneratePubkeyViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val (publicKey, alias) = withContext(Dispatchers.IO) {
+                val (publicKey, alias) = withContext(dispatchers.io) {
                     val alias = biometricKeyManager.generateKeyAlias()
                     val publicKey = biometricKeyManager.generateKey(
                         alias = alias,
@@ -314,7 +314,7 @@ class GeneratePubkeyViewModel @Inject constructor(
         state: GeneratePubkeyUiState,
         onSuccess: (() -> Unit)?
     ) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatchers.io) {
             try {
                 val encrypted = state.password1.isNotEmpty()
 
@@ -334,13 +334,13 @@ class GeneratePubkeyViewModel @Inject constructor(
 
                 Timber.d("Key pair saved successfully")
 
-                withContext(Dispatchers.Main) {
+                withContext(dispatchers.main) {
                     _uiState.update { it.copy(isGenerating = false) }
                     onSuccess?.invoke()
                 }
             } catch (e: Exception) {
                 Timber.e(e, "Failed to save key pair")
-                withContext(Dispatchers.Main) {
+                withContext(dispatchers.main) {
                     _uiState.update { it.copy(isGenerating = false) }
                 }
             }
@@ -353,7 +353,7 @@ class GeneratePubkeyViewModel @Inject constructor(
         state: GeneratePubkeyUiState,
         onSuccess: (() -> Unit)?
     ) {
-        withContext(Dispatchers.IO) {
+        withContext(dispatchers.io) {
             try {
                 val pubkey = Pubkey(
                     id = 0, // Let Room auto-generate the ID
@@ -374,7 +374,7 @@ class GeneratePubkeyViewModel @Inject constructor(
 
                 Timber.d("Biometric key saved successfully with alias: $keystoreAlias")
 
-                withContext(Dispatchers.Main) {
+                withContext(dispatchers.main) {
                     _uiState.update { it.copy(isGenerating = false) }
                     onSuccess?.invoke()
                 }
@@ -384,9 +384,9 @@ class GeneratePubkeyViewModel @Inject constructor(
                 try {
                     biometricKeyManager.deleteKey(keystoreAlias)
                 } catch (deleteError: Exception) {
-                    Timber.e("Failed to clean up Keystore key after save failure", deleteError)
+                    Timber.e(deleteError, "Failed to clean up Keystore key after save failure")
                 }
-                withContext(Dispatchers.Main) {
+                withContext(dispatchers.main) {
                     _uiState.update { it.copy(isGenerating = false) }
                 }
             }

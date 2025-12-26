@@ -18,10 +18,10 @@
 package org.connectbot.service
 
 import timber.log.Timber
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import org.apache.harmony.niochar.charset.additional.IBM437
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.transport.AbsTransport
 import java.io.IOException
 import java.nio.ByteBuffer
@@ -41,6 +41,7 @@ import java.nio.charset.StandardCharsets
 class Relay(
     private val bridge: TerminalBridge,
     private val transport: AbsTransport,
+    private val dispatchers: CoroutineDispatchers,
     encoding: String
 ) {
 
@@ -98,7 +99,7 @@ class Relay(
      * Start relaying data from transport to terminal buffer.
      * This is a suspend function that runs on IO dispatcher.
      */
-    suspend fun start() = withContext(Dispatchers.IO) {
+    suspend fun start() = withContext(dispatchers.io) {
         decoder?.reset()
         encoder.reset()
         sourceBuffer.clear()

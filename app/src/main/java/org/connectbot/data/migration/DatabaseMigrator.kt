@@ -20,7 +20,6 @@ package org.connectbot.data.migration
 import android.content.Context
 import timber.log.Timber
 import androidx.room.withTransaction
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,6 +33,7 @@ import org.connectbot.data.entity.KnownHost
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.di.CoroutineDispatchers
 import java.io.File
 
 /**
@@ -58,7 +58,8 @@ class DatabaseMigrator @Inject constructor(
     @ApplicationContext private val context: Context,
     private val roomDatabase: ConnectBotDatabase,
     private val legacyHostReader: LegacyHostDatabaseReader,
-    private val legacyPubkeyReader: LegacyPubkeyDatabaseReader
+    private val legacyPubkeyReader: LegacyPubkeyDatabaseReader,
+    private val dispatchers: CoroutineDispatchers
 ) {
     companion object {
         private const val TAG = "DatabaseMigrator"
@@ -109,7 +110,7 @@ class DatabaseMigrator @Inject constructor(
      * 1. Legacy databases exist and haven't been migrated yet
      * 2. Room database is empty (or doesn't exist)
      */
-    suspend fun isMigrationNeeded(): Boolean = withContext(Dispatchers.IO) {
+    suspend fun isMigrationNeeded(): Boolean = withContext(dispatchers.io) {
         val legacyHostsExists = getLegacyDatabaseFile(LEGACY_HOSTS_DB).exists()
         val legacyPubkeysExists = getLegacyDatabaseFile(LEGACY_PUBKEYS_DB).exists()
 
@@ -148,7 +149,7 @@ class DatabaseMigrator @Inject constructor(
      * Performs the full database migration.
      * This is a long-running operation and should be called from a background coroutine.
      */
-    suspend fun migrate(): MigrationResult = withContext(Dispatchers.IO) {
+    suspend fun migrate(): MigrationResult = withContext(dispatchers.io) {
         // Check if migration is needed
         if (!isMigrationNeeded()) {
             logDebug("Migration not needed - already migrated or no legacy databases found")

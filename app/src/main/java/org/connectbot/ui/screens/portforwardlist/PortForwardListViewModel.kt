@@ -22,7 +22,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,7 +31,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.PortForward
-import org.connectbot.di.IoDispatcher
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import javax.inject.Inject
@@ -48,7 +47,7 @@ data class PortForwardListUiState(
 class PortForwardListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val repository: HostRepository,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
     private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
     private val _terminalManager = MutableStateFlow<TerminalManager?>(null)
@@ -124,7 +123,7 @@ class PortForwardListViewModel @Inject constructor(
                 val srcPort = validatePort(sourcePort, "source")
                 val parsed = parseDestination(destination)
 
-                val newPortForward = withContext(ioDispatcher) {
+                val newPortForward = withContext(dispatchers.io) {
                     val portForward = PortForward(
                         hostId = hostId,
                         nickname = nickname,
@@ -164,7 +163,7 @@ class PortForwardListViewModel @Inject constructor(
                 val srcPort = validatePort(sourcePort, "source")
                 val parsed = parseDestination(destination)
 
-                val updated = withContext(ioDispatcher) {
+                val updated = withContext(dispatchers.io) {
                     val updatedPf = portForward.copy(
                         nickname = nickname,
                         type = type,
@@ -202,7 +201,7 @@ class PortForwardListViewModel @Inject constructor(
     fun deletePortForward(portForward: PortForward) {
         viewModelScope.launch {
             try {
-                withContext(ioDispatcher) {
+                withContext(dispatchers.io) {
                     repository.deletePortForward(portForward)
                 }
 
@@ -246,7 +245,7 @@ class PortForwardListViewModel @Inject constructor(
                     return@launch
                 }
 
-                val success = withContext(ioDispatcher) {
+                val success = withContext(dispatchers.io) {
                     if (enable) {
                         bridge.enablePortForward(bridgePortForward)
                     } else {
@@ -309,7 +308,7 @@ class PortForwardListViewModel @Inject constructor(
     private suspend fun withActiveBridge(action: suspend (TerminalBridge) -> Unit) {
         val bridge = findBridgeForHost()
         if (bridge != null && bridge.transport?.isConnected() == true) {
-            withContext(ioDispatcher) {
+            withContext(dispatchers.io) {
                 action(bridge)
             }
         }

@@ -20,19 +20,16 @@ package org.connectbot.ui.screens.colors
 import android.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.core.app.ApplicationProvider
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ColorSchemePresets
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.entity.ColorScheme
-import org.junit.After
+import org.connectbot.di.CoroutineDispatchers
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -50,12 +47,15 @@ class PaletteEditorViewModelTest {
     private lateinit var savedStateHandle: SavedStateHandle
     private lateinit var viewModel: PaletteEditorViewModel
     private val testDispatcher = StandardTestDispatcher()
+    private val dispatchers = CoroutineDispatchers(
+        default = testDispatcher,
+        io = testDispatcher,
+        main = testDispatcher
+    )
     private val testSchemeId = -1L
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(testDispatcher)
-
         repository = mock()
         savedStateHandle = mock()
         whenever(savedStateHandle.get<Long>("schemeId")).thenReturn(testSchemeId)
@@ -71,14 +71,9 @@ class PaletteEditorViewModelTest {
         }
     }
 
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-    }
-
     @Test
     fun `initial state loads palette for scheme`() = runTest {
-        viewModel = PaletteEditorViewModel(savedStateHandle, repository)
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
@@ -93,7 +88,7 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `scheme name is loaded correctly`() = runTest {
-        viewModel = PaletteEditorViewModel(savedStateHandle, repository)
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
@@ -102,7 +97,7 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `editColor sets editing index`() = runTest {
-        viewModel = PaletteEditorViewModel(savedStateHandle, repository)
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         val colorIndex = 5
@@ -114,7 +109,7 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `closeColorEditor clears editing index`() = runTest {
-        viewModel = PaletteEditorViewModel(savedStateHandle, repository)
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         viewModel.editColor(5)
@@ -128,7 +123,7 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `updateColor changes color in palette`() = runTest {
-        viewModel = PaletteEditorViewModel(savedStateHandle, repository)
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         val colorIndex = 3
@@ -144,7 +139,7 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `updateColor persists to database`() = runTest {
-        viewModel = PaletteEditorViewModel(savedStateHandle, repository)
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         val colorIndex = 0
@@ -172,7 +167,7 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `resetColor restores default color`() = runTest {
-        viewModel = PaletteEditorViewModel(savedStateHandle, repository)
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         val colorIndex = 4
@@ -193,7 +188,7 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `showResetAllDialog sets dialog flag`() = runTest {
-        viewModel = PaletteEditorViewModel(savedStateHandle, repository)
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         viewModel.showResetAllDialog()
@@ -204,7 +199,7 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `hideResetAllDialog clears dialog flag`() = runTest {
-        viewModel = PaletteEditorViewModel(savedStateHandle, repository)
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         viewModel.showResetAllDialog()
@@ -218,7 +213,7 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `resetAllColors restores all default colors`() = runTest {
-        viewModel = PaletteEditorViewModel(savedStateHandle, repository)
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         // Change multiple colors
@@ -238,7 +233,7 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `resetAllColors closes dialog`() = runTest {
-        viewModel = PaletteEditorViewModel(savedStateHandle, repository)
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         viewModel.showResetAllDialog()
@@ -253,7 +248,7 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `clearError removes error message`() = runTest {
-        viewModel = PaletteEditorViewModel(savedStateHandle, repository)
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         // Manually set an error state for testing
@@ -266,7 +261,7 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `multiple color updates are handled correctly`() = runTest {
-        viewModel = PaletteEditorViewModel(savedStateHandle, repository)
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         val updates = mapOf(
@@ -334,7 +329,7 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `editing workflow - open edit close`() = runTest {
-        viewModel = PaletteEditorViewModel(savedStateHandle, repository)
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         // Open editor
@@ -352,7 +347,7 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `palette contains correct number of colors`() = runTest {
-        viewModel = PaletteEditorViewModel(savedStateHandle, repository)
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         val state = viewModel.uiState.value

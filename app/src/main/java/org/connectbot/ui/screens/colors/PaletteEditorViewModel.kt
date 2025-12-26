@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.connectbot.data.ColorSchemePresets
 import org.connectbot.data.ColorSchemeRepository
+import org.connectbot.di.CoroutineDispatchers
 
 data class PaletteEditorUiState(
     val schemeId: Long = -1,
@@ -71,7 +72,8 @@ data class PaletteEditorUiState(
 @HiltViewModel
 class PaletteEditorViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val repository: ColorSchemeRepository
+    private val repository: ColorSchemeRepository,
+    private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
     private val schemeId = savedStateHandle.get<Long>("schemeId") ?: 0

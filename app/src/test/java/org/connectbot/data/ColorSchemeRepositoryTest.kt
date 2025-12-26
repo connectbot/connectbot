@@ -21,7 +21,10 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.HostConstants
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -36,12 +39,19 @@ import org.junit.runner.RunWith
 /**
  * Tests for ColorSchemeRepository.
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 class ColorSchemeRepositoryTest {
 
     private lateinit var context: Context
     private lateinit var database: ConnectBotDatabase
     private lateinit var repository: ColorSchemeRepository
+    private val testDispatcher = UnconfinedTestDispatcher()
+    private val dispatchers = CoroutineDispatchers(
+        default = testDispatcher,
+        io = testDispatcher,
+        main = testDispatcher
+    )
 
     @Before
     fun setUp() {
@@ -49,7 +59,7 @@ class ColorSchemeRepositoryTest {
         database = Room.inMemoryDatabaseBuilder(context, ConnectBotDatabase::class.java)
             .allowMainThreadQueries()
             .build()
-        repository = ColorSchemeRepository(database.colorSchemeDao())
+        repository = ColorSchemeRepository(database.colorSchemeDao(), dispatchers)
     }
 
     @After

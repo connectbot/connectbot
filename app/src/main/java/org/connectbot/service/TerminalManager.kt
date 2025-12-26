@@ -49,6 +49,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.ColorSchemeRepository
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.data.HostRepository
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.PubkeyRepository
@@ -128,6 +129,9 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	@Inject
 	internal lateinit var connectionNotifier: ConnectionNotifier
 
+	@Inject
+	internal lateinit var dispatchers: CoroutineDispatchers
+
 	private val binder: IBinder = TerminalBinder()
 
 	internal lateinit var connectivityMonitor: ConnectivityMonitor
@@ -168,7 +172,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 		// load all marked pubkeys into memory
 		updateSavingKeys()
-		scope.launch(Dispatchers.IO) {
+		scope.launch(dispatchers.io) {
 			try {
 				val pubkeys = pubkeyRepository.getStartupKeys()
 				for (pubkey in pubkeys) {
@@ -293,7 +297,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 			throw IllegalArgumentException("Connection already open for that nickname")
 		}
 
-		val bridge = TerminalBridge(this, host)
+		val bridge = TerminalBridge(this, host, dispatchers)
 		bridge.setOnDisconnectedListener(this)
 		bridge.startConnection()
 
@@ -375,7 +379,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 * to [HostRepository].
 	 */
 	private fun touchHost(host: Host) {
-		scope.launch(Dispatchers.IO) {
+		scope.launch(dispatchers.io) {
 			hostRepository.touchHost(host)
 		}
 	}
@@ -795,7 +799,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 */
 	fun onConnectivityLost() {
 		Timber.d("Network lost - starting grace period for all network bridges")
-		scope.launch(Dispatchers.IO) {
+		scope.launch(dispatchers.io) {
 			synchronized(_bridges) {
 				for (bridge in _bridges) {
 					if (bridge.isUsingNetwork()) {
@@ -812,7 +816,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	 */
 	fun onConnectivityRestored() {
 		Timber.d("Network restored - checking IP addresses for grace period bridges")
-		scope.launch(Dispatchers.IO) {
+		scope.launch(dispatchers.io) {
 			val newNetworkInfo = connectivityMonitor.getCurrentNetworkInfo()
 
 			if (newNetworkInfo == null) {

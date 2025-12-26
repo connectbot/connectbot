@@ -38,6 +38,7 @@ import kotlinx.coroutines.launch
 import org.connectbot.data.migration.DatabaseMigrator
 import org.connectbot.data.migration.MigrationResult
 import org.connectbot.data.migration.MigrationState
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalManager
 import org.connectbot.util.PreferenceConstants
 import javax.inject.Inject
@@ -60,7 +61,8 @@ sealed class AppUiState {
 @HiltViewModel
 class AppViewModel @Inject constructor(
     private val migrator: DatabaseMigrator,
-    private val prefs: SharedPreferences
+    private val prefs: SharedPreferences,
+    private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
     private val _terminalManager = MutableStateFlow<TerminalManager?>(null)

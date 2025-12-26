@@ -22,8 +22,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -36,8 +34,10 @@ import kotlinx.coroutines.withContext
 import org.connectbot.R
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.ServiceError
 import org.connectbot.service.TerminalManager
+import javax.inject.Inject
 
 enum class ConnectionState {
     UNKNOWN,
@@ -71,7 +71,8 @@ data class ExportResult(
 @HiltViewModel
 class HostListViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val repository: HostRepository
+    private val repository: HostRepository,
+    private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
     private var terminalManager: TerminalManager? = null
@@ -192,25 +193,6 @@ class HostListViewModel @Inject constructor(
         _uiState.update { it.copy(sortedByColor = !it.sortedByColor) }
     }
 
-    fun connectToHost(host: Host) {
-        viewModelScope.launch {
-            try {
-                withContext(Dispatchers.IO) {
-                    // Build URI from host
-                    val uri = android.net.Uri.Builder()
-                        .scheme(host.protocol)
-                        .encodedAuthority("${host.username}@${host.hostname}:${host.port}")
-                        .build()
-                    terminalManager?.openConnection(uri)
-                }
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(error = e.message ?: "Failed to connect")
-                }
-            }
-        }
-    }
-
     fun deleteHost(host: Host) {
         viewModelScope.launch {
             try {
@@ -239,7 +221,7 @@ class HostListViewModel @Inject constructor(
     fun exportHosts() {
         viewModelScope.launch {
             try {
-                val (json, exportCounts) = withContext(Dispatchers.IO) {
+                val (json, exportCounts) = withContext(dispatchers.io) {
                     repository.exportHostsToJson()
                 }
                 val exportResult = ExportResult(
@@ -262,7 +244,7 @@ class HostListViewModel @Inject constructor(
     fun importHosts(jsonString: String) {
         viewModelScope.launch {
             try {
-                val importCounts = withContext(Dispatchers.IO) {
+                val importCounts = withContext(dispatchers.io) {
                     repository.importHostsFromJson(jsonString)
                 }
                 val importResult = ImportResult(

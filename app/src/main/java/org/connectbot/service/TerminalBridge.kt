@@ -42,6 +42,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.connectbot.di.CoroutineDispatchers
 
 import java.io.IOException
 import java.nio.charset.Charset
@@ -94,6 +96,8 @@ class TerminalBridge {
     val manager: TerminalManager
 
     var host: Host
+
+    private val dispatchers: CoroutineDispatchers
 
     /* package */ var transport: AbsTransport? = null
 
@@ -164,9 +168,10 @@ class TerminalBridge {
      * launch thread to start SSH connection and handle any hostkey verification
      * and password authentication.
      */
-    constructor(manager: TerminalManager, host: Host) {
+    constructor(manager: TerminalManager, host: Host, dispatchers: CoroutineDispatchers) {
         this.manager = manager
         this.host = host
+        this.dispatchers = dispatchers
 
         // Load profile for this host (always returns a profile, defaulting to Default profile)
         val profile = manager.profileRepository.getByIdOrDefaultBlocking(host.profileId)
@@ -254,7 +259,7 @@ class TerminalBridge {
      * This ensures keyboard input and other writes happen in the correct order.
      */
     private fun startTransportOperationProcessor() {
-        scope.launch(Dispatchers.IO) {
+        scope.launch(dispatchers.io) {
             for (operation in transportOperations) {
                 try {
                     when (operation) {
@@ -388,7 +393,7 @@ class TerminalBridge {
 
         outputLine(manager.res.getString(R.string.terminal_connecting, host.hostname, host.port, host.protocol))
 
-        scope.launch(Dispatchers.IO) {
+        scope.launch(dispatchers.io) {
             try {
                 if (newTransport.canForwardPorts()) {
                     try {
@@ -508,7 +513,7 @@ class TerminalBridge {
         if (isSessionOpen) {
             // create thread to relay incoming connection data to buffer
             transport?.let { t ->
-                relay = Relay(this, t, encoding)
+                relay = Relay(this, t, dispatchers, encoding)
                 scope.launch {
                     relay?.start()
                 }
@@ -559,7 +564,7 @@ class TerminalBridge {
 
         // disconnection request hangs if we havent really connected to a host yet
         // temporary fix is to just spawn disconnection into a thread
-        scope.launch(Dispatchers.IO) {
+        scope.launch(dispatchers.io) {
             transport?.let {
                 if (it.isConnected()) {
                     it.close()
@@ -579,7 +584,7 @@ class TerminalBridge {
                 manager.requestReconnect(this)
                 return
             }
-            scope.launch(Dispatchers.IO) {
+            scope.launch(dispatchers.io) {
                 val result = requestBooleanPrompt(
                     message = manager.res.getString(R.string.prompt_host_disconnected),
                     instructions = null
@@ -605,7 +610,7 @@ class TerminalBridge {
 
         // The disconnect listener should be run on the main thread if possible.
         // CopyOnWriteArrayList is safe to iterate even if modified during iteration
-        scope.launch(Dispatchers.Main) {
+        scope.launch(dispatchers.main) {
             for (listener in disconnectListeners) {
                 listener.onDisconnected(this@TerminalBridge)
             }

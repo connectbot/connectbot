@@ -17,12 +17,12 @@
 
 package org.connectbot.data
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.connectbot.data.dao.ProfileDao
 import org.connectbot.data.entity.Profile
+import org.connectbot.di.CoroutineDispatchers
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,7 +34,8 @@ import javax.inject.Singleton
  */
 @Singleton
 class ProfileRepository @Inject constructor(
-    private val profileDao: ProfileDao
+    private val profileDao: ProfileDao,
+    private val dispatchers: CoroutineDispatchers
 ) {
     /**
      * Observe all profiles.
@@ -49,21 +50,21 @@ class ProfileRepository @Inject constructor(
     /**
      * Get all profiles.
      */
-    suspend fun getAll(): List<Profile> = withContext(Dispatchers.IO) {
+    suspend fun getAll(): List<Profile> = withContext(dispatchers.io) {
         profileDao.getAll()
     }
 
     /**
      * Get a profile by ID.
      */
-    suspend fun getById(profileId: Long): Profile? = withContext(Dispatchers.IO) {
+    suspend fun getById(profileId: Long): Profile? = withContext(dispatchers.io) {
         profileDao.getById(profileId)
     }
 
     /**
      * Get the default profile.
      */
-    suspend fun getDefault(): Profile = withContext(Dispatchers.IO) {
+    suspend fun getDefault(): Profile = withContext(dispatchers.io) {
         profileDao.getDefault() ?: Profile.createDefault()
     }
 
@@ -77,7 +78,7 @@ class ProfileRepository @Inject constructor(
     suspend fun create(
         name: String,
         basedOnProfileId: Long? = null
-    ): Long = withContext(Dispatchers.IO) {
+    ): Long = withContext(dispatchers.io) {
         val baseProfile = if (basedOnProfileId != null) {
             profileDao.getById(basedOnProfileId) ?: Profile.createDefault()
         } else {
@@ -94,7 +95,7 @@ class ProfileRepository @Inject constructor(
     /**
      * Update an existing profile.
      */
-    suspend fun update(profile: Profile) = withContext(Dispatchers.IO) {
+    suspend fun update(profile: Profile) = withContext(dispatchers.io) {
         profileDao.update(profile)
     }
 
@@ -103,7 +104,7 @@ class ProfileRepository @Inject constructor(
      *
      * @return The ID of the saved profile
      */
-    suspend fun save(profile: Profile): Long = withContext(Dispatchers.IO) {
+    suspend fun save(profile: Profile): Long = withContext(dispatchers.io) {
         if (profile.id == 0L) {
             profileDao.insert(profile)
         } else {
@@ -118,7 +119,7 @@ class ProfileRepository @Inject constructor(
      * @param profileId The profile ID to delete
      * @return true if deleted, false if not found
      */
-    suspend fun delete(profileId: Long): Boolean = withContext(Dispatchers.IO) {
+    suspend fun delete(profileId: Long): Boolean = withContext(dispatchers.io) {
         profileDao.deleteById(profileId) > 0
     }
 
@@ -130,14 +131,14 @@ class ProfileRepository @Inject constructor(
      * @return true if the name exists, false otherwise
      */
     suspend fun nameExists(name: String, excludeProfileId: Long? = null): Boolean =
-        withContext(Dispatchers.IO) {
+        withContext(dispatchers.io) {
             profileDao.nameExists(name, excludeProfileId)
         }
 
     /**
      * Get the count of hosts using a specific profile.
      */
-    suspend fun getHostsUsingProfile(profileId: Long): Int = withContext(Dispatchers.IO) {
+    suspend fun getHostsUsingProfile(profileId: Long): Int = withContext(dispatchers.io) {
         profileDao.getHostsUsingProfile(profileId)
     }
 
@@ -168,7 +169,7 @@ class ProfileRepository @Inject constructor(
      * @return The ID of the newly created profile
      */
     suspend fun duplicate(sourceProfileId: Long, newName: String): Long =
-        withContext(Dispatchers.IO) {
+        withContext(dispatchers.io) {
             val source = profileDao.getById(sourceProfileId) ?: Profile.createDefault()
             val newProfile = source.copy(
                 id = 0,

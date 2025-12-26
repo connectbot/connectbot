@@ -25,10 +25,12 @@ import android.os.ParcelFileDescriptor
 import timber.log.Timber
 import androidx.preference.PreferenceManager
 import androidx.room.Room
+import kotlinx.coroutines.Dispatchers
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.ConnectBotDatabase
 import org.connectbot.data.HostRepository
 import org.connectbot.data.PubkeyRepository
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.PreferenceConstants
 import java.io.File
 import java.io.FileInputStream
@@ -110,8 +112,9 @@ class BackupAgent : BackupAgentHelper() {
             ConnectBotDatabase::class.java,
             DATABASE_NAME
         ).build()
+        val dispatchers = CoroutineDispatchers(default = Dispatchers.Default, io = Dispatchers.IO, main = Dispatchers.Main)
         val hostRepository = HostRepository(applicationContext, database, database.hostDao(), database.portForwardDao(), database.knownHostDao())
-        val colorSchemeRepository = ColorSchemeRepository(database.colorSchemeDao())
+        val colorSchemeRepository = ColorSchemeRepository(database.colorSchemeDao(), dispatchers = dispatchers)
         val pubkeyRepository = PubkeyRepository(database.pubkeyDao())
 
         val filter = BackupFilter(applicationContext, hostRepository, colorSchemeRepository, pubkeyRepository)
