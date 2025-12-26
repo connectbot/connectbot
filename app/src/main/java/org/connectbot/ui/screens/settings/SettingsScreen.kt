@@ -66,6 +66,7 @@ import org.connectbot.R
 import org.connectbot.data.entity.Profile
 import org.connectbot.ui.ObservePermissionOnResume
 import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.common.getLocalizedFontDisplayName
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.NotificationPermissionHelper
@@ -340,7 +341,7 @@ fun SettingsScreenContent(
 
                 ListPreference(
                     title = stringResource(R.string.pref_fontfamily_title),
-                    summary = TerminalFont.getDisplayName(uiState.fontFamily),
+                    summary = getLocalizedFontDisplayName(uiState.fontFamily),
                     value = uiState.fontFamily,
                     entries = allEntries,
                     onValueChange = onFontFamilyChange
@@ -373,7 +374,7 @@ fun SettingsScreenContent(
             }
 
             item {
-                PreferenceCategory(title = "Profiles")
+                PreferenceCategory(title = stringResource(R.string.pref_profiles_category))
             }
 
             item {
@@ -382,11 +383,12 @@ fun SettingsScreenContent(
                 } else {
                     uiState.availableProfiles.find { it.id == uiState.defaultProfileId }
                 }
-                val profileEntries = listOf("None (use host settings)" to "0") +
+                val noneLabel = stringResource(R.string.pref_default_profile_none)
+                val profileEntries = listOf(noneLabel to "0") +
                     uiState.availableProfiles.map { it.name to it.id.toString() }
                 ListPreference(
-                    title = "Default Profile",
-                    summary = selectedProfile?.name ?: "None (use host settings)",
+                    title = stringResource(R.string.pref_default_profile_title),
+                    summary = selectedProfile?.name ?: noneLabel,
                     value = uiState.defaultProfileId.toString(),
                     entries = profileEntries,
                     onValueChange = { onDefaultProfileChange(it.toLong()) }
@@ -470,7 +472,7 @@ fun SettingsScreenContent(
             item {
                 SwitchPreference(
                     title = stringResource(R.string.pref_alwaysvisible_title),
-                    summary = "Keep special keys always visible",
+                    summary = stringResource(R.string.pref_alwaysvisible_summary),
                     checked = uiState.alwaysvisible,
                     onCheckedChange = onAlwaysVisibleChange
                 )
@@ -533,9 +535,18 @@ fun SettingsScreenContent(
             }
 
             item {
+                val cameraSummary = when (uiState.camera) {
+                    "Ctrl+A then Space" -> stringResource(R.string.list_camera_ctrlaspace_description)
+                    "Ctrl+A" -> stringResource(R.string.list_camera_ctrla_description)
+                    "Esc" -> stringResource(R.string.list_camera_esc_description)
+                    "Esc+A" -> stringResource(R.string.list_camera_esc_a_description)
+                    "None" -> stringResource(R.string.list_camera_none_description)
+                    "text_input" -> stringResource(R.string.list_camera_text_input_description)
+                    else -> uiState.camera
+                }
                 ListPreference(
                     title = stringResource(R.string.pref_camera_title),
-                    summary = uiState.camera,
+                    summary = cameraSummary,
                     value = uiState.camera,
                     entries = listOf(
                         stringResource(R.string.list_camera_ctrlaspace) to "Ctrl+A then Space",
@@ -818,7 +829,7 @@ private fun ListPreferenceWithCustomDialog(
                 OutlinedTextField(
                     value = customValue,
                     onValueChange = { customValue = it },
-                    label = { Text("Enter custom value") },
+                    label = { Text(stringResource(R.string.dialog_custom_value_label)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -923,8 +934,8 @@ private fun AddCustomTerminalTypePreference(
 
     Column(modifier = modifier) {
         ListItem(
-            headlineContent = { Text("Custom Terminal Types") },
-            supportingContent = { Text("Add custom TERM values for remote servers") },
+            headlineContent = { Text(stringResource(R.string.pref_customterminal_title)) },
+            supportingContent = { Text(stringResource(R.string.pref_customterminal_summary)) },
             modifier = Modifier.clickable { showAddDialog = true }
         )
 
@@ -960,12 +971,12 @@ private fun AddCustomTerminalTypePreference(
                 showAddDialog = false
                 newTerminalType = ""
             },
-            title = { Text("Add Custom Terminal Type") },
+            title = { Text(stringResource(R.string.dialog_customterminal_title)) },
             text = {
                 OutlinedTextField(
                     value = newTerminalType,
                     onValueChange = { newTerminalType = it },
-                    label = { Text("Terminal type (e.g., rxvt-unicode)") },
+                    label = { Text(stringResource(R.string.dialog_customterminal_hint)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )

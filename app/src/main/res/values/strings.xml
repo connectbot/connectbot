@@ -1158,4 +1158,36 @@
 	<string name="colorscheme_monokai_description">Sublime Text inspired theme</string>
 	<!-- Description of the Tomorrow Night color scheme -->
 	<string name="colorscheme_tomorrow_night_description">A clean and comfortable dark theme</string>
+
+	<!-- Settings screen strings -->
+	<!-- Category title for profile settings section -->
+	<string name="pref_profiles_category">Profiles</string>
+	<!-- Setting title for default profile selection -->
+	<string name="pref_default_profile_title">Default Profile</string>
+	<!-- Summary text when no default profile is selected -->
+	<string name="pref_default_profile_none">None (use host settings)</string>
+	<!-- Summary text for special keys always visible setting -->
+	<string name="pref_alwaysvisible_summary">Keep special keys always visible</string>
+	<!-- Title for custom terminal types preference -->
+	<string name="pref_customterminal_title">Custom Terminal Types</string>
+	<!-- Summary for custom terminal types preference -->
+	<string name="pref_customterminal_summary">Add custom TERM values for remote servers</string>
+	<!-- Dialog title for adding a custom terminal type -->
+	<string name="dialog_customterminal_title">Add Custom Terminal Type</string>
+	<!-- Label/hint for terminal type input field -->
+	<string name="dialog_customterminal_hint">Terminal type (e.g., rxvt-unicode)</string>
+	<!-- Label for custom value input in list preference dialogs -->
+	<string name="dialog_custom_value_label">Enter custom value</string>
+	<!-- Summary description for Ctrl+A then Space camera button action -->
+	<string name="list_camera_ctrlaspace_description">Ctrl+A then Space</string>
+	<!-- Summary description for Ctrl+A camera button action -->
+	<string name="list_camera_ctrla_description">Ctrl+A</string>
+	<!-- Summary description for Esc camera button action -->
+	<string name="list_camera_esc_description">Esc</string>
+	<!-- Summary description for Esc+A camera button action -->
+	<string name="list_camera_esc_a_description">Esc+A</string>
+	<!-- Summary description for None camera button action -->
+	<string name="list_camera_none_description">None</string>
+	<!-- Summary description for text input camera button action -->
+	<string name="list_camera_text_input_description">Text input</string>
 </resources>
