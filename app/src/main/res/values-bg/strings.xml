@@ -1,18 +1,18 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
   <string name="app_desc">Прост, мощен SSH клиент с отворен код</string>
-	<string name="title_pubkey_list">Публични ключове</string>
+  <string name="title_pubkey_list">Публични ключове</string>
   <string name="title_port_forwards_list">Пренасочване на портове</string>
-	<string name="title_help">Помощ</string>
+  <string name="title_help">Помощ</string>
   <string name="title_colors">Цветове</string>
   <string name="pubkey_generate">Генериране</string>
   <string name="pubkey_delete">Клавиш Delete</string>
   <string name="pubkey_copy_private">Копира частния ключ</string>
   <string name="pubkey_copy_public">Копира публичния ключ</string>
-	<string name="pubkey_change_password">Промени паролата</string>
-	<string name="pubkey_unlock">Клавиш за отключване</string>
-	<string name="pubkey_load_on_start">Зареди ключа при стартиране</string>
-	<string name="portforward_edit">Променете пренасочването на портове</string>
+  <string name="pubkey_change_password">Промени паролата</string>
+  <string name="pubkey_unlock">Клавиш за отключване</string>
+  <string name="pubkey_load_on_start">Зареди ключа при стартиране</string>
+  <string name="portforward_edit">Променете пренасочването на портове</string>
   <string name="portforward_delete">Изтрийте пренасочването на портове</string>
   <string name="prompt_nickname">Псевдоним:</string>
   <string name="prompt_destination">Назначение:</string>
@@ -24,11 +24,11 @@
   <string name="prompt_bits">Битове</string>
   <string name="alert_passwords_do_not_match_msg">Паролите не съвпадат!</string>
   <string name="alert_wrong_password_msg">Грешна парола!</string>
-	<string name="button_resize">Промяна на размера на екрана</string>
+  <string name="button_resize">Промяна на размера на екрана</string>
   <string name="alert_disconnect_msg">Връзката изгубена</string>
-	<string name="list_keymode_none">Забраняване</string>
-	<string name="console_menu_close">Затваряне</string>
-	<string name="console_menu_paste">Поставяне</string>
+  <string name="list_keymode_none">Забраняване</string>
+  <string name="console_menu_close">Затваряне</string>
+  <string name="console_menu_paste">Поставяне</string>
   <string name="console_menu_portforwards">Пренасочване на портове</string>
   <string name="list_host_disconnect">Прекъсване на връзката</string>
 </resources>
