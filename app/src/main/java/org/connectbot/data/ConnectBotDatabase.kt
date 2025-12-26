@@ -17,11 +17,8 @@
 
 package org.connectbot.data
 
-import android.content.Context
-import androidx.annotation.VisibleForTesting
 import androidx.room.AutoMigration
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
@@ -128,19 +125,24 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                 // Use a data class key: (color_scheme_id, font_size, del_key, encoding)
                 // This groups hosts with identical terminal settings into shared profiles
                 db.execSQL("""
+                    CREATE TEMP TABLE temp_profile_settings AS
+                    SELECT DISTINCT color_scheme_id, font_size, del_key, encoding
+                    FROM hosts
+                    WHERE NOT (color_scheme_id = 1 AND font_size = 10 AND del_key = 'DEL' AND encoding = 'UTF-8')
+                """.trimIndent())
+
+                db.execSQL("""
                     INSERT INTO `profiles` (`name`, `color_scheme_id`, `font_size`, `del_key`, `encoding`)
                     SELECT
-                        'Migrated Profile ' || ROW_NUMBER() OVER (ORDER BY color_scheme_id, font_size, del_key, encoding),
+                        'Migrated Profile ' || ROWID,
                         color_scheme_id,
                         font_size,
                         del_key,
                         encoding
-                    FROM (
-                        SELECT DISTINCT color_scheme_id, font_size, del_key, encoding
-                        FROM hosts
-                        WHERE NOT (color_scheme_id = 1 AND font_size = 10 AND del_key = 'DEL' AND encoding = 'UTF-8')
-                    )
+                    FROM temp_profile_settings
                 """.trimIndent())
+
+                db.execSQL("DROP TABLE temp_profile_settings")
 
                 // Recreate hosts table without the old columns (encoding, font_size, color_scheme_id, del_key, font_family)
                 // and add profile_id column. SQLite doesn't support DROP COLUMN before 3.35.0,
