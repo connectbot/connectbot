@@ -63,6 +63,7 @@ import org.connectbot.BuildConfig
 import org.connectbot.R
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.ui.common.getIconColors
+import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.common.getLocalizedFontDisplayName
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
@@ -572,9 +573,10 @@ private fun ColorSchemeSelector(
                         text = {
                             Column {
                                 Text(scheme.name)
-                                if (scheme.description.isNotBlank()) {
+                                val localizedDescription = getLocalizedColorSchemeDescription(scheme)
+                                if (localizedDescription.isNotBlank()) {
                                     Text(
-                                        text = scheme.description,
+                                        text = localizedDescription,
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )

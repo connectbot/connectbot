@@ -64,6 +64,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.connectbot.R
 import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.components.ColorPickerDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 
@@ -350,9 +351,10 @@ private fun ColorSchemeSelector(
                                 text = scheme.name,
                                 style = MaterialTheme.typography.bodyLarge
                             )
-                            if (scheme.description.isNotEmpty()) {
+                            val localizedDescription = getLocalizedColorSchemeDescription(scheme)
+                            if (localizedDescription.isNotEmpty()) {
                                 Text(
-                                    text = scheme.description,
+                                    text = localizedDescription,
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
