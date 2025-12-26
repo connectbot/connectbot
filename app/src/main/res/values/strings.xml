@@ -365,6 +365,40 @@
 	<!-- Host color category preference title -->
 	<string name="hostpref_color_title">"Color category"</string>
 
+	<!-- Color category names used for visual identification of hosts. These appear in the color selector dropdown. -->
+	<!-- Color name for red (#F44336) -->
+	<string name="color_red">Red</string>
+	<!-- Color name for pink (#E91E63) -->
+	<string name="color_pink">Pink</string>
+	<!-- Color name for purple (#9C27B0) -->
+	<string name="color_purple">Purple</string>
+	<!-- Color name for deep purple (#673AB7) -->
+	<string name="color_deep_purple">Deep Purple</string>
+	<!-- Color name for indigo (#3F51B5) -->
+	<string name="color_indigo">Indigo</string>
+	<!-- Color name for blue (#2196F3) -->
+	<string name="color_blue">Blue</string>
+	<!-- Color name for light blue (#03A9F4) -->
+	<string name="color_light_blue">Light Blue</string>
+	<!-- Color name for cyan (#00BCD4) -->
+	<string name="color_cyan">Cyan</string>
+	<!-- Color name for teal (#009688) -->
+	<string name="color_teal">Teal</string>
+	<!-- Color name for green (#4CAF50) -->
+	<string name="color_green">Green</string>
+	<!-- Color name for light green (#8BC34A) -->
+	<string name="color_light_green">Light Green</string>
+	<!-- Color name for lime (#CDDC39) -->
+	<string name="color_lime">Lime</string>
+	<!-- Color name for yellow (#FFEB3B) -->
+	<string name="color_yellow">Yellow</string>
+	<!-- Color name for amber (#FFC107) -->
+	<string name="color_amber">Amber</string>
+	<!-- Color name for orange (#FF9800) -->
+	<string name="color_orange">Orange</string>
+	<!-- Color name for gray (#9E9E9E) -->
+	<string name="color_gray">Gray</string>
+
 	<!-- Host's default font size when opening the terminal in points (pt) -->
 	<string name="hostpref_fontsize_title">"Font size (pt)"</string>
 
