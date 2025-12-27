@@ -195,6 +195,11 @@ fun ConsoleScreen(
         }
     }
 
+    // Request focus on terminal when screen appears (e.g., returning from navigation)
+    LaunchedEffect(Unit) {
+        termFocusRequester.requestFocus()
+    }
+
     // Track actual IME visibility using WindowInsets to detect user dismissing with back button
     val imeInsets = WindowInsets.ime
     val density = LocalDensity.current
