@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-26 10:13-0800\n"
-"PO-Revision-Date: 2025-12-26 08:28-0800\n"
+"POT-Creation-Date: 2025-12-26 16:01-0800\n"
+"PO-Revision-Date: 2025-12-26 15:08-0800\n"
 "Last-Translator: Tommaso Fonda <fondatommaso2@gmail.com>\n"
 "Language: it\n"
 "Language-Team: it <LL@li.org>\n"
@@ -2557,116 +2557,116 @@ msgstr "Informazioni"
 #. Description of the default terminal color scheme
 msgctxt "colorscheme_default_description"
 msgid "Default terminal colors"
-msgstr ""
+msgstr "Colori del terminale predefiniti"
 
 #. Description of the Solarized Dark color scheme
 msgctxt "colorscheme_solarized_dark_description"
 msgid "Precision colors for machines and people"
-msgstr ""
+msgstr "Colori precisi per macchine e persone"
 
 #. Description of the Solarized Light color scheme
 msgctxt "colorscheme_solarized_light_description"
 msgid "Solarized with light background"
-msgstr ""
+msgstr "Solarizzato con sfondo chiaro"
 
 #. Description of the Dracula color scheme
 msgctxt "colorscheme_dracula_description"
 msgid "A dark theme for the terminal"
-msgstr ""
+msgstr "Un tema scuro per il terminale"
 
 #. Description of the Nord color scheme
 msgctxt "colorscheme_nord_description"
 msgid "An arctic, north-bluish color palette"
-msgstr ""
+msgstr "Una tavolozza di colori artica azzurro nordica"
 
 #. Description of the Gruvbox Dark color scheme
 msgctxt "colorscheme_gruvbox_dark_description"
 msgid "Retro groove color scheme"
-msgstr ""
+msgstr "Schema dei colori del groove retrò"
 
 #. Description of the Monokai color scheme
 msgctxt "colorscheme_monokai_description"
 msgid "Sublime Text inspired theme"
-msgstr ""
+msgstr "Tema ispirato a Sublime Text"
 
 #. Description of the Tomorrow Night color scheme
 msgctxt "colorscheme_tomorrow_night_description"
 msgid "A clean and comfortable dark theme"
-msgstr ""
+msgstr "Un tema scuro pulito e confortevole"
 
 #. Settings screen strings
 #. Category title for profile settings section
 msgctxt "pref_profiles_category"
 msgid "Profiles"
-msgstr ""
+msgstr "Profili"
 
 #. Setting title for default profile selection
 msgctxt "pref_default_profile_title"
 msgid "Default Profile"
-msgstr ""
+msgstr "Profilo predefinito"
 
 #. Summary text when no default profile is selected
 msgctxt "pref_default_profile_none"
 msgid "None (use host settings)"
-msgstr ""
+msgstr "Nessuno (usa le impostazioni dellhost)"
 
 #. Summary text for special keys always visible setting
 msgctxt "pref_alwaysvisible_summary"
 msgid "Keep special keys always visible"
-msgstr ""
+msgstr "Mantieni sempre visibili i tasti speciali"
 
 #. Title for custom terminal types preference
 msgctxt "pref_customterminal_title"
 msgid "Custom Terminal Types"
-msgstr ""
+msgstr "Tipi di terminale personalizzati"
 
 #. Summary for custom terminal types preference
 msgctxt "pref_customterminal_summary"
 msgid "Add custom TERM values for remote servers"
-msgstr ""
+msgstr "Aggiungi valori personalizzati di TERM per i server remoti"
 
 #. Dialog title for adding a custom terminal type
 msgctxt "dialog_customterminal_title"
 msgid "Add Custom Terminal Type"
-msgstr ""
+msgstr "Aggiungi tipo di terminale personalizzato"
 
 #. Label/hint for terminal type input field
 msgctxt "dialog_customterminal_hint"
 msgid "Terminal type (e.g., rxvt-unicode)"
-msgstr ""
+msgstr "Tipo di terminale ad esempio rxvt-unicode"
 
 #. Label for custom value input in list preference dialogs
 msgctxt "dialog_custom_value_label"
 msgid "Enter custom value"
-msgstr ""
+msgstr "Inserisci valore personalizzato"
 
 #. Summary description for Ctrl+A then Space camera button action
 msgctxt "list_camera_ctrlaspace_description"
 msgid "Ctrl+A then Space"
-msgstr ""
+msgstr "Ctrl+A poi spazio"
 
 #. Summary description for Ctrl+A camera button action
 msgctxt "list_camera_ctrla_description"
 msgid "Ctrl+A"
-msgstr ""
+msgstr "Ctrl+A"
 
 #. Summary description for Esc camera button action
 msgctxt "list_camera_esc_description"
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #. Summary description for Esc+A camera button action
 msgctxt "list_camera_esc_a_description"
 msgid "Esc+A"
-msgstr ""
+msgstr "Esc+A"
 
 #. Summary description for None camera button action
 msgctxt "list_camera_none_description"
 msgid "None"
-msgstr ""
+msgstr "Nessuno"
 
 #. Summary description for text input camera button action
 msgctxt "list_camera_text_input_description"
 msgid "Text input"
-msgstr ""
+msgstr "Inserimento di testo"
 
