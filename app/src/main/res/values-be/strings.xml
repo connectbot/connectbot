@@ -1,2 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<resources/>
+<resources>
+  <string name="pubkey_list_empty">Tap Menu to create\nor import key pairs.</string>
+  <string name="portforward_list_empty">Tap Menu to create\nport forwards.</string>
+</resources>
