@@ -78,6 +78,26 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	private val _bridgesFlow = MutableStateFlow<List<TerminalBridge>>(emptyList())
 	val bridgesFlow: StateFlow<List<TerminalBridge>> = _bridgesFlow.asStateFlow()
 
+	// Track the currently displayed bridge for volume key font size changes
+	private var _currentBridgeIndex = 0
+
+	/**
+	 * Set the index of the currently displayed bridge.
+	 * Called by ConsoleViewModel when the user switches between terminals.
+	 */
+	fun setCurrentBridgeIndex(index: Int) {
+		_currentBridgeIndex = index
+	}
+
+	/**
+	 * Get the currently displayed bridge, or null if none.
+	 */
+	fun getCurrentBridge(): TerminalBridge? {
+		synchronized(_bridges) {
+			return _bridges.getOrNull(_currentBridgeIndex)
+		}
+	}
+
 	private val hostBridgeMap: MutableMap<Host, WeakReference<TerminalBridge>> = HashMap()
 	private val nicknameBridgeMap: MutableMap<String, WeakReference<TerminalBridge>> = HashMap()
 

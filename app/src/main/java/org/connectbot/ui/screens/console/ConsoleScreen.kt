@@ -78,6 +78,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -105,6 +110,7 @@ import org.connectbot.ui.components.TERMINAL_KEYBOARD_HEIGHT_DP
 import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
 import org.connectbot.service.PromptRequest
+import org.connectbot.util.PreferenceConstants
 
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import timber.log.Timber
@@ -144,6 +150,7 @@ fun ConsoleScreen(
     val keyboardAlwaysVisible = remember { prefs.getBoolean("alwaysvisible", false) }
     var fullscreen by remember { mutableStateOf(prefs.getBoolean("fullscreen", false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean("titlebarhide", false)) }
+    val volumeKeysChangeFontSize = remember { prefs.getBoolean(PreferenceConstants.VOLUME_FONT, true) }
 
     // Keyboard state
     val hasHardwareKeyboard = rememberHasHardwareKeyboard()
@@ -322,6 +329,24 @@ fun ConsoleScreen(
                     bottom = innerPadding.calculateBottomPadding()
                 )
                 .windowInsetsPadding(WindowInsets.imeAnimationTarget)
+                .onPreviewKeyEvent { keyEvent ->
+                    // Handle volume keys for font size change
+                    if (volumeKeysChangeFontSize && keyEvent.type == KeyEventType.KeyDown) {
+                        when (keyEvent.key) {
+                            Key.VolumeUp -> {
+                                currentBridge?.increaseFontSize()
+                                true
+                            }
+                            Key.VolumeDown -> {
+                                currentBridge?.decreaseFontSize()
+                                true
+                            }
+                            else -> false
+                        }
+                    } else {
+                        false
+                    }
+                }
         ) {
             when {
                 uiState.isLoading -> {
@@ -348,6 +373,8 @@ fun ConsoleScreen(
                         // Get font from profile (stored in bridge)
                         val fontResult = rememberTerminalTypefaceResultFromStoredValue(bridge.fontFamily)
                         val coroutineScope = rememberCoroutineScope()
+                        // Observe font size changes for reactive updates
+                        val fontSize by bridge.fontSizeFlow.collectAsState()
 
                         // Show snackbar if font loading failed
                         LaunchedEffect(fontResult.loadFailed, fontResult.isLoading) {
@@ -368,7 +395,7 @@ fun ConsoleScreen(
                                     bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp
                                 ),
                             typeface = fontResult.typeface,
-                            initialFontSize = bridge.fontSizeFlow.value.sp,
+                            initialFontSize = fontSize.sp,
                             keyboardEnabled = true,
                             showSoftKeyboard = showSoftwareKeyboard,
                             focusRequester = termFocusRequester,

@@ -165,6 +165,9 @@ class ConsoleViewModel @Inject constructor(
                 true // Always stop loading when showing all bridges
             }
 
+            // Sync with TerminalManager for volume key font size changes
+            terminalManager?.setCurrentBridgeIndex(newIndex)
+
             it.copy(
                 bridges = newBridges,
                 currentBridgeIndex = newIndex,
@@ -177,6 +180,8 @@ class ConsoleViewModel @Inject constructor(
     fun selectBridge(index: Int) {
         if (index in _uiState.value.bridges.indices) {
             _uiState.update { it.copy(currentBridgeIndex = index) }
+            // Sync with TerminalManager for volume key font size changes
+            terminalManager?.setCurrentBridgeIndex(index)
         }
     }
 
