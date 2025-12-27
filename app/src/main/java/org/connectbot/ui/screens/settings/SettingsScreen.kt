@@ -63,7 +63,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.BuildConfig
 import org.connectbot.R
-import org.connectbot.data.entity.Profile
 import org.connectbot.ui.ObservePermissionOnResume
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.common.getLocalizedFontDisplayName
