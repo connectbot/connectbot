@@ -73,7 +73,7 @@
   <string name="pref_ctrlfkeys_title">Ctrl+num are F-keys</string>
   <string name="pref_ctrlfkeys_summary">On software keyboards, number keys send F1-F10 with ctrl</string>
   <string name="pref_volumefont_title">Volume keys change font size</string>
-  <string name="pref_volumefont_summary">Font size can also be changed in per-host settings</string>
+  <string name="pref_volumefont_summary">Font size can also be changed in profile settings</string>
   <string name="pref_memkeys_title">Remember keys in memory</string>
   <string name="pref_memkeys_summary">Keep unlocked keys in memory until backend service is terminated</string>
   <string name="pref_conn_persist_title">Persist connections</string>
