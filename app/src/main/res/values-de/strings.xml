@@ -458,4 +458,19 @@
   <string name="colorscheme_gruvbox_dark_description">RetrogrooveFarbschema</string>
   <string name="colorscheme_monokai_description">Sublime-Text-inspiriertes-Design</string>
   <string name="colorscheme_tomorrow_night_description">Ein sauberes und komfortables dunkles Thema</string>
+  <string name="pref_profiles_category">Profile</string>
+  <string name="pref_default_profile_title">Standardprofil</string>
+  <string name="pref_default_profile_none">Keine (Hosteinstellungen verwenden)</string>
+  <string name="pref_alwaysvisible_summary">Behalte spezielle Tasten immer sichtbar</string>
+  <string name="pref_customterminal_title">Benutzerdefinierte Terminaltypen</string>
+  <string name="pref_customterminal_summary">Fügen Sie benutzerdefinierte TERM-Werte für Remote-Server hinzu</string>
+  <string name="dialog_customterminal_title">Fügen Sie benutzerdefinierten TerminalsTyp hinzu</string>
+  <string name="dialog_customterminal_hint">Termintyp zB rxvt-unicode</string>
+  <string name="dialog_custom_value_label">Geben Sie einen benutzerdefinierten Wert ein</string>
+  <string name="list_camera_ctrlaspace_description">Strg+A dann Leertaste</string>
+  <string name="list_camera_ctrla_description">Strg+A</string>
+  <string name="list_camera_esc_description">Esc</string>
+  <string name="list_camera_esc_a_description">Esc+A</string>
+  <string name="list_camera_none_description">Kein</string>
+  <string name="list_camera_text_input_description">Eingabetext</string>
 </resources>

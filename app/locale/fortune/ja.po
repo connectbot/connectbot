@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-26 10:13-0800\n"
-"PO-Revision-Date: 2025-12-26 08:40-0800\n"
+"POT-Creation-Date: 2025-12-26 16:01-0800\n"
+"PO-Revision-Date: 2025-12-26 16:00-0800\n"
 "Last-Translator: Naofumi Fukue <naofum@gmail.com>\n"
 "Language: ja\n"
 "Language-Team: ja <LL@li.org>\n"
@@ -2549,75 +2549,75 @@ msgstr "きれいできれいに暗いテーマ"
 #. Category title for profile settings section
 msgctxt "pref_profiles_category"
 msgid "Profiles"
-msgstr ""
+msgstr "プロファイル"
 
 #. Setting title for default profile selection
 msgctxt "pref_default_profile_title"
 msgid "Default Profile"
-msgstr ""
+msgstr "デフォルトプロファイル"
 
 #. Summary text when no default profile is selected
 msgctxt "pref_default_profile_none"
 msgid "None (use host settings)"
-msgstr ""
+msgstr "ホストの設定を使用する"
 
 #. Summary text for special keys always visible setting
 msgctxt "pref_alwaysvisible_summary"
 msgid "Keep special keys always visible"
-msgstr ""
+msgstr "特別なキーを常に表示する"
 
 #. Title for custom terminal types preference
 msgctxt "pref_customterminal_title"
 msgid "Custom Terminal Types"
-msgstr ""
+msgstr "カスタムターミナルタイプ"
 
 #. Summary for custom terminal types preference
 msgctxt "pref_customterminal_summary"
 msgid "Add custom TERM values for remote servers"
-msgstr ""
+msgstr "リモートサーバーにカスタムTERM値を追加する"
 
 #. Dialog title for adding a custom terminal type
 msgctxt "dialog_customterminal_title"
 msgid "Add Custom Terminal Type"
-msgstr ""
+msgstr "カスタムターミナルタイプを追加する"
 
 #. Label/hint for terminal type input field
 msgctxt "dialog_customterminal_hint"
 msgid "Terminal type (e.g., rxvt-unicode)"
-msgstr ""
+msgstr "ターミナルタイプ（例：rxvt-unicode）"
 
 #. Label for custom value input in list preference dialogs
 msgctxt "dialog_custom_value_label"
 msgid "Enter custom value"
-msgstr ""
+msgstr "カスタム値を入力してください"
 
 #. Summary description for Ctrl+A then Space camera button action
 msgctxt "list_camera_ctrlaspace_description"
 msgid "Ctrl+A then Space"
-msgstr ""
+msgstr "CtrlAの後スペース"
 
 #. Summary description for Ctrl+A camera button action
 msgctxt "list_camera_ctrla_description"
 msgid "Ctrl+A"
-msgstr ""
+msgstr "CtrlA"
 
 #. Summary description for Esc camera button action
 msgctxt "list_camera_esc_description"
 msgid "Esc"
-msgstr ""
+msgstr "エスケープキー"
 
 #. Summary description for Esc+A camera button action
 msgctxt "list_camera_esc_a_description"
 msgid "Esc+A"
-msgstr ""
+msgstr "エスケーププラスＡ"
 
 #. Summary description for None camera button action
 msgctxt "list_camera_none_description"
 msgid "None"
-msgstr ""
+msgstr "なし"
 
 #. Summary description for text input camera button action
 msgctxt "list_camera_text_input_description"
 msgid "Text input"
-msgstr ""
+msgstr "テキスト入力"
 
