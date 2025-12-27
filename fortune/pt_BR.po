@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-26 16:01-0800\n"
-"PO-Revision-Date: 2024-07-16 10:19+0000\n"
+"POT-Creation-Date: 2025-12-26 17:40-0800\n"
+"PO-Revision-Date: 2025-12-26 17:39-0800\n"
 "Last-Translator: Dannylo <dannylo.xavier@gmail.com>\n"
 "Language: pt_BR\n"
 "Language-Team: pt_BR <LL@li.org>\n"
@@ -35,7 +35,7 @@ msgstr "Mantém conexões SSH e de Chaves Públicas"
 #. Displayed in the "Help" screen to denote the copyright of this app.
 msgctxt "app_copyright"
 msgid "Copyright © Kenny Root"
-msgstr ""
+msgstr "Direitos Autorais © Kenny Root"
 
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
@@ -161,17 +161,17 @@ msgstr "Copiar chave privada"
 #. Context menu action to copy the private key to clipboard in OpenSSH format
 msgctxt "pubkey_copy_private_openssh"
 msgid "Copy private key (OpenSSH)"
-msgstr ""
+msgstr "Copiar chave privada OpenSSH"
 
 #. Context menu action to copy the private key to clipboard in PEM format
 msgctxt "pubkey_copy_private_pem"
 msgid "Copy private key (PEM)"
-msgstr ""
+msgstr "Copiar chave privada (PEM)"
 
 #. Context menu action to copy the encrypted private key to clipboard
 msgctxt "pubkey_copy_private_encrypted"
 msgid "Copy private key (encrypted)"
-msgstr ""
+msgstr "Copiar chave privada cifrada"
 
 #. Context menu action to copy the public key to clipboard
 msgctxt "pubkey_copy_public"
@@ -181,66 +181,66 @@ msgstr "Copiar chave pública"
 #. Context menu action to export the public key to a file
 msgctxt "pubkey_export_public"
 msgid "Export public key"
-msgstr ""
+msgstr "Exportar chave pública"
 
 #. Context menu action to export the private key to a file in the default
 #. format
 msgctxt "pubkey_export_private"
 msgid "Export private key"
-msgstr ""
+msgstr "Exportar chave privada"
 
 #. Context menu action to export the private key to a file in OpenSSH format
 msgctxt "pubkey_export_private_openssh"
 msgid "Export private key (OpenSSH)"
-msgstr ""
+msgstr "Exportar chave privada (OpenSSH)"
 
 #. Context menu action to export the private key to a file in PEM format
 msgctxt "pubkey_export_private_pem"
 msgid "Export private key (PEM)"
-msgstr ""
+msgstr "Exportar chave privada PEM"
 
 #. Context menu action to export the encrypted private key to a file
 msgctxt "pubkey_export_private_encrypted"
 msgid "Export private key (encrypted)"
-msgstr ""
+msgstr "Exportar chave privada (encriptada)"
 
 #. Dialog title for setting a passphrase when exporting a key
 msgctxt "pubkey_export_set_passphrase"
 msgid "Set export passphrase"
-msgstr ""
+msgstr "Definir frase de passe de exportação"
 
 #. Instructions to enter a passphrase to encrypt the key being exported
 msgctxt "pubkey_export_passphrase_message"
 msgid "Enter a passphrase to encrypt the exported key"
-msgstr ""
+msgstr "Insira uma frase de passe para cifrar a chave exportada"
 
 #. Label for the field where user confirms the passphrase by entering it again
 msgctxt "pubkey_export_confirm_passphrase"
 msgid "Confirm passphrase"
-msgstr ""
+msgstr "Confirme a frase de acesso"
 
 #. Error message shown when the passphrase and confirmation passphrase don't
 #. match
 msgctxt "pubkey_export_passphrase_mismatch"
 msgid "Passphrases do not match"
-msgstr ""
+msgstr "Senhas não coincidem"
 
 #. Dialog title when importing an encrypted SSH key file
 msgctxt "pubkey_import_encrypted_title"
 msgid "Import encrypted key"
-msgstr ""
+msgstr "Importar chave encriptada"
 
 #. Prompt asking user to enter the password to decrypt an imported key file.
 #. First parameter is key nickname, second is key type.
 #, c-format
 msgctxt "pubkey_import_encrypted_message"
 msgid "Enter password to decrypt key '%1$s' (%2$s)"
-msgstr ""
+msgstr "Insira a senha para decifrar a chave '%1$s' (%2$s)"
 
 #. Button text to confirm importing a key
 msgctxt "pubkey_import_button"
 msgid "Import"
-msgstr ""
+msgstr "Importar"
 
 #. Context menu action to change the password protecting a private key
 msgctxt "pubkey_change_password"
@@ -257,13 +257,13 @@ msgstr "Abrir chave"
 #, c-format
 msgctxt "pubkey_unlock_message"
 msgid "Enter password to unlock key '%1$s'"
-msgstr ""
+msgstr "Insira a senha para desbloquear a chave '%1$s'"
 
 #. Error message shown when user tries to use a nickname that already exists
 #. for another key.
 msgctxt "pubkey_nickname_exists"
 msgid "A key with this nickname already exists"
-msgstr ""
+msgstr "Uma chave com este apelido já existe"
 
 #. Context menu checkbox that indicates that this pubkey entry should attempt
 #. to be loaded upon starting the app.
@@ -397,7 +397,7 @@ msgstr ""
 #, c-format
 msgctxt "host_authenticity_warning"
 msgid "The authenticity of host '%1$s' can't be established."
-msgstr "A autenticidade do Host '%1$s' não pode ser estabelecida"
+msgstr "A autenticidade do Host '%1$s' não pode ser estabelecida."
 
 #. First field is encryption algorithm. Second is the actual fingerprint in
 #. hex digits
@@ -410,25 +410,25 @@ msgstr "O host %1$s tem a impressão digital %2$s"
 #. connecting to a new host
 msgctxt "host_key_verification_title"
 msgid "Host key verification"
-msgstr ""
+msgstr "Verificação da chave do host"
 
 #. Section header for the fingerprint formats display area
 msgctxt "fingerprint_format_header"
 msgid "Fingerprint format"
-msgstr ""
+msgstr "Formato de impressão digital"
 
 #. Format string showing key type and size, e.g., "RSA 2048 bits". First field
 #. is key type, second is key size in bits.
 #, c-format
 msgctxt "host_key_type_and_size"
 msgid "%1$s %2$d bits"
-msgstr ""
+msgstr "%1$s %2$d bits"
 
 #. Content description for the copy fingerprint to clipboard button, used by
 #. screen readers for accessibility
 msgctxt "fingerprint_copy_description"
 msgid "Copy fingerprint to clipboard"
-msgstr ""
+msgstr "Copiar impressão digital para área de transferência"
 
 #. Error message shown when entered password and confirmation password don't
 #. match
@@ -455,31 +455,31 @@ msgstr "Conexão perdida"
 #. reconnect
 msgctxt "network_lost_grace_period"
 msgid "Network lost, waiting to reconnect…"
-msgstr ""
+msgstr "Conexão de rede perdida aguardando para reconectar…"
 
 #. Message shown when the 60-second grace period expires without network
 #. restoration
 msgctxt "network_grace_period_expired"
 msgid "Network not restored, disconnecting…"
-msgstr ""
+msgstr "Rede não restaurada, desconectando…"
 
 #. Message shown when network is restored and connection can continue (same IP
 #. address)
 msgctxt "network_restored_same_ip"
 msgid "Network restored, connection maintained"
-msgstr ""
+msgstr "Rede restaurada, conexão mantida"
 
 #. Message shown when network is restored but IP address changed, requiring
 #. reconnection
 msgctxt "network_restored_ip_changed"
 msgid "Network restored but IP changed, reconnecting…"
-msgstr ""
+msgstr "Rede restaurada mas o IP mudou reconectando…"
 
 #. Message shown when network is restored but previous network state is
 #. unknown
 msgctxt "network_restored_no_previous_state"
 msgid "Network restored, verifying connection…"
-msgstr ""
+msgstr "Rede restaurada, verificando conexão…"
 
 #. The category title for terminal emulation preferences.
 msgctxt "pref_emulation_category"
@@ -505,73 +505,73 @@ msgstr "Tamanho do buffer de memória a manter para cada terminal"
 #. Name for the font family preference
 msgctxt "pref_fontfamily_title"
 msgid "Font"
-msgstr ""
+msgstr "Fonte"
 
 #. Description of the font family preference
 #. Title for adding custom font
 msgctxt "pref_customfont_title"
 msgid "Add custom font"
-msgstr ""
+msgstr "Adicionar fonte personalizada"
 
 #. Summary for adding custom font
 msgctxt "pref_customfont_summary"
 msgid "Add a font from Google Fonts by name"
-msgstr ""
+msgstr "Adicionar uma fonte do Google Fonts pelo nome"
 
 #. Dialog title for adding custom font
 msgctxt "dialog_customfont_title"
 msgid "Add Custom Font"
-msgstr ""
+msgstr "Adicionar Fonte Personalizada"
 
 #. Hint for custom font name input
 msgctxt "dialog_customfont_hint"
 msgid "Google Fonts name (e.g., Cascadia Code)"
-msgstr ""
+msgstr "Nome da fonte do Google (por exemplo Cascadia Code)"
 
 #. Button to add font
 msgctxt "button_add"
 msgid "Add"
-msgstr ""
+msgstr "Adicionar"
 
 #. Button to remove font
 msgctxt "button_remove"
 msgid "Remove"
-msgstr ""
+msgstr "Remover"
 
 #. Message shown when validating font
 msgctxt "font_validating"
 msgid "Validating font…"
-msgstr ""
+msgstr "Validando fonte…"
 
 #. Title for importing local font
 msgctxt "pref_localfont_title"
 msgid "Import local font"
-msgstr ""
+msgstr "Importar fonte local"
 
 #. Summary for importing local font
 msgctxt "pref_localfont_summary"
 msgid "Import a font file from storage (TTF, OTF)"
-msgstr ""
+msgstr "Importe um arquivo de fonte do armazenamento (TTF, OTF)"
 
 #. Dialog title for importing local font
 msgctxt "dialog_localfont_title"
 msgid "Import Font"
-msgstr ""
+msgstr "Importar Fonte"
 
 #. Hint for local font name input
 msgctxt "dialog_localfont_hint"
 msgid "Display name for the font"
-msgstr ""
+msgstr "Nome de exibição para a fonte"
 
 #. Button to import font
 msgctxt "button_import"
 msgid "Import"
-msgstr ""
+msgstr "Importar"
 
 #. Message shown when importing font
 msgctxt "font_importing"
 msgid "Importing font…"
-msgstr ""
+msgstr "Importando fonte…"
 
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
@@ -755,7 +755,7 @@ msgstr "Alerta audível"
 #. the terminal alert is triggered.
 msgctxt "pref_bell_summary"
 msgid "Play sound on terminal alert"
-msgstr ""
+msgstr "Reproduzir som no alerta do terminal"
 
 #. Title for the slider preference to set the volume
 msgctxt "pref_bell_volume_title"
@@ -771,7 +771,7 @@ msgstr "Vibrar ao alertar"
 #. terminal alert would cause the "bell" sound to play normally.
 msgctxt "pref_bell_vibrate_summary"
 msgid "Vibrate on terminal alert"
-msgstr ""
+msgstr "Vibrar ao alerta de terminal"
 
 #. Checkbox preference title for the receive notifications on terminal bell
 #. feature
@@ -827,82 +827,82 @@ msgstr "Categoria de cor"
 #. Color name for red (#F44336)
 msgctxt "color_red"
 msgid "Red"
-msgstr ""
+msgstr "Vermelho"
 
 #. Color name for pink (#E91E63)
 msgctxt "color_pink"
 msgid "Pink"
-msgstr ""
+msgstr "Rosa"
 
 #. Color name for purple (#9C27B0)
 msgctxt "color_purple"
 msgid "Purple"
-msgstr ""
+msgstr "Roxo"
 
 #. Color name for deep purple (#673AB7)
 msgctxt "color_deep_purple"
 msgid "Deep Purple"
-msgstr ""
+msgstr "Purple Profundo"
 
 #. Color name for indigo (#3F51B5)
 msgctxt "color_indigo"
 msgid "Indigo"
-msgstr ""
+msgstr "Índigo"
 
 #. Color name for blue (#2196F3)
 msgctxt "color_blue"
 msgid "Blue"
-msgstr ""
+msgstr "Azul"
 
 #. Color name for light blue (#03A9F4)
 msgctxt "color_light_blue"
 msgid "Light Blue"
-msgstr ""
+msgstr "Azul Claro"
 
 #. Color name for cyan (#00BCD4)
 msgctxt "color_cyan"
 msgid "Cyan"
-msgstr ""
+msgstr "Ciano"
 
 #. Color name for teal (#009688)
 msgctxt "color_teal"
 msgid "Teal"
-msgstr ""
+msgstr "Azul Esverdeado"
 
 #. Color name for green (#4CAF50)
 msgctxt "color_green"
 msgid "Green"
-msgstr ""
+msgstr "Verde"
 
 #. Color name for light green (#8BC34A)
 msgctxt "color_light_green"
 msgid "Light Green"
-msgstr ""
+msgstr "Verde Claro"
 
 #. Color name for lime (#CDDC39)
 msgctxt "color_lime"
 msgid "Lime"
-msgstr ""
+msgstr "Limão"
 
 #. Color name for yellow (#FFEB3B)
 msgctxt "color_yellow"
 msgid "Yellow"
-msgstr ""
+msgstr "Amarelo"
 
 #. Color name for amber (#FFC107)
 msgctxt "color_amber"
 msgid "Amber"
-msgstr ""
+msgstr "Âmbar"
 
 #. Color name for orange (#FF9800)
 msgctxt "color_orange"
 msgid "Orange"
-msgstr ""
+msgstr "Laranja"
 
 #. Color name for gray (#9E9E9E)
 msgctxt "color_gray"
 msgid "Gray"
-msgstr ""
+msgstr "Cinza"
 
 #. Host's default font size when opening the terminal in points (pt)
 msgctxt "hostpref_fontsize_title"
@@ -912,12 +912,12 @@ msgstr "Tamanho da fonte (pontos)"
 #. Host's font family preference title
 msgctxt "hostpref_fontfamily_title"
 msgid "Font"
-msgstr ""
+msgstr "Fonte"
 
 #. Host's color scheme preference title
 msgctxt "hostpref_colorscheme_title"
 msgid "Terminal color scheme"
-msgstr ""
+msgstr "Esquema de cores do terminal"
 
 #. Host pubkey usage preference title
 msgctxt "hostpref_pubkeyid_title"
@@ -1014,192 +1014,192 @@ msgstr "Porta"
 #. terminal colors, terminal              font, etc.
 msgctxt "hostpref_profile_title"
 msgid "Profile"
-msgstr ""
+msgstr "Perfil"
 
 #. Description text shown below the profile selector explaining what selecting
 #. a profile does
 msgctxt "hostpref_profile_summary"
 msgid "Select a profile to use its terminal settings"
-msgstr ""
+msgstr "Selecione um perfil para usar suas configurações de terminal"
 
 #. Dropdown option shown when no profile is selected, indicating host-specific
 #. settings will be used instead
 msgctxt "hostpref_profile_none"
 msgid "None (use host settings)"
-msgstr ""
+msgstr "Nenhum (usar configurações do host)"
 
 #. Message displayed when a setting is disabled because it's controlled by a
 #. profile instead of host settings
 msgctxt "profile_controlled_setting"
 msgid "Controlled by profile"
-msgstr ""
+msgstr "Controlado por perfil"
 
 #. Dropdown option to use the default font when configuring font family
 msgctxt "font_use_default"
 msgid "Use Default"
-msgstr ""
+msgstr "Usar Padrão"
 
 #. Display name for the system default monospace font option
 msgctxt "font_system_default"
 msgid "Default (Monospace)"
-msgstr ""
+msgstr "Padrão Monospaçado"
 
 #. Fallback text shown when referencing a pubkey that no longer exists in the
 #. database
 msgctxt "pubkey_unknown"
 msgid "Unknown key"
-msgstr ""
+msgstr "Chave desconhecida"
 
 #. Default name shown for the default color scheme when no specific scheme is
 #. selected
 msgctxt "colorscheme_default"
 msgid "Default"
-msgstr ""
+msgstr "Padrão"
 
 #. Profile editor screen strings
 #. Window title shown when creating a new profile
 msgctxt "profile_editor_title_new"
 msgid "New Profile"
-msgstr ""
+msgstr "Novo Perfil"
 
 #. Window title shown when editing an existing profile
 msgctxt "profile_editor_title_edit"
 msgid "Edit Profile"
-msgstr ""
+msgstr "Editar Perfil"
 
 #. Content description for the save button that saves profile changes
 msgctxt "profile_editor_save"
 msgid "Save"
-msgstr ""
+msgstr "Guardar"
 
 #. Label for the text field where user enters the profile name
 msgctxt "profile_editor_name_label"
 msgid "Profile Name"
-msgstr ""
+msgstr "Nome do Perfil"
 
 #. Section header for icon color selection area
 msgctxt "profile_editor_section_icon_color"
 msgid "Icon Color"
-msgstr ""
+msgstr "Cor do Ícone"
 
 #. Section header for color scheme selection area
 msgctxt "profile_editor_section_color_scheme"
 msgid "Color Scheme"
-msgstr ""
+msgstr "Esquema de Cores"
 
 #. Section header for font configuration area
 msgctxt "profile_editor_section_font"
 msgid "Font"
-msgstr ""
+msgstr "Fonte"
 
 #. Section header for terminal emulation settings area
 msgctxt "profile_editor_section_terminal"
 msgid "Terminal"
-msgstr ""
+msgstr "Terminal"
 
 #. Subsection title for font family selector
 msgctxt "profile_editor_font_family_title"
 msgid "Font Family"
-msgstr ""
+msgstr "Família de Fontes"
 
 #. Subsection title showing current font size. Parameter is the font size in
 #. points.
 #, c-format
 msgctxt "profile_editor_font_size_title"
 msgid "Font Size: %d"
-msgstr ""
+msgstr "Tamanho da Fonte: %d"
 
 #. Dropdown option to not override host color with profile color
 msgctxt "profile_icon_color_none"
 msgid "None (use host color)"
-msgstr ""
+msgstr "Nenhum usar cor do host"
 
 #. Profile list screen strings
 #. Window title for the profiles list screen
 msgctxt "profile_list_title"
 msgid "Profiles"
-msgstr ""
+msgstr "Perfis"
 
 #. Content description for the FAB button that creates a new profile
 msgctxt "profile_list_create_profile"
 msgid "Create profile"
-msgstr ""
+msgstr "Criar perfil"
 
 #. Message shown when there are no profiles, encouraging user to create one
 msgctxt "profile_list_empty_message"
 msgid "No profiles yet. Tap + to create one."
-msgstr ""
+msgstr "Nenhum perfil ainda. Toque em + para criar um."
 
 #. Content description for the menu button on each profile item
 msgctxt "profile_list_more_options"
 msgid "More options"
-msgstr ""
+msgstr "Mais opções"
 
 #. Menu item to duplicate/copy a profile
 msgctxt "profile_list_duplicate"
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplicar"
 
 #. Menu item to delete a profile
 msgctxt "profile_list_delete"
 msgid "Delete"
-msgstr ""
+msgstr "Excluir"
 
 #. Dialog title when creating a new profile
 msgctxt "profile_create_dialog_title"
 msgid "Create Profile"
-msgstr ""
+msgstr "Criar Perfil"
 
 #. Label for the profile name text field in create dialog
 msgctxt "profile_create_name_label"
 msgid "Profile Name"
-msgstr ""
+msgstr "Nome do Perfil"
 
 #. Button text to confirm creating a new profile
 msgctxt "profile_create_button"
 msgid "Create"
-msgstr ""
+msgstr "Criar"
 
 #. Button text to cancel creating a new profile
 msgctxt "profile_create_cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #. Dialog title when deleting a profile
 msgctxt "profile_delete_dialog_title"
 msgid "Delete Profile"
-msgstr ""
+msgstr "Excluir Perfil"
 
 #. Confirmation message asking if user wants to delete a profile. Parameter is
 #. the profile name.
 #, c-format
 msgctxt "profile_delete_dialog_message"
 msgid "Are you sure you want to delete '%s'?"
-msgstr ""
+msgstr "Tem certeza de que deseja excluir '%s'?"
 
 #. Button text to confirm deleting a profile
 msgctxt "profile_delete_button"
 msgid "Delete"
-msgstr ""
+msgstr "Excluir"
 
 #. Button text to cancel deleting a profile
 msgctxt "profile_delete_cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #. Summary text showing font settings. First parameter is font name, second is
 #. font size in points.
 #, c-format
 msgctxt "profile_summary_font"
 msgid "Font: %1$s %2$dpt"
-msgstr ""
+msgstr "Fonte %1$s %2$dpontos"
 
 #. Summary text showing emulation setting. Parameter is the terminal emulation
 #. type.
 #, c-format
 msgctxt "profile_summary_emulation"
 msgid "Emulation: %s"
-msgstr ""
+msgstr "Emulação"
 
 #. Button to close the disconnected terminal window.
 msgctxt "console_menu_close"
@@ -1269,7 +1269,7 @@ msgstr "Criar encaminhamento de porta"
 #. Edit dialog.
 msgctxt "portforward_save"
 msgid "Save"
-msgstr ""
+msgstr "Guardar"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
@@ -1385,7 +1385,7 @@ msgstr "Nada"
 #. dialog.
 msgctxt "list_camera_text_input"
 msgid "Text Input"
-msgstr ""
+msgstr "Entrada de Texto"
 
 #. Confirmation dialog message asking user to confirm deletion. Parameter is
 #. the item name.
@@ -1505,7 +1505,7 @@ msgstr "Tentando autenticação 'chave pública' com uma chave pública específ
 #, c-format
 msgctxt "terminal_auth_biometric"
 msgid "Requesting biometric authentication for key '%1$s'"
-msgstr ""
+msgstr "Solicitando autenticação biométrica para a chave '%1$s'"
 
 #. Message shown in terminal when public key authentication fails. Parameter
 #. is the key nickname.
@@ -1533,7 +1533,7 @@ msgid ""
 "authentication.]"
 msgstr ""
 "[Seu host não suporta autenticação por 'senha' ou 'interativa por "
-"teclado'."
+"teclado'.]"
 
 #. Message shown in terminal when shell session is not started because user
 #. disabled it in host settings
@@ -1574,7 +1574,7 @@ msgstr "Sim"
 #. Selector title for the list of color schemes.
 msgctxt "list_color_schemes"
 msgid "Color schemes"
-msgstr ""
+msgstr "Esquemas de cores"
 
 #. Menu selection to reset colors to their defaults.
 msgctxt "menu_colors_reset"
@@ -1584,158 +1584,160 @@ msgstr "Reiniciar"
 #. Button text to open color scheme manager
 msgctxt "button_manage_schemes"
 msgid "Manage Schemes"
-msgstr ""
+msgstr "Gerenciar Esquemas"
 
 #. Window title for color scheme manager screen
 msgctxt "title_scheme_manager"
 msgid "Manage Color Schemes"
-msgstr ""
+msgstr "Gerenciar Esquemas de Cores"
 
 #. Button text to create a new color scheme
 msgctxt "button_new_scheme"
 msgid "New Scheme"
-msgstr ""
+msgstr "Novo Esquema"
 
 #. Button text to duplicate a color scheme
 msgctxt "button_duplicate_scheme"
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplicar"
 
 #. Button text to rename a color scheme
 msgctxt "button_rename_scheme"
 msgid "Rename"
-msgstr ""
+msgstr "Renomear"
 
 #. Button text to delete a color scheme
 msgctxt "button_delete_scheme"
 msgid "Delete"
-msgstr ""
+msgstr "Excluir"
 
 #. Dialog title when creating a new color scheme
 msgctxt "dialog_title_new_scheme"
 msgid "New Color Scheme"
-msgstr ""
+msgstr "Novo Esquema de Cores"
 
 #. Dialog title when renaming a color scheme
 msgctxt "dialog_title_rename_scheme"
 msgid "Rename Color Scheme"
-msgstr ""
+msgstr "Renomear Esquema de Cores"
 
 #. Label for scheme name input field
 msgctxt "label_scheme_name"
 msgid "Scheme Name"
-msgstr ""
+msgstr "Nome do Esquema"
 
 #. Label for scheme description input field (optional)
 msgctxt "label_scheme_description"
 msgid "Description (optional)"
-msgstr ""
+msgstr "Descrição opcional"
 
 #. Confirmation dialog title when deleting a scheme
 msgctxt "dialog_title_delete_scheme"
 msgid "Delete Scheme?"
-msgstr ""
+msgstr "Excluir Esquema?"
 
 #. Confirmation dialog message when deleting a scheme
 #, c-format
 msgctxt "dialog_message_delete_scheme"
 msgid "Are you sure you want to delete \"%1$s\"? This action cannot be undone."
 msgstr ""
+"Tem certeza de que deseja excluir \"%1$s\"? Esta ação não pode ser "
+"desfeita."
 
 #. Button text for confirm action in dialogs
 msgctxt "button_confirm"
 msgid "Confirm"
-msgstr ""
+msgstr "Confirme"
 
 #. Button text for cancel action in dialogs
 msgctxt "button_cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #. Label indicating a scheme is built-in and cannot be deleted
 msgctxt "label_built_in_scheme"
 msgid "Built-in"
-msgstr ""
+msgstr "Integrado"
 
 #. Label indicating a scheme is custom/user-created
 msgctxt "label_custom_scheme"
 msgid "Custom"
-msgstr ""
+msgstr "Personalizado"
 
 #. Empty state message when no custom schemes exist
 msgctxt "empty_custom_schemes"
 msgid "No custom schemes. Tap \"New Scheme\" to create one."
-msgstr ""
+msgstr "Nenhum esquema personalizado. Toque em \"Novo Esquema\" para criar um."
 
 #. Button text to edit full color palette
 msgctxt "button_edit_palette"
 msgid "Edit Palette"
-msgstr ""
+msgstr "Editar Paleta"
 
 #. Button text to export a color scheme to JSON file
 msgctxt "button_export_scheme"
 msgid "Export Scheme"
-msgstr ""
+msgstr "Esquema de Exportação"
 
 #. Button text to import a color scheme from JSON file
 msgctxt "button_import_scheme"
 msgid "Import Scheme"
-msgstr ""
+msgstr "Esquema de Importação"
 
 #. Success message after exporting a scheme
 #, c-format
 msgctxt "message_export_success"
 msgid "Exported %1$s"
-msgstr ""
+msgstr "Exportado %1$s"
 
 #. Success message after importing a scheme
 #, c-format
 msgctxt "message_import_success"
 msgid "Imported %1$s"
-msgstr ""
+msgstr "Importado %1$s"
 
 #. Error message when export fails
 #, c-format
 msgctxt "error_export_failed"
 msgid "Failed to export scheme: %1$s"
-msgstr ""
+msgstr "Falha ao exportar esquema %1$s"
 
 #. Error message when import fails
 #, c-format
 msgctxt "error_import_failed"
 msgid "Failed to import scheme: %1$s"
-msgstr ""
+msgstr "Falha ao importar esquema %1$s"
 
 #. Error message when JSON parsing fails
 msgctxt "error_invalid_json"
 msgid "Invalid JSON file"
-msgstr ""
+msgstr "Arquivo JSON inválido"
 
 #. Window title for palette editor screen
 msgctxt "title_palette_editor"
 msgid "Edit Color Palette"
-msgstr ""
+msgstr "Editar Paleta de Cores"
 
 #. Button text to reset entire palette to defaults
 msgctxt "button_reset_all_colors"
 msgid "Reset All"
-msgstr ""
+msgstr "Reiniciar Tudo"
 
 #. Section header for ANSI colors (0-15)
 msgctxt "section_ansi_colors"
 msgid "ANSI Colors (0–15)"
-msgstr ""
+msgstr "Cores ANSI 0–15"
 
 #. Dialog title when editing a specific color
 #, c-format
 msgctxt "dialog_title_edit_color"
 msgid "Edit Color %1$d"
-msgstr ""
+msgstr "Editar Cor %1$d"
 
 #. Confirmation dialog for resetting all colors
 msgctxt "dialog_title_reset_all"
 msgid "Reset All Colors?"
-msgstr ""
+msgstr "Reiniciar todas as cores?"
 
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
@@ -1743,6 +1745,8 @@ msgid ""
 "This will reset all 256 colors to their default values. This action "
 "cannot be undone."
 msgstr ""
+"Isso irá reiniciar todos os 256 cores para seus valores padrão. Esta ação"
+" não pode ser desfeita."
 
 #. Displayed in the notification bar that connections are active
 msgctxt "app_is_running"
@@ -1753,22 +1757,22 @@ msgstr "ConnectBot está executando"
 #. Label for the red color component slider (0-255) in the RGB color picker
 msgctxt "label_red"
 msgid "Red"
-msgstr ""
+msgstr "Vermelho"
 
 #. Label for the green color component slider (0-255) in the RGB color picker
 msgctxt "label_green"
 msgid "Green"
-msgstr ""
+msgstr "Verde"
 
 #. Label for the blue color component slider (0-255) in the RGB color picker
 msgctxt "label_blue"
 msgid "Blue"
-msgstr ""
+msgstr "Azul"
 
 #. Label for the hex color input field where users can type a hex color code
 msgctxt "label_hex_color"
 msgid "Hex Color"
-msgstr ""
+msgstr "Cor Hexadecimal"
 
 #. Very short label indicating the number next to it is "foreground color"
 #. number.
@@ -1944,205 +1948,207 @@ msgstr "F12"
 #. longer text with full IME support
 msgctxt "terminal_keyboard_text_input_button"
 msgid "Text input"
-msgstr ""
+msgstr "Entrada de texto"
 
 #. Title for the floating text input dialog where users can type longer text
 #. with full keyboard/IME support
 msgctxt "terminal_text_input_dialog_title"
 msgid "Text Input"
-msgstr ""
+msgstr "Entrada de Texto"
 
 #. Label for the text field in the floating text input dialog where users
 #. compose their text
 msgctxt "terminal_text_input_dialog_label"
 msgid "Enter text to send to terminal"
-msgstr ""
+msgstr "Digite o texto para enviar ao terminal"
 
 #. Menu item in console toolbar to open floating text input dialog
 msgctxt "console_menu_text_input"
 msgid "Text input"
-msgstr ""
+msgstr "Entrada de texto"
 
 #. Send button in floating text input dialog
 msgctxt "button_send"
 msgid "Send"
-msgstr ""
+msgstr "Enviar"
 
 #. Common UI button labels
 #. Button label for confirming an action
 msgctxt "button_ok"
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #. Button label for closing a dialog
 msgctxt "button_close"
 msgid "Close"
-msgstr ""
+msgstr "Fechar"
 
 #. Accessibility label for back navigation button; used for screen readers
 msgctxt "button_back"
 msgid "Back"
-msgstr ""
+msgstr "Voltar"
 
 #. Accessibility label for navigate up button in app bar; used for screen
 #. readers
 msgctxt "button_navigate_up"
 msgid "Navigate up"
-msgstr ""
+msgstr "Navegar para cima"
 
 #. Accessibility label for more options menu button; used for screen readers
 msgctxt "button_more_options"
 msgid "More options"
-msgstr ""
+msgstr "Mais opções"
 
 #. Accessibility label for host options menu button; used for screen readers
 msgctxt "button_host_options"
 msgid "Host options"
-msgstr ""
+msgstr "Opções de host"
 
 #. Accessibility label for collapse button; used for screen readers
 msgctxt "button_collapse"
 msgid "Collapse"
-msgstr ""
+msgstr "Colapsar"
 
 #. Error messages
 #. Error message shown when a public key fails to load at startup
 #, c-format
 msgctxt "error_key_load_failed"
 msgid "Failed to load key '%1$s': %2$s"
-msgstr ""
+msgstr "Falha ao carregar a chave '%1$s': %2$s"
 
 #. Error message shown when a connection to a host fails
 #, c-format
 msgctxt "error_connection_failed"
 msgid "Failed to connect to %1$s (%2$s): %3$s"
-msgstr ""
+msgstr "Falha ao conectar a %1$s (%2$s): %3$s"
 
 #. Error message shown when port forwards fail to load for a host
 #, c-format
 msgctxt "error_port_forward_load_failed"
 msgid "Failed to load port forwards for %1$s: %2$s"
-msgstr ""
+msgstr "Falha ao carregar redirecionamentos de porta para %1$s: %2$s"
 
 #. Error message shown when saving host configuration fails
 #, c-format
 msgctxt "error_host_save_failed"
 msgid "Failed to save host %1$s: %2$s"
-msgstr ""
+msgstr "Falha ao salvar o host %1$s: %2$s"
 
 #. Error message shown when loading a color scheme fails
 #, c-format
 msgctxt "error_color_scheme_load_failed"
 msgid "Failed to load color scheme: %s"
-msgstr ""
+msgstr "Falha ao carregar esquema de cores: %s"
 
 #. Empty state messages
 #. Message shown when no hosts have been configured yet
 msgctxt "empty_hosts_message"
 msgid "No hosts configured"
-msgstr ""
+msgstr "Nenhum host configurado"
 
 #. Message shown when no public keys have been generated or imported yet
 msgctxt "empty_pubkeys_message"
 msgid "No keys found."
-msgstr ""
+msgstr "Nenhuma chave encontrada."
 
 #. Message shown when no port forwards have been configured for a host
 msgctxt "empty_port_forwards_message"
 msgid "No port forwards configured."
-msgstr ""
+msgstr "Nenhuma reencaminhamento de porta configurado."
 
 #. Message shown when no URLs are found in the terminal buffer during URL scan
 msgctxt "empty_urls_message"
 msgid "No URLs found in terminal buffer"
-msgstr ""
+msgstr "Nenhum URL encontrado no buffer do terminal"
 
 #. Console screen messages
 #. Default title for console screen when no specific host is connected
 msgctxt "console_default_title"
 msgid "Console"
 msgstr ""
+"Console é um termo que não está presente na frase original fornecida para"
+" tradução, porém o termo Console em português é Console"
 
 #. Host editor screen labels
 #. Label for quick connect input field
 msgctxt "host_editor_quick_connect_label"
 msgid "Quick connect"
-msgstr ""
+msgstr "Conectar rápido"
 
 #. Placeholder text showing format for quick connect field
 msgctxt "host_editor_quick_connect_placeholder"
 msgid "user@hostname:port"
-msgstr ""
+msgstr "usuário@nome_do_host:porta"
 
 #. Supporting text showing example for quick connect field
 msgctxt "host_editor_quick_connect_example"
 msgid "Example: root@192.168.1.1:22"
-msgstr ""
+msgstr "Exemplo root@192.168.1.1{22"
 
 #. Text for button to show advanced host options
 msgctxt "host_editor_show_advanced"
 msgid "Show advanced options"
-msgstr ""
+msgstr "Mostrar opções avançadas"
 
 #. Text for button to hide advanced host options
 msgctxt "host_editor_hide_advanced"
 msgid "Hide advanced options"
-msgstr ""
+msgstr "Esconder opções avançadas"
 
 #. Terminal resize dialog
 #. Label for width input field in terminal resize dialog
 msgctxt "resize_width_label"
 msgid "Width (columns)"
-msgstr ""
+msgstr "Largura colunas"
 
 #. Label for height input field in terminal resize dialog
 msgctxt "resize_height_label"
 msgid "Height (rows)"
-msgstr ""
+msgstr "Altura linhas"
 
 #. Public key editor labels
 #. Label for key type field in the SSH pubkey editor
 msgctxt "pubkey_editor_key_type_label"
 msgid "Key type"
-msgstr ""
+msgstr "Tipo de chave"
 
 #. Label for the options section on SSH pubkey editor
 msgctxt "pubkey_editor_options_label"
 msgid "Options"
-msgstr ""
+msgstr "Opções"
 
 #. Warning message shown when encrypted SSH pubkeys are set to load on startup
 msgctxt "pubkey_editor_encrypted_startup_warning"
 msgid "Encrypted keys cannot be unlocked at startup"
-msgstr ""
+msgstr "Chaves criptografadas não podem ser desbloqueadas na inicialização"
 
 #. Public key list labels
 #. Label prefix for displaying key type in list
 #, c-format
 msgctxt "pubkey_type_label"
 msgid "Type: %s"
-msgstr ""
+msgstr "Tipo: %s"
 
 #. Accessibility description for encrypted key icon
 msgctxt "pubkey_encrypted_description"
 msgid "Encrypted"
-msgstr ""
+msgstr "Criptografado"
 
 #. Accessibility description for unencrypted key icon
 msgctxt "pubkey_not_encrypted_description"
 msgid "Not encrypted"
-msgstr ""
+msgstr "Não criptografado"
 
 #. Biometric authentication strings
 #. Label for biometric protection toggle in key generation
 msgctxt "pubkey_biometric_protection"
 msgid "Fingerprint protection"
-msgstr ""
+msgstr "Proteção por impressão digital"
 
 #. Description for biometric protection option
 msgctxt "pubkey_biometric_description"
 msgid "Protect this key with your fingerprint"
-msgstr ""
+msgstr "Proteja esta chave com sua digital"
 
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
@@ -2150,82 +2156,84 @@ msgid ""
 "No fingerprint enrolled. Set up fingerprint in device settings to use "
 "this feature."
 msgstr ""
+"Nenhum dedo registrado. Configure impressão digital nas configurações do "
+"dispositivo para usar essa função."
 
 #. Warning shown when key type doesn\'t support biometric protection
 msgctxt "pubkey_biometric_key_type_warning"
 msgid "Fingerprint protection is only available for RSA and EC keys"
-msgstr ""
+msgstr "Proteção por impressão digital está disponível apenas para chaves RSA e EC"
 
 #. Title for biometric prompt when unlocking a key
 msgctxt "pubkey_biometric_prompt_title"
 msgid "Authenticate to use key"
-msgstr ""
+msgstr "Autenticar para usar chave"
 
 #. Subtitle for biometric prompt
 #, c-format
 msgctxt "pubkey_biometric_prompt_subtitle"
 msgid "Touch the fingerprint sensor to unlock '%1$s'"
-msgstr ""
+msgstr "Toque no sensor de impressão digital para desbloquear %1$s"
 
 #. Accessibility description for biometric-protected key icon
 msgctxt "pubkey_biometric_description_icon"
 msgid "Protected by fingerprint"
-msgstr ""
+msgstr "Protegido por impressão digital"
 
 #. Error message when biometric authentication is not available in current
 #. context
 msgctxt "pubkey_biometric_not_available"
 msgid "Fingerprint authentication is not available"
-msgstr ""
+msgstr "Autenticação por impressão digital não está disponível"
 
 #. Port forward editor labels
 #. Placeholder for port forward nickname field. Should show an example
 #. nickname for a port forward.
 msgctxt "portforward_nickname_placeholder"
 msgid "Internal Webserver"
-msgstr ""
+msgstr "Servidor Web Interno"
 
 #. Error message when port is out of valid range
 msgctxt "portforward_port_range_error"
 msgid "Port must be between 1 and 65535"
-msgstr ""
+msgstr "A porta deve estar entre 1 e 65535"
 
 #. Placeholder for destination field
 msgctxt "portforward_destination_placeholder"
 msgid "localhost:80"
-msgstr ""
+msgstr "localhost:80"
 
 #. Error message for invalid destination format
 msgctxt "portforward_destination_format_error"
 msgid "Format should be host:port (e.g., localhost:80)"
-msgstr ""
+msgstr "Formato deve ser hospedeiro:porta (exemplo localhost:80)"
 
 #. Port forward list labels
 #. Label prefix for displaying port forward type in list
 #, c-format
 msgctxt "portforward_type_label"
 msgid "Type: %s"
-msgstr ""
+msgstr "Tipo: %s"
 
 #. Menu item to enable port forward on live connection
 msgctxt "portforward_enable"
 msgid "Enable"
-msgstr ""
+msgstr "Ativar"
 
 #. Menu item to disable port forward on live connection
 msgctxt "portforward_disable"
 msgid "Disable"
-msgstr ""
+msgstr "Desativar"
 
 #. Content description for enabled port forward visual indicator
 msgctxt "portforward_enabled"
 msgid "Port forward enabled"
-msgstr ""
+msgstr "Encaminhamento de porta habilitado"
 
 #. Content description for disabled port forward visual indicator
 msgctxt "portforward_disabled"
 msgid "Port forward disabled"
-msgstr ""
+msgstr "Encaminhamento de porta desativado"
 
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
@@ -2264,7 +2272,7 @@ msgstr "Inportar chaves publica existente"
 #. connections alive.
 msgctxt "notification_permission_title"
 msgid "Keep connections alive"
-msgstr ""
+msgstr "Mantenha as conexões ativas"
 
 #. Explanation message shown in permission dialog when user tries to connect
 #. to a host.              Explains why notification permission is needed and
@@ -2275,25 +2283,28 @@ msgid ""
 "background. Without permission, connections may close when you switch "
 "apps."
 msgstr ""
+"É necessário exibir uma notificação para manter as conexões ativas em "
+"segundo plano. Sem permissão, as conexões podem ser encerradas quando "
+"você alternar entre aplicativos."
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
 msgctxt "grant_permission"
 msgid "Grant permission"
-msgstr ""
+msgstr "Conceder permissão"
 
 #. Button text to proceed with connecting without granting notification
 #. permission.
 msgctxt "connect_anyway"
 msgid "Connect anyway"
-msgstr ""
+msgstr "Conectar de qualquer forma"
 
 #. Title for dialog directing users to app settings when notification
 #. permission was denied.              Shown when user tries to enable persist
 #. connections after denying permission.
 msgctxt "notification_permission_denied_title"
 msgid "Permission required"
-msgstr ""
+msgstr "Permissão necessária"
 
 #. Message explaining that user must enable notification permission in app
 #. settings.              Shown when notification permission was previously
@@ -2303,80 +2314,83 @@ msgid ""
 "To keep connections alive in the background, you must enable notification"
 " permission in app settings."
 msgstr ""
+"Redefinir todas as cores? Para manter as conexões ativas em segundo "
+"plano, você deve habilitar a permissão de notificação nas configurações "
+"do aplicativo."
 
 #. Button text to open ConnectBot app settings page where user can grant
 #. notification permission.
 msgctxt "open_settings"
 msgid "Open settings"
-msgstr ""
+msgstr "Abrir configurações"
 
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
 msgid "Are you trying to access a local host? Grant local network permissions."
-msgstr ""
+msgstr "Você está tentando acessar um host local? Grant permissões de rede local."
 
 #. Loading message shown during app initialization
 msgctxt "loading_message"
 msgid "Loading…"
-msgstr ""
+msgstr "Carregando…"
 
 #. Database migration screen messages. Displayed during one-time migration
 #. from legacy database format to Room database.
 #. Title shown while checking if database migration is needed
 msgctxt "migration_checking"
 msgid "Checking database…"
-msgstr ""
+msgstr "Verificando banco de dados…"
 
 #. Title shown during database migration process
 msgctxt "migration_title"
 msgid "Migrating Database"
-msgstr ""
+msgstr "Migração de Banco de Dados"
 
 #. Warning message shown during migration to inform user not to close the app
 msgctxt "migration_warning"
 msgid "Please do not close the app during migration"
-msgstr ""
+msgstr "Por favor não feche o aplicativo durante a migração"
 
 #. Statistics label showing number of hosts migrated
 #, c-format
 msgctxt "migration_stats_hosts"
 msgid "Hosts migrated: %d"
-msgstr ""
+msgstr "Hosts migrados %d"
 
 #. Statistics label showing number of SSH keys migrated
 #, c-format
 msgctxt "migration_stats_pubkeys"
 msgid "SSH keys migrated: %d"
-msgstr ""
+msgstr "Chaves SSH migradas: %d"
 
 #. Statistics label showing number of port forwards migrated
 #, c-format
 msgctxt "migration_stats_port_forwards"
 msgid "Port forwards migrated: %d"
-msgstr ""
+msgstr "Encaminhamentos de porta migrados %d"
 
 #. Statistics label showing number of known hosts migrated
 #, c-format
 msgctxt "migration_stats_known_hosts"
 msgid "Known hosts migrated: %d"
-msgstr ""
+msgstr "Hosts conhecidos migrados: %d"
 
 #. Title shown when migration fails
 msgctxt "migration_failed_title"
 msgid "Migration Failed"
-msgstr ""
+msgstr "Falha na Migração"
 
 #. Error message shown when migration fails, includes error details
 #, c-format
 msgctxt "migration_failed_message"
 msgid "An error occurred during database migration: %s"
-msgstr ""
+msgstr "Ocorreu um erro durante a migração do banco de dados: %s"
 
 #. Button label to retry failed migration
 msgctxt "migration_retry"
 msgid "Retry"
-msgstr ""
+msgstr "Tentar novamente"
 
 #. Help text shown after migration failure with link to GitHub issues
 #, c-format
@@ -2385,122 +2399,124 @@ msgid ""
 "If the problem persists, please report this issue at %1$s with the debug "
 "log copied above"
 msgstr ""
+"Se o problema persistir por favor relate este problema em %1$s com o log "
+"de depuração copiado acima"
 
 #. Title for warnings section shown during database migration
 msgctxt "migration_warnings_title"
 msgid "Migration Warnings"
-msgstr ""
+msgstr "Avisos de Migração"
 
 #. Button text to copy migration warnings to clipboard for reporting issues
 msgctxt "migration_copy_warnings"
 msgid "Copy Warnings"
-msgstr ""
+msgstr "Cópias de Avisos"
 
 #. Title for debug log section shown when migration fails
 msgctxt "migration_debug_log_title"
 msgid "Debug Log"
-msgstr ""
+msgstr "Registro de Depuração"
 
 #. Button text to copy debug log to clipboard for reporting issues
 msgctxt "migration_copy_debug_log"
 msgid "Copy Debug Log"
-msgstr ""
+msgstr "Copiar Registro de Depuração"
 
 #. Shown in the alert dialog when a user chooses the 'disconnect' item to
 #. disconnect from a SSH or Telnet host.
 #, c-format
 msgctxt "disconnect_host_alert"
 msgid "Are you sure you want to disconnect from '%1$s'?"
-msgstr ""
+msgstr "Tem certeza de que deseja se desconectar de '%1$s'?"
 
 #. Shown in the alert dialog when a user chooses the 'delete host' item to
 #. delete a host.
 #, c-format
 msgctxt "delete_host_confirm"
 msgid "Are you sure you want to delete host '%1$s'?"
-msgstr ""
+msgstr "Tem certeza de que deseja excluir o host '%1$s'?"
 
 #. Menu selection to edit a pubkey details (e.g., nickname)
 msgctxt "list_pubkey_edit"
 msgid "Edit pubkey"
-msgstr ""
+msgstr "Editar chave pública"
 
 #. ProxyJump / Jump Host support
 #. Title for jump host selector in host editor
 msgctxt "hostpref_jumphost_title"
 msgid "Jump host (ProxyJump)"
-msgstr ""
+msgstr "Servidor de salto (ProxyJump)"
 
 #. Summary text explaining jump host functionality
 msgctxt "hostpref_jumphost_summary"
 msgid "Connect through another SSH host"
-msgstr ""
+msgstr "Conectar através de outro host SSH"
 
 #. Option for no jump host (direct connection)
 msgctxt "list_jumphost_none"
 msgid "None (direct connection)"
-msgstr ""
+msgstr "Nenhum conexão direta"
 
 #. Terminal message when connecting via jump host
 #, c-format
 msgctxt "terminal_connecting_via_jump"
 msgid "Connecting via jump host: %s"
-msgstr ""
+msgstr "Conectando via host de salto %s"
 
 #. Terminal message when connected to jump host
 #, c-format
 msgctxt "terminal_jump_connected"
 msgid "Connected to jump host: %s"
-msgstr ""
+msgstr "Conectado ao host de salto: %s"
 
 #. Terminal message when authenticated to jump host
 #, c-format
 msgctxt "terminal_jump_authenticated"
 msgid "Authenticated to jump host: %s"
-msgstr ""
+msgstr "Autenticado no host de salto: %s"
 
 #. Terminal message when jump host connection fails
 #, c-format
 msgctxt "terminal_jump_failed"
 msgid "Failed to connect to jump host %1$s: %2$s"
-msgstr ""
+msgstr "Falha ao conectar ao host de salto %1$s: %2$s"
 
 #. Terminal message when jump host authentication fails
 #, c-format
 msgctxt "terminal_jump_auth_failed"
 msgid "Authentication failed for jump host: %s"
-msgstr ""
+msgstr "Autenticação falhou para o host de salto: %s"
 
 #. Terminal message when jump host is not found in database
 msgctxt "terminal_jump_not_found"
 msgid "Jump host not found in saved hosts"
-msgstr ""
+msgstr "Servidor de conexão não encontrado nos hosts salvos"
 
 #. Password prompt prefix for jump host
 #, c-format
 msgctxt "terminal_jump_password"
 msgid "Password for jump host %s:"
-msgstr ""
+msgstr "Senha para o host de salto %s:"
 
 #. Button text to view application logs for debugging
 msgctxt "view_logs"
 msgid "View Logs"
-msgstr ""
+msgstr "Visualizar Registros"
 
 #. Title for the log viewer dialog
 msgctxt "logs_title"
 msgid "Application Logs"
-msgstr ""
+msgstr "Registros do Aplicativo"
 
 #. Button text to copy logs to clipboard for bug reporting
 msgctxt "copy_logs"
 msgid "Copy Logs"
-msgstr ""
+msgstr "Copiar Registros"
 
 #. Confirmation message shown when logs are copied to clipboard
 msgctxt "logs_copied"
 msgid "Logs copied to clipboard"
-msgstr ""
+msgstr "Registros copiados para a área de transferência"
 
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
@@ -2508,132 +2524,134 @@ msgid ""
 "To report a bug, copy these logs and open a new issue at "
 "https://connectbot.org/bug"
 msgstr ""
+"Para relatar um bug, copie esses registros e abra uma nova questão em "
+"https://connectbot.org/bug"
 
 #. Message shown when no logs are available
 msgctxt "no_logs_available"
 msgid "No logs available"
-msgstr ""
+msgstr "Nenhum log disponível"
 
 #. Section title for the "Help" screen showing information about the program
 #. itself.
 msgctxt "help_section_about"
 msgid "About"
-msgstr ""
+msgstr "Sobre"
 
 #. Built-in color scheme descriptions for terminal display
 #. Description of the default terminal color scheme
 msgctxt "colorscheme_default_description"
 msgid "Default terminal colors"
-msgstr ""
+msgstr "Cores de terminal padrão"
 
 #. Description of the Solarized Dark color scheme
 msgctxt "colorscheme_solarized_dark_description"
 msgid "Precision colors for machines and people"
-msgstr ""
+msgstr "Cores precisas para máquinas e pessoas"
 
 #. Description of the Solarized Light color scheme
 msgctxt "colorscheme_solarized_light_description"
 msgid "Solarized with light background"
-msgstr ""
+msgstr "Solarizado com fundo claro"
 
 #. Description of the Dracula color scheme
 msgctxt "colorscheme_dracula_description"
 msgid "A dark theme for the terminal"
-msgstr ""
+msgstr "Um tema escuro para o terminal"
 
 #. Description of the Nord color scheme
 msgctxt "colorscheme_nord_description"
 msgid "An arctic, north-bluish color palette"
-msgstr ""
+msgstr "Uma paleta de cores árticas, azuladas do norte"
 
 #. Description of the Gruvbox Dark color scheme
 msgctxt "colorscheme_gruvbox_dark_description"
 msgid "Retro groove color scheme"
-msgstr ""
+msgstr "Esquema de cores groove retro"
 
 #. Description of the Monokai color scheme
 msgctxt "colorscheme_monokai_description"
 msgid "Sublime Text inspired theme"
-msgstr ""
+msgstr "Tema inspirado no Sublime Text"
 
 #. Description of the Tomorrow Night color scheme
 msgctxt "colorscheme_tomorrow_night_description"
 msgid "A clean and comfortable dark theme"
-msgstr ""
+msgstr "Um tema escuro limpo e confortável"
 
 #. Settings screen strings
 #. Category title for profile settings section
 msgctxt "pref_profiles_category"
 msgid "Profiles"
-msgstr ""
+msgstr "Perfis"
 
 #. Setting title for default profile selection
 msgctxt "pref_default_profile_title"
 msgid "Default Profile"
-msgstr ""
+msgstr "Perfil Padrão"
 
 #. Summary text when no default profile is selected
 msgctxt "pref_default_profile_none"
 msgid "None (use host settings)"
-msgstr ""
+msgstr "Nenhum (usar configurações do host)"
 
 #. Summary text for special keys always visible setting
 msgctxt "pref_alwaysvisible_summary"
 msgid "Keep special keys always visible"
-msgstr ""
+msgstr "Mantenha as teclas especiais sempre visíveis"
 
 #. Title for custom terminal types preference
 msgctxt "pref_customterminal_title"
 msgid "Custom Terminal Types"
-msgstr ""
+msgstr "Tipos de Terminais Personalizados"
 
 #. Summary for custom terminal types preference
 msgctxt "pref_customterminal_summary"
 msgid "Add custom TERM values for remote servers"
-msgstr ""
+msgstr "Adicionar valores personalizados de TERM para servidores remotos"
 
 #. Dialog title for adding a custom terminal type
 msgctxt "dialog_customterminal_title"
 msgid "Add Custom Terminal Type"
-msgstr ""
+msgstr "Adicionar Tipo de Terminal Personalizado"
 
 #. Label/hint for terminal type input field
 msgctxt "dialog_customterminal_hint"
 msgid "Terminal type (e.g., rxvt-unicode)"
-msgstr ""
+msgstr "Tipo de terminal exemplo rxvt-unicode"
 
 #. Label for custom value input in list preference dialogs
 msgctxt "dialog_custom_value_label"
 msgid "Enter custom value"
-msgstr ""
+msgstr "Insira um valor personalizado"
 
 #. Summary description for Ctrl+A then Space camera button action
 msgctxt "list_camera_ctrlaspace_description"
 msgid "Ctrl+A then Space"
-msgstr ""
+msgstr "Ctrl+A então Espaço"
 
 #. Summary description for Ctrl+A camera button action
 msgctxt "list_camera_ctrla_description"
 msgid "Ctrl+A"
-msgstr ""
+msgstr "Ctrl+A"
 
 #. Summary description for Esc camera button action
 msgctxt "list_camera_esc_description"
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #. Summary description for Esc+A camera button action
 msgctxt "list_camera_esc_a_description"
 msgid "Esc+A"
-msgstr ""
+msgstr "Esc+A"
 
 #. Summary description for None camera button action
 msgctxt "list_camera_none_description"
 msgid "None"
-msgstr ""
+msgstr "Nenhum"
 
 #. Summary description for text input camera button action
 msgctxt "list_camera_text_input_description"
 msgid "Text input"
-msgstr ""
+msgstr "Entrada de texto"
 
