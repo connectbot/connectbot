@@ -458,4 +458,19 @@
   <string name="colorscheme_gruvbox_dark_description">レトログルーブカラースキーム</string>
   <string name="colorscheme_monokai_description">サブライムテキストにインスパイアされたテーマ</string>
   <string name="colorscheme_tomorrow_night_description">きれいできれいに暗いテーマ</string>
+  <string name="pref_profiles_category">プロファイル</string>
+  <string name="pref_default_profile_title">デフォルトプロファイル</string>
+  <string name="pref_default_profile_none">ホストの設定を使用する</string>
+  <string name="pref_alwaysvisible_summary">特別なキーを常に表示する</string>
+  <string name="pref_customterminal_title">カスタムターミナルタイプ</string>
+  <string name="pref_customterminal_summary">リモートサーバーにカスタムTERM値を追加する</string>
+  <string name="dialog_customterminal_title">カスタムターミナルタイプを追加する</string>
+  <string name="dialog_customterminal_hint">ターミナルタイプ（例：rxvt-unicode）</string>
+  <string name="dialog_custom_value_label">カスタム値を入力してください</string>
+  <string name="list_camera_ctrlaspace_description">CtrlAの後スペース</string>
+  <string name="list_camera_ctrla_description">CtrlA</string>
+  <string name="list_camera_esc_description">エスケープキー</string>
+  <string name="list_camera_esc_a_description">エスケーププラスＡ</string>
+  <string name="list_camera_none_description">なし</string>
+  <string name="list_camera_text_input_description">テキスト入力</string>
 </resources>

@@ -458,4 +458,19 @@
   <string name="colorscheme_gruvbox_dark_description">Esquema de colores con estilo retro</string>
   <string name="colorscheme_monokai_description">Tema inspirado en Sublime Text</string>
   <string name="colorscheme_tomorrow_night_description">Un tema oscuro limpio y cómodo</string>
+  <string name="pref_profiles_category">Perfiles</string>
+  <string name="pref_default_profile_title">Perfil predeterminado</string>
+  <string name="pref_default_profile_none">Ninguno (usar configuración del host)</string>
+  <string name="pref_alwaysvisible_summary">Mantener las teclas especiales siempre visibles</string>
+  <string name="pref_customterminal_title">Tipos de terminales personalizados</string>
+  <string name="pref_customterminal_summary">Agregar valores personalizados de TERM para servidores remotos</string>
+  <string name="dialog_customterminal_title">Agregar tipo de terminal personalizado</string>
+  <string name="dialog_customterminal_hint">Tipo de terminal por ejemplo rxvt unicode</string>
+  <string name="dialog_custom_value_label">Introducir valor personalizado</string>
+  <string name="list_camera_ctrlaspace_description">Ctrl+A luego Espacio</string>
+  <string name="list_camera_ctrla_description">Ctrl+A</string>
+  <string name="list_camera_esc_description">Esc</string>
+  <string name="list_camera_esc_a_description">Esc+A</string>
+  <string name="list_camera_none_description">Ninguno</string>
+  <string name="list_camera_text_input_description">Entrada de texto</string>
 </resources>

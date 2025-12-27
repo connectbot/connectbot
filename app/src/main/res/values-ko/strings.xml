@@ -458,4 +458,19 @@
   <string name="colorscheme_gruvbox_dark_description">레트로 그루브 색상 구성표</string>
   <string name="colorscheme_monokai_description">서브라임 텍스트에서 영감을 받은 테마</string>
   <string name="colorscheme_tomorrow_night_description">깔끔하고 편안한 다크 테마</string>
+  <string name="pref_profiles_category">프로파일들</string>
+  <string name="pref_default_profile_title">기본 프로파일</string>
+  <string name="pref_default_profile_none">호스트 설정 사용</string>
+  <string name="pref_alwaysvisible_summary">항상 특수 키 표시 유지하기</string>
+  <string name="pref_customterminal_title">사용자 지정 터미널 유형</string>
+  <string name="pref_customterminal_summary">원격 서버에 사용자 지정 TERM 값을 추가합니다</string>
+  <string name="dialog_customterminal_title">사용자 지정 터미널 유형 추가</string>
+  <string name="dialog_customterminal_hint">터미널 종류 예를 들어 rxvt 유니코드</string>
+  <string name="dialog_custom_value_label">사용자 지정 값을 입력하세요</string>
+  <string name="list_camera_ctrlaspace_description">CtrlA，然后空格을 누르면 CtrlA스페이스</string>
+  <string name="list_camera_ctrla_description">컨트롤A</string>
+  <string name="list_camera_esc_description">에스케이프</string>
+  <string name="list_camera_esc_a_description">Esc+A</string>
+  <string name="list_camera_none_description">없음</string>
+  <string name="list_camera_text_input_description">텍스트 입력</string>
 </resources>

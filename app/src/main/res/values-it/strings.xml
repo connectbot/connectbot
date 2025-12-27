@@ -450,4 +450,27 @@
   <string name="logs_bug_report_info">Per segnalare un errore copia questi log e apri una nuova richiesta su https://connectbot.org/bug</string>
   <string name="no_logs_available">Nessun log disponibile</string>
   <string name="help_section_about">Informazioni</string>
+  <string name="colorscheme_default_description">Colori del terminale predefiniti</string>
+  <string name="colorscheme_solarized_dark_description">Colori precisi per macchine e persone</string>
+  <string name="colorscheme_solarized_light_description">Solarizzato con sfondo chiaro</string>
+  <string name="colorscheme_dracula_description">Un tema scuro per il terminale</string>
+  <string name="colorscheme_nord_description">Una tavolozza di colori artica azzurro nordica</string>
+  <string name="colorscheme_gruvbox_dark_description">Schema dei colori del groove retrò</string>
+  <string name="colorscheme_monokai_description">Tema ispirato a Sublime Text</string>
+  <string name="colorscheme_tomorrow_night_description">Un tema scuro pulito e confortevole</string>
+  <string name="pref_profiles_category">Profili</string>
+  <string name="pref_default_profile_title">Profilo predefinito</string>
+  <string name="pref_default_profile_none">Nessuno (usa le impostazioni dellhost)</string>
+  <string name="pref_alwaysvisible_summary">Mantieni sempre visibili i tasti speciali</string>
+  <string name="pref_customterminal_title">Tipi di terminale personalizzati</string>
+  <string name="pref_customterminal_summary">Aggiungi valori personalizzati di TERM per i server remoti</string>
+  <string name="dialog_customterminal_title">Aggiungi tipo di terminale personalizzato</string>
+  <string name="dialog_customterminal_hint">Tipo di terminale ad esempio rxvt-unicode</string>
+  <string name="dialog_custom_value_label">Inserisci valore personalizzato</string>
+  <string name="list_camera_ctrlaspace_description">Ctrl+A poi spazio</string>
+  <string name="list_camera_ctrla_description">Ctrl+A</string>
+  <string name="list_camera_esc_description">Esc</string>
+  <string name="list_camera_esc_a_description">Esc+A</string>
+  <string name="list_camera_none_description">Nessuno</string>
+  <string name="list_camera_text_input_description">Inserimento di testo</string>
 </resources>
