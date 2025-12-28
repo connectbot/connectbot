@@ -28,6 +28,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
+import org.connectbot.di.IoDispatcher
 import com.trilead.ssh2.crypto.Base64
 import com.trilead.ssh2.crypto.OpenSSHKeyEncoder
 import com.trilead.ssh2.crypto.PEMDecoder
@@ -96,7 +98,8 @@ data class PubkeyListUiState(
 @HiltViewModel
 class PubkeyListViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val repository: PubkeyRepository
+    private val repository: PubkeyRepository,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PubkeyListUiState(isLoading = true))
@@ -570,7 +573,7 @@ class PubkeyListViewModel @Inject constructor(
                     PublicKeyUtils.toAuthorizedKeysFormat(pk, pubkey.nickname)
                 }
 
-                withContext(Dispatchers.IO) {
+                withContext(ioDispatcher) {
                     context.contentResolver.openOutputStream(uri)?.use { outputStream ->
                         outputStream.write(publicKeyString.toByteArray(Charsets.UTF_8))
                     } ?: throw Exception("Could not open file for writing")
@@ -644,7 +647,7 @@ class PubkeyListViewModel @Inject constructor(
                     return@launch
                 }
 
-                withContext(Dispatchers.IO) {
+                withContext(ioDispatcher) {
                     context.contentResolver.openOutputStream(uri)?.use { outputStream ->
                         outputStream.write(privateKeyString.toByteArray(Charsets.UTF_8))
                     } ?: throw Exception("Could not open file for writing")
@@ -673,7 +676,7 @@ class PubkeyListViewModel @Inject constructor(
     fun importKeyFromUri(uri: Uri) {
         viewModelScope.launch {
             try {
-                val result = withContext(Dispatchers.IO) {
+                val result = withContext(ioDispatcher) {
                     readKeyFromUri(uri)
                 }
 
@@ -708,14 +711,17 @@ class PubkeyListViewModel @Inject constructor(
 
     /**
      * Complete the import of an encrypted key with the provided password.
+     * @param decryptPassword Password to decrypt the imported key
+     * @param encrypt Whether to encrypt the key for storage
+     * @param encryptPassword Password to use for encryption (null if not encrypting)
      */
-    fun completeImportWithPassword(password: String) {
+    fun completeImportWithPassword(decryptPassword: String, encrypt: Boolean, encryptPassword: String?) {
         val pending = _uiState.value.pendingImport ?: return
 
         viewModelScope.launch {
             try {
-                val pubkey = withContext(Dispatchers.IO) {
-                    decryptAndImportKey(pending.keyData, pending.nickname, password)
+                val pubkey = withContext(ioDispatcher) {
+                    decryptAndImportKey(pending.keyData, pending.nickname, decryptPassword, encrypt, encryptPassword)
                 }
 
                 if (pubkey != null) {
@@ -750,23 +756,36 @@ class PubkeyListViewModel @Inject constructor(
         _uiState.update { it.copy(pendingImport = null) }
     }
 
-    private fun decryptAndImportKey(keyData: ByteArray, nickname: String, password: String): Pubkey? {
+    private fun decryptAndImportKey(
+        keyData: ByteArray,
+        nickname: String,
+        decryptPassword: String,
+        encrypt: Boolean,
+        encryptPassword: String?
+    ): Pubkey? {
         val keyString = String(keyData)
 
         try {
             // Use PEMDecoder to decrypt the key
-            val kp = PEMDecoder.decode(keyString.toCharArray(), password)
+            val kp = PEMDecoder.decode(keyString.toCharArray(), decryptPassword)
             val algorithm = convertAlgorithmName(kp.private.algorithm)
+
+            // Optionally re-encrypt the private key with the specified password
+            val privateKeyBytes = if (encrypt && encryptPassword != null) {
+                PubkeyUtils.getEncodedPrivate(kp.private, encryptPassword)
+            } else {
+                kp.private.encoded
+            }
 
             return Pubkey(
                 id = 0,
                 nickname = nickname,
                 type = algorithm,
-                encrypted = false,  // Store decrypted in internal format
+                encrypted = encrypt,
                 startup = false,
                 confirmation = false,
                 createdDate = System.currentTimeMillis(),
-                privateKey = kp.private.encoded,
+                privateKey = privateKeyBytes,
                 publicKey = kp.public.encoded
             )
         } catch (e: Exception) {
