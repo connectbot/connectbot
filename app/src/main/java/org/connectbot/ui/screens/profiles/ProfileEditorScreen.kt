@@ -29,13 +29,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
@@ -47,7 +44,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -223,8 +219,6 @@ fun ProfileEditorScreen(
                     emulation = uiState.emulation,
                     customTerminalTypes = uiState.customTerminalTypes,
                     onEmulationSelected = { viewModel.updateEmulation(it) },
-                    onAddCustomTerminalType = { viewModel.addCustomTerminalType(it) },
-                    onRemoveCustomTerminalType = { viewModel.removeCustomTerminalType(it) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -353,14 +347,9 @@ private fun EmulationSelector(
     emulation: String,
     customTerminalTypes: List<String>,
     onEmulationSelected: (String) -> Unit,
-    onAddCustomTerminalType: (String) -> Unit,
-    onRemoveCustomTerminalType: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var showAddDialog by remember { mutableStateOf(false) }
-    var showManageDialog by remember { mutableStateOf(false) }
-    var newTerminalType by remember { mutableStateOf("") }
     val presetOptions = listOf(
         "xterm-256color",
         "xterm",
@@ -431,119 +420,8 @@ private fun EmulationSelector(
                         )
                     }
                 }
-                HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            text = stringResource(R.string.button_add_custom),
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    },
-                    onClick = {
-                        expanded = false
-                        showAddDialog = true
-                    },
-                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                )
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            text = stringResource(R.string.button_manage_custom),
-                            color = if (customTerminalTypes.isNotEmpty()) {
-                                MaterialTheme.colorScheme.primary
-                            } else {
-                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-                            }
-                        )
-                    },
-                    onClick = {
-                        if (customTerminalTypes.isNotEmpty()) {
-                            expanded = false
-                            showManageDialog = true
-                        }
-                    },
-                    enabled = customTerminalTypes.isNotEmpty(),
-                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                )
             }
         }
-    }
-
-    // Add custom terminal type dialog
-    if (showAddDialog) {
-        AlertDialog(
-            onDismissRequest = {
-                showAddDialog = false
-                newTerminalType = ""
-            },
-            title = { Text(stringResource(R.string.dialog_customterminal_title)) },
-            text = {
-                OutlinedTextField(
-                    value = newTerminalType,
-                    onValueChange = { newTerminalType = it },
-                    label = { Text(stringResource(R.string.dialog_customterminal_hint)) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        if (newTerminalType.isNotBlank()) {
-                            onAddCustomTerminalType(newTerminalType.trim())
-                            showAddDialog = false
-                            newTerminalType = ""
-                        }
-                    },
-                    enabled = newTerminalType.isNotBlank()
-                ) {
-                    Text(stringResource(R.string.button_add))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    showAddDialog = false
-                    newTerminalType = ""
-                }) {
-                    Text(stringResource(android.R.string.cancel))
-                }
-            }
-        )
-    }
-
-    // Manage custom terminal types dialog
-    if (showManageDialog) {
-        AlertDialog(
-            onDismissRequest = { showManageDialog = false },
-            title = { Text(stringResource(R.string.dialog_manage_customterminal_title)) },
-            text = {
-                Column {
-                    customTerminalTypes.forEach { terminalType ->
-                        ListItem(
-                            headlineContent = { Text(terminalType) },
-                            trailingContent = {
-                                IconButton(onClick = {
-                                    onRemoveCustomTerminalType(terminalType)
-                                    if (customTerminalTypes.size <= 1) {
-                                        showManageDialog = false
-                                    }
-                                }) {
-                                    Icon(
-                                        imageVector = Icons.Default.Delete,
-                                        contentDescription = stringResource(R.string.button_remove)
-                                    )
-                                }
-                            }
-                        )
-                    }
-                }
-            },
-            confirmButton = {
-                TextButton(onClick = { showManageDialog = false }) {
-                    Text(stringResource(android.R.string.ok))
-                }
-            }
-        )
     }
 }
 
