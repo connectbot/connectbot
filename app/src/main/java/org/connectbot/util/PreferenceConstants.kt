@@ -24,8 +24,6 @@ object PreferenceConstants {
 
     const val SCROLLBACK: String = "scrollback"
 
-    const val EMULATION: String = "emulation"
-
     const val ROTATION: String = "rotation"
 
     const val BACKUP_KEYS: String = "backupkeys"

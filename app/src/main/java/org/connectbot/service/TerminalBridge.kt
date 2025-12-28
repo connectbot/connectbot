@@ -168,7 +168,11 @@ class TerminalBridge {
         this.manager = manager
         this.host = host
 
-        emulation = manager.getEmulation()
+        // Load profile for this host (always returns a profile, defaulting to Default profile)
+        val profile = manager.profileRepository.getByIdOrDefaultBlocking(host.profileId)
+        currentProfileId = host.profileId
+
+        emulation = profile.emulation
         scrollback = manager.getScrollback()
 
         // create our default paint
@@ -180,10 +184,6 @@ class TerminalBridge {
         localOutput = mutableListOf()
 
         fontSizeChangedListeners = mutableListOf()
-
-        // Load profile for this host (always returns a profile, defaulting to Default profile)
-        val profile = manager.profileRepository.getByIdOrDefaultBlocking(host.profileId)
-        currentProfileId = host.profileId
 
         // Store encoding and font family from profile for later use
         encoding = profile.encoding

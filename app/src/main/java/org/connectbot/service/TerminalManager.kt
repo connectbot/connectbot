@@ -326,10 +326,6 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 		return bridge
 	}
 
-	fun getEmulation(): String {
-		return prefs.getString(PreferenceConstants.EMULATION, "xterm-256color")!!
-	}
-
 	fun getScrollback(): Int {
 		var scrollback = 140
 		try {
