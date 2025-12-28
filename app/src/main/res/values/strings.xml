@@ -287,7 +287,7 @@
 	<!-- Name for the volume keys control font size preference -->
 	<string name="pref_volumefont_title">"Volume keys change font size"</string>
 	<!-- Summary for the volume keys control font size preference -->
-	<string name="pref_volumefont_summary">"Font size can also be changed in per-host settings"</string>
+	<string name="pref_volumefont_summary">"Font size can also be changed in profile settings"</string>
 
 	<!-- Name for the memorize keys preference -->
 	<string name="pref_memkeys_title">"Remember keys in memory"</string>
