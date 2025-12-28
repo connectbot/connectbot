@@ -86,22 +86,23 @@ class ProfileConflictMigrationTest {
     }
 
     /**
-     * Reproduces issue #1806: UNIQUE constraint failed on profiles.id during migration.
+     * Verifies fix for issue #1806: UNIQUE constraint failed on profiles.id during migration.
      *
-     * This test simulates the exact scenario described in the issue:
+     * This test verifies that the fix correctly prevents the migration from running
+     * when Room already has data (including profiles), which avoids the UNIQUE constraint
+     * violation that would occur if migration tried to insert profile ID=1 again.
+     *
+     * The scenario:
      * - User upgrades from stable (legacy DBs) to beta (Room with profiles)
      * - Room database is initialized with default profile ID=1
-     * - Legacy migration attempts to insert profile ID=1 again
-     * - Expected: Migration should fail with UNIQUE constraint violation
-     *
-     * Once this test passes (by reproducing the failure), the fix should make
-     * the migration handle this case gracefully.
+     * - Migration should be skipped because Room already has data (profiles)
+     * - This prevents the UNIQUE constraint violation
      */
     @Test
-    fun migrationFailsWithProfileIdConflict() {
+    fun migrationSkippedWhenRoomHasProfiles() {
         runBlocking {
             try {
-                Timber.d("Starting test: migrationFailsWithProfileIdConflict")
+                Timber.d("Starting test: migrationSkippedWhenRoomHasProfiles")
 
                 // Step 1: Ensure Room database has the default profile
                 // The DI-provided database should already have this from onCreate callback
@@ -110,7 +111,7 @@ class ProfileConflictMigrationTest {
                 assertThat(existingProfiles).isNotEmpty()
                 assertThat(existingProfiles.any { it.id == 1L }).isTrue()
 
-                // Verify hosts and pubkeys are empty (so isMigrationNeeded will return true)
+                // Verify hosts and pubkeys are empty
                 val existingHosts = database.hostDao().getAll()
                 val existingPubkeys = database.pubkeyDao().getAll()
                 Timber.d("Existing hosts: ${existingHosts.size}, pubkeys: ${existingPubkeys.size}")
@@ -129,34 +130,31 @@ class ProfileConflictMigrationTest {
                 assertThat(pubkeysDbFile.exists()).isTrue()
 
                 // Step 3: Check if migration thinks it's needed
-                // It should return true because:
-                // - Legacy databases exist
-                // - Room hosts/pubkeys are empty
-                // BUT: Room already has a profile with ID=1
+                // It should return FALSE because Room already has profiles (the fix for #1806)
+                // Even though legacy DBs exist and hosts/pubkeys are empty, the presence of
+                // profiles indicates Room has already been initialized, so migration should
+                // be skipped to avoid UNIQUE constraint violation on profiles.id
                 val migrationNeeded = migrator.isMigrationNeeded()
                 Timber.d("Migration needed: $migrationNeeded")
                 assertThat(migrationNeeded)
-                    .describedAs("Migration should be needed because legacy DBs exist and Room hosts/pubkeys are empty")
-                    .isTrue()
+                    .describedAs("Migration should NOT be needed because Room already has profiles (fix for #1806)")
+                    .isFalse()
 
-                // Step 4: Run migration - this should fail with UNIQUE constraint violation
+                // Step 4: Run migrate() anyway - it should return Success with 0 items migrated
+                // because isMigrationNeeded() returns false
                 val result = migrator.migrate()
 
                 Timber.d("Migration result: $result")
 
-                // Step 5: Verify migration failed with the expected error
+                // Step 5: Verify migration returned success (no-op) instead of failing
                 assertThat(result)
-                    .describedAs("Migration should fail due to profile ID conflict")
-                    .isInstanceOf(MigrationResult.Failure::class.java)
+                    .describedAs("Migration should succeed as a no-op when Room already has profiles")
+                    .isInstanceOf(MigrationResult.Success::class.java)
 
-                val failure = result as MigrationResult.Failure
-                val errorMessage = failure.error.message ?: ""
-                Timber.d("Migration error: $errorMessage")
-
-                assertThat(errorMessage)
-                    .describedAs("Error should mention UNIQUE constraint failed on profiles.id")
-                    .containsIgnoringCase("UNIQUE constraint failed")
-                    .containsIgnoringCase("profiles")
+                val success = result as MigrationResult.Success
+                assertThat(success.hostsMigrated).isEqualTo(0)
+                assertThat(success.pubkeysMigrated).isEqualTo(0)
+                Timber.d("Migration correctly skipped - 0 items migrated")
 
             } catch (e: Exception) {
                 Timber.e(e, "Test failed with exception")
