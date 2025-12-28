@@ -34,7 +34,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.FontDownload
-import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -149,9 +148,6 @@ fun SettingsScreen(
         onConnPersistChange = viewModel::updateConnPersist,
         onWifilockChange = viewModel::updateWifilock,
         onBackupkeysChange = viewModel::updateBackupkeys,
-        onEmulationChange = viewModel::updateEmulation,
-        onAddCustomTerminalType = viewModel::addCustomTerminalType,
-        onRemoveCustomTerminalType = viewModel::removeCustomTerminalType,
         onScrollbackChange = viewModel::updateScrollback,
         onFontFamilyChange = viewModel::updateFontFamily,
         onAddCustomFont = viewModel::addCustomFont,
@@ -191,9 +187,6 @@ fun SettingsScreenContent(
     onConnPersistChange: (Boolean) -> Unit,
     onWifilockChange: (Boolean) -> Unit,
     onBackupkeysChange: (Boolean) -> Unit,
-    onEmulationChange: (String) -> Unit,
-    onAddCustomTerminalType: (String) -> Unit,
-    onRemoveCustomTerminalType: (String) -> Unit,
     onScrollbackChange: (String) -> Unit,
     onFontFamilyChange: (String) -> Unit,
     onAddCustomFont: (String) -> Unit,
@@ -274,40 +267,6 @@ fun SettingsScreenContent(
 
             item {
                 PreferenceCategory(title = stringResource(R.string.pref_emulation_category))
-            }
-
-            item {
-                // Build combined list: preset types + custom types
-                val presetTypes = listOf(
-                    "xterm-256color" to "xterm-256color",
-                    "xterm" to "xterm",
-                    "vt100" to "vt100",
-                    "vt102" to "vt102",
-                    "vt220" to "vt220",
-                    "ansi" to "ansi",
-                    "screen" to "screen",
-                    "screen-256color" to "screen-256color",
-                    "linux" to "linux",
-                    "dumb" to "dumb"
-                )
-                val customTypeEntries = uiState.customTerminalTypes.map { it to it }
-                val allEntries = presetTypes + customTypeEntries
-
-                ListPreference(
-                    title = stringResource(R.string.pref_emulation_title),
-                    summary = uiState.emulation,
-                    value = uiState.emulation,
-                    entries = allEntries,
-                    onValueChange = onEmulationChange
-                )
-            }
-
-            item {
-                AddCustomTerminalTypePreference(
-                    customTerminalTypes = uiState.customTerminalTypes,
-                    onAddTerminalType = onAddCustomTerminalType,
-                    onRemoveTerminalType = onRemoveCustomTerminalType
-                )
             }
 
             item {
@@ -921,91 +880,6 @@ private fun SliderPreference(
     HorizontalDivider()
 }
 
-@Composable
-private fun AddCustomTerminalTypePreference(
-    customTerminalTypes: List<String>,
-    onAddTerminalType: (String) -> Unit,
-    onRemoveTerminalType: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    var showAddDialog by remember { mutableStateOf(false) }
-    var newTerminalType by remember { mutableStateOf("") }
-
-    Column(modifier = modifier) {
-        ListItem(
-            headlineContent = { Text(stringResource(R.string.pref_customterminal_title)) },
-            supportingContent = { Text(stringResource(R.string.pref_customterminal_summary)) },
-            modifier = Modifier.clickable { showAddDialog = true }
-        )
-
-        // Show existing custom terminal types with remove option
-        customTerminalTypes.forEach { terminalType ->
-            ListItem(
-                headlineContent = { Text(terminalType) },
-                leadingContent = {
-                    Icon(
-                        imageVector = Icons.Default.Terminal,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                },
-                trailingContent = {
-                    IconButton(onClick = { onRemoveTerminalType(terminalType) }) {
-                        Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = stringResource(R.string.button_remove)
-                        )
-                    }
-                },
-                modifier = Modifier.padding(start = 16.dp)
-            )
-        }
-
-        HorizontalDivider()
-    }
-
-    if (showAddDialog) {
-        AlertDialog(
-            onDismissRequest = {
-                showAddDialog = false
-                newTerminalType = ""
-            },
-            title = { Text(stringResource(R.string.dialog_customterminal_title)) },
-            text = {
-                OutlinedTextField(
-                    value = newTerminalType,
-                    onValueChange = { newTerminalType = it },
-                    label = { Text(stringResource(R.string.dialog_customterminal_hint)) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        if (newTerminalType.isNotBlank()) {
-                            onAddTerminalType(newTerminalType.trim())
-                            showAddDialog = false
-                            newTerminalType = ""
-                        }
-                    },
-                    enabled = newTerminalType.isNotBlank()
-                ) {
-                    Text(stringResource(R.string.button_add))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    showAddDialog = false
-                    newTerminalType = ""
-                }) {
-                    Text(stringResource(android.R.string.cancel))
-                }
-            }
-        )
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AddCustomFontPreference(
@@ -1276,8 +1150,6 @@ private fun SettingsScreenPreview() {
                 connPersist = true,
                 wifilock = false,
                 backupkeys = true,
-                emulation = "xterm-256color",
-                customTerminalTypes = listOf("rxvt-unicode", "tmux-256color"),
                 scrollback = "500",
                 rotation = "Default",
                 titlebarhide = false,
@@ -1309,9 +1181,6 @@ private fun SettingsScreenPreview() {
             onConnPersistChange = {},
             onWifilockChange = {},
             onBackupkeysChange = {},
-            onEmulationChange = {},
-            onAddCustomTerminalType = {},
-            onRemoveCustomTerminalType = {},
             onScrollbackChange = {},
             onFontFamilyChange = {},
             onAddCustomFont = {},
