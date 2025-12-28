@@ -1176,6 +1176,12 @@
 	<string name="dialog_customterminal_title">Add Custom Terminal Type</string>
 	<!-- Label/hint for terminal type input field -->
 	<string name="dialog_customterminal_hint">Terminal type (e.g., rxvt-unicode)</string>
+	<!-- Dialog title for managing custom terminal types -->
+	<string name="dialog_manage_customterminal_title">Manage Custom Terminal Types</string>
+	<!-- Button to add a custom item -->
+	<string name="button_add_custom">Add custom…</string>
+	<!-- Button to manage custom items -->
+	<string name="button_manage_custom">Manage custom…</string>
 	<!-- Label for custom value input in list preference dialogs -->
 	<string name="dialog_custom_value_label">Enter custom value</string>
 	<!-- Summary description for Ctrl+A then Space camera button action -->

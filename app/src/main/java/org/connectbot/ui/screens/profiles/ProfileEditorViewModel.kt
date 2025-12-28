@@ -187,6 +187,35 @@ class ProfileEditorViewModel @Inject constructor(
         _uiState.update { it.copy(emulation = value) }
     }
 
+    fun addCustomTerminalType(terminalType: String) {
+        if (terminalType.isBlank()) return
+        val currentTypes = _uiState.value.customTerminalTypes
+        if (currentTypes.contains(terminalType)) return
+
+        viewModelScope.launch {
+            val updatedTypes = currentTypes + terminalType
+            val typesString = updatedTypes.joinToString(",")
+            prefs.edit().putString("customTerminalTypes", typesString).apply()
+            _uiState.update { it.copy(customTerminalTypes = updatedTypes) }
+        }
+    }
+
+    fun removeCustomTerminalType(terminalType: String) {
+        viewModelScope.launch {
+            val currentTypes = _uiState.value.customTerminalTypes.toMutableList()
+            if (currentTypes.remove(terminalType)) {
+                val typesString = currentTypes.joinToString(",")
+                prefs.edit().putString("customTerminalTypes", typesString).apply()
+                _uiState.update { it.copy(customTerminalTypes = currentTypes) }
+
+                // If the removed type was the selected emulation, reset to default
+                if (_uiState.value.emulation == terminalType) {
+                    updateEmulation("xterm-256color")
+                }
+            }
+        }
+    }
+
     fun save(onSuccess: () -> Unit) {
         viewModelScope.launch {
             val state = _uiState.value
