@@ -128,8 +128,12 @@ class DatabaseMigrator @Inject constructor(
         }
 
         // Check if Room database has any data
+        // Note: We must check profiles table too, not just hosts/pubkeys.
+        // The profiles table may already have a default profile from DatabaseModule.onCreate()
+        // or MIGRATION_4_5, even if hosts/pubkeys are empty. (Fixes #1806)
         val roomHasData = roomDatabase.hostDao().getAll().isNotEmpty() ||
-                         roomDatabase.pubkeyDao().getAll().isNotEmpty()
+                         roomDatabase.pubkeyDao().getAll().isNotEmpty() ||
+                         roomDatabase.profileDao().getAll().isNotEmpty()
 
         if (roomHasData) {
             logDebug("Room database already has data, skipping migration")
