@@ -26,7 +26,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.view.KeyEvent
 import timber.log.Timber
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -309,32 +308,6 @@ class MainActivity : AppCompatActivity() {
         intent.data?.let { uri ->
             requestedUri = uri
         }
-    }
-
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        // Handle volume keys for font size change when preference is enabled
-        val state = appViewModel.uiState.value
-        if (state is AppUiState.Ready) {
-            val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-            val volumeKeysChangeFontSize = prefs.getBoolean(PreferenceConstants.VOLUME_FONT, true)
-
-            if (volumeKeysChangeFontSize) {
-                val currentBridge = state.terminalManager.getCurrentBridge()
-                if (currentBridge != null) {
-                    when (keyCode) {
-                        KeyEvent.KEYCODE_VOLUME_UP -> {
-                            currentBridge.increaseFontSize()
-                            return true
-                        }
-                        KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                            currentBridge.decreaseFontSize()
-                            return true
-                        }
-                    }
-                }
-            }
-        }
-        return super.onKeyDown(keyCode, event)
     }
 
     private fun handleIntent(intent: Intent?) {
