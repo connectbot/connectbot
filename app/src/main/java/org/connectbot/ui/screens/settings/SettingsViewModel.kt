@@ -68,6 +68,7 @@ data class SettingsUiState(
     val bellNotification: Boolean = false,
     val fontFamily: String = "SYSTEM_DEFAULT",
     val customFonts: List<String> = emptyList(),
+    val customTerminalTypes: List<String> = emptyList(),
     val localFonts: List<Pair<String, String>> = emptyList(),
     val fontValidationInProgress: Boolean = false,
     val fontValidationError: String? = null,
@@ -119,6 +120,12 @@ class SettingsViewModel @Inject constructor(
         } else {
             customFontsString.split(",").filter { it.isNotBlank() }
         }
+        val customTerminalTypesString = prefs.getString("customTerminalTypes", "") ?: ""
+        val customTerminalTypes = if (customTerminalTypesString.isBlank()) {
+            emptyList()
+        } else {
+            customTerminalTypesString.split(",").filter { it.isNotBlank() }
+        }
         val localFonts = localFontProvider.getImportedFonts()
 
         return SettingsUiState(
@@ -146,6 +153,7 @@ class SettingsViewModel @Inject constructor(
             bellNotification = prefs.getBoolean("bellNotification", false),
             fontFamily = prefs.getString("fontFamily", "SYSTEM_DEFAULT") ?: "SYSTEM_DEFAULT",
             customFonts = customFonts,
+            customTerminalTypes = customTerminalTypes,
             localFonts = localFonts,
             defaultProfileId = prefs.getLong("defaultProfileId", 0L),
         )
@@ -286,6 +294,30 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             prefs.edit().putLong("defaultProfileId", profileId).apply()
             _uiState.update { it.copy(defaultProfileId = profileId) }
+        }
+    }
+
+    fun addCustomTerminalType(terminalType: String) {
+        if (terminalType.isBlank()) return
+        val currentTypes = _uiState.value.customTerminalTypes
+        if (currentTypes.contains(terminalType)) return
+
+        viewModelScope.launch {
+            val updatedTypes = currentTypes + terminalType
+            val typesString = updatedTypes.joinToString(",")
+            prefs.edit().putString("customTerminalTypes", typesString).apply()
+            _uiState.update { it.copy(customTerminalTypes = updatedTypes) }
+        }
+    }
+
+    fun removeCustomTerminalType(terminalType: String) {
+        viewModelScope.launch {
+            val currentTypes = _uiState.value.customTerminalTypes.toMutableList()
+            if (currentTypes.remove(terminalType)) {
+                val typesString = currentTypes.joinToString(",")
+                prefs.edit().putString("customTerminalTypes", typesString).apply()
+                _uiState.update { it.copy(customTerminalTypes = currentTypes) }
+            }
         }
     }
 
