@@ -34,6 +34,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.FontDownload
+import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -149,6 +150,8 @@ fun SettingsScreen(
         onWifilockChange = viewModel::updateWifilock,
         onBackupkeysChange = viewModel::updateBackupkeys,
         onScrollbackChange = viewModel::updateScrollback,
+        onAddCustomTerminalType = viewModel::addCustomTerminalType,
+        onRemoveCustomTerminalType = viewModel::removeCustomTerminalType,
         onFontFamilyChange = viewModel::updateFontFamily,
         onAddCustomFont = viewModel::addCustomFont,
         onRemoveCustomFont = viewModel::removeCustomFont,
@@ -188,6 +191,8 @@ fun SettingsScreenContent(
     onWifilockChange: (Boolean) -> Unit,
     onBackupkeysChange: (Boolean) -> Unit,
     onScrollbackChange: (String) -> Unit,
+    onAddCustomTerminalType: (String) -> Unit,
+    onRemoveCustomTerminalType: (String) -> Unit,
     onFontFamilyChange: (String) -> Unit,
     onAddCustomFont: (String) -> Unit,
     onRemoveCustomFont: (String) -> Unit,
@@ -275,6 +280,14 @@ fun SettingsScreenContent(
                     summary = stringResource(R.string.pref_scrollback_summary),
                     value = uiState.scrollback,
                     onValueChange = onScrollbackChange
+                )
+            }
+
+            item {
+                AddCustomTerminalTypePreference(
+                    customTerminalTypes = uiState.customTerminalTypes,
+                    onAddTerminalType = onAddCustomTerminalType,
+                    onRemoveTerminalType = onRemoveCustomTerminalType
                 )
             }
 
@@ -880,6 +893,91 @@ private fun SliderPreference(
     HorizontalDivider()
 }
 
+@Composable
+private fun AddCustomTerminalTypePreference(
+    customTerminalTypes: List<String>,
+    onAddTerminalType: (String) -> Unit,
+    onRemoveTerminalType: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var showAddDialog by remember { mutableStateOf(false) }
+    var newTerminalType by remember { mutableStateOf("") }
+
+    Column(modifier = modifier) {
+        ListItem(
+            headlineContent = { Text(stringResource(R.string.pref_customterminal_title)) },
+            supportingContent = { Text(stringResource(R.string.pref_customterminal_summary)) },
+            modifier = Modifier.clickable { showAddDialog = true }
+        )
+
+        // Show existing custom terminal types with remove option
+        customTerminalTypes.forEach { terminalType ->
+            ListItem(
+                headlineContent = { Text(terminalType) },
+                leadingContent = {
+                    Icon(
+                        imageVector = Icons.Default.Terminal,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                },
+                trailingContent = {
+                    IconButton(onClick = { onRemoveTerminalType(terminalType) }) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = stringResource(R.string.button_remove)
+                        )
+                    }
+                },
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
+
+        HorizontalDivider()
+    }
+
+    if (showAddDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                showAddDialog = false
+                newTerminalType = ""
+            },
+            title = { Text(stringResource(R.string.dialog_customterminal_title)) },
+            text = {
+                OutlinedTextField(
+                    value = newTerminalType,
+                    onValueChange = { newTerminalType = it },
+                    label = { Text(stringResource(R.string.dialog_customterminal_hint)) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        if (newTerminalType.isNotBlank()) {
+                            onAddTerminalType(newTerminalType.trim())
+                            showAddDialog = false
+                            newTerminalType = ""
+                        }
+                    },
+                    enabled = newTerminalType.isNotBlank()
+                ) {
+                    Text(stringResource(R.string.button_add))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showAddDialog = false
+                    newTerminalType = ""
+                }) {
+                    Text(stringResource(R.string.delete_neg))
+                }
+            }
+        )
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AddCustomFontPreference(
@@ -1170,6 +1268,7 @@ private fun SettingsScreenPreview() {
                 bellNotification = false,
                 fontFamily = "JETBRAINS_MONO",
                 customFonts = listOf("Cascadia Code", "Hack"),
+                customTerminalTypes = listOf("rxvt-unicode", "tmux-256color"),
                 localFonts = listOf("My Custom Font" to "my_custom_font.ttf"),
                 fontValidationInProgress = false,
                 fontValidationError = null,
@@ -1182,6 +1281,8 @@ private fun SettingsScreenPreview() {
             onWifilockChange = {},
             onBackupkeysChange = {},
             onScrollbackChange = {},
+            onAddCustomTerminalType = {},
+            onRemoveCustomTerminalType = {},
             onFontFamilyChange = {},
             onAddCustomFont = {},
             onRemoveCustomFont = {},
