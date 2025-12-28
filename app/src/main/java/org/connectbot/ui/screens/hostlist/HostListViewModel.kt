@@ -52,12 +52,20 @@ data class HostListUiState(
     val error: String? = null,
     val sortedByColor: Boolean = false,
     val exportedJson: String? = null,
+    val exportResult: ExportResult? = null,
     val importResult: ImportResult? = null
 )
 
 data class ImportResult(
-    val imported: Int,
-    val skipped: Int
+    val hostsImported: Int,
+    val hostsSkipped: Int,
+    val profilesImported: Int,
+    val profilesSkipped: Int
+)
+
+data class ExportResult(
+    val hostCount: Int,
+    val profileCount: Int
 )
 
 @HiltViewModel
@@ -231,10 +239,14 @@ class HostListViewModel @Inject constructor(
     fun exportHosts() {
         viewModelScope.launch {
             try {
-                val json = withContext(Dispatchers.IO) {
+                val (json, exportCounts) = withContext(Dispatchers.IO) {
                     repository.exportHostsToJson()
                 }
-                _uiState.update { it.copy(exportedJson = json) }
+                val exportResult = ExportResult(
+                    hostCount = exportCounts.hostCount,
+                    profileCount = exportCounts.profileCount
+                )
+                _uiState.update { it.copy(exportedJson = json, exportResult = exportResult) }
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(error = e.message ?: "Failed to export hosts")
@@ -244,16 +256,22 @@ class HostListViewModel @Inject constructor(
     }
 
     fun clearExportedJson() {
-        _uiState.update { it.copy(exportedJson = null) }
+        _uiState.update { it.copy(exportedJson = null, exportResult = null) }
     }
 
     fun importHosts(jsonString: String) {
         viewModelScope.launch {
             try {
-                val (imported, skipped) = withContext(Dispatchers.IO) {
+                val importCounts = withContext(Dispatchers.IO) {
                     repository.importHostsFromJson(jsonString)
                 }
-                _uiState.update { it.copy(importResult = ImportResult(imported, skipped)) }
+                val importResult = ImportResult(
+                    hostsImported = importCounts.hostsImported,
+                    hostsSkipped = importCounts.hostsSkipped,
+                    profilesImported = importCounts.profilesImported,
+                    profilesSkipped = importCounts.profilesSkipped
+                )
+                _uiState.update { it.copy(importResult = importResult) }
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(error = e.message ?: "Failed to import hosts")

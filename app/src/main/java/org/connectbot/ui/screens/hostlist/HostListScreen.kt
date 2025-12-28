@@ -123,12 +123,18 @@ fun HostListScreen(
                     context.contentResolver.openOutputStream(uri)?.use { outputStream ->
                         outputStream.write(uiState.exportedJson!!.toByteArray())
                     }
-                    val hostCount = uiState.hosts.size
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.export_hosts_success, hostCount),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    val exportResult = uiState.exportResult
+                    if (exportResult != null) {
+                        Toast.makeText(
+                            context,
+                            context.getString(
+                                R.string.export_hosts_success,
+                                exportResult.hostCount,
+                                exportResult.profileCount
+                            ),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } catch (e: Exception) {
                     Toast.makeText(
                         context,
@@ -185,7 +191,13 @@ fun HostListScreen(
         uiState.importResult?.let { result ->
             Toast.makeText(
                 context,
-                context.getString(R.string.import_hosts_success, result.imported, result.skipped),
+                context.getString(
+                    R.string.import_hosts_success,
+                    result.hostsImported,
+                    result.hostsSkipped,
+                    result.profilesImported,
+                    result.profilesSkipped
+                ),
                 Toast.LENGTH_SHORT
             ).show()
             viewModel.clearImportResult()

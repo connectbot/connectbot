@@ -19,6 +19,33 @@ package org.connectbot.data
 
 import android.content.Context
 import androidx.room.RoomDatabase
+import org.json.JSONObject
+
+/**
+ * Result of exporting host configurations.
+ *
+ * @param hostCount Number of hosts exported
+ * @param profileCount Number of profiles exported
+ */
+data class ExportCounts(
+    val hostCount: Int,
+    val profileCount: Int
+)
+
+/**
+ * Result of importing host configurations.
+ *
+ * @param hostsImported Number of hosts newly inserted
+ * @param hostsSkipped Number of hosts skipped (already existed)
+ * @param profilesImported Number of profiles newly inserted
+ * @param profilesSkipped Number of profiles skipped (already existed)
+ */
+data class ImportCounts(
+    val hostsImported: Int,
+    val hostsSkipped: Int,
+    val profilesImported: Int,
+    val profilesSkipped: Int
+)
 
 /**
  * Configuration for host configuration export/import.
@@ -49,12 +76,19 @@ object HostConfigJson {
      * @param context Android context for loading schema
      * @param database The Room database instance
      * @param pretty Whether to format JSON with indentation
-     * @return JSON string containing host configurations
+     * @return Pair of JSON string and export counts (hosts and profiles)
      */
-    fun exportToJson(context: Context, database: RoomDatabase, pretty: Boolean = true): String {
+    fun exportToJson(context: Context, database: RoomDatabase, pretty: Boolean = true): Pair<String, ExportCounts> {
         val schema = DatabaseSchema.load(context)
         val exporter = SchemaBasedExporter(database, schema)
-        return exporter.exportToJson(EXPORT_TABLES, pretty)
+        val json = exporter.exportToJson(EXPORT_TABLES, pretty)
+
+        // Parse the JSON to count hosts and profiles
+        val jsonObj = JSONObject(json)
+        val hostCount = jsonObj.optJSONArray("hosts")?.length() ?: 0
+        val profileCount = jsonObj.optJSONArray("profiles")?.length() ?: 0
+
+        return Pair(json, ExportCounts(hostCount, profileCount))
     }
 
     /**
@@ -63,13 +97,21 @@ object HostConfigJson {
      * @param context Android context for loading schema
      * @param database The Room database instance
      * @param jsonString JSON string containing host configurations
-     * @return Pair of (inserted count, updated count) for hosts only
+     * @return Import counts for hosts and profiles
      */
-    fun importFromJson(context: Context, database: RoomDatabase, jsonString: String): Pair<Int, Int> {
+    fun importFromJson(context: Context, database: RoomDatabase, jsonString: String): ImportCounts {
         val schema = DatabaseSchema.load(context)
         val exporter = SchemaBasedExporter(database, schema)
         val results = exporter.importFromJson(jsonString, EXPORT_TABLES)
-        // Return only hosts counts (not port_forwards or other child tables)
-        return results["hosts"] ?: Pair(0, 0)
+
+        val hostCounts = results["hosts"] ?: Pair(0, 0)
+        val profileCounts = results["profiles"] ?: Pair(0, 0)
+
+        return ImportCounts(
+            hostsImported = hostCounts.first,
+            hostsSkipped = hostCounts.second,
+            profilesImported = profileCounts.first,
+            profilesSkipped = profileCounts.second
+        )
     }
 }

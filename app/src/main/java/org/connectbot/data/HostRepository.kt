@@ -296,9 +296,9 @@ class HostRepository @Inject constructor(
      * Uses schema-driven serialization that automatically adapts to database schema changes.
      *
      * @param pretty If true, format JSON with indentation
-     * @return JSON string containing all host configurations
+     * @return Pair of JSON string and export counts (hosts and profiles)
      */
-    suspend fun exportHostsToJson(pretty: Boolean = true): String {
+    suspend fun exportHostsToJson(pretty: Boolean = true): Pair<String, ExportCounts> {
         return HostConfigJson.exportToJson(context, database, pretty)
     }
 
@@ -310,11 +310,11 @@ class HostRepository @Inject constructor(
      * - Conflict resolution via unique constraints
      *
      * @param jsonString The JSON string containing host configurations
-     * @return Pair of (inserted count, updated count)
+     * @return Import counts for hosts and profiles
      * @throws org.json.JSONException if JSON is invalid
      * @throws IllegalArgumentException if schema version is incompatible
      */
-    suspend fun importHostsFromJson(jsonString: String): Pair<Int, Int> {
+    suspend fun importHostsFromJson(jsonString: String): ImportCounts {
         return HostConfigJson.importFromJson(context, database, jsonString)
     }
 

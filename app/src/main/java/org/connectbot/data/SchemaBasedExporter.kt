@@ -87,7 +87,7 @@ class SchemaBasedExporter(
      *
      * @param jsonString JSON string containing table data
      * @param tableNames List of table names to import (in order - parent tables first)
-     * @return Map of table name to Pair of (inserted count, updated count)
+     * @return Map of table name to Pair of (inserted count, skipped count)
      */
     fun importFromJson(jsonString: String, tableNames: List<String>): Map<String, Pair<Int, Int>> {
         val json = JSONObject(jsonString)
@@ -113,7 +113,7 @@ class SchemaBasedExporter(
             idMappings[tableName] = idMapping
 
             var insertedCount = 0
-            var updatedCount = 0
+            var skippedCount = 0
 
             // Find unique constraint for conflict detection
             val uniqueFields = entitySchema.uniqueIndices
@@ -135,9 +135,8 @@ class SchemaBasedExporter(
                 val existingId = findExistingId(db, tableName, remappedRow, uniqueFields, entitySchema)
 
                 val newId = if (existingId != null) {
-                    // Update existing row
-                    updateRow(db, tableName, existingId, remappedRow, entitySchema)
-                    updatedCount++
+                    // Skip existing row - do not update
+                    skippedCount++
                     existingId
                 } else {
                     // Insert new row
@@ -152,7 +151,7 @@ class SchemaBasedExporter(
             // Second pass: update self-referencing foreign keys
             updateSelfReferences(db, tableName, entitySchema, idMapping, rows)
 
-            results[tableName] = Pair(insertedCount, updatedCount)
+            results[tableName] = Pair(insertedCount, skippedCount)
         }
 
         // Notify Room's InvalidationTracker that tables have changed
