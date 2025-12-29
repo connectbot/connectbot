@@ -398,19 +398,23 @@ class SftpConnectionManager @Inject constructor(
             serverHostKey: ByteArray
         ): Boolean {
             val knownHosts = kotlinx.coroutines.runBlocking {
-                hostRepository.getKnownHosts()
+                hostRepository.getKnownHostsForHost(host.id)
             }
 
-            val matchName = String.format(Locale.US, "%s:%d", hostname, port)
             val sha256 = KeyFingerprint.createSHA256Fingerprint(serverHostKey)
 
-            return when (knownHosts.verifyHostkey(matchName, serverHostKeyAlgorithm, serverHostKey)) {
-                KnownHosts.HOSTKEY_IS_OK -> {
+            // Check if we have any known hosts for this algorithm
+            val hostsWithSameAlgo = knownHosts.filter { it.hostKeyAlgo == serverHostKeyAlgorithm }
+
+            return when {
+                // Key matches an existing known host
+                knownHosts.any { it.hostKeyAlgo == serverHostKeyAlgorithm && it.hostKey.contentEquals(serverHostKey) } -> {
                     Log.d(TAG, "Host key verified for $hostname")
                     true
                 }
 
-                KnownHosts.HOSTKEY_IS_NEW -> {
+                // No known hosts - this is a new key
+                knownHosts.isEmpty() -> {
                     val accepted = kotlinx.coroutines.runBlocking {
                         promptHandler.confirmHostKey(
                             hostname = hostname,
@@ -428,7 +432,8 @@ class SftpConnectionManager @Inject constructor(
                     accepted
                 }
 
-                KnownHosts.HOSTKEY_HAS_CHANGED -> {
+                // We have hosts with this algorithm but key doesn't match - key has changed
+                hostsWithSameAlgo.isNotEmpty() -> {
                     val accepted = kotlinx.coroutines.runBlocking {
                         promptHandler.confirmHostKey(
                             hostname = hostname,
@@ -446,19 +451,36 @@ class SftpConnectionManager @Inject constructor(
                     accepted
                 }
 
-                else -> false
+                // New algorithm for this host - treat as new key
+                else -> {
+                    val accepted = kotlinx.coroutines.runBlocking {
+                        promptHandler.confirmHostKey(
+                            hostname = hostname,
+                            keyType = getKeyType(serverHostKeyAlgorithm) ?: "UNKNOWN",
+                            fingerprint = sha256,
+                            isNewKey = true
+                        )
+                    }
+
+                    if (accepted) {
+                        kotlinx.coroutines.runBlocking {
+                            hostRepository.saveKnownHost(host, hostname, port, serverHostKeyAlgorithm, serverHostKey)
+                        }
+                    }
+                    accepted
+                }
             }
         }
 
-        override fun getKnownKeyAlgorithmsForHost(host: String, port: Int): List<String>? {
+        override fun getKnownKeyAlgorithmsForHost(hostname: String, port: Int): List<String>? {
             return kotlinx.coroutines.runBlocking {
-                hostRepository.getHostKeyAlgorithmsForHost(host, port).ifEmpty { null }
+                hostRepository.getHostKeyAlgorithmsForHost(host.id).ifEmpty { null }
             }
         }
 
-        override fun removeServerHostKey(host: String, port: Int, algorithm: String, hostKey: ByteArray) {
+        override fun removeServerHostKey(hostname: String, port: Int, algorithm: String, hostKey: ByteArray) {
             kotlinx.coroutines.runBlocking {
-                hostRepository.removeKnownHost(host, port, algorithm, hostKey)
+                hostRepository.removeKnownHost(host.id, algorithm, hostKey)
             }
         }
 
