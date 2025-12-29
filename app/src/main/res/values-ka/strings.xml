@@ -113,6 +113,6 @@
   <string name="expand">ამოკეცვა</string>
   <string name="hostpref_authagent_with_confirmation">დადასტურების მოთხოვნა</string>
   <string name="hostpref_add_host">ჰოსტის დამატება</string>
-  <string name="hostpref_edit_host">ჰოსტის შენახვა</string>
+  <string name="hostpref_save_host">ჰოსტის შენახვა</string>
   <string name="pubkey_import_existing">არსებული საჯგასაღების შემოტანა</string>
 </resources>

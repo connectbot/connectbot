@@ -215,6 +215,6 @@
   <string name="expand">Mở rộng</string>
   <string name="hostpref_authagent_with_confirmation">cần xác nhận</string>
   <string name="hostpref_add_host">Thêm máy chủ (host)</string>
-  <string name="hostpref_edit_host">Lưu máy chủ (host)</string>
+  <string name="hostpref_save_host">Lưu máy chủ (host)</string>
   <string name="pubkey_import_existing">Import khoá pubkey có sẵn</string>
 </resources>

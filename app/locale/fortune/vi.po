@@ -2252,7 +2252,7 @@ msgid "Add host"
 msgstr "Thêm máy chủ (host)"
 
 #. Text for button which, when clicked, saves an existing host.
-msgctxt "hostpref_edit_host"
+msgctxt "hostpref_save_host"
 msgid "Save host"
 msgstr "Lưu máy chủ (host)"
 

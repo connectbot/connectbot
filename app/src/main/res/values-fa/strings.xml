@@ -157,6 +157,6 @@
   <string name="button_key_f11">F11</string>
   <string name="button_key_f12">F12</string>
   <string name="hostpref_add_host">افزودن میزبان</string>
-  <string name="hostpref_edit_host">ذخیره میزبان</string>
+  <string name="hostpref_save_host">ذخیره میزبان</string>
   <string name="pubkey_import_existing">وارد کردن کلید عمومی موجود</string>
 </resources>

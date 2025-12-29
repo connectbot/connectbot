@@ -404,7 +404,7 @@
   <string name="expand">展開</string>
   <string name="hostpref_authagent_with_confirmation">確認が必要</string>
   <string name="hostpref_add_host">ホストを追加</string>
-  <string name="hostpref_edit_host">ホストを保存</string>
+  <string name="hostpref_save_host">ホストを保存</string>
   <string name="pubkey_import_existing">既存の公開鍵をインポート</string>
   <string name="notification_permission_title">接続を維持する</string>
   <string name="notification_permission_message">通知を表示することはバックグラウンドで接続を維持するために必要です。許可なくして、接続はアプリを切り替えたときに閉じることがあります。</string>

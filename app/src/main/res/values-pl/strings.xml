@@ -404,7 +404,7 @@
   <string name="expand">Rozwiń</string>
   <string name="hostpref_authagent_with_confirmation">wymaga potwierdzenia</string>
   <string name="hostpref_add_host">Dodaj host</string>
-  <string name="hostpref_edit_host">Zapisz host</string>
+  <string name="hostpref_save_host">Zapisz host</string>
   <string name="pubkey_import_existing">Importuj istniejący klucz publiczny</string>
   <string name="notification_permission_title">Utrzymuj połączenia przy życiu</string>
   <string name="notification_permission_message">Wyświetlanie powiadomienia jest wymagane do utrzymania połączeń w tle. Bez zgody połączenia mogą zostać zamknięte podczas przełączania aplikacji.</string>

@@ -170,7 +170,7 @@ fun HostEditorScreenContent(
                             uiState.quickConnect.isNotBlank()
                         }
                     ) {
-                        Text(stringResource(if (hostId == -1L) R.string.hostpref_add_host else R.string.hostpref_edit_host))
+                        Text(stringResource(if (hostId == -1L) R.string.hostpref_add_host else R.string.hostpref_save_host))
                     }
                 }
             )
