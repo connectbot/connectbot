@@ -221,6 +221,6 @@
   <string name="expand">展開</string>
   <string name="hostpref_authagent_with_confirmation">需要確認</string>
   <string name="hostpref_add_host">新增主機</string>
-  <string name="hostpref_edit_host">儲存主機</string>
+  <string name="hostpref_save_host">儲存主機</string>
   <string name="pubkey_import_existing">匯入現有公鑰</string>
 </resources>

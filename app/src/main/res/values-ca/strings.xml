@@ -217,6 +217,6 @@
   <string name="expand">Amplia</string>
   <string name="hostpref_authagent_with_confirmation">Requereix confirmació</string>
   <string name="hostpref_add_host">Afegeix un equip remot</string>
-  <string name="hostpref_edit_host">Desa l\'equip remot</string>
+  <string name="hostpref_save_host">Desa l\'equip remot</string>
   <string name="pubkey_import_existing">Importa una clau pública existent</string>
 </resources>

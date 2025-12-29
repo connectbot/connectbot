@@ -404,7 +404,7 @@
   <string name="expand">Espandi</string>
   <string name="hostpref_authagent_with_confirmation">richiedi conferma</string>
   <string name="hostpref_add_host">Aggiungi host</string>
-  <string name="hostpref_edit_host">Salva host</string>
+  <string name="hostpref_save_host">Salva host</string>
   <string name="pubkey_import_existing">Importa chiave pubblica</string>
   <string name="notification_permission_title">Mantieni le connessioni attive</string>
   <string name="notification_permission_message">La visualizzazione di una notifica è necessaria per mantenere attive le connessioni in background. Senza autorizzazione, le connessioni potrebbero chiudersi quando si cambia app.</string>

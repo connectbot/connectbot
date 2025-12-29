@@ -76,6 +76,6 @@
   <string name="protocol_spinner_label">Protokols</string>
   <string name="expand">Izvērst</string>
   <string name="hostpref_add_host">Pievienot serveri</string>
-  <string name="hostpref_edit_host">Saglabāt serveri</string>
+  <string name="hostpref_save_host">Saglabāt serveri</string>
   <string name="pubkey_import_existing">Ievietot esošu publisko atslēgu</string>
 </resources>

@@ -2235,7 +2235,7 @@ msgid "Add host"
 msgstr "호스트 추가"
 
 #. Text for button which, when clicked, saves an existing host.
-msgctxt "hostpref_edit_host"
+msgctxt "hostpref_save_host"
 msgid "Save host"
 msgstr "호스트 저장"
 

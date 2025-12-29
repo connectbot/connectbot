@@ -404,7 +404,7 @@
   <string name="expand">Expand</string>
   <string name="hostpref_authagent_with_confirmation">확인 필요</string>
   <string name="hostpref_add_host">호스트 추가</string>
-  <string name="hostpref_edit_host">호스트 저장</string>
+  <string name="hostpref_save_host">호스트 저장</string>
   <string name="pubkey_import_existing">기존 공개키 가져오기</string>
   <string name="notification_permission_title">연결 유지하기</string>
   <string name="notification_permission_message">백그라운드에서 연결을 유지하기 위해 알림 표시가 필요합니다. 권한 없이 앱을 전환할 때 연결이 종료될 수 있습니다.</string>

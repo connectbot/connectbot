@@ -179,6 +179,6 @@
   <string name="expand">Laajenna</string>
   <string name="hostpref_authagent_with_confirmation">edellytä vahvistusta</string>
   <string name="hostpref_add_host">Lisää isäntä</string>
-  <string name="hostpref_edit_host">Tallenna isäntä</string>
+  <string name="hostpref_save_host">Tallenna isäntä</string>
   <string name="pubkey_import_existing">Tuo nykyinen julkinen avain</string>
 </resources>

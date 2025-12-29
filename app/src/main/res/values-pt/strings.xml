@@ -215,6 +215,6 @@
   <string name="expand">Expandir</string>
   <string name="hostpref_authagent_with_confirmation">requer confirmação</string>
   <string name="hostpref_add_host">Adicionar servidor</string>
-  <string name="hostpref_edit_host">Gravar servidor</string>
+  <string name="hostpref_save_host">Gravar servidor</string>
   <string name="pubkey_import_existing">Importar chave publica existente</string>
 </resources>

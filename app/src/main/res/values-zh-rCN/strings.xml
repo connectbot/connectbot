@@ -217,6 +217,6 @@
   <string name="expand">展开</string>
   <string name="hostpref_authagent_with_confirmation">需要确认</string>
   <string name="hostpref_add_host">添加主机</string>
-  <string name="hostpref_edit_host">保存主机</string>
+  <string name="hostpref_save_host">保存主机</string>
   <string name="pubkey_import_existing">导入已有的公钥</string>
 </resources>

@@ -2241,7 +2241,7 @@ msgid "Add host"
 msgstr "ເພີ່ມໂຮສ"
 
 #. Text for button which, when clicked, saves an existing host.
-msgctxt "hostpref_edit_host"
+msgctxt "hostpref_save_host"
 msgid "Save host"
 msgstr "ບັນທຶກໂຮສ"
 
