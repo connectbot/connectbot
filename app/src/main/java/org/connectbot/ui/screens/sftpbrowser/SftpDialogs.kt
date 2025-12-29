@@ -78,6 +78,42 @@ fun CreateFolderDialog(
 }
 
 @Composable
+fun GoToPathDialog(
+    currentPath: String,
+    onDismiss: () -> Unit,
+    onConfirm: (String) -> Unit
+) {
+    var path by remember { mutableStateOf(currentPath) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.sftp_go_to_path)) },
+        text = {
+            OutlinedTextField(
+                value = path,
+                onValueChange = { path = it },
+                label = { Text(stringResource(R.string.sftp_path)) },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { onConfirm(path) },
+                enabled = path.isNotBlank()
+            ) {
+                Text(stringResource(R.string.sftp_go))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.button_cancel))
+            }
+        }
+    )
+}
+
+@Composable
 fun DeleteConfirmDialog(
     entry: SftpEntry,
     onDismiss: () -> Unit,

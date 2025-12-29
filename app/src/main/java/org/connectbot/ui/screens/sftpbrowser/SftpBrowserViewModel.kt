@@ -72,7 +72,10 @@ data class SftpBrowserUiState(
     val showPasswordDialog: Boolean = false,
     val passwordPrompt: String? = null,
     val showKeyPassphraseDialog: Boolean = false,
-    val keyPassphrasePrompt: String? = null
+    val keyPassphrasePrompt: String? = null,
+    val showBiometricDialog: Boolean = false,
+    val biometricKeyInfo: BiometricKeyInfo? = null,
+    val showGoToPathDialog: Boolean = false
 )
 
 /**
@@ -101,6 +104,14 @@ data class HostKeyInfo(
     val isNewKey: Boolean
 )
 
+/**
+ * Biometric key information for authentication dialog.
+ */
+data class BiometricKeyInfo(
+    val keyName: String,
+    val keystoreAlias: String
+)
+
 @HiltViewModel
 class SftpBrowserViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -118,6 +129,7 @@ class SftpBrowserViewModel @Inject constructor(
     private var pendingHostKeyCallback: ((Boolean) -> Unit)? = null
     private var pendingPasswordCallback: ((String?) -> Unit)? = null
     private var pendingKeyPassphraseCallback: ((String?) -> Unit)? = null
+    private var pendingBiometricCallback: ((Boolean) -> Unit)? = null
 
     init {
         loadHost()
@@ -239,6 +251,21 @@ class SftpBrowserViewModel @Inject constructor(
 
     fun dismissCreateFolderDialog() {
         _uiState.update { it.copy(showCreateFolderDialog = false) }
+    }
+
+    fun showGoToPathDialog() {
+        _uiState.update { it.copy(showGoToPathDialog = true) }
+    }
+
+    fun dismissGoToPathDialog() {
+        _uiState.update { it.copy(showGoToPathDialog = false) }
+    }
+
+    fun goToPath(path: String) {
+        _uiState.update { it.copy(showGoToPathDialog = false) }
+        if (path.isNotBlank()) {
+            navigateTo(path.trim())
+        }
     }
 
     fun createFolder(name: String) {
@@ -453,6 +480,19 @@ class SftpBrowserViewModel @Inject constructor(
         _uiState.update { it.copy(showKeyPassphraseDialog = false, keyPassphrasePrompt = null) }
     }
 
+    // Biometric dialog handling
+    fun onBiometricSuccess() {
+        pendingBiometricCallback?.invoke(true)
+        pendingBiometricCallback = null
+        _uiState.update { it.copy(showBiometricDialog = false, biometricKeyInfo = null) }
+    }
+
+    fun onBiometricFailure() {
+        pendingBiometricCallback?.invoke(false)
+        pendingBiometricCallback = null
+        _uiState.update { it.copy(showBiometricDialog = false, biometricKeyInfo = null) }
+    }
+
     private fun createPromptHandler(): SftpPromptHandler {
         return object : SftpPromptHandler {
             override suspend fun requestPassword(message: String): String? {
@@ -500,9 +540,17 @@ class SftpBrowserViewModel @Inject constructor(
             }
 
             override suspend fun requestBiometricAuth(keyName: String, keystoreAlias: String): Boolean {
-                // Biometric auth is not fully implemented for SFTP yet
-                // Would require FragmentActivity access
-                return false
+                return kotlinx.coroutines.suspendCancellableCoroutine { cont ->
+                    pendingBiometricCallback = { success ->
+                        cont.resumeWith(Result.success(success))
+                    }
+                    _uiState.update {
+                        it.copy(
+                            showBiometricDialog = true,
+                            biometricKeyInfo = BiometricKeyInfo(keyName, keystoreAlias)
+                        )
+                    }
+                }
             }
 
             override suspend fun handleKeyboardInteractive(
