@@ -146,6 +146,8 @@
 	<string name="prompt_destination">"Destination:"</string>
 	<!-- Prompt presented to the user when the server requests that they change their password. This is the entry for the old password. -->
 	<string name="prompt_old_password">"Old password:"</string>
+	<!-- Prompt for user to enter their username when the host has no username configured. -->
+	<string name="prompt_username">"Username:"</string>
 	<!-- Prompt for user to enter their password to log into the host when using 'password' authentication. -->
 	<string name="prompt_password">"Password:"</string>
 	<!-- Added after a "Password:" prompt to indicate user needs to confirm entry. -->
