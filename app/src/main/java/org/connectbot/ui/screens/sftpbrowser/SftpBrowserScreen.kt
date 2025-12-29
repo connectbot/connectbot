@@ -188,14 +188,12 @@ fun SftpBrowserScreen(
                             checked = fabExpanded,
                             onCheckedChange = { fabExpanded = !fabExpanded }
                         ) {
-                            val imageVector by animateIcon(
-                                checked = fabExpanded,
-                                checkedImageVector = Icons.Filled.Close,
-                                uncheckedImageVector = Icons.Filled.Add
-                            )
                             Icon(
-                                painter = rememberVectorPainter(imageVector),
-                                contentDescription = stringResource(R.string.sftp_actions)
+                                painter = rememberVectorPainter(
+                                    if (checkedProgress > 0.5f) Icons.Filled.Close else Icons.Filled.Add
+                                ),
+                                contentDescription = stringResource(R.string.sftp_actions),
+                                modifier = Modifier.animateIcon({ checkedProgress })
                             )
                         }
                     }
