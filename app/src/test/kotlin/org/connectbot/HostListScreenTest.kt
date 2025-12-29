@@ -61,6 +61,7 @@ class HostListScreenTest {
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
+                    onNavigateToSftp = {}
                 )
             }
         }
@@ -84,6 +85,7 @@ class HostListScreenTest {
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
+                    onNavigateToSftp = {}
                 )
             }
         }
@@ -108,6 +110,7 @@ class HostListScreenTest {
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
+                    onNavigateToSftp = {}
                 )
             }
         }
@@ -136,6 +139,7 @@ class HostListScreenTest {
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
+                    onNavigateToSftp = {}
                 )
             }
         }
