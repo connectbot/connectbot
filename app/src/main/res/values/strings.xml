@@ -1041,6 +1041,8 @@
 	<string name="hostpref_add_host">Add host</string>
 	<!-- Text for button which, when clicked, saves an existing host. -->
 	<string name="hostpref_edit_host">Save host</string>
+	<!-- Title shown in the app bar when editing an existing host's settings. -->
+	<string name="hostpref_setting_title">Host setting</string>
 	<!-- Text for button which, when clicked, brings up picker to import an existing pubkey. -->
 	<string name="pubkey_import_existing">Import existing pubkey</string>
 
