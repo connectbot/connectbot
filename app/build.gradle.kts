@@ -150,6 +150,12 @@ android {
         unitTests.isIncludeAndroidResources = true
     }
 
+    sourceSets {
+        getByName("main") {
+            assets.srcDirs("build/generated/exportSchema")
+        }
+    }
+
     lint {
         abortOnError = false
         lintConfig = file("lint.xml")
@@ -211,6 +217,64 @@ tasks.withType<Test>().configureEach {
         isIncludeNoLocationClasses = true
         excludes = listOf("jdk.internal.*")
     }
+}
+
+// Generate filtered export schema from Room schema
+// Only includes tables needed for export/import (profiles, hosts, port_forwards)
+val generateExportSchema by tasks.registering {
+    val schemaVersion = 5 // Must match ConnectBotDatabase.SCHEMA_VERSION
+    val exportTables = setOf("profiles", "hosts", "port_forwards")
+    val excludedFields = setOf("last_connect", "host_key_algo")
+
+    val inputFile = file("schemas/org.connectbot.data.ConnectBotDatabase/$schemaVersion.json")
+    val outputDir = file("build/generated/exportSchema")
+    val outputFile = file("$outputDir/export_schema.json")
+
+    inputs.file(inputFile)
+    outputs.file(outputFile)
+
+    doLast {
+        val inputJson = groovy.json.JsonSlurper().parseText(inputFile.readText()) as Map<*, *>
+        val database = inputJson["database"] as Map<*, *>
+        val entities = database["entities"] as List<*>
+
+        // Filter entities to only include export tables
+        val filteredEntities = entities.filter { entity ->
+            val entityMap = entity as Map<*, *>
+            entityMap["tableName"] in exportTables
+        }.map { entity ->
+            val entityMap = (entity as Map<*, *>).toMutableMap()
+            // Mark excluded fields instead of removing them (needed for NOT NULL defaults)
+            val fields = entityMap["fields"] as List<*>
+            entityMap["fields"] = fields.map { field ->
+                val fieldMap = (field as Map<*, *>).toMutableMap()
+                if (fieldMap["columnName"] in excludedFields) {
+                    fieldMap["excluded"] = true
+                }
+                fieldMap
+            }
+            entityMap
+        }
+
+        val filteredSchema = mapOf(
+            "formatVersion" to inputJson["formatVersion"],
+            "database" to mapOf(
+                "version" to database["version"],
+                "entities" to filteredEntities
+            )
+        )
+
+        outputDir.mkdirs()
+        outputFile.writeText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(filteredSchema)))
+    }
+}
+
+// Ensure export schema is generated before tasks that read from the assets directory
+tasks.matching {
+    (it.name.contains("merge") && it.name.contains("Assets")) ||
+    it.name.contains("Lint", ignoreCase = true)
+}.configureEach {
+    dependsOn(generateExportSchema)
 }
 
 // Do not want any release candidates for updates.

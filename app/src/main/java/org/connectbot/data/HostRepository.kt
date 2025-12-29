@@ -17,6 +17,8 @@
 
 package org.connectbot.data
 
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
 import org.connectbot.data.dao.HostDao
@@ -32,12 +34,16 @@ import javax.inject.Singleton
  * Repository for managing SSH host configurations and connections.
  * Handles host CRUD operations, known hosts, and port forwards.
  *
+ * @param context Application context for accessing schema assets
+ * @param database The Room database instance for export/import operations
  * @param hostDao The DAO for accessing host data
  * @param portForwardDao The DAO for accessing port forward data
  * @param knownHostDao The DAO for accessing known host data
  */
 @Singleton
 class HostRepository @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val database: ConnectBotDatabase,
     private val hostDao: HostDao,
     private val portForwardDao: PortForwardDao,
     private val knownHostDao: KnownHostDao
@@ -279,6 +285,37 @@ class HostRepository @Inject constructor(
         if (knownHost != null) {
             knownHostDao.delete(knownHost)
         }
+    }
+
+    // ============================================================================
+    // Export/Import Operations
+    // ============================================================================
+
+    /**
+     * Export all hosts and their port forwards to JSON string.
+     * Uses schema-driven serialization that automatically adapts to database schema changes.
+     *
+     * @param pretty If true, format JSON with indentation
+     * @return Pair of JSON string and export counts (hosts and profiles)
+     */
+    suspend fun exportHostsToJson(pretty: Boolean = true): Pair<String, ExportCounts> {
+        return HostConfigJson.exportToJson(context, database, pretty)
+    }
+
+    /**
+     * Import hosts from JSON string.
+     * Uses schema-driven deserialization that automatically handles:
+     * - Field mapping based on database schema
+     * - Foreign key ID remapping
+     * - Conflict resolution via unique constraints
+     *
+     * @param jsonString The JSON string containing host configurations
+     * @return Import counts for hosts and profiles
+     * @throws org.json.JSONException if JSON is invalid
+     * @throws IllegalArgumentException if schema version is incompatible
+     */
+    suspend fun importHostsFromJson(jsonString: String): ImportCounts {
+        return HostConfigJson.importFromJson(context, database, jsonString)
     }
 
     // ============================================================================

@@ -1207,4 +1207,22 @@
 	<string name="list_camera_none_description">None</string>
 	<!-- Summary description for text input camera button action -->
 	<string name="list_camera_text_input_description">Text input</string>
+
+	<!-- Host export/import menu items -->
+	<!-- Menu item to export all hosts to a JSON file -->
+	<string name="list_menu_export_hosts">Export Hosts</string>
+	<!-- Menu item to import hosts from a JSON file -->
+	<string name="list_menu_import_hosts">Import Hosts</string>
+
+	<!-- Host export/import messages -->
+	<!-- Success message shown after exporting hosts to a file. Parameters: %1$d = host count, %2$d = profile count -->
+	<string name="export_hosts_success">Exported %1$d hosts and %2$d profiles</string>
+	<!-- Success message shown after importing hosts from a file. Parameters: %1$d = hosts imported, %2$d = hosts skipped, %3$d = profiles imported, %4$d = profiles skipped -->
+	<string name="import_hosts_success">Imported %1$d hosts (%2$d skipped) and %3$d profiles (%4$d skipped)</string>
+	<!-- Error message when host export fails -->
+	<string name="export_hosts_failed">Failed to export hosts: %s</string>
+	<!-- Error message when host import fails -->
+	<string name="import_hosts_failed">Failed to import hosts: %s</string>
+	<!-- Title for the export hosts file picker dialog -->
+	<string name="export_hosts_title">Export Hosts</string>
 </resources>

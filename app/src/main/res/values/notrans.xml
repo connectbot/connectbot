@@ -44,4 +44,7 @@
 
 	<!-- Keyboard-interactive prompt prefix for jump host (format pattern, not translatable) -->
 	<string name="terminal_jump_prompt">[%s]</string>
+
+	<!-- Default filename for exported hosts JSON file -->
+	<string name="export_hosts_filename">connectbot_hosts.json</string>
 </resources>
