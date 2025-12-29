@@ -145,7 +145,7 @@ fun HostEditorScreenContent(
                 title = {
                     Text(
                         if (hostId == -1L) stringResource(R.string.hostpref_add_host)
-                        else stringResource(R.string.hostpref_edit_host)
+                        else stringResource(R.string.hostpref_setting_title)
                     )
                 },
                 navigationIcon = {
