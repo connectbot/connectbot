@@ -17,9 +17,14 @@
 
 package org.connectbot.ui.screens.sftpbrowser
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.activity.compose.BackHandler
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +42,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.CreateNewFolder
+import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.UploadFile
 import androidx.compose.material3.CircularProgressIndicator
@@ -76,6 +82,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.connectbot.R
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -169,6 +176,12 @@ fun SftpBrowserScreen(
                 },
                 actions = {
                     if (uiState.isConnected) {
+                        IconButton(onClick = { viewModel.showGoToPathDialog() }) {
+                            Icon(
+                                Icons.Default.Folder,
+                                contentDescription = stringResource(R.string.sftp_go_to_path)
+                            )
+                        }
                         IconButton(onClick = { viewModel.refresh() }) {
                             Icon(
                                 Icons.Default.Refresh,
@@ -332,6 +345,14 @@ fun SftpBrowserScreen(
         )
     }
 
+    if (uiState.showGoToPathDialog) {
+        GoToPathDialog(
+            currentPath = uiState.currentPath,
+            onDismiss = { viewModel.dismissGoToPathDialog() },
+            onConfirm = { path -> viewModel.goToPath(path) }
+        )
+    }
+
     if (uiState.showDeleteDialog && uiState.entryToDelete != null) {
         DeleteConfirmDialog(
             entry = uiState.entryToDelete!!,
@@ -370,4 +391,77 @@ fun SftpBrowserScreen(
             onCancel = { viewModel.cancelKeyPassphrase() }
         )
     }
+
+    if (uiState.showBiometricDialog && uiState.biometricKeyInfo != null) {
+        SftpBiometricPromptHandler(
+            keyName = uiState.biometricKeyInfo!!.keyName,
+            onSuccess = { viewModel.onBiometricSuccess() },
+            onFailure = { viewModel.onBiometricFailure() }
+        )
+    }
+}
+
+/**
+ * Handler for biometric authentication prompts in SFTP.
+ * Triggers BiometricPrompt when the composable is displayed.
+ */
+@Composable
+private fun SftpBiometricPromptHandler(
+    keyName: String,
+    onSuccess: () -> Unit,
+    onFailure: () -> Unit
+) {
+    val context = LocalContext.current
+    val activity = remember(context) { context.findFragmentActivity() }
+
+    LaunchedEffect(keyName) {
+        if (activity == null) {
+            Timber.e("Cannot show BiometricPrompt: FragmentActivity not found")
+            onFailure()
+            return@LaunchedEffect
+        }
+
+        val executor = ContextCompat.getMainExecutor(context)
+
+        val callback = object : BiometricPrompt.AuthenticationCallback() {
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                Timber.d("Biometric authentication succeeded for SFTP")
+                onSuccess()
+            }
+
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                Timber.e("Biometric authentication error: $errorCode - $errString")
+                onFailure()
+            }
+
+            override fun onAuthenticationFailed() {
+                Timber.w("Biometric authentication failed (not recognized)")
+                // Don't respond yet - let the user retry or cancel
+            }
+        }
+
+        val biometricPrompt = BiometricPrompt(activity, executor, callback)
+
+        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle(context.getString(R.string.pubkey_biometric_prompt_title))
+            .setSubtitle(context.getString(R.string.pubkey_biometric_prompt_subtitle, keyName))
+            .setNegativeButtonText(context.getString(R.string.delete_neg))
+            .build()
+
+        biometricPrompt.authenticate(promptInfo)
+    }
+}
+
+/**
+ * Find the FragmentActivity from the context hierarchy.
+ */
+private fun Context.findFragmentActivity(): FragmentActivity? {
+    var currentContext = this
+    while (currentContext is ContextWrapper) {
+        if (currentContext is FragmentActivity) {
+            return currentContext
+        }
+        currentContext = currentContext.baseContext
+    }
+    return null
 }
