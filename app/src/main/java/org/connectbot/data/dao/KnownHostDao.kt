@@ -77,4 +77,11 @@ interface KnownHostDao {
      */
     @Query("DELETE FROM known_hosts WHERE hostname = :hostname AND port = :port")
     suspend fun deleteByHostnameAndPort(hostname: String, port: Int)
+
+    /**
+     * Delete all known hosts for a specific host configuration.
+     * Use this when the user wants to forget all stored host keys for a host.
+     */
+    @Query("DELETE FROM known_hosts WHERE host_id = :hostId")
+    suspend fun deleteByHostId(hostId: Long)
 }

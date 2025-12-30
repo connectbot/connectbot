@@ -425,6 +425,55 @@ class KnownHostDaoTest {
         assertThat(allKeysForHost).hasSize(3)
     }
 
+    @Test
+    fun deleteByHostId_DeletesAllKnownHostsForHost() = runTest {
+        val host1 = createTestHost(nickname = "host1")
+        val host2 = createTestHost(nickname = "host2")
+        val hostId1 = hostDao.insert(host1)
+        val hostId2 = hostDao.insert(host2)
+
+        // Create multiple known hosts for host1 with different algorithms
+        val knownHost1 = createTestKnownHost(hostId1, "example.com", 22, hostKeyAlgo = "ssh-rsa", hostKey = "rsa-key".toByteArray())
+        val knownHost2 = createTestKnownHost(hostId1, "example.com", 22, hostKeyAlgo = "ssh-ed25519", hostKey = "ed25519-key".toByteArray())
+        val knownHost3 = createTestKnownHost(hostId1, "example.com", 2222, hostKey = "other-key".toByteArray())
+
+        // Create a known host for host2
+        val knownHost4 = createTestKnownHost(hostId2, "test.com", 22, hostKey = "test-key".toByteArray())
+
+        knownHostDao.insert(knownHost1)
+        knownHostDao.insert(knownHost2)
+        knownHostDao.insert(knownHost3)
+        knownHostDao.insert(knownHost4)
+
+        // Verify initial state
+        assertThat(knownHostDao.getByHostId(hostId1)).hasSize(3)
+        assertThat(knownHostDao.getByHostId(hostId2)).hasSize(1)
+
+        // Delete all known hosts for host1
+        knownHostDao.deleteByHostId(hostId1)
+
+        // Verify host1's known hosts are deleted
+        assertThat(knownHostDao.getByHostId(hostId1)).isEmpty()
+
+        // Verify host2's known hosts are not affected
+        val host2KnownHosts = knownHostDao.getByHostId(hostId2)
+        assertThat(host2KnownHosts).hasSize(1)
+        assertThat(host2KnownHosts[0].hostname).isEqualTo("test.com")
+    }
+
+    @Test
+    fun deleteByHostId_DoesNothingWhenNoKnownHostsExist() = runTest {
+        val host = createTestHost()
+        val hostId = hostDao.insert(host)
+
+        // Try to delete when no known hosts exist
+        knownHostDao.deleteByHostId(hostId)
+
+        // Should not throw and should return empty list
+        val knownHosts = knownHostDao.getByHostId(hostId)
+        assertThat(knownHosts).isEmpty()
+    }
+
     private fun createTestHost(
         nickname: String = "test-host",
         protocol: String = "ssh",
