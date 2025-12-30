@@ -205,6 +205,18 @@ class HostListViewModel @Inject constructor(
         }
     }
 
+    fun forgetHostKeys(host: Host) {
+        viewModelScope.launch {
+            try {
+                repository.deleteKnownHostsForHost(host.id)
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(error = e.message ?: "Failed to forget host keys")
+                }
+            }
+        }
+    }
+
     fun disconnectAll() {
         terminalManager?.disconnectAll(true, false)
     }

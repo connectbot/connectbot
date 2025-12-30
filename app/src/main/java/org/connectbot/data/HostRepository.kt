@@ -287,6 +287,17 @@ class HostRepository @Inject constructor(
         }
     }
 
+    /**
+     * Delete all known host keys for a specific host configuration.
+     * Use this when the user wants to forget all stored host keys and
+     * re-verify on next connection.
+     *
+     * @param hostId The host ID
+     */
+    suspend fun deleteKnownHostsForHost(hostId: Long) {
+        knownHostDao.deleteByHostId(hostId)
+    }
+
     // ============================================================================
     // Export/Import Operations
     // ============================================================================

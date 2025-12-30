@@ -40,6 +40,7 @@ import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.MoreVert
@@ -217,6 +218,7 @@ fun HostListScreen(
         onNavigateToHelp = onNavigateToHelp,
         onToggleSortOrder = viewModel::toggleSortOrder,
         onDeleteHost = viewModel::deleteHost,
+        onForgetHostKeys = viewModel::forgetHostKeys,
         onDisconnectHost = viewModel::disconnectHost,
         onDisconnectAll = viewModel::disconnectAll,
         onExportHosts = viewModel::exportHosts,
@@ -241,6 +243,7 @@ fun HostListScreenContent(
     onNavigateToHelp: () -> Unit,
     onToggleSortOrder: () -> Unit,
     onDeleteHost: (Host) -> Unit,
+    onForgetHostKeys: (Host) -> Unit,
     onDisconnectHost: (Host) -> Unit,
     onDisconnectAll: () -> Unit,
     onExportHosts: () -> Unit = {},
@@ -417,6 +420,7 @@ fun HostListScreenContent(
                                 },
                                 onEdit = { onNavigateToEditHost(host) },
                                 onPortForwards = { onNavigateToPortForwards(host) },
+                                onForgetHostKeys = { onForgetHostKeys(host) },
                                 onDisconnect = { onDisconnectHost(host) },
                                 onDelete = { onDeleteHost(host) }
                             )
@@ -446,6 +450,7 @@ private fun HostListItem(
     onClick: () -> Unit,
     onEdit: () -> Unit,
     onPortForwards: () -> Unit,
+    onForgetHostKeys: () -> Unit,
     onDisconnect: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
@@ -453,6 +458,7 @@ private fun HostListItem(
     var showMenu by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showDisconnectDialog by remember { mutableStateOf(false) }
+    var showForgetHostKeysDialog by remember { mutableStateOf(false) }
 
     // Determine border color based on connection state
     val borderColor = when (connectionState) {
@@ -565,6 +571,18 @@ private fun HostListItem(
                                 Icon(Icons.Default.Link, null)
                             }
                         )
+                        if (host.protocol == "ssh") {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.list_host_forget_keys)) },
+                                onClick = {
+                                    showMenu = false
+                                    showForgetHostKeysDialog = true
+                                },
+                                leadingIcon = {
+                                    Icon(Icons.Default.Key, null)
+                                }
+                            )
+                        }
                         DropdownMenuItem(
                             text = { Text(stringResource(R.string.list_host_disconnect)) },
                             onClick = {
@@ -612,6 +630,17 @@ private fun HostListItem(
             onConfirm = {
                 showDisconnectDialog = false
                 onDisconnect()
+            }
+        )
+    }
+
+    if (showForgetHostKeysDialog) {
+        ForgetHostKeysDialog(
+            host = host,
+            onDismiss = { showForgetHostKeysDialog = false },
+            onConfirm = {
+                showForgetHostKeysDialog = false
+                onForgetHostKeys()
             }
         )
     }
@@ -672,6 +701,33 @@ private fun HostDisconnectDialog(
 }
 
 @Composable
+private fun ForgetHostKeysDialog(
+    host: Host,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.list_host_forget_keys)) },
+        text = {
+            Text(stringResource(R.string.forget_host_keys_confirm, host.nickname))
+        },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm
+            ) {
+                Text(stringResource(R.string.button_yes))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.button_no))
+            }
+        }
+    )
+}
+
+@Composable
 private fun parseColor(colorString: String?): Color {
     if (colorString.isNullOrBlank()) {
         return colorResource(R.color.host_blue)
@@ -700,6 +756,7 @@ private fun HostListScreenEmptyPreview() {
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
+            onForgetHostKeys = {},
             onDisconnectHost = {},
             onDisconnectAll = {}
         )
@@ -725,6 +782,7 @@ private fun HostListScreenLoadingPreview() {
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
+            onForgetHostKeys = {},
             onDisconnectHost = {},
             onDisconnectAll = {}
         )
@@ -751,6 +809,7 @@ private fun HostListScreenErrorPreview() {
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
+            onForgetHostKeys = {},
             onDisconnectHost = {},
             onDisconnectAll = {}
         )
@@ -809,6 +868,7 @@ private fun HostListScreenPopulatedPreview() {
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
+            onForgetHostKeys = {},
             onDisconnectHost = {},
             onDisconnectAll = {}
         )
