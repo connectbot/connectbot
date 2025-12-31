@@ -130,6 +130,27 @@ class DatabaseMigrator @Inject constructor(
             return@withContext false
         }
 
+        // Check if legacy databases have any actual data to migrate.
+        // If legacy DBs exist but are empty, skip migration to avoid inserting
+        // a duplicate default profile (fixes #1806).
+        // Wrap in try-catch to handle malformed legacy databases gracefully.
+        val legacyHostsHaveData = legacyHostsExists && try {
+            legacyHostReader.readHosts().isNotEmpty()
+        } catch (e: Exception) {
+            logDebug("Failed to read legacy hosts database: ${e.message}")
+            false
+        }
+        val legacyPubkeysHaveData = legacyPubkeysExists && try {
+            legacyPubkeyReader.readPubkeys().isNotEmpty()
+        } catch (e: Exception) {
+            logDebug("Failed to read legacy pubkeys database: ${e.message}")
+            false
+        }
+        if (!legacyHostsHaveData && !legacyPubkeysHaveData) {
+            logDebug("Legacy databases exist but are empty or unreadable, no migration needed")
+            return@withContext false
+        }
+
         // IMPORTANT: Check if Room database FILE exists BEFORE accessing Room.
         // This prevents a race condition where accessing Room triggers lazy initialization,
         // which fires the onCreate callback that inserts a default profile. If we query
