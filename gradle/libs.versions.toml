@@ -54,6 +54,7 @@ navigationTesting = "2.9.8"
 ui = "1.11.1"
 biometric = "1.4.0-alpha02"
 core = "1.18.0"
+cbor = "0.9"
 
 [libraries]
 sshlib = { module = "org.connectbot:sshlib", version.ref = "sshlib" }
@@ -108,6 +109,8 @@ androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-
 androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 androidx-biometric = { module = "androidx.biometric:biometric-ktx", version.ref = "biometric" }
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "core" }
+
+cbor = { module = "co.nstant.in:cbor", version.ref = "cbor" }
 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }

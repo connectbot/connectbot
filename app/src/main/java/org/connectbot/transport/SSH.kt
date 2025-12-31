@@ -48,6 +48,11 @@ import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.fido2.ssh.SkEcdsaPublicKey
+import org.connectbot.fido2.ssh.SkEcdsaVerify
+import org.connectbot.fido2.ssh.SkEd25519PublicKey
+import org.connectbot.fido2.ssh.SkEd25519Verify
+import org.connectbot.fido2.ssh.SkPublicKey
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
@@ -134,9 +139,14 @@ open class SSH :
             "ecdsa-sha2-nistp256" -> ECDSASHA2Verify.ECDSASHA2NISTP256Verify.get().decodePublicKey(keyBlob)
             "ecdsa-sha2-nistp384" -> ECDSASHA2Verify.ECDSASHA2NISTP384Verify.get().decodePublicKey(keyBlob)
             "ecdsa-sha2-nistp521" -> ECDSASHA2Verify.ECDSASHA2NISTP521Verify.get().decodePublicKey(keyBlob)
+            SkEcdsaPublicKey.KEY_TYPE -> SkEcdsaVerify.decodePublicKey(keyBlob)
+            SkEd25519PublicKey.KEY_TYPE -> SkEd25519Verify.decodePublicKey(keyBlob)
             else -> null
         }
     } catch (e: IOException) {
+        Timber.e(e, "Failed to decode public key")
+        null
+    } catch (e: Exception) {
         Timber.e(e, "Failed to decode public key")
         null
     }
@@ -146,6 +156,8 @@ open class SSH :
         is DSAPublicKey -> publicKey.params.p.bitLength()
         is ECPublicKey -> publicKey.params.curve.field.fieldSize
         is Ed25519PublicKey -> 256
+        is SkEcdsaPublicKey -> 256 // P-256 curve
+        is SkEd25519PublicKey -> 256 // Ed25519
         else -> 0
     }
 
@@ -154,6 +166,8 @@ open class SSH :
         "ssh-rsa", "rsa-sha2-256", "rsa-sha2-512" -> "RSA"
         "ssh-dss" -> "DSA"
         "ssh-ed25519" -> "Ed25519"
+        SkEcdsaPublicKey.KEY_TYPE -> "SK-ECDSA"
+        SkEd25519PublicKey.KEY_TYPE -> "SK-Ed25519"
         else -> if (openSshKeyType.startsWith("ecdsa-sha2-")) "EC" else null
     }
 
