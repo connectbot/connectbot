@@ -23,7 +23,10 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import org.connectbot.di.CoroutineDispatchers
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
 import org.junit.After
@@ -48,12 +51,19 @@ import java.io.FileOutputStream
  *
  * This test reproduces the exact production scenario to verify the bug.
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 @Config(sdk = [34])
 class LegacyMigrationRaceConditionTest {
 
     private lateinit var context: Context
     private val roomDbName = "connectbot_test_race.db"
+    private val testDispatcher = UnconfinedTestDispatcher()
+    private val dispatchers = CoroutineDispatchers(
+        default = testDispatcher,
+        io = testDispatcher,
+        main = testDispatcher
+    )
 
     @Before
     fun setUp() {
@@ -130,7 +140,7 @@ class LegacyMigrationRaceConditionTest {
             // Step 4: Create the migrator (same as production)
             val legacyHostReader = LegacyHostDatabaseReader(context)
             val legacyPubkeyReader = LegacyPubkeyDatabaseReader(context)
-            val migrator = DatabaseMigrator(context, database, legacyHostReader, legacyPubkeyReader)
+            val migrator = DatabaseMigrator(context, database, legacyHostReader, legacyPubkeyReader, dispatchers)
 
             // Step 5: Call isMigrationNeeded() - this is where the bug manifests
             // The bug: This call triggers Room lazy initialization, which fires onCreate,
