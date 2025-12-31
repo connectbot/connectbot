@@ -21,11 +21,11 @@ import android.content.Context
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
-import timber.log.Timber
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.connectbot.ui.screens.generatepubkey.KeyType
+import timber.log.Timber
 import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.PrivateKey
@@ -47,7 +47,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class BiometricKeyManager @Inject constructor(
-	@ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context
 ) {
     companion object {
         private const val TAG = "BiometricKeyManager"
@@ -64,9 +64,7 @@ class BiometricKeyManager @Inject constructor(
          * Check if a KeyType supports biometric protection.
          * Only RSA and EC keys can be stored in Android Keystore with biometric auth.
          */
-        fun supportsBiometric(keyType: KeyType): Boolean {
-            return keyType == KeyType.RSA || keyType == KeyType.EC
-        }
+        fun supportsBiometric(keyType: KeyType): Boolean = keyType == KeyType.RSA || keyType == KeyType.EC
     }
 
     private val keyStore: KeyStore = KeyStore.getInstance(KEYSTORE_PROVIDER).apply {
@@ -91,9 +89,7 @@ class BiometricKeyManager @Inject constructor(
     /**
      * Generate a unique alias for a new biometric key.
      */
-    fun generateKeyAlias(): String {
-        return KEY_ALIAS_PREFIX + UUID.randomUUID().toString()
-    }
+    fun generateKeyAlias(): String = KEY_ALIAS_PREFIX + UUID.randomUUID().toString()
 
     /**
      * Generate an RSA key pair in Android Keystore with biometric authentication requirement.
@@ -112,7 +108,9 @@ class BiometricKeyManager @Inject constructor(
             } catch (e: Exception) {
                 Timber.w("StrongBox key generation failed, falling back to TEE", e)
                 // Delete any partial key that might have been created
-                try { deleteKey(alias) } catch (_: Exception) {}
+                try {
+                    deleteKey(alias)
+                } catch (_: Exception) {}
             }
         }
 
@@ -184,7 +182,9 @@ class BiometricKeyManager @Inject constructor(
             } catch (e: Exception) {
                 Timber.w("StrongBox key generation failed, falling back to TEE", e)
                 // Delete any partial key that might have been created
-                try { deleteKey(alias) } catch (_: Exception) {}
+                try {
+                    deleteKey(alias)
+                } catch (_: Exception) {}
             }
         }
 
@@ -253,12 +253,10 @@ class BiometricKeyManager @Inject constructor(
      * @param keySize The key size in bits
      * @return The public key
      */
-    fun generateKey(alias: String, keyType: String, keySize: Int): PublicKey {
-        return when (keyType) {
-            "RSA" -> generateRsaKey(alias, keySize)
-            "EC" -> generateEcKey(alias, keySize)
-            else -> throw IllegalArgumentException("Unsupported key type for biometric protection: $keyType")
-        }
+    fun generateKey(alias: String, keyType: String, keySize: Int): PublicKey = when (keyType) {
+        "RSA" -> generateRsaKey(alias, keySize)
+        "EC" -> generateEcKey(alias, keySize)
+        else -> throw IllegalArgumentException("Unsupported key type for biometric protection: $keyType")
     }
 
     /**
@@ -283,16 +281,16 @@ class BiometricKeyManager @Inject constructor(
      * @param keySize The key size in bits (used to determine hash algorithm for EC keys)
      * @return The signature algorithm string
      */
-    fun getSignatureAlgorithm(keyType: String, keySize: Int = 256): String {
-        return when (keyType) {
-            "RSA" -> "SHA256withRSA"
-            "EC" -> when (keySize) {
-                521 -> "SHA512withECDSA"
-                384 -> "SHA384withECDSA"
-                else -> "SHA256withECDSA" // P-256 and any other size
-            }
-            else -> throw IllegalArgumentException("Unsupported key type: $keyType")
+    fun getSignatureAlgorithm(keyType: String, keySize: Int = 256): String = when (keyType) {
+        "RSA" -> "SHA256withRSA"
+
+        "EC" -> when (keySize) {
+            521 -> "SHA512withECDSA"
+            384 -> "SHA384withECDSA"
+            else -> "SHA256withECDSA" // P-256 and any other size
         }
+
+        else -> throw IllegalArgumentException("Unsupported key type: $keyType")
     }
 
     /**
@@ -302,9 +300,7 @@ class BiometricKeyManager @Inject constructor(
      * @param alias The key alias
      * @return The private key
      */
-    fun getPrivateKey(alias: String): PrivateKey {
-        return keyStore.getKey(alias, null) as PrivateKey
-    }
+    fun getPrivateKey(alias: String): PrivateKey = keyStore.getKey(alias, null) as PrivateKey
 
     /**
      * Get the public key from Keystore.
@@ -312,9 +308,7 @@ class BiometricKeyManager @Inject constructor(
      * @param alias The key alias
      * @return The public key, or null if not found
      */
-    fun getPublicKey(alias: String): PublicKey? {
-        return keyStore.getCertificate(alias)?.publicKey
-    }
+    fun getPublicKey(alias: String): PublicKey? = keyStore.getCertificate(alias)?.publicKey
 
     /**
      * Check if a key exists in the Keystore.
@@ -322,9 +316,7 @@ class BiometricKeyManager @Inject constructor(
      * @param alias The key alias
      * @return True if the key exists
      */
-    fun keyExists(alias: String): Boolean {
-        return keyStore.containsAlias(alias)
-    }
+    fun keyExists(alias: String): Boolean = keyStore.containsAlias(alias)
 
     /**
      * Delete a key from the Keystore.

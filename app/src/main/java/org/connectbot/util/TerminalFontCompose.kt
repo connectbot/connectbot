@@ -18,7 +18,6 @@
 package org.connectbot.util
 
 import android.graphics.Typeface
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,9 +26,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.suspendCancellableCoroutine
+import timber.log.Timber
 import kotlin.coroutines.resume
-
-private const val TAG = "TerminalFontCompose"
 
 /**
  * State representing font loading progress.
@@ -139,17 +137,17 @@ fun rememberTerminalTypefaceResultFromStoredValue(
     }
 
     LaunchedEffect(storedValue) {
-        Log.d(TAG, "Loading font for storedValue: $storedValue")
+        Timber.d("Loading font for storedValue: $storedValue")
         isLoading = true
         loadFailed = false
 
         // Check if it's a local font
         if (LocalFontProvider.isLocalFont(storedValue)) {
             val fileName = LocalFontProvider.getLocalFontFileName(storedValue)
-            Log.d(TAG, "Local font detected, fileName: $fileName")
+            Timber.d("Local font detected, fileName: $fileName")
             if (fileName != null) {
                 val loadedTypeface = localFontProvider.getTypeface(fileName, fallback)
-                typeface = loadedTypeface ?: fallback
+                typeface = loadedTypeface
                 loadFailed = loadedTypeface == fallback
             } else {
                 typeface = fallback
@@ -161,22 +159,22 @@ fun rememberTerminalTypefaceResultFromStoredValue(
 
         // Handle Google Fonts (preset or custom)
         val googleFontName = TerminalFont.getGoogleFontName(storedValue)
-        Log.d(TAG, "Google font name resolved: '$googleFontName'")
+        Timber.d("Google font name resolved: '$googleFontName'")
         if (googleFontName.isBlank()) {
-            Log.d(TAG, "Google font name is blank, using fallback")
+            Timber.d("Google font name is blank, using fallback")
             typeface = fallback
             isLoading = false
             // Not a failure if it's SYSTEM_DEFAULT
             loadFailed = storedValue != null &&
-                         storedValue != TerminalFont.SYSTEM_DEFAULT.name &&
-                         storedValue != TerminalFont.SYSTEM_DEFAULT.displayName
+                storedValue != TerminalFont.SYSTEM_DEFAULT.name &&
+                storedValue != TerminalFont.SYSTEM_DEFAULT.displayName
             return@LaunchedEffect
         }
 
         // Check cache first
         val cached = fontProvider.getCachedTypefaceByName(googleFontName)
         if (cached != null) {
-            Log.d(TAG, "Font found in cache: $googleFontName")
+            Timber.d("Font found in cache: $googleFontName")
             typeface = cached
             isLoading = false
             loadFailed = false
@@ -184,14 +182,14 @@ fun rememberTerminalTypefaceResultFromStoredValue(
         }
 
         // Load font using suspend function (runs on Dispatchers.IO)
-        Log.d(TAG, "Loading font from provider: $googleFontName")
+        Timber.d("Loading font from provider: $googleFontName")
         val loadedTypeface = fontProvider.loadFontByNameSuspend(googleFontName)
-        Log.d(TAG, "Font loaded: $googleFontName, typeface: $loadedTypeface")
-        typeface = loadedTypeface ?: fallback
+        Timber.d("Font loaded: $googleFontName, typeface: $loadedTypeface")
+        typeface = loadedTypeface
         // If we got MONOSPACE back but didn't request it, the load failed
         loadFailed = loadedTypeface == Typeface.MONOSPACE
         isLoading = false
-        Log.d(TAG, "Font set to: $typeface, loadFailed: $loadFailed")
+        Timber.d("Font set to: $typeface, loadFailed: $loadFailed")
     }
 
     return TerminalTypefaceResult(
@@ -214,9 +212,7 @@ fun rememberTerminalTypefaceResultFromStoredValue(
 fun rememberTerminalTypefaceFromStoredValue(
     storedValue: String?,
     fallback: Typeface = Typeface.MONOSPACE
-): Typeface {
-    return rememberTerminalTypefaceResultFromStoredValue(storedValue, fallback).typeface
-}
+): Typeface = rememberTerminalTypefaceResultFromStoredValue(storedValue, fallback).typeface
 
 /**
  * Remember a terminal font provider instance.

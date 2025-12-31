@@ -70,7 +70,7 @@ data class ExportResult(
 
 @HiltViewModel
 class HostListViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val repository: HostRepository,
     private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
@@ -137,32 +137,34 @@ class HostListViewModel @Inject constructor(
         }
     }
 
-    private fun formatServiceError(error: ServiceError): String {
-        return when (error) {
-            is ServiceError.KeyLoadFailed -> {
-                context.getString(R.string.error_key_load_failed, error.keyName, error.reason)
-            }
-            is ServiceError.ConnectionFailed -> {
-                context.getString(
-                    R.string.error_connection_failed,
-                    error.hostNickname,
-                    error.hostname,
-                    error.reason
-                )
-            }
-            is ServiceError.PortForwardLoadFailed -> {
-                context.getString(
-                    R.string.error_port_forward_load_failed,
-                    error.hostNickname,
-                    error.reason
-                )
-            }
-            is ServiceError.HostSaveFailed -> {
-                context.getString(R.string.error_host_save_failed, error.hostNickname, error.reason)
-            }
-            is ServiceError.ColorSchemeLoadFailed -> {
-                context.getString(R.string.error_color_scheme_load_failed, error.reason)
-            }
+    private fun formatServiceError(error: ServiceError): String = when (error) {
+        is ServiceError.KeyLoadFailed -> {
+            context.getString(R.string.error_key_load_failed, error.keyName, error.reason)
+        }
+
+        is ServiceError.ConnectionFailed -> {
+            context.getString(
+                R.string.error_connection_failed,
+                error.hostNickname,
+                error.hostname,
+                error.reason
+            )
+        }
+
+        is ServiceError.PortForwardLoadFailed -> {
+            context.getString(
+                R.string.error_port_forward_load_failed,
+                error.hostNickname,
+                error.reason
+            )
+        }
+
+        is ServiceError.HostSaveFailed -> {
+            context.getString(R.string.error_host_save_failed, error.hostNickname, error.reason)
+        }
+
+        is ServiceError.ColorSchemeLoadFailed -> {
+            context.getString(R.string.error_color_scheme_load_failed, error.reason)
         }
     }
 
@@ -218,7 +220,7 @@ class HostListViewModel @Inject constructor(
     }
 
     fun disconnectAll() {
-        terminalManager?.disconnectAll(true, false)
+        terminalManager?.disconnectAll(immediate = true, excludeLocal = false)
     }
 
     fun disconnectHost(host: Host) {
