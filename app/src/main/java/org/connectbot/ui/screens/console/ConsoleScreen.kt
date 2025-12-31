@@ -260,6 +260,19 @@ fun ConsoleScreen(
     val canForwardPorts = currentBridge?.canFowardPorts() == true
     val snackbarHostState = remember { SnackbarHostState() }
 
+    // Initialize forceSize from profile when bridge changes
+    LaunchedEffect(currentBridge) {
+        currentBridge?.let { bridge ->
+            val rows = bridge.profileForceSizeRows
+            val cols = bridge.profileForceSizeColumns
+            if (rows != null && cols != null) {
+                forceSize = Pair(rows, cols)
+            } else {
+                forceSize = null
+            }
+        }
+    }
+
     // Show snackbar when there's an error
     LaunchedEffect(uiState.error) {
         uiState.error?.let { error ->
@@ -482,10 +495,15 @@ fun ConsoleScreen(
         if (showResizeDialog && currentBridge != null) {
             ResizeDialog(
                 currentBridge = currentBridge,
+                isForced = forceSize != null,
                 onDismiss = { showResizeDialog = false },
                 onResize = { width, height ->
                     // Resize the terminal emulator
                     forceSize = Pair(height, width)
+                },
+                onDisableForceSize = {
+                    // Disable force size for this session
+                    forceSize = null
                 }
             )
         }

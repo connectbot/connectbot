@@ -49,6 +49,9 @@ data class ProfileEditorUiState(
     val delKey: String = "del",
     val encoding: String = "UTF-8",
     val emulation: String = "xterm-256color",
+    val forceSizeEnabled: Boolean = false,
+    val forceSizeRows: Int = 24,
+    val forceSizeColumns: Int = 80,
     val customTerminalTypes: List<String> = emptyList(),
     val customFonts: List<String> = emptyList(),
     val localFonts: List<Pair<String, String>> = emptyList(),
@@ -125,6 +128,7 @@ class ProfileEditorViewModel @Inject constructor(
         viewModelScope.launch {
             val profile = profileRepository.getById(profileId)
             if (profile != null) {
+                val forceSizeEnabled = profile.forceSizeRows != null && profile.forceSizeColumns != null
                 _uiState.update {
                     it.copy(
                         name = profile.name,
@@ -135,6 +139,9 @@ class ProfileEditorViewModel @Inject constructor(
                         delKey = profile.delKey,
                         encoding = profile.encoding,
                         emulation = profile.emulation,
+                        forceSizeEnabled = forceSizeEnabled,
+                        forceSizeRows = profile.forceSizeRows ?: 24,
+                        forceSizeColumns = profile.forceSizeColumns ?: 80,
                         isLoading = false
                     )
                 }
@@ -187,6 +194,18 @@ class ProfileEditorViewModel @Inject constructor(
         _uiState.update { it.copy(emulation = value) }
     }
 
+    fun updateForceSizeEnabled(value: Boolean) {
+        _uiState.update { it.copy(forceSizeEnabled = value) }
+    }
+
+    fun updateForceSizeRows(value: Int) {
+        _uiState.update { it.copy(forceSizeRows = value.coerceIn(1, 999)) }
+    }
+
+    fun updateForceSizeColumns(value: Int) {
+        _uiState.update { it.copy(forceSizeColumns = value.coerceIn(1, 999)) }
+    }
+
     fun save(onSuccess: () -> Unit) {
         viewModelScope.launch {
             val state = _uiState.value
@@ -214,7 +233,9 @@ class ProfileEditorViewModel @Inject constructor(
                 fontSize = state.fontSize,
                 delKey = state.delKey,
                 encoding = state.encoding,
-                emulation = state.emulation
+                emulation = state.emulation,
+                forceSizeRows = if (state.forceSizeEnabled) state.forceSizeRows else null,
+                forceSizeColumns = if (state.forceSizeEnabled) state.forceSizeColumns else null
             )
 
             profileRepository.save(profile)

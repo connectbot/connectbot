@@ -19,11 +19,14 @@ package org.connectbot.ui.screens.profiles
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -46,8 +49,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -236,6 +241,18 @@ fun ProfileEditorScreen(
                 EncodingSelector(
                     encoding = uiState.encoding,
                     onEncodingSelected = { viewModel.updateEncoding(it) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                ForceSizeSelector(
+                    enabled = uiState.forceSizeEnabled,
+                    rows = uiState.forceSizeRows,
+                    columns = uiState.forceSizeColumns,
+                    onEnabledChange = { viewModel.updateForceSizeEnabled(it) },
+                    onRowsChange = { viewModel.updateForceSizeRows(it) },
+                    onColumnsChange = { viewModel.updateForceSizeColumns(it) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -658,6 +675,78 @@ private fun IconColorSelector(
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ForceSizeSelector(
+    enabled: Boolean,
+    rows: Int,
+    columns: Int,
+    onEnabledChange: (Boolean) -> Unit,
+    onRowsChange: (Int) -> Unit,
+    onColumnsChange: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = stringResource(R.string.profile_editor_force_size_title),
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+        Text(
+            text = stringResource(R.string.profile_editor_force_size_summary),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        Row(
+            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = stringResource(R.string.profile_editor_force_size_enable),
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.weight(1f)
+            )
+            Switch(
+                checked = enabled,
+                onCheckedChange = onEnabledChange
+            )
+        }
+
+        if (enabled) {
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                OutlinedTextField(
+                    value = columns.toString(),
+                    onValueChange = { value ->
+                        value.toIntOrNull()?.let { onColumnsChange(it) }
+                    },
+                    label = { Text(stringResource(R.string.profile_editor_force_size_columns)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    singleLine = true,
+                    modifier = Modifier.weight(1f)
+                )
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                OutlinedTextField(
+                    value = rows.toString(),
+                    onValueChange = { value ->
+                        value.toIntOrNull()?.let { onRowsChange(it) }
+                    },
+                    label = { Text(stringResource(R.string.profile_editor_force_size_rows)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    singleLine = true,
+                    modifier = Modifier.weight(1f)
+                )
             }
         }
     }
